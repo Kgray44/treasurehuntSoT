@@ -1,0 +1,2 @@
+import { defineConfig, devices } from "@playwright/test";
+export default defineConfig({ testDir: "./tests/e2e", timeout: 30_000, fullyParallel: false, use: { baseURL: "http://127.0.0.1:3000", trace: "retain-on-failure", screenshot: "only-on-failure" }, projects: [{ name: "chromium", use: { ...devices["Desktop Chrome"] } }, { name: "webkit-mobile", use: { ...devices["iPhone 14"] } }], webServer: { command: "npm run dev", url: "http://127.0.0.1:3000", reuseExistingServer: true, timeout: 120_000 } });

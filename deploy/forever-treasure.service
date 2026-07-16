@@ -1,0 +1,17 @@
+[Unit]
+Description=Forever Treasure Companion
+After=network.target mysql.service
+
+[Service]
+Type=simple
+User=forever-treasure
+WorkingDirectory=/opt/forever-treasure
+EnvironmentFile=/etc/forever-treasure.env
+ExecStart=/usr/bin/npm start
+Restart=on-failure
+RestartSec=5
+NoNewPrivileges=true
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target

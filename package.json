@@ -1,0 +1,53 @@
+{
+  "name": "forever-treasure-companion",
+  "version": "0.1.0",
+  "private": true,
+  "packageManager": "npm@11.9.0",
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint .",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:e2e": "playwright test",
+    "db:generate": "prisma generate --schema prisma/schema.sqlite.prisma",
+    "db:migrate": "prisma migrate dev --schema prisma/schema.sqlite.prisma",
+    "db:seed": "tsx prisma/seed.ts",
+    "db:reset": "prisma migrate reset --force --schema prisma/schema.sqlite.prisma",
+    "db:generate:mysql": "prisma generate --schema prisma/schema.prisma",
+    "db:migrate:mysql:init": "prisma db execute --file prisma/mysql-migrations/0001_init/migration.sql --schema prisma/schema.prisma"
+  },
+  "dependencies": {
+    "@prisma/client": "6.19.1",
+    "bcryptjs": "3.0.2",
+    "framer-motion": "12.23.24",
+    "motion-dom": "12.23.23",
+    "motion-utils": "12.23.6",
+    "next": "16.2.10",
+    "pino": "10.1.0",
+    "react": "19.2.4",
+    "react-dom": "19.2.4",
+    "zod": "4.1.12"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.56.1",
+    "@tailwindcss/postcss": "^4",
+    "@testing-library/jest-dom": "6.9.1",
+    "@testing-library/react": "16.3.0",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "16.2.10",
+    "jsdom": "27.2.0",
+    "prisma": "6.19.1",
+    "tailwindcss": "^4",
+    "tsx": "4.20.6",
+    "typescript": "^5",
+    "vitest": "4.0.13"
+  }
+}
