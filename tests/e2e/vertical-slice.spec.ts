@@ -1,3 +1,0 @@
-import { expect, test } from "@playwright/test";
-test("player gate protects all unreleased story content", async ({ page }) => { await page.goto("/tale/development-forever-treasure"); await expect(page.getByRole("heading", { name: "The journal knows its sailor" })).toBeVisible(); await expect(page.getByText("Where weary crews return from foam")).toHaveCount(0); });
-test("quartermaster login is protected and rate-limit-safe", async ({ page }) => { await page.goto("/quartermaster"); await expect(page.getByRole("heading", { name: "Quartermaster’s Log" })).toBeVisible(); await expect(page.getByRole("button", { name: "Enter the chart room" })).toBeVisible(); });

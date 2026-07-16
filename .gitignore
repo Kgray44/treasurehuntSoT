@@ -39,13 +39,19 @@ yarn-error.log*
 *.db
 *.db-journal
 *.sqlite*
+!prisma/schema.sqlite.prisma
 /backups/
+
+# local startup state and runtime mirrors
+/.forever-dev.json
+/.runtime/
 
 # browser and visual test artifacts
 /test-results/
 /playwright-report/
 /playwright/.auth/
 /artifacts/screenshots/
+/artifacts/validation/
 
 # local certificates, archives, logs, and editor state
 *.key

@@ -1,16 +1,26 @@
 import { z } from "zod";
 
-export const chapterStates = [
-  "LOCKED", "TEASER", "READY", "REVEALING", "ACTIVE", "SOLVED", "COMPLETE",
-] as const;
+export const chapterStates = ["LOCKED", "TEASER", "READY", "REVEALING", "ACTIVE", "SOLVED", "COMPLETE"] as const;
 export type ChapterState = (typeof chapterStates)[number];
 
 export const eventTypes = [
-  "CAMPAIGN_STARTED", "CAMPAIGN_PAUSED", "CAMPAIGN_RESUMED", "CHAPTER_PREPARED",
-  "CHAPTER_RELEASED", "CHAPTER_REVEAL_STARTED", "CHAPTER_REVEAL_COMPLETED",
-  "CHAPTER_SOLVED", "HINT_RELEASED", "ARTIFACT_AWARDED", "SIDE_QUEST_DISCOVERED",
-  "SIDE_QUEST_UPDATED", "JOURNAL_ENTRY_ADDED", "MAP_LOCATION_REVEALED",
-  "GM_MESSAGE_RELEASED", "FINALE_UNLOCKED", "STATE_REVERTED",
+  "CAMPAIGN_STARTED",
+  "CAMPAIGN_PAUSED",
+  "CAMPAIGN_RESUMED",
+  "CHAPTER_PREPARED",
+  "CHAPTER_RELEASED",
+  "CHAPTER_REVEAL_STARTED",
+  "CHAPTER_REVEAL_COMPLETED",
+  "CHAPTER_SOLVED",
+  "HINT_RELEASED",
+  "ARTIFACT_AWARDED",
+  "SIDE_QUEST_DISCOVERED",
+  "SIDE_QUEST_UPDATED",
+  "JOURNAL_ENTRY_ADDED",
+  "MAP_LOCATION_REVEALED",
+  "GM_MESSAGE_RELEASED",
+  "FINALE_UNLOCKED",
+  "STATE_REVERTED",
 ] as const;
 export type ProgressEventType = (typeof eventTypes)[number];
 
@@ -29,7 +39,16 @@ export function canTransition(from: ChapterState, to: ChapterState) {
 }
 
 export const gmActionSchema = z.object({
-  action: z.enum(["PREPARE_CHAPTER", "RELEASE_CHAPTER", "MARK_SOLVED", "AWARD_ARTIFACT", "REVEAL_MAP", "UNDO_LAST", "PAUSE", "RESUME"]),
+  action: z.enum([
+    "PREPARE_CHAPTER",
+    "RELEASE_CHAPTER",
+    "MARK_SOLVED",
+    "AWARD_ARTIFACT",
+    "REVEAL_MAP",
+    "UNDO_LAST",
+    "PAUSE",
+    "RESUME",
+  ]),
   campaignSlug: z.string().min(3).max(80),
   confirmation: z.literal(true),
 });

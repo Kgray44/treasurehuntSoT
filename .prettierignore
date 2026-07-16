@@ -1,0 +1,11 @@
+.next
+node_modules
+node_modules.failed
+coverage
+test-results
+playwright-report
+artifacts
+package-lock.json
+prisma/migrations
+prisma/mysql-migrations
+src/app/favicon.ico

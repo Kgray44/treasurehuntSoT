@@ -1,17 +1,17 @@
 # Codex handoff
 
 - Canonical repository: `Kgray44/treasurehuntSoT`, branch `main`
-- Phase: production foundation + first theatrical vertical slice
-- Last milestone: responsive sealed journal, authenticated GM progression, SSE ceremony, map reveal, undo, tests, and deployment docs
+- Phase: production foundation + fully automated, acceptance-tested local demo
+- Last milestone: one-command startup/shutdown, clean validation database, full GM/player browser workflow, cross-browser accessibility, reconnect recovery, screenshots, build and restart proof
 - Architecture: Next App Router, Prisma SQLite/MySQL, database sessions, ordered events/SSE, central ceremony queue
 - Story model: seven states and 18 event types implemented; development Chapter One only
-- Database: normalized schema, SQLite migration and idempotent seed validated; MySQL schema prepared, not deployed
+- Database: normalized schema, tracked SQLite schema/migration, clean validation rebuild and invariant verifier passing; MySQL schema prepared, not deployed
 - Authentication: player code cookie and GM bcrypt/database session/CSRF/rate limit implemented
-- Tests: 6 Vitest tests and 2 Chromium Playwright smoke tests passing
-- Known failures: none in build/unit/Chromium smoke; WebKit not run
-- Technical debt: fuller transactional integration tests, Redis fan-out, dedicated GM preview
+- Tests: 6 Vitest tests; 5 Chromium/WebKit browser checks passing with 1 intentional cross-project skip; axe scans, database invariants, production build, and two-cycle restart proof passing
+- Known failures: none; Playwright may log a harmless screenshot-caret hydration warning only when an older runner uses its default hidden-caret capture
+- Technical debt: Redis fan-out, dedicated GM preview, connector-parity migration generation, CI workflow
 - Development-only content: The First Seal, Broken Compass Needle, Port Merrick, Echoes of the Past
 - Do not casually rewrite: `src/server/progression.ts`, public snapshot filtering, ceremony queue, dual Prisma schemas
-- Recommended next task: add isolated database fixtures and complete the full GM-release/undo Playwright scenario
-- Latest validated implementation commit SHA: `da344158bc29a427e25c6d4189d03416e9e34edb`
+- Recommended next task: add CI for `npm run validate` and production-like MySQL integration coverage
+- Latest validated implementation commit SHA: pending publication of this milestone (replace immediately after the verified push)
 - Updated: 2026-07-16

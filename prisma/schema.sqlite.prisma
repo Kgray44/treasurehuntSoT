@@ -1,0 +1,266 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Campaign {
+  id              String   @id @default(cuid())
+  slug            String   @unique
+  title           String
+  status          String   @default("PAUSED")
+  accessCodeHash  String
+  currentSequence Int      @default(0)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  chapters        Chapter[]
+  artifacts       Artifact[]
+  mapLocations    MapLocation[]
+  sideQuests      SideQuest[]
+  events          ProgressEvent[]
+  snapshots       CampaignSnapshot[]
+  awards          ArtifactAward[]
+  journalEntries  JournalEntry[]
+  auditLogs       AdminAuditLog[]
+  saveStates      SaveStateSnapshot[]
+  playerAccesses  PlayerAccess[]
+}
+
+model PlayerAccess {
+  id          String   @id @default(cuid())
+  campaignId  String
+  tokenHash   String   @unique
+  label       String?
+  expiresAt   DateTime?
+  lastSeenAt  DateTime?
+  createdAt   DateTime @default(now())
+  campaign    Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  audio       AudioPreference?
+  @@index([campaignId])
+}
+
+model GameMasterUser {
+  id           String   @id @default(cuid())
+  username     String   @unique
+  passwordHash String
+  createdAt    DateTime @default(now())
+  sessions     GameMasterSession[]
+  auditLogs    AdminAuditLog[]
+}
+
+model GameMasterSession {
+  id        String   @id
+  userId    String
+  csrfToken String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  user      GameMasterUser @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@index([userId, expiresAt])
+}
+
+model Chapter {
+  id          String   @id @default(cuid())
+  campaignId  String
+  ordinal     Int
+  state       String   @default("LOCKED")
+  contentId   String
+  revealedAt  DateTime?
+  solvedAt    DateTime?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  campaign    Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  content     ChapterContent @relation(fields: [contentId], references: [id])
+  clues       Clue[]
+  hints       Hint[]
+  @@unique([campaignId, ordinal])
+  @@index([campaignId, state])
+}
+
+model ChapterContent {
+  id             String   @id @default(cuid())
+  version        Int      @default(1)
+  title          String
+  narrative      String
+  objective      String
+  developmentOnly Boolean @default(true)
+  createdAt      DateTime @default(now())
+  chapters       Chapter[]
+}
+
+model Clue {
+  id        String   @id @default(cuid())
+  chapterId String
+  ordinal   Int
+  body      String
+  chapter   Chapter @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+  @@unique([chapterId, ordinal])
+}
+
+model Hint {
+  id          String   @id @default(cuid())
+  chapterId   String
+  ordinal     Int
+  body        String
+  releasedAt  DateTime?
+  chapter     Chapter @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+  @@unique([chapterId, ordinal])
+}
+
+model Artifact {
+  id          String   @id @default(cuid())
+  campaignId  String
+  key         String
+  name        String
+  description String
+  campaign    Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  awards      ArtifactAward[]
+  @@unique([campaignId, key])
+}
+
+model ArtifactAward {
+  id          String   @id @default(cuid())
+  campaignId  String
+  artifactId  String
+  eventId     String?  @unique
+  awardedAt   DateTime @default(now())
+  campaign    Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  artifact    Artifact @relation(fields: [artifactId], references: [id], onDelete: Cascade)
+  @@unique([campaignId, artifactId])
+}
+
+model SideQuest {
+  id          String   @id @default(cuid())
+  campaignId  String
+  key         String
+  title       String
+  state       String   @default("UNDISCOVERED")
+  campaign    Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  objectives  SideQuestObjective[]
+  @@unique([campaignId, key])
+}
+
+model SideQuestObjective {
+  id          String   @id @default(cuid())
+  sideQuestId String
+  ordinal     Int
+  body        String
+  complete    Boolean  @default(false)
+  sideQuest   SideQuest @relation(fields: [sideQuestId], references: [id], onDelete: Cascade)
+  @@unique([sideQuestId, ordinal])
+}
+
+model JournalEntry {
+  id          String   @id @default(cuid())
+  campaignId  String
+  title       String
+  body        String
+  releasedAt  DateTime?
+  createdAt   DateTime @default(now())
+  campaign    Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  @@index([campaignId, releasedAt])
+}
+
+model MapLocation {
+  id          String   @id @default(cuid())
+  campaignId  String
+  key         String
+  name        String
+  regionLabel String
+  x           Float
+  y           Float
+  revealedAt  DateTime?
+  campaign    Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  @@unique([campaignId, key])
+}
+
+model ProgressEvent {
+  id             String   @id @default(cuid())
+  campaignId     String
+  type           String
+  payload        String
+  actor          String
+  sequence       Int
+  version        Int      @default(1)
+  releaseAt      DateTime @default(now())
+  createdAt      DateTime @default(now())
+  reversesEventId String?
+  supersededById String?
+  campaign       Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  @@unique([campaignId, sequence])
+  @@index([campaignId, releaseAt])
+}
+
+model CampaignSnapshot {
+  id          String   @id @default(cuid())
+  campaignId  String
+  sequence    Int
+  version     Int      @default(1)
+  state       String
+  createdAt   DateTime @default(now())
+  campaign    Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  @@unique([campaignId, sequence])
+}
+
+model AdminAuditLog {
+  id          String   @id @default(cuid())
+  campaignId  String
+  userId      String?
+  action      String
+  metadata    String
+  createdAt   DateTime @default(now())
+  campaign    Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  user        GameMasterUser? @relation(fields: [userId], references: [id], onDelete: SetNull)
+  @@index([campaignId, createdAt])
+}
+
+model AudioPreference {
+  id             String   @id @default(cuid())
+  playerAccessId String   @unique
+  muted          Boolean  @default(false)
+  masterVolume   Float    @default(0.45)
+  ambientVolume  Float    @default(0.25)
+  effectsVolume  Float    @default(0.55)
+  updatedAt      DateTime @updatedAt
+  playerAccess   PlayerAccess @relation(fields: [playerAccessId], references: [id], onDelete: Cascade)
+}
+
+model ContentVersion {
+  id          String   @id @default(cuid())
+  key         String
+  version     Int
+  checksum    String
+  publishedAt DateTime?
+  createdAt   DateTime @default(now())
+  @@unique([key, version])
+}
+
+model SaveStateSnapshot {
+  id          String   @id @default(cuid())
+  campaignId  String
+  sequence    Int
+  state       String
+  reason      String
+  createdAt   DateTime @default(now())
+  campaign    Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  @@index([campaignId, sequence])
+}
+
+model ViewedCeremony {
+  id          String   @id @default(cuid())
+  campaignId  String
+  deviceId    String
+  eventId     String
+  viewedAt    DateTime @default(now())
+  @@unique([campaignId, deviceId, eventId])
+}
+
+model LoginAttempt {
+  id          String   @id @default(cuid())
+  fingerprint String
+  succeeded   Boolean
+  createdAt   DateTime @default(now())
+  @@index([fingerprint, createdAt])
+}

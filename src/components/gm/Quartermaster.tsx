@@ -1,23 +1,227 @@
 "use client";
 import { useCallback, useEffect, useState } from "react";
-type Status = { csrfToken:string; campaign:{slug:string;title:string;status:string;sequence:number}; chapter:{ordinal:number;state:string;title:string}; playerConnected:boolean; events:Array<{id:string;type:string;sequence:number;createdAt:string}>; inventory:string[]; sideQuest:{title:string;state:string}|null; preview:{chapter:{objective?:string}} };
+type Status = {
+  csrfToken: string;
+  campaign: { slug: string; title: string; status: string; sequence: number };
+  chapter: { ordinal: number; state: string; title: string };
+  playerConnected: boolean;
+  events: Array<{ id: string; type: string; sequence: number; createdAt: string }>;
+  inventory: string[];
+  sideQuest: { title: string; state: string } | null;
+  preview: { chapter: { objective?: string } };
+};
 const actions = [
-  ["PREPARE_CHAPTER","Prepare Chapter","Move the sealed chapter into a ready state. The player still receives no clue text."],
-  ["RELEASE_CHAPTER","Release Chapter","Publish the clue, begin the player ceremony, and make Chapter One active."],
-  ["MARK_SOLVED","Mark Chapter Solved","Record that the current chapter has been solved."],
-  ["AWARD_ARTIFACT","Award Test Artifact","Place the Broken Compass Needle in the player’s relic frame."],
-  ["REVEAL_MAP","Reveal Test Map Location","Mark Port Merrick on the voyage chart."],
-  ["UNDO_LAST","Undo Last Progression Action","Restore the last saved progression state and publish a reconciliation event."],
-  ["PAUSE","Pause Campaign","Pause the voyage without hiding already released material."],
-  ["RESUME","Resume Campaign","Return the voyage to active status."],
+  [
+    "PREPARE_CHAPTER",
+    "Prepare Chapter",
+    "Move the sealed chapter into a ready state. The player still receives no clue text.",
+  ],
+  ["RELEASE_CHAPTER", "Release Chapter", "Publish the clue, begin the player ceremony, and make Chapter One active."],
+  ["MARK_SOLVED", "Mark Chapter Solved", "Record that the current chapter has been solved."],
+  ["AWARD_ARTIFACT", "Award Test Artifact", "Place the Broken Compass Needle in the player’s relic frame."],
+  ["REVEAL_MAP", "Reveal Test Map Location", "Mark Port Merrick on the voyage chart."],
+  [
+    "UNDO_LAST",
+    "Undo Last Progression Action",
+    "Restore the last saved progression state and publish a reconciliation event.",
+  ],
+  ["PAUSE", "Pause Campaign", "Pause the voyage without hiding already released material."],
+  ["RESUME", "Resume Campaign", "Return the voyage to active status."],
 ] as const;
-export function Quartermaster({ authenticated }: { authenticated:boolean }) {
-  const [signedIn,setSignedIn]=useState(authenticated); const [status,setStatus]=useState<Status|null>(null); const [selected,setSelected]=useState<(typeof actions)[number]|null>(null); const [message,setMessage]=useState(""); const [busy,setBusy]=useState(false); const [error,setError]=useState("");
-  const refresh=useCallback(async()=>{const response=await fetch('/api/gm/status',{cache:'no-store'}); if(response.ok){setStatus(await response.json());setSignedIn(true)}},[]);
-  useEffect(()=>{if(!signedIn)return;void fetch('/api/gm/status',{cache:'no-store'}).then(async(response)=>{if(response.ok)setStatus(await response.json())})},[signedIn]);
-  async function login(event:React.FormEvent<HTMLFormElement>){event.preventDefault();setError('');const form=new FormData(event.currentTarget);const response=await fetch('/api/gm/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username:form.get('username'),password:form.get('password')})});const data=await response.json();if(!response.ok){setError(data.error);return}setSignedIn(true);void refresh()}
-  async function execute(){if(!selected||!status)return;setBusy(true);setError('');const response=await fetch('/api/gm/action',{method:'POST',headers:{'Content-Type':'application/json','x-csrf-token':status.csrfToken},body:JSON.stringify({action:selected[0],campaignSlug:status.campaign.slug,confirmation:true})});const data=await response.json();if(!response.ok){setError(data.error)}else{setMessage(`Event ${data.event.id} recorded at sequence ${data.event.sequence}.`);setSelected(null);await refresh()}setBusy(false)}
-  if(!signedIn)return <main className="quartermaster-login"><section><p className="eyebrow">Restricted chart room</p><h1>Quartermaster’s Log</h1><p>Captain, identify yourself before touching the voyage ledger.</p><form onSubmit={login}><label>Captain’s name<input name="username" autoComplete="username" required/></label><label>Passphrase<input name="password" type="password" autoComplete="current-password" required minLength={8}/></label><button className="brass-button">Enter the chart room</button>{error&&<p className="form-error" role="alert">{error}</p>}</form></section></main>;
-  if(!status)return <main className="quartermaster-shell loading-quarters">Opening the voyage ledger…</main>;
-  return <main className="quartermaster-shell"><header><div><p className="eyebrow">Private command surface</p><h1>Quartermaster’s Log</h1></div><div className="campaign-stamp"><span>{status.campaign.status}</span><b>Sequence {status.campaign.sequence}</b></div></header><section className="gm-grid"><div className="gm-status-card"><p className="card-kicker">Active voyage</p><h2>{status.campaign.title}</h2><dl><div><dt>Chapter</dt><dd>{status.chapter.ordinal} · {status.chapter.title}</dd></div><div><dt>Chapter state</dt><dd>{status.chapter.state}</dd></div><div><dt>Player signal</dt><dd className={status.playerConnected?'signal-live':''}>{status.playerConnected?'Connected recently':'No recent signal'}</dd></div><div><dt>Side quest</dt><dd>{status.sideQuest?.state??'None'}</dd></div></dl></div><div className="gm-preview"><p className="card-kicker">Player’s present view</p><div className="mini-page"><span>{status.chapter.state}</span><strong>{status.preview.chapter.objective??'Awaiting the captain’s signal.'}</strong></div><a href={`/tale/${status.campaign.slug}`} target="_blank">Open player view ↗</a></div><div className="gm-actions"><p className="card-kicker">Progression controls</p><div className="action-list">{actions.map(action=><button key={action[0]} className={action[0]==='UNDO_LAST'?'danger-action':''} onClick={()=>setSelected(action)}><strong>{action[1]}</strong><span>{action[2]}</span></button>)}</div></div><div className="gm-events"><p className="card-kicker">Recent ledger entries</p><ol>{status.events.map(event=><li key={event.id}><span>{event.sequence}</span><b>{event.type.replaceAll('_',' ')}</b><time>{new Date(event.createdAt).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})}</time></li>)}</ol><p>Relics aboard: {status.inventory.length?status.inventory.join(', '):'none'}</p></div></section>{message&&<div className="gm-toast" role="status">{message}</div>}{selected&&<div className="confirm-backdrop"><section className="confirm-sheet" role="dialog" aria-modal="true" aria-labelledby="confirm-title"><p className="eyebrow">Confirm ledger action</p><h2 id="confirm-title">{selected[1]}</h2><p>{selected[2]}</p><div className="impact-note"><b>What happens next</b><span>This runs atomically, writes an audit entry, publishes one ordered event, and creates a state point for undo.</span></div>{error&&<p className="form-error" role="alert">{error}</p>}<div><button onClick={()=>setSelected(null)}>Cancel</button><button className="confirm-action" disabled={busy} onClick={execute}>{busy?'Recording…':'Confirm action'}</button></div></section></div>}</main>;
+export function Quartermaster({ authenticated }: { authenticated: boolean }) {
+  const [signedIn, setSignedIn] = useState(authenticated);
+  const [status, setStatus] = useState<Status | null>(null);
+  const [selected, setSelected] = useState<(typeof actions)[number] | null>(null);
+  const [message, setMessage] = useState("");
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState("");
+  const refresh = useCallback(async () => {
+    const response = await fetch("/api/gm/status", { cache: "no-store" });
+    if (response.ok) {
+      setStatus(await response.json());
+      setSignedIn(true);
+    }
+  }, []);
+  useEffect(() => {
+    if (!signedIn) return;
+    void fetch("/api/gm/status", { cache: "no-store" }).then(async (response) => {
+      if (response.ok) setStatus(await response.json());
+    });
+  }, [signedIn]);
+  async function login(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setError("");
+    const form = new FormData(event.currentTarget);
+    const response = await fetch("/api/gm/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username: form.get("username"), password: form.get("password") }),
+    });
+    const data = await response.json();
+    if (!response.ok) {
+      setError(data.error);
+      return;
+    }
+    setSignedIn(true);
+    void refresh();
+  }
+  async function execute() {
+    if (!selected || !status) return;
+    setBusy(true);
+    setError("");
+    const response = await fetch("/api/gm/action", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "x-csrf-token": status.csrfToken },
+      body: JSON.stringify({ action: selected[0], campaignSlug: status.campaign.slug, confirmation: true }),
+    });
+    const data = await response.json();
+    if (!response.ok) {
+      setError(data.error);
+    } else {
+      setMessage(`Event ${data.event.id} recorded at sequence ${data.event.sequence}.`);
+      setSelected(null);
+      await refresh();
+    }
+    setBusy(false);
+  }
+  if (!signedIn)
+    return (
+      <main className="quartermaster-login">
+        <section>
+          <p className="eyebrow">Restricted chart room</p>
+          <h1>Quartermaster’s Log</h1>
+          <p>Captain, identify yourself before touching the voyage ledger.</p>
+          <form onSubmit={login}>
+            <label>
+              Captain’s name
+              <input name="username" autoComplete="username" required />
+            </label>
+            <label>
+              Passphrase
+              <input name="password" type="password" autoComplete="current-password" required minLength={8} />
+            </label>
+            <button className="brass-button">Enter the chart room</button>
+            {error && (
+              <p className="form-error" role="alert">
+                {error}
+              </p>
+            )}
+          </form>
+        </section>
+      </main>
+    );
+  if (!status) return <main className="quartermaster-shell loading-quarters">Opening the voyage ledger…</main>;
+  return (
+    <main className="quartermaster-shell">
+      <header>
+        <div>
+          <p className="eyebrow">Private command surface</p>
+          <h1>Quartermaster’s Log</h1>
+        </div>
+        <div className="campaign-stamp">
+          <span>{status.campaign.status}</span>
+          <b>Sequence {status.campaign.sequence}</b>
+        </div>
+      </header>
+      <section className="gm-grid">
+        <div className="gm-status-card">
+          <p className="card-kicker">Active voyage</p>
+          <h2>{status.campaign.title}</h2>
+          <dl>
+            <div>
+              <dt>Chapter</dt>
+              <dd>
+                {status.chapter.ordinal} · {status.chapter.title}
+              </dd>
+            </div>
+            <div>
+              <dt>Chapter state</dt>
+              <dd>{status.chapter.state}</dd>
+            </div>
+            <div>
+              <dt>Player signal</dt>
+              <dd className={status.playerConnected ? "signal-live" : ""}>
+                {status.playerConnected ? "Connected recently" : "No recent signal"}
+              </dd>
+            </div>
+            <div>
+              <dt>Side quest</dt>
+              <dd>{status.sideQuest?.state ?? "None"}</dd>
+            </div>
+          </dl>
+        </div>
+        <div className="gm-preview">
+          <p className="card-kicker">Player’s present view</p>
+          <div className="mini-page">
+            <span>{status.chapter.state}</span>
+            <strong>{status.preview.chapter.objective ?? "Awaiting the captain’s signal."}</strong>
+          </div>
+          <a href={`/tale/${status.campaign.slug}`} target="_blank">
+            Open player view ↗
+          </a>
+        </div>
+        <div className="gm-actions">
+          <p className="card-kicker">Progression controls</p>
+          <div className="action-list">
+            {actions.map((action) => (
+              <button
+                key={action[0]}
+                aria-label={action[1]}
+                className={action[0] === "UNDO_LAST" ? "danger-action" : ""}
+                onClick={() => setSelected(action)}
+              >
+                <strong>{action[1]}</strong>
+                <span>{action[2]}</span>
+              </button>
+            ))}
+          </div>
+        </div>
+        <div className="gm-events">
+          <p className="card-kicker">Recent ledger entries</p>
+          <ol>
+            {status.events.map((event) => (
+              <li key={event.id}>
+                <span>{event.sequence}</span>
+                <b>{event.type.replaceAll("_", " ")}</b>
+                <time>{new Date(event.createdAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}</time>
+              </li>
+            ))}
+          </ol>
+          <p>Relics aboard: {status.inventory.length ? status.inventory.join(", ") : "none"}</p>
+        </div>
+      </section>
+      {message && (
+        <div className="gm-toast" role="status">
+          {message}
+        </div>
+      )}
+      {selected && (
+        <div className="confirm-backdrop">
+          <section className="confirm-sheet" role="dialog" aria-modal="true" aria-labelledby="confirm-title">
+            <p className="eyebrow">Confirm ledger action</p>
+            <h2 id="confirm-title">{selected[1]}</h2>
+            <p>{selected[2]}</p>
+            <div className="impact-note">
+              <b>What happens next</b>
+              <span>
+                This runs atomically, writes an audit entry, publishes one ordered event, and creates a state point for
+                undo.
+              </span>
+            </div>
+            {error && (
+              <p className="form-error" role="alert">
+                {error}
+              </p>
+            )}
+            <div>
+              <button onClick={() => setSelected(null)}>Cancel</button>
+              <button className="confirm-action" disabled={busy} onClick={execute}>
+                {busy ? "Recording…" : "Confirm action"}
+              </button>
+            </div>
+          </section>
+        </div>
+      )}
+    </main>
+  );
 }
