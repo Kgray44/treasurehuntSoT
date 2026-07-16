@@ -13,5 +13,5 @@
 - Development-only content: The First Seal, Broken Compass Needle, Port Merrick, Echoes of the Past
 - Do not casually rewrite: `src/server/progression.ts`, public snapshot filtering, ceremony queue, dual Prisma schemas
 - Recommended next task: add isolated database fixtures and complete the full GM-release/undo Playwright scenario
-- Latest validated commit SHA: updated in the task report after commit
+- Latest validated implementation commit SHA: `da344158bc29a427e25c6d4189d03416e9e34edb`
 - Updated: 2026-07-16
