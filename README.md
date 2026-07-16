@@ -4,7 +4,7 @@ Production-oriented foundation and fully automated local demo for a private naut
 
 ## Current phase
 
-Phase one provides a sealed player journal, responsive chart/relic workspace, private quartermaster dashboard, authenticated transactional progression, ordered SSE delivery, replay/skip/reduced-motion ceremony controls, state undo, development seed data for “The First Seal,” and reproducible one-command startup and validation.
+Phase two expands the production foundation into the complete Player Companion shell: multi-state Journal, Voyage Chart, Treasure Altar, Side-Quest Ledger, event-derived Ship’s Log, sealed Finale, persistent objective, companion navigation, cross-device unseen state, preferences, and fullscreen-friendly operation. All committed content remains fictional development seed material.
 
 ## Stack
 
@@ -52,19 +52,20 @@ Set unique local values in `.env`; the seed’s fallback values are development-
 
 ## Commands
 
-| Command                     | Purpose                                                                |
-| --------------------------- | ---------------------------------------------------------------------- |
-| `npm run dev:full`          | Idempotent setup, migration, seed, health check, and background server |
-| `npm run dev:stop`          | Safely stop only the recorded development process                      |
-| `npm run validate`          | Fresh DB, format/lint/types/unit/E2E/a11y/build/restart proof          |
-| `npm run dev`               | Next.js only; assumes setup is already complete                        |
-| `npm run build`             | Production build                                                       |
-| `npm start`                 | Start production build                                                 |
-| `npm test`                  | Six deterministic unit tests                                           |
-| `npm run test:e2e`          | Five Chromium/WebKit checks plus one Chromium mutation workflow        |
-| `npm run db:migrate`        | Apply local SQLite migrations                                          |
-| `npm run db:seed`           | Load replaceable development content                                   |
-| `npm run db:generate:mysql` | Generate production MySQL client                                       |
+| Command                           | Purpose                                                                |
+| --------------------------------- | ---------------------------------------------------------------------- |
+| `npm run dev:full`                | Idempotent setup, migration, seed, health check, and background server |
+| `npm run dev:stop`                | Safely stop only the recorded development process                      |
+| `npm run validate`                | Fresh DB, format/lint/types/unit/E2E/a11y/build/restart proof          |
+| `npm run dev`                     | Next.js only; assumes setup is already complete                        |
+| `npm run build`                   | Production build                                                       |
+| `npm start`                       | Start production build                                                 |
+| `npm test`                        | Six deterministic unit tests                                           |
+| `npm run test:e2e`                | Five Chromium/WebKit checks plus one Chromium mutation workflow        |
+| `npm run db:migrate`              | Apply local SQLite migrations                                          |
+| `npm run db:seed`                 | Load replaceable development content                                   |
+| `npm run db:preset -- mid-voyage` | Reset to a repeatable development-only companion preset                |
+| `npm run db:generate:mysql`       | Generate production MySQL client                                       |
 
 Full setup, validation stages, output locations, clean-clone instructions, and troubleshooting are in [local development](docs/local-development.md) and [testing](docs/testing.md).
 
@@ -74,7 +75,7 @@ Full setup, validation stages, output locations, clean-clone instructions, and t
 
 ## Important limitations
 
-The full story, final art/audio, multi-player device management, horizontal scale-out for SSE, and production deployment are later work. The current sound is a restrained procedural seal tone; no external copyrighted assets are present. The repository was public during this milestone, so only generic development content was used. See [known limitations](docs/known-limitations.md).
+The full story, final art/audio, horizontal scale-out for SSE, and production deployment are later work. The current sound is restrained and procedural; no external copyrighted assets are present. The repository is public, so only generic development content is permitted. See [known limitations](docs/known-limitations.md).
 
 ## Next steps
 

@@ -1,5 +1,7 @@
 "use client";
 import { useCallback, useEffect, useState } from "react";
+import { cinematicSequences, type CinematicSequenceName } from "@/components/cinematic/sequences";
+import { useCinematicTransition, type MotionMode } from "@/components/cinematic/useCinematicTransition";
 type Status = {
   csrfToken: string;
   campaign: { slug: string; title: string; status: string; sequence: number };
@@ -20,6 +22,24 @@ const actions = [
   ["MARK_SOLVED", "Mark Chapter Solved", "Record that the current chapter has been solved."],
   ["AWARD_ARTIFACT", "Award Test Artifact", "Place the Broken Compass Needle in the player’s relic frame."],
   ["REVEAL_MAP", "Reveal Test Map Location", "Mark Port Merrick on the voyage chart."],
+  ["REVEAL_ROUTE", "Reveal Route Segment", "Draw the next safe development route between revealed locations."],
+  [
+    "REVEAL_ARTIFACT_SILHOUETTE",
+    "Reveal Artifact Silhouette",
+    "Expose only the next artifact’s approved safe outline.",
+  ],
+  [
+    "CONNECT_ARTIFACTS",
+    "Connect Test Artifacts",
+    "Reveal the neutral development connection between configured relics.",
+  ],
+  ["DISCOVER_SIDE_QUEST", "Discover Side Quest", "Move the next optional mystery from rumor to discovered."],
+  ["UPDATE_SIDE_QUEST", "Update Side Quest", "Advance one released optional objective."],
+  ["COMPLETE_SIDE_QUEST", "Complete Side Quest", "Complete the active optional mystery and grant its safe reward."],
+  ["ADD_JOURNAL_ANNOTATION", "Add Journal Annotation", "Release a generic development note beside the active chapter."],
+  ["ADD_LOG_ENTRY", "Add Player Log Entry", "Record a generic player-facing captain’s note."],
+  ["TEASE_FINALE", "Tease Sealed Finale", "Wake the dormant shell without releasing finale content."],
+  ["UPDATE_FINALE_REQUIREMENT", "Update Finale Requirement", "Advance one generic symbolic requirement."],
   [
     "UNDO_LAST",
     "Undo Last Progression Action",
@@ -35,6 +55,22 @@ export function Quartermaster({ authenticated }: { authenticated: boolean }) {
   const [message, setMessage] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
+  const [motionMode, setMotionMode] = useState<MotionMode>("full");
+  const transition = useCinematicTransition(motionMode);
+  useEffect(() => {
+    const media = matchMedia("(prefers-reduced-motion: reduce)");
+    const sync = () =>
+      setMotionMode(
+        media.matches || localStorage.getItem("forever-motion") === "reduced"
+          ? "reduced"
+          : localStorage.getItem("forever-motion") === "gentle"
+            ? "gentle"
+            : "full",
+      );
+    queueMicrotask(sync);
+    media.addEventListener("change", sync);
+    return () => media.removeEventListener("change", sync);
+  }, []);
   const refresh = useCallback(async () => {
     const response = await fetch("/api/gm/status", { cache: "no-store" });
     if (response.ok) {
@@ -52,42 +88,83 @@ export function Quartermaster({ authenticated }: { authenticated: boolean }) {
     event.preventDefault();
     setError("");
     const form = new FormData(event.currentTarget);
-    const response = await fetch("/api/gm/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ username: form.get("username"), password: form.get("password") }),
-    });
-    const data = await response.json();
-    if (!response.ok) {
-      setError(data.error);
-      return;
+    try {
+      await transition.play("signIn", cinematicSequences.signIn, async () => {
+        const response = await fetch("/api/gm/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ username: form.get("username"), password: form.get("password") }),
+        });
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error);
+        return data;
+      });
+      setSignedIn(true);
+      void refresh();
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : "The lock refused the key.");
     }
-    setSignedIn(true);
-    void refresh();
   }
   async function execute() {
     if (!selected || !status) return;
     setBusy(true);
     setError("");
-    const response = await fetch("/api/gm/action", {
-      method: "POST",
-      headers: { "Content-Type": "application/json", "x-csrf-token": status.csrfToken },
-      body: JSON.stringify({ action: selected[0], campaignSlug: status.campaign.slug, confirmation: true }),
-    });
-    const data = await response.json();
-    if (!response.ok) {
-      setError(data.error);
-    } else {
-      setMessage(`Event ${data.event.id} recorded at sequence ${data.event.sequence}.`);
-      setSelected(null);
-      await refresh();
+    const action = selected;
+    const sequenceByAction: Record<string, CinematicSequenceName> = {
+      PREPARE_CHAPTER: "prepare",
+      RELEASE_CHAPTER: "release",
+      MARK_SOLVED: "solved",
+      AWARD_ARTIFACT: "artifact",
+      REVEAL_MAP: "map",
+      REVEAL_ROUTE: "map",
+      REVEAL_ARTIFACT_SILHOUETTE: "artifact",
+      CONNECT_ARTIFACTS: "artifact",
+      DISCOVER_SIDE_QUEST: "prepare",
+      UPDATE_SIDE_QUEST: "prepare",
+      COMPLETE_SIDE_QUEST: "solved",
+      ADD_JOURNAL_ANNOTATION: "prepare",
+      ADD_LOG_ENTRY: "prepare",
+      TEASE_FINALE: "prepare",
+      UPDATE_FINALE_REQUIREMENT: "prepare",
+      UNDO_LAST: "undo",
+      PAUSE: "pause",
+      RESUME: "resume",
+    };
+    try {
+      const data = await transition.play(
+        sequenceByAction[action[0]],
+        cinematicSequences[sequenceByAction[action[0]]],
+        async () => {
+          const response = await fetch("/api/gm/action", {
+            method: "POST",
+            headers: { "Content-Type": "application/json", "x-csrf-token": status.csrfToken },
+            body: JSON.stringify({ action: action[0], campaignSlug: status.campaign.slug, confirmation: true }),
+          });
+          const body = await response.json();
+          if (!response.ok) throw new Error(body.error);
+          setSelected(null);
+          return body;
+        },
+      );
+      if (data) {
+        setMessage(`Event ${data.event.id} recorded at sequence ${data.event.sequence}.`);
+        await refresh();
+      }
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : "The order could not be recorded.");
     }
     setBusy(false);
   }
   if (!signedIn)
     return (
-      <main className="quartermaster-login">
-        <section>
+      <main className={`quartermaster-login cinematic-${transition.stage}`}>
+        <div className="cabin-door" aria-hidden="true">
+          <span>Private command surface</span>
+        </div>
+        <section className="login-ledger">
+          <div className="brass-latch" aria-hidden="true">
+            F
+          </div>
           <p className="eyebrow">Restricted chart room</p>
           <h1>Quartermaster’s Log</h1>
           <p>Captain, identify yourself before touching the voyage ledger.</p>
@@ -100,7 +177,9 @@ export function Quartermaster({ authenticated }: { authenticated: boolean }) {
               Passphrase
               <input name="password" type="password" autoComplete="current-password" required minLength={8} />
             </label>
-            <button className="brass-button">Enter the chart room</button>
+            <button className="brass-button" disabled={transition.isPlaying}>
+              {transition.isPlaying ? "Turning the key…" : "Enter the chart room"}
+            </button>
             {error && (
               <p className="form-error" role="alert">
                 {error}
@@ -108,11 +187,12 @@ export function Quartermaster({ authenticated }: { authenticated: boolean }) {
             )}
           </form>
         </section>
+        <CinematicOverlay name={transition.name} stage={transition.stage} active={transition.isPlaying} />
       </main>
     );
   if (!status) return <main className="quartermaster-shell loading-quarters">Opening the voyage ledger…</main>;
   return (
-    <main className="quartermaster-shell">
+    <main className={`quartermaster-shell cinematic-${transition.stage}`}>
       <header>
         <div>
           <p className="eyebrow">Private command surface</p>
@@ -222,6 +302,37 @@ export function Quartermaster({ authenticated }: { authenticated: boolean }) {
           </section>
         </div>
       )}
+      <CinematicOverlay name={transition.name} stage={transition.stage} active={transition.isPlaying} />
+      {process.env.NODE_ENV === "development" && (
+        <details className="dev-cinematic">
+          <summary>Animation lab</summary>
+          {(Object.keys(cinematicSequences) as CinematicSequenceName[]).map((name) => (
+            <button
+              key={name}
+              onClick={() => void transition.play(name, cinematicSequences[name]).catch(() => undefined)}
+            >
+              {name}
+            </button>
+          ))}
+        </details>
+      )}
     </main>
+  );
+}
+
+function CinematicOverlay({ name, stage, active }: { name: string; stage: string; active: boolean }) {
+  if (!active) return null;
+  return (
+    <div
+      className={`cinematic-command-overlay scene-${name} scene-stage-${stage}`}
+      aria-live="polite"
+      aria-label={`${name} ceremony: ${stage}`}
+    >
+      <div className="lantern-sweep" aria-hidden="true" />
+      <div className="ceremony-seal" aria-hidden="true">
+        F
+      </div>
+      <p>{stage.replaceAll("-", " ")}</p>
+    </div>
   );
 }

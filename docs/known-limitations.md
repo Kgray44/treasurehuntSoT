@@ -1,5 +1,14 @@
 # Known limitations
 
+## Phase 2 boundaries
+
+- The repository is public; final story and surprise content is intentionally blocked.
+- Finale unlock/assembly is structural only and cannot enter `READY` or later states through Phase 2 controls.
+- SSE fan-out remains process-local and needs Redis or equivalent before multi-instance production deployment.
+- Initial Ship's Log projection is capped at 250 entries; cursor pagination is future scale work.
+- Production MySQL migration must be exercised against an actual MySQL 8 integration environment.
+- Final art/audio, real content authoring, and production deployment belong to later phases.
+
 - SSE fan-out is process-local; database replay is durable, but multi-instance production needs Redis/pub-sub.
 - Dedicated GM-only preview timeline, explicit replay targeting, and richer player presence are not yet implemented.
 - The full mutation workflow runs once in Chromium to avoid cross-project database contention; privacy, route protection, accessibility, and mobile behavior also run in WebKit.

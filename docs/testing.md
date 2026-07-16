@@ -1,5 +1,9 @@
 # Testing
 
+## Phase 2 coverage
+
+Unit coverage includes event reconciliation, event-to-log transformation, malformed/unknown event fallback, and event payload allowlisting. Database verification checks the five-chapter, five-location, two-route, five-artifact, and four-quest development fixture structure plus contiguous event/snapshot/audit invariants. Presets are reset with `npm run db:preset -- <name>`; default `npm run db:seed` retains the sealed acceptance start.
+
 Run the complete gate with:
 
 ```powershell

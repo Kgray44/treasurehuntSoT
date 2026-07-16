@@ -1,5 +1,11 @@
 # Architecture
 
+## Phase 2 companion projection
+
+The player reads one server-filtered `PublicSnapshot` containing chapters, released hints/annotations, visible map locations/routes, safe artifact states, visible optional mysteries, event-derived log entries, generic finale state, and per-section unseen counts. One SSE connection transports ordered sanitized events; section navigation is client-side and starts no independent polling.
+
+New normalized records are `MapRoute` and `ViewedContent`. Existing content models gained release, relationship, placement, and safe-label fields rather than duplicating derived display tables. `AudioPreference` now carries the cross-device preference projection; immediate UI choices may also be cached locally for offline startup.
+
 ```mermaid
 flowchart LR
   P[Player journal] -->|snapshot + access cookie| N[Next.js server]

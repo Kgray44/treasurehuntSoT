@@ -6,7 +6,7 @@ export async function GET(_: Request, context: { params: Promise<{ campaignSlug:
   const { campaignSlug } = await context.params;
   const access = await requirePlayer(campaignSlug);
   if (!access) return NextResponse.json({ error: "Invitation required." }, { status: 401 });
-  return NextResponse.json(await buildPublicSnapshot(access.campaignId), {
+  return NextResponse.json(await buildPublicSnapshot(access.campaignId, access.id), {
     headers: { "Cache-Control": "no-store, private" },
   });
 }

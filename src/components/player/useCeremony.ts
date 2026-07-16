@@ -23,9 +23,9 @@ const timing = {
   omen: 650,
   attention: 550,
   seal: 900,
-  parchment: 800,
+  parchment: 1600,
   "ink-heading": 350,
-  "ink-story": 700,
+  "ink-story": 1400,
   "ink-objective": 450,
   "ink-riddle": 900,
   map: 700,
@@ -46,9 +46,11 @@ const wait = (ms: number, signal: AbortSignal) =>
 
 export function useCeremony({
   reducedMotion,
+  gentleMotion = false,
   onComplete,
 }: {
   reducedMotion: boolean;
+  gentleMotion?: boolean;
   onComplete: (event: ClientProgressEvent) => void;
 }) {
   const [stage, setStage] = useState<CeremonyStage>("idle");
@@ -69,7 +71,10 @@ export function useCeremony({
       for (const next of stages) {
         if (abort.signal.aborted) break;
         setStage(next);
-        await wait(reducedMotion ? Math.min(timing[next], 120) : timing[next], abort.signal);
+        await wait(
+          reducedMotion ? Math.min(timing[next], 120) : gentleMotion ? Math.min(timing[next], 280) : timing[next],
+          abort.signal,
+        );
       }
       setStage("active");
       onComplete(event);
@@ -79,7 +84,7 @@ export function useCeremony({
       setCurrent(null);
     }
     running.current = false;
-  }, [onComplete, reducedMotion]);
+  }, [gentleMotion, onComplete, reducedMotion]);
   const enqueue = useCallback(
     (event: ClientProgressEvent) => {
       if (seen.current.has(event.id)) return;
