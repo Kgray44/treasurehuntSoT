@@ -13,5 +13,5 @@
 - Development-only content: The First Seal, Broken Compass Needle, Port Merrick, Echoes of the Past
 - Do not casually rewrite: `src/server/progression.ts`, public snapshot filtering, ceremony queue, dual Prisma schemas
 - Recommended next task: add CI for `npm run validate` and production-like MySQL integration coverage
-- Latest validated implementation commit SHA: pending publication of this milestone (replace immediately after the verified push)
+- Latest validated implementation commit SHA: `68a92f25bf511e5eb4176f802d38dbc0897ff825` (fresh GitHub clone, install, migration/seed, launch/health/stop, full validation, build, and restart proof)
 - Updated: 2026-07-16
