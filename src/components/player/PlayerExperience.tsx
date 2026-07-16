@@ -27,6 +27,7 @@ export function PlayerExperience({ initialSnapshot }: { initialSnapshot: PublicS
   const [snapshot, setSnapshot] = useState(initialSnapshot);
   const [view, setView] = useState<View>("journal");
   const [opened, setOpened] = useState(false);
+  const [entryReady, setEntryReady] = useState(false);
   const [muted, setMuted] = useState(false);
   const [volume, setVolume] = useState(0.4);
   const [connection, setConnection] = useState<"connecting" | "live" | "adrift">("connecting");
@@ -64,6 +65,13 @@ export function PlayerExperience({ initialSnapshot }: { initialSnapshot: PublicS
     [refreshSnapshot, snapshot.campaign.slug],
   );
   const ceremony = useCeremony({ reducedMotion: reduced, gentleMotion: motionMode === "gentle", onComplete: complete });
+  useEffect(() => {
+    const key = `forever-journal-open:${snapshot.campaign.slug}`;
+    queueMicrotask(() => {
+      setOpened(sessionStorage.getItem(key) === "open");
+      setEntryReady(true);
+    });
+  }, [snapshot.campaign.slug]);
   useEffect(() => {
     const media = matchMedia("(prefers-reduced-motion: reduce)");
     const sync = () =>
@@ -217,6 +225,7 @@ export function PlayerExperience({ initialSnapshot }: { initialSnapshot: PublicS
     if (!audioContext.current) audioContext.current = new AudioContext();
     void audioContext.current.resume();
     setOpened(true);
+    sessionStorage.setItem(`forever-journal-open:${snapshot.campaign.slug}`, "open");
     const key = `forever-intro:${snapshot.campaign.slug}`;
     const firstArrival = forceFull || sessionStorage.getItem(key) !== "seen";
     sessionStorage.setItem(key, "seen");
@@ -372,7 +381,7 @@ export function PlayerExperience({ initialSnapshot }: { initialSnapshot: PublicS
           </button>
         ))}
       </nav>
-      {!opened && (
+      {entryReady && !opened && (
         <div className="journal-opening">
           <button className="wax-open" onClick={() => void openJournal()}>
             <span>F</span>
@@ -383,7 +392,7 @@ export function PlayerExperience({ initialSnapshot }: { initialSnapshot: PublicS
       )}
       <div
         className={`workspace ${!(["journal", "chart", "treasures"] as View[]).includes(view) ? "section-hidden" : ""}`}
-        aria-hidden={!opened || !(["journal", "chart", "treasures"] as View[]).includes(view)}
+        aria-hidden={!entryReady || !opened || !(["journal", "chart", "treasures"] as View[]).includes(view)}
       >
         <aside className={`chart-panel panel ${view === "chart" ? "mobile-current" : ""}`}>
           <PanelTitle index="I" title="Voyage chart" />

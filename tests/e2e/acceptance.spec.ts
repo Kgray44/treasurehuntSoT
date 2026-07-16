@@ -138,9 +138,9 @@ test("complete live voyage workflow is private, ordered, resilient, and theatric
   expect(Date.now() - gentleStarted).toBeLessThan(5_500);
 
   await player.reload();
-  await expect(player.getByRole("button", { name: "Open the journal" })).toBeVisible();
-  await player.getByRole("button", { name: "Open the journal" }).click();
   await expect(player.getByRole("heading", { name: "The Lantern Test" })).toBeVisible();
+  await expect(player.getByRole("button", { name: "Open the journal" })).toHaveCount(0);
+  await expect(player.locator(".voyage-introduction")).toHaveCount(0);
   await expect(player.getByText("Releasing the first seal")).toHaveCount(0);
 
   await gmAction(gm, "Award Test Artifact");
