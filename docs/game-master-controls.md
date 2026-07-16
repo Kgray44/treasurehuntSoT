@@ -1,3 +1,5 @@
 # Game Master controls
 
-Prepare, release, solve, artifact award, map reveal, pause, resume, and undo all use select → impact preview → confirmation → atomic execution → event receipt. The release transaction activates the chapter and reveals its intentionally imprecise map marker. Undo restores the latest save-state and emits `STATE_REVERTED` so players reconcile. Preview Reveal and Replay Reveal Locally are represented by the safe player replay control in this slice; a dedicated isolated GM preview timeline is future work.
+The Phase 3 Command Center uses select → server projection → consequence confirmation → atomic command → persistence receipt → separate delivery observation. It exposes Command Deck, Chapters, Hints, Voyage, Artifacts, Side Quests, Journal, Event Staging, Player View, Recovery, Audit, and Diagnostics.
+
+No control sets arbitrary state. Chapter commands follow the seven-state machine, hints remain ordered, awards are unique, pause blocks progression, and undo emits a compensating event. Preview is watermarked and nonmutating. Critical finale/reset controls are absent. See [information architecture](command-center-information-architecture.md), [risk model](action-risk-model.md), and [recovery](recovery-and-reversal.md).

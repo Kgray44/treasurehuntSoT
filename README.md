@@ -6,6 +6,8 @@ Production-oriented foundation and fully automated local demo for a private naut
 
 Phase one provides a sealed player journal, responsive chart/relic workspace, private quartermaster dashboard, authenticated transactional progression, ordered SSE delivery, replay/skip/reduced-motion ceremony controls, state undo, development seed data for “The First Seal,” and reproducible one-command startup and validation.
 
+The Phase 3 feature branch adds an expanded Game Master Command Center: 12 URL-backed workspaces, truthful presence/synchronization, sanitized Player View, nonmutating projection, staging, idempotent commands, stale-tab protection, recovery, audit/diagnostics, keyboard controls, and tablet/emergency layouts. It remains unintegrated until the parallel Phase 2 reconciliation pass.
+
 ## Stack
 
 - Next.js 16 App Router, React 19, strict TypeScript
@@ -60,8 +62,8 @@ Set unique local values in `.env`; the seed’s fallback values are development-
 | `npm run dev`               | Next.js only; assumes setup is already complete                        |
 | `npm run build`             | Production build                                                       |
 | `npm start`                 | Start production build                                                 |
-| `npm test`                  | Six deterministic unit tests                                           |
-| `npm run test:e2e`          | Five Chromium/WebKit checks plus one Chromium mutation workflow        |
+| `npm test`                  | Nine deterministic domain and ceremony tests                           |
+| `npm run test:e2e`          | Nine passing Chromium/WebKit checks plus one intentional workflow skip |
 | `npm run db:migrate`        | Apply local SQLite migrations                                          |
 | `npm run db:seed`           | Load replaceable development content                                   |
 | `npm run db:generate:mysql` | Generate production MySQL client                                       |

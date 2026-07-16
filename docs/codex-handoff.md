@@ -1,17 +1,17 @@
 # Codex handoff
 
-- Canonical repository: `Kgray44/treasurehuntSoT`, branch `main`
-- Phase: production foundation + fully automated, acceptance-tested local demo
-- Last milestone: one-command startup/shutdown, clean validation database, full GM/player browser workflow, cross-browser accessibility, reconnect recovery, screenshots, build and restart proof
-- Architecture: Next App Router, Prisma SQLite/MySQL, database sessions, ordered events/SSE, central ceremony queue
-- Story model: seven states and 18 event types implemented; development Chapter One only
-- Database: normalized schema, tracked SQLite schema/migration, clean validation rebuild and invariant verifier passing; MySQL schema prepared, not deployed
-- Authentication: player code cookie and GM bcrypt/database session/CSRF/rate limit implemented
-- Tests: 6 Vitest tests; 5 Chromium/WebKit browser checks passing with 1 intentional cross-project skip; axe scans, database invariants, production build, and two-cycle restart proof passing
-- Known failures: none; Playwright may log a harmless screenshot-caret hydration warning only when an older runner uses its default hidden-caret capture
-- Technical debt: Redis fan-out, dedicated GM preview, connector-parity migration generation, CI workflow
-- Development-only content: The First Seal, Broken Compass Needle, Port Merrick, Echoes of the Past
-- Do not casually rewrite: `src/server/progression.ts`, public snapshot filtering, ceremony queue, dual Prisma schemas
-- Recommended next task: add CI for `npm run validate` and production-like MySQL integration coverage
-- Latest validated implementation commit SHA: `68a92f25bf511e5eb4176f802d38dbc0897ff825` (fresh GitHub clone, install, migration/seed, launch/health/stop, full validation, build, and restart proof)
-- Updated: 2026-07-16
+- Canonical repository: `Kgray44/treasurehuntSoT`
+- Phase 3 branch: `feature/game-master-command-center`; base `origin/main` at `70bb654b78a84df15dba8d0f9ce5b3fd5782181d`
+- Status: expanded Command Center implemented on its isolated feature branch; not integrated into `main`
+- Routes: `/quartermaster` plus `/chapters`, `/hints`, `/voyage`, `/artifacts`, `/quests`, `/journal`, `/events`, `/player-view`, `/recovery`, `/audit`, `/diagnostics`
+- Authentication: GM bcrypt/database session and CSRF; player session cannot call admin APIs
+- Commands: prepare/release/solve/complete chapter, prepare/release hint, reveal map, award artifact, discover/advance quest, release journal entry, pause/resume, undo, reconciliation
+- Events: six additive Phase 3 event names documented in `parallel-development-phase-3.md`
+- Migration: `20260716233000_game_master_command_center` and MySQL `0002_game_master_command_center`
+- Development data: four generic chapters, ordered hints, two artifacts, two map locations, two side quests, staged action, audit fixture
+- Startup: `npm run dev:full`; validation: `npm run validate`; stop: `npm run dev:stop`
+- Known limitations: no background scheduler, multi-event dependency rollback, production presence cleanup, Redis fan-out, real finale/story/private media, or deployment
+- Phase 2 overlap: story event union, Prisma relation blocks, seed, player lifecycle, global CSS. Preserve Phase 2 visibility/player shell and reapply Phase 3 administrative additions.
+- Required integration: follow `phase-2-phase-3-integration.md`, regenerate both clients, clean migrate, and rerun full two-browser validation
+- Latest validated Phase 3 commit and pull request: populate after branch publication
+- Recommended next task: controlled Phase 2/3 reconciliation, never a blind branch merge
