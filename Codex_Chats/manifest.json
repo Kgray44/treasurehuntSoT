@@ -1,0 +1,144 @@
+{
+  "conversations": [
+    {
+      "archive_path": "Codex_Chats/chats/019f6c06-6dcb-7102-813c-33a77d001361--create-forever-treasure-companion.md",
+      "content_sha256": "d1aa9e72f4a30d32ea74bd8067bb0ce547fcea475df695d3bbb5317b15613b62",
+      "conversation_id": "019f6c06-6dcb-7102-813c-33a77d001361",
+      "created_at": "2026-07-16T17:43:09.440Z",
+      "first_archived_at": "2026-07-16T22:38:49Z",
+      "last_synchronized_at": "2026-07-16T22:39:57Z",
+      "message_count": 819,
+      "project_identifier": "treasurehunt",
+      "redaction_categories": {
+        "login_credential": 7,
+        "secret_assignment": 5
+      },
+      "redactions": 12,
+      "source_export_timestamp": null,
+      "source_identifier": "rollout-2026-07-16T13-43-08-019f6c06-6dcb-7102-813c-33a77d001361.jsonl",
+      "source_sha256": "05d9420afedbfa27f788cd4798b39303649e1601751526ef922a9d4ee5ab353a",
+      "source_type": "codex_session",
+      "status": "active",
+      "title": "Create Forever Treasure companion",
+      "updated_at": "2026-07-16T19:26:35.966Z"
+    },
+    {
+      "archive_path": "Codex_Chats/chats/019f6c81-fc0e-7f20-a5d3-2d8650365b8a--add-cinematic-journey-animations.md",
+      "content_sha256": "bb40e4fd3b9ccff58d641c3a128b88e804c1e2105a8072fd8a59b98a88277e7a",
+      "conversation_id": "019f6c81-fc0e-7f20-a5d3-2d8650365b8a",
+      "created_at": "2026-07-16T19:58:06.781Z",
+      "first_archived_at": "2026-07-16T22:38:49Z",
+      "last_synchronized_at": "2026-07-16T22:38:49Z",
+      "message_count": 575,
+      "project_identifier": "treasurehunt",
+      "redaction_categories": {
+        "secret_assignment": 5
+      },
+      "redactions": 5,
+      "source_export_timestamp": null,
+      "source_identifier": "rollout-2026-07-16T15-58-05-019f6c81-fc0e-7f20-a5d3-2d8650365b8a.jsonl",
+      "source_sha256": "6d9c11ed9e57f55264214bf64c6142cd0b23b2cc0a3c05e8104dc27a3b9f6c38",
+      "source_type": "codex_session",
+      "status": "active",
+      "title": "Add cinematic journey animations",
+      "updated_at": "2026-07-16T20:56:10.078Z"
+    },
+    {
+      "archive_path": "Codex_Chats/chats/019f6c85-fe74-7862-b2a7-3f24780cb2d6--build-player-companion-shell.md",
+      "content_sha256": "4e7144acca3bae7e2e0b34ef0eaa51bbdaacbbaa7196962beda73fac7bab376a",
+      "conversation_id": "019f6c85-fe74-7862-b2a7-3f24780cb2d6",
+      "created_at": "2026-07-16T20:02:52.481Z",
+      "first_archived_at": "2026-07-16T22:38:49Z",
+      "last_synchronized_at": "2026-07-16T22:39:57Z",
+      "message_count": 568,
+      "project_identifier": "treasurehunt",
+      "redaction_categories": {
+        "login_credential": 1,
+        "secret_assignment": 5
+      },
+      "redactions": 6,
+      "source_export_timestamp": null,
+      "source_identifier": "rollout-2026-07-16T16-02-28-019f6c85-fe74-7862-b2a7-3f24780cb2d6.jsonl",
+      "source_sha256": "b6201ff886ad2bf191b063ff7e5ada46cce9edf46ae146a6889c82e74f33873a",
+      "source_type": "codex_session",
+      "status": "active",
+      "title": "Build player companion shell",
+      "updated_at": "2026-07-16T21:12:52.511Z"
+    },
+    {
+      "archive_path": "Codex_Chats/chats/019f6c9e-5964-7f31-b47e-78344946bce7--add-game-master-command-center.md",
+      "content_sha256": "e835b5381086c85267c443469beb8760a2af70b4b80306d0c73753c943efe501",
+      "conversation_id": "019f6c9e-5964-7f31-b47e-78344946bce7",
+      "created_at": "2026-07-16T20:29:06.084Z",
+      "first_archived_at": "2026-07-16T22:38:49Z",
+      "last_synchronized_at": "2026-07-16T22:39:57Z",
+      "message_count": 774,
+      "project_identifier": "treasurehunt",
+      "redaction_categories": {
+        "login_credential": 3,
+        "secret_assignment": 3
+      },
+      "redactions": 6,
+      "source_export_timestamp": null,
+      "source_identifier": "rollout-2026-07-16T16-29-04-019f6c9e-5964-7f31-b47e-78344946bce7.jsonl",
+      "source_sha256": "07147295e1c3776e1186b97b735d94cb1fabe4201d8ce039e1f513d03664e483",
+      "source_type": "codex_session",
+      "status": "active",
+      "title": "Add Game Master command center",
+      "updated_at": "2026-07-16T21:58:20.156Z"
+    },
+    {
+      "archive_path": "Codex_Chats/chats/019f6d0b-68b7-7a61-bf6f-22095f9b1ede--implement-chat-archival-sync.md",
+      "content_sha256": "9db660bd65fe9399150990a8d4a7553559ca161f459602f8d2107018de051a60",
+      "conversation_id": "019f6d0b-68b7-7a61-bf6f-22095f9b1ede",
+      "created_at": "2026-07-16T22:28:12.966Z",
+      "first_archived_at": "2026-07-16T22:38:49Z",
+      "last_synchronized_at": "2026-07-16T22:42:54Z",
+      "message_count": 112,
+      "project_identifier": "treasurehunt",
+      "redaction_categories": {
+        "login_credential": 1,
+        "openai_key": 1
+      },
+      "redactions": 2,
+      "source_export_timestamp": null,
+      "source_identifier": "rollout-2026-07-16T18-28-12-019f6d0b-68b7-7a61-bf6f-22095f9b1ede.jsonl",
+      "source_sha256": "a80aa29b584f430cfd6af9b92b8cc5529743c041462bc88cbd47978315f205db",
+      "source_type": "codex_session",
+      "status": "active",
+      "title": "Implement chat archival sync",
+      "updated_at": "2026-07-16T22:42:54.554Z"
+    }
+  ],
+  "last_successful_synchronization_at": "2026-07-16T22:42:54Z",
+  "migration_history": [
+    {
+      "schema_version": "1.0",
+      "synchronizer_version": "1.0.0"
+    }
+  ],
+  "project_identity": {
+    "name": "Forever Treasure Companion",
+    "project_identifiers": [
+      "treasurehunt",
+      "forever-treasure-companion"
+    ],
+    "repository_identifiers": [
+      "Kgray44/treasurehuntSoT",
+      "https://github.com/Kgray44/treasurehuntSoT.git"
+    ]
+  },
+  "schema_version": "1.0",
+  "source_coverage": {
+    "complete_account_export": false,
+    "inspected": [
+      "codex_session:C:\\Users\\kgray\\.codex\\sessions"
+    ]
+  },
+  "synchronizer_version": "1.0.0",
+  "total_conversation_count": 5,
+  "total_message_count": 2848,
+  "warnings": [
+    "Duplicate source record reconciled for 019eb237-487b-78d0-a637-e4e3bc865430"
+  ]
+}

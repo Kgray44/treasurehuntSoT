@@ -1,0 +1,38 @@
+{
+  "archive_directory": "Codex_Chats",
+  "automatic_push": true,
+  "branch_strategy": "current",
+  "enabled": true,
+  "exclude_conversation_ids": [],
+  "import_directories": [
+    "Codex_Chats/imports"
+  ],
+  "include_conversation_ids": [],
+  "include_reasoning": false,
+  "include_tool_output": true,
+  "preserve_deleted_conversations": true,
+  "project_identifiers": [
+    "treasurehunt",
+    "forever-treasure-companion"
+  ],
+  "project_keywords": [
+    "Forever Treasure Companion",
+    "treasurehuntSoT",
+    "development-forever-treasure"
+  ],
+  "project_names": [
+    "Forever Treasure Companion"
+  ],
+  "redact_secrets": true,
+  "remote": "origin",
+  "repository_identifiers": [
+    "Kgray44/treasurehuntSoT",
+    "https://github.com/Kgray44/treasurehuntSoT.git"
+  ],
+  "workspace_paths": [
+    "\\\\gwplastics.com\\VT\\Users\\kgray\\My Documents\\treasurehunt",
+    "\\\\gwplastics.com\\VT\\Users\\kgray\\My Documents\\treasurehunt\\forever-treasure-companion",
+    "\\\\gwplastics.com\\VT\\Users\\kgray\\My Documents\\treasurehunt\\phase3-game-master-command-center",
+    "\\\\gwplastics.com\\VT\\Users\\kgray\\My Documents\\treasurehunt\\phase3-clean-clone-validation"
+  ]
+}

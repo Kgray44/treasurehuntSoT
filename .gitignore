@@ -63,6 +63,19 @@ yarn-error.log*
 .idea/
 .vscode/
 Thumbs.db
+__pycache__/
+*.py[cod]
+
+# private conversation imports and local synchronization state
+/Codex_Chats/imports/*
+!/Codex_Chats/imports/README.md
+!/Codex_Chats/imports/.gitkeep
+/.codex/chat-sync-cache/
+/.codex/*.lock
+/Codex_Chats/**/*.tmp
+/Codex_Chats/**/*.bak
+/Codex_Chats/imports/**/temp*/
+/Codex_Chats/imports/**/extracted*/
 
 # vercel
 .vercel
