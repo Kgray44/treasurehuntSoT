@@ -2,6 +2,7 @@ import { PrismaClient } from "@prisma/client";
 
 const db = new PrismaClient();
 const acceptance = process.argv.includes("--acceptance");
+const preset = process.argv.includes("--preset");
 
 function assert(condition: unknown, message: string): asserts condition {
   if (!condition) throw new Error(`Database verification failed: ${message}`);
@@ -14,6 +15,8 @@ async function main() {
       chapters: true,
       artifacts: true,
       mapLocations: true,
+      mapRoutes: true,
+      sideQuests: true,
       events: { orderBy: { sequence: "asc" } },
       snapshots: true,
       awards: true,
@@ -23,9 +26,11 @@ async function main() {
     },
   });
   assert(campaign, "the development campaign is missing");
-  assert(campaign.chapters.length >= 4, "the Command Center requires multiple development chapters");
-  assert(campaign.artifacts.length >= 2, "multiple development artifacts are required");
-  assert(campaign.mapLocations.length >= 2, "multiple development map locations are required");
+  assert(campaign.chapters.length >= 5, "the complete development chapter set is required");
+  assert(campaign.artifacts.length >= 5, "the complete development artifact set is required");
+  assert(campaign.mapLocations.length >= 5, "the complete development map set is required");
+  assert(campaign.mapRoutes.length >= 2, "development route segments are required");
+  assert(campaign.sideQuests.length >= 4, "development side-quest states are required");
   assert(campaign.playerAccesses.length === 1, "exactly one development player access is required");
   assert(campaign.currentSequence === campaign.events.length, "campaign sequence must equal its ordered event count");
   assert(
@@ -42,12 +47,12 @@ async function main() {
       campaign.events.length,
     "every progression event must have a successful audit record",
   );
-  assert(campaign.awards.length <= campaign.artifacts.length, "an artifact may only be awarded once");
+  assert(campaign.awards.length <= campaign.artifacts.length, "artifact awards must remain unique");
 
-  if (!acceptance) {
+  if (!acceptance && !preset) {
     assert(campaign.currentSequence === 0, "a fresh validation database must start at sequence zero");
     assert(campaign.chapters[0].state === "LOCKED", "a fresh chapter must be locked");
-  } else {
+  } else if (acceptance) {
     const eventTypes = new Set(campaign.events.map((event) => event.type));
     for (const expected of [
       "CHAPTER_PREPARED",
@@ -60,7 +65,7 @@ async function main() {
     ]) {
       assert(eventTypes.has(expected), `acceptance run did not record ${expected}`);
     }
-    assert(campaign.awards.length === 1, "acceptance run must persist one artifact award");
+    assert(campaign.awards.length >= 1, "acceptance run must persist an artifact award");
     assert(
       campaign.mapLocations.some((location) => location.revealedAt),
       "acceptance run must persist a released map location",

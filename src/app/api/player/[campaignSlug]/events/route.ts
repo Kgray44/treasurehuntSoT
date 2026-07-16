@@ -1,7 +1,8 @@
 import { db } from "@/lib/db";
 import { eventBus } from "@/lib/events";
 import { requirePlayer } from "@/lib/security";
-import type { ClientProgressEvent, ProgressEventType } from "@/domain/story";
+import type { ClientProgressEvent } from "@/domain/story";
+import { toClientEvent } from "@/domain/visibility";
 
 export const dynamic = "force-dynamic";
 export async function GET(request: Request, context: { params: Promise<{ campaignSlug: string }> }) {
@@ -26,15 +27,7 @@ export async function GET(request: Request, context: { params: Promise<{ campaig
         },
         orderBy: { sequence: "asc" },
       });
-      missed.forEach((event) =>
-        send({
-          id: event.id,
-          type: event.type as ProgressEventType,
-          sequence: event.sequence,
-          payload: JSON.parse(event.payload),
-          releaseAt: event.releaseAt.toISOString(),
-        }),
-      );
+      missed.forEach((event) => send(toClientEvent(event)));
       const channel = `campaign:${access.campaignId}`;
       eventBus.on(channel, send);
       heartbeat = setInterval(

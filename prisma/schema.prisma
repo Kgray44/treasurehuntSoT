@@ -14,11 +14,15 @@ model Campaign {
   status          String   @default("PAUSED")
   accessCodeHash  String
   currentSequence Int      @default(0)
+  finaleState     String   @default("SEALED")
+  finaleTeaser    String?
+  finaleRequirements String @default("[]")
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
   chapters        Chapter[]
   artifacts       Artifact[]
   mapLocations    MapLocation[]
+  mapRoutes       MapRoute[]
   sideQuests      SideQuest[]
   events          ProgressEvent[]
   snapshots       CampaignSnapshot[]
@@ -43,6 +47,7 @@ model PlayerAccess {
   campaign    Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
   audio       AudioPreference?
   presences   PlayerPresence[]
+  viewedContent ViewedContent[]
   @@index([campaignId])
 }
 
@@ -90,6 +95,10 @@ model Chapter {
   contentId   String
   revealedAt  DateTime?
   solvedAt    DateTime?
+  safeTeaser  String?
+  relatedMapKey String?
+  relatedArtifactKey String?
+  relatedSideQuestKey String?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   campaign    Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
@@ -136,6 +145,17 @@ model Artifact {
   key         String
   name        String
   description String
+  safeName    String?
+  state       String   @default("UNKNOWN")
+  category    String   @default("RELIC")
+  discoveryText String?
+  silhouetteLabel String?
+  displayX    Float    @default(50)
+  displayY    Float    @default(50)
+  assemblyGroup String?
+  assemblyPosition String?
+  connectedArtifactKey String?
+  chapterOrdinal Int?
   campaign    Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
   awards      ArtifactAward[]
   @@unique([campaignId, key])
@@ -158,6 +178,15 @@ model SideQuest {
   key         String
   title       String
   state       String   @default("UNDISCOVERED")
+  safeTeaser  String?
+  description String?
+  rewardType  String?
+  rewardLabel String?
+  completionSummary String?
+  chapterOrdinal Int?
+  mapLocationKey String?
+  artifactKey String?
+  completedAt DateTime?
   campaign    Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
   objectives  SideQuestObjective[]
   @@unique([campaignId, key])
@@ -178,6 +207,9 @@ model JournalEntry {
   campaignId  String
   title       String
   body        String
+  kind        String   @default("ANNOTATION")
+  eventId     String?  @unique
+  chapterOrdinal Int?
   releasedAt  DateTime?
   createdAt   DateTime @default(now())
   campaign    Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
@@ -189,12 +221,37 @@ model MapLocation {
   campaignId  String
   key         String
   name        String
+  safeLabel   String?
   regionLabel String
+  locationType String @default("STORY")
+  state       String   @default("UNKNOWN")
+  description String?
+  exactness   String   @default("APPROXIMATE")
+  chapterOrdinal Int?
+  sideQuestKey String?
   x           Float
   y           Float
+  mobileX     Float?
+  mobileY     Float?
+  revealedAt  DateTime?
+  completedAt DateTime?
+  campaign    Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  @@unique([campaignId, key])
+}
+
+model MapRoute {
+  id          String   @id @default(cuid())
+  campaignId  String
+  key         String
+  fromKey     String
+  toKey       String
+  ordinal     Int
+  state       String   @default("HIDDEN")
+  annotation  String?
   revealedAt  DateTime?
   campaign    Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
   @@unique([campaignId, key])
+  @@index([campaignId, ordinal])
 }
 
 model ProgressEvent {
@@ -280,8 +337,24 @@ model AudioPreference {
   masterVolume   Float    @default(0.45)
   ambientVolume  Float    @default(0.25)
   effectsVolume  Float    @default(0.55)
+  motionMode     String   @default("SYSTEM")
+  textScale      Float    @default(1)
+  ambientEffects Boolean  @default(true)
+  textureIntensity Float  @default(1)
+  fullscreenPreferred Boolean @default(false)
   updatedAt      DateTime @updatedAt
   playerAccess   PlayerAccess @relation(fields: [playerAccessId], references: [id], onDelete: Cascade)
+}
+
+model ViewedContent {
+  id             String   @id @default(cuid())
+  playerAccessId String
+  contentType    String
+  contentKey     String
+  viewedAt       DateTime @default(now())
+  playerAccess   PlayerAccess @relation(fields: [playerAccessId], references: [id], onDelete: Cascade)
+  @@unique([playerAccessId, contentType, contentKey])
+  @@index([playerAccessId, viewedAt])
 }
 
 model ContentVersion {

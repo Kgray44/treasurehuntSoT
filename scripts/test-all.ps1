@@ -3,6 +3,20 @@ $ErrorActionPreference = "Stop"
 . (Join-Path $PSScriptRoot "dev-common.ps1")
 
 $runtimeRoot = Initialize-ForeverRuntime -Mode validation -ResetDatabase
+$nextCache = Join-Path $runtimeRoot ".next"
+if (Test-Path -LiteralPath $nextCache) {
+    $resolvedRuntime = [System.IO.Path]::GetFullPath($runtimeRoot)
+    $resolvedCache = [System.IO.Path]::GetFullPath($nextCache)
+    if (-not $resolvedCache.StartsWith($resolvedRuntime, [System.StringComparison]::OrdinalIgnoreCase)) { throw "Unsafe validation cache path." }
+    Remove-Item -LiteralPath $resolvedCache -Recurse -Force
+}
+$validationArtifacts = Join-Path $runtimeRoot "artifacts\validation"
+if (Test-Path -LiteralPath $validationArtifacts) {
+    $resolvedRuntime = [System.IO.Path]::GetFullPath($runtimeRoot)
+    $resolvedArtifacts = [System.IO.Path]::GetFullPath($validationArtifacts)
+    if (-not $resolvedArtifacts.StartsWith($resolvedRuntime, [System.StringComparison]::OrdinalIgnoreCase)) { throw "Unsafe validation artifact path." }
+    Remove-Item -LiteralPath $resolvedArtifacts -Recurse -Force
+}
 $node = Get-ForeverNode
 $nodeDirectory = Split-Path $node
 $env:PATH = "$nodeDirectory;$env:PATH"

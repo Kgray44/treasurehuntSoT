@@ -1,5 +1,9 @@
 # Story state machine
 
+## Companion sub-state
+
+Chapter transitions remain authoritative. Map, route, artifact, side-quest, and finale state changes are separate domain events projected into the same campaign snapshot. They never bypass chapter visibility. New event types include route reveal, artifact silhouette/connection, quest completion, annotation/log arrival, and finale tease/requirement changes. Undo captures every mutable companion subsystem before applying a progression action.
+
 ```mermaid
 stateDiagram-v2
   LOCKED --> TEASER

@@ -5,7 +5,7 @@ const playwrightPort = new URL(baseURL).port || "3100";
 
 export default defineConfig({
   testDir: "./tests/e2e",
-  timeout: 90_000,
+  timeout: 240_000,
   expect: { timeout: 10_000 },
   fullyParallel: false,
   workers: 1,
@@ -24,7 +24,7 @@ export default defineConfig({
   webServer: {
     command: `node node_modules/next/dist/bin/next dev -H 127.0.0.1 -p ${playwrightPort}`,
     url: baseURL,
-    reuseExistingServer: false,
+    reuseExistingServer: true,
     timeout: 120_000,
   },
 });

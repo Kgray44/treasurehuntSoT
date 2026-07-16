@@ -7,5 +7,5 @@ export default async function TalePage({ params }: { params: Promise<{ campaignS
   const { campaignSlug } = await params;
   const access = await requirePlayer(campaignSlug);
   if (!access) return <AccessGate campaignSlug={campaignSlug} />;
-  return <PlayerExperience initialSnapshot={await buildPublicSnapshot(access.campaignId)} />;
+  return <PlayerExperience initialSnapshot={await buildPublicSnapshot(access.campaignId, access.id)} />;
 }

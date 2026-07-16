@@ -1,5 +1,9 @@
 # Testing
 
+## Phase 2 coverage
+
+Unit coverage includes event reconciliation, event-to-log transformation, malformed/unknown event fallback, and event payload allowlisting. Database verification checks the five-chapter, five-location, two-route, five-artifact, and four-quest development fixture structure plus contiguous event/snapshot/audit invariants. Presets are reset with `npm run db:preset -- <name>`; default `npm run db:seed` retains the sealed acceptance start.
+
 Run the complete gate with:
 
 ```powershell
@@ -12,9 +16,9 @@ The live workflow covers player/GM access, rate limiting, cookie isolation, prep
 
 The validated Phase 3 run reports:
 
-- Unit: 9 passed, 0 failed, 0 skipped.
+- Unit after Phase 2 reconciliation: 16 passed, 0 failed, 0 skipped.
 - Browser: 9 passed, 0 failed, 1 intentional WebKit duplicate-workflow skip.
-- Database: 9 contiguous events, 12 audit records, sequence 9.
+- Reconciled database: 10 contiguous events, 11 audit records, sequence 10.
 - Build: passed; all Command Center and API routes compiled.
 - Restart: two passes on the configured validation port.
 

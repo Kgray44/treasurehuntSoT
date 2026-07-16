@@ -1,5 +1,9 @@
 # Theatrical event system
 
+## Phase 2 ceremonies
+
+Meaningful map, artifact, quest, log, objective, and finale events reuse the ordered ceremony queue. Routine section navigation stays fast. Every event has a final-state snapshot, reduced-motion path, skip path, and stable event identity; refresh does not replay an acknowledged ceremony. See `docs/cinematic-system.md` for reusable motion primitives.
+
 ```mermaid
 sequenceDiagram
   participant GM

@@ -11,7 +11,7 @@ export async function POST(request: Request) {
   if (!parsed.success) return NextResponse.json({ error: "That action was not confirmed correctly." }, { status: 400 });
   try {
     return NextResponse.json(
-      await executeProgressionAction(parsed.data.campaignSlug, parsed.data.action, session.userId),
+      await executeProgressionAction(parsed.data.campaignSlug, parsed.data.action, session.userId, parsed.data),
     );
   } catch (error) {
     return NextResponse.json(

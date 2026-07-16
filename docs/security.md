@@ -1,5 +1,11 @@
 # Security
 
+## Companion release boundary
+
+Serialization is allowlist-based. Locked chapters omit narrative/objective/clues; unreleased hints and annotations are absent; rumored map locations omit coordinates/internal regions; unknown artifacts omit names/descriptions; hidden quests are absent and rumors expose only safe teasers; hidden finale details are never modeled in public content. SSE payloads pass through the same explicit allowlist and never stream raw stored payloads. Player routes require a campaign-bound, unexpired access identity and expose no mutation endpoint.
+
+The repository is public as of 2026-07-16. Real story, surprise, romantic, location, photographic, token, and finale content is prohibited until visibility is verified private.
+
 Player access uses a bcrypt-verified campaign code and strict HTTP-only cookie. GM login uses bcrypt, database sessions, secure/strict cookies, a per-session CSRF token, generic failures, and a five-failure/15-minute fingerprint limit. Zod validates mutation input. Admin actions are audited. Logs redact passwords, access codes, cookies, and authorization headers. Player snapshots omit all chapter content until the chapter is released; tests and manual DOM/network inspection verify the gate contains no clue text.
 
 Production must set a random 32+ byte session secret, unique GM password and player code, HTTPS, reverse-proxy rate controls, database least privilege, and private repository visibility before real surprise content is committed.

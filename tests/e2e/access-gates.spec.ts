@@ -5,7 +5,7 @@ test("player gate stays private and accessible across supported browsers", async
   const response = await page.goto("/tale/development-forever-treasure");
   expect(response?.status()).toBe(200);
   const markup = await response!.text();
-  for (const secret of ["The First Seal", "Where weary crews return", "Discover where the first seal was hidden"]) {
+  for (const secret of ["The Lantern Test", "Where painted waves meet borrowed light", "Confirm the lantern mark"]) {
     expect(markup).not.toContain(secret);
   }
   await expect(page.getByRole("heading", { name: "The journal knows its sailor" })).toBeVisible();

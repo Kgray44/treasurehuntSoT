@@ -4,6 +4,7 @@
 - Branch: `feature/game-master-command-center`
 - Base branch: `origin/main`
 - Worktree: isolated from the dirty Phase 2 checkout
+- Reconciliation: Phase 2 landed on `origin/main` at `ede3764`; that updated main was merged into this feature branch after the initial Phase 3 validation. Phase 2 player visibility/rendering and seed presets were retained, with Phase 3 administrative relations, presence lifecycle, CSS, and fixtures applied additively.
 
 ## Shared contract review
 
@@ -15,4 +16,4 @@ Shared files modified: `src/domain/story.ts`, `src/server/progression.ts`, `src/
 
 New APIs: `POST /api/gm/commands`, `POST /api/gm/preview`, `POST /api/gm/staging`, and `POST /api/player/[campaignSlug]/presence`. Admin routes require a GM session; writes also require CSRF. Commands validate expected sequence and idempotency key.
 
-Likely conflicts are Phase 2 snapshot/event additions, schema relations on `Campaign` and `PlayerAccess`, seed fixtures, and player lifecycle effects. Recommended integration: retain Phase 2 player visibility first, then reapply Phase 3 administrative models/events and adapt heartbeat reporting. Post-merge validation must regenerate both clients, migrate clean SQLite, and run unit, E2E, accessibility, build, two-context SSE, preview-nonmutation, stale-command, and leakage checks.
+Resolved conflicts were Phase 2 snapshot/event additions, schema relations on `PlayerAccess`, seed fixtures, the player lifecycle, global styles, Game Master UI, verification rules, and handoff docs. Phase 2 visibility and Player Companion stayed authoritative; Phase 3 Command Center stayed authoritative. Post-merge validation regenerates both clients, migrates clean SQLite, and runs unit, E2E, accessibility, build, two-context SSE, preview-nonmutation, stale-command, and leakage checks.

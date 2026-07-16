@@ -305,7 +305,7 @@ export function Quartermaster({
     if (!response.ok) setError(data.error);
     else {
       setMessage(
-        `${title(data.event.type)} committed at sequence ${data.event.sequence}. Delivery is tracked separately.`,
+        `${title(data.event.type)} recorded at sequence ${data.event.sequence}. Delivery is tracked separately.`,
       );
       setSelected(null);
       setPreview(null);
@@ -423,7 +423,7 @@ export function Quartermaster({
         <button onClick={() => void choose(quickActions[5])}>Undo</button>
       </nav>
       {message && (
-        <div className="command-toast" role="status">
+        <div className="command-toast gm-toast" role="status">
           <b>Server confirmed</b>
           <span>{message}</span>
           <button aria-label="Dismiss notification" onClick={() => setMessage("")}>
