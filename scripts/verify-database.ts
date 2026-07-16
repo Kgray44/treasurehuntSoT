@@ -23,9 +23,9 @@ async function main() {
     },
   });
   assert(campaign, "the development campaign is missing");
-  assert(campaign.chapters.length === 1, "exactly one development chapter is required");
-  assert(campaign.artifacts.length === 1, "exactly one development artifact is required");
-  assert(campaign.mapLocations.length === 1, "exactly one development map location is required");
+  assert(campaign.chapters.length >= 4, "the Command Center requires multiple development chapters");
+  assert(campaign.artifacts.length >= 2, "multiple development artifacts are required");
+  assert(campaign.mapLocations.length >= 2, "multiple development map locations are required");
   assert(campaign.playerAccesses.length === 1, "exactly one development player access is required");
   assert(campaign.currentSequence === campaign.events.length, "campaign sequence must equal its ordered event count");
   assert(
@@ -37,8 +37,12 @@ async function main() {
     "event sequences must be unique",
   );
   assert(campaign.snapshots.length === campaign.events.length, "every progression event must have a campaign snapshot");
-  assert(campaign.auditLogs.length === campaign.events.length, "every progression event must have an audit record");
-  assert(campaign.awards.length <= 1, "an artifact may only be awarded once");
+  assert(
+    campaign.auditLogs.filter((entry) => entry.outcome === "SUCCEEDED" && entry.action !== "DEVELOPMENT_SEED").length >=
+      campaign.events.length,
+    "every progression event must have a successful audit record",
+  );
+  assert(campaign.awards.length <= campaign.artifacts.length, "an artifact may only be awarded once");
 
   if (!acceptance) {
     assert(campaign.currentSequence === 0, "a fresh validation database must start at sequence zero");
@@ -57,7 +61,10 @@ async function main() {
       assert(eventTypes.has(expected), `acceptance run did not record ${expected}`);
     }
     assert(campaign.awards.length === 1, "acceptance run must persist one artifact award");
-    assert(campaign.mapLocations[0].revealedAt, "acceptance run must persist the released map location");
+    assert(
+      campaign.mapLocations.some((location) => location.revealedAt),
+      "acceptance run must persist a released map location",
+    );
     assert(campaign.saveStates.length > 0, "acceptance run must retain undo save states");
   }
 

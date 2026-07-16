@@ -70,6 +70,9 @@ export async function executeProgressionAction(slug: string, action: Action, use
     let payload: Record<string, unknown> = {};
     let reversesEventId: string | undefined;
 
+    if (campaign.status === "PAUSED" && !["RESUME", "UNDO_LAST"].includes(action))
+      throw new Error("The campaign is paused. Resume it before releasing progression.");
+
     if (action === "UNDO_LAST") {
       const saved = await tx.saveStateSnapshot.findFirst({
         where: { campaignId: campaign.id },

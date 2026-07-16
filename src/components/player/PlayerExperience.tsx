@@ -58,6 +58,30 @@ export function PlayerExperience({ initialSnapshot }: { initialSnapshot: PublicS
     return () => media.removeEventListener("change", sync);
   }, []);
   useEffect(() => {
+    const report = (disconnected = false) =>
+      fetch(`/api/player/${snapshot.campaign.slug}/presence`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          deviceId: deviceId(),
+          route: `${location.pathname}#${view}`,
+          visibility: document.visibilityState,
+          acknowledgedSequence: snapshot.sequence,
+          disconnected,
+        }),
+        keepalive: disconnected,
+      }).catch(() => undefined);
+    void report();
+    const interval = window.setInterval(() => void report(), 20_000);
+    const visibility = () => void report();
+    document.addEventListener("visibilitychange", visibility);
+    return () => {
+      window.clearInterval(interval);
+      document.removeEventListener("visibilitychange", visibility);
+      void report(true);
+    };
+  }, [snapshot.campaign.slug, snapshot.sequence, view]);
+  useEffect(() => {
     if (ceremony.stage !== "seal" || muted || !audioContext.current) return;
     const context = audioContext.current;
     const gain = context.createGain();

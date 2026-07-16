@@ -27,6 +27,9 @@ model Campaign {
   auditLogs       AdminAuditLog[]
   saveStates      SaveStateSnapshot[]
   playerAccesses  PlayerAccess[]
+  preparedActions PreparedAction[]
+  commandExecutions CommandExecution[]
+  playerPresences PlayerPresence[]
 }
 
 model PlayerAccess {
@@ -39,7 +42,25 @@ model PlayerAccess {
   createdAt   DateTime @default(now())
   campaign    Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
   audio       AudioPreference?
+  presences   PlayerPresence[]
   @@index([campaignId])
+}
+
+model PlayerPresence {
+  id                   String   @id @default(cuid())
+  campaignId           String
+  playerAccessId       String
+  deviceId             String
+  route                String?
+  visibility           String?
+  connectedAt          DateTime @default(now())
+  lastHeartbeatAt      DateTime @default(now())
+  disconnectedAt       DateTime?
+  acknowledgedSequence Int      @default(0)
+  campaign             Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  playerAccess         PlayerAccess @relation(fields: [playerAccessId], references: [id], onDelete: Cascade)
+  @@unique([campaignId, deviceId])
+  @@index([campaignId, lastHeartbeatAt])
 }
 
 model GameMasterUser {
@@ -210,9 +231,45 @@ model AdminAuditLog {
   userId      String?
   action      String
   metadata    String
+  correlationId String?
+  outcome     String   @default("SUCCEEDED")
+  reason      String?
   createdAt   DateTime @default(now())
   campaign    Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
   user        GameMasterUser? @relation(fields: [userId], references: [id], onDelete: SetNull)
+  @@index([campaignId, createdAt])
+}
+
+model PreparedAction {
+  id               String   @id @default(cuid())
+  campaignId       String
+  command          String
+  targetKey        String?
+  payload          String
+  status           String   @default("PREPARED")
+  expectedSequence Int
+  scheduledFor     DateTime?
+  preparedBy       String
+  preparedAt       DateTime @default(now())
+  executedAt       DateTime?
+  cancelledAt      DateTime?
+  campaign         Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  @@index([campaignId, status, scheduledFor])
+}
+
+model CommandExecution {
+  id               String   @id @default(cuid())
+  campaignId       String
+  idempotencyKey   String
+  command          String
+  expectedSequence Int
+  correlationId    String
+  status           String
+  result           String?
+  createdAt        DateTime @default(now())
+  completedAt      DateTime?
+  campaign         Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  @@unique([campaignId, idempotencyKey])
   @@index([campaignId, createdAt])
 }
 
