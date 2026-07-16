@@ -11,5 +11,6 @@
 - Development data: Phase 2 multi-state presets plus Phase 3 prepared-action and audit fixtures
 - Startup: `npm run dev:full`; validation: `npm run validate`; stop: `npm run dev:stop`
 - Known limitations: no background scheduler, multi-event rollback, automated presence cleanup, Redis fan-out, real finale/story/private media, or deployment
-- Latest validated Phase 3 commit and pull request: populate after reconciled validation/publication
+- Latest fully validated implementation commit: `8174f28` (16 unit, 9 executed browser, build, and two restart proofs)
+- Draft pull request: `https://github.com/Kgray44/treasurehuntSoT/pull/1`
 - Recommended next task: controlled integration review and production-readiness work; do not merge the PR without the post-merge checklist
