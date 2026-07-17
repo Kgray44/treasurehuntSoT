@@ -4,43 +4,41 @@
   "ambiguous_candidates": [],
   "commit_created": false,
   "commit_hash": null,
-  "conversations_discovered": 184,
+  "conversations_discovered": 150,
   "errors": [],
-  "excluded": 183,
+  "excluded": 144,
   "failed": 0,
   "files_changed": [
-    "Codex_Chats/chats/019f6e3d-4202-70f1-901d-96869d69ab07--rehydrate-sea-of-thieves-project.md",
+    "Codex_Chats/chats/019f6d0b-68b7-7a61-bf6f-22095f9b1ede--implement-chat-archival-sync.md",
+    "Codex_Chats/chats/019f7152-3a02-7bd1-9715-cb895e108b9f--implement-prompt-details.md",
     "Codex_Chats/manifest.json",
     "Codex_Chats/reports/latest-sync-report.json"
   ],
-  "finished_at": "2026-07-17T05:09:33Z",
-  "included": 1,
+  "finished_at": "2026-07-17T20:21:56Z",
+  "included": 6,
   "push_attempted": false,
   "push_result": "not requested",
-  "redacted": 9,
+  "redacted": 41,
   "redaction_categories": {
-    "login_credential": 6,
-    "secret_assignment": 3
+    "login_credential": 16,
+    "openai_key": 1,
+    "secret_assignment": 24
   },
   "renamed": 0,
   "schema_version": "1.0",
   "source_coverage": [
-    "codex_session:C:\\Users\\kkids\\.codex\\sessions"
+    "codex_session:C:\\Users\\kgray\\.codex\\sessions"
   ],
   "source_types_inspected": [
     "codex_session"
   ],
-  "started_at": "2026-07-17T05:09:19Z",
+  "started_at": "2026-07-17T20:21:43Z",
   "suspected_secret_categories": [],
   "synchronizer_version": "1.0.0",
   "unavailable": 0,
-  "unchanged": 0,
-  "updated": 0,
+  "unchanged": 4,
+  "updated": 1,
   "warnings": [
-    "Duplicate source record reconciled for 019dad68-91f3-7091-b4aa-6fee54fd1a1f",
-    "Duplicate source record reconciled for 019dad68-91f3-7091-b4aa-6fee54fd1a1f",
-    "Duplicate source record reconciled for 019dc22f-4155-7ad2-b1d6-bc451bf68259",
-    "Duplicate source record reconciled for 019dc22f-4155-7ad2-b1d6-bc451bf68259",
-    "Duplicate source record reconciled for 019dc22f-4155-7ad2-b1d6-bc451bf68259"
+    "Duplicate source record reconciled for 019eb237-487b-78d0-a637-e4e3bc865430"
   ]
 }

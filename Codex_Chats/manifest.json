@@ -89,12 +89,12 @@
     },
     {
       "archive_path": "Codex_Chats/chats/019f6d0b-68b7-7a61-bf6f-22095f9b1ede--implement-chat-archival-sync.md",
-      "content_sha256": "773b6ce491de0c013091b2ca2e68c12ba4c5cfeb42eb4057941903f000e1fa0b",
+      "content_sha256": "62999de629114c25f7e642e6239b8f8c37af33c0e426d3a264a3d307e4b94cc8",
       "conversation_id": "019f6d0b-68b7-7a61-bf6f-22095f9b1ede",
       "created_at": "2026-07-16T22:28:12.966Z",
       "first_archived_at": "2026-07-16T22:38:49Z",
-      "last_synchronized_at": "2026-07-16T22:44:27Z",
-      "message_count": 119,
+      "last_synchronized_at": "2026-07-17T20:21:43Z",
+      "message_count": 123,
       "project_identifier": "treasurehunt",
       "redaction_categories": {
         "login_credential": 1,
@@ -103,11 +103,11 @@
       "redactions": 2,
       "source_export_timestamp": null,
       "source_identifier": "rollout-2026-07-16T18-28-12-019f6d0b-68b7-7a61-bf6f-22095f9b1ede.jsonl",
-      "source_sha256": "514815c7f90fc6cc3407f2d0b52f53ccf26e5b932b12038a6f6321a631707933",
+      "source_sha256": "7c0a9fc9664c8002dcddbb2f2c109e9b18978a9ec7801a6a607d2a2fe2674057",
       "source_type": "codex_session",
       "status": "active",
       "title": "Implement chat archival sync",
-      "updated_at": "2026-07-16T22:44:23.054Z"
+      "updated_at": "2026-07-16T22:45:32.425Z"
     },
     {
       "archive_path": "Codex_Chats/chats/019f6e3d-4202-70f1-901d-96869d69ab07--rehydrate-sea-of-thieves-project.md",
@@ -130,9 +130,31 @@
       "status": "active",
       "title": "Rehydrate Sea of Thieves project",
       "updated_at": "2026-07-17T05:09:19.433Z"
+    },
+    {
+      "archive_path": "Codex_Chats/chats/019f7152-3a02-7bd1-9715-cb895e108b9f--implement-prompt-details.md",
+      "content_sha256": "d28a8982e6350ffe6315083a995b577ad50441a06e8b00ebcbe8b77b3d67bd41",
+      "conversation_id": "019f7152-3a02-7bd1-9715-cb895e108b9f",
+      "created_at": "2026-07-17T18:24:02.861Z",
+      "first_archived_at": "2026-07-17T20:21:43Z",
+      "last_synchronized_at": "2026-07-17T20:21:43Z",
+      "message_count": 938,
+      "project_identifier": "treasurehunt",
+      "redaction_categories": {
+        "login_credential": 4,
+        "secret_assignment": 6
+      },
+      "redactions": 10,
+      "source_export_timestamp": null,
+      "source_identifier": "rollout-2026-07-17T14-24-02-019f7152-3a02-7bd1-9715-cb895e108b9f.jsonl",
+      "source_sha256": "0d7ff20aba297085dbe8396dcec3883c40da4a66c9850dafa7366e029acdbd06",
+      "source_type": "codex_session",
+      "status": "active",
+      "title": "Implement prompt details",
+      "updated_at": "2026-07-17T20:21:39.853Z"
     }
   ],
-  "last_successful_synchronization_at": "2026-07-17T05:09:19Z",
+  "last_successful_synchronization_at": "2026-07-17T20:21:43Z",
   "migration_history": [
     {
       "schema_version": "1.0",
@@ -154,17 +176,13 @@
   "source_coverage": {
     "complete_account_export": false,
     "inspected": [
-      "codex_session:C:\\Users\\kkids\\.codex\\sessions"
+      "codex_session:C:\\Users\\kgray\\.codex\\sessions"
     ]
   },
   "synchronizer_version": "1.0.0",
-  "total_conversation_count": 6,
-  "total_message_count": 3417,
+  "total_conversation_count": 7,
+  "total_message_count": 4359,
   "warnings": [
-    "Duplicate source record reconciled for 019dad68-91f3-7091-b4aa-6fee54fd1a1f",
-    "Duplicate source record reconciled for 019dad68-91f3-7091-b4aa-6fee54fd1a1f",
-    "Duplicate source record reconciled for 019dc22f-4155-7ad2-b1d6-bc451bf68259",
-    "Duplicate source record reconciled for 019dc22f-4155-7ad2-b1d6-bc451bf68259",
-    "Duplicate source record reconciled for 019dc22f-4155-7ad2-b1d6-bc451bf68259"
+    "Duplicate source record reconciled for 019eb237-487b-78d0-a637-e4e3bc865430"
   ]
 }
