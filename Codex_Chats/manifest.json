@@ -155,34 +155,35 @@
     },
     {
       "archive_path": "Codex_Chats/chats/019f71df-dc7a-7641-a39a-625aba79af02--complete-phase.md",
-      "content_sha256": "0d888b8f185e043b58a78353a0e6b82acc51e811fcedc66c1c0c029d71413ed7",
+      "content_sha256": "8678b076446c4a0045b4abdd477d51997b127a9286a4766ae504b628c29e1c38",
       "conversation_id": "019f71df-dc7a-7641-a39a-625aba79af02",
       "created_at": "2026-07-17T20:58:47.802Z",
       "first_archived_at": "2026-07-17T21:23:22Z",
-      "last_synchronized_at": "2026-07-17T21:23:22Z",
-      "message_count": 114,
+      "last_synchronized_at": "2026-07-17T22:54:07Z",
+      "message_count": 740,
       "project_identifier": "treasurehunt",
       "redaction_categories": {
-        "login_credential": 1,
-        "secret_assignment": 2
+        "connection_string": 2,
+        "login_credential": 2,
+        "secret_assignment": 4
       },
-      "redactions": 3,
+      "redactions": 8,
       "source_export_timestamp": null,
       "source_identifier": "rollout-2026-07-17T16-58-44-019f71df-dc7a-7641-a39a-625aba79af02.jsonl",
-      "source_sha256": "0f72ea47c775aa8d7f648a35e2bfada11aa1b1d4b0246de901b97ef183338408",
+      "source_sha256": "dd61739e7b7c5b57f8abfedfc0e4ab495d36c8d3b4358cd50732d5e4d32ca964",
       "source_type": "codex_session",
       "status": "active",
       "title": "Complete phase",
-      "updated_at": "2026-07-17T21:22:44.117Z"
+      "updated_at": "2026-07-17T22:54:12.887Z"
     },
     {
       "archive_path": "Codex_Chats/chats/019f71e2-3dcf-76f3-8d0a-2eb6eae88df2--add-development_docs-sync.md",
-      "content_sha256": "67c4aa1110ad48ae4887c5671e2602b278e2a275de18f07c9852111eed745e61",
+      "content_sha256": "fefe039c2556b136f2e30c67f3775a250e70ba3130593cf6db0b2fce0f9a1849",
       "conversation_id": "019f71e2-3dcf-76f3-8d0a-2eb6eae88df2",
       "created_at": "2026-07-17T21:01:31.759Z",
       "first_archived_at": "2026-07-17T21:23:22Z",
-      "last_synchronized_at": "2026-07-17T21:23:22Z",
-      "message_count": 187,
+      "last_synchronized_at": "2026-07-17T22:54:07Z",
+      "message_count": 211,
       "project_identifier": "treasurehunt",
       "redaction_categories": {
         "openai_key": 1,
@@ -191,33 +192,35 @@
       "redactions": 3,
       "source_export_timestamp": null,
       "source_identifier": "rollout-2026-07-17T17-01-20-019f71e2-3dcf-76f3-8d0a-2eb6eae88df2.jsonl",
-      "source_sha256": "7b8dc4a570f6aed0812f1111d65280558fd59263a60330739f246b5d81de4bf2",
+      "source_sha256": "64f4ce2aab7152a1b5a8d74f2127fd0b6a5510ef1488b102d6be51d61f4f4f94",
       "source_type": "codex_session",
       "status": "active",
       "title": "Add Development_Docs sync",
-      "updated_at": "2026-07-17T21:23:29.191Z"
+      "updated_at": "2026-07-17T21:27:57.430Z"
     },
     {
       "archive_path": "Codex_Chats/chats/019f71f4-6a13-78e1-a8f6-71f1c052c449--rebuild-journal-page-physics.md",
-      "content_sha256": "5ec9bcb2d300d837f71d820c4f2a3ea34dcbc685808dbd1ccb576058b44cc9cd",
+      "content_sha256": "c128080703553cab54bda58441948de6eeb708d41c3ab3c46428b523b02e3b43",
       "conversation_id": "019f71f4-6a13-78e1-a8f6-71f1c052c449",
       "created_at": "2026-07-17T21:21:19.371Z",
       "first_archived_at": "2026-07-17T21:23:22Z",
-      "last_synchronized_at": "2026-07-17T21:23:22Z",
-      "message_count": 28,
+      "last_synchronized_at": "2026-07-17T22:54:07Z",
+      "message_count": 554,
       "project_identifier": "treasurehunt",
-      "redaction_categories": {},
-      "redactions": 0,
+      "redaction_categories": {
+        "login_credential": 1
+      },
+      "redactions": 1,
       "source_export_timestamp": null,
       "source_identifier": "rollout-2026-07-17T17-21-11-019f71f4-6a13-78e1-a8f6-71f1c052c449.jsonl",
-      "source_sha256": "5838fc210ded81e395240bd70071cb36d999b7c74da15c31c947e489f1819a08",
+      "source_sha256": "153a4c0a83a8cd78a9561a0c5c8cf71e7f893bb1d9325810cec2b89d13d8373a",
       "source_type": "codex_session",
       "status": "active",
       "title": "Rebuild journal page physics",
-      "updated_at": "2026-07-17T21:23:28.787Z"
+      "updated_at": "2026-07-17T22:54:15.039Z"
     }
   ],
-  "last_successful_synchronization_at": "2026-07-17T21:23:22Z",
+  "last_successful_synchronization_at": "2026-07-17T22:54:07Z",
   "migration_history": [
     {
       "schema_version": "1.0",
@@ -244,7 +247,7 @@
   },
   "synchronizer_version": "1.1.0",
   "total_conversation_count": 10,
-  "total_message_count": 4774,
+  "total_message_count": 5950,
   "warnings": [
     "Duplicate source record reconciled for 019eb237-487b-78d0-a637-e4e3bc865430"
   ]

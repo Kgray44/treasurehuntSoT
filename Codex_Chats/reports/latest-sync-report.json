@@ -1,5 +1,5 @@
 {
-  "added": 3,
+  "added": 0,
   "ambiguous": 0,
   "ambiguous_candidates": [],
   "commit_created": false,
@@ -8,7 +8,12 @@
   "conversations_discovered": 153,
   "development_docs": {
     "changes": {
-      "added": [],
+      "added": [
+        {
+          "path": "Development_Docs/Tall_Tale_Platform_Codex_Implementation_Specification.pdf",
+          "status": "??"
+        }
+      ],
       "conflicted": [],
       "deleted": [],
       "modified": [],
@@ -16,8 +21,12 @@
     },
     "commit_included": false,
     "directory": "Development_Docs",
-    "eligible_fingerprints": {},
-    "eligible_paths": [],
+    "eligible_fingerprints": {
+      "Development_Docs/Tall_Tale_Platform_Codex_Implementation_Specification.pdf": "213b3471dc546ff8575c24971ff49c96c6b1a666753ad3296c202bbef5a49f95"
+    },
+    "eligible_paths": [
+      "Development_Docs/Tall_Tale_Platform_Codex_Implementation_Specification.pdf"
+    ],
     "empty_directories": [],
     "excluded": [],
     "exists": true,
@@ -31,22 +40,22 @@
   "excluded": 144,
   "failed": 0,
   "files_changed": [
-    "Codex_Chats/chats/019f7152-3a02-7bd1-9715-cb895e108b9f--implement-prompt-details.md",
     "Codex_Chats/chats/019f71df-dc7a-7641-a39a-625aba79af02--complete-phase.md",
     "Codex_Chats/chats/019f71e2-3dcf-76f3-8d0a-2eb6eae88df2--add-development_docs-sync.md",
     "Codex_Chats/chats/019f71f4-6a13-78e1-a8f6-71f1c052c449--rebuild-journal-page-physics.md",
     "Codex_Chats/manifest.json",
     "Codex_Chats/reports/latest-sync-report.json"
   ],
-  "finished_at": "2026-07-17T21:23:40Z",
+  "finished_at": "2026-07-17T22:54:34Z",
   "included": 9,
   "push_attempted": false,
   "push_result": "not requested",
-  "redacted": 48,
+  "redacted": 54,
   "redaction_categories": {
-    "login_credential": 18,
+    "connection_string": 2,
+    "login_credential": 20,
     "openai_key": 2,
-    "secret_assignment": 28
+    "secret_assignment": 30
   },
   "renamed": 0,
   "schema_version": "1.0",
@@ -56,12 +65,12 @@
   "source_types_inspected": [
     "codex_session"
   ],
-  "started_at": "2026-07-17T21:23:22Z",
+  "started_at": "2026-07-17T22:54:07Z",
   "suspected_secret_categories": [],
   "synchronizer_version": "1.1.0",
   "unavailable": 0,
-  "unchanged": 5,
-  "updated": 1,
+  "unchanged": 6,
+  "updated": 3,
   "warnings": [
     "Duplicate source record reconciled for 019eb237-487b-78d0-a637-e4e3bc865430"
   ]
