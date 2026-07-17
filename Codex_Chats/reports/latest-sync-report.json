@@ -1,43 +1,46 @@
 {
-  "added": 0,
+  "added": 1,
   "ambiguous": 0,
   "ambiguous_candidates": [],
   "commit_created": false,
   "commit_hash": null,
-  "conversations_discovered": 148,
+  "conversations_discovered": 184,
   "errors": [],
-  "excluded": 143,
+  "excluded": 183,
   "failed": 0,
   "files_changed": [
-    "Codex_Chats/chats/019f6d0b-68b7-7a61-bf6f-22095f9b1ede--implement-chat-archival-sync.md",
+    "Codex_Chats/chats/019f6e3d-4202-70f1-901d-96869d69ab07--rehydrate-sea-of-thieves-project.md",
     "Codex_Chats/manifest.json",
     "Codex_Chats/reports/latest-sync-report.json"
   ],
-  "finished_at": "2026-07-16T22:44:37Z",
-  "included": 5,
+  "finished_at": "2026-07-17T05:09:33Z",
+  "included": 1,
   "push_attempted": false,
   "push_result": "not requested",
-  "redacted": 31,
+  "redacted": 9,
   "redaction_categories": {
-    "login_credential": 12,
-    "openai_key": 1,
-    "secret_assignment": 18
+    "login_credential": 6,
+    "secret_assignment": 3
   },
   "renamed": 0,
   "schema_version": "1.0",
   "source_coverage": [
-    "codex_session:C:\\Users\\kgray\\.codex\\sessions"
+    "codex_session:C:\\Users\\kkids\\.codex\\sessions"
   ],
   "source_types_inspected": [
     "codex_session"
   ],
-  "started_at": "2026-07-16T22:44:27Z",
+  "started_at": "2026-07-17T05:09:19Z",
   "suspected_secret_categories": [],
   "synchronizer_version": "1.0.0",
   "unavailable": 0,
-  "unchanged": 4,
-  "updated": 1,
+  "unchanged": 0,
+  "updated": 0,
   "warnings": [
-    "Duplicate source record reconciled for 019eb237-487b-78d0-a637-e4e3bc865430"
+    "Duplicate source record reconciled for 019dad68-91f3-7091-b4aa-6fee54fd1a1f",
+    "Duplicate source record reconciled for 019dad68-91f3-7091-b4aa-6fee54fd1a1f",
+    "Duplicate source record reconciled for 019dc22f-4155-7ad2-b1d6-bc451bf68259",
+    "Duplicate source record reconciled for 019dc22f-4155-7ad2-b1d6-bc451bf68259",
+    "Duplicate source record reconciled for 019dc22f-4155-7ad2-b1d6-bc451bf68259"
   ]
 }
