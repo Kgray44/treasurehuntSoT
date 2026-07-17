@@ -36,7 +36,7 @@ try {
     & $python @arguments
     $exitCode = $LASTEXITCODE
 } catch {
-    Write-Error "Chat synchronization could not start: $($_.Exception.Message)"
+    Write-Error "Project synchronization could not start: $($_.Exception.Message)"
     exit 1
 }
 exit $exitCode

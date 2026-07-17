@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Synchronize project conversations into a deterministic, privacy-safe archive."""
+"""Synchronize project conversations and repository-root Development_Docs safely."""
 
 from __future__ import annotations
 
@@ -8,6 +8,7 @@ import base64
 import contextlib
 import dataclasses
 import datetime as dt
+import fnmatch
 import hashlib
 import json
 import os
@@ -23,13 +24,61 @@ import zipfile
 from pathlib import Path, PurePosixPath
 from typing import Any, Iterable, Iterator
 
-VERSION = "1.0.0"
+VERSION = "1.1.0"
 SCHEMA_VERSION = "1.0"
-COMMIT_MESSAGE = "docs(chats): synchronize project conversations"
+CHAT_COMMIT_MESSAGE = "docs(chats): synchronize project conversations"
+DEVELOPMENT_DOCS_COMMIT_MESSAGE = "docs: synchronize Development_Docs"
+COMBINED_COMMIT_MESSAGE = "chore(sync): update Codex chats and development docs"
 EXIT_SOURCE_ERROR = 3
 EXIT_LOCKED = 4
 EXIT_INTEGRITY = 5
 EXIT_GIT = 6
+
+DEFAULT_DEVELOPMENT_DOCS_WARN_BYTES = 25 * 1024 * 1024
+DEFAULT_DEVELOPMENT_DOCS_MAX_GIT_BYTES = 50 * 1024 * 1024
+MAX_CONTENT_SCAN_BYTES = 20 * 1024 * 1024
+SENSITIVE_NAME_PATTERNS = (
+    ".env",
+    ".env.*",
+    "*.pem",
+    "*.key",
+    "*.p12",
+    "*.pfx",
+    "*.crt",
+    "*.ppk",
+    "credentials.*",
+    "secrets.*",
+    "*_secret.*",
+    "*_credentials.*",
+    "*access-token*",
+    "*access_token*",
+    "*api-token*",
+    "*api_token*",
+    "*database*credential*",
+    "*db*credential*",
+    "id_rsa",
+    "id_dsa",
+    "id_ecdsa",
+    "id_ed25519",
+    ".npmrc",
+    ".pypirc",
+    ".netrc",
+)
+SENSITIVE_DIRECTORY_NAMES = {".ssh", ".aws", ".auth", "auth-cache", "authentication-cache"}
+TEXT_DOCUMENT_EXTENSIONS = {
+    ".csv",
+    ".json",
+    ".md",
+    ".rst",
+    ".svg",
+    ".toml",
+    ".txt",
+    ".xml",
+    ".yaml",
+    ".yml",
+}
+TEXT_DOCUMENT_NAMES = {".gitignore", ".gitattributes"}
+OFFICE_DOCUMENT_EXTENSIONS = {".docx", ".xlsx", ".pptx", ".odt", ".ods", ".odp"}
 
 
 class SyncError(RuntimeError):
@@ -148,6 +197,14 @@ class SecretScan:
     suspected_categories: list[str]
 
 
+@dataclasses.dataclass
+class GitPathChange:
+    kind: str
+    path: str
+    status: str
+    original_path: str | None = None
+
+
 HIGH_SECRET_PATTERNS: list[tuple[str, re.Pattern[str], str]] = [
     ("private_key", re.compile(r"-----BEGIN (?:RSA |EC |OPENSSH |DSA )?PRIVATE KEY-----.*?-----END (?:RSA |EC |OPENSSH |DSA )?PRIVATE KEY-----", re.S), "[REDACTED: PRIVATE KEY]"),
     ("github_token", re.compile(r"\b(?:gh[pousr]_[A-Za-z0-9]{20,}|github_pat_[A-Za-z0-9_]{20,})\b"), "[REDACTED: POSSIBLE GITHUB TOKEN]"),
@@ -189,6 +246,104 @@ def redact_secrets(text: str, enabled: bool = True) -> SecretScan:
             suspected.append(category)
             break
     return SecretScan(result, sum(categories.values()), categories, sorted(set(suspected)))
+
+
+def detected_secret_categories(text: str) -> list[str]:
+    """Return category names only; never return or log a matched value."""
+    categories = {category for category, pattern, _ in HIGH_SECRET_PATTERNS if pattern.search(text)}
+    categories.update(redact_secrets(text).suspected_categories)
+    if re.search(r"(?m)^<<<<<<< .+\n.*?^=======\n.*?^>>>>>>> .+$", text, re.S):
+        categories.add("merge_conflict_markers")
+    return sorted(categories)
+
+
+def sensitive_document_name(relative_path: str) -> bool:
+    pure = PurePosixPath(relative_path)
+    folded_parts = [part.casefold() for part in pure.parts]
+    if any(part in SENSITIVE_DIRECTORY_NAMES for part in folded_parts[:-1]):
+        return True
+    name = folded_parts[-1] if folded_parts else ""
+    return any(fnmatch.fnmatchcase(name, pattern.casefold()) for pattern in SENSITIVE_NAME_PATTERNS)
+
+
+def bounded_file_bytes(path: Path, limit: int = MAX_CONTENT_SCAN_BYTES) -> tuple[bytes, bool]:
+    with path.open("rb") as stream:
+        value = stream.read(limit + 1)
+    return value[:limit], len(value) > limit
+
+
+def decoded_text_candidates(data: bytes) -> list[str]:
+    candidates = [data.decode("utf-8", errors="ignore")]
+    if data.startswith((b"\xff\xfe", b"\xfe\xff")) or data[:4096].count(b"\0") > 8:
+        candidates.append(data.decode("utf-16", errors="ignore"))
+    candidates.append(data.decode("latin-1", errors="ignore"))
+    return candidates
+
+
+def extract_office_text(path: Path) -> tuple[str, list[str]]:
+    chunks: list[str] = []
+    warnings: list[str] = []
+    remaining = MAX_CONTENT_SCAN_BYTES
+    try:
+        with zipfile.ZipFile(path) as archive:
+            for info in archive.infolist():
+                suffix = PurePosixPath(info.filename).suffix.casefold()
+                if info.is_dir() or suffix not in {".xml", ".rels", ".txt", ".csv"}:
+                    continue
+                if info.file_size > MAX_CONTENT_SCAN_BYTES or info.file_size > remaining:
+                    warnings.append("embedded office content exceeded the bounded text scan")
+                    break
+                data = archive.read(info)
+                remaining -= len(data)
+                chunks.append(data.decode("utf-8", errors="ignore"))
+    except (OSError, zipfile.BadZipFile, RuntimeError):
+        warnings.append("office document text could not be extracted")
+    return "\n".join(chunks), warnings
+
+
+def extract_pdf_text(path: Path) -> tuple[str, list[str]]:
+    try:
+        from pypdf import PdfReader  # type: ignore[import-not-found]
+    except ImportError:
+        return "", ["PDF text extraction unavailable; raw bytes were still scanned"]
+    try:
+        reader = PdfReader(path)
+        if reader.is_encrypted:
+            return "", ["encrypted PDF could not be text-scanned"]
+        chunks: list[str] = []
+        length = 0
+        for page in reader.pages:
+            value = page.extract_text() or ""
+            remaining = MAX_CONTENT_SCAN_BYTES - length
+            if remaining <= 0:
+                return "\n".join(chunks), ["PDF text exceeded the bounded content scan"]
+            chunks.append(value[:remaining])
+            length += len(chunks[-1].encode("utf-8", errors="ignore"))
+        return "\n".join(chunks), []
+    except Exception:
+        return "", ["PDF text could not be extracted; raw bytes were still scanned"]
+
+
+def scan_document_content(path: Path) -> tuple[list[str], list[str]]:
+    """Inspect bounded textual content and return only safe category/warning labels."""
+    raw, truncated = bounded_file_bytes(path)
+    texts = decoded_text_candidates(raw)
+    warnings = ["raw content exceeded the bounded content scan"] if truncated else []
+    suffix = path.suffix.casefold()
+    if suffix in OFFICE_DOCUMENT_EXTENSIONS:
+        office_text, office_warnings = extract_office_text(path)
+        texts.append(office_text)
+        warnings.extend(office_warnings)
+    elif suffix == ".pdf":
+        pdf_text, pdf_warnings = extract_pdf_text(path)
+        texts.append(pdf_text)
+        warnings.extend(pdf_warnings)
+    elif suffix not in TEXT_DOCUMENT_EXTENSIONS and path.name.casefold() not in TEXT_DOCUMENT_NAMES:
+        warnings.append("binary format received filename, metadata, and raw-byte scanning only")
+    categories: set[str] = set()
+    for text in texts:
+        categories.update(detected_secret_categories(text))
+    return sorted(categories), sorted(set(warnings))
 
 
 def find_repo_root(start: Path) -> Path:
@@ -706,42 +861,314 @@ def git(repo: Path, *args: str, check: bool = True, env: dict[str, str] | None =
     return proc
 
 
+def configured_relative_directory(config: dict[str, Any], key: str, default: str) -> str:
+    value = str(config.get(key, default)).replace("\\", "/").strip("/")
+    pure = PurePosixPath(value)
+    if not value or pure.is_absolute() or ".." in pure.parts or ":" in value:
+        raise SyncError(f"Unsafe repository-relative directory configured for {key}")
+    return pure.as_posix()
+
+
+def parse_porcelain_v2(value: str) -> list[GitPathChange]:
+    records = value.split("\0")
+    result: list[GitPathChange] = []
+    index = 0
+    while index < len(records):
+        record = records[index]
+        index += 1
+        if not record or record.startswith("# "):
+            continue
+        if record.startswith("? "):
+            result.append(GitPathChange("added", record[2:], "??"))
+            continue
+        if record.startswith("! "):
+            continue
+        if record.startswith("1 "):
+            fields = record.split(" ", 8)
+            if len(fields) != 9:
+                raise GitSafetyError("Could not parse ordinary Development_Docs Git status")
+            xy, path = fields[1], fields[8]
+            if "D" in xy:
+                kind = "deleted"
+            elif "A" in xy:
+                kind = "added"
+            else:
+                kind = "modified"
+            result.append(GitPathChange(kind, path, xy))
+            continue
+        if record.startswith("2 "):
+            fields = record.split(" ", 9)
+            if len(fields) != 10 or index >= len(records):
+                raise GitSafetyError("Could not parse renamed Development_Docs Git status")
+            original_path = records[index]
+            index += 1
+            result.append(GitPathChange("renamed", fields[9], fields[1], original_path))
+            continue
+        if record.startswith("u "):
+            fields = record.split(" ", 10)
+            if len(fields) != 11:
+                raise GitSafetyError("Could not parse conflicted Development_Docs Git status")
+            result.append(GitPathChange("conflicted", fields[10], fields[1]))
+            continue
+        raise GitSafetyError("Unrecognized Development_Docs Git status record")
+    return result
+
+
+def coalesce_exact_worktree_renames(repo: Path, changes: list[GitPathChange]) -> list[GitPathChange]:
+    """Recognize one-to-one unstaged moves that Git reports as delete plus untracked add."""
+    deleted_by_hash: dict[str, list[GitPathChange]] = {}
+    added_by_hash: dict[str, list[GitPathChange]] = {}
+    for change in changes:
+        if change.kind == "deleted":
+            proc = git(repo, "rev-parse", f"HEAD:{change.path}", check=False)
+            if proc.returncode == 0:
+                deleted_by_hash.setdefault(proc.stdout.strip(), []).append(change)
+        elif change.kind == "added" and change.status == "??":
+            proc = git(repo, "hash-object", "--", change.path, check=False)
+            if proc.returncode == 0:
+                added_by_hash.setdefault(proc.stdout.strip(), []).append(change)
+    replacements: list[GitPathChange] = []
+    removed: set[int] = set()
+    for blob_hash in sorted(set(deleted_by_hash) & set(added_by_hash)):
+        deleted = deleted_by_hash[blob_hash]
+        added = added_by_hash[blob_hash]
+        if len(deleted) != 1 or len(added) != 1:
+            continue
+        old, new = deleted[0], added[0]
+        removed.update({id(old), id(new)})
+        replacements.append(GitPathChange("renamed", new.path, "R100", old.path))
+    return [change for change in changes if id(change) not in removed] + replacements
+
+
+def ignored_untracked_paths(repo: Path, paths: list[str]) -> set[str]:
+    if not paths:
+        return set()
+    payload = "\0".join(paths) + "\0"
+    proc = subprocess.run(
+        ["git", "-C", str(repo), "check-ignore", "-z", "--stdin"],
+        input=payload,
+        text=True,
+        capture_output=True,
+    )
+    if proc.returncode not in {0, 1}:
+        raise GitSafetyError("git check-ignore failed while auditing Development_Docs")
+    return {item for item in proc.stdout.split("\0") if item}
+
+
+def git_lfs_filter_for_path(repo: Path, path: str) -> bool:
+    proc = git(repo, "check-attr", "filter", "--", path, check=False)
+    if proc.returncode:
+        return False
+    return proc.stdout.rstrip().endswith(": lfs")
+
+
+def repository_lfs_configured(repo: Path) -> bool:
+    tracked = git(repo, "ls-files", "-z", "--", "*.gitattributes", "**/.gitattributes", check=False)
+    if tracked.returncode:
+        return False
+    for relative_path in (item for item in tracked.stdout.split("\0") if item):
+        try:
+            text = (repo / Path(relative_path)).read_text(encoding="utf-8", errors="ignore")
+        except OSError:
+            continue
+        if re.search(r"(?:^|\s)filter=lfs(?:\s|$)", text, re.M):
+            return True
+    return False
+
+
+def empty_development_docs_report(directory: str, exists: bool) -> dict[str, Any]:
+    return {
+        "directory": directory,
+        "exists": exists,
+        "git_available": False,
+        "changes": {"added": [], "modified": [], "renamed": [], "deleted": [], "conflicted": []},
+        "eligible_paths": [],
+        "eligible_fingerprints": {},
+        "excluded": [],
+        "empty_directories": [],
+        "large_files": [],
+        "scan_warnings": [],
+        "lfs_paths_detected": [],
+        "lfs_configured": False,
+        "commit_included": False,
+    }
+
+
+def audit_development_docs(repo: Path, config: dict[str, Any]) -> dict[str, Any]:
+    directory = configured_relative_directory(config, "development_docs_directory", "Development_Docs")
+    root = repo / Path(directory)
+    report = empty_development_docs_report(directory, root.is_dir())
+    if not config.get("sync_development_docs", True):
+        report["excluded"].append({"path": directory, "reason": "Development_Docs synchronization disabled"})
+        return report
+    if not root.exists():
+        return report
+    if not root.is_dir():
+        report["excluded"].append({"path": directory, "reason": "configured path is not a directory"})
+        return report
+    if git(repo, "rev-parse", "--is-inside-work-tree", check=False).returncode:
+        report["scan_warnings"].append({"path": directory, "reason": "Git status unavailable outside a worktree"})
+        return report
+    report["git_available"] = True
+    report["lfs_configured"] = repository_lfs_configured(repo)
+    status = git(
+        repo,
+        "status",
+        "--porcelain=v2",
+        "-z",
+        "--untracked-files=all",
+        "--renames",
+        "--ignore-submodules=all",
+        "--",
+        directory,
+    ).stdout
+    changes = coalesce_exact_worktree_renames(repo, parse_porcelain_v2(status))
+    for change in changes:
+        item: dict[str, Any] = {"path": change.path, "status": change.status}
+        if change.original_path:
+            item["original_path"] = change.original_path
+        report["changes"][change.kind].append(item)
+
+    physical_paths: list[str] = []
+    for path in root.rglob("*"):
+        if path.is_file() or path.is_symlink():
+            physical_paths.append(path.relative_to(repo).as_posix())
+        elif path.is_dir() and not any(path.iterdir()):
+            report["empty_directories"].append(path.relative_to(repo).as_posix())
+    ignored = ignored_untracked_paths(repo, physical_paths)
+    for path in sorted(ignored):
+        report["excluded"].append({"path": path, "reason": "ignored by Development_Docs safety rules"})
+
+    warn_size = int(config.get("development_docs_warn_size_bytes", DEFAULT_DEVELOPMENT_DOCS_WARN_BYTES))
+    max_git_size = int(config.get("development_docs_max_git_size_bytes", DEFAULT_DEVELOPMENT_DOCS_MAX_GIT_BYTES))
+    eligible: set[str] = set()
+    excluded_changed: set[str] = set()
+    for change in changes:
+        if change.kind == "conflicted":
+            report["excluded"].append({"path": change.path, "reason": "unresolved Git conflict"})
+            excluded_changed.add(change.path)
+            continue
+        if change.kind == "deleted":
+            eligible.add(change.path)
+            continue
+        relative_path = change.path
+        path = repo / Path(relative_path)
+        if relative_path in ignored:
+            excluded_changed.add(relative_path)
+            continue
+        if sensitive_document_name(relative_path):
+            report["excluded"].append({"path": relative_path, "reason": "sensitive filename pattern"})
+            excluded_changed.add(relative_path)
+            continue
+        if path.is_symlink():
+            report["excluded"].append({"path": relative_path, "reason": "symbolic links are not synchronized automatically"})
+            excluded_changed.add(relative_path)
+            continue
+        if not path.is_file():
+            report["excluded"].append({"path": relative_path, "reason": "changed path is not a regular file"})
+            excluded_changed.add(relative_path)
+            continue
+        size = path.stat().st_size
+        uses_lfs = git_lfs_filter_for_path(repo, relative_path)
+        if uses_lfs:
+            report["lfs_paths_detected"].append(relative_path)
+        if size >= warn_size:
+            action = "tracked with existing Git LFS rule" if uses_lfs else "reviewed for ordinary Git history"
+            report["large_files"].append({"path": relative_path, "bytes": size, "action": action})
+        if size >= max_git_size and not uses_lfs:
+            report["excluded"].append({"path": relative_path, "reason": "too large for ordinary Git history without an existing LFS rule"})
+            excluded_changed.add(relative_path)
+            continue
+        categories, warnings = scan_document_content(path)
+        for warning in warnings:
+            report["scan_warnings"].append({"path": relative_path, "reason": warning})
+        if categories:
+            report["excluded"].append(
+                {"path": relative_path, "reason": f"possible sensitive content ({', '.join(categories)})"}
+            )
+            excluded_changed.add(relative_path)
+            continue
+        eligible.add(relative_path)
+        if change.original_path:
+            eligible.add(change.original_path)
+
+    # Keep both sides of a rename out of the commit when its destination failed a safety gate.
+    for change in changes:
+        if change.kind == "renamed" and change.path in excluded_changed and change.original_path:
+            eligible.discard(change.original_path)
+    report["eligible_paths"] = sorted(eligible)
+    report["eligible_fingerprints"] = {
+        path: sha256_file(repo / Path(path)) if (repo / Path(path)).is_file() else None
+        for path in report["eligible_paths"]
+    }
+    for key in report["changes"]:
+        report["changes"][key] = sorted(report["changes"][key], key=lambda item: (item["path"], item.get("original_path", "")))
+    report["excluded"] = sorted(report["excluded"], key=lambda item: (item["path"], item["reason"]))
+    report["large_files"] = sorted(report["large_files"], key=lambda item: item["path"])
+    report["scan_warnings"] = sorted(report["scan_warnings"], key=lambda item: (item["path"], item["reason"]))
+    report["lfs_paths_detected"] = sorted(set(report["lfs_paths_detected"]))
+    report["empty_directories"] = sorted(set(report["empty_directories"]))
+    return report
+
+
 def ensure_git_safe(repo: Path, remote: str) -> str:
     git_dir = Path(git(repo, "rev-parse", "--git-dir").stdout.strip())
     if not git_dir.is_absolute():
         git_dir = repo / git_dir
     for marker in ("MERGE_HEAD", "CHERRY_PICK_HEAD", "REVERT_HEAD", "rebase-merge", "rebase-apply"):
         if (git_dir / marker).exists():
-            raise GitSafetyError(f"Git operation in progress ({marker}); archive automation stopped")
+            raise GitSafetyError(f"Git operation in progress ({marker}); synchronization stopped")
     branch = git(repo, "branch", "--show-current").stdout.strip()
     if not branch:
-        raise GitSafetyError("Detached HEAD; archive automation requires a branch")
+        raise GitSafetyError("Detached HEAD; synchronization requires a branch")
     if git(repo, "remote", "get-url", remote, check=False).returncode:
         raise GitSafetyError(f"Configured remote does not exist: {remote}")
+    conflicts = [path for path in git(repo, "diff", "--name-only", "--diff-filter=U", "-z").stdout.split("\0") if path]
+    if conflicts:
+        raise GitSafetyError("Unresolved Git conflicts prevent synchronization: " + ", ".join(conflicts))
     return branch
 
 
-def commit_archive(repo: Path, files: list[str], config: dict[str, Any], push: bool) -> dict[str, Any]:
-    result = {"commit_created": False, "commit_hash": None, "push_attempted": False, "push_result": "not requested"}
+def commit_archive(
+    repo: Path,
+    files: list[str],
+    config: dict[str, Any],
+    push: bool,
+    message: str = CHAT_COMMIT_MESSAGE,
+    expected_fingerprints: dict[str, str | None] | None = None,
+) -> dict[str, Any]:
+    result = {
+        "commit_created": False,
+        "commit_hash": None,
+        "commit_message": None,
+        "push_attempted": False,
+        "push_result": "not requested",
+    }
     if not files:
         return result
     branch = ensure_git_safe(repo, config["remote"])
+    for path, expected in (expected_fingerprints or {}).items():
+        target = repo / Path(path)
+        actual = sha256_file(target) if target.is_file() else None
+        if actual != expected:
+            raise GitSafetyError(f"Development_Docs changed after its safety scan: {path}")
     existing_staged = set(git(repo, "diff", "--cached", "--name-only", "-z").stdout.split("\0")) - {""}
-    git(repo, "add", "--", *files)
+    unrelated_staged = existing_staged - set(files)
+    git(repo, "add", "-A", "--", *files)
     changed = git(repo, "diff", "--cached", "--name-only", "--", *files).stdout.splitlines()
     if not changed:
         return result
-    # --only commits the archive pathspec while preserving unrelated staged entries.
-    git(repo, "commit", "--only", "-m", COMMIT_MESSAGE, "--", *files)
+    # --only commits explicit synchronization pathspecs while preserving unrelated staged entries.
+    git(repo, "commit", "--only", "-m", message, "--", *files)
     commit_hash = git(repo, "rev-parse", "HEAD").stdout.strip()
-    result.update(commit_created=True, commit_hash=commit_hash)
+    result.update(commit_created=True, commit_hash=commit_hash, commit_message=message)
     after_staged = set(git(repo, "diff", "--cached", "--name-only", "-z").stdout.split("\0")) - {""}
-    if not existing_staged.issubset(after_staged):
+    if not unrelated_staged.issubset(after_staged):
         raise GitSafetyError("Unrelated staged changes changed during archive commit")
     if push:
         result["push_attempted"] = True
         remote = config["remote"]
-        git(repo, "fetch", "--no-tags", remote, branch)
+        git(repo, "fetch", "--no-auto-maintenance", "--no-tags", remote, branch)
         remote_ref = f"refs/remotes/{remote}/{branch}"
         if git(repo, "show-ref", "--verify", "--quiet", remote_ref, check=False).returncode == 0:
             if git(repo, "merge-base", "--is-ancestor", remote_ref, "HEAD", check=False).returncode:
@@ -749,7 +1176,7 @@ def commit_archive(repo: Path, files: list[str], config: dict[str, Any], push: b
         git(repo, "push", remote, f"HEAD:refs/heads/{branch}")
         remote_sha = git(repo, "ls-remote", remote, f"refs/heads/{branch}").stdout.split()
         if not remote_sha or remote_sha[0] != commit_hash:
-            raise GitSafetyError("Push returned but remote SHA did not match the archive commit")
+            raise GitSafetyError("Push returned but remote SHA did not match the synchronization commit")
         result["push_result"] = f"verified {remote}/{branch} at {commit_hash}"
     return result
 
@@ -776,6 +1203,7 @@ def reconcile_duplicates(conversations: Iterable[Conversation], warnings: list[s
 
 def synchronize(repo: Path, config: dict[str, Any], sources: list[Path] | None, dry_run: bool = False, report_only: bool = False, no_push: bool = False, no_commit: bool = False, verbose: bool = False) -> tuple[dict[str, Any], list[str]]:
     started = utc_now()
+    development_docs = audit_development_docs(repo, config)
     archive_rel = Path(config.get("archive_directory", "Codex_Chats"))
     archive = repo / archive_rel
     manifest_path = archive / "manifest.json"
@@ -813,7 +1241,8 @@ def synchronize(repo: Path, config: dict[str, Any], sources: list[Path] | None, 
         "unavailable": 0, "redacted": 0, "failed": 0,
         "files_changed": [], "ambiguous_candidates": [],
         "redaction_categories": {}, "suspected_secret_categories": [],
-        "commit_created": False, "commit_hash": None,
+        "development_docs": development_docs,
+        "commit_created": False, "commit_hash": None, "commit_message": None,
         "push_attempted": False, "push_result": "not requested",
         "warnings": warnings, "errors": errors,
     }
@@ -916,20 +1345,36 @@ def synchronize(repo: Path, config: dict[str, Any], sources: list[Path] | None, 
         AtomicBatchLocal = AtomicBatch(); AtomicBatchLocal.add(local_report, json_bytes(report)); AtomicBatchLocal.commit()
     elif verbose:
         print(json.dumps(report, ensure_ascii=False, indent=2, sort_keys=True))
-    git_files = list(report["files_changed"])
-    if substantive and not dry_run and not report_only and not no_commit:
-        if report["suspected_secret_categories"]:
-            report["warnings"].append("Automatic commit/push blocked: possible low-confidence secret requires review")
+    archive_git_files = list(report["files_changed"])
+    development_docs_git_files = list(development_docs["eligible_paths"])
+    if report["suspected_secret_categories"]:
+        report["warnings"].append("Automatic chat archive commit/push blocked: possible low-confidence secret requires review")
+        archive_git_files = []
+    git_files = sorted(set(archive_git_files + development_docs_git_files))
+    if git_files and not dry_run and not report_only and not no_commit:
+        if archive_git_files and development_docs_git_files:
+            commit_message = COMBINED_COMMIT_MESSAGE
+        elif development_docs_git_files:
+            commit_message = DEVELOPMENT_DOCS_COMMIT_MESSAGE
         else:
-            git_result = commit_archive(repo, git_files, config, push=bool(config.get("automatic_push", True) and not no_push))
-            report.update(git_result)
-            AtomicBatchLocal = AtomicBatch(); AtomicBatchLocal.add(local_report, json_bytes(report)); AtomicBatchLocal.commit()
+            commit_message = CHAT_COMMIT_MESSAGE
+        git_result = commit_archive(
+            repo,
+            git_files,
+            config,
+            push=bool(config.get("automatic_push", True) and not no_push),
+            message=commit_message,
+            expected_fingerprints=development_docs["eligible_fingerprints"],
+        )
+        report.update(git_result)
+        development_docs["commit_included"] = bool(git_result["commit_created"] and development_docs_git_files)
+        AtomicBatchLocal = AtomicBatch(); AtomicBatchLocal.add(local_report, json_bytes(report)); AtomicBatchLocal.commit()
     return report, git_files
 
 
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--dry-run", action="store_true", help="discover and classify without writing or using Git")
+    parser.add_argument("--dry-run", action="store_true", help="discover, classify, and inspect Git status without writing")
     parser.add_argument("--verbose", action="store_true")
     parser.add_argument("--no-push", action="store_true", help="allow a local archive commit but do not push")
     parser.add_argument("--no-commit", action="store_true", help=argparse.SUPPRESS)
@@ -955,18 +1400,34 @@ def main(argv: list[str] | None = None) -> int:
             if errors:
                 print("\n".join(errors), file=sys.stderr)
                 return EXIT_INTEGRITY
+            docs = audit_development_docs(repo, config)
+            counts = {key: len(value) for key, value in docs["changes"].items()}
             print(f"Chat archive valid: {manifest['total_conversation_count']} conversations, {manifest['total_message_count']} messages")
+            print(
+                "Development docs status: "
+                f"{counts['added']} added, {counts['modified']} modified, {counts['renamed']} renamed, "
+                f"{counts['deleted']} deleted, {counts['conflicted']} conflicted; "
+                f"{len(docs['excluded'])} excluded."
+            )
             return 0
         lock_path = repo / ".codex" / "chat-sync-cache" / "sync.lock"
         with FileLock(lock_path):
             report, _ = synchronize(repo, config, [p.resolve() for p in args.source] if args.source else None, args.dry_run, args.report_only, args.no_push, args.no_commit, args.verbose)
         print(f"Chat archive: {report['added']} added, {report['updated']} updated, {report['unchanged']} unchanged, {report['excluded']} excluded, {report['ambiguous']} ambiguous.")
+        docs = report["development_docs"]
+        counts = {key: len(value) for key, value in docs["changes"].items()}
+        print(
+            "Development docs: "
+            f"{counts['added']} added, {counts['modified']} modified, {counts['renamed']} renamed, "
+            f"{counts['deleted']} deleted, {counts['conflicted']} conflicted; "
+            f"{len(docs['eligible_paths'])} eligible paths, {len(docs['excluded'])} excluded."
+        )
         if args.dry_run or args.report_only:
             print(json.dumps(report, ensure_ascii=False, indent=2, sort_keys=True))
         elif report["commit_created"]:
             print(f"Commit: {report['commit_hash']}; push: {report['push_result']}")
-        elif not report["files_changed"]:
-            print("No transcript changes detected; no archive commit created.")
+        elif not report["files_changed"] and not docs["eligible_paths"]:
+            print("No transcript or Development_Docs changes detected; no synchronization commit created.")
         elif report["suspected_secret_categories"]:
             print("Archive written locally; commit/push blocked pending possible-secret review.")
         return 0

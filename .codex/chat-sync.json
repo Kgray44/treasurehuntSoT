@@ -2,6 +2,9 @@
   "archive_directory": "Codex_Chats",
   "automatic_push": true,
   "branch_strategy": "current",
+  "development_docs_directory": "Development_Docs",
+  "development_docs_max_git_size_bytes": 52428800,
+  "development_docs_warn_size_bytes": 26214400,
   "enabled": true,
   "exclude_conversation_ids": [],
   "import_directories": [
@@ -29,6 +32,7 @@
     "Kgray44/treasurehuntSoT",
     "https://github.com/Kgray44/treasurehuntSoT.git"
   ],
+  "sync_development_docs": true,
   "workspace_paths": [
     "\\\\gwplastics.com\\VT\\Users\\kgray\\My Documents\\treasurehunt",
     "\\\\gwplastics.com\\VT\\Users\\kgray\\My Documents\\treasurehunt\\forever-treasure-companion",
