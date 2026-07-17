@@ -1,17 +1,13 @@
 # Known limitations
 
-## Phase 2 boundaries
-
-- The repository is public; final story and surprise content is intentionally blocked.
-- Finale unlock/assembly is structural only and cannot enter `READY` or later states through Phase 2 controls.
-- SSE fan-out remains process-local and needs Redis or equivalent before multi-instance production deployment.
+- The repository is public. Final story, riddles, personal material, surprise content, production credentials, and private media remain intentionally blocked.
+- Invitation seal, journal clasp, voyage compass, and finale mechanism have typed Rive contracts but no final designer-authored `.riv` binaries. Production renders honest original SVG/CSS fallbacks. The sole working `.riv` file is an MIT-licensed development-only runtime sample.
+- Current Lottie effects are original shape-layer ambience/punctuation, not final designer-exported Bodymovin artwork.
+- Finale unlock/assembly remains structural and cannot enter unsupported `READY` or later states through current controls.
+- SSE fan-out is process-local. Database replay is durable, but multi-instance production needs Redis or equivalent pub/sub.
 - Initial Ship's Log projection is capped at 250 entries; cursor pagination is future scale work.
-- Production MySQL migration must be exercised against an actual MySQL 8 integration environment.
-- Final art/audio, real content authoring, and production deployment belong to later phases.
-
-- SSE fan-out is process-local; database replay is durable, but multi-instance production needs Redis/pub-sub.
-- Dedicated GM-only preview timeline, explicit replay targeting, and richer player presence are not yet implemented.
-- The full mutation workflow runs once in Chromium to avoid cross-project database contention; privacy, route protection, accessibility, and mobile behavior also run in WebKit.
-- Windows LAN access is opt-in and may still require a firewall rule or network-policy change; localhost is the safe default.
-- SQLite and MySQL schemas are intentionally parallel; schema edits must update both and add SQL to the connector-specific migration histories until a generation workflow is added.
-- Final story content, private media, polished licensed audio, production monitoring, and deployment remain out of scope.
+- The parallel MySQL migration still needs exercise against a real MySQL 8 integration environment.
+- Development FPS/long-task metrics are observational and local, not production telemetry. Final Rive binaries require another mobile GPU/memory profile.
+- The complete mutation workflow runs once in Chromium to avoid shared-database contention; privacy, access gates, landing behavior, accessibility, responsive layouts, and mobile behavior also run in WebKit.
+- Windows LAN access is opt-in and can still be blocked by firewall or corporate network policy.
+- Final licensed audio, production monitoring, CI, deployment, and private content authoring remain later work.

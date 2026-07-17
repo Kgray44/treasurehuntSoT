@@ -4,13 +4,14 @@ Production-oriented foundation and fully automated local demo for a private naut
 
 ## Current phase
 
-Phase two expands the production foundation into the complete Player Companion shell: multi-state Journal, Voyage Chart, Treasure Altar, Side-Quest Ledger, event-derived Ship’s Log, sealed Finale, persistent objective, companion navigation, cross-device unseen state, preferences, and fullscreen-friendly operation. All committed content remains fictional development seed material.
+Phase three rebuilds that companion as a cinematic, event-synchronized experience. A shared animation director coordinates the harbor arrival, physical invitation and authentication, page-flip journal, chapter ceremonies, chart routes, artifacts, side quests, log, sealed finale, and Quartermaster instruments without allowing presentation timing to outrun server truth. All committed content remains fictional development seed material.
 
 ## Stack
 
 - Next.js 16 App Router, React 19, strict TypeScript
 - Prisma 6.19 with SQLite for local/test and an equivalent MySQL production schema
-- Framer Motion with pinned compatible motion packages
+- GSAP 3.15 for orchestrated scenes and SVG/text work; Motion 12 for React interaction and presence
+- StPageFlip for the journal; local Rive and Lottie runtimes with explicit static fallbacks
 - bcrypt password/access-code hashing, server-side database sessions, CSRF tokens, and rate limiting
 - Vitest and Playwright
 
@@ -60,14 +61,15 @@ Set unique local values in `.env`; the seed’s fallback values are development-
 | `npm run dev`                     | Next.js only; assumes setup is already complete                        |
 | `npm run build`                   | Production build                                                       |
 | `npm start`                       | Start production build                                                 |
-| `npm test`                        | Six deterministic unit tests                                           |
+| `npm test`                        | Deterministic domain, director, ownership, asset, and page tests       |
+| `npm run assets:validate`         | Validate local Lottie/Rive contracts and fallback paths                |
 | `npm run test:e2e`                | Five Chromium/WebKit checks plus one Chromium mutation workflow        |
 | `npm run db:migrate`              | Apply local SQLite migrations                                          |
 | `npm run db:seed`                 | Load replaceable development content                                   |
 | `npm run db:preset -- mid-voyage` | Reset to a repeatable development-only companion preset                |
 | `npm run db:generate:mysql`       | Generate production MySQL client                                       |
 
-Full setup, validation stages, output locations, clean-clone instructions, and troubleshooting are in [local development](docs/local-development.md) and [testing](docs/testing.md).
+Full setup, validation stages, output locations, clean-clone instructions, and troubleshooting are in [local development](docs/local-development.md) and [testing](docs/testing.md). Animation ownership, scene contracts, assets, performance, and the development lab are indexed from [animation architecture](docs/animation/architecture.md).
 
 ## Repository workflow
 
@@ -75,7 +77,7 @@ Full setup, validation stages, output locations, clean-clone instructions, and t
 
 ## Important limitations
 
-The full story, final art/audio, horizontal scale-out for SSE, and production deployment are later work. The current sound is restrained and procedural; no external copyrighted assets are present. The repository is public, so only generic development content is permitted. See [known limitations](docs/known-limitations.md).
+The full story, final Rive artwork/audio, horizontal scale-out for SSE, and production deployment are later work. The current sound is restrained and procedural. The sole third-party visual sample is MIT-licensed, local, documented, and development-only; production uses original SVG/CSS fallbacks. The repository is public, so only generic development content is permitted. See [known limitations](docs/known-limitations.md).
 
 ## Next steps
 

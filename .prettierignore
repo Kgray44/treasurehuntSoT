@@ -9,3 +9,5 @@ package-lock.json
 prisma/migrations
 prisma/mysql-migrations
 src/app/favicon.ico
+.codex/chat-sync.json
+Codex_Chats

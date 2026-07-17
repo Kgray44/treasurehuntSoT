@@ -1,7 +1,31 @@
-# Asset licenses
+# Asset licenses and provenance
 
-## Phase 2
+The repository contains no Sea of Thieves map art, ripped game audio, private photographs, commercial fonts, or final surprise content.
 
-No third-party story map, game art, photographs, or ripped game audio were added. The companion shell uses CSS, text symbols, and existing procedural audio only. Any later image or sound asset must record source, author, license, modification, and in-product use here before commit.
+## Original project assets
 
-No external images, fonts, music, icons, screenshots, or Sea of Thieves assets are included. Parchment, grain, chart markings, constellation, seal, compass needle, and ornamentation are original CSS geometry. The low seal tone is generated at runtime with the Web Audio API and has no source asset. Third-party code licenses remain in package metadata and the lockfile.
+The following are original procedural assets authored for this public development companion and may be replaced by final private artwork later:
+
+- `public/animations/lottie/moonlit-waves.json`
+- `public/animations/lottie/rolling-fog.json`
+- `public/animations/lottie/ink-bloom.json`
+- All SVGs in `public/animations/stills`
+- `public/illustrations/chart/voyage-chart.svg`
+- `public/illustrations/finale/celestial-mechanism.svg`
+- `public/illustrations/artifacts/compass-needle.svg`
+- `public/textures/paper-grain.svg`
+- Procedural Web Audio cues in `src/animation/core/audio-cues.ts`
+
+## Third-party development sample
+
+`public/animations/rive/rating-animation.riv` is copied from the official Rive WebAssembly runtime repository's rating example solely to prove a valid local state-machine integration in the development showcase.
+
+- Project/source: `https://github.com/rive-app/rive-wasm/tree/master/js/examples/rating-animation`
+- License: MIT
+- Copyright: 2020-2021 Rive
+- Local license notice: `public/animations/rive/LICENSE-RIVE-MIT.txt`
+- SHA-256: `CB67C07896FA35DA41A976B61499277EF2B009D6D8858C11BD671C0DF5BC9630`
+- Modification: none to the binary
+- Product use: development-only `/dev/animations`; production Rive contracts use original SVG/CSS fallbacks
+
+Third-party code licenses remain in package metadata and `package-lock.json`. Any later visual or audio asset must record source URL, author, license, modification, checksum where practical, product surfaces, and fallback before commit.

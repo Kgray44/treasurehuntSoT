@@ -20,6 +20,7 @@ Run `npm run dev:stop` before switching branches or replacing the runtime. Shutd
 - Invitation phrase: `development-moonwake`
 - GM URL: `http://127.0.0.1:3000/quartermaster`
 - GM username/password: `kato` / `development-captain-only`
+- Animation showcase: `http://127.0.0.1:3000/dev/animations` (development only)
 
 The launcher-generated `.env` is ignored. Change these values for any shared environment. Never reuse them for deployment.
 
@@ -41,6 +42,12 @@ npm run dev
 ```
 
 Use Node 24 and npm 11.9.0; `.nvmrc`, `.node-version`, `packageManager`, and `package-lock.json` define the reproducible toolchain.
+
+## Animation development
+
+Open `/dev/animations` or use the development-only `TEST ANIMATIONS` button. The lab contains all registered scenes, a no-API trailer, transport/scrub/speed/mode controls, StPageFlip book, live Rive input proof, Lottie controls, fallback states, and local FPS/long-task/runtime metrics. The route intentionally returns 404 from a production server.
+
+Use `npm run assets:validate` after any asset-contract change. Keep all runtime files and fallbacks under `public`, add provenance to `docs/asset-licenses.md`, and never use a remote CDN placeholder. See `docs/animation/showcase.md` for the manual pass and `docs/animation/` for scene/asset extension contracts.
 
 ## Clean-clone continuation
 

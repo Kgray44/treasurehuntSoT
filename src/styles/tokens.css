@@ -1,0 +1,235 @@
+:root {
+  --ocean-950: #030b0e;
+  --ocean-900: #061419;
+  --ocean-850: #0a2024;
+  --ocean-800: #0d2b2f;
+  --ocean-700: #174147;
+  --ocean-500: #397a79;
+  --moon-300: #9dd8d0;
+  --moon-100: #dcf2e9;
+  --parchment-50: #f6edd6;
+  --parchment-100: #eadbb7;
+  --parchment-200: #d5c18f;
+  --parchment-ink: #2b2a22;
+  --brass-100: #f0d594;
+  --brass-300: #c9a95f;
+  --brass-500: #8a6a32;
+  --crimson-400: #a63f38;
+  --crimson-700: #652321;
+  --shadow-deep: 0 28px 90px rgba(0, 0, 0, 0.55);
+  --shadow-paper: 0 18px 38px rgba(25, 18, 8, 0.32);
+  --focus-ring: 0 0 0 3px var(--ocean-950), 0 0 0 6px var(--moon-300);
+  --radius-small: 8px;
+  --radius-medium: 18px;
+  --z-ambient: 0;
+  --z-content: 10;
+  --z-navigation: 30;
+  --z-overlay: 70;
+  --z-dialog: 90;
+  --player-text-scale: 1;
+  --texture-opacity: 1;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  color-scheme: dark;
+  background: var(--ocean-950);
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  color: #f4eddc;
+  background:
+    radial-gradient(circle at 50% -20%, rgba(54, 126, 125, 0.22), transparent 44%),
+    linear-gradient(165deg, var(--ocean-900), var(--ocean-950));
+  font-family:
+    Inter,
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+}
+
+body,
+button,
+input,
+select,
+textarea {
+  font-size: 16px;
+}
+
+button,
+a,
+input,
+select,
+summary {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button,
+select,
+input {
+  font: inherit;
+}
+
+button,
+a {
+  color: inherit;
+}
+
+button {
+  border: 1px solid rgba(208, 181, 113, 0.34);
+  border-radius: 999px;
+  padding: 0.62rem 0.95rem;
+  background: rgba(8, 28, 31, 0.84);
+  cursor: pointer;
+  transition:
+    border-color 160ms ease,
+    background 160ms ease,
+    color 160ms ease;
+}
+
+button:hover:not(:disabled) {
+  border-color: var(--brass-300);
+  background: rgba(24, 62, 63, 0.92);
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.46;
+}
+
+a {
+  text-decoration-color: rgba(201, 169, 95, 0.6);
+  text-underline-offset: 0.24em;
+}
+
+:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+
+h1,
+h2,
+h3,
+h4,
+p,
+blockquote {
+  margin-top: 0;
+}
+
+h1,
+h2,
+h3 {
+  font-family: Georgia, "Times New Roman", serif;
+  font-weight: 500;
+  text-wrap: balance;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+.eyebrow,
+.card-kicker {
+  margin: 0 0 0.5rem;
+  color: var(--brass-100);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.brass-button {
+  display: inline-flex;
+  min-height: 48px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--brass-100);
+  border-radius: 999px;
+  padding: 0.8rem 1.35rem;
+  color: #151108;
+  background: linear-gradient(145deg, #f0d594, #a57b35 78%);
+  box-shadow:
+    inset 0 1px rgba(255, 255, 255, 0.5),
+    0 9px 26px rgba(0, 0, 0, 0.34);
+  font-weight: 850;
+  text-decoration: none;
+}
+
+.brass-button:hover:not(:disabled) {
+  color: #080604;
+  background: linear-gradient(145deg, #ffebad, #bd9142 78%);
+}
+
+.sr-only {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+.asset-fallback,
+.rive-object,
+.lottie-effect {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.asset-fallback img,
+.asset-fallback > img,
+.rive-object canvas,
+.lottie-effect > div:first-child,
+.lottie-effect svg {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain;
+}
+
+.form-error {
+  margin: 0.75rem 0 0;
+  border-left: 3px solid #db7a6f;
+  padding: 0.65rem 0.8rem;
+  color: #ffd6ce;
+  background: rgba(103, 28, 28, 0.22);
+}
+
+::selection {
+  color: #0a1718;
+  background: var(--moon-300);
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--brass-500) rgba(4, 13, 15, 0.72);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

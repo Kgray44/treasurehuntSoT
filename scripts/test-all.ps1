@@ -39,6 +39,7 @@ Invoke-ValidationStep -Name "Checking formatting" -Arguments @("node_modules/pre
 Invoke-ValidationStep -Name "Linting" -Arguments @("node_modules/eslint/bin/eslint.js", ".")
 Invoke-ValidationStep -Name "Type checking" -Arguments @("node_modules/typescript/bin/tsc", "--noEmit")
 Invoke-ValidationStep -Name "Running unit tests" -Arguments @("node_modules/vitest/vitest.mjs", "run")
+Invoke-ValidationStep -Name "Validating animation assets" -Arguments @("node_modules/tsx/dist/cli.mjs", "scripts/validate-animation-assets.ts")
 Invoke-ValidationStep -Name "Verifying seeded database" -Arguments @("node_modules/tsx/dist/cli.mjs", "scripts/verify-database.ts")
 Invoke-ValidationStep -Name "Running browser acceptance tests" -Arguments @("node_modules/playwright/cli.js", "test")
 Invoke-ValidationStep -Name "Verifying accepted database state" -Arguments @("node_modules/tsx/dist/cli.mjs", "scripts/verify-database.ts", "--acceptance")
@@ -50,7 +51,18 @@ function Test-ProductionStart {
     $stderr = Join-Path $runtimeRoot "artifacts\validation\production-$Port.err.log"
     New-Item -ItemType Directory -Path (Split-Path $stdout) -Force | Out-Null
     $process = Start-Process -FilePath $node -ArgumentList "node_modules/next/dist/bin/next", "start", "-H", "127.0.0.1", "-p", "$Port" -WorkingDirectory $runtimeRoot -WindowStyle Hidden -RedirectStandardOutput $stdout -RedirectStandardError $stderr -PassThru
-    try { Wait-ForeverHttp -Url "http://127.0.0.1:$Port" -Seconds 45 }
+    try {
+        Wait-ForeverHttp -Url "http://127.0.0.1:$Port" -Seconds 45
+        $showcaseStatus = 0
+        try {
+            $showcaseResponse = Invoke-WebRequest -Uri "http://127.0.0.1:$Port/dev/animations" -UseBasicParsing -TimeoutSec 10
+            $showcaseStatus = [int]$showcaseResponse.StatusCode
+        } catch {
+            if ($_.Exception.Response) { $showcaseStatus = [int]$_.Exception.Response.StatusCode }
+            else { throw }
+        }
+        if ($showcaseStatus -ne 404) { throw "Development animation showcase returned HTTP $showcaseStatus in production." }
+    }
     finally { if (-not $process.HasExited) { Stop-Process -Id $process.Id -Force; [void]$process.WaitForExit(10000) } }
 }
 

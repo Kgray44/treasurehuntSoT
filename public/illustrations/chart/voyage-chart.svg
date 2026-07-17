@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 780" role="img" aria-labelledby="title desc">
+  <title id="title">Original illustrated voyage chart</title>
+  <desc id="desc">A weathered fictional nautical chart with islands, rhumb lines, a compass rose, and a safe development route.</desc>
+  <defs>
+    <filter id="paper"><feTurbulence baseFrequency=".018" numOctaves="3" seed="9" result="n"/><feBlend in="SourceGraphic" in2="n" mode="multiply"/></filter>
+    <pattern id="grid" width="80" height="80" patternUnits="userSpaceOnUse"><path d="M80 0H0V80" fill="none" stroke="#315f5e" stroke-opacity=".2"/></pattern>
+    <radialGradient id="sea"><stop stop-color="#c9b98d"/><stop offset="1" stop-color="#8d845f"/></radialGradient>
+  </defs>
+  <rect width="1200" height="780" rx="26" fill="url(#sea)" filter="url(#paper)"/>
+  <rect x="34" y="34" width="1132" height="712" rx="14" fill="url(#grid)" stroke="#4d3825" stroke-width="5"/>
+  <g fill="none" stroke="#315f5e" stroke-opacity=".32" stroke-width="2">
+    <path d="M110 690L1040 110M90 120L1080 650M600 45V735M50 390H1150"/>
+    <circle cx="600" cy="390" r="260"/><circle cx="600" cy="390" r="160"/>
+  </g>
+  <g fill="#566e4b" stroke="#3b3424" stroke-width="5">
+    <path d="M205 265c58-58 133-38 151 14 18 50-15 99-81 101-79 3-116-58-70-115z"/>
+    <path d="M735 240c40-48 132-56 164-2 33 57-5 118-79 124-85 7-132-65-85-122z"/>
+    <path d="M520 548c43-37 110-28 127 18 16 44-23 83-78 78-61-5-87-60-49-96z"/>
+  </g>
+  <g fill="#2c3e35" font-family="Georgia,serif" font-size="22" font-style="italic">
+    <text x="185" y="414">Moonwake Cay</text><text x="748" y="397">Port Merrick</text><text x="512" y="686">The Quiet Shoal</text>
+  </g>
+  <g transform="translate(955 565)" fill="none" stroke="#4d3825">
+    <circle r="92" stroke-width="4"/><circle r="62" stroke-width="2"/><path d="M0-112L16-18 0 0-16-18zM112 0L18 16 0 0 18-16zM0 112L-16 18 0 0 16 18zM-112 0L-18-16 0 0-18 16z" fill="#9b3a31" stroke-width="3"/>
+    <text y="-126" text-anchor="middle" fill="#4d3825" stroke="none" font-family="Georgia,serif" font-size="28">N</text>
+  </g>
+  <path d="M310 315C470 225 620 215 800 292" data-route-art="true" fill="none" stroke="#8b2d2a" stroke-width="7" stroke-linecap="round" stroke-dasharray="14 12"/>
+  <g fill="none" stroke="#493a28" stroke-width="4" opacity=".66"><path d="M105 78c22 18 43 19 64 0M1030 710c24-18 48-18 72 0"/><path d="M430 730q20-42 40 0t40 0"/></g>
+</svg>

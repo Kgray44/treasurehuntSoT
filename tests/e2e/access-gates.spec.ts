@@ -18,7 +18,7 @@ test("player gate stays private and accessible across supported browsers", async
 
 test("quartermaster remains protected across supported browsers", async ({ page }) => {
   await page.goto("/quartermaster");
-  await expect(page.getByRole("heading", { name: "Quartermaster’s Log" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Quartermaster's Log" })).toBeVisible();
   await expect(page.getByRole("button", { name: "Enter the chart room" })).toBeVisible();
   const status = await page.request.get("/api/gm/status");
   expect(status.status()).toBe(401);

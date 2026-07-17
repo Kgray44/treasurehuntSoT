@@ -1,20 +1,19 @@
 # Theatrical event system
 
-## Phase 2 ceremonies
-
-Meaningful map, artifact, quest, log, objective, and finale events reuse the ordered ceremony queue. Routine section navigation stays fast. Every event has a final-state snapshot, reduced-motion path, skip path, and stable event identity; refresh does not replay an acknowledged ceremony. See `docs/cinematic-system.md` for reusable motion primitives.
+Meaningful chapter, map, artifact, quest, log, objective, and finale events share one ordered promise queue and one SSE connection. Each event maps to a registered scene, has a stable ID/final-state snapshot, supports reduced motion and skip, acknowledges only after presentation reaches a safe final state, and does not replay after refresh once viewed.
 
 ```mermaid
 sequenceDiagram
   participant GM
   participant Server
   participant Player
-  GM->>Server: Confirm release
-  Server->>Server: Transaction + event sequence
-  Server-->>Player: SSE CHAPTER_RELEASED
-  Player->>Player: Omen → attention → seal → parchment
-  Player->>Player: Heading → story → objective → riddle → map
-  Player->>Server: Ceremony viewed acknowledgement
+  GM->>Server: Confirm command
+  Server->>Server: Transaction + event + snapshot + audit
+  Server-->>Player: Ordered sanitized SSE event
+  Player->>Player: Queue mapped scene
+  Player->>Player: Opening → semantic success stages
+  Player->>Server: Viewed acknowledgement
+  Player->>Server: Fetch fresh public snapshot
 ```
 
-`useCeremony` owns one sorted queue and AbortController; components contain no independent timeout chains. Default timing totals about 6.3 seconds. Reduced motion uses attention, grouped ink stages, map, and active state with 120ms caps. Skip aborts presentation but still reconciles the authoritative snapshot. Replay creates a local synthetic event ID and never mutates progression. Audio is initialized only by “Open the journal”; the seal tone is procedural and low-volume.
+If a tab hides, the active timeline pauses. If connectivity drops, database replay by sequence remains authoritative. If a visual runtime fails, the static fallback and snapshot still render. Replay creates only a local presentation. Procedural Web Audio cues begin only after user interaction, follow mute/volume preferences, and close on unmount.

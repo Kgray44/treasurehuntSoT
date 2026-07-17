@@ -10,4 +10,6 @@ Player access uses a bcrypt-verified campaign code and strict HTTP-only cookie. 
 
 Production must set a random 32+ byte session secret, unique GM password and player code, HTTPS, reverse-proxy rate controls, database least privilege, and private repository visibility before real surprise content is committed.
 
+Animation is downstream of authorization. Access and GM scenes start their network operation immediately but cannot cross the director's `await-server` checkpoint until the response succeeds; skip only completes safe presentation and never authorizes, confirms, or fetches a protected snapshot. Failed operations run a failure/reversal branch. The showcase never calls player/GM APIs and returns 404 in production. Animation contracts reject remote URLs, Rive CDN fallback is disabled, and all Lottie/Rive files and static fallbacks are same-origin.
+
 The repository was still treated as public during the automated-demo milestone. Only generic development clues, locations, messages, and credentials are committed; validation performs a deliberate diff/secret review before publication. LAN development is an explicit opt-in because binding to `0.0.0.0` exposes the disposable demo surface to peers allowed by the host firewall.

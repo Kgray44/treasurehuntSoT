@@ -68,7 +68,8 @@ test("complete live voyage workflow is private, ordered, resilient, and theatric
   await expect(player.locator('[data-cinematic-sequence="firstArrival"]')).toBeVisible();
   await expect(player.getByRole("button", { name: "Skip ceremony" })).toBeVisible({ timeout: 3_000 });
   await player.getByRole("button", { name: "Skip ceremony" }).click();
-  await expect(player.getByRole("heading", { name: "Awaiting the captain’s signal" })).toBeVisible();
+  await expect(player.getByRole("heading", { name: "The Voyage Journal" })).toBeVisible();
+  await expect(player.getByText("Await the captain's signal.", { exact: true })).toBeVisible();
   await expect(player.getByText(/Where painted waves meet borrowed light/)).toHaveCount(0);
   await expect(player.getByText("Tide connected")).toBeVisible();
   await screenshot(player, "02-sealed-journal");
@@ -84,13 +85,13 @@ test("complete live voyage workflow is private, ordered, resilient, and theatric
     data: { username: "rate-limit-probe", password: "wrong-password" },
   });
   expect(limited.status()).toBe(429);
-  await gm.getByLabel("Captain’s name").fill(process.env.GM_USERNAME!);
+  await gm.getByLabel("Captain's name").fill(process.env.GM_USERNAME!);
   await gm.getByLabel("Passphrase").fill("definitely-wrong");
   await gm.getByRole("button", { name: "Enter the chart room" }).click();
   await expect(gm.locator(".form-error")).toContainText("does not recognize");
   await gm.getByLabel("Passphrase").fill(process.env.GM_PASSWORD!);
   await gm.getByRole("button", { name: "Enter the chart room" }).click();
-  await expect(gm.getByRole("heading", { name: "Quartermaster’s Log" })).toBeVisible();
+  await expect(gm.getByRole("heading", { name: "Quartermaster's Log" })).toBeVisible();
   await expect(gm.getByText("Sequence 0")).toBeVisible();
   const gmCookie = (await gmContext.cookies()).find((cookie) => cookie.name === "forever_gm");
   expect(gmCookie).toMatchObject({ httpOnly: true, sameSite: "Strict" });
@@ -117,9 +118,20 @@ test("complete live voyage workflow is private, ordered, resilient, and theatric
   expect(Date.now() - releasedAt).toBeGreaterThanOrEqual(5_000);
   expect(Date.now() - releasedAt).toBeLessThan(10_000);
   await expect(player.getByRole("heading", { name: "The Lantern Test" })).toBeVisible();
-  await expect(player.getByText(/Where painted waves meet borrowed light/)).toBeVisible();
+  await player.getByRole("button", { name: "Next journal page" }).click();
+  await expect(
+    player.getByLabel("Physical journal pages").getByText(/Where painted waves meet borrowed light/),
+  ).toBeVisible();
   await screenshot(player, "07-active-chapter");
   await assertNoSeriousAxeViolations(player);
+
+  await player.getByRole("button", { name: "Chart", exact: true }).click();
+  await expect(player.getByRole("heading", { name: "Voyage Chart" })).toBeVisible();
+  await expect(player.locator("[data-section-heading]")).toBeFocused();
+  await expect(player).toHaveURL(/section=chart/);
+  await player.goBack();
+  await expect(player.getByRole("heading", { name: "The Voyage Journal" })).toBeVisible();
+  await expect(player.locator("[data-section-heading]")).toBeFocused();
 
   const beforeReplay = (await status(gm)).campaign.sequence;
   await player.getByRole("button", { name: "Replay ceremony" }).click();
@@ -144,7 +156,10 @@ test("complete live voyage workflow is private, ordered, resilient, and theatric
   await expect(player.getByText("Releasing the first seal")).toHaveCount(0);
 
   await gmAction(gm, "Award Test Artifact");
+  await player.getByRole("button", { name: /Altar/ }).click();
+  await expect(player.getByRole("heading", { name: "Treasure Altar" })).toBeVisible();
   await expect(player.getByRole("button", { name: /awarded$/i })).toBeVisible();
+  await player.getByRole("button", { name: "Chart", exact: true }).click();
   await gmAction(gm, "Reveal Test Map Location");
   await expect(player.locator(".map-alternative").getByText("Moonwake Cay", { exact: true }).first()).toBeVisible();
 
@@ -164,6 +179,7 @@ test("complete live voyage workflow is private, ordered, resilient, and theatric
   await playerContext.setOffline(false);
   await player.evaluate(() => window.dispatchEvent(new Event("online")));
   await expect(player.getByText("Tide connected")).toBeVisible({ timeout: 20_000 });
+  await player.getByRole("button", { name: "Journal", exact: true }).click();
   await expect(player.getByRole("heading", { name: "The Lantern Test" })).toBeVisible();
   expect((await status(gm)).campaign.status).toBe("ACTIVE");
 
