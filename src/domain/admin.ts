@@ -101,3 +101,36 @@ export function commandCapability(command: AdminCommand) {
   if (actionRisks[command] === "MEDIUM") return "PREPARE_PROGRESSION";
   return "RELEASE_PROGRESSION";
 }
+
+export type SideQuestTransitionPlan =
+  | {
+      allowed: true;
+      state: "DISCOVERED" | "ACTIVE" | "PARTIALLY_COMPLETE" | "COMPLETE";
+      eventType: "SIDE_QUEST_DISCOVERED" | "SIDE_QUEST_UPDATED" | "SIDE_QUEST_COMPLETED";
+      objectiveOrdinal?: number;
+    }
+  | { allowed: false; message: string };
+
+export function planSideQuestTransition(
+  command: "DISCOVER_SIDE_QUEST" | "ADVANCE_SIDE_QUEST",
+  state: string,
+  objectives: Array<{ ordinal: number; complete: boolean }>,
+): SideQuestTransitionPlan {
+  if (command === "DISCOVER_SIDE_QUEST") {
+    if (!["HIDDEN", "RUMORED"].includes(state))
+      return { allowed: false, message: "The side quest has already been discovered." };
+    return { allowed: true, state: "DISCOVERED", eventType: "SIDE_QUEST_DISCOVERED" };
+  }
+  if (state === "DISCOVERED") return { allowed: true, state: "ACTIVE", eventType: "SIDE_QUEST_UPDATED" };
+  if (!["ACTIVE", "PARTIALLY_COMPLETE"].includes(state))
+    return { allowed: false, message: "Discover the side quest before advancing it." };
+  const objective = objectives.find((item) => !item.complete);
+  if (!objective) return { allowed: true, state: "COMPLETE", eventType: "SIDE_QUEST_COMPLETED" };
+  const completesQuest = objectives.filter((item) => !item.complete).length === 1;
+  return {
+    allowed: true,
+    state: completesQuest ? "COMPLETE" : "PARTIALLY_COMPLETE",
+    eventType: completesQuest ? "SIDE_QUEST_COMPLETED" : "SIDE_QUEST_UPDATED",
+    objectiveOrdinal: objective.ordinal,
+  };
+}

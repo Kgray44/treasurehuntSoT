@@ -818,7 +818,7 @@ function Quests({ status, choose }: { status: Status; choose: (action: Action) =
               ))}
             </ol>
             <div className="row-actions">
-              {quest.state === "UNDISCOVERED" ? (
+              {["HIDDEN", "RUMORED"].includes(quest.state) ? (
                 <button
                   onClick={() =>
                     void choose({

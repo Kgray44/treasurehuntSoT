@@ -1,6 +1,7 @@
 import { randomUUID } from "node:crypto";
-import type { AdminCommand } from "@/domain/admin";
+import { planSideQuestTransition, type AdminCommand } from "@/domain/admin";
 import type { ClientProgressEvent, ProgressEventType, PublicSnapshot } from "@/domain/story";
+import { toClientEvent } from "@/domain/visibility";
 import { db } from "@/lib/db";
 import { publishCampaignEvent } from "@/lib/events";
 import { buildPublicSnapshot } from "@/lib/snapshot";
@@ -70,6 +71,7 @@ async function appendCustomEvent(input: Input, userId: string, correlationId: st
       throw new CommandConflict("The campaign is paused. Resume it before releasing progression.", "CAMPAIGN_PAUSED");
 
     let payload: Record<string, unknown> = {};
+    let type = eventFor(input.command);
     if (input.command === "COMPLETE_CHAPTER") {
       const chapter = campaign.chapters.find((item) => item.state === "SOLVED");
       if (!chapter) throw new CommandConflict("Only a solved chapter can be completed.", "INVALID_TRANSITION");
@@ -85,16 +87,27 @@ async function appendCustomEvent(input: Input, userId: string, correlationId: st
       const priorUnreleased = chapter.hints.some((item) => item.ordinal < hint.ordinal && !item.releasedAt);
       if (priorUnreleased) throw new CommandConflict("Release earlier hints first.", "HINT_ORDER");
       await tx.hint.update({ where: { id: hint.id }, data: { releasedAt: new Date() } });
-      payload = { chapterOrdinal: chapter.ordinal, hintOrdinal: hint.ordinal, body: hint.body };
+      payload = { ordinal: chapter.ordinal, hintOrdinal: hint.ordinal, body: hint.body };
     } else if (input.command === "DISCOVER_SIDE_QUEST" || input.command === "ADVANCE_SIDE_QUEST") {
       const quest = campaign.sideQuests.find((item) => !input.targetKey || item.key === input.targetKey);
       if (!quest) throw new CommandConflict("The side quest is not configured.", "NOT_FOUND");
-      const next =
-        input.command === "DISCOVER_SIDE_QUEST" ? "DISCOVERED" : quest.state === "DISCOVERED" ? "ACTIVE" : "COMPLETE";
-      if (input.command === "DISCOVER_SIDE_QUEST" && quest.state !== "UNDISCOVERED")
-        throw new CommandConflict("The side quest is already discovered.", "ALREADY_RELEASED");
-      await tx.sideQuest.update({ where: { id: quest.id }, data: { state: next } });
-      payload = { key: quest.key, title: quest.title, state: next };
+      const plan = planSideQuestTransition(input.command, quest.state, quest.objectives);
+      if (!plan.allowed) throw new CommandConflict(plan.message, "INVALID_TRANSITION");
+      if (plan.objectiveOrdinal !== undefined) {
+        const objective = quest.objectives.find((item) => item.ordinal === plan.objectiveOrdinal);
+        if (objective) await tx.sideQuestObjective.update({ where: { id: objective.id }, data: { complete: true } });
+      }
+      await tx.sideQuest.update({
+        where: { id: quest.id },
+        data: { state: plan.state, completedAt: plan.state === "COMPLETE" ? new Date() : null },
+      });
+      type = plan.eventType;
+      payload =
+        plan.eventType === "SIDE_QUEST_DISCOVERED"
+          ? { key: quest.key, title: quest.title }
+          : plan.eventType === "SIDE_QUEST_COMPLETED"
+            ? { key: quest.key, title: quest.title, rewardLabel: quest.rewardLabel }
+            : { key: quest.key, objectiveOrdinal: plan.objectiveOrdinal };
     } else if (input.command === "RELEASE_JOURNAL_ENTRY") {
       const title = String(input.payload.title ?? "Captain's dispatch").trim();
       const body = String(input.payload.body ?? "").trim();
@@ -111,7 +124,6 @@ async function appendCustomEvent(input: Input, userId: string, correlationId: st
       where: { id: campaign.id },
       data: { currentSequence: { increment: 1 } },
     });
-    const type = eventFor(input.command);
     const event = await tx.progressEvent.create({
       data: {
         campaignId: campaign.id,
@@ -136,13 +148,7 @@ async function appendCustomEvent(input: Input, userId: string, correlationId: st
     });
     return { campaignId: campaign.id, event };
   });
-  const event: ClientProgressEvent = {
-    id: result.event.id,
-    type: result.event.type as ProgressEventType,
-    sequence: result.event.sequence,
-    payload: JSON.parse(result.event.payload) as Record<string, unknown>,
-    releaseAt: result.event.releaseAt.toISOString(),
-  };
+  const event = toClientEvent(result.event);
   publishCampaignEvent(result.campaignId, event);
   return { event, snapshot: await buildPublicSnapshot(result.campaignId) };
 }
@@ -182,9 +188,15 @@ export async function executeAdminCommand(input: Input, userId: string) {
         input.campaignSlug,
         input.command as Parameters<typeof executeProgressionAction>[1],
         userId,
+        {
+          targetKey: input.targetKey,
+          value: typeof input.payload.value === "string" ? input.payload.value : undefined,
+          correlationId,
+          reason: input.reason,
+        },
       );
     } else if (input.command === "PREPARE_HINT") {
-      const staged = await stageAdminCommand(input, userId);
+      const staged = await stageAdminCommand(input, userId, { correlationId, reason: input.reason });
       const snapshot = await buildPublicSnapshot(campaign.id);
       result = {
         event: {
@@ -232,21 +244,41 @@ export async function stageAdminCommand(
     scheduledFor?: string;
   },
   userId: string,
+  context: { correlationId?: string; reason?: string } = {},
 ) {
   const campaign = await db.campaign.findUniqueOrThrow({ where: { slug: input.campaignSlug } });
   if (campaign.currentSequence !== input.expectedSequence)
     throw new CommandConflict("The proposed action is stale. Refresh it before staging.", "STALE_SEQUENCE");
-  return db.preparedAction.create({
-    data: {
-      campaignId: campaign.id,
-      command: input.command,
-      targetKey: input.targetKey,
-      payload: JSON.stringify(input.payload),
-      expectedSequence: input.expectedSequence,
-      scheduledFor: input.scheduledFor ? new Date(input.scheduledFor) : undefined,
-      preparedBy: userId,
-      status: input.scheduledFor ? "SCHEDULED" : "PREPARED",
-    },
+  const correlationId = context.correlationId ?? randomUUID();
+  return db.$transaction(async (tx) => {
+    const staged = await tx.preparedAction.create({
+      data: {
+        campaignId: campaign.id,
+        command: input.command,
+        targetKey: input.targetKey,
+        payload: JSON.stringify(input.payload),
+        expectedSequence: input.expectedSequence,
+        scheduledFor: input.scheduledFor ? new Date(input.scheduledFor) : undefined,
+        preparedBy: userId,
+        status: input.scheduledFor ? "SCHEDULED" : "PREPARED",
+      },
+    });
+    await tx.adminAuditLog.create({
+      data: {
+        campaignId: campaign.id,
+        userId,
+        action: `${input.command}_STAGED`,
+        correlationId,
+        reason: context.reason,
+        metadata: JSON.stringify({
+          preparedActionId: staged.id,
+          expectedSequence: input.expectedSequence,
+          targetKey: input.targetKey,
+          status: staged.status,
+        }),
+      },
+    });
+    return staged;
   });
 }
 
@@ -263,6 +295,17 @@ export async function previewAdminCommand(input: Omit<Input, "idempotencyKey">) 
   if (input.command === "RELEASE_CHAPTER" && !prerequisites.length) projected.chapter.state = "ACTIVE";
   if (input.command === "MARK_SOLVED" && snapshot.chapter.state !== "ACTIVE")
     prerequisites.push("Only the active chapter can be solved.");
+  if (input.command === "DISCOVER_SIDE_QUEST" || input.command === "ADVANCE_SIDE_QUEST") {
+    const quest = await db.sideQuest.findFirst({
+      where: { campaignId: campaign.id, ...(input.targetKey ? { key: input.targetKey } : {}) },
+      include: { objectives: { orderBy: { ordinal: "asc" } } },
+    });
+    if (!quest) prerequisites.push("The side quest is not configured.");
+    else {
+      const plan = planSideQuestTransition(input.command, quest.state, quest.objectives);
+      if (!plan.allowed) prerequisites.push(plan.message);
+    }
+  }
   if (input.command === "PAUSE") projected.campaign.status = "PAUSED";
   if (input.command === "RESUME") projected.campaign.status = "ACTIVE";
   return {

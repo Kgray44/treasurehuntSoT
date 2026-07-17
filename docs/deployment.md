@@ -3,7 +3,7 @@
 Target: Debian, Node 24, MySQL 8, NGINX, HTTPS, and systemd. Do not deploy from development seed credentials.
 
 1. Create MySQL database/user and set `DATABASE_URL=mysql://...`.
-2. For a new database run `npm ci`, `npm run db:generate:mysql`, `npm run db:migrate:mysql:init`, then `npm run build`. Record future MySQL migrations under `prisma/mysql-migrations` before production use.
+2. For a new database run `npm ci`, `npm run db:generate:mysql`, `npm run db:migrate:mysql:init`, `npm run db:migrate:mysql:companion`, and `npm run db:migrate:mysql:command-center`, then `npm run build`. Apply those connector-specific SQL files in order exactly once and record every future MySQL migration under `prisma/mysql-migrations` before production use.
 3. Install `deploy/forever-treasure.service`, place secrets in `/etc/forever-treasure.env`, and proxy with `deploy/nginx.conf`.
 4. Send application logs to journald; retain NGINX access/error logs under `/var/log/nginx`.
 

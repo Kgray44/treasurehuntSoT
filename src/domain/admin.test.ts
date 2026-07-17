@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { commandCapability, describePresence } from "./admin";
+import { commandCapability, describePresence, planSideQuestTransition } from "./admin";
 
 describe("truthful player presence", () => {
   it("distinguishes synchronized active devices from a browser merely seen before", () => {
@@ -39,5 +39,42 @@ describe("capability mapping", () => {
     expect(commandCapability("RELEASE_CHAPTER")).toBe("RELEASE_PROGRESSION");
     expect(commandCapability("UNDO_LAST")).toBe("REVERSE_PROGRESSION");
     expect(commandCapability("REQUEST_RECONCILIATION")).toBe("VIEW_DIAGNOSTICS");
+  });
+});
+
+describe("side-quest state planning", () => {
+  const objectives = [
+    { ordinal: 1, complete: false },
+    { ordinal: 2, complete: false },
+  ];
+
+  it("discovers hidden and rumored quests before allowing progression", () => {
+    expect(planSideQuestTransition("DISCOVER_SIDE_QUEST", "RUMORED", objectives)).toMatchObject({
+      allowed: true,
+      state: "DISCOVERED",
+      eventType: "SIDE_QUEST_DISCOVERED",
+    });
+    expect(planSideQuestTransition("ADVANCE_SIDE_QUEST", "HIDDEN", objectives)).toEqual({
+      allowed: false,
+      message: "Discover the side quest before advancing it.",
+    });
+  });
+
+  it("advances objectives one at a time and completes only after the last one", () => {
+    expect(planSideQuestTransition("ADVANCE_SIDE_QUEST", "DISCOVERED", objectives)).toMatchObject({
+      state: "ACTIVE",
+      eventType: "SIDE_QUEST_UPDATED",
+    });
+    expect(planSideQuestTransition("ADVANCE_SIDE_QUEST", "ACTIVE", objectives)).toMatchObject({
+      state: "PARTIALLY_COMPLETE",
+      objectiveOrdinal: 1,
+      eventType: "SIDE_QUEST_UPDATED",
+    });
+    expect(
+      planSideQuestTransition("ADVANCE_SIDE_QUEST", "PARTIALLY_COMPLETE", [
+        { ordinal: 1, complete: true },
+        { ordinal: 2, complete: false },
+      ]),
+    ).toMatchObject({ state: "COMPLETE", objectiveOrdinal: 2, eventType: "SIDE_QUEST_COMPLETED" });
   });
 });

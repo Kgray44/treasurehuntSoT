@@ -68,6 +68,108 @@ test("preview is nonmutating, stale commands conflict, and idempotency replays s
   expect((await replay.json()).idempotentReplay).toBe(true);
 });
 
+test("targeted commands preserve side-quest order and audit staged work", async ({ page, browserName }) => {
+  test.skip(
+    browserName !== "chromium",
+    "The shared-database mutation workflow runs once to avoid cross-project contention.",
+  );
+  await page.goto("/quartermaster");
+  await page.getByLabel("Captain’s name").fill(process.env.GM_USERNAME!);
+  await page.getByLabel("Passphrase").fill(process.env.GM_PASSWORD!);
+  await page.getByRole("button", { name: "Enter the chart room" }).click();
+  await expect(page.getByRole("heading", { name: "The Forever Treasure" })).toBeVisible();
+
+  let status = await (await page.request.get("/api/gm/status")).json();
+  const hiddenQuest = status.sideQuests.find((item: { state: string }) => item.state === "HIDDEN");
+  expect(hiddenQuest).toBeTruthy();
+  const invalidPreview = await page.request.post("/api/gm/preview", {
+    data: {
+      command: "ADVANCE_SIDE_QUEST",
+      campaignSlug: status.campaign.slug,
+      expectedSequence: status.campaign.sequence,
+      targetKey: hiddenQuest.key,
+      payload: {},
+      preview: true,
+    },
+  });
+  expect(invalidPreview.ok()).toBeTruthy();
+  expect(await invalidPreview.json()).toMatchObject({
+    canExecute: false,
+    prerequisites: ["Discover the side quest before advancing it."],
+  });
+
+  async function command(command: string, targetKey?: string) {
+    status = await (await page.request.get("/api/gm/status")).json();
+    const response = await page.request.post("/api/gm/commands", {
+      headers: { "x-csrf-token": status.csrfToken },
+      data: {
+        command,
+        campaignSlug: status.campaign.slug,
+        expectedSequence: status.campaign.sequence,
+        idempotencyKey: crypto.randomUUID(),
+        targetKey,
+        payload: {},
+        confirmation: true,
+      },
+    });
+    const body = await response.json();
+    expect(response.ok(), JSON.stringify(body)).toBeTruthy();
+    return body;
+  }
+
+  const discovered = await command("DISCOVER_SIDE_QUEST", hiddenQuest.key);
+  expect(discovered.event).toMatchObject({
+    type: "SIDE_QUEST_DISCOVERED",
+    payload: { key: hiddenQuest.key },
+  });
+  expect((await command("ADVANCE_SIDE_QUEST", hiddenQuest.key)).event.type).toBe("SIDE_QUEST_UPDATED");
+  expect((await command("ADVANCE_SIDE_QUEST", hiddenQuest.key)).event).toMatchObject({
+    type: "SIDE_QUEST_UPDATED",
+    payload: { key: hiddenQuest.key, objectiveOrdinal: 1 },
+  });
+  expect((await command("ADVANCE_SIDE_QUEST", hiddenQuest.key)).event).toMatchObject({
+    type: "SIDE_QUEST_COMPLETED",
+    payload: { key: hiddenQuest.key },
+  });
+
+  status = await (await page.request.get("/api/gm/status")).json();
+  const mapTarget = status.mapLocations.find((item: { revealedAt: string | null }) => !item.revealedAt);
+  expect(mapTarget).toBeTruthy();
+  const mapResult = await command("REVEAL_MAP", mapTarget.key);
+  expect(mapResult.event.payload.key).toBe(mapTarget.key);
+  status = await (await page.request.get("/api/gm/status")).json();
+  expect(
+    status.audit.some(
+      (entry: { action: string; correlationId: string | null }) =>
+        entry.action === "REVEAL_MAP" && entry.correlationId === mapResult.correlationId,
+    ),
+  ).toBe(true);
+
+  const artifactTarget = status.artifacts.find((item: { awarded: boolean }) => !item.awarded);
+  expect(artifactTarget).toBeTruthy();
+  const artifactResult = await command("AWARD_ARTIFACT", artifactTarget.key);
+  expect(artifactResult.event.payload.key).toBe(artifactTarget.key);
+
+  status = await (await page.request.get("/api/gm/status")).json();
+  const staged = await page.request.post("/api/gm/staging", {
+    headers: { "x-csrf-token": status.csrfToken },
+    data: {
+      command: "PREPARE_CHAPTER",
+      campaignSlug: status.campaign.slug,
+      expectedSequence: status.campaign.sequence,
+      payload: {},
+    },
+  });
+  const stagedBody = await staged.json();
+  expect(staged.ok(), JSON.stringify(stagedBody)).toBeTruthy();
+  status = await (await page.request.get("/api/gm/status")).json();
+  expect(
+    status.audit.some((entry: { action: string; metadata?: Record<string, unknown> }) => {
+      return entry.action === "PREPARE_CHAPTER_STAGED" && entry.metadata?.preparedActionId === stagedBody.staged.id;
+    }),
+  ).toBe(true);
+});
+
 test("workspace routes remain authenticated, responsive, and accessible", async ({ page, browserName }) => {
   await page.goto("/quartermaster");
   await page.getByLabel("Captain’s name").fill(process.env.GM_USERNAME!);
