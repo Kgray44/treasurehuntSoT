@@ -1,0 +1,195 @@
+"use client";
+
+import Link from "next/link";
+import { useEffect, useMemo, useState } from "react";
+
+type TaleCard = {
+  id: string;
+  slug: string;
+  title: string;
+  subtitle: string | null;
+  shortDescription: string | null;
+  status: string;
+  visibility: string;
+  savedAt: string;
+  validationState: string;
+  latestVersion: string | null;
+  sessionCount: number;
+  assetCount: number;
+};
+
+export function StudioHome({ authenticated }: { authenticated: boolean }) {
+  const [tales, setTales] = useState<TaleCard[]>([]);
+  const [csrf, setCsrf] = useState("");
+  const [query, setQuery] = useState("");
+  const [sort, setSort] = useState("recent");
+  const [error, setError] = useState("");
+  const [busy, setBusy] = useState("");
+
+  async function load() {
+    const response = await fetch("/api/studio/tales", { cache: "no-store" });
+    const body = (await response.json()) as { tales?: TaleCard[]; csrfToken?: string; error?: string };
+    if (!response.ok) return setError(body.error ?? "The Studio ledger could not be opened.");
+    setTales(body.tales ?? []);
+    setCsrf(body.csrfToken ?? "");
+  }
+
+  useEffect(() => {
+    if (!authenticated) return;
+    queueMicrotask(() => void load());
+  }, [authenticated]);
+
+  const visible = useMemo(() => {
+    const filtered = tales.filter((tale) =>
+      `${tale.title} ${tale.subtitle ?? ""} ${tale.shortDescription ?? ""}`
+        .toLocaleLowerCase()
+        .includes(query.toLocaleLowerCase()),
+    );
+    return filtered.sort((left, right) =>
+      sort === "title"
+        ? left.title.localeCompare(right.title)
+        : sort === "status"
+          ? left.status.localeCompare(right.status)
+          : Date.parse(right.savedAt) - Date.parse(left.savedAt),
+    );
+  }, [query, sort, tales]);
+
+  async function act(tale: TaleCard, action: "duplicate" | "archive" | "restore") {
+    if (
+      (action === "archive" || action === "restore") &&
+      !window.confirm(`${action === "archive" ? "Archive" : "Restore"} “${tale.title}”?`)
+    )
+      return;
+    setBusy(tale.id);
+    setError("");
+    const response = await fetch(`/api/studio/tales/${tale.id}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "x-csrf-token": csrf },
+      body: JSON.stringify({ action }),
+    });
+    const body = (await response.json()) as { error?: string };
+    if (!response.ok) setError(body.error ?? "The ledger action failed.");
+    await load();
+    setBusy("");
+  }
+
+  if (!authenticated)
+    return (
+      <main className="studio-auth-gate">
+        <section>
+          <p className="eyebrow">Tall Tale Studio</p>
+          <h1>The Cartographer&apos;s Table is locked.</h1>
+          <p>Sign in through the Quartermaster&apos;s Log with a creator-capable account, then return here.</p>
+          <Link className="brass-button" href="/quartermaster">
+            Open Quartermaster login
+          </Link>
+        </section>
+      </main>
+    );
+
+  return (
+    <main className="studio-home">
+      <header className="studio-home-header">
+        <div>
+          <p className="eyebrow">Authoring waters</p>
+          <h1>Tall Tale Studio</h1>
+          <p>Draft stories, bind their assets, and publish voyages from one authoritative chart.</p>
+        </div>
+        <nav aria-label="Studio destinations">
+          <Link href="/tales">Player catalog</Link>
+          <Link href="/captain">Captain controls</Link>
+          <Link className="brass-button" href="/studio/tales/new">
+            Create New Tall Tale
+          </Link>
+        </nav>
+      </header>
+      <section className="studio-toolbar" aria-label="Find Tall Tales">
+        <label>
+          <span>Search</span>
+          <input
+            value={query}
+            onChange={(event) => setQuery(event.target.value)}
+            placeholder="Title, subtitle, or description"
+          />
+        </label>
+        <label>
+          <span>Sort</span>
+          <select value={sort} onChange={(event) => setSort(event.target.value)}>
+            <option value="recent">Last saved</option>
+            <option value="title">Title</option>
+            <option value="status">Status</option>
+          </select>
+        </label>
+        <p aria-live="polite">
+          {visible.length} {visible.length === 1 ? "tale" : "tales"}
+        </p>
+      </section>
+      {error && (
+        <p className="studio-error" role="alert">
+          {error}
+        </p>
+      )}
+      {!visible.length ? (
+        <section className="studio-empty">
+          <span aria-hidden="true">✦</span>
+          <h2>No Tall Tales on this chart</h2>
+          <p>Create the first editable voyage, or clear the current search.</p>
+          <Link className="brass-button" href="/studio/tales/new">
+            Create a Tall Tale
+          </Link>
+        </section>
+      ) : (
+        <section className="tale-card-grid" aria-label="Tall Tales">
+          {visible.map((tale) => (
+            <article className={`tale-studio-card status-${tale.status.toLowerCase()}`} key={tale.id}>
+              <div className="tale-card-stamp">{tale.status.replaceAll("_", " ")}</div>
+              <p className="card-kicker">
+                {tale.visibility.toLocaleLowerCase()} ·{" "}
+                {tale.latestVersion ? `version ${tale.latestVersion}` : "not published"}
+              </p>
+              <h2>{tale.title}</h2>
+              <p>{tale.subtitle ?? tale.shortDescription ?? "No summary has been inked yet."}</p>
+              <dl>
+                <div>
+                  <dt>Last saved</dt>
+                  <dd>{new Date(tale.savedAt).toLocaleString()}</dd>
+                </div>
+                <div>
+                  <dt>Validation</dt>
+                  <dd>{tale.validationState.toLocaleLowerCase()}</dd>
+                </div>
+                <div>
+                  <dt>Library</dt>
+                  <dd>{tale.assetCount} assets</dd>
+                </div>
+                <div>
+                  <dt>Sessions</dt>
+                  <dd>{tale.sessionCount}</dd>
+                </div>
+              </dl>
+              <div className="tale-card-actions">
+                <Link className="primary" href={`/studio/tales/${tale.id}`}>
+                  Open editor
+                </Link>
+                {tale.latestVersion && (
+                  <Link href={`/play/${tale.slug}`} target="_blank">
+                    Player preview
+                  </Link>
+                )}
+                <button disabled={busy === tale.id} onClick={() => void act(tale, "duplicate")}>
+                  Duplicate
+                </button>
+                <button
+                  disabled={busy === tale.id}
+                  onClick={() => void act(tale, tale.status === "ARCHIVED" ? "restore" : "archive")}
+                >
+                  {tale.status === "ARCHIVED" ? "Restore" : "Archive"}
+                </button>
+              </div>
+            </article>
+          ))}
+        </section>
+      )}
+    </main>
+  );
+}

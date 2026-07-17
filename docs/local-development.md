@@ -21,6 +21,9 @@ Run `npm run dev:stop` before switching branches or replacing the runtime. Shutd
 - GM URL: `http://127.0.0.1:3000/quartermaster`
 - GM username/password: `kato` / `development-captain-only`
 - Animation showcase: `http://127.0.0.1:3000/dev/animations` (development only)
+- Tall Tale catalog: `http://127.0.0.1:3000/tales`
+- Creator Studio: `http://127.0.0.1:3000/studio`
+- Captain console: `http://127.0.0.1:3000/captain`
 
 The launcher-generated `.env` is ignored. Change these values for any shared environment. Never reuse them for deployment.
 
@@ -48,6 +51,12 @@ Use Node 24 and npm 11.9.0; `.nvmrc`, `.node-version`, `packageManager`, and `pa
 Open `/dev/animations` or use the development-only `TEST ANIMATIONS` button. The lab contains all registered scenes, a no-API trailer, transport/scrub/speed/mode controls, StPageFlip book, live Rive input proof, Lottie controls, fallback states, and local FPS/long-task/runtime metrics. The route intentionally returns 404 from a production server.
 
 Use `npm run assets:validate` after any asset-contract change. Keep all runtime files and fallbacks under `public`, add provenance to `docs/asset-licenses.md`, and never use a remote CDN placeholder. See `docs/animation/showcase.md` for the manual pass and `docs/animation/` for scene/asset extension contracts.
+
+## Tall Tale Studio development
+
+The seed creates `development-studio-voyage`, its editable draft, and published version 1.0 without replacing the original campaign seed. Sign in through Quartermaster and use Studio to edit it. Asset originals and generated derivatives live under ignored `.data/tall-tale-assets` by default. Override that location with an absolute `TALL_TALE_ASSET_ROOT`; set the upload ceiling with `TALL_TALE_MAX_UPLOAD_MB`.
+
+Draft preview sessions are explicitly marked and may read draft assets only through an authenticated creator session. Real player sessions always start from `/tales` and pin themselves to an immutable published version.
 
 ## Clean-clone continuation
 

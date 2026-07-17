@@ -61,6 +61,29 @@ export async function requireGm() {
   });
 }
 
+export type GmCapability = "CAPTAIN" | "CREATE_TALES" | "PUBLISH_TALES" | "MANAGE_ASSETS";
+
+const roleCapabilities: Record<string, GmCapability[]> = {
+  CAPTAIN: ["CAPTAIN"],
+  CREATOR: ["CREATE_TALES", "MANAGE_ASSETS"],
+  PUBLISHER: ["CREATE_TALES", "PUBLISH_TALES", "MANAGE_ASSETS"],
+  CAPTAIN_CREATOR: ["CAPTAIN", "CREATE_TALES", "PUBLISH_TALES", "MANAGE_ASSETS"],
+};
+
+export function gmCan(user: { role: string; capabilities: string }, capability: GmCapability) {
+  let explicit: string[] = [];
+  try {
+    const parsed = JSON.parse(user.capabilities);
+    if (Array.isArray(parsed)) explicit = parsed.filter((item): item is string => typeof item === "string");
+  } catch {}
+  return roleCapabilities[user.role]?.includes(capability) || explicit.includes(capability);
+}
+
+export async function requireGmCapability(capability: GmCapability) {
+  const session = await requireGm();
+  return session && gmCan(session.user, capability) ? session : null;
+}
+
 export async function verifyCsrf(session: { csrfToken: string }) {
   const provided = (await headers()).get("x-csrf-token") ?? "";
   return safeEqual(provided, session.csrfToken);

@@ -29,17 +29,29 @@ export const PageFlipBook = forwardRef<
     mode: MotionMode;
     className?: string;
     initialPage?: number;
+    showCover?: boolean;
+    playbackRate?: 0.25 | 0.5 | 1;
     onPageChange?: (page: number) => void;
+    onFlipStateChange?: (state: "folding" | "flipping" | "read") => void;
   }
->(function PageFlipBook({ pages, mode, className = "", initialPage = 0, onPageChange }, ref) {
+>(function PageFlipBook(
+  { pages, mode, className = "", initialPage = 0, showCover = true, playbackRate = 1, onPageChange, onFlipStateChange },
+  ref,
+) {
   const host = useRef<HTMLDivElement>(null);
   const source = useRef<HTMLDivElement>(null);
   const instance = useRef<PageFlipInstance | null>(null);
   const [current, setCurrent] = useState(Math.min(initialPage, Math.max(0, pages.length - 1)));
   const [orientation, setOrientation] = useState<"portrait" | "landscape">("landscape");
+  const [flipState, setFlipState] = useState<"folding" | "flipping" | "read">("read");
   const [failed, setFailed] = useState(false);
+  const flipStateCallback = useRef(onFlipStateChange);
   const signature = useMemo(() => pages.map((page) => page.id).join("|"), [pages]);
   const reduced = mode === "reduced";
+
+  useEffect(() => {
+    flipStateCallback.current = onFlipStateChange;
+  }, [onFlipStateChange]);
 
   const changePage = (page: number) => {
     const next = Math.min(Math.max(0, page), pages.length - 1);
@@ -73,12 +85,12 @@ export const PageFlipBook = forwardRef<
           maxWidth: 720,
           minHeight: 420,
           maxHeight: 960,
-          showCover: true,
+          showCover,
           usePortrait: true,
           autoSize: true,
           drawShadow: true,
           maxShadowOpacity: 0.45,
-          flippingTime: mode === "full" ? 1100 : 620,
+          flippingTime: Math.round((mode === "full" ? 1100 : 620) / playbackRate),
           swipeDistance: 24,
           mobileScrollSupport: true,
           startPage: Math.min(initialPage, pages.length - 1),
@@ -93,6 +105,11 @@ export const PageFlipBook = forwardRef<
           );
         });
         book.on("changeOrientation", (event) => setOrientation(event.data as "portrait" | "landscape"));
+        book.on("changeState", (event) => {
+          const state = event.data === "flipping" ? "flipping" : event.data === "read" ? "read" : "folding";
+          setFlipState(state);
+          flipStateCallback.current?.(state);
+        });
         instance.current = book;
         changeMountedMetric("pageFlip", 1);
       })
@@ -111,7 +128,7 @@ export const PageFlipBook = forwardRef<
     };
     // The page-flip instance deliberately initializes once; updates are handled below.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [reduced]);
+  }, [playbackRate, reduced, showCover]);
 
   useEffect(() => {
     if (reduced || !instance.current || !source.current) return;
@@ -124,9 +141,10 @@ export const PageFlipBook = forwardRef<
   const pageNodes = pages.map((page, index) => (
     <article
       key={page.id}
-      className={`ft-page density-${page.density}`}
+      className={`ft-page density-${page.density} page-side-${index % 2 === 0 ? "right" : "left"}`}
       data-density={page.density}
       data-page-index={index}
+      data-page-side={index % 2 === 0 ? "right" : "left"}
       tabIndex={-1}
       aria-label={page.label}
     >
@@ -140,7 +158,14 @@ export const PageFlipBook = forwardRef<
         className={`page-flip-book reduced-page-book ${className}`}
         data-pageflip-status={failed ? "fallback" : "reduced"}
       >
-        <div className="reduced-page-stage">{pages[current]?.content}</div>
+        <div className="reduced-page-stage">
+          <article
+            className={`ft-page density-${pages[current]?.density ?? "soft"} page-side-${current % 2 === 0 ? "right" : "left"}`}
+            data-page-side={current % 2 === 0 ? "right" : "left"}
+          >
+            {pages[current]?.content}
+          </article>
+        </div>
         <PageControls
           current={current}
           count={pages.length}
@@ -155,6 +180,7 @@ export const PageFlipBook = forwardRef<
     <section
       className={`page-flip-book orientation-${orientation} ${className}`}
       data-animation-owner="st-page-flip"
+      data-flip-state={flipState}
       onKeyDown={(event) => {
         if (event.key === "ArrowRight" || event.key === "PageDown") instance.current?.flipNext("top");
         if (event.key === "ArrowLeft" || event.key === "PageUp") instance.current?.flipPrev("top");

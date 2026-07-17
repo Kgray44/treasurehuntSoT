@@ -51,6 +51,8 @@ model GameMasterUser {
   id           String   @id @default(cuid())
   username     String   @unique
   passwordHash String
+  role         String   @default("CAPTAIN_CREATOR")
+  capabilities String   @default("[]") @db.LongText
   createdAt    DateTime @default(now())
   sessions     GameMasterSession[]
   auditLogs    AdminAuditLog[]
@@ -336,4 +338,376 @@ model LoginAttempt {
   succeeded   Boolean
   createdAt   DateTime @default(now())
   @@index([fingerprint, createdAt])
+}
+
+model TallTale {
+  id                       String   @id @default(cuid())
+  slug                     String   @unique
+  title                    String
+  subtitle                 String?
+  shortDescription         String?  @db.Text
+  longDescription          String?  @db.LongText
+  coverAssetId             String?
+  theme                    String   @default("CARTOGRAPHERS_TABLE")
+  status                   String   @default("DRAFT")
+  visibility               String   @default("PRIVATE")
+  creatorId                String
+  currentDraftRevisionId   String?
+  latestPublishedVersionId String?
+  playerCountMin           Int      @default(1)
+  playerCountMax           Int      @default(4)
+  estimatedDuration        Int?
+  contentWarnings          String?  @db.Text
+  sortOrder                Int      @default(0)
+  featured                 Boolean  @default(false)
+  archivedAt               DateTime?
+  createdAt                DateTime @default(now())
+  updatedAt                DateTime @updatedAt
+  drafts                   TaleDraft[]
+  versions                 PublishedTaleVersion[]
+  assets                   TaleAsset[]
+  collections              TaleAssetCollection[]
+  locations                TaleLocation[]
+  storyArtifacts           TaleArtifact[]
+  sessions                 TaleSession[]
+  @@index([status, visibility, sortOrder])
+  @@index([creatorId, updatedAt])
+}
+
+model TaleDraft {
+  id                        String   @id @default(cuid())
+  taleId                    String
+  revisionNumber            Int      @default(1)
+  basedOnPublishedVersionId String?
+  createdBy                 String
+  autosaveVersion           Int      @default(1)
+  validationState           String   @default("NOT_VALIDATED")
+  validationSummary         String   @default("{}") @db.LongText
+  lastValidatedAt           DateTime?
+  createdAt                 DateTime @default(now())
+  updatedAt                 DateTime @updatedAt
+  tale                      TallTale @relation(fields: [taleId], references: [id], onDelete: Cascade)
+  chapters                  TaleChapter[]
+  @@unique([taleId, revisionNumber])
+  @@index([taleId, updatedAt])
+}
+
+model TaleChapter {
+  id                String   @id @default(cuid())
+  draftRevisionId   String
+  title             String
+  subtitle          String?
+  description       String?  @db.Text
+  orderIndex        Int
+  coverAssetId      String?
+  estimatedDuration Int?
+  entryBlockId      String?
+  completionBlockId String?
+  isOptional        Boolean  @default(false)
+  metadata          String   @default("{}") @db.LongText
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  draft             TaleDraft @relation(fields: [draftRevisionId], references: [id], onDelete: Cascade)
+  blocks            StoryBlock[]
+  @@unique([draftRevisionId, orderIndex])
+  @@index([draftRevisionId])
+}
+
+model StoryBlock {
+  id            String   @id @default(cuid())
+  chapterId     String
+  blockType     String
+  title         String
+  internalLabel String?
+  orderIndex    Int
+  configuration String   @default("{}") @db.LongText
+  presentation  String   @default("{}") @db.LongText
+  completion    String   @default("{}") @db.LongText
+  nextBlockId   String?
+  creatorNotes  String?  @db.Text
+  isEnabled     Boolean  @default(true)
+  schemaVersion Int      @default(1)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  chapter       TaleChapter @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+  outgoing      BlockConnection[] @relation("BlockConnectionSource")
+  incoming      BlockConnection[] @relation("BlockConnectionTarget")
+  @@unique([chapterId, orderIndex])
+  @@index([chapterId, blockType])
+}
+
+model BlockConnection {
+  id                  String   @id @default(cuid())
+  sourceBlockId       String
+  targetBlockId       String
+  connectionType      String   @default("DEFAULT")
+  conditionExpression String?  @db.Text
+  label               String?
+  orderIndex          Int      @default(0)
+  createdAt           DateTime @default(now())
+  source              StoryBlock @relation("BlockConnectionSource", fields: [sourceBlockId], references: [id], onDelete: Cascade)
+  target              StoryBlock @relation("BlockConnectionTarget", fields: [targetBlockId], references: [id], onDelete: Cascade)
+  @@unique([sourceBlockId, targetBlockId, connectionType])
+  @@index([targetBlockId])
+}
+
+model PublishedTaleVersion {
+  id              String   @id @default(cuid())
+  taleId          String
+  versionNumber   Int
+  versionLabel    String
+  publishedAt     DateTime @default(now())
+  publishedBy     String
+  releaseNotes    String?  @db.Text
+  contentSnapshot String   @db.LongText
+  schemaVersion   Int      @default(1)
+  checksum        String
+  isCurrent       Boolean  @default(true)
+  tale            TallTale @relation(fields: [taleId], references: [id], onDelete: Cascade)
+  sessions        TaleSession[]
+  @@unique([taleId, versionNumber])
+  @@index([taleId, isCurrent])
+}
+
+model TaleAsset {
+  id               String   @id @default(cuid())
+  taleId           String
+  mediaType        String
+  displayName      String
+  description      String?  @db.Text
+  originalFilename String
+  currentVariantId String?
+  mimeType         String
+  fileSize         Int
+  width            Int?
+  height           Int?
+  duration         Float?
+  checksum         String
+  createdBy        String
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  deletedAt        DateTime?
+  tale             TallTale @relation(fields: [taleId], references: [id], onDelete: Cascade)
+  variants         TaleAssetVariant[]
+  tags             TaleAssetTagLink[]
+  roles            TaleAssetRole[]
+  collectionItems  TaleAssetCollectionItem[]
+  @@unique([taleId, checksum])
+  @@index([taleId, mediaType, deletedAt])
+}
+
+model TaleAssetVariant {
+  id              String   @id @default(cuid())
+  assetId         String
+  role            String
+  storageKey      String   @unique
+  mimeType        String
+  fileSize        Int
+  width           Int?
+  height          Int?
+  duration        Float?
+  checksum        String
+  processingState String   @default("READY")
+  createdAt       DateTime @default(now())
+  asset           TaleAsset @relation(fields: [assetId], references: [id], onDelete: Cascade)
+  @@index([assetId, role, createdAt])
+}
+
+model TaleAssetTag {
+  id        String   @id @default(cuid())
+  taleId    String
+  name      String
+  createdAt DateTime @default(now())
+  assets    TaleAssetTagLink[]
+  @@unique([taleId, name])
+}
+
+model TaleAssetTagLink {
+  assetId String
+  tagId   String
+  asset   TaleAsset @relation(fields: [assetId], references: [id], onDelete: Cascade)
+  tag     TaleAssetTag @relation(fields: [tagId], references: [id], onDelete: Cascade)
+  @@id([assetId, tagId])
+  @@index([tagId])
+}
+
+model TaleAssetRole {
+  id        String   @id @default(cuid())
+  assetId   String
+  role      String
+  createdAt DateTime @default(now())
+  asset     TaleAsset @relation(fields: [assetId], references: [id], onDelete: Cascade)
+  @@unique([assetId, role])
+}
+
+model TaleAssetCollection {
+  id             String   @id @default(cuid())
+  taleId         String
+  name           String
+  description    String?  @db.Text
+  collectionType String   @default("GENERAL")
+  locationId     String?
+  artifactId     String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  tale           TallTale @relation(fields: [taleId], references: [id], onDelete: Cascade)
+  items          TaleAssetCollectionItem[]
+  @@unique([taleId, name])
+}
+
+model TaleAssetCollectionItem {
+  id           String   @id @default(cuid())
+  collectionId String
+  assetId      String
+  label        String?
+  orderIndex   Int      @default(0)
+  metadata     String   @default("{}") @db.LongText
+  createdAt    DateTime @default(now())
+  collection   TaleAssetCollection @relation(fields: [collectionId], references: [id], onDelete: Cascade)
+  asset        TaleAsset @relation(fields: [assetId], references: [id], onDelete: Cascade)
+  @@unique([collectionId, assetId, label])
+  @@index([assetId])
+}
+
+model TaleLocation {
+  id                      String   @id @default(cuid())
+  taleId                  String
+  name                    String
+  slug                    String
+  region                  String?
+  generalDescription      String?  @db.Text
+  playerFacingDescription String?  @db.LongText
+  captainNotes            String?  @db.LongText
+  mapAssetId              String?
+  displayAssetId          String?
+  referenceCollectionId   String?
+  verificationProfile     String   @default("{}") @db.LongText
+  orderIndex              Int      @default(0)
+  archivedAt              DateTime?
+  createdAt               DateTime @default(now())
+  updatedAt               DateTime @updatedAt
+  tale                    TallTale @relation(fields: [taleId], references: [id], onDelete: Cascade)
+  @@unique([taleId, slug])
+  @@index([taleId, orderIndex])
+}
+
+model TaleArtifact {
+  id                      String   @id @default(cuid())
+  taleId                  String
+  name                    String
+  shortDescription        String?  @db.Text
+  loreDescription         String?  @db.LongText
+  ordinaryGameObjectLabel String?
+  artworkAssetId          String?
+  revealVideoAssetId      String?
+  modelAssetId            String?
+  inventoryCategory       String   @default("RELIC")
+  collectionGroup         String?
+  sortOrder               Int      @default(0)
+  persistentAfterUnlock   Boolean  @default(true)
+  archivedAt              DateTime?
+  createdAt               DateTime @default(now())
+  updatedAt               DateTime @updatedAt
+  tale                    TallTale @relation(fields: [taleId], references: [id], onDelete: Cascade)
+  @@index([taleId, sortOrder])
+}
+
+model TaleSession {
+  id                   String   @id @default(cuid())
+  taleId               String
+  publishedVersionId   String?
+  ownerLabel            String?
+  captainId             String?
+  accessTokenHash       String   @unique
+  status                String   @default("ACTIVE")
+  currentChapterId      String?
+  currentBlockId        String?
+  currentSequence       Int      @default(0)
+  previewMode           Boolean  @default(false)
+  draftRevisionId       String?
+  previewSnapshot       String?  @db.LongText
+  variables             String   @default("{}") @db.LongText
+  inventory             String   @default("[]") @db.LongText
+  startedAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+  completedAt           DateTime?
+  expiresAt             DateTime?
+  lastHeartbeatAt       DateTime?
+  tale                  TallTale @relation(fields: [taleId], references: [id], onDelete: Cascade)
+  version               PublishedTaleVersion? @relation(fields: [publishedVersionId], references: [id])
+  events                TaleSessionEvent[]
+  verificationRequests  TaleVerificationRequest[]
+  helperPairings        TaleHelperPairing[]
+  @@index([taleId, status, previewMode])
+  @@index([publishedVersionId, status])
+}
+
+model TaleSessionEvent {
+  id                    String   @id @default(cuid())
+  sessionId             String
+  publishedVersionId    String
+  blockId               String?
+  eventType             String
+  sourceType            String
+  sourceId              String?
+  idempotencyKey        String   @unique
+  payload               String   @default("{}") @db.LongText
+  sequence              Int
+  correlationId         String?
+  verificationRequestId String?
+  createdAt             DateTime @default(now())
+  session               TaleSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  @@unique([sessionId, sequence])
+  @@index([sessionId, createdAt])
+}
+
+model TaleVerificationRequest {
+  id                    String   @id @default(cuid())
+  sessionId             String
+  blockId               String
+  providerType          String
+  status                String   @default("PENDING")
+  requestedAt           DateTime @default(now())
+  resolvedAt            DateTime?
+  expiresAt             DateTime?
+  configurationSnapshot String   @default("{}") @db.LongText
+  providerCorrelationId String?
+  satisfiedByEventId    String?
+  session               TaleSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  submissions           TaleVerificationEvent[]
+  @@index([sessionId, status, requestedAt])
+  @@index([blockId, status])
+}
+
+model TaleVerificationEvent {
+  id                 String   @id @default(cuid())
+  requestId          String
+  eventId            String   @unique
+  idempotencyKey     String   @unique
+  schemaVersion      Int      @default(1)
+  providerType       String
+  providerInstanceId String?
+  result             String
+  confidence         Float?
+  evidence           String   @default("{}") @db.LongText
+  observedAt         DateTime
+  accepted           Boolean  @default(false)
+  rejectionReason    String?  @db.Text
+  createdAt          DateTime @default(now())
+  request            TaleVerificationRequest @relation(fields: [requestId], references: [id], onDelete: Cascade)
+  @@index([requestId, createdAt])
+}
+
+model TaleHelperPairing {
+  id         String   @id @default(cuid())
+  sessionId  String
+  deviceId   String
+  tokenHash  String   @unique
+  status     String   @default("ACTIVE")
+  expiresAt  DateTime
+  lastSeenAt DateTime?
+  revokedAt  DateTime?
+  createdAt  DateTime @default(now())
+  session    TaleSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  @@index([sessionId, status])
 }

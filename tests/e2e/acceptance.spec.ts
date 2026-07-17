@@ -117,7 +117,7 @@ test("complete live voyage workflow is private, ordered, resilient, and theatric
   await expect(player.getByRole("button", { name: "Replay ceremony" })).toBeVisible({ timeout: 12_000 });
   expect(Date.now() - releasedAt).toBeGreaterThanOrEqual(5_000);
   expect(Date.now() - releasedAt).toBeLessThan(10_000);
-  await expect(player.getByRole("heading", { name: "The Lantern Test" })).toBeVisible();
+  await expect(player.getByRole("heading", { name: "The Lantern Test" }).first()).toBeVisible();
   await player.getByRole("button", { name: "Next journal page" }).click();
   await expect(
     player.getByLabel("Physical journal pages").getByText(/Where painted waves meet borrowed light/),
@@ -152,7 +152,7 @@ test("complete live voyage workflow is private, ordered, resilient, and theatric
   await player.reload();
   await expect(player.getByRole("button", { name: "Open the journal" })).toBeVisible();
   await player.getByRole("button", { name: "Open the journal" }).click();
-  await expect(player.getByRole("heading", { name: "The Lantern Test" })).toBeVisible();
+  await expect(player.getByRole("heading", { name: "The Lantern Test" }).first()).toBeVisible();
   await expect(player.getByText("Releasing the first seal")).toHaveCount(0);
 
   await gmAction(gm, "Award Test Artifact");
@@ -180,7 +180,7 @@ test("complete live voyage workflow is private, ordered, resilient, and theatric
   await player.evaluate(() => window.dispatchEvent(new Event("online")));
   await expect(player.getByText("Tide connected")).toBeVisible({ timeout: 20_000 });
   await player.getByRole("button", { name: "Journal", exact: true }).click();
-  await expect(player.getByRole("heading", { name: "The Lantern Test" })).toBeVisible();
+  await expect(player.getByRole("heading", { name: "The Lantern Test" }).first()).toBeVisible();
   expect((await status(gm)).campaign.status).toBe("ACTIVE");
 
   const heartbeat = await player.evaluate(async () => {

@@ -44,6 +44,38 @@ async function main() {
   assert(campaign.snapshots.length === campaign.events.length, "every progression event must have a campaign snapshot");
   assert(campaign.auditLogs.length === campaign.events.length, "every progression event must have an audit record");
   assert(campaign.awards.length <= campaign.artifacts.length, "artifact awards must remain unique");
+  const studioTale = await db.tallTale.findUnique({
+    where: { slug: "development-studio-voyage" },
+    include: {
+      drafts: { orderBy: { revisionNumber: "desc" }, include: { chapters: { include: { blocks: true } } } },
+      versions: true,
+    },
+  });
+  assert(studioTale, "the migrated Studio development tale is missing");
+  assert(
+    acceptance ? studioTale.drafts.length >= 1 : studioTale.drafts.length === 1,
+    "the migrated tale requires its initial editable draft",
+  );
+  assert(studioTale.versions.length === 1, "the migrated tale requires one immutable published version");
+  assert(
+    studioTale.latestPublishedVersionId === studioTale.versions[0].id,
+    "the player catalog must point to the current version",
+  );
+  assert(studioTale.drafts[0].chapters.length === 2, "the migrated Studio draft requires two chapters");
+  assert(
+    studioTale.drafts[0].chapters
+      .flatMap((chapter) => chapter.blocks)
+      .some((block) => block.blockType === "taleComplete"),
+    "the migrated Studio draft requires a Tale Complete endpoint",
+  );
+  const snapshot = JSON.parse(studioTale.versions[0].contentSnapshot) as {
+    schemaVersion?: number;
+    chapters?: unknown[];
+  };
+  assert(
+    snapshot.schemaVersion === 1 && Array.isArray(snapshot.chapters),
+    "the published Studio snapshot must be schema-versioned",
+  );
 
   if (!acceptance && !preset) {
     assert(campaign.currentSequence === 0, "a fresh validation database must start at sequence zero");
@@ -70,7 +102,7 @@ async function main() {
   }
 
   console.log(
-    `Database verified: ${campaign.events.length} events, ${campaign.auditLogs.length} audit entries, sequence ${campaign.currentSequence}.`,
+    `Database verified: ${campaign.events.length} legacy events, ${campaign.auditLogs.length} audit entries, sequence ${campaign.currentSequence}; Studio version ${studioTale.versions[0].versionLabel}.`,
   );
 }
 

@@ -7,18 +7,28 @@ import type { ClientProgressEvent, PublicSnapshot } from "@/domain/story";
 import { PageFlipBook, type FlipBookPage, type PageFlipBookHandle } from "@/components/animation/PageFlipBook";
 import { LottieEffect } from "@/components/animation/LottieEffect";
 import { lottieAssets } from "@/animation/assets/lottie-contracts";
+import type { JournalOpeningPhase } from "@/animation/journal/opening-machine";
+import { OpeningWaxSeal } from "./OpeningWaxSeal";
 
 export function JournalWorkspace({
   snapshot,
   mode,
   activeEvent,
+  openingPhase,
+  interactive,
+  playbackRate,
+  onPageTurn,
 }: {
   snapshot: PublicSnapshot;
   mode: MotionMode;
   activeEvent: ClientProgressEvent | null;
+  openingPhase: JournalOpeningPhase;
+  interactive: boolean;
+  playbackRate: 0.25 | 0.5 | 1;
+  onPageTurn?: () => void;
 }) {
   const book = useRef<PageFlipBookHandle>(null);
-  const pages = useMemo(() => buildJournalPages(snapshot), [snapshot]);
+  const pages = useMemo(() => buildJournalPages(snapshot).filter((page) => page.density === "soft"), [snapshot]);
   const flipPages = useMemo<FlipBookPage[]>(
     () =>
       pages.map((page) => ({
@@ -35,6 +45,7 @@ export function JournalWorkspace({
       className="physical-section journal-workspace"
       aria-labelledby="journal-heading"
       data-section-heading
+      data-journal-phase={openingPhase}
       tabIndex={-1}
     >
       <header className="section-masthead">
@@ -45,36 +56,70 @@ export function JournalWorkspace({
         <p>Selectable parchment, physical leaves, and only the words the tide has released.</p>
       </header>
       <div className="journal-table" data-scene-part="journal-stage" data-gsap-owned>
-        <div className="page-stack" aria-hidden="true" />
-        <div className="spine-stitching" aria-hidden="true">
-          <i />
-          <i />
-          <i />
-          <i />
-          <i />
+        <div className="book-camera" data-opening-actor="book-camera">
+          <div className="book-shadow" aria-hidden="true" />
+          <div className="rear-book-cover" aria-hidden="true" />
+          <div className="page-stack page-stack-left" aria-hidden="true" />
+          <div className="page-stack page-stack-right" aria-hidden="true" />
+          <div className="book-binding" aria-hidden="true">
+            <span className="binding-fold" />
+            <span className="binding-cord cord-one" />
+            <span className="binding-cord cord-two" />
+            <span className="binding-cord cord-three" />
+            <span className="binding-cord cord-four" />
+            <span className="binding-cord cord-five" />
+          </div>
+          <div className="open-page-stage">
+            <PageFlipBook
+              ref={book}
+              pages={flipPages}
+              mode={mode}
+              showCover={false}
+              playbackRate={playbackRate}
+              initialPage={pageIndexForChapter(pages, snapshot.chapter.ordinal)}
+              className="main-journal-book"
+              onFlipStateChange={(state) => state === "flipping" && onPageTurn?.()}
+            />
+          </div>
+          <div className="closed-book" data-opening-actor="closed-book" aria-hidden="true">
+            <div className="closed-page-block" />
+            <div className="opening-sealed-page" data-opening-actor="sealed-page">
+              <div className="opening-page-grain" />
+              <p>The first leaf waits beneath the captain&apos;s seal.</p>
+              <OpeningWaxSeal />
+            </div>
+            <span className="latch-catch" />
+            <div className="front-cover" data-opening-actor="front-cover">
+              <div className="cover-face cover-front">
+                <span className="cover-border" />
+                <span className="cover-emblem">F</span>
+                <strong>The Forever Treasure</strong>
+                <small>Captain&apos;s Voyage Journal</small>
+                <div className="latch-assembly" data-opening-actor="latch">
+                  <span className="latch-hinge" />
+                  <span className="latch-strap" />
+                  <span className="latch-hook" />
+                </div>
+              </div>
+              <div className="cover-face cover-inside" />
+            </div>
+          </div>
+          <nav className="chapter-tabs" aria-label="Journal chapters">
+            {snapshot.chapters.map((chapter) => (
+              <button
+                key={chapter.ordinal}
+                disabled={!interactive}
+                onClick={() => book.current?.flipTo(pageIndexForChapter(pages, chapter.ordinal))}
+                aria-label={`Turn to chapter ${chapter.ordinal}: ${chapter.title ?? chapter.teaser ?? "sealed"}`}
+              >
+                <span>{chapter.ordinal}</span>
+                <b>{chapter.title ?? chapter.teaser ?? "Sealed"}</b>
+                <small>{chapter.state.toLowerCase()}</small>
+              </button>
+            ))}
+          </nav>
         </div>
-        <div className="journal-clasp" data-scene-part="journal-clasp" data-gsap-owned aria-hidden="true" />
-        <PageFlipBook
-          ref={book}
-          pages={flipPages}
-          mode={mode}
-          initialPage={pageIndexForChapter(pages, snapshot.chapter.ordinal)}
-          className="main-journal-book"
-        />
-        <nav className="chapter-tabs" aria-label="Journal chapters">
-          {snapshot.chapters.map((chapter) => (
-            <button
-              key={chapter.ordinal}
-              onClick={() => book.current?.flipTo(pageIndexForChapter(pages, chapter.ordinal))}
-              aria-label={`Turn to chapter ${chapter.ordinal}: ${chapter.title ?? chapter.teaser ?? "sealed"}`}
-            >
-              <span>{chapter.ordinal}</span>
-              <b>{chapter.title ?? chapter.teaser ?? "Sealed"}</b>
-              <small>{chapter.state.toLowerCase()}</small>
-            </button>
-          ))}
-        </nav>
-        {payload && <ChapterCeremonyPage payload={payload} mode={mode} />}
+        {payload && interactive && <ChapterCeremonyPage payload={payload} mode={mode} />}
       </div>
     </section>
   );

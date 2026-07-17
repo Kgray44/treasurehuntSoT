@@ -4,7 +4,7 @@ Production-oriented foundation and fully automated local demo for a private naut
 
 ## Current phase
 
-Phase three rebuilds that companion as a cinematic, event-synchronized experience. A shared animation director coordinates the harbor arrival, physical invitation and authentication, page-flip journal, chapter ceremonies, chart routes, artifacts, side quests, log, sealed finale, and Quartermaster instruments without allowing presentation timing to outrun server truth. All committed content remains fictional development seed material.
+The cinematic companion now also includes Tall Tale Studio Phase 1: an authenticated no-code authoring workspace, reusable asset/location/artifact libraries, immutable publishing, a dynamic player catalog, version-pinned live sessions, and Captain controls. A shared animation director still coordinates the original harbor, journal, chart, artifact, and finale experience without allowing presentation timing to outrun server truth. All committed content remains fictional development seed material.
 
 ## Stack
 
@@ -30,8 +30,11 @@ npm run dev:full
 The launcher creates an ignored `.env` when absent, installs the exact lockfile, generates Prisma, applies migrations, seeds generic disposable data, starts the app, checks health, and prints the URLs and credentials. Network/UNC workspaces are mirrored to an ignored local runtime under `%LOCALAPPDATA%` because Node and SQLite are unreliable on network shares. Stop it with `npm run dev:stop`.
 
 - Player: `http://127.0.0.1:3000/tale/development-forever-treasure`
+- Tall Tale catalog: `http://127.0.0.1:3000/tales`
 - Player phrase: `development-moonwake`
 - GM: `http://127.0.0.1:3000/quartermaster`
+- Studio: `http://127.0.0.1:3000/studio`
+- Captain: `http://127.0.0.1:3000/captain`
 - GM development login: `kato` / `development-captain-only`
 
 These values are disposable local defaults, never production credentials. To opt into LAN access, run `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/start-dev.ps1 -Lan`; Windows Firewall and network policy still determine whether another device can connect.
@@ -68,8 +71,9 @@ Set unique local values in `.env`; the seed’s fallback values are development-
 | `npm run db:seed`                 | Load replaceable development content                                   |
 | `npm run db:preset -- mid-voyage` | Reset to a repeatable development-only companion preset                |
 | `npm run db:generate:mysql`       | Generate production MySQL client                                       |
+| `npm run db:migrate:mysql:studio` | Apply the production-parity Tall Tale Studio migration                 |
 
-Full setup, validation stages, output locations, clean-clone instructions, and troubleshooting are in [local development](docs/local-development.md) and [testing](docs/testing.md). Animation ownership, scene contracts, assets, performance, and the development lab are indexed from [animation architecture](docs/animation/architecture.md).
+Full setup, validation stages, output locations, clean-clone instructions, and troubleshooting are in [local development](docs/local-development.md) and [testing](docs/testing.md). Studio architecture and operations are in [Tall Tale Studio](docs/tall-tale-studio.md); the future recognition seam is in [vision helper boundary](docs/future-vision-helper.md). Animation ownership, scene contracts, assets, performance, and the development lab are indexed from [animation architecture](docs/animation/architecture.md).
 
 ## Repository workflow
 

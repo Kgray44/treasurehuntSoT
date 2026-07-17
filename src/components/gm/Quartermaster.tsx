@@ -245,6 +245,8 @@ export function Quartermaster({ authenticated }: { authenticated: boolean }) {
           <h1>Quartermaster&apos;s Log</h1>
         </div>
         <div className="gm-header-tools">
+          <a href="/studio">Tall Tale Studio</a>
+          <a href="/captain">Captain sessions</a>
           <button onClick={cycle} aria-label={`Motion: ${mode}. Change motion setting`}>
             {mode} motion
           </button>

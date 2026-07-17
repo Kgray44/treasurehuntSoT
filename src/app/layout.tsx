@@ -7,6 +7,8 @@ import "../styles/player.css";
 import "../styles/gm.css";
 import "../styles/animation.css";
 import "../styles/showcase.css";
+import "../styles/studio.css";
+import "../styles/tall-tale.css";
 
 export const metadata: Metadata = {
   title: { default: "The Forever Treasure", template: "%s · The Forever Treasure" },
@@ -16,7 +18,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en">
+    <html lang="en" data-scroll-behavior="smooth">
       <body>
         <AnimationProvider>{children}</AnimationProvider>
       </body>

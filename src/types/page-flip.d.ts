@@ -1,6 +1,7 @@
 declare module "page-flip" {
   export type FlipCorner = "top" | "bottom";
   export type Orientation = "portrait" | "landscape";
+  export type FlipState = "user_fold" | "fold_corner" | "flipping" | "read";
 
   export type FlipSetting = {
     width: number;
@@ -45,5 +46,6 @@ declare module "page-flip" {
     getOrientation(): Orientation;
     on(event: "flip", callback: (event: WidgetEvent<number>) => void): PageFlip;
     on(event: "changeOrientation", callback: (event: WidgetEvent<Orientation>) => void): PageFlip;
+    on(event: "changeState", callback: (event: WidgetEvent<FlipState>) => void): PageFlip;
   }
 }

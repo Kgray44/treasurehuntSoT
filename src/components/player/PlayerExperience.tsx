@@ -8,6 +8,11 @@ import { AudioCuePlayer, type AudioCueName } from "@/animation/core/audio-cues";
 import { useAnimationDirector } from "@/animation/director/useAnimationDirector";
 import { sectionVariants } from "@/animation/motion/variants";
 import { useMotionMode } from "@/animation/motion/useMotionMode";
+import {
+  isJournalInteractive,
+  waitForJournalPhase,
+  type JournalOpeningPhase,
+} from "@/animation/journal/opening-machine";
 import type { ClientProgressEvent, PublicSnapshot } from "@/domain/story";
 import { AnimationTestButton } from "@/components/dev/AnimationTestButton";
 import { ArtifactInspection } from "./workspace/ArtifactInspection";
@@ -70,8 +75,8 @@ export function PlayerExperience({ initialSnapshot }: { initialSnapshot: PublicS
   const root = useRef<HTMLElement>(null);
   const [snapshot, setSnapshot] = useState(initialSnapshot);
   const [view, setView] = useState<CompanionView>("journal");
-  const [opened, setOpened] = useState(false);
-  const [introVisible, setIntroVisible] = useState(false);
+  const [openingPhase, setOpeningPhase] = useState<JournalOpeningPhase>("ENTRY_IDLE");
+  const [resettingJournal, setResettingJournal] = useState(false);
   const [muted, setMuted] = useState(false);
   const [volume, setVolumeState] = useState(0.4);
   const [connection, setConnection] = useState<"connecting" | "live" | "adrift">("connecting");
@@ -82,12 +87,16 @@ export function PlayerExperience({ initialSnapshot }: { initialSnapshot: PublicS
   const [objectiveOpen, setObjectiveOpen] = useState(false);
   const [textScale, setTextScaleState] = useState(1);
   const [texture, setTextureState] = useState(1);
+  const [openingSpeed, setOpeningSpeed] = useState<0.25 | 0.5 | 1>(1);
   const eventChain = useRef<Promise<void>>(Promise.resolve());
+  const openingRun = useRef<AbortController | null>(null);
+  const openingBusy = useRef(false);
   const seenEvents = useRef(new Set<string>());
   const latestSequence = useRef(initialSnapshot.sequence);
   const audio = useRef(new AudioCuePlayer());
   const { director, snapshot: animation } = useAnimationDirector();
   const { mode, cycle } = useMotionMode();
+  const journalReady = isJournalInteractive(openingPhase);
 
   useEffect(() => {
     const audioEngine = audio.current;
@@ -101,7 +110,10 @@ export function PlayerExperience({ initialSnapshot }: { initialSnapshot: PublicS
       audioEngine.setMuted(savedMuted);
       audioEngine.setVolume(savedVolume);
     });
-    return () => audioEngine.close();
+    return () => {
+      openingRun.current?.abort();
+      audioEngine.close();
+    };
   }, []);
 
   const refreshSnapshot = useCallback(async () => {
@@ -188,8 +200,13 @@ export function PlayerExperience({ initialSnapshot }: { initialSnapshot: PublicS
 
   useEffect(() => {
     const readLocation = () => {
-      const requested = new URLSearchParams(location.search).get("section") as CompanionView | null;
+      const params = new URLSearchParams(location.search);
+      const requested = params.get("section") as CompanionView | null;
       setView(requested && companionViews.some((item) => item.key === requested) ? requested : "journal");
+      if (process.env.NODE_ENV !== "production") {
+        const requestedSpeed = Number(params.get("journalSpeed") ?? 1);
+        setOpeningSpeed(requestedSpeed === 0.25 || requestedSpeed === 0.5 ? requestedSpeed : 1);
+      }
     };
     readLocation();
     window.addEventListener("popstate", readLocation);
@@ -197,7 +214,7 @@ export function PlayerExperience({ initialSnapshot }: { initialSnapshot: PublicS
   }, []);
 
   useEffect(() => {
-    if (!opened) return;
+    if (!journalReady) return;
     const entries: Record<CompanionView, { contentType: string; contentKeys: string[] }> = {
       journal: {
         contentType: "chapter",
@@ -230,24 +247,56 @@ export function PlayerExperience({ initialSnapshot }: { initialSnapshot: PublicS
       .then(() => refreshSnapshot())
       .catch(() => undefined);
     return () => controller.abort();
-  }, [opened, refreshSnapshot, snapshot, view]);
+  }, [journalReady, refreshSnapshot, snapshot, view]);
 
   async function openJournal(forceFull = false) {
-    await audio.current.unlock();
-    setOpened(true);
-    setIntroVisible(true);
-    await nextFrame();
-    if (!root.current) return;
-    const key = `forever-intro:${snapshot.campaign.slug}`;
-    const first = forceFull || sessionStorage.getItem(key) !== "seen";
-    sessionStorage.setItem(key, "seen");
-    audio.current.play("ocean-rise");
+    if (openingBusy.current || !root.current) return;
+    openingBusy.current = true;
+    const controller = new AbortController();
+    openingRun.current = controller;
+    audio.current.stopAll();
+    audio.current.unlock();
+    const advance = async (phase: JournalOpeningPhase, cue?: AudioCueName) => {
+      if (controller.signal.aborted || !root.current) throw new DOMException("Opening interrupted", "AbortError");
+      flushSync(() => setOpeningPhase(phase));
+      if (cue) audio.current.play(cue);
+      await waitForJournalPhase(root.current, phase, mode, controller.signal);
+    };
     try {
-      await director.play(first ? "first-arrival" : "session-reentry", { root: root.current, queue: false });
-    } catch {
-      /* local introduction only */
+      if (forceFull) {
+        flushSync(() => {
+          setResettingJournal(true);
+          setView("journal");
+          setOpeningPhase("ENTRY_IDLE");
+        });
+        await nextFrame();
+        await nextFrame();
+        flushSync(() => setResettingJournal(false));
+      }
+      await advance("ENTRY_ACTIVATED", "ocean-rise");
+      const key = `forever-intro:${snapshot.campaign.slug}`;
+      const first = forceFull || sessionStorage.getItem(key) !== "seen";
+      try {
+        await director.play(first ? "first-arrival" : "session-reentry", { root: root.current, queue: false });
+      } catch {
+        // The physical state machine remains authoritative if the atmospheric prelude is unavailable.
+      }
+      await advance("CLOSED_BOOK_REVEAL");
+      await advance("LATCH_RELEASING", "brass-latch");
+      await advance("COVER_OPENING", "wood-creak");
+      await advance("SEALED_PAGE_REVEAL", "seal-pressure");
+      await advance("SEAL_BREAKING", "wax-crack");
+      await advance("BOOK_SETTLING", "paper-flutter");
+      await advance("JOURNAL_READY");
+      sessionStorage.setItem(key, "seen");
+    } catch (cause) {
+      if (!(cause instanceof DOMException && cause.name === "AbortError")) {
+        flushSync(() => setOpeningPhase("JOURNAL_READY"));
+      }
+    } finally {
+      if (openingRun.current === controller) openingRun.current = null;
+      openingBusy.current = false;
     }
-    setIntroVisible(false);
   }
 
   function navigate(next: CompanionView) {
@@ -304,8 +353,10 @@ export function PlayerExperience({ initialSnapshot }: { initialSnapshot: PublicS
   return (
     <main
       ref={root}
-      className={`voyage-shell stage-${animation.label} view-${view}`}
+      className={`voyage-shell stage-${animation.label} view-${view}${resettingJournal ? " journal-resetting" : ""}`}
       data-cinematic-sequence={animationSequence}
+      data-journal-phase={openingPhase}
+      data-journal-speed={openingSpeed}
       data-motion-mode={mode}
       style={{ "--player-text-scale": textScale, "--texture-opacity": texture } as React.CSSProperties}
     >
@@ -320,25 +371,35 @@ export function PlayerExperience({ initialSnapshot }: { initialSnapshot: PublicS
         <i />
         <b />
       </div>
-      <CompanionHeader
-        connection={connection}
-        muted={muted}
-        volume={volume}
-        mode={mode}
-        textScale={textScale}
-        texture={texture}
-        canReplay={Boolean(lastRelease)}
-        toggleMute={toggleMute}
-        setVolume={setVolume}
-        cycleMotion={cycle}
-        setTextScale={setTextScale}
-        setTexture={setTexture}
-        replay={() =>
-          lastRelease && void playEvent({ ...lastRelease, id: `${lastRelease.id}:replay:${Date.now()}` }, true)
-        }
-      />
-      <CompanionNavigation view={view} unseen={snapshot.unseen} navigate={navigate} />
-      {!opened && (
+      <div
+        className="persistent-interface"
+        data-opening-actor="persistent-interface"
+        aria-hidden={!journalReady}
+        inert={!journalReady ? true : undefined}
+      >
+        <CompanionHeader
+          connection={connection}
+          muted={muted}
+          volume={volume}
+          mode={mode}
+          textScale={textScale}
+          texture={texture}
+          canReplay={Boolean(lastRelease)}
+          toggleMute={toggleMute}
+          setVolume={setVolume}
+          cycleMotion={cycle}
+          setTextScale={setTextScale}
+          setTexture={setTexture}
+          replay={() =>
+            lastRelease && void playEvent({ ...lastRelease, id: `${lastRelease.id}:replay:${Date.now()}` }, true)
+          }
+        />
+        <CompanionNavigation view={view} unseen={snapshot.unseen} navigate={navigate} />
+      </div>
+      <div className="persistent-mobile-interface" aria-hidden={!journalReady} inert={!journalReady ? true : undefined}>
+        <MobileNavigation view={view} unseen={snapshot.unseen} navigate={navigate} />
+      </div>
+      {(openingPhase === "ENTRY_IDLE" || openingPhase === "ENTRY_ACTIVATED") && (
         <div className="journal-opening">
           <button className="wax-open" onClick={() => void openJournal()}>
             <span>F</span>
@@ -347,42 +408,55 @@ export function PlayerExperience({ initialSnapshot }: { initialSnapshot: PublicS
           </button>
         </div>
       )}
-      {opened && (
-        <div className="physical-workspace">
-          <AnimatePresence mode="wait" initial={false}>
-            <motion.div
-              key={view}
-              className="section-transition"
-              variants={sectionVariants(mode)}
-              initial="initial"
-              animate="enter"
-              exit="exit"
-              onAnimationComplete={(definition) => {
-                if (definition === "enter") {
-                  document.querySelector<HTMLElement>("[data-section-heading]")?.focus({ preventScroll: true });
-                }
-              }}
-              data-animation-owner="motion"
-            >
-              {view === "journal" && <JournalWorkspace snapshot={snapshot} mode={mode} activeEvent={activeEvent} />}
-              {view === "chart" && <VoyageChart snapshot={snapshot} mode={mode} />}
-              {view === "treasures" && (
-                <TreasureAltar
-                  snapshot={snapshot}
-                  inspect={(key, element) => {
-                    setInspectionOrigin(element);
-                    setSelectedArtifact(key);
-                  }}
-                />
-              )}
-              {view === "quests" && <SideQuestLedger snapshot={snapshot} mode={mode} />}
-              {view === "log" && <ShipsLog snapshot={snapshot} navigate={navigate} />}
-              {view === "finale" && <FinaleChamber snapshot={snapshot} mode={mode} />}
-            </motion.div>
-          </AnimatePresence>
-        </div>
-      )}
-      {opened && (
+      <div className="physical-workspace" aria-hidden={!journalReady} inert={!journalReady ? true : undefined}>
+        <AnimatePresence mode="wait" initial={false}>
+          <motion.div
+            key={view}
+            className="section-transition"
+            variants={sectionVariants(mode)}
+            initial="initial"
+            animate="enter"
+            exit="exit"
+            onAnimationComplete={(definition) => {
+              if (definition === "enter" && journalReady) {
+                document.querySelector<HTMLElement>("[data-section-heading]")?.focus({ preventScroll: true });
+              }
+            }}
+            data-animation-owner="motion"
+          >
+            {view === "journal" && (
+              <JournalWorkspace
+                snapshot={snapshot}
+                mode={mode}
+                activeEvent={activeEvent}
+                openingPhase={openingPhase}
+                interactive={journalReady}
+                playbackRate={openingSpeed}
+                onPageTurn={() => audio.current.play("page-turn")}
+              />
+            )}
+            {view === "chart" && <VoyageChart snapshot={snapshot} mode={mode} />}
+            {view === "treasures" && (
+              <TreasureAltar
+                snapshot={snapshot}
+                inspect={(key, element) => {
+                  setInspectionOrigin(element);
+                  setSelectedArtifact(key);
+                }}
+              />
+            )}
+            {view === "quests" && <SideQuestLedger snapshot={snapshot} mode={mode} />}
+            {view === "log" && <ShipsLog snapshot={snapshot} navigate={navigate} />}
+            {view === "finale" && <FinaleChamber snapshot={snapshot} mode={mode} />}
+          </motion.div>
+        </AnimatePresence>
+      </div>
+      <div
+        className="persistent-objective"
+        data-opening-actor="objective"
+        aria-hidden={!journalReady}
+        inert={!journalReady ? true : undefined}
+      >
         <ObjectiveNote
           objective={objective}
           chapter={snapshot.chapter.ordinal}
@@ -392,8 +466,7 @@ export function PlayerExperience({ initialSnapshot }: { initialSnapshot: PublicS
           setExpanded={setObjectiveOpen}
           returnToClue={() => navigate("journal")}
         />
-      )}
-      <MobileNavigation view={view} unseen={snapshot.unseen} navigate={navigate} />
+      </div>
       <AnimatePresence>
         {inspectedArtifact && (
           <ArtifactInspection
@@ -403,8 +476,13 @@ export function PlayerExperience({ initialSnapshot }: { initialSnapshot: PublicS
           />
         )}
       </AnimatePresence>
-      {introVisible && (
-        <div className={`voyage-introduction intro-${animationSequence}`} role="status" aria-live="polite">
+      {openingPhase !== "ENTRY_IDLE" && !journalReady && (
+        <div
+          className={`voyage-introduction intro-${animationSequence}`}
+          data-opening-actor="introduction"
+          role="status"
+          aria-live="polite"
+        >
           <div className="intro-horizon" data-scene-part="horizon" data-gsap-owned aria-hidden="true" />
           <div className="intro-wave" data-scene-part="ocean" data-gsap-owned aria-hidden="true" />
           <div className="intro-fog" data-scene-part="fog-front" data-gsap-owned aria-hidden="true" />
@@ -441,7 +519,7 @@ export function PlayerExperience({ initialSnapshot }: { initialSnapshot: PublicS
           <button onClick={() => director.skip()}>Reveal all now</button>
         </div>
       )}
-      {!animation.isPlaying && lastRelease && opened && (
+      {!animation.isPlaying && lastRelease && journalReady && (
         <button
           className="replay-control"
           onClick={() => void playEvent({ ...lastRelease, id: `${lastRelease.id}:replay:${Date.now()}` }, true)}
@@ -449,7 +527,7 @@ export function PlayerExperience({ initialSnapshot }: { initialSnapshot: PublicS
           Replay ceremony
         </button>
       )}
-      {!animation.isPlaying && opened && (
+      {!animation.isPlaying && journalReady && (
         <button className="intro-replay-control" onClick={() => void openJournal(true)}>
           Replay introduction
         </button>

@@ -125,6 +125,7 @@ export function HarborLanding() {
           <Link className="brass-button" href="/tale/development-forever-treasure">
             Follow the invitation
           </Link>
+          <Link href="/tales">Browse published Tall Tales</Link>
         </motion.div>
       </section>
       <div className="landing-controls">

@@ -8,325 +8,346 @@ datasource db {
 }
 
 model Campaign {
-  id              String   @id @default(cuid())
-  slug            String   @unique
-  title           String
-  status          String   @default("PAUSED")
-  accessCodeHash  String
-  currentSequence Int      @default(0)
-  finaleState     String   @default("SEALED")
-  finaleTeaser    String?
-  finaleRequirements String @default("[]")
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
-  chapters        Chapter[]
-  artifacts       Artifact[]
-  mapLocations    MapLocation[]
-  mapRoutes       MapRoute[]
-  sideQuests      SideQuest[]
-  events          ProgressEvent[]
-  snapshots       CampaignSnapshot[]
-  awards          ArtifactAward[]
-  journalEntries  JournalEntry[]
-  auditLogs       AdminAuditLog[]
-  saveStates      SaveStateSnapshot[]
-  playerAccesses  PlayerAccess[]
+  id                 String              @id @default(cuid())
+  slug               String              @unique
+  title              String
+  status             String              @default("PAUSED")
+  accessCodeHash     String
+  currentSequence    Int                 @default(0)
+  finaleState        String              @default("SEALED")
+  finaleTeaser       String?
+  finaleRequirements String              @default("[]")
+  createdAt          DateTime            @default(now())
+  updatedAt          DateTime            @updatedAt
+  chapters           Chapter[]
+  artifacts          Artifact[]
+  mapLocations       MapLocation[]
+  mapRoutes          MapRoute[]
+  sideQuests         SideQuest[]
+  events             ProgressEvent[]
+  snapshots          CampaignSnapshot[]
+  awards             ArtifactAward[]
+  journalEntries     JournalEntry[]
+  auditLogs          AdminAuditLog[]
+  saveStates         SaveStateSnapshot[]
+  playerAccesses     PlayerAccess[]
 }
 
 model PlayerAccess {
-  id          String   @id @default(cuid())
-  campaignId  String
-  tokenHash   String   @unique
-  label       String?
-  expiresAt   DateTime?
-  lastSeenAt  DateTime?
-  createdAt   DateTime @default(now())
-  campaign    Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
-  audio       AudioPreference?
+  id            String           @id @default(cuid())
+  campaignId    String
+  tokenHash     String           @unique
+  label         String?
+  expiresAt     DateTime?
+  lastSeenAt    DateTime?
+  createdAt     DateTime         @default(now())
+  campaign      Campaign         @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  audio         AudioPreference?
   viewedContent ViewedContent[]
+
   @@index([campaignId])
 }
 
 model GameMasterUser {
-  id           String   @id @default(cuid())
-  username     String   @unique
+  id           String              @id @default(cuid())
+  username     String              @unique
   passwordHash String
-  createdAt    DateTime @default(now())
+  role         String              @default("CAPTAIN_CREATOR")
+  capabilities String              @default("[]")
+  createdAt    DateTime            @default(now())
   sessions     GameMasterSession[]
   auditLogs    AdminAuditLog[]
 }
 
 model GameMasterSession {
-  id        String   @id
+  id        String         @id
   userId    String
   csrfToken String
   expiresAt DateTime
-  createdAt DateTime @default(now())
+  createdAt DateTime       @default(now())
   user      GameMasterUser @relation(fields: [userId], references: [id], onDelete: Cascade)
+
   @@index([userId, expiresAt])
 }
 
 model Chapter {
-  id          String   @id @default(cuid())
-  campaignId  String
-  ordinal     Int
-  state       String   @default("LOCKED")
-  contentId   String
-  revealedAt  DateTime?
-  solvedAt    DateTime?
-  safeTeaser  String?
-  relatedMapKey String?
-  relatedArtifactKey String?
+  id                  String         @id @default(cuid())
+  campaignId          String
+  ordinal             Int
+  state               String         @default("LOCKED")
+  contentId           String
+  revealedAt          DateTime?
+  solvedAt            DateTime?
+  safeTeaser          String?
+  relatedMapKey       String?
+  relatedArtifactKey  String?
   relatedSideQuestKey String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  campaign    Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
-  content     ChapterContent @relation(fields: [contentId], references: [id])
-  clues       Clue[]
-  hints       Hint[]
+  createdAt           DateTime       @default(now())
+  updatedAt           DateTime       @updatedAt
+  campaign            Campaign       @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  content             ChapterContent @relation(fields: [contentId], references: [id])
+  clues               Clue[]
+  hints               Hint[]
+
   @@unique([campaignId, ordinal])
   @@index([campaignId, state])
 }
 
 model ChapterContent {
-  id             String   @id @default(cuid())
-  version        Int      @default(1)
-  title          String
-  narrative      String
-  objective      String
-  developmentOnly Boolean @default(true)
-  createdAt      DateTime @default(now())
-  chapters       Chapter[]
+  id              String    @id @default(cuid())
+  version         Int       @default(1)
+  title           String
+  narrative       String
+  objective       String
+  developmentOnly Boolean   @default(true)
+  createdAt       DateTime  @default(now())
+  chapters        Chapter[]
 }
 
 model Clue {
-  id        String   @id @default(cuid())
+  id        String  @id @default(cuid())
   chapterId String
   ordinal   Int
   body      String
   chapter   Chapter @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+
   @@unique([chapterId, ordinal])
 }
 
 model Hint {
-  id          String   @id @default(cuid())
-  chapterId   String
-  ordinal     Int
-  body        String
-  releasedAt  DateTime?
-  chapter     Chapter @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+  id         String    @id @default(cuid())
+  chapterId  String
+  ordinal    Int
+  body       String
+  releasedAt DateTime?
+  chapter    Chapter   @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+
   @@unique([chapterId, ordinal])
 }
 
 model Artifact {
-  id          String   @id @default(cuid())
-  campaignId  String
-  key         String
-  name        String
-  description String
-  safeName    String?
-  state       String   @default("UNKNOWN")
-  category    String   @default("RELIC")
-  discoveryText String?
-  silhouetteLabel String?
-  displayX    Float    @default(50)
-  displayY    Float    @default(50)
-  assemblyGroup String?
-  assemblyPosition String?
+  id                   String          @id @default(cuid())
+  campaignId           String
+  key                  String
+  name                 String
+  description          String
+  safeName             String?
+  state                String          @default("UNKNOWN")
+  category             String          @default("RELIC")
+  discoveryText        String?
+  silhouetteLabel      String?
+  displayX             Float           @default(50)
+  displayY             Float           @default(50)
+  assemblyGroup        String?
+  assemblyPosition     String?
   connectedArtifactKey String?
-  chapterOrdinal Int?
-  campaign    Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
-  awards      ArtifactAward[]
+  chapterOrdinal       Int?
+  campaign             Campaign        @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  awards               ArtifactAward[]
+
   @@unique([campaignId, key])
 }
 
 model ArtifactAward {
-  id          String   @id @default(cuid())
-  campaignId  String
-  artifactId  String
-  eventId     String?  @unique
-  awardedAt   DateTime @default(now())
-  campaign    Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
-  artifact    Artifact @relation(fields: [artifactId], references: [id], onDelete: Cascade)
+  id         String   @id @default(cuid())
+  campaignId String
+  artifactId String
+  eventId    String?  @unique
+  awardedAt  DateTime @default(now())
+  campaign   Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  artifact   Artifact @relation(fields: [artifactId], references: [id], onDelete: Cascade)
+
   @@unique([campaignId, artifactId])
 }
 
 model SideQuest {
-  id          String   @id @default(cuid())
-  campaignId  String
-  key         String
-  title       String
-  state       String   @default("UNDISCOVERED")
-  safeTeaser  String?
-  description String?
-  rewardType  String?
-  rewardLabel String?
+  id                String               @id @default(cuid())
+  campaignId        String
+  key               String
+  title             String
+  state             String               @default("UNDISCOVERED")
+  safeTeaser        String?
+  description       String?
+  rewardType        String?
+  rewardLabel       String?
   completionSummary String?
-  chapterOrdinal Int?
-  mapLocationKey String?
-  artifactKey String?
-  completedAt DateTime?
-  campaign    Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
-  objectives  SideQuestObjective[]
+  chapterOrdinal    Int?
+  mapLocationKey    String?
+  artifactKey       String?
+  completedAt       DateTime?
+  campaign          Campaign             @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  objectives        SideQuestObjective[]
+
   @@unique([campaignId, key])
 }
 
 model SideQuestObjective {
-  id          String   @id @default(cuid())
+  id          String    @id @default(cuid())
   sideQuestId String
   ordinal     Int
   body        String
-  complete    Boolean  @default(false)
+  complete    Boolean   @default(false)
   sideQuest   SideQuest @relation(fields: [sideQuestId], references: [id], onDelete: Cascade)
+
   @@unique([sideQuestId, ordinal])
 }
 
 model JournalEntry {
-  id          String   @id @default(cuid())
-  campaignId  String
-  title       String
-  body        String
-  kind        String   @default("ANNOTATION")
-  eventId     String?  @unique
+  id             String    @id @default(cuid())
+  campaignId     String
+  title          String
+  body           String
+  kind           String    @default("ANNOTATION")
+  eventId        String?   @unique
   chapterOrdinal Int?
-  releasedAt  DateTime?
-  createdAt   DateTime @default(now())
-  campaign    Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  releasedAt     DateTime?
+  createdAt      DateTime  @default(now())
+  campaign       Campaign  @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+
   @@index([campaignId, releasedAt])
 }
 
 model MapLocation {
-  id          String   @id @default(cuid())
-  campaignId  String
-  key         String
-  name        String
-  safeLabel   String?
-  regionLabel String
-  locationType String @default("STORY")
-  state       String   @default("UNKNOWN")
-  description String?
-  exactness   String   @default("APPROXIMATE")
+  id             String    @id @default(cuid())
+  campaignId     String
+  key            String
+  name           String
+  safeLabel      String?
+  regionLabel    String
+  locationType   String    @default("STORY")
+  state          String    @default("UNKNOWN")
+  description    String?
+  exactness      String    @default("APPROXIMATE")
   chapterOrdinal Int?
-  sideQuestKey String?
-  x           Float
-  y           Float
-  mobileX     Float?
-  mobileY     Float?
-  revealedAt  DateTime?
-  completedAt DateTime?
-  campaign    Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  sideQuestKey   String?
+  x              Float
+  y              Float
+  mobileX        Float?
+  mobileY        Float?
+  revealedAt     DateTime?
+  completedAt    DateTime?
+  campaign       Campaign  @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+
   @@unique([campaignId, key])
 }
 
 model MapRoute {
-  id          String   @id @default(cuid())
-  campaignId  String
-  key         String
-  fromKey     String
-  toKey       String
-  ordinal     Int
-  state       String   @default("HIDDEN")
-  annotation  String?
-  revealedAt  DateTime?
-  campaign    Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  id         String    @id @default(cuid())
+  campaignId String
+  key        String
+  fromKey    String
+  toKey      String
+  ordinal    Int
+  state      String    @default("HIDDEN")
+  annotation String?
+  revealedAt DateTime?
+  campaign   Campaign  @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+
   @@unique([campaignId, key])
   @@index([campaignId, ordinal])
 }
 
 model ProgressEvent {
-  id             String   @id @default(cuid())
-  campaignId     String
-  type           String
-  payload        String
-  actor          String
-  sequence       Int
-  version        Int      @default(1)
-  releaseAt      DateTime @default(now())
-  createdAt      DateTime @default(now())
+  id              String   @id @default(cuid())
+  campaignId      String
+  type            String
+  payload         String
+  actor           String
+  sequence        Int
+  version         Int      @default(1)
+  releaseAt       DateTime @default(now())
+  createdAt       DateTime @default(now())
   reversesEventId String?
-  supersededById String?
-  campaign       Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  supersededById  String?
+  campaign        Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+
   @@unique([campaignId, sequence])
   @@index([campaignId, releaseAt])
 }
 
 model CampaignSnapshot {
-  id          String   @id @default(cuid())
-  campaignId  String
-  sequence    Int
-  version     Int      @default(1)
-  state       String
-  createdAt   DateTime @default(now())
-  campaign    Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  id         String   @id @default(cuid())
+  campaignId String
+  sequence   Int
+  version    Int      @default(1)
+  state      String
+  createdAt  DateTime @default(now())
+  campaign   Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+
   @@unique([campaignId, sequence])
 }
 
 model AdminAuditLog {
-  id          String   @id @default(cuid())
-  campaignId  String
-  userId      String?
-  action      String
-  metadata    String
-  createdAt   DateTime @default(now())
-  campaign    Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
-  user        GameMasterUser? @relation(fields: [userId], references: [id], onDelete: SetNull)
+  id         String          @id @default(cuid())
+  campaignId String
+  userId     String?
+  action     String
+  metadata   String
+  createdAt  DateTime        @default(now())
+  campaign   Campaign        @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  user       GameMasterUser? @relation(fields: [userId], references: [id], onDelete: SetNull)
+
   @@index([campaignId, createdAt])
 }
 
 model AudioPreference {
-  id             String   @id @default(cuid())
-  playerAccessId String   @unique
-  muted          Boolean  @default(false)
-  masterVolume   Float    @default(0.45)
-  ambientVolume  Float    @default(0.25)
-  effectsVolume  Float    @default(0.55)
-  motionMode     String   @default("SYSTEM")
-  textScale      Float    @default(1)
-  ambientEffects Boolean  @default(true)
-  textureIntensity Float  @default(1)
-  fullscreenPreferred Boolean @default(false)
-  updatedAt      DateTime @updatedAt
-  playerAccess   PlayerAccess @relation(fields: [playerAccessId], references: [id], onDelete: Cascade)
+  id                  String       @id @default(cuid())
+  playerAccessId      String       @unique
+  muted               Boolean      @default(false)
+  masterVolume        Float        @default(0.45)
+  ambientVolume       Float        @default(0.25)
+  effectsVolume       Float        @default(0.55)
+  motionMode          String       @default("SYSTEM")
+  textScale           Float        @default(1)
+  ambientEffects      Boolean      @default(true)
+  textureIntensity    Float        @default(1)
+  fullscreenPreferred Boolean      @default(false)
+  updatedAt           DateTime     @updatedAt
+  playerAccess        PlayerAccess @relation(fields: [playerAccessId], references: [id], onDelete: Cascade)
 }
 
 model ViewedContent {
-  id             String   @id @default(cuid())
+  id             String       @id @default(cuid())
   playerAccessId String
   contentType    String
   contentKey     String
-  viewedAt       DateTime @default(now())
+  viewedAt       DateTime     @default(now())
   playerAccess   PlayerAccess @relation(fields: [playerAccessId], references: [id], onDelete: Cascade)
+
   @@unique([playerAccessId, contentType, contentKey])
   @@index([playerAccessId, viewedAt])
 }
 
 model ContentVersion {
-  id          String   @id @default(cuid())
+  id          String    @id @default(cuid())
   key         String
   version     Int
   checksum    String
   publishedAt DateTime?
-  createdAt   DateTime @default(now())
+  createdAt   DateTime  @default(now())
+
   @@unique([key, version])
 }
 
 model SaveStateSnapshot {
-  id          String   @id @default(cuid())
-  campaignId  String
-  sequence    Int
-  state       String
-  reason      String
-  createdAt   DateTime @default(now())
-  campaign    Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  id         String   @id @default(cuid())
+  campaignId String
+  sequence   Int
+  state      String
+  reason     String
+  createdAt  DateTime @default(now())
+  campaign   Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+
   @@index([campaignId, sequence])
 }
 
 model ViewedCeremony {
-  id          String   @id @default(cuid())
-  campaignId  String
-  deviceId    String
-  eventId     String
-  viewedAt    DateTime @default(now())
+  id         String   @id @default(cuid())
+  campaignId String
+  deviceId   String
+  eventId    String
+  viewedAt   DateTime @default(now())
+
   @@unique([campaignId, deviceId, eventId])
 }
 
@@ -335,5 +356,401 @@ model LoginAttempt {
   fingerprint String
   succeeded   Boolean
   createdAt   DateTime @default(now())
+
   @@index([fingerprint, createdAt])
+}
+
+// Tall Tale Studio is deliberately additive. The original Campaign models above
+// continue to power the existing Forever Treasure experience while authored tales
+// use an immutable publish-and-session model.
+model TallTale {
+  id                       String                 @id @default(cuid())
+  slug                     String                 @unique
+  title                    String
+  subtitle                 String?
+  shortDescription         String?
+  longDescription          String?
+  coverAssetId             String?
+  theme                    String                 @default("CARTOGRAPHERS_TABLE")
+  status                   String                 @default("DRAFT")
+  visibility               String                 @default("PRIVATE")
+  creatorId                String
+  currentDraftRevisionId   String?
+  latestPublishedVersionId String?
+  playerCountMin           Int                    @default(1)
+  playerCountMax           Int                    @default(4)
+  estimatedDuration        Int?
+  contentWarnings          String?
+  sortOrder                Int                    @default(0)
+  featured                 Boolean                @default(false)
+  archivedAt               DateTime?
+  createdAt                DateTime               @default(now())
+  updatedAt                DateTime               @updatedAt
+  drafts                   TaleDraft[]
+  versions                 PublishedTaleVersion[]
+  assets                   TaleAsset[]
+  collections              TaleAssetCollection[]
+  locations                TaleLocation[]
+  storyArtifacts           TaleArtifact[]
+  sessions                 TaleSession[]
+
+  @@index([status, visibility, sortOrder])
+  @@index([creatorId, updatedAt])
+}
+
+model TaleDraft {
+  id                        String        @id @default(cuid())
+  taleId                    String
+  revisionNumber            Int           @default(1)
+  basedOnPublishedVersionId String?
+  createdBy                 String
+  autosaveVersion           Int           @default(1)
+  validationState           String        @default("NOT_VALIDATED")
+  validationSummary         String        @default("{}")
+  lastValidatedAt           DateTime?
+  createdAt                 DateTime      @default(now())
+  updatedAt                 DateTime      @updatedAt
+  tale                      TallTale      @relation(fields: [taleId], references: [id], onDelete: Cascade)
+  chapters                  TaleChapter[]
+
+  @@unique([taleId, revisionNumber])
+  @@index([taleId, updatedAt])
+}
+
+model TaleChapter {
+  id                String       @id @default(cuid())
+  draftRevisionId   String
+  title             String
+  subtitle          String?
+  description       String?
+  orderIndex        Int
+  coverAssetId      String?
+  estimatedDuration Int?
+  entryBlockId      String?
+  completionBlockId String?
+  isOptional        Boolean      @default(false)
+  metadata          String       @default("{}")
+  createdAt         DateTime     @default(now())
+  updatedAt         DateTime     @updatedAt
+  draft             TaleDraft    @relation(fields: [draftRevisionId], references: [id], onDelete: Cascade)
+  blocks            StoryBlock[]
+
+  @@unique([draftRevisionId, orderIndex])
+  @@index([draftRevisionId])
+}
+
+model StoryBlock {
+  id            String            @id @default(cuid())
+  chapterId     String
+  blockType     String
+  title         String
+  internalLabel String?
+  orderIndex    Int
+  configuration String            @default("{}")
+  presentation  String            @default("{}")
+  completion    String            @default("{}")
+  nextBlockId   String?
+  creatorNotes  String?
+  isEnabled     Boolean           @default(true)
+  schemaVersion Int               @default(1)
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @updatedAt
+  chapter       TaleChapter       @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+  outgoing      BlockConnection[] @relation("BlockConnectionSource")
+  incoming      BlockConnection[] @relation("BlockConnectionTarget")
+
+  @@unique([chapterId, orderIndex])
+  @@index([chapterId, blockType])
+}
+
+model BlockConnection {
+  id                  String     @id @default(cuid())
+  sourceBlockId       String
+  targetBlockId       String
+  connectionType      String     @default("DEFAULT")
+  conditionExpression String?
+  label               String?
+  orderIndex          Int        @default(0)
+  createdAt           DateTime   @default(now())
+  source              StoryBlock @relation("BlockConnectionSource", fields: [sourceBlockId], references: [id], onDelete: Cascade)
+  target              StoryBlock @relation("BlockConnectionTarget", fields: [targetBlockId], references: [id], onDelete: Cascade)
+
+  @@unique([sourceBlockId, targetBlockId, connectionType])
+  @@index([targetBlockId])
+}
+
+model PublishedTaleVersion {
+  id              String        @id @default(cuid())
+  taleId          String
+  versionNumber   Int
+  versionLabel    String
+  publishedAt     DateTime      @default(now())
+  publishedBy     String
+  releaseNotes    String?
+  contentSnapshot String
+  schemaVersion   Int           @default(1)
+  checksum        String
+  isCurrent       Boolean       @default(true)
+  tale            TallTale      @relation(fields: [taleId], references: [id], onDelete: Cascade)
+  sessions        TaleSession[]
+
+  @@unique([taleId, versionNumber])
+  @@index([taleId, isCurrent])
+}
+
+model TaleAsset {
+  id               String                    @id @default(cuid())
+  taleId           String
+  mediaType        String
+  displayName      String
+  description      String?
+  originalFilename String
+  currentVariantId String?
+  mimeType         String
+  fileSize         Int
+  width            Int?
+  height           Int?
+  duration         Float?
+  checksum         String
+  createdBy        String
+  createdAt        DateTime                  @default(now())
+  updatedAt        DateTime                  @updatedAt
+  deletedAt        DateTime?
+  tale             TallTale                  @relation(fields: [taleId], references: [id], onDelete: Cascade)
+  variants         TaleAssetVariant[]
+  tags             TaleAssetTagLink[]
+  roles            TaleAssetRole[]
+  collectionItems  TaleAssetCollectionItem[]
+
+  @@unique([taleId, checksum])
+  @@index([taleId, mediaType, deletedAt])
+}
+
+model TaleAssetVariant {
+  id              String    @id @default(cuid())
+  assetId         String
+  role            String
+  storageKey      String    @unique
+  mimeType        String
+  fileSize        Int
+  width           Int?
+  height          Int?
+  duration        Float?
+  checksum        String
+  processingState String    @default("READY")
+  createdAt       DateTime  @default(now())
+  asset           TaleAsset @relation(fields: [assetId], references: [id], onDelete: Cascade)
+
+  @@index([assetId, role, createdAt])
+}
+
+model TaleAssetTag {
+  id        String             @id @default(cuid())
+  taleId    String
+  name      String
+  createdAt DateTime           @default(now())
+  assets    TaleAssetTagLink[]
+
+  @@unique([taleId, name])
+}
+
+model TaleAssetTagLink {
+  assetId String
+  tagId   String
+  asset   TaleAsset    @relation(fields: [assetId], references: [id], onDelete: Cascade)
+  tag     TaleAssetTag @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([assetId, tagId])
+  @@index([tagId])
+}
+
+model TaleAssetRole {
+  id        String    @id @default(cuid())
+  assetId   String
+  role      String
+  createdAt DateTime  @default(now())
+  asset     TaleAsset @relation(fields: [assetId], references: [id], onDelete: Cascade)
+
+  @@unique([assetId, role])
+}
+
+model TaleAssetCollection {
+  id             String                    @id @default(cuid())
+  taleId         String
+  name           String
+  description    String?
+  collectionType String                    @default("GENERAL")
+  locationId     String?
+  artifactId     String?
+  createdAt      DateTime                  @default(now())
+  updatedAt      DateTime                  @updatedAt
+  tale           TallTale                  @relation(fields: [taleId], references: [id], onDelete: Cascade)
+  items          TaleAssetCollectionItem[]
+
+  @@unique([taleId, name])
+}
+
+model TaleAssetCollectionItem {
+  id           String              @id @default(cuid())
+  collectionId String
+  assetId      String
+  label        String?
+  orderIndex   Int                 @default(0)
+  metadata     String              @default("{}")
+  createdAt    DateTime            @default(now())
+  collection   TaleAssetCollection @relation(fields: [collectionId], references: [id], onDelete: Cascade)
+  asset        TaleAsset           @relation(fields: [assetId], references: [id], onDelete: Cascade)
+
+  @@unique([collectionId, assetId, label])
+  @@index([assetId])
+}
+
+model TaleLocation {
+  id                      String    @id @default(cuid())
+  taleId                  String
+  name                    String
+  slug                    String
+  region                  String?
+  generalDescription      String?
+  playerFacingDescription String?
+  captainNotes            String?
+  mapAssetId              String?
+  displayAssetId          String?
+  referenceCollectionId   String?
+  verificationProfile     String    @default("{}")
+  orderIndex              Int       @default(0)
+  archivedAt              DateTime?
+  createdAt               DateTime  @default(now())
+  updatedAt               DateTime  @updatedAt
+  tale                    TallTale  @relation(fields: [taleId], references: [id], onDelete: Cascade)
+
+  @@unique([taleId, slug])
+  @@index([taleId, orderIndex])
+}
+
+model TaleArtifact {
+  id                      String    @id @default(cuid())
+  taleId                  String
+  name                    String
+  shortDescription        String?
+  loreDescription         String?
+  ordinaryGameObjectLabel String?
+  artworkAssetId          String?
+  revealVideoAssetId      String?
+  modelAssetId            String?
+  inventoryCategory       String    @default("RELIC")
+  collectionGroup         String?
+  sortOrder               Int       @default(0)
+  persistentAfterUnlock   Boolean   @default(true)
+  archivedAt              DateTime?
+  createdAt               DateTime  @default(now())
+  updatedAt               DateTime  @updatedAt
+  tale                    TallTale  @relation(fields: [taleId], references: [id], onDelete: Cascade)
+
+  @@index([taleId, sortOrder])
+}
+
+model TaleSession {
+  id                   String                    @id @default(cuid())
+  taleId               String
+  publishedVersionId   String?
+  ownerLabel           String?
+  captainId            String?
+  accessTokenHash      String                    @unique
+  status               String                    @default("ACTIVE")
+  currentChapterId     String?
+  currentBlockId       String?
+  currentSequence      Int                       @default(0)
+  previewMode          Boolean                   @default(false)
+  draftRevisionId      String?
+  previewSnapshot      String?
+  variables            String                    @default("{}")
+  inventory            String                    @default("[]")
+  startedAt            DateTime                  @default(now())
+  updatedAt            DateTime                  @updatedAt
+  completedAt          DateTime?
+  expiresAt            DateTime?
+  lastHeartbeatAt      DateTime?
+  tale                 TallTale                  @relation(fields: [taleId], references: [id], onDelete: Cascade)
+  version              PublishedTaleVersion?     @relation(fields: [publishedVersionId], references: [id])
+  events               TaleSessionEvent[]
+  verificationRequests TaleVerificationRequest[]
+  helperPairings       TaleHelperPairing[]
+
+  @@index([taleId, status, previewMode])
+  @@index([publishedVersionId, status])
+}
+
+model TaleSessionEvent {
+  id                    String      @id @default(cuid())
+  sessionId             String
+  publishedVersionId    String
+  blockId               String?
+  eventType             String
+  sourceType            String
+  sourceId              String?
+  idempotencyKey        String      @unique
+  payload               String      @default("{}")
+  sequence              Int
+  correlationId         String?
+  verificationRequestId String?
+  createdAt             DateTime    @default(now())
+  session               TaleSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  @@unique([sessionId, sequence])
+  @@index([sessionId, createdAt])
+}
+
+model TaleVerificationRequest {
+  id                    String                  @id @default(cuid())
+  sessionId             String
+  blockId               String
+  providerType          String
+  status                String                  @default("PENDING")
+  requestedAt           DateTime                @default(now())
+  resolvedAt            DateTime?
+  expiresAt             DateTime?
+  configurationSnapshot String                  @default("{}")
+  providerCorrelationId String?
+  satisfiedByEventId    String?
+  session               TaleSession             @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  submissions           TaleVerificationEvent[]
+
+  @@index([sessionId, status, requestedAt])
+  @@index([blockId, status])
+}
+
+model TaleVerificationEvent {
+  id                 String                  @id @default(cuid())
+  requestId          String
+  eventId            String                  @unique
+  idempotencyKey     String                  @unique
+  schemaVersion      Int                     @default(1)
+  providerType       String
+  providerInstanceId String?
+  result             String
+  confidence         Float?
+  evidence           String                  @default("{}")
+  observedAt         DateTime
+  accepted           Boolean                 @default(false)
+  rejectionReason    String?
+  createdAt          DateTime                @default(now())
+  request            TaleVerificationRequest @relation(fields: [requestId], references: [id], onDelete: Cascade)
+
+  @@index([requestId, createdAt])
+}
+
+model TaleHelperPairing {
+  id         String      @id @default(cuid())
+  sessionId  String
+  deviceId   String
+  tokenHash  String      @unique
+  status     String      @default("ACTIVE")
+  expiresAt  DateTime
+  lastSeenAt DateTime?
+  revokedAt  DateTime?
+  createdAt  DateTime    @default(now())
+  session    TaleSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  @@index([sessionId, status])
 }

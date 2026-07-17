@@ -20,8 +20,8 @@ vi.mock("page-flip", () => ({
   PageFlip: class {
     current = 0;
     handlers = new Map<string, (event: { data: number | string }) => void>();
-    constructor() {
-      calls.constructors();
+    constructor(host: HTMLElement, options: { flippingTime: number }) {
+      calls.constructors(host, options);
       calls.instance = this;
     }
     loadFromHTML = calls.load;
@@ -91,6 +91,15 @@ describe("PageFlipBook", () => {
     expect(calls.flipTo).toHaveBeenCalledWith(0, "top");
     expect(ref.current?.pageCount()).toBe(3);
     expect(ref.current?.orientation()).toBe("landscape");
+  });
+
+  it("scales the page turn duration for slow-motion physical inspection", async () => {
+    render(<PageFlipBook pages={pages} mode="full" playbackRate={0.25} />);
+    await waitFor(() => expect(calls.constructors).toHaveBeenCalledOnce());
+    expect(calls.constructors).toHaveBeenCalledWith(
+      expect.any(HTMLElement),
+      expect.objectContaining({ flippingTime: 4400 }),
+    );
   });
 
   it("uses an immediate accessible fallback and keyboard-independent controls in reduced mode", () => {
