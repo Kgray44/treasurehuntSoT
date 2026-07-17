@@ -155,26 +155,26 @@
     },
     {
       "archive_path": "Codex_Chats/chats/019f71df-dc7a-7641-a39a-625aba79af02--complete-phase.md",
-      "content_sha256": "8678b076446c4a0045b4abdd477d51997b127a9286a4766ae504b628c29e1c38",
+      "content_sha256": "bcdaa249a93f951df14d7b62bb7559de2236b1cfc083cc5faff772a928a8b7d7",
       "conversation_id": "019f71df-dc7a-7641-a39a-625aba79af02",
       "created_at": "2026-07-17T20:58:47.802Z",
       "first_archived_at": "2026-07-17T21:23:22Z",
-      "last_synchronized_at": "2026-07-17T22:54:07Z",
-      "message_count": 740,
+      "last_synchronized_at": "2026-07-17T23:51:09Z",
+      "message_count": 1280,
       "project_identifier": "treasurehunt",
       "redaction_categories": {
         "connection_string": 2,
-        "login_credential": 2,
-        "secret_assignment": 4
+        "login_credential": 3,
+        "secret_assignment": 15
       },
-      "redactions": 8,
+      "redactions": 20,
       "source_export_timestamp": null,
       "source_identifier": "rollout-2026-07-17T16-58-44-019f71df-dc7a-7641-a39a-625aba79af02.jsonl",
-      "source_sha256": "dd61739e7b7c5b57f8abfedfc0e4ab495d36c8d3b4358cd50732d5e4d32ca964",
+      "source_sha256": "7e0a957aace0e33e191e821fbc23ba0f2c5fa22aedd95d05a523db71848411ff",
       "source_type": "codex_session",
       "status": "active",
       "title": "Complete phase",
-      "updated_at": "2026-07-17T22:54:12.887Z"
+      "updated_at": "2026-07-17T23:51:06.234Z"
     },
     {
       "archive_path": "Codex_Chats/chats/019f71e2-3dcf-76f3-8d0a-2eb6eae88df2--add-development_docs-sync.md",
@@ -200,12 +200,12 @@
     },
     {
       "archive_path": "Codex_Chats/chats/019f71f4-6a13-78e1-a8f6-71f1c052c449--rebuild-journal-page-physics.md",
-      "content_sha256": "c128080703553cab54bda58441948de6eeb708d41c3ab3c46428b523b02e3b43",
+      "content_sha256": "4411b1205dcbc2dabd67655e317697ef56a25b6e778d4b501c32f0449b32c141",
       "conversation_id": "019f71f4-6a13-78e1-a8f6-71f1c052c449",
       "created_at": "2026-07-17T21:21:19.371Z",
       "first_archived_at": "2026-07-17T21:23:22Z",
-      "last_synchronized_at": "2026-07-17T22:54:07Z",
-      "message_count": 554,
+      "last_synchronized_at": "2026-07-17T23:51:09Z",
+      "message_count": 569,
       "project_identifier": "treasurehunt",
       "redaction_categories": {
         "login_credential": 1
@@ -213,14 +213,14 @@
       "redactions": 1,
       "source_export_timestamp": null,
       "source_identifier": "rollout-2026-07-17T17-21-11-019f71f4-6a13-78e1-a8f6-71f1c052c449.jsonl",
-      "source_sha256": "153a4c0a83a8cd78a9561a0c5c8cf71e7f893bb1d9325810cec2b89d13d8373a",
+      "source_sha256": "9cfe1cad3feea1e95694cb88d611c493fdf1e8e6d61655c42e822d9785e6fadb",
       "source_type": "codex_session",
       "status": "active",
       "title": "Rebuild journal page physics",
-      "updated_at": "2026-07-17T22:54:15.039Z"
+      "updated_at": "2026-07-17T22:58:11.818Z"
     }
   ],
-  "last_successful_synchronization_at": "2026-07-17T22:54:07Z",
+  "last_successful_synchronization_at": "2026-07-17T23:51:09Z",
   "migration_history": [
     {
       "schema_version": "1.0",
@@ -247,7 +247,7 @@
   },
   "synchronizer_version": "1.1.0",
   "total_conversation_count": 10,
-  "total_message_count": 5950,
+  "total_message_count": 6505,
   "warnings": [
     "Duplicate source record reconciled for 019eb237-487b-78d0-a637-e4e3bc865430"
   ]
