@@ -1070,25 +1070,35 @@ model VisionWaypointPublication {
 }
 
 model VisionCaptureSession {
-  id                String                 @id @default(cuid())
-  waypointVersionId String
-  purpose           String
-  actorType         String
-  actorId           String?
-  companionVersion  String?
-  captureResolution String?
-  frameRate         Float?
-  durationMs        Int?
-  hardwarePath      String?
-  consentFlags      String                 @default("{}")
-  retentionPolicy   String                 @default("DERIVED_ONLY")
-  status            String                 @default("CREATED")
-  failureReason     String?
-  createdAt         DateTime               @default(now())
-  startedAt         DateTime?
-  completedAt       DateTime?
-  waypointVersion   VisionWaypointVersion  @relation(fields: [waypointVersionId], references: [id], onDelete: Cascade)
-  recordingAssets   VisionRecordingAsset[]
+  id                  String                      @id @default(cuid())
+  sessionKey          String?                     @unique
+  waypointVersionId   String
+  purpose             String
+  actorType           String
+  actorId             String?
+  companionVersion    String?
+  protocolVersion     String?
+  captureApi          String?
+  captureResolution   String?
+  frameRate           Float?
+  durationMs          Int?
+  hardwarePath        String?
+  targetMetadata      String                      @default("{}")
+  qualitySummary      String                      @default("{}")
+  interruptionSummary String                      @default("{}")
+  consentFlags        String                      @default("{}")
+  retentionPolicy     String                      @default("DERIVED_ONLY")
+  manifestVersion     Int                         @default(1)
+  status              String                      @default("CREATED")
+  failureReason       String?
+  createdAt           DateTime                    @default(now())
+  updatedAt           DateTime                    @default(now()) @updatedAt
+  startedAt           DateTime?
+  completedAt         DateTime?
+  waypointVersion     VisionWaypointVersion       @relation(fields: [waypointVersionId], references: [id], onDelete: Cascade)
+  recordingAssets     VisionRecordingAsset[]
+  interruptions       VisionCaptureInterruption[]
+  diagnosticBundles   VisionDiagnosticBundle[]
 
   @@index([waypointVersionId, purpose, createdAt])
   @@index([actorType, actorId, createdAt])
@@ -1102,6 +1112,10 @@ model VisionRecordingAsset {
   storageReference  String
   contentHash       String
   fileSize          Int
+  mediaType         String                @default("video/webm")
+  manifestVersion   Int                   @default(1)
+  artifactManifest  String                @default("{}")
+  durationMs        Int?
   datasetPartition  String                @default("UNASSIGNED")
   truthLabel        String                @default("UNKNOWN")
   creatorLabel      String?
@@ -1116,6 +1130,59 @@ model VisionRecordingAsset {
   @@unique([waypointVersionId, contentHash])
   @@index([captureSessionId])
   @@index([waypointVersionId, datasetPartition, truthLabel])
+}
+
+model VisionCaptureInterruption {
+  id               String               @id @default(cuid())
+  captureSessionId String
+  code             String
+  metadata         String               @default("{}")
+  recoverable      Boolean              @default(true)
+  occurredAt       DateTime             @default(now())
+  captureSession   VisionCaptureSession @relation(fields: [captureSessionId], references: [id], onDelete: Cascade)
+
+  @@index([captureSessionId, occurredAt])
+  @@index([code, occurredAt])
+}
+
+model VisionDiagnosticBundle {
+  id                String                @id @default(cuid())
+  captureSessionId  String?
+  actorType         String
+  actorId           String?
+  bundleReference   String
+  contentHash       String?
+  fileSize          Int
+  metadata          String                @default("{}")
+  containsRawFrames Boolean               @default(false)
+  consentAt         DateTime?
+  expiresAt         DateTime?
+  createdAt         DateTime              @default(now())
+  deletedAt         DateTime?
+  captureSession    VisionCaptureSession? @relation(fields: [captureSessionId], references: [id], onDelete: SetNull)
+
+  @@index([captureSessionId, createdAt])
+  @@index([actorType, actorId, createdAt])
+  @@index([expiresAt, deletedAt])
+}
+
+model VisionCapturePreference {
+  id                  String   @id @default(cuid())
+  ownerType           String
+  ownerId             String
+  deviceInstanceId    String
+  rememberTarget      Boolean  @default(false)
+  selectedTargetHash  String?
+  hotkeyBinding       String   @default("Control+Alt+F9")
+  hotkeyInteraction   String   @default("HOLD")
+  hotkeyEnabled       Boolean  @default(false)
+  previewEnabled      Boolean  @default(true)
+  diagnosticRetention Boolean  @default(false)
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  @@unique([ownerType, ownerId, deviceInstanceId])
+  @@index([ownerType, ownerId, updatedAt])
 }
 
 model VisionRegion {

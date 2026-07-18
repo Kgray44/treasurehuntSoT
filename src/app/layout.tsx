@@ -12,6 +12,7 @@ import "../styles/studio.css";
 import "../styles/tall-tale.css";
 import "../styles/platform.css";
 import "../styles/vision.css";
+import "../styles/companion.css";
 
 export const metadata: Metadata = {
   title: { default: "The Forever Treasure", template: "%s · The Forever Treasure" },

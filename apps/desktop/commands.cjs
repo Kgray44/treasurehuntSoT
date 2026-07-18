@@ -1,7 +1,39 @@
 "use strict";
 
-const allowedCommands = new Set(["vision.getCapabilities", "vision.prepareMockScan", "app.getDiagnostics"]);
-const allowedScenarios = new Set([
+const { validateCommand } = require("../companion/capture-contract.cjs");
+
+const allowedCommands = new Set([
+  "capture.getCapabilities",
+  "capture.listTargets",
+  "capture.selectTarget",
+  "capture.getStatus",
+  "capture.creator.start",
+  "capture.creator.pause",
+  "capture.creator.resume",
+  "capture.creator.stop",
+  "capture.creator.cancel",
+  "capture.creator.list",
+  "capture.creator.delete",
+  "capture.creator.preview",
+  "capture.scan.start",
+  "capture.scan.stop",
+  "capture.scan.cancel",
+  "capture.privacy.pause",
+  "capture.privacy.resume",
+  "capture.hotkey.configure",
+  "capture.hotkey.disable",
+  "capture.pairing.pending",
+  "capture.pairing.approve",
+  "capture.pairing.revoke",
+  "capture.pairing.list",
+  "capture.diagnostic.create",
+  "capture.diagnostic.export",
+  "vision.getCapabilities",
+  "vision.prepareMockScan",
+  "app.getDiagnostics",
+]);
+
+const developmentScenarios = new Set([
   "verified",
   "insufficient",
   "not_at_target",
@@ -12,42 +44,56 @@ const allowedScenarios = new Set([
   "stale_stage",
   "duplicate_result_delivery",
 ]);
-function safeIdentifier(value) {
-  return typeof value === "string" && value.length >= 8 && value.length <= 128 && /^[A-Za-z0-9:_-]+$/.test(value);
+
+function validateLegacyMockPreparation(payload) {
+  const keys = Object.keys(payload);
+  const identifiers = [payload.sessionId, payload.blockId, payload.waypointVersionId];
+  if (
+    keys.length !== 4 ||
+    !["sessionId", "blockId", "waypointVersionId", "scenario"].every((key) => keys.includes(key)) ||
+    !identifiers.every(
+      (value) =>
+        typeof value === "string" &&
+        value.length >= 8 &&
+        value.length <= 160 &&
+        /^[A-Za-z0-9][A-Za-z0-9:._-]*$/.test(value),
+    ) ||
+    !developmentScenarios.has(payload.scenario)
+  )
+    throw new Error("DESKTOP_SCAN_REQUEST_INVALID");
 }
-function executeDesktopCommand(command, payload = {}) {
+
+async function executeDesktopCommand(coordinator, command, payload = {}) {
   if (!allowedCommands.has(command)) throw new Error("DESKTOP_COMMAND_NOT_ALLOWED");
   if (!payload || typeof payload !== "object" || Array.isArray(payload)) throw new Error("DESKTOP_PAYLOAD_INVALID");
-  if (command === "vision.getCapabilities")
+  if (command === "vision.getCapabilities") {
+    validateCommand("capture.getStatus", payload);
+    const capabilities = coordinator.core.getCapabilities();
     return {
       available: true,
       state: "CONNECTED",
-      protocolVersion: "1.0",
-      packageSchemaVersions: [1],
-      capture: false,
-      deterministicMock: true,
+      protocolVersion: capabilities.protocolVersion,
+      capture: capabilities.nativeCapture,
+      deterministicMock: !coordinator.packaged,
+      platform: "DESKTOP",
     };
+  }
   if (command === "vision.prepareMockScan") {
-    if (
-      !safeIdentifier(payload.sessionId) ||
-      !safeIdentifier(payload.blockId) ||
-      !safeIdentifier(payload.waypointVersionId) ||
-      !allowedScenarios.has(payload.scenario)
-    )
-      throw new Error("DESKTOP_SCAN_REQUEST_INVALID");
+    if (coordinator.packaged) throw new Error("DEVELOPMENT_MOCK_DISABLED");
+    validateLegacyMockPreparation(payload);
     return {
       accepted: true,
-      implementation: "B1_DETERMINISTIC_MOCK",
+      implementation: "B1_DETERMINISTIC_MOCK_DEVELOPMENT_ONLY",
       capturesCamera: false,
       accessesFilesystem: false,
     };
   }
-  return {
-    shellVersion: "0.3.0-b1",
-    platform: "windows",
-    protocolVersion: "1.0",
-    packageSchemaVersion: 1,
-    genericNativeCommands: false,
-  };
+  if (command === "app.getDiagnostics") {
+    validateCommand("capture.getStatus", payload);
+    return coordinator.diagnostics();
+  }
+  validateCommand(command, { ...payload });
+  return coordinator.execute(command, payload);
 }
+
 module.exports = { allowedCommands, executeDesktopCommand };

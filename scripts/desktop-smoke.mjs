@@ -21,7 +21,15 @@ child.stderr.on("data", (chunk) => (stderr += chunk.toString()));
 const timeout = setTimeout(() => child.kill(), 60_000);
 const code = await new Promise((resolve) => child.once("close", resolve));
 clearTimeout(timeout);
-if (code !== 0 || !stdout.includes('"area":"desktop-smoke"') || !stdout.includes('"loaded":true')) {
+const resultLine = stdout.split(/\r?\n/).find((line) => line.includes('"area":"desktop-smoke"'));
+const result = resultLine ? JSON.parse(resultLine) : null;
+if (
+  code !== 0 ||
+  !result?.loaded ||
+  result.desktopAdapterScan?.result !== "EVIDENCE_CAPTURED" ||
+  result.desktopAdapterScan?.rawFramesCleared !== true ||
+  result.desktopAdapterScan?.verificationResult !== null
+) {
   throw new Error(`Packaged desktop smoke failed (exit ${code}).\nstdout:\n${stdout}\nstderr:\n${stderr}`);
 }
 console.log(stdout.trim());

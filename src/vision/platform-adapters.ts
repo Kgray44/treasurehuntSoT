@@ -206,10 +206,8 @@ declare global {
     tallTaleDesktop?: {
       platform: "windows";
       shellVersion: string;
-      invoke(
-        command: "vision.getCapabilities" | "vision.prepareMockScan" | "app.getDiagnostics",
-        payload: Record<string, unknown>,
-      ): Promise<unknown>;
+      invoke(command: string, payload: Record<string, unknown>): Promise<unknown>;
+      subscribe(callback: (event: { eventName: string; payload: unknown }) => void): () => void;
     };
   }
 }

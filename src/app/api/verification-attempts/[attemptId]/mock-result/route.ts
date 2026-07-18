@@ -7,6 +7,7 @@ import { requireVisionFeature } from "@/vision/feature-flags";
 export async function POST(request: Request, context: { params: Promise<{ attemptId: string }> }) {
   try {
     requireVisionFeature("player_hold_to_scan");
+    requireVisionFeature("mock_verification_consumer");
     const attemptId = (await context.params).attemptId;
     const record = await db.verificationAttempt.findUnique({
       where: { id: attemptId },

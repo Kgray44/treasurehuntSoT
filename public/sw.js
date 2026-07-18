@@ -6,7 +6,16 @@ const SHELL = [
   "/icons/forever-treasure-192.svg",
   "/icons/forever-treasure-512.svg",
 ];
-const SENSITIVE_PREFIXES = ["/api/", "/studio", "/captain", "/player", "/play/", "/quartermaster", "/join/"];
+const SENSITIVE_PREFIXES = [
+  "/api/",
+  "/studio",
+  "/captain",
+  "/player",
+  "/play/",
+  "/quartermaster",
+  "/join/",
+  "/vision-companion",
+];
 self.addEventListener("install", (event) =>
   event.waitUntil(caches.open(CACHE_VERSION).then((cache) => cache.addAll(SHELL))),
 );

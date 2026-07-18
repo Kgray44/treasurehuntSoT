@@ -307,7 +307,7 @@ test("Studio lifecycle, browser scan, duplicate/stale guards, desktop path, and 
     protocolVersion: "1.0",
     packageSchemaVersion: 1,
     featureFlags: {
-      creator_capture: false,
+      creator_capture: true,
       vision_build_engine: false,
       automatic_vision_progression: false,
       live_external_ar: false,
