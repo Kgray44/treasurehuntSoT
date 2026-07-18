@@ -4,7 +4,10 @@ import { createHash, randomBytes } from "node:crypto";
 
 const db = new PrismaClient();
 const hash = (value: string) => createHash("sha256").update(value).digest("hex");
-const preset = process.argv[2] ?? process.env.DEV_PRESET ?? "awaiting-first-release";
+const seedArguments = process.argv.slice(2);
+const preserveExisting = seedArguments.includes("--ensure");
+const preset =
+  seedArguments.find((argument) => !argument.startsWith("--")) ?? process.env.DEV_PRESET ?? "awaiting-first-release";
 const supportedPresets = new Set([
   "awaiting-first-release",
   "active-chapter",
@@ -41,6 +44,16 @@ async function main() {
   });
 
   const prior = await db.campaign.findUnique({ where: { slug: "development-forever-treasure" } });
+  if (prior && preserveExisting) {
+    await db.campaign.update({
+      where: { id: prior.id },
+      data: { accessCodeHash: await bcrypt.hash(accessCode, 12) },
+    });
+    console.log(
+      `Existing development voyage preserved at sequence ${prior.currentSequence}; local access credentials were refreshed.`,
+    );
+    return;
+  }
   if (prior) await db.campaign.delete({ where: { id: prior.id } });
   await db.chapterContent.deleteMany({ where: { developmentOnly: true } });
   const expanded = !["awaiting-first-release", "all-empty"].includes(preset);
@@ -431,6 +444,26 @@ async function main() {
     where: { key_version: { key: `development-companion-${preset}`, version: 1 } },
     update: { checksum: hash(JSON.stringify(chapters)) },
     create: { key: `development-companion-${preset}`, version: 1, checksum: hash(JSON.stringify(chapters)) },
+  });
+  await db.preparedAction.create({
+    data: {
+      campaignId: campaign.id,
+      command: "REVEAL_MAP",
+      targetKey: "moonwake-cay",
+      payload: "{}",
+      status: "PREPARED",
+      expectedSequence: eventTemplates.length,
+      preparedBy: user.id,
+    },
+  });
+  await db.adminAuditLog.create({
+    data: {
+      campaignId: campaign.id,
+      userId: user.id,
+      action: "DEVELOPMENT_SEED",
+      metadata: JSON.stringify({ preset, fixture: "command-center-ready" }),
+      reason: "Generic Phase 3 development fixture",
+    },
   });
   console.log(
     `Development preset '${preset}' ready for ${campaign.slug}; GM user: ${user.username}. Credentials come from local environment values.`,

@@ -27,6 +27,7 @@ export function PlayerExperience({ initialSnapshot }: { initialSnapshot: PublicS
   const [snapshot, setSnapshot] = useState(initialSnapshot);
   const [view, setView] = useState<View>("journal");
   const [opened, setOpened] = useState(false);
+  const [entryReady, setEntryReady] = useState(false);
   const [muted, setMuted] = useState(false);
   const [volume, setVolume] = useState(0.4);
   const [connection, setConnection] = useState<"connecting" | "live" | "adrift">("connecting");
@@ -65,6 +66,13 @@ export function PlayerExperience({ initialSnapshot }: { initialSnapshot: PublicS
   );
   const ceremony = useCeremony({ reducedMotion: reduced, gentleMotion: motionMode === "gentle", onComplete: complete });
   useEffect(() => {
+    const key = `forever-journal-open:${snapshot.campaign.slug}`;
+    queueMicrotask(() => {
+      setOpened(sessionStorage.getItem(key) === "open");
+      setEntryReady(true);
+    });
+  }, [snapshot.campaign.slug]);
+  useEffect(() => {
     const media = matchMedia("(prefers-reduced-motion: reduce)");
     const sync = () =>
       setMotionMode(
@@ -83,6 +91,30 @@ export function PlayerExperience({ initialSnapshot }: { initialSnapshot: PublicS
     media.addEventListener("change", sync);
     return () => media.removeEventListener("change", sync);
   }, []);
+  useEffect(() => {
+    const report = (disconnected = false) =>
+      fetch(`/api/player/${snapshot.campaign.slug}/presence`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          deviceId: deviceId(),
+          route: `${location.pathname}#${view}`,
+          visibility: document.visibilityState,
+          acknowledgedSequence: snapshot.sequence,
+          disconnected,
+        }),
+        keepalive: disconnected,
+      }).catch(() => undefined);
+    void report();
+    const interval = window.setInterval(() => void report(), 20_000);
+    const visibility = () => void report();
+    document.addEventListener("visibilitychange", visibility);
+    return () => {
+      window.clearInterval(interval);
+      document.removeEventListener("visibilitychange", visibility);
+      void report(true);
+    };
+  }, [snapshot.campaign.slug, snapshot.sequence, view]);
   useEffect(() => {
     const readLocation = () => {
       const requested = new URLSearchParams(location.search).get("section") as View | null;
@@ -193,6 +225,7 @@ export function PlayerExperience({ initialSnapshot }: { initialSnapshot: PublicS
     if (!audioContext.current) audioContext.current = new AudioContext();
     void audioContext.current.resume();
     setOpened(true);
+    sessionStorage.setItem(`forever-journal-open:${snapshot.campaign.slug}`, "open");
     const key = `forever-intro:${snapshot.campaign.slug}`;
     const firstArrival = forceFull || sessionStorage.getItem(key) !== "seen";
     sessionStorage.setItem(key, "seen");
@@ -348,7 +381,7 @@ export function PlayerExperience({ initialSnapshot }: { initialSnapshot: PublicS
           </button>
         ))}
       </nav>
-      {!opened && (
+      {entryReady && !opened && (
         <div className="journal-opening">
           <button className="wax-open" onClick={() => void openJournal()}>
             <span>F</span>
@@ -359,7 +392,7 @@ export function PlayerExperience({ initialSnapshot }: { initialSnapshot: PublicS
       )}
       <div
         className={`workspace ${!(["journal", "chart", "treasures"] as View[]).includes(view) ? "section-hidden" : ""}`}
-        aria-hidden={!opened || !(["journal", "chart", "treasures"] as View[]).includes(view)}
+        aria-hidden={!entryReady || !opened || !(["journal", "chart", "treasures"] as View[]).includes(view)}
       >
         <aside className={`chart-panel panel ${view === "chart" ? "mobile-current" : ""}`}>
           <PanelTitle index="I" title="Voyage chart" />

@@ -25,6 +25,7 @@ const publicKeys: Partial<Record<ProgressEventType, readonly string[]>> = {
   SIDE_QUEST_COMPLETED: ["key", "title", "rewardLabel"],
   JOURNAL_ENTRY_ADDED: ["key", "title", "chapterOrdinal"],
   JOURNAL_ANNOTATION_ADDED: ["key", "title", "chapterOrdinal"],
+  NARRATIVE_MESSAGE_RELEASED: ["id", "title"],
   PLAYER_LOG_ENTRY_ADDED: ["key", "title"],
   FINALE_TEASED: ["state"],
   FINALE_REQUIREMENT_UPDATED: ["key"],

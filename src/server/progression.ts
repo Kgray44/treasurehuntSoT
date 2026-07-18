@@ -94,7 +94,7 @@ export async function executeProgressionAction(
   slug: string,
   action: Action,
   userId: string,
-  options: { targetKey?: string; value?: string } = {},
+  options: { targetKey?: string; value?: string; correlationId?: string; reason?: string } = {},
 ) {
   const result = await db.$transaction(async (tx) => {
     const campaign = await tx.campaign.findUniqueOrThrow({
@@ -119,6 +119,9 @@ export async function executeProgressionAction(
     let type: ProgressEventType;
     let payload: Record<string, unknown> = {};
     let reversesEventId: string | undefined;
+
+    if (campaign.status === "PAUSED" && !["RESUME", "UNDO_LAST"].includes(action))
+      throw new Error("The campaign is paused. Resume it before releasing progression.");
 
     if (action === "UNDO_LAST") {
       const saved = await tx.saveStateSnapshot.findFirst({
@@ -231,7 +234,7 @@ export async function executeProgressionAction(
         type = "CHAPTER_SOLVED";
         payload = { ordinal: chapter.ordinal };
       } else if (action === "AWARD_ARTIFACT") {
-        const artifact = campaign.artifacts[0];
+        const artifact = campaign.artifacts.find((item) => item.key === options.targetKey) ?? campaign.artifacts[0];
         if (!artifact) throw new Error("No artifact is configured.");
         const existingAward = await tx.artifactAward.findUnique({
           where: { campaignId_artifactId: { campaignId: campaign.id, artifactId: artifact.id } },
@@ -374,7 +377,9 @@ export async function executeProgressionAction(
         campaignId: campaign.id,
         userId,
         action,
-        metadata: JSON.stringify({ eventId: event.id, sequence: event.sequence }),
+        correlationId: options.correlationId,
+        reason: options.reason,
+        metadata: JSON.stringify({ eventId: event.id, sequence: event.sequence, targetKey: options.targetKey }),
       },
     });
     return { campaignId: campaign.id, event };

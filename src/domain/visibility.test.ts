@@ -30,4 +30,15 @@ describe("player event serialization", () => {
       releaseAt: "2026-07-16T12:00:00.000Z",
     });
   });
+
+  it("keeps released dispatch metadata but never broadcasts its body", () => {
+    expect(
+      sanitizeEventPayload("NARRATIVE_MESSAGE_RELEASED", {
+        id: "dispatch-1",
+        title: "Safe title",
+        body: "Player-visible body is loaded from the authorized snapshot.",
+        internalNote: "never broadcast",
+      }),
+    ).toEqual({ id: "dispatch-1", title: "Safe title" });
+  });
 });

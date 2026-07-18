@@ -138,9 +138,9 @@ test("complete live voyage workflow is private, ordered, resilient, and theatric
   expect(Date.now() - gentleStarted).toBeLessThan(5_500);
 
   await player.reload();
-  await expect(player.getByRole("button", { name: "Open the journal" })).toBeVisible();
-  await player.getByRole("button", { name: "Open the journal" }).click();
   await expect(player.getByRole("heading", { name: "The Lantern Test" })).toBeVisible();
+  await expect(player.getByRole("button", { name: "Open the journal" })).toHaveCount(0);
+  await expect(player.locator(".voyage-introduction")).toHaveCount(0);
   await expect(player.getByText("Releasing the first seal")).toHaveCount(0);
 
   await gmAction(gm, "Award Test Artifact");
@@ -150,8 +150,8 @@ test("complete live voyage workflow is private, ordered, resilient, and theatric
 
   await gmAction(gm, "Mark Chapter Solved");
   await gm.getByRole("button", { name: "Mark Chapter Solved", exact: true }).click();
-  await gm.getByRole("button", { name: "Confirm action" }).click();
-  await expect(gm.locator(".form-error")).toContainText("Only an active chapter");
+  await expect(gm.getByText("Only the active chapter can be solved.")).toBeVisible();
+  await expect(gm.getByRole("button", { name: "Confirm action" })).toBeDisabled();
   await gm.getByRole("button", { name: "Cancel" }).click();
   await gmAction(gm, "Undo Last Progression Action");
   await expect(gm.getByText("ACTIVE", { exact: true }).first()).toBeVisible();

@@ -44,6 +44,7 @@ yarn-error.log*
 
 # local startup state and runtime mirrors
 /.forever-dev.json
+/.forever-lock.sha
 /.runtime/
 
 # browser and visual test artifacts

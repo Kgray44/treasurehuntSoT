@@ -8,7 +8,7 @@ Double-click `Start Forever Treasure Dev.cmd` or run `npm run dev:full`. The ide
 2. Creates `.env` only when absent; existing local configuration is preserved and validated.
 3. Mirrors network-share checkouts to `%LOCALAPPDATA%\ForeverTreasureCompanion\development` while keeping dependencies, databases, logs, and generated artifacts out of Git.
 4. Runs `npm ci` only when `package-lock.json` changed or dependencies are missing.
-5. Generates Prisma, applies the versioned SQLite migration, and runs the idempotent development seed.
+5. Generates Prisma, applies the versioned SQLite migrations, and ensures the development fixture exists without replacing an existing campaign. Local access hashes are refreshed from `.env`, while voyage progress, history, staging, and audit state remain intact.
 6. Refuses to take an occupied port, starts the server as a hidden recorded process, and waits for an HTTP health response.
 7. Prints the player and GM URLs, disposable credentials, and stop command.
 
@@ -51,6 +51,6 @@ An authorized session on another computer needs only Git, Node/npm, and this rep
 - **Port 3000 is occupied:** stop that process or run `scripts/start-dev.ps1 -Port 3001`. The launcher never kills an unknown listener.
 - **Existing `.env` is incomplete:** the launcher preserves it and identifies each missing key. Add the key; it will not overwrite local secrets.
 - **Startup fails:** inspect `%LOCALAPPDATA%\ForeverTreasureCompanion\development\.forever\logs`.
-- **Database is disposable:** stop the app, remove the ignored local `prisma/dev.db`, and rerun startup. For validation, `npm run validate` always rebuilds `validation.db` from migrations.
+- **Resetting disposable data is explicit:** `npm run db:preset -- awaiting-first-release` intentionally replaces the development fixture. Normal `npm run dev:stop` / `npm run dev:full` cycles preserve it. For validation, `npm run validate` always rebuilds `validation.db` from migrations.
 - **Browser binaries are missing:** `npm run validate` installs pinned Chromium and WebKit builds automatically.
 - **UNC/network checkout is slow:** the first mirror/install is expected to take longer; subsequent runs retain the dependency cache and only synchronize project files.

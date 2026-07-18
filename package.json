@@ -26,7 +26,8 @@
     "db:reset": "prisma migrate reset --force --schema prisma/schema.sqlite.prisma",
     "db:generate:mysql": "prisma generate --schema prisma/schema.prisma",
     "db:migrate:mysql:init": "prisma db execute --file prisma/mysql-migrations/0001_init/migration.sql --schema prisma/schema.prisma",
-    "db:migrate:mysql:companion": "prisma db execute --file prisma/mysql-migrations/0002_player_companion_shell/migration.sql --schema prisma/schema.prisma"
+    "db:migrate:mysql:companion": "prisma db execute --file prisma/mysql-migrations/0002_player_companion_shell/migration.sql --schema prisma/schema.prisma",
+    "db:migrate:mysql:command-center": "prisma db execute --file prisma/mysql-migrations/0002_game_master_command_center/migration.sql --schema prisma/schema.prisma"
   },
   "dependencies": {
     "@prisma/client": "6.19.1",

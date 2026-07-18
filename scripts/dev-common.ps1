@@ -124,8 +124,13 @@ function Initialize-ForeverRuntime {
     Invoke-ForeverNode -WorkingDirectory $runtimeRoot -Arguments @("node_modules/prisma/build/index.js", "generate", "--schema", "prisma/schema.sqlite.prisma")
     Write-Host "Applying database migrations..." -ForegroundColor Cyan
     Invoke-ForeverNode -WorkingDirectory $runtimeRoot -Arguments @("node_modules/prisma/build/index.js", "migrate", "deploy", "--schema", "prisma/schema.sqlite.prisma")
-    Write-Host "Verifying development seed data..." -ForegroundColor Cyan
-    Invoke-ForeverNode -WorkingDirectory $runtimeRoot -Arguments @("node_modules/tsx/dist/cli.mjs", "prisma/seed.ts")
+    if ($Mode -eq "development") {
+        Write-Host "Ensuring development seed data without resetting voyage progress..." -ForegroundColor Cyan
+        Invoke-ForeverNode -WorkingDirectory $runtimeRoot -Arguments @("node_modules/tsx/dist/cli.mjs", "prisma/seed.ts", "--ensure")
+    } else {
+        Write-Host "Verifying development seed data..." -ForegroundColor Cyan
+        Invoke-ForeverNode -WorkingDirectory $runtimeRoot -Arguments @("node_modules/tsx/dist/cli.mjs", "prisma/seed.ts")
+    }
     return $runtimeRoot
 }
 

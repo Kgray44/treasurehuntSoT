@@ -1,6 +1,7 @@
 import { defineConfig, devices } from "@playwright/test";
 
 const baseURL = process.env.PLAYWRIGHT_BASE_URL ?? "http://127.0.0.1:3100";
+const playwrightPort = new URL(baseURL).port || "3100";
 
 export default defineConfig({
   testDir: "./tests/e2e",
@@ -21,7 +22,7 @@ export default defineConfig({
     { name: "webkit-mobile", use: { ...devices["iPhone 14"] } },
   ],
   webServer: {
-    command: "node node_modules/next/dist/bin/next dev -H 127.0.0.1 -p 3100",
+    command: `node node_modules/next/dist/bin/next dev -H 127.0.0.1 -p ${playwrightPort}`,
     url: baseURL,
     reuseExistingServer: true,
     timeout: 120_000,

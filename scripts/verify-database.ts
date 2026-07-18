@@ -42,7 +42,11 @@ async function main() {
     "event sequences must be unique",
   );
   assert(campaign.snapshots.length === campaign.events.length, "every progression event must have a campaign snapshot");
-  assert(campaign.auditLogs.length === campaign.events.length, "every progression event must have an audit record");
+  assert(
+    campaign.auditLogs.filter((entry) => entry.outcome === "SUCCEEDED" && entry.action !== "DEVELOPMENT_SEED").length >=
+      campaign.events.length,
+    "every progression event must have a successful audit record",
+  );
   assert(campaign.awards.length <= campaign.artifacts.length, "artifact awards must remain unique");
 
   if (!acceptance && !preset) {
