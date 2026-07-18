@@ -989,20 +989,21 @@ model TaleHelperPairing {
 }
 
 model VisionWaypoint {
-  id           String                  @id @default(cuid())
-  ownerId      String
-  name         String
-  description  String                  @default("") @db.Text
-  type         String
-  locationTags String                  @default("[]") @db.LongText
-  sharingScope String                  @default("PRIVATE")
-  archivedAt   DateTime?
-  createdAt    DateTime                @default(now())
-  updatedAt    DateTime                @updatedAt
-  owner        GameMasterUser          @relation("VisionWaypointOwner", fields: [ownerId], references: [id], onDelete: Restrict)
-  versions     VisionWaypointVersion[]
-  bindings     StoryWaypointBinding[]
-  attempts     VerificationAttempt[]
+  id             String                  @id @default(cuid())
+  ownerId        String
+  name           String
+  description    String                  @default("") @db.Text
+  type           String
+  locationTags   String                  @default("[]") @db.LongText
+  sharingScope   String                  @default("PRIVATE")
+  archivedAt     DateTime?
+  createdAt      DateTime                @default(now())
+  updatedAt      DateTime                @updatedAt
+  owner          GameMasterUser          @relation("VisionWaypointOwner", fields: [ownerId], references: [id], onDelete: Restrict)
+  versions       VisionWaypointVersion[]
+  bindings       StoryWaypointBinding[]
+  attempts       VerificationAttempt[]
+  shadowAttempts VisionShadowAttempt[]
 
   @@index([ownerId, archivedAt, updatedAt])
   @@index([type, sharingScope])
@@ -1046,6 +1047,7 @@ model VisionWaypointVersion {
   testRuns                 VisionWaypointTestRun[]
   bindings                 StoryWaypointBinding[]
   attempts                 VerificationAttempt[]
+  shadowAttempts           VisionShadowAttempt[]
 
   @@unique([waypointId, versionNumber])
   @@index([waypointId, lifecycleStatus, updatedAt])
@@ -1244,26 +1246,70 @@ model VisionHardNegativeSet {
 }
 
 model VisionBuildJob {
-  id                String                @id @default(cuid())
-  waypointVersionId String
-  executionTarget   String                @default("LOCAL")
-  engineMetadata    String                @default("{}") @db.LongText
-  processingStage   String                @default("QUEUED")
-  status            String                @default("QUEUED")
-  progress          Float                 @default(0)
-  logSummary        String                @default("[]") @db.LongText
-  outputSummary     String                @default("{}") @db.LongText
-  inputSchemaVersion Int                  @default(1)
-  buildInput        String                @default("{}") @db.LongText
-  inputHash         String?
-  failureCode       String?
-  createdAt         DateTime              @default(now())
-  startedAt         DateTime?
-  completedAt       DateTime?
-  waypointVersion   VisionWaypointVersion @relation(fields: [waypointVersionId], references: [id], onDelete: Cascade)
-  artifacts         VisionBuildArtifact[]
+  id                      String                @id @default(cuid())
+  waypointVersionId       String
+  executionTarget         String                @default("LOCAL")
+  engineMetadata          String                @default("{}") @db.LongText
+  processingStage         String                @default("QUEUED")
+  status                  String                @default("QUEUED")
+  progress                Float                 @default(0)
+  logSummary              String                @default("[]") @db.LongText
+  outputSummary           String                @default("{}") @db.LongText
+  inputSchemaVersion      Int                   @default(1)
+  buildInput              String                @default("{}") @db.LongText
+  inputHash               String?
+  failureCode             String?
+  packageId               String?
+  packageHash             String?
+  report                  String                @default("{}") @db.LongText
+  providerMetadata        String                @default("{}") @db.LongText
+  reliabilityGrade        String?
+  automaticEligibility    Boolean               @default(false)
+  lastHeartbeatAt         DateTime?
+  cancellationRequestedAt DateTime?
+  createdAt               DateTime              @default(now())
+  startedAt               DateTime?
+  completedAt             DateTime?
+  waypointVersion         VisionWaypointVersion @relation(fields: [waypointVersionId], references: [id], onDelete: Cascade)
+  artifacts               VisionBuildArtifact[]
 
   @@index([waypointVersionId, status, createdAt])
+}
+
+model VisionShadowAttempt {
+  id                     String                @id @default(cuid())
+  attemptId              String                @unique
+  waypointId             String
+  waypointVersionId      String
+  packageId              String
+  packageHash            String?
+  stageTokenHash         String
+  result                 String
+  guidanceCode           String?
+  failedGates            String                @default("[]") @db.LongText
+  evidenceDigest         String?
+  engineVersion          String
+  modelBundleVersion     String
+  provider               String
+  providerFallbackUsed   Boolean               @default(false)
+  capturedFrameCount     Int                   @default(0)
+  usableFrameCount       Int                   @default(0)
+  passingFrameCount      Int                   @default(0)
+  durationMs             Int
+  diagnostics            String                @default("{}") @db.LongText
+  humanTruthLabel        String?
+  captainDisposition     String?
+  rebuildDisposition     String?
+  rebuildParentAttemptId String?
+  shadowMode             Boolean               @default(true)
+  automaticProgression   Boolean               @default(false)
+  createdAt              DateTime              @default(now())
+  reviewedAt             DateTime?
+  waypoint               VisionWaypoint        @relation(fields: [waypointId], references: [id], onDelete: Restrict)
+  waypointVersion        VisionWaypointVersion @relation(fields: [waypointVersionId], references: [id], onDelete: Restrict)
+
+  @@index([waypointVersionId, result, createdAt])
+  @@index([humanTruthLabel, createdAt])
 }
 
 model VisionBuildArtifact {

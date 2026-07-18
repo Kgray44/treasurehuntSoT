@@ -6,6 +6,7 @@ const os = require("node:os");
 const path = require("node:path");
 const test = require("node:test");
 const { CompanionStorage, withinRoot } = require("./storage.cjs");
+const { createRuntimePackage } = require("./vision-package.cjs");
 
 async function temporaryStorage(t) {
   const root = await fsp.mkdtemp(path.join(os.tmpdir(), "forever-treasure-b2-storage-"));
@@ -74,4 +75,61 @@ test("artifact lookup rejects traversal and diagnostics contain metadata only", 
   const exported = await storage.getDiagnosticBundle(diagnostic.bundleId);
   assert.equal(exported.fileSize, diagnostic.fileSize);
   assert.equal(exported.mediaType, "application/gzip");
+});
+
+test("B-4 derived luminance frames and immutable packages remain inside managed local storage", async (t) => {
+  const storage = await temporaryStorage(t);
+  const started = await storage.startCreatorRecording({
+    waypointVersionId: "waypoint_version_b4",
+    purpose: "TARGET_REFERENCE",
+    creatorLabel: "B-4 target",
+    allowCloudUpload: false,
+  });
+  await storage.appendCreatorChunk(started.recordingId, Buffer.from("webm-b4-fixture"));
+  const luminance = Buffer.alloc(32 * 24, 120);
+  const manifest = await storage.finishCreatorRecording(
+    started.recordingId,
+    { sessionId: "creator_b4_fixture", durationMs: 1_000, frameCount: 2 },
+    [
+      {
+        id: "frame_b4_0001",
+        sequence: 1,
+        offsetMs: 0,
+        capturedAtMs: 1,
+        width: 32,
+        height: 24,
+        quality: { usable: true },
+        luminance,
+      },
+      {
+        id: "frame_b4_0002",
+        sequence: 2,
+        offsetMs: 500,
+        capturedAtMs: 501,
+        width: 32,
+        height: 24,
+        quality: { usable: true },
+        luminance,
+      },
+    ],
+  );
+  assert.equal(manifest.derivedFrameSet.containsColorPixels, false);
+  const frames = await storage.loadCreatorFrameSet(started.artifactId, manifest.contentHash);
+  assert.equal(frames.frames.length, 2);
+  assert.deepEqual(frames.frames[0].luminance, luminance);
+
+  const runtimePackage = createRuntimePackage({
+    packageId: "pkg_storage_fixture_01",
+    buildId: "build_storage_fixture_01",
+    builtAt: "2026-07-18T00:00:00.000Z",
+    waypoint: { id: "waypoint_storage_01", versionId: "version_storage_01", versionNumber: 1, type: "EXACT_LANDMARK" },
+    calibrationProfile: "BALANCED",
+    certificationStatus: "GOOD",
+    artifacts: { "runtime-config.json": { shadowModeOnly: true, automaticProgression: false } },
+  });
+  const published = await storage.publishVisionPackage(runtimePackage);
+  const repeated = await storage.publishVisionPackage(runtimePackage);
+  assert.equal(published.idempotent, false);
+  assert.equal(repeated.idempotent, true);
+  assert.equal((await storage.loadVisionPackage(published.packageId)).manifest.packageHash, published.contentHash);
 });

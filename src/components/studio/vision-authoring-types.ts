@@ -94,6 +94,10 @@ export type StudioAuthoringAggregate = {
     inputHash: string | null;
     engineMetadata: Record<string, unknown>;
     outputSummary: Record<string, unknown>;
+    reliabilityGrade: string | null;
+    packageId: string | null;
+    packageHash: string | null;
+    automaticEligibility: false;
     createdAt: string;
     completedAt: string | null;
   }>;

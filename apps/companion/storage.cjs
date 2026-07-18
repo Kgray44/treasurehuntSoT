@@ -7,6 +7,8 @@ const path = require("node:path");
 const zlib = require("node:zlib");
 const { promisify } = require("node:util");
 const { captureError, requireIdentifier } = require("./capture-contract.cjs");
+const { loadRuntimePackage } = require("./vision-package.cjs");
+const { sha256, stableStringify } = require("./vision-engine-contract.cjs");
 
 const gzip = promisify(zlib.gzip);
 
@@ -24,6 +26,17 @@ async function closeWriter(writer) {
   });
 }
 
+async function hashFile(filePath) {
+  const hash = crypto.createHash("sha256");
+  await new Promise((resolve, reject) => {
+    const stream = fs.createReadStream(filePath);
+    stream.on("data", (chunk) => hash.update(chunk));
+    stream.once("error", reject);
+    stream.once("end", resolve);
+  });
+  return `sha256:${hash.digest("hex")}`;
+}
+
 class CompanionStorage {
   constructor(root, options = {}) {
     if (!path.isAbsolute(root)) throw captureError("ARTIFACT_PATH_INVALID", "Companion storage root must be absolute.");
@@ -33,6 +46,9 @@ class CompanionStorage {
       configuration: path.join(this.root, "configuration"),
       pairings: path.join(this.root, "pairings"),
       creator: path.join(this.root, "recordings", "creator"),
+      creatorFrames: path.join(this.root, "derived", "creator-frames"),
+      visionPackages: path.join(this.root, "vision-packages"),
+      visionBuildDiagnostics: path.join(this.root, "diagnostics", "vision-builds"),
       diagnostics: path.join(this.root, "diagnostics"),
       logs: path.join(this.root, "logs"),
       temporary: path.join(this.root, "temporary"),
@@ -106,7 +122,7 @@ class CompanionStorage {
     return Promise.resolve();
   }
 
-  async finishCreatorRecording(recordingId, completion) {
+  async finishCreatorRecording(recordingId, completion, derivedFrames = []) {
     const active = this.activeRecordings.get(recordingId);
     if (!active) throw captureError("CAPTURE_STORAGE_UNAVAILABLE", "Creator recording is not active.");
     if (active.writerError) {
@@ -124,18 +140,57 @@ class CompanionStorage {
     if (!withinRoot(this.paths.creator, mediaPath) || !withinRoot(this.paths.creator, manifestPath))
       throw captureError("ARTIFACT_PATH_INVALID", "Creator artifact path escaped storage.");
     await fsp.rename(active.temporaryPath, mediaPath);
+    let derivedFrameSet = null;
+    if (derivedFrames.length) {
+      const frameSetBody = {
+        schemaVersion: 1,
+        artifactId: active.artifactId,
+        sourceContentHash: `sha256:${active.hash.copy().digest("hex")}`,
+        width: derivedFrames[0].width,
+        height: derivedFrames[0].height,
+        frames: derivedFrames.map((frame) => ({
+          id: frame.id,
+          sequence: frame.sequence,
+          offsetMs: frame.offsetMs,
+          capturedAtMs: frame.capturedAtMs,
+          width: frame.width,
+          height: frame.height,
+          quality: frame.quality,
+          luminanceBase64: frame.luminance.toString("base64"),
+        })),
+      };
+      const serializedFrameSet = `${stableStringify(frameSetBody)}\n`;
+      const compressed = await gzip(Buffer.from(serializedFrameSet, "utf8"));
+      const frameSetName = `${active.artifactId}.frames.json.gz`;
+      const frameSetPath = path.join(this.paths.creatorFrames, frameSetName);
+      const temporaryFrameSet = path.join(this.paths.temporary, `${active.artifactId}.frames.tmp`);
+      if (!withinRoot(this.paths.creatorFrames, frameSetPath) || !withinRoot(this.paths.temporary, temporaryFrameSet))
+        throw captureError("ARTIFACT_PATH_INVALID", "Derived frame-set path escaped storage.");
+      await fsp.writeFile(temporaryFrameSet, compressed, { flag: "wx" });
+      await fsp.rename(temporaryFrameSet, frameSetPath);
+      derivedFrameSet = {
+        schemaVersion: 1,
+        storageReference: `companion://creator-frames/${active.artifactId}`,
+        contentHash: `sha256:${sha256(serializedFrameSet)}`,
+        fileSize: compressed.length,
+        frameCount: derivedFrames.length,
+        containsColorPixels: false,
+      };
+    }
+    const sourceContentHash = `sha256:${active.hash.digest("hex")}`;
     const manifest = {
       schemaVersion: 1,
       artifactId: active.artifactId,
       recordingId: active.recordingId,
       mediaType: "video/webm",
       storageCategory: "LOCAL_APP_DATA",
-      contentHash: `sha256:${active.hash.digest("hex")}`,
+      contentHash: sourceContentHash,
       fileSize: active.bytes,
       startedAt: active.startedAt,
       completedAt: new Date().toISOString(),
       metadata: active.metadata,
       capture: completion,
+      derivedFrameSet,
       retention: {
         policy: "CREATOR_MANAGED",
         deletable: true,
@@ -153,6 +208,10 @@ class CompanionStorage {
     } catch (error) {
       await fsp.rm(temporaryManifest, { force: true }).catch(() => {});
       await fsp.rm(mediaPath, { force: true }).catch(() => {});
+      if (derivedFrameSet)
+        await fsp
+          .rm(path.join(this.paths.creatorFrames, `${active.artifactId}.frames.json.gz`), { force: true })
+          .catch(() => {});
       throw error;
     }
   }
@@ -200,11 +259,96 @@ class CompanionStorage {
     }
   }
 
+  async loadCreatorFrameSet(artifactId, expectedContentHash) {
+    const artifact = await this.getCreatorArtifact(artifactId);
+    if (expectedContentHash && artifact.manifest.contentHash !== expectedContentHash)
+      throw captureError("ARTIFACT_PATH_INVALID", "Creator recording hash does not match the build input.");
+    if ((await hashFile(artifact.mediaPath)) !== artifact.manifest.contentHash)
+      throw captureError("ARTIFACT_PATH_INVALID", "Creator recording bytes failed immutable hash verification.");
+    const derived = artifact.manifest.derivedFrameSet;
+    if (!derived)
+      throw captureError(
+        "ARTIFACT_NOT_FOUND",
+        "This recording predates B-4 derived frames. Re-record it before building.",
+      );
+    const frameSetPath = path.join(this.paths.creatorFrames, `${artifactId}.frames.json.gz`);
+    if (!withinRoot(this.paths.creatorFrames, frameSetPath))
+      throw captureError("ARTIFACT_PATH_INVALID", "Derived frame-set path escaped managed storage.");
+    try {
+      const compressed = await fsp.readFile(frameSetPath);
+      if (compressed.length !== derived.fileSize) throw new Error("SIZE_MISMATCH");
+      const serialized = (await promisify(zlib.gunzip)(compressed)).toString("utf8");
+      if (`sha256:${sha256(serialized)}` !== derived.contentHash) throw new Error("HASH_MISMATCH");
+      const parsed = JSON.parse(serialized);
+      if (parsed.artifactId !== artifactId || parsed.sourceContentHash !== artifact.manifest.contentHash)
+        throw new Error("IDENTITY_MISMATCH");
+      return {
+        ...parsed,
+        frames: parsed.frames.map((frame) => ({
+          ...frame,
+          luminance: Buffer.from(frame.luminanceBase64, "base64"),
+          luminanceBase64: undefined,
+        })),
+      };
+    } catch (error) {
+      throw captureError("ARTIFACT_PATH_INVALID", `Derived frame-set integrity failed: ${error.message}`);
+    }
+  }
+
+  async publishVisionPackage(envelope) {
+    const loaded = loadRuntimePackage(envelope);
+    const packageId = loaded.manifest.packageId;
+    requireIdentifier(packageId, "packageId");
+    const packagePath = path.join(this.paths.visionPackages, `${packageId}.package.json`);
+    if (!withinRoot(this.paths.visionPackages, packagePath))
+      throw captureError("ARTIFACT_PATH_INVALID", "Vision package path escaped managed storage.");
+    const serialized = `${stableStringify(envelope)}\n`;
+    const existing = await fsp.readFile(packagePath, "utf8").catch(() => null);
+    if (existing !== null) {
+      if (existing !== serialized)
+        throw captureError("ARTIFACT_PATH_INVALID", "Immutable package ID already exists with different content.");
+      return {
+        packageId,
+        storageReference: `companion://vision-packages/${packageId}`,
+        contentHash: loaded.manifest.packageHash,
+        fileSize: Buffer.byteLength(existing),
+        idempotent: true,
+      };
+    }
+    const temporary = path.join(this.paths.temporary, `${packageId}.${crypto.randomUUID()}.tmp`);
+    try {
+      await fsp.writeFile(temporary, serialized, { flag: "wx" });
+      await fsp.rename(temporary, packagePath);
+    } finally {
+      await fsp.rm(temporary, { force: true }).catch(() => {});
+    }
+    return {
+      packageId,
+      storageReference: `companion://vision-packages/${packageId}`,
+      contentHash: loaded.manifest.packageHash,
+      fileSize: Buffer.byteLength(serialized),
+      idempotent: false,
+    };
+  }
+
+  async loadVisionPackage(packageId) {
+    requireIdentifier(packageId, "packageId");
+    const packagePath = path.join(this.paths.visionPackages, `${packageId}.package.json`);
+    if (!withinRoot(this.paths.visionPackages, packagePath))
+      throw captureError("ARTIFACT_PATH_INVALID", "Vision package path escaped managed storage.");
+    try {
+      return JSON.parse(await fsp.readFile(packagePath, "utf8"));
+    } catch {
+      throw captureError("ARTIFACT_NOT_FOUND", "Vision package was not found.");
+    }
+  }
+
   async deleteCreatorArtifact(artifactId) {
     const artifact = await this.getCreatorArtifact(artifactId);
     const manifestPath = path.join(this.paths.creator, `${artifactId}.manifest.json`);
     await fsp.rm(artifact.mediaPath, { force: true });
     await fsp.rm(manifestPath, { force: true });
+    await fsp.rm(path.join(this.paths.creatorFrames, `${artifactId}.frames.json.gz`), { force: true });
     return { artifactId, deleted: true, recoverable: false };
   }
 

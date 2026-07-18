@@ -190,6 +190,10 @@ function publicRecord(version: AuthoringRecord) {
       inputHash: job.inputHash,
       engineMetadata: parseObject(job.engineMetadata),
       outputSummary: parseObject(job.outputSummary),
+      reliabilityGrade: job.reliabilityGrade,
+      packageId: job.packageId,
+      packageHash: job.packageHash,
+      automaticEligibility: false,
       createdAt: job.createdAt.toISOString(),
       completedAt: job.completedAt?.toISOString() ?? null,
     })),
@@ -701,6 +705,7 @@ function buildInputFor(record: ReturnType<typeof publicRecord>) {
         durationMs: asset.durationMs,
         segmentStartMs: asset.segmentStartMs,
         segmentEndMs: asset.segmentEndMs,
+        sourceAssetId: asset.sourceAssetId,
         integrityState: asset.integrityState,
       }))
       .sort((left, right) => left.id.localeCompare(right.id)),
@@ -712,22 +717,21 @@ function buildInputFor(record: ReturnType<typeof publicRecord>) {
       .sort((left, right) => left.id.localeCompare(right.id)),
     lockedTests: record.tests.filter((test) => test.lockedAt).sort((left, right) => left.id.localeCompare(right.id)),
     boundary: {
-      implementation: "INPUT_PREPARATION_ONLY",
+      implementation: "LOCAL_COMPANION_BUILD_REQUIRED",
       modelProduced: false,
       confidenceProduced: false,
       certificationProduced: false,
+      shadowModeOnly: true,
+      automaticProgression: false,
     },
   };
 }
 
 export async function prepareBuildInput(versionId: string, unchecked: unknown, actorId: string) {
-  if (
-    process.env.NODE_ENV === "production" ||
-    !["1", "true", "enabled"].includes((process.env.FEATURE_VISION_BUILD_ENGINE ?? "").toLocaleLowerCase())
-  )
+  if (!["1", "true", "enabled"].includes((process.env.FEATURE_VISION_BUILD_ENGINE ?? "").toLocaleLowerCase()))
     throw new VisionDomainError(
-      "BUILD_FIXTURE_DISABLED",
-      "Deterministic build-input preparation is disabled. Enable the development-only Vision build fixture explicitly.",
+      "VISION_BUILD_ENGINE_DISABLED",
+      "The local Vision build engine is disabled. Enable it explicitly for pilot builders.",
     );
   const expectedRevision =
     typeof unchecked === "object" && unchecked && "expectedRevision" in unchecked
@@ -747,45 +751,34 @@ export async function prepareBuildInput(versionId: string, unchecked: unknown, a
   const buildInput = buildInputFor(record);
   const serialized = stableStringify(buildInput);
   const inputHash = createHash("sha256").update(serialized).digest("hex");
-  const now = new Date();
   const result = await db.$transaction(async (tx) => {
     const current = await ownedRecord(versionId, actorId, tx);
     assertEditable(current, expectedRevision);
     const job = await tx.visionBuildJob.create({
       data: {
+        id: `build_${randomUUID()}`,
         waypointVersionId: versionId,
         executionTarget: record.authoring.steps.buildPreparation?.executionTarget ?? "LOCAL",
         engineMetadata: JSON.stringify({
-          implementation: "DETERMINISTIC_BUILD_INPUT_FIXTURE",
-          phase: "B3",
+          implementation: "LOCAL_COMPANION_VERIFICATION_ENGINE",
+          phase: "B4",
           modelProduced: false,
           confidenceProduced: false,
         }),
-        processingStage: "INPUT_PREPARED",
-        status: "COMPLETED",
-        progress: 1,
+        processingStage: "QUEUED",
+        status: "QUEUED",
+        progress: 0,
         logSummary: JSON.stringify([
           "Validated persisted authoring aggregate",
           "Canonicalized BuildInput",
-          "Persisted immutable input snapshot",
+          "Queued immutable input snapshot for local Companion build",
         ]),
-        outputSummary: JSON.stringify({ inputHash, modelProduced: false, nextPhase: "B4" }),
+        outputSummary: JSON.stringify({ inputHash, modelProduced: false, nextAction: "START_LOCAL_BUILD" }),
         inputSchemaVersion: BUILD_INPUT_SCHEMA_VERSION,
         buildInput: serialized,
         inputHash,
-        startedAt: now,
-        completedAt: now,
-      },
-    });
-    const artifact = await tx.visionBuildArtifact.create({
-      data: {
-        waypointVersionId: versionId,
-        buildJobId: job.id,
-        artifactType: "BUILD_INPUT",
-        storageReference: `database://vision-build-jobs/${job.id}/build-input`,
-        contentHash: inputHash,
-        fileSize: Buffer.byteLength(serialized),
-        schemaVersion: BUILD_INPUT_SCHEMA_VERSION,
+        startedAt: null,
+        completedAt: null,
       },
     });
     await advanceRevision(tx, current, expectedRevision, { lifecycleStatus: "READY_TO_BUILD" });
@@ -793,15 +786,16 @@ export async function prepareBuildInput(versionId: string, unchecked: unknown, a
       actorId,
       action: "VISION_BUILD_INPUT_PREPARED",
       resourceId: versionId,
-      metadata: { jobId: job.id, artifactId: artifact.id, inputHash, modelProduced: false },
+      metadata: { jobId: job.id, inputHash, queuedForLocalBuild: true, modelProduced: false },
     });
     return {
       jobId: job.id,
-      artifactId: artifact.id,
       inputHash,
       schemaVersion: BUILD_INPUT_SCHEMA_VERSION,
       modelProduced: false,
       confidenceProduced: false,
+      status: "QUEUED",
+      processingStage: "QUEUED",
     };
   });
   return { ...result, authoring: await getAuthoringAggregate(versionId, actorId) };

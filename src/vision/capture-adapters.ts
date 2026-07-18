@@ -10,6 +10,8 @@ import {
   type CaptureTarget,
   type CreatorStartInput,
   type PlayerCaptureStartInput,
+  type VisionBuildStartInput,
+  type VisionRuntimeArmInput,
 } from "@/vision/capture-protocol";
 import { WebCompanionClient } from "@/vision/web-companion-client";
 
@@ -39,6 +41,12 @@ export interface CapturePlatformAdapter {
   disableHotkey(): Promise<unknown>;
   createDiagnosticBundle(consent: boolean): Promise<Record<string, unknown>>;
   exportDiagnosticBundle(bundleId: string): Promise<{ downloadUrl: string; expiresAt: string }>;
+  getVisionEngineCapabilities(): Promise<Record<string, unknown>>;
+  startVisionBuild(input: VisionBuildStartInput): Promise<Record<string, unknown>>;
+  getVisionBuildStatus(buildId: string): Promise<Record<string, unknown>>;
+  cancelVisionBuild(buildId: string): Promise<Record<string, unknown>>;
+  armVisionRuntime(input: VisionRuntimeArmInput): Promise<Record<string, unknown>>;
+  disarmVisionRuntime(attemptId: string): Promise<Record<string, unknown>>;
   subscribe(listener: (event: CaptureEvent) => void): () => void;
 }
 
@@ -147,6 +155,30 @@ export class DesktopCapturePlatformAdapter implements CapturePlatformAdapter {
   async exportDiagnosticBundle(bundleId: string) {
     const result = objectResult(await this.invoke("capture.diagnostic.export", { bundleId }));
     return { downloadUrl: String(result.downloadUrl), expiresAt: String(result.expiresAt) };
+  }
+
+  async getVisionEngineCapabilities() {
+    return objectResult(await this.invoke("vision.engine.getCapabilities"));
+  }
+
+  async startVisionBuild(input: VisionBuildStartInput) {
+    return objectResult(await this.invoke("vision.build.start", input));
+  }
+
+  async getVisionBuildStatus(buildId: string) {
+    return objectResult(await this.invoke("vision.build.status", { buildId }));
+  }
+
+  async cancelVisionBuild(buildId: string) {
+    return objectResult(await this.invoke("vision.build.cancel", { buildId }));
+  }
+
+  async armVisionRuntime(input: VisionRuntimeArmInput) {
+    return objectResult(await this.invoke("vision.runtime.arm", input));
+  }
+
+  async disarmVisionRuntime(attemptId: string) {
+    return objectResult(await this.invoke("vision.runtime.disarm", { attemptId }));
   }
 
   subscribe(listener: (event: CaptureEvent) => void) {
@@ -278,6 +310,30 @@ export class WebCapturePlatformAdapter implements CapturePlatformAdapter {
   async exportDiagnosticBundle(bundleId: string) {
     const result = objectResult(await this.command("capture.diagnostic.export", { bundleId }));
     return { downloadUrl: String(result.downloadUrl), expiresAt: String(result.expiresAt) };
+  }
+
+  async getVisionEngineCapabilities() {
+    return objectResult(await this.command("vision.engine.getCapabilities"));
+  }
+
+  async startVisionBuild(input: VisionBuildStartInput) {
+    return objectResult(await this.command("vision.build.start", input));
+  }
+
+  async getVisionBuildStatus(buildId: string) {
+    return objectResult(await this.command("vision.build.status", { buildId }));
+  }
+
+  async cancelVisionBuild(buildId: string) {
+    return objectResult(await this.command("vision.build.cancel", { buildId }));
+  }
+
+  async armVisionRuntime(input: VisionRuntimeArmInput) {
+    return objectResult(await this.command("vision.runtime.arm", input));
+  }
+
+  async disarmVisionRuntime(attemptId: string) {
+    return objectResult(await this.command("vision.runtime.disarm", { attemptId }));
   }
 
   subscribe(listener: (event: CaptureEvent) => void) {

@@ -78,8 +78,28 @@ export const creatorCaptureManifestSchema = z
               .strict(),
           )
           .max(500),
+        derivedFrameSelection: z
+          .object({
+            algorithmVersion: z.string().min(1).max(100),
+            selectedFrameCount: z.number().int().nonnegative().max(100),
+            reasons: z.array(z.string().min(1).max(100)).max(100),
+          })
+          .strict()
+          .optional(),
       })
       .strict(),
+    derivedFrameSet: z
+      .object({
+        schemaVersion: z.literal(1),
+        storageReference: z.string().regex(/^companion:\/\/creator-frames\/artifact_[A-Za-z0-9-]+$/),
+        contentHash: z.string().regex(/^sha256:[a-f0-9]{64}$/),
+        fileSize: z.number().int().positive().max(2_147_483_647),
+        frameCount: z.number().int().positive().max(100),
+        containsColorPixels: z.literal(false),
+      })
+      .strict()
+      .nullable()
+      .optional(),
     retention: z
       .object({ policy: z.literal("CREATOR_MANAGED"), deletable: z.literal(true), uploadAuthorized: z.boolean() })
       .strict(),

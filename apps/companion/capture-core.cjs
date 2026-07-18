@@ -36,6 +36,7 @@ class CaptureCore extends EventEmitter {
     this.graphicsAdapters = [];
     this.storageStatus = { location: { category: "ELECTRON_USER_DATA", managed: true }, availableDiskBytes: null };
     this.diagnosticContextProvider = null;
+    this.playerEvidenceConsumer = null;
     this.state = "TARGET_SELECTION_REQUIRED";
     this.target = null;
     this.active = null;
@@ -95,8 +96,8 @@ class CaptureCore extends EventEmitter {
       browserPairing: true,
       desktopIntegrated: true,
       systemTray: true,
-      localInference: false,
-      locationVerification: false,
+      localInference: true,
+      locationVerification: true,
       cloudBuild: false,
       offlineCapture: true,
       operatingSystem: { platform: os.platform(), release: os.release(), architecture: os.arch() },
@@ -109,7 +110,7 @@ class CaptureCore extends EventEmitter {
         encoderCandidates: ["WEBM_VP9", "WEBM_VP8", "WEBM_DEFAULT"],
         hardwareAccelerationAvailable: this.graphicsAdapters.some((device) => device.active),
         cpuFallbackAvailable: true,
-        futureComputeProviders: ["CPU_METADATA_ONLY"],
+        futureComputeProviders: ["CPU_CLASSICAL", "DIRECTML_DETECTED", "CUDA_DETECTED"],
       },
       storage: {
         ...this.storageStatus.location,
@@ -155,6 +156,10 @@ class CaptureCore extends EventEmitter {
 
   setDiagnosticContextProvider(provider) {
     this.diagnosticContextProvider = typeof provider === "function" ? provider : null;
+  }
+
+  setPlayerEvidenceConsumer(consumer) {
+    this.playerEvidenceConsumer = typeof consumer === "function" ? consumer : null;
   }
 
   async execute(command, input = {}) {
@@ -339,6 +344,28 @@ class CaptureCore extends EventEmitter {
       },
       verification: { performed: false, outcome: null },
     };
+    let verificationResult = null;
+    if (this.playerEvidenceConsumer && selection.selected.length) {
+      verificationResult = await this.playerEvidenceConsumer({
+        attemptId: active.attemptId,
+        sessionId: active.sessionId,
+        frames: selection.selected.map((frame) => ({
+          ...frame,
+          id: `frame_${active.sessionId}_${frame.sequence}`,
+        })),
+        capture: { result, reasons, qualitySummary },
+      });
+      if (verificationResult) {
+        evidenceMetadata.verification = {
+          performed: true,
+          outcome: verificationResult.result,
+          attemptId: verificationResult.attemptId,
+          evidenceDigest: verificationResult.evidenceDigest ?? null,
+          shadowMode: true,
+          automaticProgression: false,
+        };
+      }
+    }
     evidenceMetadata.evidenceDigest = digest(evidenceMetadata);
     const clearedFrames = active.ring.clear();
     evidenceMetadata.retention.transientFramesCleared = true;
@@ -351,8 +378,8 @@ class CaptureCore extends EventEmitter {
       reasons,
       qualitySummary,
       evidenceBundle: evidenceMetadata,
-      captureOnly: true,
-      verificationResult: null,
+      captureOnly: verificationResult === null,
+      verificationResult,
     };
     this.#finishActive(response);
     return response;
@@ -382,6 +409,7 @@ class CaptureCore extends EventEmitter {
       recordingId: storageSession.recordingId,
       artifactId: storageSession.artifactId,
       metrics: [],
+      authoringFrames: [],
       previousFrame: null,
       frameSequence: 0,
       lastFrameAtMs: null,
@@ -449,19 +477,41 @@ class CaptureCore extends EventEmitter {
       active.previousFrame = null;
     }
     const qualitySummary = summarizeQuality(active.metrics, { droppedFrames: workerResult?.droppedFrames ?? 0 });
-    const manifest = await this.storage.finishCreatorRecording(active.recordingId, {
-      sessionId: active.sessionId,
-      captureCoreVersion: CAPTURE_CORE_VERSION,
-      protocolVersion: CAPTURE_PROTOCOL_VERSION,
-      originalDimensions: workerResult?.originalDimensions ?? this.target.dimensions,
-      normalizedDimensions: { width: 320, height: 180 },
-      estimatedFrameRate: workerResult?.estimatedFrameRate ?? 10,
-      durationMs: Date.now() - active.startedAtMs,
-      frameCount: active.metrics.length,
-      encoding: workerResult?.encoding ?? "video/webm",
-      qualitySummary,
-      interruptions: active.interruptions,
-    });
+    const frameSelection = selectBestFrames(active.authoringFrames, { minimum: 2, maximum: 18 });
+    const derivedFrames = frameSelection.selected.map((frame) => ({
+      id: `frame_${active.artifactId}_${frame.sequence}`,
+      sequence: frame.sequence,
+      offsetMs: Math.max(0, frame.capturedAtMs - active.startedAtMs),
+      capturedAtMs: frame.capturedAtMs,
+      width: frame.width,
+      height: frame.height,
+      quality: frame.quality,
+      luminance: frame.luminance,
+    }));
+    const manifest = await this.storage.finishCreatorRecording(
+      active.recordingId,
+      {
+        sessionId: active.sessionId,
+        captureCoreVersion: CAPTURE_CORE_VERSION,
+        protocolVersion: CAPTURE_PROTOCOL_VERSION,
+        originalDimensions: workerResult?.originalDimensions ?? this.target.dimensions,
+        normalizedDimensions: { width: 320, height: 180 },
+        estimatedFrameRate: workerResult?.estimatedFrameRate ?? 10,
+        durationMs: Date.now() - active.startedAtMs,
+        frameCount: active.metrics.length,
+        encoding: workerResult?.encoding ?? "video/webm",
+        qualitySummary,
+        interruptions: active.interruptions,
+        derivedFrameSelection: {
+          algorithmVersion: frameSelection.algorithmVersion,
+          selectedFrameCount: derivedFrames.length,
+          reasons: frameSelection.reasons,
+        },
+      },
+      derivedFrames,
+    );
+    for (const frame of active.authoringFrames) disposeFrame(frame);
+    active.authoringFrames.length = 0;
     this.#move("COMPLETED", { sessionId: active.sessionId, artifactId: active.artifactId });
     const response = {
       sessionId: active.sessionId,
@@ -505,6 +555,8 @@ class CaptureCore extends EventEmitter {
       await this.pendingWrites.catch(() => {});
       this.pendingWrites = Promise.resolve();
       await this.storage.cancelCreatorRecording(active.recordingId);
+      for (const frame of active.authoringFrames ?? []) disposeFrame(frame);
+      if (active.authoringFrames) active.authoringFrames.length = 0;
     }
     if (active.ring) active.ring.clear();
     if (active.previousFrame) disposeFrame(active.previousFrame);
@@ -732,6 +784,14 @@ class CaptureCore extends EventEmitter {
       } else {
         active.metrics.push({ ...captured, pixels: undefined, luminance: undefined });
         if (active.metrics.length > 600) active.metrics.shift();
+        if (active.frameSequence === 1 || active.frameSequence % 5 === 0) {
+          active.authoringFrames.push({
+            ...captured,
+            pixels: Buffer.alloc(0),
+            luminance: Buffer.from(analyzed.luminance),
+          });
+          while (active.authoringFrames.length > 72) disposeFrame(active.authoringFrames.shift());
+        }
         if (active.previousFrame) disposeFrame(active.previousFrame);
         active.previousFrame = captured;
         captured.pixels.fill(0);
@@ -805,6 +865,8 @@ class CaptureCore extends EventEmitter {
       await this.pendingWrites.catch(() => {});
       this.pendingWrites = Promise.resolve();
       await this.storage.cancelCreatorRecording(active.recordingId);
+      for (const frame of active.authoringFrames ?? []) disposeFrame(frame);
+      if (active.authoringFrames) active.authoringFrames.length = 0;
     }
     active.ring?.clear();
     this.lastError = serializeCaptureError(captureError(code, code));
@@ -825,6 +887,8 @@ class CaptureCore extends EventEmitter {
         await this.pendingWrites.catch(() => {});
         this.pendingWrites = Promise.resolve();
         await this.storage.cancelCreatorRecording(active.recordingId).catch(() => {});
+        for (const frame of active.authoringFrames ?? []) disposeFrame(frame);
+        if (active.authoringFrames) active.authoringFrames.length = 0;
       }
       active.ring?.clear();
     }

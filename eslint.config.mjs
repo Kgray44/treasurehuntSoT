@@ -6,7 +6,7 @@ const eslintConfig = defineConfig([
   ...nextVitals,
   ...nextTs,
   {
-    files: ["apps/**/*.cjs"],
+    files: ["apps/**/*.cjs", "scripts/**/*.cjs"],
     rules: {
       "@typescript-eslint/no-require-imports": "off",
     },

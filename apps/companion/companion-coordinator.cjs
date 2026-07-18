@@ -10,6 +10,9 @@ const { ElectronTargetProvider } = require("./electron-target-provider.cjs");
 const { CompanionStorage } = require("./storage.cjs");
 const { WindowsHotkeyMonitor } = require("./windows-hotkey-monitor.cjs");
 const { CAPTURE_CORE_VERSION, serializeCaptureError, validateCommand } = require("./capture-contract.cjs");
+const { VisionEngineService } = require("./vision-engine-service.cjs");
+const { validateVisionCommand } = require("./vision-command-contract.cjs");
+const { serializeVisionEngineError } = require("./vision-engine-contract.cjs");
 
 function parseAllowedOrigins(value, required = []) {
   const origins = new Set(required);
@@ -96,6 +99,8 @@ class CompanionCoordinator {
       hotkeyService: this.hotkey,
       logger: (entry) => this.logger.write(entry),
     });
+    this.vision = new VisionEngineService({ storage: this.storage, featureFlags: () => this.#featureFlagSnapshot() });
+    this.core.setPlayerEvidenceConsumer((evidence) => this.vision.consumePlayerEvidence(evidence));
     const requiredOrigins = [
       this.desktopOrigin,
       ...(this.packaged ? [] : ["http://127.0.0.1:3000", "http://localhost:3000"]),
@@ -103,6 +108,7 @@ class CompanionCoordinator {
     this.allowedOrigins = parseAllowedOrigins(process.env.TALL_TALE_COMPANION_ALLOWED_ORIGINS, requiredOrigins);
     this.server = new CompanionLoopbackServer({
       core: this.core,
+      vision: this.vision,
       storage: this.storage,
       port: this.port,
       allowedOrigins: this.allowedOrigins,
@@ -115,12 +121,21 @@ class CompanionCoordinator {
     for (const eventName of ["status", "state", "capture-progress", "capture-completed", "capture-error"]) {
       this.core.on(eventName, (payload) => this.#forward(eventName, payload));
     }
+    for (const eventName of [
+      "vision-build-progress",
+      "vision-build-completed",
+      "vision-build-failed",
+      "vision-runtime-progress",
+      "vision-runtime-completed",
+    ])
+      this.vision.on(eventName, (payload) => this.#forward(eventName, payload));
   }
 
   async initialize() {
     await this.logger.initialize();
     const gpuInfo = await this.electron.app.getGPUInfo("basic").catch(() => null);
     this.core.setGraphicsAdapters(gpuInfo?.gpuDevice ?? []);
+    this.vision.setGraphicsAdapters(gpuInfo?.gpuDevice ?? []);
     const capabilities = await this.core.initialize();
     const companion = await this.server.start();
     this.#createTray();
@@ -135,6 +150,14 @@ class CompanionCoordinator {
 
   async execute(command, payload = {}) {
     try {
+      if (
+        command.startsWith("vision.engine.") ||
+        command.startsWith("vision.build.") ||
+        command.startsWith("vision.runtime.")
+      ) {
+        validateVisionCommand(command, { ...payload });
+        return await this.vision.execute(command, payload);
+      }
       const validated = validateCommand(command, { ...payload });
       if (
         command.startsWith("capture.pairing.") ||
@@ -144,6 +167,14 @@ class CompanionCoordinator {
         return await this.server.executeDesktopCommand(command, validated, this.desktopOrigin);
       return await this.core.execute(command, validated);
     } catch (error) {
+      if (error?.name === "VisionEngineError") {
+        const serialized = serializeVisionEngineError(error);
+        const wrapped = new Error(serialized.userMessage);
+        wrapped.name = "VisionEngineCommandError";
+        wrapped.code = serialized.code;
+        wrapped.details = serialized;
+        throw wrapped;
+      }
       const serialized = serializeCaptureError(error);
       const wrapped = new Error(serialized.userMessage);
       wrapped.name = "CaptureCommandError";
@@ -163,6 +194,7 @@ class CompanionCoordinator {
       genericNativeCommands: false,
       storageRootCategory: "ELECTRON_USER_DATA",
       featureFlags: this.#featureFlagSnapshot(),
+      visionEngine: this.vision.capabilities(),
     };
   }
 
@@ -248,6 +280,11 @@ class CompanionCoordinator {
     };
     return {
       visionCompanion: enabled("VISION_COMPANION", true),
+      visionBuildEngine: enabled("VISION_BUILD_ENGINE", false),
+      visionRuntimeEngine: enabled("VISION_RUNTIME_ENGINE", false),
+      visionReconstruction: enabled("VISION_RECONSTRUCTION", false),
+      visionSecondaryMatcher: enabled("VISION_SECONDARY_MATCHER", false),
+      shadowVerification: enabled("SHADOW_VERIFICATION", false),
       nativeWindowCapture: enabled("NATIVE_WINDOW_CAPTURE", true),
       creatorCapture: enabled("CREATOR_CAPTURE", true),
       playerHoldToScan: enabled("PLAYER_HOLD_TO_SCAN", true),

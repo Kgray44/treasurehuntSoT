@@ -5,7 +5,7 @@ contextBridge.exposeInMainWorld(
   "tallTaleDesktop",
   Object.freeze({
     platform: "windows",
-    shellVersion: "0.5.0-b3",
+    shellVersion: "0.6.0-b4",
     invoke: (command, payload) => ipcRenderer.invoke("vision:invoke", command, payload),
     subscribe: (callback) => {
       if (typeof callback !== "function") throw new Error("DESKTOP_SUBSCRIBER_INVALID");

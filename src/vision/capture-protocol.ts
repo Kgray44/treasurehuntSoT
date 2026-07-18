@@ -69,8 +69,8 @@ export const captureCapabilitiesSchema = z
     browserPairing: z.boolean(),
     desktopIntegrated: z.boolean(),
     systemTray: z.boolean(),
-    localInference: z.literal(false),
-    locationVerification: z.literal(false),
+    localInference: z.boolean(),
+    locationVerification: z.boolean(),
     cloudBuild: z.literal(false),
     offlineCapture: z.boolean(),
     operatingSystem: z.record(z.string(), z.unknown()),
@@ -198,7 +198,35 @@ export type CaptureCommand =
   | "capture.pairing.revoke"
   | "capture.pairing.list"
   | "capture.diagnostic.create"
-  | "capture.diagnostic.export";
+  | "capture.diagnostic.export"
+  | "vision.engine.getCapabilities"
+  | "vision.build.start"
+  | "vision.build.status"
+  | "vision.build.cancel"
+  | "vision.runtime.arm"
+  | "vision.runtime.disarm";
+
+export type VisionBuildStartInput = {
+  buildId: string;
+  inputHash: string;
+  buildInput: Record<string, unknown>;
+  builtAt: string;
+  provider?: string;
+  allowProviderFallback?: boolean;
+  timeoutMs?: number;
+};
+
+export type VisionRuntimeArmInput = {
+  attemptId: string;
+  packageId: string;
+  waypointVersionId: string;
+  stageToken: string;
+  expectedStageToken: string;
+  provider?: string;
+  allowProviderFallback?: boolean;
+  timeoutMs?: number;
+  checkpointContext?: Record<string, unknown>;
+};
 
 export function createCaptureEnvelope(input: {
   messageType: CaptureProtocolEnvelope["messageType"];

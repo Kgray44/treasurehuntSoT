@@ -15,6 +15,8 @@ const {
   validateCommand,
   validateEnvelope,
 } = require("./capture-contract.cjs");
+const { validateVisionCommand } = require("./vision-command-contract.cjs");
+const { serializeVisionEngineError } = require("./vision-engine-contract.cjs");
 
 function base64Url(buffer) {
   return Buffer.from(buffer).toString("base64url");
@@ -321,12 +323,19 @@ const browserCommands = new Set([
   "capture.privacy.resume",
   "capture.diagnostic.create",
   "capture.diagnostic.export",
+  "vision.engine.getCapabilities",
+  "vision.build.start",
+  "vision.build.status",
+  "vision.build.cancel",
+  "vision.runtime.arm",
+  "vision.runtime.disarm",
 ]);
 
 class CompanionLoopbackServer {
   constructor(options) {
     this.core = options.core;
     this.storage = options.storage;
+    this.vision = options.vision ?? null;
     this.host = "127.0.0.1";
     this.port = options.port ?? 32179;
     this.allowedOrigins = [...new Set(options.allowedOrigins)];
@@ -344,13 +353,26 @@ class CompanionLoopbackServer {
   async start() {
     await this.pairings.initialize();
     this.server = http.createServer((request, response) => void this.#handleHttp(request, response));
-    this.webSocketServer = new WebSocketServer({ noServer: true, maxPayload: 64 * 1024, perMessageDeflate: false });
+    this.webSocketServer = new WebSocketServer({ noServer: true, maxPayload: 512 * 1024, perMessageDeflate: false });
     this.server.on("upgrade", (request, socket, head) => this.#handleUpgrade(request, socket, head));
     this.webSocketServer.on("connection", (socket, request) => this.#handleSocket(socket, request));
     for (const eventName of ["status", "state", "capture-progress", "capture-completed", "capture-error"]) {
       const listener = (payload) => this.#broadcast(eventName, payload);
       this.core.on(eventName, listener);
       this.boundCoreEvents.push([eventName, listener]);
+    }
+    if (this.vision) {
+      for (const eventName of [
+        "vision-build-progress",
+        "vision-build-completed",
+        "vision-build-failed",
+        "vision-runtime-progress",
+        "vision-runtime-completed",
+      ]) {
+        const listener = (payload) => this.#broadcast(eventName, payload);
+        this.vision.on(eventName, listener);
+        this.boundCoreEvents.push([eventName, listener, this.vision]);
+      }
     }
     await new Promise((resolve, reject) => {
       this.server.once("error", reject);
@@ -366,7 +388,8 @@ class CompanionLoopbackServer {
   }
 
   async stop() {
-    for (const [eventName, listener] of this.boundCoreEvents) this.core.removeListener(eventName, listener);
+    for (const [eventName, listener, emitter] of this.boundCoreEvents)
+      (emitter ?? this.core).removeListener(eventName, listener);
     this.boundCoreEvents = [];
     for (const socket of this.sockets) socket.close(1001, "Companion shutting down");
     this.sockets.clear();
@@ -585,7 +608,7 @@ class CompanionLoopbackServer {
   async #handleSocketMessage(socket, binary, isBinary) {
     let envelope;
     try {
-      if (isBinary || binary.length > 64 * 1024)
+      if (isBinary || binary.length > 512 * 1024)
         throw captureError("COMPANION_PAYLOAD_TOO_LARGE", "WebSocket payload is invalid.");
       envelope = validateEnvelope(JSON.parse(binary.toString("utf8")));
       if (!socket.companionPairing) {
@@ -615,7 +638,10 @@ class CompanionLoopbackServer {
       assertExactKeys(envelope.payload, ["command", "input"], "command payload");
       if (!browserCommands.has(envelope.payload.command))
         throw captureError("VALIDATION_FAILED", "Browser command is not allowed.");
-      const input = validateCommand(envelope.payload.command, { ...(envelope.payload.input ?? {}) });
+      const visionCommand = envelope.payload.command.startsWith("vision.");
+      const input = visionCommand
+        ? validateVisionCommand(envelope.payload.command, { ...(envelope.payload.input ?? {}) })
+        : validateCommand(envelope.payload.command, { ...(envelope.payload.input ?? {}) });
       await this.pairings.acceptRequest(
         socket.companionPairing,
         envelope.requestId ?? envelope.messageId,
@@ -626,7 +652,9 @@ class CompanionLoopbackServer {
           ? await this.issuePreview(input.artifactId, socket.companionOrigin)
           : envelope.payload.command === "capture.diagnostic.export"
             ? await this.issueDiagnosticDownload(input.bundleId, socket.companionOrigin)
-            : await this.core.execute(envelope.payload.command, input);
+            : visionCommand
+              ? await this.vision.execute(envelope.payload.command, input)
+              : await this.core.execute(envelope.payload.command, input);
       this.#send(socket, "capture.response", {
         requestId: envelope.requestId ?? envelope.messageId,
         ok: true,
@@ -636,7 +664,7 @@ class CompanionLoopbackServer {
       this.#send(socket, "capture.response", {
         requestId: envelope?.requestId ?? envelope?.messageId ?? null,
         ok: false,
-        error: serializeCaptureError(error),
+        error: error?.name === "VisionEngineError" ? serializeVisionEngineError(error) : serializeCaptureError(error),
       });
       if (["PAIRING_REQUIRED", "PAIRING_EXPIRED", "PAIRING_REVOKED", "PAIRING_REPLAY_REJECTED"].includes(error?.code))
         socket.close(4003, error.code);

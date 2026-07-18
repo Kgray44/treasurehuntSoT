@@ -1,6 +1,7 @@
 "use strict";
 
 const { validateCommand } = require("../companion/capture-contract.cjs");
+const { validateVisionCommand } = require("../companion/vision-command-contract.cjs");
 
 const allowedCommands = new Set([
   "capture.getCapabilities",
@@ -30,6 +31,12 @@ const allowedCommands = new Set([
   "capture.diagnostic.export",
   "vision.getCapabilities",
   "vision.prepareMockScan",
+  "vision.engine.getCapabilities",
+  "vision.build.start",
+  "vision.build.status",
+  "vision.build.cancel",
+  "vision.runtime.arm",
+  "vision.runtime.disarm",
   "app.getDiagnostics",
 ]);
 
@@ -91,6 +98,14 @@ async function executeDesktopCommand(coordinator, command, payload = {}) {
   if (command === "app.getDiagnostics") {
     validateCommand("capture.getStatus", payload);
     return coordinator.diagnostics();
+  }
+  if (
+    command.startsWith("vision.engine.") ||
+    command.startsWith("vision.build.") ||
+    command.startsWith("vision.runtime.")
+  ) {
+    validateVisionCommand(command, { ...payload });
+    return coordinator.execute(command, payload);
   }
   validateCommand(command, { ...payload });
   return coordinator.execute(command, payload);

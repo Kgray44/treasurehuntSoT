@@ -111,7 +111,7 @@ async function captureFixture(
   return `artifact_b3_${id}`;
 }
 
-test("Exact Landmark authoring persists deterministic BuildInput without inventing a model", async ({
+test("Exact Landmark authoring queues immutable B-4 BuildInput without inventing a completion", async ({
   browser,
   browserName,
 }) => {
@@ -307,11 +307,69 @@ test("Exact Landmark authoring persists deterministic BuildInput without inventi
   expect(snapshot.ok(), await snapshot.text()).toBeTruthy();
   expect(await snapshot.json()).toMatchObject({
     inputHash: preparedBody.inputHash,
-    buildInput: { boundary: { modelProduced: false, confidenceProduced: false } },
+    status: "QUEUED",
+    processingStage: "QUEUED",
+    buildInput: {
+      boundary: {
+        implementation: "LOCAL_COMPANION_BUILD_REQUIRED",
+        modelProduced: false,
+        confidenceProduced: false,
+        shadowModeOnly: true,
+        automaticProgression: false,
+      },
+    },
+  });
+
+  const packageHash = `sha256:${createHash("sha256").update(`b4-package-${preparedBody.jobId}`).digest("hex")}`;
+  const packageId = `pkg_${randomUUID()}`;
+  const completed = await context.request.patch(`/api/vision-build-jobs/${preparedBody.jobId}`, {
+    headers: { "x-csrf-token": csrfToken },
+    data: {
+      event: "COMPLETED",
+      report: {
+        schemaVersion: 1,
+        buildId: preparedBody.jobId,
+        inputHash: `sha256:${preparedBody.inputHash}`,
+        engineVersion: "1.0.0-b4",
+        modelBundleVersion: "classical-vision-cpu-1",
+        provider: { id: "CPU_CLASSICAL", active: true },
+        calibration: { profile: "STORY_CRITICAL", thresholds: { minimumTargetNegativeMargin: 0.1 } },
+        certification: {
+          reliabilityGrade: "GOOD",
+          automaticEligibility: false,
+          approvedRuntimeModes: ["SHADOW"],
+          metrics: { positiveAttempts: 2, negativeAttempts: 20, falseAccepts: 0, falseRejects: 1 },
+        },
+        package: {
+          manifest: {
+            packageId,
+            packageHash,
+            waypointVersionId: created.draftVersionId,
+            shadowModeOnly: true,
+            automaticEligibility: false,
+          },
+        },
+        status: "COMPLETED",
+        shadowModeOnly: true,
+      },
+      packageArtifact: {
+        packageId,
+        storageReference: `companion://vision-packages/${packageId}`,
+        contentHash: packageHash,
+        fileSize: 16_384,
+      },
+    },
+  });
+  expect(completed.ok(), await completed.text()).toBeTruthy();
+  expect(await completed.json()).toMatchObject({
+    status: "COMPLETED",
+    lifecycleStatus: "SHADOW_READY",
+    reliabilityGrade: "GOOD",
+    automaticEligibility: false,
   });
 
   await page.reload();
-  await expect(page.getByText("Ready to prepare")).toBeVisible();
+  await expect(page.getByText("Automatic progression: disabled")).toBeVisible();
   await context.close();
 });
 

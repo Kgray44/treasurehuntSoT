@@ -1,6 +1,6 @@
 {
   "name": "forever-treasure-companion",
-  "version": "0.5.0-b3",
+  "version": "0.6.0-b4",
   "description": "Shared Player, Captain, and Studio companion for versioned Tall Tales.",
   "author": "The Forever Treasure contributors",
   "private": true,
@@ -37,6 +37,7 @@
     "db:migrate:mysql:vision": "prisma db execute --file prisma/mysql-migrations/0005_vision_waypoint_b1/migration.sql --schema prisma/schema.prisma",
     "db:migrate:mysql:capture": "prisma db execute --file prisma/mysql-migrations/0006_vision_capture_b2/migration.sql --schema prisma/schema.prisma",
     "db:migrate:mysql:authoring": "prisma db execute --file prisma/mysql-migrations/0007_vision_studio_authoring_b3/migration.sql --schema prisma/schema.prisma",
+    "db:migrate:mysql:verification": "prisma db execute --file prisma/mysql-migrations/0008_vision_verification_runtime_b4/migration.sql --schema prisma/schema.prisma",
     "desktop:dev": "concurrently --kill-others-on-fail \"npm:dev\" \"wait-on http://127.0.0.1:3000 && electron apps/desktop/main.cjs\"",
     "desktop:stage": "node scripts/prepare-desktop.mjs",
     "desktop:build": "npm run build && npm run desktop:stage && electron-builder --win nsis",
@@ -44,7 +45,8 @@
     "desktop:test": "node --test apps/desktop/desktop-shell.test.cjs",
     "companion:test": "node --test apps/companion/*.test.cjs",
     "companion:electron-smoke": "electron apps/companion/electron-capture-smoke.cjs",
-    "companion:hotkey-smoke": "node apps/companion/windows-hotkey-smoke.cjs"
+    "companion:hotkey-smoke": "node apps/companion/windows-hotkey-smoke.cjs",
+    "vision:b4:replay": "node scripts/run-vision-b4-replay.cjs"
   },
   "dependencies": {
     "@dnd-kit/core": "6.3.1",

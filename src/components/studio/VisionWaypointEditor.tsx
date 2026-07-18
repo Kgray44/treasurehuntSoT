@@ -383,6 +383,12 @@ export function VisionWaypointEditor({ waypointId, authenticated }: { waypointId
   const [dirty, setDirty] = useState(false);
   const [autoSaving, setAutoSaving] = useState(false);
   const [message, setMessage] = useState("");
+  const [buildProgress, setBuildProgress] = useState<{
+    buildId: string;
+    status: string;
+    stage: string;
+    progress: number | null;
+  } | null>(null);
 
   const load = useCallback(async () => {
     const response = await fetch(`/api/vision-waypoints/${waypointId}`, { cache: "no-store" });
@@ -390,9 +396,7 @@ export function VisionWaypointEditor({ waypointId, authenticated }: { waypointId
     if (!response.ok || !body.waypoint) throw new Error(body.error ?? "The waypoint could not be opened.");
     setWaypoint(body.waypoint);
     setCsrf(body.csrfToken ?? "");
-    const draft =
-      body.waypoint.versions.find((version) => version.lifecycleStatus === "DRAFT" && !version.publishedAt) ??
-      body.waypoint.versions.find((version) => version.lifecycleStatus === "READY_TO_BUILD" && !version.publishedAt);
+    const draft = body.waypoint.versions.find((version) => !version.publishedAt && !version.deprecatedAt);
     if (!draft) return setAggregate(null);
     const authoringResponse = await fetch(`/api/vision-waypoint-versions/${draft.id}/authoring`, { cache: "no-store" });
     const authoringBody = (await authoringResponse.json()) as {
@@ -499,22 +503,175 @@ export function VisionWaypointEditor({ waypointId, authenticated }: { waypointId
     if (response.ok) await load();
     else setMessage(((await response.json()) as { error?: string }).error ?? "Draft creation failed.");
   }
+  async function persistBuildUpdate(buildId: string, payload: Record<string, unknown>) {
+    const response = await fetch(`/api/vision-build-jobs/${buildId}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json", "x-csrf-token": csrf },
+      body: JSON.stringify(payload),
+    });
+    if (!response.ok)
+      throw new Error(((await response.json()) as { error?: string }).error ?? "Build state could not be persisted.");
+  }
+
   async function prepareBuild() {
     if (!aggregate) return;
     setBusy(true);
-    const response = await fetch(`/api/vision-waypoint-versions/${aggregate.version.id}/prepare-build`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json", "x-csrf-token": csrf },
-      body: JSON.stringify({ expectedRevision: aggregate.version.authoringRevision }),
-    });
-    const body = (await response.json()) as { error?: string; inputHash?: string };
-    setBusy(false);
-    setMessage(
-      response.ok
-        ? `BuildInput prepared and persisted: sha256:${body.inputHash}. No model or confidence was produced.`
-        : (body.error ?? "Build preparation failed."),
-    );
-    await load();
+    setMessage("");
+    try {
+      const response = await fetch(`/api/vision-waypoint-versions/${aggregate.version.id}/prepare-build`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "x-csrf-token": csrf },
+        body: JSON.stringify({ expectedRevision: aggregate.version.authoringRevision }),
+      });
+      const body = (await response.json()) as { error?: string; inputHash?: string; jobId?: string };
+      if (!response.ok || !body.jobId || !body.inputHash) throw new Error(body.error ?? "Build preparation failed.");
+      const jobResponse = await fetch(`/api/vision-build-jobs/${body.jobId}`, { cache: "no-store" });
+      const job = (await jobResponse.json()) as {
+        error?: string;
+        buildInput?: Record<string, unknown>;
+        createdAt?: string;
+      };
+      if (!jobResponse.ok || !job.buildInput) throw new Error(job.error ?? "Persisted BuildInput could not be read.");
+      const capabilities = await adapter.getVisionEngineCapabilities();
+      const configured = capabilities.configured as Record<string, unknown> | undefined;
+      if (capabilities.buildEngine !== true || capabilities.shadowModeOnly !== true || configured?.buildEngine !== true)
+        throw new Error("The connected Companion does not expose the governed B-4 shadow build engine.");
+      await adapter.startVisionBuild({
+        buildId: body.jobId,
+        inputHash: body.inputHash,
+        buildInput: job.buildInput,
+        builtAt: job.createdAt ?? new Date().toISOString(),
+        provider: "DIRECTML_DETECTED",
+        allowProviderFallback: true,
+      });
+      let lastStage = "QUEUED";
+      let terminal: Record<string, unknown> | null = null;
+      while (!terminal) {
+        await new Promise((resolve) => window.setTimeout(resolve, 350));
+        const local = await adapter.getVisionBuildStatus(body.jobId);
+        const status = String(local.status ?? "RUNNING");
+        const stage = String(local.processingStage ?? "QUEUED");
+        const progress = typeof local.progress === "number" ? local.progress : null;
+        setBuildProgress({ buildId: body.jobId, status, stage, progress });
+        if (stage !== lastStage && status === "RUNNING") {
+          await persistBuildUpdate(body.jobId, {
+            event: "PROGRESS",
+            stage,
+            progress,
+            messageCode: `COMPANION_${stage}`,
+            detail: { source: "LOCAL_COMPANION" },
+          });
+          lastStage = stage;
+        }
+        if (["COMPLETED", "FAILED", "CANCELLED"].includes(status)) terminal = local;
+      }
+      if (terminal.status === "COMPLETED") {
+        const report = terminal.report as Record<string, unknown> | undefined;
+        const packageArtifact = report?.packageArtifact as Record<string, unknown> | undefined;
+        if (!report || !packageArtifact) throw new Error("Companion completed without immutable package metadata.");
+        const persistedReport = { ...report };
+        delete persistedReport.packageArtifact;
+        await persistBuildUpdate(body.jobId, { event: "COMPLETED", report: persistedReport, packageArtifact });
+        const certification = persistedReport.certification as Record<string, unknown> | undefined;
+        setMessage(
+          `Local verification package built and persisted. Reliability: ${String(certification?.reliabilityGrade ?? "UNSAFE")}. Shadow mode only; automatic progression remains disabled.`,
+        );
+      } else if (terminal.status === "CANCELLED") {
+        await persistBuildUpdate(body.jobId, {
+          event: "CANCELLED",
+          report: (terminal.failure as Record<string, unknown>) ?? {},
+        });
+        setMessage("The local build was cancelled without publishing a package.");
+      } else {
+        const failure = (terminal.failure as Record<string, unknown>) ?? {};
+        await persistBuildUpdate(body.jobId, {
+          event: "FAILED",
+          failureCode: String(failure.failureCode ?? "INTERNAL_BUILD_ERROR"),
+          report: failure,
+        });
+        throw new Error(`Local build failed: ${String(failure.failureCode ?? "INTERNAL_BUILD_ERROR")}.`);
+      }
+      await load();
+    } catch (cause) {
+      setMessage(cause instanceof Error ? cause.message : "Local verification build failed.");
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function runShadowScan() {
+    if (!aggregate) return;
+    const job = aggregate.buildJobs.find((candidate) => candidate.status === "COMPLETED" && candidate.packageId);
+    if (!job?.packageId) return setMessage("Build a runtime package before running a shadow scan.");
+    setBusy(true);
+    setMessage("Capturing a five-second shadow scan. Story progression remains disabled.");
+    const attemptId = `att_${crypto.randomUUID()}`;
+    const stageToken = `stage_${crypto.randomUUID()}`;
+    try {
+      const captureStatus = await adapter.getStatus();
+      if (!captureStatus.target)
+        throw new Error("Select the Sea of Thieves window in Companion before the shadow scan.");
+      await adapter.armVisionRuntime({
+        attemptId,
+        packageId: job.packageId,
+        waypointVersionId: aggregate.version.id,
+        stageToken,
+        expectedStageToken: stageToken,
+        provider: "DIRECTML_DETECTED",
+        allowProviderFallback: true,
+        timeoutMs: 8_000,
+        checkpointContext: {},
+      });
+      const scan = await adapter.beginPlayerScan({
+        requestId: `request_${crypto.randomUUID()}`,
+        attemptId,
+        durationMs: 5_000,
+        sampleFps: 10,
+        minimumFrames: 6,
+      });
+      await new Promise((resolve) => window.setTimeout(resolve, 5_100));
+      const capture = await adapter.stopPlayerScan(scan.sessionId);
+      const result = capture.verificationResult as Record<string, unknown> | null;
+      if (!result) throw new Error("The scan completed without a shadow verification result.");
+      const persisted = {
+        attemptId,
+        waypointId: aggregate.waypoint.id,
+        waypointVersionId: aggregate.version.id,
+        packageId: job.packageId,
+        packageHash: job.packageHash,
+        stageToken,
+        result: result.result,
+        guidanceCode: result.guidanceCode ?? null,
+        failedGates: result.failedGates ?? [],
+        evidenceDigest: result.evidenceDigest ?? null,
+        engineVersion: result.engineVersion,
+        modelBundleVersion: result.modelBundleVersion,
+        provider: result.provider ?? "CPU_CLASSICAL",
+        providerFallbackUsed: result.providerFallbackUsed === true,
+        capturedFrameCount: result.capturedFrameCount ?? 0,
+        usableFrameCount: result.usableFrameCount ?? 0,
+        passingFrameCount: result.passingFrameCount ?? 0,
+        durationMs: result.durationMs ?? 0,
+        shadowMode: true,
+        automaticProgression: false,
+        diagnostics: result.diagnostics ?? {},
+      };
+      const response = await fetch("/api/vision-shadow-attempts", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "x-csrf-token": csrf },
+        body: JSON.stringify(persisted),
+      });
+      if (!response.ok)
+        throw new Error(((await response.json()) as { error?: string }).error ?? "Shadow result was not persisted.");
+      setMessage(
+        `Shadow result persisted: ${String(result.result).replaceAll("_", " ")}. Guidance: ${String(result.guidanceCode ?? "none")}. No story event was emitted.`,
+      );
+    } catch (cause) {
+      await adapter.disarmVisionRuntime(attemptId).catch(() => {});
+      setMessage(cause instanceof Error ? cause.message : "Shadow scan failed.");
+    } finally {
+      setBusy(false);
+    }
   }
 
   if (!authenticated)
@@ -578,6 +735,25 @@ export function VisionWaypointEditor({ waypointId, authenticated }: { waypointId
         <p className={message.startsWith("Saved") ? "captain-notice" : "studio-error"} role="status">
           {message}
         </p>
+      )}
+      {aggregate.buildJobs.some((job) => job.status === "COMPLETED" && job.packageId) && (
+        <section className="review-grid" aria-label="B-4 shadow reliability controls">
+          <section>
+            <p className="eyebrow">B-4 reliability</p>
+            <h2>{aggregate.buildJobs[0].reliabilityGrade?.replaceAll("_", " ") ?? "Unrated"}</h2>
+            <p>Immutable package {aggregate.buildJobs[0].packageId}</p>
+          </section>
+          <section>
+            <p>
+              Run the exact production runtime against a live selected-window scan. The result is persisted for analysis
+              only.
+            </p>
+            <button type="button" className="brass-button" disabled={busy} onClick={() => void runShadowScan()}>
+              Run five-second shadow scan
+            </button>
+            <p>Automatic progression: disabled</p>
+          </section>
+        </section>
       )}
       <section className="authoring-shell">
         <aside className="wizard-sidebar">
@@ -957,20 +1133,20 @@ export function VisionWaypointEditor({ waypointId, authenticated }: { waypointId
           {step === 10 && (
             <>
               <div className="boundary-banner">
-                <strong>Phase boundary</strong>
+                <strong>Local B-4 verification build</strong>
                 <p>
-                  This step can persist schema-valid deterministic BuildInput only. It cannot train a model, run
-                  inference, create confidence, certify reliability, or enable automatic progression.
+                  The connected Companion consumes local derived frames, builds visual indexes, calibrates independent
+                  gates, runs locked tests, and publishes an immutable data-only package. Raw recordings never leave
+                  Companion storage.
                 </p>
               </div>
               <label>
-                <span>Future execution target</span>
+                <span>Execution target</span>
                 <select
                   value={String(form.executionTarget ?? "LOCAL")}
                   onChange={(event) => field("executionTarget", event.target.value)}
                 >
                   <option>LOCAL</option>
-                  <option>CLOUD_ASSISTED</option>
                 </select>
               </label>
               <label className="check-field">
@@ -980,7 +1156,7 @@ export function VisionWaypointEditor({ waypointId, authenticated }: { waypointId
                   onChange={(event) => field("rawMediaConsent", event.target.checked)}
                 />
                 <span>
-                  I understand raw-media movement would require separate explicit consent. This fixture does not upload
+                  I understand cloud or raw-media movement would require separate consent. This local build uploads no
                   media.
                 </span>
               </label>
@@ -990,18 +1166,46 @@ export function VisionWaypointEditor({ waypointId, authenticated }: { waypointId
                 disabled={!aggregate.dataHealth.readyToPrepare || busy || readOnly}
                 onClick={() => void prepareBuild()}
               >
-                Prepare deterministic BuildInput
+                Build verification package locally
               </button>
+              {buildProgress && (
+                <section className="health-summary" aria-live="polite">
+                  <strong>{buildProgress.stage.toLocaleLowerCase().replaceAll("_", " ")}</strong>
+                  <span>
+                    {buildProgress.status} ·{" "}
+                    {buildProgress.progress === null ? "indeterminate" : `${Math.round(buildProgress.progress * 100)}%`}
+                  </span>
+                  <progress value={buildProgress.progress ?? undefined} max={1} />
+                </section>
+              )}
               {!aggregate.dataHealth.readyToPrepare && <p>Resolve every Data Health blocker first.</p>}
               <ul className="build-job-list">
                 {aggregate.buildJobs.map((job) => (
                   <li key={job.id}>
                     <strong>{job.processingStage.toLocaleLowerCase().replaceAll("_", " ")}</strong>
                     <code>{job.inputHash ? `sha256:${job.inputHash}` : "No input hash"}</code>
-                    <span>No model · no confidence</span>
+                    <span>
+                      {job.reliabilityGrade ? `${job.reliabilityGrade.replaceAll("_", " ")} reliability` : job.status}
+                      {" · "}Shadow only · automatic disabled
+                    </span>
+                    {job.packageHash && <code>{job.packageHash}</code>}
                   </li>
                 ))}
               </ul>
+              {aggregate.buildJobs[0]?.status === "COMPLETED" && (
+                <section className="review-grid" aria-label="Reliability report">
+                  <section>
+                    <h3>Reliability</h3>
+                    <p>{aggregate.buildJobs[0].reliabilityGrade?.replaceAll("_", " ") ?? "Unavailable"}</p>
+                    <p>Package {aggregate.buildJobs[0].packageId}</p>
+                  </section>
+                  <section>
+                    <h3>Runtime authorization</h3>
+                    <p>Shadow verification only.</p>
+                    <p>Automatic story progression is disabled regardless of grade.</p>
+                  </section>
+                </section>
+              )}
             </>
           )}
           {step === 11 && (
@@ -1084,7 +1288,7 @@ export function VisionWaypointEditor({ waypointId, authenticated }: { waypointId
                   checked={Boolean(form.confirmNoModelYet)}
                   onChange={(event) => field("confirmNoModelYet", event.target.checked)}
                 />
-                <span>I understand B-3 prepares data and does not create a recognition model.</span>
+                <span>I understand B-4 results remain shadow-only and do not advance a story automatically.</span>
               </label>
               <label className="check-field">
                 <input
@@ -1101,7 +1305,7 @@ export function VisionWaypointEditor({ waypointId, authenticated }: { waypointId
                   disabled={!aggregate.dataHealth.readyToPrepare || busy}
                   onClick={() => void prepareBuild()}
                 >
-                  Finalize deterministic BuildInput and mark ready
+                  Build and certify shadow package locally
                 </button>
               )}
             </>

@@ -27,6 +27,11 @@ if (-not $env:GM_PASSWORD) { $env:GM_PASSWORD = "development-captain-only" }
 if (-not $env:PLAYER_ACCESS_CODE) { $env:PLAYER_ACCESS_CODE = "development-moonwake" }
 $env:VALIDATION_ARTIFACTS = Join-Path $runtimeRoot "artifacts\validation"
 $env:FEATURE_VISION_BUILD_ENGINE = "true"
+$env:FEATURE_VISION_RUNTIME_ENGINE = "true"
+$env:FEATURE_VISION_RECONSTRUCTION = "true"
+$env:FEATURE_VISION_SECONDARY_MATCHER = "true"
+$env:FEATURE_SHADOW_VERIFICATION = "true"
+$env:FEATURE_AUTOMATIC_VISION_PROGRESSION = "false"
 
 function Invoke-ValidationStep {
     param([Parameter(Mandatory)][string]$Name, [Parameter(Mandatory)][string[]]$Arguments)
