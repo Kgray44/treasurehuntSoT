@@ -15,8 +15,8 @@
 3. Create an `EXACT_LANDMARK` waypoint with `STORY_CRITICAL` verification. Publish version 1 with the `verified` deterministic scenario.
 4. Confirm version 1 has a SHA-256 package hash and cannot be edited. Derive version 2, change its hold duration, and confirm version 1 is unchanged.
 5. Open the seeded `B-1 Vision Waypoint Demonstration` in Studio and confirm `Inspect the Painted Lantern` binds the exact published version ID.
-6. Start `b1-vision-waypoint-demo`, open the Player URL, and confirm the scan card says it is a deterministic mock with no camera or game access.
-7. Hold `Hold to Inspect Surroundings`. Confirm the verified result crosses the existing `submitVerification` seam and the story advances once to `The mark is true`.
+6. Start `b1-vision-waypoint-demo`, open the Player URL, open/skip the canonical journal ceremony, and confirm the scan card says it is a deterministic mock with no camera or game access.
+7. Hold `Hold to Inspect Surroundings`. Confirm the verified result crosses the existing `submitVerification` seam, the current-objective tray changes once, and `Return to Current Objective` opens the newly released `The mark is true` leaf.
 8. Repeat with `duplicate_result_delivery`; confirm one `verificationSatisfied` event and a persisted `Duplicate rejected` diagnostic.
 9. Exercise `insufficient`, `not_at_target`, `ambiguous`, `system_error`, and `cancelled`; confirm none advances the story.
 10. Exercise `stale_stage` and `delayed_verified` while moving the session to a different stage; confirm the result persists as rejected stale and does not advance the current stage.

@@ -19,6 +19,21 @@ async function startFixture(context: BrowserContext) {
   expect(response.status(), await response.text()).toBe(201);
   return response.json() as Promise<{ sessionId: string; url: string }>;
 }
+async function openJournal(page: Page) {
+  const open = page.getByRole("button", { name: /Open the journal/i });
+  await expect(open).toBeVisible();
+  await open.click();
+  const skip = page.getByRole("button", { name: "Skip ceremony" });
+  await expect(skip).toBeVisible();
+  await skip.click();
+  await expect(page.locator("main.tall-tale-journal-shell")).toHaveAttribute("data-journal-phase", "JOURNAL_READY");
+  await expect(page.locator(".persistent-objective")).toHaveCSS("opacity", "1");
+}
+async function returnToCurrentObjective(page: Page) {
+  const button = page.getByRole("button", { name: "Return to Current Objective" });
+  await expect(button).toBeVisible();
+  await button.click();
+}
 
 test("Studio lifecycle, browser scan, duplicate/stale guards, desktop path, and Captain diagnostics form one B-1 slice", async ({
   browser,
@@ -116,19 +131,25 @@ test("Studio lifecycle, browser scan, duplicate/stale guards, desktop path, and 
   const browserRun = await startFixture(browserContext);
   const playerPage = await browserContext.newPage();
   await playerPage.goto(browserRun.url);
+  await openJournal(playerPage);
   await expect(playerPage.getByRole("heading", { name: "Inspect the Painted Lantern", exact: true })).toBeVisible();
   await expect(playerPage.getByText(/deterministic mock/i)).toBeVisible();
+  await expect(playerPage.locator(".runtime-connection.live")).toBeVisible();
   await capture(playerPage, "01-player-vision-ready");
   await playerPage.getByRole("button", { name: /Hold to Inspect Surroundings/i }).click({ delay: 1500 });
+  await returnToCurrentObjective(playerPage);
   await expect(playerPage.getByRole("heading", { name: "The mark is true" })).toBeVisible();
+  await expect(playerPage.locator('.main-journal-book[data-flip-state="read"]')).toBeVisible();
   await capture(playerPage, "02-player-verified-advanced");
 
   const duplicateContext = await browser.newContext();
   const duplicateRun = await startFixture(duplicateContext);
   const duplicatePage = await duplicateContext.newPage();
   await duplicatePage.goto(duplicateRun.url);
+  await openJournal(duplicatePage);
   await duplicatePage.getByLabel("Test scenario").selectOption("duplicate_result_delivery");
   await duplicatePage.getByRole("button", { name: /Hold to Inspect Surroundings/i }).click({ delay: 1500 });
+  await returnToCurrentObjective(duplicatePage);
   await expect(duplicatePage.getByRole("heading", { name: "The mark is true" })).toBeVisible();
   const duplicateAttempts = await captain.get(`/api/verification-attempts?sessionId=${duplicateRun.sessionId}`);
   await ok(duplicateAttempts);
@@ -146,6 +167,7 @@ test("Studio lifecycle, browser scan, duplicate/stale guards, desktop path, and 
   const staleRun = await startFixture(staleContext);
   const stalePage = await staleContext.newPage();
   await stalePage.goto(staleRun.url);
+  await openJournal(stalePage);
   await stalePage.getByLabel("Test scenario").selectOption("stale_stage");
   await stalePage.getByRole("button", { name: /Hold to Inspect Surroundings/i }).click({ delay: 1500 });
   await expect(stalePage.getByRole("heading", { name: "Inspect the Painted Lantern", exact: true })).toBeVisible();

@@ -110,3 +110,7 @@ B-1 must extend this gate with protocol, lifecycle, migration, adapter, PWA, des
 ## Audit conclusion
 
 The repository can support B-1 additively. Its existing immutable Tall Tale snapshots, provider seam, ordered idempotent events, staff/Player security model, and shared UI reduce implementation risk. The primary new foundations are the persistent waypoint/version domain, typed protocol, adapter boundary, attempt state machine, Studio waypoint surfaces, story binding, Player/Captain mock workflow, safe PWA, locally packaged desktop shell, and evidence-backed documentation.
+
+## Final concurrent-work integration
+
+The Tall Tale UI task completed as upstream commits `884facb` and `481dc92`. B-1 fetched that result and rebased the isolated branch without discarding either change set. The upstream task deliberately deleted `src/components/tales/PlayerRuntime.tsx`; B-1 preserved that deletion and integrated Vision into `TallTaleJournalSession` plus `journal-contract` instead. The content conflict in `progression.ts` retained both the canonical Player journal projection and the server-enforced Vision flag. The combined result passed formatting, lint, TypeScript, 102 unit tests, all authorized browser checks, production build/restart, Electron package build, and packaged smoke.

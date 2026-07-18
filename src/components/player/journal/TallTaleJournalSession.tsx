@@ -386,7 +386,7 @@ export function TallTaleJournalSession({
     return (
       <JournalStatus
         title="Unbinding the journal"
-        message={error || "Finding the current leafâ€¦"}
+        message={error || "Finding the current leaf…"}
         error={Boolean(error)}
       />
     );
@@ -423,7 +423,7 @@ export function TallTaleJournalSession({
       </div>
       <header className="tall-tale-session-header persistent-interface" data-opening-actor="persistent-interface">
         <div>
-          <Link href="/player/library">â† Tall Tale Library</Link>
+          <Link href="/player/library">← Tall Tale Library</Link>
           <p className="eyebrow">{historical ? "Completed journal" : (state.chapter?.title ?? "Tall Tale session")}</p>
           <h1>{state.tale.title}</h1>
         </div>
@@ -503,7 +503,7 @@ export function TallTaleJournalSession({
       {(openingPhase === "ENTRY_IDLE" || openingPhase === "ENTRY_ACTIVATED") && (
         <div className="journal-opening tall-tale-opening">
           <button className="wax-open" onClick={() => void openJournal()}>
-            <span>âœ¦</span>
+            <span>✦</span>
             <strong>Open the journal</strong>
             <small>{reading.hasOpened ? "Return to your place" : "Begin the Tall Tale"}</small>
           </button>
@@ -525,7 +525,7 @@ export function TallTaleJournalSession({
           onClick={() => saveReading({ openDrawer: null })}
           aria-label="Close chapter drawer"
         >
-          Ã—
+          ×
         </button>
         <h2>Released chapters</h2>
         {state.journal.chapters.map((chapter) => (
@@ -544,7 +544,7 @@ export function TallTaleJournalSession({
           onClick={() => saveReading({ openDrawer: null })}
           aria-label="Close journal tool drawer"
         >
-          Ã—
+          ×
         </button>
         <h2>{drawerTitle(reading.openDrawer)}</h2>
         {contextBlocks
@@ -657,7 +657,7 @@ function JournalActions({
   if (state.pendingVerification?.providerType === "captainManual")
     return (
       <div className="awaiting-captain">
-        <strong>{String(currentBlock?.configuration.waitingText ?? "Awaiting the Captain's approvalâ€¦")}</strong>
+        <strong>{String(currentBlock?.configuration.waitingText ?? "Awaiting the Captain's approval…")}</strong>
         <p>The journal will respond when the shared session advances.</p>
       </div>
     );
@@ -685,7 +685,7 @@ function JournalActions({
           <input value={answer} onChange={(event) => setAnswer(event.target.value)} autoComplete="off" required />
         </label>
         <button className="brass-button" disabled={busy}>
-          {busy ? "Testing the answerâ€¦" : "Write answer"}
+          {busy ? "Testing the answer…" : "Write answer"}
         </button>
       </form>
     );
@@ -713,7 +713,7 @@ function JournalActions({
   return (
     <button className="brass-button" disabled={busy || !currentBlock} onClick={() => void act("continue")}>
       {busy
-        ? "Writing progressâ€¦"
+        ? "Writing progress…"
         : String(
             currentBlock?.configuration.buttonLabel ??
               currentBlock?.configuration.primaryLabel ??

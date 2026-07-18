@@ -133,10 +133,29 @@
   border: 1px solid rgba(222, 184, 104, 0.35);
   border-radius: 1.2rem;
   padding: 1.25rem;
+  color: #f7e8c1;
   background: rgba(5, 31, 40, 0.88);
+}
+.vision-scan-control .eyebrow {
+  color: #f0c96b;
 }
 .vision-scan-control h2 {
   margin: 0;
+  color: #fff4d6;
+}
+.vision-scan-control > p {
+  color: #dce9e4;
+}
+.vision-scenario {
+  color: #f7e8c1;
+}
+.vision-scenario select {
+  width: 100%;
+  border: 1px solid rgba(222, 184, 104, 0.55);
+  border-radius: 0.65rem;
+  padding: 0.8rem;
+  color: #fff4d6;
+  background: #103946;
 }
 .vision-hold-button {
   --scan-progress: 0%;
