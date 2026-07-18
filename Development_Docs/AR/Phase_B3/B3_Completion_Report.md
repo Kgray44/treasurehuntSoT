@@ -18,7 +18,7 @@ The automated exit gate is green. The overall B-3 exit gate is **not passed** be
 - Branch: `codex/phase-b3-studio-authoring`
 - Base branch: `origin/codex/phase-b2-native-capture`
 - Base commit: `eec2c73146a63d6f061254209fef59ac5d4691a5`
-- Implementation commit: `[record after source commit]`
+- Implementation commit: `45d9c98f98afe0dcb1e6364c3b0916de10ee9ad6`
 - Pull request: none created
 - SQLite migration: `20260718140000_vision_studio_authoring_b3`
 - MySQL migration: `0007_vision_studio_authoring_b3`
