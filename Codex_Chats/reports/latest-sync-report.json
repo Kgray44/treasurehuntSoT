@@ -1,11 +1,11 @@
 {
-  "added": 0,
+  "added": 1,
   "ambiguous": 0,
   "ambiguous_candidates": [],
   "commit_created": false,
   "commit_hash": null,
   "commit_message": null,
-  "conversations_discovered": 192,
+  "conversations_discovered": 193,
   "development_docs": {
     "changes": {
       "added": [],
@@ -22,7 +22,7 @@
     "commit_included": false,
     "directory": "Development_Docs",
     "eligible_fingerprints": {
-      "Development_Docs/Full_System_Product_Polish_Implementation_Record.md": "a7016d336782a5a8aeb4904bca0c0b6c654a08382e5089d6ed5bf2d1f7bcce68"
+      "Development_Docs/Full_System_Product_Polish_Implementation_Record.md": "33a77c2a55dd2bc6df165541a1939a36fa86f58e2809110c76f38235debb72cc"
     },
     "eligible_paths": [
       "Development_Docs/Full_System_Product_Polish_Implementation_Record.md"
@@ -42,11 +42,12 @@
   "files_changed": [
     "Codex_Chats/chats/019f75c9-109d-7722-8be3-7c49cc4a3cf2--polish-full-system-product-ux.md",
     "Codex_Chats/chats/019f75d1-8441-7962-a500-d605d0f89966--fix-captain-sign-in-json-error.md",
+    "Codex_Chats/chats/019f75f4-50ba-7982-940a-f0dd9e2dd384--consolidate-unified-experience-shell.md",
     "Codex_Chats/manifest.json",
     "Codex_Chats/reports/latest-sync-report.json"
   ],
-  "finished_at": "2026-07-18T15:33:08Z",
-  "included": 9,
+  "finished_at": "2026-07-18T16:01:46Z",
+  "included": 10,
   "push_attempted": false,
   "push_result": "not requested",
   "redacted": 91,
@@ -63,7 +64,7 @@
   "source_types_inspected": [
     "codex_session"
   ],
-  "started_at": "2026-07-18T15:32:28Z",
+  "started_at": "2026-07-18T16:01:19Z",
   "suspected_secret_categories": [],
   "synchronizer_version": "1.1.0",
   "unavailable": 0,
