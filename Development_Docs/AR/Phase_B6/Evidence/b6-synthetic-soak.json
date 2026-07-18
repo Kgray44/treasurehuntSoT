@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "evidenceClass": "SYNTHETIC_SOAK_NOT_MULTI_HOUR_FIELD_EVIDENCE",
+  "buildIterations": 15,
+  "scanIterations": 250,
+  "results": {
+    "verified": 84,
+    "nonSuccess": 166,
+    "systemErrors": 0
+  },
+  "performance": {
+    "wallDurationMs": 15067.54,
+    "runtimeP95Ms": 53,
+    "rssBeforeBytes": 63590400,
+    "rssAfterBytes": 320958464,
+    "rssGrowthBytes": 257368064,
+    "budgetBytes": 268435456
+  },
+  "releaseEligible": false,
+  "limitations": [
+    "No Sea of Thieves process was running.",
+    "No native capture, GPU, thermal, sleep/resume, or multi-hour behavior was measured.",
+    "Passing this bounded harness does not close the B-6 long-duration release blocker."
+  ]
+}
