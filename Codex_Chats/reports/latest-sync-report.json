@@ -5,7 +5,7 @@
   "commit_created": false,
   "commit_hash": null,
   "commit_message": null,
-  "conversations_discovered": 196,
+  "conversations_discovered": 197,
   "development_docs": {
     "changes": {
       "added": [],
@@ -32,21 +32,21 @@
   "failed": 0,
   "files_changed": [
     "Codex_Chats/chats/019f75f4-50ba-7982-940a-f0dd9e2dd384--consolidate-unified-experience-shell.md",
-    "Codex_Chats/chats/019f7612-5f0c-7941-8ee5-cf9390e1a6ea--audit-animation-system-failures.md",
     "Codex_Chats/chats/019f7623-2908-7722-bd6d-8f806f88c69f--recover-missing-chat.md",
     "Codex_Chats/chats/019f762c-354a-7b22-afd3-9a0afdadb205--continue-animation-system-audit.md",
+    "Codex_Chats/chats/019f762f-4820-7852-8a27-dbce5d80c2cf--untitled.md",
     "Codex_Chats/manifest.json",
     "Codex_Chats/reports/latest-sync-report.json"
   ],
-  "finished_at": "2026-07-18T17:01:35Z",
-  "included": 13,
+  "finished_at": "2026-07-18T17:13:22Z",
+  "included": 14,
   "push_attempted": false,
   "push_result": "not requested",
-  "redacted": 98,
+  "redacted": 101,
   "redaction_categories": {
     "connection_string": 12,
-    "login_credential": 23,
-    "secret_assignment": 63
+    "login_credential": 24,
+    "secret_assignment": 65
   },
   "renamed": 0,
   "schema_version": "1.0",
@@ -56,16 +56,19 @@
   "source_types_inspected": [
     "codex_session"
   ],
-  "started_at": "2026-07-18T17:01:09Z",
+  "started_at": "2026-07-18T17:13:02Z",
   "suspected_secret_categories": [],
   "synchronizer_version": "1.1.0",
   "unavailable": 0,
-  "unchanged": 9,
+  "unchanged": 10,
   "updated": 3,
   "warnings": [
     "Duplicate source record reconciled for 019dad68-91f3-7091-b4aa-6fee54fd1a1f",
     "Duplicate source record reconciled for 019dad68-91f3-7091-b4aa-6fee54fd1a1f",
     "Duplicate source record reconciled for 019dc22f-4155-7ad2-b1d6-bc451bf68259",
+    "Duplicate source record reconciled for 019f762f-4820-7852-8a27-dbce5d80c2cf",
+    "Duplicate source record reconciled for 019f762f-4820-7852-8a27-dbce5d80c2cf",
+    "Duplicate source record reconciled for 019f762f-4820-7852-8a27-dbce5d80c2cf",
     "Duplicate source record reconciled for 019dc22f-4155-7ad2-b1d6-bc451bf68259",
     "Duplicate source record reconciled for 019dc22f-4155-7ad2-b1d6-bc451bf68259"
   ]
