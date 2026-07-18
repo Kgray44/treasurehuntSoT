@@ -59,7 +59,7 @@ Command:
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts/test-all.ps1 -SkipBrowserInstall
 ```
 
-Result: exit code `0`, `Full validation passed` in 416.5 seconds.
+Result: exit code `0`, `Full validation passed` in 342.8 seconds on the final committed implementation tree.
 
 - Fresh SQLite: all 6 migrations deployed successfully.
 - Formatting, ESLint, and strict TypeScript: passed.
