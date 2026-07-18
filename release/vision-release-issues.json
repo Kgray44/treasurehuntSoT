@@ -17,7 +17,7 @@
       "affectedVersions": ["0.7.0-b5"],
       "owner": "desktop-runtime",
       "status": "RESOLVED",
-      "fixCommit": "PENDING_PHASE_B6_CODE_COMMIT",
+      "fixCommit": "eb8dc48badaca5847ac237a249b8026ec717905b",
       "regressionTest": "node scripts/desktop-smoke.mjs",
       "releaseBlocking": true,
       "evidence": {
@@ -215,7 +215,7 @@
       "affectedVersions": ["0.7.0-b5"],
       "owner": "web-runtime",
       "status": "RESOLVED",
-      "fixCommit": "PENDING_PHASE_B6_CODE_COMMIT",
+      "fixCommit": "eb8dc48badaca5847ac237a249b8026ec717905b",
       "regressionTest": "tests/e2e/animations.spec.ts",
       "releaseBlocking": true,
       "evidence": {
