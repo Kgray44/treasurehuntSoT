@@ -1,32 +1,23 @@
 {
-  "added": 1,
+  "added": 2,
   "ambiguous": 0,
   "ambiguous_candidates": [],
   "commit_created": false,
   "commit_hash": null,
   "commit_message": null,
-  "conversations_discovered": 193,
+  "conversations_discovered": 195,
   "development_docs": {
     "changes": {
       "added": [],
       "conflicted": [],
       "deleted": [],
-      "modified": [
-        {
-          "path": "Development_Docs/Full_System_Product_Polish_Implementation_Record.md",
-          "status": ".M"
-        }
-      ],
+      "modified": [],
       "renamed": []
     },
     "commit_included": false,
     "directory": "Development_Docs",
-    "eligible_fingerprints": {
-      "Development_Docs/Full_System_Product_Polish_Implementation_Record.md": "33a77c2a55dd2bc6df165541a1939a36fa86f58e2809110c76f38235debb72cc"
-    },
-    "eligible_paths": [
-      "Development_Docs/Full_System_Product_Polish_Implementation_Record.md"
-    ],
+    "eligible_fingerprints": {},
+    "eligible_paths": [],
     "empty_directories": [],
     "excluded": [],
     "exists": true,
@@ -41,20 +32,21 @@
   "failed": 0,
   "files_changed": [
     "Codex_Chats/chats/019f75c9-109d-7722-8be3-7c49cc4a3cf2--polish-full-system-product-ux.md",
-    "Codex_Chats/chats/019f75d1-8441-7962-a500-d605d0f89966--fix-captain-sign-in-json-error.md",
     "Codex_Chats/chats/019f75f4-50ba-7982-940a-f0dd9e2dd384--consolidate-unified-experience-shell.md",
+    "Codex_Chats/chats/019f7612-5f0c-7941-8ee5-cf9390e1a6ea--audit-animation-system-failures.md",
+    "Codex_Chats/chats/019f7623-2908-7722-bd6d-8f806f88c69f--recover-missing-chat.md",
     "Codex_Chats/manifest.json",
     "Codex_Chats/reports/latest-sync-report.json"
   ],
-  "finished_at": "2026-07-18T16:01:46Z",
-  "included": 10,
+  "finished_at": "2026-07-18T16:55:19Z",
+  "included": 12,
   "push_attempted": false,
   "push_result": "not requested",
-  "redacted": 91,
+  "redacted": 97,
   "redaction_categories": {
     "connection_string": 12,
-    "login_credential": 19,
-    "secret_assignment": 60
+    "login_credential": 23,
+    "secret_assignment": 62
   },
   "renamed": 0,
   "schema_version": "1.0",
@@ -64,11 +56,11 @@
   "source_types_inspected": [
     "codex_session"
   ],
-  "started_at": "2026-07-18T16:01:19Z",
+  "started_at": "2026-07-18T16:54:48Z",
   "suspected_secret_categories": [],
   "synchronizer_version": "1.1.0",
   "unavailable": 0,
-  "unchanged": 7,
+  "unchanged": 8,
   "updated": 2,
   "warnings": [
     "Duplicate source record reconciled for 019dad68-91f3-7091-b4aa-6fee54fd1a1f",
