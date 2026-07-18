@@ -1,5 +1,5 @@
 {
-  "added": 1,
+  "added": 0,
   "ambiguous": 0,
   "ambiguous_candidates": [],
   "commit_created": false,
@@ -8,24 +8,7 @@
   "conversations_discovered": 198,
   "development_docs": {
     "changes": {
-      "added": [
-        {
-          "path": "Development_Docs/Animation_System_Audit_Matrix.csv",
-          "status": "??"
-        },
-        {
-          "path": "Development_Docs/Animation_System_Full_Audit.md",
-          "status": "??"
-        },
-        {
-          "path": "Development_Docs/Animation_System_Implementation_Roadmap.md",
-          "status": "??"
-        },
-        {
-          "path": "Development_Docs/Animation_System_Test_Plan.md",
-          "status": "??"
-        }
-      ],
+      "added": [],
       "conflicted": [],
       "deleted": [],
       "modified": [],
@@ -33,18 +16,8 @@
     },
     "commit_included": false,
     "directory": "Development_Docs",
-    "eligible_fingerprints": {
-      "Development_Docs/Animation_System_Audit_Matrix.csv": "ac8817b66dda358c154b66efc385200978fdeedf2b00be06541342e1fbb3aa0b",
-      "Development_Docs/Animation_System_Full_Audit.md": "0232b04c288e7b198d0dfcc4034f3bae24a37f8df29184f3ddd3e5500d8223eb",
-      "Development_Docs/Animation_System_Implementation_Roadmap.md": "00ee9f80b313d044a0ec3b84540c890e8fc3572639db57d1151b1c11259fc45a",
-      "Development_Docs/Animation_System_Test_Plan.md": "e92f5a3f1ee5ea0dc0d7a75576a8fea927fe72b8ed72d01621d8078722da8bba"
-    },
-    "eligible_paths": [
-      "Development_Docs/Animation_System_Audit_Matrix.csv",
-      "Development_Docs/Animation_System_Full_Audit.md",
-      "Development_Docs/Animation_System_Implementation_Roadmap.md",
-      "Development_Docs/Animation_System_Test_Plan.md"
-    ],
+    "eligible_fingerprints": {},
+    "eligible_paths": [],
     "empty_directories": [],
     "excluded": [],
     "exists": true,
@@ -60,11 +33,10 @@
   "files_changed": [
     "Codex_Chats/chats/019f762c-354a-7b22-afd3-9a0afdadb205--continue-animation-system-audit.md",
     "Codex_Chats/chats/019f762f-4820-7852-8a27-dbce5d80c2cf--untitled.md",
-    "Codex_Chats/chats/019f7646-9102-7e81-82c0-4fc43049078a--commit-and-push-governing-docs.md",
     "Codex_Chats/manifest.json",
     "Codex_Chats/reports/latest-sync-report.json"
   ],
-  "finished_at": "2026-07-18T17:43:43Z",
+  "finished_at": "2026-07-18T18:21:21Z",
   "included": 15,
   "push_attempted": false,
   "push_result": "not requested",
@@ -82,11 +54,11 @@
   "source_types_inspected": [
     "codex_session"
   ],
-  "started_at": "2026-07-18T17:43:10Z",
+  "started_at": "2026-07-18T18:20:55Z",
   "suspected_secret_categories": [],
   "synchronizer_version": "1.1.0",
   "unavailable": 0,
-  "unchanged": 12,
+  "unchanged": 13,
   "updated": 2,
   "warnings": [
     "Duplicate source record reconciled for 019dad68-91f3-7091-b4aa-6fee54fd1a1f",
@@ -98,6 +70,9 @@
     "Duplicate source record reconciled for 019f762c-354a-7b22-afd3-9a0afdadb205",
     "Duplicate source record reconciled for 019f762c-354a-7b22-afd3-9a0afdadb205",
     "Duplicate source record reconciled for 019f762c-354a-7b22-afd3-9a0afdadb205",
+    "Duplicate source record reconciled for 019f762f-4820-7852-8a27-dbce5d80c2cf",
+    "Duplicate source record reconciled for 019f762f-4820-7852-8a27-dbce5d80c2cf",
+    "Duplicate source record reconciled for 019f762f-4820-7852-8a27-dbce5d80c2cf",
     "Duplicate source record reconciled for 019dc22f-4155-7ad2-b1d6-bc451bf68259",
     "Duplicate source record reconciled for 019dc22f-4155-7ad2-b1d6-bc451bf68259"
   ]

@@ -457,12 +457,12 @@
     },
     {
       "archive_path": "Codex_Chats/chats/019f762c-354a-7b22-afd3-9a0afdadb205--continue-animation-system-audit.md",
-      "content_sha256": "94a2a1d757c60aada11eb50f0c1a88d72bdb14ce334a669e0b7529a5a5ee7f16",
+      "content_sha256": "2aae52d520939130b047d804e7c3ef514e356f4416a9943fd466fd76412ea9bb",
       "conversation_id": "019f762c-354a-7b22-afd3-9a0afdadb205",
       "created_at": "2026-07-18T17:00:47.478Z",
       "first_archived_at": "2026-07-18T17:01:09Z",
-      "last_synchronized_at": "2026-07-18T17:43:10Z",
-      "message_count": 383,
+      "last_synchronized_at": "2026-07-18T18:20:55Z",
+      "message_count": 396,
       "project_identifier": "treasurehunt",
       "redaction_categories": {
         "secret_assignment": 2
@@ -470,20 +470,20 @@
       "redactions": 2,
       "source_export_timestamp": null,
       "source_identifier": "rollout-2026-07-18T13-00-41-019f762c-354a-7b22-afd3-9a0afdadb205.jsonl",
-      "source_sha256": "ffb0c5028e0f4beb6ae51495c5c1b0a9e9a757b6616723270d3aaeb256e37091",
+      "source_sha256": "6efdf2cd7084dfa7e03b99d945b450c92b175d887d62e269f596d0f3ce766e5b",
       "source_type": "codex_session",
       "status": "active",
       "title": "Continue animation system audit",
-      "updated_at": "2026-07-18T17:43:21.721Z"
+      "updated_at": "2026-07-18T17:44:48.140Z"
     },
     {
       "archive_path": "Codex_Chats/chats/019f762f-4820-7852-8a27-dbce5d80c2cf--untitled.md",
-      "content_sha256": "11077713475e91d3ecd3f417b231c3cd80f02073771a687f1adea74354a2f412",
+      "content_sha256": "c372b8ad830d5c61ec8fd95e64564204501e8d158ea3a1a3c3933c4727495a25",
       "conversation_id": "019f762f-4820-7852-8a27-dbce5d80c2cf",
       "created_at": "2026-07-18T17:04:10.049Z",
       "first_archived_at": "2026-07-18T17:13:02Z",
-      "last_synchronized_at": "2026-07-18T17:43:10Z",
-      "message_count": 128,
+      "last_synchronized_at": "2026-07-18T18:20:55Z",
+      "message_count": 312,
       "project_identifier": "treasurehunt",
       "redaction_categories": {
         "login_credential": 1
@@ -491,11 +491,11 @@
       "redactions": 1,
       "source_export_timestamp": null,
       "source_identifier": "rollout-2026-07-18T13-04-04-019f762f-4820-7852-8a27-dbce5d80c2cf.jsonl",
-      "source_sha256": "8017e95df742ceaf04267e448c9f1d216a78fc2631b4ba11e878fa2e57d8df66",
+      "source_sha256": "eda22e607312516227b8c642a338a68856fe985461eb85389e4d697fb9f6d22d",
       "source_type": "codex_session",
       "status": "active",
       "title": "",
-      "updated_at": "2026-07-18T17:14:38.068Z"
+      "updated_at": "2026-07-18T18:21:06.038Z"
     },
     {
       "archive_path": "Codex_Chats/chats/019f7646-9102-7e81-82c0-4fc43049078a--commit-and-push-governing-docs.md",
@@ -517,7 +517,7 @@
       "updated_at": "2026-07-18T17:32:33.063Z"
     }
   ],
-  "last_successful_synchronization_at": "2026-07-18T17:43:10Z",
+  "last_successful_synchronization_at": "2026-07-18T18:20:55Z",
   "migration_history": [
     {
       "schema_version": "1.0",
@@ -544,7 +544,7 @@
   },
   "synchronizer_version": "1.1.0",
   "total_conversation_count": 24,
-  "total_message_count": 15188,
+  "total_message_count": 15385,
   "warnings": [
     "Duplicate source record reconciled for 019dad68-91f3-7091-b4aa-6fee54fd1a1f",
     "Duplicate source record reconciled for 019dad68-91f3-7091-b4aa-6fee54fd1a1f",
@@ -555,6 +555,9 @@
     "Duplicate source record reconciled for 019f762c-354a-7b22-afd3-9a0afdadb205",
     "Duplicate source record reconciled for 019f762c-354a-7b22-afd3-9a0afdadb205",
     "Duplicate source record reconciled for 019f762c-354a-7b22-afd3-9a0afdadb205",
+    "Duplicate source record reconciled for 019f762f-4820-7852-8a27-dbce5d80c2cf",
+    "Duplicate source record reconciled for 019f762f-4820-7852-8a27-dbce5d80c2cf",
+    "Duplicate source record reconciled for 019f762f-4820-7852-8a27-dbce5d80c2cf",
     "Duplicate source record reconciled for 019dc22f-4155-7ad2-b1d6-bc451bf68259",
     "Duplicate source record reconciled for 019dc22f-4155-7ad2-b1d6-bc451bf68259"
   ]
