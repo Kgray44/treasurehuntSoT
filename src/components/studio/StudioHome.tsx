@@ -96,6 +96,7 @@ export function StudioHome({ authenticated }: { authenticated: boolean }) {
           <p>Draft stories, bind their assets, and publish voyages from one authoritative chart.</p>
         </div>
         <nav aria-label="Studio destinations">
+          <Link href="/studio/vision-waypoints">Vision Waypoints</Link>
           <Link href="/tales">Player catalog</Link>
           <Link href="/captain">Captain controls</Link>
           <Link className="brass-button" href="/studio/tales/new">

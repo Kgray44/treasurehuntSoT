@@ -3,7 +3,7 @@ import { getBlockDefinition } from "@/tall-tale/block-registry";
 import { getStudioTale, slugSchema } from "@/tall-tale/studio-service";
 import type { DraftValidationResult, ValidationIssue } from "@/tall-tale/types";
 
-const futureProviders = new Set(["visionLocation", "visionObject", "externalWebhook"]);
+const futureProviders = new Set(["visionObject", "externalWebhook"]);
 
 export async function validateTaleDraft(taleId: string): Promise<DraftValidationResult & { autosaveVersion: number }> {
   const studio = await getStudioTale(taleId);
@@ -38,6 +38,14 @@ export async function validateTaleDraft(taleId: string): Promise<DraftValidation
   const outgoing = new Map<string, string[]>();
   const referencedAssetIds = new Set<string>();
   let taleCompleteCount = 0;
+  const visionBindings = new Map(
+    (
+      await db.storyWaypointBinding.findMany({
+        where: { storyId: taleId },
+        include: { waypointVersion: { select: { lifecycleStatus: true, publishedAt: true } } },
+      })
+    ).map((binding) => [binding.blockId, binding]),
+  );
 
   for (const chapter of studio.draft.chapters) {
     if (!chapter.blocks.length) {
@@ -82,6 +90,25 @@ export async function validateTaleDraft(taleId: string): Promise<DraftValidation
           blockId: block.id,
           field: "verificationProvider",
         });
+      if (provider === "visionLocation" || block.blockType === "visionWaypoint") {
+        const binding = visionBindings.get(block.id);
+        if (!binding)
+          error({
+            code: "VISION_BINDING_REQUIRED",
+            message: `${block.title} must bind an immutable published Vision Waypoint version. Save the draft after selecting one.`,
+            chapterId: chapter.id,
+            blockId: block.id,
+            field: "waypointVersionId",
+          });
+        else if (!binding.waypointVersion.publishedAt || binding.waypointVersion.lifecycleStatus === "DRAFT")
+          error({
+            code: "VISION_VERSION_NOT_PUBLISHED",
+            message: `${block.title} references a Vision Waypoint version that is not published.`,
+            chapterId: chapter.id,
+            blockId: block.id,
+            field: "waypointVersionId",
+          });
+      }
       if (["riddle", "textAnswer"].includes(block.blockType)) {
         const answers = block.configuration.acceptedAnswers;
         if (!Array.isArray(answers) || !answers.some((answer) => typeof answer === "string" && answer.trim()))

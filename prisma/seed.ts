@@ -126,6 +126,331 @@ async function ensurePlatformFoundation(userId: string, accessCode: string) {
   return { playerUsername, legacySessionsMigrated: legacySessions.length };
 }
 
+async function ensureVisionFoundation(userId: string) {
+  let waypoint = await db.visionWaypoint.findFirst({
+    where: { ownerId: userId, name: "B-1 Painted Lantern Waypoint" },
+  });
+  if (!waypoint)
+    waypoint = await db.visionWaypoint.create({
+      data: {
+        ownerId: userId,
+        name: "B-1 Painted Lantern Waypoint",
+        description: "Deterministic development waypoint used to prove the Phase B-1 shared platform path.",
+        type: "EXACT_LANDMARK",
+        locationTags: JSON.stringify(["development", "painted-lantern"]),
+        sharingScope: "PRIVATE",
+      },
+    });
+  let version = await db.visionWaypointVersion.findFirst({
+    where: { waypointId: waypoint.id, publishedAt: { not: null } },
+    orderBy: { versionNumber: "desc" },
+    include: { publication: true },
+  });
+  if (!version) {
+    const publishedAt = new Date();
+    const versionId = randomUUID();
+    const configuration = {
+      schemaVersion: 1,
+      waypointType: "EXACT_LANDMARK",
+      verificationProfile: "BALANCED",
+      scanInteraction: { mode: "HOLD", holdDurationMs: 1250, progressAnnouncementIntervalMs: 500 },
+      creatorGuidancePreferences: {},
+      captainFallbackPolicy: { enabled: true, allowManualApprove: true, allowManualReject: true, requireReason: true },
+      acceptedPoseConfiguration: {},
+      stableRegionConfiguration: {},
+      hardNegativeRequirement: {},
+      storyPurposeMetadata: { fixture: "phase-b1-vertical-slice" },
+      buildPreference: "UNDECIDED",
+    };
+    const developmentPackage = JSON.stringify({
+      packageSchemaVersion: 1,
+      packageType: "development-mock",
+      waypointId: waypoint.id,
+      waypointVersionId: versionId,
+      waypointVersion: 1,
+      mockScenario: "verified",
+      compatibility: { protocol: "1.0", minimumAppVersion: "0.3.0-b1" },
+    });
+    const packageHash = hash(developmentPackage);
+    version = await db.visionWaypointVersion.create({
+      data: {
+        id: versionId,
+        waypointId: waypoint.id,
+        versionNumber: 1,
+        lifecycleStatus: "PUBLISHED",
+        verificationProfile: "BALANCED",
+        packageSchemaVersion: 1,
+        draftConfiguration: JSON.stringify(configuration),
+        packageArtifactReference: `development-package://sha256/${packageHash}`,
+        compatibilityMetadata: JSON.stringify({ protocol: "1.0", packageSchemaVersion: 1, developmentMock: true }),
+        createdBy: userId,
+        publishedBy: userId,
+        publishedAt,
+        publication: {
+          create: {
+            packageHash,
+            packageSchemaVersion: 1,
+            publishedAt,
+            publishedBy: userId,
+            compatibilityRange: JSON.stringify({ protocol: "1.0", packageSchemaVersion: [1] }),
+          },
+        },
+        buildArtifacts: {
+          create: {
+            artifactType: "DEVELOPMENT_MOCK_PACKAGE",
+            storageReference: `development-package://sha256/${packageHash}`,
+            contentHash: packageHash,
+            fileSize: Buffer.byteLength(developmentPackage),
+            schemaVersion: 1,
+          },
+        },
+      },
+      include: { publication: true },
+    });
+  }
+
+  if (!version) throw new Error("Vision fixture version could not be ensured.");
+  const publishedVisionVersion = version;
+  let tale = await db.tallTale.findUnique({ where: { slug: "b1-vision-waypoint-demo" } });
+  if (!tale) {
+    const chapterId = randomUUID();
+    const visionBlockId = randomUUID();
+    const narrativeBlockId = randomUUID();
+    const completeBlockId = randomUUID();
+    const publishedAt = new Date();
+    tale = await db.tallTale.create({
+      data: {
+        slug: "b1-vision-waypoint-demo",
+        title: "B-1 Vision Waypoint Demonstration",
+        subtitle: "A deterministic inspection with exactly-once progression",
+        shortDescription: "Development-only fixture for browser, PWA, and Windows desktop verification.",
+        longDescription:
+          "No camera or game integration is used. The authorized deterministic mock drives the real story verification seam.",
+        theme: "CARTOGRAPHERS_TABLE",
+        status: "PUBLISHED",
+        visibility: "PUBLIC",
+        creatorId: userId,
+        playerCountMin: 1,
+        playerCountMax: 4,
+        estimatedDuration: 5,
+      },
+    });
+    const draft = await db.taleDraft.create({
+      data: {
+        taleId: tale.id,
+        createdBy: userId,
+        validationState: "VALID",
+        validationSummary: JSON.stringify({ valid: true, errors: [], warnings: [], fixture: "phase-b1" }),
+      },
+    });
+    await db.taleChapter.create({
+      data: {
+        id: chapterId,
+        draftRevisionId: draft.id,
+        title: "The Painted Lantern",
+        description: "Inspect the deterministic landmark and prove canonical progression.",
+        orderIndex: 0,
+        entryBlockId: visionBlockId,
+        completionBlockId: completeBlockId,
+        estimatedDuration: 5,
+        blocks: {
+          create: [
+            {
+              id: visionBlockId,
+              blockType: "visionWaypoint",
+              title: "Inspect the Painted Lantern",
+              orderIndex: 0,
+              configuration: JSON.stringify({
+                prompt: "Hold to inspect the Painted Lantern waypoint.",
+                waypointVersionId: publishedVisionVersion.id,
+                verificationProvider: "visionLocation",
+                runtimeMode: "DEVELOPMENT_MOCK",
+                scanMode: "HOLD",
+                holdDurationMs: 1250,
+                successEvent: "vision.verification_succeeded",
+                captainFallbackEnabled: true,
+                offlineBehavior: "CAPTAIN_FALLBACK",
+                completionMode: "visionLocation",
+              }),
+              nextBlockId: narrativeBlockId,
+            },
+            {
+              id: narrativeBlockId,
+              blockType: "narrative",
+              title: "The Lantern Answers",
+              orderIndex: 1,
+              configuration: JSON.stringify({
+                heading: "The mark is true",
+                body: "The deterministic result crossed the governed protocol and advanced this story exactly once.",
+                completionMode: "playerConfirmation",
+              }),
+              nextBlockId: completeBlockId,
+            },
+            {
+              id: completeBlockId,
+              blockType: "taleComplete",
+              title: "B-1 Demonstration Complete",
+              orderIndex: 2,
+              configuration: JSON.stringify({
+                finaleHeading: "Shared foundation verified",
+                finaleContent:
+                  "The same story, domain, API, and UI path is ready for Phase B-2 native capture adapters.",
+                completionMode: "playerConfirmation",
+              }),
+            },
+          ],
+        },
+      },
+    });
+    await db.blockConnection.createMany({
+      data: [
+        { sourceBlockId: visionBlockId, targetBlockId: narrativeBlockId, connectionType: "DEFAULT", orderIndex: 0 },
+        { sourceBlockId: narrativeBlockId, targetBlockId: completeBlockId, connectionType: "DEFAULT", orderIndex: 0 },
+      ],
+    });
+    await db.storyWaypointBinding.create({
+      data: {
+        storyId: tale.id,
+        blockId: visionBlockId,
+        waypointId: waypoint.id,
+        waypointVersionId: publishedVisionVersion.id,
+        runtimeMode: "DEVELOPMENT_MOCK",
+        scanInteraction: JSON.stringify({ mode: "HOLD", holdDurationMs: 1250 }),
+        successEvent: "vision.verification_succeeded",
+        retryMessageConfiguration: JSON.stringify({ insufficient: "Move slowly and try again." }),
+        failureMessageConfiguration: JSON.stringify({ notAtTarget: "The compass remains silent here." }),
+        captainFallbackPolicy: JSON.stringify({ enabled: true, requireReason: true }),
+        offlineBehavior: "CAPTAIN_FALLBACK",
+      },
+    });
+    const blocks = [
+      {
+        id: visionBlockId,
+        chapterId,
+        blockType: "visionWaypoint",
+        title: "Inspect the Painted Lantern",
+        internalLabel: null,
+        configuration: {
+          prompt: "Hold to inspect the Painted Lantern waypoint.",
+          waypointVersionId: publishedVisionVersion.id,
+          verificationProvider: "visionLocation",
+          runtimeMode: "DEVELOPMENT_MOCK",
+          scanMode: "HOLD",
+          holdDurationMs: 1250,
+          successEvent: "vision.verification_succeeded",
+          captainFallbackEnabled: true,
+          offlineBehavior: "CAPTAIN_FALLBACK",
+          completionMode: "visionLocation",
+        },
+        presentation: {},
+        completion: {},
+        creatorNotes: null,
+        isEnabled: true,
+        schemaVersion: 1,
+        orderIndex: 0,
+        nextBlockId: narrativeBlockId,
+        connections: [{ targetBlockId: narrativeBlockId, connectionType: "DEFAULT", orderIndex: 0 }],
+      },
+      {
+        id: narrativeBlockId,
+        chapterId,
+        blockType: "narrative",
+        title: "The Lantern Answers",
+        internalLabel: null,
+        configuration: {
+          heading: "The mark is true",
+          body: "The deterministic result crossed the governed protocol and advanced this story exactly once.",
+          completionMode: "playerConfirmation",
+        },
+        presentation: {},
+        completion: {},
+        creatorNotes: null,
+        isEnabled: true,
+        schemaVersion: 1,
+        orderIndex: 1,
+        nextBlockId: completeBlockId,
+        connections: [{ targetBlockId: completeBlockId, connectionType: "DEFAULT", orderIndex: 0 }],
+      },
+      {
+        id: completeBlockId,
+        chapterId,
+        blockType: "taleComplete",
+        title: "B-1 Demonstration Complete",
+        internalLabel: null,
+        configuration: {
+          finaleHeading: "Shared foundation verified",
+          finaleContent: "The same story, domain, API, and UI path is ready for Phase B-2 native capture adapters.",
+          completionMode: "playerConfirmation",
+        },
+        presentation: {},
+        completion: {},
+        creatorNotes: null,
+        isEnabled: true,
+        schemaVersion: 1,
+        orderIndex: 2,
+        nextBlockId: null,
+        connections: [],
+      },
+    ];
+    const contentSnapshot = JSON.stringify({
+      schemaVersion: 1,
+      tale: {
+        id: tale.id,
+        slug: tale.slug,
+        title: tale.title,
+        subtitle: tale.subtitle,
+        shortDescription: tale.shortDescription,
+        longDescription: tale.longDescription,
+        coverAssetId: null,
+        theme: tale.theme,
+        visibility: tale.visibility,
+        playerCountMin: tale.playerCountMin,
+        playerCountMax: tale.playerCountMax,
+        estimatedDuration: tale.estimatedDuration,
+        contentWarnings: null,
+      },
+      chapters: [
+        {
+          id: chapterId,
+          title: "The Painted Lantern",
+          subtitle: null,
+          description: "Inspect the deterministic landmark and prove canonical progression.",
+          coverAssetId: null,
+          estimatedDuration: 5,
+          isOptional: false,
+          metadata: {},
+          orderIndex: 0,
+          entryBlockId: visionBlockId,
+          completionBlockId: completeBlockId,
+          blocks,
+        },
+      ],
+      assets: [],
+      locations: [],
+      artifacts: [],
+      publishedAt: publishedAt.toISOString(),
+    });
+    const published = await db.publishedTaleVersion.create({
+      data: {
+        taleId: tale.id,
+        versionNumber: 1,
+        versionLabel: "B1.1",
+        publishedBy: userId,
+        releaseNotes: "Phase B-1 deterministic Vision vertical slice fixture.",
+        contentSnapshot,
+        checksum: hash(contentSnapshot),
+        publishedAt,
+        isCurrent: true,
+      },
+    });
+    await db.tallTale.update({
+      where: { id: tale.id },
+      data: { currentDraftRevisionId: draft.id, latestPublishedVersionId: published.id },
+    });
+  }
+  return { waypointId: waypoint.id, waypointVersionId: publishedVisionVersion.id, taleId: tale.id };
+}
+
 async function main() {
   if (!supportedPresets.has(preset)) throw new Error(`Unknown development preset: ${preset}`);
   const gmUsername = process.env.GM_USERNAME ?? "kato";
@@ -137,6 +462,7 @@ async function main() {
     create: { username: gmUsername, passwordHash: await bcrypt.hash(gmPassword, 12) },
   });
   const platform = await ensurePlatformFoundation(user.id, accessCode);
+  const vision = await ensureVisionFoundation(user.id);
 
   const prior = await db.campaign.findUnique({ where: { slug: "development-forever-treasure" } });
   if (prior && preserveExisting) {
@@ -145,7 +471,7 @@ async function main() {
       data: { accessCodeHash: await bcrypt.hash(accessCode, 12) },
     });
     console.log(
-      `Existing development voyage preserved at sequence ${prior.currentSequence}; local access credentials were refreshed. Player identity '${platform.playerUsername}' is ready and ${platform.legacySessionsMigrated} legacy playthrough(s) were backfilled.`,
+      `Existing development voyage preserved at sequence ${prior.currentSequence}; local access credentials were refreshed. Player identity '${platform.playerUsername}' is ready, ${platform.legacySessionsMigrated} legacy playthrough(s) were backfilled, and Vision fixture ${vision.taleId} is available.`,
     );
     return;
   }

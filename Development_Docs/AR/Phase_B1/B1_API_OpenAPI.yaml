@@ -1,0 +1,309 @@
+openapi: 3.1.0
+info:
+  title: Forever Treasure Vision Waypoint B-1 API
+  version: 0.3.0-b1
+  description: Authenticated, same-origin API for immutable Vision Waypoints and deterministic development verification.
+servers:
+  - url: /
+security:
+  - cookieSession: []
+paths:
+  /api/vision-waypoints:
+    get:
+      summary: List owned waypoints
+      parameters:
+        - { name: q, in: query, schema: { type: string } }
+        - { name: lifecycle, in: query, schema: { type: string } }
+        - { name: cursor, in: query, schema: { type: string } }
+        - { name: limit, in: query, schema: { type: integer, minimum: 1, maximum: 100 } }
+      responses:
+        { "200": { description: Paginated waypoint list }, "401": { $ref: "#/components/responses/Unauthorized" } }
+    post:
+      summary: Create a waypoint and initial draft
+      security: [{ cookieSession: [], csrf: [] }]
+      requestBody:
+        { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/CreateWaypoint" } } } }
+      responses: { "201": { description: Created }, "403": { $ref: "#/components/responses/Forbidden" } }
+  /api/vision-waypoints/{waypointId}:
+    parameters: [{ $ref: "#/components/parameters/WaypointId" }]
+    get:
+      {
+        summary: Get owned waypoint,
+        versions,
+        and usage,
+        responses: { "200": { description: Waypoint detail }, "404": { description: Not found } },
+      }
+    patch:
+      summary: Update stable metadata
+      security: [{ cookieSession: [], csrf: [] }]
+      requestBody:
+        { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/WaypointMetadata" } } } }
+      responses: { "200": { description: Updated }, "403": { $ref: "#/components/responses/Forbidden" } }
+  /api/vision-waypoints/{waypointId}/archive:
+    post:
+      {
+        summary: Archive without deleting versions or bindings,
+        parameters: [{ $ref: "#/components/parameters/WaypointId" }],
+        security: [{ cookieSession: [], csrf: [] }],
+        responses: { "200": { description: Archived } },
+      }
+  /api/vision-waypoints/{waypointId}/versions:
+    parameters: [{ $ref: "#/components/parameters/WaypointId" }]
+    get: { summary: List latest draft and published versions, responses: { "200": { description: Version list } } }
+    post:
+      summary: Create a draft, optionally from a published parent
+      security: [{ cookieSession: [], csrf: [] }]
+      requestBody:
+        {
+          content:
+            {
+              application/json:
+                {
+                  schema:
+                    { type: object, additionalProperties: false, properties: { parentVersionId: { type: string } } },
+                },
+            },
+        }
+      responses: { "201": { description: Draft created }, "409": { description: Draft already exists } }
+  /api/vision-waypoints/{waypointId}/usage:
+    get:
+      {
+        summary: List immutable story bindings,
+        parameters: [{ $ref: "#/components/parameters/WaypointId" }],
+        responses: { "200": { description: Usage list } },
+      }
+  /api/vision-waypoint-versions/{versionId}:
+    get:
+      {
+        summary: Get an owned version,
+        parameters: [{ $ref: "#/components/parameters/VersionId" }],
+        responses: { "200": { description: Version detail } },
+      }
+  /api/vision-waypoint-versions/{versionId}/draft:
+    patch:
+      summary: Replace strict configuration on an unpublished draft
+      parameters: [{ $ref: "#/components/parameters/VersionId" }]
+      security: [{ cookieSession: [], csrf: [] }]
+      requestBody:
+        {
+          required: true,
+          content: { application/json: { schema: { $ref: "#/components/schemas/DraftConfiguration" } } },
+        }
+      responses: { "200": { description: Updated }, "409": { description: Published version is immutable } }
+  /api/vision-waypoint-versions/{versionId}/publish:
+    post:
+      summary: Seal a deterministic development package
+      parameters: [{ $ref: "#/components/parameters/VersionId" }]
+      security: [{ cookieSession: [], csrf: [] }]
+      requestBody:
+        {
+          content:
+            {
+              application/json:
+                {
+                  schema:
+                    {
+                      type: object,
+                      additionalProperties: false,
+                      properties: { scenario: { $ref: "#/components/schemas/MockScenario" } },
+                    },
+                },
+            },
+        }
+      responses:
+        { "200": { description: Immutable publication with SHA-256 hash }, "409": { description: Already sealed } }
+  /api/vision-waypoint-versions/{versionId}/deprecate:
+    post:
+      {
+        summary: Deprecate while retaining bindings,
+        parameters: [{ $ref: "#/components/parameters/VersionId" }],
+        security: [{ cookieSession: [], csrf: [] }],
+        responses: { "200": { description: Deprecated } },
+      }
+  /api/story-waypoint-bindings:
+    post:
+      {
+        summary: Bind an exact published version to an owned story block,
+        security: [{ cookieSession: [], csrf: [] }],
+        responses: { "201": { description: Bound }, "422": { description: Published version required } },
+      }
+  /api/story-waypoint-bindings/{bindingId}:
+    parameters: [{ name: bindingId, in: path, required: true, schema: { type: string } }]
+    patch:
+      {
+        summary: Atomically replace a binding,
+        security: [{ cookieSession: [], csrf: [] }],
+        responses: { "200": { description: Replaced } },
+      }
+    delete:
+      {
+        summary: Remove a binding,
+        security: [{ cookieSession: [], csrf: [] }],
+        responses: { "200": { description: Removed } },
+      }
+  /api/verification-attempts:
+    post:
+      summary: Player creates a persisted deterministic attempt
+      security: [{ playerSession: [], csrf: [] }]
+      requestBody:
+        { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/CreateAttempt" } } } }
+      responses: { "201": { description: Armed attempt }, "409": { description: Story stage changed } }
+    get:
+      summary: Captain lists session attempt diagnostics
+      parameters: [{ name: sessionId, in: query, required: true, schema: { type: string } }]
+      responses: { "200": { description: Persisted attempt list } }
+  /api/verification-attempts/{attemptId}:
+    get:
+      {
+        summary: Read an authorized attempt and transition history,
+        parameters: [{ $ref: "#/components/parameters/AttemptId" }],
+        responses: { "200": { description: Attempt detail } },
+      }
+  /api/verification-attempts/{attemptId}/cancel:
+    post:
+      {
+        summary: Player cancels a nonterminal attempt,
+        parameters: [{ $ref: "#/components/parameters/AttemptId" }],
+        security: [{ playerSession: [], csrf: [] }],
+        responses: { "200": { description: Cancelled } },
+      }
+  /api/verification-attempts/{attemptId}/mock-result:
+    post:
+      summary: Run the authorized deterministic B-1 verifier and deliver through story idempotency
+      parameters: [{ $ref: "#/components/parameters/AttemptId" }]
+      security: [{ playerSession: [], csrf: [] }]
+      requestBody:
+        {
+          content:
+            {
+              application/json:
+                {
+                  schema:
+                    {
+                      type: object,
+                      additionalProperties: false,
+                      properties: { scenario: { $ref: "#/components/schemas/MockScenario" } },
+                    },
+                },
+            },
+        }
+      responses:
+        { "200": { description: Terminal result and delivery state }, "409": { description: Cancelled or stale } }
+  /api/verification-attempts/{attemptId}/captain-action:
+    post:
+      summary: Apply an audited Captain fallback to an authorized session attempt
+      parameters: [{ $ref: "#/components/parameters/AttemptId" }]
+      security: [{ cookieSession: [], csrf: [] }]
+      requestBody:
+        {
+          required: true,
+          content:
+            {
+              application/json:
+                {
+                  schema:
+                    {
+                      type: object,
+                      additionalProperties: false,
+                      required: [action, reason],
+                      properties:
+                        {
+                          action: { enum: [APPROVE, REJECT, RETRY] },
+                          reason: { type: string, minLength: 8, maxLength: 500 },
+                        },
+                    },
+                },
+            },
+        }
+      responses: { "200": { description: Audited action result }, "403": { $ref: "#/components/responses/Forbidden" } }
+  /api/vision-diagnostics:
+    get:
+      summary: Read Captain-owned B-1 protocol, flag, platform, PWA, and attempt diagnostics
+      parameters: [{ name: sessionId, in: query, required: true, schema: { type: string } }]
+      responses:
+        {
+          "200": { description: Diagnostics with no raw camera frames or evidence payloads },
+          "403": { $ref: "#/components/responses/Forbidden" },
+        }
+components:
+  securitySchemes:
+    cookieSession: { type: apiKey, in: cookie, name: forever_gm }
+    playerSession: { type: apiKey, in: cookie, name: tall_tale_player }
+    csrf: { type: apiKey, in: header, name: x-csrf-token }
+  parameters:
+    WaypointId: { name: waypointId, in: path, required: true, schema: { type: string } }
+    VersionId: { name: versionId, in: path, required: true, schema: { type: string } }
+    AttemptId: { name: attemptId, in: path, required: true, schema: { type: string } }
+  responses:
+    Unauthorized: { description: Authenticated session required }
+    Forbidden: { description: Capability, ownership, feature flag, or CSRF check failed }
+  schemas:
+    CreateWaypoint:
+      allOf:
+        - { $ref: "#/components/schemas/WaypointMetadata" }
+        - type: object
+          required: [name, description, type, locationTags, sharingScope, verificationProfile]
+          properties: { verificationProfile: { enum: [BALANCED, STRICT, STORY_CRITICAL, CUSTOM] } }
+    WaypointMetadata:
+      type: object
+      additionalProperties: false
+      properties:
+        name: { type: string, minLength: 2, maxLength: 160 }
+        description: { type: string, maxLength: 4000 }
+        type: { enum: [AREA_ARRIVAL, EXACT_LANDMARK, VIEWPOINT, OBJECT_INSPECTION, ITEM_PICKUP, SEQUENCE, ADVANCED] }
+        locationTags: { type: array, maxItems: 64, items: { type: string, maxLength: 80 } }
+        sharingScope: { enum: [PRIVATE, CREW, TALL_TALE, COMMUNITY, OFFICIAL] }
+    DraftConfiguration:
+      type: object
+      additionalProperties: false
+      required:
+        [
+          schemaVersion,
+          waypointType,
+          verificationProfile,
+          scanInteraction,
+          creatorGuidancePreferences,
+          captainFallbackPolicy,
+          acceptedPoseConfiguration,
+          stableRegionConfiguration,
+          hardNegativeRequirement,
+          storyPurposeMetadata,
+          buildPreference,
+        ]
+      properties:
+        schemaVersion: { const: 1 }
+        waypointType:
+          { enum: [AREA_ARRIVAL, EXACT_LANDMARK, VIEWPOINT, OBJECT_INSPECTION, ITEM_PICKUP, SEQUENCE, ADVANCED] }
+        verificationProfile: { enum: [BALANCED, STRICT, STORY_CRITICAL, CUSTOM] }
+        scanInteraction: { type: object }
+        creatorGuidancePreferences: { type: object }
+        captainFallbackPolicy: { type: object }
+        acceptedPoseConfiguration: { type: object }
+        stableRegionConfiguration: { type: object }
+        hardNegativeRequirement: { type: object }
+        storyPurposeMetadata: { type: object }
+        buildPreference: { enum: [LOCAL, CLOUD_ASSISTED, UNDECIDED] }
+    CreateAttempt:
+      type: object
+      additionalProperties: false
+      required: [sessionId, blockId, waypointVersionId, scenario, platform, adapterType]
+      properties:
+        sessionId: { type: string }
+        blockId: { type: string }
+        waypointVersionId: { type: string }
+        scenario: { $ref: "#/components/schemas/MockScenario" }
+        platform: { enum: [WEB, PWA, DESKTOP] }
+        adapterType: { enum: [MOCK, WEB_COMPANION, DESKTOP] }
+    MockScenario:
+      enum:
+        [
+          verified,
+          insufficient,
+          not_at_target,
+          ambiguous,
+          system_error,
+          delayed_verified,
+          cancelled,
+          stale_stage,
+          duplicate_result_delivery,
+        ]

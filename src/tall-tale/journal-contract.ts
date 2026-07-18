@@ -116,7 +116,7 @@ export function journalKindForBlock(blockType: string): TallTaleJournalContentKi
     return "artifact";
   if (blockType === "choice") return "decision";
   if (["confirmation", "wait"].includes(blockType)) return "objective";
-  if (["arrivalCheck", "captainApproval"].includes(blockType)) return "locationVerification";
+  if (["arrivalCheck", "captainApproval", "visionWaypoint"].includes(blockType)) return "locationVerification";
   if (blockType === "captainsNote") return "message";
   if (["cinematic", "audio"].includes(blockType)) return "cinematic";
   if (["chapterComplete", "taleComplete"].includes(blockType)) return "chapterComplete";

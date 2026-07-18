@@ -10,6 +10,7 @@ describe("Tall Tale block registry", () => {
       "information",
       "travelDirection",
       "location",
+      "visionWaypoint",
       "arrivalCheck",
       "image",
       "imageTransformation",

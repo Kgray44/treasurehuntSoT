@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="192" height="192" viewBox="0 0 192 192" role="img" aria-label="Forever Treasure compass">
+  <rect width="192" height="192" rx="38" fill="#082532"/>
+  <circle cx="96" cy="96" r="66" fill="none" stroke="#d4ad63" stroke-width="8"/>
+  <path d="M96 35l18 43 43 18-43 18-18 43-18-43-43-18 43-18z" fill="#efe0b8" stroke="#b77c37" stroke-width="4"/>
+  <circle cx="96" cy="96" r="12" fill="#8e2d32"/>
+</svg>

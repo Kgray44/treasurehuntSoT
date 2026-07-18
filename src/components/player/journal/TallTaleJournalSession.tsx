@@ -12,6 +12,7 @@ import {
 import type { FlipBookPage, PageFlipBookHandle } from "@/components/animation/PageFlipBook";
 import { PhysicalJournalBook } from "@/components/player/journal/PhysicalJournalBook";
 import { TallTaleJournalPageContent, type JournalAsset } from "@/components/player/journal/TallTaleJournalPage";
+import { VisionScanControl } from "@/components/player/VisionScanControl";
 import {
   emptyJournalReadingState,
   type PlayerJournalBlock,
@@ -594,6 +595,7 @@ export function TallTaleJournalSession({
             waitRemaining={waitRemaining}
             busy={busy}
             act={act}
+            onStoryChanged={() => load().then(() => undefined)}
           />
         )}
         {historical && (
@@ -633,6 +635,7 @@ function JournalActions({
   waitRemaining,
   busy,
   act,
+  onStoryChanged,
 }: {
   state: SessionState;
   currentBlock: PlayerJournalBlock | null;
@@ -642,6 +645,7 @@ function JournalActions({
   waitRemaining: number;
   busy: boolean;
   act: (action: "continue" | "confirm" | "answer" | "choice" | "timer", extra?: JsonObject) => Promise<void>;
+  onStoryChanged: () => Promise<void>;
 }) {
   if (state.session.status === "PAUSED")
     return (
@@ -656,6 +660,17 @@ function JournalActions({
         <strong>{String(currentBlock?.configuration.waitingText ?? "Awaiting the Captain's approvalâ€¦")}</strong>
         <p>The journal will respond when the shared session advances.</p>
       </div>
+    );
+  if (state.pendingVerification?.providerType === "visionLocation" && currentBlock)
+    return (
+      <VisionScanControl
+        sessionId={state.session.id}
+        blockId={currentBlock.id}
+        waypointVersionId={String(currentBlock.configuration.waypointVersionId ?? "")}
+        csrfToken={state.csrfToken}
+        configuration={currentBlock.configuration}
+        onStoryChanged={onStoryChanged}
+      />
     );
   if (state.pendingVerification?.providerType === "textAnswer")
     return (

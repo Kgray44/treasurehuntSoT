@@ -17,9 +17,10 @@ import { parseJsonArray, parseJsonObject } from "@/tall-tale/types";
 import { logger } from "@/lib/logger";
 import { playerSafeAssetIds, playerSafeObject } from "@/platform/libraries";
 import { projectPlayerBlock } from "@/tall-tale/journal-contract";
+import { resolveVisionFeatureFlags } from "@/vision/feature-flags";
 
 const digest = (value: string) => createHash("sha256").update(value).digest("hex");
-const futureProviders = new Set(["visionLocation", "visionObject", "externalWebhook"]);
+const futureProviders = new Set(["visionObject", "externalWebhook"]);
 
 export const verificationSubmissionSchema = z.object({
   schemaVersion: z.literal(1),
@@ -107,6 +108,8 @@ async function appendEvent(
 async function createRequest(tx: Prisma.TransactionClient, sessionId: string, block: PublishedBlock) {
   const providerType = providerForBlock(block.blockType, block.configuration);
   if (!providerType) return null;
+  if (providerType === "visionLocation" && !resolveVisionFeatureFlags().vision_waypoints)
+    throw new Error("Vision Waypoints are disabled by the server feature flag.");
   if (futureProviders.has(providerType))
     throw new Error(`${providerType} is reserved for a future paired helper and cannot be active in Phase 1.`);
   const existing = await tx.taleVerificationRequest.findFirst({
