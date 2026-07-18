@@ -8,24 +8,60 @@
   "conversations_discovered": 189,
   "development_docs": {
     "changes": {
-      "added": [],
-      "conflicted": [],
-      "deleted": [],
-      "modified": [
+      "added": [
         {
-          "path": "Development_Docs/AR/Phase_Completion_Reports/Phase_B4_Completion_Report.md",
-          "status": ".M"
+          "path": "Development_Docs/AR/ADRs/0017-authoritative-vision-story-coordinator.md",
+          "status": "??"
+        },
+        {
+          "path": "Development_Docs/AR/Captain_Guide/Vision_Verification_Operations.md",
+          "status": "??"
+        },
+        {
+          "path": "Development_Docs/AR/Phase_B/Phase_B5_Implementation_Report.md",
+          "status": "??"
+        },
+        {
+          "path": "Development_Docs/AR/Player_Guide/Vision_Waypoint_Scanning.md",
+          "status": "??"
+        },
+        {
+          "path": "Development_Docs/AR/Protocols/Phase_B5_Runtime_Protocol.md",
+          "status": "??"
+        },
+        {
+          "path": "Development_Docs/AR/Schemas/Phase_B5_Data_Model.md",
+          "status": "??"
+        },
+        {
+          "path": "Development_Docs/AR/Testing/Phase_B5_Test_and_Demonstration.md",
+          "status": "??"
         }
       ],
+      "conflicted": [],
+      "deleted": [],
+      "modified": [],
       "renamed": []
     },
     "commit_included": false,
     "directory": "Development_Docs",
     "eligible_fingerprints": {
-      "Development_Docs/AR/Phase_Completion_Reports/Phase_B4_Completion_Report.md": "5ea3ec4896a58f70e62eaf22f07471e5deae41e58d8d4804362b513284ef1890"
+      "Development_Docs/AR/ADRs/0017-authoritative-vision-story-coordinator.md": "b6c39d29c6843b6810ef309f02b8890be6cae5c594bac4b7b83ee34f720e3642",
+      "Development_Docs/AR/Captain_Guide/Vision_Verification_Operations.md": "becfc41a72fafe3195822af0b897596b9930612f43b5bb4154dc82a7605990bd",
+      "Development_Docs/AR/Phase_B/Phase_B5_Implementation_Report.md": "d11aee3e54de6431b034f34a5e065b70c5a58612500889c9bd7e4587c21a951a",
+      "Development_Docs/AR/Player_Guide/Vision_Waypoint_Scanning.md": "9e861fc58c1e7c5f22175183f144d6069deb444297093395b8c11582c4198e07",
+      "Development_Docs/AR/Protocols/Phase_B5_Runtime_Protocol.md": "06725515955e2c0480760fb6ab0dea0733a6ccc21a4e55b75624ff5d293ad48b",
+      "Development_Docs/AR/Schemas/Phase_B5_Data_Model.md": "c22726693c855309ca6f3247ff58d873a77015502f87bba9afa7207f2f3de521",
+      "Development_Docs/AR/Testing/Phase_B5_Test_and_Demonstration.md": "a125e9262f8b145da265e920a7ab7c13b7fcc29064b80735db4f1a9e56048ec6"
     },
     "eligible_paths": [
-      "Development_Docs/AR/Phase_Completion_Reports/Phase_B4_Completion_Report.md"
+      "Development_Docs/AR/ADRs/0017-authoritative-vision-story-coordinator.md",
+      "Development_Docs/AR/Captain_Guide/Vision_Verification_Operations.md",
+      "Development_Docs/AR/Phase_B/Phase_B5_Implementation_Report.md",
+      "Development_Docs/AR/Player_Guide/Vision_Waypoint_Scanning.md",
+      "Development_Docs/AR/Protocols/Phase_B5_Runtime_Protocol.md",
+      "Development_Docs/AR/Schemas/Phase_B5_Data_Model.md",
+      "Development_Docs/AR/Testing/Phase_B5_Test_and_Demonstration.md"
     ],
     "empty_directories": [],
     "excluded": [],
@@ -44,15 +80,15 @@
     "Codex_Chats/manifest.json",
     "Codex_Chats/reports/latest-sync-report.json"
   ],
-  "finished_at": "2026-07-18T10:25:59Z",
+  "finished_at": "2026-07-18T11:31:35Z",
   "included": 6,
   "push_attempted": false,
   "push_result": "not requested",
-  "redacted": 60,
+  "redacted": 68,
   "redaction_categories": {
-    "connection_string": 9,
+    "connection_string": 12,
     "login_credential": 14,
-    "secret_assignment": 37
+    "secret_assignment": 42
   },
   "renamed": 0,
   "schema_version": "1.0",
@@ -62,7 +98,7 @@
   "source_types_inspected": [
     "codex_session"
   ],
-  "started_at": "2026-07-18T10:25:41Z",
+  "started_at": "2026-07-18T11:31:15Z",
   "suspected_secret_categories": [],
   "synchronizer_version": "1.1.0",
   "unavailable": 0,
