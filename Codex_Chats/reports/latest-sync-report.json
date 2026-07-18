@@ -19,16 +19,7 @@
     "eligible_fingerprints": {},
     "eligible_paths": [],
     "empty_directories": [],
-    "excluded": [
-      {
-        "path": "Development_Docs/phase_b_implementation_roadmap_v1_0.pdf",
-        "reason": "ignored by Development_Docs safety rules"
-      },
-      {
-        "path": "Development_Docs/vision_waypoint_external_ar_governing_specification_v1_0.pdf",
-        "reason": "ignored by Development_Docs safety rules"
-      }
-    ],
+    "excluded": [],
     "exists": true,
     "git_available": true,
     "large_files": [],
@@ -45,15 +36,15 @@
     "Codex_Chats/manifest.json",
     "Codex_Chats/reports/latest-sync-report.json"
   ],
-  "finished_at": "2026-07-18T05:26:42Z",
+  "finished_at": "2026-07-18T06:31:17Z",
   "included": 6,
   "push_attempted": false,
   "push_result": "not requested",
-  "redacted": 49,
+  "redacted": 52,
   "redaction_categories": {
     "connection_string": 5,
-    "login_credential": 13,
-    "secret_assignment": 31
+    "login_credential": 14,
+    "secret_assignment": 33
   },
   "renamed": 0,
   "schema_version": "1.0",
@@ -63,7 +54,7 @@
   "source_types_inspected": [
     "codex_session"
   ],
-  "started_at": "2026-07-18T05:26:19Z",
+  "started_at": "2026-07-18T06:30:50Z",
   "suspected_secret_categories": [],
   "synchronizer_version": "1.1.0",
   "unavailable": 0,
