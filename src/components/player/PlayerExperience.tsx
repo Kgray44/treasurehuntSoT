@@ -324,6 +324,14 @@ export function PlayerExperience({ initialSnapshot }: { initialSnapshot: PublicS
     }
   }
 
+  function skipJournalOpening() {
+    sessionStorage.setItem(`forever-intro:${snapshot.campaign.slug}`, "seen");
+    openingRun.current?.abort();
+    director.skip();
+    audio.current.stopAll();
+    flushSync(() => setOpeningPhase("JOURNAL_READY"));
+  }
+
   function navigate(next: CompanionView) {
     setView(next);
     const url = new URL(location.href);
@@ -523,7 +531,7 @@ export function PlayerExperience({ initialSnapshot }: { initialSnapshot: PublicS
           </p>
           <div data-scene-part="arrival-action" data-gsap-owned />
           {animation.isPlaying && animation.label !== "dark-sea" && (
-            <button onClick={() => director.skip()}>Skip ceremony</button>
+            <button onClick={skipJournalOpening}>Skip ceremony</button>
           )}
         </div>
       )}

@@ -385,7 +385,7 @@ export function Quartermaster({
         </button>
       </aside>
       <section className="command-main">
-        <h2 className="sr-only">Quartermaster’s Log</h2>
+        <h2 className="sr-only">Quartermaster&apos;s Log</h2>
         <header className="command-topbar">
           <div>
             <p className="eyebrow">{workspaces.find(([key]) => key === workspace)?.[1]}</p>
@@ -475,11 +475,11 @@ function Login({ error, onSubmit }: { error: string; onSubmit: (event: React.For
     <main className="quartermaster-login">
       <section>
         <p className="eyebrow">Restricted chart room</p>
-        <h1>Quartermaster’s Log</h1>
+        <h1>Quartermaster&apos;s Log</h1>
         <p>Captain, identify yourself before touching the voyage ledger.</p>
         <form onSubmit={onSubmit}>
           <label>
-            Captain’s name
+            Captain&apos;s name
             <input name="username" autoComplete="username" required />
           </label>
           <label>
