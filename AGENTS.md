@@ -19,6 +19,176 @@ Parallelization may never broaden scope, remove an acceptance criterion, weaken 
 
 When governing instructions change during an existing task, preserve the original task instructions, all completed work, established terminology, current scope, acceptance criteria, evidence, decisions, modifications, validation, and requested deliverable. Apply the updated execution framework only to unfinished work. Do not restart, discard, or re-scope the task merely because the governing framework changed.
 
+## Purpose of parallel execution
+
+Subagent parallelization exists to accomplish three primary goals:
+
+### 1. Increase effective work capacity
+
+Multiple independent workstreams should progress simultaneously so the task receives substantially more useful work per unit of elapsed time than one sequential agent could provide.
+
+Subagents should absorb bounded investigation, implementation, testing, evidence collection, review, and verification work that would otherwise accumulate serially in the coordinator's queue.
+
+### 2. Increase strength, depth, and coverage
+
+Parallel specialists should provide stronger results than one general agent working alone by examining separate subsystems, concerns, hypotheses, evidence sources, risks, test surfaces, and implementation boundaries in greater depth.
+
+Subagents must be used to improve:
+
+- completeness;
+- technical depth;
+- fault detection;
+- independent verification;
+- cross-checking;
+- domain specialization;
+- test coverage;
+- architectural review; and
+- confidence in conclusions.
+
+Parallelism must not merely divide the same amount of shallow work among more agents.
+
+### 3. Reduce elapsed completion time
+
+Genuinely independent work must begin concurrently so large tasks finish materially faster than a sequential approach.
+
+The coordinator must minimize unnecessary waiting, keep available worker capacity filled with meaningful ready work, immediately launch newly unblocked lanes, and avoid performing delegable work sequentially.
+
+> The success of parallelization is measured by increased useful throughput, improved result quality and coverage, and reduced elapsed completion time, while preserving correctness, safety, ownership, and integration quality.
+
+The following principles govern how those outcomes are achieved:
+
+- Parallel execution is not successful merely because many workers were spawned.
+- Workers must generate useful work that advances the task.
+- Parallelism must not add coordination overhead greater than the time or quality benefit it creates.
+- The coordinator must avoid bottlenecking the system by personally performing work that could safely be delegated.
+- The coordinator must review and integrate worker output promptly so completed lanes do not sit unused.
+- Available worker slots should be kept occupied when meaningful ready work exists.
+- Workers should be assigned substantial, outcome-oriented lanes rather than tiny ceremonial tasks.
+- Independent verification lanes are valuable because they increase confidence and catch errors, even when they do not directly modify code.
+- Specialization should be used deliberately so difficult areas receive appropriately capable reviewers or implementers.
+- Faster completion must never come from reducing required evidence, testing, reasoning, accessibility, security, performance analysis, or acceptance criteria.
+- Quality improvement must not become an excuse for unlimited duplicate investigation after sufficient evidence exists.
+- Parallelization must optimize the combination of speed, capacity, depth, and correctness rather than maximizing any one metric alone.
+
+## Visible subagent disclosure
+
+Subagent use must never be invisible to the user. Whenever the coordinator creates, launches, changes, replaces, blocks, fails, cancels, completes, integrates, or verifies a subagent lane, it must provide a concise, structured, user-visible chat update at the time of that meaningful event. The update must make the current worker topology, ownership, expected outcome, and integration state understandable without exposing private chain-of-thought.
+
+This requirement applies to one worker or many, including named specialists, full parallel sets, later waves, replacements, verification workers, read-only workers, implementation workers, test workers, and batch workers. Spawning workers never transfers accountability for the final result away from the coordinator.
+
+### Required launch disclosure
+
+Before or immediately after launching workers, publish a visible update titled `Subagents started`, `Subagent started`, or a similarly clear label. When several workers launch at approximately the same time, announce them together in one compact table rather than sending one repetitive message per worker. A launch manifest must disclose, for every lane:
+
+- **Lane ID**;
+- **subagent name or role**;
+- **status**;
+- **primary objective** and user-visible end goal;
+- **why the lane exists**;
+- **read-only or write-enabled mode**;
+- **owned subsystem, concern, exact files, path patterns, components, packages, or evidence boundary**;
+- **explicit non-scope and prohibited files, paths, systems, and resources**;
+- **expected deliverable**;
+- **completion criteria**;
+- **dependencies and prerequisite evidence**;
+- **shared resources it may not control**;
+- **how the coordinator will review and integrate its output**; and
+- **expected capacity, quality, coverage, verification, or elapsed-time benefit**.
+
+For a multi-worker launch, use a compact structure equivalent to:
+
+| Lane | Role            | Status | Mode      | Ownership                     | End goal and deliverable                | Non-scope                                | Dependencies         | Integration                                           | Expected benefit                     |
+| ---- | --------------- | ------ | --------- | ----------------------------- | --------------------------------------- | ---------------------------------------- | -------------------- | ----------------------------------------------------- | ------------------------------------ |
+| R1   | Route inventory | Active | Read-only | `src/app` route-tree evidence | Verified route and transition inventory | No edits, server, database, or Git state | Repository preflight | Coordinator cross-checks against other route evidence | Faster, more complete route coverage |
+
+The launch update must also state:
+
+- the total number of workers launched and the number of direct-worker slots still available;
+- what work remains with the coordinator;
+- which shared or expensive resources have one authoritative owner;
+- which lanes are blocked or queued; and
+- whether additional workers will start when capacity opens or dependencies clear.
+
+When only one worker launches, disclosure remains mandatory. Use a compact card or structured block that provides the same information, for example:
+
+> **Subagent started — V1: Runtime verification**
+>
+> - **Status:** Active
+> - **Mode:** Read-only
+> - **Owns:** Browser reproduction and runtime evidence
+> - **Objective and end goal:** Confirm the reported transition defect and capture evidence
+> - **Why this lane exists:** Independent runtime verification while static analysis continues
+> - **Must not modify or control:** Application code, database, port ownership, or Git state
+> - **Deliverable and completion:** Reproduction steps, affected routes, console evidence, and confidence after the defined checks complete
+> - **Dependencies:** Existing runnable application state
+> - **Integration:** Coordinator compares the runtime evidence with static findings
+> - **Expected benefit:** Higher confidence without blocking implementation analysis
+
+### Ownership and shared-resource transparency
+
+The visible manifest must make write ownership unmistakable. For every write-enabled lane, identify the exact files, path patterns, components, or packages it may edit; the exact shared files it may not edit; whether it has an isolated worktree; its integration owner; and its handoff condition. If ownership cannot be stated clearly, the worker remains read-only until the boundary is resolved and visibly announced. Exactly one agent may write a file at a time, and the existing exclusive-resource rules remain in force.
+
+Whenever applicable, the launch or ownership update must identify the authoritative owner of the development server, port `3000`, browser automation, database, schema, migrations, dependency installation, manifests, lockfiles, full build, full end-to-end suite, full validation, generated assets, Git integration, and final `Codex_Chats` / `Development_Docs` synchronization. Workers must not imply ownership of resources assigned elsewhere.
+
+Every launch update must state that the coordinator retains the original user requirements, decomposition, dependency tracking, conflict prevention, major decisions, output review, integration, contradiction resolution, final validation, final response, and repository synchronization. The coordinator remains accountable for correctness and completion.
+
+### Meaningful status changes and later waves
+
+Provide a visible update when worker topology, ownership, permissions, objective, dependencies, findings, or integration state changes materially. Meaningful triggers include:
+
+- worker launched or a new wave began;
+- worker scope or ownership materially changed;
+- ownership transferred;
+- worker became blocked or failed;
+- worker reported a major finding;
+- worker completed;
+- worker was replaced or cancelled as redundant; or
+- integration, coordinator review, or independent verification began or completed.
+
+If a lane's ownership, objective, permissions, dependencies, or end goal changes, announce the previous scope, new scope, reason, ownership-conflict check, effect on other lanes, and whether the plan was updated **before** allowing work to continue under the revised scope. Workers must never silently broaden their own scope.
+
+Newly discovered lanes and later waves require a new manifest with the same information as the initial launch. Label it clearly, such as `Subagent wave 2 started`, `Additional verification lanes started`, or `Replacement lane started`; an earlier manifest never covers workers created later.
+
+### Completion, blocking, failure, replacement, and cancellation
+
+When a worker finishes, promptly provide a concise status update containing its lane ID and role, completion status, deliverable received, major finding or authorized change, validation performed, unresolved uncertainty, review and integration state, and confirmation that its worker slot was released. Group results received at approximately the same time into a compact table. Distinguish each state explicitly:
+
+- **worker complete** means the lane returned its deliverable;
+- **output reviewed** means the coordinator inspected that deliverable;
+- **output integrated** means accepted changes or findings were incorporated into the combined result; and
+- **output independently verified** means a separate check confirmed the material result.
+
+A worker's completion report alone is not coordinator verification. A grouped completion report may use fields equivalent to:
+
+| Lane | Result   | Key output                   | Validation                       | Uncertainty | Review / integration / verification                      | Slot     |
+| ---- | -------- | ---------------------------- | -------------------------------- | ----------- | -------------------------------------------------------- | -------- |
+| R1   | Complete | 24 active routes inventoried | Cross-checked against route tree | None        | Reviewed; awaiting synthesis; not independently verified | Released |
+
+When a lane becomes blocked or fails, report its exact blocker, preserved partial work, released ownership or resource locks, impact on dependent lanes, whether unrelated lanes continue, recovery action, and whether the lane will be retried, narrowed, split, reassigned, serialized, replaced, or cancelled. Do not hide failure because other lanes succeeded.
+
+When replacing a worker, report the prior lane's status and preserved output, why replacement is necessary, the replacement lane's complete launch manifest, ownership handoff, affected dependencies, and confirmation that no material result was lost or left unreviewed.
+
+When cancelling a redundant or unnecessary lane, report its lane ID, why it became redundant, what useful output was preserved, which lane now owns any remaining responsibility, which locks or slots were released, and confirmation that no unreviewed material result was discarded.
+
+### Grouping and anti-spam safeguard
+
+Transparency must remain useful rather than noisy. Group workers launched or completed at approximately the same time into one structured update. Do not require or send updates for every tool call, file opened, search performed, minor internal observation, unchanged status poll, or passage of a few minutes. Do not repeat `still working` messages without a meaningful change, dump full worker prompts unless the user requests them, or expose raw internal reasoning or private chain-of-thought. Announce only meaningful changes in topology, ownership, permissions, status, material findings, dependencies, or integration state.
+
+### Final parallel-execution summary
+
+For every substantial task that used subagents, the final response must concisely and readably summarize:
+
+- total unique subagents used, maximum simultaneous workers, and worker waves;
+- roles and ownership boundaries, including which lanes were read-only and which modified files;
+- important results from each lane;
+- failed, blocked, replaced, or cancelled lanes;
+- how worker outputs were reviewed, reconciled, integrated, and verified;
+- whether parallel execution increased capacity, depth, coverage, verification, or reduced elapsed time;
+- any avoidable duplication or coordination overhead; and
+- useful improvements for the next task decomposition.
+
+Do not reproduce raw worker prompts or private reasoning. Keep the assessment evidence-based, and do not invent numerical percentages when timing or work data was not recorded.
+
 ## Mandatory parallelization assessment
 
 Every task performs at least a brief parallelization assessment before substantial work begins. A concise internal determination is sufficient only for a genuinely trivial task with no useful independent lane.
