@@ -288,48 +288,90 @@
     },
     {
       "archive_path": "Codex_Chats/chats/019f737d-91fa-7093-b54b-6b13860f857a--make-journal-canonical-tall-tale-ui.md",
-      "content_sha256": "03a1f2bdc35f0d071142ee13dd5f4b94b9410b2858655dd357242ce8b6c27fce",
+      "content_sha256": "809314babeb54567f132417e62dcafe77a60eea9bc315f23391ed388f2219c64",
       "conversation_id": "019f737d-91fa-7093-b54b-6b13860f857a",
       "created_at": "2026-07-18T04:30:57.105Z",
       "first_archived_at": "2026-07-18T05:24:03Z",
-      "last_synchronized_at": "2026-07-18T05:26:19Z",
-      "message_count": 355,
+      "last_synchronized_at": "2026-07-18T15:17:34Z",
+      "message_count": 367,
       "project_identifier": "treasurehunt",
       "redaction_categories": {},
       "redactions": 0,
       "source_export_timestamp": null,
       "source_identifier": "rollout-2026-07-18T00-30-42-019f737d-91fa-7093-b54b-6b13860f857a.jsonl",
-      "source_sha256": "85ba90234f92f6b5669d948e3e8d2675bf677895c8ed0d4bc7f6d61015306b6b",
+      "source_sha256": "714b419a92be28e6d3b6039ee96761309c902b567623e658762d2b2620e51e26",
       "source_type": "codex_session",
       "status": "active",
       "title": "Make journal canonical Tall Tale UI",
-      "updated_at": "2026-07-18T05:26:31.431Z"
+      "updated_at": "2026-07-18T05:27:43.666Z"
     },
     {
       "archive_path": "Codex_Chats/chats/019f737e-a458-7c10-afec-b6a7b51c8881--implement-phase-b-1-foundation.md",
-      "content_sha256": "edf0ecab86bc2c54b0273eed742de2a1d77a06c30875f311336d50ca09319b0a",
+      "content_sha256": "812dc08e1d89921683267522d651e2d1c3b76f061726e446d4779dc05bfc03bd",
       "conversation_id": "019f737e-a458-7c10-afec-b6a7b51c8881",
       "created_at": "2026-07-18T04:31:58.603Z",
       "first_archived_at": "2026-07-18T05:24:03Z",
-      "last_synchronized_at": "2026-07-18T05:26:19Z",
-      "message_count": 375,
+      "last_synchronized_at": "2026-07-18T15:17:34Z",
+      "message_count": 4327,
       "project_identifier": "treasurehunt",
       "redaction_categories": {
-        "connection_string": 2,
-        "login_credential": 2,
-        "secret_assignment": 4
+        "connection_string": 9,
+        "login_credential": 3,
+        "secret_assignment": 24
       },
-      "redactions": 8,
+      "redactions": 36,
       "source_export_timestamp": null,
       "source_identifier": "rollout-2026-07-18T00-31-52-019f737e-a458-7c10-afec-b6a7b51c8881.jsonl",
-      "source_sha256": "a9f57050deb7ab57a2f415330773afe1bb626f7b39f11ff5164d3b20bebce164",
+      "source_sha256": "1b7694b07601de6a1ddd07b2a72edebe520050c4ac7c8632c196cf07c5491d9e",
       "source_type": "codex_session",
       "status": "active",
       "title": "Implement Phase B-1 foundation",
-      "updated_at": "2026-07-18T05:26:31.086Z"
+      "updated_at": "2026-07-18T13:20:08.933Z"
+    },
+    {
+      "archive_path": "Codex_Chats/chats/019f75c9-109d-7722-8be3-7c49cc4a3cf2--polish-full-system-product-ux.md",
+      "content_sha256": "1c7dc8a24f92b03c088235f904bfc36ef6ad5a12c95f6f5e22ffd54440ee0fc7",
+      "conversation_id": "019f75c9-109d-7722-8be3-7c49cc4a3cf2",
+      "created_at": "2026-07-18T15:12:25.137Z",
+      "first_archived_at": "2026-07-18T15:17:34Z",
+      "last_synchronized_at": "2026-07-18T15:17:34Z",
+      "message_count": 79,
+      "project_identifier": "treasurehunt",
+      "redaction_categories": {
+        "login_credential": 1
+      },
+      "redactions": 1,
+      "source_export_timestamp": null,
+      "source_identifier": "rollout-2026-07-18T11-12-24-019f75c9-109d-7722-8be3-7c49cc4a3cf2.jsonl",
+      "source_sha256": "bf07c201113381a99feb2cf8921d9d2cfe2d361d190f3bd7a90eced6256de701",
+      "source_type": "codex_session",
+      "status": "active",
+      "title": "Polish full-system product UX",
+      "updated_at": "2026-07-18T15:17:54.423Z"
+    },
+    {
+      "archive_path": "Codex_Chats/chats/019f75c9-3a87-7810-a64a-7dd9f528605a--start-mini-app-bridge-and-website.md",
+      "content_sha256": "e565afea28b9436d71164f9677b820b3da63271d80340014432b54c10a31b46d",
+      "conversation_id": "019f75c9-3a87-7810-a64a-7dd9f528605a",
+      "created_at": "2026-07-18T15:12:48.094Z",
+      "first_archived_at": "2026-07-18T15:17:34Z",
+      "last_synchronized_at": "2026-07-18T15:17:34Z",
+      "message_count": 73,
+      "project_identifier": "treasurehunt",
+      "redaction_categories": {
+        "login_credential": 2
+      },
+      "redactions": 2,
+      "source_export_timestamp": null,
+      "source_identifier": "rollout-2026-07-18T11-12-32-019f75c9-3a87-7810-a64a-7dd9f528605a.jsonl",
+      "source_sha256": "70b88a5c053ecc036b50a68b77da278de97254840ad03f10e0ed44bb9231cba3",
+      "source_type": "codex_session",
+      "status": "active",
+      "title": "Start mini app bridge and website",
+      "updated_at": "2026-07-18T15:17:47.224Z"
     }
   ],
-  "last_successful_synchronization_at": "2026-07-18T05:26:19Z",
+  "last_successful_synchronization_at": "2026-07-18T15:17:34Z",
   "migration_history": [
     {
       "schema_version": "1.0",
@@ -355,8 +397,8 @@
     ]
   },
   "synchronizer_version": "1.1.0",
-  "total_conversation_count": 15,
-  "total_message_count": 8880,
+  "total_conversation_count": 17,
+  "total_message_count": 12996,
   "warnings": [
     "Duplicate source record reconciled for 019dad68-91f3-7091-b4aa-6fee54fd1a1f",
     "Duplicate source record reconciled for 019dad68-91f3-7091-b4aa-6fee54fd1a1f",
