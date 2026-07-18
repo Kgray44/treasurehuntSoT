@@ -395,12 +395,12 @@
     },
     {
       "archive_path": "Codex_Chats/chats/019f75f4-50ba-7982-940a-f0dd9e2dd384--consolidate-unified-experience-shell.md",
-      "content_sha256": "c3e17f0ae64734bee3fd40dc74f63efb7203020f913f03c703edca4fc338564f",
+      "content_sha256": "eba69b65b9e3a7020dd4ab82f81b9602223b9e56d5611b6588217cd771dc9ade",
       "conversation_id": "019f75f4-50ba-7982-940a-f0dd9e2dd384",
       "created_at": "2026-07-18T15:59:51.128Z",
       "first_archived_at": "2026-07-18T16:01:19Z",
-      "last_synchronized_at": "2026-07-18T16:54:48Z",
-      "message_count": 565,
+      "last_synchronized_at": "2026-07-18T17:01:09Z",
+      "message_count": 661,
       "project_identifier": "treasurehunt",
       "redaction_categories": {
         "login_credential": 4,
@@ -409,54 +409,73 @@
       "redactions": 5,
       "source_export_timestamp": null,
       "source_identifier": "rollout-2026-07-18T11-59-38-019f75f4-50ba-7982-940a-f0dd9e2dd384.jsonl",
-      "source_sha256": "607ee083767c61a39a8fcdc4a7c4a6c6c9a7d309484a19ff765bfa52c963f71a",
+      "source_sha256": "0760059add27f741774d09f68f7be3d0c68d6285e99d2d54a11f17d038465c2d",
       "source_type": "codex_session",
       "status": "active",
       "title": "Consolidate unified experience shell",
-      "updated_at": "2026-07-18T16:55:03.672Z"
+      "updated_at": "2026-07-18T17:01:21.680Z"
     },
     {
       "archive_path": "Codex_Chats/chats/019f7612-5f0c-7941-8ee5-cf9390e1a6ea--audit-animation-system-failures.md",
-      "content_sha256": "00647b3e647e84ac2f9745424a7cefd2724fc4d9461f6a421e3ca52f5d84da5e",
+      "content_sha256": "5a83b1c0749a32ea17d066e48c95b42c65dd574988337a79261625393e12c8e9",
       "conversation_id": "019f7612-5f0c-7941-8ee5-cf9390e1a6ea",
       "created_at": "2026-07-18T16:32:38.586Z",
       "first_archived_at": "2026-07-18T16:54:48Z",
-      "last_synchronized_at": "2026-07-18T16:54:48Z",
-      "message_count": 217,
+      "last_synchronized_at": "2026-07-18T17:01:09Z",
+      "message_count": 265,
       "project_identifier": "treasurehunt",
       "redaction_categories": {
-        "secret_assignment": 1
+        "secret_assignment": 2
       },
-      "redactions": 1,
+      "redactions": 2,
       "source_export_timestamp": null,
       "source_identifier": "rollout-2026-07-18T12-32-29-019f7612-5f0c-7941-8ee5-cf9390e1a6ea.jsonl",
-      "source_sha256": "e7e6c50bf4b67ef0abf97b1b27dfdf07d62e60a6bb7bddea7c49136c21678164",
+      "source_sha256": "8a3c1254f6e164f420f1766dd5fc2a81dea657696aacf9690c8024bbc325eff9",
       "source_type": "codex_session",
       "status": "active",
       "title": "Audit animation system failures",
-      "updated_at": "2026-07-18T16:55:01.648Z"
+      "updated_at": "2026-07-18T17:00:03.343Z"
     },
     {
       "archive_path": "Codex_Chats/chats/019f7623-2908-7722-bd6d-8f806f88c69f--recover-missing-chat.md",
-      "content_sha256": "6dacde45a58031d21208ae4ac12c676105d38d093c4bd9974bd59cd376f11876",
+      "content_sha256": "18eeec786e5e6734d92e09591718bed40e1305a3b81c77dc86f38593fdc9ff90",
       "conversation_id": "019f7623-2908-7722-bd6d-8f806f88c69f",
       "created_at": "2026-07-18T16:51:22.435Z",
       "first_archived_at": "2026-07-18T16:54:48Z",
-      "last_synchronized_at": "2026-07-18T16:54:48Z",
-      "message_count": 61,
+      "last_synchronized_at": "2026-07-18T17:01:09Z",
+      "message_count": 115,
       "project_identifier": "treasurehunt",
       "redaction_categories": {},
       "redactions": 0,
       "source_export_timestamp": null,
       "source_identifier": "rollout-2026-07-18T12-50-48-019f7623-2908-7722-bd6d-8f806f88c69f.jsonl",
-      "source_sha256": "b7cb13998f8404dcb8d74ae37cea07791d47df6680b5dced4525ca76e3ece4c4",
+      "source_sha256": "f7f0c67d06375a9de7ed4abf1b3b7e53d70b2d2b23db4c05344e4d649624a00e",
       "source_type": "codex_session",
       "status": "active",
       "title": "Recover missing chat",
-      "updated_at": "2026-07-18T16:55:03.842Z"
+      "updated_at": "2026-07-18T17:01:21.829Z"
+    },
+    {
+      "archive_path": "Codex_Chats/chats/019f762c-354a-7b22-afd3-9a0afdadb205--continue-animation-system-audit.md",
+      "content_sha256": "48bf50cd69b6c496a41c36c9adf4f926da90323bb91425c3d9bcfe2328a09970",
+      "conversation_id": "019f762c-354a-7b22-afd3-9a0afdadb205",
+      "created_at": "2026-07-18T17:00:47.478Z",
+      "first_archived_at": "2026-07-18T17:01:09Z",
+      "last_synchronized_at": "2026-07-18T17:01:09Z",
+      "message_count": 11,
+      "project_identifier": "treasurehunt",
+      "redaction_categories": {},
+      "redactions": 0,
+      "source_export_timestamp": null,
+      "source_identifier": "rollout-2026-07-18T13-00-41-019f762c-354a-7b22-afd3-9a0afdadb205.jsonl",
+      "source_sha256": "e64ae4e988228fe08a39ac4c909646f48de3bc77baee8880f51e9b21b41d1a0d",
+      "source_type": "codex_session",
+      "status": "active",
+      "title": "Continue animation system audit",
+      "updated_at": "2026-07-18T17:01:21.782Z"
     }
   ],
-  "last_successful_synchronization_at": "2026-07-18T16:54:48Z",
+  "last_successful_synchronization_at": "2026-07-18T17:01:09Z",
   "migration_history": [
     {
       "schema_version": "1.0",
@@ -482,8 +501,8 @@
     ]
   },
   "synchronizer_version": "1.1.0",
-  "total_conversation_count": 21,
-  "total_message_count": 14409,
+  "total_conversation_count": 22,
+  "total_message_count": 14618,
   "warnings": [
     "Duplicate source record reconciled for 019dad68-91f3-7091-b4aa-6fee54fd1a1f",
     "Duplicate source record reconciled for 019dad68-91f3-7091-b4aa-6fee54fd1a1f",
