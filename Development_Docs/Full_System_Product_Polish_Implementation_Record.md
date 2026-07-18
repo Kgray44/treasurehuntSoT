@@ -14,22 +14,22 @@ Repository baseline: `main` at `481dc92`, synchronized with `origin/main` (`0` b
 
 ## Product terminology map
 
-| Term | Product meaning | Usage rule |
-| --- | --- | --- |
-| Tall Tale | A reusable, creator-authored interactive story | Primary noun for content in discovery, Studio, and invitations |
-| Experience | Broad description of what participants create or join | Use in explanatory marketing copy; do not substitute it for stored Tall Tale entities |
-| Voyage | A configured, version-pinned playthrough shared by a group | Use for Captain setup, invitations, lobby, history, and continuation |
-| Session | The live technical/runtime state of a voyage | Use for operational status, reconnect behavior, and Captain controls |
-| Player | A person experiencing the Tall Tale | Primary participant role in controls and permissions |
-| Participant | Inclusive collective label when role detail is not important | Use in general explanations and accessibility copy |
-| Captain | The host who configures and guides a voyage | Use consistently for host-only actions |
-| Creator | A person who authors and publishes Tall Tales | Use consistently for Studio access and authoring actions |
-| Crew | Optional thematic collective for Players | Flavor only; critical controls continue to use Player or participant |
-| Chapter | A published structural division of a Tall Tale | Never substitute step or stage for the authored chapter entity |
-| Story moment | A prompt, passage, decision, activity, or reveal inside a chapter | Human-readable umbrella term for block-level content |
-| Invitation | A single-recipient credential and joining flow | Use for links, short codes, PINs, lifecycle, and acceptance |
-| Waiting room | The pre-launch Player state after invitation acceptance | Use instead of lobby where the existing route and domain already use this term |
-| Journal | The immersive, canonical in-session and completed-history surface | Cards may select a voyage, but must not replace journal play |
+| Term         | Product meaning                                                   | Usage rule                                                                            |
+| ------------ | ----------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
+| Tall Tale    | A reusable, creator-authored interactive story                    | Primary noun for content in discovery, Studio, and invitations                        |
+| Experience   | Broad description of what participants create or join             | Use in explanatory marketing copy; do not substitute it for stored Tall Tale entities |
+| Voyage       | A configured, version-pinned playthrough shared by a group        | Use for Captain setup, invitations, lobby, history, and continuation                  |
+| Session      | The live technical/runtime state of a voyage                      | Use for operational status, reconnect behavior, and Captain controls                  |
+| Player       | A person experiencing the Tall Tale                               | Primary participant role in controls and permissions                                  |
+| Participant  | Inclusive collective label when role detail is not important      | Use in general explanations and accessibility copy                                    |
+| Captain      | The host who configures and guides a voyage                       | Use consistently for host-only actions                                                |
+| Creator      | A person who authors and publishes Tall Tales                     | Use consistently for Studio access and authoring actions                              |
+| Crew         | Optional thematic collective for Players                          | Flavor only; critical controls continue to use Player or participant                  |
+| Chapter      | A published structural division of a Tall Tale                    | Never substitute step or stage for the authored chapter entity                        |
+| Story moment | A prompt, passage, decision, activity, or reveal inside a chapter | Human-readable umbrella term for block-level content                                  |
+| Invitation   | A single-recipient credential and joining flow                    | Use for links, short codes, PINs, lifecycle, and acceptance                           |
+| Waiting room | The pre-launch Player state after invitation acceptance           | Use instead of lobby where the existing route and domain already use this term        |
+| Journal      | The immersive, canonical in-session and completed-history surface | Cards may select a voyage, but must not replace journal play                          |
 
 ## Audit summary
 

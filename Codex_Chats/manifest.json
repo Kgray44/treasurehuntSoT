@@ -330,25 +330,25 @@
     },
     {
       "archive_path": "Codex_Chats/chats/019f75c9-109d-7722-8be3-7c49cc4a3cf2--polish-full-system-product-ux.md",
-      "content_sha256": "f0e1e30349580a4f4de1c12021a4a93c30b7f6f794785b4386adb6262f85542f",
+      "content_sha256": "8b0576dd074a6698934a3a5b606ea9a2110974b3d0ad0555bde5e3cdc02ef207",
       "conversation_id": "019f75c9-109d-7722-8be3-7c49cc4a3cf2",
       "created_at": "2026-07-18T15:12:25.137Z",
       "first_archived_at": "2026-07-18T15:17:34Z",
-      "last_synchronized_at": "2026-07-18T15:30:20Z",
-      "message_count": 163,
+      "last_synchronized_at": "2026-07-18T15:32:28Z",
+      "message_count": 183,
       "project_identifier": "treasurehunt",
       "redaction_categories": {
         "login_credential": 1,
-        "secret_assignment": 1
+        "secret_assignment": 2
       },
-      "redactions": 2,
+      "redactions": 3,
       "source_export_timestamp": null,
       "source_identifier": "rollout-2026-07-18T11-12-24-019f75c9-109d-7722-8be3-7c49cc4a3cf2.jsonl",
-      "source_sha256": "eaabdd22676b7e67a215dc8a920a1f1b32cefd1e7f4cfbeff0e6a61bcc6deaaa",
+      "source_sha256": "fe1bbd095aa8186d83b4e5e5e9432685e80d3213184d2b61edef9fab45f509aa",
       "source_type": "codex_session",
       "status": "active",
       "title": "Polish full-system product UX",
-      "updated_at": "2026-07-18T15:29:38.041Z"
+      "updated_at": "2026-07-18T15:32:48.104Z"
     },
     {
       "archive_path": "Codex_Chats/chats/019f75c9-3a87-7810-a64a-7dd9f528605a--start-mini-app-bridge-and-website.md",
@@ -373,28 +373,28 @@
     },
     {
       "archive_path": "Codex_Chats/chats/019f75d1-8441-7962-a500-d605d0f89966--fix-captain-sign-in-json-error.md",
-      "content_sha256": "8c294100d9c0db3d34b2c4e2adeb56bb14254c99c6e52366d76d8f4bf8aa0b80",
+      "content_sha256": "248cf8cb9954eda7af4925d2d11869ca60746089435b0273df5f38891b7202d3",
       "conversation_id": "019f75d1-8441-7962-a500-d605d0f89966",
       "created_at": "2026-07-18T15:21:56.037Z",
       "first_archived_at": "2026-07-18T15:30:20Z",
-      "last_synchronized_at": "2026-07-18T15:30:20Z",
-      "message_count": 100,
+      "last_synchronized_at": "2026-07-18T15:32:28Z",
+      "message_count": 121,
       "project_identifier": "treasurehunt",
       "redaction_categories": {
         "login_credential": 2,
-        "secret_assignment": 6
+        "secret_assignment": 7
       },
-      "redactions": 8,
+      "redactions": 9,
       "source_export_timestamp": null,
       "source_identifier": "rollout-2026-07-18T11-21-38-019f75d1-8441-7962-a500-d605d0f89966.jsonl",
-      "source_sha256": "5ed5cb21df3033a01f79cd97769de81c4268e30b569f962278669453bd02c24a",
+      "source_sha256": "96884aa9f2e008e1d2f17e8b8346aeb4e4e675c65ab0af810261b50789f4296e",
       "source_type": "codex_session",
       "status": "active",
       "title": "Fix Captain sign-in JSON error",
-      "updated_at": "2026-07-18T15:30:29.721Z"
+      "updated_at": "2026-07-18T15:32:40.618Z"
     }
   ],
-  "last_successful_synchronization_at": "2026-07-18T15:30:20Z",
+  "last_successful_synchronization_at": "2026-07-18T15:32:28Z",
   "migration_history": [
     {
       "schema_version": "1.0",
@@ -421,7 +421,7 @@
   },
   "synchronizer_version": "1.1.0",
   "total_conversation_count": 18,
-  "total_message_count": 13227,
+  "total_message_count": 13268,
   "warnings": [
     "Duplicate source record reconciled for 019dad68-91f3-7091-b4aa-6fee54fd1a1f",
     "Duplicate source record reconciled for 019dad68-91f3-7091-b4aa-6fee54fd1a1f",
