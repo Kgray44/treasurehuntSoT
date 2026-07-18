@@ -95,8 +95,8 @@ Packaged smoke result:
 ```
 
 Installer: `dist/The Forever Treasure Companion Setup 0.3.0-b1.exe`  
-Bytes: `245103495`  
-SHA-256: `8811009EE95C5F447324A81A32304E02E505D994F4F8DD667BAB6688D1414439`  
+Bytes: `245103686`  
+SHA-256: `F26EE0F22FDA1EED2F1D83330B80147BBCB07CCFE598E65E23FCE6EA76BE887D`  
 Authenticode: `NotSigned`
 
 The local installer uses Electron's default icon. Signing, branded icons, reputation testing, and a trusted distribution channel are required before public release.
