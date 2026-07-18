@@ -5,6 +5,7 @@ import { ProductShell } from "./ProductShell";
 const navigation = vi.hoisted(() => ({ pathname: "/tales" }));
 
 vi.mock("next/navigation", () => ({ usePathname: () => navigation.pathname }));
+vi.mock("@/animation/motion/useMotionMode", () => ({ useMotionMode: () => ({ mode: "reduced" }) }));
 
 describe("ProductShell", () => {
   afterEach(() => {
@@ -21,7 +22,7 @@ describe("ProductShell", () => {
 
     expect(screen.getByRole("link", { name: "Skip to main content" })).toHaveAttribute("href", "#main-content");
     const navigationRegion = screen.getByRole("navigation", { name: "Tall Tale Harbor navigation" });
-    expect(within(navigationRegion).getByRole("link", { name: "Explore Tall Tales" })).toHaveAttribute(
+    expect(within(navigationRegion).getByRole("link", { name: "Tall Tale Library" })).toHaveAttribute(
       "aria-current",
       "page",
     );
@@ -39,7 +40,7 @@ describe("ProductShell", () => {
     const navigationRegion = screen.getByRole("navigation", { name: "Tall Tale Harbor navigation" });
     fireEvent.click(menuButton);
     await waitFor(() =>
-      expect(within(navigationRegion).getByRole("link", { name: "Explore Tall Tales" })).toHaveFocus(),
+      expect(within(navigationRegion).getByRole("link", { name: "Tall Tale Library" })).toHaveFocus(),
     );
 
     fireEvent.keyDown(window, { key: "Escape" });
@@ -48,7 +49,7 @@ describe("ProductShell", () => {
   });
 
   it("leaves the canonical journal route immersive", () => {
-    navigation.pathname = "/player/playthroughs/playthrough-1/journal";
+    navigation.pathname = "/player/playthroughs/playthrough-1/journal/chapters";
     render(
       <ProductShell>
         <main>Immersive journal</main>
@@ -57,5 +58,19 @@ describe("ProductShell", () => {
 
     expect(screen.getByText("Immersive journal")).toBeInTheDocument();
     expect(screen.queryByRole("banner")).not.toBeInTheDocument();
+  });
+
+  it("adds hierarchy and a route-specific transition to nested Studio screens", () => {
+    navigation.pathname = "/studio/tales/tale-one/settings";
+    render(
+      <ProductShell>
+        <main>Settings content</main>
+      </ProductShell>,
+    );
+
+    const breadcrumbs = screen.getByRole("navigation", { name: "Breadcrumb" });
+    expect(within(breadcrumbs).getByRole("link", { name: "Library" })).toHaveAttribute("href", "/studio/library");
+    expect(within(breadcrumbs).getByText("Settings")).toHaveAttribute("aria-current", "page");
+    expect(document.querySelector("[data-route-transition='settings']")).toBeInTheDocument();
   });
 });

@@ -14,6 +14,8 @@ The live workflow covers player/GM access, rate limiting, cookie isolation, prep
 
 Artifacts are ignored and written below the validation runtime at `artifacts/validation`; Command Center screenshots are in `artifacts/validation/command-center`. `PLAYWRIGHT_BASE_URL` and `FOREVER_VALIDATION_PRODUCTION_PORT` may select isolated ports for parallel sessions.
 
+Both variables are validation-only isolation controls. Their defaults are port 3000; no launch command silently falls back when 3000 is occupied. The full gate may select an explicit temporary port while another verified task owns 3000, but that port is never documented or persisted as a second product runtime.
+
 ## Integrated validation workflow
 
 The command mirrors network-share checkouts into a clean local runtime, rebuilds disposable `validation.db`, and runs:
@@ -40,6 +42,8 @@ Tall Tale Studio unit coverage asserts the complete 23-type block registry, sche
 Tall Tale Platform unit coverage adds lifecycle transition rules, role/resource authorization, and audit redaction. Its Chromium journey forks and publishes a Tale, atomically creates and accepts a secure invitation, denies cross-role access and missing Player CSRF, launches the crew, publishes a newer edition, proves the active playthrough remains pinned, completes it, validates the exact-version archive, persists pin/hide preferences, retries acceptance idempotently, and verifies replacement/revocation. A read-only mobile WebKit pass covers the reduced-motion gateway, responsive width, accessibility, and protected API denials. Validation also creates a legacy-shaped playthrough, runs the normal progress-preserving seed, and proves that ID, version, events, timestamps, membership, and reveal history survive backfill.
 
 Canonical journal unit coverage asserts the typed presentation schema, recursive Player secret removal, mode mapping, stable page IDs/parity, two-page spreads, chapter/current-objective indexes, StPageFlip revision refresh, queued turn locking, and distinct left/right geometry. The platform Chromium journey now enters the physical journal after launch, verifies canonical Player-safe state, proves reading-state persistence does not mutate the current story block, follows the same journal into completed historical mode, and checks that the immutable edition/checksum remain visible while actions are disabled.
+
+Unified Experience coverage adds stable route parsing, invalid-section fallback, Map/Artifacts/Messages full-page rendering, persisted section state, tab ARIA semantics, keyed route-transition signals, breadcrumb hierarchy, semantic theme parsing/fallback, and direct Chapters/Map navigation in the platform Chromium journey. Manual review covers forward/back replay, both application themes, explicit Tale override, focus transfer, compact connection status, 375/430/768/1024/1440/1920 widths, and absence of horizontal overflow or content-obscuring overlays.
 
 The 2026-07-17 platform release gate passed 25 Vitest files with 80 tests and 21 Playwright tests with 7 intentionally skipped mobile mutation permutations. Post-browser verification passed before and after the progress-preserving seed, and the production build plus both restart-safety cycles completed successfully.
 

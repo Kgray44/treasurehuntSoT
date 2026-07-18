@@ -10,6 +10,14 @@ The ocean-dark, parchment, brass, moonlight, and muted-crimson materials now ser
 
 System copy uses the shared product vocabulary: a Creator authors a reusable **Tall Tale**, a Captain configures a version-pinned **Voyage**, an invited **Player** waits for launch, and the **Journal** is the canonical in-session and completed-history surface. The collective word _participant_ is used when a role distinction is unnecessary; _crew_ remains optional flavor rather than permission language. Personal names and event-specific language belong to authored content and invitations, not generic product controls.
 
+## Semantic application themes
+
+All application chrome and operational surfaces consume the `--color-*` aliases in `tokens.css`. **Verdant Depths** is the default deep green-black, muted emerald, warm-brass, cream-parchment scheme. **Moonlit Blue** replaces water, fog, glow, surfaces, borders, text, focus, and navigation values with a controlled navy/cyan family. Vision Waypoint and Companion screens use those same aliases and are not independent blue applications.
+
+Theme precedence is: explicit Experience override, persisted Player or staff application preference, then Verdant Depths. `APPLICATION` on a Tall Tale means inherit. Stable parchment pigments may remain material-specific, but surrounding atmosphere, focus, metal, shadow, status, form, and navigation colors must use semantic tokens. New visual experiments extend this theme layer; they must not introduce a separate root palette or alternate frontend runtime.
+
+Navigation has four deliberately separate levels: ProductShell global workspace links, stable Captain/Creator workspace sections, the four routed Player Experience tabs, and local content controls. Deeper Studio and Captain routes add explicit breadcrumbs. The global shell never replaces the Experience tabs, and contextual controls never masquerade as global navigation.
+
 ## Cinematic companion sections
 
 The shared ocean-dark, parchment, brass, moonlight, and muted-crimson tokens remain authoritative. Journal uses ink/page hierarchy; Chart uses fog and cartographic marks; Altar uses wood/brass placement; Ledger uses secret-note rhythm; Log uses an engraved timeline; Finale uses a dormant celestial mechanism. All retain the same focus ring, corner language, shadows, texture ceiling, typography scale, and motion tokens.

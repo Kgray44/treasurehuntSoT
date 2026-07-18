@@ -51,11 +51,11 @@ const groupLabels: Array<[keyof Library["groups"], string, string]> = [
   ["expiredOrRevoked", "Closed Invitations", "Expired, declined, or revoked access"],
 ];
 
-export function PlayerLibrary() {
+export function PlayerLibrary({ initialFilter = "ALL" }: { initialFilter?: string } = {}) {
   const [library, setLibrary] = useState<Library | null>(null);
   const [error, setError] = useState("");
   const [query, setQuery] = useState("");
-  const [filter, setFilter] = useState("ALL");
+  const [filter, setFilter] = useState(initialFilter);
   const [sort, setSort] = useState("RECENT");
   const [view, setView] = useState<"gallery" | "list">("gallery");
   const [busyCard, setBusyCard] = useState("");

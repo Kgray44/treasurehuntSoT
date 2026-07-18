@@ -65,7 +65,7 @@ export function PlayerVoyageRoom({ playthroughId }: { playthroughId: string }) {
       const timer = setTimeout(() => router.push(voyage.runtimeHref!), 900);
       return () => clearTimeout(timer);
     }
-    if (voyage?.state === "COMPLETED") router.replace(`/player/playthroughs/${playthroughId}/journal`);
+    if (voyage?.state === "COMPLETED") router.replace(`/player/playthroughs/${playthroughId}/journal/chapters`);
   }, [playthroughId, router, voyage]);
 
   if (error && !voyage)

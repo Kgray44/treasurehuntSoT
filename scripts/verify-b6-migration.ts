@@ -23,10 +23,12 @@ async function main() {
   }
 
   try {
-    const migrations = (await readdir(migrationRoot, { withFileTypes: true }))
-      .filter((entry) => entry.isDirectory() && entry.name !== b6Migration)
+    const allMigrations = (await readdir(migrationRoot, { withFileTypes: true }))
+      .filter((entry) => entry.isDirectory())
       .map((entry) => entry.name)
       .sort();
+    if (!allMigrations.includes(b6Migration)) throw new Error(`Required migration ${b6Migration} is missing.`);
+    const migrations = allMigrations.filter((migration) => migration.localeCompare(b6Migration) < 0);
     if (migrations.length !== 10)
       throw new Error(`Expected 10 representative pre-B-6 migrations, found ${migrations.length}.`);
     for (const migration of migrations) apply(path.join(migrationRoot, migration, "migration.sql"));

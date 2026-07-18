@@ -1,7 +1,8 @@
-param([int]$Port = 3000, [switch]$Lan)
+param([switch]$Lan)
 $ErrorActionPreference = "Stop"
 . (Join-Path $PSScriptRoot "dev-common.ps1")
 
+$Port = 3000
 $runtimeRoot = Initialize-ForeverRuntime -Mode development
 $statePath = Join-Path $env:LOCALAPPDATA "ForeverTreasureCompanion\dev-state.json"
 $playerUrl = "http://127.0.0.1:$Port/tale/development-forever-treasure"
@@ -13,10 +14,17 @@ if (Test-Path $statePath) {
     $state = Get-Content -Raw $statePath | ConvertFrom-Json
     $existing = Get-Process -Id $state.pid -ErrorAction SilentlyContinue
     if ($existing) {
+        $recordedRuntime = [System.IO.Path]::GetFullPath([string]$state.runtimeRoot)
+        $currentRuntime = [System.IO.Path]::GetFullPath($runtimeRoot)
+        $recordedPort = [int]$state.port
+        $listener = Get-NetTCPConnection -LocalPort $Port -State Listen -ErrorAction SilentlyContinue | Where-Object { $_.OwningProcess -eq $state.pid }
+        if ($recordedPort -ne $Port -or $recordedRuntime -ne $currentRuntime -or -not $listener) {
+            throw "The recorded process does not own this checkout's canonical port 3000. Inspect $statePath before stopping anything."
+        }
         try { Wait-ForeverHttp -Url "http://127.0.0.1:$Port" -Seconds 3; Write-Host "Forever Treasure Companion is already running." -ForegroundColor Green; Write-Host "`nPlayer Companion:`n$playerUrl`n`nGame Master Dashboard:`n$gmUrl`n"; exit 0 } catch { throw "Port $Port belongs to an existing recorded process that is not healthy. Run .\scripts\stop-dev.ps1 and retry." }
     }
 }
-try { $listener = Get-NetTCPConnection -LocalPort $Port -State Listen -ErrorAction Stop; if ($listener) { throw "Port $Port is already in use. Stop that application or run .\scripts\start-dev.ps1 -Port 3001." } } catch [Microsoft.PowerShell.Cmdletization.Cim.CimJobException] { }
+try { $listener = Get-NetTCPConnection -LocalPort $Port -State Listen -ErrorAction Stop; if ($listener) { throw "Canonical port 3000 is already in use. Stop the verified owning application, then retry; this launcher will not select another port." } } catch [Microsoft.PowerShell.Cmdletization.Cim.CimJobException] { }
 
 $logDirectory = Join-Path $runtimeRoot ".forever\logs"
 New-Item -ItemType Directory -Path $logDirectory -Force | Out-Null

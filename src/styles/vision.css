@@ -3,8 +3,8 @@
 .vision-release-readiness {
   min-height: 100vh;
   padding: clamp(1.25rem, 4vw, 4rem);
-  color: var(--ink, #eadfc4);
-  background: radial-gradient(circle at 20% 0%, rgba(32, 94, 102, 0.35), transparent 38%), #071b25;
+  color: var(--color-text-primary);
+  background: radial-gradient(circle at 20% 0%, var(--color-glow), transparent 38%), var(--color-background-deep);
 }
 .vision-library > header,
 .vision-editor > header,
@@ -25,7 +25,7 @@
 .vision-library a,
 .vision-editor a,
 .vision-release-readiness a {
-  color: #e7c77e;
+  color: var(--color-accent-primary);
 }
 .vision-release-readiness {
   display: grid;
@@ -40,14 +40,14 @@
 .release-decision {
   width: min(100%, 90rem);
   margin: 0 auto;
-  border: 1px solid rgba(222, 184, 104, 0.32);
+  border: 1px solid var(--color-border-muted);
   border-radius: 1rem;
-  background: rgba(9, 36, 46, 0.92);
+  background: color-mix(in srgb, var(--color-background-elevated) 92%, transparent);
   padding: clamp(1rem, 3vw, 1.5rem);
 }
 .release-decision {
   border-width: 2px;
-  border-color: #e8b36d;
+  border-color: var(--color-border-accent);
 }
 .release-decision dl {
   display: grid;
@@ -55,7 +55,7 @@
   gap: 1rem;
 }
 .release-decision dt {
-  color: #aebfc2;
+  color: var(--color-text-muted);
   font-size: 0.8rem;
   text-transform: uppercase;
 }
@@ -69,13 +69,13 @@
 }
 .release-status-grid article,
 .release-issue-list article {
-  border: 1px solid rgba(255, 255, 255, 0.14);
+  border: 1px solid var(--color-border-muted);
   border-radius: 0.75rem;
   padding: 1rem;
-  background: rgba(255, 255, 255, 0.035);
+  background: var(--color-navigation-hover);
 }
 .release-status-text {
-  color: #ffd08a;
+  color: var(--color-warning);
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.06em;
@@ -91,7 +91,7 @@
   gap: 0.5rem;
 }
 .release-issue-list article > header span {
-  border: 1px solid #e8b36d;
+  border: 1px solid var(--color-border-accent);
   border-radius: 999px;
   padding: 0.2rem 0.55rem;
   font-weight: 700;
@@ -100,7 +100,7 @@
   overflow-x: auto;
 }
 .release-table-scroll:focus-visible {
-  outline: 3px solid #e7c77e;
+  outline: 3px solid var(--focus-color);
   outline-offset: 0.25rem;
 }
 .release-table-scroll table {
@@ -114,7 +114,7 @@
 }
 .release-table-scroll th,
 .release-table-scroll td {
-  border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+  border-bottom: 1px solid var(--color-border-muted);
   padding: 0.75rem;
   text-align: left;
 }
@@ -130,15 +130,15 @@
   width: min(42rem, calc(100vw - 2rem));
   max-height: calc(100vh - 2rem);
   overflow: auto;
-  color: #eadfc4;
-  border: 2px solid #d9b65f;
+  color: var(--color-text-primary);
+  border: 2px solid var(--color-border-accent);
   border-radius: 1rem;
-  background: #09242e;
+  background: var(--color-background-elevated);
   padding: clamp(1rem, 4vw, 2rem);
   box-shadow: 0 1.5rem 5rem rgba(0, 0, 0, 0.65);
 }
 .vision-onboarding-dialog::backdrop {
-  background: rgba(2, 12, 17, 0.82);
+  background: color-mix(in srgb, var(--color-background-deep) 82%, transparent);
   backdrop-filter: blur(3px);
 }
 .vision-onboarding-dialog li {
@@ -162,9 +162,9 @@
 .vision-library-results,
 .vision-editor-grid > section,
 .vision-diagnostics {
-  border: 1px solid rgba(222, 184, 104, 0.32);
+  border: 1px solid var(--color-border-muted);
   border-radius: 1rem;
-  background: rgba(9, 36, 46, 0.92);
+  background: color-mix(in srgb, var(--color-background-elevated) 92%, transparent);
   padding: 1.25rem;
   box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.18);
 }
@@ -191,8 +191,8 @@
 .vision-scenario select {
   width: 100%;
   color: inherit;
-  background: #0c2b36;
-  border: 1px solid rgba(222, 184, 104, 0.35);
+  background: var(--color-background-surface);
+  border: 1px solid var(--color-border-muted);
   border-radius: 0.55rem;
   padding: 0.7rem;
 }
@@ -213,7 +213,7 @@
   align-items: center;
 }
 .tag-line {
-  color: #a8d3cd;
+  color: var(--color-text-secondary);
   font-size: 0.85rem;
 }
 .vision-waypoint-grid {
@@ -223,10 +223,10 @@
 }
 .vision-waypoint-grid article,
 .vision-version-history article {
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  border: 1px solid var(--color-border-muted);
   border-radius: 0.8rem;
   padding: 1rem;
-  background: rgba(255, 255, 255, 0.035);
+  background: var(--color-navigation-hover);
 }
 .library-waypoint-thumbnail,
 .library-waypoint-preview {
@@ -235,7 +235,8 @@
   max-height: 12rem;
   margin-bottom: 0.8rem;
   border-radius: 0.65rem;
-  background: radial-gradient(circle at 50% 45%, rgba(231, 199, 126, 0.2), transparent 40%), #061820;
+  background:
+    radial-gradient(circle at 50% 45%, var(--color-navigation-hover), transparent 40%), var(--color-background-deep);
 }
 .library-waypoint-thumbnail {
   display: grid;
@@ -245,7 +246,7 @@
   text-align: center;
 }
 .library-waypoint-thumbnail strong {
-  color: #e7c77e;
+  color: var(--color-accent-primary);
   font-size: 2rem;
   letter-spacing: 0.12em;
 }
@@ -263,7 +264,7 @@
 }
 .vision-waypoint-grid dt,
 .vision-attempt-list dt {
-  color: #aebfc2;
+  color: var(--color-text-muted);
   font-size: 0.75rem;
   text-transform: uppercase;
   letter-spacing: 0.08em;
@@ -280,8 +281,8 @@
   gap: 1.25rem;
 }
 .vision-authoring {
-  --authoring-panel: rgba(9, 36, 46, 0.94);
-  --authoring-line: rgba(222, 184, 104, 0.32);
+  --authoring-panel: color-mix(in srgb, var(--color-background-elevated) 94%, transparent);
+  --authoring-line: var(--color-border-muted);
 }
 .authoring-status {
   display: grid;
@@ -291,17 +292,17 @@
 .health-badge,
 .connection-pill {
   display: inline-flex;
-  border: 1px solid #d69c65;
+  border: 1px solid var(--color-warning);
   border-radius: 999px;
   padding: 0.45rem 0.75rem;
-  color: #ffd6ad;
-  background: rgba(103, 45, 30, 0.55);
+  color: var(--color-text-primary);
+  background: color-mix(in srgb, var(--color-warning) 18%, var(--color-background-elevated));
 }
 .health-badge.ready,
 .connection-pill.live {
-  border-color: #76c59a;
-  color: #baf4d0;
-  background: rgba(24, 91, 66, 0.45);
+  border-color: var(--color-success);
+  color: var(--color-text-primary);
+  background: color-mix(in srgb, var(--color-success) 18%, var(--color-background-elevated));
 }
 .authoring-shell {
   max-width: 96rem;
@@ -363,8 +364,8 @@
 .region-editor select {
   width: 100%;
   color: inherit;
-  background: #0c2b36;
-  border: 1px solid rgba(222, 184, 104, 0.42);
+  background: var(--color-background-surface);
+  border: 1px solid var(--color-border-accent);
   border-radius: 0.55rem;
   padding: 0.7rem;
 }
@@ -372,7 +373,7 @@
 .health-summary progress,
 .capture-progress progress {
   width: 100%;
-  accent-color: #d9b65f;
+  accent-color: var(--color-accent-primary);
 }
 .wizard-sidebar ol {
   display: grid;
@@ -391,7 +392,7 @@
   border-radius: 0.55rem;
   padding: 0.65rem;
   text-align: left;
-  color: #dce9e4;
+  color: var(--color-text-secondary);
   background: transparent;
 }
 .wizard-sidebar li button span {
@@ -399,16 +400,16 @@
   width: 1.65rem;
   height: 1.65rem;
   place-items: center;
-  border: 1px solid rgba(255, 255, 255, 0.22);
+  border: 1px solid var(--color-border-muted);
   border-radius: 50%;
 }
 .wizard-sidebar li.current button {
-  color: #fff2c5;
-  background: rgba(219, 175, 93, 0.17);
+  color: var(--color-navigation-active);
+  background: var(--color-navigation-hover);
 }
 .wizard-sidebar li.complete button span {
-  color: #c8f8dc;
-  border-color: #6fc392;
+  color: var(--color-success);
+  border-color: var(--color-success);
 }
 .wizard-content > header,
 .studio-capture-panel > header,
@@ -465,14 +466,14 @@
 .capture-recovery,
 .recording-placeholder,
 .health-summary {
-  border: 1px solid rgba(222, 184, 104, 0.3);
+  border: 1px solid var(--color-border-muted);
   border-radius: 0.8rem;
   padding: 1rem;
-  background: rgba(255, 255, 255, 0.035);
+  background: var(--color-navigation-hover);
 }
 .boundary-banner {
-  border-color: #d69c65;
-  background: rgba(103, 45, 30, 0.3);
+  border-color: var(--color-warning);
+  background: color-mix(in srgb, var(--color-warning) 12%, var(--color-background-elevated));
 }
 .studio-capture-panel,
 .recording-review,
@@ -480,7 +481,7 @@
 .negative-editor,
 .test-editor,
 .region-editor {
-  background: rgba(4, 25, 33, 0.65);
+  background: color-mix(in srgb, var(--color-background-surface) 65%, transparent);
 }
 .capture-recovery,
 .capture-toolbar,
@@ -533,13 +534,13 @@
 }
 .asset-facts div,
 .review-grid section {
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--color-border-muted);
   border-radius: 0.65rem;
   padding: 0.7rem;
 }
 .asset-facts dt,
 .review-grid dt {
-  color: #aebfc2;
+  color: var(--color-text-muted);
   font-size: 0.75rem;
   text-transform: uppercase;
 }
@@ -551,18 +552,18 @@
 .dependency-note {
   margin: 1rem 0;
   padding: 0.75rem;
-  border-left: 3px solid #d9b65f;
-  background: rgba(217, 182, 95, 0.06);
+  border-left: 3px solid var(--color-accent-primary);
+  background: var(--color-navigation-hover);
 }
 .danger-button {
-  color: #ffd7cf;
-  border-color: #c86f61;
+  color: var(--color-danger);
+  border-color: var(--color-danger);
 }
 .authoring-record-list li,
 .health-list li,
 .build-job-list li,
 .region-list li {
-  border: 1px solid rgba(255, 255, 255, 0.11);
+  border: 1px solid var(--color-border-muted);
   border-radius: 0.65rem;
   padding: 0.75rem;
 }
@@ -578,10 +579,10 @@
   gap: 1rem;
 }
 .health-list li.blocker {
-  border-left: 4px solid #dc7766;
+  border-left: 4px solid var(--color-danger);
 }
 .health-list li.warning {
-  border-left: 4px solid #d9b65f;
+  border-left: 4px solid var(--color-warning);
 }
 .region-workspace {
   display: grid;
@@ -591,7 +592,7 @@
 .region-workspace svg {
   width: 100%;
   min-height: 24rem;
-  border: 1px solid rgba(222, 184, 104, 0.4);
+  border: 1px solid var(--color-border-accent);
   border-radius: 0.75rem;
   touch-action: none;
   cursor: crosshair;
@@ -605,12 +606,12 @@
   margin: 0.75rem 0;
 }
 .region-toolbox button[aria-pressed="true"] {
-  color: #08232b;
-  background: #e7c77e;
+  color: var(--text-on-accent);
+  background: var(--color-accent-primary);
 }
 .engineering-details {
   margin-top: 1rem;
-  border-top: 1px dashed rgba(222, 184, 104, 0.4);
+  border-top: 1px dashed var(--color-border-accent);
   padding-top: 1rem;
 }
 .engineering-details code,
@@ -620,7 +621,7 @@
 .wizard-actions {
   margin-top: 1.5rem;
   padding-top: 1rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: 1px solid var(--color-border-muted);
 }
 .authoring-version-history {
   max-width: 96rem;
@@ -636,12 +637,12 @@
   gap: 0.3rem;
   min-width: 13rem;
   padding: 0.75rem;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--color-border-muted);
   border-radius: 0.65rem;
 }
 .authoring-empty {
   padding: 1rem;
-  border: 1px dashed rgba(222, 184, 104, 0.4);
+  border: 1px dashed var(--color-border-accent);
   border-radius: 0.75rem;
 }
 .vision-authoring button:focus-visible,
@@ -650,19 +651,19 @@
 .vision-authoring select:focus-visible,
 .vision-authoring textarea:focus-visible,
 .region-workspace svg:focus-visible {
-  outline: 3px solid #fff;
+  outline: 3px solid var(--focus-color);
   outline-offset: 3px;
 }
 .development-badge {
-  border: 1px solid #ddaf5d;
+  border: 1px solid var(--color-border-accent);
   border-radius: 999px;
   padding: 0.5rem 0.8rem;
-  color: #f1ce8d;
+  color: var(--color-accent-primary);
 }
 .development-publish {
   margin-top: 1.25rem;
   padding-top: 1.25rem;
-  border-top: 1px dashed rgba(222, 184, 104, 0.4);
+  border-top: 1px dashed var(--color-border-accent);
 }
 .vision-version-history article {
   display: grid;
@@ -672,59 +673,59 @@
 .vision-version-history code {
   overflow-wrap: anywhere;
   font-size: 0.75rem;
-  color: #c4d6d6;
+  color: var(--color-text-secondary);
 }
 .vision-scan-control {
   width: min(40rem, 100%);
   display: grid;
   gap: 0.75rem;
   text-align: left;
-  border: 1px solid rgba(222, 184, 104, 0.35);
+  border: 1px solid var(--color-border-muted);
   border-radius: 1.2rem;
   padding: 1.25rem;
-  color: #f7e8c1;
-  background: rgba(5, 31, 40, 0.88);
+  color: var(--color-text-primary);
+  background: color-mix(in srgb, var(--color-background-elevated) 88%, transparent);
 }
 .vision-scan-control .eyebrow {
-  color: #f0c96b;
+  color: var(--color-accent-primary);
 }
 .vision-scan-control h2 {
   margin: 0;
-  color: #fff4d6;
+  color: var(--color-text-primary);
 }
 .vision-scan-control > p {
-  color: #dce9e4;
+  color: var(--color-text-secondary);
 }
 .vision-scenario {
-  color: #f7e8c1;
+  color: var(--color-text-primary);
 }
 .vision-scenario select {
   width: 100%;
-  border: 1px solid rgba(222, 184, 104, 0.55);
+  border: 1px solid var(--color-border-accent);
   border-radius: 0.65rem;
   padding: 0.8rem;
-  color: #fff4d6;
-  background: #103946;
+  color: var(--color-text-primary);
+  background: var(--color-background-surface);
 }
 .vision-hold-button {
   --scan-progress: 0%;
   position: relative;
   overflow: hidden;
   min-height: 4rem;
-  border: 2px solid #d8b66a;
+  border: 2px solid var(--color-border-accent);
   border-radius: 999px;
-  color: #f7e8c1;
+  color: var(--color-text-primary);
   background: linear-gradient(
     90deg,
-    rgba(176, 119, 47, 0.75) var(--scan-progress),
-    rgba(18, 59, 69, 0.9) var(--scan-progress)
+    color-mix(in srgb, var(--color-accent-primary) 75%, transparent) var(--scan-progress),
+    color-mix(in srgb, var(--color-water) 90%, transparent) var(--scan-progress)
   );
   font-weight: 700;
   cursor: pointer;
   touch-action: none;
 }
 .vision-hold-button:focus-visible {
-  outline: 3px solid #fff;
+  outline: 3px solid var(--focus-color);
   outline-offset: 3px;
 }
 .vision-hold-button:disabled {
@@ -734,10 +735,10 @@
 .vision-runtime-notice,
 .vision-pairing,
 .vision-target-picker {
-  border: 1px solid rgba(222, 184, 104, 0.28);
+  border: 1px solid var(--color-border-muted);
   border-radius: 0.85rem;
   padding: 0.9rem;
-  background: rgba(8, 44, 54, 0.72);
+  background: color-mix(in srgb, var(--color-background-elevated) 72%, transparent);
 }
 .vision-pairing,
 .vision-pairing > div,
@@ -748,11 +749,11 @@
 .vision-pairing input,
 .vision-captain-actions select {
   width: 100%;
-  border: 1px solid rgba(222, 184, 104, 0.55);
+  border: 1px solid var(--color-border-accent);
   border-radius: 0.55rem;
   padding: 0.65rem;
-  color: #fff4d6;
-  background: #103946;
+  color: var(--color-text-primary);
+  background: var(--color-background-surface);
 }
 .vision-target-picker ul {
   display: grid;
@@ -763,7 +764,7 @@
 }
 .vision-cancel-button {
   justify-self: center;
-  color: #f7e8c1;
+  color: var(--color-text-primary);
   text-decoration: underline;
   background: transparent;
   border: 0;
@@ -791,7 +792,7 @@
   list-style: none;
 }
 .vision-attempt-list > li {
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  border: 1px solid var(--color-border-muted);
   border-radius: 0.75rem;
   padding: 1rem;
 }
@@ -801,7 +802,7 @@
   gap: 1rem;
 }
 .diagnostic-guardrail {
-  color: #a8db9d;
+  color: var(--color-success);
 }
 .vision-captain-actions {
   display: grid !important;
@@ -825,17 +826,17 @@
   justify-content: center;
   gap: 1rem;
   padding: 0.7rem 1rem;
-  color: #fff4d6;
-  background: #593526;
-  border-bottom: 1px solid #e7bd72;
+  color: var(--color-text-primary);
+  background: color-mix(in srgb, var(--color-warning) 22%, var(--color-background-elevated));
+  border-bottom: 1px solid var(--color-warning);
 }
 .offline-page {
   min-height: 100vh;
   display: grid;
   place-items: center;
   padding: 2rem;
-  color: #eadfc4;
-  background: #071b25;
+  color: var(--color-text-primary);
+  background: var(--color-background-deep);
 }
 .offline-page section {
   max-width: 42rem;

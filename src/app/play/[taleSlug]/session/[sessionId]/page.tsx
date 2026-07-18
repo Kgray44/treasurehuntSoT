@@ -1,5 +1,8 @@
-import { TallTaleJournalSession } from "@/components/player/journal/TallTaleJournalSession";
+import { redirect } from "next/navigation";
+
 export const dynamic = "force-dynamic";
-export default async function SessionPage({ params }: { params: Promise<{ sessionId: string }> }) {
-  return <TallTaleJournalSession sessionId={(await params).sessionId} />;
+
+export default async function SessionPage({ params }: { params: Promise<{ taleSlug: string; sessionId: string }> }) {
+  const { taleSlug, sessionId } = await params;
+  redirect(`/play/${encodeURIComponent(taleSlug)}/session/${encodeURIComponent(sessionId)}/chapters`);
 }

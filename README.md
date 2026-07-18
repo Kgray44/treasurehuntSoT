@@ -4,7 +4,7 @@ Production-oriented foundation and fully automated local demo for a private naut
 
 ## Current phase
 
-The application is now a unified Tall Tale platform. The cinematic gateway opens distinct Player, Captain, and Creator workspaces without treating role choice as authorization. Phase B-1 adds persisted, immutable-versioned Vision Waypoints, a strict protocol, platform adapters, an installable PWA shell, and a restricted Electron Windows shell without creating separate Player, Captain, or Studio applications. The authorized B-1 verifier is explicitly deterministic development-only: it does not capture a camera, inspect the game, or perform real vision inference.
+The application is now a unified Tall Tale platform. The cinematic gateway opens distinct Player, Captain, and Creator workspaces without treating role choice as authorization. Active and completed voyages share routed Chapters, Map, Artifacts, and Messages pages around the preserved physical book. Verdant Depths is the semantic default theme and Moonlit Blue is a persisted application option; individual Tall Tales may inherit or override that preference. Phase B-1 adds persisted, immutable-versioned Vision Waypoints, a strict protocol, platform adapters, an installable PWA shell, and a restricted Electron Windows shell without creating separate Player, Captain, or Studio applications. The authorized B-1 verifier is explicitly deterministic development-only: it does not capture a camera, inspect the game, or perform real vision inference.
 
 The original companion and expanded Game Master Command Center remain integrated compatibility surfaces. A shared animation director coordinates the harbor, journal, chart, artifact, gateway, and finale experiences without allowing presentation timing to outrun server truth. All committed content remains fictional development seed material.
 
@@ -30,6 +30,8 @@ npm run dev:full
 ```
 
 The launcher creates an ignored `.env` when absent, installs the exact lockfile, generates Prisma, applies migrations, creates generic development data only when the voyage is missing, starts the app, checks health, and prints the URLs and credentials. Existing campaign progress is preserved across normal stop/start cycles. Network/UNC workspaces are mirrored to an ignored local runtime under `%LOCALAPPDATA%` because Node and SQLite are unreliable on network shares. Stop it with `npm run dev:stop`.
+
+Port 3000 is strict and canonical. If another process owns it, startup reports the conflict and stops; it never falls back to 3001, 3101, 3106, or another hidden application version.
 
 - Role gateway: `http://127.0.0.1:3000/`
 - Player: `http://127.0.0.1:3000/tale/development-forever-treasure`

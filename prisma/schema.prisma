@@ -76,6 +76,7 @@ model GameMasterUser {
   passwordHash            String
   role                    String                              @default("CAPTAIN_CREATOR")
   capabilities            String                              @default("[]") @db.LongText
+  preferences             String                              @default("{}") @db.VarChar(191)
   createdAt               DateTime                            @default(now())
   sessions                GameMasterSession[]
   auditLogs               AdminAuditLog[]

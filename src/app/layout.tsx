@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { AnimationProvider } from "@/animation/director/AnimationProvider";
 import { PwaRegistration } from "@/components/pwa/PwaRegistration";
 import { ProductShell } from "@/components/shell/ProductShell";
+import { ThemeProvider } from "@/components/theme/ThemeProvider";
 import "./globals.css";
 import "../styles/tokens.css";
 import "../styles/shell.css";
@@ -39,9 +40,11 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     <html lang="en" data-scroll-behavior="smooth">
       <body>
         <PwaRegistration />
-        <AnimationProvider>
-          <ProductShell>{children}</ProductShell>
-        </AnimationProvider>
+        <ThemeProvider>
+          <AnimationProvider>
+            <ProductShell>{children}</ProductShell>
+          </AnimationProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

@@ -1398,6 +1398,24 @@ export function TaleEditor({
                 <option value="PUBLIC">Public</option>
               </select>
             </label>
+            <label>
+              <span>Experience theme</span>
+              <select
+                value={draft.tale.theme}
+                onChange={(event) =>
+                  change((next) => {
+                    next.tale.theme = event.target.value;
+                  })
+                }
+              >
+                <option value="APPLICATION">Use application preference</option>
+                <option value="VERDANT_DEPTHS">Verdant Depths</option>
+                <option value="MOONLIT_BLUE">Moonlit Blue</option>
+                {!["APPLICATION", "VERDANT_DEPTHS", "MOONLIT_BLUE"].includes(draft.tale.theme) && (
+                  <option value={draft.tale.theme}>Legacy: {draft.tale.theme.replaceAll("_", " ")}</option>
+                )}
+              </select>
+            </label>
             <label className="wide">
               <span>Short description</span>
               <textarea

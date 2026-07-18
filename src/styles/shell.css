@@ -136,12 +136,47 @@
   scroll-margin-top: calc(var(--shell-header-height) + 1rem);
 }
 
+.product-breadcrumbs {
+  width: min(var(--content-wide), calc(100% - clamp(1.5rem, 5vw, 5rem)));
+  margin: 0.75rem auto 0;
+  color: var(--color-text-muted);
+  font-size: 0.86rem;
+}
+
+.product-breadcrumbs ol {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.product-breadcrumbs li:not(:last-child)::after {
+  margin-left: 0.35rem;
+  color: var(--color-border-accent);
+  content: "/";
+}
+
+.product-breadcrumbs a {
+  color: var(--color-text-secondary);
+}
+
+.product-breadcrumbs [aria-current="page"] {
+  color: var(--color-text-primary);
+}
+
 .product-shell-content:focus {
   outline: none;
 }
 
-.product-shell-content > main {
+.product-route-transition,
+.product-route-transition > main {
   min-height: calc(100svh - var(--shell-header-height) - var(--shell-footer-height));
+}
+.product-route-transition {
+  width: 100%;
+  outline: none;
 }
 
 .product-footer {
@@ -230,7 +265,8 @@
     min-height: calc(100svh - var(--shell-header-height-compact));
   }
 
-  .product-shell-content > main {
+  .product-route-transition,
+  .product-route-transition > main {
     min-height: calc(100svh - var(--shell-header-height-compact));
   }
 
@@ -253,5 +289,115 @@
 @media (prefers-reduced-motion: reduce) {
   .skip-link {
     transition: none;
+  }
+}
+
+.theme-settings-page {
+  width: min(1080px, calc(100% - 2rem));
+  margin: 0 auto;
+  padding: clamp(2rem, 7vw, 5rem) 0;
+}
+.theme-settings-page > header {
+  max-width: 760px;
+}
+.theme-settings-page > header h1 {
+  margin-bottom: 0.7rem;
+  font-size: clamp(2.4rem, 6vw, 5rem);
+}
+.theme-settings-page > header > p:last-child {
+  color: var(--text-secondary);
+  line-height: 1.65;
+}
+.theme-settings-page fieldset {
+  margin: 2rem 0 0;
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-large);
+  padding: clamp(1rem, 3vw, 1.5rem);
+  background: var(--surface-default);
+}
+.theme-settings-page legend {
+  padding: 0 0.55rem;
+  color: var(--accent-hover);
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+}
+.theme-option-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+.theme-option {
+  display: grid;
+  position: relative;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 0.35rem 0.8rem;
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-medium);
+  padding: 1rem;
+  background: var(--surface-raised);
+  cursor: pointer;
+}
+.theme-option:has(input:checked) {
+  border-color: var(--accent-hover);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent-primary) 28%, transparent);
+}
+.theme-option input {
+  align-self: center;
+  grid-row: 1 / span 3;
+}
+.theme-option strong {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+}
+.theme-option small {
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+.theme-swatch {
+  display: grid;
+  height: 92px;
+  grid-column: 2;
+  grid-template-columns: 1fr 0.8fr 0.6fr;
+  overflow: hidden;
+  margin-bottom: 0.45rem;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: var(--radius-small);
+}
+.theme-verdant-depths .theme-swatch {
+  background: linear-gradient(145deg, #020b09, #0b2821);
+}
+.theme-moonlit-blue .theme-swatch {
+  background: linear-gradient(145deg, #020711, #102a44);
+}
+.theme-swatch i:nth-child(2) {
+  align-self: end;
+  height: 68%;
+  background: #c9a95f;
+}
+.theme-moonlit-blue .theme-swatch i:nth-child(2) {
+  background: #8bb9d0;
+}
+.theme-swatch i:nth-child(3) {
+  align-self: end;
+  height: 42%;
+  background: #eadbb7;
+}
+.theme-setting-status {
+  margin-top: 1rem;
+  border-left: 3px solid var(--state-info);
+  padding: 0.75rem 0.9rem;
+  color: var(--text-secondary);
+  background: var(--surface-raised);
+}
+.theme-setting-status.status-saved {
+  border-color: var(--state-success);
+}
+.theme-setting-status.status-error {
+  border-color: var(--state-danger);
+}
+
+@media (max-width: 680px) {
+  .theme-option-grid {
+    grid-template-columns: 1fr;
   }
 }

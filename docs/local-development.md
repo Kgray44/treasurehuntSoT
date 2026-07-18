@@ -1,5 +1,7 @@
 # Local development
 
+`src/app/layout.tsx` is the canonical frontend entry point. All Player, Captain, Creator, Vision, settings, and Experience routes are part of this Next.js application; alternate themes are token sets, not separate frontends. The canonical local origin is `http://127.0.0.1:3000`.
+
 ## One-command Windows startup
 
 Double-click `Start Forever Treasure Dev.cmd` or run `npm run dev:full`. The idempotent launcher:
@@ -13,6 +15,8 @@ Double-click `Start Forever Treasure Dev.cmd` or run `npm run dev:full`. The ide
 7. Prints the player and GM URLs, disposable credentials, and stop command.
 
 Run `npm run dev:stop` before switching branches or replacing the runtime. Shutdown verifies the recorded PID is the expected Next.js development process before stopping it.
+
+The recorded-state fast path also verifies runtime root, canonical port, and socket ownership. A stale PID or a listener from another checkout therefore produces a diagnostic instead of a false “already running” result. Visual experiments must be developed as semantic themes or feature branches and merged back into this entry point; ports 3101 and 3106 are deprecated historical worktree choices, not supported runtimes.
 
 ## URLs and credentials
 
@@ -67,7 +71,7 @@ An authorized session on another computer needs only Git, Node/npm, and this rep
 
 ## Troubleshooting
 
-- **Port 3000 is occupied:** stop that process or run `scripts/start-dev.ps1 -Port 3001`. The launcher never kills an unknown listener.
+- **Port 3000 is occupied:** identify and stop the verified owning application, then rerun the launcher. Startup fails clearly and never selects port 3001, 3101, 3106, or another fallback; it also never kills an unknown listener.
 - **Existing `.env` is incomplete:** the launcher preserves it and identifies each missing key. Add the key; it will not overwrite local secrets.
 - **Startup fails:** inspect `%LOCALAPPDATA%\ForeverTreasureCompanion\development\.forever\logs`.
 - **Resetting disposable data is explicit:** `npm run db:preset -- awaiting-first-release` intentionally replaces the development fixture. Normal `npm run dev:stop` / `npm run dev:full` cycles preserve it. For validation, `npm run validate` always rebuilds `validation.db` from migrations.

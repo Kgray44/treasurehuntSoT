@@ -20,8 +20,8 @@ if (Test-Path -LiteralPath $validationArtifacts) {
 $node = Get-ForeverNode
 $nodeDirectory = Split-Path $node
 $env:PATH = "$nodeDirectory;$env:PATH"
-if (-not $env:PLAYWRIGHT_BASE_URL) { $env:PLAYWRIGHT_BASE_URL = "http://127.0.0.1:3100" }
-$productionPort = if ($env:FOREVER_VALIDATION_PRODUCTION_PORT) { [int]$env:FOREVER_VALIDATION_PRODUCTION_PORT } else { 3200 }
+if (-not $env:PLAYWRIGHT_BASE_URL) { $env:PLAYWRIGHT_BASE_URL = "http://127.0.0.1:3000" }
+$productionPort = if ($env:FOREVER_VALIDATION_PRODUCTION_PORT) { [int]$env:FOREVER_VALIDATION_PRODUCTION_PORT } else { 3000 }
 if (-not $env:GM_USERNAME) { $env:GM_USERNAME = "kato" }
 if (-not $env:GM_PASSWORD) { $env:GM_PASSWORD = "development-captain-only" }
 if (-not $env:PLAYER_ACCESS_CODE) { $env:PLAYER_ACCESS_CODE = "development-moonwake" }

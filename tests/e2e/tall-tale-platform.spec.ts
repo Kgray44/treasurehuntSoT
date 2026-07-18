@@ -166,13 +166,22 @@ test("Captain invitation, immutable version, Player runtime, archive, and revoca
   expect(activeState.block.blockType).toBe("narrative");
   expect(activeState.journal).toMatchObject({ mode: "active", currentBlockId: activeState.block.id });
   expect(JSON.stringify(activeState.journal)).not.toMatch(/acceptedAnswers|captainInstruction|creatorNotes/);
-  await expect(playerPage).toHaveURL(new RegExp(`/player/playthroughs/${created.playthroughId}/journal$`), {
+  await expect(playerPage).toHaveURL(new RegExp(`/player/playthroughs/${created.playthroughId}/journal/chapters$`), {
     timeout: 20_000,
   });
   await expect(playerPage.getByRole("button", { name: "Open the journal" })).toBeVisible();
   await playerPage.getByRole("button", { name: "Open the journal" }).click();
   await playerPage.getByRole("button", { name: "Skip ceremony" }).click();
   await expect(playerPage.getByRole("heading", { name: "1.0 Voyage Journal" })).toBeVisible();
+  await expect(playerPage.locator(".main-journal-book")).toBeVisible();
+  const experienceTabs = playerPage.getByRole("tablist", { name: "Voyage sections" });
+  await expect(experienceTabs.getByRole("tab", { name: /Chapters/ })).toHaveAttribute("aria-selected", "true");
+  await experienceTabs.getByRole("tab", { name: /Map/ }).click();
+  await expect(playerPage).toHaveURL(new RegExp(`/player/playthroughs/${created.playthroughId}/journal/map$`));
+  await expect(playerPage.getByRole("tabpanel", { name: "Map content" })).toBeVisible();
+  await expect(playerPage.getByRole("heading", { name: "Map" })).toBeVisible();
+  await experienceTabs.getByRole("tab", { name: /Chapters/ }).click();
+  await expect(playerPage).toHaveURL(new RegExp(`/player/playthroughs/${created.playthroughId}/journal/chapters$`));
   await expect(playerPage.locator(".main-journal-book")).toBeVisible();
   const withoutCsrf = await playerContext.request.post(playerUrl(`/api/play/sessions/${created.playthroughId}`), {
     data: { action: "continue", idempotencyKey: unique("csrf-denied") },
@@ -292,9 +301,12 @@ test("Captain invitation, immutable version, Player runtime, archive, and revoca
 
   await playerPage.goto(playerUrl("/player/library"));
   const completedJournalLink = playerPage.getByRole("link", { name: "Open Completed Journal" });
-  await expect(completedJournalLink).toHaveAttribute("href", `/player/playthroughs/${created.playthroughId}/journal`);
+  await expect(completedJournalLink).toHaveAttribute(
+    "href",
+    `/player/playthroughs/${created.playthroughId}/journal/chapters`,
+  );
   await completedJournalLink.click();
-  await expect(playerPage).toHaveURL(new RegExp(`/player/playthroughs/${created.playthroughId}/journal$`));
+  await expect(playerPage).toHaveURL(new RegExp(`/player/playthroughs/${created.playthroughId}/journal/chapters$`));
   await expect(playerPage.locator(".tall-tale-journal-shell.mode-historical")).toBeVisible();
   await expect(playerPage.getByText(/Read-only · edition checksum/)).toBeVisible();
 

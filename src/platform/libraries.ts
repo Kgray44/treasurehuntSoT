@@ -116,9 +116,9 @@ function cardOf(membership: PlayerMembership, captainName?: string) {
     paused: playthrough.status === "PAUSED",
     primaryHref:
       state === "COMPLETED"
-        ? `/player/playthroughs/${playthrough.id}/journal`
+        ? `/player/playthroughs/${playthrough.id}/journal/chapters`
         : state === "IN_PROGRESS"
-          ? `/player/playthroughs/${playthrough.id}/journal`
+          ? `/player/playthroughs/${playthrough.id}/journal/chapters`
           : `/player/playthroughs/${playthrough.id}`,
     primaryLabel:
       state === "INVITATIONS"
@@ -225,7 +225,7 @@ export async function getPlayerPlaythrough(playerId: string, playthroughId: stri
     connection: { state: "POLLING", lastServerConfirmation: playthrough.updatedAt.toISOString() },
     canEnter: ["ACTIVE", "PAUSED"].includes(playthrough.status),
     runtimeHref: ["ACTIVE", "PAUSED"].includes(playthrough.status)
-      ? `/player/playthroughs/${playthrough.id}/journal`
+      ? `/player/playthroughs/${playthrough.id}/journal/chapters`
       : null,
   };
 }
@@ -319,6 +319,13 @@ export async function getPlayerJournalReadingState(playerId: string, playthrough
     openDrawer: ["chapters", "map", "artifacts", "messages"].includes(stored.openDrawer ?? "")
       ? stored.openDrawer!
       : null,
+    mapSelectedId: typeof stored.mapSelectedId === "string" ? stored.mapSelectedId : null,
+    mapZoom: Math.min(2, Math.max(0.75, Number(stored.mapZoom ?? 1))),
+    artifactSelectedId: typeof stored.artifactSelectedId === "string" ? stored.artifactSelectedId : null,
+    messageSelectedId: typeof stored.messageSelectedId === "string" ? stored.messageSelectedId : null,
+    readMessageIds: Array.isArray(stored.readMessageIds)
+      ? stored.readMessageIds.filter((value): value is string => typeof value === "string").slice(0, 500)
+      : [],
     hasOpened: Boolean(stored.hasOpened),
     lastEventSequence: Math.max(0, Number(stored.lastEventSequence ?? 0)),
     textScale: Math.min(1.5, Math.max(0.85, Number(stored.textScale ?? 1))),

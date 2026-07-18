@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { blockTypeIds } from "@/tall-tale/block-registry";
 import {
+  emptyJournalReadingState,
   journalContentKinds,
   journalKindForBlock,
   parseJournalPresentation,
@@ -82,6 +83,17 @@ describe("Tall Tale journal contract", () => {
     expect(parseJournalPresentation({ spreadMode: "invalid" }, "cinematic")).toMatchObject({
       spreadMode: "cinematic",
       pageTemplate: "cinematic",
+    });
+  });
+
+  it("starts routed section state with stable, privacy-safe defaults", () => {
+    expect(emptyJournalReadingState).toMatchObject({
+      pageId: null,
+      mapSelectedId: null,
+      mapZoom: 1,
+      artifactSelectedId: null,
+      messageSelectedId: null,
+      readMessageIds: [],
     });
   });
 });

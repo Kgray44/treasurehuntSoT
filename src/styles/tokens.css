@@ -69,6 +69,80 @@
   --z-skip-link: 200;
   --player-text-scale: 1;
   --texture-opacity: 1;
+  --color-background-deep: var(--background-primary);
+  --color-background-surface: var(--surface-default);
+  --color-background-elevated: var(--surface-raised);
+  --color-border-muted: var(--border-subtle);
+  --color-border-accent: var(--border-emphasis);
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-muted: var(--text-muted);
+  --color-accent-primary: var(--accent-primary);
+  --color-accent-secondary: var(--moon-300);
+  --color-success: var(--state-success);
+  --color-warning: var(--state-warning);
+  --color-danger: var(--state-danger);
+  --color-parchment: var(--parchment-100);
+  --color-parchment-shadow: rgba(25, 18, 8, 0.32);
+  --color-brass: var(--brass-300);
+  --color-glow: rgba(81, 177, 146, 0.24);
+  --color-water: #0b3434;
+  --color-fog: rgba(157, 216, 208, 0.16);
+  --color-navigation-active: var(--brass-100);
+  --color-navigation-hover: rgba(240, 213, 148, 0.14);
+}
+
+:root,
+[data-theme="verdant-depths"] {
+  --background-primary: #020b09;
+  --background-secondary: #061612;
+  --surface-default: #071b17;
+  --surface-raised: #0b2821;
+  --surface-overlay: #081f1a;
+  --surface-hover: rgba(87, 190, 145, 0.09);
+  --text-primary: #f5eddc;
+  --text-secondary: #c7d1c7;
+  --text-muted: #91a79b;
+  --border-subtle: rgba(205, 174, 101, 0.2);
+  --border-default: rgba(205, 174, 101, 0.34);
+  --border-emphasis: rgba(240, 213, 148, 0.6);
+  --accent-primary: #c9a95f;
+  --accent-hover: #f0d594;
+  --focus-color: #8bd5b5;
+  --color-glow: rgba(61, 171, 126, 0.24);
+  --color-water: #0a332c;
+  --color-fog: rgba(153, 205, 184, 0.15);
+}
+
+[data-theme="moonlit-blue"] {
+  --ocean-950: #020711;
+  --ocean-900: #061020;
+  --ocean-850: #0a1b31;
+  --ocean-800: #102a44;
+  --ocean-700: #1d4667;
+  --ocean-500: #39779d;
+  --moon-300: #91cde8;
+  --moon-100: #dceefa;
+  --background-primary: #020711;
+  --background-secondary: #061020;
+  --surface-default: #08172a;
+  --surface-raised: #0d243b;
+  --surface-overlay: #0a1c31;
+  --surface-hover: rgba(91, 179, 220, 0.11);
+  --text-primary: #f1f0e9;
+  --text-secondary: #c5d4df;
+  --text-muted: #8fa9bb;
+  --border-subtle: rgba(149, 189, 213, 0.2);
+  --border-default: rgba(149, 189, 213, 0.34);
+  --border-emphasis: rgba(178, 215, 235, 0.62);
+  --accent-primary: #8bb9d0;
+  --accent-hover: #c7e6f5;
+  --focus-color: #8fd8f4;
+  --color-glow: rgba(78, 169, 218, 0.26);
+  --color-water: #092841;
+  --color-fog: rgba(152, 205, 234, 0.17);
+  --color-navigation-active: #d7edf8;
+  --color-navigation-hover: rgba(143, 216, 244, 0.13);
 }
 
 * {

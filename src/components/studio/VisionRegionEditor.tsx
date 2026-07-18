@@ -29,8 +29,8 @@ function Shape({ geometry, opacity = 0.5 }: { geometry: Record<string, unknown> 
         y={`${Number(geometry.y) * 100}%`}
         width={`${Number(geometry.width) * 100}%`}
         height={`${Number(geometry.height) * 100}%`}
-        fill={`rgba(231,199,126,${opacity})`}
-        stroke="#fff2bd"
+        fill={`color-mix(in srgb, var(--color-accent-primary) ${Math.round(opacity * 100)}%, transparent)`}
+        stroke="var(--color-navigation-active)"
         strokeWidth="2"
       />
     );
@@ -38,8 +38,8 @@ function Shape({ geometry, opacity = 0.5 }: { geometry: Record<string, unknown> 
     return (
       <polygon
         points={(geometry.points as Point[]).map((item) => `${item.x * 1000},${item.y * 600}`).join(" ")}
-        fill={`rgba(67,190,181,${opacity})`}
-        stroke="#d6fffa"
+        fill={`color-mix(in srgb, var(--color-accent-secondary) ${Math.round(opacity * 100)}%, transparent)`}
+        stroke="var(--focus-color)"
         strokeWidth="2"
       />
     );
@@ -51,7 +51,7 @@ function Shape({ geometry, opacity = 0.5 }: { geometry: Record<string, unknown> 
             key={index}
             points={stroke.map((item) => `${item.x * 1000},${item.y * 600}`).join(" ")}
             fill="none"
-            stroke={`rgba(231,199,126,${Math.max(0.25, opacity)})`}
+            stroke={`color-mix(in srgb, var(--color-accent-primary) ${Math.round(Math.max(0.25, opacity) * 100)}%, transparent)`}
             strokeWidth={Math.max(2, Number(geometry.radius) * 600)}
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -288,12 +288,12 @@ export function VisionRegionEditor({
         >
           <defs>
             <linearGradient id="region-grid" x1="0" x2="1">
-              <stop offset="0" stopColor="#123844" />
-              <stop offset="1" stopColor="#071b25" />
+              <stop offset="0" stopColor="var(--color-water)" />
+              <stop offset="1" stopColor="var(--color-background-deep)" />
             </linearGradient>
           </defs>
           <rect width="1000" height="600" fill="url(#region-grid)" />
-          <path d="M0 300H1000M500 0V600" stroke="rgba(255,255,255,.12)" strokeDasharray="8 8" />
+          <path d="M0 300H1000M500 0V600" stroke="var(--color-fog)" strokeDasharray="8 8" />
           {visible &&
             regions.map((region) => (
               <Shape

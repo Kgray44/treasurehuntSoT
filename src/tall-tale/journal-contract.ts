@@ -72,6 +72,11 @@ export type PlayerJournalProjection = {
 export type PlayerJournalReadingState = {
   pageId: string | null;
   openDrawer: "chapters" | "map" | "artifacts" | "messages" | null;
+  mapSelectedId: string | null;
+  mapZoom: number;
+  artifactSelectedId: string | null;
+  messageSelectedId: string | null;
+  readMessageIds: string[];
   hasOpened: boolean;
   lastEventSequence: number;
   textScale: number;
@@ -82,6 +87,11 @@ export const journalReadingStateInputSchema = z
   .object({
     pageId: z.string().min(1).max(180).nullable().optional(),
     openDrawer: z.enum(["chapters", "map", "artifacts", "messages"]).nullable().optional(),
+    mapSelectedId: z.string().min(1).max(180).nullable().optional(),
+    mapZoom: z.number().min(0.75).max(2).optional(),
+    artifactSelectedId: z.string().min(1).max(180).nullable().optional(),
+    messageSelectedId: z.string().min(1).max(180).nullable().optional(),
+    readMessageIds: z.array(z.string().min(1).max(180)).max(500).optional(),
     hasOpened: z.boolean().optional(),
     lastEventSequence: z.number().int().min(0).optional(),
     textScale: z.number().min(0.85).max(1.5).optional(),
@@ -181,6 +191,11 @@ export function projectPlayerBlock(block: PublishedBlock, options: { releasedHin
 export const emptyJournalReadingState: PlayerJournalReadingState = {
   pageId: null,
   openDrawer: null,
+  mapSelectedId: null,
+  mapZoom: 1,
+  artifactSelectedId: null,
+  messageSelectedId: null,
+  readMessageIds: [],
   hasOpened: false,
   lastEventSequence: 0,
   textScale: 1,
