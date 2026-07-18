@@ -13,7 +13,7 @@ Major technical limitations are planar relative localization rather than general
 - Starting branch: `codex/phase-b4-verification-runtime`, forked from `codex/phase-b3-studio-authoring`.
 - Starting commit: `7ebce5d7c435ae8e998d5ec8207937de5d70db06`.
 - Final branch: `codex/phase-b4-verification-runtime`.
-- Implementation evidence commit: `PENDING_FINALIZATION` (replace after the implementation commit; later chat/document synchronization may add a scoped follow-up commit).
+- Implementation evidence commit: `b0bfe5e7335f480125d32ea9bac51c0db3f78f18`; later chat/document synchronization may add a scoped follow-up commit.
 - Working tree at evidence capture: implementation and documentation changes present; generated validation output remained outside the repository runtime mirror.
 
 ## Architecture
