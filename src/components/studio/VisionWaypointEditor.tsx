@@ -2,35 +2,28 @@
 
 import Link from "next/link";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { mockVisionScenarios, type MockVisionScenario } from "@/vision/domain";
+import { RecordingReview } from "@/components/studio/RecordingReview";
+import { StudioCapturePanel } from "@/components/studio/StudioCapturePanel";
+import { VisionRegionEditor } from "@/components/studio/VisionRegionEditor";
+import type { AuthoringMutate, StudioAuthoringAggregate } from "@/components/studio/vision-authoring-types";
+import { selectCapturePlatformAdapter } from "@/vision/capture-adapters";
+import { waypointTypes } from "@/vision/domain";
 
-type Configuration = {
-  schemaVersion: 1;
-  waypointType: string;
-  verificationProfile: "BALANCED" | "STRICT" | "STORY_CRITICAL" | "CUSTOM";
-  scanInteraction: { mode: "HOLD" | "TOGGLE"; holdDurationMs: number; progressAnnouncementIntervalMs: number };
-  creatorGuidancePreferences: Record<string, unknown>;
-  captainFallbackPolicy: {
-    enabled: boolean;
-    allowManualApprove: boolean;
-    allowManualReject: boolean;
-    requireReason: boolean;
-  };
-  acceptedPoseConfiguration: Record<string, unknown>;
-  stableRegionConfiguration: Record<string, unknown>;
-  hardNegativeRequirement: Record<string, unknown>;
-  storyPurposeMetadata: Record<string, unknown>;
-  buildPreference: "LOCAL" | "CLOUD_ASSISTED" | "UNDECIDED";
-};
-type Version = {
-  id: string;
-  versionNumber: number;
-  lifecycleStatus: string;
-  draftConfiguration: Configuration;
-  publishedAt: string | null;
-  deprecatedAt: string | null;
-  publication: { packageHash: string; packageSchemaVersion: number; status: string } | null;
-};
+const steps = [
+  "Purpose",
+  "Story Intent",
+  "Companion",
+  "Record Target",
+  "Accepted Player Area",
+  "Boundaries",
+  "Similar Wrong Places",
+  "Important Visual Regions",
+  "Data Health",
+  "Build Preparation",
+  "Test Plan",
+  "Review",
+] as const;
+
 type Waypoint = {
   id: string;
   name: string;
@@ -38,49 +31,492 @@ type Waypoint = {
   type: string;
   sharingScope: string;
   locationTags: string[];
-  archivedAt: string | null;
-  versions: Version[];
+  versions: Array<{
+    id: string;
+    versionNumber: number;
+    lifecycleStatus: string;
+    publishedAt: string | null;
+    deprecatedAt: string | null;
+    publication: { packageHash: string; packageSchemaVersion: number; status: string } | null;
+  }>;
   usage: Array<{ id: string; storyTitle: string; blockTitle: string; waypointVersionId: string }>;
 };
 
+function defaultData(step: number, aggregate: StudioAuthoringAggregate): Record<string, unknown> {
+  const stored =
+    aggregate.authoring.steps[
+      [
+        "purpose",
+        "storyIntent",
+        "companion",
+        "recordTarget",
+        "acceptedArea",
+        "boundaries",
+        "wrongPlaces",
+        "visualRegions",
+        "dataHealth",
+        "buildPreparation",
+        "testPlan",
+        "review",
+      ][step - 1]
+    ];
+  if (stored) return stored;
+  if (step === 1)
+    return {
+      summary: aggregate.waypoint.description || "Recognize this reusable story location.",
+      successDefinition: "The player is inside the accepted area and the durable target detail is visible.",
+      waypointType: aggregate.waypoint.type,
+      verificationProfile: aggregate.version.verificationProfile,
+      buildPreference: "LOCAL",
+    };
+  if (step === 2)
+    return {
+      playerTask: "Find and inspect the described landmark.",
+      narrativeImportance: "This confirms the crew reached the intended story location.",
+      failureConsequence: "Do not advance; offer a retry and Captain fallback.",
+    };
+  if (step === 3) return { privacyAcknowledged: false, selectedPath: "NONE", lastConnectionState: "Not checked" };
+  if (step === 4)
+    return {
+      guidanceNotes: "Circle the target slowly and include stable surrounding context.",
+      coveragePlan: "BALANCED",
+      representativeAssetId: null,
+    };
+  if (step === 5)
+    return {
+      instructions: "Walk the positions from which a player should be accepted.",
+      provisionalAccuracyAcknowledged: false,
+    };
+  if (step === 6)
+    return {
+      instructions: "Mark where acceptance must end and explain why.",
+      reasons: ["The target is no longer clearly visible."],
+    };
+  if (step === 7)
+    return {
+      confusionNotes: "Capture the strongest visually similar wrong places.",
+      storyCriticalRequirementAcknowledged: aggregate.version.verificationProfile !== "STORY_CRITICAL",
+    };
+  if (step === 8)
+    return {
+      targetDescription: "Mark durable target detail and stable context.",
+      ignoreDescription: "Ignore water, sky, players, UI, particles, and transient lighting.",
+    };
+  if (step === 9) return { reviewedAt: null, acknowledgedWarningCodes: [] };
+  if (step === 10) return { executionTarget: "LOCAL", rawMediaConsent: false };
+  if (step === 11)
+    return {
+      notes: "Include a correct view, wrong place, boundary, and environmental variation.",
+      acceptanceNotes: "Locked tests must remain outside tuning decisions.",
+    };
+  return { confirmCaptureConsent: false, confirmNoModelYet: false, confirmLockedTests: false };
+}
+
+function PoseRegionEditor({
+  aggregate,
+  mutate,
+  classification,
+}: {
+  aggregate: StudioAuthoringAggregate;
+  mutate: AuthoringMutate;
+  classification: "ACCEPTED" | "BOUNDARY" | "EXCLUDED";
+}) {
+  const [centerX, setCenterX] = useState(0);
+  const [centerZ, setCenterZ] = useState(0);
+  const [radius, setRadius] = useState(3);
+  const [facing, setFacing] = useState(0);
+  const [tolerance, setTolerance] = useState(90);
+  const [orientationRules, setOrientationRules] = useState("Any comfortable facing is accepted.");
+  const [visibilityRules, setVisibilityRules] = useState("The target must remain clearly visible.");
+  const regions = aggregate.poseRegions.filter((region) => region.classification === classification);
+  return (
+    <section className="pose-editor">
+      <header>
+        <div>
+          <p className="eyebrow">Plain-rule provisional editor</p>
+          <h3>{classification === "ACCEPTED" ? "Accepted player regions" : "Boundary and excluded regions"}</h3>
+        </div>
+        <span>Not surveyed 3D geometry</span>
+      </header>
+      <p>Coordinates are creator-relative planning values. They do not claim game-world localization precision.</p>
+      <div className="pose-input-grid">
+        <label>
+          <span>Center east/west</span>
+          <input type="number" value={centerX} onChange={(event) => setCenterX(Number(event.target.value))} />
+        </label>
+        <label>
+          <span>Center forward/back</span>
+          <input type="number" value={centerZ} onChange={(event) => setCenterZ(Number(event.target.value))} />
+        </label>
+        <label>
+          <span>Radius (creator units)</span>
+          <input type="number" min={0.1} value={radius} onChange={(event) => setRadius(Number(event.target.value))} />
+        </label>
+        <label>
+          <span>Facing degrees</span>
+          <input
+            type="number"
+            min={0}
+            max={360}
+            value={facing}
+            onChange={(event) => setFacing(Number(event.target.value))}
+          />
+        </label>
+        <label>
+          <span>Facing tolerance</span>
+          <input
+            type="number"
+            min={0}
+            max={180}
+            value={tolerance}
+            onChange={(event) => setTolerance(Number(event.target.value))}
+          />
+        </label>
+      </div>
+      <label>
+        <span>Orientation rule</span>
+        <input value={orientationRules} onChange={(event) => setOrientationRules(event.target.value)} />
+      </label>
+      <label>
+        <span>Visibility rule</span>
+        <input value={visibilityRules} onChange={(event) => setVisibilityRules(event.target.value)} />
+      </label>
+      <button
+        type="button"
+        onClick={() =>
+          void mutate({
+            operation: "UPSERT_POSE_REGION",
+            classification,
+            parameters: { centerX, centerZ, radius, facingDegrees: facing, toleranceDegrees: tolerance },
+            orientationRules,
+            visibilityRules,
+          })
+        }
+      >
+        Add {classification.toLocaleLowerCase()} region
+      </button>
+      <ul className="authoring-record-list">
+        {regions.map((region) => (
+          <li key={region.id}>
+            <span>
+              {String(region.parameters.radius)} unit radius at {String(region.parameters.centerX)},{" "}
+              {String(region.parameters.centerZ)}
+            </span>
+            <button type="button" onClick={() => void mutate({ operation: "DELETE_POSE_REGION", id: region.id })}>
+              Remove
+            </button>
+          </li>
+        ))}
+      </ul>
+    </section>
+  );
+}
+
+function HardNegativeEditor({ aggregate, mutate }: { aggregate: StudioAuthoringAggregate; mutate: AuthoringMutate }) {
+  const assets = aggregate.assets.filter((asset) => !asset.deletedAt && asset.isUsable);
+  const [name, setName] = useState("Nearby look-alike");
+  const [classification, setClassification] = useState("NEARBY");
+  const [reason, setReason] = useState("Similar silhouette, but the surrounding structure is different.");
+  const [assetId, setAssetId] = useState(assets[0]?.id ?? "");
+  return (
+    <section className="negative-editor">
+      <h3>Wrong-place profiles</h3>
+      <div className="form-grid">
+        <label>
+          <span>Name</span>
+          <input value={name} onChange={(event) => setName(event.target.value)} />
+        </label>
+        <label>
+          <span>Kind</span>
+          <select value={classification} onChange={(event) => setClassification(event.target.value)}>
+            <option value="NEARBY">Nearby confuser</option>
+            <option value="DISTANT">Distant confuser</option>
+            <option value="INVALID_POSE">Invalid pose</option>
+          </select>
+        </label>
+      </div>
+      <label>
+        <span>Why a player could confuse it</span>
+        <textarea rows={3} value={reason} onChange={(event) => setReason(event.target.value)} />
+      </label>
+      <label>
+        <span>Evidence recording</span>
+        <select value={assetId} onChange={(event) => setAssetId(event.target.value)}>
+          <option value="">Select recording</option>
+          {assets.map((asset) => (
+            <option key={asset.id} value={asset.id}>
+              {asset.label ?? asset.id}
+            </option>
+          ))}
+        </select>
+      </label>
+      <button
+        type="button"
+        disabled={!assetId}
+        onClick={() =>
+          void mutate({ operation: "UPSERT_HARD_NEGATIVE", name, classification, reason, assetIds: [assetId] })
+        }
+      >
+        Add wrong-place profile
+      </button>
+      <ul className="authoring-record-list">
+        {aggregate.hardNegatives.map((negative) => (
+          <li key={negative.id}>
+            <span>
+              <strong>{negative.name}</strong> · {negative.classification.toLocaleLowerCase()}
+              <small>{String(negative.metadata.reason ?? "")}</small>
+            </span>
+            <button type="button" onClick={() => void mutate({ operation: "DELETE_HARD_NEGATIVE", id: negative.id })}>
+              Remove
+            </button>
+          </li>
+        ))}
+      </ul>
+    </section>
+  );
+}
+
+function TestCaseEditor({ aggregate, mutate }: { aggregate: StudioAuthoringAggregate; mutate: AuthoringMutate }) {
+  const assets = aggregate.assets.filter((asset) => !asset.deletedAt && asset.isUsable);
+  const [name, setName] = useState("Correct target from accepted area");
+  const [testType, setTestType] = useState("POSITIVE");
+  const [expectedResult, setExpectedResult] = useState("MATCH");
+  const [instructions, setInstructions] = useState("Use this evidence without changing authoring decisions.");
+  const [environment, setEnvironment] = useState("Daylight, ordinary weather, UI excluded.");
+  const [assetId, setAssetId] = useState(assets[0]?.id ?? "");
+  return (
+    <section className="test-editor">
+      <h3>Authored test cases</h3>
+      <div className="form-grid">
+        <label>
+          <span>Name</span>
+          <input value={name} onChange={(event) => setName(event.target.value)} />
+        </label>
+        <label>
+          <span>Test type</span>
+          <select value={testType} onChange={(event) => setTestType(event.target.value)}>
+            <option>POSITIVE</option>
+            <option>NEGATIVE</option>
+            <option>BOUNDARY</option>
+            <option>ENVIRONMENT</option>
+          </select>
+        </label>
+        <label>
+          <span>Expected</span>
+          <select value={expectedResult} onChange={(event) => setExpectedResult(event.target.value)}>
+            <option>MATCH</option>
+            <option>NO_MATCH</option>
+            <option>INSUFFICIENT</option>
+          </select>
+        </label>
+      </div>
+      <label>
+        <span>Instructions</span>
+        <textarea rows={3} value={instructions} onChange={(event) => setInstructions(event.target.value)} />
+      </label>
+      <label>
+        <span>Environment</span>
+        <input value={environment} onChange={(event) => setEnvironment(event.target.value)} />
+      </label>
+      <label>
+        <span>Evidence</span>
+        <select value={assetId} onChange={(event) => setAssetId(event.target.value)}>
+          <option value="">Select recording</option>
+          {assets.map((asset) => (
+            <option key={asset.id} value={asset.id}>
+              {asset.label ?? asset.id}
+            </option>
+          ))}
+        </select>
+      </label>
+      <button
+        type="button"
+        disabled={!assetId}
+        onClick={() =>
+          void mutate({
+            operation: "UPSERT_TEST",
+            name,
+            testType,
+            expectedResult,
+            instructions,
+            assetIds: [assetId],
+            environment,
+          })
+        }
+      >
+        Add test case
+      </button>
+      <ul className="authoring-record-list">
+        {aggregate.tests.map((test) => (
+          <li key={test.id}>
+            <span>
+              <strong>{test.name}</strong> · {test.testType.toLocaleLowerCase()} →{" "}
+              {test.expectedResult.toLocaleLowerCase()}
+              <small>{test.lockedAt ? "Locked away from authoring" : "Editable validation evidence"}</small>
+            </span>
+            <div>
+              {!test.lockedAt && (
+                <button type="button" onClick={() => void mutate({ operation: "LOCK_TEST", id: test.id })}>
+                  Lock test
+                </button>
+              )}
+              {!test.lockedAt && (
+                <button type="button" onClick={() => void mutate({ operation: "DELETE_TEST", id: test.id })}>
+                  Remove
+                </button>
+              )}
+            </div>
+          </li>
+        ))}
+      </ul>
+    </section>
+  );
+}
+
 export function VisionWaypointEditor({ waypointId, authenticated }: { waypointId: string; authenticated: boolean }) {
+  const adapter = useMemo(() => selectCapturePlatformAdapter(), []);
   const [waypoint, setWaypoint] = useState<Waypoint | null>(null);
+  const [aggregate, setAggregate] = useState<StudioAuthoringAggregate | null>(null);
   const [csrf, setCsrf] = useState("");
-  const [configuration, setConfiguration] = useState<Configuration | null>(null);
-  const [scenario, setScenario] = useState<MockVisionScenario>("verified");
-  const [message, setMessage] = useState("");
+  const [form, setForm] = useState<Record<string, unknown>>({});
   const [busy, setBusy] = useState(false);
+  const [dirty, setDirty] = useState(false);
+  const [autoSaving, setAutoSaving] = useState(false);
+  const [message, setMessage] = useState("");
+
   const load = useCallback(async () => {
     const response = await fetch(`/api/vision-waypoints/${waypointId}`, { cache: "no-store" });
     const body = (await response.json()) as { waypoint?: Waypoint; csrfToken?: string; error?: string };
-    if (!response.ok) return setMessage(body.error ?? "The waypoint could not be opened.");
-    setWaypoint(body.waypoint ?? null);
+    if (!response.ok || !body.waypoint) throw new Error(body.error ?? "The waypoint could not be opened.");
+    setWaypoint(body.waypoint);
     setCsrf(body.csrfToken ?? "");
-    const draft = body.waypoint?.versions.find(
-      (version) => version.lifecycleStatus === "DRAFT" && !version.publishedAt,
-    );
-    setConfiguration(draft?.draftConfiguration ?? null);
+    const draft =
+      body.waypoint.versions.find((version) => version.lifecycleStatus === "DRAFT" && !version.publishedAt) ??
+      body.waypoint.versions.find((version) => version.lifecycleStatus === "READY_TO_BUILD" && !version.publishedAt);
+    if (!draft) return setAggregate(null);
+    const authoringResponse = await fetch(`/api/vision-waypoint-versions/${draft.id}/authoring`, { cache: "no-store" });
+    const authoringBody = (await authoringResponse.json()) as {
+      authoring?: StudioAuthoringAggregate;
+      csrfToken?: string;
+      error?: string;
+    };
+    if (!authoringResponse.ok || !authoringBody.authoring)
+      throw new Error(authoringBody.error ?? "Authoring data could not be opened.");
+    setAggregate(authoringBody.authoring);
+    setCsrf(authoringBody.csrfToken ?? body.csrfToken ?? "");
+    setForm(defaultData(authoringBody.authoring.version.currentWizardStep, authoringBody.authoring));
   }, [waypointId]);
+
   useEffect(() => {
-    if (authenticated) queueMicrotask(() => void load());
+    if (authenticated)
+      queueMicrotask(
+        () =>
+          void load().catch((cause) => setMessage(cause instanceof Error ? cause.message : "Waypoint unavailable.")),
+      );
   }, [authenticated, load]);
-  const draft = useMemo(
-    () => waypoint?.versions.find((version) => version.lifecycleStatus === "DRAFT" && !version.publishedAt) ?? null,
-    [waypoint],
+
+  const mutate: AuthoringMutate = useCallback(
+    async (operation) => {
+      if (!aggregate) return false;
+      setBusy(true);
+      setMessage("");
+      try {
+        const response = await fetch(`/api/vision-waypoint-versions/${aggregate.version.id}/authoring`, {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json", "x-csrf-token": csrf },
+          body: JSON.stringify({ ...operation, expectedRevision: aggregate.version.authoringRevision }),
+        });
+        const body = (await response.json()) as { authoring?: StudioAuthoringAggregate; error?: string; code?: string };
+        if (!response.ok || !body.authoring) {
+          if (response.status === 409) await load();
+          throw new Error(body.error ?? "The draft could not be saved.");
+        }
+        setAggregate(body.authoring);
+        setForm(defaultData(body.authoring.version.currentWizardStep, body.authoring));
+        setMessage("Saved to the authoritative waypoint draft.");
+        return true;
+      } catch (cause) {
+        setMessage(cause instanceof Error ? cause.message : "The draft could not be saved.");
+        return false;
+      } finally {
+        setBusy(false);
+      }
+    },
+    [aggregate, csrf, load],
   );
-  async function mutate(url: string, options: RequestInit = {}) {
-    setBusy(true);
-    setMessage("");
-    const response = await fetch(url, {
-      ...options,
-      headers: { "Content-Type": "application/json", "x-csrf-token": csrf, ...(options.headers ?? {}) },
-    });
-    const body = (await response.json()) as { error?: string };
-    setMessage(response.ok ? "Saved to the authoritative waypoint record." : (body.error ?? "Waypoint action failed."));
-    if (response.ok) await load();
-    setBusy(false);
-    return response.ok;
+
+  useEffect(() => {
+    if (!aggregate || !dirty || busy || aggregate.version.lifecycleStatus !== "DRAFT") return;
+    const timer = window.setTimeout(() => {
+      setAutoSaving(true);
+      void mutate({
+        operation: "SAVE_STEP",
+        step: aggregate.version.currentWizardStep,
+        complete: aggregate.authoring.completedSteps.includes(aggregate.version.currentWizardStep),
+        data: form,
+      }).then((saved) => {
+        if (saved) setDirty(false);
+        setAutoSaving(false);
+      });
+    }, 1_000);
+    return () => window.clearTimeout(timer);
+  }, [aggregate, busy, dirty, form, mutate]);
+
+  function field(name: string, value: unknown) {
+    setForm((current) => ({ ...current, [name]: value }));
+    setDirty(true);
+    setMessage("Unsaved changes; autosave is queued.");
   }
+  async function openStep(step: number) {
+    if (!aggregate || step === aggregate.version.currentWizardStep) return;
+    const saved = await mutate({
+      operation: "SET_NAVIGATION",
+      mode: aggregate.version.authoringMode,
+      currentStep: step,
+    });
+    if (saved) setForm(defaultData(step, { ...aggregate, version: { ...aggregate.version, currentWizardStep: step } }));
+  }
+  async function saveStep() {
+    if (!aggregate) return;
+    const saved = await mutate({
+      operation: "SAVE_STEP",
+      step: aggregate.version.currentWizardStep,
+      complete: true,
+      data: form,
+    });
+    if (saved) setDirty(false);
+  }
+  async function createNextDraft() {
+    if (!waypoint) return;
+    setBusy(true);
+    const parentVersionId = waypoint.versions.find((version) => version.publishedAt)?.id;
+    const response = await fetch(`/api/vision-waypoints/${waypoint.id}/versions`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "x-csrf-token": csrf },
+      body: JSON.stringify({ parentVersionId }),
+    });
+    setBusy(false);
+    if (response.ok) await load();
+    else setMessage(((await response.json()) as { error?: string }).error ?? "Draft creation failed.");
+  }
+  async function prepareBuild() {
+    if (!aggregate) return;
+    setBusy(true);
+    const response = await fetch(`/api/vision-waypoint-versions/${aggregate.version.id}/prepare-build`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "x-csrf-token": csrf },
+      body: JSON.stringify({ expectedRevision: aggregate.version.authoringRevision }),
+    });
+    const body = (await response.json()) as { error?: string; inputHash?: string };
+    setBusy(false);
+    setMessage(
+      response.ok
+        ? `BuildInput prepared and persisted: sha256:${body.inputHash}. No model or confidence was produced.`
+        : (body.error ?? "Build preparation failed."),
+    );
+    await load();
+  }
+
   if (!authenticated)
     return (
       <main className="studio-auth-gate">
@@ -96,227 +532,640 @@ export function VisionWaypointEditor({ waypointId, authenticated }: { waypointId
         <p role="status">{message || "Opening waypoint…"}</p>
       </main>
     );
+  if (!aggregate)
+    return (
+      <main className="vision-editor">
+        <header>
+          <div>
+            <Link href="/studio/vision-waypoints">← Vision Waypoints</Link>
+            <h1>{waypoint.name}</h1>
+            <p>No editable draft exists. Published versions remain immutable.</p>
+          </div>
+        </header>
+        <section className="no-draft-card">
+          <button className="brass-button" disabled={busy} onClick={() => void createNextDraft()}>
+            Create next draft from latest published version
+          </button>
+          <VersionHistory waypoint={waypoint} />
+        </section>
+      </main>
+    );
+
+  const step = aggregate.version.currentWizardStep;
+  const readOnly = aggregate.version.lifecycleStatus !== "DRAFT";
   return (
-    <main className="vision-editor">
+    <main className="vision-editor vision-authoring">
       <header>
         <div>
           <Link href="/studio/vision-waypoints">← Vision Waypoints</Link>
-          <p className="eyebrow">{waypoint.type.replaceAll("_", " ")}</p>
-          <h1>{waypoint.name}</h1>
-          <p>{waypoint.description || "No description yet."}</p>
+          <p className="eyebrow">
+            {aggregate.waypoint.type.replaceAll("_", " ")} · Draft v{aggregate.version.versionNumber}
+          </p>
+          <h1>{aggregate.waypoint.name}</h1>
+          <p>{aggregate.waypoint.description}</p>
         </div>
-        <span className="development-badge">Development mock only</span>
+        <div className="authoring-status">
+          <span className={`health-badge ${aggregate.dataHealth.readyToPrepare ? "ready" : "blocked"}`}>
+            {aggregate.dataHealth.readyToPrepare ? "Ready to prepare" : `${aggregate.dataHealth.blockerCount} blockers`}
+          </span>
+          <span>
+            {autoSaving ? "Saving…" : dirty ? "Unsaved changes" : "Saved"} · Revision{" "}
+            {aggregate.version.authoringRevision}
+          </span>
+        </div>
       </header>
       {message && (
-        <p className="captain-notice" role="status">
+        <p className={message.startsWith("Saved") ? "captain-notice" : "studio-error"} role="status">
           {message}
         </p>
       )}
-      <div className="vision-editor-grid">
-        <section>
-          <h2>Metadata</h2>
+      <section className="authoring-shell">
+        <aside className="wizard-sidebar">
           <label>
-            <span>Name</span>
-            <input value={waypoint.name} onChange={(event) => setWaypoint({ ...waypoint, name: event.target.value })} />
-          </label>
-          <label>
-            <span>Description</span>
-            <textarea
-              rows={4}
-              value={waypoint.description}
-              onChange={(event) => setWaypoint({ ...waypoint, description: event.target.value })}
-            />
-          </label>
-          <label>
-            <span>Location tags</span>
-            <input
-              value={waypoint.locationTags.join(", ")}
+            <span>Authoring mode</span>
+            <select
+              value={aggregate.version.authoringMode}
+              disabled={readOnly || busy}
               onChange={(event) =>
-                setWaypoint({
-                  ...waypoint,
-                  locationTags: event.target.value
-                    .split(",")
-                    .map((tag) => tag.trim())
-                    .filter(Boolean),
-                })
+                void mutate({ operation: "SET_NAVIGATION", mode: event.target.value, currentStep: step })
               }
-            />
+            >
+              <option value="GUIDED">Guided</option>
+              <option value="DETAILED">Detailed</option>
+              <option value="ENGINEERING">Engineering</option>
+            </select>
           </label>
-          <button
-            disabled={busy}
-            onClick={() =>
-              void mutate(`/api/vision-waypoints/${waypoint.id}`, {
-                method: "PATCH",
-                body: JSON.stringify({
-                  name: waypoint.name,
-                  description: waypoint.description,
-                  locationTags: waypoint.locationTags,
-                  sharingScope: waypoint.sharingScope,
-                }),
-              })
-            }
-          >
-            Save metadata
-          </button>
-        </section>
-        <section>
-          <h2>{draft ? `Draft version ${draft.versionNumber}` : "No editable draft"}</h2>
-          {configuration && draft ? (
+          <p>
+            {aggregate.version.authoringMode === "GUIDED"
+              ? "Plain-language essentials."
+              : aggregate.version.authoringMode === "DETAILED"
+                ? "Adds evidence and configuration detail."
+                : "Shows hashes, schemas, and persisted boundary data."}
+          </p>
+          <progress value={aggregate.authoring.completedSteps.length} max={12} aria-label="Wizard completion" />
+          <ol>
+            {steps.map((name, index) => {
+              const number = index + 1;
+              const complete = aggregate.authoring.completedSteps.includes(number);
+              return (
+                <li key={name} className={number === step ? "current" : complete ? "complete" : ""}>
+                  <button
+                    type="button"
+                    disabled={busy || dirty}
+                    title={dirty ? "Wait for the queued autosave before changing steps." : undefined}
+                    aria-current={number === step ? "step" : undefined}
+                    onClick={() => void openStep(number)}
+                  >
+                    <span>{complete ? "✓" : number}</span>
+                    {name}
+                  </button>
+                </li>
+              );
+            })}
+          </ol>
+        </aside>
+        <section className="wizard-content">
+          <header>
+            <div>
+              <p className="eyebrow">Step {step} of 12</p>
+              <h2>{steps[step - 1]}</h2>
+            </div>
+            <span>
+              {readOnly ? aggregate.version.lifecycleStatus.toLocaleLowerCase().replaceAll("_", " ") : "Editable draft"}
+            </span>
+          </header>
+          {step === 1 && (
             <>
               <label>
-                <span>Verification profile</span>
+                <span>What this waypoint proves</span>
+                <textarea
+                  rows={4}
+                  value={String(form.summary ?? "")}
+                  onChange={(event) => field("summary", event.target.value)}
+                />
+              </label>
+              <label>
+                <span>Success in plain language</span>
+                <textarea
+                  rows={3}
+                  value={String(form.successDefinition ?? "")}
+                  onChange={(event) => field("successDefinition", event.target.value)}
+                />
+              </label>
+              <div className="form-grid">
+                <label>
+                  <span>Waypoint type</span>
+                  <select
+                    value={String(form.waypointType ?? aggregate.waypoint.type)}
+                    onChange={(event) => field("waypointType", event.target.value)}
+                  >
+                    {waypointTypes.map((type) => (
+                      <option value={type} key={type}>
+                        {type.toLocaleLowerCase().replaceAll("_", " ")}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                <label>
+                  <span>Verification profile</span>
+                  <select
+                    value={String(form.verificationProfile ?? "BALANCED")}
+                    onChange={(event) => field("verificationProfile", event.target.value)}
+                  >
+                    <option>BALANCED</option>
+                    <option>STRICT</option>
+                    <option>STORY_CRITICAL</option>
+                    <option>CUSTOM</option>
+                  </select>
+                </label>
+                <label>
+                  <span>Build preference</span>
+                  <select
+                    value={String(form.buildPreference ?? "LOCAL")}
+                    onChange={(event) => field("buildPreference", event.target.value)}
+                  >
+                    <option>LOCAL</option>
+                    <option>CLOUD_ASSISTED</option>
+                    <option>UNDECIDED</option>
+                  </select>
+                </label>
+              </div>
+            </>
+          )}
+          {step === 2 && (
+            <>
+              <label>
+                <span>What the player is trying to do</span>
+                <textarea
+                  rows={3}
+                  value={String(form.playerTask ?? "")}
+                  onChange={(event) => field("playerTask", event.target.value)}
+                />
+              </label>
+              <label>
+                <span>Why success matters to the story</span>
+                <textarea
+                  rows={3}
+                  value={String(form.narrativeImportance ?? "")}
+                  onChange={(event) => field("narrativeImportance", event.target.value)}
+                />
+              </label>
+              <label>
+                <span>What should happen when evidence is insufficient</span>
+                <textarea
+                  rows={3}
+                  value={String(form.failureConsequence ?? "")}
+                  onChange={(event) => field("failureConsequence", event.target.value)}
+                />
+              </label>
+            </>
+          )}
+          {step === 3 && (
+            <>
+              <div className="plain-callout">
+                <h3>One Companion, two paths</h3>
+                <p>
+                  Desktop uses the restricted Electron bridge. Browser uses an approved loopback pairing. Both call the
+                  same B-2 coordinator and capture core.
+                </p>
+                <Link href="/vision-companion" target="_blank">
+                  Open Companion connection and privacy center
+                </Link>
+              </div>
+              <label>
+                <span>Connection path</span>
                 <select
-                  value={configuration.verificationProfile}
-                  onChange={(event) =>
-                    setConfiguration({
-                      ...configuration,
-                      verificationProfile: event.target.value as Configuration["verificationProfile"],
-                    })
-                  }
+                  value={String(form.selectedPath ?? "NONE")}
+                  onChange={(event) => field("selectedPath", event.target.value)}
                 >
-                  <option>BALANCED</option>
-                  <option>STRICT</option>
-                  <option>STORY_CRITICAL</option>
-                  <option>CUSTOM</option>
+                  <option value="NONE">Not connected yet</option>
+                  <option value="DESKTOP">Integrated desktop</option>
+                  <option value="BROWSER_PAIRED">Paired browser</option>
                 </select>
               </label>
               <label>
-                <span>Scan interaction</span>
-                <select
-                  value={configuration.scanInteraction.mode}
-                  onChange={(event) =>
-                    setConfiguration({
-                      ...configuration,
-                      scanInteraction: {
-                        ...configuration.scanInteraction,
-                        mode: event.target.value as "HOLD" | "TOGGLE",
-                      },
-                    })
-                  }
-                >
-                  <option>HOLD</option>
-                  <option>TOGGLE</option>
-                </select>
-              </label>
-              <label>
-                <span>Hold duration (ms)</span>
+                <span>Last observed state</span>
                 <input
-                  type="number"
-                  min={250}
-                  max={15000}
-                  value={configuration.scanInteraction.holdDurationMs}
-                  onChange={(event) =>
-                    setConfiguration({
-                      ...configuration,
-                      scanInteraction: { ...configuration.scanInteraction, holdDurationMs: Number(event.target.value) },
-                    })
-                  }
+                  value={String(form.lastConnectionState ?? "")}
+                  onChange={(event) => field("lastConnectionState", event.target.value)}
                 />
               </label>
               <label className="check-field">
                 <input
                   type="checkbox"
-                  checked={configuration.captainFallbackPolicy.enabled}
+                  checked={Boolean(form.privacyAcknowledged)}
+                  onChange={(event) => field("privacyAcknowledged", event.target.checked)}
+                />
+                <span>I understand which window is captured and where creator recordings are retained.</span>
+              </label>
+            </>
+          )}
+          {step === 4 && (
+            <div id="studio-capture">
+              <label>
+                <span>Coverage plan</span>
+                <select
+                  value={String(form.coveragePlan ?? "BALANCED")}
+                  onChange={(event) => field("coveragePlan", event.target.value)}
+                >
+                  <option>QUICK</option>
+                  <option>BALANCED</option>
+                  <option>THOROUGH</option>
+                </select>
+              </label>
+              <label>
+                <span>Recording guidance</span>
+                <textarea
+                  rows={3}
+                  value={String(form.guidanceNotes ?? "")}
+                  onChange={(event) => field("guidanceNotes", event.target.value)}
+                />
+              </label>
+              <StudioCapturePanel
+                adapter={adapter}
+                versionId={aggregate.version.id}
+                csrfToken={csrf}
+                purpose="TARGET_REFERENCE"
+                label="Target reference"
+                onChanged={load}
+              />
+              <RecordingReview aggregate={aggregate} adapter={adapter} csrfToken={csrf} mutate={mutate} reload={load} />
+            </div>
+          )}
+          {step === 5 && (
+            <>
+              <label>
+                <span>Guided walk instructions</span>
+                <textarea
+                  rows={3}
+                  value={String(form.instructions ?? "")}
+                  onChange={(event) => field("instructions", event.target.value)}
+                />
+              </label>
+              <label className="check-field">
+                <input
+                  type="checkbox"
+                  checked={Boolean(form.provisionalAccuracyAcknowledged)}
+                  onChange={(event) => field("provisionalAccuracyAcknowledged", event.target.checked)}
+                />
+                <span>I understand these are provisional creator-relative regions, not surveyed game coordinates.</span>
+              </label>
+              <StudioCapturePanel
+                adapter={adapter}
+                versionId={aggregate.version.id}
+                csrfToken={csrf}
+                purpose="ACCEPTED_AREA_WALK"
+                label="Accepted area walk"
+                onChanged={load}
+              />
+              <PoseRegionEditor aggregate={aggregate} mutate={mutate} classification="ACCEPTED" />
+            </>
+          )}
+          {step === 6 && (
+            <>
+              <label>
+                <span>Boundary instructions</span>
+                <textarea
+                  rows={3}
+                  value={String(form.instructions ?? "")}
+                  onChange={(event) => field("instructions", event.target.value)}
+                />
+              </label>
+              <label>
+                <span>Reasons, one per line</span>
+                <textarea
+                  rows={4}
+                  value={Array.isArray(form.reasons) ? form.reasons.join("\n") : ""}
                   onChange={(event) =>
-                    setConfiguration({
-                      ...configuration,
-                      captainFallbackPolicy: { ...configuration.captainFallbackPolicy, enabled: event.target.checked },
-                    })
+                    field(
+                      "reasons",
+                      event.target.value
+                        .split("\n")
+                        .map((value) => value.trim())
+                        .filter(Boolean),
+                    )
                   }
                 />
-                <span>Captain fallback enabled</span>
+              </label>
+              <StudioCapturePanel
+                adapter={adapter}
+                versionId={aggregate.version.id}
+                csrfToken={csrf}
+                purpose="BOUNDARY"
+                label="Boundary evidence"
+                onChanged={load}
+              />
+              <PoseRegionEditor aggregate={aggregate} mutate={mutate} classification="BOUNDARY" />
+            </>
+          )}
+          {step === 7 && (
+            <>
+              <label>
+                <span>Confusion analysis</span>
+                <textarea
+                  rows={3}
+                  value={String(form.confusionNotes ?? "")}
+                  onChange={(event) => field("confusionNotes", event.target.value)}
+                />
+              </label>
+              {aggregate.version.verificationProfile === "STORY_CRITICAL" && (
+                <label className="check-field">
+                  <input
+                    type="checkbox"
+                    checked={Boolean(form.storyCriticalRequirementAcknowledged)}
+                    onChange={(event) => field("storyCriticalRequirementAcknowledged", event.target.checked)}
+                  />
+                  <span>I will provide both nearby and distant hard negatives before build preparation.</span>
+                </label>
+              )}
+              <div className="dual-capture">
+                <StudioCapturePanel
+                  adapter={adapter}
+                  versionId={aggregate.version.id}
+                  csrfToken={csrf}
+                  purpose="NEARBY_HARD_NEGATIVE"
+                  label="Nearby wrong place"
+                  onChanged={load}
+                />
+                <StudioCapturePanel
+                  adapter={adapter}
+                  versionId={aggregate.version.id}
+                  csrfToken={csrf}
+                  purpose="DISTANT_HARD_NEGATIVE"
+                  label="Distant wrong place"
+                  onChanged={load}
+                />
+              </div>
+              <HardNegativeEditor aggregate={aggregate} mutate={mutate} />
+            </>
+          )}
+          {step === 8 && (
+            <>
+              <label>
+                <span>Durable target detail</span>
+                <textarea
+                  rows={3}
+                  value={String(form.targetDescription ?? "")}
+                  onChange={(event) => field("targetDescription", event.target.value)}
+                />
+              </label>
+              <label>
+                <span>Transient or ignored content</span>
+                <textarea
+                  rows={3}
+                  value={String(form.ignoreDescription ?? "")}
+                  onChange={(event) => field("ignoreDescription", event.target.value)}
+                />
+              </label>
+              <VisionRegionEditor aggregate={aggregate} adapter={adapter} mutate={mutate} />
+            </>
+          )}
+          {step === 9 && (
+            <>
+              <div className="health-summary">
+                <strong>{aggregate.dataHealth.score}% authoring health</strong>
+                <span>
+                  {aggregate.dataHealth.blockerCount} blockers · {aggregate.dataHealth.warningCount} warnings
+                </span>
+                <progress value={aggregate.dataHealth.score} max={100} />
+              </div>
+              <ul className="health-list">
+                {aggregate.dataHealth.items.map((item) => (
+                  <li key={item.code} className={item.severity.toLocaleLowerCase()}>
+                    <div>
+                      <strong>
+                        {item.severity}: {item.message}
+                      </strong>
+                      <p>{item.recovery}</p>
+                    </div>
+                    <button type="button" onClick={() => void openStep(item.step)}>
+                      Go to step {item.step}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+              <label className="check-field">
+                <input
+                  type="checkbox"
+                  checked={Boolean(form.reviewedAt)}
+                  onChange={(event) => field("reviewedAt", event.target.checked ? new Date().toISOString() : null)}
+                />
+                <span>I reviewed these current persisted results.</span>
+              </label>
+            </>
+          )}
+          {step === 10 && (
+            <>
+              <div className="boundary-banner">
+                <strong>Phase boundary</strong>
+                <p>
+                  This step can persist schema-valid deterministic BuildInput only. It cannot train a model, run
+                  inference, create confidence, certify reliability, or enable automatic progression.
+                </p>
+              </div>
+              <label>
+                <span>Future execution target</span>
+                <select
+                  value={String(form.executionTarget ?? "LOCAL")}
+                  onChange={(event) => field("executionTarget", event.target.value)}
+                >
+                  <option>LOCAL</option>
+                  <option>CLOUD_ASSISTED</option>
+                </select>
+              </label>
+              <label className="check-field">
+                <input
+                  type="checkbox"
+                  checked={Boolean(form.rawMediaConsent)}
+                  onChange={(event) => field("rawMediaConsent", event.target.checked)}
+                />
+                <span>
+                  I understand raw-media movement would require separate explicit consent. This fixture does not upload
+                  media.
+                </span>
               </label>
               <button
-                disabled={busy}
-                onClick={() =>
-                  void mutate(`/api/vision-waypoint-versions/${draft.id}/draft`, {
-                    method: "PATCH",
-                    body: JSON.stringify(configuration),
-                  })
-                }
+                type="button"
+                className="brass-button"
+                disabled={!aggregate.dataHealth.readyToPrepare || busy || readOnly}
+                onClick={() => void prepareBuild()}
               >
-                Save draft configuration
+                Prepare deterministic BuildInput
               </button>
-              <div className="development-publish">
-                <label>
-                  <span>Deterministic scenario</span>
-                  <select value={scenario} onChange={(event) => setScenario(event.target.value as MockVisionScenario)}>
-                    {mockVisionScenarios.map((item) => (
-                      <option key={item}>{item}</option>
-                    ))}
-                  </select>
-                </label>
-                <button
-                  className="brass-button"
-                  disabled={busy}
-                  onClick={() => {
-                    if (window.confirm(`Publish immutable version ${draft.versionNumber}?`))
-                      void mutate(`/api/vision-waypoint-versions/${draft.id}/publish`, {
-                        method: "POST",
-                        body: JSON.stringify({ scenario }),
-                      });
-                  }}
-                >
-                  Publish development package
-                </button>
-              </div>
+              {!aggregate.dataHealth.readyToPrepare && <p>Resolve every Data Health blocker first.</p>}
+              <ul className="build-job-list">
+                {aggregate.buildJobs.map((job) => (
+                  <li key={job.id}>
+                    <strong>{job.processingStage.toLocaleLowerCase().replaceAll("_", " ")}</strong>
+                    <code>{job.inputHash ? `sha256:${job.inputHash}` : "No input hash"}</code>
+                    <span>No model · no confidence</span>
+                  </li>
+                ))}
+              </ul>
             </>
-          ) : (
-            <button
-              disabled={busy}
-              onClick={() =>
-                void mutate(`/api/vision-waypoints/${waypoint.id}/versions`, {
-                  method: "POST",
-                  body: JSON.stringify({
-                    parentVersionId: waypoint.versions.find((version) => version.publishedAt)?.id,
-                  }),
-                })
-              }
-            >
-              Create next draft from latest published
-            </button>
           )}
-        </section>
-        <section className="vision-version-history">
-          <h2>Immutable version history</h2>
-          {waypoint.versions.map((version) => (
-            <article key={version.id}>
-              <strong>Version {version.versionNumber}</strong>
-              <span>{version.lifecycleStatus.toLocaleLowerCase()}</span>
-              {version.publication && (
-                <>
-                  <code>sha256:{version.publication.packageHash}</code>
-                  <small>Package schema {version.publication.packageSchemaVersion}</small>
-                </>
-              )}
-              {version.publishedAt && version.lifecycleStatus !== "DEPRECATED" && (
+          {step === 11 && (
+            <>
+              <label>
+                <span>Test-plan notes</span>
+                <textarea
+                  rows={3}
+                  value={String(form.notes ?? "")}
+                  onChange={(event) => field("notes", event.target.value)}
+                />
+              </label>
+              <label>
+                <span>Acceptance notes</span>
+                <textarea
+                  rows={3}
+                  value={String(form.acceptanceNotes ?? "")}
+                  onChange={(event) => field("acceptanceNotes", event.target.value)}
+                />
+              </label>
+              <TestCaseEditor aggregate={aggregate} mutate={mutate} />
+            </>
+          )}
+          {step === 12 && (
+            <>
+              <div className="review-grid">
+                <section>
+                  <h3>Waypoint</h3>
+                  <dl>
+                    <div>
+                      <dt>Type</dt>
+                      <dd>{aggregate.waypoint.type.replaceAll("_", " ")}</dd>
+                    </div>
+                    <div>
+                      <dt>Profile</dt>
+                      <dd>{aggregate.version.verificationProfile}</dd>
+                    </div>
+                    <div>
+                      <dt>Recordings</dt>
+                      <dd>{aggregate.assets.filter((asset) => !asset.deletedAt).length}</dd>
+                    </div>
+                    <div>
+                      <dt>Regions</dt>
+                      <dd>{aggregate.poseRegions.length + aggregate.visualRegions.length}</dd>
+                    </div>
+                    <div>
+                      <dt>Wrong places</dt>
+                      <dd>{aggregate.hardNegatives.length}</dd>
+                    </div>
+                    <div>
+                      <dt>Tests</dt>
+                      <dd>{aggregate.tests.length}</dd>
+                    </div>
+                  </dl>
+                </section>
+                <section>
+                  <h3>Exit readiness</h3>
+                  <p>
+                    {aggregate.dataHealth.readyToPrepare
+                      ? "Persisted authoring evidence is ready for BuildInput preparation."
+                      : `${aggregate.dataHealth.blockerCount} data-health blockers remain.`}
+                  </p>
+                  <p>
+                    Human usability and real Sea of Thieves evidence are external validation gates; automated fixtures
+                    do not satisfy them.
+                  </p>
+                </section>
+              </div>
+              <label className="check-field">
+                <input
+                  type="checkbox"
+                  checked={Boolean(form.confirmCaptureConsent)}
+                  onChange={(event) => field("confirmCaptureConsent", event.target.checked)}
+                />
+                <span>Capture retention and consent are correct.</span>
+              </label>
+              <label className="check-field">
+                <input
+                  type="checkbox"
+                  checked={Boolean(form.confirmNoModelYet)}
+                  onChange={(event) => field("confirmNoModelYet", event.target.checked)}
+                />
+                <span>I understand B-3 prepares data and does not create a recognition model.</span>
+              </label>
+              <label className="check-field">
+                <input
+                  type="checkbox"
+                  checked={Boolean(form.confirmLockedTests)}
+                  onChange={(event) => field("confirmLockedTests", event.target.checked)}
+                />
+                <span>Locked test evidence is isolated from authoring decisions.</span>
+              </label>
+              {aggregate.authoring.completedSteps.includes(12) && (
                 <button
-                  disabled={busy}
-                  onClick={() =>
-                    void mutate(`/api/vision-waypoint-versions/${version.id}/deprecate`, { method: "POST" })
-                  }
+                  type="button"
+                  className="brass-button"
+                  disabled={!aggregate.dataHealth.readyToPrepare || busy}
+                  onClick={() => void prepareBuild()}
                 >
-                  Deprecate without breaking bindings
+                  Finalize deterministic BuildInput and mark ready
                 </button>
               )}
-            </article>
-          ))}
-        </section>
-        <section>
-          <h2>Story usage</h2>
-          {waypoint.usage.length ? (
-            <ul>
-              {waypoint.usage.map((use) => (
-                <li key={use.id}>
-                  <strong>{use.storyTitle}</strong> · {use.blockTitle}
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p>Not yet bound to a story block.</p>
+            </>
+          )}
+          {!readOnly && (
+            <footer className="wizard-actions">
+              <button type="button" disabled={busy || step === 1} onClick={() => void openStep(step - 1)}>
+                Back
+              </button>
+              <button type="button" className="brass-button" disabled={busy} onClick={() => void saveStep()}>
+                {step === 12 ? "Complete authoring review" : "Save and continue"}
+              </button>
+            </footer>
+          )}
+          {aggregate.version.authoringMode === "ENGINEERING" && (
+            <details className="engineering-details">
+              <summary>Persisted engineering details</summary>
+              <dl>
+                <div>
+                  <dt>Version ID</dt>
+                  <dd>
+                    <code>{aggregate.version.id}</code>
+                  </dd>
+                </div>
+                <div>
+                  <dt>Authoring schema</dt>
+                  <dd>{aggregate.authoring.schemaVersion}</dd>
+                </div>
+                <div>
+                  <dt>Revision</dt>
+                  <dd>{aggregate.version.authoringRevision}</dd>
+                </div>
+                <div>
+                  <dt>Local assets</dt>
+                  <dd>{aggregate.assets.filter((asset) => asset.cloudState === "LOCAL_ONLY").length}</dd>
+                </div>
+              </dl>
+            </details>
           )}
         </section>
-      </div>
+      </section>
+      <VersionHistory waypoint={waypoint} />
     </main>
+  );
+}
+
+function VersionHistory({ waypoint }: { waypoint: Waypoint }) {
+  return (
+    <section className="authoring-version-history">
+      <h2>Immutable version history</h2>
+      <div>
+        {waypoint.versions.map((version) => (
+          <article key={version.id}>
+            <strong>Version {version.versionNumber}</strong>
+            <span>{version.lifecycleStatus.toLocaleLowerCase().replaceAll("_", " ")}</span>
+            {version.publication && <code>sha256:{version.publication.packageHash}</code>}
+          </article>
+        ))}
+      </div>
+      {waypoint.usage.length > 0 && (
+        <p>
+          Used by {waypoint.usage.length} exact story binding{waypoint.usage.length === 1 ? "" : "s"}.
+        </p>
+      )}
+    </section>
   );
 }

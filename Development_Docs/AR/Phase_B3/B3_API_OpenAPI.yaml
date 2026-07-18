@@ -1,0 +1,285 @@
+openapi: 3.1.0
+info:
+  title: Forever Treasure Vision Studio Authoring API
+  version: 0.5.0-b3
+  description: Phase B-3 creator authoring and deterministic BuildInput contracts. No endpoint creates or runs a recognition model.
+servers:
+  - url: /
+paths:
+  /api/vision-waypoint-versions/{versionId}/authoring:
+    parameters:
+      - $ref: "#/components/parameters/VersionId"
+    get:
+      summary: Read the owned authoring aggregate
+      responses:
+        "200":
+          description: Current authoritative aggregate and CSRF token
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [csrfToken, authoring]
+                properties:
+                  csrfToken: { type: string }
+                  authoring: { $ref: "#/components/schemas/AuthoringAggregate" }
+        "401": { $ref: "#/components/responses/AuthenticationRequired" }
+        "404": { $ref: "#/components/responses/NotFound" }
+    patch:
+      summary: Apply one revision-checked authoring mutation
+      parameters:
+        - $ref: "#/components/parameters/Csrf"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/AuthoringMutation" }
+      responses:
+        "200":
+          description: Updated aggregate
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [authoring]
+                properties:
+                  authoring: { $ref: "#/components/schemas/AuthoringAggregate" }
+        "409":
+          description: Stale revision, immutable version, locked test, or referenced recording conflict
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/TypedError" }
+        "413":
+          description: Payload exceeds 512 KiB
+        "422":
+          description: Strict schema or data-health validation failed
+  /api/vision-waypoint-versions/{versionId}/prepare-build:
+    parameters:
+      - $ref: "#/components/parameters/VersionId"
+    post:
+      summary: Persist a deterministic BuildInput fixture and seal the version ready to build
+      description: Development-only and explicitly feature-gated. Produces no model, confidence, inference, or certification.
+      parameters:
+        - $ref: "#/components/parameters/Csrf"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              required: [expectedRevision]
+              properties:
+                expectedRevision: { type: integer, minimum: 1 }
+      responses:
+        "201":
+          description: BuildInput persisted
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [jobId, artifactId, inputHash, schemaVersion, modelProduced, confidenceProduced]
+                properties:
+                  jobId: { type: string }
+                  artifactId: { type: string }
+                  inputHash: { type: string, pattern: "^[a-f0-9]{64}$" }
+                  schemaVersion: { const: 1 }
+                  modelProduced: { const: false }
+                  confidenceProduced: { const: false }
+        "409":
+          description: Fixture disabled, stale revision, or Data Health blocked
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/TypedError" }
+  /api/vision-build-jobs/{jobId}:
+    get:
+      summary: Read an owned persisted BuildInput snapshot
+      parameters:
+        - name: jobId
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: Persisted snapshot
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [id, schemaVersion, inputHash, status, buildInput]
+                properties:
+                  id: { type: string }
+                  schemaVersion: { const: 1 }
+                  inputHash: { type: string }
+                  status: { type: string }
+                  buildInput: { $ref: "#/components/schemas/BuildInput" }
+        "404": { $ref: "#/components/responses/NotFound" }
+components:
+  parameters:
+    VersionId:
+      name: versionId
+      in: path
+      required: true
+      schema: { type: string, minLength: 8, maxLength: 128 }
+    Csrf:
+      name: x-csrf-token
+      in: header
+      required: true
+      schema: { type: string }
+  responses:
+    AuthenticationRequired:
+      description: Current creator session required
+    NotFound:
+      description: Resource not found within the current owner scope
+  schemas:
+    AuthoringMutation:
+      oneOf:
+        - $ref: "#/components/schemas/SaveStep"
+        - $ref: "#/components/schemas/SetNavigation"
+        - $ref: "#/components/schemas/NamedAuthoringOperation"
+      discriminator:
+        propertyName: operation
+    Revision:
+      type: object
+      required: [expectedRevision]
+      properties:
+        expectedRevision: { type: integer, minimum: 1 }
+    SaveStep:
+      allOf:
+        - $ref: "#/components/schemas/Revision"
+        - type: object
+          additionalProperties: false
+          required: [operation, step, complete, data]
+          properties:
+            operation: { const: SAVE_STEP }
+            step: { type: integer, minimum: 1, maximum: 12 }
+            complete: { type: boolean }
+            data:
+              type: object
+              description: Strict step-specific schema defined in src/vision/authoring-domain.ts.
+    SetNavigation:
+      allOf:
+        - $ref: "#/components/schemas/Revision"
+        - type: object
+          additionalProperties: false
+          required: [operation, mode, currentStep]
+          properties:
+            operation: { const: SET_NAVIGATION }
+            mode: { enum: [GUIDED, DETAILED, ENGINEERING] }
+            currentStep: { type: integer, minimum: 1, maximum: 12 }
+    NamedAuthoringOperation:
+      allOf:
+        - $ref: "#/components/schemas/Revision"
+        - type: object
+          required: [operation]
+          properties:
+            operation:
+              enum:
+                - UPSERT_POSE_REGION
+                - DELETE_POSE_REGION
+                - UPSERT_VISUAL_REGION
+                - DELETE_VISUAL_REGION
+                - UPSERT_HARD_NEGATIVE
+                - DELETE_HARD_NEGATIVE
+                - UPDATE_ASSET
+                - SPLIT_ASSET
+                - UPSERT_TEST
+                - LOCK_TEST
+                - DELETE_TEST
+          description: Each operation is strict and bounded by authoringMutationSchema.
+    AuthoringAggregate:
+      type: object
+      required:
+        [
+          version,
+          waypoint,
+          authoring,
+          captures,
+          assets,
+          poseRegions,
+          visualRegions,
+          hardNegatives,
+          tests,
+          buildJobs,
+          dataHealth,
+        ]
+      properties:
+        version: { type: object }
+        waypoint: { type: object }
+        authoring: { $ref: "#/components/schemas/AuthoringState" }
+        captures: { type: array, items: { type: object } }
+        assets: { type: array, items: { type: object } }
+        poseRegions: { type: array, items: { type: object } }
+        visualRegions: { type: array, items: { type: object } }
+        hardNegatives: { type: array, items: { type: object } }
+        tests: { type: array, items: { type: object } }
+        buildJobs: { type: array, items: { type: object } }
+        dataHealth:
+          type: object
+          required: [readyToPrepare, score, blockerCount, warningCount, items]
+          properties:
+            readyToPrepare: { type: boolean }
+            score:
+              {
+                type: integer,
+                minimum: 0,
+                maximum: 100,
+                description: Authoring coverage,
+                never recognition confidence.,
+              }
+            blockerCount: { type: integer, minimum: 0 }
+            warningCount: { type: integer, minimum: 0 }
+            items: { type: array, items: { type: object } }
+    AuthoringState:
+      type: object
+      additionalProperties: false
+      required: [schemaVersion, completedSteps, steps]
+      properties:
+        schemaVersion: { const: 1 }
+        completedSteps:
+          type: array
+          maxItems: 12
+          items: { type: integer, minimum: 1, maximum: 12 }
+        steps: { type: object }
+    BuildInput:
+      type: object
+      additionalProperties: false
+      required:
+        [
+          schemaVersion,
+          inputType,
+          waypoint,
+          authoring,
+          assets,
+          acceptedPoseRegions,
+          visualRegions,
+          hardNegatives,
+          validationTests,
+          lockedTests,
+          boundary,
+        ]
+      properties:
+        schemaVersion: { const: 1 }
+        inputType: { const: VISION_WAYPOINT_BUILD_INPUT }
+        waypoint: { type: object }
+        authoring: { $ref: "#/components/schemas/AuthoringState" }
+        assets: { type: array, items: { type: object } }
+        acceptedPoseRegions: { type: array, items: { type: object } }
+        visualRegions: { type: array, items: { type: object } }
+        hardNegatives: { type: array, items: { type: object } }
+        validationTests: { type: array, items: { type: object } }
+        lockedTests: { type: array, items: { type: object } }
+        boundary:
+          type: object
+          properties:
+            implementation: { const: INPUT_PREPARATION_ONLY }
+            modelProduced: { const: false }
+            confidenceProduced: { const: false }
+            certificationProduced: { const: false }
+    TypedError:
+      type: object
+      required: [error, code]
+      properties:
+        error: { type: string }
+        code: { type: string }
+        currentRevision: { type: integer }
+        dataHealth: { type: object }

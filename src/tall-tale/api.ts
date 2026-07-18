@@ -51,7 +51,7 @@ export function apiError(cause: unknown) {
         : cause.code.includes("REQUIRED") || cause.code.includes("INVALID")
           ? 422
           : 409;
-    return NextResponse.json({ error: cause.message, code: cause.code }, { status });
+    return NextResponse.json({ error: cause.message, code: cause.code, ...(cause.details ?? {}) }, { status });
   }
   if (cause instanceof Error && cause.name === "VisionFeatureDisabledError")
     return NextResponse.json({ error: cause.message, code: "FEATURE_DISABLED" }, { status: 404 });

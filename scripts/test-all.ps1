@@ -26,6 +26,7 @@ if (-not $env:GM_USERNAME) { $env:GM_USERNAME = "kato" }
 if (-not $env:GM_PASSWORD) { $env:GM_PASSWORD = "development-captain-only" }
 if (-not $env:PLAYER_ACCESS_CODE) { $env:PLAYER_ACCESS_CODE = "development-moonwake" }
 $env:VALIDATION_ARTIFACTS = Join-Path $runtimeRoot "artifacts\validation"
+$env:FEATURE_VISION_BUILD_ENGINE = "true"
 
 function Invoke-ValidationStep {
     param([Parameter(Mandatory)][string]$Name, [Parameter(Mandatory)][string[]]$Arguments)
@@ -41,10 +42,12 @@ Invoke-ValidationStep -Name "Linting" -Arguments @("node_modules/eslint/bin/esli
 Invoke-ValidationStep -Name "Type checking" -Arguments @("node_modules/typescript/bin/tsc", "--noEmit")
 Invoke-ValidationStep -Name "Running unit tests" -Arguments @("node_modules/vitest/vitest.mjs", "run")
 Invoke-ValidationStep -Name "Testing restricted desktop bridge" -Arguments @("--test", "apps/desktop/desktop-shell.test.cjs")
+Invoke-ValidationStep -Name "Testing Companion capture contracts and runtime" -Arguments @("--test", "apps/companion/*.test.cjs")
 Invoke-ValidationStep -Name "Validating animation assets" -Arguments @("node_modules/tsx/dist/cli.mjs", "scripts/validate-animation-assets.ts")
 Invoke-ValidationStep -Name "Verifying seeded database" -Arguments @("node_modules/tsx/dist/cli.mjs", "scripts/verify-database.ts")
 Invoke-ValidationStep -Name "Verifying Phase B-1 waypoint fixture" -Arguments @("node_modules/tsx/dist/cli.mjs", "scripts/verify-vision-foundation.ts")
 Invoke-ValidationStep -Name "Verifying Phase B-2 capture persistence" -Arguments @("node_modules/tsx/dist/cli.mjs", "scripts/verify-capture-foundation.ts")
+Invoke-ValidationStep -Name "Verifying Phase B-3 authoring migration" -Arguments @("node_modules/tsx/dist/cli.mjs", "scripts/verify-authoring-foundation.ts")
 Invoke-ValidationStep -Name "Preparing legacy playthrough backfill proof" -Arguments @("node_modules/tsx/dist/cli.mjs", "scripts/verify-platform-backfill.ts", "--prepare")
 Invoke-ValidationStep -Name "Running additive platform backfill" -Arguments @("node_modules/tsx/dist/cli.mjs", "prisma/seed.ts", "--ensure")
 Invoke-ValidationStep -Name "Verifying additive platform backfill" -Arguments @("node_modules/tsx/dist/cli.mjs", "scripts/verify-platform-backfill.ts", "--verify")

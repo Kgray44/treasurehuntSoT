@@ -308,7 +308,9 @@ test("Studio lifecycle, browser scan, duplicate/stale guards, desktop path, and 
     packageSchemaVersion: 1,
     featureFlags: {
       creator_capture: true,
-      vision_build_engine: false,
+      vision_build_engine: ["1", "true", "yes", "on", "enabled"].includes(
+        (process.env.FEATURE_VISION_BUILD_ENGINE ?? "").toLocaleLowerCase(),
+      ),
       automatic_vision_progression: false,
       live_external_ar: false,
     },

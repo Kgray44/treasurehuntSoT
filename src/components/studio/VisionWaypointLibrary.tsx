@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
+import { selectCapturePlatformAdapter, type CapturePlatformAdapter } from "@/vision/capture-adapters";
 import { waypointTypes } from "@/vision/domain";
 
 type Version = {
@@ -10,6 +11,7 @@ type Version = {
   lifecycleStatus: string;
   publishedAt: string | null;
   publication: { packageHash: string } | null;
+  representativeAssetId: string | null;
 };
 type Waypoint = {
   id: string;
@@ -18,14 +20,19 @@ type Waypoint = {
   type: string;
   sharingScope: string;
   usageCount: number;
+  locationTags: string[];
   updatedAt: string;
   versions: Version[];
 };
 
 export function VisionWaypointLibrary({ authenticated }: { authenticated: boolean }) {
+  const captureAdapter = useMemo(() => selectCapturePlatformAdapter(), []);
   const [items, setItems] = useState<Waypoint[]>([]);
   const [csrf, setCsrf] = useState("");
   const [query, setQuery] = useState("");
+  const [typeFilter, setTypeFilter] = useState("ALL");
+  const [statusFilter, setStatusFilter] = useState("ALL");
+  const [sort, setSort] = useState("UPDATED_DESC");
   const [error, setError] = useState("");
   const [creating, setCreating] = useState(false);
   const [name, setName] = useState("");
@@ -41,13 +48,35 @@ export function VisionWaypointLibrary({ authenticated }: { authenticated: boolea
   useEffect(() => {
     if (authenticated) queueMicrotask(() => void load());
   }, [authenticated]);
-  const visible = useMemo(
-    () =>
-      items.filter((item) =>
-        `${item.name} ${item.description} ${item.type}`.toLocaleLowerCase().includes(query.toLocaleLowerCase()),
-      ),
-    [items, query],
-  );
+  const visible = useMemo(() => {
+    const filtered = items.filter((item) => {
+      const latest = item.versions[0]?.lifecycleStatus ?? "NONE";
+      return (
+        `${item.name} ${item.description} ${item.type} ${item.locationTags.join(" ")}`
+          .toLocaleLowerCase()
+          .includes(query.toLocaleLowerCase()) &&
+        (typeFilter === "ALL" || item.type === typeFilter) &&
+        (statusFilter === "ALL" || latest === statusFilter)
+      );
+    });
+    return [...filtered].sort((left, right) =>
+      sort === "NAME_ASC"
+        ? left.name.localeCompare(right.name)
+        : sort === "USAGE_DESC"
+          ? right.usageCount - left.usageCount
+          : Date.parse(right.updatedAt) - Date.parse(left.updatedAt),
+    );
+  }, [items, query, sort, statusFilter, typeFilter]);
+  async function archive(waypointId: string) {
+    if (!window.confirm("Archive this waypoint? Existing exact story bindings remain unchanged.")) return;
+    const response = await fetch(`/api/vision-waypoints/${waypointId}/archive`, {
+      method: "POST",
+      headers: { "x-csrf-token": csrf },
+    });
+    if (!response.ok)
+      setError(((await response.json()) as { error?: string }).error ?? "Waypoint could not be archived.");
+    else await load();
+  }
   async function create(event: React.FormEvent) {
     event.preventDefault();
     setCreating(true);
@@ -83,11 +112,9 @@ export function VisionWaypointLibrary({ authenticated }: { authenticated: boolea
       <header>
         <div>
           <Link href="/studio">← Tall Tale Studio</Link>
-          <p className="eyebrow">Shared platform foundation</p>
+          <p className="eyebrow">Reusable authoring library</p>
           <h1>Vision Waypoints</h1>
-          <p>
-            Persisted, versioned recognition goals. B-1 publication creates deterministic development packages only.
-          </p>
+          <p>Search, resume, version, and reuse durable recognition goals across Tall Tales.</p>
         </div>
       </header>
       <section className="vision-library-layout">
@@ -114,15 +141,46 @@ export function VisionWaypointLibrary({ authenticated }: { authenticated: boolea
           </button>
         </form>
         <section className="vision-library-results">
-          <label>
-            <span>Search</span>
-            <input
-              type="search"
-              value={query}
-              onChange={(event) => setQuery(event.target.value)}
-              placeholder="Name, description, or type"
-            />
-          </label>
+          <div className="vision-library-filters">
+            <label>
+              <span>Search</span>
+              <input
+                type="search"
+                value={query}
+                onChange={(event) => setQuery(event.target.value)}
+                placeholder="Name, tags, description, or type"
+              />
+            </label>
+            <label>
+              <span>Type</span>
+              <select value={typeFilter} onChange={(event) => setTypeFilter(event.target.value)}>
+                <option value="ALL">All types</option>
+                {waypointTypes.map((item) => (
+                  <option value={item} key={item}>
+                    {item.replaceAll("_", " ")}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label>
+              <span>Latest status</span>
+              <select value={statusFilter} onChange={(event) => setStatusFilter(event.target.value)}>
+                <option value="ALL">All statuses</option>
+                <option>DRAFT</option>
+                <option>READY_TO_BUILD</option>
+                <option>PUBLISHED</option>
+                <option>DEPRECATED</option>
+              </select>
+            </label>
+            <label>
+              <span>Sort</span>
+              <select value={sort} onChange={(event) => setSort(event.target.value)}>
+                <option value="UPDATED_DESC">Recently updated</option>
+                <option value="NAME_ASC">Name</option>
+                <option value="USAGE_DESC">Most used</option>
+              </select>
+            </label>
+          </div>
           {error && (
             <p role="alert" className="studio-error">
               {error}
@@ -132,15 +190,27 @@ export function VisionWaypointLibrary({ authenticated }: { authenticated: boolea
             {visible.length} waypoint{visible.length === 1 ? "" : "s"}
           </p>
           <div className="vision-waypoint-grid">
+            {visible.length === 0 && (
+              <div className="authoring-empty">
+                <h2>No waypoints match</h2>
+                <p>Clear a filter or create a draft from the form. No sample waypoint is inserted automatically.</p>
+              </div>
+            )}
             {visible.map((item) => {
               const latest = item.versions[0];
               return (
                 <article key={item.id}>
+                  <LibraryThumbnail
+                    adapter={captureAdapter}
+                    artifactId={latest?.representativeAssetId ?? null}
+                    type={item.type}
+                  />
                   <p className="card-kicker">
                     {item.type.replaceAll("_", " ")} · {item.sharingScope.toLocaleLowerCase()}
                   </p>
                   <h2>{item.name}</h2>
                   <p>{item.description || "No description yet."}</p>
+                  {item.locationTags.length > 0 && <p className="tag-line">{item.locationTags.join(" · ")}</p>}
                   <dl>
                     <div>
                       <dt>Latest</dt>
@@ -153,9 +223,15 @@ export function VisionWaypointLibrary({ authenticated }: { authenticated: boolea
                       <dd>{item.usageCount}</dd>
                     </div>
                   </dl>
-                  <Link className="brass-button" href={`/studio/vision-waypoints/${item.id}`}>
-                    Open waypoint
-                  </Link>
+                  <div className="library-card-actions">
+                    <Link className="brass-button" href={`/studio/vision-waypoints/${item.id}`}>
+                      {latest?.lifecycleStatus === "DRAFT" ? "Resume authoring" : "Open waypoint"}
+                    </Link>
+                    <Link href="/studio/tales">Use in a Tale</Link>
+                    <button type="button" onClick={() => void archive(item.id)}>
+                      Archive
+                    </button>
+                  </div>
                 </article>
               );
             })}
@@ -163,5 +239,55 @@ export function VisionWaypointLibrary({ authenticated }: { authenticated: boolea
         </section>
       </section>
     </main>
+  );
+}
+
+function LibraryThumbnail({
+  adapter,
+  artifactId,
+  type,
+}: {
+  adapter: CapturePlatformAdapter;
+  artifactId: string | null;
+  type: string;
+}) {
+  const [preview, setPreview] = useState("");
+  const [message, setMessage] = useState(
+    artifactId ? "Load local representative preview" : "No representative recording yet",
+  );
+  if (preview)
+    return (
+      <video
+        className="library-waypoint-preview"
+        src={preview}
+        muted
+        preload="metadata"
+        aria-label="Local representative waypoint recording"
+      />
+    );
+  return (
+    <div className="library-waypoint-thumbnail">
+      <strong>
+        {type
+          .split("_")
+          .map((part) => part[0])
+          .join("")}
+      </strong>
+      {artifactId ? (
+        <button
+          type="button"
+          onClick={() =>
+            void adapter
+              .previewCreatorArtifact(artifactId)
+              .then((value) => setPreview(value.previewUrl))
+              .catch(() => setMessage("Connect Companion to load the local preview"))
+          }
+        >
+          {message}
+        </button>
+      ) : (
+        <span>{message}</span>
+      )}
+    </div>
   );
 }

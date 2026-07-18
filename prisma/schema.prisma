@@ -1014,6 +1014,9 @@ model VisionWaypointVersion {
   versionNumber            Int
   parentVersionId          String?
   lifecycleStatus          String                     @default("DRAFT")
+  authoringRevision        Int                        @default(1)
+  authoringMode            String                     @default("GUIDED")
+  currentWizardStep        Int                        @default(1)
   verificationProfile      String                     @default("BALANCED")
   packageSchemaVersion     Int                        @default(1)
   draftConfiguration       String                     @default("{}") @db.LongText
@@ -1116,6 +1119,14 @@ model VisionRecordingAsset {
   datasetPartition  String                @default("UNASSIGNED")
   truthLabel        String                @default("UNKNOWN")
   creatorLabel      String?
+  creatorNotes      String?               @db.Text
+  role              String                @default("UNASSIGNED")
+  isUsable          Boolean               @default(true)
+  segmentStartMs    Int?
+  segmentEndMs      Int?
+  sourceAssetId     String?
+  integrityState    String                @default("LOCAL_VERIFIED")
+  cloudState        String                @default("LOCAL_ONLY")
   qualitySummary    String                @default("{}") @db.LongText
   deletionStatus    String                @default("ACTIVE")
   createdAt         DateTime              @default(now())
@@ -1242,6 +1253,9 @@ model VisionBuildJob {
   progress          Float                 @default(0)
   logSummary        String                @default("[]") @db.LongText
   outputSummary     String                @default("{}") @db.LongText
+  inputSchemaVersion Int                  @default(1)
+  buildInput        String                @default("{}") @db.LongText
+  inputHash         String?
   failureCode       String?
   createdAt         DateTime              @default(now())
   startedAt         DateTime?
@@ -1299,12 +1313,17 @@ model VisionWaypointTestRun {
   waypointVersionId  String
   certificationRunId String?
   testType           String
+  name               String                  @default("Untitled test")
+  instructions       String                  @default("") @db.Text
+  environment        String                  @default("{}") @db.LongText
+  assetRole          String                  @default("VALIDATION")
   expectedResult     String
   actualResult       String?
   status             String                  @default("PENDING")
   evidenceReference  String?                 @db.Text
   createdAt          DateTime                @default(now())
   completedAt        DateTime?
+  lockedAt           DateTime?
   waypointVersion    VisionWaypointVersion   @relation(fields: [waypointVersionId], references: [id], onDelete: Cascade)
   certificationRun   VisionCertificationRun? @relation(fields: [certificationRunId], references: [id], onDelete: SetNull)
 

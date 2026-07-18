@@ -76,6 +76,9 @@ function publicVersion(version: {
   versionNumber: number;
   parentVersionId: string | null;
   lifecycleStatus: string;
+  authoringRevision: number;
+  authoringMode: string;
+  currentWizardStep: number;
   verificationProfile: string;
   packageSchemaVersion: number;
   draftConfiguration: string;
@@ -95,6 +98,7 @@ function publicVersion(version: {
     compatibilityRange: string;
     status: string;
   } | null;
+  recordingAssets?: Array<{ id: string }>;
 }) {
   return {
     ...version,
@@ -103,6 +107,7 @@ function publicVersion(version: {
     publication: version.publication
       ? { ...version.publication, compatibilityRange: parseJson(version.publication.compatibilityRange) }
       : null,
+    representativeAssetId: version.recordingAssets?.[0]?.id ?? null,
     createdAt: version.createdAt.toISOString(),
     updatedAt: version.updatedAt.toISOString(),
     publishedAt: version.publishedAt?.toISOString() ?? null,
@@ -137,7 +142,18 @@ export async function listVisionWaypoints(input: {
     take: limit + 1,
     ...(input.cursor ? { cursor: { id: input.cursor }, skip: 1 } : {}),
     include: {
-      versions: { orderBy: { versionNumber: "desc" }, include: { publication: true } },
+      versions: {
+        orderBy: { versionNumber: "desc" },
+        include: {
+          publication: true,
+          recordingAssets: {
+            where: { deletedAt: null, isUsable: true, role: "TARGET_REFERENCE" },
+            orderBy: { createdAt: "asc" },
+            take: 1,
+            select: { id: true },
+          },
+        },
+      },
       _count: { select: { bindings: true } },
     },
   });
@@ -164,7 +180,18 @@ export async function getVisionWaypoint(waypointId: string, actorId: string) {
   const waypoint = await db.visionWaypoint.findFirstOrThrow({
     where: { id: waypointId, ownerId: actorId },
     include: {
-      versions: { orderBy: { versionNumber: "desc" }, include: { publication: true } },
+      versions: {
+        orderBy: { versionNumber: "desc" },
+        include: {
+          publication: true,
+          recordingAssets: {
+            where: { deletedAt: null, isUsable: true, role: "TARGET_REFERENCE" },
+            orderBy: { createdAt: "asc" },
+            take: 1,
+            select: { id: true },
+          },
+        },
+      },
       bindings: { include: { story: { select: { title: true, slug: true } }, block: { select: { title: true } } } },
     },
   });

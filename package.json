@@ -1,6 +1,6 @@
 {
   "name": "forever-treasure-companion",
-  "version": "0.4.0-b2",
+  "version": "0.5.0-b3",
   "description": "Shared Player, Captain, and Studio companion for versioned Tall Tales.",
   "author": "The Forever Treasure contributors",
   "private": true,
@@ -36,6 +36,7 @@
     "db:migrate:mysql:platform": "prisma db execute --file prisma/mysql-migrations/0004_tall_tale_platform/migration.sql --schema prisma/schema.prisma",
     "db:migrate:mysql:vision": "prisma db execute --file prisma/mysql-migrations/0005_vision_waypoint_b1/migration.sql --schema prisma/schema.prisma",
     "db:migrate:mysql:capture": "prisma db execute --file prisma/mysql-migrations/0006_vision_capture_b2/migration.sql --schema prisma/schema.prisma",
+    "db:migrate:mysql:authoring": "prisma db execute --file prisma/mysql-migrations/0007_vision_studio_authoring_b3/migration.sql --schema prisma/schema.prisma",
     "desktop:dev": "concurrently --kill-others-on-fail \"npm:dev\" \"wait-on http://127.0.0.1:3000 && electron apps/desktop/main.cjs\"",
     "desktop:stage": "node scripts/prepare-desktop.mjs",
     "desktop:build": "npm run build && npm run desktop:stage && electron-builder --win nsis",

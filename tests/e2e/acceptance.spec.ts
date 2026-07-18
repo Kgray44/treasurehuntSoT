@@ -108,13 +108,18 @@ test("complete live voyage workflow is private, ordered, resilient, and theatric
   await expect(gm.getByRole("dialog")).toBeVisible();
   await gm.getByRole("button", { name: "Confirm action" }).click();
   await expect(player.locator(".voyage-shell.stage-seal")).toBeVisible({ timeout: 10_000 });
+  const parchmentVisible = player.locator(".voyage-shell.stage-parchment").waitFor({ state: "visible" });
   await screenshot(player, "04-ceremony-seal-break");
-  await expect(player.locator(".voyage-shell.stage-parchment")).toBeVisible();
+  await parchmentVisible;
+  const inkStoryVisible = player.locator(".voyage-shell.stage-ink-story").waitFor({ state: "visible" });
   await screenshot(player, "05-ceremony-parchment");
-  await expect(player.locator(".voyage-shell.stage-ink-story")).toBeVisible();
+  await inkStoryVisible;
+  const replayVisible = player
+    .getByRole("button", { name: "Replay ceremony" })
+    .waitFor({ state: "visible", timeout: 12_000 });
   await screenshot(player, "06-ceremony-ink-reveal");
   await expect(gm.getByRole("dialog")).toBeHidden();
-  await expect(player.getByRole("button", { name: "Replay ceremony" })).toBeVisible({ timeout: 12_000 });
+  await replayVisible;
   expect(Date.now() - releasedAt).toBeGreaterThanOrEqual(5_000);
   expect(Date.now() - releasedAt).toBeLessThan(10_000);
   await expect(player.getByRole("heading", { name: "The Lantern Test" }).first()).toBeVisible();

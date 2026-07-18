@@ -96,6 +96,11 @@ function publicAsset(asset: {
   mediaType: string;
   durationMs: number | null;
   creatorLabel: string | null;
+  creatorNotes?: string | null;
+  role?: string;
+  isUsable?: boolean;
+  integrityState?: string;
+  cloudState?: string;
   deletionStatus: string;
   createdAt: Date;
   deletedAt: Date | null;
@@ -108,6 +113,11 @@ function publicAsset(asset: {
     mediaType: asset.mediaType,
     durationMs: asset.durationMs,
     creatorLabel: asset.creatorLabel,
+    creatorNotes: asset.creatorNotes ?? null,
+    role: asset.role ?? "UNASSIGNED",
+    isUsable: asset.isUsable ?? true,
+    integrityState: asset.integrityState ?? "LOCAL_VERIFIED",
+    cloudState: asset.cloudState ?? "LOCAL_ONLY",
     deletionStatus: asset.deletionStatus,
     createdAt: asset.createdAt.toISOString(),
     deletedAt: asset.deletedAt?.toISOString() ?? null,
@@ -190,6 +200,16 @@ export async function persistCreatorCapture(input: unknown, actorId: string) {
         completedAt,
       },
     });
+    const roleByPurpose: Record<string, string> = {
+      TARGET_REFERENCE: "TARGET_REFERENCE",
+      ACCEPTED_AREA_WALK: "ACCEPTED_AREA",
+      BOUNDARY: "BOUNDARY",
+      NEARBY_HARD_NEGATIVE: "HARD_NEGATIVE_NEARBY",
+      DISTANT_HARD_NEGATIVE: "HARD_NEGATIVE_DISTANT",
+      INVALID_POSE: "INVALID_POSE",
+      DIAGNOSTIC_POSITIVE: "VALIDATION",
+      DIAGNOSTIC_NEGATIVE: "VALIDATION",
+    };
     const asset = await tx.visionRecordingAsset.create({
       data: {
         id: manifest.artifactId,
@@ -204,6 +224,10 @@ export async function persistCreatorCapture(input: unknown, actorId: string) {
         artifactManifest: JSON.stringify(manifest),
         durationMs: manifest.capture.durationMs,
         creatorLabel: manifest.metadata.creatorLabel,
+        creatorNotes: manifest.metadata.notes,
+        role: roleByPurpose[manifest.metadata.purpose] ?? "UNASSIGNED",
+        integrityState: "LOCAL_VERIFIED",
+        cloudState: manifest.retention.uploadAuthorized ? "UPLOAD_AUTHORIZED" : "LOCAL_ONLY",
         qualitySummary: JSON.stringify(manifest.capture.qualitySummary),
       },
     });
@@ -217,6 +241,10 @@ export async function persistCreatorCapture(input: unknown, actorId: string) {
         })),
       });
     }
+    await tx.visionWaypointVersion.update({
+      where: { id: version.id },
+      data: { authoringRevision: { increment: 1 } },
+    });
     await writeCaptureAudit(tx, {
       actorId,
       action: "VISION_CREATOR_CAPTURE_PERSISTED",
@@ -252,9 +280,35 @@ export async function markCreatorCaptureDeleted(artifactId: string, actorId: str
     });
     if (!asset) throw new VisionDomainError("CAPTURE_ARTIFACT_NOT_FOUND", "The creator capture was not found.");
     if (asset.deletedAt) return { asset: publicAsset(asset), idempotent: true };
+    const [regionCount, buildCount, tests] = await Promise.all([
+      tx.visionRegion.count({ where: { recordingAssetId: id } }),
+      tx.visionBuildJob.count({ where: { waypointVersionId: asset.waypointVersionId } }),
+      tx.visionWaypointTestRun.findMany({
+        where: { waypointVersionId: asset.waypointVersionId, lockedAt: { not: null } },
+        select: { environment: true },
+      }),
+    ]);
+    const lockedTestReference = tests.some((test) => {
+      try {
+        const environment = JSON.parse(test.environment) as { assetIds?: unknown[] };
+        return environment.assetIds?.includes(id) ?? false;
+      } catch {
+        return false;
+      }
+    });
+    if (regionCount || buildCount || lockedTestReference)
+      throw new VisionDomainError(
+        "CAPTURE_ARTIFACT_IN_USE",
+        "This recording is referenced by a visual region, locked test, or prepared build input. Remove that dependency or replace the recording first.",
+        { regionCount, buildCount, lockedTestReference },
+      );
     const deleted = await tx.visionRecordingAsset.update({
       where: { id },
       data: { deletionStatus: "DELETED_FROM_COMPANION", deletedAt: new Date() },
+    });
+    await tx.visionWaypointVersion.update({
+      where: { id: asset.waypointVersionId },
+      data: { authoringRevision: { increment: 1 } },
     });
     await writeCaptureAudit(tx, {
       actorId,

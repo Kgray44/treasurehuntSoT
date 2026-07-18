@@ -125,6 +125,7 @@ export const visionWaypointDraftConfigurationSchema = z
     hardNegativeRequirement: jsonObject.default({}),
     storyPurposeMetadata: jsonObject.default({}),
     buildPreference: z.enum(["LOCAL", "CLOUD_ASSISTED", "UNDECIDED"]).default("UNDECIDED"),
+    authoring: z.unknown().optional(),
   })
   .strict();
 
@@ -213,6 +214,7 @@ export class VisionDomainError extends Error {
   constructor(
     public readonly code: string,
     message: string,
+    public readonly details?: Record<string, unknown>,
   ) {
     super(message);
   }
