@@ -9,3 +9,10 @@ if (!globalEvents.foreverEvents) globalEvents.foreverEvents = eventBus;
 export function publishCampaignEvent(campaignId: string, event: ClientProgressEvent) {
   eventBus.emit(`campaign:${campaignId}`, event);
 }
+
+export function publishTaleSessionEvent(
+  sessionId: string,
+  event: { id: string; eventType: string; sequence: number; createdAt: string },
+) {
+  eventBus.emit(`tale-session:${sessionId}`, event);
+}

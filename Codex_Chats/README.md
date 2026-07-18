@@ -43,6 +43,12 @@ Changed content is scanned before writing for private-key blocks, provider/API t
 
 Review redacted transcripts and `redaction_categories`; never bypass an unresolved warning. Secret redaction is a defense-in-depth check, not permission to put sensitive account exports in Git.
 
+## Integrated Development_Docs synchronization
+
+The same end-of-task command also inspects the repository-root `Development_Docs` directory as ordinary Git content. It reads porcelain Git status with rename detection, accounts for additions, modifications, renames, deletions, and nested paths, and stages only explicit eligible paths. It does not copy documents into `Codex_Chats` or create a second document store.
+
+Changed documentation is checked against directory-local ignore rules, sensitive filename patterns, bounded textual secret detection, merge-conflict markers, ordinary-Git size thresholds, and existing Git LFS attributes. Suspicious, ignored, conflicted, or unsuitable large files remain local and are reported by path and general reason without printing matched secret values. Deleting a valid tracked document remains eligible so its GitHub counterpart can be removed normally. Unrelated staged and unstaged work is preserved.
+
 ## Commands
 
 From any directory on Windows, the wrapper resolves the repository and prefers `.venv` or `venv`:
@@ -68,7 +74,7 @@ python scripts/sync_codex_chats.py --report-only
 python scripts/sync_codex_chats.py --validate
 ```
 
-`--dry-run` and `--report-only` do not modify the archive or Git. `--no-push` permits a local archive-only commit but suppresses the push. Normal mode writes atomically under a lock, validates the manifest and transcript hashes, commits only its explicit archive paths, fetches before pushing, refuses non-fast-forward or in-progress Git operations, never force-pushes, and verifies the remote SHA. It never resets, cleans, stashes, checks out, or stages the entire repository. Unrelated staged and unstaged changes are preserved.
+`--dry-run` and `--report-only` do not modify the archive, documents, index, or commits; they do use read-only Git status inspection for `Development_Docs`. `--no-push` permits a local scoped synchronization commit but suppresses the push. Normal mode writes conversation files atomically under a lock, validates the manifest and transcript hashes, commits only explicit eligible archive and documentation paths, fetches before pushing, refuses non-fast-forward or in-progress Git operations, never force-pushes, and verifies the remote SHA. It never resets, cleans, stashes, checks out, or stages the entire repository. Unrelated staged and unstaged changes are preserved.
 
 The tracked latest report changes only when transcript content changes. Volatile per-run diagnostics are stored in ignored `.codex/chat-sync-cache/`, preventing timestamp-only Git noise.
 
@@ -79,7 +85,7 @@ The tracked latest report changes only when transcript content changes. Volatile
 If synchronization fails:
 
 1. read the sanitized error and `.codex/chat-sync-cache/last-run.json`;
-2. resolve corrupt input, an ambiguous ID, a secret warning, a concurrent lock, an in-progress merge/rebase, or remote divergence without resetting unrelated work;
+2. resolve corrupt input, an ambiguous ID, a secret warning, an excluded documentation path, a concurrent lock, an in-progress merge/rebase, or remote divergence without resetting unrelated work;
 3. run `--dry-run`, then `--validate`;
 4. rerun normally only after the condition is safe.
 

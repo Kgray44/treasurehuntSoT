@@ -74,6 +74,15 @@ class SyncTests(unittest.TestCase):
     def manifest(self):
         return json.loads((self.repo / "Codex_Chats/manifest.json").read_text(encoding="utf-8"))
 
+    def init_git(self):
+        subprocess.run(["git", "init", "-b", "main"], cwd=self.repo, check=True, capture_output=True)
+        subprocess.run(["git", "config", "user.email", "test@example.invalid"], cwd=self.repo, check=True)
+        subprocess.run(["git", "config", "user.name", "Test"], cwd=self.repo, check=True)
+
+    def git_commit_all(self, message):
+        subprocess.run(["git", "add", "-A"], cwd=self.repo, check=True)
+        subprocess.run(["git", "commit", "-m", message], cwd=self.repo, check=True, capture_output=True)
+
     def test_01_first_import_creates_conversation(self):
         report = self.run_sync(self.source([chat()]))
         self.assertEqual(report["added"], 1)
@@ -223,6 +232,114 @@ class SyncTests(unittest.TestCase):
         self.assertEqual(sync.validate_manifest(self.manifest(), self.repo), [])
         schema = json.loads((SCRIPT.parents[1] / "Codex_Chats/schema/manifest.schema.json").read_text(encoding="utf-8"))
         self.assertEqual(schema["properties"]["schema_version"]["const"], "1.0")
+
+    def test_21_development_docs_lifecycle_and_safety_exclusions(self):
+        self.init_git()
+        docs = self.repo / "Development_Docs"
+        docs.mkdir()
+        (docs / ".gitignore").write_text(".env\n~$*\n__pycache__/\ncredentials.*\n", encoding="utf-8")
+        (self.repo / "base.txt").write_text("base", encoding="utf-8")
+        self.git_commit_all("base")
+
+        test_document = docs / "sync-test.md"
+        test_document.write_text("first version\n", encoding="utf-8")
+        report = sync.audit_development_docs(self.repo, self.config)
+        self.assertEqual([item["path"] for item in report["changes"]["added"]], ["Development_Docs/sync-test.md"])
+        self.assertIn("Development_Docs/sync-test.md", report["eligible_paths"])
+        self.git_commit_all("add test document")
+
+        test_document.write_text("second version\n", encoding="utf-8")
+        report = sync.audit_development_docs(self.repo, self.config)
+        self.assertEqual([item["path"] for item in report["changes"]["modified"]], ["Development_Docs/sync-test.md"])
+        self.git_commit_all("modify test document")
+
+        design = docs / "Design"
+        design.mkdir()
+        renamed = design / "renamed-sync-test.md"
+        test_document.rename(renamed)
+        report = sync.audit_development_docs(self.repo, self.config)
+        self.assertEqual(len(report["changes"]["renamed"]), 1)
+        self.assertEqual(report["changes"]["renamed"][0]["path"], "Development_Docs/Design/renamed-sync-test.md")
+        self.assertEqual(report["changes"]["renamed"][0]["original_path"], "Development_Docs/sync-test.md")
+        self.git_commit_all("rename test document")
+
+        renamed.unlink()
+        (docs / ".env").write_text("PASSWORD=local-only\n", encoding="utf-8")
+        (docs / "~$notes.docx").write_bytes(b"office lock")
+        cache = docs / "__pycache__"
+        cache.mkdir()
+        (cache / "cached.pyc").write_bytes(b"cache")
+        (docs / "planning.md").write_text("api_key=ghp_" + "A" * 30, encoding="utf-8")
+        (self.repo / "unrelated.txt").write_text("leave me alone", encoding="utf-8")
+        report = sync.audit_development_docs(self.repo, self.config)
+        self.assertEqual([item["path"] for item in report["changes"]["deleted"]], ["Development_Docs/Design/renamed-sync-test.md"])
+        excluded = {item["path"] for item in report["excluded"]}
+        self.assertIn("Development_Docs/.env", excluded)
+        self.assertIn("Development_Docs/~$notes.docx", excluded)
+        self.assertIn("Development_Docs/__pycache__/cached.pyc", excluded)
+        self.assertIn("Development_Docs/planning.md", excluded)
+        self.assertNotIn("Development_Docs/planning.md", report["eligible_paths"])
+
+        subprocess.run(["git", "add", "-A", "--", *report["eligible_paths"]], cwd=self.repo, check=True)
+        staged = subprocess.run(
+            ["git", "diff", "--cached", "--name-only"], cwd=self.repo, check=True, text=True, capture_output=True
+        ).stdout.splitlines()
+        self.assertEqual(staged, ["Development_Docs/Design/renamed-sync-test.md"])
+        self.assertNotIn("unrelated.txt", staged)
+
+    def test_22_development_docs_large_file_and_empty_commit_protection(self):
+        self.init_git()
+        docs = self.repo / "Development_Docs"
+        docs.mkdir()
+        (docs / ".gitignore").write_text(".env\n", encoding="utf-8")
+        self.git_commit_all("base")
+        self.config["development_docs_warn_size_bytes"] = 10
+        self.config["development_docs_max_git_size_bytes"] = 20
+        (docs / "oversized.bin").write_bytes(b"ordinary documentation bytes")
+        report = sync.audit_development_docs(self.repo, self.config)
+        self.assertEqual(report["large_files"][0]["path"], "Development_Docs/oversized.bin")
+        self.assertNotIn("Development_Docs/oversized.bin", report["eligible_paths"])
+        self.assertTrue(any(item["path"] == "Development_Docs/oversized.bin" for item in report["excluded"]))
+        result = sync.commit_archive(self.repo, [], self.config, push=False)
+        self.assertFalse(result["commit_created"])
+        self.assertEqual(subprocess.run(["git", "rev-list", "--count", "HEAD"], cwd=self.repo, check=True, text=True, capture_output=True).stdout.strip(), "1")
+
+    def test_23_development_docs_are_part_of_the_existing_sync_run(self):
+        self.init_git()
+        docs = self.repo / "Development_Docs"
+        docs.mkdir()
+        (docs / ".gitignore").write_text(".env\n", encoding="utf-8")
+        self.git_commit_all("base")
+        (docs / "decision.md").write_text("Use the shared synchronization workflow.\n", encoding="utf-8")
+        source = self.source([chat(title="Cooking", messages=[("user", "make soup")])])
+        report, git_files = sync.synchronize(self.repo, self.config, [source], no_commit=True)
+        self.assertEqual(report["excluded"], 1)
+        self.assertEqual(report["development_docs"]["eligible_paths"], ["Development_Docs/decision.md"])
+        self.assertEqual(git_files, ["Development_Docs/decision.md"])
+
+    def test_24_development_docs_change_after_scan_stops_commit(self):
+        self.init_git()
+        docs = self.repo / "Development_Docs"
+        docs.mkdir()
+        (docs / ".gitignore").write_text(".env\n", encoding="utf-8")
+        self.git_commit_all("base")
+        document = docs / "decision.md"
+        document.write_text("version one\n", encoding="utf-8")
+        report = sync.audit_development_docs(self.repo, self.config)
+        document.write_text("version two\n", encoding="utf-8")
+        with mock.patch.object(sync, "ensure_git_safe", return_value="main"):
+            with self.assertRaises(sync.GitSafetyError):
+                sync.commit_archive(
+                    self.repo,
+                    report["eligible_paths"],
+                    self.config,
+                    push=False,
+                    expected_fingerprints=report["eligible_fingerprints"],
+                )
+        self.assertEqual(
+            subprocess.run(["git", "diff", "--cached", "--name-only"], cwd=self.repo, check=True, text=True, capture_output=True).stdout,
+            "",
+        )
 
 
 if __name__ == "__main__":

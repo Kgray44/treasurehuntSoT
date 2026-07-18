@@ -370,6 +370,14 @@ export function Quartermaster({
               <span>{label}</span>
             </Link>
           ))}
+          <Link href="/studio">
+            <i aria-hidden="true">S</i>
+            <span>Tall Tale Studio</span>
+          </Link>
+          <Link href="/captain">
+            <i aria-hidden="true">C</i>
+            <span>Captain Sessions</span>
+          </Link>
         </nav>
         <button className="palette-trigger" onClick={() => setPalette(true)}>
           <span>Command palette</span>

@@ -89,12 +89,12 @@
     },
     {
       "archive_path": "Codex_Chats/chats/019f6d0b-68b7-7a61-bf6f-22095f9b1ede--implement-chat-archival-sync.md",
-      "content_sha256": "773b6ce491de0c013091b2ca2e68c12ba4c5cfeb42eb4057941903f000e1fa0b",
+      "content_sha256": "62999de629114c25f7e642e6239b8f8c37af33c0e426d3a264a3d307e4b94cc8",
       "conversation_id": "019f6d0b-68b7-7a61-bf6f-22095f9b1ede",
       "created_at": "2026-07-16T22:28:12.966Z",
       "first_archived_at": "2026-07-16T22:38:49Z",
-      "last_synchronized_at": "2026-07-16T22:44:27Z",
-      "message_count": 119,
+      "last_synchronized_at": "2026-07-17T20:21:43Z",
+      "message_count": 123,
       "project_identifier": "treasurehunt",
       "redaction_categories": {
         "login_credential": 1,
@@ -103,11 +103,11 @@
       "redactions": 2,
       "source_export_timestamp": null,
       "source_identifier": "rollout-2026-07-16T18-28-12-019f6d0b-68b7-7a61-bf6f-22095f9b1ede.jsonl",
-      "source_sha256": "514815c7f90fc6cc3407f2d0b52f53ccf26e5b932b12038a6f6321a631707933",
+      "source_sha256": "7c0a9fc9664c8002dcddbb2f2c109e9b18978a9ec7801a6a607d2a2fe2674057",
       "source_type": "codex_session",
       "status": "active",
       "title": "Implement chat archival sync",
-      "updated_at": "2026-07-16T22:44:23.054Z"
+      "updated_at": "2026-07-16T22:45:32.425Z"
     },
     {
       "archive_path": "Codex_Chats/chats/019f6e3d-4202-70f1-901d-96869d69ab07--rehydrate-sea-of-thieves-project.md",
@@ -130,9 +130,97 @@
       "status": "active",
       "title": "Rehydrate Sea of Thieves project",
       "updated_at": "2026-07-17T05:09:19.433Z"
+    },
+    {
+      "archive_path": "Codex_Chats/chats/019f7152-3a02-7bd1-9715-cb895e108b9f--implement-prompt-details.md",
+      "content_sha256": "2845446d7f928f7f605623bb496bd24bf23b1adc28bb0a535f30cbda55525969",
+      "conversation_id": "019f7152-3a02-7bd1-9715-cb895e108b9f",
+      "created_at": "2026-07-17T18:24:02.861Z",
+      "first_archived_at": "2026-07-17T20:21:43Z",
+      "last_synchronized_at": "2026-07-17T21:23:22Z",
+      "message_count": 1024,
+      "project_identifier": "treasurehunt",
+      "redaction_categories": {
+        "login_credential": 5,
+        "secret_assignment": 6
+      },
+      "redactions": 11,
+      "source_export_timestamp": null,
+      "source_identifier": "rollout-2026-07-17T14-24-02-019f7152-3a02-7bd1-9715-cb895e108b9f.jsonl",
+      "source_sha256": "6824d27a22176cfd3365c59470ec0b8784193192eae31e09532e737d92708135",
+      "source_type": "codex_session",
+      "status": "active",
+      "title": "Implement prompt details",
+      "updated_at": "2026-07-17T20:41:35.098Z"
+    },
+    {
+      "archive_path": "Codex_Chats/chats/019f71df-dc7a-7641-a39a-625aba79af02--complete-phase.md",
+      "content_sha256": "8ad8a8a537dbb0997d44aaec31a76ead0c0d49bcb167e9fbe661ff10f02f67fe",
+      "conversation_id": "019f71df-dc7a-7641-a39a-625aba79af02",
+      "created_at": "2026-07-17T20:58:47.802Z",
+      "first_archived_at": "2026-07-17T21:23:22Z",
+      "last_synchronized_at": "2026-07-17T23:58:53Z",
+      "message_count": 1354,
+      "project_identifier": "treasurehunt",
+      "redaction_categories": {
+        "connection_string": 2,
+        "login_credential": 3,
+        "secret_assignment": 15
+      },
+      "redactions": 20,
+      "source_export_timestamp": null,
+      "source_identifier": "rollout-2026-07-17T16-58-44-019f71df-dc7a-7641-a39a-625aba79af02.jsonl",
+      "source_sha256": "c6fb3f13d56fa9908230f27b2ff7612d2013d54e020b2501787772213235adde",
+      "source_type": "codex_session",
+      "status": "active",
+      "title": "Complete phase",
+      "updated_at": "2026-07-17T23:59:00.145Z"
+    },
+    {
+      "archive_path": "Codex_Chats/chats/019f71e2-3dcf-76f3-8d0a-2eb6eae88df2--add-development_docs-sync.md",
+      "content_sha256": "fefe039c2556b136f2e30c67f3775a250e70ba3130593cf6db0b2fce0f9a1849",
+      "conversation_id": "019f71e2-3dcf-76f3-8d0a-2eb6eae88df2",
+      "created_at": "2026-07-17T21:01:31.759Z",
+      "first_archived_at": "2026-07-17T21:23:22Z",
+      "last_synchronized_at": "2026-07-17T22:54:07Z",
+      "message_count": 211,
+      "project_identifier": "treasurehunt",
+      "redaction_categories": {
+        "openai_key": 1,
+        "secret_assignment": 2
+      },
+      "redactions": 3,
+      "source_export_timestamp": null,
+      "source_identifier": "rollout-2026-07-17T17-01-20-019f71e2-3dcf-76f3-8d0a-2eb6eae88df2.jsonl",
+      "source_sha256": "64f4ce2aab7152a1b5a8d74f2127fd0b6a5510ef1488b102d6be51d61f4f4f94",
+      "source_type": "codex_session",
+      "status": "active",
+      "title": "Add Development_Docs sync",
+      "updated_at": "2026-07-17T21:27:57.430Z"
+    },
+    {
+      "archive_path": "Codex_Chats/chats/019f71f4-6a13-78e1-a8f6-71f1c052c449--rebuild-journal-page-physics.md",
+      "content_sha256": "4411b1205dcbc2dabd67655e317697ef56a25b6e778d4b501c32f0449b32c141",
+      "conversation_id": "019f71f4-6a13-78e1-a8f6-71f1c052c449",
+      "created_at": "2026-07-17T21:21:19.371Z",
+      "first_archived_at": "2026-07-17T21:23:22Z",
+      "last_synchronized_at": "2026-07-17T23:51:09Z",
+      "message_count": 569,
+      "project_identifier": "treasurehunt",
+      "redaction_categories": {
+        "login_credential": 1
+      },
+      "redactions": 1,
+      "source_export_timestamp": null,
+      "source_identifier": "rollout-2026-07-17T17-21-11-019f71f4-6a13-78e1-a8f6-71f1c052c449.jsonl",
+      "source_sha256": "9cfe1cad3feea1e95694cb88d611c493fdf1e8e6d61655c42e822d9785e6fadb",
+      "source_type": "codex_session",
+      "status": "active",
+      "title": "Rebuild journal page physics",
+      "updated_at": "2026-07-17T22:58:11.818Z"
     }
   ],
-  "last_successful_synchronization_at": "2026-07-17T05:09:19Z",
+  "last_successful_synchronization_at": "2026-07-17T23:58:53Z",
   "migration_history": [
     {
       "schema_version": "1.0",
@@ -154,17 +242,13 @@
   "source_coverage": {
     "complete_account_export": false,
     "inspected": [
-      "codex_session:C:\\Users\\kkids\\.codex\\sessions"
+      "codex_session:C:\\Users\\kgray\\.codex\\sessions"
     ]
   },
-  "synchronizer_version": "1.0.0",
-  "total_conversation_count": 6,
-  "total_message_count": 3417,
+  "synchronizer_version": "1.1.0",
+  "total_conversation_count": 10,
+  "total_message_count": 6579,
   "warnings": [
-    "Duplicate source record reconciled for 019dad68-91f3-7091-b4aa-6fee54fd1a1f",
-    "Duplicate source record reconciled for 019dad68-91f3-7091-b4aa-6fee54fd1a1f",
-    "Duplicate source record reconciled for 019dc22f-4155-7ad2-b1d6-bc451bf68259",
-    "Duplicate source record reconciled for 019dc22f-4155-7ad2-b1d6-bc451bf68259",
-    "Duplicate source record reconciled for 019dc22f-4155-7ad2-b1d6-bc451bf68259"
+    "Duplicate source record reconciled for 019eb237-487b-78d0-a637-e4e3bc865430"
   ]
 }

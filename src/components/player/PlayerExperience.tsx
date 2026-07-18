@@ -1,20 +1,63 @@
 "use client";
-import { AnimatePresence, motion } from "framer-motion";
-import { useCallback, useEffect, useRef, useState } from "react";
-import type { ClientProgressEvent, PublicSnapshot } from "@/domain/story";
-import { cinematicSequences, type CinematicSequenceName } from "@/components/cinematic/sequences";
-import { useCinematicTransition, type MotionMode } from "@/components/cinematic/useCinematicTransition";
-import { useCeremony } from "./useCeremony";
 
-type View = "journal" | "chart" | "treasures" | "quests" | "log" | "finale";
-const views: Array<{ key: View; label: string; symbol: string }> = [
-  { key: "journal", label: "Journal", symbol: "¶" },
-  { key: "chart", label: "Chart", symbol: "⌖" },
-  { key: "treasures", label: "Altar", symbol: "◇" },
-  { key: "quests", label: "Ledger", symbol: "☾" },
-  { key: "log", label: "Ship’s Log", symbol: "≋" },
-  { key: "finale", label: "Finale", symbol: "✺" },
-];
+import { useCallback, useEffect, useRef, useState } from "react";
+import { flushSync } from "react-dom";
+import { AnimatePresence, motion } from "motion/react";
+import type { AnimationSceneName } from "@/animation/core/animation-types";
+import { AudioCuePlayer, type AudioCueName } from "@/animation/core/audio-cues";
+import { useAnimationDirector } from "@/animation/director/useAnimationDirector";
+import { sectionVariants } from "@/animation/motion/variants";
+import { useMotionMode } from "@/animation/motion/useMotionMode";
+import {
+  isJournalInteractive,
+  waitForJournalPhase,
+  type JournalOpeningPhase,
+} from "@/animation/journal/opening-machine";
+import type { ClientProgressEvent, PublicSnapshot } from "@/domain/story";
+import { AnimationTestButton } from "@/components/dev/AnimationTestButton";
+import { ArtifactInspection } from "./workspace/ArtifactInspection";
+import { CompanionHeader } from "./workspace/CompanionHeader";
+import { CompanionNavigation, MobileNavigation } from "./workspace/CompanionNavigation";
+import { FinaleChamber } from "./workspace/FinaleChamber";
+import { JournalWorkspace } from "./workspace/JournalWorkspace";
+import { ObjectiveNote } from "./workspace/ObjectiveNote";
+import { ShipsLog } from "./workspace/ShipsLog";
+import { SideQuestLedger } from "./workspace/SideQuestLedger";
+import { TreasureAltar } from "./workspace/TreasureAltar";
+import { companionViews, type CompanionView } from "./workspace/types";
+import { VoyageChart } from "./workspace/VoyageChart";
+
+const sceneByEvent: Partial<Record<ClientProgressEvent["type"], AnimationSceneName>> = {
+  CHAPTER_RELEASED: "chapter-release",
+  CHAPTER_SOLVED: "mark-solved",
+  ARTIFACT_AWARDED: "artifact-award",
+  ARTIFACT_SILHOUETTE_REVEALED: "artifact-award",
+  ARTIFACT_CONNECTED: "artifact-connection",
+  MAP_LOCATION_REVEALED: "map-reveal",
+  MAP_ROUTE_REVEALED: "route-draw",
+  SIDE_QUEST_DISCOVERED: "quest-discovery",
+  SIDE_QUEST_UPDATED: "quest-discovery",
+  SIDE_QUEST_COMPLETED: "quest-complete",
+  JOURNAL_ANNOTATION_ADDED: "log-entry",
+  PLAYER_LOG_ENTRY_ADDED: "log-entry",
+  FINALE_TEASED: "finale-tease",
+  FINALE_REQUIREMENT_UPDATED: "finale-requirement",
+  CAMPAIGN_PAUSED: "pause",
+  CAMPAIGN_RESUMED: "resume",
+  STATE_REVERTED: "undo",
+};
+
+const cueByEvent: Partial<Record<ClientProgressEvent["type"], AudioCueName>> = {
+  CHAPTER_RELEASED: "wax-crack",
+  CHAPTER_SOLVED: "stamp-impact",
+  ARTIFACT_AWARDED: "artifact-chime",
+  MAP_LOCATION_REVEALED: "compass-click",
+  MAP_ROUTE_REVEALED: "map-scratch",
+  FINALE_TEASED: "mechanism-hum",
+  CAMPAIGN_PAUSED: "pause-wind-down",
+  STATE_REVERTED: "undo-reverse",
+};
+
 function deviceId() {
   let id = localStorage.getItem("forever-device");
   if (!id) {
@@ -23,74 +66,138 @@ function deviceId() {
   }
   return id;
 }
+
+function nextFrame() {
+  return new Promise<void>((resolve) => window.requestAnimationFrame(() => resolve()));
+}
+
 export function PlayerExperience({ initialSnapshot }: { initialSnapshot: PublicSnapshot }) {
+  const root = useRef<HTMLElement>(null);
   const [snapshot, setSnapshot] = useState(initialSnapshot);
-  const [view, setView] = useState<View>("journal");
-  const [opened, setOpened] = useState(false);
-  const [entryReady, setEntryReady] = useState(false);
+  const [view, setView] = useState<CompanionView>("journal");
+  const [openingPhase, setOpeningPhase] = useState<JournalOpeningPhase>("ENTRY_IDLE");
+  const [resettingJournal, setResettingJournal] = useState(false);
   const [muted, setMuted] = useState(false);
-  const [volume, setVolume] = useState(0.4);
+  const [volume, setVolumeState] = useState(0.4);
   const [connection, setConnection] = useState<"connecting" | "live" | "adrift">("connecting");
-  const [motionMode, setMotionMode] = useState<MotionMode>("full");
-  const reduced = motionMode === "reduced";
   const [lastRelease, setLastRelease] = useState<ClientProgressEvent | null>(null);
+  const [activeEvent, setActiveEvent] = useState<ClientProgressEvent | null>(null);
   const [selectedArtifact, setSelectedArtifact] = useState<string | null>(null);
+  const [inspectionOrigin, setInspectionOrigin] = useState<HTMLElement | null>(null);
   const [objectiveOpen, setObjectiveOpen] = useState(false);
-  const [textScale, setTextScale] = useState(1);
-  const [textureIntensity, setTextureIntensity] = useState(1);
-  const audioContext = useRef<AudioContext | null>(null);
-  const cinematic = useCinematicTransition(motionMode);
-  const playCinematic = cinematic.play;
-  const seenAmbientEvents = useRef(new Set<string>());
+  const [textScale, setTextScaleState] = useState(1);
+  const [texture, setTextureState] = useState(1);
+  const [openingSpeed, setOpeningSpeed] = useState<0.25 | 0.5 | 1>(1);
+  const eventChain = useRef<Promise<void>>(Promise.resolve());
+  const openingRun = useRef<AbortController | null>(null);
+  const openingBusy = useRef(false);
+  const seenEvents = useRef(new Set<string>());
+  const latestSequence = useRef(initialSnapshot.sequence);
+  const audio = useRef(new AudioCuePlayer());
+  const { director, snapshot: animation } = useAnimationDirector();
+  const { mode, cycle } = useMotionMode();
+  const journalReady = isJournalInteractive(openingPhase);
+
+  useEffect(() => {
+    const audioEngine = audio.current;
+    queueMicrotask(() => {
+      const savedMuted = localStorage.getItem("forever-muted") === "true";
+      const savedVolume = Number(localStorage.getItem("forever-volume") ?? 0.4);
+      setMuted(savedMuted);
+      setVolumeState(savedVolume);
+      setTextScaleState(Number(localStorage.getItem("forever-text-scale") ?? 1));
+      setTextureState(Number(localStorage.getItem("forever-texture") ?? 1));
+      audioEngine.setMuted(savedMuted);
+      audioEngine.setVolume(savedVolume);
+    });
+    return () => {
+      openingRun.current?.abort();
+      audioEngine.close();
+    };
+  }, []);
+
   const refreshSnapshot = useCallback(async () => {
-    const response = await fetch(`/api/player/${snapshot.campaign.slug}/snapshot`, { cache: "no-store" });
+    const response = await fetch(`/api/player/${initialSnapshot.campaign.slug}/snapshot`, { cache: "no-store" });
     if (!response.ok) throw new Error("The latest voyage state could not be loaded.");
-    setSnapshot(await response.json());
-  }, [snapshot.campaign.slug]);
-  const complete = useCallback(
+    const next = (await response.json()) as PublicSnapshot;
+    latestSequence.current = Math.max(latestSequence.current, next.sequence);
+    setSnapshot(next);
+    return next;
+  }, [initialSnapshot.campaign.slug]);
+
+  const completeEvent = useCallback(
     async (event: ClientProgressEvent) => {
-      if (event.type === "CHAPTER_RELEASED") setLastRelease(event);
       try {
         await refreshSnapshot();
-        if (!event.id.includes(":replay:"))
-          await fetch(`/api/player/${snapshot.campaign.slug}/viewed`, {
+        if (!event.id.includes(":replay:")) {
+          await fetch(`/api/player/${initialSnapshot.campaign.slug}/viewed`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ eventId: event.id, deviceId: deviceId() }),
           });
+        }
       } catch {
         setConnection("adrift");
       }
     },
-    [refreshSnapshot, snapshot.campaign.slug],
+    [initialSnapshot.campaign.slug, refreshSnapshot],
   );
-  const ceremony = useCeremony({ reducedMotion: reduced, gentleMotion: motionMode === "gentle", onComplete: complete });
+
+  const playEvent = useCallback(
+    async (event: ClientProgressEvent, replay = false) => {
+      if (!root.current) return;
+      const scene = sceneByEvent[event.type];
+      flushSync(() => {
+        if (event.type === "CHAPTER_RELEASED") setLastRelease(event);
+        setActiveEvent(event);
+      });
+      const cue = cueByEvent[event.type];
+      if (cue) audio.current.play(cue);
+      try {
+        if (scene)
+          await director.play(scene, {
+            root: root.current,
+            display: event.payload as Record<string, string | number | boolean>,
+            queue: true,
+          });
+      } catch {
+        // Presentation failure must not prevent reconciliation with authoritative state.
+      }
+      if (!replay) await completeEvent(event);
+      setActiveEvent(null);
+    },
+    [completeEvent, director],
+  );
+
   useEffect(() => {
-    const key = `forever-journal-open:${snapshot.campaign.slug}`;
-    queueMicrotask(() => {
-      setOpened(sessionStorage.getItem(key) === "open");
-      setEntryReady(true);
+    const source = new EventSource(
+      `/api/player/${initialSnapshot.campaign.slug}/events?after=${latestSequence.current}`,
+    );
+    const offline = () => setConnection("adrift");
+    const online = () => {
+      setConnection("connecting");
+      void refreshSnapshot()
+        .then(() => setConnection("live"))
+        .catch(() => setConnection("adrift"));
+    };
+    source.onopen = () => setConnection("live");
+    source.onerror = () => setConnection("adrift");
+    source.addEventListener("progression", (message) => {
+      const event = JSON.parse((message as MessageEvent).data) as ClientProgressEvent;
+      if (seenEvents.current.has(event.id)) return;
+      seenEvents.current.add(event.id);
+      latestSequence.current = Math.max(latestSequence.current, event.sequence);
+      eventChain.current = eventChain.current.then(() => playEvent(event)).catch(() => undefined);
     });
-  }, [snapshot.campaign.slug]);
-  useEffect(() => {
-    const media = matchMedia("(prefers-reduced-motion: reduce)");
-    const sync = () =>
-      setMotionMode(
-        media.matches
-          ? "reduced"
-          : ((localStorage.getItem("forever-motion") as MotionMode | null) ??
-              (localStorage.getItem("forever-reduced") === "true" ? "gentle" : "full")),
-      );
-    queueMicrotask(() => {
-      setMuted(localStorage.getItem("forever-muted") === "true");
-      setVolume(Number(localStorage.getItem("forever-volume") ?? 0.4));
-      setTextScale(Number(localStorage.getItem("forever-text-scale") ?? 1));
-      setTextureIntensity(Number(localStorage.getItem("forever-texture") ?? 1));
-      sync();
-    });
-    media.addEventListener("change", sync);
-    return () => media.removeEventListener("change", sync);
-  }, []);
+    window.addEventListener("offline", offline);
+    window.addEventListener("online", online);
+    return () => {
+      source.close();
+      window.removeEventListener("offline", offline);
+      window.removeEventListener("online", online);
+    };
+  }, [initialSnapshot.campaign.slug, playEvent, refreshSnapshot]);
+
   useEffect(() => {
     const report = (disconnected = false) =>
       fetch(`/api/player/${snapshot.campaign.slug}/presence`, {
@@ -115,136 +222,25 @@ export function PlayerExperience({ initialSnapshot }: { initialSnapshot: PublicS
       void report(true);
     };
   }, [snapshot.campaign.slug, snapshot.sequence, view]);
+
   useEffect(() => {
     const readLocation = () => {
-      const requested = new URLSearchParams(location.search).get("section") as View | null;
-      if (requested && views.some((item) => item.key === requested)) setView(requested);
+      const params = new URLSearchParams(location.search);
+      const requested = params.get("section") as CompanionView | null;
+      setView(requested && companionViews.some((item) => item.key === requested) ? requested : "journal");
+      if (process.env.NODE_ENV !== "production") {
+        const requestedSpeed = Number(params.get("journalSpeed") ?? 1);
+        setOpeningSpeed(requestedSpeed === 0.25 || requestedSpeed === 0.5 ? requestedSpeed : 1);
+      }
     };
     readLocation();
     window.addEventListener("popstate", readLocation);
     return () => window.removeEventListener("popstate", readLocation);
   }, []);
+
   useEffect(() => {
-    if (ceremony.stage !== "seal" || muted || !audioContext.current) return;
-    const context = audioContext.current;
-    const gain = context.createGain();
-    const tone = context.createOscillator();
-    tone.type = "triangle";
-    tone.frequency.setValueAtTime(92, context.currentTime);
-    tone.frequency.exponentialRampToValueAtTime(42, context.currentTime + 0.5);
-    gain.gain.setValueAtTime(Math.max(0.001, volume * 0.16), context.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.001, context.currentTime + 0.55);
-    tone.connect(gain).connect(context.destination);
-    tone.start();
-    tone.stop(context.currentTime + 0.56);
-  }, [ceremony.stage, muted, volume]);
-  const enqueueCeremony = ceremony.enqueue;
-  useEffect(() => {
-    const source = new EventSource(`/api/player/${snapshot.campaign.slug}/events?after=${snapshot.sequence}`);
-    const offline = () => setConnection("adrift");
-    const online = () => {
-      setConnection("connecting");
-      void refreshSnapshot().catch(() => setConnection("adrift"));
-    };
-    source.onopen = () => setConnection("live");
-    source.onerror = () => setConnection("adrift");
-    source.addEventListener("progression", (message) => {
-      const event = JSON.parse((message as MessageEvent).data) as ClientProgressEvent;
-      if (event.type === "CHAPTER_RELEASED") enqueueCeremony(event);
-      else if (!seenAmbientEvents.current.has(event.id)) {
-        seenAmbientEvents.current.add(event.id);
-        const sequenceByEvent: Partial<Record<ClientProgressEvent["type"], CinematicSequenceName>> = {
-          CHAPTER_PREPARED: "prepare",
-          CHAPTER_SOLVED: "solved",
-          ARTIFACT_AWARDED: "artifact",
-          MAP_LOCATION_REVEALED: "map",
-          MAP_ROUTE_REVEALED: "map",
-          ARTIFACT_SILHOUETTE_REVEALED: "artifact",
-          ARTIFACT_CONNECTED: "artifact",
-          SIDE_QUEST_DISCOVERED: "prepare",
-          SIDE_QUEST_COMPLETED: "solved",
-          FINALE_TEASED: "prepare",
-          CAMPAIGN_PAUSED: "pause",
-          CAMPAIGN_RESUMED: "resume",
-          STATE_REVERTED: "undo",
-        };
-        const sequence = sequenceByEvent[event.type];
-        if (sequence)
-          void playCinematic(sequence, cinematicSequences[sequence])
-            .then(() => complete(event))
-            .catch(() => complete(event));
-        else void complete(event);
-      }
-    });
-    window.addEventListener("offline", offline);
-    window.addEventListener("online", online);
-    return () => {
-      source.close();
-      window.removeEventListener("offline", offline);
-      window.removeEventListener("online", online);
-    };
-  }, [enqueueCeremony, complete, refreshSnapshot, snapshot.campaign.slug, snapshot.sequence, playCinematic]);
-  const stageIndex = ceremony.current
-    ? Math.max(
-        0,
-        [
-          "omen",
-          "attention",
-          "seal",
-          "parchment",
-          "ink-heading",
-          "ink-story",
-          "ink-objective",
-          "ink-riddle",
-          "map",
-          "active",
-        ].indexOf(ceremony.stage),
-      )
-    : 10;
-  const readable = Boolean(snapshot.chapter.title) || (ceremony.current && stageIndex >= 4);
-  const content = ceremony.current?.payload ?? snapshot.chapter;
-  const objective =
-    !ceremony.isPlaying || stageIndex >= 6
-      ? String(content.objective ?? "Await the captain’s signal.")
-      : String(snapshot.chapter.objective ?? "Await the captain’s signal.");
-  function toggleMute() {
-    setMuted((value) => {
-      localStorage.setItem("forever-muted", String(!value));
-      return !value;
-    });
-  }
-  function toggleReduced() {
-    setMotionMode((value) => {
-      const next: MotionMode = value === "full" ? "gentle" : value === "gentle" ? "reduced" : "full";
-      localStorage.setItem("forever-motion", next);
-      localStorage.setItem("forever-reduced", String(next !== "full"));
-      return next;
-    });
-  }
-  async function openJournal(forceFull = false) {
-    if (!audioContext.current) audioContext.current = new AudioContext();
-    void audioContext.current.resume();
-    setOpened(true);
-    sessionStorage.setItem(`forever-journal-open:${snapshot.campaign.slug}`, "open");
-    const key = `forever-intro:${snapshot.campaign.slug}`;
-    const firstArrival = forceFull || sessionStorage.getItem(key) !== "seen";
-    sessionStorage.setItem(key, "seen");
-    await cinematic
-      .play(
-        firstArrival ? "firstArrival" : "reentry",
-        firstArrival ? cinematicSequences.firstArrival : cinematicSequences.reentry,
-      )
-      .catch(() => undefined);
-  }
-  function navigate(next: View) {
-    setView(next);
-    const url = new URL(location.href);
-    url.searchParams.set("section", next);
-    history.pushState({}, "", url);
-  }
-  useEffect(() => {
-    if (!opened) return;
-    const entries: Record<View, { contentType: string; contentKeys: string[] }> = {
+    if (!journalReady) return;
+    const entries: Record<CompanionView, { contentType: string; contentKeys: string[] }> = {
       journal: {
         contentType: "chapter",
         contentKeys: snapshot.chapters.filter((item) => item.unseen).map((item) => String(item.ordinal)),
@@ -266,122 +262,169 @@ export function PlayerExperience({ initialSnapshot }: { initialSnapshot: PublicS
     };
     const entry = entries[view];
     if (!entry.contentKeys.length) return;
-    const timer = window.setTimeout(() => {
-      void fetch(`/api/player/${snapshot.campaign.slug}/viewed`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(entry),
-      })
-        .then(() => refreshSnapshot())
-        .catch(() => undefined);
-    }, 900);
-    return () => clearTimeout(timer);
-  }, [opened, refreshSnapshot, snapshot, view]);
-  const inspectedArtifact = snapshot.artifacts.find((item) => item.key === selectedArtifact);
+    const controller = new AbortController();
+    void fetch(`/api/player/${snapshot.campaign.slug}/viewed`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(entry),
+      signal: controller.signal,
+    })
+      .then(() => refreshSnapshot())
+      .catch(() => undefined);
+    return () => controller.abort();
+  }, [journalReady, refreshSnapshot, snapshot, view]);
+
+  async function openJournal(forceFull = false) {
+    if (openingBusy.current || !root.current) return;
+    openingBusy.current = true;
+    const controller = new AbortController();
+    openingRun.current = controller;
+    audio.current.stopAll();
+    audio.current.unlock();
+    const advance = async (phase: JournalOpeningPhase, cue?: AudioCueName) => {
+      if (controller.signal.aborted || !root.current) throw new DOMException("Opening interrupted", "AbortError");
+      flushSync(() => setOpeningPhase(phase));
+      if (cue) audio.current.play(cue);
+      await waitForJournalPhase(root.current, phase, mode, controller.signal);
+    };
+    try {
+      if (forceFull) {
+        flushSync(() => {
+          setResettingJournal(true);
+          setView("journal");
+          setOpeningPhase("ENTRY_IDLE");
+        });
+        await nextFrame();
+        await nextFrame();
+        flushSync(() => setResettingJournal(false));
+      }
+      await advance("ENTRY_ACTIVATED", "ocean-rise");
+      const key = `forever-intro:${snapshot.campaign.slug}`;
+      const first = forceFull || sessionStorage.getItem(key) !== "seen";
+      try {
+        await director.play(first ? "first-arrival" : "session-reentry", { root: root.current, queue: false });
+      } catch {
+        // The physical state machine remains authoritative if the atmospheric prelude is unavailable.
+      }
+      await advance("CLOSED_BOOK_REVEAL");
+      await advance("LATCH_RELEASING", "brass-latch");
+      await advance("COVER_OPENING", "wood-creak");
+      await advance("SEALED_PAGE_REVEAL", "seal-pressure");
+      await advance("SEAL_BREAKING", "wax-crack");
+      await advance("BOOK_SETTLING", "paper-flutter");
+      await advance("JOURNAL_READY");
+      sessionStorage.setItem(key, "seen");
+    } catch (cause) {
+      if (!(cause instanceof DOMException && cause.name === "AbortError")) {
+        flushSync(() => setOpeningPhase("JOURNAL_READY"));
+      }
+    } finally {
+      if (openingRun.current === controller) openingRun.current = null;
+      openingBusy.current = false;
+    }
+  }
+
+  function navigate(next: CompanionView) {
+    setView(next);
+    const url = new URL(location.href);
+    url.searchParams.set("section", next);
+    history.pushState({}, "", url);
+  }
+
+  function toggleMute() {
+    setMuted((value) => {
+      const next = !value;
+      localStorage.setItem("forever-muted", String(next));
+      audio.current.setMuted(next);
+      return next;
+    });
+  }
+  function setVolume(value: number) {
+    setVolumeState(value);
+    localStorage.setItem("forever-volume", String(value));
+    audio.current.setVolume(value);
+  }
+  function setTextScale(value: number) {
+    setTextScaleState(value);
+    localStorage.setItem("forever-text-scale", String(value));
+  }
+  function setTexture(value: number) {
+    setTextureState(value);
+    localStorage.setItem("forever-texture", String(value));
+  }
+
+  const payloadObjective =
+    activeEvent?.type === "CHAPTER_RELEASED" &&
+    [
+      "ink-objective",
+      "ink-riddle",
+      "map",
+      "active",
+      "content-readable",
+      "interaction-restored",
+      "scene-complete",
+    ].includes(animation.label)
+      ? String(activeEvent.payload.objective ?? "")
+      : null;
+  const objective = payloadObjective || snapshot.chapter.objective || "Await the captain's signal.";
+  const inspectedArtifact = snapshot.artifacts.find((artifact) => artifact.key === selectedArtifact);
+  const animationSequence =
+    animation.scene === "first-arrival"
+      ? "firstArrival"
+      : animation.scene === "session-reentry"
+        ? "reentry"
+        : (animation.scene ?? "dormant");
+
   return (
     <main
-      className={`voyage-shell stage-${ceremony.stage} cinematic-${cinematic.stage} view-${view}`}
-      data-cinematic-sequence={cinematic.name}
-      style={{ "--player-text-scale": textScale, "--texture-opacity": textureIntensity } as React.CSSProperties}
+      ref={root}
+      className={`voyage-shell stage-${animation.label} view-${view}${resettingJournal ? " journal-resetting" : ""}`}
+      data-cinematic-sequence={animationSequence}
+      data-journal-phase={openingPhase}
+      data-journal-speed={openingSpeed}
+      data-motion-mode={mode}
+      style={{ "--player-text-scale": textScale, "--texture-opacity": texture } as React.CSSProperties}
     >
-      <div className="ocean-depth" aria-hidden="true" />
-      <header className="companion-bar">
-        <div>
-          <p className="eyebrow">The Forever Treasure</p>
-          <h1>Voyage Companion</h1>
-        </div>
-        <div className="companion-controls">
-          <span className={`connection ${connection}`}>
-            {connection === "live" ? "Tide connected" : connection === "adrift" ? "Signal adrift" : "Finding the tide"}
-          </span>
-          <button onClick={toggleMute} aria-pressed={muted}>
-            {muted ? "Sound off" : "Sound on"}
-          </button>
-          <label className="volume-control">
-            Volume
-            <input
-              aria-label="Master volume"
-              type="range"
-              min="0"
-              max="1"
-              step="0.05"
-              value={volume}
-              onChange={(event) => {
-                const next = Number(event.target.value);
-                setVolume(next);
-                localStorage.setItem("forever-volume", String(next));
-              }}
-            />
-          </label>
-          <button
-            onClick={toggleReduced}
-            aria-pressed={motionMode !== "full"}
-            aria-label={`Motion: ${motionMode}. Change motion setting`}
-          >
-            {motionMode === "full" ? "Full motion" : motionMode === "gentle" ? "Gentle motion" : "Reduced motion"}
-          </button>
-          <button
-            onClick={() =>
-              document.fullscreenElement ? document.exitFullscreen?.() : document.documentElement.requestFullscreen?.()
-            }
-          >
-            Companion mode
-          </button>
-          <details className="preference-menu">
-            <summary>Preferences</summary>
-            <label>
-              Text size{" "}
-              <input
-                aria-label="Text size"
-                type="range"
-                min="0.9"
-                max="1.35"
-                step="0.05"
-                value={textScale}
-                onChange={(event) => {
-                  const next = Number(event.target.value);
-                  setTextScale(next);
-                  localStorage.setItem("forever-text-scale", String(next));
-                }}
-              />
-            </label>
-            <label>
-              Texture{" "}
-              <input
-                aria-label="Texture intensity"
-                type="range"
-                min="0"
-                max="1"
-                step="0.1"
-                value={textureIntensity}
-                onChange={(event) => {
-                  const next = Number(event.target.value);
-                  setTextureIntensity(next);
-                  localStorage.setItem("forever-texture", String(next));
-                }}
-              />
-            </label>
-            <button onClick={() => lastRelease && ceremony.replay(lastRelease)} disabled={!lastRelease}>
-              Replay last ceremony
-            </button>
-          </details>
-        </div>
-      </header>
-      <nav className="companion-navigation" aria-label="Companion sections">
-        {views.map((item) => (
-          <button
-            key={item.key}
-            aria-current={view === item.key ? "page" : undefined}
-            className={view === item.key ? "active" : ""}
-            onClick={() => navigate(item.key)}
-          >
-            <span aria-hidden="true">{item.symbol}</span>
-            {item.label}
-            {snapshot.unseen[item.key] > 0 && <small aria-label={`${snapshot.unseen[item.key]} unseen`}>New</small>}
-          </button>
-        ))}
-      </nav>
-      {entryReady && !opened && (
+      <div className="ocean-depth" data-scene-part="workspace-light" data-gsap-owned aria-hidden="true">
+        <div data-scene-part="sky" data-gsap-owned />
+        <div data-scene-part="horizon" data-gsap-owned />
+        <div data-scene-part="ocean" data-gsap-owned />
+        <div data-scene-part="fog-back" data-gsap-owned />
+        <div data-scene-part="fog-front" data-gsap-owned />
+      </div>
+      <div className="player-lantern" data-scene-part="lantern" data-gsap-owned aria-hidden="true">
+        <i />
+        <b />
+      </div>
+      <div
+        className="persistent-interface"
+        data-opening-actor="persistent-interface"
+        aria-hidden={!journalReady}
+        inert={!journalReady ? true : undefined}
+      >
+        <CompanionHeader
+          connection={connection}
+          muted={muted}
+          volume={volume}
+          mode={mode}
+          textScale={textScale}
+          texture={texture}
+          canReplay={Boolean(lastRelease)}
+          toggleMute={toggleMute}
+          setVolume={setVolume}
+          cycleMotion={cycle}
+          setTextScale={setTextScale}
+          setTexture={setTexture}
+          replay={() =>
+            lastRelease && void playEvent({ ...lastRelease, id: `${lastRelease.id}:replay:${Date.now()}` }, true)
+          }
+        />
+        <CompanionNavigation view={view} unseen={snapshot.unseen} navigate={navigate} />
+      </div>
+      <div className="persistent-mobile-interface" aria-hidden={!journalReady} inert={!journalReady ? true : undefined}>
+        <MobileNavigation view={view} unseen={snapshot.unseen} navigate={navigate} />
+      </div>
+      {(openingPhase === "ENTRY_IDLE" || openingPhase === "ENTRY_ACTIVATED") && (
         <div className="journal-opening">
           <button className="wax-open" onClick={() => void openJournal()}>
             <span>F</span>
@@ -390,401 +433,206 @@ export function PlayerExperience({ initialSnapshot }: { initialSnapshot: PublicS
           </button>
         </div>
       )}
-      <div
-        className={`workspace ${!(["journal", "chart", "treasures"] as View[]).includes(view) ? "section-hidden" : ""}`}
-        aria-hidden={!entryReady || !opened || !(["journal", "chart", "treasures"] as View[]).includes(view)}
-      >
-        <aside className={`chart-panel panel ${view === "chart" ? "mobile-current" : ""}`}>
-          <PanelTitle index="I" title="Voyage chart" />
-          <div className="chart">
-            <div className="chart-lines" />
-            <div className="fog-bank" />
-            {snapshot.mapLocations
-              .filter((location) => location.x !== undefined && location.y !== undefined)
-              .map((location) => (
-                <motion.div
-                  initial={{ scale: 0, rotate: -20 }}
-                  animate={{ scale: 1, rotate: 0 }}
-                  className="map-marker"
-                  style={{ left: `${location.x}%`, top: `${location.y}%` }}
-                  key={location.key}
-                >
-                  <span>✦</span>
-                  <b>{location.name}</b>
-                </motion.div>
-              ))}
-            {ceremony.stage === "map" && (
-              <div className="map-marker discovering" style={{ left: "63%", top: "43%" }}>
-                <span>✦</span>
-                <b>Port Merrick</b>
-              </div>
-            )}
-          </div>
-          <p className="panel-note">
-            {snapshot.mapLocations.length ? "A new mark stains the chart." : "Fog keeps the first bearing hidden."}
-          </p>
-          <ol className="map-alternative" aria-label="Voyage locations" tabIndex={0}>
-            {snapshot.mapLocations.map((location) => (
-              <li key={location.key}>
-                <strong>{location.name}</strong>
-                <span>
-                  {location.state.replaceAll("_", " ")}
-                  {location.regionLabel ? ` · ${location.regionLabel}` : ""}
-                </span>
-              </li>
-            ))}
-          </ol>
-          {snapshot.mapRoutes.length > 0 && (
-            <ol className="route-list" aria-label="Revealed route segments">
-              {snapshot.mapRoutes.map((route) => (
-                <li key={route.key}>
-                  <span aria-hidden="true">⟶</span>
-                  <b>
-                    {snapshot.mapLocations.find((item) => item.key === route.fromKey)?.name ?? "Known mark"} to{" "}
-                    {snapshot.mapLocations.find((item) => item.key === route.toKey)?.name ?? "Known mark"}
-                  </b>
-                  {route.annotation && <small>{route.annotation}</small>}
-                </li>
-              ))}
-            </ol>
-          )}
-        </aside>
-        <section className={`journal-panel ${view === "journal" ? "mobile-current" : ""}`} aria-label="Current chapter">
-          <div className="book-spine" />
-          <div className="page left-page">
-            <p className="folio">— {snapshot.chapter.ordinal} —</p>
-            <p className="script-note">A course drawn beneath paired stars</p>
-            <div className="constellation" aria-hidden="true">
-              <i />
-              <i />
-              <i />
-              <i />
-              <span />
-            </div>
-            <p className="margin-verse">
-              Keep the moon to larboard
-              <br />
-              and the promise close.
-            </p>
-            <ol className="chapter-index" aria-label="Chapter index" tabIndex={0}>
-              {snapshot.chapters.map((chapter) => (
-                <li key={chapter.ordinal} className={chapter.ordinal === snapshot.chapter.ordinal ? "current" : ""}>
-                  <span>Chapter {chapter.ordinal}</span>
-                  <b>{chapter.title ?? chapter.teaser ?? "The page remains sealed"}</b>
-                  <small>
-                    {chapter.state.replaceAll("_", " ")}
-                    {chapter.unseen ? " · new" : ""}
-                  </small>
-                </li>
-              ))}
-            </ol>
-          </div>
-          <div className="page right-page">
-            <div className={`sealed-content ${readable ? "is-open" : ""}`}>
-              {!readable ? (
-                <>
-                  <p className="eyebrow">Chapter sealed</p>
-                  <h2>Awaiting the captain’s signal</h2>
-                  <p>The page is quiet. Its ink remains somewhere beyond the horizon.</p>
-                  <div className="seal-wrap">
-                    <div className="seal-cracks" />
-                    <div className="wax-seal">F</div>
-                  </div>
-                </>
-              ) : (
-                <>
-                  <motion.p className="eyebrow ink-line" animate={{ opacity: stageIndex >= 4 ? 1 : 0 }}>
-                    Chapter {snapshot.chapter.ordinal}
-                  </motion.p>
-                  <motion.h2 className="ink-line" animate={{ opacity: stageIndex >= 4 ? 1 : 0 }}>
-                    {String(content.title ?? "")}
-                  </motion.h2>
-                  <motion.p className="narrative ink-line" animate={{ opacity: stageIndex >= 5 ? 1 : 0 }}>
-                    {String(content.narrative ?? "")}
-                  </motion.p>
-                  <motion.div className="objective-card ink-line" animate={{ opacity: stageIndex >= 6 ? 1 : 0 }}>
-                    <span>Present course</span>
-                    <strong>{objective}</strong>
-                  </motion.div>
-                  <motion.blockquote className="riddle ink-line" animate={{ opacity: stageIndex >= 7 ? 1 : 0 }}>
-                    {String(content.riddle ?? "")
-                      .split("\n")
-                      .map((line) => (
-                        <span key={line}>{line}</span>
-                      ))}
-                  </motion.blockquote>
-                </>
-              )}
-            </div>
-          </div>
-        </section>
-        <aside className={`treasure-panel panel ${view === "treasures" ? "mobile-current" : ""}`}>
-          <PanelTitle index="II" title="Recovered relics" />
-          <div className="artifact-frame artifact-altar">
-            {snapshot.artifacts.some((item) => item.state !== "UNKNOWN") ? (
-              snapshot.artifacts.map((artifact) => (
-                <button
-                  key={artifact.key}
-                  className={`altar-position state-${artifact.state.toLowerCase()}`}
-                  style={{ left: `${artifact.displayX}%`, top: `${artifact.displayY}%` }}
-                  onClick={() => artifact.name && setSelectedArtifact(artifact.key)}
-                  aria-label={`${artifact.name ?? artifact.safeName ?? "Unknown artifact"}, ${artifact.state.toLowerCase()}`}
-                >
-                  <i aria-hidden="true" />
-                  <b>{artifact.name ?? artifact.safeName ?? "Unknown"}</b>
-                </button>
-              ))
-            ) : (
-              <>
-                <div className="empty-sigil">◇</div>
-                <span>One shape waits in the velvet</span>
-              </>
-            )}
-          </div>
-          <div className="side-quest">
-            <span>Whispered course</span>
-            <b>{snapshot.sideQuest?.state === "UNDISCOVERED" ? "Undiscovered" : snapshot.sideQuest?.title}</b>
-          </div>
-        </aside>
-      </div>
-      {opened && view === "quests" && (
-        <section className="companion-section quest-ledger" aria-labelledby="quest-heading">
-          <header>
-            <p className="eyebrow">Optional mysteries</p>
-            <h2 id="quest-heading">Side-Quest Ledger</h2>
-            <p>Rumors may enrich the voyage, but never bar the main course.</p>
-          </header>
-          {snapshot.sideQuests.length ? (
-            <div className="quest-pages">
-              {snapshot.sideQuests.map((quest) => (
-                <article key={quest.key} className={`quest-note state-${quest.state.toLowerCase()}`}>
-                  <span>{quest.state.replaceAll("_", " ")}</span>
-                  <h3>{quest.title ?? "A whispered rumor"}</h3>
-                  <p>{quest.description ?? quest.teaser ?? "Only a safe symbol has appeared."}</p>
-                  {quest.objectives && (
-                    <ol>
-                      {quest.objectives.map((item) => (
-                        <li key={item.ordinal} className={item.complete ? "complete" : ""}>
-                          {item.body}
-                        </li>
-                      ))}
-                    </ol>
-                  )}
-                  {quest.reward && (
-                    <small>Optional reward · {quest.reward.label ?? quest.reward.type.replaceAll("_", " ")}</small>
-                  )}
-                </article>
-              ))}
-            </div>
-          ) : (
-            <EmptyState title="No optional rumors yet" body="The ledger is ready when a mystery chooses to surface." />
-          )}
-        </section>
-      )}
-      {opened && view === "log" && (
-        <section className="companion-section ships-log" aria-labelledby="log-heading">
-          <header>
-            <p className="eyebrow">Chronicle of the voyage</p>
-            <h2 id="log-heading">Ship’s Log</h2>
-          </header>
-          {snapshot.log.length ? (
-            <ol className="log-timeline">
-              {snapshot.log.map((entry) => (
-                <li key={entry.key} className={entry.unseen ? "unseen" : ""}>
-                  <span aria-hidden="true">{entry.symbol}</span>
-                  <div>
-                    <time>
-                      {new Date(entry.timestamp).toLocaleString([], { dateStyle: "medium", timeStyle: "short" })}
-                    </time>
-                    <h3>{entry.title}</h3>
-                    <p>{entry.summary}</p>
-                    {entry.section !== "log" && (
-                      <button onClick={() => navigate(entry.section)}>
-                        Open {views.find((item) => item.key === entry.section)?.label}
-                      </button>
-                    )}
-                  </div>
-                </li>
-              ))}
-            </ol>
-          ) : (
-            <EmptyState
-              title="The log awaits its first line"
-              body="Player-facing voyage events will be recorded here automatically."
-            />
-          )}
-        </section>
-      )}
-      {opened && view === "finale" && (
-        <section className="companion-section finale-chamber" aria-labelledby="finale-heading">
-          <div className="finale-mechanism" aria-hidden="true">
-            <i />
-            <i />
-            <i />
-            <b>F</b>
-          </div>
-          <p className="eyebrow">{snapshot.finale.state.replaceAll("_", " ")}</p>
-          <h2 id="finale-heading">The Final Seal</h2>
-          <p>
-            {snapshot.finale.teaser ??
-              "The last pages remain safely chained. Nothing beyond the seal has been entrusted to this companion."}
-          </p>
-          {snapshot.finale.requirements.length > 0 && (
-            <ul className="finale-requirements">
-              {snapshot.finale.requirements.map((item) => (
-                <li key={item.key}>
-                  <span>
-                    {item.label}
-                    {item.optional ? " · optional" : ""}
-                  </span>
-                  <div aria-label={`${item.current} of ${item.target}`}>
-                    {Array.from({ length: item.target }, (_, index) => (
-                      <i key={index} className={index < item.current ? "lit" : ""} />
-                    ))}
-                  </div>
-                </li>
-              ))}
-            </ul>
-          )}
-        </section>
-      )}
-      {inspectedArtifact && (
-        <div className="artifact-inspection-backdrop" onClick={() => setSelectedArtifact(null)}>
-          <section
-            className="artifact-inspection"
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="artifact-name"
-            onClick={(event) => event.stopPropagation()}
+      <div className="physical-workspace" aria-hidden={!journalReady} inert={!journalReady ? true : undefined}>
+        <AnimatePresence mode="wait" initial={false}>
+          <motion.div
+            key={view}
+            className="section-transition"
+            variants={sectionVariants(mode)}
+            initial="initial"
+            animate="enter"
+            exit="exit"
+            onAnimationComplete={(definition) => {
+              if (definition === "enter" && journalReady) {
+                document.querySelector<HTMLElement>("[data-section-heading]")?.focus({ preventScroll: true });
+              }
+            }}
+            data-animation-owner="motion"
           >
-            <button className="close-inspection" onClick={() => setSelectedArtifact(null)}>
-              Close
-            </button>
-            <div className="artifact-focus" aria-hidden="true">
-              ◇
-            </div>
-            <p className="eyebrow">{inspectedArtifact.state.replaceAll("_", " ")}</p>
-            <h2 id="artifact-name">{inspectedArtifact.name}</h2>
-            <p>{inspectedArtifact.description}</p>
-            {inspectedArtifact.discoveryText && <blockquote>{inspectedArtifact.discoveryText}</blockquote>}
-            <dl>
-              <div>
-                <dt>Category</dt>
-                <dd>{inspectedArtifact.category?.replaceAll("_", " ")}</dd>
-              </div>
-              {inspectedArtifact.chapterOrdinal && (
-                <div>
-                  <dt>Journal</dt>
-                  <dd>Chapter {inspectedArtifact.chapterOrdinal}</dd>
-                </div>
-              )}
-              {inspectedArtifact.connectedArtifactKey && (
-                <div>
-                  <dt>Connection</dt>
-                  <dd>A released relationship answers elsewhere on the altar.</dd>
-                </div>
-              )}
-            </dl>
-          </section>
-        </div>
-      )}
-      {opened && cinematic.isPlaying && (
+            {view === "journal" && (
+              <JournalWorkspace
+                snapshot={snapshot}
+                mode={mode}
+                activeEvent={activeEvent}
+                openingPhase={openingPhase}
+                interactive={journalReady}
+                playbackRate={openingSpeed}
+                onPageTurn={() => audio.current.play("page-turn")}
+              />
+            )}
+            {view === "chart" && <VoyageChart snapshot={snapshot} mode={mode} />}
+            {view === "treasures" && (
+              <TreasureAltar
+                snapshot={snapshot}
+                inspect={(key, element) => {
+                  setInspectionOrigin(element);
+                  setSelectedArtifact(key);
+                }}
+              />
+            )}
+            {view === "quests" && <SideQuestLedger snapshot={snapshot} mode={mode} />}
+            {view === "log" && <ShipsLog snapshot={snapshot} navigate={navigate} />}
+            {view === "finale" && <FinaleChamber snapshot={snapshot} mode={mode} />}
+          </motion.div>
+        </AnimatePresence>
+      </div>
+      <div
+        className="persistent-objective"
+        data-opening-actor="objective"
+        aria-hidden={!journalReady}
+        inert={!journalReady ? true : undefined}
+      >
+        <ObjectiveNote
+          objective={objective}
+          chapter={snapshot.chapter.ordinal}
+          title={snapshot.chapter.title}
+          hintCount={snapshot.chapter.hints?.length ?? 0}
+          expanded={objectiveOpen}
+          setExpanded={setObjectiveOpen}
+          returnToClue={() => navigate("journal")}
+        />
+      </div>
+      <AnimatePresence>
+        {inspectedArtifact && (
+          <ArtifactInspection
+            artifact={inspectedArtifact}
+            close={() => setSelectedArtifact(null)}
+            restoreFocus={inspectionOrigin}
+          />
+        )}
+      </AnimatePresence>
+      {openingPhase !== "ENTRY_IDLE" && !journalReady && (
         <div
-          className={`voyage-introduction intro-${cinematic.name} intro-stage-${cinematic.stage}`}
+          className={`voyage-introduction intro-${animationSequence}`}
+          data-opening-actor="introduction"
           role="status"
           aria-live="polite"
         >
-          <div className="intro-horizon" aria-hidden="true" />
-          <div className="intro-wave wave-back" aria-hidden="true" />
-          <div className="intro-wave wave-front" aria-hidden="true" />
-          <div className="intro-fog" aria-hidden="true" />
-          <div className="intro-title">
+          <div className="intro-horizon" data-scene-part="horizon" data-gsap-owned aria-hidden="true" />
+          <div className="intro-wave" data-scene-part="ocean" data-gsap-owned aria-hidden="true" />
+          <div className="intro-fog" data-scene-part="fog-front" data-gsap-owned aria-hidden="true" />
+          <div className="intro-title" data-scene-part="title" data-gsap-owned>
             <span>The Forever Treasure</span>
             <small>Voyage Companion</small>
           </div>
-          {cinematic.stage !== "dark-sea" && <button onClick={cinematic.skip}>Skip ceremony</button>}
+          <div className="intro-emblem" data-scene-part="emblem" data-gsap-owned aria-hidden="true">
+            ✦
+          </div>
+          <p data-scene-part="arrival-copy" data-gsap-owned>
+            The journal wakes beneath paired stars.
+          </p>
+          <div data-scene-part="arrival-action" data-gsap-owned />
+          {animation.isPlaying && animation.label !== "dark-sea" && (
+            <button onClick={() => director.skip()}>Skip ceremony</button>
+          )}
         </div>
       )}
-      <div className={`objective-dock ${objectiveOpen ? "expanded" : ""}`}>
-        <span>Current objective</span>
-        <strong>{objective}</strong>
-        {objectiveOpen && (
-          <p>
-            Chapter {snapshot.chapter.ordinal}
-            {snapshot.chapter.title ? ` · ${snapshot.chapter.title}` : ""}
-            {snapshot.chapter.hints?.length
-              ? ` · ${snapshot.chapter.hints.length} hint${snapshot.chapter.hints.length === 1 ? "" : "s"} available`
-              : " · no released hints"}
-          </p>
-        )}
-        <button onClick={() => setObjectiveOpen((value) => !value)} aria-expanded={objectiveOpen}>
-          {objectiveOpen ? "Collapse" : "Review"}
-        </button>
-        <button aria-label="Return to active clue" onClick={() => navigate("journal")}>
-          Return to clue
-        </button>
-      </div>
-      <nav className="mobile-nav" aria-label="Companion views">
-        {views.map(({ key, label }) => (
-          <button className={view === key ? "active" : ""} onClick={() => navigate(key)} key={key}>
-            {label}
-            {snapshot.unseen[key] > 0 && <span className="sr-only">, new content</span>}
-          </button>
-        ))}
-      </nav>
-      <AnimatePresence>
-        {ceremony.isPlaying && (
-          <motion.div
-            className="ceremony-controls"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-          >
-            <span>Releasing the first seal · {ceremony.stage.replace("-", " ")}</span>
-            <button onClick={ceremony.skip}>Reveal all now</button>
-          </motion.div>
-        )}
-      </AnimatePresence>
-      {!ceremony.isPlaying && lastRelease && (
-        <button className="replay-control" onClick={() => ceremony.replay(lastRelease)}>
+      {(activeEvent?.type === "CHAPTER_SOLVED" || activeEvent?.type === "STATE_REVERTED") && (
+        <div
+          className="progression-mark"
+          data-scene-part={activeEvent.type === "CHAPTER_SOLVED" ? "solved-stamp" : "undo-mark"}
+          data-gsap-owned
+          role="status"
+        >
+          {activeEvent.type === "CHAPTER_SOLVED" ? "SOLVED" : "RESTORED"}
+        </div>
+      )}
+      {activeEvent && <PlayerProgressionProp event={activeEvent} />}
+      {animation.isPlaying && animation.scene === "chapter-release" && (
+        <div className="ceremony-controls">
+          <span>Releasing the first seal · {animation.label.replaceAll("-", " ")}</span>
+          <button onClick={() => director.skip()}>Reveal all now</button>
+        </div>
+      )}
+      {!animation.isPlaying && lastRelease && journalReady && (
+        <button
+          className="replay-control"
+          onClick={() => void playEvent({ ...lastRelease, id: `${lastRelease.id}:replay:${Date.now()}` }, true)}
+        >
           Replay ceremony
         </button>
       )}
-      {!ceremony.isPlaying && !cinematic.isPlaying && opened && (
+      {!animation.isPlaying && journalReady && (
         <button className="intro-replay-control" onClick={() => void openJournal(true)}>
           Replay introduction
         </button>
       )}
-      {process.env.NODE_ENV === "development" && opened && (
-        <details className="dev-cinematic player-animation-lab">
-          <summary>Animation lab</summary>
-          {(Object.keys(cinematicSequences) as CinematicSequenceName[]).map((name) => (
-            <button
-              key={name}
-              onClick={() => void cinematic.play(name, cinematicSequences[name]).catch(() => undefined)}
-            >
-              {name}
-            </button>
-          ))}
-        </details>
-      )}
+      <AnimationTestButton />
     </main>
   );
 }
-function PanelTitle({ index, title }: { index: string; title: string }) {
-  return (
-    <div className="panel-title">
-      <span>{index}</span>
-      <h2>{title}</h2>
-    </div>
-  );
-}
-function EmptyState({ title, body }: { title: string; body: string }) {
-  return (
-    <div className="companion-empty">
-      <span aria-hidden="true">◇</span>
-      <h3>{title}</h3>
-      <p>{body}</p>
-    </div>
-  );
+
+function PlayerProgressionProp({ event }: { event: ClientProgressEvent }) {
+  if (["ARTIFACT_AWARDED", "ARTIFACT_SILHOUETTE_REVEALED"].includes(event.type)) {
+    return (
+      <div className="player-event-prop artifact-event-prop" aria-hidden="true">
+        <div data-scene-part="artifact-light" data-gsap-owned />
+        <div data-scene-part="artifact-reveal" data-gsap-owned>
+          ✦
+        </div>
+        <div data-scene-part="artifact-slot-target" />
+      </div>
+    );
+  }
+  if (["MAP_LOCATION_REVEALED", "MAP_ROUTE_REVEALED"].includes(event.type)) {
+    return (
+      <div className="player-event-prop map-event-prop" aria-hidden="true">
+        <div data-scene-part="map-fog" data-gsap-owned />
+        <svg viewBox="0 0 460 220">
+          <path data-scene-part="route-path" data-gsap-owned d="M20 180C140 35 310 40 440 160" />
+        </svg>
+        <i data-scene-part="map-marker-new" data-gsap-owned>
+          ✦
+        </i>
+      </div>
+    );
+  }
+  if (["ARTIFACT_CONNECTED"].includes(event.type)) {
+    return (
+      <svg className="player-event-prop connection-event-prop" viewBox="0 0 460 220" aria-hidden="true">
+        <path data-scene-part="artifact-connection-path" data-gsap-owned d="M30 170Q230 20 430 170" />
+      </svg>
+    );
+  }
+  if (["SIDE_QUEST_DISCOVERED", "SIDE_QUEST_UPDATED", "SIDE_QUEST_COMPLETED"].includes(event.type)) {
+    return (
+      <div className="player-event-prop quest-event-prop" aria-hidden="true">
+        <div data-scene-part="quest-note-new" data-gsap-owned>
+          OPTIONAL COURSE
+        </div>
+        <svg viewBox="0 0 460 220">
+          <path data-scene-part="red-thread" data-gsap-owned d="M20 180C150 20 310 35 440 170" />
+        </svg>
+        <i data-scene-part="quest-stamp" data-gsap-owned>
+          COMPLETE
+        </i>
+      </div>
+    );
+  }
+  if (["JOURNAL_ANNOTATION_ADDED", "PLAYER_LOG_ENTRY_ADDED"].includes(event.type)) {
+    return (
+      <div
+        className="player-event-prop log-event-prop"
+        data-scene-part="log-entry-new"
+        data-gsap-owned
+        aria-hidden="true"
+      >
+        <i data-scene-part="log-symbol-new" data-gsap-owned>
+          ✦
+        </i>
+      </div>
+    );
+  }
+  if (["FINALE_TEASED", "FINALE_REQUIREMENT_UPDATED"].includes(event.type)) {
+    return (
+      <div className="player-event-prop finale-event-prop" aria-hidden="true">
+        <i data-scene-part="finale-ring-outer" data-gsap-owned />
+        <i data-scene-part="finale-ring-inner" data-gsap-owned />
+        <svg viewBox="0 0 300 300">
+          <path data-scene-part="finale-light-path" data-gsap-owned d="M150 12L278 150 150 288 22 150z" />
+        </svg>
+      </div>
+    );
+  }
+  return null;
 }

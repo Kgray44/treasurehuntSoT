@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcryptjs";
-import { createHash, randomBytes } from "node:crypto";
+import { createHash, randomBytes, randomUUID } from "node:crypto";
 
 const db = new PrismaClient();
 const hash = (value: string) => createHash("sha256").update(value).digest("hex");
@@ -464,6 +464,399 @@ async function main() {
       metadata: JSON.stringify({ preset, fixture: "command-center-ready" }),
       reason: "Generic Phase 3 development fixture",
     },
+  });
+
+  // Additive migration of the generic development voyage into the Studio model.
+  // The original Campaign remains untouched and playable at its established URL.
+  const priorStudioTale = await db.tallTale.findUnique({ where: { slug: "development-studio-voyage" } });
+  if (priorStudioTale) await db.tallTale.delete({ where: { id: priorStudioTale.id } });
+  const studioTale = await db.tallTale.create({
+    data: {
+      slug: "development-studio-voyage",
+      title: "The Forever Treasure — Studio Development Voyage",
+      subtitle: "A safe editable migration of the existing development tale",
+      shortDescription: "A generic published voyage used to verify Studio, Player, and Captain integration.",
+      longDescription:
+        "This development-only tale mirrors the existing lantern and cartography progression without containing private or final story material.",
+      theme: "CARTOGRAPHERS_TABLE",
+      status: "PUBLISHED",
+      visibility: "PUBLIC",
+      creatorId: user.id,
+      playerCountMin: 1,
+      playerCountMax: 4,
+      estimatedDuration: 25,
+      featured: true,
+    },
+  });
+  const studioDraft = await db.taleDraft.create({
+    data: {
+      taleId: studioTale.id,
+      createdBy: user.id,
+      validationState: "VALID",
+      validationSummary: JSON.stringify({ valid: true, errors: [], warnings: [], migratedFrom: campaign.slug }),
+    },
+  });
+  const studioChapterIds = [randomUUID(), randomUUID()];
+  const studioBlockIds = Array.from({ length: 7 }, () => randomUUID());
+  await db.taleChapter.create({
+    data: {
+      id: studioChapterIds[0],
+      draftRevisionId: studioDraft.id,
+      title: chapters[0][0],
+      description: chapters[0][1],
+      orderIndex: 0,
+      entryBlockId: studioBlockIds[0],
+      completionBlockId: studioBlockIds[3],
+      estimatedDuration: 12,
+      blocks: {
+        create: [
+          {
+            id: studioBlockIds[0],
+            blockType: "narrative",
+            title: "The Lantern Wakes",
+            orderIndex: 0,
+            configuration: JSON.stringify({
+              heading: chapters[0][0],
+              body: chapters[0][1],
+              entranceAnimation: "ink",
+              completionMode: "playerConfirmation",
+            }),
+            nextBlockId: studioBlockIds[1],
+          },
+          {
+            id: studioBlockIds[1],
+            blockType: "riddle",
+            title: "The Practice Lantern",
+            orderIndex: 1,
+            configuration: JSON.stringify({
+              riddleTitle: "A painted-light riddle",
+              riddleText: chapters[0][3],
+              acceptedAnswers: ["lantern"],
+              caseSensitive: false,
+              normalizeWhitespace: true,
+              wrongAnswerFeedback: "Look again toward the lowest practice light.",
+              completionMode: "textAnswer",
+            }),
+            nextBlockId: studioBlockIds[2],
+          },
+          {
+            id: studioBlockIds[2],
+            blockType: "captainApproval",
+            title: "Captain Confirms the Mark",
+            orderIndex: 2,
+            configuration: JSON.stringify({
+              waitingText: "The Captain is checking the practice chart.",
+              captainInstruction: "Approve after the lantern mark is confirmed.",
+              allowRetry: true,
+              completionMode: "captainManual",
+            }),
+            nextBlockId: studioBlockIds[3],
+          },
+          {
+            id: studioBlockIds[3],
+            blockType: "chapterComplete",
+            title: "Lantern Chapter Complete",
+            orderIndex: 3,
+            configuration: JSON.stringify({
+              completionMessage: "The Lantern Test is complete.",
+              summary: chapters[0][4],
+              animation: "seal",
+              completionMode: "playerConfirmation",
+            }),
+            nextBlockId: studioBlockIds[4],
+          },
+        ],
+      },
+    },
+  });
+  await db.taleChapter.create({
+    data: {
+      id: studioChapterIds[1],
+      draftRevisionId: studioDraft.id,
+      title: chapters[1][0],
+      description: chapters[1][1],
+      orderIndex: 1,
+      entryBlockId: studioBlockIds[4],
+      completionBlockId: studioBlockIds[6],
+      estimatedDuration: 13,
+      blocks: {
+        create: [
+          {
+            id: studioBlockIds[4],
+            blockType: "travelDirection",
+            title: "Follow the Blue Ink",
+            orderIndex: 0,
+            configuration: JSON.stringify({
+              heading: "Set a practice course",
+              directionText: chapters[1][2],
+              region: "The Painted Reach",
+              completionMode: "playerConfirmation",
+            }),
+            nextBlockId: studioBlockIds[5],
+          },
+          {
+            id: studioBlockIds[5],
+            blockType: "confirmation",
+            title: "Confirm the Destination",
+            orderIndex: 1,
+            configuration: JSON.stringify({
+              prompt: "Has the crew reached the blue practice mark?",
+              primaryLabel: "We have arrived",
+              captainOverride: true,
+              completionMode: "playerConfirmation",
+            }),
+            nextBlockId: studioBlockIds[6],
+          },
+          {
+            id: studioBlockIds[6],
+            blockType: "taleComplete",
+            title: "Development Voyage Complete",
+            orderIndex: 2,
+            configuration: JSON.stringify({
+              finaleHeading: "The practice chart is complete",
+              finaleContent:
+                "The lantern, riddle, Captain approval, and version-pinned runtime have all followed one authoritative story model.",
+              completionMessage: "This development voyage is safely complete.",
+              replayAvailable: true,
+              completionMode: "playerConfirmation",
+            }),
+          },
+        ],
+      },
+    },
+  });
+  for (let index = 0; index < studioBlockIds.length - 1; index += 1) {
+    await db.blockConnection.create({
+      data: {
+        sourceBlockId: studioBlockIds[index],
+        targetBlockId: studioBlockIds[index + 1],
+        connectionType: "DEFAULT",
+      },
+    });
+  }
+  const publishedAt = new Date();
+  const contentSnapshot = JSON.stringify({
+    schemaVersion: 1,
+    tale: {
+      id: studioTale.id,
+      slug: studioTale.slug,
+      title: studioTale.title,
+      subtitle: studioTale.subtitle,
+      shortDescription: studioTale.shortDescription,
+      longDescription: studioTale.longDescription,
+      coverAssetId: null,
+      theme: studioTale.theme,
+      visibility: studioTale.visibility,
+      playerCountMin: studioTale.playerCountMin,
+      playerCountMax: studioTale.playerCountMax,
+      estimatedDuration: studioTale.estimatedDuration,
+      contentWarnings: null,
+    },
+    chapters: [
+      {
+        id: studioChapterIds[0],
+        title: chapters[0][0],
+        subtitle: null,
+        description: chapters[0][1],
+        coverAssetId: null,
+        estimatedDuration: 12,
+        isOptional: false,
+        metadata: {},
+        orderIndex: 0,
+        entryBlockId: studioBlockIds[0],
+        completionBlockId: studioBlockIds[3],
+        blocks: [
+          {
+            id: studioBlockIds[0],
+            chapterId: studioChapterIds[0],
+            blockType: "narrative",
+            title: "The Lantern Wakes",
+            internalLabel: null,
+            configuration: {
+              heading: chapters[0][0],
+              body: chapters[0][1],
+              entranceAnimation: "ink",
+              completionMode: "playerConfirmation",
+            },
+            presentation: {},
+            completion: {},
+            creatorNotes: null,
+            isEnabled: true,
+            schemaVersion: 1,
+            orderIndex: 0,
+            nextBlockId: studioBlockIds[1],
+            connections: [{ targetBlockId: studioBlockIds[1], connectionType: "DEFAULT", orderIndex: 0 }],
+          },
+          {
+            id: studioBlockIds[1],
+            chapterId: studioChapterIds[0],
+            blockType: "riddle",
+            title: "The Practice Lantern",
+            internalLabel: null,
+            configuration: {
+              riddleTitle: "A painted-light riddle",
+              riddleText: chapters[0][3],
+              acceptedAnswers: ["lantern"],
+              caseSensitive: false,
+              normalizeWhitespace: true,
+              wrongAnswerFeedback: "Look again toward the lowest practice light.",
+              completionMode: "textAnswer",
+            },
+            presentation: {},
+            completion: {},
+            creatorNotes: null,
+            isEnabled: true,
+            schemaVersion: 1,
+            orderIndex: 1,
+            nextBlockId: studioBlockIds[2],
+            connections: [{ targetBlockId: studioBlockIds[2], connectionType: "DEFAULT", orderIndex: 0 }],
+          },
+          {
+            id: studioBlockIds[2],
+            chapterId: studioChapterIds[0],
+            blockType: "captainApproval",
+            title: "Captain Confirms the Mark",
+            internalLabel: null,
+            configuration: {
+              waitingText: "The Captain is checking the practice chart.",
+              captainInstruction: "Approve after the lantern mark is confirmed.",
+              allowRetry: true,
+              completionMode: "captainManual",
+            },
+            presentation: {},
+            completion: {},
+            creatorNotes: null,
+            isEnabled: true,
+            schemaVersion: 1,
+            orderIndex: 2,
+            nextBlockId: studioBlockIds[3],
+            connections: [{ targetBlockId: studioBlockIds[3], connectionType: "DEFAULT", orderIndex: 0 }],
+          },
+          {
+            id: studioBlockIds[3],
+            chapterId: studioChapterIds[0],
+            blockType: "chapterComplete",
+            title: "Lantern Chapter Complete",
+            internalLabel: null,
+            configuration: {
+              completionMessage: "The Lantern Test is complete.",
+              summary: chapters[0][4],
+              animation: "seal",
+              completionMode: "playerConfirmation",
+            },
+            presentation: {},
+            completion: {},
+            creatorNotes: null,
+            isEnabled: true,
+            schemaVersion: 1,
+            orderIndex: 3,
+            nextBlockId: studioBlockIds[4],
+            connections: [{ targetBlockId: studioBlockIds[4], connectionType: "DEFAULT", orderIndex: 0 }],
+          },
+        ],
+      },
+      {
+        id: studioChapterIds[1],
+        title: chapters[1][0],
+        subtitle: null,
+        description: chapters[1][1],
+        coverAssetId: null,
+        estimatedDuration: 13,
+        isOptional: false,
+        metadata: {},
+        orderIndex: 1,
+        entryBlockId: studioBlockIds[4],
+        completionBlockId: studioBlockIds[6],
+        blocks: [
+          {
+            id: studioBlockIds[4],
+            chapterId: studioChapterIds[1],
+            blockType: "travelDirection",
+            title: "Follow the Blue Ink",
+            internalLabel: null,
+            configuration: {
+              heading: "Set a practice course",
+              directionText: chapters[1][2],
+              region: "The Painted Reach",
+              completionMode: "playerConfirmation",
+            },
+            presentation: {},
+            completion: {},
+            creatorNotes: null,
+            isEnabled: true,
+            schemaVersion: 1,
+            orderIndex: 0,
+            nextBlockId: studioBlockIds[5],
+            connections: [{ targetBlockId: studioBlockIds[5], connectionType: "DEFAULT", orderIndex: 0 }],
+          },
+          {
+            id: studioBlockIds[5],
+            chapterId: studioChapterIds[1],
+            blockType: "confirmation",
+            title: "Confirm the Destination",
+            internalLabel: null,
+            configuration: {
+              prompt: "Has the crew reached the blue practice mark?",
+              primaryLabel: "We have arrived",
+              captainOverride: true,
+              completionMode: "playerConfirmation",
+            },
+            presentation: {},
+            completion: {},
+            creatorNotes: null,
+            isEnabled: true,
+            schemaVersion: 1,
+            orderIndex: 1,
+            nextBlockId: studioBlockIds[6],
+            connections: [{ targetBlockId: studioBlockIds[6], connectionType: "DEFAULT", orderIndex: 0 }],
+          },
+          {
+            id: studioBlockIds[6],
+            chapterId: studioChapterIds[1],
+            blockType: "taleComplete",
+            title: "Development Voyage Complete",
+            internalLabel: null,
+            configuration: {
+              finaleHeading: "The practice chart is complete",
+              finaleContent:
+                "The lantern, riddle, Captain approval, and version-pinned runtime have all followed one authoritative story model.",
+              completionMessage: "This development voyage is safely complete.",
+              replayAvailable: true,
+              completionMode: "playerConfirmation",
+            },
+            presentation: {},
+            completion: {},
+            creatorNotes: null,
+            isEnabled: true,
+            schemaVersion: 1,
+            orderIndex: 2,
+            nextBlockId: null,
+            connections: [],
+          },
+        ],
+      },
+    ],
+    assets: [],
+    locations: [],
+    artifacts: [],
+    publishedAt: publishedAt.toISOString(),
+  });
+  const studioVersion = await db.publishedTaleVersion.create({
+    data: {
+      taleId: studioTale.id,
+      versionNumber: 1,
+      versionLabel: "1.0",
+      publishedBy: user.id,
+      releaseNotes: "Automated migration of the generic development voyage.",
+      contentSnapshot,
+      checksum: hash(contentSnapshot),
+      publishedAt,
+      isCurrent: true,
+    },
+  });
+  await db.tallTale.update({
+    where: { id: studioTale.id },
+    data: { currentDraftRevisionId: studioDraft.id, latestPublishedVersionId: studioVersion.id },
   });
   console.log(
     `Development preset '${preset}' ready for ${campaign.slug}; GM user: ${user.username}. Credentials come from local environment values.`,

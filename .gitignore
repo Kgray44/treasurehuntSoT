@@ -41,6 +41,7 @@ yarn-error.log*
 *.sqlite*
 !prisma/schema.sqlite.prisma
 /backups/
+/.data/
 
 # local startup state and runtime mirrors
 /.forever-dev.json

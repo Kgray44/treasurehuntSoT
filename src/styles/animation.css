@@ -1,0 +1,466 @@
+.cinematic-hidden *,
+html.cinematic-hidden * {
+  animation-play-state: paused !important;
+}
+
+.voyage-introduction {
+  position: fixed;
+  z-index: 68;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background: #02090c;
+  transition:
+    opacity 900ms ease,
+    background-color 900ms ease,
+    visibility 0s linear 900ms;
+}
+.voyage-shell[data-journal-phase="CLOSED_BOOK_REVEAL"] .voyage-introduction,
+.voyage-shell[data-journal-phase="LATCH_RELEASING"] .voyage-introduction,
+.voyage-shell[data-journal-phase="COVER_OPENING"] .voyage-introduction,
+.voyage-shell[data-journal-phase="SEALED_PAGE_REVEAL"] .voyage-introduction,
+.voyage-shell[data-journal-phase="SEAL_BREAKING"] .voyage-introduction,
+.voyage-shell[data-journal-phase="BOOK_SETTLING"] .voyage-introduction {
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+  background-color: rgba(2, 9, 12, 0);
+}
+
+.intro-horizon,
+.intro-wave,
+.intro-fog {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.intro-horizon {
+  top: 45%;
+  border-top: 1px solid rgba(134, 209, 202, 0.24);
+  background: linear-gradient(transparent, #0c3036);
+}
+.intro-wave {
+  top: 55%;
+  background: repeating-radial-gradient(
+    ellipse at 50% 0,
+    transparent 0 18px,
+    rgba(105, 173, 170, 0.1) 19px 22px,
+    transparent 23px 44px
+  );
+}
+.intro-fog {
+  top: 32%;
+  height: 42%;
+  background: radial-gradient(ellipse, rgba(159, 190, 183, 0.2), transparent 65%);
+  filter: blur(18px);
+}
+.intro-title {
+  position: relative;
+  z-index: 3;
+  display: grid;
+  gap: 0.5rem;
+  text-align: center;
+}
+.intro-title span {
+  font-family: Georgia, serif;
+  font-size: clamp(3rem, 8vw, 8rem);
+}
+.intro-title small {
+  color: var(--brass-100);
+  font-size: 0.78rem;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+}
+.intro-emblem {
+  position: absolute;
+  top: 25%;
+  color: var(--brass-100);
+  font-size: 4rem;
+  filter: drop-shadow(0 0 20px #76bdb5);
+}
+.voyage-introduction > p {
+  position: absolute;
+  z-index: 3;
+  top: 68%;
+  color: #b8c8c1;
+  font-family: Georgia, serif;
+}
+.voyage-introduction > button {
+  position: absolute;
+  z-index: 4;
+  right: 1rem;
+  bottom: 1rem;
+}
+
+.animation-test-button {
+  position: fixed;
+  z-index: 64;
+  top: max(0.8rem, env(safe-area-inset-top));
+  left: max(0.8rem, env(safe-area-inset-left));
+  border: 1px solid rgba(126, 214, 203, 0.58);
+  border-radius: 999px;
+  padding: 0.55rem 0.8rem;
+  color: #cdebe3;
+  background: rgba(4, 26, 28, 0.94);
+  box-shadow: 0 0 18px rgba(81, 175, 165, 0.16);
+  font-size: 0.65rem;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  text-decoration: none;
+}
+
+.voyage-shell .animation-test-button {
+  top: auto;
+  bottom: 4rem;
+  left: 1rem;
+}
+
+.quartermaster-shell .animation-test-button {
+  top: 1rem;
+  right: auto;
+  bottom: auto;
+  left: 62%;
+  transform: translateX(-50%);
+}
+
+.cinematic-command-overlay {
+  position: fixed;
+  z-index: 82;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background: radial-gradient(circle at 50% 46%, rgba(25, 71, 69, 0.94), rgba(1, 7, 9, 0.98) 65%);
+}
+
+.command-vignette {
+  position: absolute;
+  inset: 0;
+  box-shadow: inset 0 0 180px #000;
+  pointer-events: none;
+}
+.command-object {
+  position: absolute;
+  z-index: 4;
+}
+.command-copy {
+  position: absolute;
+  z-index: 12;
+  bottom: 7%;
+  left: 50%;
+  width: min(580px, 90vw);
+  text-align: center;
+  transform: translateX(-50%);
+}
+.command-copy h2 {
+  margin: 0 0 0.55rem;
+  color: var(--parchment-50);
+  font-size: clamp(2rem, 4vw, 4rem);
+  text-transform: capitalize;
+}
+.command-copy p:not(.eyebrow) {
+  color: #b9c7c1;
+  line-height: 1.6;
+}
+.command-copy button {
+  margin-top: 0.5rem;
+}
+
+.blank-page {
+  top: 13%;
+  width: min(430px, 70vw);
+  height: 52%;
+  border: 1px solid #957445;
+  border-radius: 5px 14px 9px 5px;
+  background: linear-gradient(100deg, #c7b17f, #f0e2bc 8% 94%, #b19a67);
+  box-shadow: var(--shadow-deep);
+}
+.blank-page i {
+  position: absolute;
+  inset: 13%;
+  border: 1px solid rgba(115, 78, 38, 0.25);
+}
+.seal-object {
+  top: 31%;
+  display: grid;
+  width: 130px;
+  aspect-ratio: 1;
+  place-items: center;
+  border: 7px double #d7a66e;
+  border-radius: 50%;
+  color: #f3c68e;
+  background: radial-gradient(circle, #ad453c, #671f1d);
+  font-family: Georgia, serif;
+  font-size: 3rem;
+  box-shadow: 0 14px 30px #000;
+}
+.seal-object svg {
+  position: absolute;
+  inset: -30%;
+  width: 160%;
+  height: 160%;
+  fill: #7f2b27;
+  stroke: #dfa375;
+  stroke-width: 4;
+}
+.solved-stamp {
+  top: 31%;
+  border: 8px double #9a3933;
+  padding: 1rem;
+  color: #a83f39;
+  font-size: 2rem;
+  font-weight: 950;
+  letter-spacing: 0.12em;
+  transform: rotate(-7deg);
+}
+.artifact-object {
+  top: 11%;
+  width: 150px;
+  height: 330px;
+}
+.artifact-object img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 24px 20px #000) drop-shadow(0 0 28px #6cad9f);
+}
+.artifact-slot-target {
+  top: 45%;
+  right: 22%;
+  width: 120px;
+  height: 160px;
+  border: 4px solid #8b6b35;
+  border-radius: 14px;
+  background: rgba(54, 22, 31, 0.8);
+}
+.command-map {
+  position: absolute;
+  z-index: 3;
+  top: 10%;
+  width: min(560px, 80vw);
+  height: 52%;
+}
+.command-map path {
+  fill: none;
+  stroke: #c68e66;
+  stroke-width: 6;
+  stroke-linecap: round;
+}
+.marker {
+  top: 30%;
+  color: #e4c374;
+  font-size: 5rem;
+  text-shadow: 0 0 18px #83cbc0;
+}
+.quest-note {
+  top: 20%;
+  border: 1px solid #997344;
+  padding: 3rem 4rem;
+  color: #70332e;
+  background: #e6d6aa;
+  box-shadow: var(--shadow-deep);
+  font-family: Georgia, serif;
+  font-size: 1.4rem;
+  transform: rotate(-2deg);
+}
+.quest-note::before {
+  content: "";
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  width: 20px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: #8a302c;
+}
+.quest-stamp {
+  top: 34%;
+  border: 5px double #9b3a34;
+  padding: 0.8rem;
+  color: #9b3a34;
+  font-weight: 900;
+  transform: rotate(-8deg);
+}
+.log-line {
+  top: 27%;
+  width: min(520px, 82vw);
+  border-bottom: 2px solid #866a3a;
+  padding: 2rem;
+  color: #3b3024;
+  background: #eadbb7;
+  box-shadow: var(--shadow-paper);
+}
+.log-line i {
+  display: inline-grid;
+  width: 40px;
+  aspect-ratio: 1;
+  place-items: center;
+  border: 2px solid #8b312c;
+  border-radius: 50%;
+}
+.finale-rings {
+  top: 9%;
+  width: 360px;
+  aspect-ratio: 1;
+}
+.finale-rings i {
+  position: absolute;
+  inset: 0;
+  border: 14px dashed #a88a4d;
+  border-radius: 50%;
+}
+.finale-rings i:nth-child(2) {
+  inset: 20%;
+  border-width: 7px;
+  border-style: dotted;
+}
+.lantern {
+  top: 15%;
+  width: 100px;
+  height: 210px;
+}
+.lantern::before {
+  content: "";
+  position: absolute;
+  left: 49px;
+  width: 3px;
+  height: 80px;
+  background: #6f5a36;
+}
+.lantern i {
+  position: absolute;
+  top: 76px;
+  width: 100%;
+  height: 120px;
+  border: 9px solid #9d7b3f;
+  background: radial-gradient(circle, #ffdf91, #a35c2f 42%, #1f1510 70%);
+  box-shadow: 0 0 70px rgba(237, 169, 78, 0.4);
+}
+.undo-mark {
+  top: 24%;
+  color: #d7bc7c;
+  font-size: 10rem;
+  text-shadow: 0 0 30px #6fb0a6;
+}
+
+.cinematic-command-overlay:not(.command-prepare_chapter) .blank-page,
+.cinematic-command-overlay:not(.command-release_chapter) .seal-object,
+.cinematic-command-overlay:not(.command-mark_solved) .solved-stamp,
+.cinematic-command-overlay:not(.command-award_artifact):not(.command-reveal_artifact_silhouette) .artifact-object,
+.cinematic-command-overlay:not(.command-award_artifact):not(.command-reveal_artifact_silhouette) .artifact-slot-target,
+.cinematic-command-overlay:not(.command-reveal_map):not(.command-reveal_route):not(.command-connect_artifacts):not(
+    .command-update_finale_requirement
+  )
+  .command-map,
+.cinematic-command-overlay:not(.command-reveal_map) .marker,
+.cinematic-command-overlay:not(.command-discover_side_quest):not(.command-update_side_quest) .quest-note,
+.cinematic-command-overlay:not(.command-complete_side_quest) .quest-stamp,
+.cinematic-command-overlay:not(.command-add_journal_annotation):not(.command-add_log_entry) .log-line,
+.cinematic-command-overlay:not(.command-tease_finale) .finale-rings,
+.cinematic-command-overlay:not(.command-pause):not(.command-resume) .lantern,
+.cinematic-command-overlay:not(.command-undo_last) .undo-mark {
+  display: none;
+}
+
+.animation-controls {
+  display: grid;
+  gap: 0.7rem;
+  border-top: 1px solid rgba(204, 174, 103, 0.2);
+  padding-top: 0.9rem;
+}
+.animation-readout {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.2rem;
+}
+.animation-readout span {
+  grid-column: 1 / 3;
+  color: #94a59e;
+  font-size: 0.65rem;
+  text-transform: uppercase;
+}
+.animation-readout strong {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-transform: capitalize;
+}
+.animation-readout output {
+  color: var(--brass-100);
+}
+.transport-controls {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.3rem;
+}
+.animation-controls label {
+  display: grid;
+  gap: 0.25rem;
+  color: #aab7b1;
+  font-size: 0.68rem;
+}
+.animation-controls input {
+  width: 100%;
+  accent-color: var(--brass-300);
+}
+.animation-controls select {
+  border: 1px solid #6c5832;
+  border-radius: 8px;
+  padding: 0.45rem;
+  color: #eee7d7;
+  background: #07191b;
+}
+.animation-controls fieldset {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.3rem;
+  border: 0;
+  padding: 0;
+}
+.animation-controls legend {
+  margin-bottom: 0.3rem;
+  color: #aab7b1;
+  font-size: 0.68rem;
+}
+.animation-controls button[aria-pressed="true"] {
+  color: #24170d;
+  background: var(--brass-100);
+}
+
+@media (max-width: 720px) {
+  .animation-test-button {
+    top: calc(0.5rem + env(safe-area-inset-top));
+    right: auto;
+    bottom: auto;
+    left: calc(0.5rem + env(safe-area-inset-left));
+  }
+  .voyage-shell .animation-test-button {
+    display: none;
+  }
+  .quartermaster-shell .animation-test-button {
+    display: none;
+  }
+  .command-copy {
+    bottom: 3%;
+  }
+  .blank-page {
+    top: 8%;
+    height: 56%;
+  }
+  .artifact-slot-target {
+    right: 8%;
+  }
+  .finale-rings {
+    width: 260px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .harbor-fog,
+  .harbor-waves,
+  .chart-lottie-fog,
+  .finale-fog {
+    display: none;
+  }
+}
