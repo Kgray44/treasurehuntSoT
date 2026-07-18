@@ -1,5 +1,5 @@
-import { PlayerRuntime } from "@/components/tales/PlayerRuntime";
+import { TallTaleJournalSession } from "@/components/player/journal/TallTaleJournalSession";
 export const dynamic = "force-dynamic";
 export default async function SessionPage({ params }: { params: Promise<{ sessionId: string }> }) {
-  return <PlayerRuntime sessionId={(await params).sessionId} />;
+  return <TallTaleJournalSession sessionId={(await params).sessionId} />;
 }

@@ -2,6 +2,8 @@
 
 Phase 1 does not perform image recognition. It prepares a narrow, auditable provider seam so a later phone/helper implementation cannot become a second progression engine.
 
+The canonical Player journal consumes only the resulting persisted verification request/outcome and ordered progression event. It has no provider-specific camera, matching, or advancement code. A future Vision Waypoint or other provider can therefore replace the simulator at the existing envelope boundary while leaving the journal presentation contract and authoritative Captain/session engine unchanged.
+
 ## Reference preparation
 
 Creators can organize assets into location or artifact collections, including positive and negative reference sets, and assign a collection to a location. Locations retain a JSON verification profile for future provider configuration. Published snapshots freeze those records and referenced asset variants with the rest of a release.

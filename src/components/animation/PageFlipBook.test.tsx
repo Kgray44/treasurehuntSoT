@@ -70,6 +70,13 @@ describe("PageFlipBook", () => {
     expect(calls.destroy).toHaveBeenCalledOnce();
   });
 
+  it("refreshes same-page content when the canonical session revision changes", async () => {
+    const { rerender } = render(<PageFlipBook pages={pages} mode="full" revision={1} />);
+    await waitFor(() => expect(calls.load).toHaveBeenCalledOnce());
+    rerender(<PageFlipBook pages={pages} mode="full" revision={2} />);
+    await waitFor(() => expect(calls.update).toHaveBeenCalledOnce());
+  });
+
   it("supports keyboard turns, event-driven page/orientation state, and imperative navigation", async () => {
     const ref = createRef<PageFlipBookHandle>();
     const { container } = render(<PageFlipBook ref={ref} pages={pages} mode="full" />);
@@ -91,6 +98,24 @@ describe("PageFlipBook", () => {
     expect(calls.flipTo).toHaveBeenCalledWith(0, "top");
     expect(ref.current?.pageCount()).toBe(3);
     expect(ref.current?.orientation()).toBe("landscape");
+  });
+
+  it("queues one programmatic turn while a physical page is already moving", async () => {
+    const ref = createRef<PageFlipBookHandle>();
+    render(<PageFlipBook ref={ref} pages={pages} mode="full" />);
+    await waitFor(() => expect(calls.instance).not.toBeNull());
+    calls.instance!.handlers.get("changeState")?.({ data: "flipping" });
+    await waitFor(() => expect(screen.getByRole("button", { name: "Next journal page" })).toBeDisabled());
+    ref.current?.flipTo(1);
+    expect(calls.flipTo).not.toHaveBeenCalled();
+    calls.instance!.handlers.get("changeState")?.({ data: "read" });
+    await waitFor(() => expect(calls.flipTo).toHaveBeenCalledOnce());
+    expect(calls.flipTo).toHaveBeenCalledWith(1, "top");
+  });
+
+  it("assigns distinct left and right physical page geometry", () => {
+    const html = renderToString(<PageFlipBook pages={pages} mode="full" />);
+    expect(html).toMatch(/page-side-right[\s\S]*page-side-left/);
   });
 
   it("scales the page turn duration for slow-motion physical inspection", async () => {

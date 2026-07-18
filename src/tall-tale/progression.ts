@@ -16,6 +16,7 @@ import type {
 import { parseJsonArray, parseJsonObject } from "@/tall-tale/types";
 import { logger } from "@/lib/logger";
 import { playerSafeAssetIds, playerSafeObject } from "@/platform/libraries";
+import { projectPlayerBlock } from "@/tall-tale/journal-contract";
 
 const digest = (value: string) => createHash("sha256").update(value).digest("hex");
 const futureProviders = new Set(["visionLocation", "visionObject", "externalWebhook"]);
@@ -293,6 +294,11 @@ async function completeBlock(
     payload: { blockType: block.blockType },
     correlationId: key,
   });
+  if (session.publishedVersionId)
+    await tx.revealState.updateMany({
+      where: { playthroughId: session.id, contentType: "BLOCK", contentKey: block.id },
+      data: { status: "COMPLETED" },
+    });
   if (block.blockType === "chapterComplete")
     await appendEvent(tx, session, {
       eventType: "chapterCompleted",
@@ -590,29 +596,28 @@ export async function startPublishedPreviewSession(taleId: string, versionId: st
   return { sessionId: created.session.id, token, taleSlug: version.tale.slug, versionId: version.id };
 }
 
-function safeConfig(block: PublishedBlock) {
-  const result = structuredClone(block.configuration);
-  delete result.acceptedAnswers;
-  delete result.captainNotes;
-  delete result.captainInstruction;
-  delete result.futureProviderOptions;
-  return result;
-}
-
 export async function getTaleSessionState(
   sessionId: string,
   token?: string,
   captain = false,
   authorizedPlayer = false,
 ) {
-  const session = await db.taleSession.findUniqueOrThrow({
-    where: { id: sessionId },
-    include: {
-      version: true,
-      verificationRequests: { where: { status: "PENDING" }, orderBy: { requestedAt: "desc" }, take: 1 },
-      events: { orderBy: { sequence: "desc" }, take: 40 },
-    },
-  });
+  const [session, journalEvents] = await Promise.all([
+    db.taleSession.findUniqueOrThrow({
+      where: { id: sessionId },
+      include: {
+        version: true,
+        verificationRequests: { where: { status: "PENDING" }, orderBy: { requestedAt: "desc" }, take: 1 },
+        events: { orderBy: { sequence: "desc" }, take: 40 },
+        revealStates: { where: { contentType: "BLOCK" }, orderBy: { revealedAt: "asc" } },
+      },
+    }),
+    db.taleSessionEvent.findMany({
+      where: { sessionId, eventType: { in: ["blockEntered", "blockCompleted", "hintReleased"] } },
+      orderBy: { sequence: "asc" },
+      select: { blockId: true, eventType: true, createdAt: true },
+    }),
+  ]);
   if (!captain && !authorizedPlayer && (!token || digest(token) !== session.accessTokenHash))
     throw new Error("This voyage session is not available to this browser.");
   if (session.expiresAt && session.expiresAt < new Date()) throw new Error("This preview session has expired.");
@@ -620,6 +625,64 @@ export async function getTaleSessionState(
   const block = blockById(snapshot, session.currentBlockId);
   const chapter = chapterByBlock(snapshot, session.currentBlockId);
   const request = session.verificationRequests[0] ?? null;
+  const revealedAt = new Map<string, Date>();
+  const completedAt = new Map<string, Date>();
+  const releasedHintCounts = new Map<string, number>();
+  for (const state of session.revealStates) revealedAt.set(state.contentKey, state.revealedAt);
+  for (const event of journalEvents) {
+    if (!event.blockId) continue;
+    if (event.eventType === "blockEntered" && !revealedAt.has(event.blockId))
+      revealedAt.set(event.blockId, event.createdAt);
+    if (event.eventType === "blockCompleted") completedAt.set(event.blockId, event.createdAt);
+    if (event.eventType === "hintReleased")
+      releasedHintCounts.set(event.blockId, (releasedHintCounts.get(event.blockId) ?? 0) + 1);
+  }
+  if (session.currentBlockId && !revealedAt.has(session.currentBlockId))
+    revealedAt.set(session.currentBlockId, session.updatedAt);
+  const playerChoices = Object.fromEntries(
+    Object.entries(parseJsonObject(session.variables))
+      .filter(([key, value]) => key.startsWith("choice:") && typeof value === "string")
+      .map(([key, value]) => [key.slice("choice:".length), String(value)]),
+  );
+  const playerBlock = block ? projectPlayerBlock(block, { releasedHintCount: releasedHintCounts.get(block.id) }) : null;
+  const journal = {
+    mode: session.previewMode
+      ? ("preview" as const)
+      : session.status === "COMPLETED"
+        ? ("historical" as const)
+        : ("active" as const),
+    currentChapterId: session.currentChapterId,
+    currentBlockId: session.currentBlockId,
+    chapters: snapshot.chapters
+      .map((item) => ({
+        id: item.id,
+        title: item.title,
+        subtitle: item.subtitle ?? null,
+        orderIndex: item.orderIndex,
+        blocks: item.blocks
+          .filter((candidate) => revealedAt.has(candidate.id))
+          .map((candidate) => {
+            const projected = projectPlayerBlock(candidate, {
+              releasedHintCount: releasedHintCounts.get(candidate.id),
+            });
+            if (!projected) return null;
+            const complete = completedAt.get(candidate.id) ?? null;
+            return {
+              ...projected,
+              progress: complete
+                ? ("completed" as const)
+                : candidate.id === session.currentBlockId
+                  ? ("active" as const)
+                  : ("released" as const),
+              releasedAt: revealedAt.get(candidate.id)?.toISOString() ?? null,
+              completedAt: complete?.toISOString() ?? null,
+              selectedTargetId: playerChoices[candidate.id] ?? null,
+            };
+          })
+          .filter((candidate): candidate is NonNullable<typeof candidate> => Boolean(candidate)),
+      }))
+      .filter((item) => item.blocks.length > 0),
+  };
   const allowedAssetIds = captain
     ? new Set(snapshot.assets.map((asset) => asset.id))
     : playerSafeAssetIds(
@@ -638,14 +701,15 @@ export async function getTaleSessionState(
       startedAt: session.startedAt.toISOString(),
       updatedAt: session.updatedAt.toISOString(),
       completedAt: session.completedAt?.toISOString() ?? null,
+      versionLabel: session.version?.versionLabel ?? (session.previewMode ? "Draft preview" : "Unpublished"),
+      versionPublishedAt: session.version?.publishedAt.toISOString() ?? null,
+      versionChecksum: session.version?.checksum ?? null,
     },
     tale: snapshot.tale,
     chapter: chapter
       ? { id: chapter.id, title: chapter.title, subtitle: chapter.subtitle, orderIndex: chapter.orderIndex }
       : null,
-    block: block
-      ? { ...block, configuration: safeConfig(block), creatorNotes: captain ? block.creatorNotes : null }
-      : null,
+    block: captain ? (block ? { ...block, creatorNotes: block.creatorNotes } : null) : playerBlock,
     pendingVerification: request
       ? {
           id: request.id,
@@ -657,6 +721,7 @@ export async function getTaleSessionState(
       : null,
     inventory: parseJsonArray<string>(session.inventory),
     variables: captain ? parseJsonObject(session.variables) : undefined,
+    journal: captain ? undefined : journal,
     events: session.events.map((event) => ({
       id: event.id,
       eventType: event.eventType,

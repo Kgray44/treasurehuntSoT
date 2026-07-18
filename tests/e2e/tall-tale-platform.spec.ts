@@ -154,11 +154,26 @@ test("Captain invitation, immutable version, Player runtime, archive, and revoca
   await expectOk(activeStateResponse);
   let activeState = (await activeStateResponse.json()) as {
     csrfToken: string;
-    session: { status: string; versionId: string };
-    block: { blockType: string; configuration: Record<string, unknown> };
+    session: { status: string; versionId: string; currentSequence: number };
+    block: { id: string; blockType: string; configuration: Record<string, unknown> };
+    journal: {
+      mode: string;
+      currentBlockId: string;
+      chapters: Array<{ blocks: Array<{ id: string; configuration: Record<string, unknown> }> }>;
+    };
   };
   expect(activeState.session).toMatchObject({ status: "ACTIVE", versionId: versionOne.id });
   expect(activeState.block.blockType).toBe("narrative");
+  expect(activeState.journal).toMatchObject({ mode: "active", currentBlockId: activeState.block.id });
+  expect(JSON.stringify(activeState.journal)).not.toMatch(/acceptedAnswers|captainInstruction|creatorNotes/);
+  await expect(playerPage).toHaveURL(new RegExp(`/player/playthroughs/${created.playthroughId}/journal$`), {
+    timeout: 20_000,
+  });
+  await expect(playerPage.getByRole("button", { name: "Open the journal" })).toBeVisible();
+  await playerPage.getByRole("button", { name: "Open the journal" }).click();
+  await playerPage.getByRole("button", { name: "Skip ceremony" }).click();
+  await expect(playerPage.getByRole("heading", { name: "1.0 Voyage Journal" })).toBeVisible();
+  await expect(playerPage.locator(".main-journal-book")).toBeVisible();
   const withoutCsrf = await playerContext.request.post(playerUrl(`/api/play/sessions/${created.playthroughId}`), {
     data: { action: "continue", idempotencyKey: unique("csrf-denied") },
   });
@@ -197,6 +212,29 @@ test("Captain invitation, immutable version, Player runtime, archive, and revoca
   ).json()) as typeof activeState;
   expect(activeState.session.versionId).toBe(versionOne.id);
   const playerHeaders = { "x-csrf-token": activeState.csrfToken };
+  const readingStateResponse = await playerContext.request.get(
+    playerUrl(`/api/player/playthroughs/${created.playthroughId}/journal-state`),
+  );
+  await expectOk(readingStateResponse);
+  const readingStateBefore = (await readingStateResponse.json()) as {
+    csrfToken: string;
+    readingState: { pageId: string | null };
+  };
+  const currentBlockBeforeReading = activeState.block.id;
+  await expectOk(
+    await playerContext.request.post(playerUrl(`/api/player/playthroughs/${created.playthroughId}/journal-state`), {
+      headers: { "x-csrf-token": readingStateBefore.csrfToken },
+      data: { pageId: "journal-title", hasOpened: true, lastEventSequence: activeState.session.currentSequence },
+    }),
+  );
+  const restoredReading = await playerContext.request.get(
+    playerUrl(`/api/player/playthroughs/${created.playthroughId}/journal-state`),
+  );
+  await expectOk(restoredReading);
+  expect((await restoredReading.json()).readingState.pageId).toBe("journal-title");
+  const stateAfterReading = await playerContext.request.get(playerUrl(`/api/play/sessions/${created.playthroughId}`));
+  await expectOk(stateAfterReading);
+  expect((await stateAfterReading.json()).block.id).toBe(currentBlockBeforeReading);
   await expectOk(
     await playerContext.request.post(playerUrl(`/api/play/sessions/${created.playthroughId}`), {
       headers: playerHeaders,
@@ -251,6 +289,14 @@ test("Captain invitation, immutable version, Player runtime, archive, and revoca
     checksum: versionOne.checksum,
   });
   expect(archive.chapters.flatMap((chapter) => chapter.blocks).length).toBeGreaterThan(0);
+
+  await playerPage.goto(playerUrl("/player/library"));
+  const completedJournalLink = playerPage.getByRole("link", { name: "Open Completed Journal" });
+  await expect(completedJournalLink).toHaveAttribute("href", `/player/playthroughs/${created.playthroughId}/journal`);
+  await completedJournalLink.click();
+  await expect(playerPage).toHaveURL(new RegExp(`/player/playthroughs/${created.playthroughId}/journal$`));
+  await expect(playerPage.locator(".tall-tale-journal-shell.mode-historical")).toBeVisible();
+  await expect(playerPage.getByText(/Read-only · edition checksum/)).toBeVisible();
 
   const pin = await playerContext.request.post(
     playerUrl(`/api/player/playthroughs/${created.playthroughId}/preference`),

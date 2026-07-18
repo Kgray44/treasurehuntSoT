@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { db } from "@/lib/db";
 import { getBlockDefinition, serializeBlockRegistry } from "@/tall-tale/block-registry";
+import { journalPresentationSchema } from "@/tall-tale/journal-contract";
 import type { JsonObject, PublishedTaleSnapshot, StudioDraftInput } from "@/tall-tale/types";
 import { parseJsonObject } from "@/tall-tale/types";
 
@@ -26,7 +27,7 @@ const blockInputSchema = z.object({
   title: z.string().min(1).max(160),
   internalLabel: z.string().max(160).nullish(),
   configuration: z.record(z.string(), z.unknown()),
-  presentation: z.record(z.string(), z.unknown()).optional(),
+  presentation: journalPresentationSchema.optional(),
   completion: z.record(z.string(), z.unknown()).optional(),
   creatorNotes: z.string().max(10000).nullish(),
   isEnabled: z.boolean().optional(),

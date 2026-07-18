@@ -1135,6 +1135,70 @@ export function TaleEditor({
                         }
                       />
                     )}
+                    <fieldset className="journal-presentation-fields">
+                      <legend>Player journal presentation</legend>
+                      <label>
+                        <span>Spread mode</span>
+                        <select
+                          value={String(selected.block.presentation.spreadMode ?? "")}
+                          onChange={(event) =>
+                            updateSelected((block) => {
+                              if (event.target.value) block.presentation.spreadMode = event.target.value;
+                              else delete block.presentation.spreadMode;
+                            })
+                          }
+                        >
+                          <option value="">Automatic for block type</option>
+                          <option value="left">Left page</option>
+                          <option value="right">Right page</option>
+                          <option value="two-page">Two-page spread</option>
+                          <option value="overlay">Physical insert</option>
+                          <option value="cinematic">Cinematic expansion</option>
+                        </select>
+                      </label>
+                      <label>
+                        <span>Page-turn behavior</span>
+                        <select
+                          value={String(selected.block.presentation.pageTurnBehavior ?? "")}
+                          onChange={(event) =>
+                            updateSelected((block) => {
+                              if (event.target.value) block.presentation.pageTurnBehavior = event.target.value;
+                              else delete block.presentation.pageTurnBehavior;
+                            })
+                          }
+                        >
+                          <option value="">Manual by default</option>
+                          <option value="manual">Manual</option>
+                          <option value="automatic">Automatic</option>
+                          <option value="captain-triggered">Captain-triggered</option>
+                          <option value="locked">Locked</option>
+                        </select>
+                      </label>
+                      <label>
+                        <span>Paper style</span>
+                        <input
+                          value={String(selected.block.presentation.paperStyle ?? "")}
+                          placeholder="weathered"
+                          onChange={(event) =>
+                            updateSelected((block) => {
+                              block.presentation.paperStyle = event.target.value;
+                            })
+                          }
+                        />
+                      </label>
+                      <label>
+                        <span>Ink style</span>
+                        <input
+                          value={String(selected.block.presentation.inkStyle ?? "")}
+                          placeholder="midnight"
+                          onChange={(event) =>
+                            updateSelected((block) => {
+                              block.presentation.inkStyle = event.target.value;
+                            })
+                          }
+                        />
+                      </label>
+                    </fieldset>
                     <label>
                       <span>Private creator notes</span>
                       <textarea

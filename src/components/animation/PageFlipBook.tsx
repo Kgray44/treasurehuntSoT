@@ -31,16 +31,28 @@ export const PageFlipBook = forwardRef<
     initialPage?: number;
     showCover?: boolean;
     playbackRate?: 0.25 | 0.5 | 1;
+    revision?: string | number;
     onPageChange?: (page: number) => void;
     onFlipStateChange?: (state: "folding" | "flipping" | "read") => void;
   }
 >(function PageFlipBook(
-  { pages, mode, className = "", initialPage = 0, showCover = true, playbackRate = 1, onPageChange, onFlipStateChange },
+  {
+    pages,
+    mode,
+    className = "",
+    initialPage = 0,
+    showCover = true,
+    playbackRate = 1,
+    revision = 0,
+    onPageChange,
+    onFlipStateChange,
+  },
   ref,
 ) {
   const host = useRef<HTMLDivElement>(null);
   const source = useRef<HTMLDivElement>(null);
   const instance = useRef<PageFlipInstance | null>(null);
+  const pendingPage = useRef<number | null>(null);
   const [current, setCurrent] = useState(Math.min(initialPage, Math.max(0, pages.length - 1)));
   const [orientation, setOrientation] = useState<"portrait" | "landscape">("landscape");
   const [flipState, setFlipState] = useState<"folding" | "flipping" | "read">("read");
@@ -59,11 +71,24 @@ export const PageFlipBook = forwardRef<
     onPageChange?.(next);
   };
 
+  const requestPage = (page: number, animated: boolean) => {
+    if (reduced) {
+      changePage(page);
+      return;
+    }
+    if (flipState !== "read") {
+      pendingPage.current = page;
+      return;
+    }
+    if (animated) instance.current?.flip(page, "top");
+    else instance.current?.turnToPage(page);
+  };
+
   useImperativeHandle(ref, () => ({
-    next: () => (reduced ? changePage(current + 1) : instance.current?.flipNext("top")),
-    previous: () => (reduced ? changePage(current - 1) : instance.current?.flipPrev("top")),
-    turnTo: (page) => (reduced ? changePage(page) : instance.current?.turnToPage(page)),
-    flipTo: (page) => (reduced ? changePage(page) : instance.current?.flip(page, "top")),
+    next: () => (reduced ? changePage(current + 1) : flipState === "read" && instance.current?.flipNext("top")),
+    previous: () => (reduced ? changePage(current - 1) : flipState === "read" && instance.current?.flipPrev("top")),
+    turnTo: (page) => requestPage(page, false),
+    flipTo: (page) => requestPage(page, true),
     currentPage: () => (reduced ? current : (instance.current?.getCurrentPageIndex() ?? current)),
     pageCount: () => (reduced ? pages.length : (instance.current?.getPageCount() ?? pages.length)),
     orientation: () => (reduced ? "portrait" : (instance.current?.getOrientation() ?? orientation)),
@@ -109,6 +134,11 @@ export const PageFlipBook = forwardRef<
           const state = event.data === "flipping" ? "flipping" : event.data === "read" ? "read" : "folding";
           setFlipState(state);
           flipStateCallback.current?.(state);
+          if (state === "read" && pendingPage.current !== null) {
+            const page = pendingPage.current;
+            pendingPage.current = null;
+            if (page !== book.getCurrentPageIndex()) book.flip(page, "top");
+          }
         });
         instance.current = book;
         changeMountedMetric("pageFlip", 1);
@@ -124,6 +154,7 @@ export const PageFlipBook = forwardRef<
         instance.current = null;
         changeMountedMetric("pageFlip", -1);
       }
+      pendingPage.current = null;
       hostElement.replaceChildren();
     };
     // The page-flip instance deliberately initializes once; updates are handled below.
@@ -136,7 +167,7 @@ export const PageFlipBook = forwardRef<
     instance.current.updateFromHtml(clones);
     const safeCurrent = Math.min(instance.current.getCurrentPageIndex(), pages.length - 1);
     if (safeCurrent !== instance.current.getCurrentPageIndex()) instance.current.turnToPage(safeCurrent);
-  }, [pages.length, reduced, signature]);
+  }, [pages.length, reduced, revision, signature]);
 
   const pageNodes = pages.map((page, index) => (
     <article
@@ -169,6 +200,7 @@ export const PageFlipBook = forwardRef<
         <PageControls
           current={current}
           count={pages.length}
+          busy={false}
           previous={() => changePage(current - 1)}
           next={() => changePage(current + 1)}
         />
@@ -182,6 +214,7 @@ export const PageFlipBook = forwardRef<
       data-animation-owner="st-page-flip"
       data-flip-state={flipState}
       onKeyDown={(event) => {
+        if (flipState !== "read") return;
         if (event.key === "ArrowRight" || event.key === "PageDown") instance.current?.flipNext("top");
         if (event.key === "ArrowLeft" || event.key === "PageUp") instance.current?.flipPrev("top");
       }}
@@ -193,6 +226,7 @@ export const PageFlipBook = forwardRef<
       <PageControls
         current={current}
         count={pages.length}
+        busy={flipState !== "read"}
         previous={() => instance.current?.flipPrev("top")}
         next={() => instance.current?.flipNext("top")}
       />
@@ -203,23 +237,25 @@ export const PageFlipBook = forwardRef<
 function PageControls({
   current,
   count,
+  busy,
   previous,
   next,
 }: {
   current: number;
   count: number;
+  busy: boolean;
   previous: () => void;
   next: () => void;
 }) {
   return (
     <div className="page-controls" data-animation-owner="motion">
-      <button onClick={previous} disabled={current <= 0} aria-label="Previous journal page">
+      <button onClick={previous} disabled={busy || current <= 0} aria-label="Previous journal page">
         ← Previous
       </button>
       <span aria-live="polite">
         Page {Math.min(current + 1, count)} of {count}
       </span>
-      <button onClick={next} disabled={current >= count - 1} aria-label="Next journal page">
+      <button onClick={next} disabled={busy || current >= count - 1} aria-label="Next journal page">
         Next →
       </button>
     </div>

@@ -4,7 +4,7 @@
 
 `/` is a cinematic three-role gateway. Choosing Player, Captain, or Creator selects a workspace; it never grants a permission. Server sessions, capabilities, scoped assignments, playthrough membership, and exact resource ownership remain authoritative.
 
-- `/player/sign-in`, `/player/invitation`, `/player/library`, `/player/playthroughs/[id]`, and `/player/playthroughs/[id]/archive` provide durable Player identity, code/link acceptance, waiting state, live continuation, and historical records.
+- `/player/sign-in`, `/player/invitation`, and `/player/library` provide durable Player identity, code/link acceptance, and card-based browsing. `/player/playthroughs/[id]` owns invitation/lobby/waiting state. `/player/playthroughs/[id]/journal` is the canonical active, resumed, paused, and completed story surface; the former archive route redirects there.
 - `/captain/sign-in`, `/captain/library`, `/captain/invitations`, `/captain/sessions/[id]`, and Player-safe preview routes provide operational voyage control without exposing Creator-only internals.
 - `/studio/sign-in`, `/studio/library`, and `/studio/tales/*` remain the authoring, validation, asset, version, fork, and publishing workspace.
 - `/tales`, legacy token sessions, `/quartermaster`, and the original companion remain compatibility surfaces.
@@ -30,6 +30,8 @@ Launch requires an assigned Captain, a ready/scheduled playthrough, at least one
 ## Projection and authorization rules
 
 Player projections are allowlists. They contain current Player-safe Tale copy, revealed blocks/assets, crew readiness, and exact edition metadata; accepted answers, Captain instructions, Creator notes, future branches, private variables, storage keys, and raw event payloads are removed. Completed archives are rebuilt from the pinned published snapshot plus visited events/reveal state, not from the current draft or latest release.
+
+The journal projection extends that allowlist to all released readable blocks, typed presentation metadata, released hints, visited-choice summaries, current-objective indexes, and completion/edition data. Recursive sanitization runs before any page is built. Logic-only blocks and unreleased future content are omitted. Player reading position is stored separately in profile preferences and cannot advance, rewind, or otherwise mutate `TaleSession` progression.
 
 Media reads require one of four explicit scopes: authenticated Creator asset management; Player membership in the exact version-bound playthrough plus reveal/role inclusion; pending invitation cover access; or the current public catalog cover. Original downloads require asset-management permission. SSE authenticates before streaming and periodically rechecks membership, emitting an access-revoked close signal when authorization changes.
 

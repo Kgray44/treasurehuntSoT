@@ -1,14 +1,19 @@
 import { db } from "@/lib/db";
 import { parsePublishedSnapshot } from "@/tall-tale/publishing";
 import { parseJsonArray, type JsonObject, type PublishedBlock } from "@/tall-tale/types";
+import {
+  emptyJournalReadingState,
+  sanitizePlayerObject,
+  type PlayerJournalReadingState,
+  type PlayerJournalReadingStateInput,
+} from "@/tall-tale/journal-contract";
 
 const pendingInvitationStates = ["CREATED", "SENT", "COPIED", "VIEWED"];
 const validMembershipStates = ["INVITED", "ACCEPTED", "READY", "ACTIVE_MEMBER", "COMPLETED_MEMBER"];
 const libraryMembershipStates = [...validMembershipStates, "DECLINED", "REMOVED", "SUSPENDED"];
 
 function safeObject(value: JsonObject) {
-  const denied = /answer|solution|captain|creator|internal|condition|future|private|note/i;
-  return Object.fromEntries(Object.entries(value).filter(([key]) => !denied.test(key)));
+  return sanitizePlayerObject(value);
 }
 
 function safeBlock(block: PublishedBlock) {
@@ -111,17 +116,21 @@ function cardOf(membership: PlayerMembership, captainName?: string) {
     paused: playthrough.status === "PAUSED",
     primaryHref:
       state === "COMPLETED"
-        ? `/player/playthroughs/${playthrough.id}/archive`
-        : `/player/playthroughs/${playthrough.id}`,
+        ? `/player/playthroughs/${playthrough.id}/journal`
+        : state === "IN_PROGRESS"
+          ? `/player/playthroughs/${playthrough.id}/journal`
+          : `/player/playthroughs/${playthrough.id}`,
     primaryLabel:
       state === "INVITATIONS"
         ? "View invitation"
         : state === "AWAITING_CAPTAIN"
           ? "Open waiting room"
           : state === "IN_PROGRESS"
-            ? "Continue the Tale"
+            ? playthrough.status === "PAUSED"
+              ? "Resume Adventure"
+              : "Continue Adventure"
             : state === "COMPLETED"
-              ? "Open voyage archive"
+              ? "Open Completed Journal"
               : "View status",
   };
 }
@@ -214,8 +223,10 @@ export async function getPlayerPlaythrough(playerId: string, playthroughId: stri
       .filter((item) => validMembershipStates.includes(item.status))
       .map((item) => ({ displayName: item.player.displayName, crewRole: item.crewRole, status: item.status })),
     connection: { state: "POLLING", lastServerConfirmation: playthrough.updatedAt.toISOString() },
-    canEnter: playthrough.status === "ACTIVE",
-    runtimeHref: playthrough.status === "ACTIVE" ? `/play/${playthrough.tale.slug}/session/${playthrough.id}` : null,
+    canEnter: ["ACTIVE", "PAUSED"].includes(playthrough.status),
+    runtimeHref: ["ACTIVE", "PAUSED"].includes(playthrough.status)
+      ? `/player/playthroughs/${playthrough.id}/journal`
+      : null,
   };
 }
 
@@ -279,6 +290,71 @@ export async function getPlayerArchive(playerId: string, playthroughId: string) 
       at: event.createdAt.toISOString(),
     })),
   };
+}
+
+type StoredPlayerPreferences = {
+  journals?: Record<string, Partial<PlayerJournalReadingState>>;
+  [key: string]: unknown;
+};
+
+function playerPreferences(value: string): StoredPlayerPreferences {
+  try {
+    const parsed = JSON.parse(value);
+    return parsed && typeof parsed === "object" && !Array.isArray(parsed) ? parsed : {};
+  } catch {
+    return {};
+  }
+}
+
+export async function getPlayerJournalReadingState(playerId: string, playthroughId: string) {
+  const membership = await db.playthroughMembership.findFirst({
+    where: { playerProfileId: playerId, playthroughId, status: { in: validMembershipStates } },
+    include: { player: { select: { preferences: true } } },
+  });
+  if (!membership) return null;
+  const stored = playerPreferences(membership.player.preferences).journals?.[playthroughId] ?? {};
+  return {
+    ...emptyJournalReadingState,
+    pageId: typeof stored.pageId === "string" ? stored.pageId : null,
+    openDrawer: ["chapters", "map", "artifacts", "messages"].includes(stored.openDrawer ?? "")
+      ? stored.openDrawer!
+      : null,
+    hasOpened: Boolean(stored.hasOpened),
+    lastEventSequence: Math.max(0, Number(stored.lastEventSequence ?? 0)),
+    textScale: Math.min(1.5, Math.max(0.85, Number(stored.textScale ?? 1))),
+    updatedAt: typeof stored.updatedAt === "string" ? stored.updatedAt : null,
+  } satisfies PlayerJournalReadingState;
+}
+
+export async function updatePlayerJournalReadingState(
+  playerId: string,
+  playthroughId: string,
+  input: PlayerJournalReadingStateInput,
+) {
+  const membership = await db.playthroughMembership.findFirst({
+    where: { playerProfileId: playerId, playthroughId, status: { in: validMembershipStates } },
+    include: { player: { select: { preferences: true } } },
+  });
+  if (!membership) return null;
+  const preferences = playerPreferences(membership.player.preferences);
+  const current = preferences.journals?.[playthroughId] ?? {};
+  const next: PlayerJournalReadingState = {
+    ...emptyJournalReadingState,
+    ...current,
+    ...input,
+    lastEventSequence: Math.max(
+      Number(current.lastEventSequence ?? 0),
+      Number(input.lastEventSequence ?? current.lastEventSequence ?? 0),
+    ),
+    updatedAt: new Date().toISOString(),
+  } as PlayerJournalReadingState;
+  await db.playerProfile.update({
+    where: { id: playerId },
+    data: {
+      preferences: JSON.stringify({ ...preferences, journals: { ...preferences.journals, [playthroughId]: next } }),
+    },
+  });
+  return next;
 }
 
 export async function listCaptainLibrary(captainId: string) {
