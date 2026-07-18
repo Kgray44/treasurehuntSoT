@@ -1,5 +1,7 @@
 # Phase B-1 Windows Desktop Development
 
+> Historical B-1 boundary: Phase B-2 extends this shell with the governed capture commands documented in `../Phase_B2/B2_Architecture.md` and `../Phase_B2/B2_Protocol.md`. The three-command list below remains the B-1 baseline, not the current B-2 runtime surface.
+
 ## Choice and boundary
 
 Electron 41 packages the existing Next.js standalone application. This choice is recorded in ADR 0002. No route, React component, story engine, or domain model is forked for desktop.

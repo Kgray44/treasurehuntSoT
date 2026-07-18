@@ -1,5 +1,7 @@
 # Phase B-1 Feature Flags
 
+> Historical B-1 defaults: Phase B-2 enables the governed `creator_capture` surface in development and the packaged desktop runtime. Current B-2 defaults and production gates are documented in `../Phase_B2/B2_Architecture.md`.
+
 Flags are resolved on the server by `src/vision/feature-flags.ts`. APIs call `requireVisionFeature`; hiding a client control is never the authorization boundary. An override may use `FEATURE_<ENVIRONMENT_NAME>` or `NEXT_PUBLIC_<ENVIRONMENT_NAME>`. Accepted true values are `1`, `true`, `yes`, `on`, and `enabled`; every other explicit value is false.
 
 | Flag                           | Environment name               |                Development default | Production default | Governs                                     |

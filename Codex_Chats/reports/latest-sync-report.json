@@ -8,16 +8,104 @@
   "conversations_discovered": 189,
   "development_docs": {
     "changes": {
-      "added": [],
+      "added": [
+        {
+          "path": "Development_Docs/AR/ADRs/0011-electron-window-capture-coordinator.md",
+          "status": "??"
+        },
+        {
+          "path": "Development_Docs/AR/ADRs/0012-companion-loopback-pairing.md",
+          "status": "??"
+        },
+        {
+          "path": "Development_Docs/AR/ADRs/0013-windows-hotkey-and-window-health-monitor.md",
+          "status": "??"
+        },
+        {
+          "path": "Development_Docs/AR/Phase_B2/B2_Architecture.md",
+          "status": "??"
+        },
+        {
+          "path": "Development_Docs/AR/Phase_B2/B2_Completion_Report.md",
+          "status": "??"
+        },
+        {
+          "path": "Development_Docs/AR/Phase_B2/B2_Demonstration.md",
+          "status": "??"
+        },
+        {
+          "path": "Development_Docs/AR/Phase_B2/B2_Preflight_Audit.md",
+          "status": "??"
+        },
+        {
+          "path": "Development_Docs/AR/Phase_B2/B2_Protocol.md",
+          "status": "??"
+        },
+        {
+          "path": "Development_Docs/AR/Phase_B2/B2_Security_and_Privacy.md",
+          "status": "??"
+        },
+        {
+          "path": "Development_Docs/AR/Phase_B2/B2_Storage_and_Migrations.md",
+          "status": "??"
+        },
+        {
+          "path": "Development_Docs/AR/Phase_B2/B2_Test_Plan_and_Manual_Matrix.md",
+          "status": "??"
+        },
+        {
+          "path": "Development_Docs/AR/Phase_B2/B2_Troubleshooting.md",
+          "status": "??"
+        }
+      ],
       "conflicted": [],
       "deleted": [],
-      "modified": [],
+      "modified": [
+        {
+          "path": "Development_Docs/AR/Phase_B1/B1_Desktop_Development.md",
+          "status": ".M"
+        },
+        {
+          "path": "Development_Docs/AR/Phase_B1/B1_Feature_Flags.md",
+          "status": ".M"
+        }
+      ],
       "renamed": []
     },
     "commit_included": false,
     "directory": "Development_Docs",
-    "eligible_fingerprints": {},
-    "eligible_paths": [],
+    "eligible_fingerprints": {
+      "Development_Docs/AR/ADRs/0011-electron-window-capture-coordinator.md": "192c757a1659ef58a14779bca0444f483a1c7c1294bf1e2ce6217b0e6c7dca75",
+      "Development_Docs/AR/ADRs/0012-companion-loopback-pairing.md": "0b147e9852ddad0eb6023f5dca56d8b843e4512f5a79b9fee2b163e3f645c019",
+      "Development_Docs/AR/ADRs/0013-windows-hotkey-and-window-health-monitor.md": "8fbc0b5ada38a07ac354206cf908328cfb579abac5e9ec8ff26b67d706b96bc2",
+      "Development_Docs/AR/Phase_B1/B1_Desktop_Development.md": "c6ea3eecaa094429f77db448deb45c87aad361fec0b22707385492d7db0e2515",
+      "Development_Docs/AR/Phase_B1/B1_Feature_Flags.md": "83021f6f59bac34d356d5e392bb6fc8f3c2a2794a8ee6b87d4ed12c1e5f35619",
+      "Development_Docs/AR/Phase_B2/B2_Architecture.md": "6f58b1d3e7daf98b28c337208a4d69cb3d20fc27037ee7117849146e4507a0ed",
+      "Development_Docs/AR/Phase_B2/B2_Completion_Report.md": "72cd310ad694f2532d7ecf0125e32f4aad1bc15d9c417b0e3d8adf9ecb181eac",
+      "Development_Docs/AR/Phase_B2/B2_Demonstration.md": "e269e65fa140b7bea9a95d6363f811929ca634f1e690869375fbdca1e146358d",
+      "Development_Docs/AR/Phase_B2/B2_Preflight_Audit.md": "c0623cf4371e824810c6b66b128f03e6694b88fbd3872019891176afcc7f049b",
+      "Development_Docs/AR/Phase_B2/B2_Protocol.md": "e3bc4588822a9361131f9964d0d1c6a622444d7c8c586ae918770f235339a832",
+      "Development_Docs/AR/Phase_B2/B2_Security_and_Privacy.md": "aef3681f059460bf5d690be8abe75bcdb1cbd6eedde44316544b09a1668a39aa",
+      "Development_Docs/AR/Phase_B2/B2_Storage_and_Migrations.md": "0891a028b670577bcc5ac084f1aa2496738fd6143ab9569f4725736f9dbf58d9",
+      "Development_Docs/AR/Phase_B2/B2_Test_Plan_and_Manual_Matrix.md": "0bf280842b9e5b366d041777046bdb39cce6675cf32378fc2f351a15eebe6141",
+      "Development_Docs/AR/Phase_B2/B2_Troubleshooting.md": "5fce2b9cfee96dd7041c5ac40962baab4c6da4a694392a3ad60d615695b9a118"
+    },
+    "eligible_paths": [
+      "Development_Docs/AR/ADRs/0011-electron-window-capture-coordinator.md",
+      "Development_Docs/AR/ADRs/0012-companion-loopback-pairing.md",
+      "Development_Docs/AR/ADRs/0013-windows-hotkey-and-window-health-monitor.md",
+      "Development_Docs/AR/Phase_B1/B1_Desktop_Development.md",
+      "Development_Docs/AR/Phase_B1/B1_Feature_Flags.md",
+      "Development_Docs/AR/Phase_B2/B2_Architecture.md",
+      "Development_Docs/AR/Phase_B2/B2_Completion_Report.md",
+      "Development_Docs/AR/Phase_B2/B2_Demonstration.md",
+      "Development_Docs/AR/Phase_B2/B2_Preflight_Audit.md",
+      "Development_Docs/AR/Phase_B2/B2_Protocol.md",
+      "Development_Docs/AR/Phase_B2/B2_Security_and_Privacy.md",
+      "Development_Docs/AR/Phase_B2/B2_Storage_and_Migrations.md",
+      "Development_Docs/AR/Phase_B2/B2_Test_Plan_and_Manual_Matrix.md",
+      "Development_Docs/AR/Phase_B2/B2_Troubleshooting.md"
+    ],
     "empty_directories": [],
     "excluded": [],
     "exists": true,
@@ -31,20 +119,19 @@
   "excluded": 183,
   "failed": 0,
   "files_changed": [
-    "Codex_Chats/chats/019f737d-91fa-7093-b54b-6b13860f857a--make-journal-canonical-tall-tale-ui.md",
     "Codex_Chats/chats/019f737e-a458-7c10-afec-b6a7b51c8881--implement-phase-b-1-foundation.md",
     "Codex_Chats/manifest.json",
     "Codex_Chats/reports/latest-sync-report.json"
   ],
-  "finished_at": "2026-07-18T06:31:17Z",
+  "finished_at": "2026-07-18T08:16:44Z",
   "included": 6,
   "push_attempted": false,
   "push_result": "not requested",
-  "redacted": 52,
+  "redacted": 54,
   "redaction_categories": {
-    "connection_string": 5,
+    "connection_string": 6,
     "login_credential": 14,
-    "secret_assignment": 33
+    "secret_assignment": 34
   },
   "renamed": 0,
   "schema_version": "1.0",
@@ -54,12 +141,12 @@
   "source_types_inspected": [
     "codex_session"
   ],
-  "started_at": "2026-07-18T06:30:50Z",
+  "started_at": "2026-07-18T08:16:26Z",
   "suspected_secret_categories": [],
   "synchronizer_version": "1.1.0",
   "unavailable": 0,
-  "unchanged": 4,
-  "updated": 2,
+  "unchanged": 5,
+  "updated": 1,
   "warnings": [
     "Duplicate source record reconciled for 019dad68-91f3-7091-b4aa-6fee54fd1a1f",
     "Duplicate source record reconciled for 019dad68-91f3-7091-b4aa-6fee54fd1a1f",
