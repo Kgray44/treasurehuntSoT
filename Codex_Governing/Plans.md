@@ -4,6 +4,12 @@ This document defines how Codex plans and coordinates work in this repository. I
 
 Root `PLANS.md` does not replace `Development_Docs`. When a task requires a durable authored plan or implementation record, store that task-specific artifact under `Development_Docs` in accordance with its rules. A plan may otherwise remain in the task's coordination state or in the user-requested artifact.
 
+## Elapsed-time planning priority
+
+Correctness, completeness, user intent, safety, required evidence, ownership discipline, and validation quality are hard constraints. Within those constraints, every plan must organize scheduling, delegation, worker capability, integration, and validation to produce the correct integrated result in the minimum practical elapsed time. Speed is an explicit planning objective, not merely a possible by-product of parallelization.
+
+When multiple safe and correct decompositions exist, prefer the one expected to finish sooner while delivering the required depth, coverage, and verification. Minimize avoidable waiting, duplicate work, oversized planning ceremony, repeated discovery, delayed review, and unnecessary global validation. Do not trade required evidence, accessibility, security, performance analysis, testing, or acceptance criteria for speed, and do not invent duration estimates or improvement percentages when no timing data was recorded.
+
 ## Progressive planning tiers
 
 Every task gets a parallelization assessment, but planning ceremony scales with task size and risk.
@@ -16,15 +22,17 @@ Tier 0 records only the objective, affected scope, quick parallelization assessm
 
 ### Tier 1: standard multi-step task
 
-Use Tier 1 for medium work. Record the objective; scope and exclusions; governing sources; repository/working-tree reality; assumptions and unknowns; compact dependency graph and parallelization assessment; lane matrix; subagent communication plan; file and shared-resource ownership; focused testing; integration; and final verification. For each proposed lane, record its expected capacity, quality or coverage, elapsed-time, independence, and coordinator-integration value as defined below. The lane matrix must include the user-visible worker identity, announcement, ownership, lifecycle, deliverable, benefit, and integration fields defined below. Use two to five workers when that many meaningful lanes exist.
+Use Tier 1 for medium work. Record the objective; scope and exclusions; governing sources; repository/working-tree reality; assumptions and unknowns; compact dependency graph and parallelization assessment; critical path and elapsed-time strategy; lane matrix; subagent communication plan; file and shared-resource ownership; focused testing; integration; and final verification. For each proposed lane, record its expected capacity, quality or coverage, elapsed-time, independence, and coordinator-integration value as defined below. The lane matrix must include the user-visible worker identity, announcement, ownership, lifecycle, deliverable, benefit, time-aware, and integration fields defined below. Use two to five workers when that many meaningful lanes exist.
 
 ### Tier 2: large or high-risk task
 
-Use the complete template in this file for repository-wide audits, large implementations, major refactors, multiple feature surfaces, database changes, migrations, deployment, high-risk security work, architecture changes, long-running or cross-computer work, tasks with six or more meaningful lanes, or work with substantial context/coordination-loss risk. Record the expected capacity, quality or coverage, elapsed-time, independence, and coordinator-integration value of every proposed lane. The complete lane matrix and subagent communication plan are mandatory whenever workers are used. Target six to twelve direct workers when the dependency graph and installed capacity support that many real lanes.
+Use the complete template in this file for repository-wide audits, large implementations, major refactors, multiple feature surfaces, database changes, migrations, deployment, high-risk security work, architecture changes, long-running or cross-computer work, tasks with six or more meaningful lanes, or work with substantial context/coordination-loss risk. Record the critical path and complete elapsed-time strategy, plus the expected capacity, quality or coverage, elapsed-time, independence, and coordinator-integration value of every proposed lane. The complete lane matrix and subagent communication plan are mandatory whenever workers are used. Target six to twelve direct workers when the dependency graph and installed capacity support that many real lanes.
 
 ## Progressive planning rule
 
-Minimum safe preflight comes first. Launch obvious independent read-only lanes immediately afterward and refine the detailed plan while they run. Before or immediately after any launch, disclose the worker manifest in chat as required by the subagent communication plan; planning refinement never makes a launched worker invisible. No write lane begins before file/resource ownership and integration boundaries are defined. Plans are living coordination artifacts, not paperwork gates: make them detailed enough to protect quality without delaying safe useful work. "Complete every planning table before starting any worker" is prohibited when ready read-only lanes exist.
+Minimum safe preflight comes first. Identify immediately ready independent lanes, publish the required compact worker manifest, launch safe read-only lanes without unnecessary delay, and refine the dependency graph and detailed plan while they run. No write lane begins before its requirements, prerequisites, file/resource ownership, and integration boundaries are sufficiently established. Launch write lanes as soon as those conditions are met, keep the highest-value ready work in available slots, and start newly unblocked work immediately.
+
+Before or immediately after any launch, disclose the worker manifest in chat as required by the subagent communication plan; planning refinement never makes a launched worker invisible. Communication must not become a blocking administrative process: do not delay a safe worker merely to produce elaborate formatting. Plans are living coordination artifacts, not paperwork gates; make them detailed enough to protect quality without delaying safe useful work. "Complete every planning table before starting any worker" is prohibited when ready read-only lanes exist.
 
 ## Planning principles
 
@@ -35,12 +43,14 @@ An execution plan must:
 - separate requirements and invariants from implementation choices;
 - identify verified facts, assumptions, unknowns, and canonical sources;
 - represent work as a dependency graph rather than a falsely linear checklist;
+- identify the critical path and organize work to shorten it without weakening any hard constraint;
 - maximize safe, useful concurrency while identifying conflict-prone and serialized work;
 - establish one coordinator, clear lane ownership, and one writer per file at a time;
 - identify shared runtime and expensive resources with authoritative owners;
 - define evidence, focused validation, integration validation, and completion criteria before implementation;
 - remain updateable as discoveries change scope, dependencies, ownership, risk, or validation;
 - make every subagent launch and material lifecycle change visible to the user through concise structured chat updates;
+- use completed results promptly and integrate safe independent work incrementally rather than waiting for unrelated lanes;
 - record significant decisions and discoveries without exposing private chain-of-thought; and
 - preserve completed work when the plan changes.
 
@@ -57,10 +67,19 @@ Currently active lanes:
 Blocked lanes:
 Available slots:
 Next ready lanes:
+Highest-value ready-lane queue:
 Exclusive resources currently held:
 ```
 
-Keep safe capacity filled with ready meaningful work, reserve the coordinator when the client counts the root session, queue excess work by dependency and value, and fill newly available slots immediately. Do not wait for an entire wave to finish. Avoid idle or artificial workers, stop or collapse redundant work, and preserve results between waves.
+Keep safe capacity filled with the highest-value ready meaningful work, reserve the coordinator when the client counts the root session, and maintain ready and next-ready queues for substantial tasks. Fill each newly available slot immediately rather than waiting for an entire wave. Capacity may remain intentionally unused only when no useful independent work exists or a concrete conflict, dependency, safety, or resource constraint prevents more work. When substantial ready work exists but a slot remains unused, record the reason briefly.
+
+Do not require a fixed worker count when fewer meaningful lanes exist, and do not create a lane merely because capacity is available. When enough real non-overlapping work exists, use the full safe and useful lane count. Avoid idle or artificial workers, stop or collapse redundant work after sufficient evidence exists, preserve results between waves, and keep completed high-priority output moving into review and integration.
+
+## Worker capability and reasoning-speed planning
+
+Route work for both reliability and elapsed time. Use the fastest capable available worker configuration for mechanical inventories, repository searches, classifications, repetitive comparisons, and bounded read-only scans. Reserve high reasoning effort for work that actually needs it, and use stronger workers for difficult architecture, diagnosis, implementation, reconciliation, and verification. Do not assign maximum reasoning effort to every worker by habit.
+
+Record any capability or reasoning requirement that materially affects lane success or urgency. Reassign work from an unnecessarily slow configuration when a faster capable worker can complete it reliably, and split broad work when that shortens the critical path without losing useful context. Do not hardcode model names or capabilities that were not verified in the installed client.
 
 ## Lane-decomposition quality check
 
@@ -82,10 +101,18 @@ Apply this lane-value check to every proposed Tier 1 and Tier 2 lane:
 - Does this lane increase useful work capacity?
 - Does it add distinct expertise, evidence, implementation, testing, or verification?
 - Can it reduce the task's critical-path duration?
+- Will this lane reduce total elapsed completion time?
+- Does it remove work from the critical path?
+- Can it execute simultaneously with existing lanes?
+- Will its expected time savings exceed briefing, monitoring, and integration overhead?
+- Would combining it with another lane be faster?
+- Would splitting a slow or broad lane shorten the critical path?
+- Is the worker capability appropriate for the lane's urgency and complexity?
+- Can the result be reviewed and integrated promptly?
 - Is its expected value greater than its delegation and integration overhead?
 - Can its output be integrated without creating conflicts or duplicated work?
 
-A lane should normally be created when it provides at least one strong benefit in capacity, quality, coverage, verification, or elapsed time and does not create disproportionate conflict or coordination cost. A lane that fails this value check should be revised, merged, serialized, or omitted rather than used ceremonially.
+A lane should normally be created when it provides at least one strong benefit in speed, capacity, quality, coverage, verification, or risk reduction and does not create disproportionate conflict or coordination cost. A lane that fails this value check should be revised, combined, split, reassigned, serialized, or omitted rather than used ceremonially.
 
 ## Complete Tier 2 execution-plan template
 
@@ -207,7 +234,28 @@ These entries must state the expected task benefit and likely coordination cost 
 
 For a substantial task that remains primarily sequential, document the dependency, safety, exclusive-resource, or overlapping-file reason. Ease of coordination is not enough.
 
-### 8. Dependency graph
+### 8. Elapsed-time strategy
+
+Every Tier 1 and Tier 2 plan must identify the task's critical path and record:
+
+```text
+Critical path:
+Earliest safe fan-out point:
+Ready lanes at launch:
+Highest-risk dependency to resolve early:
+Expected serialized bottlenecks:
+Incremental integration opportunities:
+Expensive shared operations:
+Worker-slot utilization strategy:
+Conditions for splitting or reassigning a slow lane:
+Conditions allowing work to proceed before all lanes finish:
+```
+
+The strategy must explain which work directly controls final completion time and how the plan will launch that work as early as safely possible. Move prerequisite discovery off the critical path through bounded parallel read-only lanes where useful; prioritize uncertain or high-risk dependencies early; prevent noncritical work from blocking critical work; and start newly unblocked work immediately. Begin implementation once sufficient verified inputs exist, review high-priority completed results promptly, and integrate completed independent work incrementally when safe instead of waiting for unrelated lanes.
+
+Record how the coordinator will avoid becoming the critical-path bottleneck, how ready and next-ready lanes will keep meaningful capacity occupied, and when a slow or broad lane should be split or reassigned without discarding useful work. Do not require speculative duration estimates or invented percentages. Base the strategy on dependencies, readiness, ownership, risk, shared resources, and observed evidence.
+
+### 9. Dependency graph
 
 Represent lane identifiers, prerequisites, fan-out, fan-in, the critical path, and failure independence. A compact text or Mermaid graph is acceptable. For example:
 
@@ -233,7 +281,7 @@ Annotate:
 
 Do not force parallel work into a fake sequential checklist.
 
-### 9. Workstream matrix
+### 10. Workstream matrix
 
 Every Tier 1 and Tier 2 workstream matrix must contain fields equivalent to the following. Keep the entries compact enough to scan; an adjacent lane record may carry details, but no required field may be omitted.
 
@@ -247,13 +295,26 @@ For a write-enabled lane, ownership must list the exact files, path patterns, co
 
 Update announcement, completion, and integration fields whenever the worker topology or lifecycle changes. Distinguish **worker complete**, **output reviewed**, **output integrated**, and **output independently verified**; none implies the next automatically.
 
-### 10. Subagent communication plan
+For every Tier 1 and Tier 2 lane, include these time-aware fields in the matrix or an adjacent lane record:
+
+```text
+Critical-path relationship:
+Earliest safe start:
+Expected blocking dependencies:
+Elapsed-time benefit:
+Can integration begin before other lanes finish?
+Reassignment or split trigger:
+```
+
+Use dependency and readiness evidence rather than speculative duration estimates. A lane record must make clear whether its result can be reviewed or integrated while unrelated work continues.
+
+### 11. Subagent communication plan
 
 Subagent use must never be invisible to the user. Every Tier 1 or Tier 2 plan that uses workers must include a communication plan covering the items below. If a Tier 0 task uses a distinct verification or other worker, the same launch and lifecycle disclosures apply even though the full planning template does not. These rules apply to one worker, multiple specialists, full-capacity fan-out, later waves, replacements, verification lanes, read-only or write lanes, test lanes, and batch workers.
 
 #### Initial manifest format and launch timing
 
-Before or immediately after launching workers, provide a visible chat update titled `Subagent started`, `Subagents started`, or an equally clear wave-specific title. Never omit the disclosure for a single worker. Use a compact structured card for one worker and one grouped table for workers launched at approximately the same time.
+Before or immediately after launching workers, provide a visible chat update titled `Subagent started`, `Subagents started`, or an equally clear wave-specific title. Never omit the disclosure for a single worker. Use a compact structured card for one worker and one grouped table for workers launched at approximately the same time. Prepare and publish the minimum sufficient disclosure promptly; do not delay a safe launch to create elaborate presentation.
 
 For each worker, the launch update must disclose:
 
@@ -344,6 +405,8 @@ Workers may not silently broaden their scope. A write-ownership transfer stops t
 
 Do not require or send updates for every tool call, file opened, search, minor internal observation, unchanged poll, or the mere passage of time. Do not repeat `still working` messages without a meaningful topology, ownership, status, finding, dependency, or integration change. Do not expose or request private chain-of-thought, raw internal reasoning, unfiltered worker logs, or full worker prompts unless the user explicitly requests the prompt text. Visible updates provide decisions, scope, evidence, results, and concise rationale sufficient for the user to understand and audit the parallel work.
 
+Communication supports execution and must not materially slow it. Use compact grouped manifests, concise meaningful status changes, and no duplicate narration. Continue independent work while preparing nonblocking updates, and never turn the disclosure requirement into unnecessary scheduling ceremony.
+
 #### Final parallel-execution summary
 
 For every substantial task that used subagents, the final response must concisely summarize:
@@ -358,7 +421,7 @@ For every substantial task that used subagents, the final response must concisel
 
 Keep the summary evidence-based and readable. Do not reproduce raw worker prompts or private reasoning, and do not invent numerical performance percentages when timing or work data was not recorded.
 
-### 11. Subagent briefing template
+### 12. Subagent briefing template
 
 Use a bounded briefing such as:
 
@@ -380,6 +443,11 @@ End goal:
 Capacity benefit:
 Quality or coverage benefit:
 Elapsed-time benefit:
+Critical-path relationship:
+Earliest safe start:
+Expected blocking dependencies:
+Can integration begin before other lanes finish?
+Reassignment or split trigger:
 Why this lane should run independently:
 Expected coordinator integration cost:
 Worker capability and reasoning requirement:
@@ -397,7 +465,7 @@ Blocker/uncertainty/overlap/ownership-conflict reporting:
 
 Briefings must carry the requirements the worker needs; do not rely on the worker to reconstruct user intent. Require distilled results, not full raw logs. A worker must stop and report if its scope becomes ambiguous, overlaps another writer, requires a prohibited shared resource, or would broaden the task.
 
-### 12. Shared-resource and locking plan
+### 13. Shared-resource and locking plan
 
 | Resource                             | Authoritative owner | Other permitted consumers            | Exclusive operations                        | Conflict-prevention method                              | Release/handoff condition                   |
 | ------------------------------------ | ------------------- | ------------------------------------ | ------------------------------------------- | ------------------------------------------------------- | ------------------------------------------- |
@@ -415,7 +483,7 @@ Briefings must carry the requirements the worker needs; do not rely on the worke
 
 Add task-specific resources. In this repository, normal development uses `npm run dev:full` on `127.0.0.1:3000`. The Playwright default test port (`3100`) and validation production proof port (`3200`) are isolated validation resources, not extra canonical app instances.
 
-### 13. File ownership plan
+### 14. File ownership plan
 
 Record:
 
@@ -436,7 +504,7 @@ Recommended table:
 
 Package manifests and lockfiles, Prisma schemas/migrations/seed, root layouts and providers, global styles/tokens, route entrypoints, central registries, runtime configuration, and generated files are presumed conflict-prone until inspected. Exactly one integration lane owns each such resource.
 
-### 14. Runtime strategy
+### 15. Runtime strategy
 
 Define:
 
@@ -459,7 +527,7 @@ Repository defaults:
 - treat database-mutating browser work as exclusive unless separate databases are configured; and
 - centralize final browser/runtime review after integration.
 
-### 15. Testing strategy
+### 16. Testing strategy
 
 Plan all applicable layers:
 
@@ -476,9 +544,11 @@ Plan all applicable layers:
 
 Use only verified commands. Available focused commands include `npm run format:check`, `npm run lint`, `npm run typecheck`, `npm test`, `npm run assets:validate`, `npm run test:e2e`, and `npm run build`. `npm run validate` is the full cross-cutting gate. No separate `test:integration` script is currently verified; describe the actual focused Vitest/Playwright coverage instead of inventing one.
 
-Implementation lanes run the smallest relevant checks. Independent unit shards may run concurrently. One validation owner deduplicates full lint/type/build/browser/server work and runs the required integrated gate on the combined state. Record commands, exit status, relevant counts, artifact paths, and failures. Classify failures as pre-existing, task regression, environmental, or unresolved with evidence; never erase failure evidence to make a gate appear clean.
+Implementation lanes run the smallest relevant focused checks, and safe independent test shards run concurrently. Test high-risk assumptions early enough to unblock or redirect critical-path work. One validation owner deduplicates full lint/type/build/browser/server work and runs the required integrated gate when the combined state is ready enough to make the result useful. Do not make each worker run a complete suite, duplicate a build without a demonstrated reason, or rerun expensive global checks after every small lane.
 
-### 16. Integration strategy
+Reuse valid repository, test, server, and browser evidence when its state and provenance still apply. Classify failures immediately as pre-existing, task regression, environmental, intermittent, or unresolved so unaffected work can continue. Record commands, exit status, relevant counts, artifact paths, and failures; never erase failure evidence to make a gate appear clean. Speed never authorizes silently skipping required validation.
+
+### 17. Integration strategy
 
 Define:
 
@@ -491,9 +561,11 @@ Define:
 - how the complete integrated diff and working tree are reviewed; and
 - focused and cross-cutting checks to run after integration.
 
+Review critical results promptly and begin synthesis, implementation, or integration from sufficiently verified completed lanes. Integrate completed independent work in safe increments and keep unrelated lanes running; do not wait for every lane when unresolved results do not block the next step. Record unresolved dependencies explicitly, and surface major findings early enough to change downstream scheduling. A completed result must not sit unused merely because unrelated workers remain active.
+
 The integration owner preserves both sides of unexpected conflicts, consults the governing source, and resolves only when intent is clear. Workers do not casually merge, stage, or overwrite one another's work. Final Git reconciliation, if authorized, remains serialized.
 
-### 17. Risk register
+### 18. Risk register
 
 | Risk ID | Description | Probability  | Impact       | Detection method | Mitigation | Owner | Recovery action | Status |
 | ------- | ----------- | ------------ | ------------ | ---------------- | ---------- | ----- | --------------- | ------ |
@@ -501,7 +573,7 @@ The integration owner preserves both sides of unexpected conflicts, consults the
 
 Include ownership collision, stale repository assumptions, accidental scope expansion, runtime/port/database contention, migration ordering, generated-file churn, pre-existing failures, security/privacy exposure, incomplete integration, and validation gaps where applicable.
 
-### 18. Decision log
+### 19. Decision log
 
 | Decision ID | Decision | Reason | Alternatives considered | Evidence | Affected lanes | Date/stage |
 | ----------- | -------- | ------ | ----------------------- | -------- | -------------- | ---------- |
@@ -509,7 +581,7 @@ Include ownership collision, stale repository assumptions, accidental scope expa
 
 Record concise rationale and evidence, not private chain-of-thought.
 
-### 19. Discovery log
+### 20. Discovery log
 
 | Discovery ID | Finding | Evidence | Changes scope/dependencies/ownership/validation/risk | Plan update | Date/stage |
 | ------------ | ------- | -------- | ---------------------------------------------------- | ----------- | ---------- |
@@ -517,7 +589,7 @@ Record concise rationale and evidence, not private chain-of-thought.
 
 Log discoveries that materially change architecture assumptions, canonical locations, dependency edges, ownership, validation, risk, or completion criteria.
 
-### 20. Progress tracking
+### 21. Progress tracking
 
 Use these statuses consistently:
 
@@ -535,7 +607,7 @@ Use these statuses consistently:
 
 Plans reflect actual state, not optimistic expectations. At most one owner writes a file or holds an exclusive resource at a time.
 
-### 21. Failure recovery
+### 22. Failure recovery
 
 For each material lane or shared resource, define:
 
@@ -551,7 +623,7 @@ For each material lane or shared resource, define:
 
 Do not restart completed work because another lane failed. A failed lane returns partial evidence and a precise blocker. The coordinator discloses any gap that remains material to completion.
 
-### 22. Final verification
+### 23. Final verification
 
 Before claiming completion:
 
@@ -568,7 +640,7 @@ Before claiming completion:
 
 For documentation-only work, use proportionate document validation and do not launch the application or full test suite unless a governing instruction explicitly requires it.
 
-### 23. Final report format
+### 24. Final report format
 
 The coordinator reports:
 
@@ -587,6 +659,18 @@ Development docs: required synchronization result
 ```
 
 For every substantial task that used subagents, include the complete final parallel-execution summary required by the communication plan: total unique subagents, maximum simultaneous workers, waves, roles and ownership boundaries, read-only and write-enabled lanes, important results from each lane, failures/blocks/replacements/cancellations, reconciliation, realized capacity/depth/coverage/verification/time benefits, avoidable duplication or overhead, and decomposition improvements. Keep the assessment concise and evidence-based. Do not claim speculative numerical percentages unless timing or work data was actually recorded.
+
+For every substantial task, the final execution assessment must also state concisely and from observed task evidence:
+
+- whether independent work began promptly;
+- whether useful capacity remained unnecessarily idle;
+- whether critical-path work received priority;
+- whether completed results were reviewed and integrated promptly;
+- whether parallelization materially reduced elapsed time;
+- what avoidable waiting, duplication, or planning overhead occurred; and
+- how a similar future task could finish faster.
+
+Do not invent timing figures, duration estimates, or percentages that were not measured.
 
 The report provides concise rationale, evidence, decisions, and results. It does not expose private chain-of-thought or paste raw agent logs.
 
@@ -638,13 +722,24 @@ Each batch requires a stable item ID, explicit input columns, fixed output schem
 Do not:
 
 - process independent areas sequentially without a concrete reason;
+- leave useful worker slots idle while ready meaningful work exists;
+- wait for an entire worker wave when one slot becomes available;
+- wait for every discovery lane before starting implementation that has sufficient verified inputs;
+- wait for every implementation lane before integrating completed independent work when incremental integration is safe;
+- require every worker to finish before reviewing completed high-priority output;
 - spawn agents with substantially identical scopes;
 - make every agent scan the entire repository;
+- make every worker rediscover repository structure instead of reusing a shared census;
+- delay safe read-only fan-out until every planning field is complete;
+- write oversized plans or status reports whose coordination cost exceeds their practical value;
+- perform delegable work in the coordinator merely because delegation requires a briefing;
 - launch work before evidence, path, and resource ownership are defined;
 - allow multiple agents to edit the same file concurrently;
 - let multiple development servers compete for port `3000`;
 - make every lane run the entire test suite;
+- rerun expensive global checks after every small lane instead of using focused checks and one integrated gate;
 - use agent count as a quality metric or create microscopic artificial lanes;
+- maintain redundant lanes after sufficient evidence exists;
 - ignore slower-lane results because faster lanes finished first;
 - combine reports without reconciling duplicates, severity, or contradictions;
 - let subagents reinterpret or broaden user requirements;
@@ -666,6 +761,7 @@ Update the plan when:
 - a lane becomes unnecessary or duplicates another;
 - supposedly independent work is found to be dependent;
 - a blocked lane can be narrowed or split;
+- a slow or broad lane can be split or reassigned to shorten the critical path without losing useful work;
 - additional safe parallelism becomes available;
 - runtime evidence contradicts static analysis;
 - the canonical implementation differs from the initial assumption;
@@ -678,7 +774,8 @@ When adapting:
 2. update dependency edges, ownership, locks, status, risk, and validation;
 3. notify affected lanes and stop conflicting writers before reassignment;
 4. record the material discovery or decision;
-5. start newly ready independent work promptly; and
-6. avoid unnecessary restarts.
+5. start newly ready independent work promptly;
+6. review and integrate completed high-priority output without waiting for unrelated lanes; and
+7. avoid unnecessary restarts.
 
-The plan serves the task. It may evolve, but it may never override the user's instructions or governing product requirements.
+The plan serves the task. It may evolve, but it may never override the user's instructions or governing product requirements. Codex must move as quickly as possible without becoming careless: progressive planning, specialization, early risk resolution, incremental integration, focused validation, and prompt worker reuse exist to deliver a correct and complete result in the least practical elapsed time.

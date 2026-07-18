@@ -19,6 +19,23 @@ Parallelization may never broaden scope, remove an acceptance criterion, weaken 
 
 When governing instructions change during an existing task, preserve the original task instructions, all completed work, established terminology, current scope, acceptance criteria, evidence, decisions, modifications, validation, and requested deliverable. Apply the updated execution framework only to unfinished work. Do not restart, discard, or re-scope the task merely because the governing framework changed.
 
+## Speed as a first-class operational priority
+
+> Speed is a first-class operational priority. Codex must organize and execute work to minimize total elapsed completion time while preserving correctness, user intent, safety, required evidence, ownership discipline, and validation quality.
+
+Speed is not merely a hoped-for result of parallelization. It is an explicit planning, scheduling, delegation, worker-capability and reasoning-routing, review, integration, and validation objective.
+
+The governing optimization target, in priority order, is:
+
+1. Correct and complete results.
+2. Minimum practical elapsed completion time.
+3. Maximum useful capacity, depth, coverage, and verification within that time.
+4. Minimum avoidable duplication, waiting, ceremony, and coordination overhead.
+
+Correctness and safety remain hard constraints. Within those constraints, Codex must choose the valid execution approach expected to finish sooner. Faster completion must never weaken user intent, required evidence, accessibility, security, performance analysis, ownership, testing, integration, acceptance criteria, or final verification.
+
+> Codex must move as quickly as possible without becoming careless. Parallelization, specialization, progressive planning, early risk resolution, incremental integration, focused validation, and prompt worker reuse exist to deliver a correct and complete result in the least practical elapsed time.
+
 ## Purpose of parallel execution
 
 Subagent parallelization exists to accomplish three primary goals:
@@ -174,6 +191,8 @@ When cancelling a redundant or unnecessary lane, report its lane ID, why it beca
 
 Transparency must remain useful rather than noisy. Group workers launched or completed at approximately the same time into one structured update. Do not require or send updates for every tool call, file opened, search performed, minor internal observation, unchanged status poll, or passage of a few minutes. Do not repeat `still working` messages without a meaningful change, dump full worker prompts unless the user requests them, or expose raw internal reasoning or private chain-of-thought. Announce only meaningful changes in topology, ownership, permissions, status, material findings, dependencies, or integration state.
 
+Required disclosure must occur immediately before or after launch through compact grouped manifests and concise meaningful status changes. Communication supports execution and must not become a blocking administrative process: do not delay safe workers merely to produce elaborate chat formatting, duplicate narration, full prompt dumps, or status reports with no new information.
+
 ### Final parallel-execution summary
 
 For every substantial task that used subagents, the final response must concisely and readably summarize:
@@ -202,6 +221,79 @@ The assessment identifies:
 - the maximum safe and useful concurrency, worktree needs, integration owner, and final-validation owner.
 
 If two or more genuine independent lanes exist, parallel delegation is mandatory unless a concrete technical, safety, dependency, resource, capacity, or ownership reason prevents it. The repository policy itself is standing authorization; the user does not need to request subagents, delegation, workers, parallel execution, or the full available limit.
+
+## Critical-path and fast-start execution
+
+Every Tier 1 and Tier 2 plan must identify the task's critical path and use it as an active scheduling input. The coordinator must:
+
+- identify which work directly controls final completion time;
+- launch critical-path work as early as safely possible;
+- move prerequisite discovery off the critical path through parallel read-only lanes;
+- prevent noncritical work from blocking critical work;
+- resolve uncertain or high-risk dependencies early;
+- begin integration incrementally when safe instead of waiting unnecessarily for every unrelated lane;
+- start newly unblocked work immediately;
+- reassign or split a slow lane when doing so can shorten completion time without discarding useful work or reducing quality;
+- review and integrate completed worker output promptly rather than leaving it waiting; and
+- prevent the coordinator from becoming the critical-path bottleneck.
+
+When multiple valid decompositions exist, prefer the one expected to produce a correct integrated result sooner.
+
+### Fast-start requirement
+
+For every nontrivial task:
+
+1. Complete the minimum safety and repository preflight.
+2. Identify immediately ready independent lanes.
+3. Publish the required subagent manifest.
+4. Launch those lanes without unnecessary delay.
+5. Continue refining the dependency graph and detailed plan while safe read-only work proceeds.
+6. Launch write lanes as soon as ownership, requirements, and prerequisites are sufficiently established.
+7. Keep capacity filled with the highest-value ready work.
+
+The coordinator must not spend a large initial portion of the task only planning when useful bounded investigation can already proceed safely.
+
+### No unnecessary waiting
+
+Unless a real dependency, conflict, safety boundary, exclusive resource, or missing prerequisite requires serialization, do not:
+
+- process independent workstreams sequentially;
+- leave useful worker slots idle while ready work exists;
+- wait for an entire worker wave when one slot becomes available;
+- wait for every discovery lane before starting implementation that already has sufficient verified inputs;
+- wait for every implementation lane before integrating completed independent work when incremental integration is safe;
+- require every worker to finish before reviewing completed high-priority output;
+- rerun expensive global checks after every small lane instead of using focused checks and one integrated gate;
+- make every worker rediscover repository structure;
+- delay safe read-only fan-out until every planning field is complete;
+- write oversized plans or status reports whose coordination cost exceeds their practical value;
+- perform delegable work in the coordinator merely because delegation requires a briefing; or
+- maintain redundant lanes after sufficient evidence exists.
+
+### Time-aware lane selection
+
+In addition to capacity, quality, coverage, verification, and risk value, evaluate each proposed lane by asking:
+
+- Will this lane reduce total elapsed completion time?
+- Does it remove work from the critical path?
+- Can it execute simultaneously with existing lanes?
+- Will its expected time savings exceed briefing, monitoring, and integration overhead?
+- Would combining it with another lane be faster?
+- Would splitting a slow or broad lane shorten the critical path?
+- Is the worker capability appropriate for the lane's urgency and complexity?
+- Can the result be reviewed and integrated promptly?
+
+A lane must not be created merely because parallel capacity exists. It should normally improve speed, capacity, quality, coverage, verification, or risk reduction enough to justify its overhead.
+
+### Worker-slot utilization
+
+- Meaningful ready worker capacity should normally remain fully utilized.
+- For substantial tasks, maintain a queue of ready and next-ready lanes ordered by critical-path impact, value, risk, and dependency readiness.
+- Fill each newly available slot immediately with the highest-value ready lane.
+- Intentionally leave capacity unused only when no useful independent work exists or when conflict, dependency, safety, ownership, or resource constraints prevent more work.
+- If substantial ready work exists but available capacity is intentionally unused, briefly record the concrete reason.
+
+Do not require twelve workers when fewer meaningful lanes exist. Do require the full useful lane count when enough real, non-overlapping work exists.
 
 ## Aggressive concurrency requirement
 
@@ -323,9 +415,25 @@ Subagents must not silently broaden scope. They return distilled findings or imp
 - Avoid redundant searches, duplicated expensive operations, idle workers, and artificial lanes created only to raise agent count.
 - Add lanes dynamically when new independent work appears. Collapse or cancel redundant lanes, preserve useful partial results, and never ignore a slower worker's material output merely because faster lanes finished first.
 
+## Incremental result use
+
+Use worker output as it becomes available. The coordinator must:
+
+- review critical results promptly;
+- begin synthesis or implementation from sufficiently verified completed lanes;
+- proceed without unrelated workers when their results do not block the next safe step;
+- surface major findings early;
+- preserve unresolved dependencies explicitly;
+- integrate in safe increments; and
+- keep unrelated lanes running during review and integration.
+
+A completed worker result must not sit unused merely because other lanes are still active.
+
 ## Worker capability and reasoning routing
 
-When the installed client supports per-agent selection, verify available models and reasoning settings rather than inventing aliases. Use the fastest capable available worker, generally with balanced reasoning, for mechanical repository census, file/symbol/route/import inventories, dependency mapping, repetitive documentation checks, straightforward result classification, and homogeneous read-only audits. Use a stronger worker with high reasoning for complex code paths, performance, accessibility, security, architecture, data flow, difficult implementation, subtle regressions, runtime diagnosis, and cross-system contracts. Use the strongest appropriate available capability for coordination, decomposition, reconciliation, high-risk decisions, shared architecture, integration, synthesis, and final verification. Never downgrade a lane when doing so would materially reduce reliability, and do not run every mechanical lane at the coordinator's maximum reasoning effort.
+When the installed client supports per-agent selection, verify available models and reasoning settings rather than inventing aliases. Use the fastest capable available worker, generally with balanced reasoning, for mechanical repository census and inventories, repository searches, file/symbol/route/import inventories, dependency mapping, repetitive comparisons, classifications, documentation checks, straightforward result classification, and bounded homogeneous read-only scans. Reserve high reasoning effort for work that actually requires it. Use a stronger worker with high reasoning for complex code paths, performance, accessibility, security, architecture, data flow, difficult diagnosis and implementation, runtime diagnosis, subtle regressions, reconciliation, verification, and cross-system contracts. Use the strongest appropriate available capability for coordination, decomposition, high-risk decisions, shared architecture, integration, synthesis, and final verification.
+
+Do not assign maximum reasoning effort to every worker by habit. Reassign work from an unnecessarily slow configuration when a faster capable worker can complete it reliably, but never downgrade a lane when doing so would materially reduce reliability. Model and reasoning selection must optimize both reliability and elapsed completion time.
 
 ## Read-heavy workflow policy
 
@@ -354,10 +462,14 @@ Other lanes may consume existing logs or results and request targeted checks fro
 
 - Run safe independent unit-test groups concurrently and shard by package, subsystem, feature, or test type.
 - Let implementation lanes run focused checks for their work. Do not make every lane run the complete suite.
+- Test high-risk assumptions early so failures do not invalidate large amounts of downstream work.
 - Assign one integrated type-check owner, one integrated lint owner when needed, one production-build owner, one final E2E owner, and one final full-validation owner. A single validation lane may own several of these serialized operations.
-- Run the full required acceptance gate once on the ready integrated state unless the task or failure investigation requires an additional run.
-- Preserve failure evidence and classify failures as pre-existing, task-induced, environmental, intermittent, or unresolved.
+- Run the full required acceptance gate once when the integrated state is ready enough for the result to be useful, unless the task or failure investigation demonstrates a reason for an additional run.
+- Do not duplicate builds, full suites, server starts, browser checks, or repository evidence without a demonstrated need; reuse valid evidence when its state and scope still match.
+- Preserve failure evidence and classify failures immediately as pre-existing, task-induced, environmental, intermittent, or unresolved so unrelated work can continue.
 - Treat shared-database mutation suites and runtime-dependent checks as exclusive resources unless isolation is proven.
+
+Speed may never be obtained by silently skipping required validation.
 
 ## Context management
 
