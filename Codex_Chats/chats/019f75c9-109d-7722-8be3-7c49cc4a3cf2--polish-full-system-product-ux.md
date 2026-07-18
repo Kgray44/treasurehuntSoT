@@ -4,9 +4,9 @@ title: "Polish full-system product UX"
 project: "Forever Treasure Companion"
 source_type: "codex_session"
 created_at: "2026-07-18T15:12:25.137Z"
-updated_at: "2026-07-18T16:01:29.568Z"
-message_count: 434
-content_sha256: "938f1ba644e90c33fe18b8f8793c4bffed0a4a8e1b16ce00dcab84ada2f3de8c"
+updated_at: "2026-07-18T16:03:33.651Z"
+message_count: 458
+content_sha256: "d31d7f7e35b03f125737221096f503c5aec19dc0e59dfe41079af00f4f6ed946"
 archived_at: "2026-07-18T15:17:34Z"
 ---
 
@@ -2366,3 +2366,134 @@ const r = await tools.shell_command({command:"python scripts/sync_codex_chats.py
 Script running with cell ID 166
 Wall time 10.0 seconds
 Output:
+
+## Tool Call: wait
+**Timestamp:** 2026-07-18T16:01:33.155Z
+
+{"cell_id":"166","yield_time_ms":10000,"max_tokens":8000}
+
+## Tool Result: call_xnnXUC9y9gnDHTEdCV0vvTgf
+**Timestamp:** 2026-07-18T16:01:43.164Z
+
+Script running with cell ID 166
+Wall time 10.0 seconds
+Output:
+
+## Tool Call: wait
+**Timestamp:** 2026-07-18T16:01:46.767Z
+
+{"cell_id":"166","yield_time_ms":10000,"max_tokens":8000}
+
+## Tool Result: call_6wAPq6qAVjlxmGeHNQJna4bD
+**Timestamp:** 2026-07-18T16:01:51.847Z
+
+[{"text": "Script completed\nWall time 5.1 seconds\nOutput:\n", "type": "input_text"}, {"text": "Exit code: 0\nWall time: 32.2 seconds\nOutput:\nChat archive: 1 added, 2 updated, 7 unchanged, 183 excluded, 0 ambiguous.\r\nDevelopment docs: 0 added, 1 modified, 0 renamed, 0 deleted, 0 conflicted; 1 eligible paths, 0 excluded.\r\nCommit: 2007099f121a475c2faf32f9bf94b1d6b4ae4218; push: verified origin/main at 2007099f121a475c2faf32f9bf94b1d6b4ae4218\r\n", "type": "input_text"}]
+
+## Tool Call: exec
+**Timestamp:** 2026-07-18T16:01:55.125Z
+
+const r = await tools.shell_command({command:"python scripts/sync_codex_chats.py --validate","workdir":"C:\\Users\\kkids\\Documents\\Codex_TreasureHunt","timeout_ms":300000}); text(r)
+
+## Tool Result: call_rPqNzdObMrrLnWuin0SLsce4
+**Timestamp:** 2026-07-18T16:01:57.000Z
+
+[{"text": "Script completed\nWall time 1.9 seconds\nOutput:\n", "type": "input_text"}, {"text": "Exit code: 0\nWall time: 1.8 seconds\nOutput:\nChat archive valid: 19 conversations, 13549 messages\r\nDevelopment docs status: 0 added, 0 modified, 0 renamed, 0 deleted, 0 conflicted; 0 excluded.\r\n", "type": "input_text"}]
+
+## Tool Call: exec
+**Timestamp:** 2026-07-18T16:02:03.196Z
+
+const r = await tools.shell_command({command:"git show --name-status --format=fuller --stat 2007099f121a475c2faf32f9bf94b1d6b4ae4218; git status --short --branch; git diff --stat; git diff --check; git rev-list --left-right --count \"HEAD...@{upstream}\"; git rev-parse HEAD; git rev-parse origin/main; git ls-remote origin refs/heads/main","workdir":"C:\\Users\\kkids\\Documents\\Codex_TreasureHunt","timeout_ms":30000}); text(r)
+
+## Tool Result: call_VLPKOJtYiU0Vrccp4wPYuqjO
+**Timestamp:** 2026-07-18T16:02:04.637Z
+
+[{"text": "Script completed\nWall time 1.4 seconds\nOutput:\n", "type": "input_text"}, {"text": "Exit code: 0\nWall time: 1.3 seconds\nOutput:\ncommit 2007099f121a475c2faf32f9bf94b1d6b4ae4218\nAuthor:     Kgray44 <kkidsgray@icloud.com>\nAuthorDate: Sat Jul 18 12:01:48 2026 -0400\nCommit:     Kgray44 <kkidsgray@icloud.com>\nCommitDate: Sat Jul 18 12:01:48 2026 -0400\n\n    chore(sync): update Codex chats and development docs\n\nM\tCodex_Chats/chats/019f75c9-109d-7722-8be3-7c49cc4a3cf2--polish-full-system-product-ux.md\nM\tCodex_Chats/chats/019f75d1-8441-7962-a500-d605d0f89966--fix-captain-sign-in-json-error.md\nA\tCodex_Chats/chats/019f75f4-50ba-7982-940a-f0dd9e2dd384--consolidate-unified-experience-shell.md\nM\tCodex_Chats/manifest.json\nM\tCodex_Chats/reports/latest-sync-report.json\nM\tDevelopment_Docs/Full_System_Product_Polish_Implementation_Record.md\n## main...origin/main\n M docs/design-system.md\n M docs/responsive-behavior.md\n M docs/testing.md\n M src/app/api/gm/login/route.ts\n M src/app/layout.tsx\n M src/components/landing/HarborLanding.tsx\n M src/components/platform/CaptainLibrary.tsx\n M src/components/platform/InvitationCeremony.tsx\n M src/components/platform/PlayerLibrary.tsx\n M src/components/platform/PlayerSignIn.tsx\n M src/components/platform/PlayerVoyageRoom.tsx\n M src/components/platform/StaffSignIn.tsx\n M src/components/studio/StudioHome.tsx\n M src/components/tales/TaleCatalog.tsx\n M src/components/tales/TaleStart.tsx\n M src/styles/landing.css\n M src/styles/platform.css\n M src/styles/studio.css\n M src/styles/tall-tale.css\n M src/styles/tokens.css\n M tests/e2e/access-gates.spec.ts\n M tests/e2e/tall-tale-platform.spec.ts\n?? src/app/api/gm/login/route.test.ts\n?? src/app/captain/layout.tsx\n?? src/app/play/layout.tsx\n?? src/app/player/layout.tsx\n?? src/app/studio/layout.tsx\n?? src/app/tales/layout.tsx\n?? src/components/platform/StaffSignIn.test.tsx\n?? src/components/shell/\n?? src/components/tales/TaleCatalog.test.tsx\n?? src/components/ui/\n?? src/lib/client-response.ts\n?? src/styles/shell.css\n docs/design-system.md                          |  12 +-\n docs/responsive-behavior.md                    |   8 +-\n docs/testing.md                                |   4 +\n src/app/api/gm/login/route.ts                  |  40 +--\n src/app/layout.tsx                             |  13 +-\n src/components/landing/HarborLanding.tsx       |  82 +++++-\n src/components/platform/CaptainLibrary.tsx     | 368 +++++++++++++++++--------\n src/components/platform/InvitationCeremony.tsx |  75 +++--\n src/components/platform/PlayerLibrary.tsx      | 225 +++++++++------\n src/components/platform/PlayerSignIn.tsx       |  15 +-\n src/components/platform/PlayerVoyageRoom.tsx   |  41 ++-\n src/components/platform/StaffSignIn.tsx        |  56 ++--\n src/components/studio/StudioHome.tsx           | 166 +++++++----\n src/components/tales/TaleCatalog.tsx           | 152 ++++++++--\n src/components/tales/TaleStart.tsx             |  72 +++--\n src/styles/landing.css                         | 143 +++++++++-\n src/styles/platform.css                        |  53 +++-\n src/styles/studio.css                          |  12 +-\n src/styles/tall-tale.css                       | 149 +++++++++-\n src/styles/tokens.css                          | 257 +++++++++++++++--\n tests/e2e/access-gates.spec.ts                 |   4 +-\n tests/e2e/tall-tale-platform.spec.ts           |   4 +-\n 22 files changed, 1489 insertions(+), 462 deletions(-)\n0\t0\n2007099f121a475c2faf32f9bf94b1d6b4ae4218\n2007099f121a475c2faf32f9bf94b1d6b4ae4218\n2007099f121a475c2faf32f9bf94b1d6b4ae4218\trefs/heads/main\n", "type": "input_text"}]
+
+## Tool Call: exec
+**Timestamp:** 2026-07-18T16:02:19.595Z
+
+const r = await tools.shell_command({command:"Get-Content Development_Docs\\Full_System_Product_Polish_Implementation_Record.md -TotalCount 12; rg -n \"6114|6045473|sync\" Development_Docs/Full_System_Product_Polish_Implementation_Record.md","workdir":"C:\\Users\\kkids\\Documents\\Codex_TreasureHunt","timeout_ms":20000}); text(r)
+
+## Tool Result: call_lQA8UKL1IoQv26FvswSZT6cu
+**Timestamp:** 2026-07-18T16:02:20.105Z
+
+[{"text": "Script completed\nWall time 0.5 seconds\nOutput:\n", "type": "input_text"}, {"text": "Exit code: 0\nWall time: 0.4 seconds\nOutput:\n# Full-System Product Polish implementation record\r\n\r\nStatus: implementation and release validation complete\r\nStarted: 2026-07-18\r\nRepository baseline: work began from `main` at `481dc92`, synchronized with `origin/main` (`0` behind / `0` ahead). Two concurrent path-scoped archive synchronizations advanced local and remote `main` to `516dbb7` and then `6045473`; the polish work was preserved, and the concurrent Captain-sign-in resilience changes remain separately classified.\r\n\r\n## Governing boundaries\r\n\r\n- Preserve the unified Tall Tale platform, immutable published versions, role/resource policy, Player-safe projections, audited Captain operations, and canonical journal runtime.\r\n- The library helps a Player choose or continue an adventure; the physical journal remains the canonical place where a Tall Tale is played.\r\n- The Phase B Vision Waypoint roadmap and governing specification are parallel future-program inputs. This polish pass must remain compatible with their shared-product and design-system rules, but it must not invent capture, vision, PWA, or desktop behavior.\r\n- System copy stays broadly reusable. Authored Tall Tale copy may be specific to its selected story or event.\r\n5:Repository baseline: work began from `main` at `481dc92`, synchronized with `origin/main` (`0` behind / `0` ahead). Two concurrent path-scoped archive synchronizations advanced local and remote `main` to `516dbb7` and then `6045473`; the polish work was preserved, and the concurrent Captain-sign-in resilience changes remain separately classified.\n13:- Existing local changes and governing documents were preserved. The mandatory synchronizer later committed the two governing PDFs and this implementation record through its own eligible-path workflow.\n125:- Shared design/state foundation: `src/styles/tokens.css`, `src/styles/shell.css`, and `src/components/ui/AsyncState.tsx`.\n", "type": "input_text"}]
+
+## Tool Call: exec
+**Timestamp:** 2026-07-18T16:02:30.522Z
+
+const patch = "*** Begin Patch\n*** Update File: C:/Users/kkids/Documents/Codex_TreasureHunt/Development_Docs/Full_System_Product_Polish_Implementation_Record.md\n@@\n-Repository baseline: work began from `main` at `481dc92`, synchronized with `origin/main` (`0` behind / `0` ahead). Two concurrent path-scoped archive synchronizations advanced local and remote `main` to `516dbb7` and then `6045473`; the polish work was preserved, and the concurrent Captain-sign-in resilience changes remain separately classified.\n+Repository baseline: work began from `main` at `481dc92`, synchronized with `origin/main` (`0` behind / `0` ahead). Three concurrent path-scoped archive synchronizations advanced local and remote `main` through `516dbb7`, `6045473`, and `6114f12`; the polish work was preserved, and the concurrent Captain-sign-in resilience changes remain separately classified. Mandatory task finalization then advanced `main` again through its own scoped chat/development-document commit without including application source.\n@@\n The first broad run exposed three stale browser assertions after intentional control-copy changes and one non-repeating transient cinematic checkpoint miss. The catalog heading/action and invitation-error assertions were updated to the new accessible names. A clean second run passed the full cinematic workflow, and the final complete run passed every configured gate. A direct focused Playwright attempt from the source checkout was not used as evidence because the user's existing Next.js development server correctly held the checkout lock; it was left running and untouched.\n+\n+The first mandatory finalization sync reported 1 chat added, 2 updated, 7 unchanged, 0 ambiguous, and one eligible modified development document. It created `2007099f121a475c2faf32f9bf94b1d6b4ae4218`, verified the push against `origin/main`, and passed archive validation with 19 conversations and 13,549 messages. No conflicted, excluded, large, suspicious, or failed development-document path was included. This record correction is intentionally handled by the same scoped synchronizer rather than an application-source commit.\n*** End Patch";
+text(await tools.apply_patch(patch));
+
+## Tool Result: call_pxiaQNEC6ZYknY1EjJmDAgOG
+**Timestamp:** 2026-07-18T16:02:30.666Z
+
+[{"text": "Script completed\nWall time 0.1 seconds\nOutput:\n", "type": "input_text"}, {"text": "{}", "type": "input_text"}]
+
+## Assistant
+**Timestamp:** 2026-07-18T16:02:35.540Z
+
+The first scoped sync succeeded and pushed `2007099f…`, but its committed implementation record still described only two of the three concurrent archive advances. I corrected that historical line and recorded the proven validation/sync result; I’m passing this last documentation-only correction through the same mandated scoped workflow so the final remote state is internally consistent.
+
+## Tool Call: exec
+**Timestamp:** 2026-07-18T16:02:36.456Z
+
+const r = await tools.shell_command({command:"npx prettier --write Development_Docs/Full_System_Product_Polish_Implementation_Record.md; python scripts/sync_codex_chats.py --dry-run","workdir":"C:\\Users\\kkids\\Documents\\Codex_TreasureHunt","timeout_ms":300000}); text(r)
+
+## Tool Result: call_091O7NjvmyKqjQkWkUZi8GKs
+**Timestamp:** 2026-07-18T16:02:46.581Z
+
+Script running with cell ID 171
+Wall time 10.1 seconds
+Output:
+
+## Tool Call: wait
+**Timestamp:** 2026-07-18T16:02:48.908Z
+
+{"cell_id":"171","yield_time_ms":10000,"max_tokens":8000}
+
+## Tool Result: call_q4HrcZWGdraod7tJaOKfdbUo
+**Timestamp:** 2026-07-18T16:02:58.917Z
+
+Script running with cell ID 171
+Wall time 10.0 seconds
+Output:
+
+## Tool Call: wait
+**Timestamp:** 2026-07-18T16:03:01.281Z
+
+{"cell_id":"171","yield_time_ms":10000,"max_tokens":8000}
+
+## Tool Result: call_HruvegCu6xjOec7lN9S4aoU9
+**Timestamp:** 2026-07-18T16:03:11.290Z
+
+Script running with cell ID 171
+Wall time 10.0 seconds
+Output:
+
+## Tool Call: wait
+**Timestamp:** 2026-07-18T16:03:14.962Z
+
+{"cell_id":"171","yield_time_ms":10000,"max_tokens":8000}
+
+## Tool Result: call_TJXl4RiSeejEQIfbXrsgHqYc
+**Timestamp:** 2026-07-18T16:03:14.989Z
+
+[{"text": "Script completed\nWall time 0.0 seconds\nOutput:\n", "type": "input_text"}, {"text": "Exit code: 0\nWall time: 37.7 seconds\nOutput:\n\u001b[90mDevelopment_Docs/Full_System_Product_Polish_Implementation_Record.md\u001b[39m 54ms (unchanged)\nChat archive: 0 added, 2 updated, 8 unchanged, 183 excluded, 0 ambiguous.\r\nDevelopment docs: 0 added, 1 modified, 0 renamed, 0 deleted, 0 conflicted; 1 eligible paths, 0 excluded.\r\n{\r\n  \"added\": 0,\r\n  \"ambiguous\": 0,\r\n  \"ambiguous_candidates\": [],\r\n  \"commit_created\": false,\r\n  \"commit_hash\": null,\r\n  \"commit_message\": null,\r\n  \"conversations_discovered\": 193,\r\n  \"development_docs\": {\r\n    \"changes\": {\r\n      \"added\": [],\r\n      \"conflicted\": [],\r\n      \"deleted\": [],\r\n      \"modified\": [\r\n        {\r\n          \"path\": \"Development_Docs/Full_System_Product_Polish_Implementation_Record.md\",\r\n          \"status\": \".M\"\r\n        }\r\n      ],\r\n      \"renamed\": []\r\n    },\r\n    \"commit_included\": false,\r\n    \"directory\": \"Development_Docs\",\r\n    \"eligible_fingerprints\": {\r\n      \"Development_Docs/Full_System_Product_Polish_Implementation_Record.md\": \"82b11ddb6d4aecbb4a300014b53ea1184006070627999684912312f12e383c30\"\r\n    },\r\n    \"eligible_paths\": [\r\n      \"Development_Docs/Full_System_Product_Polish_Implementation_Record.md\"\r\n    ],\r\n    \"empty_directories\": [],\r\n    \"excluded\": [],\r\n    \"exists\": true,\r\n    \"git_available\": true,\r\n    \"large_files\": [],\r\n    \"lfs_configured\": false,\r\n    \"lfs_paths_detected\": [],\r\n    \"scan_warnings\": []\r\n  },\r\n  \"errors\": [],\r\n  \"excluded\": 183,\r\n  \"failed\": 0,\r\n  \"files_changed\": [\r\n    \"Codex_Chats/chats/019f75c9-109d-7722-8be3-7c49cc4a3cf2--polish-full-system-product-ux.md\",\r\n    \"Codex_Chats/chats/019f75f4-50ba-7982-940a-f0dd9e2dd384--consolidate-unified-experience-shell.md\",\r\n    \"Codex_Chats/manifest.json\",\r\n    \"Codex_Chats/reports/latest-sync-report.json\"\r\n  ],\r\n  \"finished_at\": \"2026-07-18T16:03:14Z\",\r\n  \"included\": 10,\r\n  \"push_attempted\": false,\r\n  \"push_result\": \"not requested\",\r\n  \"redacted\": 91,\r\n  \"redaction_categories\": {\r\n    \"connection_string\": 12,\r\n    \"login_credential\": 19,\r\n    \"secret_assignment\": 60\r\n  },\r\n  \"renamed\": 0,\r\n  \"schema_version\": \"1.0\",\r\n  \"source_coverage\": [\r\n    \"codex_session:C:\\\\Users\\\\kkids\\\\.codex\\\\sessions\"\r\n  ],\r\n  \"source_types_inspected\": [\r\n    \"codex_session\"\r\n  ],\r\n  \"started_at\": \"2026-07-18T16:02:37Z\",\r\n  \"suspected_secret_categories\": [],\r\n  \"synchronizer_version\": \"1.1.0\",\r\n  \"unavailable\": 0,\r\n  \"unchanged\": 8,\r\n  \"updated\": 2,\r\n  \"warnings\": [\r\n    \"Duplicate source record reconciled for 019dad68-91f3-7091-b4aa-6fee54fd1a1f\",\r\n    \"Duplicate source record reconciled for 019dad68-91f3-7091-b4aa-6fee54fd1a1f\",\r\n    \"Duplicate source record reconciled for 019dc22f-4155-7ad2-b1d6-bc451bf68259\",\r\n    \"Duplicate source record reconciled for 019dc22f-4155-7ad2-b1d6-bc451bf68259\",\r\n    \"Duplicate source record reconciled for 019dc22f-4155-7ad2-b1d6-bc451bf68259\"\r\n  ]\r\n}\r\n", "type": "input_text"}]
+
+## Tool Call: exec
+**Timestamp:** 2026-07-18T16:03:21.241Z
+
+const r = await tools.shell_command({command:"python scripts/sync_codex_chats.py","workdir":"C:\\Users\\kkids\\Documents\\Codex_TreasureHunt","timeout_ms":300000}); text(r)
+
+## Tool Result: call_fHFsZEzjpVjrwfrt0ucwedzn
+**Timestamp:** 2026-07-18T16:03:31.318Z
+
+Script running with cell ID 172
+Wall time 10.0 seconds
+Output:
+
+## Tool Call: wait
+**Timestamp:** 2026-07-18T16:03:33.651Z
+
+{"cell_id":"172","yield_time_ms":10000,"max_tokens":8000}

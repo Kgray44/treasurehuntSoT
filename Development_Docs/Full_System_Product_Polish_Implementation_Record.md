@@ -2,7 +2,7 @@
 
 Status: implementation and release validation complete
 Started: 2026-07-18
-Repository baseline: work began from `main` at `481dc92`, synchronized with `origin/main` (`0` behind / `0` ahead). Two concurrent path-scoped archive synchronizations advanced local and remote `main` to `516dbb7` and then `6045473`; the polish work was preserved, and the concurrent Captain-sign-in resilience changes remain separately classified.
+Repository baseline: work began from `main` at `481dc92`, synchronized with `origin/main` (`0` behind / `0` ahead). Three concurrent path-scoped archive synchronizations advanced local and remote `main` through `516dbb7`, `6045473`, and `6114f12`; the polish work was preserved, and the concurrent Captain-sign-in resilience changes remain separately classified. Mandatory task finalization then advanced `main` again through its own scoped chat/development-document commit without including application source.
 
 ## Governing boundaries
 
@@ -162,6 +162,8 @@ Final `npm run validate` exit status: `0`.
 - Retained validation artifacts: `%LOCALAPPDATA%\ForeverTreasureCompanion\validation\artifacts\validation`.
 
 The first broad run exposed three stale browser assertions after intentional control-copy changes and one non-repeating transient cinematic checkpoint miss. The catalog heading/action and invitation-error assertions were updated to the new accessible names. A clean second run passed the full cinematic workflow, and the final complete run passed every configured gate. A direct focused Playwright attempt from the source checkout was not used as evidence because the user's existing Next.js development server correctly held the checkout lock; it was left running and untouched.
+
+The first mandatory finalization sync reported 1 chat added, 2 updated, 7 unchanged, 0 ambiguous, and one eligible modified development document. It created `2007099f121a475c2faf32f9bf94b1d6b4ae4218`, verified the push against `origin/main`, and passed archive validation with 19 conversations and 13,549 messages. No conflicted, excluded, large, suspicious, or failed development-document path was included. This record correction is intentionally handled by the same scoped synchronizer rather than an application-source commit.
 
 ## Issues found and disposition
 

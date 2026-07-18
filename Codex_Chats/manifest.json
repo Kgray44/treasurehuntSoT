@@ -330,12 +330,12 @@
     },
     {
       "archive_path": "Codex_Chats/chats/019f75c9-109d-7722-8be3-7c49cc4a3cf2--polish-full-system-product-ux.md",
-      "content_sha256": "938f1ba644e90c33fe18b8f8793c4bffed0a4a8e1b16ce00dcab84ada2f3de8c",
+      "content_sha256": "d31d7f7e35b03f125737221096f503c5aec19dc0e59dfe41079af00f4f6ed946",
       "conversation_id": "019f75c9-109d-7722-8be3-7c49cc4a3cf2",
       "created_at": "2026-07-18T15:12:25.137Z",
       "first_archived_at": "2026-07-18T15:17:34Z",
-      "last_synchronized_at": "2026-07-18T16:01:19Z",
-      "message_count": 434,
+      "last_synchronized_at": "2026-07-18T16:03:21Z",
+      "message_count": 458,
       "project_identifier": "treasurehunt",
       "redaction_categories": {
         "login_credential": 1,
@@ -344,11 +344,11 @@
       "redactions": 3,
       "source_export_timestamp": null,
       "source_identifier": "rollout-2026-07-18T11-12-24-019f75c9-109d-7722-8be3-7c49cc4a3cf2.jsonl",
-      "source_sha256": "2dcc087db0154e0a723e8d5ab596aa9e0401b45a2927d688aa0f162599422bf2",
+      "source_sha256": "0aa04ce384b0c350f306559015614fe67151659b65e297794cdb935a6d932ffb",
       "source_type": "codex_session",
       "status": "active",
       "title": "Polish full-system product UX",
-      "updated_at": "2026-07-18T16:01:29.568Z"
+      "updated_at": "2026-07-18T16:03:33.651Z"
     },
     {
       "archive_path": "Codex_Chats/chats/019f75c9-3a87-7810-a64a-7dd9f528605a--start-mini-app-bridge-and-website.md",
@@ -395,25 +395,25 @@
     },
     {
       "archive_path": "Codex_Chats/chats/019f75f4-50ba-7982-940a-f0dd9e2dd384--consolidate-unified-experience-shell.md",
-      "content_sha256": "e60149f5d8f2f9ff8ae11279d4adf7ff0aec47f6681ebacb0aab6ba89f890c80",
+      "content_sha256": "77bebae013ee1427d87c303d920a9a13a89aa6823052a8eca6df4f4aaed1809c",
       "conversation_id": "019f75f4-50ba-7982-940a-f0dd9e2dd384",
       "created_at": "2026-07-18T15:59:51.128Z",
       "first_archived_at": "2026-07-18T16:01:19Z",
-      "last_synchronized_at": "2026-07-18T16:01:19Z",
-      "message_count": 21,
+      "last_synchronized_at": "2026-07-18T16:03:21Z",
+      "message_count": 53,
       "project_identifier": "treasurehunt",
       "redaction_categories": {},
       "redactions": 0,
       "source_export_timestamp": null,
       "source_identifier": "rollout-2026-07-18T11-59-38-019f75f4-50ba-7982-940a-f0dd9e2dd384.jsonl",
-      "source_sha256": "b2c3c9dacefc417130dc7b7bac716f698f21f432af0a2b4d556f31a5cd881755",
+      "source_sha256": "9886a3044b08c789f9b2505a2cfe4208cf2208c279a465aa8d7cae9e7f7785ab",
       "source_type": "codex_session",
       "status": "active",
       "title": "Consolidate unified experience shell",
-      "updated_at": "2026-07-18T16:01:32.993Z"
+      "updated_at": "2026-07-18T16:03:42.086Z"
     }
   ],
-  "last_successful_synchronization_at": "2026-07-18T16:01:19Z",
+  "last_successful_synchronization_at": "2026-07-18T16:03:21Z",
   "migration_history": [
     {
       "schema_version": "1.0",
@@ -440,7 +440,7 @@
   },
   "synchronizer_version": "1.1.0",
   "total_conversation_count": 19,
-  "total_message_count": 13549,
+  "total_message_count": 13605,
   "warnings": [
     "Duplicate source record reconciled for 019dad68-91f3-7091-b4aa-6fee54fd1a1f",
     "Duplicate source record reconciled for 019dad68-91f3-7091-b4aa-6fee54fd1a1f",
