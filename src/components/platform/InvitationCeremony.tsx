@@ -4,6 +4,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { ErrorState, LoadingState } from "@/components/ui/AsyncState";
 
 type Invitation = {
   id: string;
@@ -37,54 +38,67 @@ export function InvitationCeremony() {
 
   useEffect(() => {
     if (search.get("state") === "invalid") return;
-    void fetch("/api/invitations/resolve", { cache: "no-store" }).then(async (response) => {
-      const body = (await response.json()) as { invitation?: Invitation; csrfToken?: string; error?: string };
-      if (!response.ok) return setError(body.error ?? "This invitation is not available.");
-      setInvitation(body.invitation ?? null);
-      setCsrf(body.csrfToken ?? "");
-      setDisplayName(body.invitation?.recipientName ?? "");
-    });
+    void fetch("/api/invitations/resolve", { cache: "no-store" })
+      .then(async (response) => {
+        const body = (await response.json()) as { invitation?: Invitation; csrfToken?: string; error?: string };
+        if (!response.ok) return setError(body.error ?? "This invitation is not available.");
+        setInvitation(body.invitation ?? null);
+        setCsrf(body.csrfToken ?? "");
+        setDisplayName(body.invitation?.recipientName ?? "");
+      })
+      .catch(() => setError("This invitation could not be reached. Check your connection and try again."));
   }, [search]);
 
   async function act(action: "accept" | "decline") {
+    if (
+      action === "decline" &&
+      !window.confirm(
+        "Decline this invitation? You will leave this joining flow and the Captain will see your response.",
+      )
+    )
+      return;
     setBusy(true);
     setError("");
-    const response = await fetch(`/api/invitations/${action}`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json", "x-csrf-token": csrf },
-      body: JSON.stringify(action === "accept" ? { pin, displayName } : {}),
-    });
-    const body = (await response.json()) as { error?: string; code?: string; playthroughId?: string };
-    setBusy(false);
-    if (!response.ok) {
-      setNeedsAccount(body.code === "ACCOUNT_REQUIRED");
-      return setError(body.error ?? `Unable to ${action} this invitation.`);
+    try {
+      const response = await fetch(`/api/invitations/${action}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "x-csrf-token": csrf },
+        body: JSON.stringify(action === "accept" ? { pin, displayName } : {}),
+      });
+      const body = (await response.json()) as { error?: string; code?: string; playthroughId?: string };
+      if (!response.ok) {
+        setNeedsAccount(body.code === "ACCOUNT_REQUIRED");
+        return setError(body.error ?? `Unable to ${action} this invitation.`);
+      }
+      router.push(action === "accept" ? `/player/playthroughs/${body.playthroughId}` : "/player/sign-in");
+      router.refresh();
+    } catch {
+      setError(`Unable to ${action} this invitation. Check your connection and try again.`);
+    } finally {
+      setBusy(false);
     }
-    router.push(action === "accept" ? `/player/playthroughs/${body.playthroughId}` : "/player/sign-in");
-    router.refresh();
   }
 
   if (error && !invitation)
     return (
       <main className="invitation-page">
-        <section className="invitation-sheet invalid">
-          <p className="eyebrow">Invitation closed</p>
-          <h1>The seal will not open</h1>
-          <p role="alert">{error}</p>
-          <Link href="/player/sign-in">Return to Player entry</Link>
-        </section>
+        <ErrorState
+          title="This invitation cannot be opened"
+          detail={error}
+          action={{ label: "Return to Player Entry", href: "/player/sign-in" }}
+        />
       </main>
     );
   if (!invitation)
     return (
       <main className="invitation-page platform-loading">
-        <p role="status">Inspecting the Captain&apos;s seal…</p>
+        <LoadingState title="Opening your invitation" detail="Checking its status, voyage, and access requirements." />
       </main>
     );
   const tale = invitation.playthrough.tale;
   return (
     <main className="invitation-page">
-      <section className="invitation-sheet" aria-labelledby="invitation-title">
+      <section className="invitation-sheet" aria-labelledby="invitation-title" aria-busy={busy}>
         <div className="invitation-seal" aria-hidden="true">
           ✦
         </div>
@@ -143,12 +157,13 @@ export function InvitationCeremony() {
           <button
             className="brass-button"
             disabled={busy || !displayName || (invitation.requiresPin && !pin)}
+            aria-busy={busy}
             onClick={() => void act("accept")}
           >
-            Accept and join voyage
+            {busy ? "Joining voyage…" : "Accept and Join Voyage"}
           </button>
-          <button disabled={busy} onClick={() => void act("decline")}>
-            Decline invitation
+          <button className="button-subtle" disabled={busy} onClick={() => void act("decline")}>
+            Decline Invitation
           </button>
         </div>
       </section>

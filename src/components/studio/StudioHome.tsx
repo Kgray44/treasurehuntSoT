@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { EmptyState, ErrorState, LoadingState, StatusBanner } from "@/components/ui/AsyncState";
 import { VisionOnboarding } from "@/components/vision/VisionOnboarding";
 
 type TaleCard = {
@@ -26,19 +27,31 @@ export function StudioHome({ authenticated }: { authenticated: boolean }) {
   const [sort, setSort] = useState("recent");
   const [error, setError] = useState("");
   const [busy, setBusy] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [notice, setNotice] = useState("");
 
-  async function load() {
-    const response = await fetch("/api/studio/tales", { cache: "no-store" });
-    const body = (await response.json()) as { tales?: TaleCard[]; csrfToken?: string; error?: string };
-    if (!response.ok) return setError(body.error ?? "The Studio ledger could not be opened.");
-    setTales(body.tales ?? []);
-    setCsrf(body.csrfToken ?? "");
-  }
+  const load = useCallback(async () => {
+    setLoading(true);
+    setError("");
+    try {
+      const response = await fetch("/api/studio/tales", { cache: "no-store" });
+      const body = (await response.json()) as { tales?: TaleCard[]; csrfToken?: string; error?: string };
+      if (!response.ok) setError(body.error ?? "The Studio library could not be opened.");
+      else {
+        setTales(body.tales ?? []);
+        setCsrf(body.csrfToken ?? "");
+      }
+    } catch {
+      setError("The Studio library could not be reached. Check your connection and try again.");
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
   useEffect(() => {
     if (!authenticated) return;
     queueMicrotask(() => void load());
-  }, [authenticated]);
+  }, [authenticated, load]);
 
   const visible = useMemo(() => {
     const filtered = tales.filter((tale) =>
@@ -58,20 +71,39 @@ export function StudioHome({ authenticated }: { authenticated: boolean }) {
   async function act(tale: TaleCard, action: "duplicate" | "archive" | "restore") {
     if (
       (action === "archive" || action === "restore") &&
-      !window.confirm(`${action === "archive" ? "Archive" : "Restore"} “${tale.title}”?`)
+      !window.confirm(
+        action === "archive"
+          ? `Archive “${tale.title}”? Existing published editions and active voyages remain preserved.`
+          : `Restore “${tale.title}” to the active Studio library?`,
+      )
     )
       return;
     setBusy(tale.id);
     setError("");
-    const response = await fetch(`/api/studio/tales/${tale.id}`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json", "x-csrf-token": csrf },
-      body: JSON.stringify({ action }),
-    });
-    const body = (await response.json()) as { error?: string };
-    if (!response.ok) setError(body.error ?? "The ledger action failed.");
-    await load();
-    setBusy("");
+    setNotice("");
+    try {
+      const response = await fetch(`/api/studio/tales/${tale.id}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "x-csrf-token": csrf },
+        body: JSON.stringify({ action }),
+      });
+      const body = (await response.json()) as { error?: string };
+      if (!response.ok) setError(body.error ?? "The Studio action failed.");
+      else {
+        setNotice(
+          action === "duplicate"
+            ? "A new editable Tall Tale copy was created."
+            : action === "archive"
+              ? "The Tall Tale was archived without changing published voyages."
+              : "The Tall Tale was restored to the active library.",
+        );
+        await load();
+      }
+    } catch {
+      setError("The Studio action could not be completed. Check your connection and try again.");
+    } finally {
+      setBusy("");
+    }
   }
 
   if (!authenticated)
@@ -103,45 +135,60 @@ export function StudioHome({ authenticated }: { authenticated: boolean }) {
           <Link href="/tales">Player catalog</Link>
           <Link href="/captain">Captain controls</Link>
           <Link className="brass-button" href="/studio/tales/new">
-            Create New Tall Tale
+            Create a Tall Tale
           </Link>
         </nav>
       </header>
-      <section className="studio-toolbar" aria-label="Find Tall Tales">
-        <label>
-          <span>Search</span>
-          <input
-            value={query}
-            onChange={(event) => setQuery(event.target.value)}
-            placeholder="Title, subtitle, or description"
-          />
-        </label>
-        <label>
-          <span>Sort</span>
-          <select value={sort} onChange={(event) => setSort(event.target.value)}>
-            <option value="recent">Last saved</option>
-            <option value="title">Title</option>
-            <option value="status">Status</option>
-          </select>
-        </label>
-        <p aria-live="polite">
-          {visible.length} {visible.length === 1 ? "tale" : "tales"}
-        </p>
-      </section>
-      {error && (
-        <p className="studio-error" role="alert">
-          {error}
-        </p>
-      )}
-      {!visible.length ? (
-        <section className="studio-empty">
-          <span aria-hidden="true">✦</span>
-          <h2>No Tall Tales on this chart</h2>
-          <p>Create the first editable voyage, or clear the current search.</p>
-          <Link className="brass-button" href="/studio/tales/new">
-            Create a Tall Tale
-          </Link>
+      {notice && <StatusBanner tone="success">{notice}</StatusBanner>}
+      {error && tales.length > 0 && <StatusBanner tone="danger">{error}</StatusBanner>}
+      {!loading && tales.length > 0 && (
+        <section className="studio-toolbar" aria-label="Find Tall Tales">
+          <label>
+            <span>Search</span>
+            <input
+              type="search"
+              value={query}
+              onChange={(event) => setQuery(event.target.value)}
+              placeholder="Title, subtitle, or description"
+            />
+          </label>
+          <label>
+            <span>Sort</span>
+            <select value={sort} onChange={(event) => setSort(event.target.value)}>
+              <option value="recent">Last saved</option>
+              <option value="title">Title</option>
+              <option value="status">Status</option>
+            </select>
+          </label>
+          <p aria-live="polite">
+            {visible.length} {visible.length === 1 ? "tale" : "tales"}
+          </p>
         </section>
+      )}
+      {loading ? (
+        <LoadingState
+          title="Opening the Studio library"
+          detail="Loading drafts, published editions, and validation state."
+        />
+      ) : error && !tales.length ? (
+        <ErrorState
+          title="The Studio library could not be opened"
+          detail={error}
+          action={{ label: "Try Again", onClick: () => void load() }}
+        />
+      ) : !tales.length ? (
+        <EmptyState
+          title="Create the first Tall Tale"
+          detail="Start with reusable story details, then add chapters, story moments, assets, and publication settings."
+          action={{ label: "Create a Tall Tale", href: "/studio/tales/new" }}
+        />
+      ) : !visible.length ? (
+        <EmptyState
+          title="No Tall Tales match this search"
+          detail="Clear the search to return to every draft and published edition."
+          action={{ label: "Clear Search", onClick: () => setQuery("") }}
+          symbol="⌕"
+        />
       ) : (
         <section className="tale-card-grid" aria-label="Tall Tales">
           {visible.map((tale) => (
@@ -180,10 +227,15 @@ export function StudioHome({ authenticated }: { authenticated: boolean }) {
                     Player preview
                   </Link>
                 )}
-                <button disabled={busy === tale.id} onClick={() => void act(tale, "duplicate")}>
-                  Duplicate
+                <button
+                  disabled={busy === tale.id}
+                  aria-busy={busy === tale.id}
+                  onClick={() => void act(tale, "duplicate")}
+                >
+                  {busy === tale.id ? "Working…" : "Duplicate"}
                 </button>
                 <button
+                  className={tale.status === "ARCHIVED" ? "button-secondary" : "button-subtle"}
                   disabled={busy === tale.id}
                   onClick={() => void act(tale, tale.status === "ARCHIVED" ? "restore" : "archive")}
                 >

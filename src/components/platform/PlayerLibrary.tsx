@@ -2,7 +2,8 @@
 
 /* eslint-disable @next/next/no-img-element -- Images are served by the version- and membership-authorized media route. */
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { EmptyState, ErrorState, LoadingState, StatusBanner } from "@/components/ui/AsyncState";
 
 type Card = {
   id: string;
@@ -57,39 +58,65 @@ export function PlayerLibrary() {
   const [filter, setFilter] = useState("ALL");
   const [sort, setSort] = useState("RECENT");
   const [view, setView] = useState<"gallery" | "list">("gallery");
+  const [busyCard, setBusyCard] = useState("");
+  const [notice, setNotice] = useState("");
 
-  useEffect(() => {
-    void fetch("/api/player/library", { cache: "no-store" }).then(async (response) => {
+  const load = useCallback(async () => {
+    setError("");
+    try {
+      const response = await fetch("/api/player/library", { cache: "no-store" });
       const body = (await response.json()) as Library & { error?: string };
       if (!response.ok) setError(body.error ?? "Your Tall Tale Library is unavailable.");
       else setLibrary(body);
-    });
+    } catch {
+      setError("Your Tall Tale Library could not be reached. Check your connection and try again.");
+    }
   }, []);
+
+  useEffect(() => {
+    queueMicrotask(() => void load());
+  }, [load]);
 
   async function setPreference(card: Card, action: "pin" | "unpin" | "hide") {
     if (!library) return;
+    if (
+      action === "hide" &&
+      !window.confirm(`Hide “${card.title}” from your library? This removes the saved card from this view.`)
+    )
+      return;
+    setBusyCard(card.id);
     setError("");
-    const response = await fetch(`/api/player/playthroughs/${card.id}/preference`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json", "x-csrf-token": library.csrfToken },
-      body: JSON.stringify({ action }),
-    });
-    const body = (await response.json()) as { error?: string };
-    if (!response.ok) return setError(body.error ?? "The library preference could not be saved.");
-    setLibrary((current) => {
-      if (!current) return current;
-      const update = (cards: Card[]) =>
-        cards
-          .filter((item) => action !== "hide" || item.id !== card.id)
-          .map((item) => (item.id === card.id ? { ...item, pinned: action === "pin" } : item));
-      return {
-        ...current,
-        total: action === "hide" ? current.total - 1 : current.total,
-        groups: Object.fromEntries(
-          Object.entries(current.groups).map(([key, cards]) => [key, update(cards)]),
-        ) as Library["groups"],
-      };
-    });
+    setNotice("");
+    try {
+      const response = await fetch(`/api/player/playthroughs/${card.id}/preference`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "x-csrf-token": library.csrfToken },
+        body: JSON.stringify({ action }),
+      });
+      const body = (await response.json()) as { error?: string };
+      if (!response.ok) return setError(body.error ?? "The library preference could not be saved.");
+      setLibrary((current) => {
+        if (!current) return current;
+        const update = (cards: Card[]) =>
+          cards
+            .filter((item) => action !== "hide" || item.id !== card.id)
+            .map((item) => (item.id === card.id ? { ...item, pinned: action === "pin" } : item));
+        return {
+          ...current,
+          total: action === "hide" ? current.total - 1 : current.total,
+          groups: Object.fromEntries(
+            Object.entries(current.groups).map(([key, cards]) => [key, update(cards)]),
+          ) as Library["groups"],
+        };
+      });
+      setNotice(
+        action === "hide" ? "The Tall Tale was hidden from this library." : "Your library preference was saved.",
+      );
+    } catch {
+      setError("The library preference could not be saved. Check your connection and try again.");
+    } finally {
+      setBusyCard("");
+    }
   }
 
   const groups = useMemo(() => {
@@ -114,19 +141,23 @@ export function PlayerLibrary() {
       .filter((group) => group.cards.length);
   }, [filter, library, query, sort]);
 
-  if (error)
+  if (error && !library)
     return (
       <main className="player-library platform-loading">
-        <p role="alert" className="platform-error">
-          {error}
-        </p>
-        <Link href="/player/sign-in">Return to Player sign-in</Link>
+        <ErrorState
+          title="Your library could not be opened"
+          detail={error}
+          action={{ label: "Try Again", onClick: () => void load() }}
+        />
       </main>
     );
   if (!library)
     return (
       <main className="player-library platform-loading">
-        <p role="status">Reading your voyage shelf…</p>
+        <LoadingState
+          title="Opening your Tall Tale Library"
+          detail="Loading invitations, active stories, and history."
+        />
       </main>
     );
 
@@ -144,65 +175,75 @@ export function PlayerLibrary() {
           <time dateTime={library.serverTime}>{new Date(library.serverTime).toLocaleTimeString()}</time>
         </div>
       </header>
-      <section className="library-tools" aria-label="Search and filter Tall Tales">
-        <label>
-          <span>Search</span>
-          <input
-            type="search"
-            value={query}
-            onChange={(event) => setQuery(event.target.value)}
-            placeholder="Title, Captain, voyage, or year"
-          />
-        </label>
-        <label>
-          <span>State</span>
-          <select value={filter} onChange={(event) => setFilter(event.target.value)}>
-            <option value="ALL">All states</option>
-            {groupLabels.map(([key, label]) => (
-              <option key={key} value={key}>
-                {label}
-              </option>
-            ))}
-          </select>
-        </label>
-        <label>
-          <span>Sort</span>
-          <select value={sort} onChange={(event) => setSort(event.target.value)}>
-            <option value="RECENT">Recently active</option>
-            <option value="TITLE">Title</option>
-            <option value="COMPLETED">Completion date</option>
-          </select>
-        </label>
-        <div className="view-toggle" role="group" aria-label="Library view">
-          <button className={view === "gallery" ? "active" : ""} onClick={() => setView("gallery")}>
-            Gallery
-          </button>
-          <button className={view === "list" ? "active" : ""} onClick={() => setView("list")}>
-            List
-          </button>
-        </div>
-      </section>
-      {!library.total ? (
-        <section className="platform-empty">
-          <span aria-hidden="true">✦</span>
-          <h2>Your shelf is waiting for its first voyage</h2>
-          <p>Open a Captain&apos;s invitation link, or enter the short code they shared with you.</p>
-          <Link className="brass-button" href="/player/sign-in#invitation-code">
-            Enter invitation code
-          </Link>
+      {error && <StatusBanner tone="danger">{error}</StatusBanner>}
+      {notice && <StatusBanner tone="success">{notice}</StatusBanner>}
+      {library.total > 0 && (
+        <section className="library-tools" aria-label="Search and filter Tall Tales">
+          <label>
+            <span>Search</span>
+            <input
+              type="search"
+              value={query}
+              onChange={(event) => setQuery(event.target.value)}
+              placeholder="Title, Captain, voyage, or year"
+            />
+          </label>
+          <label>
+            <span>State</span>
+            <select value={filter} onChange={(event) => setFilter(event.target.value)}>
+              <option value="ALL">All states</option>
+              {groupLabels.map(([key, label]) => (
+                <option key={key} value={key}>
+                  {label}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label>
+            <span>Sort</span>
+            <select value={sort} onChange={(event) => setSort(event.target.value)}>
+              <option value="RECENT">Recently active</option>
+              <option value="TITLE">Title</option>
+              <option value="COMPLETED">Completion date</option>
+            </select>
+          </label>
+          <div className="view-toggle" role="group" aria-label="Library view">
+            <button
+              className={view === "gallery" ? "active" : ""}
+              aria-pressed={view === "gallery"}
+              onClick={() => setView("gallery")}
+            >
+              Gallery
+            </button>
+            <button
+              className={view === "list" ? "active" : ""}
+              aria-pressed={view === "list"}
+              onClick={() => setView("list")}
+            >
+              List
+            </button>
+          </div>
         </section>
+      )}
+      {!library.total ? (
+        <EmptyState
+          title="Your library is ready for its first Tall Tale"
+          detail="Accept a Captain's invitation, enter a short code, or explore public Tall Tales to begin."
+          action={{ label: "Join with an Invitation", href: "/player/sign-in#invitation-code" }}
+        />
       ) : !groups.length ? (
-        <section className="platform-empty">
-          <h2>No voyages match these filters</h2>
-          <button
-            onClick={() => {
+        <EmptyState
+          title="No Tall Tales match these filters"
+          detail="Broaden your search or return to all story states."
+          action={{
+            label: "Clear Filters",
+            onClick: () => {
               setQuery("");
               setFilter("ALL");
-            }}
-          >
-            Clear filters
-          </button>
-        </section>
+            },
+          }}
+          symbol="⌕"
+        />
       ) : (
         groups.map((group) => (
           <section className="library-group" key={group.key} aria-labelledby={`group-${group.key}`}>
@@ -217,7 +258,7 @@ export function PlayerLibrary() {
             </header>
             <div className={`player-card-grid ${view}`}>
               {group.cards.map((card) => (
-                <PlayerTaleCard card={card} key={card.id} onPreference={setPreference} />
+                <PlayerTaleCard card={card} key={card.id} busy={busyCard === card.id} onPreference={setPreference} />
               ))}
             </div>
           </section>
@@ -229,9 +270,11 @@ export function PlayerLibrary() {
 
 function PlayerTaleCard({
   card,
+  busy,
   onPreference,
 }: {
   card: Card;
+  busy: boolean;
   onPreference: (card: Card, action: "pin" | "unpin" | "hide") => void;
 }) {
   return (
@@ -288,11 +331,13 @@ function PlayerTaleCard({
           <Link className="brass-button" href={card.primaryHref}>
             {card.primaryLabel}
           </Link>
-          <button onClick={() => onPreference(card, card.pinned ? "unpin" : "pin")}>
-            {card.pinned ? "Unpin" : "Pin to top"}
+          <button disabled={busy} aria-busy={busy} onClick={() => onPreference(card, card.pinned ? "unpin" : "pin")}>
+            {busy ? "Saving…" : card.pinned ? "Unpin" : "Pin to top"}
           </button>
           {["COMPLETED", "EXPIRED_REVOKED"].includes(card.state) && (
-            <button onClick={() => onPreference(card, "hide")}>Hide from library</button>
+            <button className="button-subtle" disabled={busy} onClick={() => onPreference(card, "hide")}>
+              Hide from library
+            </button>
           )}
         </div>
       </div>

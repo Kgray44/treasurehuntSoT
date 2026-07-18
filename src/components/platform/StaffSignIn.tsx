@@ -3,6 +3,9 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { parseJsonResponse } from "@/lib/client-response";
+
+type GatewayStatus = Partial<Record<"captain" | "creator", { authenticated?: boolean }>> & { error?: string };
 
 export function StaffSignIn({
   intent,
@@ -25,31 +28,42 @@ export function StaffSignIn({
     event.preventDefault();
     setBusy(true);
     setError("");
-    const response = await fetch("/api/gm/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ username, password }),
-    });
-    const body = (await response.json()) as { error?: string };
-    if (!response.ok) {
+    try {
+      const response = await fetch("/api/gm/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, password }),
+      });
+      if (!response.ok) {
+        const body = await parseJsonResponse<{ error?: string }>(response);
+        return setError(body?.error ?? "Sign-in failed. Please try again.");
+      }
+
+      const statusResponse = await fetch("/api/gateway/status", { cache: "no-store" });
+      const status = await parseJsonResponse<GatewayStatus>(statusResponse);
+      if (!statusResponse.ok || !status) {
+        return setError(
+          status?.error ?? `Sign-in succeeded, but ${title} permission could not be verified. Please try again.`,
+        );
+      }
+      if (!status[intent]?.authenticated) {
+        return setError(
+          `This account is signed in but does not have ${intent === "captain" ? "Captain" : "Creator"} permission.`,
+        );
+      }
+
+      router.push(destination);
+      router.refresh();
+    } catch {
+      setError(`${title} could not be reached. Check that the app is running and try again.`);
+    } finally {
       setBusy(false);
-      return setError(body.error ?? "Sign-in failed.");
     }
-    const statusResponse = await fetch("/api/gateway/status", { cache: "no-store" });
-    const status = (await statusResponse.json()) as Record<string, { authenticated: boolean }>;
-    setBusy(false);
-    if (!status[intent]?.authenticated)
-      return setError(
-        `This account is signed in but does not have ${intent === "captain" ? "Captain" : "Creator"} permission.`,
-      );
-    router.push(destination);
-    router.refresh();
   }
 
   return (
     <main className={`platform-auth staff-auth-page intent-${intent}`}>
       <section className="auth-ledger" aria-labelledby="staff-sign-in-title">
-        <Link href="/">Return to role selection</Link>
         <p className="eyebrow">{intent === "captain" ? "Operational waters" : "Authoring waters"}</p>
         <h1 id="staff-sign-in-title">Enter {title}</h1>
         <p>
@@ -66,7 +80,7 @@ export function StaffSignIn({
             Your current account is not authorized for this workspace. Return to a role you are allowed to use.
           </p>
         ) : null}
-        <form onSubmit={submit}>
+        <form onSubmit={submit} aria-busy={busy} aria-describedby={error ? "staff-sign-in-error" : undefined}>
           <label>
             <span>Username</span>
             <input
@@ -86,12 +100,12 @@ export function StaffSignIn({
               required
             />
           </label>
-          <button className="brass-button" disabled={busy}>
+          <button className="brass-button" disabled={busy} aria-busy={busy}>
             {busy ? "Checking the ledger…" : `Enter ${title}`}
           </button>
         </form>
         {error && (
-          <p className="platform-error" role="alert">
+          <p id="staff-sign-in-error" className="platform-error" role="alert">
             {error}
           </p>
         )}

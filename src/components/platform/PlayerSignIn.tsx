@@ -57,7 +57,6 @@ export function PlayerSignIn({
         <i />
       </div>
       <section className="auth-ledger" aria-labelledby="player-sign-in-title">
-        <Link href="/">Return to role selection</Link>
         <p className="eyebrow">Player waters</p>
         <h1 id="player-sign-in-title">Open your Tall Tale Library</h1>
         <p>Sign in to continue remembered voyages, or enter the short code from a Captain&apos;s invitation.</p>
@@ -67,8 +66,8 @@ export function PlayerSignIn({
           </Link>
         )}
         <div className="auth-columns">
-          <form onSubmit={signIn}>
-            <h2>Player sign-in</h2>
+          <form onSubmit={signIn} aria-busy={busy} aria-describedby={error ? "player-sign-in-error" : undefined}>
+            <h2>{authenticated ? "Use a different Player account" : "Player sign-in"}</h2>
             <label>
               <span>Player name</span>
               <input
@@ -88,8 +87,8 @@ export function PlayerSignIn({
                 required
               />
             </label>
-            <button className="brass-button" disabled={busy}>
-              Open my library
+            <button className="brass-button" disabled={busy} aria-busy={busy}>
+              {busy ? "Opening library…" : "Open my library"}
             </button>
           </form>
           <form id="invitation-code" onSubmit={findInvitation}>
@@ -106,11 +105,13 @@ export function PlayerSignIn({
               />
             </label>
             <p>Invitation links open the same ceremony automatically. Codes are checked securely and rate-limited.</p>
-            <button disabled={busy}>Find my invitation</button>
+            <button disabled={busy} aria-busy={busy}>
+              {busy ? "Checking code…" : "Find my invitation"}
+            </button>
           </form>
         </div>
         {error && (
-          <p className="platform-error" role="alert">
+          <p id="player-sign-in-error" className="platform-error" role="alert">
             {error}
           </p>
         )}

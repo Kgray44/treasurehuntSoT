@@ -95,10 +95,20 @@
 }
 .tale-card-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 360px), 1fr));
   gap: 1rem;
   max-width: 1500px;
   margin: auto;
+}
+
+@media (min-width: 1180px) {
+  .tale-card-grid:has(> :nth-child(1):last-child) {
+    grid-template-columns: minmax(420px, 720px);
+  }
+
+  .tale-card-grid:has(> :nth-child(2):last-child) {
+    grid-template-columns: repeat(2, minmax(420px, 1fr));
+  }
 }
 .tale-studio-card {
   position: relative;
