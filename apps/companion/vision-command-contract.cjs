@@ -7,6 +7,7 @@ const commands = Object.freeze([
   "vision.build.start",
   "vision.build.status",
   "vision.build.cancel",
+  "vision.package.install",
   "vision.runtime.arm",
   "vision.runtime.disarm",
 ]);
@@ -76,6 +77,11 @@ function validateVisionCommand(command, unchecked = {}) {
   if (command === "vision.build.status" || command === "vision.build.cancel") {
     exact(input, ["buildId"], command);
     identifier(input.buildId, "buildId", "build_");
+    return input;
+  }
+  if (command === "vision.package.install") {
+    exact(input, ["package"], command);
+    object(input.package, "package");
     return input;
   }
   if (command === "vision.runtime.arm") {

@@ -88,6 +88,7 @@ class VisionEngineService extends EventEmitter {
     if (command === "vision.build.start") return this.#startBuild(input);
     if (command === "vision.build.status") return this.#jobStatus(input.buildId);
     if (command === "vision.build.cancel") return this.#cancelBuild(input.buildId);
+    if (command === "vision.package.install") return this.storage.publishVisionPackage(input.package);
     if (command === "vision.runtime.arm") return this.#arm(input);
     if (command === "vision.runtime.disarm") return this.#disarm(input.attemptId);
     throw new VisionEngineError("INTERNAL_RUNTIME_ERROR", "Vision command is not implemented.");

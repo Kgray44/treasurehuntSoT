@@ -5,6 +5,8 @@ import { getStudioTale } from "@/tall-tale/studio-service";
 import type { PublishedTaleSnapshot } from "@/tall-tale/types";
 import { validateTaleDraft } from "@/tall-tale/validation";
 import { logger } from "@/lib/logger";
+import { publishedVisionBindingConfiguration, publishedVisionBindingKey } from "@/vision/binding-contract";
+import { runtimeResultPayloadHash } from "@/vision/runtime-contract";
 
 export class PublishValidationError extends Error {
   constructor(public readonly validation: Awaited<ReturnType<typeof validateTaleDraft>>) {
@@ -125,6 +127,44 @@ export async function publishTale(
         isCurrent: true,
       },
     });
+    for (const block of snapshot.chapters
+      .flatMap((chapter) => chapter.blocks)
+      .filter((candidate) => candidate.blockType === "visionWaypoint")) {
+      const waypointVersionId = String(block.configuration.waypointVersionId ?? "");
+      const waypointVersion = await tx.visionWaypointVersion.findUniqueOrThrow({
+        where: { id: waypointVersionId },
+      });
+      const configuration = publishedVisionBindingConfiguration(block);
+      const bindingKey = runtimeResultPayloadHash(
+        publishedVisionBindingKey({
+          publishedVersionId: created.id,
+          storyId: taleId,
+          stageId: block.id,
+          waypointId: waypointVersion.waypointId,
+          waypointVersionId,
+          configuration,
+        }),
+      );
+      await tx.visionPublishedBinding.create({
+        data: {
+          bindingKey,
+          publishedVersionId: created.id,
+          storyId: taleId,
+          stageId: block.id,
+          waypointId: waypointVersion.waypointId,
+          waypointVersionId,
+          runtimeMode: configuration.runtimeMode,
+          scanInteraction: JSON.stringify(configuration.scanInteraction),
+          scanConfiguration: JSON.stringify(configuration.scanConfiguration),
+          successEvent: configuration.successEvent,
+          guidanceConfiguration: JSON.stringify(configuration.guidanceConfiguration),
+          captainFallbackPolicy: JSON.stringify(configuration.captainFallbackPolicy),
+          offlineBehavior: configuration.offlineBehavior,
+          assignmentPolicy: JSON.stringify(configuration.assignmentPolicy),
+          accessibilityPolicy: JSON.stringify(configuration.accessibilityPolicy),
+        },
+      });
+    }
     await tx.tallTale.update({
       where: { id: taleId },
       data: { status: "PUBLISHED", latestPublishedVersionId: created.id },

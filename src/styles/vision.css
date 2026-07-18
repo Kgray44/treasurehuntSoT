@@ -604,6 +604,43 @@
   opacity: 0.65;
   cursor: wait;
 }
+.vision-runtime-notice,
+.vision-pairing,
+.vision-target-picker {
+  border: 1px solid rgba(222, 184, 104, 0.28);
+  border-radius: 0.85rem;
+  padding: 0.9rem;
+  background: rgba(8, 44, 54, 0.72);
+}
+.vision-pairing,
+.vision-pairing > div,
+.vision-target-picker {
+  display: grid;
+  gap: 0.65rem;
+}
+.vision-pairing input,
+.vision-captain-actions select {
+  width: 100%;
+  border: 1px solid rgba(222, 184, 104, 0.55);
+  border-radius: 0.55rem;
+  padding: 0.65rem;
+  color: #fff4d6;
+  background: #103946;
+}
+.vision-target-picker ul {
+  display: grid;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.vision-cancel-button {
+  justify-self: center;
+  color: #f7e8c1;
+  text-decoration: underline;
+  background: transparent;
+  border: 0;
+}
 .vision-scan-status {
   min-height: 3rem;
 }
@@ -638,6 +675,20 @@
 }
 .diagnostic-guardrail {
   color: #a8db9d;
+}
+.vision-captain-actions {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+  gap: 0.5rem !important;
+  margin-top: 0.9rem;
+}
+.vision-captain-actions button,
+.vision-captain-actions label {
+  min-height: 2.8rem;
+}
+.vision-captain-actions label {
+  display: grid;
+  gap: 0.3rem;
 }
 .pwa-truth-banner {
   position: sticky;

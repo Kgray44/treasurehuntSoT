@@ -31,6 +31,10 @@ $env:FEATURE_VISION_RUNTIME_ENGINE = "true"
 $env:FEATURE_VISION_RECONSTRUCTION = "true"
 $env:FEATURE_VISION_SECONDARY_MATCHER = "true"
 $env:FEATURE_SHADOW_VERIFICATION = "true"
+$env:FEATURE_LIVE_EXTERNAL_AR = "true"
+$env:FEATURE_VISION_PLAYER_STORY_INTEGRATION = "true"
+$env:FEATURE_VISION_CAPTAIN_INTEGRATION = "true"
+$env:FEATURE_VISION_OFFLINE_RECONCILIATION = "true"
 $env:FEATURE_AUTOMATIC_VISION_PROGRESSION = "false"
 
 function Invoke-ValidationStep {
@@ -56,6 +60,7 @@ Invoke-ValidationStep -Name "Verifying Phase B-3 authoring migration" -Arguments
 Invoke-ValidationStep -Name "Preparing legacy playthrough backfill proof" -Arguments @("node_modules/tsx/dist/cli.mjs", "scripts/verify-platform-backfill.ts", "--prepare")
 Invoke-ValidationStep -Name "Running additive platform backfill" -Arguments @("node_modules/tsx/dist/cli.mjs", "prisma/seed.ts", "--ensure")
 Invoke-ValidationStep -Name "Verifying additive platform backfill" -Arguments @("node_modules/tsx/dist/cli.mjs", "scripts/verify-platform-backfill.ts", "--verify")
+Invoke-ValidationStep -Name "Preparing B-5 production-engine integration fixture" -Arguments @("node_modules/tsx/dist/cli.mjs", "scripts/prepare-vision-b5-fixture.ts")
 Invoke-ValidationStep -Name "Running browser acceptance tests" -Arguments @("node_modules/playwright/cli.js", "test")
 Invoke-ValidationStep -Name "Verifying accepted database state" -Arguments @("node_modules/tsx/dist/cli.mjs", "scripts/verify-database.ts", "--acceptance")
 Invoke-ValidationStep -Name "Proving launcher seed preserves accepted progress" -Arguments @("node_modules/tsx/dist/cli.mjs", "prisma/seed.ts", "--ensure")

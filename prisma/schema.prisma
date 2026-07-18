@@ -429,30 +429,30 @@ model LoginAttempt {
 }
 
 model TallTale {
-  id                       String                 @id @default(cuid())
-  slug                     String                 @unique
+  id                       String                   @id @default(cuid())
+  slug                     String                   @unique
   title                    String
   subtitle                 String?
-  shortDescription         String?                @db.Text
-  longDescription          String?                @db.LongText
+  shortDescription         String?                  @db.Text
+  longDescription          String?                  @db.LongText
   coverAssetId             String?
-  theme                    String                 @default("CARTOGRAPHERS_TABLE")
-  status                   String                 @default("DRAFT")
-  visibility               String                 @default("PRIVATE")
+  theme                    String                   @default("CARTOGRAPHERS_TABLE")
+  status                   String                   @default("DRAFT")
+  visibility               String                   @default("PRIVATE")
   creatorId                String
   currentDraftRevisionId   String?
   latestPublishedVersionId String?
   forkedFromTaleId         String?
   forkedFromVersionId      String?
-  playerCountMin           Int                    @default(1)
-  playerCountMax           Int                    @default(4)
+  playerCountMin           Int                      @default(1)
+  playerCountMax           Int                      @default(4)
   estimatedDuration        Int?
-  contentWarnings          String?                @db.Text
-  sortOrder                Int                    @default(0)
-  featured                 Boolean                @default(false)
+  contentWarnings          String?                  @db.Text
+  sortOrder                Int                      @default(0)
+  featured                 Boolean                  @default(false)
   archivedAt               DateTime?
-  createdAt                DateTime               @default(now())
-  updatedAt                DateTime               @updatedAt
+  createdAt                DateTime                 @default(now())
+  updatedAt                DateTime                 @updatedAt
   drafts                   TaleDraft[]
   versions                 PublishedTaleVersion[]
   assets                   TaleAsset[]
@@ -461,6 +461,7 @@ model TallTale {
   storyArtifacts           TaleArtifact[]
   sessions                 TaleSession[]
   visionBindings           StoryWaypointBinding[]
+  publishedVisionBindings  VisionPublishedBinding[]
   visionAttempts           VerificationAttempt[]
 
   @@index([status, visibility, sortOrder])
@@ -550,19 +551,21 @@ model BlockConnection {
 }
 
 model PublishedTaleVersion {
-  id              String        @id @default(cuid())
+  id              String                   @id @default(cuid())
   taleId          String
   versionNumber   Int
   versionLabel    String
-  publishedAt     DateTime      @default(now())
+  publishedAt     DateTime                 @default(now())
   publishedBy     String
-  releaseNotes    String?       @db.Text
-  contentSnapshot String        @db.LongText
-  schemaVersion   Int           @default(1)
+  releaseNotes    String?                  @db.Text
+  contentSnapshot String                   @db.LongText
+  schemaVersion   Int                      @default(1)
   checksum        String
-  isCurrent       Boolean       @default(true)
-  tale            TallTale      @relation(fields: [taleId], references: [id], onDelete: Cascade)
+  isCurrent       Boolean                  @default(true)
+  tale            TallTale                 @relation(fields: [taleId], references: [id], onDelete: Cascade)
   sessions        TaleSession[]
+  visionAttempts  VerificationAttempt[]
+  visionBindings  VisionPublishedBinding[]
 
   @@unique([taleId, versionNumber])
   @@index([taleId, isCurrent])
@@ -721,46 +724,48 @@ model TaleArtifact {
 }
 
 model TaleSession {
-  id                   String                    @id @default(cuid())
-  taleId               String
-  publishedVersionId   String?
-  ownerLabel           String?
-  voyageName           String?
-  captainId            String?
-  accessTokenHash      String                    @unique
-  status               String                    @default("ACTIVE")
-  captainMode          String                    @default("CAPTAIN_CONTROLLED")
-  configuration        String                    @default("{}") @db.LongText
-  scheduleTimezone     String?
-  plannedStartAt       DateTime?
-  launchedAt           DateTime?
-  cancelledAt          DateTime?
-  abandonedAt          DateTime?
-  concurrencyVersion   Int                       @default(0)
-  historicalHidden     Boolean                   @default(false)
-  archiveMetadata      String                    @default("{}") @db.LongText
-  currentChapterId     String?
-  currentBlockId       String?
-  currentSequence      Int                       @default(0)
-  previewMode          Boolean                   @default(false)
-  draftRevisionId      String?
-  previewSnapshot      String?                   @db.LongText
-  variables            String                    @default("{}") @db.LongText
-  inventory            String                    @default("[]") @db.LongText
-  startedAt            DateTime                  @default(now())
-  updatedAt            DateTime                  @updatedAt
-  completedAt          DateTime?
-  expiresAt            DateTime?
-  lastHeartbeatAt      DateTime?
-  tale                 TallTale                  @relation(fields: [taleId], references: [id], onDelete: Cascade)
-  version              PublishedTaleVersion?     @relation(fields: [publishedVersionId], references: [id])
-  events               TaleSessionEvent[]
-  verificationRequests TaleVerificationRequest[]
-  helperPairings       TaleHelperPairing[]
-  memberships          PlaythroughMembership[]
-  invitations          Invitation[]
-  revealStates         RevealState[]
-  visionAttempts       VerificationAttempt[]
+  id                    String                    @id @default(cuid())
+  taleId                String
+  publishedVersionId    String?
+  ownerLabel            String?
+  voyageName            String?
+  captainId             String?
+  accessTokenHash       String                    @unique
+  status                String                    @default("ACTIVE")
+  captainMode           String                    @default("CAPTAIN_CONTROLLED")
+  configuration         String                    @default("{}") @db.LongText
+  scheduleTimezone      String?
+  plannedStartAt        DateTime?
+  launchedAt            DateTime?
+  cancelledAt           DateTime?
+  abandonedAt           DateTime?
+  concurrencyVersion    Int                       @default(0)
+  historicalHidden      Boolean                   @default(false)
+  archiveMetadata       String                    @default("{}") @db.LongText
+  currentChapterId      String?
+  currentBlockId        String?
+  currentSequence       Int                       @default(0)
+  previewMode           Boolean                   @default(false)
+  draftRevisionId       String?
+  previewSnapshot       String?                   @db.LongText
+  variables             String                    @default("{}") @db.LongText
+  inventory             String                    @default("[]") @db.LongText
+  startedAt             DateTime                  @default(now())
+  updatedAt             DateTime                  @updatedAt
+  completedAt           DateTime?
+  expiresAt             DateTime?
+  lastHeartbeatAt       DateTime?
+  tale                  TallTale                  @relation(fields: [taleId], references: [id], onDelete: Cascade)
+  version               PublishedTaleVersion?     @relation(fields: [publishedVersionId], references: [id])
+  events                TaleSessionEvent[]
+  verificationRequests  TaleVerificationRequest[]
+  helperPairings        TaleHelperPairing[]
+  memberships           PlaythroughMembership[]
+  invitations           Invitation[]
+  revealStates          RevealState[]
+  visionAttempts        VerificationAttempt[]
+  visionRuntimeControls VisionRuntimeControl[]
+  visionPendingEvents   VisionPendingEvent[]
 
   @@index([taleId, status, previewMode])
   @@index([publishedVersionId, status])
@@ -989,21 +994,22 @@ model TaleHelperPairing {
 }
 
 model VisionWaypoint {
-  id             String                  @id @default(cuid())
-  ownerId        String
-  name           String
-  description    String                  @default("") @db.Text
-  type           String
-  locationTags   String                  @default("[]") @db.LongText
-  sharingScope   String                  @default("PRIVATE")
-  archivedAt     DateTime?
-  createdAt      DateTime                @default(now())
-  updatedAt      DateTime                @updatedAt
-  owner          GameMasterUser          @relation("VisionWaypointOwner", fields: [ownerId], references: [id], onDelete: Restrict)
-  versions       VisionWaypointVersion[]
-  bindings       StoryWaypointBinding[]
-  attempts       VerificationAttempt[]
-  shadowAttempts VisionShadowAttempt[]
+  id                String                   @id @default(cuid())
+  ownerId           String
+  name              String
+  description       String                   @default("") @db.Text
+  type              String
+  locationTags      String                   @default("[]") @db.LongText
+  sharingScope      String                   @default("PRIVATE")
+  archivedAt        DateTime?
+  createdAt         DateTime                 @default(now())
+  updatedAt         DateTime                 @updatedAt
+  owner             GameMasterUser           @relation("VisionWaypointOwner", fields: [ownerId], references: [id], onDelete: Restrict)
+  versions          VisionWaypointVersion[]
+  bindings          StoryWaypointBinding[]
+  attempts          VerificationAttempt[]
+  shadowAttempts    VisionShadowAttempt[]
+  publishedBindings VisionPublishedBinding[]
 
   @@index([ownerId, archivedAt, updatedAt])
   @@index([type, sharingScope])
@@ -1048,6 +1054,7 @@ model VisionWaypointVersion {
   bindings                 StoryWaypointBinding[]
   attempts                 VerificationAttempt[]
   shadowAttempts           VisionShadowAttempt[]
+  publishedBindings        VisionPublishedBinding[]
 
   @@unique([waypointId, versionNumber])
   @@index([waypointId, lifecycleStatus, updatedAt])
@@ -1393,46 +1400,106 @@ model VisionWaypointVerificationProfile {
 }
 
 model StoryWaypointBinding {
-  id                          String                @id @default(cuid())
+  id                          String                 @id @default(cuid())
   storyId                     String
-  blockId                     String                @unique
+  blockId                     String                 @unique
   waypointId                  String
   waypointVersionId           String
-  runtimeMode                 String                @default("DEVELOPMENT_MOCK")
-  scanInteraction             String                @default("{}") @db.LongText
-  successEvent                String                @default("vision.verification_succeeded")
-  retryMessageConfiguration   String                @default("{}") @db.LongText
-  failureMessageConfiguration String                @default("{}") @db.LongText
-  captainFallbackPolicy       String                @default("{}") @db.LongText
-  offlineBehavior             String                @default("CAPTAIN_FALLBACK")
-  createdAt                   DateTime              @default(now())
-  updatedAt                   DateTime              @updatedAt
-  story                       TallTale              @relation(fields: [storyId], references: [id], onDelete: Cascade)
-  block                       StoryBlock            @relation(fields: [blockId], references: [id], onDelete: Cascade)
-  waypoint                    VisionWaypoint        @relation(fields: [waypointId], references: [id], onDelete: Restrict)
-  waypointVersion             VisionWaypointVersion @relation(fields: [waypointVersionId], references: [id], onDelete: Restrict)
+  runtimeMode                 String                 @default("DEVELOPMENT_MOCK")
+  scanInteraction             String                 @default("{}") @db.LongText
+  successEvent                String                 @default("vision.verification_succeeded")
+  retryMessageConfiguration   String                 @default("{}") @db.LongText
+  failureMessageConfiguration String                 @default("{}") @db.LongText
+  captainFallbackPolicy       String                 @default("{}") @db.LongText
+  offlineBehavior             String                 @default("CAPTAIN_FALLBACK")
+  assignmentPolicy            String                 @default("{}") @db.LongText
+  accessibilityPolicy         String                 @default("{}") @db.LongText
+  guidanceConfiguration       String                 @default("{}") @db.LongText
+  scanConfiguration           String                 @default("{}") @db.LongText
+  createdAt                   DateTime               @default(now())
+  updatedAt                   DateTime               @updatedAt
+  story                       TallTale               @relation(fields: [storyId], references: [id], onDelete: Cascade)
+  block                       StoryBlock             @relation(fields: [blockId], references: [id], onDelete: Cascade)
+  waypoint                    VisionWaypoint         @relation(fields: [waypointId], references: [id], onDelete: Restrict)
+  waypointVersion             VisionWaypointVersion  @relation(fields: [waypointVersionId], references: [id], onDelete: Restrict)
+  attempts                    VerificationAttempt[]
+  runtimeControls             VisionRuntimeControl[]
 
   @@index([storyId, waypointVersionId])
   @@index([waypointId, updatedAt])
+}
+
+model VisionPublishedBinding {
+  id                    String                @id @default(cuid())
+  bindingKey            String                @unique
+  publishedVersionId    String
+  storyId               String
+  stageId               String
+  waypointId            String
+  waypointVersionId     String
+  runtimeMode           String
+  scanInteraction       String                @default("{}") @db.LongText
+  scanConfiguration     String                @default("{}") @db.LongText
+  successEvent          String
+  guidanceConfiguration String                @default("{}") @db.LongText
+  captainFallbackPolicy String                @default("{}") @db.LongText
+  offlineBehavior       String
+  assignmentPolicy      String                @default("{}") @db.LongText
+  accessibilityPolicy   String                @default("{}") @db.LongText
+  createdAt             DateTime              @default(now())
+  publishedVersion      PublishedTaleVersion  @relation(fields: [publishedVersionId], references: [id], onDelete: Cascade)
+  story                 TallTale              @relation(fields: [storyId], references: [id], onDelete: Restrict)
+  waypoint              VisionWaypoint        @relation(fields: [waypointId], references: [id], onDelete: Restrict)
+  waypointVersion       VisionWaypointVersion @relation(fields: [waypointVersionId], references: [id], onDelete: Restrict)
+  attempts              VerificationAttempt[]
+
+  @@unique([publishedVersionId, stageId])
+  @@index([storyId, stageId])
+  @@index([waypointVersionId, runtimeMode])
 }
 
 model VerificationAttempt {
   id                      String                          @id @default(cuid())
   storyId                 String
   stageId                 String
+  publishedVersionId      String?
+  storyBindingId          String?
+  publishedBindingId      String?
   playerId                String?
   sessionId               String?
   verificationRequestId   String?
   waypointId              String
   waypointVersionId       String
+  packageId               String?
+  packageHash             String?
+  runtimeMode             String                          @default("DEVELOPMENT_MOCK")
+  effectiveRuntimeMode    String                          @default("DEVELOPMENT_MOCK")
+  stageTokenHash          String?
+  stageTokenExpiresAt     DateTime?
+  storyStateVersion       Int?
+  companionInstanceId     String?
   attemptState            String                          @default("IDLE")
   result                  String?
   guidanceCode            String?
   evidenceDigest          String?
+  failedGates             String                          @default("[]") @db.LongText
+  diagnostics             String                          @default("{}") @db.LongText
+  engineVersion           String?
+  modelBundleVersion      String?
+  provider                String?
+  providerFallbackUsed    Boolean                         @default(false)
+  capturedFrameCount      Int                             @default(0)
+  usableFrameCount        Int                             @default(0)
+  passingFrameCount       Int                             @default(0)
+  durationMs              Int?
+  rawFramesRetained       Boolean                         @default(false)
   platform                String
   adapterType             String
   eventDeliveryStatus     String                          @default("NOT_DELIVERED")
   captainAction           String?
+  captainDecisionStatus   String                          @default("NOT_REQUIRED")
+  presentationStatus      String                          @default("NOT_REQUESTED")
+  offlineEventStatus      String                          @default("ONLINE")
   mockScenario            String?
   protocolVersion         String                          @default("1.0")
   protocolMessageId       String?
@@ -1443,8 +1510,13 @@ model VerificationAttempt {
   updatedAt               DateTime                        @updatedAt
   startedAt               DateTime?
   completedAt             DateTime?
+  resultReceivedAt        DateTime?
+  progressionAppliedAt    DateTime?
   closedAt                DateTime?
   story                   TallTale                        @relation(fields: [storyId], references: [id], onDelete: Restrict)
+  publishedVersion        PublishedTaleVersion?           @relation(fields: [publishedVersionId], references: [id], onDelete: SetNull)
+  storyBinding            StoryWaypointBinding?           @relation(fields: [storyBindingId], references: [id], onDelete: SetNull)
+  publishedBinding        VisionPublishedBinding?         @relation(fields: [publishedBindingId], references: [id], onDelete: SetNull)
   session                 TaleSession?                    @relation(fields: [sessionId], references: [id], onDelete: SetNull)
   player                  PlayerProfile?                  @relation(fields: [playerId], references: [id], onDelete: SetNull)
   verificationRequest     TaleVerificationRequest?        @relation(fields: [verificationRequestId], references: [id], onDelete: SetNull)
@@ -1452,11 +1524,95 @@ model VerificationAttempt {
   waypointVersion         VisionWaypointVersion           @relation(fields: [waypointVersionId], references: [id], onDelete: Restrict)
   transitions             VerificationAttemptTransition[]
   evidenceBundles         VisionEvidenceBundle[]
+  captainDecisions        VisionCaptainDecision[]
+  presentationRuns        VisionPresentationRun[]
+  pendingEvents           VisionPendingEvent[]
 
   @@index([sessionId, stageId, createdAt])
   @@index([waypointVersionId, result, createdAt])
   @@index([playerId, attemptState, createdAt])
   @@index([verificationRequestId])
+  @@index([storyBindingId, runtimeMode, createdAt])
+  @@index([publishedVersionId, stageId, createdAt])
+  @@index([publishedBindingId, createdAt])
+}
+
+model VisionCaptainDecision {
+  id              String              @id @default(cuid())
+  attemptId       String
+  actorId         String
+  action          String
+  reason          String              @db.Text
+  truthLabel      String?
+  evidenceSummary String              @default("{}") @db.LongText
+  idempotencyKey  String              @unique
+  createdAt       DateTime            @default(now())
+  attempt         VerificationAttempt @relation(fields: [attemptId], references: [id], onDelete: Cascade)
+
+  @@index([attemptId, createdAt])
+  @@index([truthLabel, createdAt])
+}
+
+model VisionRuntimeControl {
+  id                  String                @id @default(cuid())
+  sessionId           String
+  storyBindingId      String?
+  stageId             String
+  configuredMode      String
+  effectiveMode       String
+  status              String                @default("ACTIVE")
+  automaticPaused     Boolean               @default(false)
+  certificationRunId  String?
+  fieldEvidenceStatus String                @default("MISSING")
+  demotionReason      String?               @db.Text
+  updatedBy           String?
+  createdAt           DateTime              @default(now())
+  updatedAt           DateTime              @updatedAt
+  session             TaleSession           @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  storyBinding        StoryWaypointBinding? @relation(fields: [storyBindingId], references: [id], onDelete: SetNull)
+
+  @@unique([sessionId, stageId])
+  @@index([storyBindingId, effectiveMode])
+  @@index([automaticPaused, updatedAt])
+}
+
+model VisionPresentationRun {
+  id             String              @id @default(cuid())
+  attemptId      String
+  storyEventKey  String
+  status         String              @default("PENDING")
+  errorCode      String?
+  recoveryAction String?
+  startedAt      DateTime?
+  completedAt    DateTime?
+  createdAt      DateTime            @default(now())
+  updatedAt      DateTime            @updatedAt
+  attempt        VerificationAttempt @relation(fields: [attemptId], references: [id], onDelete: Cascade)
+
+  @@unique([attemptId, storyEventKey])
+  @@index([status, updatedAt])
+}
+
+model VisionPendingEvent {
+  id                String               @id @default(cuid())
+  sessionId         String
+  attemptId         String?
+  eventId           String               @unique
+  idempotencyKey    String               @unique
+  eventType         String
+  payload           String               @default("{}") @db.LongText
+  storyStateVersion Int
+  payloadHash       String
+  status            String               @default("PENDING")
+  conflictReason    String?
+  observedAt        DateTime
+  createdAt         DateTime             @default(now())
+  syncedAt          DateTime?
+  session           TaleSession          @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  attempt           VerificationAttempt? @relation(fields: [attemptId], references: [id], onDelete: SetNull)
+
+  @@index([sessionId, status, createdAt])
+  @@index([attemptId, createdAt])
 }
 
 model VerificationAttemptTransition {

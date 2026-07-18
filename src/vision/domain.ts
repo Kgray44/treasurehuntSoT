@@ -34,7 +34,14 @@ export const waypointLifecycleStates = [
   "OUTDATED",
   "INCOMPATIBLE",
 ] as const;
-export const waypointRuntimeModes = ["DEVELOPMENT_MOCK", "SHADOW", "CAPTAIN_CONFIRMED", "AUTOMATIC"] as const;
+export const waypointRuntimeModes = [
+  "DEVELOPMENT",
+  "DEVELOPMENT_MOCK",
+  "SHADOW",
+  "CAPTAIN_CONFIRMED",
+  "AUTOMATIC",
+  "DISABLED",
+] as const;
 export const verificationResults = [
   "VERIFIED",
   "INSUFFICIENT_VISUAL_EVIDENCE",
@@ -42,6 +49,7 @@ export const verificationResults = [
   "AMBIGUOUS",
   "SYSTEM_ERROR",
   "CANCELLED",
+  "STALE",
 ] as const;
 export const verificationAttemptStates = [
   "IDLE",
@@ -59,6 +67,8 @@ export const verificationAttemptStates = [
   "AMBIGUOUS",
   "ERROR",
   "CANCELLED",
+  "STALE",
+  "AWAITING_CAPTAIN",
   "EVENT_DELIVERED",
   "RESULT_DISPLAYED",
   "CLOSED",
@@ -186,25 +196,39 @@ export const storyWaypointBindingSchema = z
     failureMessageConfiguration: jsonObject,
     captainFallbackPolicy: captainFallbackPolicySchema,
     offlineBehavior: z.enum(["CAPTAIN_FALLBACK", "RETRY_WHEN_ONLINE", "UNAVAILABLE"]),
+    assignmentPolicy: jsonObject.default({}),
+    accessibilityPolicy: jsonObject.default({}),
+    guidanceConfiguration: jsonObject.default({}),
+    scanConfiguration: jsonObject.default({}),
   })
   .strict();
 
 const allowedAttemptTransitions: Record<VerificationAttemptState, readonly VerificationAttemptState[]> = {
   IDLE: ["ARMED", "CANCELLED"],
-  ARMED: ["CAPTURING", "CANCELLED", "ERROR"],
-  CAPTURING: ["CURATING_FRAMES", "CANCELLED", "ERROR"],
-  CURATING_FRAMES: ["RETRIEVING", "CANCELLED", "ERROR"],
-  RETRIEVING: ["MATCHING", "INSUFFICIENT", "NOT_AT_TARGET", "AMBIGUOUS", "ERROR", "CANCELLED"],
-  MATCHING: ["LOCALIZING", "INSUFFICIENT", "NOT_AT_TARGET", "AMBIGUOUS", "ERROR", "CANCELLED"],
-  LOCALIZING: ["EVALUATING_SEQUENCE", "INSUFFICIENT", "NOT_AT_TARGET", "AMBIGUOUS", "ERROR", "CANCELLED"],
-  EVALUATING_SEQUENCE: ["EVALUATING_SPECIAL_RULES", "INSUFFICIENT", "NOT_AT_TARGET", "AMBIGUOUS", "ERROR", "CANCELLED"],
-  EVALUATING_SPECIAL_RULES: ["VERIFIED", "INSUFFICIENT", "NOT_AT_TARGET", "AMBIGUOUS", "ERROR", "CANCELLED"],
-  VERIFIED: ["EVENT_DELIVERED", "RESULT_DISPLAYED", "CLOSED"],
-  INSUFFICIENT: ["RESULT_DISPLAYED", "CLOSED"],
-  NOT_AT_TARGET: ["RESULT_DISPLAYED", "CLOSED"],
-  AMBIGUOUS: ["RESULT_DISPLAYED", "CLOSED"],
-  ERROR: ["RESULT_DISPLAYED", "CLOSED"],
-  CANCELLED: ["RESULT_DISPLAYED", "CLOSED"],
+  ARMED: ["CAPTURING", "CANCELLED", "ERROR", "STALE"],
+  CAPTURING: ["CURATING_FRAMES", "CANCELLED", "ERROR", "STALE"],
+  CURATING_FRAMES: ["RETRIEVING", "CANCELLED", "ERROR", "STALE"],
+  RETRIEVING: ["MATCHING", "INSUFFICIENT", "NOT_AT_TARGET", "AMBIGUOUS", "ERROR", "CANCELLED", "STALE"],
+  MATCHING: ["LOCALIZING", "INSUFFICIENT", "NOT_AT_TARGET", "AMBIGUOUS", "ERROR", "CANCELLED", "STALE"],
+  LOCALIZING: ["EVALUATING_SEQUENCE", "INSUFFICIENT", "NOT_AT_TARGET", "AMBIGUOUS", "ERROR", "CANCELLED", "STALE"],
+  EVALUATING_SEQUENCE: [
+    "EVALUATING_SPECIAL_RULES",
+    "INSUFFICIENT",
+    "NOT_AT_TARGET",
+    "AMBIGUOUS",
+    "ERROR",
+    "CANCELLED",
+    "STALE",
+  ],
+  EVALUATING_SPECIAL_RULES: ["VERIFIED", "INSUFFICIENT", "NOT_AT_TARGET", "AMBIGUOUS", "ERROR", "CANCELLED", "STALE"],
+  VERIFIED: ["AWAITING_CAPTAIN", "EVENT_DELIVERED", "RESULT_DISPLAYED", "CLOSED", "STALE"],
+  INSUFFICIENT: ["EVENT_DELIVERED", "RESULT_DISPLAYED", "CLOSED"],
+  NOT_AT_TARGET: ["EVENT_DELIVERED", "RESULT_DISPLAYED", "CLOSED"],
+  AMBIGUOUS: ["EVENT_DELIVERED", "RESULT_DISPLAYED", "CLOSED"],
+  ERROR: ["EVENT_DELIVERED", "RESULT_DISPLAYED", "CLOSED"],
+  CANCELLED: ["EVENT_DELIVERED", "RESULT_DISPLAYED", "CLOSED"],
+  STALE: ["RESULT_DISPLAYED", "CLOSED"],
+  AWAITING_CAPTAIN: ["EVENT_DELIVERED", "RESULT_DISPLAYED", "CLOSED", "STALE"],
   EVENT_DELIVERED: ["RESULT_DISPLAYED", "CLOSED"],
   RESULT_DISPLAYED: ["CLOSED"],
   CLOSED: [],
@@ -231,6 +255,7 @@ export function terminalStateForResult(result: VerificationResult): Verification
   if (result === "NOT_AT_TARGET") return "NOT_AT_TARGET";
   if (result === "AMBIGUOUS") return "AMBIGUOUS";
   if (result === "CANCELLED") return "CANCELLED";
+  if (result === "STALE") return "STALE";
   return "ERROR";
 }
 

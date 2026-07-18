@@ -35,6 +35,7 @@ const allowedCommands = new Set([
   "vision.build.start",
   "vision.build.status",
   "vision.build.cancel",
+  "vision.package.install",
   "vision.runtime.arm",
   "vision.runtime.disarm",
   "app.getDiagnostics",

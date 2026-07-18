@@ -19,6 +19,9 @@ export const visionFeatureKeys = [
   "automatic_progression",
   "automatic_vision_progression",
   "live_external_ar",
+  "vision_player_story_integration",
+  "vision_captain_integration",
+  "vision_offline_reconciliation",
 ] as const;
 
 export type VisionFeatureKey = (typeof visionFeatureKeys)[number];
@@ -45,6 +48,9 @@ const environmentNames: Record<VisionFeatureKey, string> = {
   automatic_progression: "AUTOMATIC_PROGRESSION",
   automatic_vision_progression: "AUTOMATIC_VISION_PROGRESSION",
   live_external_ar: "LIVE_EXTERNAL_AR",
+  vision_player_story_integration: "VISION_PLAYER_STORY_INTEGRATION",
+  vision_captain_integration: "VISION_CAPTAIN_INTEGRATION",
+  vision_offline_reconciliation: "VISION_OFFLINE_RECONCILIATION",
 };
 
 function readBoolean(value: string | undefined, fallback: boolean) {
@@ -82,6 +88,9 @@ export function resolveVisionFeatureFlags(environment: Record<string, string | u
     automatic_progression: read("automatic_progression", false),
     automatic_vision_progression: read("automatic_vision_progression", false),
     live_external_ar: read("live_external_ar", false),
+    vision_player_story_integration: read("vision_player_story_integration", development && vision),
+    vision_captain_integration: read("vision_captain_integration", development && vision),
+    vision_offline_reconciliation: read("vision_offline_reconciliation", development && vision),
   } satisfies VisionFeatureFlags;
 }
 

@@ -12,6 +12,7 @@ import {
   type PlayerCaptureStartInput,
   type VisionBuildStartInput,
   type VisionRuntimeArmInput,
+  type VisionPackageInstallInput,
 } from "@/vision/capture-protocol";
 import { WebCompanionClient } from "@/vision/web-companion-client";
 
@@ -45,6 +46,7 @@ export interface CapturePlatformAdapter {
   startVisionBuild(input: VisionBuildStartInput): Promise<Record<string, unknown>>;
   getVisionBuildStatus(buildId: string): Promise<Record<string, unknown>>;
   cancelVisionBuild(buildId: string): Promise<Record<string, unknown>>;
+  installVisionPackage(input: VisionPackageInstallInput): Promise<Record<string, unknown>>;
   armVisionRuntime(input: VisionRuntimeArmInput): Promise<Record<string, unknown>>;
   disarmVisionRuntime(attemptId: string): Promise<Record<string, unknown>>;
   subscribe(listener: (event: CaptureEvent) => void): () => void;
@@ -171,6 +173,10 @@ export class DesktopCapturePlatformAdapter implements CapturePlatformAdapter {
 
   async cancelVisionBuild(buildId: string) {
     return objectResult(await this.invoke("vision.build.cancel", { buildId }));
+  }
+
+  async installVisionPackage(input: VisionPackageInstallInput) {
+    return objectResult(await this.invoke("vision.package.install", input));
   }
 
   async armVisionRuntime(input: VisionRuntimeArmInput) {
@@ -326,6 +332,10 @@ export class WebCapturePlatformAdapter implements CapturePlatformAdapter {
 
   async cancelVisionBuild(buildId: string) {
     return objectResult(await this.command("vision.build.cancel", { buildId }));
+  }
+
+  async installVisionPackage(input: VisionPackageInstallInput) {
+    return objectResult(await this.command("vision.package.install", input));
   }
 
   async armVisionRuntime(input: VisionRuntimeArmInput) {

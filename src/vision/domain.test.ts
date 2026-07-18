@@ -31,5 +31,6 @@ describe("Vision Waypoint domain", () => {
     expect(scenarioOutcome.verified.result).toBe("VERIFIED");
     expect(scenarioOutcome.duplicate_result_delivery.result).toBe("VERIFIED");
     for (const outcome of Object.values(scenarioOutcome)) expect(terminalStateForResult(outcome.result)).toBeTruthy();
+    expect(terminalStateForResult("INSUFFICIENT_VISUAL_EVIDENCE")).toBe("INSUFFICIENT");
   });
 });

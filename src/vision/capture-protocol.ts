@@ -203,6 +203,7 @@ export type CaptureCommand =
   | "vision.build.start"
   | "vision.build.status"
   | "vision.build.cancel"
+  | "vision.package.install"
   | "vision.runtime.arm"
   | "vision.runtime.disarm";
 
@@ -226,6 +227,10 @@ export type VisionRuntimeArmInput = {
   allowProviderFallback?: boolean;
   timeoutMs?: number;
   checkpointContext?: Record<string, unknown>;
+};
+
+export type VisionPackageInstallInput = {
+  package: Record<string, unknown>;
 };
 
 export function createCaptureEnvelope(input: {

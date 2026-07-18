@@ -194,7 +194,7 @@ async function createWindow() {
         loaded: true,
         title,
         origin,
-        shellVersion: "0.6.0-b4",
+        shellVersion: "0.7.0-b5",
         companionListening: diagnostics.companion.listening,
         captureApi: diagnostics.capture.health ? coordinator.core.getCapabilities().captureApi : null,
         desktopAdapterScan,

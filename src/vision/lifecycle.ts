@@ -537,12 +537,17 @@ async function validateBindingTarget(
   input: z.infer<typeof bindingInputSchema>,
   actorId: string,
 ) {
-  if (input.runtimeMode !== "DEVELOPMENT_MOCK")
-    throw new VisionDomainError("RUNTIME_MODE_DISABLED", "B-1 permits only DEVELOPMENT_MOCK bindings.");
   const [story, block, version] = await Promise.all([
     tx.tallTale.findFirst({ where: { id: input.storyId, creatorId: actorId } }),
     tx.storyBlock.findFirst({ where: { id: input.blockId, chapter: { draft: { taleId: input.storyId } } } }),
-    tx.visionWaypointVersion.findUnique({ where: { id: input.waypointVersionId }, include: { waypoint: true } }),
+    tx.visionWaypointVersion.findUnique({
+      where: { id: input.waypointVersionId },
+      include: {
+        waypoint: true,
+        buildJobs: { where: { status: "COMPLETED" }, orderBy: { completedAt: "desc" }, take: 5 },
+        certificationRuns: { orderBy: { completedAt: "desc" }, take: 1 },
+      },
+    }),
   ]);
   if (!story || !block) throw new VisionDomainError("STORY_BLOCK_NOT_FOUND", "The story block is unavailable.");
   if (!version?.publishedAt)
@@ -552,7 +557,39 @@ async function validateBindingTarget(
     );
   if (version.waypoint.ownerId !== actorId)
     throw new VisionDomainError("WAYPOINT_PERMISSION_DENIED", "This waypoint cannot be bound by the current creator.");
+  assertRuntimeBindingEligibility(version, input.runtimeMode);
   return { story, block, version };
+}
+
+function assertRuntimeBindingEligibility(
+  version: {
+    buildJobs: Array<{ packageId: string | null; packageHash: string | null; automaticEligibility: boolean }>;
+    certificationRuns: Array<{ approvedRuntimeModes: string; metrics: string }>;
+  },
+  runtimeMode: z.infer<typeof waypointRuntimeModeSchema>,
+) {
+  if (["DEVELOPMENT", "DEVELOPMENT_MOCK", "DISABLED"].includes(runtimeMode)) return;
+  const productionBuild = version.buildJobs.find((job) => job.packageId && job.packageHash);
+  if (!productionBuild)
+    throw new VisionDomainError(
+      "PRODUCTION_PACKAGE_REQUIRED",
+      "Shadow and production bindings require a completed B-4 runtime package.",
+    );
+  if (runtimeMode !== "AUTOMATIC") return;
+  const approvedModes = parseJson(version.certificationRuns[0]?.approvedRuntimeModes);
+  const metrics = parseJson(version.certificationRuns[0]?.metrics);
+  if (
+    !productionBuild.automaticEligibility ||
+    !Array.isArray(approvedModes) ||
+    !approvedModes.includes("AUTOMATIC") ||
+    !metrics ||
+    typeof metrics !== "object" ||
+    (metrics as Record<string, unknown>).fieldEvidenceStatus !== "PASSED"
+  )
+    throw new VisionDomainError(
+      "AUTOMATIC_CERTIFICATION_REQUIRED",
+      "Automatic bindings require an eligible package, explicit AUTOMATIC certification, and passed real field evidence.",
+    );
 }
 
 export async function bindWaypointVersionToStory(unchecked: unknown, actorId: string) {
@@ -572,6 +609,10 @@ export async function bindWaypointVersionToStory(unchecked: unknown, actorId: st
         failureMessageConfiguration: JSON.stringify(input.failureMessageConfiguration),
         captainFallbackPolicy: JSON.stringify(input.captainFallbackPolicy),
         offlineBehavior: input.offlineBehavior,
+        assignmentPolicy: JSON.stringify(input.assignmentPolicy),
+        accessibilityPolicy: JSON.stringify(input.accessibilityPolicy),
+        guidanceConfiguration: JSON.stringify(input.guidanceConfiguration),
+        scanConfiguration: JSON.stringify(input.scanConfiguration),
       },
     });
     await audit(tx, {
@@ -606,6 +647,10 @@ export async function replaceStoryWaypointBinding(bindingId: string, unchecked: 
         failureMessageConfiguration: JSON.stringify(input.failureMessageConfiguration),
         captainFallbackPolicy: JSON.stringify(input.captainFallbackPolicy),
         offlineBehavior: input.offlineBehavior,
+        assignmentPolicy: JSON.stringify(input.assignmentPolicy),
+        accessibilityPolicy: JSON.stringify(input.accessibilityPolicy),
+        guidanceConfiguration: JSON.stringify(input.guidanceConfiguration),
+        scanConfiguration: JSON.stringify(input.scanConfiguration),
       },
     });
     await audit(tx, {
@@ -650,7 +695,11 @@ export async function syncVisionBindingsForDraft(
     if (!versionId) continue;
     const version = await tx.visionWaypointVersion.findUnique({
       where: { id: versionId },
-      include: { waypoint: true },
+      include: {
+        waypoint: true,
+        buildJobs: { where: { status: "COMPLETED" }, orderBy: { completedAt: "desc" }, take: 5 },
+        certificationRuns: { orderBy: { completedAt: "desc" }, take: 1 },
+      },
     });
     if (!version?.publishedAt)
       throw new VisionDomainError(
@@ -660,8 +709,7 @@ export async function syncVisionBindingsForDraft(
     if (version.waypoint.ownerId !== actorId)
       throw new VisionDomainError("WAYPOINT_PERMISSION_DENIED", "The selected waypoint is not owned by this creator.");
     const runtimeMode = waypointRuntimeModeSchema.parse(block.configuration.runtimeMode ?? "DEVELOPMENT_MOCK");
-    if (runtimeMode !== "DEVELOPMENT_MOCK")
-      throw new VisionDomainError("RUNTIME_MODE_DISABLED", "B-1 permits only DEVELOPMENT_MOCK story blocks.");
+    assertRuntimeBindingEligibility(version, runtimeMode);
     const scanInteraction = {
       mode: block.configuration.scanMode ?? "HOLD",
       holdDurationMs: Number(block.configuration.holdDurationMs ?? 5_000),
@@ -694,6 +742,19 @@ export async function syncVisionBindingsForDraft(
         failureMessageConfiguration: JSON.stringify(failureMessages),
         captainFallbackPolicy: JSON.stringify(fallback),
         offlineBehavior: String(block.configuration.offlineBehavior ?? "CAPTAIN_FALLBACK"),
+        assignmentPolicy: JSON.stringify(block.configuration.assignmentPolicy ?? {}),
+        accessibilityPolicy: JSON.stringify(block.configuration.accessibilityPolicy ?? {}),
+        guidanceConfiguration: JSON.stringify({
+          INSUFFICIENT_VISUAL_EVIDENCE: block.configuration.insufficientMessage,
+          AMBIGUOUS: block.configuration.ambiguousMessage,
+          NOT_AT_TARGET: block.configuration.notAtTargetMessage,
+          SYSTEM_ERROR: block.configuration.systemErrorMessage,
+        }),
+        scanConfiguration: JSON.stringify({
+          durationMs: Number(block.configuration.captureDurationMs ?? 5_000),
+          sampleFps: Number(block.configuration.sampleFps ?? 10),
+          minimumFrames: Number(block.configuration.minimumFrames ?? 6),
+        }),
       },
     });
     await audit(tx, {

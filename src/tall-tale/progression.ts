@@ -938,6 +938,53 @@ export async function submitVerification(
       where: { id: request.id },
       data: { status: "SATISFIED", resolvedAt: new Date(), satisfiedByEventId: submission.eventId },
     });
+    if (submission.providerType === "visionLocation") {
+      await appendEvent(tx, current, {
+        eventType: "visionVerificationSucceeded",
+        sourceType: actor.sourceType,
+        sourceId: actor.sourceId,
+        blockId: block.id,
+        idempotencyKey: `${submission.idempotencyKey}:vision-succeeded`,
+        payload: {
+          attemptId: submission.evidence?.attemptId,
+          waypointVersionId: submission.evidence?.waypointVersionId,
+          packageHash: submission.evidence?.packageHash,
+          successEvent: submission.evidence?.successEvent ?? block.configuration.successEvent,
+          manualOverride: submission.evidence?.manualOverride === true,
+        },
+        verificationRequestId: request.id,
+        correlationId: submission.eventId,
+      });
+      await appendEvent(tx, current, {
+        eventType:
+          actor.sourceType === "captainConfirmed" || actor.sourceType === "captainOverride"
+            ? "visionCaptainApproved"
+            : "visionAutomaticProgressionAccepted",
+        sourceType: actor.sourceType,
+        sourceId: actor.sourceId,
+        blockId: block.id,
+        idempotencyKey: `${submission.idempotencyKey}:vision-mode-decision`,
+        payload: {
+          attemptId: submission.evidence?.attemptId,
+          runtimeMode: submission.evidence?.runtimeMode,
+          manualOverride: submission.evidence?.manualOverride === true,
+        },
+        verificationRequestId: request.id,
+        correlationId: submission.eventId,
+      });
+      await appendEvent(tx, current, {
+        eventType: "visionPresentationRequested",
+        sourceType: "story",
+        blockId: block.id,
+        idempotencyKey: `${submission.idempotencyKey}:vision-presentation`,
+        payload: {
+          attemptId: submission.evidence?.attemptId,
+          storyEvent: submission.evidence?.successEvent ?? block.configuration.successEvent,
+        },
+        verificationRequestId: request.id,
+        correlationId: submission.eventId,
+      });
+    }
     await appendEvent(tx, current, {
       eventType: actor.sourceType === "captainOverride" ? "captainManualUnlock" : "verificationSatisfied",
       sourceType: actor.sourceType,
@@ -969,6 +1016,56 @@ export async function submitVerification(
     "Verification event accepted",
   );
   return { duplicate: false, accepted: true, rejectionReason: null };
+}
+
+export async function recordVisionStoryObservation(input: {
+  sessionId: string;
+  blockId: string;
+  attemptId: string;
+  idempotencyKey: string;
+  outcome:
+    | "VERIFIED_SHADOW"
+    | "VERIFIED_AWAITING_CAPTAIN"
+    | "INSUFFICIENT_VISUAL_EVIDENCE"
+    | "NOT_AT_TARGET"
+    | "AMBIGUOUS"
+    | "SYSTEM_ERROR"
+    | "CANCELLED";
+  guidanceCode?: string | null;
+  evidenceDigest?: string | null;
+}) {
+  const session = await db.taleSession.findUniqueOrThrow({
+    where: { id: input.sessionId },
+    include: { version: true },
+  });
+  if (session.currentBlockId !== input.blockId) return { accepted: false, stale: true };
+  const eventType = {
+    VERIFIED_SHADOW: "visionShadowResultRecorded",
+    VERIFIED_AWAITING_CAPTAIN: "visionCaptainReviewRequested",
+    INSUFFICIENT_VISUAL_EVIDENCE: "visionVerificationInsufficient",
+    NOT_AT_TARGET: "visionVerificationNotAtTarget",
+    AMBIGUOUS: "visionVerificationAmbiguous",
+    SYSTEM_ERROR: "visionVerificationSystemError",
+    CANCELLED: "visionVerificationCancelled",
+  }[input.outcome];
+  const event = await db.$transaction((tx) =>
+    appendEvent(tx, session, {
+      eventType,
+      sourceType: "visionRuntime",
+      blockId: input.blockId,
+      idempotencyKey: `${input.idempotencyKey}:observation:${input.outcome}`,
+      correlationId: input.attemptId,
+      payload: {
+        attemptId: input.attemptId,
+        outcome: input.outcome,
+        guidanceCode: input.guidanceCode ?? null,
+        evidenceDigest: input.evidenceDigest ?? null,
+        progressed: false,
+      },
+    }),
+  );
+  emit(input.sessionId, event);
+  return { accepted: true, stale: false };
 }
 
 export async function captainSessionAction(

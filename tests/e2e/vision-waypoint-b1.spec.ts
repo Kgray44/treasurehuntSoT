@@ -312,7 +312,9 @@ test("Studio lifecycle, browser scan, duplicate/stale guards, desktop path, and 
         (process.env.FEATURE_VISION_BUILD_ENGINE ?? "").toLocaleLowerCase(),
       ),
       automatic_vision_progression: false,
-      live_external_ar: false,
+      live_external_ar: ["1", "true", "yes", "on", "enabled"].includes(
+        (process.env.FEATURE_LIVE_EXTERNAL_AR ?? "").toLocaleLowerCase(),
+      ),
     },
     pwa: { mutableApiCache: false },
   });
