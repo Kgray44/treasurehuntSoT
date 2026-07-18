@@ -14,7 +14,8 @@ Major technical limitations are planar relative localization rather than general
 - Starting commit: `7ebce5d7c435ae8e998d5ec8207937de5d70db06`.
 - Final branch: `codex/phase-b4-verification-runtime`.
 - Implementation evidence commit: `b0bfe5e7335f480125d32ea9bac51c0db3f78f18`; later chat/document synchronization may add a scoped follow-up commit.
-- Working tree at evidence capture: implementation and documentation changes present; generated validation output remained outside the repository runtime mirror.
+- Final remote branch SHA: reported in the task handoff because this tracked report cannot contain its own containing/future synchronization commit.
+- Working tree at the final gate: clean and at remote parity after scoped conversation/development-document synchronization; generated validation output remains outside the repository runtime mirror.
 
 ## Architecture
 

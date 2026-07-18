@@ -11,13 +11,22 @@
       "added": [],
       "conflicted": [],
       "deleted": [],
-      "modified": [],
+      "modified": [
+        {
+          "path": "Development_Docs/AR/Phase_Completion_Reports/Phase_B4_Completion_Report.md",
+          "status": ".M"
+        }
+      ],
       "renamed": []
     },
     "commit_included": false,
     "directory": "Development_Docs",
-    "eligible_fingerprints": {},
-    "eligible_paths": [],
+    "eligible_fingerprints": {
+      "Development_Docs/AR/Phase_Completion_Reports/Phase_B4_Completion_Report.md": "5ea3ec4896a58f70e62eaf22f07471e5deae41e58d8d4804362b513284ef1890"
+    },
+    "eligible_paths": [
+      "Development_Docs/AR/Phase_Completion_Reports/Phase_B4_Completion_Report.md"
+    ],
     "empty_directories": [],
     "excluded": [],
     "exists": true,
@@ -35,7 +44,7 @@
     "Codex_Chats/manifest.json",
     "Codex_Chats/reports/latest-sync-report.json"
   ],
-  "finished_at": "2026-07-18T10:24:44Z",
+  "finished_at": "2026-07-18T10:25:59Z",
   "included": 6,
   "push_attempted": false,
   "push_result": "not requested",
@@ -53,7 +62,7 @@
   "source_types_inspected": [
     "codex_session"
   ],
-  "started_at": "2026-07-18T10:24:25Z",
+  "started_at": "2026-07-18T10:25:41Z",
   "suspected_secret_categories": [],
   "synchronizer_version": "1.1.0",
   "unavailable": 0,
