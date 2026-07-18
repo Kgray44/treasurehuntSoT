@@ -1,5 +1,5 @@
 {
-  "added": 1,
+  "added": 0,
   "ambiguous": 0,
   "ambiguous_candidates": [],
   "commit_created": false,
@@ -31,12 +31,11 @@
   "excluded": 183,
   "failed": 0,
   "files_changed": [
-    "Codex_Chats/chats/019f729c-c614-7532-aa23-3dff7df68023--merge-all-branches-into-main.md",
     "Codex_Chats/chats/019f72ca-dfc8-7ea3-b1c5-73d7f3d7fbc2--set-up-treasure-companion-locally.md",
     "Codex_Chats/manifest.json",
     "Codex_Chats/reports/latest-sync-report.json"
   ],
-  "finished_at": "2026-07-18T02:02:36Z",
+  "finished_at": "2026-07-18T02:26:36Z",
   "included": 3,
   "push_attempted": false,
   "push_result": "not requested",
@@ -54,11 +53,11 @@
   "source_types_inspected": [
     "codex_session"
   ],
-  "started_at": "2026-07-18T02:02:21Z",
+  "started_at": "2026-07-18T02:26:20Z",
   "suspected_secret_categories": [],
   "synchronizer_version": "1.1.0",
   "unavailable": 0,
-  "unchanged": 1,
+  "unchanged": 2,
   "updated": 1,
   "warnings": [
     "Duplicate source record reconciled for 019dad68-91f3-7091-b4aa-6fee54fd1a1f",
