@@ -53,31 +53,33 @@ model PlayerAccess {
 }
 
 model PlayerPresence {
-  id                   String   @id @default(cuid())
+  id                   String       @id @default(cuid())
   campaignId           String
   playerAccessId       String
   deviceId             String
   route                String?
   visibility           String?
-  connectedAt          DateTime @default(now())
-  lastHeartbeatAt      DateTime @default(now())
+  connectedAt          DateTime     @default(now())
+  lastHeartbeatAt      DateTime     @default(now())
   disconnectedAt       DateTime?
-  acknowledgedSequence Int      @default(0)
-  campaign             Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  acknowledgedSequence Int          @default(0)
+  campaign             Campaign     @relation(fields: [campaignId], references: [id], onDelete: Cascade)
   playerAccess         PlayerAccess @relation(fields: [playerAccessId], references: [id], onDelete: Cascade)
+
   @@unique([campaignId, deviceId])
   @@index([campaignId, lastHeartbeatAt])
 }
 
 model GameMasterUser {
-  id           String              @id @default(cuid())
-  username     String              @unique
-  passwordHash String
-  role         String              @default("CAPTAIN_CREATOR")
-  capabilities String              @default("[]")
-  createdAt    DateTime            @default(now())
-  sessions     GameMasterSession[]
-  auditLogs    AdminAuditLog[]
+  id            String                   @id @default(cuid())
+  username      String                   @unique
+  passwordHash  String
+  role          String                   @default("CAPTAIN_CREATOR")
+  capabilities  String                   @default("[]")
+  createdAt     DateTime                 @default(now())
+  sessions      GameMasterSession[]
+  auditLogs     AdminAuditLog[]
+  platformRoles PlatformRoleAssignment[]
 }
 
 model GameMasterSession {
@@ -315,24 +317,25 @@ model AdminAuditLog {
 }
 
 model PreparedAction {
-  id               String   @id @default(cuid())
+  id               String    @id @default(cuid())
   campaignId       String
   command          String
   targetKey        String?
   payload          String
-  status           String   @default("PREPARED")
+  status           String    @default("PREPARED")
   expectedSequence Int
   scheduledFor     DateTime?
   preparedBy       String
-  preparedAt       DateTime @default(now())
+  preparedAt       DateTime  @default(now())
   executedAt       DateTime?
   cancelledAt      DateTime?
-  campaign         Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  campaign         Campaign  @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+
   @@index([campaignId, status, scheduledFor])
 }
 
 model CommandExecution {
-  id               String   @id @default(cuid())
+  id               String    @id @default(cuid())
   campaignId       String
   idempotencyKey   String
   command          String
@@ -340,9 +343,10 @@ model CommandExecution {
   correlationId    String
   status           String
   result           String?
-  createdAt        DateTime @default(now())
+  createdAt        DateTime  @default(now())
   completedAt      DateTime?
-  campaign         Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  campaign         Campaign  @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+
   @@unique([campaignId, idempotencyKey])
   @@index([campaignId, createdAt])
 }
@@ -434,6 +438,8 @@ model TallTale {
   creatorId                String
   currentDraftRevisionId   String?
   latestPublishedVersionId String?
+  forkedFromTaleId         String?
+  forkedFromVersionId      String?
   playerCountMin           Int                    @default(1)
   playerCountMax           Int                    @default(4)
   estimatedDuration        Int?
@@ -712,9 +718,20 @@ model TaleSession {
   taleId               String
   publishedVersionId   String?
   ownerLabel           String?
+  voyageName           String?
   captainId            String?
   accessTokenHash      String                    @unique
   status               String                    @default("ACTIVE")
+  captainMode          String                    @default("CAPTAIN_CONTROLLED")
+  configuration        String                    @default("{}")
+  scheduleTimezone     String?
+  plannedStartAt       DateTime?
+  launchedAt           DateTime?
+  cancelledAt          DateTime?
+  abandonedAt          DateTime?
+  concurrencyVersion   Int                       @default(0)
+  historicalHidden     Boolean                   @default(false)
+  archiveMetadata      String                    @default("{}")
   currentChapterId     String?
   currentBlockId       String?
   currentSequence      Int                       @default(0)
@@ -733,9 +750,158 @@ model TaleSession {
   events               TaleSessionEvent[]
   verificationRequests TaleVerificationRequest[]
   helperPairings       TaleHelperPairing[]
+  memberships          PlaythroughMembership[]
+  invitations          Invitation[]
+  revealStates         RevealState[]
 
   @@index([taleId, status, previewMode])
   @@index([publishedVersionId, status])
+}
+
+model PlayerProfile {
+  id           String                  @id @default(cuid())
+  username     String?                 @unique
+  passwordHash String?
+  displayName  String
+  status       String                  @default("ACTIVE")
+  preferences  String                  @default("{}")
+  claimedAt    DateTime?
+  createdAt    DateTime                @default(now())
+  updatedAt    DateTime                @updatedAt
+  lastSeenAt   DateTime?
+  sessions     PlayerIdentitySession[]
+  memberships  PlaythroughMembership[]
+  invitations  Invitation[]
+
+  @@index([status, displayName])
+}
+
+model PlayerIdentitySession {
+  id              String        @id @default(cuid())
+  playerProfileId String
+  tokenHash       String        @unique
+  csrfToken       String
+  expiresAt       DateTime
+  createdAt       DateTime      @default(now())
+  lastSeenAt      DateTime      @default(now())
+  revokedAt       DateTime?
+  player          PlayerProfile @relation(fields: [playerProfileId], references: [id], onDelete: Cascade)
+
+  @@index([playerProfileId, expiresAt])
+}
+
+model PlatformRoleAssignment {
+  id        String         @id @default(cuid())
+  accountId String
+  role      String
+  scopeType String         @default("GLOBAL")
+  scopeId   String?
+  grantedBy String?
+  grantedAt DateTime       @default(now())
+  revokedAt DateTime?
+  account   GameMasterUser @relation(fields: [accountId], references: [id], onDelete: Cascade)
+
+  @@unique([accountId, role, scopeType, scopeId])
+  @@index([role, scopeType, scopeId, revokedAt])
+}
+
+model PlaythroughMembership {
+  id              String        @id @default(cuid())
+  playthroughId   String
+  playerProfileId String
+  role            String        @default("PLAYER")
+  status          String        @default("INVITED")
+  crewRole        String?
+  joinedAt        DateTime?
+  removedAt       DateTime?
+  completedAt     DateTime?
+  pinnedAt        DateTime?
+  hiddenAt        DateTime?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  playthrough     TaleSession   @relation(fields: [playthroughId], references: [id], onDelete: Cascade)
+  player          PlayerProfile @relation(fields: [playerProfileId], references: [id], onDelete: Cascade)
+
+  @@unique([playthroughId, playerProfileId])
+  @@index([playerProfileId, status, updatedAt])
+}
+
+model Invitation {
+  id                   String            @id @default(cuid())
+  playthroughId        String
+  intendedPlayerId     String?
+  tokenHash            String            @unique
+  tokenPrefix          String
+  shortCodeHash        String            @unique
+  shortCodePrefix      String
+  pinHash              String?
+  recipientName        String
+  status               String            @default("CREATED")
+  deliveryMethods      String            @default("[]")
+  expiresAt            DateTime
+  maxRedemptions       Int               @default(1)
+  redemptionCount      Int               @default(0)
+  viewedAt             DateTime?
+  acceptedAt           DateTime?
+  declinedAt           DateTime?
+  revokedAt            DateTime?
+  lastValidatedAt      DateTime?
+  replacesInvitationId String?           @unique
+  createdBy            String
+  createdAt            DateTime          @default(now())
+  updatedAt            DateTime          @updatedAt
+  playthrough          TaleSession       @relation(fields: [playthroughId], references: [id], onDelete: Cascade)
+  intendedPlayer       PlayerProfile?    @relation(fields: [intendedPlayerId], references: [id], onDelete: SetNull)
+  replaces             Invitation?       @relation("InvitationReplacement", fields: [replacesInvitationId], references: [id], onDelete: SetNull)
+  replacement          Invitation?       @relation("InvitationReplacement")
+  events               InvitationEvent[]
+
+  @@index([playthroughId, status, expiresAt])
+  @@index([intendedPlayerId, status])
+}
+
+model InvitationEvent {
+  id           String     @id @default(cuid())
+  invitationId String
+  eventType    String
+  actorType    String
+  actorId      String?
+  metadata     String     @default("{}")
+  createdAt    DateTime   @default(now())
+  invitation   Invitation @relation(fields: [invitationId], references: [id], onDelete: Cascade)
+
+  @@index([invitationId, createdAt])
+}
+
+model RevealState {
+  id            String      @id @default(cuid())
+  playthroughId String
+  contentType   String
+  contentKey    String
+  status        String      @default("REVEALED")
+  revealedBy    String?
+  revealedAt    DateTime    @default(now())
+  playthrough   TaleSession @relation(fields: [playthroughId], references: [id], onDelete: Cascade)
+
+  @@unique([playthroughId, contentType, contentKey])
+  @@index([playthroughId, revealedAt])
+}
+
+model PlatformAuditEvent {
+  id            String   @id @default(cuid())
+  actorType     String
+  actorId       String?
+  action        String
+  resourceType  String
+  resourceId    String
+  outcome       String   @default("SUCCEEDED")
+  correlationId String
+  metadata      String   @default("{}")
+  createdAt     DateTime @default(now())
+
+  @@index([resourceType, resourceId, createdAt])
+  @@index([actorType, actorId, createdAt])
+  @@index([correlationId])
 }
 
 model TaleSessionEvent {

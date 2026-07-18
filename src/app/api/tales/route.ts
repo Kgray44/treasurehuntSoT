@@ -22,7 +22,7 @@ export async function GET() {
         shortDescription: tale.shortDescription,
         coverAssetId: tale.coverAssetId,
         coverUrl: tale.coverAssetId
-          ? `/api/media/${tale.coverAssetId}?variant=PREVIEW&version=${tale.versions[0].id}`
+          ? `/api/media/${tale.coverAssetId}?variant=PREVIEW&version=${tale.versions[0].id}&public=cover`
           : null,
         estimatedDuration: tale.estimatedDuration,
         playerCountMin: tale.playerCountMin,

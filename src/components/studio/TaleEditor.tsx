@@ -119,6 +119,13 @@ type Version = {
   isCurrent: boolean;
   activeSessions: number;
 };
+type VersionComparison = {
+  left: { label: string };
+  right: { label: string };
+  summary: Record<string, number>;
+  changes: Array<{ type: string; path: string; before?: string; after?: string }>;
+  compatibilityWarnings: string[];
+};
 type EditorData = {
   csrfToken: string;
   tale: Tale;
@@ -181,6 +188,7 @@ export function TaleEditor({
   const [previewReplay, setPreviewReplay] = useState(0);
   const [librarySearch, setLibrarySearch] = useState("");
   const [librarySort, setLibrarySort] = useState<"name" | "region">("name");
+  const [versionComparison, setVersionComparison] = useState<VersionComparison | null>(null);
   const saving = useRef(false);
   const dndSensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 6 } }),
@@ -560,12 +568,14 @@ export function TaleEditor({
     window.location.assign(action === "duplicate" && body.id ? `/studio/tales/${body.id}` : "/studio");
   }
 
-  async function versionAction(version: Version, action: "preview" | "restore") {
+  async function versionAction(version: Version, action: "preview" | "restore" | "fork") {
     if (!data) return;
     if (
-      action === "restore" &&
+      (action === "restore" || action === "fork") &&
       !window.confirm(
-        `Copy version ${version.versionLabel} into a new editable draft? The immutable release and current draft history will remain intact.`,
+        action === "restore"
+          ? `Copy version ${version.versionLabel} into a new editable draft? The immutable release and current draft history will remain intact.`
+          : `Fork version ${version.versionLabel} into a new Tall Tale identity? Provenance will be preserved.`,
       )
     )
       return;
@@ -574,14 +584,28 @@ export function TaleEditor({
       headers: { "Content-Type": "application/json", "x-csrf-token": data.csrfToken },
       body: JSON.stringify({ action }),
     });
-    const body = (await response.json()) as { url?: string; error?: string };
+    const body = (await response.json()) as { id?: string; url?: string; error?: string };
     if (!response.ok) return setError(body.error ?? `Version ${version.versionLabel} could not be ${action}ed.`);
     if (action === "preview" && body.url) window.open(body.url, "_blank", "noopener,noreferrer");
+    else if (action === "fork" && body.id) window.location.assign(`/studio/tales/${body.id}`);
     else {
       setSelectedId(null);
       await load();
       setSaveState(`Version ${version.versionLabel} copied into a new draft`);
     }
+  }
+
+  async function compareVersion(version: Version) {
+    if (!data) return;
+    const current = data.versions.find((candidate) => candidate.isCurrent) ?? data.versions[0];
+    if (!current || current.id === version.id) return setVersionComparison(null);
+    const response = await fetch(
+      `/api/studio/tales/${taleId}/versions/compare?left=${encodeURIComponent(version.id)}&right=${encodeURIComponent(current.id)}`,
+      { cache: "no-store" },
+    );
+    const body = (await response.json()) as VersionComparison & { error?: string };
+    if (!response.ok) return setError(body.error ?? "Version comparison failed.");
+    setVersionComparison(body);
   }
 
   async function showAssetUsages(asset: Asset) {
@@ -1580,10 +1604,48 @@ export function TaleEditor({
                 <div className="version-actions">
                   <button onClick={() => void versionAction(version, "preview")}>Preview release</button>
                   <button onClick={() => void versionAction(version, "restore")}>Copy into new draft</button>
+                  <button onClick={() => void versionAction(version, "fork")}>Fork as new Tale</button>
+                  {!version.isCurrent && (
+                    <button onClick={() => void compareVersion(version)}>Compare to current</button>
+                  )}
                 </div>
               </article>
             ))}
           </div>
+          {versionComparison && (
+            <section className="version-comparison" aria-live="polite">
+              <header>
+                <div>
+                  <p className="eyebrow">Structured immutable diff</p>
+                  <h3>
+                    Version {versionComparison.left.label} to {versionComparison.right.label}
+                  </h3>
+                </div>
+                <button onClick={() => setVersionComparison(null)}>Close comparison</button>
+              </header>
+              <ul className="comparison-summary">
+                {Object.entries(versionComparison.summary).map(([type, count]) => (
+                  <li key={type}>
+                    <strong>{count}</strong>
+                    <span>{type}</span>
+                  </li>
+                ))}
+              </ul>
+              {versionComparison.compatibilityWarnings.length > 0 && (
+                <p className="platform-error">
+                  Compatibility warnings: {versionComparison.compatibilityWarnings.join(", ")}
+                </p>
+              )}
+              <ol>
+                {versionComparison.changes.map((change, index) => (
+                  <li key={`${change.path}-${index}`}>
+                    <b>{change.type}</b>
+                    <code>{change.path}</code>
+                  </li>
+                ))}
+              </ol>
+            </section>
+          )}
         </LibraryPanel>
       )}
       {(assetDrawer || initialSection === "assets") && (

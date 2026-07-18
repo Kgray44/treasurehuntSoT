@@ -53,7 +53,7 @@ Publishing runs server-side graph, configuration, asset, and reachability valida
 
 The catalog lists only current public releases; current unlisted releases remain available by their direct address. Starting a game records the exact `publishedVersionId`; later releases cannot alter that session. Preview sessions instead carry a draft snapshot and are visibly labeled. Every session event has a monotonic sequence and globally unique idempotency key.
 
-Version History can preview any immutable release or copy it into a newly numbered draft based on that release without mutating the published snapshot or discarding the prior draft. The catalog reports New, In Progress, or Completed/Replayable for the authenticated browser session and routes its primary action to Start, Continue, or Replay accordingly.
+Version History can preview any immutable release, compare two releases with structured added/removed/moved/renamed/access-scope changes, copy a release into a newly numbered draft, or fork it as a separate private Tall Tale with explicit provenance. None of those operations mutate a published snapshot or silently retarget active playthroughs. The catalog reports New, In Progress, or Completed/Replayable for compatibility browser sessions; the canonical Player library groups durable identity memberships by invitation, waiting, active, completed, replay/new-edition, and closed state.
 
 The progression engine advances automatic blocks, evaluates variables/conditions, grants artifacts once, and opens standardized verification requests. Text answers, player confirmations, timers, Captain decisions, helper submissions, and the simulator converge on that engine. It rejects duplicate, stale, wrong-session, wrong-version, wrong-block, and wrong-request submissions.
 
@@ -67,7 +67,7 @@ Interactive player, Captain, upload, and helper routes apply bounded per-process
 
 ## Data and migration
 
-SQLite migration `20260717213000_tall_tale_studio_phase1` and MySQL migration `0003_tall_tale_studio_phase1` add the same domain. The seed is idempotent and additive: it preserves legacy Campaign rows and rebuilds only the known development Studio tale.
+SQLite migration `20260717213000_tall_tale_studio_phase1` and MySQL migration `0003_tall_tale_studio_phase1` add the authoring domain. The subsequent platform migrations extend that same model with identity, membership, invitation, reveal, role, and audit data. The seed is progress-safe under `--ensure`; an explicit preset remains the only development reset path.
 
 For local SQLite:
 
@@ -77,7 +77,7 @@ npm run db:migrate
 npm run db:seed
 ```
 
-For a fresh MySQL database, apply the three numbered scripts in order as documented in `docs/deployment.md`.
+For a fresh MySQL database, apply the platform script after the three prior domain scripts in the exact order documented in `docs/deployment.md`.
 
 ## Operational checklist
 

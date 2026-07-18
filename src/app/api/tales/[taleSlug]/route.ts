@@ -21,7 +21,9 @@ export async function GET(_: Request, context: { params: Promise<{ taleSlug: str
       subtitle: tale.subtitle,
       shortDescription: tale.shortDescription,
       longDescription: tale.longDescription,
-      coverUrl: tale.coverAssetId ? `/api/media/${tale.coverAssetId}?variant=PREVIEW&version=${version.id}` : null,
+      coverUrl: tale.coverAssetId
+        ? `/api/media/${tale.coverAssetId}?variant=PREVIEW&version=${version.id}&public=cover`
+        : null,
       estimatedDuration: tale.estimatedDuration,
       playerCountMin: tale.playerCountMin,
       playerCountMax: tale.playerCountMax,

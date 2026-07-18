@@ -3,7 +3,7 @@ import { requireGmCapability, verifyCsrf } from "@/lib/security";
 import { apiError } from "@/tall-tale/api";
 import { startPublishedPreviewSession } from "@/tall-tale/progression";
 import { setTaleSessionCookie } from "@/tall-tale/session-cookie";
-import { restorePublishedVersionToDraft } from "@/tall-tale/studio-service";
+import { forkPublishedVersion, restorePublishedVersionToDraft } from "@/tall-tale/studio-service";
 
 async function authorize() {
   const session = await requireGmCapability("CREATE_TALES");
@@ -14,10 +14,11 @@ export async function POST(request: Request, context: { params: Promise<{ taleId
   const session = await authorize();
   if (!session) return NextResponse.json({ error: "A current creator session is required." }, { status: 403 });
   try {
-    const { action } = (await request.json()) as { action: "preview" | "restore" };
+    const { action } = (await request.json()) as { action: "preview" | "restore" | "fork" };
     const { taleId, versionId } = await context.params;
     if (action === "restore")
       return NextResponse.json(await restorePublishedVersionToDraft(taleId, versionId, session.userId));
+    if (action === "fork") return NextResponse.json(await forkPublishedVersion(taleId, versionId, session.userId));
     if (action === "preview") {
       const preview = await startPublishedPreviewSession(taleId, versionId, session.userId);
       await setTaleSessionCookie(preview.sessionId, preview.token);

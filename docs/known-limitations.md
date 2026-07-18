@@ -1,28 +1,12 @@
 # Known limitations
 
 - The repository is public. Final story, riddles, personal material, surprise content, production credentials, and private media remain intentionally blocked.
-- Invitation seal, journal clasp, voyage compass, and finale mechanism have typed Rive contracts but no final designer-authored `.riv` binaries. Production renders honest original SVG/CSS fallbacks. The sole working `.riv` file is an MIT-licensed development-only runtime sample.
-- Current Lottie effects are original shape-layer ambience/punctuation, not final designer-exported Bodymovin artwork.
-- Finale unlock/assembly remains structural and cannot enter unsupported `READY` or later states through current controls.
-- SSE fan-out is process-local. Database replay is durable, but multi-instance production needs Redis or equivalent pub/sub.
-- Interactive route rate limits are process-local. Multi-instance production needs a shared limiter such as Redis in addition to the existing authorization and idempotency controls.
-- Initial Ship's Log projection is capped at 250 entries; cursor pagination is future scale work.
-- Production MySQL migration must be exercised against an actual MySQL 8 integration environment.
-- Final art/audio, real content authoring, and production deployment belong to later phases.
-
-- SSE fan-out is process-local; database replay is durable, but multi-instance production needs Redis/pub-sub.
-- The Phase 3 preview is a sanitized state projection rather than a pixel-identical embedded Player Companion ceremony timeline; explicit replay targeting is not implemented.
-- The full mutation workflow runs once in Chromium to avoid cross-project database contention; privacy, route protection, accessibility, and mobile behavior also run in WebKit.
-- Windows LAN access is opt-in and may still require a firewall rule or network-policy change; localhost is the safe default.
-- SQLite and MySQL schemas are intentionally parallel; schema edits must update both and add SQL to the connector-specific migration histories until a generation workflow is added.
-- Final story content, private media, polished licensed audio, production monitoring, and deployment remain out of scope.
-- Scheduling stores a future timestamp and stale-state evidence but has no background execution worker; scheduled actions require Game Master review and release.
-- Recovery exposes only the latest safe single-step reversal. Full dependency-graph multi-event rollback is intentionally unavailable.
-- Presence is durable per device but cleanup is documented rather than automated; production should expire records older than 30 days.
-- The parallel MySQL migration still needs exercise against a real MySQL 8 integration environment.
-- Development FPS/long-task metrics are observational and local, not production telemetry. Final Rive binaries require another mobile GPU/memory profile.
-- The complete mutation workflow runs once in Chromium to avoid shared-database contention; privacy, access gates, landing behavior, accessibility, responsive layouts, and mobile behavior also run in WebKit.
-- Windows LAN access is opt-in and can still be blocked by firewall or corporate network policy.
-- Final licensed audio, production monitoring, CI, deployment, and private content authoring remain later work.
-- Tall Tale asset binaries use one local filesystem root in Phase 1. Object storage, antivirus scanning, resumable large uploads, and asynchronous media processing remain production hardening work.
-- The future vision provider is deliberately inactive. Phase 1 supplies reference collections, a scoped helper pairing token, a versioned verification contract, strict progression rejection rules, and a development simulator; it does not capture camera frames or claim recognition accuracy.
+- SSE fan-out and interactive rate-limit counters are process-local. Database replay is durable, but multi-instance production needs shared pub/sub and rate limiting such as Redis.
+- Tall Tale media uses one local filesystem root. Multi-instance production needs shared object storage; antivirus scanning, resumable large uploads, and asynchronous processing remain hardening work.
+- The additive MySQL migrations are maintained in parity with SQLite but still require a live MySQL 8 integration run before production rollout.
+- The full shared-database mutation workflow runs once in Chromium. Privacy, access gates, the role gateway, accessibility, reduced motion, and mobile behavior also run as read-only WebKit coverage.
+- Captain scheduling persists timezone-aware future state but has no background launch worker; the Captain must explicitly launch a ready or scheduled voyage.
+- SSE access revocation is rechecked on its heartbeat interval, not through an immediate cross-process revocation broadcast.
+- Final designer-authored Rive artwork, licensed audio, real private content, production monitoring, CI hosting, and deployment remain later release work. Current visual assets use documented local development samples and original SVG/CSS/Lottie fallbacks.
+- The future vision provider remains deliberately inactive. Scoped helper pairing, a versioned verification contract, strict rejection rules, and a simulator exist, but the application does not capture camera frames or claim recognition accuracy.
+- Windows LAN access is opt-in and can still be blocked by the host firewall or network policy; localhost is the safe default.

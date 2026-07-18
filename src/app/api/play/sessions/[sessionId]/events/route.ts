@@ -1,11 +1,12 @@
 import { db } from "@/lib/db";
 import { eventBus } from "@/lib/events";
-import { readTaleSessionCookie } from "@/tall-tale/session-cookie";
+import { authorizeTaleSessionPlayer, playerCanAccessPlaythrough } from "@/platform/auth";
 
 export const dynamic = "force-dynamic";
 export async function GET(request: Request, context: { params: Promise<{ sessionId: string }> }) {
   const { sessionId } = await context.params;
-  if (!(await readTaleSessionCookie(sessionId))) return new Response("Voyage session required.", { status: 401 });
+  const access = await authorizeTaleSessionPlayer(sessionId);
+  if (!access) return new Response("Voyage session required.", { status: 401 });
   const after = Number(request.headers.get("last-event-id") ?? new URL(request.url).searchParams.get("after") ?? 0);
   const encoder = new TextEncoder();
   let heartbeat: ReturnType<typeof setInterval>;
@@ -15,7 +16,7 @@ export async function GET(request: Request, context: { params: Promise<{ session
         controller.enqueue(
           encoder.encode(`id: ${event.sequence}\nevent: progression\ndata: ${JSON.stringify(event)}\n\n`),
         );
-      controller.enqueue(encoder.encode(": captain channel connected\n\n"));
+      controller.enqueue(encoder.encode(": authorized playthrough channel connected\n\n"));
       const missed = await db.taleSessionEvent.findMany({
         where: { sessionId, sequence: { gt: Number.isFinite(after) ? after : 0 } },
         orderBy: { sequence: "asc" },
@@ -29,10 +30,18 @@ export async function GET(request: Request, context: { params: Promise<{ session
         });
       const channel = `tale-session:${sessionId}`;
       eventBus.on(channel, send);
-      heartbeat = setInterval(
-        () => controller.enqueue(encoder.encode(`event: heartbeat\ndata: ${Date.now()}\n\n`)),
-        15000,
-      );
+      heartbeat = setInterval(() => {
+        void (async () => {
+          if (access.kind === "identity" && !(await playerCanAccessPlaythrough(sessionId, access.playerId))) {
+            clearInterval(heartbeat);
+            eventBus.off(channel, send);
+            controller.enqueue(encoder.encode("event: access-revoked\ndata: {}\n\n"));
+            controller.close();
+            return;
+          }
+          controller.enqueue(encoder.encode(`event: heartbeat\ndata: ${Date.now()}\n\n`));
+        })().catch(() => undefined);
+      }, 15000);
       request.signal.addEventListener("abort", () => {
         clearInterval(heartbeat);
         eventBus.off(channel, send);

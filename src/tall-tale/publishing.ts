@@ -109,6 +109,9 @@ export async function publishTale(
   const version = await db.$transaction(async (tx) => {
     const latest = await tx.publishedTaleVersion.findFirst({ where: { taleId }, orderBy: { versionNumber: "desc" } });
     const versionNumber = (latest?.versionNumber ?? 0) + 1;
+    const structuredReleaseNotes =
+      releaseNotes.trim() ||
+      `Published ${snapshot.chapters.length} chapters, ${snapshot.chapters.reduce((count, chapter) => count + chapter.blocks.length, 0)} story blocks, and ${snapshot.assets.length} assets${latest ? ` from version ${latest.versionLabel}` : " as the initial release"}.`;
     await tx.publishedTaleVersion.updateMany({ where: { taleId, isCurrent: true }, data: { isCurrent: false } });
     const created = await tx.publishedTaleVersion.create({
       data: {
@@ -116,7 +119,7 @@ export async function publishTale(
         versionNumber,
         versionLabel: versionNumber === 1 ? "1.0" : `1.${versionNumber - 1}`,
         publishedBy: publisherId,
-        releaseNotes: releaseNotes.trim() || null,
+        releaseNotes: structuredReleaseNotes,
         contentSnapshot,
         checksum,
         isCurrent: true,
@@ -125,6 +128,17 @@ export async function publishTale(
     await tx.tallTale.update({
       where: { id: taleId },
       data: { status: "PUBLISHED", latestPublishedVersionId: created.id },
+    });
+    await tx.platformAuditEvent.create({
+      data: {
+        actorType: "CREATOR",
+        actorId: publisherId,
+        action: "TALE_VERSION_PUBLISHED",
+        resourceType: "PUBLISHED_TALE_VERSION",
+        resourceId: created.id,
+        correlationId: crypto.randomUUID(),
+        metadata: JSON.stringify({ taleId, versionLabel: created.versionLabel, checksum: created.checksum }),
+      },
     });
     return created;
   });

@@ -3,12 +3,19 @@ import { requireGmCapability, verifyCsrf } from "@/lib/security";
 import { apiError } from "@/tall-tale/api";
 import { captainSessionAction, getTaleSessionState } from "@/tall-tale/progression";
 import { consumeRateLimit, rateLimitHeaders } from "@/lib/rate-limit";
+import { db } from "@/lib/db";
 
 export async function GET(_: Request, context: { params: Promise<{ sessionId: string }> }) {
-  if (!(await requireGmCapability("CAPTAIN")))
-    return NextResponse.json({ error: "Captain authentication required." }, { status: 401 });
+  const captain = await requireGmCapability("CAPTAIN");
+  if (!captain) return NextResponse.json({ error: "Captain authentication required." }, { status: 401 });
   try {
-    return NextResponse.json(await getTaleSessionState((await context.params).sessionId, undefined, true));
+    const sessionId = (await context.params).sessionId;
+    const assigned = await db.taleSession.findFirst({
+      where: { id: sessionId, OR: [{ captainId: captain.userId }, { captainId: null }] },
+      select: { id: true },
+    });
+    if (!assigned) return NextResponse.json({ error: "Voyage not found." }, { status: 404 });
+    return NextResponse.json(await getTaleSessionState(sessionId, undefined, true));
   } catch (cause) {
     return apiError(cause);
   }

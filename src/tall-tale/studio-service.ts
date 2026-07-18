@@ -552,3 +552,152 @@ export async function restorePublishedVersionToDraft(taleId: string, versionId: 
   }
   return { draftId: draft.id, basedOnPublishedVersionId: version.id, revisionNumber: draft.revisionNumber };
 }
+
+export async function comparePublishedVersions(taleId: string, leftVersionId: string, rightVersionId: string) {
+  const versions = await db.publishedTaleVersion.findMany({
+    where: { taleId, id: { in: [leftVersionId, rightVersionId] } },
+  });
+  const leftRow = versions.find((version) => version.id === leftVersionId);
+  const rightRow = versions.find((version) => version.id === rightVersionId);
+  if (!leftRow || !rightRow) throw new Error("Choose two published versions from this Tall Tale.");
+  const left = JSON.parse(leftRow.contentSnapshot) as PublishedTaleSnapshot;
+  const right = JSON.parse(rightRow.contentSnapshot) as PublishedTaleSnapshot;
+  const changes: Array<{ type: string; path: string; before?: string; after?: string }> = [];
+  const record = (type: string, path: string, before?: unknown, after?: unknown) =>
+    changes.push({
+      type,
+      path,
+      ...(before === undefined ? {} : { before: typeof before === "string" ? before : JSON.stringify(before) }),
+      ...(after === undefined ? {} : { after: typeof after === "string" ? after : JSON.stringify(after) }),
+    });
+  for (const key of ["title", "subtitle", "shortDescription", "longDescription", "theme", "visibility"] as const)
+    if (left.tale[key] !== right.tale[key])
+      record(
+        key === "title" ? "renamed" : key === "visibility" ? "access-scope-changed" : "modified",
+        `tale.${key}`,
+        left.tale[key],
+        right.tale[key],
+      );
+  const leftChapters = new Map(left.chapters.map((chapter) => [chapter.id, chapter]));
+  const rightChapters = new Map(right.chapters.map((chapter) => [chapter.id, chapter]));
+  for (const [id, chapter] of leftChapters)
+    if (!rightChapters.has(id)) record("removed", `chapters.${id}`, chapter.title);
+  for (const [id, chapter] of rightChapters)
+    if (!leftChapters.has(id)) record("added", `chapters.${id}`, undefined, chapter.title);
+  for (const [id, before] of leftChapters) {
+    const after = rightChapters.get(id);
+    if (!after) continue;
+    if (before.title !== after.title) record("renamed", `chapters.${id}.title`, before.title, after.title);
+    if (before.orderIndex !== after.orderIndex)
+      record("moved", `chapters.${id}.orderIndex`, before.orderIndex, after.orderIndex);
+    const beforeBlocks = new Map(before.blocks.map((block) => [block.id, block]));
+    const afterBlocks = new Map(after.blocks.map((block) => [block.id, block]));
+    for (const [blockId, block] of beforeBlocks)
+      if (!afterBlocks.has(blockId)) record("removed", `chapters.${id}.blocks.${blockId}`, block.title);
+    for (const [blockId, block] of afterBlocks)
+      if (!beforeBlocks.has(blockId)) record("added", `chapters.${id}.blocks.${blockId}`, undefined, block.title);
+    for (const [blockId, beforeBlock] of beforeBlocks) {
+      const afterBlock = afterBlocks.get(blockId);
+      if (!afterBlock) continue;
+      if (beforeBlock.title !== afterBlock.title)
+        record("renamed", `chapters.${id}.blocks.${blockId}.title`, beforeBlock.title, afterBlock.title);
+      if (beforeBlock.orderIndex !== afterBlock.orderIndex)
+        record("moved", `chapters.${id}.blocks.${blockId}.orderIndex`, beforeBlock.orderIndex, afterBlock.orderIndex);
+      for (const key of ["blockType", "configuration", "presentation", "completion", "nextBlockId"] as const)
+        if (JSON.stringify(beforeBlock[key]) !== JSON.stringify(afterBlock[key]))
+          record("modified", `chapters.${id}.blocks.${blockId}.${key}`, beforeBlock[key], afterBlock[key]);
+    }
+  }
+  const leftAssets = new Map(left.assets.map((asset) => [asset.id, asset]));
+  const rightAssets = new Map(right.assets.map((asset) => [asset.id, asset]));
+  for (const [id, asset] of leftAssets) if (!rightAssets.has(id)) record("removed", `assets.${id}`, asset.displayName);
+  for (const [id, asset] of rightAssets)
+    if (!leftAssets.has(id)) record("added", `assets.${id}`, undefined, asset.displayName);
+  for (const [id, before] of leftAssets) {
+    const after = rightAssets.get(id);
+    if (after && JSON.stringify(before.roles) !== JSON.stringify(after.roles))
+      record("access-scope-changed", `assets.${id}.roles`, before.roles, after.roles);
+  }
+  const activeSessions = await db.taleSession.count({
+    where: {
+      publishedVersionId: leftVersionId,
+      status: { in: ["INVITING", "READY", "SCHEDULED", "ACTIVE", "PAUSED"] },
+    },
+  });
+  const compatibilityWarnings = changes
+    .filter((change) => ["removed", "access-scope-changed"].includes(change.type))
+    .map((change) => `${change.type}: ${change.path}`);
+  return {
+    left: { id: leftRow.id, label: leftRow.versionLabel, checksum: leftRow.checksum },
+    right: { id: rightRow.id, label: rightRow.versionLabel, checksum: rightRow.checksum },
+    changes,
+    summary: changes.reduce<Record<string, number>>((summary, change) => {
+      summary[change.type] = (summary[change.type] ?? 0) + 1;
+      return summary;
+    }, {}),
+    activeSessionsOnLeft: activeSessions,
+    compatibilityWarnings,
+  };
+}
+
+export async function forkPublishedVersion(taleId: string, versionId: string, creatorId: string) {
+  const version = await db.publishedTaleVersion.findFirstOrThrow({ where: { id: versionId, taleId } });
+  const snapshot = JSON.parse(version.contentSnapshot) as PublishedTaleSnapshot;
+  let slug = slugify(`${snapshot.tale.slug}-fork`);
+  let suffix = 2;
+  const base = slug;
+  while (await db.tallTale.findUnique({ where: { slug }, select: { id: true } })) slug = `${base}-${suffix++}`;
+  const created = await createStudioTale({
+    title: `${snapshot.tale.title} Fork`,
+    slug,
+    subtitle: snapshot.tale.subtitle ?? undefined,
+    shortDescription: snapshot.tale.shortDescription ?? undefined,
+    longDescription: snapshot.tale.longDescription ?? undefined,
+    theme: snapshot.tale.theme,
+    visibility: "PRIVATE",
+    playerCountMin: snapshot.tale.playerCountMin,
+    playerCountMax: snapshot.tale.playerCountMax,
+    estimatedDuration: snapshot.tale.estimatedDuration ?? undefined,
+    initialChapterTitle: snapshot.chapters[0]?.title ?? "Chapter One",
+    creatorId,
+  });
+  await db.tallTale.update({
+    where: { id: created.id },
+    data: { forkedFromTaleId: taleId, forkedFromVersionId: versionId },
+  });
+  const target = await getStudioTale(created.id);
+  const chapterIds = new Map(snapshot.chapters.map((chapter) => [chapter.id, crypto.randomUUID()]));
+  const blockIds = new Map(
+    snapshot.chapters.flatMap((chapter) => chapter.blocks.map((block) => [block.id, crypto.randomUUID()] as const)),
+  );
+  const remap = (value: unknown) => (typeof value === "string" && blockIds.has(value) ? blockIds.get(value) : value);
+  await saveStudioDraft(
+    created.id,
+    {
+      autosaveVersion: target.draft.autosaveVersion,
+      tale: { ...snapshot.tale, title: `${snapshot.tale.title} Fork`, slug, visibility: "PRIVATE" },
+      chapters: snapshot.chapters.map((chapter) => ({
+        ...chapter,
+        id: chapterIds.get(chapter.id)!,
+        blocks: chapter.blocks.map((block) => ({
+          ...block,
+          id: blockIds.get(block.id)!,
+          configuration: {
+            ...block.configuration,
+            successTargetBlockId: remap(block.configuration.successTargetBlockId),
+            failureTargetBlockId: remap(block.configuration.failureTargetBlockId),
+            choices: Array.isArray(block.configuration.choices)
+              ? block.configuration.choices.map((choice) =>
+                  choice && typeof choice === "object" && !Array.isArray(choice)
+                    ? { ...choice, targetBlockId: remap(choice.targetBlockId) }
+                    : choice,
+                )
+              : block.configuration.choices,
+          },
+        })),
+      })),
+    },
+    creatorId,
+  );
+  return { id: created.id, slug, forkedFromTaleId: taleId, forkedFromVersionId: versionId };
+}

@@ -4,14 +4,14 @@ Production-oriented foundation and fully automated local demo for a private naut
 
 ## Current phase
 
-The cinematic companion now also includes Tall Tale Studio Phase 1: an authenticated no-code authoring workspace, reusable asset/location/artifact libraries, immutable publishing, a dynamic player catalog, version-pinned live sessions, and Captain controls. A shared animation director still coordinates the original harbor, journal, chart, artifact, and finale experience without allowing presentation timing to outrun server truth. All committed content remains fictional development seed material.
+The application is now a unified Tall Tale platform. The cinematic gateway opens distinct Player, Captain, and Creator workspaces without treating role choice as authorization. Players have durable identities, invitation acceptance, a multi-voyage library, live waiting/runtime state, and exact-version archives. Captains can create version-pinned crew voyages, deliver individually hashed link/QR/code/PIN invitations, manage invitation lifecycle, preview the Player-safe surface, and launch accepted crews. Creator Studio retains immutable publishing and now adds structured version comparison, restore-to-draft, and fork provenance.
 
-The Phase 3 feature branch adds an expanded Game Master Command Center: 12 URL-backed workspaces, truthful presence/synchronization, sanitized Player View, nonmutating projection, staging, idempotent commands, stale-tab protection, recovery, audit/diagnostics, keyboard controls, and tablet/emergency layouts. It remains unintegrated until the parallel Phase 2 reconciliation pass.
+The original companion and expanded Game Master Command Center remain integrated compatibility surfaces. A shared animation director coordinates the harbor, journal, chart, artifact, gateway, and finale experiences without allowing presentation timing to outrun server truth. All committed content remains fictional development seed material.
 
 ## Stack
 
 - Next.js 16 App Router, React 19, strict TypeScript
-- Prisma 6.19 with SQLite for local/test and an equivalent MySQL production schema
+- Prisma 6.19.3 with SQLite for local/test and an equivalent MySQL production schema
 - GSAP 3.15 for orchestrated scenes and SVG/text work; Motion 12 for React interaction and presence
 - StPageFlip for the journal; local Rive and Lottie runtimes with explicit static fallbacks
 - bcrypt password/access-code hashing, server-side database sessions, CSRF tokens, and rate limiting
@@ -31,9 +31,12 @@ npm run dev:full
 
 The launcher creates an ignored `.env` when absent, installs the exact lockfile, generates Prisma, applies migrations, creates generic development data only when the voyage is missing, starts the app, checks health, and prints the URLs and credentials. Existing campaign progress is preserved across normal stop/start cycles. Network/UNC workspaces are mirrored to an ignored local runtime under `%LOCALAPPDATA%` because Node and SQLite are unreliable on network shares. Stop it with `npm run dev:stop`.
 
+- Role gateway: `http://127.0.0.1:3000/`
 - Player: `http://127.0.0.1:3000/tale/development-forever-treasure`
+- Player library: `http://127.0.0.1:3000/player`
 - Tall Tale catalog: `http://127.0.0.1:3000/tales`
 - Player phrase: `development-moonwake`
+- Returning Player development login: `sera` / the configured `PLAYER_PASSWORD` (or `PLAYER_ACCESS_CODE` fallback)
 - GM: `http://127.0.0.1:3000/quartermaster`
 - Studio: `http://127.0.0.1:3000/studio`
 - Captain: `http://127.0.0.1:3000/captain`
@@ -75,8 +78,9 @@ Set unique local values in `.env`; the seed’s fallback values are development-
 | `npm run db:generate:mysql`               | Generate production MySQL client                                      |
 | `npm run db:migrate:mysql:command-center` | Apply the Phase 3 production MySQL migration                          |
 | `npm run db:migrate:mysql:studio`         | Apply the production-parity Tall Tale Studio migration                |
+| `npm run db:migrate:mysql:platform`       | Apply the unified Tall Tale Platform migration                        |
 
-Full setup, validation stages, output locations, clean-clone instructions, and troubleshooting are in [local development](docs/local-development.md) and [testing](docs/testing.md). Studio architecture and operations are in [Tall Tale Studio](docs/tall-tale-studio.md); the future recognition seam is in [vision helper boundary](docs/future-vision-helper.md). Animation ownership, scene contracts, assets, performance, and the development lab are indexed from [animation architecture](docs/animation/architecture.md).
+Full setup, validation stages, output locations, clean-clone instructions, and troubleshooting are in [local development](docs/local-development.md) and [testing](docs/testing.md). Unified identity, invitations, libraries, authorization, history, and migration are in [Tall Tale Platform](docs/tall-tale-platform.md); Studio architecture and operations are in [Tall Tale Studio](docs/tall-tale-studio.md). The future recognition seam is in [vision helper boundary](docs/future-vision-helper.md). Animation ownership, scene contracts, assets, performance, and the development lab are indexed from [animation architecture](docs/animation/architecture.md).
 
 ## Repository workflow
 

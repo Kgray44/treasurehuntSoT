@@ -15,6 +15,7 @@ import type {
 } from "@/tall-tale/types";
 import { parseJsonArray, parseJsonObject } from "@/tall-tale/types";
 import { logger } from "@/lib/logger";
+import { playerSafeAssetIds, playerSafeObject } from "@/platform/libraries";
 
 const digest = (value: string) => createHash("sha256").update(value).digest("hex");
 const futureProviders = new Set(["visionLocation", "visionObject", "externalWebhook"]);
@@ -137,6 +138,23 @@ async function enterBlock(
     where: { id: session.id },
     data: { currentBlockId: block.id, currentChapterId: chapter?.id ?? null, lastHeartbeatAt: new Date() },
   });
+  if (session.publishedVersionId)
+    await tx.revealState.upsert({
+      where: {
+        playthroughId_contentType_contentKey: {
+          playthroughId: session.id,
+          contentType: "BLOCK",
+          contentKey: block.id,
+        },
+      },
+      update: {},
+      create: {
+        playthroughId: session.id,
+        contentType: "BLOCK",
+        contentKey: block.id,
+        revealedBy: sourceId ?? sourceType,
+      },
+    });
   const event = await appendEvent(tx, session, {
     eventType: "blockEntered",
     sourceType,
@@ -234,6 +252,22 @@ async function completeBlock(
     const artifactId = String(block.configuration.artifactId ?? "");
     if (artifactId && !inventory.includes(artifactId)) {
       inventory = [...inventory, artifactId];
+      await tx.revealState.upsert({
+        where: {
+          playthroughId_contentType_contentKey: {
+            playthroughId: session.id,
+            contentType: "ARTIFACT",
+            contentKey: artifactId,
+          },
+        },
+        update: {},
+        create: {
+          playthroughId: session.id,
+          contentType: "ARTIFACT",
+          contentKey: artifactId,
+          revealedBy: sourceId ?? sourceType,
+        },
+      });
       await appendEvent(tx, session, {
         eventType: "artifactGranted",
         sourceType,
@@ -271,6 +305,10 @@ async function completeBlock(
     });
   if (block.blockType === "taleComplete") {
     await tx.taleSession.update({ where: { id: session.id }, data: { status: "COMPLETED", completedAt: new Date() } });
+    await tx.playthroughMembership.updateMany({
+      where: { playthroughId: session.id, status: { in: ["READY", "ACTIVE_MEMBER"] } },
+      data: { status: "COMPLETED_MEMBER", completedAt: new Date() },
+    });
     await appendEvent(tx, session, {
       eventType: "sessionCompleted",
       sourceType,
@@ -339,14 +377,30 @@ export async function startTaleSession(slug: string, ownerLabel?: string) {
   const token = randomBytes(32).toString("base64url");
   const key = randomUUID();
   const created = await db.$transaction(async (tx) => {
+    const player = await tx.playerProfile.create({
+      data: {
+        displayName: ownerLabel?.trim() || "Guest Player",
+        preferences: JSON.stringify({ compatibilitySessionCookie: true }),
+      },
+    });
     const session = await tx.taleSession.create({
       data: {
         taleId: tale.id,
         publishedVersionId: version.id,
         ownerLabel: ownerLabel?.trim() || "Guest crew",
+        voyageName: ownerLabel?.trim() ? `${ownerLabel.trim()}'s voyage` : "Guest voyage",
         accessTokenHash: digest(token),
+        launchedAt: new Date(),
         currentChapterId: chapterByBlock(snapshot, first.id)?.id,
         currentBlockId: first.id,
+      },
+    });
+    await tx.playthroughMembership.create({
+      data: {
+        playthroughId: session.id,
+        playerProfileId: player.id,
+        status: "ACTIVE_MEMBER",
+        joinedAt: session.startedAt,
       },
     });
     await appendEvent(tx, session, {
@@ -358,6 +412,16 @@ export async function startTaleSession(slug: string, ownerLabel?: string) {
       correlationId: key,
     });
     const event = await enterBlock(tx, session, snapshot, first, "player", null, key);
+    await tx.platformAuditEvent.create({
+      data: {
+        actorType: "ANONYMOUS",
+        action: "COMPATIBILITY_PLAYTHROUGH_STARTED",
+        resourceType: "PLAYTHROUGH",
+        resourceId: session.id,
+        correlationId: key,
+        metadata: JSON.stringify({ taleId: tale.id, versionId: version.id }),
+      },
+    });
     return { session, event };
   });
   emit(created.session.id, created.event);
@@ -366,6 +430,73 @@ export async function startTaleSession(slug: string, ownerLabel?: string) {
     "Published Tall Tale session started",
   );
   return { sessionId: created.session.id, token, taleSlug: slug, versionId: version.id };
+}
+
+export async function launchTalePlaythrough(sessionId: string, actorId: string, expectedVersion?: number) {
+  const session = await db.taleSession.findUniqueOrThrow({
+    where: { id: sessionId },
+    include: { version: true, memberships: true, invitations: true },
+  });
+  if (session.previewMode || !session.version) throw new Error("Only a published real voyage can be launched.");
+  if (session.captainId && session.captainId !== actorId)
+    throw new Error("This voyage is assigned to another Captain.");
+  if (!["READY", "SCHEDULED"].includes(session.status))
+    throw new Error(`This voyage is ${session.status.toLocaleLowerCase()} and is not ready to launch.`);
+  if (!session.memberships.some((membership) => membership.status === "READY"))
+    throw new Error("At least one accepted Player must be ready before launch.");
+  const snapshot = snapshotOf(session);
+  const configured = parseJsonObject(session.configuration).startingBlockId;
+  const first = blockById(snapshot, typeof configured === "string" ? configured : null) ?? blocksOf(snapshot)[0];
+  if (!first) throw new Error("This published version has no playable entry block.");
+  const correlationId = randomUUID();
+  const event = await db.$transaction(async (tx) => {
+    const claimed = await tx.taleSession.updateMany({
+      where: {
+        id: sessionId,
+        status: { in: ["READY", "SCHEDULED"] },
+        concurrencyVersion: expectedVersion ?? session.concurrencyVersion,
+      },
+      data: {
+        status: "ACTIVE",
+        launchedAt: new Date(),
+        captainId: actorId,
+        concurrencyVersion: { increment: 1 },
+      },
+    });
+    if (!claimed.count) throw new Error("Voyage state changed before launch. Refresh and review the current state.");
+    await tx.playthroughMembership.updateMany({
+      where: { playthroughId: sessionId, status: "READY" },
+      data: { status: "ACTIVE_MEMBER" },
+    });
+    await tx.invitation.updateMany({
+      where: { playthroughId: sessionId, status: { in: ["ACCEPTED", "READY", "JOINED"] } },
+      data: { status: "CONSUMED" },
+    });
+    await appendEvent(tx, session, {
+      eventType: "sessionLaunched",
+      sourceType: "captain",
+      sourceId: actorId,
+      blockId: first.id,
+      idempotencyKey: `${correlationId}:launch`,
+      payload: { versionId: session.version!.id },
+      correlationId,
+    });
+    const entered = await enterBlock(tx, session, snapshot, first, "captain", actorId, correlationId);
+    await tx.platformAuditEvent.create({
+      data: {
+        actorType: "CAPTAIN",
+        actorId,
+        action: "PLAYTHROUGH_LAUNCHED",
+        resourceType: "PLAYTHROUGH",
+        resourceId: sessionId,
+        correlationId,
+        metadata: JSON.stringify({ versionId: session.version!.id }),
+      },
+    });
+    return entered;
+  });
+  emit(sessionId, event);
+  return { accepted: true, state: await getTaleSessionState(sessionId, undefined, true) };
 }
 
 export async function getCatalogSessionStatus(sessionId: string, token: string) {
@@ -468,7 +599,12 @@ function safeConfig(block: PublishedBlock) {
   return result;
 }
 
-export async function getTaleSessionState(sessionId: string, token?: string, captain = false) {
+export async function getTaleSessionState(
+  sessionId: string,
+  token?: string,
+  captain = false,
+  authorizedPlayer = false,
+) {
   const session = await db.taleSession.findUniqueOrThrow({
     where: { id: sessionId },
     include: {
@@ -477,13 +613,20 @@ export async function getTaleSessionState(sessionId: string, token?: string, cap
       events: { orderBy: { sequence: "desc" }, take: 40 },
     },
   });
-  if (!captain && (!token || digest(token) !== session.accessTokenHash))
+  if (!captain && !authorizedPlayer && (!token || digest(token) !== session.accessTokenHash))
     throw new Error("This voyage session is not available to this browser.");
   if (session.expiresAt && session.expiresAt < new Date()) throw new Error("This preview session has expired.");
   const snapshot = snapshotOf(session);
   const block = blockById(snapshot, session.currentBlockId);
   const chapter = chapterByBlock(snapshot, session.currentBlockId);
   const request = session.verificationRequests[0] ?? null;
+  const allowedAssetIds = captain
+    ? new Set(snapshot.assets.map((asset) => asset.id))
+    : playerSafeAssetIds(
+        session.version?.contentSnapshot ?? session.previewSnapshot ?? JSON.stringify(snapshot),
+        session.events.map((event) => event.blockId),
+        session.inventory,
+      );
   return {
     session: {
       id: session.id,
@@ -520,13 +663,23 @@ export async function getTaleSessionState(sessionId: string, token?: string, cap
       sourceType: event.sourceType,
       blockId: event.blockId,
       sequence: event.sequence,
-      payload: parseJsonObject(event.payload),
+      payload: captain ? parseJsonObject(event.payload) : playerSafeObject(parseJsonObject(event.payload)),
       createdAt: event.createdAt.toISOString(),
     })),
-    assets: snapshot.assets.map((asset) => ({
-      ...asset,
-      url: `/api/media/${asset.id}?version=${encodeURIComponent(identity(session))}`,
-    })),
+    assets: snapshot.assets
+      .filter((asset) => allowedAssetIds.has(asset.id))
+      .map((asset) => ({
+        id: asset.id,
+        mediaType: asset.mediaType,
+        displayName: asset.displayName,
+        description: asset.description,
+        mimeType: asset.mimeType,
+        width: asset.width,
+        height: asset.height,
+        url: `/api/media/${asset.id}?version=${encodeURIComponent(identity(session))}&session=${encodeURIComponent(
+          session.id,
+        )}`,
+      })),
     chapters: captain
       ? snapshot.chapters.map((item) => ({
           id: item.id,
@@ -549,16 +702,17 @@ export function normalized(value: string, config: JsonObject) {
 
 export async function interactWithTaleSession(
   sessionId: string,
-  token: string,
+  token: string | undefined,
   input: {
     action: "continue" | "confirm" | "answer" | "choice" | "timer";
     idempotencyKey: string;
     answer?: string;
     targetBlockId?: string;
   },
+  authorizedPlayer = false,
 ) {
   const session = await db.taleSession.findUniqueOrThrow({ where: { id: sessionId }, include: { version: true } });
-  if (digest(token) !== session.accessTokenHash)
+  if (!authorizedPlayer && (!token || digest(token) !== session.accessTokenHash))
     throw new Error("This voyage session is not available to this browser.");
   if (session.status !== "ACTIVE") throw new Error(`This session is ${session.status.toLowerCase()}.`);
   const snapshot = snapshotOf(session);
@@ -589,7 +743,7 @@ export async function interactWithTaleSession(
         }),
       );
       emit(sessionId, event);
-      return { accepted: false, state: await getTaleSessionState(sessionId, token) };
+      return { accepted: false, state: await getTaleSessionState(sessionId, token, false, authorizedPlayer) };
     }
   } else if (input.action === "timer") {
     if (!request || request.providerType !== "timer" || !request.expiresAt || request.expiresAt > new Date())
@@ -623,7 +777,7 @@ export async function interactWithTaleSession(
     return completeBlock(tx, current, snapshot, block, "player", null, input.idempotencyKey, input.targetBlockId);
   });
   emit(sessionId, event);
-  return { accepted: true, state: await getTaleSessionState(sessionId, token) };
+  return { accepted: true, state: await getTaleSessionState(sessionId, token, false, authorizedPlayer) };
 }
 
 export async function submitVerification(
@@ -776,6 +930,8 @@ export async function captainSessionAction(
       events: { where: { eventType: "blockEntered" }, orderBy: { sequence: "desc" }, take: 2 },
     },
   });
+  if (session.captainId && session.captainId !== actorId)
+    throw new Error("This voyage is assigned to another Captain.");
   const snapshot = snapshotOf(session);
   const request = session.verificationRequests[0];
   if (["approve", "reject", "override"].includes(input.action)) {

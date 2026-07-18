@@ -871,6 +871,43 @@
   display: grid;
   gap: 0.35rem;
 }
+.version-comparison {
+  margin-top: 1rem;
+  border: 1px solid rgba(201, 169, 95, 0.35);
+  border-radius: 14px;
+  padding: 1rem;
+  background: rgba(4, 18, 20, 0.82);
+}
+.version-comparison > header,
+.comparison-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.8rem;
+}
+.comparison-summary {
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  padding: 0;
+  list-style: none;
+}
+.comparison-summary li {
+  display: grid;
+  min-width: 90px;
+  border: 1px solid rgba(201, 169, 95, 0.2);
+  border-radius: 9px;
+  padding: 0.6rem;
+}
+.version-comparison > ol {
+  max-height: 320px;
+  overflow: auto;
+}
+.version-comparison > ol li {
+  display: grid;
+  grid-template-columns: 150px 1fr;
+  gap: 0.7rem;
+  padding: 0.45rem;
+}
 .asset-search input {
   flex: 1;
   border: 1px solid rgba(201, 169, 95, 0.28);

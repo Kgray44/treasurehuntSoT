@@ -276,6 +276,176 @@
   line-height: 1.7;
 }
 
+.gateway-content {
+  width: min(1180px, calc(100% - 44px));
+  padding-top: max(8vh, 70px);
+}
+
+.gateway-content h1 {
+  font-size: clamp(2.8rem, 6vw, 6rem);
+}
+
+.role-object-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(0.75rem, 2vw, 1.5rem);
+  margin: 2rem auto 1rem;
+  text-align: left;
+}
+
+.role-object-card {
+  position: relative;
+  display: grid;
+  min-height: 360px;
+  align-content: end;
+  overflow: hidden;
+  border: 1px solid rgba(201, 169, 95, 0.38);
+  border-radius: 22px;
+  padding: 1.25rem;
+  background: linear-gradient(160deg, rgba(20, 52, 54, 0.88), rgba(3, 15, 18, 0.95));
+  box-shadow: 0 22px 55px rgba(0, 0, 0, 0.34);
+  isolation: isolate;
+}
+
+.role-object-card::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  background: radial-gradient(circle at 50% 22%, rgba(230, 183, 91, 0.2), transparent 43%);
+}
+
+.role-object-card h2 {
+  margin: 0.15rem 0 0.4rem;
+  color: var(--parchment-50);
+  font-size: clamp(1.7rem, 3vw, 2.6rem);
+}
+
+.role-object-card > p:not(.card-kicker) {
+  min-height: 4.4em;
+  margin: 0 0 0.5rem;
+  color: #c8d5cf;
+  line-height: 1.5;
+}
+
+.role-object-card small {
+  min-height: 1.3rem;
+  color: var(--brass-100);
+}
+
+.role-entry {
+  display: block;
+  margin-top: 0.85rem;
+  border: 1px solid var(--brass-300);
+  border-radius: 999px;
+  padding: 0.75rem 1rem;
+  color: #1d160b;
+  background: var(--brass-100);
+  font-weight: 850;
+  text-align: center;
+  text-decoration: none;
+}
+
+.role-object {
+  position: absolute;
+  top: 28px;
+  left: 50%;
+  width: 118px;
+  height: 118px;
+  transform: translateX(-50%);
+  filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.5));
+}
+
+.role-object.journal {
+  border: 5px solid #7b552e;
+  border-radius: 9px 19px 19px 9px;
+  background: linear-gradient(125deg, #6c2d24, #a34b35);
+  box-shadow: inset 10px 0 rgba(39, 18, 12, 0.34);
+}
+
+.role-object.journal::after {
+  content: "✦";
+  position: absolute;
+  inset: 31px;
+  display: grid;
+  place-items: center;
+  border: 2px solid var(--brass-300);
+  border-radius: 50%;
+  color: var(--brass-100);
+  font-size: 1.8rem;
+}
+
+.role-object.wheel {
+  border: 11px double #9a7239;
+  border-radius: 50%;
+}
+
+.role-object.wheel::before,
+.role-object.wheel::after,
+.role-object.wheel i {
+  content: "";
+  position: absolute;
+  top: 48%;
+  left: -20px;
+  width: 138px;
+  height: 7px;
+  background: #a4793d;
+}
+
+.role-object.wheel::after {
+  transform: rotate(60deg);
+}
+.role-object.wheel i {
+  transform: rotate(120deg);
+}
+.role-object.wheel b {
+  position: absolute;
+  inset: 35px;
+  border-radius: 50%;
+  background: #c69a53;
+}
+
+.role-object.quill::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 48px;
+  width: 36px;
+  height: 110px;
+  border-radius: 80% 12% 80% 12%;
+  background: linear-gradient(90deg, #b7c6bf, #f0e9cf 50%, #758e88);
+  transform: rotate(28deg);
+}
+
+.role-object.quill::after {
+  content: "";
+  position: absolute;
+  right: 4px;
+  bottom: 5px;
+  width: 78px;
+  height: 30px;
+  border: 5px solid #9a7239;
+  border-radius: 50%;
+  background: #111f20;
+}
+
+.invitation-code-link {
+  position: relative;
+  z-index: 2;
+  display: inline-block;
+  margin-top: 0.5rem;
+  color: var(--brass-100);
+}
+
+.sr-only {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+}
+
 .landing-controls,
 .access-controls,
 .quartermaster-login-controls {
@@ -487,6 +657,25 @@
   .harbor-content {
     padding-top: 13vh;
   }
+  .gateway-content {
+    padding-top: 3.5rem;
+    padding-bottom: 9rem;
+  }
+  .role-object-grid {
+    grid-template-columns: 1fr;
+  }
+  .role-object-card {
+    min-height: 280px;
+    padding-left: 10rem;
+  }
+  .role-object {
+    top: 70px;
+    left: 5rem;
+    transform: translateX(-50%) scale(0.75);
+  }
+  .role-object-card > p:not(.card-kicker) {
+    min-height: 0;
+  }
   .landing-emblem {
     width: 88px;
     height: 88px;
@@ -522,5 +711,17 @@
   }
   .table-key {
     display: none;
+  }
+}
+
+@media (max-width: 420px) {
+  .role-object-card {
+    min-height: 330px;
+    padding-left: 1.25rem;
+    padding-top: 10rem;
+  }
+  .role-object {
+    top: 24px;
+    left: 50%;
   }
 }

@@ -4,19 +4,19 @@ import { expect, test } from "@playwright/test";
 test("first arrival supports skip, replay, reduced motion, and a semantic destination", async ({ page }) => {
   await page.addInitScript(() => sessionStorage.clear());
   await page.goto("/");
-  await expect(page.getByRole("heading", { name: "The Forever Treasure" })).toBeVisible();
-  await expect(page.getByRole("link", { name: "Follow the invitation" })).toBeVisible();
-  await expect(page.getByRole("link", { name: "TEST ANIMATIONS" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Choose your place in the Tale" })).toBeVisible();
+  await expect(page.getByRole("link", { name: "Enter as Player" })).toBeVisible();
+  await expect(page.getByRole("link", { name: /TEST ANIMATIONS/ })).toBeVisible();
   await expect(page.getByRole("button", { name: "Skip arrival" })).toBeVisible({ timeout: 4_000 });
   await page.getByRole("button", { name: "Skip arrival" }).click();
-  await expect(page.getByRole("button", { name: "Replay arrival" })).toBeEnabled();
+  await expect(page.getByRole("button", { name: "Replay gateway" })).toBeEnabled();
 
   await page.getByRole("button", { name: "Motion: full. Change motion setting" }).click();
   await expect(page.getByRole("button", { name: "Motion: gentle. Change motion setting" })).toBeVisible();
   await page.getByRole("button", { name: "Motion: gentle. Change motion setting" }).click();
   await expect(page.getByRole("button", { name: "Motion: reduced. Change motion setting" })).toBeVisible();
-  await page.getByRole("button", { name: "Replay arrival" }).click();
-  await expect(page.getByRole("button", { name: "Replay arrival" })).toBeEnabled({ timeout: 3_000 });
+  await page.getByRole("button", { name: "Replay gateway" }).click();
+  await expect(page.getByRole("button", { name: "Replay gateway" })).toBeEnabled({ timeout: 3_000 });
 
   const axe = await new AxeBuilder({ page }).analyze();
   expect(axe.violations.filter((violation) => ["serious", "critical"].includes(violation.impact ?? ""))).toEqual([]);

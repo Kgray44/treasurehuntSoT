@@ -6,6 +6,7 @@ import { PublishedBlockView } from "@/components/tales/PublishedBlockView";
 import type { JsonObject } from "@/tall-tale/types";
 
 type State = {
+  csrfToken?: string;
   session: {
     id: string;
     status: string;
@@ -67,13 +68,16 @@ export function PlayerRuntime({ sessionId }: { sessionId: string }) {
     setError("");
     const response = await fetch(`/api/play/sessions/${sessionId}`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        ...(state?.csrfToken ? { "x-csrf-token": state.csrfToken } : {}),
+      },
       body: JSON.stringify({ action, idempotencyKey: crypto.randomUUID(), answer, ...extra }),
     });
     const body = (await response.json()) as { state?: State; accepted?: boolean; error?: string };
     if (!response.ok) setError(body.error ?? "The story could not advance.");
     else if (body.state) {
-      setState(body.state);
+      setState({ ...body.state, csrfToken: body.state.csrfToken ?? state?.csrfToken });
       if (body.accepted) setAnswer("");
     }
     setBusy(false);

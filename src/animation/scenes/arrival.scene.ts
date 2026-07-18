@@ -49,12 +49,13 @@ export const firstArrivalScene: SceneDefinition = {
       "title-written",
     );
     mark(timeline, context, "voyage-materializes", ">-0.14");
-    timeline.fromTo(
-      emblem,
-      { opacity: 0, scale: 0.72, rotate: distance(context, -18) },
-      { opacity: 1, scale: 1, rotate: 0, duration: seconds(context, 0.95) },
-      "voyage-materializes",
-    );
+    if (emblem.length)
+      timeline.fromTo(
+        emblem,
+        { opacity: 0, scale: 0.72, rotate: distance(context, -18) },
+        { opacity: 1, scale: 1, rotate: 0, duration: seconds(context, 0.95) },
+        "voyage-materializes",
+      );
     timeline.fromTo(
       copy,
       { opacity: 0, y: distance(context, 16) },
@@ -62,12 +63,13 @@ export const firstArrivalScene: SceneDefinition = {
       "voyage-materializes+=0.24",
     );
     mark(timeline, context, "physical-open", ">-0.08");
-    timeline.fromTo(
-      action,
-      { opacity: 0, y: distance(context, 24) },
-      { opacity: 1, y: 0, duration: seconds(context, 0.62) },
-      "physical-open",
-    );
+    if (action.length)
+      timeline.fromTo(
+        action,
+        { opacity: 0, y: distance(context, 24) },
+        { opacity: 1, y: 0, duration: seconds(context, 0.62) },
+        "physical-open",
+      );
     if (border.length) {
       timeline.fromTo(border, { opacity: 0 }, { opacity: 1, duration: seconds(context, 0.7) }, "physical-open+=0.1");
     }

@@ -16,14 +16,17 @@ Run `npm run dev:stop` before switching branches or replacing the runtime. Shutd
 
 ## URLs and credentials
 
+- Unified role gateway: `http://127.0.0.1:3000/`
 - Player URL: `http://127.0.0.1:3000/tale/development-forever-treasure`
+- Player identity/library: `http://127.0.0.1:3000/player`
 - Invitation phrase: `development-moonwake`
+- Returning Player username: `sera`; password is `PLAYER_PASSWORD`, falling back to `PLAYER_ACCESS_CODE` in an isolated development database
 - GM URL: `http://127.0.0.1:3000/quartermaster`
 - GM username/password: `kato` / `development-captain-only`
 - Animation showcase: `http://127.0.0.1:3000/dev/animations` (development only)
 - Tall Tale catalog: `http://127.0.0.1:3000/tales`
-- Creator Studio: `http://127.0.0.1:3000/studio`
-- Captain console: `http://127.0.0.1:3000/captain`
+- Creator Studio: `http://127.0.0.1:3000/studio/library`
+- Captain command/library: `http://127.0.0.1:3000/captain/library`
 
 The launcher-generated `.env` is ignored. Change these values for any shared environment. Never reuse them for deployment.
 
@@ -56,7 +59,7 @@ Use `npm run assets:validate` after any asset-contract change. Keep all runtime 
 
 The seed creates `development-studio-voyage`, its editable draft, and published version 1.0 without replacing the original campaign seed. Sign in through Quartermaster and use Studio to edit it. Asset originals and generated derivatives live under ignored `.data/tall-tale-assets` by default. Override that location with an absolute `TALL_TALE_ASSET_ROOT`; set the upload ceiling with `TALL_TALE_MAX_UPLOAD_MB`.
 
-Draft preview sessions are explicitly marked and may read draft assets only through an authenticated creator session. Real player sessions always start from `/tales` and pin themselves to an immutable published version.
+Draft preview sessions are explicitly marked and may read draft assets only through an authenticated Creator session. Real Player playthroughs normally begin with a Captain invitation. The development catalog compatibility route remains available, but `/player/*`, `/captain/*`, and `/studio/*` are the canonical role workspaces. Every real playthrough pins itself to an immutable published version. Normal `--ensure` startup also adds missing platform roles/Player credentials and backfills memberships/reveal history for legacy Tall Tale sessions without resetting progress.
 
 ## Clean-clone continuation
 

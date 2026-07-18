@@ -1,0 +1,966 @@
+.platform-auth,
+.player-library,
+.captain-library,
+.invitation-page,
+.waiting-room,
+.voyage-archive,
+.player-safe-preview {
+  min-height: 100svh;
+  color: var(--parchment-50);
+  background:
+    radial-gradient(circle at 78% 8%, rgba(113, 181, 171, 0.14), transparent 28%),
+    linear-gradient(145deg, #031013, #071e21 50%, #020a0c);
+}
+
+.platform-auth,
+.invitation-page,
+.waiting-room,
+.player-safe-preview {
+  display: grid;
+  place-items: center;
+  padding: clamp(1rem, 4vw, 3rem);
+}
+
+.auth-ledger,
+.invitation-sheet,
+.waiting-room > section,
+.player-safe-preview > section {
+  position: relative;
+  z-index: 2;
+  width: min(920px, 100%);
+  border: 1px solid rgba(201, 169, 95, 0.4);
+  border-radius: 24px;
+  padding: clamp(1.2rem, 5vw, 3.5rem);
+  color: var(--parchment-ink);
+  background:
+    radial-gradient(circle at 12% 12%, rgba(103, 63, 30, 0.1), transparent 18%),
+    linear-gradient(145deg, #f4ead2, #d9c18b);
+  box-shadow: var(--shadow-deep);
+}
+
+.auth-ledger h1,
+.invitation-sheet h1,
+.waiting-room h1,
+.archive-title h1 {
+  margin: 0.4rem 0;
+  font-size: clamp(2.4rem, 7vw, 5.4rem);
+  line-height: 0.96;
+}
+
+.auth-ledger > p,
+.invitation-sheet > p,
+.waiting-room > section > p {
+  max-width: 700px;
+  line-height: 1.65;
+}
+
+.auth-columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.auth-columns form,
+.auth-ledger > form {
+  display: grid;
+  align-content: start;
+  gap: 0.8rem;
+  border: 1px solid rgba(70, 47, 27, 0.24);
+  border-radius: 16px;
+  padding: 1.2rem;
+  background: rgba(255, 250, 232, 0.4);
+}
+
+.auth-ledger > form {
+  max-width: 520px;
+  margin-top: 1.5rem;
+}
+
+.auth-ledger label,
+.invitation-sheet label,
+.wizard-form label,
+.library-tools label {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.auth-ledger label span,
+.invitation-sheet label span,
+.wizard-form label span,
+.library-tools label span {
+  font-size: 0.72rem;
+  font-weight: 850;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+.auth-ledger input,
+.invitation-sheet input,
+.wizard-form input,
+.wizard-form select,
+.wizard-choice-grid select,
+.library-tools input,
+.library-tools select {
+  width: 100%;
+  min-height: 45px;
+  border: 1px solid rgba(73, 49, 27, 0.32);
+  border-radius: 9px;
+  padding: 0.65rem 0.75rem;
+  color: #1c261f;
+  background: rgba(255, 253, 243, 0.72);
+}
+
+.auth-continue {
+  display: inline-block;
+  margin-top: 0.7rem;
+}
+
+.platform-error {
+  border: 1px solid rgba(153, 46, 38, 0.45);
+  border-radius: 10px;
+  padding: 0.8rem 1rem;
+  color: #74251f;
+  background: rgba(196, 77, 66, 0.1);
+}
+
+.captain-banner {
+  max-width: 1500px;
+  margin: 1rem auto;
+  color: #ffd7d3;
+}
+
+.platform-loading {
+  display: grid;
+  min-height: 100svh;
+  place-content: center;
+  gap: 1rem;
+  padding: 2rem;
+  text-align: center;
+}
+
+.platform-header {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 1.5rem;
+  max-width: 1500px;
+  margin: 0 auto;
+  padding: clamp(2rem, 5vw, 5rem) clamp(1rem, 3vw, 2rem) 1.5rem;
+}
+
+.platform-header h1 {
+  margin: 0.2rem 0;
+  font-size: clamp(2.6rem, 6vw, 5.6rem);
+  line-height: 0.94;
+}
+
+.platform-header > div:last-child {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+}
+
+.library-truth {
+  display: grid !important;
+  grid-template-columns: auto 1fr;
+  border: 1px solid rgba(201, 169, 95, 0.25);
+  border-radius: 12px;
+  padding: 0.75rem 1rem;
+  background: rgba(5, 24, 26, 0.72);
+}
+
+.library-truth i,
+.session-signal i {
+  width: 9px;
+  height: 9px;
+  align-self: center;
+  border-radius: 50%;
+  background: #6ed2a4;
+  box-shadow: 0 0 10px rgba(110, 210, 164, 0.7);
+}
+
+.library-truth time {
+  grid-column: 2;
+  color: #99aea8;
+  font-size: 0.72rem;
+}
+
+.library-tools {
+  display: grid;
+  grid-template-columns: minmax(240px, 1fr) repeat(2, minmax(150px, 210px)) auto;
+  align-items: end;
+  gap: 0.8rem;
+  max-width: 1450px;
+  margin: 0 auto 2rem;
+  border: 1px solid rgba(201, 169, 95, 0.22);
+  border-radius: 16px;
+  padding: 1rem;
+  background: rgba(5, 23, 25, 0.84);
+}
+
+.library-tools input,
+.library-tools select {
+  color: var(--parchment-50);
+  background: #061719;
+}
+
+.view-toggle {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.view-toggle .active,
+.platform-tabs .active {
+  color: #1c150a;
+  background: var(--brass-100);
+}
+
+.library-group,
+.captain-groups,
+.invitation-dashboard,
+.published-tale-grid {
+  max-width: 1450px;
+  margin: 0 auto;
+  padding: 0 1rem 2.5rem;
+}
+
+.library-group > header,
+.captain-groups section > header,
+.invitation-dashboard > header {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  margin: 1rem 0;
+}
+
+.library-group h2,
+.captain-groups h2,
+.invitation-dashboard h2 {
+  margin: 0;
+  font-size: clamp(1.8rem, 4vw, 3rem);
+}
+
+.library-group header p {
+  margin: 0.25rem 0;
+  color: #9db2ac;
+}
+
+.player-card-grid,
+.captain-card-grid,
+.published-tale-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: 1rem;
+}
+
+.player-card-grid.list {
+  grid-template-columns: 1fr;
+}
+
+.player-tale-card {
+  display: grid;
+  overflow: hidden;
+  border: 1px solid rgba(201, 169, 95, 0.28);
+  border-radius: 20px;
+  background: linear-gradient(145deg, rgba(17, 50, 51, 0.94), rgba(4, 18, 20, 0.96));
+  box-shadow: 0 20px 42px rgba(0, 0, 0, 0.22);
+}
+
+.player-card-grid.list .player-tale-card {
+  grid-template-columns: minmax(180px, 28%) 1fr;
+}
+
+.tale-cover {
+  position: relative;
+  display: grid;
+  min-height: 190px;
+  place-items: center;
+  overflow: hidden;
+  color: var(--brass-100);
+  background: radial-gradient(circle, #315c5b, #071a1c 70%);
+  font-size: 3rem;
+}
+
+.tale-cover img {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.tale-cover b {
+  position: absolute;
+  right: 0.7rem;
+  bottom: 0.7rem;
+  border: 1px solid rgba(255, 245, 218, 0.32);
+  border-radius: 999px;
+  padding: 0.3rem 0.55rem;
+  color: #fff4d9;
+  background: rgba(2, 12, 14, 0.8);
+  font-size: 0.62rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.tale-card-copy {
+  display: grid;
+  align-content: start;
+  padding: 1.15rem;
+}
+
+.tale-card-copy h3,
+.captain-voyage-card h3 {
+  margin: 0.2rem 0;
+  font-size: 1.8rem;
+}
+
+.tale-card-copy h4,
+.captain-voyage-card h4 {
+  margin: 0;
+  color: var(--brass-100);
+  font-family: Georgia, serif;
+  font-weight: 500;
+}
+
+.tale-card-copy > p:not(.card-kicker) {
+  color: #aebfba;
+  line-height: 1.55;
+}
+
+.tale-card-copy dl,
+.captain-voyage-card dl,
+.invitation-sheet dl,
+.waiting-room dl,
+.review-sheet dl,
+.archive-title dl,
+.player-safe-preview dl {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.6rem;
+}
+
+.tale-card-copy dl div,
+.captain-voyage-card dl div,
+.invitation-sheet dl div,
+.waiting-room dl div,
+.review-sheet dl div,
+.archive-title dl div,
+.player-safe-preview dl div {
+  border-left: 2px solid rgba(201, 169, 95, 0.35);
+  padding-left: 0.55rem;
+}
+
+dl dt {
+  color: #7e9992;
+  font-size: 0.64rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+dl dd {
+  margin: 0.12rem 0 0;
+}
+
+.platform-empty {
+  display: grid;
+  min-height: 300px;
+  place-content: center;
+  max-width: 900px;
+  margin: 2rem auto;
+  border: 1px dashed rgba(201, 169, 95, 0.35);
+  border-radius: 22px;
+  padding: 2rem;
+  text-align: center;
+}
+
+.platform-empty > span {
+  color: var(--brass-100);
+  font-size: 3rem;
+}
+
+.invitation-page {
+  overflow: hidden;
+}
+
+.invitation-sheet {
+  width: min(760px, 100%);
+  padding-top: clamp(5rem, 12vw, 8rem);
+}
+
+.invitation-seal {
+  position: absolute;
+  top: -48px;
+  left: 50%;
+  display: grid;
+  width: 110px;
+  height: 110px;
+  place-items: center;
+  border: 8px double #9c3d32;
+  border-radius: 50%;
+  color: #f0c497;
+  background: #7b2f2a;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.34);
+  font-size: 2rem;
+  transform: translateX(-50%);
+}
+
+.invitation-cover {
+  width: 100%;
+  max-height: 260px;
+  margin-bottom: 1.2rem;
+  border-radius: 14px;
+  object-fit: cover;
+}
+
+.invitation-actions,
+.waiting-actions,
+.card-actions,
+.row-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  margin-top: 1rem;
+}
+
+.waiting-room {
+  grid-template-columns: minmax(220px, 380px) minmax(0, 780px);
+  gap: clamp(1rem, 4vw, 4rem);
+}
+
+.closed-journal {
+  position: relative;
+  width: min(330px, 70vw);
+  aspect-ratio: 0.74;
+  border: 9px solid #6f4d2b;
+  border-radius: 14px 35px 35px 14px;
+  background: linear-gradient(140deg, #6b2d26, #9a4534);
+  box-shadow:
+    0 35px 65px rgba(0, 0, 0, 0.46),
+    inset 20px 0 rgba(40, 18, 13, 0.28);
+  animation: journal-breathe 4s ease-in-out infinite alternate;
+}
+
+.closed-journal b {
+  position: absolute;
+  inset: 36% 28%;
+  display: grid;
+  place-items: center;
+  border: 4px double var(--brass-300);
+  border-radius: 50%;
+  color: var(--brass-100);
+  font-size: 2.5rem;
+}
+
+.crew-readiness ul {
+  display: grid;
+  gap: 0.4rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.crew-readiness li {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(70, 47, 27, 0.18);
+  padding: 0.6rem 0;
+}
+
+.connection-live {
+  color: #176b4c;
+}
+.connection-polling {
+  color: #765c16;
+}
+.connection-disconnected {
+  color: #8a2e28;
+}
+
+.platform-tabs {
+  display: flex;
+  overflow-x: auto;
+  gap: 0.35rem;
+  max-width: 1450px;
+  margin: 0 auto 1.5rem;
+  padding: 0 1rem;
+}
+
+.platform-tabs button {
+  min-width: max-content;
+}
+
+.platform-tabs span {
+  display: inline-grid;
+  min-width: 1.3rem;
+  height: 1.3rem;
+  place-items: center;
+  margin-left: 0.3rem;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.18);
+  font-size: 0.65rem;
+}
+
+.captain-groups section {
+  margin: 1rem 0 2.5rem;
+}
+
+.captain-groups section > header span {
+  display: grid;
+  min-width: 2.3rem;
+  height: 2.3rem;
+  place-items: center;
+  border: 1px solid var(--brass-500);
+  border-radius: 50%;
+}
+
+.captain-voyage-card,
+.published-tale-grid > article {
+  border: 1px solid rgba(201, 169, 95, 0.28);
+  border-radius: 18px;
+  padding: 1rem;
+  background: rgba(7, 29, 31, 0.9);
+}
+
+.session-signal {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  color: #9fb4ad;
+  font-size: 0.7rem;
+}
+
+.session-signal i.quiet {
+  background: #75827e;
+  box-shadow: none;
+}
+
+.invitation-table {
+  overflow: hidden;
+  border: 1px solid rgba(201, 169, 95, 0.24);
+  border-radius: 16px;
+  background: rgba(5, 24, 26, 0.9);
+}
+
+.invitation-table article {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1.1fr auto;
+  align-items: center;
+  gap: 1rem;
+  border-bottom: 1px solid rgba(201, 169, 95, 0.15);
+  padding: 0.9rem;
+}
+
+.invitation-table article > div:not(.row-actions) {
+  display: grid;
+  gap: 0.2rem;
+}
+
+.invitation-table small,
+.published-tale-grid small {
+  color: #8da39d;
+}
+
+.status-pill {
+  width: max-content;
+  border: 1px solid rgba(201, 169, 95, 0.3);
+  border-radius: 999px;
+  padding: 0.28rem 0.5rem;
+  font-size: 0.64rem;
+}
+
+.published-tale-grid > article ul {
+  margin: 1rem 0;
+  padding: 0;
+  list-style: none;
+}
+
+.published-tale-grid > article li {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(201, 169, 95, 0.15);
+  padding: 0.55rem 0;
+}
+
+.published-tale-grid > article > button,
+.published-tale-grid > article > a {
+  display: inline-block;
+  margin: 0.3rem;
+}
+
+.wizard-backdrop {
+  position: fixed;
+  z-index: 150;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  background: rgba(0, 8, 10, 0.86);
+}
+
+.voyage-wizard {
+  width: min(1000px, 100%);
+  max-height: calc(100svh - 2rem);
+  overflow: auto;
+  border: 1px solid rgba(201, 169, 95, 0.45);
+  border-radius: 22px;
+  color: var(--parchment-50);
+  background: #071d20;
+  box-shadow: var(--shadow-deep);
+}
+
+.voyage-wizard > header,
+.voyage-wizard > footer {
+  position: sticky;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 1.2rem;
+  background: rgba(5, 22, 24, 0.97);
+}
+
+.voyage-wizard > header {
+  top: 0;
+  border-bottom: 1px solid rgba(201, 169, 95, 0.2);
+}
+.voyage-wizard > footer {
+  bottom: 0;
+  justify-content: flex-end;
+  border-top: 1px solid rgba(201, 169, 95, 0.2);
+}
+.voyage-wizard > header h2 {
+  margin: 0;
+}
+.voyage-wizard > header > button {
+  font-size: 1.5rem;
+}
+
+.wizard-progress {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  margin: 0;
+  padding: 0.8rem;
+  list-style: none;
+}
+
+.wizard-progress li {
+  display: grid;
+  justify-items: center;
+  color: #788e88;
+}
+
+.wizard-progress span {
+  display: grid;
+  width: 1.8rem;
+  height: 1.8rem;
+  place-items: center;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+}
+
+.wizard-progress .active {
+  color: var(--brass-100);
+}
+.wizard-progress small {
+  margin-top: 0.25rem;
+  font-size: 0.58rem;
+  text-align: center;
+}
+
+.wizard-body {
+  min-height: 390px;
+  padding: clamp(1rem, 3vw, 2rem);
+}
+
+.wizard-choice-grid,
+.delivery-options {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.8rem;
+}
+
+.wizard-choice-grid button,
+.delivery-options article {
+  display: grid;
+  gap: 0.3rem;
+  border: 1px solid rgba(201, 169, 95, 0.28);
+  border-radius: 12px;
+  padding: 1rem;
+  text-align: left;
+  background: rgba(15, 49, 50, 0.62);
+}
+
+.wizard-choice-grid button.selected {
+  border-color: var(--brass-100);
+  box-shadow: 0 0 0 2px rgba(201, 169, 95, 0.18);
+}
+.wizard-choice-grid label {
+  grid-column: 1 / -1;
+}
+.wizard-form {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+.wizard-form input,
+.wizard-form select,
+.wizard-choice-grid select {
+  color: #fff;
+  background: #061416;
+}
+.wizard-form .panel-note,
+.wizard-form > p {
+  grid-column: 1 / -1;
+}
+.wizard-form .check-field {
+  display: flex;
+  align-items: center;
+}
+.wizard-form .check-field input {
+  width: auto;
+}
+.crew-builder fieldset {
+  display: grid;
+  grid-column: 1 / -1;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.8rem;
+  border: 1px solid rgba(201, 169, 95, 0.28);
+  border-radius: 12px;
+  padding: 1rem;
+}
+.crew-builder legend {
+  color: #dfc37f;
+  font-weight: 800;
+  padding: 0 0.45rem;
+}
+.crew-builder fieldset > button {
+  align-self: end;
+}
+
+.review-sheet {
+  max-width: 650px;
+  margin: auto;
+  border: 1px solid rgba(201, 169, 95, 0.35);
+  border-radius: 18px;
+  padding: 1.5rem;
+  color: var(--parchment-ink);
+  background: #e5d2a5;
+}
+
+.invitation-secrets {
+  display: grid;
+  gap: 1rem;
+}
+
+.invitation-secrets article {
+  display: grid;
+  grid-template-columns: minmax(180px, 280px) 1fr;
+  gap: 1rem;
+  border: 1px solid rgba(201, 169, 95, 0.28);
+  border-radius: 16px;
+  padding: 1rem;
+  background: rgba(13, 44, 45, 0.8);
+}
+
+.invitation-secrets img {
+  width: 100%;
+  border-radius: 10px;
+  background: #fff;
+}
+
+.invitation-secrets code {
+  display: inline-block;
+  border: 1px dashed var(--brass-300);
+  border-radius: 8px;
+  padding: 0.5rem 0.75rem;
+  color: var(--brass-100);
+  font-size: 1.5rem;
+  letter-spacing: 0.14em;
+}
+
+.voyage-archive {
+  padding: clamp(1rem, 4vw, 4rem);
+}
+
+.archive-title,
+.archive-chapters,
+.archive-media,
+.archive-timeline {
+  max-width: 1100px;
+  margin: 0 auto 2rem;
+}
+
+.archive-title {
+  border-bottom: 1px solid rgba(201, 169, 95, 0.3);
+  padding-bottom: 2rem;
+}
+
+.archive-chapters > article {
+  margin: 1rem 0;
+  border: 1px solid rgba(201, 169, 95, 0.25);
+  border-radius: 18px;
+  padding: clamp(1rem, 3vw, 2rem);
+  color: var(--parchment-ink);
+  background: linear-gradient(145deg, #f2e7cc, #d9c18e);
+}
+
+.archive-chapters ol,
+.archive-timeline ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.archive-chapters li {
+  border-top: 1px solid rgba(80, 50, 28, 0.16);
+  padding: 1rem 0;
+}
+
+.archive-chapters li strong,
+.archive-chapters li small {
+  display: block;
+}
+
+.archive-media > div {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 1rem;
+}
+
+.archive-media figure {
+  overflow: hidden;
+  margin: 0;
+  border: 1px solid rgba(201, 169, 95, 0.25);
+  border-radius: 14px;
+  background: rgba(9, 32, 34, 0.9);
+}
+
+.archive-media img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+.archive-media figcaption {
+  display: grid;
+  padding: 0.8rem;
+}
+
+.archive-timeline li {
+  display: grid;
+  grid-template-columns: 2.3rem 1fr auto;
+  gap: 0.8rem;
+  border-bottom: 1px solid rgba(201, 169, 95, 0.16);
+  padding: 0.75rem;
+}
+
+.player-safe-preview > header {
+  width: min(900px, 100%);
+  margin-bottom: 1rem;
+}
+
+.preview-watermark {
+  border: 2px dashed #8e3e36;
+  padding: 0.7rem;
+  color: #8e3e36;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-align: center;
+}
+
+@keyframes journal-breathe {
+  to {
+    transform: translateY(-7px) rotate(0.5deg);
+    box-shadow:
+      0 42px 70px rgba(0, 0, 0, 0.5),
+      0 0 38px rgba(207, 165, 81, 0.12);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .closed-journal {
+    animation: none;
+  }
+}
+
+@media (max-width: 850px) {
+  .platform-header {
+    align-items: start;
+    flex-direction: column;
+  }
+  .library-tools {
+    grid-template-columns: 1fr 1fr;
+  }
+  .library-tools label:first-child {
+    grid-column: 1 / -1;
+  }
+  .waiting-room {
+    grid-template-columns: 1fr;
+  }
+  .closed-journal {
+    width: min(230px, 60vw);
+  }
+  .invitation-table article {
+    grid-template-columns: 1fr 1fr;
+  }
+  .wizard-progress small {
+    display: none;
+  }
+}
+
+@media (max-width: 620px) {
+  .auth-columns,
+  .wizard-choice-grid,
+  .delivery-options,
+  .wizard-form,
+  .crew-builder fieldset,
+  .invitation-secrets article,
+  .player-card-grid.list .player-tale-card {
+    grid-template-columns: 1fr;
+  }
+  .library-tools {
+    grid-template-columns: 1fr;
+  }
+  .library-tools label:first-child {
+    grid-column: auto;
+  }
+  .player-card-grid {
+    grid-template-columns: 1fr;
+  }
+  .invitation-table article {
+    grid-template-columns: 1fr;
+  }
+  .wizard-progress {
+    padding: 0.5rem;
+  }
+  .wizard-progress span {
+    width: 1.45rem;
+    height: 1.45rem;
+    font-size: 0.7rem;
+  }
+  .tale-card-copy dl,
+  .captain-voyage-card dl,
+  .invitation-sheet dl,
+  .waiting-room dl,
+  .review-sheet dl,
+  .archive-title dl {
+    grid-template-columns: 1fr;
+  }
+  .archive-timeline li {
+    grid-template-columns: 2rem 1fr;
+  }
+  .archive-timeline time {
+    grid-column: 2;
+  }
+}
+
+@media (forced-colors: active) {
+  .role-entry,
+  .brass-button,
+  .status-pill {
+    border: 1px solid ButtonText;
+  }
+}

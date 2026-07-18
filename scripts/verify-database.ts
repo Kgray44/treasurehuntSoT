@@ -1,4 +1,5 @@
 import { PrismaClient } from "@prisma/client";
+import { createHash } from "node:crypto";
 
 const db = new PrismaClient();
 const acceptance = process.argv.includes("--acceptance");
@@ -80,6 +81,45 @@ async function main() {
     snapshot.schemaVersion === 1 && Array.isArray(snapshot.chapters),
     "the published Studio snapshot must be schema-versioned",
   );
+  assert(
+    studioTale.versions.every(
+      (version) => createHash("sha256").update(version.contentSnapshot).digest("hex") === version.checksum,
+    ),
+    "every published version checksum must match its immutable snapshot",
+  );
+
+  const [player, staff, platformSessions, platformAudits] = await Promise.all([
+    db.playerProfile.findUnique({ where: { username: process.env.PLAYER_USERNAME ?? "sera" } }),
+    db.gameMasterUser.findUnique({
+      where: { username: process.env.GM_USERNAME ?? "kato" },
+      include: { platformRoles: { where: { revokedAt: null } } },
+    }),
+    db.taleSession.findMany({ where: { previewMode: false }, include: { memberships: true, version: true } }),
+    db.platformAuditEvent.findMany(),
+  ]);
+  assert(player?.passwordHash, "the returning Player development identity is missing");
+  assert(staff, "the development staff identity is missing");
+  for (const role of ["CAPTAIN", "CREATOR", "PUBLISHER"])
+    assert(
+      staff.platformRoles.some((assignment) => assignment.role === role),
+      `the staff ${role} assignment is missing`,
+    );
+  assert(
+    platformSessions.every((session) => session.memberships.length > 0),
+    "every non-preview playthrough must have at least one membership after backfill",
+  );
+  assert(
+    platformSessions.every(
+      (session) => !session.publishedVersionId || session.version?.id === session.publishedVersionId,
+    ),
+    "every version-bound playthrough must still resolve its exact published version",
+  );
+  assert(
+    platformAudits.every(
+      (event) => !/password|pin|token|secret|cookie|credential|snapshot|payload/i.test(event.metadata),
+    ),
+    "platform audit metadata must not contain secret-bearing fields",
+  );
 
   if (!acceptance && !preset) {
     assert(campaign.currentSequence === 0, "a fresh validation database must start at sequence zero");
@@ -106,7 +146,7 @@ async function main() {
   }
 
   console.log(
-    `Database verified: ${campaign.events.length} legacy events, ${campaign.auditLogs.length} audit entries, sequence ${campaign.currentSequence}; Studio version ${studioTale.versions[0].versionLabel}.`,
+    `Database verified: ${campaign.events.length} legacy events, ${campaign.auditLogs.length} legacy audit entries, ${platformSessions.length} playthroughs, ${platformAudits.length} platform audit entries; Studio version ${studioTale.versions[0].versionLabel}.`,
   );
 }
 

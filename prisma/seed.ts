@@ -32,6 +32,100 @@ const statesByPreset: Record<string, string[]> = {
   "mobile-stress-test": ["COMPLETE", "ACTIVE", "TEASER", "LOCKED", "LOCKED"],
 };
 
+function membershipStateForSession(status: string) {
+  if (status === "COMPLETED") return "COMPLETED_MEMBER";
+  if (["ACTIVE", "PAUSED"].includes(status)) return "ACTIVE_MEMBER";
+  return "READY";
+}
+
+async function ensurePlatformFoundation(userId: string, accessCode: string) {
+  const playerUsername = process.env.PLAYER_USERNAME ?? "sera";
+  const playerPassword = process.env.PLAYER_PASSWORD ?? accessCode;
+  await db.playerProfile.upsert({
+    where: { username: playerUsername },
+    update: {
+      displayName: "Sera",
+      passwordHash: await bcrypt.hash(playerPassword, 12),
+      status: "ACTIVE",
+      claimedAt: new Date(),
+    },
+    create: {
+      username: playerUsername,
+      displayName: "Sera",
+      passwordHash: await bcrypt.hash(playerPassword, 12),
+      status: "ACTIVE",
+      claimedAt: new Date(),
+    },
+  });
+
+  for (const role of ["CAPTAIN", "CREATOR", "PUBLISHER"]) {
+    const existing = await db.platformRoleAssignment.findFirst({
+      where: { accountId: userId, role, scopeType: "GLOBAL", scopeId: null },
+    });
+    if (existing) {
+      await db.platformRoleAssignment.update({ where: { id: existing.id }, data: { revokedAt: null } });
+    } else {
+      await db.platformRoleAssignment.create({
+        data: { accountId: userId, role, scopeType: "GLOBAL", grantedBy: userId },
+      });
+    }
+  }
+
+  const legacySessions = await db.taleSession.findMany({
+    where: { previewMode: false, memberships: { none: {} } },
+    include: { events: { orderBy: { sequence: "asc" } } },
+  });
+  for (const session of legacySessions) {
+    await db.$transaction(async (tx) => {
+      const placeholder = await tx.playerProfile.create({
+        data: {
+          displayName: session.ownerLabel?.trim() || `Legacy Player ${session.id.slice(-5)}`,
+          status: "ACTIVE",
+          preferences: JSON.stringify({ migratedLegacySession: session.id }),
+        },
+      });
+      await tx.playthroughMembership.create({
+        data: {
+          playthroughId: session.id,
+          playerProfileId: placeholder.id,
+          status: membershipStateForSession(session.status),
+          joinedAt: session.startedAt,
+          completedAt: session.completedAt,
+        },
+      });
+      await tx.taleSession.update({
+        where: { id: session.id },
+        data: {
+          voyageName: session.voyageName ?? session.ownerLabel ?? `Legacy voyage ${session.id.slice(-5)}`,
+          launchedAt: session.launchedAt ?? session.startedAt,
+          archiveMetadata: JSON.stringify({ migratedFromLegacySession: true }),
+        },
+      });
+      for (const event of session.events.filter((item) => item.blockId && item.eventType === "blockEntered")) {
+        await tx.revealState.upsert({
+          where: {
+            playthroughId_contentType_contentKey: {
+              playthroughId: session.id,
+              contentType: "BLOCK",
+              contentKey: event.blockId!,
+            },
+          },
+          update: {},
+          create: {
+            playthroughId: session.id,
+            contentType: "BLOCK",
+            contentKey: event.blockId!,
+            status: "REVEALED",
+            revealedAt: event.createdAt,
+          },
+        });
+      }
+    });
+  }
+
+  return { playerUsername, legacySessionsMigrated: legacySessions.length };
+}
+
 async function main() {
   if (!supportedPresets.has(preset)) throw new Error(`Unknown development preset: ${preset}`);
   const gmUsername = process.env.GM_USERNAME ?? "kato";
@@ -42,6 +136,7 @@ async function main() {
     update: { passwordHash: await bcrypt.hash(gmPassword, 12) },
     create: { username: gmUsername, passwordHash: await bcrypt.hash(gmPassword, 12) },
   });
+  const platform = await ensurePlatformFoundation(user.id, accessCode);
 
   const prior = await db.campaign.findUnique({ where: { slug: "development-forever-treasure" } });
   if (prior && preserveExisting) {
@@ -50,7 +145,7 @@ async function main() {
       data: { accessCodeHash: await bcrypt.hash(accessCode, 12) },
     });
     console.log(
-      `Existing development voyage preserved at sequence ${prior.currentSequence}; local access credentials were refreshed.`,
+      `Existing development voyage preserved at sequence ${prior.currentSequence}; local access credentials were refreshed. Player identity '${platform.playerUsername}' is ready and ${platform.legacySessionsMigrated} legacy playthrough(s) were backfilled.`,
     );
     return;
   }

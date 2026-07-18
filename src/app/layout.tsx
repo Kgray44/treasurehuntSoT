@@ -9,6 +9,7 @@ import "../styles/animation.css";
 import "../styles/showcase.css";
 import "../styles/studio.css";
 import "../styles/tall-tale.css";
+import "../styles/platform.css";
 
 export const metadata: Metadata = {
   title: { default: "The Forever Treasure", template: "%s · The Forever Treasure" },
