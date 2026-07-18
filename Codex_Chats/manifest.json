@@ -221,12 +221,12 @@
     },
     {
       "archive_path": "Codex_Chats/chats/019f729c-c614-7532-aa23-3dff7df68023--merge-all-branches-into-main.md",
-      "content_sha256": "5207c82ab0cbb797dc044164d2ea31410f30d8d43a98b082c43958ec54d49606",
+      "content_sha256": "2bd6589f9674eaf62f348441eb8df21b61bd7c1b6ed5186a6c813c0714a056dc",
       "conversation_id": "019f729c-c614-7532-aa23-3dff7df68023",
       "created_at": "2026-07-18T00:25:42.957Z",
       "first_archived_at": "2026-07-18T01:09:40Z",
-      "last_synchronized_at": "2026-07-18T01:09:40Z",
-      "message_count": 428,
+      "last_synchronized_at": "2026-07-18T02:02:21Z",
+      "message_count": 441,
       "project_identifier": "treasurehunt",
       "redaction_categories": {
         "connection_string": 1,
@@ -235,14 +235,36 @@
       "redactions": 8,
       "source_export_timestamp": null,
       "source_identifier": "rollout-2026-07-17T20-25-09-019f729c-c614-7532-aa23-3dff7df68023.jsonl",
-      "source_sha256": "8979940ad6f3c2174ac44a343cfd9975f105fbac32769623ceffd13b5d828c31",
+      "source_sha256": "465d1ba8a480268499ba3368ae10abe8d9688bc19a4180e7eb77405628e8b99e",
       "source_type": "codex_session",
       "status": "active",
       "title": "Merge all branches into main",
-      "updated_at": "2026-07-18T01:09:54.907Z"
+      "updated_at": "2026-07-18T01:11:09.592Z"
+    },
+    {
+      "archive_path": "Codex_Chats/chats/019f72ca-dfc8-7ea3-b1c5-73d7f3d7fbc2--set-up-treasure-companion-locally.md",
+      "content_sha256": "6917a32e7b686bd2f4cdb4957ece883c41c4921632f89e0d072e5c3087c87731",
+      "conversation_id": "019f72ca-dfc8-7ea3-b1c5-73d7f3d7fbc2",
+      "created_at": "2026-07-18T01:15:31.675Z",
+      "first_archived_at": "2026-07-18T02:02:21Z",
+      "last_synchronized_at": "2026-07-18T02:02:21Z",
+      "message_count": 217,
+      "project_identifier": "treasurehunt",
+      "redaction_categories": {
+        "login_credential": 2,
+        "secret_assignment": 1
+      },
+      "redactions": 3,
+      "source_export_timestamp": null,
+      "source_identifier": "rollout-2026-07-17T21-15-31-019f72ca-dfc8-7ea3-b1c5-73d7f3d7fbc2.jsonl",
+      "source_sha256": "03ed2b7861144077385bd3b2e0dedfaa6335eec44067240114c4a194b4990308",
+      "source_type": "codex_session",
+      "status": "active",
+      "title": "Set up Treasure Companion locally",
+      "updated_at": "2026-07-18T02:02:31.732Z"
     }
   ],
-  "last_successful_synchronization_at": "2026-07-18T01:09:40Z",
+  "last_successful_synchronization_at": "2026-07-18T02:02:21Z",
   "migration_history": [
     {
       "schema_version": "1.0",
@@ -268,8 +290,8 @@
     ]
   },
   "synchronizer_version": "1.1.0",
-  "total_conversation_count": 11,
-  "total_message_count": 7034,
+  "total_conversation_count": 12,
+  "total_message_count": 7264,
   "warnings": [
     "Duplicate source record reconciled for 019dad68-91f3-7091-b4aa-6fee54fd1a1f",
     "Duplicate source record reconciled for 019dad68-91f3-7091-b4aa-6fee54fd1a1f",
