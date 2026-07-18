@@ -32,6 +32,7 @@ else {
 
 for (const directory of ["svg", "stills"]) {
   const location = path.join(root, "public", "animations", directory);
+  if (!fs.existsSync(location)) continue;
   for (const file of fs.readdirSync(location).filter((name) => name.endsWith(".svg"))) {
     const source = fs.readFileSync(path.join(location, file), "utf8");
     if (!source.includes("<svg") || !source.includes("</svg>"))
