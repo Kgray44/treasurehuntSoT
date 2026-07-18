@@ -243,28 +243,51 @@
     },
     {
       "archive_path": "Codex_Chats/chats/019f72ca-dfc8-7ea3-b1c5-73d7f3d7fbc2--set-up-treasure-companion-locally.md",
-      "content_sha256": "9c1d9cdf84fa11e2daae413f3fc0070b2655a7f3ca35f98e642734d81a554959",
+      "content_sha256": "479f56d278e7baa5c78b49a72e6622db91a313fceb5b377511842b6b67192a87",
       "conversation_id": "019f72ca-dfc8-7ea3-b1c5-73d7f3d7fbc2",
       "created_at": "2026-07-18T01:15:31.675Z",
       "first_archived_at": "2026-07-18T02:02:21Z",
-      "last_synchronized_at": "2026-07-18T02:26:20Z",
-      "message_count": 241,
+      "last_synchronized_at": "2026-07-18T03:47:10Z",
+      "message_count": 247,
       "project_identifier": "treasurehunt",
       "redaction_categories": {
         "login_credential": 2,
-        "secret_assignment": 1
+        "secret_assignment": 2
       },
-      "redactions": 3,
+      "redactions": 4,
       "source_export_timestamp": null,
       "source_identifier": "rollout-2026-07-17T21-15-31-019f72ca-dfc8-7ea3-b1c5-73d7f3d7fbc2.jsonl",
-      "source_sha256": "460eeb1062d4dcf10930fefe3afcda641c54ff6d2f47314bf0bb51c53e57d465",
+      "source_sha256": "1e7e7f998595500f4a255024e86eecf748cd0dfb723e0698c5f3de7c243eae87",
       "source_type": "codex_session",
       "status": "active",
       "title": "Set up Treasure Companion locally",
-      "updated_at": "2026-07-18T02:26:22.959Z"
+      "updated_at": "2026-07-18T02:27:31.580Z"
+    },
+    {
+      "archive_path": "Codex_Chats/chats/019f730b-e872-7ce3-82e4-64614c4d9c97--implement-full-prompt.md",
+      "content_sha256": "4589406dbd32ef85786f2cdd2bc1453f607f33ef28460527bd006c0db1ef395a",
+      "conversation_id": "019f730b-e872-7ce3-82e4-64614c4d9c97",
+      "created_at": "2026-07-18T02:26:34.286Z",
+      "first_archived_at": "2026-07-18T03:47:10Z",
+      "last_synchronized_at": "2026-07-18T03:47:10Z",
+      "message_count": 747,
+      "project_identifier": "treasurehunt",
+      "redaction_categories": {
+        "connection_string": 2,
+        "login_credential": 2,
+        "secret_assignment": 14
+      },
+      "redactions": 18,
+      "source_export_timestamp": null,
+      "source_identifier": "rollout-2026-07-17T22-26-33-019f730b-e872-7ce3-82e4-64614c4d9c97.jsonl",
+      "source_sha256": "dac406610b9140cb681560a09512ac9635a42ee51d9d0099d8f0e9c97bd4c4f1",
+      "source_type": "codex_session",
+      "status": "active",
+      "title": "Implement full prompt",
+      "updated_at": "2026-07-18T03:47:09.849Z"
     }
   ],
-  "last_successful_synchronization_at": "2026-07-18T02:26:20Z",
+  "last_successful_synchronization_at": "2026-07-18T03:47:10Z",
   "migration_history": [
     {
       "schema_version": "1.0",
@@ -290,8 +313,8 @@
     ]
   },
   "synchronizer_version": "1.1.0",
-  "total_conversation_count": 12,
-  "total_message_count": 7288,
+  "total_conversation_count": 13,
+  "total_message_count": 8041,
   "warnings": [
     "Duplicate source record reconciled for 019dad68-91f3-7091-b4aa-6fee54fd1a1f",
     "Duplicate source record reconciled for 019dad68-91f3-7091-b4aa-6fee54fd1a1f",
