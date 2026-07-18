@@ -14,7 +14,7 @@
 | GPU vision provider     | Not active and not measured                                                                        |
 | Release replay          | p50 44 ms, p95 56 ms, p99/max 61 ms; excludes capture and game impact                              |
 | Bounded soak            | 15 builds, 250 scans, 0 system errors; p95 53 ms; RSS growth 257,368,064 bytes                     |
-| Native packaged capture | 14 frames captured, 9 selected, `EVIDENCE_CAPTURED`, transient frames cleared                      |
+| Native packaged capture | 15 frames captured, 9 selected, `EVIDENCE_CAPTURED`, transient frames cleared                      |
 
 ## Required but unobserved rows
 

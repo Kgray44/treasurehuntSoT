@@ -7,7 +7,7 @@
 - Creator onboarding is skippable and revisitable; Player and Captain entry points render the same role-specific component.
 - Captain truth-label acceptance creates a metadata-only, audited review candidate with `rawFramesRetained: false`.
 - The production engine release replay passes all 27 synthetic expected outcomes; it is not a field demonstration.
-- The final unpacked packaged app starts its embedded server, selects a separate animated application window, captures 14 frames, selects 9, clears transient frames, and returns no fabricated verification result.
+- The final unpacked packaged app starts its embedded server, selects a separate animated application window, captures 15 frames, selects 9, clears transient frames, and returns no fabricated verification result.
 - Update tests prove integrity rejection, active-story interlock, atomic activation, failed-health rollback, and interrupted-start recovery in a bounded test store.
 
 ## Required demonstrations not completed

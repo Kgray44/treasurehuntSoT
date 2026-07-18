@@ -21,7 +21,7 @@ Nine release blockers remain open. The missing evidence includes real locked Sea
 - Focused code commits: `eb8dc48badaca5847ac237a249b8026ec717905b` and `919df0e2843c8c03759b0dfd644e4e77801e03b6`.
 - The user-owned main checkout and its two untracked governing PDFs were not modified.
 - Build outputs, dependency trees, generated Rive runtime copies, and local SQLite databases remain ignored and are not release-source commits.
-- The final development artifact was produced while B-6 documentation was still awaiting the required documentation/chat synchronizer. Its provenance therefore truthfully records `workingTreeClean: false`; this is one reason it is evidence only, not a publishable candidate.
+- The final development artifact was rebuilt from remote-matched commit `a880ea1b04c50978f6792fb38839672ce18eddee`. Its provenance truthfully records `workingTreeClean: true`; its unsigned development status still makes it evidence only, not a publishable candidate.
 
 ## 3. Baseline audit findings
 
@@ -68,11 +68,12 @@ The x64 assisted, per-user NSIS development installer builds successfully, permi
 
 - `dist/Forever-Treasure-Companion-0.8.0-b6-x64-unsigned-development.exe`
 - size: 244,642,005 bytes
-- source commit: `919df0e2843c8c03759b0dfd644e4e77801e03b6`
+- source commit: `a880ea1b04c50978f6792fb38839672ce18eddee`
 - Authenticode: `NotSigned`; the development channel permits this state, while preview/stable builds reject missing signing credentials
-- final pre-document-sync artifact SHA-256: `b616718af4ef0abb92086aa71aba8d4b44d19dc07c9c28c45d2009e4adb4df29`
+- final clean-source artifact SHA-256: `16f4606b856c89e4f73cfc8facb486ea803cd1292138829d5fe7a6c79de38fd3`
+- provenance hash: `sha256:5dab5526f5a97ea52ed805a477126dd698c2a106c70b8dbad525519d730b6cd1`
 
-The packaged smoke loaded shell `0.8.0-b6`, started the local Companion, used `ELECTRON_DESKTOP_CAPTURER`, selected a separate animated WinForms window, captured 14 frames, retained 9 evidence frames, cleared raw frames, and returned no fabricated verification decision.
+The packaged smoke loaded shell `0.8.0-b6`, started the local Companion, used `ELECTRON_DESKTOP_CAPTURER`, selected a separate animated WinForms window, captured 15 frames, retained 9 evidence frames, cleared raw frames, and returned no fabricated verification decision.
 
 Automated update tests pass signature/metadata tamper rejection, hash/length rejection, unsafe-path rejection, active-story deferral, atomic activation, failed-health rollback, and interrupted-activation recovery while keeping user projects outside the version store. Clean-machine install, upgrade from B-5, hosted update, interrupted download, disk exhaustion, multiple-account behavior, uninstall observation, repair, and signed rollback were not run. The default Electron icon remains open non-blocking issue B6-011.
 
@@ -170,7 +171,6 @@ Release authority result: `NO_GO`. Stable promotion: false. Creator-preview prom
 - Hosted CI evidence is absent.
 - External usability and independent security/privacy evidence are absent.
 - MySQL migration was not executed against a live server.
-- The pre-document-sync artifact provenance records a dirty tree because the required B-6 documents were not yet committed.
 - No public-release, anti-cheat compatibility, Microsoft/Rare affiliation, or endorsement claim is made.
 
 ## 17. External dependencies

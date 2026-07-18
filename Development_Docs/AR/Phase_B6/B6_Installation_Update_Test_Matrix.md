@@ -4,7 +4,7 @@
 | --------------------------------------------- | ---------------------- | ------------------------------------------------------------------------------- |
 | Local x64 NSIS build                          | PASS                   | `npm run desktop:build`; assisted per-user installer produced                   |
 | Packaged application launch                   | PASS                   | Embedded Next server loaded title `The Forever Treasure`                        |
-| Packaged native capture                       | PASS                   | Dedicated external window selected; 14 captured, 9 selected; raw frames cleared |
+| Packaged native capture                       | PASS                   | Dedicated external window selected; 15 captured, 9 selected; raw frames cleared |
 | Development signature status                  | PASS as truth boundary | Artifact remains visibly unsigned; not eligible for preview/stable              |
 | Manifest signature tamper                     | PASS automated         | Ed25519 metadata tests reject tamper/untrusted scope                            |
 | Artifact hash/length mismatch                 | PASS automated         | Release-governance tests reject before staging                                  |

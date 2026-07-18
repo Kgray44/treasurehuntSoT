@@ -11,13 +11,40 @@
       "added": [],
       "conflicted": [],
       "deleted": [],
-      "modified": [],
+      "modified": [
+        {
+          "path": "Development_Docs/AR/Phase_B6/B6_Completion_Report.md",
+          "status": ".M"
+        },
+        {
+          "path": "Development_Docs/AR/Phase_B6/B6_Final_Demonstration.md",
+          "status": ".M"
+        },
+        {
+          "path": "Development_Docs/AR/Phase_B6/B6_Hardware_Performance_Matrix.md",
+          "status": ".M"
+        },
+        {
+          "path": "Development_Docs/AR/Phase_B6/B6_Installation_Update_Test_Matrix.md",
+          "status": ".M"
+        }
+      ],
       "renamed": []
     },
     "commit_included": false,
     "directory": "Development_Docs",
-    "eligible_fingerprints": {},
-    "eligible_paths": [],
+    "eligible_fingerprints": {
+      "Development_Docs/AR/Phase_B6/B6_Completion_Report.md": "7d1b28979442ca4a774971c461f4d2b35b3857f109607352dd51da827788fd51",
+      "Development_Docs/AR/Phase_B6/B6_Final_Demonstration.md": "db071261c4a6e34e18e4f3df4eda3154d065f8094e13552949310fab35c68e65",
+      "Development_Docs/AR/Phase_B6/B6_Hardware_Performance_Matrix.md": "3381298a274300f18d2a01bfa777865d2ffb8b36021d3c9c26e375990dc606ac",
+      "Development_Docs/AR/Phase_B6/B6_Installation_Update_Test_Matrix.md": "728fc65e5f28f2a98c8627b96e44cb2c9dde5b5f3c299ed55e6337d8a7cd1c9c"
+    },
+    "eligible_paths": [
+      "Development_Docs/AR/Phase_B6/B6_Completion_Report.md",
+      "Development_Docs/AR/Phase_B6/B6_Final_Demonstration.md",
+      "Development_Docs/AR/Phase_B6/B6_Hardware_Performance_Matrix.md",
+      "Development_Docs/AR/Phase_B6/B6_Installation_Update_Test_Matrix.md"
+    ],
     "empty_directories": [],
     "excluded": [],
     "exists": true,
@@ -35,7 +62,7 @@
     "Codex_Chats/manifest.json",
     "Codex_Chats/reports/latest-sync-report.json"
   ],
-  "finished_at": "2026-07-18T13:14:59Z",
+  "finished_at": "2026-07-18T13:19:00Z",
   "included": 6,
   "push_attempted": false,
   "push_result": "not requested",
@@ -53,7 +80,7 @@
   "source_types_inspected": [
     "codex_session"
   ],
-  "started_at": "2026-07-18T13:14:40Z",
+  "started_at": "2026-07-18T13:18:41Z",
   "suspected_secret_categories": [],
   "synchronizer_version": "1.1.0",
   "unavailable": 0,
