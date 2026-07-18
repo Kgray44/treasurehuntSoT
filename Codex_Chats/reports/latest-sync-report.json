@@ -8,104 +8,7 @@
   "conversations_discovered": 189,
   "development_docs": {
     "changes": {
-      "added": [
-        {
-          "path": "Development_Docs/AR/ADRs/0018-persisted-release-authority-and-truth-boundary.md",
-          "status": "??"
-        },
-        {
-          "path": "Development_Docs/AR/ADRs/0019-signed-manifests-and-atomic-update-rollback.md",
-          "status": "??"
-        },
-        {
-          "path": "Development_Docs/AR/Phase_B6/B6_Architecture_and_Release_Governance.md",
-          "status": "??"
-        },
-        {
-          "path": "Development_Docs/AR/Phase_B6/B6_Baseline_Audit.md",
-          "status": "??"
-        },
-        {
-          "path": "Development_Docs/AR/Phase_B6/B6_Completion_Report.md",
-          "status": "??"
-        },
-        {
-          "path": "Development_Docs/AR/Phase_B6/B6_Development_Release_Notes.md",
-          "status": "??"
-        },
-        {
-          "path": "Development_Docs/AR/Phase_B6/B6_Documentation_Inventory.md",
-          "status": "??"
-        },
-        {
-          "path": "Development_Docs/AR/Phase_B6/B6_External_Usability_Report.md",
-          "status": "??"
-        },
-        {
-          "path": "Development_Docs/AR/Phase_B6/B6_Final_Demonstration.md",
-          "status": "??"
-        },
-        {
-          "path": "Development_Docs/AR/Phase_B6/B6_Game_Safety_and_Distribution_Review.md",
-          "status": "??"
-        },
-        {
-          "path": "Development_Docs/AR/Phase_B6/B6_Hardware_Performance_Matrix.md",
-          "status": "??"
-        },
-        {
-          "path": "Development_Docs/AR/Phase_B6/B6_Installation_Update_Test_Matrix.md",
-          "status": "??"
-        },
-        {
-          "path": "Development_Docs/AR/Phase_B6/B6_Release_Runbook_and_Rollback.md",
-          "status": "??"
-        },
-        {
-          "path": "Development_Docs/AR/Phase_B6/B6_Reliability_and_Replay_Report.md",
-          "status": "??"
-        },
-        {
-          "path": "Development_Docs/AR/Phase_B6/B6_Security_Privacy_Review.md",
-          "status": "??"
-        },
-        {
-          "path": "Development_Docs/AR/Phase_B6/Evidence/b6-release-replay.json",
-          "status": "??"
-        },
-        {
-          "path": "Development_Docs/AR/Phase_B6/Evidence/b6-release-replay.md",
-          "status": "??"
-        },
-        {
-          "path": "Development_Docs/AR/Phase_B6/Evidence/b6-synthetic-soak.json",
-          "status": "??"
-        },
-        {
-          "path": "Development_Docs/AR/Phase_B6/Guides/B6_Captain_Guide.md",
-          "status": "??"
-        },
-        {
-          "path": "Development_Docs/AR/Phase_B6/Guides/B6_Creator_Guide.md",
-          "status": "??"
-        },
-        {
-          "path": "Development_Docs/AR/Phase_B6/Guides/B6_Developer_Architecture.md",
-          "status": "??"
-        },
-        {
-          "path": "Development_Docs/AR/Phase_B6/Guides/B6_Player_Guide.md",
-          "status": "??"
-        },
-        {
-          "path": "Development_Docs/AR/Phase_B6/Guides/B6_Release_Admin_Guide.md",
-          "status": "??"
-        },
-        {
-          "path": "Development_Docs/AR/Phase_B6/Guides/B6_Troubleshooting.md",
-          "status": "??"
-        }
-      ],
+      "added": [],
       "conflicted": [],
       "deleted": [],
       "modified": [],
@@ -113,58 +16,8 @@
     },
     "commit_included": false,
     "directory": "Development_Docs",
-    "eligible_fingerprints": {
-      "Development_Docs/AR/ADRs/0018-persisted-release-authority-and-truth-boundary.md": "08d8a7946d2ebcc70b67a9e765575234a7d1565d6f95a758a304ad86e4ac8d94",
-      "Development_Docs/AR/ADRs/0019-signed-manifests-and-atomic-update-rollback.md": "4b87f08b127df0d053d6f33c85613c688d49219f59484555b84ff3cbfe2bc23d",
-      "Development_Docs/AR/Phase_B6/B6_Architecture_and_Release_Governance.md": "fba4120abc839e6210f132baf573c6a3400de885059eead239680a0c32d859f5",
-      "Development_Docs/AR/Phase_B6/B6_Baseline_Audit.md": "2d2827654937417a81bb8afa2cb754bddac04ad62cc8309b8b1a3d2d0be89c37",
-      "Development_Docs/AR/Phase_B6/B6_Completion_Report.md": "1e3fc217480a230a450fee61e51ec2bd6651cdc5b9f8024bc180aa00167abb5d",
-      "Development_Docs/AR/Phase_B6/B6_Development_Release_Notes.md": "19ee2b5405d8377952318bb37efa9faf0f41990b0a1aeb381e4d5938f54cf581",
-      "Development_Docs/AR/Phase_B6/B6_Documentation_Inventory.md": "ce4279967df5c47b21f7bc5ddc25bb9cc0f18f37374d7ae6247318f74245fa93",
-      "Development_Docs/AR/Phase_B6/B6_External_Usability_Report.md": "f50f8ec1a30a3ca122fcc8d7d5092d04ac5b560e20e3936dfd55a958c66d4731",
-      "Development_Docs/AR/Phase_B6/B6_Final_Demonstration.md": "f47b368039b67384551e53b18709f50bce1b3f7a8734e926c2d62c0efb18ec77",
-      "Development_Docs/AR/Phase_B6/B6_Game_Safety_and_Distribution_Review.md": "fdb62ee28b48603377625f450992d4abf96118c057a076033ded96c1620a1ceb",
-      "Development_Docs/AR/Phase_B6/B6_Hardware_Performance_Matrix.md": "98182541a4c909883e34a958189c3da1311b66bb32aecf01f27760522a94d431",
-      "Development_Docs/AR/Phase_B6/B6_Installation_Update_Test_Matrix.md": "253cb4ec83105edd6680dde07c2a93758f1075e94014c4e8a297785d162c0994",
-      "Development_Docs/AR/Phase_B6/B6_Release_Runbook_and_Rollback.md": "449a4c2e61e69507e56316031157aeeb987250a2b937eaed75e3cd47740be422",
-      "Development_Docs/AR/Phase_B6/B6_Reliability_and_Replay_Report.md": "fac2e9135824bb24f9a5917bab0f47319b8ffb135551093fdb17afc80ed16c54",
-      "Development_Docs/AR/Phase_B6/B6_Security_Privacy_Review.md": "6881c992b381ad98dd1e471433fafc7e35af307cc8233338bac128767542207d",
-      "Development_Docs/AR/Phase_B6/Evidence/b6-release-replay.json": "0d412bd020c4c501b93e660bb4e4011206fd51f1b0ea56b7325ab0fa8444b806",
-      "Development_Docs/AR/Phase_B6/Evidence/b6-release-replay.md": "21ec53abae1d722ab2cadbee9f32f8165e24ece0f7e86871a206420772c009c1",
-      "Development_Docs/AR/Phase_B6/Evidence/b6-synthetic-soak.json": "ec79466119db69f984a2512a86c8b4bf1177b08d0f1a02e241f96de23c84a5f4",
-      "Development_Docs/AR/Phase_B6/Guides/B6_Captain_Guide.md": "40513d024b69b74392b4d464de627a00d8cdd01e24919a375d7372a9552f344e",
-      "Development_Docs/AR/Phase_B6/Guides/B6_Creator_Guide.md": "c3c22fb35c213b23ddecd6dcbcda7fbec839a17511463b7929443762f9f4b97e",
-      "Development_Docs/AR/Phase_B6/Guides/B6_Developer_Architecture.md": "c3f52ec723fb8f9d10fe62509a0c9876d0cd31e9f906a308df5bcc01328e7299",
-      "Development_Docs/AR/Phase_B6/Guides/B6_Player_Guide.md": "19fcb75711c22d1319d43fe5ab1639fce5e7c414b318c08ab7fd919cca3686c1",
-      "Development_Docs/AR/Phase_B6/Guides/B6_Release_Admin_Guide.md": "8873dc09a58e947f0f1065a40e3bcfc233bb2c426dbe40d68f94576d6ed85ec3",
-      "Development_Docs/AR/Phase_B6/Guides/B6_Troubleshooting.md": "c39a68c3229d559bff35fcb22f46b9e9e3be7a0f120e979af3ac84a2352265c1"
-    },
-    "eligible_paths": [
-      "Development_Docs/AR/ADRs/0018-persisted-release-authority-and-truth-boundary.md",
-      "Development_Docs/AR/ADRs/0019-signed-manifests-and-atomic-update-rollback.md",
-      "Development_Docs/AR/Phase_B6/B6_Architecture_and_Release_Governance.md",
-      "Development_Docs/AR/Phase_B6/B6_Baseline_Audit.md",
-      "Development_Docs/AR/Phase_B6/B6_Completion_Report.md",
-      "Development_Docs/AR/Phase_B6/B6_Development_Release_Notes.md",
-      "Development_Docs/AR/Phase_B6/B6_Documentation_Inventory.md",
-      "Development_Docs/AR/Phase_B6/B6_External_Usability_Report.md",
-      "Development_Docs/AR/Phase_B6/B6_Final_Demonstration.md",
-      "Development_Docs/AR/Phase_B6/B6_Game_Safety_and_Distribution_Review.md",
-      "Development_Docs/AR/Phase_B6/B6_Hardware_Performance_Matrix.md",
-      "Development_Docs/AR/Phase_B6/B6_Installation_Update_Test_Matrix.md",
-      "Development_Docs/AR/Phase_B6/B6_Release_Runbook_and_Rollback.md",
-      "Development_Docs/AR/Phase_B6/B6_Reliability_and_Replay_Report.md",
-      "Development_Docs/AR/Phase_B6/B6_Security_Privacy_Review.md",
-      "Development_Docs/AR/Phase_B6/Evidence/b6-release-replay.json",
-      "Development_Docs/AR/Phase_B6/Evidence/b6-release-replay.md",
-      "Development_Docs/AR/Phase_B6/Evidence/b6-synthetic-soak.json",
-      "Development_Docs/AR/Phase_B6/Guides/B6_Captain_Guide.md",
-      "Development_Docs/AR/Phase_B6/Guides/B6_Creator_Guide.md",
-      "Development_Docs/AR/Phase_B6/Guides/B6_Developer_Architecture.md",
-      "Development_Docs/AR/Phase_B6/Guides/B6_Player_Guide.md",
-      "Development_Docs/AR/Phase_B6/Guides/B6_Release_Admin_Guide.md",
-      "Development_Docs/AR/Phase_B6/Guides/B6_Troubleshooting.md"
-    ],
+    "eligible_fingerprints": {},
+    "eligible_paths": [],
     "empty_directories": [],
     "excluded": [],
     "exists": true,
@@ -182,7 +35,7 @@
     "Codex_Chats/manifest.json",
     "Codex_Chats/reports/latest-sync-report.json"
   ],
-  "finished_at": "2026-07-18T13:13:58Z",
+  "finished_at": "2026-07-18T13:14:59Z",
   "included": 6,
   "push_attempted": false,
   "push_result": "not requested",
@@ -200,7 +53,7 @@
   "source_types_inspected": [
     "codex_session"
   ],
-  "started_at": "2026-07-18T13:13:36Z",
+  "started_at": "2026-07-18T13:14:40Z",
   "suspected_secret_categories": [],
   "synchronizer_version": "1.1.0",
   "unavailable": 0,
