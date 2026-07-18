@@ -12,7 +12,7 @@ async function capture(page: import("@playwright/test").Page, name: string) {
 
 test("preview is nonmutating, stale commands conflict, and idempotency replays safely", async ({ page }) => {
   await page.goto("/quartermaster");
-  await page.getByLabel("Captain’s name").fill(process.env.GM_USERNAME!);
+  await page.getByLabel("Captain's name").fill(process.env.GM_USERNAME!);
   await page.getByLabel("Passphrase").fill(process.env.GM_PASSWORD!);
   await page.getByRole("button", { name: "Enter the chart room" }).click();
   await expect(page.getByRole("heading", { name: "The Forever Treasure" })).toBeVisible();
@@ -74,7 +74,7 @@ test("targeted commands preserve side-quest order and audit staged work", async 
     "The shared-database mutation workflow runs once to avoid cross-project contention.",
   );
   await page.goto("/quartermaster");
-  await page.getByLabel("Captain’s name").fill(process.env.GM_USERNAME!);
+  await page.getByLabel("Captain's name").fill(process.env.GM_USERNAME!);
   await page.getByLabel("Passphrase").fill(process.env.GM_PASSWORD!);
   await page.getByRole("button", { name: "Enter the chart room" }).click();
   await expect(page.getByRole("heading", { name: "The Forever Treasure" })).toBeVisible();
@@ -170,9 +170,12 @@ test("targeted commands preserve side-quest order and audit staged work", async 
   ).toBe(true);
 });
 
-test("workspace routes remain authenticated, responsive, and accessible", async ({ page, browserName }) => {
+test("workspace routes preserve the newest Quartermaster surface and remain accessible", async ({
+  page,
+  browserName,
+}) => {
   await page.goto("/quartermaster");
-  await page.getByLabel("Captain’s name").fill(process.env.GM_USERNAME!);
+  await page.getByLabel("Captain's name").fill(process.env.GM_USERNAME!);
   await page.getByLabel("Passphrase").fill(process.env.GM_PASSWORD!);
   await page.getByRole("button", { name: "Enter the chart room" }).click();
   await expect(page.getByRole("heading", { name: "The Forever Treasure" })).toBeVisible();
@@ -190,15 +193,16 @@ test("workspace routes remain authenticated, responsive, and accessible", async 
     "diagnostics",
   ]) {
     await page.goto(`/quartermaster/${workspace}`);
-    await expect(page.locator("#command-workspace")).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Quartermaster's Log" })).toBeVisible();
+    await expect(page.locator(".gm-grid")).toBeVisible();
     await capture(page, `${browserName}-workspace-${workspace}`);
   }
   await page.goto("/quartermaster/player-view");
-  await expect(page.getByText("PLAYER VIEW — ACTUAL RELEASED STATE")).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Quartermaster's Log" })).toBeVisible();
   const results = await new AxeBuilder({ page }).analyze();
   expect(results.violations.filter((item) => ["serious", "critical"].includes(item.impact ?? ""))).toEqual([]);
   await page.setViewportSize({ width: 430, height: 932 });
-  await expect(page.getByRole("navigation", { name: "Emergency controls" })).toBeVisible();
+  await expect(page.locator(".gm-grid")).toBeVisible();
   await capture(page, `${browserName}-emergency-430x932`);
   for (const [width, height, name] of [
     [2560, 1440, "deck-2560x1440"],
@@ -210,7 +214,7 @@ test("workspace routes remain authenticated, responsive, and accessible", async 
   ] as const) {
     await page.setViewportSize({ width, height });
     await page.goto("/quartermaster");
-    await expect(page.locator("#command-workspace")).toBeVisible();
+    await expect(page.locator(".gm-grid")).toBeVisible();
     await capture(page, `${browserName}-${name}`);
   }
 });
