@@ -1,20 +1,16 @@
 {
-  "added": 2,
+  "added": 1,
   "ambiguous": 0,
   "ambiguous_candidates": [],
   "commit_created": false,
   "commit_hash": null,
   "commit_message": null,
-  "conversations_discovered": 191,
+  "conversations_discovered": 192,
   "development_docs": {
     "changes": {
       "added": [
         {
-          "path": "Development_Docs/phase_b_implementation_roadmap_v1_0.pdf",
-          "status": "??"
-        },
-        {
-          "path": "Development_Docs/vision_waypoint_external_ar_governing_specification_v1_0.pdf",
+          "path": "Development_Docs/Full_System_Product_Polish_Implementation_Record.md",
           "status": "??"
         }
       ],
@@ -26,12 +22,10 @@
     "commit_included": false,
     "directory": "Development_Docs",
     "eligible_fingerprints": {
-      "Development_Docs/phase_b_implementation_roadmap_v1_0.pdf": "4382680e77c3ba45753c5cf253ddec6b5e6be66f214b90957435358c8ff319dd",
-      "Development_Docs/vision_waypoint_external_ar_governing_specification_v1_0.pdf": "3afeed4f9d267e1a2b670473be337fde55129190d1cad24992e25b3295af1007"
+      "Development_Docs/Full_System_Product_Polish_Implementation_Record.md": "d0455b52e686b654bcd02f9c2fbeaf9d99404b2420758b5e0d91eccb46a4689c"
     },
     "eligible_paths": [
-      "Development_Docs/phase_b_implementation_roadmap_v1_0.pdf",
-      "Development_Docs/vision_waypoint_external_ar_governing_specification_v1_0.pdf"
+      "Development_Docs/Full_System_Product_Polish_Implementation_Record.md"
     ],
     "empty_directories": [],
     "excluded": [],
@@ -46,22 +40,21 @@
   "excluded": 183,
   "failed": 0,
   "files_changed": [
-    "Codex_Chats/chats/019f737d-91fa-7093-b54b-6b13860f857a--make-journal-canonical-tall-tale-ui.md",
-    "Codex_Chats/chats/019f737e-a458-7c10-afec-b6a7b51c8881--implement-phase-b-1-foundation.md",
     "Codex_Chats/chats/019f75c9-109d-7722-8be3-7c49cc4a3cf2--polish-full-system-product-ux.md",
     "Codex_Chats/chats/019f75c9-3a87-7810-a64a-7dd9f528605a--start-mini-app-bridge-and-website.md",
+    "Codex_Chats/chats/019f75d1-8441-7962-a500-d605d0f89966--fix-captain-sign-in-json-error.md",
     "Codex_Chats/manifest.json",
     "Codex_Chats/reports/latest-sync-report.json"
   ],
-  "finished_at": "2026-07-18T15:18:10Z",
-  "included": 8,
+  "finished_at": "2026-07-18T15:30:49Z",
+  "included": 9,
   "push_attempted": false,
   "push_result": "not requested",
-  "redacted": 80,
+  "redacted": 89,
   "redaction_categories": {
     "connection_string": 12,
-    "login_credential": 17,
-    "secret_assignment": 51
+    "login_credential": 19,
+    "secret_assignment": 58
   },
   "renamed": 0,
   "schema_version": "1.0",
@@ -71,11 +64,11 @@
   "source_types_inspected": [
     "codex_session"
   ],
-  "started_at": "2026-07-18T15:17:34Z",
+  "started_at": "2026-07-18T15:30:20Z",
   "suspected_secret_categories": [],
   "synchronizer_version": "1.1.0",
   "unavailable": 0,
-  "unchanged": 4,
+  "unchanged": 6,
   "updated": 2,
   "warnings": [
     "Duplicate source record reconciled for 019dad68-91f3-7091-b4aa-6fee54fd1a1f",

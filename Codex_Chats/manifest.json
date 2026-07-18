@@ -330,33 +330,34 @@
     },
     {
       "archive_path": "Codex_Chats/chats/019f75c9-109d-7722-8be3-7c49cc4a3cf2--polish-full-system-product-ux.md",
-      "content_sha256": "1c7dc8a24f92b03c088235f904bfc36ef6ad5a12c95f6f5e22ffd54440ee0fc7",
+      "content_sha256": "f0e1e30349580a4f4de1c12021a4a93c30b7f6f794785b4386adb6262f85542f",
       "conversation_id": "019f75c9-109d-7722-8be3-7c49cc4a3cf2",
       "created_at": "2026-07-18T15:12:25.137Z",
       "first_archived_at": "2026-07-18T15:17:34Z",
-      "last_synchronized_at": "2026-07-18T15:17:34Z",
-      "message_count": 79,
+      "last_synchronized_at": "2026-07-18T15:30:20Z",
+      "message_count": 163,
       "project_identifier": "treasurehunt",
       "redaction_categories": {
-        "login_credential": 1
+        "login_credential": 1,
+        "secret_assignment": 1
       },
-      "redactions": 1,
+      "redactions": 2,
       "source_export_timestamp": null,
       "source_identifier": "rollout-2026-07-18T11-12-24-019f75c9-109d-7722-8be3-7c49cc4a3cf2.jsonl",
-      "source_sha256": "bf07c201113381a99feb2cf8921d9d2cfe2d361d190f3bd7a90eced6256de701",
+      "source_sha256": "eaabdd22676b7e67a215dc8a920a1f1b32cefd1e7f4cfbeff0e6a61bcc6deaaa",
       "source_type": "codex_session",
       "status": "active",
       "title": "Polish full-system product UX",
-      "updated_at": "2026-07-18T15:17:54.423Z"
+      "updated_at": "2026-07-18T15:29:38.041Z"
     },
     {
       "archive_path": "Codex_Chats/chats/019f75c9-3a87-7810-a64a-7dd9f528605a--start-mini-app-bridge-and-website.md",
-      "content_sha256": "e565afea28b9436d71164f9677b820b3da63271d80340014432b54c10a31b46d",
+      "content_sha256": "f5f44c9151f18caf5b686eaa54ffe438d888c388d2098675e8cfdc6750466969",
       "conversation_id": "019f75c9-3a87-7810-a64a-7dd9f528605a",
       "created_at": "2026-07-18T15:12:48.094Z",
       "first_archived_at": "2026-07-18T15:17:34Z",
-      "last_synchronized_at": "2026-07-18T15:17:34Z",
-      "message_count": 73,
+      "last_synchronized_at": "2026-07-18T15:30:20Z",
+      "message_count": 120,
       "project_identifier": "treasurehunt",
       "redaction_categories": {
         "login_credential": 2
@@ -364,14 +365,36 @@
       "redactions": 2,
       "source_export_timestamp": null,
       "source_identifier": "rollout-2026-07-18T11-12-32-019f75c9-3a87-7810-a64a-7dd9f528605a.jsonl",
-      "source_sha256": "70b88a5c053ecc036b50a68b77da278de97254840ad03f10e0ed44bb9231cba3",
+      "source_sha256": "51a9a775d05cde85ae6b20228ba5e334eb389029a78356b678a3abcdd6a2e21e",
       "source_type": "codex_session",
       "status": "active",
       "title": "Start mini app bridge and website",
-      "updated_at": "2026-07-18T15:17:47.224Z"
+      "updated_at": "2026-07-18T15:29:37.851Z"
+    },
+    {
+      "archive_path": "Codex_Chats/chats/019f75d1-8441-7962-a500-d605d0f89966--fix-captain-sign-in-json-error.md",
+      "content_sha256": "8c294100d9c0db3d34b2c4e2adeb56bb14254c99c6e52366d76d8f4bf8aa0b80",
+      "conversation_id": "019f75d1-8441-7962-a500-d605d0f89966",
+      "created_at": "2026-07-18T15:21:56.037Z",
+      "first_archived_at": "2026-07-18T15:30:20Z",
+      "last_synchronized_at": "2026-07-18T15:30:20Z",
+      "message_count": 100,
+      "project_identifier": "treasurehunt",
+      "redaction_categories": {
+        "login_credential": 2,
+        "secret_assignment": 6
+      },
+      "redactions": 8,
+      "source_export_timestamp": null,
+      "source_identifier": "rollout-2026-07-18T11-21-38-019f75d1-8441-7962-a500-d605d0f89966.jsonl",
+      "source_sha256": "5ed5cb21df3033a01f79cd97769de81c4268e30b569f962278669453bd02c24a",
+      "source_type": "codex_session",
+      "status": "active",
+      "title": "Fix Captain sign-in JSON error",
+      "updated_at": "2026-07-18T15:30:29.721Z"
     }
   ],
-  "last_successful_synchronization_at": "2026-07-18T15:17:34Z",
+  "last_successful_synchronization_at": "2026-07-18T15:30:20Z",
   "migration_history": [
     {
       "schema_version": "1.0",
@@ -397,8 +420,8 @@
     ]
   },
   "synchronizer_version": "1.1.0",
-  "total_conversation_count": 17,
-  "total_message_count": 12996,
+  "total_conversation_count": 18,
+  "total_message_count": 13227,
   "warnings": [
     "Duplicate source record reconciled for 019dad68-91f3-7091-b4aa-6fee54fd1a1f",
     "Duplicate source record reconciled for 019dad68-91f3-7091-b4aa-6fee54fd1a1f",
