@@ -165,8 +165,8 @@ test("complete live voyage workflow is private, ordered, resilient, and theatric
 
   await gmAction(gm, "Mark Chapter Solved");
   await gm.getByRole("button", { name: "Mark Chapter Solved", exact: true }).click();
-  await expect(gm.getByText("Only the active chapter can be solved.")).toBeVisible();
-  await expect(gm.getByRole("button", { name: "Confirm action" })).toBeDisabled();
+  await gm.getByRole("button", { name: "Confirm action" }).click();
+  await expect(gm.locator(".form-error")).toContainText("Only an active chapter");
   await gm.getByRole("button", { name: "Cancel" }).click();
   await gmAction(gm, "Undo Last Progression Action");
   await expect(gm.getByText("ACTIVE", { exact: true }).first()).toBeVisible();

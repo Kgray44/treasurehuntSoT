@@ -20,5 +20,5 @@ const workspaces = new Set([
 export default async function QuartermasterWorkspacePage({ params }: { params: Promise<{ workspace: string }> }) {
   const { workspace } = await params;
   if (!workspaces.has(workspace)) notFound();
-  return <Quartermaster authenticated={Boolean(await requireGm())} initialWorkspace={workspace} />;
+  return <Quartermaster authenticated={Boolean(await requireGm())} />;
 }
