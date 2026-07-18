@@ -265,29 +265,71 @@
     },
     {
       "archive_path": "Codex_Chats/chats/019f730b-e872-7ce3-82e4-64614c4d9c97--implement-full-prompt.md",
-      "content_sha256": "48db8dbe2fcb751e1d62b973a6e1e332de327b8eabc7b56cf58b4e485449472b",
+      "content_sha256": "4317214dcd3add03b5d5edb229ab4c1fce86a647f920c411b438e848b7d9a6e6",
       "conversation_id": "019f730b-e872-7ce3-82e4-64614c4d9c97",
       "created_at": "2026-07-18T02:26:34.286Z",
       "first_archived_at": "2026-07-18T03:47:10Z",
-      "last_synchronized_at": "2026-07-18T04:06:05Z",
-      "message_count": 850,
+      "last_synchronized_at": "2026-07-18T05:24:03Z",
+      "message_count": 856,
       "project_identifier": "treasurehunt",
       "redaction_categories": {
         "connection_string": 2,
         "login_credential": 3,
-        "secret_assignment": 14
+        "secret_assignment": 15
       },
-      "redactions": 19,
+      "redactions": 20,
       "source_export_timestamp": null,
       "source_identifier": "rollout-2026-07-17T22-26-33-019f730b-e872-7ce3-82e4-64614c4d9c97.jsonl",
-      "source_sha256": "fefc6569439bb75dba6dd590f2927225eda49dc4084fe2c1c4dbd944cd90952f",
+      "source_sha256": "c1c6593f1fccce13743374ac9bf4c845af9715468713219def90c724815c98e5",
       "source_type": "codex_session",
       "status": "active",
       "title": "Implement full prompt",
-      "updated_at": "2026-07-18T04:06:16.668Z"
+      "updated_at": "2026-07-18T04:06:44.146Z"
+    },
+    {
+      "archive_path": "Codex_Chats/chats/019f737d-91fa-7093-b54b-6b13860f857a--make-journal-canonical-tall-tale-ui.md",
+      "content_sha256": "d8f9836092a18dcdbc4959d99526d8fdae6c4a7674c91838cc5f325ec3844240",
+      "conversation_id": "019f737d-91fa-7093-b54b-6b13860f857a",
+      "created_at": "2026-07-18T04:30:57.105Z",
+      "first_archived_at": "2026-07-18T05:24:03Z",
+      "last_synchronized_at": "2026-07-18T05:24:03Z",
+      "message_count": 333,
+      "project_identifier": "treasurehunt",
+      "redaction_categories": {},
+      "redactions": 0,
+      "source_export_timestamp": null,
+      "source_identifier": "rollout-2026-07-18T00-30-42-019f737d-91fa-7093-b54b-6b13860f857a.jsonl",
+      "source_sha256": "24417ea4a5023c7a6ecc461958fc0c9b2d2fe1062a6831d8fb1b7ebdc3b37a87",
+      "source_type": "codex_session",
+      "status": "active",
+      "title": "Make journal canonical Tall Tale UI",
+      "updated_at": "2026-07-18T05:24:16.728Z"
+    },
+    {
+      "archive_path": "Codex_Chats/chats/019f737e-a458-7c10-afec-b6a7b51c8881--implement-phase-b-1-foundation.md",
+      "content_sha256": "2e82dd09cd10c1bda06ae68d266e1c91ae32828bbb45cd51f512d06ebe67c334",
+      "conversation_id": "019f737e-a458-7c10-afec-b6a7b51c8881",
+      "created_at": "2026-07-18T04:31:58.603Z",
+      "first_archived_at": "2026-07-18T05:24:03Z",
+      "last_synchronized_at": "2026-07-18T05:24:03Z",
+      "message_count": 367,
+      "project_identifier": "treasurehunt",
+      "redaction_categories": {
+        "connection_string": 2,
+        "login_credential": 2,
+        "secret_assignment": 2
+      },
+      "redactions": 6,
+      "source_export_timestamp": null,
+      "source_identifier": "rollout-2026-07-18T00-31-52-019f737e-a458-7c10-afec-b6a7b51c8881.jsonl",
+      "source_sha256": "bc99b8c7da7db4d51bdb432b169427b10a83920cb2b1746a69a1f65db62cf091",
+      "source_type": "codex_session",
+      "status": "active",
+      "title": "Implement Phase B-1 foundation",
+      "updated_at": "2026-07-18T05:24:20.070Z"
     }
   ],
-  "last_successful_synchronization_at": "2026-07-18T04:06:05Z",
+  "last_successful_synchronization_at": "2026-07-18T05:24:03Z",
   "migration_history": [
     {
       "schema_version": "1.0",
@@ -313,8 +355,8 @@
     ]
   },
   "synchronizer_version": "1.1.0",
-  "total_conversation_count": 13,
-  "total_message_count": 8144,
+  "total_conversation_count": 15,
+  "total_message_count": 8850,
   "warnings": [
     "Duplicate source record reconciled for 019dad68-91f3-7091-b4aa-6fee54fd1a1f",
     "Duplicate source record reconciled for 019dad68-91f3-7091-b4aa-6fee54fd1a1f",

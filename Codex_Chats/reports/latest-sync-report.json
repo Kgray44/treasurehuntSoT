@@ -1,14 +1,19 @@
 {
-  "added": 0,
+  "added": 2,
   "ambiguous": 0,
   "ambiguous_candidates": [],
   "commit_created": false,
   "commit_hash": null,
   "commit_message": null,
-  "conversations_discovered": 187,
+  "conversations_discovered": 189,
   "development_docs": {
     "changes": {
-      "added": [],
+      "added": [
+        {
+          "path": "Development_Docs/Canonical_Player_Journal_Implementation_Record.md",
+          "status": "??"
+        }
+      ],
       "conflicted": [],
       "deleted": [],
       "modified": [],
@@ -16,10 +21,23 @@
     },
     "commit_included": false,
     "directory": "Development_Docs",
-    "eligible_fingerprints": {},
-    "eligible_paths": [],
+    "eligible_fingerprints": {
+      "Development_Docs/Canonical_Player_Journal_Implementation_Record.md": "6e8a00384878cd4ba639f17c82b65a3d43320c15f78912214f4d68f424890f54"
+    },
+    "eligible_paths": [
+      "Development_Docs/Canonical_Player_Journal_Implementation_Record.md"
+    ],
     "empty_directories": [],
-    "excluded": [],
+    "excluded": [
+      {
+        "path": "Development_Docs/phase_b_implementation_roadmap_v1_0.pdf",
+        "reason": "ignored by Development_Docs safety rules"
+      },
+      {
+        "path": "Development_Docs/vision_waypoint_external_ar_governing_specification_v1_0.pdf",
+        "reason": "ignored by Development_Docs safety rules"
+      }
+    ],
     "exists": true,
     "git_available": true,
     "large_files": [],
@@ -32,18 +50,20 @@
   "failed": 0,
   "files_changed": [
     "Codex_Chats/chats/019f730b-e872-7ce3-82e4-64614c4d9c97--implement-full-prompt.md",
+    "Codex_Chats/chats/019f737d-91fa-7093-b54b-6b13860f857a--make-journal-canonical-tall-tale-ui.md",
+    "Codex_Chats/chats/019f737e-a458-7c10-afec-b6a7b51c8881--implement-phase-b-1-foundation.md",
     "Codex_Chats/manifest.json",
     "Codex_Chats/reports/latest-sync-report.json"
   ],
-  "finished_at": "2026-07-18T04:06:25Z",
-  "included": 4,
+  "finished_at": "2026-07-18T05:24:29Z",
+  "included": 6,
   "push_attempted": false,
   "push_result": "not requested",
-  "redacted": 40,
+  "redacted": 47,
   "redaction_categories": {
-    "connection_string": 3,
-    "login_credential": 11,
-    "secret_assignment": 26
+    "connection_string": 5,
+    "login_credential": 13,
+    "secret_assignment": 29
   },
   "renamed": 0,
   "schema_version": "1.0",
@@ -53,7 +73,7 @@
   "source_types_inspected": [
     "codex_session"
   ],
-  "started_at": "2026-07-18T04:06:05Z",
+  "started_at": "2026-07-18T05:24:03Z",
   "suspected_secret_categories": [],
   "synchronizer_version": "1.1.0",
   "unavailable": 0,
