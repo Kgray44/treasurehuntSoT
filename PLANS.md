@@ -30,7 +30,7 @@ Use the complete template in this file for repository-wide audits, large impleme
 
 ## Progressive planning rule
 
-Minimum safe preflight comes first. Identify immediately ready independent lanes, publish the required compact worker manifest, launch safe read-only lanes without unnecessary delay, and refine the dependency graph and detailed plan while they run. No write lane begins before its requirements, prerequisites, file/resource ownership, and integration boundaries are sufficiently established. Launch write lanes as soon as those conditions are met, keep the highest-value ready work in available slots, and start newly unblocked work immediately.
+Minimum safe preflight comes first. Identify immediately ready independent lanes, publish the required compact worker manifest, launch safe read-only lanes without unnecessary delay, and refine the dependency graph and detailed plan while they run. No write lane begins before its requirements, prerequisites, file/resource ownership, and integration boundaries are sufficiently established and every assigned path has passed the write-lane path-verification gate below. Launch write lanes as soon as those conditions are met, keep the highest-value ready work in available slots, and start newly unblocked work immediately. Safe read-only discovery continues while unresolved paths are being identified or verified.
 
 Before or immediately after any launch, disclose the worker manifest in chat as required by the subagent communication plan; planning refinement never makes a launched worker invisible. Communication must not become a blocking administrative process: do not delay a safe worker merely to produce elaborate formatting. Plans are living coordination artifacts, not paperwork gates; make them detailed enough to protect quality without delaying safe useful work. "Complete every planning table before starting any worker" is prohibited when ready read-only lanes exist.
 
@@ -46,6 +46,7 @@ An execution plan must:
 - identify the critical path and organize work to shorten it without weakening any hard constraint;
 - maximize safe, useful concurrency while identifying conflict-prone and serialized work;
 - establish one coordinator, clear lane ownership, and one writer per file at a time;
+- verify assigned write-lane paths against the current repository and distinguish verified existing files, intentional new files, and unresolved read-only paths;
 - identify shared runtime and expensive resources with authoritative owners;
 - define evidence, focused validation, integration validation, and completion criteria before implementation;
 - remain updateable as discoveries change scope, dependencies, ownership, risk, or validation;
@@ -113,6 +114,20 @@ Apply this lane-value check to every proposed Tier 1 and Tier 2 lane:
 - Can its output be integrated without creating conflicts or duplicated work?
 
 A lane should normally be created when it provides at least one strong benefit in speed, capacity, quality, coverage, verification, or risk reduction and does not create disproportionate conflict or coordination cost. A lane that fails this value check should be revised, combined, split, reassigned, serialized, or omitted rather than used ceremonially.
+
+## Write-lane path-verification gate
+
+Before launching any write-enabled subagent, the coordinator must:
+
+- resolve the current repository root and verify every assigned existing file path against that current repository;
+- record each assigned file using its exact canonical repository path, not shorthand, a basename alone, an inferred filename, or an unverified location;
+- determine whether every assigned path that does not exist is intentionally being created or remains unresolved;
+- label each intended new file explicitly as **intentional new-file ownership** before granting write authorization;
+- label each confirmed existing file explicitly as **verified existing-file ownership**;
+- label every unresolved or unverified path explicitly as **unresolved path — read-only**, and keep the affected lane read-only until verification or intentional-new-file classification is complete; and
+- confirm one-writer ownership and integration boundaries only after these path states are known.
+
+A directory or path pattern may define the outer ownership boundary, but it does not replace verification of each assigned existing file. A writer must not launch against an unresolved, inferred, or unverified path. Path resolution must not stall independent work: continue safe read-only discovery while paths are being resolved, then update the plan and visible manifest before changing the lane to write-enabled.
 
 ## Complete Tier 2 execution-plan template
 
@@ -285,13 +300,13 @@ Do not force parallel work into a fake sequential checklist.
 
 Every Tier 1 and Tier 2 workstream matrix must contain fields equivalent to the following. Keep the entries compact enough to scan; an adjacent lane record may carry details, but no required field may be omitted.
 
-| Lane ID | Visible worker name/role | Chat announcement status | User-visible objective | Mode      | Ownership: concern and exact paths | Explicit non-scope/prohibited resources | End goal | Expected deliverable | Expected benefit | Dependencies | Shared resources not controlled/authoritative owner | Integration path/owner | Completion criteria | Required evidence/focused validation | Current status | Completion announced | Integration status | Blockers |
-| ------- | ------------------------ | ------------------------ | ---------------------- | --------- | ---------------------------------- | --------------------------------------- | -------- | -------------------- | ---------------- | ------------ | --------------------------------------------------- | ---------------------- | ------------------- | ------------------------------------ | -------------- | -------------------- | ------------------ | -------- |
-| R1      |                          | Pending                  |                        | Read-only |                                    |                                         |          |                      |                  |              |                                                     | Coordinator            |                     |                                      | Ready          | No                   | Not started        |          |
+| Lane ID | Visible worker name/role | Chat announcement status | User-visible objective | Mode      | Ownership: concern and exact paths | Path ownership classification/verification | Explicit non-scope/prohibited resources | End goal | Expected deliverable | Expected benefit | Dependencies | Shared resources not controlled/authoritative owner | Integration path/owner | Completion criteria | Required evidence/focused validation | Current status | Completion announced | Integration status | Blockers |
+| ------- | ------------------------ | ------------------------ | ---------------------- | --------- | ---------------------------------- | ------------------------------------------ | --------------------------------------- | -------- | -------------------- | ---------------- | ------------ | --------------------------------------------------- | ---------------------- | ------------------- | ------------------------------------ | -------------- | -------------------- | ------------------ | -------- |
+| R1      |                          | Pending                  |                        | Read-only |                                    | Unresolved path — read-only                |                                         |          |                      |                  |              |                                                     | Coordinator            |                     |                                      | Ready          | No                   | Not started        |          |
 
 Every lane must have a non-overlapping evidence or edit boundary. If two write lanes need the same file, change the ownership or serialize the handoff before either edits.
 
-For a write-enabled lane, ownership must list the exact files, path patterns, components, or packages it may edit; exact shared files it may not edit; whether it uses an isolated worktree; the integration owner; and the ownership handoff condition. If clear write ownership cannot be recorded and announced, keep the lane read-only. Shared-resource entries name the authoritative owner of every applicable server, port, browser, database, schema, migration chain, dependency installation, manifest, lockfile, full build, full E2E, full validation, generated asset, Git integration, and final synchronization resource.
+For a write-enabled lane, ownership must list the exact canonical repository paths of the files it may edit; any verified path pattern, component, or package boundary; exact shared files it may not edit; whether it uses an isolated worktree; the integration owner; and the ownership handoff condition. The path-classification field must distinguish **verified existing-file ownership**, **intentional new-file ownership**, and **unresolved path — read-only**, with enough evidence to show that assigned existing files were checked against the current repository. A nonexistent path receives write authorization only when its creation is intentional and labeled as new-file ownership. If clear write ownership or path status cannot be recorded and announced, keep the lane read-only. Shared-resource entries name the authoritative owner of every applicable server, port, browser, database, schema, migration chain, dependency installation, manifest, lockfile, full build, full E2E, full validation, generated asset, Git integration, and final synchronization resource.
 
 Update announcement, completion, and integration fields whenever the worker topology or lifecycle changes. Distinguish **worker complete**, **output reviewed**, **output integrated**, and **output independently verified**; none implies the next automatically.
 
@@ -322,6 +337,7 @@ For each worker, the launch update must disclose:
 - current status, primary objective, end goal, and why the lane exists;
 - read-only or write-enabled mode;
 - owned subsystem, concern, files, paths, components, or evidence boundary;
+- path ownership status distinguishing verified existing-file ownership, intentional new-file ownership, and unresolved paths that keep the lane read-only;
 - explicit non-scope, forbidden paths, and prohibited resources;
 - expected deliverable and completion criteria;
 - dependencies and prerequisite evidence;
@@ -329,15 +345,15 @@ For each worker, the launch update must disclose:
 - how the coordinator will review and integrate the output; and
 - expected capacity, quality, coverage, verification, specialization, or elapsed-time benefit.
 
-For each write-enabled worker, the visible launch update must make ownership unmistakable: list the exact files, path patterns, components, or packages it may edit; exact shared files it may not edit; whether it has an isolated worktree; the integration owner; and the handoff condition. If those boundaries cannot yet be stated clearly, announce and keep the lane read-only until they can.
+For each write-enabled worker, the visible launch update must make ownership unmistakable: list the exact canonical repository paths it may edit; classify each as verified existing-file ownership or intentional new-file ownership; list any verified outer path pattern, component, or package boundary; identify exact shared files it may not edit; and state whether it has an isolated worktree, the integration owner, and the handoff condition. An unresolved or unverified path must be shown as unresolved in the manifest and keeps the lane read-only until the coordinator verifies the existing path or confirms and announces intentional new-file ownership. Never launch a writer using shorthand or an inferred filename. Safe read-only lanes may continue while this resolution occurs.
 
 When several workers launch together, use a manifest such as:
 
 ```text
 Subagents started: <count>
 
-| Lane | Role | Status | Mode | Ownership | End goal/deliverable | Non-scope | Dependencies | Integration | Expected benefit |
-|------|------|--------|------|-----------|----------------------|-----------|--------------|-------------|------------------|
+| Lane | Role | Status | Mode | Exact ownership | Path status | End goal/deliverable | Non-scope | Dependencies | Integration | Expected benefit |
+|------|------|--------|------|-----------------|-------------|----------------------|-----------|--------------|-------------|------------------|
 ```
 
 For one worker, use a compact card containing the same information rather than omitting fields because a table seems unnecessary.
@@ -436,6 +452,9 @@ Scope:
 Explicit non-scope:
 Authorization: read-only | write
 Owned concerns/paths:
+Verified existing-file ownership (exact canonical repository paths and verification evidence):
+Intentional new-file ownership (exact canonical repository paths; creation confirmed):
+Unresolved paths (lane remains read-only):
 Forbidden resources and paths:
 Dependencies and prerequisite evidence:
 Constraints and invariants:
@@ -488,7 +507,10 @@ Add task-specific resources. In this repository, normal development uses `npm ru
 Record:
 
 - one writer per file at a time;
-- path/component/package boundaries for every write lane;
+- exact canonical repository paths for every assigned existing file, verified against the current repository before writer launch;
+- explicit **verified existing-file ownership**, **intentional new-file ownership**, or **unresolved path — read-only** classification for every assigned path;
+- confirmation that each nonexistent path is either an intended new file or remains unresolved and cannot receive write authorization;
+- path/component/package boundaries for every write lane, without using a broad boundary as a substitute for verifying assigned existing files;
 - the integration owner for shared files;
 - read-only reviewers assigned where edit overlap would otherwise occur;
 - worktree locations or isolation method for independent implementation lanes;
@@ -498,9 +520,11 @@ Record:
 
 Recommended table:
 
-| Path or pattern | Writer/owner | Read-only reviewers | Ownership window | Dependencies | Handoff condition |
-| --------------- | ------------ | ------------------- | ---------------- | ------------ | ----------------- |
-|                 |              |                     |                  |              |                   |
+| Exact canonical repository path or verified outer pattern | Path classification | Verification evidence | Writer/owner | Read-only reviewers | Ownership window | Dependencies | Handoff condition |
+| --------------------------------------------------------- | ------------------- | --------------------- | ------------ | ------------------- | ---------------- | ------------ | ----------------- |
+|                                                           |                     |                       |              |                     |                  |              |                   |
+
+Do not launch a write-enabled lane until all of its assigned paths are classified and verified. If any path remains unresolved, retain read-only authorization, continue safe discovery, and update both this ownership plan and the visible worker manifest before granting write access.
 
 Package manifests and lockfiles, Prisma schemas/migrations/seed, root layouts and providers, global styles/tokens, route entrypoints, central registries, runtime configuration, and generated files are presumed conflict-prone until inspected. Exactly one integration lane owns each such resource.
 
@@ -734,6 +758,8 @@ Do not:
 - write oversized plans or status reports whose coordination cost exceeds their practical value;
 - perform delegable work in the coordinator merely because delegation requires a briefing;
 - launch work before evidence, path, and resource ownership are defined;
+- launch a write-enabled worker against an unresolved, inferred, shorthand, or otherwise unverified path;
+- treat a nonexistent path as writable without explicitly confirming and labeling intentional new-file ownership;
 - allow multiple agents to edit the same file concurrently;
 - let multiple development servers compete for port `3000`;
 - make every lane run the entire test suite;
@@ -765,6 +791,7 @@ Update the plan when:
 - additional safe parallelism becomes available;
 - runtime evidence contradicts static analysis;
 - the canonical implementation differs from the initial assumption;
+- a write-lane path is verified, found nonexistent, confirmed as an intentional new file, or remains unresolved;
 - validation reveals a pre-existing failure or regression; or
 - risk, completion criteria, or user authority changes.
 

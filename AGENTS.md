@@ -143,7 +143,13 @@ When only one worker launches, disclosure remains mandatory. Use a compact card 
 
 ### Ownership and shared-resource transparency
 
-The visible manifest must make write ownership unmistakable. For every write-enabled lane, identify the exact files, path patterns, components, or packages it may edit; the exact shared files it may not edit; whether it has an isolated worktree; its integration owner; and its handoff condition. If ownership cannot be stated clearly, the worker remains read-only until the boundary is resolved and visibly announced. Exactly one agent may write a file at a time, and the existing exclusive-resource rules remain in force.
+The visible manifest must make write ownership unmistakable. For every write-enabled lane, identify the exact files, path patterns, components, or packages it may edit; the exact shared files it may not edit; whether it has an isolated worktree; its integration owner; and its handoff condition. It must distinguish **verified existing-file ownership**, **intentional new-file ownership**, and **unresolved paths that keep the lane read-only**. If ownership cannot be stated clearly, the worker remains read-only until the boundary is resolved and visibly announced. Exactly one agent may write a file at a time, and the existing exclusive-resource rules remain in force.
+
+#### Write-lane path verification
+
+Before launching any write-enabled subagent, the coordinator must verify every assigned existing file path against the current repository. Resolve each path from the current canonical repository root and use that exact canonical repository path in the assignment and visible manifest; shorthand, approximate names, inferred filenames, and unresolved path guesses are not valid write ownership.
+
+For every assigned path that does not exist, the coordinator must determine whether the lane is intentionally authorized to create it. Label each such assignment explicitly as **intentional new-file ownership**, including its exact canonical destination path. Never launch a writer against an unresolved or unverified path. Until the path and ownership boundary are resolved, keep that lane read-only and label the path as unresolved in the visible manifest. Safe read-only discovery may continue concurrently while paths are being resolved; path verification must gate write authorization without delaying otherwise safe investigation.
 
 Whenever applicable, the launch or ownership update must identify the authoritative owner of the development server, port `3000`, browser automation, database, schema, migrations, dependency installation, manifests, lockfiles, full build, full end-to-end suite, full validation, generated assets, Git integration, and final `Codex_Chats` / `Development_Docs` synchronization. Workers must not imply ownership of resources assigned elsewhere.
 
@@ -311,7 +317,7 @@ When a substantial task has materially more ready independent work than active w
 
 ## Progressive fan-out
 
-Verify the minimum safety baseline first: repository root, applicable instructions, user scope, working-tree state, existing task state, current modifications, exclusive resources, and destructive boundaries. Then launch obvious independent read-only lanes immediately while the coordinator refines the plan. Do not delay safe discovery until every planning table is complete. Do not start write lanes until ownership and integration boundaries are explicit. Add newly discovered ready lanes dynamically, collapse redundant lanes, release unused capacity, and preserve useful partial findings.
+Verify the minimum safety baseline first: repository root, applicable instructions, user scope, working-tree state, existing task state, current modifications, exclusive resources, and destructive boundaries. Then launch obvious independent read-only lanes immediately while the coordinator refines the plan. Do not delay safe discovery until every planning table is complete. Do not start write lanes until ownership and integration boundaries are explicit and every assigned path has the required verified existing-file, intentional new-file, or unresolved read-only classification. Add newly discovered ready lanes dynamically, collapse redundant lanes, release unused capacity, and preserve useful partial findings.
 
 ## Canonical repository context
 
@@ -397,7 +403,7 @@ Every delegated lane must state:
 - lane ID, role, precise objective, relevant background, and governing requirements;
 - explicit scope and non-scope;
 - read-only or write authorization;
-- owned files, directories, components, or concerns, plus forbidden paths and resources;
+- owned files, directories, components, or concerns, plus forbidden paths and resources; for a write-enabled lane, use exact canonical repository paths and identify each as verified existing-file ownership or intentional new-file ownership;
 - dependencies, prerequisite evidence, and shared resources it may not modify;
 - required searches, output, evidence, focused validation, and confidence level;
 - concise return schema covering what was inspected and found, paths/symbols, evidence, authorized changes, tests, failures, uncertainty, conflicts, recommendations, and completion status;
@@ -446,6 +452,7 @@ Broad read-heavy tasks should normally use more workers than write-heavy tasks b
 ## Write-heavy workflow policy
 
 - Partition implementation by non-overlapping files, components, packages, or services. Exactly one agent may write a file at a time.
+- Before launching a writer, complete the write-lane path verification required by the visible-disclosure policy. Any unresolved or unverified path keeps the lane read-only while safe discovery continues.
 - Use separate Codex worktrees for independent implementation chats or lanes when supported and appropriate. Otherwise declare strict path ownership before editing.
 - Designate one integration owner for shared files. Lockfiles, manifests, central configuration, schemas, migrations, generated artifacts, global styles, providers, route definitions, and entrypoints each have one authoritative lane.
 - Sequence dependent changes through the plan's dependency graph. Use an explicit handoff before ownership moves between agents.
