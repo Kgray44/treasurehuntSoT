@@ -395,12 +395,12 @@
     },
     {
       "archive_path": "Codex_Chats/chats/019f75f4-50ba-7982-940a-f0dd9e2dd384--consolidate-unified-experience-shell.md",
-      "content_sha256": "17fc372c0098626c3cb0f806a068435d95b35a637b5e522b66fe5ab8a98a418a",
+      "content_sha256": "ff6ffe91df30c4afae682baffbd58432d3d9620adf6c9b57346a9a9be845fde6",
       "conversation_id": "019f75f4-50ba-7982-940a-f0dd9e2dd384",
       "created_at": "2026-07-18T15:59:51.128Z",
       "first_archived_at": "2026-07-18T16:01:19Z",
-      "last_synchronized_at": "2026-07-18T17:01:10Z",
-      "message_count": 662,
+      "last_synchronized_at": "2026-07-18T17:02:03Z",
+      "message_count": 675,
       "project_identifier": "treasurehunt",
       "redaction_categories": {
         "login_credential": 4,
@@ -409,11 +409,11 @@
       "redactions": 5,
       "source_export_timestamp": null,
       "source_identifier": "rollout-2026-07-18T11-59-38-019f75f4-50ba-7982-940a-f0dd9e2dd384.jsonl",
-      "source_sha256": "e5158ca9bca5dde16baf7b722ed45fc488226a29a85f275e1e81f36633ddf6ef",
+      "source_sha256": "ba1b16b5bdba59156b96a47b7908153ca406cec6f48fbc1cac2027f099763c9a",
       "source_type": "codex_session",
       "status": "active",
       "title": "Consolidate unified experience shell",
-      "updated_at": "2026-07-18T17:01:22.043Z"
+      "updated_at": "2026-07-18T17:02:15.909Z"
     },
     {
       "archive_path": "Codex_Chats/chats/019f7612-5f0c-7941-8ee5-cf9390e1a6ea--audit-animation-system-failures.md",
@@ -438,44 +438,44 @@
     },
     {
       "archive_path": "Codex_Chats/chats/019f7623-2908-7722-bd6d-8f806f88c69f--recover-missing-chat.md",
-      "content_sha256": "18eeec786e5e6734d92e09591718bed40e1305a3b81c77dc86f38593fdc9ff90",
+      "content_sha256": "fd81794f30f2571c79bd2f1a2fe77a05243f2e188f9cc0c23ae79e2eca9410df",
       "conversation_id": "019f7623-2908-7722-bd6d-8f806f88c69f",
       "created_at": "2026-07-18T16:51:22.435Z",
       "first_archived_at": "2026-07-18T16:54:48Z",
-      "last_synchronized_at": "2026-07-18T17:01:10Z",
-      "message_count": 115,
+      "last_synchronized_at": "2026-07-18T17:02:03Z",
+      "message_count": 121,
       "project_identifier": "treasurehunt",
       "redaction_categories": {},
       "redactions": 0,
       "source_export_timestamp": null,
       "source_identifier": "rollout-2026-07-18T12-50-48-019f7623-2908-7722-bd6d-8f806f88c69f.jsonl",
-      "source_sha256": "f7f0c67d06375a9de7ed4abf1b3b7e53d70b2d2b23db4c05344e4d649624a00e",
+      "source_sha256": "5ecbb7518ce1095985b3ad63979b493d503895e84d1e15c260bf0a305192cdfe",
       "source_type": "codex_session",
       "status": "active",
       "title": "Recover missing chat",
-      "updated_at": "2026-07-18T17:01:21.829Z"
+      "updated_at": "2026-07-18T17:01:58.516Z"
     },
     {
       "archive_path": "Codex_Chats/chats/019f762c-354a-7b22-afd3-9a0afdadb205--continue-animation-system-audit.md",
-      "content_sha256": "48bf50cd69b6c496a41c36c9adf4f926da90323bb91425c3d9bcfe2328a09970",
+      "content_sha256": "4137410f2e9862a5588cb9f6ad6b565c570e5144f1e00602883eb79b9b89d3de",
       "conversation_id": "019f762c-354a-7b22-afd3-9a0afdadb205",
       "created_at": "2026-07-18T17:00:47.478Z",
       "first_archived_at": "2026-07-18T17:01:10Z",
-      "last_synchronized_at": "2026-07-18T17:01:10Z",
-      "message_count": 11,
+      "last_synchronized_at": "2026-07-18T17:02:03Z",
+      "message_count": 29,
       "project_identifier": "treasurehunt",
       "redaction_categories": {},
       "redactions": 0,
       "source_export_timestamp": null,
       "source_identifier": "rollout-2026-07-18T13-00-41-019f762c-354a-7b22-afd3-9a0afdadb205.jsonl",
-      "source_sha256": "e64ae4e988228fe08a39ac4c909646f48de3bc77baee8880f51e9b21b41d1a0d",
+      "source_sha256": "3996595622b02be7dbc5b0cf13eea91f9d669e47dc1b797ee3b731d01897a3f4",
       "source_type": "codex_session",
       "status": "active",
       "title": "Continue animation system audit",
-      "updated_at": "2026-07-18T17:01:21.782Z"
+      "updated_at": "2026-07-18T17:02:17.673Z"
     }
   ],
-  "last_successful_synchronization_at": "2026-07-18T17:01:10Z",
+  "last_successful_synchronization_at": "2026-07-18T17:02:03Z",
   "migration_history": [
     {
       "schema_version": "1.0",
@@ -502,7 +502,7 @@
   },
   "synchronizer_version": "1.1.0",
   "total_conversation_count": 22,
-  "total_message_count": 14619,
+  "total_message_count": 14656,
   "warnings": [
     "Duplicate source record reconciled for 019dad68-91f3-7091-b4aa-6fee54fd1a1f",
     "Duplicate source record reconciled for 019dad68-91f3-7091-b4aa-6fee54fd1a1f",

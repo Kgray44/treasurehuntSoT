@@ -1,5 +1,5 @@
 {
-  "added": 1,
+  "added": 0,
   "ambiguous": 0,
   "ambiguous_candidates": [],
   "commit_created": false,
@@ -8,12 +8,7 @@
   "conversations_discovered": 196,
   "development_docs": {
     "changes": {
-      "added": [
-        {
-          "path": "Development_Docs/Unified_Experience_Shell_Consolidation_Implementation_Record.md",
-          "status": "??"
-        }
-      ],
+      "added": [],
       "conflicted": [],
       "deleted": [],
       "modified": [],
@@ -21,12 +16,8 @@
     },
     "commit_included": false,
     "directory": "Development_Docs",
-    "eligible_fingerprints": {
-      "Development_Docs/Unified_Experience_Shell_Consolidation_Implementation_Record.md": "172ab7589b64c95d8cc0e9a45ad7766ee7786ca07c9703426e8e14e794265240"
-    },
-    "eligible_paths": [
-      "Development_Docs/Unified_Experience_Shell_Consolidation_Implementation_Record.md"
-    ],
+    "eligible_fingerprints": {},
+    "eligible_paths": [],
     "empty_directories": [],
     "excluded": [],
     "exists": true,
@@ -41,13 +32,12 @@
   "failed": 0,
   "files_changed": [
     "Codex_Chats/chats/019f75f4-50ba-7982-940a-f0dd9e2dd384--consolidate-unified-experience-shell.md",
-    "Codex_Chats/chats/019f7612-5f0c-7941-8ee5-cf9390e1a6ea--audit-animation-system-failures.md",
     "Codex_Chats/chats/019f7623-2908-7722-bd6d-8f806f88c69f--recover-missing-chat.md",
     "Codex_Chats/chats/019f762c-354a-7b22-afd3-9a0afdadb205--continue-animation-system-audit.md",
     "Codex_Chats/manifest.json",
     "Codex_Chats/reports/latest-sync-report.json"
   ],
-  "finished_at": "2026-07-18T17:01:35Z",
+  "finished_at": "2026-07-18T17:02:40Z",
   "included": 13,
   "push_attempted": false,
   "push_result": "not requested",
@@ -65,11 +55,11 @@
   "source_types_inspected": [
     "codex_session"
   ],
-  "started_at": "2026-07-18T17:01:10Z",
+  "started_at": "2026-07-18T17:02:03Z",
   "suspected_secret_categories": [],
   "synchronizer_version": "1.1.0",
   "unavailable": 0,
-  "unchanged": 9,
+  "unchanged": 10,
   "updated": 3,
   "warnings": [
     "Duplicate source record reconciled for 019dad68-91f3-7091-b4aa-6fee54fd1a1f",
