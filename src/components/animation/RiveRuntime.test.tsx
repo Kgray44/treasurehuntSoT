@@ -22,6 +22,10 @@ const runtime = vi.hoisted(() => {
 });
 
 vi.mock("@rive-app/react-webgl2", () => ({
+  RuntimeLoader: {
+    setWasmUrl: vi.fn(),
+    setWasmFallbackUrl: vi.fn(),
+  },
   Alignment: { Center: "center" },
   Fit: { Contain: "contain" },
   Layout: class {

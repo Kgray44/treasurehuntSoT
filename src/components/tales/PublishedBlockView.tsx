@@ -101,11 +101,16 @@ export function PublishedBlockView({ block, assets }: { block: PlayerBlock; asse
         <footer>{value(config, "signature")}</footer>
       </article>
     );
-  if (block.blockType === "travelDirection" || block.blockType === "location" || block.blockType === "arrivalCheck")
+  if (
+    block.blockType === "travelDirection" ||
+    block.blockType === "location" ||
+    block.blockType === "arrivalCheck" ||
+    block.blockType === "visionWaypoint"
+  )
     return (
       <article className="runtime-block direction-block">
         <span aria-hidden="true">⌖</span>
-        <p className="eyebrow">Set a course</p>
+        <p className="eyebrow">{block.blockType === "visionWaypoint" ? "Vision Waypoint" : "Set a course"}</p>
         <h2>{value(config, "heading") || value(config, "playerTitle") || block.title}</h2>
         <p>{value(config, "directionText") || value(config, "playerDescription") || value(config, "prompt")}</p>
         {asset(config.mapAssetId) && <img src={asset(config.mapAssetId)} alt="Voyage map" />}

@@ -71,15 +71,22 @@ model PlayerPresence {
 }
 
 model GameMasterUser {
-  id            String                   @id @default(cuid())
-  username      String                   @unique
-  passwordHash  String
-  role          String                   @default("CAPTAIN_CREATOR")
-  capabilities  String                   @default("[]") @db.LongText
-  createdAt     DateTime                 @default(now())
-  sessions      GameMasterSession[]
-  auditLogs     AdminAuditLog[]
-  platformRoles PlatformRoleAssignment[]
+  id                      String                              @id @default(cuid())
+  username                String                              @unique
+  passwordHash            String
+  role                    String                              @default("CAPTAIN_CREATOR")
+  capabilities            String                              @default("[]") @db.LongText
+  createdAt               DateTime                            @default(now())
+  sessions                GameMasterSession[]
+  auditLogs               AdminAuditLog[]
+  platformRoles           PlatformRoleAssignment[]
+  visionWaypoints         VisionWaypoint[]                    @relation("VisionWaypointOwner")
+  visionVersions          VisionWaypointVersion[]             @relation("VisionVersionCreator")
+  visionPublishedVersions VisionWaypointVersion[]             @relation("VisionVersionPublisher")
+  visionPublications      VisionWaypointPublication[]         @relation("VisionPublicationPublisher")
+  visionProfiles          VisionWaypointVerificationProfile[] @relation("VisionProfileOwner")
+  companionDevices        CompanionDevice[]                   @relation("CompanionDeviceOwner")
+  pairingSessions         PairingSession[]                    @relation("PairingSessionOwner")
 }
 
 model GameMasterSession {
@@ -422,30 +429,30 @@ model LoginAttempt {
 }
 
 model TallTale {
-  id                       String                 @id @default(cuid())
-  slug                     String                 @unique
+  id                       String                   @id @default(cuid())
+  slug                     String                   @unique
   title                    String
   subtitle                 String?
-  shortDescription         String?                @db.Text
-  longDescription          String?                @db.LongText
+  shortDescription         String?                  @db.Text
+  longDescription          String?                  @db.LongText
   coverAssetId             String?
-  theme                    String                 @default("CARTOGRAPHERS_TABLE")
-  status                   String                 @default("DRAFT")
-  visibility               String                 @default("PRIVATE")
+  theme                    String                   @default("CARTOGRAPHERS_TABLE")
+  status                   String                   @default("DRAFT")
+  visibility               String                   @default("PRIVATE")
   creatorId                String
   currentDraftRevisionId   String?
   latestPublishedVersionId String?
   forkedFromTaleId         String?
   forkedFromVersionId      String?
-  playerCountMin           Int                    @default(1)
-  playerCountMax           Int                    @default(4)
+  playerCountMin           Int                      @default(1)
+  playerCountMax           Int                      @default(4)
   estimatedDuration        Int?
-  contentWarnings          String?                @db.Text
-  sortOrder                Int                    @default(0)
-  featured                 Boolean                @default(false)
+  contentWarnings          String?                  @db.Text
+  sortOrder                Int                      @default(0)
+  featured                 Boolean                  @default(false)
   archivedAt               DateTime?
-  createdAt                DateTime               @default(now())
-  updatedAt                DateTime               @updatedAt
+  createdAt                DateTime                 @default(now())
+  updatedAt                DateTime                 @updatedAt
   drafts                   TaleDraft[]
   versions                 PublishedTaleVersion[]
   assets                   TaleAsset[]
@@ -453,6 +460,9 @@ model TallTale {
   locations                TaleLocation[]
   storyArtifacts           TaleArtifact[]
   sessions                 TaleSession[]
+  visionBindings           StoryWaypointBinding[]
+  publishedVisionBindings  VisionPublishedBinding[]
+  visionAttempts           VerificationAttempt[]
 
   @@index([status, visibility, sortOrder])
   @@index([creatorId, updatedAt])
@@ -500,24 +510,25 @@ model TaleChapter {
 }
 
 model StoryBlock {
-  id            String            @id @default(cuid())
+  id            String                @id @default(cuid())
   chapterId     String
   blockType     String
   title         String
   internalLabel String?
   orderIndex    Int
-  configuration String            @default("{}") @db.LongText
-  presentation  String            @default("{}") @db.LongText
-  completion    String            @default("{}") @db.LongText
+  configuration String                @default("{}") @db.LongText
+  presentation  String                @default("{}") @db.LongText
+  completion    String                @default("{}") @db.LongText
   nextBlockId   String?
-  creatorNotes  String?           @db.Text
-  isEnabled     Boolean           @default(true)
-  schemaVersion Int               @default(1)
-  createdAt     DateTime          @default(now())
-  updatedAt     DateTime          @updatedAt
-  chapter       TaleChapter       @relation(fields: [chapterId], references: [id], onDelete: Cascade)
-  outgoing      BlockConnection[] @relation("BlockConnectionSource")
-  incoming      BlockConnection[] @relation("BlockConnectionTarget")
+  creatorNotes  String?               @db.Text
+  isEnabled     Boolean               @default(true)
+  schemaVersion Int                   @default(1)
+  createdAt     DateTime              @default(now())
+  updatedAt     DateTime              @updatedAt
+  chapter       TaleChapter           @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+  outgoing      BlockConnection[]     @relation("BlockConnectionSource")
+  incoming      BlockConnection[]     @relation("BlockConnectionTarget")
+  visionBinding StoryWaypointBinding?
 
   @@unique([chapterId, orderIndex])
   @@index([chapterId, blockType])
@@ -540,19 +551,21 @@ model BlockConnection {
 }
 
 model PublishedTaleVersion {
-  id              String        @id @default(cuid())
+  id              String                   @id @default(cuid())
   taleId          String
   versionNumber   Int
   versionLabel    String
-  publishedAt     DateTime      @default(now())
+  publishedAt     DateTime                 @default(now())
   publishedBy     String
-  releaseNotes    String?       @db.Text
-  contentSnapshot String        @db.LongText
-  schemaVersion   Int           @default(1)
+  releaseNotes    String?                  @db.Text
+  contentSnapshot String                   @db.LongText
+  schemaVersion   Int                      @default(1)
   checksum        String
-  isCurrent       Boolean       @default(true)
-  tale            TallTale      @relation(fields: [taleId], references: [id], onDelete: Cascade)
+  isCurrent       Boolean                  @default(true)
+  tale            TallTale                 @relation(fields: [taleId], references: [id], onDelete: Cascade)
   sessions        TaleSession[]
+  visionAttempts  VerificationAttempt[]
+  visionBindings  VisionPublishedBinding[]
 
   @@unique([taleId, versionNumber])
   @@index([taleId, isCurrent])
@@ -711,64 +724,68 @@ model TaleArtifact {
 }
 
 model TaleSession {
-  id                   String                    @id @default(cuid())
-  taleId               String
-  publishedVersionId   String?
-  ownerLabel           String?
-  voyageName           String?
-  captainId            String?
-  accessTokenHash      String                    @unique
-  status               String                    @default("ACTIVE")
-  captainMode          String                    @default("CAPTAIN_CONTROLLED")
-  configuration        String                    @default("{}") @db.LongText
-  scheduleTimezone     String?
-  plannedStartAt       DateTime?
-  launchedAt           DateTime?
-  cancelledAt          DateTime?
-  abandonedAt          DateTime?
-  concurrencyVersion   Int                       @default(0)
-  historicalHidden     Boolean                   @default(false)
-  archiveMetadata      String                    @default("{}") @db.LongText
-  currentChapterId     String?
-  currentBlockId       String?
-  currentSequence      Int                       @default(0)
-  previewMode          Boolean                   @default(false)
-  draftRevisionId      String?
-  previewSnapshot      String?                   @db.LongText
-  variables            String                    @default("{}") @db.LongText
-  inventory            String                    @default("[]") @db.LongText
-  startedAt            DateTime                  @default(now())
-  updatedAt            DateTime                  @updatedAt
-  completedAt          DateTime?
-  expiresAt            DateTime?
-  lastHeartbeatAt      DateTime?
-  tale                 TallTale                  @relation(fields: [taleId], references: [id], onDelete: Cascade)
-  version              PublishedTaleVersion?     @relation(fields: [publishedVersionId], references: [id])
-  events               TaleSessionEvent[]
-  verificationRequests TaleVerificationRequest[]
-  helperPairings       TaleHelperPairing[]
-  memberships          PlaythroughMembership[]
-  invitations          Invitation[]
-  revealStates         RevealState[]
+  id                    String                    @id @default(cuid())
+  taleId                String
+  publishedVersionId    String?
+  ownerLabel            String?
+  voyageName            String?
+  captainId             String?
+  accessTokenHash       String                    @unique
+  status                String                    @default("ACTIVE")
+  captainMode           String                    @default("CAPTAIN_CONTROLLED")
+  configuration         String                    @default("{}") @db.LongText
+  scheduleTimezone      String?
+  plannedStartAt        DateTime?
+  launchedAt            DateTime?
+  cancelledAt           DateTime?
+  abandonedAt           DateTime?
+  concurrencyVersion    Int                       @default(0)
+  historicalHidden      Boolean                   @default(false)
+  archiveMetadata       String                    @default("{}") @db.LongText
+  currentChapterId      String?
+  currentBlockId        String?
+  currentSequence       Int                       @default(0)
+  previewMode           Boolean                   @default(false)
+  draftRevisionId       String?
+  previewSnapshot       String?                   @db.LongText
+  variables             String                    @default("{}") @db.LongText
+  inventory             String                    @default("[]") @db.LongText
+  startedAt             DateTime                  @default(now())
+  updatedAt             DateTime                  @updatedAt
+  completedAt           DateTime?
+  expiresAt             DateTime?
+  lastHeartbeatAt       DateTime?
+  tale                  TallTale                  @relation(fields: [taleId], references: [id], onDelete: Cascade)
+  version               PublishedTaleVersion?     @relation(fields: [publishedVersionId], references: [id])
+  events                TaleSessionEvent[]
+  verificationRequests  TaleVerificationRequest[]
+  helperPairings        TaleHelperPairing[]
+  memberships           PlaythroughMembership[]
+  invitations           Invitation[]
+  revealStates          RevealState[]
+  visionAttempts        VerificationAttempt[]
+  visionRuntimeControls VisionRuntimeControl[]
+  visionPendingEvents   VisionPendingEvent[]
 
   @@index([taleId, status, previewMode])
   @@index([publishedVersionId, status])
 }
 
 model PlayerProfile {
-  id           String                  @id @default(cuid())
-  username     String?                 @unique
-  passwordHash String?
-  displayName  String
-  status       String                  @default("ACTIVE")
-  preferences  String                  @default("{}") @db.LongText
-  claimedAt    DateTime?
-  createdAt    DateTime                @default(now())
-  updatedAt    DateTime                @updatedAt
-  lastSeenAt   DateTime?
-  sessions     PlayerIdentitySession[]
-  memberships  PlaythroughMembership[]
-  invitations  Invitation[]
+  id                   String                  @id @default(cuid())
+  username             String?                 @unique
+  passwordHash         String?
+  displayName          String
+  status               String                  @default("ACTIVE")
+  preferences          String                  @default("{}") @db.LongText
+  claimedAt            DateTime?
+  createdAt            DateTime                @default(now())
+  updatedAt            DateTime                @updatedAt
+  lastSeenAt           DateTime?
+  sessions             PlayerIdentitySession[]
+  memberships          PlaythroughMembership[]
+  invitations          Invitation[]
+  verificationAttempts VerificationAttempt[]
 
   @@index([status, displayName])
 }
@@ -935,6 +952,7 @@ model TaleVerificationRequest {
   satisfiedByEventId    String?
   session               TaleSession             @relation(fields: [sessionId], references: [id], onDelete: Cascade)
   submissions           TaleVerificationEvent[]
+  visionAttempts        VerificationAttempt[]
 
   @@index([sessionId, status, requestedAt])
   @@index([blockId, status])
@@ -973,4 +991,875 @@ model TaleHelperPairing {
   session    TaleSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
 
   @@index([sessionId, status])
+}
+
+model VisionWaypoint {
+  id                String                   @id @default(cuid())
+  ownerId           String
+  name              String
+  description       String                   @default("") @db.Text
+  type              String
+  locationTags      String                   @default("[]") @db.LongText
+  sharingScope      String                   @default("PRIVATE")
+  archivedAt        DateTime?
+  createdAt         DateTime                 @default(now())
+  updatedAt         DateTime                 @updatedAt
+  owner             GameMasterUser           @relation("VisionWaypointOwner", fields: [ownerId], references: [id], onDelete: Restrict)
+  versions          VisionWaypointVersion[]
+  bindings          StoryWaypointBinding[]
+  attempts          VerificationAttempt[]
+  shadowAttempts    VisionShadowAttempt[]
+  publishedBindings VisionPublishedBinding[]
+
+  @@index([ownerId, archivedAt, updatedAt])
+  @@index([type, sharingScope])
+}
+
+model VisionWaypointVersion {
+  id                       String                     @id @default(cuid())
+  waypointId               String
+  versionNumber            Int
+  parentVersionId          String?
+  lifecycleStatus          String                     @default("DRAFT")
+  authoringRevision        Int                        @default(1)
+  authoringMode            String                     @default("GUIDED")
+  currentWizardStep        Int                        @default(1)
+  verificationProfile      String                     @default("BALANCED")
+  packageSchemaVersion     Int                        @default(1)
+  draftConfiguration       String                     @default("{}") @db.LongText
+  packageArtifactReference String?                    @db.Text
+  compatibilityMetadata    String                     @default("{}") @db.LongText
+  certificationReference   String?                    @db.Text
+  certificationStatus      String                     @default("DRAFT")
+  compatibilityStatus      String                     @default("NEEDS_RETEST")
+  certifiedPackageHash     String?
+  certifiedDatasetRevision String?
+  createdBy                String
+  publishedBy              String?
+  createdAt                DateTime                   @default(now())
+  updatedAt                DateTime                   @updatedAt
+  publishedAt              DateTime?
+  deprecatedAt             DateTime?
+  waypoint                 VisionWaypoint             @relation(fields: [waypointId], references: [id], onDelete: Restrict)
+  parentVersion            VisionWaypointVersion?     @relation("VisionVersionLineage", fields: [parentVersionId], references: [id], onDelete: SetNull)
+  derivedVersions          VisionWaypointVersion[]    @relation("VisionVersionLineage")
+  creator                  GameMasterUser             @relation("VisionVersionCreator", fields: [createdBy], references: [id], onDelete: Restrict)
+  publisher                GameMasterUser?            @relation("VisionVersionPublisher", fields: [publishedBy], references: [id], onDelete: Restrict)
+  publication              VisionWaypointPublication?
+  captureSessions          VisionCaptureSession[]
+  recordingAssets          VisionRecordingAsset[]
+  regions                  VisionRegion[]
+  poseRegions              VisionPoseRegion[]
+  hardNegativeSets         VisionHardNegativeSet[]
+  buildJobs                VisionBuildJob[]
+  buildArtifacts           VisionBuildArtifact[]
+  certificationRuns        VisionCertificationRun[]
+  testRuns                 VisionWaypointTestRun[]
+  bindings                 StoryWaypointBinding[]
+  attempts                 VerificationAttempt[]
+  shadowAttempts           VisionShadowAttempt[]
+  publishedBindings        VisionPublishedBinding[]
+
+  @@unique([waypointId, versionNumber])
+  @@index([waypointId, lifecycleStatus, updatedAt])
+  @@index([parentVersionId])
+  @@index([publishedAt, deprecatedAt])
+}
+
+model VisionWaypointPublication {
+  id                   String                @id @default(cuid())
+  waypointVersionId    String                @unique
+  packageHash          String
+  packageSchemaVersion Int                   @default(1)
+  publishedAt          DateTime              @default(now())
+  publishedBy          String
+  compatibilityRange   String                @default("{}") @db.LongText
+  status               String                @default("ACTIVE")
+  waypointVersion      VisionWaypointVersion @relation(fields: [waypointVersionId], references: [id], onDelete: Restrict)
+  publisher            GameMasterUser        @relation("VisionPublicationPublisher", fields: [publishedBy], references: [id], onDelete: Restrict)
+
+  @@index([packageHash])
+  @@index([status, publishedAt])
+}
+
+model VisionCaptureSession {
+  id                  String                      @id @default(cuid())
+  sessionKey          String?                     @unique
+  waypointVersionId   String
+  purpose             String
+  actorType           String
+  actorId             String?
+  companionVersion    String?
+  protocolVersion     String?
+  captureApi          String?
+  captureResolution   String?
+  frameRate           Float?
+  durationMs          Int?
+  hardwarePath        String?
+  targetMetadata      String                      @default("{}") @db.LongText
+  qualitySummary      String                      @default("{}") @db.LongText
+  interruptionSummary String                      @default("{}") @db.LongText
+  consentFlags        String                      @default("{}") @db.LongText
+  retentionPolicy     String                      @default("DERIVED_ONLY")
+  manifestVersion     Int                         @default(1)
+  status              String                      @default("CREATED")
+  failureReason       String?                     @db.Text
+  createdAt           DateTime                    @default(now())
+  updatedAt           DateTime                    @default(now()) @updatedAt
+  startedAt           DateTime?
+  completedAt         DateTime?
+  waypointVersion     VisionWaypointVersion       @relation(fields: [waypointVersionId], references: [id], onDelete: Cascade)
+  recordingAssets     VisionRecordingAsset[]
+  interruptions       VisionCaptureInterruption[]
+  diagnosticBundles   VisionDiagnosticBundle[]
+
+  @@index([waypointVersionId, purpose, createdAt])
+  @@index([actorType, actorId, createdAt])
+}
+
+model VisionRecordingAsset {
+  id                String                @id @default(cuid())
+  waypointVersionId String
+  captureSessionId  String?
+  assetType         String
+  storageReference  String                @db.Text
+  contentHash       String
+  fileSize          Int
+  mediaType         String                @default("video/webm")
+  manifestVersion   Int                   @default(1)
+  artifactManifest  String                @default("{}") @db.LongText
+  durationMs        Int?
+  datasetPartition  String                @default("UNASSIGNED")
+  truthLabel        String                @default("UNKNOWN")
+  creatorLabel      String?
+  creatorNotes      String?               @db.Text
+  role              String                @default("UNASSIGNED")
+  isUsable          Boolean               @default(true)
+  segmentStartMs    Int?
+  segmentEndMs      Int?
+  sourceAssetId     String?
+  integrityState    String                @default("LOCAL_VERIFIED")
+  cloudState        String                @default("LOCAL_ONLY")
+  qualitySummary    String                @default("{}") @db.LongText
+  deletionStatus    String                @default("ACTIVE")
+  createdAt         DateTime              @default(now())
+  deletedAt         DateTime?
+  waypointVersion   VisionWaypointVersion @relation(fields: [waypointVersionId], references: [id], onDelete: Cascade)
+  captureSession    VisionCaptureSession? @relation(fields: [captureSessionId], references: [id], onDelete: SetNull)
+  regions           VisionRegion[]
+
+  @@unique([waypointVersionId, contentHash])
+  @@index([captureSessionId])
+  @@index([waypointVersionId, datasetPartition, truthLabel])
+}
+
+model VisionCaptureInterruption {
+  id               String               @id @default(cuid())
+  captureSessionId String
+  code             String
+  metadata         String               @default("{}") @db.LongText
+  recoverable      Boolean              @default(true)
+  occurredAt       DateTime             @default(now())
+  captureSession   VisionCaptureSession @relation(fields: [captureSessionId], references: [id], onDelete: Cascade)
+
+  @@index([captureSessionId, occurredAt])
+  @@index([code, occurredAt])
+}
+
+model VisionDiagnosticBundle {
+  id                String                @id @default(cuid())
+  captureSessionId  String?
+  actorType         String
+  actorId           String?
+  bundleReference   String                @db.Text
+  contentHash       String?
+  fileSize          Int
+  metadata          String                @default("{}") @db.LongText
+  containsRawFrames Boolean               @default(false)
+  consentAt         DateTime?
+  expiresAt         DateTime?
+  createdAt         DateTime              @default(now())
+  deletedAt         DateTime?
+  captureSession    VisionCaptureSession? @relation(fields: [captureSessionId], references: [id], onDelete: SetNull)
+
+  @@index([captureSessionId, createdAt])
+  @@index([actorType, actorId, createdAt])
+  @@index([expiresAt, deletedAt])
+}
+
+model VisionCapturePreference {
+  id                  String   @id @default(cuid())
+  ownerType           String
+  ownerId             String
+  deviceInstanceId    String
+  rememberTarget      Boolean  @default(false)
+  selectedTargetHash  String?
+  hotkeyBinding       String   @default("Control+Alt+F9")
+  hotkeyInteraction   String   @default("HOLD")
+  hotkeyEnabled       Boolean  @default(false)
+  previewEnabled      Boolean  @default(true)
+  diagnosticRetention Boolean  @default(false)
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  @@unique([ownerType, ownerId, deviceInstanceId])
+  @@index([ownerType, ownerId, updatedAt])
+}
+
+model VisionRegion {
+  id                String                @id @default(cuid())
+  waypointVersionId String
+  recordingAssetId  String?
+  regionType        String
+  coordinateSpace   String                @default("NORMALIZED_IMAGE")
+  geometry          String                @db.LongText
+  semanticLabel     String?
+  createdBy         String
+  createdAt         DateTime              @default(now())
+  updatedAt         DateTime              @updatedAt
+  waypointVersion   VisionWaypointVersion @relation(fields: [waypointVersionId], references: [id], onDelete: Cascade)
+  recordingAsset    VisionRecordingAsset? @relation(fields: [recordingAssetId], references: [id], onDelete: Cascade)
+
+  @@index([waypointVersionId, regionType])
+  @@index([recordingAssetId])
+}
+
+model VisionPoseRegion {
+  id                    String                @id @default(cuid())
+  waypointVersionId     String
+  coordinateSystem      String
+  shapeType             String
+  parameters            String                @db.LongText
+  classification        String
+  orientationRules      String                @default("{}") @db.LongText
+  targetVisibilityRules String                @default("{}") @db.LongText
+  authoringSource       String
+  createdAt             DateTime              @default(now())
+  updatedAt             DateTime              @updatedAt
+  waypointVersion       VisionWaypointVersion @relation(fields: [waypointVersionId], references: [id], onDelete: Cascade)
+
+  @@index([waypointVersionId, classification])
+}
+
+model VisionHardNegativeSet {
+  id                         String                @id @default(cuid())
+  waypointVersionId          String
+  name                       String
+  classification             String
+  strongestConfuserReference String?               @db.Text
+  metadata                   String                @default("{}") @db.LongText
+  createdAt                  DateTime              @default(now())
+  updatedAt                  DateTime              @updatedAt
+  waypointVersion            VisionWaypointVersion @relation(fields: [waypointVersionId], references: [id], onDelete: Cascade)
+
+  @@unique([waypointVersionId, name])
+  @@index([waypointVersionId, classification])
+}
+
+model VisionBuildJob {
+  id                      String                @id @default(cuid())
+  waypointVersionId       String
+  executionTarget         String                @default("LOCAL")
+  engineMetadata          String                @default("{}") @db.LongText
+  processingStage         String                @default("QUEUED")
+  status                  String                @default("QUEUED")
+  progress                Float                 @default(0)
+  logSummary              String                @default("[]") @db.LongText
+  outputSummary           String                @default("{}") @db.LongText
+  inputSchemaVersion      Int                   @default(1)
+  buildInput              String                @default("{}") @db.LongText
+  inputHash               String?
+  failureCode             String?
+  packageId               String?
+  packageHash             String?
+  report                  String                @default("{}") @db.LongText
+  providerMetadata        String                @default("{}") @db.LongText
+  reliabilityGrade        String?
+  automaticEligibility    Boolean               @default(false)
+  lastHeartbeatAt         DateTime?
+  cancellationRequestedAt DateTime?
+  createdAt               DateTime              @default(now())
+  startedAt               DateTime?
+  completedAt             DateTime?
+  waypointVersion         VisionWaypointVersion @relation(fields: [waypointVersionId], references: [id], onDelete: Cascade)
+  artifacts               VisionBuildArtifact[]
+
+  @@index([waypointVersionId, status, createdAt])
+}
+
+model VisionShadowAttempt {
+  id                     String                @id @default(cuid())
+  attemptId              String                @unique
+  waypointId             String
+  waypointVersionId      String
+  packageId              String
+  packageHash            String?
+  stageTokenHash         String
+  result                 String
+  guidanceCode           String?
+  failedGates            String                @default("[]") @db.LongText
+  evidenceDigest         String?
+  engineVersion          String
+  modelBundleVersion     String
+  provider               String
+  providerFallbackUsed   Boolean               @default(false)
+  capturedFrameCount     Int                   @default(0)
+  usableFrameCount       Int                   @default(0)
+  passingFrameCount      Int                   @default(0)
+  durationMs             Int
+  diagnostics            String                @default("{}") @db.LongText
+  humanTruthLabel        String?
+  captainDisposition     String?
+  rebuildDisposition     String?
+  rebuildParentAttemptId String?
+  shadowMode             Boolean               @default(true)
+  automaticProgression   Boolean               @default(false)
+  createdAt              DateTime              @default(now())
+  reviewedAt             DateTime?
+  waypoint               VisionWaypoint        @relation(fields: [waypointId], references: [id], onDelete: Restrict)
+  waypointVersion        VisionWaypointVersion @relation(fields: [waypointVersionId], references: [id], onDelete: Restrict)
+
+  @@index([waypointVersionId, result, createdAt])
+  @@index([humanTruthLabel, createdAt])
+}
+
+model VisionBuildArtifact {
+  id                String                   @id @default(cuid())
+  waypointVersionId String
+  buildJobId        String?
+  artifactType      String
+  storageReference  String                   @db.Text
+  contentHash       String
+  fileSize          Int
+  schemaVersion     Int                      @default(1)
+  createdAt         DateTime                 @default(now())
+  waypointVersion   VisionWaypointVersion    @relation(fields: [waypointVersionId], references: [id], onDelete: Cascade)
+  buildJob          VisionBuildJob?          @relation(fields: [buildJobId], references: [id], onDelete: SetNull)
+  certificationRuns VisionCertificationRun[]
+
+  @@unique([waypointVersionId, contentHash, artifactType])
+  @@index([buildJobId])
+}
+
+model VisionCertificationRun {
+  id                      String                  @id @default(cuid())
+  waypointVersionId       String
+  buildArtifactId         String?
+  validationPartitionHash String
+  lockedTestPartitionHash String
+  thresholds              String                  @default("{}") @db.LongText
+  profile                 String
+  metrics                 String                  @default("{}") @db.LongText
+  observedFalseResults    String                  @default("{}") @db.LongText
+  reliabilityGrade        String
+  approvedRuntimeModes    String                  @default("[]") @db.LongText
+  reviewerId              String?
+  reportReference         String?                 @db.Text
+  createdAt               DateTime                @default(now())
+  completedAt             DateTime?
+  waypointVersion         VisionWaypointVersion   @relation(fields: [waypointVersionId], references: [id], onDelete: Cascade)
+  buildArtifact           VisionBuildArtifact?    @relation(fields: [buildArtifactId], references: [id], onDelete: SetNull)
+  testRuns                VisionWaypointTestRun[]
+
+  @@index([waypointVersionId, createdAt])
+  @@index([buildArtifactId])
+}
+
+model VisionWaypointTestRun {
+  id                 String                  @id @default(cuid())
+  waypointVersionId  String
+  certificationRunId String?
+  testType           String
+  name               String                  @default("Untitled test")
+  instructions       String                  @default("") @db.Text
+  environment        String                  @default("{}") @db.LongText
+  assetRole          String                  @default("VALIDATION")
+  expectedResult     String
+  actualResult       String?
+  status             String                  @default("PENDING")
+  evidenceReference  String?                 @db.Text
+  createdAt          DateTime                @default(now())
+  completedAt        DateTime?
+  lockedAt           DateTime?
+  waypointVersion    VisionWaypointVersion   @relation(fields: [waypointVersionId], references: [id], onDelete: Cascade)
+  certificationRun   VisionCertificationRun? @relation(fields: [certificationRunId], references: [id], onDelete: SetNull)
+
+  @@index([waypointVersionId, testType, status])
+  @@index([certificationRunId])
+}
+
+model VisionWaypointVerificationProfile {
+  id            String         @id @default(cuid())
+  ownerId       String
+  name          String
+  schemaVersion Int            @default(1)
+  requirements  String         @default("{}") @db.LongText
+  archivedAt    DateTime?
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  owner         GameMasterUser @relation("VisionProfileOwner", fields: [ownerId], references: [id], onDelete: Cascade)
+
+  @@unique([ownerId, name])
+  @@index([ownerId, archivedAt])
+}
+
+model StoryWaypointBinding {
+  id                          String                 @id @default(cuid())
+  storyId                     String
+  blockId                     String                 @unique
+  waypointId                  String
+  waypointVersionId           String
+  runtimeMode                 String                 @default("DEVELOPMENT_MOCK")
+  scanInteraction             String                 @default("{}") @db.LongText
+  successEvent                String                 @default("vision.verification_succeeded")
+  retryMessageConfiguration   String                 @default("{}") @db.LongText
+  failureMessageConfiguration String                 @default("{}") @db.LongText
+  captainFallbackPolicy       String                 @default("{}") @db.LongText
+  offlineBehavior             String                 @default("CAPTAIN_FALLBACK")
+  assignmentPolicy            String                 @default("{}") @db.LongText
+  accessibilityPolicy         String                 @default("{}") @db.LongText
+  guidanceConfiguration       String                 @default("{}") @db.LongText
+  scanConfiguration           String                 @default("{}") @db.LongText
+  createdAt                   DateTime               @default(now())
+  updatedAt                   DateTime               @updatedAt
+  story                       TallTale               @relation(fields: [storyId], references: [id], onDelete: Cascade)
+  block                       StoryBlock             @relation(fields: [blockId], references: [id], onDelete: Cascade)
+  waypoint                    VisionWaypoint         @relation(fields: [waypointId], references: [id], onDelete: Restrict)
+  waypointVersion             VisionWaypointVersion  @relation(fields: [waypointVersionId], references: [id], onDelete: Restrict)
+  attempts                    VerificationAttempt[]
+  runtimeControls             VisionRuntimeControl[]
+
+  @@index([storyId, waypointVersionId])
+  @@index([waypointId, updatedAt])
+}
+
+model VisionPublishedBinding {
+  id                    String                @id @default(cuid())
+  bindingKey            String                @unique
+  publishedVersionId    String
+  storyId               String
+  stageId               String
+  waypointId            String
+  waypointVersionId     String
+  runtimeMode           String
+  scanInteraction       String                @default("{}") @db.LongText
+  scanConfiguration     String                @default("{}") @db.LongText
+  successEvent          String
+  guidanceConfiguration String                @default("{}") @db.LongText
+  captainFallbackPolicy String                @default("{}") @db.LongText
+  offlineBehavior       String
+  assignmentPolicy      String                @default("{}") @db.LongText
+  accessibilityPolicy   String                @default("{}") @db.LongText
+  createdAt             DateTime              @default(now())
+  publishedVersion      PublishedTaleVersion  @relation(fields: [publishedVersionId], references: [id], onDelete: Cascade)
+  story                 TallTale              @relation(fields: [storyId], references: [id], onDelete: Restrict)
+  waypoint              VisionWaypoint        @relation(fields: [waypointId], references: [id], onDelete: Restrict)
+  waypointVersion       VisionWaypointVersion @relation(fields: [waypointVersionId], references: [id], onDelete: Restrict)
+  attempts              VerificationAttempt[]
+
+  @@unique([publishedVersionId, stageId])
+  @@index([storyId, stageId])
+  @@index([waypointVersionId, runtimeMode])
+}
+
+model VerificationAttempt {
+  id                      String                          @id @default(cuid())
+  storyId                 String
+  stageId                 String
+  publishedVersionId      String?
+  storyBindingId          String?
+  publishedBindingId      String?
+  playerId                String?
+  sessionId               String?
+  verificationRequestId   String?
+  waypointId              String
+  waypointVersionId       String
+  packageId               String?
+  packageHash             String?
+  runtimeMode             String                          @default("DEVELOPMENT_MOCK")
+  effectiveRuntimeMode    String                          @default("DEVELOPMENT_MOCK")
+  stageTokenHash          String?
+  stageTokenExpiresAt     DateTime?
+  storyStateVersion       Int?
+  companionInstanceId     String?
+  attemptState            String                          @default("IDLE")
+  result                  String?
+  guidanceCode            String?
+  evidenceDigest          String?
+  failedGates             String                          @default("[]") @db.LongText
+  diagnostics             String                          @default("{}") @db.LongText
+  engineVersion           String?
+  modelBundleVersion      String?
+  provider                String?
+  providerFallbackUsed    Boolean                         @default(false)
+  capturedFrameCount      Int                             @default(0)
+  usableFrameCount        Int                             @default(0)
+  passingFrameCount       Int                             @default(0)
+  durationMs              Int?
+  rawFramesRetained       Boolean                         @default(false)
+  platform                String
+  adapterType             String
+  eventDeliveryStatus     String                          @default("NOT_DELIVERED")
+  captainAction           String?
+  captainDecisionStatus   String                          @default("NOT_REQUIRED")
+  presentationStatus      String                          @default("NOT_REQUESTED")
+  offlineEventStatus      String                          @default("ONLINE")
+  mockScenario            String?
+  protocolVersion         String                          @default("1.0")
+  protocolMessageId       String?
+  idempotencyKey          String                          @unique
+  staleResultRejected     Boolean                         @default(false)
+  duplicateResultRejected Boolean                         @default(false)
+  createdAt               DateTime                        @default(now())
+  updatedAt               DateTime                        @updatedAt
+  startedAt               DateTime?
+  completedAt             DateTime?
+  resultReceivedAt        DateTime?
+  progressionAppliedAt    DateTime?
+  closedAt                DateTime?
+  story                   TallTale                        @relation(fields: [storyId], references: [id], onDelete: Restrict)
+  publishedVersion        PublishedTaleVersion?           @relation(fields: [publishedVersionId], references: [id], onDelete: SetNull)
+  storyBinding            StoryWaypointBinding?           @relation(fields: [storyBindingId], references: [id], onDelete: SetNull)
+  publishedBinding        VisionPublishedBinding?         @relation(fields: [publishedBindingId], references: [id], onDelete: SetNull)
+  session                 TaleSession?                    @relation(fields: [sessionId], references: [id], onDelete: SetNull)
+  player                  PlayerProfile?                  @relation(fields: [playerId], references: [id], onDelete: SetNull)
+  verificationRequest     TaleVerificationRequest?        @relation(fields: [verificationRequestId], references: [id], onDelete: SetNull)
+  waypoint                VisionWaypoint                  @relation(fields: [waypointId], references: [id], onDelete: Restrict)
+  waypointVersion         VisionWaypointVersion           @relation(fields: [waypointVersionId], references: [id], onDelete: Restrict)
+  transitions             VerificationAttemptTransition[]
+  evidenceBundles         VisionEvidenceBundle[]
+  captainDecisions        VisionCaptainDecision[]
+  presentationRuns        VisionPresentationRun[]
+  pendingEvents           VisionPendingEvent[]
+
+  @@index([sessionId, stageId, createdAt])
+  @@index([waypointVersionId, result, createdAt])
+  @@index([playerId, attemptState, createdAt])
+  @@index([verificationRequestId])
+  @@index([storyBindingId, runtimeMode, createdAt])
+  @@index([publishedVersionId, stageId, createdAt])
+  @@index([publishedBindingId, createdAt])
+}
+
+model VisionCaptainDecision {
+  id              String              @id @default(cuid())
+  attemptId       String
+  actorId         String
+  action          String
+  reason          String              @db.Text
+  truthLabel      String?
+  evidenceSummary String              @default("{}") @db.LongText
+  idempotencyKey  String              @unique
+  createdAt       DateTime            @default(now())
+  attempt         VerificationAttempt @relation(fields: [attemptId], references: [id], onDelete: Cascade)
+
+  @@index([attemptId, createdAt])
+  @@index([truthLabel, createdAt])
+}
+
+model VisionRuntimeControl {
+  id                  String                @id @default(cuid())
+  sessionId           String
+  storyBindingId      String?
+  stageId             String
+  configuredMode      String
+  effectiveMode       String
+  status              String                @default("ACTIVE")
+  automaticPaused     Boolean               @default(false)
+  certificationRunId  String?
+  fieldEvidenceStatus String                @default("MISSING")
+  demotionReason      String?               @db.Text
+  updatedBy           String?
+  createdAt           DateTime              @default(now())
+  updatedAt           DateTime              @updatedAt
+  session             TaleSession           @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  storyBinding        StoryWaypointBinding? @relation(fields: [storyBindingId], references: [id], onDelete: SetNull)
+
+  @@unique([sessionId, stageId])
+  @@index([storyBindingId, effectiveMode])
+  @@index([automaticPaused, updatedAt])
+}
+
+model VisionPresentationRun {
+  id             String              @id @default(cuid())
+  attemptId      String
+  storyEventKey  String
+  status         String              @default("PENDING")
+  errorCode      String?
+  recoveryAction String?
+  startedAt      DateTime?
+  completedAt    DateTime?
+  createdAt      DateTime            @default(now())
+  updatedAt      DateTime            @updatedAt
+  attempt        VerificationAttempt @relation(fields: [attemptId], references: [id], onDelete: Cascade)
+
+  @@unique([attemptId, storyEventKey])
+  @@index([status, updatedAt])
+}
+
+model VisionPendingEvent {
+  id                String               @id @default(cuid())
+  sessionId         String
+  attemptId         String?
+  eventId           String               @unique
+  idempotencyKey    String               @unique
+  eventType         String
+  payload           String               @default("{}") @db.LongText
+  storyStateVersion Int
+  payloadHash       String
+  status            String               @default("PENDING")
+  conflictReason    String?
+  observedAt        DateTime
+  createdAt         DateTime             @default(now())
+  syncedAt          DateTime?
+  session           TaleSession          @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  attempt           VerificationAttempt? @relation(fields: [attemptId], references: [id], onDelete: SetNull)
+
+  @@index([sessionId, status, createdAt])
+  @@index([attemptId, createdAt])
+}
+
+model VerificationAttemptTransition {
+  id        String              @id @default(cuid())
+  attemptId String
+  sequence  Int
+  fromState String?
+  toState   String
+  metadata  String              @default("{}") @db.LongText
+  createdAt DateTime            @default(now())
+  attempt   VerificationAttempt @relation(fields: [attemptId], references: [id], onDelete: Cascade)
+
+  @@unique([attemptId, sequence])
+  @@index([attemptId, createdAt])
+}
+
+model VisionEvidenceBundle {
+  id               String              @id @default(cuid())
+  attemptId        String
+  metadata         String              @default("{}") @db.LongText
+  retentionPolicy  String              @default("DERIVED_ONLY")
+  storageReference String?             @db.Text
+  contentHash      String?
+  expiresAt        DateTime?
+  createdAt        DateTime            @default(now())
+  deletedAt        DateTime?
+  attempt          VerificationAttempt @relation(fields: [attemptId], references: [id], onDelete: Cascade)
+
+  @@index([attemptId, createdAt])
+  @@index([expiresAt, deletedAt])
+}
+
+model CompanionDevice {
+  id              String           @id @default(cuid())
+  ownerId         String
+  displayName     String
+  instanceId      String           @unique
+  protocolVersion String
+  capabilities    String           @default("{}") @db.LongText
+  lastSeenAt      DateTime?
+  revokedAt       DateTime?
+  createdAt       DateTime         @default(now())
+  owner           GameMasterUser   @relation("CompanionDeviceOwner", fields: [ownerId], references: [id], onDelete: Cascade)
+  pairingSessions PairingSession[]
+
+  @@index([ownerId, revokedAt, lastSeenAt])
+}
+
+model PairingSession {
+  id                String          @id @default(cuid())
+  ownerId           String
+  companionDeviceId String
+  pairingCodeHash   String          @unique
+  sessionSecretHash String          @unique
+  allowedOrigin     String
+  expiresAt         DateTime
+  pairedAt          DateTime?
+  revokedAt         DateTime?
+  createdAt         DateTime        @default(now())
+  owner             GameMasterUser  @relation("PairingSessionOwner", fields: [ownerId], references: [id], onDelete: Cascade)
+  companionDevice   CompanionDevice @relation(fields: [companionDeviceId], references: [id], onDelete: Cascade)
+
+  @@index([ownerId, expiresAt, revokedAt])
+  @@index([companionDeviceId, expiresAt])
+}
+
+model VisionRelease {
+  id                  String                    @id
+  version             String
+  channel             String
+  status              String                    @default("EXPERIMENTAL")
+  sourceCommit        String
+  buildId             String
+  readinessStatus     String                    @default("NO_GO")
+  releaseManifest     String                    @default("{}") @db.LongText
+  evidenceSummary     String                    @default("{}") @db.LongText
+  knownLimitations    String                    @default("[]") @db.LongText
+  createdAt           DateTime                  @default(now())
+  updatedAt           DateTime                  @updatedAt
+  publishedAt         DateTime?
+  issues              VisionReleaseIssue[]
+  artifacts           VisionReleaseArtifact[]
+  compatibilityRules  VisionCompatibilityRule[]
+  reliabilityRuns     VisionReliabilityRun[]
+  testRuns            VisionReleaseTestRun[]
+
+  @@unique([version, channel])
+  @@index([channel, status, updatedAt])
+}
+
+model VisionReleaseIssue {
+  id                   String        @id
+  releaseId            String
+  category             String
+  severity             String
+  component            String
+  title                String
+  reproductionSteps    String        @default("[]") @db.LongText
+  affectedVersions     String        @default("[]") @db.LongText
+  owner                String
+  status               String        @default("OPEN")
+  fixCommit            String?
+  regressionTest       String?       @db.Text
+  releaseBlocking      Boolean       @default(true)
+  evidence             String        @default("{}") @db.LongText
+  createdAt            DateTime      @default(now())
+  updatedAt            DateTime      @updatedAt
+  closedAt             DateTime?
+  release              VisionRelease @relation(fields: [releaseId], references: [id], onDelete: Restrict)
+
+  @@index([releaseId, status, releaseBlocking])
+  @@index([severity, status])
+}
+
+model VisionDatasetManifest {
+  id                  String                 @id
+  revision            String                 @unique
+  evidenceClass       String
+  waypointVersionId   String?
+  manifestHash        String
+  manifest            String                 @db.LongText
+  lockedAt            DateTime?
+  createdAt           DateTime               @default(now())
+  reliabilityRuns     VisionReliabilityRun[]
+
+  @@index([waypointVersionId, evidenceClass])
+}
+
+model VisionReliabilityRun {
+  id                   String                @id @default(cuid())
+  releaseId            String
+  datasetManifestId    String
+  engineVersion        String
+  modelBundleVersion   String
+  packageHashes        String                @default("[]") @db.LongText
+  deterministicSeed    Int
+  status               String
+  resultSummary        String                @default("{}") @db.LongText
+  reportHash           String
+  reportReference      String                @db.Text
+  falseAccepts         Int                   @default(0)
+  firstAttemptSuccess  Float?
+  twoAttemptSuccess    Float?
+  p95DurationMs        Float?
+  createdAt            DateTime              @default(now())
+  completedAt          DateTime?
+  release              VisionRelease         @relation(fields: [releaseId], references: [id], onDelete: Restrict)
+  datasetManifest      VisionDatasetManifest @relation(fields: [datasetManifestId], references: [id], onDelete: Restrict)
+
+  @@index([releaseId, status, createdAt])
+  @@index([datasetManifestId, createdAt])
+}
+
+model VisionCompatibilityRule {
+  id                 String        @id
+  releaseId          String
+  component          String
+  currentVersion     String
+  minimumVersion     String?
+  maximumVersion     String?
+  status             String
+  reason             String        @db.Text
+  metadata           String        @default("{}") @db.LongText
+  createdAt          DateTime      @default(now())
+  release            VisionRelease @relation(fields: [releaseId], references: [id], onDelete: Restrict)
+
+  @@unique([releaseId, component])
+  @@index([component, status])
+}
+
+model VisionReleaseArtifact {
+  id                 String        @id @default(cuid())
+  releaseId          String
+  artifactType       String
+  version            String
+  platform           String
+  architecture       String
+  contentHash        String
+  fileSize           Int
+  signatureStatus    String
+  signatureIdentity  String?
+  provenance         String        @default("{}") @db.LongText
+  rollbackTarget     String?
+  createdAt          DateTime      @default(now())
+  release            VisionRelease @relation(fields: [releaseId], references: [id], onDelete: Restrict)
+
+  @@unique([releaseId, artifactType, platform, architecture])
+  @@index([contentHash])
+  @@index([signatureStatus, createdAt])
+}
+
+model VisionReleaseTestRun {
+  id                 String        @id @default(cuid())
+  releaseId          String
+  suite              String
+  category           String
+  environment        String        @default("{}") @db.LongText
+  status             String
+  evidence           String        @default("{}") @db.LongText
+  startedAt          DateTime?
+  completedAt        DateTime?
+  createdAt          DateTime      @default(now())
+  release            VisionRelease @relation(fields: [releaseId], references: [id], onDelete: Restrict)
+
+  @@index([releaseId, category, status])
+  @@index([suite, createdAt])
+}
+
+model VisionUpdateState {
+  id                  String   @id @default(cuid())
+  installationId      String   @unique
+  channel             String
+  currentVersion      String
+  targetVersion       String?
+  phase               String   @default("IDLE")
+  manifestHash        String?
+  stagedArtifactHash  String?
+  rollbackVersion     String?
+  lastHealthStatus    String?
+  errorCode           String?
+  state               String   @default("{}") @db.LongText
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  @@index([channel, phase, updatedAt])
+}
+
+model VisionImprovementCandidate {
+  id                   String   @id @default(cuid())
+  sourceAttemptId      String   @unique
+  waypointVersionId    String
+  humanTruthLabel      String
+  candidateReason      String   @db.Text
+  evidenceDigest       String?
+  derivedDiagnostics   String   @default("{}") @db.LongText
+  proposedPartition    String
+  rawFramesRetained    Boolean  @default(false)
+  consentReference     String?
+  status               String   @default("QUEUED")
+  dispositionReason    String?  @db.Text
+  createdAt            DateTime @default(now())
+  reviewedAt           DateTime?
+
+  @@index([waypointVersionId, status, createdAt])
+  @@index([humanTruthLabel, status])
 }

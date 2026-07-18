@@ -4,6 +4,7 @@ import { PublishValidationError } from "@/tall-tale/publishing";
 import { VerificationRejectedError } from "@/tall-tale/progression";
 import { logger } from "@/lib/logger";
 import { InvitationUnavailableError } from "@/platform/invitations";
+import { VisionDomainError } from "@/vision/domain";
 
 export function apiError(cause: unknown) {
   logger.warn(
@@ -19,7 +20,9 @@ export function apiError(cause: unknown) {
               ? cause.reason
               : cause instanceof InvitationUnavailableError
                 ? cause.code
-                : "REQUEST_FAILED",
+                : cause instanceof VisionDomainError
+                  ? cause.code
+                  : "REQUEST_FAILED",
     },
     "Tall Tale request rejected",
   );
@@ -40,6 +43,18 @@ export function apiError(cause: unknown) {
       cause.code === "ACCOUNT_REQUIRED" ? 401 : cause.code === "CONFLICT" ? 409 : cause.code === "INVALID" ? 400 : 410;
     return NextResponse.json({ error: cause.message, code: cause.code }, { status });
   }
+  if (cause instanceof VisionDomainError) {
+    const status = cause.code.includes("NOT_FOUND")
+      ? 404
+      : cause.code.includes("PERMISSION")
+        ? 403
+        : cause.code.includes("REQUIRED") || cause.code.includes("INVALID")
+          ? 422
+          : 409;
+    return NextResponse.json({ error: cause.message, code: cause.code, ...(cause.details ?? {}) }, { status });
+  }
+  if (cause instanceof Error && cause.name === "VisionFeatureDisabledError")
+    return NextResponse.json({ error: cause.message, code: "FEATURE_DISABLED" }, { status: 404 });
   const message = cause instanceof Error ? cause.message : "The request could not be completed.";
   if (message.includes("Unique constraint"))
     return NextResponse.json({ error: "That name or address is already in use." }, { status: 409 });

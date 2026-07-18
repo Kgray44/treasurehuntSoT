@@ -4,6 +4,7 @@ import { getBlockDefinition, serializeBlockRegistry } from "@/tall-tale/block-re
 import { journalPresentationSchema } from "@/tall-tale/journal-contract";
 import type { JsonObject, PublishedTaleSnapshot, StudioDraftInput } from "@/tall-tale/types";
 import { parseJsonObject } from "@/tall-tale/types";
+import { syncVisionBindingsForDraft } from "@/vision/lifecycle";
 
 export const slugSchema = z
   .string()
@@ -184,6 +185,13 @@ export async function getStudioTale(taleId: string) {
   });
   const draft = tale.drafts[0];
   if (!draft) throw new Error("The tale has no editable draft.");
+  const visionWaypointVersions = tale.creatorId
+    ? await db.visionWaypointVersion.findMany({
+        where: { waypoint: { ownerId: tale.creatorId, archivedAt: null }, publishedAt: { not: null } },
+        include: { waypoint: { select: { name: true, type: true } }, publication: { select: { packageHash: true } } },
+        orderBy: [{ waypoint: { name: "asc" } }, { versionNumber: "desc" }],
+      })
+    : [];
   return {
     tale: {
       id: tale.id,
@@ -266,6 +274,16 @@ export async function getStudioTale(taleId: string) {
       releaseNotes: version.releaseNotes,
       isCurrent: version.isCurrent,
       activeSessions: version._count.sessions,
+    })),
+    visionWaypointVersions: visionWaypointVersions.map((version) => ({
+      id: version.id,
+      waypointId: version.waypointId,
+      name: version.waypoint.name,
+      type: version.waypoint.type,
+      versionNumber: version.versionNumber,
+      lifecycleStatus: version.lifecycleStatus,
+      packageHash: version.publication?.packageHash ?? null,
+      publishedAt: version.publishedAt?.toISOString() ?? null,
     })),
     registry: serializeBlockRegistry(),
   };
@@ -410,6 +428,7 @@ export async function saveStudioDraft(taleId: string, unchecked: StudioDraftInpu
         });
       }
     }
+    await syncVisionBindingsForDraft(tx, taleId, flattened, userId);
     const updated = await tx.taleDraft.findUniqueOrThrow({ where: { id: draft.id } });
     return {
       autosaveVersion: updated.autosaveVersion,

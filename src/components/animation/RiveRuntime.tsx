@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Alignment, Fit, Layout, StateMachineInputType, useRive } from "@rive-app/react-webgl2";
+import { Alignment, Fit, Layout, RuntimeLoader, StateMachineInputType, useRive } from "@rive-app/react-webgl2";
 import type { MotionMode } from "@/animation/core/animation-types";
 import type { RiveAssetContract } from "@/animation/assets/rive-contracts";
 import { changeMountedMetric, recordAssetFailure } from "@/animation/core/metrics";
@@ -10,6 +10,9 @@ import type { RiveRuntimeInput, RiveSignal } from "./RiveStatefulObject";
 import { AssetFallback } from "./AssetFallback";
 
 type RuntimeInput = { name: string; type: number; value?: boolean | number; fire?: () => void };
+
+RuntimeLoader.setWasmUrl("/runtimes/rive.wasm");
+RuntimeLoader.setWasmFallbackUrl("/runtimes/rive-fallback.wasm");
 
 export function RiveRuntime({
   asset,

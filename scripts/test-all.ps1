@@ -26,6 +26,16 @@ if (-not $env:GM_USERNAME) { $env:GM_USERNAME = "kato" }
 if (-not $env:GM_PASSWORD) { $env:GM_PASSWORD = "development-captain-only" }
 if (-not $env:PLAYER_ACCESS_CODE) { $env:PLAYER_ACCESS_CODE = "development-moonwake" }
 $env:VALIDATION_ARTIFACTS = Join-Path $runtimeRoot "artifacts\validation"
+$env:FEATURE_VISION_BUILD_ENGINE = "true"
+$env:FEATURE_VISION_RUNTIME_ENGINE = "true"
+$env:FEATURE_VISION_RECONSTRUCTION = "true"
+$env:FEATURE_VISION_SECONDARY_MATCHER = "true"
+$env:FEATURE_SHADOW_VERIFICATION = "true"
+$env:FEATURE_LIVE_EXTERNAL_AR = "true"
+$env:FEATURE_VISION_PLAYER_STORY_INTEGRATION = "true"
+$env:FEATURE_VISION_CAPTAIN_INTEGRATION = "true"
+$env:FEATURE_VISION_OFFLINE_RECONCILIATION = "true"
+$env:FEATURE_AUTOMATIC_VISION_PROGRESSION = "false"
 
 function Invoke-ValidationStep {
     param([Parameter(Mandatory)][string]$Name, [Parameter(Mandatory)][string[]]$Arguments)
@@ -36,15 +46,27 @@ function Invoke-ValidationStep {
 if (-not $SkipBrowserInstall) {
     Invoke-ValidationStep -Name "Installing Playwright browsers" -Arguments @("node_modules/playwright/cli.js", "install", "chromium", "webkit")
 }
+Invoke-ValidationStep -Name "Staging pinned local Rive runtime" -Arguments @("scripts/prepare-rive-runtime.mjs")
 Invoke-ValidationStep -Name "Checking formatting" -Arguments @("node_modules/prettier/bin/prettier.cjs", "--check", ".")
 Invoke-ValidationStep -Name "Linting" -Arguments @("node_modules/eslint/bin/eslint.js", ".")
 Invoke-ValidationStep -Name "Type checking" -Arguments @("node_modules/typescript/bin/tsc", "--noEmit")
 Invoke-ValidationStep -Name "Running unit tests" -Arguments @("node_modules/vitest/vitest.mjs", "run")
+Invoke-ValidationStep -Name "Testing restricted desktop bridge and updater rollback" -Arguments @("--test", "apps/desktop/*.test.cjs")
+Invoke-ValidationStep -Name "Testing Companion capture contracts and runtime" -Arguments @("--test", "apps/companion/*.test.cjs")
+Invoke-ValidationStep -Name "Validating Phase B-6 release authority" -Arguments @("scripts/verify-vision-b6-release.cjs")
+Invoke-ValidationStep -Name "Running fast Phase B-6 replay gate" -Arguments @("scripts/run-vision-b6-replay.cjs", "--tier", "fast", "--parallel", "3", "--fail-on-regression", "--summary-only")
+Invoke-ValidationStep -Name "Running bounded Phase B-6 soak" -Arguments @("scripts/run-vision-b6-soak.cjs", "--quick")
 Invoke-ValidationStep -Name "Validating animation assets" -Arguments @("node_modules/tsx/dist/cli.mjs", "scripts/validate-animation-assets.ts")
 Invoke-ValidationStep -Name "Verifying seeded database" -Arguments @("node_modules/tsx/dist/cli.mjs", "scripts/verify-database.ts")
+Invoke-ValidationStep -Name "Verifying Phase B-1 waypoint fixture" -Arguments @("node_modules/tsx/dist/cli.mjs", "scripts/verify-vision-foundation.ts")
+Invoke-ValidationStep -Name "Verifying Phase B-2 capture persistence" -Arguments @("node_modules/tsx/dist/cli.mjs", "scripts/verify-capture-foundation.ts")
+Invoke-ValidationStep -Name "Verifying Phase B-3 authoring migration" -Arguments @("node_modules/tsx/dist/cli.mjs", "scripts/verify-authoring-foundation.ts")
+Invoke-ValidationStep -Name "Verifying representative pre-B-6 migration" -Arguments @("node_modules/tsx/dist/cli.mjs", "scripts/verify-b6-migration.ts")
+Invoke-ValidationStep -Name "Verifying persisted B-6 release foundation" -Arguments @("node_modules/tsx/dist/cli.mjs", "scripts/verify-release-foundation.ts")
 Invoke-ValidationStep -Name "Preparing legacy playthrough backfill proof" -Arguments @("node_modules/tsx/dist/cli.mjs", "scripts/verify-platform-backfill.ts", "--prepare")
 Invoke-ValidationStep -Name "Running additive platform backfill" -Arguments @("node_modules/tsx/dist/cli.mjs", "prisma/seed.ts", "--ensure")
 Invoke-ValidationStep -Name "Verifying additive platform backfill" -Arguments @("node_modules/tsx/dist/cli.mjs", "scripts/verify-platform-backfill.ts", "--verify")
+Invoke-ValidationStep -Name "Preparing B-5 production-engine integration fixture" -Arguments @("node_modules/tsx/dist/cli.mjs", "scripts/prepare-vision-b5-fixture.ts")
 Invoke-ValidationStep -Name "Running browser acceptance tests" -Arguments @("node_modules/playwright/cli.js", "test")
 Invoke-ValidationStep -Name "Verifying accepted database state" -Arguments @("node_modules/tsx/dist/cli.mjs", "scripts/verify-database.ts", "--acceptance")
 Invoke-ValidationStep -Name "Proving launcher seed preserves accepted progress" -Arguments @("node_modules/tsx/dist/cli.mjs", "prisma/seed.ts", "--ensure")

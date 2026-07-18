@@ -1,0 +1,77 @@
+{
+  "schemaVersion": 1,
+  "releaseId": "vision-b6-development-0.8.0",
+  "version": "0.8.0-b6",
+  "channel": "development",
+  "releaseStatus": "EXPERIMENTAL",
+  "readiness": "NO_GO",
+  "evaluatedAt": "2026-07-18T13:07:00.000Z",
+  "sections": [
+    {
+      "id": "automated-regression",
+      "label": "Automated regression",
+      "status": "FINAL_PASS",
+      "summary": "The definitive B-6 gate passed 115 unit, 6 desktop, 34 Companion, and 37 browser tests with 13 intentional WebKit mutation skips; all 11 SQLite migrations, seed preservation, production build, and restart checks passed."
+    },
+    {
+      "id": "reliability",
+      "label": "Reliability",
+      "status": "BLOCKED",
+      "summary": "Only synthetic production-engine fixtures exist; real locked pilot corpora are absent."
+    },
+    {
+      "id": "hardware-performance",
+      "label": "Hardware and performance",
+      "status": "BLOCKED",
+      "summary": "CPU synthetic timing exists; required provider/display/game-impact/long-run matrix is absent."
+    },
+    {
+      "id": "installer",
+      "label": "Installer",
+      "status": "BLOCKED",
+      "summary": "Local NSIS build and packaged native-capture smoke pass; clean-machine installation and removal evidence remains open."
+    },
+    {
+      "id": "signing",
+      "label": "Signing",
+      "status": "BLOCKED_EXTERNAL",
+      "summary": "Signing pipeline can be implemented, but no production certificate or signed artifact exists."
+    },
+    {
+      "id": "updates",
+      "label": "Updater and rollback",
+      "status": "BLOCKED",
+      "summary": "Integrity, active-session interlock, activation, interruption recovery, and rollback pass automated tests; clean-machine update evidence remains open."
+    },
+    {
+      "id": "security",
+      "label": "Security review",
+      "status": "BLOCKED",
+      "summary": "Existing boundaries have automated tests; independent B-6 review remains required."
+    },
+    {
+      "id": "privacy",
+      "label": "Privacy review",
+      "status": "BLOCKED",
+      "summary": "Local non-retention defaults are tested; independent B-6 validation remains required."
+    },
+    {
+      "id": "usability",
+      "label": "External usability",
+      "status": "BLOCKED",
+      "summary": "No external creator, uninvolved Player, or uninvolved Captain study has run."
+    },
+    {
+      "id": "documentation",
+      "label": "Documentation",
+      "status": "COMPLETE",
+      "summary": "Architecture, reliability, hardware, installation/update, security/privacy, distribution, usability, runbook, release notes, role guides, evidence, ADRs, and the completion report are present."
+    }
+  ],
+  "knownLimitations": [
+    "CPU_CLASSICAL is the only active vision provider.",
+    "Automatic progression remains disabled.",
+    "No public release trust claim is permitted.",
+    "Synthetic fixtures are not Sea of Thieves field evidence."
+  ]
+}

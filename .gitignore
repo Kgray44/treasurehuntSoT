@@ -20,6 +20,10 @@
 
 # production
 /build
+/dist/
+/.desktop-bundle/
+/public/runtimes/rive*.wasm
+/public/runtimes/rive-runtime.json
 
 # misc
 .DS_Store

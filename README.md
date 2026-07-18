@@ -4,7 +4,7 @@ Production-oriented foundation and fully automated local demo for a private naut
 
 ## Current phase
 
-The application is now a unified Tall Tale platform. The cinematic gateway opens distinct Player, Captain, and Creator workspaces without treating role choice as authorization. Players have durable identities, invitation acceptance, a multi-voyage library, live waiting/runtime state, and exact-version archives. Captains can create version-pinned crew voyages, deliver individually hashed link/QR/code/PIN invitations, manage invitation lifecycle, preview the Player-safe surface, and launch accepted crews. Creator Studio retains immutable publishing and now adds structured version comparison, restore-to-draft, and fork provenance.
+The application is now a unified Tall Tale platform. The cinematic gateway opens distinct Player, Captain, and Creator workspaces without treating role choice as authorization. Phase B-1 adds persisted, immutable-versioned Vision Waypoints, a strict protocol, platform adapters, an installable PWA shell, and a restricted Electron Windows shell without creating separate Player, Captain, or Studio applications. The authorized B-1 verifier is explicitly deterministic development-only: it does not capture a camera, inspect the game, or perform real vision inference.
 
 The original companion and expanded Game Master Command Center remain integrated compatibility surfaces. A shared animation director coordinates the harbor, journal, chart, artifact, gateway, and finale experiences without allowing presentation timing to outrun server truth. All committed content remains fictional development seed material.
 
@@ -39,6 +39,7 @@ The launcher creates an ignored `.env` when absent, installs the exact lockfile,
 - Returning Player development login: `sera` / the configured `PLAYER_PASSWORD` (or `PLAYER_ACCESS_CODE` fallback)
 - GM: `http://127.0.0.1:3000/quartermaster`
 - Studio: `http://127.0.0.1:3000/studio`
+- Vision Waypoint Studio: `http://127.0.0.1:3000/studio/vision-waypoints`
 - Captain: `http://127.0.0.1:3000/captain`
 - GM development login: `kato` / `development-captain-only`
 
@@ -79,8 +80,12 @@ Set unique local values in `.env`; the seed’s fallback values are development-
 | `npm run db:migrate:mysql:command-center` | Apply the Phase 3 production MySQL migration                          |
 | `npm run db:migrate:mysql:studio`         | Apply the production-parity Tall Tale Studio migration                |
 | `npm run db:migrate:mysql:platform`       | Apply the unified Tall Tale Platform migration                        |
+| `npm run db:migrate:mysql:vision`         | Apply the additive Phase B-1 MySQL migration                          |
+| `npm run desktop:dev`                     | Start the shared Next.js UI in the restricted Electron shell          |
+| `npm run desktop:test`                    | Test the desktop command allowlist and input validation               |
+| `npm run desktop:build`                   | Build Next standalone and a Windows NSIS installer                    |
 
-Full setup, validation stages, output locations, clean-clone instructions, and troubleshooting are in [local development](docs/local-development.md) and [testing](docs/testing.md). Unified identity, invitations, libraries, authorization, history, and migration are in [Tall Tale Platform](docs/tall-tale-platform.md); Studio architecture and operations are in [Tall Tale Studio](docs/tall-tale-studio.md). The future recognition seam is in [vision helper boundary](docs/future-vision-helper.md). Animation ownership, scene contracts, assets, performance, and the development lab are indexed from [animation architecture](docs/animation/architecture.md).
+Full setup, validation stages, output locations, clean-clone instructions, and troubleshooting are in [local development](docs/local-development.md) and [testing](docs/testing.md). Phase B-1 architecture, flags, desktop, PWA, protocol, API, security, test, and demonstration instructions are indexed from [the B-1 architecture](Development_Docs/AR/Phase_B1/B1_Architecture.md). Unified identity, invitations, libraries, authorization, history, and migration are in [Tall Tale Platform](docs/tall-tale-platform.md); Studio architecture and operations are in [Tall Tale Studio](docs/tall-tale-studio.md).
 
 ## Repository workflow
 

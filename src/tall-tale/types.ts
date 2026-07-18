@@ -3,7 +3,17 @@ export type JsonObject = Record<string, unknown>;
 export type InspectorField = {
   key: string;
   label: string;
-  kind: "text" | "textarea" | "number" | "boolean" | "select" | "asset" | "location" | "artifact" | "json";
+  kind:
+    | "text"
+    | "textarea"
+    | "number"
+    | "boolean"
+    | "select"
+    | "asset"
+    | "location"
+    | "artifact"
+    | "visionWaypointVersion"
+    | "json";
   required?: boolean;
   help?: string;
   options?: Array<{ value: string; label: string }>;

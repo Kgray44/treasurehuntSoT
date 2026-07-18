@@ -119,6 +119,16 @@ type Version = {
   isCurrent: boolean;
   activeSessions: number;
 };
+type VisionWaypointVersion = {
+  id: string;
+  waypointId: string;
+  name: string;
+  type: string;
+  versionNumber: number;
+  lifecycleStatus: string;
+  packageHash: string | null;
+  publishedAt: string | null;
+};
 type VersionComparison = {
   left: { label: string };
   right: { label: string };
@@ -142,6 +152,7 @@ type EditorData = {
   locations: LibraryRecord[];
   artifacts: LibraryRecord[];
   versions: Version[];
+  visionWaypointVersions: VisionWaypointVersion[];
   registry: RegistryItem[];
 };
 type DraftState = { tale: Tale; chapters: Chapter[] };
@@ -1115,6 +1126,7 @@ export function TaleEditor({
                         assets={data.assets}
                         locations={data.locations}
                         artifacts={data.artifacts}
+                        visionWaypointVersions={data.visionWaypointVersions}
                         onChange={(value) =>
                           updateSelected((block) => {
                             block.configuration[field.key] = value;
@@ -1878,6 +1890,7 @@ function Field({
   assets,
   locations,
   artifacts,
+  visionWaypointVersions,
   onChange,
 }: {
   field: InspectorField;
@@ -1885,6 +1898,7 @@ function Field({
   assets: Asset[];
   locations: LibraryRecord[];
   artifacts: LibraryRecord[];
+  visionWaypointVersions: VisionWaypointVersion[];
   onChange: (value: unknown) => void;
 }) {
   const label = (
@@ -1987,6 +2001,21 @@ function Field({
       </label>
     );
   }
+  if (field.kind === "visionWaypointVersion")
+    return (
+      <label>
+        {label}
+        <select value={String(value ?? "")} onChange={(event) => onChange(event.target.value || null)}>
+          <option value="">Choose a published version</option>
+          {visionWaypointVersions.map((version) => (
+            <option key={version.id} value={version.id}>
+              {version.name} · v{version.versionNumber} · {version.lifecycleStatus.toLocaleLowerCase()}
+            </option>
+          ))}
+        </select>
+        {field.help && <small>{field.help}</small>}
+      </label>
+    );
   if (field.kind === "json")
     return (
       <label>

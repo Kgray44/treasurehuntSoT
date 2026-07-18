@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import type { JsonObject } from "@/tall-tale/types";
+import { VisionAttemptDiagnostics } from "@/components/captain/VisionAttemptDiagnostics";
 
 type State = {
   session: {
@@ -244,6 +245,7 @@ export function CaptainSessionControl({ sessionId, authenticated }: { sessionId:
             ))}
           </ol>
         </section>
+        <VisionAttemptDiagnostics sessionId={sessionId} />
         {process.env.NODE_ENV !== "production" && (
           <section className="verification-simulator">
             <p className="card-kicker">Development tool · future provider seam</p>

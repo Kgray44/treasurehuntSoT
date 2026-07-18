@@ -1,0 +1,107 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-07-18T10:11:19.827Z",
+  "statement": "Synthetic mathematical fixtures execute the production engine but are not real Sea of Thieves pilot evidence.",
+  "hardware": {
+    "platform": "win32 10.0.26200 x64",
+    "cpu": "AMD Ryzen AI 7 350 w/ Radeon 860M",
+    "logicalCores": 16,
+    "totalMemoryBytes": 33413779456,
+    "node": "v24.18.0"
+  },
+  "performance": {
+    "provider": "CPU_CLASSICAL",
+    "gpuBackend": "NOT_IMPLEMENTED_NO_GPU_TESTS_RUN",
+    "wallDurationMs": 1298,
+    "userCpuMs": 1422,
+    "systemCpuMs": 94,
+    "rssStartedBytes": 56426496,
+    "rssFinishedBytes": 142495744,
+    "observedPeakRssBytes": 142495744,
+    "observedRssDeltaBytes": 86069248,
+    "measurementScope": "single-process synthetic replay; not a game-impact benchmark"
+  },
+  "pilots": [
+    {
+      "pilotId": "pilot1",
+      "label": "Easy exact landmark",
+      "evidenceClass": "SYNTHETIC_MATHEMATICAL_FIXTURE",
+      "seaOfThievesClaim": false,
+      "buildInputHash": "sha256:6b91df9c73f7ef6509bad7dd26cf9b330d148a6c98980f95414e6cfc34314853",
+      "build": {
+        "status": "COMPLETED",
+        "reliabilityGrade": "EXCELLENT",
+        "durationMs": 491,
+        "packageHash": "sha256:a4b3085257a6b267b0dfb0b885239fb40646c8415cfe361364901f9c30a0e261"
+      },
+      "runtime": {
+        "positive": {
+          "result": "VERIFIED",
+          "durationMs": 69
+        },
+        "negative": {
+          "result": "NOT_AT_TARGET",
+          "durationMs": 48
+        },
+        "insufficient": {
+          "result": "INSUFFICIENT_VISUAL_EVIDENCE",
+          "durationMs": 23
+        }
+      }
+    },
+    {
+      "pilotId": "pilot2",
+      "label": "Moderate natural location",
+      "evidenceClass": "SYNTHETIC_MATHEMATICAL_FIXTURE",
+      "seaOfThievesClaim": false,
+      "buildInputHash": "sha256:2433842a90f57df1590216f2bd5e8d24829acef1f8ceb1ebee85942ac9ffcde6",
+      "build": {
+        "status": "COMPLETED",
+        "reliabilityGrade": "EXCELLENT",
+        "durationMs": 364,
+        "packageHash": "sha256:d00e1f19f63a873dfd0636b627d8f0526624572b5ce4544a3c467588955554b6"
+      },
+      "runtime": {
+        "positive": {
+          "result": "VERIFIED",
+          "durationMs": 50
+        },
+        "negative": {
+          "result": "AMBIGUOUS",
+          "durationMs": 38
+        },
+        "insufficient": {
+          "result": "INSUFFICIENT_VISUAL_EVIDENCE",
+          "durationMs": 13
+        }
+      }
+    },
+    {
+      "pilotId": "pilot3",
+      "label": "Difficult confusable viewpoint",
+      "evidenceClass": "SYNTHETIC_MATHEMATICAL_FIXTURE",
+      "seaOfThievesClaim": false,
+      "buildInputHash": "sha256:0e01c54c3e16cf88e51ab79d8b49bf7996697de5909733be8993ff633f1a3f58",
+      "build": {
+        "status": "COMPLETED",
+        "reliabilityGrade": "EXCELLENT",
+        "durationMs": 337,
+        "packageHash": "sha256:f920325119d3d971232bcb242684ec06264b21aad22e22e47e4b480b060570f5"
+      },
+      "runtime": {
+        "positive": {
+          "result": "VERIFIED",
+          "durationMs": 53
+        },
+        "negative": {
+          "result": "AMBIGUOUS",
+          "durationMs": 38
+        },
+        "insufficient": {
+          "result": "INSUFFICIENT_VISUAL_EVIDENCE",
+          "durationMs": 14
+        }
+      }
+    }
+  ]
+}

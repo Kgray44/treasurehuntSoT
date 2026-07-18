@@ -1,0 +1,739 @@
+{
+  "schemaVersion": 1,
+  "datasetId": "vision-b6-synthetic-corpus",
+  "revision": "synthetic-v1-2026-07-18",
+  "manifestHash": "sha256:2aa5006b9c3352d17cdc62389a4b9b61b596bea670ee37d2ad4b4ea780e9843b",
+  "evidenceClass": "SYNTHETIC_MATHEMATICAL_FIXTURE",
+  "statement": "This corpus executes production engine code but is not Sea of Thieves field evidence and cannot approve automatic or public release.",
+  "deterministicSeed": 6102026,
+  "lockedAt": "2026-07-18T12:00:00.000Z",
+  "partitions": ["REFERENCE_BUILD", "CALIBRATION", "VALIDATION", "LOCKED_POSITIVE", "LOCKED_NEGATIVE", "REGRESSION"],
+  "cases": [
+    {
+      "id": "pilot1-reference-target",
+      "waypoint": "waypoint_pilot1",
+      "waypointVersion": "version_pilot1_0001",
+      "partition": "REFERENCE_BUILD",
+      "expectedResult": "REFERENCE_ONLY",
+      "source": "build:target",
+      "assetHash": "sha256:9a7b24542a076c02f6e7eaa1f7d09480d5a020c578ec645c53044d4d301b8270",
+      "captureConditions": {
+        "environment": "synthetic luminance generator",
+        "description": "Synthetic target references used to build the package."
+      },
+      "truthLabel": {
+        "label": "REFERENCE_ONLY",
+        "reviewed": true,
+        "reviewerClass": "FIXTURE_AUTHOR",
+        "independent": false
+      },
+      "mayBeUsedForCalibration": false,
+      "locked": false,
+      "expectedGuidance": "NOT_APPLICABLE"
+    },
+    {
+      "id": "pilot1-reference-negative",
+      "waypoint": "waypoint_pilot1",
+      "waypointVersion": "version_pilot1_0001",
+      "partition": "REFERENCE_BUILD",
+      "expectedResult": "REFERENCE_ONLY",
+      "source": "build:hard_negative",
+      "assetHash": "sha256:76d7a4ef082ac5c6b3c2ebd1c9702f5ae0b259d05a643f85f8a26bb3d89f798d",
+      "captureConditions": {
+        "environment": "synthetic luminance generator",
+        "description": "Synthetic hard-negative references used to build the package."
+      },
+      "truthLabel": {
+        "label": "REFERENCE_ONLY",
+        "reviewed": true,
+        "reviewerClass": "FIXTURE_AUTHOR",
+        "independent": false
+      },
+      "mayBeUsedForCalibration": false,
+      "locked": false,
+      "expectedGuidance": "NOT_APPLICABLE"
+    },
+    {
+      "id": "pilot1-calibration-positive",
+      "waypoint": "waypoint_pilot1",
+      "waypointVersion": "version_pilot1_0001",
+      "partition": "CALIBRATION",
+      "expectedResult": "VERIFIED",
+      "source": "release:calibration-positive",
+      "assetHash": "sha256:e33b4086450e2fd5aec881ff1604fda98c6092da60356a57c46a2af30576ab19",
+      "captureConditions": {
+        "environment": "synthetic luminance generator",
+        "description": "Independent synthetic positive sequence reserved for threshold comparison."
+      },
+      "truthLabel": {
+        "label": "VERIFIED",
+        "reviewed": true,
+        "reviewerClass": "FIXTURE_AUTHOR",
+        "independent": false
+      },
+      "mayBeUsedForCalibration": true,
+      "locked": false,
+      "expectedGuidance": "VERIFICATION_SUCCESS"
+    },
+    {
+      "id": "pilot1-calibration-negative",
+      "waypoint": "waypoint_pilot1",
+      "waypointVersion": "version_pilot1_0001",
+      "partition": "CALIBRATION",
+      "expectedResult": "NOT_VERIFIED",
+      "source": "release:calibration-negative",
+      "assetHash": "sha256:320e99f228a7aa65e365392702a921512b7bbe2e27ed5302f6eaa84f0b10cb3e",
+      "captureConditions": {
+        "environment": "synthetic luminance generator",
+        "description": "Independent synthetic negative sequence reserved for threshold comparison."
+      },
+      "truthLabel": {
+        "label": "NOT_VERIFIED",
+        "reviewed": true,
+        "reviewerClass": "FIXTURE_AUTHOR",
+        "independent": false
+      },
+      "mayBeUsedForCalibration": true,
+      "locked": false,
+      "expectedGuidance": "NON_SUCCESS"
+    },
+    {
+      "id": "pilot1-validation-positive",
+      "waypoint": "waypoint_pilot1",
+      "waypointVersion": "version_pilot1_0001",
+      "partition": "VALIDATION",
+      "expectedResult": "VERIFIED",
+      "source": "build:validation_positive",
+      "assetHash": "sha256:12287de3f4acd69f0ab68625b3c1f2316cbb009f5afd46c0d5c9538243d273c3",
+      "captureConditions": {
+        "environment": "synthetic luminance generator",
+        "description": "Independent synthetic positive development comparison."
+      },
+      "truthLabel": {
+        "label": "VERIFIED",
+        "reviewed": true,
+        "reviewerClass": "FIXTURE_AUTHOR",
+        "independent": false
+      },
+      "mayBeUsedForCalibration": false,
+      "locked": false,
+      "expectedGuidance": "VERIFICATION_SUCCESS"
+    },
+    {
+      "id": "pilot1-validation-negative",
+      "waypoint": "waypoint_pilot1",
+      "waypointVersion": "version_pilot1_0001",
+      "partition": "VALIDATION",
+      "expectedResult": "NOT_VERIFIED",
+      "source": "build:validation_negative",
+      "assetHash": "sha256:1691cd8ae51fe4c8f676784c0ace10e64411424d1b23e5224390840e475f5178",
+      "captureConditions": {
+        "environment": "synthetic luminance generator",
+        "description": "Independent synthetic negative development comparison."
+      },
+      "truthLabel": {
+        "label": "NOT_VERIFIED",
+        "reviewed": true,
+        "reviewerClass": "FIXTURE_AUTHOR",
+        "independent": false
+      },
+      "mayBeUsedForCalibration": false,
+      "locked": false,
+      "expectedGuidance": "NON_SUCCESS"
+    },
+    {
+      "id": "pilot1-locked-positive",
+      "waypoint": "waypoint_pilot1",
+      "waypointVersion": "version_pilot1_0001",
+      "partition": "LOCKED_POSITIVE",
+      "expectedResult": "VERIFIED",
+      "source": "build:locked_positive",
+      "assetHash": "sha256:dc09815e6fa10c0786f2022ac8ed6d310fa543fa56c2b95901e8474f1001e057",
+      "captureConditions": {
+        "environment": "synthetic luminance generator",
+        "description": "Locked synthetic legitimate scan."
+      },
+      "truthLabel": {
+        "label": "VERIFIED",
+        "reviewed": true,
+        "reviewerClass": "FIXTURE_AUTHOR",
+        "independent": false
+      },
+      "mayBeUsedForCalibration": false,
+      "locked": true,
+      "expectedGuidance": "VERIFICATION_SUCCESS"
+    },
+    {
+      "id": "pilot1-locked-negative",
+      "waypoint": "waypoint_pilot1",
+      "waypointVersion": "version_pilot1_0001",
+      "partition": "LOCKED_NEGATIVE",
+      "expectedResult": "NOT_VERIFIED",
+      "source": "build:locked_negative",
+      "assetHash": "sha256:67aca1ccaca80ec23bc9fe37f2df88257b3e71fef000ef14b2ebb2a228ce9b76",
+      "captureConditions": {
+        "environment": "synthetic luminance generator",
+        "description": "Locked synthetic invalid scene."
+      },
+      "truthLabel": {
+        "label": "NOT_VERIFIED",
+        "reviewed": true,
+        "reviewerClass": "FIXTURE_AUTHOR",
+        "independent": false
+      },
+      "mayBeUsedForCalibration": false,
+      "locked": true,
+      "expectedGuidance": "NON_SUCCESS"
+    },
+    {
+      "id": "pilot1-regression-positive",
+      "waypoint": "waypoint_pilot1",
+      "waypointVersion": "version_pilot1_0001",
+      "partition": "REGRESSION",
+      "expectedResult": "VERIFIED",
+      "source": "release:regression-positive",
+      "assetHash": "sha256:9ae8adac623234f9708c81351ad1b8d22b47d92d60b1f608ff2e637a1c5def50",
+      "captureConditions": {
+        "environment": "synthetic luminance generator",
+        "description": "Historically important wider synthetic positive framing."
+      },
+      "truthLabel": {
+        "label": "VERIFIED",
+        "reviewed": true,
+        "reviewerClass": "FIXTURE_AUTHOR",
+        "independent": false
+      },
+      "mayBeUsedForCalibration": false,
+      "locked": true,
+      "expectedGuidance": "VERIFICATION_SUCCESS"
+    },
+    {
+      "id": "pilot1-regression-negative",
+      "waypoint": "waypoint_pilot1",
+      "waypointVersion": "version_pilot1_0001",
+      "partition": "REGRESSION",
+      "expectedResult": "NOT_VERIFIED",
+      "source": "release:regression-negative",
+      "assetHash": "sha256:33b7864bc151456c9b322189d420b7d06fb86ec83d51708b6020d0ae4696183a",
+      "captureConditions": {
+        "environment": "synthetic luminance generator",
+        "description": "Strong independent synthetic confuser."
+      },
+      "truthLabel": {
+        "label": "NOT_VERIFIED",
+        "reviewed": true,
+        "reviewerClass": "FIXTURE_AUTHOR",
+        "independent": false
+      },
+      "mayBeUsedForCalibration": false,
+      "locked": true,
+      "expectedGuidance": "NON_SUCCESS"
+    },
+    {
+      "id": "pilot1-regression-insufficient",
+      "waypoint": "waypoint_pilot1",
+      "waypointVersion": "version_pilot1_0001",
+      "partition": "REGRESSION",
+      "expectedResult": "INSUFFICIENT_VISUAL_EVIDENCE",
+      "source": "release:regression-insufficient",
+      "assetHash": "sha256:457af81c5131e8ed2b1f8733f31460f32e90000412de80aa77ed333a13cdd8ef",
+      "captureConditions": {
+        "environment": "synthetic luminance generator",
+        "description": "Dark unusable synthetic evidence."
+      },
+      "truthLabel": {
+        "label": "INSUFFICIENT_VISUAL_EVIDENCE",
+        "reviewed": true,
+        "reviewerClass": "FIXTURE_AUTHOR",
+        "independent": false
+      },
+      "mayBeUsedForCalibration": false,
+      "locked": true,
+      "expectedGuidance": "NO_STABLE_FEATURES"
+    },
+    {
+      "id": "pilot2-reference-target",
+      "waypoint": "waypoint_pilot2",
+      "waypointVersion": "version_pilot2_0001",
+      "partition": "REFERENCE_BUILD",
+      "expectedResult": "REFERENCE_ONLY",
+      "source": "build:target",
+      "assetHash": "sha256:edde597ef64bb4078fd779f0d9819cfe8dab520ef2b389342f4e744eb9a307f7",
+      "captureConditions": {
+        "environment": "synthetic luminance generator",
+        "description": "Synthetic target references used to build the package."
+      },
+      "truthLabel": {
+        "label": "REFERENCE_ONLY",
+        "reviewed": true,
+        "reviewerClass": "FIXTURE_AUTHOR",
+        "independent": false
+      },
+      "mayBeUsedForCalibration": false,
+      "locked": false,
+      "expectedGuidance": "NOT_APPLICABLE"
+    },
+    {
+      "id": "pilot2-reference-negative",
+      "waypoint": "waypoint_pilot2",
+      "waypointVersion": "version_pilot2_0001",
+      "partition": "REFERENCE_BUILD",
+      "expectedResult": "REFERENCE_ONLY",
+      "source": "build:hard_negative",
+      "assetHash": "sha256:c27457860ab6310e67321a67f4be9f0674d3e19ec7f11da9b2207d40ddbde379",
+      "captureConditions": {
+        "environment": "synthetic luminance generator",
+        "description": "Synthetic hard-negative references used to build the package."
+      },
+      "truthLabel": {
+        "label": "REFERENCE_ONLY",
+        "reviewed": true,
+        "reviewerClass": "FIXTURE_AUTHOR",
+        "independent": false
+      },
+      "mayBeUsedForCalibration": false,
+      "locked": false,
+      "expectedGuidance": "NOT_APPLICABLE"
+    },
+    {
+      "id": "pilot2-calibration-positive",
+      "waypoint": "waypoint_pilot2",
+      "waypointVersion": "version_pilot2_0001",
+      "partition": "CALIBRATION",
+      "expectedResult": "VERIFIED",
+      "source": "release:calibration-positive",
+      "assetHash": "sha256:418657ab93904cb9f4880b8605f7d67e882cefcd53adacfada40e8608dc7147e",
+      "captureConditions": {
+        "environment": "synthetic luminance generator",
+        "description": "Independent synthetic positive sequence reserved for threshold comparison."
+      },
+      "truthLabel": {
+        "label": "VERIFIED",
+        "reviewed": true,
+        "reviewerClass": "FIXTURE_AUTHOR",
+        "independent": false
+      },
+      "mayBeUsedForCalibration": true,
+      "locked": false,
+      "expectedGuidance": "VERIFICATION_SUCCESS"
+    },
+    {
+      "id": "pilot2-calibration-negative",
+      "waypoint": "waypoint_pilot2",
+      "waypointVersion": "version_pilot2_0001",
+      "partition": "CALIBRATION",
+      "expectedResult": "NOT_VERIFIED",
+      "source": "release:calibration-negative",
+      "assetHash": "sha256:948c0995457539d79829d1749c637cfb596778e05f857062995c8db48132b4f3",
+      "captureConditions": {
+        "environment": "synthetic luminance generator",
+        "description": "Independent synthetic negative sequence reserved for threshold comparison."
+      },
+      "truthLabel": {
+        "label": "NOT_VERIFIED",
+        "reviewed": true,
+        "reviewerClass": "FIXTURE_AUTHOR",
+        "independent": false
+      },
+      "mayBeUsedForCalibration": true,
+      "locked": false,
+      "expectedGuidance": "NON_SUCCESS"
+    },
+    {
+      "id": "pilot2-validation-positive",
+      "waypoint": "waypoint_pilot2",
+      "waypointVersion": "version_pilot2_0001",
+      "partition": "VALIDATION",
+      "expectedResult": "VERIFIED",
+      "source": "build:validation_positive",
+      "assetHash": "sha256:0bfcfd910e48d79784dbb79f587814bd8cabb130d9a5fc88b3a2abf81c36ecfc",
+      "captureConditions": {
+        "environment": "synthetic luminance generator",
+        "description": "Independent synthetic positive development comparison."
+      },
+      "truthLabel": {
+        "label": "VERIFIED",
+        "reviewed": true,
+        "reviewerClass": "FIXTURE_AUTHOR",
+        "independent": false
+      },
+      "mayBeUsedForCalibration": false,
+      "locked": false,
+      "expectedGuidance": "VERIFICATION_SUCCESS"
+    },
+    {
+      "id": "pilot2-validation-negative",
+      "waypoint": "waypoint_pilot2",
+      "waypointVersion": "version_pilot2_0001",
+      "partition": "VALIDATION",
+      "expectedResult": "NOT_VERIFIED",
+      "source": "build:validation_negative",
+      "assetHash": "sha256:d71da3db450bc445a082005016029ffa9dde1fac01d3865a8cb48ea128278c6b",
+      "captureConditions": {
+        "environment": "synthetic luminance generator",
+        "description": "Independent synthetic negative development comparison."
+      },
+      "truthLabel": {
+        "label": "NOT_VERIFIED",
+        "reviewed": true,
+        "reviewerClass": "FIXTURE_AUTHOR",
+        "independent": false
+      },
+      "mayBeUsedForCalibration": false,
+      "locked": false,
+      "expectedGuidance": "NON_SUCCESS"
+    },
+    {
+      "id": "pilot2-locked-positive",
+      "waypoint": "waypoint_pilot2",
+      "waypointVersion": "version_pilot2_0001",
+      "partition": "LOCKED_POSITIVE",
+      "expectedResult": "VERIFIED",
+      "source": "build:locked_positive",
+      "assetHash": "sha256:9d9a05e11635ad71d59441ecac06aaac01aa902ac6516b4ac60a322773d25165",
+      "captureConditions": {
+        "environment": "synthetic luminance generator",
+        "description": "Locked synthetic legitimate scan."
+      },
+      "truthLabel": {
+        "label": "VERIFIED",
+        "reviewed": true,
+        "reviewerClass": "FIXTURE_AUTHOR",
+        "independent": false
+      },
+      "mayBeUsedForCalibration": false,
+      "locked": true,
+      "expectedGuidance": "VERIFICATION_SUCCESS"
+    },
+    {
+      "id": "pilot2-locked-negative",
+      "waypoint": "waypoint_pilot2",
+      "waypointVersion": "version_pilot2_0001",
+      "partition": "LOCKED_NEGATIVE",
+      "expectedResult": "NOT_VERIFIED",
+      "source": "build:locked_negative",
+      "assetHash": "sha256:410eef16b847486eaeaf77195f35a844166423784550c4c8bda5eb3657164418",
+      "captureConditions": {
+        "environment": "synthetic luminance generator",
+        "description": "Locked synthetic invalid scene."
+      },
+      "truthLabel": {
+        "label": "NOT_VERIFIED",
+        "reviewed": true,
+        "reviewerClass": "FIXTURE_AUTHOR",
+        "independent": false
+      },
+      "mayBeUsedForCalibration": false,
+      "locked": true,
+      "expectedGuidance": "NON_SUCCESS"
+    },
+    {
+      "id": "pilot2-regression-positive",
+      "waypoint": "waypoint_pilot2",
+      "waypointVersion": "version_pilot2_0001",
+      "partition": "REGRESSION",
+      "expectedResult": "VERIFIED",
+      "source": "release:regression-positive",
+      "assetHash": "sha256:c024050fdb29ece49d5cddf17ab3ad1ae89ed387a53a7c5cb87c78865c82206a",
+      "captureConditions": {
+        "environment": "synthetic luminance generator",
+        "description": "Historically important wider synthetic positive framing."
+      },
+      "truthLabel": {
+        "label": "VERIFIED",
+        "reviewed": true,
+        "reviewerClass": "FIXTURE_AUTHOR",
+        "independent": false
+      },
+      "mayBeUsedForCalibration": false,
+      "locked": true,
+      "expectedGuidance": "VERIFICATION_SUCCESS"
+    },
+    {
+      "id": "pilot2-regression-negative",
+      "waypoint": "waypoint_pilot2",
+      "waypointVersion": "version_pilot2_0001",
+      "partition": "REGRESSION",
+      "expectedResult": "NOT_VERIFIED",
+      "source": "release:regression-negative",
+      "assetHash": "sha256:81f8844cf7d38a215454b72d175461d36f87c4f4c361934fa1e8c17d79331bf1",
+      "captureConditions": {
+        "environment": "synthetic luminance generator",
+        "description": "Strong independent synthetic confuser."
+      },
+      "truthLabel": {
+        "label": "NOT_VERIFIED",
+        "reviewed": true,
+        "reviewerClass": "FIXTURE_AUTHOR",
+        "independent": false
+      },
+      "mayBeUsedForCalibration": false,
+      "locked": true,
+      "expectedGuidance": "NON_SUCCESS"
+    },
+    {
+      "id": "pilot2-regression-insufficient",
+      "waypoint": "waypoint_pilot2",
+      "waypointVersion": "version_pilot2_0001",
+      "partition": "REGRESSION",
+      "expectedResult": "INSUFFICIENT_VISUAL_EVIDENCE",
+      "source": "release:regression-insufficient",
+      "assetHash": "sha256:66c1ceab2120b14c377b6b70f3d83b40a6b666458025f39e9d337c7a76bef911",
+      "captureConditions": {
+        "environment": "synthetic luminance generator",
+        "description": "Dark unusable synthetic evidence."
+      },
+      "truthLabel": {
+        "label": "INSUFFICIENT_VISUAL_EVIDENCE",
+        "reviewed": true,
+        "reviewerClass": "FIXTURE_AUTHOR",
+        "independent": false
+      },
+      "mayBeUsedForCalibration": false,
+      "locked": true,
+      "expectedGuidance": "NO_STABLE_FEATURES"
+    },
+    {
+      "id": "pilot3-reference-target",
+      "waypoint": "waypoint_pilot3",
+      "waypointVersion": "version_pilot3_0001",
+      "partition": "REFERENCE_BUILD",
+      "expectedResult": "REFERENCE_ONLY",
+      "source": "build:target",
+      "assetHash": "sha256:4b76c5c1493117a931a572d0217a1ffe5497154d7626ce4ef148c9d37b419b80",
+      "captureConditions": {
+        "environment": "synthetic luminance generator",
+        "description": "Synthetic target references used to build the package."
+      },
+      "truthLabel": {
+        "label": "REFERENCE_ONLY",
+        "reviewed": true,
+        "reviewerClass": "FIXTURE_AUTHOR",
+        "independent": false
+      },
+      "mayBeUsedForCalibration": false,
+      "locked": false,
+      "expectedGuidance": "NOT_APPLICABLE"
+    },
+    {
+      "id": "pilot3-reference-negative",
+      "waypoint": "waypoint_pilot3",
+      "waypointVersion": "version_pilot3_0001",
+      "partition": "REFERENCE_BUILD",
+      "expectedResult": "REFERENCE_ONLY",
+      "source": "build:hard_negative",
+      "assetHash": "sha256:fd81e2dcc14dcd7ff3a7286af76a6ba2faab3057f2e6862c469041e14953cbc1",
+      "captureConditions": {
+        "environment": "synthetic luminance generator",
+        "description": "Synthetic hard-negative references used to build the package."
+      },
+      "truthLabel": {
+        "label": "REFERENCE_ONLY",
+        "reviewed": true,
+        "reviewerClass": "FIXTURE_AUTHOR",
+        "independent": false
+      },
+      "mayBeUsedForCalibration": false,
+      "locked": false,
+      "expectedGuidance": "NOT_APPLICABLE"
+    },
+    {
+      "id": "pilot3-calibration-positive",
+      "waypoint": "waypoint_pilot3",
+      "waypointVersion": "version_pilot3_0001",
+      "partition": "CALIBRATION",
+      "expectedResult": "VERIFIED",
+      "source": "release:calibration-positive",
+      "assetHash": "sha256:28621b9552a6c1cb955036668bc7363169688a2c474cada988eedfecd56f1240",
+      "captureConditions": {
+        "environment": "synthetic luminance generator",
+        "description": "Independent synthetic positive sequence reserved for threshold comparison."
+      },
+      "truthLabel": {
+        "label": "VERIFIED",
+        "reviewed": true,
+        "reviewerClass": "FIXTURE_AUTHOR",
+        "independent": false
+      },
+      "mayBeUsedForCalibration": true,
+      "locked": false,
+      "expectedGuidance": "VERIFICATION_SUCCESS"
+    },
+    {
+      "id": "pilot3-calibration-negative",
+      "waypoint": "waypoint_pilot3",
+      "waypointVersion": "version_pilot3_0001",
+      "partition": "CALIBRATION",
+      "expectedResult": "NOT_VERIFIED",
+      "source": "release:calibration-negative",
+      "assetHash": "sha256:5ad445d689eb4b1f38f9a57647a24c7f616689307b60973c6f49b25a939c3b20",
+      "captureConditions": {
+        "environment": "synthetic luminance generator",
+        "description": "Independent synthetic negative sequence reserved for threshold comparison."
+      },
+      "truthLabel": {
+        "label": "NOT_VERIFIED",
+        "reviewed": true,
+        "reviewerClass": "FIXTURE_AUTHOR",
+        "independent": false
+      },
+      "mayBeUsedForCalibration": true,
+      "locked": false,
+      "expectedGuidance": "NON_SUCCESS"
+    },
+    {
+      "id": "pilot3-validation-positive",
+      "waypoint": "waypoint_pilot3",
+      "waypointVersion": "version_pilot3_0001",
+      "partition": "VALIDATION",
+      "expectedResult": "VERIFIED",
+      "source": "build:validation_positive",
+      "assetHash": "sha256:452f6b213062ad29848d84c5a9f61fc834f928bc7f330fef060becf4502fd7bd",
+      "captureConditions": {
+        "environment": "synthetic luminance generator",
+        "description": "Independent synthetic positive development comparison."
+      },
+      "truthLabel": {
+        "label": "VERIFIED",
+        "reviewed": true,
+        "reviewerClass": "FIXTURE_AUTHOR",
+        "independent": false
+      },
+      "mayBeUsedForCalibration": false,
+      "locked": false,
+      "expectedGuidance": "VERIFICATION_SUCCESS"
+    },
+    {
+      "id": "pilot3-validation-negative",
+      "waypoint": "waypoint_pilot3",
+      "waypointVersion": "version_pilot3_0001",
+      "partition": "VALIDATION",
+      "expectedResult": "NOT_VERIFIED",
+      "source": "build:validation_negative",
+      "assetHash": "sha256:4e91c56db4a75788cb1570b361f077ce5d6d03c94ec49b142e1838e9ce41b3ff",
+      "captureConditions": {
+        "environment": "synthetic luminance generator",
+        "description": "Independent synthetic negative development comparison."
+      },
+      "truthLabel": {
+        "label": "NOT_VERIFIED",
+        "reviewed": true,
+        "reviewerClass": "FIXTURE_AUTHOR",
+        "independent": false
+      },
+      "mayBeUsedForCalibration": false,
+      "locked": false,
+      "expectedGuidance": "NON_SUCCESS"
+    },
+    {
+      "id": "pilot3-locked-positive",
+      "waypoint": "waypoint_pilot3",
+      "waypointVersion": "version_pilot3_0001",
+      "partition": "LOCKED_POSITIVE",
+      "expectedResult": "VERIFIED",
+      "source": "build:locked_positive",
+      "assetHash": "sha256:a62e6a99a2f03515c1be628d3027622ed58d7c1009866a7650bc5485bfd90ae2",
+      "captureConditions": {
+        "environment": "synthetic luminance generator",
+        "description": "Locked synthetic legitimate scan."
+      },
+      "truthLabel": {
+        "label": "VERIFIED",
+        "reviewed": true,
+        "reviewerClass": "FIXTURE_AUTHOR",
+        "independent": false
+      },
+      "mayBeUsedForCalibration": false,
+      "locked": true,
+      "expectedGuidance": "VERIFICATION_SUCCESS"
+    },
+    {
+      "id": "pilot3-locked-negative",
+      "waypoint": "waypoint_pilot3",
+      "waypointVersion": "version_pilot3_0001",
+      "partition": "LOCKED_NEGATIVE",
+      "expectedResult": "NOT_VERIFIED",
+      "source": "build:locked_negative",
+      "assetHash": "sha256:f4b8cc7ffafa973fb07de59ac4c185555f42711798cd3b1240f6241112ea39f7",
+      "captureConditions": {
+        "environment": "synthetic luminance generator",
+        "description": "Locked synthetic invalid scene."
+      },
+      "truthLabel": {
+        "label": "NOT_VERIFIED",
+        "reviewed": true,
+        "reviewerClass": "FIXTURE_AUTHOR",
+        "independent": false
+      },
+      "mayBeUsedForCalibration": false,
+      "locked": true,
+      "expectedGuidance": "NON_SUCCESS"
+    },
+    {
+      "id": "pilot3-regression-positive",
+      "waypoint": "waypoint_pilot3",
+      "waypointVersion": "version_pilot3_0001",
+      "partition": "REGRESSION",
+      "expectedResult": "VERIFIED",
+      "source": "release:regression-positive",
+      "assetHash": "sha256:ff027f0c5f973b934052c57f46c76c5bb08ebf7a9f484a7d42307b0e2c6e87b1",
+      "captureConditions": {
+        "environment": "synthetic luminance generator",
+        "description": "Historically important wider synthetic positive framing."
+      },
+      "truthLabel": {
+        "label": "VERIFIED",
+        "reviewed": true,
+        "reviewerClass": "FIXTURE_AUTHOR",
+        "independent": false
+      },
+      "mayBeUsedForCalibration": false,
+      "locked": true,
+      "expectedGuidance": "VERIFICATION_SUCCESS"
+    },
+    {
+      "id": "pilot3-regression-negative",
+      "waypoint": "waypoint_pilot3",
+      "waypointVersion": "version_pilot3_0001",
+      "partition": "REGRESSION",
+      "expectedResult": "NOT_VERIFIED",
+      "source": "release:regression-negative",
+      "assetHash": "sha256:35224cf329cd8127c58f83261085c46ae04ea96dcbe54af01549899842740f80",
+      "captureConditions": {
+        "environment": "synthetic luminance generator",
+        "description": "Strong independent synthetic confuser."
+      },
+      "truthLabel": {
+        "label": "NOT_VERIFIED",
+        "reviewed": true,
+        "reviewerClass": "FIXTURE_AUTHOR",
+        "independent": false
+      },
+      "mayBeUsedForCalibration": false,
+      "locked": true,
+      "expectedGuidance": "NON_SUCCESS"
+    },
+    {
+      "id": "pilot3-regression-insufficient",
+      "waypoint": "waypoint_pilot3",
+      "waypointVersion": "version_pilot3_0001",
+      "partition": "REGRESSION",
+      "expectedResult": "INSUFFICIENT_VISUAL_EVIDENCE",
+      "source": "release:regression-insufficient",
+      "assetHash": "sha256:9ae9c0dee949169d8dc1bafb8aa89b04ba40f6d5472a2647b145cb0c984a23dd",
+      "captureConditions": {
+        "environment": "synthetic luminance generator",
+        "description": "Dark unusable synthetic evidence."
+      },
+      "truthLabel": {
+        "label": "INSUFFICIENT_VISUAL_EVIDENCE",
+        "reviewed": true,
+        "reviewerClass": "FIXTURE_AUTHOR",
+        "independent": false
+      },
+      "mayBeUsedForCalibration": false,
+      "locked": true,
+      "expectedGuidance": "NO_STABLE_FEATURES"
+    }
+  ]
+}

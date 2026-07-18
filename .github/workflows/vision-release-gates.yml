@@ -1,0 +1,85 @@
+name: Vision release gates
+
+on:
+  push:
+    branches:
+      - main
+      - "codex/**"
+  pull_request:
+  schedule:
+    - cron: "17 5 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: vision-release-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  fast-gates:
+    runs-on: windows-2025
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: npm
+      - run: npm ci --no-audit --no-fund
+      - run: npm run db:generate
+      - run: npm run format:check
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm test
+      - run: npm run desktop:test
+      - run: npm run companion:test
+      - run: npm run release:security
+      - run: npm run release:verify
+      - run: npm run vision:b6:replay:fast
+
+  release-corpus:
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    needs: fast-gates
+    runs-on: windows-2025
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: npm
+      - run: npm ci --no-audit --no-fund
+      - run: npm run db:generate
+      - name: Run versioned release corpus
+        run: >
+          node scripts/run-vision-b6-replay.cjs
+          --tier release
+          --parallel 3
+          --fail-on-regression
+          --output-json artifacts/release/vision-b6-replay.json
+          --output-markdown artifacts/release/vision-b6-replay.md
+      - uses: actions/upload-artifact@v4
+        with:
+          name: vision-b6-replay-${{ github.run_id }}
+          path: artifacts/release
+          if-no-files-found: error
+          retention-days: 30
+
+  full-windows-validation:
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    needs: fast-gates
+    runs-on: windows-2025
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: npm
+      - run: npm ci --no-audit --no-fund
+      - run: npx playwright install chromium webkit
+      - name: Run isolated full validation
+        shell: powershell
+        run: ./scripts/test-all.ps1 -SkipBrowserInstall

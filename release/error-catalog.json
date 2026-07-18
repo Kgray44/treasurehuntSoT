@@ -1,0 +1,117 @@
+{
+  "schemaVersion": 1,
+  "errors": [
+    {
+      "code": "CAPTURE_WINDOW_UNAVAILABLE",
+      "class": "CAPTURE",
+      "userExplanation": "The selected game window is no longer available.",
+      "recommendedRecovery": "Return to Companion health, reselect Sea of Thieves, and retry.",
+      "technicalContext": "The governed window handle was absent or closed.",
+      "privacy": "No frame is retained."
+    },
+    {
+      "code": "CAPTURE_PERMISSION_LOST",
+      "class": "CAPTURE",
+      "userExplanation": "Windows stopped allowing the selected window to be captured.",
+      "recommendedRecovery": "Stop the scan, restore capture permission, and select the window again.",
+      "technicalContext": "The native capture provider returned a permission or source error.",
+      "privacy": "Incomplete frames are cleared."
+    },
+    {
+      "code": "COMPANION_PROTOCOL_INCOMPATIBLE",
+      "class": "COMPATIBILITY",
+      "userExplanation": "The app and Companion cannot safely understand each other.",
+      "recommendedRecovery": "Update the older component or return to the last compatible release.",
+      "technicalContext": "Companion protocol version negotiation had no supported overlap.",
+      "privacy": "No capture command is started."
+    },
+    {
+      "code": "WAYPOINT_PACKAGE_CORRUPT",
+      "class": "PACKAGE",
+      "userExplanation": "The waypoint package failed its integrity checks.",
+      "recommendedRecovery": "Restore the last verified package or rebuild from governed Creator recordings.",
+      "technicalContext": "A package, artifact, size, or canonical hash did not match.",
+      "privacy": "The rejected package is never executed."
+    },
+    {
+      "code": "PACKAGE_SIGNATURE_REQUIRED",
+      "class": "PACKAGE",
+      "userExplanation": "This release channel requires a trusted waypoint-package signature.",
+      "recommendedRecovery": "Install a package signed for the selected trust scope.",
+      "technicalContext": "No signature was present while trusted-package mode was active.",
+      "privacy": "No gameplay evidence is read."
+    },
+    {
+      "code": "MODEL_PROVIDER_UNAVAILABLE",
+      "class": "VISION_RUNTIME",
+      "userExplanation": "The selected vision provider is unavailable.",
+      "recommendedRecovery": "Use the displayed CPU fallback if supported or choose a compatible package.",
+      "technicalContext": "Provider initialization or model load did not complete.",
+      "privacy": "No incomplete result can verify a waypoint."
+    },
+    {
+      "code": "INSUFFICIENT_VIDEO_MEMORY",
+      "class": "RESOURCE",
+      "userExplanation": "The selected package needs more graphics memory than is available.",
+      "recommendedRecovery": "Use a supported lower-resource provider or close other GPU-heavy applications.",
+      "technicalContext": "Provider allocation exceeded the declared resource budget.",
+      "privacy": "Captured evidence is cleared on failure."
+    },
+    {
+      "code": "STALE_STAGE_TOKEN",
+      "class": "STORY_INTEGRITY",
+      "userExplanation": "The voyage moved on before this scan finished.",
+      "recommendedRecovery": "Return to the current story step and scan only if it still requests verification.",
+      "technicalContext": "The signed attempt stage token did not match authoritative current state.",
+      "privacy": "Only derived rejection metadata is retained."
+    },
+    {
+      "code": "BUILD_RECONSTRUCTION_FAILED",
+      "class": "VISION_BUILD",
+      "userExplanation": "The target recordings could not form a reliable reference.",
+      "recommendedRecovery": "Record more varied, well-lit target views with stable surroundings.",
+      "technicalContext": "The governed reference graph or planar reconstruction failed.",
+      "privacy": "Creator recordings remain governed authoring assets."
+    },
+    {
+      "code": "UPDATE_SIGNATURE_INVALID",
+      "class": "UPDATE",
+      "userExplanation": "The update is not signed by a trusted release key.",
+      "recommendedRecovery": "Keep the current version and obtain the update from the approved channel.",
+      "technicalContext": "Ed25519 release metadata or Authenticode policy validation failed.",
+      "privacy": "No user project data is changed."
+    },
+    {
+      "code": "UPDATE_HASH_MISMATCH",
+      "class": "UPDATE",
+      "userExplanation": "The downloaded update is damaged or unexpected.",
+      "recommendedRecovery": "Discard the staged file and download it again from the approved channel.",
+      "technicalContext": "The artifact SHA-256 did not match signed release metadata.",
+      "privacy": "No user project data is changed."
+    },
+    {
+      "code": "UPDATE_ACTIVE_SESSION",
+      "class": "UPDATE",
+      "userExplanation": "The update is waiting for the active scan or story moment to finish.",
+      "recommendedRecovery": "Finish or safely stop the active activity, then apply the staged update.",
+      "technicalContext": "Atomic activation is deferred by the active-session interlock.",
+      "privacy": "The staged update does not inspect gameplay frames."
+    },
+    {
+      "code": "UPDATE_HEALTH_CHECK_FAILED",
+      "class": "UPDATE",
+      "userExplanation": "The new version did not start safely and was rolled back.",
+      "recommendedRecovery": "Continue on the restored version and create a metadata-only diagnostic bundle.",
+      "technicalContext": "Post-activation health failed before the release pointer was committed.",
+      "privacy": "Rollback preserves user projects and published waypoint history."
+    },
+    {
+      "code": "OFFLINE_PACKAGE_MISSING",
+      "class": "OFFLINE",
+      "userExplanation": "This waypoint is not available offline on this device.",
+      "recommendedRecovery": "Reconnect before the story step or ask the Captain for manual recovery.",
+      "technicalContext": "The pinned immutable package was absent from the governed local cache.",
+      "privacy": "No network upload is attempted without the normal application connection."
+    }
+  ]
+}
