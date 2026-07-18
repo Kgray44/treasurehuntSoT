@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { VisionOnboarding } from "@/components/vision/VisionOnboarding";
 
 type Attempt = {
   id: string;
@@ -157,7 +158,7 @@ export function VisionAttemptDiagnostics({ sessionId }: { sessionId: string }) {
       JSON.stringify(
         {
           generatedAt: new Date().toISOString(),
-          appVersion: "0.7.0-b5",
+          appVersion: "0.8.0-b6",
           protocolVersions: ["1.0", "2.0"],
           implementation: "player-story-captain-governed-integration",
           sessionId,
@@ -173,6 +174,7 @@ export function VisionAttemptDiagnostics({ sessionId }: { sessionId: string }) {
 
   return (
     <section className="vision-diagnostics">
+      <VisionOnboarding role="CAPTAIN" />
       <p className="card-kicker">Phase B-5 · governed Vision</p>
       <header>
         <div>

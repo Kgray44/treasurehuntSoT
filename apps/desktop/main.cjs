@@ -1,6 +1,7 @@
 "use strict";
 const electron = require("electron");
 const { app, BrowserWindow, ipcMain, Menu, utilityProcess } = electron;
+const { spawn } = require("node:child_process");
 const { randomUUID } = require("node:crypto");
 const http = require("node:http");
 const path = require("node:path");
@@ -11,7 +12,7 @@ const DEVELOPMENT_URL = process.env.TALL_TALE_DESKTOP_URL || "http://127.0.0.1:3
 let applicationServer = null;
 let coordinator = null;
 let primaryWindow = null;
-let smokeHarnessWindow = null;
+let smokeHarnessProcess = null;
 let quitting = false;
 
 if (!app.requestSingleInstanceLock()) app.quit();
@@ -72,19 +73,25 @@ async function applicationUrl() {
 
 async function runDesktopCaptureSmoke(origin) {
   const harnessTitle = `Forever Treasure Desktop Adapter Harness ${randomUUID()}`;
-  smokeHarnessWindow = new BrowserWindow({
-    show: true,
-    width: 800,
-    height: 480,
-    x: 40,
-    y: 40,
-    title: harnessTitle,
-    webPreferences: { contextIsolation: true, sandbox: true, nodeIntegration: false, backgroundThrottling: false },
-  });
-  await smokeHarnessWindow.loadURL(
-    `data:text/html;charset=utf-8,${encodeURIComponent(`<!doctype html><html><head><title>${harnessTitle}</title><style>html,body{width:100%;height:100%;margin:0;overflow:hidden;background:#071b25}canvas{width:100%;height:100%}</style></head><body><canvas id="scene" width="960" height="540"></canvas><script>const canvas=document.getElementById('scene');const context=canvas.getContext('2d');let frame=0;function draw(){frame+=1;const gradient=context.createLinearGradient(0,0,960,540);gradient.addColorStop(0,'hsl('+((frame*3)%360)+' 80% 45%)');gradient.addColorStop(1,'hsl('+((frame*3+120)%360)+' 70% 18%)');context.fillStyle=gradient;context.fillRect(0,0,960,540);context.fillStyle='#f4d58d';context.font='bold 70px sans-serif';context.fillText('DESKTOP ADAPTER CAPTURE',50,180);context.fillStyle='#ffffff';context.fillRect((frame*13)%900,260,60,60);requestAnimationFrame(draw)}draw()</script></body></html>`)}`,
+  const harnessScript = app.isPackaged
+    ? path.join(process.resourcesPath, "desktop", "smoke-window.ps1")
+    : path.join(__dirname, "smoke-window.ps1");
+  smokeHarnessProcess = spawn(
+    "powershell.exe",
+    ["-NoProfile", "-ExecutionPolicy", "Bypass", "-File", harnessScript, "-Title", harnessTitle],
+    { windowsHide: false, stdio: "ignore" },
   );
-  await new Promise((resolve) => setTimeout(resolve, 750));
+  await new Promise((resolve, reject) => {
+    const timeout = setTimeout(resolve, 1_500);
+    smokeHarnessProcess.once("error", (error) => {
+      clearTimeout(timeout);
+      reject(error);
+    });
+    smokeHarnessProcess.once("exit", (code) => {
+      clearTimeout(timeout);
+      if (code !== null) reject(new Error(`DESKTOP_SMOKE_HARNESS_EXITED:${code}`));
+    });
+  });
   await primaryWindow.loadURL(`${origin}/vision-companion`);
   return primaryWindow.webContents.executeJavaScript(`(async () => {
     let targetList = { targets: [] };
@@ -194,7 +201,7 @@ async function createWindow() {
         loaded: true,
         title,
         origin,
-        shellVersion: "0.7.0-b5",
+        shellVersion: "0.8.0-b6",
         companionListening: diagnostics.companion.listening,
         captureApi: diagnostics.capture.health ? coordinator.core.getCapabilities().captureApi : null,
         desktopAdapterScan,
@@ -220,7 +227,7 @@ app.on("before-quit", (event) => {
   quitting = true;
   void (async () => {
     await coordinator?.shutdown();
-    if (smokeHarnessWindow && !smokeHarnessWindow.isDestroyed()) smokeHarnessWindow.destroy();
+    smokeHarnessProcess?.kill();
     applicationServer?.kill();
     app.exit(0);
   })();

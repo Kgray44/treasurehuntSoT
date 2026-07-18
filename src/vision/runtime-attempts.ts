@@ -849,6 +849,52 @@ export async function recordCaptainRuntimeAction(attemptId: string, actorId: str
         idempotencyKey: input.idempotencyKey,
       },
     });
+    if (input.action === "LABEL_TRUTH" && input.truthLabel && input.truthLabel !== "UNREVIEWABLE") {
+      const proposedPartition =
+        input.truthLabel === "FALSE_POSITIVE" || input.truthLabel === "TRUE_NEGATIVE"
+          ? "HARD_NEGATIVE_CANDIDATE"
+          : input.truthLabel === "FALSE_NEGATIVE" || input.truthLabel === "TRUE_POSITIVE"
+            ? "POSITIVE_CANDIDATE"
+            : "REGRESSION_CANDIDATE";
+      await tx.visionImprovementCandidate.upsert({
+        where: { sourceAttemptId: attempt.id },
+        update: {
+          humanTruthLabel: input.truthLabel,
+          candidateReason: input.reason,
+          evidenceDigest: attempt.evidenceDigest,
+          derivedDiagnostics: JSON.stringify({
+            result: attempt.result,
+            guidanceCode: attempt.guidanceCode,
+            failedGates: parseArray(attempt.failedGates),
+            engineVersion: attempt.engineVersion,
+            modelBundleVersion: attempt.modelBundleVersion,
+            packageHash: attempt.packageHash,
+          }),
+          proposedPartition,
+          rawFramesRetained: false,
+          status: "QUEUED",
+          dispositionReason: null,
+          reviewedAt: null,
+        },
+        create: {
+          sourceAttemptId: attempt.id,
+          waypointVersionId: attempt.waypointVersionId,
+          humanTruthLabel: input.truthLabel,
+          candidateReason: input.reason,
+          evidenceDigest: attempt.evidenceDigest,
+          derivedDiagnostics: JSON.stringify({
+            result: attempt.result,
+            guidanceCode: attempt.guidanceCode,
+            failedGates: parseArray(attempt.failedGates),
+            engineVersion: attempt.engineVersion,
+            modelBundleVersion: attempt.modelBundleVersion,
+            packageHash: attempt.packageHash,
+          }),
+          proposedPartition,
+          rawFramesRetained: false,
+        },
+      });
+    }
     await tx.verificationAttempt.update({
       where: { id: attemptId },
       data: {

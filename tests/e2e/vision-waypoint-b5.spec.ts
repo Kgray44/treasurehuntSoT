@@ -220,6 +220,49 @@ test("real B-4 replay is governed through Player, story, Captain, stale, negativ
   );
   await ok(duplicateApproval);
   expect(await duplicateApproval.json()).toMatchObject({ duplicate: true });
+
+  const truthLabel = await captainContext.request.post(
+    `/api/vision-runtime/attempts/${authorization.attemptId}/captain-action`,
+    {
+      headers: { "x-csrf-token": csrfToken },
+      data: {
+        action: "LABEL_TRUTH",
+        reason: "Retain the metadata-only positive as a governed improvement candidate",
+        truthLabel: "TRUE_POSITIVE",
+        idempotencyKey: `captain:${authorization.attemptId}:truth-label`,
+      },
+    },
+  );
+  await ok(truthLabel);
+  const improvementQueue = await ok(await captainContext.request.get("/api/vision-improvement-candidates"));
+  const queueBody = (await improvementQueue.json()) as {
+    candidates: Array<{
+      id: string;
+      sourceAttemptId: string;
+      proposedPartition: string;
+      rawFramesRetained: boolean;
+      status: string;
+    }>;
+  };
+  const candidate = queueBody.candidates.find((item) => item.sourceAttemptId === authorization.attemptId);
+  expect(candidate).toMatchObject({
+    sourceAttemptId: authorization.attemptId,
+    proposedPartition: "POSITIVE_CANDIDATE",
+    rawFramesRetained: false,
+    status: "QUEUED",
+  });
+  const disposition = await captainContext.request.patch("/api/vision-improvement-candidates", {
+    headers: { "x-csrf-token": csrfToken },
+    data: {
+      candidateId: candidate!.id,
+      action: "ACCEPT_FOR_CORPUS",
+      reason: "Independent Creator review is still required before corpus admission",
+    },
+  });
+  await ok(disposition);
+  expect(await disposition.json()).toMatchObject({
+    candidate: { status: "ACCEPTED_FOR_REVIEW", rawFramesRetained: false },
+  });
   const advanced = (await (
     await ok(await playerContext.request.get(`/api/play/sessions/${run.sessionId}`))
   ).json()) as { block: { id: string; title: string } };

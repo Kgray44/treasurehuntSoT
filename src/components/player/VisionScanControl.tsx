@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { VisionOnboarding } from "@/components/vision/VisionOnboarding";
 import {
   selectCapturePlatformAdapter,
   WebCapturePlatformAdapter,
@@ -571,6 +572,7 @@ export function VisionScanControl({
 
   return (
     <section className="vision-scan-control" aria-labelledby="vision-scan-title">
+      <VisionOnboarding role="PLAYER" />
       <p className="eyebrow">
         {development ? "Development Vision" : `${effectiveMode.replaceAll("_", " ")} · local Companion`}
       </p>

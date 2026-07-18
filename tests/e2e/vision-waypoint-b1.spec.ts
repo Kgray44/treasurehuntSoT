@@ -303,7 +303,7 @@ test("Studio lifecycle, browser scan, duplicate/stale guards, desktop path, and 
   const diagnostics = await captain.get(`/api/vision-diagnostics?sessionId=${duplicateRun.sessionId}`);
   await ok(diagnostics);
   expect(await diagnostics.json()).toMatchObject({
-    appVersion: "0.3.0-b1",
+    appVersion: "0.8.0-b6",
     protocolVersion: "1.0",
     packageSchemaVersion: 1,
     featureFlags: {

@@ -1,0 +1,269 @@
+{
+  "schemaVersion": 1,
+  "releaseId": "vision-b6-development-0.8.0",
+  "updatedAt": "2026-07-18T12:00:00.000Z",
+  "issues": [
+    {
+      "id": "B6-001",
+      "category": "BLOCKER",
+      "severity": "BLOCKER",
+      "affectedComponent": "packaged-desktop-capture",
+      "title": "Packaged desktop capture smoke enumerates and captures its controlled target",
+      "reproductionSteps": [
+        "Build the 0.7.0-b5 NSIS package.",
+        "Run node scripts/desktop-smoke.mjs.",
+        "Observe DESKTOP_SMOKE_TARGET_MISSING and no successful structured result."
+      ],
+      "affectedVersions": ["0.7.0-b5"],
+      "owner": "desktop-runtime",
+      "status": "RESOLVED",
+      "fixCommit": "PENDING_PHASE_B6_CODE_COMMIT",
+      "regressionTest": "node scripts/desktop-smoke.mjs",
+      "releaseBlocking": true,
+      "evidence": {
+        "baseline": "B6_Baseline_Audit.md section 4.5",
+        "baselineErrorCode": "DESKTOP_SMOKE_TARGET_MISSING",
+        "fixedResult": "EVIDENCE_CAPTURED",
+        "capturedFrames": 15,
+        "selectedFrames": 8,
+        "rawFramesCleared": true
+      }
+    },
+    {
+      "id": "B6-002",
+      "category": "BLOCKER",
+      "severity": "BLOCKER",
+      "affectedComponent": "code-signing",
+      "title": "Production code-signing certificate and signed artifacts are unavailable",
+      "reproductionSteps": [
+        "Build the installer.",
+        "Run Get-AuthenticodeSignature against installer and unpacked application.",
+        "Observe NotSigned."
+      ],
+      "affectedVersions": ["0.7.0-b5", "0.8.0-b6"],
+      "owner": "release-owner",
+      "status": "OPEN_EXTERNAL_DEPENDENCY",
+      "fixCommit": null,
+      "regressionTest": "powershell -File scripts/verify-release-signatures.ps1",
+      "releaseBlocking": true,
+      "evidence": {
+        "dependency": "trusted Windows code-signing certificate and timestamp service",
+        "baselineStatus": "NotSigned"
+      }
+    },
+    {
+      "id": "B6-003",
+      "category": "BLOCKER",
+      "severity": "BLOCKER",
+      "affectedComponent": "updater-and-rollback",
+      "title": "Update and rollback have no clean-machine production evidence",
+      "reproductionSteps": [
+        "Publish a signed Creator Preview release manifest.",
+        "Upgrade a clean supported installation.",
+        "Interrupt activation and prove atomic rollback.",
+        "Repeat with a failed health check."
+      ],
+      "affectedVersions": ["0.8.0-b6"],
+      "owner": "release-owner",
+      "status": "OPEN_EVIDENCE_REQUIRED",
+      "fixCommit": null,
+      "regressionTest": "node --test apps/desktop/release-manager.test.cjs",
+      "releaseBlocking": true,
+      "evidence": {
+        "implementedCoreDoesNotSubstituteForCleanMachineTest": true
+      }
+    },
+    {
+      "id": "B6-004",
+      "category": "MAJOR",
+      "severity": "MAJOR",
+      "affectedComponent": "continuous-integration",
+      "title": "Release gates are not yet observed in the hosted CI environment",
+      "reproductionSteps": [
+        "Push the B-6 workflow.",
+        "Observe fast gates and the release-corpus job on GitHub Actions.",
+        "Record the immutable run URL and result."
+      ],
+      "affectedVersions": ["0.8.0-b6"],
+      "owner": "release-engineering",
+      "status": "OPEN_EVIDENCE_REQUIRED",
+      "fixCommit": null,
+      "regressionTest": ".github/workflows/vision-release-gates.yml",
+      "releaseBlocking": true,
+      "evidence": {
+        "localWorkflowValidationOnly": true
+      }
+    },
+    {
+      "id": "B6-005",
+      "category": "BLOCKER",
+      "severity": "BLOCKER",
+      "affectedComponent": "vision-reliability",
+      "title": "Three independent real Sea of Thieves locked pilot corpora do not exist",
+      "reproductionSteps": [
+        "Capture separate build, calibration, validation, locked-positive, locked-negative, and regression partitions for three pilot waypoints.",
+        "Obtain human truth labels.",
+        "Run the locked B-6 replay without threshold tuning."
+      ],
+      "affectedVersions": ["0.6.0-b4", "0.7.0-b5", "0.8.0-b6"],
+      "owner": "vision-pilot-team",
+      "status": "OPEN_EVIDENCE_REQUIRED",
+      "fixCommit": null,
+      "regressionTest": "npm run vision:b6:replay",
+      "releaseBlocking": true,
+      "evidence": {
+        "availableCorpus": "SYNTHETIC_MATHEMATICAL_FIXTURE",
+        "realPilotCount": 0
+      }
+    },
+    {
+      "id": "B6-006",
+      "category": "BLOCKER",
+      "severity": "BLOCKER",
+      "affectedComponent": "hardware-display-performance",
+      "title": "Required hardware, display, game-impact, and long-duration matrix is incomplete",
+      "reproductionSteps": [
+        "Run the documented matrix on each available hardware/provider/display configuration.",
+        "Measure capture, inference, memory, GPU memory, CPU, game frame time, startup, idle, and package load.",
+        "Run interruption and long-duration scenarios."
+      ],
+      "affectedVersions": ["0.8.0-b6"],
+      "owner": "quality-engineering",
+      "status": "OPEN_EVIDENCE_REQUIRED",
+      "fixCommit": null,
+      "regressionTest": "Development_Docs/AR/Phase_B6/B6_Hardware_Performance_Matrix.md",
+      "releaseBlocking": true,
+      "evidence": {
+        "activeProvider": "CPU_CLASSICAL",
+        "gpuProviders": "DETECTED_ONLY"
+      }
+    },
+    {
+      "id": "B6-007",
+      "category": "BLOCKER",
+      "severity": "BLOCKER",
+      "affectedComponent": "installer",
+      "title": "Clean-machine install, upgrade, uninstall, and retained-data matrix is unexecuted",
+      "reproductionSteps": [
+        "Run the installation matrix on clean non-administrator Windows accounts.",
+        "Test install, repair, upgrade, interrupted install, uninstall with preservation, complete removal, and reinstall.",
+        "Record installer logs and filesystem/registry observations."
+      ],
+      "affectedVersions": ["0.8.0-b6"],
+      "owner": "quality-engineering",
+      "status": "OPEN_EVIDENCE_REQUIRED",
+      "fixCommit": null,
+      "regressionTest": "Development_Docs/AR/Phase_B6/B6_Installation_Update_Test_Matrix.md",
+      "releaseBlocking": true,
+      "evidence": {
+        "localPackageBuild": "PASS",
+        "cleanMachineRuns": 0
+      }
+    },
+    {
+      "id": "B6-008",
+      "category": "BLOCKER",
+      "severity": "BLOCKER",
+      "affectedComponent": "creator-player-captain-usability",
+      "title": "External creator cohort and uninvolved Player/Captain studies are unexecuted",
+      "reproductionSteps": [
+        "Recruit the three required participant profiles.",
+        "Run the unassisted authoring and recovery scenario.",
+        "Run uninvolved Player and Captain tasks and record interventions, errors, confidence, and accessibility findings."
+      ],
+      "affectedVersions": ["0.8.0-b6"],
+      "owner": "product-research",
+      "status": "OPEN_EVIDENCE_REQUIRED",
+      "fixCommit": null,
+      "regressionTest": "Development_Docs/AR/Phase_B6/B6_External_Usability_Report.md",
+      "releaseBlocking": true,
+      "evidence": {
+        "externalParticipantCount": 0
+      }
+    },
+    {
+      "id": "B6-009",
+      "category": "CRITICAL",
+      "severity": "CRITICAL",
+      "affectedComponent": "security-and-privacy-review",
+      "title": "Independent B-6 security and privacy validation is not complete",
+      "reproductionSteps": [
+        "Run the repeatable security and privacy suite.",
+        "Review the localhost, desktop command, package, update, secret, retention, and diagnostic boundaries.",
+        "Obtain independent review and record findings."
+      ],
+      "affectedVersions": ["0.8.0-b6"],
+      "owner": "security-reviewer",
+      "status": "OPEN_EVIDENCE_REQUIRED",
+      "fixCommit": null,
+      "regressionTest": "npm run release:security",
+      "releaseBlocking": true,
+      "evidence": {
+        "automatedRegressionIsNotIndependentReview": true
+      }
+    },
+    {
+      "id": "B6-010",
+      "category": "MAJOR",
+      "severity": "MAJOR",
+      "affectedComponent": "offline-animation-runtime",
+      "title": "Rive runtime is staged locally from the pinned npm dependency",
+      "reproductionSteps": [
+        "Run the Playwright animation showcase without network access.",
+        "Observe attempted unpkg and jsDelivr WASM requests before fallback."
+      ],
+      "affectedVersions": ["0.7.0-b5"],
+      "owner": "web-runtime",
+      "status": "RESOLVED",
+      "fixCommit": "PENDING_PHASE_B6_CODE_COMMIT",
+      "regressionTest": "tests/e2e/animations.spec.ts",
+      "releaseBlocking": true,
+      "evidence": {
+        "baselineDomains": ["unpkg.com", "cdn.jsdelivr.net"],
+        "localRuntimeVersion": "@rive-app/webgl2@2.38.5",
+        "primaryWasmSha256": "a598aa7f141ba1b459eabb90d57b19e288fd31065fec57435af405b47a69c2ac",
+        "fallbackWasmSha256": "35a4e30b5c4c46f3a9f4077895a5d6ed9caa19a1147239767b682aacbec2f917"
+      }
+    },
+    {
+      "id": "B6-011",
+      "category": "MINOR",
+      "severity": "MINOR",
+      "affectedComponent": "installer-presentation",
+      "title": "Installer uses the default Electron executable icon",
+      "reproductionSteps": [
+        "Build the NSIS installer.",
+        "Observe electron-builder warning that the application icon is not set."
+      ],
+      "affectedVersions": ["0.7.0-b5"],
+      "owner": "desktop-runtime",
+      "status": "OPEN",
+      "fixCommit": null,
+      "regressionTest": "npm run desktop:build",
+      "releaseBlocking": false,
+      "evidence": {
+        "baselineWarning": "default Electron icon is used"
+      }
+    },
+    {
+      "id": "B6-012",
+      "category": "BLOCKER",
+      "severity": "BLOCKER",
+      "affectedComponent": "public-distribution-policy",
+      "title": "Rare or Microsoft public-distribution clarification remains unresolved",
+      "reproductionSteps": [
+        "Obtain and archive the required written clarification for the current non-injected local capture design.",
+        "Review any imposed distribution or branding conditions before public release."
+      ],
+      "affectedVersions": ["0.8.0-b6"],
+      "owner": "project-owner",
+      "status": "OPEN_EXTERNAL_DEPENDENCY",
+      "fixCommit": null,
+      "regressionTest": "Development_Docs/AR/Phase_B6/B6_Game_Safety_and_Distribution_Review.md",
+      "releaseBlocking": true,
+      "evidence": {
+        "governingDecision": "Rare/Microsoft clarification before public distribution"
+      }
+    }
+  ]
+}

@@ -117,6 +117,8 @@ class CompanionCoordinator {
     this.core.setDiagnosticContextProvider(() => ({
       loopback: this.server.getStatus(),
       featureFlags: this.#featureFlagSnapshot(),
+      release: this.#releaseHealth(),
+      visionEngine: this.vision.capabilities(),
     }));
     for (const eventName of ["status", "state", "capture-progress", "capture-completed", "capture-error"]) {
       this.core.on(eventName, (payload) => this.#forward(eventName, payload));
@@ -186,6 +188,7 @@ class CompanionCoordinator {
 
   diagnostics() {
     return {
+      applicationVersion: "0.8.0-b6",
       shellVersion: CAPTURE_CORE_VERSION,
       platform: "windows",
       protocolVersion: "2.0",
@@ -195,6 +198,28 @@ class CompanionCoordinator {
       storageRootCategory: "ELECTRON_USER_DATA",
       featureFlags: this.#featureFlagSnapshot(),
       visionEngine: this.vision.capabilities(),
+      release: this.#releaseHealth(),
+    };
+  }
+
+  #releaseHealth() {
+    let availableBytes = null;
+    try {
+      const stats = fs.statfsSync(this.userDataRoot);
+      availableBytes = stats.bavail * stats.bsize;
+    } catch {
+      // Storage availability is optional diagnostics; failure does not broaden access or stop capture.
+    }
+    return {
+      channel: process.env.VISION_RELEASE_CHANNEL || "development",
+      currentVersion: "0.8.0-b6",
+      signingStatus: process.env.VISION_SIGNING_STATUS || "UNSIGNED_DEVELOPMENT",
+      backendOrigin: this.desktopOrigin,
+      backendConnectivity: "LOCAL_SERVER_CONNECTED",
+      packageCache: this.vision.capabilities().resourcePolicy.packageCache,
+      storage: { category: "ELECTRON_USER_DATA", availableBytes },
+      updateState: "IDLE_OR_NOT_CONFIGURED",
+      automaticProgression: false,
     };
   }
 

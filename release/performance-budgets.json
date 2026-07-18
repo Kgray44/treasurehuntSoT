@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "evidenceScope": "DEVELOPMENT_BUDGETS_PENDING_REPRESENTATIVE_HARDWARE_APPROVAL",
+  "budgets": [
+    {
+      "metric": "syntheticVerificationP95Ms",
+      "maximum": 2000,
+      "unit": "ms",
+      "enforcedBy": "scripts/run-vision-b6-replay.cjs"
+    },
+    {
+      "metric": "syntheticSoakRssGrowthBytes",
+      "maximum": 268435456,
+      "unit": "bytes",
+      "enforcedBy": "scripts/run-vision-b6-soak.cjs"
+    },
+    {
+      "metric": "runtimePackageBytes",
+      "maximum": 33554432,
+      "unit": "bytes",
+      "enforcedBy": "apps/companion/vision-package.cjs"
+    },
+    {
+      "metric": "runtimeArtifactBytes",
+      "maximum": 8388608,
+      "unit": "bytes",
+      "enforcedBy": "apps/companion/vision-package.cjs"
+    },
+    {
+      "metric": "activeRuntimeAttempts",
+      "maximum": 1,
+      "unit": "attempts",
+      "enforcedBy": "apps/companion/vision-engine-service.cjs"
+    },
+    {
+      "metric": "activeBuildJobs",
+      "maximum": 1,
+      "unit": "jobs",
+      "enforcedBy": "apps/companion/vision-engine-service.cjs"
+    },
+    {
+      "metric": "gameFrameRateImpactPercent",
+      "maximum": 5,
+      "unit": "percent",
+      "enforcedBy": "MANUAL_TARGET_HARDWARE_MATRIX",
+      "status": "UNMEASURED_RELEASE_BLOCKER"
+    },
+    {
+      "metric": "idleHeavyInferenceJobs",
+      "maximum": 0,
+      "unit": "jobs",
+      "enforcedBy": "feature-gated scan and build commands"
+    }
+  ]
+}

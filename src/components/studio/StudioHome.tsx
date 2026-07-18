@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
+import { VisionOnboarding } from "@/components/vision/VisionOnboarding";
 
 type TaleCard = {
   id: string;
@@ -89,6 +90,7 @@ export function StudioHome({ authenticated }: { authenticated: boolean }) {
 
   return (
     <main className="studio-home">
+      <VisionOnboarding role="CREATOR" />
       <header className="studio-home-header">
         <div>
           <p className="eyebrow">Authoring waters</p>
@@ -97,6 +99,7 @@ export function StudioHome({ authenticated }: { authenticated: boolean }) {
         </div>
         <nav aria-label="Studio destinations">
           <Link href="/studio/vision-waypoints">Vision Waypoints</Link>
+          <Link href="/studio/release-readiness">Release readiness</Link>
           <Link href="/tales">Player catalog</Link>
           <Link href="/captain">Captain controls</Link>
           <Link className="brass-button" href="/studio/tales/new">

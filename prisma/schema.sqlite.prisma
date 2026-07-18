@@ -1033,6 +1033,10 @@ model VisionWaypointVersion {
   packageArtifactReference String?
   compatibilityMetadata    String                     @default("{}")
   certificationReference   String?
+  certificationStatus      String                     @default("DRAFT")
+  compatibilityStatus      String                     @default("NEEDS_RETEST")
+  certifiedPackageHash     String?
+  certifiedDatasetRevision String?
   createdBy                String
   publishedBy              String?
   createdAt                DateTime                   @default(now())
@@ -1680,4 +1684,185 @@ model PairingSession {
 
   @@index([ownerId, expiresAt, revokedAt])
   @@index([companionDeviceId, expiresAt])
+}
+
+model VisionRelease {
+  id                  String                    @id
+  version             String
+  channel             String
+  status              String                    @default("EXPERIMENTAL")
+  sourceCommit        String
+  buildId             String
+  readinessStatus     String                    @default("NO_GO")
+  releaseManifest     String                    @default("{}")
+  evidenceSummary     String                    @default("{}")
+  knownLimitations    String                    @default("[]")
+  createdAt           DateTime                  @default(now())
+  updatedAt           DateTime                  @updatedAt
+  publishedAt         DateTime?
+  issues              VisionReleaseIssue[]
+  artifacts           VisionReleaseArtifact[]
+  compatibilityRules  VisionCompatibilityRule[]
+  reliabilityRuns     VisionReliabilityRun[]
+  testRuns            VisionReleaseTestRun[]
+
+  @@unique([version, channel])
+  @@index([channel, status, updatedAt])
+}
+
+model VisionReleaseIssue {
+  id                   String        @id
+  releaseId            String
+  category             String
+  severity             String
+  component            String
+  title                String
+  reproductionSteps    String        @default("[]")
+  affectedVersions     String        @default("[]")
+  owner                String
+  status               String        @default("OPEN")
+  fixCommit            String?
+  regressionTest       String?
+  releaseBlocking      Boolean       @default(true)
+  evidence             String        @default("{}")
+  createdAt            DateTime      @default(now())
+  updatedAt            DateTime      @updatedAt
+  closedAt             DateTime?
+  release              VisionRelease @relation(fields: [releaseId], references: [id], onDelete: Restrict)
+
+  @@index([releaseId, status, releaseBlocking])
+  @@index([severity, status])
+}
+
+model VisionDatasetManifest {
+  id                  String                 @id
+  revision            String                 @unique
+  evidenceClass       String
+  waypointVersionId   String?
+  manifestHash        String
+  manifest            String
+  lockedAt            DateTime?
+  createdAt           DateTime               @default(now())
+  reliabilityRuns     VisionReliabilityRun[]
+
+  @@index([waypointVersionId, evidenceClass])
+}
+
+model VisionReliabilityRun {
+  id                   String                @id @default(cuid())
+  releaseId            String
+  datasetManifestId    String
+  engineVersion        String
+  modelBundleVersion   String
+  packageHashes        String                @default("[]")
+  deterministicSeed    Int
+  status               String
+  resultSummary        String                @default("{}")
+  reportHash           String
+  reportReference      String
+  falseAccepts         Int                   @default(0)
+  firstAttemptSuccess  Float?
+  twoAttemptSuccess    Float?
+  p95DurationMs        Float?
+  createdAt            DateTime              @default(now())
+  completedAt          DateTime?
+  release              VisionRelease         @relation(fields: [releaseId], references: [id], onDelete: Restrict)
+  datasetManifest      VisionDatasetManifest @relation(fields: [datasetManifestId], references: [id], onDelete: Restrict)
+
+  @@index([releaseId, status, createdAt])
+  @@index([datasetManifestId, createdAt])
+}
+
+model VisionCompatibilityRule {
+  id                 String        @id
+  releaseId          String
+  component          String
+  currentVersion     String
+  minimumVersion     String?
+  maximumVersion     String?
+  status             String
+  reason             String
+  metadata           String        @default("{}")
+  createdAt          DateTime      @default(now())
+  release            VisionRelease @relation(fields: [releaseId], references: [id], onDelete: Restrict)
+
+  @@unique([releaseId, component])
+  @@index([component, status])
+}
+
+model VisionReleaseArtifact {
+  id                 String        @id @default(cuid())
+  releaseId          String
+  artifactType       String
+  version            String
+  platform           String
+  architecture       String
+  contentHash        String
+  fileSize           Int
+  signatureStatus    String
+  signatureIdentity  String?
+  provenance         String        @default("{}")
+  rollbackTarget     String?
+  createdAt          DateTime      @default(now())
+  release            VisionRelease @relation(fields: [releaseId], references: [id], onDelete: Restrict)
+
+  @@unique([releaseId, artifactType, platform, architecture])
+  @@index([contentHash])
+  @@index([signatureStatus, createdAt])
+}
+
+model VisionReleaseTestRun {
+  id                 String        @id @default(cuid())
+  releaseId          String
+  suite              String
+  category           String
+  environment        String        @default("{}")
+  status             String
+  evidence           String        @default("{}")
+  startedAt          DateTime?
+  completedAt        DateTime?
+  createdAt          DateTime      @default(now())
+  release            VisionRelease @relation(fields: [releaseId], references: [id], onDelete: Restrict)
+
+  @@index([releaseId, category, status])
+  @@index([suite, createdAt])
+}
+
+model VisionUpdateState {
+  id                  String   @id @default(cuid())
+  installationId      String   @unique
+  channel             String
+  currentVersion      String
+  targetVersion       String?
+  phase               String   @default("IDLE")
+  manifestHash        String?
+  stagedArtifactHash  String?
+  rollbackVersion     String?
+  lastHealthStatus    String?
+  errorCode           String?
+  state               String   @default("{}")
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  @@index([channel, phase, updatedAt])
+}
+
+model VisionImprovementCandidate {
+  id                   String   @id @default(cuid())
+  sourceAttemptId      String   @unique
+  waypointVersionId    String
+  humanTruthLabel      String
+  candidateReason      String
+  evidenceDigest       String?
+  derivedDiagnostics   String   @default("{}")
+  proposedPartition    String
+  rawFramesRetained    Boolean  @default(false)
+  consentReference     String?
+  status               String   @default("QUEUED")
+  dispositionReason    String?
+  createdAt            DateTime @default(now())
+  reviewedAt           DateTime?
+
+  @@index([waypointVersionId, status, createdAt])
+  @@index([humanTruthLabel, status])
 }

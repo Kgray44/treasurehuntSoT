@@ -91,6 +91,25 @@ function frameSet(assetRecord, seed, kind, pilotIndex) {
   };
 }
 
+function releaseSequence(pilotId, caseId, seed, options = {}) {
+  const variants = options.variants ?? [
+    { shiftX: 1, shiftY: -2, scale: 1.01 },
+    { shiftX: -3, shiftY: 1, scale: 0.975 },
+    { shiftX: 4, shiftY: 2, scale: 1.035 },
+    { shiftX: -1, shiftY: -3, scale: 0.99 },
+  ];
+  return variants.map((variant, index) =>
+    makeFrame(`frame_${pilotId}_${caseId}_${index + 1}`, seed, {
+      ...variant,
+      confuser: options.confuser === true,
+      dark: options.dark === true,
+      occluded: options.occluded === true,
+      sequence: index + 1,
+      offsetMs: index * 700,
+    }),
+  );
+}
+
 function createPilot(index) {
   const pilotId = `pilot${index}`;
   const seed = 20 + index * 13;
@@ -172,6 +191,43 @@ function createPilot(index) {
     [lockedPositive.id, frameSet(lockedPositive, seed, "locked-positive", index)],
     [lockedNegative.id, frameSet(lockedNegative, seed + 97, "locked-negative", index)],
   ]);
+  const releaseCorpus = new Map([
+    [
+      "calibration-positive",
+      releaseSequence(pilotId, "calibration_positive", seed, {
+        variants: [
+          { shiftX: 1, shiftY: -2, scale: 1.01 },
+          { shiftX: -3, shiftY: 1, scale: 0.975 },
+          { shiftX: 4, shiftY: 2, scale: 1.035 },
+          { shiftX: -1, shiftY: -3, scale: 0.99 },
+        ],
+      }),
+    ],
+    ["calibration-negative", releaseSequence(pilotId, "calibration_negative", seed + 109, { confuser: true })],
+    [
+      "regression-positive",
+      releaseSequence(pilotId, "regression_positive", seed, {
+        variants: [
+          { shiftX: 5, shiftY: 0, scale: 1.04 },
+          { shiftX: -4, shiftY: 3, scale: 0.965 },
+          { shiftX: 0, shiftY: -4, scale: 1.02 },
+          { shiftX: 2, shiftY: 4, scale: 0.98 },
+        ],
+      }),
+    ],
+    ["regression-negative", releaseSequence(pilotId, "regression_negative", seed + 127, { confuser: true })],
+    [
+      "regression-insufficient",
+      releaseSequence(pilotId, "regression_insufficient", seed, {
+        dark: true,
+        variants: [
+          { shiftX: 0, shiftY: 0, scale: 1 },
+          { shiftX: 2, shiftY: 0, scale: 1 },
+          { shiftX: -2, shiftY: 1, scale: 1 },
+        ],
+      }),
+    ],
+  ]);
   return {
     id: pilotId,
     label:
@@ -184,6 +240,7 @@ function createPilot(index) {
     seaOfThievesClaim: false,
     buildInput,
     frameSets,
+    releaseCorpus,
     runtime: {
       positive: frameSet(validationPositive, seed, "validation-positive", index).frames,
       negative: frameSet(validationNegative, seed + 83, "validation-negative", index).frames,

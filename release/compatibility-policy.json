@@ -1,0 +1,117 @@
+{
+  "schemaVersion": 1,
+  "releaseId": "vision-b6-development-0.8.0",
+  "policyVersion": "1.0.0",
+  "packageStatuses": ["COMPATIBLE", "COMPATIBLE_WITH_WARNING", "NEEDS_RETEST", "OUTDATED", "INCOMPATIBLE", "REVOKED"],
+  "components": [
+    {
+      "component": "WEB_APPLICATION",
+      "currentVersion": "0.8.0-b6",
+      "minimumVersion": "0.8.0-b6",
+      "maximumVersion": "0.8.x",
+      "status": "EXPERIMENTAL"
+    },
+    {
+      "component": "DESKTOP_APPLICATION",
+      "currentVersion": "0.8.0-b6",
+      "minimumVersion": "0.8.0-b6",
+      "maximumVersion": "0.8.x",
+      "status": "EXPERIMENTAL"
+    },
+    {
+      "component": "COMPANION_SERVICE",
+      "currentVersion": "2.0",
+      "minimumVersion": "2.0",
+      "maximumVersion": "2.x",
+      "status": "CREATOR_PREVIEW"
+    },
+    {
+      "component": "SERVER_API",
+      "currentVersion": "1.0",
+      "minimumVersion": "1.0",
+      "maximumVersion": "1.x",
+      "status": "CREATOR_PREVIEW"
+    },
+    {
+      "component": "COMPANION_PROTOCOL",
+      "currentVersion": "2.0",
+      "minimumVersion": "2.0",
+      "maximumVersion": "2.x",
+      "status": "CREATOR_PREVIEW"
+    },
+    {
+      "component": "WAYPOINT_BUILD_INPUT_SCHEMA",
+      "currentVersion": "1",
+      "minimumVersion": "1",
+      "maximumVersion": "1",
+      "status": "CREATOR_PREVIEW"
+    },
+    {
+      "component": "RUNTIME_PACKAGE_SCHEMA",
+      "currentVersion": "1",
+      "minimumVersion": "1",
+      "maximumVersion": "1",
+      "status": "CREATOR_PREVIEW"
+    },
+    {
+      "component": "STORY_PACKAGE_SCHEMA",
+      "currentVersion": "1",
+      "minimumVersion": "1",
+      "maximumVersion": "1",
+      "status": "CREATOR_PREVIEW"
+    },
+    {
+      "component": "MODEL_BUNDLE",
+      "currentVersion": "classical-local-v1",
+      "minimumVersion": "classical-local-v1",
+      "maximumVersion": "classical-local-v1",
+      "status": "EXPERIMENTAL"
+    },
+    {
+      "component": "VISION_ENGINE",
+      "currentVersion": "0.6.0-b4",
+      "minimumVersion": "0.6.0-b4",
+      "maximumVersion": "0.6.x",
+      "status": "EXPERIMENTAL"
+    },
+    {
+      "component": "DATABASE_SCHEMA",
+      "currentVersion": "11",
+      "minimumVersion": "10",
+      "maximumVersion": "11",
+      "status": "CREATOR_PREVIEW"
+    }
+  ],
+  "featureStatuses": [
+    {
+      "feature": "EXACT_LANDMARK",
+      "status": "EXPERIMENTAL",
+      "reason": "Production path exists but real pilot certification is absent."
+    },
+    {
+      "feature": "AREA_ARRIVAL",
+      "status": "EXPERIMENTAL",
+      "reason": "Production path exists but real pilot certification is absent."
+    },
+    {
+      "feature": "VIEWPOINT",
+      "status": "EXPERIMENTAL",
+      "reason": "Production path exists but real pilot certification is absent."
+    },
+    {
+      "feature": "ITEM_PICKUP",
+      "status": "UNSUPPORTED",
+      "reason": "The runtime has no governed item-state detector."
+    },
+    {
+      "feature": "SHADOW_VERIFICATION",
+      "status": "CREATOR_PREVIEW",
+      "reason": "Software path is tested and cannot advance the story automatically."
+    },
+    {
+      "feature": "AUTOMATIC_PROGRESSION",
+      "status": "UNSUPPORTED",
+      "reason": "Real reliability and field gates are not met."
+    }
+  ]
+}

@@ -1,7 +1,7 @@
 {
   "name": "forever-treasure-companion",
-  "version": "0.7.0-b5",
-  "description": "Shared Player, Captain, and Studio companion for versioned Tall Tales.",
+  "version": "0.8.0-b6",
+  "description": "Hardened local-first Creator, Player, Captain, and Vision Waypoint companion.",
   "author": "The Forever Treasure contributors",
   "private": true,
   "main": "apps/desktop/main.cjs",
@@ -10,8 +10,8 @@
     "node": ">=22.0.0"
   },
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
+    "dev": "node scripts/prepare-rive-runtime.mjs && next dev",
+    "build": "node scripts/prepare-rive-runtime.mjs && next build",
     "start": "next start",
     "lint": "eslint .",
     "format:check": "prettier --check .",
@@ -20,6 +20,7 @@
     "test:watch": "vitest",
     "test:e2e": "playwright test",
     "assets:validate": "tsx scripts/validate-animation-assets.ts",
+    "assets:runtime": "node scripts/prepare-rive-runtime.mjs",
     "validate": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/test-all.ps1",
     "dev:full": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/start-dev.ps1",
     "dev:stop": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/stop-dev.ps1",
@@ -43,11 +44,17 @@
     "desktop:stage": "node scripts/prepare-desktop.mjs",
     "desktop:build": "npm run build && npm run desktop:stage && electron-builder --win nsis",
     "desktop:smoke": "node scripts/desktop-smoke.mjs",
-    "desktop:test": "node --test apps/desktop/desktop-shell.test.cjs",
+    "desktop:test": "node --test apps/desktop/*.test.cjs",
     "companion:test": "node --test apps/companion/*.test.cjs",
     "companion:electron-smoke": "electron apps/companion/electron-capture-smoke.cjs",
     "companion:hotkey-smoke": "node apps/companion/windows-hotkey-smoke.cjs",
-    "vision:b4:replay": "node scripts/run-vision-b4-replay.cjs"
+    "vision:b4:replay": "node scripts/run-vision-b4-replay.cjs",
+    "vision:b6:replay": "node scripts/run-vision-b6-replay.cjs --tier release",
+    "vision:b6:replay:fast": "node scripts/run-vision-b6-replay.cjs --tier fast --fail-on-regression",
+    "release:verify": "node scripts/verify-vision-b6-release.cjs",
+    "release:security": "node --test apps/companion/coordinator-security.test.cjs apps/companion/loopback-server.test.cjs apps/companion/release-governance.test.cjs apps/companion/storage.test.cjs apps/companion/vision-package-security.test.cjs apps/desktop/release-manager.test.cjs",
+    "release:soak": "node scripts/run-vision-b6-soak.cjs",
+    "release:soak:quick": "node scripts/run-vision-b6-soak.cjs --quick"
   },
   "dependencies": {
     "@dnd-kit/core": "6.3.1",
@@ -82,6 +89,7 @@
     "concurrently": "9.2.4",
     "electron": "41.10.2",
     "electron-builder": "26.15.3",
+    "esbuild": "0.28.1",
     "eslint": "^9",
     "eslint-config-next": "16.2.10",
     "jsdom": "27.2.0",
@@ -122,17 +130,28 @@
       {
         "from": "apps/companion/windows-hotkey-monitor.ps1",
         "to": "companion/windows-hotkey-monitor.ps1"
+      },
+      {
+        "from": "apps/desktop/smoke-window.ps1",
+        "to": "desktop/smoke-window.ps1"
       }
     ],
     "win": {
-      "signAndEditExecutable": false,
+      "signAndEditExecutable": true,
       "target": [
         "nsis"
       ]
     },
     "nsis": {
       "oneClick": false,
-      "allowToChangeInstallationDirectory": true
+      "perMachine": false,
+      "allowElevation": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "deleteAppDataOnUninstall": false,
+      "include": "apps/desktop/installer.nsh",
+      "artifactName": "Forever-Treasure-Companion-${version}-${arch}-unsigned-development.${ext}"
     }
   }
 }

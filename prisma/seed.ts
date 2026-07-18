@@ -1,6 +1,8 @@
 import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcryptjs";
 import { createHash, randomBytes, randomUUID } from "node:crypto";
+import { readFileSync } from "node:fs";
+import path from "node:path";
 
 const db = new PrismaClient();
 const hash = (value: string) => createHash("sha256").update(value).digest("hex");
@@ -31,6 +33,173 @@ const statesByPreset: Record<string, string[]> = {
   "long-log": ["COMPLETE", "ACTIVE", "TEASER", "LOCKED", "LOCKED"],
   "mobile-stress-test": ["COMPLETE", "ACTIVE", "TEASER", "LOCKED", "LOCKED"],
 };
+
+type ReleaseIssueFile = {
+  id: string;
+  category: string;
+  severity: string;
+  affectedComponent: string;
+  title: string;
+  reproductionSteps: string[];
+  affectedVersions: string[];
+  owner: string;
+  status: string;
+  fixCommit: string | null;
+  regressionTest: string | null;
+  releaseBlocking: boolean;
+  evidence: Record<string, unknown>;
+};
+
+function releaseJson<T>(relativePath: string) {
+  return JSON.parse(readFileSync(path.join(process.cwd(), "release", relativePath), "utf8")) as T;
+}
+
+async function ensureReleaseFoundation() {
+  const register = releaseJson<{ releaseId: string; issues: ReleaseIssueFile[] }>("vision-release-issues.json");
+  const readiness = releaseJson<{
+    version: string;
+    channel: string;
+    releaseStatus: string;
+    readiness: string;
+    sections: unknown[];
+    knownLimitations: string[];
+  }>("release-readiness.json");
+  const compatibility = releaseJson<{
+    components: Array<{
+      component: string;
+      currentVersion: string;
+      minimumVersion: string | null;
+      maximumVersion: string | null;
+      status: string;
+    }>;
+    featureStatuses: unknown[];
+  }>("compatibility-policy.json");
+  const dataset = releaseJson<{
+    datasetId: string;
+    revision: string;
+    manifestHash: string;
+    evidenceClass: string;
+    lockedAt: string;
+    cases: unknown[];
+  }>("datasets/synthetic-corpus-v1.json");
+  const sourceCommit = process.env.GIT_SHA ?? "working-tree-b6";
+  await db.visionRelease.upsert({
+    where: { id: register.releaseId },
+    update: {
+      version: readiness.version,
+      channel: readiness.channel,
+      status: readiness.releaseStatus,
+      sourceCommit,
+      buildId: process.env.BUILD_ID ?? "development-b6",
+      readinessStatus: readiness.readiness,
+      releaseManifest: JSON.stringify(readiness),
+      evidenceSummary: JSON.stringify({ sections: readiness.sections }),
+      knownLimitations: JSON.stringify(readiness.knownLimitations),
+    },
+    create: {
+      id: register.releaseId,
+      version: readiness.version,
+      channel: readiness.channel,
+      status: readiness.releaseStatus,
+      sourceCommit,
+      buildId: process.env.BUILD_ID ?? "development-b6",
+      readinessStatus: readiness.readiness,
+      releaseManifest: JSON.stringify(readiness),
+      evidenceSummary: JSON.stringify({ sections: readiness.sections }),
+      knownLimitations: JSON.stringify(readiness.knownLimitations),
+    },
+  });
+  for (const issue of register.issues) {
+    const data = {
+      releaseId: register.releaseId,
+      category: issue.category,
+      severity: issue.severity,
+      component: issue.affectedComponent,
+      title: issue.title,
+      reproductionSteps: JSON.stringify(issue.reproductionSteps),
+      affectedVersions: JSON.stringify(issue.affectedVersions),
+      owner: issue.owner,
+      status: issue.status,
+      fixCommit: issue.fixCommit,
+      regressionTest: issue.regressionTest,
+      releaseBlocking: issue.releaseBlocking,
+      evidence: JSON.stringify(issue.evidence),
+      closedAt: issue.status === "CLOSED" ? new Date("2026-07-18T12:00:00.000Z") : null,
+    };
+    await db.visionReleaseIssue.upsert({ where: { id: issue.id }, update: data, create: { id: issue.id, ...data } });
+  }
+  await db.visionDatasetManifest.upsert({
+    where: { id: dataset.datasetId },
+    update: {
+      revision: dataset.revision,
+      evidenceClass: dataset.evidenceClass,
+      manifestHash: dataset.manifestHash,
+      manifest: JSON.stringify(dataset),
+      lockedAt: new Date(dataset.lockedAt),
+    },
+    create: {
+      id: dataset.datasetId,
+      revision: dataset.revision,
+      evidenceClass: dataset.evidenceClass,
+      manifestHash: dataset.manifestHash,
+      manifest: JSON.stringify(dataset),
+      lockedAt: new Date(dataset.lockedAt),
+    },
+  });
+  for (const rule of compatibility.components) {
+    const id = `compatibility-b6-${rule.component.toLocaleLowerCase().replaceAll("_", "-")}`;
+    const data = {
+      releaseId: register.releaseId,
+      component: rule.component,
+      currentVersion: rule.currentVersion,
+      minimumVersion: rule.minimumVersion,
+      maximumVersion: rule.maximumVersion,
+      status: rule.status,
+      reason: `Governed by compatibility policy 1.0.0; ${rule.status} is not a Stable certification.`,
+      metadata: JSON.stringify({ featureStatuses: compatibility.featureStatuses }),
+    };
+    await db.visionCompatibilityRule.upsert({ where: { id }, update: data, create: { id, ...data } });
+  }
+  await db.visionReleaseTestRun.upsert({
+    where: { id: "b6-baseline-master-validation" },
+    update: {
+      releaseId: register.releaseId,
+      suite: "scripts/test-all.ps1",
+      category: "BASELINE_REGRESSION",
+      environment: JSON.stringify({ evidenceClass: "LOCAL_DEVELOPMENT_WORKSTATION" }),
+      status: "PASS",
+      evidence: JSON.stringify({
+        migrations: 10,
+        vitest: 115,
+        desktop: 3,
+        companion: 29,
+        playwrightPassed: 33,
+        playwrightSkipped: 13,
+        durationSeconds: 350.9,
+      }),
+      completedAt: new Date("2026-07-18T11:43:39.000Z"),
+    },
+    create: {
+      id: "b6-baseline-master-validation",
+      releaseId: register.releaseId,
+      suite: "scripts/test-all.ps1",
+      category: "BASELINE_REGRESSION",
+      environment: JSON.stringify({ evidenceClass: "LOCAL_DEVELOPMENT_WORKSTATION" }),
+      status: "PASS",
+      evidence: JSON.stringify({
+        migrations: 10,
+        vitest: 115,
+        desktop: 3,
+        companion: 29,
+        playwrightPassed: 33,
+        playwrightSkipped: 13,
+        durationSeconds: 350.9,
+      }),
+      startedAt: new Date("2026-07-18T11:37:48.000Z"),
+      completedAt: new Date("2026-07-18T11:43:39.000Z"),
+    },
+  });
+}
 
 function membershipStateForSession(status: string) {
   if (status === "COMPLETED") return "COMPLETED_MEMBER";
@@ -463,6 +632,7 @@ async function main() {
   });
   const platform = await ensurePlatformFoundation(user.id, accessCode);
   const vision = await ensureVisionFoundation(user.id);
+  await ensureReleaseFoundation();
 
   const prior = await db.campaign.findUnique({ where: { slug: "development-forever-treasure" } });
   if (prior && preserveExisting) {

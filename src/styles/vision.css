@@ -1,12 +1,14 @@
 .vision-library,
-.vision-editor {
+.vision-editor,
+.vision-release-readiness {
   min-height: 100vh;
   padding: clamp(1.25rem, 4vw, 4rem);
   color: var(--ink, #eadfc4);
   background: radial-gradient(circle at 20% 0%, rgba(32, 94, 102, 0.35), transparent 38%), #071b25;
 }
 .vision-library > header,
-.vision-editor > header {
+.vision-editor > header,
+.vision-release-readiness > header {
   max-width: 90rem;
   margin: 0 auto 2rem;
   display: flex;
@@ -15,13 +17,138 @@
   align-items: end;
 }
 .vision-library h1,
-.vision-editor h1 {
+.vision-editor h1,
+.vision-release-readiness h1 {
   margin: 0.25rem 0;
   font-size: clamp(2.4rem, 6vw, 5rem);
 }
 .vision-library a,
-.vision-editor a {
+.vision-editor a,
+.vision-release-readiness a {
   color: #e7c77e;
+}
+.vision-release-readiness {
+  display: grid;
+  gap: 1.5rem;
+}
+.vision-release-readiness > header nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+.vision-release-readiness > section,
+.release-decision {
+  width: min(100%, 90rem);
+  margin: 0 auto;
+  border: 1px solid rgba(222, 184, 104, 0.32);
+  border-radius: 1rem;
+  background: rgba(9, 36, 46, 0.92);
+  padding: clamp(1rem, 3vw, 1.5rem);
+}
+.release-decision {
+  border-width: 2px;
+  border-color: #e8b36d;
+}
+.release-decision dl {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+  gap: 1rem;
+}
+.release-decision dt {
+  color: #aebfc2;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+}
+.release-decision dd {
+  margin: 0.3rem 0 0;
+}
+.release-status-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  gap: 1rem;
+}
+.release-status-grid article,
+.release-issue-list article {
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 0.75rem;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.035);
+}
+.release-status-text {
+  color: #ffd08a;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.release-issue-list {
+  display: grid;
+  gap: 0.8rem;
+}
+.release-issue-list article > header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+.release-issue-list article > header span {
+  border: 1px solid #e8b36d;
+  border-radius: 999px;
+  padding: 0.2rem 0.55rem;
+  font-weight: 700;
+}
+.release-table-scroll {
+  overflow-x: auto;
+}
+.release-table-scroll:focus-visible {
+  outline: 3px solid #e7c77e;
+  outline-offset: 0.25rem;
+}
+.release-table-scroll table {
+  width: 100%;
+  min-width: 42rem;
+  border-collapse: collapse;
+}
+.release-table-scroll caption {
+  text-align: left;
+  padding: 0.5rem 0;
+}
+.release-table-scroll th,
+.release-table-scroll td {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+  padding: 0.75rem;
+  text-align: left;
+}
+.release-test-list {
+  display: grid;
+  gap: 0.55rem;
+}
+.vision-onboarding-control {
+  display: flex;
+  justify-content: flex-end;
+}
+.vision-onboarding-dialog {
+  width: min(42rem, calc(100vw - 2rem));
+  max-height: calc(100vh - 2rem);
+  overflow: auto;
+  color: #eadfc4;
+  border: 2px solid #d9b65f;
+  border-radius: 1rem;
+  background: #09242e;
+  padding: clamp(1rem, 4vw, 2rem);
+  box-shadow: 0 1.5rem 5rem rgba(0, 0, 0, 0.65);
+}
+.vision-onboarding-dialog::backdrop {
+  background: rgba(2, 12, 17, 0.82);
+  backdrop-filter: blur(3px);
+}
+.vision-onboarding-dialog li {
+  margin: 0.6rem 0;
+}
+.vision-onboarding-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.75rem;
 }
 .vision-library-layout {
   max-width: 90rem;
