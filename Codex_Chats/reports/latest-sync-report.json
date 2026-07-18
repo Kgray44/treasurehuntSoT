@@ -1,5 +1,5 @@
 {
-  "added": 2,
+  "added": 0,
   "ambiguous": 0,
   "ambiguous_candidates": [],
   "commit_created": false,
@@ -8,12 +8,7 @@
   "conversations_discovered": 189,
   "development_docs": {
     "changes": {
-      "added": [
-        {
-          "path": "Development_Docs/Canonical_Player_Journal_Implementation_Record.md",
-          "status": "??"
-        }
-      ],
+      "added": [],
       "conflicted": [],
       "deleted": [],
       "modified": [],
@@ -21,12 +16,8 @@
     },
     "commit_included": false,
     "directory": "Development_Docs",
-    "eligible_fingerprints": {
-      "Development_Docs/Canonical_Player_Journal_Implementation_Record.md": "6e8a00384878cd4ba639f17c82b65a3d43320c15f78912214f4d68f424890f54"
-    },
-    "eligible_paths": [
-      "Development_Docs/Canonical_Player_Journal_Implementation_Record.md"
-    ],
+    "eligible_fingerprints": {},
+    "eligible_paths": [],
     "empty_directories": [],
     "excluded": [
       {
@@ -49,21 +40,20 @@
   "excluded": 183,
   "failed": 0,
   "files_changed": [
-    "Codex_Chats/chats/019f730b-e872-7ce3-82e4-64614c4d9c97--implement-full-prompt.md",
     "Codex_Chats/chats/019f737d-91fa-7093-b54b-6b13860f857a--make-journal-canonical-tall-tale-ui.md",
     "Codex_Chats/chats/019f737e-a458-7c10-afec-b6a7b51c8881--implement-phase-b-1-foundation.md",
     "Codex_Chats/manifest.json",
     "Codex_Chats/reports/latest-sync-report.json"
   ],
-  "finished_at": "2026-07-18T05:24:29Z",
+  "finished_at": "2026-07-18T05:26:42Z",
   "included": 6,
   "push_attempted": false,
   "push_result": "not requested",
-  "redacted": 47,
+  "redacted": 49,
   "redaction_categories": {
     "connection_string": 5,
     "login_credential": 13,
-    "secret_assignment": 29
+    "secret_assignment": 31
   },
   "renamed": 0,
   "schema_version": "1.0",
@@ -73,12 +63,12 @@
   "source_types_inspected": [
     "codex_session"
   ],
-  "started_at": "2026-07-18T05:24:03Z",
+  "started_at": "2026-07-18T05:26:19Z",
   "suspected_secret_categories": [],
   "synchronizer_version": "1.1.0",
   "unavailable": 0,
-  "unchanged": 3,
-  "updated": 1,
+  "unchanged": 4,
+  "updated": 2,
   "warnings": [
     "Duplicate source record reconciled for 019dad68-91f3-7091-b4aa-6fee54fd1a1f",
     "Duplicate source record reconciled for 019dad68-91f3-7091-b4aa-6fee54fd1a1f",
