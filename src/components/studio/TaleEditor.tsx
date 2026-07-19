@@ -900,7 +900,9 @@ export function TaleEditor({
     }
     if (completed) await load();
     if (failed) setError(`${failed} file${failed === 1 ? "" : "s"} could not be uploaded. Other files were preserved.`);
-    setSaveState(failed ? `${completed} ready · ${failed} failed` : `${completed} file${completed === 1 ? "" : "s"} ready`);
+    setSaveState(
+      failed ? `${completed} ready · ${failed} failed` : `${completed} file${completed === 1 ? "" : "s"} ready`,
+    );
     setAssetDrawer(true);
   }
 
@@ -1114,14 +1116,29 @@ export function TaleEditor({
             >
               More
             </button>
-            {moreOpen ? <div id="studio-more-actions">
-              <Link href={`/studio/tales/${taleId}/settings`}>Tale settings</Link>
-              <Link href={`/studio/tales/${taleId}/versions`}>Version history</Link>
-              <button onClick={() => { setMoreOpen(false); void taleAction("duplicate"); }}>Duplicate tale</button>
-              <button className="danger" onClick={() => { setMoreOpen(false); void taleAction("archive"); }}>
-                Archive tale
-              </button>
-            </div> : null}
+            {moreOpen ? (
+              <div id="studio-more-actions">
+                <Link href={`/studio/tales/${taleId}/settings`}>Tale settings</Link>
+                <Link href={`/studio/tales/${taleId}/versions`}>Version history</Link>
+                <button
+                  onClick={() => {
+                    setMoreOpen(false);
+                    void taleAction("duplicate");
+                  }}
+                >
+                  Duplicate tale
+                </button>
+                <button
+                  className="danger"
+                  onClick={() => {
+                    setMoreOpen(false);
+                    void taleAction("archive");
+                  }}
+                >
+                  Archive tale
+                </button>
+              </div>
+            ) : null}
           </div>
         </div>
       </motion.header>
@@ -1132,7 +1149,9 @@ export function TaleEditor({
             className={initialSection === item ? "active" : ""}
             href={item === "story" ? `/studio/tales/${taleId}` : `/studio/tales/${taleId}/${item}`}
           >
-            {initialSection === item && <motion.span className="studio-active-section" layoutId="studio-active-section" />}
+            {initialSection === item && (
+              <motion.span className="studio-active-section" layoutId="studio-active-section" />
+            )}
             <span>{item}</span>
           </Link>
         ))}
@@ -1144,43 +1163,43 @@ export function TaleEditor({
         </div>
       )}
       <AnimatePresence initial={false}>
-      {deletedBlock && (
-        <motion.div
-          className="studio-undo-banner"
-          role="status"
-          initial={{ opacity: 0, y: mode === "reduced" ? 0 : -stateMotion.distancePx }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0 }}
-        >
-          <span>{deletedBlock.block.title} was deleted after the draft save completed.</span>
-          <button onClick={() => void restoreDeletedBlock()}>Undo deletion</button>
-        </motion.div>
-      )}
-      {validation && (
-        <motion.aside
-          className={`validation-panel ${validation.valid ? "valid" : "invalid"}`}
-          initial={{ opacity: 0, x: mode === "reduced" ? 0 : stateMotion.distancePx }}
-          animate={{ opacity: 1, x: 0 }}
-          exit={{ opacity: 0 }}
-        >
-          <header>
-            <strong>
-              {validation.valid
-                ? "Draft is publishable"
-                : `${validation.errors.length} blocking issue${validation.errors.length === 1 ? "" : "s"}`}
-            </strong>
-            <button onClick={() => setValidation(null)}>Close</button>
-          </header>
-          {[...validation.errors, ...validation.warnings].map((issue, index) => (
-            <button
-              key={`${issue.message}-${index}`}
-              onClick={(event) => issue.blockId && focusBlock(issue.blockId, event.currentTarget)}
-            >
-              {issue.message}
-            </button>
-          ))}
-        </motion.aside>
-      )}
+        {deletedBlock && (
+          <motion.div
+            className="studio-undo-banner"
+            role="status"
+            initial={{ opacity: 0, y: mode === "reduced" ? 0 : -stateMotion.distancePx }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0 }}
+          >
+            <span>{deletedBlock.block.title} was deleted after the draft save completed.</span>
+            <button onClick={() => void restoreDeletedBlock()}>Undo deletion</button>
+          </motion.div>
+        )}
+        {validation && (
+          <motion.aside
+            className={`validation-panel ${validation.valid ? "valid" : "invalid"}`}
+            initial={{ opacity: 0, x: mode === "reduced" ? 0 : stateMotion.distancePx }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0 }}
+          >
+            <header>
+              <strong>
+                {validation.valid
+                  ? "Draft is publishable"
+                  : `${validation.errors.length} blocking issue${validation.errors.length === 1 ? "" : "s"}`}
+              </strong>
+              <button onClick={() => setValidation(null)}>Close</button>
+            </header>
+            {[...validation.errors, ...validation.warnings].map((issue, index) => (
+              <button
+                key={`${issue.message}-${index}`}
+                onClick={(event) => issue.blockId && focusBlock(issue.blockId, event.currentTarget)}
+              >
+                {issue.message}
+              </button>
+            ))}
+          </motion.aside>
+        )}
       </AnimatePresence>
       {initialSection === "story" && (
         <DndContext
@@ -1452,7 +1471,10 @@ export function TaleEditor({
               className={`block-inspector ${selected ? "has-selection" : "empty"}`}
               data-inspector-state={selected ? "open" : "closed"}
               initial={false}
-              animate={{ opacity: selected ? 1 : 0.74, x: selected && mode !== "reduced" ? [stateMotion.distancePx, 0] : 0 }}
+              animate={{
+                opacity: selected ? 1 : 0.74,
+                x: selected && mode !== "reduced" ? [stateMotion.distancePx, 0] : 0,
+              }}
               transition={{ duration: stateMotion.durationSeconds, ease: platformMotionEasing("state") }}
             >
               {selected && selectedDefinition ? (
@@ -1603,11 +1625,7 @@ export function TaleEditor({
                     >
                       Duplicate block
                     </button>
-                    <button
-                      onClick={() => void deleteSelectedAuthoritatively()}
-                    >
-                      Delete block
-                    </button>
+                    <button onClick={() => void deleteSelectedAuthoritatively()}>Delete block</button>
                   </div>
                 </>
               ) : (
@@ -2246,9 +2264,7 @@ function DraggableLibraryItem({ item, onAdd }: { item: RegistryItem; onAdd: () =
     attributes: { roleDescription: "sortable story block" },
   });
   return (
-    <article
-      className={isDragging ? "dnd-dragging" : ""}
-    >
+    <article className={isDragging ? "dnd-dragging" : ""}>
       <button
         type="button"
         ref={setNodeRef}

@@ -310,14 +310,22 @@ async function installLiveRegionProbe(page: Page) {
         announcements.push({ politeness, text });
       }
     };
-    new MutationObserver(inspect).observe(document.documentElement, {
-      subtree: true,
-      childList: true,
-      characterData: true,
-      attributes: true,
-      attributeFilter: ["aria-live", "hidden", "aria-hidden"],
-    });
     Object.defineProperty(window, "__phase3Announcements", { value: announcements, configurable: true });
+    const observe = () => {
+      if (!document.documentElement) {
+        queueMicrotask(observe);
+        return;
+      }
+      new MutationObserver(inspect).observe(document.documentElement, {
+        subtree: true,
+        childList: true,
+        characterData: true,
+        attributes: true,
+        attributeFilter: ["aria-live", "hidden", "aria-hidden"],
+      });
+      inspect();
+    };
+    observe();
   });
 }
 

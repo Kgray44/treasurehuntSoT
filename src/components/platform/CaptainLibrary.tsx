@@ -1,6 +1,5 @@
 "use client";
 
-/* eslint-disable @next/next/no-img-element -- QR data URLs are generated server-side and shown only after invitation creation. */
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { AnimatePresence, LayoutGroup, motion } from "motion/react";
@@ -79,17 +78,35 @@ function flattenVoyages(groups: Library["groups"]): VersionedVoyage[] {
 }
 
 function rebuildVoyageGroups(rows: readonly VersionedVoyage[]): Library["groups"] {
-  const groups = { needsAttention: [], activeVoyages: [], readyToLaunch: [], completedPlaythroughs: [] } as Library["groups"];
+  const groups = {
+    needsAttention: [],
+    activeVoyages: [],
+    readyToLaunch: [],
+    completedPlaythroughs: [],
+  } as Library["groups"];
   for (const row of rows) groups[row.group].push(row.voyage);
   return groups;
 }
 
 function voyageVersion(row: VersionedVoyage) {
-  return JSON.stringify([row.voyage.status, row.voyage.versionLabel, row.voyage.currentSequence, row.voyage.connected, row.voyage.pendingAction, row.voyage.players]);
+  return JSON.stringify([
+    row.voyage.status,
+    row.voyage.versionLabel,
+    row.voyage.currentSequence,
+    row.voyage.connected,
+    row.voyage.pendingAction,
+    row.voyage.players,
+  ]);
 }
 
 function invitationVersion(invitation: Invitation) {
-  return JSON.stringify([invitation.status, invitation.expiresAt, invitation.viewedAt, invitation.acceptedAt, invitation.replacementId]);
+  return JSON.stringify([
+    invitation.status,
+    invitation.expiresAt,
+    invitation.viewedAt,
+    invitation.acceptedAt,
+    invitation.replacementId,
+  ]);
 }
 
 export function CaptainLibrary() {
@@ -104,6 +121,7 @@ export function CaptainLibrary() {
   const [tab, setTab] = useState<"voyages" | "invitations" | "published">("voyages");
   const [wizard, setWizard] = useState(false);
   const [step, setStep] = useState(0);
+  const [wizardDirection, setWizardDirection] = useState<1 | -1>(1);
   const [taleId, setTaleId] = useState("");
   const [versionId, setVersionId] = useState("");
   const [voyageName, setVoyageName] = useState("");
@@ -122,7 +140,8 @@ export function CaptainLibrary() {
   const [notice, setNotice] = useState("");
   const [changedIds, setChangedIds] = useState<ReadonlySet<string>>(new Set());
   const [invitationTransitions, setInvitationTransitions] = useState<Readonly<Record<string, string>>>({});
-  const [launchState, setLaunchState] = useState<Readonly<{ id: string; phase: "confirming" | "launching" | "launched" } | null>>(null);
+  const [launchState, setLaunchState] =
+    useState<Readonly<{ id: string; phase: "confirming" | "launching" | "launched" } | null>>(null);
 
   const load = useCallback(async () => {
     if (activeLoad.current) return;
@@ -138,7 +157,12 @@ export function CaptainLibrary() {
         if (!previous) {
           libraryRef.current = body;
           setLibrary(body);
-          setChangedIds(new Set([...flattenVoyages(body.groups).map((row) => row.voyage.id), ...body.invitations.map((item) => item.id)]));
+          setChangedIds(
+            new Set([
+              ...flattenVoyages(body.groups).map((row) => row.voyage.id),
+              ...body.invitations.map((item) => item.id),
+            ]),
+          );
           changedTimer.current = setTimeout(() => setChangedIds(new Set()), 900);
         } else {
           const voyageDiff = reconcileVersionedRows({
@@ -162,11 +186,19 @@ export function CaptainLibrary() {
             ...body,
             groups: voyageDiff.changed ? rebuildVoyageGroups(voyageDiff.rows) : previous.groups,
             invitations: invitationDiff.changed ? [...invitationDiff.rows] : previous.invitations,
-            publishedTales: JSON.stringify(body.publishedTales) === JSON.stringify(previous.publishedTales) ? previous.publishedTales : body.publishedTales,
+            publishedTales:
+              JSON.stringify(body.publishedTales) === JSON.stringify(previous.publishedTales)
+                ? previous.publishedTales
+                : body.publishedTales,
           };
           libraryRef.current = nextLibrary;
           setLibrary(nextLibrary);
-          const changed = [...voyageDiff.addedIds, ...voyageDiff.changedIds, ...invitationDiff.addedIds, ...invitationDiff.changedIds];
+          const changed = [
+            ...voyageDiff.addedIds,
+            ...voyageDiff.changedIds,
+            ...invitationDiff.addedIds,
+            ...invitationDiff.changedIds,
+          ];
           if (changed.length) {
             setChangedIds(new Set(changed));
             if (changedTimer.current) clearTimeout(changedTimer.current);
@@ -247,6 +279,7 @@ export function CaptainLibrary() {
       if (!response.ok) return setError(body.error ?? "Voyage creation failed.");
       setCreated(body.invitations ?? []);
       setNotice("The voyage and its individual invitations were created together.");
+      setWizardDirection(1);
       setStep(6);
       await load();
     } catch {
@@ -319,9 +352,11 @@ export function CaptainLibrary() {
           delete next[invitation.id];
           return next;
         });
-      }
-      else {
-        setInvitationTransitions((current) => ({ ...current, [invitation.id]: action === "replace" ? "replaced" : action === "revoke" ? "revoked" : "extended" }));
+      } else {
+        setInvitationTransitions((current) => ({
+          ...current,
+          [invitation.id]: action === "replace" ? "replaced" : action === "revoke" ? "revoked" : "extended",
+        }));
         if (body.replacement) {
           await new Promise((resolve) => window.setTimeout(resolve, layoutToken.durationMs));
           setCreated([body.replacement]);
@@ -386,6 +421,7 @@ export function CaptainLibrary() {
             className="brass-button"
             onClick={() => {
               setWizard(true);
+              setWizardDirection(1);
               setStep(0);
             }}
           >
@@ -399,7 +435,9 @@ export function CaptainLibrary() {
           aria-pressed={tab === "voyages"}
           onClick={() => setTab("voyages")}
         >
-          {tab === "voyages" && <motion.span className="platform-tab-plate" layoutId="captain-tab-plate" aria-hidden="true" />}
+          {tab === "voyages" && (
+            <motion.span className="platform-tab-plate" layoutId="captain-tab-plate" aria-hidden="true" />
+          )}
           Voyages
         </button>
         <button
@@ -407,7 +445,9 @@ export function CaptainLibrary() {
           aria-pressed={tab === "invitations"}
           onClick={() => setTab("invitations")}
         >
-          {tab === "invitations" && <motion.span className="platform-tab-plate" layoutId="captain-tab-plate" aria-hidden="true" />}
+          {tab === "invitations" && (
+            <motion.span className="platform-tab-plate" layoutId="captain-tab-plate" aria-hidden="true" />
+          )}
           Invitations{" "}
           <span>
             {library.invitations.filter((item) => ["CREATED", "COPIED", "VIEWED"].includes(item.status)).length}
@@ -418,7 +458,9 @@ export function CaptainLibrary() {
           aria-pressed={tab === "published"}
           onClick={() => setTab("published")}
         >
-          {tab === "published" && <motion.span className="platform-tab-plate" layoutId="captain-tab-plate" aria-hidden="true" />}
+          {tab === "published" && (
+            <motion.span className="platform-tab-plate" layoutId="captain-tab-plate" aria-hidden="true" />
+          )}
           Published Tales
         </button>
       </nav>
@@ -433,206 +475,223 @@ export function CaptainLibrary() {
           exit={{ opacity: 0 }}
           transition={{ duration: layoutToken.durationSeconds, ease: platformMotionEasing("layout") }}
         >
-      {tab === "voyages" && (
-        <div className="captain-groups">
-          {!voyageCount && (
-            <EmptyState
-              title="No voyages need your attention"
-              detail="Choose a published Tall Tale, configure the participants, and create secure invitations."
-              action={{
-                label: "Create a Voyage",
-                onClick: () => {
-                  setWizard(true);
-                  setStep(0);
-                },
-              }}
-            />
+          {tab === "voyages" && (
+            <div className="captain-groups">
+              {!voyageCount && (
+                <EmptyState
+                  title="No voyages need your attention"
+                  detail="Choose a published Tall Tale, configure the participants, and create secure invitations."
+                  action={{
+                    label: "Create a Voyage",
+                    onClick: () => {
+                      setWizard(true);
+                      setWizardDirection(1);
+                      setStep(0);
+                    },
+                  }}
+                />
+              )}
+              {voyageGroups.map(
+                ([label, voyages]) =>
+                  voyages.length > 0 && (
+                    <section key={label}>
+                      <header>
+                        <h2>{label}</h2>
+                        <span>{voyages.length}</span>
+                      </header>
+                      <LayoutGroup id="captain-voyages">
+                        <div className="captain-card-grid">
+                          {voyages.map((voyage) => (
+                            <VoyageCard
+                              key={voyage.id}
+                              voyage={voyage}
+                              busy={busy}
+                              changed={changedIds.has(voyage.id)}
+                              group={label}
+                              launchPhase={launchState?.id === voyage.id ? launchState.phase : null}
+                              mode={mode}
+                              launch={() => void launch(voyage)}
+                            />
+                          ))}
+                        </div>
+                      </LayoutGroup>
+                    </section>
+                  ),
+              )}
+            </div>
           )}
-          {voyageGroups.map(
-            ([label, voyages]) =>
-              voyages.length > 0 && (
-                <section key={label}>
-                  <header>
-                    <h2>{label}</h2>
-                    <span>{voyages.length}</span>
-                  </header>
-                  <LayoutGroup id="captain-voyages"><div className="captain-card-grid">
-                    {voyages.map((voyage) => (
-                      <VoyageCard
-                        key={voyage.id}
-                        voyage={voyage}
-                        busy={busy}
-                        changed={changedIds.has(voyage.id)}
-                        group={label}
-                        launchPhase={launchState?.id === voyage.id ? launchState.phase : null}
-                        mode={mode}
-                        launch={() => void launch(voyage)}
-                      />
+          {tab === "invitations" && (
+            <section className="invitation-dashboard">
+              <header>
+                <div>
+                  <p className="eyebrow">Tracked security objects</p>
+                  <h2>Invitation management</h2>
+                </div>
+              </header>
+              {!library.invitations.length ? (
+                <EmptyState
+                  title="No invitations have been created"
+                  detail="Invitations appear here after a Captain creates a voyage for one or more Players."
+                  action={{
+                    label: "Create a Voyage",
+                    onClick: () => {
+                      setWizard(true);
+                      setWizardDirection(1);
+                      setStep(0);
+                    },
+                  }}
+                />
+              ) : (
+                <div className="invitation-table" role="table" aria-label="Voyage invitations">
+                  <AnimatePresence initial={false} mode="popLayout">
+                    {library.invitations.map((invitation) => (
+                      <motion.article
+                        layout
+                        key={invitation.id}
+                        role="row"
+                        data-invitation-transition={
+                          invitationTransitions[invitation.id] ?? invitation.status.toLocaleLowerCase()
+                        }
+                        data-row-changed={changedIds.has(invitation.id)}
+                        exit={{ opacity: 0, scale: mode === "reduced" ? 1 : 0.98 }}
+                      >
+                        <div>
+                          <strong>{invitation.recipientName}</strong>
+                          <span>
+                            {invitation.taleTitle} · {invitation.voyageName}
+                          </span>
+                        </div>
+                        <div>
+                          <b className={`status-pill status-${invitation.status.toLocaleLowerCase()}`}>
+                            {invitation.status}
+                          </b>
+                          <small>
+                            token {invitation.tokenPrefix}… · code {invitation.shortCodePrefix}…
+                          </small>
+                        </div>
+                        <div>
+                          <time>{new Date(invitation.expiresAt).toLocaleString()}</time>
+                          <small>
+                            {invitation.viewedAt
+                              ? `Viewed ${new Date(invitation.viewedAt).toLocaleString()}`
+                              : "Not viewed"}
+                          </small>
+                        </div>
+                        <div className="row-actions">
+                          {["CREATED", "SENT", "COPIED", "VIEWED"].includes(invitation.status) && (
+                            <>
+                              <button disabled={busy} onClick={() => void invitationAction(invitation, "extend")}>
+                                Extend
+                              </button>
+                              <button disabled={busy} onClick={() => void invitationAction(invitation, "replace")}>
+                                Replace invitation
+                              </button>
+                              <button
+                                className="button-danger"
+                                disabled={busy}
+                                onClick={() => void invitationAction(invitation, "revoke")}
+                              >
+                                Revoke invitation
+                              </button>
+                            </>
+                          )}
+                        </div>
+                      </motion.article>
                     ))}
-                  </div></LayoutGroup>
-                </section>
-              ),
+                  </AnimatePresence>
+                </div>
+              )}
+            </section>
           )}
-        </div>
-      )}
-      {tab === "invitations" && (
-        <section className="invitation-dashboard">
-          <header>
-            <div>
-              <p className="eyebrow">Tracked security objects</p>
-              <h2>Invitation management</h2>
-            </div>
-          </header>
-          {!library.invitations.length ? (
-            <EmptyState
-              title="No invitations have been created"
-              detail="Invitations appear here after a Captain creates a voyage for one or more Players."
-              action={{
-                label: "Create a Voyage",
-                onClick: () => {
-                  setWizard(true);
-                  setStep(0);
-                },
-              }}
-            />
-          ) : (
-            <div className="invitation-table" role="table" aria-label="Voyage invitations">
-              <AnimatePresence initial={false} mode="popLayout">
-              {library.invitations.map((invitation) => (
-                <motion.article
-                  layout
-                  key={invitation.id}
-                  role="row"
-                  data-invitation-transition={invitationTransitions[invitation.id] ?? invitation.status.toLocaleLowerCase()}
-                  data-row-changed={changedIds.has(invitation.id)}
-                  exit={{ opacity: 0, scale: mode === "reduced" ? 1 : 0.98 }}
-                >
-                  <div>
-                    <strong>{invitation.recipientName}</strong>
-                    <span>
-                      {invitation.taleTitle} · {invitation.voyageName}
-                    </span>
-                  </div>
-                  <div>
-                    <b className={`status-pill status-${invitation.status.toLocaleLowerCase()}`}>{invitation.status}</b>
-                    <small>
-                      token {invitation.tokenPrefix}… · code {invitation.shortCodePrefix}…
-                    </small>
-                  </div>
-                  <div>
-                    <time>{new Date(invitation.expiresAt).toLocaleString()}</time>
-                    <small>
-                      {invitation.viewedAt ? `Viewed ${new Date(invitation.viewedAt).toLocaleString()}` : "Not viewed"}
-                    </small>
-                  </div>
-                  <div className="row-actions">
-                    {["CREATED", "SENT", "COPIED", "VIEWED"].includes(invitation.status) && (
-                      <>
-                        <button disabled={busy} onClick={() => void invitationAction(invitation, "extend")}>
-                          Extend
-                        </button>
-                        <button disabled={busy} onClick={() => void invitationAction(invitation, "replace")}>
-                          Replace invitation
-                        </button>
-                        <button
-                          className="button-danger"
-                          disabled={busy}
-                          onClick={() => void invitationAction(invitation, "revoke")}
-                        >
-                          Revoke invitation
-                        </button>
-                      </>
-                    )}
-                  </div>
-                </motion.article>
-              ))}
-              </AnimatePresence>
-            </div>
-          )}
-        </section>
-      )}
-      {tab === "published" && (
-        <section className="published-tale-grid">
-          {!library.publishedTales.length && (
-            <EmptyState
-              title="No published Tall Tales are ready"
-              detail="A Creator must validate and publish an edition before a Captain can create a voyage from it."
-              action={{ label: "Open Tall Tale Studio", href: "/studio/library" }}
-            />
-          )}
-          <AnimatePresence initial={false}>
-          {library.publishedTales.map((tale) => (
-            <motion.article layout key={tale.id}>
-              <p className="card-kicker">{tale.visibility.toLocaleLowerCase()}</p>
-              <h2>{tale.title}</h2>
-              <p>{tale.subtitle}</p>
-              <ul>
-                {tale.versions.map((version) => (
-                  <li key={version.id}>
-                    <span>Version {version.label}</span>
-                    <small>
-                      {version.activeRunCount} runs · {new Date(version.publishedAt).toLocaleDateString()}
-                    </small>
-                  </li>
+          {tab === "published" && (
+            <section className="published-tale-grid">
+              {!library.publishedTales.length && (
+                <EmptyState
+                  title="No published Tall Tales are ready"
+                  detail="A Creator must validate and publish an edition before a Captain can create a voyage from it."
+                  action={{ label: "Open Tall Tale Studio", href: "/studio/library" }}
+                />
+              )}
+              <AnimatePresence initial={false}>
+                {library.publishedTales.map((tale) => (
+                  <motion.article layout key={tale.id}>
+                    <p className="card-kicker">{tale.visibility.toLocaleLowerCase()}</p>
+                    <h2>{tale.title}</h2>
+                    <p>{tale.subtitle}</p>
+                    <ul>
+                      {tale.versions.map((version) => (
+                        <li key={version.id}>
+                          <span>Version {version.label}</span>
+                          <small>
+                            {version.activeRunCount} runs · {new Date(version.publishedAt).toLocaleDateString()}
+                          </small>
+                        </li>
+                      ))}
+                    </ul>
+                    <button
+                      onClick={() => {
+                        chooseTale(tale.id);
+                        setWizard(true);
+                        setWizardDirection(1);
+                        setStep(1);
+                      }}
+                    >
+                      Invite Players
+                    </button>
+                    <Link href={`/captain/tales/${tale.id}`}>Open details</Link>
+                  </motion.article>
                 ))}
-              </ul>
-              <button
-                onClick={() => {
-                  chooseTale(tale.id);
-                  setWizard(true);
-                  setStep(1);
-                }}
-              >
-                Invite Players
-              </button>
-              <Link href={`/captain/tales/${tale.id}`}>Open details</Link>
-            </motion.article>
-          ))}
-          </AnimatePresence>
-        </section>
-      )}
+              </AnimatePresence>
+            </section>
+          )}
         </motion.div>
       </AnimatePresence>
       <AnimatePresence>
-      {created.length > 0 && !wizard && <InvitationSecrets invitations={created} csrf={library.csrfToken} mode={mode} />}
+        {created.length > 0 && !wizard && (
+          <InvitationSecrets invitations={created} csrf={library.csrfToken} mode={mode} />
+        )}
       </AnimatePresence>
       <AnimatePresence>
-      {wizard && (
-        <VoyageWizard
-          step={step}
-          setStep={setStep}
-          close={() => setWizard(false)}
-          library={library}
-          taleId={taleId}
-          chooseTale={chooseTale}
-          versionId={versionId}
-          setVersionId={setVersionId}
-          selectedTale={selectedTale}
-          selectedVersion={selectedVersion}
-          voyageName={voyageName}
-          setVoyageName={setVoyageName}
-          captainMode={captainMode}
-          setCaptainMode={setCaptainMode}
-          hints={hints}
-          setHints={setHints}
-          sideQuests={sideQuests}
-          setSideQuests={setSideQuests}
-          plannedStartAt={plannedStartAt}
-          setPlannedStartAt={setPlannedStartAt}
-          scheduleTimezone={scheduleTimezone}
-          setScheduleTimezone={setScheduleTimezone}
-          players={players}
-          setPlayers={setPlayers}
-          expiresInHours={expiresInHours}
-          setExpiresInHours={setExpiresInHours}
-          accountRequired={accountRequired}
-          setAccountRequired={setAccountRequired}
-          created={created}
-          busy={busy}
-          mode={mode}
-          createVoyage={() => void createVoyage()}
-        />
-      )}
+        {wizard && (
+          <VoyageWizard
+            step={step}
+            direction={wizardDirection}
+            setStep={(nextStep) => {
+              setWizardDirection(nextStep >= step ? 1 : -1);
+              setStep(nextStep);
+            }}
+            close={() => setWizard(false)}
+            library={library}
+            taleId={taleId}
+            chooseTale={chooseTale}
+            versionId={versionId}
+            setVersionId={setVersionId}
+            selectedTale={selectedTale}
+            selectedVersion={selectedVersion}
+            voyageName={voyageName}
+            setVoyageName={setVoyageName}
+            captainMode={captainMode}
+            setCaptainMode={setCaptainMode}
+            hints={hints}
+            setHints={setHints}
+            sideQuests={sideQuests}
+            setSideQuests={setSideQuests}
+            plannedStartAt={plannedStartAt}
+            setPlannedStartAt={setPlannedStartAt}
+            scheduleTimezone={scheduleTimezone}
+            setScheduleTimezone={setScheduleTimezone}
+            players={players}
+            setPlayers={setPlayers}
+            expiresInHours={expiresInHours}
+            setExpiresInHours={setExpiresInHours}
+            accountRequired={accountRequired}
+            setAccountRequired={setAccountRequired}
+            created={created}
+            busy={busy}
+            mode={mode}
+            createVoyage={() => void createVoyage()}
+          />
+        )}
       </AnimatePresence>
     </main>
   );
@@ -697,17 +756,33 @@ function VoyageCard({
           </div>
         )}
       </dl>
-      {group === "Needs Attention" && <p className="needs-attention-mark"><span aria-hidden="true">!</span> Captain action is required.</p>}
+      {group === "Needs Attention" && (
+        <p className="needs-attention-mark">
+          <span aria-hidden="true">!</span> Captain action is required.
+        </p>
+      )}
       {group === "Ready to Launch" && (
         <div className="readiness-gauge" aria-label={`${readiness}% of Players ready`}>
           <span style={{ "--readiness": `${readiness}%` } as React.CSSProperties} />
-          <small>{readyPlayers} of {voyage.players.length} Players ready</small>
+          <small>
+            {readyPlayers} of {voyage.players.length} Players ready
+          </small>
         </div>
       )}
       {launchPhase && (
         <div className="launch-ceremony-status" role="status" aria-live="polite">
-          <PlatformRelic kind="voyage-compass" state={launchPhase === "launched" ? "launch-ready" : "bearing"} mode={mode} />
-          <span>{launchPhase === "launched" ? "Launch confirmed by the server." : launchPhase === "launching" ? "Recording launch with the Captain's ledger." : "Awaiting launch confirmation."}</span>
+          <PlatformRelic
+            kind="voyage-compass"
+            state={launchPhase === "launched" ? "launch-ready" : "bearing"}
+            mode={mode}
+          />
+          <span>
+            {launchPhase === "launched"
+              ? "Launch confirmed by the server."
+              : launchPhase === "launching"
+                ? "Recording launch with the Captain's ledger."
+                : "Awaiting launch confirmation."}
+          </span>
         </div>
       )}
       <div className="card-actions">
@@ -716,8 +791,16 @@ function VoyageCard({
         </Link>
         <Link href={`/captain/voyages/${voyage.id}/player-preview`}>Preview as Player</Link>
         {["READY", "SCHEDULED"].includes(voyage.status) && (
-          <button disabled={busy || launchPhase === "launched"} aria-busy={launchPhase === "launching"} onClick={launch}>
-            {launchPhase === "launching" ? "Launching…" : launchPhase === "launched" ? "Voyage launched" : "Launch voyage"}
+          <button
+            disabled={busy || launchPhase === "launched"}
+            aria-busy={launchPhase === "launching"}
+            onClick={launch}
+          >
+            {launchPhase === "launching"
+              ? "Launching…"
+              : launchPhase === "launched"
+                ? "Voyage launched"
+                : "Launch voyage"}
           </button>
         )}
       </div>
@@ -727,6 +810,7 @@ function VoyageCard({
 
 type WizardProps = Record<string, unknown> & {
   step: number;
+  direction: 1 | -1;
   setStep: (step: number) => void;
   close: () => void;
   library: Library;
@@ -761,10 +845,9 @@ type WizardProps = Record<string, unknown> & {
 };
 function VoyageWizard(props: WizardProps) {
   const dialogRef = useRef<HTMLElement>(null);
-  const previousStep = useRef(props.step);
   const closeRef = useRef(props.close);
   const token = resolvePlatformMotionToken("layout", props.mode);
-  const direction = props.step >= previousStep.current ? 1 : -1;
+  const direction = props.direction;
   const crewNames = props.players.map(
     (crew) =>
       props.library.playerProfiles.find((profile) => profile.id === crew.playerId)?.displayName ??
@@ -796,7 +879,6 @@ function VoyageWizard(props: WizardProps) {
   }, [props.close]);
 
   useEffect(() => {
-    previousStep.current = props.step;
     const timer = window.setTimeout(() => document.getElementById("wizard-title")?.focus(), token.durationMs + 20);
     return () => window.clearTimeout(timer);
   }, [props.step, token.durationMs]);
@@ -838,7 +920,13 @@ function VoyageWizard(props: WizardProps) {
   }, []);
 
   return (
-    <motion.div className="wizard-backdrop" role="presentation" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+    <motion.div
+      className="wizard-backdrop"
+      role="presentation"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+    >
       <motion.section
         ref={dialogRef}
         className="voyage-wizard"
@@ -852,14 +940,21 @@ function VoyageWizard(props: WizardProps) {
         <header>
           <div>
             <p className="eyebrow">Step {props.step + 1} of 7</p>
-            <h2 id="wizard-title" tabIndex={-1}>{steps[props.step]}</h2>
+            <h2 id="wizard-title" tabIndex={-1}>
+              {steps[props.step]}
+            </h2>
           </div>
           <button aria-label="Close invitation wizard" onClick={props.close}>
             ×
           </button>
         </header>
         <ol className="wizard-progress" aria-label="Voyage creation progress">
-          <motion.span className="wizard-progress-path" aria-hidden="true" animate={{ scaleX: props.step / (steps.length - 1) }} transition={{ duration: token.durationSeconds }} />
+          <motion.span
+            className="wizard-progress-path"
+            aria-hidden="true"
+            animate={{ scaleX: props.step / (steps.length - 1) }}
+            transition={{ duration: token.durationSeconds }}
+          />
           {steps.map((label, index) => (
             <li
               className={index === props.step ? "current" : index < props.step ? "completed" : ""}
@@ -873,285 +968,291 @@ function VoyageWizard(props: WizardProps) {
         </ol>
         <div className="wizard-body">
           <AnimatePresence mode="wait" initial={false} custom={direction}>
-          <motion.div
-            className="wizard-step-panel"
-            key={props.step}
-            custom={direction}
-            initial={{ opacity: 0, x: props.mode === "reduced" ? 0 : direction * 18 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: props.mode === "reduced" ? 0 : direction * -12 }}
-            transition={{ duration: token.durationSeconds, ease: platformMotionEasing("layout") }}
-          >
-          {props.step === 0 && (
-            <div className="wizard-choice-grid">
-              {props.library.publishedTales.map((tale) => (
-                <button
-                  className={props.taleId === tale.id ? "selected" : ""}
-                  aria-pressed={props.taleId === tale.id}
-                  onClick={() => props.chooseTale(tale.id)}
-                  key={tale.id}
-                >
-                  <strong>{tale.title}</strong>
-                  <span>
-                    {tale.versions.length} published {tale.versions.length === 1 ? "edition" : "editions"}
-                  </span>
-                </button>
-              ))}
-              {props.selectedTale && (
-                <label>
-                  <span>Published version</span>
-                  <select value={props.versionId} onChange={(event) => props.setVersionId(event.target.value)}>
-                    {props.selectedTale.versions.map((version) => (
-                      <option key={version.id} value={version.id}>
-                        Version {version.label} · {new Date(version.publishedAt).toLocaleDateString()}
-                      </option>
-                    ))}
-                  </select>
-                </label>
-              )}
-            </div>
-          )}
-          {props.step === 1 && (
-            <div className="wizard-form">
-              <label>
-                <span>Voyage name</span>
-                <input value={props.voyageName} onChange={(event) => props.setVoyageName(event.target.value)} />
-              </label>
-              <label>
-                <span>Progression mode</span>
-                <select value={props.captainMode} onChange={(event) => props.setCaptainMode(event.target.value)}>
-                  <option value="CAPTAIN_CONTROLLED">Captain-controlled</option>
-                  <option value="RULE_CONTROLLED">Rule-controlled</option>
-                  <option value="HYBRID">Hybrid</option>
-                </select>
-              </label>
-              <label>
-                <span>Hints</span>
-                <select value={props.hints} onChange={(event) => props.setHints(event.target.value)}>
-                  <option value="DISABLED">Disabled</option>
-                  <option value="ON_REQUEST">On request</option>
-                  <option value="CAPTAIN_PUSHED">Captain-pushed</option>
-                  <option value="TIMED">Timed</option>
-                  <option value="TALE_DEFINED">Tale-defined</option>
-                </select>
-              </label>
-              <label className="check-field">
-                <input
-                  type="checkbox"
-                  checked={props.sideQuests}
-                  onChange={(event) => props.setSideQuests(event.target.checked)}
-                />{" "}
-                Enable published side quests
-              </label>
-              <label>
-                <span>Planned start (optional)</span>
-                <input
-                  type="datetime-local"
-                  value={props.plannedStartAt}
-                  onChange={(event) => props.setPlannedStartAt(event.target.value)}
-                />
-              </label>
-              <label>
-                <span>Schedule timezone</span>
-                <input
-                  value={props.scheduleTimezone}
-                  onChange={(event) => props.setScheduleTimezone(event.target.value)}
-                />
-              </label>
-            </div>
-          )}
-          {props.step === 2 && (
-            <div className="wizard-form crew-builder">
-              <AnimatePresence initial={false}>
-              {props.players.map((crew, index) => (
-                <motion.fieldset layout key={crew.key} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-                  <legend>Player {index + 1}</legend>
-                  <label>
-                    <span>Use existing Player (optional)</span>
-                    <select
-                      value={crew.playerId}
-                      onChange={(event) => updateCrew(crew.key, { playerId: event.target.value })}
+            <motion.div
+              className="wizard-step-panel"
+              key={props.step}
+              custom={direction}
+              initial={{ opacity: 0, x: props.mode === "reduced" ? 0 : direction * 18 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: props.mode === "reduced" ? 0 : direction * -12 }}
+              transition={{ duration: token.durationSeconds, ease: platformMotionEasing("layout") }}
+            >
+              {props.step === 0 && (
+                <div className="wizard-choice-grid">
+                  {props.library.publishedTales.map((tale) => (
+                    <button
+                      className={props.taleId === tale.id ? "selected" : ""}
+                      aria-pressed={props.taleId === tale.id}
+                      onClick={() => props.chooseTale(tale.id)}
+                      key={tale.id}
                     >
-                      <option value="">Create guest profile</option>
-                      {props.library.playerProfiles.map((player) => (
-                        <option key={player.id} value={player.id}>
-                          {player.displayName}
-                          {player.username ? ` (${player.username})` : ""}
-                        </option>
-                      ))}
-                    </select>
-                  </label>
-                  {!crew.playerId && (
+                      <strong>{tale.title}</strong>
+                      <span>
+                        {tale.versions.length} published {tale.versions.length === 1 ? "edition" : "editions"}
+                      </span>
+                    </button>
+                  ))}
+                  {props.selectedTale && (
                     <label>
-                      <span>Player display name</span>
-                      <input
-                        value={crew.displayName}
-                        onChange={(event) => updateCrew(crew.key, { displayName: event.target.value })}
-                      />
+                      <span>Published version</span>
+                      <select value={props.versionId} onChange={(event) => props.setVersionId(event.target.value)}>
+                        {props.selectedTale.versions.map((version) => (
+                          <option key={version.id} value={version.id}>
+                            Version {version.label} · {new Date(version.publishedAt).toLocaleDateString()}
+                          </option>
+                        ))}
+                      </select>
                     </label>
                   )}
+                </div>
+              )}
+              {props.step === 1 && (
+                <div className="wizard-form">
                   <label>
-                    <span>Crew role</span>
+                    <span>Voyage name</span>
+                    <input value={props.voyageName} onChange={(event) => props.setVoyageName(event.target.value)} />
+                  </label>
+                  <label>
+                    <span>Progression mode</span>
+                    <select value={props.captainMode} onChange={(event) => props.setCaptainMode(event.target.value)}>
+                      <option value="CAPTAIN_CONTROLLED">Captain-controlled</option>
+                      <option value="RULE_CONTROLLED">Rule-controlled</option>
+                      <option value="HYBRID">Hybrid</option>
+                    </select>
+                  </label>
+                  <label>
+                    <span>Hints</span>
+                    <select value={props.hints} onChange={(event) => props.setHints(event.target.value)}>
+                      <option value="DISABLED">Disabled</option>
+                      <option value="ON_REQUEST">On request</option>
+                      <option value="CAPTAIN_PUSHED">Captain-pushed</option>
+                      <option value="TIMED">Timed</option>
+                      <option value="TALE_DEFINED">Tale-defined</option>
+                    </select>
+                  </label>
+                  <label className="check-field">
                     <input
-                      value={crew.crewRole}
-                      onChange={(event) => updateCrew(crew.key, { crewRole: event.target.value })}
+                      type="checkbox"
+                      checked={props.sideQuests}
+                      onChange={(event) => props.setSideQuests(event.target.checked)}
+                    />{" "}
+                    Enable published side quests
+                  </label>
+                  <label>
+                    <span>Planned start (optional)</span>
+                    <input
+                      type="datetime-local"
+                      value={props.plannedStartAt}
+                      onChange={(event) => props.setPlannedStartAt(event.target.value)}
                     />
                   </label>
-                  {props.players.length > 1 && (
-                    <button
-                      type="button"
-                      onClick={() => removeCrew(crew.key)}
-                    >
-                      Remove Player
-                    </button>
-                  )}
-                </motion.fieldset>
-              ))}
-              </AnimatePresence>
-              <button
-                data-add-player
-                type="button"
-                onClick={() =>
-                  props.setPlayers((current) => [
-                    ...current,
-                    { key: crypto.randomUUID(), playerId: "", displayName: "", crewRole: "Player", pin: "" },
-                  ])
-                }
-              >
-                Add another Player
-              </button>
-              <p className="panel-note">Each crew member receives an individual invitation and identity boundary.</p>
-            </div>
-          )}
-          {props.step === 3 && (
-            <div className="wizard-form">
-              <label>
-                <span>Invitation lifetime</span>
-                <select
-                  value={props.expiresInHours}
-                  onChange={(event) => props.setExpiresInHours(Number(event.target.value))}
-                >
-                  <option value={24}>24 hours</option>
-                  <option value={168}>7 days</option>
-                  <option value={720}>30 days</option>
-                </select>
-              </label>
-              <label className="check-field">
-                <input
-                  type="checkbox"
-                  checked={props.accountRequired}
-                  onChange={(event) => props.setAccountRequired(event.target.checked)}
-                />{" "}
-                Require claimed Player accounts
-              </label>
-              {props.players.map((crew, index) => (
-                <label key={crew.key}>
-                  <span>Optional PIN for {crewNames[index] || `Player ${index + 1}`}</span>
-                  <input
-                    type="password"
-                    minLength={4}
-                    value={crew.pin}
-                    onChange={(event) => updateCrew(crew.key, { pin: event.target.value })}
-                  />
-                </label>
-              ))}
-              {!claimedAccountsValid && (
-                <p className="platform-error" role="alert">
-                  Every account-required invitation must select an existing claimed Player account.
-                </p>
+                  <label>
+                    <span>Schedule timezone</span>
+                    <input
+                      value={props.scheduleTimezone}
+                      onChange={(event) => props.setScheduleTimezone(event.target.value)}
+                    />
+                  </label>
+                </div>
               )}
-              <p>No raw token, short code, or PIN will be stored. Replacements generate new secrets.</p>
-            </div>
-          )}
-          {props.step === 4 && (
-            <div className="delivery-options">
-              <article>
-                <strong>Secure link</strong>
-                <span>Opaque, high-entropy, single-recipient URL</span>
-              </article>
-              <article>
-                <strong>QR card</strong>
-                <span>Encodes the same secure link with a readable code fallback</span>
-              </article>
-              <article>
-                <strong>Short code</strong>
-                <span>Human-friendly, rate-limited gateway lookup</span>
-              </article>
-              <article>
-                <strong>Copyable message</strong>
-                <span>Player-safe invitation copy without hidden Tale details</span>
-              </article>
-            </div>
-          )}
-          {props.step === 5 && (
-            <div className="review-sheet">
-              <p className="eyebrow">Player-safe preview</p>
-              <h3>{props.selectedTale?.title}</h3>
-              <h4>{props.voyageName}</h4>
-              <dl>
-                <div>
-                  <dt>Tall Tale</dt>
-                  <dd>{props.selectedTale?.title}</dd>
+              {props.step === 2 && (
+                <div className="wizard-form crew-builder">
+                  <AnimatePresence initial={false}>
+                    {props.players.map((crew, index) => (
+                      <motion.fieldset
+                        layout
+                        key={crew.key}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                      >
+                        <legend>Player {index + 1}</legend>
+                        <label>
+                          <span>Use existing Player (optional)</span>
+                          <select
+                            value={crew.playerId}
+                            onChange={(event) => updateCrew(crew.key, { playerId: event.target.value })}
+                          >
+                            <option value="">Create guest profile</option>
+                            {props.library.playerProfiles.map((player) => (
+                              <option key={player.id} value={player.id}>
+                                {player.displayName}
+                                {player.username ? ` (${player.username})` : ""}
+                              </option>
+                            ))}
+                          </select>
+                        </label>
+                        {!crew.playerId && (
+                          <label>
+                            <span>Player display name</span>
+                            <input
+                              value={crew.displayName}
+                              onChange={(event) => updateCrew(crew.key, { displayName: event.target.value })}
+                            />
+                          </label>
+                        )}
+                        <label>
+                          <span>Crew role</span>
+                          <input
+                            value={crew.crewRole}
+                            onChange={(event) => updateCrew(crew.key, { crewRole: event.target.value })}
+                          />
+                        </label>
+                        {props.players.length > 1 && (
+                          <button type="button" onClick={() => removeCrew(crew.key)}>
+                            Remove Player
+                          </button>
+                        )}
+                      </motion.fieldset>
+                    ))}
+                  </AnimatePresence>
+                  <button
+                    data-add-player
+                    type="button"
+                    onClick={() =>
+                      props.setPlayers((current) => [
+                        ...current,
+                        { key: crypto.randomUUID(), playerId: "", displayName: "", crewRole: "Player", pin: "" },
+                      ])
+                    }
+                  >
+                    Add another Player
+                  </button>
+                  <p className="panel-note">
+                    Each crew member receives an individual invitation and identity boundary.
+                  </p>
                 </div>
-                <div>
-                  <dt>Voyage name</dt>
-                  <dd>{props.voyageName}</dd>
+              )}
+              {props.step === 3 && (
+                <div className="wizard-form">
+                  <label>
+                    <span>Invitation lifetime</span>
+                    <select
+                      value={props.expiresInHours}
+                      onChange={(event) => props.setExpiresInHours(Number(event.target.value))}
+                    >
+                      <option value={24}>24 hours</option>
+                      <option value={168}>7 days</option>
+                      <option value={720}>30 days</option>
+                    </select>
+                  </label>
+                  <label className="check-field">
+                    <input
+                      type="checkbox"
+                      checked={props.accountRequired}
+                      onChange={(event) => props.setAccountRequired(event.target.checked)}
+                    />{" "}
+                    Require claimed Player accounts
+                  </label>
+                  {props.players.map((crew, index) => (
+                    <label key={crew.key}>
+                      <span>Optional PIN for {crewNames[index] || `Player ${index + 1}`}</span>
+                      <input
+                        type="password"
+                        minLength={4}
+                        value={crew.pin}
+                        onChange={(event) => updateCrew(crew.key, { pin: event.target.value })}
+                      />
+                    </label>
+                  ))}
+                  {!claimedAccountsValid && (
+                    <p className="platform-error" role="alert">
+                      Every account-required invitation must select an existing claimed Player account.
+                    </p>
+                  )}
+                  <p>No raw token, short code, or PIN will be stored. Replacements generate new secrets.</p>
                 </div>
-                <div>
-                  <dt>Edition lock</dt>
-                  <dd>{props.selectedVersion?.label}</dd>
+              )}
+              {props.step === 4 && (
+                <div className="delivery-options">
+                  <article>
+                    <strong>Secure link</strong>
+                    <span>Opaque, high-entropy, single-recipient URL</span>
+                  </article>
+                  <article>
+                    <strong>QR card</strong>
+                    <span>Encodes the same secure link with a readable code fallback</span>
+                  </article>
+                  <article>
+                    <strong>Short code</strong>
+                    <span>Human-friendly, rate-limited gateway lookup</span>
+                  </article>
+                  <article>
+                    <strong>Copyable message</strong>
+                    <span>Player-safe invitation copy without hidden Tale details</span>
+                  </article>
                 </div>
-                <div>
-                  <dt>Crew</dt>
-                  <dd>{crewNames.join(", ")}</dd>
+              )}
+              {props.step === 5 && (
+                <div className="review-sheet">
+                  <p className="eyebrow">Player-safe preview</p>
+                  <h3>{props.selectedTale?.title}</h3>
+                  <h4>{props.voyageName}</h4>
+                  <dl>
+                    <div>
+                      <dt>Tall Tale</dt>
+                      <dd>{props.selectedTale?.title}</dd>
+                    </div>
+                    <div>
+                      <dt>Voyage name</dt>
+                      <dd>{props.voyageName}</dd>
+                    </div>
+                    <div>
+                      <dt>Edition lock</dt>
+                      <dd>{props.selectedVersion?.label}</dd>
+                    </div>
+                    <div>
+                      <dt>Crew</dt>
+                      <dd>{crewNames.join(", ")}</dd>
+                    </div>
+                    <div>
+                      <dt>Progression</dt>
+                      <dd>{props.captainMode.replaceAll("_", " ").toLocaleLowerCase()}</dd>
+                    </div>
+                    <div>
+                      <dt>Hints</dt>
+                      <dd>{props.hints.replaceAll("_", " ").toLocaleLowerCase()}</dd>
+                    </div>
+                    <div>
+                      <dt>Side quests</dt>
+                      <dd>{props.sideQuests ? "Enabled" : "Disabled"}</dd>
+                    </div>
+                    {props.plannedStartAt && (
+                      <div>
+                        <dt>Planned start</dt>
+                        <dd>
+                          {new Date(props.plannedStartAt).toLocaleString()} · {props.scheduleTimezone}
+                        </dd>
+                      </div>
+                    )}
+                    <div>
+                      <dt>Invitation expires</dt>
+                      <dd>{props.expiresInHours} hours after creation</dd>
+                    </div>
+                    <div>
+                      <dt>Account requirement</dt>
+                      <dd>{props.accountRequired ? "Claimed Player accounts required" : "Guest Players allowed"}</dd>
+                    </div>
+                  </dl>
+                  <p className="panel-note">
+                    Creation is atomic. The voyage remains bound to this immutable edition, including after newer
+                    editions are published.
+                  </p>
                 </div>
-                <div>
-                  <dt>Progression</dt>
-                  <dd>{props.captainMode.replaceAll("_", " ").toLocaleLowerCase()}</dd>
-                </div>
-                <div>
-                  <dt>Hints</dt>
-                  <dd>{props.hints.replaceAll("_", " ").toLocaleLowerCase()}</dd>
-                </div>
-                <div>
-                  <dt>Side quests</dt>
-                  <dd>{props.sideQuests ? "Enabled" : "Disabled"}</dd>
-                </div>
-                {props.plannedStartAt && (
-                  <div>
-                    <dt>Planned start</dt>
-                    <dd>
-                      {new Date(props.plannedStartAt).toLocaleString()} · {props.scheduleTimezone}
-                    </dd>
+              )}
+              {props.step === 6 &&
+                (props.created.length ? (
+                  <InvitationSecrets invitations={props.created} csrf={props.library.csrfToken} mode={props.mode} />
+                ) : (
+                  <div className="platform-empty">
+                    <h3>Ready to create</h3>
+                    <p>
+                      The playthrough and invitation will be written together. No orphaned voyage is left if creation
+                      fails.
+                    </p>
                   </div>
-                )}
-                <div>
-                  <dt>Invitation expires</dt>
-                  <dd>{props.expiresInHours} hours after creation</dd>
-                </div>
-                <div>
-                  <dt>Account requirement</dt>
-                  <dd>{props.accountRequired ? "Claimed Player accounts required" : "Guest Players allowed"}</dd>
-                </div>
-              </dl>
-              <p className="panel-note">
-                Creation is atomic. The voyage remains bound to this immutable edition, including after newer editions
-                are published.
-              </p>
-            </div>
-          )}
-          {props.step === 6 &&
-            (props.created.length ? (
-              <InvitationSecrets invitations={props.created} csrf={props.library.csrfToken} mode={props.mode} />
-            ) : (
-              <div className="platform-empty">
-                <h3>Ready to create</h3>
-                <p>
-                  The playthrough and invitation will be written together. No orphaned voyage is left if creation fails.
-                </p>
-              </div>
-            ))}
-          </motion.div>
+                ))}
+            </motion.div>
           </AnimatePresence>
         </div>
         <footer>
@@ -1211,7 +1312,12 @@ function InvitationSecrets({
       {copied && <StatusBanner tone="success">Invitation details copied to the clipboard.</StatusBanner>}
       {copyError && <StatusBanner tone="danger">{copyError}</StatusBanner>}
       {invitations.map((invitation, index) => (
-        <motion.article key={invitation.id} initial={{ opacity: 0, y: mode === "reduced" ? 0 : 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: token.durationSeconds, delay: mode === "reduced" ? 0 : Math.min(index * 0.06, 0.18) }}>
+        <motion.article
+          key={invitation.id}
+          initial={{ opacity: 0, y: mode === "reduced" ? 0 : 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: token.durationSeconds, delay: mode === "reduced" ? 0 : Math.min(index * 0.06, 0.18) }}
+        >
           <motion.img
             src={invitation.qrCodeDataUrl}
             alt={`QR code for ${invitation.recipientName}. Short code ${invitation.shortCode}.`}

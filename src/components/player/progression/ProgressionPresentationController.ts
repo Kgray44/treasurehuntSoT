@@ -57,6 +57,7 @@ export type ProgressionPresentationControllerDependencies = Readonly<{
   present: (request: ProgressionPresentationRequest) => Promise<ProgressionPresentationExecution>;
   acknowledge: (receipt: ProgressionPresentationReceipt) => Promise<boolean>;
   cancelActive: (requestId: string) => void;
+  fastForwardActive?: (requestId: string) => void;
   onReceipt?: (receipt: ProgressionPresentationReceipt) => void;
   onSnapshot?: (snapshot: ProgressionPresentationControllerSnapshot) => void;
   onSettled?: (notification: ProgressionPresentationSettledNotification) => void;
@@ -134,6 +135,7 @@ export class ProgressionPresentationController {
   private pumping: Promise<void> | null = null;
   private stopped = false;
   private semanticCommitReached = false;
+  private expediteReconnect = false;
 
   constructor(
     private readonly dependencies: ProgressionPresentationControllerDependencies,
@@ -196,6 +198,14 @@ export class ProgressionPresentationController {
       this.cursors = Object.freeze({ ...this.cursors, queued: Math.max(this.cursors.queued, event.sequence) });
     }
 
+    if (!enqueued.receipt && source === "live") {
+      this.expediteReconnect = true;
+      const active = this.queue.active?.request;
+      if (active?.source === "reconnect" && active.eventSequence < event.sequence) {
+        this.dependencies.fastForwardActive?.(active.requestId);
+      }
+    }
+
     if (source !== "replay" && this.queue.active?.request.source === "replay") {
       const interruptedRequest = this.queue.active.request;
       const interruption = interruptReplayForAuthoritative(this.queue, this.now(), this.semanticCommitReached);
@@ -250,7 +260,13 @@ export class ProgressionPresentationController {
       this.publishSnapshot();
       let execution: ProgressionPresentationExecution;
       try {
-        execution = await this.dependencies.present(request);
+        const presentation = this.dependencies.present(request);
+        if (request.source === "reconnect" && this.expediteReconnect) {
+          this.dependencies.fastForwardActive?.(request.requestId);
+        } else if (request.source !== "reconnect") {
+          this.expediteReconnect = false;
+        }
+        execution = await presentation;
       } catch {
         execution = { status: "failed", finalStateResult: "failed", retryDisposition: "retryable" };
       }

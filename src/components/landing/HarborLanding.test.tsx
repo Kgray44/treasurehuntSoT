@@ -274,9 +274,7 @@ describe("HarborLanding gateway SceneHost", () => {
     expect(document.querySelector(".harbor-landing")).toHaveAttribute("data-ambient-state", "paused");
     expect(document.querySelector("[data-parallax-layer='ship']")).toBeInTheDocument();
     expect(
-      Array.from(document.querySelectorAll<HTMLElement>("[data-role-object]")).every(
-        (object) => object.tabIndex < 0,
-      ),
+      Array.from(document.querySelectorAll<HTMLElement>("[data-role-object]")).every((object) => object.tabIndex < 0),
     ).toBe(true);
   });
 

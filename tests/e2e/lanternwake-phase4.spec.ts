@@ -3,9 +3,7 @@ import { expect, test, type Page } from "@playwright/test";
 
 async function expectNoSeriousAccessibilityViolations(page: Page) {
   const result = await new AxeBuilder({ page }).analyze();
-  expect(result.violations.filter((violation) => ["serious", "critical"].includes(violation.impact ?? ""))).toEqual(
-    [],
-  );
+  expect(result.violations.filter((violation) => ["serious", "critical"].includes(violation.impact ?? ""))).toEqual([]);
 }
 
 test("Phase 4 gateway and authentication remain readable, responsive, and truthful in reduced motion", async ({

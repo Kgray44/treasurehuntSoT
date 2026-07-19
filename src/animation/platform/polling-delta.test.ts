@@ -32,10 +32,7 @@ describe("polling delta reconciliation", () => {
   });
 
   it("distinguishes regrouped, removed, and added rows", () => {
-    const result = reconcile(
-      [row("move"), row("remove")],
-      [row("move", 1, "complete"), row("add")],
-    );
+    const result = reconcile([row("move"), row("remove")], [row("move", 1, "complete"), row("add")]);
     expect(result.regroupedIds).toEqual(["move"]);
     expect(result.removedIds).toEqual(["remove"]);
     expect(result.addedIds).toEqual(["add"]);
@@ -55,4 +52,3 @@ describe("polling delta reconciliation", () => {
     });
   });
 });
-

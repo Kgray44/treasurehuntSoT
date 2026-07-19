@@ -140,11 +140,7 @@
   width: 170px;
   height: 90px;
   filter: drop-shadow(0 0 16px rgba(101, 183, 178, 0.16));
-  transform: translate3d(
-    calc(var(--harbor-parallax-x, 0) * -5px),
-    calc(var(--harbor-parallax-y, 0) * -2px),
-    0
-  );
+  transform: translate3d(calc(var(--harbor-parallax-x, 0) * -5px), calc(var(--harbor-parallax-y, 0) * -2px), 0);
   transition: transform 180ms ease-out;
 }
 
@@ -471,7 +467,9 @@
 
 .role-object-card[data-role-selected="true"] {
   border-color: var(--brass-100);
-  box-shadow: 0 24px 65px rgba(0, 0, 0, 0.42), 0 0 28px rgba(224, 177, 85, 0.18);
+  box-shadow:
+    0 24px 65px rgba(0, 0, 0, 0.42),
+    0 0 28px rgba(224, 177, 85, 0.18);
 }
 
 .role-object-card::before {

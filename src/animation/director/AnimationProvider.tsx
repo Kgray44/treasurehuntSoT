@@ -43,6 +43,7 @@ export function AnimationProvider({ children }: { children: React.ReactNode }) {
   const rootMotionOwner = useMemo(() => Symbol("animation-provider-motion"), []);
   const [productMode, setProductMode] = useState<MotionMode>("full");
   const [systemReduced, setSystemReduced] = useState(false);
+  const [motionPolicyReady, setMotionPolicyReady] = useState(false);
   const policy = useMemo(() => resolveMotionPolicy(productMode, systemReduced), [productMode, systemReduced]);
   const snapshot = useSyncExternalStore(director.subscribe, director.getSnapshot, director.getSnapshot);
 
@@ -51,9 +52,12 @@ export function AnimationProvider({ children }: { children: React.ReactNode }) {
     const query = window.matchMedia("(prefers-reduced-motion: reduce)");
     const updateSystemPreference = () => setSystemReduced(query.matches);
     queueMicrotask(() => {
-      if (!cancelled) setProductMode(readStoredMotionMode());
+      if (!cancelled) {
+        setSystemReduced(query.matches);
+        setProductMode(readStoredMotionMode());
+        setMotionPolicyReady(true);
+      }
     });
-    updateSystemPreference();
     query.addEventListener("change", updateSystemPreference);
     return () => {
       cancelled = true;
@@ -94,8 +98,8 @@ export function AnimationProvider({ children }: { children: React.ReactNode }) {
     [productMode, setMode],
   );
   const motionContext = useMemo(
-    () => ({ policy, mode: policy.level, productMode, systemReduced, setMode, cycle }),
-    [cycle, policy, productMode, setMode, systemReduced],
+    () => ({ ready: motionPolicyReady, policy, mode: policy.level, productMode, systemReduced, setMode, cycle }),
+    [cycle, motionPolicyReady, policy, productMode, setMode, systemReduced],
   );
 
   return (

@@ -244,6 +244,15 @@
   overflow: hidden;
 }
 
+.companion-navigation button:focus,
+.companion-navigation button:focus-visible,
+.mobile-nav button:focus,
+.mobile-nav button:focus-visible {
+  outline: 3px solid #fff2a8;
+  outline-offset: 2px;
+  box-shadow: inset 0 0 0 2px rgba(17, 48, 51, 0.88);
+}
+
 .companion-navigation button > *:not(.active-nav-plate) {
   position: relative;
   z-index: 2;
@@ -258,8 +267,8 @@
 .companion-navigation small {
   border-radius: 999px;
   padding: 0.14rem 0.42rem;
-  color: #24150c;
-  background: var(--brass-100);
+  color: #000;
+  background: #fff8d6;
   font-size: 0.58rem;
   font-weight: 900;
   text-transform: uppercase;
@@ -271,8 +280,8 @@
   place-items: center;
   margin-left: 0.25rem;
   border-radius: 999px;
-  color: #24150c;
-  background: var(--brass-100);
+  color: #000;
+  background: #fff8d6;
   font-size: 0.65rem;
   font-weight: 900;
 }
@@ -3358,6 +3367,22 @@ html[data-motion-level="reduced"] .finale-fallback-pose * {
 .voyage-shell[data-motion-mode="gentle"] .persistent-interface,
 .voyage-shell[data-motion-mode="gentle"] .persistent-objective {
   transition-duration: 620ms;
+}
+
+.voyage-shell[data-motion-mode="reduced"] .closed-book,
+.voyage-shell[data-motion-mode="reduced"] .front-cover,
+.voyage-shell[data-motion-mode="reduced"] .opening-sealed-page,
+.voyage-shell[data-motion-mode="reduced"] .opening-wax-seal,
+.voyage-shell[data-motion-mode="reduced"] .wax-fragment,
+.voyage-shell[data-motion-mode="reduced"] .wax-cracks path,
+.voyage-shell[data-motion-mode="reduced"] .open-page-stage,
+.voyage-shell[data-motion-mode="reduced"] .persistent-interface,
+.voyage-shell[data-motion-mode="reduced"] .persistent-mobile-interface,
+.voyage-shell[data-motion-mode="reduced"] .persistent-objective,
+.voyage-shell[data-motion-mode="reduced"] .section-masthead,
+.voyage-shell[data-motion-mode="reduced"] .chapter-tabs {
+  transition: none !important;
+  animation: none !important;
 }
 
 .voyage-shell[data-journal-speed="0.5"] .closed-book,

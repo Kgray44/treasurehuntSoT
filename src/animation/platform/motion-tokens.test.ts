@@ -37,4 +37,3 @@ describe("platform motion tokens", () => {
     expect(platformMotionTokens.route.distancePx.full).toBeLessThanOrEqual(22);
   });
 });
-

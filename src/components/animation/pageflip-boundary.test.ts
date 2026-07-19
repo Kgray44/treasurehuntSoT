@@ -214,17 +214,19 @@ describe("PageFlip source and clone boundary", () => {
     const firstMarker = `${nearCollisionPrefix}marker-a`;
     const secondMarker = `${nearCollisionPrefix}marker-b`;
     const configureLongTargets = (sourceRoot: HTMLElement) => {
-      sourceRoot.children[0]!
-        .querySelector<HTMLElement>("[data-scene-part]")!
-        .setAttribute("data-scene-target-key", firstMarker);
+      sourceRoot.children[0]!.querySelector<HTMLElement>("[data-scene-part]")!.setAttribute(
+        "data-scene-target-key",
+        firstMarker,
+      );
       const nearCollisionMarker = document.createElement("span");
       nearCollisionMarker.dataset.scenePart = "chapter-heading";
       nearCollisionMarker.dataset.sceneTargetKey = secondMarker;
       nearCollisionMarker.dataset.gsapOwned = "";
       sourceRoot.children[0]!.append(nearCollisionMarker);
-      sourceRoot.children[1]!
-        .querySelector<HTMLElement>("[data-scene-part]")!
-        .setAttribute("data-scene-target-key", firstMarker);
+      sourceRoot.children[1]!.querySelector<HTMLElement>("[data-scene-part]")!.setAttribute(
+        "data-scene-target-key",
+        firstMarker,
+      );
     };
     configureLongTargets(firstFixture.sourceRoot);
     const firstPages = firstFixture.controller.preparePages([firstPageId, secondPageId], "revision-long-identity");

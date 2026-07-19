@@ -61,7 +61,9 @@ function renderInvitation(onRouteHandoff?: (destination: string, signal: AbortSi
 
 function deferred<T>() {
   let resolve!: (value: T) => void;
-  const promise = new Promise<T>((resolvePromise) => { resolve = resolvePromise; });
+  const promise = new Promise<T>((resolvePromise) => {
+    resolve = resolvePromise;
+  });
   return { promise, resolve };
 }
 
@@ -84,11 +86,17 @@ describe("InvitationCeremony", () => {
     expect(screen.getByRole("main")).toHaveAttribute("data-invitation-state", "pin-required");
     expect(document.querySelector('[data-scene-host-boundary="access"]')).toBeInTheDocument();
     expect(document.querySelectorAll('[data-runtime-boundary="gsap"]')).toHaveLength(5);
-    expect(document.querySelector('[data-rive-interface="invitation-seal"]')).toHaveAttribute("data-rive-fallback", "css-svg");
+    expect(document.querySelector('[data-rive-interface="invitation-seal"]')).toHaveAttribute(
+      "data-rive-fallback",
+      "css-svg",
+    );
   });
 
   it("renders a distinct terminal state from an authoritative revoked result", async () => {
-    vi.stubGlobal("fetch", vi.fn().mockResolvedValue(response(410, { error: "This invitation is no longer available.", code: "REVOKED" })));
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue(response(410, { error: "This invitation is no longer available.", code: "REVOKED" })),
+    );
     renderInvitation();
 
     const heading = await screen.findByRole("heading", { name: "This invitation was locked by its Captain" });
@@ -99,7 +107,10 @@ describe("InvitationCeremony", () => {
 
   it("does not enter accepted state or route until the server accepts the invitation", async () => {
     const accept = deferred<Response>();
-    const fetch = vi.fn().mockResolvedValueOnce(response(200, { invitation, csrfToken: "csrf" })).mockReturnValueOnce(accept.promise);
+    const fetch = vi
+      .fn()
+      .mockResolvedValueOnce(response(200, { invitation, csrfToken: "csrf" }))
+      .mockReturnValueOnce(accept.promise);
     vi.stubGlobal("fetch", fetch);
     director.play.mockImplementation(async (_scene, options) => {
       const result = await options.operation();
@@ -123,7 +134,8 @@ describe("InvitationCeremony", () => {
   it("clears rejected PIN progress and restores the PIN-required state", async () => {
     vi.stubGlobal(
       "fetch",
-      vi.fn()
+      vi
+        .fn()
         .mockResolvedValueOnce(response(200, { invitation, csrfToken: "csrf" }))
         .mockResolvedValueOnce(response(400, { error: "The invitation PIN was not accepted.", code: "INVALID" })),
     );

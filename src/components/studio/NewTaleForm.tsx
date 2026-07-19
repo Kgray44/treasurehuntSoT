@@ -28,9 +28,7 @@ export function NewTaleForm({ authenticated }: { authenticated: boolean }) {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const [coverFile, setCoverFile] = useState<File | null>(null);
-  const [phase, setPhase] = useState<"idle" | "creating" | "uploading" | "assigning" | "routing" | "failed">(
-    "idle",
-  );
+  const [phase, setPhase] = useState<"idle" | "creating" | "uploading" | "assigning" | "routing" | "failed">("idle");
   useEffect(() => {
     if (authenticated)
       void fetch("/api/studio/tales")

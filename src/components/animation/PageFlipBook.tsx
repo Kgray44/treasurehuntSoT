@@ -974,6 +974,7 @@ export const PageFlipBook = forwardRef<
         setOrientation(initialOrientation);
         activeBoundary.bindPrimaryPages(initialSpreadAnchor, initialOrientation);
         book.on("flip", (event) => {
+          if (disposed || boundary.current !== activeBoundary) return;
           const page = Number(event.data);
           let turn = activeTurn.current;
           if (!turn) {
@@ -989,10 +990,14 @@ export const PageFlipBook = forwardRef<
           changePage(page);
           emitTurnLifecycle("turn-commit", turn, { toPage: page });
           activeBoundary.updateCurrentPage(page, flipStateRef.current === "read" ? "visible" : "settling");
-          focusMemory.current = { kind: "page", index: page };
+          const controlTurn = turn.source === "control-next" || turn.source === "control-previous";
+          if (!controlTurn || focusMemory.current?.kind !== "control") {
+            focusMemory.current = { kind: "page", index: page };
+          }
           window.requestAnimationFrame(restoreFocus);
         });
         book.on("changeOrientation", (event) => {
+          if (disposed || boundary.current !== activeBoundary) return;
           const nextOrientation = event.data as "portrait" | "landscape";
           orientationRef.current = nextOrientation;
           setOrientation(nextOrientation);
@@ -1000,6 +1005,7 @@ export const PageFlipBook = forwardRef<
           window.requestAnimationFrame(restoreFocus);
         });
         book.on("changeState", (event) => {
+          if (disposed || boundary.current !== activeBoundary) return;
           const state = event.data === "flipping" ? "flipping" : event.data === "read" ? "read" : "folding";
           flipStateRef.current = state;
           setFlipState(state);

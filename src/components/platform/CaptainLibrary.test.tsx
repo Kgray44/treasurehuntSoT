@@ -62,7 +62,9 @@ function response(status: number, body: unknown) {
 
 function deferred<T>() {
   let resolve!: (value: T) => void;
-  const promise = new Promise<T>((resolvePromise) => { resolve = resolvePromise; });
+  const promise = new Promise<T>((resolvePromise) => {
+    resolve = resolvePromise;
+  });
   return { promise, resolve };
 }
 
@@ -88,10 +90,29 @@ describe("CaptainLibrary motion and authority", () => {
 
   it("shows an authoritative readiness gauge and holds launch pending until the server responds", async () => {
     const launch = deferred<Response>();
-    vi.stubGlobal("confirm", vi.fn(() => true));
+    vi.stubGlobal(
+      "confirm",
+      vi.fn(() => true),
+    );
     vi.stubGlobal(
       "fetch",
-      vi.fn().mockResolvedValueOnce(response(200, library())).mockReturnValueOnce(launch.promise).mockResolvedValueOnce(response(200, library({ groups: { needsAttention: [], activeVoyages: [readyVoyage], readyToLaunch: [], completedPlaythroughs: [] } }))),
+      vi
+        .fn()
+        .mockResolvedValueOnce(response(200, library()))
+        .mockReturnValueOnce(launch.promise)
+        .mockResolvedValueOnce(
+          response(
+            200,
+            library({
+              groups: {
+                needsAttention: [],
+                activeVoyages: [readyVoyage],
+                readyToLaunch: [],
+                completedPlaythroughs: [],
+              },
+            }),
+          ),
+        ),
     );
     render(<CaptainLibrary />);
     expect(await screen.findByLabelText("100% of Players ready")).toBeInTheDocument();
@@ -108,10 +129,17 @@ describe("CaptainLibrary motion and authority", () => {
 
   it("settles a replaced row before revealing server-created replacement credentials", async () => {
     const replacement = deferred<Response>();
-    vi.stubGlobal("confirm", vi.fn(() => true));
+    vi.stubGlobal(
+      "confirm",
+      vi.fn(() => true),
+    );
     vi.stubGlobal(
       "fetch",
-      vi.fn().mockResolvedValueOnce(response(200, library())).mockReturnValueOnce(replacement.promise).mockResolvedValueOnce(response(200, library())),
+      vi
+        .fn()
+        .mockResolvedValueOnce(response(200, library()))
+        .mockReturnValueOnce(replacement.promise)
+        .mockResolvedValueOnce(response(200, library())),
     );
     render(<CaptainLibrary />);
     await screen.findByRole("heading", { name: "Captain's Tall Tale Library" });
@@ -121,7 +149,19 @@ describe("CaptainLibrary motion and authority", () => {
     fireEvent.click(within(row).getByRole("button", { name: "Replace invitation" }));
     expect(row).toHaveAttribute("data-invitation-transition", "replace-pending");
     expect(screen.queryByAltText(/QR code/)).not.toBeInTheDocument();
-    replacement.resolve(response(200, { replacement: { id: "invite-2", recipientName: "Kato", link: "https://example.test/new", shortCode: "ABCD-EFGH", qrCodeDataUrl: "data:image/png;base64,AAAA", message: "New invitation", expiresAt: "2099-07-20T12:00:00.000Z" } }));
+    replacement.resolve(
+      response(200, {
+        replacement: {
+          id: "invite-2",
+          recipientName: "Kato",
+          link: "https://example.test/new",
+          shortCode: "ABCD-EFGH",
+          qrCodeDataUrl: "data:image/png;base64,AAAA",
+          message: "New invitation",
+          expiresAt: "2099-07-20T12:00:00.000Z",
+        },
+      }),
+    );
 
     await waitFor(() => expect(row).toHaveAttribute("data-invitation-transition", "replaced"));
     expect(await screen.findByAltText(/QR code for Kato/)).toBeInTheDocument();

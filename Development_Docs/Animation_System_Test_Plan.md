@@ -906,3 +906,31 @@ program reconciliation + Phase 3 ledger validators
 ```
 
 Use only `task-regression`, `pre-existing`, `environment`, `database-isolation`, `missing-phase-5-asset`, `blocked`, or `unresolved` for failures. The Journal Clasp, Voyage Compass, and Finale Mechanism final `.riv` binaries remain `missing-phase-5-asset`; their CSS/SVG readable fallback behavior is still a Phase 3 gate. No nonzero command, skip, missing artifact, blocked cell, or unverified total is a pass.
+
+## 26. Project Lanternwake Phase 4 validation plan: Bring the Harbor Alive
+
+### 26.1 Denominator and deterministic tracking
+
+The Phase 4 denominator is exactly 119 matrix requirements plus 122 OA requirements. `scripts/generate_phase4_manifest.py` rejects denominator drift, duplicate IDs, missing surface evidence mapping, or a stale 241-row manifest. Every row records source files, runtime, trigger, full/gentle/reduced behavior, fallback, test IDs, semantic checkpoints, implementation commit, and validation status. Final unmapped accepted requirements must equal zero.
+
+### 26.2 Focused surface gates
+
+Run each group once after its vertical slice stabilizes:
+
+1. platform tokens, one-shot identity, semantic polling deltas, authoritative async state, route/focus boundary;
+2. landing and Player/Captain/Creator authentication;
+3. invitation ceremony;
+4. Player Library, Captain Library, wizard, and waiting room;
+5. shell, notification, unseen acknowledgment, offline/reconnect and Ship's Log projection;
+6. Quartermaster preflight, receipt, reversal, reconciliation, conflict, and snapshot validation;
+7. Studio insertion, deletion/undo, drag ownership, validation, autosave, preview, publish, version, upload, comparison, and immutable states.
+
+Use the smallest failing test during repair. Filtered-out tests are not counted as passes or skips. Chromium owns mutations; WebKit remains read-only where the configured integrated suite permits it.
+
+### 26.3 Motion, accessibility, viewport, and lifecycle gates
+
+Full, gentle, system-reduced, product-reduced, and combined-reduced states must preserve text, focus, controls, authoritative order, and fallback. Required semantic checkpoints are listed in `Project_Lanternwake_Phase_4_Visual_Checkpoint_Index.md`. Automated axe scans cover idle, error, dialog, reduced, offline/reconnect, and created-result representatives. The configured six viewports must have no horizontal overflow or focus loss. After repeated mount/update/unmount cycles, hosts, targets, claims, listeners, timers, EventSource instances, focus traps, GSAP contexts, Motion presence, dnd-kit overlays, and pending requests return to baseline.
+
+### 26.4 Serialized integrated gate
+
+One owner runs `npm run validate` once after focused gates and documentation stabilize. Its existing harness must prove the copied database path and nonce through the app, record owned PIDs/ports, run mutation cases only on the copy, verify the canonical SQLite family unchanged, run the full unit/component/browser/assets/build/lifecycle/performance sequence, and release resources. Any failure is classified before a focused repair; the full command is rerun only after the affected focused group passes.

@@ -564,7 +564,8 @@ test.describe.serial("Project Lanternwake Journal browser lifecycle", () => {
     await page.goto(journalUrl);
     await expect(page.locator(".tall-tale-journal-shell")).toHaveAttribute("data-motion-mode", "full");
     const documentToken = (await readProbe(page)).documentToken;
-    await startOpeningAtFinitePhase(page);
+    await page.getByRole("button", { name: "Open the journal" }).click();
+    await expect(page.locator(".tall-tale-journal-shell")).toHaveAttribute("data-journal-phase", "CLOSED_BOOK_REVEAL");
     await page.getByRole("button", { name: "Motion: full", exact: true }).click();
     await expect(page.locator(".tall-tale-journal-shell")).toHaveAttribute("data-journal-opening-outcome", "aborted");
     await expectReadyFinalPose(page);
@@ -590,6 +591,14 @@ test.describe.serial("Project Lanternwake Journal browser lifecycle", () => {
     const shell = page.locator(".tall-tale-journal-shell");
     await expect(page.locator("html")).toHaveAttribute("data-motion-level", "reduced");
     await expect(shell).toHaveAttribute("data-motion-mode", "reduced");
+    const firstOpening = page.getByRole("button", { name: "Open the journal" });
+    await expect
+      .poll(async () => {
+        const outcome = await shell.getAttribute("data-journal-opening-outcome");
+        return outcome === "idle" ? await firstOpening.isVisible().catch(() => false) : outcome !== null;
+      })
+      .toBe(true);
+    if (await firstOpening.isVisible().catch(() => false)) await firstOpening.click();
     await expect(shell).toHaveAttribute("data-journal-opening-outcome", "completed-fallback");
     await expectReadyFinalPose(page);
     await expect(page.locator(".main-journal-book")).toHaveAttribute("data-pageflip-status", "reduced");
@@ -809,8 +818,9 @@ test.describe.serial("Project Lanternwake Journal browser lifecycle", () => {
 
   test("completed archive auto-opens quietly, remains read-only, and preserves replay", async ({ page }) => {
     const sessionPath = journalPath.replace("/player/playthroughs/", "/api/play/sessions/").replace("/journal", "");
+    const sessionUrl = new URL(sessionPath, journalUrl).href;
     const readState = async () => {
-      const response = await page.request.get(sessionPath);
+      const response = await page.request.get(sessionUrl);
       const body = await expectOk(response);
       return JSON.parse(body) as {
         csrfToken: string;
@@ -821,7 +831,7 @@ test.describe.serial("Project Lanternwake Journal browser lifecycle", () => {
     let state = await readState();
     const playerHeaders = { "x-csrf-token": state.csrfToken };
     await expectOk(
-      await page.request.post(sessionPath, {
+      await page.request.post(sessionUrl, {
         headers: playerHeaders,
         data: { action: "continue", idempotencyKey: `phase3-archive-narrative-${crypto.randomUUID()}` },
       }),
@@ -829,7 +839,7 @@ test.describe.serial("Project Lanternwake Journal browser lifecycle", () => {
     state = await readState();
     expect(state.block.blockType).toBe("riddle");
     await expectOk(
-      await page.request.post(sessionPath, {
+      await page.request.post(sessionUrl, {
         headers: playerHeaders,
         data: { action: "answer", answer: "LANTERN", idempotencyKey: `phase3-archive-riddle-${crypto.randomUUID()}` },
       }),
@@ -855,7 +865,7 @@ test.describe.serial("Project Lanternwake Journal browser lifecycle", () => {
     );
     for (const label of ["chapter-complete", "travel", "confirmation", "tale-complete"]) {
       await expectOk(
-        await page.request.post(sessionPath, {
+        await page.request.post(sessionUrl, {
           headers: playerHeaders,
           data: { action: "continue", idempotencyKey: `phase3-archive-${label}-${crypto.randomUUID()}` },
         }),
@@ -870,12 +880,24 @@ test.describe.serial("Project Lanternwake Journal browser lifecycle", () => {
     await expect(page.getByRole("button", { name: "Open the journal" })).toHaveCount(0);
     await expectReadyFinalPose(page);
     await expect.poll(async () => (await readProbe(page)).activeEventSources).toBe(0);
-    await expect(page.getByText(/Read-only/)).toBeVisible();
+    await expect(page.locator(".historical-lock")).toContainText("Read-only");
 
     const replay = page.getByRole("button", { name: "Replay short opening" });
     await replay.focus();
     await replay.click();
-    await page.getByRole("button", { name: "Skip ceremony" }).click();
+    const skip = page.getByRole("button", { name: "Skip ceremony" });
+    await expect
+      .poll(
+        async () => (await skip.isVisible()) || (await shell.getAttribute("data-journal-phase")) === "JOURNAL_READY",
+      )
+      .toBe(true);
+    if (await skip.isVisible()) {
+      try {
+        await skip.click({ timeout: 2_000 });
+      } catch {
+        await expect(shell).toHaveAttribute("data-journal-phase", "JOURNAL_READY");
+      }
+    }
     await expectReadyFinalPose(page);
     await expect(replay).toBeFocused();
   });

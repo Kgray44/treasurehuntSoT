@@ -92,7 +92,7 @@ test("complete live voyage workflow is private, ordered, resilient, and theatric
   await gm.getByLabel("Passphrase").fill(process.env.GM_PASSWORD!);
   await gm.getByRole("button", { name: "Enter the chart room" }).click();
   await expect(gm.getByRole("heading", { name: "Quartermaster's Log" })).toBeVisible();
-  await expect(gm.getByText("Sequence 0")).toBeVisible();
+  await expect(gm.getByText("Sequence 0", { exact: true })).toBeVisible();
   const gmCookie = (await gmContext.cookies()).find((cookie) => cookie.name === "forever_gm");
   expect(gmCookie).toMatchObject({ httpOnly: true, sameSite: "Strict" });
   expect((await playerContext.cookies()).some((cookie) => cookie.name === "forever_gm")).toBeFalsy();
@@ -135,8 +135,8 @@ test("complete live voyage workflow is private, ordered, resilient, and theatric
 
   const beforeReplay = (await status(gm)).campaign.sequence;
   await player.getByRole("button", { name: "Replay ceremony" }).click();
-  await expect(player.getByRole("button", { name: "Reveal all now" })).toBeVisible();
-  await player.getByRole("button", { name: "Reveal all now" }).click();
+  await expect(player.getByRole("button", { name: "Reveal readable result" })).toBeVisible();
+  await player.getByRole("button", { name: "Reveal readable result" }).click();
   await expect(player.getByRole("button", { name: "Replay ceremony" })).toBeVisible();
   expect((await status(gm)).campaign.sequence).toBe(beforeReplay);
 

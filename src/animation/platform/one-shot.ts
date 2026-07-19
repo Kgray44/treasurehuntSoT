@@ -17,4 +17,3 @@ export function hasConsumedOneShot(key: string, storage: OneShotStorage = sessio
 export function resetOneShot(key: string, storage: OneShotStorage = sessionStorage) {
   storage.removeItem(key);
 }
-

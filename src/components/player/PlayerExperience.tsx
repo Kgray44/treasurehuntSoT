@@ -206,6 +206,16 @@ function presentationHistoryEntries(events: readonly ClientProgressEvent[]): rea
   );
 }
 
+function clientEventForPresentationRequest(request: ProgressionPresentationRequest): ClientProgressEvent {
+  return Object.freeze({
+    id: request.eventId,
+    type: request.eventType,
+    sequence: request.eventSequence,
+    payload: Object.freeze({ ...request.payload }),
+    releaseAt: new Date().toISOString(),
+  });
+}
+
 class JournalOpeningFailure extends Error {
   constructor(readonly outcome: JournalPhaseOutcome) {
     super(`Journal phase ${outcome.phase} ended as ${outcome.status}.`);
@@ -257,7 +267,7 @@ function waitForValue<T>(read: () => T | null | undefined, signal: AbortSignal, 
 }
 
 function sectionHeadingWithin(transition: HTMLElement | null) {
-  return transition?.querySelector<HTMLElement>(":scope > [data-section-heading]") ?? null;
+  return transition?.querySelector<HTMLElement>("[data-section-heading]") ?? null;
 }
 
 function eventPayloadKey(event: ClientProgressEvent, field = "key") {
@@ -464,6 +474,7 @@ export function PlayerExperience({ initialSnapshot }: { initialSnapshot: PublicS
     presentationHistoryEntries(initialSnapshot.presentationHistory ?? []),
   );
   const [historyReconciled, setHistoryReconciled] = useState(false);
+  const progressionReconciliation = useRef<Promise<void> | null>(null);
   const [accessRevoked, setAccessRevoked] = useState(false);
   const accessRevokedRef = useRef(false);
   const [journalOpeningNotice, setJournalOpeningNotice] = useState<string | null>(null);
@@ -651,7 +662,10 @@ export function PlayerExperience({ initialSnapshot }: { initialSnapshot: PublicS
     return () => {
       openingRun.current?.abort();
       presentationRun.current?.abort();
-      controllerRef.current?.stop();
+      const controller = controllerRef.current;
+      controller?.stop();
+      if (controllerRef.current === controller) controllerRef.current = null;
+      controllerSnapshot.current = null;
       for (const handles of externalHandles.values()) handles.forEach((handle) => handle.revoke());
       externalHandles.clear();
       audioEngine.close();
@@ -661,6 +675,14 @@ export function PlayerExperience({ initialSnapshot }: { initialSnapshot: PublicS
   useEffect(() => {
     viewRef.current = view;
   }, [view]);
+
+  useLayoutEffect(() => {
+    if (!journalReady) return;
+    const frame = window.requestAnimationFrame(() => {
+      sectionHeadingWithin(sectionFocusTarget.current)?.focus({ preventScroll: true });
+    });
+    return () => window.cancelAnimationFrame(frame);
+  }, [journalReady, view]);
 
   useEffect(() => {
     if (previousMotionMode.current === mode) return;
@@ -674,44 +696,47 @@ export function PlayerExperience({ initialSnapshot }: { initialSnapshot: PublicS
     setOpeningPhase("JOURNAL_READY");
   }, [mode]);
 
-  const refreshSnapshot = useCallback(async (options?: Readonly<{ offlineAfterSequence?: number }>) => {
-    if (accessRevokedRef.current) throw new Error("Player access has been revoked.");
-    const query =
-      options?.offlineAfterSequence !== undefined
-        ? `?offlineAfterSequence=${encodeURIComponent(String(options.offlineAfterSequence))}`
-        : "";
-    const response = await fetch(`/api/player/${initialSnapshot.campaign.slug}/snapshot${query}`, {
-      cache: "no-store",
-    });
-    if (!response.ok) throw new Error("The latest voyage state could not be loaded.");
-    const received = (await response.json()) as PublicSnapshot;
-    if (accessRevokedRef.current) throw new Error("Player access has been revoked.");
-    const priorSynchronization = new Map(
-      snapshotRef.current.log
-        .filter((entry) => entry.synchronization?.source === "offline-recovery")
-        .map((entry) => [entry.key, entry.synchronization] as const),
-    );
-    const next: PublicSnapshot = {
-      ...received,
-      log: received.log.map((entry) =>
-        entry.synchronization || !priorSynchronization.has(entry.key)
-          ? entry
-          : { ...entry, synchronization: priorSynchronization.get(entry.key) },
-      ),
-    };
-    snapshotRef.current = next;
-    setSnapshot(next);
-    eventHistory.current = new Map(
-      (next.presentationHistory ?? []).map((event) => [
-        event.id,
-        Object.freeze({ ...event, payload: { ...event.payload } }),
-      ]),
-    );
-    setPresentationHistory(presentationHistoryEntries(next.presentationHistory ?? []));
-    const nextRelease = next.latestChapterReleasePresentation ?? null;
-    setLastRelease(nextRelease);
-    return next;
-  }, [initialSnapshot.campaign.slug]);
+  const refreshSnapshot = useCallback(
+    async (options?: Readonly<{ offlineAfterSequence?: number }>) => {
+      if (accessRevokedRef.current) throw new Error("Player access has been revoked.");
+      const query =
+        options?.offlineAfterSequence !== undefined
+          ? `?offlineAfterSequence=${encodeURIComponent(String(options.offlineAfterSequence))}`
+          : "";
+      const response = await fetch(`/api/player/${initialSnapshot.campaign.slug}/snapshot${query}`, {
+        cache: "no-store",
+      });
+      if (!response.ok) throw new Error("The latest voyage state could not be loaded.");
+      const received = (await response.json()) as PublicSnapshot;
+      if (accessRevokedRef.current) throw new Error("Player access has been revoked.");
+      const priorSynchronization = new Map(
+        snapshotRef.current.log
+          .filter((entry) => entry.synchronization?.source === "offline-recovery")
+          .map((entry) => [entry.key, entry.synchronization] as const),
+      );
+      const next: PublicSnapshot = {
+        ...received,
+        log: received.log.map((entry) =>
+          entry.synchronization || !priorSynchronization.has(entry.key)
+            ? entry
+            : { ...entry, synchronization: priorSynchronization.get(entry.key) },
+        ),
+      };
+      snapshotRef.current = next;
+      setSnapshot(next);
+      eventHistory.current = new Map(
+        (next.presentationHistory ?? []).map((event) => [
+          event.id,
+          Object.freeze({ ...event, payload: { ...event.payload } }),
+        ]),
+      );
+      setPresentationHistory(presentationHistoryEntries(next.presentationHistory ?? []));
+      const nextRelease = next.latestChapterReleasePresentation ?? null;
+      setLastRelease(nextRelease);
+      return next;
+    },
+    [initialSnapshot.campaign.slug],
+  );
 
   const submitViewedAcknowledgment = useCallback(
     async (
@@ -745,7 +770,9 @@ export function PlayerExperience({ initialSnapshot }: { initialSnapshot: PublicS
       } catch (cause) {
         if (signal?.aborted || (cause instanceof DOMException && cause.name === "AbortError")) {
           setViewedFeedback((current) =>
-            current?.view === targetView ? { ...current, state: "cancelled", message: "Viewed update cancelled." } : current,
+            current?.view === targetView
+              ? { ...current, state: "cancelled", message: "Viewed update cancelled." }
+              : current,
           );
           return;
         }
@@ -1009,13 +1036,7 @@ export function PlayerExperience({ initialSnapshot }: { initialSnapshot: PublicS
       const playerRoot = root.current;
       if (!playerRoot) return { status: "failed", finalStateResult: "failed", retryDisposition: "retryable" };
       const remembered = eventHistory.current.get(request.eventId);
-      const event: ClientProgressEvent = remembered ?? {
-        id: request.eventId,
-        type: request.eventType,
-        sequence: request.eventSequence,
-        payload: request.payload,
-        releaseAt: new Date().toISOString(),
-      };
+      const event = remembered ?? clientEventForPresentationRequest(request);
       const eventPolicy = policyForProgressionEvent(request.eventType);
       const summary = presentationSummary(request);
       const restoration = captureSectionRestoration(viewRef.current, sectionFocusTarget.current);
@@ -1275,7 +1296,11 @@ export function PlayerExperience({ initialSnapshot }: { initialSnapshot: PublicS
           retryDisposition: "retryable",
         };
       }
-      if (request.source !== "replay") await refreshSnapshot().catch(() => setConnection("adrift"));
+      // Reconnect work is reconstructed from the already-current authoritative
+      // snapshot. Refreshing that same snapshot after every historical ceremony
+      // serializes catch-up behind redundant network reads and can starve newer
+      // live work; only a newly arrived live event needs another refresh here.
+      if (request.source === "live") await refreshSnapshot().catch(() => setConnection("adrift"));
       flushSync(() => {
         setLastPresentedRequest(request);
         setPresentationStatus(execution.status);
@@ -1310,6 +1335,16 @@ export function PlayerExperience({ initialSnapshot }: { initialSnapshot: PublicS
           if (activeRequestRef.current?.requestId !== requestId) return;
           presentationRun.current?.abort();
           director.cancel?.("authoritative-progression-arrived");
+        },
+        fastForwardActive: (requestId) => {
+          let attemptsRemaining = 60;
+          const fastForward = () => {
+            if (activeRequestRef.current?.requestId !== requestId) return;
+            if (director.getSnapshot().isPlaying) director.skip();
+            attemptsRemaining -= 1;
+            if (attemptsRemaining > 0) window.requestAnimationFrame(fastForward);
+          };
+          queueMicrotask(fastForward);
         },
         onReceipt: (receipt) => {
           setLastPresentationReceipt(receipt);
@@ -1396,7 +1431,7 @@ export function PlayerExperience({ initialSnapshot }: { initialSnapshot: PublicS
   useEffect(() => {
     if (!journalReady || historyReconciled || accessRevoked) return;
     const abort = new AbortController();
-    const reconcile = async () => {
+    const enqueueReconciliation = async () => {
       const history = [...(snapshotRef.current.presentationHistory ?? [])].sort(
         (left, right) => left.sequence - right.sequence || left.id.localeCompare(right.id),
       );
@@ -1407,19 +1442,34 @@ export function PlayerExperience({ initialSnapshot }: { initialSnapshot: PublicS
       );
       if (abort.signal.aborted) return;
       const controller = ensureProgressionController();
-      await controller.reconcile({ events: history, acknowledgedEventIds, source: "reconnect" });
-      if (!abort.signal.aborted) setHistoryReconciled(true);
+      const acknowledged = new Set(acknowledgedEventIds);
+      controller.seedAcknowledged(acknowledgedEventIds);
+      for (const event of history) {
+        if (!acknowledged.has(event.id)) controller.submit(event, "reconnect");
+      }
     };
-    void reconcile().catch(() => {
-      if (!abort.signal.aborted) setConnection("adrift");
-    });
+    const reconciliationQueued = enqueueReconciliation();
+    progressionReconciliation.current = reconciliationQueued;
+    void reconciliationQueued
+      .then(async () => {
+        await ensureProgressionController().awaitIdle();
+        if (!abort.signal.aborted) setHistoryReconciled(true);
+      })
+      .catch(() => {
+        if (!abort.signal.aborted) setConnection("adrift");
+      });
     return () => abort.abort();
   }, [accessRevoked, ensureProgressionController, historyReconciled, initialSnapshot.campaign.slug, journalReady]);
 
   useEffect(() => {
-    if (!historyReconciled || accessRevoked) return;
+    if (!journalReady || accessRevoked) return;
     const controller = ensureProgressionController();
-    const after = controller.snapshot().cursors.observed;
+    let disposed = false;
+    let liveSubmission = Promise.resolve();
+    // The transport may connect while presentation-history reconciliation is still
+    // rendering. Start after the authoritative snapshot cursor so that connection
+    // health is independent from presentation timing without replaying snapshot events.
+    const after = Math.max(controller.snapshot().cursors.observed, snapshotRef.current.sequence);
     const source = new EventSource(`/api/player/${initialSnapshot.campaign.slug}/events?after=${after}`);
     const offline = () => {
       offlineAfterSequenceRef.current ??= snapshotRef.current.sequence;
@@ -1428,8 +1478,8 @@ export function PlayerExperience({ initialSnapshot }: { initialSnapshot: PublicS
     const online = () => {
       setConnection("connecting");
       const offlineAfterSequence = offlineAfterSequenceRef.current;
-      void refreshSnapshot(offlineAfterSequence === null ? undefined : { offlineAfterSequence })
-        .then(async (next) => {
+      const reconciliation = refreshSnapshot(offlineAfterSequence === null ? undefined : { offlineAfterSequence }).then(
+        async (next) => {
           const history = [...(next.presentationHistory ?? [])].sort(
             (left, right) => left.sequence - right.sequence || left.id.localeCompare(right.id),
           );
@@ -1442,29 +1492,39 @@ export function PlayerExperience({ initialSnapshot }: { initialSnapshot: PublicS
           await controller.reconcile({ events: history, acknowledgedEventIds, source: "reconnect" });
           offlineAfterSequenceRef.current = null;
           setConnection("live");
-        })
-        .catch(() => setConnection("adrift"));
+        },
+      );
+      progressionReconciliation.current = reconciliation;
+      void reconciliation.catch(() => setConnection("adrift"));
     };
     source.onopen = () => (offlineAfterSequenceRef.current === null ? setConnection("live") : online());
     source.onerror = offline;
-    source.addEventListener("progression", (message) => {
-      const event = JSON.parse((message as MessageEvent).data) as ClientProgressEvent;
+    const submitLiveEvent = async (event: ClientProgressEvent) => {
+      if (disposed) return;
       if (event.type === "CHAPTER_RELEASED") {
-        void refreshSnapshot()
-          .then((next) => {
-            const authorized = next.presentationHistory?.find((candidate) => candidate.id === event.id);
-            if (!authorized) return;
-            eventHistory.current.set(
-              authorized.id,
-              Object.freeze({ ...authorized, payload: Object.freeze({ ...authorized.payload }) }),
-            );
-            controller.submit(authorized, "live");
-          })
-          .catch(() => setConnection("adrift"));
+        const next = await refreshSnapshot();
+        const authorized = next.presentationHistory?.find((candidate) => candidate.id === event.id);
+        if (!authorized || disposed) return;
+        eventHistory.current.set(
+          authorized.id,
+          Object.freeze({ ...authorized, payload: Object.freeze({ ...authorized.payload }) }),
+        );
+        controller.submit(authorized, "live");
         return;
       }
       eventHistory.current.set(event.id, Object.freeze({ ...event, payload: Object.freeze({ ...event.payload }) }));
       controller.submit(event, "live");
+    };
+    source.addEventListener("progression", (message) => {
+      const event = JSON.parse((message as MessageEvent).data) as ClientProgressEvent;
+      const gate = progressionReconciliation.current ?? Promise.resolve();
+      liveSubmission = liveSubmission
+        .catch(() => undefined)
+        .then(() => gate)
+        .then(() => submitLiveEvent(event));
+      void liveSubmission.catch(() => {
+        if (!disposed) setConnection("adrift");
+      });
     });
     source.addEventListener("access-revoked", () => {
       source.close();
@@ -1517,11 +1577,12 @@ export function PlayerExperience({ initialSnapshot }: { initialSnapshot: PublicS
     window.addEventListener("offline", offline);
     window.addEventListener("online", online);
     return () => {
+      disposed = true;
       source.close();
       window.removeEventListener("offline", offline);
       window.removeEventListener("online", online);
     };
-  }, [accessRevoked, ensureProgressionController, historyReconciled, initialSnapshot.campaign.slug, refreshSnapshot]);
+  }, [accessRevoked, ensureProgressionController, initialSnapshot.campaign.slug, journalReady, refreshSnapshot]);
 
   useEffect(() => {
     if (accessRevoked) return;
@@ -1549,7 +1610,7 @@ export function PlayerExperience({ initialSnapshot }: { initialSnapshot: PublicS
       document.removeEventListener("visibilitychange", visibility);
       void report(true);
     };
-  }, [accessRevoked, lastPresentationReceipt, snapshot.campaign.slug, view]);
+  }, [accessRevoked, snapshot.campaign.slug, view]);
 
   useEffect(() => {
     const readLocation = () => {
@@ -1599,8 +1660,11 @@ export function PlayerExperience({ initialSnapshot }: { initialSnapshot: PublicS
     const entry = entries[view];
     if (!entry.contentKeys.length) return;
     const controller = new AbortController();
-    void submitViewedAcknowledgment(view, entry, controller.signal);
-    return () => controller.abort();
+    const timer = window.setTimeout(() => void submitViewedAcknowledgment(view, entry, controller.signal), 0);
+    return () => {
+      window.clearTimeout(timer);
+      controller.abort();
+    };
   }, [
     activeRequest,
     journalReady,
@@ -1766,7 +1830,8 @@ export function PlayerExperience({ initialSnapshot }: { initialSnapshot: PublicS
     : null;
   const settledPresentationSummary = lastPresentedRequest ? presentationSummary(lastPresentedRequest) : "";
   const settledRetryable = lastPresentationReceipt?.retryDisposition === "retryable";
-  const settledRetryOutcome = lastPresentationReceipt?.sceneReceipt?.outcome ?? lastPresentationReceipt?.status ?? "failed";
+  const settledRetryOutcome =
+    lastPresentationReceipt?.sceneReceipt?.outcome ?? lastPresentationReceipt?.status ?? "failed";
   const settledChapterReadableFallback =
     lastPresentedRequest?.eventType === "CHAPTER_RELEASED" &&
     (lastPresentationReceipt?.status === "fallback" ||
@@ -1798,7 +1863,9 @@ export function PlayerExperience({ initialSnapshot }: { initialSnapshot: PublicS
             }
           : undefined
       }
-      fallback={presentationFallback ? <p role={settledRetryable ? undefined : "alert"}>{presentationFallback}</p> : null}
+      fallback={
+        presentationFallback ? <p role={settledRetryable ? undefined : "alert"}>{presentationFallback}</p> : null
+      }
       onHostChange={onPersistentHostChange}
       content={
         accessRevoked ? (
@@ -2090,67 +2157,73 @@ export function PlayerExperience({ initialSnapshot }: { initialSnapshot: PublicS
               </div>
             )}
             <AnimatePresence initial={false}>
-            {!activeRequest && lastPresentedRequest && settledPresentationPolicy && (
-              <motion.aside
-                key={lastPresentedRequest.eventId}
-                className="progression-settled-notice"
-                role={settledRetryable ? "alert" : undefined}
-                data-global-event-notification
-                data-progress-event-id={lastPresentedRequest.eventId}
-                data-progress-event-type={lastPresentedRequest.eventType}
-                data-presentation-status={lastPresentationReceipt?.status ?? presentationStatus}
-                initial={mode === "reduced" ? false : { opacity: 0, y: 14 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0 }}
-              >
-                <h2>{settledPresentationPolicy.globalPresentation.heading}</h2>
-                <p>{settledPresentationSummary}</p>
-                {settledChapterReadableFallback && (
-                  <section data-chapter-readable-fallback data-event-id={lastPresentedRequest.eventId}>
-                    <h3>{String(lastPresentedRequest.payload.title ?? settledPresentationPolicy.globalPresentation.heading)}</h3>
-                    <p>{String(lastPresentedRequest.payload.objective ?? settledPresentationSummary)}</p>
-                  </section>
-                )}
-                {settledRetryable && (
-                  <>
-                    <p>The ceremony could not be completed. Its readable state remains available while you retry.</p>
-                    <code>outcome={settledRetryOutcome}</code>
-                  </>
-                )}
-                <div role="group" aria-label="Voyage update actions">
-                  {settledPresentationPolicy.relevantSection && (
-                    <button type="button" onClick={() => navigate(settledPresentationPolicy.relevantSection!)}>
-                      {lastPresentedRequest.eventType === "CHAPTER_RELEASED" && view !== "journal"
-                        ? "Return to Journal"
-                        : `Open ${settledPresentationPolicy.relevantSection}`}
-                    </button>
+              {!activeRequest && lastPresentedRequest && settledPresentationPolicy && (
+                <motion.aside
+                  key={lastPresentedRequest.eventId}
+                  className="progression-settled-notice"
+                  role={settledRetryable ? "alert" : undefined}
+                  data-global-event-notification
+                  data-progress-event-id={lastPresentedRequest.eventId}
+                  data-progress-event-type={lastPresentedRequest.eventType}
+                  data-presentation-status={lastPresentationReceipt?.status ?? presentationStatus}
+                  initial={mode === "reduced" ? false : { opacity: 0, y: 14 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0 }}
+                >
+                  <h2>{settledPresentationPolicy.globalPresentation.heading}</h2>
+                  <p>{settledPresentationSummary}</p>
+                  {settledChapterReadableFallback && (
+                    <section data-chapter-readable-fallback data-event-id={lastPresentedRequest.eventId}>
+                      <h3>
+                        {String(
+                          lastPresentedRequest.payload.title ?? settledPresentationPolicy.globalPresentation.heading,
+                        )}
+                      </h3>
+                      <p>{String(lastPresentedRequest.payload.objective ?? settledPresentationSummary)}</p>
+                    </section>
                   )}
-                  <button
-                    type="button"
-                    onClick={() => {
-                      const event = eventHistory.current.get(lastPresentedRequest.eventId);
-                      if (event) void playEvent(event, "replay");
-                    }}
-                  >
-                    Replay ceremony
-                  </button>
                   {settledRetryable && (
+                    <>
+                      <p>The ceremony could not be completed. Its readable state remains available while you retry.</p>
+                      <code>outcome={settledRetryOutcome}</code>
+                    </>
+                  )}
+                  <div role="group" aria-label="Voyage update actions">
+                    {settledPresentationPolicy.relevantSection && (
+                      <button type="button" onClick={() => navigate(settledPresentationPolicy.relevantSection!)}>
+                        {lastPresentedRequest.eventType === "CHAPTER_RELEASED" && view !== "journal"
+                          ? "Return to Journal"
+                          : `Open ${settledPresentationPolicy.relevantSection}`}
+                      </button>
+                    )}
                     <button
                       type="button"
                       onClick={() => {
-                        const event = eventHistory.current.get(lastPresentedRequest.eventId);
-                        if (event) void playEvent(event, "automatic");
+                        const event =
+                          eventHistory.current.get(lastPresentedRequest.eventId) ??
+                          clientEventForPresentationRequest(lastPresentedRequest);
+                        void playEvent(event, "replay");
                       }}
                     >
-                      Retry ceremony
+                      Replay ceremony
                     </button>
-                  )}
-                  <button type="button" onClick={() => setLastPresentedRequest(null)}>
-                    Dismiss
-                  </button>
-                </div>
-              </motion.aside>
-            )}
+                    {settledRetryable && (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const event = eventHistory.current.get(lastPresentedRequest.eventId);
+                          if (event) void playEvent(event, "automatic");
+                        }}
+                      >
+                        Retry ceremony
+                      </button>
+                    )}
+                    <button type="button" onClick={() => setLastPresentedRequest(null)}>
+                      Dismiss
+                    </button>
+                  </div>
+                </motion.aside>
+              )}
             </AnimatePresence>
             {presentationHistory.length > 0 && (
               <aside className="progression-history" aria-label="Presentation history" data-presentation-history>

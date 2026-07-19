@@ -30,4 +30,3 @@ describe("Phase 4 one-shot keys", () => {
     expect(consumeOneShot(key, storage)).toBe(true);
   });
 });
-

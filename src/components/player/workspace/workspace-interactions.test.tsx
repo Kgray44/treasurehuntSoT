@@ -24,7 +24,8 @@ describe("Motion workspace interactions", () => {
     expect(navigate).toHaveBeenCalledWith("chart");
 
     rerender(<MobileNavigation view="chart" unseen={unseen} navigate={navigate} />);
-    expect(screen.getByRole("button", { name: /Chart, new content/ })).toBeEnabled();
+    expect(screen.getByRole("button", { name: /Chart/ })).toBeEnabled();
+    expect(screen.getByLabelText("2 unseen")).toBeVisible();
     fireEvent.click(screen.getByRole("button", { name: /Finale/ }));
     expect(navigate).toHaveBeenLastCalledWith("finale");
   });

@@ -1312,6 +1312,9 @@
   left: 50%;
   transform: translateX(-50%);
 }
+.journal-opening-status:not([role="dialog"]) {
+  pointer-events: none;
+}
 .journal-connection-note {
   top: 7rem;
   right: 1rem;

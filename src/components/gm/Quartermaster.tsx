@@ -226,18 +226,30 @@ function commandPreflight(action: Action, status: Status) {
     case "PREPARE_CHAPTER":
     case "RELEASE_CHAPTER":
     case "MARK_SOLVED":
-      return { target: `Chapter ${status.chapter.ordinal}: ${status.chapter.title}`, current: status.chapter.state, consequence: action[2] };
+      return {
+        target: `Chapter ${status.chapter.ordinal}: ${status.chapter.title}`,
+        current: status.chapter.state,
+        consequence: action[2],
+      };
     case "UNDO_LAST":
       return {
-        target: previous ? `${previous.type.replaceAll("_", " ")} at sequence ${previous.sequence}` : "No previous ledger event",
+        target: previous
+          ? `${previous.type.replaceAll("_", " ")} at sequence ${previous.sequence}`
+          : "No previous ledger event",
         current: campaignTarget,
-        consequence: previous ? `Restore the persisted state immediately before event ${previous.id}.` : "No undo target is currently available.",
+        consequence: previous
+          ? `Restore the persisted state immediately before event ${previous.id}.`
+          : "No undo target is currently available.",
       };
     case "PAUSE":
     case "RESUME":
       return { target: campaignTarget, current: status.campaign.status, consequence: action[2] };
     default:
-      return { target: `${status.campaign.title} / ${status.chapter.title}`, current: `Sequence ${status.campaign.sequence}`, consequence: action[2] };
+      return {
+        target: `${status.campaign.title} / ${status.chapter.title}`,
+        current: `Sequence ${status.campaign.sequence}`,
+        consequence: action[2],
+      };
   }
 }
 
@@ -1451,9 +1463,18 @@ export function Quartermaster({ authenticated }: { authenticated: boolean }) {
                 <p>{selected[2]}</p>
                 {selectedPreflight && (
                   <dl className="command-preflight" aria-label="Command-specific preflight">
-                    <div><dt>Exact target</dt><dd>{selectedPreflight.target}</dd></div>
-                    <div><dt>Current authoritative state</dt><dd>{selectedPreflight.current}</dd></div>
-                    <div><dt>Committed consequence</dt><dd>{selectedPreflight.consequence}</dd></div>
+                    <div>
+                      <dt>Exact target</dt>
+                      <dd>{selectedPreflight.target}</dd>
+                    </div>
+                    <div>
+                      <dt>Current authoritative state</dt>
+                      <dd>{selectedPreflight.current}</dd>
+                    </div>
+                    <div>
+                      <dt>Committed consequence</dt>
+                      <dd>{selectedPreflight.consequence}</dd>
+                    </div>
                   </dl>
                 )}
                 <div className="impact-note">
@@ -1468,7 +1489,11 @@ export function Quartermaster({ authenticated }: { authenticated: boolean }) {
                     {error}
                   </p>
                 )}
-                {busy && <p className="command-queue-state" role="status">This command owns the ledger queue. Other commands remain serialized until it settles.</p>}
+                {busy && (
+                  <p className="command-queue-state" role="status">
+                    This command owns the ledger queue. Other commands remain serialized until it settles.
+                  </p>
+                )}
                 <div>
                   <button onClick={closeConfirmation} disabled={busy}>
                     Cancel

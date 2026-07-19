@@ -472,6 +472,18 @@ describe("PageFlipBook", () => {
     );
   });
 
+  it("restores the initiating control after its animated turn settles", async () => {
+    renderPageFlip(<PageFlipBook pages={fourPages} mode="full" />);
+    await waitFor(() => expect(calls.instance).not.toBeNull());
+    const next = screen.getByRole("button", { name: "Next journal page" });
+    next.focus();
+
+    fireEvent.click(next);
+    await settleMockTurn(1);
+
+    await waitFor(() => expect(next).toHaveFocus());
+  });
+
   it("mirrors each lifecycle transition once as a sanitized payload-free browser event", async () => {
     const browserEvents: PageTurnLifecycleBrowserDetail[] = [];
     const privatePages: FlipBookPage[] = [
@@ -573,10 +585,16 @@ describe("PageFlipBook", () => {
     });
     ref.current?.next();
     expect(browserEvents.map((event) => event.phase)).toEqual(["start"]);
+    const staleHandlers = calls.instance!.handlers;
 
     unmount();
 
     expect(browserEvents.map((event) => event.phase)).toEqual(["start"]);
+    expect(() => {
+      staleHandlers.get("flip")?.({ data: 1 });
+      staleHandlers.get("changeOrientation")?.({ data: "portrait" });
+      staleHandlers.get("changeState")?.({ data: "read" });
+    }).not.toThrow();
   });
 
   it("truthfully cancels a queued intent when a newer intent replaces it", async () => {

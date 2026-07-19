@@ -249,7 +249,7 @@ function TallTaleJournalSessionIdentity({ sessionId, identitySession = false }: 
   const [openingNotice, setOpeningNotice] = useState("");
   const [readyReceipt, setReadyReceipt] = useState<JournalReadyReceipt | null>(null);
   const [replayControlsMounted, setReplayControlsMounted] = useState(false);
-  const { mode, policy: motionPolicy, cycle: cycleMotion } = useMotionMode();
+  const { mode, policy: motionPolicy, cycle: cycleMotion, ready: motionPolicyReady = true } = useMotionMode();
   const openingMode = useRef(mode);
   const teardownRegistry = useRef<JournalTeardownRegistry>(createJournalTeardownRegistry());
   const archiveMode = Boolean(state && (state.journal.mode === "historical" || state.session.status === "COMPLETED"));
@@ -524,7 +524,7 @@ function TallTaleJournalSessionIdentity({ sessionId, identitySession = false }: 
           );
           return;
         }
-        const readinessFallback = readiness.readinessStatus === "fallback";
+        const readinessFallback = ["fallback", "reduced"].includes(readiness.readinessStatus);
         const settledOutcome =
           result.status === "completed-fallback" || readinessFallback ? "completed-fallback" : result.status;
         settleJournalReady(
@@ -555,6 +555,20 @@ function TallTaleJournalSessionIdentity({ sessionId, identitySession = false }: 
         return;
       }
 
+      const phaseFailureReadiness = book.current?.readiness() ?? null;
+      if (phaseFailureReadiness?.ready) {
+        const runtimeStillAvailable = phaseFailureReadiness.status === "ready";
+        settleJournalReady(
+          policy,
+          phaseFailureReason(result.outcome),
+          "failure",
+          runtimeStillAvailable
+            ? "The animated opening could not finish. The journal and page turning are ready."
+            : "The animated opening could not finish. The journal is ready in a readable fallback state.",
+        );
+        return;
+      }
+
       if (!forcePageFlipReadableFallback(`Journal opening phase failed: ${result.outcome.status}`)) {
         setOpeningOutcome("failure");
         setOpeningNotice("The journal could not prepare a readable page. Try Skip ceremony again.");
@@ -569,6 +583,29 @@ function TallTaleJournalSessionIdentity({ sessionId, identitySession = false }: 
     },
     [forcePageFlipReadableFallback, mode, settleJournalReady],
   );
+
+  const abortOpeningForMotionChange = useCallback(() => {
+    if (!openingRun.current) return;
+    const policy = activeOpeningPolicy.current;
+    stopOpeningRun();
+    if (!policy) return;
+    if (forcePageFlipReadableFallback("Motion changed during the journal opening")) {
+      settleJournalReady(
+        policy,
+        "motion-changed",
+        "aborted",
+        "Motion changed during the opening. The journal is ready without replaying the ceremony.",
+      );
+      return;
+    }
+    setOpeningOutcome("failure");
+    setOpeningNotice("The journal could not prepare a readable page. Try Skip ceremony again.");
+  }, [forcePageFlipReadableFallback, settleJournalReady, stopOpeningRun]);
+
+  const changeMotionMode = useCallback(() => {
+    abortOpeningForMotionChange();
+    cycleMotion();
+  }, [abortOpeningForMotionChange, cycleMotion]);
 
   useEffect(() => {
     if (!state || !readingReady || liveReady) return;
@@ -673,7 +710,7 @@ function TallTaleJournalSessionIdentity({ sessionId, identitySession = false }: 
   }, [initialPage, pages, state?.journal.currentBlockId]);
 
   useEffect(() => {
-    if (!state || !readingReady || !root.current || initializedOpening.current) return;
+    if (!motionPolicyReady || !state || !readingReady || !root.current || initializedOpening.current) return;
     const registry = teardownRegistry.current;
     initializedOpening.current = true;
     const request = archiveMode
@@ -687,27 +724,13 @@ function TallTaleJournalSessionIdentity({ sessionId, identitySession = false }: 
         if (!registry.isDisposed()) void startOpening(policy);
       });
     }
-  }, [archiveMode, mode, reading.hasOpened, readingReady, startOpening, state]);
+  }, [archiveMode, mode, motionPolicyReady, reading.hasOpened, readingReady, startOpening, state]);
 
   useEffect(() => {
     if (openingMode.current === mode) return;
     openingMode.current = mode;
-    if (!openingRun.current) return;
-    const policy = activeOpeningPolicy.current;
-    stopOpeningRun();
-    if (!policy) return;
-    if (forcePageFlipReadableFallback("Motion changed during the journal opening")) {
-      settleJournalReady(
-        policy,
-        "motion-changed",
-        "aborted",
-        "Motion changed during the opening. The journal is ready without replaying the ceremony.",
-      );
-      return;
-    }
-    setOpeningOutcome("failure");
-    setOpeningNotice("The journal could not prepare a readable page. Try Skip ceremony again.");
-  }, [forcePageFlipReadableFallback, mode, settleJournalReady, stopOpeningRun]);
+    abortOpeningForMotionChange();
+  }, [abortOpeningForMotionChange, mode]);
 
   useEffect(() => {
     if (!pendingEvent || !state || !pages.length) return;
@@ -920,7 +943,7 @@ function TallTaleJournalSessionIdentity({ sessionId, identitySession = false }: 
                     ? "Offline"
                     : "Reconnecting"}
           </span>
-          <button onClick={cycleMotion}>Motion: {mode}</button>
+          <button onClick={changeMotionMode}>Motion: {mode}</button>
           {replayControlsMounted && (
             <div role="group" aria-label="Journal opening replay">
               <button onClick={(event) => void replayOpening("manual-full-replay", event.currentTarget)}>
@@ -1031,6 +1054,7 @@ function TallTaleJournalSessionIdentity({ sessionId, identitySession = false }: 
           <span>{openingLabel(openingPhase)}</span>
           {openingNotice && openingOutcome === "failure" && <p role="alert">{openingNotice}</p>}
           <button onClick={skipOpening}>Skip ceremony</button>
+          <button onClick={changeMotionMode}>Motion: {mode}</button>
           <Link href="/player/library">Leave for Tall Tale Library</Link>
         </div>
       )}

@@ -89,7 +89,9 @@
   place-items: center;
   border-radius: 50%;
   background: radial-gradient(circle, #c56b4d, #762e28 68%, #4b1d1a);
-  box-shadow: inset 0 0 0 5px rgba(255, 219, 151, 0.16), 0 0 0 1px #ddb170;
+  box-shadow:
+    inset 0 0 0 5px rgba(255, 219, 151, 0.16),
+    0 0 0 1px #ddb170;
 }
 
 .relic-invitation-seal::after {
@@ -598,11 +600,17 @@ html[data-motion-level="reduced"] .platform-relic *,
 }
 
 @keyframes waiting-lantern-pulse {
-  50% { opacity: 0.72; box-shadow: 0 0 7px rgba(239, 185, 74, 0.32); }
+  50% {
+    opacity: 0.72;
+    box-shadow: 0 0 7px rgba(239, 185, 74, 0.32);
+  }
 }
 
 @keyframes library-journal-breathe {
-  to { filter: brightness(1.035); transform: translateY(-2px); }
+  to {
+    filter: brightness(1.035);
+    transform: translateY(-2px);
+  }
 }
 
 .tale-card-copy {
@@ -792,7 +800,9 @@ dl dd {
   border: 1px solid rgba(201, 169, 95, 0.64);
   border-radius: 50%;
   background: transparent;
-  transition: background 120ms ease, box-shadow 120ms ease;
+  transition:
+    background 120ms ease,
+    box-shadow 120ms ease;
 }
 
 .pin-progress i[data-filled="true"] {
@@ -809,8 +819,12 @@ dl dd {
 }
 
 @keyframes invitation-route-hold {
-  from { opacity: 1; }
-  to { opacity: 1; }
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 .invitation-cover {
@@ -1094,7 +1108,9 @@ dl dd {
 }
 
 @keyframes needs-attention-arrival {
-  50% { box-shadow: 0 0 0 5px rgba(156, 61, 50, 0.16); }
+  50% {
+    box-shadow: 0 0 0 5px rgba(156, 61, 50, 0.16);
+  }
 }
 
 .session-signal {

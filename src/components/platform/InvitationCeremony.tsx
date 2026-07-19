@@ -1,6 +1,5 @@
 "use client";
 
-/* eslint-disable @next/next/no-img-element -- Cover image is authorized against the pending invitation cookie. */
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import {
@@ -199,17 +198,27 @@ function TerminalInvitationState({
       exit={{ opacity: 0 }}
       aria-busy={stage === "resolving" || stage === "replacing"}
     >
-      <h1 id="invitation-state-title" tabIndex={-1}>{title}</h1>
+      <h1 id="invitation-state-title" tabIndex={-1}>
+        {title}
+      </h1>
       <p>{detail}</p>
-      <p className="platform-status" role="status" aria-live="polite">{title}</p>
+      <p className="platform-status" role="status" aria-live="polite">
+        {title}
+      </p>
       <div className="invitation-actions">
         {(stage === "failed" || stage === "replaced") && (
-          <button className="brass-button" onClick={retry}>{stage === "replaced" ? "Check for replacement" : "Try again"}</button>
+          <button className="brass-button" onClick={retry}>
+            {stage === "replaced" ? "Check for replacement" : "Try again"}
+          </button>
         )}
         {stage === "account-required" && (
-          <Link className="brass-button" href="/player/sign-in">Sign in, then return here</Link>
+          <Link className="brass-button" href="/player/sign-in">
+            Sign in, then return here
+          </Link>
         )}
-        <Link className="button-subtle" href="/player/sign-in">Return to Player Entry</Link>
+        <Link className="button-subtle" href="/player/sign-in">
+          Return to Player Entry
+        </Link>
       </div>
     </motion.section>
   );
@@ -224,7 +233,8 @@ export function InvitationCeremony({ onRouteHandoff }: { onRouteHandoff?: Invita
   const { director } = useAnimationDirector();
   const { mode } = useMotionMode();
   const asyncState = useAuthoritativeAsyncState(900);
-  const [stage, setStage] = useState<InvitationStage>("resolving");
+  const invalidState = search.get("state") === "invalid";
+  const [resolvedStage, setStage] = useState<InvitationStage>("resolving");
   const [invitation, setInvitation] = useState<Invitation | null>(null);
   const [csrf, setCsrf] = useState("");
   const [pin, setPin] = useState("");
@@ -234,8 +244,8 @@ export function InvitationCeremony({ onRouteHandoff }: { onRouteHandoff?: Invita
   const [coverVisible, setCoverVisible] = useState(true);
   const stateToken = resolvePlatformMotionToken("state", mode);
   const ceremonyToken = resolvePlatformMotionToken("ceremony", mode);
-
-  const invalidState = search.get("state") === "invalid";
+  const stage: InvitationStage = invalidState ? "invalid" : resolvedStage;
+  const visibleError = invalidState ? "This invitation is invalid or no longer available." : error;
 
   const resolveInvitation = useCallback(async (replacement = false) => {
     resolveRun.current?.abort("superseded");
@@ -264,7 +274,11 @@ export function InvitationCeremony({ onRouteHandoff }: { onRouteHandoff?: Invita
       setCoverVisible(true);
       const next = body.invitation.requiresPin ? "pin-required" : "valid";
       setStage(next);
-      setAnnouncement(body.invitation.requiresPin ? "Invitation found. Enter its PIN to continue." : "Invitation found and ready to accept.");
+      setAnnouncement(
+        body.invitation.requiresPin
+          ? "Invitation found. Enter its PIN to continue."
+          : "Invitation found and ready to accept.",
+      );
     } catch (cause) {
       if (cause instanceof DOMException && cause.name === "AbortError") return;
       setStage("failed");
@@ -276,12 +290,9 @@ export function InvitationCeremony({ onRouteHandoff }: { onRouteHandoff?: Invita
   }, []);
 
   useEffect(() => {
-    if (invalidState) {
-      setStage("invalid");
-      setError("This invitation is invalid or no longer available.");
-      return;
-    }
-    void resolveInvitation();
+    if (invalidState) return;
+    const timer = window.setTimeout(() => void resolveInvitation(), 0);
+    return () => window.clearTimeout(timer);
   }, [invalidState, resolveInvitation]);
 
   useEffect(() => () => resolveRun.current?.abort("unmounted"), []);
@@ -297,15 +308,13 @@ export function InvitationCeremony({ onRouteHandoff }: { onRouteHandoff?: Invita
   useEffect(() => {
     if (!invitation) return;
     const remaining = new Date(invitation.expiresAt).getTime() - Date.now();
-    if (remaining <= 0) {
-      setStage("expired");
-      setAnnouncement("This invitation has expired.");
-      return;
-    }
-    const timer = window.setTimeout(() => {
-      setStage("expired");
-      setAnnouncement("This invitation has expired.");
-    }, Math.min(remaining, 2_147_483_647));
+    const timer = window.setTimeout(
+      () => {
+        setStage("expired");
+        setAnnouncement("This invitation has expired.");
+      },
+      Math.min(Math.max(remaining, 0), 2_147_483_647),
+    );
     return () => window.clearTimeout(timer);
   }, [invitation]);
 
@@ -332,7 +341,9 @@ export function InvitationCeremony({ onRouteHandoff }: { onRouteHandoff?: Invita
     const pendingStage = action === "decline" ? "declining" : invitation.requiresPin ? "pin-validating" : "accepting";
     setStage(pendingStage);
     setError("");
-    setAnnouncement(action === "decline" ? "Declining invitation." : "Validating invitation with the Captain's ledger.");
+    setAnnouncement(
+      action === "decline" ? "Declining invitation." : "Validating invitation with the Captain's ledger.",
+    );
     let operationError = `Unable to ${action} this invitation.`;
     let operationCode: string | undefined;
     let actionPromise: Promise<InvitationActionResult> | null = null;
@@ -394,7 +405,8 @@ export function InvitationCeremony({ onRouteHandoff }: { onRouteHandoff?: Invita
           verifyReadableState: (semanticState) => semanticState === accessFinalState,
         },
         presentationFallback: async (context) => {
-          if (context.fallback !== accessFallback || context.signal?.aborted) return { completed: false, readable: false };
+          if (context.fallback !== accessFallback || context.signal?.aborted)
+            return { completed: false, readable: false };
           try {
             fallbackResult = await submitAction();
             setStage("accepted");
@@ -409,7 +421,8 @@ export function InvitationCeremony({ onRouteHandoff }: { onRouteHandoff?: Invita
       const result = receipt.operationResult ?? fallbackResult;
       const presented =
         result?.ok === true &&
-        ((receipt.outcome === "presented" || receipt.outcome === "skipped-by-user") ||
+        (receipt.outcome === "presented" ||
+          receipt.outcome === "skipped-by-user" ||
           (receipt.outcome === "presented-fallback" && fallbackReadable));
       if (!presented || !result.playthroughId) {
         restoreFailure(run, operationError, operationCode);
@@ -424,14 +437,26 @@ export function InvitationCeremony({ onRouteHandoff }: { onRouteHandoff?: Invita
     }
   }
 
-  const terminal = !invitation || ["account-required", "invalid", "expired", "revoked", "declined", "replacing", "replaced", "failed", "resolving"].includes(stage);
+  const terminal =
+    !invitation ||
+    [
+      "account-required",
+      "invalid",
+      "expired",
+      "revoked",
+      "declined",
+      "replacing",
+      "replaced",
+      "failed",
+      "resolving",
+    ].includes(stage);
   if (terminal) {
     return (
       <main className="invitation-page" data-invitation-state={stage} data-motion-mode={mode}>
         <AnimatePresence mode="wait">
           <TerminalInvitationState
             stage={stage as Parameters<typeof TerminalInvitationState>[0]["stage"]}
-            detail={error || announcement}
+            detail={visibleError || announcement}
             retry={() => void resolveInvitation(stage === "replaced")}
           />
         </AnimatePresence>
@@ -440,7 +465,8 @@ export function InvitationCeremony({ onRouteHandoff }: { onRouteHandoff?: Invita
   }
 
   const tale = invitation.playthrough.tale;
-  const relicState = stage === "accepted" ? "open" : stage === "pin-validating" || stage === "accepting" ? "accepting" : "valid";
+  const relicState =
+    stage === "accepted" ? "open" : stage === "pin-validating" || stage === "accepting" ? "accepting" : "valid";
   return (
     <main ref={root} className="invitation-page" data-invitation-state={stage} data-motion-mode={mode}>
       <SceneHost
@@ -456,14 +482,21 @@ export function InvitationCeremony({ onRouteHandoff }: { onRouteHandoff?: Invita
         className="invitation-sheet"
         aria-labelledby="invitation-state-title"
         aria-busy={asyncState.busy}
-        initial={{ opacity: 0, rotateX: mode === "reduced" ? 0 : -8, clipPath: mode === "reduced" ? "inset(0)" : "inset(0 0 42% 0 round 18px)" }}
+        initial={{
+          opacity: 0,
+          rotateX: mode === "reduced" ? 0 : -8,
+          clipPath: mode === "reduced" ? "inset(0)" : "inset(0 0 42% 0 round 18px)",
+        }}
         animate={{ opacity: 1, rotateX: 0, clipPath: "inset(0 0 0% 0 round 18px)" }}
         transition={{ duration: stateToken.durationSeconds, ease: platformMotionEasing("state") }}
       >
         <div className="invitation-seal" aria-hidden="true">
           <PlatformRelic kind="invitation-seal" state={relicState} mode={mode} />
         </div>
-        <div className="invitation-cover-frame" data-cover-state={coverVisible && tale?.coverUrl ? "image" : "fallback"}>
+        <div
+          className="invitation-cover-frame"
+          data-cover-state={coverVisible && tale?.coverUrl ? "image" : "fallback"}
+        >
           {coverVisible && tale?.coverUrl ? (
             <motion.img
               className="invitation-cover"
@@ -474,22 +507,46 @@ export function InvitationCeremony({ onRouteHandoff }: { onRouteHandoff?: Invita
               animate={{ clipPath: "inset(0 0% 0 0)" }}
               transition={{ duration: stateToken.durationSeconds, ease: platformMotionEasing("state") }}
             />
-          ) : <span aria-hidden="true">Charted voyage</span>}
+          ) : (
+            <span aria-hidden="true">Charted voyage</span>
+          )}
         </div>
-        <p className="eyebrow">A Captain&apos;s invitation for <span className="invitation-handwritten-name">{invitation.recipientName}</span></p>
-        <h1 id="invitation-state-title" tabIndex={-1}>{tale?.title ?? "A Tall Tale awaits"}</h1>
+        <p className="eyebrow">
+          A Captain&apos;s invitation for{" "}
+          <span className="invitation-handwritten-name">{invitation.recipientName}</span>
+        </p>
+        <h1 id="invitation-state-title" tabIndex={-1}>
+          {tale?.title ?? "A Tall Tale awaits"}
+        </h1>
         <h2>{invitation.playthrough.voyageName}</h2>
         <p>{tale?.shortDescription ?? "Your voyage is ready to join."}</p>
         <dl>
-          <div><dt>Edition</dt><dd>{invitation.playthrough.versionLabel ?? "Published edition"}</dd></div>
-          <div><dt>Invitation expires</dt><dd>{new Date(invitation.expiresAt).toLocaleString()}</dd></div>
+          <div>
+            <dt>Edition</dt>
+            <dd>{invitation.playthrough.versionLabel ?? "Published edition"}</dd>
+          </div>
+          <div>
+            <dt>Invitation expires</dt>
+            <dd>{new Date(invitation.expiresAt).toLocaleString()}</dd>
+          </div>
           {invitation.playthrough.plannedStartAt && (
-            <div><dt>Planned start</dt><dd>{new Date(invitation.playthrough.plannedStartAt).toLocaleString()} {invitation.playthrough.scheduleTimezone}</dd></div>
+            <div>
+              <dt>Planned start</dt>
+              <dd>
+                {new Date(invitation.playthrough.plannedStartAt).toLocaleString()}{" "}
+                {invitation.playthrough.scheduleTimezone}
+              </dd>
+            </div>
           )}
         </dl>
         <label>
           <span>Your display name</span>
-          <input value={displayName} onChange={(event) => setDisplayName(event.target.value)} required disabled={asyncState.busy} />
+          <input
+            value={displayName}
+            onChange={(event) => setDisplayName(event.target.value)}
+            required
+            disabled={asyncState.busy}
+          />
         </label>
         {invitation.requiresPin && (
           <label>
@@ -506,12 +563,18 @@ export function InvitationCeremony({ onRouteHandoff }: { onRouteHandoff?: Invita
               aria-describedby="invitation-pin-progress"
             />
             <span id="invitation-pin-progress" className="pin-progress" aria-live="polite">
-              {Array.from({ length: 4 }, (_, index) => <i key={index} data-filled={index < pin.length} aria-hidden="true" />)}
+              {Array.from({ length: 4 }, (_, index) => (
+                <i key={index} data-filled={index < pin.length} aria-hidden="true" />
+              ))}
               <b className="sr-only">{Math.min(pin.length, 4)} PIN digits entered</b>
             </span>
           </label>
         )}
-        {error && <p className="platform-error" role="alert">{error}</p>}
+        {visibleError && (
+          <p className="platform-error" role="alert">
+            {visibleError}
+          </p>
+        )}
         <AnimatePresence mode="wait">
           <motion.p
             key={stage}
@@ -532,12 +595,26 @@ export function InvitationCeremony({ onRouteHandoff }: { onRouteHandoff?: Invita
             aria-busy={asyncState.busy}
             onClick={() => void act("accept")}
           >
-            {stage === "pin-validating" ? "Validating PIN…" : stage === "accepting" ? "Joining voyage…" : stage === "accepted" ? "Invitation accepted" : "Accept and Join Voyage"}
+            {stage === "pin-validating"
+              ? "Validating PIN…"
+              : stage === "accepting"
+                ? "Joining voyage…"
+                : stage === "accepted"
+                  ? "Invitation accepted"
+                  : "Accept and Join Voyage"}
           </button>
-          <button className="button-subtle" disabled={asyncState.busy} onClick={() => void act("decline")}>Decline Invitation</button>
+          <button className="button-subtle" disabled={asyncState.busy} onClick={() => void act("decline")}>
+            Decline Invitation
+          </button>
         </div>
       </motion.section>
-      {stage === "accepted" && <span className="invitation-route-hold" style={{ "--hold-ms": `${ceremonyToken.durationMs}ms` } as CSSProperties} aria-hidden="true" />}
+      {stage === "accepted" && (
+        <span
+          className="invitation-route-hold"
+          style={{ "--hold-ms": `${ceremonyToken.durationMs}ms` } as CSSProperties}
+          aria-hidden="true"
+        />
+      )}
     </main>
   );
 }

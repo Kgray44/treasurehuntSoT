@@ -100,6 +100,7 @@ export const showcaseDemos: ShowcaseDemo[] = [
   { id: "heading", label: "Live chapter-heading writing", scene: "chapter-heading", libraries: ["gsap"] },
   { id: "prose", label: "Long prose ink reveal", scene: "prose-ink", libraries: ["gsap", "lottie"] },
   { id: "seal", label: "Seal deformation and cracking", scene: "seal-break", libraries: ["gsap", "rive", "lottie"] },
+  { id: "studio-publish", label: "Studio publish receipt", scene: "studio-publish", libraries: ["gsap", "motion"] },
   {
     id: "release",
     label: "Chapter-release full ceremony",

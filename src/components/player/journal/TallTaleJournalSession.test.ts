@@ -651,6 +651,7 @@ describe("TallTaleJournalSession mounted synchronous teardown", () => {
 
     const heading = screen.getByRole("heading", { name: "Edition focus Voyage Journal" });
     expect(view.container.querySelector("main")?.dataset.journalPhase).toBe("JOURNAL_READY");
+    expect(view.container.querySelector("main")?.dataset.journalOpeningOutcome).toBe("completed-fallback");
     expect(view.container.querySelector("main")?.dataset.pageFlipReadiness).toBe("reduced");
     expect(document.activeElement).toBe(heading);
     expect(tools.hasAttribute("inert")).toBe(false);
@@ -707,7 +708,7 @@ describe("TallTaleJournalSession mounted synchronous teardown", () => {
     await act(flushMicrotasks);
 
     expect(view.container.querySelector("main")?.dataset.journalPhase).toBe("JOURNAL_READY");
-    expect(view.container.querySelector("main")?.dataset.journalReadyReason).toBe("completed");
+    expect(view.container.querySelector("main")?.dataset.journalReadyReason).toBe("completed-fallback");
     expect(screen.getByText("Completed archive")).toBeTruthy();
     expect(ControlledEventSource.activeStreams).toBe(0);
     expect(setIntervalSpy.mock.calls.some((call) => Number(call[1]) === 5000)).toBe(false);

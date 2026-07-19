@@ -18,6 +18,7 @@ export function useAuthoritativeAsyncState(slowAfterMs = 900) {
   const sequence = useRef(0);
   const active = useRef<(AuthoritativeAsyncRun & { timer: ReturnType<typeof setTimeout> }) | null>(null);
   const [phase, setPhase] = useState<AuthoritativeAsyncPhase>("idle");
+  const [busy, setBusy] = useState(false);
 
   const clear = useCallback((run: AuthoritativeAsyncRun) => {
     if (active.current?.id !== run.id) return false;
@@ -32,13 +33,13 @@ export function useAuthoritativeAsyncState(slowAfterMs = 900) {
       if (mounted.current && active.current?.id === run.id && !run.controller.signal.aborted) setPhase("slow");
     }, slowAfterMs);
     active.current = { ...run, timer };
+    setBusy(true);
     setPhase("pending");
     return run;
   }, [slowAfterMs]);
 
   const isCurrent = useCallback(
-    (run: AuthoritativeAsyncRun) =>
-      mounted.current && active.current?.id === run.id && !run.controller.signal.aborted,
+    (run: AuthoritativeAsyncRun) => mounted.current && active.current?.id === run.id && !run.controller.signal.aborted,
     [],
   );
 
@@ -55,6 +56,7 @@ export function useAuthoritativeAsyncState(slowAfterMs = 900) {
     (run: AuthoritativeAsyncRun, terminal = false) => {
       if (!isCurrent(run) || !clear(run)) return false;
       active.current = null;
+      setBusy(false);
       setPhase(terminal ? "terminal-error" : "recoverable-error");
       return true;
     },
@@ -67,7 +69,10 @@ export function useAuthoritativeAsyncState(slowAfterMs = 900) {
     clearTimeout(current.timer);
     current.controller.abort(reason);
     active.current = null;
-    if (mounted.current) setPhase("cancelled");
+    if (mounted.current) {
+      setBusy(false);
+      setPhase("cancelled");
+    }
   }, []);
 
   const reset = useCallback((reason = "reset") => {
@@ -77,19 +82,22 @@ export function useAuthoritativeAsyncState(slowAfterMs = 900) {
       current.controller.abort(reason);
       active.current = null;
     }
-    if (mounted.current) setPhase("idle");
+    if (mounted.current) {
+      setBusy(false);
+      setPhase("idle");
+    }
   }, []);
 
-  const release = useCallback(
-    (run: AuthoritativeAsyncRun, next: AuthoritativeAsyncPhase = "idle") => {
-      if (active.current?.id !== run.id) return false;
-      clearTimeout(active.current.timer);
-      active.current = null;
-      if (mounted.current) setPhase(next);
-      return true;
-    },
-    [],
-  );
+  const release = useCallback((run: AuthoritativeAsyncRun, next: AuthoritativeAsyncPhase = "idle") => {
+    if (active.current?.id !== run.id) return false;
+    clearTimeout(active.current.timer);
+    active.current = null;
+    if (mounted.current) {
+      setBusy(false);
+      setPhase(next);
+    }
+    return true;
+  }, []);
 
   useEffect(() => {
     mounted.current = true;
@@ -104,5 +112,5 @@ export function useAuthoritativeAsyncState(slowAfterMs = 900) {
     };
   }, []);
 
-  return { phase, busy: active.current !== null, begin, isCurrent, succeed, fail, cancel, reset, release };
+  return { phase, busy, begin, isCurrent, succeed, fail, cancel, reset, release };
 }

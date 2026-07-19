@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { motion } from "motion/react";
-import { useMotionMode } from "@/animation/motion/useMotionMode";
+import { useOptionalMotionPolicyContext } from "@/animation/motion/MotionPolicyContext";
 import { platformMotionEasing, resolvePlatformMotionToken } from "@/animation/platform/motion-tokens";
 
 type StateAction =
@@ -24,6 +24,10 @@ function StateActionControl({ action }: { action: StateAction }) {
   );
 }
 
+function useAsyncStateMotionMode() {
+  return useOptionalMotionPolicyContext()?.mode ?? "reduced";
+}
+
 export function LoadingState({
   title,
   detail,
@@ -33,7 +37,7 @@ export function LoadingState({
   detail?: string;
   compact?: boolean;
 }) {
-  const { mode } = useMotionMode();
+  const mode = useAsyncStateMotionMode();
   const stateMotion = resolvePlatformMotionToken("state", mode);
   const [slow, setSlow] = useState(false);
   useEffect(() => {
@@ -75,7 +79,7 @@ export function ErrorState({
   action?: StateAction;
   terminal?: boolean;
 }) {
-  const { mode } = useMotionMode();
+  const mode = useAsyncStateMotionMode();
   const stateMotion = resolvePlatformMotionToken("state", mode);
   const heading = useRef<HTMLHeadingElement>(null);
   useEffect(() => {
@@ -97,7 +101,9 @@ export function ErrorState({
       </span>
       <div>
         <p className="eyebrow">Unable to continue</p>
-        <h2 ref={heading} tabIndex={terminal ? -1 : undefined}>{title}</h2>
+        <h2 ref={heading} tabIndex={terminal ? -1 : undefined}>
+          {title}
+        </h2>
         <p>{detail}</p>
       </div>
       {action && <StateActionControl action={action} />}
@@ -116,7 +122,7 @@ export function EmptyState({
   action?: StateAction;
   symbol?: string;
 }) {
-  const { mode } = useMotionMode();
+  const mode = useAsyncStateMotionMode();
   const stateMotion = resolvePlatformMotionToken("state", mode);
   return (
     <motion.section
@@ -145,7 +151,7 @@ export function StatusBanner({
   children: React.ReactNode;
   tone?: "info" | "success" | "warning" | "danger";
 }) {
-  const { mode } = useMotionMode();
+  const mode = useAsyncStateMotionMode();
   const stateMotion = resolvePlatformMotionToken("state", mode);
   return (
     <motion.p

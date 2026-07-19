@@ -637,3 +637,11 @@ No V2 or V3 item is marked repaired merely because a patch exists. The 16/16 V2 
 ### 22.5 Current audit conclusion
 
 Claim the Deck has a concrete architecture and zero-loss requirement reconciliation in the working tree, but the phase is not yet complete. The present controlling truth is: **458 accepted requirements preserved, zero unmapped, architecture implementation active, V2/V3 repairs and re-audits pending, and all final runtime and repository gates pending**. Phase 3 and Phase 4 have not started through this Phase 2 task.
+
+## 23. Project Lanternwake Phase 4 current implementation reconciliation (2026-07-19)
+
+This section supersedes the historical Phase 2 statement above only for current Phase 4 status. `Bring the Harbor Alive` is implemented at `7521afa049b73ba39cd9d237773a6772d3656b5d` in its isolated worktree. It reuses the Phase 1–3 Director, SceneHost, ownership, receipt, replay, focus, motion-policy, and cleanup contracts; it does not reopen the Phase 2 architecture.
+
+Phase 4's exact denominator remains 119 matrix rows and 122 OA rows. All 241 rows have actual source owners, test IDs, full/gentle/reduced behavior, semantic checkpoints, an implementation commit, and `focused_pass` validation evidence in the canonical matrix, OA ledger, and generated manifest. Blocked and unmapped Phase 4 counts are zero. Final promotion from `implemented`/`focused_pass` to `validated`/`passed` waits for the one serialized integrated gate recorded in `Project_Lanternwake_Phase_4_Validation_Report.md`.
+
+The only shared architecture extension is the bounded `studio-publish` scene contract. OA-170 / MX-254 now projects offline Ship's Log metadata from server sequence and server synchronization time; no client clock invents the event. Static SVG/CSS relic fallbacks remain truthful and preserve the Phase 5 interface. Production Rive/Lottie replacement is not claimed or started.

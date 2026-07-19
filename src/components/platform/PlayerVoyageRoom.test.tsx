@@ -17,11 +17,15 @@ class FakeEventSource {
   onerror: (() => void) | null = null;
   listeners = new Map<string, Array<() => void>>();
   close = vi.fn();
-  constructor(public url: string) { FakeEventSource.current = this; }
+  constructor(public url: string) {
+    FakeEventSource.current = this;
+  }
   addEventListener(name: string, listener: () => void) {
     this.listeners.set(name, [...(this.listeners.get(name) ?? []), listener]);
   }
-  emit(name: string) { for (const listener of this.listeners.get(name) ?? []) listener(); }
+  emit(name: string) {
+    for (const listener of this.listeners.get(name) ?? []) listener();
+  }
 }
 
 function TestAuthority({ children }: { children: React.ReactNode }) {
@@ -58,12 +62,18 @@ function body(nextVoyage = voyage) {
 
 function deferred<T>() {
   let resolve!: (value: T) => void;
-  const promise = new Promise<T>((resolvePromise) => { resolve = resolvePromise; });
+  const promise = new Promise<T>((resolvePromise) => {
+    resolve = resolvePromise;
+  });
   return { promise, resolve };
 }
 
 function renderRoom(onRouteHandoff?: (destination: string) => void | Promise<void>) {
-  return render(<TestAuthority><PlayerVoyageRoom playthroughId="voyage-1" onRouteHandoff={onRouteHandoff} /></TestAuthority>);
+  return render(
+    <TestAuthority>
+      <PlayerVoyageRoom playthroughId="voyage-1" onRouteHandoff={onRouteHandoff} />
+    </TestAuthority>,
+  );
 }
 
 describe("PlayerVoyageRoom", () => {
@@ -84,8 +94,25 @@ describe("PlayerVoyageRoom", () => {
     await screen.findByRole("heading", { name: "The Moonlit Key" });
     expect(screen.getByRole("timer")).toHaveTextContent(/d|h|m/);
     expect(document.querySelector('[data-scene-host-boundary="platform-ceremony"]')).toBeInTheDocument();
-    expect(document.querySelector('[data-rive-interface="journal-clasp"]')).toHaveAttribute("data-rive-fallback", "css-svg");
+    expect(document.querySelector('[data-rive-interface="journal-clasp"]')).toHaveAttribute(
+      "data-rive-fallback",
+      "css-svg",
+    );
     expect(document.querySelectorAll('[data-runtime-boundary="gsap"]')).toHaveLength(2);
+  });
+
+  it("gives transiently overlapping waiting rooms independent launch hosts", async () => {
+    vi.stubGlobal("EventSource", FakeEventSource);
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue(response(200, body())));
+    render(
+      <TestAuthority>
+        <PlayerVoyageRoom playthroughId="voyage-1" />
+        <PlayerVoyageRoom playthroughId="voyage-1" />
+      </TestAuthority>,
+    );
+
+    await waitFor(() => expect(screen.getAllByRole("heading", { name: "The Moonlit Key" })).toHaveLength(2));
+    expect(document.querySelectorAll('[data-scene-host-boundary="platform-ceremony"]')).toHaveLength(2);
   });
 
   it("distinguishes live, polling, and offline connection states without changing voyage truth", async () => {
@@ -107,7 +134,14 @@ describe("PlayerVoyageRoom", () => {
   it("reconciles a newly arrived crew member once while preserving unchanged token identity", async () => {
     const joined = { ...voyage, crew: [...voyage.crew, { displayName: "Mira", crewRole: "Lookout", status: "READY" }] };
     vi.stubGlobal("EventSource", FakeEventSource);
-    vi.stubGlobal("fetch", vi.fn().mockResolvedValueOnce(response(200, body())).mockResolvedValueOnce(response(200, body(joined))).mockResolvedValueOnce(response(200, body(joined))));
+    vi.stubGlobal(
+      "fetch",
+      vi
+        .fn()
+        .mockResolvedValueOnce(response(200, body()))
+        .mockResolvedValueOnce(response(200, body(joined)))
+        .mockResolvedValueOnce(response(200, body(joined))),
+    );
     renderRoom();
     await screen.findByText("Kato");
 
@@ -127,10 +161,40 @@ describe("PlayerVoyageRoom", () => {
     renderRoom(handoff);
     expect(handoff).not.toHaveBeenCalled();
 
-    pending.resolve(response(200, body({ ...voyage, status: "ACTIVE", state: "IN_PROGRESS", canEnter: true, runtimeHref: "/play/voyage-1" })));
+    pending.resolve(
+      response(
+        200,
+        body({ ...voyage, status: "ACTIVE", state: "IN_PROGRESS", canEnter: true, runtimeHref: "/play/voyage-1" }),
+      ),
+    );
 
     await waitFor(() => expect(handoff).toHaveBeenCalledWith("/play/voyage-1"));
     expect(screen.getByRole("main")).toHaveAttribute("data-launch-state", "launch-ready");
+  });
+
+  it("does not lose an authoritative progression event while an older load is pending", async () => {
+    const stale = deferred<Response>();
+    const handoff = vi.fn();
+    const active = {
+      ...voyage,
+      status: "ACTIVE",
+      state: "IN_PROGRESS",
+      canEnter: true,
+      runtimeHref: "/player/playthroughs/voyage-1/journal",
+    };
+    const fetchMock = vi
+      .fn()
+      .mockReturnValueOnce(stale.promise)
+      .mockResolvedValueOnce(response(200, body(active)));
+    vi.stubGlobal("EventSource", FakeEventSource);
+    vi.stubGlobal("fetch", fetchMock);
+    renderRoom(handoff);
+    await waitFor(() => expect(FakeEventSource.current).not.toBeNull());
+
+    FakeEventSource.current?.emit("progression");
+
+    await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(2));
+    await waitFor(() => expect(handoff).toHaveBeenCalledWith("/player/playthroughs/voyage-1/journal"));
   });
 
   it("makes revocation terminal and removes reconnect controls", async () => {

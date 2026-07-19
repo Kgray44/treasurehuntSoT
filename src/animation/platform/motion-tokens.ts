@@ -68,10 +68,7 @@ export const platformMotionTokens = {
   },
 } as const satisfies Record<PlatformMotionTier, PlatformMotionToken>;
 
-export function resolvePlatformMotionToken(
-  tier: PlatformMotionTier,
-  mode: MotionMode,
-): ResolvedPlatformMotionToken {
+export function resolvePlatformMotionToken(tier: PlatformMotionTier, mode: MotionMode): ResolvedPlatformMotionToken {
   const token = platformMotionTokens[tier];
   const durationMs = token.durationMs[mode];
   return {

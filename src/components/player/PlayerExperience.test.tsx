@@ -177,10 +177,7 @@ function TestJournalWorkspace({
       tabIndex={-1}
     >
       <h2>The Voyage Journal</h2>
-      <TestReadyJournalContents
-        onSceneHostChange={onSceneHostChange}
-        onSceneTargetsChange={onSceneTargetsChange}
-      />
+      <TestReadyJournalContents onSceneHostChange={onSceneHostChange} onSceneTargetsChange={onSceneTargetsChange} />
     </SceneHost>
   );
 }
@@ -296,7 +293,12 @@ vi.mock("motion/react", () => ({
       );
     },
     aside: (
-      input: React.HTMLAttributes<HTMLElement> & { initial?: unknown; animate?: unknown; exit?: unknown; layout?: unknown },
+      input: React.HTMLAttributes<HTMLElement> & {
+        initial?: unknown;
+        animate?: unknown;
+        exit?: unknown;
+        layout?: unknown;
+      },
     ) => {
       const { children, initial: _initial, animate: _animate, exit: _exit, layout: _layout, ...props } = input;
       return <aside {...props}>{children}</aside>;
@@ -953,6 +955,16 @@ describe("PlayerExperience presentation integrity", () => {
         policyForProgressionEvent(eventType).globalPresentation.heading,
       );
       expect(within(settledNotice).getByRole("button", { name: "Replay ceremony" })).toBeEnabled();
+      if (eventType === "CHAPTER_RELEASED" && section === "journal") {
+        fireEvent.click(within(settledNotice).getByRole("button", { name: "Replay ceremony" }));
+        await waitFor(() =>
+          expect(
+            mocks.play.mock.calls.some(
+              ([, options]) => options.eventOrActionId === event.id && options.requestSource === "replay",
+            ),
+          ).toBe(true),
+        );
+      }
       expect(location.href).toBe(startingUrl);
       expect(screen.getByTestId("progression-scene-host")).toBe(persistentHost);
       expect(document.querySelectorAll('[data-testid="progression-scene-host"]')).toHaveLength(1);
@@ -1370,4 +1382,5 @@ describe("PlayerExperience presentation integrity", () => {
       ),
     );
   });
+
 });

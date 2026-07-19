@@ -57,7 +57,13 @@ function PlayerCeremonyBoundary({
       <PlatformRelic
         kind="player-journal"
         state={
-          state === "accepted" ? "arrived" : state === "rejected" ? "failure" : state === "pending" ? "resolving" : "idle"
+          state === "accepted"
+            ? "arrived"
+            : state === "rejected"
+              ? "failure"
+              : state === "pending"
+                ? "resolving"
+                : "idle"
         }
         mode={mode}
         layoutId="role-object-player"
@@ -145,12 +151,7 @@ export function PlayerSignIn({
     requestAnimationFrame(() => (focus === "username" ? usernameInput.current : codeInput.current)?.focus());
   }
 
-  async function acceptAndNavigate(
-    run: AuthoritativeAsyncRun,
-    destination: string,
-    message: string,
-    refresh: boolean,
-  ) {
+  async function acceptAndNavigate(run: AuthoritativeAsyncRun, destination: string, message: string, refresh: boolean) {
     if (!asyncState.succeed(run)) return;
     setStatus(message);
     try {
@@ -334,7 +335,9 @@ export function PlayerSignIn({
                     required
                   />
                 </label>
-                <p>Invitation links open the same ceremony automatically. Codes are checked securely and rate-limited.</p>
+                <p>
+                  Invitation links open the same ceremony automatically. Codes are checked securely and rate-limited.
+                </p>
                 <button disabled={busy || cooldown > 0} aria-busy={busy}>
                   {cooldown > 0
                     ? `Try again in ${cooldown}s`

@@ -207,71 +207,71 @@ export function StudioHome({ authenticated }: { authenticated: boolean }) {
       ) : (
         <LayoutGroup id="studio-library">
           <motion.section className="tale-card-grid" aria-label="Tall Tales" layout={mode !== "reduced"}>
-          <AnimatePresence initial={false} mode="popLayout">
-          {visible.map((tale) => (
-            <motion.article
-              className={`tale-studio-card status-${tale.status.toLowerCase()}`}
-              key={tale.id}
-              layout={mode !== "reduced"}
-              layoutId={`studio-tale-${tale.id}`}
-              data-motion-state={busy === tale.id ? "pending" : "settled"}
-              initial={mode === "reduced" ? false : { opacity: 0, y: layoutMotion.distancePx }}
-              animate={{ opacity: busy === tale.id ? 0.62 : 1, y: 0 }}
-              exit={mode === "reduced" ? { opacity: 0 } : { opacity: 0, scale: 1 - layoutMotion.scaleDelta }}
-              transition={{ duration: layoutMotion.durationSeconds, ease: platformMotionEasing("layout") }}
-            >
-              <div className="tale-card-stamp">{tale.status.replaceAll("_", " ")}</div>
-              <p className="card-kicker">
-                {tale.visibility.toLocaleLowerCase()} ·{" "}
-                {tale.latestVersion ? `version ${tale.latestVersion}` : "not published"}
-              </p>
-              <h2>{tale.title}</h2>
-              <p>{tale.subtitle ?? tale.shortDescription ?? "No summary has been inked yet."}</p>
-              <dl>
-                <div>
-                  <dt>Last saved</dt>
-                  <dd>{new Date(tale.savedAt).toLocaleString()}</dd>
-                </div>
-                <div>
-                  <dt>Validation</dt>
-                  <dd>{tale.validationState.toLocaleLowerCase()}</dd>
-                </div>
-                <div>
-                  <dt>Library</dt>
-                  <dd>{tale.assetCount} assets</dd>
-                </div>
-                <div>
-                  <dt>Sessions</dt>
-                  <dd>{tale.sessionCount}</dd>
-                </div>
-              </dl>
-              <div className="tale-card-actions">
-                <Link className="primary" href={`/studio/tales/${tale.id}`}>
-                  Open editor
-                </Link>
-                {tale.latestVersion && (
-                  <Link href={`/play/${tale.slug}`} target="_blank">
-                    Player preview
-                  </Link>
-                )}
-                <button
-                  disabled={busy === tale.id}
-                  aria-busy={busy === tale.id}
-                  onClick={() => void act(tale, "duplicate")}
+            <AnimatePresence initial={false} mode="popLayout">
+              {visible.map((tale) => (
+                <motion.article
+                  className={`tale-studio-card status-${tale.status.toLowerCase()}`}
+                  key={tale.id}
+                  layout={mode !== "reduced"}
+                  layoutId={`studio-tale-${tale.id}`}
+                  data-motion-state={busy === tale.id ? "pending" : "settled"}
+                  initial={mode === "reduced" ? false : { opacity: 0, y: layoutMotion.distancePx }}
+                  animate={{ opacity: busy === tale.id ? 0.62 : 1, y: 0 }}
+                  exit={mode === "reduced" ? { opacity: 0 } : { opacity: 0, scale: 1 - layoutMotion.scaleDelta }}
+                  transition={{ duration: layoutMotion.durationSeconds, ease: platformMotionEasing("layout") }}
                 >
-                  {busy === tale.id ? "Working…" : "Duplicate"}
-                </button>
-                <button
-                  className={tale.status === "ARCHIVED" ? "button-secondary" : "button-subtle"}
-                  disabled={busy === tale.id}
-                  onClick={() => void act(tale, tale.status === "ARCHIVED" ? "restore" : "archive")}
-                >
-                  {tale.status === "ARCHIVED" ? "Restore" : "Archive"}
-                </button>
-              </div>
-            </motion.article>
-          ))}
-          </AnimatePresence>
+                  <div className="tale-card-stamp">{tale.status.replaceAll("_", " ")}</div>
+                  <p className="card-kicker">
+                    {tale.visibility.toLocaleLowerCase()} ·{" "}
+                    {tale.latestVersion ? `version ${tale.latestVersion}` : "not published"}
+                  </p>
+                  <h2>{tale.title}</h2>
+                  <p>{tale.subtitle ?? tale.shortDescription ?? "No summary has been inked yet."}</p>
+                  <dl>
+                    <div>
+                      <dt>Last saved</dt>
+                      <dd>{new Date(tale.savedAt).toLocaleString()}</dd>
+                    </div>
+                    <div>
+                      <dt>Validation</dt>
+                      <dd>{tale.validationState.toLocaleLowerCase()}</dd>
+                    </div>
+                    <div>
+                      <dt>Library</dt>
+                      <dd>{tale.assetCount} assets</dd>
+                    </div>
+                    <div>
+                      <dt>Sessions</dt>
+                      <dd>{tale.sessionCount}</dd>
+                    </div>
+                  </dl>
+                  <div className="tale-card-actions">
+                    <Link className="primary" href={`/studio/tales/${tale.id}`}>
+                      Open editor
+                    </Link>
+                    {tale.latestVersion && (
+                      <Link href={`/play/${tale.slug}`} target="_blank">
+                        Player preview
+                      </Link>
+                    )}
+                    <button
+                      disabled={busy === tale.id}
+                      aria-busy={busy === tale.id}
+                      onClick={() => void act(tale, "duplicate")}
+                    >
+                      {busy === tale.id ? "Working…" : "Duplicate"}
+                    </button>
+                    <button
+                      className={tale.status === "ARCHIVED" ? "button-secondary" : "button-subtle"}
+                      disabled={busy === tale.id}
+                      onClick={() => void act(tale, tale.status === "ARCHIVED" ? "restore" : "archive")}
+                    >
+                      {tale.status === "ARCHIVED" ? "Restore" : "Archive"}
+                    </button>
+                  </div>
+                </motion.article>
+              ))}
+            </AnimatePresence>
           </motion.section>
         </LayoutGroup>
       )}

@@ -31,7 +31,14 @@ function card(id: string, title: string, state: string, overrides: Partial<Playe
   };
 }
 
-function library(overrides: Partial<Record<"invitations" | "awaitingCaptain" | "inProgress" | "completed" | "replayOrNewEdition" | "expiredOrRevoked", PlayerLibraryCard[]>> = {}) {
+function library(
+  overrides: Partial<
+    Record<
+      "invitations" | "awaitingCaptain" | "inProgress" | "completed" | "replayOrNewEdition" | "expiredOrRevoked",
+      PlayerLibraryCard[]
+    >
+  > = {},
+) {
   const groups = {
     invitations: [],
     awaitingCaptain: [],
@@ -78,7 +85,17 @@ describe("PlayerLibrary motion and authority", () => {
   });
 
   it("keeps card identity stable across gallery/list layout and announces immediate search results", async () => {
-    vi.stubGlobal("fetch", vi.fn().mockResolvedValue(response(200, library({ inProgress: [card("one", "Moon Key", "IN_PROGRESS"), card("two", "Sun Key", "IN_PROGRESS")] }))));
+    vi.stubGlobal(
+      "fetch",
+      vi
+        .fn()
+        .mockResolvedValue(
+          response(
+            200,
+            library({ inProgress: [card("one", "Moon Key", "IN_PROGRESS"), card("two", "Sun Key", "IN_PROGRESS")] }),
+          ),
+        ),
+    );
     render(<PlayerLibrary />);
     const moonHeading = await screen.findByRole("heading", { name: "Moon Key" });
     const originalCard = moonHeading.closest("article");
@@ -95,26 +112,48 @@ describe("PlayerLibrary motion and authority", () => {
     const first = card("one", "First Voyage", "IN_PROGRESS", { lastSynchronizedAt: "2026-07-19T13:00:00.000Z" });
     const second = card("two", "Second Voyage", "IN_PROGRESS", { lastSynchronizedAt: "2026-07-19T12:00:00.000Z" });
     let resolvePin!: (value: Response) => void;
-    const pinResponse = new Promise<Response>((resolve) => { resolvePin = resolve; });
-    vi.stubGlobal("fetch", vi.fn().mockResolvedValueOnce(response(200, library({ inProgress: [first, second] }))).mockReturnValueOnce(pinResponse));
+    const pinResponse = new Promise<Response>((resolve) => {
+      resolvePin = resolve;
+    });
+    vi.stubGlobal(
+      "fetch",
+      vi
+        .fn()
+        .mockResolvedValueOnce(response(200, library({ inProgress: [first, second] })))
+        .mockReturnValueOnce(pinResponse),
+    );
     render(<PlayerLibrary />);
     await screen.findByRole("heading", { name: "First Voyage" });
     const group = screen.getByRole("heading", { name: "In Progress" }).closest("section")!;
     const secondCard = screen.getByRole("heading", { name: "Second Voyage" }).closest("article")!;
 
     fireEvent.click(within(secondCard).getByRole("button", { name: "Pin to top" }));
-    expect(within(group).getAllByRole("heading", { level: 3 }).map((heading) => heading.textContent)).toEqual(["First Voyage", "Second Voyage"]);
+    expect(
+      within(group)
+        .getAllByRole("heading", { level: 3 })
+        .map((heading) => heading.textContent),
+    ).toEqual(["First Voyage", "Second Voyage"]);
     resolvePin(response(200, { ok: true }));
 
-    await waitFor(() => expect(within(group).getAllByRole("heading", { level: 3 }).map((heading) => heading.textContent)).toEqual(["Second Voyage", "First Voyage"]));
+    await waitFor(() =>
+      expect(
+        within(group)
+          .getAllByRole("heading", { level: 3 })
+          .map((heading) => heading.textContent),
+      ).toEqual(["Second Voyage", "First Voyage"]),
+    );
   });
 
   it("removes hidden history only after authority and provides a separate undo mutation", async () => {
     const completed = card("done", "Finished Voyage", "COMPLETED", { completionDate: "2026-07-18T12:00:00.000Z" });
-    vi.stubGlobal("confirm", vi.fn(() => true));
+    vi.stubGlobal(
+      "confirm",
+      vi.fn(() => true),
+    );
     vi.stubGlobal(
       "fetch",
-      vi.fn()
+      vi
+        .fn()
         .mockResolvedValueOnce(response(200, library({ completed: [completed] })))
         .mockResolvedValueOnce(response(200, { ok: true }))
         .mockResolvedValueOnce(response(200, { ok: true })),

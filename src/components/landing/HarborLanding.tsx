@@ -406,12 +406,7 @@ function HarborGatewayContent({ motionMode }: { motionMode: ReturnType<typeof us
         data-runtime-boundary="gsap"
         aria-hidden="true"
       >
-        <div
-          ref={bindShip}
-          className="harbor-ship-arrival-target"
-          data-scene-part="ship"
-          data-runtime-boundary="gsap"
-        >
+        <div ref={bindShip} className="harbor-ship-arrival-target" data-scene-part="ship" data-runtime-boundary="gsap">
           <div className="distant-ship" data-parallax-layer="ship">
             <i />
             <i />

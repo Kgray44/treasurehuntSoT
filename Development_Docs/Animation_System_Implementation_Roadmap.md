@@ -675,3 +675,22 @@ The five future-contract scenes remain later visuals. Their safe runtime boundar
 - Production Rive visuals, future-contract visuals, Phase 3 progression/event integration, Phase 4 platform motion, broad device-performance tuning, and final art polish remain later work rather than Phase 2 blockers.
 
 Phase 2 implementation and composite validation are accepted. Phase 3 and Phase 4 stay blocked from automatic start until the coordinator completes synchronization, push, and remote verification, then provides the explicit handoff.
+
+## Project Lanternwake Phase 4 implementation status (2026-07-19)
+
+The historical handoff text above is preserved as Phase 2 evidence. The current Phase 4 branch is `codex/project-lanternwake-phase-4-bring-the-harbor-alive`; its code-and-tests checkpoint is `7521afa049b73ba39cd9d237773a6772d3656b5d`.
+
+| Phase 4 workstream                                                           | Current status            | Evidence owner                                                         |
+| ---------------------------------------------------------------------------- | ------------------------- | ---------------------------------------------------------------------- |
+| Shared tokens, route/focus, async lifecycle, polling deltas, one-shot policy | Implemented; focused pass | `src/animation/platform/*`; ProductShell and AsyncState tests          |
+| Landing and role gateway                                                     | Implemented; focused pass | HarborLanding tests and Phase 4 browser spec                           |
+| Player/Captain/Creator authentication                                        | Implemented; focused pass | PlayerSignIn, StaffSignIn, AsyncState tests                            |
+| Invitation ceremony                                                          | Implemented; focused pass | Invitation component plus access scene tests                           |
+| Player and Captain Libraries, wizard, waiting room                           | Implemented; focused pass | Library/VoyageRoom/polling tests                                       |
+| Shell, notifications, unseen acknowledgment, offline recovery                | Implemented; focused pass | ProductShell, navigation, PlayerExperience, Ship's Log, snapshot tests |
+| Quartermaster                                                                | Implemented; focused pass | Quartermaster and authoritative snapshot validator tests               |
+| Studio                                                                       | Implemented; focused pass | TaleEditor, scene registry/builders, Studio browser tests              |
+| Canonical 119 MX + 122 OA tracking                                           | Implemented; focused pass | Phase 4 manifest generator and canonical ledgers                       |
+| Serialized integrated gate and evidence commit                               | Pending                   | Single Phase 4 validation owner                                        |
+
+Phase 4 introduces no speculative Phase 5 or Phase 6 implementation. Phase 5 owns production Rive/Lottie relic internals; Phase 6 owns performance/visual polish after the Phase 4 integrated gate.

@@ -119,68 +119,77 @@ export function PlayerLibrary() {
     }, 900);
   }, []);
 
-  const applyAuthoritativeLibrary = useCallback((next: Library) => {
-    const previous = libraryRef.current;
-    const nextRows = flattenGroups(next.groups);
-    if (!previous) {
-      markChanged(nextRows.map((row) => row.card.id), nextRows.map((row) => row.card.id));
-      setNewInvitationIds(
-        new Set(
-          next.groups.invitations
-            .filter((card) => consumeOneShot(platformOneShotKey("new-invitation", card.id, card.versionLabel)))
-            .map((card) => card.id),
-        ),
-      );
-      libraryRef.current = next;
-      setLibrary(next);
-      return;
-    }
-    const diff = reconcileVersionedRows({
-      previous: flattenGroups(previous.groups),
-      next: nextRows,
-      previousVersion: requestSequence.current - 1,
-      nextVersion: requestSequence.current,
-      getId: (row) => row.card.id,
-      getVersion: semanticCardVersion,
-      getGroup: (row) => row.group,
-    });
-    if (diff.changed) {
-      markChanged([...diff.addedIds, ...diff.changedIds], diff.addedIds);
-      const badges = next.groups.invitations
-        .filter((card) => diff.addedIds.includes(card.id))
-        .filter((card) => consumeOneShot(platformOneShotKey("new-invitation", card.id, card.versionLabel)))
-        .map((card) => card.id);
-      if (badges.length) setNewInvitationIds((current) => new Set([...current, ...badges]));
-    }
-    const committed = { ...next, groups: diff.changed ? rebuildGroups(diff.rows) : previous.groups };
-    libraryRef.current = committed;
-    setLibrary(committed);
-  }, [markChanged]);
-
-  const load = useCallback(async ({ quiet = false }: { quiet?: boolean } = {}) => {
-    if (activeLoad.current) return;
-    const controller = new AbortController();
-    activeLoad.current = controller;
-    if (!quiet) setError("");
-    try {
-      const response = await fetch("/api/player/library", { cache: "no-store", signal: controller.signal });
-      const body = (await response.json()) as Library & { error?: string };
-      if (!response.ok) {
-        setConfirmed(false);
-        setError(body.error ?? "Your Tall Tale Library is unavailable.");
+  const applyAuthoritativeLibrary = useCallback(
+    (next: Library) => {
+      const previous = libraryRef.current;
+      const nextRows = flattenGroups(next.groups);
+      if (!previous) {
+        markChanged(
+          nextRows.map((row) => row.card.id),
+          nextRows.map((row) => row.card.id),
+        );
+        setNewInvitationIds(
+          new Set(
+            next.groups.invitations
+              .filter((card) => consumeOneShot(platformOneShotKey("new-invitation", card.id, card.versionLabel)))
+              .map((card) => card.id),
+          ),
+        );
+        libraryRef.current = next;
+        setLibrary(next);
         return;
       }
-      requestSequence.current += 1;
-      applyAuthoritativeLibrary(body);
-      setConfirmed(true);
-    } catch (cause) {
-      if (cause instanceof DOMException && cause.name === "AbortError") return;
-      setConfirmed(false);
-      setError("Your Tall Tale Library could not be reached. Check your connection and try again.");
-    } finally {
-      if (activeLoad.current === controller) activeLoad.current = null;
-    }
-  }, [applyAuthoritativeLibrary]);
+      const diff = reconcileVersionedRows({
+        previous: flattenGroups(previous.groups),
+        next: nextRows,
+        previousVersion: requestSequence.current - 1,
+        nextVersion: requestSequence.current,
+        getId: (row) => row.card.id,
+        getVersion: semanticCardVersion,
+        getGroup: (row) => row.group,
+      });
+      if (diff.changed) {
+        markChanged([...diff.addedIds, ...diff.changedIds], diff.addedIds);
+        const badges = next.groups.invitations
+          .filter((card) => diff.addedIds.includes(card.id))
+          .filter((card) => consumeOneShot(platformOneShotKey("new-invitation", card.id, card.versionLabel)))
+          .map((card) => card.id);
+        if (badges.length) setNewInvitationIds((current) => new Set([...current, ...badges]));
+      }
+      const committed = { ...next, groups: diff.changed ? rebuildGroups(diff.rows) : previous.groups };
+      libraryRef.current = committed;
+      setLibrary(committed);
+    },
+    [markChanged],
+  );
+
+  const load = useCallback(
+    async ({ quiet = false }: { quiet?: boolean } = {}) => {
+      if (activeLoad.current) return;
+      const controller = new AbortController();
+      activeLoad.current = controller;
+      if (!quiet) setError("");
+      try {
+        const response = await fetch("/api/player/library", { cache: "no-store", signal: controller.signal });
+        const body = (await response.json()) as Library & { error?: string };
+        if (!response.ok) {
+          setConfirmed(false);
+          setError(body.error ?? "Your Tall Tale Library is unavailable.");
+          return;
+        }
+        requestSequence.current += 1;
+        applyAuthoritativeLibrary(body);
+        setConfirmed(true);
+      } catch (cause) {
+        if (cause instanceof DOMException && cause.name === "AbortError") return;
+        setConfirmed(false);
+        setError("Your Tall Tale Library could not be reached. Check your connection and try again.");
+      } finally {
+        if (activeLoad.current === controller) activeLoad.current = null;
+      }
+    },
+    [applyAuthoritativeLibrary],
+  );
 
   useEffect(() => {
     queueMicrotask(() => void load());
@@ -220,13 +229,19 @@ export function PlayerLibrary() {
       const hidden = rows.find((row) => row.card.id === card.id) ?? null;
       const nextRows = rows
         .filter((row) => action !== "hide" || row.card.id !== card.id)
-        .map((row) => row.card.id === card.id ? { ...row, card: { ...row.card, pinned: action === "pin" } } : row);
-      const committed = { ...current, total: action === "hide" ? current.total - 1 : current.total, groups: rebuildGroups(nextRows) };
+        .map((row) => (row.card.id === card.id ? { ...row, card: { ...row.card, pinned: action === "pin" } } : row));
+      const committed = {
+        ...current,
+        total: action === "hide" ? current.total - 1 : current.total,
+        groups: rebuildGroups(nextRows),
+      };
       libraryRef.current = committed;
       setLibrary(committed);
       markChanged([card.id]);
       if (action === "hide") setHiddenUndo(hidden);
-      setNotice(action === "hide" ? "The Tall Tale was hidden. Undo remains available." : "Your library preference was saved.");
+      setNotice(
+        action === "hide" ? "The Tall Tale was hidden. Undo remains available." : "Your library preference was saved.",
+      );
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : "The library preference could not be saved.");
     } finally {
@@ -241,7 +256,11 @@ export function PlayerLibrary() {
       await writePreference(hiddenUndo.card, "show");
       const current = libraryRef.current;
       if (!current) return;
-      const committed = { ...current, total: current.total + 1, groups: rebuildGroups([...flattenGroups(current.groups), hiddenUndo]) };
+      const committed = {
+        ...current,
+        total: current.total + 1,
+        groups: rebuildGroups([...flattenGroups(current.groups), hiddenUndo]),
+      };
       libraryRef.current = committed;
       setLibrary(committed);
       setNotice("The Tall Tale was restored to your library.");
@@ -297,8 +316,25 @@ export function PlayerLibrary() {
 
   const resultCount = groups.reduce((total, group) => total + group.cards.length, 0);
 
-  if (error && !library) return <main className="player-library platform-loading"><ErrorState title="Your library could not be opened" detail={error} action={{ label: "Try Again", onClick: () => void load() }} /></main>;
-  if (!library) return <main className="player-library platform-loading"><LoadingState title="Opening your Tall Tale Library" detail="Loading invitations, active stories, and history." /></main>;
+  if (error && !library)
+    return (
+      <main className="player-library platform-loading">
+        <ErrorState
+          title="Your library could not be opened"
+          detail={error}
+          action={{ label: "Try Again", onClick: () => void load() }}
+        />
+      </main>
+    );
+  if (!library)
+    return (
+      <main className="player-library platform-loading">
+        <LoadingState
+          title="Opening your Tall Tale Library"
+          detail="Loading invitations, active stories, and history."
+        />
+      </main>
+    );
 
   return (
     <motion.main
@@ -309,39 +345,138 @@ export function PlayerLibrary() {
       transition={{ duration: token.durationSeconds, ease: platformMotionEasing("layout") }}
     >
       <header className="platform-header">
-        <div><p className="eyebrow">{library.player.displayName}&apos;s collection</p><h1>My Tall Tale Library</h1><p>Invitations, active adventures, and the exact historical editions you experienced.</p></div>
-        <div className="library-truth" data-confirmed={confirmed}><i /><span>{confirmed ? "Server confirmed" : "Reconnecting"}</span><time dateTime={library.serverTime}>{new Date(library.serverTime).toLocaleTimeString()}</time></div>
+        <div>
+          <p className="eyebrow">{library.player.displayName}&apos;s collection</p>
+          <h1>My Tall Tale Library</h1>
+          <p>Invitations, active adventures, and the exact historical editions you experienced.</p>
+        </div>
+        <div className="library-truth" data-confirmed={confirmed}>
+          <i />
+          <span>{confirmed ? "Server confirmed" : "Reconnecting"}</span>
+          <time dateTime={library.serverTime}>{new Date(library.serverTime).toLocaleTimeString()}</time>
+        </div>
       </header>
       {error && <StatusBanner tone="danger">{error}</StatusBanner>}
-      {notice && <StatusBanner tone="success">{notice} {hiddenUndo && <button onClick={() => void undoHide()} disabled={busyCard === hiddenUndo.card.id}>Undo hide</button>}</StatusBanner>}
+      {notice && (
+        <StatusBanner tone="success">
+          {notice}{" "}
+          {hiddenUndo && (
+            <button onClick={() => void undoHide()} disabled={busyCard === hiddenUndo.card.id}>
+              Undo hide
+            </button>
+          )}
+        </StatusBanner>
+      )}
       {library.total > 0 && (
         <section className="library-tools" aria-label="Search and filter Tall Tales">
-          <label><span>Search</span><input type="search" value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Title, Captain, voyage, or year" /></label>
-          <label><span>State</span><select value={filter} onChange={(event) => setFilter(event.target.value)}><option value="ALL">All states</option>{groupLabels.map(([key, label]) => <option key={key} value={key}>{label}</option>)}</select></label>
-          <label><span>Sort</span><select value={sort} onChange={(event) => setSort(event.target.value)}><option value="RECENT">Recently active</option><option value="TITLE">Title</option><option value="COMPLETED">Completion date</option></select></label>
+          <label>
+            <span>Search</span>
+            <input
+              type="search"
+              value={query}
+              onChange={(event) => setQuery(event.target.value)}
+              placeholder="Title, Captain, voyage, or year"
+            />
+          </label>
+          <label>
+            <span>State</span>
+            <select value={filter} onChange={(event) => setFilter(event.target.value)}>
+              <option value="ALL">All states</option>
+              {groupLabels.map(([key, label]) => (
+                <option key={key} value={key}>
+                  {label}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label>
+            <span>Sort</span>
+            <select value={sort} onChange={(event) => setSort(event.target.value)}>
+              <option value="RECENT">Recently active</option>
+              <option value="TITLE">Title</option>
+              <option value="COMPLETED">Completion date</option>
+            </select>
+          </label>
           <div className="view-toggle" role="group" aria-label="Library view">
-            <button className={view === "gallery" ? "active" : ""} aria-pressed={view === "gallery"} onClick={() => setView("gallery")}>Gallery</button>
-            <button className={view === "list" ? "active" : ""} aria-pressed={view === "list"} onClick={() => setView("list")}>List</button>
+            <button
+              className={view === "gallery" ? "active" : ""}
+              aria-pressed={view === "gallery"}
+              onClick={() => setView("gallery")}
+            >
+              Gallery
+            </button>
+            <button
+              className={view === "list" ? "active" : ""}
+              aria-pressed={view === "list"}
+              onClick={() => setView("list")}
+            >
+              List
+            </button>
           </div>
-          <p className="sr-only" role="status" aria-live="polite">{resultCount} Tall Tale {resultCount === 1 ? "result" : "results"}</p>
+          <p className="sr-only" role="status" aria-live="polite">
+            {resultCount} Tall Tale {resultCount === 1 ? "result" : "results"}
+          </p>
         </section>
       )}
       {!library.total ? (
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}><EmptyState title="Your library is ready for its first Tall Tale" detail="Accept a Captain's invitation, enter a short code, or explore public Tall Tales to begin." action={{ label: "Join with an Invitation", href: "/player/sign-in#invitation-code" }} /></motion.div>
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+          <EmptyState
+            title="Your library is ready for its first Tall Tale"
+            detail="Accept a Captain's invitation, enter a short code, or explore public Tall Tales to begin."
+            action={{ label: "Join with an Invitation", href: "/player/sign-in#invitation-code" }}
+          />
+        </motion.div>
       ) : !groups.length ? (
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}><EmptyState title="No Tall Tales match these filters" detail="Broaden your search or return to all story states." action={{ label: "Clear Filters", onClick: () => { setQuery(""); setFilter("ALL"); } }} symbol="⌕" /></motion.div>
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+          <EmptyState
+            title="No Tall Tales match these filters"
+            detail="Broaden your search or return to all story states."
+            action={{
+              label: "Clear Filters",
+              onClick: () => {
+                setQuery("");
+                setFilter("ALL");
+              },
+            }}
+            symbol="⌕"
+          />
+        </motion.div>
       ) : (
         <LayoutGroup id="player-library">
           {groups.map((group) => {
             const isCollapsed = collapsed.has(group.key);
             return (
-              <motion.section layout="position" className="library-group" key={group.key} aria-labelledby={`group-${group.key}`}>
+              <motion.section
+                layout="position"
+                className="library-group"
+                key={group.key}
+                aria-labelledby={`group-${group.key}`}
+              >
                 <header>
-                  <div><p className="eyebrow">{group.cards.length} {group.cards.length === 1 ? "record" : "records"}</p><h2 id={`group-${group.key}`}><button aria-expanded={!isCollapsed} onClick={(event) => toggleGroup(group.key, event.currentTarget)}>{group.label}</button></h2><p>{group.description}</p></div>
+                  <div>
+                    <p className="eyebrow">
+                      {group.cards.length} {group.cards.length === 1 ? "record" : "records"}
+                    </p>
+                    <h2 id={`group-${group.key}`}>
+                      <button
+                        aria-expanded={!isCollapsed}
+                        onClick={(event) => toggleGroup(group.key, event.currentTarget)}
+                      >
+                        {group.label}
+                      </button>
+                    </h2>
+                    <p>{group.description}</p>
+                  </div>
                 </header>
                 <AnimatePresence initial={false}>
                   {!isCollapsed && (
-                    <motion.div key={`${group.key}-cards`} className={`player-card-grid ${view}`} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                    <motion.div
+                      key={`${group.key}-cards`}
+                      className={`player-card-grid ${view}`}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                    >
                       <AnimatePresence mode="popLayout" initial={false}>
                         {group.cards.map((card, index) => (
                           <PlayerTaleCard
@@ -400,7 +535,11 @@ function PlayerTaleCard({
       initial={entering ? { opacity: 0, y: token.distancePx } : false}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, scale: mode === "reduced" ? 1 : 0.98 }}
-      transition={{ duration: token.durationSeconds, delay: mode === "reduced" ? 0 : Math.min(index * 0.04, 0.2), ease: platformMotionEasing("layout") }}
+      transition={{
+        duration: token.durationSeconds,
+        delay: mode === "reduced" ? 0 : Math.min(index * 0.04, 0.2),
+        ease: platformMotionEasing("layout"),
+      }}
     >
       <motion.div className="tale-cover" layoutId={`player-cover-${card.id}`}>
         {card.coverUrl ? <img src={card.coverUrl} alt="" /> : <span aria-hidden="true">✦</span>}
@@ -411,23 +550,62 @@ function PlayerTaleCard({
         {card.state === "REPLAY_NEW_EDITION" && <span className="new-edition-badge">New edition</span>}
       </motion.div>
       <div className="tale-card-copy">
-        <p className="card-kicker">Version {card.versionLabel} · {card.voyageName}{card.pinned ? " · Pinned" : ""}</p>
+        <p className="card-kicker">
+          Version {card.versionLabel} · {card.voyageName}
+          {card.pinned ? " · Pinned" : ""}
+        </p>
         <h3>{card.title}</h3>
         {card.subtitle && <h4>{card.subtitle}</h4>}
         <p>{card.shortDescription ?? "A Tall Tale waits inside this volume."}</p>
         {card.state === "AWAITING_CAPTAIN" && <p className="sr-only">Waiting for the Captain to launch this voyage.</p>}
         <dl>
-          <div><dt>Captain</dt><dd>{card.captainName}</dd></div>
-          {card.currentChapterTitle && <div><dt>Present chapter</dt><dd>{card.currentChapterTitle}</dd></div>}
-          {card.revealedChapterCount > 0 && <div><dt>Revealed chapters</dt><dd>{card.revealedChapterCount}</dd></div>}
-          {card.completionDate && <div><dt>Completed</dt><dd>{new Date(card.completionDate).toLocaleDateString()}</dd></div>}
-          {card.completionDate && <div><dt>Memories</dt><dd>{card.memoriesCollected}</dd></div>}
-          {card.plannedStartAt && <div><dt>Planned start</dt><dd>{new Date(card.plannedStartAt).toLocaleString()}</dd></div>}
+          <div>
+            <dt>Captain</dt>
+            <dd>{card.captainName}</dd>
+          </div>
+          {card.currentChapterTitle && (
+            <div>
+              <dt>Present chapter</dt>
+              <dd>{card.currentChapterTitle}</dd>
+            </div>
+          )}
+          {card.revealedChapterCount > 0 && (
+            <div>
+              <dt>Revealed chapters</dt>
+              <dd>{card.revealedChapterCount}</dd>
+            </div>
+          )}
+          {card.completionDate && (
+            <div>
+              <dt>Completed</dt>
+              <dd>{new Date(card.completionDate).toLocaleDateString()}</dd>
+            </div>
+          )}
+          {card.completionDate && (
+            <div>
+              <dt>Memories</dt>
+              <dd>{card.memoriesCollected}</dd>
+            </div>
+          )}
+          {card.plannedStartAt && (
+            <div>
+              <dt>Planned start</dt>
+              <dd>{new Date(card.plannedStartAt).toLocaleString()}</dd>
+            </div>
+          )}
         </dl>
         <div className="card-actions">
-          <Link className="brass-button" href={card.primaryHref}>{card.primaryLabel}</Link>
-          <button disabled={busy} aria-busy={busy} onClick={() => onPreference(card, card.pinned ? "unpin" : "pin")}>{busy ? "Saving…" : card.pinned ? "Unpin" : "Pin to top"}</button>
-          {["COMPLETED", "EXPIRED_REVOKED"].includes(card.state) && <button className="button-subtle" disabled={busy} onClick={() => onPreference(card, "hide")}>Hide from library</button>}
+          <Link className="brass-button" href={card.primaryHref}>
+            {card.primaryLabel}
+          </Link>
+          <button disabled={busy} aria-busy={busy} onClick={() => onPreference(card, card.pinned ? "unpin" : "pin")}>
+            {busy ? "Saving…" : card.pinned ? "Unpin" : "Pin to top"}
+          </button>
+          {["COMPLETED", "EXPIRED_REVOKED"].includes(card.state) && (
+            <button className="button-subtle" disabled={busy} onClick={() => onPreference(card, "hide")}>
+              Hide from library
+            </button>
+          )}
         </div>
       </div>
     </motion.article>

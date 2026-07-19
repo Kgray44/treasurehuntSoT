@@ -4,7 +4,13 @@ import { motion } from "motion/react";
 import type { MotionMode } from "@/animation/core/animation-types";
 import { platformMotionEasing, resolvePlatformMotionToken } from "@/animation/platform/motion-tokens";
 
-export type PlatformRelicKind = "player-journal" | "captain-lock" | "creator-quill" | "invitation-seal" | "journal-clasp" | "voyage-compass";
+export type PlatformRelicKind =
+  | "player-journal"
+  | "captain-lock"
+  | "creator-quill"
+  | "invitation-seal"
+  | "journal-clasp"
+  | "voyage-compass";
 
 export type PlatformRelicState =
   | "idle"
@@ -67,4 +73,3 @@ export function PlatformRelic({
     </motion.div>
   );
 }
-

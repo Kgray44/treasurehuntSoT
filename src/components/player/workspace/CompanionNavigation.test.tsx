@@ -105,21 +105,14 @@ describe("CompanionNavigation animation boundaries", () => {
   });
 
   it("updates unseen counts once per authoritative count version without moving focus", async () => {
-    const view = render(
-      <CompanionNavigation view="journal" unseen={unseen} navigate={vi.fn()} mode="reduced" />,
-    );
+    const view = render(<CompanionNavigation view="journal" unseen={unseen} navigate={vi.fn()} mode="reduced" />);
     const navigation = within(view.container).getByRole("navigation", { name: "Companion sections" });
     const chart = within(navigation).getByRole("button", { name: /Chart/u });
     chart.focus();
     expect(within(navigation).getByLabelText("2 unseen")).toHaveAttribute("data-unseen-version", "chart:2");
 
     view.rerender(
-      <CompanionNavigation
-        view="journal"
-        unseen={{ ...unseen, chart: 1 }}
-        navigate={vi.fn()}
-        mode="reduced"
-      />,
+      <CompanionNavigation view="journal" unseen={{ ...unseen, chart: 1 }} navigate={vi.fn()} mode="reduced" />,
     );
     await waitFor(() =>
       expect(within(navigation).getByLabelText("1 unseen")).toHaveAttribute("data-unseen-version", "chart:1"),
@@ -127,12 +120,7 @@ describe("CompanionNavigation animation boundaries", () => {
     expect(chart).toHaveFocus();
 
     view.rerender(
-      <CompanionNavigation
-        view="journal"
-        unseen={{ ...unseen, chart: 0 }}
-        navigate={vi.fn()}
-        mode="reduced"
-      />,
+      <CompanionNavigation view="journal" unseen={{ ...unseen, chart: 0 }} navigate={vi.fn()} mode="reduced" />,
     );
     await waitFor(() => expect(within(navigation).queryByLabelText(/unseen/u)).not.toBeInTheDocument());
     expect(chart).toHaveFocus();

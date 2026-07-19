@@ -106,8 +106,14 @@ function editorData() {
 describe("TaleEditor Phase 4 motion and authority", () => {
   beforeEach(() => {
     Object.defineProperty(Element.prototype, "scrollIntoView", { configurable: true, value: vi.fn() });
-    vi.stubGlobal("confirm", vi.fn(() => true));
-    vi.stubGlobal("prompt", vi.fn(() => "Release notes"));
+    vi.stubGlobal(
+      "confirm",
+      vi.fn(() => true),
+    );
+    vi.stubGlobal(
+      "prompt",
+      vi.fn(() => "Release notes"),
+    );
     vi.stubGlobal("open", vi.fn());
   });
 
@@ -156,7 +162,8 @@ describe("TaleEditor Phase 4 motion and authority", () => {
   it("highlights and focuses the exact block named by authoritative validation", async () => {
     vi.stubGlobal(
       "fetch",
-      vi.fn()
+      vi
+        .fn()
         .mockResolvedValueOnce(response(200, editorData()))
         .mockResolvedValueOnce(
           response(200, {
@@ -185,12 +192,11 @@ describe("TaleEditor Phase 4 motion and authority", () => {
     });
     vi.stubGlobal(
       "fetch",
-      vi.fn()
+      vi
+        .fn()
         .mockResolvedValueOnce(response(200, editorData()))
         .mockReturnValueOnce(deletion)
-        .mockResolvedValueOnce(
-          response(200, { autosaveVersion: 5, savedAt: "2026-07-19T12:02:00.000Z" }),
-        ),
+        .mockResolvedValueOnce(response(200, { autosaveVersion: 5, savedAt: "2026-07-19T12:02:00.000Z" })),
     );
     render(<TaleEditor taleId="tale-1" authenticated />);
     const card = (await screen.findByText("Opening Scene")).closest<HTMLElement>("article")!;
@@ -212,7 +218,8 @@ describe("TaleEditor Phase 4 motion and authority", () => {
     });
     vi.stubGlobal(
       "fetch",
-      vi.fn()
+      vi
+        .fn()
         .mockResolvedValueOnce(response(200, editorData()))
         .mockReturnValueOnce(publication)
         .mockResolvedValueOnce(response(200, editorData())),
@@ -229,7 +236,8 @@ describe("TaleEditor Phase 4 motion and authority", () => {
   it("tracks each upload independently and preserves successful files when a sibling fails", async () => {
     vi.stubGlobal(
       "fetch",
-      vi.fn()
+      vi
+        .fn()
         .mockResolvedValueOnce(response(200, editorData()))
         .mockResolvedValueOnce(response(201, { assets: [{ asset: { id: "asset-1" } }] }))
         .mockResolvedValueOnce(response(415, { error: "Unsupported file type." }))

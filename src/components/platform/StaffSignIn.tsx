@@ -17,7 +17,12 @@ type GatewayStatus = Partial<Record<"captain" | "creator", { authenticated?: boo
 type CeremonyState = "idle" | "pending" | "accepted" | "rejected";
 type StaffRouteHandoff = (destination: string, signal: AbortSignal) => void | Promise<void>;
 
-const ceremonyProperties = ["opacity", "transform", "clip-path", "filter"] as const satisfies readonly AnimatedProperty[];
+const ceremonyProperties = [
+  "opacity",
+  "transform",
+  "clip-path",
+  "filter",
+] as const satisfies readonly AnimatedProperty[];
 
 function StaffCeremonyTarget({ part, targetKey }: { part: "accepted-pose" | "rejected-pose"; targetKey: string }) {
   const registration = useMemo(
@@ -40,7 +45,8 @@ function StaffCeremonyBoundary({
   state: CeremonyState;
 }) {
   const hostKey = `staff-${intent}`;
-  const relicState = state === "accepted" ? "arrived" : state === "rejected" ? "failure" : state === "pending" ? "resolving" : "idle";
+  const relicState =
+    state === "accepted" ? "arrived" : state === "rejected" ? "failure" : state === "pending" ? "resolving" : "idle";
   return (
     <SceneHost
       kind="platform-ceremony"
