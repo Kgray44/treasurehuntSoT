@@ -1,6 +1,6 @@
 # Animation System Test Plan
 
-Status: required completion plan for the animation-system audit of exact committed baseline `4dbe8c0ae2fbab2785d1d3f26b8d7ba33bf56aee`, with completed Phase 1 evidence and accepted Phase 2 implementation/composite-validation evidence at `d529b59e06ad1f2d736f6e1b888ebb78f169dcc0`. The Phase 2 appendix records 59 Vitest files / 452 tests, 48 Playwright passes / 30 intentional skips / 0 failures, all six viewports in both browsers, isolation verification, asset validation, and canonical build/restart proof. The combined `npm run validate` command remains classified as environment exit 1 because of the temporary worktree dependency junction; repository synchronization and remote publication remain pending. This does not claim completion of Phases 3-6.
+Status: required completion plan for the animation-system audit of exact committed baseline `4dbe8c0ae2fbab2785d1d3f26b8d7ba33bf56aee`, with completed Phase 1 evidence, accepted Phase 2 composite evidence, and completed Phase 3 composite browser/visual validation. Phase 3 implementation tip `3a24e1e9c88449ee0bdfe35d7ab4bfe378d82fac` is merged in clean baseline `35132ca5e38187336c0632f392edbfc985e5ff55`; section 25.8 records the accepted evidence and explicit no-rerun/no-screenshot-archive deviations. This does not claim completion of Phases 4-6.
 
 ## 1. Purpose, scope, and truth boundary
 
@@ -906,3 +906,25 @@ program reconciliation + Phase 3 ledger validators
 ```
 
 Use only `task-regression`, `pre-existing`, `environment`, `database-isolation`, `missing-phase-5-asset`, `blocked`, or `unresolved` for failures. The Journal Clasp, Voyage Compass, and Finale Mechanism final `.riv` binaries remain `missing-phase-5-asset`; their CSS/SVG readable fallback behavior is still a Phase 3 gate. No nonzero command, skip, missing artifact, blocked cell, or unverified total is a pass.
+
+### 25.8 Final Phase 3 execution and acceptance record (2026-07-19)
+
+Phase 3 is complete under an explicitly approved composite-evidence decision. The plan above remains the original ideal single-run gate; the final report records the actual execution without turning an aborted comprehensive run or a missing artifact archive into a pass.
+
+| Evidence stage                         | Final result                                                                                                                                                                                                                                                                        |
+| -------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Integrated implementation gate         | **passed** — TypeScript, Prettier, ESLint, 73 Vitest files / 827 tests, assets, reconciliation, Phase 3 ledger, diff integrity, 599 main Playwright cases collected across 18 files, and one production-performance case collected                                                  |
+| Comprehensive isolated browser attempt | **diagnostic, not a pass** — entered the full matrix and stopped after 55 cases once a shared root-state regression repeated across viewports; the continuation exposed the bounded retry, Journal readiness, PageFlip identity/settling, duplicate-host, and Library-exit failures |
+| Implementation repairs                 | **complete** — blocker fixes in `04b2114c91bad53bba0994aa54512d34dc740f5a`                                                                                                                                                                                                          |
+| Final targeted source gate             | **219/219 passed** with targeted TypeScript                                                                                                                                                                                                                                         |
+| Final targeted browser gate            | **passed** — reduced retry/fallback and persisted acknowledgment, Journal target publication, PageFlip visible-primary resolution and settled behavior; duplicate-host and Library-exit coverage passed in the targeted source set                                                  |
+| Isolation and cleanup                  | **passed** — canonical database unchanged; owned processes/ports released                                                                                                                                                                                                           |
+| Final merged-main integration          | **passed** — TypeScript, ESLint, 73 files / 829 tests, assets, production build with 30 static pages, reconciliation, Phase 3 ledger, and 28 Python validator tests                                                                                                                 |
+| Final machine-readable disposition     | **reconciled** — dedicated ledger: 265 `validated` / `passed`, 32 Phase 4 assignments, three Phase 5 asset blockers, one environment blocker; matrix: 119 Phase 3 passed + one environment blocker; OA ledger: 98 Phase 3 passed + OA-173 blocked                                   |
+| Visual acceptance                      | **57/57 semantic checkpoints accepted; 0 failed** by completed browser/visual review and project-owner acceptance; no per-image file/hash archive is claimed                                                                                                                        |
+
+The project owner explicitly waived a redundant second complete 599-case rerun after all known failures passed their exact focused checks. The owner also accepted the completed semantic visual review without requiring retroactive creation of 57 screenshot files and hashes. These are acceptance deviations `P3-DEV-01` and `P3-DEV-02`, not claims that the missing executions/artifacts exist.
+
+**Final Phase 3 test-plan verdict: PASS — composite browser/visual validation accepted.** The authoritative evidence ledger is `Project_Lanternwake_Phase_3_Validation_Report.md`; the semantic checkpoint disposition is `Project_Lanternwake_Phase_3_Visual_Checkpoint_Index.md`.
+
+This verdict remains bounded: it does not claim final authored Phase 5 Rive art, authoritative moon-phase behavior without data/fixtures, Phase 4 platform motion, or Phase 6 device-performance and final-polish completion.

@@ -1,11 +1,12 @@
 # Project Lanternwake Phase 3 — Unfurl the Tale
 
-- Status: implementation in progress; integrated acceptance not yet claimed
+- Status: **implementation complete; composite validation accepted; merged to `main`**
 - Report date: 2026-07-19
-- Ending implementation commit: **PENDING IMPLEMENTATION SHA**
-- Integrated validation: **PENDING FINAL EVIDENCE**
+- Ending implementation commit: `3a24e1e9c88449ee0bdfe35d7ab4bfe378d82fac`
+- Integrated merge commit: `35132ca5e38187336c0632f392edbfc985e5ff55`
+- Integrated validation: **PASS — see `Project_Lanternwake_Phase_3_Validation_Report.md`**
 
-This report records evidence-backed source present in the Phase 3 worktree. It deliberately does not convert focused implementation checks into a final integrated pass. The final validation report, final Git commit, remote parity proof, resource-release proof, and required synchronization pass remain coordinator-owned closing gates.
+This report records the completed Phase 3 implementation. Sections that describe the original implementation-stage evidence plan are retained as design history; the final acceptance authority is `Project_Lanternwake_Phase_3_Validation_Report.md`. That report records the cumulative browser evidence, bounded failures, post-fix targeted verification, merged-main gates, accepted visual-review deviation, Git ancestry, and remote parity without claiming a post-fix 599-case rerun or a retained screenshot archive.
 
 ## 1. Executive summary
 
@@ -13,7 +14,7 @@ Phase 3 replaces the compatibility Player companion's section-local presentation
 
 Every event has a readable global outcome available from all six starting sections without forced navigation. A mounted relevant section may receive one optional after-commit enhancement, but that enhancement cannot order, acknowledge, replay, or block the event. Replay uses a fresh identity and cannot mutate. Access revocation is terminal and removes protected Player content.
 
-Final integrated tests, 102-case browser evidence, performance/lifecycle evidence, build/full validation, final commit, and remote proof are **PENDING FINAL EVIDENCE**.
+The 102 event/section carriers, focused runtime repairs, merged-main build/static gates, and final Git proof are accepted by the composite Phase 3 validation report. The planned post-fix 599-case rerun, hashed 57-image archive, and Phase 6-wide production performance/polish work are explicitly not claimed.
 
 ## 2. Repository and branch
 
@@ -31,19 +32,20 @@ Final integrated tests, 102-case browser evidence, performance/lifecycle evidenc
 - Phase 2 implementation: `d529b59e06ad1f2d736f6e1b888ebb78f169dcc0`.
 - Phase 2 evidence: `acf390f`.
 - Phase 2 chat synchronization: `7747ce5`.
-- Ending Phase 3 commit: **PENDING IMPLEMENTATION SHA**.
+- Ending Phase 3 commit: `3a24e1e9c88449ee0bdfe35d7ab4bfe378d82fac`.
+- Final merge on `main`: `35132ca5e38187336c0632f392edbfc985e5ff55`.
 
 ## 4. Worktree safety
 
 Phase 3 runs in its own worktree and branch based exactly on the Phase 2 final handoff. The shared `main` checkout is outside this implementation path. Dependency generation used a real local `node_modules` directory rather than the Phase 2 temporary junction condition. The coordinator retains sole ownership of dependency installation, schema/migrations, ports, shared databases, full builds/suites, Git integration, generated evidence, and final synchronization.
 
-Final complete-status classification, branch push, and remote parity are **PENDING FINAL EVIDENCE**.
+Final status is complete. Phase 3 is an ancestor of `main`, and `main` matched `origin/main` at `35132ca5e38187336c0632f392edbfc985e5ff55` when finalization began.
 
 ## 5. Phase 1 dependency result
 
 Phase 3 receives the Phase 1 animation provider, Director, host/target registry, runtime/property ownership, scene receipt, motion-policy, asset fallback, and focus/lifecycle foundations through the Phase 2 handoff. The historical `main` Phase 1 baseline was `fb8eb4ac33f4a44028fe82fb08df0ac0e5021db6`; Phase 3 did not reimplement those systems.
 
-Final integrated regression proof against the consumed Phase 1 contracts is **PENDING FINAL EVIDENCE**.
+The consumed Phase 1 contracts passed the focused failure-only browser gate and the final merged-main source suite; the evidence and accepted no-rerun boundary are recorded in the Phase 3 Validation Report.
 
 ## 6. Phase 2 dependency result
 
@@ -58,7 +60,7 @@ Phase 2 completed on remote SHA `7747ce5b472fdb19b9fe8f35ea12fbe974902fe7` with 
 - Accepted-unmapped and unresolved program requirements at intake: zero.
 - Three Phase 3 Rive binary rows remain `blocked_external_asset`; OA-173 / MX-257 remains `blocked_environment` pending a moon-phase data contract and fixtures.
 
-The final status distribution and acceptance proof are **PENDING FINAL EVIDENCE**.
+The final dedicated-ledger disposition is 265 `validated` / `passed` rows, 32 `architecture_ready` / `planned` rows explicitly assigned to Phase 4, three Phase 5 `blocked_external_asset` rows, and one `blocked_environment` moon-phase row. The governing matrix records 119 Phase 3 rows as `validated` / `passed`, one Phase 3 environment blocker, and the 32 platform/shell rows under Phase 4. The OA ledger records 98 Phase 3 rows as `validated` / `passed` plus OA-173 as `blocked_environment`. The final acceptance proof is complete in the Phase 3 Validation Report.
 
 ## 8. ProgressionSceneHost design
 
@@ -134,13 +136,13 @@ The command, compatibility action, status, and Quartermaster page paths require 
 
 Replay draws from bounded authorized Player-safe `presentationHistory`, creates a new request and Director playback identity, and is always acknowledgment-ineligible. It stays behind authoritative work and may be interrupted. A replay mutation guard prevents progression/viewed/presence writes; replay does not reuse stale section capabilities.
 
-The final no-mutation browser/database replay protocol is **PENDING FINAL EVIDENCE**.
+The final focused browser gate proved the repaired retry/fallback and persisted acknowledgment paths without changing the canonical database. Broader replay implementation is covered by the accepted source suite; the waived comprehensive rerun is recorded rather than inferred.
 
 ## 23. Audio
 
 Every event policy declares instance-scoped semantic labels or intentional silence. Audio begins only after user interaction, active-request target preflight, and the matching Director label; it deduplicates by event/scene instance/label. Mute, volume, playback failure, and cleanup cannot change meaning, final-state truth, focus, or acknowledgment.
 
-Final cross-browser audio evidence is **PENDING FINAL EVIDENCE**.
+Audio policy and cleanup are accepted through source coverage and the completed composite review. A new post-fix cross-browser sweep was not performed and is not claimed.
 
 ## 24. Lottie
 
@@ -160,39 +162,39 @@ Access revocation is terminal for the current identity: reconnect stops, in-memo
 
 The persistent overlay owns one controlled live region; local components do not duplicate ceremony announcements. Decorative Lottie/Rive/SVG content is hidden from the accessibility tree. Modal inertness applies only while the global overlay is active. Focus targets reject hidden-source, stale-clone, unrelated, inert, hidden, detached, or disabled nodes and restore to an exact eligible element or declared heading/destination fallback.
 
-Final six-viewport, keyboard, assistive-technology, and 200% zoom evidence is **PENDING FINAL EVIDENCE**.
+The completed browser/visual review is accepted for Phase 3. A second post-fix all-viewport sweep and per-image hash archive were waived by the project owner and are not claimed as executed.
 
 ## 28. Additional OA animations
 
 The Phase 3 Player Event Coverage Ledger maps all 99 OA intake requirements to their source, carrier, status, evidence path, blocker, and later-phase ownership. The current reconciliation separates active Phase 3 work from 32 Phase 4 assignments and explicit Phase 5 art/PageFlip portions. OA-173 remains blocked on authoritative moon-phase data and fixtures rather than being represented as an animation pass.
 
-Final OA status/commit evidence is **PENDING FINAL EVIDENCE**.
+Final OA reconciliation and commit evidence passed in the Phase 3 ledger and merged-main validators.
 
 ## 29. Additional MX animations
 
 The ledger retains the 152 Phase 3 MX physical carrier rows without treating those rows as additional requirements. The 102 exact event/section carriers cover all 17 events from all six starting sections; supplemental contract and asset rows preserve cross-phase truth. Current-quality/partial compatibility work is not promoted merely because a typed carrier exists.
 
-Final MX status/commit evidence is **PENDING FINAL EVIDENCE**.
+Final MX carrier reconciliation and commit evidence passed in the Phase 3 ledger and merged-main validators.
 
 ## 30. Tests
 
 Focused source tests exist for the exhaustive policy/queue, controller, persistent host, PageFlip lifecycle/fallback, Journal opening/session identity, exact section targets, Player-safe history/SSE/viewed routes, Quartermaster authorization/idempotency/sequence handling, Rive contracts/runtime, reconciliation validators, and the Phase 3 event ledger. Implementation lanes ran focused checks while files were owned by those lanes.
 
-The authoritative integrated command list, exit codes, final file/test counts, 102-case matrix, browser shards, build, and full-validation result belong in the Validation Report and are **PENDING FINAL EVIDENCE**.
+The authoritative commands, counts, browser failure ledger, post-fix checks, merged-main build, and accepted deviations are final in the Phase 3 Validation Report.
 
 ## 31. Performance
 
 The frozen gates are: chapter release below 10,000 ms; target preflight p95 below 50 ms; Skip/Replay/PageFlip response within 100 ms; cleanup below 250 ms; desktop frame p95 at most 25 ms; mobile frame p95 at most 40 ms; no app-attributable stall above 100 ms; chapter/ordinary long-task budgets of 200/100 ms; and CLS at most 0.10.
 
-Production-server performance measurement across the required viewports is **PENDING FINAL EVIDENCE**.
+Phase 3's implementation and product-validation boundary is accepted. Broad production device profiling and final performance/polish remain Phase 6 work; this report does not manufacture a missing post-fix performance trace.
 
 ## 32. Lifecycle
 
-Implementation includes idempotent Director/final-state cleanup, external-handle revocation, Lottie/Rive/PageFlip teardown, EventSource access-revocation cleanup, queued-turn cancellation, focus restoration, and session-identity reset behavior. The required 20-cycle return-to-baseline proof for hosts, claims, runtimes, listeners, timers, EventSources, focus traps, clones, audio, Lottie, and WAAPI promises is **PENDING FINAL EVIDENCE**.
+Implementation includes idempotent Director/final-state cleanup, external-handle revocation, Lottie/Rive/PageFlip teardown, EventSource access-revocation cleanup, queued-turn cancellation, focus restoration, and session-identity reset behavior. Lifecycle behavior is accepted through the completed source/browser review and focused repair checks. A new post-fix monolithic 20-cycle browser rerun was not performed and is covered by the same accepted deviation as the full matrix.
 
 ## 33. Files changed
 
-The worktree's implementation diff is still evolving. Confirmed source groups currently include:
+The completed Phase 3 implementation includes:
 
 - progression contracts/policy/queue/controller/host under `src/components/player/progression/`;
 - compatibility Player integration in `src/components/player/PlayerExperience.tsx`, its tests, `src/domain/story.ts`, and `src/styles/player.css`;
@@ -203,11 +205,11 @@ The worktree's implementation diff is still evolving. Confirmed source groups cu
 - scene registry/builders, Rive contracts/runtime, reconciliation and ledger validators, isolated validation harness, and Phase 3 E2E/performance configuration;
 - this report, the frozen/appended Design Record, coverage ledger, and governing architecture/product documentation.
 
-An exact final file list tied to the ending SHA is **PENDING IMPLEMENTATION SHA**.
+The authoritative final file list is the Git tree diff from Phase 2 handoff `7747ce5b472fdb19b9fe8f35ea12fbe974902fe7` through Phase 3 tip `3a24e1e9c88449ee0bdfe35d7ab4bfe378d82fac`, merged by `35132ca5e38187336c0632f392edbfc985e5ff55`.
 
 ## 34. Known limitations
 
-- Final integrated validation and ending commit do not yet exist: **PENDING FINAL EVIDENCE** / **PENDING IMPLEMENTATION SHA**.
+- Composite Phase 3 validation is final and the implementation/merge commits are recorded above. The report truthfully preserves the waived post-fix comprehensive rerun and missing screenshot archive.
 - Journal Clasp, Voyage Compass, and Finale Mechanism authored `.riv` binaries remain Phase 5 `blocked_external_asset`; Phase 3 uses truthful local fallbacks.
 - OA-173 / MX-257 remains blocked until authoritative moon-phase data and deterministic fixtures exist.
 - Thirty-two platform/shell requirements are assigned to Phase 4 and require closing acceptance evidence.
@@ -219,7 +221,7 @@ An exact final file list tied to the ending SHA is **PENDING IMPLEMENTATION SHA*
 
 Phase 4 receives the 32 platform/shell assignments and must reuse the existing AnimationProvider, persistent progression host, authoritative-first queue, target/ownership registry, resolved motion policy, notification integration, focus restoration, final-state fallback, access-revocation boundary, and semantic audio labels. It must not create a second global host, queue, ownership system, or business-state store. Phase 4 does not start automatically.
 
-Final accepted cross-phase disposition evidence is **PENDING FINAL EVIDENCE**.
+Cross-phase disposition is accepted by the Phase 3 ledger and validation report. Phase 4 must continue from the merged Phase 3 baseline without absorbing Phase 5 authored-art scope.
 
 ## 36. Phase 5 handoff
 

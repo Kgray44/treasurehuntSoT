@@ -2,7 +2,7 @@
 
 ## Design record
 
-- Status: frozen for implementation
+- Status: frozen design implemented; Phase 3 composite validation accepted
 - Date: 2026-07-18
 - Branch: `codex/project-lanternwake-phase-3-unfurl-the-tale`
 - Phase 3 base and Phase 2 final handoff: `7747ce5b472fdb19b9fe8f35ea12fbe974902fe7`
@@ -202,7 +202,7 @@ Critical path: freeze this record → implement pure policy/queue and persistent
 
 ## 9. Blockers and reconciliation decisions
 
-1. Thirty-two platform/shell matrix rows conflict with the explicit Phase 4 exclusion. They remain a release-blocking reconciliation item pending explicit Phase 4 reassignment; Phase 3 will not silently implement or mark them complete.
+1. Thirty-two platform/shell matrix rows conflict with the explicit Phase 4 exclusion. They were explicitly reassigned to Phase 4 in the final coverage ledger; Phase 3 did not silently implement or mark them complete.
 2. Cross-phase bundles are validated only for their Phase 3 portion: `MX-093/OA-175`, `MX-094/OA-178`, and `MX-097/OA-183` contain Phase 5 scope; `MX-054/OA-090` contains Phase 1 scope; `MX-091/OA-167` contains Phase 2 scope.
 3. OA-173 / MX-257 needs an authoritative moon-phase data contract and fixtures. It is a non-art external blocker, not a Phase 5 art blocker.
 4. OA-184 retains Phase 3 light-geometry, luminance-budget, and final-timing work.
@@ -221,7 +221,7 @@ Phase 3 may be called complete only when every accepted requirement is implement
 
 ## 12. Final-reconciliation record (appended 2026-07-19)
 
-Sections 1-11 above remain the frozen pre-implementation contract and have not been rewritten. This appended section records the current reconciliation boundary; it is not a completion claim.
+Sections 1-11 above remain the frozen pre-implementation contract and have not been rewritten. This appended section records the implementation-stage reconciliation boundary. Section 13 records the final completion decision.
 
 ### 12.1 Requirement disposition
 
@@ -239,7 +239,23 @@ Sections 1-11 above remain the frozen pre-implementation contract and have not b
 
 ### 12.3 Closing evidence still required
 
-- Ending implementation commit: **PENDING IMPLEMENTATION SHA**.
-- Integrated format, lint, typecheck, unit/component, asset, ledger, build, E2E, performance, lifecycle, and full-validation evidence: **PENDING FINAL EVIDENCE**.
-- Final 102-case and multi-mode/viewport result: **PENDING FINAL EVIDENCE**.
-- Remote branch parity, released ports/resources, final repository status, and the single required synchronization pass: **PENDING FINAL EVIDENCE**.
+- Ending implementation commit: `3a24e1e9c88449ee0bdfe35d7ab4bfe378d82fac`.
+- Final merge on `main`: `35132ca5e38187336c0632f392edbfc985e5ff55`.
+- Integrated and post-fix evidence: accepted by `Project_Lanternwake_Phase_3_Validation_Report.md`.
+- The 102 cases remain the validated coverage ledger denominator; no post-fix 102-case browser rerun is claimed.
+- The completed multi-mode/viewport semantic review is accepted; no 57-image hash archive is claimed.
+
+## 13. Completion record (appended 2026-07-19)
+
+Phase 3 is officially complete under an approved composite-evidence decision.
+
+- The implementation gates passed TypeScript, Prettier, ESLint, 73 files / 827 tests, assets, reconciliation, and the 301-row Phase 3 ledger before browser execution.
+- The isolated comprehensive browser effort entered the 599-case inventory, exposed a bounded shared failure set, and was stopped once repeated failures had the same root cause.
+- The known retry/fallback, Journal target-publication, PageFlip identity/settling, duplicate-host, root-state, and Library-exit failures were repaired in `04b2114c91bad53bba0994aa54512d34dc740f5a` and related setup commit `3d06b24d986640d0c947dfee2a81b71f80a531a5`.
+- The final targeted gate passed TypeScript, 219/219 source tests, and the exact isolated Chromium reproductions. The persistence assertion follow-up at `3a24e1e9c88449ee0bdfe35d7ab4bfe378d82fac` proved the viewed acknowledgment after the response/commit boundary.
+- The canonical database remained unchanged, owned runtime resources were released, and the merged Phase 3 state passed TypeScript, ESLint, 73 files / 829 tests, assets, production build, reconciliation, ledger validation, and 28 Python validator tests.
+- The final 301-row coverage-ledger disposition is 265 `validated` / `passed`, 32 explicit Phase 4 assignments, three Phase 5 authored-asset blockers, and one authoritative moon-phase environment blocker.
+- The governing audit matrix records 119 Phase 3 `validated` / `passed` rows plus one Phase 3 environment blocker; the 32 platform/shell rows now belong to Phase 4. The OA ledger records 98 Phase 3 `validated` / `passed` requirements plus OA-173 as `blocked_environment`.
+- The project owner accepted the completed browser/visual review and explicitly waived a second complete 599-case rerun and a retained 57-image screenshot/hash archive.
+
+**Design-record completion verdict: PASS — the frozen Phase 3 design was implemented and accepted.** The accepted deviations do not authorize a false claim that the waived rerun or missing screenshot archive exists. Final authored Rive art remains Phase 5; broad device-performance and final polish remain Phase 6; Phase 4 platform motion remains separate.

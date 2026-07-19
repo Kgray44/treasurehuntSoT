@@ -637,3 +637,37 @@ No V2 or V3 item is marked repaired merely because a patch exists. The 16/16 V2 
 ### 22.5 Current audit conclusion
 
 Claim the Deck has a concrete architecture and zero-loss requirement reconciliation in the working tree, but the phase is not yet complete. The present controlling truth is: **458 accepted requirements preserved, zero unmapped, architecture implementation active, V2/V3 repairs and re-audits pending, and all final runtime and repository gates pending**. Phase 3 and Phase 4 have not started through this Phase 2 task.
+
+## 23. Project Lanternwake Phase 3 completion addendum (2026-07-19)
+
+This addendum supersedes the execution status in section 22.5 without rewriting that historical Phase 2 snapshot. Phase 2 completed at `7747ce5b472fdb19b9fe8f35ea12fbe974902fe7`. Phase 3 then implemented Unfurl the Tale through `3a24e1e9c88449ee0bdfe35d7ab4bfe378d82fac`, and the clean Phase 3 state was merged to `main` by `35132ca5e38187336c0632f392edbfc985e5ff55`.
+
+### 23.1 Implemented Phase 3 audit outcomes
+
+| Audit area                     | Final Phase 3 disposition                                                                                                                                                                    |
+| ------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Persistent Player presentation | One persistent `player-progression` host supplies readable global outcomes across all six companion sections without forced navigation.                                                      |
+| Event policy                   | All 17 Player event types have typed global presentation, optional local enhancement, replay, acknowledgment, focus, notification, audio/silence, motion, fallback, and safe-payload policy. |
+| Queue and reconnect            | Authoritative-first sequence/priority/request ordering, duplicate/stale rejection, four distinct cursors, durable replay authority, and terminal access revocation are implemented.          |
+| Journal and PageFlip           | Opening/readiness/fallback handoff, visible-primary identity, valid target keys, lifecycle labels, settled behavior, focus preservation, retry, and Library exit are implemented.            |
+| Section integrations           | Journal, Voyage Chart, Treasure/Artifact, Side Quests, Ship's Log, and Finale expose exact keyed targets without DOM-index or hidden-clone substitution.                                     |
+| Quartermaster bridge           | Capability, bounded payload, idempotency fingerprint, expected-sequence transaction, persistence/publication/delivery distinction, and generic failure behavior are implemented.             |
+| Runtime truth                  | Lottie one-shots, audio labels, Rive state interfaces, readable fallbacks, cleanup, and reduced semantics remain subordinate to authoritative presentation truth.                            |
+| Requirement reconciliation     | 458 accepted requirements remain mapped with 0 accepted-unmapped and 0 unresolved; the Phase 3 ledger validates 301 rows, 17/17 events, 6/6 sections, and 102/102 carriers.                  |
+
+### 23.2 Accepted validation evidence
+
+- Integrated implementation gates passed TypeScript, Prettier, ESLint, 73 Vitest files / 827 tests, assets, reconciliation, Phase 3 ledger validation, and exact collection of 599 main Playwright cases plus one production-performance case.
+- The isolated comprehensive browser effort entered the main matrix and exposed a bounded shared failure set. It was stopped once repeated failures had the same root cause, rather than manufacturing a green full-run result.
+- Blocker repairs landed in `04b2114c91bad53bba0994aa54512d34dc740f5a`; the final persistence-assertion synchronization landed in `3a24e1e9c88449ee0bdfe35d7ab4bfe378d82fac`.
+- The final failure-only gate passed targeted TypeScript, 219/219 source tests, and the exact isolated Chromium retry/fallback, persisted acknowledgment, Journal target-publication, and PageFlip target/settle reproductions. Duplicate host and Library-exit coverage also passed. The canonical database remained unchanged and owned resources were released.
+- The merged Phase 3 state passed TypeScript, ESLint, 73 files / 829 tests, asset validation, production build with 30 static pages, both evidence validators, and 28 Python validator tests.
+- The final 301-row Phase 3 ledger records 265 `validated` / `passed` rows, 32 explicit Phase 4 assignments, three Phase 5 authored-asset blockers, and one authoritative moon-phase environment blocker.
+- The governing matrix records 119 Phase 3 `validated` / `passed` rows, one Phase 3 `blocked_environment` row, and 32 platform/shell rows reassigned to Phase 4. The OA ledger records 98 Phase 3 `validated` / `passed` requirements and OA-173 as `blocked_environment`.
+- The project owner accepted the completed browser/visual review and explicitly waived a second complete 599-case rerun. The 57-checkpoint semantic review is accepted, but no per-image hash archive is claimed.
+
+### 23.3 Phase 3 audit verdict and boundaries
+
+**PHASE 3 COMPLETE — COMPOSITE BROWSER/VISUAL VALIDATION ACCEPTED.** All known Phase 3 browser failures are fixed and targeted-verified; no known failure remains unresolved.
+
+This verdict does not claim a post-fix monolithic `npm run validate` pass, a retained 57-image screenshot archive, final authored Journal Clasp/Voyage Compass/Finale Mechanism `.riv` art, authoritative moon-phase behavior without source data, Phase 4 platform motion, or Phase 6 device-performance/final-polish completion. The detailed evidence and accepted deviations are authoritative in `Project_Lanternwake_Phase_3_Validation_Report.md`.
