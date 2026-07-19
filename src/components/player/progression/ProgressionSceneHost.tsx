@@ -16,7 +16,7 @@ export type ProgressionSceneAction = Readonly<{
   disabled?: boolean;
 }>;
 
-export type ProgressionSceneHostProps = Readonly<{
+type ProgressionSceneHostOwnProps = {
   /** Persistent application content owned by this one Player progression boundary. */
   content: ReactNode;
   /** The boundary and content stay mounted when false; only the fixed presentation overlay becomes hidden and inert. */
@@ -37,7 +37,14 @@ export type ProgressionSceneHostProps = Readonly<{
   onHostChange?: (host: SceneHostHandle | null) => void;
   as?: SceneHostProps["as"];
   className?: string;
-}>;
+};
+
+type ProgressionSceneHostRootProps = Omit<
+  SceneHostProps,
+  "kind" | "hostKey" | "children" | keyof ProgressionSceneHostOwnProps
+>;
+
+export type ProgressionSceneHostProps = Readonly<ProgressionSceneHostRootProps & ProgressionSceneHostOwnProps>;
 
 type TargetDefinition = Readonly<{
   key: string;
@@ -473,6 +480,7 @@ export function ProgressionSceneHost({
   onHostChange,
   as = "div",
   className,
+  ...rootProps
 }: ProgressionSceneHostProps) {
   const headingId = "player-progression-heading";
   const summaryId = "player-progression-summary";
@@ -553,6 +561,7 @@ export function ProgressionSceneHost({
 
   return (
     <SceneHost
+      {...rootProps}
       kind="player-progression"
       hostKey={progressionSceneHostKey}
       as={as}

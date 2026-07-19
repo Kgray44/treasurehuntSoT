@@ -75,6 +75,32 @@ describe("ProgressionSceneHost", () => {
     vi.restoreAllMocks();
   });
 
+  it("forwards Player journal state and presentation attributes to the persistent host root", () => {
+    render(
+      <AnimationProvider>
+        <ProgressionSceneHost
+          {...baseProps}
+          as="main"
+          className="voyage-shell"
+          data-cinematic-sequence="firstArrival"
+          data-journal-phase="JOURNAL_READY"
+          data-journal-speed={0.5}
+          data-motion-mode="gentle"
+          style={{ "--player-text-scale": 1.1 } as React.CSSProperties}
+        />
+      </AnimationProvider>,
+    );
+
+    const host = screen.getByTestId("progression-scene-host");
+    expect(host.tagName).toBe("MAIN");
+    expect(host).toHaveClass("voyage-shell");
+    expect(host).toHaveAttribute("data-cinematic-sequence", "firstArrival");
+    expect(host).toHaveAttribute("data-journal-phase", "JOURNAL_READY");
+    expect(host).toHaveAttribute("data-journal-speed", "0.5");
+    expect(host).toHaveAttribute("data-motion-mode", "gentle");
+    expect(host).toHaveStyle({ "--player-text-scale": "1.1" });
+  });
+
   it("keeps one stable player-progression authority while active state and presentation children change", async () => {
     const handles: Array<SceneHostHandle | null> = [];
     const onHostChange = (host: SceneHostHandle | null) => handles.push(host);

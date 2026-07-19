@@ -1680,6 +1680,11 @@ export function PlayerExperience({ initialSnapshot }: { initialSnapshot: PublicS
     <ProgressionSceneHost
       as="main"
       className={`voyage-shell stage-${animation.label} view-${view}${resettingJournal ? " journal-resetting" : ""}`}
+      data-cinematic-sequence={animationSequence}
+      data-journal-phase={openingPhase}
+      data-journal-speed={openingSpeed}
+      data-motion-mode={mode}
+      style={{ "--player-text-scale": textScale, "--texture-opacity": texture } as React.CSSProperties}
       active={Boolean(activeRequest)}
       eventType={activeRequest?.eventType ?? null}
       presentationId={activeRequest?.requestId}
