@@ -1,6 +1,6 @@
 # Project Lanternwake Phase 2 Implementation Report
 
-Status: **draft implementation record; V2/V3 repair re-audits and final integrated validation are pending**
+Status: **implementation and composite validation accepted; coordinator synchronization and remote push pending**
 
 Date: 2026-07-18  
 Program: Project Lanternwake  
@@ -13,7 +13,7 @@ Claim the Deck establishes one provider-scoped place for animation scenes to sta
 
 Requirement reconciliation is complete as a data-integrity result: 220 Codex requirements and 238 OA requirements are preserved, 97 OA requirements use existing matrix rows, 141 have dedicated specificity-preserving rows, 289 mapping edges are explicit, and zero accepted requirements are unmapped or unresolved. The validator and its 13-test suite pass.
 
-This is not yet a Phase 2 completion declaration. Independent V2 and V3 audits returned fix-needed findings. Repairs are landing, but neither audit may be called repaired until its re-audit passes. Integrated format, lint, typecheck, unit, build, browser/E2E, accessibility, lifecycle, viewport, full validation, Git, and synchronization evidence remains `[PENDING_FINAL_GATE]`.
+The V2 and V3 fix-needed findings were repaired and re-audited on the integrated implementation. The final concurrent sweep passed format, lint, typecheck, diff cleanliness, and 59 Vitest files / 452 tests. The isolated Playwright gate passed 48 tests with 30 intentional skips and no failures, including the Phase 1 and Phase 2 suites, all four Journal cases, and all six required viewports in both browser projects. The production build passed after the temporary worktree dependency junction was removed. Repository synchronization and remote publication remain coordinator-owned finalization steps.
 
 ## 2. Starting branch and commit
 
@@ -21,14 +21,15 @@ This is not yet a Phase 2 completion declaration. Independent V2 and V3 audits r
 - Branch: `codex/project-lanternwake-phase-2-claim-the-deck`
 - Starting commit: `fb8eb4ac33f4a44028fe82fb08df0ac0e5021db6`
 - Canonical upstream at start: `origin/main`, verified at the same commit
-- Ending commit: `[PENDING_FINAL_GATE]`
-- Phase 2 branch upstream/push result: `[PENDING_FINAL_GATE]`
+- Implementation commit: `d529b59e06ad1f2d736f6e1b888ebb78f169dcc0`
+- Evidence-document follow-up commit: to be recorded after these reports are committed
+- Phase 2 branch upstream/push result: to be recorded after coordinator synchronization and push
 
 ## 3. Repository safety result
 
 Phase 2 was isolated from the active `main` checkout. After Phase 1 synchronized, the branch fast-forwarded to `fb8eb4a`. The coordinator copied the preserved Phase 1 working snapshot into the isolated worktree and verified SHA-256 equality for all 106 paths: 67 tracked modifications and 39 untracked paths. The Phase 2 worktree did not take ownership of the `main` development server, port 3000, browser, canonical database, dependency installation, schema, migrations, lockfile, full build, E2E, Git integration, or synchronization.
 
-Final complete-status and accidental-scope review: `[PENDING_FINAL_GATE]`.
+The implementation commit is task-scoped and the final concurrent `git diff --check` gate exited 0. The documentation follow-up, complete post-synchronization status review, and remote comparison remain with the coordinator.
 
 ## 4. Phase 1 dependency verification
 
@@ -54,19 +55,19 @@ Production v2 resolution consumes the invocation's immutable registered-target s
 
 Cross-tree continuity requires a registry-minted, provider-scoped, host-bound, generation-bound external handle. Handles are explicit capabilities, not selectors. They can be revoked and fail for foreign, stale, disconnected, or mismatched identities.
 
-V3 requires the Artifact Award destination handle to be identity-only: it may identify and reconcile the Motion-owned destination without authorizing GSAP to write its properties. Re-audit result: `[PENDING_FINAL_GATE]`.
+The Artifact Award destination handle is identity-only: it identifies and reconciles the Motion-owned destination without authorizing GSAP property writes. The repaired boundary passed its focused re-audit and the integrated 59-file / 452-test sweep.
 
 ## 9. Ownership enforcement
 
 Ownership is provider-scoped and normalized into property groups. Atomic claim batches either grant every requested target/property or leave no provisional claim. A live opaque `AnimationWritePermit` binds exact provider, invocation, target generation, runtime, and property groups; rejected or revoked permits cannot write. Cleanup, interruption, fallback, policy change, host teardown, and unmount revoke the relevant claims and permits.
 
-V3 found that a single-property permit could validate a multi-property GSAP configuration. Multi-property fail-close repair and re-audit: `[PENDING_FINAL_GATE]`.
+The single-property-permit defect is repaired: a permit must cover every property in a multi-property runtime configuration. The fail-close cases passed focused re-audit and the integrated 59-file / 452-test sweep.
 
 ## 10. Motion integration
 
 Motion remains the structural owner for layout, presence, dialog, card/list, form-state, and ordinary interaction surfaces. A provider-scoped runtime-surface lease is the enforcement bridge: Motion may write only while its target, invocation, and property-group capability remains live. GSAP is confined to deliberately separated cinematic children or wrappers.
 
-Runtime-owned Motion hook retry and re-audit: `[PENDING_FINAL_GATE]`.
+The runtime-owned Motion hook retry and lease checks passed focused re-audit and the integrated 59-file / 452-test sweep.
 
 ## 11. PageFlip boundary
 
@@ -74,7 +75,7 @@ StPageFlip remains the sole owner of physical curl, drag, keyboard and programma
 
 `journal-open`, `manual-page-flip`, and `programmatic-page-flip` remain explicit deprecated registry records. The showcase demonstrates the real PageFlip runtime instead of fake production curl proof.
 
-Focused PageFlip evidence and final browser/accessibility proof: `[PENDING_FINAL_GATE]`.
+Final PageFlip evidence is green: 34 focused unit tests passed; the full-mode and tombstone browser cases passed 2/2 in Chromium and 2/2 in WebKit; and the integrated Playwright gate completed with no failures. The browser evidence covers real manual, keyboard, and programmatic StPageFlip turns, current-primary identity, source exclusion, clone revocation, and accessible visible-page behavior.
 
 ## 12. Scene dispositions
 
@@ -85,7 +86,7 @@ The registry remains exactly 28 scenes:
 - 5 future-contract: `chapter-heading`, `prose-ink`, `marker-stamp`, `ship-course`, `artifact-inspection`; and
 - 3 deprecated: `journal-open`, `manual-page-flip`, `programmatic-page-flip`.
 
-The 16 production contracts carry v2 host-kind data in the current registry. Final proof that every production builder/caller is native-v2 and cannot re-query outside its invocation: `[PENDING_FINAL_GATE]`.
+The 16 production contracts carry v2 host-kind data in the current registry. Native-v2 builder/caller and immutable invocation-snapshot checks passed in the final 59-file / 452-test integrated sweep; no production builder is accepted on a broad-root re-query path.
 
 ## 13. Final-state handoff
 
@@ -93,15 +94,15 @@ Canonical policies are `revert-immediately`, `hold-final-until-unmount`, `commit
 
 ## 14. Component migrations
 
-| Surface                              | Intended boundary                                                                                         | Current acceptance state                          |
-| ------------------------------------ | --------------------------------------------------------------------------------------------------------- | ------------------------------------------------- |
-| Voyage Chart                         | Motion marker/layout wrapper; nested GSAP stamp/pulse/reveal child; semantic marker handle                | Implemented surface; final gate pending           |
-| Ship's Log                           | Motion row/presence wrapper; nested GSAP fresh-ink/symbol children; authoritative event identity          | Implemented surface; final gate pending           |
-| Artifact Inspection / Treasure Altar | Motion shared-layout/dialog shell; nested engraving/light children; local export/focus/inertness boundary | V2 repairs landing; re-audit pending              |
-| Companion Header / Navigation        | permanent Motion owner markers; deliberate aria-hidden cinematic dim children; controls excluded          | V2 repairs landing; re-audit pending              |
-| Quartermaster                        | invocation-local command host, Motion controls/dialog, GSAP cinematic children, explicit external handles | 13 dual-host caller proof and V3 re-audit pending |
-| Access/login                         | Motion form/pending/error state; bounded GSAP accepted/rejected child; route-stable handoff               | Implemented surface; final gate pending           |
-| PageFlip consumers                   | source/clone generation boundary; actual StPageFlip turn ownership                                        | Implemented surface; final gate pending           |
+| Surface                              | Intended boundary                                                                                         | Current acceptance state               |
+| ------------------------------------ | --------------------------------------------------------------------------------------------------------- | -------------------------------------- |
+| Voyage Chart                         | Motion marker/layout wrapper; nested GSAP stamp/pulse/reveal child; semantic marker handle                | Implemented; integrated tests passed   |
+| Ship's Log                           | Motion row/presence wrapper; nested GSAP fresh-ink/symbol children; authoritative event identity          | Implemented; integrated tests passed   |
+| Artifact Inspection / Treasure Altar | Motion shared-layout/dialog shell; nested engraving/light children; local export/focus/inertness boundary | Implemented; V2 re-audit passed        |
+| Companion Header / Navigation        | permanent Motion owner markers; deliberate aria-hidden cinematic dim children; controls excluded          | Implemented; V2 re-audit passed        |
+| Quartermaster                        | invocation-local command host, Motion controls/dialog, GSAP cinematic children, explicit external handles | Implemented; V3 re-audit passed        |
+| Access/login                         | Motion form/pending/error state; bounded GSAP accepted/rejected child; route-stable handoff               | Implemented; integrated tests passed   |
+| PageFlip consumers                   | source/clone generation boundary; actual StPageFlip turn ownership                                        | Implemented; unit/browser gates passed |
 
 ## 15. Diagnostics
 
@@ -109,21 +110,21 @@ Structured diagnostics expose bounded IDs, counts, lifecycle, outcomes, policy, 
 
 ## 16. Tests
 
-The working tree contains focused host registry/React boundary, ownership, target preflight, director, provider, final-state, scene registry/builders, PageFlip boundary/book, showcase, high-risk component, Quartermaster, Access/login, and reconciliation-validator tests. The accepted reconciliation gate passed and its unit suite passed 13/13. A bounded C4 component repair gate reported 3 files / 8 tests plus lint, Prettier, and diff cleanliness; its final integrated rerun remains pending.
+The working tree contains focused host registry/React boundary, ownership, target preflight, director, provider, final-state, scene registry/builders, PageFlip boundary/book, showcase, high-risk component, Quartermaster, Access/login, and reconciliation-validator tests. The accepted reconciliation gate passed and its Python unit suite passed 13/13.
 
-Core (97), scene (55), C2 (6), C3 (10), A2 (32), PageFlip, and integration-lane focused counts are not recorded as final because files are changing or need re-audit. Exact final commands, counts, failures, skips, and classifications: `[PENDING_FINAL_GATE]`.
+The final concurrent coordinator sweep passed `npm test` with **59 files / 452 tests**, plus `npm run typecheck`, `npm run lint`, `npm run format:check`, and `git diff --check`, all at exit 0. PageFlip also passed its final 34-test focused selection. Earlier lane-specific counts remain useful diagnostic evidence, but the accepted unit/component result is the integrated 59-file / 452-test run.
 
 ## 17. Browser validation
 
-The coordinator exclusively owns the browser, server, ports, and database copy. Phase 2 browser/E2E results, the mandatory two-host fixture, PageFlip runtime proof, collision-surface proof, and production-context component flows: `[PENDING_FINAL_GATE]`.
+The coordinator exclusively owned the browser, server, ports, and database copy. The final isolated Playwright run completed in 6.2 minutes with **48 passed / 30 intentional skips / 0 failures** across 78 cases. It included both Phase 1 and Phase 2 suites, the two-host and collision surfaces, real PageFlip runtime proof, production-context component flows, and all four Journal cases. The final PageFlip-focused browser shard additionally passed 2/2 in Chromium and 2/2 in WebKit.
 
 ## 18. Accessibility
 
-Required proof covers semantic roles, interactive controls, decorative child hiding, hidden PageFlip source exclusion, visible page readability, focus order, dialog trap/return, exact trigger return, route focus after navigation, readable fallback, reduced state, and non-motion state signals at all required surfaces. Result: `[PENDING_FINAL_GATE]`.
+Required proof covers semantic roles, interactive controls, decorative child hiding, hidden PageFlip source exclusion, visible page readability, focus order, dialog trap/return, exact trigger return, route focus after navigation, readable fallback, reduced state, and non-motion state signals at all required surfaces. These assertions passed in the final unit/component sweep and the zero-failure integrated Playwright run, including all six required viewports in both Chromium and WebKit.
 
 ## 19. Lifecycle and performance
 
-The release protocol requires at least 20 cycles each of host mount/unmount, scene play/cleanup, Artifact Inspection open/close, PageFlip mount/update/unmount, and a non-mutating Quartermaster overlay, with registries/claims/targets/handles/clones/listeners/timers returning to baseline. It also requires the six viewport checks and production-profile performance evidence. Result: `[PENDING_FINAL_GATE]`.
+The 20-cycle host, scene, Artifact Inspection, PageFlip, and Quartermaster lifecycle suites passed within the final 59-file / 452-test run. The integrated Journal cleanup assertion remained below its 250 ms cleanup threshold; its complete browser case passed in 12.8 seconds. All six viewport checks passed in both browser projects. The canonical production build exited 0, compiled in 7.3 seconds, completed TypeScript in 22.2 seconds, and emitted 30 static pages; two production starts each returned HTTP 200 for `/`, HTTP 404 for the development-only `/dev/animations`, then released port 3200.
 
 ## 20. Requirement tracking
 
@@ -139,11 +140,11 @@ The release protocol requires at least 20 cycles each of host mount/unmount, sce
 | Coverage exact / combined / partial    | 184 / 47 / 7          |
 | Accepted unmapped / unresolved         | 0 / 0                 |
 
-Current normalized status is intentionally conservative pending re-audits: matrix 259 `architecture_blocked`, 90 `partially_implemented`, 10 `not_started`, 2 `blocked`; OA ledger 159 `architecture_blocked`, 67 `partially_implemented`, 10 `not_started`, 2 `blocked`. Claim the Deck implemented/validated/blocked totals and the number promoted to `architecture_ready` are `[PENDING_FINAL_GATE]`; they will be derived from the final canonical artifacts rather than estimated.
+The canonical artifacts intentionally retain conservative program-wide status: matrix 252 `architecture_ready`, 47 `validated`, 50 `partially_implemented`, 10 `not_started`, and 2 `blocked`; OA ledger 151 `architecture_ready`, 1 `validated`, 74 `partially_implemented`, 10 `not_started`, and 2 `blocked`. Of the 71 matrix rows assigned to Phase 2, 47 directly evidenced runtime/contract rows are `validated`, 23 boundary-enabled rows are `architecture_ready`, and 1 remains `partially_implemented`. `architecture_ready` rows retain blank visual implementation commits and planned visual validation. This preserves the distinction between accepted Phase 2 runtime architecture and later visual, asset, trigger, progression, and production-performance implementation.
 
 ## 21. Files changed
 
-Phase 2 implementation and evidence currently touch these exact owned groups; the final Git diff is authoritative and remains `[PENDING_FINAL_GATE]`:
+Phase 2 implementation and evidence touch these exact owned groups. Implementation commit `d529b59e06ad1f2d736f6e1b888ebb78f169dcc0` is authoritative for the source change set; the evidence-document and synchronization follow-up commits will be recorded by the coordinator:
 
 - `src/animation/hosts/SceneHost.tsx`, `SceneHostContext.ts`, `scene-host-registry.ts`, `scene-host-types.ts`, and their tests;
 - `src/animation/core/animation-types.ts`, `ownership.ts`, `target-preflight.ts`, `final-state-handoff.ts`, `presentation-telemetry.ts`, `metrics.ts`, and their focused tests;
@@ -163,18 +164,17 @@ The final report will distinguish copied Phase 1 snapshot paths, Phase 2 task-au
 ## 22. Deviations
 
 - The Phase 1 source arrived as a validated working-tree snapshot rather than an application commit; it was preserved byte-for-byte in the isolated worktree.
-- The first V2 and V3 independent audits returned fix-needed rather than pass. Repairs are being applied before final validation.
-- `architecture_ready` promotion is deferred until repair re-audits pass; later visuals are not marked implemented.
+- The first V2 and V3 independent audits returned fix-needed rather than pass. Their findings were repaired and the repaired integrated tree passed the focused and full unit/browser evidence described above.
+- `architecture_ready` promotion remains deferred for later visuals; later visual work is not marked implemented by this architecture phase.
+- The combined `npm run validate` process exited 1 only after its format, lint, typecheck, 59-file / 452-test, assets, database/backfill, and 48-pass Playwright stages succeeded: the temporary worktree `node_modules` junction caused the production build worker/Turbopack environment failure. The junction was removed, dependencies and Prisma client were generated locally, and the canonical standalone production build plus two restart probes passed. The command itself is therefore recorded as exit 1 / `environment`, while the composite acceptance gates are passed.
 - No production Rive visual art, full Phase 3 persistent progression integration, or Phase 4 platform-motion program is included.
 
 ## 23. Known limitations
 
-1. V2 re-audit must pass the Artifact Inspection export/stale-callback, altar ID/inertness, Companion markers, and engraving-property repairs.
-2. V3 re-audit must pass multi-property permit fail-close, identity-only Artifact Award handoff, and 13 Quartermaster dual-host caller evidence.
-3. Motion runtime-surface gating awaits the final hook integration/retry.
-4. All integrated runtime/browser/database/build/full-validation gates remain pending.
-5. Production Rive visuals remain fallback-only where assets are absent.
-6. Future-contract visuals, complete Phase 3 all-event/all-section integration, Phase 4 platform motion, full performance tuning, and final art polish remain later work.
+1. The combined `npm run validate` command is not a zero-exit pass; its junction-induced production-build failure is classified as `environment` and is superseded for build acceptance by the successful canonical standalone build/restart evidence.
+2. Coordinator-owned documentation/chat synchronization, evidence commit, remote push, and final remote-SHA verification remain to be recorded.
+3. Production Rive visuals remain fallback-only where assets are absent.
+4. Future-contract visuals, complete Phase 3 all-event/all-section integration, Phase 4 platform motion, full device-performance tuning, and final art polish remain later work.
 
 ## 24. Phase 3 handoff
 

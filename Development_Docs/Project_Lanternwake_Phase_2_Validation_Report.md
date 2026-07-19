@@ -1,15 +1,16 @@
 # Project Lanternwake Phase 2 Validation Report
 
-Status: **draft; Claim the Deck is not yet release-validated**
+Status: **composite validation accepted; repository synchronization and remote publication pending**
 
 Date: 2026-07-18  
 Branch: `codex/project-lanternwake-phase-2-claim-the-deck`  
 Starting commit: `fb8eb4ac33f4a44028fe82fb08df0ac0e5021db6`  
-Ending commit: `[PENDING_FINAL_GATE]`
+Implementation commit: `d529b59e06ad1f2d736f6e1b888ebb78f169dcc0`
+Evidence-document follow-up commit: to be recorded after commit
 
 ## 1. Truth boundary
 
-This report distinguishes accepted current evidence from planned or in-progress checks. A patch, worker completion, test inventory, historical Phase 1 result, skipped case, or fix-needed audit is not a Phase 2 pass. Every `[PENDING_FINAL_GATE]` marker must be replaced with an exact command, exit code, counts, environment, and classification before Claim the Deck can be declared complete.
+This report distinguishes accepted current evidence from planned or in-progress checks. A patch, worker completion, test inventory, historical Phase 1 result, skipped case, or fix-needed audit is not a Phase 2 pass. Accepted evidence below records the exact command family, exit classification, counts, environment, and recovery proof. The combined `npm run validate` process is explicitly **not** called a zero-exit pass: it exited 1 at the production-build step because the temporary worktree `node_modules` junction was incompatible with that worker/Turbopack environment. Every substantive subgate passed either before that point or in the canonical junction-free recovery described below.
 
 Phase 1 validation remains valid for Phase 1 only. Its `npm run validate` gate passed with 46 Vitest files / 304 tests and 27 Playwright passes / 17 intentional skips, plus assets, isolated database, seed/backfill/history, build/restart, launcher preservation, and cleanup. It does not prove Phase 2 host isolation, ownership, PageFlip, component, or final-state behavior.
 
@@ -42,56 +43,56 @@ This evidence proves artifact integrity and zero accepted requirements lost or u
 
 ### 2.2 Bounded focused repair evidence
 
-A C4 component-repair lane reported a focused gate of **3 files / 8 tests**, plus lint, Prettier, and diff cleanliness. The exact coordinator replay command and integrated-state result are `[PENDING_FINAL_GATE]`; this lane result is retained as focused evidence but is not counted as final acceptance.
+A C4 component-repair lane reported a focused gate of **3 files / 8 tests**, plus lint, Prettier, and diff cleanliness. Its repaired paths were subsequently included in the coordinator's accepted integrated `npm test` result: **59 files / 452 tests, exit 0**.
 
-Core (97 tests), scene (55), C2 (6), C3 (10), A2 (32), PageFlip, and integration-lane counts are intentionally not promoted: their files are still changing or require re-audit. Exact results: `[PENDING_FINAL_GATE]`.
+Earlier core, scene, C2, C3, A2, and integration-lane counts remain diagnostic history. The accepted combined result is 59 Vitest files / 452 tests at exit 0. PageFlip additionally passed its final 34-test focused selection and four browser cases: 2/2 in Chromium and 2/2 in WebKit.
 
 ## 3. Required command/result matrix
 
-| Gate                | Exact command or selection                                           | Status                 | Counts / exit          | Classification / note                                              |
-| ------------------- | -------------------------------------------------------------------- | ---------------------- | ---------------------- | ------------------------------------------------------------------ |
-| Format              | `npm run format:check`                                               | `[PENDING_FINAL_GATE]` | `[PENDING_FINAL_GATE]` | Integrated tree only                                               |
-| Lint                | `npm run lint`                                                       | `[PENDING_FINAL_GATE]` | `[PENDING_FINAL_GATE]` | Integrated tree only                                               |
-| Typecheck           | `npm run typecheck`                                                  | `[PENDING_FINAL_GATE]` | `[PENDING_FINAL_GATE]` | Strict TypeScript gate                                             |
-| Unit tests          | `npm test` or exact final Vitest selections                          | `[PENDING_FINAL_GATE]` | `[PENDING_FINAL_GATE]` | Record files/tests/failures/skips                                  |
-| Component tests     | exact high-risk component Vitest selections                          | `[PENDING_FINAL_GATE]` | `[PENDING_FINAL_GATE]` | Chart, Log, Artifact/Altar, Companion, Quartermaster, Access/login |
-| SceneHost tests     | host registry, React boundary, target preflight, two-host selections | `[PENDING_FINAL_GATE]` | `[PENDING_FINAL_GATE]` | Mandatory host/isolation proof                                     |
-| Ownership tests     | ownership, director permits, runtime-surface, collision selections   | `[PENDING_FINAL_GATE]` | `[PENDING_FINAL_GATE]` | Must include multi-property fail-close and identity-only handoff   |
-| PageFlip tests      | boundary, book, showcase, consumer selections                        | `[PENDING_FINAL_GATE]` | `[PENDING_FINAL_GATE]` | All 14 required cases plus clone interception                      |
-| Accessibility tests | automated axe/semantic plus keyboard/focus selections                | `[PENDING_FINAL_GATE]` | `[PENDING_FINAL_GATE]` | A skip is not a pass                                               |
-| Browser tests       | exact Playwright projects/specs/greps                                | `[PENDING_FINAL_GATE]` | `[PENDING_FINAL_GATE]` | Serialized owner and isolated database                             |
-| Viewport tests      | six required viewport projects/checkpoints                           | `[PENDING_FINAL_GATE]` | `[PENDING_FINAL_GATE]` | 2560x1440, 1920x1080, 1440x900, 430x932, 390x844, 844x390          |
-| Lifecycle tests     | exact 20-cycle harness commands                                      | `[PENDING_FINAL_GATE]` | `[PENDING_FINAL_GATE]` | Five required lifecycle groups                                     |
-| Asset contracts     | `npm run assets:validate`                                            | `[PENDING_FINAL_GATE]` | `[PENDING_FINAL_GATE]` | Missing production art stays disclosed                             |
-| Build               | `npm run build`                                                      | `[PENDING_FINAL_GATE]` | `[PENDING_FINAL_GATE]` | Production build/restart proof                                     |
-| E2E                 | `npm run test:e2e` or exact final Playwright command                 | `[PENDING_FINAL_GATE]` | `[PENDING_FINAL_GATE]` | Database mutation serialized                                       |
-| Full validation     | `npm run validate`                                                   | `[PENDING_FINAL_GATE]` | `[PENDING_FINAL_GATE]` | One coordinator-owned integrated gate                              |
-| Git SHA / remote    | exact `git` verification                                             | `[PENDING_FINAL_GATE]` | `[PENDING_FINAL_GATE]` | No implementation commit claimed yet                               |
-| Chat/docs sync      | synchronizer dry-run, live run, validate                             | `[PENDING_FINAL_GATE]` | `[PENDING_FINAL_GATE]` | Coordinator-only finalization                                      |
+| Gate                | Exact command or selection                                           | Status                             | Counts / exit                                     | Classification / note                                                    |
+| ------------------- | -------------------------------------------------------------------- | ---------------------------------- | ------------------------------------------------- | ------------------------------------------------------------------------ |
+| Format              | `npm run format:check`                                               | **passed**                         | exit 0                                            | Final integrated concurrent sweep                                        |
+| Lint                | `npm run lint`                                                       | **passed**                         | exit 0                                            | Final integrated concurrent sweep                                        |
+| Typecheck           | `npm run typecheck`                                                  | **passed**                         | exit 0                                            | Strict TypeScript gate                                                   |
+| Unit tests          | `npm test`                                                           | **passed**                         | 59 files / 452 tests; exit 0                      | Final integrated Vitest result                                           |
+| Component tests     | high-risk component selections included in `npm test`                | **passed**                         | included in 59 files / 452 tests                  | Chart, Log, Artifact/Altar, Companion, Quartermaster, Access/login       |
+| SceneHost tests     | host registry, React boundary, target preflight, two-host selections | **passed**                         | included in 59 files / 452 tests                  | Mandatory host/isolation proof                                           |
+| Ownership tests     | ownership, director permits, runtime-surface, collision selections   | **passed**                         | included in 59 files / 452 tests                  | Multi-property fail-close and identity-only handoff included             |
+| PageFlip tests      | boundary, book, showcase, consumer selections                        | **passed**                         | 34 focused tests; exit 0                          | Four focused browser cases also passed                                   |
+| Accessibility tests | semantic, keyboard, focus, reduced-state, and PageFlip checks        | **passed**                         | unit plus zero-failure browser evidence           | Intentional project skips are separately counted, not promoted as passes |
+| Browser tests       | final integrated Playwright selection                                | **passed**                         | 48 passed / 30 intentional skips / 0 failed; 6.2m | Serialized owner and isolated database                                   |
+| Viewport tests      | six required viewport checkpoints in Chromium and WebKit             | **passed**                         | 6 viewports in both projects                      | 2560x1440, 1920x1080, 1440x900, 430x932, 390x844, 844x390                |
+| Lifecycle tests     | five required 20-cycle groups plus Journal cleanup                   | **passed**                         | included in 452 tests; cleanup below 250 ms       | Journal browser case passed in 12.8 s                                    |
+| Asset contracts     | `npm run assets:validate` stage                                      | **passed**                         | exit 0                                            | Missing future production art remains disclosed                          |
+| Build               | junction-free `npm run build`, then two production restart probes    | **passed**                         | exit 0; 7.3 s compile; 22.2 s TS; 30 static pages | `/` 200 and `/dev/animations` 404 twice; port 3200 released              |
+| E2E                 | final integrated Playwright selection                                | **passed**                         | 48 passed / 30 intentional skips / 0 failed       | Database mutation serialized and expected mutation observed              |
+| Full validation     | `npm run validate`                                                   | **accounted environment exit**     | exit 1 after all pre-build stages passed          | Junction-induced build-worker failure; canonical build/restarts passed   |
+| Git SHA / remote    | `git rev-parse HEAD`                                                 | **local implementation committed** | `d529b59e06ad1f2d736f6e1b888ebb78f169dcc0`        | Evidence commit and remote proof pending coordinator finalization        |
+| Chat/docs sync      | synchronizer dry-run, live run, validate                             | **pending finalization**           | not yet run for this evidence update              | Coordinator-only finalization; no success claimed                        |
 
 ## 4. SceneHost and target gate
 
 Required: unique/duplicate registration; immutable invocation identity; host-local resolution; identical names across hosts; stale and outside-host rejection; detached/nested cleanup; external handles; unmount; idempotency; simultaneous Player/Quartermaster hosts; showcase isolation; and exact target evidence without broad re-query.
 
-Mandatory two-host fixture result: `[PENDING_FINAL_GATE]`.
+The mandatory two-host fixture and target-isolation cases passed within the final 59-file / 452-test integrated sweep and the zero-failure Phase 2 Playwright selection.
 
 ## 5. Ownership and Motion gate
 
 Required runtime pairs are GSAP/Motion, GSAP/CSS, Motion/CSS, Motion/PageFlip, GSAP/PageFlip, GSAP/Rive container, GSAP/Lottie container, Motion-layout/GSAP-transform, dnd-kit/Motion-transform, and dnd-kit/GSAP-transform. Each pair must prove atomic grant/reject, write prevention, multi-property fail-close, release/reclaim, stale/interruption/fallback/unmount cleanup, and valid nested wrappers.
 
-Runtime-owned Motion surface lease result: `[PENDING_FINAL_GATE]`.
+The runtime-owned Motion surface lease, multi-property permit fail-close, collision, revocation, and identity-only handoff cases passed within the final 59-file / 452-test integrated sweep.
 
 ## 6. PageFlip gate
 
 Required cases: hidden-source exclusion; visible-current qualification; stale rejection; current/off-page qualification; unique IDs/IDREFs; accessibility tree; manual, keyboard and programmatic StPageFlip ownership; deprecated fake curls; update and orientation identity; and unmount release. Synchronous temporary-clone interception, fail-closed observation, generation revocation, focus/page preservation, and 20-cycle baseline return are required.
 
-Result: `[PENDING_FINAL_GATE]`.
+Result: **passed**. The final focused PageFlip selection passed 34 tests. Full-mode and tombstone runtime cases passed 2/2 in Chromium and 2/2 in WebKit, and the integrated Playwright gate had no failures.
 
 ## 7. Final-state and access gate
 
 Required: success response, accepted pose, delayed route, no snapback, route/auth failure, abort, unmount, reduced mode, repeated submission, all five canonical final-state policies, exact semantic identity, handoff-before-cleanup, retained claims until readability, focus recovery, and no false success.
 
-Result: `[PENDING_FINAL_GATE]`.
+Result: **passed** within the final unit/component sweep and the integrated Phase 2 Playwright selection, including accepted-pose hold, failure recovery, route-focus timing, reduced mode, and no-snapback checks.
 
 ## 8. High-risk component gate
 
@@ -104,25 +105,25 @@ Required boundaries:
 - Quartermaster invocation-local command host and 13 source-grounded dual-host callers; and
 - Access/login Motion state and bounded GSAP cinematic child.
 
-Result: `[PENDING_FINAL_GATE]`.
+Result: **passed** within the final 59-file / 452-test integrated sweep and the zero-failure Phase 2 Playwright selection. This includes the repaired V2/V3 component boundaries and Quartermaster transition geometry.
 
 ## 9. Accessibility and viewport gate
 
 Required viewports: 2560x1440, 1920x1080, 1440x900, 430x932, 390x844, and 844x390. Required accessibility assertions cover roles, control interactivity, decorative hiding, PageFlip source exclusion, visible-page readability, focus order, dialog trap/return, route focus timing, readable fallbacks, reduced motion, and non-motion state signals.
 
-Result: `[PENDING_FINAL_GATE]`.
+Result: **passed**. All six required viewport checkpoints passed in both Chromium and WebKit, together with the semantic, keyboard, focus, reduced-state, and visible-current-page assertions.
 
 ## 10. Lifecycle and performance gate
 
 Run at least 20 cycles each of host mount/unmount, scene play/cleanup, Artifact Inspection open/close, PageFlip mount/update/unmount, and a non-mutating Quartermaster overlay. Host, target, handle, generation, claim, runtime, clone, listener, timer, and retained-node counts must return to baseline. Production-profile performance must be recorded separately.
 
-Result: `[PENDING_FINAL_GATE]`.
+Result: **passed**. All five 20-cycle lifecycle groups are included in the final 59-file / 452-test run. The Journal cleanup assertion stayed below 250 ms, and its complete integrated browser case passed in 12.8 seconds. Production build/start evidence is recorded separately; broader device-specific performance tuning remains future-phase work.
 
 ## 11. Database and runtime isolation
 
 Before mutation-capable browser work, record a unique copied database absolute path, isolation nonce through the running app, server PID/port, canonical database hash/size/mtime before and after, SQLite family membership, and cleanup. An alternate worktree or port alone is not isolation.
 
-Result: `[PENDING_FINAL_GATE]`.
+Result: **isolation verified**. The final report records `status=isolation-verified`, `browserSucceeded=true`, `canonicalDatabaseUnchanged=true`, `canonicalDatabaseFamilyUnchanged=true`, `expectedMutation=true`, `observedMutation=true`, and `server identityVerified=true` on port 3100. The preserved canonical database SHA-256 was `cbcdbb6a8150643b874ac3913743601e27e149f71c6b6a12941a71a9c907cf92`.
 
 ## 12. Open fix-needed audits
 
@@ -137,7 +138,7 @@ Baseline audit evidence: 16/16 checks executed with a **fix-needed** verdict. Op
 5. permanent Companion owner markers; and
 6. invalid engraving ownership property.
 
-Repairs exist or are landing. Re-audit: `[PENDING_FINAL_GATE]`.
+The six repairs landed. Focused re-audit passed, and the repaired paths passed the final integrated 59-file / 452-test sweep plus the zero-failure browser gate.
 
 ### V3 permit and caller audit
 
@@ -147,7 +148,7 @@ Baseline audit evidence: 55/55 checks executed with a **fix-needed / release-blo
 2. `artifact-award` must use identity-only handoff for the Motion-owned destination; and
 3. all 13 Quartermaster dual-host callers require source-grounded proof.
 
-Repairs exist or are landing. Re-audit: `[PENDING_FINAL_GATE]`.
+The three release-blocking repairs landed. Focused re-audit passed, and the repaired paths passed the final integrated 59-file / 452-test sweep plus the zero-failure browser gate.
 
 Neither baseline audit is a pass and neither repair is accepted without the re-audit.
 
@@ -163,7 +164,7 @@ Use only:
 - `blocked` - a named prerequisite prevents execution; or
 - `unresolved` - evidence is insufficient to classify safely.
 
-Current classified failures: V2 and V3 are `task-regression` / fix-needed until repaired re-audits pass. All unrun final gates are `blocked` by integration readiness, not passed or skipped.
+Resolved task regressions included the initial Journal probe contamination and Phase 1 skip time-of-check/time-of-use behavior; both repairs passed focused checks and the integrated final Playwright gate. The remaining nonzero command is the `npm run validate` production-build stage and is classified `environment`: the temporary worktree dependency junction was incompatible with that build worker/Turbopack environment. After removing the junction, installing local dependencies, and regenerating Prisma, the canonical standalone build and both restart probes passed. No test failure remains unresolved.
 
 ## 14. Requirement-tracking result
 
@@ -179,8 +180,8 @@ Current classified failures: V2 and V3 are `task-regression` / fix-needed until 
 | Exact / combined / partial coverage   | 184 / 47 / 7            |
 | Accepted unmapped / unresolved        | 0 / 0                   |
 
-Claim the Deck requirements implemented / validated / blocked, production scenes migrated, SceneHosts introduced, ownership conflicts fixed, and OA rows promoted to `architecture_ready`: `[PENDING_FINAL_GATE]`. Final values must be derived from the canonical post-validation matrix/ledger and source inventory.
+The canonical artifacts remain deliberately conservative: matrix 252 `architecture_ready`, 47 `validated`, 50 `partially_implemented`, 10 `not_started`, and 2 `blocked`; OA ledger 151 `architecture_ready`, 1 `validated`, 74 `partially_implemented`, 10 `not_started`, and 2 `blocked`. Of the 71 Phase 2 matrix rows, 47 directly evidenced runtime/contract rows are `validated`, 23 boundary-enabled rows are `architecture_ready`, and 1 remains `partially_implemented`. Architecture-ready visuals keep blank implementation commits and planned visual validation; the accepted runtime-architecture evidence does not claim later visuals, production art, triggers, progression integration, or full device-performance work.
 
 ## 15. Current verdict
 
-**NOT YET COMPLETE.** Requirement reconciliation is green, but V2/V3 repair re-audits and every integrated runtime/repository gate remain pending. This draft must not be used to start Phase 3 or Phase 4 automatically.
+**PHASE 2 IMPLEMENTATION AND COMPOSITE VALIDATION ACCEPTED; REPOSITORY FINALIZATION PENDING.** Reconciliation, V2/V3 repaired re-audits, static gates, 59-file / 452-test Vitest, isolated 48-pass Playwright, PageFlip focused browser proof, assets, canonical production build, and restart/cleanup evidence are green. The combined `npm run validate` command remains truthfully recorded as environment exit 1 rather than a pass. The coordinator must still commit this evidence, run the required chat/document synchronization workflow, push the branch, and verify the remote SHA before the repository handoff is complete. Phase 3 or Phase 4 must not start automatically from this report.
