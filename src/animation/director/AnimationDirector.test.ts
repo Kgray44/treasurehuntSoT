@@ -34,6 +34,8 @@ const harness = vi.hoisted(() => {
     lastContextHadRoot: false,
     lastBuildTargetUse: undefined as SceneTargetUseResult<void> | undefined,
     lastOptionalTargetCount: undefined as number | undefined,
+    beforeSemanticEmit: undefined as (() => void) | undefined,
+    semanticEmitters: [] as Array<(label: string) => void>,
     successLabels: ["semantic-ready", "scene-complete"],
   };
 
@@ -85,6 +87,7 @@ const harness = vi.hoisted(() => {
     private emitOnce() {
       if (this.emitted) return;
       this.emitted = true;
+      state.beforeSemanticEmit?.();
       this.emit?.();
     }
 
@@ -141,6 +144,7 @@ const harness = vi.hoisted(() => {
         if (state.cleanupThrows) throw new Error("cleanup failed");
       });
       if (state.builderThrows) throw new Error("builder failed");
+      state.semanticEmitters.push(context.emitLabel);
       return timeline("opening", () => context.emitLabel("opening-ready"));
     },
     buildIdle: () => {
@@ -149,6 +153,7 @@ const harness = vi.hoisted(() => {
     },
     buildSuccess: (context: { emitLabel: (label: string) => void }) => {
       built.push("success");
+      state.semanticEmitters.push(context.emitLabel);
       return timeline("success", () => state.successLabels.forEach((label) => context.emitLabel(label)));
     },
     buildFailure: (context: { emitLabel: (label: string) => void }) => {
@@ -178,7 +183,12 @@ vi.mock("./scene-registry", () => ({
   getSceneDefinition: () => harness.definition(),
 }));
 
-import { AnimationDirector } from "./AnimationDirector";
+import {
+  ANIMATION_SEMANTIC_LABEL_EVENT_NAME,
+  AnimationDirector,
+  type AnimationSemanticLabelEvent,
+  type AnimationSemanticLabelEventDetail,
+} from "./AnimationDirector";
 
 const visibleRule = {
   mustBeConnected: true,
@@ -266,6 +276,18 @@ function director(mode: "full" | "gentle" | "reduced" = "full") {
   return value;
 }
 
+function observeSemanticLabels() {
+  const events: AnimationSemanticLabelEventDetail[] = [];
+  const listener = ((event: Event) => {
+    events.push((event as AnimationSemanticLabelEvent).detail);
+  }) as EventListener;
+  window.addEventListener(ANIMATION_SEMANTIC_LABEL_EVENT_NAME, listener);
+  return {
+    events,
+    stop: () => window.removeEventListener(ANIMATION_SEMANTIC_LABEL_EVENT_NAME, listener),
+  };
+}
+
 describe("AnimationDirector presentation receipts", () => {
   beforeEach(() => {
     harness.built.length = 0;
@@ -285,6 +307,8 @@ describe("AnimationDirector presentation receipts", () => {
     harness.state.lastContextHadRoot = false;
     harness.state.lastBuildTargetUse = undefined;
     harness.state.lastOptionalTargetCount = undefined;
+    harness.state.beforeSemanticEmit = undefined;
+    harness.state.semanticEmitters.length = 0;
     harness.state.successLabels = ["semantic-ready", "scene-complete"];
     resetAnimationMetrics();
     resetPresentationTelemetry();
@@ -296,6 +320,7 @@ describe("AnimationDirector presentation receipts", () => {
     resetAnimationMetrics();
     resetPresentationTelemetry();
     vi.useRealTimers();
+    vi.unstubAllGlobals();
   });
 
   it("returns a successful receipt with operation result, labels, target evidence, and compatibility fields", async () => {
@@ -332,6 +357,104 @@ describe("AnimationDirector presentation receipts", () => {
     expect(receipt.semanticLabelsReached).toEqual(["opening-ready", "semantic-ready", "scene-complete"]);
     expect(operation).toHaveBeenCalledOnce();
     expect(readAnimationMetrics().gsap).toBe(0);
+  });
+
+  it("dispatches frozen, content-free semantic label events in exact occurrence order", async () => {
+    const { root } = fixture();
+    const observed = observeSemanticLabels();
+    harness.state.successLabels = ["semantic-ready", "pulse", "pulse", "scene-complete"];
+
+    const receipt = await director("gentle").play("player-access", {
+      root,
+      eventOrActionId: "event-17",
+      requestSource: "replay",
+      display: {
+        chapterTitle: "private chapter title",
+        objective: "private objective",
+        campaignSecret: "private campaign data",
+      },
+    });
+    observed.stop();
+
+    expect(observed.events.map(({ label }) => label)).toEqual([
+      "opening-ready",
+      "semantic-ready",
+      "pulse",
+      "pulse",
+      "scene-complete",
+    ]);
+    expect(observed.events).toHaveLength(5);
+    for (const detail of observed.events) {
+      expect(Object.keys(detail).sort()).toEqual(
+        [
+          "version",
+          "sceneName",
+          "sceneInstanceId",
+          "hostId",
+          "hostKind",
+          "eventOrActionId",
+          "requestSource",
+          "label",
+          "elapsedMs",
+          "motionLevel",
+        ].sort(),
+      );
+      expect(detail).toMatchObject({
+        version: 1,
+        sceneName: "player-access",
+        sceneInstanceId: receipt.sceneInstanceId,
+        hostId: "test-host-id",
+        hostKind: "test-host",
+        eventOrActionId: "event-17",
+        requestSource: "replay",
+        motionLevel: "gentle",
+      });
+      expect(detail.elapsedMs).toBeGreaterThanOrEqual(0);
+      expect(Object.isFrozen(detail)).toBe(true);
+    }
+    expect(JSON.stringify(observed.events)).not.toContain("private");
+    expect(receipt.semanticLabelsReached).toEqual(["opening-ready", "semantic-ready", "pulse", "scene-complete"]);
+  });
+
+  it("suppresses semantic labels emitted after abort or a completed instance becomes stale", async () => {
+    const { root } = fixture();
+    const observed = observeSemanticLabels();
+    const abort = new AbortController();
+    harness.state.autoComplete.delete("opening");
+    const pending = director().play("player-access", { root, signal: abort.signal });
+    await waitFor(() => expect(observed.events.map(({ label }) => label)).toEqual(["opening-ready"]));
+
+    abort.abort();
+    const aborted = await pending;
+    const abortedEmitters = [...harness.state.semanticEmitters];
+    abortedEmitters.forEach((emit) => emit("stale-after-abort"));
+
+    expect(aborted.outcome).toBe("aborted");
+    expect(observed.events.map(({ label }) => label)).toEqual(["opening-ready"]);
+
+    harness.state.autoComplete.add("opening");
+    harness.state.semanticEmitters.length = 0;
+    const completed = await director().play("player-access", { root: fixture().root });
+    const labelsAtCompletion = observed.events.map(({ label }) => label);
+    harness.state.semanticEmitters.forEach((emit) => emit("stale-after-completion"));
+    observed.stop();
+
+    expect(completed.outcome).toBe("presented");
+    expect(observed.events.map(({ label }) => label)).toEqual(labelsAtCompletion);
+  });
+
+  it("keeps semantic label emission safe when no browser window exists", async () => {
+    const { root } = fixture();
+    harness.state.beforeSemanticEmit = () => {
+      harness.state.beforeSemanticEmit = undefined;
+      vi.stubGlobal("window", undefined);
+    };
+
+    const receipt = await director().play("player-access", { root });
+    vi.unstubAllGlobals();
+
+    expect(receipt).toMatchObject({ outcome: "presented" });
+    expect(receipt.semanticLabelsReached).toEqual(["opening-ready", "semantic-ready", "scene-complete"]);
   });
 
   it("requires explicit, agreeing production host identity before preflight", async () => {
@@ -737,12 +860,14 @@ describe("AnimationDirector presentation receipts", () => {
     const authority = Object.freeze({ providerId: hosts.providerId, hosts, ownership: hosts.ownership });
     const value = new AnimationDirector("full", authority);
     directors.push(value);
+    const observed = observeSemanticLabels();
 
     const receipt = await value.play("player-access", {
       root,
       sceneHost: host,
       finalStateRuntime: { commitFinalState: () => undefined },
     });
+    observed.stop();
 
     expect(receipt).toMatchObject({
       outcome: "presented",
@@ -759,6 +884,18 @@ describe("AnimationDirector presentation receipts", () => {
     });
     expect(receipt.targetReport.observations[0]?.visibleCount).toBe(1);
     expect(receipt.sceneInstanceId).toContain("player-access-live-1-");
+    expect(observed.events).toEqual([
+      expect.objectContaining({
+        sceneInstanceId: receipt.sceneInstanceId,
+        hostId: host.hostId,
+        hostKind: "access",
+        eventOrActionId: null,
+        requestSource: "automatic",
+        label: "opening-ready",
+      }),
+      expect.objectContaining({ label: "semantic-ready" }),
+      expect.objectContaining({ label: "scene-complete" }),
+    ]);
     expect(harness.state.lastContextHadRoot).toBe(false);
     expect(harness.state.lastBuildTargetUse).toEqual({ status: "applied", value: undefined });
     expect(target).toHaveAttribute("data-v2-builder-used", "yes");

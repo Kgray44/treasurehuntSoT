@@ -1,4 +1,4 @@
-import { act, cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { act, cleanup, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { useEffect, useMemo } from "react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type {
@@ -10,24 +10,44 @@ import type {
   PresentationOutcome,
   PresentationReceipt,
 } from "@/animation/core/animation-types";
-import type { PublicSnapshot, ReplayablePresentation } from "@/domain/story";
-import { sceneContracts } from "@/animation/director/scene-registry";
+import type { ClientProgressEvent, PublicSnapshot, ReplayablePresentation } from "@/domain/story";
 import { AnimationAuthorityContext, useOptionalSceneHost } from "@/animation/hosts/SceneHostContext";
 import { SceneHost, useSceneTargetRegistration } from "@/animation/hosts/SceneHost";
 import { SceneHostRegistry } from "@/animation/hosts/scene-host-registry";
 import type { ExternalTargetExportRequest } from "@/animation/hosts/scene-host-types";
-import { PlayerExperience } from "./PlayerExperience";
+import {
+  PlayerExperience,
+  progressionReceiptEventName,
+  progressionStateEventName,
+  type ProgressionReceiptEventDetail,
+  type ProgressionStateEventDetail,
+} from "./PlayerExperience";
+import { policyForProgressionEvent } from "./progression/event-policy";
+import { phase3PlayerProgressEventTypes, type Phase3PlayerProgressEventType } from "./progression/contracts";
 
 const mocks = vi.hoisted(() => {
   return {
     play: vi.fn(),
     skip: vi.fn(),
+    cancel: vi.fn(),
     cycle: vi.fn(),
     motionMode: "reduced" as MotionMode,
     waitForJournalPhase: vi.fn(),
     audioPlayValidated: vi.fn(),
     audioStopAll: vi.fn(),
     sectionAnimationComplete: null as ((definition: string) => void) | null,
+    animationSnapshot: {
+      isPlaying: false,
+      isPaused: false,
+      scene: null as AnimationSceneName | null,
+      label: "idle",
+      progress: 0,
+      speed: 1,
+      mode: "reduced",
+      phase: "idle",
+      queueDepth: 0,
+      error: null,
+    },
   };
 });
 
@@ -222,123 +242,6 @@ function TestArtifactProducer({
   );
 }
 
-function ArrivalGeometrySibling() {
-  return (
-    <SceneHost kind="journal-opening" hostKey="test-arrival-geometry-sibling" data-testid="arrival-geometry-sibling">
-      <TestRegisteredTarget
-        targetKey="test-sibling:title"
-        part="title"
-        kind="arrival"
-        itemKey="title"
-        allowedProperties={["clip-path", "opacity"]}
-      />
-      <TestRegisteredTarget
-        targetKey="test-sibling:arrival-copy"
-        part="arrival-copy"
-        kind="arrival"
-        itemKey="arrival-copy"
-        allowedProperties={["transform", "opacity"]}
-      />
-      <TestRegisteredTarget
-        targetKey="test-sibling:arrival-action"
-        part="arrival-action"
-        kind="arrival"
-        itemKey="arrival-action"
-        allowedProperties={["transform", "opacity"]}
-      />
-    </SceneHost>
-  );
-}
-
-function PlayerEventGeometrySibling() {
-  return (
-    <SceneHost
-      kind="player-progression"
-      hostKey="test-player-event-geometry-sibling"
-      data-testid="player-event-geometry-sibling"
-    >
-      <TestRegisteredTarget
-        targetKey="test-event-sibling:artifact-reveal"
-        part="artifact-reveal"
-        kind="player-event"
-        itemKey="artifact-reveal"
-        allowedProperties={["transform", "opacity"]}
-      />
-      <TestRegisteredTarget
-        targetKey="test-event-sibling:solved-stamp"
-        part="solved-stamp"
-        kind="player-event"
-        itemKey="solved-stamp"
-        allowedProperties={["transform", "opacity"]}
-      />
-      <TestRegisteredTarget
-        targetKey="test-event-sibling:undo-mark"
-        part="undo-mark"
-        kind="player-event"
-        itemKey="undo-mark"
-        allowedProperties={["transform", "opacity"]}
-      />
-      <TestRegisteredTarget
-        targetKey="test-event-sibling:workspace-light"
-        part="workspace-light"
-        kind="player-event"
-        itemKey="workspace-light"
-        allowedProperties={["opacity"]}
-      />
-      <TestRegisteredTarget
-        targetKey="test-event-sibling:command-light"
-        part="command-light"
-        kind="player-event"
-        itemKey="command-light"
-        allowedProperties={["opacity"]}
-      />
-    </SceneHost>
-  );
-}
-
-function geometryRect(x: number, y: number, width: number, height: number): DOMRect {
-  return {
-    x,
-    y,
-    width,
-    height,
-    top: y,
-    right: x + width,
-    bottom: y + height,
-    left: x,
-    toJSON: () => ({}),
-  } as DOMRect;
-}
-
-function installJournalOpeningGeometry() {
-  vi.spyOn(HTMLElement.prototype, "getBoundingClientRect").mockImplementation(function (this: HTMLElement) {
-    const openingHost = this.dataset.sceneHostKind === "journal-opening";
-    const sibling = this.dataset.testid === "arrival-geometry-sibling";
-    if (openingHost) {
-      if (this.style.display === "contents") return geometryRect(sibling ? 800 : 0, 0, 0, 0);
-      return geometryRect(sibling ? 800 : 0, 0, 560, 420);
-    }
-    const parentIsSibling = this.parentElement?.dataset.testid === "arrival-geometry-sibling";
-    if (this.dataset.scenePart) return geometryRect(parentIsSibling ? 820 : 20, 20, 160, 60);
-    return geometryRect(0, 0, 100, 100);
-  });
-}
-
-function installPlayerEventGeometry() {
-  vi.spyOn(HTMLElement.prototype, "getBoundingClientRect").mockImplementation(function (this: HTMLElement) {
-    const eventHost = this.classList.contains("player-event-host");
-    const siblingHost = this.dataset.testid === "player-event-geometry-sibling";
-    if (eventHost || siblingHost) {
-      if (this.style.display === "contents") return geometryRect(siblingHost ? 1_000 : 0, 0, 0, 0);
-      return geometryRect(siblingHost ? 1_000 : 0, 0, 800, 600);
-    }
-    if (this.dataset.testid?.startsWith("test-event-sibling:")) return geometryRect(1_020, 20, 120, 80);
-    if (this.dataset.scenePart) return geometryRect(20, 20, 120, 80);
-    if (this.dataset.sceneHostKind) return geometryRect(0, 0, 800, 600);
-    return geometryRect(0, 0, 100, 100);
-  });
-}
-
 function renderPlayer(initialSnapshot: PublicSnapshot, sibling: React.ReactNode = null) {
   return render(
     <TestAnimationAuthority>
@@ -378,19 +281,8 @@ vi.mock("motion/react", () => ({
 
 vi.mock("@/animation/director/useAnimationDirector", () => ({
   useAnimationDirector: () => ({
-    director: { play: mocks.play, skip: mocks.skip },
-    snapshot: {
-      isPlaying: false,
-      isPaused: false,
-      scene: null,
-      label: "idle",
-      progress: 0,
-      speed: 1,
-      mode: "reduced",
-      phase: "idle",
-      queueDepth: 0,
-      error: null,
-    },
+    director: { play: mocks.play, skip: mocks.skip, cancel: mocks.cancel },
+    snapshot: mocks.animationSnapshot,
   }),
 }));
 
@@ -727,23 +619,9 @@ function receipt(
   };
 }
 
-function chapterPlayCalls() {
-  return mocks.play.mock.calls.filter(([scene]) => scene === "chapter-release") as Array<
-    [AnimationSceneName, PlaySceneOptions<void>]
-  >;
-}
-
 async function openJournal() {
   fireEvent.click(screen.getByRole("button", { name: /Open the journal/ }));
   await screen.findByRole("button", { name: "Replay introduction" });
-}
-
-function mutationCalls(fetchMock: ReturnType<typeof vi.fn>) {
-  return fetchMock.mock.calls.filter(([input, init]) => {
-    const url = String(input);
-    const method = (init as RequestInit | undefined)?.method ?? "GET";
-    return method !== "GET" && !url.endsWith("/presence");
-  });
 }
 
 function viewedPostCalls(fetchMock: ReturnType<typeof vi.fn>) {
@@ -758,11 +636,90 @@ function viewedPostBodies(fetchMock: ReturnType<typeof vi.fn>) {
   ) as Array<Record<string, unknown>>;
 }
 
+function captureProgressionBrowserEvidence() {
+  const receipts: ProgressionReceiptEventDetail[] = [];
+  const states: ProgressionStateEventDetail[] = [];
+  const order: string[] = [];
+  const onReceipt = (event: Event) => {
+    const detail = (event as CustomEvent<ProgressionReceiptEventDetail>).detail;
+    receipts.push(detail);
+    order.push(`receipt:${detail.requestId}:${detail.status}`);
+  };
+  const onState = (event: Event) => {
+    const detail = (event as CustomEvent<ProgressionStateEventDetail>).detail;
+    states.push(detail);
+    order.push(`state:${detail.requestId ?? "none"}:${detail.transition}`);
+  };
+  window.addEventListener(progressionReceiptEventName, onReceipt);
+  window.addEventListener(progressionStateEventName, onState);
+  return {
+    receipts,
+    states,
+    order,
+    stop: () => {
+      window.removeEventListener(progressionReceiptEventName, onReceipt);
+      window.removeEventListener(progressionStateEventName, onState);
+    },
+  };
+}
+
+const matrixSections = ["journal", "chart", "treasures", "quests", "log", "finale"] as const;
+
+const matrixPayloads = {
+  CHAPTER_RELEASED: {
+    ordinal: 2,
+    title: "The Safe Lantern",
+    narrative: "Player-readable narrative.",
+    objective: "Follow the safe light.",
+    riddle: "What wakes without flame?",
+  },
+  CHAPTER_SOLVED: { ordinal: 2 },
+  ARTIFACT_AWARDED: {
+    key: "artifact-alpha",
+    name: "Alpha Compass",
+    description: "A safe awarded artifact.",
+    discoveryText: "Recovered at dawn.",
+  },
+  ARTIFACT_SILHOUETTE_REVEALED: {
+    key: "artifact-alpha",
+    safeName: "Unknown compass",
+    silhouetteLabel: "Compass silhouette",
+  },
+  ARTIFACT_CONNECTED: { key: "artifact-alpha", connectedArtifactKey: "artifact-beta" },
+  MAP_LOCATION_REVEALED: { key: "lantern-cove", name: "Lantern Cove", regionLabel: "The Shores" },
+  MAP_ROUTE_REVEALED: { key: "harbor-to-cove", fromKey: "harbor", toKey: "lantern-cove" },
+  SIDE_QUEST_DISCOVERED: { key: "lost-bell", title: "The Lost Bell" },
+  SIDE_QUEST_UPDATED: { key: "lost-bell", objectiveOrdinal: 1 },
+  SIDE_QUEST_COMPLETED: { key: "lost-bell", title: "The Lost Bell", rewardLabel: "Bell restored" },
+  JOURNAL_ANNOTATION_ADDED: { key: "captains-mark", title: "Captain's mark", chapterOrdinal: 2 },
+  PLAYER_LOG_ENTRY_ADDED: { key: "matrix-log-entry", title: "A safe log entry" },
+  FINALE_TEASED: { state: "TEASED" },
+  FINALE_REQUIREMENT_UPDATED: { key: "three-stars" },
+  CAMPAIGN_PAUSED: {},
+  CAMPAIGN_RESUMED: {},
+  STATE_REVERTED: { reversedType: "MAP_ROUTE_REVEALED" },
+} as const satisfies Record<Phase3PlayerProgressEventType, Readonly<Record<string, unknown>>>;
+
+const matrixCases = phase3PlayerProgressEventTypes.flatMap((eventType, eventIndex) =>
+  matrixSections.map((section) => ({ eventType, eventIndex, section })),
+);
+
+function matrixEvent(eventType: Phase3PlayerProgressEventType, eventIndex: number): ClientProgressEvent {
+  return Object.freeze({
+    id: `matrix-${eventType.toLowerCase()}-${eventIndex}`,
+    type: eventType,
+    sequence: 100 + eventIndex,
+    releaseAt: `2026-07-19T12:${String(eventIndex).padStart(2, "0")}:00.000Z`,
+    payload: Object.freeze({ ...matrixPayloads[eventType] }),
+  });
+}
+
 describe("PlayerExperience presentation integrity", () => {
   beforeEach(() => {
     TestEventSource.instances = [];
     vi.stubGlobal("EventSource", TestEventSource);
     mocks.play.mockReset();
+    mocks.cancel.mockReset();
     mocks.motionMode = "reduced";
     mocks.waitForJournalPhase.mockReset();
     mocks.waitForJournalPhase.mockImplementation(
@@ -777,6 +734,18 @@ describe("PlayerExperience presentation integrity", () => {
     mocks.audioPlayValidated.mockReset();
     mocks.audioStopAll.mockReset();
     mocks.sectionAnimationComplete = null;
+    Object.assign(mocks.animationSnapshot, {
+      isPlaying: false,
+      isPaused: false,
+      scene: null,
+      label: "idle",
+      progress: 0,
+      speed: 1,
+      mode: "reduced",
+      phase: "idle",
+      queueDepth: 0,
+      error: null,
+    });
     localStorage.clear();
     localStorage.setItem("forever-device", "123e4567-e89b-42d3-a456-426614174000");
     sessionStorage.clear();
@@ -789,855 +758,445 @@ describe("PlayerExperience presentation integrity", () => {
     history.replaceState({}, "", "/");
   });
 
-  it("focuses the scoped semantic section after Chart navigation and history restoration", async () => {
-    const navigationSnapshot: PublicSnapshot = {
-      ...snapshot,
-      chapter: { ...snapshot.chapter, unseen: false },
-      chapters: snapshot.chapters.map((chapter) => ({ ...chapter, unseen: false })),
-      unseen: { ...snapshot.unseen, journal: 0 },
-      latestChapterReleasePresentation: undefined,
-    };
-    vi.stubGlobal("fetch", vi.fn().mockResolvedValue(response({ ok: true })));
-    mocks.play.mockImplementation(async (scene: AnimationSceneName, options: PlaySceneOptions<void>) =>
-      receipt("presented", options, scene),
-    );
-    renderPlayer(navigationSnapshot);
-    await openJournal();
-
-    fireEvent.click(screen.getByRole("button", { name: "Open chart" }));
-    const chartHeading = await screen.findByRole("heading", { name: "Voyage chart" });
-    act(() => mocks.sectionAnimationComplete?.("enter"));
-    expect(chartHeading.closest("[data-section-heading]")).toHaveFocus();
-
-    act(() => {
-      history.pushState({}, "", "/?section=journal");
-      window.dispatchEvent(new PopStateEvent("popstate"));
-    });
-    const journalHeading = await screen.findByRole("heading", { name: "The Voyage Journal" });
-    act(() => mocks.sectionAnimationComplete?.("enter"));
-    expect(journalHeading.closest("[data-section-heading]")).toHaveFocus();
+  it("defines the exact 17 event by 6 starting-section matrix", () => {
+    expect(phase3PlayerProgressEventTypes).toHaveLength(17);
+    expect(matrixSections).toHaveLength(6);
+    expect(matrixCases).toHaveLength(102);
+    expect(new Set(matrixCases.map(({ eventType, section }) => `${eventType}:${section}`))).toHaveLength(102);
   });
 
-  it("presents first arrival from the authentic boxed journal-opening host without touching an identical sibling host", async () => {
-    installJournalOpeningGeometry();
-    const openingSnapshot: PublicSnapshot = {
-      ...snapshot,
-      chapter: { ...snapshot.chapter, unseen: false },
-      chapters: snapshot.chapters.map((chapter) => ({ ...chapter, unseen: false })),
-      unseen: { ...snapshot.unseen, journal: 0 },
-      latestChapterReleasePresentation: undefined,
-    };
-    vi.stubGlobal("fetch", vi.fn().mockResolvedValue(response({ ok: true })));
-    let releaseArrival!: () => void;
-    const arrivalGate = new Promise<void>((resolve) => {
-      releaseArrival = resolve;
-    });
-    mocks.play.mockImplementation(async (scene: AnimationSceneName, options: PlaySceneOptions<void>) => {
-      if (scene === "first-arrival") await arrivalGate;
-      return receipt("presented", options, scene);
-    });
-    const view = renderPlayer(openingSnapshot, <ArrivalGeometrySibling />);
-
-    fireEvent.click(screen.getByRole("button", { name: /Open the journal/ }));
-    await waitFor(() => expect(mocks.play.mock.calls.some(([scene]) => scene === "first-arrival")).toBe(true));
-    const [, options] = mocks.play.mock.calls.find(([scene]) => scene === "first-arrival") as [
-      AnimationSceneName,
-      PlaySceneOptions<void>,
-    ];
-    const openingRoot = document.getElementsByClassName("voyage-introduction")[0] as HTMLElement;
-    expect(openingRoot).toHaveAttribute("data-scene-host-boundary", "journal-opening");
-    expect(openingRoot.style.display).not.toBe("contents");
-    expect(openingRoot.getBoundingClientRect()).toMatchObject({ width: 560, height: 420 });
-
-    const registry = latestRegistry;
-    if (!registry || !options.sceneHost) throw new Error("Expected the live journal-opening registry host.");
-    expect(registry.hostForRoot(openingRoot)).toBe(options.sceneHost);
-    const invocation = options.sceneHost.beginScene({
-      sceneName: "first-arrival",
-      playback: "live",
-      targetContract: sceneContracts["first-arrival"],
-      motionPolicy,
-    });
-    const resolution = invocation.resolveTargets();
-    expect(resolution.requiredSatisfied).toBe(true);
-    expect(resolution.entries.filter((entry) => entry.required)).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({ part: "title", candidateCount: 1, visibilitySatisfied: true }),
-        expect.objectContaining({ part: "arrival-copy", candidateCount: 1, visibilitySatisfied: true }),
-        expect.objectContaining({ part: "arrival-action", candidateCount: 1, visibilitySatisfied: true }),
-      ]),
-    );
-    const acceptedIds = resolution.entries.flatMap((entry) => entry.acceptedTargetIds);
-    const siblingIds = [
-      screen.getByTestId("test-sibling:title").dataset.sceneTargetId,
-      screen.getByTestId("test-sibling:arrival-copy").dataset.sceneTargetId,
-      screen.getByTestId("test-sibling:arrival-action").dataset.sceneTargetId,
-    ];
-    expect(acceptedIds).not.toEqual(expect.arrayContaining(siblingIds));
-    expect(screen.getByTestId("arrival-geometry-sibling")).toBeInTheDocument();
-    await invocation.abort("runtime-failed");
-
-    releaseArrival();
-    await screen.findByRole("button", { name: "Replay introduction" });
-    expect(registry.isRegisteredHandle(options.sceneHost)).toBe(false);
-    expect(screen.getByTestId("arrival-geometry-sibling")).toBeInTheDocument();
-
-    view.unmount();
-    expect(registry.snapshot()).toMatchObject({
-      registeredHostCount: 0,
-      registeredTargetCount: 0,
-      activeInvocationCount: 0,
-      externalHandleCount: 0,
-      activeClaimCount: 0,
-    });
-  });
-
-  it("fails authentic first-arrival preflight if the journal-opening host regresses to a zero-box contents boundary", async () => {
-    installJournalOpeningGeometry();
-    const openingSnapshot: PublicSnapshot = {
-      ...snapshot,
-      chapter: { ...snapshot.chapter, unseen: false },
-      chapters: snapshot.chapters.map((chapter) => ({ ...chapter, unseen: false })),
-      unseen: { ...snapshot.unseen, journal: 0 },
-      latestChapterReleasePresentation: undefined,
-    };
-    vi.stubGlobal("fetch", vi.fn().mockResolvedValue(response({ ok: true })));
-    let releaseArrival!: () => void;
-    const arrivalGate = new Promise<void>((resolve) => {
-      releaseArrival = resolve;
-    });
-    mocks.play.mockImplementation(async (scene: AnimationSceneName, options: PlaySceneOptions<void>) => {
-      if (scene === "first-arrival") await arrivalGate;
-      return receipt("presented", options, scene);
-    });
-    renderPlayer(openingSnapshot);
-
-    fireEvent.click(screen.getByRole("button", { name: /Open the journal/ }));
-    await waitFor(() => expect(mocks.play.mock.calls.some(([scene]) => scene === "first-arrival")).toBe(true));
-    const [, options] = mocks.play.mock.calls.find(([scene]) => scene === "first-arrival") as [
-      AnimationSceneName,
-      PlaySceneOptions<void>,
-    ];
-    const openingRoot = document.getElementsByClassName("voyage-introduction")[0] as HTMLElement;
-    openingRoot.style.display = "contents";
-    expect(openingRoot.getBoundingClientRect()).toMatchObject({ width: 0, height: 0 });
-    if (!options.sceneHost) throw new Error("Expected the live journal-opening host.");
-    const invocation = options.sceneHost.beginScene({
-      sceneName: "first-arrival",
-      playback: "live",
-      targetContract: sceneContracts["first-arrival"],
-      motionPolicy,
-    });
-    const resolution = invocation.resolveTargets();
-    expect(resolution.requiredSatisfied).toBe(false);
-    for (const entry of resolution.entries.filter((candidate) => candidate.required)) {
-      expect(entry.acceptedTargetIds).toEqual([]);
-      expect(entry.rejectionCodes).toContain("target-outside-host");
-    }
-    await invocation.abort("runtime-failed");
-    releaseArrival();
-  });
-
-  it("resolves artifact, solved, and undo targets from each boxed event host while excluding an identical sibling host", async () => {
-    installPlayerEventGeometry();
-    const alpha = {
-      key: "alpha",
-      state: "AWARDED",
-      name: "Alpha",
-      displayX: 20,
-      displayY: 30,
-      unseen: false,
-    };
-    const eventSnapshot: PublicSnapshot = {
-      ...snapshot,
-      sequence: 10,
-      chapter: { ...snapshot.chapter, unseen: false },
-      chapters: snapshot.chapters.map((chapter) => ({ ...chapter, unseen: false })),
-      unseen: { ...snapshot.unseen, journal: 0, treasures: 0 },
-      latestChapterReleasePresentation: undefined,
-      artifacts: [alpha],
-    };
-    const fetchMock = vi.fn((input: RequestInfo | URL) =>
-      String(input).endsWith("/snapshot")
-        ? Promise.resolve(response(eventSnapshot))
-        : Promise.resolve(response({ ok: true })),
-    );
-    vi.stubGlobal("fetch", fetchMock);
-
-    const eventIds = ["event-artifact", "event-solved", "event-undo"] as const;
-    const gates = new Map<string, Promise<void>>();
-    const releases = new Map<string, () => void>();
-    for (const eventId of eventIds) {
-      gates.set(eventId, new Promise<void>((resolve) => releases.set(eventId, resolve)));
-    }
-    mocks.play.mockImplementation(async (scene: AnimationSceneName, options: PlaySceneOptions<void>) => {
-      const gate = options.eventOrActionId ? gates.get(options.eventOrActionId) : undefined;
-      if (gate) await gate;
-      return receipt("presented", options, scene);
-    });
-
-    const view = renderPlayer(eventSnapshot, <PlayerEventGeometrySibling />);
-    await openJournal();
-    fireEvent.click(screen.getByRole("button", { name: "Open treasures" }));
-    await screen.findByTestId("test-artifact:alpha:layout-source");
-    const registry = latestRegistry;
-    if (!registry) throw new Error("Expected the live provider registry.");
-    const siblingTargets = [
-      "test-event-sibling:artifact-reveal",
-      "test-event-sibling:solved-stamp",
-      "test-event-sibling:undo-mark",
-      "test-event-sibling:workspace-light",
-      "test-event-sibling:command-light",
-    ].map((testId) => screen.getByTestId(testId));
-    await waitFor(() => siblingTargets.forEach((target) => expect(target.dataset.sceneTargetId).toBeTruthy()));
-    const siblingTargetIds = siblingTargets.map((target) => target.dataset.sceneTargetId as string);
-    const baseline = registry.snapshot();
-    const hostIds = new Set<string>();
-    const cases = [
-      {
-        id: "event-artifact",
-        type: "ARTIFACT_AWARDED",
-        scene: "artifact-award",
-        part: "artifact-reveal",
-        payload: { key: "alpha" },
-      },
-      {
-        id: "event-solved",
-        type: "CHAPTER_SOLVED",
-        scene: "mark-solved",
-        part: "solved-stamp",
-        payload: {},
-      },
-      {
-        id: "event-undo",
-        type: "STATE_REVERTED",
-        scene: "undo",
-        part: "undo-mark",
-        payload: {},
-      },
-    ] as const;
-
-    for (const [index, eventCase] of cases.entries()) {
-      await act(async () => {
-        TestEventSource.instances[0]?.emit("progression", {
-          id: eventCase.id,
-          type: eventCase.type,
-          sequence: 11 + index,
-          releaseAt: `2026-07-18T12:${11 + index}:00.000Z`,
-          payload: eventCase.payload,
-        });
+  it.each(matrixCases)(
+    "presents $eventType from $section on the one persistent host without forcing navigation",
+    async ({ eventType, eventIndex, section }) => {
+      const event = matrixEvent(eventType, eventIndex);
+      const caseSnapshot: PublicSnapshot = {
+        ...snapshot,
+        sequence: event.sequence,
+        chapter: { ...snapshot.chapter, unseen: false },
+        chapters: snapshot.chapters.map((chapter) => ({ ...chapter, unseen: false })),
+        latestChapterReleasePresentation: undefined,
+        presentationHistory: [event],
+        artifacts: [
+          {
+            key: "artifact-alpha",
+            state: "AWARDED",
+            name: "Alpha Compass",
+            displayX: 20,
+            displayY: 30,
+            unseen: false,
+          },
+        ],
+        unseen: { journal: 0, chart: 0, treasures: 0, quests: 0, log: 0, finale: 0 },
+      };
+      const initialSnapshot: PublicSnapshot = {
+        ...caseSnapshot,
+        sequence: 8,
+        presentationHistory: [],
+      };
+      const fetchMock = vi.fn((input: RequestInfo | URL, init?: RequestInit) => {
+        const url = String(input);
+        if (url.endsWith("/snapshot")) return Promise.resolve(response(caseSnapshot));
+        if (url.includes("/viewed") && (init?.method ?? "GET") === "GET") {
+          return Promise.resolve(response({ acknowledgedEventIds: [] }));
+        }
+        return Promise.resolve(response({ ok: true }));
       });
+      vi.stubGlobal("fetch", fetchMock);
+      vi.stubGlobal("scrollTo", vi.fn());
+      sessionStorage.setItem("forever-intro:test-voyage", "seen");
+      history.replaceState({}, "", `/?section=${section}`);
+
+      let releasePresentation!: () => void;
+      const presentationGate = new Promise<void>((resolve) => {
+        releasePresentation = resolve;
+      });
+      mocks.play.mockImplementation(async (scene: AnimationSceneName, options: PlaySceneOptions<void>) => {
+        if (options.eventOrActionId === event.id) await presentationGate;
+        return receipt("presented", options, scene);
+      });
+
+      const rendered = renderPlayer(initialSnapshot);
+      await openJournal();
+      await waitFor(() => expect(TestEventSource.instances).toHaveLength(1));
+      const persistentHost = screen.getByTestId("progression-scene-host");
+      const startingUrl = location.href;
+
+      act(() => TestEventSource.instances[0]!.emit("progression", event));
       await waitFor(() =>
-        expect(mocks.play.mock.calls.some(([, options]) => options.eventOrActionId === eventCase.id)).toBe(true),
+        expect(mocks.play.mock.calls.some(([, options]) => options.eventOrActionId === event.id)).toBe(true),
       );
-      const [sceneName, options] = mocks.play.mock.calls.find(
-        ([, candidateOptions]) => candidateOptions.eventOrActionId === eventCase.id,
+      const [sceneName, playOptions] = mocks.play.mock.calls.find(
+        ([, options]) => options.eventOrActionId === event.id,
       ) as [AnimationSceneName, PlaySceneOptions<void>];
-      expect(sceneName).toBe(eventCase.scene);
+      const overlay = screen.getByTestId("progression-scene-overlay");
 
-      const eventRoot = document.getElementsByClassName("player-event-host")[0] as HTMLElement;
-      expect(eventRoot).toHaveAttribute("data-scene-host-boundary", "player-progression");
-      expect(eventRoot.style.position).toBe("fixed");
-      expect(eventRoot.style.inset).toBe("0");
-      expect(eventRoot.style.pointerEvents).toBe("none");
-      expect(eventRoot.style.display).not.toBe("contents");
-      expect(eventRoot.getBoundingClientRect()).toMatchObject({ width: 800, height: 600 });
-      expect(eventRoot).not.toHaveAttribute("aria-hidden");
-      if (!options.sceneHost) throw new Error(`Expected the live host for ${eventCase.id}.`);
-      expect(registry.hostForRoot(eventRoot)).toBe(options.sceneHost);
-      hostIds.add(options.sceneHost.hostId);
-
-      const invocation = options.sceneHost.beginScene({
-        sceneName: eventCase.scene,
-        playback: "live",
-        targetContract: sceneContracts[eventCase.scene],
-        motionPolicy,
-        ...(options.externalTargets ? { externalTargets: options.externalTargets } : {}),
+      expect(sceneName).toBe(policyForProgressionEvent(eventType).sceneName);
+      expect(playOptions).toMatchObject({
+        queue: false,
+        requestSource: "automatic",
+        eventOrActionId: event.id,
+        hostKind: "player-progression",
       });
-      const resolution = invocation.resolveTargets();
-      expect(resolution.requiredSatisfied).toBe(true);
-      const localEntry = resolution.entries.find((entry) => entry.part === eventCase.part);
-      expect(localEntry).toMatchObject({
-        required: true,
-        candidateCount: 1,
-        visibilitySatisfied: true,
-        rejectionCodes: [],
+      expect(playOptions.sceneHost?.hostId).toBe(playOptions.hostId);
+      expect(playOptions.finalStateRuntime).toMatchObject({
+        commitFinalState: expect.any(Function),
+        reconcileFinalState: expect.any(Function),
+        holdSafePose: expect.any(Function),
+        renderStaticFallback: expect.any(Function),
+        verifyReadableState: expect.any(Function),
+        cleanup: expect.any(Function),
       });
-      const localTarget = Array.from(eventRoot.getElementsByTagName("*")).find(
-        (element) => (element as HTMLElement).dataset.scenePart === eventCase.part,
-      ) as HTMLElement | undefined;
-      expect(localTarget?.dataset.sceneTargetId).toBe(localEntry?.acceptedTargetIds[0]);
-
-      const acceptedIds = resolution.entries.flatMap((entry) => entry.acceptedTargetIds);
-      expect(acceptedIds).not.toEqual(expect.arrayContaining(siblingTargetIds));
-      if (eventCase.scene === "artifact-award") {
-        expect(resolution.entries.find((entry) => entry.part === "workspace-light")).toMatchObject({
-          required: false,
-          candidateCount: 1,
-          visibilitySatisfied: true,
-        });
-        expect(options.externalTargets?.["artifact-slot"]?.targetId).toBe(
-          screen.getByTestId("test-artifact:alpha:layout-source").dataset.sceneTargetId,
-        );
-      } else {
-        expect(resolution.entries.find((entry) => entry.part === "command-light")).toMatchObject({
-          required: false,
-          candidateCount: 0,
-          acceptedTargetIds: [],
-        });
+      expect(overlay).toHaveAttribute("data-presentation-event", eventType);
+      expect(overlay.getAttribute("data-presentation-id")).toContain(event.id);
+      const matchingAnnouncements = Array.from(document.querySelectorAll<HTMLElement>("[aria-live]")).filter(
+        (element) => element.textContent?.trim() === policyForProgressionEvent(eventType).globalPresentation.heading,
+      );
+      expect(matchingAnnouncements).toHaveLength(1);
+      expect(screen.getByTestId("progression-content")).toHaveAttribute("inert");
+      expect(location.href).toBe(startingUrl);
+      expect(screen.getByTestId("progression-scene-host")).toBe(persistentHost);
+      if (eventType === "CHAPTER_SOLVED" && section === "journal") {
+        expect(document.querySelector('[data-scene-part="solved-stamp"]')).toHaveTextContent("Solved");
+        expect(playOptions.externalTargets?.["chapter-solved-stamp"]).toBeDefined();
       }
-      expect(screen.getByTestId("player-event-geometry-sibling")).toBeInTheDocument();
-      siblingTargets.forEach((target, targetIndex) => {
-        expect(target.dataset.sceneTargetId).toBe(siblingTargetIds[targetIndex]);
+
+      releasePresentation();
+      await waitFor(() =>
+        expect(viewedPostBodies(fetchMock)).toContainEqual({ eventId: event.id, deviceId: expect.any(String) }),
+      );
+      const settledNotice = await waitFor(() => {
+        const notice = document.querySelector<HTMLElement>(`[data-progress-event-id="${event.id}"]`);
+        expect(notice).not.toBeNull();
+        return notice!;
       });
-      await invocation.abort("runtime-failed");
+      expect(settledNotice).toHaveAttribute("data-progress-event-id", event.id);
+      expect(settledNotice).toHaveTextContent(policyForProgressionEvent(eventType).globalPresentation.heading);
+      expect(settledNotice).not.toHaveAttribute("role");
+      expect(settledNotice).not.toHaveAttribute("aria-live");
+      expect(within(settledNotice).getByRole("heading", { level: 2 })).toHaveTextContent(
+        policyForProgressionEvent(eventType).globalPresentation.heading,
+      );
+      expect(within(settledNotice).getByRole("button", { name: "Replay presentation" })).toBeEnabled();
+      expect(location.href).toBe(startingUrl);
+      expect(screen.getByTestId("progression-scene-host")).toBe(persistentHost);
+      expect(document.querySelectorAll('[data-testid="progression-scene-host"]')).toHaveLength(1);
+      rendered.unmount();
+    },
+    15_000,
+  );
 
-      releases.get(eventCase.id)?.();
-      await waitFor(() => expect(document.getElementsByClassName("player-event-host")).toHaveLength(0));
-      await waitFor(() => expect(registry.snapshot()).toEqual(baseline));
-    }
-
-    expect(hostIds.size).toBe(cases.length);
-    view.unmount();
-    expect(registry.snapshot()).toMatchObject({
-      registeredHostCount: 0,
-      registeredTargetCount: 0,
-      activeInvocationCount: 0,
-      externalHandleCount: 0,
-      activeClaimCount: 0,
+  it("renders the chapter-release ceremony separator without mojibake", () => {
+    Object.assign(mocks.animationSnapshot, {
+      isPlaying: true,
+      scene: "chapter-release" as const,
+      label: "seal-breaking",
     });
-  });
-
-  it("rejects a local progression target if an event host regresses to a zero-box contents boundary", async () => {
-    installPlayerEventGeometry();
-    const eventSnapshot: PublicSnapshot = {
-      ...snapshot,
-      chapter: { ...snapshot.chapter, unseen: false },
-      chapters: snapshot.chapters.map((chapter) => ({ ...chapter, unseen: false })),
-      unseen: { ...snapshot.unseen, journal: 0 },
-      latestChapterReleasePresentation: undefined,
-    };
-    vi.stubGlobal("fetch", vi.fn().mockResolvedValue(response(eventSnapshot)));
-    let releaseSolved!: () => void;
-    const solvedGate = new Promise<void>((resolve) => {
-      releaseSolved = resolve;
-    });
-    mocks.play.mockImplementation(async (scene: AnimationSceneName, options: PlaySceneOptions<void>) => {
-      if (options.eventOrActionId === "event-zero-box") await solvedGate;
-      return receipt("presented", options, scene);
-    });
-    renderPlayer(eventSnapshot);
-    await openJournal();
-
-    await act(async () => {
-      TestEventSource.instances[0]?.emit("progression", {
-        id: "event-zero-box",
-        type: "CHAPTER_SOLVED",
-        sequence: 11,
-        releaseAt: "2026-07-18T12:11:00.000Z",
-        payload: {},
-      });
-    });
-    await waitFor(() =>
-      expect(mocks.play.mock.calls.some(([, options]) => options.eventOrActionId === "event-zero-box")).toBe(true),
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(() => Promise.resolve(response({ acknowledgedEventIds: [] }))),
     );
-    const [, options] = mocks.play.mock.calls.find(
-      ([, candidateOptions]) => candidateOptions.eventOrActionId === "event-zero-box",
-    ) as [AnimationSceneName, PlaySceneOptions<void>];
-    const eventRoot = document.getElementsByClassName("player-event-host")[0] as HTMLElement;
-    eventRoot.style.display = "contents";
-    expect(eventRoot.getBoundingClientRect()).toMatchObject({ width: 0, height: 0 });
-    if (!options.sceneHost) throw new Error("Expected the live event host.");
-    const invocation = options.sceneHost.beginScene({
-      sceneName: "mark-solved",
-      playback: "live",
-      targetContract: sceneContracts["mark-solved"],
-      motionPolicy,
-    });
-    const resolution = invocation.resolveTargets();
-    expect(resolution.requiredSatisfied).toBe(false);
-    expect(resolution.entries.find((entry) => entry.part === "solved-stamp")).toMatchObject({
-      acceptedTargetIds: [],
-      rejectionCodes: expect.arrayContaining(["target-outside-host"]),
-    });
-    await invocation.abort("runtime-failed");
-    releaseSolved();
+
+    renderPlayer(snapshot);
+
+    expect(screen.getByText("Releasing the first seal · seal breaking")).toBeVisible();
+    expect(document.body).not.toHaveTextContent("Â·");
   });
 
-  it("replays persisted safe data from an interactive section without any additional story or viewed mutation", async () => {
-    const viewedSnapshot: PublicSnapshot = {
+  it("publishes presented, duplicate, stale, and cancelled browser receipts exactly once before settled state", async () => {
+    const duplicate = Object.freeze({
+      ...matrixEvent("PLAYER_LOG_ENTRY_ADDED", 11),
+      id: "evidence-duplicate",
+      sequence: 301,
+    });
+    const presented = Object.freeze({
+      ...matrixEvent("CAMPAIGN_RESUMED", 15),
+      id: "evidence-presented",
+      sequence: 302,
+    });
+    const stale = Object.freeze({
+      ...matrixEvent("CAMPAIGN_PAUSED", 14),
+      id: "evidence-stale",
+      sequence: 301,
+    });
+    let serverSnapshot: PublicSnapshot = {
       ...snapshot,
+      sequence: 300,
       chapter: { ...snapshot.chapter, unseen: false },
       chapters: snapshot.chapters.map((chapter) => ({ ...chapter, unseen: false })),
-      unseen: { ...snapshot.unseen, journal: 0 },
+      latestChapterReleasePresentation: undefined,
+      presentationHistory: [],
+      unseen: { journal: 0, chart: 0, treasures: 0, quests: 0, log: 0, finale: 0 },
     };
     const fetchMock = vi.fn((input: RequestInfo | URL, init?: RequestInit) => {
       const url = String(input);
-      if (url.includes("/viewed?") && !init?.method) return Promise.resolve(response({ acknowledged: true }));
-      if (url.endsWith("/snapshot")) return Promise.resolve(response(viewedSnapshot));
+      if (url.endsWith("/snapshot")) return Promise.resolve(response(serverSnapshot));
+      if (url.includes("/viewed") && (init?.method ?? "GET") === "GET") {
+        return Promise.resolve(response({ acknowledgedEventIds: [] }));
+      }
       return Promise.resolve(response({ ok: true }));
     });
     vi.stubGlobal("fetch", fetchMock);
-    mocks.play.mockImplementation(async (scene: AnimationSceneName, options: PlaySceneOptions<void>) =>
-      receipt("presented", options, scene),
-    );
-    renderPlayer(snapshot);
-
-    await openJournal();
-    await waitFor(() =>
-      expect(viewedPostBodies(fetchMock).filter((body) => body.contentType === "chapter")).toHaveLength(1),
-    );
-    fireEvent.click(screen.getByText("Open chart"));
-    const chartHeading = await screen.findByText("Voyage chart");
-    const chartSection = chartHeading.closest<HTMLElement>("[data-section-heading]");
-    chartSection?.focus();
-    expect(chartSection).toHaveFocus();
-    const mutationsBeforeReplay = mutationCalls(fetchMock).length;
-
-    fireEvent.click(screen.getAllByRole("button", { name: "Replay latest chapter" })[0]);
-
-    await waitFor(() => expect(chapterPlayCalls()).toHaveLength(1));
-    await waitFor(() => expect(screen.getByText("Voyage chart").closest("[data-section-heading]")).toHaveFocus());
-    const [scene, options] = chapterPlayCalls()[0];
-    expect(scene).toBe("chapter-release");
-    expect(options).toMatchObject({
-      hostKind: "player-progression",
-      requestSource: "replay",
-      eventOrActionId: release.eventId,
-      display: release.payload,
-      telemetryContext: { route: "/tale", playerSection: "journal" },
+    vi.stubGlobal("scrollTo", vi.fn());
+    sessionStorage.setItem("forever-intro:test-voyage", "seen");
+    const browserEvidence = captureProgressionBrowserEvidence();
+    let releaseCancelled!: () => void;
+    const cancelledGate = new Promise<void>((resolve) => {
+      releaseCancelled = resolve;
     });
-    expect(options.sceneHost?.hostId).toBe(options.hostId);
-    expect(options.externalTargets && Object.keys(options.externalTargets).sort()).toEqual([
-      "companion-desktop-navigation-dim",
-      "companion-header-dim",
-      "companion-mobile-navigation-dim",
-    ]);
-    expect(options.signal).toBeInstanceOf(AbortSignal);
-    expect(mutationCalls(fetchMock)).toHaveLength(mutationsBeforeReplay);
-    expect(viewedPostBodies(fetchMock).filter((body) => body.eventId === release.eventId)).toHaveLength(0);
-  });
-
-  it("keeps a failed automatic release unviewed, then acknowledges exactly once after retry succeeds", async () => {
-    const beforeRelease: PublicSnapshot = {
-      ...snapshot,
-      chapter: { ...snapshot.chapter, unseen: false },
-      chapters: snapshot.chapters.map((chapter) => ({ ...chapter, unseen: false })),
-      unseen: { ...snapshot.unseen, journal: 0 },
-    };
-    delete beforeRelease.latestChapterReleasePresentation;
-    const fetchMock = vi.fn((input: RequestInfo | URL) => {
-      if (String(input).endsWith("/snapshot")) return Promise.resolve(response(snapshot));
-      return Promise.resolve(response({ ok: true }));
-    });
-    vi.stubGlobal("fetch", fetchMock);
-    let chapterAttempt = 0;
     mocks.play.mockImplementation(async (scene: AnimationSceneName, options: PlaySceneOptions<void>) => {
-      if (scene !== "chapter-release") return receipt("presented", options, scene);
-      chapterAttempt += 1;
-      return receipt(chapterAttempt === 1 ? "missing-required-target" : "presented", options, scene);
-    });
-    renderPlayer(beforeRelease);
-
-    await openJournal();
-
-    await act(async () => {
-      TestEventSource.instances[0]?.emit("progression", {
-        id: release.eventId,
-        type: "CHAPTER_RELEASED",
-        sequence: release.sequence,
-        releaseAt: release.occurredAt,
-        payload: { title: "untrusted event payload", secret: "must-not-reach-director" },
-      });
-    });
-
-    expect(await screen.findByRole("alert")).toHaveTextContent("Your progress is safe");
-    expect(viewedPostCalls(fetchMock)).toEqual([]);
-    await waitFor(() => expect(fetchMock.mock.calls.some(([input]) => String(input).endsWith("/snapshot"))).toBe(true));
-    expect(chapterPlayCalls()[0]?.[1]).toEqual(
-      expect.objectContaining({ display: release.payload, requestSource: "automatic" }),
-    );
-
-    fireEvent.click(screen.getByRole("button", { name: "Retry ceremony" }));
-
-    await waitFor(() => expect(chapterPlayCalls()).toHaveLength(2));
-    await waitFor(() =>
-      expect(viewedPostBodies(fetchMock).filter((body) => body.eventId === release.eventId)).toHaveLength(1),
-    );
-    expect(screen.queryByText("Your progress is safe", { exact: false })).not.toBeInTheDocument();
-
-    await act(async () => {
-      TestEventSource.instances[0]?.emit("progression", {
-        id: release.eventId,
-        type: "CHAPTER_RELEASED",
-        sequence: release.sequence,
-        releaseAt: release.occurredAt,
-        payload: {},
-      });
-    });
-    expect(chapterPlayCalls()).toHaveLength(2);
-    expect(viewedPostBodies(fetchMock).filter((body) => body.eventId === release.eventId)).toHaveLength(1);
-  });
-
-  it("recovers an unacknowledged persisted release after remount without an automatic retry storm", async () => {
-    const fetchMock = vi.fn((input: RequestInfo | URL) => {
-      const url = String(input);
-      if (url.includes("/viewed?")) return Promise.resolve(response({ acknowledged: false }));
-      if (url.endsWith("/snapshot")) return Promise.resolve(response(snapshot));
-      return Promise.resolve(response({ ok: true }));
-    });
-    vi.stubGlobal("fetch", fetchMock);
-    let chapterAttempt = 0;
-    mocks.play.mockImplementation(async (scene: AnimationSceneName, options: PlaySceneOptions<void>) => {
-      if (scene !== "chapter-release") return receipt("presented", options, scene);
-      chapterAttempt += 1;
-      return receipt(chapterAttempt === 1 ? "interrupted" : "presented", options, scene);
-    });
-
-    const first = renderPlayer(snapshot);
-    await openJournal();
-    expect(await screen.findByRole("alert")).toHaveTextContent("Your progress is safe");
-    await waitFor(() => expect(chapterPlayCalls()).toHaveLength(1));
-    expect(viewedPostBodies(fetchMock).filter((body) => body.eventId === release.eventId)).toHaveLength(0);
-
-    first.unmount();
-    renderPlayer(snapshot);
-    await openJournal();
-
-    await waitFor(() => expect(chapterPlayCalls()).toHaveLength(2));
-    await waitFor(() =>
-      expect(viewedPostBodies(fetchMock).filter((body) => body.eventId === release.eventId)).toHaveLength(1),
-    );
-    expect(screen.queryByText("Your progress is safe", { exact: false })).not.toBeInTheDocument();
-  });
-
-  it("clears revoked replay data and its readable fallback on snapshot reconciliation", async () => {
-    const seenSnapshot: PublicSnapshot = {
-      ...snapshot,
-      chapter: { ...snapshot.chapter, unseen: false },
-      chapters: snapshot.chapters.map((chapter) => ({ ...chapter, unseen: false })),
-      unseen: { ...snapshot.unseen, journal: 0 },
-    };
-    const revokedSnapshot = { ...seenSnapshot };
-    delete revokedSnapshot.latestChapterReleasePresentation;
-    let refreshed: PublicSnapshot = seenSnapshot;
-    const fetchMock = vi.fn((input: RequestInfo | URL) => {
-      const url = String(input);
-      if (url.includes("/viewed?")) return Promise.resolve(response({ acknowledged: true }));
-      if (url.endsWith("/snapshot")) return Promise.resolve(response(refreshed));
-      return Promise.resolve(response({ ok: true }));
-    });
-    vi.stubGlobal("fetch", fetchMock);
-    mocks.play.mockImplementation(async (scene: AnimationSceneName, options: PlaySceneOptions<void>) => {
-      if (scene === "chapter-release" && options.presentationFallback) {
-        await options.presentationFallback({
-          sceneName: scene,
-          sceneInstanceId: "fallback-instance",
-          hostId: options.hostId ?? "player-progression-host",
-          hostKind: options.hostKind ?? "player-progression",
-          fallback: "static-reader",
-          trigger: "runtime-failed",
-          motionPolicy,
-          signal: options.signal,
-        });
-        return receipt("presented-fallback", options, scene);
+      if (options.eventOrActionId === duplicate.id) {
+        await cancelledGate;
+        return receipt("interrupted", options, scene);
       }
       return receipt("presented", options, scene);
     });
-    renderPlayer(seenSnapshot);
+
+    renderPlayer(serverSnapshot);
     await openJournal();
-    await waitFor(() => expect(screen.getByRole("button", { name: "Replay latest chapter" })).toBeInTheDocument());
+    await waitFor(() => expect(TestEventSource.instances).toHaveLength(1));
 
-    fireEvent.click(screen.getAllByRole("button", { name: "Replay latest chapter" })[0]);
-    expect(await screen.findByText(release.payload.narrative)).toBeInTheDocument();
-
-    refreshed = revokedSnapshot;
-    window.dispatchEvent(new Event("online"));
-
-    await waitFor(() => expect(screen.queryAllByRole("button", { name: "Replay latest chapter" })).toHaveLength(0));
-    expect(screen.queryByText(release.payload.narrative)).not.toBeInTheDocument();
-  });
-
-  it("routes keyed map and log capabilities through the exact event host while identical host-local parts coexist", async () => {
-    const progressionSnapshot: PublicSnapshot = {
-      ...snapshot,
-      sequence: 10,
-      chapter: { ...snapshot.chapter, unseen: false },
-      chapters: snapshot.chapters.map((chapter) => ({ ...chapter, unseen: false })),
-      unseen: { ...snapshot.unseen, journal: 0, chart: 1, log: 1 },
-      latestChapterReleasePresentation: undefined,
-      mapLocations: [{ key: "reef-b", state: "REVEALED", label: "Reef B", name: "Reef B", x: 35, y: 42, unseen: true }],
-      log: [
-        {
-          key: "entry-b",
-          sequence: 10,
-          title: "Fresh bearings",
-          summary: "The reef is marked.",
-          timestamp: "2026-07-18T12:10:00.000Z",
-          symbol: "compass",
-          importance: "notable",
-          section: "chart",
-          unseen: true,
-        },
-      ],
-    };
-    const fetchMock = vi.fn((input: RequestInfo | URL) =>
-      String(input).endsWith("/snapshot")
-        ? Promise.resolve(response(progressionSnapshot))
-        : Promise.resolve(response({ ok: true })),
-    );
-    vi.stubGlobal("fetch", fetchMock);
-    let releaseMap!: () => void;
-    let releaseLog!: () => void;
-    const mapGate = new Promise<void>((resolve) => {
-      releaseMap = resolve;
-    });
-    const logGate = new Promise<void>((resolve) => {
-      releaseLog = resolve;
-    });
-    mocks.play.mockImplementation(async (scene: AnimationSceneName, options: PlaySceneOptions<void>) => {
-      if (scene === "map-reveal") await mapGate;
-      if (scene === "log-entry") await logGate;
-      return receipt("presented", options, scene);
-    });
-    renderPlayer(progressionSnapshot);
-    await openJournal();
-
-    await act(async () => {
-      TestEventSource.instances[0]?.emit("progression", {
-        id: "map-event-reef-b",
-        type: "MAP_LOCATION_REVEALED",
-        sequence: 11,
-        releaseAt: "2026-07-18T12:11:00.000Z",
-        payload: { key: "reef-b" },
-      });
-    });
-    await waitFor(() => expect(mocks.play.mock.calls.some(([scene]) => scene === "map-reveal")).toBe(true));
-    const [, mapOptions] = mocks.play.mock.calls.find(([scene]) => scene === "map-reveal") as [
-      AnimationSceneName,
-      PlaySceneOptions<void>,
-    ];
-    const mapTargets = mapOptions.externalTargets ?? {};
-    expect(Object.keys(mapTargets).sort()).toEqual(["map-fog", "map-marker"]);
-    expect(mapTargets["map-marker"]?.allowedProperties).toEqual(["transform", "opacity"]);
-    expect(mapTargets["map-fog"]?.allowedProperties).toEqual(["clip-path", "opacity"]);
-    expect(mapTargets["map-marker"]?.destinationHostId).toBe(mapOptions.hostId);
-    expect(screen.getByTestId("test-chart:location:reef-b")).toHaveAttribute(
-      "data-scene-target-id",
-      mapTargets["map-marker"]?.targetId,
-    );
-    expect(screen.getByTestId("test-chart:location:reef-b")).toHaveAttribute("data-scene-part", "map-marker");
-
-    const persistentLight = document.getElementsByClassName("ocean-depth")[0] as HTMLElement;
-    const eventLight = document.getElementsByClassName("player-event-host-light")[0] as HTMLElement;
-    const persistentBoundary = persistentLight.parentElement?.parentElement;
-    const eventBoundary = eventLight.parentElement;
-    expect(persistentLight).toHaveAttribute("data-scene-part", "workspace-light");
-    expect(eventLight).toHaveAttribute("data-scene-part", "workspace-light");
-    expect(eventBoundary).toHaveAttribute("data-scene-host-id", mapOptions.hostId);
-    expect(eventBoundary?.dataset.sceneHostId).not.toBe(persistentBoundary?.dataset.sceneHostId);
-
-    releaseMap();
-    await waitFor(() => expect(screen.queryByTestId("test-chart:location:reef-b")).not.toBeInTheDocument());
-
-    await act(async () => {
-      TestEventSource.instances[0]?.emit("progression", {
-        id: "log-event-entry-b",
-        type: "PLAYER_LOG_ENTRY_ADDED",
-        sequence: 12,
-        releaseAt: "2026-07-18T12:12:00.000Z",
-        payload: { key: "entry-b" },
-      });
-    });
-    await waitFor(() => expect(mocks.play.mock.calls.some(([scene]) => scene === "log-entry")).toBe(true));
-    const [, logOptions] = mocks.play.mock.calls.find(([scene]) => scene === "log-entry") as [
-      AnimationSceneName,
-      PlaySceneOptions<void>,
-    ];
-    const logTargets = logOptions.externalTargets ?? {};
-    expect(Object.keys(logTargets).sort()).toEqual(["log-entry", "log-symbol"]);
-    expect(logTargets["log-entry"]?.allowedProperties).toEqual(["opacity", "clip-path", "filter"]);
-    expect(logTargets["log-symbol"]?.allowedProperties).toEqual(["transform", "opacity"]);
-    expect(screen.getByTestId("test-log:ink:entry-b")).toHaveAttribute(
-      "data-scene-target-id",
-      logTargets["log-entry"]?.targetId,
-    );
-    expect(screen.getByTestId("test-log:ink:entry-b")).toHaveAttribute("data-scene-part", "log-entry-new");
-    releaseLog();
-  });
-
-  it("revokes only a removed artifact capability and retains a live sibling keyed producer", async () => {
-    const alpha = {
-      key: "alpha",
-      state: "AWARDED",
-      name: "Alpha",
-      displayX: 20,
-      displayY: 30,
-      unseen: true,
-    };
-    const beta = {
-      key: "beta",
-      state: "AWARDED",
-      name: "Beta",
-      displayX: 60,
-      displayY: 30,
-      unseen: true,
-    };
-    const artifactSnapshot: PublicSnapshot = {
-      ...snapshot,
-      sequence: 10,
-      chapter: { ...snapshot.chapter, unseen: false },
-      chapters: snapshot.chapters.map((chapter) => ({ ...chapter, unseen: false })),
-      unseen: { ...snapshot.unseen, journal: 0, treasures: 2 },
-      latestChapterReleasePresentation: undefined,
-      artifacts: [alpha, beta],
-    };
-    const betaOnlySnapshot: PublicSnapshot = {
-      ...artifactSnapshot,
-      sequence: 11,
-      unseen: { ...artifactSnapshot.unseen, treasures: 1 },
-      artifacts: [beta],
-    };
-    let refreshed = artifactSnapshot;
-    const fetchMock = vi.fn((input: RequestInfo | URL) =>
-      String(input).endsWith("/snapshot")
-        ? Promise.resolve(response(refreshed))
-        : Promise.resolve(response({ ok: true })),
-    );
-    vi.stubGlobal("fetch", fetchMock);
-    let releaseAlpha!: () => void;
-    const alphaGate = new Promise<void>((resolve) => {
-      releaseAlpha = resolve;
-    });
-    mocks.play.mockImplementation(async (scene: AnimationSceneName, options: PlaySceneOptions<void>) => {
-      if (scene === "artifact-award" && options.eventOrActionId === "artifact-alpha") await alphaGate;
-      return receipt("presented", options, scene);
-    });
-    renderPlayer(artifactSnapshot);
-    await openJournal();
-    fireEvent.click(screen.getByRole("button", { name: "Open treasures" }));
-    await screen.findByTestId("test-artifact:alpha:layout-source");
-    await screen.findByTestId("test-artifact:beta:layout-source");
-
-    await act(async () => {
-      TestEventSource.instances[0]?.emit("progression", {
-        id: "artifact-alpha",
-        type: "ARTIFACT_AWARDED",
-        sequence: 11,
-        releaseAt: "2026-07-18T12:11:00.000Z",
-        payload: { key: "alpha" },
-      });
+    act(() => {
+      TestEventSource.instances[0]!.emit("progression", duplicate);
+      TestEventSource.instances[0]!.emit("progression", duplicate);
     });
     await waitFor(() =>
-      expect(mocks.play.mock.calls.some(([, options]) => options.eventOrActionId === "artifact-alpha")).toBe(true),
+      expect(
+        browserEvidence.receipts.filter(
+          (candidate) => candidate.eventId === duplicate.id && candidate.status === "duplicate",
+        ),
+      ).toHaveLength(1),
     );
-    const [, alphaOptions] = mocks.play.mock.calls.find(
-      ([, options]) => options.eventOrActionId === "artifact-alpha",
-    ) as [AnimationSceneName, PlaySceneOptions<void>];
-    const alphaExternal = alphaOptions.externalTargets?.["artifact-slot"];
-    expect(alphaExternal?.allowedProperties).toEqual([]);
-    expect(alphaExternal?.lifetime).toBe("handoff");
-    const registry = latestRegistry;
-    if (!registry || !alphaExternal) throw new Error("Expected a live provider-scoped artifact capability.");
-    expect(registry.isRegisteredExternalHandle(alphaExternal)).toBe(true);
-
-    refreshed = betaOnlySnapshot;
-    window.dispatchEvent(new Event("online"));
-    await waitFor(() => expect(screen.queryByTestId("test-artifact:alpha:layout-source")).not.toBeInTheDocument());
-    expect(screen.getByTestId("test-artifact:beta:layout-source")).toBeInTheDocument();
-    await waitFor(() => expect(registry.isRegisteredExternalHandle(alphaExternal)).toBe(false));
-
-    releaseAlpha();
-    await waitFor(() => expect(screen.getByTestId("test-artifact:beta:layout-source")).toBeInTheDocument());
-    await act(async () => {
-      TestEventSource.instances[0]?.emit("progression", {
-        id: "artifact-beta",
-        type: "ARTIFACT_AWARDED",
-        sequence: 12,
-        releaseAt: "2026-07-18T12:12:00.000Z",
-        payload: { key: "beta" },
-      });
-    });
+    releaseCancelled();
     await waitFor(() =>
-      expect(mocks.play.mock.calls.some(([, options]) => options.eventOrActionId === "artifact-beta")).toBe(true),
+      expect(
+        browserEvidence.receipts.filter(
+          (candidate) => candidate.eventId === duplicate.id && candidate.status === "cancelled",
+        ),
+      ).toHaveLength(1),
     );
-    const [, betaOptions] = mocks.play.mock.calls.find(
-      ([, options]) => options.eventOrActionId === "artifact-beta",
-    ) as [AnimationSceneName, PlaySceneOptions<void>];
-    expect(betaOptions.externalTargets?.["artifact-slot"]?.targetId).toBe(
-      screen.getByTestId("test-artifact:beta:layout-source").dataset.sceneTargetId,
+
+    serverSnapshot = { ...serverSnapshot, sequence: presented.sequence, presentationHistory: [presented] };
+    act(() => TestEventSource.instances[0]!.emit("progression", presented));
+    await waitFor(() =>
+      expect(
+        browserEvidence.receipts.filter(
+          (candidate) => candidate.eventId === presented.id && candidate.status === "presented",
+        ),
+      ).toHaveLength(1),
     );
+
+    act(() => TestEventSource.instances[0]!.emit("progression", stale));
+    await waitFor(() =>
+      expect(
+        browserEvidence.receipts.filter((candidate) => candidate.eventId === stale.id && candidate.status === "stale"),
+      ).toHaveLength(1),
+    );
+
+    for (const evidence of browserEvidence.receipts.filter((candidate) =>
+      ([duplicate.id, presented.id, stale.id] as readonly string[]).includes(candidate.eventId),
+    )) {
+      expect(evidence).not.toHaveProperty("payload");
+      expect(browserEvidence.order.indexOf(`receipt:${evidence.requestId}:${evidence.status}`)).toBeLessThan(
+        browserEvidence.order.indexOf(`state:${evidence.requestId}:settled`),
+      );
+      if (evidence.status === "duplicate" || evidence.status === "stale") {
+        expect(evidence).toMatchObject({ scene: null, targetReport: null });
+      }
+    }
+    browserEvidence.stop();
   });
 
-  it("converges a typed Journal phase timeout to a visible readable fallback", async () => {
-    mocks.motionMode = "gentle";
-    mocks.waitForJournalPhase.mockImplementation(async (_root, phase) =>
-      phase === "BOOK_SETTLING"
-        ? ({ status: "timed-out", phase, timeoutMs: 1700 } satisfies JournalPhaseOutcome)
-        : ({ status: "completed", phase, finiteAnimationCount: 0, durationMs: 0 } satisfies JournalPhaseOutcome),
-    );
-    const fetchMock = vi.fn().mockResolvedValue(response({ ok: true }));
-    vi.stubGlobal("fetch", fetchMock);
-    mocks.play.mockImplementation(async (scene: AnimationSceneName, options: PlaySceneOptions<void>) =>
-      receipt("presented", options, scene),
-    );
-    const motionSnapshot: PublicSnapshot = {
+  it("publishes a no-scene deferred receipt once and preserves its identity for later presentation", async () => {
+    const authoritative = Object.freeze({
+      ...matrixEvent("CAMPAIGN_PAUSED", 14),
+      id: "evidence-deferred-authoritative",
+      sequence: 9,
+    });
+    let serverSnapshot: PublicSnapshot = {
       ...snapshot,
+      sequence: 8,
       chapter: { ...snapshot.chapter, unseen: false },
       chapters: snapshot.chapters.map((chapter) => ({ ...chapter, unseen: false })),
-      unseen: { ...snapshot.unseen, journal: 0 },
-      latestChapterReleasePresentation: undefined,
+      presentationHistory: [],
+      unseen: { journal: 0, chart: 0, treasures: 0, quests: 0, log: 0, finale: 0 },
     };
-    renderPlayer(motionSnapshot);
+    const fetchMock = vi.fn((input: RequestInfo | URL, init?: RequestInit) => {
+      const url = String(input);
+      if (url.endsWith("/snapshot")) return Promise.resolve(response(serverSnapshot));
+      if (url.includes("/viewed") && (init?.method ?? "GET") === "GET") {
+        return Promise.resolve(response({ acknowledgedEventIds: [] }));
+      }
+      return Promise.resolve(response({ ok: true }));
+    });
+    vi.stubGlobal("fetch", fetchMock);
+    vi.stubGlobal("scrollTo", vi.fn());
+    sessionStorage.setItem("forever-intro:test-voyage", "seen");
+    const browserEvidence = captureProgressionBrowserEvidence();
+    let releaseReplay!: () => void;
+    let replayStarted!: () => void;
+    const replayGate = new Promise<void>((resolve) => {
+      releaseReplay = resolve;
+    });
+    const replayReady = new Promise<void>((resolve) => {
+      replayStarted = resolve;
+    });
+    mocks.play.mockImplementation(async (scene: AnimationSceneName, options: PlaySceneOptions<void>) => {
+      if (options.eventOrActionId === release.eventId && options.requestSource === "replay") {
+        options.finalStateRuntime?.commitFinalState?.("chapter-readable");
+        replayStarted();
+        await replayGate;
+      }
+      return receipt("presented", options, scene);
+    });
 
-    fireEvent.click(screen.getByRole("button", { name: /Open the journal/ }));
+    renderPlayer(serverSnapshot);
+    await openJournal();
+    await waitFor(() => expect(TestEventSource.instances).toHaveLength(1));
+    fireEvent.click(screen.getByRole("button", { name: "Replay latest chapter" }));
+    await replayReady;
 
-    await waitFor(() => expect(screen.getByRole("main")).toHaveAttribute("data-journal-phase", "JOURNAL_READY"));
-    expect(await screen.findByText(/opened in readable mode after the ceremony could not finish/i)).toBeVisible();
-    expect(
-      mocks.audioPlayValidated.mock.calls.some(
-        ([request]) => (request as { semanticLabel?: string }).semanticLabel === "BOOK_SETTLING",
-      ),
-    ).toBe(false);
+    serverSnapshot = {
+      ...serverSnapshot,
+      sequence: authoritative.sequence,
+      presentationHistory: [authoritative],
+    };
+    act(() => TestEventSource.instances[0]!.emit("progression", authoritative));
+    const deferred = await waitFor(() => {
+      const matches = browserEvidence.receipts.filter(
+        (candidate) => candidate.eventId === authoritative.id && candidate.status === "deferred",
+      );
+      expect(matches).toHaveLength(1);
+      return matches[0]!;
+    });
+    expect(deferred).toMatchObject({ scene: null, targetReport: null, acknowledged: false });
+    expect(deferred).not.toHaveProperty("payload");
+    expect(browserEvidence.order.indexOf(`receipt:${deferred.requestId}:deferred`)).toBeLessThan(
+      browserEvidence.order.indexOf(`state:${deferred.requestId}:settled`),
+    );
+    expect(mocks.cancel).not.toHaveBeenCalled();
+
+    releaseReplay();
+    await waitFor(() =>
+      expect(
+        browserEvidence.receipts.filter(
+          (candidate) => candidate.eventId === authoritative.id && candidate.status === "presented",
+        ),
+      ).toHaveLength(1),
+    );
+    const presented = browserEvidence.receipts.find(
+      (candidate) => candidate.eventId === authoritative.id && candidate.status === "presented",
+    )!;
+    expect(presented.requestId).toBe(deferred.requestId);
+    expect(presented.playbackIdentity).toBe(deferred.playbackIdentity);
+    browserEvidence.stop();
   });
 
-  it("aborts an active Journal generation on resolved mode change and settles readable without later audio", async () => {
-    mocks.motionMode = "full";
-    let phaseSignal: AbortSignal | null = null;
-    mocks.waitForJournalPhase.mockImplementation(
-      (_root, phase, _mode, signal: AbortSignal) =>
-        new Promise<JournalPhaseOutcome>((resolve) => {
-          phaseSignal = signal;
-          signal.addEventListener("abort", () => resolve({ status: "aborted", phase }), { once: true });
-        }),
-    );
-    const fetchMock = vi.fn().mockResolvedValue(response({ ok: true }));
-    vi.stubGlobal("fetch", fetchMock);
-    mocks.play.mockImplementation(async (scene: AnimationSceneName, options: PlaySceneOptions<void>) =>
-      receipt("presented", options, scene),
-    );
-    const motionSnapshot: PublicSnapshot = {
+  it("hydrates bounded history newest-first and replays an exact older event behind newer authoritative work without acknowledging replay", async () => {
+    const older = Object.freeze({
+      ...matrixEvent("MAP_LOCATION_REVEALED", 5),
+      id: "history-older-map",
+      sequence: 201,
+    });
+    const newer = Object.freeze({
+      ...matrixEvent("PLAYER_LOG_ENTRY_ADDED", 11),
+      id: "history-newer-log",
+      sequence: 202,
+    });
+    const live = Object.freeze({
+      ...matrixEvent("CAMPAIGN_PAUSED", 14),
+      id: "history-live-pause",
+      sequence: 203,
+    });
+    let serverSnapshot: PublicSnapshot = {
       ...snapshot,
+      sequence: 202,
       chapter: { ...snapshot.chapter, unseen: false },
       chapters: snapshot.chapters.map((chapter) => ({ ...chapter, unseen: false })),
-      unseen: { ...snapshot.unseen, journal: 0 },
       latestChapterReleasePresentation: undefined,
+      presentationHistory: [older, newer],
+      unseen: { journal: 0, chart: 0, treasures: 0, quests: 0, log: 0, finale: 0 },
     };
-    const view = renderPlayer(motionSnapshot);
+    const fetchMock = vi.fn((input: RequestInfo | URL, init?: RequestInit) => {
+      const url = String(input);
+      if (url.endsWith("/snapshot")) return Promise.resolve(response(serverSnapshot));
+      if (url.includes("/viewed") && (init?.method ?? "GET") === "GET") {
+        return Promise.resolve(response({ acknowledgedEventIds: [older.id, newer.id] }));
+      }
+      return Promise.resolve(response({ ok: true }));
+    });
+    vi.stubGlobal("fetch", fetchMock);
+    vi.stubGlobal("scrollTo", vi.fn());
+    sessionStorage.setItem("forever-intro:test-voyage", "seen");
+    const browserEvidence = captureProgressionBrowserEvidence();
 
-    fireEvent.click(screen.getByRole("button", { name: /Open the journal/ }));
-    await waitFor(() => expect(phaseSignal).toBeInstanceOf(AbortSignal));
-    mocks.motionMode = "reduced";
-    view.rerender(
-      <TestAnimationAuthority>
-        <PlayerExperience initialSnapshot={motionSnapshot} />
-      </TestAnimationAuthority>,
+    let releaseOlderReplay!: () => void;
+    const olderReplayGate = new Promise<void>((resolve) => {
+      releaseOlderReplay = resolve;
+    });
+    mocks.play.mockImplementation(async (scene: AnimationSceneName, options: PlaySceneOptions<void>) => {
+      if (options.eventOrActionId === older.id && options.requestSource === "replay") await olderReplayGate;
+      return receipt("presented", options, scene);
+    });
+
+    renderPlayer(serverSnapshot);
+    await openJournal();
+    await waitFor(() => expect(TestEventSource.instances).toHaveLength(1));
+    fireEvent.click(screen.getByText("Presentation history"));
+    const historyItems = document.querySelectorAll<HTMLElement>("[data-presentation-history-event]");
+    expect([...historyItems].map((item) => item.dataset.presentationHistoryEvent)).toEqual([newer.id, older.id]);
+
+    const olderReplayButton = screen.getByRole("button", {
+      name: `Replay Map location revealed (${older.id})`,
+    });
+    fireEvent.click(olderReplayButton);
+    await waitFor(() =>
+      expect(
+        mocks.play.mock.calls.some(
+          ([, options]) => options.eventOrActionId === older.id && options.requestSource === "replay",
+        ),
+      ).toBe(true),
     );
 
-    await waitFor(() => expect(phaseSignal?.aborted).toBe(true));
-    expect(await screen.findByRole("button", { name: "Replay introduction" })).toBeInTheDocument();
-    expect(screen.getByRole("main")).toHaveAttribute("data-journal-phase", "JOURNAL_READY");
-    expect(mocks.audioPlayValidated).not.toHaveBeenCalled();
-    expect(mocks.audioStopAll).toHaveBeenCalledTimes(2);
+    serverSnapshot = { ...serverSnapshot, sequence: live.sequence, presentationHistory: [older, newer, live] };
+    act(() => TestEventSource.instances[0]!.emit("progression", live));
+    await waitFor(() => expect(mocks.cancel).toHaveBeenCalledWith("authoritative-progression-arrived"));
+    const interruptedReceipt = await waitFor(() => {
+      const matches = browserEvidence.receipts.filter(
+        (candidate) => candidate.eventId === older.id && candidate.status === "interrupted",
+      );
+      expect(matches).toHaveLength(1);
+      return matches[0]!;
+    });
+    expect(interruptedReceipt).toMatchObject({
+      source: "replay",
+      scene: null,
+      targetReport: null,
+      acknowledgmentAttempted: false,
+      acknowledged: false,
+    });
+    expect(interruptedReceipt).not.toHaveProperty("payload");
+    expect(browserEvidence.order.indexOf(`receipt:${interruptedReceipt.requestId}:interrupted`)).toBeLessThan(
+      browserEvidence.order.indexOf(`state:${interruptedReceipt.requestId}:settled`),
+    );
+    expect(viewedPostBodies(fetchMock).filter((body) => body.eventId === older.id)).toEqual([]);
+
+    releaseOlderReplay();
+    await waitFor(() =>
+      expect(
+        mocks.play.mock.calls.some(
+          ([, options]) => options.eventOrActionId === live.id && options.requestSource === "automatic",
+        ),
+      ).toBe(true),
+    );
+    await waitFor(() => expect(viewedPostBodies(fetchMock).filter((body) => body.eventId === live.id)).toHaveLength(1));
+    await waitFor(() =>
+      expect(browserEvidence.receipts.filter((candidate) => candidate.eventId === live.id)).toHaveLength(1),
+    );
+    expect(viewedPostBodies(fetchMock).filter((body) => body.eventId === older.id)).toEqual([]);
+    expect(screen.getByRole("button", { name: `Replay Map location revealed (${older.id})` })).toHaveAttribute(
+      "data-replay-event-id",
+      older.id,
+    );
+    browserEvidence.stop();
   });
 });

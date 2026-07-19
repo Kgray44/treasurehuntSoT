@@ -171,6 +171,76 @@ describe("VoyageChart animation boundary", () => {
     expect(view.container.querySelector('[data-location-key="cove"]')).not.toHaveAttribute("data-progress-target");
   });
 
+  it("deduplicates exact entity producers, excludes unplotted targets, and retracts stale capabilities", async () => {
+    const changes: VoyageChartTargetRegistration[] = [];
+    const onChange = (registration: VoyageChartTargetRegistration) => changes.push(registration);
+    const unplotted = {
+      ...locations[1],
+      key: "unplotted",
+      name: "Unplotted Shoal",
+      x: undefined,
+      y: undefined,
+    };
+    const duplicateSnapshot: PublicSnapshot = {
+      ...snapshot,
+      mapLocations: [locations[0], { ...locations[0], name: "Duplicate Harbor" }, locations[1], unplotted],
+      mapRoutes: [routes[0], { ...routes[0], annotation: "Duplicate route" }],
+    };
+    const view = render(
+      <AnimationProvider>
+        <VoyageChart snapshot={duplicateSnapshot} mode="full" onTargetRegistrationChange={onChange} />
+      </AnimationProvider>,
+    );
+
+    expect(view.container.querySelectorAll('[data-marker-visual-key="harbor"]')).toHaveLength(1);
+    expect(view.container.querySelectorAll('[data-route-key="harbor-to-cove"]')).toHaveLength(1);
+    expect(view.container.querySelector('[data-marker-visual-key="unplotted"]')).not.toBeInTheDocument();
+    expect(screen.getByText("Unplotted Shoal")).toBeVisible();
+
+    await waitFor(() =>
+      expect(
+        changes.some(
+          (registration) =>
+            registration.kind === "location-visual" &&
+            registration.key === "harbor" &&
+            registration.handle &&
+            registration.exportForScene,
+        ),
+      ).toBe(true),
+    );
+    const harbor = changes.findLast(
+      (registration) =>
+        registration.kind === "location-visual" && registration.key === "harbor" && registration.exportForScene,
+    )!;
+    const exported = harbor.exportForScene!({ allowedProperties: ["transform"], lifetime: "scene" });
+    expect(exported.targetId).toBe(harbor.handle!.targetId);
+    exported.revoke();
+
+    view.rerender(
+      <AnimationProvider>
+        <VoyageChart
+          snapshot={{ ...snapshot, mapLocations: [locations[1]], mapRoutes: [] }}
+          mode="full"
+          onTargetRegistrationChange={onChange}
+        />
+      </AnimationProvider>,
+    );
+    await waitFor(() =>
+      expect(
+        changes.some(
+          (registration) =>
+            registration.kind === "location-visual" &&
+            registration.key === "harbor" &&
+            registration.handle === null &&
+            registration.exportForScene === null,
+        ),
+      ).toBe(true),
+    );
+    expect(view.container.querySelector('[data-marker-visual-key="harbor"]')).not.toBeInTheDocument();
+    expect(() => harbor.exportForScene!({ allowedProperties: ["transform"], lifetime: "scene" })).toThrow();
+    expect(view.container.querySelector('[data-marker-visual-key="cove"]')).toBeInTheDocument();
+  });
+
   it("keeps the chart static and semantic when a Motion surface lease is denied", () => {
     vi.spyOn(AnimationOwnershipRegistry.prototype, "claim").mockImplementation((request) => ({
       status: "rejected",
@@ -232,5 +302,89 @@ describe("VoyageChart animation boundary", () => {
     ).not.toBe(sections[1].querySelector('[data-marker-visual-key="harbor"]')?.getAttribute("data-scene-target-id"));
     expect(screen.getAllByText("Lantern Harbor").length).toBeGreaterThanOrEqual(2);
     expect(screen.getAllByTestId("chart-lottie")[0]).toHaveAttribute("data-mode", "reduced");
+  });
+
+  it("mounts the truthful decorative Voyage Compass fallback with keyed state and bearing inputs", async () => {
+    const statuses: Array<"loading" | "ready" | "failed" | "fallback" | null> = [];
+    const view = render(
+      <AnimationProvider>
+        <VoyageChart
+          snapshot={snapshot}
+          mode="full"
+          progressRouteKey="harbor-to-cove"
+          onCompassStatusChange={(status) => statuses.push(status)}
+        />
+      </AnimationProvider>,
+    );
+
+    const contract = view.container.querySelector<HTMLElement>("[data-voyage-compass-contract]");
+    expect(contract).not.toBeNull();
+    expect(contract).toHaveAttribute("aria-hidden", "true");
+    expect(contract).toHaveAttribute("data-rive-contract-availability", "blocked_external_asset");
+    expect(contract).toHaveAttribute("data-rive-production-art-status", "blocked_external_asset");
+    expect(contract).toHaveAttribute("data-rive-state", "bearing");
+    expect(contract).toHaveAttribute("data-rive-state-value", "1");
+    expect(contract).toHaveAttribute("data-rive-route-key", "harbor-to-cove");
+    expect(contract).toHaveAttribute("data-rive-inputs", "state,bearing,arrive");
+    expect(contract).toHaveAttribute("data-rive-reduced-pose", JSON.stringify({ state: 0, bearing: 0 }));
+    expect(contract).toHaveAttribute("data-rive-reduced-equivalent", "semantic-final-state");
+    expect(Number(contract?.dataset.riveBearingValue)).toBeCloseTo(0.176208, 5);
+    expect(contract).toHaveStyle({ pointerEvents: "none" });
+    expect(contract?.querySelector("img")).toHaveAttribute("src", "/animations/stills/compass-fallback.svg");
+    expect(
+      contract?.querySelector("[data-scene-part], [data-scene-target-id], [data-animation-owner], [data-gsap-owned]"),
+    ).toBeNull();
+    expect(
+      view.container.querySelector('.illustrated-chart > img[src="/illustrations/chart/voyage-chart.svg"]'),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText("The voyage compass holds the released bearing for route harbor-to-cove."),
+    ).toBeInTheDocument();
+    expect(screen.getAllByText("Lantern Harbor").length).toBeGreaterThanOrEqual(2);
+    await waitFor(() => expect(contract).toHaveAttribute("data-rive-runtime-status", "fallback"));
+    await waitFor(() => expect(contract).toHaveAttribute("data-rive-active-signal", "bearing"));
+    expect(contract).toHaveAttribute("data-rive-semantic-dispatches", "state,bearing");
+    expect(statuses.at(-1)).toBe("fallback");
+
+    view.rerender(
+      <AnimationProvider>
+        <VoyageChart
+          snapshot={{
+            ...snapshot,
+            sequence: 9,
+            mapRoutes: [{ ...routes[0], state: "ARRIVED" }],
+          }}
+          mode="reduced"
+          progressRouteKey="harbor-to-cove"
+          onCompassStatusChange={(status) => statuses.push(status)}
+        />
+      </AnimationProvider>,
+    );
+    const arrived = view.container.querySelector<HTMLElement>("[data-voyage-compass-contract]");
+    await waitFor(() => expect(arrived).toHaveAttribute("data-rive-runtime-status", "fallback"));
+    expect(arrived).toHaveAttribute("data-rive-state", "arrived");
+    expect(arrived).toHaveAttribute("data-rive-state-value", "2");
+    expect(arrived).toHaveAttribute("data-rive-reduced-equivalent", "semantic-final-state");
+    expect(screen.getByText("The voyage compass marks arrival for route harbor-to-cove.")).toBeInTheDocument();
+    expect(statuses).toContain(null);
+    expect(statuses.at(-1)).toBe("fallback");
+
+    view.rerender(
+      <AnimationProvider>
+        <VoyageChart
+          snapshot={{ ...snapshot, sequence: 10 }}
+          mode="reduced"
+          onCompassStatusChange={(status) => statuses.push(status)}
+        />
+      </AnimationProvider>,
+    );
+    const idle = view.container.querySelector<HTMLElement>("[data-voyage-compass-contract]");
+    await waitFor(() => expect(idle).toHaveAttribute("data-rive-runtime-status", "fallback"));
+    expect(idle).toHaveAttribute("data-rive-state", "idle");
+    expect(idle).toHaveAttribute("data-rive-bearing-value", "0.000000");
+    expect(screen.getByText("The voyage compass is idle; no exact route bearing is active.")).toBeInTheDocument();
+
+    view.unmount();
+    expect(statuses.at(-1)).toBeNull();
   });
 });

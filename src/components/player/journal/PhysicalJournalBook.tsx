@@ -5,7 +5,14 @@ import type { MotionMode } from "@/animation/core/animation-types";
 import { useSceneTargetRegistration } from "@/animation/hosts/SceneHost";
 import type { SceneTargetHandle } from "@/animation/hosts/scene-host-types";
 import type { JournalOpeningPhase } from "@/animation/journal/opening-machine";
-import { PageFlipBook, type FlipBookPage, type PageFlipBookHandle } from "@/components/animation/PageFlipBook";
+import {
+  PageFlipBook,
+  type FlipBookPage,
+  type PageFlipBookHandle,
+  type PageFlipPageTargetExportAuthority,
+  type PageFlipReadinessSnapshot,
+  type PageTurnLifecycleEvent,
+} from "@/components/animation/PageFlipBook";
 import { OpeningWaxSeal } from "@/components/player/workspace/OpeningWaxSeal";
 
 export type PhysicalJournalTab = {
@@ -39,7 +46,11 @@ export const PhysicalJournalBook = forwardRef<
     tabs?: PhysicalJournalTab[];
     onSelectTab?: (pageIndex: number) => void;
     onPageChange?: (page: number) => void;
-    onPageTurn?: () => void;
+    /** Fires only after a real page change reaches its semantic settled state; safe for labelled page-turn audio. */
+    onPageTurn?: (event: PageTurnLifecycleEvent) => void;
+    onTurnLifecycle?: (event: PageTurnLifecycleEvent) => void;
+    onReadinessChange?: (snapshot: PageFlipReadinessSnapshot) => void;
+    onPageTargetsChange?: (authority: PageFlipPageTargetExportAuthority | null) => void;
     onJournalStageTargetChange?: (handle: SceneTargetHandle | null) => void;
     overlay?: React.ReactNode;
   }
@@ -59,6 +70,9 @@ export const PhysicalJournalBook = forwardRef<
     onSelectTab,
     onPageChange,
     onPageTurn,
+    onTurnLifecycle,
+    onReadinessChange,
+    onPageTargetsChange,
     onJournalStageTargetChange,
     overlay,
   },
@@ -103,7 +117,12 @@ export const PhysicalJournalBook = forwardRef<
             initialPage={initialPage}
             className="main-journal-book"
             onPageChange={onPageChange}
-            onFlipStateChange={(state) => state === "flipping" && onPageTurn?.()}
+            onTurnLifecycle={(event) => {
+              onTurnLifecycle?.(event);
+              if (event.phase === "turn-settle" && event.fromPage !== event.toPage) onPageTurn?.(event);
+            }}
+            onReadinessChange={onReadinessChange}
+            onPageTargetsChange={onPageTargetsChange}
           />
         </div>
         <div className="closed-book" data-opening-actor="closed-book" aria-hidden="true">

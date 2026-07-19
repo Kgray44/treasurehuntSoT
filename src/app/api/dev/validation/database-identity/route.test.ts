@@ -20,19 +20,61 @@ describe("GET /api/dev/validation/database-identity", () => {
     vi.stubEnv("NODE_ENV", "test");
     vi.stubEnv("FOREVER_VALIDATION_ISOLATION", "1");
     vi.stubEnv("FOREVER_VALIDATION_NONCE_HASH", nonceHash);
+    vi.stubEnv("FOREVER_VALIDATION_PRODUCTION_IDENTITY", "0");
   });
 
   afterEach(() => {
     vi.unstubAllEnvs();
   });
 
-  it("is unavailable in production", async () => {
+  it("is unavailable by default in production", async () => {
     vi.stubEnv("NODE_ENV", "production");
 
     const response = await GET();
 
     expect(response.status).toBe(404);
     await expect(response.json()).resolves.toEqual({ error: "Not found" });
+    expect(mocks.count).not.toHaveBeenCalled();
+  });
+
+  it("is unavailable in production when only part of the required environment is set", async () => {
+    vi.stubEnv("NODE_ENV", "production");
+    vi.stubEnv("FOREVER_VALIDATION_PRODUCTION_IDENTITY", "1");
+    vi.stubEnv("FOREVER_VALIDATION_ISOLATION", "0");
+
+    const missingIsolation = await GET();
+    expect(missingIsolation.status).toBe(404);
+    expect(mocks.count).not.toHaveBeenCalled();
+
+    vi.stubEnv("FOREVER_VALIDATION_ISOLATION", "1");
+    vi.stubEnv("FOREVER_VALIDATION_NONCE_HASH", "");
+    const missingNonce = await GET();
+    expect(missingNonce.status).toBe(404);
+    expect(mocks.count).not.toHaveBeenCalled();
+  });
+
+  it("allows production identity proof only with the explicit flag and all safeguards", async () => {
+    vi.stubEnv("NODE_ENV", "production");
+    vi.stubEnv("FOREVER_VALIDATION_PRODUCTION_IDENTITY", "1");
+    mocks.count.mockResolvedValue(1);
+
+    const response = await GET();
+
+    expect(response.status).toBe(200);
+    await expect(response.json()).resolves.toEqual({
+      validationDatabase: true,
+      nonceMatch: true,
+    });
+  });
+
+  it("rejects an invalid nonce in production even when production proof is enabled", async () => {
+    vi.stubEnv("NODE_ENV", "production");
+    vi.stubEnv("FOREVER_VALIDATION_PRODUCTION_IDENTITY", "1");
+    vi.stubEnv("FOREVER_VALIDATION_NONCE_HASH", "not-a-hash");
+
+    const response = await GET();
+
+    expect(response.status).toBe(404);
     expect(mocks.count).not.toHaveBeenCalled();
   });
 
@@ -68,6 +110,19 @@ describe("GET /api/dev/validation/database-identity", () => {
         resourceId: nonceHash,
         correlationId: nonceHash,
       },
+    });
+  });
+
+  it("preserves development access with isolation and a valid nonce", async () => {
+    vi.stubEnv("NODE_ENV", "development");
+    mocks.count.mockResolvedValue(1);
+
+    const response = await GET();
+
+    expect(response.status).toBe(200);
+    await expect(response.json()).resolves.toEqual({
+      validationDatabase: true,
+      nonceMatch: true,
     });
   });
 

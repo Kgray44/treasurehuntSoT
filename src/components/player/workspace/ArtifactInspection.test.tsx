@@ -84,7 +84,7 @@ describe("ArtifactInspection animation boundary", () => {
     outside.remove();
   });
 
-  it("mounts a dialog-local host and keeps Motion layout separate from GSAP detail targets", async () => {
+  it("uses the boxed dialog as its local host and keeps Motion layout separate from GSAP detail targets", async () => {
     const changes: Array<ArtifactInspectionTargetHandles | null> = [];
     let gatedLayoutShell: HTMLElement | null = null;
     const { unmount } = render(
@@ -102,14 +102,28 @@ describe("ArtifactInspection animation boundary", () => {
     );
 
     const dialog = screen.getByRole("dialog", { name: artifact.name });
-    const localHost = dialog.querySelector<HTMLElement>("[data-scene-host-boundary='player-section-enhancement']");
-    expect(localHost).toBeInTheDocument();
+    const localHost = dialog as HTMLElement;
+    const motionWrapper = localHost.parentElement;
+    expect(localHost.tagName).toBe("SECTION");
+    expect(localHost).toHaveClass("artifact-inspection");
+    expect(localHost).toHaveAttribute("data-scene-host-boundary", "player-section-enhancement");
+    expect(localHost).toHaveAttribute("aria-modal", "true");
+    expect(localHost).not.toHaveStyle({ display: "contents" });
+    expect(localHost).toHaveStyle({ minWidth: "1px", minHeight: "1px" });
+    expect(motionWrapper).toHaveAttribute("data-artifact-inspection-motion-wrapper");
+    expect(motionWrapper).toHaveAttribute("data-runtime-boundary", "motion");
 
     const layoutShell = dialog.querySelector<HTMLElement>("[data-artifact-target-role='layout-destination']")!;
     const engraving = dialog.querySelector<HTMLElement>("[data-artifact-target-role='engraving']")!;
+    const returnVisual = dialog.querySelector<HTMLElement>("[data-artifact-target-role='return-visual']")!;
     const detailLight = dialog.querySelector<HTMLElement>("[data-artifact-target-role='detail-light']")!;
     const story = dialog.querySelector<HTMLElement>("[data-static-readable='true']")!;
     const connectedGatedLayoutShell = gatedLayoutShell as HTMLElement | null;
+
+    for (const target of [layoutShell, engraving, returnVisual, detailLight]) {
+      expect(localHost).toContainElement(target);
+      expect(target.closest("[data-scene-host-boundary]")).toBe(localHost);
+    }
 
     expect(layoutShell).toHaveAttribute("data-runtime-boundary", "motion");
     expect(layoutShell).toHaveAttribute("data-runtime-lease", "ready");
@@ -121,6 +135,10 @@ describe("ArtifactInspection animation boundary", () => {
     expect(engraving).toHaveAttribute("data-runtime-boundary", "gsap");
     expect(engraving).toHaveAttribute("aria-hidden", "true");
     expect(engraving).toHaveStyle({ pointerEvents: "none" });
+    expect(returnVisual).toHaveAttribute("data-runtime-boundary", "gsap");
+    expect(returnVisual).toHaveAttribute("data-artifact-key", artifact.key);
+    expect(returnVisual).toHaveStyle({ pointerEvents: "none" });
+    expect(returnVisual).not.toHaveAttribute("data-animation-owner", "motion");
     expect(detailLight).toHaveAttribute("data-runtime-boundary", "gsap");
     expect(detailLight).toHaveAttribute("aria-hidden", "true");
     expect(detailLight).toHaveStyle({ pointerEvents: "none" });
@@ -134,15 +152,18 @@ describe("ArtifactInspection animation boundary", () => {
             handles?.artifactKey === artifact.key &&
             handles.layoutDestination !== null &&
             handles.engraving !== null &&
-            handles.detailLight !== null,
+            handles.detailLight !== null &&
+            handles.returnVisual !== null,
         ),
       ).toBe(true),
     );
     const registered = changes.findLast(
-      (handles) => handles?.layoutDestination && handles.engraving && handles.detailLight,
+      (handles) => handles?.layoutDestination && handles.engraving && handles.detailLight && handles.returnVisual,
     )!;
     expect(registered!.layoutDestination!.target.targetId).not.toBe(registered!.engraving!.target.targetId);
     expect(registered!.engraving!.target.targetId).not.toBe(registered!.detailLight!.target.targetId);
+    expect(registered!.returnVisual!.target.targetId).not.toBe(registered!.engraving!.target.targetId);
+    expect(registered!.returnVisual!.target.part).toBe("artifact-return-visual");
     expect(registered!.layoutDestination!.target.hostId).toBe(registered!.engraving!.target.hostId);
     const engravingExternal = registered!.engraving!.exportForScene({
       allowedProperties: ["clip-path"],
@@ -150,13 +171,21 @@ describe("ArtifactInspection animation boundary", () => {
     });
     expect(engravingExternal.targetId).toBe(registered!.engraving!.target.targetId);
     engravingExternal.revoke();
+    const returnExternal = registered!.returnVisual!.exportForScene({
+      allowedProperties: ["opacity", "filter"],
+      lifetime: "handoff",
+    });
+    expect(returnExternal.targetId).toBe(registered!.returnVisual!.target.targetId);
+    returnExternal.revoke();
     expect(() =>
       registered!.engraving!.exportForScene({ allowedProperties: ["path-drawing"], lifetime: "scene" }),
     ).toThrow(/allowlist/i);
     const releasedLayout = registered!.layoutDestination!;
+    const releasedReturn = registered!.returnVisual!;
     unmount();
     expect(changes.at(-1)).toBeNull();
     expect(() => releasedLayout.exportForScene({ allowedProperties: ["layout"], lifetime: "scene" })).toThrow();
+    expect(() => releasedReturn.exportForScene({ allowedProperties: ["opacity"], lifetime: "scene" })).toThrow();
   });
 
   it("hands the live registration to the current callback and cleans the replaced consumer", async () => {
@@ -173,6 +202,73 @@ describe("ArtifactInspection animation boundary", () => {
     rerender(view(second));
     await waitFor(() => expect(second.mock.calls.some(([handles]) => handles?.engraving)).toBe(true));
     expect(first).toHaveBeenLastCalledWith(null);
+  });
+
+  it("isolates bounded non-modal siblings while keeping the boxed modal exposed", async () => {
+    render(
+      <AnimationProvider>
+        <main data-testid="inspection-background" aria-hidden="false">
+          <button>Background action</button>
+        </main>
+        <aside data-testid="pre-isolated-background" aria-hidden="true" inert>
+          Already isolated
+        </aside>
+        <ArtifactInspection artifact={artifact} close={vi.fn()} restoreFocus={null} />
+      </AnimationProvider>,
+    );
+
+    const background = screen.getByTestId("inspection-background");
+    const preIsolated = screen.getByTestId("pre-isolated-background");
+    const dialog = screen.getByRole("dialog", { name: artifact.name });
+    const backdrop = dialog.closest<HTMLElement>(".artifact-inspection-backdrop")!;
+
+    expect(background).toHaveAttribute("aria-hidden", "true");
+    expect(background).toHaveAttribute("inert");
+    expect(background.inert).toBe(true);
+    expect(preIsolated).toHaveAttribute("aria-hidden", "true");
+    expect(preIsolated.inert).toBe(true);
+    expect(dialog).not.toHaveAttribute("aria-hidden");
+    expect(dialog).not.toHaveAttribute("inert");
+    expect(Boolean(dialog.inert)).toBe(false);
+    expect(backdrop).not.toHaveAttribute("aria-hidden");
+    expect(backdrop).not.toHaveAttribute("inert");
+    expect(screen.getByRole("button", { name: "Close inspection" })).toHaveFocus();
+  });
+
+  it("restores exact sibling state after identity replacement and modal unmount", async () => {
+    const secondArtifact: PublicArtifact = { ...artifact, key: "second-compass", name: "Second Compass" };
+    const view = (activeArtifact: PublicArtifact | null) => (
+      <AnimationProvider>
+        <main data-testid="false-aria-background" aria-hidden="false">
+          Visible background
+        </main>
+        <aside data-testid="inert-background" aria-hidden="true" inert>
+          Preserved inert background
+        </aside>
+        <footer data-testid="attribute-free-background">Attribute-free background</footer>
+        {activeArtifact && <ArtifactInspection artifact={activeArtifact} close={vi.fn()} restoreFocus={null} />}
+      </AnimationProvider>
+    );
+    const rendered = render(view(artifact));
+    const falseAria = screen.getByTestId("false-aria-background");
+    const inertBackground = screen.getByTestId("inert-background");
+    const attributeFree = screen.getByTestId("attribute-free-background");
+
+    expect(falseAria).toHaveAttribute("aria-hidden", "true");
+    expect(falseAria.inert).toBe(true);
+    rendered.rerender(view(secondArtifact));
+    expect(screen.getByRole("dialog", { name: secondArtifact.name })).not.toHaveAttribute("aria-hidden");
+    expect(falseAria).toHaveAttribute("aria-hidden", "true");
+    expect(falseAria.inert).toBe(true);
+
+    rendered.rerender(view(null));
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+    expect(falseAria).toHaveAttribute("aria-hidden", "false");
+    expect(falseAria).not.toHaveAttribute("inert");
+    expect(inertBackground).toHaveAttribute("aria-hidden", "true");
+    expect(inertBackground).toHaveAttribute("inert", "");
+    expect(attributeFree).not.toHaveAttribute("aria-hidden");
+    expect(attributeFree).not.toHaveAttribute("inert");
   });
 
   it("keeps readable semantic content in reduced motion and never invokes the future scene", async () => {

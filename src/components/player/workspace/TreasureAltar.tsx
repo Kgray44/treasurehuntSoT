@@ -21,7 +21,10 @@ export type TreasureAltarExportableTarget = Readonly<{
 export type TreasureAltarArtifactTargetHandles = Readonly<{
   artifactKey: string;
   layoutSource: TreasureAltarExportableTarget | null;
+  /** Backward-compatible award destination; it is the exact keyed silhouette capability. */
   cinematicDestination: TreasureAltarExportableTarget | null;
+  silhouette?: TreasureAltarExportableTarget | null;
+  connectionEndpoint?: TreasureAltarExportableTarget | null;
 }>;
 
 export type TreasureAltarConnectionTargetHandle = Readonly<{
@@ -49,6 +52,15 @@ function useExportableTarget(handle: SceneTargetHandle | null) {
   }, [handle, host]);
 }
 
+function uniqueByKey<T extends Readonly<{ key: string }>>(items: readonly T[]) {
+  const seen = new Set<string>();
+  return items.filter((item) => {
+    if (seen.has(item.key)) return false;
+    seen.add(item.key);
+    return true;
+  });
+}
+
 function ArtifactSlot({
   artifact,
   inspect,
@@ -69,12 +81,21 @@ function ArtifactSlot({
     }),
     [artifact.key],
   );
-  const destinationInput = useMemo(
+  const silhouetteInput = useMemo(
     () => ({
-      targetKey: `artifact:${artifact.key}:altar-cinematic-destination`,
-      part: "artifact-slot-cinematic",
+      targetKey: `artifact:${artifact.key}:altar-silhouette`,
+      part: "artifact-silhouette",
       ownerHint: "gsap" as const,
       allowedProperties: ["transform", "opacity", "filter"] as const,
+    }),
+    [artifact.key],
+  );
+  const endpointInput = useMemo(
+    () => ({
+      targetKey: `artifact:${artifact.key}:altar-connection-endpoint`,
+      part: "artifact-connection-endpoint",
+      ownerHint: "gsap" as const,
+      allowedProperties: ["transform", "scale", "opacity", "filter"] as const,
     }),
     [artifact.key],
   );
@@ -83,10 +104,11 @@ function ArtifactSlot({
     handle: layoutSource,
     ownershipReady: layoutOwnershipReady,
   } = useRuntimeOwnedSceneTarget(layoutInput);
-  const { bindTarget: bindCinematicDestination, handle: cinematicDestination } =
-    useSceneTargetRegistration(destinationInput);
+  const { bindTarget: bindSilhouette, handle: silhouette } = useSceneTargetRegistration(silhouetteInput);
+  const { bindTarget: bindConnectionEndpoint, handle: connectionEndpoint } = useSceneTargetRegistration(endpointInput);
   const layoutSourceRegistration = useExportableTarget(layoutSource);
-  const cinematicDestinationRegistration = useExportableTarget(cinematicDestination);
+  const silhouetteRegistration = useExportableTarget(silhouette);
+  const connectionEndpointRegistration = useExportableTarget(connectionEndpoint);
   const bindLayoutSourceNode = useCallback(
     (node: HTMLButtonElement | null) => bindLayoutSource(node),
     [bindLayoutSource],
@@ -96,15 +118,25 @@ function ArtifactSlot({
     onArtifactTargetHandlesChange?.({
       artifactKey: artifact.key,
       layoutSource: layoutSourceRegistration,
-      cinematicDestination: cinematicDestinationRegistration,
+      cinematicDestination: silhouetteRegistration,
+      silhouette: silhouetteRegistration,
+      connectionEndpoint: connectionEndpointRegistration,
     });
     return () =>
       onArtifactTargetHandlesChange?.({
         artifactKey: artifact.key,
         layoutSource: null,
         cinematicDestination: null,
+        silhouette: null,
+        connectionEndpoint: null,
       });
-  }, [artifact.key, cinematicDestinationRegistration, layoutSourceRegistration, onArtifactTargetHandlesChange]);
+  }, [
+    artifact.key,
+    connectionEndpointRegistration,
+    layoutSourceRegistration,
+    onArtifactTargetHandlesChange,
+    silhouetteRegistration,
+  ]);
 
   return (
     <motion.button
@@ -123,26 +155,40 @@ function ArtifactSlot({
       disabled={!known}
     >
       <span
-        ref={bindCinematicDestination}
+        ref={bindConnectionEndpoint}
+        className="brass-mount"
         aria-hidden="true"
         data-runtime-boundary="gsap"
-        data-scene-part="artifact-slot-cinematic"
+        data-scene-part="artifact-connection-endpoint"
         data-artifact-key={artifact.key}
-        data-artifact-target-role="cinematic-destination"
+        data-artifact-target-role="connection-endpoint"
         style={{ pointerEvents: "none" }}
-      />
-      <span className="brass-mount" aria-hidden="true">
+      >
         <i />
         <i />
         <i />
       </span>
-      {artifact.key.includes("compass") || artifact.name?.toLowerCase().includes("compass") ? (
-        <img src="/illustrations/artifacts/compass-needle.svg" alt="" aria-hidden="true" />
-      ) : (
-        <span className="artifact-silhouette" aria-hidden="true">
-          {artifact.state === "SILHOUETTE" ? "?" : "✦"}
-        </span>
-      )}
+      <span
+        ref={bindSilhouette}
+        className="artifact-silhouette"
+        aria-hidden="true"
+        data-runtime-boundary="gsap"
+        data-scene-part="artifact-silhouette"
+        data-artifact-key={artifact.key}
+        data-artifact-target-role="silhouette"
+        style={{ pointerEvents: "none" }}
+      >
+        {artifact.key.includes("compass") || artifact.name?.toLowerCase().includes("compass") ? (
+          <img
+            src="/illustrations/artifacts/compass-needle.svg"
+            alt=""
+            aria-hidden="true"
+            style={{ width: 72, height: 105, objectFit: "contain" }}
+          />
+        ) : (
+          <span aria-hidden="true">{artifact.state === "SILHOUETTE" ? "?" : "✦"}</span>
+        )}
+      </span>
       <b>{artifact.name ?? artifact.safeName ?? "Unknown"}</b>
       <small>{artifact.category?.replaceAll("_", " ") ?? artifact.state}</small>
     </motion.button>
@@ -205,10 +251,11 @@ export function TreasureAltar({
   onConnectionTargetHandleChange,
 }: TreasureAltarProps) {
   const headingId = useId();
-  const visible = snapshot.artifacts.filter((artifact) => artifact.state !== "UNKNOWN");
+  const uniqueArtifacts = useMemo(() => uniqueByKey(snapshot.artifacts), [snapshot.artifacts]);
+  const visible = uniqueArtifacts.filter((artifact) => artifact.state !== "UNKNOWN");
   const artifactsByKey = useMemo(
-    () => new Map(snapshot.artifacts.map((artifact) => [artifact.key, artifact])),
-    [snapshot.artifacts],
+    () => new Map(uniqueArtifacts.map((artifact) => [artifact.key, artifact])),
+    [uniqueArtifacts],
   );
   const altarLightInput = useMemo(
     () => ({
@@ -247,11 +294,11 @@ export function TreasureAltar({
           style={{ pointerEvents: "none" }}
         />
         <svg className="artifact-connections" viewBox="0 0 1000 620" aria-hidden="true">
-          {snapshot.artifacts
+          {visible
             .filter((artifact) => artifact.connectedArtifactKey)
             .map((artifact) => {
               const connected = artifactsByKey.get(artifact.connectedArtifactKey!);
-              return connected ? (
+              return connected && connected.state !== "UNKNOWN" ? (
                 <ArtifactConnectionPath
                   key={`${artifact.key}:${connected.key}`}
                   artifact={artifact}

@@ -2,17 +2,7 @@
 
 /* eslint-disable @next/next/no-img-element -- The artifact SVG is presented inside the shared-layout shell. */
 
-import {
-  useCallback,
-  useContext,
-  useEffect,
-  useId,
-  useLayoutEffect,
-  useMemo,
-  useRef,
-  type CSSProperties,
-  type ReactNode,
-} from "react";
+import { useCallback, useContext, useEffect, useId, useLayoutEffect, useMemo, useRef, type ReactNode } from "react";
 import { motion } from "motion/react";
 import type { PublicArtifact } from "@/domain/story";
 import { AnimationAuthorityContext } from "@/animation/hosts/SceneHostContext";
@@ -34,6 +24,8 @@ export type ArtifactInspectionTargetHandles = Readonly<{
   layoutDestination: ArtifactInspectionExportableTarget | null;
   engraving: ArtifactInspectionExportableTarget | null;
   detailLight: ArtifactInspectionExportableTarget | null;
+  /** GSAP-owned inner visual used for return handoff; Motion retains layout ownership. */
+  returnVisual?: ArtifactInspectionExportableTarget | null;
 }>;
 
 type ArtifactInspectionProps = {
@@ -43,27 +35,88 @@ type ArtifactInspectionProps = {
   onTargetHandlesChange?: (handles: ArtifactInspectionTargetHandles | null) => void;
 };
 
-const contentsStyle: CSSProperties = { display: "contents" };
+type PreservedBackgroundState = Readonly<{
+  element: HTMLElement;
+  hadAriaHidden: boolean;
+  ariaHidden: string | null;
+  hadInertAttribute: boolean;
+  inertAttribute: string | null;
+  inert: boolean;
+}>;
 
-function DialogSceneHost({ hostKey, children }: { hostKey: string; children: ReactNode }) {
+function isolateNonModalSiblings(modalContainer: HTMLElement) {
+  const parent = modalContainer.parentElement;
+  if (!parent) return () => undefined;
+  const preserved = Array.from(parent.children)
+    .filter(
+      (element): element is HTMLElement =>
+        element instanceof HTMLElement &&
+        element !== modalContainer &&
+        !(["SCRIPT", "STYLE", "LINK", "META"] as const).includes(
+          element.tagName as "SCRIPT" | "STYLE" | "LINK" | "META",
+        ),
+    )
+    .map<PreservedBackgroundState>((element) => ({
+      element,
+      hadAriaHidden: element.hasAttribute("aria-hidden"),
+      ariaHidden: element.getAttribute("aria-hidden"),
+      hadInertAttribute: element.hasAttribute("inert"),
+      inertAttribute: element.getAttribute("inert"),
+      inert: element.inert,
+    }));
+
+  preserved.forEach(({ element }) => {
+    element.inert = true;
+    element.setAttribute("inert", "");
+    element.setAttribute("aria-hidden", "true");
+  });
+
+  return () => {
+    preserved.forEach(({ element, hadAriaHidden, ariaHidden, hadInertAttribute, inertAttribute, inert }) => {
+      if (hadAriaHidden) element.setAttribute("aria-hidden", ariaHidden ?? "");
+      else element.removeAttribute("aria-hidden");
+      element.inert = inert;
+      if (hadInertAttribute) element.setAttribute("inert", inertAttribute ?? "");
+      else if (!inert) element.removeAttribute("inert");
+    });
+  };
+}
+
+function DialogSceneHost({ hostKey, titleId, children }: { hostKey: string; titleId: string; children: ReactNode }) {
   const authority = useContext(AnimationAuthorityContext);
 
   if (!authority) {
     // Isolated story/component renders may omit the product provider. Production is
     // always provider-backed; this compatibility wrapper does not mint authority.
     return (
-      <div data-scene-host-unregistered="artifact-inspection" style={contentsStyle}>
+      <section
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby={titleId}
+        className="artifact-inspection"
+        data-artifact-inspection-state="readable"
+        data-scene-host-unregistered="artifact-inspection"
+        style={{ minWidth: 1, minHeight: 1 }}
+        onClick={(event) => event.stopPropagation()}
+      >
         {children}
-      </div>
+      </section>
     );
   }
 
   return (
     <SceneHost
+      as="section"
       kind="player-section-enhancement"
       hostKey={hostKey}
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby={titleId}
+      className="artifact-inspection"
+      data-artifact-inspection-state="readable"
       data-artifact-inspection-host={hostKey}
-      style={contentsStyle}
+      style={{ minWidth: 1, minHeight: 1 }}
+      onClick={(event) => event.stopPropagation()}
     >
       {children}
     </SceneHost>
@@ -114,6 +167,15 @@ function ArtifactInspectionContents({
     }),
     [artifact.key],
   );
+  const returnVisualInput = useMemo(
+    () => ({
+      targetKey: `artifact:${artifact.key}:inspection-return-visual`,
+      part: "artifact-return-visual",
+      ownerHint: "gsap" as const,
+      allowedProperties: ["opacity", "filter"] as const,
+    }),
+    [artifact.key],
+  );
   const detailLightInput = useMemo(
     () => ({
       targetKey: `artifact:${artifact.key}:inspection-detail-light`,
@@ -129,9 +191,11 @@ function ArtifactInspectionContents({
     ownershipReady: layoutOwnershipReady,
   } = useRuntimeOwnedSceneTarget(layoutInput);
   const { bindTarget: bindEngraving, handle: engraving } = useSceneTargetRegistration(engravingInput);
+  const { bindTarget: bindReturnVisual, handle: returnVisual } = useSceneTargetRegistration(returnVisualInput);
   const { bindTarget: bindDetailLight, handle: detailLight } = useSceneTargetRegistration(detailLightInput);
   const layoutDestinationRegistration = useExportableTarget(layoutDestination);
   const engravingRegistration = useExportableTarget(engraving);
+  const returnVisualRegistration = useExportableTarget(returnVisual);
   const detailLightRegistration = useExportableTarget(detailLight);
   const bindLayoutDestinationNode = useCallback(
     (node: HTMLDivElement | null) => bindLayoutDestination(node),
@@ -144,6 +208,7 @@ function ArtifactInspectionContents({
       layoutDestination: layoutDestinationRegistration,
       engraving: engravingRegistration,
       detailLight: detailLightRegistration,
+      returnVisual: returnVisualRegistration,
     });
     return () => onTargetHandlesChange?.(null);
   }, [
@@ -152,6 +217,7 @@ function ArtifactInspectionContents({
     engravingRegistration,
     layoutDestinationRegistration,
     onTargetHandlesChange,
+    returnVisualRegistration,
   ]);
 
   return (
@@ -167,21 +233,31 @@ function ArtifactInspectionContents({
           data-artifact-key={artifact.key}
           data-artifact-target-role="layout-destination"
         >
-          {artifact.key.includes("compass") || artifact.name?.toLowerCase().includes("compass") ? (
-            <img src="/illustrations/artifacts/compass-needle.svg" alt="" aria-hidden="true" />
-          ) : (
-            <span aria-hidden="true">✦</span>
-          )}
           <span
-            ref={bindEngraving}
+            ref={bindReturnVisual}
             aria-hidden="true"
-            className="artifact-engraving-detail"
             data-runtime-boundary="gsap"
-            data-scene-part="artifact-engraving"
+            data-scene-part="artifact-return-visual"
             data-artifact-key={artifact.key}
-            data-artifact-target-role="engraving"
-            style={{ pointerEvents: "none" }}
-          />
+            data-artifact-target-role="return-visual"
+            style={{ display: "grid", width: "100%", height: "100%", placeItems: "center", pointerEvents: "none" }}
+          >
+            {artifact.key.includes("compass") || artifact.name?.toLowerCase().includes("compass") ? (
+              <img src="/illustrations/artifacts/compass-needle.svg" alt="" aria-hidden="true" />
+            ) : (
+              <span aria-hidden="true">✦</span>
+            )}
+            <span
+              ref={bindEngraving}
+              aria-hidden="true"
+              className="artifact-engraving-detail"
+              data-runtime-boundary="gsap"
+              data-scene-part="artifact-engraving"
+              data-artifact-key={artifact.key}
+              data-artifact-target-role="engraving"
+              style={{ pointerEvents: "none" }}
+            />
+          </span>
         </motion.div>
         <div
           ref={bindDetailLight}
@@ -223,9 +299,12 @@ function ArtifactInspectionContents({
 }
 
 export function ArtifactInspection({ artifact, close, restoreFocus, onTargetHandlesChange }: ArtifactInspectionProps) {
-  const dialog = useRef<HTMLElement>(null);
+  const backdrop = useRef<HTMLDivElement>(null);
+  const dialog = useRef<HTMLDivElement>(null);
   const closeRef = useRef(close);
   const initialRestoreFocus = useRef(restoreFocus);
+  const restoreFocusTarget = useRef<HTMLElement | null>(null);
+  const capturedRestoreFocus = useRef(false);
   const reactInstanceId = useId();
   const titleId = `${reactInstanceId}-artifact-name`;
   const hostKey = `artifact-inspection:${artifact.key}:${reactInstanceId}`;
@@ -234,11 +313,16 @@ export function ArtifactInspection({ artifact, close, restoreFocus, onTargetHand
     closeRef.current = close;
   }, [close]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const node = dialog.current;
-    const previouslyFocused = initialRestoreFocus.current ?? (document.activeElement as HTMLElement | null);
+    if (!node) return;
+    if (!capturedRestoreFocus.current) {
+      restoreFocusTarget.current = initialRestoreFocus.current ?? (document.activeElement as HTMLElement | null);
+      capturedRestoreFocus.current = true;
+    }
     const focusFirst = () => focusableElements(node!).at(0)?.focus();
     focusFirst();
+    const restoreIsolation = backdrop.current ? isolateNonModalSiblings(backdrop.current) : () => undefined;
 
     const keydown = (event: KeyboardEvent) => {
       if (!node?.isConnected) return;
@@ -270,12 +354,14 @@ export function ArtifactInspection({ artifact, close, restoreFocus, onTargetHand
     return () => {
       document.removeEventListener("keydown", keydown);
       document.removeEventListener("focusin", focusin);
-      if (previouslyFocused?.isConnected) previouslyFocused.focus();
+      restoreIsolation();
+      if (restoreFocusTarget.current?.isConnected) restoreFocusTarget.current.focus();
     };
-  }, []);
+  }, [artifact.key]);
 
   return (
     <motion.div
+      ref={backdrop}
       className="artifact-inspection-backdrop"
       onClick={() => closeRef.current()}
       initial={{ opacity: 0 }}
@@ -283,30 +369,25 @@ export function ArtifactInspection({ artifact, close, restoreFocus, onTargetHand
       exit={{ opacity: 0 }}
       data-runtime-boundary="motion"
     >
-      <motion.section
+      <motion.div
         ref={dialog}
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby={titleId}
-        className="artifact-inspection"
-        onClick={(event) => event.stopPropagation()}
         initial={{ y: 26, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         exit={{ y: 18, opacity: 0 }}
         data-runtime-boundary="motion"
-        data-artifact-inspection-state="readable"
+        data-artifact-inspection-motion-wrapper
       >
-        <button className="close-inspection" onClick={() => closeRef.current()}>
-          Close inspection
-        </button>
-        <DialogSceneHost hostKey={hostKey}>
+        <DialogSceneHost key={hostKey} hostKey={hostKey} titleId={titleId}>
+          <button className="close-inspection" onClick={() => closeRef.current()}>
+            Close inspection
+          </button>
           <ArtifactInspectionContents
             artifact={artifact}
             titleId={titleId}
             onTargetHandlesChange={onTargetHandlesChange}
           />
         </DialogSceneHost>
-      </motion.section>
+      </motion.div>
     </motion.div>
   );
 }

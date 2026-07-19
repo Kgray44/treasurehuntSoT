@@ -5,10 +5,10 @@ import { AnimatePresence, motion } from "motion/react";
 import { SceneHost, useRuntimeOwnedSceneTarget, useSceneTargetRegistration } from "@/animation/hosts/SceneHost";
 import { useOptionalSceneHost } from "@/animation/hosts/SceneHostContext";
 import type { SceneHostHandle, SceneTargetHandle } from "@/animation/hosts/scene-host-types";
-import type { PublicLogEntry, PublicSnapshot } from "@/domain/story";
+import type { ClientProgressEvent, PublicLogEntry, PublicSnapshot } from "@/domain/story";
 import type { CompanionView } from "./types";
 
-export type ShipsLogTargetKind = "log-day-layout" | "log-row" | "fresh-ink" | "log-symbol";
+export type ShipsLogTargetKind = "log-day-layout" | "log-row" | "fresh-ink" | "log-date" | "log-symbol";
 
 export type ShipsLogTargetRegistration = Readonly<{
   kind: ShipsLogTargetKind;
@@ -20,8 +20,8 @@ export type ShipsLogTargetRegistration = Readonly<{
 export type ShipsLogProps = Readonly<{
   snapshot: PublicSnapshot;
   navigate: (view: CompanionView) => void;
-  /** Exact progress identity; it never falls back to the last visible row. */
-  progressEntryKey?: PublicLogEntry["key"];
+  /** Exact immutable ProgressEvent identity; PublicLogEntry.key is the same event id. */
+  progressEventId?: ClientProgressEvent["id"];
   /** Gives the progression-host integrator the source host and exact target handle needed for a bounded export. */
   onTargetRegistrationChange?: (registration: ShipsLogTargetRegistration) => void;
 }>;
@@ -54,7 +54,7 @@ function LogEntryRow({
 }>) {
   const rowTarget = useMemo(
     () => ({
-      targetKey: `log:${entry.key}:row`,
+      targetKey: `log-event:${entry.key}:row`,
       part: "log-row",
       runtime: "motion" as const,
       allowedProperties: ["layout"] as const,
@@ -64,16 +64,25 @@ function LogEntryRow({
   );
   const inkTarget = useMemo(
     () => ({
-      targetKey: `log:${entry.key}:fresh-ink`,
+      targetKey: `log-event:${entry.key}:fresh-ink`,
       part: isProgressEntry ? "log-entry-new" : "log-entry-ink",
       ownerHint: "gsap" as const,
       allowedProperties: ["opacity", "clip-path", "filter"] as const,
     }),
     [entry.key, isProgressEntry],
   );
+  const dateTarget = useMemo(
+    () => ({
+      targetKey: `log-event:${entry.key}:date-stamp`,
+      part: isProgressEntry ? "log-date-new" : "log-date",
+      ownerHint: "gsap" as const,
+      allowedProperties: ["opacity", "filter"] as const,
+    }),
+    [entry.key, isProgressEntry],
+  );
   const symbolTarget = useMemo(
     () => ({
-      targetKey: `log:${entry.key}:symbol`,
+      targetKey: `log-event:${entry.key}:symbol`,
       part: isProgressEntry ? "log-symbol-new" : "log-symbol",
       ownerHint: "gsap" as const,
       allowedProperties: ["transform", "scale", "rotate", "opacity"] as const,
@@ -86,9 +95,11 @@ function LogEntryRow({
     ownershipReady: rowOwnershipReady,
   } = useRuntimeOwnedSceneTarget(rowTarget);
   const { bindTarget: bindInkTarget, handle: inkHandle } = useSceneTargetRegistration(inkTarget);
+  const { bindTarget: bindDateTarget, handle: dateHandle } = useSceneTargetRegistration(dateTarget);
   const { bindTarget: bindSymbolTarget, handle: symbolHandle } = useSceneTargetRegistration(symbolTarget);
   useReportTarget("log-row", entry.key, rowHandle, report);
   useReportTarget("fresh-ink", entry.key, inkHandle, report);
+  useReportTarget("log-date", entry.key, dateHandle, report);
   useReportTarget("log-symbol", entry.key, symbolHandle, report);
 
   return (
@@ -100,6 +111,7 @@ function LogEntryRow({
       data-motion-layout-boundary
       data-motion-ownership={rowOwnershipReady ? "ready" : "static"}
       data-log-entry-key={entry.key}
+      data-event-id={entry.key}
       data-progress-target={isProgressEntry ? "true" : undefined}
       style={{ position: "relative" }}
     >
@@ -109,15 +121,29 @@ function LogEntryRow({
         data-scene-part={isProgressEntry ? "log-entry-new" : "log-entry-ink"}
         data-gsap-visual-boundary
         data-log-ink-key={entry.key}
+        data-event-id={entry.key}
         aria-hidden="true"
         style={{ position: "absolute", inset: 0, pointerEvents: "none" }}
       />
+      <span
+        ref={bindDateTarget}
+        className="log-date-stamp"
+        data-scene-part={isProgressEntry ? "log-date-new" : "log-date"}
+        data-gsap-visual-boundary
+        data-log-date-key={entry.key}
+        data-event-id={entry.key}
+        aria-hidden="true"
+        style={{ pointerEvents: "none" }}
+      >
+        {new Date(entry.timestamp).toLocaleDateString([], { month: "short", day: "numeric" })}
+      </span>
       <span
         ref={bindSymbolTarget}
         className="log-symbol"
         data-scene-part={isProgressEntry ? "log-symbol-new" : "log-symbol"}
         data-gsap-visual-boundary
         data-log-symbol-key={entry.key}
+        data-event-id={entry.key}
         aria-hidden="true"
         style={{ pointerEvents: "none" }}
       >
@@ -149,7 +175,7 @@ function LogDaySection({
   day: string;
   entries: PublicLogEntry[];
   navigate: ShipsLogProps["navigate"];
-  progressEntryKey: ShipsLogProps["progressEntryKey"];
+  progressEntryKey: ShipsLogProps["progressEventId"];
   report: ShipsLogProps["onTargetRegistrationChange"];
 }>) {
   const firstTimestamp = entries[0]?.timestamp ?? "1970-01-01T00:00:00.000Z";
@@ -211,7 +237,7 @@ function ShipsLogContents({
   snapshot,
   navigate,
   headingId,
-  progressEntryKey,
+  progressEventId,
   onTargetRegistrationChange,
 }: ShipsLogProps & Readonly<{ headingId: string }>) {
   const [filter, setFilter] = useState("all");
@@ -252,7 +278,7 @@ function ShipsLogContents({
                 key={day}
                 day={day}
                 entries={entries}
-                progressEntryKey={progressEntryKey}
+                progressEntryKey={progressEventId}
                 navigate={navigate}
                 report={onTargetRegistrationChange}
               />

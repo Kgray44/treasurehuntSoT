@@ -76,6 +76,34 @@ describe("CompanionNavigation animation boundaries", () => {
     expect(navigate).toHaveBeenNthCalledWith(2, "finale");
   });
 
+  it("marks only the active desktop and mobile destinations as the current page", () => {
+    const view = render(
+      <>
+        <CompanionNavigation view="journal" unseen={unseen} navigate={vi.fn()} />
+        <MobileNavigation view="chart" unseen={unseen} navigate={vi.fn()} />
+      </>,
+    );
+
+    const desktop = within(view.container).getByRole("navigation", { name: "Companion sections" });
+    const mobile = within(view.container).getByRole("navigation", { name: "Companion views" });
+
+    expect(within(desktop).getByRole("button", { name: /Journal/u })).toHaveAttribute("aria-current", "page");
+    expect(within(desktop).getByRole("button", { name: /Chart/u })).not.toHaveAttribute("aria-current");
+    expect(within(mobile).getByRole("button", { name: /Chart/u })).toHaveAttribute("aria-current", "page");
+    expect(within(mobile).getByRole("button", { name: /Journal/u })).not.toHaveAttribute("aria-current");
+
+    expect(
+      within(desktop)
+        .getAllByRole("button")
+        .filter((button) => button.hasAttribute("aria-current")),
+    ).toHaveLength(1);
+    expect(
+      within(mobile)
+        .getAllByRole("button")
+        .filter((button) => button.hasAttribute("aria-current")),
+    ).toHaveLength(1);
+  });
+
   it("exports distinct host-local desktop and mobile handles", async () => {
     type DesktopRegistration = CompanionNavigationDimTargetRegistration<typeof companionDesktopNavigationDimTargetKey>;
     type MobileRegistration = CompanionNavigationDimTargetRegistration<typeof companionMobileNavigationDimTargetKey>;

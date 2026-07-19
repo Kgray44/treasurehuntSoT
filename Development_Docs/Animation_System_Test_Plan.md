@@ -508,10 +508,12 @@ If forced GC is unavailable, runtime/listener/detached-node counts remain hard g
 | Lottie                            | 404, malformed JSON, stalled load, renderer error, document hidden, reduced mode                 | Representative static art or CSS state; no blank layout, retry storm, or accidental one-shot replay                                        |
 | PageFlip                          | import failure, initialization throw, source update failure, orientation failure, reduced policy | Static accessible page controls, current page/focus preserved, one visible content copy                                                    |
 | CSS/WAAPI                         | missing actor, zero animations, infinite animation, rejected promise, timeout                    | Declared immediate reduced state or explicit failure; no indefinite wait                                                                   |
-| Web Audio                         | blocked context, missing buffer, decode/play error, mute                                         | Visual/text sequence continues; metrics record cue failure; no uncaught rejection                                                          |
+| Web Audio                         | missing/blocked/suspended context; node/start/stop failure; mute; cleanup                        | Visual/text continues; audio stays optional; failures are sanitized/nonblocking; active work returns to baseline                           |
 | Motion                            | reduced policy, presence interruption, layout measurement failure                                | Immediate/non-spatial readable state; no focus loss or same-node GSAP conflict                                                             |
 | Network/SSE                       | slow, failed, offline, duplicate/replayed event                                                  | Pending/offline status, idempotent reconciliation, unseen event remains presentable                                                        |
 | Authentication/invitation command | 400/401/403/404/409/410/429/500 and timeout                                                      | Specific readable alert within 1,000 ms after response, focus recovery, no success transition or duplicate submission                      |
+
+`missing buffer` and `decodeAudioData` failure are **not applicable** to the current production `AudioCuePlayer`: it synthesizes every cue with an `OscillatorNode` and `GainNode` and never fetches, loads, or decodes an audio buffer. Those cases are neither passes nor untested Phase 3 gaps. If a future implementation adds decoded media, missing-buffer and decode-failure injection become required release gates again. The applicable Phase 3 gate set is unavailable/blocked/suspended/closed context behavior; oscillator/gain creation, connection, start, and stop failure; muted/zero-volume and optional-audio semantics; sanitized nonblocking outcomes; and exact node/context cleanup. Browser lifecycle evidence must cover success, blocked resume, unavailable context, oscillator-start failure, and muted operation across 20 cycles with zero active audio nodes after each turn pair; focused unit coverage must own the remaining node-stop, close-failure, and exactly-once cleanup branches.
 
 Fallback simulation in `/dev/animations` is a component/harness test only. Each production call site must also have a focused component or E2E fallback test.
 
@@ -801,3 +803,106 @@ reconciliation validator
 ```
 
 The final Phase 2 evidence passed the reconciliation validator and 13 Python tests; concurrent format, lint, typecheck, diff, and 59-file / 452-test Vitest gates; V2/V3 repaired re-audits; 34 focused PageFlip tests; isolated Playwright with 48 passed / 30 intentional skips / 0 failures across 78 cases; all six viewports in both browsers; all four Journal cases; asset validation; and the canonical production build plus two restart/cleanup probes. Database isolation reported `isolation-verified` with the canonical database and its SQLite family unchanged. The combined `npm run validate` process itself exited 1 at production build because of the temporary worktree dependency junction and is classified `environment`, not pass; the junction-free canonical build/restart evidence supplies the accepted build gate. Coordinator-owned evidence commit, synchronization, push, and remote verification remain before repository handoff. V2 and V3's earlier fix-needed runs are retained only as history; the repaired integrated tree is the accepted evidence.
+
+## 25. Project Lanternwake Phase 3 release plan: Unfurl the Tale
+
+This section adds the Phase 3 Player cinematic-integration gate. It does not rewrite the accepted Phase 1/2 evidence, count a `PENDING` result as a pass, or claim final Rive artwork. The exact evidence form is `Development_Docs/Project_Lanternwake_Phase_3_Validation_Report.md`; the 57-row semantic visual index is `Development_Docs/Project_Lanternwake_Phase_3_Visual_Checkpoint_Index.md`.
+
+### 25.1 Controlling denominators and validator
+
+Phase 3 owns 189 unique accepted requirements, 90 Codex plus 99 OA. The 152 physical Phase 3 matrix rows contain OA carriers and are not additive. The Player baseline is exactly 102 cases: 17 event types × six starting sections, full mode, 1440×900. At least 185 distinct M1–M5 cases are required by the mode matrix.
+
+Run the read-only Phase 3 ledger gate before browser mutation:
+
+```powershell
+python scripts/validate_phase3_player_event_ledger.py `
+  --ledger Development_Docs/Project_Lanternwake_Phase_3_Player_Event_Coverage_Ledger.csv `
+  --no-write
+
+python -m unittest scripts.tests.test_validate_phase3_player_event_ledger
+```
+
+The validator must report 301 rows, 17/17 event types, 6/6 sections, 102/102 baseline cases, 20 Journal-opening rows, and 10 PageFlip rows. The program reconciliation gate must still report 458 accepted requirements, 361 matrix rows, zero accepted unmapped requirements, and zero unresolved requirements. Neither validator substitutes for implementation/runtime evidence.
+
+### 25.2 Persistent host and 102-case baseline
+
+For every event from every starting section, assert:
+
+1. the sole persistent `player-progression` host remains mounted;
+2. the exhaustive event policy selects the declared global scene and readable outcome;
+3. queue ordering is deterministic by authoritative source, sequence, priority, and stable request ID;
+4. live/reconnect work precedes replay, duplicate and stale IDs do not animate, and replay never delays authority;
+5. exactly one required visible global target is selected from the correct host;
+6. the starting section is not changed to obtain a cinematic target;
+7. an optional local enhancement runs only after global handoff when its already-mounted exact capability is ready;
+8. unrelated local sections and targets remain untouched;
+9. `finalStateRuntime` settles or produces the declared readable fallback before cleanup;
+10. section scroll and the exact connected visible focus target are restored, with explicit destination/heading fallback;
+11. live/reconnect acknowledgment occurs only after an eligible global receipt; and
+12. all claims, handles, timers, listeners, focus state, audio, and runtime work clean up.
+
+Component/unit evidence may enumerate this matrix, but the release gate also needs isolated Chromium mutation coverage and WebKit read-only presentation/accessibility coverage. A skip is individually classified and never added to the pass count.
+
+### 25.3 Replay, delivery, reconnect, and revocation
+
+Use the twelve-step replay protocol: automatic receipt; eligible completion; refresh; authorized bounded-history reconstruction; replay outside Journal; fresh request and scene identities; zero POST/PATCH/DELETE; no new business event; no new viewed row; unchanged snapshot/business state; focus/section restoration; and terminal cleanup. Replay always has `acknowledgmentEligible=false`.
+
+Test batch viewed-state filtering, duplicate delivery, query/subscribe overlap, reconnect gaps, source ordering, separate observed/queued/presented/acknowledged cursors, interrupted replay, failed mandatory retry, stale request rejection, and idempotent acknowledgment. On access revocation, retry and delivery terminate, protected workspace/history content is removed, and a readable access state receives focus. Snapshot sequence must never stand in for the presentation-acknowledgment cursor.
+
+### 25.4 Journal, PageFlip, and exact sections
+
+Journal coverage includes first/full, returning/abbreviated, completed/archive, manual-full replay, and reduced profiles. `JOURNAL_READY` requires a truthful receipt plus ready PageFlip or verified static fallback. Page turns assert all five lifecycle states, rebased queued page/generation, truthful same-page cancellation, current-visible-primary focus/target selection, stale generation rejection, and readable force-fallback behavior.
+
+Section-local checks use stable domain identities:
+
+- Journal: current-visible chapter/annotation identity, never hidden source or stale clone;
+- Chart: exact keyed location marker and route path/endpoints;
+- Treasures: exact artifact slot, silhouette, connection, dialog-local engraving, and focus return;
+- Quests: distinct exact quest note and objective identities;
+- Log: immutable progress-event ID row with separate ink/date/symbol children; and
+- Finale: exact requirement socket plus mechanism state/progress and nullable capability retraction.
+
+### 25.5 Modes, accessibility, viewports, and visual evidence
+
+Run at least 185 distinct M1–M5 cases: all 17 events in their relevant section plus chapter release, pause, resume, and revert from every section. Browser reduced motion is an upper safety bound. Mode changes may not recreate unrelated runtimes, replay one-shots, duplicate a presentation, or weaken content/focus/acknowledgment semantics.
+
+Run all six viewports — 2560×1440, 1920×1080, 1440×900, 430×932, 390×844, and 844×390 — with Chromium owning mutation and WebKit limited to read-only shared-database coverage. Assert zero task-caused serious/critical axe violations, one readable heading and controlled announcement, keyboard/touch reachability, correct modal focus, no hidden/inert/detached/stale focus, one accessible PageFlip content copy, no horizontal overflow/clipping, and readable behavior at 200% zoom where supported.
+
+Capture exactly 57 named semantic checkpoints: 11 Journal, 14 chapter, six map, seven artifact, five quest, five log, and nine finale. Every index row records label, event, case, section, mode, viewport, browser, artifact path, SHA-256, run ID, integrated SHA, status, and note. A missing file/hash/run/SHA remains `PENDING`.
+
+### 25.6 Production performance and twenty-cycle lifecycle
+
+The performance gate runs only against the coordinator-owned optimized production server at `http://127.0.0.1:3200`, through `playwright.phase3-performance.config.ts`. Development FPS, unit fake clocks, and HTTP restart probes are not production performance evidence.
+
+| Metric                                    |        Phase 3 budget |
+| ----------------------------------------- | --------------------: |
+| Chapter release completion                | strictly `<10,000 ms` |
+| Target preflight p95                      |              `<50 ms` |
+| Skip/Replay/PageFlip response start       |             `<100 ms` |
+| Interruption/unmount cleanup              |             `<250 ms` |
+| Desktop frame-time p95                    |              `≤25 ms` |
+| Mobile frame-time p95                     |              `≤40 ms` |
+| App-attributable single stall             |             `≤100 ms` |
+| Chapter cumulative long tasks             |             `≤200 ms` |
+| Ordinary-transition cumulative long tasks |             `≤100 ms` |
+| CLS                                       |               `≤0.10` |
+
+At least 20 cycles must exercise host mount/unmount, scene play/replay/cleanup, Journal/PageFlip open/turn/update/fallback/unmount, section enhancements, Quartermaster overlay, reconnect/revocation, audio, Lottie, and fallback transitions. After each group and cycle 20, hosts, targets, handles, generations, claims, runtimes, listeners, timers, EventSource instances, focus traps, clones, audio work, Lottie work, and pending WAAPI promises return to baseline with no monotonic growth.
+
+### 25.7 Serialized integrated gate and result classification
+
+One coordinator owns the copied database, ports 3100/3200, browser, production server, complete Playwright run, production performance, build/restarts, Git, and final synchronization. The required order is:
+
+```text
+program reconciliation + Phase 3 ledger validators
+  -> focused policy/queue/host/Journal/PageFlip/section/API/security tests
+  -> format + lint + strict typecheck + complete unit/component + assets
+  -> prove unique copied-database identity through the running app
+  -> serialized Chromium mutation + WebKit read-only E2E, 102 cases, >=185 modes, six viewports, accessibility, 57 visual checkpoints, 20 cycles
+  -> optimized production build and owned production performance run
+  -> two restart/cleanup probes and canonical-database verification
+  -> one complete npm run validate result
+  -> Git/remote and one documentation/conversation synchronization proof
+```
+
+Use only `task-regression`, `pre-existing`, `environment`, `database-isolation`, `missing-phase-5-asset`, `blocked`, or `unresolved` for failures. The Journal Clasp, Voyage Compass, and Finale Mechanism final `.riv` binaries remain `missing-phase-5-asset`; their CSS/SVG readable fallback behavior is still a Phase 3 gate. No nonzero command, skip, missing artifact, blocked cell, or unverified total is a pass.

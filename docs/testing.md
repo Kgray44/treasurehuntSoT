@@ -44,3 +44,21 @@ Canonical journal unit coverage asserts the typed presentation schema, recursive
 The 2026-07-17 platform release gate passed 25 Vitest files with 80 tests and 21 Playwright tests with 7 intentionally skipped mobile mutation permutations. Post-browser verification passed before and after the progress-preserving seed, and the production build plus both restart-safety cycles completed successfully.
 
 The 2026-07-18 product-polish release gate passed 31 Vitest files with 99 tests and the same 21-test Playwright acceptance matrix with 7 intentional mobile mutation skips. Formatting, ESLint, strict TypeScript, animation assets, migration/seed/backfill invariants, accepted-state verification, the progress-preserving seed rerun, the optimized production build, and both restart-safety cycles also passed.
+
+## Lanternwake Phase 3 validation
+
+Phase 3 adds an exhaustive 17-event Player presentation policy, one persistent progression host, deterministic authoritative/replay queueing, bounded Player-safe history, batch viewed-state checks, reconnect/revocation behavior, Journal/PageFlip readiness, six exact section integrations, and hardened Quartermaster command delivery. The baseline browser denominator is 102 cases: 17 events from each of six starting sections at full mode and 1440×900. At least 185 distinct M1–M5 cases cover every event in its relevant section and chapter release, pause, resume, and revert from every section.
+
+The exact required viewports remain 2560×1440, 1920×1080, 1440×900, 430×932, 390×844, and 844×390. Chromium owns mutation-capable Player/Quartermaster cases through the unique copied-database harness. WebKit is read-only for shared-database responsive, accessibility, protected-denial, replay-presentation, and reduced-motion coverage. An alternate port or worktree is not database isolation.
+
+The replay gate proves refresh-safe reconstruction from authorized bounded history, replay outside Journal, fresh presentation identity, no POST/PATCH/DELETE, no new progress event or viewed row, unchanged business snapshot, focus/section restoration, and cleanup. Access revocation must terminate delivery/retry and remove protected workspace/history content. The 20-cycle lifecycle gate returns hosts, targets, handles, claims, runtimes, listeners, timers, EventSource instances, focus traps, PageFlip clones, audio/Lottie work, and pending WAAPI promises to baseline.
+
+Production performance runs from the optimized owned server on port 3200 inside `npm run validate`. Budgets are chapter release `<10s`, target-preflight p95 `<50ms`, Skip/Replay/PageFlip response `<100ms`, interruption/unmount cleanup `<250ms`, desktop/mobile frame p95 `≤25ms`/`≤40ms`, no app-attributable stall `>100ms`, chapter/ordinary cumulative long tasks `≤200ms`/`≤100ms`, and CLS `≤0.10`.
+
+The Phase 3 evidence set is:
+
+- `Development_Docs/Project_Lanternwake_Phase_3_Player_Event_Coverage_Ledger.csv` for the exact 102 baseline and supplemental contract rows;
+- `Development_Docs/Project_Lanternwake_Phase_3_Validation_Report.md` for commands, counts, isolation, performance, failures, SHAs, and verdict; and
+- `Development_Docs/Project_Lanternwake_Phase_3_Visual_Checkpoint_Index.md` for exactly 57 semantic checkpoints: 11 Journal, 14 chapter, six map, seven artifact, five quest, five log, and nine finale.
+
+Run `npm run validate` for the serialized release gate. Focused commands remain `npm run format:check`, `npm run lint`, `npm run typecheck`, `npm test`, `npm run assets:validate`, `npm run test:e2e`, and `npm run build`; focused browser commands do not authorize bypassing mutation isolation. Skipped, pending, `blocked`, `missing-phase-5-asset`, and nonzero results are not passes.

@@ -20,3 +20,26 @@ The 2026-07-17 in-app browser review held at a 60 FPS estimate while idle and du
 These are development diagnostics on one workstation, not a portable performance benchmark. The production showcase is intentionally unavailable, so release profiling should exercise the real landing, access, player, and quartermaster surfaces under representative device throttling.
 
 Production review should include browser performance traces on the actual low-end mobile target, real final Rive binaries, throttled 4G/local-cache behavior, and memory snapshots after repeated section navigation. The current development metrics are diagnostics, not production telemetry.
+
+## Lanternwake Phase 3 production budgets
+
+Phase 3 performance evidence runs against the owned optimized server at `http://127.0.0.1:3200` through `playwright.phase3-performance.config.ts`. The integrated harness starts and stops that server, verifies the isolated/canonical database boundary, and releases port 3200. A development-server sample, unit fake clock, or HTTP restart probe does not satisfy this gate.
+
+| Metric                                    |       Required budget |
+| ----------------------------------------- | --------------------: |
+| Chapter-release completion                | strictly `<10,000 ms` |
+| Real target-preflight p95                 |              `<50 ms` |
+| Skip, Replay, and PageFlip response start |             `<100 ms` |
+| Interruption and unmount cleanup          |             `<250 ms` |
+| Desktop frame-time p95                    |              `≤25 ms` |
+| Mobile frame-time p95                     |              `≤40 ms` |
+| App-attributable single stall             |             `≤100 ms` |
+| Chapter cumulative long tasks             |             `≤200 ms` |
+| Ordinary-transition cumulative long tasks |             `≤100 ms` |
+| Cumulative layout shift                   |               `≤0.10` |
+
+The preflight result uses eight untimed warmups and 40 measured executions of the real acquire/preflight/release path, sorted with nearest-rank p95 at zero-based index 37. Chapter timing starts at authoritative presentation activation and ends only after the readable final-state handoff; asset load, fallback, and cleanup policy must be explicit in the trace.
+
+Twenty-cycle coverage includes host mount/unmount, play/replay/cleanup, Journal/PageFlip open/turn/update/fallback/unmount, section enhancements, Quartermaster overlay, reconnect/revocation, semantic audio, Lottie, and forced fallback. Record baselines and cycle-20 counts for hosts, targets, handles, generations, ownership claims, runtimes, listeners, timers, EventSource instances, focus traps, clones, audio work, Lottie work, pending WAAPI promises, detached nodes, and heap. Counts must return to baseline without monotonic growth; a missing measurement remains pending rather than passing.
+
+Final Rive binaries for Journal Clasp, Voyage Compass, and Finale Mechanism are Phase 5 external assets. Phase 3 profiles their truthful CSS/SVG fallback adapters and must not label those results as live Rive performance.

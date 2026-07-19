@@ -14,6 +14,150 @@ export const journalOpeningPhases = [
 
 export type JournalOpeningPhase = JournalPhase;
 
+export const journalOpeningCompositions = {
+  full: journalOpeningPhases.slice(1),
+  abbreviated: ["BOOK_SETTLING", "JOURNAL_READY"],
+  quiet: ["JOURNAL_READY"],
+  reduced: ["JOURNAL_READY"],
+} as const satisfies Record<string, readonly JournalOpeningPhase[]>;
+
+export type JournalOpeningRequest =
+  | "first"
+  | "returning"
+  | "completed-archive"
+  | "manual-full-replay"
+  | "manual-abbreviated-replay";
+
+export type JournalOpeningComposition = keyof typeof journalOpeningCompositions;
+
+export type JournalOpeningPolicy = Readonly<{
+  id: string;
+  request: JournalOpeningRequest;
+  composition: JournalOpeningComposition;
+  phases: readonly JournalOpeningPhase[];
+  autoStart: boolean;
+  persistOnCompletion: boolean;
+  liveChannel: boolean;
+}>;
+
+export type JournalReadyReason =
+  | "completed"
+  | "completed-fallback"
+  | "skipped"
+  | "motion-changed"
+  | "recoverable-interruption"
+  | "phase-timeout"
+  | "runtime-failure"
+  | "pageflip-readiness-failure";
+
+export type JournalReadyReceipt = Readonly<{
+  finalPhase: "JOURNAL_READY";
+  policyId: string;
+  reason: JournalReadyReason;
+  persistHasOpened: boolean;
+  readable: true;
+}>;
+
+/**
+ * Resolves the opening composition without mixing route/session policy into the
+ * animation runner. Reduced motion changes presentation only; the request and
+ * persistence meaning remain intact.
+ */
+export function resolveJournalOpeningPolicy({
+  request,
+  mode,
+}: {
+  request: JournalOpeningRequest;
+  mode: MotionMode;
+}): JournalOpeningPolicy {
+  const archive = request === "completed-archive";
+  const composition: JournalOpeningComposition = archive
+    ? "quiet"
+    : mode === "reduced"
+      ? "reduced"
+      : request === "returning" || request === "manual-abbreviated-replay"
+        ? "abbreviated"
+        : "full";
+  return Object.freeze({
+    id: `${request}:${composition}`,
+    request,
+    composition,
+    phases: journalOpeningCompositions[composition],
+    autoStart: request === "returning" || archive,
+    persistOnCompletion: request === "first",
+    liveChannel: !archive,
+  });
+}
+
+export function createJournalReadyReceipt(
+  policy: Pick<JournalOpeningPolicy, "id" | "persistOnCompletion">,
+  reason: JournalReadyReason,
+): JournalReadyReceipt {
+  return Object.freeze({
+    finalPhase: "JOURNAL_READY",
+    policyId: policy.id,
+    reason,
+    persistHasOpened:
+      policy.persistOnCompletion && (reason === "completed" || reason === "completed-fallback" || reason === "skipped"),
+    readable: true,
+  });
+}
+
+export type JournalReadinessOutcome =
+  | Readonly<{ status: "ready"; readinessStatus: string }>
+  | Readonly<{ status: "aborted" }>
+  | Readonly<{ status: "timed-out"; timeoutMs: number }>
+  | Readonly<{ status: "runtime-failed" }>;
+
+/** Waits on a public readable-state probe without coupling the opening machine to PageFlip internals. */
+export function waitForJournalReadiness(
+  probe: () => Readonly<{ ready: boolean; status: string }> | null,
+  signal: AbortSignal,
+  timeoutMs = 1500,
+): Promise<JournalReadinessOutcome> {
+  return new Promise((resolve) => {
+    let timer: ReturnType<typeof setTimeout> | null = null;
+    let settled = false;
+    const startedAt = clockNow();
+    const cleanup = () => {
+      if (timer !== null) clearTimeout(timer);
+      timer = null;
+      signal.removeEventListener("abort", onAbort);
+    };
+    const settle = (outcome: JournalReadinessOutcome) => {
+      if (settled) return;
+      settled = true;
+      cleanup();
+      resolve(outcome);
+    };
+    const onAbort = () => settle({ status: "aborted" });
+    const inspect = () => {
+      if (signal.aborted) {
+        onAbort();
+        return;
+      }
+      let snapshot: ReturnType<typeof probe>;
+      try {
+        snapshot = probe();
+      } catch {
+        settle({ status: "runtime-failed" });
+        return;
+      }
+      if (snapshot?.ready) {
+        settle({ status: "ready", readinessStatus: snapshot.status });
+        return;
+      }
+      if (clockNow() - startedAt >= timeoutMs) {
+        settle({ status: "timed-out", timeoutMs });
+        return;
+      }
+      timer = setTimeout(inspect, 16);
+    };
+    signal.addEventListener("abort", onAbort, { once: true });
+    inspect();
+  });
+}
+
 type JournalPhaseActorContract = {
   actor: string;
   selector: string;

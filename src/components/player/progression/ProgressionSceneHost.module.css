@@ -1,0 +1,407 @@
+.host,
+.content {
+  min-inline-size: 0;
+}
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1200;
+  display: grid;
+  place-items: center;
+  overflow: clip;
+  pointer-events: auto;
+  isolation: isolate;
+}
+
+.overlay[hidden] {
+  display: none;
+}
+
+.overlay [data-neutral-visibility="dim"][data-presentation-relevance="neutral"] {
+  opacity: 0.01;
+}
+
+.overlay [data-neutral-visibility="dim"][data-presentation-relevance="relevant"] {
+  opacity: 1;
+}
+
+.backdropLayer,
+.primaryLayer,
+.objectLayer,
+.summaryLayer,
+.controlsLayer,
+.fallbackLayer {
+  position: absolute;
+  box-sizing: border-box;
+}
+
+.backdropLayer {
+  inset: 0;
+  z-index: 0;
+  background: radial-gradient(circle at 50% 42%, rgb(22 76 92 / 42%), transparent 48%), rgb(2 13 24 / 76%);
+}
+
+.primaryLayer {
+  inset: max(1rem, env(safe-area-inset-top)) max(1rem, env(safe-area-inset-right))
+    max(6.5rem, calc(env(safe-area-inset-bottom) + 5rem)) max(1rem, env(safe-area-inset-left));
+  z-index: 1;
+  display: grid;
+  place-items: center;
+}
+
+.parchment {
+  position: relative;
+  width: min(43rem, 92vw);
+  min-height: min(24rem, 62vh);
+  border: 1px solid rgb(219 186 110 / 78%);
+  border-radius: 1.1rem;
+  background: linear-gradient(135deg, #f3dfae, #caa462);
+  box-shadow: 0 1.5rem 4rem rgb(0 0 0 / 52%);
+}
+
+.pageLight,
+.mapFog {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+}
+
+.pageLight {
+  background: radial-gradient(circle at 50% 40%, rgb(255 249 210 / 72%), transparent 58%);
+}
+
+.mapFog {
+  background: linear-gradient(115deg, transparent 35%, rgb(246 233 196 / 42%), transparent 64%);
+}
+
+.sealGroup {
+  position: absolute;
+  inset: 50% auto auto 50%;
+  width: 6.5rem;
+  height: 6.5rem;
+  translate: -50% -50%;
+}
+
+.seal {
+  position: absolute;
+  inset: 0;
+  border: 0.28rem solid #7d251d;
+  border-radius: 50%;
+  background: radial-gradient(circle, #c75b42, #77251d 70%);
+  box-shadow: 0 0.4rem 1.1rem rgb(67 17 12 / 46%);
+}
+
+.sealCracks,
+.inkPaths,
+.globalMapPath,
+.connectionPaths {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 3;
+}
+
+.sealCracks {
+  color: #3e0c09;
+}
+
+.sealFragmentOne,
+.sealFragmentTwo {
+  position: absolute;
+  width: 1.4rem;
+  height: 1.1rem;
+  background: #8d2f23;
+  clip-path: polygon(0 0, 100% 35%, 30% 100%);
+}
+
+.sealFragmentOne {
+  inset: 28% auto auto 12%;
+}
+
+.sealFragmentTwo {
+  inset: auto 8% 22% auto;
+}
+
+.inkPaths {
+  color: #65451f;
+}
+
+.semanticTarget {
+  min-width: 1rem;
+  min-height: 1rem;
+}
+
+.globalMapPath {
+  z-index: 2;
+  color: #d2a950;
+}
+
+.quill {
+  position: absolute;
+  right: 11%;
+  bottom: 12%;
+  width: 1rem;
+  height: 8rem;
+  border-radius: 100% 0;
+  rotate: 38deg;
+  background: linear-gradient(90deg, #f0e6c9, #805d34);
+}
+
+.lantern {
+  position: absolute;
+  z-index: 2;
+  top: 8%;
+  right: 7%;
+  width: 3.2rem;
+  height: 4.4rem;
+  border: 0.18rem solid #bd8743;
+  border-radius: 1rem 1rem 0.5rem 0.5rem;
+  background: radial-gradient(circle, #fff5a3, #ca6e25 60%, #452615);
+  box-shadow: 0 0 2rem rgb(255 188 74 / 58%);
+}
+
+.objectLayer {
+  inset: 8% 5% 18%;
+  z-index: 3;
+}
+
+.eventChildren {
+  position: absolute;
+  inset: 0;
+}
+
+.marker,
+.artifact,
+.artifactSlot,
+.artifactLight,
+.questNote,
+.questStamp,
+.logEntry,
+.logSymbol,
+.finaleOuter,
+.finaleInner,
+.solvedStamp,
+.undoMark {
+  position: absolute;
+  min-width: 1rem;
+  min-height: 1rem;
+}
+
+.marker {
+  left: 12%;
+  top: 28%;
+  width: 1.7rem;
+  height: 1.7rem;
+  border-radius: 50% 50% 50% 0;
+  rotate: -45deg;
+  background: #d8a441;
+}
+
+.artifact,
+.artifactSlot {
+  right: 13%;
+  top: 24%;
+  width: 5rem;
+  height: 5rem;
+  border: 0.16rem solid rgb(232 189 94 / 80%);
+  border-radius: 50%;
+}
+
+.artifact {
+  background: radial-gradient(circle, #88e2db, #275769 62%, transparent 64%);
+}
+
+.artifactSlot {
+  border-style: dashed;
+}
+
+.artifactLight {
+  right: 9%;
+  top: 18%;
+  width: 8rem;
+  height: 8rem;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgb(120 242 225 / 54%), transparent 70%);
+}
+
+.connectionPaths {
+  color: #d2a950;
+}
+
+.questNote,
+.logEntry {
+  left: 10%;
+  bottom: 11%;
+  width: 8rem;
+  height: 4.6rem;
+  border: 1px solid #d1b56c;
+  background: #dfc98f;
+}
+
+.questStamp,
+.logSymbol,
+.solvedStamp,
+.undoMark {
+  left: 15%;
+  bottom: 15%;
+  width: 3rem;
+  height: 3rem;
+  border: 0.2rem solid #8d3529;
+  border-radius: 50%;
+}
+
+.logEntry {
+  left: auto;
+  right: 10%;
+}
+
+.logSymbol {
+  left: auto;
+  right: 14%;
+}
+
+.finaleOuter,
+.finaleInner {
+  inset: 50% auto auto 50%;
+  border: 0.15rem solid rgb(111 218 222 / 72%);
+  border-radius: 50%;
+  translate: -50% -50%;
+}
+
+.finaleOuter {
+  width: min(18rem, 38vw);
+  height: min(18rem, 38vw);
+}
+
+.finaleInner {
+  width: min(12rem, 26vw);
+  height: min(12rem, 26vw);
+}
+
+.solvedStamp {
+  left: 50%;
+  bottom: 12%;
+}
+
+.undoMark {
+  left: calc(50% + 4rem);
+  bottom: 12%;
+}
+
+.summaryLayer {
+  z-index: 4;
+  right: max(1rem, env(safe-area-inset-right));
+  bottom: max(5.8rem, calc(env(safe-area-inset-bottom) + 4.5rem));
+  left: max(1rem, env(safe-area-inset-left));
+  margin-inline: auto;
+  width: min(42rem, calc(100vw - 2rem));
+  padding: 1rem 1.25rem;
+  border: 1px solid rgb(219 186 110 / 72%);
+  border-radius: 0.85rem;
+  color: #fff4d2;
+  background: rgb(8 25 37 / 94%);
+  box-shadow: 0 0.8rem 2rem rgb(0 0 0 / 42%);
+  pointer-events: auto;
+}
+
+.summaryLayer h2,
+.summaryLayer p {
+  margin: 0;
+}
+
+.summaryLayer h2 + * {
+  margin-top: 0.45rem;
+}
+
+.controlsLayer {
+  z-index: 5;
+  right: max(1rem, env(safe-area-inset-right));
+  bottom: max(1rem, env(safe-area-inset-bottom));
+  left: max(1rem, env(safe-area-inset-left));
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.65rem;
+  pointer-events: auto;
+}
+
+.controlsLayer button {
+  min-width: 7rem;
+  min-height: 2.75rem;
+  padding: 0.65rem 1rem;
+  border: 1px solid #d8b468;
+  border-radius: 999px;
+  color: #fff8dc;
+  background: #17364a;
+  font: inherit;
+  cursor: pointer;
+}
+
+.controlsLayer button:focus-visible {
+  outline: 3px solid #fff2a8;
+  outline-offset: 3px;
+}
+
+.controlsLayer button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.liveRegion {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.fallbackLayer {
+  z-index: 6;
+  inset: max(1rem, env(safe-area-inset-top)) max(1rem, env(safe-area-inset-right)) auto auto;
+  width: min(26rem, calc(100vw - 2rem));
+  padding: 0.85rem 1rem;
+  border: 1px solid #ddb96c;
+  border-radius: 0.75rem;
+  color: #fff4d2;
+  background: #122e40;
+  pointer-events: auto;
+}
+
+@media (max-width: 44rem) {
+  .primaryLayer {
+    inset-inline: 0.5rem;
+  }
+
+  .parchment {
+    width: calc(100vw - 1rem);
+    min-height: 48vh;
+  }
+
+  .summaryLayer {
+    bottom: max(7.3rem, calc(env(safe-area-inset-bottom) + 6rem));
+  }
+
+  .controlsLayer button {
+    flex: 1 1 7.5rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .overlay *,
+  .overlay *::before,
+  .overlay *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

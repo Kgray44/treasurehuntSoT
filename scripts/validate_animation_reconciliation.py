@@ -176,6 +176,8 @@ IMPLEMENTATION_STATUSES = frozenset(
         "implemented",
         "validated",
         "blocked",
+        "blocked_external_asset",
+        "blocked_environment",
         "superseded",
         "rejected",
     }
@@ -520,8 +522,16 @@ class ReconciliationValidator:
                     "partial implementation has weak or missing remaining-scope detail",
                     severity="warning",
                 )
-        if status == "blocked" and not row.get("Blocked By", ""):
-            self.add("E-STATUS-004", source, row_id, "blocked requires Blocked By", record=record)
+        if status in {"blocked", "blocked_external_asset", "blocked_environment"} and not row.get(
+            "Blocked By", ""
+        ):
+            self.add(
+                "E-STATUS-004",
+                source,
+                row_id,
+                f"{status} requires Blocked By",
+                record=record,
+            )
         if status == "architecture_blocked" and (
             not row.get("Architecture Dependency", "") or not row.get("Blocked By", "")
         ):

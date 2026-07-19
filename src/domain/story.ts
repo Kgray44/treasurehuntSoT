@@ -202,6 +202,8 @@ export type PublicSnapshot = {
   };
   unseen: Record<"journal" | "chart" | "treasures" | "quests" | "log" | "finale", number>;
   latestChapterReleasePresentation?: ReplayablePresentation;
+  /** Bounded, oldest-first, Player-safe presentation delivery history. */
+  presentationHistory?: ClientProgressEvent[];
 };
 
 export type ClientProgressEvent = {

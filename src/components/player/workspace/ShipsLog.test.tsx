@@ -74,7 +74,7 @@ describe("ShipsLog animation boundary", () => {
         <ShipsLog
           snapshot={snapshot}
           navigate={navigate}
-          progressEntryKey="progress-17"
+          progressEventId="progress-17"
           onTargetRegistrationChange={(registration) => registrations.push(registration)}
         />
       </AnimationProvider>,
@@ -82,9 +82,11 @@ describe("ShipsLog animation boundary", () => {
 
     const row = view.container.querySelector<HTMLElement>('[data-log-entry-key="progress-17"]');
     const ink = view.container.querySelector<HTMLElement>('[data-log-ink-key="progress-17"]');
+    const date = view.container.querySelector<HTMLElement>('[data-log-date-key="progress-17"]');
     const symbol = view.container.querySelector<HTMLElement>('[data-log-symbol-key="progress-17"]');
     expect(row).not.toBeNull();
     expect(ink).not.toBeNull();
+    expect(date).not.toBeNull();
     expect(symbol).not.toBeNull();
     expect(row).toHaveAttribute("data-motion-layout-boundary");
     expect(row).not.toHaveAttribute("data-gsap-owned");
@@ -94,9 +96,15 @@ describe("ShipsLog animation boundary", () => {
     expect(ink).toHaveAttribute("data-gsap-visual-boundary");
     expect(ink).not.toHaveAttribute("data-animation-owner");
     expect(ink).toHaveAttribute("data-scene-part", "log-entry-new");
+    expect(ink).toHaveAttribute("data-event-id", "progress-17");
     expect(ink).toHaveAttribute("aria-hidden", "true");
     expect(ink).toHaveStyle({ pointerEvents: "none" });
+    expect(date).toHaveAttribute("data-scene-part", "log-date-new");
+    expect(date).toHaveAttribute("data-event-id", "progress-17");
+    expect(date).toHaveAttribute("aria-hidden", "true");
+    expect(date).toHaveStyle({ pointerEvents: "none" });
     expect(symbol).toHaveAttribute("data-scene-part", "log-symbol-new");
+    expect(symbol).toHaveAttribute("data-event-id", "progress-17");
     expect(symbol).toHaveAttribute("aria-hidden", "true");
 
     await waitFor(() => expect(row).toHaveAttribute("data-scene-target-id"));
@@ -107,6 +115,7 @@ describe("ShipsLog animation boundary", () => {
       "ready",
     );
     await waitFor(() => expect(ink).toHaveAttribute("data-scene-target-id"));
+    await waitFor(() => expect(date).toHaveAttribute("data-scene-target-id"));
     await waitFor(() => expect(symbol).toHaveAttribute("data-scene-target-id"));
     await waitFor(() =>
       expect(
@@ -123,11 +132,19 @@ describe("ShipsLog animation boundary", () => {
     expect(navigate).toHaveBeenCalledWith("chart");
   });
 
-  it("selects the fresh entry by PublicLogEntry key, never by row order", () => {
+  it("selects by immutable ProgressEvent id, never by payload target or row order", () => {
     const navigate = vi.fn();
     const view = render(
       <AnimationProvider>
-        <ShipsLog snapshot={snapshot} navigate={navigate} progressEntryKey="progress-16" />
+        <ShipsLog snapshot={snapshot} navigate={navigate} progressEventId="harbor-to-cove" />
+      </AnimationProvider>,
+    );
+
+    expect(view.container.querySelectorAll('[data-log-entry-key][data-progress-target="true"]')).toHaveLength(0);
+
+    view.rerender(
+      <AnimationProvider>
+        <ShipsLog snapshot={snapshot} navigate={navigate} progressEventId="progress-16" />
       </AnimationProvider>,
     );
 
@@ -145,13 +162,14 @@ describe("ShipsLog animation boundary", () => {
         <ShipsLog
           snapshot={{ ...snapshot, log: [...snapshot.log].reverse() }}
           navigate={navigate}
-          progressEntryKey="progress-16"
+          progressEventId="progress-16"
         />
       </AnimationProvider>,
     );
     const selected = view.container.querySelectorAll('[data-log-entry-key][data-progress-target="true"]');
     expect(selected).toHaveLength(1);
     expect(selected[0]).toHaveAttribute("data-log-entry-key", "progress-16");
+    expect(selected[0]).toHaveAttribute("data-event-id", "progress-16");
   });
 
   it("keeps log rows static, readable, and interactive when Motion ownership is denied", () => {
@@ -167,7 +185,7 @@ describe("ShipsLog animation boundary", () => {
     const navigate = vi.fn();
     const view = render(
       <AnimationProvider>
-        <ShipsLog snapshot={snapshot} navigate={navigate} progressEntryKey="progress-17" />
+        <ShipsLog snapshot={snapshot} navigate={navigate} progressEventId="progress-17" />
       </AnimationProvider>,
     );
 
@@ -194,7 +212,7 @@ describe("ShipsLog animation boundary", () => {
     const navigate = vi.fn();
     const view = render(
       <AnimationProvider>
-        <ShipsLog snapshot={snapshot} navigate={navigate} progressEntryKey="progress-17" />
+        <ShipsLog snapshot={snapshot} navigate={navigate} progressEventId="progress-17" />
       </AnimationProvider>,
     );
 
@@ -208,6 +226,9 @@ describe("ShipsLog animation boundary", () => {
 
     fireEvent.change(filter, { target: { value: "all" } });
     await waitFor(() => expect(screen.getByText("The chart changed")).toBeVisible());
+    expect(view.container.querySelectorAll('[data-event-id="progress-17"][data-progress-target="true"]')).toHaveLength(
+      1,
+    );
 
     view.rerender(
       <AnimationProvider>

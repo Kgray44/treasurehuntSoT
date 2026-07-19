@@ -5,10 +5,22 @@ import type { MotionMode } from "@/animation/core/animation-types";
 import { SceneHost, useSceneTargetRegistration } from "@/animation/hosts/SceneHost";
 import { useOptionalSceneHost } from "@/animation/hosts/SceneHostContext";
 import type { SceneHostHandle, SceneTargetHandle } from "@/animation/hosts/scene-host-types";
-import { buildJournalPages, pageIndexForChapter, type JournalPage } from "@/animation/journal/page-model";
+import {
+  buildJournalPages,
+  pageIndexForAnnotation,
+  pageIndexForChapter,
+  type JournalPage,
+} from "@/animation/journal/page-model";
 import type { ClientProgressEvent, PublicSnapshot } from "@/domain/story";
-import type { FlipBookPage, PageFlipBookHandle } from "@/components/animation/PageFlipBook";
-import { LottieEffect } from "@/components/animation/LottieEffect";
+import type {
+  FlipBookPage,
+  PageFlipBookHandle,
+  PageFlipPageTargetExportAuthority,
+} from "@/components/animation/PageFlipBook";
+import type { PageFlipPageTargetCapability } from "@/components/animation/pageflip-boundary";
+import { LottieEffect, type LottieEffectHandle } from "@/components/animation/LottieEffect";
+import { RiveStatefulObject, type RiveRuntimeStatus } from "@/components/animation/RiveStatefulObject";
+import { riveAssets } from "@/animation/assets/rive-contracts";
 import { lottieAssets } from "@/animation/assets/lottie-contracts";
 import type { JournalOpeningPhase } from "@/animation/journal/opening-machine";
 import { PhysicalJournalBook } from "@/components/player/journal/PhysicalJournalBook";
@@ -33,6 +45,44 @@ export type JournalCeremonyTargetReady = Readonly<{
   host: SceneHostHandle;
   targets: Readonly<Record<JournalCeremonyTargetKey, readonly SceneTargetHandle[]>>;
 }>;
+
+export type JournalAnnotationTargetReady = Readonly<{
+  eventId: string;
+  annotationKey: string;
+  chapterOrdinal: number;
+  pageId: string;
+  pageIndex: number;
+  authority: PageFlipPageTargetExportAuthority;
+  target: PageFlipPageTargetCapability;
+}>;
+
+export type JournalChapterInkCommand = Readonly<{
+  eventId: string;
+  semanticLabel: "ink-story";
+  play: () => void;
+  stop: () => void;
+}>;
+
+type JournalClaspPose = "locked" | "awake" | "opening" | "open";
+
+const journalClaspPoseByPhase = {
+  ENTRY_IDLE: "locked",
+  ENTRY_ACTIVATED: "locked",
+  CLOSED_BOOK_REVEAL: "locked",
+  LATCH_RELEASING: "awake",
+  COVER_OPENING: "opening",
+  SEALED_PAGE_REVEAL: "opening",
+  SEAL_BREAKING: "opening",
+  BOOK_SETTLING: "opening",
+  JOURNAL_READY: "open",
+} as const satisfies Record<JournalOpeningPhase, JournalClaspPose>;
+
+const journalClaspReadableState = {
+  locked: "The journal clasp is locked.",
+  awake: "The journal clasp is awake and ready to release.",
+  opening: "The journal clasp is released while the journal opens.",
+  open: "The journal clasp is open and the readable journal is ready.",
+} as const satisfies Record<JournalClaspPose, string>;
 
 type CeremonyOverlayTargetHandles = Omit<JournalCeremonyTargetReady["targets"], "journal-stage">;
 
@@ -129,6 +179,62 @@ const ceremonyTargetRegistrations = {
   },
 } as const;
 
+function annotationEventKey(event: ClientProgressEvent | null | undefined) {
+  return event?.type === "JOURNAL_ANNOTATION_ADDED" && typeof event.payload.key === "string" && event.payload.key.trim()
+    ? event.payload.key
+    : null;
+}
+
+function annotationChapterOrdinal(event: ClientProgressEvent) {
+  const value = event.payload.chapterOrdinal;
+  if (typeof value === "number" && Number.isInteger(value)) return value;
+  if (typeof value === "string" && /^\d+$/.test(value)) return Number(value);
+  return null;
+}
+
+function safeTargetToken(value: string) {
+  return (
+    value
+      .trim()
+      .toLowerCase()
+      .replace(/[^a-z0-9_-]+/g, "-")
+      .replace(/^-+|-+$/g, "") || "target"
+  );
+}
+
+export function resolveJournalAnnotationTarget(
+  event: ClientProgressEvent | null | undefined,
+  pages: JournalPage[],
+  authority: PageFlipPageTargetExportAuthority | null,
+): JournalAnnotationTargetReady | null {
+  if (!event || !authority) return null;
+  const annotationKey = annotationEventKey(event);
+  const chapterOrdinal = annotationChapterOrdinal(event);
+  if (!annotationKey || chapterOrdinal === null) return null;
+  const pageIndex = pageIndexForAnnotation(pages, annotationKey, chapterOrdinal);
+  if (pageIndex < 0) return null;
+  const pageId = pages[pageIndex]!.id;
+  const markerSuffix = `:${safeTargetToken(`annotation:${annotationKey}:ink`)}`;
+  const target = authority.targets.find(
+    (candidate) =>
+      candidate.current &&
+      candidate.role === "primary" &&
+      candidate.pageId === pageId &&
+      candidate.part === "annotation-ink" &&
+      candidate.targetKey.endsWith(markerSuffix),
+  );
+  if (!target) return null;
+  return Object.freeze({
+    eventId: event.id,
+    annotationKey,
+    chapterOrdinal,
+    pageId,
+    pageIndex,
+    authority,
+    target,
+  });
+}
+
 export function JournalWorkspace({
   snapshot,
   mode,
@@ -139,6 +245,9 @@ export function JournalWorkspace({
   onPageTurn,
   onSceneHostChange,
   onSceneTargetsChange,
+  onAnnotationTargetChange,
+  onChapterInkCommandChange,
+  onClaspStatusChange,
 }: {
   snapshot: PublicSnapshot;
   mode: MotionMode;
@@ -149,11 +258,16 @@ export function JournalWorkspace({
   onPageTurn?: () => void;
   onSceneHostChange?: (host: SceneHostHandle | null) => void;
   onSceneTargetsChange?: (ready: JournalCeremonyTargetReady | null) => void;
+  onAnnotationTargetChange?: (ready: JournalAnnotationTargetReady | null) => void;
+  onChapterInkCommandChange?: (command: JournalChapterInkCommand | null) => void;
+  /** Optional local Rive/fallback truth only; never progression acknowledgment or ordering authority. */
+  onClaspStatusChange?: (status: RiveRuntimeStatus | null) => void;
 }) {
   const book = useRef<PageFlipBookHandle>(null);
   const [ceremonyHost, setCeremonyHost] = useState<SceneHostHandle | null>(null);
   const [journalStageTarget, setJournalStageTarget] = useState<SceneTargetHandle | null>(null);
   const [ceremonyTargets, setCeremonyTargets] = useState<CeremonyOverlayTargetHandles | null>(null);
+  const [pageTargets, setPageTargets] = useState<PageFlipPageTargetExportAuthority | null>(null);
   const pages = useMemo(() => buildJournalPages(snapshot).filter((page) => page.density === "soft"), [snapshot]);
   const flipPages = useMemo<FlipBookPage[]>(
     () =>
@@ -166,6 +280,17 @@ export function JournalWorkspace({
     [pages],
   );
   const payload = activeEvent?.type === "CHAPTER_RELEASED" ? activeEvent.payload : null;
+  const annotationTarget = useMemo(
+    () => resolveJournalAnnotationTarget(activeEvent, pages, pageTargets),
+    [activeEvent, pageTargets, pages],
+  );
+  const claspPose = journalClaspPoseByPhase[openingPhase];
+  const claspStateValue = riveAssets.journalClasp.states.indexOf(claspPose);
+  const claspLifecycleIdentity = [
+    snapshot.campaign.slug,
+    activeEvent?.id ?? `snapshot-${snapshot.sequence}`,
+    openingPhase,
+  ].join(":");
   const handleJournalStageTarget = useCallback((handle: SceneTargetHandle | null) => {
     setJournalStageTarget(handle);
   }, []);
@@ -191,6 +316,11 @@ export function JournalWorkspace({
       onSceneTargetsChange?.(null);
     };
   }, [onSceneHostChange, onSceneTargetsChange, ready]);
+
+  useEffect(() => {
+    onAnnotationTargetChange?.(annotationTarget);
+    return () => onAnnotationTargetChange?.(null);
+  }, [annotationTarget, onAnnotationTargetChange]);
 
   return (
     <SceneHost
@@ -231,14 +361,114 @@ export function JournalWorkspace({
         }))}
         onSelectTab={(page) => book.current?.flipTo(page)}
         onPageTurn={onPageTurn}
+        onPageTargetsChange={setPageTargets}
         onJournalStageTargetChange={handleJournalStageTarget}
         overlay={
-          payload && interactive ? (
-            <ChapterCeremonyPage payload={payload} mode={mode} onTargetsChange={handleCeremonyTargets} />
-          ) : null
+          <>
+            <JournalClaspAdapter
+              key={claspLifecycleIdentity}
+              mode={mode}
+              pose={claspPose}
+              stateValue={claspStateValue}
+              nonce={snapshot.sequence}
+              onStatusChange={onClaspStatusChange}
+            />
+            {payload && interactive ? (
+              <ChapterCeremonyPage
+                eventId={activeEvent!.id}
+                payload={payload}
+                mode={mode}
+                onTargetsChange={handleCeremonyTargets}
+                onInkCommandChange={onChapterInkCommandChange}
+              />
+            ) : null}
+          </>
         }
       />
     </SceneHost>
+  );
+}
+
+function JournalClaspAdapter({
+  mode,
+  pose,
+  stateValue,
+  nonce,
+  onStatusChange,
+}: Readonly<{
+  mode: MotionMode;
+  pose: JournalClaspPose;
+  stateValue: number;
+  nonce: number;
+  onStatusChange?: (status: RiveRuntimeStatus | null) => void;
+}>) {
+  const [reportedStatus, setReportedStatus] = useState<RiveRuntimeStatus | null>(null);
+  const statusRef = useRef<RiveRuntimeStatus | null>(null);
+  const callbackRef = useRef(onStatusChange);
+
+  useEffect(() => {
+    const previous = callbackRef.current;
+    if (previous === onStatusChange) return;
+    previous?.(null);
+    callbackRef.current = onStatusChange;
+    if (statusRef.current) onStatusChange?.(statusRef.current);
+  }, [onStatusChange]);
+
+  useEffect(
+    () => () => {
+      callbackRef.current?.(null);
+      callbackRef.current = undefined;
+      statusRef.current = null;
+    },
+    [],
+  );
+
+  const handleStatus = useCallback((status: RiveRuntimeStatus) => {
+    statusRef.current = status;
+    setReportedStatus(status);
+    callbackRef.current?.(status);
+  }, []);
+
+  return (
+    <>
+      <p className="sr-only" data-journal-clasp-readable-status data-journal-clasp-state={pose}>
+        {journalClaspReadableState[pose]}
+      </p>
+      <div
+        aria-hidden="true"
+        data-journal-clasp-contract
+        data-rive-contract-availability={riveAssets.journalClasp.availability}
+        data-rive-runtime-status={reportedStatus ?? "pending"}
+        data-rive-state={pose}
+        data-rive-state-value={stateValue}
+        data-rive-inputs={riveAssets.journalClasp.inputs.map((input) => input.name).join(",")}
+        data-rive-reduced-pose={JSON.stringify(riveAssets.journalClasp.reducedPose)}
+        data-rive-reduced-equivalent="semantic-final-state"
+        data-rive-production-art-status={riveAssets.journalClasp.availability}
+        style={{
+          position: "absolute",
+          zIndex: 31,
+          top: "245px",
+          left: "calc(50% + 130px)",
+          width: "96px",
+          height: "96px",
+          pointerEvents: "none",
+          opacity: pose === "open" ? 0.4 : 0.82,
+        }}
+      >
+        <RiveStatefulObject
+          asset={riveAssets.journalClasp}
+          mode={mode}
+          label={`Journal clasp, ${pose}`}
+          signal={{ name: "state", value: stateValue, nonce }}
+          reducedMotion={{
+            stablePose: riveAssets.journalClasp.reducedPose,
+            allowedSemanticSignals: riveAssets.journalClasp.reducedSemanticSignals,
+          }}
+          onStatus={handleStatus}
+        />
+      </div>
+    </>
   );
 }
 
@@ -253,12 +483,34 @@ function SceneHostHandleBridge({ onChange }: { onChange: (host: SceneHostHandle 
 
 function JournalPageContent({ page }: { page: JournalPage }) {
   return (
-    <div className={`journal-leaf page-kind-${page.kind}`}>
+    <div
+      className={`journal-leaf page-kind-${page.kind}`}
+      {...(page.annotationKey
+        ? {
+            "data-annotation-key": page.annotationKey,
+            "data-annotation-unseen": String(Boolean(page.unseen)),
+          }
+        : {})}
+    >
       <div className="paper-fibers" aria-hidden="true" />
       {page.folio && <span className="folio">— {page.folio} —</span>}
       {page.eyebrow && <p className="eyebrow">{page.eyebrow}</p>}
       {page.title && <h3>{page.title}</h3>}
-      {page.body && <p className="journal-prose">{page.body}</p>}
+      {page.body &&
+        (page.annotationKey ? (
+          <p
+            className="journal-prose captain-annotation-ink"
+            data-scene-part="annotation-ink"
+            data-scene-target-key={`annotation:${page.annotationKey}:ink`}
+            data-annotation-key={page.annotationKey}
+            data-annotation-unseen={String(Boolean(page.unseen))}
+            data-gsap-owned
+          >
+            {page.body}
+          </p>
+        ) : (
+          <p className="journal-prose">{page.body}</p>
+        ))}
       {page.objective && (
         <div className="page-objective">
           <span>Present course</span>
@@ -291,13 +543,17 @@ function useCeremonyTarget(input: Parameters<typeof useSceneTargetRegistration>[
 }
 
 function ChapterCeremonyPage({
+  eventId,
   payload,
   mode,
   onTargetsChange,
+  onInkCommandChange,
 }: {
+  eventId: string;
   payload: Record<string, unknown>;
   mode: MotionMode;
   onTargetsChange: (handles: CeremonyOverlayTargetHandles | null) => void;
+  onInkCommandChange?: (command: JournalChapterInkCommand | null) => void;
 }) {
   const [bindSealedParchment, sealedParchmentHandle] = useCeremonyTarget(ceremonyTargetRegistrations.sealedParchment);
   const [bindInkHeadingEyebrow, inkHeadingEyebrowHandle] = useCeremonyTarget(
@@ -316,6 +572,21 @@ function ChapterCeremonyPage({
   const [bindMapFog, mapFogHandle] = useCeremonyTarget(ceremonyTargetRegistrations.mapFog);
   const [bindQuill, quillHandle] = useCeremonyTarget(ceremonyTargetRegistrations.quill);
   const [bindQuillPath, quillPathHandle] = useCeremonyTarget(ceremonyTargetRegistrations.quillPath);
+  const bindInkBloom = useCallback(
+    (handle: LottieEffectHandle | null) => {
+      onInkCommandChange?.(
+        handle
+          ? Object.freeze({
+              eventId,
+              semanticLabel: "ink-story" as const,
+              play: () => handle.play(),
+              stop: () => handle.stop(),
+            })
+          : null,
+      );
+    },
+    [eventId, onInkCommandChange],
+  );
   const targets = useMemo<CeremonyOverlayTargetHandles | null>(() => {
     const required = [
       sealedParchmentHandle,
@@ -374,7 +645,7 @@ function ChapterCeremonyPage({
   }, [onTargetsChange, targets]);
 
   return (
-    <div className="chapter-ceremony-page" role="status" aria-live="polite">
+    <div className="chapter-ceremony-page">
       <div ref={bindSealedParchment} className="sealed-parchment" data-scene-part="sealed-parchment" data-gsap-owned>
         <div
           ref={bindPageLight}
@@ -430,12 +701,16 @@ function ChapterCeremonyPage({
           aria-hidden="true"
         />
         <div ref={bindQuill} className="ceremony-quill" data-scene-part="quill" data-gsap-owned aria-hidden="true" />
-        <LottieEffect
-          asset={lottieAssets.inkBloom}
-          mode={mode}
-          label="Ink blooming and drying across the released page"
-          className="ceremony-ink-bloom"
-        />
+        <div className="ceremony-ink-bloom-decoration" aria-hidden="true">
+          <LottieEffect
+            ref={bindInkBloom}
+            asset={lottieAssets.inkBloom}
+            mode={mode}
+            label="Ink blooming and drying across the released page"
+            playback="commanded"
+            className="ceremony-ink-bloom"
+          />
+        </div>
       </div>
     </div>
   );

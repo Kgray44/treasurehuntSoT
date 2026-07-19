@@ -1,5 +1,11 @@
 # Lottie assets
 
+## Phase 3 command boundary
+
+One-shot Lottie effects are `commanded`: they load with `autoplay: false` and do not begin merely because their React component mounted. A matching instance-scoped semantic command may call play or a segment after target preflight. Completing, stopping, entering reduced mode, or unmounting clears commanded playback so visibility restoration cannot restart an old one-shot.
+
+Ambient loops also load with runtime autoplay disabled; the component applies visibility and resolved motion policy after readiness. Reduced mode stops travel and exposes the declared representative frame. Fetch, import, data, timeout, and renderer failures retain the local static fallback and never change event meaning, receipt eligibility, focus, or authoritative state.
+
 The three Lottie files are original Forever Treasure shape-layer animations with local SVG fallbacks.
 
 | Key             | File                 | Composition | Use                                 | Full / gentle / reduced                                    |

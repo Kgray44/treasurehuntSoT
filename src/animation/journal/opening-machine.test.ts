@@ -1,10 +1,14 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import {
+  createJournalReadyReceipt,
   getJournalPhaseTimeoutMs,
   isJournalInteractive,
+  journalOpeningCompositions,
   journalOpeningPhases,
   nextJournalOpeningPhase,
+  resolveJournalOpeningPolicy,
   waitForJournalPhase,
+  waitForJournalReadiness,
 } from "./opening-machine";
 
 type Deferred = {
@@ -100,6 +104,127 @@ describe("journal opening state machine", () => {
     expect(journalOpeningPhases.slice(0, -1).every((phase) => !isJournalInteractive(phase))).toBe(true);
     expect(isJournalInteractive("JOURNAL_READY")).toBe(true);
     expect(nextJournalOpeningPhase("JOURNAL_READY")).toBeNull();
+  });
+
+  it.each([
+    {
+      request: "first",
+      mode: "full",
+      composition: "full",
+      phases: journalOpeningCompositions.full,
+      autoStart: false,
+      persistOnCompletion: true,
+      liveChannel: true,
+    },
+    {
+      request: "returning",
+      mode: "gentle",
+      composition: "abbreviated",
+      phases: journalOpeningCompositions.abbreviated,
+      autoStart: true,
+      persistOnCompletion: false,
+      liveChannel: true,
+    },
+    {
+      request: "completed-archive",
+      mode: "full",
+      composition: "quiet",
+      phases: journalOpeningCompositions.quiet,
+      autoStart: true,
+      persistOnCompletion: false,
+      liveChannel: false,
+    },
+    {
+      request: "manual-full-replay",
+      mode: "full",
+      composition: "full",
+      phases: journalOpeningCompositions.full,
+      autoStart: false,
+      persistOnCompletion: false,
+      liveChannel: true,
+    },
+    {
+      request: "manual-abbreviated-replay",
+      mode: "gentle",
+      composition: "abbreviated",
+      phases: journalOpeningCompositions.abbreviated,
+      autoStart: false,
+      persistOnCompletion: false,
+      liveChannel: true,
+    },
+    {
+      request: "first",
+      mode: "reduced",
+      composition: "reduced",
+      phases: journalOpeningCompositions.reduced,
+      autoStart: false,
+      persistOnCompletion: true,
+      liveChannel: true,
+    },
+  ] as const)("resolves $request in $mode to the data-driven $composition composition", ({ mode, ...expected }) => {
+    expect(resolveJournalOpeningPolicy({ request: expected.request, mode })).toMatchObject(expected);
+  });
+
+  it.each([
+    ["completed", true],
+    ["completed-fallback", true],
+    ["skipped", true],
+    ["motion-changed", false],
+    ["recoverable-interruption", false],
+    ["phase-timeout", false],
+    ["runtime-failure", false],
+    ["pageflip-readiness-failure", false],
+  ] as const)("creates a readable JOURNAL_READY receipt for %s without false persistence", (reason, persists) => {
+    const receipt = createJournalReadyReceipt(resolveJournalOpeningPolicy({ request: "first", mode: "full" }), reason);
+    expect(receipt).toEqual({
+      finalPhase: "JOURNAL_READY",
+      policyId: "first:full",
+      reason,
+      persistHasOpened: persists,
+      readable: true,
+    });
+  });
+
+  it("accepts a public PageFlip readable terminal state immediately", async () => {
+    await expect(
+      waitForJournalReadiness(() => ({ status: "ready", ready: true }), new AbortController().signal),
+    ).resolves.toEqual({ status: "ready", readinessStatus: "ready" });
+  });
+
+  it("waits until the public PageFlip readiness probe becomes readable", async () => {
+    const probe = vi
+      .fn<() => { status: string; ready: boolean }>()
+      .mockReturnValueOnce({ status: "initializing", ready: false })
+      .mockReturnValue({ status: "fallback", ready: true });
+    const result = waitForJournalReadiness(probe, new AbortController().signal, 100);
+    await vi.advanceTimersByTimeAsync(16);
+    await expect(result).resolves.toEqual({ status: "ready", readinessStatus: "fallback" });
+    expect(probe).toHaveBeenCalledTimes(2);
+  });
+
+  it("bounds a PageFlip readiness timeout and clears its polling timer", async () => {
+    const result = waitForJournalReadiness(
+      () => ({ status: "initializing", ready: false }),
+      new AbortController().signal,
+      32,
+    );
+    await vi.advanceTimersByTimeAsync(32);
+    await expect(result).resolves.toEqual({ status: "timed-out", timeoutMs: 32 });
+  });
+
+  it("reports a failed public PageFlip readiness probe without leaking private error details", async () => {
+    await expect(
+      waitForJournalReadiness(() => {
+        throw new Error("private PageFlip detail");
+      }, new AbortController().signal),
+    ).resolves.toEqual({ status: "runtime-failed" });
+  });
+
+  it("aborts PageFlip readiness acquisition and clears its pending poll", async () => {
+    const controller = new AbortController();
+    const result = waitForJournalReadiness(() => ({ status: "busy", ready: false }), controller.signal, 100);
+    controller.abort();
+    await expect(result).resolves.toEqual({ status: "aborted" });
   });
 
   it("reports completion for the expected finite phase animation", async () => {

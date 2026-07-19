@@ -11,8 +11,14 @@ import type {
   RuntimeSurfaceClaimResult,
   SceneTargetUseResult,
 } from "@/animation/hosts/scene-host-types";
-import { PageFlipBook, type FlipBookPage, type PageFlipBookHandle } from "./PageFlipBook";
-import type { PageFlipPageTargetAuthority } from "./pageflip-boundary";
+import {
+  PAGE_TURN_LIFECYCLE_BROWSER_EVENT,
+  PageFlipBook,
+  type FlipBookPage,
+  type PageFlipBookHandle,
+  type PageFlipPageTargetExportAuthority,
+  type PageTurnLifecycleBrowserDetail,
+} from "./PageFlipBook";
 
 type RuntimeSurfaceClaimPrototype = {
   claimRuntimeSurface: (record: unknown, input: RuntimeSurfaceClaimRequest) => RuntimeSurfaceClaimResult;
@@ -156,6 +162,8 @@ describe("PageFlipBook", () => {
     cleanup();
     localStorage.clear();
     document.documentElement.removeAttribute("data-motion-level");
+    delete window.__FOREVER_PAGEFLIP_FAILPOINT__;
+    vi.unstubAllEnvs();
     vi.restoreAllMocks();
     vi.clearAllMocks();
     calls.instances.length = 0;
@@ -232,6 +240,8 @@ describe("PageFlipBook", () => {
   });
 
   it("destroys a constructed runtime exactly once when loadFromHTML throws and releases every authority", async () => {
+    const onTurnLifecycle = vi.fn();
+    const onReadinessChange = vi.fn();
     const originalRegisterHost = SceneHostRegistry.prototype.registerHost;
     const providerRegistries: SceneHostRegistry[] = [];
     vi.spyOn(SceneHostRegistry.prototype, "registerHost").mockImplementation(function (this: SceneHostRegistry, input) {
@@ -254,12 +264,32 @@ describe("PageFlipBook", () => {
       },
     ];
 
-    renderPageFlip(<PageFlipBook pages={failingPages} mode="full" />);
+    const ref = createRef<PageFlipBookHandle>();
+    renderPageFlip(
+      <PageFlipBook
+        ref={ref}
+        pages={failingPages}
+        mode="full"
+        onTurnLifecycle={onTurnLifecycle}
+        onReadinessChange={onReadinessChange}
+      />,
+    );
 
     await waitFor(() => expect(screen.getByRole("heading", { name: "Cover" })).toBeVisible());
     expect(calls.constructors).toHaveBeenCalledOnce();
     expect(calls.destroy).toHaveBeenCalledOnce();
     expect(calls.instance?.destroyMock).toHaveBeenCalledOnce();
+    expect(onTurnLifecycle).toHaveBeenCalledWith(
+      expect.objectContaining({
+        phase: "turn-failed",
+        source: "runtime-initialization",
+        reason: "deterministic PageFlip load failure",
+        fallback: true,
+        generation: 1,
+      }),
+    );
+    expect(ref.current?.readiness()).toMatchObject({ status: "fallback", ready: true, generation: 1 });
+    expect(onReadinessChange).toHaveBeenCalledWith(expect.objectContaining({ status: "fallback", ready: true }));
     await waitFor(() =>
       expect(providerRegistries.at(-1)?.snapshot()).toMatchObject({
         registeredHostCount: 0,
@@ -354,11 +384,11 @@ describe("PageFlipBook", () => {
       orientation: "portrait",
     });
 
-    ref.current?.turnTo(1);
+    ref.current?.turnTo(0);
     await advanceTurnReadinessFrame();
-    ref.current?.flipTo(0);
-    expect(calls.turnTo).toHaveBeenCalledWith(1);
-    expect(calls.flipTo).toHaveBeenCalledWith(0, "top");
+    ref.current?.flipTo(1);
+    expect(calls.turnTo).toHaveBeenCalledWith(0);
+    expect(calls.flipTo).toHaveBeenCalledWith(1, "top");
     expect(ref.current?.pageCount()).toBe(2);
     expect(ref.current?.orientation()).toBe("landscape");
   });
@@ -390,16 +420,425 @@ describe("PageFlipBook", () => {
     await settleMockTurn(3);
     ref.current?.previous();
     await settleMockTurn(1);
-    ref.current?.turnTo(1);
+    ref.current?.turnTo(0);
     await advanceTurnReadinessFrame();
     ref.current?.flipTo(3);
 
     expect(calls.next).toHaveBeenCalledTimes(2);
     expect(calls.previous).toHaveBeenCalledOnce();
-    expect(calls.turnTo).toHaveBeenCalledWith(1);
+    expect(calls.turnTo).toHaveBeenCalledWith(0);
     expect(calls.flipTo).toHaveBeenCalledWith(3, "top");
     expect(container.querySelector(".page-flip-book")).toHaveAttribute("data-animation-owner", "page-flip");
     expect(container.querySelector(".page-flip-runtime")).toHaveAttribute("data-pageflip-turn-owner", "st-page-flip");
+  });
+
+  it("publishes a typed start, commit, and settle lifecycle for an animated control turn", async () => {
+    const onTurnLifecycle = vi.fn();
+    const ref = createRef<PageFlipBookHandle>();
+    renderPageFlip(
+      <PageFlipBook
+        ref={ref}
+        pages={fourPages}
+        mode="full"
+        bookId="lifecycle-book"
+        onTurnLifecycle={onTurnLifecycle}
+      />,
+    );
+    await waitFor(() => expect(ref.current?.readiness().status).toBe("ready"));
+
+    fireEvent.click(screen.getByRole("button", { name: "Next journal page" }));
+    await settleMockTurn(1);
+
+    expect(onTurnLifecycle.mock.calls.map(([event]) => event.phase)).toEqual([
+      "turn-start",
+      "turn-commit",
+      "turn-settle",
+    ]);
+    expect(onTurnLifecycle).toHaveBeenNthCalledWith(
+      1,
+      expect.objectContaining({
+        bookId: "lifecycle-book",
+        source: "control-next",
+        fromPage: 0,
+        toPage: 1,
+        orientation: "landscape",
+        mode: "full",
+        fallback: false,
+        generation: 1,
+      }),
+    );
+    expect(onTurnLifecycle).toHaveBeenLastCalledWith(
+      expect.objectContaining({ phase: "turn-settle", fromPage: 0, toPage: 1, generation: 1 }),
+    );
+  });
+
+  it("mirrors each lifecycle transition once as a sanitized payload-free browser event", async () => {
+    const browserEvents: PageTurnLifecycleBrowserDetail[] = [];
+    const privatePages: FlipBookPage[] = [
+      { id: "private-cover", density: "hard", label: "Private cover", content: <h2>PRIVATE-COVER-CONTENT</h2> },
+      { id: "private-story", density: "soft", label: "Private story", content: <p>PRIVATE-STORY-CONTENT</p> },
+    ];
+    const { container } = renderPageFlip(
+      <PageFlipBook pages={privatePages} mode="full" bookId="browser-evidence-book" />,
+    );
+    await waitFor(() => expect(calls.instance).not.toBeNull());
+    container.addEventListener(PAGE_TURN_LIFECYCLE_BROWSER_EVENT, (event) => {
+      browserEvents.push((event as CustomEvent<PageTurnLifecycleBrowserDetail>).detail);
+    });
+
+    fireEvent.click(screen.getByRole("button", { name: "Next journal page" }));
+    await settleMockTurn(1);
+
+    expect(browserEvents.map((event) => event.phase)).toEqual(["start", "commit", "settle"]);
+    expect(browserEvents.map((event) => event.outcome)).toEqual(["started", "committed", "settled"]);
+    expect(browserEvents).toEqual(
+      browserEvents.map(() =>
+        expect.objectContaining({
+          version: 1,
+          bookId: "browser-evidence-book",
+          mountId: browserEvents[0]!.mountId,
+          request: "control-next",
+          source: "control-next",
+          fromPage: 0,
+          toPage: 1,
+          reason: "none",
+          boundaryGeneration: 1,
+          runtimeGeneration: 1,
+          fallbackStatus: "runtime",
+        }),
+      ),
+    );
+    expect(Object.keys(browserEvents[0]!).sort()).toEqual(
+      [
+        "bookId",
+        "boundaryGeneration",
+        "currentPage",
+        "fallbackStatus",
+        "fromPage",
+        "mountId",
+        "outcome",
+        "phase",
+        "reason",
+        "request",
+        "runtimeGeneration",
+        "source",
+        "toPage",
+        "version",
+      ].sort(),
+    );
+    expect(JSON.stringify(browserEvents)).not.toContain("PRIVATE-COVER-CONTENT");
+    expect(JSON.stringify(browserEvents)).not.toContain("PRIVATE-STORY-CONTENT");
+    expect(JSON.stringify(browserEvents)).not.toContain("Private cover");
+    expect(JSON.stringify(browserEvents)).not.toContain("Private story");
+  });
+
+  it("publishes sanitized cancellation and failure evidence with no duplicate transitions", async () => {
+    const browserEvents: PageTurnLifecycleBrowserDetail[] = [];
+    const ref = createRef<PageFlipBookHandle>();
+    const { container } = renderPageFlip(<PageFlipBook ref={ref} pages={pages} mode="full" />);
+    await waitFor(() => expect(ref.current?.readiness().status).toBe("ready"));
+    container.addEventListener(PAGE_TURN_LIFECYCLE_BROWSER_EVENT, (event) => {
+      browserEvents.push((event as CustomEvent<PageTurnLifecycleBrowserDetail>).detail);
+    });
+
+    ref.current?.turnTo(0);
+    await advanceTurnReadinessFrame();
+    expect(browserEvents.map((event) => [event.phase, event.reason])).toEqual([
+      ["start", "none"],
+      ["cancel", "same-spread-or-boundary-no-op"],
+    ]);
+
+    browserEvents.length = 0;
+    act(() => ref.current?.forceReadableFallback("pageflip-readiness-timeout:private-diagnostic"));
+    await waitFor(() => expect(ref.current?.readiness().status).toBe("fallback"));
+    expect(browserEvents).toEqual([
+      expect.objectContaining({
+        phase: "failed",
+        outcome: "failed",
+        reason: "readiness-timeout",
+        fallbackStatus: "fallback",
+        currentPage: 0,
+      }),
+    ]);
+    expect(JSON.stringify(browserEvents)).not.toContain("private-diagnostic");
+  });
+
+  it("does not publish a stale lifecycle event after the mounted identity is disposed", async () => {
+    const browserEvents: PageTurnLifecycleBrowserDetail[] = [];
+    const ref = createRef<PageFlipBookHandle>();
+    const { container, unmount } = renderPageFlip(<PageFlipBook ref={ref} pages={pages} mode="full" />);
+    await waitFor(() => expect(ref.current?.readiness().status).toBe("ready"));
+    container.addEventListener(PAGE_TURN_LIFECYCLE_BROWSER_EVENT, (event) => {
+      browserEvents.push((event as CustomEvent<PageTurnLifecycleBrowserDetail>).detail);
+    });
+    ref.current?.next();
+    expect(browserEvents.map((event) => event.phase)).toEqual(["start"]);
+
+    unmount();
+
+    expect(browserEvents.map((event) => event.phase)).toEqual(["start"]);
+  });
+
+  it("truthfully cancels a queued intent when a newer intent replaces it", async () => {
+    const onTurnLifecycle = vi.fn();
+    const ref = createRef<PageFlipBookHandle>();
+    renderPageFlip(<PageFlipBook ref={ref} pages={fourPages} mode="full" onTurnLifecycle={onTurnLifecycle} />);
+    await waitFor(() => expect(calls.instance).not.toBeNull());
+
+    act(() => calls.instance!.handlers.get("changeState")?.({ data: "flipping" }));
+    ref.current?.flipTo(1);
+    ref.current?.flipTo(3);
+
+    expect(onTurnLifecycle).toHaveBeenCalledWith(
+      expect.objectContaining({
+        phase: "turn-cancel",
+        source: "imperative-flip-to",
+        fromPage: 0,
+        toPage: 0,
+        reason: "replaced-by-newer-intent",
+      }),
+    );
+    act(() => calls.instance!.handlers.get("changeState")?.({ data: "read" }));
+    await advanceTurnReadinessFrame();
+    expect(calls.flipTo).toHaveBeenCalledWith(3, "top");
+  });
+
+  it("rebases a queued turn at dispatch after the preceding visible page commits", async () => {
+    const onTurnLifecycle = vi.fn();
+    const ref = createRef<PageFlipBookHandle>();
+    renderPageFlip(<PageFlipBook ref={ref} pages={fourPages} mode="full" onTurnLifecycle={onTurnLifecycle} />);
+    await waitFor(() => expect(ref.current?.readiness().status).toBe("ready"));
+
+    ref.current?.next();
+    ref.current?.flipTo(3);
+    await settleMockTurn(1);
+    await waitFor(() => expect(calls.flipTo).toHaveBeenCalledWith(3, "top"));
+
+    const starts = onTurnLifecycle.mock.calls.map(([event]) => event).filter((event) => event.phase === "turn-start");
+    expect(starts).toEqual([
+      expect.objectContaining({ source: "imperative-next", fromPage: 0, toPage: 1, generation: 1 }),
+      expect.objectContaining({ source: "imperative-flip-to", fromPage: 1, toPage: 3, generation: 1 }),
+    ]);
+  });
+
+  it("assigns the mounted boundary generation only when a pre-initialization intent actually dispatches", async () => {
+    const onTurnLifecycle = vi.fn();
+    const ref = createRef<PageFlipBookHandle>();
+    renderPageFlip(<PageFlipBook ref={ref} pages={fourPages} mode="full" onTurnLifecycle={onTurnLifecycle} />);
+
+    ref.current?.flipTo(3);
+    expect(onTurnLifecycle).not.toHaveBeenCalled();
+
+    await waitFor(() => expect(calls.flipTo).toHaveBeenCalledWith(3, "top"));
+    expect(onTurnLifecycle).toHaveBeenCalledWith(
+      expect.objectContaining({
+        phase: "turn-start",
+        source: "imperative-flip-to",
+        fromPage: 0,
+        toPage: 3,
+        generation: 1,
+      }),
+    );
+  });
+
+  it("cancels same-page full-mode turnTo and flipTo requests without false commits", async () => {
+    const onTurnLifecycle = vi.fn();
+    const ref = createRef<PageFlipBookHandle>();
+    renderPageFlip(<PageFlipBook ref={ref} pages={fourPages} mode="full" onTurnLifecycle={onTurnLifecycle} />);
+    await waitFor(() => expect(ref.current?.readiness().status).toBe("ready"));
+
+    ref.current?.turnTo(0);
+    await advanceTurnReadinessFrame();
+    ref.current?.flipTo(0);
+    await advanceTurnReadinessFrame();
+
+    expect(calls.turnTo).not.toHaveBeenCalled();
+    expect(calls.flipTo).not.toHaveBeenCalled();
+    expect(onTurnLifecycle.mock.calls.map(([event]) => event.phase)).toEqual([
+      "turn-start",
+      "turn-cancel",
+      "turn-start",
+      "turn-cancel",
+    ]);
+    expect(onTurnLifecycle).not.toHaveBeenCalledWith(expect.objectContaining({ phase: "turn-commit" }));
+    expect(onTurnLifecycle).not.toHaveBeenCalledWith(expect.objectContaining({ phase: "turn-settle" }));
+  });
+
+  it("abandons an initializing runtime before construction when readiness times out", async () => {
+    const onTurnLifecycle = vi.fn();
+    const ref = createRef<PageFlipBookHandle>();
+    const { container } = renderPageFlip(
+      <PageFlipBook ref={ref} pages={pages} mode="full" onTurnLifecycle={onTurnLifecycle} />,
+    );
+    expect(ref.current?.readiness().status).toBe("initializing");
+
+    act(() => ref.current?.forceReadableFallback("initial-readiness-timeout"));
+
+    await waitFor(() =>
+      expect(container.querySelector(".page-flip-book")).toHaveAttribute("data-pageflip-status", "fallback"),
+    );
+    expect(calls.constructors).not.toHaveBeenCalled();
+    expect(ref.current?.readiness()).toMatchObject({ status: "fallback", ready: true, generation: 0 });
+    expect(container.querySelector(".page-flip-source")).toBeNull();
+    expect(container.querySelector('.reduced-page-stage [data-page-index="0"]')).toHaveTextContent("Cover");
+    expect(onTurnLifecycle).toHaveBeenCalledWith(
+      expect.objectContaining({
+        phase: "turn-failed",
+        source: "runtime-initialization",
+        reason: "initial-readiness-timeout",
+        generation: 0,
+      }),
+    );
+  });
+
+  it.each([
+    ["dynamic-import", "development-dynamic-import", 0, 0],
+    ["runtime-init", "development-runtime-init", 0, 0],
+    ["readiness-probe", "development-readiness-probe", 1, 1],
+  ] as const)(
+    "uses the real readable fallback path for the development %s failpoint",
+    async (failpoint, browserReason, constructorCount, destroyCount) => {
+      window.__FOREVER_PAGEFLIP_FAILPOINT__ = failpoint;
+      const browserEvents: PageTurnLifecycleBrowserDetail[] = [];
+      const onReadinessChange = vi.fn();
+      const ref = createRef<PageFlipBookHandle>();
+      const { container } = renderPageFlip(
+        <PageFlipBook ref={ref} pages={pages} mode="full" initialPage={1} onReadinessChange={onReadinessChange} />,
+      );
+      container.addEventListener(PAGE_TURN_LIFECYCLE_BROWSER_EVENT, (event) => {
+        browserEvents.push((event as CustomEvent<PageTurnLifecycleBrowserDetail>).detail);
+      });
+      screen.getByRole("button", { name: "Previous journal page" }).focus();
+
+      await waitFor(() => expect(ref.current?.readiness().status).toBe("fallback"));
+
+      expect(calls.constructors).toHaveBeenCalledTimes(constructorCount);
+      expect(calls.destroy).toHaveBeenCalledTimes(destroyCount);
+      expect(container.querySelector(".page-flip-source")).toBeNull();
+      expect(container.querySelector('.reduced-page-stage [data-page-index="1"]')).toHaveTextContent("Story");
+      await waitFor(() => expect(screen.getByRole("button", { name: "Previous journal page" })).toHaveFocus());
+      expect(onReadinessChange).toHaveBeenCalledWith(expect.objectContaining({ status: "fallback", ready: true }));
+      expect(browserEvents).toEqual([
+        expect.objectContaining({
+          phase: "failed",
+          reason: browserReason,
+          fromPage: 1,
+          toPage: 1,
+          currentPage: 1,
+          fallbackStatus: "fallback",
+        }),
+      ]);
+    },
+  );
+
+  it("ignores development failpoints in production mode", async () => {
+    vi.stubEnv("NODE_ENV", "production");
+    window.__FOREVER_PAGEFLIP_FAILPOINT__ = "dynamic-import";
+    const ref = createRef<PageFlipBookHandle>();
+    const { container } = renderPageFlip(<PageFlipBook ref={ref} pages={pages} mode="full" />);
+
+    await waitFor(() => expect(ref.current?.readiness().status).toBe("ready"));
+
+    expect(calls.constructors).toHaveBeenCalledOnce();
+    expect(container.querySelector(".page-flip-book")).not.toHaveAttribute("data-pageflip-status", "fallback");
+  });
+
+  it("forces an idempotent readable fallback with canonical controls and restored focus", async () => {
+    const onTurnLifecycle = vi.fn();
+    const onReadinessChange = vi.fn();
+    const ref = createRef<PageFlipBookHandle>();
+    const { container } = renderPageFlip(
+      <PageFlipBook
+        ref={ref}
+        pages={pages}
+        mode="full"
+        onTurnLifecycle={onTurnLifecycle}
+        onReadinessChange={onReadinessChange}
+      />,
+    );
+    await waitFor(() => expect(ref.current?.readiness().status).toBe("ready"));
+    const next = screen.getByRole("button", { name: "Next journal page" });
+    next.focus();
+    const readinessBeforeFallback = onReadinessChange.mock.calls.length;
+
+    act(() => ref.current?.forceReadableFallback("pageflip-readiness-timeout"));
+
+    await waitFor(() =>
+      expect(container.querySelector(".page-flip-book")).toHaveAttribute("data-pageflip-status", "fallback"),
+    );
+    expect(container.querySelector(".page-flip-book")).toHaveAttribute(
+      "data-pageflip-fallback-reason",
+      "pageflip-readiness-timeout",
+    );
+    expect(container.querySelector(".page-flip-source")).toBeNull();
+    expect(container.querySelector('.reduced-page-stage [data-page-index="0"]')).toHaveTextContent("Cover");
+    await waitFor(() => expect(screen.getByRole("button", { name: "Next journal page" })).toHaveFocus());
+    expect(ref.current?.readiness()).toMatchObject({ status: "fallback", ready: true, generation: 1 });
+    expect(calls.destroy).toHaveBeenCalledOnce();
+    expect(onTurnLifecycle).toHaveBeenCalledWith(
+      expect.objectContaining({
+        phase: "turn-failed",
+        source: "runtime-initialization",
+        reason: "pageflip-readiness-timeout",
+        fallback: true,
+        generation: 1,
+      }),
+    );
+    expect(onReadinessChange.mock.calls.slice(readinessBeforeFallback).map(([snapshot]) => snapshot.status)).toEqual([
+      "fallback",
+    ]);
+
+    const readinessBeforeRepeat = onReadinessChange.mock.calls.length;
+    act(() => ref.current?.forceReadableFallback("second-timeout"));
+    expect(calls.destroy).toHaveBeenCalledOnce();
+    expect(onTurnLifecycle.mock.calls.filter(([event]) => event.phase === "turn-failed")).toHaveLength(1);
+    expect(onReadinessChange).toHaveBeenCalledTimes(readinessBeforeRepeat);
+
+    fireEvent.click(screen.getByRole("button", { name: "Next journal page" }));
+    expect(container.querySelector('.reduced-page-stage [data-page-index="1"]')).toHaveTextContent("Story");
+  });
+
+  it("reserves disposed readiness for real component teardown", async () => {
+    const onReadinessChange = vi.fn();
+    const { unmount } = renderPageFlip(
+      <PageFlipBook pages={pages} mode="reduced" onReadinessChange={onReadinessChange} />,
+    );
+    await waitFor(() =>
+      expect(onReadinessChange).toHaveBeenCalledWith(expect.objectContaining({ status: "reduced", ready: true })),
+    );
+    onReadinessChange.mockClear();
+
+    unmount();
+
+    expect(onReadinessChange).toHaveBeenCalledOnce();
+    expect(onReadinessChange).toHaveBeenLastCalledWith(expect.objectContaining({ status: "disposed", ready: false }));
+  });
+
+  it("publishes equivalent lifecycle and readable readiness in reduced mode", () => {
+    const onTurnLifecycle = vi.fn();
+    const onReadinessChange = vi.fn();
+    const ref = createRef<PageFlipBookHandle>();
+    renderPageFlip(
+      <PageFlipBook
+        ref={ref}
+        pages={pages}
+        mode="reduced"
+        onTurnLifecycle={onTurnLifecycle}
+        onReadinessChange={onReadinessChange}
+      />,
+    );
+
+    expect(ref.current?.readiness()).toMatchObject({ status: "reduced", ready: true, generation: 0 });
+    fireEvent.click(screen.getByRole("button", { name: "Next journal page" }));
+    expect(onTurnLifecycle.mock.calls.map(([event]) => event.phase)).toEqual([
+      "turn-start",
+      "turn-commit",
+      "turn-settle",
+    ]);
+    expect(onTurnLifecycle).toHaveBeenLastCalledWith(
+      expect.objectContaining({ source: "control-next", fromPage: 0, toPage: 1, fallback: false, mode: "reduced" }),
+    );
+    expect(onReadinessChange).toHaveBeenCalledWith(expect.objectContaining({ status: "reduced", ready: true }));
   });
 
   it("intercepts a runtime temporary clone synchronously and keeps the visible primary readable", async () => {
@@ -433,8 +872,9 @@ describe("PageFlipBook", () => {
   });
 
   it("exposes only bounded visible-primary target capabilities from its internal host", async () => {
-    const targetAuthorities: PageFlipPageTargetAuthority[] = [];
-    const onPageTargetsChange = vi.fn((authority: PageFlipPageTargetAuthority | null) => {
+    const ref = createRef<PageFlipBookHandle>();
+    const targetAuthorities: PageFlipPageTargetExportAuthority[] = [];
+    const onPageTargetsChange = vi.fn((authority: PageFlipPageTargetExportAuthority | null) => {
       if (authority) targetAuthorities.push(authority);
     });
     const markedPages: FlipBookPage[] = [
@@ -450,7 +890,7 @@ describe("PageFlipBook", () => {
       },
     ];
     const { container, unmount } = renderPageFlip(
-      <PageFlipBook pages={markedPages} mode="full" onPageTargetsChange={onPageTargetsChange} />,
+      <PageFlipBook ref={ref} pages={markedPages} mode="full" onPageTargetsChange={onPageTargetsChange} />,
     );
 
     await waitFor(() => {
@@ -463,6 +903,25 @@ describe("PageFlipBook", () => {
     ]);
     expect(container.querySelector(".page-flip-source [data-scene-target-id]")).toBeNull();
     expect(authority.targets.every((target) => target.handle.hostId === authority.hostId)).toBe(true);
+    expect(authority).toEqual(expect.objectContaining({ cloneGeneration: 1, exportTarget: expect.any(Function) }));
+    expect(ref.current?.pageTargets()).toBe(authority);
+    const exported = authority.exportTarget(authority.targets[0]!, {
+      allowedProperties: ["opacity"],
+      lifetime: "scene",
+    });
+    expect(exported).toMatchObject({
+      sourceHostId: authority.hostId,
+      targetId: authority.targets[0]!.handle.targetId,
+      targetGeneration: authority.targets[0]!.generation,
+      allowedProperties: ["opacity"],
+    });
+    exported.revoke();
+    expect(ref.current?.boundary()).toMatchObject({
+      cloneGeneration: authority.cloneGeneration,
+      currentPage: 0,
+      lifecycle: "visible",
+      registeredPrimaryTargetCount: 1,
+    });
     expect(container.querySelector('[data-pageflip-boundary-host="true"]')).toHaveAttribute(
       "data-scene-host-id",
       authority.hostId,
@@ -612,6 +1071,115 @@ describe("PageFlipBook", () => {
     await waitFor(() => expect(calls.constructors).toHaveBeenCalledTimes(2));
     expect(calls.constructors.mock.calls[1]?.[1]).toEqual(expect.objectContaining({ startPage: 1 }));
     await waitFor(() => expect(screen.getByRole("button", { name: "Previous journal page" })).toHaveFocus());
+  });
+
+  it("restores page focus only to the current visible primary when stale and temporary peers precede it", async () => {
+    const { container } = renderPageFlip(<PageFlipBook pages={pages} mode="full" bookId="focus-book" />);
+    await waitFor(() => expect(calls.load).toHaveBeenCalledOnce());
+    const host = container.querySelector<HTMLElement>(".page-flip-runtime")!;
+    const primary = host.querySelector<HTMLElement>('[data-pageflip-role="primary"][data-pageflip-current="true"]')!;
+    const generation = primary.dataset.pageflipCloneGeneration!;
+    const instanceId = primary.dataset.pageflipInstanceId!;
+
+    const stale = document.createElement("article");
+    stale.tabIndex = -1;
+    stale.dataset.pageIndex = "0";
+    stale.dataset.pageflipPageIndex = "0";
+    stale.dataset.pageflipRole = "primary";
+    stale.dataset.pageflipCurrent = "true";
+    stale.dataset.pageflipLifecycle = "stale";
+    stale.dataset.pageflipCloneGeneration = generation;
+    stale.dataset.pageflipInstanceId = instanceId;
+    stale.dataset.pageflipBookId = "focus-book";
+    const temporary = stale.cloneNode(true) as HTMLElement;
+    temporary.dataset.pageflipRole = "temporary";
+    temporary.dataset.pageflipLifecycle = "visible";
+    temporary.dataset.pageflipTemporaryClone = "";
+    host.prepend(temporary, stale);
+
+    primary.focus();
+    act(() => {
+      calls.instance!.handlers.get("changeState")?.({ data: "flipping" });
+      calls.instance!.handlers.get("flip")?.({ data: 0 });
+    });
+    await advanceTurnReadinessFrame();
+
+    expect(temporary).not.toHaveFocus();
+    expect(stale).not.toHaveFocus();
+
+    act(() => calls.instance!.handlers.get("changeState")?.({ data: "read" }));
+    await advanceTurnReadinessFrame();
+
+    expect(primary).toHaveFocus();
+    expect(stale).not.toHaveFocus();
+    expect(temporary).not.toHaveFocus();
+  });
+
+  it.each(["inert", "hidden", "disconnected"] as const)(
+    "rejects an %s current primary and falls back to the matching control",
+    async (condition) => {
+      const { container } = renderPageFlip(<PageFlipBook pages={pages} mode="full" />);
+      await waitFor(() => expect(calls.load).toHaveBeenCalledOnce());
+      const primary = container.querySelector<HTMLElement>(
+        '[data-pageflip-role="primary"][data-pageflip-current="true"]',
+      )!;
+      primary.focus();
+      if (condition === "inert") primary.setAttribute("inert", "");
+      if (condition === "hidden") primary.hidden = true;
+      if (condition === "disconnected") primary.remove();
+
+      act(() => calls.instance!.handlers.get("flip")?.({ data: 0 }));
+      await advanceTurnReadinessFrame();
+
+      expect(screen.getByRole("button", { name: "Next journal page" })).toHaveFocus();
+      expect(primary).not.toHaveFocus();
+    },
+  );
+
+  it("uses only the new visible generation after an orientation rebind", async () => {
+    const { container } = renderPageFlip(<PageFlipBook pages={pages} mode="full" />);
+    await waitFor(() => expect(calls.load).toHaveBeenCalledOnce());
+    const host = container.querySelector<HTMLElement>(".page-flip-runtime")!;
+    const primary = host.querySelector<HTMLElement>('[data-pageflip-role="primary"][data-pageflip-current="true"]')!;
+    const staleGeneration = primary.dataset.pageflipCloneGeneration!;
+    const stale = document.createElement("article");
+    stale.tabIndex = -1;
+    stale.dataset.pageIndex = "0";
+    stale.dataset.pageflipPageIndex = "0";
+    stale.dataset.pageflipRole = "primary";
+    stale.dataset.pageflipCurrent = "true";
+    stale.dataset.pageflipLifecycle = "visible";
+    stale.dataset.pageflipCloneGeneration = staleGeneration;
+    stale.dataset.pageflipInstanceId = primary.dataset.pageflipInstanceId;
+    stale.dataset.pageflipBookId = primary.dataset.pageflipBookId;
+    stale.dataset.pageflipOrientation = "landscape";
+    host.prepend(stale);
+    primary.focus();
+
+    act(() => calls.instance!.handlers.get("changeOrientation")?.({ data: "portrait" }));
+    await advanceTurnReadinessFrame();
+
+    expect(primary.dataset.pageflipCloneGeneration).toBe(String(Number(staleGeneration) + 1));
+    expect(primary).toHaveAttribute("data-pageflip-orientation", "portrait");
+    expect(primary).toHaveFocus();
+    expect(stale).not.toHaveFocus();
+  });
+
+  it("falls back to the readable host when neither page nor controls can accept focus", async () => {
+    const singlePage: FlipBookPage[] = [pages[0]!];
+    const { container } = renderPageFlip(<PageFlipBook pages={singlePage} mode="full" />);
+    await waitFor(() => expect(calls.load).toHaveBeenCalledOnce());
+    const primary = container.querySelector<HTMLElement>(
+      '[data-pageflip-role="primary"][data-pageflip-current="true"]',
+    )!;
+    primary.focus();
+    primary.setAttribute("aria-hidden", "true");
+
+    act(() => calls.instance!.handlers.get("flip")?.({ data: 0 }));
+    await advanceTurnReadinessFrame();
+
+    expect(container.querySelector(".page-flip-host")).toHaveFocus();
+    expect(primary).not.toHaveFocus();
   });
 
   it("marks the hidden source and strips only source eligibility markers from visible clones", async () => {

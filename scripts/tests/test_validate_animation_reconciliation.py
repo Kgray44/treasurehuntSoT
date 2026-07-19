@@ -321,16 +321,39 @@ class ReconciliationValidatorTests(unittest.TestCase):
         )
 
     def test_status_commit_validation_and_blocker_rules(self) -> None:
-        implemented, validated, blocked, architecture_blocked = self.fixture.ledger_rows[:4]
+        implemented, validated, blocked, architecture_blocked, asset, environment = (
+            self.fixture.ledger_rows[:6]
+        )
         implemented["Implementation Status"] = "implemented"
         validated["Implementation Status"] = "validated"
         validated["Implemented In Commit"] = "a" * 40
         blocked["Implementation Status"] = "blocked"
         architecture_blocked["Implementation Status"] = "architecture_blocked"
         architecture_blocked["Architecture Dependency"] = ""
+        asset["Implementation Status"] = "blocked_external_asset"
+        environment["Implementation Status"] = "blocked_environment"
         self.fixture.write_ledger()
         codes = self.codes(self.fixture.validate())
         self.assertTrue({"E-STATUS-002", "E-STATUS-003", "E-STATUS-004"} <= codes)
+
+    def test_phase3_blocked_statuses_preserve_prior_vocabulary_and_require_blockers(self) -> None:
+        asset, environment = self.fixture.ledger_rows[:2]
+        asset["Implementation Status"] = "blocked_external_asset"
+        asset["Blocked By"] = "Phase 5 production Rive binary"
+        environment["Implementation Status"] = "blocked_environment"
+        environment["Blocked By"] = "Production browser evidence unavailable"
+        self.fixture.write_ledger()
+
+        report = self.fixture.validate()
+        row_diagnostics = [
+            item
+            for item in report.diagnostics
+            if item.row in {asset["Source ID"], environment["Source ID"]}
+        ]
+        self.assertFalse(
+            any(item.code in {"E-SCHEMA-003", "E-STATUS-004"} for item in row_diagnostics),
+            [item.as_dict() for item in row_diagnostics],
+        )
 
     def test_architecture_ready_requires_architecture_evidence_without_visual_claim(self) -> None:
         row = self.fixture.ledger_rows[0]

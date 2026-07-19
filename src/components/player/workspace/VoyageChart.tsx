@@ -2,15 +2,22 @@
 
 /* eslint-disable @next/next/no-img-element -- The chart SVG is a layered animation surface. */
 
-import { useEffect, useId, useMemo, useState } from "react";
+import { useCallback, useEffect, useId, useMemo, useRef, useState } from "react";
 import { motion } from "motion/react";
 import type { MotionMode } from "@/animation/core/animation-types";
 import { lottieAssets } from "@/animation/assets/lottie-contracts";
+import { riveAssets } from "@/animation/assets/rive-contracts";
 import { SceneHost, useRuntimeOwnedSceneTarget, useSceneTargetRegistration } from "@/animation/hosts/SceneHost";
 import { useOptionalSceneHost } from "@/animation/hosts/SceneHostContext";
-import type { SceneHostHandle, SceneTargetHandle } from "@/animation/hosts/scene-host-types";
+import type {
+  ExternalSceneTargetHandle,
+  ExternalTargetExportRequest,
+  SceneHostHandle,
+  SceneTargetHandle,
+} from "@/animation/hosts/scene-host-types";
 import type { PublicMapLocation, PublicSnapshot } from "@/domain/story";
 import { LottieEffect } from "@/components/animation/LottieEffect";
+import { RiveStatefulObject, type RiveRuntimeStatus, type RiveSignal } from "@/components/animation/RiveStatefulObject";
 
 type ChartRoute = PublicSnapshot["mapRoutes"][number];
 
@@ -27,6 +34,11 @@ export type VoyageChartTargetRegistration = Readonly<{
   key: string;
   host: SceneHostHandle | null;
   handle: SceneTargetHandle | null;
+  /**
+   * Exact Phase 2 external capability. A progression scene may consume it only
+   * when the Chart is mounted; the Chart never queues or acknowledges events.
+   */
+  exportForScene: ((request: Omit<ExternalTargetExportRequest, "target">) => ExternalSceneTargetHandle) | null;
 }>;
 
 export type VoyageChartProps = Readonly<{
@@ -39,7 +51,57 @@ export type VoyageChartProps = Readonly<{
   onLocationActivate?: (locationKey: PublicMapLocation["key"]) => void;
   /** Gives the progression-host integrator the source host and exact target handle needed for a bounded export. */
   onTargetRegistrationChange?: (registration: VoyageChartTargetRegistration) => void;
+  /** Optional local Rive/fallback truth only; never progression acknowledgment or ordering authority. */
+  onCompassStatusChange?: (status: RiveRuntimeStatus | null) => void;
 }>;
+
+type VoyageCompassPose = "idle" | "bearing" | "arrived";
+
+type VoyageCompassSemantics = Readonly<{
+  pose: VoyageCompassPose;
+  stateValue: number;
+  bearing: number;
+  routeKey: string | null;
+  readable: string;
+}>;
+
+function normalizedRouteBearing(route: ChartRoute, locations: ReadonlyMap<string, PublicMapLocation>) {
+  const from = locations.get(route.fromKey);
+  const to = locations.get(route.toKey);
+  if (from?.x === undefined || from.y === undefined || to?.x === undefined || to.y === undefined) return 0;
+  const headingRadians = Math.atan2(to.x - from.x, -(to.y - from.y));
+  return (((headingRadians / (Math.PI * 2)) % 1) + 1) % 1;
+}
+
+function resolveVoyageCompassSemantics(
+  routes: readonly ChartRoute[],
+  locations: ReadonlyMap<string, PublicMapLocation>,
+  progressRouteKey: ChartRoute["key"] | undefined,
+): VoyageCompassSemantics {
+  const route = progressRouteKey ? routes.find((candidate) => candidate.key === progressRouteKey) : undefined;
+  if (!route) {
+    const pose = "idle" as const;
+    return {
+      pose,
+      stateValue: riveAssets.voyageCompass.states.indexOf(pose),
+      bearing: 0,
+      routeKey: null,
+      readable: "The voyage compass is idle; no exact route bearing is active.",
+    };
+  }
+  const bearing = normalizedRouteBearing(route, locations);
+  const pose = route.state.trim().toUpperCase() === "ARRIVED" ? "arrived" : "bearing";
+  return {
+    pose,
+    stateValue: riveAssets.voyageCompass.states.indexOf(pose),
+    bearing,
+    routeKey: route.key,
+    readable:
+      pose === "arrived"
+        ? `The voyage compass marks arrival for route ${route.key}.`
+        : `The voyage compass holds the released bearing for route ${route.key}.`,
+  };
+}
 
 function useReportTarget(
   kind: VoyageChartTargetKind,
@@ -48,12 +110,28 @@ function useReportTarget(
   report: VoyageChartProps["onTargetRegistrationChange"],
 ) {
   const host = useOptionalSceneHost();
+  const exportForScene = useMemo(
+    () =>
+      host && handle
+        ? (request: Omit<ExternalTargetExportRequest, "target">) => host.exportTarget({ ...request, target: handle })
+        : null,
+    [handle, host],
+  );
 
   useEffect(() => {
-    if (!report || !host || !handle) return;
-    report({ kind, key, host, handle });
-    return () => report({ kind, key, host: null, handle: null });
-  }, [handle, host, key, kind, report]);
+    if (!report || !host || !handle || !exportForScene) return;
+    report({ kind, key, host, handle, exportForScene });
+    return () => report({ kind, key, host: null, handle: null, exportForScene: null });
+  }, [exportForScene, handle, host, key, kind, report]);
+}
+
+function uniqueByKey<T extends Readonly<{ key: string }>>(items: readonly T[]) {
+  const seen = new Set<string>();
+  return items.filter((item) => {
+    if (seen.has(item.key)) return false;
+    seen.add(item.key);
+    return true;
+  });
 }
 
 function ChartMotionSurface({
@@ -277,13 +355,27 @@ function VoyageChartContents({
   progressRouteKey,
   onLocationActivate,
   onTargetRegistrationChange,
+  onCompassStatusChange,
 }: VoyageChartProps & Readonly<{ headingId: string }>) {
   const [scale, setScale] = useState(1);
   const [pan, setPan] = useState({ x: 0, y: 0 });
+  const chartLocations = useMemo(() => uniqueByKey(snapshot.mapLocations), [snapshot.mapLocations]);
+  const chartRoutes = useMemo(() => uniqueByKey(snapshot.mapRoutes), [snapshot.mapRoutes]);
   const locations = useMemo(
-    () => new Map(snapshot.mapLocations.map((location) => [location.key, location])),
-    [snapshot.mapLocations],
+    () => new Map(chartLocations.map((location) => [location.key, location])),
+    [chartLocations],
   );
+  const compass = useMemo(
+    () => resolveVoyageCompassSemantics(chartRoutes, locations, progressRouteKey),
+    [chartRoutes, locations, progressRouteKey],
+  );
+  const compassLifecycleIdentity = [
+    snapshot.campaign.slug,
+    `snapshot-${snapshot.sequence}`,
+    compass.routeKey ?? "idle",
+    compass.pose,
+    compass.bearing.toFixed(6),
+  ].join(":");
 
   return (
     <>
@@ -312,6 +404,9 @@ function VoyageChartContents({
         </button>
         <span>Zoom {Math.round(scale * 100)}%</span>
       </div>
+      <p className="sr-only" data-voyage-compass-readable-status data-voyage-compass-state={compass.pose}>
+        {compass.readable}
+      </p>
       <div
         className="chart-viewport"
         tabIndex={0}
@@ -329,7 +424,7 @@ function VoyageChartContents({
         <ChartMotionSurface scale={scale} pan={pan} mode={mode} report={onTargetRegistrationChange}>
           <img src="/illustrations/chart/voyage-chart.svg" alt="" aria-hidden="true" />
           <svg viewBox="0 0 1200 780" className="route-overlay" aria-hidden="true">
-            {snapshot.mapRoutes.map((route) => {
+            {chartRoutes.map((route) => {
               const from = locations.get(route.fromKey);
               const to = locations.get(route.toKey);
               if (from?.x === undefined || from.y === undefined || to?.x === undefined || to.y === undefined)
@@ -346,7 +441,7 @@ function VoyageChartContents({
             })}
           </svg>
           <ChartShipToken campaignKey={snapshot.campaign.slug} report={onTargetRegistrationChange} />
-          {snapshot.mapLocations
+          {chartLocations
             .filter((location) => location.x !== undefined && location.y !== undefined)
             .map((location) => (
               <ChartMarker
@@ -365,9 +460,16 @@ function VoyageChartContents({
             className="chart-lottie-fog"
           />
         </ChartMotionSurface>
+        <VoyageCompassAdapter
+          key={compassLifecycleIdentity}
+          mode={mode}
+          semantics={compass}
+          nonce={snapshot.sequence}
+          onStatusChange={onCompassStatusChange}
+        />
       </div>
       <ol className="map-alternative" aria-label="Voyage locations">
-        {snapshot.mapLocations.map((location) => (
+        {chartLocations.map((location) => (
           <li key={location.key}>
             <span aria-hidden="true">⌖</span>
             <div>
@@ -381,9 +483,9 @@ function VoyageChartContents({
           </li>
         ))}
       </ol>
-      {snapshot.mapRoutes.length > 0 && (
+      {chartRoutes.length > 0 && (
         <ol className="route-list" aria-label="Revealed route segments">
-          {snapshot.mapRoutes.map((route) => (
+          {chartRoutes.map((route) => (
             <li key={route.key} data-route-list-key={route.key}>
               <span aria-hidden="true">→</span>
               <b>
@@ -396,6 +498,119 @@ function VoyageChartContents({
         </ol>
       )}
     </>
+  );
+}
+
+function VoyageCompassAdapter({
+  mode,
+  semantics,
+  nonce,
+  onStatusChange,
+}: Readonly<{
+  mode: MotionMode;
+  semantics: VoyageCompassSemantics;
+  nonce: number;
+  onStatusChange: VoyageChartProps["onCompassStatusChange"];
+}>) {
+  const signals = useMemo<readonly [RiveSignal, RiveSignal]>(
+    () => [
+      { name: "state", value: semantics.stateValue, nonce: nonce * 2 },
+      { name: "bearing", value: semantics.bearing, nonce: nonce * 2 + 1 },
+    ],
+    [nonce, semantics.bearing, semantics.stateValue],
+  );
+  const [signalIndex, setSignalIndex] = useState<0 | 1>(0);
+  const [reportedStatus, setReportedStatus] = useState<RiveRuntimeStatus | null>(null);
+  const pendingTerminalStatus = useRef<Extract<RiveRuntimeStatus, "ready" | "fallback"> | null>(null);
+  const statusRef = useRef<RiveRuntimeStatus | null>(null);
+  const callbackRef = useRef(onStatusChange);
+  const activeSignal = signals[signalIndex];
+
+  useEffect(() => {
+    const previous = callbackRef.current;
+    if (previous === onStatusChange) return;
+    previous?.(null);
+    callbackRef.current = onStatusChange;
+    if (statusRef.current) onStatusChange?.(statusRef.current);
+  }, [onStatusChange]);
+
+  useEffect(
+    () => () => {
+      callbackRef.current?.(null);
+      callbackRef.current = undefined;
+      statusRef.current = null;
+    },
+    [],
+  );
+
+  const publishStatus = useCallback((status: RiveRuntimeStatus) => {
+    statusRef.current = status;
+    setReportedStatus(status);
+    callbackRef.current?.(status);
+  }, []);
+
+  const handleRuntimeStatus = useCallback(
+    (status: RiveRuntimeStatus) => {
+      if ((status === "ready" || status === "fallback") && signalIndex === 0) {
+        pendingTerminalStatus.current = status;
+        setSignalIndex(1);
+        return;
+      }
+      if (status === "failed" && signalIndex === 0) setSignalIndex(1);
+      publishStatus(status);
+    },
+    [publishStatus, signalIndex],
+  );
+
+  useEffect(() => {
+    if (signalIndex !== 1 || !pendingTerminalStatus.current) return;
+    const terminalStatus = pendingTerminalStatus.current;
+    const timer = window.setTimeout(() => {
+      pendingTerminalStatus.current = null;
+      publishStatus(terminalStatus);
+    }, 0);
+    return () => window.clearTimeout(timer);
+  }, [publishStatus, signalIndex]);
+
+  return (
+    <div
+      aria-hidden="true"
+      data-voyage-compass-contract
+      data-rive-contract-availability={riveAssets.voyageCompass.availability}
+      data-rive-runtime-status={reportedStatus ?? "pending"}
+      data-rive-state={semantics.pose}
+      data-rive-state-value={semantics.stateValue}
+      data-rive-bearing-value={semantics.bearing.toFixed(6)}
+      data-rive-route-key={semantics.routeKey ?? ""}
+      data-rive-active-signal={activeSignal.name}
+      data-rive-semantic-dispatches={signalIndex === 0 ? "state" : "state,bearing"}
+      data-rive-inputs={riveAssets.voyageCompass.inputs.map((input) => input.name).join(",")}
+      data-rive-reduced-pose={JSON.stringify(riveAssets.voyageCompass.reducedPose)}
+      data-rive-reduced-equivalent="semantic-final-state"
+      data-rive-production-art-status={riveAssets.voyageCompass.availability}
+      style={{
+        position: "absolute",
+        zIndex: 8,
+        right: "2.5%",
+        bottom: "3.5%",
+        width: "clamp(76px, 14%, 150px)",
+        aspectRatio: "1",
+        pointerEvents: "none",
+        opacity: mode === "reduced" ? 0.72 : 0.88,
+      }}
+    >
+      <RiveStatefulObject
+        asset={riveAssets.voyageCompass}
+        mode={mode}
+        label={`Voyage compass, ${semantics.pose}`}
+        signal={activeSignal}
+        reducedMotion={{
+          stablePose: riveAssets.voyageCompass.reducedPose,
+          allowedSemanticSignals: riveAssets.voyageCompass.reducedSemanticSignals,
+        }}
+        onStatus={handleRuntimeStatus}
+      />
+    </div>
   );
 }
 

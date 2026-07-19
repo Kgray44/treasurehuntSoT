@@ -34,7 +34,43 @@ type Status = {
   preview: { chapter: { objective?: string } };
 };
 
-type CommandResult = { event: { id: string; sequence: number } };
+type CommandResultBase = {
+  correlationId: string;
+  persistence: "COMMITTED";
+  playerDelivery: "UNCONFIRMED";
+  playerPresentation: "UNCONFIRMED";
+  playerAcknowledgment: "UNCONFIRMED";
+  idempotentReplay?: boolean;
+};
+
+type EventCommandResult = CommandResultBase & {
+  kind: "PROGRESSION_EVENT";
+  event: { id: string; type: string; sequence: number };
+  playerEvent: { id: string; type: string; sequence: number };
+  publication: "PROCESS_PUBLISHED" | "PROCESS_PUBLICATION_FAILED";
+  delivery: "PUBLISHED" | "PUBLICATION_FAILED";
+  deliveryScope: "PROCESS_SUBSCRIBERS_ONLY";
+};
+
+type StagedCommandResult = CommandResultBase & {
+  kind: "STAGED_ACTION";
+  event: null;
+  playerEvent: null;
+  preparedActionId: string;
+  stagedAction: {
+    preparedActionId: string;
+    command: string;
+    targetKey: string | null;
+    reservedSequence: number;
+    status: string;
+    preparedAt: string;
+  };
+  publication: "NOT_APPLICABLE";
+  delivery: "NOT_ATTEMPTED";
+  deliveryScope: "NO_PLAYER_EVENT";
+};
+
+type CommandResult = EventCommandResult | StagedCommandResult;
 
 const QUARTERMASTER_LOGIN_FALLBACK = "readable-quartermaster-result";
 const completedPresentationOutcomes = new Set<PresentationOutcome>([
@@ -54,16 +90,68 @@ function dialogFocusables(dialog: HTMLElement | null) {
 }
 
 function isCommandResult(value: unknown): value is CommandResult {
-  if (!value || typeof value !== "object" || !("event" in value)) return false;
-  const event = value.event;
-  return (
-    !!event &&
-    typeof event === "object" &&
-    "id" in event &&
-    typeof event.id === "string" &&
-    "sequence" in event &&
-    typeof event.sequence === "number"
-  );
+  if (!value || typeof value !== "object") return false;
+  const result = value as Record<string, unknown>;
+  if (
+    typeof result.correlationId !== "string" ||
+    result.persistence !== "COMMITTED" ||
+    result.playerDelivery !== "UNCONFIRMED" ||
+    result.playerPresentation !== "UNCONFIRMED" ||
+    result.playerAcknowledgment !== "UNCONFIRMED"
+  )
+    return false;
+  if (result.kind === "PROGRESSION_EVENT") {
+    const event = result.event as Record<string, unknown> | null;
+    const playerEvent = result.playerEvent as Record<string, unknown> | null;
+    return (
+      !!event &&
+      !!playerEvent &&
+      typeof event.id === "string" &&
+      typeof event.type === "string" &&
+      typeof event.sequence === "number" &&
+      playerEvent.id === event.id &&
+      playerEvent.type === event.type &&
+      playerEvent.sequence === event.sequence &&
+      ((result.publication === "PROCESS_PUBLISHED" && result.delivery === "PUBLISHED") ||
+        (result.publication === "PROCESS_PUBLICATION_FAILED" && result.delivery === "PUBLICATION_FAILED")) &&
+      result.deliveryScope === "PROCESS_SUBSCRIBERS_ONLY"
+    );
+  }
+  if (result.kind === "STAGED_ACTION") {
+    const staged = result.stagedAction as Record<string, unknown> | null;
+    return (
+      result.event === null &&
+      result.playerEvent === null &&
+      typeof result.preparedActionId === "string" &&
+      !!staged &&
+      staged.preparedActionId === result.preparedActionId &&
+      typeof staged.command === "string" &&
+      (staged.targetKey === null || typeof staged.targetKey === "string") &&
+      typeof staged.reservedSequence === "number" &&
+      typeof staged.status === "string" &&
+      typeof staged.preparedAt === "string" &&
+      result.publication === "NOT_APPLICABLE" &&
+      result.delivery === "NOT_ATTEMPTED" &&
+      result.deliveryScope === "NO_PLAYER_EVENT"
+    );
+  }
+  return false;
+}
+
+function receiptTruth(result: CommandResult) {
+  const publication =
+    result.publication === "PROCESS_PUBLISHED"
+      ? "Published to this server process."
+      : result.publication === "PROCESS_PUBLICATION_FAILED"
+        ? "The server could not confirm process publication after commit."
+        : "This staging action created no Player event, so process publication was not attempted.";
+  return `${publication} Player delivery, presentation, and acknowledgment remain unconfirmed. Correlation ${result.correlationId}.`;
+}
+
+function receiptMessage(result: CommandResult) {
+  return result.kind === "STAGED_ACTION"
+    ? `Prepared action ${result.preparedActionId} recorded at sequence ${result.stagedAction.reservedSequence}.`
+    : `Event ${result.event.id} recorded at sequence ${result.event.sequence}.`;
 }
 
 function safeServerError(value: unknown, fallback: string) {
@@ -631,6 +719,7 @@ export function Quartermaster({ authenticated }: { authenticated: boolean }) {
   const [selected, setSelected] = useState<Action | null>(null);
   const [activeAction, setActiveAction] = useState<ActiveCommand | null>(null);
   const [message, setMessage] = useState("");
+  const [commandTruth, setCommandTruth] = useState("");
   const [presentationWarning, setPresentationWarning] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
@@ -640,6 +729,7 @@ export function Quartermaster({ authenticated }: { authenticated: boolean }) {
   const commandRuntime = useRef<CommandRuntime | null>(null);
   const commandSequence = useRef(0);
   const commandTrigger = useRef<HTMLButtonElement | null>(null);
+  const confirmationIdempotencyKey = useRef("");
   const confirmAction = useRef<HTMLButtonElement | null>(null);
   const confirmationDialog = useRef<HTMLElement | null>(null);
   const loginInput = useRef<HTMLInputElement | null>(null);
@@ -769,6 +859,7 @@ export function Quartermaster({ authenticated }: { authenticated: boolean }) {
   }
 
   function closeConfirmation() {
+    confirmationIdempotencyKey.current = "";
     setSelected(null);
   }
 
@@ -917,7 +1008,14 @@ export function Quartermaster({ authenticated }: { authenticated: boolean }) {
     setBusy(true);
     setError("");
     setPresentationWarning("");
+    setCommandTruth("");
     const action = selected;
+    const idempotencyKey = confirmationIdempotencyKey.current;
+    if (!idempotencyKey) {
+      setBusy(false);
+      setError("This confirmation expired. Close it and review the action again.");
+      return;
+    }
     const controller = new AbortController();
     inFlight.current = controller;
     commandSequence.current += 1;
@@ -944,10 +1042,17 @@ export function Quartermaster({ authenticated }: { authenticated: boolean }) {
     const submitCommand = () => {
       commandOperation ??= (async () => {
         operationStarted = true;
-        const response = await fetch("/api/gm/action", {
+        const response = await fetch("/api/gm/commands", {
           method: "POST",
           headers: { "Content-Type": "application/json", "x-csrf-token": status.csrfToken },
-          body: JSON.stringify({ action: action[0], campaignSlug: status.campaign.slug, confirmation: true }),
+          body: JSON.stringify({
+            command: action[0],
+            campaignSlug: status.campaign.slug,
+            expectedSequence: status.campaign.sequence,
+            idempotencyKey,
+            payload: {},
+            confirmation: true,
+          }),
           signal: controller.signal,
         });
         const body = await readJson(response);
@@ -1034,7 +1139,8 @@ export function Quartermaster({ authenticated }: { authenticated: boolean }) {
 
       const refreshed = await refresh(controller.signal);
       if (!mounted.current || controller.signal.aborted) return;
-      setMessage(`Event ${result.event.id} recorded at sequence ${result.event.sequence}.`);
+      setMessage(receiptMessage(result));
+      setCommandTruth(receiptTruth(result));
       closeConfirmation();
       if (receipt.outcome === "presented-fallback" || presentationFailed(receipt.outcome)) {
         setPresentationWarning(readablePresentationWarning("order"));
@@ -1048,7 +1154,8 @@ export function Quartermaster({ authenticated }: { authenticated: boolean }) {
       if (authoritativeResult) {
         const refreshed = await refresh(controller.signal);
         if (!mounted.current || controller.signal.aborted) return;
-        setMessage(`Event ${authoritativeResult.event.id} recorded at sequence ${authoritativeResult.event.sequence}.`);
+        setMessage(receiptMessage(authoritativeResult));
+        setCommandTruth(receiptTruth(authoritativeResult));
         closeConfirmation();
         setPresentationWarning(
           refreshed
@@ -1241,8 +1348,10 @@ export function Quartermaster({ authenticated }: { authenticated: boolean }) {
                 className={action[0] === "UNDO_LAST" ? "danger-action" : ""}
                 onClick={(event) => {
                   commandTrigger.current = event.currentTarget;
+                  confirmationIdempotencyKey.current = crypto.randomUUID();
                   setError("");
                   setPresentationWarning("");
+                  setCommandTruth("");
                   setSelected(action);
                 }}
                 whileHover={{ x: 3 }}
@@ -1284,6 +1393,7 @@ export function Quartermaster({ authenticated }: { authenticated: boolean }) {
             exit={{ opacity: 0 }}
           >
             {message}
+            {commandTruth && <span>{commandTruth}</span>}
             <button onClick={() => setMessage("")} aria-label="Dismiss message">
               ×
             </button>
@@ -1309,8 +1419,8 @@ export function Quartermaster({ authenticated }: { authenticated: boolean }) {
                 <div className="impact-note">
                   <b>What happens next</b>
                   <span>
-                    This runs atomically, writes an audit entry, publishes one ordered event, and creates a state point
-                    for undo.
+                    This runs atomically, writes an audit entry, creates one ordered event and a state point for undo,
+                    then attempts in-process publication. Player delivery is confirmed separately.
                   </span>
                 </div>
                 {error && (

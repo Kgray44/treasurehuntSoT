@@ -18,6 +18,7 @@ import type {
   SceneFinalizationReceipt,
   SceneInstanceId,
   ScenePreflightReport,
+  SceneRequestSource,
   SceneTargetContractV2,
   SceneTargetResolutionReceipt,
   SceneTimeline,
@@ -42,6 +43,23 @@ type CompatiblePresentationReceipt<T> = PresentationReceipt<T> & LegacyOperation
 
 type ExternalTerminal = { kind: "aborted"; reason: string } | { kind: "interrupted"; reason: string };
 
+export const ANIMATION_SEMANTIC_LABEL_EVENT_NAME = "forever:animation-semantic-label" as const;
+
+export type AnimationSemanticLabelEventDetail = Readonly<{
+  version: 1;
+  sceneName: AnimationSceneName;
+  sceneInstanceId: string;
+  hostId: string;
+  hostKind: string;
+  eventOrActionId: string | null;
+  requestSource: SceneRequestSource;
+  label: string;
+  elapsedMs: number;
+  motionLevel: MotionMode;
+}>;
+
+export type AnimationSemanticLabelEvent = CustomEvent<AnimationSemanticLabelEventDetail>;
+
 type StageResult<T> =
   | { kind: "completed"; value: T }
   | { kind: "failed"; error: unknown }
@@ -63,6 +81,25 @@ const initialSnapshot = (mode: MotionMode): DirectorSnapshot => ({
 
 function nowMs() {
   return typeof performance === "undefined" ? Date.now() : performance.now();
+}
+
+function dispatchAnimationSemanticLabel(detail: AnimationSemanticLabelEventDetail) {
+  if (
+    typeof window === "undefined" ||
+    typeof window.dispatchEvent !== "function" ||
+    typeof window.CustomEvent !== "function"
+  ) {
+    return;
+  }
+  try {
+    window.dispatchEvent(
+      new window.CustomEvent<AnimationSemanticLabelEventDetail>(ANIMATION_SEMANTIC_LABEL_EVENT_NAME, {
+        detail: Object.freeze(detail),
+      }),
+    );
+  } catch {
+    // Observability must never become part of the scene's success path.
+  }
 }
 
 function sanitizeReason(reason: string) {
@@ -450,12 +487,14 @@ export class AnimationDirector {
     let runtimeFailed = false;
     let cleanupErrors = this.releaseHeldContext(options.root) ? 1 : 0;
     let terminalSettled = false;
+    let acceptingSemanticLabels = true;
     let resolveTerminal!: (terminal: ExternalTerminal) => void;
     const terminalPromise = new Promise<ExternalTerminal>((resolve) => {
       resolveTerminal = resolve;
     });
     this.activeTerminal = (terminal) => {
       if (terminalSettled) return;
+      acceptingSemanticLabels = false;
       terminalSettled = true;
       resolveTerminal(terminal);
     };
@@ -551,6 +590,19 @@ export class AnimationDirector {
             sceneName: name,
             display: options.display ?? {},
             emitLabel: (label: string) => {
+              if (!acceptingSemanticLabels || terminalSettled || options.signal?.aborted) return;
+              dispatchAnimationSemanticLabel({
+                version: 1,
+                sceneName: name,
+                sceneInstanceId,
+                hostId,
+                hostKind,
+                eventOrActionId: options.eventOrActionId ?? null,
+                requestSource,
+                label,
+                elapsedMs: Math.max(0, nowMs() - startedAt),
+                motionLevel: motionPolicy.level,
+              });
               if (!semanticLabelsReached.includes(label)) semanticLabelsReached.push(label);
               this.update({ label });
             },
@@ -780,6 +832,7 @@ export class AnimationDirector {
         }).begin();
       }
     } finally {
+      acceptingSemanticLabels = false;
       cleanupErrors += this.stopCurrentTimeline() ? 1 : 0;
       for (const cleanup of sceneCleanups.splice(0).reverse()) {
         try {

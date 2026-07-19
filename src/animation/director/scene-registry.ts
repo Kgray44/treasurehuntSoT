@@ -315,12 +315,15 @@ export type SceneReachabilityEvidence =
     }
   | { reachability: "development-only"; disposition: string };
 
-const playerEventCaller = (sceneBinding: string): SceneCallerAnchor => ({
-  sourcePath: "src/components/player/PlayerExperience.tsx",
-  callerSymbol: "const playEvent = useCallback",
-  sceneBinding,
-  invocation: "director.play(scene,",
-});
+const playerEventCaller = (_sceneBinding: string): SceneCallerAnchor => {
+  void _sceneBinding;
+  return {
+    sourcePath: "src/components/player/PlayerExperience.tsx",
+    callerSymbol: "const presentProgressionRequest = useCallback",
+    sceneBinding: "policyForProgressionEvent(request.eventType)",
+    invocation: "director.play<void>(eventPolicy.sceneName,",
+  };
+};
 
 const playerJournalCaller: SceneCallerAnchor = {
   sourcePath: "src/components/player/PlayerExperience.tsx",
@@ -678,7 +681,7 @@ export const sceneContracts = {
     expectedHostKinds: ["player-progression"],
     targets: [
       v2Required("journal-stage", ["transform"]),
-      v2Required("sealed-parchment", ["transform"]),
+      v2Required("sealed-parchment", ["transform"], { key: "global-sealed-parchment" }),
       v2Required("ink-heading", ["transform", "opacity"], { max: 2 }),
       v2Required("ink-story", ["transform", "opacity", "filter"]),
       v2Required("ink-objective", ["transform", "opacity"]),
@@ -700,6 +703,10 @@ export const sceneContracts = {
       v2Optional("map-fog", ["transform", "opacity"]),
       v2Optional("quill", ["transform", "opacity"]),
       v2Optional("quill-path", ["path-drawing"]),
+      v2Optional("sealed-parchment", ["transform"], {
+        key: "local-sealed-parchment",
+        source: externalSource("sealed-parchment"),
+      }),
     ],
     timeoutMs: 9_500,
     playbackPolicy: playback("automatic", {
@@ -711,15 +718,16 @@ export const sceneContracts = {
       priority: 100,
     }),
     acknowledgmentPolicy: playerEventAcknowledgment("mandatory"),
-    finalStatePolicy: v2Reconcile("chapter-readable", "sealed-parchment"),
+    finalStatePolicy: v2Reconcile("chapter-readable", "global-sealed-parchment"),
     reducedFallback: "static-reader",
   }),
   "map-reveal": v2Contract("map-reveal", {
     reachability: "production",
     expectedHostKinds: ["player-progression", "quartermaster-command"],
     targets: [
-      v2Required("map-marker", ["transform", "opacity"], {
-        key: "map-marker-new",
+      v2Required("map-marker", ["transform", "opacity"], { key: "map-marker-new" }),
+      v2Optional("map-marker", ["transform", "opacity"], {
+        key: "local-map-marker",
         source: externalSource("map-marker"),
       }),
       v2Optional("map-fog", ["clip-path", "opacity"], { source: externalSource("map-fog") }),
@@ -730,6 +738,7 @@ export const sceneContracts = {
     ],
     timeoutMs: 4_500,
     playbackPolicy: playback("automatic", {
+      replayable: true,
       allowUserSkip: true,
       userSkipFinalState: "map-location-readable",
       allowedFallback: "readable-map-location",
@@ -744,19 +753,24 @@ export const sceneContracts = {
     expectedHostKinds: ["player-progression", "quartermaster-command"],
     targets: [
       v2Required("route-path", ["path-drawing", "stroke-dasharray", "stroke-dashoffset", "opacity"], {
+        key: "global-route-path",
+      }),
+      v2Optional("route-path", ["path-drawing", "stroke-dasharray", "stroke-dashoffset", "opacity"], {
+        key: "local-route-path",
         source: externalSource("route-path"),
       }),
       v2WorkspaceLight(),
     ],
     timeoutMs: 4_000,
     playbackPolicy: playback("automatic", {
+      replayable: true,
       allowUserSkip: true,
       userSkipFinalState: "route-readable",
       allowedFallback: "readable-route",
       priority: 60,
     }),
     acknowledgmentPolicy: playerEventAcknowledgment(),
-    finalStatePolicy: v2Reconcile("route-readable", "route-path"),
+    finalStatePolicy: v2Reconcile("route-readable", "global-route-path"),
     reducedFallback: "semantic-final-state",
   }),
   "marker-stamp": v2Contract("marker-stamp", {
@@ -788,12 +802,17 @@ export const sceneContracts = {
     expectedHostKinds: ["player-progression", "quartermaster-command"],
     targets: [
       v2Required("artifact-reveal", ["transform", "opacity"]),
-      v2RequiredIdentity("artifact-slot-target", { source: externalSource("artifact-slot") }),
+      v2RequiredIdentity("artifact-slot-target"),
+      v2Optional("artifact-silhouette", ["transform", "opacity", "filter"], {
+        key: "local-artifact-slot",
+        source: externalSource("artifact-slot"),
+      }),
       v2Optional("artifact-light", ["transform", "opacity"]),
       v2WorkspaceLight(),
     ],
     timeoutMs: 5_000,
     playbackPolicy: playback("automatic", {
+      replayable: true,
       allowUserSkip: true,
       userSkipFinalState: "artifact-awarded-readable",
       allowedFallback: "readable-artifact-award",
@@ -822,33 +841,49 @@ export const sceneContracts = {
     expectedHostKinds: ["player-progression", "quartermaster-command"],
     targets: [
       v2Required("artifact-connection-path", ["path-drawing", "stroke-dasharray", "stroke-dashoffset", "opacity"], {
+        key: "global-artifact-connection-path",
+      }),
+      v2Optional("artifact-connection-path", ["path-drawing", "stroke-dasharray", "stroke-dashoffset", "opacity"], {
+        key: "local-artifact-connection-path",
         source: externalSource("artifact-connection-path"),
       }),
       v2WorkspaceLight(),
     ],
     timeoutMs: 4_000,
     playbackPolicy: playback("automatic", {
+      replayable: true,
       allowUserSkip: true,
       userSkipFinalState: "artifact-connection-readable",
       allowedFallback: "readable-artifact-connection",
       priority: 60,
     }),
     acknowledgmentPolicy: playerEventAcknowledgment(),
-    finalStatePolicy: v2Reconcile("artifact-connection-readable", "artifact-connection-path"),
+    finalStatePolicy: v2Reconcile("artifact-connection-readable", "global-artifact-connection-path"),
     reducedFallback: "semantic-final-state",
   }),
   "quest-discovery": v2Contract("quest-discovery", {
     reachability: "production",
     expectedHostKinds: ["player-progression", "quartermaster-command"],
     targets: [
-      v2Required("quest-note-new", ["transform", "opacity"], { source: externalSource("quest-note") }),
+      v2Required("quest-note-new", ["transform", "opacity"]),
+      v2Optional("red-thread", ["path-drawing", "stroke-dasharray", "stroke-dashoffset"]),
+      v2Optional("quest-note-new", ["transform", "opacity"], {
+        key: "local-quest-note",
+        source: externalSource("quest-note"),
+      }),
       v2Optional("red-thread", ["path-drawing", "stroke-dasharray", "stroke-dashoffset"], {
+        key: "local-quest-red-thread",
         source: externalSource("quest-red-thread"),
+      }),
+      v2Optional("quest-objective-updated", ["transform", "opacity"], {
+        key: "local-quest-objective",
+        source: externalSource("quest-objective"),
       }),
       v2WorkspaceLight(),
     ],
     timeoutMs: 4_000,
     playbackPolicy: playback("automatic", {
+      replayable: true,
       allowUserSkip: true,
       userSkipFinalState: "quest-readable",
       allowedFallback: "readable-quest-update",
@@ -862,30 +897,48 @@ export const sceneContracts = {
     reachability: "production",
     expectedHostKinds: ["player-progression", "quartermaster-command"],
     targets: [
-      v2Required("quest-stamp", ["transform", "opacity"], { source: externalSource("quest-stamp") }),
+      v2Required("quest-stamp", ["transform", "opacity"], { key: "global-quest-stamp" }),
+      v2Optional("quest-stamp", ["transform", "opacity"], {
+        key: "local-quest-stamp",
+        source: externalSource("quest-stamp"),
+      }),
       v2WorkspaceLight(),
     ],
     timeoutMs: 3_000,
     playbackPolicy: playback("automatic", {
+      replayable: true,
       allowUserSkip: true,
       userSkipFinalState: "quest-complete-readable",
       allowedFallback: "readable-quest-complete",
       priority: 60,
     }),
     acknowledgmentPolicy: playerEventAcknowledgment(),
-    finalStatePolicy: v2Reconcile("quest-complete-readable", "quest-stamp"),
+    finalStatePolicy: v2Reconcile("quest-complete-readable", "global-quest-stamp"),
     reducedFallback: "semantic-final-state",
   }),
   "log-entry": v2Contract("log-entry", {
     reachability: "production",
     expectedHostKinds: ["player-progression", "quartermaster-command"],
     targets: [
-      v2Required("log-entry-new", ["opacity", "clip-path", "filter"], { source: externalSource("log-entry") }),
-      v2Optional("log-symbol-new", ["transform", "opacity"], { source: externalSource("log-symbol") }),
+      v2Required("log-entry-new", ["opacity", "clip-path", "filter"]),
+      v2Optional("log-symbol-new", ["transform", "opacity"]),
+      v2Optional("log-entry-new", ["opacity", "clip-path", "filter"], {
+        key: "local-log-entry",
+        source: externalSource("log-entry"),
+      }),
+      v2Optional("log-symbol-new", ["transform", "opacity"], {
+        key: "local-log-symbol",
+        source: externalSource("log-symbol"),
+      }),
+      v2Optional("annotation-ink", ["opacity", "clip-path", "filter"], {
+        key: "local-journal-annotation-ink",
+        source: externalSource("journal-annotation-ink"),
+      }),
       v2WorkspaceLight(),
     ],
     timeoutMs: 3_500,
     playbackPolicy: playback("automatic", {
+      replayable: true,
       allowUserSkip: true,
       userSkipFinalState: "log-entry-readable",
       allowedFallback: "readable-log-entry",
@@ -899,15 +952,18 @@ export const sceneContracts = {
     reachability: "production",
     expectedHostKinds: ["player-progression", "quartermaster-command"],
     targets: [
-      v2Required("finale-ring-outer", ["transform"], { source: externalSource("finale-ring-outer") }),
-      v2Required("finale-ring-inner", ["transform"], { source: externalSource("finale-ring-inner") }),
-      v2Required("finale-light-path", ["path-drawing", "stroke-dasharray", "stroke-dashoffset"], {
-        source: externalSource("finale-light-path"),
+      v2Required("finale-ring-outer", ["transform"]),
+      v2Required("finale-ring-inner", ["transform"]),
+      v2Required("finale-light-path", ["path-drawing", "stroke-dasharray", "stroke-dashoffset"]),
+      v2Optional("finale-mechanism", ["transform", "opacity"], {
+        key: "local-finale-mechanism",
+        source: externalSource("finale-mechanism"),
       }),
       v2WorkspaceLight(),
     ],
     timeoutMs: 5_000,
     playbackPolicy: playback("automatic", {
+      replayable: true,
       allowUserSkip: true,
       userSkipFinalState: "finale-tease-readable",
       allowedFallback: "readable-finale-tease",
@@ -921,13 +977,16 @@ export const sceneContracts = {
     reachability: "production",
     expectedHostKinds: ["player-progression", "quartermaster-command"],
     targets: [
-      v2Required("finale-light-path", ["path-drawing", "stroke-dasharray", "stroke-dashoffset", "opacity"], {
-        source: externalSource("finale-light-path"),
+      v2Required("finale-light-path", ["path-drawing", "stroke-dasharray", "stroke-dashoffset", "opacity"]),
+      v2Optional("finale-requirement-socket", ["transform", "opacity", "filter"], {
+        key: "local-finale-requirement-socket",
+        source: externalSource("finale-requirement-socket"),
       }),
       v2WorkspaceLight(),
     ],
     timeoutMs: 4_000,
     playbackPolicy: playback("automatic", {
+      replayable: true,
       allowUserSkip: true,
       userSkipFinalState: "finale-requirement-readable",
       allowedFallback: "readable-finale-requirement",
@@ -956,9 +1015,17 @@ export const sceneContracts = {
   "mark-solved": v2Contract("mark-solved", {
     reachability: "production",
     expectedHostKinds: ["player-progression", "quartermaster-command"],
-    targets: [v2Required("solved-stamp", ["transform", "opacity"]), v2CommandLight()],
+    targets: [
+      v2Required("solved-stamp", ["transform", "opacity"]),
+      v2Optional("solved-stamp", ["transform", "opacity"], {
+        key: "local-chapter-solved-stamp",
+        source: externalSource("chapter-solved-stamp"),
+      }),
+      v2CommandLight(),
+    ],
     timeoutMs: 3_000,
     playbackPolicy: playback("automatic", {
+      replayable: true,
       allowUserSkip: true,
       userSkipFinalState: "chapter-solved-readable",
       allowedFallback: "readable-chapter-solved",
@@ -974,6 +1041,7 @@ export const sceneContracts = {
     targets: [v2Required("lantern", ["transform", "opacity"]), v2CommandLight()],
     timeoutMs: 3_000,
     playbackPolicy: playback("automatic", {
+      replayable: true,
       allowUserSkip: true,
       userSkipFinalState: "campaign-paused-readable",
       allowedFallback: "readable-campaign-paused",
@@ -989,6 +1057,7 @@ export const sceneContracts = {
     targets: [v2Required("lantern", ["transform", "opacity"]), v2CommandLight()],
     timeoutMs: 3_000,
     playbackPolicy: playback("automatic", {
+      replayable: true,
       allowUserSkip: true,
       userSkipFinalState: "campaign-resumed-readable",
       allowedFallback: "readable-campaign-resumed",
@@ -1004,6 +1073,7 @@ export const sceneContracts = {
     targets: [v2Required("undo-mark", ["transform", "opacity"]), v2CommandLight()],
     timeoutMs: 3_500,
     playbackPolicy: playback("automatic", {
+      replayable: true,
       allowUserSkip: true,
       userSkipFinalState: "state-restored-readable",
       allowedFallback: "readable-state-restored",

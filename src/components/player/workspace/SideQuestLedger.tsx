@@ -1,16 +1,145 @@
 "use client";
 
-import { useMemo, useRef, useState } from "react";
-import { AnimatePresence, motion } from "motion/react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { motion } from "motion/react";
 import type { MotionMode } from "@/animation/core/animation-types";
-import type { PublicSnapshot } from "@/domain/story";
-import { PageFlipBook, type FlipBookPage, type PageFlipBookHandle } from "@/components/animation/PageFlipBook";
+import type { ClientProgressEvent, PublicSnapshot } from "@/domain/story";
+import {
+  PageFlipBook,
+  type FlipBookPage,
+  type PageFlipBookHandle,
+  type PageFlipPageTargetExportAuthority,
+} from "@/components/animation/PageFlipBook";
+import type { PageFlipPageTargetCapability } from "@/components/animation/pageflip-boundary";
 
 type Filter = "all" | "rumor" | "active" | "complete";
 
-export function SideQuestLedger({ snapshot, mode }: { snapshot: PublicSnapshot; mode: MotionMode }) {
+type SideQuestEventType = "SIDE_QUEST_DISCOVERED" | "SIDE_QUEST_UPDATED" | "SIDE_QUEST_COMPLETED";
+export type SideQuestLocalTargetKey = "quest-note" | "quest-red-thread" | "quest-objective" | "quest-stamp";
+
+export type SideQuestLocalTargetReady = Readonly<{
+  eventId: string;
+  eventType: SideQuestEventType;
+  questKey: string;
+  objectiveOrdinal?: number;
+  pageId: string;
+  authority: PageFlipPageTargetExportAuthority;
+  targets: Readonly<Partial<Record<SideQuestLocalTargetKey, PageFlipPageTargetCapability>>>;
+}>;
+
+function eventQuestKey(event: ClientProgressEvent | null | undefined) {
+  return typeof event?.payload.key === "string" && event.payload.key.trim() ? event.payload.key : null;
+}
+
+function eventObjectiveOrdinal(event: ClientProgressEvent) {
+  const value = event.payload.objectiveOrdinal;
+  if (typeof value === "number" && Number.isInteger(value)) return value;
+  if (typeof value === "string" && /^\d+$/.test(value)) return Number(value);
+  return null;
+}
+
+function safeTargetToken(value: string) {
+  return (
+    value
+      .trim()
+      .toLowerCase()
+      .replace(/[^a-z0-9_-]+/g, "-")
+      .replace(/^-+|-+$/g, "") || "target"
+  );
+}
+
+function currentTarget(authority: PageFlipPageTargetExportAuthority, pageId: string, part: string, markerKey: string) {
+  const markerSuffix = `:${safeTargetToken(markerKey)}`;
+  return authority.targets.find(
+    (target) =>
+      target.current &&
+      target.role === "primary" &&
+      target.pageId === pageId &&
+      target.part === part &&
+      target.targetKey.endsWith(markerSuffix),
+  );
+}
+
+export function resolveSideQuestLocalTargets(
+  event: ClientProgressEvent | null | undefined,
+  authority: PageFlipPageTargetExportAuthority | null,
+): SideQuestLocalTargetReady | null {
+  if (
+    !event ||
+    !authority ||
+    !(["SIDE_QUEST_DISCOVERED", "SIDE_QUEST_UPDATED", "SIDE_QUEST_COMPLETED"] as const).includes(
+      event.type as SideQuestEventType,
+    )
+  )
+    return null;
+  const eventType = event.type as SideQuestEventType;
+  const questKey = eventQuestKey(event);
+  if (!questKey) return null;
+
+  if (eventType === "SIDE_QUEST_DISCOVERED") {
+    const pageId = `${questKey}-summary`;
+    const note = currentTarget(authority, pageId, "quest-note-new", `quest:${questKey}:note`);
+    if (!note) return null;
+    const thread = currentTarget(authority, pageId, "red-thread", `quest:${questKey}:thread`);
+    return Object.freeze({
+      eventId: event.id,
+      eventType,
+      questKey,
+      pageId,
+      authority,
+      targets: Object.freeze({ "quest-note": note, ...(thread ? { "quest-red-thread": thread } : {}) }),
+    });
+  }
+
+  if (eventType === "SIDE_QUEST_UPDATED") {
+    const objectiveOrdinal = eventObjectiveOrdinal(event);
+    if (objectiveOrdinal === null) return null;
+    const pageId = `${questKey}-objectives`;
+    const objective = currentTarget(
+      authority,
+      pageId,
+      "quest-objective-updated",
+      `quest:${questKey}:objective:${objectiveOrdinal}`,
+    );
+    if (!objective) return null;
+    return Object.freeze({
+      eventId: event.id,
+      eventType,
+      questKey,
+      objectiveOrdinal,
+      pageId,
+      authority,
+      targets: Object.freeze({ "quest-objective": objective }),
+    });
+  }
+
+  const pageId = `${questKey}-objectives`;
+  const stamp = currentTarget(authority, pageId, "quest-stamp", `quest:${questKey}:stamp`);
+  if (!stamp) return null;
+  return Object.freeze({
+    eventId: event.id,
+    eventType,
+    questKey,
+    pageId,
+    authority,
+    targets: Object.freeze({ "quest-stamp": stamp }),
+  });
+}
+
+export function SideQuestLedger({
+  snapshot,
+  mode,
+  progressEvent = null,
+  onTargetRegistrationChange,
+}: {
+  snapshot: PublicSnapshot;
+  mode: MotionMode;
+  progressEvent?: ClientProgressEvent | null;
+  onTargetRegistrationChange?: (ready: SideQuestLocalTargetReady | null) => void;
+}) {
   const [filter, setFilter] = useState<Filter>("all");
   const book = useRef<PageFlipBookHandle>(null);
+  const [pageTargets, setPageTargets] = useState<PageFlipPageTargetExportAuthority | null>(null);
   const quests = snapshot.sideQuests.filter(
     (quest) =>
       filter === "all" ||
@@ -47,7 +176,7 @@ export function SideQuestLedger({ snapshot, mode }: { snapshot: PublicSnapshot; 
           </div>
         ),
       },
-      ...quests.flatMap((quest, index) => [
+      ...quests.flatMap((quest) => [
         {
           id: `${quest.key}-summary`,
           density: "soft" as const,
@@ -55,7 +184,9 @@ export function SideQuestLedger({ snapshot, mode }: { snapshot: PublicSnapshot; 
           content: (
             <div
               className="quest-ledger-page"
-              data-scene-part={index === quests.length - 1 ? "quest-note-new" : "quest-note"}
+              data-scene-part="quest-note-new"
+              data-scene-target-key={`quest:${quest.key}:note`}
+              data-quest-key={quest.key}
               data-gsap-owned
             >
               <span className="wax-pin" aria-hidden="true" />
@@ -63,7 +194,12 @@ export function SideQuestLedger({ snapshot, mode }: { snapshot: PublicSnapshot; 
               <h3>{quest.title ?? "A whispered rumor"}</h3>
               <p>{quest.description ?? quest.teaser ?? "Only a safe symbol has surfaced."}</p>
               <svg viewBox="0 0 400 120" aria-hidden="true">
-                <path data-scene-part="red-thread" data-gsap-owned d="M20 88C120 20 250 15 380 82" />
+                <path
+                  data-scene-part="red-thread"
+                  data-scene-target-key={`quest:${quest.key}:thread`}
+                  data-gsap-owned
+                  d="M20 88C120 20 250 15 380 82"
+                />
               </svg>
             </div>
           ),
@@ -77,7 +213,15 @@ export function SideQuestLedger({ snapshot, mode }: { snapshot: PublicSnapshot; 
               <p className="eyebrow">Pinned objectives</p>
               <ol>
                 {quest.objectives?.map((item) => (
-                  <li key={item.ordinal} className={item.complete ? "complete" : ""}>
+                  <li
+                    key={`${quest.key}:objective:${item.ordinal}`}
+                    className={item.complete ? "complete" : ""}
+                    data-scene-part="quest-objective-updated"
+                    data-scene-target-key={`quest:${quest.key}:objective:${item.ordinal}`}
+                    data-quest-key={quest.key}
+                    data-objective-ordinal={item.ordinal}
+                    data-gsap-owned
+                  >
                     <span aria-hidden="true">{item.complete ? "✓" : "○"}</span>
                     {item.body}
                   </li>
@@ -90,7 +234,13 @@ export function SideQuestLedger({ snapshot, mode }: { snapshot: PublicSnapshot; 
                 </div>
               )}{" "}
               {quest.state === "COMPLETE" && (
-                <span className="quest-complete-stamp" data-scene-part="quest-stamp" data-gsap-owned>
+                <span
+                  className="quest-complete-stamp"
+                  data-scene-part="quest-stamp"
+                  data-scene-target-key={`quest:${quest.key}:stamp`}
+                  data-quest-key={quest.key}
+                  data-gsap-owned
+                >
                   Course complete
                 </span>
               )}
@@ -101,6 +251,16 @@ export function SideQuestLedger({ snapshot, mode }: { snapshot: PublicSnapshot; 
     ],
     [quests],
   );
+  const localTargets = useMemo(
+    () => resolveSideQuestLocalTargets(progressEvent, pageTargets),
+    [pageTargets, progressEvent],
+  );
+
+  useEffect(() => {
+    onTargetRegistrationChange?.(localTargets);
+    return () => onTargetRegistrationChange?.(null);
+  }, [localTargets, onTargetRegistrationChange]);
+
   return (
     <section
       className="physical-section side-quest-section"
@@ -122,16 +282,17 @@ export function SideQuestLedger({ snapshot, mode }: { snapshot: PublicSnapshot; 
           </button>
         ))}
       </div>
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={filter}
-          initial={{ opacity: 0, y: 8 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -8 }}
-        >
-          <PageFlipBook ref={book} pages={pages} mode={mode} bookId="side-quest-ledger" className="quest-page-book" />
-        </motion.div>
-      </AnimatePresence>
+      <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}>
+        <PageFlipBook
+          ref={book}
+          pages={pages}
+          mode={mode}
+          bookId="side-quest-ledger"
+          className="quest-page-book"
+          revision={snapshot.sequence}
+          onPageTargetsChange={setPageTargets}
+        />
+      </motion.div>
     </section>
   );
 }

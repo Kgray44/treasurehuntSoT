@@ -6,11 +6,18 @@ import type { MotionMode } from "@/animation/core/animation-types";
 import { changeMountedMetric, recordAssetFailure } from "@/animation/core/metrics";
 import { SceneHost } from "@/animation/hosts/SceneHost";
 import { useOptionalSceneHost } from "@/animation/hosts/SceneHostContext";
-import type { RuntimeSurfaceLease, SceneHostHandle, SceneTargetHandle } from "@/animation/hosts/scene-host-types";
+import type {
+  ExternalSceneTargetHandle,
+  ExternalTargetExportRequest,
+  RuntimeSurfaceLease,
+  SceneHostHandle,
+  SceneTargetHandle,
+} from "@/animation/hosts/scene-host-types";
 import {
   createPageFlipMountId,
   PageFlipBoundaryController,
   type PageFlipBoundarySnapshot,
+  type PageFlipPageTargetCapability,
   type PageFlipPageTargetAuthority,
 } from "./pageflip-boundary";
 
@@ -23,6 +30,10 @@ export type PageFlipBookHandle = {
   pageCount: () => number;
   orientation: () => "portrait" | "landscape";
   boundary: () => PageFlipBoundarySnapshot | null;
+  pageTargets: () => PageFlipPageTargetExportAuthority | null;
+  readiness: () => PageFlipReadinessSnapshot;
+  /** Abandons an unready or unhealthy StPageFlip runtime and exposes the readable static current page. */
+  forceReadableFallback: (reason: string) => void;
 };
 
 export type FlipBookPage = {
@@ -32,12 +43,111 @@ export type FlipBookPage = {
   content: React.ReactNode;
 };
 
+export type PageTurnLifecyclePhase = "turn-start" | "turn-commit" | "turn-settle" | "turn-cancel" | "turn-failed";
+
+export const PAGE_TURN_LIFECYCLE_BROWSER_EVENT = "forever:page-turn-lifecycle" as const;
+export const PAGE_FLIP_DEVELOPMENT_FAILPOINT_GLOBAL = "__FOREVER_PAGEFLIP_FAILPOINT__" as const;
+
+export type PageFlipDevelopmentFailpoint = "dynamic-import" | "runtime-init" | "readiness-probe";
+export type PageTurnLifecycleBrowserPhase = "start" | "commit" | "settle" | "cancel" | "failed";
+export type PageTurnLifecycleBrowserReason =
+  | "none"
+  | "page-boundary-no-op"
+  | "same-spread-or-boundary-no-op"
+  | "replaced-by-newer-intent"
+  | "runtime-disposed"
+  | "runtime-failure"
+  | "readiness-timeout"
+  | "readable-fallback"
+  | "development-dynamic-import"
+  | "development-runtime-init"
+  | "development-readiness-probe"
+  | "unknown";
+export type PageTurnLifecycleBrowserOutcome = "started" | "committed" | "settled" | "cancelled" | "failed";
+export type PageTurnLifecycleBrowserDetail = Readonly<{
+  version: 1;
+  bookId: string;
+  mountId: string;
+  request: PageTurnSource;
+  source: PageTurnSource;
+  fromPage: number;
+  toPage: number;
+  phase: PageTurnLifecycleBrowserPhase;
+  reason: PageTurnLifecycleBrowserReason;
+  outcome: PageTurnLifecycleBrowserOutcome;
+  boundaryGeneration: number;
+  runtimeGeneration: number;
+  currentPage: number;
+  fallbackStatus: "runtime" | "reduced" | "fallback";
+}>;
+
+declare global {
+  interface Window {
+    __FOREVER_PAGEFLIP_FAILPOINT__?: PageFlipDevelopmentFailpoint;
+  }
+
+  interface HTMLElementEventMap {
+    "forever:page-turn-lifecycle": CustomEvent<PageTurnLifecycleBrowserDetail>;
+  }
+}
+
+export type PageTurnSource =
+  | "control-next"
+  | "control-previous"
+  | "keyboard-next"
+  | "keyboard-previous"
+  | "imperative-next"
+  | "imperative-previous"
+  | "imperative-turn-to"
+  | "imperative-flip-to"
+  | "runtime-gesture"
+  | "runtime-initialization";
+
+export type PageTurnLifecycleEvent = Readonly<{
+  phase: PageTurnLifecyclePhase;
+  bookId: string;
+  mountId: string;
+  source: PageTurnSource;
+  fromPage: number;
+  toPage: number;
+  orientation: "portrait" | "landscape";
+  mode: MotionMode;
+  timestamp: number;
+  reason?: string;
+  fallback: boolean;
+  generation: number;
+}>;
+
+export type PageFlipReadinessSnapshot = Readonly<{
+  status: "initializing" | "ready" | "busy" | "reduced" | "fallback" | "disposed";
+  ready: boolean;
+  bookId: string;
+  mountId: string;
+  mode: MotionMode;
+  generation: number;
+}>;
+
+export type PageFlipPageTargetExportAuthority = PageFlipPageTargetAuthority &
+  Readonly<{
+    exportTarget: (
+      capability: PageFlipPageTargetCapability,
+      request: Omit<ExternalTargetExportRequest, "target">,
+    ) => ExternalSceneTargetHandle;
+  }>;
+
 type FocusMemory = { kind: "control"; name: "previous" | "next" } | { kind: "page"; index: number };
 type PageFlipTurnIntent =
-  | Readonly<{ kind: "next" }>
-  | Readonly<{ kind: "previous" }>
-  | Readonly<{ kind: "turn-to"; page: number }>
-  | Readonly<{ kind: "flip-to"; page: number }>;
+  | Readonly<{ kind: "next"; source: PageTurnSource }>
+  | Readonly<{ kind: "previous"; source: PageTurnSource }>
+  | Readonly<{ kind: "turn-to"; page: number; source: PageTurnSource }>
+  | Readonly<{ kind: "flip-to"; page: number; source: PageTurnSource }>;
+type ActivePageTurn = Readonly<{
+  source: PageTurnSource;
+  fromPage: number;
+  requestedPage: number;
+  generation: number;
+}>;
+type QueuedPageTurn = Readonly<{ intent: PageFlipTurnIntent }>;
 type PageFlipTurnDispatch = "animated" | "immediate" | "no-op";
 type PageFlipCollectionView = Readonly<{
   getSpreadIndexByPage: (page: number) => number | null;
@@ -56,6 +166,59 @@ function deterministicMountToken(value: string) {
     .toLowerCase()
     .replace(/[^a-z0-9_-]+/g, "-")
     .replace(/^-+|-+$/g, "");
+}
+
+function isSafeFocusTarget(element: HTMLElement | null, root: HTMLElement) {
+  if (!element?.isConnected || !root.contains(element)) return false;
+  if (element instanceof HTMLButtonElement && element.disabled) return false;
+  if (element.closest("[inert],[aria-hidden='true'],[hidden]")) return false;
+
+  let current: HTMLElement | null = element;
+  while (current && root.contains(current)) {
+    const style = current.ownerDocument.defaultView?.getComputedStyle(current);
+    if (style?.display === "none" || style?.visibility === "hidden") return false;
+    current = current.parentElement;
+  }
+  return true;
+}
+
+function browserPhase(phase: PageTurnLifecyclePhase): PageTurnLifecycleBrowserPhase {
+  if (phase === "turn-start") return "start";
+  if (phase === "turn-commit") return "commit";
+  if (phase === "turn-settle") return "settle";
+  if (phase === "turn-cancel") return "cancel";
+  return "failed";
+}
+
+function browserOutcome(phase: PageTurnLifecyclePhase): PageTurnLifecycleBrowserOutcome {
+  if (phase === "turn-start") return "started";
+  if (phase === "turn-commit") return "committed";
+  if (phase === "turn-settle") return "settled";
+  if (phase === "turn-cancel") return "cancelled";
+  return "failed";
+}
+
+function sanitizedBrowserReason(reason?: string): PageTurnLifecycleBrowserReason {
+  if (!reason) return "none";
+  if (reason === "page-boundary-no-op") return "page-boundary-no-op";
+  if (reason === "same-spread-or-boundary-no-op") return "same-spread-or-boundary-no-op";
+  if (reason === "replaced-by-newer-intent") return "replaced-by-newer-intent";
+  if (reason.includes("runtime-disposed") || reason.includes("runtime-disposal")) return "runtime-disposed";
+  if (reason.includes("development-failpoint:dynamic-import")) return "development-dynamic-import";
+  if (reason.includes("development-failpoint:runtime-init")) return "development-runtime-init";
+  if (reason.includes("development-failpoint:readiness-probe")) return "development-readiness-probe";
+  if (reason.includes("readiness-timeout") || reason.includes("readiness did not converge")) {
+    return "readiness-timeout";
+  }
+  if (reason.includes("readable-fallback")) return "readable-fallback";
+  if (reason.includes("runtime") || reason.includes("PageFlip")) return "runtime-failure";
+  return "unknown";
+}
+
+function readDevelopmentFailpoint(ownerWindow: Window): PageFlipDevelopmentFailpoint | null {
+  if (process.env.NODE_ENV === "production") return null;
+  const value = ownerWindow[PAGE_FLIP_DEVELOPMENT_FAILPOINT_GLOBAL];
+  return value === "dynamic-import" || value === "runtime-init" || value === "readiness-probe" ? value : null;
 }
 
 function dispatchPageFlipTurn(
@@ -87,6 +250,7 @@ function dispatchPageFlipTurn(
       return "animated";
     }
     case "turn-to":
+      if (intent.page === currentSpreadAnchor) return "no-op";
       book.turnToPage(intent.page);
       onImmediatePageChange(book.getCurrentPageIndex());
       return "immediate";
@@ -106,8 +270,10 @@ export const PageFlipBook = forwardRef<
     revision?: string | number;
     onPageChange?: (page: number) => void;
     onFlipStateChange?: (state: "folding" | "flipping" | "read") => void;
+    onTurnLifecycle?: (event: PageTurnLifecycleEvent) => void;
+    onReadinessChange?: (snapshot: PageFlipReadinessSnapshot) => void;
     onBoundaryChange?: (snapshot: PageFlipBoundarySnapshot) => void;
-    onPageTargetsChange?: (authority: PageFlipPageTargetAuthority | null) => void;
+    onPageTargetsChange?: (authority: PageFlipPageTargetExportAuthority | null) => void;
   }
 >(function PageFlipBook(
   {
@@ -121,6 +287,8 @@ export const PageFlipBook = forwardRef<
     revision = 0,
     onPageChange,
     onFlipStateChange,
+    onTurnLifecycle,
+    onReadinessChange,
     onBoundaryChange,
     onPageTargetsChange,
   },
@@ -140,7 +308,8 @@ export const PageFlipBook = forwardRef<
   const clientMountId = useRef<string | null>(null);
   const [mountId, setMountId] = useState(hydrationMountId);
   const [clientIdentityReady, setClientIdentityReady] = useState(false);
-  const pendingTurn = useRef<PageFlipTurnIntent | null>(null);
+  const pendingTurn = useRef<QueuedPageTurn | null>(null);
+  const activeTurn = useRef<ActivePageTurn | null>(null);
   const turnReady = useRef(false);
   const turnReadinessFrame = useRef<number | null>(null);
   const turnRuntimeIdentity = useRef(0);
@@ -150,18 +319,38 @@ export const PageFlipBook = forwardRef<
   const currentPage = useRef(initialCurrent);
   const pageChangeCallback = useRef(onPageChange);
   const flipStateCallback = useRef(onFlipStateChange);
+  const turnLifecycleCallback = useRef(onTurnLifecycle);
+  const readinessCallback = useRef(onReadinessChange);
   const boundaryCallback = useRef(onBoundaryChange);
   const pageTargetsCallback = useRef(onPageTargetsChange);
+  const pageTargetsAuthority = useRef<PageFlipPageTargetExportAuthority | null>(null);
   const flipStateRef = useRef<"folding" | "flipping" | "read">("read");
   const [current, setCurrent] = useState(initialCurrent);
   const [orientation, setOrientation] = useState<"portrait" | "landscape">("landscape");
+  const orientationRef = useRef<"portrait" | "landscape">("landscape");
   const [flipState, setFlipState] = useState<"folding" | "flipping" | "read">("read");
   const [failed, setFailed] = useState(false);
+  const failedRef = useRef(false);
+  const [fallbackReason, setFallbackReason] = useState<string | null>(null);
+  const abandonRuntime = useRef<(() => void) | null>(null);
   const [sceneHost, setSceneHost] = useState<SceneHostHandle | null>(null);
+  const readiness = useRef<PageFlipReadinessSnapshot>({
+    status: mode === "reduced" ? "reduced" : "initializing",
+    ready: mode === "reduced",
+    bookId: logicalBookId,
+    mountId: hydrationMountId,
+    mode,
+    generation: 0,
+  });
+  const readinessPublished = useRef(false);
   const signature = useMemo(() => pages.map((page) => page.id).join("|"), [pages]);
   const pageIds = useMemo(() => pages.map((page) => page.id), [pages]);
   const pageIdentity = useRef({ pageIds, contentRevision: `${String(revision)}:${signature}` });
   const reduced = mode === "reduced";
+
+  useEffect(() => {
+    failedRef.current = failed;
+  }, [failed]);
 
   useEffect(() => {
     clientMountId.current ??= createPageFlipMountId(logicalBookId);
@@ -175,10 +364,12 @@ export const PageFlipBook = forwardRef<
 
   useEffect(() => {
     flipStateCallback.current = onFlipStateChange;
+    turnLifecycleCallback.current = onTurnLifecycle;
+    readinessCallback.current = onReadinessChange;
     boundaryCallback.current = onBoundaryChange;
     pageTargetsCallback.current = onPageTargetsChange;
     pageChangeCallback.current = onPageChange;
-  }, [onBoundaryChange, onFlipStateChange, onPageChange, onPageTargetsChange]);
+  }, [onBoundaryChange, onFlipStateChange, onPageChange, onPageTargetsChange, onReadinessChange, onTurnLifecycle]);
 
   useEffect(() => {
     pagesLength.current = pages.length;
@@ -190,6 +381,180 @@ export const PageFlipBook = forwardRef<
     setCurrent(next);
     pageChangeCallback.current?.(next);
   }, []);
+
+  const publishReadiness = useCallback(
+    (status: PageFlipReadinessSnapshot["status"], generation = runtimeGeneration.current) => {
+      const next: PageFlipReadinessSnapshot = {
+        status,
+        ready: status === "ready" || status === "reduced" || status === "fallback",
+        bookId: logicalBookId,
+        mountId,
+        mode,
+        generation,
+      };
+      const previous = readiness.current;
+      readiness.current = next;
+      if (
+        !readinessPublished.current ||
+        previous.status !== next.status ||
+        previous.ready !== next.ready ||
+        previous.mountId !== next.mountId ||
+        previous.mode !== next.mode ||
+        previous.generation !== next.generation
+      ) {
+        readinessPublished.current = true;
+        readinessCallback.current?.(next);
+      }
+    },
+    [logicalBookId, mode, mountId],
+  );
+
+  const emitTurnLifecycle = useCallback(
+    (
+      phase: PageTurnLifecyclePhase,
+      turn: ActivePageTurn,
+      options: Readonly<{ toPage?: number; reason?: string; fallback?: boolean }> = {},
+    ) => {
+      const rootElement = root.current;
+      if (
+        !rootElement?.isConnected ||
+        readiness.current.status === "disposed" ||
+        rootElement.dataset.pageflipBookId !== logicalBookId ||
+        rootElement.dataset.pageflipMountId !== mountId
+      ) {
+        return;
+      }
+      const lifecycleEvent: PageTurnLifecycleEvent = {
+        phase,
+        bookId: logicalBookId,
+        mountId,
+        source: turn.source,
+        fromPage: turn.fromPage,
+        toPage: options.toPage ?? turn.requestedPage,
+        orientation: mode === "reduced" ? "portrait" : orientationRef.current,
+        mode,
+        timestamp: Date.now(),
+        reason: options.reason,
+        fallback: options.fallback ?? (failedRef.current || mode === "reduced"),
+        generation: turn.generation,
+      };
+      const boundarySnapshot = boundary.current?.snapshot() ?? null;
+      const fallbackStatus: PageTurnLifecycleBrowserDetail["fallbackStatus"] =
+        lifecycleEvent.fallback || readiness.current.status === "fallback"
+          ? "fallback"
+          : mode === "reduced"
+            ? "reduced"
+            : "runtime";
+      const detail: PageTurnLifecycleBrowserDetail = {
+        version: 1,
+        bookId: lifecycleEvent.bookId,
+        mountId: lifecycleEvent.mountId,
+        request: lifecycleEvent.source,
+        source: lifecycleEvent.source,
+        fromPage: lifecycleEvent.fromPage,
+        toPage: lifecycleEvent.toPage,
+        phase: browserPhase(lifecycleEvent.phase),
+        reason: sanitizedBrowserReason(lifecycleEvent.reason),
+        outcome: browserOutcome(lifecycleEvent.phase),
+        boundaryGeneration:
+          boundarySnapshot && !boundarySnapshot.disposed && boundarySnapshot.mountId === mountId
+            ? boundarySnapshot.cloneGeneration
+            : 0,
+        runtimeGeneration: lifecycleEvent.generation,
+        currentPage: currentPage.current,
+        fallbackStatus,
+      };
+      const ownerWindow = rootElement.ownerDocument.defaultView;
+      if (ownerWindow) {
+        rootElement.dispatchEvent(
+          new ownerWindow.CustomEvent<PageTurnLifecycleBrowserDetail>(PAGE_TURN_LIFECYCLE_BROWSER_EVENT, {
+            bubbles: true,
+            composed: true,
+            detail,
+          }),
+        );
+      }
+      turnLifecycleCallback.current?.(lifecycleEvent);
+    },
+    [logicalBookId, mode, mountId],
+  );
+
+  const requestedPageForIntent = useCallback((intent: PageFlipTurnIntent, fromPage: number) => {
+    if (intent.kind === "next") return clampPage(fromPage + 1, pagesLength.current);
+    if (intent.kind === "previous") return clampPage(fromPage - 1, pagesLength.current);
+    return clampPage(intent.page, pagesLength.current);
+  }, []);
+
+  const createTurn = useCallback(
+    (intent: PageFlipTurnIntent, generation = runtimeGeneration.current) => {
+      const fromPage = currentPage.current;
+      return {
+        source: intent.source,
+        fromPage,
+        requestedPage: requestedPageForIntent(intent, fromPage),
+        generation,
+      } satisfies ActivePageTurn;
+    },
+    [requestedPageForIntent],
+  );
+
+  const startTurn = useCallback(
+    (intent: PageFlipTurnIntent, generation = runtimeGeneration.current) => {
+      const turn = createTurn(intent, generation);
+      emitTurnLifecycle("turn-start", turn);
+      return turn;
+    },
+    [createTurn, emitTurnLifecycle],
+  );
+
+  const cancelTurn = useCallback(
+    (turn: ActivePageTurn | null, reason: string) => {
+      if (!turn) return;
+      emitTurnLifecycle("turn-cancel", turn, { reason, toPage: currentPage.current });
+      if (activeTurn.current === turn) activeTurn.current = null;
+    },
+    [emitTurnLifecycle],
+  );
+
+  const cancelQueuedIntent = useCallback(
+    (queued: QueuedPageTurn | null, reason: string) => {
+      if (!queued) return;
+      emitTurnLifecycle("turn-cancel", createTurn(queued.intent), {
+        reason,
+        toPage: currentPage.current,
+      });
+    },
+    [createTurn, emitTurnLifecycle],
+  );
+
+  useEffect(() => {
+    if (reduced) publishReadiness("reduced");
+    else if (failed) publishReadiness("fallback");
+    else if (!clientIdentityReady || !sceneHost) publishReadiness("initializing");
+  }, [clientIdentityReady, failed, publishReadiness, reduced, sceneHost]);
+
+  useEffect(() => {
+    const identity = { bookId: logicalBookId, mountId };
+    return () => {
+      const previous = readiness.current;
+      if (
+        previous.status === "disposed" &&
+        previous.bookId === identity.bookId &&
+        previous.mountId === identity.mountId
+      ) {
+        return;
+      }
+      const disposedSnapshot: PageFlipReadinessSnapshot = {
+        ...previous,
+        status: "disposed",
+        ready: false,
+        bookId: identity.bookId,
+        mountId: identity.mountId,
+      };
+      readiness.current = disposedSnapshot;
+      readinessCallback.current?.(disposedSnapshot);
+    };
+  }, [logicalBookId, mountId]);
 
   const rememberFocus = useCallback((event: React.FocusEvent<HTMLElement>) => {
     const target = event.target as HTMLElement;
@@ -215,17 +580,87 @@ export const PageFlipBook = forwardRef<
     const active = rootElement.ownerDocument.activeElement;
     if (active && active !== rootElement.ownerDocument.body && !rootElement.contains(active)) return;
 
-    const target =
-      memory.kind === "control"
-        ? rootElement.querySelector<HTMLElement>(`[data-pageflip-focus="${memory.name}"]`)
-        : (rootElement.querySelector<HTMLElement>(
-            `.page-flip-host [data-page-index="${clampPage(memory.index, pagesLength.current)}"]`,
-          ) ??
-          rootElement.querySelector<HTMLElement>(
-            `.reduced-page-stage [data-page-index="${clampPage(memory.index, pagesLength.current)}"]`,
-          ));
-    target?.focus({ preventScroll: true });
-  }, []);
+    const safeControl = (name: "previous" | "next") => {
+      const control = rootElement.querySelector<HTMLElement>(`[data-pageflip-focus="${name}"]`);
+      return isSafeFocusTarget(control, rootElement) ? control : null;
+    };
+    if (memory.kind === "control") {
+      const matchingControl = safeControl(memory.name);
+      if (matchingControl) {
+        matchingControl.focus({ preventScroll: true });
+        return;
+      }
+      const alternateControl = safeControl(memory.name === "previous" ? "next" : "previous");
+      const readableHost = rootElement.querySelector<HTMLElement>(".page-flip-host,.reduced-page-stage");
+      const fallback =
+        alternateControl ?? (isSafeFocusTarget(readableHost, rootElement) ? readableHost : null) ?? rootElement;
+      fallback.focus({ preventScroll: true });
+      return;
+    }
+
+    const pageIndex = clampPage(memory.index, pagesLength.current);
+    const readinessSnapshot = readiness.current;
+    if (readinessSnapshot.status === "reduced" || readinessSnapshot.status === "fallback") {
+      const staticPage = Array.from(
+        rootElement.querySelectorAll<HTMLElement>(".reduced-page-stage > [data-page-index]"),
+      ).find((candidate) => candidate.dataset.pageIndex === String(pageIndex));
+      if (staticPage && isSafeFocusTarget(staticPage, rootElement)) {
+        staticPage.focus({ preventScroll: true });
+        return;
+      }
+    } else if (readinessSnapshot.status === "ready" && flipStateRef.current === "read") {
+      const snapshot = boundary.current?.snapshot() ?? null;
+      const authority = pageTargetsAuthority.current;
+      const authorityMatches =
+        !authority ||
+        (snapshot &&
+          authority.pageFlipInstanceId === snapshot.pageFlipInstanceId &&
+          authority.cloneGeneration === snapshot.cloneGeneration);
+      if (
+        snapshot &&
+        !snapshot.disposed &&
+        snapshot.lifecycle === "visible" &&
+        snapshot.mountId === mountId &&
+        rootElement.dataset.pageflipMountId === mountId &&
+        authorityMatches
+      ) {
+        const primary = Array.from(
+          rootElement.querySelectorAll<HTMLElement>(
+            '.page-flip-host [data-pageflip-role="primary"][data-pageflip-current="true"]',
+          ),
+        ).find(
+          (candidate) =>
+            candidate.dataset.pageflipInstanceId === snapshot.pageFlipInstanceId &&
+            candidate.dataset.pageflipCloneGeneration === String(snapshot.cloneGeneration) &&
+            candidate.dataset.pageflipBookId === logicalBookId &&
+            candidate.dataset.pageflipPageIndex === String(pageIndex) &&
+            candidate.dataset.pageflipLifecycle === "visible" &&
+            candidate.dataset.pageflipOrientation === snapshot.orientation &&
+            !candidate.hasAttribute("data-pageflip-temporary-clone") &&
+            !candidate.hasAttribute("data-pageflip-unproven-clone") &&
+            !candidate.hasAttribute("data-pageflip-source") &&
+            isSafeFocusTarget(candidate, rootElement),
+        );
+        if (primary) {
+          primary.focus({ preventScroll: true });
+          return;
+        }
+      }
+    } else {
+      // Initializing and moving runtimes may contain transient clones; wait for the read/visible boundary.
+      return;
+    }
+
+    const matchingControl = pageIndex > 0 ? safeControl("previous") : safeControl("next");
+    const alternateControl = pageIndex > 0 ? safeControl("next") : safeControl("previous");
+    const readableHost = rootElement.querySelector<HTMLElement>(".page-flip-host,.reduced-page-stage");
+    const fallback =
+      matchingControl ??
+      alternateControl ??
+      (isSafeFocusTarget(readableHost, rootElement) ? readableHost : null) ??
+      rootElement;
+    fallback.focus({ preventScroll: true });
+  }, [logicalBookId, mountId]);
 
   const scheduleTurnReadiness = useCallback(
     function schedule(book: PageFlipInstance, runtimeIdentity: number) {
@@ -243,18 +678,27 @@ export const PageFlipBook = forwardRef<
         }
 
         turnReady.current = true;
-        const intent = pendingTurn.current;
-        if (!intent) return;
+        const queued = pendingTurn.current;
+        if (!queued) return;
         pendingTurn.current = null;
         turnReady.current = false;
-        const dispatch = dispatchPageFlipTurn(book, intent, currentPage.current, changePage);
+        const turn = startTurn(queued.intent, runtimeGeneration.current);
+        activeTurn.current = turn;
+        const dispatch = dispatchPageFlipTurn(book, queued.intent, currentPage.current, changePage);
+        if (dispatch === "immediate") {
+          emitTurnLifecycle("turn-commit", turn, { toPage: currentPage.current });
+          emitTurnLifecycle("turn-settle", turn, { toPage: currentPage.current });
+          activeTurn.current = null;
+        } else if (dispatch === "no-op") {
+          cancelTurn(turn, "same-spread-or-boundary-no-op");
+        }
         if (dispatch !== "animated") {
           boundary.current?.updateCurrentPage(currentPage.current, "visible");
           schedule(book, runtimeIdentity);
         }
       });
     },
-    [changePage],
+    [cancelTurn, changePage, emitTurnLifecycle, startTurn],
   );
 
   const requestTurn = useCallback(
@@ -263,46 +707,116 @@ export const PageFlipBook = forwardRef<
         intent.kind === "flip-to" || intent.kind === "turn-to"
           ? ({ ...intent, page: clampPage(intent.page, pagesLength.current) } as PageFlipTurnIntent)
           : intent;
-      if (reduced) {
-        if (normalizedIntent.kind === "next") changePage(currentPage.current + 1);
-        else if (normalizedIntent.kind === "previous") changePage(currentPage.current - 1);
-        else changePage(normalizedIntent.page);
+      if (reduced || failed) {
+        const turn = startTurn(normalizedIntent);
+        const target = requestedPageForIntent(normalizedIntent, currentPage.current);
+        if (target === currentPage.current) {
+          cancelTurn(turn, "page-boundary-no-op");
+          return;
+        }
+        changePage(target);
+        emitTurnLifecycle("turn-commit", turn, { toPage: target, fallback: failed });
+        emitTurnLifecycle("turn-settle", turn, { toPage: target, fallback: failed });
         return;
       }
 
       const book = instance.current;
-      if (!book) return;
-      if (flipStateRef.current !== "read" || !turnReady.current) {
-        pendingTurn.current = normalizedIntent;
+      if (!book || flipStateRef.current !== "read" || !turnReady.current) {
+        const replaced = pendingTurn.current;
+        if (replaced) cancelQueuedIntent(replaced, "replaced-by-newer-intent");
+        pendingTurn.current = { intent: normalizedIntent };
         return;
       }
 
+      const turn = startTurn(normalizedIntent);
       pendingTurn.current = null;
+      activeTurn.current = turn;
       turnReady.current = false;
       const dispatch = dispatchPageFlipTurn(book, normalizedIntent, currentPage.current, changePage);
+      if (dispatch === "immediate") {
+        emitTurnLifecycle("turn-commit", turn, { toPage: currentPage.current });
+        emitTurnLifecycle("turn-settle", turn, { toPage: currentPage.current });
+        activeTurn.current = null;
+      } else if (dispatch === "no-op") {
+        cancelTurn(turn, "same-spread-or-boundary-no-op");
+      }
       if (dispatch !== "animated") {
         boundary.current?.updateCurrentPage(currentPage.current, "visible");
         scheduleTurnReadiness(book, turnRuntimeIdentity.current);
       }
     },
-    [changePage, reduced, scheduleTurnReadiness],
+    [
+      cancelTurn,
+      cancelQueuedIntent,
+      changePage,
+      emitTurnLifecycle,
+      failed,
+      reduced,
+      requestedPageForIntent,
+      scheduleTurnReadiness,
+      startTurn,
+    ],
+  );
+
+  const forceReadableFallback = useCallback(
+    (requestedReason: string) => {
+      const reason = requestedReason.trim() || "PageFlip readiness did not converge";
+      if (failedRef.current) {
+        publishReadiness("fallback", runtimeGeneration.current);
+        window.requestAnimationFrame(restoreFocus);
+        return;
+      }
+
+      const failedTurn: ActivePageTurn = activeTurn.current ?? {
+        source: "runtime-initialization",
+        fromPage: currentPage.current,
+        requestedPage: currentPage.current,
+        generation: runtimeGeneration.current,
+      };
+      emitTurnLifecycle("turn-failed", failedTurn, {
+        reason,
+        toPage: currentPage.current,
+        fallback: true,
+      });
+      activeTurn.current = null;
+      cancelQueuedIntent(pendingTurn.current, `queued-intent-cancelled-by-readable-fallback:${reason}`);
+      pendingTurn.current = null;
+      turnReady.current = false;
+      if (turnReadinessFrame.current !== null) {
+        window.cancelAnimationFrame(turnReadinessFrame.current);
+        turnReadinessFrame.current = null;
+      }
+
+      failedRef.current = true;
+      setFallbackReason(reason);
+      abandonRuntime.current?.();
+      setFailed(true);
+      publishReadiness("fallback", runtimeGeneration.current);
+      window.requestAnimationFrame(restoreFocus);
+    },
+    [cancelQueuedIntent, emitTurnLifecycle, publishReadiness, restoreFocus],
   );
 
   useImperativeHandle(ref, () => ({
-    next: () => requestTurn({ kind: "next" }),
-    previous: () => requestTurn({ kind: "previous" }),
-    turnTo: (page) => requestTurn({ kind: "turn-to", page }),
-    flipTo: (page) => requestTurn({ kind: "flip-to", page }),
+    next: () => requestTurn({ kind: "next", source: "imperative-next" }),
+    previous: () => requestTurn({ kind: "previous", source: "imperative-previous" }),
+    turnTo: (page) => requestTurn({ kind: "turn-to", page, source: "imperative-turn-to" }),
+    flipTo: (page) => requestTurn({ kind: "flip-to", page, source: "imperative-flip-to" }),
     currentPage: () => currentPage.current,
     pageCount: () => (reduced ? pages.length : (instance.current?.getPageCount() ?? pages.length)),
     orientation: () => (reduced ? "portrait" : (instance.current?.getOrientation() ?? orientation)),
     boundary: () => boundary.current?.snapshot() ?? null,
+    pageTargets: () => pageTargetsAuthority.current,
+    readiness: () => readiness.current,
+    forceReadableFallback,
   }));
 
   useEffect(() => {
     const hostElement = host.current;
     const sourceElement = source.current;
     if (reduced || failed || !clientIdentityReady || !sceneHost || !hostElement || !sourceElement) return;
+
+    publishReadiness("initializing");
 
     let book: PageFlipInstance | null = null;
     let disposed = false;
@@ -317,7 +831,6 @@ export const PageFlipBook = forwardRef<
     hostElement.replaceChildren(runtimeElement);
     turnRuntimeIdentity.current += 1;
     const runtimeIdentity = turnRuntimeIdentity.current;
-    pendingTurn.current = null;
     turnReady.current = false;
     if (turnReadinessFrame.current !== null) {
       window.cancelAnimationFrame(turnReadinessFrame.current);
@@ -355,7 +868,25 @@ export const PageFlipBook = forwardRef<
       runtimeElement.remove();
     };
 
-    void import("page-flip")
+    const abandon = () => {
+      disposed = true;
+      turnReady.current = false;
+      if (turnReadinessFrame.current !== null) {
+        window.cancelAnimationFrame(turnReadinessFrame.current);
+        turnReadinessFrame.current = null;
+      }
+      destroyBook();
+      hostElement.replaceChildren();
+    };
+    abandonRuntime.current = abandon;
+
+    const developmentFailpoint = readDevelopmentFailpoint(hostElement.ownerDocument.defaultView ?? window);
+    const runtimeImport =
+      developmentFailpoint === "dynamic-import"
+        ? Promise.reject(new Error("development-failpoint:dynamic-import"))
+        : import("page-flip");
+
+    void runtimeImport
       .then(({ PageFlip }) => {
         if (disposed) return;
         const startPage = clampPage(currentPage.current, sourceElement.children.length);
@@ -387,13 +918,26 @@ export const PageFlipBook = forwardRef<
             sourceRoot: sourceElement,
             sceneHost,
             onChange: (snapshot) => boundaryCallback.current?.(snapshot),
-            onPageTargetsChange: (authority) => pageTargetsCallback.current?.(authority),
+            onPageTargetsChange: (authority) => {
+              const exportAuthority: PageFlipPageTargetExportAuthority | null = authority
+                ? {
+                    ...authority,
+                    exportTarget: (capability, request) =>
+                      sceneHost.exportTarget({ ...request, target: capability.handle }),
+                  }
+                : null;
+              pageTargetsAuthority.current = exportAuthority;
+              pageTargetsCallback.current?.(exportAuthority);
+            },
           });
           boundary.current = boundaryController;
           const clones = boundaryController.preparePages(
             pageIdentity.current.pageIds,
             pageIdentity.current.contentRevision,
           );
+          if (developmentFailpoint === "runtime-init") {
+            throw new Error("development-failpoint:runtime-init");
+          }
           const initializedBook = new PageFlip(element, {
             width: 560,
             height: 760,
@@ -422,19 +966,34 @@ export const PageFlipBook = forwardRef<
         if (!activeBoundary) throw new Error("PageFlip clone boundary was not initialized");
         const initialSpreadAnchor = clampPage(book.getCurrentPageIndex(), sourceElement.children.length);
         const initialOrientation = book.getOrientation() as "portrait" | "landscape";
+        orientationRef.current = initialOrientation;
         setOrientation(initialOrientation);
         activeBoundary.bindPrimaryPages(initialSpreadAnchor, initialOrientation);
         book.on("flip", (event) => {
           const page = Number(event.data);
+          let turn = activeTurn.current;
+          if (!turn) {
+            turn = {
+              source: "runtime-gesture",
+              fromPage: currentPage.current,
+              requestedPage: page,
+              generation: runtimeGeneration.current,
+            };
+            activeTurn.current = turn;
+            emitTurnLifecycle("turn-start", turn);
+          }
           changePage(page);
+          emitTurnLifecycle("turn-commit", turn, { toPage: page });
           activeBoundary.updateCurrentPage(page, flipStateRef.current === "read" ? "visible" : "settling");
           focusMemory.current = { kind: "page", index: page };
           window.requestAnimationFrame(restoreFocus);
         });
         book.on("changeOrientation", (event) => {
           const nextOrientation = event.data as "portrait" | "landscape";
+          orientationRef.current = nextOrientation;
           setOrientation(nextOrientation);
           activeBoundary.rebindOrientation(nextOrientation, currentPage.current);
+          window.requestAnimationFrame(restoreFocus);
         });
         book.on("changeState", (event) => {
           const state = event.data === "flipping" ? "flipping" : event.data === "read" ? "read" : "folding";
@@ -443,8 +1002,30 @@ export const PageFlipBook = forwardRef<
           flipStateCallback.current?.(state);
           activeBoundary.updateCurrentPage(currentPage.current, state === "read" ? "visible" : "settling");
           if (state === "read") {
+            const completedTurn = activeTurn.current;
+            if (completedTurn) {
+              if (currentPage.current === completedTurn.fromPage) {
+                cancelTurn(completedTurn, "runtime-returned-without-page-change");
+              } else {
+                emitTurnLifecycle("turn-settle", completedTurn, { toPage: currentPage.current });
+                activeTurn.current = null;
+              }
+            }
+            publishReadiness("ready", runtimeGeneration.current);
             if (book) scheduleTurnReadiness(book, runtimeIdentity);
+            window.requestAnimationFrame(restoreFocus);
           } else {
+            if (!activeTurn.current) {
+              const gestureTurn: ActivePageTurn = {
+                source: "runtime-gesture",
+                fromPage: currentPage.current,
+                requestedPage: currentPage.current,
+                generation: runtimeGeneration.current,
+              };
+              activeTurn.current = gestureTurn;
+              emitTurnLifecycle("turn-start", gestureTurn);
+            }
+            publishReadiness("busy", runtimeGeneration.current);
             turnReady.current = false;
             if (turnReadinessFrame.current !== null) {
               window.cancelAnimationFrame(turnReadinessFrame.current);
@@ -452,28 +1033,37 @@ export const PageFlipBook = forwardRef<
             }
           }
         });
+        if (developmentFailpoint === "readiness-probe") {
+          throw new Error("development-failpoint:readiness-probe");
+        }
         instance.current = book;
         turnReady.current = true;
         currentPage.current = initialSpreadAnchor;
         setCurrent(initialSpreadAnchor);
         changeMountedMetric("pageFlip", 1);
         countedAsMounted = true;
+        publishReadiness("ready", runtimeGeneration.current);
+        if (pendingTurn.current) scheduleTurnReadiness(book, runtimeIdentity);
         window.requestAnimationFrame(restoreFocus);
       })
-      .catch(() => {
-        destroyBook();
-        setFailed(true);
+      .catch((error: unknown) => {
+        const reason = error instanceof Error ? error.message : "PageFlip runtime initialization failed";
+        forceReadableFallback(reason);
         recordAssetFailure("page-flip");
       });
 
     return () => {
       disposed = true;
+      if (abandonRuntime.current === abandon) abandonRuntime.current = null;
       if (turnRuntimeIdentity.current === runtimeIdentity) turnRuntimeIdentity.current += 1;
       if (turnReadinessFrame.current !== null) {
         window.cancelAnimationFrame(turnReadinessFrame.current);
         turnReadinessFrame.current = null;
       }
       turnReady.current = false;
+      cancelTurn(activeTurn.current, "runtime-disposed-before-settle");
+      activeTurn.current = null;
+      cancelQueuedIntent(pendingTurn.current, "queued-intent-cancelled-by-runtime-disposal");
       pendingTurn.current = null;
       destroyBook();
       hostElement.replaceChildren();
@@ -486,9 +1076,14 @@ export const PageFlipBook = forwardRef<
     mode,
     mountId,
     playbackRate,
+    publishReadiness,
     reduced,
     restoreFocus,
     sceneHost,
+    cancelTurn,
+    cancelQueuedIntent,
+    emitTurnLifecycle,
+    forceReadableFallback,
     scheduleTurnReadiness,
     showCover,
   ]);
@@ -507,11 +1102,27 @@ export const PageFlipBook = forwardRef<
         currentPage.current = safeCurrent;
         setCurrent(safeCurrent);
       }
-    } catch {
+      window.requestAnimationFrame(restoreFocus);
+    } catch (error: unknown) {
+      const reason = error instanceof Error ? error.message : "PageFlip content refresh failed";
+      const failedTurn: ActivePageTurn = activeTurn.current ?? {
+        source: "runtime-initialization",
+        fromPage: currentPage.current,
+        requestedPage: currentPage.current,
+        generation: runtimeGeneration.current,
+      };
+      emitTurnLifecycle("turn-failed", failedTurn, {
+        reason,
+        toPage: currentPage.current,
+        fallback: true,
+      });
+      activeTurn.current = null;
+      failedRef.current = true;
+      setFallbackReason(reason);
       recordAssetFailure("page-flip");
       setFailed(true);
     }
-  }, [pageIds, pages.length, reduced, revision, signature]);
+  }, [emitTurnLifecycle, pageIds, pages.length, reduced, restoreFocus, revision, signature]);
 
   useEffect(() => {
     if (!reduced && !failed) return;
@@ -540,12 +1151,14 @@ export const PageFlipBook = forwardRef<
         ref={root}
         className={`page-flip-book reduced-page-book ${className}`}
         data-pageflip-status={failed ? "fallback" : "reduced"}
+        data-pageflip-fallback-reason={failed ? (fallbackReason ?? "runtime-failure") : undefined}
         data-pageflip-book-id={logicalBookId}
         data-pageflip-mount-id={mountId}
+        tabIndex={-1}
         onFocusCapture={rememberFocus}
         onBlurCapture={forgetExternalFocus}
       >
-        <div className="reduced-page-stage">
+        <div className="reduced-page-stage" tabIndex={-1}>
           <article
             className={`ft-page density-${pages[visibleCurrent]?.density ?? "soft"} page-side-${visibleCurrent % 2 === 0 ? "right" : "left"}`}
             data-page-index={visibleCurrent}
@@ -560,8 +1173,8 @@ export const PageFlipBook = forwardRef<
           current={visibleCurrent}
           count={pages.length}
           busy={false}
-          previous={() => changePage(visibleCurrent - 1)}
-          next={() => changePage(visibleCurrent + 1)}
+          previous={() => requestTurn({ kind: "previous", source: "control-previous" })}
+          next={() => requestTurn({ kind: "next", source: "control-next" })}
         />
       </section>
     );
@@ -575,16 +1188,17 @@ export const PageFlipBook = forwardRef<
       data-pageflip-book-id={logicalBookId}
       data-pageflip-mount-id={mountId}
       data-flip-state={flipState}
+      tabIndex={-1}
       onFocusCapture={rememberFocus}
       onBlurCapture={forgetExternalFocus}
       onKeyDown={(event) => {
         if (event.key === "ArrowRight" || event.key === "PageDown") {
           event.preventDefault();
-          requestTurn({ kind: "next" });
+          requestTurn({ kind: "next", source: "keyboard-next" });
         }
         if (event.key === "ArrowLeft" || event.key === "PageUp") {
           event.preventDefault();
-          requestTurn({ kind: "previous" });
+          requestTurn({ kind: "previous", source: "keyboard-previous" });
         }
       }}
     >
@@ -598,14 +1212,14 @@ export const PageFlipBook = forwardRef<
         <div ref={source} className="page-flip-source" data-pageflip-source aria-hidden="true" inert>
           {pageNodes}
         </div>
-        <div ref={host} className="page-flip-host" aria-label="Physical journal pages" />
+        <div ref={host} className="page-flip-host" aria-label="Physical journal pages" tabIndex={-1} />
       </SceneHost>
       <PageControls
         current={current}
         count={pages.length}
         busy={flipState !== "read"}
-        previous={() => requestTurn({ kind: "previous" })}
-        next={() => requestTurn({ kind: "next" })}
+        previous={() => requestTurn({ kind: "previous", source: "control-previous" })}
+        next={() => requestTurn({ kind: "next", source: "control-next" })}
       />
     </section>
   );

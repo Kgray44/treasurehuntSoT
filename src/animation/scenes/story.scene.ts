@@ -113,7 +113,7 @@ export const chapterReleaseScene: SceneDefinitionV2 = {
     toTargets(
       timeline,
       context,
-      "sealed-parchment",
+      "global-sealed-parchment",
       { rotateX: 0, y: 0, duration: releaseSeconds(context, 1.15) },
       "parchment",
     );
@@ -227,11 +227,19 @@ export const chapterReleaseScene: SceneDefinitionV2 = {
     ])
       toTargets(timeline, context, key, { opacity: 1, duration: releaseSeconds(context, 0.35) }, "active");
     mark(timeline, context, "content-readable", ">");
+    fromToTargets(
+      timeline,
+      context,
+      "local-sealed-parchment",
+      { y: distance(context, -12), rotateX: -8 },
+      { y: 0, rotateX: 0, duration: releaseSeconds(context, 0.12) },
+      "content-readable",
+    );
     return settleV2(timeline, context);
   },
 };
 
-function drawScene(name: AnimationSceneName, label: string, target: string): SceneDefinitionV2 {
+function drawScene(name: AnimationSceneName, label: string, target: string, localTarget?: string): SceneDefinitionV2 {
   return {
     name,
     reversible: true,
@@ -246,6 +254,15 @@ function drawScene(name: AnimationSceneName, label: string, target: string): Sce
         { drawSVG: "0%", opacity: 0.4 },
         { drawSVG: "100%", opacity: 1, duration: seconds(context, 0.9) },
       );
+      if (localTarget)
+        fromToTargets(
+          timeline,
+          context,
+          localTarget,
+          { drawSVG: "0%", opacity: 0.4 },
+          { drawSVG: "100%", opacity: 1, duration: seconds(context, 0.54) },
+          ">",
+        );
       return settleV2(timeline, context);
     },
   };
@@ -278,11 +295,19 @@ export const mapRevealScene: SceneDefinitionV2 = {
       { drawSVG: "0%" },
       { drawSVG: "100%", duration: seconds(context, 0.8) },
     );
+    fromToTargets(
+      timeline,
+      context,
+      "local-map-marker",
+      { scale: 1.32, opacity: 0.35, rotate: -8 },
+      { scale: 1, opacity: 1, rotate: 0, duration: seconds(context, 0.34), ease: "back.out(1.6)" },
+      ">",
+    );
     return settleV2(timeline, context);
   },
 };
 
-export const routeDrawScene = drawScene("route-draw", "route-drawing", "route-path");
+export const routeDrawScene = drawScene("route-draw", "route-drawing", "global-route-path", "local-route-path");
 
 export const artifactAwardScene: SceneDefinitionV2 = {
   name: "artifact-award",
@@ -306,6 +331,20 @@ export const artifactAwardScene: SceneDefinitionV2 = {
       { xPercent: 140, opacity: 0.85, duration: seconds(context, 0.68) },
     );
     mark(timeline, context, "artifact-settled", ">");
+    fromToTargets(
+      timeline,
+      context,
+      "local-artifact-slot",
+      { scale: 0.9, opacity: 0.45, filter: "brightness(0.72)" },
+      {
+        scale: 1,
+        opacity: 1,
+        filter: "brightness(1)",
+        duration: seconds(context, 0.42),
+        ease: "back.out(1.5)",
+      },
+      "artifact-settled",
+    );
     return settleV2(timeline, context);
   },
 };
@@ -313,7 +352,8 @@ export const artifactAwardScene: SceneDefinitionV2 = {
 export const artifactConnectionScene = drawScene(
   "artifact-connection",
   "connection-drawing",
-  "artifact-connection-path",
+  "global-artifact-connection-path",
+  "local-artifact-connection-path",
 );
 
 export const questDiscoveryScene: SceneDefinitionV2 = {
@@ -336,6 +376,30 @@ export const questDiscoveryScene: SceneDefinitionV2 = {
       { drawSVG: "0%" },
       { drawSVG: "100%", duration: seconds(context, 0.62) },
     );
+    fromToTargets(
+      timeline,
+      context,
+      "local-quest-note",
+      { y: distance(context, -18), rotate: -2, opacity: 0.35 },
+      { y: 0, rotate: 0, opacity: 1, duration: seconds(context, 0.42) },
+      ">",
+    );
+    fromToTargets(
+      timeline,
+      context,
+      "local-quest-red-thread",
+      { drawSVG: "0%" },
+      { drawSVG: "100%", duration: seconds(context, 0.38) },
+      ">",
+    );
+    fromToTargets(
+      timeline,
+      context,
+      "local-quest-objective",
+      { y: distance(context, -8), opacity: 0.35 },
+      { y: 0, opacity: 1, duration: seconds(context, 0.38) },
+      ">",
+    );
     return settleV2(timeline, context);
   },
 };
@@ -349,9 +413,17 @@ export const questCompleteScene: SceneDefinitionV2 = {
     fromToTargets(
       timeline,
       context,
-      "quest-stamp",
+      "global-quest-stamp",
       { y: distance(context, -48), scale: 1.6, opacity: 0 },
       { y: 0, scale: 1, opacity: 1, duration: seconds(context, 0.42), ease: "back.out(1.8)" },
+    );
+    fromToTargets(
+      timeline,
+      context,
+      "local-quest-stamp",
+      { y: distance(context, -24), scale: 1.35, opacity: 0.35 },
+      { y: 0, scale: 1, opacity: 1, duration: seconds(context, 0.34), ease: "back.out(1.6)" },
+      ">",
     );
     return settleV2(timeline, context);
   },
@@ -376,6 +448,40 @@ export const logEntryScene: SceneDefinitionV2 = {
       "log-symbol-new",
       { scale: 2, opacity: 0 },
       { scale: 1, opacity: 1, duration: seconds(context, 0.3), ease: "back.out(2)" },
+    );
+    fromToTargets(
+      timeline,
+      context,
+      "local-log-entry",
+      { opacity: 0.35, clipPath: "inset(0 100% 0 0)", filter: "blur(1px)" },
+      {
+        opacity: 1,
+        clipPath: "inset(0 0% 0 0)",
+        filter: "blur(0px)",
+        duration: seconds(context, 0.36),
+      },
+      ">",
+    );
+    fromToTargets(
+      timeline,
+      context,
+      "local-log-symbol",
+      { scale: 1.6, opacity: 0.35 },
+      { scale: 1, opacity: 1, duration: seconds(context, 0.28), ease: "back.out(1.6)" },
+      ">",
+    );
+    fromToTargets(
+      timeline,
+      context,
+      "local-journal-annotation-ink",
+      { opacity: 0.3, clipPath: "inset(0 100% 0 0)", filter: "blur(1px)" },
+      {
+        opacity: 1,
+        clipPath: "inset(0 0% 0 0)",
+        filter: "blur(0px)",
+        duration: seconds(context, 0.48),
+      },
+      ">",
     );
     return settleV2(timeline, context);
   },
@@ -407,11 +513,49 @@ export const finaleTeaseScene: SceneDefinitionV2 = {
       "<+0.18",
     );
     mark(timeline, context, "core-sealed", ">");
+    fromToTargets(
+      timeline,
+      context,
+      "local-finale-mechanism",
+      { scale: 0.96, opacity: 0.45 },
+      { scale: 1, opacity: 1, duration: seconds(context, 0.42), ease: "back.out(1.4)" },
+      "core-sealed",
+    );
     return settleV2(timeline, context);
   },
 };
 
-export const finaleRequirementScene = drawScene("finale-requirement", "requirement-activates", "finale-light-path");
+export const finaleRequirementScene: SceneDefinitionV2 = {
+  name: "finale-requirement",
+  reversible: true,
+  buildOpening: (context) => simpleOpening(context),
+  buildSuccess(context) {
+    const timeline = sceneTimeline(context);
+    mark(timeline, context, "requirement-activates", 0);
+    fromToTargets(
+      timeline,
+      context,
+      "finale-light-path",
+      { drawSVG: "0%", opacity: 0.4 },
+      { drawSVG: "100%", opacity: 1, duration: seconds(context, 0.9) },
+    );
+    fromToTargets(
+      timeline,
+      context,
+      "local-finale-requirement-socket",
+      { scale: 0.82, opacity: 0.45, filter: "brightness(0.65)" },
+      {
+        scale: 1,
+        opacity: 1,
+        filter: "brightness(1)",
+        duration: seconds(context, 0.46),
+        ease: "back.out(1.6)",
+      },
+      ">",
+    );
+    return settleV2(timeline, context);
+  },
+};
 
 export const journalOpenScene = tombstoneScene("journal-open", "deprecated-tombstone");
 export const manualPageFlipScene = tombstoneScene("manual-page-flip", "deprecated-tombstone");

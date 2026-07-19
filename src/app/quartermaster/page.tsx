@@ -1,6 +1,6 @@
 import { Quartermaster } from "@/components/gm/Quartermaster";
-import { requireGm } from "@/lib/security";
+import { requireGmCapability } from "@/lib/security";
 export const dynamic = "force-dynamic";
 export default async function QuartermasterPage() {
-  return <Quartermaster authenticated={Boolean(await requireGm())} />;
+  return <Quartermaster authenticated={Boolean(await requireGmCapability("CAPTAIN"))} />;
 }

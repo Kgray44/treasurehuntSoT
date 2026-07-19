@@ -10,6 +10,17 @@ import {
 } from "./TallTaleJournalSession";
 
 const openingTestDouble = vi.hoisted(() => ({ waitForPhase: vi.fn() }));
+const pageFlipTestDouble = vi.hoisted(() => ({
+  fallbackVisible: false,
+  forceReadableFallback: vi.fn(),
+  readiness: vi.fn(),
+}));
+const journalPageModelTestDouble = vi.hoisted(() => ({
+  buildPages: vi.fn(),
+  pageForBlock: vi.fn(),
+  pageForChapter: vi.fn(),
+  pageForReadingState: vi.fn(),
+}));
 
 vi.mock("next/link", async () => {
   const React = await import("react");
@@ -30,15 +41,22 @@ vi.mock("@/animation/motion/useMotionMode", () => ({
   }),
 }));
 
-vi.mock("@/animation/journal/opening-machine", () => ({
-  isJournalInteractive: (phase: JournalOpeningPhase) => phase === "JOURNAL_READY",
+vi.mock("@/animation/journal/opening-machine", async (importOriginal) => ({
+  ...(await importOriginal<typeof import("@/animation/journal/opening-machine")>()),
   waitForJournalPhase: (...args: unknown[]) => openingTestDouble.waitForPhase(...args),
 }));
 
 vi.mock("@/components/player/journal/PhysicalJournalBook", async () => {
   const React = await import("react");
   return {
-    PhysicalJournalBook: React.forwardRef(function PhysicalJournalBookMock(_props: unknown, ref) {
+    PhysicalJournalBook: React.forwardRef(function PhysicalJournalBookMock(
+      props: {
+        initialPage?: number;
+        onReadinessChange?: (snapshot: ReturnType<typeof pageFlipTestDouble.readiness>) => void;
+      },
+      ref,
+    ) {
+      const { onReadinessChange } = props;
       React.useImperativeHandle(ref, () => ({
         next: vi.fn(),
         previous: vi.fn(),
@@ -48,17 +66,33 @@ vi.mock("@/components/player/journal/PhysicalJournalBook", async () => {
         pageCount: () => 0,
         orientation: () => "portrait" as const,
         boundary: () => null,
+        pageTargets: () => null,
+        readiness: () => pageFlipTestDouble.readiness(),
+        forceReadableFallback: (reason: string) => pageFlipTestDouble.forceReadableFallback(reason),
       }));
-      return React.createElement("section", { "data-testid": "physical-journal-book" });
+      React.useEffect(() => {
+        try {
+          onReadinessChange?.(pageFlipTestDouble.readiness());
+        } catch {
+          // A failed readiness probe is exercised through the public handle.
+        }
+      }, [onReadinessChange]);
+      return React.createElement(
+        "section",
+        { "data-initial-page": props.initialPage, "data-testid": "physical-journal-book" },
+        pageFlipTestDouble.fallbackVisible
+          ? React.createElement("article", { "data-testid": "pageflip-static-current-page" }, "Readable current page")
+          : null,
+      );
     }),
   };
 });
 
 vi.mock("@/tall-tale/journal-page-model", () => ({
-  buildTallTaleJournalPages: () => [],
-  pageIndexForJournalBlock: () => 0,
-  pageIndexForJournalChapter: () => 0,
-  pageIndexForReadingState: () => 0,
+  buildTallTaleJournalPages: (...args: unknown[]) => journalPageModelTestDouble.buildPages(...args),
+  pageIndexForJournalBlock: (...args: unknown[]) => journalPageModelTestDouble.pageForBlock(...args),
+  pageIndexForJournalChapter: (...args: unknown[]) => journalPageModelTestDouble.pageForChapter(...args),
+  pageIndexForReadingState: (...args: unknown[]) => journalPageModelTestDouble.pageForReadingState(...args),
 }));
 
 function completed(phase: JournalOpeningPhase): JournalPhaseOutcome {
@@ -326,6 +360,36 @@ describe("TallTaleJournalSession mounted synchronous teardown", () => {
     openingTestDouble.waitForPhase.mockImplementation(async (_root: HTMLElement, phase: JournalOpeningPhase) =>
       completed(phase),
     );
+    pageFlipTestDouble.readiness.mockReset();
+    pageFlipTestDouble.readiness.mockReturnValue({
+      status: "reduced",
+      ready: true,
+      bookId: "physical-journal",
+      mountId: "test-journal",
+      mode: "reduced",
+      generation: 1,
+    });
+    pageFlipTestDouble.fallbackVisible = false;
+    pageFlipTestDouble.forceReadableFallback.mockReset();
+    pageFlipTestDouble.forceReadableFallback.mockImplementation(() => {
+      pageFlipTestDouble.fallbackVisible = true;
+      pageFlipTestDouble.readiness.mockReturnValue({
+        status: "fallback",
+        ready: true,
+        bookId: "physical-journal",
+        mountId: "test-journal",
+        mode: "reduced",
+        generation: 1,
+      });
+    });
+    journalPageModelTestDouble.buildPages.mockReset();
+    journalPageModelTestDouble.buildPages.mockReturnValue([]);
+    journalPageModelTestDouble.pageForBlock.mockReset();
+    journalPageModelTestDouble.pageForBlock.mockReturnValue(0);
+    journalPageModelTestDouble.pageForChapter.mockReset();
+    journalPageModelTestDouble.pageForChapter.mockReturnValue(0);
+    journalPageModelTestDouble.pageForReadingState.mockReset();
+    journalPageModelTestDouble.pageForReadingState.mockReturnValue(0);
     vi.stubGlobal("EventSource", ControlledEventSource);
   });
 
@@ -423,6 +487,10 @@ describe("TallTaleJournalSession mounted synchronous teardown", () => {
 
     for (let cycle = 0; cycle < 20; cycle += 1) {
       const sessionId = `cycle-${cycle}`;
+      localStorage.setItem(
+        `tall-tale-journal:${sessionId}`,
+        JSON.stringify({ ...readingState(1), openDrawer: "chapters" }),
+      );
       const intervalStart = setIntervalSpy.mock.results.length;
       const view = render(createElement(StrictMode, null, createElement(TallTaleJournalSession, { sessionId })));
       await act(flushMicrotasks);
@@ -433,7 +501,6 @@ describe("TallTaleJournalSession mounted synchronous teardown", () => {
       expect(ControlledEventSource.activeStreams).toBe(1);
       expect(ControlledEventSource.activeListeners).toBe(2);
 
-      fireEvent.click(screen.getByRole("button", { name: "chapters" }));
       fireEvent.click(screen.getByRole("button", { name: /Open the journal/i }));
       await act(flushMicrotasks);
       expect(activeOpenings).toBe(1);
@@ -504,6 +571,284 @@ describe("TallTaleJournalSession mounted synchronous teardown", () => {
     for (const interval of journalIntervals) expect(clearIntervalSpy).toHaveBeenCalledWith(interval);
   });
 
+  it("treats access revocation as terminal while keeping released pages readable", async () => {
+    vi.useFakeTimers();
+    const fetchMock = vi.fn(() => Promise.resolve(jsonResponse(sessionState("revoked"))));
+    vi.stubGlobal("fetch", fetchMock);
+    const view = render(createElement(TallTaleJournalSession, { sessionId: "revoked" }));
+    await act(flushMicrotasks);
+    fireEvent.click(screen.getByRole("button", { name: /Open the journal/i }));
+    await act(flushMicrotasks);
+
+    const source = ControlledEventSource.instances.at(-1)!;
+    await act(async () => {
+      source.dispatchEvent(new Event("access-revoked"));
+      await flushMicrotasks();
+    });
+    const fetchCountAfterRevocation = fetchMock.mock.calls.length;
+
+    expect(source.closed).toBe(true);
+    expect(ControlledEventSource.activeStreams).toBe(0);
+    expect(ControlledEventSource.activeListeners).toBe(0);
+    expect(screen.getByText("Access revoked")).toBeTruthy();
+    expect(screen.getByRole("alert").textContent).toContain("will not reconnect");
+    expect(screen.queryByRole("button", { name: "Retry now" })).toBeNull();
+    expect(view.container.querySelector("main")?.dataset.journalPhase).toBe("JOURNAL_READY");
+
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(10_000);
+      await flushMicrotasks();
+    });
+    expect(fetchMock).toHaveBeenCalledTimes(fetchCountAfterRevocation);
+  });
+
+  it("keeps an offline transport failure recoverable and distinct from revocation", async () => {
+    vi.spyOn(navigator, "onLine", "get").mockReturnValue(false);
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(() => Promise.resolve(jsonResponse(sessionState("offline")))),
+    );
+    render(createElement(TallTaleJournalSession, { sessionId: "offline" }));
+    await act(flushMicrotasks);
+    fireEvent.click(screen.getByRole("button", { name: /Open the journal/i }));
+    await act(flushMicrotasks);
+
+    const source = ControlledEventSource.instances.at(-1)!;
+    await act(async () => {
+      source.onerror?.(new Event("error"));
+      await flushMicrotasks();
+    });
+
+    expect(source.closed).toBe(false);
+    expect(screen.getByText("Offline")).toBeTruthy();
+    expect(screen.getByText("You appear to be offline.")).toBeTruthy();
+    expect(screen.getByRole("button", { name: "Retry now" })).toBeTruthy();
+  });
+
+  it("makes the unopened background inert, transfers focus to the ready journal, and restores drawer focus", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn((input: RequestInfo | URL) => {
+        const sessionId = String(input).split("/").at(-1) ?? "focus";
+        return Promise.resolve(jsonResponse(sessionState(sessionId)));
+      }),
+    );
+
+    const view = render(createElement(TallTaleJournalSession, { sessionId: "focus" }));
+    await act(flushMicrotasks);
+    const tools = view.container.querySelector<HTMLElement>(".journal-context-tabs")!;
+    const closedDrawer = view.container.querySelector<HTMLElement>(".journal-chapters-drawer")!;
+    expect(tools.hasAttribute("inert")).toBe(true);
+    expect(closedDrawer.hasAttribute("inert")).toBe(true);
+
+    const open = screen.getByRole("button", { name: /Open the journal/i });
+    open.focus();
+    fireEvent.click(open);
+    await act(flushMicrotasks);
+
+    const heading = screen.getByRole("heading", { name: "Edition focus Voyage Journal" });
+    expect(view.container.querySelector("main")?.dataset.journalPhase).toBe("JOURNAL_READY");
+    expect(view.container.querySelector("main")?.dataset.pageFlipReadiness).toBe("reduced");
+    expect(document.activeElement).toBe(heading);
+    expect(tools.hasAttribute("inert")).toBe(false);
+    expect(pageFlipTestDouble.readiness).toHaveBeenCalled();
+
+    const chapters = screen.getByRole("button", { name: "chapters" });
+    fireEvent.click(chapters);
+    await act(flushMicrotasks);
+    const close = screen.getByRole("button", { name: "Close chapter drawer" });
+    expect(closedDrawer.hasAttribute("inert")).toBe(false);
+    expect(document.activeElement).toBe(close);
+
+    fireEvent.click(close);
+    await act(flushMicrotasks);
+    expect(closedDrawer.hasAttribute("inert")).toBe(true);
+    expect(document.activeElement).toBe(chapters);
+  });
+
+  it("offers manual full and abbreviated replay and restores the replay trigger", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(() => Promise.resolve(jsonResponse(sessionState("replay")))),
+    );
+    const view = render(createElement(TallTaleJournalSession, { sessionId: "replay" }));
+    await act(flushMicrotasks);
+    fireEvent.click(screen.getByRole("button", { name: /Open the journal/i }));
+    await act(flushMicrotasks);
+
+    expect(screen.getByRole("button", { name: "Replay full opening" })).toBeTruthy();
+    const replayShort = screen.getByRole("button", { name: "Replay short opening" });
+    replayShort.focus();
+    fireEvent.click(replayShort);
+    await act(flushMicrotasks);
+
+    expect(view.container.querySelector("main")?.dataset.journalPhase).toBe("JOURNAL_READY");
+    expect(replayShort.isConnected).toBe(true);
+    expect(replayShort.closest("[inert]")).toBeNull();
+    expect(replayShort.closest('[aria-hidden="true"]')).toBeNull();
+    expect(document.activeElement).toBe(replayShort);
+  });
+
+  it("opens a completed voyage as a quiet archive without EventSource or reconnect polling", async () => {
+    vi.useFakeTimers();
+    const archive = sessionState("archive");
+    archive.session.status = "COMPLETED";
+    archive.journal.mode = "historical";
+    const setIntervalSpy = vi.spyOn(globalThis, "setInterval");
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(() => Promise.resolve(jsonResponse(archive))),
+    );
+
+    const view = render(createElement(TallTaleJournalSession, { sessionId: "archive" }));
+    await act(flushMicrotasks);
+
+    expect(view.container.querySelector("main")?.dataset.journalPhase).toBe("JOURNAL_READY");
+    expect(view.container.querySelector("main")?.dataset.journalReadyReason).toBe("completed");
+    expect(screen.getByText("Completed archive")).toBeTruthy();
+    expect(ControlledEventSource.activeStreams).toBe(0);
+    expect(setIntervalSpy.mock.calls.some((call) => Number(call[1]) === 5000)).toBe(false);
+  });
+
+  it("converges a phase timeout on readable JOURNAL_READY without persisting an aborted first opening", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(() => Promise.resolve(jsonResponse(sessionState("timeout")))),
+    );
+    openingTestDouble.waitForPhase.mockImplementationOnce(
+      async (_root: HTMLElement, phase: JournalOpeningPhase): Promise<JournalPhaseOutcome> => ({
+        status: "timed-out",
+        phase,
+        timeoutMs: 250,
+      }),
+    );
+    const view = render(createElement(TallTaleJournalSession, { sessionId: "timeout" }));
+    await act(flushMicrotasks);
+
+    fireEvent.click(screen.getByRole("button", { name: /Open the journal/i }));
+    await act(flushMicrotasks);
+
+    const journal = view.container.querySelector<HTMLElement>("main")!;
+    expect(journal.dataset.journalPhase).toBe("JOURNAL_READY");
+    expect(journal.dataset.journalReadyReason).toBe("phase-timeout");
+    expect(screen.getByRole("alert")).toBeTruthy();
+    expect(JSON.parse(localStorage.getItem("tall-tale-journal:timeout") ?? "{}").hasOpened).not.toBe(true);
+  });
+
+  it("waits at BOOK_SETTLING, then converges a PageFlip readiness timeout without false persistence", async () => {
+    vi.useFakeTimers();
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(() => Promise.resolve(jsonResponse(sessionState("pageflip-timeout")))),
+    );
+    pageFlipTestDouble.readiness.mockReturnValue({
+      status: "initializing",
+      ready: false,
+      bookId: "physical-journal",
+      mountId: "timeout-journal",
+      mode: "reduced",
+      generation: 1,
+    });
+    const view = render(createElement(TallTaleJournalSession, { sessionId: "pageflip-timeout" }));
+    await act(flushMicrotasks);
+
+    fireEvent.click(screen.getByRole("button", { name: /Open the journal/i }));
+    await act(flushMicrotasks);
+    expect(view.container.querySelector("main")?.dataset.journalPhase).toBe("BOOK_SETTLING");
+
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(1510);
+      await flushMicrotasks();
+    });
+    const journal = view.container.querySelector<HTMLElement>("main")!;
+    expect(journal.dataset.journalPhase).toBe("JOURNAL_READY");
+    expect(journal.dataset.journalReadyReason).toBe("pageflip-readiness-failure");
+    expect(screen.getByRole("alert")).toBeTruthy();
+    expect(pageFlipTestDouble.forceReadableFallback).toHaveBeenCalledWith("PageFlip readiness timed out");
+    expect(screen.getByTestId("pageflip-static-current-page")).toBeTruthy();
+    expect(JSON.parse(localStorage.getItem("tall-tale-journal:pageflip-timeout") ?? "{}").hasOpened).not.toBe(true);
+  });
+
+  it("converges a failed PageFlip readiness probe on readable JOURNAL_READY without exposing its error", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(() => Promise.resolve(jsonResponse(sessionState("pageflip-failure")))),
+    );
+    pageFlipTestDouble.readiness.mockImplementation(() => {
+      throw new Error("private readiness failure");
+    });
+    const view = render(createElement(TallTaleJournalSession, { sessionId: "pageflip-failure" }));
+    await act(flushMicrotasks);
+
+    fireEvent.click(screen.getByRole("button", { name: /Open the journal/i }));
+    await act(flushMicrotasks);
+
+    const journal = view.container.querySelector<HTMLElement>("main")!;
+    expect(journal.dataset.journalPhase).toBe("JOURNAL_READY");
+    expect(journal.dataset.journalReadyReason).toBe("pageflip-readiness-failure");
+    expect(pageFlipTestDouble.forceReadableFallback).toHaveBeenCalledWith("PageFlip readiness probe failed");
+    expect(screen.getByTestId("pageflip-static-current-page")).toBeTruthy();
+    expect(screen.getByRole("alert").textContent).not.toContain("private readiness failure");
+    expect(JSON.parse(localStorage.getItem("tall-tale-journal:pageflip-failure") ?? "{}").hasOpened).not.toBe(true);
+  });
+
+  it("recreates session identity before loading the new cursor, opening policy, stream, and page", async () => {
+    const oldState = sessionState("old-identity");
+    oldState.session.currentSequence = 3;
+    const newState = sessionState("new-identity");
+    newState.session.currentSequence = 9;
+    journalPageModelTestDouble.buildPages.mockReturnValue([
+      { id: "page", density: "soft", label: "Current page", blockId: null },
+    ]);
+    journalPageModelTestDouble.pageForReadingState.mockImplementation((_pages: unknown, pageId: unknown) =>
+      pageId === "new-page" ? 4 : 1,
+    );
+    vi.stubGlobal(
+      "fetch",
+      vi.fn((input: RequestInfo | URL, init?: RequestInit) => {
+        const url = String(input);
+        if (url.includes("/journal-state")) {
+          if (init?.method === "POST") return Promise.resolve(jsonResponse({}));
+          const id = url.split("/").at(-2);
+          return Promise.resolve(
+            jsonResponse({
+              readingState: {
+                ...readingState(1),
+                hasOpened: id === "new-identity",
+                pageId: id === "new-identity" ? "new-page" : "old-page",
+              },
+            }),
+          );
+        }
+        return Promise.resolve(jsonResponse(url.endsWith("/new-identity") ? newState : oldState));
+      }),
+    );
+
+    const view = render(createElement(TallTaleJournalSession, { sessionId: "old-identity", identitySession: true }));
+    await act(flushMicrotasks);
+    const oldSource = ControlledEventSource.instances.at(-1)!;
+    expect(oldSource.url).toContain("/old-identity/events?after=3");
+    expect(screen.getByTestId("physical-journal-book").dataset.initialPage).toBe("1");
+    expect(openingTestDouble.waitForPhase).not.toHaveBeenCalled();
+
+    view.rerender(createElement(TallTaleJournalSession, { sessionId: "new-identity", identitySession: true }));
+    await act(flushMicrotasks);
+
+    const newSource = ControlledEventSource.instances.at(-1)!;
+    expect(oldSource.closed).toBe(true);
+    expect(newSource).not.toBe(oldSource);
+    expect(newSource.url).toContain("/new-identity/events?after=9");
+    expect(ControlledEventSource.activeStreams).toBe(1);
+    expect(screen.getByTestId("physical-journal-book").dataset.initialPage).toBe("4");
+    expect(openingTestDouble.waitForPhase).toHaveBeenCalledWith(
+      expect.any(HTMLElement),
+      "JOURNAL_READY",
+      "reduced",
+      expect.any(AbortSignal),
+    );
+    expect(view.container.querySelector("main")?.dataset.journalPhase).toBe("JOURNAL_READY");
+  });
+
   it.each(["resolve", "reject"] as const)(
     "ignores a stale identity journal response that %s after a session rerender",
     async (settlement) => {
@@ -532,7 +877,7 @@ describe("TallTaleJournalSession mounted synchronous teardown", () => {
       await act(flushMicrotasks);
       expect(identitySignals.get("old")?.aborted).toBe(true);
       expect(identitySignals.get("new")?.aborted).toBe(false);
-      expect(screen.getByRole("heading", { name: "Tale new" })).toBeTruthy();
+      expect(screen.getByRole("heading", { name: "Tale new", hidden: true })).toBeTruthy();
       expect((screen.getByLabelText("Journal text size") as HTMLInputElement).value).toBe("0.95");
 
       await act(async () => {
@@ -541,7 +886,7 @@ describe("TallTaleJournalSession mounted synchronous teardown", () => {
         await flushMicrotasks();
       });
 
-      expect(screen.getByRole("heading", { name: "Tale new" })).toBeTruthy();
+      expect(screen.getByRole("heading", { name: "Tale new", hidden: true })).toBeTruthy();
       expect((screen.getByLabelText("Journal text size") as HTMLInputElement).value).toBe("0.95");
       expect(ControlledEventSource.activeStreams).toBe(1);
 

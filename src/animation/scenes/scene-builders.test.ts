@@ -14,6 +14,7 @@ import type {
 } from "../core/animation-types";
 import type { SceneBuildTarget, SceneBuildTargetAccess } from "../hosts/scene-host-types";
 import { sceneRegistry } from "../director/scene-registry";
+import { progressionEventPresentationPolicy } from "@/components/player/progression/event-policy";
 import { animatedPropertiesForTweenVars, fromToTargets, sceneTimeline, toTargets } from "./scene-utils";
 
 type BuiltContext = {
@@ -134,6 +135,20 @@ function v2Context(name: AnimationSceneName, contract: SceneTargetContractV2, mo
 function context(name: AnimationSceneName, mode: MotionMode = "full") {
   const contract = sceneRegistry[name].contract;
   return contract.version === 2 ? v2Context(name, contract, mode) : legacyContext(name, mode);
+}
+
+function withoutTargetKeys(built: BuiltContext, omittedKeys: readonly string[]): BuiltContext {
+  const value = built.value as SceneBuildContextV2;
+  const omitted = new Set(omittedKeys);
+  const targets: SceneBuildTargetAccess = Object.freeze({
+    keys: () => Object.freeze(value.targets.keys().filter((key) => !omitted.has(key))),
+    get: (key) => (omitted.has(key) ? undefined : value.targets.get(key)),
+    require: (key) => {
+      if (omitted.has(key)) throw new Error(`Omitted test target ${key}`);
+      return value.targets.require(key);
+    },
+  });
+  return { ...built, value: { ...value, targets } };
 }
 
 type Stage = "buildOpening" | "buildSuccess" | "buildFailure" | "buildIdle";
@@ -350,5 +365,64 @@ describe("GSAP scene builders", () => {
       toTargets(timeline, restrictedContext, "map-marker-new", { clearProps: "all", duration: 0.1 }),
     ).toThrow("Unsupported GSAP target write property: clearProps");
     timeline.kill();
+  });
+
+  it("consumes exact optional section-local capabilities without making them global-scene prerequisites", () => {
+    const cases = [
+      ["chapter-release", "sealed-parchment", ["transform"], "global-sealed-parchment"],
+      ["mark-solved", "chapter-solved-stamp", ["transform", "opacity"], "solved-stamp"],
+      ["map-reveal", "map-marker", ["transform", "opacity"], "map-marker-new"],
+      ["route-draw", "route-path", ["opacity", "path-drawing"], "global-route-path"],
+      ["artifact-award", "artifact-slot", ["transform", "opacity", "filter"], "artifact-reveal"],
+      [
+        "artifact-connection",
+        "artifact-connection-path",
+        ["opacity", "path-drawing"],
+        "global-artifact-connection-path",
+      ],
+      ["quest-discovery", "quest-note", ["transform", "opacity"], "quest-note-new"],
+      ["quest-discovery", "quest-red-thread", ["path-drawing"], "quest-note-new"],
+      ["quest-discovery", "quest-objective", ["transform", "opacity"], "quest-note-new"],
+      ["quest-complete", "quest-stamp", ["transform", "opacity"], "global-quest-stamp"],
+      ["log-entry", "journal-annotation-ink", ["opacity", "clip-path", "filter"], "log-entry-new"],
+      ["log-entry", "log-entry", ["opacity", "clip-path", "filter"], "log-entry-new"],
+      ["log-entry", "log-symbol", ["transform", "opacity"], "log-entry-new"],
+      ["finale-tease", "finale-mechanism", ["transform", "opacity"], "finale-light-path"],
+      ["finale-requirement", "finale-requirement-socket", ["transform", "opacity", "filter"], "finale-light-path"],
+    ] as const satisfies readonly (readonly [AnimationSceneName, string, readonly AnimatedProperty[], string])[];
+    const declaredLocalHandles = [
+      ...new Set(
+        Object.values(progressionEventPresentationPolicy).flatMap(
+          (policy) => policy.localEnhancement?.requiredHandleKeys ?? [],
+        ),
+      ),
+    ].sort();
+    expect(cases.map(([, capabilityKey]) => capabilityKey).sort()).toEqual(declaredLocalHandles);
+
+    for (const [sceneName, logicalHandleKey, properties, globalKey] of cases) {
+      const capabilityKey = `local-${logicalHandleKey}`;
+      const available = context(sceneName);
+      const availableTimeline = build(sceneName, "buildSuccess", available)!;
+      expect(available.propertyRequests, capabilityKey).toContainEqual({ key: capabilityKey, properties });
+      expect(available.usedKeys, capabilityKey).toContain(capabilityKey);
+      expect(
+        available.propertyRequests.findIndex((request) => request.key === capabilityKey),
+        `${capabilityKey} must be requested after ${globalKey}`,
+      ).toBeGreaterThan(available.propertyRequests.findIndex((request) => request.key === globalKey));
+      availableTimeline.kill();
+      available.cleanups.reverse().forEach((cleanup) => cleanup());
+
+      const unavailable = withoutTargetKeys(context(sceneName), [capabilityKey]);
+      const unavailableTimeline = build(sceneName, "buildSuccess", unavailable)!;
+      expect(unavailable.propertyRequests, capabilityKey).not.toContainEqual({ key: capabilityKey, properties });
+      expect(
+        unavailable.propertyRequests.some((request) => request.key === globalKey),
+        globalKey,
+      ).toBe(true);
+      expect(unavailableTimeline.labels).toHaveProperty("interaction-restored");
+      expect(unavailableTimeline.labels).toHaveProperty("scene-complete");
+      unavailableTimeline.kill();
+      unavailable.cleanups.reverse().forEach((cleanup) => cleanup());
+    }
   });
 });

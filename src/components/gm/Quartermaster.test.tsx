@@ -98,6 +98,51 @@ function jsonResponse(body: unknown, ok = true) {
   return { ok, json: vi.fn().mockResolvedValue(body) } as unknown as Response;
 }
 
+function commandResult(
+  id: string,
+  sequence: number,
+  publication: "PROCESS_PUBLISHED" | "PROCESS_PUBLICATION_FAILED" = "PROCESS_PUBLISHED",
+) {
+  return {
+    kind: "PROGRESSION_EVENT",
+    event: { id, type: "CHAPTER_PREPARED", sequence },
+    playerEvent: { id, type: "CHAPTER_PREPARED", sequence },
+    correlationId: `correlation-${id}`,
+    persistence: "COMMITTED",
+    publication,
+    delivery: publication === "PROCESS_PUBLISHED" ? "PUBLISHED" : "PUBLICATION_FAILED",
+    deliveryScope: "PROCESS_SUBSCRIBERS_ONLY",
+    playerDelivery: "UNCONFIRMED",
+    playerPresentation: "UNCONFIRMED",
+    playerAcknowledgment: "UNCONFIRMED",
+  };
+}
+
+function stagedCommandResult(id: string, sequence: number) {
+  return {
+    kind: "STAGED_ACTION",
+    event: null,
+    playerEvent: null,
+    preparedActionId: id,
+    stagedAction: {
+      preparedActionId: id,
+      command: "PREPARE_HINT",
+      targetKey: "hint-1",
+      reservedSequence: sequence,
+      status: "PREPARED",
+      preparedAt: "2026-07-18T12:00:00.000Z",
+    },
+    correlationId: `correlation-${id}`,
+    persistence: "COMMITTED",
+    publication: "NOT_APPLICABLE",
+    delivery: "NOT_ATTEMPTED",
+    deliveryScope: "NO_PLAYER_EVENT",
+    playerDelivery: "UNCONFIRMED",
+    playerPresentation: "UNCONFIRMED",
+    playerAcknowledgment: "UNCONFIRMED",
+  };
+}
+
 function presentationReceipt(outcome: PresentationOutcome, operationResult?: unknown) {
   return {
     outcome,
@@ -479,7 +524,7 @@ describe("Quartermaster command presentation receipts", () => {
         statusRequests += 1;
         return statusRequests === 1 ? Promise.resolve(jsonResponse(statusAt(0))) : refreshedStatus.promise;
       }
-      return Promise.resolve(jsonResponse({ event: { id: "event-1", sequence: 1 } }));
+      return Promise.resolve(jsonResponse(commandResult("event-1", 1)));
     });
     animation.play.mockImplementation(async (_scene: string, options: MockPlayOptions) => {
       const operationResult = await options.operation?.();
@@ -509,8 +554,116 @@ describe("Quartermaster command presentation receipts", () => {
     expect(await screen.findByText("Event event-1 recorded at sequence 1.")).toBeInTheDocument();
     await waitFor(() => expect(screen.queryByLabelText("Prepare Chapter ceremony: idle")).not.toBeInTheDocument());
     expect(screen.getByText("Sequence 1")).toBeVisible();
+    expect(screen.getByText(/Player delivery, presentation, and acknowledgment remain unconfirmed/u)).toBeVisible();
+    expect(screen.getByText(/Correlation correlation-event-1/u)).toBeVisible();
     expect(screen.queryByText(/presentation could not be displayed/i)).not.toBeInTheDocument();
     await waitFor(() => expect(commandButton).toHaveFocus());
+  });
+
+  it("reuses the exact confirmation idempotency key when a lost response is retried", async () => {
+    let statusRequests = 0;
+    const commandBodies: Array<Record<string, unknown>> = [];
+    const fetchMock = vi.fn((input: RequestInfo | URL, init?: RequestInit) => {
+      if (String(input) === "/api/gm/status") {
+        statusRequests += 1;
+        return Promise.resolve(jsonResponse(statusAt(statusRequests - 1)));
+      }
+      const body = JSON.parse(String(init?.body)) as Record<string, unknown>;
+      commandBodies.push(body);
+      return Promise.resolve(
+        commandBodies.length === 1
+          ? jsonResponse({ error: "The response was lost after submission." }, false)
+          : jsonResponse({ ...commandResult("event-replayed", 1), idempotentReplay: true }),
+      );
+    });
+    animation.play.mockImplementation(async (_scene: string, options: MockPlayOptions) => {
+      try {
+        const operationResult = await options.operation?.();
+        return presentationReceipt("presented", operationResult);
+      } catch {
+        return presentationReceipt("runtime-failed");
+      }
+    });
+    await renderReady(fetchMock);
+
+    confirmPrepareChapter();
+    expect(await screen.findByRole("alert")).toHaveTextContent("The response was lost after submission.");
+    fireEvent.click(screen.getByRole("button", { name: "Confirm action" }));
+
+    expect(await screen.findByText("Event event-replayed recorded at sequence 1.")).toBeInTheDocument();
+    expect(commandBodies).toHaveLength(2);
+    expect(commandBodies[0]).toMatchObject({ command: "PREPARE_CHAPTER", expectedSequence: 0 });
+    expect(commandBodies[0].idempotencyKey).toBe(commandBodies[1].idempotencyKey);
+  });
+
+  it("keeps a stale-sequence conflict uncommitted and reviewable in the confirmation dialog", async () => {
+    const fetchMock = vi.fn((input: RequestInfo | URL) =>
+      Promise.resolve(
+        String(input) === "/api/gm/status"
+          ? jsonResponse(statusAt(8))
+          : jsonResponse(
+              { error: "State changed from sequence 8 to 9. Refresh before confirming.", code: "STALE_SEQUENCE" },
+              false,
+            ),
+      ),
+    );
+    animation.play.mockImplementation(async (_scene: string, options: MockPlayOptions) => {
+      await options.operation?.().catch(() => undefined);
+      return presentationReceipt("runtime-failed");
+    });
+    await renderReady(fetchMock);
+
+    confirmPrepareChapter();
+
+    expect(await screen.findByRole("alert")).toHaveTextContent("State changed from sequence 8 to 9");
+    expect(screen.getByRole("dialog", { name: "Prepare Chapter" })).toBeInTheDocument();
+    expect(screen.queryByText(/Player delivery, presentation, and acknowledgment/u)).not.toBeInTheDocument();
+    expect(screen.queryByText(/Event .* recorded/u)).not.toBeInTheDocument();
+  });
+
+  it("shows a committed post-commit publication failure without inventing Player delivery or acknowledgment", async () => {
+    let statusRequests = 0;
+    const fetchMock = vi.fn((input: RequestInfo | URL) => {
+      if (String(input) === "/api/gm/status") {
+        statusRequests += 1;
+        return Promise.resolve(jsonResponse(statusAt(statusRequests - 1)));
+      }
+      return Promise.resolve(jsonResponse(commandResult("event-committed", 1, "PROCESS_PUBLICATION_FAILED")));
+    });
+    animation.play.mockImplementation(async (_scene: string, options: MockPlayOptions) => {
+      const operationResult = await options.operation?.();
+      return presentationReceipt("presented", operationResult);
+    });
+    await renderReady(fetchMock);
+
+    confirmPrepareChapter();
+
+    expect(await screen.findByText("Event event-committed recorded at sequence 1.")).toBeInTheDocument();
+    await waitFor(() => expect(screen.getByText(/could not confirm process publication after commit/u)).toBeVisible());
+    expect(screen.getByText(/Player delivery, presentation, and acknowledgment remain unconfirmed/u)).toBeVisible();
+  });
+
+  it("describes non-publishing staging receipts without claiming process or Player delivery", async () => {
+    let statusRequests = 0;
+    const fetchMock = vi.fn((input: RequestInfo | URL) => {
+      if (String(input) === "/api/gm/status") {
+        statusRequests += 1;
+        return Promise.resolve(jsonResponse(statusAt(statusRequests - 1)));
+      }
+      return Promise.resolve(jsonResponse(stagedCommandResult("prepared-stage", 1)));
+    });
+    animation.play.mockImplementation(async (_scene: string, options: MockPlayOptions) => {
+      const operationResult = await options.operation?.();
+      return presentationReceipt("presented", operationResult);
+    });
+    await renderReady(fetchMock);
+
+    confirmPrepareChapter();
+
+    expect(await screen.findByText("Prepared action prepared-stage recorded at sequence 1.")).toBeInTheDocument();
+    expect(screen.queryByText(/Event prepared-stage recorded/u)).not.toBeInTheDocument();
+    await waitFor(() => expect(screen.getByText(/created no Player event/u)).toBeVisible());
+    expect(screen.getByText(/process publication was not attempted/u)).toBeVisible();
   });
 
   it("submits a production artifact award through an isolated command host and explicit external slot", async () => {
@@ -521,9 +674,14 @@ describe("Quartermaster command presentation receipts", () => {
         statusRequests += 1;
         return Promise.resolve(jsonResponse(statusAt(statusRequests - 1)));
       }
-      expect(String(input)).toBe("/api/gm/action");
-      expect(JSON.parse(String(init?.body))).toMatchObject({ action: "AWARD_ARTIFACT", confirmation: true });
-      return Promise.resolve(jsonResponse({ event: { id: "artifact-event", sequence: 1 } }));
+      expect(String(input)).toBe("/api/gm/commands");
+      expect(JSON.parse(String(init?.body))).toMatchObject({
+        command: "AWARD_ARTIFACT",
+        expectedSequence: 0,
+        idempotencyKey: expect.any(String),
+        confirmation: true,
+      });
+      return Promise.resolve(jsonResponse(commandResult("artifact-event", 1)));
     });
     animation.play.mockImplementation(async (scene: string, options: MockPlayOptions) => {
       expect(scene).toBe("artifact-award");
@@ -557,7 +715,7 @@ describe("Quartermaster command presentation receipts", () => {
         eventOrActionId: "AWARD_ARTIFACT",
       }),
     );
-    expect(fetchMock.mock.calls.filter(([input]) => String(input) === "/api/gm/action")).toHaveLength(1);
+    expect(fetchMock.mock.calls.filter(([input]) => String(input) === "/api/gm/commands")).toHaveLength(1);
   });
 
   it("keeps an authoritative server failure distinct and ignores projected receipt fields", async () => {
@@ -597,7 +755,7 @@ describe("Quartermaster command presentation receipts", () => {
         statusRequests += 1;
         return Promise.resolve(jsonResponse(statusAt(statusRequests - 1)));
       }
-      return Promise.resolve(jsonResponse({ event: { id: "event-real", sequence: 1 } }));
+      return Promise.resolve(jsonResponse(commandResult("event-real", 1)));
     });
     animation.play.mockImplementation(async (_scene: string, options: MockPlayOptions) => {
       const operationResult = await options.operation?.();
@@ -624,7 +782,7 @@ describe("Quartermaster command presentation receipts", () => {
         statusRequests += 1;
         return Promise.resolve(jsonResponse(statusAt(statusRequests - 1)));
       }
-      return Promise.resolve(jsonResponse({ event: { id: "event-fallback", sequence: 1 } }));
+      return Promise.resolve(jsonResponse(commandResult("event-fallback", 1)));
     });
     animation.play.mockImplementation(async (_scene: string, options: MockPlayOptions) => {
       const fallback = await options.presentationFallback?.({
@@ -654,7 +812,7 @@ describe("Quartermaster command presentation receipts", () => {
   it("does not invent command success when presentation fails before the operation starts", async () => {
     const fetchMock = vi.fn((input: RequestInfo | URL) => {
       if (String(input) === "/api/gm/status") return Promise.resolve(jsonResponse(statusAt(0)));
-      return Promise.resolve(jsonResponse({ event: { id: "should-not-run", sequence: 1 } }));
+      return Promise.resolve(jsonResponse(commandResult("should-not-run", 1)));
     });
     animation.play.mockResolvedValue({
       ...presentationReceipt("missing-required-target"),
@@ -698,10 +856,8 @@ describe("Quartermaster command presentation receipts", () => {
         return Promise.resolve(jsonResponse(statusAt(commandSequence)));
       }
       commandSequence += 1;
-      const action = JSON.parse(String(init?.body)).action as string;
-      return Promise.resolve(
-        jsonResponse({ event: { id: `event-${action.toLowerCase()}`, sequence: commandSequence } }),
-      );
+      const action = JSON.parse(String(init?.body)).command as string;
+      return Promise.resolve(jsonResponse(commandResult(`event-${action.toLowerCase()}`, commandSequence)));
     });
     const hostIds: string[] = [];
     const targetParts: string[][] = [];

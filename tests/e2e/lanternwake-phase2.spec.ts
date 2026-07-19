@@ -1,4 +1,14 @@
 import { expect, test, type Locator, type Page } from "@playwright/test";
+import {
+  installPhase3EvidenceProbe,
+  readPreseededPhase3BaseFixture,
+  readPreseededPhase3FixtureFromEnv,
+  waitForPhase3Receipt,
+  type Phase3CaseFixture,
+  type Phase3EventType,
+  type Phase3PlayerSection,
+  type Phase3ReceiptEvidence,
+} from "./fixtures/lanternwake-phase3";
 
 const requiredViewports = [
   { width: 2560, height: 1440, label: "2560x1440" },
@@ -232,6 +242,241 @@ async function signInQuartermaster(page: Page) {
   await expect(page.getByText(/^Sequence \d+$/)).toBeVisible();
 }
 
+type PageFlipBoundaryEvidence = Readonly<{
+  instanceId: string | null;
+  runtimeGeneration: string | null;
+  sourceGeneration: string | null;
+  contentRevision: string | null;
+  cloneGeneration: string | null;
+  orientation: string | null;
+  currentPageId: string | null;
+  retainedBoundaries: number;
+}>;
+
+async function pageFlipBoundaryEvidence(book: Locator): Promise<PageFlipBoundaryEvidence> {
+  return book.evaluate((element) => {
+    const runtime = element.querySelector<HTMLElement>("[data-pageflip-runtime]");
+    const source = element.querySelector<HTMLElement>("[data-pageflip-source]");
+    const sourcePage = source?.querySelector<HTMLElement>("[data-pageflip-content-revision]");
+    const current = element.querySelector<HTMLElement>(
+      '[data-pageflip-role="primary"][data-pageflip-current="true"][data-pageflip-lifecycle="visible"]',
+    );
+    return {
+      instanceId: runtime?.dataset.pageflipInstanceId ?? source?.dataset.pageflipInstanceId ?? null,
+      runtimeGeneration: runtime?.dataset.pageflipRuntimeGeneration ?? null,
+      sourceGeneration: source?.dataset.pageflipSourceGeneration ?? null,
+      contentRevision: sourcePage?.dataset.pageflipContentRevision ?? null,
+      cloneGeneration: current?.dataset.pageflipCloneGeneration ?? null,
+      orientation: current?.dataset.pageflipOrientation ?? null,
+      currentPageId: current?.dataset.pageflipPageId ?? null,
+      retainedBoundaries: element.querySelectorAll("[data-pageflip-role]").length,
+    };
+  });
+}
+
+async function expectOldPageFlipGenerationReleased(
+  book: Locator,
+  evidence: Pick<PageFlipBoundaryEvidence, "cloneGeneration" | "sourceGeneration">,
+) {
+  if (evidence.cloneGeneration !== null) {
+    await expect(book.locator(`[data-pageflip-clone-generation="${evidence.cloneGeneration}"]`)).toHaveCount(0);
+  }
+  if (evidence.sourceGeneration !== null) {
+    await expect(book.locator(`[data-pageflip-source-generation="${evidence.sourceGeneration}"]`)).toHaveCount(0);
+  }
+  await expectDisqualifiedPageFlipCopiesHidden(book.page());
+}
+
+async function openDefaultPlayerJournal(page: Page) {
+  expect(
+    process.env.PLAYER_ACCESS_CODE,
+    "PLAYER_ACCESS_CODE is required for the isolated Player fixture.",
+  ).toBeTruthy();
+  await page.goto("/tale/development-forever-treasure");
+  await page.getByLabel("Invitation phrase").fill(process.env.PLAYER_ACCESS_CODE!);
+  await page.getByRole("button", { name: "Open the journal" }).click();
+  const open = page.getByRole("button", { name: "Open the journal" });
+  await expect(open).toBeVisible({ timeout: 15_000 });
+  await open.click();
+  const skip = page.getByRole("button", { name: "Skip ceremony" });
+  if (await skip.isVisible({ timeout: 4_000 }).catch(() => false)) await skip.click();
+  await expect(page.locator(".voyage-shell")).toHaveAttribute("data-journal-phase", "JOURNAL_READY", {
+    timeout: 20_000,
+  });
+}
+
+async function readQuartermasterStatus(page: Page) {
+  const response = await page.request.get("/api/gm/status");
+  const body = (await response.json()) as {
+    csrfToken: string;
+    campaign: { slug: string; status: string; sequence: number };
+  };
+  expect(response.status(), JSON.stringify(body)).toBe(200);
+  return body;
+}
+
+async function publishDefaultProgression(page: Page) {
+  const status = await readQuartermasterStatus(page);
+  const command = status.campaign.status === "PAUSED" ? "RESUME" : "ADD_LOG_ENTRY";
+  const response = await page.request.post("/api/gm/commands", {
+    headers: { "x-csrf-token": status.csrfToken },
+    data: {
+      command,
+      campaignSlug: status.campaign.slug,
+      expectedSequence: status.campaign.sequence,
+      idempotencyKey: crypto.randomUUID(),
+      payload: {},
+      confirmation: true,
+    },
+  });
+  const body = (await response.json().catch(() => null)) as {
+    persistence?: string;
+    event?: { id: string; sequence: number };
+    error?: string;
+  } | null;
+  expect(response.status(), JSON.stringify(body)).toBe(200);
+  expect(body).toMatchObject({ persistence: "COMMITTED", event: { sequence: status.campaign.sequence + 1 } });
+  return body!.event!;
+}
+
+async function installReadOnlyPlayerNetwork(page: Page, fixture: Phase3CaseFixture) {
+  const eventId = fixture.prerequisiteEventId;
+  await page.route(`**/api/player/${fixture.slug}/events**`, (route) => route.abort("blockedbyclient"));
+  await page.route(`**/api/player/${fixture.slug}/presence`, (route) => route.fulfill({ status: 204, body: "" }));
+  await page.route(`**/api/player/${fixture.slug}/viewed**`, async (route) => {
+    const request = route.request();
+    if (request.method() === "GET") {
+      const requested = new URL(request.url()).searchParams.getAll("eventIds");
+      await route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify({ acknowledgedEventIds: requested }),
+      });
+      return;
+    }
+    await route.fulfill({ status: 200, contentType: "application/json", body: JSON.stringify({ ok: true }) });
+  });
+  expect(eventId === null || typeof eventId === "string").toBe(true);
+}
+
+async function openReadOnlyPhase3Player(page: Page, fixture: Phase3CaseFixture, section: Phase3PlayerSection) {
+  await installReadOnlyPlayerNetwork(page, fixture);
+  await page.addInitScript(({ deviceId }) => {
+    localStorage.setItem("forever-device", deviceId);
+    localStorage.setItem("forever-motion", "full");
+    localStorage.setItem("forever-muted", "true");
+  }, fixture);
+  await page.context().addCookies([
+    {
+      name: "forever_player",
+      value: fixture.playerAccessId,
+      url: String(test.info().project.use.baseURL ?? "http://127.0.0.1:3100"),
+      httpOnly: true,
+      sameSite: "Strict",
+    },
+  ]);
+  await page.goto(`${fixture.path}?section=${section}&journalSpeed=0.25`);
+  const open = page.getByRole("button", { name: "Open the journal" });
+  if (await open.isVisible().catch(() => false)) {
+    await open.click();
+    const skip = page.getByRole("button", { name: "Skip ceremony" });
+    if (await skip.isVisible({ timeout: 4_000 }).catch(() => false)) await skip.click();
+  }
+  await expect(page.locator(".voyage-shell")).toHaveAttribute("data-journal-phase", "JOURNAL_READY", {
+    timeout: 20_000,
+  });
+  await expect(page.locator(`.voyage-shell.view-${section}`)).toBeVisible();
+  await expect(page.locator("[data-testid='progression-scene-host']")).toHaveCount(1);
+}
+
+async function readOnlyReplayControl(page: Page, eventId: string) {
+  const history = page.locator("[data-presentation-history]");
+  await expect(history).toBeVisible();
+  const details = history.locator("details");
+  if ((await details.getAttribute("open")) === null) await details.locator("summary").click();
+  const replay = history.locator(`[data-replay-event-id="${eventId}"]`);
+  await expect(replay).toBeVisible();
+  return replay;
+}
+
+function successfulLocalObservation(receipt: Phase3ReceiptEvidence, targetKey: string) {
+  return receipt.targetReport?.observations.find((observation) => observation.targetKey === targetKey);
+}
+
+async function addUnregisteredStaleSibling(target: Locator, identityAttribute: string) {
+  await target.evaluate((element, attribute) => {
+    const clone = element.cloneNode(true) as HTMLElement;
+    for (const candidate of [clone, ...Array.from(clone.querySelectorAll<HTMLElement>("*"))]) {
+      for (const authority of [
+        "data-scene-target-id",
+        "data-scene-instance",
+        "data-scene-instance-id",
+        "data-animation-claim-id",
+      ])
+        candidate.removeAttribute(authority);
+    }
+    clone.setAttribute(attribute, "phase2-stale-sibling");
+    clone.dataset.phase2StaleSibling = "true";
+    clone.setAttribute("aria-hidden", "true");
+    clone.setAttribute("inert", "");
+    element.closest("[data-player-experience-root]")?.append(clone);
+  }, identityAttribute);
+}
+
+async function beginKeyedStyleProbe(page: Page, exact: Locator) {
+  await exact.evaluate((element) => {
+    element.setAttribute("data-phase2-keyed-probe", "exact");
+    const root = element.closest<HTMLElement>("[data-player-experience-root]");
+    const stale = root?.querySelector<HTMLElement>('[data-phase2-stale-sibling="true"]');
+    stale?.setAttribute("data-phase2-keyed-probe", "stale");
+    const counts = { exact: 0, stale: 0 };
+    const observer = new MutationObserver((records) => {
+      for (const record of records) {
+        if (record.type !== "attributes" || record.attributeName !== "style") continue;
+        const key = (record.target as HTMLElement).dataset.phase2KeyedProbe;
+        if (key === "exact" || key === "stale") counts[key] += 1;
+      }
+    });
+    if (root) observer.observe(root, { attributes: true, attributeFilter: ["style"], subtree: true });
+    (
+      window as typeof window & {
+        __phase2KeyedStyleProbe?: { observer: MutationObserver; counts: typeof counts };
+      }
+    ).__phase2KeyedStyleProbe = { observer, counts };
+  });
+}
+
+async function keyedStyleProbeCounts(page: Page) {
+  return page.evaluate(() => {
+    const probe = (
+      window as typeof window & {
+        __phase2KeyedStyleProbe?: {
+          observer: MutationObserver;
+          counts: { exact: number; stale: number };
+        };
+      }
+    ).__phase2KeyedStyleProbe;
+    if (!probe) throw new Error("The keyed style probe is absent.");
+    return { ...probe.counts };
+  });
+}
+
+async function stopKeyedStyleProbe(page: Page) {
+  return page.evaluate(() => {
+    const probe = (
+      window as typeof window & {
+        __phase2KeyedStyleProbe?: {
+          observer: MutationObserver;
+          counts: { exact: number; stale: number };
+        };
+      }
+    ).__phase2KeyedStyleProbe;
+    if (!probe) throw new Error("The keyed style probe is absent.");
+    probe.observer.disconnect();
+    return { ...probe.counts };
+  });
+}
+
 test.describe("Project Lanternwake Phase 2 StPageFlip boundary", () => {
   test("full motion keeps source, clone identity, accessibility, and all turn paths inside StPageFlip authority", async ({
     page,
@@ -319,19 +564,169 @@ test.describe("Project Lanternwake Phase 2 StPageFlip boundary", () => {
     );
   });
 
-  test.fixme(
-    "content revision and orientation changes revoke the old generation and expose zero retained references",
-    async () => {
-      // Evidence gap: the current public showcase reports generations but has no control that changes page content revision.
-    },
-  );
+  test("content revision and orientation changes revoke the old generation and expose zero retained references", async ({
+    page,
+    browserName,
+  }) => {
+    test.setTimeout(90_000);
+    await page.setViewportSize({ width: 1_440, height: 900 });
 
-  test.fixme(
-    "only the current visible primary page target qualifies in the public target-resolution receipt",
-    async () => {
-      // Evidence gap: current PageFlip pages contain no deliberate cinematic target and the safe receipt omits target IDs.
-    },
-  );
+    if (browserName === "chromium") {
+      await requireValidationIsolation(page);
+      await signInQuartermaster(page);
+      await page.addInitScript(() => localStorage.setItem("forever-motion", "full"));
+      await openDefaultPlayerJournal(page);
+      const book = page.locator(".main-journal-book");
+      await expectStPageFlipOwnsTurn(book);
+      const beforeRevision = await pageFlipBoundaryEvidence(book);
+      expect(beforeRevision.contentRevision).toMatch(/\S/u);
+      expect(beforeRevision.cloneGeneration).toMatch(/^\d+$/u);
+      expect(beforeRevision.sourceGeneration).toMatch(/^\d+$/u);
+
+      await publishDefaultProgression(page);
+      await expect
+        .poll(() => pageFlipBoundaryEvidence(book), {
+          message: "A committed snapshot sequence must replace the PageFlip content generation.",
+          timeout: 20_000,
+        })
+        .toMatchObject({
+          instanceId: beforeRevision.instanceId,
+          runtimeGeneration: beforeRevision.runtimeGeneration,
+          orientation: beforeRevision.orientation,
+        });
+      await expect
+        .poll(async () => (await pageFlipBoundaryEvidence(book)).contentRevision)
+        .not.toBe(beforeRevision.contentRevision);
+      await expect
+        .poll(async () => (await pageFlipBoundaryEvidence(book)).cloneGeneration)
+        .not.toBe(beforeRevision.cloneGeneration);
+      await expect
+        .poll(async () => (await pageFlipBoundaryEvidence(book)).sourceGeneration)
+        .not.toBe(beforeRevision.sourceGeneration);
+      await expectOldPageFlipGenerationReleased(book, beforeRevision);
+
+      const reveal = page.getByRole("button", { name: "Reveal readable result" });
+      if (await reveal.isVisible().catch(() => false)) await reveal.click();
+      await expect(page.locator('[data-progression-overlay][data-progression-state="active"]')).toHaveCount(0);
+
+      const beforeOrientation = await pageFlipBoundaryEvidence(book);
+      await page.setViewportSize({ width: 390, height: 844 });
+      await expect
+        .poll(async () => (await pageFlipBoundaryEvidence(book)).orientation, {
+          message: "The narrow journal must rebind its trusted primary pages as portrait pages.",
+        })
+        .toBe("portrait");
+      await expect
+        .poll(async () => (await pageFlipBoundaryEvidence(book)).cloneGeneration)
+        .not.toBe(beforeOrientation.cloneGeneration);
+      const afterOrientation = await pageFlipBoundaryEvidence(book);
+      expect(afterOrientation).toMatchObject({
+        instanceId: beforeOrientation.instanceId,
+        runtimeGeneration: beforeOrientation.runtimeGeneration,
+        sourceGeneration: beforeOrientation.sourceGeneration,
+        contentRevision: beforeOrientation.contentRevision,
+      });
+      expect(afterOrientation.retainedBoundaries).toBe(beforeOrientation.retainedBoundaries);
+      await expectOldPageFlipGenerationReleased(book, {
+        cloneGeneration: beforeOrientation.cloneGeneration,
+        sourceGeneration: null,
+      });
+      return;
+    }
+
+    const fixture = readPreseededPhase3BaseFixture();
+    await installPhase3EvidenceProbe(page);
+    await openReadOnlyPhase3Player(page, fixture, "journal");
+    const book = page.locator(".main-journal-book");
+    await expectStPageFlipOwnsTurn(book);
+    const landscape = await pageFlipBoundaryEvidence(book);
+    expect(landscape.orientation).toBe("landscape");
+    await page.setViewportSize({ width: 390, height: 844 });
+    await expect.poll(async () => (await pageFlipBoundaryEvidence(book)).orientation).toBe("portrait");
+    await expect
+      .poll(async () => (await pageFlipBoundaryEvidence(book)).cloneGeneration)
+      .not.toBe(landscape.cloneGeneration);
+    const portrait = await pageFlipBoundaryEvidence(book);
+    expect(portrait.contentRevision).toBe(landscape.contentRevision);
+    expect(portrait.retainedBoundaries).toBe(landscape.retainedBoundaries);
+    await expectOldPageFlipGenerationReleased(book, {
+      cloneGeneration: landscape.cloneGeneration,
+      sourceGeneration: null,
+    });
+  });
+
+  test("only the current visible primary page target qualifies in the public target-resolution receipt", async ({
+    page,
+  }) => {
+    test.setTimeout(90_000);
+    await page.setViewportSize({ width: 390, height: 844 });
+    await installPhase3EvidenceProbe(page);
+    const fixture = readPreseededPhase3FixtureFromEnv("SIDE_QUEST_DISCOVERED");
+    const eventId = fixture.prerequisiteEventId!;
+    await openReadOnlyPhase3Player(page, fixture, "quests");
+    const book = page.locator('.quest-page-book[data-pageflip-book-id="side-quest-ledger"]');
+    await expectStPageFlipOwnsTurn(book);
+
+    const summaryPageId = `${fixture.sideQuestKey}-summary`;
+    for (let turn = 0; turn < 2; turn += 1) {
+      await book.getByRole("button", { name: "Next journal page" }).click();
+      await waitForPageFlipRead(book);
+    }
+    const current = book.locator(
+      `[data-pageflip-role="primary"][data-pageflip-current="true"]` +
+        `[data-pageflip-lifecycle="visible"][data-pageflip-page-id="${summaryPageId}"]`,
+    );
+    await expect(current).toHaveCount(1);
+    await expect(current.locator('[data-scene-part="quest-note-new"][data-scene-target-id]')).toHaveCount(1);
+
+    const replay = await readOnlyReplayControl(page, eventId);
+    await replay.click();
+    const receipt = await waitForPhase3Receipt(page, eventId, { source: "replay" });
+    expect(receipt.localEnhancement).toEqual({
+      expected: true,
+      section: "quests",
+      status: "ran",
+      targetKeys: expect.arrayContaining(["local-quest-note", "local-quest-red-thread"]),
+    });
+    for (const targetKey of ["local-quest-note", "local-quest-red-thread"]) {
+      expect(successfulLocalObservation(receipt, targetKey)).toMatchObject({
+        targetKey,
+        candidateCount: 1,
+        matchedCount: 1,
+        visibleCount: 1,
+        duplicateCount: 0,
+        ownershipRejectedCount: 0,
+      });
+    }
+
+    const targetCopies = await book.evaluate((element) =>
+      Array.from(
+        element.querySelectorAll<HTMLElement>('[data-scene-part="quest-note-new"][data-scene-target-key]'),
+      ).map((target) => {
+        const boundary = target.closest<HTMLElement>("[data-pageflip-role]");
+        return {
+          role: boundary?.dataset.pageflipRole ?? null,
+          current: boundary?.dataset.pageflipCurrent ?? null,
+          lifecycle: boundary?.dataset.pageflipLifecycle ?? null,
+          hasTargetAuthority: target.hasAttribute("data-scene-target-id"),
+        };
+      }),
+    );
+    expect(targetCopies.some((copy) => copy.role === "source" && !copy.hasTargetAuthority)).toBe(true);
+    expect(
+      targetCopies.filter(
+        (copy) =>
+          copy.role === "primary" && copy.current === "true" && copy.lifecycle === "visible" && copy.hasTargetAuthority,
+      ),
+    ).toHaveLength(1);
+    expect(
+      targetCopies.filter(
+        (copy) => ["source", "temporary", "unproven"].includes(copy.role ?? "") && copy.hasTargetAuthority,
+      ),
+    ).toEqual([]);
+    await expectDisqualifiedPageFlipCopiesHidden(page);
+    expect(receipt.targetReport?.observations.every((observation) => observation.duplicateCount === 0)).toBe(true);
+  });
 });
 
 test.describe("Project Lanternwake Phase 2 showcase tombstones", () => {
@@ -448,25 +843,234 @@ test.describe("Project Lanternwake Phase 2 Quartermaster boundaries", () => {
     await expect(trigger).toBeFocused();
   });
 
-  test.fixme("a committed Quartermaster confirmation restores focus to its exact command trigger", async () => {
-    // Evidence gap: this needs an isolated command fixture with deterministic state and must not share mutation order.
+  test("a committed Quartermaster confirmation restores focus to its exact command trigger", async ({
+    page,
+    browserName,
+  }) => {
+    test.setTimeout(90_000);
+    let mockedCommandRequests = 0;
+    let mockSequence = 41;
+    if (browserName !== "chromium") {
+      const mockStatus = () => ({
+        csrfToken: "read-only-mocked-csrf",
+        campaign: {
+          slug: "read-only-focus-proof",
+          title: "Read-only focus proof",
+          status: "ACTIVE",
+          sequence: mockSequence,
+        },
+        chapter: { ordinal: 1, state: "ACTIVE", title: "Read-only chapter" },
+        playerConnected: false,
+        events: [],
+        inventory: [],
+        sideQuest: null,
+        preview: { chapter: { objective: "Keep focus truthful." } },
+      });
+      await page.route("**/api/gm/login", (route) =>
+        route.fulfill({ status: 200, contentType: "application/json", body: JSON.stringify({ ok: true }) }),
+      );
+      await page.route("**/api/gm/status", (route) =>
+        route.fulfill({ status: 200, contentType: "application/json", body: JSON.stringify(mockStatus()) }),
+      );
+      await page.route("**/api/gm/commands", async (route) => {
+        mockedCommandRequests += 1;
+        mockSequence += 1;
+        const event = { id: "read-only-mocked-event", type: "PLAYER_LOG_ENTRY_ADDED", sequence: mockSequence };
+        await route.fulfill({
+          status: 200,
+          contentType: "application/json",
+          body: JSON.stringify({
+            kind: "PROGRESSION_EVENT",
+            correlationId: "read-only-mocked-correlation",
+            persistence: "COMMITTED",
+            publication: "PROCESS_PUBLISHED",
+            delivery: "PUBLISHED",
+            deliveryScope: "PROCESS_SUBSCRIBERS_ONLY",
+            playerDelivery: "UNCONFIRMED",
+            playerPresentation: "UNCONFIRMED",
+            playerAcknowledgment: "UNCONFIRMED",
+            event,
+            playerEvent: event,
+          }),
+        });
+      });
+    } else {
+      await requireValidationIsolation(page);
+    }
+
+    await signInQuartermaster(page);
+    const trigger = page.getByRole("button", { name: "Add Player Log Entry" });
+    const triggerIdentity = crypto.randomUUID();
+    await trigger.evaluate((element, identity) => {
+      (element as HTMLElement).dataset.phase2CommandTriggerIdentity = identity;
+    }, triggerIdentity);
+    await trigger.click();
+    const dialog = page.getByRole("dialog", { name: "Add Player Log Entry" });
+    await expect(dialog).toBeVisible();
+    await dialog.getByRole("button", { name: "Confirm action" }).click();
+    await expect(dialog).toHaveCount(0, { timeout: 20_000 });
+    await expect(page.getByRole("status").filter({ hasText: /Event .* recorded at sequence/u })).toBeVisible();
+    await expect(trigger).toHaveAttribute("data-phase2-command-trigger-identity", triggerIdentity);
+    await expect(trigger).toBeFocused();
+    if (browserName !== "chromium") expect(mockedCommandRequests).toBe(1);
   });
 });
 
 test.describe("Project Lanternwake Phase 2 Player integration evidence gaps", () => {
-  test.fixme(
-    "the chapter ceremony host is published only after its complete ready target set is registered",
-    async () => {
-      // Evidence gap: ready publication is an internal capability callback; the DOM host marker alone cannot prove it.
-    },
-  );
+  test("the chapter ceremony host is published only after its complete ready target set is registered", async ({
+    page,
+  }) => {
+    test.setTimeout(90_000);
+    await installPhase3EvidenceProbe(page);
+    const fixture = readPreseededPhase3FixtureFromEnv("CHAPTER_RELEASED");
+    const eventId = fixture.prerequisiteEventId!;
+    await openReadOnlyPhase3Player(page, fixture, "journal");
+    const journalHost = page.locator('.journal-workspace[data-scene-host-kind="player-progression"]');
+    await expect(journalHost).toHaveCount(1);
 
-  test.fixme(
-    "duplicate persistent/event parts and keyed artifact, map, and log handoffs never cross or retain stale siblings",
-    async () => {
-      // Evidence gap: the current browser fixture has no safe public control for publishing all three exact event kinds.
-    },
-  );
+    const ceremonyTargetCounts = {
+      "journal-stage": 1,
+      "sealed-parchment": 1,
+      "ink-heading": 2,
+      "ink-story": 1,
+      "ink-objective": 1,
+      "ink-riddle": 1,
+      "page-light": 1,
+      seal: 1,
+      "seal-crack": 1,
+      "seal-fragment": 2,
+      "route-path": 1,
+      "map-fog": 1,
+      quill: 1,
+      "quill-path": 1,
+    } as const;
+    for (const part of Object.keys(ceremonyTargetCounts)) {
+      if (part === "journal-stage") continue;
+      await expect(journalHost.locator(`[data-scene-part="${part}"][data-scene-target-id]`)).toHaveCount(0);
+    }
+
+    const replay = await readOnlyReplayControl(page, eventId);
+    await replay.click();
+    await expect
+      .poll(
+        () =>
+          journalHost.evaluate(
+            (element, expected) =>
+              Object.fromEntries(
+                Object.keys(expected).map((part) => [
+                  part,
+                  element.querySelectorAll(`[data-scene-part="${part}"][data-scene-target-id]`).length,
+                ]),
+              ),
+            ceremonyTargetCounts,
+          ),
+        { message: "The journal must publish its ceremony capability only after every target is registered." },
+      )
+      .toEqual(ceremonyTargetCounts);
+
+    const receipt = await waitForPhase3Receipt(page, eventId, { source: "replay" });
+    expect(receipt.localEnhancement).toEqual({
+      expected: true,
+      section: "journal",
+      status: "ran",
+      targetKeys: ["local-sealed-parchment"],
+    });
+    expect(successfulLocalObservation(receipt, "local-sealed-parchment")).toMatchObject({
+      candidateCount: 1,
+      matchedCount: 1,
+      visibleCount: 1,
+      duplicateCount: 0,
+      ownershipRejectedCount: 0,
+    });
+    expect(receipt.targetReport).toMatchObject({ requiredSatisfied: true, failures: [] });
+  });
+
+  test("duplicate persistent/event parts and keyed artifact, map, and log handoffs never cross or retain stale siblings", async ({
+    page,
+  }) => {
+    test.setTimeout(150_000);
+    await installPhase3EvidenceProbe(page);
+    const cases = [
+      {
+        eventType: "ARTIFACT_AWARDED",
+        section: "treasures",
+        exactTarget: (fixture: Phase3CaseFixture) => `.artifact-silhouette[data-artifact-key="${fixture.artifactKey}"]`,
+        identityAttribute: "data-artifact-key",
+        expectedLocalKeys: ["local-artifact-slot"],
+      },
+      {
+        eventType: "MAP_LOCATION_REVEALED",
+        section: "chart",
+        exactTarget: (fixture: Phase3CaseFixture) => `[data-marker-visual-key="${fixture.mapLocationKey}"]`,
+        identityAttribute: "data-marker-visual-key",
+        expectedLocalKeys: ["local-map-marker"],
+      },
+      {
+        eventType: "PLAYER_LOG_ENTRY_ADDED",
+        section: "log",
+        exactTarget: (_fixture: Phase3CaseFixture, eventId: string) => `.log-fresh-ink[data-event-id="${eventId}"]`,
+        identityAttribute: "data-event-id",
+        expectedLocalKeys: ["local-log-entry", "local-log-symbol"],
+      },
+    ] as const satisfies readonly {
+      eventType: Phase3EventType;
+      section: Phase3PlayerSection;
+      exactTarget: (fixture: Phase3CaseFixture, eventId: string) => string;
+      identityAttribute: string;
+      expectedLocalKeys: readonly string[];
+    }[];
+
+    for (const keyedCase of cases) {
+      const fixture = readPreseededPhase3FixtureFromEnv(keyedCase.eventType);
+      const eventId = fixture.prerequisiteEventId!;
+      await openReadOnlyPhase3Player(page, fixture, keyedCase.section);
+      const exactTarget = page.locator(keyedCase.exactTarget(fixture, eventId));
+      await expect(exactTarget).toHaveCount(1);
+      await expect(exactTarget).toHaveAttribute("data-scene-target-id", /\S/u);
+      await addUnregisteredStaleSibling(exactTarget, keyedCase.identityAttribute);
+      const staleSibling = page.locator('[data-phase2-stale-sibling="true"]');
+      await expect(staleSibling).toHaveCount(1);
+      await expect(
+        staleSibling.locator(
+          "[data-scene-target-id], [data-scene-instance], [data-scene-instance-id], [data-animation-claim-id]",
+        ),
+      ).toHaveCount(0);
+      await beginKeyedStyleProbe(page, exactTarget);
+
+      const replay = await readOnlyReplayControl(page, eventId);
+      await replay.click();
+      await expect
+        .poll(async () => (await keyedStyleProbeCounts(page)).exact, {
+          message: `${keyedCase.eventType} must animate its exact exported keyed target.`,
+        })
+        .toBeGreaterThan(0);
+      const receipt = await waitForPhase3Receipt(page, eventId, { source: "replay" });
+      const mutations = await stopKeyedStyleProbe(page);
+      expect(mutations.exact).toBeGreaterThan(0);
+      expect(mutations.stale).toBe(0);
+      await expect(staleSibling).toHaveCount(1);
+
+      expect(receipt.localEnhancement).toEqual({
+        expected: true,
+        section: keyedCase.section,
+        status: "ran",
+        targetKeys: expect.arrayContaining([...keyedCase.expectedLocalKeys]),
+      });
+      for (const targetKey of keyedCase.expectedLocalKeys) {
+        expect(successfulLocalObservation(receipt, targetKey)).toMatchObject({
+          candidateCount: 1,
+          matchedCount: 1,
+          visibleCount: 1,
+          duplicateCount: 0,
+          ownershipRejectedCount: 0,
+        });
+      }
+      expect(receipt.targetReport).toMatchObject({ requiredSatisfied: true, failures: [] });
+      expect(receipt.targetReport?.observations.every((observation) => observation.duplicateCount === 0)).toBe(true);
+      await expect(page.locator("[data-testid='progression-scene-host']")).toHaveCount(1);
+      await expect(page.locator("[data-progression-overlay]")).toHaveAttribute("data-progression-state", "inactive");
+    }
+  });
 });
 
 test.describe("Project Lanternwake Phase 2 required viewports", () => {

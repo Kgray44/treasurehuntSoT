@@ -1,12 +1,17 @@
 import { NextResponse } from "next/server";
 import { describePresence } from "@/domain/admin";
 import { db } from "@/lib/db";
-import { requireGm } from "@/lib/security";
+import { requireGm, requireGmCapability } from "@/lib/security";
 import { buildPublicSnapshot } from "@/lib/snapshot";
 
 export async function GET() {
-  const session = await requireGm();
-  if (!session) return NextResponse.json({ error: "Authentication required." }, { status: 401 });
+  const session = await requireGmCapability("CAPTAIN");
+  if (!session) {
+    const staff = await requireGm();
+    return staff
+      ? NextResponse.json({ error: "Captain authority required.", code: "FORBIDDEN" }, { status: 403 })
+      : NextResponse.json({ error: "Authentication required.", code: "UNAUTHENTICATED" }, { status: 401 });
+  }
   const campaign = await db.campaign.findFirstOrThrow({
     include: {
       chapters: {

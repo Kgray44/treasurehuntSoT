@@ -102,6 +102,7 @@ function v2CommandScene(
   successLabel: string,
   target: string,
   failureLabel = "mark-restoring",
+  localSuccessTarget?: string,
 ): SceneDefinitionV2 {
   return {
     name,
@@ -160,6 +161,15 @@ function v2CommandScene(
           { opacity: 0, scale: 1.8, y: distance(context, -18) },
           { opacity: 1, scale: 1, y: 0, duration: seconds(context, 0.68), ease: "back.out(1.7)" },
         );
+      if (localSuccessTarget)
+        fromToTargets(
+          timeline,
+          context,
+          localSuccessTarget,
+          { opacity: 0.35, scale: 1.45, y: distance(context, -12) },
+          { opacity: 1, scale: 1, y: 0, duration: seconds(context, 0.36), ease: "back.out(1.6)" },
+          ">",
+        );
       return settleV2(timeline, context);
     },
     buildFailure(context) {
@@ -191,6 +201,7 @@ export const markSolvedScene = v2CommandScene(
   "captain-stamp",
   "solved-stamp",
   "stamp-withdrawn",
+  "local-chapter-solved-stamp",
 );
 export const pauseScene = v2CommandScene("pause", "wind-falling", "pause-stamp", "lantern", "wind-returning");
 export const resumeScene = v2CommandScene("resume", "pause-lifting", "lantern-kindling", "lantern", "pause-restoring");

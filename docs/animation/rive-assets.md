@@ -4,12 +4,22 @@
 
 Invitation seal, journal clasp, voyage compass, and finale mechanism have explicit state-machine contracts but deliberately use local original SVG/CSS fallbacks in production. No claim is made that these fallbacks are `.riv` files. When final project-authored binaries arrive, set each contract's local `path`, confirm artboard/state-machine/input names in the showcase, update provenance, and retain the fallback.
 
+Phase 3 freezes the Journal Clasp, Voyage Compass, and Finale Mechanism interfaces as `blocked_external_asset`. Their contracts now include explicit availability, reduced pose, and reduced semantic-signal fields. Reduced mode may update only those semantic signals while retaining a stable non-travelling pose. A fallback status is not runtime-ready, and a runtime/status callback retracts its capability when it reports `null` or unmounts.
+
 | Object           | State machine      | Required states                                                        | Current production asset     |
 | ---------------- | ------------------ | ---------------------------------------------------------------------- | ---------------------------- |
 | Invitation seal  | `Invitation Seal`  | idle, hover, pressed, listening, opening, rejected                     | `seal-fallback.svg`          |
 | Journal clasp    | `Journal Clasp`    | locked, awake, opening, open                                           | `journal-clasp-fallback.svg` |
 | Voyage compass   | `Voyage Compass`   | idle, bearing, arrived                                                 | `compass-fallback.svg`       |
 | Finale mechanism | `Finale Mechanism` | dormant, teased, sealed, partial, ready, unlocking, unlocked, complete | `finale-fallback.svg`        |
+
+| Object           | Inputs                                                            | Reduced pose                            | Reduced semantic signals |
+| ---------------- | ----------------------------------------------------------------- | --------------------------------------- | ------------------------ |
+| Journal clasp    | `state` (number), `wake` (trigger), `release` (trigger)           | `state=0`                               | `state`                  |
+| Voyage compass   | `state` (number), `bearing` (number), `arrive` (trigger)          | `state=0`, `bearing=0`                  | `state`, `bearing`       |
+| Finale mechanism | `state`/`progress`/`audioLevel` (number), `wake`/`unlock` trigger | `state=0`, `progress=0`, `audioLevel=0` | `state`, `progress`      |
+
+The production contract rows above intentionally have no `.riv` path. Their local SVG/CSS adapters remain readable and functional while Phase 5 supplies and validates project-authored binaries. The development rating sample below proves the loader only; it does not satisfy any of the three Phase 3 art blockers.
 
 ## Development runtime proof
 

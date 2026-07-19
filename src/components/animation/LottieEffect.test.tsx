@@ -3,7 +3,7 @@ import { createRef } from "react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { lottieAssets } from "@/animation/assets/lottie-contracts";
 import { readAnimationMetrics, resetAnimationMetrics } from "@/animation/core/metrics";
-import { LottieEffect, type LottieEffectHandle } from "./LottieEffect";
+import { LOTTIE_DEVELOPMENT_FAILPOINT_GLOBAL, LottieEffect, type LottieEffectHandle } from "./LottieEffect";
 
 const lottie = vi.hoisted(() => {
   const listeners = new Map<string, () => void>();
@@ -34,6 +34,8 @@ describe("LottieEffect", () => {
     lottie.listeners.clear();
     resetAnimationMetrics();
     Object.defineProperty(document, "hidden", { configurable: true, value: false });
+    delete window[LOTTIE_DEVELOPMENT_FAILPOINT_GLOBAL];
+    vi.unstubAllEnvs();
   });
 
   it("loads an ambient runtime once, applies mode changes in place, follows visibility, and destroys exactly once", async () => {
@@ -192,6 +194,9 @@ describe("LottieEffect", () => {
 
     act(() => lottie.listeners.get("data_failed")?.());
     expect(status).toHaveBeenLastCalledWith("failed");
+    expect(
+      screen.getByRole("img", { name: "Moonlit waves static fallback" }).closest(".lottie-effect"),
+    ).toHaveAttribute("data-lottie-failure-reason", "asset-data-failed");
     expect(screen.getByRole("img", { name: "Moonlit waves static fallback" })).toBeVisible();
     expect(lottie.item.destroy).toHaveBeenCalledOnce();
     expect(readAnimationMetrics().lottie).toBe(0);
@@ -217,8 +222,77 @@ describe("LottieEffect", () => {
     });
     expect(lottie.item.destroy).toHaveBeenCalledOnce();
     expect(readAnimationMetrics().lottie).toBe(0);
+    expect(screen.getByRole("img", { name: "Rolling fog static fallback" }).closest(".lottie-effect")).toHaveAttribute(
+      "data-lottie-failure-reason",
+      "load-timeout",
+    );
 
     unmount();
     expect(lottie.item.destroy).toHaveBeenCalledOnce();
   });
+
+  it("uses the asset-scoped development timeout override for a deterministic stalled load", async () => {
+    window[LOTTIE_DEVELOPMENT_FAILPOINT_GLOBAL] = {
+      kind: "stalled-load",
+      assetKey: lottieAssets.rollingFog.key,
+      timeoutMs: 20,
+    };
+    const { unmount } = render(
+      <LottieEffect asset={lottieAssets.rollingFog} mode="full" label="Rolling fog" playback="ambient" />,
+    );
+
+    await waitFor(() => expect(lottie.loadAnimation).toHaveBeenCalledOnce());
+    await waitFor(() => expect(screen.getByRole("img", { name: "Rolling fog static fallback" })).toBeVisible(), {
+      timeout: 500,
+    });
+    expect(screen.getByRole("img", { name: "Rolling fog static fallback" }).closest(".lottie-effect")).toHaveAttribute(
+      "data-lottie-failure-reason",
+      "development-stalled-load-timeout",
+    );
+    expect(lottie.item.destroy).toHaveBeenCalledOnce();
+    expect(readAnimationMetrics().lottie).toBe(0);
+
+    unmount();
+    expect(lottie.item.destroy).toHaveBeenCalledOnce();
+  });
+
+  it("uses the asset-scoped development renderer failpoint after mount and cleans up exactly once", async () => {
+    window[LOTTIE_DEVELOPMENT_FAILPOINT_GLOBAL] = {
+      kind: "renderer-error",
+      assetKey: lottieAssets.moonlitWaves.key,
+    };
+    const { unmount } = render(
+      <LottieEffect asset={lottieAssets.moonlitWaves} mode="full" label="Moonlit waves" playback="ambient" />,
+    );
+
+    await waitFor(() => expect(lottie.loadAnimation).toHaveBeenCalledOnce());
+    await waitFor(() => expect(screen.getByRole("img", { name: "Moonlit waves static fallback" })).toBeVisible());
+    expect(
+      screen.getByRole("img", { name: "Moonlit waves static fallback" }).closest(".lottie-effect"),
+    ).toHaveAttribute("data-lottie-failure-reason", "development-renderer-error");
+    expect(lottie.item.destroy).toHaveBeenCalledOnce();
+    expect(readAnimationMetrics().lottie).toBe(0);
+
+    unmount();
+    expect(lottie.item.destroy).toHaveBeenCalledOnce();
+  });
+
+  it.each(["stalled-load", "renderer-error"] as const)(
+    "ignores the development %s failpoint in production",
+    async (kind) => {
+      vi.stubEnv("NODE_ENV", "production");
+      window[LOTTIE_DEVELOPMENT_FAILPOINT_GLOBAL] = {
+        kind,
+        assetKey: lottieAssets.moonlitWaves.key,
+        timeoutMs: kind === "stalled-load" ? 1 : undefined,
+      };
+      render(<LottieEffect asset={lottieAssets.moonlitWaves} mode="full" label="Moonlit waves" playback="ambient" />);
+
+      await waitFor(() => expect(lottie.loadAnimation).toHaveBeenCalledOnce());
+      act(() => lottie.listeners.get("data_ready")?.());
+      expect(screen.queryByRole("img", { name: "Moonlit waves static fallback" })).not.toBeInTheDocument();
+      expect(document.querySelector("[data-lottie-failure-reason]")).toBeNull();
+      expect(lottie.item.destroy).not.toHaveBeenCalled();
+    },
+  );
 });

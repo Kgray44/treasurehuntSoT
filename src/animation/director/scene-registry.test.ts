@@ -9,6 +9,7 @@ import type {
 } from "../core/animation-types";
 import { sceneNames } from "../core/animation-types";
 import { sceneContracts, sceneReachabilityEvidence, sceneRegistry } from "./scene-registry";
+import { progressionEventPresentationPolicy } from "@/components/player/progression/event-policy";
 
 const expectedReachability: Record<SceneReachability, number> = {
   production: 16,
@@ -102,8 +103,32 @@ describe("scene registry", () => {
       expect(contract.acknowledgmentPolicy.acknowledgmentOwner).toMatch(/^(player-presentation|caller|none)$/);
       expect(contract.finalStatePolicy.kind).toBeTruthy();
 
-      const declaredParts = targets(contract).map((target) => target.part);
-      expect(new Set(declaredParts).size, contract.sceneName).toBe(declaredParts.length);
+      const declaredKeys = targets(contract).map((target) => ("key" in target ? target.key : target.part));
+      expect(new Set(declaredKeys).size, contract.sceneName).toBe(declaredKeys.length);
+      const duplicatePartGroups = new Map<
+        string,
+        Array<{ part: string; required: boolean; source?: SceneTargetRequirementV2["source"] }>
+      >();
+      for (const target of targets(contract)) {
+        const declarations = duplicatePartGroups.get(target.part) ?? [];
+        declarations.push({
+          part: target.part,
+          required: target.required,
+          ...(contract.version === 2 && "source" in target ? { source: target.source } : {}),
+        });
+        duplicatePartGroups.set(target.part, declarations);
+      }
+      for (const [part, declarations] of duplicatePartGroups) {
+        if (declarations.length < 2) continue;
+        expect(
+          declarations.filter((target) => target.required).length,
+          `${contract.sceneName}:${part}:required`,
+        ).toBeLessThanOrEqual(1);
+        expect(
+          new Set(declarations.map((target) => (target.source ? JSON.stringify(target.source) : "legacy"))).size,
+          `${contract.sceneName}:${part}:sources`,
+        ).toBe(declarations.length);
+      }
       if (contract.playbackPolicy.allowUserSkip) {
         expect(contract.playbackPolicy.userSkipFinalState, contract.sceneName).toBeTruthy();
       }
@@ -291,15 +316,23 @@ describe("scene registry", () => {
     );
   });
 
-  it("freezes Phase 2 declaration and acknowledgment totals", () => {
+  it("preserves Phase 2 declaration identity and cardinality while Phase 3 moves Player visuals host-local", () => {
     expect(Object.values(sceneContracts).flatMap((contract) => requiredTargets(contract))).toHaveLength(42);
-    expect(Object.values(sceneContracts).flatMap((contract) => optionalTargets(contract))).toHaveLength(87);
-    expect(Object.values(sceneContracts).filter((contract) => contract.playbackPolicy.replayable)).toHaveLength(2);
+    expect(Object.values(sceneContracts).flatMap((contract) => optionalTargets(contract))).toHaveLength(102);
+    expect(Object.values(sceneContracts).filter((contract) => contract.playbackPolicy.replayable)).toHaveLength(15);
     expect(
       Object.values(sceneContracts).filter(
         (contract) => contract.acknowledgmentPolicy.acknowledgmentOwner === "player-presentation",
       ),
     ).toHaveLength(14);
+  });
+
+  it("keeps every Phase 3 Player policy scene replayable at the Director contract boundary", () => {
+    const policyScenes = new Set(Object.values(progressionEventPresentationPolicy).map((policy) => policy.sceneName));
+    expect(policyScenes.size).toBe(14);
+    for (const sceneName of policyScenes) {
+      expect(sceneContracts[sceneName].playbackPolicy.replayable, sceneName).toBe(true);
+    }
   });
 
   it("declares exact external continuity handles without DOM-order semantics", () => {
@@ -318,7 +351,57 @@ describe("scene registry", () => {
     }
   });
 
-  it("keeps the artifact award destination identity-only and explicitly external", () => {
+  it("declares every policy local enhancement as a non-blocking exact external capability", () => {
+    const expected = {
+      "chapter-release": { "sealed-parchment": ["transform"] },
+      "mark-solved": { "chapter-solved-stamp": ["transform", "opacity"] },
+      "artifact-award": { "artifact-slot": ["transform", "opacity", "filter"] },
+      "artifact-connection": {
+        "artifact-connection-path": ["path-drawing", "stroke-dasharray", "stroke-dashoffset", "opacity"],
+      },
+      "map-reveal": { "map-marker": ["transform", "opacity"] },
+      "route-draw": { "route-path": ["path-drawing", "stroke-dasharray", "stroke-dashoffset", "opacity"] },
+      "quest-discovery": {
+        "quest-note": ["transform", "opacity"],
+        "quest-red-thread": ["path-drawing", "stroke-dasharray", "stroke-dashoffset"],
+        "quest-objective": ["transform", "opacity"],
+      },
+      "quest-complete": { "quest-stamp": ["transform", "opacity"] },
+      "log-entry": {
+        "journal-annotation-ink": ["opacity", "clip-path", "filter"],
+        "log-entry": ["opacity", "clip-path", "filter"],
+        "log-symbol": ["transform", "opacity"],
+      },
+      "finale-tease": { "finale-mechanism": ["transform", "opacity"] },
+      "finale-requirement": { "finale-requirement-socket": ["transform", "opacity", "filter"] },
+    } as const;
+
+    for (const [sceneName, handles] of Object.entries(expected)) {
+      const contract = sceneContracts[sceneName as AnimationSceneName];
+      expect(contract.version, sceneName).toBe(2);
+      if (contract.version !== 2) continue;
+      for (const [handleKey, properties] of Object.entries(handles)) {
+        const target = contract.targets.find(
+          (candidate) => candidate.source.kind === "external" && candidate.source.handleKey === handleKey,
+        );
+        expect(target, `${sceneName}:${handleKey}`).toMatchObject({
+          key: `local-${handleKey}`,
+          required: false,
+          owner: "gsap",
+          properties,
+          source: { kind: "external", handleKey },
+        });
+        expect(
+          contract.targets.some(
+            (candidate) => candidate.required && candidate.source.kind === "host" && candidate.key === handleKey,
+          ),
+          `${sceneName}:${handleKey}:distinct-global-key`,
+        ).toBe(false);
+      }
+    }
+  });
+
+  it("keeps the artifact award global destination identity-only and host-local", () => {
     const contract = sceneContracts["artifact-award"];
     expect(contract.version).toBe(2);
     if (contract.version !== 2) return;
@@ -328,11 +411,12 @@ describe("scene registry", () => {
       identityOnly: true,
       owner: null,
       properties: [],
-      source: { kind: "external", handleKey: "artifact-slot" },
+      source: { kind: "host" },
+      required: true,
     });
   });
 
-  it("matches map and Log external contracts to their keyed GSAP visual children", () => {
+  it("requires map and Log global targets on the persistent host", () => {
     const map = sceneContracts["map-reveal"];
     const log = sceneContracts["log-entry"];
     expect(map.version).toBe(2);
@@ -342,12 +426,14 @@ describe("scene registry", () => {
     expect(map.targets.find((target) => target.key === "map-marker-new")).toMatchObject({
       part: "map-marker",
       properties: ["transform", "opacity"],
-      source: { kind: "external", handleKey: "map-marker" },
+      required: true,
+      source: { kind: "host" },
     });
     expect(log.targets.find((target) => target.key === "log-entry-new")).toMatchObject({
       part: "log-entry-new",
       properties: ["opacity", "clip-path", "filter"],
-      source: { kind: "external", handleKey: "log-entry" },
+      required: true,
+      source: { kind: "host" },
     });
   });
 });

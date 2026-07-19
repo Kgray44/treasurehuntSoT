@@ -165,7 +165,8 @@ describe("Rive runtime", () => {
       />,
     );
     act(() => (runtime.options?.onLoadError as (() => void) | undefined)?.());
-    expect(status).toHaveBeenLastCalledWith("failed");
+    expect(status).toHaveBeenCalledWith("failed");
+    await waitFor(() => expect(status).toHaveBeenLastCalledWith("fallback"));
     expect(status).not.toHaveBeenCalledWith("ready");
     expect(
       screen.getByRole("img", { name: "Rive development proof fallback after WebGL or asset failure" }),
@@ -180,6 +181,29 @@ describe("Rive runtime", () => {
     render(
       <RiveStatefulObject asset={riveAssets.invitationSeal} mode="full" label="Invitation seal" onStatus={status} />,
     );
+    expect(
+      screen.getByRole("img", {
+        name: /Original Rive artwork is not yet supplied; showing the production fallback/,
+      }),
+    ).toBeVisible();
+    await waitFor(() => expect(status).toHaveBeenCalledWith("fallback"));
+    expect(status).not.toHaveBeenCalledWith("ready");
+    expect(runtime.loadCalls).toBe(before);
+    expect(screen.queryByTestId("rive-canvas")).not.toBeInTheDocument();
+  });
+
+  it("refuses a path-bearing asset whose production availability is still blocked", async () => {
+    const status = vi.fn();
+    const before = runtime.loadCalls;
+    const blockedAsset = {
+      ...riveAssets.developmentRating,
+      key: "blocked-path-proof",
+      availability: "blocked_external_asset" as const,
+      developmentOnly: false,
+    };
+
+    render(<RiveStatefulObject asset={blockedAsset} mode="full" label="Blocked authored object" onStatus={status} />);
+
     expect(
       screen.getByRole("img", {
         name: /Original Rive artwork is not yet supplied; showing the production fallback/,

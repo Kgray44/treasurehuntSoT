@@ -99,11 +99,14 @@ describe("TreasureAltar animation boundary", () => {
       expect(button).not.toHaveAttribute("data-animation-owner");
       expect(button).toHaveAttribute("data-artifact-key", key);
       expect(button).not.toHaveAttribute("data-gsap-owned");
-      const destination = button.querySelector<HTMLElement>("[data-artifact-target-role='cinematic-destination']")!;
-      expect(destination).toHaveAttribute("data-runtime-boundary", "gsap");
-      expect(destination).toHaveAttribute("data-artifact-key", key);
-      expect(destination).toHaveAttribute("aria-hidden", "true");
-      expect(destination).toHaveStyle({ pointerEvents: "none" });
+      const silhouette = button.querySelector<HTMLElement>("[data-artifact-target-role='silhouette']")!;
+      const endpoint = button.querySelector<HTMLElement>("[data-artifact-target-role='connection-endpoint']")!;
+      for (const target of [silhouette, endpoint]) {
+        expect(target).toHaveAttribute("data-runtime-boundary", "gsap");
+        expect(target).toHaveAttribute("data-artifact-key", key);
+        expect(target).toHaveAttribute("aria-hidden", "true");
+        expect(target).toHaveStyle({ pointerEvents: "none" });
+      }
     }
 
     fireEvent.click(compassButton);
@@ -152,7 +155,10 @@ describe("TreasureAltar animation boundary", () => {
       expect(registered!.layoutSource!.target.targetId).not.toBe(registered!.cinematicDestination!.target.targetId);
       expect(registered!.layoutSource!.target.hostId).toBe(registered!.cinematicDestination!.target.hostId);
       expect(registered!.layoutSource!.target.part).toBe("artifact-slot-target");
-      expect(registered!.cinematicDestination!.target.part).toBe("artifact-slot-cinematic");
+      expect(registered!.cinematicDestination!.target.part).toBe("artifact-silhouette");
+      expect(registered!.silhouette!.target.targetId).toBe(registered!.cinematicDestination!.target.targetId);
+      expect(registered!.connectionEndpoint!.target.part).toBe("artifact-connection-endpoint");
+      expect(registered!.connectionEndpoint!.target.targetId).not.toBe(registered!.silhouette!.target.targetId);
       const exported = registered!.layoutSource!.exportForScene({ allowedProperties: ["layout"], lifetime: "scene" });
       expect(exported.targetId).toBe(registered!.layoutSource!.target.targetId);
       exported.revoke();
@@ -191,6 +197,8 @@ describe("TreasureAltar animation boundary", () => {
         artifactKey,
         layoutSource: null,
         cinematicDestination: null,
+        silhouette: null,
+        connectionEndpoint: null,
       });
     }
     expect(connectionCleanup).toContainEqual({
@@ -261,6 +269,8 @@ describe("TreasureAltar animation boundary", () => {
         artifactKey: moon.key,
         layoutSource: null,
         cinematicDestination: null,
+        silhouette: null,
+        connectionEndpoint: null,
       });
       expect(connectionChanges.slice(connectionRemovalStart)).toContainEqual({
         sourceArtifactKey: connectedStar.key,
@@ -272,6 +282,8 @@ describe("TreasureAltar animation boundary", () => {
       artifactKey: compass.key,
       layoutSource: null,
       cinematicDestination: null,
+      silhouette: null,
+      connectionEndpoint: null,
     });
     expect(connectionChanges.slice(connectionRemovalStart)).not.toContainEqual({
       sourceArtifactKey: compass.key,
@@ -302,6 +314,8 @@ describe("TreasureAltar animation boundary", () => {
         artifactKey,
         layoutSource: null,
         cinematicDestination: null,
+        silhouette: null,
+        connectionEndpoint: null,
       });
     }
     expect(finalConnectionCleanup).toContainEqual({
@@ -313,21 +327,67 @@ describe("TreasureAltar animation boundary", () => {
 
   it("preserves artifact-key target identity when display order changes", () => {
     const { rerender } = render(<TreasureAltar snapshot={snapshot([compass, star])} inspect={vi.fn()} />);
-    const before = Array.from(
-      document.querySelectorAll<HTMLElement>("[data-artifact-target-role='cinematic-destination']"),
-    )
+    const before = Array.from(document.querySelectorAll<HTMLElement>("[data-artifact-target-role='silhouette']"))
       .map((node) => node.dataset.artifactKey)
       .sort();
 
     rerender(<TreasureAltar snapshot={snapshot([star, compass])} inspect={vi.fn()} />);
-    const after = Array.from(
-      document.querySelectorAll<HTMLElement>("[data-artifact-target-role='cinematic-destination']"),
-    )
+    const after = Array.from(document.querySelectorAll<HTMLElement>("[data-artifact-target-role='silhouette']"))
       .map((node) => node.dataset.artifactKey)
       .sort();
 
     expect(before).toEqual([compass.key, star.key].sort());
     expect(after).toEqual(before);
+  });
+
+  it("excludes duplicate and unreleased artifact producers from local target registration", async () => {
+    const duplicateCompass: PublicArtifact = { ...compass, name: "Duplicate Compass" };
+    const hiddenConnection: PublicArtifact = {
+      key: "unreleased-relic",
+      state: "UNKNOWN",
+      safeName: "Unreleased relic",
+      displayX: 5,
+      displayY: 5,
+      connectedArtifactKey: compass.key,
+      unseen: false,
+    };
+    const changes: TreasureAltarArtifactTargetHandles[] = [];
+    render(
+      <AnimationProvider>
+        <SceneHost kind="player-progression" hostKey="altar-dedup-test">
+          <TreasureAltar
+            snapshot={snapshot([compass, duplicateCompass, star, hiddenConnection])}
+            inspect={vi.fn()}
+            onArtifactTargetHandlesChange={(handles) => changes.push(handles)}
+          />
+        </SceneHost>
+      </AnimationProvider>,
+    );
+
+    expect(
+      document.querySelectorAll(`[data-artifact-target-role='layout-source'][data-artifact-key='${compass.key}']`),
+    ).toHaveLength(1);
+    expect(
+      document.querySelectorAll(`[data-artifact-target-role='silhouette'][data-artifact-key='${compass.key}']`),
+    ).toHaveLength(1);
+    expect(
+      document.querySelectorAll(
+        `[data-artifact-target-role='connection-endpoint'][data-artifact-key='${compass.key}']`,
+      ),
+    ).toHaveLength(1);
+    expect(document.querySelectorAll("[data-artifact-key='unreleased-relic'][data-scene-target-id]")).toHaveLength(0);
+    expect(document.querySelector("[data-source-artifact-key='unreleased-relic']")).not.toBeInTheDocument();
+    await waitFor(() =>
+      expect(
+        changes.filter(
+          (handles) =>
+            handles.artifactKey === compass.key &&
+            handles.layoutSource &&
+            handles.silhouette &&
+            handles.connectionEndpoint,
+        ),
+      ).toHaveLength(1),
+    );
   });
 
   it("uses unique heading IDs and delivers live handles to a replacement callback", async () => {
@@ -361,6 +421,8 @@ describe("TreasureAltar animation boundary", () => {
         artifactKey,
         layoutSource: null,
         cinematicDestination: null,
+        silhouette: null,
+        connectionEndpoint: null,
       });
     }
 

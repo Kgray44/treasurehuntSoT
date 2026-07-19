@@ -147,7 +147,12 @@ export function MobileNavigation({ view, unseen, navigate, onDimTargetChange }: 
         style={companionNavigationDimStyle}
       />
       {companionViews.map((item) => (
-        <button className={view === item.key ? "active" : ""} onClick={() => navigate(item.key)} key={item.key}>
+        <button
+          aria-current={view === item.key ? "page" : undefined}
+          className={view === item.key ? "active" : ""}
+          onClick={() => navigate(item.key)}
+          key={item.key}
+        >
           <span aria-hidden="true">{item.symbol}</span>
           {item.shortLabel}
           {unseen[item.key] > 0 && <span className="sr-only">, new content</span>}

@@ -1,12 +1,17 @@
-export type RiveInputContract = { name: string; type: "boolean" | "number" | "trigger" };
+export type RiveInputContract = Readonly<{ name: string; type: "boolean" | "number" | "trigger" }>;
 export type RiveAssetContract = {
   key: string;
   path?: string;
   artboard?: string;
   stateMachine: string;
-  inputs: RiveInputContract[];
-  states: string[];
+  inputs: readonly RiveInputContract[];
+  states: readonly string[];
+  /** Input values that produce the stable, non-travelling reduced pose before an authoritative semantic signal. */
+  reducedPose: Readonly<Record<string, boolean | number>>;
+  /** Signals that may update a semantic pose without enabling physical state travel. */
+  reducedSemanticSignals: readonly string[];
   fallback: string;
+  availability: "runtime-ready" | "blocked_external_asset";
   pages: string[];
   behavior: { full: string; gentle: string; reduced: string };
   priority: "critical" | "idle" | "intent";
@@ -18,15 +23,21 @@ export type RiveAssetContract = {
 const productionFallback = (
   key: string,
   stateMachine: string,
-  states: string[],
+  inputs: readonly RiveInputContract[],
+  states: readonly string[],
+  reducedPose: Readonly<Record<string, boolean | number>>,
+  reducedSemanticSignals: readonly string[],
   fallback: string,
   pages: string[],
 ): RiveAssetContract => ({
   key,
   stateMachine,
-  inputs: [],
+  inputs,
   states,
+  reducedPose,
+  reducedSemanticSignals,
   fallback,
+  availability: "blocked_external_asset",
   pages,
   behavior: {
     full: "stateful interactive object when original art is supplied",
@@ -43,28 +54,54 @@ export const riveAssets = {
   invitationSeal: productionFallback(
     "invitation-seal",
     "Invitation Seal",
+    [],
     ["idle", "hover", "pressed", "listening", "opening", "rejected"],
+    {},
+    [],
     "/animations/stills/seal-fallback.svg",
     ["access"],
   ),
   journalClasp: productionFallback(
     "journal-clasp",
     "Journal Clasp",
+    [
+      { name: "state", type: "number" },
+      { name: "wake", type: "trigger" },
+      { name: "release", type: "trigger" },
+    ],
     ["locked", "awake", "opening", "open"],
+    { state: 0 },
+    ["state"],
     "/animations/stills/journal-clasp-fallback.svg",
     ["journal"],
   ),
   voyageCompass: productionFallback(
     "voyage-compass",
     "Voyage Compass",
+    [
+      { name: "state", type: "number" },
+      { name: "bearing", type: "number" },
+      { name: "arrive", type: "trigger" },
+    ],
     ["idle", "bearing", "arrived"],
+    { state: 0, bearing: 0 },
+    ["state", "bearing"],
     "/animations/stills/compass-fallback.svg",
     ["landing", "chart"],
   ),
   finaleMechanism: productionFallback(
     "finale-mechanism",
     "Finale Mechanism",
+    [
+      { name: "state", type: "number" },
+      { name: "progress", type: "number" },
+      { name: "wake", type: "trigger" },
+      { name: "unlock", type: "trigger" },
+      { name: "audioLevel", type: "number" },
+    ],
     ["dormant", "teased", "sealed", "partial", "ready", "unlocking", "unlocked", "complete"],
+    { state: 0, progress: 0, audioLevel: 0 },
+    ["state", "progress"],
     "/animations/stills/finale-fallback.svg",
     ["finale"],
   ),
@@ -74,7 +111,10 @@ export const riveAssets = {
     stateMachine: "State Machine 1",
     inputs: [],
     states: ["runtime-ready", "input-controlled"],
+    reducedPose: {},
+    reducedSemanticSignals: [],
     fallback: "/animations/stills/rive-sample-fallback.svg",
+    availability: "runtime-ready",
     pages: ["development showcase"],
     behavior: {
       full: "interactive state machine",

@@ -25,7 +25,16 @@ type Action =
   | "PAUSE"
   | "RESUME";
 
-async function saveBefore(tx: Prisma.TransactionClient, campaignId: string, reason: string) {
+export class ProgressionConflict extends Error {
+  constructor(
+    message: string,
+    public code = "COMMAND_CONFLICT",
+  ) {
+    super(message);
+  }
+}
+
+async function saveBefore(tx: Prisma.TransactionClient, campaignId: string, reason: string, sequence: number) {
   const campaign = await tx.campaign.findUniqueOrThrow({
     where: { id: campaignId },
     include: {
@@ -41,7 +50,7 @@ async function saveBefore(tx: Prisma.TransactionClient, campaignId: string, reas
   await tx.saveStateSnapshot.create({
     data: {
       campaignId,
-      sequence: campaign.currentSequence,
+      sequence,
       reason,
       state: JSON.stringify({
         status: campaign.status,
@@ -72,19 +81,19 @@ async function saveBefore(tx: Prisma.TransactionClient, campaignId: string, reas
 async function appendEvent(
   tx: Prisma.TransactionClient,
   campaignId: string,
+  sequence: number,
   type: ProgressEventType,
   payload: Record<string, unknown>,
   actor: string,
   reversesEventId?: string,
 ) {
-  const campaign = await tx.campaign.update({ where: { id: campaignId }, data: { currentSequence: { increment: 1 } } });
   return tx.progressEvent.create({
     data: {
       campaignId,
       type,
       payload: JSON.stringify(payload),
       actor,
-      sequence: campaign.currentSequence,
+      sequence,
       reversesEventId,
     },
   });
@@ -94,7 +103,13 @@ export async function executeProgressionAction(
   slug: string,
   action: Action,
   userId: string,
-  options: { targetKey?: string; value?: string; correlationId?: string; reason?: string } = {},
+  options: {
+    targetKey?: string;
+    value?: string;
+    correlationId?: string;
+    reason?: string;
+    expectedSequence?: number;
+  } = {},
 ) {
   const result = await db.$transaction(async (tx) => {
     const campaign = await tx.campaign.findUniqueOrThrow({
@@ -121,7 +136,27 @@ export async function executeProgressionAction(
     let reversesEventId: string | undefined;
 
     if (campaign.status === "PAUSED" && !["RESUME", "UNDO_LAST"].includes(action))
-      throw new Error("The campaign is paused. Resume it before releasing progression.");
+      throw new ProgressionConflict(
+        "The campaign is paused. Resume it before releasing progression.",
+        "CAMPAIGN_PAUSED",
+      );
+
+    const expectedSequence = options.expectedSequence ?? campaign.currentSequence;
+    if (campaign.currentSequence !== expectedSequence)
+      throw new ProgressionConflict(
+        `State changed from sequence ${expectedSequence} to ${campaign.currentSequence}. Refresh before confirming.`,
+        "STALE_SEQUENCE",
+      );
+    const reservation = await tx.campaign.updateMany({
+      where: { id: campaign.id, currentSequence: expectedSequence },
+      data: { currentSequence: { increment: 1 } },
+    });
+    if (reservation.count !== 1)
+      throw new ProgressionConflict(
+        `State changed from sequence ${expectedSequence}. Refresh before confirming.`,
+        "STALE_SEQUENCE",
+      );
+    const reservedSequence = expectedSequence + 1;
 
     if (action === "UNDO_LAST") {
       const saved = await tx.saveStateSnapshot.findFirst({
@@ -132,7 +167,7 @@ export async function executeProgressionAction(
         where: { campaignId: campaign.id, type: { not: "STATE_REVERTED" } },
         orderBy: { sequence: "desc" },
       });
-      if (!saved || !last) throw new Error("There is no progression action to undo.");
+      if (!saved || !last) throw new ProgressionConflict("There is no progression action to undo.", "NOT_FOUND");
       const state = JSON.parse(saved.state) as {
         status: string;
         chapters: Array<{ id: string; state: string; revealedAt: string | null; solvedAt: string | null }>;
@@ -196,15 +231,16 @@ export async function executeProgressionAction(
       payload = { reversedEventId: last.id, reversedType: last.type };
       reversesEventId = last.id;
     } else {
-      await saveBefore(tx, campaign.id, action);
+      await saveBefore(tx, campaign.id, action, expectedSequence);
       if (action === "PREPARE_CHAPTER") {
         if (!canTransition(chapter.state as ChapterState, "READY"))
-          throw new Error(`Chapter cannot be prepared from ${chapter.state}.`);
+          throw new ProgressionConflict(`Chapter cannot be prepared from ${chapter.state}.`, "INVALID_TRANSITION");
         await tx.chapter.update({ where: { id: chapter.id }, data: { state: "READY" } });
         type = "CHAPTER_PREPARED";
         payload = { ordinal: chapter.ordinal };
       } else if (action === "RELEASE_CHAPTER") {
-        if (chapter.state !== "READY") throw new Error("Prepare the chapter before releasing it.");
+        if (chapter.state !== "READY")
+          throw new ProgressionConflict("Prepare the chapter before releasing it.", "PREREQUISITE_FAILED");
         await tx.chapter.update({ where: { id: chapter.id }, data: { state: "ACTIVE", revealedAt: new Date() } });
         const location = campaign.mapLocations[0];
         if (location) await tx.mapLocation.update({ where: { id: location.id }, data: { revealedAt: new Date() } });
@@ -229,17 +265,17 @@ export async function executeProgressionAction(
         };
       } else if (action === "MARK_SOLVED") {
         if (!canTransition(chapter.state as ChapterState, "SOLVED"))
-          throw new Error("Only an active chapter can be solved.");
+          throw new ProgressionConflict("Only an active chapter can be solved.", "INVALID_TRANSITION");
         await tx.chapter.update({ where: { id: chapter.id }, data: { state: "SOLVED", solvedAt: new Date() } });
         type = "CHAPTER_SOLVED";
         payload = { ordinal: chapter.ordinal };
       } else if (action === "AWARD_ARTIFACT") {
         const artifact = campaign.artifacts.find((item) => item.key === options.targetKey) ?? campaign.artifacts[0];
-        if (!artifact) throw new Error("No artifact is configured.");
+        if (!artifact) throw new ProgressionConflict("No artifact is configured.", "NOT_FOUND");
         const existingAward = await tx.artifactAward.findUnique({
           where: { campaignId_artifactId: { campaignId: campaign.id, artifactId: artifact.id } },
         });
-        if (existingAward) throw new Error("This artifact has already been awarded.");
+        if (existingAward) throw new ProgressionConflict("This artifact has already been awarded.", "ALREADY_RELEASED");
         await tx.artifactAward.create({ data: { campaignId: campaign.id, artifactId: artifact.id } });
         type = "ARTIFACT_AWARDED";
         payload = { key: artifact.key, name: artifact.name, description: artifact.description };
@@ -247,8 +283,9 @@ export async function executeProgressionAction(
         const location =
           campaign.mapLocations.find((item) => item.key === options.targetKey) ??
           campaign.mapLocations.find((item) => !item.revealedAt);
-        if (!location) throw new Error("No map location is configured.");
-        if (location.revealedAt) throw new Error("This map location has already been revealed.");
+        if (!location) throw new ProgressionConflict("No map location is configured.", "NOT_FOUND");
+        if (location.revealedAt)
+          throw new ProgressionConflict("This map location has already been revealed.", "ALREADY_RELEASED");
         await tx.mapLocation.update({
           where: { id: location.id },
           data: { revealedAt: new Date(), state: "REVEALED" },
@@ -265,7 +302,7 @@ export async function executeProgressionAction(
         const route =
           campaign.mapRoutes.find((item) => item.key === options.targetKey) ??
           campaign.mapRoutes.find((item) => item.state === "HIDDEN");
-        if (!route) throw new Error("No hidden route segment remains.");
+        if (!route) throw new ProgressionConflict("No hidden route segment remains.", "NOT_FOUND");
         await tx.mapRoute.update({ where: { id: route.id }, data: { state: "REVEALED", revealedAt: new Date() } });
         type = "MAP_ROUTE_REVEALED";
         payload = { key: route.key, fromKey: route.fromKey, toKey: route.toKey };
@@ -273,7 +310,7 @@ export async function executeProgressionAction(
         const artifact =
           campaign.artifacts.find((item) => item.key === options.targetKey) ??
           campaign.artifacts.find((item) => item.state === "UNKNOWN");
-        if (!artifact) throw new Error("No unknown artifact remains.");
+        if (!artifact) throw new ProgressionConflict("No unknown artifact remains.", "NOT_FOUND");
         await tx.artifact.update({ where: { id: artifact.id }, data: { state: "SILHOUETTE" } });
         type = "ARTIFACT_SILHOUETTE_REVEALED";
         payload = { key: artifact.key, safeName: artifact.safeName, silhouetteLabel: artifact.silhouetteLabel };
@@ -281,7 +318,8 @@ export async function executeProgressionAction(
         const artifact =
           campaign.artifacts.find((item) => item.key === options.targetKey) ??
           campaign.artifacts.find((item) => item.connectedArtifactKey && item.state !== "CONNECTED");
-        if (!artifact?.connectedArtifactKey) throw new Error("No safe development artifact connection is configured.");
+        if (!artifact?.connectedArtifactKey)
+          throw new ProgressionConflict("No safe development artifact connection is configured.", "NOT_FOUND");
         await tx.artifact.updateMany({
           where: { campaignId: campaign.id, key: { in: [artifact.key, artifact.connectedArtifactKey] } },
           data: { state: "CONNECTED" },
@@ -292,7 +330,7 @@ export async function executeProgressionAction(
         const quest =
           campaign.sideQuests.find((item) => item.key === options.targetKey) ??
           campaign.sideQuests.find((item) => ["HIDDEN", "RUMORED"].includes(item.state));
-        if (!quest) throw new Error("No undiscovered side quest remains.");
+        if (!quest) throw new ProgressionConflict("No undiscovered side quest remains.", "NOT_FOUND");
         await tx.sideQuest.update({ where: { id: quest.id }, data: { state: "DISCOVERED" } });
         type = "SIDE_QUEST_DISCOVERED";
         payload = { key: quest.key, title: quest.title };
@@ -300,7 +338,7 @@ export async function executeProgressionAction(
         const quest =
           campaign.sideQuests.find((item) => item.key === options.targetKey) ??
           campaign.sideQuests.find((item) => ["DISCOVERED", "ACTIVE", "PARTIALLY_COMPLETE"].includes(item.state));
-        if (!quest) throw new Error("No active side quest can be updated.");
+        if (!quest) throw new ProgressionConflict("No active side quest can be updated.", "NOT_FOUND");
         const objective = quest.objectives.find((item) => !item.complete);
         if (objective) await tx.sideQuestObjective.update({ where: { id: objective.id }, data: { complete: true } });
         await tx.sideQuest.update({ where: { id: quest.id }, data: { state: "ACTIVE" } });
@@ -310,7 +348,7 @@ export async function executeProgressionAction(
         const quest =
           campaign.sideQuests.find((item) => item.key === options.targetKey) ??
           campaign.sideQuests.find((item) => ["DISCOVERED", "ACTIVE", "PARTIALLY_COMPLETE"].includes(item.state));
-        if (!quest) throw new Error("No active side quest can be completed.");
+        if (!quest) throw new ProgressionConflict("No active side quest can be completed.", "NOT_FOUND");
         await tx.sideQuestObjective.updateMany({ where: { sideQuestId: quest.id }, data: { complete: true } });
         await tx.sideQuest.update({ where: { id: quest.id }, data: { state: "COMPLETE", completedAt: new Date() } });
         type = "SIDE_QUEST_COMPLETED";
@@ -350,7 +388,7 @@ export async function executeProgressionAction(
           optional?: boolean;
         }>;
         const target = requirements.find((item) => item.key === options.targetKey) ?? requirements[0];
-        if (!target) throw new Error("No safe finale requirement is configured.");
+        if (!target) throw new ProgressionConflict("No safe finale requirement is configured.", "NOT_FOUND");
         target.current = Math.min(target.target, target.current + 1);
         await tx.campaign.update({
           where: { id: campaign.id },
@@ -359,16 +397,18 @@ export async function executeProgressionAction(
         type = "FINALE_REQUIREMENT_UPDATED";
         payload = { key: target.key };
       } else if (action === "PAUSE") {
-        if (campaign.status === "PAUSED") throw new Error("Campaign is already paused.");
+        if (campaign.status === "PAUSED")
+          throw new ProgressionConflict("Campaign is already paused.", "INVALID_TRANSITION");
         await tx.campaign.update({ where: { id: campaign.id }, data: { status: "PAUSED" } });
         type = "CAMPAIGN_PAUSED";
       } else {
-        if (campaign.status === "ACTIVE") throw new Error("Campaign is already underway.");
+        if (campaign.status === "ACTIVE")
+          throw new ProgressionConflict("Campaign is already underway.", "INVALID_TRANSITION");
         await tx.campaign.update({ where: { id: campaign.id }, data: { status: "ACTIVE" } });
         type = "CAMPAIGN_RESUMED";
       }
     }
-    const event = await appendEvent(tx, campaign.id, type, payload, userId, reversesEventId);
+    const event = await appendEvent(tx, campaign.id, reservedSequence, type, payload, userId, reversesEventId);
     await tx.campaignSnapshot.create({
       data: { campaignId: campaign.id, sequence: event.sequence, state: JSON.stringify({ eventType: type, payload }) },
     });
@@ -379,7 +419,12 @@ export async function executeProgressionAction(
         action,
         correlationId: options.correlationId,
         reason: options.reason,
-        metadata: JSON.stringify({ eventId: event.id, sequence: event.sequence, targetKey: options.targetKey }),
+        metadata: JSON.stringify({
+          eventId: event.id,
+          sequence: event.sequence,
+          reservedSequence,
+          targetKey: options.targetKey,
+        }),
       },
     });
     return { campaignId: campaign.id, event };

@@ -41,7 +41,10 @@ export function RiveStatefulObject({
   onInputs?: (inputs: RiveRuntimeInput[]) => void;
   onStatus?: (status: RiveRuntimeStatus) => void;
 }) {
-  const canLoad = Boolean(asset.path) && (!asset.developmentOnly || process.env.NODE_ENV !== "production");
+  const canLoad =
+    asset.availability === "runtime-ready" &&
+    Boolean(asset.path) &&
+    (!asset.developmentOnly || process.env.NODE_ENV !== "production");
   const onInputsRef = useRef(onInputs);
   const onStatusRef = useRef(onStatus);
   useEffect(() => {

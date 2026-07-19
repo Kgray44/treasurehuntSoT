@@ -19,6 +19,8 @@ export type JournalPage = {
   kind: JournalPageKind;
   density: "hard" | "soft";
   chapterOrdinal?: number;
+  annotationKey?: string;
+  unseen?: boolean;
   folio?: number;
   title?: string;
   eyebrow?: string;
@@ -28,6 +30,16 @@ export type JournalPage = {
   note?: string;
   state?: string;
 };
+
+const annotationDateFormatter = new Intl.DateTimeFormat("en-US", {
+  dateStyle: "medium",
+  timeZone: "UTC",
+});
+
+function formatAnnotationDate(value: string) {
+  const date = new Date(value);
+  return Number.isNaN(date.getTime()) ? "Invalid Date" : annotationDateFormatter.format(date);
+}
 
 function chapterPages(chapter: PublicChapter, folio: number): JournalPage[] {
   const safeTitle = chapter.title ?? chapter.teaser ?? `Chapter ${chapter.ordinal}`;
@@ -100,10 +112,12 @@ function chapterPages(chapter: PublicChapter, folio: number): JournalPage[] {
       kind: "annotation",
       density: "soft",
       chapterOrdinal: chapter.ordinal,
+      annotationKey: annotation.key,
+      unseen: annotation.unseen,
       folio: folio + pages.length,
       eyebrow: annotation.title,
       body: annotation.body,
-      note: new Date(annotation.createdAt).toLocaleDateString(),
+      note: formatAnnotationDate(annotation.createdAt),
     }),
   );
   if (chapter.related && Object.values(chapter.related).some(Boolean)) {
@@ -172,5 +186,12 @@ export function pageIndexForChapter(pages: JournalPage[], ordinal: number) {
   return Math.max(
     0,
     pages.findIndex((page) => page.chapterOrdinal === ordinal),
+  );
+}
+
+export function pageIndexForAnnotation(pages: JournalPage[], annotationKey: string, chapterOrdinal?: number) {
+  return pages.findIndex(
+    (page) =>
+      page.annotationKey === annotationKey && (chapterOrdinal === undefined || page.chapterOrdinal === chapterOrdinal),
   );
 }
