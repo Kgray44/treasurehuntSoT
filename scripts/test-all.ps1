@@ -84,8 +84,16 @@ if ($env:PLAYWRIGHT_BASE_URL -and $env:PLAYWRIGHT_BASE_URL -ne "http://127.0.0.1
 if ($env:FOREVER_VALIDATION_PRODUCTION_PORT -and [int]$env:FOREVER_VALIDATION_PRODUCTION_PORT -ne 3200) {
     throw "Production restart validation is serialized on port 3200."
 }
+if ($env:FOREVER_PHASE3_PERFORMANCE_BASE_URL -and $env:FOREVER_PHASE3_PERFORMANCE_BASE_URL -ne "http://127.0.0.1:3200") {
+    throw "Phase 3 production performance requires http://127.0.0.1:3200."
+}
+if ($env:PHASE3_BASE_URL -and $env:PHASE3_BASE_URL -notin @("http://127.0.0.1:3100", "http://127.0.0.1:3200")) {
+    throw "Phase 3 validation base URL must use the harness-owned port 3100 or 3200."
+}
 $env:PLAYWRIGHT_BASE_URL = "http://127.0.0.1:3100"
+$env:PHASE3_BASE_URL = "http://127.0.0.1:3100"
 $env:FOREVER_PLAYWRIGHT_EXTERNAL_SERVER = "1"
+$env:FOREVER_PHASE3_PERFORMANCE_BASE_URL = "http://127.0.0.1:3200"
 $productionPort = 3200
 if (-not $env:GM_USERNAME) { $env:GM_USERNAME = "kato" }
 if (-not $env:GM_PASSWORD) { $env:GM_PASSWORD = "development-captain-only" }
@@ -398,11 +406,12 @@ function Stop-OwnedValidationServer {
     if ($cleanupFailure) { throw $cleanupFailure }
 }
 
-function Test-ProductionStart {
-    param([int]$Port)
+function Start-OwnedProductionServer {
+    param([int]$Port, [string]$ArtifactLabel = "restart")
+    if ($ArtifactLabel -notmatch '^[a-z0-9-]+$') { throw "Production artifact label is invalid." }
     Assert-TcpPortAvailable -Port $Port
-    $stdout = Join-Path $runtimeRoot "artifacts\validation\production-$Port.out.log"
-    $stderr = Join-Path $runtimeRoot "artifacts\validation\production-$Port.err.log"
+    $stdout = Join-Path $runtimeRoot "artifacts\validation\production-$Port-$ArtifactLabel.out.log"
+    $stderr = Join-Path $runtimeRoot "artifacts\validation\production-$Port-$ArtifactLabel.err.log"
     New-Item -ItemType Directory -Path (Split-Path $stdout) -Force | Out-Null
     $launcherProcess = Start-Process -FilePath $node -ArgumentList "node_modules/next/dist/bin/next", "start", "-H", "127.0.0.1", "-p", "$Port" -WorkingDirectory $runtimeRoot -WindowStyle Hidden -RedirectStandardOutput $stdout -RedirectStandardError $stderr -PassThru
     $launcherIdentity = Get-ProcessIdentity -ProcessId $launcherProcess.Id
@@ -413,10 +422,22 @@ function Test-ProductionStart {
         ListenerIdentity = $null
         ProcessIdentities = @($launcherIdentity)
     }
-    $testFailure = $null
-    $cleanupFailure = $null
     try {
-        Wait-ForeverHttp -Url "http://127.0.0.1:$Port" -Seconds 45
+        $deadline = [DateTime]::UtcNow.AddSeconds(45)
+        $databaseIdentity = $null
+        while ([DateTime]::UtcNow -lt $deadline) {
+            if ($launcherProcess.HasExited) { throw "Owned production server exited before identity verification." }
+            try {
+                $databaseIdentity = Invoke-RestMethod -Uri "http://127.0.0.1:$Port/api/dev/validation/database-identity" -Method Get -TimeoutSec 3
+                if ($databaseIdentity.validationDatabase -eq $true -and $databaseIdentity.nonceMatch -eq $true) { break }
+                $databaseIdentity = $null
+            } catch {
+                $databaseIdentity = $null
+            }
+            Start-Sleep -Milliseconds 250
+        }
+        if (-not $databaseIdentity) { throw "Owned production server did not prove the isolated database identity." }
+
         Assert-ProcessIdentityMatches -ExpectedIdentity $launcherIdentity -Label "Owned production launcher"
         $ownerIds = @(Get-TcpPortOwnerIds -Port $Port)
         if ($ownerIds.Count -ne 1) { throw "Port $Port does not have exactly one listener owner." }
@@ -444,24 +465,41 @@ function Test-ProductionStart {
             else { throw }
         }
         if ($showcaseStatus -ne 404) { throw "Development animation showcase returned HTTP $showcaseStatus in production." }
+
+        [void](Invoke-IsolationHelper -Arguments @(
+            "verify-canonical",
+            "--canonical-db", $canonicalDatabase,
+            "--canonical-family-base64", $canonicalFamilyBase64
+        ))
+        return $ownership
     } catch {
-        $testFailure = $_.Exception
-    } finally {
-        try { Stop-OwnedValidationServer -ServerOwnership $ownership }
-        catch { $cleanupFailure = $_.Exception }
+        $startFailure = $_.Exception
+        try { Stop-OwnedProcessTree -ServerOwnership $ownership }
+        catch {
+            throw [System.InvalidOperationException]::new("Production server start failed and owned-process cleanup also failed: $($_.Exception.Message)", $startFailure)
+        }
+        throw $startFailure
     }
-    if ($testFailure -and $cleanupFailure) {
-        throw [System.InvalidOperationException]::new("Production start proof failed and owned-process cleanup also failed: $($cleanupFailure.Message)", $testFailure)
-    }
+}
+
+function Test-ProductionStart {
+    param([int]$Port)
+    $ownership = Start-OwnedProductionServer -Port $Port
+    $testFailure = $null
+    try { Stop-OwnedValidationServer -ServerOwnership $ownership }
+    catch { $testFailure = $_.Exception }
     if ($testFailure) { throw $testFailure }
-    if ($cleanupFailure) { throw $cleanupFailure }
+    Assert-TcpPortAvailable -Port $Port
 }
 
 $prepareAttempted = $false
 $validationFailure = $null
 $finalizationFailures = @()
 $ownedValidationServer = $null
+$ownedProductionServer = $null
 $playwrightInvoked = $false
+$defaultBrowserSucceeded = $false
+$productionPerformanceSucceeded = $false
 $browserSucceeded = $false
 try {
     Write-Host "`n==> Preparing isolated validation database" -ForegroundColor Cyan
@@ -504,24 +542,49 @@ try {
     $ownedValidationServer = Start-OwnedValidationServer
     $playwrightInvoked = $true
     Invoke-ValidationStep -Name "Running browser acceptance tests" -Arguments @("node_modules/playwright/cli.js", "test")
-    $browserSucceeded = $true
     Stop-OwnedValidationServer -ServerOwnership $ownedValidationServer
     $ownedValidationServer = $null
+    Assert-TcpPortAvailable -Port 3100
+    $defaultBrowserSucceeded = $true
 
     Invoke-ValidationStep -Name "Verifying accepted database state" -Arguments @("node_modules/tsx/dist/cli.mjs", "scripts/verify-database.ts", "--acceptance")
     Invoke-ValidationStep -Name "Proving launcher seed preserves accepted progress" -Arguments @("node_modules/tsx/dist/cli.mjs", "prisma/seed.ts", "--ensure")
     Invoke-ValidationStep -Name "Rechecking preserved database state" -Arguments @("node_modules/tsx/dist/cli.mjs", "scripts/verify-database.ts", "--acceptance")
     Invoke-ValidationStep -Name "Creating production build" -Arguments @("node_modules/next/dist/bin/next", "build")
 
-    Write-Host "`n==> Proving production restart safety" -ForegroundColor Cyan
+    Write-Host "`n==> Starting owned production performance server" -ForegroundColor Cyan
+    $env:FOREVER_VALIDATION_PRODUCTION_IDENTITY = "1"
+    $env:PHASE3_BASE_URL = "http://127.0.0.1:$productionPort"
+    $ownedProductionServer = Start-OwnedProductionServer -Port $productionPort -ArtifactLabel "performance"
+    Invoke-ValidationStep -Name "Running Chromium production performance gates" -Arguments @(
+        "node_modules/playwright/cli.js",
+        "test",
+        "--config=playwright.phase3-performance.config.ts"
+    )
+    [void](Invoke-IsolationHelper -Arguments @(
+        "verify-canonical",
+        "--canonical-db", $canonicalDatabase,
+        "--canonical-family-base64", $canonicalFamilyBase64
+    ))
+    Stop-OwnedValidationServer -ServerOwnership $ownedProductionServer
+    $ownedProductionServer = $null
+    Assert-TcpPortAvailable -Port $productionPort
+    $productionPerformanceSucceeded = $true
+
+    Write-Host "`n==> Proving the second production restart" -ForegroundColor Cyan
     Test-ProductionStart -Port $productionPort
-    Test-ProductionStart -Port $productionPort
+    $browserSucceeded = $defaultBrowserSucceeded -and $productionPerformanceSucceeded
+    if (-not $browserSucceeded) { throw "Browser validation success state is incomplete." }
 } catch {
     $validationFailure = $_.Exception
 } finally {
     if ($ownedValidationServer) {
         try { Stop-OwnedValidationServer -ServerOwnership $ownedValidationServer }
         catch { $finalizationFailures += "Owned validation server cleanup failed: $($_.Exception.Message)" }
+    }
+    if ($ownedProductionServer) {
+        try { Stop-OwnedValidationServer -ServerOwnership $ownedProductionServer }
+        catch { $finalizationFailures += "Owned production server cleanup failed: $($_.Exception.Message)" }
     }
     foreach ($port in @(3100, 3200)) {
         try { Assert-TcpPortAvailable -Port $port }
@@ -539,13 +602,16 @@ try {
         }
         if ((Test-Path -LiteralPath $isolationReport -PathType Leaf) -and (Test-Path -LiteralPath $isolatedDatabase -PathType Leaf)) {
             try {
+                $reportedBrowserSucceeded = $browserSucceeded -and
+                    ($null -eq $validationFailure) -and
+                    ($finalizationFailures.Count -eq 0)
                 [void](Invoke-IsolationHelper -Arguments @(
                     "verify",
                     "--report", $isolationReport,
                     "--copy-db", $isolatedDatabase,
                     "--canonical-db", $canonicalDatabase,
                     "--expect-mutation", $playwrightInvoked.ToString().ToLowerInvariant(),
-                    "--browser-succeeded", $browserSucceeded.ToString().ToLowerInvariant()
+                    "--browser-succeeded", $reportedBrowserSucceeded.ToString().ToLowerInvariant()
                 ))
             } catch {
                 $finalizationFailures += "Isolation report final verification failed: $($_.Exception.Message)"

@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { Quartermaster } from "@/components/gm/Quartermaster";
-import { requireGm } from "@/lib/security";
+import { requireGmCapability } from "@/lib/security";
 
 export const dynamic = "force-dynamic";
 const workspaces = new Set([
@@ -20,5 +20,5 @@ const workspaces = new Set([
 export default async function QuartermasterWorkspacePage({ params }: { params: Promise<{ workspace: string }> }) {
   const { workspace } = await params;
   if (!workspaces.has(workspace)) notFound();
-  return <Quartermaster authenticated={Boolean(await requireGm())} />;
+  return <Quartermaster authenticated={Boolean(await requireGmCapability("CAPTAIN"))} />;
 }

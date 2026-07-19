@@ -21,6 +21,27 @@ export type LottieEffectHandle = {
 
 export type LottiePlaybackPolicy = "ambient" | "commanded";
 
+export const LOTTIE_DEVELOPMENT_FAILPOINT_GLOBAL = "__FOREVER_LOTTIE_FAILPOINT__" as const;
+
+export type LottieDevelopmentFailpoint = Readonly<{
+  kind: "stalled-load" | "renderer-error";
+  assetKey: string;
+  timeoutMs?: number;
+}>;
+
+type LottieFailureReason =
+  | "load-timeout"
+  | "asset-data-failed"
+  | "runtime-error"
+  | "development-stalled-load-timeout"
+  | "development-renderer-error";
+
+declare global {
+  interface Window {
+    __FOREVER_LOTTIE_FAILPOINT__?: LottieDevelopmentFailpoint;
+  }
+}
+
 type LottieEffectProps = {
   asset: LottieAssetContract;
   mode: MotionMode;
@@ -34,6 +55,17 @@ type LottieEffectProps = {
 };
 
 const defaultLoadTimeoutMs = 5_000;
+
+function readDevelopmentFailpoint(ownerWindow: Window, assetKey: string): LottieDevelopmentFailpoint | null {
+  if (process.env.NODE_ENV === "production") return null;
+  const value = ownerWindow[LOTTIE_DEVELOPMENT_FAILPOINT_GLOBAL];
+  if (!value || value.assetKey !== assetKey) return null;
+  if (value.kind === "renderer-error") return { kind: value.kind, assetKey };
+  if (value.kind !== "stalled-load") return null;
+  const timeoutMs = value.timeoutMs;
+  if (typeof timeoutMs !== "number" || !Number.isFinite(timeoutMs)) return null;
+  return { kind: value.kind, assetKey, timeoutMs: Math.min(10_000, Math.max(1, Math.round(timeoutMs))) };
+}
 
 export const LottieEffect = forwardRef<LottieEffectHandle, LottieEffectProps>(function LottieEffect(
   {
@@ -64,6 +96,7 @@ export const LottieEffect = forwardRef<LottieEffectHandle, LottieEffectProps>(fu
   const commandedPlayback = useRef(false);
   const pendingSegment = useRef<[number, number] | null>(null);
   const [status, setStatus] = useState<"loading" | "ready" | "failed">("loading");
+  const [failureReason, setFailureReason] = useState<LottieFailureReason | null>(null);
 
   onStatusRef.current = onStatus;
   labelRef.current = label;
@@ -155,24 +188,36 @@ export const LottieEffect = forwardRef<LottieEffectHandle, LottieEffectProps>(fu
     elementVisible.current = true;
     documentVisible.current = !document.hidden;
     setStatus("loading");
+    setFailureReason(null);
     onStatusRef.current?.("loading");
+
+    const developmentFailpoint = readDevelopmentFailpoint(target.ownerDocument.defaultView ?? window, assetKey);
 
     const clearLoadTimer = () => {
       if (loadTimer !== undefined) clearTimeout(loadTimer);
       loadTimer = undefined;
     };
-    const markFailed = () => {
+    const markFailed = (reason: LottieFailureReason) => {
       if (disposed || failed) return;
       failed = true;
       clearLoadTimer();
       runtimeReady.current = false;
       setStatus("failed");
+      setFailureReason(reason);
       onStatusRef.current?.("failed");
       recordAssetFailure(assetKey);
       runtimeTeardown?.();
     };
 
-    loadTimer = setTimeout(markFailed, Math.max(0, loadTimeoutRef.current));
+    const effectiveLoadTimeout =
+      developmentFailpoint?.kind === "stalled-load"
+        ? developmentFailpoint.timeoutMs
+        : Math.max(0, loadTimeoutRef.current);
+    loadTimer = setTimeout(
+      () =>
+        markFailed(developmentFailpoint?.kind === "stalled-load" ? "development-stalled-load-timeout" : "load-timeout"),
+      effectiveLoadTimeout,
+    );
     void import("lottie-web")
       .then(({ default: lottie }) => {
         if (disposed || failed) return;
@@ -205,7 +250,7 @@ export const LottieEffect = forwardRef<LottieEffectHandle, LottieEffectProps>(fu
           commandedPlayback.current = false;
           pendingSegment.current = null;
         };
-        const failedData = () => markFailed();
+        const failedData = () => markFailed("asset-data-failed");
         runtimeTeardown = () => {
           if (runtimeDestroyed) return;
           runtimeDestroyed = true;
@@ -239,8 +284,11 @@ export const LottieEffect = forwardRef<LottieEffectHandle, LottieEffectProps>(fu
           documentVisible.current = nextVisible;
           applyPlaybackPolicy(animation);
         });
+        if (developmentFailpoint?.kind === "renderer-error") {
+          queueMicrotask(() => markFailed("development-renderer-error"));
+        }
       })
-      .catch(markFailed);
+      .catch(() => markFailed("runtime-error"));
     return () => {
       disposed = true;
       clearLoadTimer();
@@ -254,7 +302,12 @@ export const LottieEffect = forwardRef<LottieEffectHandle, LottieEffectProps>(fu
   }, [applyPlaybackPolicy, assetKey, assetLoop, assetPath, assetRenderer]);
 
   return (
-    <div className={`lottie-effect ${className}`} data-animation-owner="lottie" data-lottie-status={status}>
+    <div
+      className={`lottie-effect ${className}`}
+      data-animation-owner="lottie"
+      data-lottie-status={status}
+      data-lottie-failure-reason={failureReason ?? undefined}
+    >
       <div ref={container} aria-hidden="true" />
       {status === "failed" && <AssetFallback src={asset.fallback} label={`${label} static fallback`} />}
       <span className="sr-only">{label}</span>

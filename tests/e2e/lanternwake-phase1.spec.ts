@@ -1,4 +1,4 @@
-import { expect, test, type Page, type Request } from "@playwright/test";
+import { errors, expect, test, type Page, type Request } from "@playwright/test";
 import { db } from "../../src/lib/db";
 
 const campaignSlug = "development-forever-treasure";
@@ -121,8 +121,12 @@ async function signInPlayer(page: Page) {
 async function openJournal(page: Page) {
   await page.getByRole("button", { name: "Open the journal" }).click();
   const skip = page.getByRole("button", { name: "Skip ceremony" });
-  await skip.waitFor({ state: "visible", timeout: 4_000 }).catch(() => undefined);
-  if (await skip.isVisible()) await skip.click();
+  try {
+    await skip.click({ timeout: 4_000 });
+  } catch (error) {
+    if (!(error instanceof errors.TimeoutError)) throw error;
+    if ((await skip.count()) > 0 && (await skip.isVisible())) throw error;
+  }
   await expect(page.getByRole("heading", { name: "The Voyage Journal" })).toBeVisible({ timeout: 20_000 });
   await expect(page.getByText("Tide connected")).toBeVisible({ timeout: 20_000 });
 }
@@ -403,7 +407,11 @@ test.describe.serial("Project Lanternwake Phase 1 presentation truth", () => {
       await expect(retry).toBeHidden();
       await expect(player.getByRole("button", { name: "Replay ceremony" })).toBeVisible();
       expect(acknowledgmentRequests).toEqual([eventId]);
-      expect(await db.viewedCeremony.count({ where: { eventId } })).toBe(1);
+      await expect
+        .poll(() => db.viewedCeremony.count({ where: { eventId } }), {
+          message: "The acknowledged fallback must persist exactly one viewed ceremony receipt.",
+        })
+        .toBe(1);
     } finally {
       await player
         .evaluate(() => {

@@ -1,16 +1,22 @@
 "use client";
 
 import Link from "next/link";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { flushSync } from "react-dom";
 import type { JournalPhaseOutcome, MotionMode } from "@/animation/core/animation-types";
 import { useMotionMode } from "@/animation/motion/useMotionMode";
 import {
+  createJournalReadyReceipt,
   isJournalInteractive,
+  resolveJournalOpeningPolicy,
+  waitForJournalReadiness,
   waitForJournalPhase,
   type JournalOpeningPhase,
+  type JournalOpeningPolicy,
+  type JournalReadyReceipt,
+  type JournalReadyReason,
 } from "@/animation/journal/opening-machine";
-import type { FlipBookPage, PageFlipBookHandle } from "@/components/animation/PageFlipBook";
+import type { FlipBookPage, PageFlipBookHandle, PageFlipReadinessSnapshot } from "@/components/animation/PageFlipBook";
 import { PhysicalJournalBook } from "@/components/player/journal/PhysicalJournalBook";
 import { TallTaleJournalPageContent, type JournalAsset } from "@/components/player/journal/TallTaleJournalPage";
 import {
@@ -58,20 +64,58 @@ type SessionState = {
 };
 
 type ProgressionEvent = { id: string; eventType: string; sequence: number; createdAt: string };
-type ConnectionState = "connecting" | "live" | "reconnecting" | "offline";
+type ConnectionState = "connecting" | "live" | "reconnecting" | "offline" | "revoked" | "archived";
 
-const openingSequence: JournalOpeningPhase[] = [
-  "ENTRY_ACTIVATED",
-  "CLOSED_BOOK_REVEAL",
-  "LATCH_RELEASING",
-  "COVER_OPENING",
-  "SEALED_PAGE_REVEAL",
-  "SEAL_BREAKING",
-  "BOOK_SETTLING",
-  "JOURNAL_READY",
-];
+type JournalTeardown = () => void;
 
-const returningOpeningSequence: JournalOpeningPhase[] = ["BOOK_SETTLING", "JOURNAL_READY"];
+function onceJournalTeardown(teardown: JournalTeardown): JournalTeardown {
+  let active = true;
+  return () => {
+    if (!active) return;
+    active = false;
+    teardown();
+  };
+}
+
+export type JournalTeardownRegistry = {
+  register: (teardown: JournalTeardown) => () => void;
+  dispose: () => void;
+  isDisposed: () => boolean;
+  activeCount: () => number;
+};
+
+export function createJournalTeardownRegistry(): JournalTeardownRegistry {
+  const teardowns = new Set<JournalTeardown>();
+  let disposed = false;
+
+  return {
+    register(teardown) {
+      if (disposed) {
+        teardown();
+        return () => undefined;
+      }
+      teardowns.add(teardown);
+      return () => {
+        teardowns.delete(teardown);
+      };
+    },
+    dispose() {
+      if (disposed) return;
+      disposed = true;
+      const pending = [...teardowns].reverse();
+      teardowns.clear();
+      for (const teardown of pending) {
+        try {
+          teardown();
+        } catch {
+          // A failed resource cleanup must not strand the remaining resources.
+        }
+      }
+    },
+    isDisposed: () => disposed,
+    activeCount: () => teardowns.size,
+  };
+}
 
 export type JournalOpeningConsumerStatus =
   | "idle"
@@ -97,6 +141,16 @@ type JournalPhaseWaiter = typeof waitForJournalPhase;
 
 export function journalOpeningAllowsPersistence(status: JournalOpeningConsumerStatus) {
   return status === "completed" || status === "completed-fallback" || status === "skipped";
+}
+
+function phaseFailureReason(outcome: JournalPhaseFailureOutcome): JournalReadyReason {
+  return outcome.status === "timed-out" ? "phase-timeout" : "runtime-failure";
+}
+
+function usableFocusTarget(element: HTMLElement | null): element is HTMLElement {
+  return Boolean(
+    element?.isConnected && !element.hidden && !element.closest("[inert]") && !element.closest('[aria-hidden="true"]'),
+  );
 }
 
 export async function runJournalOpeningPhases({
@@ -140,16 +194,35 @@ export async function runJournalOpeningPhases({
     : { status: "completed" };
 }
 
-export function TallTaleJournalSession({
-  sessionId,
-  identitySession = false,
-}: {
+type TallTaleJournalSessionProps = Readonly<{
   sessionId: string;
   identitySession?: boolean;
-}) {
+}>;
+
+export function TallTaleJournalSession({ sessionId, identitySession = false }: TallTaleJournalSessionProps) {
+  return (
+    <TallTaleJournalSessionIdentity
+      key={`${identitySession ? "identity" : "compatibility"}:${sessionId}`}
+      sessionId={sessionId}
+      identitySession={identitySession}
+    />
+  );
+}
+
+function TallTaleJournalSessionIdentity({ sessionId, identitySession = false }: TallTaleJournalSessionProps) {
   const root = useRef<HTMLElement>(null);
   const book = useRef<PageFlipBookHandle>(null);
+  const journalHeading = useRef<HTMLHeadingElement>(null);
+  const openingStatus = useRef<HTMLDivElement>(null);
+  const openingFocusOrigin = useRef<HTMLElement | null>(null);
+  const pendingOpeningFocus = useRef<{ origin: HTMLElement | null; generation: number } | null>(null);
+  const activeOpeningPolicy = useRef<JournalOpeningPolicy | null>(null);
+  const chapterDrawer = useRef<HTMLElement>(null);
+  const objectDrawer = useRef<HTMLElement>(null);
+  const drawerFocusOrigin = useRef<HTMLElement | null>(null);
+  const previousDrawer = useRef<PlayerJournalReadingState["openDrawer"]>(null);
   const openingRun = useRef<AbortController | null>(null);
+  const openingRelease = useRef<(() => void) | null>(null);
   const openingGeneration = useRef(0);
   const openingBusy = useRef(false);
   const initializedOpening = useRef(false);
@@ -174,48 +247,129 @@ export function TallTaleJournalSession({
   const [now, setNow] = useState(0);
   const [openingOutcome, setOpeningOutcome] = useState<JournalOpeningConsumerStatus>("idle");
   const [openingNotice, setOpeningNotice] = useState("");
+  const [readyReceipt, setReadyReceipt] = useState<JournalReadyReceipt | null>(null);
+  const [replayControlsMounted, setReplayControlsMounted] = useState(false);
   const { mode, policy: motionPolicy, cycle: cycleMotion } = useMotionMode();
   const openingMode = useRef(mode);
+  const teardownRegistry = useRef<JournalTeardownRegistry>(createJournalTeardownRegistry());
+  const archiveMode = Boolean(state && (state.journal.mode === "historical" || state.session.status === "COMPLETED"));
+
+  const trackedRequest = useCallback(() => {
+    const registry = teardownRegistry.current;
+    const controller = new AbortController();
+    const release = registry.register(() => controller.abort());
+    return { controller, registry, release };
+  }, []);
+
+  const recordPageFlipReadiness = useCallback((snapshot: PageFlipReadinessSnapshot) => {
+    if (root.current) root.current.dataset.pageFlipReadiness = snapshot.status;
+  }, []);
+
+  const forcePageFlipReadableFallback = useCallback((reason: string) => {
+    const handle = book.current;
+    if (!handle) return false;
+    try {
+      handle.forceReadableFallback(reason);
+      return handle.readiness().ready;
+    } catch {
+      return false;
+    }
+  }, []);
+
+  const stopOpeningRun = useCallback(() => {
+    const controller = openingRun.current;
+    openingRun.current = null;
+    openingRelease.current?.();
+    openingRelease.current = null;
+    openingGeneration.current += 1;
+    openingBusy.current = false;
+    controller?.abort();
+  }, []);
+
+  useLayoutEffect(() => {
+    const registry = createJournalTeardownRegistry();
+    teardownRegistry.current = registry;
+    return () => {
+      stopOpeningRun();
+      registry.dispose();
+    };
+  }, [sessionId, stopOpeningRun]);
 
   const load = useCallback(
     async (event?: ProgressionEvent) => {
-      const response = await fetch(`/api/play/sessions/${sessionId}`, { cache: "no-store" });
-      const body = (await response.json()) as SessionState & { error?: string };
-      if (!response.ok) {
-        setError(body.error ?? "This voyage journal could not be read.");
-        return null;
-      }
-      stateRef.current = body;
-      setState(body);
-      setError("");
-      if (event)
-        setPendingEvent({
-          ...event,
-          sequence: Math.max(event.sequence, body.session.currentSequence),
+      const request = trackedRequest();
+      try {
+        const response = await fetch(`/api/play/sessions/${sessionId}`, {
+          cache: "no-store",
+          signal: request.controller.signal,
         });
-      return body;
+        const body = (await response.json()) as SessionState & { error?: string };
+        if (request.registry.isDisposed()) return null;
+        if (!response.ok) {
+          setError(body.error ?? "This voyage journal could not be read.");
+          return null;
+        }
+        stateRef.current = body;
+        setState(body);
+        setError("");
+        if (event)
+          setPendingEvent({
+            ...event,
+            sequence: Math.max(event.sequence, body.session.currentSequence),
+          });
+        return body;
+      } catch (cause) {
+        if (request.controller.signal.aborted) return null;
+        throw cause;
+      } finally {
+        request.release();
+      }
     },
-    [sessionId],
+    [sessionId, trackedRequest],
   );
 
   useEffect(() => {
+    const registry = teardownRegistry.current;
     queueMicrotask(() => {
+      if (registry.isDisposed()) return;
       setNow(Date.now());
       void load();
     });
     const timer = setInterval(() => setNow(Date.now()), 500);
-    return () => clearInterval(timer);
+    const clearTimer = onceJournalTeardown(() => clearInterval(timer));
+    const release = registry.register(clearTimer);
+    return () => {
+      clearTimer();
+      release();
+    };
   }, [load]);
 
   useEffect(() => {
+    const registry = teardownRegistry.current;
     let cancelled = false;
+    let cancelRequest: (() => void) | null = null;
     void (async () => {
       if (identitySession) {
-        const response = await fetch(`/api/player/playthroughs/${sessionId}/journal-state`, { cache: "no-store" });
-        const body = (await response.json()) as { readingState?: PlayerJournalReadingState };
-        if (!cancelled && response.ok && body.readingState) {
-          readingRef.current = body.readingState;
-          setReading(body.readingState);
+        const request = trackedRequest();
+        cancelRequest = onceJournalTeardown(() => {
+          request.controller.abort();
+          request.release();
+        });
+        try {
+          const response = await fetch(`/api/player/playthroughs/${sessionId}/journal-state`, {
+            cache: "no-store",
+            signal: request.controller.signal,
+          });
+          const body = (await response.json()) as { readingState?: PlayerJournalReadingState };
+          if (!cancelled && !request.registry.isDisposed() && response.ok && body.readingState) {
+            readingRef.current = body.readingState;
+            setReading(body.readingState);
+          }
+        } catch (cause) {
+          if (!request.controller.signal.aborted) throw cause;
+        } finally {
+          request.release();
+          cancelRequest = null;
         }
       } else {
         const stored = localStorage.getItem(`tall-tale-journal:${sessionId}`);
@@ -229,12 +383,14 @@ export function TallTaleJournalSession({
           }
         }
       }
-      if (!cancelled) setReadingReady(true);
+      if (!cancelled && !registry.isDisposed()) setReadingReady(true);
     })();
     return () => {
       cancelled = true;
+      cancelRequest?.();
+      cancelRequest = null;
     };
-  }, [identitySession, sessionId]);
+  }, [identitySession, sessionId, trackedRequest]);
 
   const saveReading = useCallback(
     (patch: PlayerJournalReadingStateInput) => {
@@ -252,88 +408,199 @@ export function TallTaleJournalSession({
       if (identitySession) {
         const csrfToken = stateRef.current?.csrfToken;
         if (!csrfToken) return;
+        const request = trackedRequest();
         void fetch(`/api/player/playthroughs/${sessionId}/journal-state`, {
           method: "POST",
           headers: { "Content-Type": "application/json", "x-csrf-token": csrfToken },
           body: JSON.stringify(patch),
-        });
+          signal: request.controller.signal,
+        })
+          .catch(() => undefined)
+          .finally(request.release);
       } else localStorage.setItem(`tall-tale-journal:${sessionId}`, JSON.stringify(next));
     },
-    [identitySession, sessionId],
+    [identitySession, sessionId, trackedRequest],
   );
 
+  const settleJournalReady = useCallback(
+    (
+      policy: JournalOpeningPolicy,
+      reason: JournalReadyReason,
+      outcome: JournalOpeningConsumerStatus,
+      notice: string,
+    ) => {
+      const receipt = createJournalReadyReceipt(policy, reason);
+      const focusOrigin = openingFocusOrigin.current;
+      const focusGeneration = openingGeneration.current;
+      openingFocusOrigin.current = null;
+      pendingOpeningFocus.current = { origin: focusOrigin, generation: focusGeneration };
+      activeOpeningPolicy.current = null;
+      setOpeningPhase(receipt.finalPhase);
+      setOpeningOutcome(outcome);
+      setOpeningNotice(notice);
+      setReadyReceipt(receipt);
+      setReplayControlsMounted(true);
+      if (receipt.persistHasOpened) saveReading({ hasOpened: true });
+    },
+    [saveReading],
+  );
+
+  useLayoutEffect(() => {
+    if (openingPhase !== "JOURNAL_READY") return;
+    const pending = pendingOpeningFocus.current;
+    pendingOpeningFocus.current = null;
+    if (!pending || teardownRegistry.current.isDisposed() || openingGeneration.current !== pending.generation) {
+      return;
+    }
+    const target = usableFocusTarget(pending.origin) ? pending.origin : journalHeading.current;
+    target?.focus({ preventScroll: true });
+  }, [openingPhase]);
+
   const startOpening = useCallback(
-    async (phases: readonly JournalOpeningPhase[], persistOnCompletion: boolean) => {
+    async (policy: JournalOpeningPolicy, focusOrigin?: HTMLElement | null) => {
       const rootElement = root.current;
       if (openingBusy.current || !rootElement) return;
       openingBusy.current = true;
+      activeOpeningPolicy.current = policy;
+      openingFocusOrigin.current =
+        focusOrigin ?? (document.activeElement instanceof HTMLElement ? document.activeElement : null);
       const generation = ++openingGeneration.current;
       const controller = new AbortController();
       openingRun.current = controller;
+      openingRelease.current = teardownRegistry.current.register(() => controller.abort());
       setOpeningOutcome("running");
       setOpeningNotice("");
+      setReadyReceipt(null);
+      queueMicrotask(() => openingStatus.current?.focus({ preventScroll: true }));
 
       const result = await runJournalOpeningPhases({
         root: rootElement,
-        phases,
+        phases: policy.phases,
         mode,
         signal: controller.signal,
-        onPhase: (phase) => flushSync(() => setOpeningPhase(phase)),
+        // JOURNAL_READY is committed only after the public PageFlip readiness handoff below.
+        onPhase: (phase) => flushSync(() => setOpeningPhase(phase === "JOURNAL_READY" ? "BOOK_SETTLING" : phase)),
       });
+
+      const readiness =
+        result.status === "completed" || result.status === "completed-fallback"
+          ? await waitForJournalReadiness(() => book.current?.readiness() ?? null, controller.signal)
+          : null;
 
       if (openingGeneration.current !== generation || openingRun.current !== controller) return;
       openingRun.current = null;
+      openingRelease.current?.();
+      openingRelease.current = null;
       openingBusy.current = false;
 
       if (result.status === "completed" || result.status === "completed-fallback") {
-        setOpeningPhase("JOURNAL_READY");
-        setOpeningOutcome(result.status);
-        setOpeningNotice(
-          result.status === "completed-fallback"
-            ? "Motion was reduced. The journal is open in its readable final state."
-            : "",
-        );
-        if (persistOnCompletion && journalOpeningAllowsPersistence(result.status)) {
-          saveReading({ hasOpened: true });
+        if (readiness?.status === "aborted") {
+          if (!forcePageFlipReadableFallback("Journal opening readiness was interrupted")) {
+            setOpeningOutcome("failure");
+            setOpeningNotice("The journal could not prepare a readable page. Try Skip ceremony again.");
+            return;
+          }
+          settleJournalReady(
+            policy,
+            "recoverable-interruption",
+            "aborted",
+            "Page preparation was interrupted. The journal is ready in its readable final state.",
+          );
+          return;
         }
+        if (readiness?.status !== "ready") {
+          const fallbackReason =
+            readiness?.status === "timed-out" ? "PageFlip readiness timed out" : "PageFlip readiness probe failed";
+          if (!forcePageFlipReadableFallback(fallbackReason)) {
+            setOpeningOutcome("failure");
+            setOpeningNotice("The journal could not prepare a readable page. Try Skip ceremony again.");
+            return;
+          }
+          settleJournalReady(
+            policy,
+            "pageflip-readiness-failure",
+            "failure",
+            "Page turning could not report ready in time. The journal is available in a readable fallback state.",
+          );
+          return;
+        }
+        const readinessFallback = readiness.readinessStatus === "fallback";
+        const settledOutcome =
+          result.status === "completed-fallback" || readinessFallback ? "completed-fallback" : result.status;
+        settleJournalReady(
+          policy,
+          settledOutcome,
+          settledOutcome,
+          readinessFallback
+            ? "Page turning is using its readable fallback. The journal is ready."
+            : result.status === "completed-fallback"
+              ? "Motion was reduced. The journal is open in its readable final state."
+              : "",
+        );
         return;
       }
 
       if (result.status === "aborted") {
-        setOpeningPhase("ENTRY_IDLE");
-        setOpeningOutcome("aborted");
-        setOpeningNotice("The opening stopped before completion. You can open the journal again.");
+        if (!forcePageFlipReadableFallback("Journal opening was interrupted")) {
+          setOpeningOutcome("failure");
+          setOpeningNotice("The journal could not prepare a readable page. Try Skip ceremony again.");
+          return;
+        }
+        settleJournalReady(
+          policy,
+          "recoverable-interruption",
+          "aborted",
+          "The opening was interrupted. The journal is ready in its readable final state.",
+        );
         return;
       }
 
-      setOpeningPhase("JOURNAL_READY");
-      setOpeningOutcome("failure");
-      setOpeningNotice("The animated opening could not finish. The journal is ready in a readable fallback state.");
+      if (!forcePageFlipReadableFallback(`Journal opening phase failed: ${result.outcome.status}`)) {
+        setOpeningOutcome("failure");
+        setOpeningNotice("The journal could not prepare a readable page. Try Skip ceremony again.");
+        return;
+      }
+      settleJournalReady(
+        policy,
+        phaseFailureReason(result.outcome),
+        "failure",
+        "The animated opening could not finish. The journal is ready in a readable fallback state.",
+      );
     },
-    [mode, saveReading],
+    [forcePageFlipReadableFallback, mode, settleJournalReady],
   );
 
   useEffect(() => {
     if (!state || !readingReady || liveReady) return;
+    const registry = teardownRegistry.current;
     processedSequence.current = state.session.currentSequence;
     queueMicrotask(() => {
+      if (registry.isDisposed()) return;
       if (reading.lastEventSequence < state.session.currentSequence)
         saveReading({ lastEventSequence: state.session.currentSequence });
+      if (archiveMode) setConnection("archived");
       setLiveReady(true);
     });
-  }, [liveReady, reading.lastEventSequence, readingReady, saveReading, state]);
+  }, [archiveMode, liveReady, reading.lastEventSequence, readingReady, saveReading, state]);
 
   useEffect(() => {
-    if (!liveReady) return;
+    if (!liveReady || archiveMode) return;
+    const registry = teardownRegistry.current;
     const source = new EventSource(`/api/play/sessions/${sessionId}/events?after=${processedSequence.current}`);
-    source.onopen = () => setConnection("live");
-    source.onerror = () => setConnection("reconnecting");
-    source.addEventListener("access-revoked", () => {
-      setConnection("offline");
-      setError("Your access to this voyage was revoked.");
-      source.close();
-    });
-    source.addEventListener("progression", (message) => {
+    source.onopen = () => {
+      if (!registry.isDisposed()) setConnection("live");
+    };
+    source.onerror = () => {
+      if (!registry.isDisposed()) setConnection(navigator.onLine === false ? "offline" : "reconnecting");
+    };
+    function accessRevoked() {
+      if (registry.isDisposed()) return;
+      setConnection("revoked");
+      setError("");
+      closeSource();
+    }
+    function progression(message: Event) {
+      if (registry.isDisposed()) return;
       try {
         const event = JSON.parse((message as MessageEvent<string>).data) as ProgressionEvent;
         if (event.sequence <= processedSequence.current) return;
@@ -341,15 +608,34 @@ export function TallTaleJournalSession({
       } catch {
         setConnection("reconnecting");
       }
+    }
+    source.addEventListener("access-revoked", accessRevoked);
+    source.addEventListener("progression", progression);
+    const closeSource = onceJournalTeardown(() => {
+      source.onopen = null;
+      source.onerror = null;
+      source.removeEventListener("access-revoked", accessRevoked);
+      source.removeEventListener("progression", progression);
+      source.close();
     });
-    return () => source.close();
-  }, [liveReady, load, sessionId]);
+    const release = registry.register(closeSource);
+    return () => {
+      closeSource();
+      release();
+    };
+  }, [archiveMode, liveReady, load, sessionId]);
 
   useEffect(() => {
-    if (connection === "live" || !liveReady) return;
+    if (connection === "live" || connection === "revoked" || !liveReady || archiveMode) return;
+    const registry = teardownRegistry.current;
     const timer = setInterval(() => void load(), 5000);
-    return () => clearInterval(timer);
-  }, [connection, liveReady, load]);
+    const clearTimer = onceJournalTeardown(() => clearInterval(timer));
+    const release = registry.register(clearTimer);
+    return () => {
+      clearTimer();
+      release();
+    };
+  }, [archiveMode, connection, liveReady, load]);
 
   const pages = useMemo(
     () =>
@@ -388,25 +674,40 @@ export function TallTaleJournalSession({
 
   useEffect(() => {
     if (!state || !readingReady || !root.current || initializedOpening.current) return;
+    const registry = teardownRegistry.current;
     initializedOpening.current = true;
-    if (reading.hasOpened || state.session.previewMode || state.session.status === "COMPLETED") {
-      queueMicrotask(() => void startOpening(returningOpeningSequence, false));
+    const request = archiveMode
+      ? "completed-archive"
+      : reading.hasOpened || state.session.previewMode
+        ? "returning"
+        : "first";
+    const policy = resolveJournalOpeningPolicy({ request, mode });
+    if (policy.autoStart) {
+      queueMicrotask(() => {
+        if (!registry.isDisposed()) void startOpening(policy);
+      });
     }
-  }, [reading.hasOpened, readingReady, startOpening, state]);
+  }, [archiveMode, mode, reading.hasOpened, readingReady, startOpening, state]);
 
   useEffect(() => {
     if (openingMode.current === mode) return;
     openingMode.current = mode;
-    const controller = openingRun.current;
-    if (!controller) return;
-    openingRun.current = null;
-    openingGeneration.current += 1;
-    openingBusy.current = false;
-    controller.abort();
-    setOpeningPhase("JOURNAL_READY");
-    setOpeningOutcome("aborted");
-    setOpeningNotice("Motion changed during the opening. The journal is ready without replaying the ceremony.");
-  }, [mode]);
+    if (!openingRun.current) return;
+    const policy = activeOpeningPolicy.current;
+    stopOpeningRun();
+    if (!policy) return;
+    if (forcePageFlipReadableFallback("Motion changed during the journal opening")) {
+      settleJournalReady(
+        policy,
+        "motion-changed",
+        "aborted",
+        "Motion changed during the opening. The journal is ready without replaying the ceremony.",
+      );
+      return;
+    }
+    setOpeningOutcome("failure");
+    setOpeningNotice("The journal could not prepare a readable page. Try Skip ceremony again.");
+  }, [forcePageFlipReadableFallback, mode, settleJournalReady, stopOpeningRun]);
 
   useEffect(() => {
     if (!pendingEvent || !state || !pages.length) return;
@@ -419,8 +720,11 @@ export function TallTaleJournalSession({
     const currentBlockId = pages[currentPage]?.blockId ?? null;
     const targetBlockId = pages[target]?.blockId ?? null;
     const label = eventLabel(pendingEvent.eventType, state);
+    const registry = teardownRegistry.current;
     setLiveNotice("");
-    queueMicrotask(() => setLiveNotice(label));
+    queueMicrotask(() => {
+      if (!registry.isDisposed()) setLiveNotice(label);
+    });
     if (followingCurrent.current || currentBlockId === targetBlockId) {
       if (target !== currentPage) book.current?.flipTo(target);
       setNewContent(false);
@@ -429,41 +733,67 @@ export function TallTaleJournalSession({
     setPendingEvent(null);
   }, [currentPage, pages, pendingEvent, saveReading, state]);
 
-  useEffect(
-    () => () => {
-      const controller = openingRun.current;
-      openingRun.current = null;
-      openingGeneration.current += 1;
-      openingBusy.current = false;
-      controller?.abort();
-    },
-    [sessionId],
-  );
-
   useEffect(() => {
     const journalRoot = root.current;
     if (!journalRoot) return;
+    const registry = teardownRegistry.current;
     const close = (event: KeyboardEvent) => {
       if (event.key === "Escape" && readingRef.current.openDrawer) saveReading({ openDrawer: null });
     };
     journalRoot.addEventListener("keydown", close);
-    return () => journalRoot.removeEventListener("keydown", close);
+    const remove = onceJournalTeardown(() => journalRoot.removeEventListener("keydown", close));
+    const release = registry.register(remove);
+    return () => {
+      remove();
+      release();
+    };
   }, [saveReading, state?.session.id]);
 
-  async function openJournal() {
-    await startOpening(openingSequence, true);
+  useEffect(() => {
+    const prior = previousDrawer.current;
+    previousDrawer.current = reading.openDrawer;
+    const registry = teardownRegistry.current;
+    queueMicrotask(() => {
+      if (registry.isDisposed()) return;
+      if (reading.openDrawer) {
+        const panel = reading.openDrawer === "chapters" ? chapterDrawer.current : objectDrawer.current;
+        panel?.querySelector<HTMLElement>("button")?.focus({ preventScroll: true });
+      } else if (prior) {
+        const origin = drawerFocusOrigin.current;
+        drawerFocusOrigin.current = null;
+        const target = usableFocusTarget(origin) ? origin : journalHeading.current;
+        target?.focus({ preventScroll: true });
+      }
+    });
+  }, [reading.openDrawer]);
+
+  async function openJournal(focusOrigin: HTMLElement) {
+    await startOpening(resolveJournalOpeningPolicy({ request: "first", mode }), focusOrigin);
+  }
+
+  async function replayOpening(request: "manual-full-replay" | "manual-abbreviated-replay", focusOrigin: HTMLElement) {
+    await startOpening(resolveJournalOpeningPolicy({ request, mode }), focusOrigin);
   }
 
   function skipOpening() {
-    const controller = openingRun.current;
-    openingRun.current = null;
-    openingGeneration.current += 1;
-    openingBusy.current = false;
-    controller?.abort();
-    setOpeningPhase("JOURNAL_READY");
-    setOpeningOutcome("skipped");
-    setOpeningNotice("Opening skipped. The journal is ready.");
-    if (journalOpeningAllowsPersistence("skipped")) saveReading({ hasOpened: true });
+    const policy = activeOpeningPolicy.current;
+    stopOpeningRun();
+    if (!policy) return;
+    if (forcePageFlipReadableFallback("Journal opening skipped")) {
+      settleJournalReady(policy, "skipped", "skipped", "Opening skipped. The journal is ready.");
+      return;
+    }
+    setOpeningOutcome("failure");
+    setOpeningNotice("The journal could not prepare a readable page. Try Skip ceremony again.");
+  }
+
+  function toggleDrawer(drawer: NonNullable<PlayerJournalReadingState["openDrawer"]>, trigger: HTMLElement) {
+    if (reading.openDrawer === drawer) {
+      saveReading({ openDrawer: null });
+      return;
+    }
+    drawerFocusOrigin.current = trigger;
+    saveReading({ openDrawer: drawer });
   }
 
   function turnTo(page: number) {
@@ -484,29 +814,40 @@ export function TallTaleJournalSession({
     const idempotencyKey = crypto.randomUUID();
     setBusy(true);
     setError("");
-    const response = await fetch(`/api/play/sessions/${sessionId}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        ...(state.csrfToken ? { "x-csrf-token": state.csrfToken } : {}),
-      },
-      body: JSON.stringify({ action, idempotencyKey, answer, ...extra }),
-    });
-    const body = (await response.json()) as { state?: SessionState; accepted?: boolean; error?: string };
-    if (!response.ok) setError(body.error ?? "The story could not advance.");
-    else if (body.state) {
-      const next = { ...body.state, csrfToken: body.state.csrfToken ?? state.csrfToken };
-      stateRef.current = next;
-      setState(next);
-      setPendingEvent({
-        id: `player:${idempotencyKey}`,
-        eventType: "playerProgress",
-        sequence: next.session.currentSequence,
-        createdAt: new Date().toISOString(),
+    const request = trackedRequest();
+    try {
+      const response = await fetch(`/api/play/sessions/${sessionId}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          ...(state.csrfToken ? { "x-csrf-token": state.csrfToken } : {}),
+        },
+        body: JSON.stringify({ action, idempotencyKey, answer, ...extra }),
+        signal: request.controller.signal,
       });
-      if (body.accepted) setAnswer("");
+      const body = (await response.json()) as { state?: SessionState; accepted?: boolean; error?: string };
+      if (request.registry.isDisposed()) return;
+      if (!response.ok) setError(body.error ?? "The story could not advance.");
+      else if (body.state) {
+        const next = { ...body.state, csrfToken: body.state.csrfToken ?? state.csrfToken };
+        stateRef.current = next;
+        setState(next);
+        setPendingEvent({
+          id: `player:${idempotencyKey}`,
+          eventType: "playerProgress",
+          sequence: next.session.currentSequence,
+          createdAt: new Date().toISOString(),
+        });
+        if (body.accepted) setAnswer("");
+      }
+    } catch {
+      if (!request.controller.signal.aborted && !request.registry.isDisposed()) {
+        setError("The story could not advance.");
+      }
+    } finally {
+      request.release();
+      if (!request.registry.isDisposed()) setBusy(false);
     }
-    setBusy(false);
   }
 
   if (!state || !readingReady)
@@ -521,6 +862,7 @@ export function TallTaleJournalSession({
     );
 
   const journalReady = isJournalInteractive(openingPhase);
+  const openingActive = !journalReady;
   const currentBlock = findCurrentBlock(state.journal);
   const choices =
     currentBlock?.blockType === "choice" && Array.isArray(currentBlock.configuration.choices)
@@ -537,6 +879,7 @@ export function TallTaleJournalSession({
       className={`voyage-shell tall-tale-journal-shell mode-${state.journal.mode}`}
       data-journal-phase={openingPhase}
       data-journal-opening-outcome={openingOutcome}
+      data-journal-ready-reason={readyReceipt?.reason}
       data-live-event={liveNotice ? "revealed" : "idle"}
       data-motion-mode={mode}
       data-motion-level={motionPolicy.level}
@@ -553,7 +896,12 @@ export function TallTaleJournalSession({
         <div data-scene-part="ocean" />
         <div data-scene-part="fog-near" />
       </div>
-      <header className="tall-tale-session-header persistent-interface" data-opening-actor="persistent-interface">
+      <header
+        className="tall-tale-session-header persistent-interface"
+        data-opening-actor="persistent-interface"
+        aria-hidden={openingActive}
+        inert={openingActive ? true : undefined}
+      >
         <div>
           <Link href="/player/library">â† Tall Tale Library</Link>
           <p className="eyebrow">{historical ? "Completed journal" : (state.chapter?.title ?? "Tall Tale session")}</p>
@@ -564,11 +912,25 @@ export function TallTaleJournalSession({
             <i />
             {connection === "live"
               ? "Captain channel connected"
-              : connection === "offline"
-                ? "Access closed"
-                : "Reconnecting"}
+              : connection === "archived"
+                ? "Completed archive"
+                : connection === "revoked"
+                  ? "Access revoked"
+                  : connection === "offline"
+                    ? "Offline"
+                    : "Reconnecting"}
           </span>
           <button onClick={cycleMotion}>Motion: {mode}</button>
+          {replayControlsMounted && (
+            <div role="group" aria-label="Journal opening replay">
+              <button onClick={(event) => void replayOpening("manual-full-replay", event.currentTarget)}>
+                Replay full opening
+              </button>
+              <button onClick={(event) => void replayOpening("manual-abbreviated-replay", event.currentTarget)}>
+                Replay short opening
+              </button>
+            </div>
+          )}
           <label>
             <span>Text size</span>
             <input
@@ -587,11 +949,15 @@ export function TallTaleJournalSession({
       <section
         className="physical-section journal-workspace tall-tale-journal-workspace"
         aria-labelledby="tall-tale-journal-heading"
+        aria-hidden={openingActive}
+        inert={openingActive ? true : undefined}
       >
         <header className="section-masthead">
           <div>
             <p className="eyebrow">{historical ? "Immutable adventure record" : "Canonical Player session"}</p>
-            <h2 id="tall-tale-journal-heading">{state.session.versionLabel} Voyage Journal</h2>
+            <h2 ref={journalHeading} id="tall-tale-journal-heading" tabIndex={-1}>
+              {state.session.versionLabel} Voyage Journal
+            </h2>
           </div>
           <p>
             {historical
@@ -621,6 +987,7 @@ export function TallTaleJournalSession({
             state: chapter.blocks.every((block) => block.progress === "completed") ? "complete" : "released",
             pageIndex: pageIndexForJournalChapter(pages, chapter.id),
           }))}
+          onReadinessChange={recordPageFlipReadiness}
           onSelectTab={turnTo}
           onPageChange={(page) => {
             setCurrentPage(page);
@@ -633,18 +1000,38 @@ export function TallTaleJournalSession({
       </section>
 
       {(openingPhase === "ENTRY_IDLE" || openingPhase === "ENTRY_ACTIVATED") && (
-        <div className="journal-opening tall-tale-opening">
-          <button className="wax-open" onClick={() => void openJournal()}>
+        <div
+          ref={openingStatus}
+          className="journal-opening tall-tale-opening"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="journal-opening-heading"
+          tabIndex={-1}
+        >
+          <h2 id="journal-opening-heading" className="sr-only">
+            Open the voyage journal
+          </h2>
+          <button className="wax-open" onClick={(event) => void openJournal(event.currentTarget)}>
             <span>âœ¦</span>
             <strong>Open the journal</strong>
             <small>{reading.hasOpened ? "Return to your place" : "Begin the Tall Tale"}</small>
           </button>
+          <Link href="/player/library">Leave for Tall Tale Library</Link>
         </div>
       )}
       {openingPhase !== "ENTRY_IDLE" && !journalReady && (
-        <div className="journal-opening-status" role="status">
+        <div
+          ref={openingStatus}
+          className="journal-opening-status"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Journal opening in progress"
+          tabIndex={-1}
+        >
           <span>{openingLabel(openingPhase)}</span>
+          {openingNotice && openingOutcome === "failure" && <p role="alert">{openingNotice}</p>}
           <button onClick={skipOpening}>Skip ceremony</button>
+          <Link href="/player/library">Leave for Tall Tale Library</Link>
         </div>
       )}
       {openingNotice && (journalReady || openingOutcome === "aborted") && (
@@ -654,8 +1041,10 @@ export function TallTaleJournalSession({
       )}
 
       <aside
+        ref={chapterDrawer}
         className={`journal-context-drawer journal-chapters-drawer ${reading.openDrawer === "chapters" ? "open" : ""}`}
         aria-hidden={reading.openDrawer !== "chapters"}
+        inert={openingActive || reading.openDrawer !== "chapters" ? true : undefined}
       >
         <button
           className="drawer-close"
@@ -673,8 +1062,10 @@ export function TallTaleJournalSession({
         ))}
       </aside>
       <aside
+        ref={objectDrawer}
         className={`journal-context-drawer journal-objects-drawer ${reading.openDrawer && reading.openDrawer !== "chapters" ? "open" : ""}`}
         aria-hidden={!reading.openDrawer || reading.openDrawer === "chapters"}
+        inert={openingActive || !reading.openDrawer || reading.openDrawer === "chapters" ? true : undefined}
       >
         <button
           className="drawer-close"
@@ -697,19 +1088,29 @@ export function TallTaleJournalSession({
         )}
       </aside>
 
-      <nav className="journal-context-tabs persistent-interface" aria-label="Journal tools">
+      <nav
+        className="journal-context-tabs persistent-interface"
+        aria-label="Journal tools"
+        aria-hidden={openingActive}
+        inert={openingActive ? true : undefined}
+      >
         {(["chapters", "map", "artifacts", "messages"] as const).map((drawer) => (
           <button
             key={drawer}
             aria-expanded={reading.openDrawer === drawer}
-            onClick={() => saveReading({ openDrawer: reading.openDrawer === drawer ? null : drawer })}
+            onClick={(event) => toggleDrawer(drawer, event.currentTarget)}
           >
             {drawer}
           </button>
         ))}
       </nav>
 
-      <aside className="tall-tale-objective-tray persistent-objective" data-opening-actor="objective">
+      <aside
+        className="tall-tale-objective-tray persistent-objective"
+        data-opening-actor="objective"
+        aria-hidden={openingActive}
+        inert={openingActive ? true : undefined}
+      >
         <div>
           <p>{historical ? "Historical volume" : "Current objective"}</p>
           <strong>{historical ? "Browse every released page from this completed voyage." : currentObjective}</strong>
@@ -746,10 +1147,16 @@ export function TallTaleJournalSession({
         )}
       </aside>
 
-      {connection !== "live" && journalReady && (
+      {connection === "revoked" && journalReady && (
+        <div className="journal-connection-note" role="alert">
+          <strong>Your access to this voyage was revoked.</strong>
+          <span>The released pages remain readable, but this journal will not reconnect or request new progress.</span>
+        </div>
+      )}
+      {connection !== "live" && connection !== "archived" && connection !== "revoked" && journalReady && (
         <div className="journal-connection-note" role="status">
           <strong>
-            {connection === "offline" ? "The journal is closed to this sailor." : "The signal is crossing rough water."}
+            {connection === "offline" ? "You appear to be offline." : "The signal is crossing rough water."}
           </strong>
           <span>Reading remains available while canonical state reconnects.</span>
           <button onClick={() => void load()}>Retry now</button>

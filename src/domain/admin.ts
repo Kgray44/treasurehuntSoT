@@ -9,10 +9,19 @@ export const adminCommands = [
   "RELEASE_HINT",
   "RELEASE_NEXT_HINT",
   "REVEAL_MAP",
+  "REVEAL_ROUTE",
   "AWARD_ARTIFACT",
+  "REVEAL_ARTIFACT_SILHOUETTE",
+  "CONNECT_ARTIFACTS",
   "DISCOVER_SIDE_QUEST",
+  "UPDATE_SIDE_QUEST",
+  "COMPLETE_SIDE_QUEST",
   "ADVANCE_SIDE_QUEST",
+  "ADD_JOURNAL_ANNOTATION",
+  "ADD_LOG_ENTRY",
   "RELEASE_JOURNAL_ENTRY",
+  "TEASE_FINALE",
+  "UPDATE_FINALE_REQUIREMENT",
   "PAUSE",
   "RESUME",
   "UNDO_LAST",
@@ -29,10 +38,19 @@ export const actionRisks = {
   RELEASE_HINT: "HIGH",
   RELEASE_NEXT_HINT: "HIGH",
   REVEAL_MAP: "HIGH",
+  REVEAL_ROUTE: "HIGH",
   AWARD_ARTIFACT: "HIGH",
+  REVEAL_ARTIFACT_SILHOUETTE: "HIGH",
+  CONNECT_ARTIFACTS: "HIGH",
   DISCOVER_SIDE_QUEST: "HIGH",
+  UPDATE_SIDE_QUEST: "HIGH",
+  COMPLETE_SIDE_QUEST: "HIGH",
   ADVANCE_SIDE_QUEST: "HIGH",
+  ADD_JOURNAL_ANNOTATION: "HIGH",
+  ADD_LOG_ENTRY: "HIGH",
   RELEASE_JOURNAL_ENTRY: "HIGH",
+  TEASE_FINALE: "HIGH",
+  UPDATE_FINALE_REQUIREMENT: "HIGH",
   PAUSE: "HIGH",
   RESUME: "HIGH",
   UNDO_LAST: "HIGH",
@@ -51,24 +69,189 @@ export const gmCapabilities = [
   "VIEW_AUDIT_LOG",
 ] as const;
 
-export const commandSchema = z.object({
-  command: z.enum(adminCommands),
-  campaignSlug: z.string().min(3).max(80),
-  expectedSequence: z.number().int().nonnegative(),
-  idempotencyKey: z.string().min(12).max(191),
-  targetKey: z.string().min(1).max(191).optional(),
-  payload: z.record(z.string(), z.unknown()).default({}),
-  reason: z.string().trim().max(500).optional(),
+const noDataCommands = [
+  "PREPARE_CHAPTER",
+  "RELEASE_CHAPTER",
+  "MARK_SOLVED",
+  "COMPLETE_CHAPTER",
+  "RELEASE_NEXT_HINT",
+  "TEASE_FINALE",
+  "PAUSE",
+  "RESUME",
+  "UNDO_LAST",
+  "REQUEST_RECONCILIATION",
+] as const satisfies readonly AdminCommand[];
+
+const targetedCommands = [
+  "RELEASE_HINT",
+  "REVEAL_MAP",
+  "REVEAL_ROUTE",
+  "AWARD_ARTIFACT",
+  "REVEAL_ARTIFACT_SILHOUETTE",
+  "CONNECT_ARTIFACTS",
+  "DISCOVER_SIDE_QUEST",
+  "UPDATE_SIDE_QUEST",
+  "COMPLETE_SIDE_QUEST",
+  "ADVANCE_SIDE_QUEST",
+  "UPDATE_FINALE_REQUIREMENT",
+] as const satisfies readonly AdminCommand[];
+
+const valueCommands = ["ADD_JOURNAL_ANNOTATION", "ADD_LOG_ENTRY"] as const satisfies readonly AdminCommand[];
+
+const campaignSlugSchema = z
+  .string()
+  .trim()
+  .min(3)
+  .max(80)
+  .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/u, "Use a canonical campaign slug.");
+const commandKeySchema = z
+  .string()
+  .trim()
+  .min(1)
+  .max(191)
+  .regex(/^[A-Za-z0-9][A-Za-z0-9._:-]*$/u, "Use a bounded command key.");
+const idempotencyKeySchema = z
+  .string()
+  .trim()
+  .min(12)
+  .max(191)
+  .regex(/^[A-Za-z0-9][A-Za-z0-9._:-]*$/u, "Use a bounded idempotency key.");
+const emptyPayloadSchema = z.object({}).strict().default({});
+const valuePayloadSchema = z
+  .object({ value: z.string().trim().min(1).max(2_048).optional() })
+  .strict()
+  .default({});
+const preparedHintPayloadSchema = z
+  .object({ body: z.string().trim().min(1).max(4_096).optional() })
+  .strict()
+  .default({});
+const journalEntryPayloadSchema = z
+  .object({ title: z.string().trim().min(1).max(160).optional(), body: z.string().trim().min(1).max(4_096) })
+  .strict();
+const commandTransportShape = {
+  campaignSlug: campaignSlugSchema,
+  expectedSequence: z.number().int().nonnegative().max(Number.MAX_SAFE_INTEGER),
+  idempotencyKey: idempotencyKeySchema,
+  reason: z.string().trim().min(1).max(500).optional(),
   confirmation: z.literal(true),
-});
+} as const;
 
-export const previewSchema = commandSchema.omit({ idempotencyKey: true, confirmation: true }).extend({
-  preview: z.literal(true),
-});
+function omitKeys<T extends object, K extends keyof T>(value: T, keys: readonly K[]): Omit<T, K> {
+  const copy = { ...value };
+  for (const key of keys) delete (copy as Partial<T>)[key];
+  return copy;
+}
 
-export const stageSchema = commandSchema
-  .pick({ command: true, campaignSlug: true, expectedSequence: true, targetKey: true, payload: true })
-  .extend({ scheduledFor: z.iso.datetime().optional() });
+export const commandSchema = z.discriminatedUnion("command", [
+  z
+    .object({
+      ...commandTransportShape,
+      command: z.enum(noDataCommands),
+      targetKey: z.never().optional(),
+      payload: emptyPayloadSchema,
+    })
+    .strict(),
+  z
+    .object({
+      ...commandTransportShape,
+      command: z.enum(targetedCommands),
+      targetKey: commandKeySchema.optional(),
+      payload: emptyPayloadSchema,
+    })
+    .strict(),
+  z
+    .object({
+      ...commandTransportShape,
+      command: z.enum(valueCommands),
+      targetKey: z.never().optional(),
+      payload: valuePayloadSchema,
+    })
+    .strict(),
+  z
+    .object({
+      ...commandTransportShape,
+      command: z.literal("PREPARE_HINT"),
+      targetKey: commandKeySchema.optional(),
+      payload: preparedHintPayloadSchema,
+    })
+    .strict(),
+  z
+    .object({
+      ...commandTransportShape,
+      command: z.literal("RELEASE_JOURNAL_ENTRY"),
+      targetKey: z.never().optional(),
+      payload: journalEntryPayloadSchema,
+    })
+    .strict(),
+]);
+
+export type AdminCommandInput = z.infer<typeof commandSchema>;
+
+/**
+ * Compatibility transport for the former `/api/gm/action` endpoint. It keeps
+ * the old field name while requiring the same concurrency and idempotency
+ * evidence as the canonical command endpoint.
+ */
+export const actionCommandSchema = z
+  .object({ action: z.enum(adminCommands) })
+  .passthrough()
+  .transform(({ action, ...input }) => ({ ...input, command: action }))
+  .pipe(commandSchema);
+
+export const commandPublicationStates = ["PROCESS_PUBLISHED", "PROCESS_PUBLICATION_FAILED", "NOT_APPLICABLE"] as const;
+export const playerDeliveryStates = ["UNCONFIRMED"] as const;
+
+export type AdminCommandReceiptTruth = Readonly<{
+  kind: "PROGRESSION_EVENT" | "STAGED_ACTION";
+  persistence: "COMMITTED";
+  publication: (typeof commandPublicationStates)[number];
+  /** @deprecated Compatibility alias. This refers only to the in-process event bus. */
+  delivery: "PUBLISHED" | "PUBLICATION_FAILED" | "NOT_ATTEMPTED";
+  deliveryScope: "PROCESS_SUBSCRIBERS_ONLY" | "NO_PLAYER_EVENT";
+  playerDelivery: (typeof playerDeliveryStates)[number];
+  playerPresentation: "UNCONFIRMED";
+  playerAcknowledgment: "UNCONFIRMED";
+}>;
+
+export type StagedActionReceiptIdentity = Readonly<{
+  preparedActionId: string;
+  command: string;
+  targetKey: string | null;
+  reservedSequence: number;
+  status: string;
+  preparedAt: string;
+}>;
+
+export const previewSchema = z
+  .object({ preview: z.literal(true) })
+  .passthrough()
+  .transform((value) => ({
+    ...omitKeys(value, ["preview"]),
+    idempotencyKey: "preview-request",
+    confirmation: true as const,
+  }))
+  .pipe(commandSchema)
+  .transform((value) => ({
+    ...omitKeys(value, ["idempotencyKey", "confirmation"]),
+    preview: true as const,
+  }));
+
+export const stageSchema = z
+  .object({ scheduledFor: z.iso.datetime().optional() })
+  .passthrough()
+  .transform(({ scheduledFor, ...input }) => ({
+    ...(scheduledFor ? { scheduledFor } : {}),
+    command: {
+      ...input,
+      idempotencyKey: "staging-request",
+      confirmation: true as const,
+    },
+  }))
+  .pipe(z.object({ scheduledFor: z.iso.datetime().optional(), command: commandSchema }))
+  .transform(({ scheduledFor, command }) => ({
+    ...omitKeys(command, ["idempotencyKey", "confirmation"]),
+    scheduledFor,
+  }));
 
 export type PresenceEvidence = {
   lastHeartbeatAt: Date;

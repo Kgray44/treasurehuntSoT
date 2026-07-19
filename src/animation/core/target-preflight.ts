@@ -6,8 +6,10 @@ import type {
   SceneTargetElementObservation,
   SceneTargetRect,
   SceneTargetRequirement,
+  SceneTargetResolutionReceipt,
 } from "./animation-types";
 import { claimAnimationOwnershipWithEvidence, type AnimationOwnershipLease } from "./ownership";
+import type { SceneInvocationHandle } from "../hosts/scene-host-types";
 
 export type SceneTargetPreflightOptions = {
   root: HTMLElement;
@@ -280,4 +282,13 @@ export function preflightSceneTargets(options: SceneTargetPreflightOptions): Sce
       return { claimedCount: leases.length, releasedCount, alreadyReleased: false };
     },
   };
+}
+
+/**
+ * Phase 2 registered-target preflight. The invocation owns and memoizes the
+ * exact qualified handle set, so optional failures cannot be resurrected by a
+ * later DOM query and repeated reads cannot drift.
+ */
+export function preflightRegisteredSceneTargets(invocation: SceneInvocationHandle): SceneTargetResolutionReceipt {
+  return invocation.resolveTargets();
 }

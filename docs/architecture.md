@@ -1,5 +1,25 @@
 # Architecture
 
+## Lanternwake Phase 3 presentation boundary
+
+Phase 3 adds one persistent `ProgressionSceneHost` to the compatibility companion at `/tale/[campaignSlug]`. It remains mounted while the six sections (`journal`, `chart`, `treasures`, `quests`, `log`, and `finale`) change and is the sole global presentation authority for the exact 17 Player progression-event types. The host owns readable ceremony, notification controls, focus capture/restoration, fallback, and receipt production; it does not own business state, section navigation, or event persistence. This is not a claim that the compatibility host exists on the canonical durable journal route at `/player/playthroughs/[playthroughId]/journal`.
+
+```mermaid
+flowchart LR
+  H[Player-safe history + SSE] --> C[Progression presentation controller]
+  C --> Q[Authoritative-first queue]
+  Q --> P[Persistent progression host]
+  P --> R[Director and final-state receipt]
+  R --> A[Viewed acknowledgment]
+  R -. optional after commit .-> L[Mounted section-local enhancement]
+```
+
+The controller keeps separate observed, queued, presented, and acknowledged cursors. A snapshot sequence remains business-state position and is never substituted for a presentation cursor. Live and reconnect events outrank replay, replay uses a fresh identity and cannot acknowledge or mutate, and only a receipt with Director acknowledgment proof may produce the idempotent per-device viewed record. Authorized replay history is bounded and reconstructed as a Player-safe projection; a chapter release whose current authorized chapter cannot be reconstructed is omitted instead of leaking stored prose.
+
+Reconnect first revalidates access, then merges bounded history with the one SSE stream by durable sequence and event ID. The stream closes the query-to-subscribe race, bounds its live buffer/dedupe window, periodically revalidates access, and emits a terminal access-revoked signal. The Player surface clears protected workspace/history on revocation and renders a readable access state.
+
+The Quartermaster bridge requires the `CAPTAIN` capability in addition to its session and CSRF boundary. Commands validate a bounded discriminated payload, reserve the expected campaign sequence with a compare-and-set inside the business transaction, and compare a canonical idempotency fingerprint. Persistence, process publication, delivery, presentation, and acknowledgment remain distinct receipt states; a prepared hint cannot be reported as published merely because staging committed.
+
 ## Phase 3 cinematic companion projection
 
 The player reads one server-filtered `PublicSnapshot` containing chapters, released hints/annotations, visible map locations/routes, safe artifact states, visible optional mysteries, event-derived log entries, generic finale state, and per-section unseen counts. One SSE connection transports ordered sanitized events; section navigation is client-side and starts no independent polling.

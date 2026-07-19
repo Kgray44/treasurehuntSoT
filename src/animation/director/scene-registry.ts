@@ -1,13 +1,21 @@
 import type {
+  AnimatedProperty,
   AnimationRuntimeOwner,
   AnimationSceneName,
+  AnySceneTargetContract,
   SceneAcknowledgmentPolicy,
+  SceneCleanupPolicy,
   SceneDefinition,
+  SceneDefinitionV2,
   SceneFinalStatePolicy,
+  SceneFinalStatePolicyV2,
   ScenePlaybackPolicy,
   SceneTargetContract,
+  SceneTargetContractV2,
   SceneTargetProperty,
   SceneTargetRequirement,
+  SceneTargetRequirementV2,
+  SceneTargetSource,
   SceneVisibilityRule,
 } from "../core/animation-types";
 import { firstArrivalScene, sessionReentryScene } from "../scenes/arrival.scene";
@@ -48,11 +56,17 @@ const visibleWithinHost = {
 } satisfies SceneVisibilityRule;
 
 type TargetOptions = {
+  key?: string;
   max?: number;
   minimumEffectiveOpacity?: number;
   mustHaveNonZeroBox?: boolean;
   mustIntersectViewport?: boolean;
+  source?: SceneTargetSource;
 };
+
+const hostSource = Object.freeze({ kind: "host" as const });
+const externalSource = (handleKey: string): SceneTargetSource =>
+  Object.freeze({ kind: "external" as const, handleKey });
 
 function target(
   part: string,
@@ -131,20 +145,9 @@ function playerEventAcknowledgment(kind: "mandatory" | "optional" = "optional"):
   };
 }
 
-const reconcile = (semanticState: string): SceneFinalStatePolicy => ({
-  kind: "reconcile-then-revert",
-  semanticState,
-});
-
 const hold = (semanticState: string): SceneFinalStatePolicy => ({
   kind: "hold-until-unmount",
   semanticState,
-});
-
-const staticFallback = (semanticState: string, fallback: string): SceneFinalStatePolicy => ({
-  kind: "readable-static-fallback",
-  semanticState,
-  fallback,
 });
 
 type ContractInput = Omit<SceneTargetContract, "version" | "sceneName">;
@@ -153,26 +156,144 @@ function contract(sceneName: AnimationSceneName, input: ContractInput): SceneTar
   return { version: 1, sceneName, ...input };
 }
 
+const cleanupPolicy = Object.freeze({
+  cleanupTimeoutMs: 2_000,
+  onHandoffFailure: "render-static-fallback",
+  releaseOrder: [
+    "runtime-resources",
+    "temporary-styles",
+    "external-handles",
+    "ownership-claims",
+    "target-handles",
+    "invocation-registration",
+  ],
+} satisfies SceneCleanupPolicy);
+
+function v2Target(
+  part: string,
+  requiredTarget: boolean,
+  owner: AnimationRuntimeOwner,
+  properties: readonly AnimatedProperty[],
+  options: TargetOptions = {},
+): SceneTargetRequirementV2 {
+  return Object.freeze({
+    key: options.key ?? part,
+    part,
+    source: options.source ?? hostSource,
+    required: requiredTarget,
+    cardinality: Object.freeze({ min: requiredTarget ? 1 : 0, max: options.max ?? 1 }),
+    visibility: Object.freeze({
+      ...visibleWithinHost,
+      minimumEffectiveOpacity: options.minimumEffectiveOpacity ?? visibleWithinHost.minimumEffectiveOpacity,
+      mustHaveNonZeroBox: options.mustHaveNonZeroBox ?? visibleWithinHost.mustHaveNonZeroBox,
+      mustIntersectViewport: options.mustIntersectViewport ?? visibleWithinHost.mustIntersectViewport,
+    }),
+    owner,
+    properties: Object.freeze([...properties]),
+  });
+}
+
+const v2Required = (
+  part: string,
+  properties: readonly AnimatedProperty[],
+  options?: TargetOptions,
+  owner: AnimationRuntimeOwner = "gsap",
+) => v2Target(part, true, owner, properties, options);
+
+const v2Optional = (
+  part: string,
+  properties: readonly AnimatedProperty[],
+  options?: TargetOptions,
+  owner: AnimationRuntimeOwner = "gsap",
+) => v2Target(part, false, owner, properties, options);
+
+function v2IdentityTarget(
+  part: string,
+  requiredTarget: boolean,
+  options: TargetOptions = {},
+): SceneTargetRequirementV2 {
+  return Object.freeze({
+    key: options.key ?? part,
+    part,
+    source: options.source ?? hostSource,
+    required: requiredTarget,
+    cardinality: Object.freeze({ min: requiredTarget ? 1 : 0, max: options.max ?? 1 }),
+    visibility: Object.freeze({
+      ...visibleWithinHost,
+      minimumEffectiveOpacity: options.minimumEffectiveOpacity ?? visibleWithinHost.minimumEffectiveOpacity,
+      mustHaveNonZeroBox: options.mustHaveNonZeroBox ?? visibleWithinHost.mustHaveNonZeroBox,
+      mustIntersectViewport: options.mustIntersectViewport ?? visibleWithinHost.mustIntersectViewport,
+    }),
+    identityOnly: true,
+    owner: null,
+    properties: [] as const,
+  });
+}
+
+const v2RequiredIdentity = (part: string, options?: TargetOptions) => v2IdentityTarget(part, true, options);
+
+type V2ContractInput = Omit<SceneTargetContractV2, "version" | "sceneName" | "cleanupPolicy"> & {
+  cleanupPolicy?: SceneCleanupPolicy;
+};
+
+function v2Contract(sceneName: AnimationSceneName, input: V2ContractInput): SceneTargetContractV2 {
+  return Object.freeze({
+    version: 2,
+    sceneName,
+    ...input,
+    expectedHostKinds: Object.freeze([...input.expectedHostKinds]),
+    targets: Object.freeze([...input.targets]),
+    cleanupPolicy: input.cleanupPolicy ?? cleanupPolicy,
+  });
+}
+
+const v2Reconcile = (semanticState: string, handoffTargetKey: string): SceneFinalStatePolicyV2 => ({
+  kind: "reconcile-then-revert",
+  semanticState,
+  handoffTargetKey,
+});
+
+const v2Hold = (semanticState: string): SceneFinalStatePolicyV2 => ({
+  kind: "hold-final-until-unmount",
+  semanticState,
+});
+
+const v2StaticFallback = (semanticState: string, fallback: string): SceneFinalStatePolicyV2 => ({
+  kind: "fallback-to-static-state",
+  semanticState,
+  fallback,
+});
+
+const v2WorkspaceLight = () => v2Optional("workspace-light", ["opacity"]);
+const v2CommandLight = () => v2Optional("command-light", ["opacity"]);
+
+const v2ChapterInheritedOptionalTargets = (primary: "ink-heading" | "ink-story"): readonly SceneTargetRequirementV2[] =>
+  [
+    v2Optional("sealed-parchment", ["transform"]),
+    v2Optional("ink-heading", ["transform", "opacity"]),
+    v2Optional("ink-story", ["transform", "opacity", "filter"]),
+    v2Optional("ink-objective", ["transform", "opacity"]),
+    v2Optional("ink-riddle", ["clip-path", "opacity"]),
+    v2Optional("seal", ["transform"]),
+    v2Optional("seal-crack", ["stroke-dasharray", "stroke-dashoffset"], { max: 4 }),
+    v2Optional("seal-fragment", ["transform", "opacity"], { max: 4 }),
+    v2Optional("page-light", ["transform", "opacity"]),
+    v2Optional("route-path", ["stroke-dasharray", "stroke-dashoffset"]),
+    v2Optional("map-fog", ["transform", "opacity"]),
+    v2Optional("quill", ["transform", "opacity"]),
+    v2Optional("quill-path", ["path-drawing"]),
+    v2Optional("companion-header-dim", ["opacity"], { source: externalSource("companion-header-dim") }),
+    v2Optional("companion-desktop-navigation-dim", ["opacity"], {
+      source: externalSource("companion-desktop-navigation-dim"),
+    }),
+    v2Optional("companion-mobile-navigation-dim", ["opacity"], {
+      source: externalSource("companion-mobile-navigation-dim"),
+    }),
+    v2WorkspaceLight(),
+  ].filter((entry) => entry.part !== primary);
+
 const workspaceLight = () => optional("workspace-light", ["opacity"]);
 const commandLight = () => optional("command-light", ["opacity"]);
-
-const chapterInheritedOptionalTargets = (primary: "ink-heading" | "ink-story"): SceneTargetRequirement[] =>
-  [
-    optional("sealed-parchment", ["transform", "custom"]),
-    optional("ink-heading", ["transform", "opacity"]),
-    optional("ink-story", ["transform", "opacity", "filter"]),
-    optional("ink-objective", ["transform", "opacity"]),
-    optional("ink-riddle", ["clip-path", "opacity"]),
-    optional("seal", ["transform"]),
-    optional("seal-crack", ["stroke-dasharray", "stroke-dashoffset"], { max: 4 }),
-    optional("seal-fragment", ["transform", "opacity"], { max: 4 }),
-    optional("page-light", ["transform", "opacity"]),
-    optional("route-path", ["stroke-dasharray", "stroke-dashoffset"]),
-    optional("map-fog", ["transform", "opacity"]),
-    optional("quill", ["transform", "opacity"]),
-    optional("peripheral", ["transform", "opacity"], { max: 2 }),
-    workspaceLight(),
-  ].filter((entry) => entry.part !== primary);
 
 type SceneCallerAnchor = {
   sourcePath: string;
@@ -182,7 +303,7 @@ type SceneCallerAnchor = {
 };
 
 export type SceneReachabilityEvidence =
-  | { reachability: "production"; caller: SceneCallerAnchor }
+  | { reachability: "production"; caller: SceneCallerAnchor; additionalCallers?: readonly SceneCallerAnchor[] }
   | { reachability: "legacy"; caller: SceneCallerAnchor; disposition: string }
   | { reachability: "future-contract"; disposition: string }
   | {
@@ -194,12 +315,15 @@ export type SceneReachabilityEvidence =
     }
   | { reachability: "development-only"; disposition: string };
 
-const playerEventCaller = (sceneBinding: string): SceneCallerAnchor => ({
-  sourcePath: "src/components/player/PlayerExperience.tsx",
-  callerSymbol: "const playEvent = useCallback",
-  sceneBinding,
-  invocation: "director.play(scene,",
-});
+const playerEventCaller = (_sceneBinding: string): SceneCallerAnchor => {
+  void _sceneBinding;
+  return {
+    sourcePath: "src/components/player/PlayerExperience.tsx",
+    callerSymbol: "const presentProgressionRequest = useCallback",
+    sceneBinding: "policyForProgressionEvent(request.eventType)",
+    invocation: "director.play<void>(eventPolicy.sceneName,",
+  };
+};
 
 const playerJournalCaller: SceneCallerAnchor = {
   sourcePath: "src/components/player/PlayerExperience.tsx",
@@ -215,12 +339,15 @@ const quartermasterActionCaller = (sceneBinding: string): SceneCallerAnchor => (
   invocation: "director.play<CommandResult>(actionScene[action[0]],",
 });
 
+const quartermasterProductionCaller = (sceneBinding: string): readonly SceneCallerAnchor[] =>
+  Object.freeze([quartermasterActionCaller(sceneBinding)]);
+
 /**
  * Source-grounded reachability evidence. Production status is granted only to
  * a scene with a current non-development caller; the showcase is deliberately
  * absent because a synthetic harness is not production reachability proof.
  */
-export const sceneReachabilityEvidence = {
+export const sceneReachabilityEvidence: Readonly<Record<AnimationSceneName, SceneReachabilityEvidence>> = {
   "first-arrival": {
     reachability: "production",
     caller: playerJournalCaller,
@@ -291,10 +418,12 @@ export const sceneReachabilityEvidence = {
   "map-reveal": {
     reachability: "production",
     caller: playerEventCaller('MAP_LOCATION_REVEALED: "map-reveal"'),
+    additionalCallers: quartermasterProductionCaller('REVEAL_MAP: "map-reveal"'),
   },
   "route-draw": {
     reachability: "production",
     caller: playerEventCaller('MAP_ROUTE_REVEALED: "route-draw"'),
+    additionalCallers: quartermasterProductionCaller('REVEAL_ROUTE: "route-draw"'),
   },
   "marker-stamp": {
     reachability: "future-contract",
@@ -307,6 +436,7 @@ export const sceneReachabilityEvidence = {
   "artifact-award": {
     reachability: "production",
     caller: playerEventCaller('ARTIFACT_AWARDED: "artifact-award"'),
+    additionalCallers: quartermasterProductionCaller('AWARD_ARTIFACT: "artifact-award"'),
   },
   "artifact-inspection": {
     reachability: "future-contract",
@@ -315,26 +445,32 @@ export const sceneReachabilityEvidence = {
   "artifact-connection": {
     reachability: "production",
     caller: playerEventCaller('ARTIFACT_CONNECTED: "artifact-connection"'),
+    additionalCallers: quartermasterProductionCaller('CONNECT_ARTIFACTS: "artifact-connection"'),
   },
   "quest-discovery": {
     reachability: "production",
     caller: playerEventCaller('SIDE_QUEST_DISCOVERED: "quest-discovery"'),
+    additionalCallers: quartermasterProductionCaller('DISCOVER_SIDE_QUEST: "quest-discovery"'),
   },
   "quest-complete": {
     reachability: "production",
     caller: playerEventCaller('SIDE_QUEST_COMPLETED: "quest-complete"'),
+    additionalCallers: quartermasterProductionCaller('COMPLETE_SIDE_QUEST: "quest-complete"'),
   },
   "log-entry": {
     reachability: "production",
     caller: playerEventCaller('PLAYER_LOG_ENTRY_ADDED: "log-entry"'),
+    additionalCallers: quartermasterProductionCaller('ADD_LOG_ENTRY: "log-entry"'),
   },
   "finale-tease": {
     reachability: "production",
     caller: playerEventCaller('FINALE_TEASED: "finale-tease"'),
+    additionalCallers: quartermasterProductionCaller('TEASE_FINALE: "finale-tease"'),
   },
   "finale-requirement": {
     reachability: "production",
     caller: playerEventCaller('FINALE_REQUIREMENT_UPDATED: "finale-requirement"'),
+    additionalCallers: quartermasterProductionCaller('UPDATE_FINALE_REQUIREMENT: "finale-requirement"'),
   },
   "prepare-chapter": {
     reachability: "legacy",
@@ -344,41 +480,43 @@ export const sceneReachabilityEvidence = {
   "mark-solved": {
     reachability: "production",
     caller: playerEventCaller('CHAPTER_SOLVED: "mark-solved"'),
+    additionalCallers: quartermasterProductionCaller('MARK_SOLVED: "mark-solved"'),
   },
   pause: {
     reachability: "production",
     caller: playerEventCaller('CAMPAIGN_PAUSED: "pause"'),
+    additionalCallers: quartermasterProductionCaller('PAUSE: "pause"'),
   },
   resume: {
     reachability: "production",
     caller: playerEventCaller('CAMPAIGN_RESUMED: "resume"'),
+    additionalCallers: quartermasterProductionCaller('RESUME: "resume"'),
   },
   undo: {
     reachability: "production",
     caller: playerEventCaller('STATE_REVERTED: "undo"'),
+    additionalCallers: quartermasterProductionCaller('UNDO_LAST: "undo"'),
   },
-} satisfies Record<AnimationSceneName, SceneReachabilityEvidence>;
+};
 
 export const sceneContracts = {
-  "first-arrival": contract("first-arrival", {
+  "first-arrival": v2Contract("first-arrival", {
     reachability: "production",
-    expectedHostKind: "arrival",
-    requiredTargets: [
-      required("title", ["clip-path", "opacity"]),
-      required("arrival-copy", ["transform", "opacity"], { max: 2 }),
-      required("arrival-action", ["transform", "opacity"], { max: 2 }),
-    ],
-    optionalTargets: [
-      optional("sky", ["opacity"]),
-      optional("stars", ["opacity"]),
-      optional("moon", ["transform", "opacity"]),
-      optional("horizon", ["transform", "opacity"], { max: 2 }),
-      optional("ocean", ["transform", "opacity"], { max: 2 }),
-      optional("fog-back", ["transform", "opacity"]),
-      optional("fog-front", ["transform", "opacity"], { max: 2 }),
-      optional("ship", ["transform", "opacity"]),
-      optional("emblem", ["transform", "opacity"]),
-      optional("nautical-border", ["opacity"]),
+    expectedHostKinds: ["gateway", "journal-opening"],
+    targets: [
+      v2Required("title", ["clip-path", "opacity"]),
+      v2Required("arrival-copy", ["transform", "opacity"], { max: 2 }),
+      v2Required("arrival-action", ["transform", "opacity"], { max: 2 }),
+      v2Optional("sky", ["opacity"]),
+      v2Optional("stars", ["opacity"]),
+      v2Optional("moon", ["transform", "opacity"]),
+      v2Optional("horizon", ["transform", "opacity"], { max: 2 }),
+      v2Optional("ocean", ["transform", "opacity"], { max: 2 }),
+      v2Optional("fog-back", ["transform", "opacity"]),
+      v2Optional("fog-front", ["transform", "opacity"], { max: 2 }),
+      v2Optional("ship", ["transform", "opacity"]),
+      v2Optional("emblem", ["transform", "opacity"]),
+      v2Optional("nautical-border", ["opacity"]),
     ],
     timeoutMs: 7_000,
     playbackPolicy: playback("automatic", {
@@ -389,17 +527,17 @@ export const sceneContracts = {
       priority: 20,
     }),
     acknowledgmentPolicy: noAcknowledgment(),
-    finalStatePolicy: reconcile("arrival-readable"),
+    finalStatePolicy: v2Reconcile("arrival-readable", "title"),
     reducedFallback: "semantic-final-state",
   }),
-  "session-reentry": contract("session-reentry", {
+  "session-reentry": v2Contract("session-reentry", {
     reachability: "production",
-    expectedHostKind: "arrival",
-    requiredTargets: [
-      required("title", ["transform", "opacity"]),
-      required("arrival-action", ["transform", "opacity"], { max: 2 }),
+    expectedHostKinds: ["gateway", "journal-opening"],
+    targets: [
+      v2Required("title", ["transform", "opacity"]),
+      v2Required("arrival-action", ["transform", "opacity"], { max: 2 }),
+      v2Optional("fog-front", ["transform", "opacity"], { max: 2 }),
     ],
-    optionalTargets: [optional("fog-front", ["transform", "opacity"], { max: 2 })],
     timeoutMs: 3_000,
     playbackPolicy: playback("automatic", {
       allowUserSkip: true,
@@ -408,12 +546,12 @@ export const sceneContracts = {
       priority: 15,
     }),
     acknowledgmentPolicy: noAcknowledgment(),
-    finalStatePolicy: reconcile("reentry-readable"),
+    finalStatePolicy: v2Reconcile("reentry-readable", "title"),
     reducedFallback: "semantic-final-state",
   }),
   "player-access": contract("player-access", {
     reachability: "legacy",
-    expectedHostKind: "player-access",
+    expectedHostKind: "access",
     requiredTargets: [
       required("invitation", ["transform"]),
       required("invitation-ink", ["filter", "opacity"]),
@@ -437,7 +575,7 @@ export const sceneContracts = {
   }),
   "quartermaster-login": contract("quartermaster-login", {
     reachability: "legacy",
-    expectedHostKind: "quartermaster-login",
+    expectedHostKind: "access",
     requiredTargets: [
       required("lock", ["transform"]),
       required("door-bolt", ["transform"]),
@@ -456,69 +594,66 @@ export const sceneContracts = {
     finalStatePolicy: hold("quartermaster-result-readable"),
     reducedFallback: "semantic-final-state",
   }),
-  "journal-open": contract("journal-open", {
+  "journal-open": v2Contract("journal-open", {
     reachability: "deprecated",
-    expectedHostKind: "development-showcase",
-    requiredTargets: [],
-    optionalTargets: [
-      optional("journal-cover", ["transform"]),
-      optional("journal-clasp", ["transform"]),
-      optional("page-dust", ["opacity"]),
-    ],
+    expectedHostKinds: ["development-showcase"],
+    targets: [],
     timeoutMs: 3_000,
     playbackPolicy: playback("development", { allowPolicySkip: false, priority: 0 }),
     acknowledgmentPolicy: noAcknowledgment(),
-    finalStatePolicy: staticFallback("journal-readable", "journal-opening-machine"),
+    finalStatePolicy: v2StaticFallback("journal-readable", "journal-opening-machine"),
     reducedFallback: "none",
     replacedBy: "journal-opening-machine",
   }),
-  "manual-page-flip": contract("manual-page-flip", {
+  "manual-page-flip": v2Contract("manual-page-flip", {
     reachability: "deprecated",
-    expectedHostKind: "development-showcase",
-    requiredTargets: [],
-    optionalTargets: [workspaceLight()],
+    expectedHostKinds: ["development-showcase"],
+    targets: [],
     timeoutMs: 1_000,
     playbackPolicy: playback("development", { allowPolicySkip: false, priority: 0 }),
     acknowledgmentPolicy: noAcknowledgment(),
-    finalStatePolicy: staticFallback("page-readable", "PageFlipBook-manual-controls"),
+    finalStatePolicy: v2StaticFallback("page-readable", "PageFlipBook-manual-controls"),
     reducedFallback: "none",
     replacedBy: "PageFlipBook-manual-controls",
   }),
-  "programmatic-page-flip": contract("programmatic-page-flip", {
+  "programmatic-page-flip": v2Contract("programmatic-page-flip", {
     reachability: "deprecated",
-    expectedHostKind: "development-showcase",
-    requiredTargets: [],
-    optionalTargets: [workspaceLight()],
+    expectedHostKinds: ["development-showcase"],
+    targets: [],
     timeoutMs: 1_000,
     playbackPolicy: playback("development", { allowPolicySkip: false, priority: 0 }),
     acknowledgmentPolicy: noAcknowledgment(),
-    finalStatePolicy: staticFallback("page-readable", "PageFlipBook-flipTo"),
+    finalStatePolicy: v2StaticFallback("page-readable", "PageFlipBook-flipTo"),
     reducedFallback: "none",
     replacedBy: "PageFlipBook-flipTo",
   }),
-  "chapter-heading": contract("chapter-heading", {
+  "chapter-heading": v2Contract("chapter-heading", {
     reachability: "future-contract",
-    expectedHostKind: "future-chapter-subscene",
-    requiredTargets: [required("ink-heading", ["transform", "opacity"], { max: 2 })],
-    optionalTargets: chapterInheritedOptionalTargets("ink-heading"),
+    expectedHostKinds: ["player-section-enhancement"],
+    targets: [
+      v2Required("ink-heading", ["transform", "opacity"], { max: 2 }),
+      ...v2ChapterInheritedOptionalTargets("ink-heading"),
+    ],
     timeoutMs: 4_000,
     playbackPolicy: playback("development", {
       allowedFallback: "static-chapter-heading",
       priority: 10,
     }),
     acknowledgmentPolicy: noAcknowledgment(),
-    finalStatePolicy: staticFallback("chapter-heading-readable", "static-chapter-heading"),
+    finalStatePolicy: v2StaticFallback("chapter-heading-readable", "static-chapter-heading"),
     reducedFallback: "static-reader",
   }),
-  "prose-ink": contract("prose-ink", {
+  "prose-ink": v2Contract("prose-ink", {
     reachability: "future-contract",
-    expectedHostKind: "future-chapter-subscene",
-    requiredTargets: [required("ink-story", ["transform", "opacity", "filter"])],
-    optionalTargets: chapterInheritedOptionalTargets("ink-story"),
+    expectedHostKinds: ["player-section-enhancement"],
+    targets: [
+      v2Required("ink-story", ["transform", "opacity", "filter"]),
+      ...v2ChapterInheritedOptionalTargets("ink-story"),
+    ],
     timeoutMs: 5_000,
     playbackPolicy: playback("development", { allowedFallback: "static-prose", priority: 10 }),
     acknowledgmentPolicy: noAcknowledgment(),
-    finalStatePolicy: staticFallback("prose-readable", "static-prose"),
+    finalStatePolicy: v2StaticFallback("prose-readable", "static-prose"),
     reducedFallback: "static-reader",
   }),
   "seal-break": contract("seal-break", {
@@ -541,28 +676,37 @@ export const sceneContracts = {
     finalStatePolicy: hold("chapter-command-recorded"),
     reducedFallback: "semantic-final-state",
   }),
-  "chapter-release": contract("chapter-release", {
+  "chapter-release": v2Contract("chapter-release", {
     reachability: "production",
-    expectedHostKind: "player-progression",
-    requiredTargets: [
-      required("journal-stage", ["transform"]),
-      required("sealed-parchment", ["transform", "custom"]),
-      required("ink-heading", ["transform", "opacity"], { max: 2 }),
-      required("ink-story", ["transform", "opacity", "filter"]),
-      required("ink-objective", ["transform", "opacity"]),
-      required("ink-riddle", ["clip-path", "opacity"]),
-    ],
-    optionalTargets: [
-      workspaceLight(),
-      optional("lantern", ["opacity"]),
-      optional("peripheral", ["transform", "opacity"], { max: 2 }),
-      optional("seal", ["transform"]),
-      optional("seal-crack", ["stroke-dasharray", "stroke-dashoffset"], { max: 4 }),
-      optional("seal-fragment", ["transform", "opacity"], { max: 4 }),
-      optional("page-light", ["transform", "opacity"]),
-      optional("route-path", ["stroke-dasharray", "stroke-dashoffset"]),
-      optional("map-fog", ["transform", "opacity"]),
-      optional("quill", ["transform", "opacity"]),
+    expectedHostKinds: ["player-progression"],
+    targets: [
+      v2Required("journal-stage", ["transform"]),
+      v2Required("sealed-parchment", ["transform"], { key: "global-sealed-parchment" }),
+      v2Required("ink-heading", ["transform", "opacity"], { max: 2 }),
+      v2Required("ink-story", ["transform", "opacity", "filter"]),
+      v2Required("ink-objective", ["transform", "opacity"]),
+      v2Required("ink-riddle", ["clip-path", "opacity"]),
+      v2WorkspaceLight(),
+      v2Optional("lantern", ["opacity"]),
+      v2Optional("companion-header-dim", ["opacity"], { source: externalSource("companion-header-dim") }),
+      v2Optional("companion-desktop-navigation-dim", ["opacity"], {
+        source: externalSource("companion-desktop-navigation-dim"),
+      }),
+      v2Optional("companion-mobile-navigation-dim", ["opacity"], {
+        source: externalSource("companion-mobile-navigation-dim"),
+      }),
+      v2Optional("seal", ["transform"]),
+      v2Optional("seal-crack", ["path-drawing", "stroke-dasharray", "stroke-dashoffset"], { max: 4 }),
+      v2Optional("seal-fragment", ["transform", "opacity"], { max: 4 }),
+      v2Optional("page-light", ["transform", "opacity"]),
+      v2Optional("route-path", ["path-drawing", "stroke-dasharray", "stroke-dashoffset"]),
+      v2Optional("map-fog", ["transform", "opacity"]),
+      v2Optional("quill", ["transform", "opacity"]),
+      v2Optional("quill-path", ["path-drawing"]),
+      v2Optional("sealed-parchment", ["transform"], {
+        key: "local-sealed-parchment",
+        source: externalSource("sealed-parchment"),
+      }),
     ],
     timeoutMs: 9_500,
     playbackPolicy: playback("automatic", {
@@ -574,195 +718,282 @@ export const sceneContracts = {
       priority: 100,
     }),
     acknowledgmentPolicy: playerEventAcknowledgment("mandatory"),
-    finalStatePolicy: reconcile("chapter-readable"),
+    finalStatePolicy: v2Reconcile("chapter-readable", "global-sealed-parchment"),
     reducedFallback: "static-reader",
   }),
-  "map-reveal": contract("map-reveal", {
+  "map-reveal": v2Contract("map-reveal", {
     reachability: "production",
-    expectedHostKind: "progression",
-    requiredTargets: [required("map-marker-new", ["transform", "opacity"])],
-    optionalTargets: [
-      optional("map-fog", ["clip-path", "opacity"]),
-      optional("route-path", ["stroke-dasharray", "stroke-dashoffset"]),
-      workspaceLight(),
+    expectedHostKinds: ["player-progression", "quartermaster-command"],
+    targets: [
+      v2Required("map-marker", ["transform", "opacity"], { key: "map-marker-new" }),
+      v2Optional("map-marker", ["transform", "opacity"], {
+        key: "local-map-marker",
+        source: externalSource("map-marker"),
+      }),
+      v2Optional("map-fog", ["clip-path", "opacity"], { source: externalSource("map-fog") }),
+      v2Optional("route-path", ["path-drawing", "stroke-dasharray", "stroke-dashoffset"], {
+        source: externalSource("route-path"),
+      }),
+      v2WorkspaceLight(),
     ],
     timeoutMs: 4_500,
     playbackPolicy: playback("automatic", {
+      replayable: true,
       allowUserSkip: true,
       userSkipFinalState: "map-location-readable",
       allowedFallback: "readable-map-location",
       priority: 60,
     }),
     acknowledgmentPolicy: playerEventAcknowledgment(),
-    finalStatePolicy: reconcile("map-location-readable"),
+    finalStatePolicy: v2Reconcile("map-location-readable", "map-marker-new"),
     reducedFallback: "semantic-final-state",
   }),
-  "route-draw": contract("route-draw", {
+  "route-draw": v2Contract("route-draw", {
     reachability: "production",
-    expectedHostKind: "progression",
-    requiredTargets: [required("route-path", ["stroke-dasharray", "stroke-dashoffset", "opacity"])],
-    optionalTargets: [workspaceLight()],
+    expectedHostKinds: ["player-progression", "quartermaster-command"],
+    targets: [
+      v2Required("route-path", ["path-drawing", "stroke-dasharray", "stroke-dashoffset", "opacity"], {
+        key: "global-route-path",
+      }),
+      v2Optional("route-path", ["path-drawing", "stroke-dasharray", "stroke-dashoffset", "opacity"], {
+        key: "local-route-path",
+        source: externalSource("route-path"),
+      }),
+      v2WorkspaceLight(),
+    ],
     timeoutMs: 4_000,
     playbackPolicy: playback("automatic", {
+      replayable: true,
       allowUserSkip: true,
       userSkipFinalState: "route-readable",
       allowedFallback: "readable-route",
       priority: 60,
     }),
     acknowledgmentPolicy: playerEventAcknowledgment(),
-    finalStatePolicy: reconcile("route-readable"),
+    finalStatePolicy: v2Reconcile("route-readable", "global-route-path"),
     reducedFallback: "semantic-final-state",
   }),
-  "marker-stamp": contract("marker-stamp", {
+  "marker-stamp": v2Contract("marker-stamp", {
     reachability: "future-contract",
-    expectedHostKind: "future-map-subscene",
-    requiredTargets: [required("map-marker-new", ["transform", "opacity"])],
-    optionalTargets: [workspaceLight()],
+    expectedHostKinds: ["player-section-enhancement"],
+    targets: [v2Required("map-marker-new", ["transform", "opacity"]), v2WorkspaceLight()],
     timeoutMs: 3_000,
     playbackPolicy: playback("development", { allowedFallback: "static-map-marker", priority: 10 }),
     acknowledgmentPolicy: noAcknowledgment(),
-    finalStatePolicy: staticFallback("map-marker-readable", "static-map-marker"),
+    finalStatePolicy: v2StaticFallback("map-marker-readable", "static-map-marker"),
     reducedFallback: "static-reader",
   }),
-  "ship-course": contract("ship-course", {
+  "ship-course": v2Contract("ship-course", {
     reachability: "future-contract",
-    expectedHostKind: "future-map-subscene",
-    requiredTargets: [required("ship-token", ["transform"])],
-    optionalTargets: [workspaceLight()],
+    expectedHostKinds: ["player-section-enhancement"],
+    targets: [
+      v2Required("ship-token", ["transform"]),
+      v2Required("route-motion-path", ["path-drawing"]),
+      v2WorkspaceLight(),
+    ],
     timeoutMs: 4_000,
     playbackPolicy: playback("development", { allowedFallback: "static-ship-position", priority: 10 }),
     acknowledgmentPolicy: noAcknowledgment(),
-    finalStatePolicy: staticFallback("ship-position-readable", "static-ship-position"),
+    finalStatePolicy: v2StaticFallback("ship-position-readable", "static-ship-position"),
     reducedFallback: "static-reader",
   }),
-  "artifact-award": contract("artifact-award", {
+  "artifact-award": v2Contract("artifact-award", {
     reachability: "production",
-    expectedHostKind: "progression",
-    requiredTargets: [
-      required("artifact-reveal", ["transform", "opacity", "layout"]),
-      required("artifact-slot-target", ["layout"], undefined, "react"),
+    expectedHostKinds: ["player-progression", "quartermaster-command"],
+    targets: [
+      v2Required("artifact-reveal", ["transform", "opacity"]),
+      v2RequiredIdentity("artifact-slot-target"),
+      v2Optional("artifact-silhouette", ["transform", "opacity", "filter"], {
+        key: "local-artifact-slot",
+        source: externalSource("artifact-slot"),
+      }),
+      v2Optional("artifact-light", ["transform", "opacity"]),
+      v2WorkspaceLight(),
     ],
-    optionalTargets: [optional("artifact-light", ["transform", "opacity"]), workspaceLight()],
     timeoutMs: 5_000,
     playbackPolicy: playback("automatic", {
+      replayable: true,
       allowUserSkip: true,
       userSkipFinalState: "artifact-awarded-readable",
       allowedFallback: "readable-artifact-award",
       priority: 70,
     }),
     acknowledgmentPolicy: playerEventAcknowledgment(),
-    finalStatePolicy: reconcile("artifact-awarded-readable"),
+    finalStatePolicy: v2Reconcile("artifact-awarded-readable", "artifact-slot-target"),
     reducedFallback: "semantic-final-state",
   }),
-  "artifact-inspection": contract("artifact-inspection", {
+  "artifact-inspection": v2Contract("artifact-inspection", {
     reachability: "future-contract",
-    expectedHostKind: "future-artifact-inspection-detail",
-    requiredTargets: [required("artifact-engraving", ["clip-path"])],
-    optionalTargets: [workspaceLight()],
+    expectedHostKinds: ["player-section-enhancement"],
+    targets: [
+      v2Required("artifact-engraving", ["clip-path"]),
+      v2Optional("artifact-detail-light", ["transform", "opacity"]),
+      v2WorkspaceLight(),
+    ],
     timeoutMs: 3_000,
     playbackPolicy: playback("development", { allowedFallback: "static-artifact-engraving", priority: 10 }),
     acknowledgmentPolicy: noAcknowledgment(),
-    finalStatePolicy: hold("artifact-engraving-readable"),
+    finalStatePolicy: v2Hold("artifact-engraving-readable"),
     reducedFallback: "static-reader",
   }),
-  "artifact-connection": contract("artifact-connection", {
+  "artifact-connection": v2Contract("artifact-connection", {
     reachability: "production",
-    expectedHostKind: "progression",
-    requiredTargets: [required("artifact-connection-path", ["stroke-dasharray", "stroke-dashoffset", "opacity"])],
-    optionalTargets: [workspaceLight()],
+    expectedHostKinds: ["player-progression", "quartermaster-command"],
+    targets: [
+      v2Required("artifact-connection-path", ["path-drawing", "stroke-dasharray", "stroke-dashoffset", "opacity"], {
+        key: "global-artifact-connection-path",
+      }),
+      v2Optional("artifact-connection-path", ["path-drawing", "stroke-dasharray", "stroke-dashoffset", "opacity"], {
+        key: "local-artifact-connection-path",
+        source: externalSource("artifact-connection-path"),
+      }),
+      v2WorkspaceLight(),
+    ],
     timeoutMs: 4_000,
     playbackPolicy: playback("automatic", {
+      replayable: true,
       allowUserSkip: true,
       userSkipFinalState: "artifact-connection-readable",
       allowedFallback: "readable-artifact-connection",
       priority: 60,
     }),
     acknowledgmentPolicy: playerEventAcknowledgment(),
-    finalStatePolicy: reconcile("artifact-connection-readable"),
+    finalStatePolicy: v2Reconcile("artifact-connection-readable", "global-artifact-connection-path"),
     reducedFallback: "semantic-final-state",
   }),
-  "quest-discovery": contract("quest-discovery", {
+  "quest-discovery": v2Contract("quest-discovery", {
     reachability: "production",
-    expectedHostKind: "progression",
-    requiredTargets: [required("quest-note-new", ["transform", "opacity"])],
-    optionalTargets: [optional("red-thread", ["stroke-dasharray", "stroke-dashoffset"]), workspaceLight()],
+    expectedHostKinds: ["player-progression", "quartermaster-command"],
+    targets: [
+      v2Required("quest-note-new", ["transform", "opacity"]),
+      v2Optional("red-thread", ["path-drawing", "stroke-dasharray", "stroke-dashoffset"]),
+      v2Optional("quest-note-new", ["transform", "opacity"], {
+        key: "local-quest-note",
+        source: externalSource("quest-note"),
+      }),
+      v2Optional("red-thread", ["path-drawing", "stroke-dasharray", "stroke-dashoffset"], {
+        key: "local-quest-red-thread",
+        source: externalSource("quest-red-thread"),
+      }),
+      v2Optional("quest-objective-updated", ["transform", "opacity"], {
+        key: "local-quest-objective",
+        source: externalSource("quest-objective"),
+      }),
+      v2WorkspaceLight(),
+    ],
     timeoutMs: 4_000,
     playbackPolicy: playback("automatic", {
+      replayable: true,
       allowUserSkip: true,
       userSkipFinalState: "quest-readable",
       allowedFallback: "readable-quest-update",
       priority: 60,
     }),
     acknowledgmentPolicy: playerEventAcknowledgment(),
-    finalStatePolicy: reconcile("quest-readable"),
+    finalStatePolicy: v2Reconcile("quest-readable", "quest-note-new"),
     reducedFallback: "semantic-final-state",
   }),
-  "quest-complete": contract("quest-complete", {
+  "quest-complete": v2Contract("quest-complete", {
     reachability: "production",
-    expectedHostKind: "progression",
-    requiredTargets: [required("quest-stamp", ["transform", "opacity"])],
-    optionalTargets: [workspaceLight()],
+    expectedHostKinds: ["player-progression", "quartermaster-command"],
+    targets: [
+      v2Required("quest-stamp", ["transform", "opacity"], { key: "global-quest-stamp" }),
+      v2Optional("quest-stamp", ["transform", "opacity"], {
+        key: "local-quest-stamp",
+        source: externalSource("quest-stamp"),
+      }),
+      v2WorkspaceLight(),
+    ],
     timeoutMs: 3_000,
     playbackPolicy: playback("automatic", {
+      replayable: true,
       allowUserSkip: true,
       userSkipFinalState: "quest-complete-readable",
       allowedFallback: "readable-quest-complete",
       priority: 60,
     }),
     acknowledgmentPolicy: playerEventAcknowledgment(),
-    finalStatePolicy: reconcile("quest-complete-readable"),
+    finalStatePolicy: v2Reconcile("quest-complete-readable", "global-quest-stamp"),
     reducedFallback: "semantic-final-state",
   }),
-  "log-entry": contract("log-entry", {
+  "log-entry": v2Contract("log-entry", {
     reachability: "production",
-    expectedHostKind: "progression",
-    requiredTargets: [required("log-entry-new", ["transform", "opacity"])],
-    optionalTargets: [optional("log-symbol-new", ["transform", "opacity"]), workspaceLight()],
+    expectedHostKinds: ["player-progression", "quartermaster-command"],
+    targets: [
+      v2Required("log-entry-new", ["opacity", "clip-path", "filter"]),
+      v2Optional("log-symbol-new", ["transform", "opacity"]),
+      v2Optional("log-entry-new", ["opacity", "clip-path", "filter"], {
+        key: "local-log-entry",
+        source: externalSource("log-entry"),
+      }),
+      v2Optional("log-symbol-new", ["transform", "opacity"], {
+        key: "local-log-symbol",
+        source: externalSource("log-symbol"),
+      }),
+      v2Optional("annotation-ink", ["opacity", "clip-path", "filter"], {
+        key: "local-journal-annotation-ink",
+        source: externalSource("journal-annotation-ink"),
+      }),
+      v2WorkspaceLight(),
+    ],
     timeoutMs: 3_500,
     playbackPolicy: playback("automatic", {
+      replayable: true,
       allowUserSkip: true,
       userSkipFinalState: "log-entry-readable",
       allowedFallback: "readable-log-entry",
       priority: 55,
     }),
     acknowledgmentPolicy: playerEventAcknowledgment(),
-    finalStatePolicy: reconcile("log-entry-readable"),
+    finalStatePolicy: v2Reconcile("log-entry-readable", "log-entry-new"),
     reducedFallback: "semantic-final-state",
   }),
-  "finale-tease": contract("finale-tease", {
+  "finale-tease": v2Contract("finale-tease", {
     reachability: "production",
-    expectedHostKind: "progression",
-    requiredTargets: [
-      required("finale-ring-outer", ["transform"]),
-      required("finale-ring-inner", ["transform"]),
-      required("finale-light-path", ["stroke-dasharray", "stroke-dashoffset"]),
+    expectedHostKinds: ["player-progression", "quartermaster-command"],
+    targets: [
+      v2Required("finale-ring-outer", ["transform"]),
+      v2Required("finale-ring-inner", ["transform"]),
+      v2Required("finale-light-path", ["path-drawing", "stroke-dasharray", "stroke-dashoffset"]),
+      v2Optional("finale-mechanism", ["transform", "opacity"], {
+        key: "local-finale-mechanism",
+        source: externalSource("finale-mechanism"),
+      }),
+      v2WorkspaceLight(),
     ],
-    optionalTargets: [workspaceLight()],
     timeoutMs: 5_000,
     playbackPolicy: playback("automatic", {
+      replayable: true,
       allowUserSkip: true,
       userSkipFinalState: "finale-tease-readable",
       allowedFallback: "readable-finale-tease",
       priority: 70,
     }),
     acknowledgmentPolicy: playerEventAcknowledgment(),
-    finalStatePolicy: reconcile("finale-tease-readable"),
+    finalStatePolicy: v2Reconcile("finale-tease-readable", "finale-light-path"),
     reducedFallback: "semantic-final-state",
   }),
-  "finale-requirement": contract("finale-requirement", {
+  "finale-requirement": v2Contract("finale-requirement", {
     reachability: "production",
-    expectedHostKind: "progression",
-    requiredTargets: [required("finale-light-path", ["stroke-dasharray", "stroke-dashoffset", "opacity"])],
-    optionalTargets: [workspaceLight()],
+    expectedHostKinds: ["player-progression", "quartermaster-command"],
+    targets: [
+      v2Required("finale-light-path", ["path-drawing", "stroke-dasharray", "stroke-dashoffset", "opacity"]),
+      v2Optional("finale-requirement-socket", ["transform", "opacity", "filter"], {
+        key: "local-finale-requirement-socket",
+        source: externalSource("finale-requirement-socket"),
+      }),
+      v2WorkspaceLight(),
+    ],
     timeoutMs: 4_000,
     playbackPolicy: playback("automatic", {
+      replayable: true,
       allowUserSkip: true,
       userSkipFinalState: "finale-requirement-readable",
       allowedFallback: "readable-finale-requirement",
       priority: 65,
     }),
     acknowledgmentPolicy: playerEventAcknowledgment(),
-    finalStatePolicy: reconcile("finale-requirement-readable"),
+    finalStatePolicy: v2Reconcile("finale-requirement-readable", "finale-light-path"),
     reducedFallback: "semantic-final-state",
   }),
   "prepare-chapter": contract("prepare-chapter", {
@@ -781,73 +1012,82 @@ export const sceneContracts = {
     finalStatePolicy: hold("chapter-prepared-readable"),
     reducedFallback: "semantic-final-state",
   }),
-  "mark-solved": contract("mark-solved", {
+  "mark-solved": v2Contract("mark-solved", {
     reachability: "production",
-    expectedHostKind: "progression",
-    requiredTargets: [required("solved-stamp", ["transform", "opacity"])],
-    optionalTargets: [commandLight()],
+    expectedHostKinds: ["player-progression", "quartermaster-command"],
+    targets: [
+      v2Required("solved-stamp", ["transform", "opacity"]),
+      v2Optional("solved-stamp", ["transform", "opacity"], {
+        key: "local-chapter-solved-stamp",
+        source: externalSource("chapter-solved-stamp"),
+      }),
+      v2CommandLight(),
+    ],
     timeoutMs: 3_000,
     playbackPolicy: playback("automatic", {
+      replayable: true,
       allowUserSkip: true,
       userSkipFinalState: "chapter-solved-readable",
       allowedFallback: "readable-chapter-solved",
       priority: 65,
     }),
     acknowledgmentPolicy: playerEventAcknowledgment(),
-    finalStatePolicy: reconcile("chapter-solved-readable"),
+    finalStatePolicy: v2Reconcile("chapter-solved-readable", "solved-stamp"),
     reducedFallback: "semantic-final-state",
   }),
-  pause: contract("pause", {
+  pause: v2Contract("pause", {
     reachability: "production",
-    expectedHostKind: "progression",
-    requiredTargets: [required("lantern", ["transform", "opacity"])],
-    optionalTargets: [commandLight()],
+    expectedHostKinds: ["player-progression", "quartermaster-command"],
+    targets: [v2Required("lantern", ["transform", "opacity"]), v2CommandLight()],
     timeoutMs: 3_000,
     playbackPolicy: playback("automatic", {
+      replayable: true,
       allowUserSkip: true,
       userSkipFinalState: "campaign-paused-readable",
       allowedFallback: "readable-campaign-paused",
       priority: 80,
     }),
     acknowledgmentPolicy: playerEventAcknowledgment(),
-    finalStatePolicy: reconcile("campaign-paused-readable"),
+    finalStatePolicy: v2Reconcile("campaign-paused-readable", "lantern"),
     reducedFallback: "semantic-final-state",
   }),
-  resume: contract("resume", {
+  resume: v2Contract("resume", {
     reachability: "production",
-    expectedHostKind: "progression",
-    requiredTargets: [required("lantern", ["transform", "opacity"])],
-    optionalTargets: [commandLight()],
+    expectedHostKinds: ["player-progression", "quartermaster-command"],
+    targets: [v2Required("lantern", ["transform", "opacity"]), v2CommandLight()],
     timeoutMs: 3_000,
     playbackPolicy: playback("automatic", {
+      replayable: true,
       allowUserSkip: true,
       userSkipFinalState: "campaign-resumed-readable",
       allowedFallback: "readable-campaign-resumed",
       priority: 80,
     }),
     acknowledgmentPolicy: playerEventAcknowledgment(),
-    finalStatePolicy: reconcile("campaign-resumed-readable"),
+    finalStatePolicy: v2Reconcile("campaign-resumed-readable", "lantern"),
     reducedFallback: "semantic-final-state",
   }),
-  undo: contract("undo", {
+  undo: v2Contract("undo", {
     reachability: "production",
-    expectedHostKind: "progression",
-    requiredTargets: [required("undo-mark", ["transform", "opacity"])],
-    optionalTargets: [commandLight()],
+    expectedHostKinds: ["player-progression", "quartermaster-command"],
+    targets: [v2Required("undo-mark", ["transform", "opacity"]), v2CommandLight()],
     timeoutMs: 3_500,
     playbackPolicy: playback("automatic", {
+      replayable: true,
       allowUserSkip: true,
       userSkipFinalState: "state-restored-readable",
       allowedFallback: "readable-state-restored",
       priority: 85,
     }),
     acknowledgmentPolicy: playerEventAcknowledgment(),
-    finalStatePolicy: reconcile("state-restored-readable"),
+    finalStatePolicy: v2Reconcile("state-restored-readable", "undo-mark"),
     reducedFallback: "semantic-final-state",
   }),
-} satisfies Record<AnimationSceneName, SceneTargetContract>;
+} satisfies Record<AnimationSceneName, AnySceneTargetContract>;
 
-const definitions: SceneDefinition[] = [
+type AnySceneDefinition = SceneDefinition | SceneDefinitionV2;
+
+const definitions: AnySceneDefinition[] = [
   firstArrivalScene,
   sessionReentryScene,
   playerAccessScene,
@@ -878,7 +1118,7 @@ const definitions: SceneDefinition[] = [
   undoScene,
 ];
 
-export type RegisteredSceneDefinition = SceneDefinition & { contract: SceneTargetContract };
+export type RegisteredSceneDefinition = AnySceneDefinition & { contract: AnySceneTargetContract };
 
 export const sceneRegistry = Object.fromEntries(
   definitions.map((definition) => [

@@ -2,6 +2,7 @@
 
 import type {
   AnimationSceneName,
+  AnySceneTargetContract,
   DirectorSnapshot,
   MotionMode,
   PlaySceneOptions,
@@ -12,23 +13,52 @@ import type {
   PresentationReceipt,
   ResolvedMotionPolicy,
   SceneBuildContext,
+  SceneBuildContextV2,
   SceneFinalStatePolicy,
+  SceneFinalizationReceipt,
+  SceneInstanceId,
   ScenePreflightReport,
-  SceneTargetContract,
+  SceneRequestSource,
+  SceneTargetContractV2,
+  SceneTargetResolutionReceipt,
   SceneTimeline,
 } from "../core/animation-types";
 import { changeMountedMetric } from "../core/metrics";
 import { recordPresentationTelemetry } from "../core/presentation-telemetry";
 import { resolveMotionPolicy } from "../core/quality";
 import { preflightSceneTargets, type SceneTargetPreflightResult } from "../core/target-preflight";
+import { createSceneFinalStateHandoff, normalizeFinalStatePolicy } from "../core/final-state-handoff";
 import { observeDocumentVisibility } from "../core/visibility";
 import { gsap } from "../core/gsap-client";
 import { getSceneDefinition } from "./scene-registry";
+import type { AnimationAuthority } from "../hosts/SceneHostContext";
+import type {
+  SceneBuildTargetAccess,
+  SceneInvocationHandle,
+  SceneInvocationOwnershipRequest,
+} from "../hosts/scene-host-types";
 
 type LegacyOperationFields<T> = [T] extends [never] ? object : T extends object ? T : object;
 type CompatiblePresentationReceipt<T> = PresentationReceipt<T> & LegacyOperationFields<T>;
 
 type ExternalTerminal = { kind: "aborted"; reason: string } | { kind: "interrupted"; reason: string };
+
+export const ANIMATION_SEMANTIC_LABEL_EVENT_NAME = "forever:animation-semantic-label" as const;
+
+export type AnimationSemanticLabelEventDetail = Readonly<{
+  version: 1;
+  sceneName: AnimationSceneName;
+  sceneInstanceId: string;
+  hostId: string;
+  hostKind: string;
+  eventOrActionId: string | null;
+  requestSource: SceneRequestSource;
+  label: string;
+  elapsedMs: number;
+  motionLevel: MotionMode;
+}>;
+
+export type AnimationSemanticLabelEvent = CustomEvent<AnimationSemanticLabelEventDetail>;
 
 type StageResult<T> =
   | { kind: "completed"; value: T }
@@ -51,6 +81,25 @@ const initialSnapshot = (mode: MotionMode): DirectorSnapshot => ({
 
 function nowMs() {
   return typeof performance === "undefined" ? Date.now() : performance.now();
+}
+
+function dispatchAnimationSemanticLabel(detail: AnimationSemanticLabelEventDetail) {
+  if (
+    typeof window === "undefined" ||
+    typeof window.dispatchEvent !== "function" ||
+    typeof window.CustomEvent !== "function"
+  ) {
+    return;
+  }
+  try {
+    window.dispatchEvent(
+      new window.CustomEvent<AnimationSemanticLabelEventDetail>(ANIMATION_SEMANTIC_LABEL_EVENT_NAME, {
+        detail: Object.freeze(detail),
+      }),
+    );
+  } catch {
+    // Observability must never become part of the scene's success path.
+  }
 }
 
 function sanitizeReason(reason: string) {
@@ -89,15 +138,34 @@ function preflightOutcome(report: ScenePreflightReport): PresentationFallbackTri
   return "missing-required-target";
 }
 
-function semanticStateFor(policy: SceneFinalStatePolicy) {
-  return policy.kind === "revert-immediately" ? undefined : policy.semanticState;
+function semanticStateFor(policy: SceneFinalStatePolicy | SceneTargetContractV2["finalStatePolicy"]) {
+  const normalized = normalizeFinalStatePolicy(policy);
+  return normalized.kind === "revert-immediately" ? undefined : normalized.semanticState;
 }
 
 function hasSemanticCompletion(labels: string[]) {
   return labels.includes("scene-complete");
 }
 
-function resolvedHostIdentity<T>(contract: SceneTargetContract, sceneInstanceId: string, options: PlaySceneOptions<T>) {
+function isV2Contract(contract: AnySceneTargetContract): contract is SceneTargetContractV2 {
+  return contract.version === 2;
+}
+
+function resolvedHostIdentity<T>(
+  contract: AnySceneTargetContract,
+  sceneInstanceId: string,
+  options: PlaySceneOptions<T>,
+) {
+  if (isV2Contract(contract)) {
+    const handle = options.sceneHost;
+    const requestSource = options.requestSource ?? contract.playbackPolicy.source;
+    return {
+      hostId: handle?.hostId ?? (`unverified-${sceneInstanceId}` as string),
+      hostKind: handle?.kind ?? "unverified",
+      requestSource,
+      valid: Boolean(handle && contract.expectedHostKinds.includes(handle.kind)),
+    };
+  }
   const explicitHostId = options.hostId?.trim() ?? "";
   const explicitHostKind = options.hostKind?.trim() ?? "";
   const rootHostId = options.root.dataset.sceneHostId?.trim() ?? "";
@@ -120,6 +188,69 @@ function resolvedHostIdentity<T>(contract: SceneTargetContract, sceneInstanceId:
   };
 }
 
+function resolutionReport(resolution: SceneTargetResolutionReceipt, startedAt: number): ScenePreflightReport {
+  const completedAt = nowMs();
+  return {
+    sceneName: resolution.sceneName,
+    sceneInstanceId: resolution.sceneInstanceId,
+    hostId: resolution.hostId,
+    startedAt,
+    completedAt,
+    durationMs: Math.max(0, completedAt - startedAt),
+    requiredSatisfied: resolution.requiredSatisfied,
+    observations: resolution.entries.map((entry) => ({
+      part: entry.part,
+      required: entry.required,
+      matchedCount: entry.candidateCount,
+      visibleCount: entry.acceptedTargetIds.length,
+      duplicateCount: entry.rejectionCodes.includes("target-duplicate")
+        ? Math.max(1, entry.candidateCount - entry.acceptedTargetIds.length)
+        : 0,
+      ownershipRejectedCount: entry.rejectionCodes.includes("ownership-rejected") ? 1 : 0,
+      observations: [],
+    })),
+    failures: resolution.entries.flatMap<ScenePreflightReport["failures"][number]>((entry) => {
+      if (!entry.required) return [];
+      if (entry.rejectionCodes.includes("ownership-rejected")) {
+        return [{ part: entry.part, code: "ownership-rejected" as const }];
+      }
+      if (entry.rejectionCodes.includes("target-duplicate")) {
+        return [{ part: entry.part, code: "duplicate-required-target" as const }];
+      }
+      return entry.cardinalitySatisfied && entry.visibilitySatisfied
+        ? []
+        : [{ part: entry.part, code: "missing-required-target" as const }];
+    }),
+  };
+}
+
+function ownershipRequests(
+  contract: SceneTargetContractV2,
+  resolution: SceneTargetResolutionReceipt,
+  required: boolean,
+): readonly Readonly<{ key: string; request: SceneInvocationOwnershipRequest }>[] {
+  const requirementByKey = new Map(contract.targets.map((target) => [target.key, target]));
+  const requests: Array<Readonly<{ key: string; request: SceneInvocationOwnershipRequest }>> = [];
+  for (const entry of resolution.entries) {
+    if (entry.required !== required) continue;
+    const requirement = requirementByKey.get(entry.key);
+    if (!requirement || requirement.identityOnly) continue;
+    for (const targetId of entry.acceptedTargetIds) {
+      requests.push(
+        Object.freeze({
+          key: entry.key,
+          request: Object.freeze({
+            targetId,
+            runtime: requirement.owner,
+            properties: Object.freeze([...requirement.properties]),
+          }),
+        }),
+      );
+    }
+  }
+  return Object.freeze(requests);
+}
+
 function resolvedTelemetryContext<T>(options: PlaySceneOptions<T>) {
   const route =
     options.telemetryContext?.route ?? (typeof window === "undefined" ? undefined : window.location.pathname);
@@ -129,7 +260,11 @@ function resolvedTelemetryContext<T>(options: PlaySceneOptions<T>) {
   };
 }
 
-function acknowledgmentAllowed(contract: SceneTargetContract, outcome: PresentationOutcome, fallbackReadable: boolean) {
+function acknowledgmentAllowed(
+  contract: AnySceneTargetContract,
+  outcome: PresentationOutcome,
+  fallbackReadable: boolean,
+) {
   const acknowledgeOn = contract.acknowledgmentPolicy.acknowledgeOn as PresentationOutcome[];
   if (!acknowledgeOn.includes(outcome)) return false;
   if (outcome === "presented-fallback" && contract.acknowledgmentPolicy.fallbackMustBeReadable) {
@@ -174,7 +309,10 @@ export class AnimationDirector {
   private heldContexts = new Map<HTMLElement, () => void>();
   private instanceCounter = 0;
 
-  constructor(mode: MotionMode = "full") {
+  constructor(
+    mode: MotionMode = "full",
+    private readonly authority?: AnimationAuthority,
+  ) {
     this.motionPolicy = resolveMotionPolicy(mode, false);
     this.snapshot = initialSnapshot(this.motionPolicy.level);
     this.visibilityCleanup = observeDocumentVisibility((visible) => {
@@ -298,22 +436,50 @@ export class AnimationDirector {
     options: PlaySceneOptions<T>,
   ): Promise<CompatiblePresentationReceipt<T>> {
     const definition = getSceneDefinition(name);
-    const contract = definition.contract;
+    const contract = definition.contract as AnySceneTargetContract;
     const startedAt = nowMs();
     const deadline = startedAt + Math.max(1, contract.timeoutMs);
-    const sceneInstanceId = this.createSceneInstanceId(name);
-    const host = resolvedHostIdentity(contract, sceneInstanceId, options);
-    const { hostId, hostKind, requestSource } = host;
     const motionPolicy = this.motionPolicy;
+    let invocation: SceneInvocationHandle | undefined;
+    if (isV2Contract(contract) && options.sceneHost && this.authority?.hosts.isRegisteredHandle(options.sceneHost)) {
+      try {
+        const source = options.requestSource ?? contract.playbackPolicy.source;
+        invocation = options.sceneHost.beginScene({
+          sceneName: name,
+          ...(options.eventOrActionId ? { eventOrActionId: options.eventOrActionId } : {}),
+          playback: source === "replay" ? "replay" : source === "development" ? "development" : "live",
+          targetContract: contract,
+          motionPolicy,
+          ...(options.signal ? { signal: options.signal } : {}),
+          ...(options.externalTargets ? { externalTargets: options.externalTargets } : {}),
+        });
+      } catch {
+        invocation = undefined;
+      }
+    }
+    const sceneInstanceId = invocation?.instanceId ?? this.createSceneInstanceId(name);
+    const canonicalHandoffHandles = isV2Contract(contract)
+      ? Object.values(options.externalTargets ?? {}).filter(
+          (handle) =>
+            handle.lifetime === "handoff" && Boolean(this.authority?.hosts.isRegisteredExternalHandle(handle)),
+        )
+      : [];
+    const host = resolvedHostIdentity(contract, sceneInstanceId, options);
+    if (isV2Contract(contract) && !invocation) host.valid = false;
+    const { hostId, hostKind, requestSource } = host;
     const semanticLabelsReached: string[] = [];
     const sceneCleanups: Array<() => void> = [];
     let targetPreflight: SceneTargetPreflightResult | undefined;
+    let targetResolution: SceneTargetResolutionReceipt | undefined;
+    let buildTargets: SceneBuildTargetAccess | undefined;
+    let targetReady = false;
     let targetReport = emptyTargetReport(name, sceneInstanceId, hostId, startedAt);
     let contextRevert: (() => void) | undefined;
     let operationResult: T | undefined;
     let fallbackUsed: string | undefined;
     let fallbackReadable = false;
     let finalSemanticState: string | undefined;
+    let finalization: SceneFinalizationReceipt | undefined;
     let interruptionReason: string | undefined;
     let outcome: PresentationOutcome = "runtime-failed";
     let errorCode: string | null = null;
@@ -321,12 +487,14 @@ export class AnimationDirector {
     let runtimeFailed = false;
     let cleanupErrors = this.releaseHeldContext(options.root) ? 1 : 0;
     let terminalSettled = false;
+    let acceptingSemanticLabels = true;
     let resolveTerminal!: (terminal: ExternalTerminal) => void;
     const terminalPromise = new Promise<ExternalTerminal>((resolve) => {
       resolveTerminal = resolve;
     });
     this.activeTerminal = (terminal) => {
       if (terminalSettled) return;
+      acceptingSemanticLabels = false;
       terminalSettled = true;
       resolveTerminal(terminal);
     };
@@ -358,33 +526,97 @@ export class AnimationDirector {
         interruptionReason = "abort-signal";
       } else {
         try {
-          targetPreflight = preflightSceneTargets({
-            root: options.root,
-            contract,
-            sceneInstanceId,
-            hostId,
-          });
-          targetReport = targetPreflight.report;
+          if (isV2Contract(contract) && invocation) {
+            targetResolution = invocation.resolveTargets();
+            targetReport = resolutionReport(targetResolution, startedAt);
+            if (targetReport.requiredSatisfied) {
+              const requiredClaims = ownershipRequests(contract, targetResolution, true);
+              const claimResult = invocation.claimBatch(requiredClaims.map(({ request }) => request));
+              if (claimResult.status === "rejected") {
+                targetReport = {
+                  ...targetReport,
+                  requiredSatisfied: false,
+                  failures: [...targetReport.failures, { part: "registered-target", code: "ownership-rejected" }],
+                };
+              } else {
+                const grants = [...claimResult.grants];
+                const optionalRejections = new Set<string>();
+                for (const optionalClaim of ownershipRequests(contract, targetResolution, false)) {
+                  const optionalResult = invocation.claim(optionalClaim.request);
+                  if (optionalResult.status === "granted") grants.push(optionalResult);
+                  else optionalRejections.add(`${optionalClaim.key}:${optionalClaim.request.targetId}`);
+                }
+                if (optionalRejections.size > 0) {
+                  targetReport = {
+                    ...targetReport,
+                    observations: targetReport.observations.map((observation, index) => {
+                      const entry = targetResolution?.entries[index];
+                      if (!entry || entry.required) return observation;
+                      const rejected = entry.acceptedTargetIds.filter((targetId) =>
+                        optionalRejections.has(`${entry.key}:${targetId}`),
+                      ).length;
+                      return rejected === 0
+                        ? observation
+                        : { ...observation, ownershipRejectedCount: observation.ownershipRejectedCount + rejected };
+                    }),
+                  };
+                }
+                buildTargets = this.authority?.hosts.createBuildTargetAccess(invocation, targetResolution, grants);
+              }
+            }
+            targetReady = targetReport.requiredSatisfied && Boolean(buildTargets);
+          } else if (!isV2Contract(contract)) {
+            targetPreflight = preflightSceneTargets({
+              root: options.root,
+              contract,
+              sceneInstanceId,
+              hostId,
+            });
+            targetReport = targetPreflight.report;
+            targetReady = targetReport.requiredSatisfied;
+          }
         } catch {
           outcome = "runtime-failed";
           errorCode = "target-preflight-failed";
         }
 
-        if (targetPreflight && !targetReport.requiredSatisfied) {
+        if ((targetPreflight || targetResolution) && !targetReport.requiredSatisfied) {
           outcome = preflightOutcome(targetReport);
           errorCode = "target-preflight-rejected";
-        } else if (targetPreflight) {
-          const sceneContext: SceneBuildContext = {
-            root: options.root,
+        } else if (targetReady) {
+          const sharedContext = {
             mode: motionPolicy.level,
             motionPolicy,
             sceneName: name,
             display: options.display ?? {},
-            emitLabel: (label) => {
+            emitLabel: (label: string) => {
+              if (!acceptingSemanticLabels || terminalSettled || options.signal?.aborted) return;
+              dispatchAnimationSemanticLabel({
+                version: 1,
+                sceneName: name,
+                sceneInstanceId,
+                hostId,
+                hostKind,
+                eventOrActionId: options.eventOrActionId ?? null,
+                requestSource,
+                label,
+                elapsedMs: Math.max(0, nowMs() - startedAt),
+                motionLevel: motionPolicy.level,
+              });
               if (!semanticLabelsReached.includes(label)) semanticLabelsReached.push(label);
               this.update({ label });
             },
-            addCleanup: (cleanup) => sceneCleanups.push(cleanup),
+            addCleanup: (cleanup: () => void) => sceneCleanups.push(cleanup),
+          };
+          const sceneContext: SceneBuildContext | SceneBuildContextV2 =
+            invocation && buildTargets
+              ? { ...sharedContext, sceneInstanceId: invocation.instanceId, targets: buildTargets }
+              : { ...sharedContext, root: options.root };
+          const compatibleDefinition = definition as unknown as {
+            buildOpening: (context: SceneBuildContext | SceneBuildContextV2) => SceneTimeline;
+            buildSuccess: (context: SceneBuildContext | SceneBuildContextV2) => SceneTimeline;
+            buildFailure?: (context: SceneBuildContext | SceneBuildContextV2) => SceneTimeline;
+            buildIdle?: (context: SceneBuildContext | SceneBuildContextV2) => SceneTimeline;
           };
           let opening!: SceneTimeline;
           let success!: SceneTimeline;
@@ -393,10 +625,10 @@ export class AnimationDirector {
 
           try {
             const gsapContext = gsap.context(() => {
-              opening = definition.buildOpening(sceneContext);
-              success = definition.buildSuccess(sceneContext);
-              failure = definition.buildFailure?.(sceneContext);
-              idle = definition.buildIdle?.(sceneContext);
+              opening = compatibleDefinition.buildOpening(sceneContext);
+              success = compatibleDefinition.buildSuccess(sceneContext);
+              failure = compatibleDefinition.buildFailure?.(sceneContext);
+              idle = compatibleDefinition.buildIdle?.(sceneContext);
             }, options.root);
             contextRevert = () => gsapContext.revert();
           } catch {
@@ -558,8 +790,49 @@ export class AnimationDirector {
             outcome = "timed-out";
           }
         }
+
+        const finalizationPolicy =
+          outcome === "presented" || outcome === "presented-fallback" || outcome === "skipped-by-user"
+            ? contract.finalStatePolicy
+            : ({ kind: "revert-immediately" } as const);
+        const normalizedPolicy = normalizeFinalStatePolicy(finalizationPolicy);
+        const handoffTarget =
+          isV2Contract(contract) && normalizedPolicy.kind === "reconcile-then-revert"
+            ? (() => {
+                const requirement = contract.targets.find((target) => target.key === normalizedPolicy.handoffTargetKey);
+                if (requirement?.source.kind !== "external") return undefined;
+                const handle = options.externalTargets?.[requirement.source.handleKey];
+                return handle && this.authority?.hosts.isRegisteredExternalHandle(handle) ? handle : undefined;
+              })()
+            : undefined;
+        const state =
+          finalSemanticState ??
+          (normalizedPolicy.kind === "revert-immediately" ? undefined : normalizedPolicy.semanticState);
+        const providedRuntime = options.finalStateRuntime ?? {};
+        const compatibilityRuntime = isV2Contract(contract)
+          ? {}
+          : {
+              commitFinalState: () => undefined,
+              reconcileFinalState: () => undefined,
+              renderStaticFallback: () => undefined,
+              holdSafePose: () => undefined,
+            };
+        finalization = await createSceneFinalStateHandoff({
+          sceneInstanceId,
+          policy: finalizationPolicy,
+          ...(state ? { semanticState: state } : {}),
+          ...(handoffTarget ? { handoffTargetId: handoffTarget.externalTargetId } : {}),
+          ...(isV2Contract(contract) ? { cleanupPolicy: contract.cleanupPolicy } : {}),
+          runtime: {
+            ...compatibilityRuntime,
+            ...providedRuntime,
+            verifyReadableState: providedRuntime.verifyReadableState ?? (() => true),
+            cleanup: providedRuntime.cleanup ?? (() => undefined),
+          },
+        }).begin();
       }
     } finally {
+      acceptingSemanticLabels = false;
       cleanupErrors += this.stopCurrentTimeline() ? 1 : 0;
       for (const cleanup of sceneCleanups.splice(0).reverse()) {
         try {
@@ -568,10 +841,45 @@ export class AnimationDirector {
           cleanupErrors += 1;
         }
       }
+      const successfulPresentation = ["presented", "presented-fallback", "skipped-by-user"].includes(outcome);
+      const canonicalFinalPolicy = normalizeFinalStatePolicy(contract.finalStatePolicy);
+      const retainRuntime =
+        Boolean(finalization && !finalization.handoffCompleted) ||
+        (successfulPresentation &&
+          (canonicalFinalPolicy.kind === "hold-final-until-unmount" ||
+            (!isV2Contract(contract) && canonicalFinalPolicy.kind === "commit-final-state")));
+      if (retainRuntime) {
+        const heldContext = contextRevert;
+        const heldPreflight = targetPreflight;
+        const heldInvocation = invocation;
+        const heldHandoffHandles = canonicalHandoffHandles;
+        this.heldContexts.set(options.root, () => {
+          let cleanupFailure: unknown;
+          const continueCleanup = (cleanup: () => void) => {
+            try {
+              cleanup();
+            } catch (error) {
+              cleanupFailure ??= error;
+            }
+          };
+          if (heldContext) continueCleanup(heldContext);
+          for (const handle of heldHandoffHandles) {
+            continueCleanup(() => void this.authority?.hosts.revokeExternalHandle(handle));
+          }
+          if (heldPreflight) continueCleanup(() => heldPreflight.release());
+          if (heldInvocation) {
+            continueCleanup(() => void heldInvocation.abort("route-change").catch(() => undefined));
+          }
+          if (cleanupFailure) throw cleanupFailure;
+        });
+        contextRevert = undefined;
+        targetPreflight = undefined;
+        invocation = undefined;
+      }
       const preserveContext =
         contextRevert &&
-        (outcome === "presented" || outcome === "skipped-by-user") &&
-        ["hold-until-unmount", "commit-semantic-pose"].includes(contract.finalStatePolicy.kind);
+        successfulPresentation &&
+        ["commit-semantic-pose", "commit-final-state"].includes(contract.finalStatePolicy.kind);
       if (contextRevert) {
         if (preserveContext) this.heldContexts.set(options.root, contextRevert);
         else {
@@ -582,9 +890,31 @@ export class AnimationDirector {
           }
         }
       }
+      if (!retainRuntime) {
+        for (const handle of canonicalHandoffHandles) this.authority?.hosts.revokeExternalHandle(handle);
+      }
       if (targetPreflight) {
         try {
           targetPreflight.release();
+        } catch {
+          cleanupErrors += 1;
+        }
+      }
+      if (invocation) {
+        try {
+          await invocation.complete({
+            outcome:
+              outcome === "presented"
+                ? "completed"
+                : outcome === "presented-fallback"
+                  ? "fallback"
+                  : outcome === "aborted"
+                    ? "aborted"
+                    : outcome === "interrupted"
+                      ? "interrupted"
+                      : "failed",
+            ...(finalSemanticState ? { finalSemanticState } : {}),
+          });
         } catch {
           cleanupErrors += 1;
         }
@@ -624,6 +954,7 @@ export class AnimationDirector {
       ...(finalSemanticState ? { finalSemanticState } : {}),
       acknowledgmentAllowed: acknowledgmentAllowed(contract, outcome, fallbackReadable),
       cleanup: cleanupErrors === 0 ? "completed" : "completed-with-errors",
+      ...(finalization ? { finalization } : {}),
       ...(operationResult === undefined ? {} : { operationResult }),
     };
     recordPresentationTelemetry(receipt, resolvedTelemetryContext(options));
@@ -636,7 +967,7 @@ export class AnimationDirector {
     outcome: Extract<PresentationOutcome, "interrupted" | "aborted">,
     reason: string,
   ): CompatiblePresentationReceipt<T> {
-    const contract = getSceneDefinition(name).contract;
+    const contract = getSceneDefinition(name).contract as AnySceneTargetContract;
     const at = nowMs();
     const sceneInstanceId = this.createSceneInstanceId(name);
     const host = resolvedHostIdentity(contract, sceneInstanceId, options);
@@ -662,10 +993,10 @@ export class AnimationDirector {
     return withLegacyOperationResult(receipt);
   }
 
-  private createSceneInstanceId(name: AnimationSceneName) {
+  private createSceneInstanceId(name: AnimationSceneName): SceneInstanceId {
     this.instanceCounter += 1;
     const randomId = globalThis.crypto?.randomUUID?.();
-    return randomId ?? `${name}-${Date.now().toString(36)}-${this.instanceCounter.toString(36)}`;
+    return (randomId ?? `${name}-${Date.now().toString(36)}-${this.instanceCounter.toString(36)}`) as SceneInstanceId;
   }
 
   private stageOutcome<T>(result: StageResult<T>): PresentationOutcome {
@@ -706,7 +1037,7 @@ export class AnimationDirector {
     hostKind: string,
     trigger: PresentationFallbackTrigger,
     motionPolicy: ResolvedMotionPolicy,
-    contract: SceneTargetContract,
+    contract: AnySceneTargetContract,
     options: PlaySceneOptions<T>,
     deadline: number,
     terminalPromise: Promise<ExternalTerminal>,

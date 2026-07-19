@@ -1,7 +1,12 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import type { SceneTargetRequirement, SceneVisibilityRule } from "./animation-types";
+import type { SceneTargetRequirement, SceneTargetResolutionReceipt, SceneVisibilityRule } from "./animation-types";
+import type { SceneInvocationHandle } from "../hosts/scene-host-types";
 import { animationOwnerFor, claimAnimationOwnership, releaseAnimationOwnership } from "./ownership";
-import { preflightSceneTargets, type SceneTargetPreflightOptions } from "./target-preflight";
+import {
+  preflightRegisteredSceneTargets,
+  preflightSceneTargets,
+  type SceneTargetPreflightOptions,
+} from "./target-preflight";
 
 const defaultVisibility: SceneVisibilityRule = {
   mustBeConnected: true,
@@ -394,5 +399,15 @@ describe("scene target preflight", () => {
 
     expect(result.report.observations[0]?.observations[0]?.viewportIntersection).toBe(false);
     expect(failureCodes(result)).toEqual(expect.arrayContaining(["outside-viewport", "missing-required-target"]));
+  });
+
+  it("delegates v2 preflight to the invocation's immutable registered-target snapshot", () => {
+    const receipt = Object.freeze({ requiredSatisfied: true }) as SceneTargetResolutionReceipt;
+    const resolveTargets = vi.fn(() => receipt);
+    const invocation = { resolveTargets } as unknown as SceneInvocationHandle;
+
+    expect(preflightRegisteredSceneTargets(invocation)).toBe(receipt);
+    expect(preflightRegisteredSceneTargets(invocation)).toBe(receipt);
+    expect(resolveTargets).toHaveBeenCalledTimes(2);
   });
 });

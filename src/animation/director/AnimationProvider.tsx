@@ -5,6 +5,8 @@ import { MotionConfig } from "motion/react";
 import type { MotionMode } from "../core/animation-types";
 import { isMotionMode, motionModeOrder, resolveMotionPolicy } from "../core/quality";
 import { MotionPolicyContext, useMotionPolicyContext } from "../motion/MotionPolicyContext";
+import { AnimationAuthorityContext } from "../hosts/SceneHostContext";
+import { SceneHostRegistry } from "../hosts/scene-host-registry";
 import { AnimationDirector } from "./AnimationDirector";
 
 export const AnimationDirectorContext = createContext<AnimationDirector | null>(null);
@@ -32,7 +34,12 @@ function storeMotionMode(mode: MotionMode) {
 }
 
 export function AnimationProvider({ children }: { children: React.ReactNode }) {
-  const director = useMemo(() => new AnimationDirector("full"), []);
+  const hosts = useMemo(() => new SceneHostRegistry(), []);
+  const authority = useMemo(
+    () => Object.freeze({ providerId: hosts.providerId, hosts, ownership: hosts.ownership }),
+    [hosts],
+  );
+  const director = useMemo(() => new AnimationDirector("full", authority), [authority]);
   const rootMotionOwner = useMemo(() => Symbol("animation-provider-motion"), []);
   const [productMode, setProductMode] = useState<MotionMode>("full");
   const [systemReduced, setSystemReduced] = useState(false);
@@ -67,13 +74,14 @@ export function AnimationProvider({ children }: { children: React.ReactNode }) {
   useEffect(
     () => () => {
       director.kill();
+      hosts.destroy();
       const root = document.documentElement;
       if (rootMotionOwners.get(root) === rootMotionOwner) {
         rootMotionOwners.delete(root);
         root.removeAttribute("data-motion-level");
       }
     },
-    [director, rootMotionOwner],
+    [director, hosts, rootMotionOwner],
   );
 
   const setMode = useCallback((next: MotionMode) => {
@@ -91,16 +99,18 @@ export function AnimationProvider({ children }: { children: React.ReactNode }) {
   );
 
   return (
-    <AnimationDirectorContext.Provider value={director}>
-      <MotionPolicyContext.Provider value={motionContext}>
-        <MotionConfig
-          reducedMotion={policy.level === "reduced" ? "always" : "never"}
-          transition={{ duration: snapshot.mode === "full" ? 0.38 : snapshot.mode === "gentle" ? 0.16 : 0.01 }}
-        >
-          {children}
-        </MotionConfig>
-      </MotionPolicyContext.Provider>
-    </AnimationDirectorContext.Provider>
+    <AnimationAuthorityContext.Provider value={authority}>
+      <AnimationDirectorContext.Provider value={director}>
+        <MotionPolicyContext.Provider value={motionContext}>
+          <MotionConfig
+            reducedMotion={policy.level === "reduced" ? "always" : "never"}
+            transition={{ duration: snapshot.mode === "full" ? 0.38 : snapshot.mode === "gentle" ? 0.16 : 0.01 }}
+          >
+            {children}
+          </MotionConfig>
+        </MotionPolicyContext.Provider>
+      </AnimationDirectorContext.Provider>
+    </AnimationAuthorityContext.Provider>
   );
 }
 

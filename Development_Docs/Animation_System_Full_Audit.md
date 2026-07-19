@@ -562,3 +562,78 @@ Start with roadmap Phase 1. Do not begin decorative expansion or Rive art integr
 - Production Rive visual quality cannot be tested because the four project assets do not exist. Fallback behavior and the development sample are the only runtime evidence.
 - The focused mobile showcase test was skipped by the existing suite. No claim of complete mobile showcase coverage is made.
 - No large trace or screenshot set is committed. The matrix identifies every row whose `Audit categories` include `needs_runtime_verification`.
+
+## 22. Project Lanternwake Phase 2 current implementation reconciliation (2026-07-18)
+
+Status: **implementation in progress; final acceptance is not yet claimed**. This section appends current evidence for **Project Lanternwake Phase 2: Claim the Deck** without rewriting the frozen 220-row audit baseline or the Phase 1 reconciliation above. Where current evidence and a historical statement differ, this dated section is the current-status authority; the earlier text remains provenance.
+
+Phase 1 is complete, validated, and synchronized. Its coordinator-owned `npm run validate` gate passed with 46 Vitest files / 304 tests, 27 Playwright passes / 17 intentional skips, asset, isolated-database, seed/backfill/history, production-build/restart, launcher-preservation, and cleanup proof. The Phase 1 documentation and conversation synchronization was committed and pushed at `fb8eb4ac33f4a44028fe82fb08df0ac0e5021db6`. Phase 2 began from that commit in the isolated `codex/project-lanternwake-phase-2-claim-the-deck` worktree after the preserved Phase 1 working snapshot was copied and all 106 paths (67 tracked and 39 untracked) matched by SHA-256.
+
+### 22.1 Accepted-requirement accounting
+
+The physical matrix and accepted requirement denominator are deliberately different:
+
+| Evidence set                                  | Current count | Truth boundary                                                                                         |
+| --------------------------------------------- | ------------: | ------------------------------------------------------------------------------------------------------ |
+| Frozen Codex audit rows                       |           220 | Historical rows preserved; their original audit fields were not replaced                               |
+| Current matrix rows                           |           361 | 220 frozen rows plus 141 specificity-preserving `MX-140` through `MX-280` rows                         |
+| Current matrix columns                        |            58 | Historical 41 columns plus 17 normalized current/reconciliation columns                                |
+| OA source requirements                        |           238 | `OA-001` through `OA-238`, each retained as a first-class ledger row                                   |
+| OA ledger columns                             |            40 | Source identity, mapping, architecture, implementation, validation, disposition, and evidence          |
+| OA requirements mapped only to existing rows  |            97 | No dedicated row was necessary                                                                         |
+| OA requirements with one dedicated matrix row |           141 | One specificity-preserving row per requirement                                                         |
+| Current OA-to-matrix mapping edges            |           289 | Reverse-linked in the matrix; multi-edge mappings remain explicit                                      |
+| Coverage dispositions                         |  184 / 47 / 7 | `exact` / `combined` / `partial`; partial is an explicit accepted mapping, not an unmapped requirement |
+| Accepted source requirements                  |           458 | 220 Codex plus 238 OA                                                                                  |
+| Accepted requirements unmapped                |             0 | Reconciliation validator release condition satisfied                                                   |
+
+The controlling reconciliation validator passed with `accepted_total=458`, `codex=220`, `oa=238`, `matrix_rows=361`, `existing_mappings=97`, `dedicated_mappings=141`, `accepted_unmapped=0`, and `all_source_unresolved=0`; its Python unit suite passed 13/13. That result proves preservation and mapping integrity. It does **not** prove that a visual requirement is implemented or browser-validated.
+
+### 22.2 Phase 2 architecture present in the working tree
+
+The current Phase 2 working tree contains one provider-scoped architecture rather than a second parallel runtime:
+
+- registered `SceneHost` boundaries with provider, host, generation, and invocation identity;
+- immutable host-local target snapshots and explicit registry-minted external target handles;
+- provider-scoped property claims and opaque write permits, including atomic conflict rejection and teardown;
+- v2 host-kind and target-contract data in the registry while preserving a bounded compatibility route for legacy callers;
+- director integration for invocation-scoped resolution, receipts, telemetry, ownership, handoff-before-cleanup, and terminal cleanup;
+- canonical final-state vocabulary and explicit semantic-state verification;
+- PageFlip source/current-clone/stale-clone identity, ID/IDREF namespacing, synchronous temporary-clone interception, accessibility exclusion, generation revocation, and fail-closed observation;
+- component boundaries for Voyage Chart, Ship's Log, Artifact Inspection/Treasure Altar, Companion Header/Navigation, Quartermaster, and Access/login; and
+- a development showcase that reports diagnostic state and routes deprecated page-turn demonstrations to the real PageFlip runtime rather than treating fake curl timelines as production proof.
+
+These are current implementation surfaces, not a release verdict. The final integrated type, lint, unit, build, E2E, browser, accessibility, lifecycle, viewport, and full-validation gates remain pending.
+
+### 22.3 Exact scene disposition remains frozen
+
+| Disposition     | Count | Scenes                                                                                                                                                                                                                                                       |
+| --------------- | ----: | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Production      |    16 | `first-arrival`, `session-reentry`, `chapter-release`, `map-reveal`, `route-draw`, `artifact-award`, `artifact-connection`, `quest-discovery`, `quest-complete`, `log-entry`, `finale-tease`, `finale-requirement`, `mark-solved`, `pause`, `resume`, `undo` |
+| Legacy          |     4 | `player-access`, `quartermaster-login`, `seal-break`, `prepare-chapter`                                                                                                                                                                                      |
+| Future contract |     5 | `chapter-heading`, `prose-ink`, `marker-stamp`, `ship-course`, `artifact-inspection`                                                                                                                                                                         |
+| Deprecated      |     3 | `journal-open`, `manual-page-flip`, `programmatic-page-flip`                                                                                                                                                                                                 |
+
+The later visuals represented by future contracts may become `architecture_ready` only after the Phase 2 boundaries and their re-audits pass. `architecture_ready` will mean that a safe host/identity/ownership boundary exists; it will not mean that the later visual, trigger, production artwork, reduced behavior, or acceptance suite is implemented.
+
+### 22.4 Current normalized status and open release blockers
+
+At this evidence snapshot, the controlling artifacts intentionally remain conservative:
+
+| Artifact          | Implementation status totals                                                          | Architecture validation totals      |
+| ----------------- | ------------------------------------------------------------------------------------- | ----------------------------------- |
+| 361-row matrix    | 259 `architecture_blocked`; 90 `partially_implemented`; 10 `not_started`; 2 `blocked` | 349 `in_progress`; 12 `not_started` |
+| 238-row OA ledger | 159 `architecture_blocked`; 67 `partially_implemented`; 10 `not_started`; 2 `blocked` | 226 `in_progress`; 12 `not_started` |
+
+The phase assignments are also explicit: matrix rows assign 71 to Phase 2, 152 to Phase 3, 119 to Phase 4, 13 to Phase 5, and 6 to Phase 6; OA rows assign 1 to Phase 1, 1 to Phase 2, 99 to Phase 3, 122 to Phase 4, 11 to Phase 5, and 4 to Phase 6.
+
+Two independent fix-needed audits remain release-blocking until their repair re-audits pass:
+
+- **V2 component-boundary audit:** repair and re-audit dialog-local Artifact Inspection export capability, stale callback delivery, duplicate altar heading identity, local pointer inertness, permanent Companion owner markers, and the invalid engraving ownership property.
+- **V3 permit/caller audit:** repair and re-audit multi-property fail-closed permit validation, prevent `artifact-award` from write-claiming the Motion-owned destination by using identity-only external handoff, and provide source-grounded proof for all 13 Quartermaster dual-host callers.
+
+No V2 or V3 item is marked repaired merely because a patch exists. The 16/16 V2 and 55/55 V3 focused runs are baseline audit evidence with fix-needed verdicts, not acceptance evidence. Final status promotion waits for clean re-audits and the coordinator-owned integrated gates.
+
+### 22.5 Current audit conclusion
+
+Claim the Deck has a concrete architecture and zero-loss requirement reconciliation in the working tree, but the phase is not yet complete. The present controlling truth is: **458 accepted requirements preserved, zero unmapped, architecture implementation active, V2/V3 repairs and re-audits pending, and all final runtime and repository gates pending**. Phase 3 and Phase 4 have not started through this Phase 2 task.

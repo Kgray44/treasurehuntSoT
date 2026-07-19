@@ -2,13 +2,21 @@
 
 /* eslint-disable @next/next/no-img-element -- The cabin's decorative SVG is an animation target, not content imagery. */
 
-import { useCallback, useEffect, useRef, useState } from "react";
-import { flushSync } from "react-dom";
+import { createElement, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import { createPortal, flushSync } from "react-dom";
 import { AnimatePresence, motion } from "motion/react";
-import type { AnimationSceneName, PresentationOutcome } from "@/animation/core/animation-types";
+import type {
+  AnimatedProperty,
+  AnimationRuntimeOwner,
+  AnimationSceneName,
+  PresentationOutcome,
+} from "@/animation/core/animation-types";
 import { lottieAssets } from "@/animation/assets/lottie-contracts";
 import { riveAssets } from "@/animation/assets/rive-contracts";
 import { useAnimationDirector } from "@/animation/director/useAnimationDirector";
+import { SceneHost, useRuntimeOwnedSceneTarget, useSceneTargetRegistration } from "@/animation/hosts/SceneHost";
+import { useOptionalSceneHost } from "@/animation/hosts/SceneHostContext";
+import type { ExternalSceneTargetHandle, SceneHostHandle, SceneTargetHandle } from "@/animation/hosts/scene-host-types";
 import { useMotionMode } from "@/animation/motion/useMotionMode";
 import { cardVariants, pressable } from "@/animation/motion/variants";
 import { LottieEffect } from "@/components/animation/LottieEffect";
@@ -26,12 +34,44 @@ type Status = {
   preview: { chapter: { objective?: string } };
 };
 
-type CommandResult = { event: { id: string; sequence: number } };
+type CommandResultBase = {
+  correlationId: string;
+  persistence: "COMMITTED";
+  playerDelivery: "UNCONFIRMED";
+  playerPresentation: "UNCONFIRMED";
+  playerAcknowledgment: "UNCONFIRMED";
+  idempotentReplay?: boolean;
+};
 
-const QUARTERMASTER_HOST_ID = "quartermaster";
-const QUARTERMASTER_HOST_KIND = "quartermaster";
-const LEGACY_COMMAND_HOST = { hostId: "quartermaster-command", hostKind: "quartermaster-command" } as const;
-const PROGRESSION_COMMAND_HOST = { hostId: "quartermaster-progression", hostKind: "progression" } as const;
+type EventCommandResult = CommandResultBase & {
+  kind: "PROGRESSION_EVENT";
+  event: { id: string; type: string; sequence: number };
+  playerEvent: { id: string; type: string; sequence: number };
+  publication: "PROCESS_PUBLISHED" | "PROCESS_PUBLICATION_FAILED";
+  delivery: "PUBLISHED" | "PUBLICATION_FAILED";
+  deliveryScope: "PROCESS_SUBSCRIBERS_ONLY";
+};
+
+type StagedCommandResult = CommandResultBase & {
+  kind: "STAGED_ACTION";
+  event: null;
+  playerEvent: null;
+  preparedActionId: string;
+  stagedAction: {
+    preparedActionId: string;
+    command: string;
+    targetKey: string | null;
+    reservedSequence: number;
+    status: string;
+    preparedAt: string;
+  };
+  publication: "NOT_APPLICABLE";
+  delivery: "NOT_ATTEMPTED";
+  deliveryScope: "NO_PLAYER_EVENT";
+};
+
+type CommandResult = EventCommandResult | StagedCommandResult;
+
 const QUARTERMASTER_LOGIN_FALLBACK = "readable-quartermaster-result";
 const completedPresentationOutcomes = new Set<PresentationOutcome>([
   "presented",
@@ -40,17 +80,78 @@ const completedPresentationOutcomes = new Set<PresentationOutcome>([
   "skipped-by-user",
 ]);
 
-function isCommandResult(value: unknown): value is CommandResult {
-  if (!value || typeof value !== "object" || !("event" in value)) return false;
-  const event = value.event;
-  return (
-    !!event &&
-    typeof event === "object" &&
-    "id" in event &&
-    typeof event.id === "string" &&
-    "sequence" in event &&
-    typeof event.sequence === "number"
+const dialogFocusableSelector =
+  'button:not([disabled]), a[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+
+function dialogFocusables(dialog: HTMLElement | null) {
+  return Array.from(dialog?.querySelectorAll<HTMLElement>(dialogFocusableSelector) ?? []).filter(
+    (candidate) => !candidate.hasAttribute("hidden") && candidate.getAttribute("aria-hidden") !== "true",
   );
+}
+
+function isCommandResult(value: unknown): value is CommandResult {
+  if (!value || typeof value !== "object") return false;
+  const result = value as Record<string, unknown>;
+  if (
+    typeof result.correlationId !== "string" ||
+    result.persistence !== "COMMITTED" ||
+    result.playerDelivery !== "UNCONFIRMED" ||
+    result.playerPresentation !== "UNCONFIRMED" ||
+    result.playerAcknowledgment !== "UNCONFIRMED"
+  )
+    return false;
+  if (result.kind === "PROGRESSION_EVENT") {
+    const event = result.event as Record<string, unknown> | null;
+    const playerEvent = result.playerEvent as Record<string, unknown> | null;
+    return (
+      !!event &&
+      !!playerEvent &&
+      typeof event.id === "string" &&
+      typeof event.type === "string" &&
+      typeof event.sequence === "number" &&
+      playerEvent.id === event.id &&
+      playerEvent.type === event.type &&
+      playerEvent.sequence === event.sequence &&
+      ((result.publication === "PROCESS_PUBLISHED" && result.delivery === "PUBLISHED") ||
+        (result.publication === "PROCESS_PUBLICATION_FAILED" && result.delivery === "PUBLICATION_FAILED")) &&
+      result.deliveryScope === "PROCESS_SUBSCRIBERS_ONLY"
+    );
+  }
+  if (result.kind === "STAGED_ACTION") {
+    const staged = result.stagedAction as Record<string, unknown> | null;
+    return (
+      result.event === null &&
+      result.playerEvent === null &&
+      typeof result.preparedActionId === "string" &&
+      !!staged &&
+      staged.preparedActionId === result.preparedActionId &&
+      typeof staged.command === "string" &&
+      (staged.targetKey === null || typeof staged.targetKey === "string") &&
+      typeof staged.reservedSequence === "number" &&
+      typeof staged.status === "string" &&
+      typeof staged.preparedAt === "string" &&
+      result.publication === "NOT_APPLICABLE" &&
+      result.delivery === "NOT_ATTEMPTED" &&
+      result.deliveryScope === "NO_PLAYER_EVENT"
+    );
+  }
+  return false;
+}
+
+function receiptTruth(result: CommandResult) {
+  const publication =
+    result.publication === "PROCESS_PUBLISHED"
+      ? "Published to this server process."
+      : result.publication === "PROCESS_PUBLICATION_FAILED"
+        ? "The server could not confirm process publication after commit."
+        : "This staging action created no Player event, so process publication was not attempted.";
+  return `${publication} Player delivery, presentation, and acknowledgment remain unconfirmed. Correlation ${result.correlationId}.`;
+}
+
+function receiptMessage(result: CommandResult) {
+  return result.kind === "STAGED_ACTION"
+    ? `Prepared action ${result.preparedActionId} recorded at sequence ${result.stagedAction.reservedSequence}.`
+    : `Event ${result.event.id} recorded at sequence ${result.event.sequence}.`;
 }
 
 function safeServerError(value: unknown, fallback: string) {
@@ -117,6 +218,190 @@ const actions = [
 ] as const;
 
 type Action = (typeof actions)[number];
+type ActiveCommand = Readonly<{ action: Action; operationKey: string }>;
+type CommandRuntime = Readonly<{
+  operationKey: string;
+  host: SceneHostHandle;
+  root: HTMLElement;
+  externalTargets: Readonly<Record<string, ExternalSceneTargetHandle>>;
+}>;
+type CommandTargetSpec = Readonly<{
+  key: string;
+  part: string;
+  properties: readonly AnimatedProperty[];
+  ownerHint?: AnimationRuntimeOwner;
+  externalKey?: string;
+  visual: "div" | "i" | "path";
+  className?: string;
+}>;
+
+const commandTarget = (
+  key: string,
+  part: string,
+  properties: readonly AnimatedProperty[],
+  visual: CommandTargetSpec["visual"] = "div",
+  options: Pick<CommandTargetSpec, "ownerHint" | "externalKey" | "className"> = {},
+): CommandTargetSpec => ({ key, part, properties, visual, ownerHint: "gsap", ...options });
+
+const workspaceLight = commandTarget("workspace-light", "workspace-light", ["opacity"], "i");
+const commandLight = commandTarget("command-light", "command-light", ["opacity"], "i");
+
+const commandTargetSpecs: Record<Action[0], readonly CommandTargetSpec[]> = {
+  PREPARE_CHAPTER: [
+    commandTarget("blank-page", "blank-page", ["transform", "opacity"], "div", { className: "blank-page" }),
+    commandLight,
+  ],
+  RELEASE_CHAPTER: [
+    commandTarget("seal", "seal", ["transform"], "div", { className: "seal-object" }),
+    commandTarget("seal-crack", "seal-crack", ["stroke-dasharray", "stroke-dashoffset"], "path"),
+    commandTarget("seal-fragment-left", "seal-fragment", ["transform", "opacity"], "path"),
+    commandTarget("seal-fragment-right", "seal-fragment", ["transform", "opacity"], "path"),
+    workspaceLight,
+  ],
+  MARK_SOLVED: [
+    commandTarget("solved-stamp", "solved-stamp", ["transform", "opacity"], "div", { className: "solved-stamp" }),
+    commandLight,
+  ],
+  AWARD_ARTIFACT: [
+    commandTarget("artifact-reveal", "artifact-reveal", ["transform", "opacity"], "div", {
+      className: "artifact-object",
+    }),
+    commandTarget("artifact-slot", "artifact-slot-target", ["layout"], "div", {
+      ownerHint: "motion",
+      externalKey: "artifact-slot",
+      className: "artifact-slot-target",
+    }),
+    commandTarget("artifact-light", "artifact-light", ["transform", "opacity"], "i"),
+    workspaceLight,
+  ],
+  REVEAL_MAP: [
+    commandTarget("map-marker", "map-marker", ["transform", "opacity"], "div", {
+      externalKey: "map-marker",
+      className: "marker",
+    }),
+    commandTarget("map-fog", "map-fog", ["clip-path", "opacity"], "div", { externalKey: "map-fog" }),
+    commandTarget("route-path", "route-path", ["path-drawing", "stroke-dasharray", "stroke-dashoffset"], "path", {
+      externalKey: "route-path",
+    }),
+    workspaceLight,
+  ],
+  REVEAL_ROUTE: [
+    commandTarget(
+      "route-path",
+      "route-path",
+      ["path-drawing", "stroke-dasharray", "stroke-dashoffset", "opacity"],
+      "path",
+      { externalKey: "route-path" },
+    ),
+    workspaceLight,
+  ],
+  REVEAL_ARTIFACT_SILHOUETTE: [
+    commandTarget("artifact-reveal", "artifact-reveal", ["transform", "opacity"], "div", {
+      className: "artifact-object",
+    }),
+    commandTarget("artifact-slot", "artifact-slot-target", ["layout"], "div", {
+      ownerHint: "motion",
+      externalKey: "artifact-slot",
+      className: "artifact-slot-target",
+    }),
+    commandTarget("artifact-light", "artifact-light", ["transform", "opacity"], "i"),
+    workspaceLight,
+  ],
+  CONNECT_ARTIFACTS: [
+    commandTarget(
+      "artifact-connection-path",
+      "artifact-connection-path",
+      ["path-drawing", "stroke-dasharray", "stroke-dashoffset", "opacity"],
+      "path",
+      { externalKey: "artifact-connection-path" },
+    ),
+    workspaceLight,
+  ],
+  DISCOVER_SIDE_QUEST: [
+    commandTarget("quest-note", "quest-note-new", ["transform", "opacity"], "div", {
+      externalKey: "quest-note",
+      className: "quest-note",
+    }),
+    commandTarget("quest-red-thread", "red-thread", ["path-drawing", "stroke-dasharray", "stroke-dashoffset"], "path", {
+      externalKey: "quest-red-thread",
+    }),
+    workspaceLight,
+  ],
+  UPDATE_SIDE_QUEST: [
+    commandTarget("quest-note", "quest-note-new", ["transform", "opacity"], "div", {
+      externalKey: "quest-note",
+      className: "quest-note",
+    }),
+    commandTarget("quest-red-thread", "red-thread", ["path-drawing", "stroke-dasharray", "stroke-dashoffset"], "path", {
+      externalKey: "quest-red-thread",
+    }),
+    workspaceLight,
+  ],
+  COMPLETE_SIDE_QUEST: [
+    commandTarget("quest-stamp", "quest-stamp", ["transform", "opacity"], "div", {
+      externalKey: "quest-stamp",
+      className: "quest-stamp",
+    }),
+    workspaceLight,
+  ],
+  ADD_JOURNAL_ANNOTATION: [
+    commandTarget("log-entry", "log-entry-new", ["opacity", "clip-path", "filter"], "div", {
+      externalKey: "log-entry",
+      className: "log-line",
+    }),
+    commandTarget("log-symbol", "log-symbol-new", ["transform", "opacity"], "i", {
+      externalKey: "log-symbol",
+    }),
+    workspaceLight,
+  ],
+  ADD_LOG_ENTRY: [
+    commandTarget("log-entry", "log-entry-new", ["opacity", "clip-path", "filter"], "div", {
+      externalKey: "log-entry",
+      className: "log-line",
+    }),
+    commandTarget("log-symbol", "log-symbol-new", ["transform", "opacity"], "i", {
+      externalKey: "log-symbol",
+    }),
+    workspaceLight,
+  ],
+  TEASE_FINALE: [
+    commandTarget("finale-ring-outer", "finale-ring-outer", ["transform"], "i", {
+      externalKey: "finale-ring-outer",
+    }),
+    commandTarget("finale-ring-inner", "finale-ring-inner", ["transform"], "i", {
+      externalKey: "finale-ring-inner",
+    }),
+    commandTarget(
+      "finale-light-path",
+      "finale-light-path",
+      ["path-drawing", "stroke-dasharray", "stroke-dashoffset"],
+      "path",
+      {
+        externalKey: "finale-light-path",
+      },
+    ),
+    workspaceLight,
+  ],
+  UPDATE_FINALE_REQUIREMENT: [
+    commandTarget(
+      "finale-light-path",
+      "finale-light-path",
+      ["path-drawing", "stroke-dasharray", "stroke-dashoffset", "opacity"],
+      "path",
+      { externalKey: "finale-light-path" },
+    ),
+    workspaceLight,
+  ],
+  UNDO_LAST: [
+    commandTarget("undo-mark", "undo-mark", ["transform", "opacity"], "div", { className: "undo-mark" }),
+    commandLight,
+  ],
+  PAUSE: [commandTarget("lantern", "lantern", ["transform", "opacity"], "div", { className: "lantern" }), commandLight],
+  RESUME: [
+    commandTarget("lantern", "lantern", ["transform", "opacity"], "div", { className: "lantern" }),
+    commandLight,
+  ],
+};
 
 const actionPresentationFallback: Record<Action[0], { fallback: string; semanticState: string }> = {
   PREPARE_CHAPTER: { fallback: "readable-command-result", semanticState: "chapter-prepared-readable" },
@@ -169,21 +454,307 @@ const actionScene: Record<Action[0], AnimationSceneName> = {
   RESUME: "resume",
 };
 
+const commandPathData: Record<string, string> = {
+  "seal-crack": "M90 12l-8 53 23 18-34 16 15 68M24 88l57-23M105 83l50-20",
+  "seal-fragment-left": "M24 88l57-23-10 34z",
+  "seal-fragment-right": "M105 83l50-20-34 42z",
+  "route-path": "M30 210C160 35 330 40 490 190",
+  "artifact-connection-path": "M80 100Q260 230 440 100",
+  "quest-red-thread": "M50 190C180 40 320 40 470 170",
+  "finale-light-path": "M260 20L430 130 260 240 90 130z",
+};
+
+type CommandTargetNodeProps = Readonly<{
+  operationKey: string;
+  spec: CommandTargetSpec;
+  legacyPart: boolean;
+  onHandle: (key: string, handle: SceneTargetHandle | null) => void;
+}>;
+
+function RegisteredCommandTargetNode({ operationKey, spec, legacyPart, onHandle }: CommandTargetNodeProps) {
+  const registration = useMemo(
+    () => ({
+      targetKey: `${operationKey}:${spec.key}`,
+      part: spec.part,
+      ownerHint: spec.ownerHint ?? "gsap",
+      allowedProperties: spec.properties,
+    }),
+    [operationKey, spec],
+  );
+  const { bindTarget, handle } = useSceneTargetRegistration(registration);
+  useLayoutEffect(() => {
+    onHandle(spec.key, handle);
+    return () => onHandle(spec.key, null);
+  }, [handle, onHandle, spec.key]);
+
+  if (spec.visual === "path") {
+    return (
+      <path
+        ref={bindTarget}
+        data-command-cinematic-part={spec.part}
+        data-runtime-boundary="gsap"
+        data-scene-part={legacyPart ? spec.part : undefined}
+        d={commandPathData[spec.key] ?? "M0 0"}
+      />
+    );
+  }
+  const common = {
+    ref: bindTarget,
+    className: `command-object ${spec.className ?? ""}`.trim(),
+    "data-command-cinematic-part": spec.part,
+    "data-runtime-boundary": "gsap",
+    "data-scene-part": legacyPart ? spec.part : undefined,
+  };
+  const content =
+    spec.part === "artifact-reveal" ? (
+      <img src="/illustrations/artifacts/compass-needle.svg" alt="" />
+    ) : spec.part === "solved-stamp" ? (
+      "SOLVED"
+    ) : spec.part === "quest-note-new" ? (
+      "OPTIONAL COURSE"
+    ) : spec.part === "quest-stamp" ? (
+      "COMPLETE"
+    ) : spec.part === "undo-mark" ? (
+      "↶"
+    ) : spec.part === "lantern" ? (
+      <i />
+    ) : null;
+  return spec.visual === "i" ? <i {...common}>{content}</i> : <div {...common}>{content}</div>;
+}
+
+function MotionCommandTargetNode({ operationKey, spec, legacyPart, onHandle }: CommandTargetNodeProps) {
+  const registration = useMemo(
+    () => ({
+      targetKey: `${operationKey}:${spec.key}`,
+      part: spec.part,
+      runtime: "motion" as const,
+      allowedProperties: spec.properties,
+      properties: spec.properties,
+    }),
+    [operationKey, spec],
+  );
+  const { bindTarget, handle, ownershipReady } = useRuntimeOwnedSceneTarget(registration);
+  const bindMotionTarget = useCallback((node: HTMLDivElement | null) => bindTarget(node), [bindTarget]);
+  useLayoutEffect(() => {
+    onHandle(spec.key, handle);
+    return () => onHandle(spec.key, null);
+  }, [handle, onHandle, spec.key]);
+
+  return (
+    <motion.div
+      ref={bindMotionTarget}
+      {...(ownershipReady && spec.properties.includes("layout") ? { layout: true } : {})}
+      className={`command-object ${spec.className ?? ""}`.trim()}
+      data-command-cinematic-part={spec.part}
+      data-runtime-boundary="motion"
+      data-runtime-lease={ownershipReady ? "ready" : "gated"}
+      data-scene-part={legacyPart ? spec.part : undefined}
+    />
+  );
+}
+
+function CommandTargetNode(props: CommandTargetNodeProps) {
+  return props.spec.ownerHint === "motion" ? (
+    <MotionCommandTargetNode {...props} />
+  ) : (
+    <RegisteredCommandTargetNode {...props} />
+  );
+}
+
+function CommandHostContent({
+  action,
+  operationKey,
+  onReady,
+}: {
+  action: Action;
+  operationKey: string;
+  onReady: (runtime: CommandRuntime) => void;
+}) {
+  const host = useOptionalSceneHost();
+  const sentinel = useRef<HTMLSpanElement>(null);
+  const specs = commandTargetSpecs[action[0]];
+  const [handles, setHandles] = useState<Readonly<Record<string, SceneTargetHandle>>>({});
+  const captureHandle = useCallback((key: string, handle: SceneTargetHandle | null) => {
+    setHandles((current) => {
+      if (handle && current[key] === handle) return current;
+      if (!handle && !(key in current)) return current;
+      const next = { ...current };
+      if (handle) next[key] = handle;
+      else delete next[key];
+      return next;
+    });
+  }, []);
+
+  useLayoutEffect(() => {
+    const root = sentinel.current?.parentElement;
+    if (!host || !root || specs.some((spec) => !handles[spec.key])) return;
+    const externalTargets: Record<string, ExternalSceneTargetHandle> = {};
+    for (const spec of specs) {
+      if (!spec.externalKey) continue;
+      externalTargets[spec.externalKey] = host.exportTarget({
+        target: handles[spec.key],
+        destinationHostId: host.hostId,
+        allowedProperties: spec.properties,
+        lifetime: "handoff",
+      });
+    }
+    onReady(Object.freeze({ operationKey, host, root, externalTargets: Object.freeze(externalTargets) }));
+    return () => Object.values(externalTargets).forEach((handle) => handle.revoke());
+  }, [handles, host, onReady, operationKey, specs]);
+
+  const paths = specs.filter((spec) => spec.visual === "path");
+  const elements = specs.filter((spec) => spec.visual !== "path");
+  const legacyPart = action[0] === "PREPARE_CHAPTER" || action[0] === "RELEASE_CHAPTER";
+  return (
+    <>
+      <span ref={sentinel} hidden />
+      {elements.map((spec) => (
+        <CommandTargetNode
+          key={spec.key}
+          operationKey={operationKey}
+          spec={spec}
+          legacyPart={legacyPart}
+          onHandle={captureHandle}
+        />
+      ))}
+      {paths.length > 0 && (
+        <svg className="command-map" viewBox="0 0 520 260">
+          {paths.map((spec) => (
+            <CommandTargetNode
+              key={spec.key}
+              operationKey={operationKey}
+              spec={spec}
+              legacyPart={legacyPart}
+              onHandle={captureHandle}
+            />
+          ))}
+        </svg>
+      )}
+    </>
+  );
+}
+
+const loginTargetProperties = {
+  lock: ["transform"],
+  "door-bolt": ["transform"],
+  "cabin-door": ["transform"],
+  "login-ledger": ["transform"],
+  "chart-room-light": ["opacity"],
+  lantern: ["transform", "opacity"],
+} as const satisfies Readonly<Record<string, readonly AnimatedProperty[]>>;
+
+function LoginTarget({
+  as = "div",
+  part,
+  targetKey,
+  className,
+  children,
+}: {
+  as?: "div" | "i";
+  part: keyof typeof loginTargetProperties;
+  targetKey: string;
+  className?: string;
+  children?: React.ReactNode;
+}) {
+  const registration = useMemo(
+    () => ({ targetKey, part, ownerHint: "gsap" as const, allowedProperties: loginTargetProperties[part] }),
+    [part, targetKey],
+  );
+  const { bindTarget } = useSceneTargetRegistration(registration);
+  return createElement(
+    as,
+    {
+      ref: bindTarget,
+      className,
+      "data-login-cinematic-part": part,
+      "data-runtime-boundary": "gsap",
+      // The bounded v1 compatibility adapter still resolves this legacy scene by part.
+      "data-scene-part": part,
+    },
+    children,
+  );
+}
+
+function QuartermasterLoginHost({
+  mode,
+  onReady,
+}: {
+  mode: ReturnType<typeof useMotionMode>["mode"];
+  onReady: (runtime: Readonly<{ host: SceneHostHandle; root: HTMLElement }>) => void;
+}) {
+  const host = useOptionalSceneHost();
+  const sentinel = useRef<HTMLSpanElement>(null);
+  useLayoutEffect(() => {
+    const root = sentinel.current?.parentElement;
+    if (host && root) onReady(Object.freeze({ host, root }));
+  }, [host, onReady]);
+  return (
+    <>
+      <span ref={sentinel} hidden />
+      <LoginTarget
+        part="chart-room-light"
+        targetKey="quartermaster-login:chart-room-light"
+        className="chart-room-light"
+      />
+      <LoginTarget part="cabin-door" targetKey="quartermaster-login:cabin-door" className="cabin-door">
+        <span>Private command surface</span>
+        <LoginTarget as="i" part="door-bolt" targetKey="quartermaster-login:door-bolt" />
+        <LoginTarget part="lock" targetKey="quartermaster-login:lock" className="door-keyhole">
+          <RiveStatefulObject asset={riveAssets.invitationSeal} mode={mode} label="Quartermaster door lock" />
+        </LoginTarget>
+      </LoginTarget>
+      <LoginTarget part="lantern" targetKey="quartermaster-login:lantern" className="login-lantern">
+        <i />
+        <b />
+      </LoginTarget>
+      <LoginTarget part="login-ledger" targetKey="quartermaster-login:ledger" className="login-ledger-cinematic" />
+    </>
+  );
+}
+
 export function Quartermaster({ authenticated }: { authenticated: boolean }) {
   const root = useRef<HTMLElement>(null);
   const [signedIn, setSignedIn] = useState(authenticated);
   const [status, setStatus] = useState<Status | null>(null);
   const [selected, setSelected] = useState<Action | null>(null);
-  const [activeAction, setActiveAction] = useState<Action | null>(null);
+  const [activeAction, setActiveAction] = useState<ActiveCommand | null>(null);
   const [message, setMessage] = useState("");
+  const [commandTruth, setCommandTruth] = useState("");
   const [presentationWarning, setPresentationWarning] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const mounted = useRef(true);
   const inFlight = useRef<AbortController | null>(null);
+  const loginRuntime = useRef<Readonly<{ host: SceneHostHandle; root: HTMLElement }> | null>(null);
+  const commandRuntime = useRef<CommandRuntime | null>(null);
+  const commandSequence = useRef(0);
+  const commandTrigger = useRef<HTMLButtonElement | null>(null);
+  const confirmationIdempotencyKey = useRef("");
+  const confirmAction = useRef<HTMLButtonElement | null>(null);
+  const confirmationDialog = useRef<HTMLElement | null>(null);
+  const loginInput = useRef<HTMLInputElement | null>(null);
+  const busyState = useRef(busy);
+  const commandWaiter = useRef<{
+    operationKey: string;
+    resolve: (runtime: CommandRuntime) => void;
+    reject: (reason: Error) => void;
+  } | null>(null);
   const presentationWarningTarget = useRef<HTMLParagraphElement>(null);
   const { director, snapshot: animation } = useAnimationDirector();
   const { mode, cycle } = useMotionMode();
+  busyState.current = busy;
+
+  const handleCommandRuntimeReady = useCallback((runtime: CommandRuntime) => {
+    commandRuntime.current = runtime;
+    const waiter = commandWaiter.current;
+    if (waiter?.operationKey !== runtime.operationKey) return;
+    commandWaiter.current = null;
+    waiter.resolve(runtime);
+  }, []);
+
+  const handleLoginRuntimeReady = useCallback((runtime: Readonly<{ host: SceneHostHandle; root: HTMLElement }>) => {
+    loginRuntime.current = runtime;
+  }, []);
 
   const refresh = useCallback(async (signal?: AbortSignal) => {
     try {
@@ -207,8 +778,65 @@ export function Quartermaster({ authenticated }: { authenticated: boolean }) {
       mounted.current = false;
       inFlight.current?.abort();
       inFlight.current = null;
+      commandWaiter.current?.reject(new Error("quartermaster-unmounted"));
+      commandWaiter.current = null;
+      commandRuntime.current = null;
+      loginRuntime.current = null;
     };
   }, []);
+
+  useEffect(() => {
+    if (!selected) return;
+    const dialog = confirmationDialog.current;
+    const restoreTarget = commandTrigger.current;
+    const focusInitial = () => {
+      if (!dialog?.isConnected) return;
+      const preferred = confirmAction.current;
+      const target = preferred && !preferred.disabled ? preferred : (dialogFocusables(dialog)[0] ?? dialog);
+      target.focus();
+    };
+    focusInitial();
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        if (busyState.current) return;
+        event.preventDefault();
+        event.stopPropagation();
+        closeConfirmation();
+        return;
+      }
+      if (event.key !== "Tab" || !dialog?.isConnected) return;
+      const controls = dialogFocusables(dialog);
+      if (!controls.length) {
+        event.preventDefault();
+        dialog.focus();
+        return;
+      }
+      const first = controls[0];
+      const last = controls.at(-1)!;
+      const active = document.activeElement;
+      if (event.shiftKey && (active === first || !dialog.contains(active))) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && (active === last || !dialog.contains(active))) {
+        event.preventDefault();
+        first.focus();
+      }
+    };
+    const onFocusIn = (event: FocusEvent) => {
+      if (!dialog?.isConnected || dialog.contains(event.target as Node)) return;
+      focusInitial();
+    };
+    document.addEventListener("keydown", onKeyDown);
+    document.addEventListener("focusin", onFocusIn);
+    return () => {
+      document.removeEventListener("keydown", onKeyDown);
+      document.removeEventListener("focusin", onFocusIn);
+      if (!restoreTarget?.isConnected) return;
+      window.requestAnimationFrame(() => {
+        if (restoreTarget.isConnected) restoreTarget.focus();
+      });
+    };
+  }, [selected]);
 
   useEffect(() => {
     if (!signedIn) return;
@@ -230,13 +858,28 @@ export function Quartermaster({ authenticated }: { authenticated: boolean }) {
     );
   }
 
+  function closeConfirmation() {
+    confirmationIdempotencyKey.current = "";
+    setSelected(null);
+  }
+
+  function restoreLoginFailure(controller: AbortController, message: string, warning = "") {
+    if (!mounted.current || controller.signal.aborted || inFlight.current !== controller) return;
+    inFlight.current = null;
+    setBusy(false);
+    setError(message);
+    setPresentationWarning(warning);
+    window.requestAnimationFrame(() => loginInput.current?.focus());
+  }
+
   async function login(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    if (!root.current) return;
+    const runtime = loginRuntime.current;
+    if (!runtime || inFlight.current) return;
+    setBusy(true);
     setError("");
     setPresentationWarning("");
     const form = new FormData(event.currentTarget);
-    inFlight.current?.abort();
     const controller = new AbortController();
     inFlight.current = controller;
     let operationStarted = false;
@@ -265,18 +908,29 @@ export function Quartermaster({ authenticated }: { authenticated: boolean }) {
     };
     try {
       const receipt = await director.play<{ authenticated: true }>("quartermaster-login", {
-        root: root.current,
-        hostId: QUARTERMASTER_HOST_ID,
-        hostKind: QUARTERMASTER_HOST_KIND,
+        root: runtime.root,
+        hostId: runtime.host.hostId,
+        hostKind: runtime.host.kind,
+        sceneHost: runtime.host,
         requestSource: "operation",
         eventOrActionId: "quartermaster-login",
         queue: false,
         signal: controller.signal,
         operation: authenticate,
+        finalStateRuntime: {
+          holdSafePose: (semanticState) => {
+            if (semanticState !== "quartermaster-result-readable" || controller.signal.aborted) return;
+            publishPresentationWarning("Sign-in accepted. Opening the chart room.");
+          },
+          verifyReadableState: (semanticState) =>
+            semanticState === "quartermaster-result-readable" &&
+            presentationWarningTarget.current?.getAttribute("role") === "status" &&
+            presentationWarningTarget.current?.textContent?.includes("Sign-in accepted") === true,
+        },
         presentationFallback: async (context) => {
           if (
-            context.hostId !== QUARTERMASTER_HOST_ID ||
-            context.hostKind !== QUARTERMASTER_HOST_KIND ||
+            context.hostId !== runtime.host.hostId ||
+            context.hostKind !== runtime.host.kind ||
             context.fallback !== QUARTERMASTER_LOGIN_FALLBACK ||
             context.signal?.aborted
           ) {
@@ -299,64 +953,106 @@ export function Quartermaster({ authenticated }: { authenticated: boolean }) {
       if (!mounted.current || controller.signal.aborted) return;
       const loginResult = receipt.operationResult ?? fallbackLoginResult;
       if (loginResult?.authenticated !== true) {
-        setError(
+        restoreLoginFailure(
+          controller,
           operationError ||
             (operationStarted
               ? "The lock refused the key."
               : "Sign-in was not attempted because its presentation could not start."),
+          !operationStarted && presentationFailed(receipt.outcome)
+            ? "The entrance presentation is unavailable. Sign-in was not recorded."
+            : "",
         );
-        if (!operationStarted && presentationFailed(receipt.outcome)) {
-          setPresentationWarning("The entrance presentation is unavailable. Sign-in was not recorded.");
-        }
         return;
       }
 
       if (receipt.outcome === "presented-fallback" || presentationFailed(receipt.outcome)) {
         setPresentationWarning(readablePresentationWarning("sign-in"));
+      } else {
+        publishPresentationWarning("Sign-in accepted. Opening the chart room.");
       }
       const refreshed = await refresh(controller.signal);
       if (!mounted.current || controller.signal.aborted) return;
-      if (!refreshed) setSignedIn(true);
+      if (!refreshed) {
+        restoreLoginFailure(
+          controller,
+          "Sign-in succeeded, but the chart room could not be opened. Please try again.",
+          readablePresentationWarning("sign-in"),
+        );
+      }
     } catch {
       if (!mounted.current || controller.signal.aborted) return;
       if (authoritativeLoginSucceeded) {
         setPresentationWarning(readablePresentationWarning("sign-in"));
         const refreshed = await refresh(controller.signal);
-        if (!refreshed && mounted.current) setSignedIn(true);
+        if (!refreshed && mounted.current) {
+          restoreLoginFailure(
+            controller,
+            "Sign-in succeeded, but the chart room could not be opened. Please try again.",
+            readablePresentationWarning("sign-in"),
+          );
+        }
       } else {
-        setError(operationError || "The lock refused the key.");
+        restoreLoginFailure(controller, operationError || "The lock refused the key.");
       }
     } finally {
-      if (inFlight.current === controller) inFlight.current = null;
+      if (inFlight.current === controller) {
+        inFlight.current = null;
+        if (mounted.current) setBusy(false);
+      }
     }
   }
 
   async function execute() {
-    if (!selected || !status || !root.current) return;
+    if (!selected || !status || inFlight.current) return;
     setBusy(true);
     setError("");
     setPresentationWarning("");
+    setCommandTruth("");
     const action = selected;
-    inFlight.current?.abort();
+    const idempotencyKey = confirmationIdempotencyKey.current;
+    if (!idempotencyKey) {
+      setBusy(false);
+      setError("This confirmation expired. Close it and review the action again.");
+      return;
+    }
     const controller = new AbortController();
     inFlight.current = controller;
+    commandSequence.current += 1;
+    const operationKey = `quartermaster:${action[0].toLowerCase()}:${commandSequence.current}`;
+    commandRuntime.current = null;
+    let waitTimer: ReturnType<typeof setTimeout> | undefined;
+    let abortWait: (() => void) | undefined;
+    const runtimePromise = new Promise<CommandRuntime>((resolve, reject) => {
+      const rejectWait = (reason: Error) => {
+        if (commandWaiter.current?.operationKey === operationKey) commandWaiter.current = null;
+        reject(reason);
+      };
+      commandWaiter.current = { operationKey, resolve, reject: rejectWait };
+      waitTimer = setTimeout(() => rejectWait(new Error("quartermaster-command-host-timeout")), 1_500);
+      abortWait = () => rejectWait(new Error("quartermaster-command-host-aborted"));
+      controller.signal.addEventListener("abort", abortWait, { once: true });
+    });
     let operationStarted = false;
     let operationError = "";
     let authoritativeResult: CommandResult | undefined;
     let commandOperation: Promise<CommandResult> | null = null;
     let fallbackOperationResult: CommandResult | undefined;
     const fallbackContract = actionPresentationFallback[action[0]];
-    const commandHost =
-      action[0] === "PREPARE_CHAPTER" || action[0] === "RELEASE_CHAPTER"
-        ? LEGACY_COMMAND_HOST
-        : PROGRESSION_COMMAND_HOST;
     const submitCommand = () => {
       commandOperation ??= (async () => {
         operationStarted = true;
-        const response = await fetch("/api/gm/action", {
+        const response = await fetch("/api/gm/commands", {
           method: "POST",
           headers: { "Content-Type": "application/json", "x-csrf-token": status.csrfToken },
-          body: JSON.stringify({ action: action[0], campaignSlug: status.campaign.slug, confirmation: true }),
+          body: JSON.stringify({
+            command: action[0],
+            campaignSlug: status.campaign.slug,
+            expectedSequence: status.campaign.sequence,
+            idempotencyKey,
+            payload: {},
+            confirmation: true,
+          }),
           signal: controller.signal,
         });
         const body = await readJson(response);
@@ -369,22 +1065,40 @@ export function Quartermaster({ authenticated }: { authenticated: boolean }) {
       })();
       return commandOperation;
     };
-    flushSync(() => setActiveAction(action));
+    flushSync(() => setActiveAction({ action, operationKey }));
     try {
+      const runtime = await runtimePromise;
+      if (!mounted.current || controller.signal.aborted || runtime.operationKey !== operationKey) return;
       const receipt = await director.play<CommandResult>(actionScene[action[0]], {
-        root: root.current,
-        hostId: commandHost.hostId,
-        hostKind: commandHost.hostKind,
+        root: runtime.root,
+        hostId: runtime.host.hostId,
+        hostKind: runtime.host.kind,
+        sceneHost: runtime.host,
+        externalTargets: runtime.externalTargets,
         requestSource: "operation",
         eventOrActionId: action[0],
         queue: false,
         signal: controller.signal,
         display: { actionLabel: action[1] },
         operation: submitCommand,
+        finalStateRuntime: {
+          holdSafePose: (semanticState) => {
+            if (semanticState !== fallbackContract.semanticState || controller.signal.aborted) return;
+            publishPresentationWarning("The order was recorded. Updating the voyage ledger.");
+          },
+          reconcileFinalState: (semanticState) => {
+            if (semanticState !== fallbackContract.semanticState || controller.signal.aborted) return;
+            publishPresentationWarning("The order was recorded. Updating the voyage ledger.");
+          },
+          verifyReadableState: (semanticState) =>
+            semanticState === fallbackContract.semanticState &&
+            presentationWarningTarget.current?.getAttribute("role") === "status" &&
+            presentationWarningTarget.current?.textContent?.includes("The order was recorded") === true,
+        },
         presentationFallback: async (context) => {
           if (
-            context.hostId !== commandHost.hostId ||
-            context.hostKind !== commandHost.hostKind ||
+            context.hostId !== runtime.host.hostId ||
+            context.hostKind !== runtime.host.kind ||
             context.fallback !== fallbackContract.fallback ||
             context.signal?.aborted
           ) {
@@ -425,83 +1139,88 @@ export function Quartermaster({ authenticated }: { authenticated: boolean }) {
 
       const refreshed = await refresh(controller.signal);
       if (!mounted.current || controller.signal.aborted) return;
-      setMessage(`Event ${result.event.id} recorded at sequence ${result.event.sequence}.`);
-      setSelected(null);
+      setMessage(receiptMessage(result));
+      setCommandTruth(receiptTruth(result));
+      closeConfirmation();
       if (receipt.outcome === "presented-fallback" || presentationFailed(receipt.outcome)) {
         setPresentationWarning(readablePresentationWarning("order"));
       } else if (!refreshed) {
         setPresentationWarning("The order was recorded, but the latest ledger status could not be loaded.");
+      } else {
+        setPresentationWarning("");
       }
     } catch {
       if (!mounted.current || controller.signal.aborted) return;
       if (authoritativeResult) {
         const refreshed = await refresh(controller.signal);
         if (!mounted.current || controller.signal.aborted) return;
-        setMessage(`Event ${authoritativeResult.event.id} recorded at sequence ${authoritativeResult.event.sequence}.`);
-        setSelected(null);
+        setMessage(receiptMessage(authoritativeResult));
+        setCommandTruth(receiptTruth(authoritativeResult));
+        closeConfirmation();
         setPresentationWarning(
           refreshed
             ? readablePresentationWarning("order")
             : "The order was recorded, but its presentation and latest ledger status could not be loaded.",
         );
       } else {
-        setError(operationError || "The order could not be recorded.");
+        setError(
+          operationError ||
+            (operationStarted ? "The order could not be recorded." : "The command presentation could not be prepared."),
+        );
       }
     } finally {
+      if (waitTimer !== undefined) clearTimeout(waitTimer);
+      if (abortWait) controller.signal.removeEventListener("abort", abortWait);
+      if (commandWaiter.current?.operationKey === operationKey) commandWaiter.current = null;
       if (inFlight.current === controller) inFlight.current = null;
       if (mounted.current) {
         setBusy(false);
-        setActiveAction(null);
+        setActiveAction((current) => (current?.operationKey === operationKey ? null : current));
       }
     }
   }
 
   if (!signedIn) {
     return (
-      <main
-        ref={root}
-        className={`quartermaster-login stage-${animation.label}`}
-        data-motion-mode={mode}
-        data-scene-host-id={QUARTERMASTER_HOST_ID}
-        data-scene-host-kind={QUARTERMASTER_HOST_KIND}
-      >
-        <div className="chart-room-light" data-scene-part="chart-room-light" data-gsap-owned aria-hidden="true" />
+      <main ref={root} className={`quartermaster-login stage-${animation.label}`} data-motion-mode={mode}>
+        <SceneHost
+          kind="access"
+          hostKey="quartermaster-login"
+          className="quartermaster-login-cinematic-boundary"
+          aria-hidden="true"
+          style={{ pointerEvents: "none" }}
+        >
+          <QuartermasterLoginHost mode={mode} onReady={handleLoginRuntimeReady} />
+        </SceneHost>
         <LottieEffect
           asset={lottieAssets.rollingFog}
           mode={mode}
           label="Dust and lantern haze at the chart-room entrance"
           className="login-door-dust"
         />
-        <div className="cabin-door" data-scene-part="cabin-door" data-gsap-owned aria-hidden="true">
-          <span>Private command surface</span>
-          <i data-scene-part="door-bolt" data-gsap-owned />
-          <div className="door-keyhole" data-scene-part="lock" data-gsap-owned />
-        </div>
-        <div className="login-lantern" data-scene-part="lantern" data-gsap-owned aria-hidden="true">
-          <i />
-          <b />
-        </div>
-        <section className="login-ledger" data-scene-part="login-ledger" data-gsap-owned>
-          <div className="brass-latch" aria-hidden="true">
-            <RiveStatefulObject asset={riveAssets.invitationSeal} mode={mode} label="Quartermaster door lock" />
-          </div>
+        <section className="login-ledger">
           <p className="eyebrow">Restricted chart room</p>
           <h1>Quartermaster&apos;s Log</h1>
           <p>Captain, identify yourself before touching the voyage ledger.</p>
-          <form onSubmit={login}>
+          <form onSubmit={login} aria-busy={busy} aria-describedby={error ? "quartermaster-login-error" : undefined}>
             <label>
               Captain&apos;s name
-              <input name="username" autoComplete="username" required />
+              <input ref={loginInput} name="username" autoComplete="username" required />
             </label>
             <label>
               Passphrase
               <input name="password" type="password" autoComplete="current-password" required minLength={8} />
             </label>
-            <motion.button className="brass-button" disabled={animation.isPlaying} {...pressable(mode)}>
-              {animation.isPlaying ? "Turning the key…" : "Enter the chart room"}
+            <motion.button
+              className="brass-button"
+              disabled={busy || animation.isPlaying}
+              aria-busy={busy}
+              {...pressable(mode)}
+            >
+              {busy || animation.isPlaying ? "Turning the key…" : "Enter the chart room"}
             </motion.button>
             {error && (
-              <p className="form-error" role="alert">
+              <p id="quartermaster-login-error" className="form-error" role="alert">
                 {error}
               </p>
             )}
@@ -530,10 +1249,10 @@ export function Quartermaster({ authenticated }: { authenticated: boolean }) {
       ref={root}
       className={`quartermaster-shell stage-${animation.label}`}
       data-motion-mode={mode}
-      data-scene-host-id={QUARTERMASTER_HOST_ID}
-      data-scene-host-kind={QUARTERMASTER_HOST_KIND}
+      aria-hidden={selected ? true : undefined}
+      inert={selected ? true : undefined}
     >
-      <div className="quartermaster-desk" data-scene-part="command-light" data-gsap-owned aria-hidden="true" />
+      <div className="quartermaster-desk" aria-hidden="true" />
       <header className="quartermaster-header">
         <div>
           <p className="eyebrow">Private command surface</p>
@@ -627,9 +1346,12 @@ export function Quartermaster({ authenticated }: { authenticated: boolean }) {
                 key={action[0]}
                 aria-label={action[1]}
                 className={action[0] === "UNDO_LAST" ? "danger-action" : ""}
-                onClick={() => {
+                onClick={(event) => {
+                  commandTrigger.current = event.currentTarget;
+                  confirmationIdempotencyKey.current = crypto.randomUUID();
                   setError("");
                   setPresentationWarning("");
+                  setCommandTruth("");
                   setSelected(action);
                 }}
                 whileHover={{ x: 3 }}
@@ -671,61 +1393,63 @@ export function Quartermaster({ authenticated }: { authenticated: boolean }) {
             exit={{ opacity: 0 }}
           >
             {message}
+            {commandTruth && <span>{commandTruth}</span>}
             <button onClick={() => setMessage("")} aria-label="Dismiss message">
               ×
             </button>
           </motion.div>
         )}
       </AnimatePresence>
-      <AnimatePresence>
-        {selected && (
-          <motion.div
-            className="confirm-backdrop"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-          >
-            <motion.section
-              className="confirm-sheet"
-              role="dialog"
-              aria-modal="true"
-              aria-labelledby="confirm-title"
-              initial={{ y: 24, scale: 0.98 }}
-              animate={{ y: 0, scale: 1 }}
-              exit={{ y: 18, opacity: 0 }}
-            >
-              <p className="eyebrow">Confirm ledger action</p>
-              <h2 id="confirm-title">{selected[1]}</h2>
-              <p>{selected[2]}</p>
-              <div className="impact-note">
-                <b>What happens next</b>
-                <span>
-                  This runs atomically, writes an audit entry, publishes one ordered event, and creates a state point
-                  for undo.
-                </span>
-              </div>
-              {error && (
-                <p className="form-error" role="alert">
-                  {error}
-                </p>
-              )}
-              <div>
-                <button onClick={() => setSelected(null)} disabled={busy}>
-                  Cancel
-                </button>
-                <button className="confirm-action" disabled={busy} onClick={execute}>
-                  {busy ? "Recording…" : "Confirm action"}
-                </button>
-              </div>
-            </motion.section>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {typeof document !== "undefined" && selected
+        ? createPortal(
+            <motion.div className="confirm-backdrop" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+              <motion.section
+                ref={confirmationDialog}
+                className="confirm-sheet"
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="confirm-title"
+                tabIndex={-1}
+                initial={{ y: 24, scale: 0.98 }}
+                animate={{ y: 0, scale: 1 }}
+              >
+                <p className="eyebrow">Confirm ledger action</p>
+                <h2 id="confirm-title">{selected[1]}</h2>
+                <p>{selected[2]}</p>
+                <div className="impact-note">
+                  <b>What happens next</b>
+                  <span>
+                    This runs atomically, writes an audit entry, creates one ordered event and a state point for undo,
+                    then attempts in-process publication. Player delivery is confirmed separately.
+                  </span>
+                </div>
+                {error && (
+                  <p className="form-error" role="alert">
+                    {error}
+                  </p>
+                )}
+                <div>
+                  <button onClick={closeConfirmation} disabled={busy}>
+                    Cancel
+                  </button>
+                  <button ref={confirmAction} className="confirm-action" disabled={busy} onClick={execute}>
+                    {busy ? "Recording…" : "Confirm action"}
+                  </button>
+                </div>
+              </motion.section>
+            </motion.div>,
+            document.body,
+            "quartermaster-confirmation",
+          )
+        : null}
       <AnimatePresence>
         {activeAction && (
           <QuartermasterActionScene
-            action={activeAction}
-            scene={actionScene[activeAction[0]]}
+            key={activeAction.operationKey}
+            action={activeAction.action}
+            scene={actionScene[activeAction.action[0]]}
+            operationKey={activeAction.operationKey}
+            onReady={handleCommandRuntimeReady}
             label={animation.label}
             mode={mode}
             skip={() => director.skip()}
@@ -740,12 +1464,16 @@ export function Quartermaster({ authenticated }: { authenticated: boolean }) {
 function QuartermasterActionScene({
   action,
   scene,
+  operationKey,
+  onReady,
   label,
   mode,
   skip,
 }: {
   action: Action;
   scene: AnimationSceneName;
+  operationKey: string;
+  onReady: (runtime: CommandRuntime) => void;
   label: string;
   mode: ReturnType<typeof useMotionMode>["mode"];
   skip: () => void;
@@ -771,79 +1499,31 @@ function QuartermasterActionScene({
     RESUME: "Lantern and compass return to their working rhythm.",
   };
   return (
-    <motion.div
-      className={`cinematic-command-overlay command-${action[0].toLowerCase()} scene-${scene}`}
-      data-motion-mode={mode}
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      aria-live="polite"
-      aria-label={`${action[1]} ceremony: ${label}`}
-    >
-      <div className="command-vignette" data-scene-part="workspace-light" data-gsap-owned aria-hidden="true">
-        <i data-scene-part="command-light" data-gsap-owned />
-        <i data-scene-part="artifact-light" data-gsap-owned />
-        <i data-scene-part="map-fog" data-gsap-owned />
-      </div>
-      <div className="command-object blank-page" data-scene-part="blank-page" data-gsap-owned aria-hidden="true">
-        <i />
-      </div>
-      <div className="command-object seal-object" data-scene-part="seal" data-gsap-owned aria-hidden="true">
-        <span>F</span>
-        <svg viewBox="0 0 180 180">
-          <path data-scene-part="seal-crack" d="M90 12l-8 53 23 18-34 16 15 68M24 88l57-23M105 83l50-20" />
-          <path data-scene-part="seal-fragment" d="M24 88l57-23-10 34z" />
-          <path data-scene-part="seal-fragment" d="M105 83l50-20-34 42z" />
-        </svg>
-      </div>
-      <div className="command-object solved-stamp" data-scene-part="solved-stamp" data-gsap-owned aria-hidden="true">
-        SOLVED
-      </div>
-      <div
-        className="command-object artifact-object"
-        data-scene-part="artifact-reveal"
-        data-gsap-owned
+    <>
+      <SceneHost
+        kind="quartermaster-command"
+        hostKey={operationKey}
+        className={`cinematic-command-overlay command-${action[0].toLowerCase()} scene-${scene}`}
+        data-motion-mode={mode}
+        data-command-operation={operationKey}
         aria-hidden="true"
+        style={{ pointerEvents: "none" }}
       >
-        <img src="/illustrations/artifacts/compass-needle.svg" alt="" />
-      </div>
-      <div className="command-object artifact-slot-target" data-scene-part="artifact-slot-target" aria-hidden="true" />
-      <svg className="command-map" viewBox="0 0 520 260" aria-hidden="true">
-        <path data-scene-part="route-path" data-gsap-owned d="M30 210C160 35 330 40 490 190" />
-        <path data-scene-part="artifact-connection-path" data-gsap-owned d="M80 100Q260 230 440 100" />
-        <path data-scene-part="red-thread" data-gsap-owned d="M50 190C180 40 320 40 470 170" />
-        <path data-scene-part="finale-light-path" data-gsap-owned d="M260 20L430 130 260 240 90 130z" />
-      </svg>
-      <div className="command-object marker" data-scene-part="map-marker-new" data-gsap-owned aria-hidden="true">
-        ✦
-      </div>
-      <div className="command-object quest-note" data-scene-part="quest-note-new" data-gsap-owned aria-hidden="true">
-        OPTIONAL COURSE
-      </div>
-      <div className="command-object quest-stamp" data-scene-part="quest-stamp" data-gsap-owned aria-hidden="true">
-        COMPLETE
-      </div>
-      <div className="command-object log-line" data-scene-part="log-entry-new" data-gsap-owned aria-hidden="true">
-        <i data-scene-part="log-symbol-new" data-gsap-owned>
-          ✦
-        </i>
-      </div>
-      <div className="command-object finale-rings" aria-hidden="true">
-        <i data-scene-part="finale-ring-outer" data-gsap-owned />
-        <i data-scene-part="finale-ring-inner" data-gsap-owned />
-      </div>
-      <div className="command-object lantern" data-scene-part="lantern" data-gsap-owned aria-hidden="true">
-        <i />
-      </div>
-      <div className="command-object undo-mark" data-scene-part="undo-mark" data-gsap-owned aria-hidden="true">
-        ↶
-      </div>
-      <div className="command-copy">
+        <CommandHostContent action={action} operationKey={operationKey} onReady={onReady} />
+      </SceneHost>
+      <motion.div
+        className="command-copy"
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0 }}
+        aria-live="polite"
+        aria-label={`${action[1]} ceremony: ${label}`}
+      >
         <p className="eyebrow">{action[1]}</p>
         <h2>{label.replaceAll("-", " ")}</h2>
         <p>{descriptions[action[0]]}</p>
         <button onClick={skip}>Skip nonessential motion</button>
-      </div>
-    </motion.div>
+      </motion.div>
+    </>
   );
 }

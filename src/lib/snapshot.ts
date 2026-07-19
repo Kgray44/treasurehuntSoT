@@ -1,12 +1,77 @@
-import type { PublicArtifact, PublicChapter, PublicSideQuest, PublicSnapshot } from "@/domain/story";
+import type {
+  ClientProgressEvent,
+  PublicArtifact,
+  PublicChapter,
+  PublicSideQuest,
+  PublicSnapshot,
+} from "@/domain/story";
 import { projectChapterReleaseReplay } from "@/domain/replay";
 import { eventToLogEntry } from "@/domain/ships-log";
+import { isPlayerPresentationEventType, playerPresentationEventTypes, toClientEvent } from "@/domain/visibility";
 import { db } from "@/lib/db";
 
 const readableChapterStates = new Set(["REVEALING", "ACTIVE", "SOLVED", "COMPLETE"]);
 const detailedQuestStates = new Set(["DISCOVERED", "ACTIVE", "PARTIALLY_COMPLETE", "COMPLETE", "ARCHIVED"]);
 const detailedArtifactStates = new Set(["DISCOVERED", "AWARDED", "INSPECTED", "CONNECTED", "ASSEMBLED"]);
 const coordinateStates = new Set(["REVEALED", "ACTIVE_DESTINATION", "VISITED", "COMPLETED", "SIDE_QUEST"]);
+
+export const MAX_PLAYER_PRESENTATION_HISTORY = 100;
+
+type StoredPresentationEvent = {
+  id: string;
+  type: string;
+  sequence: number;
+  version: number;
+  payload: string;
+  releaseAt: Date;
+  reversesEventId?: string | null;
+  supersededById?: string | null;
+};
+
+export type PublicSnapshotWithPresentationHistory = PublicSnapshot & {
+  /**
+   * Bounded, oldest-first, Player-safe presentation events. This is delivery
+   * history, not proof that any scene was presented or acknowledged.
+   */
+  presentationHistory: ClientProgressEvent[];
+};
+
+export function buildPlayerPresentationHistory(
+  storedEvents: readonly StoredPresentationEvent[],
+  chapters: readonly PublicChapter[],
+): ClientProgressEvent[] {
+  const byId = new Map<string, StoredPresentationEvent>();
+  for (const event of storedEvents) {
+    if (!isPlayerPresentationEventType(event.type)) continue;
+    const current = byId.get(event.id);
+    if (!current || event.sequence > current.sequence) byId.set(event.id, event);
+  }
+
+  return [...byId.values()]
+    .sort((left, right) => left.sequence - right.sequence || left.id.localeCompare(right.id))
+    .flatMap((event): ClientProgressEvent[] => {
+      const clientEvent = toClientEvent(event);
+      if (event.type !== "CHAPTER_RELEASED") return [clientEvent];
+      const replay = projectChapterReleaseReplay(event, chapters);
+      // A locked, reverted, missing, or invalid chapter has no Player-safe
+      // history fallback. Even the formerly public title is omitted.
+      if (replay.status === "unavailable") return [];
+      const authorizedChapter = chapters.find((chapter) => chapter.ordinal === replay.presentation.payload.ordinal);
+      if (!authorizedChapter?.title) return [];
+      return [
+        {
+          ...clientEvent,
+          // All chapter copy, including title, comes from the currently
+          // authorized readable chapter projection rather than stored payload.
+          payload: {
+            ...replay.presentation.payload,
+            title: authorizedChapter.title,
+          },
+        },
+      ];
+    })
+    .slice(-MAX_PLAYER_PRESENTATION_HISTORY);
+}
 
 function requirementList(raw: string): PublicSnapshot["finale"]["requirements"] {
   try {
@@ -19,7 +84,10 @@ function requirementList(raw: string): PublicSnapshot["finale"]["requirements"] 
   }
 }
 
-export async function buildPublicSnapshot(campaignId: string, playerAccessId?: string): Promise<PublicSnapshot> {
+export async function buildPublicSnapshot(
+  campaignId: string,
+  playerAccessId?: string,
+): Promise<PublicSnapshotWithPresentationHistory> {
   const campaign = await db.campaign.findUniqueOrThrow({
     where: { id: campaignId },
     include: {
@@ -35,7 +103,7 @@ export async function buildPublicSnapshot(campaignId: string, playerAccessId?: s
       events: { where: { releaseAt: { lte: new Date() } }, orderBy: { sequence: "desc" }, take: 250 },
     },
   });
-  const [viewed, latestChapterRelease] = await Promise.all([
+  const [viewed, latestChapterRelease, storedPresentationHistory] = await Promise.all([
     playerAccessId
       ? db.viewedContent.findMany({
           where: { playerAccessId },
@@ -56,6 +124,25 @@ export async function buildPublicSnapshot(campaignId: string, playerAccessId?: s
         version: true,
         payload: true,
         releaseAt: true,
+      },
+    }),
+    db.progressEvent.findMany({
+      where: {
+        campaignId,
+        type: { in: [...playerPresentationEventTypes] },
+        releaseAt: { lte: new Date() },
+      },
+      orderBy: [{ sequence: "desc" }, { id: "desc" }],
+      take: MAX_PLAYER_PRESENTATION_HISTORY,
+      select: {
+        id: true,
+        type: true,
+        sequence: true,
+        version: true,
+        payload: true,
+        releaseAt: true,
+        reversesEventId: true,
+        supersededById: true,
       },
     }),
   ]);
@@ -230,6 +317,7 @@ export async function buildPublicSnapshot(campaignId: string, playerAccessId?: s
     finale: finale.unseen ? 1 : 0,
   };
   const replayProjection = latestChapterRelease ? projectChapterReleaseReplay(latestChapterRelease, chapters) : null;
+  const presentationHistory = buildPlayerPresentationHistory(storedPresentationHistory, chapters);
   return {
     campaign: { slug: campaign.slug, title: campaign.title, status: campaign.status },
     sequence: campaign.currentSequence,
@@ -245,6 +333,7 @@ export async function buildPublicSnapshot(campaignId: string, playerAccessId?: s
     log,
     finale,
     unseen,
+    presentationHistory,
     ...(replayProjection && replayProjection.status !== "unavailable"
       ? { latestChapterReleasePresentation: replayProjection.presentation }
       : {}),

@@ -8,6 +8,7 @@ import {
   type PresentationTelemetryContext,
   type ResolvedMotionPolicy,
   type SceneRequestSource,
+  type SceneFinalizationReceipt,
 } from "./animation-types";
 
 const DEFAULT_CAPACITY = 100;
@@ -40,7 +41,11 @@ const outcomes = new Set<PresentationOutcome>([
   "ownership-rejected",
   "runtime-failed",
 ]);
-const cleanupOutcomes = new Set<PresentationCleanupOutcome>(["completed", "completed-with-errors"]);
+const cleanupOutcomes = new Set<PresentationCleanupOutcome>([
+  "completed",
+  "completed-with-fallback",
+  "completed-with-errors",
+]);
 const boundedTokenPattern = /^[A-Za-z0-9][A-Za-z0-9._:/-]*$/;
 const uuidLikePattern = /^[0-9a-f]{8}-[0-9a-f-]{27,}$/i;
 const opaqueIdPattern = /^[A-Za-z0-9_-]{24,}$/;
@@ -87,6 +92,7 @@ export type PresentationTelemetryEvent = Readonly<{
   durationMs: number;
   acknowledgmentAllowed: boolean;
   cleanup: PresentationCleanupOutcome;
+  finalization?: Readonly<SceneFinalizationReceipt>;
 }>;
 
 export type PresentationTelemetryListener = (event: PresentationTelemetryEvent) => void;
@@ -235,6 +241,43 @@ function summarizeTargets(targets: readonly PresentationTelemetryTarget[]): Pres
   );
 }
 
+function sanitizedFinalization(
+  value: PresentationReceipt<unknown>["finalization"],
+): SceneFinalizationReceipt | undefined {
+  if (!value || typeof value !== "object" || !cleanupOutcomes.has(value.cleanupResult)) return undefined;
+  const allowedPolicies = new Set([
+    "revert-immediately",
+    "hold-final-until-unmount",
+    "commit-final-state",
+    "reconcile-then-revert",
+    "fallback-to-static-state",
+  ]);
+  if (!allowedPolicies.has(value.finalStatePolicy)) return undefined;
+  const handoffTargetId = boundedToken(value.handoffTargetId, ID_MAX_LENGTH);
+  const allowedFailures = new Set([
+    "handoff-timeout",
+    "handoff-target-missing",
+    "handoff-rejected",
+    "handoff-runtime-failed",
+    "cleanup-failed",
+  ]);
+  const handoffFailure =
+    typeof value.handoffFailure === "string" && allowedFailures.has(value.handoffFailure)
+      ? value.handoffFailure
+      : undefined;
+  return Object.freeze({
+    finalStatePolicy: value.finalStatePolicy,
+    finalStateCommitted: value.finalStateCommitted === true,
+    ...(handoffTargetId ? { handoffTargetId } : {}),
+    handoffStarted: value.handoffStarted === true,
+    handoffCompleted: value.handoffCompleted === true,
+    ...(handoffFailure ? { handoffFailure } : {}),
+    cleanupStarted: value.cleanupStarted === true,
+    cleanupCompleted: value.cleanupCompleted === true,
+    cleanupResult: value.cleanupResult,
+  });
+}
+
 export function toPresentationTelemetryEvent<T>(
   receipt: PresentationReceipt<T>,
   context: PresentationTelemetryContext = {},
@@ -265,6 +308,7 @@ export function toPresentationTelemetryEvent<T>(
         return safeLabel ? [safeLabel] : [];
       }),
   );
+  const finalization = sanitizedFinalization(receipt.finalization);
 
   return Object.freeze({
     version: 1,
@@ -288,6 +332,7 @@ export function toPresentationTelemetryEvent<T>(
     durationMs: boundedInteger(receipt.durationMs, MAX_DURATION_MS),
     acknowledgmentAllowed: receipt.acknowledgmentAllowed === true,
     cleanup: receipt.cleanup,
+    ...(finalization ? { finalization } : {}),
   });
 }
 

@@ -4,11 +4,15 @@ import type {
   PresentationFallbackHandler,
   ResolvedMotionPolicy,
   SceneTargetContract,
+  SceneTargetContractV2,
   SceneTimeline,
 } from "../core/animation-types";
 import { readAnimationMetrics, resetAnimationMetrics } from "../core/metrics";
 import { animationOwnerFor, claimAnimationOwnership, releaseAnimationOwnership } from "../core/ownership";
 import { readPresentationTelemetry, resetPresentationTelemetry } from "../core/presentation-telemetry";
+import { defaultSceneCleanupPolicy } from "../core/final-state-handoff";
+import { SceneHostRegistry } from "../hosts/scene-host-registry";
+import type { SceneBuildTargetAccess, SceneTargetUseResult } from "../hosts/scene-host-types";
 
 const harness = vi.hoisted(() => {
   type Callback = (() => void) | null;
@@ -27,6 +31,11 @@ const harness = vi.hoisted(() => {
     cleanupThrows: false,
     revertThrows: false,
     lastMotionPolicy: undefined as unknown,
+    lastContextHadRoot: false,
+    lastBuildTargetUse: undefined as SceneTargetUseResult<void> | undefined,
+    lastOptionalTargetCount: undefined as number | undefined,
+    beforeSemanticEmit: undefined as (() => void) | undefined,
+    semanticEmitters: [] as Array<(label: string) => void>,
     successLabels: ["semantic-ready", "scene-complete"],
   };
 
@@ -78,6 +87,7 @@ const harness = vi.hoisted(() => {
     private emitOnce() {
       if (this.emitted) return;
       this.emitted = true;
+      state.beforeSemanticEmit?.();
       this.emit?.();
     }
 
@@ -118,14 +128,23 @@ const harness = vi.hoisted(() => {
       addCleanup: (cleanup: () => void) => void;
       emitLabel: (label: string) => void;
       motionPolicy?: unknown;
+      root?: HTMLElement;
+      targets?: SceneBuildTargetAccess;
     }) => {
       built.push("opening");
       state.lastMotionPolicy = context.motionPolicy;
+      state.lastContextHadRoot = "root" in context;
+      state.lastOptionalTargetCount = context.targets?.get("optional-panel")?.targets.length;
+      state.lastBuildTargetUse = context.targets
+        ?.require("panel")
+        .one()
+        ?.withElement("opacity", (element) => element.setAttribute("data-v2-builder-used", "yes"));
       context.addCleanup(() => {
         cleanup();
         if (state.cleanupThrows) throw new Error("cleanup failed");
       });
       if (state.builderThrows) throw new Error("builder failed");
+      state.semanticEmitters.push(context.emitLabel);
       return timeline("opening", () => context.emitLabel("opening-ready"));
     },
     buildIdle: () => {
@@ -134,6 +153,7 @@ const harness = vi.hoisted(() => {
     },
     buildSuccess: (context: { emitLabel: (label: string) => void }) => {
       built.push("success");
+      state.semanticEmitters.push(context.emitLabel);
       return timeline("success", () => state.successLabels.forEach((label) => context.emitLabel(label)));
     },
     buildFailure: (context: { emitLabel: (label: string) => void }) => {
@@ -163,7 +183,12 @@ vi.mock("./scene-registry", () => ({
   getSceneDefinition: () => harness.definition(),
 }));
 
-import { AnimationDirector } from "./AnimationDirector";
+import {
+  ANIMATION_SEMANTIC_LABEL_EVENT_NAME,
+  AnimationDirector,
+  type AnimationSemanticLabelEvent,
+  type AnimationSemanticLabelEventDetail,
+} from "./AnimationDirector";
 
 const visibleRule = {
   mustBeConnected: true,
@@ -251,6 +276,18 @@ function director(mode: "full" | "gentle" | "reduced" = "full") {
   return value;
 }
 
+function observeSemanticLabels() {
+  const events: AnimationSemanticLabelEventDetail[] = [];
+  const listener = ((event: Event) => {
+    events.push((event as AnimationSemanticLabelEvent).detail);
+  }) as EventListener;
+  window.addEventListener(ANIMATION_SEMANTIC_LABEL_EVENT_NAME, listener);
+  return {
+    events,
+    stop: () => window.removeEventListener(ANIMATION_SEMANTIC_LABEL_EVENT_NAME, listener),
+  };
+}
+
 describe("AnimationDirector presentation receipts", () => {
   beforeEach(() => {
     harness.built.length = 0;
@@ -267,6 +304,11 @@ describe("AnimationDirector presentation receipts", () => {
     harness.state.cleanupThrows = false;
     harness.state.revertThrows = false;
     harness.state.lastMotionPolicy = undefined;
+    harness.state.lastContextHadRoot = false;
+    harness.state.lastBuildTargetUse = undefined;
+    harness.state.lastOptionalTargetCount = undefined;
+    harness.state.beforeSemanticEmit = undefined;
+    harness.state.semanticEmitters.length = 0;
     harness.state.successLabels = ["semantic-ready", "scene-complete"];
     resetAnimationMetrics();
     resetPresentationTelemetry();
@@ -278,6 +320,7 @@ describe("AnimationDirector presentation receipts", () => {
     resetAnimationMetrics();
     resetPresentationTelemetry();
     vi.useRealTimers();
+    vi.unstubAllGlobals();
   });
 
   it("returns a successful receipt with operation result, labels, target evidence, and compatibility fields", async () => {
@@ -314,6 +357,104 @@ describe("AnimationDirector presentation receipts", () => {
     expect(receipt.semanticLabelsReached).toEqual(["opening-ready", "semantic-ready", "scene-complete"]);
     expect(operation).toHaveBeenCalledOnce();
     expect(readAnimationMetrics().gsap).toBe(0);
+  });
+
+  it("dispatches frozen, content-free semantic label events in exact occurrence order", async () => {
+    const { root } = fixture();
+    const observed = observeSemanticLabels();
+    harness.state.successLabels = ["semantic-ready", "pulse", "pulse", "scene-complete"];
+
+    const receipt = await director("gentle").play("player-access", {
+      root,
+      eventOrActionId: "event-17",
+      requestSource: "replay",
+      display: {
+        chapterTitle: "private chapter title",
+        objective: "private objective",
+        campaignSecret: "private campaign data",
+      },
+    });
+    observed.stop();
+
+    expect(observed.events.map(({ label }) => label)).toEqual([
+      "opening-ready",
+      "semantic-ready",
+      "pulse",
+      "pulse",
+      "scene-complete",
+    ]);
+    expect(observed.events).toHaveLength(5);
+    for (const detail of observed.events) {
+      expect(Object.keys(detail).sort()).toEqual(
+        [
+          "version",
+          "sceneName",
+          "sceneInstanceId",
+          "hostId",
+          "hostKind",
+          "eventOrActionId",
+          "requestSource",
+          "label",
+          "elapsedMs",
+          "motionLevel",
+        ].sort(),
+      );
+      expect(detail).toMatchObject({
+        version: 1,
+        sceneName: "player-access",
+        sceneInstanceId: receipt.sceneInstanceId,
+        hostId: "test-host-id",
+        hostKind: "test-host",
+        eventOrActionId: "event-17",
+        requestSource: "replay",
+        motionLevel: "gentle",
+      });
+      expect(detail.elapsedMs).toBeGreaterThanOrEqual(0);
+      expect(Object.isFrozen(detail)).toBe(true);
+    }
+    expect(JSON.stringify(observed.events)).not.toContain("private");
+    expect(receipt.semanticLabelsReached).toEqual(["opening-ready", "semantic-ready", "pulse", "scene-complete"]);
+  });
+
+  it("suppresses semantic labels emitted after abort or a completed instance becomes stale", async () => {
+    const { root } = fixture();
+    const observed = observeSemanticLabels();
+    const abort = new AbortController();
+    harness.state.autoComplete.delete("opening");
+    const pending = director().play("player-access", { root, signal: abort.signal });
+    await waitFor(() => expect(observed.events.map(({ label }) => label)).toEqual(["opening-ready"]));
+
+    abort.abort();
+    const aborted = await pending;
+    const abortedEmitters = [...harness.state.semanticEmitters];
+    abortedEmitters.forEach((emit) => emit("stale-after-abort"));
+
+    expect(aborted.outcome).toBe("aborted");
+    expect(observed.events.map(({ label }) => label)).toEqual(["opening-ready"]);
+
+    harness.state.autoComplete.add("opening");
+    harness.state.semanticEmitters.length = 0;
+    const completed = await director().play("player-access", { root: fixture().root });
+    const labelsAtCompletion = observed.events.map(({ label }) => label);
+    harness.state.semanticEmitters.forEach((emit) => emit("stale-after-completion"));
+    observed.stop();
+
+    expect(completed.outcome).toBe("presented");
+    expect(observed.events.map(({ label }) => label)).toEqual(labelsAtCompletion);
+  });
+
+  it("keeps semantic label emission safe when no browser window exists", async () => {
+    const { root } = fixture();
+    harness.state.beforeSemanticEmit = () => {
+      harness.state.beforeSemanticEmit = undefined;
+      vi.stubGlobal("window", undefined);
+    };
+
+    const receipt = await director().play("player-access", { root });
+    vi.unstubAllGlobals();
+
+    expect(receipt).toMatchObject({ outcome: "presented" });
+    expect(receipt.semanticLabelsReached).toEqual(["opening-ready", "semantic-ready", "scene-complete"]);
   });
 
   it("requires explicit, agreeing production host identity before preflight", async () => {
@@ -638,8 +779,10 @@ describe("AnimationDirector presentation receipts", () => {
 
     expect(held.finalSemanticState).toBe("held-readable");
     expect(harness.reverted).not.toHaveBeenCalled();
+    expect(animationOwnerFor(holdFixture.targets[0], "opacity")).toBe("gsap");
     holdingDirector.kill();
     expect(harness.reverted).toHaveBeenCalledOnce();
+    expect(animationOwnerFor(holdFixture.targets[0], "opacity")).toBeNull();
 
     harness.reverted.mockClear();
     harness.state.contract = contract();
@@ -672,6 +815,444 @@ describe("AnimationDirector presentation receipts", () => {
     expect(receipt.motionPolicy).toBe(policy);
     expect(harness.state.lastMotionPolicy).toBe(policy);
     expect(value.getSnapshot().mode).toBe("reduced");
+  });
+
+  it("uses a registered v2 host, immutable target resolution, atomic claims, and handoff-before-cleanup", async () => {
+    const root = document.createElement("main");
+    root.getBoundingClientRect = vi.fn(() => rect());
+    const target = document.createElement("div");
+    target.getBoundingClientRect = vi.fn(() => rect());
+    root.append(target);
+    document.body.append(root);
+    const hosts = new SceneHostRegistry();
+    const host = hosts.registerHost({ kind: "access", root });
+    const targetHandle = host.registerTarget({
+      targetKey: "access-panel",
+      part: "target",
+      element: target,
+      allowedProperties: ["opacity"],
+    });
+    const v2Contract: SceneTargetContractV2 = {
+      version: 2,
+      sceneName: "player-access",
+      reachability: "production",
+      expectedHostKinds: ["access"],
+      targets: [
+        {
+          key: "panel",
+          part: "target",
+          source: { kind: "host" },
+          required: true,
+          cardinality: { min: 1, max: 1 },
+          visibility: visibleRule,
+          owner: "gsap",
+          properties: ["opacity"],
+        },
+      ],
+      timeoutMs: 500,
+      playbackPolicy: contract().playbackPolicy,
+      acknowledgmentPolicy: contract().acknowledgmentPolicy,
+      finalStatePolicy: { kind: "commit-final-state", semanticState: "semantic-ready" },
+      cleanupPolicy: defaultSceneCleanupPolicy,
+      reducedFallback: "semantic-final-state",
+    };
+    harness.state.contract = v2Contract;
+    const authority = Object.freeze({ providerId: hosts.providerId, hosts, ownership: hosts.ownership });
+    const value = new AnimationDirector("full", authority);
+    directors.push(value);
+    const observed = observeSemanticLabels();
+
+    const receipt = await value.play("player-access", {
+      root,
+      sceneHost: host,
+      finalStateRuntime: { commitFinalState: () => undefined },
+    });
+    observed.stop();
+
+    expect(receipt).toMatchObject({
+      outcome: "presented",
+      hostId: host.hostId,
+      hostKind: "access",
+      finalSemanticState: "semantic-ready",
+      finalization: {
+        finalStatePolicy: "commit-final-state",
+        finalStateCommitted: true,
+        handoffCompleted: true,
+        cleanupCompleted: true,
+      },
+      targetReport: { requiredSatisfied: true },
+    });
+    expect(receipt.targetReport.observations[0]?.visibleCount).toBe(1);
+    expect(receipt.sceneInstanceId).toContain("player-access-live-1-");
+    expect(observed.events).toEqual([
+      expect.objectContaining({
+        sceneInstanceId: receipt.sceneInstanceId,
+        hostId: host.hostId,
+        hostKind: "access",
+        eventOrActionId: null,
+        requestSource: "automatic",
+        label: "opening-ready",
+      }),
+      expect.objectContaining({ label: "semantic-ready" }),
+      expect.objectContaining({ label: "scene-complete" }),
+    ]);
+    expect(harness.state.lastContextHadRoot).toBe(false);
+    expect(harness.state.lastBuildTargetUse).toEqual({ status: "applied", value: undefined });
+    expect(target).toHaveAttribute("data-v2-builder-used", "yes");
+    expect(targetHandle.targetId).toContain(host.hostId);
+    expect(target).not.toHaveAttribute("data-animation-owner");
+    expect(hosts.snapshot()).toMatchObject({ activeInvocationCount: 0, activeClaimCount: 0 });
+    hosts.destroy();
+  });
+
+  it("excludes an ownership-conflicted optional v2 target without rejecting required playback", async () => {
+    const root = document.createElement("main");
+    root.getBoundingClientRect = vi.fn(() => rect());
+    const requiredTarget = document.createElement("div");
+    const optionalTarget = document.createElement("div");
+    requiredTarget.getBoundingClientRect = vi.fn(() => rect());
+    optionalTarget.getBoundingClientRect = vi.fn(() => rect());
+    root.append(requiredTarget, optionalTarget);
+    document.body.append(root);
+    const hosts = new SceneHostRegistry();
+    const host = hosts.registerHost({ kind: "access", root });
+    host.registerTarget({
+      targetKey: "access-panel",
+      part: "target",
+      element: requiredTarget,
+      allowedProperties: ["opacity"],
+    });
+    const optionalHandle = host.registerTarget({
+      targetKey: "optional-panel",
+      part: "optional-target",
+      element: optionalTarget,
+      allowedProperties: ["opacity"],
+    });
+    const conflictingLease = host.claimRuntimeSurface({
+      target: optionalHandle,
+      element: optionalTarget,
+      runtime: "motion",
+      properties: ["opacity"],
+    });
+    expect(conflictingLease.status).toBe("granted");
+    const v2Contract: SceneTargetContractV2 = {
+      version: 2,
+      sceneName: "player-access",
+      reachability: "production",
+      expectedHostKinds: ["access"],
+      targets: [
+        {
+          key: "panel",
+          part: "target",
+          source: { kind: "host" },
+          required: true,
+          cardinality: { min: 1, max: 1 },
+          visibility: visibleRule,
+          owner: "gsap",
+          properties: ["opacity"],
+        },
+        {
+          key: "optional-panel",
+          part: "optional-target",
+          source: { kind: "host" },
+          required: false,
+          cardinality: { min: 0, max: 1 },
+          visibility: visibleRule,
+          owner: "gsap",
+          properties: ["opacity"],
+        },
+      ],
+      timeoutMs: 500,
+      playbackPolicy: contract().playbackPolicy,
+      acknowledgmentPolicy: contract().acknowledgmentPolicy,
+      finalStatePolicy: { kind: "commit-final-state", semanticState: "semantic-ready" },
+      cleanupPolicy: defaultSceneCleanupPolicy,
+      reducedFallback: "semantic-final-state",
+    };
+    harness.state.contract = v2Contract;
+    const authority = Object.freeze({ providerId: hosts.providerId, hosts, ownership: hosts.ownership });
+    const value = new AnimationDirector("full", authority);
+    directors.push(value);
+
+    const receipt = await value.play("player-access", {
+      root,
+      sceneHost: host,
+      finalStateRuntime: { commitFinalState: () => undefined },
+    });
+
+    expect(receipt.outcome).toBe("presented");
+    expect(receipt.targetReport.requiredSatisfied).toBe(true);
+    expect(receipt.targetReport.observations[1]?.ownershipRejectedCount).toBe(1);
+    expect(harness.state.lastOptionalTargetCount).toBe(0);
+    if (conflictingLease.status === "granted") conflictingLease.release();
+    hosts.destroy();
+  });
+
+  it("resolves an identity-only v2 target without conflicting with its Motion lifecycle lease", async () => {
+    const root = document.createElement("main");
+    root.getBoundingClientRect = vi.fn(() => rect());
+    const target = document.createElement("div");
+    target.getBoundingClientRect = vi.fn(() => rect());
+    root.append(target);
+    document.body.append(root);
+    const hosts = new SceneHostRegistry();
+    const host = hosts.registerHost({ kind: "access", root });
+    const targetHandle = host.registerTarget({
+      targetKey: "motion-panel",
+      part: "target",
+      element: target,
+      ownerHint: "motion",
+      allowedProperties: ["opacity"],
+    });
+    const motionLease = host.claimRuntimeSurface({
+      target: targetHandle,
+      element: target,
+      runtime: "motion",
+      properties: ["opacity"],
+    });
+    expect(motionLease.status).toBe("granted");
+    harness.state.contract = {
+      version: 2,
+      sceneName: "player-access",
+      reachability: "production",
+      expectedHostKinds: ["access"],
+      targets: [
+        {
+          key: "panel",
+          part: "target",
+          source: { kind: "host" },
+          required: true,
+          identityOnly: true,
+          cardinality: { min: 1, max: 1 },
+          visibility: visibleRule,
+          owner: null,
+          properties: [],
+        },
+      ],
+      timeoutMs: 500,
+      playbackPolicy: contract().playbackPolicy,
+      acknowledgmentPolicy: contract().acknowledgmentPolicy,
+      finalStatePolicy: { kind: "commit-final-state", semanticState: "semantic-ready" },
+      cleanupPolicy: defaultSceneCleanupPolicy,
+      reducedFallback: "semantic-final-state",
+    } satisfies SceneTargetContractV2;
+    const authority = Object.freeze({ providerId: hosts.providerId, hosts, ownership: hosts.ownership });
+    const value = new AnimationDirector("full", authority);
+    directors.push(value);
+
+    const receipt = await value.play("player-access", {
+      root,
+      sceneHost: host,
+      finalStateRuntime: { commitFinalState: () => undefined },
+    });
+
+    expect(receipt.outcome).toBe("presented");
+    expect(receipt.targetReport.requiredSatisfied).toBe(true);
+    expect(harness.state.lastBuildTargetUse).toEqual({ status: "denied", reason: "identity-only" });
+    expect(hosts.snapshot().activeClaimCount).toBe(1);
+    if (motionLease.status === "granted") motionLease.release();
+    hosts.destroy();
+  });
+
+  it("records and revokes the exact external handoff target only after semantic reconciliation", async () => {
+    const sourceRoot = document.createElement("section");
+    const destinationRoot = document.createElement("main");
+    sourceRoot.getBoundingClientRect = vi.fn(() => rect());
+    destinationRoot.getBoundingClientRect = vi.fn(() => rect());
+    const target = document.createElement("div");
+    target.getBoundingClientRect = vi.fn(() => rect());
+    sourceRoot.append(target);
+    document.body.append(sourceRoot, destinationRoot);
+    const hosts = new SceneHostRegistry();
+    const source = hosts.registerHost({ kind: "player-section-enhancement", root: sourceRoot });
+    const destination = hosts.registerHost({ kind: "access", root: destinationRoot });
+    const targetHandle = source.registerTarget({
+      targetKey: "artifact-layout",
+      part: "target",
+      element: target,
+      ownerHint: "motion",
+      allowedProperties: ["layout"],
+    });
+    const motionLease = source.claimRuntimeSurface({
+      target: targetHandle,
+      element: target,
+      runtime: "motion",
+      properties: ["layout"],
+    });
+    const external = source.exportTarget({
+      target: targetHandle,
+      destinationHostId: destination.hostId,
+      allowedProperties: ["layout"],
+      lifetime: "handoff",
+    });
+    harness.state.contract = {
+      version: 2,
+      sceneName: "player-access",
+      reachability: "production",
+      expectedHostKinds: ["access"],
+      targets: [
+        {
+          key: "panel",
+          part: "target",
+          source: { kind: "external", handleKey: "destination" },
+          required: true,
+          identityOnly: true,
+          cardinality: { min: 1, max: 1 },
+          visibility: visibleRule,
+          owner: null,
+          properties: [],
+        },
+      ],
+      timeoutMs: 500,
+      playbackPolicy: contract().playbackPolicy,
+      acknowledgmentPolicy: contract().acknowledgmentPolicy,
+      finalStatePolicy: {
+        kind: "reconcile-then-revert",
+        semanticState: "semantic-ready",
+        handoffTargetKey: "panel",
+      },
+      cleanupPolicy: defaultSceneCleanupPolicy,
+      reducedFallback: "semantic-final-state",
+    } satisfies SceneTargetContractV2;
+    const authority = Object.freeze({ providerId: hosts.providerId, hosts, ownership: hosts.ownership });
+    const value = new AnimationDirector("full", authority);
+    directors.push(value);
+    const reconcile = vi.fn();
+    const cleanupOrder: string[] = [];
+    harness.reverted.mockImplementation(() => cleanupOrder.push("temporary-styles"));
+    const revokeExternalHandle = hosts.revokeExternalHandle.bind(hosts);
+    vi.spyOn(hosts, "revokeExternalHandle").mockImplementation((handle) => {
+      cleanupOrder.push("external-handles");
+      return revokeExternalHandle(handle);
+    });
+    const releaseScene = hosts.ownership.releaseScene.bind(hosts.ownership);
+    vi.spyOn(hosts.ownership, "releaseScene").mockImplementation((instanceId) => {
+      cleanupOrder.push("ownership-claims");
+      return releaseScene(instanceId);
+    });
+
+    const receipt = await value.play("player-access", {
+      root: destinationRoot,
+      sceneHost: destination,
+      externalTargets: { destination: external },
+      finalStateRuntime: { reconcileFinalState: reconcile },
+    });
+
+    expect(receipt.outcome).toBe("presented");
+    expect(reconcile).toHaveBeenCalledWith("semantic-ready", "panel");
+    expect(receipt.finalization).toMatchObject({
+      handoffTargetId: external.externalTargetId,
+      handoffCompleted: true,
+    });
+    expect(cleanupOrder).toEqual(["temporary-styles", "external-handles", "ownership-claims"]);
+    expect(hosts.snapshot().externalHandleCount).toBe(0);
+    expect(hosts.snapshot().activeClaimCount).toBe(1);
+    if (motionLease.status === "granted") motionLease.release();
+    hosts.destroy();
+  });
+
+  it("continues retained handoff cleanup after context revert throws", async () => {
+    const sourceRoot = document.createElement("main");
+    const destinationRoot = document.createElement("main");
+    const target = document.createElement("div");
+    sourceRoot.getBoundingClientRect = vi.fn(() => rect());
+    destinationRoot.getBoundingClientRect = vi.fn(() => rect());
+    target.getBoundingClientRect = vi.fn(() => rect());
+    sourceRoot.append(target);
+    document.body.append(sourceRoot, destinationRoot);
+    const hosts = new SceneHostRegistry();
+    const source = hosts.registerHost({ kind: "player-section-enhancement", root: sourceRoot });
+    const destination = hosts.registerHost({ kind: "access", root: destinationRoot });
+    const targetHandle = source.registerTarget({
+      targetKey: "artifact-opacity",
+      part: "target",
+      element: target,
+      ownerHint: "gsap",
+      allowedProperties: ["opacity"],
+    });
+    const baseline = hosts.snapshot();
+    const external = source.exportTarget({
+      target: targetHandle,
+      destinationHostId: destination.hostId,
+      allowedProperties: ["opacity"],
+      lifetime: "handoff",
+    });
+    harness.state.contract = {
+      version: 2,
+      sceneName: "player-access",
+      reachability: "production",
+      expectedHostKinds: ["access"],
+      targets: [
+        {
+          key: "panel",
+          part: "target",
+          source: { kind: "external", handleKey: "destination" },
+          required: true,
+          cardinality: { min: 1, max: 1 },
+          visibility: visibleRule,
+          owner: "gsap",
+          properties: ["opacity"],
+        },
+      ],
+      timeoutMs: 500,
+      playbackPolicy: contract().playbackPolicy,
+      acknowledgmentPolicy: contract().acknowledgmentPolicy,
+      finalStatePolicy: {
+        kind: "reconcile-then-revert",
+        semanticState: "semantic-ready",
+        handoffTargetKey: "panel",
+      },
+      cleanupPolicy: defaultSceneCleanupPolicy,
+      reducedFallback: "semantic-final-state",
+    } satisfies SceneTargetContractV2;
+    harness.state.revertThrows = true;
+    const authority = Object.freeze({ providerId: hosts.providerId, hosts, ownership: hosts.ownership });
+    const value = new AnimationDirector("full", authority);
+    directors.push(value);
+
+    const receipt = await value.play("player-access", {
+      root: destinationRoot,
+      sceneHost: destination,
+      externalTargets: { destination: external },
+      finalStateRuntime: {
+        reconcileFinalState: () => Promise.reject(new Error("reconcile failed")),
+      },
+    });
+
+    expect(receipt).toMatchObject({
+      outcome: "presented",
+      finalization: {
+        handoffTargetId: external.externalTargetId,
+        handoffCompleted: false,
+      },
+    });
+    expect(hosts.snapshot()).toMatchObject({
+      registeredTargetCount: baseline.registeredTargetCount,
+      externalHandleCount: 1,
+      activeClaimCount: 1,
+      activeInvocationCount: 1,
+    });
+
+    value.kill();
+
+    expect(harness.reverted).toHaveBeenCalledOnce();
+    expect(hosts.snapshot()).toMatchObject({
+      registeredTargetCount: baseline.registeredTargetCount,
+      externalHandleCount: baseline.externalHandleCount,
+      activeClaimCount: baseline.activeClaimCount,
+      activeInvocationCount: baseline.activeInvocationCount,
+    });
+
+    value.kill();
+
+    expect(harness.reverted).toHaveBeenCalledOnce();
+    expect(hosts.snapshot()).toMatchObject({
+      registeredTargetCount: baseline.registeredTargetCount,
+      externalHandleCount: baseline.externalHandleCount,
+      activeClaimCount: baseline.activeClaimCount,
+      activeInvocationCount: baseline.activeInvocationCount,
+    });
+    hosts.destroy();
   });
 
   it("serializes queued presentations and returns a receipt for explicit conflicts", async () => {

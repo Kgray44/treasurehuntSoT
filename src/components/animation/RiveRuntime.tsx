@@ -57,14 +57,27 @@ export function RiveRuntime(props: RiveRuntimeProps) {
   const { asset, label, className } = props;
   const [failedAssetKey, setFailedAssetKey] = useState<string | null>(null);
   if (failedAssetKey === asset.key)
-    return (
-      <AssetFallback
-        src={asset.fallback}
-        label={`${label} fallback after WebGL or asset failure`}
-        className={className}
-      />
-    );
+    return <FailedRiveFallback asset={asset} label={label} className={className} onStatus={props.onStatus} />;
   return <LiveRiveRuntime key={asset.key} {...props} onFailure={() => setFailedAssetKey(asset.key)} />;
+}
+
+function FailedRiveFallback({
+  asset,
+  label,
+  className,
+  onStatus,
+}: Pick<RiveRuntimeProps, "asset" | "label" | "className" | "onStatus">) {
+  useEffect(() => {
+    onStatus?.("fallback");
+  }, [asset.key, onStatus]);
+
+  return (
+    <AssetFallback
+      src={asset.fallback}
+      label={`${label} fallback after WebGL or asset failure`}
+      className={className}
+    />
+  );
 }
 
 function LiveRiveRuntime({

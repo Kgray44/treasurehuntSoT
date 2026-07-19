@@ -1,13 +1,15 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useId, useRef, useState } from "react";
 import { useGSAP } from "@gsap/react";
 import { motion } from "motion/react";
 import { lottieAssets } from "@/animation/assets/lottie-contracts";
-import type { PresentationReceipt } from "@/animation/core/animation-types";
+import type { AnimationSceneName, PresentationReceipt } from "@/animation/core/animation-types";
 import { gsap } from "@/animation/core/gsap-client";
 import { useAnimationDirector } from "@/animation/director/useAnimationDirector";
+import { SceneHost, useSceneTargetRegistration } from "@/animation/hosts/SceneHost";
+import { useOptionalSceneHost } from "@/animation/hosts/SceneHostContext";
 import { useMotionMode } from "@/animation/motion/useMotionMode";
 import { pressable } from "@/animation/motion/variants";
 import { LottieEffect } from "@/components/animation/LottieEffect";
@@ -31,7 +33,82 @@ type GatewayStatus = {
   };
 };
 
-const HARBOR_PRESENTATION_HOST_ID = "harbor-arrival-host";
+const harborTargets = {
+  sky: { targetKey: "harbor:sky", part: "sky", ownerHint: "gsap", allowedProperties: ["opacity"] },
+  stars: { targetKey: "harbor:stars", part: "stars", ownerHint: "gsap", allowedProperties: ["opacity"] },
+  moon: {
+    targetKey: "harbor:moon",
+    part: "moon",
+    ownerHint: "gsap",
+    allowedProperties: ["transform", "opacity"],
+  },
+  horizon: {
+    targetKey: "harbor:horizon",
+    part: "horizon",
+    ownerHint: "gsap",
+    allowedProperties: ["transform", "opacity"],
+  },
+  ocean: {
+    targetKey: "harbor:ocean",
+    part: "ocean",
+    ownerHint: "gsap",
+    allowedProperties: ["transform", "opacity"],
+  },
+  fogBack: {
+    targetKey: "harbor:fog-back",
+    part: "fog-back",
+    ownerHint: "gsap",
+    allowedProperties: ["transform", "opacity"],
+  },
+  fogFront: {
+    targetKey: "harbor:fog-front",
+    part: "fog-front",
+    ownerHint: "gsap",
+    allowedProperties: ["transform", "opacity"],
+  },
+  ship: {
+    targetKey: "harbor:ship",
+    part: "ship",
+    ownerHint: "gsap",
+    allowedProperties: ["transform", "opacity"],
+  },
+  title: {
+    targetKey: "harbor:title",
+    part: "title",
+    ownerHint: "gsap",
+    allowedProperties: ["transform", "clip-path", "opacity"],
+  },
+  arrivalCopyEyebrow: {
+    targetKey: "harbor:arrival-copy:eyebrow",
+    part: "arrival-copy",
+    ownerHint: "gsap",
+    allowedProperties: ["transform", "opacity"],
+  },
+  arrivalCopyBody: {
+    targetKey: "harbor:arrival-copy:body",
+    part: "arrival-copy",
+    ownerHint: "gsap",
+    allowedProperties: ["transform", "opacity"],
+  },
+  arrivalActionPrimary: {
+    targetKey: "harbor:arrival-action:primary",
+    part: "arrival-action",
+    ownerHint: "gsap",
+    allowedProperties: ["transform", "opacity"],
+  },
+  arrivalActionRoles: {
+    targetKey: "harbor:arrival-action:roles",
+    part: "arrival-action",
+    ownerHint: "gsap",
+    allowedProperties: ["transform", "opacity"],
+  },
+  nauticalBorder: {
+    targetKey: "harbor:nautical-border",
+    part: "nautical-border",
+    ownerHint: "gsap",
+    allowedProperties: ["opacity"],
+  },
+} as const;
 
 function reportNonPresentedReceipt(receipt: PresentationReceipt) {
   if (process.env.NODE_ENV === "production" || receipt.outcome === "presented") return;
@@ -67,11 +144,68 @@ const roles = [
 ] as const;
 
 export function HarborLanding() {
+  const motionMode = useMotionMode();
+  return (
+    <SceneHost as="main" kind="gateway" className="harbor-landing role-gateway" data-motion-mode={motionMode.mode}>
+      <HarborGatewayContent motionMode={motionMode} />
+    </SceneHost>
+  );
+}
+
+function HarborGatewayContent({ motionMode }: { motionMode: ReturnType<typeof useMotionMode> }) {
   const root = useRef<HTMLElement>(null);
+  const gatewayTitleId = useId();
+  const explainerTitleId = useId();
   const presentationAbortRef = useRef<AbortController | null>(null);
+  const automaticSceneRef = useRef<Extract<AnimationSceneName, "first-arrival" | "session-reentry"> | null>(null);
+  const sceneHost = useOptionalSceneHost();
   const { director, snapshot } = useAnimationDirector();
-  const { mode, cycle } = useMotionMode();
+  const { mode, cycle } = motionMode;
   const [status, setStatus] = useState<GatewayStatus | null>(null);
+
+  const bindRootSentinel = useCallback((sentinel: HTMLSpanElement | null) => {
+    root.current = sentinel?.parentElement instanceof HTMLElement ? sentinel.parentElement : null;
+  }, []);
+  const { bindTarget: bindSky, handle: skyHandle } = useSceneTargetRegistration(harborTargets.sky);
+  const { bindTarget: bindStars, handle: starsHandle } = useSceneTargetRegistration(harborTargets.stars);
+  const { bindTarget: bindMoon, handle: moonHandle } = useSceneTargetRegistration(harborTargets.moon);
+  const { bindTarget: bindHorizon, handle: horizonHandle } = useSceneTargetRegistration(harborTargets.horizon);
+  const { bindTarget: bindOcean, handle: oceanHandle } = useSceneTargetRegistration(harborTargets.ocean);
+  const { bindTarget: bindFogBack, handle: fogBackHandle } = useSceneTargetRegistration(harborTargets.fogBack);
+  const { bindTarget: bindFogFront, handle: fogFrontHandle } = useSceneTargetRegistration(harborTargets.fogFront);
+  const { bindTarget: bindShip, handle: shipHandle } = useSceneTargetRegistration(harborTargets.ship);
+  const { bindTarget: bindTitle, handle: titleHandle } = useSceneTargetRegistration(harborTargets.title);
+  const { bindTarget: bindArrivalCopyEyebrow, handle: arrivalCopyEyebrowHandle } = useSceneTargetRegistration(
+    harborTargets.arrivalCopyEyebrow,
+  );
+  const { bindTarget: bindArrivalCopyBody, handle: arrivalCopyBodyHandle } = useSceneTargetRegistration(
+    harborTargets.arrivalCopyBody,
+  );
+  const { bindTarget: bindArrivalActionPrimary, handle: arrivalActionPrimaryHandle } = useSceneTargetRegistration(
+    harborTargets.arrivalActionPrimary,
+  );
+  const { bindTarget: bindArrivalActionRoles, handle: arrivalActionRolesHandle } = useSceneTargetRegistration(
+    harborTargets.arrivalActionRoles,
+  );
+  const { bindTarget: bindNauticalBorder, handle: nauticalBorderHandle } = useSceneTargetRegistration(
+    harborTargets.nauticalBorder,
+  );
+  const targetsReady = Boolean(
+    skyHandle &&
+      starsHandle &&
+      moonHandle &&
+      horizonHandle &&
+      oceanHandle &&
+      fogBackHandle &&
+      fogFrontHandle &&
+      shipHandle &&
+      titleHandle &&
+      arrivalCopyEyebrowHandle &&
+      arrivalCopyBodyHandle &&
+      arrivalActionPrimaryHandle &&
+      arrivalActionRolesHandle &&
+      nauticalBorderHandle,
+  );
 
   useGSAP(
     () => {
@@ -98,22 +232,36 @@ export function HarborLanding() {
   );
 
   useEffect(() => {
+    let mounted = true;
     void fetch("/api/gateway/status", { cache: "no-store" })
       .then((response) => (response.ok ? response.json() : null))
-      .then((value: GatewayStatus | null) => setStatus(value))
-      .catch(() => setStatus(null));
-    if (!root.current) return;
+      .then((value: GatewayStatus | null) => {
+        if (mounted) setStatus(value);
+      })
+      .catch(() => {
+        if (mounted) setStatus(null);
+      });
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!root.current || !sceneHost || !targetsReady) return;
     const presentationAbort = new AbortController();
     presentationAbortRef.current = presentationAbort;
     const key = "tall-tale-role-gateway";
-    const scene = sessionStorage.getItem(key) === "seen" ? "session-reentry" : "first-arrival";
-    sessionStorage.setItem(key, "seen");
+    const scene =
+      automaticSceneRef.current ?? (sessionStorage.getItem(key) === "seen" ? "session-reentry" : "first-arrival");
+    automaticSceneRef.current = scene;
+    if (scene === "first-arrival") sessionStorage.setItem(key, "seen");
     void director
       .play(scene, {
         root: root.current,
         queue: false,
-        hostId: HARBOR_PRESENTATION_HOST_ID,
-        hostKind: "arrival",
+        sceneHost,
+        hostId: sceneHost.hostId,
+        hostKind: sceneHost.kind,
         requestSource: "automatic",
         signal: presentationAbort.signal,
       })
@@ -128,7 +276,7 @@ export function HarborLanding() {
       presentationAbortRef.current = null;
       director.cancel("gateway-unmounted");
     };
-  }, [director]);
+  }, [director, sceneHost, targetsReady]);
 
   function continuation(role: (typeof roles)[number]) {
     const current = status?.[role.id];
@@ -138,7 +286,7 @@ export function HarborLanding() {
   }
 
   const replay = () => {
-    if (!root.current) return;
+    if (!root.current || !sceneHost || !targetsReady) return;
     presentationAbortRef.current?.abort();
     const presentationAbort = new AbortController();
     presentationAbortRef.current = presentationAbort;
@@ -146,8 +294,9 @@ export function HarborLanding() {
       .play("first-arrival", {
         root: root.current,
         queue: false,
-        hostId: HARBOR_PRESENTATION_HOST_ID,
-        hostKind: "arrival",
+        sceneHost,
+        hostId: sceneHost.hostId,
+        hostKind: sceneHost.kind,
         requestSource: "replay",
         signal: presentationAbort.signal,
       })
@@ -159,60 +308,66 @@ export function HarborLanding() {
   };
 
   return (
-    <main
-      ref={root}
-      id={HARBOR_PRESENTATION_HOST_ID}
-      className="harbor-landing role-gateway"
-      data-motion-mode={mode}
-      data-scene-host-id={HARBOR_PRESENTATION_HOST_ID}
-    >
-      <div className="harbor-sky" data-scene-part="sky" data-gsap-owned aria-hidden="true">
-        <div className="star-field" data-scene-part="stars">
+    <>
+      <span ref={bindRootSentinel} hidden />
+      <div ref={bindSky} className="harbor-sky" data-scene-part="sky" data-runtime-boundary="gsap" aria-hidden="true">
+        <div ref={bindStars} className="star-field" data-scene-part="stars" data-runtime-boundary="gsap">
           {Array.from({ length: 28 }, (_, index) => (
             <i key={index} />
           ))}
         </div>
-        <div className="moon-glow" data-scene-part="moon" />
-        <div className="distant-clouds" data-scene-part="fog-back" />
+        <div ref={bindMoon} className="moon-glow" data-scene-part="moon" data-runtime-boundary="gsap" />
+        <div ref={bindFogBack} className="distant-clouds" data-scene-part="fog-back" data-runtime-boundary="gsap" />
       </div>
-      <div className="harbor-horizon" data-scene-part="horizon" data-gsap-owned aria-hidden="true">
-        <div className="distant-ship" data-scene-part="ship">
+      <div
+        ref={bindHorizon}
+        className="harbor-horizon"
+        data-scene-part="horizon"
+        data-runtime-boundary="gsap"
+        aria-hidden="true"
+      >
+        <div ref={bindShip} className="distant-ship" data-scene-part="ship" data-runtime-boundary="gsap">
           <i />
           <i />
         </div>
       </div>
-      <LottieEffect
-        asset={lottieAssets.moonlitWaves}
-        mode={mode}
-        label="Moonlight moving across the harbor"
-        className="harbor-waves"
-      />
-      <LottieEffect
-        asset={lottieAssets.rollingFog}
-        mode={mode}
-        label="Fog rolling over the harbor"
-        className="harbor-fog"
-      />
+      <div ref={bindOcean} className="harbor-waves" data-scene-part="ocean" data-runtime-boundary="gsap">
+        <LottieEffect asset={lottieAssets.moonlitWaves} mode={mode} label="Moonlight moving across the harbor" />
+      </div>
+      <div ref={bindFogFront} className="harbor-fog" data-scene-part="fog-front" data-runtime-boundary="gsap">
+        <LottieEffect asset={lottieAssets.rollingFog} mode={mode} label="Fog rolling over the harbor" />
+      </div>
       <div className="foreground-dock" aria-hidden="true">
         <span className="dock-rope" />
       </div>
-      <div className="hanging-lantern" data-ambient="lantern" data-gsap-owned aria-hidden="true">
+      <div className="hanging-lantern" data-ambient="lantern" aria-hidden="true">
         <i />
       </div>
-      <div className="nautical-border" data-scene-part="nautical-border" data-gsap-owned aria-hidden="true" />
+      <div
+        ref={bindNauticalBorder}
+        className="nautical-border"
+        data-scene-part="nautical-border"
+        data-runtime-boundary="gsap"
+        aria-hidden="true"
+      />
 
-      <section className="harbor-content gateway-content" aria-labelledby="gateway-title">
-        <p className="eyebrow" data-scene-part="arrival-copy" data-gsap-owned>
+      <section className="harbor-content gateway-content" aria-labelledby={gatewayTitleId}>
+        <p ref={bindArrivalCopyEyebrow} className="eyebrow" data-scene-part="arrival-copy" data-runtime-boundary="gsap">
           The chart table is ready
         </p>
-        <h1 id="gateway-title" data-scene-part="title" data-gsap-owned>
+        <h1 ref={bindTitle} id={gatewayTitleId} data-scene-part="title" data-runtime-boundary="gsap">
           Choose your place in the Tale
         </h1>
-        <p data-scene-part="arrival-copy" data-gsap-owned>
+        <p ref={bindArrivalCopyBody} data-scene-part="arrival-copy" data-runtime-boundary="gsap">
           Create, host, join, and revisit interactive stories built for many kinds of groups and occasions. Choose a
           role to enter the part of the experience meant for you.
         </p>
-        <div className="gateway-primary-actions" data-scene-part="arrival-action" data-gsap-owned>
+        <div
+          ref={bindArrivalActionPrimary}
+          className="gateway-primary-actions"
+          data-scene-part="arrival-action"
+          data-runtime-boundary="gsap"
+        >
           <Link className="brass-button" href="/tales">
             Explore Tall Tales
           </Link>
@@ -221,7 +376,7 @@ export function HarborLanding() {
           </Link>
         </div>
         <div className="landing-controls" aria-label="Gateway presentation controls">
-          <button onClick={replay} disabled={snapshot.isPlaying}>
+          <button onClick={replay} disabled={snapshot.isPlaying || !targetsReady || !sceneHost}>
             Replay gateway
           </button>
           {snapshot.isPlaying && snapshot.label !== "dark-sea" && (
@@ -232,18 +387,20 @@ export function HarborLanding() {
           </button>
         </div>
         <div
+          ref={bindArrivalActionRoles}
           className="role-object-grid"
           aria-label="Tall Tale roles"
           aria-live="polite"
           data-scene-part="arrival-action"
-          data-gsap-owned
+          data-runtime-boundary="gsap"
         >
           {roles.map((role) => {
             const next = continuation(role);
             const current = status?.[role.id];
+            const descriptionId = `${gatewayTitleId}-${role.id}`;
             return (
               <motion.article key={role.id} className={`role-object-card role-${role.id}`} {...pressable(mode)}>
-                <div className={`role-object ${role.object}`} data-role-object data-gsap-owned aria-hidden="true">
+                <div className={`role-object ${role.object}`} data-role-object aria-hidden="true">
                   <i />
                   <b />
                   <span />
@@ -260,10 +417,10 @@ export function HarborLanding() {
                 {role.id === "creator" && status?.creator.authenticated && status.creator.recentDraft && (
                   <small>Recent draft: {status.creator.recentDraft.title}</small>
                 )}
-                <Link className="role-entry" href={next.href} aria-describedby={`role-${role.id}-description`}>
+                <Link className="role-entry" href={next.href} aria-describedby={descriptionId}>
                   {next.label}
                 </Link>
-                <span id={`role-${role.id}-description`} className="sr-only">
+                <span id={descriptionId} className="sr-only">
                   {role.copy}
                 </span>
               </motion.article>
@@ -274,10 +431,10 @@ export function HarborLanding() {
           Have an invitation code?
         </Link>
       </section>
-      <section className="gateway-explainer" aria-labelledby="tall-tale-explainer-title">
+      <section className="gateway-explainer" aria-labelledby={explainerTitleId}>
         <header>
           <p className="eyebrow">A story your group can step into</p>
-          <h2 id="tall-tale-explainer-title">What is a Tall Tale?</h2>
+          <h2 id={explainerTitleId}>What is a Tall Tale?</h2>
           <p>
             A Tall Tale is a guided interactive experience made of chapters, prompts, choices, activities, and reveals.
             It can support a game night, celebration, trip, reunion, date, family adventure, or an entirely custom
@@ -323,6 +480,6 @@ export function HarborLanding() {
         </div>
       </section>
       <AnimationTestButton />
-    </main>
+    </>
   );
 }

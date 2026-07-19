@@ -242,6 +242,36 @@ describe("presentation telemetry projection", () => {
       ),
     ).toBeNull();
   });
+
+  it("projects only bounded Phase 2 finalization fields and accepts fallback cleanup", () => {
+    const event = toPresentationTelemetryEvent(
+      receipt({
+        cleanup: "completed-with-fallback",
+        finalization: {
+          finalStatePolicy: "reconcile-then-revert",
+          finalStateCommitted: true,
+          handoffTargetId: "external-route-target",
+          handoffStarted: true,
+          handoffCompleted: true,
+          handoffFailure: "handoff-runtime-failed",
+          cleanupStarted: true,
+          cleanupCompleted: true,
+          cleanupResult: "completed-with-fallback",
+        },
+      }),
+    );
+
+    expect(event).toMatchObject({
+      cleanup: "completed-with-fallback",
+      finalization: {
+        finalStatePolicy: "reconcile-then-revert",
+        finalStateCommitted: true,
+        handoffTargetId: "external-route-target",
+        handoffFailure: "handoff-runtime-failed",
+        cleanupResult: "completed-with-fallback",
+      },
+    });
+  });
 });
 
 describe("presentation telemetry recorder", () => {

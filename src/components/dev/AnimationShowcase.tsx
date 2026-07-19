@@ -3,18 +3,29 @@
 /* eslint-disable @next/next/no-img-element -- The lab previews original SVG assets without image optimization side effects. */
 
 import Link from "next/link";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
-import { sceneNames, type AnimationSceneName, type PresentationReceipt } from "@/animation/core/animation-types";
+import {
+  sceneNames,
+  type AnimatedProperty,
+  type AnimationRuntimeOwner,
+  type AnimationSceneName,
+  type PresentationReceipt,
+  type SceneHostKind,
+} from "@/animation/core/animation-types";
 import { resetAnimationMetrics } from "@/animation/core/metrics";
 import { lottieAssets } from "@/animation/assets/lottie-contracts";
 import { riveAssets } from "@/animation/assets/rive-contracts";
 import { sceneContracts } from "@/animation/director/scene-registry";
 import { useAnimationDirector } from "@/animation/director/useAnimationDirector";
+import { SceneHost } from "@/animation/hosts/SceneHost";
+import { useOptionalSceneHost } from "@/animation/hosts/SceneHostContext";
+import type { ExternalSceneTargetHandle, SceneHostHandle, SceneTargetHandle } from "@/animation/hosts/scene-host-types";
 import { useMotionMode } from "@/animation/motion/useMotionMode";
 import { AnimationControls } from "@/components/animation/AnimationControls";
 import { LottieEffect, type LottieEffectHandle } from "@/components/animation/LottieEffect";
 import { PageFlipBook, type FlipBookPage, type PageFlipBookHandle } from "@/components/animation/PageFlipBook";
+import type { PageFlipBoundarySnapshot } from "@/components/animation/pageflip-boundary";
 import { RiveStatefulObject, type RiveRuntimeInput, type RiveSignal } from "@/components/animation/RiveStatefulObject";
 import { AnimationMetrics } from "./AnimationMetrics";
 
@@ -25,6 +36,7 @@ export type ShowcaseDemo = {
   scene: AnimationSceneName;
   libraries: Library[];
   operation?: "success" | "failure";
+  execution?: "runtime-only" | "non-executable";
 };
 
 export const showcaseDemos: ShowcaseDemo[] = [
@@ -69,13 +81,21 @@ export const showcaseDemos: ShowcaseDemo[] = [
     label: "Journal cover opening",
     scene: "journal-open",
     libraries: ["gsap", "pageflip", "rive"],
+    execution: "non-executable",
   },
-  { id: "manual-flip", label: "Manual page flip", scene: "manual-page-flip", libraries: ["pageflip"] },
+  {
+    id: "manual-flip",
+    label: "Manual page flip",
+    scene: "manual-page-flip",
+    libraries: ["pageflip"],
+    execution: "runtime-only",
+  },
   {
     id: "programmatic-flip",
     label: "Programmatic page flip",
     scene: "programmatic-page-flip",
     libraries: ["pageflip", "gsap"],
+    execution: "runtime-only",
   },
   { id: "heading", label: "Live chapter-heading writing", scene: "chapter-heading", libraries: ["gsap"] },
   { id: "prose", label: "Long prose ink reveal", scene: "prose-ink", libraries: ["gsap", "lottie"] },
@@ -127,6 +147,7 @@ export const showcaseDemos: ShowcaseDemo[] = [
     label: "StPageFlip portrait and landscape",
     scene: "programmatic-page-flip",
     libraries: ["pageflip"],
+    execution: "runtime-only",
   },
   {
     id: "reduced",
@@ -143,8 +164,104 @@ export const showcaseCoverage = {
   registeredScenes: sceneNames.length,
 };
 
-const showcaseHostId = "development-animation-showcase";
-const showcaseHostKind = "development-showcase";
+const showcaseDiagnosticHostId = "development-animation-showcase";
+const showcaseDiagnosticHostKind = "development-showcase";
+
+type ShowcaseTargetRequirement = Readonly<{
+  targetKey: string;
+  part: string;
+  domPart: string;
+  required: boolean;
+  ownerHint?: AnimationRuntimeOwner;
+  allowedProperties: readonly AnimatedProperty[];
+  externalKey?: string;
+}>;
+
+type ShowcaseSceneRuntime = Readonly<{
+  host: SceneHostHandle;
+  root: HTMLElement;
+  targets: ReadonlyMap<string, SceneTargetHandle>;
+  requirements: readonly ShowcaseTargetRequirement[];
+}>;
+
+type ShowcaseHostRequest = Readonly<{
+  nonce: number;
+  scene: AnimationSceneName;
+  kind: SceneHostKind;
+}>;
+
+const legacyAnimatedProperties = new Set<AnimatedProperty>([
+  "transform",
+  "opacity",
+  "clip-path",
+  "filter",
+  "stroke-dasharray",
+  "stroke-dashoffset",
+  "layout",
+  "visibility",
+]);
+
+const fixturePartAliases: Readonly<Record<string, string>> = Object.freeze({
+  "map-marker": "map-marker-new",
+});
+
+function hostKindForScene(scene: AnimationSceneName): SceneHostKind {
+  const contract = sceneContracts[scene];
+  if (contract.version === 1) return contract.expectedHostKind as SceneHostKind;
+  const preference: readonly SceneHostKind[] = [
+    "player-progression",
+    "gateway",
+    "player-section-enhancement",
+    "journal-opening",
+    "quartermaster-command",
+    "access",
+  ];
+  return preference.find((kind) => contract.expectedHostKinds.includes(kind)) ?? contract.expectedHostKinds[0];
+}
+
+function targetRequirementsForScene(scene: AnimationSceneName): readonly ShowcaseTargetRequirement[] {
+  const contract = sceneContracts[scene];
+  if (contract.version === 2) {
+    return contract.targets.map((target) => ({
+      targetKey: target.key,
+      part: target.part,
+      domPart: fixturePartAliases[target.part] ?? target.part,
+      required: target.required,
+      ...(target.owner ? { ownerHint: target.owner } : {}),
+      allowedProperties: target.properties,
+      ...(target.source.kind === "external" ? { externalKey: target.source.handleKey } : {}),
+    }));
+  }
+  return [...contract.requiredTargets, ...contract.optionalTargets].map((target, index) => ({
+    targetKey: `legacy:${target.part}:${index}`,
+    part: target.part,
+    domPart: fixturePartAliases[target.part] ?? target.part,
+    required: target.required,
+    ownerHint: target.owner,
+    allowedProperties: target.properties.flatMap((property) =>
+      legacyAnimatedProperties.has(property as AnimatedProperty) ? [property as AnimatedProperty] : [],
+    ),
+  }));
+}
+
+function exportShowcaseTargets(runtime: ShowcaseSceneRuntime) {
+  const targets: Record<string, ExternalSceneTargetHandle> = {};
+  const exported: ExternalSceneTargetHandle[] = [];
+  for (const requirement of runtime.requirements) {
+    if (!requirement.externalKey) continue;
+    const target = runtime.targets.get(requirement.targetKey);
+    if (!target) continue;
+    const handle = runtime.host.exportTarget({
+      target,
+      destinationHostId: runtime.host.hostId,
+      allowedProperties: requirement.allowedProperties,
+      lifetime: "scene",
+    });
+    targets[requirement.externalKey] = handle;
+    exported.push(handle);
+  }
+  return Object.freeze({ targets: Object.freeze(targets), exported: Object.freeze(exported) });
+}
 
 export function showcaseDemoLabel(demo: ShowcaseDemo) {
   return `${demo.label} — ${sceneContracts[demo.scene].reachability}`;
@@ -162,7 +279,6 @@ export function summarizeShowcaseReceipt(receipt: PresentationReceipt<unknown>) 
 const trailer: AnimationSceneName[] = [
   "first-arrival",
   "player-access",
-  "journal-open",
   "chapter-release",
   "map-reveal",
   "route-draw",
@@ -225,6 +341,13 @@ export function AnimationShowcase() {
   const lottie = useRef<LottieEffectHandle>(null);
   const book = useRef<PageFlipBookHandle>(null);
   const trailerCancelled = useRef(false);
+  const hostNonce = useRef(0);
+  const runtimeWaiter = useRef<{
+    nonce: number;
+    resolve: (runtime: ShowcaseSceneRuntime) => void;
+    reject: (cause: Error) => void;
+    timeout: ReturnType<typeof setTimeout>;
+  } | null>(null);
   const { director, snapshot } = useAnimationDirector();
   const { mode, setMode } = useMotionMode();
   const [selected, setSelected] = useState("arrival");
@@ -236,7 +359,14 @@ export function AnimationShowcase() {
   const [trailerPlaying, setTrailerPlaying] = useState(false);
   const [trailerCard, setTrailerCard] = useState("Animation architecture ready");
   const [runtimeEpoch, setRuntimeEpoch] = useState(0);
+  const [hostRequest, setHostRequest] = useState<ShowcaseHostRequest>(() => ({
+    nonce: 0,
+    scene: "first-arrival",
+    kind: hostKindForScene("first-arrival"),
+  }));
+  const [activeHostIdentity, setActiveHostIdentity] = useState<Readonly<{ id: string; kind: string }> | null>(null);
   const [latestReceipt, setLatestReceipt] = useState<PresentationReceipt<unknown> | null>(null);
+  const [pageFlipBoundary, setPageFlipBoundary] = useState<PageFlipBoundarySnapshot | null>(null);
   const current = showcaseDemos.find((demo) => demo.id === selected) ?? showcaseDemos[0];
   const visibleDemos = useMemo(
     () => (library === "all" ? showcaseDemos : showcaseDemos.filter((demo) => demo.libraries.includes(library))),
@@ -245,17 +375,75 @@ export function AnimationShowcase() {
   const currentContract = sceneContracts[current.scene];
   const receiptCounts = latestReceipt ? summarizeShowcaseReceipt(latestReceipt) : null;
 
-  const play = useCallback(
-    async (demo = current) => {
-      if (!root.current) return;
+  const handleRuntimeChange = useCallback((nonce: number, runtime: ShowcaseSceneRuntime | null) => {
+    if (!runtime) {
+      setActiveHostIdentity(null);
+      return;
+    }
+    setActiveHostIdentity({ id: runtime.host.hostId, kind: runtime.host.kind });
+    const waiter = runtimeWaiter.current;
+    if (!waiter || waiter.nonce !== nonce) return;
+    clearTimeout(waiter.timeout);
+    runtimeWaiter.current = null;
+    waiter.resolve(runtime);
+  }, []);
+
+  const acquireRuntime = useCallback((scene: AnimationSceneName) => {
+    const nonce = ++hostNonce.current;
+    const previous = runtimeWaiter.current;
+    if (previous) {
+      clearTimeout(previous.timeout);
+      previous.reject(new Error("Showcase host request was superseded."));
+    }
+    const promise = new Promise<ShowcaseSceneRuntime>((resolve, reject) => {
+      runtimeWaiter.current = {
+        nonce,
+        resolve,
+        reject,
+        timeout: setTimeout(() => {
+          if (runtimeWaiter.current?.nonce !== nonce) return;
+          runtimeWaiter.current = null;
+          reject(new Error(`Showcase host did not become ready for ${scene}.`));
+        }, 2_000),
+      };
+    });
+    setHostRequest({ nonce, scene, kind: hostKindForScene(scene) });
+    return promise;
+  }, []);
+
+  useEffect(
+    () => () => {
+      const waiter = runtimeWaiter.current;
+      if (!waiter) return;
+      clearTimeout(waiter.timeout);
+      waiter.reject(new Error("Showcase unmounted before its scene host became ready."));
+      runtimeWaiter.current = null;
+    },
+    [],
+  );
+
+  const executeScene = useCallback(
+    async (demo: ShowcaseDemo, eventOrActionId: string) => {
+      const runtime = await acquireRuntime(demo.scene);
+      const external = exportShowcaseTargets(runtime);
       try {
-        const receipt = await director.play(demo.scene, {
-          root: root.current,
+        return await director.play(demo.scene, {
+          root: runtime.root,
+          sceneHost: runtime.host,
+          hostId: runtime.host.hostId,
+          hostKind: runtime.host.kind,
+          externalTargets: external.targets,
           queue: false,
-          hostId: showcaseHostId,
-          hostKind: showcaseHostKind,
           requestSource: "development",
-          eventOrActionId: `development-showcase:${demo.id}`,
+          eventOrActionId,
+          finalStateRuntime: {
+            commitFinalState: () => undefined,
+            reconcileFinalState: () => undefined,
+            renderStaticFallback: () => undefined,
+            holdSafePose: () => undefined,
+            verifyReadableState: () => runtime.root.isConnected,
+            cleanup: () => undefined,
+          },
           operation: demo.operation
             ? async () => {
                 if (demo.operation === "failure") throw new Error("Deterministic showcase rejection");
@@ -263,14 +451,35 @@ export function AnimationShowcase() {
               }
             : undefined,
         });
+      } finally {
+        external.exported.forEach((handle) => handle.revoke());
+      }
+    },
+    [acquireRuntime, director],
+  );
+
+  const play = useCallback(
+    async (demo = current) => {
+      if (!root.current) return;
+      if (demo.execution === "non-executable") {
+        setLatestReceipt(null);
+        return;
+      }
+      if (demo.execution === "runtime-only") {
+        setLatestReceipt(null);
+        if (demo.id === "programmatic-flip") book.current?.flipTo(2);
+        else book.current?.next();
+        return;
+      }
+      try {
+        const receipt = await executeScene(demo, `development-showcase:${demo.id}`);
         setLatestReceipt(receipt);
-        if (demo.scene === "programmatic-page-flip") book.current?.flipTo(2);
       } catch (cause) {
         if (demo.operation !== "failure")
           setErrors((items) => [...items, cause instanceof Error ? cause.message : "Unknown showcase error"]);
       }
     },
-    [current, director],
+    [current, executeScene],
   );
 
   const playTrailer = useCallback(async () => {
@@ -283,16 +492,16 @@ export function AnimationShowcase() {
       for (const scene of trailer) {
         if (trailerCancelled.current || !root.current) break;
         setTrailerCard(scene.replaceAll("-", " "));
-        const operation = scene === "player-access" ? async () => ({ safe: true }) : undefined;
-        const receipt = await director.play(scene, {
-          root: root.current,
-          operation,
-          queue: false,
-          hostId: showcaseHostId,
-          hostKind: showcaseHostKind,
-          requestSource: "development",
-          eventOrActionId: `development-trailer:${scene}`,
-        });
+        const demo = showcaseDemos.find(
+          (candidate) => candidate.scene === scene && candidate.operation !== "failure",
+        ) ?? {
+          id: `trailer-${scene}`,
+          label: scene,
+          scene,
+          libraries: ["gsap" as const],
+        };
+        const trailerDemo = scene === "player-access" ? { ...demo, operation: "success" as const } : demo;
+        const receipt = await executeScene(trailerDemo, `development-trailer:${scene}`);
         setLatestReceipt(receipt);
       }
       setTrailerCard("GSAP · StPageFlip · Motion · Rive · Lottie");
@@ -303,7 +512,7 @@ export function AnimationShowcase() {
       director.setSpeed(originalSpeed);
       setTrailerPlaying(false);
     }
-  }, [director, mode, snapshot.speed, trailerPlaying]);
+  }, [director, executeScene, mode, snapshot.speed, trailerPlaying]);
 
   useEffect(() => {
     const keydown = (event: KeyboardEvent) => {
@@ -336,6 +545,7 @@ export function AnimationShowcase() {
     setTrailerPlaying(false);
     setErrors([]);
     setLatestReceipt(null);
+    setPageFlipBoundary(null);
     setAssetStatus({});
     setTrailerCard("Animation architecture ready");
     setRuntimeEpoch((value) => value + 1);
@@ -349,8 +559,10 @@ export function AnimationShowcase() {
       ref={root}
       className={`animation-showcase stage-${snapshot.label}`}
       data-motion-mode={mode}
-      data-scene-host-id={showcaseHostId}
-      data-scene-host-kind={showcaseHostKind}
+      data-scene-host-id={showcaseDiagnosticHostId}
+      data-scene-host-kind={showcaseDiagnosticHostKind}
+      data-active-scene-host-id={activeHostIdentity?.id ?? "pending"}
+      data-active-scene-host-kind={activeHostIdentity?.kind ?? "pending"}
       data-harness-only="true"
     >
       <header className="showcase-header">
@@ -424,7 +636,7 @@ export function AnimationShowcase() {
             </select>
           </label>
           <button className="play-scene" onClick={() => void play()}>
-            Play selected scene
+            {current.execution === "non-executable" ? "Show replacement" : "Play selected scene"}
           </button>
           <AnimationControls mode={mode} setMode={setMode} />
           <div className="keyboard-help">
@@ -465,14 +677,54 @@ export function AnimationShowcase() {
               <p>
                 Synthetic development host; not production proof.
                 {currentContract.replacedBy ? ` Replaced by ${currentContract.replacedBy}.` : ""}
+                {current.execution === "runtime-only"
+                  ? " This row invokes the real StPageFlip runtime and never plays the deprecated scene contract."
+                  : ""}
+                {current.execution === "non-executable"
+                  ? " This deprecated row is non-executable; the bounded Journal opening state machine is authoritative."
+                  : ""}
               </p>
             </motion.div>
           </AnimatePresence>
-          <DemoStage mode={mode} />
+          <ShowcaseSceneHost
+            key={`${runtimeEpoch}:${hostRequest.nonce}`}
+            request={hostRequest}
+            mode={mode}
+            onRuntimeChange={handleRuntimeChange}
+          />
           <div className="library-lab">
             <section>
               <h2>StPageFlip</h2>
-              <PageFlipBook ref={book} pages={bookPages} mode={mode} className="showcase-book" />
+              <PageFlipBook
+                ref={book}
+                pages={bookPages}
+                mode={mode}
+                bookId="animation-showcase-pageflip"
+                className="showcase-book"
+                onBoundaryChange={setPageFlipBoundary}
+              />
+              <dl aria-label="StPageFlip runtime boundary">
+                <div>
+                  <dt>Lifecycle</dt>
+                  <dd>{pageFlipBoundary?.lifecycle ?? (mode === "reduced" ? "static-reader" : "initializing")}</dd>
+                </div>
+                <div>
+                  <dt>Runtime generation</dt>
+                  <dd>{pageFlipBoundary?.runtimeGeneration ?? 0}</dd>
+                </div>
+                <div>
+                  <dt>Clone generation</dt>
+                  <dd>{pageFlipBoundary?.cloneGeneration ?? 0}</dd>
+                </div>
+                <div>
+                  <dt>Current logical page</dt>
+                  <dd>
+                    {pageFlipBoundary
+                      ? `${pageFlipBoundary.currentPage + 1} (${pageFlipBoundary.orientation})`
+                      : "none"}
+                  </dd>
+                </div>
+              </dl>
               <div className="inline-controls">
                 <button onClick={() => book.current?.previous()}>Previous</button>
                 <button onClick={() => book.current?.next()}>Next</button>
@@ -564,6 +816,10 @@ export function AnimationShowcase() {
                     <dd>{latestReceipt.sceneName}</dd>
                   </div>
                   <div>
+                    <dt>Scene instance</dt>
+                    <dd>{latestReceipt.sceneInstanceId}</dd>
+                  </div>
+                  <div>
                     <dt>Outcome</dt>
                     <dd>{latestReceipt.outcome}</dd>
                   </div>
@@ -588,6 +844,20 @@ export function AnimationShowcase() {
                   <div>
                     <dt>Duplicates</dt>
                     <dd>{receiptCounts.duplicates}</dd>
+                  </div>
+                  <div>
+                    <dt>Target failures</dt>
+                    <dd>
+                      {latestReceipt.targetReport.failures.length
+                        ? latestReceipt.targetReport.failures
+                            .map((failure) => `${failure.part}:${failure.code}`)
+                            .join(", ")
+                        : "none"}
+                    </dd>
+                  </div>
+                  <div>
+                    <dt>Fallback</dt>
+                    <dd>{latestReceipt.fallbackUsed ?? "none"}</dd>
                   </div>
                   <div>
                     <dt>Acknowledgment decision</dt>
@@ -622,9 +892,147 @@ export function AnimationShowcase() {
   );
 }
 
-function DemoStage({ mode }: { mode: ReturnType<typeof useMotionMode>["mode"] }) {
+function ShowcaseSceneHost({
+  request,
+  mode,
+  onRuntimeChange,
+}: {
+  request: ShowcaseHostRequest;
+  mode: ReturnType<typeof useMotionMode>["mode"];
+  onRuntimeChange: (nonce: number, runtime: ShowcaseSceneRuntime | null) => void;
+}) {
+  const handleRuntimeChange = useCallback(
+    (runtime: ShowcaseSceneRuntime | null) => onRuntimeChange(request.nonce, runtime),
+    [onRuntimeChange, request.nonce],
+  );
   return (
-    <div className="demo-physical-stage">
+    <SceneHost
+      kind={request.kind}
+      hostKey={`development-showcase:${request.scene}:${request.nonce}`}
+      className="showcase-scene-host"
+      data-showcase-scene={request.scene}
+      data-showcase-host-instance={request.nonce}
+    >
+      <DemoStage scene={request.scene} mode={mode} onRuntimeChange={handleRuntimeChange} />
+    </SceneHost>
+  );
+}
+
+const authoredFixtureParts = new Set([
+  "sky",
+  "stars",
+  "moon",
+  "horizon",
+  "ocean",
+  "fog-back",
+  "fog-front",
+  "ship",
+  "title",
+  "emblem",
+  "arrival-copy",
+  "arrival-action",
+  "nautical-border",
+  "invitation",
+  "ribbon",
+  "seal",
+  "seal-crack",
+  "seal-fragment",
+  "invitation-ink",
+  "journal-stage",
+  "sealed-parchment",
+  "ink-heading",
+  "ink-story",
+  "ink-objective",
+  "ink-riddle",
+  "page-light",
+  "quill",
+  "quill-path",
+  "route-motion-path",
+  "route-path",
+  "artifact-connection-path",
+  "red-thread",
+  "finale-light-path",
+  "map-fog",
+  "map-marker-new",
+  "ship-token",
+  "artifact-reveal",
+  "artifact-slot-target",
+  "artifact-light",
+  "artifact-engraving",
+  "quest-note-new",
+  "quest-stamp",
+  "log-entry-new",
+  "log-symbol-new",
+  "finale-ring-outer",
+  "finale-ring-inner",
+  "workspace-light",
+  "lantern",
+  "blank-page",
+  "solved-stamp",
+  "undo-mark",
+]);
+
+function DemoStage({
+  scene,
+  mode,
+  onRuntimeChange,
+}: {
+  scene: AnimationSceneName;
+  mode: ReturnType<typeof useMotionMode>["mode"];
+  onRuntimeChange: (runtime: ShowcaseSceneRuntime | null) => void;
+}) {
+  const host = useOptionalSceneHost();
+  const root = useRef<HTMLDivElement>(null);
+  const requirements = useMemo(() => targetRequirementsForScene(scene), [scene]);
+  const supplementalParts = useMemo(
+    () =>
+      [...new Set(requirements.map((requirement) => requirement.domPart))].filter(
+        (part) => !authoredFixtureParts.has(part),
+      ),
+    [requirements],
+  );
+
+  useLayoutEffect(() => {
+    const stage = root.current;
+    if (!host || !stage) return;
+    const handles = new Map<string, SceneTargetHandle>();
+    try {
+      for (const requirement of requirements) {
+        const element = stage.querySelector(`[data-scene-part="${requirement.domPart}"]`);
+        if (!element) {
+          if (requirement.required) throw new Error(`Required showcase fixture is missing: ${requirement.domPart}`);
+          continue;
+        }
+        const handle = host.registerTarget({
+          targetKey: requirement.targetKey,
+          part: requirement.part,
+          element,
+          ...(requirement.ownerHint ? { ownerHint: requirement.ownerHint } : {}),
+          allowedProperties: requirement.allowedProperties,
+        });
+        handles.set(requirement.targetKey, handle);
+      }
+      const missingRequired = requirements.filter(
+        (requirement) => requirement.required && !handles.has(requirement.targetKey),
+      );
+      if (missingRequired.length) {
+        throw new Error(
+          `Required showcase targets did not register: ${missingRequired.map((item) => item.targetKey).join(", ")}`,
+        );
+      }
+      onRuntimeChange(Object.freeze({ host, root: stage, targets: handles, requirements }));
+    } catch (cause) {
+      [...handles.values()].reverse().forEach((handle) => handle.release());
+      throw cause;
+    }
+    return () => {
+      onRuntimeChange(null);
+      [...handles.values()].reverse().forEach((handle) => handle.release());
+    };
+  }, [host, onRuntimeChange, requirements]);
+
+  return (
+    <div ref={root} className="demo-physical-stage">
       <div className="demo-sky" data-scene-part="sky" data-gsap-owned>
         <i data-scene-part="stars" />
       </div>
@@ -683,8 +1091,8 @@ function DemoStage({ mode }: { mode: ReturnType<typeof useMotionMode>["mode"] })
         </div>
       </div>
       <svg className="demo-route" viewBox="0 0 520 250" aria-hidden="true">
-        <path data-quill-path d="M30 170C150 30 330 30 490 170" />
-        <path data-route-motion-path d="M30 170C150 30 330 30 490 170" />
+        <path data-scene-part="quill-path" data-quill-path d="M30 170C150 30 330 30 490 170" />
+        <path data-scene-part="route-motion-path" data-route-motion-path d="M30 170C150 30 330 30 490 170" />
         <path data-scene-part="route-path" data-gsap-owned d="M30 170C150 30 330 30 490 170" />
         <path data-scene-part="artifact-connection-path" data-gsap-owned d="M60 90Q260 230 460 90" />
         <path data-scene-part="red-thread" data-gsap-owned d="M40 210C170 60 330 60 480 200" />
@@ -734,6 +1142,17 @@ function DemoStage({ mode }: { mode: ReturnType<typeof useMotionMode>["mode"] })
           ↶
         </div>
       </div>
+      {supplementalParts.map((part) => (
+        <span
+          key={part}
+          data-scene-part={part}
+          data-gsap-owned
+          aria-hidden="true"
+          style={{ display: "block", width: 1, height: 1, overflow: "hidden" }}
+        >
+          {part}
+        </span>
+      ))}
       <LottieEffect
         asset={lottieAssets.moonlitWaves}
         mode={mode}

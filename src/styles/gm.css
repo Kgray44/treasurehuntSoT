@@ -12,6 +12,15 @@
   perspective: 1800px;
 }
 
+.quartermaster-login-cinematic-boundary {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  min-width: 1px;
+  min-height: 1px;
+  overflow: hidden;
+}
+
 .chart-room-light,
 .login-door-dust {
   position: absolute;
@@ -98,6 +107,20 @@
   box-shadow:
     var(--shadow-deep),
     inset 14px 0 18px rgba(82, 52, 28, 0.15);
+}
+
+.login-ledger-cinematic {
+  position: absolute;
+  z-index: 2;
+  top: 12%;
+  right: clamp(1rem, 4vw, 5rem);
+  bottom: 12%;
+  width: min(44vw, 560px);
+  min-height: 12rem;
+  border: 1px solid rgba(218, 181, 105, 0.24);
+  border-radius: 8px 22px 22px 8px;
+  background: linear-gradient(100deg, rgba(186, 165, 116, 0.08), rgba(240, 225, 188, 0.03));
+  box-shadow: inset 14px 0 18px rgba(82, 52, 28, 0.08);
 }
 
 .login-ledger h1 {
@@ -464,6 +487,13 @@
   .quartermaster-login {
     align-items: start;
     padding-top: 5rem;
+  }
+  .login-ledger-cinematic {
+    top: 5rem;
+    right: 1rem;
+    bottom: 3rem;
+    left: 1rem;
+    width: auto;
   }
   .cabin-door {
     inset: 0;

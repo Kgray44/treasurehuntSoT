@@ -2,6 +2,14 @@
 
 The cinematic layer is an orchestration system, not a set of component timers. `AnimationProvider` owns one `AnimationDirector`; every meaningful scene is registered by name and built as a GSAP timeline inside a scoped `gsap.context`. Motion handles component presence and direct interaction, StPageFlip handles the journal's physical page surface, Rive owns stateful vector objects, and Lottie owns ambient or illustrative loops.
 
+## Phase 3 Player progression orchestration
+
+`ProgressionPresentationController` is the compatibility Player adapter above the Director. Its pure deterministic queue admits immutable Player-safe requests, deduplicates event identity, rejects stale work, and orders authoritative live/reconnect requests before replay. Sequence, policy priority, and stable request identity break ties. Replay always receives a fresh playback identity, stays permanently acknowledgment-ineligible, and may be interrupted by authoritative work outside a semantic commit boundary.
+
+One persistent `SceneHost kind="player-progression"` supplies the global registered targets. Unrelated event-family target layers stay imperceptible and ineligible while the selected event family is active. A relevant section may contribute one exact registered handle only after the global semantic commit; the local handoff is optional, nonblocking, owns no acknowledgment or fallback, and is revoked on target/status cleanup. Hidden or unrelated sections are never mounted to manufacture targets.
+
+The wrapper receipt is intentionally stricter than visual completion. Acknowledgment requires an authoritative source, a successful readable outcome, the Director's acknowledgment permission, final-state reconciliation or verified fallback, and successful restoration. `finalStateRuntime` commits or reconciles the settled UI, verifies the readable heading/summary, renders fallback on target/runtime failure, and performs idempotent cleanup. Skip converges through that same boundary rather than bypassing it.
+
 ## Server-synchronized sequence
 
 For an authenticated mutation, the director starts the real request immediately and plays only the non-authoritative opening while the request is pending. A slow request enters a bounded idle loop. Success content cannot start until the server accepts the mutation. A rejection runs the scene's failure branch and leaves the existing public snapshot in place.
@@ -27,7 +35,7 @@ sequenceDiagram
   end
 ```
 
-The player consumes one SSE connection. Events are sorted through one promise queue, mapped to a registered scene, presented, acknowledged, and then reconciled from a fresh server-filtered snapshot. Navigation, page turns, and decorative loops do not create additional event streams.
+The player consumes one SSE connection. Events are sorted through one promise queue, mapped to a registered scene, presented, receipt-checked, conditionally acknowledged, and then reconciled from a fresh server-filtered snapshot. Navigation, page turns, and decorative loops do not create additional event streams.
 
 ## Lifecycle and control contract
 
@@ -52,3 +60,5 @@ Add the discriminated `kind` and safe fields to `JournalPage` in `src/animation/
 ## Failure boundaries
 
 Rive, Lottie, and StPageFlip are dynamically imported. Each has a local SVG or React fallback. Failed visual assets are recorded for the development metrics panel but do not block authentication, progression, reading, navigation, or GM commands. No animation failure is allowed to roll back a committed server transaction.
+
+PageFlip exposes `turn-start`, `turn-commit`, `turn-settle`, `turn-cancel`, and `turn-failed` with book/mount identity and current boundary generation. Queued turns rebase against the current page and generation when dispatched; a same-page request settles as a truthful cancel/no-op. `forceReadableFallback(reason)` abandons the failed runtime, preserves the current semantic page and focus where possible, and makes the static reader ready. Journal interactivity is not declared until the opening policy and PageFlip/static readiness produce a verified `JOURNAL_READY` receipt.

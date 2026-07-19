@@ -12,8 +12,10 @@ function unavailable() {
 
 export async function GET() {
   const nonceHash = process.env.FOREVER_VALIDATION_NONCE_HASH;
+  const productionIdentityEnabled =
+    process.env.NODE_ENV !== "production" || process.env.FOREVER_VALIDATION_PRODUCTION_IDENTITY === "1";
   if (
-    process.env.NODE_ENV === "production" ||
+    !productionIdentityEnabled ||
     process.env.FOREVER_VALIDATION_ISOLATION !== "1" ||
     !nonceHash ||
     !nonceHashPattern.test(nonceHash)

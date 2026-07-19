@@ -1,16 +1,15 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { flushSync } from "react-dom";
 import { AnimatePresence, motion } from "motion/react";
-import type {
-  AnimationSceneName,
-  JournalPhaseOutcome,
-  PresentationOutcome,
-  SceneRequestSource,
-} from "@/animation/core/animation-types";
+import type { AnimatedProperty, JournalPhaseOutcome, PresentationReceipt } from "@/animation/core/animation-types";
 import { AudioCuePlayer, type AudioCueName } from "@/animation/core/audio-cues";
 import { useAnimationDirector } from "@/animation/director/useAnimationDirector";
+import { sceneContracts } from "@/animation/director/scene-registry";
+import { SceneHost, useSceneTargetRegistration } from "@/animation/hosts/SceneHost";
+import { useOptionalSceneHost } from "@/animation/hosts/SceneHostContext";
+import type { ExternalSceneTargetHandle, SceneHostHandle, SceneTargetHandle } from "@/animation/hosts/scene-host-types";
 import { sectionVariants } from "@/animation/motion/variants";
 import { useMotionMode } from "@/animation/motion/useMotionMode";
 import {
@@ -19,73 +18,185 @@ import {
   type JournalOpeningPhase,
 } from "@/animation/journal/opening-machine";
 import type { ClientProgressEvent, PublicSnapshot, ReplayablePresentation } from "@/domain/story";
+import type { RiveRuntimeStatus } from "@/components/animation/RiveStatefulObject";
 import { AnimationTestButton } from "@/components/dev/AnimationTestButton";
 import {
-  canUseReadableChapterFallback,
-  decideChapterPresentation,
   journalPhaseDisposition,
-  presentationDiagnostic,
   receiptValidatesAudio,
   shouldSuppressChapterViewed,
   toChapterReleaseClientEvent,
 } from "./presentation-policy";
-import { ArtifactInspection } from "./workspace/ArtifactInspection";
-import { CompanionHeader } from "./workspace/CompanionHeader";
-import { CompanionNavigation, MobileNavigation } from "./workspace/CompanionNavigation";
-import { FinaleChamber } from "./workspace/FinaleChamber";
-import { JournalWorkspace } from "./workspace/JournalWorkspace";
+import { ArtifactInspection, type ArtifactInspectionTargetHandles } from "./workspace/ArtifactInspection";
+import { CompanionHeader, type CompanionHeaderDimTargetRegistration } from "./workspace/CompanionHeader";
+import {
+  CompanionNavigation,
+  MobileNavigation,
+  type CompanionNavigationDimTargetRegistration,
+} from "./workspace/CompanionNavigation";
+import {
+  FinaleChamber,
+  type FinaleChamberTargetRegistration,
+  type FinaleMechanismTargetReady,
+} from "./workspace/FinaleChamber";
+import {
+  JournalWorkspace,
+  type JournalAnnotationTargetReady,
+  type JournalCeremonyTargetReady,
+} from "./workspace/JournalWorkspace";
 import { ObjectiveNote } from "./workspace/ObjectiveNote";
-import { ShipsLog } from "./workspace/ShipsLog";
-import { SideQuestLedger } from "./workspace/SideQuestLedger";
-import { TreasureAltar } from "./workspace/TreasureAltar";
+import { ShipsLog, type ShipsLogTargetRegistration } from "./workspace/ShipsLog";
+import { SideQuestLedger, type SideQuestLocalTargetReady } from "./workspace/SideQuestLedger";
+import {
+  TreasureAltar,
+  type TreasureAltarArtifactTargetHandles,
+  type TreasureAltarConnectionTargetHandle,
+} from "./workspace/TreasureAltar";
 import { companionViews, type CompanionView } from "./workspace/types";
-import { VoyageChart } from "./workspace/VoyageChart";
+import { VoyageChart, type VoyageChartTargetRegistration } from "./workspace/VoyageChart";
+import {
+  ProgressionPresentationController,
+  type ProgressionPresentationControllerSnapshot,
+  type ProgressionPresentationExecution,
+} from "./progression/ProgressionPresentationController";
+import {
+  type PlayerSectionRestoration,
+  type PlayerSectionRestorationResult,
+  type PlayerSectionId,
+  type ProgressionPresentationReceipt,
+  type ProgressionPresentationRequest,
+} from "./progression/contracts";
+import { isPhase3PlayerProgressEventType, policyForProgressionEvent } from "./progression/event-policy";
+import { ProgressionSceneHost } from "./progression/ProgressionSceneHost";
+const JOURNAL_OPENING_HOST_KEY = "player-journal-opening";
+const MAX_PRESENTATION_HISTORY_ENTRIES = 50;
+export const progressionReceiptEventName = "forever:progression-receipt" as const;
+export const progressionStateEventName = "forever:progression-state" as const;
 
-const sceneByEvent: Partial<Record<ClientProgressEvent["type"], AnimationSceneName>> = {
-  CHAPTER_RELEASED: "chapter-release",
-  CHAPTER_SOLVED: "mark-solved",
-  ARTIFACT_AWARDED: "artifact-award",
-  ARTIFACT_SILHOUETTE_REVEALED: "artifact-award",
-  ARTIFACT_CONNECTED: "artifact-connection",
-  MAP_LOCATION_REVEALED: "map-reveal",
-  MAP_ROUTE_REVEALED: "route-draw",
-  SIDE_QUEST_DISCOVERED: "quest-discovery",
-  SIDE_QUEST_UPDATED: "quest-discovery",
-  SIDE_QUEST_COMPLETED: "quest-complete",
-  JOURNAL_ANNOTATION_ADDED: "log-entry",
-  PLAYER_LOG_ENTRY_ADDED: "log-entry",
-  FINALE_TEASED: "finale-tease",
-  FINALE_REQUIREMENT_UPDATED: "finale-requirement",
-  CAMPAIGN_PAUSED: "pause",
-  CAMPAIGN_RESUMED: "resume",
-  STATE_REVERTED: "undo",
-};
+type BrowserLocalEnhancementEvidence = Readonly<{
+  expected: boolean;
+  section: PlayerSectionId | null;
+  status: "ran" | "unavailable" | "not-applicable";
+  targetKeys: readonly string[];
+}>;
 
-const cueByEvent: Partial<Record<ClientProgressEvent["type"], { name: AudioCueName; semanticLabel: string }>> = {
-  CHAPTER_RELEASED: { name: "wax-crack", semanticLabel: "seal" },
-  CHAPTER_SOLVED: { name: "stamp-impact", semanticLabel: "captain-stamp" },
-  ARTIFACT_AWARDED: { name: "artifact-chime", semanticLabel: "artifact-settled" },
-  MAP_LOCATION_REVEALED: { name: "compass-click", semanticLabel: "marker-stamp" },
-  MAP_ROUTE_REVEALED: { name: "map-scratch", semanticLabel: "route-drawing" },
-  FINALE_TEASED: { name: "mechanism-hum", semanticLabel: "mechanism-wakes" },
-  CAMPAIGN_PAUSED: { name: "pause-wind-down", semanticLabel: "pause-stamp" },
-  STATE_REVERTED: { name: "undo-reverse", semanticLabel: "ink-absorbing" },
-};
+type BrowserIntegrationEvidence = Readonly<{
+  currentSection: PlayerSectionId;
+  returnSection: PlayerSectionId;
+  localEnhancement: BrowserLocalEnhancementEvidence;
+}>;
 
-const PLAYER_PROGRESSION_HOST_ID = "player-progression-host";
-const JOURNAL_OPENING_HOST_ID = "player-journal-opening-host";
-
-type PresentationFailure = {
+type PresentationHistoryEntry = Readonly<{
   eventId: string;
-  requestSource: SceneRequestSource;
-  outcome: PresentationOutcome | "snapshot-unavailable" | "compatible-host-unavailable" | "acknowledgment-failed";
-  diagnostic: string;
-};
+  eventType: ProgressionPresentationRequest["eventType"];
+  eventSequence: number;
+}>;
 
-type CeremonyGate = {
+type ChapterSolvedLocalTargetReady = Readonly<{
   eventId: string;
-  status: "checking" | "pending" | "acknowledged";
-};
+  host: SceneHostHandle;
+  target: SceneTargetHandle;
+}>;
+
+export type ProgressionStateEventDetail = Readonly<{
+  version: 1;
+  transition: "queue" | "settled" | "access-revoked";
+  eventId: string | null;
+  requestId: string | null;
+  acknowledged: boolean;
+  acknowledgmentAttempted: boolean;
+  cursors: ProgressionPresentationControllerSnapshot["cursors"];
+  queue: Readonly<{ activeRequestId: string | null; pendingCount: number }>;
+}>;
+
+export type ProgressionReceiptEventDetail = Readonly<{
+  version: 1;
+  requestId: string;
+  eventId: string;
+  eventType: string;
+  eventSequence: number;
+  source: string;
+  playbackIdentity: string;
+  status: string;
+  sceneName: string;
+  queueWaitMs: number;
+  acknowledgmentEligible: boolean;
+  acknowledgmentAttempted: boolean;
+  acknowledged: boolean;
+  cursors: ProgressionPresentationControllerSnapshot["cursors"];
+  fallbackResult: string;
+  finalStateResult: string;
+  restorationResult: string;
+  semanticLabels: readonly string[];
+  currentSection: PlayerSectionId;
+  returnSection: PlayerSectionId;
+  motionPolicyLevel: string | null;
+  motionPolicySource: Readonly<{ productSetting: string; browserPrefersReduced: boolean }> | null;
+  motionPolicy: Readonly<{
+    level: string | null;
+    source: Readonly<{ productSetting: string; browserPrefersReduced: boolean }> | null;
+  }>;
+  scene: Readonly<{
+    sceneName: string;
+    sceneInstanceId: string;
+    hostId: string;
+    hostKind: string;
+    outcome: string;
+    requestSource: string;
+    durationMs: number;
+    cleanup: string;
+    finalization: PresentationReceipt["finalization"] | null;
+  }> | null;
+  targetReport: Readonly<{
+    requiredSatisfied: boolean;
+    durationMs: number;
+    failures: readonly Readonly<{ part: string; code: string }>[];
+    observations: readonly Readonly<{
+      targetKey: string | null;
+      part: string;
+      required: boolean;
+      candidateCount: number;
+      matchedCount: number;
+      visibleCount: number;
+      duplicateCount: number;
+      ownershipRejectedCount: number;
+      acceptedTargetIds: readonly string[];
+      rejectionCodes: readonly string[];
+      resolutionDetail: "unavailable-in-director-receipt";
+    }>[];
+  }> | null;
+  localEnhancement: BrowserLocalEnhancementEvidence;
+}>;
+
+function dispatchProgressionEvidence(
+  name: typeof progressionReceiptEventName,
+  detail: ProgressionReceiptEventDetail,
+): void;
+function dispatchProgressionEvidence(name: typeof progressionStateEventName, detail: ProgressionStateEventDetail): void;
+function dispatchProgressionEvidence(
+  name: typeof progressionReceiptEventName | typeof progressionStateEventName,
+  detail: ProgressionReceiptEventDetail | ProgressionStateEventDetail,
+) {
+  window.dispatchEvent(new CustomEvent(name, { detail: Object.freeze(detail) }));
+}
+
+function queueEvidence(snapshot: ProgressionPresentationControllerSnapshot) {
+  return Object.freeze({
+    activeRequestId: snapshot.queue.active?.request.requestId ?? null,
+    pendingCount: snapshot.queue.pending.length,
+  });
+}
+
+function presentationHistoryEntries(events: readonly ClientProgressEvent[]): readonly PresentationHistoryEntry[] {
+  return Object.freeze(
+    events
+      .filter((event): event is ClientProgressEvent & { type: ProgressionPresentationRequest["eventType"] } =>
+        isPhase3PlayerProgressEventType(event.type),
+      )
+      .sort((left, right) => right.sequence - left.sequence || right.id.localeCompare(left.id))
+      .slice(0, MAX_PRESENTATION_HISTORY_ENTRIES)
+      .map((event) => Object.freeze({ eventId: event.id, eventType: event.type, eventSequence: event.sequence })),
+  );
+}
 
 class JournalOpeningFailure extends Error {
   constructor(readonly outcome: JournalPhaseOutcome) {
@@ -109,8 +220,8 @@ function nextFrame() {
   return new Promise<void>((resolve) => window.requestAnimationFrame(() => resolve()));
 }
 
-function waitForMountedElement(root: HTMLElement, selector: string, signal: AbortSignal, timeoutMs = 1_800) {
-  return new Promise<boolean>((resolve) => {
+function waitForValue<T>(read: () => T | null | undefined, signal: AbortSignal, timeoutMs = 1_800) {
+  return new Promise<T | null>((resolve) => {
     const deadline = performance.now() + timeoutMs;
     let frame = 0;
     let settled = false;
@@ -118,18 +229,18 @@ function waitForMountedElement(root: HTMLElement, selector: string, signal: Abor
       signal.removeEventListener("abort", onAbort);
       if (frame) window.cancelAnimationFrame(frame);
     };
-    const settle = (value: boolean) => {
+    const settle = (value: T | null) => {
       if (settled) return;
       settled = true;
       cleanup();
       resolve(value);
     };
-    const onAbort = () => settle(false);
+    const onAbort = () => settle(null);
     const check = () => {
-      if (signal.aborted) return settle(false);
-      const match = root.querySelector<HTMLElement>(selector);
-      if (match?.isConnected) return settle(true);
-      if (performance.now() >= deadline) return settle(false);
+      if (signal.aborted) return settle(null);
+      const value = read();
+      if (value) return settle(value);
+      if (performance.now() >= deadline) return settle(null);
       frame = window.requestAnimationFrame(check);
     };
     signal.addEventListener("abort", onAbort, { once: true });
@@ -137,8 +248,189 @@ function waitForMountedElement(root: HTMLElement, selector: string, signal: Abor
   });
 }
 
+function sectionHeadingWithin(transition: HTMLElement | null) {
+  return transition?.querySelector<HTMLElement>(":scope > [data-section-heading]") ?? null;
+}
+
+function eventPayloadKey(event: ClientProgressEvent, field = "key") {
+  const value = event.payload[field];
+  return typeof value === "string" && value.length > 0 ? value : null;
+}
+
+function isSafeFocusTarget(target: HTMLElement | null) {
+  if (!target?.isConnected || target.matches(":disabled,[hidden],[inert]")) return false;
+  if (target.closest('[inert],[hidden],[aria-hidden="true"],[data-pageflip-source="true"],[data-pageflip-source]'))
+    return false;
+  const style = getComputedStyle(target);
+  return style.display !== "none" && style.visibility !== "hidden";
+}
+
+function captureSectionRestoration(sectionId: CompanionView, transition: HTMLElement | null): PlayerSectionRestoration {
+  const active = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+  return Object.freeze({
+    sectionId,
+    scrollPosition: Object.freeze({ x: transition?.scrollLeft ?? 0, y: transition?.scrollTop ?? 0 }),
+    exactFocusTarget: isSafeFocusTarget(active) ? active : null,
+    triggerTarget: active?.closest<HTMLElement>("button,a,[role=button]") ?? null,
+    sectionHeadingTarget: sectionHeadingWithin(transition),
+  });
+}
+
+function restoreSection(
+  restoration: PlayerSectionRestoration,
+  transition: HTMLElement | null,
+): PlayerSectionRestorationResult {
+  if (transition?.isConnected) {
+    transition.scrollLeft = restoration.scrollPosition.x;
+    transition.scrollTop = restoration.scrollPosition.y;
+  }
+  const exact = isSafeFocusTarget(restoration.exactFocusTarget) ? restoration.exactFocusTarget : null;
+  const trigger = isSafeFocusTarget(restoration.triggerTarget) ? restoration.triggerTarget : null;
+  const heading = isSafeFocusTarget(restoration.sectionHeadingTarget) ? restoration.sectionHeadingTarget : null;
+  const target = exact ?? trigger ?? heading;
+  if (!target) return transition?.isConnected ? "section-only" : "failed";
+  target.focus({ preventScroll: true });
+  if (target === exact) return "exact-target";
+  if (target === heading) return "section-heading";
+  return "destination-control";
+}
+
+function presentationSummary(request: ProgressionPresentationRequest) {
+  const policy = policyForProgressionEvent(request.eventType);
+  const fields = policy.globalPresentation.summaryFields.flatMap((field) => {
+    const value = request.payload[field];
+    return value === undefined || value === "" ? [] : [`${field.replaceAll(/([A-Z])/g, " $1")}: ${String(value)}`];
+  });
+  return fields.length > 0 ? fields.join(" · ") : policy.fallback.heading;
+}
+
+function progressionReceiptEvidence(
+  receipt: ProgressionPresentationReceipt,
+  playbackIdentity: string,
+  controllerState: ProgressionPresentationControllerSnapshot,
+  integration: BrowserIntegrationEvidence,
+): ProgressionReceiptEventDetail {
+  const scene = receipt.sceneReceipt;
+  const targetReport = receipt.targetReport;
+  const sceneContract = scene ? sceneContracts[scene.sceneName] : null;
+  return Object.freeze({
+    version: 1,
+    requestId: receipt.requestId,
+    eventId: receipt.eventId,
+    eventType: receipt.eventType,
+    eventSequence: receipt.eventSequence,
+    source: receipt.source,
+    playbackIdentity,
+    status: receipt.status,
+    sceneName: policyForProgressionEvent(receipt.eventType).sceneName,
+    queueWaitMs: receipt.queueWaitMs,
+    acknowledgmentEligible: receipt.acknowledgmentEligible,
+    acknowledgmentAttempted: receipt.acknowledgmentEligible,
+    acknowledged: false,
+    cursors: controllerState.cursors,
+    fallbackResult: receipt.fallbackResult,
+    finalStateResult: receipt.finalStateResult,
+    restorationResult: receipt.restorationResult,
+    semanticLabels: Object.freeze(
+      receipt.semanticLabels.filter((label) => /^[a-z0-9-]{1,80}$/.test(label)).slice(0, 64),
+    ),
+    currentSection: integration.currentSection,
+    returnSection: integration.returnSection,
+    motionPolicyLevel: scene?.motionPolicy.level ?? null,
+    motionPolicySource: scene
+      ? Object.freeze({
+          productSetting: scene.motionPolicy.source.productSetting,
+          browserPrefersReduced: scene.motionPolicy.source.browserPrefersReduced,
+        })
+      : null,
+    motionPolicy: Object.freeze({
+      level: scene?.motionPolicy.level ?? null,
+      source: scene
+        ? Object.freeze({
+            productSetting: scene.motionPolicy.source.productSetting,
+            browserPrefersReduced: scene.motionPolicy.source.browserPrefersReduced,
+          })
+        : null,
+    }),
+    scene: scene
+      ? Object.freeze({
+          sceneName: scene.sceneName,
+          sceneInstanceId: scene.sceneInstanceId,
+          hostId: scene.hostId,
+          hostKind: scene.hostKind,
+          outcome: scene.outcome,
+          requestSource: scene.requestSource,
+          durationMs: scene.durationMs,
+          cleanup: scene.cleanup,
+          finalization: scene.finalization ? Object.freeze({ ...scene.finalization }) : null,
+        })
+      : null,
+    targetReport: targetReport
+      ? Object.freeze({
+          requiredSatisfied: targetReport.requiredSatisfied,
+          durationMs: targetReport.durationMs,
+          failures: Object.freeze(
+            targetReport.failures
+              .slice(0, 128)
+              .map((failure) => Object.freeze({ part: failure.part, code: failure.code })),
+          ),
+          observations: Object.freeze(
+            targetReport.observations.slice(0, 128).map((observation, index) =>
+              Object.freeze({
+                targetKey: sceneContract?.version === 2 ? (sceneContract.targets[index]?.key ?? null) : null,
+                part: observation.part,
+                required: observation.required,
+                candidateCount: observation.matchedCount,
+                matchedCount: observation.matchedCount,
+                visibleCount: observation.visibleCount,
+                duplicateCount: observation.duplicateCount,
+                ownershipRejectedCount: observation.ownershipRejectedCount,
+                acceptedTargetIds: Object.freeze([]),
+                rejectionCodes: Object.freeze([]),
+                resolutionDetail: "unavailable-in-director-receipt" as const,
+              }),
+            ),
+          ),
+        })
+      : null,
+    localEnhancement: integration.localEnhancement,
+  });
+}
+
+async function loadAcknowledgedEventIds(campaignSlug: string, eventIds: readonly string[], signal: AbortSignal) {
+  const unique = [...new Set(eventIds)].slice(0, 100);
+  if (unique.length === 0) return [];
+  const query = new URLSearchParams({ deviceId: deviceId() });
+  unique.forEach((eventId) => query.append("eventIds", eventId));
+  const response = await fetch(`/api/player/${campaignSlug}/viewed?${query}`, { cache: "no-store", signal });
+  if (!response.ok) throw new Error("Presentation acknowledgments could not be loaded.");
+  const body = (await response.json()) as { acknowledgedEventIds?: unknown };
+  return Array.isArray(body.acknowledgedEventIds)
+    ? body.acknowledgedEventIds.filter((eventId): eventId is string => typeof eventId === "string")
+    : [];
+}
+
 export function PlayerExperience({ initialSnapshot }: { initialSnapshot: PublicSnapshot }) {
-  const root = useRef<HTMLElement>(null);
+  const root = useRef<HTMLDivElement>(null);
+  const sectionFocusTarget = useRef<HTMLDivElement>(null);
+  const persistentHost = useRef<SceneHostHandle | null>(null);
+  const journalOpeningHost = useRef<SceneHostHandle | null>(null);
+  const chartTargets = useRef(new Map<string, VoyageChartTargetRegistration>());
+  const logTargets = useRef(new Map<string, ShipsLogTargetRegistration>());
+  const artifactTargets = useRef(new Map<string, TreasureAltarArtifactTargetHandles>());
+  const artifactConnectionTargets = useRef(new Map<string, TreasureAltarConnectionTargetHandle>());
+  const inspectionTargets = useRef(new Map<string, ArtifactInspectionTargetHandles>());
+  const journalCeremonyTargets = useRef<JournalCeremonyTargetReady | null>(null);
+  const journalAnnotationTarget = useRef<JournalAnnotationTargetReady | null>(null);
+  const chapterSolvedLocalTarget = useRef<ChapterSolvedLocalTargetReady | null>(null);
+  const sideQuestTarget = useRef<SideQuestLocalTargetReady | null>(null);
+  const finaleTargets = useRef(new Map<string, FinaleChamberTargetRegistration>());
+  const finaleMechanismTarget = useRef<FinaleMechanismTargetReady | null>(null);
+  const finaleMechanismStatus = useRef<RiveRuntimeStatus | null>(null);
+  const companionHeaderDim = useRef<CompanionHeaderDimTargetRegistration | null>(null);
+  const companionDesktopDim = useRef<CompanionNavigationDimTargetRegistration | null>(null);
+  const companionMobileDim = useRef<CompanionNavigationDimTargetRegistration | null>(null);
+  const activeExternalHandles = useRef(new Map<string, Set<ExternalSceneTargetHandle>>());
   const snapshotRef = useRef(initialSnapshot);
   const [snapshot, setSnapshot] = useState(initialSnapshot);
   const [view, setView] = useState<CompanionView>("journal");
@@ -151,19 +443,19 @@ export function PlayerExperience({ initialSnapshot }: { initialSnapshot: PublicS
   const [lastRelease, setLastRelease] = useState<ReplayablePresentation | null>(
     initialSnapshot.latestChapterReleasePresentation ?? null,
   );
-  const lastReleaseRef = useRef<ReplayablePresentation | null>(
-    initialSnapshot.latestChapterReleasePresentation ?? null,
-  );
   const [activeEvent, setActiveEvent] = useState<ClientProgressEvent | null>(null);
-  const [pendingMandatoryEventId, setPendingMandatoryEventId] = useState<string | null>(null);
-  const pendingMandatoryEventRef = useRef<string | null>(null);
-  const [ceremonyGate, setCeremonyGate] = useState<CeremonyGate | null>(() =>
-    initialSnapshot.latestChapterReleasePresentation
-      ? { eventId: initialSnapshot.latestChapterReleasePresentation.eventId, status: "checking" }
-      : null,
+  const [activeRequest, setActiveRequest] = useState<ProgressionPresentationRequest | null>(null);
+  const activeRequestRef = useRef<ProgressionPresentationRequest | null>(null);
+  const [lastPresentedRequest, setLastPresentedRequest] = useState<ProgressionPresentationRequest | null>(null);
+  const [presentationStatus, setPresentationStatus] = useState("idle");
+  const [presentationFallback, setPresentationFallback] = useState<string | null>(null);
+  const [lastPresentationReceipt, setLastPresentationReceipt] = useState<ProgressionPresentationReceipt | null>(null);
+  const [presentationHistory, setPresentationHistory] = useState<readonly PresentationHistoryEntry[]>(() =>
+    presentationHistoryEntries(initialSnapshot.presentationHistory ?? []),
   );
-  const [presentationFailure, setPresentationFailure] = useState<PresentationFailure | null>(null);
-  const [staticChapterFallback, setStaticChapterFallback] = useState<ReplayablePresentation | null>(null);
+  const [historyReconciled, setHistoryReconciled] = useState(false);
+  const [accessRevoked, setAccessRevoked] = useState(false);
+  const accessRevokedRef = useRef(false);
   const [journalOpeningNotice, setJournalOpeningNotice] = useState<string | null>(null);
   const [selectedArtifact, setSelectedArtifact] = useState<string | null>(null);
   const [inspectionOrigin, setInspectionOrigin] = useState<HTMLElement | null>(null);
@@ -171,25 +463,171 @@ export function PlayerExperience({ initialSnapshot }: { initialSnapshot: PublicS
   const [textScale, setTextScaleState] = useState(1);
   const [texture, setTextureState] = useState(1);
   const [openingSpeed, setOpeningSpeed] = useState<0.25 | 0.5 | 1>(1);
-  const eventChain = useRef<Promise<void>>(Promise.resolve());
   const openingRun = useRef<AbortController | null>(null);
   const presentationRun = useRef<AbortController | null>(null);
   const replayMutationGuard = useRef(false);
-  const replayGuardTimer = useRef<number | null>(null);
   const openingBusy = useRef(false);
-  const seenEvents = useRef(new Set<string>());
-  const acknowledgedEvents = useRef(new Set<string>());
-  const automaticPresentationAttempts = useRef(new Set<string>());
   const acknowledgmentRequests = useRef(new Map<string, Promise<boolean>>());
-  const latestSequence = useRef(initialSnapshot.sequence);
+  const eventHistory = useRef(
+    new Map((initialSnapshot.presentationHistory ?? []).map((event) => [event.id, Object.freeze({ ...event })])),
+  );
+  const presentationIntegrationEvidence = useRef(new Map<string, BrowserIntegrationEvidence>());
+  const presentationPlaybackIdentities = useRef(new Map<string, string>());
+  const dispatchedProgressionReceipts = useRef(new WeakSet<ProgressionPresentationReceipt>());
+  const controllerRef = useRef<ProgressionPresentationController | null>(null);
+  const controllerSnapshot = useRef<ProgressionPresentationControllerSnapshot | null>(null);
   const audio = useRef(new AudioCuePlayer());
   const { director, snapshot: animation } = useAnimationDirector();
   const { mode, policy, cycle } = useMotionMode();
   const previousMotionMode = useRef(mode);
   const journalReady = isJournalInteractive(openingPhase);
 
+  const revokeExternalKey = useCallback((key: string) => {
+    const handles = activeExternalHandles.current.get(key);
+    if (!handles) return;
+    handles.forEach((handle) => handle.revoke());
+    activeExternalHandles.current.delete(key);
+  }, []);
+
+  const trackExternal = useCallback((key: string, handle: ExternalSceneTargetHandle) => {
+    const handles = activeExternalHandles.current.get(key) ?? new Set<ExternalSceneTargetHandle>();
+    handles.add(handle);
+    activeExternalHandles.current.set(key, handles);
+    return handle;
+  }, []);
+
+  const releaseExternal = useCallback((handle: ExternalSceneTargetHandle) => {
+    handle.revoke();
+    for (const [key, handles] of activeExternalHandles.current) {
+      handles.delete(handle);
+      if (handles.size === 0) activeExternalHandles.current.delete(key);
+    }
+  }, []);
+
+  const onChartTargetRegistrationChange = useCallback(
+    (registration: VoyageChartTargetRegistration) => {
+      const key = `${registration.kind}:${registration.key}`;
+      if (registration.host && registration.handle) chartTargets.current.set(key, registration);
+      else {
+        chartTargets.current.delete(key);
+        revokeExternalKey(`chart:${key}`);
+      }
+    },
+    [revokeExternalKey],
+  );
+
+  const onLogTargetRegistrationChange = useCallback(
+    (registration: ShipsLogTargetRegistration) => {
+      const key = `${registration.kind}:${registration.key}`;
+      if (registration.host && registration.handle) logTargets.current.set(key, registration);
+      else {
+        logTargets.current.delete(key);
+        revokeExternalKey(`log:${key}`);
+      }
+    },
+    [revokeExternalKey],
+  );
+
+  const onArtifactTargetHandlesChange = useCallback(
+    (handles: TreasureAltarArtifactTargetHandles) => {
+      if (handles.layoutSource || handles.cinematicDestination) {
+        artifactTargets.current.set(handles.artifactKey, handles);
+        return;
+      }
+      artifactTargets.current.delete(handles.artifactKey);
+      revokeExternalKey(`artifact:${handles.artifactKey}`);
+    },
+    [revokeExternalKey],
+  );
+
+  const onArtifactConnectionTargetHandleChange = useCallback(
+    (registration: TreasureAltarConnectionTargetHandle) => {
+      const key = `${registration.sourceArtifactKey}:${registration.destinationArtifactKey}`;
+      if (registration.target) {
+        artifactConnectionTargets.current.set(key, registration);
+        return;
+      }
+      artifactConnectionTargets.current.delete(key);
+      revokeExternalKey(`artifact-connection:${key}`);
+    },
+    [revokeExternalKey],
+  );
+
+  const onInspectionTargetHandlesChange = useCallback((handles: ArtifactInspectionTargetHandles | null) => {
+    if (handles) inspectionTargets.current.set(handles.artifactKey, handles);
+    else inspectionTargets.current.clear();
+  }, []);
+
+  const onChapterSolvedLocalTargetChange = useCallback(
+    (ready: ChapterSolvedLocalTargetReady | null) => {
+      chapterSolvedLocalTarget.current = ready;
+      if (!ready) revokeExternalKey("journal:chapter-solved-stamp");
+    },
+    [revokeExternalKey],
+  );
+
+  const onFinaleTargetRegistrationChange = useCallback(
+    (registration: FinaleChamberTargetRegistration) => {
+      const key = `${registration.kind}:${registration.key}`;
+      if (registration.host && registration.handle) finaleTargets.current.set(key, registration);
+      else {
+        finaleTargets.current.delete(key);
+        revokeExternalKey(`finale:${key}`);
+      }
+    },
+    [revokeExternalKey],
+  );
+
+  const onFinaleMechanismStatusChange = useCallback(
+    (status: RiveRuntimeStatus | null) => {
+      finaleMechanismStatus.current = status;
+      if (status === null) revokeExternalKey("finale:finale-mechanism:mechanism");
+    },
+    [revokeExternalKey],
+  );
+
+  const onFinaleMechanismTargetChange = useCallback(
+    (ready: FinaleMechanismTargetReady | null) => {
+      finaleMechanismTarget.current = ready;
+      if (!ready) revokeExternalKey("finale:finale-mechanism");
+    },
+    [revokeExternalKey],
+  );
+
+  const onCompanionHeaderDimChange = useCallback(
+    (registration: CompanionHeaderDimTargetRegistration | null) => {
+      companionHeaderDim.current = registration;
+      if (!registration) revokeExternalKey("companion:header");
+    },
+    [revokeExternalKey],
+  );
+
+  const onCompanionDesktopDimChange = useCallback(
+    (registration: CompanionNavigationDimTargetRegistration | null) => {
+      companionDesktopDim.current = registration;
+      if (!registration) revokeExternalKey("companion:desktop");
+    },
+    [revokeExternalKey],
+  );
+
+  const onCompanionMobileDimChange = useCallback(
+    (registration: CompanionNavigationDimTargetRegistration | null) => {
+      companionMobileDim.current = registration;
+      if (!registration) revokeExternalKey("companion:mobile");
+    },
+    [revokeExternalKey],
+  );
+
+  const onPersistentHostChange = useCallback((host: SceneHostHandle | null) => {
+    persistentHost.current = host;
+  }, []);
+  const onJournalOpeningHostChange = useCallback((host: SceneHostHandle | null) => {
+    journalOpeningHost.current = host;
+  }, []);
+
   useEffect(() => {
     const audioEngine = audio.current;
+    const externalHandles = activeExternalHandles.current;
     queueMicrotask(() => {
       const savedMuted = localStorage.getItem("forever-muted") === "true";
       const savedVolume = Number(localStorage.getItem("forever-volume") ?? 0.4);
@@ -203,7 +641,9 @@ export function PlayerExperience({ initialSnapshot }: { initialSnapshot: PublicS
     return () => {
       openingRun.current?.abort();
       presentationRun.current?.abort();
-      if (replayGuardTimer.current !== null) window.clearTimeout(replayGuardTimer.current);
+      controllerRef.current?.stop();
+      for (const handles of externalHandles.values()) handles.forEach((handle) => handle.revoke());
+      externalHandles.clear();
       audioEngine.close();
     };
   }, []);
@@ -225,33 +665,27 @@ export function PlayerExperience({ initialSnapshot }: { initialSnapshot: PublicS
   }, [mode]);
 
   const refreshSnapshot = useCallback(async () => {
+    if (accessRevokedRef.current) throw new Error("Player access has been revoked.");
     const response = await fetch(`/api/player/${initialSnapshot.campaign.slug}/snapshot`, { cache: "no-store" });
     if (!response.ok) throw new Error("The latest voyage state could not be loaded.");
     const next = (await response.json()) as PublicSnapshot;
-    latestSequence.current = Math.max(latestSequence.current, next.sequence);
+    if (accessRevokedRef.current) throw new Error("Player access has been revoked.");
     snapshotRef.current = next;
     setSnapshot(next);
-    const nextRelease = next.latestChapterReleasePresentation ?? null;
-    lastReleaseRef.current = nextRelease;
-    setLastRelease(nextRelease);
-    setStaticChapterFallback((current) =>
-      current && nextRelease && current.eventId === nextRelease.eventId ? nextRelease : null,
+    eventHistory.current = new Map(
+      (next.presentationHistory ?? []).map((event) => [
+        event.id,
+        Object.freeze({ ...event, payload: { ...event.payload } }),
+      ]),
     );
-    setCeremonyGate((current) => {
-      if (!nextRelease) return null;
-      return current?.eventId === nextRelease.eventId ? current : { eventId: nextRelease.eventId, status: "checking" };
-    });
-    if (!nextRelease) {
-      pendingMandatoryEventRef.current = null;
-      setPendingMandatoryEventId(null);
-      setPresentationFailure(null);
-    }
+    setPresentationHistory(presentationHistoryEntries(next.presentationHistory ?? []));
+    const nextRelease = next.latestChapterReleasePresentation ?? null;
+    setLastRelease(nextRelease);
     return next;
   }, [initialSnapshot.campaign.slug]);
 
-  const acknowledgeCeremony = useCallback(
+  const acknowledgePresentation = useCallback(
     (eventId: string) => {
-      if (acknowledgedEvents.current.has(eventId)) return Promise.resolve(true);
       const existing = acknowledgmentRequests.current.get(eventId);
       if (existing) return existing;
       const request = (async () => {
@@ -261,8 +695,7 @@ export function PlayerExperience({ initialSnapshot }: { initialSnapshot: PublicS
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ eventId, deviceId: deviceId() }),
           });
-          if (!response.ok) throw new Error("Ceremony acknowledgement was rejected.");
-          acknowledgedEvents.current.add(eventId);
+          if (!response.ok) throw new Error("Presentation acknowledgement was rejected.");
           return true;
         } catch {
           setConnection("adrift");
@@ -276,253 +709,722 @@ export function PlayerExperience({ initialSnapshot }: { initialSnapshot: PublicS
     [initialSnapshot.campaign.slug],
   );
 
+  const buildExternalTargets = useCallback(
+    (event: ClientProgressEvent, destination: SceneHostHandle) => {
+      const targets: Record<string, ExternalSceneTargetHandle> = {};
+      const exported: ExternalSceneTargetHandle[] = [];
+      const add = (
+        key: string,
+        trackingKey: string,
+        sourceHost: SceneHostHandle,
+        target: SceneTargetHandle,
+        allowedProperties: readonly AnimatedProperty[],
+        lifetime: "scene" | "handoff" = "scene",
+      ) => {
+        try {
+          const external = trackExternal(
+            trackingKey,
+            sourceHost.exportTarget({
+              target,
+              destinationHostId: destination.hostId,
+              allowedProperties,
+              lifetime,
+            }),
+          );
+          targets[key] = external;
+          exported.push(external);
+        } catch {
+          // A stale, disconnected, cross-provider, or over-broad export is omitted.
+          // Native v2 preflight then reports the exact required-target failure.
+        }
+      };
+      const addCompanion = (
+        key: string,
+        trackingKey: string,
+        registration: CompanionHeaderDimTargetRegistration | CompanionNavigationDimTargetRegistration | null,
+      ) => {
+        if (!registration) return;
+        try {
+          const external = trackExternal(
+            trackingKey,
+            registration.exportForScene({
+              destinationHostId: destination.hostId,
+              allowedProperties: ["opacity"],
+              lifetime: "scene",
+            }),
+          );
+          targets[key] = external;
+          exported.push(external);
+        } catch {
+          // See add(): external capabilities fail closed and are never replaced by a selector.
+        }
+      };
+
+      const key = eventPayloadKey(event);
+      if (event.type === "CHAPTER_RELEASED") {
+        addCompanion("companion-header-dim", "companion:header", companionHeaderDim.current);
+        addCompanion("companion-desktop-navigation-dim", "companion:desktop", companionDesktopDim.current);
+        addCompanion("companion-mobile-navigation-dim", "companion:mobile", companionMobileDim.current);
+      }
+
+      const relevantSection = isPhase3PlayerProgressEventType(event.type)
+        ? policyForProgressionEvent(event.type).relevantSection
+        : null;
+      if (relevantSection !== viewRef.current) return { targets: Object.freeze(targets), exported };
+
+      if (event.type === "CHAPTER_RELEASED") {
+        const ready = journalCeremonyTargets.current;
+        const sealedParchment = ready?.targets["sealed-parchment"][0];
+        if (ready && sealedParchment)
+          add("sealed-parchment", `journal:${event.id}:sealed-parchment`, ready.host, sealedParchment, ["transform"]);
+      } else if (event.type === "CHAPTER_SOLVED") {
+        const ready = chapterSolvedLocalTarget.current;
+        if (ready?.eventId === event.id)
+          add("chapter-solved-stamp", "journal:chapter-solved-stamp", ready.host, ready.target, [
+            "transform",
+            "opacity",
+          ]);
+      } else if (event.type === "MAP_LOCATION_REVEALED" && key) {
+        const marker = chartTargets.current.get(`location-visual:${key}`);
+        if (marker?.host && marker.handle)
+          add("map-marker", `chart:location-visual:${key}`, marker.host, marker.handle, ["transform", "opacity"]);
+        const fog = chartTargets.current.get(`fog-mask:${snapshotRef.current.campaign.slug}`);
+        if (fog?.host && fog.handle)
+          add("map-fog", `chart:fog-mask:${snapshotRef.current.campaign.slug}`, fog.host, fog.handle, [
+            "clip-path",
+            "opacity",
+          ]);
+      } else if (event.type === "MAP_ROUTE_REVEALED" && key) {
+        const route = chartTargets.current.get(`route-path:${key}`);
+        if (route?.host && route.handle)
+          add("route-path", `chart:route-path:${key}`, route.host, route.handle, [
+            "path-drawing",
+            "stroke-dasharray",
+            "stroke-dashoffset",
+            "opacity",
+          ]);
+      } else if ((event.type === "ARTIFACT_AWARDED" || event.type === "ARTIFACT_SILHOUETTE_REVEALED") && key) {
+        const artifact = artifactTargets.current.get(key);
+        if (artifact?.cinematicDestination) {
+          try {
+            const external = trackExternal(
+              `artifact:${key}`,
+              artifact.cinematicDestination.exportForScene({
+                destinationHostId: destination.hostId,
+                allowedProperties: ["transform", "opacity", "filter"],
+                lifetime: "scene",
+              }),
+            );
+            targets["artifact-slot"] = external;
+            exported.push(external);
+          } catch {
+            // Stale layout-source exports fail closed.
+          }
+        }
+      } else if (event.type === "ARTIFACT_CONNECTED" && key) {
+        const connectedKey = eventPayloadKey(event, "connectedArtifactKey");
+        const connection = connectedKey ? artifactConnectionTargets.current.get(`${key}:${connectedKey}`) : undefined;
+        if (connection?.target) {
+          try {
+            const external = trackExternal(
+              `artifact-connection:${key}:${connectedKey}`,
+              connection.target.exportForScene({
+                destinationHostId: destination.hostId,
+                allowedProperties: ["path-drawing", "stroke-dasharray", "stroke-dashoffset", "opacity"],
+                lifetime: "handoff",
+              }),
+            );
+            targets["artifact-connection-path"] = external;
+            exported.push(external);
+          } catch {
+            // Stale connection-path exports fail closed.
+          }
+        }
+      } else if (event.type === "JOURNAL_ANNOTATION_ADDED") {
+        const ready = journalAnnotationTarget.current;
+        if (ready?.eventId === event.id) {
+          try {
+            const external = trackExternal(
+              `journal-annotation:${event.id}`,
+              ready.authority.exportTarget(ready.target, {
+                destinationHostId: destination.hostId,
+                allowedProperties: ["opacity", "clip-path", "filter"],
+                lifetime: "scene",
+              }),
+            );
+            targets["journal-annotation-ink"] = external;
+            exported.push(external);
+          } catch {}
+        }
+      } else if (event.type === "PLAYER_LOG_ENTRY_ADDED") {
+        const entry = logTargets.current.get(`fresh-ink:${event.id}`);
+        if (entry?.host && entry.handle)
+          add("log-entry", `log:fresh-ink:${event.id}`, entry.host, entry.handle, ["opacity", "clip-path", "filter"]);
+        const symbol = logTargets.current.get(`log-symbol:${event.id}`);
+        if (symbol?.host && symbol.handle)
+          add("log-symbol", `log:log-symbol:${event.id}`, symbol.host, symbol.handle, ["transform", "opacity"]);
+      } else if (
+        event.type === "SIDE_QUEST_DISCOVERED" ||
+        event.type === "SIDE_QUEST_UPDATED" ||
+        event.type === "SIDE_QUEST_COMPLETED"
+      ) {
+        const ready = sideQuestTarget.current;
+        if (ready?.eventId === event.id) {
+          for (const [externalKey, capability] of Object.entries(ready.targets)) {
+            if (!capability) continue;
+            const properties: readonly AnimatedProperty[] =
+              externalKey === "quest-red-thread"
+                ? ["path-drawing", "stroke-dasharray", "stroke-dashoffset"]
+                : ["transform", "opacity"];
+            try {
+              const external = trackExternal(
+                `quest:${event.id}:${externalKey}`,
+                ready.authority.exportTarget(capability, {
+                  destinationHostId: destination.hostId,
+                  allowedProperties: properties,
+                  lifetime: "scene",
+                }),
+              );
+              targets[externalKey] = external;
+              exported.push(external);
+            } catch {}
+          }
+        }
+      } else if (event.type === "FINALE_TEASED") {
+        const mechanism = finaleMechanismTarget.current;
+        if ((finaleMechanismStatus.current === "ready" || finaleMechanismStatus.current === "fallback") && mechanism) {
+          try {
+            const external = trackExternal(
+              "finale:finale-mechanism",
+              mechanism.exportForScene({
+                destinationHostId: destination.hostId,
+                allowedProperties: mechanism.allowedProperties,
+                lifetime: "scene",
+              }),
+            );
+            targets["finale-mechanism"] = external;
+            exported.push(external);
+          } catch {}
+        }
+      } else if (event.type === "FINALE_REQUIREMENT_UPDATED" && key) {
+        const registration = finaleTargets.current.get(`requirement-socket:${key}`);
+        if (registration?.host && registration.handle)
+          add("finale-requirement-socket", `finale:requirement-socket:${key}`, registration.host, registration.handle, [
+            "transform",
+            "opacity",
+            "filter",
+          ]);
+      }
+
+      return { targets: Object.freeze(targets), exported };
+    },
+    [trackExternal],
+  );
+
+  const presentProgressionRequest = useCallback(
+    async (request: ProgressionPresentationRequest): Promise<ProgressionPresentationExecution> => {
+      const playerRoot = root.current;
+      if (!playerRoot) return { status: "failed", finalStateResult: "failed", retryDisposition: "retryable" };
+      const remembered = eventHistory.current.get(request.eventId);
+      const event: ClientProgressEvent = remembered ?? {
+        id: request.eventId,
+        type: request.eventType,
+        sequence: request.eventSequence,
+        payload: request.payload,
+        releaseAt: new Date().toISOString(),
+      };
+      const eventPolicy = policyForProgressionEvent(request.eventType);
+      const summary = presentationSummary(request);
+      const restoration = captureSectionRestoration(viewRef.current, sectionFocusTarget.current);
+      const expectedLocal = eventPolicy.localEnhancement;
+      presentationIntegrationEvidence.current.set(
+        request.requestId,
+        Object.freeze({
+          currentSection: restoration.sectionId,
+          returnSection: restoration.sectionId,
+          localEnhancement: Object.freeze({
+            expected: Boolean(expectedLocal),
+            section: expectedLocal?.section ?? null,
+            status: expectedLocal ? "unavailable" : "not-applicable",
+            targetKeys: Object.freeze([]),
+          }),
+        }),
+      );
+      const controller = new AbortController();
+      presentationRun.current = controller;
+      replayMutationGuard.current = request.source === "replay";
+      eventHistory.current.set(event.id, Object.freeze({ ...event, payload: Object.freeze({ ...event.payload }) }));
+      flushSync(() => {
+        activeRequestRef.current = request;
+        setActiveRequest(request);
+        setActiveEvent(event);
+        setPresentationStatus("active");
+        setPresentationFallback(null);
+      });
+      await nextFrame();
+      const sceneHost = await waitForValue(() => persistentHost.current, controller.signal);
+      if (!sceneHost) {
+        flushSync(() => {
+          setPresentationStatus("failed");
+          setPresentationFallback(eventPolicy.fallback.heading);
+          setLastPresentedRequest(request);
+          activeRequestRef.current = null;
+          setActiveRequest(null);
+          setActiveEvent(null);
+        });
+        replayMutationGuard.current = false;
+        return {
+          status: "failed",
+          fallbackResult: "readable",
+          finalStateResult: "fallback",
+          restorationResult: restoreSection(restoration, sectionFocusTarget.current),
+          retryDisposition: "retryable",
+        };
+      }
+
+      if (
+        expectedLocal?.section === "journal" &&
+        request.eventType === "CHAPTER_RELEASED" &&
+        viewRef.current === "journal"
+      ) {
+        await waitForValue(() => journalCeremonyTargets.current?.targets["sealed-parchment"][0], controller.signal);
+      }
+
+      const external = buildExternalTargets(event, sceneHost);
+      const providedLocalTargetKeys = expectedLocal
+        ? expectedLocal.requiredHandleKeys
+            .filter((targetKey) => Boolean(external.targets[targetKey]))
+            .map((targetKey) => `local-${targetKey}`)
+        : [];
+      presentationIntegrationEvidence.current.set(
+        request.requestId,
+        Object.freeze({
+          currentSection: restoration.sectionId,
+          returnSection: restoration.sectionId,
+          localEnhancement: Object.freeze({
+            expected: Boolean(expectedLocal),
+            section: expectedLocal?.section ?? null,
+            status: expectedLocal ? "unavailable" : "not-applicable",
+            targetKeys: Object.freeze(providedLocalTargetKeys),
+          }),
+        }),
+      );
+      const cleanupSteps = new Set<string>();
+      const markSemanticCommit = () => controllerRef.current?.setSemanticCommitReached(true);
+      const publishReadableState = (nextStatus: string, fallback?: string) => {
+        if (controller.signal.aborted) return;
+        flushSync(() => {
+          setPresentationStatus(nextStatus);
+          if (fallback) setPresentationFallback(fallback);
+        });
+      };
+      const verifyReadableState = () => {
+        const progressionHost = playerRoot.closest<HTMLElement>("[data-progression-scene-host]");
+        const overlay = progressionHost?.querySelector<HTMLElement>(
+          `[data-progression-overlay][data-presentation-id="${CSS.escape(request.requestId)}"]`,
+        );
+        const heading = overlay?.querySelector<HTMLElement>("#player-progression-heading");
+        const readableSummary = overlay?.querySelector<HTMLElement>("#player-progression-summary");
+        return Boolean(
+          overlay &&
+            !overlay.hidden &&
+            heading?.textContent?.trim() === eventPolicy.globalPresentation.heading &&
+            readableSummary?.textContent?.trim() === summary,
+        );
+      };
+
+      let sceneReceipt: PresentationReceipt | undefined;
+      let execution: ProgressionPresentationExecution;
+      try {
+        sceneReceipt = await director.play<void>(eventPolicy.sceneName, {
+          root: playerRoot,
+          sceneHost,
+          hostId: sceneHost.hostId,
+          hostKind: sceneHost.kind,
+          externalTargets: external.targets,
+          requestSource: request.source === "replay" ? "replay" : "automatic",
+          eventOrActionId: request.eventId,
+          signal: controller.signal,
+          display: request.payload,
+          telemetryContext: { route: "/tale", playerSection: restoration.sectionId },
+          queue: false,
+          finalStateRuntime: {
+            commitFinalState: () => {
+              markSemanticCommit();
+              publishReadableState("committed");
+            },
+            reconcileFinalState: () => {
+              markSemanticCommit();
+              publishReadableState("reconciled");
+            },
+            holdSafePose: () => publishReadableState("safe-pose", eventPolicy.fallback.heading),
+            renderStaticFallback: () => {
+              markSemanticCommit();
+              publishReadableState("fallback", eventPolicy.fallback.heading);
+            },
+            verifyReadableState,
+            cleanup: (step) => {
+              if (cleanupSteps.has(step)) return;
+              cleanupSteps.add(step);
+            },
+          },
+          presentationFallback: async (context) => {
+            if (context.signal?.aborted || context.hostId !== sceneHost.hostId) {
+              return { completed: false, readable: false, reason: "progression-fallback-context-rejected" };
+            }
+            if (context.motionPolicy.level !== "reduced") {
+              return { completed: false, readable: false, reason: "progression-fallback-requires-reduced-motion" };
+            }
+            publishReadableState("fallback", eventPolicy.fallback.heading);
+            markSemanticCommit();
+            await nextFrame();
+            return verifyReadableState()
+              ? { completed: true, readable: true, semanticState: eventPolicy.fallback.equivalentReducedOutcome }
+              : { completed: false, readable: false, reason: "progression-fallback-not-readable" };
+          },
+        });
+
+        if (eventPolicy.audio.kind === "semantic-labels") {
+          for (const label of eventPolicy.audio.labels) {
+            const validated = receiptValidatesAudio(sceneReceipt, label.semanticLabel);
+            if (!validated) continue;
+            audio.current.playValidated({
+              name: label.cue,
+              motionPolicy: sceneReceipt.motionPolicy,
+              motionOnly: label.motionOnly,
+              presentationValidated: true,
+              semanticLabel: label.semanticLabel,
+              allowedSemanticLabels: [label.semanticLabel],
+            });
+          }
+        }
+
+        const status =
+          sceneReceipt.outcome === "presented"
+            ? "presented"
+            : sceneReceipt.outcome === "presented-fallback"
+              ? "fallback"
+              : sceneReceipt.outcome === "skipped-by-user"
+                ? "skipped"
+                : sceneReceipt.outcome === "aborted" || sceneReceipt.outcome === "interrupted"
+                  ? "cancelled"
+                  : "failed";
+        const finalStateResult = sceneReceipt.finalization?.handoffCompleted
+          ? sceneReceipt.finalization.cleanupResult === "completed-with-fallback"
+            ? "fallback"
+            : "reconciled"
+          : status === "fallback"
+            ? "fallback"
+            : status === "failed"
+              ? "failed"
+              : "committed";
+        execution = {
+          status,
+          sceneReceipt,
+          fallbackResult: status === "fallback" ? "readable" : "not-used",
+          finalStateResult,
+          retryDisposition: status === "failed" || status === "cancelled" ? "retryable" : "replay-available",
+        };
+        const sceneContract = sceneContracts[eventPolicy.sceneName];
+        const localTargetObservations = sceneReceipt?.targetReport.observations ?? [];
+        const verifiedLocalTargetKeys =
+          expectedLocal && sceneContract.version === 2
+            ? expectedLocal.requiredHandleKeys
+                .map((targetKey) => `local-${targetKey}`)
+                .filter((targetKey) => {
+                  if (!providedLocalTargetKeys.includes(targetKey)) return false;
+                  const targetIndex = sceneContract.targets.findIndex((target) => target.key === targetKey);
+                  const observation = targetIndex >= 0 ? localTargetObservations[targetIndex] : undefined;
+                  return Boolean(
+                    observation &&
+                      observation.matchedCount === 1 &&
+                      observation.visibleCount === 1 &&
+                      observation.duplicateCount === 0 &&
+                      observation.ownershipRejectedCount === 0,
+                  );
+                })
+            : [];
+        presentationIntegrationEvidence.current.set(
+          request.requestId,
+          Object.freeze({
+            currentSection: viewRef.current,
+            returnSection: restoration.sectionId,
+            localEnhancement: Object.freeze({
+              expected: Boolean(expectedLocal),
+              section: expectedLocal?.section ?? null,
+              status:
+                expectedLocal &&
+                verifiedLocalTargetKeys.length === expectedLocal.requiredHandleKeys.length &&
+                ["presented", "fallback", "skipped"].includes(status)
+                  ? "ran"
+                  : expectedLocal
+                    ? "unavailable"
+                    : "not-applicable",
+              targetKeys: Object.freeze(verifiedLocalTargetKeys),
+            }),
+          }),
+        );
+      } catch {
+        publishReadableState("fallback", eventPolicy.fallback.heading);
+        execution = {
+          status: controller.signal.aborted ? "cancelled" : "failed",
+          fallbackResult: "readable",
+          finalStateResult: "fallback",
+          retryDisposition: "retryable",
+        };
+      } finally {
+        external.exported.forEach(releaseExternal);
+        replayMutationGuard.current = false;
+      }
+
+      if (accessRevokedRef.current) {
+        flushSync(() => {
+          activeRequestRef.current = null;
+          setActiveRequest(null);
+          setActiveEvent(null);
+          setLastPresentedRequest(null);
+        });
+        if (presentationRun.current === controller) presentationRun.current = null;
+        return {
+          status: "cancelled",
+          finalStateResult: "failed",
+          restorationResult: "not-attempted",
+          retryDisposition: "retryable",
+        };
+      }
+      if (request.source !== "replay") await refreshSnapshot().catch(() => setConnection("adrift"));
+      flushSync(() => {
+        setLastPresentedRequest(request);
+        setPresentationStatus(execution.status);
+        activeRequestRef.current = null;
+        setActiveRequest(null);
+        setActiveEvent(null);
+      });
+      const restorationResult = restoreSection(restoration, sectionFocusTarget.current);
+      if (presentationRun.current === controller) presentationRun.current = null;
+      return { ...execution, restorationResult };
+    },
+    [buildExternalTargets, director, refreshSnapshot, releaseExternal],
+  );
+
+  const ensureProgressionController = useCallback(() => {
+    if (controllerRef.current) return controllerRef.current;
+    let stagedRequestIdentity: string | null = null;
+    controllerRef.current = new ProgressionPresentationController(
+      {
+        createIdentity: (kind, event, source) => {
+          const identity = `${kind}:${source}:${event.id}:${crypto.randomUUID()}`;
+          if (kind === "request") stagedRequestIdentity = identity;
+          else if (stagedRequestIdentity) {
+            presentationPlaybackIdentities.current.set(stagedRequestIdentity, identity);
+            stagedRequestIdentity = null;
+          }
+          return identity;
+        },
+        present: presentProgressionRequest,
+        acknowledge: (receipt) => acknowledgePresentation(receipt.eventId),
+        cancelActive: (requestId) => {
+          if (activeRequestRef.current?.requestId !== requestId) return;
+          presentationRun.current?.abort();
+          director.cancel?.("authoritative-progression-arrived");
+        },
+        onReceipt: (receipt) => {
+          setLastPresentationReceipt(receipt);
+          if (dispatchedProgressionReceipts.current.has(receipt)) return;
+          dispatchedProgressionReceipts.current.add(receipt);
+          const playbackIdentity = presentationPlaybackIdentities.current.get(receipt.requestId);
+          if (!playbackIdentity) throw new Error(`Missing playback identity for ${receipt.requestId}.`);
+          const receiptPolicy = policyForProgressionEvent(receipt.eventType);
+          const integration =
+            presentationIntegrationEvidence.current.get(receipt.requestId) ??
+            Object.freeze({
+              currentSection: viewRef.current,
+              returnSection: viewRef.current,
+              localEnhancement: Object.freeze({
+                expected: Boolean(receiptPolicy.localEnhancement),
+                section: receiptPolicy.localEnhancement?.section ?? null,
+                status: receiptPolicy.localEnhancement ? ("unavailable" as const) : ("not-applicable" as const),
+                targetKeys: Object.freeze([]),
+              }),
+            });
+          const controllerState = controllerRef.current?.snapshot();
+          if (!controllerState) throw new Error("Progression controller receipt arrived before initialization.");
+          dispatchProgressionEvidence(
+            progressionReceiptEventName,
+            progressionReceiptEvidence(receipt, playbackIdentity, controllerState, integration),
+          );
+        },
+        onSnapshot: (next) => {
+          controllerSnapshot.current = next;
+          dispatchProgressionEvidence(
+            progressionStateEventName,
+            Object.freeze({
+              version: 1,
+              transition: "queue",
+              eventId: next.queue.active?.request.eventId ?? null,
+              requestId: next.queue.active?.request.requestId ?? null,
+              acknowledged: false,
+              acknowledgmentAttempted: false,
+              cursors: next.cursors,
+              queue: queueEvidence(next),
+            }),
+          );
+        },
+        onSettled: (notification) => {
+          dispatchProgressionEvidence(
+            progressionStateEventName,
+            Object.freeze({
+              version: 1,
+              transition: "settled",
+              eventId: notification.receipt.eventId,
+              requestId: notification.receipt.requestId,
+              acknowledged: notification.acknowledged,
+              acknowledgmentAttempted: notification.acknowledgmentAttempted,
+              cursors: notification.snapshot.cursors,
+              queue: queueEvidence(notification.snapshot),
+            }),
+          );
+          presentationIntegrationEvidence.current.delete(notification.receipt.requestId);
+          if (notification.receipt.status !== "deferred") {
+            presentationPlaybackIdentities.current.delete(notification.receipt.requestId);
+          }
+        },
+      },
+      { settledAuthoritativeSequence: 0 },
+    );
+    return controllerRef.current;
+  }, [acknowledgePresentation, director, presentProgressionRequest]);
+
   const playEvent = useCallback(
     async (
       incomingEvent: ClientProgressEvent,
-      requestSource: Extract<SceneRequestSource, "automatic" | "replay"> = "automatic",
+      requestSource: "automatic" | "replay" = "automatic",
       suppliedRelease?: ReplayablePresentation,
     ) => {
-      const chapterRelease = incomingEvent.type === "CHAPTER_RELEASED";
-      if (chapterRelease && requestSource === "automatic") {
-        automaticPresentationAttempts.current.add(incomingEvent.id);
-        pendingMandatoryEventRef.current = incomingEvent.id;
-        flushSync(() => {
-          setPendingMandatoryEventId(incomingEvent.id);
-          setCeremonyGate({ eventId: incomingEvent.id, status: "pending" });
-          setPresentationFailure(null);
-          setStaticChapterFallback(null);
-        });
-      } else if (chapterRelease) {
-        flushSync(() => setStaticChapterFallback(null));
-      }
-
-      const recordFailure = (failure: Omit<PresentationFailure, "eventId" | "requestSource">) => {
-        setPresentationFailure({ eventId: incomingEvent.id, requestSource, ...failure });
-      };
-
-      const host = root.current;
-      if (!host) {
-        if (chapterRelease) {
-          recordFailure({
-            outcome: "compatible-host-unavailable",
-            diagnostic: `event=${incomingEvent.id} outcome=compatible-host-unavailable`,
-          });
-        }
-        return;
-      }
-
-      let release = suppliedRelease;
-      if (chapterRelease && !release) {
-        const current = snapshotRef.current.latestChapterReleasePresentation;
-        if (current?.eventId === incomingEvent.id) release = current;
-        else {
-          try {
-            const refreshed = await refreshSnapshot();
-            if (refreshed.latestChapterReleasePresentation?.eventId === incomingEvent.id) {
-              release = refreshed.latestChapterReleasePresentation;
-            }
-          } catch {
-            setConnection("adrift");
-          }
-        }
-      }
-
-      if (chapterRelease && (!release || release.eventId !== incomingEvent.id)) {
-        recordFailure({
-          outcome: "snapshot-unavailable",
-          diagnostic: `event=${incomingEvent.id} outcome=snapshot-unavailable`,
-        });
-        return;
-      }
-
-      const event = release ? toChapterReleaseClientEvent(release) : incomingEvent;
-      if (release) {
-        lastReleaseRef.current = release;
-        setLastRelease(release);
-      }
-      const scene = sceneByEvent[event.type];
-      if (!scene) {
-        if (requestSource === "automatic") {
-          await refreshSnapshot().catch(() => setConnection("adrift"));
-        }
-        return;
-      }
-
-      presentationRun.current?.abort();
-      const controller = new AbortController();
-      presentationRun.current = controller;
-      if (requestSource === "replay") {
-        if (replayGuardTimer.current !== null) window.clearTimeout(replayGuardTimer.current);
-        replayMutationGuard.current = true;
-      }
-      const previousView = viewRef.current;
-      const previousFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;
-      const switchedToJournal = chapterRelease && previousView !== "journal";
-      flushSync(() => {
-        if (switchedToJournal) {
-          viewRef.current = "journal";
-          setView("journal");
-        }
-        setActiveEvent(event);
-      });
-
-      try {
-        if (
-          chapterRelease &&
-          !(await waitForMountedElement(host, "[data-scene-part='sealed-parchment']", controller.signal))
-        ) {
-          recordFailure({
-            outcome: "compatible-host-unavailable",
-            diagnostic: `event=${event.id} outcome=compatible-host-unavailable`,
-          });
-          return;
-        }
-
-        const receipt = await director.play(scene, {
-          root: host,
-          hostId: PLAYER_PROGRESSION_HOST_ID,
-          hostKind: chapterRelease ? "player-progression" : "progression",
-          requestSource,
-          eventOrActionId: event.id,
-          signal: controller.signal,
-          display: event.payload as Record<string, string | number | boolean>,
-          telemetryContext: {
-            route: "/tale",
-            playerSection: chapterRelease ? "journal" : viewRef.current,
-          },
-          queue: true,
-          ...(release
-            ? {
-                presentationFallback: async (context) => {
-                  if (
-                    !canUseReadableChapterFallback(
-                      context.motionPolicy.level,
-                      Boolean(release),
-                      Boolean(context.signal?.aborted),
-                    )
-                  ) {
-                    return {
-                      completed: false as const,
-                      readable: false,
-                      reason: "readable-fallback-requires-reduced-motion",
-                    };
-                  }
-                  flushSync(() => setStaticChapterFallback(release));
-                  await nextFrame();
-                  const fallback = host.querySelector<HTMLElement>("[data-chapter-readable-fallback]");
-                  const readable =
-                    fallback?.dataset.eventId === release.eventId &&
-                    fallback.isConnected &&
-                    Boolean(fallback.textContent?.includes(release.payload.title)) &&
-                    Boolean(fallback.textContent?.includes(release.payload.objective));
-                  return readable
-                    ? { completed: true as const, readable: true as const, semanticState: "chapter-readable" }
-                    : {
-                        completed: false as const,
-                        readable: false,
-                        reason: "readable-fallback-verification-failed",
-                      };
-                },
-              }
-            : {}),
-        });
-
-        const cue = cueByEvent[event.type];
-        if (cue) {
-          const validated = receiptValidatesAudio(receipt, cue.semanticLabel);
-          audio.current.playValidated({
-            name: cue.name,
-            motionPolicy: receipt.motionPolicy,
-            motionOnly: true,
-            presentationValidated: validated,
-            semanticLabel: validated ? cue.semanticLabel : null,
-            allowedSemanticLabels: [cue.semanticLabel],
-          });
-        }
-
-        if (chapterRelease) {
-          const alreadyAcknowledged = acknowledgedEvents.current.has(event.id);
-          const decision = decideChapterPresentation(receipt, alreadyAcknowledged);
-          if (decision.shouldAcknowledge) {
-            const acknowledged = await acknowledgeCeremony(event.id);
-            if (acknowledged) {
-              pendingMandatoryEventRef.current = null;
-              setPendingMandatoryEventId(null);
-              setCeremonyGate({ eventId: event.id, status: "acknowledged" });
-              setPresentationFailure(null);
-            } else {
-              recordFailure({
-                outcome: "acknowledgment-failed",
-                diagnostic: `event=${event.id} scene=${receipt.sceneName} instance=${receipt.sceneInstanceId} outcome=acknowledgment-failed`,
-              });
-            }
-          } else if (decision.retryable) {
-            recordFailure({ outcome: receipt.outcome, diagnostic: presentationDiagnostic(receipt) });
-          } else if (decision.completed && alreadyAcknowledged) {
-            pendingMandatoryEventRef.current = null;
-            setPendingMandatoryEventId(null);
-            setCeremonyGate({ eventId: event.id, status: "acknowledged" });
-            setPresentationFailure(null);
-          } else if (requestSource === "replay" && !pendingMandatoryEventRef.current) {
-            setPresentationFailure(null);
-          }
-        }
-      } catch {
-        if (chapterRelease) {
-          recordFailure({
-            outcome: "runtime-failed",
-            diagnostic: `event=${event.id} scene=${scene} outcome=director-rejected`,
-          });
-        }
-      } finally {
-        if (requestSource === "automatic") {
-          await refreshSnapshot().catch(() => setConnection("adrift"));
-        }
-        setActiveEvent(null);
-        if (switchedToJournal) {
-          flushSync(() => {
-            viewRef.current = previousView;
-            setView(previousView);
-          });
-          if (host.isConnected) {
-            await waitForMountedElement(host, "[data-section-heading]", controller.signal, 1_800);
-            const focusTarget = previousFocus?.isConnected
-              ? previousFocus
-              : host.querySelector<HTMLElement>("[data-section-heading]");
-            focusTarget?.focus({ preventScroll: true });
-          }
-        }
-        if (presentationRun.current === controller) presentationRun.current = null;
-        if (requestSource === "replay") {
-          replayGuardTimer.current = window.setTimeout(() => {
-            replayMutationGuard.current = false;
-            replayGuardTimer.current = null;
-          }, 50);
-        }
-      }
+      const event = suppliedRelease ? toChapterReleaseClientEvent(suppliedRelease) : incomingEvent;
+      eventHistory.current.set(event.id, Object.freeze({ ...event, payload: Object.freeze({ ...event.payload }) }));
+      const controller = ensureProgressionController();
+      controller.submit(event, requestSource === "replay" ? "replay" : "live");
+      await controller.awaitIdle();
     },
-    [acknowledgeCeremony, director, refreshSnapshot],
+    [ensureProgressionController],
   );
 
   useEffect(() => {
-    const source = new EventSource(
-      `/api/player/${initialSnapshot.campaign.slug}/events?after=${latestSequence.current}`,
-    );
+    if (!journalReady || historyReconciled || accessRevoked) return;
+    const abort = new AbortController();
+    const reconcile = async () => {
+      const history = [...(snapshotRef.current.presentationHistory ?? [])].sort(
+        (left, right) => left.sequence - right.sequence || left.id.localeCompare(right.id),
+      );
+      const acknowledgedEventIds = await loadAcknowledgedEventIds(
+        initialSnapshot.campaign.slug,
+        history.map((event) => event.id),
+        abort.signal,
+      );
+      if (abort.signal.aborted) return;
+      const controller = ensureProgressionController();
+      await controller.reconcile({ events: history, acknowledgedEventIds, source: "reconnect" });
+      if (!abort.signal.aborted) setHistoryReconciled(true);
+    };
+    void reconcile().catch(() => {
+      if (!abort.signal.aborted) setConnection("adrift");
+    });
+    return () => abort.abort();
+  }, [accessRevoked, ensureProgressionController, historyReconciled, initialSnapshot.campaign.slug, journalReady]);
+
+  useEffect(() => {
+    if (!historyReconciled || accessRevoked) return;
+    const controller = ensureProgressionController();
+    const after = controller.snapshot().cursors.observed;
+    const source = new EventSource(`/api/player/${initialSnapshot.campaign.slug}/events?after=${after}`);
     const offline = () => setConnection("adrift");
     const online = () => {
       setConnection("connecting");
       void refreshSnapshot()
-        .then(() => setConnection("live"))
+        .then(async (next) => {
+          const history = [...(next.presentationHistory ?? [])].sort(
+            (left, right) => left.sequence - right.sequence || left.id.localeCompare(right.id),
+          );
+          const abort = new AbortController();
+          const acknowledgedEventIds = await loadAcknowledgedEventIds(
+            initialSnapshot.campaign.slug,
+            history.map((event) => event.id),
+            abort.signal,
+          );
+          await controller.reconcile({ events: history, acknowledgedEventIds, source: "reconnect" });
+          setConnection("live");
+        })
         .catch(() => setConnection("adrift"));
     };
     source.onopen = () => setConnection("live");
     source.onerror = () => setConnection("adrift");
     source.addEventListener("progression", (message) => {
       const event = JSON.parse((message as MessageEvent).data) as ClientProgressEvent;
-      if (seenEvents.current.has(event.id)) return;
-      seenEvents.current.add(event.id);
-      latestSequence.current = Math.max(latestSequence.current, event.sequence);
-      eventChain.current = eventChain.current.then(() => playEvent(event)).catch(() => undefined);
+      if (event.type === "CHAPTER_RELEASED") {
+        void refreshSnapshot()
+          .then((next) => {
+            const authorized = next.presentationHistory?.find((candidate) => candidate.id === event.id);
+            if (!authorized) return;
+            eventHistory.current.set(
+              authorized.id,
+              Object.freeze({ ...authorized, payload: Object.freeze({ ...authorized.payload }) }),
+            );
+            controller.submit(authorized, "live");
+          })
+          .catch(() => setConnection("adrift"));
+        return;
+      }
+      eventHistory.current.set(event.id, Object.freeze({ ...event, payload: Object.freeze({ ...event.payload }) }));
+      controller.submit(event, "live");
+    });
+    source.addEventListener("access-revoked", () => {
+      source.close();
+      presentationRun.current?.abort();
+      controllerRef.current?.stop();
+      accessRevokedRef.current = true;
+      eventHistory.current.clear();
+      setPresentationHistory([]);
+      journalCeremonyTargets.current = null;
+      journalAnnotationTarget.current = null;
+      chapterSolvedLocalTarget.current = null;
+      sideQuestTarget.current = null;
+      chartTargets.current.clear();
+      logTargets.current.clear();
+      artifactTargets.current.clear();
+      artifactConnectionTargets.current.clear();
+      finaleTargets.current.clear();
+      finaleMechanismTarget.current = null;
+      finaleMechanismStatus.current = null;
+      presentationIntegrationEvidence.current.clear();
+      presentationPlaybackIdentities.current.clear();
+      dispatchedProgressionReceipts.current = new WeakSet<ProgressionPresentationReceipt>();
+      for (const handles of activeExternalHandles.current.values()) handles.forEach((handle) => handle.revoke());
+      activeExternalHandles.current.clear();
+      const revokedSnapshot = controller.snapshot();
+      dispatchProgressionEvidence(
+        progressionStateEventName,
+        Object.freeze({
+          version: 1,
+          transition: "access-revoked",
+          eventId: revokedSnapshot.queue.active?.request.eventId ?? null,
+          requestId: revokedSnapshot.queue.active?.request.requestId ?? null,
+          acknowledged: false,
+          acknowledgmentAttempted: false,
+          cursors: revokedSnapshot.cursors,
+          queue: queueEvidence(revokedSnapshot),
+        }),
+      );
+      flushSync(() => {
+        setAccessRevoked(true);
+        setConnection("adrift");
+        setPresentationFallback("Your invitation is no longer active. Ask the captain for a new invitation.");
+        setLastRelease(null);
+        setLastPresentedRequest(null);
+        activeRequestRef.current = null;
+        setActiveRequest(null);
+        setActiveEvent(null);
+      });
     });
     window.addEventListener("offline", offline);
     window.addEventListener("online", online);
@@ -531,9 +1433,10 @@ export function PlayerExperience({ initialSnapshot }: { initialSnapshot: PublicS
       window.removeEventListener("offline", offline);
       window.removeEventListener("online", online);
     };
-  }, [initialSnapshot.campaign.slug, playEvent, refreshSnapshot]);
+  }, [accessRevoked, ensureProgressionController, historyReconciled, initialSnapshot.campaign.slug, refreshSnapshot]);
 
   useEffect(() => {
+    if (accessRevoked) return;
     const report = (disconnected = false) => {
       if (replayMutationGuard.current) return Promise.resolve(undefined);
       return fetch(`/api/player/${snapshot.campaign.slug}/presence`, {
@@ -543,7 +1446,7 @@ export function PlayerExperience({ initialSnapshot }: { initialSnapshot: PublicS
           deviceId: deviceId(),
           route: `${location.pathname}#${view}`,
           visibility: document.visibilityState,
-          acknowledgedSequence: snapshot.sequence,
+          acknowledgedSequence: controllerSnapshot.current?.cursors.acknowledged ?? 0,
           disconnected,
         }),
         keepalive: disconnected,
@@ -558,7 +1461,7 @@ export function PlayerExperience({ initialSnapshot }: { initialSnapshot: PublicS
       document.removeEventListener("visibilitychange", visibility);
       void report(true);
     };
-  }, [snapshot.campaign.slug, snapshot.sequence, view]);
+  }, [accessRevoked, lastPresentationReceipt, snapshot.campaign.slug, view]);
 
   useEffect(() => {
     const readLocation = () => {
@@ -576,64 +1479,13 @@ export function PlayerExperience({ initialSnapshot }: { initialSnapshot: PublicS
   }, []);
 
   useEffect(() => {
-    const release = lastRelease;
-    if (!journalReady || !release || ceremonyGate?.eventId !== release.eventId || ceremonyGate.status !== "checking") {
-      return;
-    }
-
-    const controller = new AbortController();
-    const reconcilePersistedCeremony = async () => {
-      const query = new URLSearchParams({ eventId: release.eventId, deviceId: deviceId() });
-      try {
-        const response = await fetch(`/api/player/${snapshot.campaign.slug}/viewed?${query}`, {
-          cache: "no-store",
-          signal: controller.signal,
-        });
-        if (!response.ok) throw new Error("Ceremony status could not be loaded.");
-        const status = (await response.json()) as { acknowledged?: unknown };
-        if (controller.signal.aborted) return;
-        if (status.acknowledged === true) {
-          acknowledgedEvents.current.add(release.eventId);
-          pendingMandatoryEventRef.current = null;
-          setPendingMandatoryEventId(null);
-          setPresentationFailure(null);
-          setCeremonyGate({ eventId: release.eventId, status: "acknowledged" });
-          return;
-        }
-
-        pendingMandatoryEventRef.current = release.eventId;
-        setPendingMandatoryEventId(release.eventId);
-        setCeremonyGate({ eventId: release.eventId, status: "pending" });
-        if (!automaticPresentationAttempts.current.has(release.eventId)) {
-          void playEvent(toChapterReleaseClientEvent(release), "automatic", release);
-        }
-      } catch {
-        if (controller.signal.aborted) return;
-        pendingMandatoryEventRef.current = release.eventId;
-        setPendingMandatoryEventId(release.eventId);
-        setCeremonyGate({ eventId: release.eventId, status: "pending" });
-        setConnection("adrift");
-        setPresentationFailure({
-          eventId: release.eventId,
-          requestSource: "automatic",
-          outcome: "snapshot-unavailable",
-          diagnostic: `event=${release.eventId} outcome=ceremony-status-unavailable`,
-        });
-      }
-    };
-    void reconcilePersistedCeremony();
-    return () => controller.abort();
-  }, [ceremonyGate, journalReady, lastRelease, playEvent, snapshot.campaign.slug]);
-
-  useEffect(() => {
     if (!journalReady || replayMutationGuard.current) return;
+    const mandatoryEventId = activeRequest?.mandatory ? activeRequest.eventId : null;
     const failedAutomaticChapter =
-      presentationFailure?.requestSource === "automatic" ? presentationFailure.eventId : null;
-    const unresolvedPersistedCeremony = Boolean(lastRelease && ceremonyGate?.status !== "acknowledged");
-    if (
-      view === "journal" &&
-      shouldSuppressChapterViewed(pendingMandatoryEventId, failedAutomaticChapter, unresolvedPersistedCeremony)
-    ) {
+      lastPresentedRequest?.mandatory && lastPresentationReceipt?.status === "failed"
+        ? lastPresentedRequest.eventId
+        : null;
+    if (view === "journal" && shouldSuppressChapterViewed(mandatoryEventId, failedAutomaticChapter, false)) {
       return;
     }
     const entries: Record<CompanionView, { contentType: string; contentKeys: string[] }> = {
@@ -672,30 +1524,15 @@ export function PlayerExperience({ initialSnapshot }: { initialSnapshot: PublicS
       .catch(() => undefined);
     return () => controller.abort();
   }, [
-    ceremonyGate,
+    activeRequest,
     journalReady,
+    lastPresentationReceipt,
+    lastPresentedRequest,
     lastRelease,
-    pendingMandatoryEventId,
-    presentationFailure,
     refreshSnapshot,
     snapshot,
     view,
   ]);
-
-  async function retryChapterPresentation() {
-    let release = lastReleaseRef.current;
-    if (presentationFailure && release?.eventId !== presentationFailure.eventId) {
-      try {
-        const refreshed = await refreshSnapshot();
-        release = refreshed.latestChapterReleasePresentation ?? null;
-      } catch {
-        setConnection("adrift");
-        return;
-      }
-    }
-    if (!release || (presentationFailure && release.eventId !== presentationFailure.eventId)) return;
-    await playEvent(toChapterReleaseClientEvent(release), "automatic", release);
-  }
 
   async function openJournal(forceFull = false) {
     if (openingBusy.current || !root.current) return;
@@ -737,10 +1574,13 @@ export function PlayerExperience({ initialSnapshot }: { initialSnapshot: PublicS
       await advance("ENTRY_ACTIVATED", "ocean-rise");
       const key = `forever-intro:${snapshot.campaign.slug}`;
       const first = forceFull || sessionStorage.getItem(key) !== "seen";
+      const sceneHost = await waitForValue(() => journalOpeningHost.current, controller.signal);
+      if (!sceneHost) throw new Error("The journal opening host did not register.");
       const prelude = await director.play(first ? "first-arrival" : "session-reentry", {
         root: root.current,
-        hostId: JOURNAL_OPENING_HOST_ID,
-        hostKind: "arrival",
+        sceneHost,
+        hostId: sceneHost.hostId,
+        hostKind: sceneHost.kind,
         requestSource: forceFull ? "replay" : "explicit",
         eventOrActionId: `journal-opening:${first ? "first-arrival" : "session-reentry"}`,
         telemetryContext: { route: "/tale", playerSection: "journal" },
@@ -841,309 +1681,581 @@ export function PlayerExperience({ initialSnapshot }: { initialSnapshot: PublicS
       : animation.scene === "session-reentry"
         ? "reentry"
         : (animation.scene ?? "dormant");
+  const activePresentationPolicy = activeRequest ? policyForProgressionEvent(activeRequest.eventType) : null;
+  const activePresentationSummary = activeRequest ? presentationSummary(activeRequest) : "";
+  const settledPresentationPolicy = lastPresentedRequest
+    ? policyForProgressionEvent(lastPresentedRequest.eventType)
+    : null;
+  const settledPresentationSummary = lastPresentedRequest ? presentationSummary(lastPresentedRequest) : "";
+  const settledRetryable = lastPresentationReceipt?.retryDisposition === "retryable";
+  const settledRetryOutcome = lastPresentationReceipt?.sceneReceipt?.outcome ?? lastPresentationReceipt?.status ?? "failed";
+  const settledChapterReadableFallback =
+    lastPresentedRequest?.eventType === "CHAPTER_RELEASED" &&
+    (lastPresentationReceipt?.status === "fallback" ||
+      lastPresentationReceipt?.sceneReceipt?.motionPolicy.level === "reduced");
 
   return (
-    <main
-      ref={root}
+    <ProgressionSceneHost
+      as="main"
       className={`voyage-shell stage-${animation.label} view-${view}${resettingJournal ? " journal-resetting" : ""}`}
-      data-cinematic-sequence={animationSequence}
       data-journal-phase={openingPhase}
       data-journal-speed={openingSpeed}
       data-motion-mode={mode}
-      data-scene-host-id={PLAYER_PROGRESSION_HOST_ID}
-      data-scene-host-kind="player-progression"
-      data-journal-scene-host-id={JOURNAL_OPENING_HOST_ID}
       style={{ "--player-text-scale": textScale, "--texture-opacity": texture } as React.CSSProperties}
-    >
-      <div className="ocean-depth" data-scene-part="workspace-light" data-gsap-owned aria-hidden="true">
-        <div data-scene-part="sky" data-gsap-owned />
-        <div data-scene-part="horizon" data-gsap-owned />
-        <div data-scene-part="ocean" data-gsap-owned />
-        <div data-scene-part="fog-back" data-gsap-owned />
-        <div data-scene-part="fog-front" data-gsap-owned />
-      </div>
-      <div className="player-lantern" data-scene-part="lantern" data-gsap-owned aria-hidden="true">
-        <i />
-        <b />
-      </div>
-      <div
-        className="persistent-interface"
-        data-opening-actor="persistent-interface"
-        aria-hidden={!journalReady}
-        inert={!journalReady ? true : undefined}
-      >
-        <CompanionHeader
-          connection={connection}
-          muted={muted}
-          volume={volume}
-          mode={mode}
-          textScale={textScale}
-          texture={texture}
-          canReplay={Boolean(lastRelease && ceremonyGate?.status === "acknowledged")}
-          toggleMute={toggleMute}
-          setVolume={setVolume}
-          cycleMotion={cycle}
-          setTextScale={setTextScale}
-          setTexture={setTexture}
-          replay={() => lastRelease && void playEvent(toChapterReleaseClientEvent(lastRelease), "replay", lastRelease)}
-        />
-        <CompanionNavigation view={view} unseen={snapshot.unseen} navigate={navigate} />
-      </div>
-      <div className="persistent-mobile-interface" aria-hidden={!journalReady} inert={!journalReady ? true : undefined}>
-        <MobileNavigation view={view} unseen={snapshot.unseen} navigate={navigate} />
-      </div>
-      {(openingPhase === "ENTRY_IDLE" || openingPhase === "ENTRY_ACTIVATED") && (
-        <div className="journal-opening">
-          <button className="wax-open" onClick={() => void openJournal()}>
-            <span>F</span>
-            <strong>Open the journal</strong>
-            <small>Sound begins only after you choose</small>
-          </button>
-          {journalOpeningNotice && (
-            <p role="alert" className="journal-opening-notice">
-              {journalOpeningNotice}
-            </p>
-          )}
-        </div>
-      )}
-      {journalReady && journalOpeningNotice && (
-        <p role="status" className="journal-opening-notice">
-          {journalOpeningNotice}
-        </p>
-      )}
-      <div className="physical-workspace" aria-hidden={!journalReady} inert={!journalReady ? true : undefined}>
-        <AnimatePresence mode="wait" initial={false}>
-          <motion.div
-            key={view}
-            className="section-transition"
-            variants={sectionVariants(mode)}
-            initial="initial"
-            animate="enter"
-            exit="exit"
-            onAnimationComplete={(definition) => {
-              if (definition === "enter" && journalReady) {
-                document.querySelector<HTMLElement>("[data-section-heading]")?.focus({ preventScroll: true });
-              }
-            }}
-            data-animation-owner="motion"
+      active={Boolean(activeRequest)}
+      eventType={activeRequest?.eventType ?? null}
+      presentationId={activeRequest?.requestId}
+      status={presentationStatus}
+      title={activePresentationPolicy?.globalPresentation.heading ?? "Voyage update"}
+      summary={<p>{activePresentationSummary}</p>}
+      announcement={activePresentationPolicy?.globalPresentation.heading ?? ""}
+      politeness={activePresentationPolicy?.globalPresentation.announcement ?? "polite"}
+      busy={Boolean(activeRequest)}
+      skip={activeRequest ? { label: "Reveal readable result", onActivate: () => void director.skip() } : undefined}
+      destination={
+        activePresentationPolicy?.relevantSection
+          ? {
+              label: `Open ${activePresentationPolicy.relevantSection}`,
+              onActivate: () => navigate(activePresentationPolicy.relevantSection!),
+            }
+          : undefined
+      }
+      fallback={presentationFallback ? <p role={settledRetryable ? undefined : "alert"}>{presentationFallback}</p> : null}
+      onHostChange={onPersistentHostChange}
+      content={
+        accessRevoked ? (
+          <section className="player-access-revoked" role="alert" aria-labelledby="player-access-revoked-heading">
+            <h1 id="player-access-revoked-heading">Invitation no longer active</h1>
+            <p>Your voyage workspace has been closed. Ask the captain for a new invitation.</p>
+          </section>
+        ) : (
+          <div
+            ref={root}
+            data-player-experience-root
+            data-cinematic-sequence={animationSequence}
+            data-journal-phase={openingPhase}
+            data-journal-speed={openingSpeed}
+            data-motion-mode={mode}
+            style={{ "--player-text-scale": textScale, "--texture-opacity": texture } as React.CSSProperties}
           >
-            {view === "journal" && (
-              <JournalWorkspace
-                snapshot={snapshot}
+            <div
+              className="persistent-interface"
+              data-opening-actor="persistent-interface"
+              aria-hidden={!journalReady}
+              inert={!journalReady ? true : undefined}
+            >
+              <CompanionHeader
+                connection={connection}
+                muted={muted}
+                volume={volume}
                 mode={mode}
-                activeEvent={activeEvent}
-                openingPhase={openingPhase}
-                interactive={journalReady}
-                playbackRate={openingSpeed}
-                onPageTurn={() =>
-                  audio.current.playValidated({
-                    name: "page-turn",
-                    motionPolicy: policy,
-                    motionOnly: true,
-                    presentationValidated: true,
-                    semanticLabel: "page-turn-complete",
-                    allowedSemanticLabels: ["page-turn-complete"],
-                  })
+                textScale={textScale}
+                texture={texture}
+                canReplay={Boolean(lastRelease)}
+                toggleMute={toggleMute}
+                setVolume={setVolume}
+                cycleMotion={cycle}
+                setTextScale={setTextScale}
+                setTexture={setTexture}
+                replay={() =>
+                  lastRelease && void playEvent(toChapterReleaseClientEvent(lastRelease), "replay", lastRelease)
                 }
+                onDimTargetChange={onCompanionHeaderDimChange}
+              />
+              <CompanionNavigation
+                view={view}
+                unseen={snapshot.unseen}
+                navigate={navigate}
+                onDimTargetChange={onCompanionDesktopDimChange}
+              />
+            </div>
+            <div
+              className="persistent-mobile-interface"
+              aria-hidden={!journalReady}
+              inert={!journalReady ? true : undefined}
+            >
+              <MobileNavigation
+                view={view}
+                unseen={snapshot.unseen}
+                navigate={navigate}
+                onDimTargetChange={onCompanionMobileDimChange}
+              />
+            </div>
+            {(openingPhase === "ENTRY_IDLE" || openingPhase === "ENTRY_ACTIVATED") && (
+              <div className="journal-opening">
+                <button className="wax-open" onClick={() => void openJournal()}>
+                  <span>F</span>
+                  <strong>Open the journal</strong>
+                  <small>Sound begins only after you choose</small>
+                </button>
+                {journalOpeningNotice && (
+                  <p role="alert" className="journal-opening-notice">
+                    {journalOpeningNotice}
+                  </p>
+                )}
+              </div>
+            )}
+            {journalReady && journalOpeningNotice && (
+              <p role="status" className="journal-opening-notice">
+                {journalOpeningNotice}
+              </p>
+            )}
+            <div className="physical-workspace" aria-hidden={!journalReady} inert={!journalReady ? true : undefined}>
+              <AnimatePresence mode="wait" initial={false}>
+                <motion.div
+                  ref={sectionFocusTarget}
+                  key={view}
+                  className="section-transition"
+                  tabIndex={-1}
+                  variants={sectionVariants(mode)}
+                  initial="initial"
+                  animate="enter"
+                  exit="exit"
+                  onAnimationComplete={(definition) => {
+                    if (definition === "enter" && journalReady) {
+                      sectionHeadingWithin(sectionFocusTarget.current)?.focus({ preventScroll: true });
+                    }
+                  }}
+                  data-animation-owner="motion"
+                >
+                  {view === "journal" && (
+                    <SceneHost
+                      kind="player-section-enhancement"
+                      hostKey={`journal-section-${snapshot.campaign.slug}`}
+                      className="player-section-enhancement-host"
+                    >
+                      <JournalWorkspace
+                        snapshot={snapshot}
+                        mode={mode}
+                        activeEvent={activeEvent}
+                        openingPhase={openingPhase}
+                        interactive={journalReady}
+                        playbackRate={openingSpeed}
+                        onSceneTargetsChange={(ready) => {
+                          journalCeremonyTargets.current = ready;
+                        }}
+                        onAnnotationTargetChange={(ready) => {
+                          journalAnnotationTarget.current = ready;
+                        }}
+                        onPageTurn={() =>
+                          audio.current.playValidated({
+                            name: "page-turn",
+                            motionPolicy: policy,
+                            motionOnly: true,
+                            presentationValidated: true,
+                            semanticLabel: "page-turn-complete",
+                            allowedSemanticLabels: ["page-turn-complete"],
+                          })
+                        }
+                      />
+                      {activeEvent?.type === "CHAPTER_SOLVED" && (
+                        <ChapterSolvedLocalTarget
+                          eventId={activeEvent.id}
+                          onChange={onChapterSolvedLocalTargetChange}
+                        />
+                      )}
+                    </SceneHost>
+                  )}
+                  {view === "chart" && (
+                    <VoyageChart
+                      snapshot={snapshot}
+                      mode={mode}
+                      progressLocationKey={
+                        activeEvent?.type === "MAP_LOCATION_REVEALED"
+                          ? (eventPayloadKey(activeEvent) ?? undefined)
+                          : undefined
+                      }
+                      progressRouteKey={
+                        activeEvent?.type === "MAP_ROUTE_REVEALED"
+                          ? (eventPayloadKey(activeEvent) ?? undefined)
+                          : undefined
+                      }
+                      onTargetRegistrationChange={onChartTargetRegistrationChange}
+                    />
+                  )}
+                  {view === "treasures" && (
+                    <SceneHost
+                      kind="player-section-enhancement"
+                      hostKey={`treasure-altar-${snapshot.campaign.slug}`}
+                      className="player-section-enhancement-host"
+                    >
+                      <TreasureAltar
+                        snapshot={snapshot}
+                        onArtifactTargetHandlesChange={onArtifactTargetHandlesChange}
+                        onConnectionTargetHandleChange={onArtifactConnectionTargetHandleChange}
+                        inspect={(key, element) => {
+                          setInspectionOrigin(element);
+                          setSelectedArtifact(key);
+                        }}
+                      />
+                    </SceneHost>
+                  )}
+                  {view === "quests" && (
+                    <SideQuestLedger
+                      snapshot={snapshot}
+                      mode={mode}
+                      progressEvent={activeEvent}
+                      onTargetRegistrationChange={(ready) => {
+                        sideQuestTarget.current = ready;
+                      }}
+                    />
+                  )}
+                  {view === "log" && (
+                    <ShipsLog
+                      snapshot={snapshot}
+                      navigate={navigate}
+                      progressEventId={
+                        activeEvent?.type === "JOURNAL_ANNOTATION_ADDED" ||
+                        activeEvent?.type === "PLAYER_LOG_ENTRY_ADDED"
+                          ? activeEvent.id
+                          : undefined
+                      }
+                      onTargetRegistrationChange={onLogTargetRegistrationChange}
+                    />
+                  )}
+                  {view === "finale" && (
+                    <FinaleChamber
+                      snapshot={snapshot}
+                      mode={mode}
+                      progressEventType={
+                        activeEvent?.type === "FINALE_TEASED" || activeEvent?.type === "FINALE_REQUIREMENT_UPDATED"
+                          ? activeEvent.type
+                          : undefined
+                      }
+                      progressEventId={
+                        activeEvent?.type === "FINALE_TEASED" || activeEvent?.type === "FINALE_REQUIREMENT_UPDATED"
+                          ? activeEvent.id
+                          : undefined
+                      }
+                      progressRequirementKey={
+                        activeEvent?.type === "FINALE_REQUIREMENT_UPDATED"
+                          ? (eventPayloadKey(activeEvent) ?? undefined)
+                          : undefined
+                      }
+                      onTargetRegistrationChange={onFinaleTargetRegistrationChange}
+                      onMechanismTargetChange={onFinaleMechanismTargetChange}
+                      onMechanismStatusChange={onFinaleMechanismStatusChange}
+                    />
+                  )}
+                </motion.div>
+              </AnimatePresence>
+            </div>
+            <div
+              className="persistent-objective"
+              data-opening-actor="objective"
+              aria-hidden={!journalReady}
+              inert={!journalReady ? true : undefined}
+            >
+              <ObjectiveNote
+                objective={objective}
+                chapter={snapshot.chapter.ordinal}
+                title={snapshot.chapter.title}
+                hintCount={snapshot.chapter.hints?.length ?? 0}
+                expanded={objectiveOpen}
+                setExpanded={setObjectiveOpen}
+                returnToClue={() => navigate("journal")}
+              />
+            </div>
+            <AnimatePresence>
+              {inspectedArtifact && (
+                <ArtifactInspection
+                  artifact={inspectedArtifact}
+                  close={() => setSelectedArtifact(null)}
+                  restoreFocus={inspectionOrigin}
+                  onTargetHandlesChange={onInspectionTargetHandlesChange}
+                />
+              )}
+            </AnimatePresence>
+            {openingPhase !== "ENTRY_IDLE" && !journalReady && (
+              <JournalOpeningScene
+                animationSequence={animationSequence}
+                showSkip={animation.isPlaying && animation.label !== "dark-sea"}
+                skip={skipJournalOpening}
+                onHostChange={onJournalOpeningHostChange}
               />
             )}
-            {view === "chart" && <VoyageChart snapshot={snapshot} mode={mode} />}
-            {view === "treasures" && (
-              <TreasureAltar
-                snapshot={snapshot}
-                inspect={(key, element) => {
-                  setInspectionOrigin(element);
-                  setSelectedArtifact(key);
-                }}
-              />
+            {animation.isPlaying && animation.scene === "chapter-release" && (
+              <div className="ceremony-controls">
+                <span>Releasing the first seal · {animation.label.replaceAll("-", " ")}</span>
+                <button onClick={() => director.skip()}>Reveal all now</button>
+              </div>
             )}
-            {view === "quests" && <SideQuestLedger snapshot={snapshot} mode={mode} />}
-            {view === "log" && <ShipsLog snapshot={snapshot} navigate={navigate} />}
-            {view === "finale" && <FinaleChamber snapshot={snapshot} mode={mode} />}
-          </motion.div>
-        </AnimatePresence>
-      </div>
-      <div
-        className="persistent-objective"
-        data-opening-actor="objective"
-        aria-hidden={!journalReady}
-        inert={!journalReady ? true : undefined}
-      >
-        <ObjectiveNote
-          objective={objective}
-          chapter={snapshot.chapter.ordinal}
-          title={snapshot.chapter.title}
-          hintCount={snapshot.chapter.hints?.length ?? 0}
-          expanded={objectiveOpen}
-          setExpanded={setObjectiveOpen}
-          returnToClue={() => navigate("journal")}
-        />
-      </div>
-      <AnimatePresence>
-        {inspectedArtifact && (
-          <ArtifactInspection
-            artifact={inspectedArtifact}
-            close={() => setSelectedArtifact(null)}
-            restoreFocus={inspectionOrigin}
-          />
-        )}
-      </AnimatePresence>
-      {openingPhase !== "ENTRY_IDLE" && !journalReady && (
-        <div
-          className={`voyage-introduction intro-${animationSequence}`}
-          data-opening-actor="introduction"
-          role="status"
-          aria-live="polite"
-        >
-          <div className="intro-horizon" data-scene-part="horizon" data-gsap-owned aria-hidden="true" />
-          <div className="intro-wave" data-scene-part="ocean" data-gsap-owned aria-hidden="true" />
-          <div className="intro-fog" data-scene-part="fog-front" data-gsap-owned aria-hidden="true" />
-          <div className="intro-title" data-scene-part="title" data-gsap-owned>
-            <span>The Forever Treasure</span>
-            <small>Voyage Companion</small>
+            {!activeRequest && lastPresentedRequest && settledPresentationPolicy && (
+              <aside
+                className="progression-settled-notice"
+                role={settledRetryable ? "alert" : undefined}
+                data-progress-event-id={lastPresentedRequest.eventId}
+                data-progress-event-type={lastPresentedRequest.eventType}
+                data-presentation-status={lastPresentationReceipt?.status ?? presentationStatus}
+              >
+                <h2>{settledPresentationPolicy.globalPresentation.heading}</h2>
+                <p>{settledPresentationSummary}</p>
+                {settledChapterReadableFallback && (
+                  <section data-chapter-readable-fallback data-event-id={lastPresentedRequest.eventId}>
+                    <h3>{String(lastPresentedRequest.payload.title ?? settledPresentationPolicy.globalPresentation.heading)}</h3>
+                    <p>{String(lastPresentedRequest.payload.objective ?? settledPresentationSummary)}</p>
+                  </section>
+                )}
+                {settledRetryable && (
+                  <>
+                    <p>The ceremony could not be completed. Its readable state remains available while you retry.</p>
+                    <code>outcome={settledRetryOutcome}</code>
+                  </>
+                )}
+                <div role="group" aria-label="Voyage update actions">
+                  {settledPresentationPolicy.relevantSection && (
+                    <button type="button" onClick={() => navigate(settledPresentationPolicy.relevantSection!)}>
+                      {lastPresentedRequest.eventType === "CHAPTER_RELEASED" && view !== "journal"
+                        ? "Return to Journal"
+                        : `Open ${settledPresentationPolicy.relevantSection}`}
+                    </button>
+                  )}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const event = eventHistory.current.get(lastPresentedRequest.eventId);
+                      if (event) void playEvent(event, "replay");
+                    }}
+                  >
+                    Replay ceremony
+                  </button>
+                  {settledRetryable && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const event = eventHistory.current.get(lastPresentedRequest.eventId);
+                        if (event) void playEvent(event, "automatic");
+                      }}
+                    >
+                      Retry ceremony
+                    </button>
+                  )}
+                  <button type="button" onClick={() => setLastPresentedRequest(null)}>
+                    Dismiss
+                  </button>
+                </div>
+              </aside>
+            )}
+            {presentationHistory.length > 0 && (
+              <aside className="progression-history" aria-label="Presentation history" data-presentation-history>
+                <details>
+                  <summary>Presentation history</summary>
+                  <ol>
+                    {presentationHistory.map((entry) => {
+                      const entryPolicy = policyForProgressionEvent(entry.eventType);
+                      return (
+                        <li key={entry.eventId} data-presentation-history-event={entry.eventId}>
+                          <div>
+                            <strong>{entryPolicy.globalPresentation.heading}</strong>
+                            <small>
+                              {entry.eventType} · Sequence {entry.eventSequence} · {entry.eventId}
+                            </small>
+                          </div>
+                          <button
+                            type="button"
+                            data-replay-event-id={entry.eventId}
+                            aria-label={`Replay ${entryPolicy.globalPresentation.heading} (${entry.eventId})`}
+                            onClick={() => {
+                              const event = eventHistory.current.get(entry.eventId);
+                              if (event) void playEvent(event, "replay");
+                            }}
+                          >
+                            Replay
+                          </button>
+                        </li>
+                      );
+                    })}
+                  </ol>
+                </details>
+              </aside>
+            )}
+            {!animation.isPlaying && journalReady && (
+              <button className="intro-replay-control" onClick={() => void openJournal(true)}>
+                Replay introduction
+              </button>
+            )}
+            <AnimationTestButton />
           </div>
-          <div className="intro-emblem" data-scene-part="emblem" data-gsap-owned aria-hidden="true">
-            ✦
-          </div>
-          <p data-scene-part="arrival-copy" data-gsap-owned>
-            The journal wakes beneath paired stars.
-          </p>
-          <div className="intro-action-cue" data-scene-part="arrival-action" data-gsap-owned aria-hidden="true">
-            ✦
-          </div>
-          {animation.isPlaying && animation.label !== "dark-sea" && (
-            <button onClick={skipJournalOpening}>Skip ceremony</button>
-          )}
-        </div>
-      )}
-      {(activeEvent?.type === "CHAPTER_SOLVED" || activeEvent?.type === "STATE_REVERTED") && (
-        <div
-          className="progression-mark"
-          data-scene-part={activeEvent.type === "CHAPTER_SOLVED" ? "solved-stamp" : "undo-mark"}
-          data-gsap-owned
-          role="status"
-        >
-          {activeEvent.type === "CHAPTER_SOLVED" ? "SOLVED" : "RESTORED"}
-        </div>
-      )}
-      {activeEvent && <PlayerProgressionProp event={activeEvent} />}
-      {staticChapterFallback && (
-        <section
-          className="chapter-readable-fallback"
-          data-chapter-readable-fallback
-          data-event-id={staticChapterFallback.eventId}
-          role="status"
-          aria-live="polite"
-        >
-          <p>Chapter {staticChapterFallback.payload.ordinal}</p>
-          <h2>{staticChapterFallback.payload.title}</h2>
-          <p>{staticChapterFallback.payload.narrative}</p>
-          <strong>{staticChapterFallback.payload.objective}</strong>
-          {staticChapterFallback.payload.riddle && <p>{staticChapterFallback.payload.riddle}</p>}
-        </section>
-      )}
-      {presentationFailure && (
-        <aside className="presentation-retry" role="alert" aria-live="assertive">
-          <p>The chapter ceremony could not be completed. Your progress is safe; try it again.</p>
-          {process.env.NODE_ENV !== "production" && <code>{presentationFailure.diagnostic}</code>}
-          <button onClick={() => void retryChapterPresentation()}>Retry ceremony</button>
-        </aside>
-      )}
-      {animation.isPlaying && animation.scene === "chapter-release" && (
-        <div className="ceremony-controls">
-          <span>Releasing the first seal · {animation.label.replaceAll("-", " ")}</span>
-          <button onClick={() => director.skip()}>Reveal all now</button>
-        </div>
-      )}
-      {!animation.isPlaying && lastRelease && ceremonyGate?.status === "acknowledged" && journalReady && (
-        <button
-          className="replay-control"
-          onClick={() => void playEvent(toChapterReleaseClientEvent(lastRelease), "replay", lastRelease)}
-        >
-          Replay ceremony
-        </button>
-      )}
-      {!animation.isPlaying && journalReady && (
-        <button className="intro-replay-control" onClick={() => void openJournal(true)}>
-          Replay introduction
-        </button>
-      )}
-      <AnimationTestButton />
-    </main>
+        )
+      }
+    />
   );
 }
 
-function PlayerProgressionProp({ event }: { event: ClientProgressEvent }) {
-  if (["ARTIFACT_AWARDED", "ARTIFACT_SILHOUETTE_REVEALED"].includes(event.type)) {
-    return (
-      <div className="player-event-prop artifact-event-prop" aria-hidden="true">
-        <div data-scene-part="artifact-light" data-gsap-owned />
-        <div data-scene-part="artifact-reveal" data-gsap-owned>
-          ✦
-        </div>
-        <div data-scene-part="artifact-slot-target" />
+function SceneHostHandleCapture({ onChange }: { onChange: (host: SceneHostHandle | null) => void }) {
+  const host = useOptionalSceneHost();
+  useLayoutEffect(() => {
+    onChange(host);
+    return () => onChange(null);
+  }, [host, onChange]);
+  return null;
+}
+
+function ChapterSolvedLocalTarget({
+  eventId,
+  onChange,
+}: {
+  eventId: string;
+  onChange: (ready: ChapterSolvedLocalTargetReady | null) => void;
+}) {
+  const host = useOptionalSceneHost();
+  const registration = useMemo(
+    () => ({
+      targetKey: `chapter-solved:${eventId}`,
+      part: "solved-stamp",
+      ownerHint: "gsap" as const,
+      allowedProperties: ["transform", "opacity"] as const,
+    }),
+    [eventId],
+  );
+  const { bindTarget, handle } = useSceneTargetRegistration(registration);
+
+  useLayoutEffect(() => {
+    if (!host || !handle) {
+      onChange(null);
+      return;
+    }
+    onChange({ eventId, host, target: handle });
+    return () => onChange(null);
+  }, [eventId, handle, host, onChange]);
+
+  return (
+    <span
+      ref={bindTarget}
+      className="chapter-solved-local-stamp"
+      data-scene-part="solved-stamp"
+      data-gsap-owned
+      data-gsap-visual-boundary
+      aria-hidden="true"
+    >
+      Solved
+    </span>
+  );
+}
+
+function JournalOpeningScene({
+  animationSequence,
+  showSkip,
+  skip,
+  onHostChange,
+}: {
+  animationSequence: string;
+  showSkip: boolean;
+  skip: () => void;
+  onHostChange: (host: SceneHostHandle | null) => void;
+}) {
+  return (
+    <SceneHost
+      kind="journal-opening"
+      hostKey={JOURNAL_OPENING_HOST_KEY}
+      className={`voyage-introduction intro-${animationSequence}`}
+      data-opening-actor="introduction"
+      role="status"
+      aria-live="polite"
+    >
+      <SceneHostHandleCapture onChange={onHostChange} />
+      <JournalOpeningTargets showSkip={showSkip} skip={skip} />
+    </SceneHost>
+  );
+}
+
+function JournalOpeningTargets({ showSkip, skip }: { showSkip: boolean; skip: () => void }) {
+  const title = useMemo(
+    () => ({
+      targetKey: "journal-opening:title",
+      part: "title",
+      ownerHint: "gsap" as const,
+      allowedProperties: ["transform", "clip-path", "opacity"] as const,
+    }),
+    [],
+  );
+  const horizon = useMemo(
+    () => ({
+      targetKey: "journal-opening:horizon",
+      part: "horizon",
+      ownerHint: "gsap" as const,
+      allowedProperties: ["transform", "opacity"] as const,
+    }),
+    [],
+  );
+  const ocean = useMemo(
+    () => ({
+      targetKey: "journal-opening:ocean",
+      part: "ocean",
+      ownerHint: "gsap" as const,
+      allowedProperties: ["transform", "opacity"] as const,
+    }),
+    [],
+  );
+  const fog = useMemo(
+    () => ({
+      targetKey: "journal-opening:fog-front",
+      part: "fog-front",
+      ownerHint: "gsap" as const,
+      allowedProperties: ["transform", "opacity"] as const,
+    }),
+    [],
+  );
+  const emblem = useMemo(
+    () => ({
+      targetKey: "journal-opening:emblem",
+      part: "emblem",
+      ownerHint: "gsap" as const,
+      allowedProperties: ["transform", "opacity"] as const,
+    }),
+    [],
+  );
+  const arrivalCopy = useMemo(
+    () => ({
+      targetKey: "journal-opening:arrival-copy",
+      part: "arrival-copy",
+      ownerHint: "gsap" as const,
+      allowedProperties: ["transform", "opacity"] as const,
+    }),
+    [],
+  );
+  const arrivalAction = useMemo(
+    () => ({
+      targetKey: "journal-opening:arrival-action",
+      part: "arrival-action",
+      ownerHint: "gsap" as const,
+      allowedProperties: ["transform", "opacity"] as const,
+    }),
+    [],
+  );
+  const { bindTarget: bindTitle } = useSceneTargetRegistration(title);
+  const { bindTarget: bindHorizon } = useSceneTargetRegistration(horizon);
+  const { bindTarget: bindOcean } = useSceneTargetRegistration(ocean);
+  const { bindTarget: bindFog } = useSceneTargetRegistration(fog);
+  const { bindTarget: bindEmblem } = useSceneTargetRegistration(emblem);
+  const { bindTarget: bindArrivalCopy } = useSceneTargetRegistration(arrivalCopy);
+  const { bindTarget: bindArrivalAction } = useSceneTargetRegistration(arrivalAction);
+
+  return (
+    <>
+      <div ref={bindHorizon} className="intro-horizon" data-scene-part="horizon" data-gsap-owned aria-hidden="true" />
+      <div ref={bindOcean} className="intro-wave" data-scene-part="ocean" data-gsap-owned aria-hidden="true" />
+      <div ref={bindFog} className="intro-fog" data-scene-part="fog-front" data-gsap-owned aria-hidden="true" />
+      <div ref={bindTitle} className="intro-title" data-scene-part="title" data-gsap-owned>
+        <span>The Forever Treasure</span>
+        <small>Voyage Companion</small>
       </div>
-    );
-  }
-  if (["MAP_LOCATION_REVEALED", "MAP_ROUTE_REVEALED"].includes(event.type)) {
-    return (
-      <div className="player-event-prop map-event-prop" aria-hidden="true">
-        <div data-scene-part="map-fog" data-gsap-owned />
-        <svg viewBox="0 0 460 220">
-          <path data-scene-part="route-path" data-gsap-owned d="M20 180C140 35 310 40 440 160" />
-        </svg>
-        <i data-scene-part="map-marker-new" data-gsap-owned>
-          ✦
-        </i>
+      <div ref={bindEmblem} className="intro-emblem" data-scene-part="emblem" data-gsap-owned aria-hidden="true">
+        ✦
       </div>
-    );
-  }
-  if (["ARTIFACT_CONNECTED"].includes(event.type)) {
-    return (
-      <svg className="player-event-prop connection-event-prop" viewBox="0 0 460 220" aria-hidden="true">
-        <path data-scene-part="artifact-connection-path" data-gsap-owned d="M30 170Q230 20 430 170" />
-      </svg>
-    );
-  }
-  if (["SIDE_QUEST_DISCOVERED", "SIDE_QUEST_UPDATED", "SIDE_QUEST_COMPLETED"].includes(event.type)) {
-    return (
-      <div className="player-event-prop quest-event-prop" aria-hidden="true">
-        <div data-scene-part="quest-note-new" data-gsap-owned>
-          OPTIONAL COURSE
-        </div>
-        <svg viewBox="0 0 460 220">
-          <path data-scene-part="red-thread" data-gsap-owned d="M20 180C150 20 310 35 440 170" />
-        </svg>
-        <i data-scene-part="quest-stamp" data-gsap-owned>
-          COMPLETE
-        </i>
-      </div>
-    );
-  }
-  if (["JOURNAL_ANNOTATION_ADDED", "PLAYER_LOG_ENTRY_ADDED"].includes(event.type)) {
-    return (
+      <p ref={bindArrivalCopy} data-scene-part="arrival-copy" data-gsap-owned>
+        The journal wakes beneath paired stars.
+      </p>
       <div
-        className="player-event-prop log-event-prop"
-        data-scene-part="log-entry-new"
+        ref={bindArrivalAction}
+        className="intro-action-cue"
+        data-scene-part="arrival-action"
         data-gsap-owned
         aria-hidden="true"
       >
-        <i data-scene-part="log-symbol-new" data-gsap-owned>
-          ✦
-        </i>
+        ✦
       </div>
-    );
-  }
-  if (["FINALE_TEASED", "FINALE_REQUIREMENT_UPDATED"].includes(event.type)) {
-    return (
-      <div className="player-event-prop finale-event-prop" aria-hidden="true">
-        <i data-scene-part="finale-ring-outer" data-gsap-owned />
-        <i data-scene-part="finale-ring-inner" data-gsap-owned />
-        <svg viewBox="0 0 300 300">
-          <path data-scene-part="finale-light-path" data-gsap-owned d="M150 12L278 150 150 288 22 150z" />
-        </svg>
-      </div>
-    );
-  }
-  return null;
+      {showSkip && <button onClick={skip}>Skip ceremony</button>}
+    </>
+  );
 }

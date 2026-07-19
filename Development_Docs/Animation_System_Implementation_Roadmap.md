@@ -2,7 +2,7 @@
 
 ## Roadmap status and truth boundary
 
-This roadmap is the implementation sequence that follows the animation-system audit of baseline commit `4dbe8c0ae2fbab2785d1d3f26b8d7ba33bf56aee`. The Project Lanternwake Phase 1 section now also records implementation evidence from the current `main` working tree; the application implementation began from commit `40a58ec1329caea8245b10ce344eb05f5d6baed2`, before later governance-only commits advanced the branch. Phases 2 through 6 remain planning only. A Phase 1 item marked implemented and integrated-verified means its code and focused checks exist and the centralized full technical validation gate passed; it is not a claim that the coordinator-owned repository finalization gate has completed or that Phase 2 has started.
+This roadmap is the implementation sequence that follows the animation-system audit of baseline commit `4dbe8c0ae2fbab2785d1d3f26b8d7ba33bf56aee`. The Project Lanternwake Phase 1 section records its completed evidence, and the dated Phase 2 reconciliation records Claim the Deck implementation and composite validation at implementation commit `d529b59e06ad1f2d736f6e1b888ebb78f169dcc0`. Phases 3 through 6 remain planning only. Phase 2 repository synchronization and remote publication are still coordinator-owned finalization steps; the dated reconciliation at the end of this roadmap is authoritative for the current phase state.
 
 Current Phase 1 state: implementation, focused verification, documentation reconciliation, and the integrated technical gate are complete. `npm run validate` exited `0` with type-check, lint, format, 46 Vitest files / 304 tests, animation-asset contracts, database checks, the legacy backfill, production build, production restart proof, and isolated browser validation all passing; Playwright reported 27 passed and 17 skipped. The validation report also proved that the copied validation database was distinct from and did not change the canonical database. At this documented pre-finalization checkpoint, only the coordinator-owned chat/development-document dry-run, live synchronization, synchronization validation, and final Git/remote classification remained; their later result belongs to the synchronizer report and final task handoff. No production Rive binary, persistent/global Player ceremony host, Prisma schema change, or Phase 2+ visual expansion was added.
 
@@ -623,3 +623,55 @@ A phase is complete only when its acceptance criteria are mapped to evidence, fo
 ### Exact next action
 
 Finish Project Lanternwake Phase 1 without entering Phase 2: preserve the passing integrated `npm run validate` evidence, inspect the combined diff and working tree, and complete the required coordinator-owned chat/development-document dry-run, live synchronization, synchronization validation, scoped commit/push verification, and final Git/remote classification. Then report Phase 1 complete and stop for review. Do not begin the persistent/global ceremony host, production Rive registration, future-contract scene implementation, platform-wide motion expansion, the 238-animation blueprint, or final visual/performance tuning in this phase.
+
+## Project Lanternwake status reconciliation (2026-07-18)
+
+This dated reconciliation updates current execution status without changing the historical roadmap scope above.
+
+| Project Lanternwake phase        | Current state                                                          | Evidence and boundary                                                                                                                                                                                                                                                                                                         |
+| -------------------------------- | ---------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Phase 1 - Light the Lantern      | **Complete, validated, synchronized**                                  | `npm run validate` passed with 46 Vitest files / 304 tests and 27 Playwright passes / 17 intentional skips; asset, database-isolation, seed/backfill/history, build/restart, launcher-preservation, and cleanup checks passed; documentation/chat synchronization was pushed at `fb8eb4ac33f4a44028fe82fb08df0ac0e5021db6`    |
+| Phase 2 - Claim the Deck         | **Implementation/composite validation accepted; finalization pending** | SceneHost, scene-instance, target, external-handle, ownership-permit, final-state, PageFlip, component-boundary, diagnostics, and reconciliation surfaces are implemented; V2/V3 repairs, 59 files / 452 tests, 48-pass isolated Playwright, assets, and canonical build/restarts passed; sync/push remains coordinator-owned |
+| Phase 3 - Unfurl the Tale        | **Not started**                                                        | May consume only the stable Phase 2 APIs after Phase 2 acceptance; the persistent Player progression/event integration is not being implemented by this phase                                                                                                                                                                 |
+| Phase 4 - Bring the Harbor Alive | **Not started**                                                        | Modern platform/authentication/Library/invitation/shell motion remains later work; no Phase 2 architecture result is visual implementation proof                                                                                                                                                                              |
+
+### Current tracking totals
+
+| Tracking surface                            | Current total |
+| ------------------------------------------- | ------------: |
+| Frozen Codex animation rows                 |           220 |
+| OA source requirements                      |           238 |
+| Accepted source requirements                |           458 |
+| Current physical matrix rows / columns      |      361 / 58 |
+| OA ledger rows / columns                    |      238 / 40 |
+| Existing-only / dedicated OA mappings       |      97 / 141 |
+| OA-to-matrix edges                          |           289 |
+| Coverage exact / combined / partial         |  184 / 47 / 7 |
+| Accepted requirements unmapped / unresolved |         0 / 0 |
+
+The reconciliation validator and its 13 Python tests pass. Normalized implementation state deliberately remains conservative after Phase 2 acceptance: the matrix contains 252 `architecture_ready`, 47 `validated`, 50 `partially_implemented`, 10 `not_started`, and 2 `blocked` rows; the OA ledger contains 151 `architecture_ready`, 1 `validated`, 74 `partially_implemented`, 10 `not_started`, and 2 `blocked` rows. Architecture validation is `passed` for 349 matrix rows / 226 OA rows and `not_started` for 12 rows in each artifact. `architecture_ready` records a passed Phase 2 boundary only: those later visuals retain blank implementation commits and planned visual validation rather than being called implemented.
+
+### Stable Phase 2 handoff target
+
+Phase 3 and Phase 4 must reuse, not fork, these Phase 2 boundaries:
+
+1. provider-scoped `SceneHost` registration and teardown;
+2. immutable per-play scene-instance identity;
+3. host-local target registration and exact target contracts;
+4. registry-minted identity-only external target handles;
+5. atomic property-group ownership and opaque write permits;
+6. runtime-owned Motion/CSS/PageFlip/Rive/Lottie/WAAPI/dnd-kit integration;
+7. final-state handoff and handoff-before-cleanup ordering;
+8. PageFlip source, current clone, stale clone, and generation identity;
+9. structured presentation receipts, diagnostics, and replay-instance identity; and
+10. the 220 + 238 requirement mapping and validator contract.
+
+The five future-contract scenes remain later visuals. Their safe runtime boundaries may be consumed by later phases, but the visuals remain **not implemented** until their later triggers, visuals, assets, reduced states, accessibility, and tests are delivered.
+
+### Current release blockers
+
+- Coordinator-owned evidence commit, chat/document synchronization, branch push, and remote-SHA verification remain required.
+- The combined `npm run validate` process exited 1 at production build because of the temporary worktree dependency junction. This is an evidence-backed `environment` classification, not a command pass. After the junction was removed, canonical `npm run build` and two production restart/cleanup probes passed.
+- Production Rive visuals, future-contract visuals, Phase 3 progression/event integration, Phase 4 platform motion, broad device-performance tuning, and final art polish remain later work rather than Phase 2 blockers.
+
+Phase 2 implementation and composite validation are accepted. Phase 3 and Phase 4 stay blocked from automatic start until the coordinator completes synchronization, push, and remote verification, then provides the explicit handoff.
