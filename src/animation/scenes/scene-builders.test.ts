@@ -135,6 +135,20 @@ describe("GSAP scene builders", () => {
     chapter.cleanups.reverse().forEach((cleanup) => cleanup());
   });
 
+  it("keeps the full chapter choreography inside the cold acknowledgment envelope", () => {
+    const chapter = context("full");
+    const opening = sceneRegistry["chapter-release"].buildOpening(chapter.value);
+    const success = sceneRegistry["chapter-release"].buildSuccess(chapter.value);
+    const choreographySeconds = opening.duration() + success.duration();
+
+    expect(choreographySeconds).toBeGreaterThanOrEqual(4);
+    expect(choreographySeconds).toBeLessThan(4.5);
+
+    opening.kill();
+    success.kill();
+    chapter.cleanups.reverse().forEach((cleanup) => cleanup());
+  });
+
   it("provides truthful failure checkpoints for authenticated and GM operations", () => {
     const access = context();
     expectLabels(sceneRegistry["player-access"].buildFailure!(access.value), ["failure-branch", "lock-rejected"]);

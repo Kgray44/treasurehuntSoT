@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { sanitizeEventPayload, toClientEvent } from "./visibility";
+import { MAX_PUBLIC_EVENT_STRING_LENGTH, sanitizeEventPayload, toClientEvent } from "./visibility";
 
 describe("player event serialization", () => {
   it("allowlists released fields and strips internal story data", () => {
@@ -40,5 +40,28 @@ describe("player event serialization", () => {
         internalNote: "never broadcast",
       }),
     ).toEqual({ id: "dispatch-1", title: "Safe title" });
+  });
+
+  it("rejects nested and oversized values rather than serializing hidden structure", () => {
+    expect(
+      sanitizeEventPayload("CHAPTER_RELEASED", {
+        ordinal: 2,
+        title: { public: "Safe title", internalNote: "never serialize" },
+        narrative: "not allowlisted",
+      }),
+    ).toEqual({ ordinal: 2 });
+
+    expect(
+      sanitizeEventPayload("CHAPTER_RELEASED", {
+        ordinal: 2,
+        title: "x".repeat(MAX_PUBLIC_EVENT_STRING_LENGTH + 1),
+      }),
+    ).toEqual({ ordinal: 2 });
+  });
+
+  it("rejects non-finite numeric metadata", () => {
+    expect(sanitizeEventPayload("CHAPTER_RELEASED", { ordinal: Number.POSITIVE_INFINITY, title: "Safe" })).toEqual({
+      title: "Safe",
+    });
   });
 });

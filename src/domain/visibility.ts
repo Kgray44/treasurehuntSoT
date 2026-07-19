@@ -32,9 +32,17 @@ const publicKeys: Partial<Record<ProgressEventType, readonly string[]>> = {
   STATE_REVERTED: ["reversedType"],
 };
 
+export const MAX_PUBLIC_EVENT_STRING_LENGTH = 2_048;
+
+function isPublicEventScalar(value: unknown): value is string | number | boolean {
+  if (typeof value === "string") return value.length <= MAX_PUBLIC_EVENT_STRING_LENGTH;
+  if (typeof value === "number") return Number.isFinite(value);
+  return typeof value === "boolean";
+}
+
 export function sanitizeEventPayload(type: ProgressEventType, payload: Record<string, unknown>) {
   const keys = publicKeys[type] ?? [];
-  return Object.fromEntries(keys.filter((key) => payload[key] !== undefined).map((key) => [key, payload[key]]));
+  return Object.fromEntries(keys.filter((key) => isPublicEventScalar(payload[key])).map((key) => [key, payload[key]]));
 }
 
 export function toClientEvent(event: StoredEvent): ClientProgressEvent {

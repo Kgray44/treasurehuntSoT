@@ -3,6 +3,7 @@
 /* eslint-disable @next/next/no-img-element -- QR data URLs are generated server-side and shown only after invitation creation. */
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { EmptyState, ErrorState, LoadingState, StatusBanner } from "@/components/ui/AsyncState";
 
 type Voyage = {
   id: string;
@@ -86,14 +87,19 @@ export function CaptainLibrary() {
   const [accountRequired, setAccountRequired] = useState(false);
   const [created, setCreated] = useState<CreatedInvitation[]>([]);
   const [busy, setBusy] = useState(false);
+  const [notice, setNotice] = useState("");
 
   const load = useCallback(async () => {
-    const response = await fetch("/api/captain/library", { cache: "no-store" });
-    const body = (await response.json()) as Library & { error?: string };
-    if (!response.ok) setError(body.error ?? "Captain's library is unavailable.");
-    else {
-      setLibrary(body);
-      setError("");
+    try {
+      const response = await fetch("/api/captain/library", { cache: "no-store" });
+      const body = (await response.json()) as Library & { error?: string };
+      if (!response.ok) setError(body.error ?? "Captain's library is unavailable.");
+      else {
+        setLibrary(body);
+        setError("");
+      }
+    } catch {
+      setError("Captain's Command could not be reached. Check your connection and try again.");
     }
   }, []);
   useEffect(() => {
@@ -124,80 +130,125 @@ export function CaptainLibrary() {
     if (!library || resolvedPlayers.some((player) => !player.displayName)) return;
     setBusy(true);
     setError("");
-    const response = await fetch("/api/captain/playthroughs", {
-      method: "POST",
-      headers: { "Content-Type": "application/json", "x-csrf-token": library.csrfToken },
-      body: JSON.stringify({
-        taleId,
-        versionId,
-        voyageName,
-        captainMode,
-        hints,
-        sideQuests,
-        plannedStartAt: plannedStartAt ? new Date(plannedStartAt).toISOString() : null,
-        scheduleTimezone: plannedStartAt ? scheduleTimezone : null,
-        expiresInHours,
-        accountRequired,
-        maxRedemptions: 1,
-        accessibilityDefaults: {},
-        testVoyage: false,
-        players: resolvedPlayers.map((player) => ({
-          ...(player.playerId ? { playerId: player.playerId } : {}),
-          displayName: player.displayName,
-          crewRole: player.crewRole,
-          ...(player.pin ? { pin: player.pin } : {}),
-        })),
-      }),
-    });
-    const body = (await response.json()) as { invitations?: CreatedInvitation[]; error?: string };
-    setBusy(false);
-    if (!response.ok) return setError(body.error ?? "Voyage creation failed.");
-    setCreated(body.invitations ?? []);
-    setStep(6);
-    await load();
+    setNotice("");
+    try {
+      const response = await fetch("/api/captain/playthroughs", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "x-csrf-token": library.csrfToken },
+        body: JSON.stringify({
+          taleId,
+          versionId,
+          voyageName,
+          captainMode,
+          hints,
+          sideQuests,
+          plannedStartAt: plannedStartAt ? new Date(plannedStartAt).toISOString() : null,
+          scheduleTimezone: plannedStartAt ? scheduleTimezone : null,
+          expiresInHours,
+          accountRequired,
+          maxRedemptions: 1,
+          accessibilityDefaults: {},
+          testVoyage: false,
+          players: resolvedPlayers.map((player) => ({
+            ...(player.playerId ? { playerId: player.playerId } : {}),
+            displayName: player.displayName,
+            crewRole: player.crewRole,
+            ...(player.pin ? { pin: player.pin } : {}),
+          })),
+        }),
+      });
+      const body = (await response.json()) as { invitations?: CreatedInvitation[]; error?: string };
+      if (!response.ok) return setError(body.error ?? "Voyage creation failed.");
+      setCreated(body.invitations ?? []);
+      setNotice("The voyage and its individual invitations were created together.");
+      setStep(6);
+      await load();
+    } catch {
+      setError("The voyage could not be created. Check your connection and try again.");
+    } finally {
+      setBusy(false);
+    }
   }
 
   async function launch(voyage: Voyage) {
     if (!library || !window.confirm(`Launch “${voyage.voyageName}” for its ready Players?`)) return;
     setBusy(true);
-    const response = await fetch(`/api/captain/playthroughs/${voyage.id}/launch`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json", "x-csrf-token": library.csrfToken },
-      body: "{}",
-    });
-    const body = (await response.json()) as { error?: string };
-    setBusy(false);
-    if (!response.ok) setError(body.error ?? "Launch failed.");
-    await load();
+    setError("");
+    setNotice("");
+    try {
+      const response = await fetch(`/api/captain/playthroughs/${voyage.id}/launch`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "x-csrf-token": library.csrfToken },
+        body: "{}",
+      });
+      const body = (await response.json()) as { error?: string };
+      if (!response.ok) setError(body.error ?? "The voyage could not be launched.");
+      else setNotice(`“${voyage.voyageName}” is now live for ready Players.`);
+      await load();
+    } catch {
+      setError("The voyage could not be launched. Check your connection and try again.");
+    } finally {
+      setBusy(false);
+    }
   }
 
   async function invitationAction(invitation: Invitation, action: "extend" | "revoke" | "replace") {
     if (!library) return;
     if (
       ["revoke", "replace"].includes(action) &&
-      !window.confirm(`${action === "revoke" ? "Revoke" : "Replace"} the invitation for ${invitation.recipientName}?`)
+      !window.confirm(
+        action === "revoke"
+          ? `Revoke the invitation for ${invitation.recipientName}? The current link and short code will stop working.`
+          : `Replace the invitation for ${invitation.recipientName}? The current link and short code will be revoked and new credentials created.`,
+      )
     )
       return;
     setBusy(true);
-    const response = await fetch(`/api/captain/invitations/${invitation.id}`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json", "x-csrf-token": library.csrfToken },
-      body: JSON.stringify({ action, extendHours: 168 }),
-    });
-    const body = (await response.json()) as { error?: string; replacement?: CreatedInvitation };
-    setBusy(false);
-    if (!response.ok) setError(body.error ?? "Invitation action failed.");
-    else if (body.replacement) setCreated([body.replacement]);
-    await load();
+    setError("");
+    setNotice("");
+    try {
+      const response = await fetch(`/api/captain/invitations/${invitation.id}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "x-csrf-token": library.csrfToken },
+        body: JSON.stringify({ action, extendHours: 168 }),
+      });
+      const body = (await response.json()) as { error?: string; replacement?: CreatedInvitation };
+      if (!response.ok) setError(body.error ?? "Invitation action failed.");
+      else {
+        if (body.replacement) setCreated([body.replacement]);
+        setNotice(
+          action === "extend"
+            ? `The invitation for ${invitation.recipientName} was extended.`
+            : action === "replace"
+              ? `A replacement invitation for ${invitation.recipientName} was created.`
+              : `The invitation for ${invitation.recipientName} was revoked.`,
+        );
+      }
+      await load();
+    } catch {
+      setError("The invitation action could not be completed. Check your connection and try again.");
+    } finally {
+      setBusy(false);
+    }
   }
 
+  if (!library && error)
+    return (
+      <main className="captain-library platform-loading">
+        <ErrorState
+          title="Captain's Command could not be opened"
+          detail={error}
+          action={{ label: "Try Again", onClick: () => void load() }}
+        />
+      </main>
+    );
   if (!library)
     return (
       <main className="captain-library platform-loading">
-        <p role={error ? "alert" : "status"} className={error ? "platform-error" : ""}>
-          {error || "Opening Captain's Command…"}
-        </p>
-        <Link href="/captain/sign-in">Captain sign-in</Link>
+        <LoadingState
+          title="Opening Captain's Command"
+          detail="Loading voyages, invitations, and published editions."
+        />
       </main>
     );
   const voyageGroups: Array<[string, Voyage[]]> = [
@@ -206,6 +257,7 @@ export function CaptainLibrary() {
     ["Ready to Launch", library.groups.readyToLaunch],
     ["Completed Playthroughs", library.groups.completedPlaythroughs],
   ];
+  const voyageCount = voyageGroups.reduce((total, [, voyages]) => total + voyages.length, 0);
   return (
     <main className="captain-library">
       <header className="platform-header">
@@ -215,7 +267,6 @@ export function CaptainLibrary() {
           <p>Run live voyages, invite Players, and keep authoring controls safely in Studio.</p>
         </div>
         <div>
-          <Link href="/studio/library">Switch to Creator workspace</Link>
           <button
             className="brass-button"
             onClick={() => {
@@ -223,31 +274,53 @@ export function CaptainLibrary() {
               setStep(0);
             }}
           >
-            Start New Voyage
+            Create a Voyage
           </button>
         </div>
       </header>
       <nav className="platform-tabs" aria-label="Captain library sections">
-        <button className={tab === "voyages" ? "active" : ""} onClick={() => setTab("voyages")}>
+        <button
+          className={tab === "voyages" ? "active" : ""}
+          aria-pressed={tab === "voyages"}
+          onClick={() => setTab("voyages")}
+        >
           Voyages
         </button>
-        <button className={tab === "invitations" ? "active" : ""} onClick={() => setTab("invitations")}>
+        <button
+          className={tab === "invitations" ? "active" : ""}
+          aria-pressed={tab === "invitations"}
+          onClick={() => setTab("invitations")}
+        >
           Invitations{" "}
           <span>
             {library.invitations.filter((item) => ["CREATED", "COPIED", "VIEWED"].includes(item.status)).length}
           </span>
         </button>
-        <button className={tab === "published" ? "active" : ""} onClick={() => setTab("published")}>
+        <button
+          className={tab === "published" ? "active" : ""}
+          aria-pressed={tab === "published"}
+          onClick={() => setTab("published")}
+        >
           Published Tales
         </button>
       </nav>
-      {error && (
-        <p className="platform-error captain-banner" role="alert">
-          {error}
-        </p>
-      )}
+      {notice && <StatusBanner tone="success">{notice}</StatusBanner>}
+      {error && <StatusBanner tone="danger">{error}</StatusBanner>}
       {tab === "voyages" && (
         <div className="captain-groups">
+          {!voyageCount && (
+            <EmptyState
+              title="No voyages need your attention"
+              detail="Choose a published Tall Tale, configure the participants, and create secure invitations."
+              action={{
+                label: "Create a Voyage",
+                onClick: () => {
+                  setWizard(true);
+                  setStep(0);
+                },
+              }}
+            />
+          )}
           {voyageGroups.map(
             ([label, voyages]) =>
               voyages.length > 0 && (
@@ -279,49 +352,74 @@ export function CaptainLibrary() {
               <h2>Invitation management</h2>
             </div>
           </header>
-          <div className="invitation-table" role="table">
-            {library.invitations.map((invitation) => (
-              <article key={invitation.id} role="row">
-                <div>
-                  <strong>{invitation.recipientName}</strong>
-                  <span>
-                    {invitation.taleTitle} · {invitation.voyageName}
-                  </span>
-                </div>
-                <div>
-                  <b className={`status-pill status-${invitation.status.toLocaleLowerCase()}`}>{invitation.status}</b>
-                  <small>
-                    token {invitation.tokenPrefix}… · code {invitation.shortCodePrefix}…
-                  </small>
-                </div>
-                <div>
-                  <time>{new Date(invitation.expiresAt).toLocaleString()}</time>
-                  <small>
-                    {invitation.viewedAt ? `Viewed ${new Date(invitation.viewedAt).toLocaleString()}` : "Not viewed"}
-                  </small>
-                </div>
-                <div className="row-actions">
-                  {["CREATED", "SENT", "COPIED", "VIEWED"].includes(invitation.status) && (
-                    <>
-                      <button disabled={busy} onClick={() => void invitationAction(invitation, "extend")}>
-                        Extend
-                      </button>
-                      <button disabled={busy} onClick={() => void invitationAction(invitation, "replace")}>
-                        Replace
-                      </button>
-                      <button disabled={busy} onClick={() => void invitationAction(invitation, "revoke")}>
-                        Revoke
-                      </button>
-                    </>
-                  )}
-                </div>
-              </article>
-            ))}
-          </div>
+          {!library.invitations.length ? (
+            <EmptyState
+              title="No invitations have been created"
+              detail="Invitations appear here after a Captain creates a voyage for one or more Players."
+              action={{
+                label: "Create a Voyage",
+                onClick: () => {
+                  setWizard(true);
+                  setStep(0);
+                },
+              }}
+            />
+          ) : (
+            <div className="invitation-table" role="table" aria-label="Voyage invitations">
+              {library.invitations.map((invitation) => (
+                <article key={invitation.id} role="row">
+                  <div>
+                    <strong>{invitation.recipientName}</strong>
+                    <span>
+                      {invitation.taleTitle} · {invitation.voyageName}
+                    </span>
+                  </div>
+                  <div>
+                    <b className={`status-pill status-${invitation.status.toLocaleLowerCase()}`}>{invitation.status}</b>
+                    <small>
+                      token {invitation.tokenPrefix}… · code {invitation.shortCodePrefix}…
+                    </small>
+                  </div>
+                  <div>
+                    <time>{new Date(invitation.expiresAt).toLocaleString()}</time>
+                    <small>
+                      {invitation.viewedAt ? `Viewed ${new Date(invitation.viewedAt).toLocaleString()}` : "Not viewed"}
+                    </small>
+                  </div>
+                  <div className="row-actions">
+                    {["CREATED", "SENT", "COPIED", "VIEWED"].includes(invitation.status) && (
+                      <>
+                        <button disabled={busy} onClick={() => void invitationAction(invitation, "extend")}>
+                          Extend
+                        </button>
+                        <button disabled={busy} onClick={() => void invitationAction(invitation, "replace")}>
+                          Replace invitation
+                        </button>
+                        <button
+                          className="button-danger"
+                          disabled={busy}
+                          onClick={() => void invitationAction(invitation, "revoke")}
+                        >
+                          Revoke invitation
+                        </button>
+                      </>
+                    )}
+                  </div>
+                </article>
+              ))}
+            </div>
+          )}
         </section>
       )}
       {tab === "published" && (
         <section className="published-tale-grid">
+          {!library.publishedTales.length && (
+            <EmptyState
+              title="No published Tall Tales are ready"
+              detail="A Creator must validate and publish an edition before a Captain can create a voyage from it."
+              action={{ label: "Open Tall Tale Studio", href: "/studio/library" }}
+            />
+          )}
           {library.publishedTales.map((tale) => (
             <article key={tale.id}>
               <p className="card-kicker">{tale.visibility.toLocaleLowerCase()}</p>
@@ -550,9 +648,13 @@ function VoyageWizard(props: WizardProps) {
             ×
           </button>
         </header>
-        <ol className="wizard-progress">
+        <ol className="wizard-progress" aria-label="Voyage creation progress">
           {steps.map((label, index) => (
-            <li className={index <= props.step ? "active" : ""} key={label}>
+            <li
+              className={index === props.step ? "current" : index < props.step ? "completed" : ""}
+              aria-current={index === props.step ? "step" : undefined}
+              key={label}
+            >
               <span>{index + 1}</span>
               <small>{label}</small>
             </li>
@@ -564,6 +666,7 @@ function VoyageWizard(props: WizardProps) {
               {props.library.publishedTales.map((tale) => (
                 <button
                   className={props.taleId === tale.id ? "selected" : ""}
+                  aria-pressed={props.taleId === tale.id}
                   onClick={() => props.chooseTale(tale.id)}
                   key={tale.id}
                 >
@@ -763,6 +866,14 @@ function VoyageWizard(props: WizardProps) {
               <h4>{props.voyageName}</h4>
               <dl>
                 <div>
+                  <dt>Tall Tale</dt>
+                  <dd>{props.selectedTale?.title}</dd>
+                </div>
+                <div>
+                  <dt>Voyage name</dt>
+                  <dd>{props.voyageName}</dd>
+                </div>
+                <div>
                   <dt>Edition lock</dt>
                   <dd>{props.selectedVersion?.label}</dd>
                 </div>
@@ -775,8 +886,28 @@ function VoyageWizard(props: WizardProps) {
                   <dd>{props.captainMode.replaceAll("_", " ").toLocaleLowerCase()}</dd>
                 </div>
                 <div>
+                  <dt>Hints</dt>
+                  <dd>{props.hints.replaceAll("_", " ").toLocaleLowerCase()}</dd>
+                </div>
+                <div>
+                  <dt>Side quests</dt>
+                  <dd>{props.sideQuests ? "Enabled" : "Disabled"}</dd>
+                </div>
+                {props.plannedStartAt && (
+                  <div>
+                    <dt>Planned start</dt>
+                    <dd>
+                      {new Date(props.plannedStartAt).toLocaleString()} · {props.scheduleTimezone}
+                    </dd>
+                  </div>
+                )}
+                <div>
                   <dt>Invitation expires</dt>
                   <dd>{props.expiresInHours} hours after creation</dd>
+                </div>
+                <div>
+                  <dt>Account requirement</dt>
+                  <dd>{props.accountRequired ? "Claimed Player accounts required" : "Guest Players allowed"}</dd>
                 </div>
               </dl>
               <p className="panel-note">
@@ -798,10 +929,12 @@ function VoyageWizard(props: WizardProps) {
             ))}
         </div>
         <footer>
-          {props.step > 0 && props.step < 6 && <button onClick={() => props.setStep(props.step - 1)}>Back</button>}
+          {props.step > 0 && props.step < 6 && (
+            <button onClick={() => props.setStep(props.step - 1)}>Back to {steps[props.step - 1]}</button>
+          )}
           {props.step < 5 && (
             <button className="brass-button" disabled={!canNext} onClick={() => props.setStep(props.step + 1)}>
-              Continue
+              Continue to {steps[props.step + 1]}
             </button>
           )}
           {props.step === 5 && (
@@ -821,6 +954,7 @@ function VoyageWizard(props: WizardProps) {
 }
 
 function InvitationSecrets({ invitations, csrf }: { invitations: CreatedInvitation[]; csrf: string }) {
+  const [copied, setCopied] = useState("");
   async function copy(invitation: CreatedInvitation, value: string) {
     await navigator.clipboard.writeText(value);
     await fetch(`/api/captain/invitations/${invitation.id}`, {
@@ -828,9 +962,11 @@ function InvitationSecrets({ invitations, csrf }: { invitations: CreatedInvitati
       headers: { "Content-Type": "application/json", "x-csrf-token": csrf },
       body: JSON.stringify({ action: "copied" }),
     });
+    setCopied(invitation.id);
   }
   return (
     <div className="invitation-secrets">
+      {copied && <StatusBanner tone="success">Invitation details copied to the clipboard.</StatusBanner>}
       {invitations.map((invitation) => (
         <article key={invitation.id}>
           <img
@@ -843,7 +979,9 @@ function InvitationSecrets({ invitations, csrf }: { invitations: CreatedInvitati
             <code>{invitation.shortCode}</code>
             <p>{invitation.message}</p>
             <div>
-              <button onClick={() => void copy(invitation, invitation.link)}>Copy secure link</button>
+              <button onClick={() => void copy(invitation, invitation.link)}>
+                {copied === invitation.id ? "Secure link copied" : "Copy secure link"}
+              </button>
               <button onClick={() => void copy(invitation, invitation.message)}>Copy message</button>
             </div>
             <small>Expires {new Date(invitation.expiresAt).toLocaleString()}</small>

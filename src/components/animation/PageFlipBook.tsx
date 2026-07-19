@@ -1,6 +1,6 @@
 "use client";
 
-import { forwardRef, useEffect, useImperativeHandle, useMemo, useRef, useState } from "react";
+import { forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState } from "react";
 import type { PageFlip as PageFlipInstance } from "page-flip";
 import type { MotionMode } from "@/animation/core/animation-types";
 import { changeMountedMetric, recordAssetFailure } from "@/animation/core/metrics";
@@ -21,6 +21,23 @@ export type FlipBookPage = {
   label: string;
   content: React.ReactNode;
 };
+
+type FocusMemory = { kind: "control"; name: "previous" | "next" } | { kind: "page"; index: number };
+
+const CLONED_SOURCE_ATTRIBUTES = ["data-pageflip-source", "data-scene-instance", "data-scene-instance-id"] as const;
+
+function clampPage(page: number, count: number) {
+  return Math.min(Math.max(0, page), Math.max(0, count - 1));
+}
+
+function sanitizedPageClone(node: Element) {
+  const clone = node.cloneNode(true) as HTMLElement;
+  const elements = [clone, ...Array.from(clone.querySelectorAll<HTMLElement>("*"))];
+  for (const element of elements) {
+    for (const attribute of CLONED_SOURCE_ATTRIBUTES) element.removeAttribute(attribute);
+  }
+  return clone;
+}
 
 export const PageFlipBook = forwardRef<
   PageFlipBookHandle,
@@ -49,27 +66,75 @@ export const PageFlipBook = forwardRef<
   },
   ref,
 ) {
+  const root = useRef<HTMLElement>(null);
   const host = useRef<HTMLDivElement>(null);
   const source = useRef<HTMLDivElement>(null);
   const instance = useRef<PageFlipInstance | null>(null);
   const pendingPage = useRef<number | null>(null);
-  const [current, setCurrent] = useState(Math.min(initialPage, Math.max(0, pages.length - 1)));
+  const focusMemory = useRef<FocusMemory | null>(null);
+  const pagesLength = useRef(pages.length);
+  const initialCurrent = clampPage(initialPage, pages.length);
+  const currentPage = useRef(initialCurrent);
+  const pageChangeCallback = useRef(onPageChange);
+  const flipStateCallback = useRef(onFlipStateChange);
+  const [current, setCurrent] = useState(initialCurrent);
   const [orientation, setOrientation] = useState<"portrait" | "landscape">("landscape");
   const [flipState, setFlipState] = useState<"folding" | "flipping" | "read">("read");
   const [failed, setFailed] = useState(false);
-  const flipStateCallback = useRef(onFlipStateChange);
   const signature = useMemo(() => pages.map((page) => page.id).join("|"), [pages]);
   const reduced = mode === "reduced";
 
   useEffect(() => {
     flipStateCallback.current = onFlipStateChange;
-  }, [onFlipStateChange]);
+    pageChangeCallback.current = onPageChange;
+  }, [onFlipStateChange, onPageChange]);
 
-  const changePage = (page: number) => {
-    const next = Math.min(Math.max(0, page), pages.length - 1);
+  useEffect(() => {
+    pagesLength.current = pages.length;
+  }, [pages.length]);
+
+  const changePage = useCallback((page: number) => {
+    const next = clampPage(page, pagesLength.current);
+    currentPage.current = next;
     setCurrent(next);
-    onPageChange?.(next);
-  };
+    pageChangeCallback.current?.(next);
+  }, []);
+
+  const rememberFocus = useCallback((event: React.FocusEvent<HTMLElement>) => {
+    const target = event.target as HTMLElement;
+    const control = target.closest<HTMLElement>("[data-pageflip-focus]");
+    const controlName = control?.dataset.pageflipFocus;
+    if (controlName === "previous" || controlName === "next") {
+      focusMemory.current = { kind: "control", name: controlName };
+      return;
+    }
+    const page = target.closest<HTMLElement>("[data-page-index]");
+    if (page) focusMemory.current = { kind: "page", index: Number(page.dataset.pageIndex) };
+  }, []);
+
+  const forgetExternalFocus = useCallback((event: React.FocusEvent<HTMLElement>) => {
+    const next = event.relatedTarget;
+    if (next instanceof Node && !event.currentTarget.contains(next)) focusMemory.current = null;
+  }, []);
+
+  const restoreFocus = useCallback(() => {
+    const rootElement = root.current;
+    const memory = focusMemory.current;
+    if (!rootElement || !memory) return;
+    const active = rootElement.ownerDocument.activeElement;
+    if (active && active !== rootElement.ownerDocument.body && !rootElement.contains(active)) return;
+
+    const target =
+      memory.kind === "control"
+        ? rootElement.querySelector<HTMLElement>(`[data-pageflip-focus="${memory.name}"]`)
+        : (rootElement.querySelector<HTMLElement>(
+            `.page-flip-host [data-page-index="${clampPage(memory.index, pagesLength.current)}"]`,
+          ) ??
+          rootElement.querySelector<HTMLElement>(
+            `.reduced-page-stage [data-page-index="${clampPage(memory.index, pagesLength.current)}"]`,
+          ));
+    target?.focus({ preventScroll: true });
+  }, []);
 
   const requestPage = (page: number, animated: boolean) => {
     if (reduced) {
@@ -80,16 +145,23 @@ export const PageFlipBook = forwardRef<
       pendingPage.current = page;
       return;
     }
-    if (animated) instance.current?.flip(page, "top");
-    else instance.current?.turnToPage(page);
+    if (animated) {
+      instance.current?.flip(page, "top");
+    } else {
+      instance.current?.turnToPage(page);
+      changePage(page);
+    }
   };
 
   useImperativeHandle(ref, () => ({
-    next: () => (reduced ? changePage(current + 1) : flipState === "read" && instance.current?.flipNext("top")),
-    previous: () => (reduced ? changePage(current - 1) : flipState === "read" && instance.current?.flipPrev("top")),
+    next: () =>
+      reduced ? changePage(currentPage.current + 1) : flipState === "read" && instance.current?.flipNext("top"),
+    previous: () =>
+      reduced ? changePage(currentPage.current - 1) : flipState === "read" && instance.current?.flipPrev("top"),
     turnTo: (page) => requestPage(page, false),
     flipTo: (page) => requestPage(page, true),
-    currentPage: () => (reduced ? current : (instance.current?.getCurrentPageIndex() ?? current)),
+    currentPage: () =>
+      reduced ? currentPage.current : (instance.current?.getCurrentPageIndex() ?? currentPage.current),
     pageCount: () => (reduced ? pages.length : (instance.current?.getPageCount() ?? pages.length)),
     orientation: () => (reduced ? "portrait" : (instance.current?.getOrientation() ?? orientation)),
   }));
@@ -98,11 +170,46 @@ export const PageFlipBook = forwardRef<
     const hostElement = host.current;
     const sourceElement = source.current;
     if (reduced || !hostElement || !sourceElement) return;
+
+    let book: PageFlipInstance | null = null;
     let disposed = false;
+    let destroyed = false;
+    let countedAsMounted = false;
+    const runtimeElement = hostElement.ownerDocument.createElement("div");
+    runtimeElement.className = "page-flip-runtime";
+    runtimeElement.dataset.pageflipRuntime = "";
+    hostElement.replaceChildren(runtimeElement);
+
+    const destroyBook = () => {
+      if (destroyed) return;
+      destroyed = true;
+      const ownedBook = book;
+      book = null;
+      if (ownedBook) {
+        try {
+          currentPage.current = clampPage(ownedBook.getCurrentPageIndex(), pagesLength.current);
+        } catch {
+          // A partially initialized runtime may not expose a page collection yet.
+        }
+        if (instance.current === ownedBook) instance.current = null;
+        try {
+          ownedBook.destroy();
+        } catch {
+          // Cleanup still owns the runtime node and mounted metric if library teardown is partial.
+        }
+      }
+      if (countedAsMounted) {
+        countedAsMounted = false;
+        changeMountedMetric("pageFlip", -1);
+      }
+      runtimeElement.remove();
+    };
+
     void import("page-flip")
       .then(({ PageFlip }) => {
         if (disposed) return;
-        const book = new PageFlip(hostElement, {
+        const startPage = clampPage(currentPage.current, sourceElement.children.length);
+        book = new PageFlip(runtimeElement, {
           width: 560,
           height: 760,
           size: "stretch",
@@ -118,16 +225,15 @@ export const PageFlipBook = forwardRef<
           flippingTime: Math.round((mode === "full" ? 1100 : 620) / playbackRate),
           swipeDistance: 24,
           mobileScrollSupport: true,
-          startPage: Math.min(initialPage, pages.length - 1),
+          startPage,
         });
-        const clones = Array.from(sourceElement.children).map((node) => node.cloneNode(true) as HTMLElement);
+        const clones = Array.from(sourceElement.children).map(sanitizedPageClone);
         book.loadFromHTML(clones);
         book.on("flip", (event) => {
           const page = Number(event.data);
           changePage(page);
-          window.requestAnimationFrame(() =>
-            hostElement.querySelector<HTMLElement>(`[data-page-index="${page}"]`)?.focus({ preventScroll: true }),
-          );
+          focusMemory.current = { kind: "page", index: page };
+          window.requestAnimationFrame(restoreFocus);
         });
         book.on("changeOrientation", (event) => setOrientation(event.data as "portrait" | "landscape"));
         book.on("changeState", (event) => {
@@ -137,37 +243,47 @@ export const PageFlipBook = forwardRef<
           if (state === "read" && pendingPage.current !== null) {
             const page = pendingPage.current;
             pendingPage.current = null;
-            if (page !== book.getCurrentPageIndex()) book.flip(page, "top");
+            if (page !== book?.getCurrentPageIndex()) book?.flip(page, "top");
           }
         });
         instance.current = book;
+        currentPage.current = startPage;
+        setCurrent(startPage);
         changeMountedMetric("pageFlip", 1);
+        countedAsMounted = true;
+        window.requestAnimationFrame(restoreFocus);
       })
       .catch(() => {
+        destroyBook();
         setFailed(true);
         recordAssetFailure("page-flip");
       });
+
     return () => {
       disposed = true;
-      if (instance.current) {
-        instance.current.destroy();
-        instance.current = null;
-        changeMountedMetric("pageFlip", -1);
-      }
+      destroyBook();
       pendingPage.current = null;
       hostElement.replaceChildren();
     };
-    // The page-flip instance deliberately initializes once; updates are handled below.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [playbackRate, reduced, showCover]);
+  }, [changePage, mode, playbackRate, reduced, restoreFocus, showCover]);
 
   useEffect(() => {
     if (reduced || !instance.current || !source.current) return;
-    const clones = Array.from(source.current.children).map((node) => node.cloneNode(true) as HTMLElement);
+    const clones = Array.from(source.current.children).map(sanitizedPageClone);
     instance.current.updateFromHtml(clones);
-    const safeCurrent = Math.min(instance.current.getCurrentPageIndex(), pages.length - 1);
-    if (safeCurrent !== instance.current.getCurrentPageIndex()) instance.current.turnToPage(safeCurrent);
+    const page = instance.current.getCurrentPageIndex();
+    const safeCurrent = clampPage(page, pages.length);
+    if (safeCurrent !== page) instance.current.turnToPage(safeCurrent);
+    if (safeCurrent !== currentPage.current) {
+      currentPage.current = safeCurrent;
+      setCurrent(safeCurrent);
+    }
   }, [pages.length, reduced, revision, signature]);
+
+  useEffect(() => {
+    if (!reduced && !failed) return;
+    window.requestAnimationFrame(restoreFocus);
+  }, [failed, reduced, restoreFocus]);
 
   const pageNodes = pages.map((page, index) => (
     <article
@@ -183,26 +299,34 @@ export const PageFlipBook = forwardRef<
     </article>
   ));
 
+  const visibleCurrent = clampPage(current, pages.length);
+
   if (reduced || failed) {
     return (
       <section
+        ref={root}
         className={`page-flip-book reduced-page-book ${className}`}
         data-pageflip-status={failed ? "fallback" : "reduced"}
+        onFocusCapture={rememberFocus}
+        onBlurCapture={forgetExternalFocus}
       >
         <div className="reduced-page-stage">
           <article
-            className={`ft-page density-${pages[current]?.density ?? "soft"} page-side-${current % 2 === 0 ? "right" : "left"}`}
-            data-page-side={current % 2 === 0 ? "right" : "left"}
+            className={`ft-page density-${pages[visibleCurrent]?.density ?? "soft"} page-side-${visibleCurrent % 2 === 0 ? "right" : "left"}`}
+            data-page-index={visibleCurrent}
+            data-page-side={visibleCurrent % 2 === 0 ? "right" : "left"}
+            tabIndex={-1}
+            aria-label={pages[visibleCurrent]?.label}
           >
-            {pages[current]?.content}
+            {pages[visibleCurrent]?.content}
           </article>
         </div>
         <PageControls
-          current={current}
+          current={visibleCurrent}
           count={pages.length}
           busy={false}
-          previous={() => changePage(current - 1)}
-          next={() => changePage(current + 1)}
+          previous={() => changePage(visibleCurrent - 1)}
+          next={() => changePage(visibleCurrent + 1)}
         />
       </section>
     );
@@ -210,16 +334,19 @@ export const PageFlipBook = forwardRef<
 
   return (
     <section
+      ref={root}
       className={`page-flip-book orientation-${orientation} ${className}`}
-      data-animation-owner="st-page-flip"
+      data-animation-owner="page-flip"
       data-flip-state={flipState}
+      onFocusCapture={rememberFocus}
+      onBlurCapture={forgetExternalFocus}
       onKeyDown={(event) => {
         if (flipState !== "read") return;
         if (event.key === "ArrowRight" || event.key === "PageDown") instance.current?.flipNext("top");
         if (event.key === "ArrowLeft" || event.key === "PageUp") instance.current?.flipPrev("top");
       }}
     >
-      <div ref={source} className="page-flip-source" aria-hidden="true" inert>
+      <div ref={source} className="page-flip-source" data-pageflip-source aria-hidden="true" inert>
         {pageNodes}
       </div>
       <div ref={host} className="page-flip-host" aria-label="Physical journal pages" />
@@ -249,13 +376,23 @@ function PageControls({
 }) {
   return (
     <div className="page-controls" data-animation-owner="motion">
-      <button onClick={previous} disabled={busy || current <= 0} aria-label="Previous journal page">
+      <button
+        onClick={previous}
+        disabled={busy || current <= 0}
+        aria-label="Previous journal page"
+        data-pageflip-focus="previous"
+      >
         ← Previous
       </button>
       <span aria-live="polite">
         Page {Math.min(current + 1, count)} of {count}
       </span>
-      <button onClick={next} disabled={busy || current >= count - 1} aria-label="Next journal page">
+      <button
+        onClick={next}
+        disabled={busy || current >= count - 1}
+        aria-label="Next journal page"
+        data-pageflip-focus="next"
+      >
         Next →
       </button>
     </div>

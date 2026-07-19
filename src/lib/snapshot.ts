@@ -1,4 +1,5 @@
 import type { PublicArtifact, PublicChapter, PublicSideQuest, PublicSnapshot } from "@/domain/story";
+import { projectChapterReleaseReplay } from "@/domain/replay";
 import { eventToLogEntry } from "@/domain/ships-log";
 import { db } from "@/lib/db";
 
@@ -34,9 +35,30 @@ export async function buildPublicSnapshot(campaignId: string, playerAccessId?: s
       events: { where: { releaseAt: { lte: new Date() } }, orderBy: { sequence: "desc" }, take: 250 },
     },
   });
-  const viewed = playerAccessId
-    ? await db.viewedContent.findMany({ where: { playerAccessId }, select: { contentType: true, contentKey: true } })
-    : [];
+  const [viewed, latestChapterRelease] = await Promise.all([
+    playerAccessId
+      ? db.viewedContent.findMany({
+          where: { playerAccessId },
+          select: { contentType: true, contentKey: true },
+        })
+      : Promise.resolve([]),
+    db.progressEvent.findFirst({
+      where: {
+        campaignId,
+        type: "CHAPTER_RELEASED",
+        releaseAt: { lte: new Date() },
+      },
+      orderBy: { sequence: "desc" },
+      select: {
+        id: true,
+        type: true,
+        sequence: true,
+        version: true,
+        payload: true,
+        releaseAt: true,
+      },
+    }),
+  ]);
   const viewedKeys = new Set(viewed.map((item) => `${item.contentType}:${item.contentKey}`));
   const isUnseen = (type: string, key: string, released: boolean) => released && !viewedKeys.has(`${type}:${key}`);
 
@@ -207,6 +229,7 @@ export async function buildPublicSnapshot(campaignId: string, playerAccessId?: s
     log: log.filter((item) => item.unseen).length,
     finale: finale.unseen ? 1 : 0,
   };
+  const replayProjection = latestChapterRelease ? projectChapterReleaseReplay(latestChapterRelease, chapters) : null;
   return {
     campaign: { slug: campaign.slug, title: campaign.title, status: campaign.status },
     sequence: campaign.currentSequence,
@@ -222,5 +245,8 @@ export async function buildPublicSnapshot(campaignId: string, playerAccessId?: s
     log,
     finale,
     unseen,
+    ...(replayProjection && replayProjection.status !== "unavailable"
+      ? { latestChapterReleasePresentation: replayProjection.presentation }
+      : {}),
   };
 }

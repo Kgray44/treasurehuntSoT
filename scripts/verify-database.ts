@@ -9,6 +9,15 @@ function assert(condition: unknown, message: string): asserts condition {
   if (!condition) throw new Error(`Database verification failed: ${message}`);
 }
 
+function eventKey(payload: string) {
+  try {
+    const value = JSON.parse(payload) as { key?: unknown };
+    return typeof value.key === "string" ? value.key : null;
+  } catch {
+    return null;
+  }
+}
+
 async function main() {
   const campaign = await db.campaign.findUnique({
     where: { slug: "development-forever-treasure" },
@@ -137,10 +146,19 @@ async function main() {
     ]) {
       assert(eventTypes.has(expected), `acceptance run did not record ${expected}`);
     }
-    assert(campaign.awards.length >= 1, "acceptance run must persist an artifact award");
+    const artifactKeys = new Set(campaign.artifacts.map((artifact) => artifact.key));
     assert(
-      campaign.mapLocations.some((location) => location.revealedAt),
-      "acceptance run must persist a released map location",
+      campaign.events.some(
+        (event) => event.type === "ARTIFACT_AWARDED" && artifactKeys.has(eventKey(event.payload) ?? ""),
+      ),
+      "acceptance history must persist an artifact award for a campaign artifact",
+    );
+    const mapLocationKeys = new Set(campaign.mapLocations.map((location) => location.key));
+    assert(
+      campaign.events.some(
+        (event) => event.type === "MAP_LOCATION_REVEALED" && mapLocationKeys.has(eventKey(event.payload) ?? ""),
+      ),
+      "acceptance history must persist a reveal for a campaign map location",
     );
     assert(campaign.saveStates.length > 0, "acceptance run must retain undo save states");
   }

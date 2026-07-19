@@ -5,7 +5,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { flushSync } from "react-dom";
 import { AnimatePresence, motion } from "motion/react";
-import type { AnimationSceneName } from "@/animation/core/animation-types";
+import type { AnimationSceneName, PresentationOutcome } from "@/animation/core/animation-types";
 import { lottieAssets } from "@/animation/assets/lottie-contracts";
 import { riveAssets } from "@/animation/assets/rive-contracts";
 import { useAnimationDirector } from "@/animation/director/useAnimationDirector";
@@ -25,6 +25,59 @@ type Status = {
   sideQuest: { title: string; state: string } | null;
   preview: { chapter: { objective?: string } };
 };
+
+type CommandResult = { event: { id: string; sequence: number } };
+
+const QUARTERMASTER_HOST_ID = "quartermaster";
+const QUARTERMASTER_HOST_KIND = "quartermaster";
+const LEGACY_COMMAND_HOST = { hostId: "quartermaster-command", hostKind: "quartermaster-command" } as const;
+const PROGRESSION_COMMAND_HOST = { hostId: "quartermaster-progression", hostKind: "progression" } as const;
+const QUARTERMASTER_LOGIN_FALLBACK = "readable-quartermaster-result";
+const completedPresentationOutcomes = new Set<PresentationOutcome>([
+  "presented",
+  "presented-fallback",
+  "skipped-by-policy",
+  "skipped-by-user",
+]);
+
+function isCommandResult(value: unknown): value is CommandResult {
+  if (!value || typeof value !== "object" || !("event" in value)) return false;
+  const event = value.event;
+  return (
+    !!event &&
+    typeof event === "object" &&
+    "id" in event &&
+    typeof event.id === "string" &&
+    "sequence" in event &&
+    typeof event.sequence === "number"
+  );
+}
+
+function safeServerError(value: unknown, fallback: string) {
+  if (!value || typeof value !== "object" || !("error" in value) || typeof value.error !== "string") {
+    return fallback;
+  }
+  const message = value.error.replace(/\s+/g, " ").trim();
+  return message && message.length <= 180 ? message : fallback;
+}
+
+async function readJson(response: Response) {
+  try {
+    return (await response.json()) as unknown;
+  } catch {
+    return null;
+  }
+}
+
+function presentationFailed(outcome: PresentationOutcome) {
+  return !completedPresentationOutcomes.has(outcome);
+}
+
+function readablePresentationWarning(subject: "sign-in" | "order") {
+  return subject === "sign-in"
+    ? "Sign-in succeeded, but its entrance presentation could not be displayed."
+    : "The order was recorded, but its presentation could not be displayed. The ledger result remains authoritative.";
+}
 
 const actions = [
   [
@@ -65,6 +118,36 @@ const actions = [
 
 type Action = (typeof actions)[number];
 
+const actionPresentationFallback: Record<Action[0], { fallback: string; semanticState: string }> = {
+  PREPARE_CHAPTER: { fallback: "readable-command-result", semanticState: "chapter-prepared-readable" },
+  RELEASE_CHAPTER: { fallback: "readable-command-result", semanticState: "chapter-command-recorded" },
+  MARK_SOLVED: { fallback: "readable-chapter-solved", semanticState: "chapter-solved-readable" },
+  AWARD_ARTIFACT: { fallback: "readable-artifact-award", semanticState: "artifact-awarded-readable" },
+  REVEAL_MAP: { fallback: "readable-map-location", semanticState: "map-location-readable" },
+  REVEAL_ROUTE: { fallback: "readable-route", semanticState: "route-readable" },
+  REVEAL_ARTIFACT_SILHOUETTE: {
+    fallback: "readable-artifact-award",
+    semanticState: "artifact-awarded-readable",
+  },
+  CONNECT_ARTIFACTS: {
+    fallback: "readable-artifact-connection",
+    semanticState: "artifact-connection-readable",
+  },
+  DISCOVER_SIDE_QUEST: { fallback: "readable-quest-update", semanticState: "quest-readable" },
+  UPDATE_SIDE_QUEST: { fallback: "readable-quest-update", semanticState: "quest-readable" },
+  COMPLETE_SIDE_QUEST: { fallback: "readable-quest-complete", semanticState: "quest-complete-readable" },
+  ADD_JOURNAL_ANNOTATION: { fallback: "readable-log-entry", semanticState: "log-entry-readable" },
+  ADD_LOG_ENTRY: { fallback: "readable-log-entry", semanticState: "log-entry-readable" },
+  TEASE_FINALE: { fallback: "readable-finale-tease", semanticState: "finale-tease-readable" },
+  UPDATE_FINALE_REQUIREMENT: {
+    fallback: "readable-finale-requirement",
+    semanticState: "finale-requirement-readable",
+  },
+  UNDO_LAST: { fallback: "readable-state-restored", semanticState: "state-restored-readable" },
+  PAUSE: { fallback: "readable-campaign-paused", semanticState: "campaign-paused-readable" },
+  RESUME: { fallback: "readable-campaign-resumed", semanticState: "campaign-resumed-readable" },
+};
+
 const actionScene: Record<Action[0], AnimationSceneName> = {
   PREPARE_CHAPTER: "prepare-chapter",
   RELEASE_CHAPTER: "seal-break",
@@ -93,16 +176,38 @@ export function Quartermaster({ authenticated }: { authenticated: boolean }) {
   const [selected, setSelected] = useState<Action | null>(null);
   const [activeAction, setActiveAction] = useState<Action | null>(null);
   const [message, setMessage] = useState("");
+  const [presentationWarning, setPresentationWarning] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
+  const mounted = useRef(true);
+  const inFlight = useRef<AbortController | null>(null);
+  const presentationWarningTarget = useRef<HTMLParagraphElement>(null);
   const { director, snapshot: animation } = useAnimationDirector();
   const { mode, cycle } = useMotionMode();
 
-  const refresh = useCallback(async () => {
-    const response = await fetch("/api/gm/status", { cache: "no-store" });
-    if (!response.ok) return;
-    setStatus((await response.json()) as Status);
-    setSignedIn(true);
+  const refresh = useCallback(async (signal?: AbortSignal) => {
+    try {
+      const response = await fetch("/api/gm/status", { cache: "no-store", signal });
+      if (!response.ok) return false;
+      const nextStatus = (await response.json()) as Status;
+      if (!mounted.current || signal?.aborted) return false;
+      flushSync(() => {
+        setStatus(nextStatus);
+        setSignedIn(true);
+      });
+      return true;
+    } catch {
+      return false;
+    }
+  }, []);
+
+  useEffect(() => {
+    mounted.current = true;
+    return () => {
+      mounted.current = false;
+      inFlight.current?.abort();
+      inFlight.current = null;
+    };
   }, []);
 
   useEffect(() => {
@@ -116,30 +221,113 @@ export function Quartermaster({ authenticated }: { authenticated: boolean }) {
     };
   }, [refresh, signedIn]);
 
+  function publishPresentationWarning(warning: string) {
+    if (!mounted.current) return false;
+    flushSync(() => setPresentationWarning(warning));
+    const rendered = presentationWarningTarget.current;
+    return Boolean(
+      rendered?.isConnected && rendered.getAttribute("role") === "status" && rendered.textContent?.includes(warning),
+    );
+  }
+
   async function login(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (!root.current) return;
     setError("");
+    setPresentationWarning("");
     const form = new FormData(event.currentTarget);
+    inFlight.current?.abort();
+    const controller = new AbortController();
+    inFlight.current = controller;
+    let operationStarted = false;
+    let operationError = "";
+    let authoritativeLoginSucceeded = false;
+    let loginOperation: Promise<{ authenticated: true }> | null = null;
+    let fallbackLoginResult: { authenticated: true } | undefined;
+    const authenticate = () => {
+      loginOperation ??= (async () => {
+        operationStarted = true;
+        const response = await fetch("/api/gm/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ username: form.get("username"), password: form.get("password") }),
+          signal: controller.signal,
+        });
+        const data = await readJson(response);
+        if (!response.ok) {
+          operationError = safeServerError(data, "The lock refused the key.");
+          throw new Error("authoritative-login-failed");
+        }
+        authoritativeLoginSucceeded = true;
+        return { authenticated: true as const };
+      })();
+      return loginOperation;
+    };
     try {
-      await director.play("quartermaster-login", {
+      const receipt = await director.play<{ authenticated: true }>("quartermaster-login", {
         root: root.current,
+        hostId: QUARTERMASTER_HOST_ID,
+        hostKind: QUARTERMASTER_HOST_KIND,
+        requestSource: "operation",
+        eventOrActionId: "quartermaster-login",
         queue: false,
-        operation: async () => {
-          const response = await fetch("/api/gm/login", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ username: form.get("username"), password: form.get("password") }),
-          });
-          const data = (await response.json()) as { error?: string };
-          if (!response.ok) throw new Error(data.error ?? "The lock refused the key.");
-          return data;
+        signal: controller.signal,
+        operation: authenticate,
+        presentationFallback: async (context) => {
+          if (
+            context.hostId !== QUARTERMASTER_HOST_ID ||
+            context.hostKind !== QUARTERMASTER_HOST_KIND ||
+            context.fallback !== QUARTERMASTER_LOGIN_FALLBACK ||
+            context.signal?.aborted
+          ) {
+            return { completed: false, readable: false, reason: "quartermaster-login-fallback-rejected" };
+          }
+          try {
+            fallbackLoginResult = await authenticate();
+            const readable = publishPresentationWarning(
+              "Sign-in succeeded. The entrance animation is unavailable; opening the chart room directly.",
+            );
+            return readable
+              ? { completed: true, readable: true, semanticState: "quartermaster-result-readable" }
+              : { completed: false, readable: false, reason: "quartermaster-login-fallback-not-readable" };
+          } catch {
+            return { completed: false, readable: false, reason: "quartermaster-login-fallback-operation-failed" };
+          }
         },
       });
-      setSignedIn(true);
-      await refresh();
-    } catch (cause) {
-      setError(cause instanceof Error ? cause.message : "The lock refused the key.");
+
+      if (!mounted.current || controller.signal.aborted) return;
+      const loginResult = receipt.operationResult ?? fallbackLoginResult;
+      if (loginResult?.authenticated !== true) {
+        setError(
+          operationError ||
+            (operationStarted
+              ? "The lock refused the key."
+              : "Sign-in was not attempted because its presentation could not start."),
+        );
+        if (!operationStarted && presentationFailed(receipt.outcome)) {
+          setPresentationWarning("The entrance presentation is unavailable. Sign-in was not recorded.");
+        }
+        return;
+      }
+
+      if (receipt.outcome === "presented-fallback" || presentationFailed(receipt.outcome)) {
+        setPresentationWarning(readablePresentationWarning("sign-in"));
+      }
+      const refreshed = await refresh(controller.signal);
+      if (!mounted.current || controller.signal.aborted) return;
+      if (!refreshed) setSignedIn(true);
+    } catch {
+      if (!mounted.current || controller.signal.aborted) return;
+      if (authoritativeLoginSucceeded) {
+        setPresentationWarning(readablePresentationWarning("sign-in"));
+        const refreshed = await refresh(controller.signal);
+        if (!refreshed && mounted.current) setSignedIn(true);
+      } else {
+        setError(operationError || "The lock refused the key.");
+      }
+    } finally {
+      if (inFlight.current === controller) inFlight.current = null;
     }
   }
 
@@ -147,40 +335,136 @@ export function Quartermaster({ authenticated }: { authenticated: boolean }) {
     if (!selected || !status || !root.current) return;
     setBusy(true);
     setError("");
+    setPresentationWarning("");
     const action = selected;
+    inFlight.current?.abort();
+    const controller = new AbortController();
+    inFlight.current = controller;
+    let operationStarted = false;
+    let operationError = "";
+    let authoritativeResult: CommandResult | undefined;
+    let commandOperation: Promise<CommandResult> | null = null;
+    let fallbackOperationResult: CommandResult | undefined;
+    const fallbackContract = actionPresentationFallback[action[0]];
+    const commandHost =
+      action[0] === "PREPARE_CHAPTER" || action[0] === "RELEASE_CHAPTER"
+        ? LEGACY_COMMAND_HOST
+        : PROGRESSION_COMMAND_HOST;
+    const submitCommand = () => {
+      commandOperation ??= (async () => {
+        operationStarted = true;
+        const response = await fetch("/api/gm/action", {
+          method: "POST",
+          headers: { "Content-Type": "application/json", "x-csrf-token": status.csrfToken },
+          body: JSON.stringify({ action: action[0], campaignSlug: status.campaign.slug, confirmation: true }),
+          signal: controller.signal,
+        });
+        const body = await readJson(response);
+        if (!response.ok || !isCommandResult(body)) {
+          operationError = safeServerError(body, "The order could not be recorded.");
+          throw new Error("authoritative-command-failed");
+        }
+        authoritativeResult = body;
+        return body;
+      })();
+      return commandOperation;
+    };
     flushSync(() => setActiveAction(action));
     try {
-      const data = await director.play(actionScene[action[0]], {
+      const receipt = await director.play<CommandResult>(actionScene[action[0]], {
         root: root.current,
+        hostId: commandHost.hostId,
+        hostKind: commandHost.hostKind,
+        requestSource: "operation",
+        eventOrActionId: action[0],
         queue: false,
+        signal: controller.signal,
         display: { actionLabel: action[1] },
-        operation: async () => {
-          const response = await fetch("/api/gm/action", {
-            method: "POST",
-            headers: { "Content-Type": "application/json", "x-csrf-token": status.csrfToken },
-            body: JSON.stringify({ action: action[0], campaignSlug: status.campaign.slug, confirmation: true }),
-          });
-          const body = (await response.json()) as { error?: string; event?: { id: string; sequence: number } };
-          if (!response.ok || !body.event) throw new Error(body.error ?? "The order could not be recorded.");
-          return body;
+        operation: submitCommand,
+        presentationFallback: async (context) => {
+          if (
+            context.hostId !== commandHost.hostId ||
+            context.hostKind !== commandHost.hostKind ||
+            context.fallback !== fallbackContract.fallback ||
+            context.signal?.aborted
+          ) {
+            return { completed: false, readable: false, reason: "quartermaster-command-fallback-rejected" };
+          }
+          try {
+            fallbackOperationResult = await submitCommand();
+            const readable = publishPresentationWarning(
+              "The order was recorded. Its animation is unavailable; refreshing the ledger directly.",
+            );
+            return readable
+              ? { completed: true, readable: true, semanticState: fallbackContract.semanticState }
+              : { completed: false, readable: false, reason: "quartermaster-command-fallback-not-readable" };
+          } catch {
+            return { completed: false, readable: false, reason: "quartermaster-command-fallback-operation-failed" };
+          }
         },
       });
-      if (data?.event) {
-        setMessage(`Event ${data.event.id} recorded at sequence ${data.event.sequence}.`);
-        setSelected(null);
-        await refresh();
+
+      if (!mounted.current || controller.signal.aborted) return;
+      const result = isCommandResult(receipt.operationResult)
+        ? receipt.operationResult
+        : isCommandResult(fallbackOperationResult)
+          ? fallbackOperationResult
+          : undefined;
+      if (!result) {
+        setError(
+          operationError ||
+            (operationStarted
+              ? "The order could not be recorded."
+              : "The order was not sent because its presentation could not start."),
+        );
+        if (!operationStarted && presentationFailed(receipt.outcome)) {
+          setPresentationWarning("The command presentation is unavailable. No order was recorded.");
+        }
+        return;
       }
-    } catch (cause) {
-      setError(cause instanceof Error ? cause.message : "The order could not be recorded.");
+
+      const refreshed = await refresh(controller.signal);
+      if (!mounted.current || controller.signal.aborted) return;
+      setMessage(`Event ${result.event.id} recorded at sequence ${result.event.sequence}.`);
+      setSelected(null);
+      if (receipt.outcome === "presented-fallback" || presentationFailed(receipt.outcome)) {
+        setPresentationWarning(readablePresentationWarning("order"));
+      } else if (!refreshed) {
+        setPresentationWarning("The order was recorded, but the latest ledger status could not be loaded.");
+      }
+    } catch {
+      if (!mounted.current || controller.signal.aborted) return;
+      if (authoritativeResult) {
+        const refreshed = await refresh(controller.signal);
+        if (!mounted.current || controller.signal.aborted) return;
+        setMessage(`Event ${authoritativeResult.event.id} recorded at sequence ${authoritativeResult.event.sequence}.`);
+        setSelected(null);
+        setPresentationWarning(
+          refreshed
+            ? readablePresentationWarning("order")
+            : "The order was recorded, but its presentation and latest ledger status could not be loaded.",
+        );
+      } else {
+        setError(operationError || "The order could not be recorded.");
+      }
     } finally {
-      setBusy(false);
-      setActiveAction(null);
+      if (inFlight.current === controller) inFlight.current = null;
+      if (mounted.current) {
+        setBusy(false);
+        setActiveAction(null);
+      }
     }
   }
 
   if (!signedIn) {
     return (
-      <main ref={root} className={`quartermaster-login stage-${animation.label}`} data-motion-mode={mode}>
+      <main
+        ref={root}
+        className={`quartermaster-login stage-${animation.label}`}
+        data-motion-mode={mode}
+        data-scene-host-id={QUARTERMASTER_HOST_ID}
+        data-scene-host-kind={QUARTERMASTER_HOST_KIND}
+      >
         <div className="chart-room-light" data-scene-part="chart-room-light" data-gsap-owned aria-hidden="true" />
         <LottieEffect
           asset={lottieAssets.rollingFog}
@@ -221,6 +505,11 @@ export function Quartermaster({ authenticated }: { authenticated: boolean }) {
                 {error}
               </p>
             )}
+            {presentationWarning && (
+              <p ref={presentationWarningTarget} className="gm-presentation-warning" role="status">
+                {presentationWarning}
+              </p>
+            )}
           </form>
         </section>
         <div className="quartermaster-login-controls">
@@ -237,7 +526,13 @@ export function Quartermaster({ authenticated }: { authenticated: boolean }) {
   if (!status) return <main className="quartermaster-shell loading-quarters">Opening the voyage ledger…</main>;
 
   return (
-    <main ref={root} className={`quartermaster-shell stage-${animation.label}`} data-motion-mode={mode}>
+    <main
+      ref={root}
+      className={`quartermaster-shell stage-${animation.label}`}
+      data-motion-mode={mode}
+      data-scene-host-id={QUARTERMASTER_HOST_ID}
+      data-scene-host-kind={QUARTERMASTER_HOST_KIND}
+    >
       <div className="quartermaster-desk" data-scene-part="command-light" data-gsap-owned aria-hidden="true" />
       <header className="quartermaster-header">
         <div>
@@ -256,6 +551,14 @@ export function Quartermaster({ authenticated }: { authenticated: boolean }) {
           </div>
         </div>
       </header>
+      {presentationWarning && (
+        <p ref={presentationWarningTarget} className="gm-presentation-warning" role="status">
+          {presentationWarning}
+          <button onClick={() => setPresentationWarning("")} aria-label="Dismiss presentation warning">
+            ×
+          </button>
+        </p>
+      )}
       <section className="gm-grid">
         <motion.article
           className="gm-status-card"
@@ -326,6 +629,7 @@ export function Quartermaster({ authenticated }: { authenticated: boolean }) {
                 className={action[0] === "UNDO_LAST" ? "danger-action" : ""}
                 onClick={() => {
                   setError("");
+                  setPresentationWarning("");
                   setSelected(action);
                 }}
                 whileHover={{ x: 3 }}

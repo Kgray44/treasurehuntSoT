@@ -40,26 +40,30 @@ export const journalOpenScene: SceneDefinition = {
   },
 };
 
+function releaseSeconds(context: SceneBuildContext, value: number) {
+  return seconds(context, context.mode === "full" ? value * 0.72 : value);
+}
+
 export const chapterReleaseScene: SceneDefinition = {
   name: "chapter-release",
   buildOpening(context) {
     const timeline = sceneTimeline(context);
     mark(timeline, context, "omen", 0);
-    timeline.to(parts(context.root, "workspace-light"), { opacity: 0.42, duration: seconds(context, 0.65) });
+    timeline.to(parts(context.root, "workspace-light"), { opacity: 0.42, duration: releaseSeconds(context, 0.65) });
     timeline.to(
       parts(context.root, "lantern"),
-      { opacity: 0.62, duration: seconds(context, 0.16), repeat: 3, yoyo: true },
+      { opacity: 0.62, duration: releaseSeconds(context, 0.16), repeat: 3, yoyo: true },
       "omen+=0.18",
     );
     mark(timeline, context, "attention", ">-0.05");
     timeline.to(
       parts(context.root, "peripheral"),
-      { opacity: 0.28, scale: context.mode === "full" ? 0.97 : 1, duration: seconds(context, 0.55) },
+      { opacity: 0.28, scale: context.mode === "full" ? 0.97 : 1, duration: releaseSeconds(context, 0.55) },
       "attention",
     );
     timeline.to(
       parts(context.root, "journal-stage"),
-      { scale: context.mode === "full" ? 1.035 : 1, duration: seconds(context, 0.55) },
+      { scale: context.mode === "full" ? 1.035 : 1, duration: releaseSeconds(context, 0.55) },
       "attention",
     );
     mark(timeline, context, "await-server", ">");
@@ -87,12 +91,12 @@ export const chapterReleaseScene: SceneDefinition = {
     timeline.fromTo(
       cracks,
       { drawSVG: "0%" },
-      { drawSVG: "100%", duration: seconds(context, 0.82), stagger: seconds(context, 0.05) },
+      { drawSVG: "100%", duration: releaseSeconds(context, 0.82), stagger: releaseSeconds(context, 0.05) },
       "seal",
     );
     timeline.to(
       parts(context.root, "seal"),
-      { scale: 1.16, rotate: distance(context, 9), duration: seconds(context, 0.48) },
+      { scale: 1.16, rotate: distance(context, 9), duration: releaseSeconds(context, 0.48) },
       "seal",
     );
     timeline.to(parts(context.root, "seal-fragment"), {
@@ -100,19 +104,24 @@ export const chapterReleaseScene: SceneDefinition = {
       y: distance(context, 24),
       rotate: (i) => (i ? 26 : -22),
       opacity: 0,
-      duration: seconds(context, 0.5),
-      stagger: seconds(context, 0.04),
+      duration: releaseSeconds(context, 0.5),
+      stagger: releaseSeconds(context, 0.04),
     });
     mark(timeline, context, "parchment", ">-0.08");
     timeline.to(
       parchment,
-      { rotateX: 0, y: 0, boxShadow: "0 26px 60px rgba(0,0,0,.28)", duration: seconds(context, 1.15) },
+      {
+        rotateX: 0,
+        y: 0,
+        boxShadow: "0 26px 60px rgba(0,0,0,.28)",
+        duration: releaseSeconds(context, 1.15),
+      },
       "parchment",
     );
     timeline.fromTo(
       parts(context.root, "page-light"),
       { xPercent: -120, opacity: 0 },
-      { xPercent: 120, opacity: 0.75, duration: seconds(context, 0.85) },
+      { xPercent: 120, opacity: 0.75, duration: releaseSeconds(context, 0.85) },
       "parchment+=0.2",
     );
     mark(timeline, context, "ink-heading", ">-0.1");
@@ -124,7 +133,12 @@ export const chapterReleaseScene: SceneDefinition = {
     timeline.fromTo(
       headingLines,
       { yPercent: 105, opacity: 0 },
-      { yPercent: 0, opacity: 1, duration: seconds(context, 0.38), stagger: seconds(context, 0.06) },
+      {
+        yPercent: 0,
+        opacity: 1,
+        duration: releaseSeconds(context, 0.38),
+        stagger: releaseSeconds(context, 0.06),
+      },
       "ink-heading",
     );
     mark(timeline, context, "ink-story", ">-0.04");
@@ -140,18 +154,18 @@ export const chapterReleaseScene: SceneDefinition = {
         yPercent: 0,
         opacity: 1,
         filter: "blur(0px)",
-        duration: seconds(context, 0.52),
-        stagger: seconds(context, 0.12),
+        duration: releaseSeconds(context, 0.52),
+        stagger: releaseSeconds(context, 0.12),
       },
       "ink-story",
     );
     if (quill && quillPath && context.mode !== "reduced") {
-      timeline.fromTo(quill, { opacity: 0 }, { opacity: 1, duration: seconds(context, 0.1) }, "ink-story");
+      timeline.fromTo(quill, { opacity: 0 }, { opacity: 1, duration: releaseSeconds(context, 0.1) }, "ink-story");
       timeline.to(
         quill,
         {
           motionPath: { path: quillPath, align: quillPath, autoRotate: true, alignOrigin: [0.2, 0.8] },
-          duration: seconds(context, 1.05),
+          duration: releaseSeconds(context, 1.05),
           ease: "none",
         },
         "ink-story",
@@ -161,7 +175,7 @@ export const chapterReleaseScene: SceneDefinition = {
     timeline.fromTo(
       objective,
       { opacity: 0, y: distance(context, 14), rotate: distance(context, -1.5) },
-      { opacity: 1, y: 0, rotate: 0, duration: seconds(context, 0.42) },
+      { opacity: 1, y: 0, rotate: 0, duration: releaseSeconds(context, 0.42) },
       "ink-objective",
     );
     mark(timeline, context, "ink-riddle", ">-0.06");
@@ -173,23 +187,32 @@ export const chapterReleaseScene: SceneDefinition = {
     timeline.fromTo(
       riddleLines,
       { clipPath: "inset(0 100% 0 0)", opacity: 0.35 },
-      { clipPath: "inset(0 0% 0 0)", opacity: 1, duration: seconds(context, 0.55), stagger: seconds(context, 0.1) },
+      {
+        clipPath: "inset(0 0% 0 0)",
+        opacity: 1,
+        duration: releaseSeconds(context, 0.55),
+        stagger: releaseSeconds(context, 0.1),
+      },
       "ink-riddle",
     );
     mark(timeline, context, "map", ">-0.06");
-    timeline.fromTo(route, { drawSVG: "0%" }, { drawSVG: "100%", duration: seconds(context, 0.68) }, "map");
+    timeline.fromTo(route, { drawSVG: "0%" }, { drawSVG: "100%", duration: releaseSeconds(context, 0.68) }, "map");
     timeline.to(
       parts(context.root, "map-fog"),
-      { opacity: 0.16, scale: 1.06, duration: seconds(context, 0.62) },
+      { opacity: 0.16, scale: 1.06, duration: releaseSeconds(context, 0.62) },
       "map",
     );
     mark(timeline, context, "active", ">");
     timeline.to(
       parts(context.root, "peripheral"),
-      { opacity: 1, scale: 1, duration: seconds(context, 0.35) },
+      { opacity: 1, scale: 1, duration: releaseSeconds(context, 0.35) },
       "active",
     );
-    timeline.to(parts(context.root, "workspace-light"), { opacity: 1, duration: seconds(context, 0.35) }, "active");
+    timeline.to(
+      parts(context.root, "workspace-light"),
+      { opacity: 1, duration: releaseSeconds(context, 0.35) },
+      "active",
+    );
     mark(timeline, context, "content-readable", ">");
     return settle(timeline, context);
   },

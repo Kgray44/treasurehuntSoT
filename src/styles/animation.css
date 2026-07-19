@@ -87,6 +87,19 @@ html.cinematic-hidden * {
   color: #b8c8c1;
   font-family: Georgia, serif;
 }
+.intro-action-cue {
+  position: absolute;
+  z-index: 3;
+  top: 76%;
+  display: grid;
+  width: 2rem;
+  height: 2rem;
+  place-items: center;
+  border: 1px solid rgba(220, 174, 99, 0.5);
+  border-radius: 50%;
+  color: var(--brass-100);
+  filter: drop-shadow(0 0 12px rgba(118, 189, 181, 0.7));
+}
 .voyage-introduction > button {
   position: absolute;
   z-index: 4;
@@ -456,11 +469,9 @@ html.cinematic-hidden * {
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .harbor-fog,
-  .harbor-waves,
-  .chart-lottie-fog,
-  .finale-fog {
-    display: none;
-  }
+html[data-motion-level="reduced"] .harbor-fog,
+html[data-motion-level="reduced"] .harbor-waves,
+html[data-motion-level="reduced"] .chart-lottie-fog,
+html[data-motion-level="reduced"] .finale-fog {
+  display: none;
 }

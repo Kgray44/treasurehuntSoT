@@ -359,7 +359,7 @@ test("Captain invitation, immutable version, Player runtime, archive, and revoca
   const stalePage = await staleContext.newPage();
   await stalePage.goto(original.link);
   await expect(stalePage).toHaveURL(/\/player\/invitation\?state=invalid$/);
-  await expect(stalePage.getByRole("heading", { name: "The seal will not open" })).toBeVisible();
+  await expect(stalePage.getByRole("heading", { name: "This invitation cannot be opened" })).toBeVisible();
   await staleContext.close();
 
   const revoke = await captain.post(`/api/captain/invitations/${replacement.replacement.id}`, {
@@ -371,7 +371,7 @@ test("Captain invitation, immutable version, Player runtime, archive, and revoca
   const revokedPage = await revokedContext.newPage();
   await revokedPage.goto(replacement.replacement.link);
   await expect(revokedPage).toHaveURL(/\/player\/invitation\?state=invalid$/);
-  await expect(revokedPage.getByRole("heading", { name: "The seal will not open" })).toBeVisible();
+  await expect(revokedPage.getByRole("heading", { name: "This invitation cannot be opened" })).toBeVisible();
   const lifecycleLibrary = await captain.get("/api/captain/library");
   await expectOk(lifecycleLibrary);
   const lifecycleBody = (await lifecycleLibrary.json()) as {

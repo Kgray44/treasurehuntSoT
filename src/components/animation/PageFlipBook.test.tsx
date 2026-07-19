@@ -13,24 +13,55 @@ const calls = vi.hoisted(() => ({
   turnTo: vi.fn(),
   flipTo: vi.fn(),
   constructors: vi.fn(),
-  instance: null as null | { current: number; handlers: Map<string, (event: { data: number | string }) => void> },
+  instances: [] as Array<{
+    current: number;
+    destroyMock: ReturnType<typeof vi.fn>;
+    handlers: Map<string, (event: { data: number | string }) => void>;
+    host: HTMLElement;
+  }>,
+  instance: null as null | {
+    current: number;
+    destroyMock: ReturnType<typeof vi.fn>;
+    handlers: Map<string, (event: { data: number | string }) => void>;
+    host: HTMLElement;
+  },
 }));
 
 vi.mock("page-flip", () => ({
   PageFlip: class {
     current = 0;
+    destroyMock = vi.fn(() => calls.destroy(this));
     handlers = new Map<string, (event: { data: number | string }) => void>();
-    constructor(host: HTMLElement, options: { flippingTime: number }) {
+    host: HTMLElement;
+    constructor(host: HTMLElement, options: { flippingTime: number; startPage: number }) {
+      this.host = host;
+      this.current = options.startPage;
       calls.constructors(host, options);
       calls.instance = this;
+      calls.instances.push(this);
     }
-    loadFromHTML = calls.load;
-    updateFromHtml = calls.update;
-    destroy = calls.destroy;
-    flipNext = calls.next;
-    flipPrev = calls.previous;
-    turnToPage = calls.turnTo.mockImplementation((page: number) => (this.current = page));
-    flip = calls.flipTo.mockImplementation((page: number) => (this.current = page));
+    loadFromHTML = (pages: HTMLElement[]) => {
+      calls.load(pages);
+      this.host.replaceChildren(...pages.map((page) => page.cloneNode(true)));
+    };
+    updateFromHtml = (pages: HTMLElement[]) => {
+      calls.update(pages);
+      this.host.replaceChildren(...pages.map((page) => page.cloneNode(true)));
+    };
+    destroy = () => {
+      this.destroyMock();
+      this.host.remove();
+    };
+    flipNext = (...args: unknown[]) => calls.next(...args);
+    flipPrev = (...args: unknown[]) => calls.previous(...args);
+    turnToPage = (page: number) => {
+      this.current = page;
+      calls.turnTo(page);
+    };
+    flip = (page: number, corner: string) => {
+      this.current = page;
+      calls.flipTo(page, corner);
+    };
     getCurrentPageIndex = () => this.current;
     getPageCount = () => 3;
     getOrientation = () => "landscape" as const;
@@ -47,6 +78,7 @@ describe("PageFlipBook", () => {
   afterEach(() => {
     cleanup();
     vi.clearAllMocks();
+    calls.instances.length = 0;
     calls.instance = null;
   });
 
@@ -125,6 +157,98 @@ describe("PageFlipBook", () => {
       expect.any(HTMLElement),
       expect.objectContaining({ flippingTime: 4400 }),
     );
+  });
+
+  it("recreates a live full-mode book with gentle timing while preserving its page", async () => {
+    const { rerender } = render(<PageFlipBook pages={pages} mode="full" />);
+    await waitFor(() => expect(calls.constructors).toHaveBeenCalledOnce());
+    calls.instance!.current = 1;
+    calls.instance!.handlers.get("flip")?.({ data: 1 });
+    await waitFor(() => expect(screen.getByText("Page 2 of 2")).toBeVisible());
+
+    rerender(<PageFlipBook pages={pages} mode="gentle" />);
+
+    await waitFor(() => expect(calls.constructors).toHaveBeenCalledTimes(2));
+    expect(calls.constructors.mock.calls[0]?.[1]).toEqual(expect.objectContaining({ flippingTime: 1100 }));
+    expect(calls.constructors.mock.calls[1]?.[1]).toEqual(expect.objectContaining({ flippingTime: 620, startPage: 1 }));
+    expect(calls.instances[0]?.destroyMock).toHaveBeenCalledOnce();
+    expect(calls.instance?.current).toBe(1);
+  });
+
+  it("preserves the current page and focus while entering and exiting reduced mode", async () => {
+    const { container, rerender } = render(<PageFlipBook pages={pages} mode="full" />);
+    await waitFor(() => expect(calls.load).toHaveBeenCalledOnce());
+    calls.instance!.current = 1;
+    calls.instance!.handlers.get("flip")?.({ data: 1 });
+    await waitFor(() => expect(screen.getByText("Page 2 of 2")).toBeVisible());
+    const livePage = container.querySelector<HTMLElement>('.page-flip-host [data-page-index="1"]')!;
+    livePage.focus();
+    expect(livePage).toHaveFocus();
+
+    rerender(<PageFlipBook pages={pages} mode="reduced" />);
+
+    await waitFor(() => expect(screen.getByText("Page 2 of 2")).toBeVisible());
+    const reducedPage = container.querySelector<HTMLElement>('.reduced-page-stage [data-page-index="1"]')!;
+    await waitFor(() => expect(reducedPage).toHaveFocus());
+    expect(calls.instances[0]?.destroyMock).toHaveBeenCalledOnce();
+
+    const previous = screen.getByRole("button", { name: "Previous journal page" });
+    previous.focus();
+    rerender(<PageFlipBook pages={pages} mode="full" />);
+
+    await waitFor(() => expect(calls.constructors).toHaveBeenCalledTimes(2));
+    expect(calls.constructors.mock.calls[1]?.[1]).toEqual(expect.objectContaining({ startPage: 1 }));
+    await waitFor(() => expect(screen.getByRole("button", { name: "Previous journal page" })).toHaveFocus());
+  });
+
+  it("marks the hidden source and strips only source eligibility markers from visible clones", async () => {
+    const markedPages: FlipBookPage[] = [
+      {
+        id: "marked",
+        density: "soft",
+        label: "Marked",
+        content: (
+          <div data-pageflip-source data-scene-instance="stale" data-scene-instance-id="also-stale">
+            <span data-scene-part="chapter-heading">Readable content</span>
+          </div>
+        ),
+      },
+    ];
+    const { container } = render(<PageFlipBook pages={markedPages} mode="full" />);
+    await waitFor(() => expect(calls.load).toHaveBeenCalledOnce());
+
+    const hiddenSource = container.querySelector<HTMLElement>(".page-flip-source")!;
+    expect(hiddenSource).toHaveAttribute("data-pageflip-source");
+    expect(hiddenSource).toHaveAttribute("aria-hidden", "true");
+    expect(hiddenSource).toHaveAttribute("inert");
+    expect(hiddenSource.querySelector("[data-scene-instance]")).not.toBeNull();
+
+    const suppliedClone = (calls.load.mock.calls[0]?.[0] as HTMLElement[])[0]!;
+    expect(suppliedClone.querySelector("[data-pageflip-source]")).toBeNull();
+    expect(suppliedClone.querySelector("[data-scene-instance]")).toBeNull();
+    expect(suppliedClone.querySelector("[data-scene-instance-id]")).toBeNull();
+    expect(suppliedClone.querySelector('[data-scene-part="chapter-heading"]')).toHaveTextContent("Readable content");
+
+    const visibleHost = container.querySelector<HTMLElement>(".page-flip-host")!;
+    expect(visibleHost.querySelector("[data-pageflip-source]")).toBeNull();
+    expect(visibleHost.querySelector("[data-scene-instance]")).toBeNull();
+    expect(container.querySelector(".page-flip-book")).toHaveAttribute("data-animation-owner", "page-flip");
+  });
+
+  it("destroys every runtime instance exactly once across policy transitions and unmount", async () => {
+    const { rerender, unmount } = render(<PageFlipBook pages={pages} mode="full" />);
+    await waitFor(() => expect(calls.instances).toHaveLength(1));
+    rerender(<PageFlipBook pages={pages} mode="gentle" />);
+    await waitFor(() => expect(calls.instances).toHaveLength(2));
+    rerender(<PageFlipBook pages={pages} mode="reduced" />);
+    await waitFor(() => expect(calls.instances[1]?.destroyMock).toHaveBeenCalledOnce());
+    rerender(<PageFlipBook pages={pages} mode="full" />);
+    await waitFor(() => expect(calls.instances).toHaveLength(3));
+    unmount();
+
+    expect(calls.instances).toHaveLength(3);
+    for (const pageFlip of calls.instances) expect(pageFlip.destroyMock).toHaveBeenCalledOnce();
+    expect(calls.destroy).toHaveBeenCalledTimes(3);
   });
 
   it("uses an immediate accessible fallback and keyboard-independent controls in reduced mode", () => {

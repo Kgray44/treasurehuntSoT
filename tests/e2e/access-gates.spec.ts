@@ -26,11 +26,11 @@ test("quartermaster remains protected across supported browsers", async ({ page 
 
 test("published tale catalog is public while Studio remains protected", async ({ page }) => {
   await page.goto("/tales");
-  await expect(page.getByRole("heading", { name: "Choose a Tall Tale" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Choose an Adventure" })).toBeVisible();
   const seededTale = page.getByRole("article").filter({
     has: page.getByRole("heading", { name: "The Forever Treasure — Studio Development Voyage" }),
   });
-  await expect(seededTale.getByRole("link", { name: "Start voyage" })).toBeVisible();
+  await expect(seededTale.getByRole("link", { name: "Preview Tall Tale" })).toBeVisible();
   await page.goto("/studio");
   await expect(page.getByRole("heading", { name: "The Cartographer's Table is locked." })).toBeVisible();
 });

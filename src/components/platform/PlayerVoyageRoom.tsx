@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { ErrorState, LoadingState } from "@/components/ui/AsyncState";
 
 type Playthrough = {
   id: string;
@@ -28,11 +29,15 @@ export function PlayerVoyageRoom({ playthroughId }: { playthroughId: string }) {
   const [connection, setConnection] = useState<"CONNECTING" | "LIVE" | "POLLING" | "DISCONNECTED">("CONNECTING");
 
   const load = useCallback(async () => {
-    const response = await fetch(`/api/player/playthroughs/${playthroughId}`, { cache: "no-store" });
-    const body = (await response.json()) as { playthrough?: Playthrough; error?: string };
-    if (!response.ok) return setError(body.error ?? "This voyage is unavailable.");
-    setVoyage(body.playthrough ?? null);
-    setError("");
+    try {
+      const response = await fetch(`/api/player/playthroughs/${playthroughId}`, { cache: "no-store" });
+      const body = (await response.json()) as { playthrough?: Playthrough; error?: string };
+      if (!response.ok) return setError(body.error ?? "This voyage is unavailable.");
+      setVoyage(body.playthrough ?? null);
+      setError("");
+    } catch {
+      setError("The waiting room could not be reached. Check your connection and try again.");
+    }
   }, [playthroughId]);
 
   useEffect(() => {
@@ -66,22 +71,23 @@ export function PlayerVoyageRoom({ playthroughId }: { playthroughId: string }) {
   if (error && !voyage)
     return (
       <main className="waiting-room platform-loading">
-        <p className="platform-error" role="alert">
-          {error}
-        </p>
-        <Link href="/player/library">Return to library</Link>
+        <ErrorState
+          title="This voyage cannot be opened"
+          detail={error}
+          action={{ label: "Return to My Library", href: "/player/library" }}
+        />
       </main>
     );
   if (!voyage)
     return (
       <main className="waiting-room platform-loading">
-        <p role="status">Opening the waiting room…</p>
+        <LoadingState title="Opening the waiting room" detail="Checking launch status, participants, and connection." />
       </main>
     );
   if (voyage.state === "COMPLETED") {
     return (
       <main className="waiting-room platform-loading">
-        <p role="status">Opening your completed voyage archive…</p>
+        <LoadingState title="Opening your completed journal" detail="Restoring the exact edition and story history." />
       </main>
     );
   }
@@ -92,7 +98,6 @@ export function PlayerVoyageRoom({ playthroughId }: { playthroughId: string }) {
         <b>✦</b>
       </div>
       <section aria-labelledby="waiting-title">
-        <Link href="/player/library">Back to my library</Link>
         <p className="eyebrow">{voyage.status.replaceAll("_", " ")}</p>
         <h1 id="waiting-title">{voyage.title}</h1>
         <h2>{voyage.voyageName}</h2>
@@ -118,7 +123,9 @@ export function PlayerVoyageRoom({ playthroughId }: { playthroughId: string }) {
           )}
           <div>
             <dt>Connection</dt>
-            <dd className={`connection-${connection.toLowerCase()}`}>{connection.toLocaleLowerCase()}</dd>
+            <dd className={`connection-${connection.toLowerCase()}`} role="status" aria-live="polite">
+              {connection.toLocaleLowerCase()}
+            </dd>
           </div>
           <div>
             <dt>Last server confirmation</dt>
@@ -144,8 +151,12 @@ export function PlayerVoyageRoom({ playthroughId }: { playthroughId: string }) {
           </p>
         )}
         <div className="waiting-actions">
-          <button onClick={() => void load()}>Reconnect and refresh</button>
-          <Link href="/player/library">Leave waiting room</Link>
+          <button className="button-secondary" onClick={() => void load()}>
+            Reconnect and Refresh
+          </button>
+          <Link className="button-subtle" href="/player/library">
+            Leave Waiting Room
+          </Link>
         </div>
       </section>
     </main>

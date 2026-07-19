@@ -55,8 +55,8 @@ test("development showcase exercises transport, trailer, assets, page turns, and
   await expect(page.getByText("No runtime errors.")).toBeVisible();
 
   await page.getByRole("button", { name: "PLAY TRAILER" }).click();
-  await expect(page.getByRole("button", { name: "SKIP TRAILER" })).toBeVisible();
-  await page.getByRole("button", { name: "SKIP TRAILER" }).click();
+  await expect(page.getByRole("button", { name: "STOP TRAILER" })).toBeVisible();
+  await page.getByRole("button", { name: "STOP TRAILER" }).click();
   await expect(page.getByRole("button", { name: "PLAY TRAILER" })).toBeVisible({ timeout: 5_000 });
   expect(forbiddenRequests).toEqual([]);
 });

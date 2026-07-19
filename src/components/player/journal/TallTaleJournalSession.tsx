@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { flushSync } from "react-dom";
+import type { JournalPhaseOutcome, MotionMode } from "@/animation/core/animation-types";
 import { useMotionMode } from "@/animation/motion/useMotionMode";
 import {
   isJournalInteractive,
@@ -70,6 +71,75 @@ const openingSequence: JournalOpeningPhase[] = [
   "JOURNAL_READY",
 ];
 
+const returningOpeningSequence: JournalOpeningPhase[] = ["BOOK_SETTLING", "JOURNAL_READY"];
+
+export type JournalOpeningConsumerStatus =
+  | "idle"
+  | "running"
+  | "completed"
+  | "completed-fallback"
+  | "aborted"
+  | "failure"
+  | "skipped";
+
+type JournalPhaseFailureOutcome = Exclude<
+  JournalPhaseOutcome,
+  { status: "completed" | "completed-fallback" | "aborted" }
+>;
+
+export type JournalOpeningRunResult =
+  | { status: "completed" }
+  | { status: "completed-fallback"; reasons: string[] }
+  | { status: "aborted"; phase: JournalOpeningPhase }
+  | { status: "failure"; outcome: JournalPhaseFailureOutcome };
+
+type JournalPhaseWaiter = typeof waitForJournalPhase;
+
+export function journalOpeningAllowsPersistence(status: JournalOpeningConsumerStatus) {
+  return status === "completed" || status === "completed-fallback" || status === "skipped";
+}
+
+export async function runJournalOpeningPhases({
+  root,
+  phases,
+  mode,
+  signal,
+  onPhase,
+  waitForPhase = waitForJournalPhase,
+}: {
+  root: HTMLElement;
+  phases: readonly JournalOpeningPhase[];
+  mode: MotionMode;
+  signal: AbortSignal;
+  onPhase: (phase: JournalOpeningPhase) => void;
+  waitForPhase?: JournalPhaseWaiter;
+}): Promise<JournalOpeningRunResult> {
+  const fallbackReasons: string[] = [];
+  for (const phase of phases) {
+    if (signal.aborted) return { status: "aborted", phase };
+    let outcome: JournalPhaseOutcome;
+    try {
+      onPhase(phase);
+      outcome = await waitForPhase(root, phase, mode, signal);
+    } catch {
+      return {
+        status: "failure",
+        outcome: { status: "runtime-failed", phase, errorCode: "journal-phase-wait-rejected" },
+      };
+    }
+    if (outcome.status === "completed") continue;
+    if (outcome.status === "completed-fallback") {
+      fallbackReasons.push(outcome.reason);
+      continue;
+    }
+    if (outcome.status === "aborted") return { status: "aborted", phase: outcome.phase };
+    return { status: "failure", outcome };
+  }
+  return fallbackReasons.length
+    ? { status: "completed-fallback", reasons: [...new Set(fallbackReasons)] }
+    : { status: "completed" };
+}
+
 export function TallTaleJournalSession({
   sessionId,
   identitySession = false,
@@ -80,6 +150,7 @@ export function TallTaleJournalSession({
   const root = useRef<HTMLElement>(null);
   const book = useRef<PageFlipBookHandle>(null);
   const openingRun = useRef<AbortController | null>(null);
+  const openingGeneration = useRef(0);
   const openingBusy = useRef(false);
   const initializedOpening = useRef(false);
   const initializedPage = useRef(false);
@@ -101,7 +172,10 @@ export function TallTaleJournalSession({
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const [now, setNow] = useState(0);
-  const { mode, cycle: cycleMotion } = useMotionMode();
+  const [openingOutcome, setOpeningOutcome] = useState<JournalOpeningConsumerStatus>("idle");
+  const [openingNotice, setOpeningNotice] = useState("");
+  const { mode, policy: motionPolicy, cycle: cycleMotion } = useMotionMode();
+  const openingMode = useRef(mode);
 
   const load = useCallback(
     async (event?: ProgressionEvent) => {
@@ -188,6 +262,57 @@ export function TallTaleJournalSession({
     [identitySession, sessionId],
   );
 
+  const startOpening = useCallback(
+    async (phases: readonly JournalOpeningPhase[], persistOnCompletion: boolean) => {
+      const rootElement = root.current;
+      if (openingBusy.current || !rootElement) return;
+      openingBusy.current = true;
+      const generation = ++openingGeneration.current;
+      const controller = new AbortController();
+      openingRun.current = controller;
+      setOpeningOutcome("running");
+      setOpeningNotice("");
+
+      const result = await runJournalOpeningPhases({
+        root: rootElement,
+        phases,
+        mode,
+        signal: controller.signal,
+        onPhase: (phase) => flushSync(() => setOpeningPhase(phase)),
+      });
+
+      if (openingGeneration.current !== generation || openingRun.current !== controller) return;
+      openingRun.current = null;
+      openingBusy.current = false;
+
+      if (result.status === "completed" || result.status === "completed-fallback") {
+        setOpeningPhase("JOURNAL_READY");
+        setOpeningOutcome(result.status);
+        setOpeningNotice(
+          result.status === "completed-fallback"
+            ? "Motion was reduced. The journal is open in its readable final state."
+            : "",
+        );
+        if (persistOnCompletion && journalOpeningAllowsPersistence(result.status)) {
+          saveReading({ hasOpened: true });
+        }
+        return;
+      }
+
+      if (result.status === "aborted") {
+        setOpeningPhase("ENTRY_IDLE");
+        setOpeningOutcome("aborted");
+        setOpeningNotice("The opening stopped before completion. You can open the journal again.");
+        return;
+      }
+
+      setOpeningPhase("JOURNAL_READY");
+      setOpeningOutcome("failure");
+      setOpeningNotice("The animated opening could not finish. The journal is ready in a readable fallback state.");
+    },
+    [mode, saveReading],
+  );
+
   useEffect(() => {
     if (!state || !readingReady || liveReady) return;
     processedSequence.current = state.session.currentSequence;
@@ -265,20 +390,23 @@ export function TallTaleJournalSession({
     if (!state || !readingReady || !root.current || initializedOpening.current) return;
     initializedOpening.current = true;
     if (reading.hasOpened || state.session.previewMode || state.session.status === "COMPLETED") {
-      queueMicrotask(() => {
-        const rootElement = root.current;
-        if (!rootElement) return;
-        setOpeningPhase("BOOK_SETTLING");
-        const controller = new AbortController();
-        openingRun.current = controller;
-        void waitForJournalPhase(rootElement, "BOOK_SETTLING", mode, controller.signal)
-          .catch(() => undefined)
-          .finally(() => {
-            if (!controller.signal.aborted) setOpeningPhase("JOURNAL_READY");
-          });
-      });
+      queueMicrotask(() => void startOpening(returningOpeningSequence, false));
     }
-  }, [mode, reading.hasOpened, readingReady, state]);
+  }, [reading.hasOpened, readingReady, startOpening, state]);
+
+  useEffect(() => {
+    if (openingMode.current === mode) return;
+    openingMode.current = mode;
+    const controller = openingRun.current;
+    if (!controller) return;
+    openingRun.current = null;
+    openingGeneration.current += 1;
+    openingBusy.current = false;
+    controller.abort();
+    setOpeningPhase("JOURNAL_READY");
+    setOpeningOutcome("aborted");
+    setOpeningNotice("Motion changed during the opening. The journal is ready without replaying the ceremony.");
+  }, [mode]);
 
   useEffect(() => {
     if (!pendingEvent || !state || !pages.length) return;
@@ -301,41 +429,41 @@ export function TallTaleJournalSession({
     setPendingEvent(null);
   }, [currentPage, pages, pendingEvent, saveReading, state]);
 
-  useEffect(() => {
-    return () => openingRun.current?.abort();
-  }, []);
+  useEffect(
+    () => () => {
+      const controller = openingRun.current;
+      openingRun.current = null;
+      openingGeneration.current += 1;
+      openingBusy.current = false;
+      controller?.abort();
+    },
+    [sessionId],
+  );
 
   useEffect(() => {
+    const journalRoot = root.current;
+    if (!journalRoot) return;
     const close = (event: KeyboardEvent) => {
       if (event.key === "Escape" && readingRef.current.openDrawer) saveReading({ openDrawer: null });
     };
-    window.addEventListener("keydown", close);
-    return () => window.removeEventListener("keydown", close);
-  }, [saveReading]);
+    journalRoot.addEventListener("keydown", close);
+    return () => journalRoot.removeEventListener("keydown", close);
+  }, [saveReading, state?.session.id]);
 
   async function openJournal() {
-    if (openingBusy.current || !root.current) return;
-    openingBusy.current = true;
-    const controller = new AbortController();
-    openingRun.current = controller;
-    try {
-      for (const phase of openingSequence) {
-        if (!root.current || controller.signal.aborted) break;
-        flushSync(() => setOpeningPhase(phase));
-        await waitForJournalPhase(root.current, phase, mode, controller.signal);
-      }
-      saveReading({ hasOpened: true });
-    } catch (cause) {
-      if (!(cause instanceof DOMException && cause.name === "AbortError")) setOpeningPhase("JOURNAL_READY");
-    } finally {
-      openingBusy.current = false;
-    }
+    await startOpening(openingSequence, true);
   }
 
   function skipOpening() {
-    openingRun.current?.abort();
+    const controller = openingRun.current;
+    openingRun.current = null;
+    openingGeneration.current += 1;
+    openingBusy.current = false;
+    controller?.abort();
     setOpeningPhase("JOURNAL_READY");
-    saveReading({ hasOpened: true });
+    setOpeningOutcome("skipped");
+    setOpeningNotice("Opening skipped. The journal is ready.");
+    if (journalOpeningAllowsPersistence("skipped")) saveReading({ hasOpened: true });
   }
 
   function turnTo(page: number) {
@@ -387,6 +515,8 @@ export function TallTaleJournalSession({
         title="Unbinding the journal"
         message={error || "Finding the current leafâ€¦"}
         error={Boolean(error)}
+        motionMode={mode}
+        motionLevel={motionPolicy.level}
       />
     );
 
@@ -406,7 +536,10 @@ export function TallTaleJournalSession({
       ref={root}
       className={`voyage-shell tall-tale-journal-shell mode-${state.journal.mode}`}
       data-journal-phase={openingPhase}
+      data-journal-opening-outcome={openingOutcome}
       data-live-event={liveNotice ? "revealed" : "idle"}
+      data-motion-mode={mode}
+      data-motion-level={motionPolicy.level}
       style={
         {
           "--player-text-scale": reading.textScale,
@@ -513,6 +646,11 @@ export function TallTaleJournalSession({
           <span>{openingLabel(openingPhase)}</span>
           <button onClick={skipOpening}>Skip ceremony</button>
         </div>
+      )}
+      {openingNotice && (journalReady || openingOutcome === "aborted") && (
+        <p className="journal-opening-status" role={openingOutcome === "failure" ? "alert" : "status"}>
+          {openingNotice}
+        </p>
       )}
 
       <aside
@@ -770,10 +908,24 @@ function eventLabel(eventType: string, state: SessionState) {
   return `A new page was released: ${state.block?.title ?? "the current objective"}.`;
 }
 
-function JournalStatus({ title, message, error }: { title: string; message: string; error: boolean }) {
+function JournalStatus({
+  title,
+  message,
+  error,
+  motionMode,
+  motionLevel,
+}: {
+  title: string;
+  message: string;
+  error: boolean;
+  motionMode: MotionMode;
+  motionLevel: MotionMode;
+}) {
   return (
     <main
       className="voyage-shell tall-tale-journal-shell journal-status-shell"
+      data-motion-mode={motionMode}
+      data-motion-level={motionLevel}
       style={{ "--player-text-scale": 1, "--texture-opacity": 1 } as React.CSSProperties}
     >
       <div className="ocean-depth" aria-hidden="true">

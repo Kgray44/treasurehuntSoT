@@ -5,10 +5,11 @@
 import Link from "next/link";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
-import type { AnimationSceneName } from "@/animation/core/animation-types";
+import { sceneNames, type AnimationSceneName, type PresentationReceipt } from "@/animation/core/animation-types";
 import { resetAnimationMetrics } from "@/animation/core/metrics";
 import { lottieAssets } from "@/animation/assets/lottie-contracts";
 import { riveAssets } from "@/animation/assets/rive-contracts";
+import { sceneContracts } from "@/animation/director/scene-registry";
 import { useAnimationDirector } from "@/animation/director/useAnimationDirector";
 import { useMotionMode } from "@/animation/motion/useMotionMode";
 import { AnimationControls } from "@/components/animation/AnimationControls";
@@ -18,7 +19,7 @@ import { RiveStatefulObject, type RiveRuntimeInput, type RiveSignal } from "@/co
 import { AnimationMetrics } from "./AnimationMetrics";
 
 type Library = "all" | "gsap" | "motion" | "pageflip" | "rive" | "lottie";
-type Demo = {
+export type ShowcaseDemo = {
   id: string;
   label: string;
   scene: AnimationSceneName;
@@ -26,7 +27,7 @@ type Demo = {
   operation?: "success" | "failure";
 };
 
-const demos: Demo[] = [
+export const showcaseDemos: ShowcaseDemo[] = [
   { id: "arrival", label: "First arrival", scene: "first-arrival", libraries: ["gsap", "lottie", "rive", "motion"] },
   { id: "reentry", label: "Same-session reentry", scene: "session-reentry", libraries: ["gsap", "motion"] },
   {
@@ -108,6 +109,8 @@ const demos: Demo[] = [
     scene: "finale-requirement",
     libraries: ["gsap", "rive"],
   },
+  { id: "prepare", label: "Prepare chapter command", scene: "prepare-chapter", libraries: ["gsap"] },
+  { id: "mark-solved", label: "Mark chapter solved command", scene: "mark-solved", libraries: ["gsap"] },
   { id: "pause", label: "Pause", scene: "pause", libraries: ["gsap", "rive"] },
   { id: "resume", label: "Resume", scene: "resume", libraries: ["gsap", "rive"] },
   { id: "undo", label: "Undo reversal", scene: "undo", libraries: ["gsap"] },
@@ -133,6 +136,28 @@ const demos: Demo[] = [
   },
   { id: "fallbacks", label: "Error and fallback states", scene: "session-reentry", libraries: ["rive", "lottie"] },
 ];
+
+export const showcaseCoverage = {
+  rows: showcaseDemos.length,
+  uniqueScenes: new Set(showcaseDemos.map((demo) => demo.scene)).size,
+  registeredScenes: sceneNames.length,
+};
+
+const showcaseHostId = "development-animation-showcase";
+const showcaseHostKind = "development-showcase";
+
+export function showcaseDemoLabel(demo: ShowcaseDemo) {
+  return `${demo.label} — ${sceneContracts[demo.scene].reachability}`;
+}
+
+export function summarizeShowcaseReceipt(receipt: PresentationReceipt<unknown>) {
+  const required = receipt.targetReport.observations.filter((observation) => observation.required);
+  return {
+    required: required.reduce((total, observation) => total + observation.matchedCount, 0),
+    visible: required.reduce((total, observation) => total + observation.visibleCount, 0),
+    duplicates: receipt.targetReport.observations.reduce((total, observation) => total + observation.duplicateCount, 0),
+  };
+}
 
 const trailer: AnimationSceneName[] = [
   "first-arrival",
@@ -211,19 +236,26 @@ export function AnimationShowcase() {
   const [trailerPlaying, setTrailerPlaying] = useState(false);
   const [trailerCard, setTrailerCard] = useState("Animation architecture ready");
   const [runtimeEpoch, setRuntimeEpoch] = useState(0);
-  const current = demos.find((demo) => demo.id === selected) ?? demos[0];
+  const [latestReceipt, setLatestReceipt] = useState<PresentationReceipt<unknown> | null>(null);
+  const current = showcaseDemos.find((demo) => demo.id === selected) ?? showcaseDemos[0];
   const visibleDemos = useMemo(
-    () => (library === "all" ? demos : demos.filter((demo) => demo.libraries.includes(library))),
+    () => (library === "all" ? showcaseDemos : showcaseDemos.filter((demo) => demo.libraries.includes(library))),
     [library],
   );
+  const currentContract = sceneContracts[current.scene];
+  const receiptCounts = latestReceipt ? summarizeShowcaseReceipt(latestReceipt) : null;
 
   const play = useCallback(
     async (demo = current) => {
       if (!root.current) return;
       try {
-        await director.play(demo.scene, {
+        const receipt = await director.play(demo.scene, {
           root: root.current,
           queue: false,
+          hostId: showcaseHostId,
+          hostKind: showcaseHostKind,
+          requestSource: "development",
+          eventOrActionId: `development-showcase:${demo.id}`,
           operation: demo.operation
             ? async () => {
                 if (demo.operation === "failure") throw new Error("Deterministic showcase rejection");
@@ -231,6 +263,7 @@ export function AnimationShowcase() {
               }
             : undefined,
         });
+        setLatestReceipt(receipt);
         if (demo.scene === "programmatic-page-flip") book.current?.flipTo(2);
       } catch (cause) {
         if (demo.operation !== "failure")
@@ -251,7 +284,16 @@ export function AnimationShowcase() {
         if (trailerCancelled.current || !root.current) break;
         setTrailerCard(scene.replaceAll("-", " "));
         const operation = scene === "player-access" ? async () => ({ safe: true }) : undefined;
-        await director.play(scene, { root: root.current, operation, queue: false });
+        const receipt = await director.play(scene, {
+          root: root.current,
+          operation,
+          queue: false,
+          hostId: showcaseHostId,
+          hostKind: showcaseHostKind,
+          requestSource: "development",
+          eventOrActionId: `development-trailer:${scene}`,
+        });
+        setLatestReceipt(receipt);
       }
       setTrailerCard("GSAP · StPageFlip · Motion · Rive · Lottie");
     } catch (cause) {
@@ -278,6 +320,7 @@ export function AnimationShowcase() {
         if (!snapshot.isPlaying) void play();
       }
       if (event.key.toLowerCase() === "s") director.skip();
+      if (event.key.toLowerCase() === "c") director.cancel("development-keyboard-interruption");
       if (event.key === "ArrowLeft") director.seek(Math.max(0, snapshot.progress - 0.05));
       if (event.key === "ArrowRight") director.seek(Math.min(1, snapshot.progress + 0.05));
       if (event.key === "Escape" && document.fullscreenElement) void document.exitFullscreen();
@@ -292,6 +335,7 @@ export function AnimationShowcase() {
     trailerCancelled.current = true;
     setTrailerPlaying(false);
     setErrors([]);
+    setLatestReceipt(null);
     setAssetStatus({});
     setTrailerCard("Animation architecture ready");
     setRuntimeEpoch((value) => value + 1);
@@ -301,12 +345,22 @@ export function AnimationShowcase() {
   }
 
   return (
-    <main ref={root} className={`animation-showcase stage-${snapshot.label}`} data-motion-mode={mode}>
+    <main
+      ref={root}
+      className={`animation-showcase stage-${snapshot.label}`}
+      data-motion-mode={mode}
+      data-scene-host-id={showcaseHostId}
+      data-scene-host-kind={showcaseHostKind}
+      data-harness-only="true"
+    >
       <header className="showcase-header">
         <div>
-          <p className="eyebrow">Development-only proving ground</p>
+          <p className="eyebrow">Development harness only · never production proof</p>
           <h1>Forever Treasure Animation Showcase</h1>
-          <p>Every demonstration is deterministic, uses safe local content, and never calls a progression API.</p>
+          <p>
+            Every demonstration uses synthetic local content and never calls a progression API. A successful harness
+            receipt does not prove production reachability, visibility, or integration.
+          </p>
         </div>
         <div>
           <Link href="/">Return to harbor</Link>
@@ -334,10 +388,10 @@ export function AnimationShowcase() {
             className="trailer-button"
             onClick={() => {
               trailerCancelled.current = true;
-              director.skip();
+              director.cancel("development-trailer-interruption");
             }}
           >
-            SKIP TRAILER
+            STOP TRAILER
           </button>
         ) : (
           <button className="trailer-button" onClick={() => void playTrailer()}>
@@ -347,6 +401,10 @@ export function AnimationShowcase() {
       </section>
       <div className="showcase-layout">
         <aside className="showcase-catalog">
+          <p>
+            {showcaseCoverage.rows} harness rows · {showcaseCoverage.uniqueScenes}/{showcaseCoverage.registeredScenes}{" "}
+            registered scene contracts represented
+          </p>
           <label>
             Library
             <select value={library} onChange={(event) => setLibrary(event.target.value as Library)}>
@@ -360,7 +418,7 @@ export function AnimationShowcase() {
             <select value={selected} onChange={(event) => setSelected(event.target.value)}>
               {visibleDemos.map((demo) => (
                 <option key={demo.id} value={demo.id}>
-                  {demo.label}
+                  {showcaseDemoLabel(demo)}
                 </option>
               ))}
             </select>
@@ -381,6 +439,9 @@ export function AnimationShowcase() {
               <kbd>S</kbd> skip
             </p>
             <p>
+              <kbd>C</kbd> interrupt
+            </p>
+            <p>
               <kbd>←</kbd>
               <kbd>→</kbd> seek
             </p>
@@ -398,8 +459,13 @@ export function AnimationShowcase() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
             >
+              <span>Harness only · {currentContract.reachability}</span>
               <span>{current.libraries.join(" · ")}</span>
               <strong>{current.label}</strong>
+              <p>
+                Synthetic development host; not production proof.
+                {currentContract.replacedBy ? ` Replaced by ${currentContract.replacedBy}.` : ""}
+              </p>
             </motion.div>
           </AnimatePresence>
           <DemoStage mode={mode} />
@@ -487,6 +553,56 @@ export function AnimationShowcase() {
                 <dd>documented fallbacks</dd>
               </div>
             </dl>
+          </section>
+          <section className="receipt-readout" aria-label="Latest development presentation receipt">
+            <h2>Latest typed receipt · sanitized</h2>
+            {latestReceipt && receiptCounts ? (
+              <>
+                <dl>
+                  <div>
+                    <dt>Scene</dt>
+                    <dd>{latestReceipt.sceneName}</dd>
+                  </div>
+                  <div>
+                    <dt>Outcome</dt>
+                    <dd>{latestReceipt.outcome}</dd>
+                  </div>
+                  <div>
+                    <dt>Host</dt>
+                    <dd>
+                      {latestReceipt.hostKind} · {latestReceipt.hostId}
+                    </dd>
+                  </div>
+                  <div>
+                    <dt>Request source</dt>
+                    <dd>{latestReceipt.requestSource}</dd>
+                  </div>
+                  <div>
+                    <dt>Required matched</dt>
+                    <dd>{receiptCounts.required}</dd>
+                  </div>
+                  <div>
+                    <dt>Required visible</dt>
+                    <dd>{receiptCounts.visible}</dd>
+                  </div>
+                  <div>
+                    <dt>Duplicates</dt>
+                    <dd>{receiptCounts.duplicates}</dd>
+                  </div>
+                  <div>
+                    <dt>Acknowledgment decision</dt>
+                    <dd>{latestReceipt.acknowledgmentAllowed ? "allowed by contract" : "not allowed"}</dd>
+                  </div>
+                  <div>
+                    <dt>Cleanup</dt>
+                    <dd>{latestReceipt.cleanup}</dd>
+                  </div>
+                </dl>
+                <p>Display payloads and operation results are intentionally excluded.</p>
+              </>
+            ) : (
+              <p>No presentation receipt yet.</p>
+            )}
           </section>
           <section className="error-log" aria-live="polite">
             <h2>Error log</h2>

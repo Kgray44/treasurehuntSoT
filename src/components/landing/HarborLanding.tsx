@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { useGSAP } from "@gsap/react";
 import { motion } from "motion/react";
 import { lottieAssets } from "@/animation/assets/lottie-contracts";
+import type { PresentationReceipt } from "@/animation/core/animation-types";
 import { gsap } from "@/animation/core/gsap-client";
 import { useAnimationDirector } from "@/animation/director/useAnimationDirector";
 import { useMotionMode } from "@/animation/motion/useMotionMode";
@@ -29,6 +30,17 @@ type GatewayStatus = {
     continue?: { label: string; href: string };
   };
 };
+
+const HARBOR_PRESENTATION_HOST_ID = "harbor-arrival-host";
+
+function reportNonPresentedReceipt(receipt: PresentationReceipt) {
+  if (process.env.NODE_ENV === "production" || receipt.outcome === "presented") return;
+  console.warn("[animation] Harbor presentation did not reach presented state.", {
+    sceneName: receipt.sceneName,
+    hostId: receipt.hostId,
+    outcome: receipt.outcome,
+  });
+}
 
 const roles = [
   {
@@ -56,6 +68,7 @@ const roles = [
 
 export function HarborLanding() {
   const root = useRef<HTMLElement>(null);
+  const presentationAbortRef = useRef<AbortController | null>(null);
   const { director, snapshot } = useAnimationDirector();
   const { mode, cycle } = useMotionMode();
   const [status, setStatus] = useState<GatewayStatus | null>(null);
@@ -90,11 +103,31 @@ export function HarborLanding() {
       .then((value: GatewayStatus | null) => setStatus(value))
       .catch(() => setStatus(null));
     if (!root.current) return;
+    const presentationAbort = new AbortController();
+    presentationAbortRef.current = presentationAbort;
     const key = "tall-tale-role-gateway";
     const scene = sessionStorage.getItem(key) === "seen" ? "session-reentry" : "first-arrival";
     sessionStorage.setItem(key, "seen");
-    void director.play(scene, { root: root.current, queue: false }).catch(() => undefined);
-    return () => director.cancel("gateway-unmounted");
+    void director
+      .play(scene, {
+        root: root.current,
+        queue: false,
+        hostId: HARBOR_PRESENTATION_HOST_ID,
+        hostKind: "arrival",
+        requestSource: "automatic",
+        signal: presentationAbort.signal,
+      })
+      .then(reportNonPresentedReceipt)
+      .catch(() => undefined)
+      .finally(() => {
+        if (presentationAbortRef.current === presentationAbort) presentationAbortRef.current = null;
+      });
+    return () => {
+      presentationAbort.abort();
+      presentationAbortRef.current?.abort();
+      presentationAbortRef.current = null;
+      director.cancel("gateway-unmounted");
+    };
   }, [director]);
 
   function continuation(role: (typeof roles)[number]) {
@@ -105,11 +138,34 @@ export function HarborLanding() {
   }
 
   const replay = () => {
-    if (root.current) void director.play("first-arrival", { root: root.current, queue: false }).catch(() => undefined);
+    if (!root.current) return;
+    presentationAbortRef.current?.abort();
+    const presentationAbort = new AbortController();
+    presentationAbortRef.current = presentationAbort;
+    void director
+      .play("first-arrival", {
+        root: root.current,
+        queue: false,
+        hostId: HARBOR_PRESENTATION_HOST_ID,
+        hostKind: "arrival",
+        requestSource: "replay",
+        signal: presentationAbort.signal,
+      })
+      .then(reportNonPresentedReceipt)
+      .catch(() => undefined)
+      .finally(() => {
+        if (presentationAbortRef.current === presentationAbort) presentationAbortRef.current = null;
+      });
   };
 
   return (
-    <main ref={root} className="harbor-landing role-gateway" data-motion-mode={mode}>
+    <main
+      ref={root}
+      id={HARBOR_PRESENTATION_HOST_ID}
+      className="harbor-landing role-gateway"
+      data-motion-mode={mode}
+      data-scene-host-id={HARBOR_PRESENTATION_HOST_ID}
+    >
       <div className="harbor-sky" data-scene-part="sky" data-gsap-owned aria-hidden="true">
         <div className="star-field" data-scene-part="stars">
           {Array.from({ length: 28 }, (_, index) => (
@@ -153,9 +209,28 @@ export function HarborLanding() {
           Choose your place in the Tale
         </h1>
         <p data-scene-part="arrival-copy" data-gsap-owned>
-          One living collection of adventures opens three different ways. Your choice opens a sign-in path; your account
-          and voyage decide what you may see.
+          Create, host, join, and revisit interactive stories built for many kinds of groups and occasions. Choose a
+          role to enter the part of the experience meant for you.
         </p>
+        <div className="gateway-primary-actions" data-scene-part="arrival-action" data-gsap-owned>
+          <Link className="brass-button" href="/tales">
+            Explore Tall Tales
+          </Link>
+          <Link className="button-secondary" href="/player/sign-in#invitation-code">
+            Join with an Invitation
+          </Link>
+        </div>
+        <div className="landing-controls" aria-label="Gateway presentation controls">
+          <button onClick={replay} disabled={snapshot.isPlaying}>
+            Replay gateway
+          </button>
+          {snapshot.isPlaying && snapshot.label !== "dark-sea" && (
+            <button onClick={() => director.skip()}>Skip arrival</button>
+          )}
+          <button onClick={cycle} aria-label={`Motion: ${mode}. Change motion setting`}>
+            {mode} motion
+          </button>
+        </div>
         <div
           className="role-object-grid"
           aria-label="Tall Tale roles"
@@ -199,17 +274,54 @@ export function HarborLanding() {
           Have an invitation code?
         </Link>
       </section>
-      <div className="landing-controls" aria-label="Gateway presentation controls">
-        <button onClick={replay} disabled={snapshot.isPlaying}>
-          Replay gateway
-        </button>
-        {snapshot.isPlaying && snapshot.label !== "dark-sea" && (
-          <button onClick={() => director.skip()}>Skip arrival</button>
-        )}
-        <button onClick={cycle} aria-label={`Motion: ${mode}. Change motion setting`}>
-          {mode} motion
-        </button>
-      </div>
+      <section className="gateway-explainer" aria-labelledby="tall-tale-explainer-title">
+        <header>
+          <p className="eyebrow">A story your group can step into</p>
+          <h2 id="tall-tale-explainer-title">What is a Tall Tale?</h2>
+          <p>
+            A Tall Tale is a guided interactive experience made of chapters, prompts, choices, activities, and reveals.
+            It can support a game night, celebration, trip, reunion, date, family adventure, or an entirely custom
+            story.
+          </p>
+        </header>
+        <div className="gateway-how-grid">
+          <article>
+            <span aria-hidden="true">01</span>
+            <h3>Choose an adventure</h3>
+            <p>Browse published Tall Tales and understand the time, group size, and story before you begin.</p>
+          </article>
+          <article>
+            <span aria-hidden="true">02</span>
+            <h3>Gather participants</h3>
+            <p>A Captain configures the voyage and sends each Player a private invitation link or short code.</p>
+          </article>
+          <article>
+            <span aria-hidden="true">03</span>
+            <h3>Continue your story</h3>
+            <p>
+              The journal preserves live progress, reconnects safely, and keeps completed editions available to revisit.
+            </p>
+          </article>
+        </div>
+        <div className="gateway-trust-panel">
+          <div>
+            <p className="eyebrow">Designed around your group</p>
+            <h3>Flexible by default, personal when you choose</h3>
+            <p>
+              System controls stay inclusive and reusable. Personal details belong only to the Tall Tale, invitation, or
+              customization your group selected.
+            </p>
+          </div>
+          <ul aria-label="Experience examples">
+            <li>Friends</li>
+            <li>Families</li>
+            <li>Celebrations</li>
+            <li>Game nights</li>
+            <li>Trips</li>
+            <li>Custom events</li>
+          </ul>
+        </div>
+      </section>
       <AnimationTestButton />
     </main>
   );
