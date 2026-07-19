@@ -407,7 +407,11 @@ test.describe.serial("Project Lanternwake Phase 1 presentation truth", () => {
       await expect(retry).toBeHidden();
       await expect(player.getByRole("button", { name: "Replay ceremony" })).toBeVisible();
       expect(acknowledgmentRequests).toEqual([eventId]);
-      expect(await db.viewedCeremony.count({ where: { eventId } })).toBe(1);
+      await expect
+        .poll(() => db.viewedCeremony.count({ where: { eventId } }), {
+          message: "The acknowledged fallback must persist exactly one viewed ceremony receipt.",
+        })
+        .toBe(1);
     } finally {
       await player
         .evaluate(() => {
