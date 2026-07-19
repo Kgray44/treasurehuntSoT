@@ -82,7 +82,6 @@ describe("ProgressionSceneHost", () => {
           {...baseProps}
           as="main"
           className="voyage-shell"
-          data-cinematic-sequence="firstArrival"
           data-journal-phase="JOURNAL_READY"
           data-journal-speed={0.5}
           data-motion-mode="gentle"
@@ -94,7 +93,6 @@ describe("ProgressionSceneHost", () => {
     const host = screen.getByTestId("progression-scene-host");
     expect(host.tagName).toBe("MAIN");
     expect(host).toHaveClass("voyage-shell");
-    expect(host).toHaveAttribute("data-cinematic-sequence", "firstArrival");
     expect(host).toHaveAttribute("data-journal-phase", "JOURNAL_READY");
     expect(host).toHaveAttribute("data-journal-speed", "0.5");
     expect(host).toHaveAttribute("data-motion-mode", "gentle");

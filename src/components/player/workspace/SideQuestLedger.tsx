@@ -140,14 +140,18 @@ export function SideQuestLedger({
   const [filter, setFilter] = useState<Filter>("all");
   const book = useRef<PageFlipBookHandle>(null);
   const [pageTargets, setPageTargets] = useState<PageFlipPageTargetExportAuthority | null>(null);
-  const quests = snapshot.sideQuests.filter(
-    (quest) =>
-      filter === "all" ||
-      (filter === "rumor"
-        ? ["RUMORED", "DISCOVERED"].includes(quest.state)
-        : filter === "active"
-          ? ["ACTIVE", "PARTIALLY_COMPLETE"].includes(quest.state)
-          : quest.state === "COMPLETE"),
+  const quests = useMemo(
+    () =>
+      snapshot.sideQuests.filter(
+        (quest) =>
+          filter === "all" ||
+          (filter === "rumor"
+            ? ["RUMORED", "DISCOVERED"].includes(quest.state)
+            : filter === "active"
+              ? ["ACTIVE", "PARTIALLY_COMPLETE"].includes(quest.state)
+              : quest.state === "COMPLETE"),
+      ),
+    [filter, snapshot.sideQuests],
   );
   const pages = useMemo<FlipBookPage[]>(
     () => [

@@ -982,6 +982,14 @@ export function PlayerExperience({ initialSnapshot }: { initialSnapshot: PublicS
         };
       }
 
+      if (
+        expectedLocal?.section === "journal" &&
+        request.eventType === "CHAPTER_RELEASED" &&
+        viewRef.current === "journal"
+      ) {
+        await waitForValue(() => journalCeremonyTargets.current?.targets["sealed-parchment"][0], controller.signal);
+      }
+
       const external = buildExternalTargets(event, sceneHost);
       const providedLocalTargetKeys = expectedLocal
         ? expectedLocal.requiredHandleKeys
@@ -1011,7 +1019,8 @@ export function PlayerExperience({ initialSnapshot }: { initialSnapshot: PublicS
         });
       };
       const verifyReadableState = () => {
-        const overlay = playerRoot.querySelector<HTMLElement>(
+        const progressionHost = playerRoot.closest<HTMLElement>("[data-progression-scene-host]");
+        const overlay = progressionHost?.querySelector<HTMLElement>(
           `[data-progression-overlay][data-presentation-id="${CSS.escape(request.requestId)}"]`,
         );
         const heading = overlay?.querySelector<HTMLElement>("#player-progression-heading");
@@ -1062,6 +1071,9 @@ export function PlayerExperience({ initialSnapshot }: { initialSnapshot: PublicS
           presentationFallback: async (context) => {
             if (context.signal?.aborted || context.hostId !== sceneHost.hostId) {
               return { completed: false, readable: false, reason: "progression-fallback-context-rejected" };
+            }
+            if (context.motionPolicy.level !== "reduced") {
+              return { completed: false, readable: false, reason: "progression-fallback-requires-reduced-motion" };
             }
             publishReadableState("fallback", eventPolicy.fallback.heading);
             markSemanticCommit();
@@ -1675,12 +1687,17 @@ export function PlayerExperience({ initialSnapshot }: { initialSnapshot: PublicS
     ? policyForProgressionEvent(lastPresentedRequest.eventType)
     : null;
   const settledPresentationSummary = lastPresentedRequest ? presentationSummary(lastPresentedRequest) : "";
+  const settledRetryable = lastPresentationReceipt?.retryDisposition === "retryable";
+  const settledRetryOutcome = lastPresentationReceipt?.sceneReceipt?.outcome ?? lastPresentationReceipt?.status ?? "failed";
+  const settledChapterReadableFallback =
+    lastPresentedRequest?.eventType === "CHAPTER_RELEASED" &&
+    (lastPresentationReceipt?.status === "fallback" ||
+      lastPresentationReceipt?.sceneReceipt?.motionPolicy.level === "reduced");
 
   return (
     <ProgressionSceneHost
       as="main"
       className={`voyage-shell stage-${animation.label} view-${view}${resettingJournal ? " journal-resetting" : ""}`}
-      data-cinematic-sequence={animationSequence}
       data-journal-phase={openingPhase}
       data-journal-speed={openingSpeed}
       data-motion-mode={mode}
@@ -1703,7 +1720,7 @@ export function PlayerExperience({ initialSnapshot }: { initialSnapshot: PublicS
             }
           : undefined
       }
-      fallback={presentationFallback ? <p role="alert">{presentationFallback}</p> : null}
+      fallback={presentationFallback ? <p role={settledRetryable ? undefined : "alert"}>{presentationFallback}</p> : null}
       onHostChange={onPersistentHostChange}
       content={
         accessRevoked ? (
@@ -1966,12 +1983,25 @@ export function PlayerExperience({ initialSnapshot }: { initialSnapshot: PublicS
             {!activeRequest && lastPresentedRequest && settledPresentationPolicy && (
               <aside
                 className="progression-settled-notice"
+                role={settledRetryable ? "alert" : undefined}
                 data-progress-event-id={lastPresentedRequest.eventId}
                 data-progress-event-type={lastPresentedRequest.eventType}
                 data-presentation-status={lastPresentationReceipt?.status ?? presentationStatus}
               >
                 <h2>{settledPresentationPolicy.globalPresentation.heading}</h2>
                 <p>{settledPresentationSummary}</p>
+                {settledChapterReadableFallback && (
+                  <section data-chapter-readable-fallback data-event-id={lastPresentedRequest.eventId}>
+                    <h3>{String(lastPresentedRequest.payload.title ?? settledPresentationPolicy.globalPresentation.heading)}</h3>
+                    <p>{String(lastPresentedRequest.payload.objective ?? settledPresentationSummary)}</p>
+                  </section>
+                )}
+                {settledRetryable && (
+                  <>
+                    <p>The ceremony could not be completed. Its readable state remains available while you retry.</p>
+                    <code>outcome={settledRetryOutcome}</code>
+                  </>
+                )}
                 <div role="group" aria-label="Voyage update actions">
                   {settledPresentationPolicy.relevantSection && (
                     <button type="button" onClick={() => navigate(settledPresentationPolicy.relevantSection!)}>
@@ -1987,9 +2017,9 @@ export function PlayerExperience({ initialSnapshot }: { initialSnapshot: PublicS
                       if (event) void playEvent(event, "replay");
                     }}
                   >
-                    Replay presentation
+                    Replay ceremony
                   </button>
-                  {lastPresentationReceipt?.retryDisposition === "retryable" && (
+                  {settledRetryable && (
                     <button
                       type="button"
                       onClick={() => {
@@ -1997,7 +2027,7 @@ export function PlayerExperience({ initialSnapshot }: { initialSnapshot: PublicS
                         if (event) void playEvent(event, "automatic");
                       }}
                     >
-                      Retry presentation
+                      Retry ceremony
                     </button>
                   )}
                   <button type="button" onClick={() => setLastPresentedRequest(null)}>

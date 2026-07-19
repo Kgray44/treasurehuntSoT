@@ -1016,6 +1016,7 @@ function TallTaleJournalSessionIdentity({ sessionId, identitySession = false }: 
             <strong>Open the journal</strong>
             <small>{reading.hasOpened ? "Return to your place" : "Begin the Tall Tale"}</small>
           </button>
+          <Link href="/player/library">Leave for Tall Tale Library</Link>
         </div>
       )}
       {openingPhase !== "ENTRY_IDLE" && !journalReady && (
@@ -1030,6 +1031,7 @@ function TallTaleJournalSessionIdentity({ sessionId, identitySession = false }: 
           <span>{openingLabel(openingPhase)}</span>
           {openingNotice && openingOutcome === "failure" && <p role="alert">{openingNotice}</p>}
           <button onClick={skipOpening}>Skip ceremony</button>
+          <Link href="/player/library">Leave for Tall Tale Library</Link>
         </div>
       )}
       {openingNotice && (journalReady || openingOutcome === "aborted") && (

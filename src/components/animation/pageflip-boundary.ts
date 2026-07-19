@@ -161,6 +161,9 @@ const PAGE_TARGET_ALLOWED_PROPERTIES = [
   "stroke-dashoffset",
   "visibility",
 ] as const satisfies readonly AnimatedProperty[];
+const MAX_SCENE_TARGET_KEY_LENGTH = 96;
+const FNV_32_PRIME = 0x01000193;
+const FNV_32_DOMAIN_SEEDS: readonly number[] = [0x811c9dc5, 0x9e3779b9, 0x85ebca6b, 0xc2b2ae35];
 
 function safeToken(value: string) {
   const token = value
@@ -169,6 +172,35 @@ function safeToken(value: string) {
     .replace(/[^a-z0-9_-]+/g, "-")
     .replace(/^-+|-+$/g, "");
   return token || "page";
+}
+
+function fullIdentityDigest(value: string) {
+  return FNV_32_DOMAIN_SEEDS.map((seed) => {
+    let hash = seed;
+    for (let index = 0; index < value.length; index += 1) {
+      const codeUnit = value.charCodeAt(index);
+      hash = Math.imul(hash ^ (codeUnit & 0xff), FNV_32_PRIME) >>> 0;
+      hash = Math.imul(hash ^ (codeUnit >>> 8), FNV_32_PRIME) >>> 0;
+    }
+    return hash.toString(16).padStart(8, "0");
+  }).join("");
+}
+
+function pageTargetKey(pageId: string, generation: number, part: string, markerKey: string) {
+  const readableKey = [
+    "pageflip",
+    safeToken(pageId),
+    "primary",
+    `g${generation}`,
+    safeToken(part),
+    safeToken(markerKey),
+  ].join(":");
+  if (readableKey.length <= MAX_SCENE_TARGET_KEY_LENGTH) return readableKey;
+
+  // The synchronous PageFlip boundary runs in the browser, so hash the complete,
+  // length-framed identity instead of truncating nonce-backed page or marker IDs.
+  const identity = [pageId, String(generation), part, markerKey].map((value) => `${value.length}:${value}`).join("|");
+  return `pageflip:h${fullIdentityDigest(identity)}`;
 }
 
 function collisionFreeIdToken(value: string) {
@@ -694,14 +726,7 @@ export class PageFlipBoundaryController {
       for (const candidate of candidates) {
         const identity = `${candidate.part}:${candidate.markerKey}`;
         if (!candidate.part || !candidate.markerKey || identityCounts.get(identity) !== 1) continue;
-        const targetKey = [
-          "pageflip",
-          safeToken(pageId),
-          "primary",
-          `g${this.cloneGeneration}`,
-          safeToken(candidate.part),
-          safeToken(candidate.markerKey),
-        ].join(":");
+        const targetKey = pageTargetKey(pageId, this.cloneGeneration, candidate.part, candidate.markerKey);
         const handle = this.sceneHost.registerTarget({
           targetKey,
           part: candidate.part,

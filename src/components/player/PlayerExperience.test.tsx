@@ -161,7 +161,13 @@ function TestCapabilityTarget({
   return <span ref={bindTarget} data-scene-part={part} style={{ display: "block", width: 8, height: 8 }} />;
 }
 
-function TestJournalWorkspace({ onSceneHostChange }: { onSceneHostChange?: (host: unknown) => void }) {
+function TestJournalWorkspace({
+  onSceneHostChange,
+  onSceneTargetsChange,
+}: {
+  onSceneHostChange?: (host: unknown) => void;
+  onSceneTargetsChange?: (ready: unknown) => void;
+}) {
   return (
     <SceneHost
       as="section"
@@ -171,12 +177,21 @@ function TestJournalWorkspace({ onSceneHostChange }: { onSceneHostChange?: (host
       tabIndex={-1}
     >
       <h2>The Voyage Journal</h2>
-      <TestReadyJournalContents onSceneHostChange={onSceneHostChange} />
+      <TestReadyJournalContents
+        onSceneHostChange={onSceneHostChange}
+        onSceneTargetsChange={onSceneTargetsChange}
+      />
     </SceneHost>
   );
 }
 
-function TestReadyJournalContents({ onSceneHostChange }: { onSceneHostChange?: (host: unknown) => void }) {
+function TestReadyJournalContents({
+  onSceneHostChange,
+  onSceneTargetsChange,
+}: {
+  onSceneHostChange?: (host: unknown) => void;
+  onSceneTargetsChange?: (ready: unknown) => void;
+}) {
   const host = useOptionalSceneHost();
   const input = useMemo(
     () => ({
@@ -191,8 +206,12 @@ function TestReadyJournalContents({ onSceneHostChange }: { onSceneHostChange?: (
   useEffect(() => {
     if (!host || !handle) return;
     onSceneHostChange?.(host);
-    return () => onSceneHostChange?.(null);
-  }, [handle, host, onSceneHostChange]);
+    onSceneTargetsChange?.({ host, targets: { "sealed-parchment": [handle] } });
+    return () => {
+      onSceneHostChange?.(null);
+      onSceneTargetsChange?.(null);
+    };
+  }, [handle, host, onSceneHostChange, onSceneTargetsChange]);
   return (
     <div ref={bindTarget} data-scene-part="sealed-parchment" style={{ width: 20, height: 20 }}>
       Safe chapter surface
@@ -876,7 +895,7 @@ describe("PlayerExperience presentation integrity", () => {
       expect(within(settledNotice).getByRole("heading", { level: 2 })).toHaveTextContent(
         policyForProgressionEvent(eventType).globalPresentation.heading,
       );
-      expect(within(settledNotice).getByRole("button", { name: "Replay presentation" })).toBeEnabled();
+      expect(within(settledNotice).getByRole("button", { name: "Replay ceremony" })).toBeEnabled();
       expect(location.href).toBe(startingUrl);
       expect(screen.getByTestId("progression-scene-host")).toBe(persistentHost);
       expect(document.querySelectorAll('[data-testid="progression-scene-host"]')).toHaveLength(1);

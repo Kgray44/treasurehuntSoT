@@ -156,6 +156,7 @@ describe("PageFlip source and clone boundary", () => {
     expect(primaryTargets).toHaveLength(2);
     expect(firstAuthority.cloneGeneration).toBe(1);
     expect(currentPrimary).toMatchObject({ pageId: "first", part: "chapter-heading", generation: 1 });
+    expect(currentPrimary.targetKey).toBe("pageflip:first:primary:g1:chapter-heading:chapter-heading");
     expect(offPagePrimary).toMatchObject({ pageId: "second", part: "chapter-heading", generation: 1 });
     expect(sourceRoot.querySelectorAll("[data-scene-target-id]")).toHaveLength(0);
 
@@ -200,6 +201,56 @@ describe("PageFlip source and clone boundary", () => {
       registeredTargetCount: 0,
       activeClaimCount: 0,
     });
+  });
+
+  it("bounds nonce-backed target keys without truncating their collision identity", () => {
+    const firstAuthorities: PageFlipPageTargetAuthority[] = [];
+    const firstFixture = fixture((authority) => {
+      if (authority) firstAuthorities.push(authority);
+    });
+    const nearCollisionPrefix = `side-quest-${"nonce-backed-identity-".repeat(8)}`;
+    const firstPageId = `${nearCollisionPrefix}a`;
+    const secondPageId = `${nearCollisionPrefix}b`;
+    const firstMarker = `${nearCollisionPrefix}marker-a`;
+    const secondMarker = `${nearCollisionPrefix}marker-b`;
+    const configureLongTargets = (sourceRoot: HTMLElement) => {
+      sourceRoot.children[0]!
+        .querySelector<HTMLElement>("[data-scene-part]")!
+        .setAttribute("data-scene-target-key", firstMarker);
+      const nearCollisionMarker = document.createElement("span");
+      nearCollisionMarker.dataset.scenePart = "chapter-heading";
+      nearCollisionMarker.dataset.sceneTargetKey = secondMarker;
+      nearCollisionMarker.dataset.gsapOwned = "";
+      sourceRoot.children[0]!.append(nearCollisionMarker);
+      sourceRoot.children[1]!
+        .querySelector<HTMLElement>("[data-scene-part]")!
+        .setAttribute("data-scene-target-key", firstMarker);
+    };
+    configureLongTargets(firstFixture.sourceRoot);
+    const firstPages = firstFixture.controller.preparePages([firstPageId, secondPageId], "revision-long-identity");
+    firstFixture.runtimeRoot.append(...firstPages);
+    firstFixture.controller.bindPrimaryPages(0, "landscape");
+
+    const firstKeys = firstAuthorities.at(-1)!.targets.map((target) => target.targetKey);
+    expect(firstKeys).toHaveLength(3);
+    expect(new Set(firstKeys).size).toBe(3);
+    expect(firstKeys.every((key) => key.length <= 96)).toBe(true);
+    expect(firstKeys.every((key) => /^[A-Za-z0-9._:/-]+$/u.test(key))).toBe(true);
+    expect(firstKeys.every((key) => /^pageflip:h[0-9a-f]{32}$/u.test(key))).toBe(true);
+
+    const repeatedAuthorities: PageFlipPageTargetAuthority[] = [];
+    const repeatedFixture = fixture((authority) => {
+      if (authority) repeatedAuthorities.push(authority);
+    });
+    configureLongTargets(repeatedFixture.sourceRoot);
+    const repeatedPages = repeatedFixture.controller.preparePages(
+      [firstPageId, secondPageId],
+      "revision-long-identity",
+    );
+    repeatedFixture.runtimeRoot.append(...repeatedPages);
+    repeatedFixture.controller.bindPrimaryPages(0, "landscape");
+
+    expect(repeatedAuthorities.at(-1)!.targets.map((target) => target.targetKey)).toEqual(firstKeys);
   });
 
   it("namespaces primary IDs and rewrites every local IDREF relation", () => {

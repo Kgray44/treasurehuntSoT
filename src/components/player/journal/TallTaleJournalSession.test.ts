@@ -640,6 +640,9 @@ describe("TallTaleJournalSession mounted synchronous teardown", () => {
     const closedDrawer = view.container.querySelector<HTMLElement>(".journal-chapters-drawer")!;
     expect(tools.hasAttribute("inert")).toBe(true);
     expect(closedDrawer.hasAttribute("inert")).toBe(true);
+    const libraryExit = screen.getByRole("link", { name: "Leave for Tall Tale Library" });
+    expect(libraryExit.closest('[role="dialog"]')).not.toBeNull();
+    expect(libraryExit.closest("[inert]")).toBeNull();
 
     const open = screen.getByRole("button", { name: /Open the journal/i });
     open.focus();

@@ -954,6 +954,10 @@ export const PageFlipBook = forwardRef<
             flippingTime: Math.round((mode === "full" ? 1100 : 620) / playbackRate),
             swipeDistance: 24,
             mobileScrollSupport: true,
+            // Hovering an idle page corner can leave StPageFlip in its
+            // nonterminal fold-corner state. Controls, keyboard, and drag
+            // gestures remain available; idle pointer position is not a turn.
+            showPageCorners: false,
             startPage,
           });
           book = initializedBook;
