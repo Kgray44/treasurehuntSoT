@@ -4,6 +4,7 @@
 - Report date: 2026-07-19
 - Ending implementation commit: `3a24e1e9c88449ee0bdfe35d7ab4bfe378d82fac`
 - Integrated merge commit: `35132ca5e38187336c0632f392edbfc985e5ff55`
+- Published finalization evidence: `e44173420924350ebca0e7b9f37fbb0b3279f2df`
 - Integrated validation: **PASS — see `Project_Lanternwake_Phase_3_Validation_Report.md`**
 
 This report records the completed Phase 3 implementation. Sections that describe the original implementation-stage evidence plan are retained as design history; the final acceptance authority is `Project_Lanternwake_Phase_3_Validation_Report.md`. That report records the cumulative browser evidence, bounded failures, post-fix targeted verification, merged-main gates, accepted visual-review deviation, Git ancestry, and remote parity without claiming a post-fix 599-case rerun or a retained screenshot archive.

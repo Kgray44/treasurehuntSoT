@@ -2,15 +2,16 @@
 
 Status: **PHASE 3 COMPLETE — composite browser, visual, and release validation accepted**
 
-| Field                          | Value                                                       |
-| ------------------------------ | ----------------------------------------------------------- |
-| Date                           | 2026-07-19                                                  |
-| Phase                          | Phase 3 — Unfurl the Tale                                   |
-| Implementation branch          | `codex/project-lanternwake-phase-3-unfurl-the-tale`         |
-| Phase 2 handoff                | `7747ce5b472fdb19b9fe8f35ea12fbe974902fe7`                  |
-| Phase 3 implementation/fix tip | `3a24e1e9c88449ee0bdfe35d7ab4bfe378d82fac`                  |
-| Phase 3 merge on `main`        | `35132ca5e38187336c0632f392edbfc985e5ff55`                  |
-| Current remote                 | `origin/main` at `35132ca5e38187336c0632f392edbfc985e5ff55` |
+| Field                            | Value                                                       |
+| -------------------------------- | ----------------------------------------------------------- |
+| Date                             | 2026-07-19                                                  |
+| Phase                            | Phase 3 — Unfurl the Tale                                   |
+| Implementation branch            | `codex/project-lanternwake-phase-3-unfurl-the-tale`         |
+| Phase 2 handoff                  | `7747ce5b472fdb19b9fe8f35ea12fbe974902fe7`                  |
+| Phase 3 implementation/fix tip   | `3a24e1e9c88449ee0bdfe35d7ab4bfe378d82fac`                  |
+| Phase 3 merge on `main`          | `35132ca5e38187336c0632f392edbfc985e5ff55`                  |
+| Pre-finalization remote baseline | `origin/main` at `35132ca5e38187336c0632f392edbfc985e5ff55` |
+| Published finalization evidence  | `e44173420924350ebca0e7b9f37fbb0b3279f2df`                  |
 
 ## 1. Official verdict
 
@@ -126,7 +127,8 @@ After Phase 3 was merged to `main` at `35132ca5e38187336c0632f392edbfc985e5ff55`
 | Phase 3 ledger            | **passed**; 301 rows, 17/17 events, 6/6 sections, 102/102 mapped cases           |
 | Validator unit tests      | **28/28 passed**                                                                 |
 | Git ancestry              | **passed**; Phase 2 `7747ce5` and Phase 3 `3a24e1e` are ancestors of `main`      |
-| Local/remote parity       | **passed**; `main == origin/main == 35132ca` at finalization start               |
+| Pre-finalization parity   | **passed**; `main == origin/main == 35132ca` at finalization start               |
+| Finalization publication  | **passed**; local and remote `main` matched at `e441734` after the evidence push |
 
 This merged-main verification is additional integration evidence. It is not represented as a post-fix Playwright rerun.
 

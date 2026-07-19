@@ -640,7 +640,7 @@ Claim the Deck has a concrete architecture and zero-loss requirement reconciliat
 
 ## 23. Project Lanternwake Phase 3 completion addendum (2026-07-19)
 
-This addendum supersedes the execution status in section 22.5 without rewriting that historical Phase 2 snapshot. Phase 2 completed at `7747ce5b472fdb19b9fe8f35ea12fbe974902fe7`. Phase 3 then implemented Unfurl the Tale through `3a24e1e9c88449ee0bdfe35d7ab4bfe378d82fac`, and the clean Phase 3 state was merged to `main` by `35132ca5e38187336c0632f392edbfc985e5ff55`.
+This addendum supersedes the execution status in section 22.5 without rewriting that historical Phase 2 snapshot. Phase 2 completed at `7747ce5b472fdb19b9fe8f35ea12fbe974902fe7`. Phase 3 then implemented Unfurl the Tale through `3a24e1e9c88449ee0bdfe35d7ab4bfe378d82fac`, the clean Phase 3 state was merged to `main` by `35132ca5e38187336c0632f392edbfc985e5ff55`, and the finalization evidence package was published at `e44173420924350ebca0e7b9f37fbb0b3279f2df`.
 
 ### 23.1 Implemented Phase 3 audit outcomes
 
