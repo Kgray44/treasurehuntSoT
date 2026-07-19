@@ -298,7 +298,15 @@
   margin: 0 auto 0.45rem;
   border: 6px solid #756033;
   border-radius: 50%;
-  background: conic-gradient(#85c9b9 var(--progress), #172729 0);
+  background: radial-gradient(circle, #85c9b9 0 22%, #172729 24% 100%);
+  transform-origin: 50% 50%;
+}
+
+.campaign-instrument b {
+  display: block;
+  margin-top: 0.32rem;
+  color: #cdbb8b;
+  font-size: 0.62rem;
 }
 
 .mini-page {
@@ -411,6 +419,36 @@
 
 .confirm-sheet h2 {
   font-size: 2.5rem;
+}
+
+.command-preflight {
+  display: grid;
+  gap: 0.55rem;
+  margin: 1rem 0;
+}
+
+.command-preflight div {
+  border-left: 2px solid rgba(157, 132, 81, 0.65);
+  padding-left: 0.7rem;
+}
+
+.command-preflight dt {
+  color: #8d7952;
+  font-size: 0.64rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.command-preflight dd {
+  margin: 0.18rem 0 0;
+}
+
+.command-queue-state {
+  border: 1px solid rgba(157, 132, 81, 0.38);
+  border-radius: 8px;
+  padding: 0.7rem;
+  background: rgba(133, 107, 54, 0.08);
 }
 .impact-note {
   display: grid;

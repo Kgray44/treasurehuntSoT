@@ -2,6 +2,9 @@
 
 import Link from "next/link";
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { AnimatePresence, LayoutGroup, motion } from "motion/react";
+import { useMotionMode } from "@/animation/motion/useMotionMode";
+import { platformMotionEasing, resolvePlatformMotionToken } from "@/animation/platform/motion-tokens";
 import { EmptyState, ErrorState, LoadingState, StatusBanner } from "@/components/ui/AsyncState";
 
 type TaleCard = {
@@ -20,6 +23,8 @@ type TaleCard = {
 };
 
 export function StudioHome({ authenticated }: { authenticated: boolean }) {
+  const { mode } = useMotionMode();
+  const layoutMotion = resolvePlatformMotionToken("layout", mode);
   const [tales, setTales] = useState<TaleCard[]>([]);
   const [csrf, setCsrf] = useState("");
   const [query, setQuery] = useState("");
@@ -133,8 +138,24 @@ export function StudioHome({ authenticated }: { authenticated: boolean }) {
           </Link>
         </nav>
       </header>
-      {notice && <StatusBanner tone="success">{notice}</StatusBanner>}
-      {error && tales.length > 0 && <StatusBanner tone="danger">{error}</StatusBanner>}
+      <AnimatePresence initial={false}>
+        {notice && (
+          <motion.div
+            key="studio-notice"
+            initial={mode === "reduced" ? false : { opacity: 0, y: layoutMotion.distancePx }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={mode === "reduced" ? { opacity: 0 } : { opacity: 0, y: -layoutMotion.distancePx }}
+            transition={{ duration: layoutMotion.durationSeconds, ease: platformMotionEasing("layout") }}
+          >
+            <StatusBanner tone="success">{notice}</StatusBanner>
+          </motion.div>
+        )}
+        {error && tales.length > 0 && (
+          <motion.div key="studio-error" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+            <StatusBanner tone="danger">{error}</StatusBanner>
+          </motion.div>
+        )}
+      </AnimatePresence>
       {!loading && tales.length > 0 && (
         <section className="studio-toolbar" aria-label="Find Tall Tales">
           <label>
@@ -184,9 +205,21 @@ export function StudioHome({ authenticated }: { authenticated: boolean }) {
           symbol="⌕"
         />
       ) : (
-        <section className="tale-card-grid" aria-label="Tall Tales">
+        <LayoutGroup id="studio-library">
+          <motion.section className="tale-card-grid" aria-label="Tall Tales" layout={mode !== "reduced"}>
+          <AnimatePresence initial={false} mode="popLayout">
           {visible.map((tale) => (
-            <article className={`tale-studio-card status-${tale.status.toLowerCase()}`} key={tale.id}>
+            <motion.article
+              className={`tale-studio-card status-${tale.status.toLowerCase()}`}
+              key={tale.id}
+              layout={mode !== "reduced"}
+              layoutId={`studio-tale-${tale.id}`}
+              data-motion-state={busy === tale.id ? "pending" : "settled"}
+              initial={mode === "reduced" ? false : { opacity: 0, y: layoutMotion.distancePx }}
+              animate={{ opacity: busy === tale.id ? 0.62 : 1, y: 0 }}
+              exit={mode === "reduced" ? { opacity: 0 } : { opacity: 0, scale: 1 - layoutMotion.scaleDelta }}
+              transition={{ duration: layoutMotion.durationSeconds, ease: platformMotionEasing("layout") }}
+            >
               <div className="tale-card-stamp">{tale.status.replaceAll("_", " ")}</div>
               <p className="card-kicker">
                 {tale.visibility.toLocaleLowerCase()} ·{" "}
@@ -236,9 +269,11 @@ export function StudioHome({ authenticated }: { authenticated: boolean }) {
                   {tale.status === "ARCHIVED" ? "Restore" : "Archive"}
                 </button>
               </div>
-            </article>
+            </motion.article>
           ))}
-        </section>
+          </AnimatePresence>
+          </motion.section>
+        </LayoutGroup>
       )}
     </main>
   );

@@ -183,7 +183,7 @@ test("Studio editor exposes searchable authoring tools and responsive isolated p
   await expect(page.getByRole("tab", { name: "Chapters" })).toBeVisible();
   await expect(page.getByRole("tab", { name: "Outline" })).toBeVisible();
   await expect(page.getByRole("searchbox", { name: "Search story blocks" })).toBeVisible();
-  await expect(page.locator(".block-library article").first()).toHaveAttribute(
+  await expect(page.locator(".block-library-drag-handle").first()).toHaveAttribute(
     "aria-roledescription",
     "sortable story block",
   );

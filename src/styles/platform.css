@@ -12,6 +12,143 @@
     linear-gradient(145deg, #031013, #071e21 50%, #020a0c);
 }
 
+.platform-relic {
+  position: relative;
+  width: 7rem;
+  height: 7rem;
+  margin-inline: auto;
+  contain: layout paint;
+  filter: drop-shadow(0 16px 24px rgba(0, 0, 0, 0.35));
+}
+
+.relic-player-journal,
+.relic-journal-clasp {
+  border: 4px solid #79502d;
+  border-radius: 8px 17px 17px 8px;
+  background: linear-gradient(135deg, #713027, #a44d37);
+  box-shadow: inset 9px 0 rgba(41, 19, 13, 0.34);
+}
+
+.relic-player-journal i,
+.relic-journal-clasp i {
+  position: absolute;
+  top: 2.2rem;
+  right: -0.55rem;
+  width: 1.35rem;
+  height: 2.4rem;
+  border: 2px solid var(--brass-300);
+  border-radius: 5px;
+  background: #4a2b1a;
+}
+
+.relic-captain-lock {
+  border: 7px double #9b723b;
+  border-radius: 50%;
+  background: radial-gradient(circle, #c49a55 0 18%, #243739 19% 54%, #8c6736 55% 62%, transparent 63%);
+}
+
+.relic-captain-lock i {
+  position: absolute;
+  top: 0.75rem;
+  left: 3.35rem;
+  width: 0.3rem;
+  height: 2.8rem;
+  border-radius: 999px;
+  background: var(--brass-100);
+  transform-origin: 50% 100%;
+}
+
+.relic-creator-quill::before {
+  position: absolute;
+  top: 0;
+  left: 2.5rem;
+  width: 2.2rem;
+  height: 6.4rem;
+  border-radius: 80% 12% 80% 12%;
+  background: linear-gradient(90deg, #94aba5, #f0e9cf 50%, #5e7a75);
+  transform: rotate(28deg);
+  content: "";
+}
+
+.relic-creator-quill span {
+  position: absolute;
+  right: 0.5rem;
+  bottom: 0.6rem;
+  width: 4.6rem;
+  height: 2px;
+  border-radius: 999px;
+  background: #74b4a9;
+  transform: scaleX(0.2);
+  transform-origin: 0 50%;
+}
+
+.relic-invitation-seal {
+  display: grid;
+  width: 6rem;
+  height: 6rem;
+  place-items: center;
+  border-radius: 50%;
+  background: radial-gradient(circle, #c56b4d, #762e28 68%, #4b1d1a);
+  box-shadow: inset 0 0 0 5px rgba(255, 219, 151, 0.16), 0 0 0 1px #ddb170;
+}
+
+.relic-invitation-seal::after {
+  color: #f0d49d;
+  font-size: 2rem;
+  content: "✦";
+}
+
+.relic-voyage-compass {
+  border: 8px double #a77d42;
+  border-radius: 50%;
+  background: radial-gradient(circle, #17292c 0 45%, #c39a55 46% 50%, #1a2e30 51%);
+}
+
+.relic-voyage-compass i {
+  position: absolute;
+  top: 0.9rem;
+  left: 3.2rem;
+  width: 0.35rem;
+  height: 2.7rem;
+  clip-path: polygon(50% 0, 100% 100%, 50% 82%, 0 100%);
+  background: #f0d49d;
+  transform-origin: 50% 100%;
+}
+
+.platform-relic[data-relic-state="resolving"] i,
+.platform-relic[data-relic-state="connecting"] i,
+.platform-relic[data-relic-state="seeking"] i {
+  animation: relic-seeking 1.4s ease-in-out infinite alternate;
+}
+
+.platform-relic[data-relic-state="failure"],
+.platform-relic[data-relic-state="invalid"],
+.platform-relic[data-relic-state="revoked"] {
+  filter: grayscale(0.55) drop-shadow(0 12px 18px rgba(70, 14, 12, 0.28));
+}
+
+.platform-relic[data-relic-state="open"] i,
+.platform-relic[data-relic-state="releasing"] i {
+  transform: translateX(0.7rem) rotate(16deg);
+}
+
+.relic-creator-quill[data-relic-state="arrived"] span,
+.relic-creator-quill[data-relic-state="open"] span {
+  transform: scaleX(1);
+}
+
+@keyframes relic-seeking {
+  to {
+    transform: rotate(8deg);
+  }
+}
+
+html[data-motion-level="reduced"] .platform-relic *,
+.platform-relic[data-motion-mode="reduced"] * {
+  animation: none !important;
+  transition: none !important;
+}
+
 .platform-auth,
 .invitation-page,
 .waiting-room,
@@ -19,6 +156,24 @@
   display: grid;
   place-items: center;
   padding: clamp(1rem, 4vw, 3rem);
+}
+
+.platform-auth {
+  position: relative;
+  isolation: isolate;
+}
+
+.platform-ceremony-boundary {
+  position: absolute;
+  z-index: 1;
+  top: clamp(1.5rem, 6vw, 4rem);
+  left: 50%;
+  width: 8rem;
+  transform: translateX(-50%);
+}
+
+.platform-ceremony-boundary .platform-relic {
+  opacity: 0.86;
 }
 
 .auth-ledger,
@@ -59,6 +214,41 @@
   grid-template-columns: 1fr 1fr;
   gap: 1rem;
   margin-top: 2rem;
+}
+
+.auth-mode-tabs {
+  display: flex;
+  gap: 0.4rem;
+  width: fit-content;
+  margin-top: 1.5rem;
+  border: 1px solid rgba(70, 47, 27, 0.24);
+  border-radius: 999px;
+  padding: 0.25rem;
+  background: rgba(255, 250, 232, 0.42);
+}
+
+.auth-mode-tabs button {
+  min-height: 2.5rem;
+  border-radius: 999px;
+  color: #4b3824 !important;
+  background: transparent;
+}
+
+.auth-mode-tabs button[aria-selected="true"] {
+  color: #f8ecd1 !important;
+  background: #305d5a;
+}
+
+.auth-mode-panel {
+  grid-template-columns: minmax(0, 1fr);
+  max-width: 560px;
+}
+
+.platform-offline {
+  border-left: 4px solid #a36b2c;
+  padding: 0.7rem 0.9rem;
+  color: #5a3a1f;
+  background: rgba(166, 101, 34, 0.1);
 }
 
 .auth-columns form,
@@ -193,6 +383,11 @@
   font-size: 0.72rem;
 }
 
+.library-truth[data-confirmed="false"] i {
+  background: #d6aa62;
+  box-shadow: none;
+}
+
 .library-tools {
   display: grid;
   grid-template-columns: minmax(240px, 1fr) repeat(2, minmax(150px, 210px)) auto;
@@ -246,6 +441,28 @@
 .invitation-dashboard h2 {
   margin: 0;
   font-size: clamp(1.8rem, 4vw, 3rem);
+}
+
+.library-group h2 button {
+  border: 0;
+  padding: 0;
+  color: inherit;
+  background: transparent;
+  font: inherit;
+  text-align: left;
+}
+
+.library-group h2 button::after {
+  display: inline-block;
+  margin-left: 0.45rem;
+  color: var(--brass-100);
+  content: "⌄";
+  font-size: 0.72em;
+  transition: transform 180ms ease;
+}
+
+.library-group h2 button[aria-expanded="false"]::after {
+  transform: rotate(-90deg);
 }
 
 .library-group header p {
@@ -325,6 +542,67 @@
   font-size: 0.62rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
+}
+
+.new-invitation-badge,
+.new-edition-badge,
+.completed-ribbon {
+  position: absolute;
+  z-index: 2;
+  top: 0.7rem;
+  left: 0.7rem;
+  border: 1px solid rgba(255, 245, 218, 0.42);
+  border-radius: 999px;
+  padding: 0.3rem 0.55rem;
+  color: #fff4d9;
+  background: #7b2f2a;
+  font-size: 0.64rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.new-edition-badge {
+  background: #315c5b;
+}
+
+.completed-ribbon {
+  width: 54px;
+  height: 24px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, #7b2f2a 0 72%, transparent 72%);
+  clip-path: polygon(0 0, 100% 0, 78% 50%, 100% 100%, 0 100%);
+  font-size: 0;
+}
+
+.waiting-lantern {
+  position: absolute;
+  z-index: 2;
+  top: 0.85rem;
+  left: 0.85rem;
+  width: 16px;
+  height: 22px;
+  border: 2px solid #d8b56c;
+  border-radius: 5px 5px 8px 8px;
+  background: rgba(239, 185, 74, 0.5);
+  box-shadow: 0 0 14px rgba(239, 185, 74, 0.5);
+  animation: waiting-lantern-pulse 1.8s ease-in-out 3;
+}
+
+.state-in-progress .tale-cover {
+  animation: library-journal-breathe 4.5s ease-in-out infinite alternate;
+}
+
+.player-tale-card[data-card-changed="true"] {
+  border-color: rgba(201, 169, 95, 0.62);
+}
+
+@keyframes waiting-lantern-pulse {
+  50% { opacity: 0.72; box-shadow: 0 0 7px rgba(239, 185, 74, 0.32); }
+}
+
+@keyframes library-journal-breathe {
+  to { filter: brightness(1.035); transform: translateY(-2px); }
 }
 
 .tale-card-copy {
@@ -408,9 +686,52 @@ dl dd {
   overflow: hidden;
 }
 
+.invitation-cinematic-boundary {
+  position: absolute;
+  z-index: 12;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+
+.invitation-cinematic-boundary [data-invitation-ceremony-part="invitation"] {
+  border-radius: 20px;
+  background: linear-gradient(145deg, rgba(235, 218, 169, 0.16), rgba(94, 51, 35, 0.1));
+  transform-style: preserve-3d;
+}
+
+.invitation-cinematic-boundary [data-invitation-ceremony-part="invitation-ink"] {
+  background: linear-gradient(90deg, transparent, rgba(121, 215, 207, 0.12), transparent);
+}
+
+.invitation-cinematic-boundary [data-invitation-ceremony-part="ribbon"] {
+  background: linear-gradient(90deg, transparent, rgba(156, 61, 50, 0.72), transparent);
+}
+
+.invitation-cinematic-boundary [data-invitation-ceremony-part="seal"] {
+  transform: translate(-50%, -50%);
+}
+
+.invitation-state {
+  width: min(680px, calc(100% - 2rem));
+  margin: auto;
+}
+
+.invitation-state-expired {
+  filter: sepia(0.2) saturate(0.74);
+}
+
+.invitation-state-revoked {
+  border-color: rgba(156, 61, 50, 0.62);
+  box-shadow: inset 0 0 0 2px rgba(63, 21, 24, 0.32);
+}
+
 .invitation-sheet {
   width: min(760px, 100%);
   padding-top: clamp(5rem, 12vw, 8rem);
+  transform-origin: 50% 0%;
+  perspective: 900px;
 }
 
 .invitation-seal {
@@ -428,6 +749,68 @@ dl dd {
   box-shadow: 0 10px 28px rgba(0, 0, 0, 0.34);
   font-size: 2rem;
   transform: translateX(-50%);
+}
+
+.invitation-seal .platform-relic {
+  width: 100%;
+  height: 100%;
+}
+
+.invitation-cover-frame {
+  display: grid;
+  min-height: clamp(180px, 32vw, 260px);
+  margin-bottom: 1.2rem;
+  place-items: center;
+  overflow: hidden;
+  border-radius: 14px;
+  background: linear-gradient(145deg, rgba(19, 52, 66, 0.74), rgba(90, 64, 39, 0.58));
+  color: var(--brass-100);
+}
+
+.invitation-cover-frame .invitation-cover {
+  height: 100%;
+  margin: 0;
+}
+
+.invitation-handwritten-name {
+  display: inline-block;
+  text-decoration: underline;
+  text-decoration-color: rgba(201, 169, 95, 0.58);
+  text-underline-offset: 0.22em;
+}
+
+.pin-progress {
+  display: flex !important;
+  gap: 0.42rem;
+  min-height: 0 !important;
+  margin-top: 0.55rem;
+}
+
+.pin-progress i {
+  width: 0.72rem;
+  height: 0.72rem;
+  border: 1px solid rgba(201, 169, 95, 0.64);
+  border-radius: 50%;
+  background: transparent;
+  transition: background 120ms ease, box-shadow 120ms ease;
+}
+
+.pin-progress i[data-filled="true"] {
+  background: var(--brass-100);
+  box-shadow: 0 0 8px rgba(201, 169, 95, 0.44);
+}
+
+.invitation-page[data-invitation-state="declined"] .invitation-sheet {
+  transform-origin: 50% 0%;
+}
+
+.invitation-route-hold {
+  animation: invitation-route-hold var(--hold-ms) linear both;
+}
+
+@keyframes invitation-route-hold {
+  from { opacity: 1; }
+  to { opacity: 1; }
 }
 
 .invitation-cover {
@@ -449,6 +832,7 @@ dl dd {
 }
 
 .waiting-room {
+  position: relative;
   grid-template-columns: minmax(220px, 380px) minmax(0, 780px);
   gap: clamp(1rem, 4vw, 4rem);
 }
@@ -463,7 +847,7 @@ dl dd {
   box-shadow:
     0 35px 65px rgba(0, 0, 0, 0.46),
     inset 20px 0 rgba(40, 18, 13, 0.28);
-  animation: journal-breathe 4s ease-in-out infinite alternate;
+  animation: none;
 }
 
 .closed-journal b {
@@ -475,6 +859,72 @@ dl dd {
   border-radius: 50%;
   color: var(--brass-100);
   font-size: 2.5rem;
+}
+
+.closed-journal b .platform-relic {
+  width: 100%;
+  height: 100%;
+}
+
+.waiting-launch-boundary {
+  position: absolute;
+  z-index: 4;
+  inset: 0;
+  display: grid;
+  place-items: center start;
+  overflow: hidden;
+}
+
+.waiting-launch-boundary .platform-relic {
+  width: min(330px, 70vw);
+  height: min(250px, 52vw);
+  opacity: 0;
+}
+
+.waiting-launch-boundary[data-launch-state="launch-ready"] .platform-relic {
+  opacity: 0.96;
+}
+
+.waiting-launch-boundary [data-waiting-launch-part] {
+  position: absolute;
+  left: min(250px, 52vw);
+  width: 30px;
+  height: 30px;
+}
+
+.reconciliation-summary {
+  margin: 1rem 0;
+  border-left: 3px solid var(--brass-300);
+  padding: 0.2rem 1rem;
+}
+
+.waiting-room[data-connection-state="revoked"] .closed-journal {
+  filter: grayscale(0.65) saturate(0.5);
+}
+
+.waiting-room [data-planned-start-due="true"] {
+  border-left-color: #6ed2a4;
+  background: rgba(110, 210, 164, 0.08);
+}
+
+.connection-connecting,
+.connection-reconnecting,
+.connection-reconciling {
+  color: #765c16;
+}
+
+.connection-live {
+  color: #176b4c;
+}
+
+.connection-polling,
+.connection-offline {
+  color: #765c16;
+}
+
+.connection-revoked {
+  color: #8a2e28;
+  font-weight: 700;
 }
 
 .crew-readiness ul {
@@ -512,7 +962,25 @@ dl dd {
 }
 
 .platform-tabs button {
+  position: relative;
+  isolation: isolate;
   min-width: max-content;
+}
+
+.platform-tabs .active {
+  background: transparent;
+}
+
+.platform-tabs .platform-tab-plate {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  display: block;
+  width: auto;
+  height: auto;
+  margin: 0;
+  border-radius: 8px;
+  background: var(--brass-100);
 }
 
 .platform-tabs span {
@@ -563,6 +1031,72 @@ dl dd {
   background: rgba(7, 29, 31, 0.9);
 }
 
+.captain-voyage-card[data-card-changed="true"],
+.invitation-table article[data-row-changed="true"] {
+  border-color: rgba(201, 169, 95, 0.7);
+}
+
+.needs-attention-mark {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  color: #f0c497;
+  font-weight: 700;
+}
+
+.needs-attention-mark span {
+  display: grid;
+  width: 1.6rem;
+  height: 1.6rem;
+  place-items: center;
+  border: 1px solid #9c3d32;
+  border-radius: 50%;
+  animation: needs-attention-arrival 540ms ease-out 2;
+}
+
+.readiness-gauge {
+  display: grid;
+  gap: 0.35rem;
+  margin-top: 0.8rem;
+}
+
+.readiness-gauge > span {
+  height: 7px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.readiness-gauge > span::after {
+  display: block;
+  width: var(--readiness);
+  height: 100%;
+  border-radius: inherit;
+  background: #6ed2a4;
+  content: "";
+  transition: width 260ms ease;
+}
+
+.launch-ceremony-status {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  margin-top: 0.8rem;
+  border: 1px solid rgba(201, 169, 95, 0.22);
+  border-radius: 12px;
+  padding: 0.65rem;
+}
+
+.launch-ceremony-status .platform-relic {
+  flex: 0 0 46px;
+  width: 46px;
+  height: 46px;
+}
+
+@keyframes needs-attention-arrival {
+  50% { box-shadow: 0 0 0 5px rgba(156, 61, 50, 0.16); }
+}
+
 .session-signal {
   display: flex;
   align-items: center;
@@ -590,6 +1124,16 @@ dl dd {
   gap: 1rem;
   border-bottom: 1px solid rgba(201, 169, 95, 0.15);
   padding: 0.9rem;
+}
+
+.invitation-table article[data-invitation-transition$="-pending"] {
+  opacity: 0.72;
+}
+
+.invitation-table article[data-invitation-transition="replaced"],
+.invitation-table article[data-invitation-transition="revoked"] {
+  filter: saturate(0.55);
+  background: rgba(90, 37, 34, 0.14);
 }
 
 .invitation-table article > div:not(.row-actions) {
@@ -679,6 +1223,7 @@ dl dd {
 }
 
 .wizard-progress {
+  position: relative;
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   margin: 0;
@@ -686,7 +1231,24 @@ dl dd {
   list-style: none;
 }
 
+.wizard-progress .wizard-progress-path {
+  position: absolute;
+  z-index: 0;
+  top: 1.68rem;
+  right: calc(100% / 14);
+  left: calc(100% / 14);
+  display: block;
+  width: auto;
+  height: 2px;
+  border: 0;
+  border-radius: 0;
+  background: rgba(201, 169, 95, 0.5);
+  transform-origin: 0 50%;
+}
+
 .wizard-progress li {
+  position: relative;
+  z-index: 1;
   display: grid;
   justify-items: center;
   color: #788e88;
@@ -721,6 +1283,10 @@ dl dd {
 .wizard-body {
   min-height: 390px;
   padding: clamp(1rem, 3vw, 2rem);
+}
+
+.wizard-step-panel {
+  min-height: inherit;
 }
 
 .wizard-choice-grid,
@@ -928,6 +1494,19 @@ dl dd {
 }
 
 html[data-motion-level="reduced"] .closed-journal {
+  animation: none;
+}
+
+html[data-motion-level="reduced"] .waiting-lantern,
+html[data-motion-level="reduced"] .state-in-progress .tale-cover,
+.player-library[data-motion-mode="reduced"] .waiting-lantern,
+.player-library[data-motion-mode="reduced"] .state-in-progress .tale-cover {
+  animation: none;
+  transform: none;
+}
+
+html[data-motion-level="reduced"] .needs-attention-mark span,
+.captain-library[data-motion-mode="reduced"] .needs-attention-mark span {
   animation: none;
 }
 

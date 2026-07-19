@@ -23,8 +23,28 @@ const mocks = vi.hoisted(() => ({
 vi.mock("@gsap/react", () => ({ useGSAP: () => undefined }));
 vi.mock("motion/react", () => ({
   motion: {
-    article: ({ children, className }: { children: React.ReactNode; className?: string }) => (
-      <article className={className}>{children}</article>
+    article: ({
+      children,
+      className,
+      whileHover: _whileHover,
+      whileTap: _whileTap,
+      ...props
+    }: React.HTMLAttributes<HTMLElement> & { whileHover?: unknown; whileTap?: unknown }) => (
+      <article className={className} {...props}>
+        {children}
+      </article>
+    ),
+    div: ({
+      children,
+      className,
+      layoutId: _layoutId,
+      whileHover: _whileHover,
+      whileTap: _whileTap,
+      ...props
+    }: React.HTMLAttributes<HTMLDivElement> & { layoutId?: string; whileHover?: unknown; whileTap?: unknown }) => (
+      <div className={className} {...props}>
+        {children}
+      </div>
     ),
   },
 }));
@@ -241,6 +261,34 @@ describe("HarborLanding gateway SceneHost", () => {
     expect(reentry.options.hostId).toBe(reentry.host.hostId);
     expect(reentry.resolution.requiredSatisfied).toBe(true);
     expect(acceptedCounts(reentry.resolution)).toEqual({ title: 1, "arrival-action": 2, "fog-front": 1 });
+  });
+
+  it("uses deterministic unsynchronized stars and a static reduced ambient state", async () => {
+    renderWithRegistry(<HarborLanding />);
+    await waitFor(() => expect(resolvedPlays).toHaveLength(1));
+
+    const stars = Array.from(document.querySelectorAll<HTMLElement>(".star-field i"));
+    expect(stars).toHaveLength(28);
+    expect(new Set(stars.map((star) => star.style.getPropertyValue("--star-duration"))).size).toBeGreaterThan(10);
+    expect(new Set(stars.map((star) => star.style.getPropertyValue("--star-delay"))).size).toBeGreaterThan(10);
+    expect(document.querySelector(".harbor-landing")).toHaveAttribute("data-ambient-state", "paused");
+    expect(document.querySelector("[data-parallax-layer='ship']")).toBeInTheDocument();
+    expect(
+      Array.from(document.querySelectorAll<HTMLElement>("[data-role-object]")).every(
+        (object) => object.tabIndex < 0,
+      ),
+    ).toBe(true);
+  });
+
+  it("softens sibling roles only after a role handoff is selected", async () => {
+    renderWithRegistry(<HarborLanding />);
+    expect(await screen.findAllByText("Adventure role")).toHaveLength(3);
+    const captainLink = screen.getByRole("link", { name: "Enter as Captain" });
+    captainLink.addEventListener("click", (event) => event.preventDefault());
+    fireEvent.click(captainLink);
+    expect(document.querySelector(".role-captain")).toHaveAttribute("data-role-selected", "true");
+    expect(document.querySelector(".role-player")).toHaveAttribute("data-role-softened", "true");
+    expect(document.querySelector(".role-creator")).toHaveAttribute("data-role-softened", "true");
   });
 
   it("keeps identical target keys isolated when two gateway roots are mounted", async () => {

@@ -1,6 +1,7 @@
 import type { PublicLogEntry, ProgressEventType } from "./story";
 
 type LogSource = { id: string; type: string; sequence: number; payload: string; releaseAt: Date };
+type OfflineSynchronization = Readonly<{ afterSequence: number; synchronizedAt: Date }>;
 
 const copy: Partial<
   Record<
@@ -157,7 +158,11 @@ const copy: Partial<
   },
 };
 
-export function eventToLogEntry(event: LogSource, unseen: boolean): PublicLogEntry | null {
+export function eventToLogEntry(
+  event: LogSource,
+  unseen: boolean,
+  offlineSynchronization?: OfflineSynchronization,
+): PublicLogEntry | null {
   const template = copy[event.type as ProgressEventType];
   if (!template) return null;
   let payload: Record<string, unknown> = {};
@@ -175,6 +180,14 @@ export function eventToLogEntry(event: LogSource, unseen: boolean): PublicLogEnt
     importance: template.importance,
     section: template.section,
     ...(typeof target === "string" || typeof target === "number" ? { targetKey: String(target) } : {}),
+    ...(offlineSynchronization && event.sequence > offlineSynchronization.afterSequence
+      ? {
+          synchronization: {
+            source: "offline-recovery" as const,
+            synchronizedAt: offlineSynchronization.synchronizedAt.toISOString(),
+          },
+        }
+      : {}),
     unseen,
   };
 }

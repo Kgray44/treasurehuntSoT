@@ -8,6 +8,7 @@ import { PlayerSignIn } from "./PlayerSignIn";
 const navigation = vi.hoisted(() => ({ push: vi.fn(), refresh: vi.fn() }));
 
 vi.mock("next/navigation", () => ({ useRouter: () => navigation }));
+vi.mock("@/animation/motion/useMotionMode", () => ({ useMotionMode: () => ({ mode: "reduced" }) }));
 
 function TestAuthority({ children }: { children: React.ReactNode }) {
   const hosts = useMemo(() => new SceneHostRegistry(), []);
@@ -51,6 +52,7 @@ function submitCredentials() {
 describe("PlayerSignIn route handoff", () => {
   afterEach(() => {
     cleanup();
+    history.replaceState(null, "", "/player/sign-in");
     vi.unstubAllGlobals();
     vi.clearAllMocks();
   });
@@ -146,5 +148,30 @@ describe("PlayerSignIn route handoff", () => {
     expect(host?.querySelector("[data-gsap-owned]")).toBeNull();
     expect(host?.querySelector("input, button, form, [role]")).toBeNull();
     expect(screen.getByLabelText("Player name").closest("[data-scene-host-boundary]")).toBeNull();
+  });
+
+  it("switches entry modes without discarding entered account data and moves focus", async () => {
+    renderPlayer();
+    fireEvent.change(screen.getByLabelText("Player name"), { target: { value: "remember-me" } });
+    fireEvent.click(screen.getByRole("tab", { name: "Invitation code" }));
+    await waitFor(() => expect(screen.getByLabelText("Short code")).toHaveFocus());
+    fireEvent.change(screen.getByLabelText("Short code"), { target: { value: "ABCD-EFGH" } });
+    fireEvent.click(screen.getByRole("tab", { name: "Player account" }));
+    await waitFor(() => expect(screen.getByLabelText("Player name")).toHaveFocus());
+    expect(screen.getByLabelText("Player name")).toHaveValue("remember-me");
+  });
+
+  it("clears stale account feedback when switching to invitation entry", async () => {
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue(response(401, { error: "That Player account was refused." })));
+    renderPlayer();
+
+    fireEvent.change(screen.getByLabelText("Player name"), { target: { value: "Anne" } });
+    fireEvent.change(screen.getByLabelText("Password"), { target: { value: "wrong" } });
+    fireEvent.click(screen.getByRole("button", { name: "Open my library" }));
+    expect(await screen.findByRole("alert")).toHaveTextContent("That Player account was refused.");
+
+    fireEvent.click(screen.getByRole("tab", { name: "Invitation code" }));
+    expect(screen.queryByText("That Player account was refused.")).not.toBeInTheDocument();
+    expect(screen.getByRole("main")).toHaveAttribute("data-async-state", "idle");
   });
 });

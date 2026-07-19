@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useMemo } from "react";
-import { motion } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
+import type { MotionMode } from "@/animation/core/animation-types";
 import { useSceneTargetRegistration } from "@/animation/hosts/SceneHost";
 import { useOptionalSceneHost } from "@/animation/hosts/SceneHostContext";
 import type {
@@ -54,6 +55,7 @@ type CompanionNavigationProps = {
   view: CompanionView;
   unseen: PublicSnapshot["unseen"];
   navigate: (view: CompanionView) => void;
+  mode?: MotionMode;
 };
 
 export type DesktopCompanionNavigationProps = CompanionNavigationProps & {
@@ -99,7 +101,7 @@ function useCompanionNavigationDimTarget<Key extends CompanionNavigationDimTarge
   return bindTarget;
 }
 
-export function CompanionNavigation({ view, unseen, navigate, onDimTargetChange }: DesktopCompanionNavigationProps) {
+export function CompanionNavigation({ view, unseen, navigate, mode = "full", onDimTargetChange }: DesktopCompanionNavigationProps) {
   const bindDimTarget = useCompanionNavigationDimTarget(companionDesktopNavigationDimTarget, onDimTargetChange);
 
   return (
@@ -122,10 +124,29 @@ export function CompanionNavigation({ view, unseen, navigate, onDimTargetChange 
           {view === item.key && <motion.i layoutId="active-companion-section" className="active-nav-plate" />}
           <span aria-hidden="true">{item.symbol}</span>
           <b>{item.shortLabel}</b>
-          {unseen[item.key] > 0 && (
-            <motion.small layoutId={`unseen-${item.key}`} aria-label={`${unseen[item.key]} unseen`}>
-              New
-            </motion.small>
+          {mode === "reduced" ? (
+            unseen[item.key] > 0 && (
+              <small aria-label={`${unseen[item.key]} unseen`} data-unseen-version={`${item.key}:${unseen[item.key]}`}>
+                {unseen[item.key]} new
+              </small>
+            )
+          ) : (
+          <AnimatePresence initial={false}>
+            {unseen[item.key] > 0 && (
+              <motion.small
+                key={`${item.key}:${unseen[item.key]}`}
+                layoutId={`unseen-${item.key}`}
+                aria-label={`${unseen[item.key]} unseen`}
+                data-unseen-version={`${item.key}:${unseen[item.key]}`}
+                initial={{ opacity: 0, scale: 0.72 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: mode === "full" ? 0.28 : mode === "gentle" ? 0.16 : 0 }}
+              >
+                {unseen[item.key]} new
+              </motion.small>
+            )}
+          </AnimatePresence>
           )}
         </button>
       ))}
@@ -133,7 +154,7 @@ export function CompanionNavigation({ view, unseen, navigate, onDimTargetChange 
   );
 }
 
-export function MobileNavigation({ view, unseen, navigate, onDimTargetChange }: MobileCompanionNavigationProps) {
+export function MobileNavigation({ view, unseen, navigate, mode = "full", onDimTargetChange }: MobileCompanionNavigationProps) {
   const bindDimTarget = useCompanionNavigationDimTarget(companionMobileNavigationDimTarget, onDimTargetChange);
 
   return (
@@ -155,7 +176,29 @@ export function MobileNavigation({ view, unseen, navigate, onDimTargetChange }: 
         >
           <span aria-hidden="true">{item.symbol}</span>
           {item.shortLabel}
-          {unseen[item.key] > 0 && <span className="sr-only">, new content</span>}
+          {mode === "reduced" ? (
+            unseen[item.key] > 0 && (
+              <small className="mobile-unseen-count" aria-label={`${unseen[item.key]} unseen`}>
+                {unseen[item.key]}
+              </small>
+            )
+          ) : (
+          <AnimatePresence initial={false}>
+            {unseen[item.key] > 0 && (
+              <motion.small
+                key={`${item.key}:${unseen[item.key]}`}
+                className="mobile-unseen-count"
+                aria-label={`${unseen[item.key]} unseen`}
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: mode === "full" ? 0.24 : mode === "gentle" ? 0.14 : 0 }}
+              >
+                {unseen[item.key]}
+              </motion.small>
+            )}
+          </AnimatePresence>
+          )}
         </button>
       ))}
     </nav>

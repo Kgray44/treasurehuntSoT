@@ -62,6 +62,7 @@ describe("ShipsLog animation boundary", () => {
   afterEach(() => {
     cleanup();
     localStorage.clear();
+    sessionStorage.clear();
     document.documentElement.removeAttribute("data-motion-level");
     vi.restoreAllMocks();
   });
@@ -130,6 +131,32 @@ describe("ShipsLog animation boundary", () => {
     expect(screen.getByText("A new course appeared beyond Lantern Harbor.")).toBeVisible();
     fireEvent.click(screen.getByRole("button", { name: "Open chart" }));
     expect(navigate).toHaveBeenCalledWith("chart");
+  });
+
+  it("labels an offline-recovered entry from authoritative synchronization metadata", () => {
+    const offlineSnapshot: PublicSnapshot = {
+      ...snapshot,
+      log: [
+        {
+          ...log[0],
+          synchronization: {
+            source: "offline-recovery",
+            synchronizedAt: "2026-07-18T15:35:00.000Z",
+          },
+        },
+        log[1],
+      ],
+    };
+    const view = render(
+      <AnimationProvider>
+        <ShipsLog snapshot={offlineSnapshot} navigate={vi.fn()} progressEventId="progress-17" />
+      </AnimationProvider>,
+    );
+
+    const row = view.container.querySelector<HTMLElement>('[data-log-entry-key="progress-17"]');
+    expect(row).toHaveAttribute("data-offline-synchronized", "true");
+    expect(row).toHaveAttribute("data-synchronized-at", "2026-07-18T15:35:00.000Z");
+    expect(screen.getByText(/Added after reconnect · server synchronized/)).toBeVisible();
   });
 
   it("selects by immutable ProgressEvent id, never by payload target or row order", () => {

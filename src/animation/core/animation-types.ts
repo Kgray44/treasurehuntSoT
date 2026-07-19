@@ -27,6 +27,7 @@ export const sceneNames = [
   "session-reentry",
   "player-access",
   "quartermaster-login",
+  "studio-publish",
   "journal-open",
   "manual-page-flip",
   "programmatic-page-flip",

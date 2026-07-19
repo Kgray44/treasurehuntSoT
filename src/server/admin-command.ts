@@ -488,7 +488,7 @@ function isPublicLogEntry(value: unknown): value is PublicSnapshot["log"][number
     hasAllowedKeys(
       value,
       ["key", "sequence", "title", "summary", "timestamp", "symbol", "importance", "section", "unseen"],
-      ["targetKey"],
+      ["targetKey", "synchronization"],
     ) &&
     isNonEmptyString(value.key) &&
     isNonNegativeInteger(value.sequence) &&
@@ -504,7 +504,12 @@ function isPublicLogEntry(value: unknown): value is PublicSnapshot["log"][number
       value.section === "log" ||
       value.section === "finale") &&
     typeof value.unseen === "boolean" &&
-    optionalNonEmptyString(value, "targetKey")
+    optionalNonEmptyString(value, "targetKey") &&
+    (value.synchronization === undefined ||
+      (isRecord(value.synchronization) &&
+        hasExactKeys(value.synchronization, ["source", "synchronizedAt"]) &&
+        value.synchronization.source === "offline-recovery" &&
+        isStrictIsoDate(value.synchronization.synchronizedAt)))
   );
 }
 

@@ -1,4 +1,4 @@
-import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { cleanup, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { useEffect, useMemo } from "react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import type { PresentationOutcome, SceneBuildContext } from "@/animation/core/animation-types";
@@ -418,6 +418,9 @@ describe("Quartermaster command presentation receipts", () => {
     expect(main).toHaveAttribute("inert");
     expect(main).toHaveAttribute("aria-hidden", "true");
     expect(dialog.closest('[aria-hidden="true"], [inert]')).toBeNull();
+    expect(within(dialog).getByText("Chapter 1: The First Wake")).toBeInTheDocument();
+    expect(within(dialog).getByText("SEALED")).toBeInTheDocument();
+    expect(dialog).toHaveAttribute("data-runtime-handoff", "motion");
 
     fireEvent.keyDown(confirm, { key: "Tab" });
     expect(cancel).toHaveFocus();

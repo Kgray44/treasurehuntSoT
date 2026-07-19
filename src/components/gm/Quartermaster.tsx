@@ -218,6 +218,29 @@ const actions = [
 ] as const;
 
 type Action = (typeof actions)[number];
+
+function commandPreflight(action: Action, status: Status) {
+  const previous = status.events[0];
+  const campaignTarget = `${status.campaign.title} at ledger sequence ${status.campaign.sequence}`;
+  switch (action[0]) {
+    case "PREPARE_CHAPTER":
+    case "RELEASE_CHAPTER":
+    case "MARK_SOLVED":
+      return { target: `Chapter ${status.chapter.ordinal}: ${status.chapter.title}`, current: status.chapter.state, consequence: action[2] };
+    case "UNDO_LAST":
+      return {
+        target: previous ? `${previous.type.replaceAll("_", " ")} at sequence ${previous.sequence}` : "No previous ledger event",
+        current: campaignTarget,
+        consequence: previous ? `Restore the persisted state immediately before event ${previous.id}.` : "No undo target is currently available.",
+      };
+    case "PAUSE":
+    case "RESUME":
+      return { target: campaignTarget, current: status.campaign.status, consequence: action[2] };
+    default:
+      return { target: `${status.campaign.title} / ${status.chapter.title}`, current: `Sequence ${status.campaign.sequence}`, consequence: action[2] };
+  }
+}
+
 type ActiveCommand = Readonly<{ action: Action; operationKey: string }>;
 type CommandRuntime = Readonly<{
   operationKey: string;
@@ -1243,6 +1266,7 @@ export function Quartermaster({ authenticated }: { authenticated: boolean }) {
   }
 
   if (!status) return <main className="quartermaster-shell loading-quarters">Opening the voyage ledger…</main>;
+  const selectedPreflight = selected ? commandPreflight(selected, status) : null;
 
   return (
     <main
@@ -1293,9 +1317,15 @@ export function Quartermaster({ authenticated }: { authenticated: boolean }) {
               <i />
               {status.playerConnected ? "Player signal" : "No recent signal"}
             </div>
-            <div className="campaign-instrument">
-              <i style={{ "--progress": `${Math.min(status.campaign.sequence * 8, 100)}%` } as React.CSSProperties} />
+            <div className="campaign-instrument" data-authoritative-sequence={status.campaign.sequence}>
+              <motion.i
+                key={status.campaign.sequence}
+                initial={{ scaleX: mode === "reduced" ? 1 : 0 }}
+                animate={{ scaleX: 1 }}
+                transition={{ duration: mode === "reduced" ? 0 : 0.28 }}
+              />
               <span>{status.campaign.status}</span>
+              <b>Ledger sequence {status.campaign.sequence}</b>
             </div>
           </div>
           <dl>
@@ -1345,6 +1375,8 @@ export function Quartermaster({ authenticated }: { authenticated: boolean }) {
                 layout
                 key={action[0]}
                 aria-label={action[1]}
+                disabled={busy || animation.isPlaying}
+                aria-busy={busy && selected?.[0] === action[0]}
                 className={action[0] === "UNDO_LAST" ? "danger-action" : ""}
                 onClick={(event) => {
                   commandTrigger.current = event.currentTarget;
@@ -1354,8 +1386,8 @@ export function Quartermaster({ authenticated }: { authenticated: boolean }) {
                   setCommandTruth("");
                   setSelected(action);
                 }}
-                whileHover={{ x: 3 }}
-                whileTap={{ scale: 0.99 }}
+                whileHover={mode === "reduced" ? {} : { x: 3 }}
+                whileTap={mode === "reduced" ? {} : { scale: 0.99 }}
               >
                 <strong>{action[1]}</strong>
                 <span>{action[2]}</span>
@@ -1406,16 +1438,24 @@ export function Quartermaster({ authenticated }: { authenticated: boolean }) {
               <motion.section
                 ref={confirmationDialog}
                 className="confirm-sheet"
+                data-runtime-handoff={activeAction ? "gsap" : "motion"}
                 role="dialog"
                 aria-modal="true"
                 aria-labelledby="confirm-title"
                 tabIndex={-1}
-                initial={{ y: 24, scale: 0.98 }}
-                animate={{ y: 0, scale: 1 }}
+                initial={{ opacity: 0, y: 24, scale: 0.98 }}
+                animate={{ opacity: activeAction ? 0 : 1, y: activeAction ? -8 : 0, scale: activeAction ? 0.985 : 1 }}
               >
                 <p className="eyebrow">Confirm ledger action</p>
                 <h2 id="confirm-title">{selected[1]}</h2>
                 <p>{selected[2]}</p>
+                {selectedPreflight && (
+                  <dl className="command-preflight" aria-label="Command-specific preflight">
+                    <div><dt>Exact target</dt><dd>{selectedPreflight.target}</dd></div>
+                    <div><dt>Current authoritative state</dt><dd>{selectedPreflight.current}</dd></div>
+                    <div><dt>Committed consequence</dt><dd>{selectedPreflight.consequence}</dd></div>
+                  </dl>
+                )}
                 <div className="impact-note">
                   <b>What happens next</b>
                   <span>
@@ -1428,6 +1468,7 @@ export function Quartermaster({ authenticated }: { authenticated: boolean }) {
                     {error}
                   </p>
                 )}
+                {busy && <p className="command-queue-state" role="status">This command owns the ledger queue. Other commands remain serialized until it settles.</p>}
                 <div>
                   <button onClick={closeConfirmation} disabled={busy}>
                     Cancel

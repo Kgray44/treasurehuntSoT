@@ -3,6 +3,10 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { AnimatePresence, motion } from "motion/react";
+import { useMotionMode } from "@/animation/motion/useMotionMode";
+import { platformMotionEasing, resolvePlatformMotionToken } from "@/animation/platform/motion-tokens";
+import { RouteMotionBoundary } from "@/animation/platform/RouteMotionBoundary";
 
 type Workspace = "public" | "player" | "captain" | "creator";
 
@@ -81,6 +85,7 @@ function isCurrent(pathname: string, href: string, exact?: boolean) {
 
 export function ProductShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  const { mode } = useMotionMode();
   const [menuOpen, setMenuOpen] = useState(false);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
   const navigationRef = useRef<HTMLElement>(null);
@@ -107,9 +112,10 @@ export function ProductShell({ children }: { children: React.ReactNode }) {
     return () => window.removeEventListener("keydown", close);
   }, [closeMenuAndRestoreFocus, menuOpen]);
 
-  if (isImmersiveRoute(pathname)) return children;
+  if (isImmersiveRoute(pathname)) return <RouteMotionBoundary pathname={pathname}>{children}</RouteMotionBoundary>;
 
   const definition = shellDefinitions[getWorkspace(pathname)];
+  const micro = resolvePlatformMotionToken("micro", mode);
   return (
     <div className={`product-shell workspace-${definition.workspace}`}>
       <a className="skip-link" href="#main-content">
@@ -120,7 +126,17 @@ export function ProductShell({ children }: { children: React.ReactNode }) {
           <span aria-hidden="true">✦</span>
           <span>
             <strong>Forever Treasure</strong>
-            <small>{definition.label}</small>
+            <AnimatePresence initial={false} mode="wait">
+              <motion.small
+                key={definition.workspace}
+                initial={{ opacity: 0, y: micro.distancePx }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -micro.distancePx }}
+                transition={{ duration: micro.durationSeconds, ease: platformMotionEasing("micro") }}
+              >
+                {definition.label}
+              </motion.small>
+            </AnimatePresence>
           </span>
         </Link>
         <button
@@ -143,8 +159,21 @@ export function ProductShell({ children }: { children: React.ReactNode }) {
           {definition.navigation.map((item) => {
             const current = isCurrent(pathname, item.href, item.exact);
             return (
-              <Link key={item.href} href={item.href} aria-current={current ? "page" : undefined}>
-                {item.label}
+              <Link
+                key={item.href}
+                className={current ? "current" : undefined}
+                href={item.href}
+                aria-current={current ? "page" : undefined}
+              >
+                {current && (
+                  <motion.i
+                    className="product-navigation-active-plate"
+                    layoutId={`product-navigation-active-${definition.workspace}`}
+                    transition={{ duration: micro.durationSeconds, ease: platformMotionEasing("micro") }}
+                    aria-hidden="true"
+                  />
+                )}
+                <span>{item.label}</span>
               </Link>
             );
           })}
@@ -159,7 +188,7 @@ export function ProductShell({ children }: { children: React.ReactNode }) {
         )}
       </header>
       <div className="product-shell-content" id="main-content" tabIndex={-1}>
-        {children}
+        <RouteMotionBoundary pathname={pathname}>{children}</RouteMotionBoundary>
       </div>
       <footer className="product-footer">
         <p>Interactive Tall Tales for friends, families, groups, and celebrations.</p>

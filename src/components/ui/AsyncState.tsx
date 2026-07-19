@@ -1,4 +1,10 @@
+"use client";
+
 import Link from "next/link";
+import { useEffect, useRef, useState } from "react";
+import { motion } from "motion/react";
+import { useMotionMode } from "@/animation/motion/useMotionMode";
+import { platformMotionEasing, resolvePlatformMotionToken } from "@/animation/platform/motion-tokens";
 
 type StateAction =
   | { label: string; href: string; onClick?: never }
@@ -27,35 +33,75 @@ export function LoadingState({
   detail?: string;
   compact?: boolean;
 }) {
+  const { mode } = useMotionMode();
+  const stateMotion = resolvePlatformMotionToken("state", mode);
+  const [slow, setSlow] = useState(false);
+  useEffect(() => {
+    const timer = window.setTimeout(() => setSlow(true), 900);
+    return () => window.clearTimeout(timer);
+  }, []);
   return (
-    <section className={`ui-state ui-loading-state ${compact ? "compact" : ""}`} role="status" aria-live="polite">
+    <motion.section
+      className={`ui-state ui-loading-state ${compact ? "compact" : ""}`}
+      data-async-state={slow ? "slow" : "pending"}
+      role="status"
+      aria-live="polite"
+      initial={mode === "reduced" ? false : { opacity: 0, y: stateMotion.distancePx }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: stateMotion.durationSeconds, ease: platformMotionEasing("state") }}
+    >
       <span className="ui-spinner" aria-hidden="true" />
       <div>
         <h2>{title}</h2>
-        {detail && <p>{detail}</p>}
+        {detail && <p>{slow ? `${detail} This is taking longer than expected.` : detail}</p>}
       </div>
       <div className="ui-skeleton-lines" aria-hidden="true">
         <i />
         <i />
         <i />
       </div>
-    </section>
+    </motion.section>
   );
 }
 
-export function ErrorState({ title, detail, action }: { title: string; detail: string; action?: StateAction }) {
+export function ErrorState({
+  title,
+  detail,
+  action,
+  terminal = false,
+}: {
+  title: string;
+  detail: string;
+  action?: StateAction;
+  terminal?: boolean;
+}) {
+  const { mode } = useMotionMode();
+  const stateMotion = resolvePlatformMotionToken("state", mode);
+  const heading = useRef<HTMLHeadingElement>(null);
+  useEffect(() => {
+    if (!terminal) return;
+    const frame = requestAnimationFrame(() => heading.current?.focus({ preventScroll: true }));
+    return () => cancelAnimationFrame(frame);
+  }, [terminal]);
   return (
-    <section className="ui-state ui-error-state" role="alert">
+    <motion.section
+      className="ui-state ui-error-state"
+      data-async-state={terminal ? "terminal-error" : "recoverable-error"}
+      role="alert"
+      initial={mode === "reduced" ? false : { opacity: 0, x: stateMotion.distancePx }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ duration: stateMotion.durationSeconds, ease: platformMotionEasing("state") }}
+    >
       <span className="ui-state-symbol" aria-hidden="true">
         !
       </span>
       <div>
         <p className="eyebrow">Unable to continue</p>
-        <h2>{title}</h2>
+        <h2 ref={heading} tabIndex={terminal ? -1 : undefined}>{title}</h2>
         <p>{detail}</p>
       </div>
       {action && <StateActionControl action={action} />}
-    </section>
+    </motion.section>
   );
 }
 
@@ -70,8 +116,16 @@ export function EmptyState({
   action?: StateAction;
   symbol?: string;
 }) {
+  const { mode } = useMotionMode();
+  const stateMotion = resolvePlatformMotionToken("state", mode);
   return (
-    <section className="ui-state ui-empty-state">
+    <motion.section
+      className="ui-state ui-empty-state"
+      data-async-state="idle"
+      initial={mode === "reduced" ? false : { opacity: 0, y: stateMotion.distancePx }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: stateMotion.durationSeconds, ease: platformMotionEasing("state") }}
+    >
       <span className="ui-state-symbol" aria-hidden="true">
         {symbol}
       </span>
@@ -80,7 +134,7 @@ export function EmptyState({
         <p>{detail}</p>
       </div>
       {action && <StateActionControl action={action} />}
-    </section>
+    </motion.section>
   );
 }
 
@@ -91,10 +145,19 @@ export function StatusBanner({
   children: React.ReactNode;
   tone?: "info" | "success" | "warning" | "danger";
 }) {
+  const { mode } = useMotionMode();
+  const stateMotion = resolvePlatformMotionToken("state", mode);
   return (
-    <p className={`ui-status-banner tone-${tone}`} role={tone === "danger" ? "alert" : "status"}>
+    <motion.p
+      className={`ui-status-banner tone-${tone}`}
+      data-async-state={tone === "success" ? "success" : tone === "danger" ? "recoverable-error" : "idle"}
+      role={tone === "danger" ? "alert" : "status"}
+      initial={mode === "reduced" ? false : { opacity: 0, y: -stateMotion.distancePx }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: stateMotion.durationSeconds, ease: platformMotionEasing("state") }}
+    >
       <span aria-hidden="true" />
       {children}
-    </p>
+    </motion.p>
   );
 }

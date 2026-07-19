@@ -5,18 +5,19 @@ import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { AnimatedProperty } from "@/animation/core/animation-types";
 import { SceneHost, useSceneTargetRegistration } from "@/animation/hosts/SceneHost";
+import { useMotionMode } from "@/animation/motion/useMotionMode";
+import {
+  useAuthoritativeAsyncState,
+  type AuthoritativeAsyncRun,
+} from "@/animation/platform/useAuthoritativeAsyncState";
 import { parseJsonResponse } from "@/lib/client-response";
+import { PlatformRelic } from "./PlatformRelic";
 
 type GatewayStatus = Partial<Record<"captain" | "creator", { authenticated?: boolean }>> & { error?: string };
 type CeremonyState = "idle" | "pending" | "accepted" | "rejected";
 type StaffRouteHandoff = (destination: string, signal: AbortSignal) => void | Promise<void>;
 
-const ceremonyProperties = [
-  "opacity",
-  "transform",
-  "clip-path",
-  "filter",
-] as const satisfies readonly AnimatedProperty[];
+const ceremonyProperties = ["opacity", "transform", "clip-path", "filter"] as const satisfies readonly AnimatedProperty[];
 
 function StaffCeremonyTarget({ part, targetKey }: { part: "accepted-pose" | "rejected-pose"; targetKey: string }) {
   const registration = useMemo(
@@ -29,14 +30,17 @@ function StaffCeremonyTarget({ part, targetKey }: { part: "accepted-pose" | "rej
 
 function StaffCeremonyBoundary({
   intent,
+  mode,
   operationKey,
   state,
 }: {
   intent: "captain" | "creator";
+  mode: ReturnType<typeof useMotionMode>["mode"];
   operationKey: number;
   state: CeremonyState;
 }) {
   const hostKey = `staff-${intent}`;
+  const relicState = state === "accepted" ? "arrived" : state === "rejected" ? "failure" : state === "pending" ? "resolving" : "idle";
   return (
     <SceneHost
       kind="platform-ceremony"
@@ -47,6 +51,12 @@ function StaffCeremonyBoundary({
       aria-hidden="true"
       style={{ pointerEvents: "none" }}
     >
+      <PlatformRelic
+        kind={intent === "captain" ? "captain-lock" : "creator-quill"}
+        state={relicState}
+        mode={mode}
+        layoutId={`role-object-${intent}`}
+      />
       <StaffCeremonyTarget part="accepted-pose" targetKey={`${hostKey}:${operationKey}:accepted`} />
       <StaffCeremonyTarget part="rejected-pose" targetKey={`${hostKey}:${operationKey}:rejected`} />
     </SceneHost>
@@ -65,26 +75,28 @@ export function StaffSignIn({
   onRouteHandoff?: StaffRouteHandoff;
 }) {
   const router = useRouter();
-  const mounted = useRef(true);
-  const activeRun = useRef<AbortController | null>(null);
-  const operationSequence = useRef(0);
+  const { mode } = useMotionMode();
+  const asyncState = useAuthoritativeAsyncState(900);
   const usernameInput = useRef<HTMLInputElement>(null);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [status, setStatus] = useState("");
-  const [busy, setBusy] = useState(false);
   const [ceremonyState, setCeremonyState] = useState<CeremonyState>("idle");
   const [operationKey, setOperationKey] = useState(0);
+  const [online, setOnline] = useState(true);
   const title = intent === "captain" ? "Captain's Command" : "Tall Tale Studio";
   const destination = intent === "captain" ? "/captain/library" : "/studio/library";
+  const busy = asyncState.busy;
 
   useEffect(() => {
-    mounted.current = true;
+    const update = () => setOnline(navigator.onLine);
+    update();
+    window.addEventListener("online", update);
+    window.addEventListener("offline", update);
     return () => {
-      mounted.current = false;
-      activeRun.current?.abort();
-      activeRun.current = null;
+      window.removeEventListener("online", update);
+      window.removeEventListener("offline", update);
     };
   }, []);
 
@@ -94,24 +106,19 @@ export function StaffSignIn({
     router.refresh();
   }
 
-  function restoreAfterFailure(controller: AbortController, message: string) {
-    if (!mounted.current || controller.signal.aborted || activeRun.current !== controller) return;
-    activeRun.current = null;
+  function restoreAfterFailure(run: AuthoritativeAsyncRun, message: string) {
+    if (!asyncState.fail(run)) return;
     setStatus("");
     setError(message);
     setCeremonyState("rejected");
-    setBusy(false);
     window.requestAnimationFrame(() => usernameInput.current?.focus());
   }
 
   async function submit(event: React.FormEvent) {
     event.preventDefault();
-    if (activeRun.current) return;
-    const controller = new AbortController();
-    activeRun.current = controller;
-    operationSequence.current += 1;
-    setOperationKey(operationSequence.current);
-    setBusy(true);
+    const run = asyncState.begin();
+    if (!run) return;
+    setOperationKey(run.id);
     setError("");
     setStatus("");
     setCeremonyState("pending");
@@ -121,43 +128,43 @@ export function StaffSignIn({
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, password }),
-        signal: controller.signal,
+        signal: run.controller.signal,
       });
       if (!response.ok) {
         const body = await parseJsonResponse<{ error?: string }>(response);
-        return restoreAfterFailure(controller, body?.error ?? "Sign-in failed. Please try again.");
+        return restoreAfterFailure(run, body?.error ?? "Sign-in failed. Please try again.");
       }
 
-      const statusResponse = await fetch("/api/gateway/status", { cache: "no-store", signal: controller.signal });
-      const status = await parseJsonResponse<GatewayStatus>(statusResponse);
-      if (!statusResponse.ok || !status) {
+      const statusResponse = await fetch("/api/gateway/status", {
+        cache: "no-store",
+        signal: run.controller.signal,
+      });
+      const gatewayStatus = await parseJsonResponse<GatewayStatus>(statusResponse);
+      if (!statusResponse.ok || !gatewayStatus) {
         return restoreAfterFailure(
-          controller,
-          status?.error ?? `Sign-in succeeded, but ${title} permission could not be verified. Please try again.`,
+          run,
+          gatewayStatus?.error ?? `Sign-in succeeded, but ${title} permission could not be verified. Please try again.`,
         );
       }
-      if (!status[intent]?.authenticated) {
+      if (!gatewayStatus[intent]?.authenticated) {
         return restoreAfterFailure(
-          controller,
+          run,
           `This account is signed in but does not have ${intent === "captain" ? "Captain" : "Creator"} permission.`,
         );
       }
 
-      if (!mounted.current || controller.signal.aborted || activeRun.current !== controller) return;
+      if (!asyncState.succeed(run)) return;
       credentialsAccepted = true;
       setCeremonyState("accepted");
       setStatus(`Sign-in accepted. Opening ${title}.`);
-      await handOffRoute(controller.signal);
+      await handOffRoute(run.controller.signal);
     } catch {
       restoreAfterFailure(
-        controller,
+        run,
         credentialsAccepted
           ? `Sign-in succeeded, but ${title} could not be opened. Please try again.`
           : `${title} could not be reached. Check that the app is running and try again.`,
       );
-    } finally {
-      // On success the active operation and accepted pose deliberately remain held until route unmount.
-      if (activeRun.current === controller && (!mounted.current || controller.signal.aborted)) activeRun.current = null;
     }
   }
 
@@ -165,9 +172,10 @@ export function StaffSignIn({
     <main
       className={`platform-auth staff-auth-page intent-${intent}`}
       data-auth-state={ceremonyState}
+      data-async-state={asyncState.phase}
       data-auth-operation={operationKey}
     >
-      <StaffCeremonyBoundary intent={intent} operationKey={operationKey} state={ceremonyState} />
+      <StaffCeremonyBoundary intent={intent} mode={mode} operationKey={operationKey} state={ceremonyState} />
       <section className="auth-ledger" aria-labelledby="staff-sign-in-title">
         <p className="eyebrow">{intent === "captain" ? "Operational waters" : "Authoring waters"}</p>
         <h1 id="staff-sign-in-title">Enter {title}</h1>
@@ -176,6 +184,11 @@ export function StaffSignIn({
             ? "Guide live voyages and manage secure invitations."
             : "Author, validate, publish, compare, and preserve immutable editions."}
         </p>
+        {!online && (
+          <p className="platform-status auth-offline" role="status">
+            Offline. Entered credentials are preserved; reconnect before submitting.
+          </p>
+        )}
         {authorized ? (
           <Link className="brass-button auth-continue" href={destination}>
             Continue to {title}
@@ -206,8 +219,12 @@ export function StaffSignIn({
               required
             />
           </label>
-          <button className="brass-button" disabled={busy} aria-busy={busy}>
-            {busy ? "Checking the ledger…" : `Enter ${title}`}
+          <button className="brass-button" disabled={busy || !online} aria-busy={busy}>
+            {asyncState.phase === "slow"
+              ? "Still checking the ledger…"
+              : busy
+                ? "Checking the ledger…"
+                : `Enter ${title}`}
           </button>
         </form>
         {error && (

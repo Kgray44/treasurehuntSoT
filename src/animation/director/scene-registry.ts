@@ -19,7 +19,7 @@ import type {
   SceneVisibilityRule,
 } from "../core/animation-types";
 import { firstArrivalScene, sessionReentryScene } from "../scenes/arrival.scene";
-import { playerAccessScene, quartermasterLoginScene } from "../scenes/access.scene";
+import { playerAccessScene, quartermasterLoginScene, studioPublishScene } from "../scenes/access.scene";
 import { markSolvedScene, pauseScene, prepareChapterScene, resumeScene, undoScene } from "../scenes/command.scene";
 import {
   artifactAwardScene,
@@ -376,6 +376,15 @@ export const sceneReachabilityEvidence: Readonly<Record<AnimationSceneName, Scen
     },
     disposition: "Live compatibility Game Master sign-in flow; retained as legacy.",
   },
+  "studio-publish": {
+    reachability: "production",
+    caller: {
+      sourcePath: "src/components/studio/TaleEditor.tsx",
+      callerSymbol: "async function publish",
+      sceneBinding: 'director.play<PublishResult>("studio-publish",',
+      invocation: 'director.play<PublishResult>("studio-publish",',
+    },
+  },
   "journal-open": {
     reachability: "deprecated",
     disposition: "The bounded Journal opening machine owns this behavior; the GSAP scene has no production caller.",
@@ -592,6 +601,25 @@ export const sceneContracts = {
     }),
     acknowledgmentPolicy: callerAcknowledgment(),
     finalStatePolicy: hold("quartermaster-result-readable"),
+    reducedFallback: "semantic-final-state",
+  }),
+  "studio-publish": v2Contract("studio-publish", {
+    reachability: "production",
+    expectedHostKinds: ["platform-ceremony"],
+    targets: [
+      v2Required("version-seal", ["transform", "filter", "opacity"]),
+      v2Required("publish-ledger", ["transform", "opacity"]),
+      v2Optional("release-ribbon", ["transform", "opacity"]),
+    ],
+    timeoutMs: 8_000,
+    playbackPolicy: playback("operation", {
+      allowUserSkip: true,
+      userSkipFinalState: "version-published-readable",
+      allowedFallback: "readable-publish-result",
+      priority: 80,
+    }),
+    acknowledgmentPolicy: callerAcknowledgment(),
+    finalStatePolicy: v2Hold("version-published-readable"),
     reducedFallback: "semantic-final-state",
   }),
   "journal-open": v2Contract("journal-open", {
@@ -1092,6 +1120,7 @@ const definitions: AnySceneDefinition[] = [
   sessionReentryScene,
   playerAccessScene,
   quartermasterLoginScene,
+  studioPublishScene,
   journalOpenScene,
   manualPageFlipScene,
   programmaticPageFlipScene,

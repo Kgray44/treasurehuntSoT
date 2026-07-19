@@ -202,6 +202,14 @@ describe("GSAP scene builders", () => {
       "content-readable",
     ]);
 
+    const publication = context("studio-publish");
+    expectLabels(build("studio-publish", "buildOpening", publication)!, ["publish-requested", "await-server"]);
+    expectLabels(build("studio-publish", "buildSuccess", publication)!, [
+      "version-authorized",
+      "version-readable",
+      "scene-complete",
+    ]);
+
     const chapter = context("chapter-release");
     expectLabels(build("chapter-release", "buildSuccess", chapter)!, [
       "seal",

@@ -5,6 +5,9 @@ import { ProductShell } from "./ProductShell";
 const navigation = vi.hoisted(() => ({ pathname: "/tales" }));
 
 vi.mock("next/navigation", () => ({ usePathname: () => navigation.pathname }));
+vi.mock("@/animation/motion/useMotionMode", () => ({
+  useMotionMode: () => ({ mode: "reduced" }),
+}));
 
 describe("ProductShell", () => {
   afterEach(() => {
@@ -26,6 +29,7 @@ describe("ProductShell", () => {
       "page",
     );
     expect(screen.getByText("Catalog content")).toBeInTheDocument();
+    expect(navigationRegion.querySelectorAll(".product-navigation-active-plate")).toHaveLength(1);
   });
 
   it("moves focus into the menu and restores it on Escape", async () => {
@@ -57,5 +61,28 @@ describe("ProductShell", () => {
 
     expect(screen.getByText("Immersive journal")).toBeInTheDocument();
     expect(screen.queryByRole("banner")).not.toBeInTheDocument();
+  });
+
+  it("hands route focus to the destination heading exactly once", async () => {
+    const view = render(
+      <ProductShell>
+        <main>
+          <h1>Catalog</h1>
+        </main>
+      </ProductShell>,
+    );
+    expect(screen.getByRole("heading", { name: "Catalog" })).not.toHaveFocus();
+
+    navigation.pathname = "/player/library";
+    view.rerender(
+      <ProductShell>
+        <main>
+          <h1>My Library</h1>
+        </main>
+      </ProductShell>,
+    );
+
+    await waitFor(() => expect(screen.getByRole("heading", { name: "My Library" })).toHaveFocus());
+    expect(screen.getByRole("heading", { name: "My Library" })).toHaveAttribute("tabindex", "-1");
   });
 });

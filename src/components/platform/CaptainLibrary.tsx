@@ -3,7 +3,12 @@
 /* eslint-disable @next/next/no-img-element -- QR data URLs are generated server-side and shown only after invitation creation. */
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { AnimatePresence, LayoutGroup, motion } from "motion/react";
+import { useMotionMode } from "@/animation/motion/useMotionMode";
+import { reconcileVersionedRows } from "@/animation/platform/polling-delta";
+import { platformMotionEasing, resolvePlatformMotionToken } from "@/animation/platform/motion-tokens";
 import { EmptyState, ErrorState, LoadingState, StatusBanner } from "@/components/ui/AsyncState";
+import { PlatformRelic } from "./PlatformRelic";
 
 type Voyage = {
   id: string;
@@ -66,7 +71,34 @@ type CrewDraft = { key: string; playerId: string; displayName: string; crewRole:
 
 const steps = ["Select Tale", "Configure Voyage", "Add Players", "Security", "Delivery", "Review", "Create"];
 
+type VoyageGroup = keyof Library["groups"];
+type VersionedVoyage = { group: VoyageGroup; voyage: Voyage };
+
+function flattenVoyages(groups: Library["groups"]): VersionedVoyage[] {
+  return (Object.keys(groups) as VoyageGroup[]).flatMap((group) => groups[group].map((voyage) => ({ group, voyage })));
+}
+
+function rebuildVoyageGroups(rows: readonly VersionedVoyage[]): Library["groups"] {
+  const groups = { needsAttention: [], activeVoyages: [], readyToLaunch: [], completedPlaythroughs: [] } as Library["groups"];
+  for (const row of rows) groups[row.group].push(row.voyage);
+  return groups;
+}
+
+function voyageVersion(row: VersionedVoyage) {
+  return JSON.stringify([row.voyage.status, row.voyage.versionLabel, row.voyage.currentSequence, row.voyage.connected, row.voyage.pendingAction, row.voyage.players]);
+}
+
+function invitationVersion(invitation: Invitation) {
+  return JSON.stringify([invitation.status, invitation.expiresAt, invitation.viewedAt, invitation.acceptedAt, invitation.replacementId]);
+}
+
 export function CaptainLibrary() {
+  const { mode } = useMotionMode();
+  const layoutToken = resolvePlatformMotionToken("layout", mode);
+  const libraryRef = useRef<Library | null>(null);
+  const requestSequence = useRef(0);
+  const activeLoad = useRef<AbortController | null>(null);
+  const changedTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [library, setLibrary] = useState<Library | null>(null);
   const [error, setError] = useState("");
   const [tab, setTab] = useState<"voyages" | "invitations" | "published">("voyages");
@@ -88,26 +120,80 @@ export function CaptainLibrary() {
   const [created, setCreated] = useState<CreatedInvitation[]>([]);
   const [busy, setBusy] = useState(false);
   const [notice, setNotice] = useState("");
+  const [changedIds, setChangedIds] = useState<ReadonlySet<string>>(new Set());
+  const [invitationTransitions, setInvitationTransitions] = useState<Readonly<Record<string, string>>>({});
+  const [launchState, setLaunchState] = useState<Readonly<{ id: string; phase: "confirming" | "launching" | "launched" } | null>>(null);
 
   const load = useCallback(async () => {
+    if (activeLoad.current) return;
+    const controller = new AbortController();
+    activeLoad.current = controller;
     try {
-      const response = await fetch("/api/captain/library", { cache: "no-store" });
+      const response = await fetch("/api/captain/library", { cache: "no-store", signal: controller.signal });
       const body = (await response.json()) as Library & { error?: string };
       if (!response.ok) setError(body.error ?? "Captain's library is unavailable.");
       else {
-        setLibrary(body);
+        requestSequence.current += 1;
+        const previous = libraryRef.current;
+        if (!previous) {
+          libraryRef.current = body;
+          setLibrary(body);
+          setChangedIds(new Set([...flattenVoyages(body.groups).map((row) => row.voyage.id), ...body.invitations.map((item) => item.id)]));
+          changedTimer.current = setTimeout(() => setChangedIds(new Set()), 900);
+        } else {
+          const voyageDiff = reconcileVersionedRows({
+            previous: flattenVoyages(previous.groups),
+            next: flattenVoyages(body.groups),
+            previousVersion: requestSequence.current - 1,
+            nextVersion: requestSequence.current,
+            getId: (row) => row.voyage.id,
+            getVersion: voyageVersion,
+            getGroup: (row) => row.group,
+          });
+          const invitationDiff = reconcileVersionedRows({
+            previous: previous.invitations,
+            next: body.invitations,
+            previousVersion: requestSequence.current - 1,
+            nextVersion: requestSequence.current,
+            getId: (item) => item.id,
+            getVersion: invitationVersion,
+          });
+          const nextLibrary = {
+            ...body,
+            groups: voyageDiff.changed ? rebuildVoyageGroups(voyageDiff.rows) : previous.groups,
+            invitations: invitationDiff.changed ? [...invitationDiff.rows] : previous.invitations,
+            publishedTales: JSON.stringify(body.publishedTales) === JSON.stringify(previous.publishedTales) ? previous.publishedTales : body.publishedTales,
+          };
+          libraryRef.current = nextLibrary;
+          setLibrary(nextLibrary);
+          const changed = [...voyageDiff.addedIds, ...voyageDiff.changedIds, ...invitationDiff.addedIds, ...invitationDiff.changedIds];
+          if (changed.length) {
+            setChangedIds(new Set(changed));
+            if (changedTimer.current) clearTimeout(changedTimer.current);
+            changedTimer.current = setTimeout(() => setChangedIds(new Set()), 900);
+          }
+        }
         setError("");
       }
-    } catch {
+    } catch (cause) {
+      if (cause instanceof DOMException && cause.name === "AbortError") return;
       setError("Captain's Command could not be reached. Check your connection and try again.");
+    } finally {
+      if (activeLoad.current === controller) activeLoad.current = null;
     }
   }, []);
   useEffect(() => {
     if (new URLSearchParams(window.location.search).get("tab") === "invitations")
       queueMicrotask(() => setTab("invitations"));
     queueMicrotask(() => void load());
-    const timer = setInterval(() => void load(), 5000);
-    return () => clearInterval(timer);
+    const timer = setInterval(() => {
+      if (!document.hidden) void load();
+    }, 5000);
+    return () => {
+      clearInterval(timer);
+      activeLoad.current?.abort("unmounted");
+      if (changedTimer.current) clearTimeout(changedTimer.current);
+    };
   }, [load]);
 
   const selectedTale = library?.publishedTales.find((tale) => tale.id === taleId);
@@ -171,7 +257,13 @@ export function CaptainLibrary() {
   }
 
   async function launch(voyage: Voyage) {
-    if (!library || !window.confirm(`Launch “${voyage.voyageName}” for its ready Players?`)) return;
+    if (!library) return;
+    setLaunchState({ id: voyage.id, phase: "confirming" });
+    if (!window.confirm(`Launch “${voyage.voyageName}” for its ready Players?`)) {
+      setLaunchState(null);
+      return;
+    }
+    setLaunchState({ id: voyage.id, phase: "launching" });
     setBusy(true);
     setError("");
     setNotice("");
@@ -182,11 +274,17 @@ export function CaptainLibrary() {
         body: "{}",
       });
       const body = (await response.json()) as { error?: string };
-      if (!response.ok) setError(body.error ?? "The voyage could not be launched.");
-      else setNotice(`“${voyage.voyageName}” is now live for ready Players.`);
+      if (!response.ok) {
+        setError(body.error ?? "The voyage could not be launched.");
+        setLaunchState(null);
+      } else {
+        setLaunchState({ id: voyage.id, phase: "launched" });
+        setNotice(`“${voyage.voyageName}” is now live for ready Players.`);
+      }
       await load();
     } catch {
       setError("The voyage could not be launched. Check your connection and try again.");
+      setLaunchState(null);
     } finally {
       setBusy(false);
     }
@@ -203,6 +301,7 @@ export function CaptainLibrary() {
       )
     )
       return;
+    setInvitationTransitions((current) => ({ ...current, [invitation.id]: `${action}-pending` }));
     setBusy(true);
     setError("");
     setNotice("");
@@ -213,9 +312,20 @@ export function CaptainLibrary() {
         body: JSON.stringify({ action, extendHours: 168 }),
       });
       const body = (await response.json()) as { error?: string; replacement?: CreatedInvitation };
-      if (!response.ok) setError(body.error ?? "Invitation action failed.");
+      if (!response.ok) {
+        setError(body.error ?? "Invitation action failed.");
+        setInvitationTransitions((current) => {
+          const next = { ...current };
+          delete next[invitation.id];
+          return next;
+        });
+      }
       else {
-        if (body.replacement) setCreated([body.replacement]);
+        setInvitationTransitions((current) => ({ ...current, [invitation.id]: action === "replace" ? "replaced" : action === "revoke" ? "revoked" : "extended" }));
+        if (body.replacement) {
+          await new Promise((resolve) => window.setTimeout(resolve, layoutToken.durationMs));
+          setCreated([body.replacement]);
+        }
         setNotice(
           action === "extend"
             ? `The invitation for ${invitation.recipientName} was extended.`
@@ -227,6 +337,11 @@ export function CaptainLibrary() {
       await load();
     } catch {
       setError("The invitation action could not be completed. Check your connection and try again.");
+      setInvitationTransitions((current) => {
+        const next = { ...current };
+        delete next[invitation.id];
+        return next;
+      });
     } finally {
       setBusy(false);
     }
@@ -259,7 +374,7 @@ export function CaptainLibrary() {
   ];
   const voyageCount = voyageGroups.reduce((total, [, voyages]) => total + voyages.length, 0);
   return (
-    <main className="captain-library">
+    <main className="captain-library" data-motion-mode={mode}>
       <header className="platform-header">
         <div>
           <p className="eyebrow">Operational command</p>
@@ -284,6 +399,7 @@ export function CaptainLibrary() {
           aria-pressed={tab === "voyages"}
           onClick={() => setTab("voyages")}
         >
+          {tab === "voyages" && <motion.span className="platform-tab-plate" layoutId="captain-tab-plate" aria-hidden="true" />}
           Voyages
         </button>
         <button
@@ -291,6 +407,7 @@ export function CaptainLibrary() {
           aria-pressed={tab === "invitations"}
           onClick={() => setTab("invitations")}
         >
+          {tab === "invitations" && <motion.span className="platform-tab-plate" layoutId="captain-tab-plate" aria-hidden="true" />}
           Invitations{" "}
           <span>
             {library.invitations.filter((item) => ["CREATED", "COPIED", "VIEWED"].includes(item.status)).length}
@@ -301,11 +418,21 @@ export function CaptainLibrary() {
           aria-pressed={tab === "published"}
           onClick={() => setTab("published")}
         >
+          {tab === "published" && <motion.span className="platform-tab-plate" layoutId="captain-tab-plate" aria-hidden="true" />}
           Published Tales
         </button>
       </nav>
       {notice && <StatusBanner tone="success">{notice}</StatusBanner>}
       {error && <StatusBanner tone="danger">{error}</StatusBanner>}
+      <AnimatePresence mode="wait" initial={false}>
+        <motion.div
+          key={tab}
+          className="captain-tab-panel"
+          initial={{ opacity: 0, y: mode === "reduced" ? 0 : 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: layoutToken.durationSeconds, ease: platformMotionEasing("layout") }}
+        >
       {tab === "voyages" && (
         <div className="captain-groups">
           {!voyageCount && (
@@ -329,16 +456,20 @@ export function CaptainLibrary() {
                     <h2>{label}</h2>
                     <span>{voyages.length}</span>
                   </header>
-                  <div className="captain-card-grid">
+                  <LayoutGroup id="captain-voyages"><div className="captain-card-grid">
                     {voyages.map((voyage) => (
                       <VoyageCard
-                        key={`${label}-${voyage.id}`}
+                        key={voyage.id}
                         voyage={voyage}
                         busy={busy}
+                        changed={changedIds.has(voyage.id)}
+                        group={label}
+                        launchPhase={launchState?.id === voyage.id ? launchState.phase : null}
+                        mode={mode}
                         launch={() => void launch(voyage)}
                       />
                     ))}
-                  </div>
+                  </div></LayoutGroup>
                 </section>
               ),
           )}
@@ -366,8 +497,16 @@ export function CaptainLibrary() {
             />
           ) : (
             <div className="invitation-table" role="table" aria-label="Voyage invitations">
+              <AnimatePresence initial={false} mode="popLayout">
               {library.invitations.map((invitation) => (
-                <article key={invitation.id} role="row">
+                <motion.article
+                  layout
+                  key={invitation.id}
+                  role="row"
+                  data-invitation-transition={invitationTransitions[invitation.id] ?? invitation.status.toLocaleLowerCase()}
+                  data-row-changed={changedIds.has(invitation.id)}
+                  exit={{ opacity: 0, scale: mode === "reduced" ? 1 : 0.98 }}
+                >
                   <div>
                     <strong>{invitation.recipientName}</strong>
                     <span>
@@ -405,8 +544,9 @@ export function CaptainLibrary() {
                       </>
                     )}
                   </div>
-                </article>
+                </motion.article>
               ))}
+              </AnimatePresence>
             </div>
           )}
         </section>
@@ -420,8 +560,9 @@ export function CaptainLibrary() {
               action={{ label: "Open Tall Tale Studio", href: "/studio/library" }}
             />
           )}
+          <AnimatePresence initial={false}>
           {library.publishedTales.map((tale) => (
-            <article key={tale.id}>
+            <motion.article layout key={tale.id}>
               <p className="card-kicker">{tale.visibility.toLocaleLowerCase()}</p>
               <h2>{tale.title}</h2>
               <p>{tale.subtitle}</p>
@@ -445,11 +586,17 @@ export function CaptainLibrary() {
                 Invite Players
               </button>
               <Link href={`/captain/tales/${tale.id}`}>Open details</Link>
-            </article>
+            </motion.article>
           ))}
+          </AnimatePresence>
         </section>
       )}
-      {created.length > 0 && !wizard && <InvitationSecrets invitations={created} csrf={library.csrfToken} />}
+        </motion.div>
+      </AnimatePresence>
+      <AnimatePresence>
+      {created.length > 0 && !wizard && <InvitationSecrets invitations={created} csrf={library.csrfToken} mode={mode} />}
+      </AnimatePresence>
+      <AnimatePresence>
       {wizard && (
         <VoyageWizard
           step={step}
@@ -482,16 +629,43 @@ export function CaptainLibrary() {
           setAccountRequired={setAccountRequired}
           created={created}
           busy={busy}
+          mode={mode}
           createVoyage={() => void createVoyage()}
         />
       )}
+      </AnimatePresence>
     </main>
   );
 }
 
-function VoyageCard({ voyage, busy, launch }: { voyage: Voyage; busy: boolean; launch: () => void }) {
+function VoyageCard({
+  voyage,
+  busy,
+  changed,
+  group,
+  launchPhase,
+  mode,
+  launch,
+}: {
+  voyage: Voyage;
+  busy: boolean;
+  changed: boolean;
+  group: string;
+  launchPhase: "confirming" | "launching" | "launched" | null;
+  mode: ReturnType<typeof useMotionMode>["mode"];
+  launch: () => void;
+}) {
+  const readyPlayers = voyage.players.filter((player) => ["READY", "JOINED", "ACTIVE"].includes(player.status)).length;
+  const readiness = voyage.players.length ? Math.round((readyPlayers / voyage.players.length) * 100) : 0;
   return (
-    <article className="captain-voyage-card">
+    <motion.article
+      layout
+      layoutId={`captain-voyage-${voyage.id}`}
+      className="captain-voyage-card"
+      data-voyage-group={group}
+      data-card-changed={changed}
+      data-launch-state={launchPhase ?? "idle"}
+    >
       <div className="session-signal">
         <i className={voyage.connected ? "connected" : "quiet"} />
         <span>{voyage.connected ? "Player recently connected" : "No recent heartbeat"}</span>
@@ -523,18 +697,31 @@ function VoyageCard({ voyage, busy, launch }: { voyage: Voyage; busy: boolean; l
           </div>
         )}
       </dl>
+      {group === "Needs Attention" && <p className="needs-attention-mark"><span aria-hidden="true">!</span> Captain action is required.</p>}
+      {group === "Ready to Launch" && (
+        <div className="readiness-gauge" aria-label={`${readiness}% of Players ready`}>
+          <span style={{ "--readiness": `${readiness}%` } as React.CSSProperties} />
+          <small>{readyPlayers} of {voyage.players.length} Players ready</small>
+        </div>
+      )}
+      {launchPhase && (
+        <div className="launch-ceremony-status" role="status" aria-live="polite">
+          <PlatformRelic kind="voyage-compass" state={launchPhase === "launched" ? "launch-ready" : "bearing"} mode={mode} />
+          <span>{launchPhase === "launched" ? "Launch confirmed by the server." : launchPhase === "launching" ? "Recording launch with the Captain's ledger." : "Awaiting launch confirmation."}</span>
+        </div>
+      )}
       <div className="card-actions">
         <Link className="brass-button" href={`/captain/sessions/${voyage.id}`}>
           Open Captain console
         </Link>
         <Link href={`/captain/voyages/${voyage.id}/player-preview`}>Preview as Player</Link>
         {["READY", "SCHEDULED"].includes(voyage.status) && (
-          <button disabled={busy} onClick={launch}>
-            Launch voyage
+          <button disabled={busy || launchPhase === "launched"} aria-busy={launchPhase === "launching"} onClick={launch}>
+            {launchPhase === "launching" ? "Launching…" : launchPhase === "launched" ? "Voyage launched" : "Launch voyage"}
           </button>
         )}
       </div>
-    </article>
+    </motion.article>
   );
 }
 
@@ -569,11 +756,15 @@ type WizardProps = Record<string, unknown> & {
   setAccountRequired: (value: boolean) => void;
   created: CreatedInvitation[];
   busy: boolean;
+  mode: ReturnType<typeof useMotionMode>["mode"];
   createVoyage: () => void;
 };
 function VoyageWizard(props: WizardProps) {
   const dialogRef = useRef<HTMLElement>(null);
+  const previousStep = useRef(props.step);
   const closeRef = useRef(props.close);
+  const token = resolvePlatformMotionToken("layout", props.mode);
+  const direction = props.step >= previousStep.current ? 1 : -1;
   const crewNames = props.players.map(
     (crew) =>
       props.library.playerProfiles.find((profile) => profile.id === crew.playerId)?.displayName ??
@@ -595,10 +786,20 @@ function VoyageWizard(props: WizardProps) {
   ][props.step];
   const updateCrew = (key: string, update: Partial<CrewDraft>) =>
     props.setPlayers((current) => current.map((crew) => (crew.key === key ? { ...crew, ...update } : crew)));
+  const removeCrew = (key: string) => {
+    props.setPlayers((current) => current.filter((item) => item.key !== key));
+    window.setTimeout(() => dialogRef.current?.querySelector<HTMLElement>("[data-add-player]")?.focus(), 0);
+  };
 
   useEffect(() => {
     closeRef.current = props.close;
   }, [props.close]);
+
+  useEffect(() => {
+    previousStep.current = props.step;
+    const timer = window.setTimeout(() => document.getElementById("wizard-title")?.focus(), token.durationMs + 20);
+    return () => window.clearTimeout(timer);
+  }, [props.step, token.durationMs]);
 
   useEffect(() => {
     const previous = document.activeElement as HTMLElement | null;
@@ -637,18 +838,28 @@ function VoyageWizard(props: WizardProps) {
   }, []);
 
   return (
-    <div className="wizard-backdrop" role="presentation">
-      <section ref={dialogRef} className="voyage-wizard" role="dialog" aria-modal="true" aria-labelledby="wizard-title">
+    <motion.div className="wizard-backdrop" role="presentation" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+      <motion.section
+        ref={dialogRef}
+        className="voyage-wizard"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="wizard-title"
+        initial={{ opacity: 0, scale: props.mode === "reduced" ? 1 : 0.985 }}
+        animate={{ opacity: 1, scale: 1 }}
+        exit={{ opacity: 0, scale: props.mode === "reduced" ? 1 : 0.99 }}
+      >
         <header>
           <div>
             <p className="eyebrow">Step {props.step + 1} of 7</p>
-            <h2 id="wizard-title">{steps[props.step]}</h2>
+            <h2 id="wizard-title" tabIndex={-1}>{steps[props.step]}</h2>
           </div>
           <button aria-label="Close invitation wizard" onClick={props.close}>
             ×
           </button>
         </header>
         <ol className="wizard-progress" aria-label="Voyage creation progress">
+          <motion.span className="wizard-progress-path" aria-hidden="true" animate={{ scaleX: props.step / (steps.length - 1) }} transition={{ duration: token.durationSeconds }} />
           {steps.map((label, index) => (
             <li
               className={index === props.step ? "current" : index < props.step ? "completed" : ""}
@@ -661,6 +872,16 @@ function VoyageWizard(props: WizardProps) {
           ))}
         </ol>
         <div className="wizard-body">
+          <AnimatePresence mode="wait" initial={false} custom={direction}>
+          <motion.div
+            className="wizard-step-panel"
+            key={props.step}
+            custom={direction}
+            initial={{ opacity: 0, x: props.mode === "reduced" ? 0 : direction * 18 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: props.mode === "reduced" ? 0 : direction * -12 }}
+            transition={{ duration: token.durationSeconds, ease: platformMotionEasing("layout") }}
+          >
           {props.step === 0 && (
             <div className="wizard-choice-grid">
               {props.library.publishedTales.map((tale) => (
@@ -741,8 +962,9 @@ function VoyageWizard(props: WizardProps) {
           )}
           {props.step === 2 && (
             <div className="wizard-form crew-builder">
+              <AnimatePresence initial={false}>
               {props.players.map((crew, index) => (
-                <fieldset key={crew.key}>
+                <motion.fieldset layout key={crew.key} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
                   <legend>Player {index + 1}</legend>
                   <label>
                     <span>Use existing Player (optional)</span>
@@ -778,14 +1000,16 @@ function VoyageWizard(props: WizardProps) {
                   {props.players.length > 1 && (
                     <button
                       type="button"
-                      onClick={() => props.setPlayers((current) => current.filter((item) => item.key !== crew.key))}
+                      onClick={() => removeCrew(crew.key)}
                     >
                       Remove Player
                     </button>
                   )}
-                </fieldset>
+                </motion.fieldset>
               ))}
+              </AnimatePresence>
               <button
+                data-add-player
                 type="button"
                 onClick={() =>
                   props.setPlayers((current) => [
@@ -918,7 +1142,7 @@ function VoyageWizard(props: WizardProps) {
           )}
           {props.step === 6 &&
             (props.created.length ? (
-              <InvitationSecrets invitations={props.created} csrf={props.library.csrfToken} />
+              <InvitationSecrets invitations={props.created} csrf={props.library.csrfToken} mode={props.mode} />
             ) : (
               <div className="platform-empty">
                 <h3>Ready to create</h3>
@@ -927,6 +1151,8 @@ function VoyageWizard(props: WizardProps) {
                 </p>
               </div>
             ))}
+          </motion.div>
+          </AnimatePresence>
         </div>
         <footer>
           {props.step > 0 && props.step < 6 && (
@@ -948,30 +1174,50 @@ function VoyageWizard(props: WizardProps) {
             </button>
           )}
         </footer>
-      </section>
-    </div>
+      </motion.section>
+    </motion.div>
   );
 }
 
-function InvitationSecrets({ invitations, csrf }: { invitations: CreatedInvitation[]; csrf: string }) {
+function InvitationSecrets({
+  invitations,
+  csrf,
+  mode,
+}: {
+  invitations: CreatedInvitation[];
+  csrf: string;
+  mode: ReturnType<typeof useMotionMode>["mode"];
+}) {
   const [copied, setCopied] = useState("");
+  const [copyError, setCopyError] = useState("");
+  const token = resolvePlatformMotionToken("state", mode);
   async function copy(invitation: CreatedInvitation, value: string) {
-    await navigator.clipboard.writeText(value);
-    await fetch(`/api/captain/invitations/${invitation.id}`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json", "x-csrf-token": csrf },
-      body: JSON.stringify({ action: "copied" }),
-    });
-    setCopied(invitation.id);
+    setCopyError("");
+    try {
+      await navigator.clipboard.writeText(value);
+      const response = await fetch(`/api/captain/invitations/${invitation.id}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "x-csrf-token": csrf },
+        body: JSON.stringify({ action: "copied" }),
+      });
+      if (!response.ok) throw new Error("copy-audit-failed");
+      setCopied(invitation.id);
+    } catch {
+      setCopyError("The invitation could not be copied. Select the visible details and copy them manually.");
+    }
   }
   return (
-    <div className="invitation-secrets">
+    <motion.div className="invitation-secrets" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
       {copied && <StatusBanner tone="success">Invitation details copied to the clipboard.</StatusBanner>}
-      {invitations.map((invitation) => (
-        <article key={invitation.id}>
-          <img
+      {copyError && <StatusBanner tone="danger">{copyError}</StatusBanner>}
+      {invitations.map((invitation, index) => (
+        <motion.article key={invitation.id} initial={{ opacity: 0, y: mode === "reduced" ? 0 : 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: token.durationSeconds, delay: mode === "reduced" ? 0 : Math.min(index * 0.06, 0.18) }}>
+          <motion.img
             src={invitation.qrCodeDataUrl}
             alt={`QR code for ${invitation.recipientName}. Short code ${invitation.shortCode}.`}
+            initial={{ clipPath: mode === "reduced" ? "inset(0)" : "inset(0 100% 0 0)" }}
+            animate={{ clipPath: "inset(0 0% 0 0)" }}
+            transition={{ duration: token.durationSeconds, ease: platformMotionEasing("state") }}
           />
           <div>
             <p className="eyebrow">Shown once after creation</p>
@@ -986,8 +1232,8 @@ function InvitationSecrets({ invitations, csrf }: { invitations: CreatedInvitati
             </div>
             <small>Expires {new Date(invitation.expiresAt).toLocaleString()}</small>
           </div>
-        </article>
+        </motion.article>
       ))}
-    </div>
+    </motion.div>
   );
 }

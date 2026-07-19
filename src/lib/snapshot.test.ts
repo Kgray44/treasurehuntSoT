@@ -142,6 +142,42 @@ describe("public snapshot replay source", () => {
     expect(snapshot).not.toHaveProperty("latestChapterReleasePresentation");
   });
 
+  it("projects offline recovery labels from a server sequence boundary without changing event order or time", async () => {
+    mocks.findCampaign.mockResolvedValue({
+      ...campaignFixture(),
+      currentSequence: 403,
+      events: [
+        {
+          id: "offline-event-403",
+          type: "PLAYER_LOG_ENTRY_ADDED",
+          sequence: 403,
+          payload: JSON.stringify({ key: "captain-note" }),
+          releaseAt: new Date("2026-07-18T14:00:00.000Z"),
+        },
+        {
+          id: "known-event-401",
+          type: "CAMPAIGN_STARTED",
+          sequence: 401,
+          payload: "{}",
+          releaseAt: new Date("2026-07-18T13:00:00.000Z"),
+        },
+      ],
+    });
+
+    const snapshot = await buildPublicSnapshot("campaign-1", "player-access-1", {
+      offlineAfterSequence: 401,
+      synchronizedAt: new Date("2026-07-18T14:05:00.000Z"),
+    });
+
+    expect(snapshot.log.map((entry) => entry.sequence)).toEqual([403, 401]);
+    expect(snapshot.log[0]?.synchronization).toEqual({
+      source: "offline-recovery",
+      synchronizedAt: "2026-07-18T14:05:00.000Z",
+    });
+    expect(snapshot.log[0]?.timestamp).toBe("2026-07-18T14:00:00.000Z");
+    expect(snapshot.log[1]).not.toHaveProperty("synchronization");
+  });
+
   it("returns bounded, deduplicated, oldest-first Player-safe history for only the approved 17 event types", () => {
     const events = Array.from({ length: MAX_PLAYER_PRESENTATION_HISTORY + 5 }, (_, index) => ({
       id: `event-${index}`,

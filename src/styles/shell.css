@@ -97,12 +97,28 @@
 
 .product-navigation a {
   position: relative;
+  isolation: isolate;
   border-radius: var(--radius-pill);
   padding: 0.62rem 0.8rem;
   color: var(--text-secondary);
   font-size: 0.86rem;
   font-weight: 700;
   text-decoration: none;
+}
+
+.product-navigation a > span {
+  position: relative;
+  z-index: 1;
+}
+
+.product-navigation-active-plate {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  border: 1px solid color-mix(in srgb, var(--shell-accent) 52%, transparent);
+  border-radius: var(--radius-pill);
+  background: color-mix(in srgb, var(--shell-accent) 13%, transparent);
+  pointer-events: none;
 }
 
 .product-navigation a:hover {
@@ -134,6 +150,15 @@
 .product-shell-content {
   min-height: calc(100svh - var(--shell-header-height) - var(--shell-footer-height));
   scroll-margin-top: calc(var(--shell-header-height) + 1rem);
+}
+
+.product-route-layer {
+  min-width: 0;
+  min-height: 100%;
+}
+
+html[data-motion-level="reduced"] .product-route-layer {
+  transform: none !important;
 }
 
 .product-shell-content:focus {

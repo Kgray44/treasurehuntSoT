@@ -155,6 +155,10 @@ export type PublicLogEntry = {
   importance: "quiet" | "notable" | "major";
   section: "journal" | "chart" | "treasures" | "quests" | "log" | "finale";
   targetKey?: string;
+  synchronization?: Readonly<{
+    source: "offline-recovery";
+    synchronizedAt: string;
+  }>;
   unseen: boolean;
 };
 

@@ -3,6 +3,9 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { AnimatePresence, motion } from "motion/react";
+import { useMotionMode } from "@/animation/motion/useMotionMode";
+import { platformMotionEasing, resolvePlatformMotionToken } from "@/animation/platform/motion-tokens";
 
 function slugify(value: string) {
   return value
@@ -16,6 +19,8 @@ function slugify(value: string) {
 
 export function NewTaleForm({ authenticated }: { authenticated: boolean }) {
   const router = useRouter();
+  const { mode } = useMotionMode();
+  const routeMotion = resolvePlatformMotionToken("route", mode);
   const [csrf, setCsrf] = useState("");
   const [title, setTitle] = useState("");
   const [slug, setSlug] = useState("");
@@ -23,6 +28,9 @@ export function NewTaleForm({ authenticated }: { authenticated: boolean }) {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const [coverFile, setCoverFile] = useState<File | null>(null);
+  const [phase, setPhase] = useState<"idle" | "creating" | "uploading" | "assigning" | "routing" | "failed">(
+    "idle",
+  );
   useEffect(() => {
     if (authenticated)
       void fetch("/api/studio/tales")
@@ -42,11 +50,16 @@ export function NewTaleForm({ authenticated }: { authenticated: boolean }) {
     );
   return (
     <main className="new-tale-page">
-      <form
+      <motion.form
         className="new-tale-sheet"
+        data-creation-phase={phase}
+        initial={mode === "reduced" ? false : { opacity: 0, y: routeMotion.distancePx }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: routeMotion.durationSeconds, ease: platformMotionEasing("route") }}
         onSubmit={async (event) => {
           event.preventDefault();
           setBusy(true);
+          setPhase("creating");
           setError("");
           const values = Object.fromEntries(new FormData(event.currentTarget));
           const response = await fetch("/api/studio/tales", {
@@ -65,9 +78,11 @@ export function NewTaleForm({ authenticated }: { authenticated: boolean }) {
           if (!response.ok || !body.id) {
             setError(body.error ?? "The new tale could not be created.");
             setBusy(false);
+            setPhase("failed");
             return;
           }
           if (coverFile) {
+            setPhase("uploading");
             const upload = new FormData();
             upload.append("files", coverFile);
             const uploadResponse = await fetch(`/api/studio/tales/${body.id}/assets`, {
@@ -85,8 +100,10 @@ export function NewTaleForm({ authenticated }: { authenticated: boolean }) {
                 `The tale was created, but its cover could not be uploaded: ${uploaded.error ?? "unknown upload error"}`,
               );
               setBusy(false);
+              setPhase("failed");
               return;
             }
+            setPhase("assigning");
             const studioResponse = await fetch(`/api/studio/tales/${body.id}`, { cache: "no-store" });
             const studio = (await studioResponse.json()) as {
               tale?: Record<string, unknown>;
@@ -98,6 +115,7 @@ export function NewTaleForm({ authenticated }: { authenticated: boolean }) {
                 `The tale and cover were created, but the cover could not be assigned: ${studio.error ?? "draft unavailable"}`,
               );
               setBusy(false);
+              setPhase("failed");
               return;
             }
             const saveResponse = await fetch(`/api/studio/tales/${body.id}/draft`, {
@@ -115,9 +133,11 @@ export function NewTaleForm({ authenticated }: { authenticated: boolean }) {
                 `The tale and cover were created, but the cover could not be assigned: ${saved.error ?? "save failed"}`,
               );
               setBusy(false);
+              setPhase("failed");
               return;
             }
           }
+          setPhase("routing");
           router.push(`/studio/tales/${body.id}`);
         }}
       >
@@ -205,9 +225,28 @@ export function NewTaleForm({ authenticated }: { authenticated: boolean }) {
             <small>The original is preserved and optimized player variants are generated after creation.</small>
           </label>
         </div>
-        {error && (
-          <p className="studio-error" role="alert">
-            {error}
+        <AnimatePresence initial={false}>
+          {error && (
+            <motion.p
+              className="studio-error"
+              role="alert"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+            >
+              {error}
+            </motion.p>
+          )}
+        </AnimatePresence>
+        {busy && (
+          <p className="new-tale-progress" role="status" aria-live="polite">
+            {phase === "creating"
+              ? "Creating the editable tale…"
+              : phase === "uploading"
+                ? "Uploading the cover…"
+                : phase === "assigning"
+                  ? "Assigning the ready cover to the draft…"
+                  : "Opening the editor…"}
           </p>
         )}
         <div className="form-actions">
@@ -216,7 +255,7 @@ export function NewTaleForm({ authenticated }: { authenticated: boolean }) {
             {busy ? "Opening the chart…" : "Create and open editor"}
           </button>
         </div>
-      </form>
+      </motion.form>
     </main>
   );
 }

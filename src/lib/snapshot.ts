@@ -87,6 +87,7 @@ function requirementList(raw: string): PublicSnapshot["finale"]["requirements"] 
 export async function buildPublicSnapshot(
   campaignId: string,
   playerAccessId?: string,
+  options?: Readonly<{ offlineAfterSequence?: number; synchronizedAt?: Date }>,
 ): Promise<PublicSnapshotWithPresentationHistory> {
   const campaign = await db.campaign.findUniqueOrThrow({
     where: { id: campaignId },
@@ -296,8 +297,15 @@ export async function buildPublicSnapshot(
       };
     });
 
+  const offlineSynchronization =
+    options?.offlineAfterSequence !== undefined
+      ? {
+          afterSequence: options.offlineAfterSequence,
+          synchronizedAt: options.synchronizedAt ?? new Date(),
+        }
+      : undefined;
   const log = campaign.events
-    .map((event) => eventToLogEntry(event, isUnseen("log", event.id, true)))
+    .map((event) => eventToLogEntry(event, isUnseen("log", event.id, true), offlineSynchronization))
     .filter((entry): entry is NonNullable<typeof entry> => Boolean(entry));
   const finaleReleased = campaign.finaleState !== "HIDDEN";
   const finale = {

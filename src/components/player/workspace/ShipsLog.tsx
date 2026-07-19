@@ -5,6 +5,9 @@ import { AnimatePresence, motion } from "motion/react";
 import { SceneHost, useRuntimeOwnedSceneTarget, useSceneTargetRegistration } from "@/animation/hosts/SceneHost";
 import { useOptionalSceneHost } from "@/animation/hosts/SceneHostContext";
 import type { SceneHostHandle, SceneTargetHandle } from "@/animation/hosts/scene-host-types";
+import { useMotionMode } from "@/animation/motion/useMotionMode";
+import { consumeOneShot, hasConsumedOneShot, platformOneShotKey } from "@/animation/platform/one-shot";
+import { platformMotionEasing, resolvePlatformMotionToken } from "@/animation/platform/motion-tokens";
 import type { ClientProgressEvent, PublicLogEntry, PublicSnapshot } from "@/domain/story";
 import type { CompanionView } from "./types";
 
@@ -52,6 +55,17 @@ function LogEntryRow({
   navigate: ShipsLogProps["navigate"];
   report: ShipsLogProps["onTargetRegistrationChange"];
 }>) {
+  const { mode } = useMotionMode();
+  const entryMotion = resolvePlatformMotionToken("layout", mode);
+  const offlineEntryKey = platformOneShotKey("offline-log-entry", entry.key, entry.sequence);
+  const animateOfflineEntry =
+    Boolean(entry.synchronization) &&
+    mode !== "reduced" &&
+    typeof window !== "undefined" &&
+    !hasConsumedOneShot(offlineEntryKey);
+  useEffect(() => {
+    if (entry.synchronization && mode === "reduced") consumeOneShot(offlineEntryKey);
+  }, [entry.synchronization, mode, offlineEntryKey]);
   const rowTarget = useMemo(
     () => ({
       targetKey: `log-event:${entry.key}:row`,
@@ -113,6 +127,17 @@ function LogEntryRow({
       data-log-entry-key={entry.key}
       data-event-id={entry.key}
       data-progress-target={isProgressEntry ? "true" : undefined}
+      data-offline-synchronized={entry.synchronization ? "true" : undefined}
+      data-synchronized-at={entry.synchronization?.synchronizedAt}
+      {...(animateOfflineEntry && rowOwnershipReady
+        ? {
+            initial: { opacity: 0, y: entryMotion.distancePx, scale: 1 - entryMotion.scaleDelta },
+            animate: { opacity: 1, y: 0, scale: 1 },
+            exit: { opacity: 0, y: 0, scale: 1 },
+            transition: { duration: entryMotion.durationSeconds, ease: platformMotionEasing("layout") },
+            onAnimationComplete: () => consumeOneShot(offlineEntryKey),
+          }
+        : {})}
       style={{ position: "relative" }}
     >
       <span
@@ -155,6 +180,17 @@ function LogEntryRow({
         </time>
         <h4>{entry.title}</h4>
         <p>{entry.summary}</p>
+        {entry.synchronization ? (
+          <small className="log-offline-synchronization">
+            Added after reconnect · server synchronized{" "}
+            <time dateTime={entry.synchronization.synchronizedAt}>
+              {new Date(entry.synchronization.synchronizedAt).toLocaleTimeString([], {
+                hour: "2-digit",
+                minute: "2-digit",
+              })}
+            </time>
+          </small>
+        ) : null}
         {entry.section !== "log" && (
           <button type="button" onClick={() => navigate(entry.section)}>
             Open {entry.section}

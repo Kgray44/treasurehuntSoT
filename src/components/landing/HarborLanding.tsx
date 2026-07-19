@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useCallback, useEffect, useId, useRef, useState } from "react";
+import { useCallback, useEffect, useId, useMemo, useRef, useState, type CSSProperties } from "react";
 import { useGSAP } from "@gsap/react";
 import { motion } from "motion/react";
 import { lottieAssets } from "@/animation/assets/lottie-contracts";
@@ -12,6 +12,7 @@ import { SceneHost, useSceneTargetRegistration } from "@/animation/hosts/SceneHo
 import { useOptionalSceneHost } from "@/animation/hosts/SceneHostContext";
 import { useMotionMode } from "@/animation/motion/useMotionMode";
 import { pressable } from "@/animation/motion/variants";
+import { consumeOneShot, platformOneShotKey } from "@/animation/platform/one-shot";
 import { LottieEffect } from "@/components/animation/LottieEffect";
 import { AnimationTestButton } from "@/components/dev/AnimationTestButton";
 
@@ -143,6 +144,23 @@ const roles = [
   },
 ] as const;
 
+function deterministicStarStyle(index: number): CSSProperties {
+  const seeded = (index * 9301 + 49297) % 233280;
+  const phase = seeded / 233280;
+  return {
+    "--star-duration": `${3.6 + phase * 4.8}s`,
+    "--star-delay": `${-phase * 7.2}s`,
+    "--star-min-opacity": String(0.34 + (index % 4) * 0.08),
+  } as CSSProperties;
+}
+
+function roleObjectIntent(role: (typeof roles)[number]["id"], mode: ReturnType<typeof useMotionMode>["mode"]) {
+  if (mode === "reduced") return {};
+  if (role === "captain") return { whileHover: { rotate: 2.5 } };
+  if (role === "creator") return { whileHover: { y: -2, rotate: -1 } };
+  return { whileHover: { scale: 1.012 } };
+}
+
 export function HarborLanding() {
   const motionMode = useMotionMode();
   return (
@@ -162,6 +180,9 @@ function HarborGatewayContent({ motionMode }: { motionMode: ReturnType<typeof us
   const { director, snapshot } = useAnimationDirector();
   const { mode, cycle } = motionMode;
   const [status, setStatus] = useState<GatewayStatus | null>(null);
+  const [selectedRole, setSelectedRole] = useState<(typeof roles)[number]["id"] | null>(null);
+  const [rememberedBadges, setRememberedBadges] = useState<ReadonlySet<string>>(new Set());
+  const starStyles = useMemo(() => Array.from({ length: 28 }, (_, index) => deterministicStarStyle(index)), []);
 
   const bindRootSentinel = useCallback((sentinel: HTMLSpanElement | null) => {
     root.current = sentinel?.parentElement instanceof HTMLElement ? sentinel.parentElement : null;
@@ -218,15 +239,6 @@ function HarborGatewayContent({ motionMode }: { motionMode: ReturnType<typeof us
         ease: "sine.inOut",
         transformOrigin: "50% 0%",
       });
-      gsap.to("[data-role-object]", {
-        y: mode === "full" ? -7 : -3,
-        rotate: (index) => (index - 1) * 0.8,
-        duration: 2.4,
-        repeat: -1,
-        yoyo: true,
-        ease: "sine.inOut",
-        stagger: 0.28,
-      });
     },
     { scope: root, dependencies: [mode], revertOnUpdate: true },
   );
@@ -236,7 +248,17 @@ function HarborGatewayContent({ motionMode }: { motionMode: ReturnType<typeof us
     void fetch("/api/gateway/status", { cache: "no-store" })
       .then((response) => (response.ok ? response.json() : null))
       .then((value: GatewayStatus | null) => {
-        if (mounted) setStatus(value);
+        if (!mounted) return;
+        setStatus(value);
+        if (value) {
+          const entering = new Set<string>();
+          for (const role of roles) {
+            if (!value[role.id]?.authenticated) continue;
+            const key = platformOneShotKey("remembered-session", role.id, value[role.id]?.continue?.href ?? "active");
+            if (consumeOneShot(key)) entering.add(role.id);
+          }
+          setRememberedBadges(entering);
+        }
       })
       .catch(() => {
         if (mounted) setStatus(null);
@@ -245,6 +267,62 @@ function HarborGatewayContent({ motionMode }: { motionMode: ReturnType<typeof us
       mounted = false;
     };
   }, []);
+
+  useEffect(() => {
+    const host = root.current;
+    if (!host) return;
+    let inView = true;
+    let keyboardModality = false;
+    const coarsePointer = window.matchMedia?.("(pointer: coarse)").matches ?? false;
+    const updateAmbient = () => {
+      host.dataset.ambientState = mode === "reduced" || document.hidden || !inView ? "paused" : "active";
+    };
+    const onVisibility = () => updateAmbient();
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Tab" || event.key.startsWith("Arrow")) {
+        keyboardModality = true;
+        host.dataset.inputModality = "keyboard";
+        host.style.removeProperty("--harbor-parallax-x");
+        host.style.removeProperty("--harbor-parallax-y");
+      }
+    };
+    const onPointerMove = (event: PointerEvent) => {
+      keyboardModality = false;
+      host.dataset.inputModality = "pointer";
+      if (coarsePointer || mode === "reduced") return;
+      const bounds = host.getBoundingClientRect();
+      const x = Math.max(-1, Math.min(1, (event.clientX - bounds.left) / Math.max(bounds.width, 1) - 0.5)) * 2;
+      const y = Math.max(-1, Math.min(1, (event.clientY - bounds.top) / Math.max(bounds.height, 1) - 0.5)) * 2;
+      host.style.setProperty("--harbor-parallax-x", keyboardModality ? "0" : x.toFixed(3));
+      host.style.setProperty("--harbor-parallax-y", keyboardModality ? "0" : y.toFixed(3));
+    };
+    const onPointerLeave = () => {
+      host.style.setProperty("--harbor-parallax-x", "0");
+      host.style.setProperty("--harbor-parallax-y", "0");
+    };
+    const observer =
+      typeof IntersectionObserver === "undefined"
+        ? null
+        : new IntersectionObserver(([entry]) => {
+            inView = entry?.isIntersecting ?? true;
+            updateAmbient();
+          });
+    observer?.observe(host);
+    document.addEventListener("visibilitychange", onVisibility);
+    host.addEventListener("keydown", onKeyDown);
+    host.addEventListener("pointermove", onPointerMove);
+    host.addEventListener("pointerleave", onPointerLeave);
+    updateAmbient();
+    return () => {
+      observer?.disconnect();
+      document.removeEventListener("visibilitychange", onVisibility);
+      host.removeEventListener("keydown", onKeyDown);
+      host.removeEventListener("pointermove", onPointerMove);
+      host.removeEventListener("pointerleave", onPointerLeave);
+      host.style.removeProperty("--harbor-parallax-x");
+      host.style.removeProperty("--harbor-parallax-y");
+    };
+  }, [mode]);
 
   useEffect(() => {
     if (!root.current || !sceneHost || !targetsReady) return;
@@ -312,11 +390,13 @@ function HarborGatewayContent({ motionMode }: { motionMode: ReturnType<typeof us
       <span ref={bindRootSentinel} hidden />
       <div ref={bindSky} className="harbor-sky" data-scene-part="sky" data-runtime-boundary="gsap" aria-hidden="true">
         <div ref={bindStars} className="star-field" data-scene-part="stars" data-runtime-boundary="gsap">
-          {Array.from({ length: 28 }, (_, index) => (
-            <i key={index} />
+          {starStyles.map((style, index) => (
+            <i key={index} style={style} />
           ))}
         </div>
-        <div ref={bindMoon} className="moon-glow" data-scene-part="moon" data-runtime-boundary="gsap" />
+        <div ref={bindMoon} className="moon-glow" data-scene-part="moon" data-runtime-boundary="gsap">
+          <i />
+        </div>
         <div ref={bindFogBack} className="distant-clouds" data-scene-part="fog-back" data-runtime-boundary="gsap" />
       </div>
       <div
@@ -326,9 +406,16 @@ function HarborGatewayContent({ motionMode }: { motionMode: ReturnType<typeof us
         data-runtime-boundary="gsap"
         aria-hidden="true"
       >
-        <div ref={bindShip} className="distant-ship" data-scene-part="ship" data-runtime-boundary="gsap">
-          <i />
-          <i />
+        <div
+          ref={bindShip}
+          className="harbor-ship-arrival-target"
+          data-scene-part="ship"
+          data-runtime-boundary="gsap"
+        >
+          <div className="distant-ship" data-parallax-layer="ship">
+            <i />
+            <i />
+          </div>
         </div>
       </div>
       <div ref={bindOcean} className="harbor-waves" data-scene-part="ocean" data-runtime-boundary="gsap">
@@ -399,13 +486,30 @@ function HarborGatewayContent({ motionMode }: { motionMode: ReturnType<typeof us
             const current = status?.[role.id];
             const descriptionId = `${gatewayTitleId}-${role.id}`;
             return (
-              <motion.article key={role.id} className={`role-object-card role-${role.id}`} {...pressable(mode)}>
-                <div className={`role-object ${role.object}`} data-role-object aria-hidden="true">
+              <motion.article
+                key={role.id}
+                className={`role-object-card role-${role.id}`}
+                data-role-selected={selectedRole === role.id ? "true" : undefined}
+                data-role-softened={selectedRole && selectedRole !== role.id ? "true" : undefined}
+                {...pressable(mode)}
+              >
+                <motion.div
+                  className={`role-object ${role.object}`}
+                  data-role-object={role.id}
+                  layoutId={`role-object-${role.id}`}
+                  aria-hidden="true"
+                  {...roleObjectIntent(role.id, mode)}
+                >
                   <i />
                   <b />
                   <span />
-                </div>
-                <p className="card-kicker">{current?.authenticated ? "Session remembered" : "Adventure role"}</p>
+                </motion.div>
+                <p
+                  className={`card-kicker ${rememberedBadges.has(role.id) ? "remembered-badge-entering" : ""}`}
+                  data-session-state={status ? (current?.authenticated ? "remembered" : "guest") : "loading"}
+                >
+                  {status ? (current?.authenticated ? "Session remembered" : "Adventure role") : "Checking session…"}
+                </p>
                 <h2>{role.title}</h2>
                 <p>{role.copy}</p>
                 {role.id === "captain" && status?.captain.authenticated && (
@@ -417,7 +521,12 @@ function HarborGatewayContent({ motionMode }: { motionMode: ReturnType<typeof us
                 {role.id === "creator" && status?.creator.authenticated && status.creator.recentDraft && (
                   <small>Recent draft: {status.creator.recentDraft.title}</small>
                 )}
-                <Link className="role-entry" href={next.href} aria-describedby={descriptionId}>
+                <Link
+                  className="role-entry"
+                  href={next.href}
+                  aria-describedby={descriptionId}
+                  onClick={() => setSelectedRole(role.id)}
+                >
                   {next.label}
                 </Link>
                 <span id={descriptionId} className="sr-only">

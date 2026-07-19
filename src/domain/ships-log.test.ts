@@ -27,4 +27,23 @@ describe("event-to-log transformation", () => {
       section: "journal",
     });
   });
+
+  it("labels only events after an authoritative offline sequence boundary with server synchronization time", () => {
+    const synchronizedAt = new Date("2026-07-16T12:05:00.000Z");
+    const recovered = eventToLogEntry(event("PLAYER_LOG_ENTRY_ADDED"), true, {
+      afterSequence: 6,
+      synchronizedAt,
+    });
+    const alreadyKnown = eventToLogEntry(event("PLAYER_LOG_ENTRY_ADDED"), false, {
+      afterSequence: 7,
+      synchronizedAt,
+    });
+
+    expect(recovered?.synchronization).toEqual({
+      source: "offline-recovery",
+      synchronizedAt: "2026-07-16T12:05:00.000Z",
+    });
+    expect(alreadyKnown).not.toHaveProperty("synchronization");
+    expect(recovered?.timestamp).toBe("2026-07-16T12:00:00.000Z");
+  });
 });

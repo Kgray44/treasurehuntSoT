@@ -264,6 +264,37 @@
   font-weight: 900;
   text-transform: uppercase;
 }
+.mobile-unseen-count {
+  display: inline-grid;
+  min-width: 1.25rem;
+  height: 1.25rem;
+  place-items: center;
+  margin-left: 0.25rem;
+  border-radius: 999px;
+  color: #24150c;
+  background: var(--brass-100);
+  font-size: 0.65rem;
+  font-weight: 900;
+}
+.viewed-acknowledgment-status {
+  position: fixed;
+  z-index: calc(var(--z-navigation) + 2);
+  top: 5.5rem;
+  right: 1rem;
+  display: flex;
+  max-width: min(420px, calc(100vw - 2rem));
+  align-items: center;
+  gap: 0.75rem;
+  border: 1px solid rgba(201, 169, 95, 0.34);
+  border-radius: 12px;
+  padding: 0.7rem 0.85rem;
+  color: #dce9e3;
+  background: rgba(5, 24, 26, 0.97);
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.34);
+}
+.viewed-acknowledgment-status[data-viewed-state="failed"] {
+  border-color: rgba(220, 106, 94, 0.72);
+}
 .active-nav-plate {
   position: absolute;
   inset: 0;
@@ -2068,6 +2099,17 @@
 .log-day p {
   margin: 0;
   line-height: 1.55;
+}
+.log-offline-synchronization {
+  display: block;
+  margin-top: 0.45rem;
+  color: #694d2e;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+.log-offline-synchronization time {
+  color: inherit;
+  font-size: inherit;
 }
 .log-day button {
   margin-top: 0.6rem;

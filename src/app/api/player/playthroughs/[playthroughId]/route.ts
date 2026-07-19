@@ -7,6 +7,6 @@ export async function GET(_: Request, context: { params: Promise<{ playthroughId
   if (!session) return NextResponse.json({ error: "Player sign-in required." }, { status: 401 });
   const result = await getPlayerPlaythrough(session.playerProfileId, (await context.params).playthroughId);
   return result
-    ? NextResponse.json({ playthrough: result, csrfToken: session.csrfToken })
+    ? NextResponse.json({ playthrough: result, csrfToken: session.csrfToken, serverTime: new Date().toISOString() })
     : NextResponse.json({ error: "Voyage not found." }, { status: 404 });
 }

@@ -91,6 +91,14 @@ type PresentationHistoryEntry = Readonly<{
   eventSequence: number;
 }>;
 
+type ViewedFeedback = Readonly<{
+  view: CompanionView;
+  contentType: string;
+  contentKeys: readonly string[];
+  state: "pending" | "confirmed" | "failed" | "cancelled";
+  message: string;
+}>;
+
 type ChapterSolvedLocalTargetReady = Readonly<{
   eventId: string;
   host: SceneHostHandle;
@@ -432,8 +440,10 @@ export function PlayerExperience({ initialSnapshot }: { initialSnapshot: PublicS
   const companionMobileDim = useRef<CompanionNavigationDimTargetRegistration | null>(null);
   const activeExternalHandles = useRef(new Map<string, Set<ExternalSceneTargetHandle>>());
   const snapshotRef = useRef(initialSnapshot);
+  const offlineAfterSequenceRef = useRef<number | null>(null);
   const [snapshot, setSnapshot] = useState(initialSnapshot);
   const [view, setView] = useState<CompanionView>("journal");
+  const [viewedFeedback, setViewedFeedback] = useState<ViewedFeedback | null>(null);
   const viewRef = useRef<CompanionView>("journal");
   const [openingPhase, setOpeningPhase] = useState<JournalOpeningPhase>("ENTRY_IDLE");
   const [resettingJournal, setResettingJournal] = useState(false);
@@ -664,12 +674,31 @@ export function PlayerExperience({ initialSnapshot }: { initialSnapshot: PublicS
     setOpeningPhase("JOURNAL_READY");
   }, [mode]);
 
-  const refreshSnapshot = useCallback(async () => {
+  const refreshSnapshot = useCallback(async (options?: Readonly<{ offlineAfterSequence?: number }>) => {
     if (accessRevokedRef.current) throw new Error("Player access has been revoked.");
-    const response = await fetch(`/api/player/${initialSnapshot.campaign.slug}/snapshot`, { cache: "no-store" });
+    const query =
+      options?.offlineAfterSequence !== undefined
+        ? `?offlineAfterSequence=${encodeURIComponent(String(options.offlineAfterSequence))}`
+        : "";
+    const response = await fetch(`/api/player/${initialSnapshot.campaign.slug}/snapshot${query}`, {
+      cache: "no-store",
+    });
     if (!response.ok) throw new Error("The latest voyage state could not be loaded.");
-    const next = (await response.json()) as PublicSnapshot;
+    const received = (await response.json()) as PublicSnapshot;
     if (accessRevokedRef.current) throw new Error("Player access has been revoked.");
+    const priorSynchronization = new Map(
+      snapshotRef.current.log
+        .filter((entry) => entry.synchronization?.source === "offline-recovery")
+        .map((entry) => [entry.key, entry.synchronization] as const),
+    );
+    const next: PublicSnapshot = {
+      ...received,
+      log: received.log.map((entry) =>
+        entry.synchronization || !priorSynchronization.has(entry.key)
+          ? entry
+          : { ...entry, synchronization: priorSynchronization.get(entry.key) },
+      ),
+    };
     snapshotRef.current = next;
     setSnapshot(next);
     eventHistory.current = new Map(
@@ -683,6 +712,60 @@ export function PlayerExperience({ initialSnapshot }: { initialSnapshot: PublicS
     setLastRelease(nextRelease);
     return next;
   }, [initialSnapshot.campaign.slug]);
+
+  const submitViewedAcknowledgment = useCallback(
+    async (
+      targetView: CompanionView,
+      entry: { contentType: string; contentKeys: readonly string[] },
+      signal?: AbortSignal,
+    ) => {
+      setViewedFeedback({
+        view: targetView,
+        contentType: entry.contentType,
+        contentKeys: entry.contentKeys,
+        state: "pending",
+        message: `Marking ${entry.contentKeys.length} item${entry.contentKeys.length === 1 ? "" : "s"} viewed…`,
+      });
+      try {
+        const response = await fetch(`/api/player/${initialSnapshot.campaign.slug}/viewed`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(entry),
+          signal,
+        });
+        if (!response.ok) throw new Error("Viewed content update was rejected.");
+        await refreshSnapshot();
+        setViewedFeedback({
+          view: targetView,
+          contentType: entry.contentType,
+          contentKeys: entry.contentKeys,
+          state: "confirmed",
+          message: "Viewed state confirmed by the voyage ledger.",
+        });
+      } catch (cause) {
+        if (signal?.aborted || (cause instanceof DOMException && cause.name === "AbortError")) {
+          setViewedFeedback((current) =>
+            current?.view === targetView ? { ...current, state: "cancelled", message: "Viewed update cancelled." } : current,
+          );
+          return;
+        }
+        setViewedFeedback({
+          view: targetView,
+          contentType: entry.contentType,
+          contentKeys: entry.contentKeys,
+          state: "failed",
+          message: "Viewed state was not saved. The unseen count is unchanged.",
+        });
+      }
+    },
+    [initialSnapshot.campaign.slug, refreshSnapshot],
+  );
+
+  useEffect(() => {
+    if (viewedFeedback?.state !== "confirmed") return;
+    const timer = window.setTimeout(() => setViewedFeedback(null), 2_400);
+    return () => window.clearTimeout(timer);
+  }, [viewedFeedback]);
 
   const acknowledgePresentation = useCallback(
     (eventId: string) => {
@@ -1338,10 +1421,14 @@ export function PlayerExperience({ initialSnapshot }: { initialSnapshot: PublicS
     const controller = ensureProgressionController();
     const after = controller.snapshot().cursors.observed;
     const source = new EventSource(`/api/player/${initialSnapshot.campaign.slug}/events?after=${after}`);
-    const offline = () => setConnection("adrift");
+    const offline = () => {
+      offlineAfterSequenceRef.current ??= snapshotRef.current.sequence;
+      setConnection("adrift");
+    };
     const online = () => {
       setConnection("connecting");
-      void refreshSnapshot()
+      const offlineAfterSequence = offlineAfterSequenceRef.current;
+      void refreshSnapshot(offlineAfterSequence === null ? undefined : { offlineAfterSequence })
         .then(async (next) => {
           const history = [...(next.presentationHistory ?? [])].sort(
             (left, right) => left.sequence - right.sequence || left.id.localeCompare(right.id),
@@ -1353,12 +1440,13 @@ export function PlayerExperience({ initialSnapshot }: { initialSnapshot: PublicS
             abort.signal,
           );
           await controller.reconcile({ events: history, acknowledgedEventIds, source: "reconnect" });
+          offlineAfterSequenceRef.current = null;
           setConnection("live");
         })
         .catch(() => setConnection("adrift"));
     };
-    source.onopen = () => setConnection("live");
-    source.onerror = () => setConnection("adrift");
+    source.onopen = () => (offlineAfterSequenceRef.current === null ? setConnection("live") : online());
+    source.onerror = offline;
     source.addEventListener("progression", (message) => {
       const event = JSON.parse((message as MessageEvent).data) as ClientProgressEvent;
       if (event.type === "CHAPTER_RELEASED") {
@@ -1511,17 +1599,7 @@ export function PlayerExperience({ initialSnapshot }: { initialSnapshot: PublicS
     const entry = entries[view];
     if (!entry.contentKeys.length) return;
     const controller = new AbortController();
-    void fetch(`/api/player/${snapshot.campaign.slug}/viewed`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(entry),
-      signal: controller.signal,
-    })
-      .then((response) => {
-        if (!response.ok) throw new Error("Viewed content update was rejected.");
-        return refreshSnapshot();
-      })
-      .catch(() => undefined);
+    void submitViewedAcknowledgment(view, entry, controller.signal);
     return () => controller.abort();
   }, [
     activeRequest,
@@ -1529,7 +1607,7 @@ export function PlayerExperience({ initialSnapshot }: { initialSnapshot: PublicS
     lastPresentationReceipt,
     lastPresentedRequest,
     lastRelease,
-    refreshSnapshot,
+    submitViewedAcknowledgment,
     snapshot,
     view,
   ]);
@@ -1766,9 +1844,39 @@ export function PlayerExperience({ initialSnapshot }: { initialSnapshot: PublicS
                 view={view}
                 unseen={snapshot.unseen}
                 navigate={navigate}
+                mode={mode}
                 onDimTargetChange={onCompanionDesktopDimChange}
               />
             </div>
+            <AnimatePresence initial={false}>
+              {viewedFeedback && viewedFeedback.state !== "cancelled" && (
+                <motion.aside
+                  key={`${viewedFeedback.view}:${viewedFeedback.contentType}:${viewedFeedback.state}`}
+                  className="viewed-acknowledgment-status"
+                  data-viewed-state={viewedFeedback.state}
+                  role={viewedFeedback.state === "failed" ? "alert" : "status"}
+                  aria-live={viewedFeedback.state === "failed" ? "assertive" : "polite"}
+                  initial={mode === "reduced" ? false : { opacity: 0, y: -8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0 }}
+                >
+                  <span>{viewedFeedback.message}</span>
+                  {viewedFeedback.state === "failed" && (
+                    <button
+                      type="button"
+                      onClick={() =>
+                        void submitViewedAcknowledgment(viewedFeedback.view, {
+                          contentType: viewedFeedback.contentType,
+                          contentKeys: viewedFeedback.contentKeys,
+                        })
+                      }
+                    >
+                      Retry viewed update
+                    </button>
+                  )}
+                </motion.aside>
+              )}
+            </AnimatePresence>
             <div
               className="persistent-mobile-interface"
               aria-hidden={!journalReady}
@@ -1778,6 +1886,7 @@ export function PlayerExperience({ initialSnapshot }: { initialSnapshot: PublicS
                 view={view}
                 unseen={snapshot.unseen}
                 navigate={navigate}
+                mode={mode}
                 onDimTargetChange={onCompanionMobileDimChange}
               />
             </div>
@@ -1980,13 +2089,19 @@ export function PlayerExperience({ initialSnapshot }: { initialSnapshot: PublicS
                 <button onClick={() => director.skip()}>Reveal all now</button>
               </div>
             )}
+            <AnimatePresence initial={false}>
             {!activeRequest && lastPresentedRequest && settledPresentationPolicy && (
-              <aside
+              <motion.aside
+                key={lastPresentedRequest.eventId}
                 className="progression-settled-notice"
                 role={settledRetryable ? "alert" : undefined}
+                data-global-event-notification
                 data-progress-event-id={lastPresentedRequest.eventId}
                 data-progress-event-type={lastPresentedRequest.eventType}
                 data-presentation-status={lastPresentationReceipt?.status ?? presentationStatus}
+                initial={mode === "reduced" ? false : { opacity: 0, y: 14 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0 }}
               >
                 <h2>{settledPresentationPolicy.globalPresentation.heading}</h2>
                 <p>{settledPresentationSummary}</p>
@@ -2034,8 +2149,9 @@ export function PlayerExperience({ initialSnapshot }: { initialSnapshot: PublicS
                     Dismiss
                   </button>
                 </div>
-              </aside>
+              </motion.aside>
             )}
+            </AnimatePresence>
             {presentationHistory.length > 0 && (
               <aside className="progression-history" aria-label="Presentation history" data-presentation-history>
                 <details>
@@ -2044,7 +2160,13 @@ export function PlayerExperience({ initialSnapshot }: { initialSnapshot: PublicS
                     {presentationHistory.map((entry) => {
                       const entryPolicy = policyForProgressionEvent(entry.eventType);
                       return (
-                        <li key={entry.eventId} data-presentation-history-event={entry.eventId}>
+                        <motion.li
+                          key={entry.eventId}
+                          layout={mode !== "reduced"}
+                          data-presentation-history-event={entry.eventId}
+                          initial={mode === "reduced" ? false : { opacity: 0, y: 8 }}
+                          animate={{ opacity: 1, y: 0 }}
+                        >
                           <div>
                             <strong>{entryPolicy.globalPresentation.heading}</strong>
                             <small>
@@ -2062,7 +2184,7 @@ export function PlayerExperience({ initialSnapshot }: { initialSnapshot: PublicS
                           >
                             Replay
                           </button>
-                        </li>
+                        </motion.li>
                       );
                     })}
                   </ol>

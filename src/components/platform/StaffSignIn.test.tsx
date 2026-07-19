@@ -8,6 +8,9 @@ import { StaffSignIn } from "./StaffSignIn";
 const navigation = vi.hoisted(() => ({ push: vi.fn(), refresh: vi.fn() }));
 
 vi.mock("next/navigation", () => ({ useRouter: () => navigation }));
+vi.mock("@/animation/motion/useMotionMode", () => ({
+  useMotionMode: () => ({ mode: "reduced", source: "system", userOverride: null, setUserOverride: vi.fn() }),
+}));
 
 function TestAuthority({ children }: { children: React.ReactNode }) {
   const hosts = useMemo(() => new SceneHostRegistry(), []);

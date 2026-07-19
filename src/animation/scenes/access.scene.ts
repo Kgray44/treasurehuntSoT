@@ -1,5 +1,16 @@
-import type { SceneDefinition } from "../core/animation-types";
-import { distance, idleTimeline, mark, parts, sceneTimeline, seconds, settle } from "./scene-utils";
+import type { SceneDefinition, SceneDefinitionV2 } from "../core/animation-types";
+import {
+  distance,
+  fromToTargets,
+  idleTimeline,
+  mark,
+  parts,
+  sceneTimeline,
+  seconds,
+  settle,
+  settleV2,
+  toTargets,
+} from "./scene-utils";
 
 export const playerAccessScene: SceneDefinition = {
   name: "player-access",
@@ -110,5 +121,62 @@ export const quartermasterLoginScene: SceneDefinition = {
     timeline.to(parts(context.root, "door-bolt"), { x: 0, duration: seconds(context, 0.3) }, "<");
     mark(timeline, context, "lock-rejected", ">");
     return settle(timeline, context);
+  },
+};
+
+export const studioPublishScene: SceneDefinitionV2 = {
+  name: "studio-publish",
+  buildOpening(context) {
+    const timeline = sceneTimeline(context);
+    mark(timeline, context, "publish-requested", 0);
+    toTargets(timeline, context, "version-seal", {
+      scale: 1.04,
+      opacity: 0.72,
+      filter: "drop-shadow(0 0 14px #dcae63)",
+      duration: seconds(context, 0.34),
+    });
+    toTargets(timeline, context, "publish-ledger", { opacity: 0.72, duration: seconds(context, 0.24) }, "<");
+    mark(timeline, context, "await-server", ">");
+    return timeline;
+  },
+  buildSuccess(context) {
+    const timeline = sceneTimeline(context);
+    mark(timeline, context, "version-authorized", 0);
+    toTargets(timeline, context, "version-seal", {
+      scale: 1.14,
+      opacity: 1,
+      rotate: distance(context, -9),
+      filter: "drop-shadow(0 0 28px #f0d18a)",
+      duration: seconds(context, 0.38),
+    });
+    fromToTargets(
+      timeline,
+      context,
+      "release-ribbon",
+      { scaleX: 0, opacity: 0 },
+      { scaleX: 1, opacity: 1, duration: seconds(context, 0.52) },
+      "<+0.08",
+    );
+    toTargets(timeline, context, "publish-ledger", {
+      y: distance(context, -12),
+      opacity: 1,
+      duration: seconds(context, 0.42),
+    });
+    mark(timeline, context, "version-readable", ">");
+    return settleV2(timeline, context);
+  },
+  buildFailure(context) {
+    const timeline = sceneTimeline(context);
+    mark(timeline, context, "publish-rejected", 0);
+    toTargets(timeline, context, "version-seal", {
+      scale: 1,
+      opacity: 0.01,
+      rotate: 0,
+      filter: "none",
+      duration: seconds(context, 0.26),
+    });
+    toTargets(timeline, context, "publish-ledger", { opacity: 1, y: 0, duration: seconds(context, 0.2) }, "<");
+    mark(timeline, context, "draft-readable", ">");
+    return settleV2(timeline, context);
   },
 };

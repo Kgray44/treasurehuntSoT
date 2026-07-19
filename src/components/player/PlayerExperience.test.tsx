@@ -295,6 +295,43 @@ vi.mock("motion/react", () => ({
         </div>
       );
     },
+    aside: (
+      input: React.HTMLAttributes<HTMLElement> & { initial?: unknown; animate?: unknown; exit?: unknown; layout?: unknown },
+    ) => {
+      const { children, initial: _initial, animate: _animate, exit: _exit, layout: _layout, ...props } = input;
+      return <aside {...props}>{children}</aside>;
+    },
+    li: (
+      input: React.LiHTMLAttributes<HTMLLIElement> & {
+        initial?: unknown;
+        animate?: unknown;
+        exit?: unknown;
+        layout?: unknown;
+      },
+    ) => {
+      const { children, initial: _initial, animate: _animate, exit: _exit, layout: _layout, ...props } = input;
+      return <li {...props}>{children}</li>;
+    },
+    small: (
+      input: React.HTMLAttributes<HTMLElement> & {
+        initial?: unknown;
+        animate?: unknown;
+        exit?: unknown;
+        layoutId?: string;
+        transition?: unknown;
+      },
+    ) => {
+      const {
+        children,
+        initial: _initial,
+        animate: _animate,
+        exit: _exit,
+        layoutId: _layoutId,
+        transition: _transition,
+        ...props
+      } = input;
+      return <small {...props}>{children}</small>;
+    },
   },
 }));
 
@@ -383,9 +420,11 @@ vi.mock("./workspace/CompanionHeader", () => ({
 vi.mock("./workspace/CompanionNavigation", () => ({
   CompanionNavigation: ({
     navigate,
+    unseen,
     onDimTargetChange,
   }: {
     navigate: (view: string) => void;
+    unseen: Record<string, number>;
     onDimTargetChange?: (registration: unknown) => void;
   }) => {
     return (
@@ -397,20 +436,30 @@ vi.mock("./workspace/CompanionNavigation", () => ({
           allowedProperties={["opacity"]}
           report={onDimTargetChange}
         />
+        {unseen.journal ? <span aria-label={`${unseen.journal} unseen`} /> : null}
         <button onClick={() => navigate("chart")}>Open chart</button>
         <button onClick={() => navigate("treasures")}>Open treasures</button>
       </>
     );
   },
-  MobileNavigation: ({ onDimTargetChange }: { onDimTargetChange?: (registration: unknown) => void }) => {
+  MobileNavigation: ({
+    unseen,
+    onDimTargetChange,
+  }: {
+    unseen: Record<string, number>;
+    onDimTargetChange?: (registration: unknown) => void;
+  }) => {
     return (
-      <TestCapabilityTarget
-        targetKey="test-companion:mobile-dim"
-        part="companion-mobile-navigation-dim"
-        capabilityKey="companion-mobile-navigation-dim"
-        allowedProperties={["opacity"]}
-        report={onDimTargetChange}
-      />
+      <>
+        <TestCapabilityTarget
+          targetKey="test-companion:mobile-dim"
+          part="companion-mobile-navigation-dim"
+          capabilityKey="companion-mobile-navigation-dim"
+          allowedProperties={["opacity"]}
+          report={onDimTargetChange}
+        />
+        {unseen.journal ? <span aria-label={`${unseen.journal} unseen`} /> : null}
+      </>
     );
   },
 }));
@@ -542,6 +591,14 @@ class TestEventSource {
 
   emit(name: string, data: unknown) {
     this.listeners.get(name)?.({ data: JSON.stringify(data) } as MessageEvent);
+  }
+
+  fail() {
+    this.onerror?.();
+  }
+
+  open() {
+    this.onopen?.();
   }
 
   close() {}
@@ -1217,5 +1274,100 @@ describe("PlayerExperience presentation integrity", () => {
       older.id,
     );
     browserEvidence.stop();
+  });
+
+  it("keeps unseen truth when viewed acknowledgment fails and settles only after a successful retry", async () => {
+    const seenSnapshot: PublicSnapshot = {
+      ...snapshot,
+      chapter: { ...snapshot.chapter, unseen: false },
+      chapters: snapshot.chapters.map((chapter) => ({ ...chapter, unseen: false })),
+      unseen: { ...snapshot.unseen, journal: 0 },
+    };
+    let contentAcknowledgmentAttempts = 0;
+    const fetchMock = vi.fn((input: RequestInfo | URL, init?: RequestInit) => {
+      const url = String(input);
+      if (url.endsWith("/snapshot")) return Promise.resolve(response(seenSnapshot));
+      if (url.includes("/viewed") && (init?.method ?? "GET") === "GET")
+        return Promise.resolve(response({ acknowledgedEventIds: [] }));
+      if (url.includes("/viewed") && init?.method === "POST") {
+        const body = JSON.parse(String(init.body)) as { contentType?: string };
+        if (body.contentType) {
+          contentAcknowledgmentAttempts += 1;
+          return Promise.resolve(
+            contentAcknowledgmentAttempts === 1
+              ? response({ error: "temporary failure" }, false)
+              : response({ ok: true }),
+          );
+        }
+      }
+      return Promise.resolve(response({ ok: true }));
+    });
+    vi.stubGlobal("fetch", fetchMock);
+    vi.stubGlobal("scrollTo", vi.fn());
+    sessionStorage.setItem("forever-intro:test-voyage", "seen");
+    mocks.play.mockImplementation(async (scene: AnimationSceneName, options: PlaySceneOptions<void>) =>
+      receipt("presented", options, scene),
+    );
+
+    renderPlayer(snapshot);
+    await openJournal();
+    expect(await screen.findByText("Viewed state was not saved. The unseen count is unchanged.")).toBeVisible();
+    expect(screen.getAllByLabelText("1 unseen")).toHaveLength(2);
+
+    fireEvent.click(screen.getByRole("button", { name: "Retry viewed update" }));
+    expect(await screen.findByText("Viewed state confirmed by the voyage ledger.")).toBeVisible();
+    await waitFor(() => expect(screen.queryAllByLabelText("1 unseen")).toHaveLength(0));
+    expect(contentAcknowledgmentAttempts).toBe(2);
+  });
+
+  it("requests an authoritative offline sequence boundary when the event stream reconnects", async () => {
+    const recoveredSnapshot: PublicSnapshot = {
+      ...snapshot,
+      sequence: 9,
+      latestChapterReleasePresentation: undefined,
+      presentationHistory: [],
+      log: [
+        {
+          key: "offline-log-9",
+          sequence: 9,
+          title: "The captain recorded a note",
+          summary: "A new player-facing entry joined the voyage record.",
+          timestamp: "2026-07-19T15:00:00.000Z",
+          symbol: "note",
+          importance: "quiet",
+          section: "log",
+          synchronization: { source: "offline-recovery", synchronizedAt: "2026-07-19T15:01:00.000Z" },
+          unseen: true,
+        },
+      ],
+    };
+    const fetchMock = vi.fn((input: RequestInfo | URL, init?: RequestInit) => {
+      const url = String(input);
+      if (url.includes("/snapshot?offlineAfterSequence=")) return Promise.resolve(response(recoveredSnapshot));
+      if (url.endsWith("/snapshot")) return Promise.resolve(response(snapshot));
+      if (url.includes("/viewed") && (init?.method ?? "GET") === "GET") {
+        return Promise.resolve(response({ acknowledgedEventIds: [] }));
+      }
+      return Promise.resolve(response({ ok: true }));
+    });
+    vi.stubGlobal("fetch", fetchMock);
+    vi.stubGlobal("scrollTo", vi.fn());
+    sessionStorage.setItem("forever-intro:test-voyage", "seen");
+    mocks.play.mockImplementation(async (scene: AnimationSceneName, options: PlaySceneOptions<void>) =>
+      receipt("presented", options, scene),
+    );
+
+    renderPlayer(snapshot);
+    await openJournal();
+    await waitFor(() => expect(TestEventSource.instances).toHaveLength(1));
+    act(() => TestEventSource.instances[0]!.fail());
+    act(() => window.dispatchEvent(new Event("online")));
+
+    await waitFor(() =>
+      expect(fetchMock).toHaveBeenCalledWith(
+        "/api/player/test-voyage/snapshot?offlineAfterSequence=8",
+        expect.objectContaining({ cache: "no-store" }),
+      ),
+    );
   });
 });
