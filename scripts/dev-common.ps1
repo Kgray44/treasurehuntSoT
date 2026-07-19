@@ -80,7 +80,23 @@ function Sync-ForeverRuntime {
     $resolvedBase = (Resolve-Path $script:RuntimeBase).ProviderPath
     $resolvedRuntime = (Resolve-Path $runtimeRoot).ProviderPath
     if (-not $resolvedRuntime.StartsWith($resolvedBase, [StringComparison]::OrdinalIgnoreCase)) { throw "Unsafe runtime mirror path." }
-    & robocopy $script:ProjectRoot $runtimeRoot /MIR /XD .git .forever node_modules node_modules.failed .next artifacts coverage test-results playwright-report /XF *.db *.db-journal *.log .forever-dev.json .forever-lock.sha | Out-Null
+    $excludedDirectories = @(
+        foreach ($directoryName in @(
+            ".git",
+            ".forever",
+            "node_modules",
+            "node_modules.failed",
+            ".next",
+            "artifacts",
+            "coverage",
+            "test-results",
+            "playwright-report"
+        )) {
+            Join-Path $script:ProjectRoot $directoryName
+            Join-Path $runtimeRoot $directoryName
+        }
+    )
+    & robocopy $script:ProjectRoot $runtimeRoot /MIR /XD $excludedDirectories /XF *.db *.db-journal *.log .forever-dev.json .forever-lock.sha | Out-Null
     if ($LASTEXITCODE -gt 7) { throw "Unable to synchronize the local runtime mirror (robocopy exit $LASTEXITCODE)." }
     return $runtimeRoot
 }

@@ -158,6 +158,23 @@ export type PublicLogEntry = {
   unseen: boolean;
 };
 
+export type ReplayablePresentation = Readonly<{
+  eventId: string;
+  eventType: "CHAPTER_RELEASED";
+  sequence: number;
+  occurredAt: string;
+  sceneName: "chapter-release";
+  payloadVersion: number;
+  payload: Readonly<{
+    ordinal: number;
+    title: string;
+    narrative: string;
+    objective: string;
+    riddle: string;
+  }>;
+  replayPolicy: "presentation-only";
+}>;
+
 export type PublicSnapshot = {
   campaign: { slug: string; title: string; status: string };
   sequence: number;
@@ -184,6 +201,7 @@ export type PublicSnapshot = {
     unseen: boolean;
   };
   unseen: Record<"journal" | "chart" | "treasures" | "quests" | "log" | "finale", number>;
+  latestChapterReleasePresentation?: ReplayablePresentation;
 };
 
 export type ClientProgressEvent = {

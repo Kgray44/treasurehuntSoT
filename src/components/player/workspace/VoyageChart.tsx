@@ -2,38 +2,307 @@
 
 /* eslint-disable @next/next/no-img-element -- The chart SVG is a layered animation surface. */
 
-import { useMemo, useState } from "react";
+import { useEffect, useId, useMemo, useState } from "react";
 import { motion } from "motion/react";
 import type { MotionMode } from "@/animation/core/animation-types";
 import { lottieAssets } from "@/animation/assets/lottie-contracts";
-import type { PublicSnapshot } from "@/domain/story";
+import { SceneHost, useRuntimeOwnedSceneTarget, useSceneTargetRegistration } from "@/animation/hosts/SceneHost";
+import { useOptionalSceneHost } from "@/animation/hosts/SceneHostContext";
+import type { SceneHostHandle, SceneTargetHandle } from "@/animation/hosts/scene-host-types";
+import type { PublicMapLocation, PublicSnapshot } from "@/domain/story";
 import { LottieEffect } from "@/components/animation/LottieEffect";
 
-export function VoyageChart({ snapshot, mode }: { snapshot: PublicSnapshot; mode: MotionMode }) {
+type ChartRoute = PublicSnapshot["mapRoutes"][number];
+
+export type VoyageChartTargetKind =
+  | "chart-motion-surface"
+  | "location-layout"
+  | "location-visual"
+  | "route-path"
+  | "ship-token"
+  | "fog-mask";
+
+export type VoyageChartTargetRegistration = Readonly<{
+  kind: VoyageChartTargetKind;
+  key: string;
+  host: SceneHostHandle | null;
+  handle: SceneTargetHandle | null;
+}>;
+
+export type VoyageChartProps = Readonly<{
+  snapshot: PublicSnapshot;
+  mode: MotionMode;
+  /** Exact progress identity; it never falls back to array or DOM order. */
+  progressLocationKey?: PublicMapLocation["key"];
+  /** Exact progress identity; it never falls back to the final rendered route. */
+  progressRouteKey?: ChartRoute["key"];
+  onLocationActivate?: (locationKey: PublicMapLocation["key"]) => void;
+  /** Gives the progression-host integrator the source host and exact target handle needed for a bounded export. */
+  onTargetRegistrationChange?: (registration: VoyageChartTargetRegistration) => void;
+}>;
+
+function useReportTarget(
+  kind: VoyageChartTargetKind,
+  key: string,
+  handle: SceneTargetHandle | null,
+  report: VoyageChartProps["onTargetRegistrationChange"],
+) {
+  const host = useOptionalSceneHost();
+
+  useEffect(() => {
+    if (!report || !host || !handle) return;
+    report({ kind, key, host, handle });
+    return () => report({ kind, key, host: null, handle: null });
+  }, [handle, host, key, kind, report]);
+}
+
+function ChartMotionSurface({
+  children,
+  scale,
+  pan,
+  mode,
+  report,
+}: Readonly<{
+  children: React.ReactNode;
+  scale: number;
+  pan: Readonly<{ x: number; y: number }>;
+  mode: MotionMode;
+  report: VoyageChartProps["onTargetRegistrationChange"];
+}>) {
+  const target = useMemo(
+    () => ({
+      targetKey: "chart:motion-surface",
+      part: "chart-motion-surface",
+      runtime: "motion" as const,
+      allowedProperties: ["translate", "scale"] as const,
+      properties: ["translate", "scale"] as const,
+    }),
+    [],
+  );
+  const { bindTarget, handle, ownershipReady } = useRuntimeOwnedSceneTarget(target);
+  useReportTarget("chart-motion-surface", "chart", handle, report);
+
+  return (
+    <motion.div
+      ref={bindTarget}
+      className="illustrated-chart"
+      {...(ownershipReady
+        ? {
+            animate: { scale, x: pan.x, y: pan.y },
+            transition:
+              mode === "reduced" ? { duration: 0.01 } : { type: "spring" as const, stiffness: 180, damping: 26 },
+          }
+        : {})}
+      data-motion-layout-boundary
+      data-motion-ownership={ownershipReady ? "ready" : "static"}
+      data-chart-target-key="chart"
+    >
+      {children}
+    </motion.div>
+  );
+}
+
+function ChartRoutePath({
+  route,
+  d,
+  isProgressTarget,
+  report,
+}: Readonly<{
+  route: ChartRoute;
+  d: string;
+  isProgressTarget: boolean;
+  report: VoyageChartProps["onTargetRegistrationChange"];
+}>) {
+  const target = useMemo(
+    () => ({
+      targetKey: `route:${route.key}:path`,
+      part: "route-path",
+      ownerHint: "gsap" as const,
+      allowedProperties: ["path-drawing", "stroke-dasharray", "stroke-dashoffset", "opacity"] as const,
+    }),
+    [route.key],
+  );
+  const { bindTarget, handle } = useSceneTargetRegistration(target);
+  useReportTarget("route-path", route.key, handle, report);
+
+  return (
+    <path
+      ref={bindTarget}
+      data-scene-part="route-path"
+      data-gsap-visual-boundary
+      data-route-key={route.key}
+      data-progress-target={isProgressTarget ? "true" : undefined}
+      d={d}
+      style={{ pointerEvents: "none" }}
+    />
+  );
+}
+
+function ChartShipToken({
+  campaignKey,
+  report,
+}: Readonly<{ campaignKey: string; report: VoyageChartProps["onTargetRegistrationChange"] }>) {
+  const target = useMemo(
+    () => ({
+      targetKey: `ship:${campaignKey}:token`,
+      part: "ship-token",
+      ownerHint: "gsap" as const,
+      allowedProperties: ["transform", "translate", "rotate"] as const,
+    }),
+    [campaignKey],
+  );
+  const { bindTarget, handle } = useSceneTargetRegistration(target);
+  useReportTarget("ship-token", campaignKey, handle, report);
+
+  return (
+    <div
+      ref={bindTarget}
+      className="ship-token"
+      data-scene-part="ship-token"
+      data-gsap-visual-boundary
+      data-ship-key={campaignKey}
+      aria-hidden="true"
+      style={{ pointerEvents: "none" }}
+    >
+      ▲
+    </div>
+  );
+}
+
+function ChartMarker({
+  location,
+  isProgressTarget,
+  activate,
+  report,
+}: Readonly<{
+  location: PublicMapLocation;
+  isProgressTarget: boolean;
+  activate: VoyageChartProps["onLocationActivate"];
+  report: VoyageChartProps["onTargetRegistrationChange"];
+}>) {
+  const layoutTarget = useMemo(
+    () => ({
+      targetKey: `location:${location.key}:layout`,
+      part: "map-marker-layout",
+      runtime: "motion" as const,
+      allowedProperties: ["layout"] as const,
+      properties: ["layout"] as const,
+    }),
+    [location.key],
+  );
+  const visualTarget = useMemo(
+    () => ({
+      targetKey: `location:${location.key}:event-visual`,
+      part: "map-marker",
+      ownerHint: "gsap" as const,
+      allowedProperties: ["transform", "scale", "opacity", "filter"] as const,
+    }),
+    [location.key],
+  );
+  const {
+    bindTarget: bindLayoutTarget,
+    handle: layoutHandle,
+    ownershipReady: layoutOwnershipReady,
+  } = useRuntimeOwnedSceneTarget(layoutTarget);
+  const { bindTarget: bindVisualTarget, handle: visualHandle } = useSceneTargetRegistration(visualTarget);
+  useReportTarget("location-layout", location.key, layoutHandle, report);
+  useReportTarget("location-visual", location.key, visualHandle, report);
+
+  return (
+    <motion.button
+      ref={bindLayoutTarget}
+      {...(layoutOwnershipReady ? { layout: true } : {})}
+      type="button"
+      className="illustrated-marker"
+      data-scene-part="map-marker-layout"
+      data-motion-layout-boundary
+      data-motion-ownership={layoutOwnershipReady ? "ready" : "static"}
+      data-location-key={location.key}
+      data-progress-target={isProgressTarget ? "true" : undefined}
+      style={{ left: `${location.x}%`, top: `${location.y}%` }}
+      aria-label={`${location.name}, ${location.state.replaceAll("_", " ")}`}
+      onClick={activate ? () => activate(location.key) : undefined}
+    >
+      <span
+        ref={bindVisualTarget}
+        data-scene-part="map-marker"
+        data-gsap-visual-boundary
+        data-marker-visual-key={location.key}
+        data-progress-target={isProgressTarget ? "true" : undefined}
+        aria-hidden="true"
+        style={{ pointerEvents: "none" }}
+      >
+        ✦
+      </span>
+      <b>{location.name}</b>
+      <small>{location.regionLabel}</small>
+    </motion.button>
+  );
+}
+
+function ChartFogMask({
+  campaignKey,
+  report,
+}: Readonly<{ campaignKey: string; report: VoyageChartProps["onTargetRegistrationChange"] }>) {
+  const target = useMemo(
+    () => ({
+      targetKey: `fog:${campaignKey}`,
+      part: "map-fog",
+      ownerHint: "gsap" as const,
+      allowedProperties: ["clip-path", "opacity"] as const,
+    }),
+    [campaignKey],
+  );
+  const { bindTarget, handle } = useSceneTargetRegistration(target);
+  useReportTarget("fog-mask", campaignKey, handle, report);
+
+  return (
+    <div
+      ref={bindTarget}
+      className="map-fog-mask"
+      data-scene-part="map-fog"
+      data-gsap-visual-boundary
+      data-fog-key={campaignKey}
+      aria-hidden="true"
+      style={{ pointerEvents: "none" }}
+    />
+  );
+}
+
+function VoyageChartContents({
+  snapshot,
+  mode,
+  headingId,
+  progressLocationKey,
+  progressRouteKey,
+  onLocationActivate,
+  onTargetRegistrationChange,
+}: VoyageChartProps & Readonly<{ headingId: string }>) {
   const [scale, setScale] = useState(1);
   const [pan, setPan] = useState({ x: 0, y: 0 });
   const locations = useMemo(
     () => new Map(snapshot.mapLocations.map((location) => [location.key, location])),
     [snapshot.mapLocations],
   );
+
   return (
-    <section
-      className="physical-section voyage-chart-section"
-      aria-labelledby="chart-heading"
-      data-section-heading
-      tabIndex={-1}
-    >
+    <>
       <header className="section-masthead">
         <div>
           <p className="eyebrow">Released bearings only</p>
-          <h2 id="chart-heading">Voyage Chart</h2>
+          <h2 id={headingId}>Voyage Chart</h2>
         </div>
         <p>Pan, zoom, and inspect the chart without crossing into hidden waters.</p>
       </header>
       <div className="chart-instrument-bar" aria-label="Map controls">
-        <button onClick={() => setScale((value) => Math.min(1.8, value + 0.2))}>Zoom in</button>
-        <button onClick={() => setScale((value) => Math.max(0.8, value - 0.2))}>Zoom out</button>
+        <button type="button" onClick={() => setScale((value) => Math.min(1.8, value + 0.2))}>
+          Zoom in
+        </button>
+        <button type="button" onClick={() => setScale((value) => Math.max(0.8, value - 0.2))}>
+          Zoom out
+        </button>
         <button
+          type="button"
           onClick={() => {
             setScale(1);
             setPan({ x: 0, y: 0 });
@@ -49,18 +318,15 @@ export function VoyageChart({ snapshot, mode }: { snapshot: PublicSnapshot; mode
         aria-label="Interactive voyage chart. Use arrow keys to pan."
         onKeyDown={(event) => {
           const amount = 28;
-          if (event.key === "ArrowLeft") setPan((p) => ({ ...p, x: p.x + amount }));
-          if (event.key === "ArrowRight") setPan((p) => ({ ...p, x: p.x - amount }));
-          if (event.key === "ArrowUp") setPan((p) => ({ ...p, y: p.y + amount }));
-          if (event.key === "ArrowDown") setPan((p) => ({ ...p, y: p.y - amount }));
+          if (!event.key.startsWith("Arrow")) return;
+          event.preventDefault();
+          if (event.key === "ArrowLeft") setPan((current) => ({ ...current, x: current.x + amount }));
+          if (event.key === "ArrowRight") setPan((current) => ({ ...current, x: current.x - amount }));
+          if (event.key === "ArrowUp") setPan((current) => ({ ...current, y: current.y + amount }));
+          if (event.key === "ArrowDown") setPan((current) => ({ ...current, y: current.y - amount }));
         }}
       >
-        <motion.div
-          className="illustrated-chart"
-          animate={{ scale, x: pan.x, y: pan.y }}
-          transition={mode === "reduced" ? { duration: 0.01 } : { type: "spring", stiffness: 180, damping: 26 }}
-          data-animation-owner="motion"
-        >
+        <ChartMotionSurface scale={scale} pan={pan} mode={mode} report={onTargetRegistrationChange}>
           <img src="/illustrations/chart/voyage-chart.svg" alt="" aria-hidden="true" />
           <svg viewBox="0 0 1200 780" className="route-overlay" aria-hidden="true">
             {snapshot.mapRoutes.map((route) => {
@@ -69,44 +335,36 @@ export function VoyageChart({ snapshot, mode }: { snapshot: PublicSnapshot; mode
               if (from?.x === undefined || from.y === undefined || to?.x === undefined || to.y === undefined)
                 return null;
               return (
-                <path
+                <ChartRoutePath
                   key={route.key}
-                  data-scene-part="route-path"
-                  data-gsap-owned
+                  route={route}
+                  isProgressTarget={route.key === progressRouteKey}
+                  report={onTargetRegistrationChange}
                   d={`M${from.x * 12} ${from.y * 7.8} C${from.x * 8 + to.x * 4} ${from.y * 7.8 - 70} ${from.x * 4 + to.x * 8} ${to.y * 7.8 + 50} ${to.x * 12} ${to.y * 7.8}`}
                 />
               );
             })}
-            <path data-route-motion-path d="M180 500C390 280 660 250 960 390" fill="none" />
           </svg>
-          <div className="ship-token" data-scene-part="ship-token" data-gsap-owned aria-hidden="true">
-            ▲
-          </div>
+          <ChartShipToken campaignKey={snapshot.campaign.slug} report={onTargetRegistrationChange} />
           {snapshot.mapLocations
             .filter((location) => location.x !== undefined && location.y !== undefined)
-            .map((location, index) => (
-              <motion.button
-                layout
+            .map((location) => (
+              <ChartMarker
                 key={location.key}
-                className="illustrated-marker"
-                data-scene-part={index === snapshot.mapLocations.length - 1 ? "map-marker-new" : "map-marker"}
-                data-gsap-owned
-                style={{ left: `${location.x}%`, top: `${location.y}%` }}
-                aria-label={`${location.name}, ${location.state.replaceAll("_", " ")}`}
-              >
-                <span aria-hidden="true">✦</span>
-                <b>{location.name}</b>
-                <small>{location.regionLabel}</small>
-              </motion.button>
+                location={location}
+                isProgressTarget={location.key === progressLocationKey}
+                activate={onLocationActivate}
+                report={onTargetRegistrationChange}
+              />
             ))}
-          <div className="map-fog-mask" data-scene-part="map-fog" data-gsap-owned aria-hidden="true" />
+          <ChartFogMask campaignKey={snapshot.campaign.slug} report={onTargetRegistrationChange} />
           <LottieEffect
             asset={lottieAssets.rollingFog}
             mode={mode}
             label="Fog of war moving over unrevealed chart regions"
             className="chart-lottie-fog"
           />
-        </motion.div>
+        </ChartMotionSurface>
       </div>
       <ol className="map-alternative" aria-label="Voyage locations">
         {snapshot.mapLocations.map((location) => (
@@ -126,7 +384,7 @@ export function VoyageChart({ snapshot, mode }: { snapshot: PublicSnapshot; mode
       {snapshot.mapRoutes.length > 0 && (
         <ol className="route-list" aria-label="Revealed route segments">
           {snapshot.mapRoutes.map((route) => (
-            <li key={route.key}>
+            <li key={route.key} data-route-list-key={route.key}>
               <span aria-hidden="true">→</span>
               <b>
                 {locations.get(route.fromKey)?.name ?? "Known mark"} to{" "}
@@ -137,6 +395,23 @@ export function VoyageChart({ snapshot, mode }: { snapshot: PublicSnapshot; mode
           ))}
         </ol>
       )}
-    </section>
+    </>
+  );
+}
+
+export function VoyageChart(props: VoyageChartProps) {
+  const headingId = useId();
+
+  return (
+    <SceneHost
+      as="section"
+      kind="player-section-enhancement"
+      className="physical-section voyage-chart-section"
+      aria-labelledby={headingId}
+      data-section-heading
+      tabIndex={-1}
+    >
+      <VoyageChartContents {...props} headingId={headingId} />
+    </SceneHost>
   );
 }

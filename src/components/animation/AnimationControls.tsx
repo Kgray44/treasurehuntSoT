@@ -1,10 +1,12 @@
 "use client";
 
 import type { MotionMode } from "@/animation/core/animation-types";
+import { sceneRegistry } from "@/animation/director/scene-registry";
 import { useAnimationDirector } from "@/animation/director/useAnimationDirector";
 
 export function AnimationControls({ mode, setMode }: { mode: MotionMode; setMode: (mode: MotionMode) => void }) {
   const { director, snapshot } = useAnimationDirector();
+  const canUserSkip = snapshot.scene ? sceneRegistry[snapshot.scene].contract.playbackPolicy.allowUserSkip : false;
   return (
     <section className="animation-controls" aria-label="Animation playback controls">
       <div className="animation-readout">
@@ -22,8 +24,11 @@ export function AnimationControls({ mode, setMode }: { mode: MotionMode; setMode
         <button onClick={() => director.seek(0)} disabled={!snapshot.isPlaying}>
           Restart
         </button>
-        <button onClick={() => director.skip()} disabled={!snapshot.isPlaying}>
-          Skip
+        <button onClick={() => director.skip()} disabled={!snapshot.isPlaying || !canUserSkip}>
+          Skip as user
+        </button>
+        <button onClick={() => director.cancel("development-control-interruption")} disabled={!snapshot.isPlaying}>
+          Interrupt
         </button>
         <button onClick={() => director.reverse()} disabled={!snapshot.isPlaying}>
           Reverse

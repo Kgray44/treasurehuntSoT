@@ -10,7 +10,14 @@ async function capture(page: import("@playwright/test").Page, name: string) {
   await page.screenshot({ path: path.join(directory, `${name}.png`), fullPage: true, caret: "initial" });
 }
 
-test("preview is nonmutating, stale commands conflict, and idempotency replays safely", async ({ page }) => {
+test("preview is nonmutating, stale commands conflict, and idempotency replays safely", async ({
+  page,
+  browserName,
+}) => {
+  test.skip(
+    browserName !== "chromium",
+    "The shared-database mutation workflow runs once to avoid cross-project contention.",
+  );
   await page.goto("/quartermaster");
   await page.getByLabel("Captain's name").fill(process.env.GM_USERNAME!);
   await page.getByLabel("Passphrase").fill(process.env.GM_PASSWORD!);
@@ -174,6 +181,10 @@ test("workspace routes preserve the newest Quartermaster surface and remain acce
   page,
   browserName,
 }) => {
+  test.skip(
+    browserName !== "chromium",
+    "Authenticated workspace coverage may mutate shared login state and therefore runs once.",
+  );
   await page.goto("/quartermaster");
   await page.getByLabel("Captain's name").fill(process.env.GM_USERNAME!);
   await page.getByLabel("Passphrase").fill(process.env.GM_PASSWORD!);

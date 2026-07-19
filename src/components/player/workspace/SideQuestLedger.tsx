@@ -129,7 +129,7 @@ export function SideQuestLedger({ snapshot, mode }: { snapshot: PublicSnapshot; 
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -8 }}
         >
-          <PageFlipBook ref={book} pages={pages} mode={mode} className="quest-page-book" />
+          <PageFlipBook ref={book} pages={pages} mode={mode} bookId="side-quest-ledger" className="quest-page-book" />
         </motion.div>
       </AnimatePresence>
     </section>

@@ -77,6 +77,12 @@
   margin-top: 1.5rem;
 }
 
+.auth-ledger button:not(.brass-button),
+.invitation-sheet button:not(.brass-button),
+.waiting-room > section button:not(.brass-button) {
+  color: var(--parchment-50);
+}
+
 .auth-ledger label,
 .invitation-sheet label,
 .wizard-form label,
@@ -247,12 +253,29 @@
   color: #9db2ac;
 }
 
-.player-card-grid,
-.captain-card-grid,
-.published-tale-grid {
+.player-card-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
   gap: 1rem;
+}
+
+.captain-card-grid,
+.published-tale-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr));
+  gap: 1rem;
+}
+
+@media (min-width: 1180px) {
+  .captain-card-grid:has(> :nth-child(1):last-child),
+  .published-tale-grid:has(> article:nth-child(1):last-child) {
+    grid-template-columns: minmax(520px, 760px);
+  }
+
+  .captain-card-grid:has(> :nth-child(2):last-child),
+  .published-tale-grid:has(> article:nth-child(2):last-child) {
+    grid-template-columns: repeat(2, minmax(390px, 1fr));
+  }
 }
 
 .player-card-grid.list {
@@ -516,6 +539,22 @@ dl dd {
   border-radius: 50%;
 }
 
+@media (max-width: 560px) {
+  .platform-tabs {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    overflow: visible;
+  }
+
+  .platform-tabs button {
+    min-width: 0;
+  }
+
+  .platform-tabs button:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+  }
+}
+
 .captain-voyage-card,
 .published-tale-grid > article {
   border: 1px solid rgba(201, 169, 95, 0.28);
@@ -662,8 +701,16 @@ dl dd {
   border-radius: 50%;
 }
 
-.wizard-progress .active {
+.wizard-progress .completed,
+.wizard-progress .current {
   color: var(--brass-100);
+}
+.wizard-progress .completed span {
+  color: var(--text-on-accent);
+  background: var(--brass-100);
+}
+.wizard-progress .current span {
+  box-shadow: 0 0 0 4px rgba(201, 169, 95, 0.14);
 }
 .wizard-progress small {
   margin-top: 0.25rem;
@@ -880,10 +927,8 @@ dl dd {
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .closed-journal {
-    animation: none;
-  }
+html[data-motion-level="reduced"] .closed-journal {
+  animation: none;
 }
 
 @media (max-width: 850px) {

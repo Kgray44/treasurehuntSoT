@@ -643,3 +643,161 @@ The complete animation program is not complete until all of the following are tr
 15. Focused gates and one integrated `npm run validate` pass on the combined implementation. Any skipped, missing-art, environmental, or unresolved result is explicitly disclosed and accepted by the governing owner; it is not silently treated as green.
 
 Until these broader gates pass, the Phase 1 framework and its focused evidence do not prove complete all-event/all-section, all-viewport, production-art, performance, or leak-safe animation semantics.
+
+## 24. Project Lanternwake Phase 2 release plan: Claim the Deck
+
+This section adds the Phase 2 architecture gate without changing the completed Phase 1 evidence or promoting future-phase visual work. One coordinator owns the database copy, runtime, ports, browser, production build, full E2E, and final `npm run validate`. Component lanes may run focused non-mutating tests only.
+
+### 24.1 Reconciliation validator gate
+
+Run:
+
+```powershell
+python scripts/validate_animation_reconciliation.py `
+  --oa-source Development_Docs/KG_Original_Animation_Audit_Reconciliation_Source.md `
+  --matrix Development_Docs/Animation_System_Audit_Matrix.csv `
+  --ledger Development_Docs/Animation_Original_Audit_Reconciliation_Ledger.csv `
+  --shard-manifest Development_Docs/Project_Lanternwake_Phase_2_Reconciliation_Shard_Manifest.csv `
+  --mode final --no-write
+
+python -m unittest scripts.tests.test_validate_animation_reconciliation
+```
+
+The release gate asserts 220 unique Codex rows; contiguous `OA-001` through `OA-238`; 361 matrix rows / 58 columns; 238 ledger rows / 40 columns; 97 existing-only and 141 dedicated OA mappings; 289 mapping edges; 458 accepted requirements; and zero unmapped or unresolved requirements. It also tests schema, prefixes, contiguous source identity, source hashes, mapping existence and reverse links, cardinality, coverage, required fields, library/phase/status enums, evidence, blocker, implementation-commit, validation, disposition, and accepted-history preservation failures. Current evidence: validator passed with every controlling total and the unit suite passed 13/13.
+
+### 24.2 SceneHost, target, and two-host isolation
+
+Unit/component coverage must include all 14 host cases:
+
+1. unique host registration;
+2. duplicate-host rejection;
+3. unique scene-instance identity;
+4. host-local resolution;
+5. identical target names in separate hosts;
+6. stale-instance rejection;
+7. detached-host cleanup;
+8. nested-host behavior;
+9. external target handles;
+10. outside-host rejection;
+11. unmount during a scene;
+12. idempotent cleanup;
+13. simultaneous Player and Quartermaster hosts; and
+14. development-showcase isolation.
+
+The release-blocking integration fixture mounts Host A (`map-reveal`, `route-path`) and Host B (`route-draw`, `route-path`), runs only one scene, and asserts that only its target changes, the other host remains untouched, metrics carry the correct instance, target counts stay exact, cleanup does not affect the other host, and no target, handle, host, or ownership claim leaks.
+
+Target fixtures include the correct host target, another host with the same name, hidden source, visible current clone, stale clone, permanent section target, temporary event target, detached target, zero-box target, and transparent target. Production resolution may consume only an immutable registry snapshot or a valid registry-minted external handle; it may not re-query a broad root.
+
+### 24.3 Ownership and write-permit gate
+
+Test these runtime pairs:
+
+- GSAP vs Motion;
+- GSAP vs CSS animation;
+- Motion vs CSS animation;
+- Motion vs PageFlip;
+- GSAP vs PageFlip;
+- GSAP vs Rive container;
+- GSAP vs Lottie container;
+- Motion `layoutId` vs GSAP transform;
+- dnd-kit vs Motion transform; and
+- dnd-kit vs GSAP transform.
+
+Every pair covers first grant, compatible same-runtime claim, atomic conflict rejection, rejected-write prevention, release/reclaim, terminal cleanup, normalized property-group conflict, non-overlapping properties, stale sweep, interruption, fallback, and nested wrappers. A single permit must cover **every** property the runtime configuration can write; one allowed property cannot authorize an undeclared multi-property GSAP write. Property normalization fails closed for the frozen `spatial-transform`, `presence`, `geometry`, `clipping`, `filtering`, `path-drawing`, and `scroll` groups.
+
+External handles are identity capabilities by default. The `artifact-award` destination may participate in continuity and final-state reconciliation without granting GSAP a write claim on the Motion-owned shared-layout destination.
+
+### 24.4 Runtime-owned Motion gating
+
+Motion is an active ownership participant, not an untracked exception. Tests must prove that a provider-scoped runtime-surface lease:
+
+- is minted only for a live registered target and exact property groups;
+- is required before Motion layout, presence, or interaction writes begin;
+- rejects foreign, stale, wrong-host, wrong-instance, or insufficient-property permits;
+- revokes on interruption, unmount, host teardown, and policy transition;
+- coexists only with non-overlapping child/wrapper ownership; and
+- does not recreate or replay content merely because the resolved motion level changes.
+
+No test may count a declarative marker alone as write enforcement.
+
+### 24.5 PageFlip fourteen-case gate
+
+Test exactly:
+
+1. hidden source exclusion;
+2. visible current-clone qualification;
+3. stale-clone rejection;
+4. current-page target qualification;
+5. off-page exclusion where required;
+6. no duplicate IDs or broken local IDREFs;
+7. correct accessibility tree;
+8. manual turn remains StPageFlip-owned;
+9. keyboard turn remains StPageFlip-owned;
+10. programmatic turn remains StPageFlip-owned;
+11. fake GSAP curl scenes are not production scenes;
+12. content update preserves/rebinds identity;
+13. orientation change preserves/rebinds identity; and
+14. unmount releases targets, handles, generations, observers, runtime instances, and claims.
+
+The clone boundary additionally proves synchronous temporary `cloneNode(true)` interception, deterministic namespacing of IDs and every local IDREF relation, source inertness, current-primary readability, fail-closed observer backstop, generation revocation, and twenty repeated boundary cycles returning to baseline.
+
+### 24.6 Final-state and access/login gate
+
+Test success response, accepted visual state, delayed route, no snapback, route failure, auth failure, request abort, component unmount, reduced mode, and repeated submission. Also cover each canonical policy: `revert-immediately`, `hold-final-until-unmount`, `commit-final-state`, `reconcile-then-revert`, and `fallback-to-static-state`.
+
+For every policy, assert the exact semantic target and identity, handoff-before-cleanup ordering, claim retention until readable handoff, bounded safe fallback after handoff failure, cleanup idempotency, and no release while neither the handoff nor safe fallback is readable. Success never returns visually to closed/locked before navigation; failure never flashes success; route failure restores stable focusable controls.
+
+### 24.7 High-risk component and access boundaries
+
+- **Voyage Chart:** Motion marker wrapper; nested GSAP stamp/pulse/reveal child; semantic marker identity; no index or DOM-order selection.
+- **Ship's Log:** Motion row/presence wrapper; nested fresh-ink/symbol children; authoritative event identity; overlay-to-canonical-row reconciliation.
+- **Artifact Inspection/Treasure Altar:** Motion shared-layout/dialog shell; nested engraving/light children; dialog-local export capability; unique heading identity; local pointer inertness; exact trigger/focus return.
+- **Companion Header/Navigation:** permanent Motion owner markers remain on wrapper surfaces; deliberate aria-hidden cinematic children own dimming; controls are not cinematic targets.
+- **Quartermaster:** one invocation-local command host per command overlay, explicit external handles, thirteen source-grounded dual-host callers, and no claim on ordinary controls or permanent command lights.
+- **Access/login:** form/pending/error/permission state remains Motion-owned; bounded cinematic child is GSAP-owned; accepted pose holds through route completion; route/auth failure remains recoverable and readable.
+
+Component proof must include focus trap/return, semantic roles, decorative `aria-hidden`, pointer/keyboard behavior, reduced state, interruption/unmount cleanup, two-host isolation, and exact ownership instrumentation.
+
+### 24.8 Lifecycle, accessibility, and viewport gates
+
+Run at least **20 cycles each** of:
+
+1. `SceneHost` mount/unmount;
+2. scene play/cleanup;
+3. Artifact Inspection open/close;
+4. PageFlip mount/update/unmount; and
+5. a non-mutating Quartermaster command overlay.
+
+After every group and cycle 20, host, target, handle, generation, runtime-surface, and ownership counts return to baseline; stale targets/clones and DOM references are absent; replay uses a new instance; interruptions/routes release claims; no document-wide production target query remains; and listener/timer counts do not grow monotonically.
+
+Run accessibility and responsive validation at all six required viewports:
+
+```text
+2560x1440
+1920x1080
+1440x900
+430x932
+390x844
+844x390
+```
+
+Assert no horizontal overflow, clipped control, wrapper layout drift, focus-order drift, PageFlip geometry error, stacking-context regression, unreachable dialog, duplicate accessible page, or unreadable reduced state. Motion is never the only state signal.
+
+### 24.9 Serialized integrated gate and database isolation
+
+Before mutation-capable browser or E2E work, the single validation owner must prove a unique copied database through the running application, record absolute path/nonce/PID/port, and prove the canonical SQLite family unchanged afterward. A worktree or alternate port alone is not database isolation.
+
+The final order is:
+
+```text
+reconciliation validator
+  -> focused host/target/ownership/Motion/PageFlip/final-state/component tests
+  -> integrated format + lint + typecheck + unit/component
+  -> proven database isolation
+  -> serialized browser/E2E + accessibility + six viewports + 20-cycle lifecycle
+  -> assets + production build/restart
+  -> one npm run validate
+  -> Git and documentation/conversation synchronization proof
+```
+
+The validation report records the exact command, exit code, counts, environment, artifacts, and failure classification. Until it replaces every `[PENDING_FINAL_GATE]` marker, Claim the Deck is not complete. V2 and V3 fix-needed audits must be re-run after repairs; their earlier 16/16 and 55/55 focused runs do not become passes retroactively.

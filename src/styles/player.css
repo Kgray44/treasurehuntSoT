@@ -2992,24 +2992,22 @@
   animation: none;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .closed-book,
-  .front-cover,
-  .opening-sealed-page,
-  .opening-wax-seal,
-  .wax-fragment,
-  .wax-cracks,
-  .wax-cracks path,
-  .open-page-stage,
-  .persistent-interface,
-  .persistent-mobile-interface,
-  .persistent-objective,
-  .journal-workspace .section-masthead,
-  .chapter-tabs {
-    transition-duration: 140ms !important;
-    transition-delay: 0ms !important;
-  }
-  .page-flip-book[data-flip-state] .ft-page::after {
-    animation: none;
-  }
+html[data-motion-level="reduced"] .closed-book,
+html[data-motion-level="reduced"] .front-cover,
+html[data-motion-level="reduced"] .opening-sealed-page,
+html[data-motion-level="reduced"] .opening-wax-seal,
+html[data-motion-level="reduced"] .wax-fragment,
+html[data-motion-level="reduced"] .wax-cracks,
+html[data-motion-level="reduced"] .wax-cracks path,
+html[data-motion-level="reduced"] .open-page-stage,
+html[data-motion-level="reduced"] .persistent-interface,
+html[data-motion-level="reduced"] .persistent-mobile-interface,
+html[data-motion-level="reduced"] .persistent-objective,
+html[data-motion-level="reduced"] .journal-workspace .section-masthead,
+html[data-motion-level="reduced"] .chapter-tabs {
+  transition-duration: 140ms !important;
+  transition-delay: 0ms !important;
+}
+html[data-motion-level="reduced"] .page-flip-book[data-flip-state] .ft-page::after {
+  animation: none;
 }

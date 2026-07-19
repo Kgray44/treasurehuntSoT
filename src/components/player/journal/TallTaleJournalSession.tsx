@@ -1,8 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { flushSync } from "react-dom";
+import type { JournalPhaseOutcome, MotionMode } from "@/animation/core/animation-types";
 import { useMotionMode } from "@/animation/motion/useMotionMode";
 import {
   isJournalInteractive,
@@ -59,6 +60,57 @@ type SessionState = {
 type ProgressionEvent = { id: string; eventType: string; sequence: number; createdAt: string };
 type ConnectionState = "connecting" | "live" | "reconnecting" | "offline";
 
+type JournalTeardown = () => void;
+
+function onceJournalTeardown(teardown: JournalTeardown): JournalTeardown {
+  let active = true;
+  return () => {
+    if (!active) return;
+    active = false;
+    teardown();
+  };
+}
+
+export type JournalTeardownRegistry = {
+  register: (teardown: JournalTeardown) => () => void;
+  dispose: () => void;
+  isDisposed: () => boolean;
+  activeCount: () => number;
+};
+
+export function createJournalTeardownRegistry(): JournalTeardownRegistry {
+  const teardowns = new Set<JournalTeardown>();
+  let disposed = false;
+
+  return {
+    register(teardown) {
+      if (disposed) {
+        teardown();
+        return () => undefined;
+      }
+      teardowns.add(teardown);
+      return () => {
+        teardowns.delete(teardown);
+      };
+    },
+    dispose() {
+      if (disposed) return;
+      disposed = true;
+      const pending = [...teardowns].reverse();
+      teardowns.clear();
+      for (const teardown of pending) {
+        try {
+          teardown();
+        } catch {
+          // A failed resource cleanup must not strand the remaining resources.
+        }
+      }
+    },
+    isDisposed: () => disposed,
+    activeCount: () => teardowns.size,
+  };
+}
+
 const openingSequence: JournalOpeningPhase[] = [
   "ENTRY_ACTIVATED",
   "CLOSED_BOOK_REVEAL",
@@ -70,6 +122,75 @@ const openingSequence: JournalOpeningPhase[] = [
   "JOURNAL_READY",
 ];
 
+const returningOpeningSequence: JournalOpeningPhase[] = ["BOOK_SETTLING", "JOURNAL_READY"];
+
+export type JournalOpeningConsumerStatus =
+  | "idle"
+  | "running"
+  | "completed"
+  | "completed-fallback"
+  | "aborted"
+  | "failure"
+  | "skipped";
+
+type JournalPhaseFailureOutcome = Exclude<
+  JournalPhaseOutcome,
+  { status: "completed" | "completed-fallback" | "aborted" }
+>;
+
+export type JournalOpeningRunResult =
+  | { status: "completed" }
+  | { status: "completed-fallback"; reasons: string[] }
+  | { status: "aborted"; phase: JournalOpeningPhase }
+  | { status: "failure"; outcome: JournalPhaseFailureOutcome };
+
+type JournalPhaseWaiter = typeof waitForJournalPhase;
+
+export function journalOpeningAllowsPersistence(status: JournalOpeningConsumerStatus) {
+  return status === "completed" || status === "completed-fallback" || status === "skipped";
+}
+
+export async function runJournalOpeningPhases({
+  root,
+  phases,
+  mode,
+  signal,
+  onPhase,
+  waitForPhase = waitForJournalPhase,
+}: {
+  root: HTMLElement;
+  phases: readonly JournalOpeningPhase[];
+  mode: MotionMode;
+  signal: AbortSignal;
+  onPhase: (phase: JournalOpeningPhase) => void;
+  waitForPhase?: JournalPhaseWaiter;
+}): Promise<JournalOpeningRunResult> {
+  const fallbackReasons: string[] = [];
+  for (const phase of phases) {
+    if (signal.aborted) return { status: "aborted", phase };
+    let outcome: JournalPhaseOutcome;
+    try {
+      onPhase(phase);
+      outcome = await waitForPhase(root, phase, mode, signal);
+    } catch {
+      return {
+        status: "failure",
+        outcome: { status: "runtime-failed", phase, errorCode: "journal-phase-wait-rejected" },
+      };
+    }
+    if (outcome.status === "completed") continue;
+    if (outcome.status === "completed-fallback") {
+      fallbackReasons.push(outcome.reason);
+      continue;
+    }
+    if (outcome.status === "aborted") return { status: "aborted", phase: outcome.phase };
+    return { status: "failure", outcome };
+  }
+  return fallbackReasons.length
+    ? { status: "completed-fallback", reasons: [...new Set(fallbackReasons)] }
+    : { status: "completed" };
+}
+
 export function TallTaleJournalSession({
   sessionId,
   identitySession = false,
@@ -80,6 +201,8 @@ export function TallTaleJournalSession({
   const root = useRef<HTMLElement>(null);
   const book = useRef<PageFlipBookHandle>(null);
   const openingRun = useRef<AbortController | null>(null);
+  const openingRelease = useRef<(() => void) | null>(null);
+  const openingGeneration = useRef(0);
   const openingBusy = useRef(false);
   const initializedOpening = useRef(false);
   const initializedPage = useRef(false);
@@ -101,47 +224,113 @@ export function TallTaleJournalSession({
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const [now, setNow] = useState(0);
-  const { mode, cycle: cycleMotion } = useMotionMode();
+  const [openingOutcome, setOpeningOutcome] = useState<JournalOpeningConsumerStatus>("idle");
+  const [openingNotice, setOpeningNotice] = useState("");
+  const { mode, policy: motionPolicy, cycle: cycleMotion } = useMotionMode();
+  const openingMode = useRef(mode);
+  const teardownRegistry = useRef<JournalTeardownRegistry>(createJournalTeardownRegistry());
+
+  const trackedRequest = useCallback(() => {
+    const registry = teardownRegistry.current;
+    const controller = new AbortController();
+    const release = registry.register(() => controller.abort());
+    return { controller, registry, release };
+  }, []);
+
+  const stopOpeningRun = useCallback(() => {
+    const controller = openingRun.current;
+    openingRun.current = null;
+    openingRelease.current?.();
+    openingRelease.current = null;
+    openingGeneration.current += 1;
+    openingBusy.current = false;
+    controller?.abort();
+  }, []);
+
+  useLayoutEffect(() => {
+    const registry = createJournalTeardownRegistry();
+    teardownRegistry.current = registry;
+    return () => {
+      stopOpeningRun();
+      registry.dispose();
+    };
+  }, [sessionId, stopOpeningRun]);
 
   const load = useCallback(
     async (event?: ProgressionEvent) => {
-      const response = await fetch(`/api/play/sessions/${sessionId}`, { cache: "no-store" });
-      const body = (await response.json()) as SessionState & { error?: string };
-      if (!response.ok) {
-        setError(body.error ?? "This voyage journal could not be read.");
-        return null;
-      }
-      stateRef.current = body;
-      setState(body);
-      setError("");
-      if (event)
-        setPendingEvent({
-          ...event,
-          sequence: Math.max(event.sequence, body.session.currentSequence),
+      const request = trackedRequest();
+      try {
+        const response = await fetch(`/api/play/sessions/${sessionId}`, {
+          cache: "no-store",
+          signal: request.controller.signal,
         });
-      return body;
+        const body = (await response.json()) as SessionState & { error?: string };
+        if (request.registry.isDisposed()) return null;
+        if (!response.ok) {
+          setError(body.error ?? "This voyage journal could not be read.");
+          return null;
+        }
+        stateRef.current = body;
+        setState(body);
+        setError("");
+        if (event)
+          setPendingEvent({
+            ...event,
+            sequence: Math.max(event.sequence, body.session.currentSequence),
+          });
+        return body;
+      } catch (cause) {
+        if (request.controller.signal.aborted) return null;
+        throw cause;
+      } finally {
+        request.release();
+      }
     },
-    [sessionId],
+    [sessionId, trackedRequest],
   );
 
   useEffect(() => {
+    const registry = teardownRegistry.current;
     queueMicrotask(() => {
+      if (registry.isDisposed()) return;
       setNow(Date.now());
       void load();
     });
     const timer = setInterval(() => setNow(Date.now()), 500);
-    return () => clearInterval(timer);
+    const clearTimer = onceJournalTeardown(() => clearInterval(timer));
+    const release = registry.register(clearTimer);
+    return () => {
+      clearTimer();
+      release();
+    };
   }, [load]);
 
   useEffect(() => {
+    const registry = teardownRegistry.current;
     let cancelled = false;
+    let cancelRequest: (() => void) | null = null;
     void (async () => {
       if (identitySession) {
-        const response = await fetch(`/api/player/playthroughs/${sessionId}/journal-state`, { cache: "no-store" });
-        const body = (await response.json()) as { readingState?: PlayerJournalReadingState };
-        if (!cancelled && response.ok && body.readingState) {
-          readingRef.current = body.readingState;
-          setReading(body.readingState);
+        const request = trackedRequest();
+        cancelRequest = onceJournalTeardown(() => {
+          request.controller.abort();
+          request.release();
+        });
+        try {
+          const response = await fetch(`/api/player/playthroughs/${sessionId}/journal-state`, {
+            cache: "no-store",
+            signal: request.controller.signal,
+          });
+          const body = (await response.json()) as { readingState?: PlayerJournalReadingState };
+          if (!cancelled && !request.registry.isDisposed() && response.ok && body.readingState) {
+            readingRef.current = body.readingState;
+            setReading(body.readingState);
+          }
+        } catch (cause) {
+          if (!request.controller.signal.aborted) throw cause;
+        } finally {
+          request.release();
+          cancelRequest = null;
         }
       } else {
         const stored = localStorage.getItem(`tall-tale-journal:${sessionId}`);
@@ -155,12 +344,14 @@ export function TallTaleJournalSession({
           }
         }
       }
-      if (!cancelled) setReadingReady(true);
+      if (!cancelled && !registry.isDisposed()) setReadingReady(true);
     })();
     return () => {
       cancelled = true;
+      cancelRequest?.();
+      cancelRequest = null;
     };
-  }, [identitySession, sessionId]);
+  }, [identitySession, sessionId, trackedRequest]);
 
   const saveReading = useCallback(
     (patch: PlayerJournalReadingStateInput) => {
@@ -178,20 +369,80 @@ export function TallTaleJournalSession({
       if (identitySession) {
         const csrfToken = stateRef.current?.csrfToken;
         if (!csrfToken) return;
+        const request = trackedRequest();
         void fetch(`/api/player/playthroughs/${sessionId}/journal-state`, {
           method: "POST",
           headers: { "Content-Type": "application/json", "x-csrf-token": csrfToken },
           body: JSON.stringify(patch),
-        });
+          signal: request.controller.signal,
+        })
+          .catch(() => undefined)
+          .finally(request.release);
       } else localStorage.setItem(`tall-tale-journal:${sessionId}`, JSON.stringify(next));
     },
-    [identitySession, sessionId],
+    [identitySession, sessionId, trackedRequest],
+  );
+
+  const startOpening = useCallback(
+    async (phases: readonly JournalOpeningPhase[], persistOnCompletion: boolean) => {
+      const rootElement = root.current;
+      if (openingBusy.current || !rootElement) return;
+      openingBusy.current = true;
+      const generation = ++openingGeneration.current;
+      const controller = new AbortController();
+      openingRun.current = controller;
+      openingRelease.current = teardownRegistry.current.register(() => controller.abort());
+      setOpeningOutcome("running");
+      setOpeningNotice("");
+
+      const result = await runJournalOpeningPhases({
+        root: rootElement,
+        phases,
+        mode,
+        signal: controller.signal,
+        onPhase: (phase) => flushSync(() => setOpeningPhase(phase)),
+      });
+
+      if (openingGeneration.current !== generation || openingRun.current !== controller) return;
+      openingRun.current = null;
+      openingRelease.current?.();
+      openingRelease.current = null;
+      openingBusy.current = false;
+
+      if (result.status === "completed" || result.status === "completed-fallback") {
+        setOpeningPhase("JOURNAL_READY");
+        setOpeningOutcome(result.status);
+        setOpeningNotice(
+          result.status === "completed-fallback"
+            ? "Motion was reduced. The journal is open in its readable final state."
+            : "",
+        );
+        if (persistOnCompletion && journalOpeningAllowsPersistence(result.status)) {
+          saveReading({ hasOpened: true });
+        }
+        return;
+      }
+
+      if (result.status === "aborted") {
+        setOpeningPhase("ENTRY_IDLE");
+        setOpeningOutcome("aborted");
+        setOpeningNotice("The opening stopped before completion. You can open the journal again.");
+        return;
+      }
+
+      setOpeningPhase("JOURNAL_READY");
+      setOpeningOutcome("failure");
+      setOpeningNotice("The animated opening could not finish. The journal is ready in a readable fallback state.");
+    },
+    [mode, saveReading],
   );
 
   useEffect(() => {
     if (!state || !readingReady || liveReady) return;
+    const registry = teardownRegistry.current;
     processedSequence.current = state.session.currentSequence;
     queueMicrotask(() => {
+      if (registry.isDisposed()) return;
       if (reading.lastEventSequence < state.session.currentSequence)
         saveReading({ lastEventSequence: state.session.currentSequence });
       setLiveReady(true);
@@ -200,15 +451,22 @@ export function TallTaleJournalSession({
 
   useEffect(() => {
     if (!liveReady) return;
+    const registry = teardownRegistry.current;
     const source = new EventSource(`/api/play/sessions/${sessionId}/events?after=${processedSequence.current}`);
-    source.onopen = () => setConnection("live");
-    source.onerror = () => setConnection("reconnecting");
-    source.addEventListener("access-revoked", () => {
+    source.onopen = () => {
+      if (!registry.isDisposed()) setConnection("live");
+    };
+    source.onerror = () => {
+      if (!registry.isDisposed()) setConnection("reconnecting");
+    };
+    function accessRevoked() {
+      if (registry.isDisposed()) return;
       setConnection("offline");
       setError("Your access to this voyage was revoked.");
-      source.close();
-    });
-    source.addEventListener("progression", (message) => {
+      closeSource();
+    }
+    function progression(message: Event) {
+      if (registry.isDisposed()) return;
       try {
         const event = JSON.parse((message as MessageEvent<string>).data) as ProgressionEvent;
         if (event.sequence <= processedSequence.current) return;
@@ -216,14 +474,33 @@ export function TallTaleJournalSession({
       } catch {
         setConnection("reconnecting");
       }
+    }
+    source.addEventListener("access-revoked", accessRevoked);
+    source.addEventListener("progression", progression);
+    const closeSource = onceJournalTeardown(() => {
+      source.onopen = null;
+      source.onerror = null;
+      source.removeEventListener("access-revoked", accessRevoked);
+      source.removeEventListener("progression", progression);
+      source.close();
     });
-    return () => source.close();
+    const release = registry.register(closeSource);
+    return () => {
+      closeSource();
+      release();
+    };
   }, [liveReady, load, sessionId]);
 
   useEffect(() => {
     if (connection === "live" || !liveReady) return;
+    const registry = teardownRegistry.current;
     const timer = setInterval(() => void load(), 5000);
-    return () => clearInterval(timer);
+    const clearTimer = onceJournalTeardown(() => clearInterval(timer));
+    const release = registry.register(clearTimer);
+    return () => {
+      clearTimer();
+      release();
+    };
   }, [connection, liveReady, load]);
 
   const pages = useMemo(
@@ -263,22 +540,24 @@ export function TallTaleJournalSession({
 
   useEffect(() => {
     if (!state || !readingReady || !root.current || initializedOpening.current) return;
+    const registry = teardownRegistry.current;
     initializedOpening.current = true;
     if (reading.hasOpened || state.session.previewMode || state.session.status === "COMPLETED") {
       queueMicrotask(() => {
-        const rootElement = root.current;
-        if (!rootElement) return;
-        setOpeningPhase("BOOK_SETTLING");
-        const controller = new AbortController();
-        openingRun.current = controller;
-        void waitForJournalPhase(rootElement, "BOOK_SETTLING", mode, controller.signal)
-          .catch(() => undefined)
-          .finally(() => {
-            if (!controller.signal.aborted) setOpeningPhase("JOURNAL_READY");
-          });
+        if (!registry.isDisposed()) void startOpening(returningOpeningSequence, false);
       });
     }
-  }, [mode, reading.hasOpened, readingReady, state]);
+  }, [reading.hasOpened, readingReady, startOpening, state]);
+
+  useEffect(() => {
+    if (openingMode.current === mode) return;
+    openingMode.current = mode;
+    if (!openingRun.current) return;
+    stopOpeningRun();
+    setOpeningPhase("JOURNAL_READY");
+    setOpeningOutcome("aborted");
+    setOpeningNotice("Motion changed during the opening. The journal is ready without replaying the ceremony.");
+  }, [mode, stopOpeningRun]);
 
   useEffect(() => {
     if (!pendingEvent || !state || !pages.length) return;
@@ -291,8 +570,11 @@ export function TallTaleJournalSession({
     const currentBlockId = pages[currentPage]?.blockId ?? null;
     const targetBlockId = pages[target]?.blockId ?? null;
     const label = eventLabel(pendingEvent.eventType, state);
+    const registry = teardownRegistry.current;
     setLiveNotice("");
-    queueMicrotask(() => setLiveNotice(label));
+    queueMicrotask(() => {
+      if (!registry.isDisposed()) setLiveNotice(label);
+    });
     if (followingCurrent.current || currentBlockId === targetBlockId) {
       if (target !== currentPage) book.current?.flipTo(target);
       setNewContent(false);
@@ -302,40 +584,31 @@ export function TallTaleJournalSession({
   }, [currentPage, pages, pendingEvent, saveReading, state]);
 
   useEffect(() => {
-    return () => openingRun.current?.abort();
-  }, []);
-
-  useEffect(() => {
+    const journalRoot = root.current;
+    if (!journalRoot) return;
+    const registry = teardownRegistry.current;
     const close = (event: KeyboardEvent) => {
       if (event.key === "Escape" && readingRef.current.openDrawer) saveReading({ openDrawer: null });
     };
-    window.addEventListener("keydown", close);
-    return () => window.removeEventListener("keydown", close);
-  }, [saveReading]);
+    journalRoot.addEventListener("keydown", close);
+    const remove = onceJournalTeardown(() => journalRoot.removeEventListener("keydown", close));
+    const release = registry.register(remove);
+    return () => {
+      remove();
+      release();
+    };
+  }, [saveReading, state?.session.id]);
 
   async function openJournal() {
-    if (openingBusy.current || !root.current) return;
-    openingBusy.current = true;
-    const controller = new AbortController();
-    openingRun.current = controller;
-    try {
-      for (const phase of openingSequence) {
-        if (!root.current || controller.signal.aborted) break;
-        flushSync(() => setOpeningPhase(phase));
-        await waitForJournalPhase(root.current, phase, mode, controller.signal);
-      }
-      saveReading({ hasOpened: true });
-    } catch (cause) {
-      if (!(cause instanceof DOMException && cause.name === "AbortError")) setOpeningPhase("JOURNAL_READY");
-    } finally {
-      openingBusy.current = false;
-    }
+    await startOpening(openingSequence, true);
   }
 
   function skipOpening() {
-    openingRun.current?.abort();
+    stopOpeningRun();
     setOpeningPhase("JOURNAL_READY");
-    saveReading({ hasOpened: true });
+    setOpeningOutcome("skipped");
+    setOpeningNotice("Opening skipped. The journal is ready.");
+    if (journalOpeningAllowsPersistence("skipped")) saveReading({ hasOpened: true });
   }
 
   function turnTo(page: number) {
@@ -356,29 +629,40 @@ export function TallTaleJournalSession({
     const idempotencyKey = crypto.randomUUID();
     setBusy(true);
     setError("");
-    const response = await fetch(`/api/play/sessions/${sessionId}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        ...(state.csrfToken ? { "x-csrf-token": state.csrfToken } : {}),
-      },
-      body: JSON.stringify({ action, idempotencyKey, answer, ...extra }),
-    });
-    const body = (await response.json()) as { state?: SessionState; accepted?: boolean; error?: string };
-    if (!response.ok) setError(body.error ?? "The story could not advance.");
-    else if (body.state) {
-      const next = { ...body.state, csrfToken: body.state.csrfToken ?? state.csrfToken };
-      stateRef.current = next;
-      setState(next);
-      setPendingEvent({
-        id: `player:${idempotencyKey}`,
-        eventType: "playerProgress",
-        sequence: next.session.currentSequence,
-        createdAt: new Date().toISOString(),
+    const request = trackedRequest();
+    try {
+      const response = await fetch(`/api/play/sessions/${sessionId}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          ...(state.csrfToken ? { "x-csrf-token": state.csrfToken } : {}),
+        },
+        body: JSON.stringify({ action, idempotencyKey, answer, ...extra }),
+        signal: request.controller.signal,
       });
-      if (body.accepted) setAnswer("");
+      const body = (await response.json()) as { state?: SessionState; accepted?: boolean; error?: string };
+      if (request.registry.isDisposed()) return;
+      if (!response.ok) setError(body.error ?? "The story could not advance.");
+      else if (body.state) {
+        const next = { ...body.state, csrfToken: body.state.csrfToken ?? state.csrfToken };
+        stateRef.current = next;
+        setState(next);
+        setPendingEvent({
+          id: `player:${idempotencyKey}`,
+          eventType: "playerProgress",
+          sequence: next.session.currentSequence,
+          createdAt: new Date().toISOString(),
+        });
+        if (body.accepted) setAnswer("");
+      }
+    } catch {
+      if (!request.controller.signal.aborted && !request.registry.isDisposed()) {
+        setError("The story could not advance.");
+      }
+    } finally {
+      request.release();
+      if (!request.registry.isDisposed()) setBusy(false);
     }
-    setBusy(false);
   }
 
   if (!state || !readingReady)
@@ -387,6 +671,8 @@ export function TallTaleJournalSession({
         title="Unbinding the journal"
         message={error || "Finding the current leafâ€¦"}
         error={Boolean(error)}
+        motionMode={mode}
+        motionLevel={motionPolicy.level}
       />
     );
 
@@ -406,7 +692,10 @@ export function TallTaleJournalSession({
       ref={root}
       className={`voyage-shell tall-tale-journal-shell mode-${state.journal.mode}`}
       data-journal-phase={openingPhase}
+      data-journal-opening-outcome={openingOutcome}
       data-live-event={liveNotice ? "revealed" : "idle"}
+      data-motion-mode={mode}
+      data-motion-level={motionPolicy.level}
       style={
         {
           "--player-text-scale": reading.textScale,
@@ -513,6 +802,11 @@ export function TallTaleJournalSession({
           <span>{openingLabel(openingPhase)}</span>
           <button onClick={skipOpening}>Skip ceremony</button>
         </div>
+      )}
+      {openingNotice && (journalReady || openingOutcome === "aborted") && (
+        <p className="journal-opening-status" role={openingOutcome === "failure" ? "alert" : "status"}>
+          {openingNotice}
+        </p>
       )}
 
       <aside
@@ -770,10 +1064,24 @@ function eventLabel(eventType: string, state: SessionState) {
   return `A new page was released: ${state.block?.title ?? "the current objective"}.`;
 }
 
-function JournalStatus({ title, message, error }: { title: string; message: string; error: boolean }) {
+function JournalStatus({
+  title,
+  message,
+  error,
+  motionMode,
+  motionLevel,
+}: {
+  title: string;
+  message: string;
+  error: boolean;
+  motionMode: MotionMode;
+  motionLevel: MotionMode;
+}) {
   return (
     <main
       className="voyage-shell tall-tale-journal-shell journal-status-shell"
+      data-motion-mode={motionMode}
+      data-motion-level={motionLevel}
       style={{ "--player-text-scale": 1, "--texture-opacity": 1 } as React.CSSProperties}
     >
       <div className="ocean-depth" aria-hidden="true">

@@ -2,7 +2,8 @@
 
 /* eslint-disable @next/next/no-img-element -- Published asset URLs are authorized version-bound media responses. */
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { EmptyState, ErrorState, LoadingState } from "@/components/ui/AsyncState";
 
 type CatalogTale = {
   id: string;
@@ -23,44 +24,141 @@ export function TaleCatalog() {
   const [tales, setTales] = useState<CatalogTale[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  useEffect(() => {
-    void fetch("/api/tales", { cache: "no-store" }).then(async (response) => {
+  const [query, setQuery] = useState("");
+  const [state, setState] = useState("ALL");
+  const [duration, setDuration] = useState("ANY");
+  const [groupSize, setGroupSize] = useState("ANY");
+
+  const load = useCallback(async () => {
+    setLoading(true);
+    setError("");
+    try {
+      const response = await fetch("/api/tales", { cache: "no-store" });
       const body = (await response.json()) as { tales?: CatalogTale[]; error?: string };
-      if (!response.ok) setError(body.error ?? "The voyage catalog is unavailable.");
+      if (!response.ok) setError(body.error ?? "The Tall Tale library is unavailable.");
       else setTales(body.tales ?? []);
+    } catch {
+      setError("The Tall Tale library could not be reached. Check your connection and try again.");
+    } finally {
       setLoading(false);
-    });
+    }
   }, []);
+
+  useEffect(() => {
+    queueMicrotask(() => void load());
+  }, [load]);
+
+  const filteredTales = useMemo(() => {
+    const normalizedQuery = query.trim().toLocaleLowerCase();
+    const requestedGroupSize = groupSize === "ANY" ? null : Number(groupSize);
+    const maximumDuration = duration === "ANY" ? null : Number(duration);
+    return tales.filter((tale) => {
+      const matchesQuery = `${tale.title} ${tale.subtitle ?? ""} ${tale.shortDescription ?? ""}`
+        .toLocaleLowerCase()
+        .includes(normalizedQuery);
+      const matchesState = state === "ALL" || tale.playerState === state;
+      const matchesDuration =
+        maximumDuration === null || (tale.estimatedDuration !== null && tale.estimatedDuration <= maximumDuration);
+      const matchesGroup =
+        requestedGroupSize === null ||
+        (tale.playerCountMin <= requestedGroupSize && tale.playerCountMax >= requestedGroupSize);
+      return matchesQuery && matchesState && matchesDuration && matchesGroup;
+    });
+  }, [duration, groupSize, query, state, tales]);
+
+  const hasFilters = Boolean(query || state !== "ALL" || duration !== "ANY" || groupSize !== "ANY");
+  const clearFilters = () => {
+    setQuery("");
+    setState("ALL");
+    setDuration("ANY");
+    setGroupSize("ANY");
+  };
+
   return (
     <main className="tale-catalog">
       <header>
-        <Link href="/">← Harbor</Link>
         <div>
-          <p className="eyebrow">Published voyages</p>
-          <h1>Choose a Tall Tale</h1>
-          <p>Every chart below is an immutable, Captain-ready release from Tall Tale Studio.</p>
+          <p className="eyebrow">Published interactive stories</p>
+          <h1>Choose an Adventure</h1>
+          <p>Preview the story, time, and group size before beginning a Tall Tale or returning to one in progress.</p>
         </div>
-        <Link href="/captain">Captain controls</Link>
       </header>
-      {loading && (
-        <p className="catalog-status" role="status">
-          Reading the published ledger…
-        </p>
-      )}
-      {error && (
-        <p className="catalog-status error" role="alert">
-          {error}
-        </p>
-      )}
-      {!loading && !tales.length && (
-        <section className="catalog-empty">
-          <span>☾</span>
-          <h2>No public voyages yet</h2>
-          <p>A creator must validate and publish a public Tall Tale before it appears here.</p>
+      {!loading && !error && tales.length > 0 && (
+        <section className="catalog-tools" aria-label="Search and filter Tall Tales">
+          <label className="catalog-search">
+            <span>Search</span>
+            <input
+              type="search"
+              value={query}
+              onChange={(event) => setQuery(event.target.value)}
+              placeholder="Title, description, or theme"
+            />
+          </label>
+          <label>
+            <span>Progress</span>
+            <select value={state} onChange={(event) => setState(event.target.value)}>
+              <option value="ALL">Any progress</option>
+              <option value="NEW">Not started</option>
+              <option value="IN_PROGRESS">In progress</option>
+              <option value="COMPLETED">Completed</option>
+            </select>
+          </label>
+          <label>
+            <span>Duration</span>
+            <select value={duration} onChange={(event) => setDuration(event.target.value)}>
+              <option value="ANY">Any length</option>
+              <option value="30">30 minutes or less</option>
+              <option value="60">60 minutes or less</option>
+              <option value="120">2 hours or less</option>
+            </select>
+          </label>
+          <label>
+            <span>Group size</span>
+            <select value={groupSize} onChange={(event) => setGroupSize(event.target.value)}>
+              <option value="ANY">Any group</option>
+              <option value="1">1 Player</option>
+              <option value="2">2 Players</option>
+              <option value="4">4 Players</option>
+              <option value="6">6 Players</option>
+            </select>
+          </label>
+          <div className="catalog-result-summary" aria-live="polite">
+            <strong>{filteredTales.length}</strong>
+            <span>{filteredTales.length === 1 ? "Tall Tale" : "Tall Tales"}</span>
+            {hasFilters && (
+              <button className="button-subtle" type="button" onClick={clearFilters}>
+                Clear filters
+              </button>
+            )}
+          </div>
         </section>
       )}
+      {loading && <LoadingState title="Charting available Tall Tales" detail="Loading published story details." />}
+      {error && (
+        <ErrorState
+          title="Tall Tales could not be loaded"
+          detail={error}
+          action={{ label: "Try Again", onClick: () => void load() }}
+        />
+      )}
+      {!loading && !error && !tales.length && (
+        <EmptyState
+          title="No published Tall Tales are available"
+          detail="A Creator must validate and publish a public Tall Tale before it appears in discovery."
+          action={{ label: "Return to Role Gateway", href: "/" }}
+          symbol="☾"
+        />
+      )}
+      {!loading && !error && tales.length > 0 && !filteredTales.length && (
+        <EmptyState
+          title="No Tall Tales match these filters"
+          detail="Try a different title, a longer duration, or a broader group size."
+          action={{ label: "Clear Filters", onClick: clearFilters }}
+          symbol="⌕"
+        />
+      )}
       <section className="catalog-grid">
-        {tales.map((tale) => (
+        {filteredTales.map((tale) => (
           <article key={tale.id}>
             {tale.coverUrl ? (
               <img src={tale.coverUrl} alt="" />
@@ -102,10 +200,10 @@ export function TaleCatalog() {
                 }
               >
                 {tale.playerState === "IN_PROGRESS"
-                  ? "Continue voyage"
+                  ? "Resume Story"
                   : tale.playerState === "COMPLETED"
-                    ? "Replay voyage"
-                    : "Start voyage"}
+                    ? "Replay Tall Tale"
+                    : "Preview Tall Tale"}
               </Link>
             </div>
           </article>
