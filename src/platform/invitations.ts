@@ -120,7 +120,7 @@ function publicInvitationView(invitation: NonNullable<Awaited<ReturnType<typeof 
     requiresPin: Boolean(invitation.pinHash),
     playthrough: {
       id: invitation.playthrough.id,
-      voyageName: invitation.playthrough.voyageName ?? invitation.playthrough.ownerLabel ?? "Tall Tale voyage",
+      voyageName: invitation.playthrough.voyageName ?? invitation.playthrough.ownerLabel ?? "Voyage",
       status: invitation.playthrough.status,
       plannedStartAt: invitation.playthrough.plannedStartAt?.toISOString() ?? null,
       scheduleTimezone: invitation.playthrough.scheduleTimezone,
@@ -201,7 +201,7 @@ export async function createPlaythroughAndInvitations(
     where: { id: input.versionId, taleId: input.taleId },
     include: { tale: true },
   });
-  if (!version) throw new Error("Choose a published Tall Tale version before creating a voyage.");
+  if (!version) throw new Error("Choose a published Chronicle version before creating a Voyage.");
   if (input.accountRequired && input.players.some((player) => !player.playerId))
     throw new Error("Account-required invitations must target an existing claimed Player account.");
   const snapshot = parsePublishedSnapshot(version.contentSnapshot);

@@ -58,10 +58,34 @@ function normalizeRelative(file: string) {
   return file.replaceAll("\\", "/");
 }
 
-function isLikelyProductCopy(line: string) {
-  return /(?:>|<|aria-|\b(?:label|title|detail|description|message|placeholder|error|heading|summary|empty|loading)\b|throw new Error|NextResponse\.json)/iu.test(
-    line,
-  );
+function copyCandidates(line: string) {
+  const trimmed = line.trim();
+  if (!trimmed || trimmed.startsWith("//") || trimmed.includes("logger.")) return [];
+
+  const candidates = new Set<string>();
+  const literal = /(["'`])((?:\\.|(?!\1).)*)\1/gu;
+  for (const match of trimmed.matchAll(literal)) {
+    const source = match[2].replaceAll(/\$\{[^}]*\}/gu, "");
+    const prefix = trimmed.slice(0, match.index ?? 0);
+    const hasVisibleField =
+      /(?:aria-|\b(?:label|title|detail|description|message|placeholder|error|heading|summary|empty|loading|copy)\b)\s*(?:=|:)\s*$/iu.test(
+        prefix,
+      ) ||
+      /(?:throw new Error|NextResponse\.json)\s*\(?[^"'`]*$/iu.test(prefix);
+    if (hasVisibleField || /\s/u.test(source) || /^[A-Z]/u.test(source)) candidates.add(source);
+  }
+
+  const directJsxText = trimmed.replaceAll(/<[^>]*>/gu, "").replaceAll(/\{[^}]*\}/gu, "").trim();
+  const resemblesCode = /^(?:[?:]|[A-Za-z_$][\w$]*:\s)|\p{L}\.\p{L}/u.test(directJsxText);
+  if (
+    directJsxText &&
+    !resemblesCode &&
+    /\p{L}/u.test(directJsxText) &&
+    /^[\p{L}\p{N}\s.,!?;:'"“”’()\-–—/]+$/u.test(directJsxText)
+  ) {
+    candidates.add(directJsxText);
+  }
+  return [...candidates];
 }
 
 function isAllowed(violation: LanguageViolation, exceptions: readonly LanguageException[]) {
@@ -83,16 +107,19 @@ export function scanLanguageText(
   const normalizedFile = normalizeRelative(file);
   const violations: LanguageViolation[] = [];
   for (const [index, line] of text.split(/\r?\n/u).entries()) {
-    if (!isLikelyProductCopy(line)) continue;
-    for (const pattern of forbiddenPatterns) {
-      if (!pattern.expression.test(line)) continue;
-      const violation: LanguageViolation = {
-        file: normalizedFile,
-        line: index + 1,
-        pattern: pattern.name,
-        excerpt: line.trim().slice(0, 180),
-      };
-      if (!isAllowed(violation, exceptions)) violations.push(violation);
+    for (const candidate of copyCandidates(line)) {
+      for (const pattern of forbiddenPatterns) {
+        if (!pattern.expression.test(candidate)) continue;
+        const violation: LanguageViolation = {
+          file: normalizedFile,
+          line: index + 1,
+          pattern: pattern.name,
+          excerpt: line.trim().slice(0, 180),
+        };
+        if (!isAllowed(violation, exceptions) && !violations.some((item) => item.line === violation.line && item.pattern === violation.pattern)) {
+          violations.push(violation);
+        }
+      }
     }
   }
   return violations;
@@ -120,7 +147,7 @@ export async function scanProductionLanguage(
   repositoryRoot: string,
   exceptions: readonly LanguageException[] = approvedLanguageExceptions,
 ): Promise<LanguageViolation[]> {
-  const roots = ["src/app", "src/components", "src/platform"];
+  const roots = ["src/app", "src/components", "src/platform", "src/tall-tale"];
   const violations: LanguageViolation[] = [];
   for (const relativeRoot of roots) {
     const absoluteRoot = path.join(repositoryRoot, relativeRoot);

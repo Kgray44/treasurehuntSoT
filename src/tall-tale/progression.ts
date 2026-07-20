@@ -376,10 +376,10 @@ export async function startTaleSession(slug: string, ownerLabel?: string) {
     include: { versions: { where: { isCurrent: true }, take: 1 } },
   });
   const version = tale?.versions[0];
-  if (!tale || !version) throw new Error("This Tall Tale is not currently available.");
+  if (!tale || !version) throw new Error("This Chronicle is not currently available.");
   const snapshot = parsePublishedSnapshot(version.contentSnapshot);
   const first = blocksOf(snapshot)[0];
-  if (!first) throw new Error("This published tale has no playable entry block.");
+  if (!first) throw new Error("This published Chronicle has no playable first Passage.");
   const token = randomBytes(32).toString("base64url");
   const key = randomUUID();
   const created = await db.$transaction(async (tx) => {
@@ -433,7 +433,7 @@ export async function startTaleSession(slug: string, ownerLabel?: string) {
   emit(created.session.id, created.event);
   logger.info(
     { area: "tall-tale-session", sessionId: created.session.id, taleId: tale.id, versionId: version.id },
-    "Published Tall Tale session started",
+    "Published Chronicle Voyage started",
   );
   return { sessionId: created.session.id, token, taleSlug: slug, versionId: version.id };
 }
@@ -522,7 +522,7 @@ export async function startPreviewSession(taleId: string, creatorId: string, sta
   const studio = await getStudioTale(taleId);
   const snapshot = snapshotFromStudio(studio);
   const first = blockById(snapshot, startBlockId ?? null) ?? blocksOf(snapshot)[0];
-  if (!first) throw new Error("Add a story block before opening preview mode.");
+  if (!first) throw new Error("Add a Passage before opening Preview Voyage.");
   const token = randomBytes(32).toString("base64url");
   const key = randomUUID();
   const created = await db.$transaction(async (tx) => {
@@ -619,7 +619,7 @@ export async function getTaleSessionState(
     }),
   ]);
   if (!captain && !authorizedPlayer && (!token || digest(token) !== session.accessTokenHash))
-    throw new Error("This voyage session is not available to this browser.");
+    throw new Error("This Voyage is not available in this browser.");
   if (session.expiresAt && session.expiresAt < new Date()) throw new Error("This preview session has expired.");
   const snapshot = snapshotOf(session);
   const block = blockById(snapshot, session.currentBlockId);
@@ -782,7 +782,7 @@ export async function interactWithTaleSession(
   if (session.status !== "ACTIVE") throw new Error(`This session is ${session.status.toLowerCase()}.`);
   const snapshot = snapshotOf(session);
   const block = blockById(snapshot, session.currentBlockId);
-  if (!block) throw new Error("The current story block is unavailable.");
+  if (!block) throw new Error("The current Passage is unavailable.");
   const request = await db.taleVerificationRequest.findFirst({
     where: { sessionId, blockId: block.id, status: "PENDING" },
     orderBy: { requestedAt: "desc" },
