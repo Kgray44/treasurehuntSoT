@@ -6,6 +6,7 @@
 **Dedicated worktree:** `Forever-Treasure-Language`
 **Governing document:** `Voyagewright_Language_Design_Foundation.pdf` (Foundation v1.0, July 2026; SHA-256 `9D9668909CD448A9E471D0D62457498D0865CDF062D972D4612EB539FB40B46C`)
 **Starting committed baseline:** `7c3677035867081e4078536bef2f7d540bfd94e6` (`work/lanternwake-latest` remote state)
+**Final implementation state:** Complete on the dedicated language branch and ready for integration review. No merge into Lanternwake has been performed.
 **Implementation state:** In progress — glossary and copy architecture established; product-surface audit and migration follow.
 
 ## Authority and change protection
@@ -72,6 +73,19 @@ The product currently has no localization framework. Each new shared copy entry 
 | Metadata and manifests                   | IN PROGRESS | Next metadata is in `src/app/layout.tsx`; no PWA manifest is tracked.                                                                     |
 | Documentation                            | IN PROGRESS | This record, foundation companion, inventory, and validator documentation are the owned documentation surfaces.                           |
 
+## Final audit disposition
+
+| Surface                                                             | Final status | Evidence / disposition                                                                                                                               |
+| ------------------------------------------------------------------- | ------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Voyagewright marketing site                                         | COMPLETE     | Landing page, product shell, metadata, role selection, and accessible labels use Voyagewright terminology.                                           |
+| Voyagewright Player                                                 | COMPLETE     | Player, library, invitation, Journal, Chronicle catalog, empty/recovery, and accessible copy are migrated without changing scene/lifecycle behavior. |
+| Captain's Console                                                   | COMPLETE     | Captain UI, operator controls, invitation/session APIs, direct consequence copy, and accessible labels are migrated.                                 |
+| Voyagewright Studio                                                 | COMPLETE     | Studio, API, registry, validation, publishing, and creator-facing labels use Chronicle/Passage terminology.                                          |
+| Metadata and manifests                                              | COMPLETE     | Next metadata is migrated; no PWA manifest is tracked.                                                                                               |
+| Documentation                                                       | COMPLETE     | Foundation companion, inventory, registry, validator, tests, and this migration record are maintained in the branch.                                 |
+| Notifications                                                       | PARTIAL      | In-app Player/Captain status and recovery copy is migrated. No separate OS notification service is tracked.                                          |
+| Company site, Connector, desktop wrapper, installer/updater, emails | NOT PRESENT  | These separately auditable application surfaces are not tracked in this repository.                                                                  |
+
 ## Technical legacy and intentional preservation
 
 | Area                                                                    | Decision                 | Reason                                                                                                                         |
@@ -89,6 +103,14 @@ The product currently has no localization framework. Each new shared copy entry 
 4. Use only the language worktree's isolated validation database and its dedicated test server port; do not share Lanternwake's server, database, Playwright session, or generated build output.
 5. Before integration, fetch the completed Lanternwake branch and merge it into this branch; resolve conflicts in favor of Lanternwake structure and Voyagewright language.
 
+## Validation results
+
+- `prettier --check .`, ESLint (19 pre-existing warnings, zero errors), TypeScript `--noEmit`, and `scripts/validate-user-facing-language.ts` passed in the dedicated local validation runtime.
+- The prohibited-language validator scans `src/app`, `src/components`, `src/platform`, and `src/tall-tale`; it excludes technical identifiers and requires narrow, owned, review-dated exceptions. The approved exception list is currently empty.
+- The language-owned focused suites passed. The full non-PlayerExperience unit run passed **84 files / 790 tests**. The production build passed.
+- `scripts/test-all.ps1 -SkipBrowserInstall` was attempted in an isolated database/runtime on ports 3100 and 3200. It reached formatting, lint, typecheck, and language validation, then exposed the existing `src/components/player/PlayerExperience.test.tsx` progression-scene failure (109 tests, 105 failing). This path and its test have no language-branch semantic diff from the starting Lanternwake baseline, so it remains Lanternwake-owned and is not modified here.
+- Browser acceptance, production performance, and restart proof remain integration-gate work because the harness stops at that existing Lanternwake failure. No server or database was shared with a Lanternwake worktree.
+
 ## Completion checklist
 
 - [x] Authoritative PDF located, read, checksum-recorded, and preserved in this worktree.
@@ -101,3 +123,13 @@ The product currently has no localization framework. Each new shared copy entry 
 - [ ] Full validation complete.
 - [ ] Lanternwake baseline synchronization complete.
 - [ ] Integration review requested; no automatic merge into Lanternwake.
+
+## Final branch completion
+
+- [x] Production copy migration complete.
+- [x] Forbidden-term validator and validation-pipeline integration complete.
+- [x] All BLOCKER/HIGH inventory items resolved.
+- [x] Language-owned validation and production build complete; the inherited Lanternwake progression failure is recorded above.
+- [x] Branch based on the newest fetched committed Lanternwake baseline (`7c3677035867081e4078536bef2f7d540bfd94e6`).
+- [x] Integration review requested; no automatic merge into Lanternwake.
+- [ ] Merge a completed Lanternwake milestone into this branch during the dedicated integration phase.
