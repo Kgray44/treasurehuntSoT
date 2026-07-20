@@ -15,6 +15,7 @@ import { pressable } from "@/animation/motion/variants";
 import { consumeOneShot, platformOneShotKey } from "@/animation/platform/one-shot";
 import { LottieEffect } from "@/components/animation/LottieEffect";
 import { AnimationTestButton } from "@/components/dev/AnimationTestButton";
+import { platformCopy } from "@/language/platform-copy";
 
 type GatewayStatus = {
   player: {
@@ -126,21 +127,21 @@ const roles = [
     title: "Player",
     object: "journal",
     href: "/player/sign-in",
-    copy: "Continue an adventure, accept an invitation, or revisit completed voyages.",
+    copy: "Continue a Voyage, accept an invitation, or revisit a Voyage Record.",
   },
   {
     id: "captain",
     title: "Captain",
     object: "wheel",
     href: "/captain/sign-in",
-    copy: "Guide voyages, invite players, reveal clues, and control the journey.",
+    copy: "Guide Voyages, invite Crew, release Chapters, and manage the live experience.",
   },
   {
     id: "creator",
     title: "Creator",
     object: "quill",
     href: "/studio/sign-in",
-    copy: "Create, test, publish, and preserve Tall Tales.",
+    copy: "Create, preview, publish, and preserve Chronicles.",
   },
 ] as const;
 
@@ -435,14 +436,13 @@ function HarborGatewayContent({ motionMode }: { motionMode: ReturnType<typeof us
 
       <section className="harbor-content gateway-content" aria-labelledby={gatewayTitleId}>
         <p ref={bindArrivalCopyEyebrow} className="eyebrow" data-scene-part="arrival-copy" data-runtime-boundary="gsap">
-          The chart table is ready
+          Voyagewright
         </p>
         <h1 ref={bindTitle} id={gatewayTitleId} data-scene-part="title" data-runtime-boundary="gsap">
-          Choose your place in the Tale
+          {platformCopy.chooseRole.value}
         </h1>
         <p ref={bindArrivalCopyBody} data-scene-part="arrival-copy" data-runtime-boundary="gsap">
-          Create, host, join, and revisit interactive stories built for many kinds of groups and occasions. Choose a
-          role to enter the part of the experience meant for you.
+          {platformCopy.brandIntroduction.value}
         </p>
         <div
           ref={bindArrivalActionPrimary}
@@ -451,18 +451,18 @@ function HarborGatewayContent({ motionMode }: { motionMode: ReturnType<typeof us
           data-runtime-boundary="gsap"
         >
           <Link className="brass-button" href="/tales">
-            Explore Tall Tales
+            {platformCopy.exploreChronicles.value}
           </Link>
           <Link className="button-secondary" href="/player/sign-in#invitation-code">
             Join with an Invitation
           </Link>
         </div>
-        <div className="landing-controls" aria-label="Gateway presentation controls">
+        <div className="landing-controls" aria-label="Opening presentation controls">
           <button onClick={replay} disabled={snapshot.isPlaying || !targetsReady || !sceneHost}>
-            Replay gateway
+            Replay presentation
           </button>
           {snapshot.isPlaying && snapshot.label !== "dark-sea" && (
-            <button onClick={() => director.skip()}>Skip arrival</button>
+            <button onClick={() => director.skip()}>Skip opening presentation</button>
           )}
           <button onClick={cycle} aria-label={`Motion: ${mode}. Change motion setting`}>
             {mode} motion
@@ -471,7 +471,7 @@ function HarborGatewayContent({ motionMode }: { motionMode: ReturnType<typeof us
         <div
           ref={bindArrivalActionRoles}
           className="role-object-grid"
-          aria-label="Tall Tale roles"
+          aria-label="Voyagewright roles"
           aria-live="polite"
           data-scene-part="arrival-action"
           data-runtime-boundary="gsap"
@@ -503,14 +503,14 @@ function HarborGatewayContent({ motionMode }: { motionMode: ReturnType<typeof us
                   className={`card-kicker ${rememberedBadges.has(role.id) ? "remembered-badge-entering" : ""}`}
                   data-session-state={status ? (current?.authenticated ? "remembered" : "guest") : "loading"}
                 >
-                  {status ? (current?.authenticated ? "Session remembered" : "Adventure role") : "Checking session…"}
+                  {status ? (current?.authenticated ? "Signed in" : "Choose a role") : "Checking access..."}
                 </p>
                 <h2>{role.title}</h2>
                 <p>{role.copy}</p>
                 {role.id === "captain" && status?.captain.authenticated && (
                   <small>
                     {status.captain.waitingPlayers ?? 0} {status.captain.waitingPlayers === 1 ? "Player" : "Players"}{" "}
-                    awaiting launch
+                    awaiting a Voyage
                   </small>
                 )}
                 {role.id === "creator" && status?.creator.authenticated && status.creator.recentDraft && (
@@ -537,19 +537,18 @@ function HarborGatewayContent({ motionMode }: { motionMode: ReturnType<typeof us
       </section>
       <section className="gateway-explainer" aria-labelledby={explainerTitleId}>
         <header>
-          <p className="eyebrow">A story your group can step into</p>
-          <h2 id={explainerTitleId}>What is a Tall Tale?</h2>
+          <p className="eyebrow">Stories made to be played</p>
+          <h2 id={explainerTitleId}>{platformCopy.chronicleExplainer.value}</h2>
           <p>
-            A Tall Tale is a guided interactive experience made of chapters, prompts, choices, activities, and reveals.
-            It can support a game night, celebration, trip, reunion, date, family adventure, or an entirely custom
-            story.
+            {platformCopy.chronicleExplainerDetail.value} It can support a game night, celebration, trip, reunion,
+            date, family adventure, or an entirely custom experience.
           </p>
         </header>
         <div className="gateway-how-grid">
           <article>
             <span aria-hidden="true">01</span>
-            <h3>Choose an adventure</h3>
-            <p>Browse published Tall Tales and understand the time, group size, and story before you begin.</p>
+            <h3>Choose a Chronicle</h3>
+            <p>Browse published Chronicles and understand the time, group size, and premise before you begin.</p>
           </article>
           <article>
             <span aria-hidden="true">02</span>
@@ -558,7 +557,7 @@ function HarborGatewayContent({ motionMode }: { motionMode: ReturnType<typeof us
           </article>
           <article>
             <span aria-hidden="true">03</span>
-            <h3>Continue your story</h3>
+            <h3>Continue your Voyage</h3>
             <p>
               The journal preserves live progress, reconnects safely, and keeps completed editions available to revisit.
             </p>
@@ -569,8 +568,8 @@ function HarborGatewayContent({ motionMode }: { motionMode: ReturnType<typeof us
             <p className="eyebrow">Designed around your group</p>
             <h3>Flexible by default, personal when you choose</h3>
             <p>
-              System controls stay inclusive and reusable. Personal details belong only to the Tall Tale, invitation, or
-              customization your group selected.
+              System controls stay inclusive and reusable. Personal details belong only to the Chronicle, invitation,
+              or customization your group selected.
             </p>
           </div>
           <ul aria-label="Experience examples">

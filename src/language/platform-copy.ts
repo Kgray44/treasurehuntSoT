@@ -21,6 +21,7 @@ export const platformCopy = {
     "platform.company.description",
   ),
   createChronicle: platform("Create Chronicle", "platform.action.createChronicle"),
+  exploreChronicles: platform("Explore Chronicles", "platform.action.exploreChronicles"),
   beginVoyage: platform("Begin Voyage", "platform.action.beginVoyage"),
   continueVoyage: platform("Continue Voyage", "platform.action.continueVoyage"),
   endVoyage: platform("End Voyage", "platform.action.endVoyage"),
@@ -42,4 +43,14 @@ export const platformCopy = {
   noChronicles: platform("No Chronicles yet", "platform.empty.noChronicles"),
   noActiveVoyages: platform("No active Voyages", "platform.empty.noActiveVoyages"),
   noArtifacts: platform("No Artifacts recovered", "platform.empty.noArtifacts"),
+  chooseRole: platform("Choose your role in Voyagewright", "platform.brand.chooseRole"),
+  brandIntroduction: platform(
+    "Build a Chronicle, guide a Voyage, or join a Crew. Choose the part of Voyagewright that is right for you.",
+    "platform.brand.introduction",
+  ),
+  chronicleExplainer: platform("What is a Chronicle?", "platform.brand.chronicleExplainer"),
+  chronicleExplainerDetail: platform(
+    "A Chronicle is a guided interactive experience made of Chapters, Passages, choices, activities, and reveals.",
+    "platform.brand.chronicleExplainerDetail",
+  ),
 } as const;

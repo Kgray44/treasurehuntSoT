@@ -36,14 +36,14 @@ export async function GET() {
           continue:
             activePlayerCards.length === 1
               ? { label: `Continue ${activePlayerCards[0].title}`, href: activePlayerCards[0].primaryHref }
-              : { label: "Open My Tall Tale Library", href: "/player/library" },
+              : { label: "Open My Voyages", href: "/player/library" },
         }
       : { authenticated: false },
     captain: captain
       ? {
           authenticated: true,
           waitingPlayers,
-          continue: { label: "Return to Captain's Command", href: "/captain/library" },
+          continue: { label: "Return to Captain's Console", href: "/captain/library" },
         }
       : { authenticated: false },
     creator: creator
@@ -52,7 +52,7 @@ export async function GET() {
           recentDraft,
           continue: recentDraft
             ? { label: `Continue Editing ${recentDraft.title}`, href: `/studio/tales/${recentDraft.id}` }
-            : { label: "Open Studio Library", href: "/studio/library" },
+            : { label: "Open Chronicle Library", href: "/studio/library" },
         }
       : { authenticated: false },
   });

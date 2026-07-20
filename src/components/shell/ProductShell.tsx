@@ -7,6 +7,8 @@ import { AnimatePresence, motion } from "motion/react";
 import { useMotionMode } from "@/animation/motion/useMotionMode";
 import { platformMotionEasing, resolvePlatformMotionToken } from "@/animation/platform/motion-tokens";
 import { RouteMotionBoundary } from "@/animation/platform/RouteMotionBoundary";
+import { canonicalTerms } from "@/language/canonical-terms";
+import { platformCopy } from "@/language/platform-copy";
 
 type Workspace = "public" | "player" | "captain" | "creator";
 
@@ -19,42 +21,42 @@ type ShellDefinition = {
 const shellDefinitions: Record<Workspace, ShellDefinition> = {
   public: {
     workspace: "public",
-    label: "Tall Tale Harbor",
+    label: canonicalTerms.product,
     navigation: [
-      { href: "/tales", label: "Explore Tall Tales", exact: true },
-      { href: "/player", label: "Player Library" },
-      { href: "/captain", label: "Host a Voyage" },
-      { href: "/studio", label: "Create" },
+      { href: "/tales", label: platformCopy.exploreChronicles.value, exact: true },
+      { href: "/player", label: canonicalTerms.player },
+      { href: "/captain", label: canonicalTerms.captainConsole },
+      { href: "/studio", label: canonicalTerms.studio },
     ],
   },
   player: {
     workspace: "player",
-    label: "Player Waters",
+    label: canonicalTerms.player,
     navigation: [
-      { href: "/player/library", label: "My Library" },
-      { href: "/tales", label: "Explore Tall Tales", exact: true },
-      { href: "/player/sign-in#invitation-code", label: "Join with a Code" },
+      { href: "/player/library", label: "My Voyages" },
+      { href: "/tales", label: platformCopy.exploreChronicles.value, exact: true },
+      { href: "/player/sign-in#invitation-code", label: "Join with an invitation code" },
       { href: "/", label: "Switch Role", exact: true },
     ],
   },
   captain: {
     workspace: "captain",
-    label: "Captain's Command",
+    label: canonicalTerms.captainConsole,
     navigation: [
       { href: "/captain/library", label: "Voyages" },
-      { href: "/captain/invitations", label: "Invitations" },
-      { href: "/tales", label: "Explore Tall Tales", exact: true },
-      { href: "/studio/library", label: "Creator Workspace" },
+      { href: "/captain/invitations", label: "Crew invitations" },
+      { href: "/tales", label: platformCopy.exploreChronicles.value, exact: true },
+      { href: "/studio/library", label: canonicalTerms.studio },
     ],
   },
   creator: {
     workspace: "creator",
-    label: "Tall Tale Studio",
+    label: canonicalTerms.studio,
     navigation: [
-      { href: "/studio/library", label: "Studio Library" },
-      { href: "/studio/tales/new", label: "New Tall Tale" },
-      { href: "/tales", label: "Player Preview", exact: true },
-      { href: "/captain/library", label: "Captain Workspace" },
+      { href: "/studio/library", label: canonicalTerms.chronicleLibrary },
+      { href: "/studio/tales/new", label: platformCopy.createChronicle.value },
+      { href: "/tales", label: "Preview Voyage", exact: true },
+      { href: "/captain/library", label: canonicalTerms.captainConsole },
     ],
   },
 };
@@ -122,10 +124,10 @@ export function ProductShell({ children }: { children: React.ReactNode }) {
         Skip to main content
       </a>
       <header className="product-shell-header">
-        <Link className="product-mark" href="/" aria-label="Forever Treasure role gateway">
+        <Link className="product-mark" href="/" aria-label="Voyagewright role selection">
           <span aria-hidden="true">✦</span>
           <span>
-            <strong>Forever Treasure</strong>
+            <strong>{canonicalTerms.product}</strong>
             <AnimatePresence initial={false} mode="wait">
               <motion.small
                 key={definition.workspace}
@@ -191,10 +193,10 @@ export function ProductShell({ children }: { children: React.ReactNode }) {
         <RouteMotionBoundary pathname={pathname}>{children}</RouteMotionBoundary>
       </div>
       <footer className="product-footer">
-        <p>Interactive Tall Tales for friends, families, groups, and celebrations.</p>
+        <p>{platformCopy.productTagline.value}</p>
         <nav aria-label="Product links">
-          <Link href="/">Role gateway</Link>
-          <Link href="/tales">Explore Tall Tales</Link>
+          <Link href="/">Choose a role</Link>
+          <Link href="/tales">{platformCopy.exploreChronicles.value}</Link>
         </nav>
       </footer>
     </div>

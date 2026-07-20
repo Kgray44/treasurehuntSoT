@@ -8,7 +8,7 @@ export async function GET(_: Request, context: { params: Promise<{ sessionId: st
   try {
     const { sessionId } = await context.params;
     const access = await authorizeTaleSessionPlayer(sessionId);
-    if (!access) return NextResponse.json({ error: "Voyage session required." }, { status: 401 });
+    if (!access) return NextResponse.json({ error: "Sign in to access this Voyage." }, { status: 401 });
     return NextResponse.json({
       ...(await getTaleSessionState(
         sessionId,
@@ -27,7 +27,7 @@ export async function POST(request: Request, context: { params: Promise<{ sessio
   try {
     const { sessionId } = await context.params;
     const access = await authorizeTaleSessionPlayer(sessionId);
-    if (!access) return NextResponse.json({ error: "Voyage session required." }, { status: 401 });
+    if (!access) return NextResponse.json({ error: "Sign in to access this Voyage." }, { status: 401 });
     if (access.kind === "identity" && !(await verifyPlayerCsrf(request.headers.get("x-csrf-token"))))
       return NextResponse.json({ error: "The Player session expired." }, { status: 403 });
     const rate = consumeRateLimit(`tale-player:${sessionId}`, { limit: 45, windowMs: 60_000 });

@@ -91,7 +91,7 @@ export function StaffSignIn({
   const [ceremonyState, setCeremonyState] = useState<CeremonyState>("idle");
   const [operationKey, setOperationKey] = useState(0);
   const [online, setOnline] = useState(true);
-  const title = intent === "captain" ? "Captain's Command" : "Tall Tale Studio";
+  const title = intent === "captain" ? "Captain's Console" : "Voyagewright Studio";
   const destination = intent === "captain" ? "/captain/library" : "/studio/library";
   const busy = asyncState.busy;
 
@@ -138,7 +138,7 @@ export function StaffSignIn({
       });
       if (!response.ok) {
         const body = await parseJsonResponse<{ error?: string }>(response);
-        return restoreAfterFailure(run, body?.error ?? "Sign-in failed. Please try again.");
+        return restoreAfterFailure(run, body?.error ?? "We couldn't sign you in. Check your details, then try again.");
       }
 
       const statusResponse = await fetch("/api/gateway/status", {

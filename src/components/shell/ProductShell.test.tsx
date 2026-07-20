@@ -23,8 +23,8 @@ describe("ProductShell", () => {
     );
 
     expect(screen.getByRole("link", { name: "Skip to main content" })).toHaveAttribute("href", "#main-content");
-    const navigationRegion = screen.getByRole("navigation", { name: "Tall Tale Harbor navigation" });
-    expect(within(navigationRegion).getByRole("link", { name: "Explore Tall Tales" })).toHaveAttribute(
+    const navigationRegion = screen.getByRole("navigation", { name: "Voyagewright navigation" });
+    expect(within(navigationRegion).getByRole("link", { name: "Explore Chronicles" })).toHaveAttribute(
       "aria-current",
       "page",
     );
@@ -40,10 +40,10 @@ describe("ProductShell", () => {
     );
 
     const menuButton = screen.getByRole("button", { name: /Menu/ });
-    const navigationRegion = screen.getByRole("navigation", { name: "Tall Tale Harbor navigation" });
+    const navigationRegion = screen.getByRole("navigation", { name: "Voyagewright navigation" });
     fireEvent.click(menuButton);
     await waitFor(() =>
-      expect(within(navigationRegion).getByRole("link", { name: "Explore Tall Tales" })).toHaveFocus(),
+      expect(within(navigationRegion).getByRole("link", { name: "Explore Chronicles" })).toHaveFocus(),
     );
 
     fireEvent.keyDown(window, { key: "Escape" });

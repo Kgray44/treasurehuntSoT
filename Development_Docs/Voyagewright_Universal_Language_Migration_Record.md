@@ -2,10 +2,10 @@
 
 ## Status
 
-**Branch:** `development/universal-language`  
-**Dedicated worktree:** `Forever-Treasure-Language`  
-**Governing document:** `Voyagewright_Language_Design_Foundation.pdf` (Foundation v1.0, July 2026; SHA-256 `9D9668909CD448A9E471D0D62457498D0865CDF062D972D4612EB539FB40B46C`)  
-**Starting committed baseline:** `7c3677035867081e4078536bef2f7d540bfd94e6` (`work/lanternwake-latest` remote state)  
+**Branch:** `development/universal-language`
+**Dedicated worktree:** `Forever-Treasure-Language`
+**Governing document:** `Voyagewright_Language_Design_Foundation.pdf` (Foundation v1.0, July 2026; SHA-256 `9D9668909CD448A9E471D0D62457498D0865CDF062D972D4612EB539FB40B46C`)
+**Starting committed baseline:** `7c3677035867081e4078536bef2f7d540bfd94e6` (`work/lanternwake-latest` remote state)
 **Implementation state:** In progress — glossary and copy architecture established; product-surface audit and migration follow.
 
 ## Authority and change protection

@@ -15,6 +15,7 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
+    "language:validate": "tsx scripts/validate-user-facing-language.ts",
     "test:e2e": "playwright test",
     "assets:validate": "tsx scripts/validate-animation-assets.ts",
     "validate": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/test-all.ps1",

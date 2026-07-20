@@ -2,8 +2,8 @@
 
 > Searchable companion to `Voyagewright_Language_Design_Foundation.pdf` (Foundation v1.0, July 2026). The PDF is the authoritative source. This companion preserves its governing requirements for implementation and review; if any rendering or transcription question arises, follow the PDF.
 
-**Product:** Voyagewright  
-**Company:** Absolute Relative Systems  
+**Product:** Voyagewright
+**Company:** Absolute Relative Systems
 **Governing statement:** **Clear first. Human always. Wonder earned.**
 
 ## Document purpose and use
