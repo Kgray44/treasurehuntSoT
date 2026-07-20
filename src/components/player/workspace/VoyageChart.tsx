@@ -381,7 +381,7 @@ function VoyageChartContents({
     `snapshot-${snapshot.sequence}`,
     compass.routeKey ?? "idle",
     compass.pose,
-    compass.bearing.toFixed(6),
+    compass.bearingDegrees.toFixed(2),
   ].join(":");
 
   return (
