@@ -9,6 +9,10 @@ export type LottieAssetContract = {
   priority: "critical" | "idle" | "intent";
   provenance: string;
   dimensions: string;
+  /** Deliberately authored stable frame for reduced motion; never defaulted to frame zero. */
+  reducedFrame: number;
+  /** Approved semantic labels and their inclusive frame ranges for commanded one-shots. */
+  segments?: Readonly<Record<string, readonly [number, number]>>;
 };
 
 export const lottieAssets = {
@@ -23,6 +27,7 @@ export const lottieAssets = {
     priority: "critical",
     provenance: "Original shape-layer Lottie authored for Forever Treasure.",
     dimensions: "1200 x 320",
+    reducedFrame: 120,
   },
   rollingFog: {
     key: "rolling-fog",
@@ -35,6 +40,7 @@ export const lottieAssets = {
     priority: "idle",
     provenance: "Original shape-layer Lottie authored for Forever Treasure.",
     dimensions: "1200 x 420",
+    reducedFrame: 150,
   },
   inkBloom: {
     key: "ink-bloom",
@@ -47,5 +53,13 @@ export const lottieAssets = {
     priority: "intent",
     provenance: "Original shape-layer Lottie authored for Forever Treasure.",
     dimensions: "320 x 320",
+    reducedFrame: 72,
+    segments: {
+      "ink-heading": [0, 72],
+      "ink-story": [0, 72],
+      "ink-objective": [0, 72],
+      "ink-riddle": [0, 72],
+      "annotation-ink": [0, 72],
+    },
   },
 } satisfies Record<string, LottieAssetContract>;

@@ -384,21 +384,24 @@ describe("FinaleChamber Phase 3 interface", () => {
     );
     expect(view.container.querySelector(".finale-rive-contract")).toHaveAttribute(
       "data-rive-semantic-signals",
-      "state,progress",
+      "stage,overallProgress,activeRequirement,requirementProgress,isReady",
     );
     expect(view.container.querySelector(".finale-rive-contract")).toHaveAttribute("data-rive-state-value", "3");
     expect(view.container.querySelector(".finale-rive-contract")).toHaveAttribute("data-rive-progress-value", "0.600");
     expect(view.container.querySelector(".finale-rive-contract")).toHaveAttribute(
       "data-rive-semantic-dispatches",
-      "state,progress",
-    );
-    expect(view.container.querySelector(".finale-rive-contract")).toHaveAttribute(
-      "data-rive-active-signal",
-      "progress",
+      "stage,overallProgress,activeRequirement,requirementProgress,isReady",
     );
     expect(view.container.querySelector(".finale-rive-contract")).toHaveAttribute(
       "data-rive-reduced-pose",
-      JSON.stringify({ state: 0, progress: 0, audioLevel: 0 }),
+      JSON.stringify({
+        stage: 0,
+        overallProgress: 0,
+        activeRequirement: -1,
+        requirementProgress: 0,
+        isReady: false,
+        reducedMotion: true,
+      }),
     );
     expect(screen.getByText("Mechanism state partial. 3 of 5 progress steps are visible.")).toBeVisible();
     expect(view.container.querySelector(".constellation-field")).toHaveAttribute("aria-hidden", "true");
@@ -408,7 +411,7 @@ describe("FinaleChamber Phase 3 interface", () => {
   });
 
   it("retracts stale mechanism status on event replacement and unmount before a fresh adapter reports", async () => {
-    const statuses = vi.fn<(status: "loading" | "ready" | "failed" | "fallback" | null) => void>();
+    const statuses = vi.fn<(status: "loading" | "ready" | "timed-out" | "failed" | "fallback" | "paused" | "hidden" | null) => void>();
     const view = render(
       <AnimationProvider>
         <FinaleChamber
@@ -449,7 +452,7 @@ describe("FinaleChamber Phase 3 interface", () => {
     expect(statuses).toHaveBeenCalledOnce();
     expect(statuses).toHaveBeenLastCalledWith(null);
 
-    const remountStatuses = vi.fn<(status: "loading" | "ready" | "failed" | "fallback" | null) => void>();
+    const remountStatuses = vi.fn<(status: "loading" | "ready" | "timed-out" | "failed" | "fallback" | "paused" | "hidden" | null) => void>();
     render(
       <AnimationProvider>
         <FinaleChamber

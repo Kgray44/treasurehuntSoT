@@ -22,6 +22,7 @@ type RiveRuntimeProps = {
   label: string;
   className: string;
   signal?: RiveSignal;
+  signals?: readonly RiveSignal[];
   motionPolicy?: RiveMotionPolicy;
   reducedMotion?: RiveReducedMotionContract;
   onInputs?: (inputs: RiveRuntimeInput[]) => void;
@@ -86,6 +87,7 @@ function LiveRiveRuntime({
   label,
   className,
   signal,
+  signals,
   motionPolicy,
   reducedMotion,
   onInputs,
@@ -97,6 +99,8 @@ function LiveRiveRuntime({
   const onStatusRef = useRef(onStatus);
   const onFailureRef = useRef(onFailure);
   const failureReported = useRef(false);
+  const loaded = useRef(false);
+  const clearLoadTimeout = useRef<() => void>(() => undefined);
   const riveOptions = useMemo(
     () => ({
       src: asset.path!,
@@ -108,10 +112,15 @@ function LiveRiveRuntime({
       shouldDisableRiveListeners: true,
       enableRiveAssetCDN: false,
       automaticallyHandleEvents: false,
-      onLoad: () => onStatusRef.current?.("ready"),
+      onLoad: () => {
+        loaded.current = true;
+        clearLoadTimeout.current();
+        onStatusRef.current?.("ready");
+      },
       onLoadError: () => {
         if (failureReported.current) return;
         failureReported.current = true;
+        clearLoadTimeout.current();
         recordAssetFailure(asset.key);
         onStatusRef.current?.("failed");
         onFailureRef.current();
@@ -136,8 +145,29 @@ function LiveRiveRuntime({
   }, [onFailure]);
 
   useEffect(() => {
-    onStatusRef.current?.("loading");
-  }, [asset.key]);
+    let released = false;
+    let timeout: ReturnType<typeof setTimeout> | undefined;
+    const clear = () => {
+      if (timeout !== undefined) clearTimeout(timeout);
+      timeout = undefined;
+    };
+    clearLoadTimeout.current = clear;
+    if (!loaded.current) {
+      onStatusRef.current?.("loading");
+      timeout = setTimeout(() => {
+        if (released || loaded.current || failureReported.current) return;
+        failureReported.current = true;
+        recordAssetFailure(asset.key);
+        onStatusRef.current?.("timed-out");
+        onFailureRef.current();
+      }, asset.loadTimeoutMs);
+    }
+    return () => {
+      released = true;
+      clear();
+      clearLoadTimeout.current = () => undefined;
+    };
+  }, [asset.key, asset.loadTimeoutMs]);
 
   useEffect(() => {
     if (!rive) return;
@@ -164,14 +194,26 @@ function LiveRiveRuntime({
   useEffect(() => {
     if (!rive || !wrapper.current) return;
     const stopElement = observeElementVisibility(wrapper.current, (visible) => {
-      if (!visible) rive.pause();
+      if (!visible) {
+        rive.pause();
+        onStatusRef.current?.("hidden");
+      }
       else if (allowStateTravel && !document.hidden) rive.play();
-      else rive.pause();
+      else {
+        rive.pause();
+        onStatusRef.current?.("paused");
+      }
     });
     const stopDocument = observeDocumentVisibility((visible) => {
-      if (!visible) rive.pause();
+      if (!visible) {
+        rive.pause();
+        onStatusRef.current?.("hidden");
+      }
       else if (allowStateTravel) rive.play();
-      else rive.pause();
+      else {
+        rive.pause();
+        onStatusRef.current?.("paused");
+      }
     });
     return () => {
       stopElement();
@@ -180,19 +222,27 @@ function LiveRiveRuntime({
   }, [allowStateTravel, rive]);
 
   useEffect(() => {
-    if (!rive || !signal) return;
+    const latestSignals = signals ?? (signal ? [signal] : []);
+    if (!rive || latestSignals.length === 0) return;
     const inputs = rive.stateMachineInputs(asset.stateMachine) as RuntimeInput[];
-    const input = inputs.find((item) => item.name === signal.name);
-    if (!input) return;
-    if (!allowStateTravel) {
-      const semanticSignalAllowed = reducedMotion?.allowedSemanticSignals?.includes(signal.name) ?? false;
-      if (!semanticSignalAllowed || signal.value === undefined || !setStableInput(input, signal.value)) return;
+    let reducedPoseChanged = false;
+    for (const nextSignal of latestSignals) {
+      const input = inputs.find((item) => item.name === nextSignal.name);
+      if (!input) continue;
+      if (!allowStateTravel) {
+        const semanticSignalAllowed = reducedMotion?.allowedSemanticSignals?.includes(nextSignal.name) ?? false;
+        if (semanticSignalAllowed && nextSignal.value !== undefined && setStableInput(input, nextSignal.value)) {
+          reducedPoseChanged = true;
+        }
+      } else if (input.type === StateMachineInputType.Trigger && nextSignal.value === undefined) input.fire?.();
+      else if (nextSignal.value !== undefined) setStableInput(input, nextSignal.value);
+    }
+    if (!allowStateTravel && reducedPoseChanged) {
       rive.pause();
       rive.drawFrame();
-    } else if (input.type === StateMachineInputType.Trigger && signal.value === undefined) input.fire?.();
-    else if (signal.value !== undefined) setStableInput(input, signal.value);
+    }
     onInputsRef.current?.(serializeInputs(inputs));
-  }, [allowStateTravel, asset.stateMachine, reducedMotion?.allowedSemanticSignals, rive, signal]);
+  }, [allowStateTravel, asset.stateMachine, reducedMotion?.allowedSemanticSignals, rive, signal, signals]);
 
   return (
     <div ref={wrapper} className={`rive-object ${className}`} data-animation-owner="rive" role="img" aria-label={label}>

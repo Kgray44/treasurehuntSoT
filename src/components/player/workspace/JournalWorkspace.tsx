@@ -20,7 +20,7 @@ import type {
 import type { PageFlipPageTargetCapability } from "@/components/animation/pageflip-boundary";
 import { LottieEffect, type LottieEffectHandle } from "@/components/animation/LottieEffect";
 import { RiveStatefulObject, type RiveRuntimeStatus } from "@/components/animation/RiveStatefulObject";
-import { riveAssets } from "@/animation/assets/rive-contracts";
+import { journalClaspOpeningPhase, riveAssets } from "@/animation/assets/rive-contracts";
 import { lottieAssets } from "@/animation/assets/lottie-contracts";
 import type { JournalOpeningPhase } from "@/animation/journal/opening-machine";
 import { PhysicalJournalBook } from "@/components/player/journal/PhysicalJournalBook";
@@ -63,13 +63,13 @@ export type JournalChapterInkCommand = Readonly<{
   stop: () => void;
 }>;
 
-type JournalClaspPose = "locked" | "awake" | "opening" | "open";
+type JournalClaspPose = "locked" | "awake" | "releasing" | "opening" | "open";
 
 const journalClaspPoseByPhase = {
   ENTRY_IDLE: "locked",
   ENTRY_ACTIVATED: "locked",
   CLOSED_BOOK_REVEAL: "locked",
-  LATCH_RELEASING: "awake",
+  LATCH_RELEASING: "releasing",
   COVER_OPENING: "opening",
   SEALED_PAGE_REVEAL: "opening",
   SEAL_BREAKING: "opening",
@@ -80,6 +80,7 @@ const journalClaspPoseByPhase = {
 const journalClaspReadableState = {
   locked: "The journal clasp is locked.",
   awake: "The journal clasp is awake and ready to release.",
+  releasing: "The journal clasp is releasing while the journal cover remains supported.",
   opening: "The journal clasp is released while the journal opens.",
   open: "The journal clasp is open and the readable journal is ready.",
 } as const satisfies Record<JournalClaspPose, string>;
@@ -285,7 +286,7 @@ export function JournalWorkspace({
     [activeEvent, pageTargets, pages],
   );
   const claspPose = journalClaspPoseByPhase[openingPhase];
-  const claspStateValue = riveAssets.journalClasp.states.indexOf(claspPose);
+  const claspStateValue = journalClaspOpeningPhase[claspPose];
   const claspLifecycleIdentity = [
     snapshot.campaign.slug,
     activeEvent?.id ?? `snapshot-${snapshot.sequence}`,
@@ -460,7 +461,14 @@ function JournalClaspAdapter({
           asset={riveAssets.journalClasp}
           mode={mode}
           label={`Journal clasp, ${pose}`}
-          signal={{ name: "state", value: stateValue, nonce }}
+          signals={[
+            { name: "openingPhase", value: stateValue, nonce: nonce * 2 },
+            {
+              name: "pressure",
+              value: pose === "releasing" || pose === "opening" ? 1 : 0,
+              nonce: nonce * 2 + 1,
+            },
+          ]}
           reducedMotion={{
             stablePose: riveAssets.journalClasp.reducedPose,
             allowedSemanticSignals: riveAssets.journalClasp.reducedSemanticSignals,
@@ -579,7 +587,7 @@ function ChapterCeremonyPage({
           ? Object.freeze({
               eventId,
               semanticLabel: "ink-story" as const,
-              play: () => handle.play(),
+              play: () => handle.playSegment([...lottieAssets.inkBloom.segments!["ink-story"]]),
               stop: () => handle.stop(),
             })
           : null,

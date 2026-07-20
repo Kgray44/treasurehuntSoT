@@ -6,7 +6,7 @@ import { useCallback, useEffect, useId, useMemo, useRef, useState } from "react"
 import { motion } from "motion/react";
 import type { AnimatedProperty, MotionMode } from "@/animation/core/animation-types";
 import { lottieAssets } from "@/animation/assets/lottie-contracts";
-import { riveAssets } from "@/animation/assets/rive-contracts";
+import { finaleMechanismStage, riveAssets } from "@/animation/assets/rive-contracts";
 import { SceneHost, useRuntimeOwnedSceneTarget, useSceneTargetRegistration } from "@/animation/hosts/SceneHost";
 import { useOptionalSceneHost } from "@/animation/hosts/SceneHostContext";
 import type {
@@ -437,19 +437,19 @@ function FinaleMechanismAdapter({
   nonce: number;
   onStatusChange: FinaleChamberProps["onMechanismStatusChange"];
 }>) {
-  const signals = useMemo<readonly [RiveSignal, RiveSignal]>(
+  const signals = useMemo<readonly RiveSignal[]>(
     () => [
-      { name: "state", value: stateValue, nonce: nonce * 2 },
-      { name: "progress", value: progress, nonce: nonce * 2 + 1 },
+      { name: "stage", value: stateValue, nonce: nonce * 5 },
+      { name: "overallProgress", value: progress, nonce: nonce * 5 + 1 },
+      { name: "activeRequirement", value: -1, nonce: nonce * 5 + 2 },
+      { name: "requirementProgress", value: progress, nonce: nonce * 5 + 3 },
+      { name: "isReady", value: pose === "ready", nonce: nonce * 5 + 4 },
     ],
-    [nonce, progress, stateValue],
+    [nonce, pose, progress, stateValue],
   );
-  const [signalIndex, setSignalIndex] = useState<0 | 1>(0);
   const [reportedStatus, setReportedStatus] = useState<RiveRuntimeStatus | null>(null);
-  const pendingTerminalStatus = useRef<Extract<RiveRuntimeStatus, "ready" | "fallback"> | null>(null);
   const statusRef = useRef<RiveRuntimeStatus | null>(null);
   const callbackRef = useRef(onStatusChange);
-  const activeSignal = signals[signalIndex];
 
   useEffect(() => {
     const previous = callbackRef.current;
@@ -474,51 +474,27 @@ function FinaleMechanismAdapter({
     callbackRef.current?.(status);
   }, []);
 
-  const handleRuntimeStatus = useCallback(
-    (status: RiveRuntimeStatus) => {
-      if ((status === "ready" || status === "fallback") && signalIndex === 0) {
-        pendingTerminalStatus.current = status;
-        setSignalIndex(1);
-        return;
-      }
-      if (status === "failed" && signalIndex === 0) setSignalIndex(1);
-      publishStatus(status);
-    },
-    [publishStatus, signalIndex],
-  );
-
-  useEffect(() => {
-    if (signalIndex !== 1 || !pendingTerminalStatus.current) return;
-    const terminalStatus = pendingTerminalStatus.current;
-    const timer = window.setTimeout(() => {
-      pendingTerminalStatus.current = null;
-      publishStatus(terminalStatus);
-    }, 0);
-    return () => window.clearTimeout(timer);
-  }, [publishStatus, signalIndex]);
-
   return (
     <div
       className="finale-rive-contract"
       data-rive-contract-availability={riveAssets.finaleMechanism.availability}
       data-rive-runtime-status={reportedStatus ?? "pending"}
-      data-rive-semantic-signals="state,progress"
+      data-rive-semantic-signals="stage,overallProgress,activeRequirement,requirementProgress,isReady"
       data-rive-state-value={stateValue}
       data-rive-progress-value={progress.toFixed(3)}
-      data-rive-active-signal={activeSignal.name}
-      data-rive-semantic-dispatches={signalIndex === 0 ? "state" : "state,progress"}
+      data-rive-semantic-dispatches="stage,overallProgress,activeRequirement,requirementProgress,isReady"
       data-rive-reduced-pose={JSON.stringify(riveAssets.finaleMechanism.reducedPose)}
     >
       <RiveStatefulObject
         asset={riveAssets.finaleMechanism}
         mode={mode}
         label={`Finale mechanism, ${pose}; ${completed} of ${total} progress`}
-        signal={activeSignal}
+        signals={signals}
         reducedMotion={{
           stablePose: riveAssets.finaleMechanism.reducedPose,
           allowedSemanticSignals: riveAssets.finaleMechanism.reducedSemanticSignals,
         }}
-        onStatus={handleRuntimeStatus}
+        onStatus={publishStatus}
       />
     </div>
   );
@@ -539,7 +515,7 @@ export function FinaleChamber({
   const completed = snapshot.finale.requirements.reduce((sum, item) => sum + Math.min(item.current, item.target), 0);
   const total = snapshot.finale.requirements.reduce((sum, item) => sum + item.target, 0);
   const progress = total > 0 ? completed / total : 0;
-  const stateValue = riveAssets.finaleMechanism.states.indexOf(pose);
+  const stateValue = finaleMechanismStage[pose];
   const fallbackSemantics = finaleFallbackSemantics[pose];
   const mechanismLifecycleIdentity = [
     snapshot.campaign.slug,

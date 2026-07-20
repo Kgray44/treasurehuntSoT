@@ -8,7 +8,7 @@ import { AssetFallback } from "./AssetFallback";
 
 export type RiveRuntimeInput = { name: string; type: "boolean" | "number" | "trigger"; value?: boolean | number };
 export type RiveSignal = { name: string; value?: boolean | number; nonce: number };
-export type RiveRuntimeStatus = "loading" | "ready" | "failed" | "fallback";
+export type RiveRuntimeStatus = "loading" | "ready" | "timed-out" | "failed" | "fallback" | "paused" | "hidden";
 export type RiveMotionPolicy = Pick<ResolvedMotionPolicy, "level" | "allowRiveStateTravel">;
 export type RiveReducedMotionContract = {
   stablePose?: Readonly<Record<string, boolean | number>>;
@@ -26,6 +26,7 @@ export function RiveStatefulObject({
   label,
   className = "",
   signal,
+  signals,
   motionPolicy,
   reducedMotion,
   onInputs,
@@ -36,6 +37,11 @@ export function RiveStatefulObject({
   label: string;
   className?: string;
   signal?: RiveSignal;
+  /**
+   * The latest authoritative input set. Runtime arrival is intentionally collapsed to this
+   * snapshot so a delayed Rive load cannot replay stale hover or validating signals.
+   */
+  signals?: readonly RiveSignal[];
   motionPolicy?: RiveMotionPolicy;
   reducedMotion?: RiveReducedMotionContract;
   onInputs?: (inputs: RiveRuntimeInput[]) => void;
@@ -75,6 +81,7 @@ export function RiveStatefulObject({
       label={label}
       className={className}
       signal={signal}
+      signals={signals}
       motionPolicy={motionPolicy}
       reducedMotion={reducedMotion}
       onInputs={onInputs}
