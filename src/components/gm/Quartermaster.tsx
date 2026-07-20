@@ -724,7 +724,7 @@ function QuartermasterLoginHost({
         className="chart-room-light"
       />
       <LoginTarget part="cabin-door" targetKey="quartermaster-login:cabin-door" className="cabin-door">
-        <span>Captain&apos;s Console access</span>
+        <span>Captain’s Console access</span>
         <LoginTarget as="i" part="door-bolt" targetKey="quartermaster-login:door-bolt" />
         <LoginTarget part="lock" targetKey="quartermaster-login:lock" className="door-keyhole">
           <RiveStatefulObject asset={riveAssets.invitationSeal} mode={mode} label="Captain's Console door lock" />
@@ -1234,8 +1234,8 @@ export function Quartermaster({ authenticated }: { authenticated: boolean }) {
           className="login-door-dust"
         />
         <section className="login-ledger">
-          <p className="eyebrow">Restricted Captain&apos;s Console</p>
-          <h1>Captain&apos;s Console</h1>
+          <p className="eyebrow">Restricted Captain’s Console</p>
+          <h1>Captain’s Console</h1>
           <p>Captain, sign in before changing Voyage progress.</p>
           <form onSubmit={login} aria-busy={busy} aria-describedby={error ? "quartermaster-login-error" : undefined}>
             <label>
@@ -1277,7 +1277,7 @@ export function Quartermaster({ authenticated }: { authenticated: boolean }) {
     );
   }
 
-  if (!status) return <main className="quartermaster-shell loading-quarters">Opening Captain&apos;s Console...</main>;
+  if (!status) return <main className="quartermaster-shell loading-quarters">Opening Captain’s Console...</main>;
   const selectedPreflight = selected ? commandPreflight(selected, status) : null;
 
   return (
@@ -1292,7 +1292,7 @@ export function Quartermaster({ authenticated }: { authenticated: boolean }) {
       <header className="quartermaster-header">
         <div>
           <p className="eyebrow">Live Voyage control</p>
-          <h1>Captain&apos;s Console</h1>
+          <h1>Captain’s Console</h1>
         </div>
         <div className="gm-header-tools">
           <a href="/studio">Voyagewright Studio</a>
@@ -1364,7 +1364,7 @@ export function Quartermaster({ authenticated }: { authenticated: boolean }) {
           animate="enter"
           custom={1}
         >
-          <p className="card-kicker">Crew&apos;s current view</p>
+          <p className="card-kicker">Crew’s current view</p>
           <div className="mini-page">
             <span>{status.chapter.state}</span>
             <strong>{status.preview.chapter.objective ?? "Awaiting the Captain's signal."}</strong>

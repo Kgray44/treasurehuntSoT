@@ -77,7 +77,9 @@ describe("StaffSignIn", () => {
 
     submitCaptainSignIn();
 
-    expect(await screen.findByRole("alert")).toHaveTextContent("Sign-in failed. Please try again.");
+    expect(await screen.findByRole("alert")).toHaveTextContent(
+      "We couldn't sign you in. Check your details, then try again.",
+    );
     expect(fetch).toHaveBeenCalledOnce();
     expect(navigation.push).not.toHaveBeenCalled();
   });

@@ -245,7 +245,7 @@ export function PlayerSignIn({
       <section className="auth-ledger" aria-labelledby="player-sign-in-title">
         <p className="eyebrow">Player waters</p>
         <h1 id="player-sign-in-title">Open your Chronicle Library</h1>
-        <p>Sign in to continue remembered voyages, or enter the short code from a Captain&apos;s invitation.</p>
+        <p>Sign in to continue remembered voyages, or enter the short code from a Captain’s invitation.</p>
         {authenticated && (
           <Link className="brass-button auth-continue" href={nextHref}>
             {nextHref === "/player/invitation" ? "Return to invitation" : "Continue to my library"}

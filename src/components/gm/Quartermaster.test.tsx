@@ -282,8 +282,8 @@ describe("Quartermaster command presentation receipts", () => {
     expect(loginHost?.querySelectorAll("[data-scene-part]")).toHaveLength(6);
     expect(loginHost?.querySelectorAll('[data-runtime-boundary="gsap"]')).toHaveLength(6);
     expect(loginHost?.querySelector("[data-gsap-owned]")).toBeNull();
-    expect(screen.getByLabelText("Captain's name").closest("[data-scene-host-boundary]")).toBeNull();
-    fireEvent.change(screen.getByLabelText("Captain's name"), { target: { value: "captain" } });
+    expect(screen.getByLabelText("Captain name").closest("[data-scene-host-boundary]")).toBeNull();
+    fireEvent.change(screen.getByLabelText("Captain name"), { target: { value: "captain" } });
     fireEvent.change(screen.getByLabelText("Passphrase"), { target: { value: "safe-development-passphrase" } });
 
     fireEvent.click(screen.getByRole("button", { name: "Enter the chart room" }));
@@ -313,13 +313,13 @@ describe("Quartermaster command presentation receipts", () => {
     });
     vi.stubGlobal("fetch", fetchMock);
     renderQuartermaster(false);
-    fireEvent.change(screen.getByLabelText("Captain's name"), { target: { value: "captain" } });
+    fireEvent.change(screen.getByLabelText("Captain name"), { target: { value: "captain" } });
     fireEvent.change(screen.getByLabelText("Passphrase"), { target: { value: "safe-development-passphrase" } });
 
     fireEvent.click(screen.getByRole("button", { name: "Enter the chart room" }));
 
-    const form = screen.getByLabelText("Captain's name").closest("form")!;
-    expect(await screen.findByRole("status")).toHaveTextContent("Sign-in accepted. Opening the chart room.");
+    const form = screen.getByLabelText("Captain name").closest("form")!;
+    expect(await screen.findByRole("status")).toHaveTextContent("Sign-in accepted. Opening Captain's Console.");
     expect(form).toHaveAttribute("aria-busy", "true");
     expect(screen.getByRole("button", { name: /Turning the key/u })).toBeDisabled();
     fireEvent.submit(form);
@@ -328,7 +328,7 @@ describe("Quartermaster command presentation receipts", () => {
 
     statusResponse.resolve(jsonResponse(statusAt(0)));
     expect(await screen.findByRole("heading", { name: "Test Voyage" })).toBeInTheDocument();
-    expect(screen.queryByLabelText("Captain's name")).not.toBeInTheDocument();
+    expect(screen.queryByLabelText("Captain name")).not.toBeInTheDocument();
   });
 
   it("restores a readable, focusable login after an authoritative rejection", async () => {
@@ -339,7 +339,7 @@ describe("Quartermaster command presentation receipts", () => {
     });
     vi.stubGlobal("fetch", fetchMock);
     renderQuartermaster(false);
-    const username = screen.getByLabelText("Captain's name");
+    const username = screen.getByLabelText("Captain name");
     fireEvent.change(username, { target: { value: "captain" } });
     fireEvent.change(screen.getByLabelText("Passphrase"), { target: { value: "wrong-development-passphrase" } });
 
@@ -356,7 +356,7 @@ describe("Quartermaster command presentation receipts", () => {
     animation.play.mockResolvedValue(presentationReceipt("missing-required-target"));
     vi.stubGlobal("fetch", fetchMock);
     renderQuartermaster(false);
-    const username = screen.getByLabelText("Captain's name");
+    const username = screen.getByLabelText("Captain name");
     fireEvent.change(username, { target: { value: "captain" } });
     fireEvent.change(screen.getByLabelText("Passphrase"), { target: { value: "safe-development-passphrase" } });
 
@@ -384,14 +384,14 @@ describe("Quartermaster command presentation receipts", () => {
     });
     vi.stubGlobal("fetch", fetchMock);
     renderQuartermaster(false);
-    const username = screen.getByLabelText("Captain's name");
+    const username = screen.getByLabelText("Captain name");
     fireEvent.change(username, { target: { value: "captain" } });
     fireEvent.change(screen.getByLabelText("Passphrase"), { target: { value: "safe-development-passphrase" } });
 
     fireEvent.click(screen.getByRole("button", { name: "Enter the chart room" }));
 
     expect(await screen.findByRole("alert")).toHaveTextContent(
-      "Sign-in succeeded, but the chart room could not be opened. Please try again.",
+      "Sign-in succeeded, but Captain's Console could not be opened. Please try again.",
     );
     expect(screen.getByRole("button", { name: "Enter the chart room" })).toBeEnabled();
     await waitFor(() => expect(username).toHaveFocus());
@@ -665,10 +665,10 @@ describe("Quartermaster command presentation receipts", () => {
 
     confirmPrepareChapter();
 
-    expect(await screen.findByText("Prepared action prepared-stage recorded at sequence 1.")).toBeInTheDocument();
-    expect(screen.queryByText(/Prepared action saved at sequence/u)).not.toBeInTheDocument();
-    await waitFor(() => expect(screen.getByText(/created no Player event/u)).toBeVisible());
-    expect(screen.getByText(/process publication was not attempted/u)).toBeVisible();
+    expect(await screen.findByText("Prepared action saved at sequence 1.")).toBeInTheDocument();
+    expect(screen.queryByText(/Prepared action prepared-stage recorded/u)).not.toBeInTheDocument();
+    await waitFor(() => expect(screen.getByText(/does not send a Crew event/u)).toBeVisible());
+    expect(screen.getByText(/Crew delivery, presentation, and acknowledgment remain unconfirmed/u)).toBeVisible();
   });
 
   it("submits a production artifact award through an isolated command host and explicit external slot", async () => {

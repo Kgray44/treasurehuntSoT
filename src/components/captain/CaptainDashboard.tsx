@@ -57,11 +57,11 @@ export function CaptainDashboard({ authenticated, taleFilter }: { authenticated:
     return (
       <main className="captain-auth">
         <section>
-          <p className="eyebrow">Captain&apos;s Console</p>
+          <p className="eyebrow">Captain’s Console</p>
           <h1>Captain access required</h1>
           <p>Sign in to open live Voyages and their controls.</p>
           <Link className="brass-button" href="/quartermaster">
-            Sign in to Captain&apos;s Console
+            Sign in to Captain’s Console
           </Link>
         </section>
       </main>
@@ -72,7 +72,7 @@ export function CaptainDashboard({ authenticated, taleFilter }: { authenticated:
         <div>
           <Link href="/">← Return to Voyagewright</Link>
           <p className="eyebrow">Live Voyage control</p>
-          <h1>Captain&apos;s Console</h1>
+          <h1>Captain’s Console</h1>
           <p>
             This Console refreshes server state every 2.5 seconds. Every progression action is recorded and auditable.
           </p>

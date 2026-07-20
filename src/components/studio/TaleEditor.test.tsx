@@ -153,9 +153,9 @@ describe("Voyagewright Studio editor motion and authority", () => {
     expect(motionWrapper.parentElement).toHaveAttribute("data-dnd-transform-owner", "true");
 
     fireEvent.click(card);
-    const title = await screen.findByRole("textbox", { name: "Block title" });
+    const title = await screen.findByRole("textbox", { name: "Passage title" });
     await waitFor(() => expect(title).toHaveFocus());
-    fireEvent.click(screen.getByRole("button", { name: "Close block inspector" }));
+    fireEvent.click(screen.getByRole("button", { name: "Close Passage inspector" }));
     await waitFor(() => expect(card).toHaveFocus());
   });
 
@@ -176,7 +176,7 @@ describe("Voyagewright Studio editor motion and authority", () => {
     render(<TaleEditor taleId="tale-1" authenticated />);
     await screen.findByRole("heading", { name: "A Test Chronicle" });
 
-    fireEvent.click(screen.getByRole("button", { name: "Validate" }));
+    fireEvent.click(screen.getByRole("button", { name: "Validate Chronicle" }));
     const issue = await screen.findByRole("button", { name: "Opening Scene needs a destination." });
     fireEvent.click(issue);
     const card = screen.getByText("Opening Scene").closest<HTMLElement>("article")!;
@@ -201,7 +201,7 @@ describe("Voyagewright Studio editor motion and authority", () => {
     render(<TaleEditor taleId="tale-1" authenticated />);
     const card = (await screen.findByText("Opening Scene")).closest<HTMLElement>("article")!;
     fireEvent.click(card);
-    fireEvent.click(await screen.findByRole("button", { name: "Delete block" }));
+    fireEvent.click(await screen.findByRole("button", { name: "Delete Passage" }));
     expect(screen.getByText("Opening Scene")).toBeInTheDocument();
 
     await act(async () => resolveDelete(response(200, { autosaveVersion: 4, savedAt: "2026-07-19T12:01:00.000Z" })));
@@ -226,7 +226,7 @@ describe("Voyagewright Studio editor motion and authority", () => {
     );
     render(<TaleEditor taleId="tale-1" authenticated />);
     await screen.findByRole("heading", { name: "A Test Chronicle" });
-    fireEvent.click(screen.getByRole("button", { name: "Publish" }));
+    fireEvent.click(screen.getByRole("button", { name: "Publish Chronicle" }));
     expect(screen.queryByText(/Version 4 sealed/)).not.toBeInTheDocument();
 
     await act(async () => resolvePublish(response(201, { versionLabel: "4" })));

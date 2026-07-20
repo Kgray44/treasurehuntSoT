@@ -348,7 +348,7 @@ export function PlayerLibrary() {
     >
       <header className="platform-header">
         <div>
-          <p className="eyebrow">{library.player.displayName}&apos;s collection</p>
+          <p className="eyebrow">{library.player.displayName}’s collection</p>
           <h1>My Chronicle Library</h1>
           <p>Invitations, active Voyages, and the exact Chronicle versions you experienced.</p>
         </div>

@@ -120,7 +120,7 @@ describe("CaptainLibrary motion and authority", () => {
     fireEvent.click(screen.getByRole("button", { name: "Begin Voyage" }));
 
     expect(screen.getByRole("button", { name: "Beginning..." })).toBeDisabled();
-    expect(screen.getByText("Recording this Voyage launch with the Captain's Console.")).toBeInTheDocument();
+    expect(screen.getByText("Recording this Voyage launch with the Captain’s Console.")).toBeInTheDocument();
     expect(screen.queryByText(/now live/)).not.toBeInTheDocument();
     launch.resolve(response(200, { ok: true }));
 

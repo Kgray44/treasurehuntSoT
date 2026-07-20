@@ -803,14 +803,14 @@ function VoyageCard({
             {launchPhase === "launched"
               ? "The server confirmed this Voyage is available to ready Crew."
               : launchPhase === "launching"
-                ? "Recording this Voyage launch with the Captain&apos;s Console."
+                ? "Recording this Voyage launch with the Captain’s Console."
                 : "Waiting for launch confirmation."}
           </span>
         </div>
       )}
       <div className="card-actions">
         <Link className="brass-button" href={`/captain/sessions/${voyage.id}`}>
-          Open Captain&apos;s Console
+          Open Captain’s Console
         </Link>
         <Link href={`/captain/voyages/${voyage.id}/player-preview`}>Preview Crew view</Link>
         {["READY", "SCHEDULED"].includes(voyage.status) && (

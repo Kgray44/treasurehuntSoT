@@ -433,7 +433,7 @@ describe("admin command receipts and concurrency", () => {
       executeAdminCommand(input, "gm-1", { correlationId: "request-correlation-failure" }),
     ).rejects.toMatchObject({
       correlationId: "request-correlation-failure",
-      message: "The command could not be completed.",
+      message: "The Voyage action could not be completed. No progress has changed.",
     } satisfies Partial<CommandFailure>);
 
     expect(dependencies.db.commandExecution.create).toHaveBeenCalledWith({

@@ -512,8 +512,7 @@ export function InvitationCeremony({ onRouteHandoff }: { onRouteHandoff?: Invita
           )}
         </div>
         <p className="eyebrow">
-          A Captain&apos;s invitation for{" "}
-          <span className="invitation-handwritten-name">{invitation.recipientName}</span>
+          A Captain’s invitation for <span className="invitation-handwritten-name">{invitation.recipientName}</span>
         </p>
         <h1 id="invitation-state-title" tabIndex={-1}>
           {tale?.title ?? "A Chronicle awaits"}

@@ -177,9 +177,9 @@ export function NewTaleForm({ authenticated }: { authenticated: boolean }) {
           <label>
             <span>Theme</span>
             <select name="theme">
-              <option value="CARTOGRAPHERS_TABLE">Cartographer&apos;s Table</option>
+              <option value="CARTOGRAPHERS_TABLE">Cartographer’s Table</option>
               <option value="MOONLIT_JOURNAL">Moonlit Journal</option>
-              <option value="CAPTAINS_CABIN">Captain&apos;s Cabin</option>
+              <option value="CAPTAINS_CABIN">Captain’s Cabin</option>
             </select>
           </label>
           <label className="wide">

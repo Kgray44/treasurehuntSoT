@@ -122,7 +122,7 @@ export function CaptainSessionControl({ sessionId, authenticated }: { sessionId:
       <main className="captain-auth">
         <section>
           <h1>Captain access required</h1>
-          <Link href="/quartermaster">Sign in to Captain&apos;s Console</Link>
+          <Link href="/quartermaster">Sign in to Captain’s Console</Link>
         </section>
       </main>
     );
@@ -159,7 +159,7 @@ export function CaptainSessionControl({ sessionId, authenticated }: { sessionId:
       )}
       <div className="session-control-grid">
         <section className="current-state">
-          <p className="card-kicker">Crew&apos;s current Passage</p>
+          <p className="card-kicker">Crew’s current Passage</p>
           <h2>{state.chapter?.title}</h2>
           <h3>{state.block?.title}</h3>
           <span>{state.block?.blockType}</span>
