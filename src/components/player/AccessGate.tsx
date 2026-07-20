@@ -16,12 +16,13 @@ import { pressable } from "@/animation/motion/variants";
 import { LottieEffect } from "@/components/animation/LottieEffect";
 import { RiveStatefulObject } from "@/components/animation/RiveStatefulObject";
 import { AnimationTestButton } from "@/components/dev/AnimationTestButton";
+import { platformCopy } from "@/language/platform-copy";
 
 const accessFinalState = "access-result-readable";
 const accessFallback = "readable-access-result";
-const genericAccessError = "The invitation could not be recognized.";
-const presentationAccessError = "The invitation could not be opened safely. Please try again.";
-const accessSuccessStatus = "Invitation accepted. Opening the journal.";
+const genericAccessError = "This invitation could not be confirmed. Check the phrase, then try again.";
+const presentationAccessError = "The invitation could not be confirmed safely. Your access has not changed. Try again.";
+const accessSuccessStatus = `${platformCopy.invitationAccepted.value} Opening your Voyage Journal.`;
 const accessTargetProperties = {
   invitation: ["transform"],
   "invitation-ink": ["filter", "opacity"],
@@ -326,7 +327,7 @@ export function AccessGate({
         } catch {
           restoreInteractiveFailure(
             controller,
-            "Invitation accepted, but the journal could not be opened. Please try again.",
+            "Invitation accepted, but the Voyage Journal could not be opened. Your access is preserved. Try again.",
           );
         }
       } else if (mounted.current && !controller.signal.aborted) {
@@ -388,10 +389,9 @@ export function AccessGate({
         <AccessHostBridge onReady={(host) => (accessHost.current = host)} mode={mode} />
       </SceneHost>
       <section className="access-card" aria-labelledby="invitation-title">
-        <p className="recipient-line">For the sailor named by the moon</p>
         <p className="eyebrow">Private invitation</p>
-        <h1 id="invitation-title">The journal knows its sailor</h1>
-        <p>Speak the phrase tucked inside your invitation. Nothing beyond the seal has been sent to this page.</p>
+        <h1 id="invitation-title">Confirm your invitation</h1>
+        <p>Enter the phrase provided by your Captain. This Chronicle remains unavailable until the phrase is confirmed.</p>
         <form onSubmit={submit} aria-busy={busy}>
           <label htmlFor="accessCode">Invitation phrase</label>
           <input
@@ -405,11 +405,11 @@ export function AccessGate({
             aria-describedby={error ? "access-error" : undefined}
           />
           <motion.button className="brass-button" disabled={busy} {...pressable(mode)}>
-            {busy ? "Listening to the tide…" : "Open the journal"}
+            {busy ? "Confirming invitation…" : "Confirm invitation"}
           </motion.button>
           {error && (
             <p id="access-error" className="form-error captain-note" role="alert">
-              Captain&apos;s note: {error}
+              {error}
             </p>
           )}
           {status && (
@@ -420,7 +420,7 @@ export function AccessGate({
         </form>
         {snapshot.phase === "await-server" && (
           <p className="access-listening" role="status">
-            The seal is listening. The locked page remains closed.
+            Confirming your invitation. This page remains protected.
           </p>
         )}
       </section>

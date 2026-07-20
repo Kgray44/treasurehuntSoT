@@ -156,7 +156,7 @@ function renderAccess(
 function submitAccess(onRouteHandoff?: (signal: AbortSignal) => void | Promise<void>) {
   const view = renderAccess(onRouteHandoff);
   fireEvent.change(screen.getByLabelText("Invitation phrase"), { target: { value: "moonlit-secret" } });
-  fireEvent.click(screen.getByRole("button", { name: "Open the journal" }));
+  fireEvent.click(screen.getByRole("button", { name: "Confirm invitation" }));
   return view;
 }
 
@@ -245,9 +245,9 @@ describe("AccessGate typed presentation receipts", () => {
     const host = document.querySelector<HTMLElement>('[data-scene-host-boundary="access"]')!;
     installCinematicGeometry(host);
     fireEvent.change(screen.getByLabelText("Invitation phrase"), { target: { value: "moonlit-secret" } });
-    fireEvent.click(screen.getByRole("button", { name: "Open the journal" }));
+    fireEvent.click(screen.getByRole("button", { name: "Confirm invitation" }));
 
-    expect(await screen.findByRole("status")).toHaveTextContent("Invitation accepted. Opening the journal.");
+    expect(await screen.findByRole("status")).toHaveTextContent("Invitation accepted. Opening your Voyage Journal.");
     expect(handoff).toHaveBeenCalledOnce();
     const committedStyle = committedSeal.getAttribute("style");
     expect(committedSeal).toHaveStyle({ opacity: "0", filter: "drop-shadow(0 0 24px #dcae63)" });
@@ -288,7 +288,7 @@ describe("AccessGate typed presentation receipts", () => {
     expect(options.signal).toBeInstanceOf(AbortSignal);
     finishPresentation?.();
     await waitFor(() => expect(mocks.refresh).toHaveBeenCalledOnce());
-    expect(await screen.findByRole("status")).toHaveTextContent("Invitation accepted. Opening the journal.");
+    expect(await screen.findByRole("status")).toHaveTextContent("Invitation accepted. Opening your Voyage Journal.");
   });
 
   it("shows the authoritative operation failure and never refreshes as success", async () => {
@@ -305,7 +305,7 @@ describe("AccessGate typed presentation receipts", () => {
 
     expect(await screen.findByRole("alert")).toHaveTextContent("That invitation could not be recognized.");
     expect(mocks.refresh).not.toHaveBeenCalled();
-    expect(screen.getByRole("button", { name: "Open the journal" })).toBeEnabled();
+    expect(screen.getByRole("button", { name: "Confirm invitation" })).toBeEnabled();
     await waitFor(() => expect(screen.getByLabelText("Invitation phrase")).toHaveFocus());
   });
 
@@ -317,7 +317,7 @@ describe("AccessGate typed presentation receipts", () => {
     submitAccess();
 
     expect(await screen.findByRole("alert")).toHaveTextContent(
-      "The invitation could not be opened safely. Please try again.",
+      "The invitation could not be confirmed safely. Your access has not changed. Try again.",
     );
     expect(fetch).not.toHaveBeenCalled();
     expect(mocks.refresh).not.toHaveBeenCalled();
@@ -335,7 +335,7 @@ describe("AccessGate typed presentation receipts", () => {
     submitAccess();
 
     expect(await screen.findByRole("alert")).toHaveTextContent(
-      "The invitation could not be opened safely. Please try again.",
+      "The invitation could not be confirmed safely. Your access has not changed. Try again.",
     );
     expect(mocks.refresh).not.toHaveBeenCalled();
   });
@@ -364,7 +364,7 @@ describe("AccessGate typed presentation receipts", () => {
 
     submitAccess();
 
-    expect(await screen.findByRole("status")).toHaveTextContent("Invitation accepted. Opening the journal.");
+    expect(await screen.findByRole("status")).toHaveTextContent("Invitation accepted. Opening your Voyage Journal.");
     await waitFor(() => expect(mocks.refresh).toHaveBeenCalledOnce());
     expect(fetch).toHaveBeenCalledOnce();
     expect(screen.queryByRole("alert")).not.toBeInTheDocument();
@@ -437,7 +437,7 @@ describe("AccessGate typed presentation receipts", () => {
 
     expect(await screen.findByRole("status")).toHaveTextContent("Invitation accepted");
     expect(screen.getByRole("main")).toHaveAttribute("data-access-state", "accepted");
-    const form = screen.getByRole("button", { name: "Listening to the tide…" }).closest("form")!;
+    const form = screen.getByRole("button", { name: "Confirming invitation…" }).closest("form")!;
     fireEvent.submit(form);
 
     expect(fetch).toHaveBeenCalledOnce();
@@ -457,11 +457,11 @@ describe("AccessGate typed presentation receipts", () => {
     submitAccess(() => Promise.reject(new Error("route failed")));
 
     expect(await screen.findByRole("alert")).toHaveTextContent(
-      "Invitation accepted, but the journal could not be opened",
+      "Invitation accepted, but the Voyage Journal could not be opened",
     );
     expect(screen.getByRole("main")).toHaveAttribute("data-access-state", "rejected");
     expect(screen.queryByRole("status")).not.toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Open the journal" })).toBeEnabled();
+    expect(screen.getByRole("button", { name: "Confirm invitation" })).toBeEnabled();
     await waitFor(() => expect(screen.getByLabelText("Invitation phrase")).toHaveFocus());
   });
 

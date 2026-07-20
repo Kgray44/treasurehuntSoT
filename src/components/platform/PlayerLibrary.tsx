@@ -9,6 +9,8 @@ import { consumeOneShot, platformOneShotKey } from "@/animation/platform/one-sho
 import { reconcileVersionedRows } from "@/animation/platform/polling-delta";
 import { platformMotionEasing, resolvePlatformMotionToken } from "@/animation/platform/motion-tokens";
 import { EmptyState, ErrorState, LoadingState, StatusBanner } from "@/components/ui/AsyncState";
+import { platformCopy } from "@/language/platform-copy";
+import { playerCopy } from "@/language/player-copy";
 
 export type PlayerLibraryCard = {
   id: string;
@@ -52,11 +54,11 @@ type VersionedCard = { group: GroupKey; card: PlayerLibraryCard };
 type PreferenceAction = "pin" | "unpin" | "hide" | "show";
 
 const groupLabels: Array<[GroupKey, string, string]> = [
-  ["invitations", "Invitations", "Sealed invitations awaiting your answer"],
-  ["awaitingCaptain", "Awaiting Captain", "Accepted voyages preparing to launch"],
-  ["inProgress", "In Progress", "Living Tall Tales ready to continue"],
-  ["completed", "Voyage Archive", "Permanent records of completed playthroughs"],
-  ["replayOrNewEdition", "Replay and New Editions", "Only voyages explicitly offered to you"],
+  ["invitations", "Invitations", "Invitations awaiting your answer"],
+  ["awaitingCaptain", playerCopy.awaitingCaptain.value, "Accepted Voyages preparing to begin"],
+  ["inProgress", platformCopy.activeVoyages.value, "Voyages ready to continue"],
+  ["completed", platformCopy.voyageHistory.value, "Preserved records of completed Voyages"],
+  ["replayOrNewEdition", "New Voyages and editions", "Voyages explicitly offered to you"],
   ["expiredOrRevoked", "Closed Invitations", "Expired, declined, or revoked access"],
 ];
 
@@ -174,7 +176,7 @@ export function PlayerLibrary() {
         const body = (await response.json()) as Library & { error?: string };
         if (!response.ok) {
           setConfirmed(false);
-          setError(body.error ?? "Your Tall Tale Library is unavailable.");
+          setError(body.error ?? "Your Chronicle Library is unavailable.");
           return;
         }
         requestSequence.current += 1;
@@ -183,7 +185,7 @@ export function PlayerLibrary() {
       } catch (cause) {
         if (cause instanceof DOMException && cause.name === "AbortError") return;
         setConfirmed(false);
-        setError("Your Tall Tale Library could not be reached. Check your connection and try again.");
+        setError("Your Chronicle Library could not be reached. Check your connection, then try again.");
       } finally {
         if (activeLoad.current === controller) activeLoad.current = null;
       }
@@ -240,7 +242,7 @@ export function PlayerLibrary() {
       markChanged([card.id]);
       if (action === "hide") setHiddenUndo(hidden);
       setNotice(
-        action === "hide" ? "The Tall Tale was hidden. Undo remains available." : "Your library preference was saved.",
+        action === "hide" ? "The Chronicle was hidden. Undo remains available." : "Your library preference was saved.",
       );
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : "The library preference could not be saved.");
@@ -263,11 +265,11 @@ export function PlayerLibrary() {
       };
       libraryRef.current = committed;
       setLibrary(committed);
-      setNotice("The Tall Tale was restored to your library.");
+      setNotice("The Chronicle was restored to your library.");
       markChanged([hiddenUndo.card.id], [hiddenUndo.card.id]);
       setHiddenUndo(null);
     } catch (cause) {
-      setError(cause instanceof Error ? cause.message : "The Tall Tale could not be restored.");
+      setError(cause instanceof Error ? cause.message : "The Chronicle could not be restored.");
     } finally {
       setBusyCard("");
     }
@@ -320,7 +322,7 @@ export function PlayerLibrary() {
     return (
       <main className="player-library platform-loading">
         <ErrorState
-          title="Your library could not be opened"
+          title="Your Chronicle Library could not be opened"
           detail={error}
           action={{ label: "Try Again", onClick: () => void load() }}
         />
@@ -330,8 +332,8 @@ export function PlayerLibrary() {
     return (
       <main className="player-library platform-loading">
         <LoadingState
-          title="Opening your Tall Tale Library"
-          detail="Loading invitations, active stories, and history."
+          title={`Opening your ${platformCopy.chronicleLibrary.value}`}
+          detail="Loading invitations, active Voyages, and Voyage History."
         />
       </main>
     );
@@ -347,8 +349,8 @@ export function PlayerLibrary() {
       <header className="platform-header">
         <div>
           <p className="eyebrow">{library.player.displayName}&apos;s collection</p>
-          <h1>My Tall Tale Library</h1>
-          <p>Invitations, active adventures, and the exact historical editions you experienced.</p>
+          <h1>My Chronicle Library</h1>
+          <p>Invitations, active Voyages, and the exact Chronicle versions you experienced.</p>
         </div>
         <div className="library-truth" data-confirmed={confirmed}>
           <i />
@@ -368,7 +370,7 @@ export function PlayerLibrary() {
         </StatusBanner>
       )}
       {library.total > 0 && (
-        <section className="library-tools" aria-label="Search and filter Tall Tales">
+        <section className="library-tools" aria-label="Search and filter Chronicles">
           <label>
             <span>Search</span>
             <input
@@ -414,23 +416,23 @@ export function PlayerLibrary() {
             </button>
           </div>
           <p className="sr-only" role="status" aria-live="polite">
-            {resultCount} Tall Tale {resultCount === 1 ? "result" : "results"}
+            {resultCount} {resultCount === 1 ? "Chronicle result" : "Chronicle results"}
           </p>
         </section>
       )}
       {!library.total ? (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
           <EmptyState
-            title="Your library is ready for its first Tall Tale"
-            detail="Accept a Captain's invitation, enter a short code, or explore public Tall Tales to begin."
+            title={platformCopy.noChronicles.value}
+            detail="Accept a Captain's invitation, enter a short code, or explore published Chronicles to begin a Voyage."
             action={{ label: "Join with an Invitation", href: "/player/sign-in#invitation-code" }}
           />
         </motion.div>
       ) : !groups.length ? (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
           <EmptyState
-            title="No Tall Tales match these filters"
-            detail="Broaden your search or return to all story states."
+            title="No Chronicles match these filters"
+            detail="Broaden your search or return to all Voyage states."
             action={{
               label: "Clear Filters",
               onClick: () => {
@@ -556,8 +558,12 @@ function PlayerTaleCard({
         </p>
         <h3>{card.title}</h3>
         {card.subtitle && <h4>{card.subtitle}</h4>}
-        <p>{card.shortDescription ?? "A Tall Tale waits inside this volume."}</p>
-        {card.state === "AWAITING_CAPTAIN" && <p className="sr-only">Waiting for the Captain to launch this voyage.</p>}
+        <p>{card.shortDescription ?? "A Chronicle is ready when the Captain opens the next Passage."}</p>
+        {card.state === "AWAITING_CAPTAIN" && (
+          <p className="sr-only">
+            {playerCopy.awaitingCaptain.value}. {playerCopy.awaitingCaptainDetail.value}
+          </p>
+        )}
         <dl>
           <div>
             <dt>Captain</dt>

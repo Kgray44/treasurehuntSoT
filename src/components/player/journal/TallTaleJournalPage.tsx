@@ -19,7 +19,7 @@ export function TallTaleJournalPageContent({ page, assets }: { page: TallTaleJou
       <span className="folio">â€” {page.folio} â€”</span>
       {page.kind === "title" && (
         <>
-          <p className="eyebrow">Tall Tale journal</p>
+          <p className="eyebrow">Chronicle Journal</p>
           <h3>{page.title}</h3>
           <p className="journal-prose">{page.body}</p>
           <div className="journal-compass-mark" aria-hidden="true">
@@ -298,7 +298,7 @@ function splitCopy(value: string, part: "primary" | "secondary", split: boolean)
 
 function journalEyebrow(block: PlayerJournalBlock) {
   const labels: Record<PlayerJournalBlock["journalKind"], string> = {
-    story: "Story page",
+    story: "Narrative Passage",
     riddle: "Riddle in the margin",
     map: "Voyage chart",
     artifact: "Recovered artifact",
@@ -307,7 +307,7 @@ function journalEyebrow(block: PlayerJournalBlock) {
     locationVerification: "Location verification",
     message: "Sealed message",
     cinematic: "Cinematic passage",
-    chapterComplete: block.blockType === "taleComplete" ? "Tall Tale complete" : "Chapter complete",
+    chapterComplete: block.blockType === "taleComplete" ? "Chronicle complete" : "Chapter complete",
   };
   return labels[block.journalKind];
 }

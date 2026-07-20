@@ -158,11 +158,11 @@ export function SideQuestLedger({
       {
         id: "quest-cover",
         density: "hard",
-        label: "Side-Quest Ledger cover",
+        label: "Echo Ledger cover",
         content: (
           <div className="quest-ledger-cover">
-            <span>Optional courses</span>
-            <h3>Whispers & Bearings</h3>
+            <span>Optional Echoes</span>
+            <h3>Echo Ledger</h3>
             <i aria-hidden="true" />
           </div>
         ),
@@ -170,13 +170,13 @@ export function SideQuestLedger({
       {
         id: "quest-dividers",
         density: "hard",
-        label: "Quest section dividers",
+        label: "Echo section dividers",
         content: (
           <div className="quest-divider-page">
             <span>Rumor</span>
             <span>Active</span>
             <span>Complete</span>
-            <p>Optional mysteries may enrich the voyage. They never bar the main course.</p>
+            <p>Echoes are optional discoveries. They never prevent progress through the Voyage.</p>
           </div>
         ),
       },
@@ -211,7 +211,7 @@ export function SideQuestLedger({
         {
           id: `${quest.key}-objectives`,
           density: "soft" as const,
-          label: `${quest.title ?? "Quest"} objectives`,
+          label: `${quest.title ?? "Echo"} objectives`,
           content: (
             <div className="quest-ledger-page objective-list">
               <p className="eyebrow">Pinned objectives</p>
@@ -274,12 +274,12 @@ export function SideQuestLedger({
     >
       <header className="section-masthead">
         <div>
-          <p className="eyebrow">Optional mysteries</p>
-          <h2 id="quest-heading">Side-Quest Ledger</h2>
+          <p className="eyebrow">Optional Echoes</p>
+          <h2 id="quest-heading">Echo Ledger</h2>
         </div>
-        <p>A rough leather book of correspondence, ciphers, and routes that never block the tale.</p>
+        <p>Optional discoveries and context that never block progress through the Chronicle.</p>
       </header>
-      <div className="ledger-filter" role="group" aria-label="Filter side quests">
+      <div className="ledger-filter" role="group" aria-label="Filter Echoes">
         {(["all", "rumor", "active", "complete"] as Filter[]).map((item) => (
           <button key={item} aria-pressed={filter === item} onClick={() => setFilter(item)}>
             {item}

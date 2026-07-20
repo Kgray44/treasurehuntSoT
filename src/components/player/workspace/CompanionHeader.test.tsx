@@ -60,7 +60,7 @@ describe("CompanionHeader animation boundary", () => {
     expect(view.container.querySelector('[data-scene-part="peripheral"]')).toBeNull();
     expect(header.querySelector("button[data-gsap-owned]")).toBeNull();
 
-    expect(screen.getByText("Tide connected")).toHaveAttribute("aria-live", "polite");
+    expect(screen.getByText("Connected")).toHaveAttribute("aria-live", "polite");
     fireEvent.click(screen.getByRole("button", { name: "Sound on" }));
     fireEvent.click(screen.getByRole("button", { name: "Motion: reduced. Change motion setting" }));
     expect(toggleMute).toHaveBeenCalledOnce();

@@ -290,8 +290,8 @@ function ShipsLogContents({
     <>
       <header className="section-masthead">
         <div>
-          <p className="eyebrow">Chronicle of the voyage</p>
-          <h2 id={headingId}>Ship&apos;s Log</h2>
+          <p className="eyebrow">Chronicle activity</p>
+          <h2 id={headingId}>Voyage Log</h2>
         </div>
         <p>Dated entries, weather marks, moon phases, and routes back to the physical workspace.</p>
       </header>
@@ -301,8 +301,8 @@ function ShipsLogContents({
           <option value="all">All entries</option>
           <option value="journal">Journal</option>
           <option value="chart">Chart</option>
-          <option value="treasures">Treasures</option>
-          <option value="quests">Quests</option>
+          <option value="treasures">Artifacts</option>
+          <option value="quests">Echoes</option>
           <option value="finale">Finale</option>
         </select>
       </label>
@@ -324,8 +324,8 @@ function ShipsLogContents({
       ) : (
         <div className="physical-empty">
           <span aria-hidden="true">◇</span>
-          <h3>The log awaits its first line</h3>
-          <p>Released voyage events will be recorded here without inventing private details.</p>
+          <h3>Nothing has been recorded yet</h3>
+          <p>Released Voyage events will appear here without revealing private details.</p>
         </div>
       )}
     </>

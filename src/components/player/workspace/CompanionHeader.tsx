@@ -10,6 +10,7 @@ import type {
   ExternalTargetExportRequest,
   SceneTargetHandle,
 } from "@/animation/hosts/scene-host-types";
+import { canonicalTerms } from "@/language/canonical-terms";
 
 export const companionHeaderDimTargetKey = "companion-header-dim" as const;
 
@@ -104,13 +105,13 @@ export function CompanionHeader({
         style={companionHeaderDimStyle}
       />
       <div className="companion-title">
-        <p className="eyebrow">The Forever Treasure</p>
-        <h1>Voyage Companion</h1>
+        <p className="eyebrow">{canonicalTerms.product}</p>
+        <h1>{canonicalTerms.player}</h1>
       </div>
       <div className="companion-controls">
         <motion.span layout className={`connection ${connection}`} aria-live="polite">
           <i aria-hidden="true" />
-          {connection === "live" ? "Tide connected" : connection === "adrift" ? "Signal adrift" : "Finding the tide"}
+          {connection === "live" ? "Connected" : connection === "adrift" ? "Connection lost" : "Connecting"}
         </motion.span>
         <button onClick={toggleMute} aria-pressed={muted}>
           {muted ? "Sound off" : "Sound on"}

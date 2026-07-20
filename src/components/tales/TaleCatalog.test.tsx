@@ -55,11 +55,11 @@ describe("TaleCatalog", () => {
     expect(screen.getByRole("heading", { name: "Harbor Homecoming" })).toBeInTheDocument();
 
     fireEvent.change(screen.getByLabelText("Progress"), { target: { value: "IN_PROGRESS" } });
-    expect(screen.getByRole("heading", { name: "No Tall Tales match these filters" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "No Chronicles match these filters" })).toBeInTheDocument();
 
     fireEvent.click(screen.getByRole("button", { name: "Clear Filters" }));
     expect(screen.getByRole("heading", { name: "The Lantern Test" })).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: "Resume Story" })).toHaveAttribute(
+    expect(screen.getByRole("link", { name: "Continue Voyage" })).toHaveAttribute(
       "href",
       "/play/lantern-test/session/session-1",
     );
