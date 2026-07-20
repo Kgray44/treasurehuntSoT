@@ -6,9 +6,9 @@ import { setTaleSessionCookie } from "@/tall-tale/session-cookie";
 
 export async function POST(request: Request, context: { params: Promise<{ taleId: string }> }) {
   const session = await requireGmCapability("CREATE_TALES");
-  if (!session) return NextResponse.json({ error: "Creator authentication required." }, { status: 401 });
+  if (!session) return NextResponse.json({ error: "Sign in with a creator account to continue." }, { status: 401 });
   if (!(await verifyCsrf(session)))
-    return NextResponse.json({ error: "The creator session expired." }, { status: 403 });
+    return NextResponse.json({ error: "Your creator session has expired. Reload the page and try again." }, { status: 403 });
   try {
     const body = (await request.json().catch(() => ({}))) as { blockId?: string };
     const preview = await startPreviewSession((await context.params).taleId, session.userId, body.blockId);

@@ -21,7 +21,7 @@ export function apiError(cause: unknown) {
                 ? cause.code
                 : "REQUEST_FAILED",
     },
-    "Tall Tale request rejected",
+    "Voyagewright request rejected",
   );
   if (cause instanceof DraftConflictError)
     return NextResponse.json(

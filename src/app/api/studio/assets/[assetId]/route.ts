@@ -7,7 +7,7 @@ import { consumeRateLimit, rateLimitHeaders } from "@/lib/rate-limit";
 
 export async function GET(_: Request, context: { params: Promise<{ assetId: string }> }) {
   if (!(await requireGmCapability("MANAGE_ASSETS")))
-    return NextResponse.json({ error: "Asset permission required." }, { status: 403 });
+    return NextResponse.json({ error: "You do not have permission to manage assets in this Chronicle." }, { status: 403 });
   try {
     const asset = await db.taleAsset.findUniqueOrThrow({ where: { id: (await context.params).assetId } });
     return NextResponse.json({ usages: await assetUsages(asset.taleId, asset.id) });
@@ -25,7 +25,7 @@ export async function PATCH(request: Request, context: { params: Promise<{ asset
   const session = await authorized();
   if (!session)
     return NextResponse.json(
-      { error: "Asset permission and a current creator session are required." },
+      { error: "You do not have permission to manage assets in this Chronicle, or your creator session has expired." },
       { status: 403 },
     );
   try {
@@ -39,7 +39,7 @@ export async function PUT(request: Request, context: { params: Promise<{ assetId
   const session = await authorized();
   if (!session)
     return NextResponse.json(
-      { error: "Asset permission and a current creator session are required." },
+      { error: "You do not have permission to manage assets in this Chronicle, or your creator session has expired." },
       { status: 403 },
     );
   try {
@@ -63,7 +63,7 @@ export async function DELETE(_: Request, context: { params: Promise<{ assetId: s
   const session = await authorized();
   if (!session)
     return NextResponse.json(
-      { error: "Asset permission and a current creator session are required." },
+      { error: "You do not have permission to manage assets in this Chronicle, or your creator session has expired." },
       { status: 403 },
     );
   try {

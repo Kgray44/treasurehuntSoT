@@ -12,21 +12,21 @@ export async function validateTaleDraft(taleId: string): Promise<DraftValidation
   const error = (issue: Omit<ValidationIssue, "severity">) => errors.push({ ...issue, severity: "error" });
   const warn = (issue: Omit<ValidationIssue, "severity">) => warnings.push({ ...issue, severity: "warning" });
 
-  if (!studio.tale.title.trim()) error({ code: "TALE_TITLE", message: "The Tall Tale needs a title.", field: "title" });
+  if (!studio.tale.title.trim()) error({ code: "TALE_TITLE", message: "This Chronicle needs a title.", field: "title" });
   const slug = slugSchema.safeParse(studio.tale.slug);
   if (!slug.success)
     error({
       code: "TALE_SLUG",
-      message: slug.error.issues[0]?.message ?? "The tale address is invalid.",
+      message: "The Chronicle address must use lowercase letters, numbers, and hyphens.",
       field: "slug",
     });
-  if (!studio.draft.chapters.length) error({ code: "NO_CHAPTERS", message: "Add at least one chapter." });
+  if (!studio.draft.chapters.length) error({ code: "NO_CHAPTERS", message: "Add at least one Chapter." });
   if (!studio.tale.coverAssetId)
-    warn({ code: "NO_COVER", message: "Add cover artwork before featuring this tale.", field: "coverAssetId" });
+    warn({ code: "NO_COVER", message: "Add cover artwork before featuring this Chronicle.", field: "coverAssetId" });
   if (!studio.tale.estimatedDuration)
     warn({
       code: "NO_DURATION",
-      message: "Add an estimated duration for the player catalog.",
+      message: "Add an estimated duration for the Chronicle Library.",
       field: "estimatedDuration",
     });
 
@@ -41,7 +41,7 @@ export async function validateTaleDraft(taleId: string): Promise<DraftValidation
 
   for (const chapter of studio.draft.chapters) {
     if (!chapter.blocks.length) {
-      error({ code: "EMPTY_CHAPTER", message: `“${chapter.title}” needs an entry block.`, chapterId: chapter.id });
+      error({ code: "EMPTY_CHAPTER", message: `“${chapter.title}” needs an opening Passage.`, chapterId: chapter.id });
       continue;
     }
     if (!chapter.estimatedDuration)
@@ -55,7 +55,7 @@ export async function validateTaleDraft(taleId: string): Promise<DraftValidation
       if (!definition) {
         error({
           code: "UNKNOWN_BLOCK",
-          message: `“${block.title}” uses unknown block type ${block.blockType}.`,
+            message: `“${block.title}” uses an unrecognized Passage type.`,
           chapterId: chapter.id,
           blockId: block.id,
         });
@@ -77,7 +77,7 @@ export async function validateTaleDraft(taleId: string): Promise<DraftValidation
       if (futureProviders.has(provider))
         error({
           code: "FUTURE_PROVIDER_ACTIVE",
-          message: `${block.title} selects ${provider}, which is stored for future use but unavailable as an active Phase 1 provider.`,
+            message: `${block.title} uses a verification provider that is not available yet. Choose an available provider before publishing.`,
           chapterId: chapter.id,
           blockId: block.id,
           field: "verificationProvider",
@@ -130,7 +130,7 @@ export async function validateTaleDraft(taleId: string): Promise<DraftValidation
         if (!selected.variants.some((variant) => variant.processingState === "READY"))
           error({
             code: "ASSET_PROCESSING",
-            message: `${selected.displayName} has no ready player variant.`,
+            message: `${selected.displayName} has no ready Voyagewright Player version.`,
             chapterId: chapter.id,
             blockId: block.id,
             assetId,
@@ -159,7 +159,7 @@ export async function validateTaleDraft(taleId: string): Promise<DraftValidation
         if (!alignment || typeof alignment !== "object")
           warn({
             code: "NO_ALIGNMENT",
-            message: `${block.title} has no saved mobile/alignment treatment.`,
+            message: `${block.title} has no saved mobile alignment setting.`,
             chapterId: chapter.id,
             blockId: block.id,
             field: "alignment",
@@ -171,7 +171,7 @@ export async function validateTaleDraft(taleId: string): Promise<DraftValidation
         if (!blockIds.has(target))
           error({
             code: "BROKEN_CONNECTION",
-            message: `${block.title} points to a story block that no longer exists.`,
+            message: `${block.title} points to a Passage that no longer exists.`,
             chapterId: chapter.id,
             blockId: block.id,
           });
@@ -224,11 +224,11 @@ export async function validateTaleDraft(taleId: string): Promise<DraftValidation
     }
   }
   if (!taleCompleteCount)
-    error({ code: "NO_TALE_COMPLETE", message: "Add a Tale Complete block so the runtime has a safe endpoint." });
+    error({ code: "NO_TALE_COMPLETE", message: "Add a Voyage Complete Passage so the Voyage has a clear ending." });
   if (taleCompleteCount > 1)
     warn({
       code: "MULTIPLE_TALE_COMPLETE",
-      message: "The tale has multiple completion endpoints. Confirm each branch is intentional.",
+      message: "This Chronicle has multiple completion endpoints. Confirm that each branch is intentional.",
     });
 
   const entry = allBlocks[0]?.id;
@@ -246,7 +246,7 @@ export async function validateTaleDraft(taleId: string): Promise<DraftValidation
         const chapter = studio.draft.chapters.find((item) => item.id === block.chapterId);
         const issue = {
           code: "UNREACHABLE_BLOCK",
-          message: `${block.title} cannot be reached through the saved story graph.`,
+          message: `${block.title} cannot be reached through the saved Chronicle flow.`,
           chapterId: block.chapterId,
           blockId: block.id,
         };
@@ -273,7 +273,7 @@ export async function validateTaleDraft(taleId: string): Promise<DraftValidation
       if (block.isEnabled && visited.has(block.id) && !canComplete.has(block.id))
         error({
           code: "NO_COMPLETION_PATH",
-          message: `${block.title} enters a branch or loop with no path to Tale Complete.`,
+          message: `${block.title} enters a branch or loop with no path to Voyage Complete.`,
           chapterId: block.chapterId,
           blockId: block.id,
         });
@@ -283,7 +283,7 @@ export async function validateTaleDraft(taleId: string): Promise<DraftValidation
     if (!referencedAssetIds.has(asset.id) && asset.id !== studio.tale.coverAssetId)
       warn({
         code: "UNUSED_ASSET",
-        message: `${asset.displayName} is not used by the current draft.`,
+        message: `${asset.displayName} is not used by the current Chronicle draft.`,
         assetId: asset.id,
       });
 

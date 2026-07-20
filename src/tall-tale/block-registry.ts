@@ -2,9 +2,9 @@ import { z } from "zod";
 import type { InspectorField, JsonObject, VerificationProviderType } from "@/tall-tale/types";
 
 const completionOptions = [
-  { value: "playerConfirmation", label: "Player continue button" },
+  { value: "playerConfirmation", label: "Continue button" },
   { value: "captainManual", label: "Captain approval" },
-  { value: "automatic", label: "Automatic after presentation" },
+  { value: "automatic", label: "Continue automatically after presentation" },
   { value: "textAnswer", label: "Accepted text answer" },
 ] as const;
 
@@ -39,7 +39,7 @@ const completion = (): InspectorField => ({
 export type BlockDefinition = {
   type: string;
   displayName: string;
-  category: "Story" | "Direction and Location" | "Media" | "Reveal" | "Interaction" | "Logic";
+  category: "Narrative" | "Directions and waypoints" | "Media" | "Reveals" | "Interactions" | "Logic";
   icon: string;
   description: string;
   defaultTitle: string;
@@ -77,9 +77,9 @@ export const blockRegistry = {
   narrative: define({
     type: "narrative",
     displayName: "Narrative",
-    category: "Story",
+    category: "Narrative",
     icon: "¶",
-    description: "Cinematic exposition and connective story text.",
+    description: "Cinematic narration and connective text for a Passage.",
     defaultTitle: "Narrative",
     defaultConfiguration: {
       heading: "A new passage",
@@ -100,9 +100,9 @@ export const blockRegistry = {
   captainsNote: define({
     type: "captainsNote",
     displayName: "Captain's Note",
-    category: "Story",
+    category: "Narrative",
     icon: "✒",
-    description: "A handwritten letter or journal leaf.",
+    description: "A handwritten letter or journal entry.",
     defaultTitle: "Captain's Note",
     defaultConfiguration: {
       title: "Captain's note",
@@ -124,9 +124,9 @@ export const blockRegistry = {
   riddle: define({
     type: "riddle",
     displayName: "Riddle",
-    category: "Interaction",
+    category: "Interactions",
     icon: "?",
-    description: "A clue with server-validated answers and hints.",
+    description: "A clue with accepted answers and optional hints.",
     defaultTitle: "Riddle",
     defaultConfiguration: {
       riddleTitle: "A riddle",
@@ -151,7 +151,7 @@ export const blockRegistry = {
   information: define({
     type: "information",
     displayName: "Information",
-    category: "Story",
+    category: "Narrative",
     icon: "i",
     description: "Rules, context, safety notes, or instructions.",
     defaultTitle: "Information",
@@ -184,7 +184,7 @@ export const blockRegistry = {
   travelDirection: define({
     type: "travelDirection",
     displayName: "Travel Direction",
-    category: "Direction and Location",
+    category: "Directions and waypoints",
     icon: "➶",
     description: "A bearing, destination, map, and travel instruction.",
     defaultTitle: "Travel Direction",
@@ -200,7 +200,7 @@ export const blockRegistry = {
       text("compassHeading", "Compass heading"),
       text("region", "Region"),
       { key: "estimatedTravelTime", label: "Estimated minutes", kind: "number" },
-      { key: "locationId", label: "Location", kind: "location" },
+      { key: "locationId", label: "Waypoint", kind: "location" },
       asset("mapAssetId", "Map", ["IMAGE"]),
       area("captainNotes", "Captain-only notes"),
       completion(),
@@ -208,11 +208,11 @@ export const blockRegistry = {
   }),
   location: define({
     type: "location",
-    displayName: "Location",
-    category: "Direction and Location",
+    displayName: "Waypoint",
+    category: "Directions and waypoints",
     icon: "⌖",
-    description: "Introduce a reusable story location.",
-    defaultTitle: "Location",
+    description: "Introduce a reusable Waypoint.",
+    defaultTitle: "Waypoint",
     defaultConfiguration: {
       playerTitle: "Destination",
       playerDescription: "",
@@ -221,22 +221,22 @@ export const blockRegistry = {
       futureVision: {},
     },
     fields: [
-      { key: "locationId", label: "Location", kind: "location", required: true },
+      { key: "locationId", label: "Waypoint", kind: "location", required: true },
       text("playerTitle", "Player title"),
       area("playerDescription", "Player description"),
       asset("displayAssetId", "Display image", ["IMAGE"]),
       asset("mapAssetId", "Map image", ["IMAGE"]),
       area("arrivalInstructions", "Arrival instructions"),
-      { key: "referenceCollectionId", label: "Future reference collection ID", kind: "text" },
+      { key: "referenceCollectionId", label: "Reference collection ID for a future integration", kind: "text" },
       completion(),
     ],
   }),
   arrivalCheck: define({
     type: "arrivalCheck",
     displayName: "Arrival Check",
-    category: "Direction and Location",
+    category: "Directions and waypoints",
     icon: "⚓",
-    description: "Wait for a standardized arrival verification.",
+    description: "Pause for a verified arrival.",
     defaultTitle: "Arrival Check",
     defaultConfiguration: {
       prompt: "Confirm when you have arrived.",
@@ -259,10 +259,10 @@ export const blockRegistry = {
           { value: "captainManual", label: "Captain manual" },
           { value: "playerConfirmation", label: "Player confirmation" },
           { value: "textAnswer", label: "Text phrase or code" },
-          { value: "visionLocation", label: "Vision location (future)" },
+          { value: "visionLocation", label: "Vision Waypoint (future)" },
         ],
       },
-      { key: "referenceCollectionId", label: "Future reference collection ID", kind: "text" },
+      { key: "referenceCollectionId", label: "Reference collection ID for a future integration", kind: "text" },
       completion(),
     ],
   }),
@@ -271,7 +271,7 @@ export const blockRegistry = {
     displayName: "Image",
     category: "Media",
     icon: "▧",
-    description: "Player-facing artwork in cinematic display modes.",
+    description: "Player-facing artwork with display options.",
     defaultTitle: "Image",
     defaultConfiguration: {
       caption: "",
@@ -303,7 +303,7 @@ export const blockRegistry = {
   imageTransformation: define({
     type: "imageTransformation",
     displayName: "Image Transformation",
-    category: "Reveal",
+    category: "Reveals",
     icon: "◐",
     description: "Align and transform a before image into an after image.",
     defaultTitle: "Image Transformation",
@@ -401,9 +401,9 @@ export const blockRegistry = {
   artifactReveal: define({
     type: "artifactReveal",
     displayName: "Artifact Reveal",
-    category: "Reveal",
+    category: "Reveals",
     icon: "✦",
-    description: "Reveal lore and grant a reusable artifact exactly once.",
+    description: "Reveal context and add a reusable Artifact once.",
     defaultTitle: "Artifact Reveal",
     defaultConfiguration: {
       ordinaryObjectLabel: "",
@@ -428,7 +428,7 @@ export const blockRegistry = {
   hiddenMessageReveal: define({
     type: "hiddenMessageReveal",
     displayName: "Hidden Message Reveal",
-    category: "Reveal",
+    category: "Reveals",
     icon: "◈",
     description: "Reveal a hidden layer or message over an image.",
     defaultTitle: "Hidden Message",
@@ -456,9 +456,9 @@ export const blockRegistry = {
   collectionUpdate: define({
     type: "collectionUpdate",
     displayName: "Collection Update",
-    category: "Reveal",
+    category: "Reveals",
     icon: "+",
-    description: "Grant an idempotent artifact or collection count.",
+    description: "Add an Artifact or update a collection count.",
     defaultTitle: "Collection Update",
     defaultConfiguration: {
       quantity: 1,
@@ -478,7 +478,7 @@ export const blockRegistry = {
   confirmation: define({
     type: "confirmation",
     displayName: "Confirmation",
-    category: "Interaction",
+    category: "Interactions",
     icon: "✓",
     description: "An explicit player confirmation step.",
     defaultTitle: "Confirmation",
@@ -501,9 +501,9 @@ export const blockRegistry = {
   choice: define({
     type: "choice",
     displayName: "Choice",
-    category: "Interaction",
+    category: "Interactions",
     icon: "⑂",
-    description: "Two or more explicit branches in the story graph.",
+    description: "Two or more explicit branches in the Chronicle flow.",
     defaultTitle: "Choice",
     defaultConfiguration: {
       prompt: "Choose a course.",
@@ -524,7 +524,7 @@ export const blockRegistry = {
   textAnswer: define({
     type: "textAnswer",
     displayName: "Text Answer",
-    category: "Interaction",
+    category: "Interactions",
     icon: "Aa",
     description: "A server-validated phrase or answer.",
     defaultTitle: "Text Answer",
@@ -549,9 +549,9 @@ export const blockRegistry = {
   captainApproval: define({
     type: "captainApproval",
     displayName: "Captain Approval",
-    category: "Interaction",
+    category: "Interactions",
     icon: "⚑",
-    description: "Pause for an audited Captain verification.",
+    description: "Pause for a Captain verification.",
     defaultTitle: "Captain Approval",
     defaultConfiguration: {
       waitingText: "The Captain is checking the chart.",
@@ -571,7 +571,7 @@ export const blockRegistry = {
     displayName: "Wait",
     category: "Logic",
     icon: "◷",
-    description: "Continue after a configured duration or Captain skip.",
+    description: "Continue after a set duration or Captain skip.",
     defaultTitle: "Wait",
     defaultConfiguration: {
       durationSeconds: 5,
@@ -590,7 +590,7 @@ export const blockRegistry = {
     displayName: "Condition",
     category: "Logic",
     icon: "◇",
-    description: "Route using constrained session state comparisons.",
+    description: "Route using saved Voyage state comparisons.",
     defaultTitle: "Condition",
     defaultConfiguration: {
       variable: "",
@@ -601,7 +601,7 @@ export const blockRegistry = {
       completionMode: "automatic",
     },
     fields: [
-      text("variable", "Session variable", true),
+      text("variable", "Voyage variable", true),
       {
         key: "operator",
         label: "Comparison",
@@ -612,8 +612,8 @@ export const blockRegistry = {
         })),
       },
       { key: "value", label: "Comparison value (JSON)", kind: "json" },
-      text("successTargetBlockId", "Success block ID", true),
-      text("failureTargetBlockId", "Failure block ID", true),
+      text("successTargetBlockId", "Success Passage ID", true),
+      text("failureTargetBlockId", "Failure Passage ID", true),
     ],
   }),
   setVariable: define({
@@ -650,9 +650,9 @@ export const blockRegistry = {
   chapterComplete: define({
     type: "chapterComplete",
     displayName: "Chapter Complete",
-    category: "Story",
+    category: "Narrative",
     icon: "§",
-    description: "Close a chapter and move to the next chart leaf.",
+    description: "Close a Chapter and continue to the next Chapter.",
     defaultTitle: "Chapter Complete",
     defaultConfiguration: {
       completionMessage: "Chapter complete",
@@ -665,7 +665,7 @@ export const blockRegistry = {
     fields: [
       text("completionMessage", "Completion message", true),
       area("summary", "Summary"),
-      { key: "rewardArtifactId", label: "Reward artifact", kind: "artifact" },
+      { key: "rewardArtifactId", label: "Reward Artifact", kind: "artifact" },
       { key: "returnToMap", label: "Return to map", kind: "boolean" },
       text("animation", "Animation"),
       completion(),
@@ -673,13 +673,13 @@ export const blockRegistry = {
   }),
   taleComplete: define({
     type: "taleComplete",
-    displayName: "Tale Complete",
-    category: "Story",
+    displayName: "Voyage Complete",
+    category: "Narrative",
     icon: "★",
-    description: "Finish the session and write it into history.",
-    defaultTitle: "Tale Complete",
+    description: "End the Voyage and preserve its Voyage Record.",
+    defaultTitle: "Voyage Complete",
     defaultConfiguration: {
-      finaleHeading: "Tale complete",
+      finaleHeading: "Voyage complete",
       finaleContent: "The final mark is written.",
       completionMessage: "Your voyage is complete.",
       credits: "",

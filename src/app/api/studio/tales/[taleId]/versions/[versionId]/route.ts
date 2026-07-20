@@ -12,7 +12,8 @@ async function authorize() {
 
 export async function POST(request: Request, context: { params: Promise<{ taleId: string; versionId: string }> }) {
   const session = await authorize();
-  if (!session) return NextResponse.json({ error: "A current creator session is required." }, { status: 403 });
+  if (!session)
+    return NextResponse.json({ error: "Your creator session has expired. Sign in again to continue." }, { status: 403 });
   try {
     const { action } = (await request.json()) as { action: "preview" | "restore" | "fork" };
     const { taleId, versionId } = await context.params;
@@ -28,7 +29,7 @@ export async function POST(request: Request, context: { params: Promise<{ taleId
         url: `/play/${preview.taleSlug}/session/${preview.sessionId}`,
       });
     }
-    return NextResponse.json({ error: "Unknown version action." }, { status: 400 });
+    return NextResponse.json({ error: "That Version action is not available." }, { status: 400 });
   } catch (cause) {
     return apiError(cause);
   }

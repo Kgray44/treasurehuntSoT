@@ -6,6 +6,7 @@ import { AnimatePresence, LayoutGroup, motion } from "motion/react";
 import { useMotionMode } from "@/animation/motion/useMotionMode";
 import { platformMotionEasing, resolvePlatformMotionToken } from "@/animation/platform/motion-tokens";
 import { EmptyState, ErrorState, LoadingState, StatusBanner } from "@/components/ui/AsyncState";
+import { studioCopy } from "@/language/studio-copy";
 
 type TaleCard = {
   id: string;
@@ -77,8 +78,8 @@ export function StudioHome({ authenticated }: { authenticated: boolean }) {
       (action === "archive" || action === "restore") &&
       !window.confirm(
         action === "archive"
-          ? `Archive “${tale.title}”? Existing published editions and active voyages remain preserved.`
-          : `Restore “${tale.title}” to the active Studio library?`,
+          ? `Archive “${tale.title}”? Published Versions and active Voyages will be preserved.`
+          : `Restore “${tale.title}” to the active Chronicle Library?`,
       )
     )
       return;
@@ -96,10 +97,10 @@ export function StudioHome({ authenticated }: { authenticated: boolean }) {
       else {
         setNotice(
           action === "duplicate"
-            ? "A new editable Tall Tale copy was created."
+            ? "A new editable Chronicle draft was created."
             : action === "archive"
-              ? "The Tall Tale was archived without changing published voyages."
-              : "The Tall Tale was restored to the active library.",
+              ? "The Chronicle was archived. Published Voyages are unchanged."
+              : "The Chronicle was restored to the active Chronicle Library.",
         );
         await load();
       }
@@ -114,11 +115,11 @@ export function StudioHome({ authenticated }: { authenticated: boolean }) {
     return (
       <main className="studio-auth-gate">
         <section>
-          <p className="eyebrow">Tall Tale Studio</p>
-          <h1>The Cartographer&apos;s Table is locked.</h1>
-          <p>Sign in through the Quartermaster&apos;s Log with a creator-capable account, then return here.</p>
+          <p className="eyebrow">{studioCopy.studioName.value}</p>
+          <h1>Creator access is required.</h1>
+          <p>Sign in with a creator account, then return to Voyagewright Studio.</p>
           <Link className="brass-button" href="/quartermaster">
-            Open Quartermaster login
+            Sign in
           </Link>
         </section>
       </main>
@@ -128,13 +129,13 @@ export function StudioHome({ authenticated }: { authenticated: boolean }) {
     <main className="studio-home">
       <header className="studio-home-header">
         <div>
-          <p className="eyebrow">Authoring waters</p>
-          <h1>Tall Tale Studio</h1>
-          <p>Draft stories, bind their assets, and publish voyages from one authoritative chart.</p>
+          <p className="eyebrow">Chronicle authoring</p>
+          <h1>{studioCopy.studioName.value}</h1>
+          <p>Create, validate, and publish Chronicles from one place.</p>
         </div>
         <nav aria-label="Studio destinations">
           <Link className="brass-button" href="/studio/tales/new">
-            Create a Tall Tale
+            {studioCopy.createChronicle.value}
           </Link>
         </nav>
       </header>
@@ -157,7 +158,7 @@ export function StudioHome({ authenticated }: { authenticated: boolean }) {
         )}
       </AnimatePresence>
       {!loading && tales.length > 0 && (
-        <section className="studio-toolbar" aria-label="Find Tall Tales">
+        <section className="studio-toolbar" aria-label="Find Chronicles">
           <label>
             <span>Search</span>
             <input
@@ -176,14 +177,14 @@ export function StudioHome({ authenticated }: { authenticated: boolean }) {
             </select>
           </label>
           <p aria-live="polite">
-            {visible.length} {visible.length === 1 ? "tale" : "tales"}
+            {visible.length} {visible.length === 1 ? "Chronicle" : "Chronicles"}
           </p>
         </section>
       )}
       {loading ? (
         <LoadingState
           title="Opening the Studio library"
-          detail="Loading drafts, published editions, and validation state."
+          detail="Loading Chronicle drafts, published versions, and validation status."
         />
       ) : error && !tales.length ? (
         <ErrorState
@@ -193,20 +194,20 @@ export function StudioHome({ authenticated }: { authenticated: boolean }) {
         />
       ) : !tales.length ? (
         <EmptyState
-          title="Create the first Tall Tale"
-          detail="Start with reusable story details, then add chapters, story moments, assets, and publication settings."
-          action={{ label: "Create a Tall Tale", href: "/studio/tales/new" }}
+          title="No Chronicles yet"
+          detail="Start with a title, premise, and first Chapter."
+          action={{ label: studioCopy.createChronicle.value, href: "/studio/tales/new" }}
         />
       ) : !visible.length ? (
         <EmptyState
-          title="No Tall Tales match this search"
-          detail="Clear the search to return to every draft and published edition."
-          action={{ label: "Clear Search", onClick: () => setQuery("") }}
+          title="No Chronicles match this search"
+          detail="Clear the search to see every draft and published version."
+          action={{ label: "Clear search", onClick: () => setQuery("") }}
           symbol="⌕"
         />
       ) : (
         <LayoutGroup id="studio-library">
-          <motion.section className="tale-card-grid" aria-label="Tall Tales" layout={mode !== "reduced"}>
+          <motion.section className="tale-card-grid" aria-label="Chronicles" layout={mode !== "reduced"}>
             <AnimatePresence initial={false} mode="popLayout">
               {visible.map((tale) => (
                 <motion.article
@@ -223,10 +224,10 @@ export function StudioHome({ authenticated }: { authenticated: boolean }) {
                   <div className="tale-card-stamp">{tale.status.replaceAll("_", " ")}</div>
                   <p className="card-kicker">
                     {tale.visibility.toLocaleLowerCase()} ·{" "}
-                    {tale.latestVersion ? `version ${tale.latestVersion}` : "not published"}
+                    {tale.latestVersion ? `Version ${tale.latestVersion}` : "Not published"}
                   </p>
                   <h2>{tale.title}</h2>
-                  <p>{tale.subtitle ?? tale.shortDescription ?? "No summary has been inked yet."}</p>
+                  <p>{tale.subtitle ?? tale.shortDescription ?? "No description has been added yet."}</p>
                   <dl>
                     <div>
                       <dt>Last saved</dt>
@@ -241,17 +242,17 @@ export function StudioHome({ authenticated }: { authenticated: boolean }) {
                       <dd>{tale.assetCount} assets</dd>
                     </div>
                     <div>
-                      <dt>Sessions</dt>
+                      <dt>Voyages</dt>
                       <dd>{tale.sessionCount}</dd>
                     </div>
                   </dl>
                   <div className="tale-card-actions">
                     <Link className="primary" href={`/studio/tales/${tale.id}`}>
-                      Open editor
+                      {studioCopy.editChronicle.value}
                     </Link>
                     {tale.latestVersion && (
                       <Link href={`/play/${tale.slug}`} target="_blank">
-                        Player preview
+                        {studioCopy.previewVoyage.value}
                       </Link>
                     )}
                     <button

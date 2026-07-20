@@ -36,7 +36,7 @@ function editorData() {
     tale: {
       id: "tale-1",
       slug: "test-tale",
-      title: "A Test Tale",
+      title: "A Test Chronicle",
       subtitle: null,
       shortDescription: "A chart for testing.",
       longDescription: null,
@@ -91,9 +91,9 @@ function editorData() {
       {
         type: "narrative",
         displayName: "Narrative",
-        category: "Story",
+        category: "Narrative",
         icon: "N",
-        description: "A readable story passage.",
+        description: "A readable Passage.",
         defaultTitle: "New Narrative",
         defaultConfiguration: { body: "" },
         fields: [{ key: "body", label: "Body", kind: "textarea", required: true }],
@@ -103,7 +103,7 @@ function editorData() {
   };
 }
 
-describe("TaleEditor Phase 4 motion and authority", () => {
+describe("Voyagewright Studio editor motion and authority", () => {
   beforeEach(() => {
     Object.defineProperty(Element.prototype, "scrollIntoView", { configurable: true, value: vi.fn() });
     vi.stubGlobal(
@@ -126,18 +126,18 @@ describe("TaleEditor Phase 4 motion and authority", () => {
   it("exposes the More actions through an explicit keyboard-operable disclosure", async () => {
     vi.stubGlobal("fetch", vi.fn().mockResolvedValue(response(200, editorData())));
     render(<TaleEditor taleId="tale-1" authenticated />);
-    await screen.findByRole("heading", { name: "A Test Tale" });
+    await screen.findByRole("heading", { name: "A Test Chronicle" });
 
     const more = screen.getByRole("button", { name: "More" });
     const libraryHandle = document.querySelector(".block-library-drag-handle");
-    expect(libraryHandle).toHaveAttribute("aria-roledescription", "sortable story block");
+    expect(libraryHandle).toHaveAttribute("aria-roledescription", "sortable Passage");
     expect(libraryHandle?.tagName).toBe("BUTTON");
     expect(libraryHandle?.querySelector("button")).toBeNull();
     expect(more).toHaveAttribute("aria-expanded", "false");
-    expect(screen.queryByRole("button", { name: "Duplicate tale" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Duplicate Chronicle" })).not.toBeInTheDocument();
     fireEvent.click(more);
     expect(more).toHaveAttribute("aria-expanded", "true");
-    expect(screen.getByRole("button", { name: "Duplicate tale" })).toBeVisible();
+    expect(screen.getByRole("button", { name: "Duplicate Chronicle" })).toBeVisible();
     fireEvent.keyDown(more, { key: "Escape" });
     expect(more).toHaveAttribute("aria-expanded", "false");
   });
@@ -146,7 +146,7 @@ describe("TaleEditor Phase 4 motion and authority", () => {
     vi.stubGlobal("fetch", vi.fn().mockResolvedValue(response(200, editorData())));
     render(<TaleEditor taleId="tale-1" authenticated />);
 
-    await screen.findByRole("heading", { name: "A Test Tale" });
+    await screen.findByRole("heading", { name: "A Test Chronicle" });
     const card = screen.getByText("Opening Scene").closest<HTMLElement>("article")!;
     const motionWrapper = card.closest<HTMLElement>("[data-post-drop-layout-wrapper='true']")!;
     expect(motionWrapper).toBeInTheDocument();
@@ -174,7 +174,7 @@ describe("TaleEditor Phase 4 motion and authority", () => {
         ),
     );
     render(<TaleEditor taleId="tale-1" authenticated />);
-    await screen.findByRole("heading", { name: "A Test Tale" });
+    await screen.findByRole("heading", { name: "A Test Chronicle" });
 
     fireEvent.click(screen.getByRole("button", { name: "Validate" }));
     const issue = await screen.findByRole("button", { name: "Opening Scene needs a destination." });
@@ -225,7 +225,7 @@ describe("TaleEditor Phase 4 motion and authority", () => {
         .mockResolvedValueOnce(response(200, editorData())),
     );
     render(<TaleEditor taleId="tale-1" authenticated />);
-    await screen.findByRole("heading", { name: "A Test Tale" });
+    await screen.findByRole("heading", { name: "A Test Chronicle" });
     fireEvent.click(screen.getByRole("button", { name: "Publish" }));
     expect(screen.queryByText(/Version 4 sealed/)).not.toBeInTheDocument();
 
@@ -244,7 +244,7 @@ describe("TaleEditor Phase 4 motion and authority", () => {
         .mockResolvedValueOnce(response(200, editorData())),
     );
     render(<TaleEditor taleId="tale-1" initialSection="assets" authenticated />);
-    await screen.findByRole("heading", { name: "A Test Tale" });
+    await screen.findByRole("heading", { name: "A Test Chronicle" });
     const uploadLabel = screen.getByText("Drop files or choose from this device").closest("label")!;
     const input = within(uploadLabel).getByDisplayValue("") as HTMLInputElement;
     const first = new File(["image"], "harbor.png", { type: "image/png", lastModified: 1 });
