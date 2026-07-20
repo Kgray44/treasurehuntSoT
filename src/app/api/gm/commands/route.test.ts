@@ -16,7 +16,7 @@ const dependencies = vi.hoisted(() => ({
   },
   CommandFailure: class CommandFailure extends Error {
     constructor(public correlationId: string) {
-      super("The command could not be completed.");
+      super("The Voyage action could not be completed. No progress has changed.");
     }
   },
 }));
@@ -87,7 +87,7 @@ describe("POST /api/gm/commands", () => {
 
     expect(response.status).toBe(403);
     expect(await response.json()).toMatchObject({
-      error: "Captain authority required.",
+      error: "Captain access is required to continue.",
       code: "FORBIDDEN",
       correlationId: expect.any(String),
     });
@@ -149,7 +149,7 @@ describe("POST /api/gm/commands", () => {
 
     expect(response.status).toBe(500);
     expect(await response.json()).toEqual({
-      error: "The command could not be completed.",
+      error: "The Voyage action could not be completed. No progress has changed. Check the current Voyage status, then try again.",
       code: "COMMAND_FAILED",
       correlationId: "correlation-safe-reference",
     });
@@ -164,7 +164,7 @@ describe("POST /api/gm/commands", () => {
 
     expect(response.status).toBe(500);
     expect(body).toEqual({
-      error: "The command could not be completed.",
+      error: "The Voyage action could not be completed. No progress has changed. Check the current Voyage status, then try again.",
       code: "COMMAND_FAILED",
       correlationId: executionContext.correlationId,
     });
@@ -195,7 +195,7 @@ describe("POST /api/gm/commands", () => {
 
     expect(response.status).toBe(500);
     expect(body).toEqual({
-      error: "The command could not be completed.",
+      error: "The Voyage action could not be completed. No progress has changed. Check the current Voyage status, then try again.",
       code: "COMMAND_FAILED",
       correlationId: expect.any(String),
     });

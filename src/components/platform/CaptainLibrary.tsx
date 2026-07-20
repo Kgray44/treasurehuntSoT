@@ -7,6 +7,7 @@ import { useMotionMode } from "@/animation/motion/useMotionMode";
 import { reconcileVersionedRows } from "@/animation/platform/polling-delta";
 import { platformMotionEasing, resolvePlatformMotionToken } from "@/animation/platform/motion-tokens";
 import { EmptyState, ErrorState, LoadingState, StatusBanner } from "@/components/ui/AsyncState";
+import { captainCopy } from "@/language/captain-copy";
 import { PlatformRelic } from "./PlatformRelic";
 
 type Voyage = {
@@ -68,7 +69,7 @@ type CreatedInvitation = {
 };
 type CrewDraft = { key: string; playerId: string; displayName: string; crewRole: string; pin: string };
 
-const steps = ["Select Tale", "Configure Voyage", "Add Players", "Security", "Delivery", "Review", "Create"];
+const steps = ["Select Chronicle", "Configure Voyage", "Add Crew", "Invitation access", "Delivery", "Review", "Create"];
 
 type VoyageGroup = keyof Library["groups"];
 type VersionedVoyage = { group: VoyageGroup; voyage: Voyage };
@@ -131,7 +132,7 @@ export function CaptainLibrary() {
   const [plannedStartAt, setPlannedStartAt] = useState("");
   const [scheduleTimezone, setScheduleTimezone] = useState(Intl.DateTimeFormat().resolvedOptions().timeZone);
   const [players, setPlayers] = useState<CrewDraft[]>([
-    { key: "crew-1", playerId: "", displayName: "", crewRole: "Player", pin: "" },
+    { key: "crew-1", playerId: "", displayName: "", crewRole: "Crew member", pin: "" },
   ]);
   const [expiresInHours, setExpiresInHours] = useState(168);
   const [accountRequired, setAccountRequired] = useState(false);
@@ -150,7 +151,8 @@ export function CaptainLibrary() {
     try {
       const response = await fetch("/api/captain/library", { cache: "no-store", signal: controller.signal });
       const body = (await response.json()) as Library & { error?: string };
-      if (!response.ok) setError(body.error ?? "Captain's library is unavailable.");
+      if (!response.ok)
+        setError(body.error ?? "Captain's Console is unavailable. No Voyage progress has changed. Check your connection, then try again.");
       else {
         requestSequence.current += 1;
         const previous = libraryRef.current;
@@ -209,7 +211,7 @@ export function CaptainLibrary() {
       }
     } catch (cause) {
       if (cause instanceof DOMException && cause.name === "AbortError") return;
-      setError("Captain's Command could not be reached. Check your connection and try again.");
+      setError("Captain's Console could not connect. No Voyage progress has changed. Check your connection, then try again.");
     } finally {
       if (activeLoad.current === controller) activeLoad.current = null;
     }
@@ -276,14 +278,15 @@ export function CaptainLibrary() {
         }),
       });
       const body = (await response.json()) as { invitations?: CreatedInvitation[]; error?: string };
-      if (!response.ok) return setError(body.error ?? "Voyage creation failed.");
+      if (!response.ok)
+        return setError(body.error ?? "The Voyage could not be created. Check the Voyage list before trying again to avoid duplicate invitations.");
       setCreated(body.invitations ?? []);
-      setNotice("The voyage and its individual invitations were created together.");
+      setNotice("The Voyage and its individual Crew invitations were created together.");
       setWizardDirection(1);
       setStep(6);
       await load();
     } catch {
-      setError("The voyage could not be created. Check your connection and try again.");
+      setError("The Voyage could not be created. Check the Voyage list before trying again to avoid duplicate invitations.");
     } finally {
       setBusy(false);
     }
@@ -292,7 +295,7 @@ export function CaptainLibrary() {
   async function launch(voyage: Voyage) {
     if (!library) return;
     setLaunchState({ id: voyage.id, phase: "confirming" });
-    if (!window.confirm(`Launch “${voyage.voyageName}” for its ready Players?`)) {
+    if (!window.confirm(`Begin “${voyage.voyageName}” for its ready Crew? The ready Crew will receive access to this Voyage.`)) {
       setLaunchState(null);
       return;
     }
@@ -308,15 +311,15 @@ export function CaptainLibrary() {
       });
       const body = (await response.json()) as { error?: string };
       if (!response.ok) {
-        setError(body.error ?? "The voyage could not be launched.");
+        setError(body.error ?? "The Voyage could not begin. No Crew access has changed. Review the Voyage and try again.");
         setLaunchState(null);
       } else {
         setLaunchState({ id: voyage.id, phase: "launched" });
-        setNotice(`“${voyage.voyageName}” is now live for ready Players.`);
+        setNotice(`“${voyage.voyageName}” is now available to ready Crew.`);
       }
       await load();
     } catch {
-      setError("The voyage could not be launched. Check your connection and try again.");
+      setError("The Voyage could not begin. Check its current status before trying again.");
       setLaunchState(null);
     } finally {
       setBusy(false);
@@ -329,8 +332,8 @@ export function CaptainLibrary() {
       ["revoke", "replace"].includes(action) &&
       !window.confirm(
         action === "revoke"
-          ? `Revoke the invitation for ${invitation.recipientName}? The current link and short code will stop working.`
-          : `Replace the invitation for ${invitation.recipientName}? The current link and short code will be revoked and new credentials created.`,
+          ? `Revoke the invitation for ${invitation.recipientName}? The current link and short code will stop working immediately.`
+          : `Replace the invitation for ${invitation.recipientName}? The current link and short code will stop working immediately, and the Crew member will need the replacement invitation.`,
       )
     )
       return;
@@ -346,7 +349,7 @@ export function CaptainLibrary() {
       });
       const body = (await response.json()) as { error?: string; replacement?: CreatedInvitation };
       if (!response.ok) {
-        setError(body.error ?? "Invitation action failed.");
+        setError(body.error ?? "The invitation could not be changed. Its current access remains unchanged. Check its status, then try again.");
         setInvitationTransitions((current) => {
           const next = { ...current };
           delete next[invitation.id];
@@ -371,7 +374,7 @@ export function CaptainLibrary() {
       }
       await load();
     } catch {
-      setError("The invitation action could not be completed. Check your connection and try again.");
+      setError("The invitation could not be changed. Check its current status, then try again.");
       setInvitationTransitions((current) => {
         const next = { ...current };
         delete next[invitation.id];
@@ -386,7 +389,7 @@ export function CaptainLibrary() {
     return (
       <main className="captain-library platform-loading">
         <ErrorState
-          title="Captain's Command could not be opened"
+          title="Captain's Console could not connect"
           detail={error}
           action={{ label: "Try Again", onClick: () => void load() }}
         />
@@ -396,8 +399,8 @@ export function CaptainLibrary() {
     return (
       <main className="captain-library platform-loading">
         <LoadingState
-          title="Opening Captain's Command"
-          detail="Loading voyages, invitations, and published editions."
+          title="Opening Captain's Console"
+          detail="Loading Voyages, Crew invitations, and published Chronicles."
         />
       </main>
     );
@@ -405,16 +408,16 @@ export function CaptainLibrary() {
     ["Needs Attention", library.groups.needsAttention],
     ["Active Voyages", library.groups.activeVoyages],
     ["Ready to Launch", library.groups.readyToLaunch],
-    ["Completed Playthroughs", library.groups.completedPlaythroughs],
+    ["Voyage Records", library.groups.completedPlaythroughs],
   ];
   const voyageCount = voyageGroups.reduce((total, [, voyages]) => total + voyages.length, 0);
   return (
     <main className="captain-library" data-motion-mode={mode}>
       <header className="platform-header">
         <div>
-          <p className="eyebrow">Operational command</p>
-          <h1>Captain&apos;s Tall Tale Library</h1>
-          <p>Run live voyages, invite Players, and keep authoring controls safely in Studio.</p>
+          <p className="eyebrow">Live Voyage control</p>
+          <h1>{captainCopy.consoleName.value}</h1>
+          <p>Begin live Voyages, invite Crew, and keep Chronicle authoring in Voyagewright Studio.</p>
         </div>
         <div>
           <button
@@ -429,7 +432,7 @@ export function CaptainLibrary() {
           </button>
         </div>
       </header>
-      <nav className="platform-tabs" aria-label="Captain library sections">
+      <nav className="platform-tabs" aria-label="Captain&apos;s Console sections">
         <button
           className={tab === "voyages" ? "active" : ""}
           aria-pressed={tab === "voyages"}
@@ -461,7 +464,7 @@ export function CaptainLibrary() {
           {tab === "published" && (
             <motion.span className="platform-tab-plate" layoutId="captain-tab-plate" aria-hidden="true" />
           )}
-          Published Tales
+          Published Chronicles
         </button>
       </nav>
       {notice && <StatusBanner tone="success">{notice}</StatusBanner>}
@@ -480,7 +483,7 @@ export function CaptainLibrary() {
               {!voyageCount && (
                 <EmptyState
                   title="No voyages need your attention"
-                  detail="Choose a published Tall Tale, configure the participants, and create secure invitations."
+                  detail="Choose a published Chronicle, add your Crew, and create secure invitations."
                   action={{
                     label: "Create a Voyage",
                     onClick: () => {
@@ -524,14 +527,14 @@ export function CaptainLibrary() {
             <section className="invitation-dashboard">
               <header>
                 <div>
-                  <p className="eyebrow">Tracked security objects</p>
-                  <h2>Invitation management</h2>
+                  <p className="eyebrow">Tracked access records</p>
+                  <h2>Crew invitations</h2>
                 </div>
               </header>
               {!library.invitations.length ? (
                 <EmptyState
-                  title="No invitations have been created"
-                  detail="Invitations appear here after a Captain creates a voyage for one or more Players."
+                  title="No Crew invitations yet"
+                  detail="Invitations appear here after a Captain creates a Voyage for one or more Crew members."
                   action={{
                     label: "Create a Voyage",
                     onClick: () => {
@@ -542,7 +545,7 @@ export function CaptainLibrary() {
                   }}
                 />
               ) : (
-                <div className="invitation-table" role="table" aria-label="Voyage invitations">
+                <div className="invitation-table" role="table" aria-label="Crew invitations for Voyages">
                   <AnimatePresence initial={false} mode="popLayout">
                     {library.invitations.map((invitation) => (
                       <motion.article
@@ -607,9 +610,9 @@ export function CaptainLibrary() {
             <section className="published-tale-grid">
               {!library.publishedTales.length && (
                 <EmptyState
-                  title="No published Tall Tales are ready"
-                  detail="A Creator must validate and publish an edition before a Captain can create a voyage from it."
-                  action={{ label: "Open Tall Tale Studio", href: "/studio/library" }}
+                  title="No published Chronicles are ready"
+                  detail="A Creator must validate and publish a version before a Captain can create a Voyage from it."
+                  action={{ label: "Open Voyagewright Studio", href: "/studio/library" }}
                 />
               )}
               <AnimatePresence initial={false}>
@@ -623,7 +626,7 @@ export function CaptainLibrary() {
                         <li key={version.id}>
                           <span>Version {version.label}</span>
                           <small>
-                            {version.activeRunCount} runs · {new Date(version.publishedAt).toLocaleDateString()}
+                            {version.activeRunCount} active Voyages · {new Date(version.publishedAt).toLocaleDateString()}
                           </small>
                         </li>
                       ))}
@@ -636,9 +639,9 @@ export function CaptainLibrary() {
                         setStep(1);
                       }}
                     >
-                      Invite Players
+                      Invite Crew
                     </button>
-                    <Link href={`/captain/tales/${tale.id}`}>Open details</Link>
+                    <Link href={`/captain/tales/${tale.id}`}>Open Chronicle</Link>
                   </motion.article>
                 ))}
               </AnimatePresence>
@@ -727,7 +730,7 @@ function VoyageCard({
     >
       <div className="session-signal">
         <i className={voyage.connected ? "connected" : "quiet"} />
-        <span>{voyage.connected ? "Player recently connected" : "No recent heartbeat"}</span>
+        <span>{voyage.connected ? "Crew member recently connected" : "No recent Crew connection"}</span>
       </div>
       <p className="card-kicker">Version {voyage.versionLabel}</p>
       <h3>{voyage.taleTitle}</h3>
@@ -738,11 +741,11 @@ function VoyageCard({
           <dd>{voyage.status.toLocaleLowerCase()}</dd>
         </div>
         <div>
-          <dt>Players</dt>
+          <dt>Crew</dt>
           <dd>
             {voyage.players
               .map((player) => `${player.displayName} (${player.status.toLocaleLowerCase()})`)
-              .join(", ") || "No Players"}
+              .join(", ") || "No Crew members"}
           </dd>
         </div>
         <div>
@@ -758,14 +761,14 @@ function VoyageCard({
       </dl>
       {group === "Needs Attention" && (
         <p className="needs-attention-mark">
-          <span aria-hidden="true">!</span> Captain action is required.
+          <span aria-hidden="true">!</span> A Captain action is required before this Voyage can continue.
         </p>
       )}
       {group === "Ready to Launch" && (
-        <div className="readiness-gauge" aria-label={`${readiness}% of Players ready`}>
+        <div className="readiness-gauge" aria-label={`${readiness}% of Crew ready`}>
           <span style={{ "--readiness": `${readiness}%` } as React.CSSProperties} />
           <small>
-            {readyPlayers} of {voyage.players.length} Players ready
+            {readyPlayers} of {voyage.players.length} Crew members ready
           </small>
         </div>
       )}
@@ -778,18 +781,18 @@ function VoyageCard({
           />
           <span>
             {launchPhase === "launched"
-              ? "Launch confirmed by the server."
+              ? "The server confirmed this Voyage is available to ready Crew."
               : launchPhase === "launching"
-                ? "Recording launch with the Captain's ledger."
-                : "Awaiting launch confirmation."}
+                ? "Recording this Voyage launch with the Captain&apos;s Console."
+                : "Waiting for launch confirmation."}
           </span>
         </div>
       )}
       <div className="card-actions">
         <Link className="brass-button" href={`/captain/sessions/${voyage.id}`}>
-          Open Captain console
+          Open Captain&apos;s Console
         </Link>
-        <Link href={`/captain/voyages/${voyage.id}/player-preview`}>Preview as Player</Link>
+        <Link href={`/captain/voyages/${voyage.id}/player-preview`}>Preview Crew view</Link>
         {["READY", "SCHEDULED"].includes(voyage.status) && (
           <button
             disabled={busy || launchPhase === "launched"}
@@ -797,10 +800,10 @@ function VoyageCard({
             onClick={launch}
           >
             {launchPhase === "launching"
-              ? "Launching…"
+              ? "Beginning..."
               : launchPhase === "launched"
-                ? "Voyage launched"
-                : "Launch voyage"}
+                ? "Voyage begun"
+                : captainCopy.beginVoyage.value}
           </button>
         )}
       </div>
@@ -944,7 +947,7 @@ function VoyageWizard(props: WizardProps) {
               {steps[props.step]}
             </h2>
           </div>
-          <button aria-label="Close invitation wizard" onClick={props.close}>
+          <button aria-label="Close Voyage wizard" onClick={props.close}>
             ×
           </button>
         </header>
@@ -988,7 +991,7 @@ function VoyageWizard(props: WizardProps) {
                     >
                       <strong>{tale.title}</strong>
                       <span>
-                        {tale.versions.length} published {tale.versions.length === 1 ? "edition" : "editions"}
+                        {tale.versions.length} published {tale.versions.length === 1 ? "version" : "versions"}
                       </span>
                     </button>
                   ))}
@@ -1027,7 +1030,7 @@ function VoyageWizard(props: WizardProps) {
                       <option value="ON_REQUEST">On request</option>
                       <option value="CAPTAIN_PUSHED">Captain-pushed</option>
                       <option value="TIMED">Timed</option>
-                      <option value="TALE_DEFINED">Tale-defined</option>
+                      <option value="TALE_DEFINED">Chronicle-defined</option>
                     </select>
                   </label>
                   <label className="check-field">
@@ -1036,7 +1039,7 @@ function VoyageWizard(props: WizardProps) {
                       checked={props.sideQuests}
                       onChange={(event) => props.setSideQuests(event.target.checked)}
                     />{" "}
-                    Enable published side quests
+                    Enable published Echoes
                   </label>
                   <label>
                     <span>Planned start (optional)</span>
@@ -1066,14 +1069,14 @@ function VoyageWizard(props: WizardProps) {
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                       >
-                        <legend>Player {index + 1}</legend>
+                        <legend>Crew member {index + 1}</legend>
                         <label>
-                          <span>Use existing Player (optional)</span>
+                          <span>Use existing Crew member (optional)</span>
                           <select
                             value={crew.playerId}
                             onChange={(event) => updateCrew(crew.key, { playerId: event.target.value })}
                           >
-                            <option value="">Create guest profile</option>
+                            <option value="">Create guest Crew profile</option>
                             {props.library.playerProfiles.map((player) => (
                               <option key={player.id} value={player.id}>
                                 {player.displayName}
@@ -1084,7 +1087,7 @@ function VoyageWizard(props: WizardProps) {
                         </label>
                         {!crew.playerId && (
                           <label>
-                            <span>Player display name</span>
+                            <span>Crew member name</span>
                             <input
                               value={crew.displayName}
                               onChange={(event) => updateCrew(crew.key, { displayName: event.target.value })}
@@ -1100,7 +1103,7 @@ function VoyageWizard(props: WizardProps) {
                         </label>
                         {props.players.length > 1 && (
                           <button type="button" onClick={() => removeCrew(crew.key)}>
-                            Remove Player
+                            Remove Crew member
                           </button>
                         )}
                       </motion.fieldset>
@@ -1112,14 +1115,14 @@ function VoyageWizard(props: WizardProps) {
                     onClick={() =>
                       props.setPlayers((current) => [
                         ...current,
-                        { key: crypto.randomUUID(), playerId: "", displayName: "", crewRole: "Player", pin: "" },
+                        { key: crypto.randomUUID(), playerId: "", displayName: "", crewRole: "Crew member", pin: "" },
                       ])
                     }
                   >
-                    Add another Player
+                    Add another Crew member
                   </button>
                   <p className="panel-note">
-                    Each crew member receives an individual invitation and identity boundary.
+                    Each Crew member receives an individual invitation and identity boundary.
                   </p>
                 </div>
               )}
@@ -1142,11 +1145,11 @@ function VoyageWizard(props: WizardProps) {
                       checked={props.accountRequired}
                       onChange={(event) => props.setAccountRequired(event.target.checked)}
                     />{" "}
-                    Require claimed Player accounts
+                    Require registered Crew accounts
                   </label>
                   {props.players.map((crew, index) => (
                     <label key={crew.key}>
-                      <span>Optional PIN for {crewNames[index] || `Player ${index + 1}`}</span>
+                      <span>Optional PIN for {crewNames[index] || `Crew member ${index + 1}`}</span>
                       <input
                         type="password"
                         minLength={4}
@@ -1157,7 +1160,7 @@ function VoyageWizard(props: WizardProps) {
                   ))}
                   {!claimedAccountsValid && (
                     <p className="platform-error" role="alert">
-                      Every account-required invitation must select an existing claimed Player account.
+                      Every invitation that requires an account must select a registered Crew account.
                     </p>
                   )}
                   <p>No raw token, short code, or PIN will be stored. Replacements generate new secrets.</p>
@@ -1179,18 +1182,18 @@ function VoyageWizard(props: WizardProps) {
                   </article>
                   <article>
                     <strong>Copyable message</strong>
-                    <span>Player-safe invitation copy without hidden Tale details</span>
+                    <span>Crew-safe invitation copy without hidden Chronicle details</span>
                   </article>
                 </div>
               )}
               {props.step === 5 && (
                 <div className="review-sheet">
-                  <p className="eyebrow">Player-safe preview</p>
+                  <p className="eyebrow">Crew preview</p>
                   <h3>{props.selectedTale?.title}</h3>
                   <h4>{props.voyageName}</h4>
                   <dl>
                     <div>
-                      <dt>Tall Tale</dt>
+                      <dt>Chronicle</dt>
                       <dd>{props.selectedTale?.title}</dd>
                     </div>
                     <div>
@@ -1214,7 +1217,7 @@ function VoyageWizard(props: WizardProps) {
                       <dd>{props.hints.replaceAll("_", " ").toLocaleLowerCase()}</dd>
                     </div>
                     <div>
-                      <dt>Side quests</dt>
+                      <dt>Echoes</dt>
                       <dd>{props.sideQuests ? "Enabled" : "Disabled"}</dd>
                     </div>
                     {props.plannedStartAt && (
@@ -1231,12 +1234,12 @@ function VoyageWizard(props: WizardProps) {
                     </div>
                     <div>
                       <dt>Account requirement</dt>
-                      <dd>{props.accountRequired ? "Claimed Player accounts required" : "Guest Players allowed"}</dd>
+                      <dd>{props.accountRequired ? "Registered Crew accounts required" : "Guest Crew allowed"}</dd>
                     </div>
                   </dl>
                   <p className="panel-note">
-                    Creation is atomic. The voyage remains bound to this immutable edition, including after newer
-                    editions are published.
+                    Creation is atomic. The Voyage remains bound to this published version, even after newer versions
+                    are published.
                   </p>
                 </div>
               )}
@@ -1247,8 +1250,7 @@ function VoyageWizard(props: WizardProps) {
                   <div className="platform-empty">
                     <h3>Ready to create</h3>
                     <p>
-                      The playthrough and invitation will be written together. No orphaned voyage is left if creation
-                      fails.
+                      The Voyage and invitations will be created together. If creation fails, no Voyage is created.
                     </p>
                   </div>
                 ))}
@@ -1266,7 +1268,7 @@ function VoyageWizard(props: WizardProps) {
           )}
           {props.step === 5 && (
             <button className="brass-button" disabled={props.busy || !canNext} onClick={props.createVoyage}>
-              {props.busy ? "Creating…" : "Create voyage and invitation"}
+              {props.busy ? "Creating..." : "Create Voyage and invitations"}
             </button>
           )}
           {props.step === 6 && props.created.length > 0 && (

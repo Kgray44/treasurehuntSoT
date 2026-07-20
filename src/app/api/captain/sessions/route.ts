@@ -5,7 +5,8 @@ import { db } from "@/lib/db";
 
 export async function GET() {
   const session = await requireGmCapability("CAPTAIN");
-  if (!session) return NextResponse.json({ error: "Captain authentication required." }, { status: 401 });
+  if (!session)
+    return NextResponse.json({ error: "Sign in to Captain's Console to view active Voyages." }, { status: 401 });
   const tales = await db.tallTale.findMany({
     where: { archivedAt: null, latestPublishedVersionId: { not: null } },
     orderBy: { title: "asc" },

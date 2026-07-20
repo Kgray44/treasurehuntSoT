@@ -26,7 +26,8 @@ export function CaptainDashboard({ authenticated, taleFilter }: { authenticated:
   const load = useCallback(async () => {
     const response = await fetch("/api/captain/sessions", { cache: "no-store" });
     const body = (await response.json()) as { sessions?: Session[]; tales?: Tale[]; error?: string };
-    if (!response.ok) setError(body.error ?? "The Captain ledger is unavailable.");
+    if (!response.ok)
+      setError(body.error ?? "Captain's Console is unavailable. No Voyage progress has changed. Check your connection, then try again.");
     else {
       setSessions(body.sessions ?? []);
       setTales(body.tales ?? []);
@@ -53,11 +54,11 @@ export function CaptainDashboard({ authenticated, taleFilter }: { authenticated:
     return (
       <main className="captain-auth">
         <section>
-          <p className="eyebrow">Captain control</p>
-          <h1>The command cabin is locked.</h1>
-          <p>Sign in through the Quartermaster&apos;s Log, then return to active Tall Tale sessions.</p>
+          <p className="eyebrow">Captain&apos;s Console</p>
+          <h1>Captain access required</h1>
+          <p>Sign in to open live Voyages and their controls.</p>
           <Link className="brass-button" href="/quartermaster">
-            Open Quartermaster login
+            Sign in to Captain&apos;s Console
           </Link>
         </section>
       </main>
@@ -66,14 +67,14 @@ export function CaptainDashboard({ authenticated, taleFilter }: { authenticated:
     <main className="captain-dashboard">
       <header>
         <div>
-          <Link href="/">← Harbor</Link>
-          <p className="eyebrow">Authoritative session control</p>
-          <h1>Captain&apos;s Tall Tale Desk</h1>
-          <p>State refreshes from the server every 2.5 seconds. Progression actions remain idempotent and audited.</p>
+          <Link href="/">← Return to Voyagewright</Link>
+          <p className="eyebrow">Live Voyage control</p>
+          <h1>Captain&apos;s Console</h1>
+          <p>This Console refreshes server state every 2.5 seconds. Every progression action is recorded and auditable.</p>
         </div>
         <nav>
-          <Link href="/studio">Tall Tale Studio</Link>
-          <Link href="/tales">Player catalog</Link>
+          <Link href="/studio">Voyagewright Studio</Link>
+          <Link href="/tales">Chronicle Library</Link>
         </nav>
       </header>
       {error && (
@@ -84,7 +85,7 @@ export function CaptainDashboard({ authenticated, taleFilter }: { authenticated:
       <section className="captain-summary">
         <article>
           <strong>{shown.filter((session) => session.status === "ACTIVE" && !session.previewMode).length}</strong>
-          <span>active voyages</span>
+          <span>active Voyages</span>
         </article>
         <article>
           <strong>{shown.filter((session) => session.pendingVerification && !session.previewMode).length}</strong>
@@ -92,17 +93,17 @@ export function CaptainDashboard({ authenticated, taleFilter }: { authenticated:
         </article>
         <article>
           <strong>{shown.filter((session) => session.previewMode).length}</strong>
-          <span>preview sessions</span>
+          <span>Preview Voyages</span>
         </article>
         <article className="live-poll">
           <i />
           <strong>Live</strong>
-          <span>canonical polling</span>
+          <span>server refresh</span>
         </article>
       </section>
       <div className="captain-layout">
         <aside>
-          <p className="eyebrow">Available Tall Tales</p>
+          <p className="eyebrow">Available Chronicles</p>
           {tales.map((tale) => (
             <Link className={tale.id === taleFilter ? "active" : ""} key={tale.id} href={`/captain/tales/${tale.id}`}>
               <strong>{tale.title}</strong>
@@ -114,14 +115,14 @@ export function CaptainDashboard({ authenticated, taleFilter }: { authenticated:
         </aside>
         <section className="captain-sessions">
           <header>
-            <h2>{taleFilter ? tales.find((tale) => tale.id === taleFilter)?.title : "All sessions"}</h2>
+            <h2>{taleFilter ? tales.find((tale) => tale.id === taleFilter)?.title : "All Voyages"}</h2>
             <span>{shown.length} total</span>
           </header>
           {!shown.length && (
             <div className="captain-empty">
               <span>◌</span>
-              <h3>No sessions on this chart</h3>
-              <p>Start a published tale or create a Studio preview session.</p>
+              <h3>No Voyages yet</h3>
+              <p>Begin a Voyage from a published Chronicle or create a Preview Voyage in Voyagewright Studio.</p>
             </div>
           )}
           {shown
@@ -131,7 +132,7 @@ export function CaptainDashboard({ authenticated, taleFilter }: { authenticated:
             ))}
           {shown.some((session) => session.previewMode) && (
             <>
-              <h3 className="preview-divider">Development previews</h3>
+              <h3 className="preview-divider">Preview Voyages</h3>
               {shown
                 .filter((session) => session.previewMode)
                 .map((session) => (
@@ -155,18 +156,18 @@ function SessionCard({ session, clock }: { session: Session; clock: number }) {
     >
       <div className="session-signal">
         <i className={session.connected ? "connected" : "quiet"} />
-        <span>{session.connected ? "Recent player heartbeat" : "No recent player heartbeat"}</span>
+        <span>{session.connected ? "Crew member recently connected" : "No recent Crew connection"}</span>
       </div>
-      <p className="card-kicker">{session.previewMode ? "Preview Mode" : `Version ${session.versionLabel}`}</p>
+      <p className="card-kicker">{session.previewMode ? "Preview Voyage" : `Version ${session.versionLabel}`}</p>
       <h3>{session.taleTitle}</h3>
-      <p>{session.ownerLabel ?? "Guest crew"}</p>
+      <p>{session.ownerLabel ?? "Guest Crew"}</p>
       <dl>
         <div>
           <dt>Status</dt>
           <dd>{session.status.toLocaleLowerCase()}</dd>
         </div>
         <div>
-          <dt>Current block</dt>
+          <dt>Current Passage</dt>
           <dd>{session.currentBlockId?.slice(0, 8) ?? "none"}</dd>
         </div>
         <div>
@@ -174,16 +175,16 @@ function SessionCard({ session, clock }: { session: Session; clock: number }) {
           <dd>
             {session.pendingVerification
               ? `${session.pendingVerification.providerType} · ${Math.floor(waiting / 1000)}s`
-              : "none pending"}
+              : "No request"}
           </dd>
         </div>
         <div>
-          <dt>Last event</dt>
+          <dt>Last update</dt>
           <dd>{new Date(session.lastEventAt).toLocaleTimeString()}</dd>
         </div>
       </dl>
       <Link className="brass-button" href={`/captain/sessions/${session.id}`}>
-        Open session controls
+        Open Voyage controls
       </Link>
     </article>
   );

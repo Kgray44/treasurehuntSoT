@@ -70,7 +70,7 @@ export function commandReceipt(
     persistence: "COMMITTED" as const,
     publication,
     // Compatibility fields remain explicit about their limited scope. Neither
-    // value means a Player browser received, presented, or acknowledged it.
+    // value means a Crew browser received, presented, or acknowledged it.
     delivery: publication === "PROCESS_PUBLISHED" ? ("PUBLISHED" as const) : ("PUBLICATION_FAILED" as const),
     deliveryScope: "PROCESS_SUBSCRIBERS_ONLY" as const,
     playerDelivery: "UNCONFIRMED" as const,
@@ -925,7 +925,7 @@ export class CommandConflict extends Error {
 
 export class CommandFailure extends Error {
   constructor(public correlationId: string) {
-    super("The command could not be completed.");
+    super("The Voyage action could not be completed. No progress has changed.");
   }
 }
 
@@ -936,7 +936,7 @@ async function reserveCampaignSequence(tx: Prisma.TransactionClient, campaignId:
   });
   if (reserved.count !== 1)
     throw new CommandConflict(
-      `State changed from sequence ${expectedSequence}. Refresh before confirming.`,
+      `Voyage state changed from sequence ${expectedSequence}. Refresh Captain's Console before confirming.`,
       "STALE_SEQUENCE",
     );
   return expectedSequence + 1;
@@ -953,7 +953,8 @@ function eventFor(command: AdminCommand): ProgressEventType {
     REQUEST_RECONCILIATION: "PLAYER_RECONCILIATION_REQUESTED",
   };
   const value = events[command];
-  if (!value) throw new CommandConflict("That command does not publish directly.", "UNSUPPORTED_COMMAND");
+  if (!value)
+    throw new CommandConflict("This Voyage action does not publish directly. Review the action and try again.", "UNSUPPORTED_COMMAND");
   return value;
 }
 
@@ -969,11 +970,11 @@ async function appendCustomEvent(input: Input, userId: string, correlationId: st
     });
     if (campaign.currentSequence !== input.expectedSequence)
       throw new CommandConflict(
-        `State changed from sequence ${input.expectedSequence} to ${campaign.currentSequence}. Refresh and review the action again.`,
+      `Voyage state changed from sequence ${input.expectedSequence} to ${campaign.currentSequence}. Refresh Captain's Console and review the action again.`,
         "STALE_SEQUENCE",
       );
     if (campaign.status === "PAUSED" && input.command !== "REQUEST_RECONCILIATION")
-      throw new CommandConflict("The campaign is paused. Resume it before releasing progression.", "CAMPAIGN_PAUSED");
+      throw new CommandConflict("This Voyage is paused. Resume it before releasing progression.", "CAMPAIGN_PAUSED");
 
     const reservedSequence = await reserveCampaignSequence(tx, campaign.id, input.expectedSequence);
 
@@ -981,23 +982,23 @@ async function appendCustomEvent(input: Input, userId: string, correlationId: st
     let type = eventFor(input.command);
     if (input.command === "COMPLETE_CHAPTER") {
       const chapter = campaign.chapters.find((item) => item.state === "SOLVED");
-      if (!chapter) throw new CommandConflict("Only a solved chapter can be completed.", "INVALID_TRANSITION");
+      if (!chapter) throw new CommandConflict("Only a solved Chapter can be completed.", "INVALID_TRANSITION");
       await tx.chapter.update({ where: { id: chapter.id }, data: { state: "COMPLETE" } });
       payload = { ordinal: chapter.ordinal };
     } else if (input.command === "RELEASE_HINT" || input.command === "RELEASE_NEXT_HINT") {
       const chapter = campaign.chapters.find((item) => ["ACTIVE", "SOLVED"].includes(item.state));
-      if (!chapter) throw new CommandConflict("Release the chapter before releasing a hint.", "PREREQUISITE_FAILED");
+      if (!chapter) throw new CommandConflict("Release the Chapter before releasing a Hint.", "PREREQUISITE_FAILED");
       const hint = input.targetKey
         ? chapter.hints.find((item) => item.id === input.targetKey || String(item.ordinal) === input.targetKey)
         : chapter.hints.find((item) => !item.releasedAt);
-      if (!hint) throw new CommandConflict("No unreleased hint is available.", "ALREADY_RELEASED");
+      if (!hint) throw new CommandConflict("No unreleased Hint is available.", "ALREADY_RELEASED");
       const priorUnreleased = chapter.hints.some((item) => item.ordinal < hint.ordinal && !item.releasedAt);
-      if (priorUnreleased) throw new CommandConflict("Release earlier hints first.", "HINT_ORDER");
+      if (priorUnreleased) throw new CommandConflict("Release earlier Hints first.", "HINT_ORDER");
       await tx.hint.update({ where: { id: hint.id }, data: { releasedAt: new Date() } });
       payload = { ordinal: chapter.ordinal, hintOrdinal: hint.ordinal, body: hint.body };
     } else if (input.command === "DISCOVER_SIDE_QUEST" || input.command === "ADVANCE_SIDE_QUEST") {
       const quest = campaign.sideQuests.find((item) => !input.targetKey || item.key === input.targetKey);
-      if (!quest) throw new CommandConflict("The side quest is not configured.", "NOT_FOUND");
+      if (!quest) throw new CommandConflict("This Echo is not configured.", "NOT_FOUND");
       const plan = planSideQuestTransition(input.command, quest.state, quest.objectives);
       if (!plan.allowed) throw new CommandConflict(plan.message, "INVALID_TRANSITION");
       if (plan.objectiveOrdinal !== undefined) {
@@ -1016,9 +1017,9 @@ async function appendCustomEvent(input: Input, userId: string, correlationId: st
             ? { key: quest.key, title: quest.title, rewardLabel: quest.rewardLabel }
             : { key: quest.key, objectiveOrdinal: plan.objectiveOrdinal };
     } else if (input.command === "RELEASE_JOURNAL_ENTRY") {
-      const title = String(input.payload.title ?? "Captain's dispatch").trim();
+      const title = String(input.payload.title ?? "Captain's journal entry").trim();
       const body = String(input.payload.body ?? "").trim();
-      if (!body) throw new CommandConflict("Write the dispatch before releasing it.", "VALIDATION_FAILED");
+      if (!body) throw new CommandConflict("Add the journal entry before releasing it.", "VALIDATION_FAILED");
       const entry = await tx.journalEntry.create({
         data: { campaignId: campaign.id, title, body, releasedAt: new Date() },
       });
@@ -1071,7 +1072,7 @@ export async function executeAdminCommand(input: Input, userId: string, context:
   if (existing) return replayExistingExecution(existing, input);
   if (campaign.currentSequence !== input.expectedSequence)
     throw new CommandConflict(
-      `State changed from sequence ${input.expectedSequence} to ${campaign.currentSequence}. Refresh before confirming.`,
+      `Voyage state changed from sequence ${input.expectedSequence} to ${campaign.currentSequence}. Refresh Captain's Console before confirming.`,
       "STALE_SEQUENCE",
     );
 
@@ -1100,7 +1101,7 @@ export async function executeAdminCommand(input: Input, userId: string, context:
     if (legacyCommands.has(input.command)) {
       const current = await db.campaign.findUniqueOrThrow({ where: { id: campaign.id } });
       if (current.currentSequence !== input.expectedSequence)
-        throw new CommandConflict("Another command won the race. Refresh before retrying.", "STALE_SEQUENCE");
+        throw new CommandConflict("Another Voyage action was saved first. Refresh Captain's Console before retrying.", "STALE_SEQUENCE");
       try {
         const result = await executeProgressionAction(
           input.campaignSlug,
@@ -1172,7 +1173,7 @@ export async function stageAdminCommand(
   return db.$transaction(async (tx) => {
     const campaign = await tx.campaign.findUniqueOrThrow({ where: { slug: input.campaignSlug } });
     if (campaign.currentSequence !== input.expectedSequence)
-      throw new CommandConflict("The proposed action is stale. Refresh it before staging.", "STALE_SEQUENCE");
+      throw new CommandConflict("This prepared Voyage action is stale. Refresh Captain's Console before preparing it again.", "STALE_SEQUENCE");
     const reservedSequence = await reserveCampaignSequence(tx, campaign.id, input.expectedSequence);
     const staged = await tx.preparedAction.create({
       data: {
@@ -1217,20 +1218,21 @@ export async function previewAdminCommand(input: Omit<Input, "idempotencyKey">) 
   const snapshot = await buildPublicSnapshot(campaign.id);
   const projected = structuredClone(snapshot);
   const prerequisites: string[] = [];
-  if (campaign.currentSequence !== input.expectedSequence) prerequisites.push("The dashboard state is stale.");
+  if (campaign.currentSequence !== input.expectedSequence)
+    prerequisites.push("Captain's Console state is stale. Refresh before continuing.");
   if (campaign.status === "PAUSED" && !["RESUME", "REQUEST_RECONCILIATION"].includes(input.command))
-    prerequisites.push("Resume the campaign first.");
+    prerequisites.push("Resume the Voyage first.");
   if (input.command === "RELEASE_CHAPTER" && snapshot.chapter.state !== "READY")
-    prerequisites.push("Prepare this chapter first.");
+    prerequisites.push("Prepare this Chapter first.");
   if (input.command === "RELEASE_CHAPTER" && !prerequisites.length) projected.chapter.state = "ACTIVE";
   if (input.command === "MARK_SOLVED" && snapshot.chapter.state !== "ACTIVE")
-    prerequisites.push("Only the active chapter can be solved.");
+    prerequisites.push("Only the active Chapter can be solved.");
   if (input.command === "DISCOVER_SIDE_QUEST" || input.command === "ADVANCE_SIDE_QUEST") {
     const quest = await db.sideQuest.findFirst({
       where: { campaignId: campaign.id, ...(input.targetKey ? { key: input.targetKey } : {}) },
       include: { objectives: { orderBy: { ordinal: "asc" } } },
     });
-    if (!quest) prerequisites.push("The side quest is not configured.");
+    if (!quest) prerequisites.push("This Echo is not configured.");
     else {
       const plan = planSideQuestTransition(input.command, quest.state, quest.objectives);
       if (!plan.allowed) prerequisites.push(plan.message);
@@ -1268,12 +1270,12 @@ function eventForPreview(command: AdminCommand) {
 
 function affectedSystems(command: AdminCommand) {
   const systems: Partial<Record<AdminCommand, string[]>> = {
-    RELEASE_CHAPTER: ["Chapter", "Objective", "Voyage chart", "Ship's Log", "Player ceremony"],
-    RELEASE_HINT: ["Hint ledger", "Player snapshot", "Ship's Log"],
-    RELEASE_NEXT_HINT: ["Hint ledger", "Player snapshot", "Ship's Log"],
-    AWARD_ARTIFACT: ["Relic frame", "Ship's Log", "Player ceremony"],
-    REVEAL_MAP: ["Voyage chart", "Ship's Log", "Player ceremony"],
-    UNDO_LAST: ["Campaign snapshot", "Player reconciliation", "Audit history"],
+    RELEASE_CHAPTER: ["Chapter", "Passage objective", "Voyage chart", "Voyage record", "Crew presentation"],
+    RELEASE_HINT: ["Hint record", "Crew view", "Voyage record"],
+    RELEASE_NEXT_HINT: ["Hint record", "Crew view", "Voyage record"],
+    AWARD_ARTIFACT: ["Artifact collection", "Voyage record", "Crew presentation"],
+    REVEAL_MAP: ["Voyage chart", "Voyage record", "Crew presentation"],
+    UNDO_LAST: ["Voyage recovery point", "Crew reconciliation", "Audit history"],
   };
-  return systems[command] ?? ["Campaign state", "Ship's Log"];
+  return systems[command] ?? ["Voyage state", "Voyage record"];
 }

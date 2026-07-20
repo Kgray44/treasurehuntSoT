@@ -72,7 +72,7 @@ describe("GET /api/gm/status captain boundary", () => {
     const response = await GET();
 
     expect(response.status).toBe(403);
-    expect(await response.json()).toEqual({ error: "Captain authority required.", code: "FORBIDDEN" });
+    expect(await response.json()).toEqual({ error: "Captain access is required to continue.", code: "FORBIDDEN" });
     expect(dependencies.campaign.findFirstOrThrow).not.toHaveBeenCalled();
   });
 

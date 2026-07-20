@@ -181,7 +181,7 @@ async function renderReady(fetchMock: ReturnType<typeof vi.fn>) {
 
 function confirmPrepareChapter() {
   fireEvent.click(screen.getByRole("button", { name: "Prepare Chapter" }));
-  fireEvent.click(screen.getByRole("button", { name: "Confirm action" }));
+  fireEvent.click(screen.getByRole("button", { name: "Confirm Voyage action" }));
 }
 
 describe("Quartermaster command presentation receipts", () => {
@@ -413,7 +413,7 @@ describe("Quartermaster command presentation receipts", () => {
     const dialog = screen.getByRole("dialog", { name: "Prepare Chapter" });
     const main = document.querySelector<HTMLElement>("main.quartermaster-shell")!;
     const cancel = screen.getByRole("button", { name: "Cancel" });
-    const confirm = screen.getByRole("button", { name: "Confirm action" });
+    const confirm = screen.getByRole("button", { name: "Confirm Voyage action" });
     await waitFor(() => expect(confirm).toHaveFocus());
     expect(main).toHaveAttribute("inert");
     expect(main).toHaveAttribute("aria-hidden", "true");
@@ -443,9 +443,9 @@ describe("Quartermaster command presentation receipts", () => {
   it("returns focus after Cancel removes the dialog", async () => {
     const fetchMock = vi.fn().mockResolvedValue(jsonResponse(statusAt(0)));
     await renderReady(fetchMock);
-    const trigger = screen.getByRole("button", { name: "Pause Campaign" });
+    const trigger = screen.getByRole("button", { name: "Pause Voyage" });
     fireEvent.click(trigger);
-    expect(await screen.findByRole("dialog", { name: "Pause Campaign" })).toBeInTheDocument();
+    expect(await screen.findByRole("dialog", { name: "Pause Voyage" })).toBeInTheDocument();
 
     fireEvent.click(screen.getByRole("button", { name: "Cancel" }));
 
@@ -467,7 +467,7 @@ describe("Quartermaster command presentation receipts", () => {
     const dialog = screen.getByRole("dialog", { name: "Prepare Chapter" });
     expect(dialog).toHaveAttribute("tabindex", "-1");
 
-    fireEvent.click(screen.getByRole("button", { name: "Confirm action" }));
+    fireEvent.click(screen.getByRole("button", { name: "Confirm Voyage action" }));
 
     await waitFor(() => expect(animation.play).toHaveBeenCalledOnce());
     const cancel = screen.getByRole("button", { name: "Cancel" });
@@ -492,9 +492,9 @@ describe("Quartermaster command presentation receipts", () => {
     fireEvent.click(screen.getByRole("button", { name: "Cancel" }));
     await waitFor(() => expect(prepare).toHaveFocus());
 
-    const pause = screen.getByRole("button", { name: "Pause Campaign" });
+    const pause = screen.getByRole("button", { name: "Pause Voyage" });
     fireEvent.click(pause);
-    fireEvent.keyDown(screen.getByRole("dialog", { name: "Pause Campaign" }), { key: "Escape" });
+    fireEvent.keyDown(screen.getByRole("dialog", { name: "Pause Voyage" }), { key: "Escape" });
     await waitFor(() => expect(pause).toHaveFocus());
 
     expect(addListener.mock.calls.filter(([type]) => type === "keydown")).toHaveLength(2);
@@ -539,8 +539,8 @@ describe("Quartermaster command presentation receipts", () => {
     confirmPrepareChapter();
 
     await waitFor(() => expect(animation.play).toHaveBeenCalledOnce());
-    expect(screen.getByLabelText("Prepare Chapter ceremony: idle")).toBeInTheDocument();
-    expect(screen.queryByText(/Event event-1 recorded/)).not.toBeInTheDocument();
+    expect(screen.getByLabelText("Prepare Chapter presentation: idle")).toBeInTheDocument();
+    expect(screen.queryByText(/Voyage event saved at sequence 1/)).not.toBeInTheDocument();
     expect(animation.play.mock.calls[0]?.[1]).toEqual(
       expect.objectContaining({
         hostId: expect.stringMatching(/^quartermaster-command-/u),
@@ -554,11 +554,11 @@ describe("Quartermaster command presentation receipts", () => {
 
     refreshedStatus.resolve(jsonResponse(statusAt(1)));
 
-    expect(await screen.findByText("Event event-1 recorded at sequence 1.")).toBeInTheDocument();
-    await waitFor(() => expect(screen.queryByLabelText("Prepare Chapter ceremony: idle")).not.toBeInTheDocument());
-    expect(screen.getByText("Sequence 1")).toBeVisible();
-    expect(screen.getByText(/Player delivery, presentation, and acknowledgment remain unconfirmed/u)).toBeVisible();
-    expect(screen.getByText(/Correlation correlation-event-1/u)).toBeVisible();
+    expect(await screen.findByText("Voyage event saved at sequence 1.")).toBeInTheDocument();
+    await waitFor(() => expect(screen.queryByLabelText("Prepare Chapter presentation: idle")).not.toBeInTheDocument());
+    expect(screen.getByText("Voyage sequence 1")).toBeVisible();
+    expect(screen.getByText(/Crew delivery, presentation, and acknowledgment remain unconfirmed/u)).toBeVisible();
+    expect(screen.getByText(/Reference correlation-event-1/u)).toBeVisible();
     expect(screen.queryByText(/presentation could not be displayed/i)).not.toBeInTheDocument();
     await waitFor(() => expect(commandButton).toHaveFocus());
   });
@@ -591,9 +591,9 @@ describe("Quartermaster command presentation receipts", () => {
 
     confirmPrepareChapter();
     expect(await screen.findByRole("alert")).toHaveTextContent("The response was lost after submission.");
-    fireEvent.click(screen.getByRole("button", { name: "Confirm action" }));
+    fireEvent.click(screen.getByRole("button", { name: "Confirm Voyage action" }));
 
-    expect(await screen.findByText("Event event-replayed recorded at sequence 1.")).toBeInTheDocument();
+    expect(await screen.findByText("Voyage event saved at sequence 1.")).toBeInTheDocument();
     expect(commandBodies).toHaveLength(2);
     expect(commandBodies[0]).toMatchObject({ command: "PREPARE_CHAPTER", expectedSequence: 0 });
     expect(commandBodies[0].idempotencyKey).toBe(commandBodies[1].idempotencyKey);
@@ -620,11 +620,11 @@ describe("Quartermaster command presentation receipts", () => {
 
     expect(await screen.findByRole("alert")).toHaveTextContent("State changed from sequence 8 to 9");
     expect(screen.getByRole("dialog", { name: "Prepare Chapter" })).toBeInTheDocument();
-    expect(screen.queryByText(/Player delivery, presentation, and acknowledgment/u)).not.toBeInTheDocument();
-    expect(screen.queryByText(/Event .* recorded/u)).not.toBeInTheDocument();
+    expect(screen.queryByText(/Crew delivery, presentation, and acknowledgment/u)).not.toBeInTheDocument();
+    expect(screen.queryByText(/Voyage event saved/u)).not.toBeInTheDocument();
   });
 
-  it("shows a committed post-commit publication failure without inventing Player delivery or acknowledgment", async () => {
+  it("shows a committed post-commit publication failure without inventing Crew delivery or acknowledgment", async () => {
     let statusRequests = 0;
     const fetchMock = vi.fn((input: RequestInfo | URL) => {
       if (String(input) === "/api/gm/status") {
@@ -641,12 +641,12 @@ describe("Quartermaster command presentation receipts", () => {
 
     confirmPrepareChapter();
 
-    expect(await screen.findByText("Event event-committed recorded at sequence 1.")).toBeInTheDocument();
-    await waitFor(() => expect(screen.getByText(/could not confirm process publication after commit/u)).toBeVisible());
-    expect(screen.getByText(/Player delivery, presentation, and acknowledgment remain unconfirmed/u)).toBeVisible();
+    expect(await screen.findByText("Voyage event saved at sequence 1.")).toBeInTheDocument();
+    await waitFor(() => expect(screen.getByText(/saved, but this server could not confirm live delivery/u)).toBeVisible());
+    expect(screen.getByText(/Crew delivery, presentation, and acknowledgment remain unconfirmed/u)).toBeVisible();
   });
 
-  it("describes non-publishing staging receipts without claiming process or Player delivery", async () => {
+  it("describes non-publishing staging receipts without claiming process or Crew delivery", async () => {
     let statusRequests = 0;
     const fetchMock = vi.fn((input: RequestInfo | URL) => {
       if (String(input) === "/api/gm/status") {
@@ -664,7 +664,7 @@ describe("Quartermaster command presentation receipts", () => {
     confirmPrepareChapter();
 
     expect(await screen.findByText("Prepared action prepared-stage recorded at sequence 1.")).toBeInTheDocument();
-    expect(screen.queryByText(/Event prepared-stage recorded/u)).not.toBeInTheDocument();
+    expect(screen.queryByText(/Prepared action saved at sequence/u)).not.toBeInTheDocument();
     await waitFor(() => expect(screen.getByText(/created no Player event/u)).toBeVisible());
     expect(screen.getByText(/process publication was not attempted/u)).toBeVisible();
   });
@@ -699,11 +699,11 @@ describe("Quartermaster command presentation receipts", () => {
     });
     await renderReady(fetchMock);
 
-    fireEvent.click(screen.getByRole("button", { name: "Award Test Artifact" }));
-    fireEvent.click(screen.getByRole("button", { name: "Confirm action" }));
+    fireEvent.click(screen.getByRole("button", { name: "Award test Artifact" }));
+    fireEvent.click(screen.getByRole("button", { name: "Confirm Voyage action" }));
 
     await waitFor(() => expect(animation.play).toHaveBeenCalledOnce());
-    expect(await screen.findByText("Event artifact-event recorded at sequence 1.")).toBeInTheDocument();
+    expect(await screen.findByText("Voyage event saved at sequence 1.")).toBeInTheDocument();
     expect(capturedOptions).toEqual(
       expect.objectContaining({
         hostId: expect.stringMatching(/^quartermaster-command-/u),
@@ -746,7 +746,7 @@ describe("Quartermaster command presentation receipts", () => {
 
     expect(await screen.findByRole("alert")).toHaveTextContent("The chapter is not ready.");
     expect(screen.queryByText(/projected-false-success/)).not.toBeInTheDocument();
-    expect(screen.queryByText(/order was recorded/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/Voyage action was saved/i)).not.toBeInTheDocument();
     expect(screen.queryByText(/presentation could not be displayed/i)).not.toBeInTheDocument();
     expect(fetchMock).toHaveBeenCalledTimes(2);
   });
@@ -771,11 +771,11 @@ describe("Quartermaster command presentation receipts", () => {
 
     confirmPrepareChapter();
 
-    expect(await screen.findByText("Event event-real recorded at sequence 1.")).toBeInTheDocument();
-    expect(screen.getByText(/order was recorded, but its presentation could not be displayed/i)).toBeVisible();
+    expect(await screen.findByText("Voyage event saved at sequence 1.")).toBeInTheDocument();
+    expect(screen.getByText(/Voyage action was saved, but its presentation could not be displayed/i)).toBeVisible();
     expect(screen.queryByText(/projected-wrong/)).not.toBeInTheDocument();
     expect(screen.queryByRole("alert")).not.toBeInTheDocument();
-    expect(screen.getByText("Sequence 1")).toBeVisible();
+    expect(screen.getByText("Voyage sequence 1")).toBeVisible();
   });
 
   it("runs a command once through a verified readable fallback when its animation targets are missing", async () => {
@@ -807,8 +807,8 @@ describe("Quartermaster command presentation receipts", () => {
 
     confirmPrepareChapter();
 
-    expect(await screen.findByText("Event event-fallback recorded at sequence 1.")).toBeInTheDocument();
-    expect(screen.getByText(/order was recorded, but its presentation could not be displayed/i)).toBeVisible();
+    expect(await screen.findByText("Voyage event saved at sequence 1.")).toBeInTheDocument();
+    expect(screen.getByText(/Voyage action was saved, but its presentation could not be displayed/i)).toBeVisible();
     expect(fetchMock).toHaveBeenCalledTimes(3);
   });
 
@@ -826,9 +826,9 @@ describe("Quartermaster command presentation receipts", () => {
     confirmPrepareChapter();
 
     expect(await screen.findByRole("alert")).toHaveTextContent(
-      "The order was not sent because its presentation could not start.",
+      "The Voyage action was not sent because its presentation could not start.",
     );
-    expect(screen.getByText("The command presentation is unavailable. No order was recorded.")).toBeVisible();
+    expect(screen.getByText("The Voyage action presentation is unavailable. No action was recorded.")).toBeVisible();
     expect(screen.queryByText(/projected-false-success/)).not.toBeInTheDocument();
     expect(fetchMock).toHaveBeenCalledOnce();
   });
@@ -889,10 +889,10 @@ describe("Quartermaster command presentation receipts", () => {
     await renderReady(fetchMock);
 
     confirmPrepareChapter();
-    expect(await screen.findByText("Event event-prepare_chapter recorded at sequence 1.")).toBeInTheDocument();
-    fireEvent.click(screen.getByRole("button", { name: "Pause Campaign" }));
-    fireEvent.click(screen.getByRole("button", { name: "Confirm action" }));
-    expect(await screen.findByText("Event event-pause recorded at sequence 2.")).toBeInTheDocument();
+    expect(await screen.findByText("Voyage event saved at sequence 1.")).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Pause Voyage" }));
+    fireEvent.click(screen.getByRole("button", { name: "Confirm Voyage action" }));
+    expect(await screen.findByText("Voyage event saved at sequence 2.")).toBeInTheDocument();
 
     expect(hostIds).toHaveLength(2);
     expect(new Set(hostIds).size).toBe(2);
@@ -902,6 +902,6 @@ describe("Quartermaster command presentation receipts", () => {
     expect(targetParts[1]).toEqual(expect.arrayContaining(["lantern", "command-light"]));
     expect(legacyPartSets[0]).toEqual(expect.arrayContaining(["blank-page", "command-light"]));
     expect(legacyPartSets[1]).toEqual([]);
-    expect(screen.getByRole("button", { name: "Pause Campaign" }).closest("[data-scene-host-boundary]")).toBeNull();
+    expect(screen.getByRole("button", { name: "Pause Voyage" }).closest("[data-scene-host-boundary]")).toBeNull();
   });
 });

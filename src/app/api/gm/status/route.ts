@@ -9,8 +9,8 @@ export async function GET() {
   if (!session) {
     const staff = await requireGm();
     return staff
-      ? NextResponse.json({ error: "Captain authority required.", code: "FORBIDDEN" }, { status: 403 })
-      : NextResponse.json({ error: "Authentication required.", code: "UNAUTHENTICATED" }, { status: 401 });
+      ? NextResponse.json({ error: "Captain access is required to continue.", code: "FORBIDDEN" }, { status: 403 })
+      : NextResponse.json({ error: "Sign in to Captain's Console to continue.", code: "UNAUTHENTICATED" }, { status: 401 });
   }
   const campaign = await db.campaign.findFirstOrThrow({
     include: {

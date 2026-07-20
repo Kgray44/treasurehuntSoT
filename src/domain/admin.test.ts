@@ -9,7 +9,7 @@ import {
   stageSchema,
 } from "./admin";
 
-describe("truthful player presence", () => {
+describe("truthful Crew presence", () => {
   it("distinguishes synchronized active devices from a browser merely seen before", () => {
     const now = new Date("2026-07-16T20:00:00Z").getTime();
     expect(
@@ -166,7 +166,7 @@ describe("side-quest state planning", () => {
     });
     expect(planSideQuestTransition("ADVANCE_SIDE_QUEST", "HIDDEN", objectives)).toEqual({
       allowed: false,
-      message: "Discover the side quest before advancing it.",
+      message: "Discover this Echo before advancing it.",
     });
   });
 

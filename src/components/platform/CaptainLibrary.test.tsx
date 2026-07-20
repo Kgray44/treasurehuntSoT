@@ -39,7 +39,7 @@ const invitation = {
 const tale = {
   id: "tale-1",
   title: "The Moonlit Key",
-  subtitle: "A Lanternwake Tale",
+  subtitle: "A Lanternwake Chronicle",
   visibility: "PRIVATE",
   versions: [{ id: "version-1", label: "1", publishedAt: "2026-07-18T12:00:00.000Z", activeRunCount: 0 }],
 };
@@ -79,12 +79,12 @@ describe("CaptainLibrary motion and authority", () => {
   it("uses one shared active tab plate and swaps semantic tab content", async () => {
     vi.stubGlobal("fetch", vi.fn().mockResolvedValue(response(200, library())));
     render(<CaptainLibrary />);
-    await screen.findByRole("heading", { name: "Captain's Tall Tale Library" });
+    await screen.findByRole("heading", { name: "Captain's Console" });
 
     expect(document.querySelectorAll(".platform-tab-plate")).toHaveLength(1);
     fireEvent.click(screen.getByRole("button", { name: /Invitations/ }));
 
-    expect(await screen.findByRole("heading", { name: "Invitation management" })).toBeInTheDocument();
+    expect(await screen.findByRole("heading", { name: "Crew invitations" })).toBeInTheDocument();
     expect(document.querySelectorAll(".platform-tab-plate")).toHaveLength(1);
   });
 
@@ -115,16 +115,16 @@ describe("CaptainLibrary motion and authority", () => {
         ),
     );
     render(<CaptainLibrary />);
-    expect(await screen.findByLabelText("100% of Players ready")).toBeInTheDocument();
+    expect(await screen.findByLabelText("100% of Crew ready")).toBeInTheDocument();
 
-    fireEvent.click(screen.getByRole("button", { name: "Launch voyage" }));
+    fireEvent.click(screen.getByRole("button", { name: "Begin Voyage" }));
 
-    expect(screen.getByRole("button", { name: "Launching…" })).toBeDisabled();
-    expect(screen.getByText("Recording launch with the Captain's ledger.")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Beginning..." })).toBeDisabled();
+    expect(screen.getByText("Recording this Voyage launch with the Captain's Console.")).toBeInTheDocument();
     expect(screen.queryByText(/now live/)).not.toBeInTheDocument();
     launch.resolve(response(200, { ok: true }));
 
-    expect(await screen.findByText(/now live for ready Players/)).toBeInTheDocument();
+    expect(await screen.findByText(/now available to ready Crew/)).toBeInTheDocument();
   });
 
   it("settles a replaced row before revealing server-created replacement credentials", async () => {
@@ -142,7 +142,7 @@ describe("CaptainLibrary motion and authority", () => {
         .mockResolvedValueOnce(response(200, library())),
     );
     render(<CaptainLibrary />);
-    await screen.findByRole("heading", { name: "Captain's Tall Tale Library" });
+    await screen.findByRole("heading", { name: "Captain's Console" });
     fireEvent.click(screen.getByRole("button", { name: /Invitations/ }));
     const row = await screen.findByRole("row");
 
@@ -170,7 +170,7 @@ describe("CaptainLibrary motion and authority", () => {
   it("moves wizard focus by step while preserving entered values", async () => {
     vi.stubGlobal("fetch", vi.fn().mockResolvedValue(response(200, library())));
     render(<CaptainLibrary />);
-    await screen.findByRole("heading", { name: "Captain's Tall Tale Library" });
+    await screen.findByRole("heading", { name: "Captain's Console" });
     fireEvent.click(screen.getByRole("button", { name: "Create a Voyage" }));
     const dialog = screen.getByRole("dialog");
     fireEvent.click(within(dialog).getByRole("button", { name: /The Moonlit Key/ }));
@@ -178,7 +178,7 @@ describe("CaptainLibrary motion and authority", () => {
     const title = await within(dialog).findByRole("heading", { name: "Configure Voyage" });
     await waitFor(() => expect(title).toHaveFocus());
     fireEvent.change(within(dialog).getByLabelText("Voyage name"), { target: { value: "Remember This Voyage" } });
-    fireEvent.click(within(dialog).getByRole("button", { name: "Continue to Add Players" }));
+    fireEvent.click(within(dialog).getByRole("button", { name: "Continue to Add Crew" }));
     fireEvent.click(await within(dialog).findByRole("button", { name: "Back to Configure Voyage" }));
 
     expect(await within(dialog).findByDisplayValue("Remember This Voyage")).toBeInTheDocument();

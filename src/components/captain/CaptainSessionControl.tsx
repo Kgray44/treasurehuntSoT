@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
+import { captainCopy } from "@/language/captain-copy";
 import type { JsonObject } from "@/tall-tale/types";
 
 type State = {
@@ -52,7 +53,8 @@ export function CaptainSessionControl({ sessionId, authenticated }: { sessionId:
     ]);
     const body = (await detail.json()) as State & { error?: string };
     const meta = (await list.json()) as { csrfToken?: string };
-    if (!detail.ok) setError(body.error ?? "Session detail is unavailable.");
+    if (!detail.ok)
+      setError(body.error ?? "This Voyage could not be opened. No progress has changed. Check your connection, then try again.");
     else {
       setState(body);
       setError("");
@@ -68,11 +70,17 @@ export function CaptainSessionControl({ sessionId, authenticated }: { sessionId:
   async function action(name: string, options: JsonObject = {}) {
     if (
       ["rollback", "jump", "override"].includes(name) &&
-      !window.confirm(`${name} changes canonical progression and will be written to the audit history. Continue?`)
+      !window.confirm(
+        name === "rollback"
+          ? "Restore the prior saved Passage? This changes the Voyage's current progress and records an audit entry."
+          : name === "jump"
+            ? "Move the Crew to the selected Passage? This changes the Voyage's current progress and records an audit entry."
+            : "Approve this verification with an override? This advances the Voyage and records why the normal verification was bypassed.",
+      )
     )
       return;
     const reason = ["rollback", "jump", "override", "reject"].includes(name)
-      ? window.prompt("Record a reason for this Captain action:")
+      ? window.prompt("Record why this Captain action is needed:")
       : "Captain control";
     if (reason === null) return;
     setBusy(true);
@@ -82,7 +90,8 @@ export function CaptainSessionControl({ sessionId, authenticated }: { sessionId:
       body: JSON.stringify({ action: name, reason, idempotencyKey: crypto.randomUUID(), ...options }),
     });
     const body = (await response.json()) as { error?: string };
-    if (!response.ok) setError(body.error ?? "Captain action failed.");
+    if (!response.ok)
+      setError(body.error ?? "This Captain action could not be completed. Current Voyage progress is unchanged. Review the Console and try again.");
     await load();
     setBusy(false);
   }
@@ -96,8 +105,8 @@ export function CaptainSessionControl({ sessionId, authenticated }: { sessionId:
     const body = (await response.json()) as { error?: string; code?: string };
     setError(
       response.ok
-        ? `Simulator accepted the ${simResult} event${scenario === "duplicate" ? " and safely deduplicated its replay" : ""}.`
-        : `${body.error ?? "Simulator event rejected."} (${body.code ?? "rejected"})`,
+        ? `Verification simulation accepted the ${simResult} result${scenario === "duplicate" ? " and safely deduplicated its replay" : ""}.`
+        : `${body.error ?? "The verification simulation could not be applied. No Voyage progress changed."} (${body.code ?? "rejected"})`,
     );
     await load();
     setBusy(false);
@@ -106,24 +115,24 @@ export function CaptainSessionControl({ sessionId, authenticated }: { sessionId:
     return (
       <main className="captain-auth">
         <section>
-          <h1>Captain authentication required</h1>
-          <Link href="/quartermaster">Open Quartermaster login</Link>
+          <h1>Captain access required</h1>
+          <Link href="/quartermaster">Sign in to Captain&apos;s Console</Link>
         </section>
       </main>
     );
   if (!state)
     return (
       <main className="captain-session loading">
-        <p role="status">{error || "Opening the audited session ledger…"}</p>
+        <p role="status">{error || "Opening Voyage controls..."}</p>
       </main>
     );
   return (
     <main className="captain-session">
       <header>
         <div>
-          <Link href="/captain">← All sessions</Link>
+          <Link href="/captain">All Voyages</Link>
           <p className="eyebrow">
-            {state.session.previewMode ? "Preview session" : `Pinned ${state.session.versionId.slice(0, 12)}`}
+            {state.session.previewMode ? "Preview Voyage" : `Version ${state.session.versionId.slice(0, 12)}`}
           </p>
           <h1>{state.tale.title}</h1>
           <p>
@@ -133,7 +142,7 @@ export function CaptainSessionControl({ sessionId, authenticated }: { sessionId:
         </div>
         <span className="polling-state">
           <i />
-          Canonical state · 2s polling
+          Server state · 2-second refresh
         </span>
       </header>
       {error && (
@@ -144,7 +153,7 @@ export function CaptainSessionControl({ sessionId, authenticated }: { sessionId:
       )}
       <div className="session-control-grid">
         <section className="current-state">
-          <p className="card-kicker">Player&apos;s present position</p>
+          <p className="card-kicker">Crew&apos;s current Passage</p>
           <h2>{state.chapter?.title}</h2>
           <h3>{state.block?.title}</h3>
           <span>{state.block?.blockType}</span>
@@ -153,7 +162,7 @@ export function CaptainSessionControl({ sessionId, authenticated }: { sessionId:
               state.block?.configuration.prompt ??
                 state.block?.configuration.heading ??
                 state.block?.configuration.body ??
-                "No player summary configured.",
+                "No Crew-facing summary has been configured.",
             )}
           </p>
           {state.block?.creatorNotes && (
@@ -165,8 +174,8 @@ export function CaptainSessionControl({ sessionId, authenticated }: { sessionId:
           <div className={`pending-request ${state.pendingVerification ? "active" : "quiet"}`}>
             <strong>
               {state.pendingVerification
-                ? `Pending ${state.pendingVerification.providerType}`
-                : "No pending verification"}
+                ? `Awaiting ${state.pendingVerification.providerType} verification`
+                : "No verification request"}
             </strong>
             {state.pendingVerification && (
               <span>Waiting since {new Date(state.pendingVerification.requestedAt).toLocaleTimeString()}</span>
@@ -174,7 +183,7 @@ export function CaptainSessionControl({ sessionId, authenticated }: { sessionId:
           </div>
         </section>
         <section className="captain-actions">
-          <p className="card-kicker">Authorized controls</p>
+          <p className="card-kicker">Captain controls</p>
           <div>
             {state.pendingVerification && (
               <>
@@ -182,30 +191,30 @@ export function CaptainSessionControl({ sessionId, authenticated }: { sessionId:
                   Approve verification
                 </button>
                 <button disabled={busy} onClick={() => void action("reject")}>
-                  Reject / request retry
+                  Request another attempt
                 </button>
                 <button disabled={busy} onClick={() => void action("override")}>
-                  Explicit override
+                  Approve with override
                 </button>
               </>
             )}
             <button disabled={busy} onClick={() => void action(state.session.status === "PAUSED" ? "resume" : "pause")}>
-              {state.session.status === "PAUSED" ? "Resume" : "Pause"} session
+              {state.session.status === "PAUSED" ? captainCopy.resumeVoyage.value : captainCopy.pauseVoyage.value}
             </button>
             <button disabled={busy} onClick={() => void action("presentation")}>
-              Re-trigger presentation
+              Replay presentation
             </button>
             <button disabled={busy} onClick={() => void action("releaseHint")}>
-              Release hint
+              Release Hint
             </button>
             <button disabled={busy} onClick={() => void action("rollback")}>
-              Rollback to prior safe block
+              Restore prior Passage
             </button>
           </div>
           <label>
-            <span>Jump target</span>
+            <span>Choose Passage</span>
             <select value={jumpTarget} onChange={(event) => setJumpTarget(event.target.value)}>
-              <option value="">Choose block</option>
+              <option value="">Choose a Passage</option>
               {state.chapters?.map((chapter) => (
                 <optgroup key={chapter.id} label={chapter.title}>
                   {chapter.blocks.map((block) => (
@@ -218,18 +227,18 @@ export function CaptainSessionControl({ sessionId, authenticated }: { sessionId:
             </select>
           </label>
           <button disabled={busy || !jumpTarget} onClick={() => void action("jump", { targetBlockId: jumpTarget })}>
-            Jump with audit reason
+            Move Crew to selected Passage
           </button>
         </section>
         <section className="session-debug">
-          <p className="card-kicker">Inventory and variables</p>
-          <h3>Inventory</h3>
-          <ul>{state.inventory.length ? state.inventory.map((item) => <li key={item}>{item}</li>) : <li>Empty</li>}</ul>
-          <h3>Variables</h3>
+          <p className="card-kicker">Artifacts and Voyage variables</p>
+          <h3>Artifacts</h3>
+          <ul>{state.inventory.length ? state.inventory.map((item) => <li key={item}>{item}</li>) : <li>No Artifacts</li>}</ul>
+          <h3>Voyage variables</h3>
           <pre>{JSON.stringify(state.variables ?? {}, null, 2)}</pre>
         </section>
         <section className="event-ledger">
-          <p className="card-kicker">Recent event history</p>
+          <p className="card-kicker">Voyage event history</p>
           <ol>
             {state.events.map((event) => (
               <li key={event.id}>
@@ -246,11 +255,11 @@ export function CaptainSessionControl({ sessionId, authenticated }: { sessionId:
         </section>
         {process.env.NODE_ENV !== "production" && (
           <section className="verification-simulator">
-            <p className="card-kicker">Development tool · future provider seam</p>
+            <p className="card-kicker">Development tool: verification provider seam</p>
             <h2>Verification Simulator</h2>
             <p>
-              Submits standardized evidence against the current pending request. It cannot issue an unrestricted advance
-              command.
+              Tests standardized evidence against the current verification request. It cannot advance a Voyage without a
+              pending verification request.
             </p>
             <label>
               <span>Outcome</span>
@@ -282,7 +291,7 @@ export function CaptainSessionControl({ sessionId, authenticated }: { sessionId:
                 Test stale
               </button>
               <button disabled={busy || !state.pendingVerification} onClick={() => void simulate("wrongBlock")}>
-                Test wrong block
+                Test wrong Passage
               </button>
               <button disabled={busy || !state.pendingVerification} onClick={() => void simulate("wrongVersion")}>
                 Test wrong version
