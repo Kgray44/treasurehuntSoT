@@ -227,10 +227,10 @@ describe("Voyagewright Studio editor motion and authority", () => {
     render(<TaleEditor taleId="tale-1" authenticated />);
     await screen.findByRole("heading", { name: "A Test Chronicle" });
     fireEvent.click(screen.getByRole("button", { name: "Publish Chronicle" }));
-    expect(screen.queryByText(/Version 4 sealed/)).not.toBeInTheDocument();
+    expect(screen.queryByText(/Version 4 published/)).not.toBeInTheDocument();
 
     await act(async () => resolvePublish(response(201, { versionLabel: "4" })));
-    expect(await screen.findByText(/Version 4 sealed/)).toHaveAttribute("data-authority-state", "confirmed");
+    expect(await screen.findByText(/Version 4 published/)).toHaveAttribute("data-authority-state", "confirmed");
   });
 
   it("tracks each upload independently and preserves successful files when a sibling fails", async () => {
