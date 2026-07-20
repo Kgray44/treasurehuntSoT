@@ -411,9 +411,11 @@ describe("JournalWorkspace chapter ceremony host", () => {
       expect(commands.at(-1)).toMatchObject({ eventId: chapterRelease.id, semanticLabel: "ink-story" }),
     );
     expect(lottieProbe.play).not.toHaveBeenCalled();
+    expect(lottieProbe.playSegment).not.toHaveBeenCalled();
 
     act(() => commands.at(-1)!.play());
-    expect(lottieProbe.play).toHaveBeenCalledOnce();
+    expect(lottieProbe.playSegment).toHaveBeenCalledOnce();
+    expect(lottieProbe.playSegment).toHaveBeenCalledWith([0, 72]);
 
     view.rerender(
       <AnimationProvider>
