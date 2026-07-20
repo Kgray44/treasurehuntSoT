@@ -22,14 +22,14 @@ Voyagewright helps creators build stories worth entering, helps Captains guide t
 
 Voice is stable; tone responds to the moment.
 
-| Context | Tone | Primary objective |
-| --- | --- | --- |
-| Public landing page | Inviting and aspirational | Explain the product and create curiosity |
-| Player experience | Mysterious and reassuring | Frame the Chronicle without overpowering it |
-| Captain's Console | Focused and operational | Support fast, reliable live control |
-| Voyagewright Studio | Clear and encouraging | Help creators build valid, publishable Chronicles |
-| Errors and recovery | Calm and direct | Explain impact, safety, and next action |
-| Finale or reflection | Minimal and spacious | Let the Chronicle earn the emotion |
+| Context              | Tone                      | Primary objective                                 |
+| -------------------- | ------------------------- | ------------------------------------------------- |
+| Public landing page  | Inviting and aspirational | Explain the product and create curiosity          |
+| Player experience    | Mysterious and reassuring | Frame the Chronicle without overpowering it       |
+| Captain's Console    | Focused and operational   | Support fast, reliable live control               |
+| Voyagewright Studio  | Clear and encouraging     | Help creators build valid, publishable Chronicles |
+| Errors and recovery  | Calm and direct           | Explain impact, safety, and next action           |
+| Finale or reflection | Minimal and spacious      | Let the Chronicle earn the emotion                |
 
 Tone always serves the user's need before atmosphere. A confirmation dialog for deleting a Chronicle must not recite poetry about impermanence.
 
@@ -78,59 +78,59 @@ For authoring, validation, publishing, versioning, assets, and preview. It is cr
 
 Errors are calm, specific, honest, and actionable. Each recovery message answers: what happened; whether anything was lost; what the system is doing now; and what the user can do next.
 
-| Situation | Heading | Supporting copy |
-| --- | --- | --- |
-| Connection loss | Connection lost | Your progress is safe. Voyagewright is trying to reconnect. |
-| Failed reconnect | Unable to reconnect | Your progress is saved through Chapter II. Check your connection, then try again. |
-| Expired invitation | This invitation has expired | Ask the Captain to create a new invitation. |
-| Publishing problem | The Chronicle was not published | Chapter III contains a Passage with no valid destination. Your draft has been preserved. |
-| Unsupported content | This Chronicle requires a newer version of Voyagewright | Update the application before continuing. Your Voyage has not advanced. |
-| Verification failure | The object could not be confirmed | Adjust the view so the full marker is visible, then try again. |
+| Situation            | Heading                                                 | Supporting copy                                                                          |
+| -------------------- | ------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| Connection loss      | Connection lost                                         | Your progress is safe. Voyagewright is trying to reconnect.                              |
+| Failed reconnect     | Unable to reconnect                                     | Your progress is saved through Chapter II. Check your connection, then try again.        |
+| Expired invitation   | This invitation has expired                             | Ask the Captain to create a new invitation.                                              |
+| Publishing problem   | The Chronicle was not published                         | Chapter III contains a Passage with no valid destination. Your draft has been preserved. |
+| Unsupported content  | This Chronicle requires a newer version of Voyagewright | Update the application before continuing. Your Voyage has not advanced.                  |
+| Verification failure | The object could not be confirmed                       | Adjust the view so the full marker is visible, then try again.                           |
 
 Prefer “The Chronicle could not be opened. Your progress has not changed. Try again, or return to the Library.” Never leave the user with only “Something went wrong.”
 
 ## 6. Canonical vocabulary
 
-| Concept | Canonical term | Usage |
-| --- | --- | --- |
-| Authored playable experience | Chronicle | Central content object created in Studio |
-| Active playthrough | Voyage | Live or resumable instance of a Chronicle |
-| Person running the experience | Captain | Operator guiding a Voyage |
-| Participating players | Crew | People taking part in the Voyage |
-| Major story division | Chapter | Large authored section |
-| Individual authored unit | Passage | Narration, objective, riddle, choice, reveal, checkpoint, or transition |
-| Location or progression point | Waypoint | Destination, checkpoint, or meaningful position |
-| Optional discovered memory | Echo | Side discovery that deepens context without blocking progress |
-| Significant collected object | Artifact | Discovered object with narrative meaning |
-| Completed-session record | Voyage Record | Durable history of an ended or completed Voyage |
-| Creator application | Voyagewright Studio | Authoring and publishing interface |
-| Player application | Voyagewright Player | Player-facing experience |
-| Session-control application | Captain's Console | Live operating interface |
-| Test playthrough | Preview Voyage | Controlled test run |
-| Completed or retired content storage | Archive | Clear ordinary storage term |
+| Concept                              | Canonical term      | Usage                                                                   |
+| ------------------------------------ | ------------------- | ----------------------------------------------------------------------- |
+| Authored playable experience         | Chronicle           | Central content object created in Studio                                |
+| Active playthrough                   | Voyage              | Live or resumable instance of a Chronicle                               |
+| Person running the experience        | Captain             | Operator guiding a Voyage                                               |
+| Participating players                | Crew                | People taking part in the Voyage                                        |
+| Major story division                 | Chapter             | Large authored section                                                  |
+| Individual authored unit             | Passage             | Narration, objective, riddle, choice, reveal, checkpoint, or transition |
+| Location or progression point        | Waypoint            | Destination, checkpoint, or meaningful position                         |
+| Optional discovered memory           | Echo                | Side discovery that deepens context without blocking progress           |
+| Significant collected object         | Artifact            | Discovered object with narrative meaning                                |
+| Completed-session record             | Voyage Record       | Durable history of an ended or completed Voyage                         |
+| Creator application                  | Voyagewright Studio | Authoring and publishing interface                                      |
+| Player application                   | Voyagewright Player | Player-facing experience                                                |
+| Session-control application          | Captain's Console   | Live operating interface                                                |
+| Test playthrough                     | Preview Voyage      | Controlled test run                                                     |
+| Completed or retired content storage | Archive             | Clear ordinary storage term                                             |
 
 Creators see **Passage** even when an internal type is named `StoryBlock`. A Passage can contain narration, a riddle, an objective, a confirmation, an Artifact reveal, an image transformation, a choice, a Captain checkpoint, or a Chapter ending. Keep ordinary clear words literal: Save, Cancel, Delete, Email, Password, Privacy, Version history, and Validation errors.
 
 ## 7. Required microcopy transformations
 
-| Generic or inherited language | Voyagewright language |
-| --- | --- |
-| Start Tall Tale | Begin Chronicle |
-| Active game session | Active Voyage |
-| Create new story | Create Chronicle |
-| Game master dashboard | Captain's Console |
-| Continue | Continue Voyage |
-| Submit | Confirm Answer |
-| You unlocked an item! | Artifact recovered |
-| Waiting for admin | Awaiting the Captain |
-| No data | Nothing has been recorded yet |
-| Replay animation | Replay Presentation |
-| Go back | Return to Library |
-| End session | End Voyage |
-| Duplicate campaign | Create a new Voyage from this Chronicle |
-| Error loading story | This Chronicle could not be opened |
-| Testing mode | Preview Voyage |
-| Draft game | Draft Chronicle |
+| Generic or inherited language | Voyagewright language                   |
+| ----------------------------- | --------------------------------------- |
+| Start Tall Tale               | Begin Chronicle                         |
+| Active game session           | Active Voyage                           |
+| Create new story              | Create Chronicle                        |
+| Game master dashboard         | Captain's Console                       |
+| Continue                      | Continue Voyage                         |
+| Submit                        | Confirm Answer                          |
+| You unlocked an item!         | Artifact recovered                      |
+| Waiting for admin             | Awaiting the Captain                    |
+| No data                       | Nothing has been recorded yet           |
+| Replay animation              | Replay Presentation                     |
+| Go back                       | Return to Library                       |
+| End session                   | End Voyage                              |
+| Duplicate campaign            | Create a new Voyage from this Chronicle |
+| Error loading story           | This Chronicle could not be opened      |
+| Testing mode                  | Preview Voyage                          |
+| Draft game                    | Draft Chronicle                         |
 
 For important Player events, use functional truth first and atmospheric meaning second.
 
@@ -172,33 +172,33 @@ When two versions are equally clear, choose the more human one. When one is clea
 
 ## Appendix A. Sample copy library
 
-| Area | Heading or action | Supporting copy |
-| --- | --- | --- |
-| Onboarding | Welcome to Voyagewright | Create a Chronicle, gather your Crew, and turn a familiar world into a story made for them. |
-| Onboarding | Choose your role | Join as a Player, guide the Voyage as Captain, or create in Studio. |
-| Onboarding | No account yet? | Create one to save your Chronicles, Voyages, and invitations. |
-| Invitations | You've been invited | A Captain has invited you to join a Voyage. |
-| Invitations | Invitation accepted | Your place in the Crew is confirmed. |
-| Player progression | Chapter released | A new entry has opened in the journal. |
-| Player progression | Waypoint revealed | A new bearing has been marked on the chart. |
-| Player progression | Artifact recovered | The object has been added to your collection. |
-| Player progression | Echo discovered | This memory is optional, but it may change what the journey means. |
-| Player progression | Awaiting the Captain | Your progress is saved. The Voyage will continue when the next Passage is released. |
-| Captain controls | Release Chapter | Make the next Chapter available to the Crew. |
-| Captain controls | Approve discovery | Confirm the player's submission and advance the Voyage. |
-| Captain controls | Send hint | Reveal the selected hint to the player. |
-| Captain controls | Pause Voyage | Players can keep reading, but progression controls will be suspended. |
-| Captain controls | End Voyage | The current Voyage will close. Its record and progress will be preserved. |
-| Studio | Create Chronicle | Start with a title, premise, and first Chapter. |
-| Studio | Add Passage | Choose narration, objective, riddle, choice, reveal, or Captain checkpoint. |
-| Studio | Preview from here | Run the Chronicle from this Passage without changing the draft. |
-| Studio | Draft saved | Your latest changes are preserved. |
-| Studio | Cannot publish yet | Two Passages have no valid destination. |
-| Empty state | No Chronicles yet | Every Voyage starts with a first page. |
-| Empty state | No active Voyages | Join an invitation or begin one from your Chronicle Library. |
-| Recovery | Connection lost | Your progress is safe. Voyagewright is trying to reconnect. |
-| Recovery | Unable to reconnect | Your progress is preserved. Check your connection, then try again. |
-| Recovery | Upload incomplete | The file was not saved. Choose it again after checking your connection. |
+| Area               | Heading or action       | Supporting copy                                                                             |
+| ------------------ | ----------------------- | ------------------------------------------------------------------------------------------- |
+| Onboarding         | Welcome to Voyagewright | Create a Chronicle, gather your Crew, and turn a familiar world into a story made for them. |
+| Onboarding         | Choose your role        | Join as a Player, guide the Voyage as Captain, or create in Studio.                         |
+| Onboarding         | No account yet?         | Create one to save your Chronicles, Voyages, and invitations.                               |
+| Invitations        | You've been invited     | A Captain has invited you to join a Voyage.                                                 |
+| Invitations        | Invitation accepted     | Your place in the Crew is confirmed.                                                        |
+| Player progression | Chapter released        | A new entry has opened in the journal.                                                      |
+| Player progression | Waypoint revealed       | A new bearing has been marked on the chart.                                                 |
+| Player progression | Artifact recovered      | The object has been added to your collection.                                               |
+| Player progression | Echo discovered         | This memory is optional, but it may change what the journey means.                          |
+| Player progression | Awaiting the Captain    | Your progress is saved. The Voyage will continue when the next Passage is released.         |
+| Captain controls   | Release Chapter         | Make the next Chapter available to the Crew.                                                |
+| Captain controls   | Approve discovery       | Confirm the player's submission and advance the Voyage.                                     |
+| Captain controls   | Send hint               | Reveal the selected hint to the player.                                                     |
+| Captain controls   | Pause Voyage            | Players can keep reading, but progression controls will be suspended.                       |
+| Captain controls   | End Voyage              | The current Voyage will close. Its record and progress will be preserved.                   |
+| Studio             | Create Chronicle        | Start with a title, premise, and first Chapter.                                             |
+| Studio             | Add Passage             | Choose narration, objective, riddle, choice, reveal, or Captain checkpoint.                 |
+| Studio             | Preview from here       | Run the Chronicle from this Passage without changing the draft.                             |
+| Studio             | Draft saved             | Your latest changes are preserved.                                                          |
+| Studio             | Cannot publish yet      | Two Passages have no valid destination.                                                     |
+| Empty state        | No Chronicles yet       | Every Voyage starts with a first page.                                                      |
+| Empty state        | No active Voyages       | Join an invitation or begin one from your Chronicle Library.                                |
+| Recovery           | Connection lost         | Your progress is safe. Voyagewright is trying to reconnect.                                 |
+| Recovery           | Unable to reconnect     | Your progress is preserved. Check your connection, then try again.                          |
+| Recovery           | Upload incomplete       | The file was not saved. Choose it again after checking your connection.                     |
 
 ## Appendix B. Copy review checklist
 

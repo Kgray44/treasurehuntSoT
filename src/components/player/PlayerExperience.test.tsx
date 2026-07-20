@@ -1382,5 +1382,4 @@ describe("PlayerExperience presentation integrity", () => {
       ),
     );
   });
-
 });
