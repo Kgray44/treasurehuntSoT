@@ -85,3 +85,6 @@ __pycache__/
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+# Deprecated repository guidance files. Do not reintroduce or track them.
+AGENTS.md
+PLANS.md
