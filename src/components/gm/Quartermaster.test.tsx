@@ -286,7 +286,7 @@ describe("Quartermaster command presentation receipts", () => {
     fireEvent.change(screen.getByLabelText("Captain name"), { target: { value: "captain" } });
     fireEvent.change(screen.getByLabelText("Passphrase"), { target: { value: "safe-development-passphrase" } });
 
-    fireEvent.click(screen.getByRole("button", { name: "Enter the chart room" }));
+    fireEvent.click(screen.getByRole("button", { name: "Sign in to Captain's Console" }));
 
     expect(await screen.findByRole("heading", { name: "Test Voyage" })).toBeInTheDocument();
     expect(animation.play.mock.calls[0]?.[1]).toEqual(
@@ -316,12 +316,12 @@ describe("Quartermaster command presentation receipts", () => {
     fireEvent.change(screen.getByLabelText("Captain name"), { target: { value: "captain" } });
     fireEvent.change(screen.getByLabelText("Passphrase"), { target: { value: "safe-development-passphrase" } });
 
-    fireEvent.click(screen.getByRole("button", { name: "Enter the chart room" }));
+    fireEvent.click(screen.getByRole("button", { name: "Sign in to Captain's Console" }));
 
     const form = screen.getByLabelText("Captain name").closest("form")!;
     expect(await screen.findByRole("status")).toHaveTextContent("Sign-in accepted. Opening Captain's Console.");
     expect(form).toHaveAttribute("aria-busy", "true");
-    expect(screen.getByRole("button", { name: /Turning the key/u })).toBeDisabled();
+    expect(screen.getByRole("button", { name: "Signing in..." })).toBeDisabled();
     fireEvent.submit(form);
     expect(fetchMock.mock.calls.filter(([input]) => String(input) === "/api/gm/login")).toHaveLength(1);
     expect(animation.play).toHaveBeenCalledOnce();
@@ -343,11 +343,11 @@ describe("Quartermaster command presentation receipts", () => {
     fireEvent.change(username, { target: { value: "captain" } });
     fireEvent.change(screen.getByLabelText("Passphrase"), { target: { value: "wrong-development-passphrase" } });
 
-    fireEvent.click(screen.getByRole("button", { name: "Enter the chart room" }));
+    fireEvent.click(screen.getByRole("button", { name: "Sign in to Captain's Console" }));
 
     expect(await screen.findByRole("alert")).toHaveTextContent("The captain's key was refused.");
     expect(username.closest("form")).toHaveAttribute("aria-busy", "false");
-    expect(screen.getByRole("button", { name: "Enter the chart room" })).toBeEnabled();
+    expect(screen.getByRole("button", { name: "Sign in to Captain's Console" })).toBeEnabled();
     await waitFor(() => expect(username).toHaveFocus());
   });
 
@@ -360,7 +360,7 @@ describe("Quartermaster command presentation receipts", () => {
     fireEvent.change(username, { target: { value: "captain" } });
     fireEvent.change(screen.getByLabelText("Passphrase"), { target: { value: "safe-development-passphrase" } });
 
-    fireEvent.click(screen.getByRole("button", { name: "Enter the chart room" }));
+    fireEvent.click(screen.getByRole("button", { name: "Sign in to Captain's Console" }));
 
     expect(await screen.findByRole("alert")).toHaveTextContent(
       "Sign-in was not attempted because its presentation could not start.",
@@ -388,12 +388,12 @@ describe("Quartermaster command presentation receipts", () => {
     fireEvent.change(username, { target: { value: "captain" } });
     fireEvent.change(screen.getByLabelText("Passphrase"), { target: { value: "safe-development-passphrase" } });
 
-    fireEvent.click(screen.getByRole("button", { name: "Enter the chart room" }));
+    fireEvent.click(screen.getByRole("button", { name: "Sign in to Captain's Console" }));
 
     expect(await screen.findByRole("alert")).toHaveTextContent(
       "Sign-in succeeded, but Captain's Console could not be opened. Please try again.",
     );
-    expect(screen.getByRole("button", { name: "Enter the chart room" })).toBeEnabled();
+    expect(screen.getByRole("button", { name: "Sign in to Captain's Console" })).toBeEnabled();
     await waitFor(() => expect(username).toHaveFocus());
   });
 
