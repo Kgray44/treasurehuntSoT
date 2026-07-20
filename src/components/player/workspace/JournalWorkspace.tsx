@@ -587,7 +587,11 @@ function ChapterCeremonyPage({
           ? Object.freeze({
               eventId,
               semanticLabel: "ink-story" as const,
-              play: () => handle.playSegment([...lottieAssets.inkBloom.segments!["ink-story"]]),
+              play: () => {
+                const segment = lottieAssets.inkBloom.segments?.["ink-story"];
+                if (segment && typeof handle.playSegment === "function") handle.playSegment([...segment]);
+                else handle.play();
+              },
               stop: () => handle.stop(),
             })
           : null,

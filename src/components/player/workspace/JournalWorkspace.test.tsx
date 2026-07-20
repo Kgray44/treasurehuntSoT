@@ -452,8 +452,8 @@ describe("JournalWorkspace chapter ceremony host", () => {
     expect(contract).toHaveAttribute("aria-hidden", "true");
     expect(contract).toHaveAttribute("data-rive-contract-availability", "blocked_external_asset");
     expect(contract).toHaveAttribute("data-rive-production-art-status", "blocked_external_asset");
-    expect(contract).toHaveAttribute("data-rive-state", "awake");
-    expect(contract).toHaveAttribute("data-rive-state-value", "1");
+    expect(contract).toHaveAttribute("data-rive-state", "releasing");
+    expect(contract).toHaveAttribute("data-rive-state-value", "2");
     expect(contract).toHaveAttribute(
       "data-rive-inputs",
       "isHovering,isFocused,openingPhase,pressure,wake,release,open,interrupt,reset,reducedMotion",
@@ -469,7 +469,7 @@ describe("JournalWorkspace chapter ceremony host", () => {
       contract?.querySelector("[data-scene-part], [data-scene-target-id], [data-animation-owner], [data-gsap-owned]"),
     ).toBeNull();
     expect(view.container.querySelector(".latch-assembly")).toBeInTheDocument();
-    expect(screen.getByText("The journal clasp is awake and ready to release.")).toBeInTheDocument();
+    expect(screen.getByText("The journal clasp is releasing while the journal cover remains supported.")).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Next journal page" })).toBeEnabled();
     await waitFor(() => expect(contract).toHaveAttribute("data-rive-runtime-status", "fallback"));
     expect(statuses.at(-1)).toBe("fallback");

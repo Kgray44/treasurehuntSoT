@@ -470,6 +470,10 @@ export function InvitationCeremony({ onRouteHandoff }: { onRouteHandoff?: Invita
       "failed",
       "resolving",
     ].includes(stage);
+  const sealSignals = useMemo(
+    () => invitationSealSignals(stage, pin, invitation?.requiresPin ?? false),
+    [invitation?.requiresPin, pin, stage],
+  );
   if (terminal) {
     return (
       <main className="invitation-page" data-invitation-state={stage} data-motion-mode={mode}>
@@ -485,10 +489,6 @@ export function InvitationCeremony({ onRouteHandoff }: { onRouteHandoff?: Invita
   }
 
   const tale = invitation.playthrough.tale;
-  const sealSignals = useMemo(
-    () => invitationSealSignals(stage, pin, invitation.requiresPin),
-    [invitation.requiresPin, pin, stage],
-  );
   const relicState =
     stage === "accepted" ? "open" : stage === "pin-validating" || stage === "accepting" ? "accepting" : "valid";
   return (
