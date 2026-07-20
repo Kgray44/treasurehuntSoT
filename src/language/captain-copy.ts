@@ -24,8 +24,14 @@ export const captainCopy = {
   pauseVoyage: captain("Pause Voyage", "captain.action.pauseVoyage"),
   resumeVoyage: captain("Resume Voyage", "captain.action.resumeVoyage"),
   endVoyage: captain("End Voyage", "captain.action.endVoyage"),
-  offlineDetail: captain("This player is offline. The action will be delivered when they reconnect.", "captain.status.playerOffline"),
-  advanceCrewDetail: captain("This action advances the entire Crew to the next Passage.", "captain.action.advanceDetail"),
+  offlineDetail: captain(
+    "This player is offline. The action will be delivered when they reconnect.",
+    "captain.status.playerOffline",
+  ),
+  advanceCrewDetail: captain(
+    "This action advances the entire Crew to the next Passage.",
+    "captain.action.advanceDetail",
+  ),
   endConfirmation: captain("End this Voyage?", "captain.confirmation.end.title"),
   endConfirmationDetail: captain(
     "Players will no longer be able to advance. The Voyage Record and current progress will be preserved.",

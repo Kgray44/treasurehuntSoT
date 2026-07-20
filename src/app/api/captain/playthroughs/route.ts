@@ -8,7 +8,10 @@ export async function POST(request: Request) {
   if (!session)
     return NextResponse.json({ error: "Sign in to Captain's Console to create a Voyage." }, { status: 401 });
   if (!(await verifyCsrf(session)))
-    return NextResponse.json({ error: "Your Captain session expired. Sign in again; no Voyage or invitations were created." }, { status: 403 });
+    return NextResponse.json(
+      { error: "Your Captain session expired. Sign in again; no Voyage or invitations were created." },
+      { status: 403 },
+    );
   try {
     return NextResponse.json(
       await createPlaythroughAndInvitations(await request.json(), session.userId, new URL(request.url).origin),

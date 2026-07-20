@@ -13,7 +13,10 @@ async function authorize() {
 export async function POST(request: Request, context: { params: Promise<{ taleId: string; versionId: string }> }) {
   const session = await authorize();
   if (!session)
-    return NextResponse.json({ error: "Your creator session has expired. Sign in again to continue." }, { status: 403 });
+    return NextResponse.json(
+      { error: "Your creator session has expired. Sign in again to continue." },
+      { status: 403 },
+    );
   try {
     const { action } = (await request.json()) as { action: "preview" | "restore" | "fork" };
     const { taleId, versionId } = await context.params;

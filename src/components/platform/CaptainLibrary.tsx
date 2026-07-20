@@ -152,7 +152,10 @@ export function CaptainLibrary() {
       const response = await fetch("/api/captain/library", { cache: "no-store", signal: controller.signal });
       const body = (await response.json()) as Library & { error?: string };
       if (!response.ok)
-        setError(body.error ?? "Captain's Console is unavailable. No Voyage progress has changed. Check your connection, then try again.");
+        setError(
+          body.error ??
+            "Captain's Console is unavailable. No Voyage progress has changed. Check your connection, then try again.",
+        );
       else {
         requestSequence.current += 1;
         const previous = libraryRef.current;
@@ -211,7 +214,9 @@ export function CaptainLibrary() {
       }
     } catch (cause) {
       if (cause instanceof DOMException && cause.name === "AbortError") return;
-      setError("Captain's Console could not connect. No Voyage progress has changed. Check your connection, then try again.");
+      setError(
+        "Captain's Console could not connect. No Voyage progress has changed. Check your connection, then try again.",
+      );
     } finally {
       if (activeLoad.current === controller) activeLoad.current = null;
     }
@@ -279,14 +284,19 @@ export function CaptainLibrary() {
       });
       const body = (await response.json()) as { invitations?: CreatedInvitation[]; error?: string };
       if (!response.ok)
-        return setError(body.error ?? "The Voyage could not be created. Check the Voyage list before trying again to avoid duplicate invitations.");
+        return setError(
+          body.error ??
+            "The Voyage could not be created. Check the Voyage list before trying again to avoid duplicate invitations.",
+        );
       setCreated(body.invitations ?? []);
       setNotice("The Voyage and its individual Crew invitations were created together.");
       setWizardDirection(1);
       setStep(6);
       await load();
     } catch {
-      setError("The Voyage could not be created. Check the Voyage list before trying again to avoid duplicate invitations.");
+      setError(
+        "The Voyage could not be created. Check the Voyage list before trying again to avoid duplicate invitations.",
+      );
     } finally {
       setBusy(false);
     }
@@ -295,7 +305,11 @@ export function CaptainLibrary() {
   async function launch(voyage: Voyage) {
     if (!library) return;
     setLaunchState({ id: voyage.id, phase: "confirming" });
-    if (!window.confirm(`Begin “${voyage.voyageName}” for its ready Crew? The ready Crew will receive access to this Voyage.`)) {
+    if (
+      !window.confirm(
+        `Begin “${voyage.voyageName}” for its ready Crew? The ready Crew will receive access to this Voyage.`,
+      )
+    ) {
       setLaunchState(null);
       return;
     }
@@ -311,7 +325,9 @@ export function CaptainLibrary() {
       });
       const body = (await response.json()) as { error?: string };
       if (!response.ok) {
-        setError(body.error ?? "The Voyage could not begin. No Crew access has changed. Review the Voyage and try again.");
+        setError(
+          body.error ?? "The Voyage could not begin. No Crew access has changed. Review the Voyage and try again.",
+        );
         setLaunchState(null);
       } else {
         setLaunchState({ id: voyage.id, phase: "launched" });
@@ -349,7 +365,10 @@ export function CaptainLibrary() {
       });
       const body = (await response.json()) as { error?: string; replacement?: CreatedInvitation };
       if (!response.ok) {
-        setError(body.error ?? "The invitation could not be changed. Its current access remains unchanged. Check its status, then try again.");
+        setError(
+          body.error ??
+            "The invitation could not be changed. Its current access remains unchanged. Check its status, then try again.",
+        );
         setInvitationTransitions((current) => {
           const next = { ...current };
           delete next[invitation.id];
@@ -432,7 +451,7 @@ export function CaptainLibrary() {
           </button>
         </div>
       </header>
-      <nav className="platform-tabs" aria-label="Captain&apos;s Console sections">
+      <nav className="platform-tabs" aria-label="Captain's Console sections">
         <button
           className={tab === "voyages" ? "active" : ""}
           aria-pressed={tab === "voyages"}
@@ -626,7 +645,8 @@ export function CaptainLibrary() {
                         <li key={version.id}>
                           <span>Version {version.label}</span>
                           <small>
-                            {version.activeRunCount} active Voyages · {new Date(version.publishedAt).toLocaleDateString()}
+                            {version.activeRunCount} active Voyages ·{" "}
+                            {new Date(version.publishedAt).toLocaleDateString()}
                           </small>
                         </li>
                       ))}
@@ -1249,9 +1269,7 @@ function VoyageWizard(props: WizardProps) {
                 ) : (
                   <div className="platform-empty">
                     <h3>Ready to create</h3>
-                    <p>
-                      The Voyage and invitations will be created together. If creation fails, no Voyage is created.
-                    </p>
+                    <p>The Voyage and invitations will be created together. If creation fails, no Voyage is created.</p>
                   </div>
                 ))}
             </motion.div>

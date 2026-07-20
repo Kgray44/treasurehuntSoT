@@ -69,7 +69,9 @@ export const studioDraftSchema = z.object({
 
 export class DraftConflictError extends Error {
   constructor(public readonly currentVersion: number) {
-    super("This Chronicle changed in another window. Your unsaved changes remain in this browser. Review the latest saved draft before continuing.");
+    super(
+      "This Chronicle changed in another window. Your unsaved changes remain in this browser. Review the latest saved draft before continuing.",
+    );
   }
 }
 
@@ -279,7 +281,8 @@ export async function saveStudioDraft(taleId: string, unchecked: StudioDraftInpu
   const input = studioDraftSchema.parse(unchecked);
   for (const chapter of input.chapters) {
     for (const block of chapter.blocks) {
-      if (!getBlockDefinition(block.blockType)) throw new Error("This Chronicle contains an unrecognized Passage type.");
+      if (!getBlockDefinition(block.blockType))
+        throw new Error("This Chronicle contains an unrecognized Passage type.");
     }
   }
   return db.$transaction(async (tx) => {

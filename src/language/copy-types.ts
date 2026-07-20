@@ -10,14 +10,7 @@ export type SpeakerType =
 
 export type CopyAudience = "PUBLIC" | "PLAYER" | "CAPTAIN" | "CREATOR" | "ADMIN" | "SYSTEM";
 
-export type DeliveryContext =
-  | "PLATFORM"
-  | "CHRONICLE"
-  | "NOTIFICATION"
-  | "EMAIL"
-  | "CONNECTOR"
-  | "ERROR"
-  | "HELP";
+export type DeliveryContext = "PLATFORM" | "CHRONICLE" | "NOTIFICATION" | "EMAIL" | "CONNECTOR" | "ERROR" | "HELP";
 
 export type VoiceLayer = "brand" | "platform" | "player" | "captain" | "studio" | "chronicle";
 

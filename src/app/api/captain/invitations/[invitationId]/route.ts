@@ -19,10 +19,16 @@ export async function POST(request: Request, context: { params: Promise<{ invita
   if (!session)
     return NextResponse.json({ error: "Sign in to Captain's Console to manage Crew invitations." }, { status: 401 });
   if (!(await verifyCsrf(session)))
-    return NextResponse.json({ error: "Your Captain session expired. Sign in again; invitation access has not changed." }, { status: 403 });
+    return NextResponse.json(
+      { error: "Your Captain session expired. Sign in again; invitation access has not changed." },
+      { status: 403 },
+    );
   const parsed = schema.safeParse(await request.json().catch(() => null));
   if (!parsed.success)
-    return NextResponse.json({ error: "This invitation action is invalid. Review the invitation and try again." }, { status: 400 });
+    return NextResponse.json(
+      { error: "This invitation action is invalid. Review the invitation and try again." },
+      { status: 400 },
+    );
   try {
     return NextResponse.json(
       await manageInvitation(

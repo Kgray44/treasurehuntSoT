@@ -149,7 +149,8 @@ describe("POST /api/gm/commands", () => {
 
     expect(response.status).toBe(500);
     expect(await response.json()).toEqual({
-      error: "The Voyage action could not be completed. No progress has changed. Check the current Voyage status, then try again.",
+      error:
+        "The Voyage action could not be completed. No progress has changed. Check the current Voyage status, then try again.",
       code: "COMMAND_FAILED",
       correlationId: "correlation-safe-reference",
     });
@@ -164,7 +165,8 @@ describe("POST /api/gm/commands", () => {
 
     expect(response.status).toBe(500);
     expect(body).toEqual({
-      error: "The Voyage action could not be completed. No progress has changed. Check the current Voyage status, then try again.",
+      error:
+        "The Voyage action could not be completed. No progress has changed. Check the current Voyage status, then try again.",
       code: "COMMAND_FAILED",
       correlationId: executionContext.correlationId,
     });
@@ -195,7 +197,8 @@ describe("POST /api/gm/commands", () => {
 
     expect(response.status).toBe(500);
     expect(body).toEqual({
-      error: "The Voyage action could not be completed. No progress has changed. Check the current Voyage status, then try again.",
+      error:
+        "The Voyage action could not be completed. No progress has changed. Check the current Voyage status, then try again.",
       code: "COMMAND_FAILED",
       correlationId: expect.any(String),
     });

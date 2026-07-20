@@ -27,7 +27,10 @@ export function CaptainDashboard({ authenticated, taleFilter }: { authenticated:
     const response = await fetch("/api/captain/sessions", { cache: "no-store" });
     const body = (await response.json()) as { sessions?: Session[]; tales?: Tale[]; error?: string };
     if (!response.ok)
-      setError(body.error ?? "Captain's Console is unavailable. No Voyage progress has changed. Check your connection, then try again.");
+      setError(
+        body.error ??
+          "Captain's Console is unavailable. No Voyage progress has changed. Check your connection, then try again.",
+      );
     else {
       setSessions(body.sessions ?? []);
       setTales(body.tales ?? []);
@@ -70,7 +73,9 @@ export function CaptainDashboard({ authenticated, taleFilter }: { authenticated:
           <Link href="/">← Return to Voyagewright</Link>
           <p className="eyebrow">Live Voyage control</p>
           <h1>Captain&apos;s Console</h1>
-          <p>This Console refreshes server state every 2.5 seconds. Every progression action is recorded and auditable.</p>
+          <p>
+            This Console refreshes server state every 2.5 seconds. Every progression action is recorded and auditable.
+          </p>
         </div>
         <nav>
           <Link href="/studio">Voyagewright Studio</Link>

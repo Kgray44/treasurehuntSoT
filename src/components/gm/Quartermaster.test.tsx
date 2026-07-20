@@ -642,7 +642,9 @@ describe("Quartermaster command presentation receipts", () => {
     confirmPrepareChapter();
 
     expect(await screen.findByText("Voyage event saved at sequence 1.")).toBeInTheDocument();
-    await waitFor(() => expect(screen.getByText(/saved, but this server could not confirm live delivery/u)).toBeVisible());
+    await waitFor(() =>
+      expect(screen.getByText(/saved, but this server could not confirm live delivery/u)).toBeVisible(),
+    );
     expect(screen.getByText(/Crew delivery, presentation, and acknowledgment remain unconfirmed/u)).toBeVisible();
   });
 

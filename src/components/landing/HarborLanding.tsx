@@ -540,8 +540,8 @@ function HarborGatewayContent({ motionMode }: { motionMode: ReturnType<typeof us
           <p className="eyebrow">Stories made to be played</p>
           <h2 id={explainerTitleId}>{platformCopy.chronicleExplainer.value}</h2>
           <p>
-            {platformCopy.chronicleExplainerDetail.value} It can support a game night, celebration, trip, reunion,
-            date, family adventure, or an entirely custom experience.
+            {platformCopy.chronicleExplainerDetail.value} It can support a game night, celebration, trip, reunion, date,
+            family adventure, or an entirely custom experience.
           </p>
         </header>
         <div className="gateway-how-grid">
@@ -568,8 +568,8 @@ function HarborGatewayContent({ motionMode }: { motionMode: ReturnType<typeof us
             <p className="eyebrow">Designed around your group</p>
             <h3>Flexible by default, personal when you choose</h3>
             <p>
-              System controls stay inclusive and reusable. Personal details belong only to the Chronicle, invitation,
-              or customization your group selected.
+              System controls stay inclusive and reusable. Personal details belong only to the Chronicle, invitation, or
+              customization your group selected.
             </p>
           </div>
           <ul aria-label="Experience examples">

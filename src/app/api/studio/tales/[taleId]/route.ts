@@ -17,7 +17,10 @@ export async function POST(request: Request, context: { params: Promise<{ taleId
   const session = await requireGmCapability("CREATE_TALES");
   if (!session) return NextResponse.json({ error: "Sign in with a creator account to continue." }, { status: 401 });
   if (!(await verifyCsrf(session)))
-    return NextResponse.json({ error: "Your creator session has expired. Reload the page and try again." }, { status: 403 });
+    return NextResponse.json(
+      { error: "Your creator session has expired. Reload the page and try again." },
+      { status: 403 },
+    );
   try {
     const { action } = (await request.json()) as { action: "duplicate" | "archive" | "restore" };
     const { taleId } = await context.params;

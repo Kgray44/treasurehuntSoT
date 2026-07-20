@@ -70,12 +70,14 @@ function copyCandidates(line: string) {
     const hasVisibleField =
       /(?:aria-|\b(?:label|title|detail|description|message|placeholder|error|heading|summary|empty|loading|copy)\b)\s*(?:=|:)\s*$/iu.test(
         prefix,
-      ) ||
-      /(?:throw new Error|NextResponse\.json)\s*\(?[^"'`]*$/iu.test(prefix);
+      ) || /(?:throw new Error|NextResponse\.json)\s*\(?[^"'`]*$/iu.test(prefix);
     if (hasVisibleField || /\s/u.test(source) || /^[A-Z]/u.test(source)) candidates.add(source);
   }
 
-  const directJsxText = trimmed.replaceAll(/<[^>]*>/gu, "").replaceAll(/\{[^}]*\}/gu, "").trim();
+  const directJsxText = trimmed
+    .replaceAll(/<[^>]*>/gu, "")
+    .replaceAll(/\{[^}]*\}/gu, "")
+    .trim();
   const resemblesCode = /^(?:[?:]|[A-Za-z_$][\w$]*:\s)|\p{L}\.\p{L}/u.test(directJsxText);
   if (
     directJsxText &&
@@ -116,7 +118,10 @@ export function scanLanguageText(
           pattern: pattern.name,
           excerpt: line.trim().slice(0, 180),
         };
-        if (!isAllowed(violation, exceptions) && !violations.some((item) => item.line === violation.line && item.pattern === violation.pattern)) {
+        if (
+          !isAllowed(violation, exceptions) &&
+          !violations.some((item) => item.line === violation.line && item.pattern === violation.pattern)
+        ) {
           violations.push(violation);
         }
       }

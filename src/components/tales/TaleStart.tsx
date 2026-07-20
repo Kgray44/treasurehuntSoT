@@ -57,7 +57,10 @@ export function TaleStart({ taleSlug }: { taleSlug: string }) {
   if (!tale)
     return (
       <main className="tale-start">
-        <LoadingState title={platformCopy.loadingChronicle.value} detail="Loading the published Chronicle and its version." />
+        <LoadingState
+          title={platformCopy.loadingChronicle.value}
+          detail="Loading the published Chronicle and its version."
+        />
       </main>
     );
   return (

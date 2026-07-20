@@ -57,5 +57,6 @@ export const copyCapitalizationPolicy = {
     "Capitalize Chronicle, Voyage, Captain, Crew, Chapter, Passage, Waypoint, Echo, Artifact, and named interfaces when they refer to Voyagewright product concepts.",
   ordinaryUsage:
     "Use ordinary sentence case when the same word describes a non-product concept, such as a fictional captain in Chronicle-authored prose.",
-  controls: "Keep ordinary controls literal: Save, Cancel, Delete, Email, Password, Privacy, Version history, and Validation errors.",
+  controls:
+    "Keep ordinary controls literal: Save, Cancel, Delete, Email, Password, Privacy, Version history, and Validation errors.",
 } as const;

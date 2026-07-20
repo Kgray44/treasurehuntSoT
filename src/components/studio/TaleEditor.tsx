@@ -703,7 +703,9 @@ export function TaleEditor({
     const notes = window.prompt("Release notes for this immutable Version:", "Initial Chronicle release");
     if (
       notes === null ||
-      !window.confirm("Publish this saved Chronicle as a new immutable Version? New Voyages will use it. Existing Voyages will not change.")
+      !window.confirm(
+        "Publish this saved Chronicle as a new immutable Version? New Voyages will use it. Existing Voyages will not change.",
+      )
     )
       return;
     setPublishState("publishing");
@@ -790,7 +792,10 @@ export function TaleEditor({
 
   async function taleAction(action: "duplicate" | "archive") {
     if (!data) return;
-    if (action === "archive" && !window.confirm("Archive this Chronicle? Published Versions and existing Voyages will not change."))
+    if (
+      action === "archive" &&
+      !window.confirm("Archive this Chronicle? Published Versions and existing Voyages will not change.")
+    )
       return;
     const response = await fetch(`/api/studio/tales/${taleId}`, {
       method: "POST",

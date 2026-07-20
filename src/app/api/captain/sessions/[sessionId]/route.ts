@@ -16,7 +16,10 @@ export async function GET(_: Request, context: { params: Promise<{ sessionId: st
       select: { id: true },
     });
     if (!assigned)
-      return NextResponse.json({ error: "This Voyage is unavailable. Return to Captain's Console and choose another Voyage." }, { status: 404 });
+      return NextResponse.json(
+        { error: "This Voyage is unavailable. Return to Captain's Console and choose another Voyage." },
+        { status: 404 },
+      );
     return NextResponse.json(await getTaleSessionState(sessionId, undefined, true));
   } catch (cause) {
     return apiError(cause);
@@ -28,7 +31,10 @@ export async function POST(request: Request, context: { params: Promise<{ sessio
   if (!session)
     return NextResponse.json({ error: "Sign in to Captain's Console to control this Voyage." }, { status: 401 });
   if (!(await verifyCsrf(session)))
-    return NextResponse.json({ error: "Your Captain session expired. Sign in again; no Voyage progress has changed." }, { status: 403 });
+    return NextResponse.json(
+      { error: "Your Captain session expired. Sign in again; no Voyage progress has changed." },
+      { status: 403 },
+    );
   try {
     const rate = consumeRateLimit(`tale-captain:${session.userId}`, { limit: 60, windowMs: 60_000 });
     if (!rate.allowed)

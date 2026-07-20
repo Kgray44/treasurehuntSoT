@@ -391,7 +391,9 @@ export function AccessGate({
       <section className="access-card" aria-labelledby="invitation-title">
         <p className="eyebrow">Private invitation</p>
         <h1 id="invitation-title">Confirm your invitation</h1>
-        <p>Enter the phrase provided by your Captain. This Chronicle remains unavailable until the phrase is confirmed.</p>
+        <p>
+          Enter the phrase provided by your Captain. This Chronicle remains unavailable until the phrase is confirmed.
+        </p>
         <form onSubmit={submit} aria-busy={busy}>
           <label htmlFor="accessCode">Invitation phrase</label>
           <input

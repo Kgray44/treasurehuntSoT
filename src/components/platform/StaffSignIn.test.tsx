@@ -132,7 +132,7 @@ describe("StaffSignIn", () => {
     fireEvent.change(screen.getByLabelText("Username"), { target: { value: "kato" } });
     fireEvent.change(screen.getByLabelText("Password"), { target: { value: "development-captain-only" } });
 
-  fireEvent.click(screen.getByRole("button", { name: "Enter Captain's Console" }));
+    fireEvent.click(screen.getByRole("button", { name: "Enter Captain's Console" }));
 
     expect(await screen.findByRole("alert")).toHaveTextContent(
       "Sign-in succeeded, but Captain's Console could not be opened",
@@ -154,7 +154,7 @@ describe("StaffSignIn", () => {
     const view = renderCaptain();
     fireEvent.change(screen.getByLabelText("Username"), { target: { value: "kato" } });
     fireEvent.change(screen.getByLabelText("Password"), { target: { value: "development-captain-only" } });
-  fireEvent.click(screen.getByRole("button", { name: "Enter Captain's Console" }));
+    fireEvent.click(screen.getByRole("button", { name: "Enter Captain's Console" }));
     await waitFor(() => expect(signal).toBeDefined());
 
     view.unmount();

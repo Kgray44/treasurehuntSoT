@@ -9,7 +9,10 @@ export async function POST(request: Request, context: { params: Promise<{ sessio
   if (!session || process.env.NODE_ENV === "production")
     return NextResponse.json({ error: "The development verification simulator is unavailable." }, { status: 403 });
   if (!(await verifyCsrf(session)))
-    return NextResponse.json({ error: "Your Captain session expired. Sign in again; no Voyage progress has changed." }, { status: 403 });
+    return NextResponse.json(
+      { error: "Your Captain session expired. Sign in again; no Voyage progress has changed." },
+      { status: 403 },
+    );
   try {
     const { sessionId } = await context.params;
     const body = (await request.json()) as {

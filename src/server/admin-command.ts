@@ -954,7 +954,10 @@ function eventFor(command: AdminCommand): ProgressEventType {
   };
   const value = events[command];
   if (!value)
-    throw new CommandConflict("This Voyage action does not publish directly. Review the action and try again.", "UNSUPPORTED_COMMAND");
+    throw new CommandConflict(
+      "This Voyage action does not publish directly. Review the action and try again.",
+      "UNSUPPORTED_COMMAND",
+    );
   return value;
 }
 
@@ -970,7 +973,7 @@ async function appendCustomEvent(input: Input, userId: string, correlationId: st
     });
     if (campaign.currentSequence !== input.expectedSequence)
       throw new CommandConflict(
-      `Voyage state changed from sequence ${input.expectedSequence} to ${campaign.currentSequence}. Refresh Captain's Console and review the action again.`,
+        `Voyage state changed from sequence ${input.expectedSequence} to ${campaign.currentSequence}. Refresh Captain's Console and review the action again.`,
         "STALE_SEQUENCE",
       );
     if (campaign.status === "PAUSED" && input.command !== "REQUEST_RECONCILIATION")
@@ -1101,7 +1104,10 @@ export async function executeAdminCommand(input: Input, userId: string, context:
     if (legacyCommands.has(input.command)) {
       const current = await db.campaign.findUniqueOrThrow({ where: { id: campaign.id } });
       if (current.currentSequence !== input.expectedSequence)
-        throw new CommandConflict("Another Voyage action was saved first. Refresh Captain's Console before retrying.", "STALE_SEQUENCE");
+        throw new CommandConflict(
+          "Another Voyage action was saved first. Refresh Captain's Console before retrying.",
+          "STALE_SEQUENCE",
+        );
       try {
         const result = await executeProgressionAction(
           input.campaignSlug,
@@ -1173,7 +1179,10 @@ export async function stageAdminCommand(
   return db.$transaction(async (tx) => {
     const campaign = await tx.campaign.findUniqueOrThrow({ where: { slug: input.campaignSlug } });
     if (campaign.currentSequence !== input.expectedSequence)
-      throw new CommandConflict("This prepared Voyage action is stale. Refresh Captain's Console before preparing it again.", "STALE_SEQUENCE");
+      throw new CommandConflict(
+        "This prepared Voyage action is stale. Refresh Captain's Console before preparing it again.",
+        "STALE_SEQUENCE",
+      );
     const reservedSequence = await reserveCampaignSequence(tx, campaign.id, input.expectedSequence);
     const staged = await tx.preparedAction.create({
       data: {

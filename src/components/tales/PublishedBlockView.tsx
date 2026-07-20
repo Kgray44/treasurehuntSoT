@@ -150,7 +150,8 @@ export function PublishedBlockView({ block, assets }: { block: PlayerBlock; asse
     <article className="runtime-block unknown-block" role="alert">
       <h2>{errorCopy.newerVersionRequired.value}</h2>
       <p>
-        This Passage type (<code>{block.blockType}</code>) is not supported. {errorCopy.newerVersionRequiredDetail.value}
+        This Passage type (<code>{block.blockType}</code>) is not supported.{" "}
+        {errorCopy.newerVersionRequiredDetail.value}
       </p>
     </article>
   );

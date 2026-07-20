@@ -54,7 +54,10 @@ export function CaptainSessionControl({ sessionId, authenticated }: { sessionId:
     const body = (await detail.json()) as State & { error?: string };
     const meta = (await list.json()) as { csrfToken?: string };
     if (!detail.ok)
-      setError(body.error ?? "This Voyage could not be opened. No progress has changed. Check your connection, then try again.");
+      setError(
+        body.error ??
+          "This Voyage could not be opened. No progress has changed. Check your connection, then try again.",
+      );
     else {
       setState(body);
       setError("");
@@ -91,7 +94,10 @@ export function CaptainSessionControl({ sessionId, authenticated }: { sessionId:
     });
     const body = (await response.json()) as { error?: string };
     if (!response.ok)
-      setError(body.error ?? "This Captain action could not be completed. Current Voyage progress is unchanged. Review the Console and try again.");
+      setError(
+        body.error ??
+          "This Captain action could not be completed. Current Voyage progress is unchanged. Review the Console and try again.",
+      );
     await load();
     setBusy(false);
   }
@@ -233,7 +239,9 @@ export function CaptainSessionControl({ sessionId, authenticated }: { sessionId:
         <section className="session-debug">
           <p className="card-kicker">Artifacts and Voyage variables</p>
           <h3>Artifacts</h3>
-          <ul>{state.inventory.length ? state.inventory.map((item) => <li key={item}>{item}</li>) : <li>No Artifacts</li>}</ul>
+          <ul>
+            {state.inventory.length ? state.inventory.map((item) => <li key={item}>{item}</li>) : <li>No Artifacts</li>}
+          </ul>
           <h3>Voyage variables</h3>
           <pre>{JSON.stringify(state.variables ?? {}, null, 2)}</pre>
         </section>

@@ -7,7 +7,10 @@ import { consumeRateLimit, rateLimitHeaders } from "@/lib/rate-limit";
 
 export async function GET(_: Request, context: { params: Promise<{ taleId: string }> }) {
   if (!(await requireGmCapability("MANAGE_ASSETS")))
-    return NextResponse.json({ error: "You do not have permission to manage assets in this Chronicle." }, { status: 403 });
+    return NextResponse.json(
+      { error: "You do not have permission to manage assets in this Chronicle." },
+      { status: 403 },
+    );
   try {
     const studio = await getStudioTale((await context.params).taleId);
     return NextResponse.json({ assets: studio.assets, collections: studio.collections });
@@ -19,9 +22,15 @@ export async function GET(_: Request, context: { params: Promise<{ taleId: strin
 export async function POST(request: Request, context: { params: Promise<{ taleId: string }> }) {
   const session = await requireGmCapability("MANAGE_ASSETS");
   if (!session)
-    return NextResponse.json({ error: "You do not have permission to manage assets in this Chronicle." }, { status: 403 });
+    return NextResponse.json(
+      { error: "You do not have permission to manage assets in this Chronicle." },
+      { status: 403 },
+    );
   if (!(await verifyCsrf(session)))
-    return NextResponse.json({ error: "Your creator session has expired. Reload the page and try again." }, { status: 403 });
+    return NextResponse.json(
+      { error: "Your creator session has expired. Reload the page and try again." },
+      { status: 403 },
+    );
   try {
     const rate = consumeRateLimit(`tale-upload:${session.userId}`, { limit: 30, windowMs: 15 * 60_000 });
     if (!rate.allowed)

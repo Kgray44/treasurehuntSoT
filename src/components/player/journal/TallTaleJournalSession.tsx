@@ -852,7 +852,8 @@ function TallTaleJournalSessionIdentity({ sessionId, identitySession = false }: 
       });
       const body = (await response.json()) as { state?: SessionState; accepted?: boolean; error?: string };
       if (request.registry.isDisposed()) return;
-      if (!response.ok) setError(body.error ?? "The Voyage could not advance. Your progress has not changed. Try again.");
+      if (!response.ok)
+        setError(body.error ?? "The Voyage could not advance. Your progress has not changed. Try again.");
       else if (body.state) {
         const next = { ...body.state, csrfToken: body.state.csrfToken ?? state.csrfToken };
         stateRef.current = next;
@@ -1176,14 +1177,14 @@ function TallTaleJournalSessionIdentity({ sessionId, identitySession = false }: 
       {connection === "revoked" && journalReady && (
         <div className="journal-connection-note" role="alert">
           <strong>Your access to this Voyage was revoked.</strong>
-          <span>The released Passages remain readable, but this Journal will not reconnect or request new progress.</span>
+          <span>
+            The released Passages remain readable, but this Journal will not reconnect or request new progress.
+          </span>
         </div>
       )}
       {connection !== "live" && connection !== "archived" && connection !== "revoked" && journalReady && (
         <div className="journal-connection-note" role="status">
-          <strong>
-            {connection === "offline" ? "You appear to be offline." : "Reconnecting to the Captain."}
-          </strong>
+          <strong>{connection === "offline" ? "You appear to be offline." : "Reconnecting to the Captain."}</strong>
           <span>Your released Passages remain available while Voyage updates reconnect.</span>
           <button onClick={() => void load()}>Retry now</button>
         </div>

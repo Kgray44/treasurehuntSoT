@@ -191,16 +191,8 @@ const actions = [
   ["AWARD_ARTIFACT", "Award test Artifact", "Add the Broken Compass Needle to the Crew's Artifact collection."],
   ["REVEAL_MAP", "Reveal test Waypoint", "Mark Port Merrick on the Voyage chart."],
   ["REVEAL_ROUTE", "Reveal route segment", "Reveal the next safe development route between Waypoints."],
-  [
-    "REVEAL_ARTIFACT_SILHOUETTE",
-    "Reveal Artifact silhouette",
-    "Show only the next Artifact's approved safe outline.",
-  ],
-  [
-    "CONNECT_ARTIFACTS",
-    "Connect test Artifacts",
-    "Reveal the development connection between configured Artifacts.",
-  ],
+  ["REVEAL_ARTIFACT_SILHOUETTE", "Reveal Artifact silhouette", "Show only the next Artifact's approved safe outline."],
+  ["CONNECT_ARTIFACTS", "Connect test Artifacts", "Reveal the development connection between configured Artifacts."],
   ["DISCOVER_SIDE_QUEST", "Discover Echo", "Make the next optional Echo available to the Crew."],
   ["UPDATE_SIDE_QUEST", "Update Echo", "Advance one released Echo objective."],
   ["COMPLETE_SIDE_QUEST", "Complete Echo", "Complete the active Echo and grant its configured reward."],
@@ -732,10 +724,10 @@ function QuartermasterLoginHost({
         className="chart-room-light"
       />
       <LoginTarget part="cabin-door" targetKey="quartermaster-login:cabin-door" className="cabin-door">
-            <span>Captain&apos;s Console access</span>
+        <span>Captain&apos;s Console access</span>
         <LoginTarget as="i" part="door-bolt" targetKey="quartermaster-login:door-bolt" />
         <LoginTarget part="lock" targetKey="quartermaster-login:lock" className="door-keyhole">
-          <RiveStatefulObject asset={riveAssets.invitationSeal} mode={mode} label="Captain&apos;s Console door lock" />
+          <RiveStatefulObject asset={riveAssets.invitationSeal} mode={mode} label="Captain's Console door lock" />
         </LoginTarget>
       </LoginTarget>
       <LoginTarget part="lantern" targetKey="quartermaster-login:lantern" className="login-lantern">
@@ -933,7 +925,10 @@ export function Quartermaster({ authenticated }: { authenticated: boolean }) {
         });
         const data = await readJson(response);
         if (!response.ok) {
-          operationError = safeServerError(data, "We couldn't sign you in. Check the Captain name and passphrase, then try again.");
+          operationError = safeServerError(
+            data,
+            "We couldn't sign you in. Check the Captain name and passphrase, then try again.",
+          );
           throw new Error("authoritative-login-failed");
         }
         authoritativeLoginSucceeded = true;
@@ -1314,7 +1309,7 @@ export function Quartermaster({ authenticated }: { authenticated: boolean }) {
       {presentationWarning && (
         <p ref={presentationWarningTarget} className="gm-presentation-warning" role="status">
           {presentationWarning}
-          <button onClick={() => setPresentationWarning("")} aria-label="Dismiss Captain&apos;s Console notice">
+          <button onClick={() => setPresentationWarning("")} aria-label="Dismiss Captain's Console notice">
             ×
           </button>
         </p>
@@ -1443,7 +1438,7 @@ export function Quartermaster({ authenticated }: { authenticated: boolean }) {
           >
             {message}
             {commandTruth && <span>{commandTruth}</span>}
-            <button onClick={() => setMessage("")} aria-label="Dismiss Captain&apos;s Console message">
+            <button onClick={() => setMessage("")} aria-label="Dismiss Captain's Console message">
               ×
             </button>
           </motion.div>

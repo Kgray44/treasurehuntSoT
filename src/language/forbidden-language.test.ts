@@ -14,11 +14,11 @@ describe("forbidden-language", () => {
   });
 
   it("does not mistake technical identifiers for product copy", () => {
-    expect(scanLanguageText('const campaignId = response.campaignId;', "src/app/api/example/route.ts")).toEqual([]);
+    expect(scanLanguageText("const campaignId = response.campaignId;", "src/app/api/example/route.ts")).toEqual([]);
   });
 
   it("requires a precise, owned, review-dated exception", () => {
-    const text = '<p>Campaign history</p>';
+    const text = "<p>Campaign history</p>";
     const exception = {
       pattern: "campaign",
       file: "src/components/History.tsx",
@@ -28,10 +28,8 @@ describe("forbidden-language", () => {
     } as const;
 
     expect(scanLanguageText(text, exception.file, [exception])).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({ pattern: "campaign history" }),
-      ]),
+      expect.arrayContaining([expect.objectContaining({ pattern: "campaign history" })]),
     );
-    expect(scanLanguageText('<p>Campaign</p>', exception.file, [exception])).toEqual([]);
+    expect(scanLanguageText("<p>Campaign</p>", exception.file, [exception])).toEqual([]);
   });
 });

@@ -7,7 +7,10 @@ import { consumeRateLimit, rateLimitHeaders } from "@/lib/rate-limit";
 
 export async function GET(_: Request, context: { params: Promise<{ assetId: string }> }) {
   if (!(await requireGmCapability("MANAGE_ASSETS")))
-    return NextResponse.json({ error: "You do not have permission to manage assets in this Chronicle." }, { status: 403 });
+    return NextResponse.json(
+      { error: "You do not have permission to manage assets in this Chronicle." },
+      { status: 403 },
+    );
   try {
     const asset = await db.taleAsset.findUniqueOrThrow({ where: { id: (await context.params).assetId } });
     return NextResponse.json({ usages: await assetUsages(asset.taleId, asset.id) });

@@ -14,7 +14,10 @@ export async function GET(_: Request, context: { params: Promise<{ playthroughId
     select: { id: true },
   });
   if (!assigned)
-    return NextResponse.json({ error: "This Voyage is unavailable. Return to Captain's Console and choose another Voyage." }, { status: 404 });
+    return NextResponse.json(
+      { error: "This Voyage is unavailable. Return to Captain's Console and choose another Voyage." },
+      { status: 404 },
+    );
   try {
     return NextResponse.json({
       preview: await getTaleSessionState(playthroughId, undefined, false, true),

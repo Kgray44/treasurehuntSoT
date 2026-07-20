@@ -18,7 +18,10 @@ export async function POST(request: Request) {
     if (!session) {
       const staff = await requireGm();
       return staff
-        ? NextResponse.json({ error: "Captain access is required to continue.", code: "FORBIDDEN", correlationId }, { status: 403 })
+        ? NextResponse.json(
+            { error: "Captain access is required to continue.", code: "FORBIDDEN", correlationId },
+            { status: 403 },
+          )
         : NextResponse.json(
             { error: "Sign in to Captain's Console to continue.", code: "UNAUTHENTICATED", correlationId },
             { status: 401 },
@@ -26,14 +29,19 @@ export async function POST(request: Request) {
     }
     if (!(await verifyCsrf(session)))
       return NextResponse.json(
-        { error: "This confirmation expired. Refresh Captain's Console, review the action, then try again.", code: "CSRF", correlationId },
+        {
+          error: "This confirmation expired. Refresh Captain's Console, review the action, then try again.",
+          code: "CSRF",
+          correlationId,
+        },
         { status: 403 },
       );
     const parsed = actionCommandSchema.safeParse(await request.json().catch(() => null));
     if (!parsed.success)
       return NextResponse.json(
         {
-          error: "This Voyage action request is incomplete. Refresh Captain's Console, review the action, then try again.",
+          error:
+            "This Voyage action request is incomplete. Refresh Captain's Console, review the action, then try again.",
           code: "VALIDATION",
           correlationId,
           issues: parsed.error.issues,
@@ -57,7 +65,8 @@ export async function POST(request: Request) {
     logger.error({ area: "gm-action", correlationId: failureCorrelationId }, "GM action request failed");
     return NextResponse.json(
       {
-        error: "The Voyage action could not be completed. No progress has changed. Check the current Voyage status, then try again.",
+        error:
+          "The Voyage action could not be completed. No progress has changed. Check the current Voyage status, then try again.",
         code: "COMMAND_FAILED",
         correlationId: failureCorrelationId,
       },

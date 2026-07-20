@@ -12,7 +12,8 @@ export async function validateTaleDraft(taleId: string): Promise<DraftValidation
   const error = (issue: Omit<ValidationIssue, "severity">) => errors.push({ ...issue, severity: "error" });
   const warn = (issue: Omit<ValidationIssue, "severity">) => warnings.push({ ...issue, severity: "warning" });
 
-  if (!studio.tale.title.trim()) error({ code: "TALE_TITLE", message: "This Chronicle needs a title.", field: "title" });
+  if (!studio.tale.title.trim())
+    error({ code: "TALE_TITLE", message: "This Chronicle needs a title.", field: "title" });
   const slug = slugSchema.safeParse(studio.tale.slug);
   if (!slug.success)
     error({
@@ -55,7 +56,7 @@ export async function validateTaleDraft(taleId: string): Promise<DraftValidation
       if (!definition) {
         error({
           code: "UNKNOWN_BLOCK",
-            message: `“${block.title}” uses an unrecognized Passage type.`,
+          message: `“${block.title}” uses an unrecognized Passage type.`,
           chapterId: chapter.id,
           blockId: block.id,
         });
@@ -77,7 +78,7 @@ export async function validateTaleDraft(taleId: string): Promise<DraftValidation
       if (futureProviders.has(provider))
         error({
           code: "FUTURE_PROVIDER_ACTIVE",
-            message: `${block.title} uses a verification provider that is not available yet. Choose an available provider before publishing.`,
+          message: `${block.title} uses a verification provider that is not available yet. Choose an available provider before publishing.`,
           chapterId: chapter.id,
           blockId: block.id,
           field: "verificationProvider",

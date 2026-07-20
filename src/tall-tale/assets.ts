@@ -118,13 +118,17 @@ async function derivativeSet(buffer: Buffer, folder: string) {
 export async function ingestAsset(taleId: string, file: File, userId: string, replaceAssetId?: string) {
   const definition = supported.get(file.type);
   if (!definition)
-    throw new Error("This file type cannot be uploaded. Choose PNG, JPEG, WebP, AVIF, MP4, WebM, MP3, Ogg, WAV, or PDF.");
+    throw new Error(
+      "This file type cannot be uploaded. Choose PNG, JPEG, WebP, AVIF, MP4, WebM, MP3, Ogg, WAV, or PDF.",
+    );
   const maximum = Number(process.env.TALL_TALE_MAX_UPLOAD_MB ?? 25) * 1024 * 1024;
   if (!file.size || file.size > maximum)
     throw new Error(`Choose a file smaller than ${Math.round(maximum / 1024 / 1024)} MB.`);
   const buffer = Buffer.from(await file.arrayBuffer());
   if (!hasValidSignature(buffer, file.type))
-    throw new Error("The file content does not match its file type. Choose the file again or export it in a supported format.");
+    throw new Error(
+      "The file content does not match its file type. Choose the file again or export it in a supported format.",
+    );
   const checksum = createHash("sha256").update(buffer).digest("hex");
   if (!replaceAssetId) {
     const duplicate = await db.taleAsset.findUnique({
