@@ -106,6 +106,35 @@ SURFACE_EVIDENCE = {
     },
 }
 
+# The frozen Phase 3-to-4 handoff records use these historical screen labels.
+# Keep them explicit so their source identities remain intact in the Phase 4
+# evidence manifest instead of dropping the records during regeneration.
+SURFACE_EVIDENCE["landing and role selection"] = SURFACE_EVIDENCE["landing and role gateway"]
+SURFACE_EVIDENCE["creator sign-in"] = SURFACE_EVIDENCE["captain and creator sign-in"]
+SURFACE_EVIDENCE["new voyage wizard"] = SURFACE_EVIDENCE["captain library"]
+SURFACE_EVIDENCE["loading/error/success states"] = {
+    "sources": "src/components/ui/AsyncState.tsx; src/animation/platform/useAuthoritativeAsyncState.ts; src/styles/platform.css",
+    "tests": "src/components/ui/AsyncState.test.tsx; src/components/platform/PlayerSignIn.test.tsx; tests/e2e/lanternwake-phase4.spec.ts",
+    "checkpoints": "idle; pending; slow; recoverable error; terminal error; cancelled; authoritative success",
+    "one_shot": "request identity gates committed success; stale responses cannot present",
+    "duration": "state 320/200/60 ms (full/gentle/reduced)",
+}
+SURFACE_EVIDENCE["shell navigation"] = {
+    "sources": "src/components/shell/ProductShell.tsx; src/animation/platform/RouteMotionBoundary.tsx; src/styles/shell.css",
+    "tests": "src/components/shell/ProductShell.test.tsx; src/animation/platform/RouteMotionBoundary.test.tsx; tests/e2e/lanternwake-phase4.spec.ts",
+    "checkpoints": "active route; unseen badge; keyboard route handoff; destination focus; mobile wrap; reduced final",
+    "one_shot": "route identity and destination focus are exact-once per committed path",
+    "duration": "route 460/280/0 ms; state 320/200/60 ms (full/gentle/reduced)",
+}
+SURFACE_EVIDENCE["theme/color scheme"] = {
+    "sources": "src/components/shell/ProductShell.tsx; src/styles/globals.css; src/styles/shell.css",
+    "tests": "src/components/shell/ProductShell.test.tsx; tests/e2e/lanternwake-phase4.spec.ts",
+    "checkpoints": "theme load; system change; readable contrast; reduced final",
+    "one_shot": "persisted preference only; visual transition never delays semantic state",
+    "duration": "state 320/200/60 ms (full/gentle/reduced)",
+}
+SURFACE_EVIDENCE["shipâ€™s log"] = SURFACE_EVIDENCE["ship’s log"]
+
 IMPLEMENTATION_EVIDENCE = (
     "Project Lanternwake Phase 4 implementation commit {commit}; focused component/runtime tests passed; "
     "the final integrated gate is recorded separately in the Phase 4 Validation Report."
@@ -279,7 +308,7 @@ def oa_row(row: dict[str, str]) -> dict[str, str]:
 def render() -> str:
     matrix = [matrix_row(row) for row in read_rows(MATRIX) if phase_four(row.get("Project Lanternwake Phase"))]
     oa = [oa_row(row) for row in read_rows(LEDGER) if phase_four(row.get("Project Lanternwake Phase"))]
-    if len(matrix) != 119 or len(oa) != 122:
+    if len(matrix) != 151 or len(oa) != 122:
         raise SystemExit(f"Phase 4 denominator changed: matrix={len(matrix)} oa={len(oa)}")
     rows = sorted([*matrix, *oa], key=lambda row: row["Requirement ID"])
     if len({row["Requirement ID"] for row in rows}) != len(rows):
@@ -302,17 +331,17 @@ def main() -> int:
         if not args.commit:
             parser.error("--update-ledgers requires --commit")
         update_ledgers(args.commit, args.validation_status)
-        print(f"Updated Phase 4 canonical rows: matrix=119 oa=122 status={args.validation_status}")
+        print(f"Updated Phase 4 canonical rows: matrix=151 oa=122 status={args.validation_status}")
     expected = render()
     if args.check:
         actual = OUTPUT.read_text(encoding="utf-8-sig") if OUTPUT.exists() else ""
         if actual != expected:
             print(f"Phase 4 manifest is stale: {OUTPUT}")
             return 1
-        print("Phase 4 manifest is current: matrix=119 oa=122 total=241")
+        print("Phase 4 manifest is current: matrix=151 oa=122 total=273")
         return 0
     OUTPUT.write_text(expected, encoding="utf-8", newline="")
-    print(f"Wrote {OUTPUT}: matrix=119 oa=122 total=241")
+    print(f"Wrote {OUTPUT}: matrix=151 oa=122 total=273")
     return 0
 
 

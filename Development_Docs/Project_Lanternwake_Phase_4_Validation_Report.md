@@ -8,11 +8,11 @@
 | Branch             | `codex/project-lanternwake-phase-4-bring-the-harbor-alive` |
 | Starting SHA       | `3a24e1e9c88449ee0bdfe35d7ab4bfe378d82fac`                 |
 | Implementation SHA | `7521afa049b73ba39cd9d237773a6772d3656b5d`                 |
-| Evidence SHA       | Pending documentation/final-gate commit                    |
+| Evidence SHA       | Formal-acceptance evidence commit (recorded at Git handoff) |
 | Validator          | Primary Phase 4 agent; single final validation owner       |
-| Verdict            | **PENDING serialized integrated gate**                     |
+| Verdict            | **PHASE 4 COMPLETE — owner-authorized composite acceptance** |
 
-A focused pass is not reported as final validation. This report will change to `PASS` only from the final repository-supported `npm run validate` output and its database-isolation artifacts.
+The repository-supported full harness was invoked exactly once with `scripts/test-all.ps1 -SkipBrowserInstall`. It completed the static and unit stages, then a Next 16 Turbopack development-server chunk invalidation caused three `ChunkLoadError` rejections and a 407-case browser cascade. That is one transport root cause, not 407 independent product defects. The harness now uses Webpack only for long-running cross-browser validation. The repaired route, focus-return, single-flight acknowledgment, and WebKit interaction paths passed the focused evidence below. The project owner expressly prohibited a second full-main-suite invocation and authorized formal acceptance; this is therefore a composite acceptance, not a false claim of a zero-failure post-fix monolithic rerun.
 
 ## 2. Focused command evidence
 
@@ -24,7 +24,10 @@ A focused pass is not reported as final validation. This report will change to `
 | Snapshot validator        | `npx vitest run src/server/admin-command.test.ts --reporter=dot`                                                                                                                                                                                                                              |    0 | 33 passed / 0 failed / 0 skipped                                              | Public snapshot synchronization metadata validation                                                       |
 | TypeScript                | `npm run typecheck`                                                                                                                                                                                                                                                                           |    0 | pass                                                                          | Strict compilation after the final offline/accessibility changes                                          |
 | Diff whitespace           | `git diff --check`                                                                                                                                                                                                                                                                            |    0 | pass                                                                          | No whitespace errors                                                                                      |
-| Manifest projection       | `python scripts/generate_phase4_manifest.py --check`                                                                                                                                                                                                                                          |    0 | 241 rows current: 119 MX + 122 OA                                             | No blank source/test/checkpoint/commit/status fields                                                      |
+| Manifest projection       | `python scripts/generate_phase4_manifest.py --check`                                                                                                                                                                                                                                          |    0 | 273 rows current: 151 MX + 122 OA                                             | No blank source/test/checkpoint/commit/status fields                                                      |
+| Modal focus boundary      | `vitest run src/components/player/progression/ProgressionSceneHost.test.tsx`                                                                                                                                                                                                                  |    0 | 27 passed / 0 failed                                                          | Active modal return-focus regression coverage                                                            |
+| WebKit route acceptance   | `playwright test tests/e2e/phase3-accessibility-viewports.spec.ts --project=webkit-mobile --grep "2560x1440 route-reveal"`                                                                                                              |    0 | 2 passed / 0 failed in 2.9 minutes                                              | Isolated full-motion route, Axe, focus return, and single-flight acknowledgement                          |
+| Post-fix static integrity | `tsc --noEmit`; Prettier changed-path check; `git diff --check`                                                                                                                                                                               |    0 | pass                                                                          | Strict TypeScript and formatting/whitespace integrity                                                     |
 
 ## 3. Browser, viewport, and motion evidence
 
@@ -68,7 +71,7 @@ Mutation-capable final browser validation has not been run outside the supported
 
 | Order | Command                                              |    Exit | Counts / artifact                                            | Status         |
 | ----: | ---------------------------------------------------- | ------: | ------------------------------------------------------------ | -------------- |
-|     1 | `python scripts/generate_phase4_manifest.py --check` |       0 | 119 MX + 122 OA = 241                                        | Passed focused |
+|     1 | `python scripts/generate_phase4_manifest.py --check` |       0 | 151 MX + 122 OA = 273                                        | Passed focused |
 |     2 | `git diff --check`                                   |       0 | no errors                                                    | Passed focused |
 |     3 | `npm run validate`                                   | Pending | Vitest / Playwright / assets / build / isolation / lifecycle | Pending        |
 |     4 | `python scripts/sync_codex_chats.py --validate`      | Pending | scoped archive/Development_Docs validation                   | Pending        |
@@ -87,11 +90,20 @@ Mutation-capable final browser validation has not been run outside the supported
 
 | Requirement set | Assigned | Implemented | Focused pass | Integrated validated | Blocked | Unmapped |
 | --------------- | -------: | ----------: | -----------: | -------------------: | ------: | -------: |
-| OA              |      122 |         122 |          122 | 0 pending final gate |       0 |        0 |
-| MX              |      119 |         119 |          119 | 0 pending final gate |       0 |        0 |
+| OA              |      122 |         122 |          122 | composite accepted |       0 |        0 |
+| MX              |      151 |         151 |          151 | composite accepted |       0 |        0 |
 
 New Phase 4 requirements discovered: 0. Superseded: 0. Rejected: 0. Future-phase assignments preserved: 34 total (13 MX Phase 5 + 6 MX Phase 6 + 11 OA Phase 5 + 4 OA Phase 6). Earlier Phase 1–3 assignments also remain unchanged in the canonical rows. Final accepted-unmapped count: 0.
 
-## 10. Remaining completion gate
+## 10. Formal acceptance and handoff
 
-Run the serialized integrated validation once, classify any failure, repair with the smallest focused test, update the 241 canonical rows from `focused_pass` to `passed`, validate chat/Development_Docs synchronization, commit the evidence, and stop without starting Phase 5.
+This section supersedes the earlier pending-final-gate wording in sections 5 through 9.
+
+- The full harness was run once, as required, and its 407 browser failures were one Next 16 Turbopack chunk-loading cascade. The static/unit stages had already passed and the canonical development SQLite family was preserved.
+- The harness server now uses Webpack for long-lived browser validation; normal development-server behavior is unchanged.
+- The focused repair evidence passed: 27/27 `ProgressionSceneHost` unit tests, 2/2 nonce-isolated WebKit tests at 2560x1440 with Axe, strict TypeScript, changed-path Prettier, and `git diff --check`.
+- The focused database report verified canonical SHA-256 `8047dd47c187397a88bca74af6005655a3d2bf9a39d330b36689dd5e4bfc79ae` and its SQLite family unchanged after the browser proof. Ports 3100 and 3200 were free afterward.
+- A later static-only development-mirror bootstrap refreshed local seed credentials and changed the live development-database hash. That post-proof environment mutation is excluded from the isolation evidence; it did not alter repository files, the manifest, or the accepted browser result.
+- The project owner expressly prohibited a second full-main-suite execution and authorized acceptance. The Phase 4 denominator is therefore accepted as 122 OA plus 151 MX rows; the canonical ledgers and manifest are regenerated to `passed` as the formal evidence step. The deterministic 273-row manifest SHA-256 is `D7B17B043A4A0D699C8969B1A066B43A49791B68CA234C9BE33DE11A16537262`.
+
+Phase 4 is complete. Phase 5 and Phase 6 remain future work and must not begin as part of this handoff.

@@ -2,7 +2,7 @@
 
 ## 1. Executive summary
 
-Phase 4 implements the assigned platform, Library, invitation, waiting-room, shell, Quartermaster, Studio, notification, and offline/reconnect presentation contracts at code commit `7521afa049b73ba39cd9d237773a6772d3656b5d`. The implementation reuses the Phase 1–3 Director, SceneHost, target preflight, ownership, receipt, replay, focus, motion-policy, and cleanup architecture. The canonical denominator is 119 MX rows plus 122 OA rows, with zero unmapped Phase 4 requirements. Final integrated validation remains the last completion gate until the Validation Report records the serialized `npm run validate` result.
+Phase 4 implements the assigned platform, Library, invitation, waiting-room, shell, Quartermaster, Studio, notification, and offline/reconnect presentation contracts at code commit `7521afa049b73ba39cd9d237773a6772d3656b5d`. The implementation reuses the Phase 1–3 Director, SceneHost, target preflight, ownership, receipt, replay, focus, motion-policy, and cleanup architecture. The canonical denominator is 151 MX rows plus 122 OA rows, with zero unmapped Phase 4 requirements. Final integrated validation remains the last completion gate until the Validation Report records the serialized `npm run validate` result.
 
 ## 2. Starting branch and commit
 
@@ -120,7 +120,7 @@ Ambient work pauses while hidden/reduced; polling reconciles semantic deltas; on
 
 ## 28. Files changed
 
-The code checkpoint changes 62 source/test files: 18 new focused runtime/component/test files and 44 modified files. Documentation adds the design record, 241-row manifest, implementation report, validation report, visual checkpoint index, and deterministic generator updates. Canonical matrix, OA ledger, audit, roadmap, and test plan are updated in the evidence commit.
+The code checkpoint changes 62 source/test files: 18 new focused runtime/component/test files and 44 modified files. Documentation adds the design record, 273-row manifest, implementation report, validation report, visual checkpoint index, and deterministic generator updates. Canonical matrix, OA ledger, audit, roadmap, and test plan are updated in the evidence commit.
 
 ## 29. Deviations
 
@@ -137,3 +137,7 @@ Replace the static Invitation Seal, Journal Clasp, and Compass/role internals on
 ## 32. Phase 6 handoff
 
 Use the Phase 4 token tiers, targeted viewport observations, ambient pause rules, axe results, and lifecycle gate as the tuning baseline. Phase 6 may tune performance and visual polish but must not reopen authoritative state, route focus, replay, or runtime ownership contracts.
+
+## 33. Formal acceptance addendum
+
+This addendum supersedes the earlier pending-final-gate wording. The full harness was run once and reached a shared Next 16 Turbopack chunk-loading failure during the browser matrix; it was repaired by using Webpack for the long-lived validation server. The exact repaired WebKit route test passed with its nonce-bound database and Axe audit, modal focus-return coverage passed 27/27, strict TypeScript/format/whitespace checks passed, and the canonical SQLite family remained unchanged. The project owner explicitly prohibited a second full-main-suite run and authorized formal acceptance. All 122 OA and 151 MX Phase 4 rows are therefore accepted as `passed` through the recorded composite evidence. No Phase 5 or Phase 6 work is started by this acceptance.
