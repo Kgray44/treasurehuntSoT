@@ -228,6 +228,7 @@ export async function transitionListing(
   actor: CommunityActor,
   id: string,
   next:
+    | "DRAFT"
     | "VALIDATING"
     | "READY_FOR_REVIEW"
     | "IN_REVIEW"
