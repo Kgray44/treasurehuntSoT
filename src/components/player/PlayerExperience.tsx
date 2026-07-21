@@ -1349,7 +1349,8 @@ export function PlayerExperience({ initialSnapshot }: { initialSnapshot: PublicS
   const ensureProgressionController = useCallback(() => {
     if (controllerRef.current) return controllerRef.current;
     let stagedRequestIdentity: string | null = null;
-    controllerRef.current = new ProgressionPresentationController(
+    let controller: ProgressionPresentationController;
+    controller = new ProgressionPresentationController(
       {
         createIdentity: (kind, event, source) => {
           const identity = `${kind}:${source}:${event.id}:${crypto.randomUUID()}`;
@@ -1378,6 +1379,10 @@ export function PlayerExperience({ initialSnapshot }: { initialSnapshot: PublicS
           queueMicrotask(fastForward);
         },
         onReceipt: (receipt) => {
+          // A stopped controller can finish an in-flight presentation after the
+          // Player surface unmounts. Its receipt is no longer authoritative for
+          // this mounted surface and must not publish stale evidence or throw.
+          if (controllerRef.current !== controller) return;
           setLastPresentationReceipt(receipt);
           if (dispatchedProgressionReceipts.current.has(receipt)) return;
           dispatchedProgressionReceipts.current.add(receipt);
@@ -1404,6 +1409,7 @@ export function PlayerExperience({ initialSnapshot }: { initialSnapshot: PublicS
           );
         },
         onSnapshot: (next) => {
+          if (controllerRef.current !== controller) return;
           controllerSnapshot.current = next;
           dispatchProgressionEvidence(
             progressionStateEventName,
@@ -1420,6 +1426,7 @@ export function PlayerExperience({ initialSnapshot }: { initialSnapshot: PublicS
           );
         },
         onSettled: (notification) => {
+          if (controllerRef.current !== controller) return;
           dispatchProgressionEvidence(
             progressionStateEventName,
             Object.freeze({
@@ -1441,7 +1448,8 @@ export function PlayerExperience({ initialSnapshot }: { initialSnapshot: PublicS
       },
       { settledAuthoritativeSequence: 0 },
     );
-    return controllerRef.current;
+    controllerRef.current = controller;
+    return controller;
   }, [acknowledgePresentation, director, presentProgressionRequest]);
 
   const playEvent = useCallback(

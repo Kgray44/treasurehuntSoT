@@ -6,7 +6,7 @@ import { useCallback, useEffect, useId, useMemo, useRef, useState } from "react"
 import { motion } from "motion/react";
 import type { MotionMode } from "@/animation/core/animation-types";
 import { lottieAssets } from "@/animation/assets/lottie-contracts";
-import { riveAssets } from "@/animation/assets/rive-contracts";
+import { riveAssets, voyageCompassConnectionStatus } from "@/animation/assets/rive-contracts";
 import { SceneHost, useRuntimeOwnedSceneTarget, useSceneTargetRegistration } from "@/animation/hosts/SceneHost";
 import { useOptionalSceneHost } from "@/animation/hosts/SceneHostContext";
 import type {
@@ -59,8 +59,10 @@ type VoyageCompassPose = "idle" | "bearing" | "arrived";
 
 type VoyageCompassSemantics = Readonly<{
   pose: VoyageCompassPose;
-  stateValue: number;
-  bearing: number;
+  connectionStatus: number;
+  bearingDegrees: number;
+  courseProgress: number;
+  hasCourse: boolean;
   routeKey: string | null;
   readable: string;
 }>;
@@ -83,18 +85,23 @@ function resolveVoyageCompassSemantics(
     const pose = "idle" as const;
     return {
       pose,
-      stateValue: riveAssets.voyageCompass.states.indexOf(pose),
-      bearing: 0,
+      connectionStatus: voyageCompassConnectionStatus.idle,
+      bearingDegrees: 0,
+      courseProgress: 0,
+      hasCourse: false,
       routeKey: null,
       readable: "The voyage compass is idle; no exact route bearing is active.",
     };
   }
-  const bearing = normalizedRouteBearing(route, locations);
+  const bearingDegrees = normalizedRouteBearing(route, locations) * 360;
   const pose = route.state.trim().toUpperCase() === "ARRIVED" ? "arrived" : "bearing";
   return {
     pose,
-    stateValue: riveAssets.voyageCompass.states.indexOf(pose),
-    bearing,
+    connectionStatus:
+      pose === "arrived" ? voyageCompassConnectionStatus.arrived : voyageCompassConnectionStatus.bearing,
+    bearingDegrees,
+    courseProgress: pose === "arrived" ? 1 : 0,
+    hasCourse: true,
     routeKey: route.key,
     readable:
       pose === "arrived"
@@ -374,7 +381,7 @@ function VoyageChartContents({
     `snapshot-${snapshot.sequence}`,
     compass.routeKey ?? "idle",
     compass.pose,
-    compass.bearing.toFixed(6),
+    compass.bearingDegrees.toFixed(2),
   ].join(":");
 
   return (
@@ -512,19 +519,18 @@ function VoyageCompassAdapter({
   nonce: number;
   onStatusChange: VoyageChartProps["onCompassStatusChange"];
 }>) {
-  const signals = useMemo<readonly [RiveSignal, RiveSignal]>(
+  const signals = useMemo<readonly RiveSignal[]>(
     () => [
-      { name: "state", value: semantics.stateValue, nonce: nonce * 2 },
-      { name: "bearing", value: semantics.bearing, nonce: nonce * 2 + 1 },
+      { name: "connectionStatus", value: semantics.connectionStatus, nonce: nonce * 4 },
+      { name: "bearingDegrees", value: semantics.bearingDegrees, nonce: nonce * 4 + 1 },
+      { name: "courseProgress", value: semantics.courseProgress, nonce: nonce * 4 + 2 },
+      { name: "hasCourse", value: semantics.hasCourse, nonce: nonce * 4 + 3 },
     ],
-    [nonce, semantics.bearing, semantics.stateValue],
+    [nonce, semantics.bearingDegrees, semantics.connectionStatus, semantics.courseProgress, semantics.hasCourse],
   );
-  const [signalIndex, setSignalIndex] = useState<0 | 1>(0);
   const [reportedStatus, setReportedStatus] = useState<RiveRuntimeStatus | null>(null);
-  const pendingTerminalStatus = useRef<Extract<RiveRuntimeStatus, "ready" | "fallback"> | null>(null);
   const statusRef = useRef<RiveRuntimeStatus | null>(null);
   const callbackRef = useRef(onStatusChange);
-  const activeSignal = signals[signalIndex];
 
   useEffect(() => {
     const previous = callbackRef.current;
@@ -549,29 +555,6 @@ function VoyageCompassAdapter({
     callbackRef.current?.(status);
   }, []);
 
-  const handleRuntimeStatus = useCallback(
-    (status: RiveRuntimeStatus) => {
-      if ((status === "ready" || status === "fallback") && signalIndex === 0) {
-        pendingTerminalStatus.current = status;
-        setSignalIndex(1);
-        return;
-      }
-      if (status === "failed" && signalIndex === 0) setSignalIndex(1);
-      publishStatus(status);
-    },
-    [publishStatus, signalIndex],
-  );
-
-  useEffect(() => {
-    if (signalIndex !== 1 || !pendingTerminalStatus.current) return;
-    const terminalStatus = pendingTerminalStatus.current;
-    const timer = window.setTimeout(() => {
-      pendingTerminalStatus.current = null;
-      publishStatus(terminalStatus);
-    }, 0);
-    return () => window.clearTimeout(timer);
-  }, [publishStatus, signalIndex]);
-
   return (
     <div
       aria-hidden="true"
@@ -579,11 +562,10 @@ function VoyageCompassAdapter({
       data-rive-contract-availability={riveAssets.voyageCompass.availability}
       data-rive-runtime-status={reportedStatus ?? "pending"}
       data-rive-state={semantics.pose}
-      data-rive-state-value={semantics.stateValue}
-      data-rive-bearing-value={semantics.bearing.toFixed(6)}
+      data-rive-state-value={semantics.connectionStatus}
+      data-rive-bearing-value={semantics.bearingDegrees.toFixed(2)}
       data-rive-route-key={semantics.routeKey ?? ""}
-      data-rive-active-signal={activeSignal.name}
-      data-rive-semantic-dispatches={signalIndex === 0 ? "state" : "state,bearing"}
+      data-rive-semantic-dispatches="connectionStatus,bearingDegrees,courseProgress,hasCourse"
       data-rive-inputs={riveAssets.voyageCompass.inputs.map((input) => input.name).join(",")}
       data-rive-reduced-pose={JSON.stringify(riveAssets.voyageCompass.reducedPose)}
       data-rive-reduced-equivalent="semantic-final-state"
@@ -603,12 +585,12 @@ function VoyageCompassAdapter({
         asset={riveAssets.voyageCompass}
         mode={mode}
         label={`Voyage compass, ${semantics.pose}`}
-        signal={activeSignal}
+        signals={signals}
         reducedMotion={{
           stablePose: riveAssets.voyageCompass.reducedPose,
           allowedSemanticSignals: riveAssets.voyageCompass.reducedSemanticSignals,
         }}
-        onStatus={handleRuntimeStatus}
+        onStatus={publishStatus}
       />
     </div>
   );

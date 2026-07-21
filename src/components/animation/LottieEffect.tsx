@@ -74,7 +74,7 @@ export const LottieEffect = forwardRef<LottieEffectHandle, LottieEffectProps>(fu
     className = "",
     label,
     playback = asset.loop ? "ambient" : "commanded",
-    reducedFrame = 0,
+    reducedFrame = asset.reducedFrame,
     loadTimeoutMs = defaultLoadTimeoutMs,
     onStatus,
   },

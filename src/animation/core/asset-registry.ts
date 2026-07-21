@@ -6,8 +6,8 @@ export type AnimationAsset = {
   type: "rive" | "lottie" | "svg" | "still";
   path?: string;
   owner: "rive" | "lottie" | "gsap" | "css";
-  pages: string[];
-  behavior: { full: string; gentle: string; reduced: string };
+  pages: readonly string[];
+  behavior: Readonly<{ full: string; gentle: string; reduced: string }>;
   priority: "critical" | "idle" | "intent";
   provenance: string;
   fallback?: string;

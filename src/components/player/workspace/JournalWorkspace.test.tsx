@@ -411,9 +411,11 @@ describe("JournalWorkspace chapter ceremony host", () => {
       expect(commands.at(-1)).toMatchObject({ eventId: chapterRelease.id, semanticLabel: "ink-story" }),
     );
     expect(lottieProbe.play).not.toHaveBeenCalled();
+    expect(lottieProbe.playSegment).not.toHaveBeenCalled();
 
     act(() => commands.at(-1)!.play());
-    expect(lottieProbe.play).toHaveBeenCalledOnce();
+    expect(lottieProbe.playSegment).toHaveBeenCalledOnce();
+    expect(lottieProbe.playSegment).toHaveBeenCalledWith([0, 72]);
 
     view.rerender(
       <AnimationProvider>
@@ -432,7 +434,7 @@ describe("JournalWorkspace chapter ceremony host", () => {
   });
 
   it("mounts the truthful decorative Journal Clasp fallback and retracts lifecycle-scoped status", async () => {
-    const statuses: Array<"loading" | "ready" | "failed" | "fallback" | null> = [];
+    const statuses: Array<"loading" | "ready" | "timed-out" | "failed" | "fallback" | "paused" | "hidden" | null> = [];
     const view = render(
       <AnimationProvider>
         <JournalWorkspace
@@ -452,10 +454,16 @@ describe("JournalWorkspace chapter ceremony host", () => {
     expect(contract).toHaveAttribute("aria-hidden", "true");
     expect(contract).toHaveAttribute("data-rive-contract-availability", "blocked_external_asset");
     expect(contract).toHaveAttribute("data-rive-production-art-status", "blocked_external_asset");
-    expect(contract).toHaveAttribute("data-rive-state", "awake");
-    expect(contract).toHaveAttribute("data-rive-state-value", "1");
-    expect(contract).toHaveAttribute("data-rive-inputs", "state,wake,release");
-    expect(contract).toHaveAttribute("data-rive-reduced-pose", JSON.stringify({ state: 0 }));
+    expect(contract).toHaveAttribute("data-rive-state", "releasing");
+    expect(contract).toHaveAttribute("data-rive-state-value", "2");
+    expect(contract).toHaveAttribute(
+      "data-rive-inputs",
+      "isHovering,isFocused,openingPhase,pressure,wake,release,open,interrupt,reset,reducedMotion",
+    );
+    expect(contract).toHaveAttribute(
+      "data-rive-reduced-pose",
+      JSON.stringify({ openingPhase: 0, pressure: 0, reducedMotion: true }),
+    );
     expect(contract).toHaveAttribute("data-rive-reduced-equivalent", "semantic-final-state");
     expect(contract).toHaveStyle({ pointerEvents: "none" });
     expect(contract?.querySelector("img")).toHaveAttribute("src", "/animations/stills/journal-clasp-fallback.svg");
@@ -463,7 +471,7 @@ describe("JournalWorkspace chapter ceremony host", () => {
       contract?.querySelector("[data-scene-part], [data-scene-target-id], [data-animation-owner], [data-gsap-owned]"),
     ).toBeNull();
     expect(view.container.querySelector(".latch-assembly")).toBeInTheDocument();
-    expect(screen.getByText("The journal clasp is awake and ready to release.")).toBeInTheDocument();
+    expect(screen.getByText("The journal clasp is releasing while the journal cover remains supported.")).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Next journal page" })).toBeEnabled();
     await waitFor(() => expect(contract).toHaveAttribute("data-rive-runtime-status", "fallback"));
     expect(statuses.at(-1)).toBe("fallback");
@@ -484,7 +492,7 @@ describe("JournalWorkspace chapter ceremony host", () => {
     const settled = view.container.querySelector<HTMLElement>("[data-journal-clasp-contract]");
     await waitFor(() => expect(settled).toHaveAttribute("data-rive-runtime-status", "fallback"));
     expect(settled).toHaveAttribute("data-rive-state", "open");
-    expect(settled).toHaveAttribute("data-rive-state-value", "3");
+    expect(settled).toHaveAttribute("data-rive-state-value", "4");
     expect(settled).toHaveAttribute("data-rive-reduced-equivalent", "semantic-final-state");
     expect(screen.getByText("The journal clasp is open and the readable journal is ready.")).toBeInTheDocument();
     expect(statuses).toContain(null);

@@ -175,6 +175,28 @@ describe("Rive runtime", () => {
     expect(runtime.rive.cleanup).toHaveBeenCalledOnce();
   });
 
+  it("settles to the accessible fallback when a runtime load exceeds its contract timeout", async () => {
+    vi.useFakeTimers();
+    const status = vi.fn();
+    render(
+      <RiveRuntime
+        asset={riveAssets.developmentRating}
+        mode="full"
+        label="Rive development proof"
+        className="proof"
+        onStatus={status}
+      />,
+    );
+
+    act(() => vi.advanceTimersByTime(riveAssets.developmentRating.loadTimeoutMs));
+    expect(status).toHaveBeenCalledWith("timed-out");
+    expect(status).toHaveBeenLastCalledWith("fallback");
+    expect(
+      screen.getByRole("img", { name: "Rive development proof fallback after WebGL or asset failure" }),
+    ).toBeVisible();
+    vi.useRealTimers();
+  });
+
   it("identifies unavailable production artwork honestly and never attempts a remote runtime load", async () => {
     const status = vi.fn();
     const before = runtime.loadCalls;

@@ -1,0 +1,14 @@
+id,system,scope,status,evidence,blocker
+AR-001,Rive,Invitation seal runtime contract,blocked_external_asset,src/animation/assets/rive-contracts.ts;Project_Lanternwake_Phase_5_Rive_Authoring_Specification.md,Project-owned editable source and production .riv export absent
+AR-002,Rive,Journal clasp runtime contract,blocked_external_asset,src/animation/assets/rive-contracts.ts;src/components/player/workspace/JournalWorkspace.tsx,Project-owned editable source and production .riv export absent
+AR-003,Rive,Voyage compass runtime contract,blocked_external_asset,src/animation/assets/rive-contracts.ts;src/components/player/workspace/VoyageChart.tsx,Project-owned editable source and production .riv export absent
+AR-004,Rive,Finale mechanism runtime contract,blocked_external_asset,src/animation/assets/rive-contracts.ts;src/components/player/workspace/FinaleChamber.tsx,Project-owned editable source and production .riv export absent
+AL-001,Lottie,Voyage waves reduced-motion pose,implemented_and_tested,src/animation/assets/lottie-contracts.ts;src/components/animation/LottieEffect.test.tsx,
+AL-002,Lottie,Fog drift reduced-motion pose,implemented_and_tested,src/animation/assets/lottie-contracts.ts;src/components/animation/LottieEffect.test.tsx,
+AL-003,Lottie,Journal ink semantic reduced-motion segment,implemented_and_tested,src/animation/assets/lottie-contracts.ts;src/components/player/workspace/JournalWorkspace.test.tsx,
+MX-199,PageFlip,Archive opening lifecycle,inherited_existing_implementation,src/components/animation/PageFlipBook.tsx;src/components/animation/PageFlipBook.test.tsx,
+MX-224,PageFlip,Voyage compass bearing lifecycle,implemented_contract_blocked_asset,src/components/player/workspace/VoyageChart.tsx,Production compass .riv absent
+MX-242,PageFlip,Ledger cover opening and target lifecycle,inherited_existing_implementation,src/components/player/workspace/SideQuestLedger.tsx;src/components/animation/PageFlipBook.test.tsx,
+MX-243,PageFlip,Ledger filter divider state,preserved_existing_implementation,src/components/player/workspace/SideQuestLedger.tsx,
+MX-258,PageFlip,Ship log long-history treatment,not_implemented,src/components/player/workspace/ShipsLog.tsx,No approved pagination/product behavior was present in baseline
+MX-261,Rive,Finale sound-reactive optional behavior,blocked_external_asset,Project_Lanternwake_Phase_5_Rive_Authoring_Specification.md,Finale .riv absent and optional audio authority not supplied

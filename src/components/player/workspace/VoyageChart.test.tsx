@@ -305,7 +305,7 @@ describe("VoyageChart animation boundary", () => {
   });
 
   it("mounts the truthful decorative Voyage Compass fallback with keyed state and bearing inputs", async () => {
-    const statuses: Array<"loading" | "ready" | "failed" | "fallback" | null> = [];
+    const statuses: Array<"loading" | "ready" | "timed-out" | "failed" | "fallback" | "paused" | "hidden" | null> = [];
     const view = render(
       <AnimationProvider>
         <VoyageChart
@@ -323,12 +323,18 @@ describe("VoyageChart animation boundary", () => {
     expect(contract).toHaveAttribute("data-rive-contract-availability", "blocked_external_asset");
     expect(contract).toHaveAttribute("data-rive-production-art-status", "blocked_external_asset");
     expect(contract).toHaveAttribute("data-rive-state", "bearing");
-    expect(contract).toHaveAttribute("data-rive-state-value", "1");
+    expect(contract).toHaveAttribute("data-rive-state-value", "2");
     expect(contract).toHaveAttribute("data-rive-route-key", "harbor-to-cove");
-    expect(contract).toHaveAttribute("data-rive-inputs", "state,bearing,arrive");
-    expect(contract).toHaveAttribute("data-rive-reduced-pose", JSON.stringify({ state: 0, bearing: 0 }));
+    expect(contract).toHaveAttribute(
+      "data-rive-inputs",
+      "bearingDegrees,courseProgress,connectionStatus,hasCourse,seeking,setCourse,arrive,disconnect,reset,reducedMotion",
+    );
+    expect(contract).toHaveAttribute(
+      "data-rive-reduced-pose",
+      JSON.stringify({ bearingDegrees: 0, courseProgress: 0, connectionStatus: 0, hasCourse: false, reducedMotion: true }),
+    );
     expect(contract).toHaveAttribute("data-rive-reduced-equivalent", "semantic-final-state");
-    expect(Number(contract?.dataset.riveBearingValue)).toBeCloseTo(0.176208, 5);
+    expect(Number(contract?.dataset.riveBearingValue)).toBeCloseTo(63.43488, 2);
     expect(contract).toHaveStyle({ pointerEvents: "none" });
     expect(contract?.querySelector("img")).toHaveAttribute("src", "/animations/stills/compass-fallback.svg");
     expect(
@@ -342,8 +348,10 @@ describe("VoyageChart animation boundary", () => {
     ).toBeInTheDocument();
     expect(screen.getAllByText("Lantern Harbor").length).toBeGreaterThanOrEqual(2);
     await waitFor(() => expect(contract).toHaveAttribute("data-rive-runtime-status", "fallback"));
-    await waitFor(() => expect(contract).toHaveAttribute("data-rive-active-signal", "bearing"));
-    expect(contract).toHaveAttribute("data-rive-semantic-dispatches", "state,bearing");
+    expect(contract).toHaveAttribute(
+      "data-rive-semantic-dispatches",
+      "connectionStatus,bearingDegrees,courseProgress,hasCourse",
+    );
     expect(statuses.at(-1)).toBe("fallback");
 
     view.rerender(
@@ -363,7 +371,7 @@ describe("VoyageChart animation boundary", () => {
     const arrived = view.container.querySelector<HTMLElement>("[data-voyage-compass-contract]");
     await waitFor(() => expect(arrived).toHaveAttribute("data-rive-runtime-status", "fallback"));
     expect(arrived).toHaveAttribute("data-rive-state", "arrived");
-    expect(arrived).toHaveAttribute("data-rive-state-value", "2");
+    expect(arrived).toHaveAttribute("data-rive-state-value", "4");
     expect(arrived).toHaveAttribute("data-rive-reduced-equivalent", "semantic-final-state");
     expect(screen.getByText("The voyage compass marks arrival for route harbor-to-cove.")).toBeInTheDocument();
     expect(statuses).toContain(null);
@@ -381,7 +389,7 @@ describe("VoyageChart animation boundary", () => {
     const idle = view.container.querySelector<HTMLElement>("[data-voyage-compass-contract]");
     await waitFor(() => expect(idle).toHaveAttribute("data-rive-runtime-status", "fallback"));
     expect(idle).toHaveAttribute("data-rive-state", "idle");
-    expect(idle).toHaveAttribute("data-rive-bearing-value", "0.000000");
+    expect(idle).toHaveAttribute("data-rive-bearing-value", "0.00");
     expect(screen.getByText("The voyage compass is idle; no exact route bearing is active.")).toBeInTheDocument();
 
     view.unmount();

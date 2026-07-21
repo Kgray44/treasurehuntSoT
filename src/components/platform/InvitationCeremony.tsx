@@ -19,12 +19,14 @@ import { SceneHost, useSceneTargetRegistration } from "@/animation/hosts/SceneHo
 import { useOptionalSceneHost } from "@/animation/hosts/SceneHostContext";
 import type { SceneHostHandle } from "@/animation/hosts/scene-host-types";
 import { useMotionMode } from "@/animation/motion/useMotionMode";
+import { invitationSealStatus, riveAssets } from "@/animation/assets/rive-contracts";
 import { platformMotionEasing, resolvePlatformMotionToken } from "@/animation/platform/motion-tokens";
 import {
   useAuthoritativeAsyncState,
   type AuthoritativeAsyncRun,
 } from "@/animation/platform/useAuthoritativeAsyncState";
 import { PlatformRelic } from "./PlatformRelic";
+import { RiveStatefulObject, type RiveSignal } from "@/components/animation/RiveStatefulObject";
 
 type Invitation = {
   id: string;
@@ -167,6 +169,24 @@ function stageFromCode(code: string | undefined, hasInvitation: boolean): Invita
   if (code === "DECLINED") return "declined";
   if (code === "INVALID") return hasInvitation ? "pin-required" : "invalid";
   return "failed";
+}
+
+function invitationSealSignals(stage: InvitationStage, pin: string, requiresPin: boolean): readonly RiveSignal[] {
+  const status =
+    stage === "accepted"
+      ? invitationSealStatus.open
+      : stage === "expired"
+        ? invitationSealStatus.expired
+        : stage === "revoked"
+          ? invitationSealStatus.revoked
+          : stage === "pin-validating" || stage === "accepting"
+            ? invitationSealStatus.validating
+            : invitationSealStatus.idle;
+  return [
+    { name: "isListening", value: stage === "pin-required", nonce: 1 },
+    { name: "pinProgress", value: requiresPin ? Math.min(pin.length, 4) / 4 : 0, nonce: 2 },
+    { name: "status", value: status, nonce: 3 },
+  ];
 }
 
 function TerminalInvitationState({
@@ -452,6 +472,10 @@ export function InvitationCeremony({ onRouteHandoff }: { onRouteHandoff?: Invita
       "failed",
       "resolving",
     ].includes(stage);
+  const sealSignals = useMemo(
+    () => invitationSealSignals(stage, pin, invitation?.requiresPin ?? false),
+    [invitation?.requiresPin, pin, stage],
+  );
   if (terminal) {
     return (
       <main className="invitation-page" data-invitation-state={stage} data-motion-mode={mode}>
@@ -493,7 +517,20 @@ export function InvitationCeremony({ onRouteHandoff }: { onRouteHandoff?: Invita
         transition={{ duration: stateToken.durationSeconds, ease: platformMotionEasing("state") }}
       >
         <div className="invitation-seal" aria-hidden="true">
-          <PlatformRelic kind="invitation-seal" state={relicState} mode={mode} />
+          {riveAssets.invitationSeal.availability === "runtime-ready" ? (
+            <RiveStatefulObject
+              asset={riveAssets.invitationSeal}
+              mode={mode}
+              label={`Invitation seal, ${stage}`}
+              signals={sealSignals}
+              reducedMotion={{
+                stablePose: riveAssets.invitationSeal.reducedPose,
+                allowedSemanticSignals: riveAssets.invitationSeal.reducedSemanticSignals,
+              }}
+            />
+          ) : (
+            <PlatformRelic kind="invitation-seal" state={relicState} mode={mode} />
+          )}
         </div>
         <div
           className="invitation-cover-frame"
