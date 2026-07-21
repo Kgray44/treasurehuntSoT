@@ -17,4 +17,11 @@
 | Universal Language merge  | `b5b5d63514cca3e00af38bd491626c65c361d64c` |
 | Archive/doc sync          | `03d5733eab7af233e2c1e8c4ec757c8b7c4c8ccd` |
 
-The final reconciliation commit and its resulting Git tree are recorded in the immediately following verification-hash metadata commit and in the final remote verification report. This avoids claiming a self-referential commit SHA before Git creates it.
+## Final reconciliation
+
+| Item                        | Git SHA                                    |
+| --------------------------- | ------------------------------------------ |
+| Final reconciliation commit | `0ecd2f9cca6116e2f7f9ab4408ade749fb061e72` |
+| Final reconciliation tree   | `a598c4fbe6959dc9c3f6957ce8277bee552e5047` |
+
+This verification-hash metadata commit records the preceding reconciliation object after Git created it. The final branch-head SHA/tree and remote SHA are reported by the terminal remote verification step.
