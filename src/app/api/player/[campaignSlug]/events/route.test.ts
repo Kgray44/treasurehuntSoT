@@ -38,7 +38,8 @@ vi.mock("@/compatibility/legacy-companion", () => ({ requireLegacyCompatibilityA
 vi.mock("@/lib/events", () => ({ eventBus: mocks.bus }));
 vi.mock("@/lib/db", () => ({ db: { taleSessionEvent: { findMany: mocks.findMany, findUnique: mocks.findUnique } } }));
 
-import { GET, PLAYER_EVENT_HISTORY_PAGE_SIZE } from "./route";
+import { GET } from "./route";
+import { PLAYER_EVENT_HISTORY_PAGE_SIZE } from "@/platform/player-event-stream";
 
 const context = { params: Promise.resolve({ campaignSlug: "legacy-voyage" }) };
 const canonicalEvent = (sequence: number) => ({
