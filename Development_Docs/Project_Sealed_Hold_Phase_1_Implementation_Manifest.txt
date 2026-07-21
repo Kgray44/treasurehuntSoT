@@ -1,0 +1,22 @@
+Project Sealed Hold Phase 1 implementation manifest
+Generated: 2026-07-21 America/New_York
+Branch: codex/project-sealed-hold-phase1
+Starting commit: 0ecd2f9cca6116e2f7f9ab4408ade749fb061e72
+Package format: forever-treasure-private-package envelope/payload v1
+Cryptography: AES-256-GCM with scrypt N=32768 r=8 p=1, random 16-byte salt and 12-byte nonce
+Migrations: 20260721130000_project_sealed_hold_phase1; 0005_project_sealed_hold_phase1
+
+Owned implementation:
+- src/private-content/{core,package,storage,authorization,security,service}.ts
+- scripts/private-content/{cli,scan,staged-diff-scan,build-scan,verify-fixtures}.ts
+- tests/private-content and Studio/API private-content routes
+- Private asset authorized delivery route and player-event route export correction
+- additive private-content Prisma schemas and migrations
+- Phase 1 design, threat model, package format, operations, test plan, migration, parallel-work, checklist, and completion records
+
+Validation status at manifest generation:
+- synthetic fixture verification passed
+- repository private-content scan passed
+- full Vitest/browser/database release validation remains required from an owned local runtime mirror because the UNC worktree cannot start worker processes
+
+No real private Chronicle content, credentials, plaintext export, private root, staging directory, database file, or dependency directory is included by this manifest.

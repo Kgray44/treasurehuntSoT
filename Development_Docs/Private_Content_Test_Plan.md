@@ -1,0 +1,7 @@
+# Private Content test plan
+
+Focused unit tests cover AES-GCM/scrypt success, wrong key, tampering, malformed envelope, limits, compatibility, checksum mismatch, dangerous/colliding paths, and passphrase/error redaction. Storage tests cover rejected roots, hash-derived paths, staging/finalization, reuse, verification, and cleanup.
+
+Integration tests use a unique isolated SQLite database, private root, staging root, test nonce, and alternate server port. They prove dry run has no mutation; confirmed import stays private and has no session/invitation; re-import is idempotent; database and finalization failures clean up; authorized asset access succeeds only for allowed references; anonymous/unrevealed requests return opaque denial; export refuses repository output and round-trips; backup restore detects tampering/missing objects and cleans temporary data.
+
+Guard tests create only the synthetic sentinel `SEALED-HOLD-SYNTHETIC-PRIVATE-SENTINEL-73A9C1` in allowed test memory/encrypted fixture scope. Repository, staged-diff, and build-output scans must not expose matched values and must reject forbidden package/key/decrypted paths. Final validation runs format, lint, typecheck, focused tests, scan, fixture verification, build scan, build, and the repository full gate once from the Sealed Hold environment; failures are classified as task regression, baseline, environment, skipped, or blocked.

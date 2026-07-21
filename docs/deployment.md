@@ -12,3 +12,10 @@ Back up with daily encrypted `mysqldump --single-transaction`, retain seven dail
 Set `CHRONICLE_ASSET_ROOT` to durable storage outside the release directory and back it up with the database. Published snapshots retain asset variant identities, so a database-only restore is incomplete. Phase 1 uses local filesystem storage; horizontally scaled production needs shared object storage before enabling multiple application nodes.
 
 The platform migration is additive, but it is not reversed destructively. Before applying `0004_chronicle_platform`, take and verify a database backup. Rollback means stop the application, restore that backup together with the matching asset volume, deploy the previous application release, and validate playthrough/event counts before reopening traffic. Run the normal progress-preserving seed/ensure step after a successful forward migration to backfill existing Chronicle session memberships; development identities and roles are never a substitute for production provisioning.
+Private Chronicle storage is separate from ordinary Tale assets. Set
+`PRIVATE_CONTENT_ROOT` and `PRIVATE_CONTENT_STAGING_ROOT` to distinct,
+restricted absolute paths outside the release tree, `public/`, and build
+output. Back up encrypted package/import data and referenced private objects
+together; test restores only into an isolated database and asset root. Do not
+place package passphrases, decrypted archives, or exports in service arguments,
+environment defaults, logs, or deployment artifacts.
