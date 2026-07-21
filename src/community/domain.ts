@@ -181,7 +181,7 @@ export function toPublicListing(input: {
   visibility: (typeof communityVisibility)[number];
   publicationStatus: (typeof publicationStatuses)[number];
   locationClass: (typeof locationClasses)[number];
-  owner: { handle: string; displayName: string; email?: string; passwordHash?: string };
+  owner: { handle: string; displayName: string };
   privateSnapshot?: unknown;
 }): PublicCommunityListing | null {
   if (!canView({ ...input, ownerProfileId: "" })) return null;
