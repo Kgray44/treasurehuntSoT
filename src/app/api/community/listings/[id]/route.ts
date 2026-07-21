@@ -7,9 +7,7 @@ export async function GET(_: Request, context: { params: Promise<{ id: string }>
   if (!identity)
     return NextResponse.json({ code: "COMMUNITY_ACCESS_DENIED", error: "Sign in required." }, { status: 401 });
   try {
-    return NextResponse.json(
-      await getOwnerListing({ accountId: identity.accountId }, (await context.params).id),
-    );
+    return NextResponse.json(await getOwnerListing({ accountId: identity.accountId }, (await context.params).id));
   } catch (cause) {
     return communityApiError(cause);
   }
@@ -23,11 +21,7 @@ export async function PATCH(request: Request, context: { params: Promise<{ id: s
     );
   try {
     return NextResponse.json(
-      await updateListing(
-        { accountId: identity.accountId },
-        (await context.params).id,
-        await request.json(),
-      ),
+      await updateListing({ accountId: identity.accountId }, (await context.params).id, await request.json()),
     );
   } catch (cause) {
     return communityApiError(cause);

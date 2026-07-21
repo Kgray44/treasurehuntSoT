@@ -11,11 +11,7 @@ export async function POST(request: Request, context: { params: Promise<{ id: st
     );
   try {
     return NextResponse.json(
-      await createRelease(
-        { accountId: identity.accountId },
-        (await context.params).id,
-        await request.json(),
-      ),
+      await createRelease({ accountId: identity.accountId }, (await context.params).id, await request.json()),
       { status: 201 },
     );
   } catch (cause) {

@@ -5,9 +5,7 @@ import type { CommunityActor } from "./services";
 export async function canViewCommunityListing(actor: CommunityActor | null, listingId: string, unlistedSlug?: string) {
   const listing = await db.communityListing.findUnique({ where: { id: listingId }, include: { currentRelease: true } });
   if (!listing || listing.moderationStatus !== "ACTIVE" || listing.publicationStatus !== "PUBLISHED") return false;
-  const profile = actor
-    ? await db.communityProfile.findUnique({ where: { accountId: actor.accountId } })
-    : null;
+  const profile = actor ? await db.communityProfile.findUnique({ where: { accountId: actor.accountId } }) : null;
   if (profile?.id === listing.ownerProfileId || actor?.role === "MODERATOR" || actor?.role === "ADMIN") return true;
   if (listing.visibility === "COMMUNITY" || listing.visibility === "FEATURED") return true;
   if (listing.visibility === "UNLISTED") return Boolean(unlistedSlug && unlistedSlug === listing.slug);
@@ -21,7 +19,8 @@ export async function canViewCommunityListing(actor: CommunityActor | null, list
     ? await db.userAccount.findUnique({ where: { id: actor.accountId }, select: { profile: { select: { id: true } } } })
     : null;
   return Boolean(
-    source && playerProfile?.profile &&
+    source &&
+      playerProfile?.profile &&
       (await db.playthroughMembership.findFirst({
         where: {
           playerProfileId: playerProfile.profile.id,

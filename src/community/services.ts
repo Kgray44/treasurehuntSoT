@@ -241,7 +241,11 @@ export async function transitionListing(
   const profile = await ownProfile(actor);
   const listing = await db.communityListing.findFirst({ where: { id, ownerProfileId: profile.id } });
   if (!listing) throw new CommunityError("COMMUNITY_ACCESS_DENIED", "You cannot change this listing.");
-  if (actor.role !== "MODERATOR" && actor.role !== "ADMIN" && !["DRAFT", "VALIDATING", "READY_FOR_REVIEW"].includes(next))
+  if (
+    actor.role !== "MODERATOR" &&
+    actor.role !== "ADMIN" &&
+    !["DRAFT", "VALIDATING", "READY_FOR_REVIEW"].includes(next)
+  )
     throw new CommunityError("COMMUNITY_ACCESS_DENIED", "Only moderation may change this publication state.");
   assertTransition(listing.publicationStatus as Parameters<typeof assertTransition>[0], next);
   return db.$transaction(async (tx) => {
@@ -318,7 +322,8 @@ export async function createRelease(actor: CommunityActor, listingId: string, ra
     });
     const listingUpdate =
       listing.publicationStatus === "PUBLISHED"
-        ? (assertTransition("PUBLISHED", "UPDATE_PENDING"), { currentReleaseId: release.id, publicationStatus: "UPDATE_PENDING" })
+        ? (assertTransition("PUBLISHED", "UPDATE_PENDING"),
+          { currentReleaseId: release.id, publicationStatus: "UPDATE_PENDING" })
         : { currentReleaseId: release.id };
     await tx.communityListing.update({ where: { id: listingId }, data: listingUpdate });
     await outbox(tx, "COMMUNITY_RELEASE_CREATED", "COMMUNITY_RELEASE", release.id, {
@@ -410,12 +415,25 @@ export async function setProfileSuspension(actor: CommunityActor, profileId: str
       where: { id: profileId },
       data: { creatorStatus: suspended ? "SUSPENDED" : "ACTIVE" },
     });
-    await outbox(tx, suspended ? "COMMUNITY_PROFILE_SUSPENDED" : "COMMUNITY_PROFILE_RESTORED", "COMMUNITY_PROFILE", profileId, {
-      suspended,
-    });
-    await audit(tx, actor, suspended ? "COMMUNITY_PROFILE_SUSPENDED" : "COMMUNITY_PROFILE_RESTORED", "COMMUNITY_PROFILE", profileId, {
-      suspended,
-    });
+    await outbox(
+      tx,
+      suspended ? "COMMUNITY_PROFILE_SUSPENDED" : "COMMUNITY_PROFILE_RESTORED",
+      "COMMUNITY_PROFILE",
+      profileId,
+      {
+        suspended,
+      },
+    );
+    await audit(
+      tx,
+      actor,
+      suspended ? "COMMUNITY_PROFILE_SUSPENDED" : "COMMUNITY_PROFILE_RESTORED",
+      "COMMUNITY_PROFILE",
+      profileId,
+      {
+        suspended,
+      },
+    );
     return ownerProfileProjection(updated);
   });
 }

@@ -10,9 +10,7 @@ export async function PATCH(request: Request) {
       { status: 403 },
     );
   try {
-    return NextResponse.json(
-      await updateOwnProfile({ accountId: identity.accountId }, await request.json()),
-    );
+    return NextResponse.json(await updateOwnProfile({ accountId: identity.accountId }, await request.json()));
   } catch (cause) {
     return communityApiError(cause);
   }
