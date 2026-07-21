@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { requireGmCapability, verifyCsrf } from "@/lib/security";
-import { apiError } from "@/tall-tale/api";
-import { launchTalePlaythrough } from "@/tall-tale/progression";
+import { apiError } from "@/chronicle/api";
+import { launchTalePlaythrough } from "@/chronicle/progression";
 
 const schema = z.object({ expectedVersion: z.number().int().min(0).optional() });
 

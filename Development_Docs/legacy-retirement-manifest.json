@@ -1,0 +1,56 @@
+{
+  "$schema": "./legacy-retirement-manifest.schema.json",
+  "project": "Project One Voyage",
+  "canonicalDomain": "Chronicle",
+  "cutoverStage": "F-compatibility-only",
+  "components": [
+    {
+      "component": "Campaign",
+      "status": "read-only-migration-source",
+      "canonicalReplacement": "Chronicle plus Published Chronicle Version",
+      "productionCallersRemaining": "legacy URL/provenance resolution only; no production writer",
+      "canWrite": false,
+      "removalGate": "zero shadow mismatches, live MySQL proof, backup/restore rehearsal, and one compatibility release"
+    },
+    {
+      "component": "CampaignSnapshotBuilder",
+      "status": "replace-with-adapter",
+      "canonicalReplacement": "ChronicleSessionProjectionService",
+      "productionCallersRemaining": "zero direct legacy writers in Player and GM route scan",
+      "canWrite": false,
+      "removalGate": "legacy Player URLs pass canonical projection compatibility tests"
+    },
+    {
+      "component": "LegacyProgressionService",
+      "status": "replace-with-adapter",
+      "canonicalReplacement": "ChronicleCommandService",
+      "productionCallersRemaining": "adapter-only entrypoint; zero direct legacy writers in Player and GM route scan",
+      "canWrite": false,
+      "removalGate": "legacy GM and Quartermaster routes perform zero legacy writes"
+    },
+    {
+      "component": "PlayerAccess",
+      "status": "migration-source",
+      "canonicalReplacement": "PlayerProfile, PlayerIdentitySession, PlaythroughMembership, Invitation",
+      "productionCallersRemaining": "legacy credential is accepted only for canonical identity/membership exchange",
+      "canWrite": false,
+      "removalGate": "all active credentials migrated, revocation proof, and one compatibility release"
+    },
+    {
+      "component": "AdminAuditLog",
+      "status": "migration-source",
+      "canonicalReplacement": "PlatformAuditEvent",
+      "productionCallersRemaining": "import source only; canonical audit is written by adapters",
+      "canWrite": false,
+      "removalGate": "all commands correlate to canonical events and audit records"
+    },
+    {
+      "component": "Quartermaster",
+      "status": "compatibility-ui",
+      "canonicalReplacement": "Captain runtime services",
+      "productionCallersRemaining": "historical bookmark redirects to Captain; API compatibility delegates to canonical services",
+      "canWrite": false,
+      "removalGate": "bookmark, command, and authorization compatibility release plus one"
+    }
+  ]
+}

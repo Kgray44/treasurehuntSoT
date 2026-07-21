@@ -1,13 +1,13 @@
 import { NextResponse } from "next/server";
 import { requireGmCapability } from "@/lib/security";
-import { listCaptainSessions } from "@/tall-tale/progression";
+import { listCaptainSessions } from "@/chronicle/progression";
 import { db } from "@/lib/db";
 
 export async function GET() {
   const session = await requireGmCapability("CAPTAIN");
   if (!session)
     return NextResponse.json({ error: "Sign in to Captain's Console to view active Voyages." }, { status: 401 });
-  const tales = await db.tallTale.findMany({
+  const tales = await db.chronicle.findMany({
     where: { archivedAt: null, latestPublishedVersionId: { not: null } },
     orderBy: { title: "asc" },
     select: { id: true, slug: true, title: true, status: true, visibility: true },

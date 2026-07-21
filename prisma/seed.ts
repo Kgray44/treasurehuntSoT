@@ -184,7 +184,7 @@ async function main() {
     ],
     [
       "The Cartographer’s Long Development Heading for Narrow Screens",
-      "A deliberately long development narrative tests reading rhythm without containing any final Tall Tale story. The crew follows a harmless line of blue ink between invented islands.",
+      "A deliberately long development narrative tests reading rhythm without containing any final Chronicle story. The crew follows a harmless line of blue ink between invented islands.",
       "Trace the blue practice route to the current destination.",
       "Follow the ink that bends but never crosses the small brass moon.",
       "Fresh ink gathers at the page edge.",
@@ -563,9 +563,9 @@ async function main() {
 
   // Additive migration of the generic development voyage into the Studio model.
   // The original Campaign remains untouched and playable at its established URL.
-  const priorStudioTale = await db.tallTale.findUnique({ where: { slug: "development-studio-voyage" } });
-  if (priorStudioTale) await db.tallTale.delete({ where: { id: priorStudioTale.id } });
-  const studioTale = await db.tallTale.create({
+  const priorStudioTale = await db.chronicle.findUnique({ where: { slug: "development-studio-voyage" } });
+  if (priorStudioTale) await db.chronicle.delete({ where: { id: priorStudioTale.id } });
+  const studioTale = await db.chronicle.create({
     data: {
       slug: "development-studio-voyage",
       title: "The Forever Treasure — Studio Development Voyage",
@@ -949,7 +949,7 @@ async function main() {
       isCurrent: true,
     },
   });
-  await db.tallTale.update({
+  await db.chronicle.update({
     where: { id: studioTale.id },
     data: { currentDraftRevisionId: studioDraft.id, latestPublishedVersionId: studioVersion.id },
   });

@@ -20,7 +20,7 @@ The Phase 3 Quartermaster bridge additionally requires the server-side `CAPTAIN`
 
 Player presentation history is allowlist-projected and bounded. Chapter-release prose is reconstructed only through the currently authorized `PublicChapter`; unreadable or missing chapters cause that history event to be omitted. SSE performs periodic access revalidation and sends a terminal access-revoked signal. Both Player surfaces stop reconnecting for the revoked identity; the compatibility companion additionally clears protected workspace and in-memory replay history before showing the access state. Replay cannot call mutations or create a viewed acknowledgment.
 
-## Unified Tall Tale Platform boundary
+## Unified Chronicle Platform boundary
 
 Gateway role choice is presentation only. Player APIs require a live `PlayerIdentitySession` plus resource membership; Captain and Creator APIs require the existing server-side staff session plus the matching capability and, where applicable, Captain assignment or Creator ownership. New cookie-authenticated mutations use per-session CSRF. Runtime actions made through durable Player identity require Player CSRF; the legacy opaque session-cookie flow remains isolated for compatibility. SSE and asset routes enforce resource authorization independently and recheck Player membership during long-lived streams.
 

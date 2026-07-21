@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { requireGmCapability, verifyCsrf } from "@/lib/security";
-import { apiError } from "@/tall-tale/api";
-import { revokeHelperPairing } from "@/tall-tale/progression";
+import { apiError } from "@/chronicle/api";
+import { revokeHelperPairing } from "@/chronicle/progression";
 
 export async function DELETE(_: Request, context: { params: Promise<{ pairingId: string }> }) {
   const session = await requireGmCapability("CAPTAIN");

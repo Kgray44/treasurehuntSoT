@@ -1,8 +1,7 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { playerPresentationEventTypes } from "@/domain/visibility";
 import { db } from "@/lib/db";
-import { requirePlayer } from "@/lib/security";
+import { requireLegacyCompatibilityAccess } from "@/compatibility/legacy-companion";
 
 const eventIdSchema = z.string().min(8).max(128);
 const deviceIdSchema = z.string().uuid();
@@ -25,25 +24,39 @@ const schema = z.union([
   }),
 ]);
 
-async function eligiblePlayerPresentation(campaignId: string, eventId: string) {
-  return db.progressEvent.findFirst({
+async function eligiblePlayerPresentation(sessionId: string, eventId: string) {
+  return db.taleSessionEvent.findFirst({
     where: {
       id: eventId,
-      campaignId,
-      type: { in: [...playerPresentationEventTypes] },
-      releaseAt: { lte: new Date() },
+      sessionId,
+      eventType: {
+        in: [
+          "CHAPTER_RELEASED",
+          "HINT_RELEASED",
+          "ARTIFACT_AWARDED",
+          "MAP_LOCATION_REVEALED",
+          "NARRATIVE_MESSAGE_RELEASED",
+        ],
+      },
     },
-    select: { id: true, type: true },
+    select: { id: true, eventType: true },
   });
 }
 
-async function eligiblePlayerPresentations(campaignId: string, eventIds: string[]) {
-  return db.progressEvent.findMany({
+async function eligiblePlayerPresentations(sessionId: string, eventIds: string[]) {
+  return db.taleSessionEvent.findMany({
     where: {
       id: { in: eventIds },
-      campaignId,
-      type: { in: [...playerPresentationEventTypes] },
-      releaseAt: { lte: new Date() },
+      sessionId,
+      eventType: {
+        in: [
+          "CHAPTER_RELEASED",
+          "HINT_RELEASED",
+          "ARTIFACT_AWARDED",
+          "MAP_LOCATION_REVEALED",
+          "NARRATIVE_MESSAGE_RELEASED",
+        ],
+      },
     },
     select: { id: true },
   });
@@ -51,7 +64,7 @@ async function eligiblePlayerPresentations(campaignId: string, eventIds: string[
 
 export async function GET(request: Request, context: { params: Promise<{ campaignSlug: string }> }) {
   const { campaignSlug } = await context.params;
-  const access = await requirePlayer(campaignSlug);
+  const access = await requireLegacyCompatibilityAccess(campaignSlug);
   if (!access) return NextResponse.json({ error: "Invitation required." }, { status: 401 });
   const url = new URL(request.url);
   // Batch contract: repeat the plural key, for example
@@ -69,17 +82,19 @@ export async function GET(request: Request, context: { params: Promise<{ campaig
       return NextResponse.json({ error: "Invalid acknowledgement query." }, { status: 400 });
     }
     const requestedEventIds = [...new Set(parsedBatch.data.eventIds)];
-    const eligible = await eligiblePlayerPresentations(access.campaignId, requestedEventIds);
+    const eligible = await eligiblePlayerPresentations(access.sessionId, requestedEventIds);
     const eligibleIds = new Set(eligible.map((event) => event.id));
-    const viewed = await db.viewedCeremony.findMany({
+    const viewed = await db.revealState.findMany({
       where: {
-        campaignId: access.campaignId,
-        deviceId: parsedBatch.data.deviceId,
-        eventId: { in: [...eligibleIds] },
+        playthroughId: access.sessionId,
+        contentType: "acknowledgement:event",
+        contentKey: {
+          in: [...eligibleIds].map((eventId) => `${access.playerId}:${parsedBatch.data.deviceId}:${eventId}`),
+        },
       },
-      select: { eventId: true },
+      select: { contentKey: true },
     });
-    const acknowledgedEventIds = [...new Set(viewed.map((receipt) => receipt.eventId))]
+    const acknowledgedEventIds = [...new Set(viewed.map((receipt) => receipt.contentKey.split(":").at(-1) ?? ""))]
       .filter((eventId) => eligibleIds.has(eventId))
       .sort((left, right) => left.localeCompare(right));
     return NextResponse.json({ acknowledgedEventIds });
@@ -89,12 +104,16 @@ export async function GET(request: Request, context: { params: Promise<{ campaig
     deviceId: url.searchParams.get("deviceId"),
   });
   if (!parsed.success) return NextResponse.json({ error: "Invalid acknowledgement." }, { status: 400 });
-  const event = await eligiblePlayerPresentation(access.campaignId, parsed.data.eventId);
+  const event = await eligiblePlayerPresentation(access.sessionId, parsed.data.eventId);
   if (!event) {
     return NextResponse.json({ error: "Presentation is not eligible for acknowledgement." }, { status: 409 });
   }
-  const viewed = await db.viewedCeremony.findUnique({
-    where: { campaignId_deviceId_eventId: { campaignId: access.campaignId, ...parsed.data } },
+  const viewed = await db.revealState.findFirst({
+    where: {
+      playthroughId: access.sessionId,
+      contentType: "acknowledgement:event",
+      contentKey: `${access.playerId}:${parsed.data.deviceId}:${parsed.data.eventId}`,
+    },
     select: { id: true },
   });
   return NextResponse.json({ acknowledged: Boolean(viewed) });
@@ -102,28 +121,52 @@ export async function GET(request: Request, context: { params: Promise<{ campaig
 
 export async function POST(request: Request, context: { params: Promise<{ campaignSlug: string }> }) {
   const { campaignSlug } = await context.params;
-  const access = await requirePlayer(campaignSlug);
+  const access = await requireLegacyCompatibilityAccess(campaignSlug);
   if (!access) return NextResponse.json({ error: "Invitation required." }, { status: 401 });
   const parsed = schema.safeParse(await request.json().catch(() => null));
   if (!parsed.success) return NextResponse.json({ error: "Invalid acknowledgement." }, { status: 400 });
   if ("eventId" in parsed.data) {
-    const event = await eligiblePlayerPresentation(access.campaignId, parsed.data.eventId);
+    const event = await eligiblePlayerPresentation(access.sessionId, parsed.data.eventId);
     if (!event) {
       return NextResponse.json({ error: "Presentation is not eligible for acknowledgement." }, { status: 409 });
     }
-    await db.viewedCeremony.upsert({
-      where: { campaignId_deviceId_eventId: { campaignId: access.campaignId, ...parsed.data } },
+    await db.revealState.upsert({
+      where: {
+        playthroughId_contentType_contentKey: {
+          playthroughId: access.sessionId,
+          contentType: "acknowledgement:event",
+          contentKey: `${access.playerId}:${parsed.data.deviceId}:${parsed.data.eventId}`,
+        },
+      },
       update: {},
-      create: { campaignId: access.campaignId, ...parsed.data },
+      create: {
+        playthroughId: access.sessionId,
+        contentType: "acknowledgement:event",
+        contentKey: `${access.playerId}:${parsed.data.deviceId}:${parsed.data.eventId}`,
+        status: "ACKNOWLEDGED",
+        revealedBy: access.playerId,
+      },
     });
   } else {
     const { contentType, contentKeys } = parsed.data;
     await db.$transaction(
       contentKeys.map((contentKey) =>
-        db.viewedContent.upsert({
-          where: { playerAccessId_contentType_contentKey: { playerAccessId: access.id, contentType, contentKey } },
-          update: { viewedAt: new Date() },
-          create: { playerAccessId: access.id, contentType, contentKey },
+        db.revealState.upsert({
+          where: {
+            playthroughId_contentType_contentKey: {
+              playthroughId: access.sessionId,
+              contentType: `acknowledgement:${contentType}`,
+              contentKey: `${access.playerId}:${contentKey}`,
+            },
+          },
+          update: { revealedAt: new Date() },
+          create: {
+            playthroughId: access.sessionId,
+            contentType: `acknowledgement:${contentType}`,
+            contentKey: `${access.playerId}:${contentKey}`,
+            status: "ACKNOWLEDGED",
+            revealedBy: access.playerId,
+          },
         }),
       ),
     );

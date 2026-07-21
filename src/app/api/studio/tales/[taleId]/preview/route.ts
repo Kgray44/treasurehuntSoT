@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 import { requireGmCapability, verifyCsrf } from "@/lib/security";
-import { apiError } from "@/tall-tale/api";
-import { startPreviewSession } from "@/tall-tale/progression";
-import { setTaleSessionCookie } from "@/tall-tale/session-cookie";
+import { apiError } from "@/chronicle/api";
+import { startPreviewSession } from "@/chronicle/progression";
+import { setTaleSessionCookie } from "@/chronicle/session-cookie";
 
 export async function POST(request: Request, context: { params: Promise<{ taleId: string }> }) {
   const session = await requireGmCapability("CREATE_TALES");

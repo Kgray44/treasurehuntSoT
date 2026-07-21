@@ -3,7 +3,7 @@
 - Canonical repository: `Kgray44/treasurehuntSoT`
 - Integrated branches: `feature/game-master-command-center` and `feature/cinematic-animation-rebuild`
 - Integration method: normal merge commits on `main`, preserving both source histories
-- Status: expanded Command Center, complete Player Companion, cinematic animation architecture, and Tall Tale Studio share one integrated tree
+- Status: expanded Command Center, complete Player Companion, cinematic animation architecture, and Chronicle Studio share one integrated tree
 - Command Center routes: `/quartermaster` plus `/chapters`, `/hints`, `/voyage`, `/artifacts`, `/quests`, `/journal`, `/events`, `/player-view`, `/recovery`, `/audit`, `/diagnostics`
 - Authentication: GM bcrypt/database session and CSRF; player sessions cannot call admin APIs
 - Commands: prepare/release/solve/complete chapter, prepare/release hint, reveal map, award artifact, discover/advance quest, release journal entry, pause/resume, undo, reconciliation

@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { requireGmCapability } from "@/lib/security";
-import { getTaleSessionState } from "@/tall-tale/progression";
-import { apiError } from "@/tall-tale/api";
+import { getTaleSessionState } from "@/chronicle/progression";
+import { apiError } from "@/chronicle/api";
 
 export async function GET(_: Request, context: { params: Promise<{ playthroughId: string }> }) {
   const captain = await requireGmCapability("CAPTAIN");

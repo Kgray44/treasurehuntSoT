@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { requireGmCapability } from "@/lib/security";
-import { comparePublishedVersions } from "@/tall-tale/studio-service";
-import { apiError } from "@/tall-tale/api";
+import { comparePublishedVersions } from "@/chronicle/studio-service";
+import { apiError } from "@/chronicle/api";
 
 export async function GET(request: Request, context: { params: Promise<{ taleId: string }> }) {
   if (!(await requireGmCapability("CREATE_TALES")))

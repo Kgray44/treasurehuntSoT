@@ -64,7 +64,7 @@ The product currently has no localization framework. Each new shared copy entry 
 | Voyagewright marketing site              | IN PROGRESS | Root landing page and shared product shell are in `src/components/landing` and `src/components/shell`.                                    |
 | Voyagewright Player                      | IN PROGRESS | Routes and components under `src/app/player`, `src/components/player`, and `src/components/platform`.                                     |
 | Captain's Console                        | IN PROGRESS | Routes and components under `src/app/captain`, `src/components/captain`, `src/components/platform`.                                       |
-| Voyagewright Studio                      | IN PROGRESS | Routes and components under `src/app/studio`, `src/components/studio`, and `src/tall-tale`.                                               |
+| Voyagewright Studio                      | IN PROGRESS | Routes and components under `src/app/studio`, `src/components/studio`, and `src/chronicle`.                                               |
 | Voyagewright desktop wrapper             | NOT PRESENT | No Electron, Tauri, native wrapper, shortcut, or desktop manifest is tracked.                                                             |
 | Voyagewright Connector                   | NOT PRESENT | No connector application, tray surface, or capture-permission package is tracked.                                                         |
 | Installer / updater                      | NOT PRESENT | No installer or update configuration is tracked.                                                                                          |
@@ -91,7 +91,7 @@ The product currently has no localization framework. Each new shared copy entry 
 | Area                                                                    | Decision                 | Reason                                                                                                                         |
 | ----------------------------------------------------------------------- | ------------------------ | ------------------------------------------------------------------------------------------------------------------------------ |
 | `campaignId`, `campaignSlug`, `storyBlock`, existing API route names    | Preserve internally      | Persisted data/API compatibility and low-risk migration boundary; must not appear in product-facing copy.                      |
-| `tall-tale` CSS/data identifiers and implementation file names          | Preserve internally      | Animation/style/runtime identifiers are Lanternwake-adjacent technical legacy, not product language.                           |
+| `chronicle` CSS/data identifiers and implementation file names          | Preserve internally      | Animation/style/runtime identifiers are Lanternwake-adjacent technical legacy, not product language.                           |
 | Chronicle-authored narration, dialogue, riddles, letters, and documents | Preserve                 | Chronicle authors own their voice; only accidental product-language leakage or placeholder copy is migrated.                   |
 | `/tales`, `/play`, `/tale`, `/quartermaster`, and API routes            | Preserve for this branch | Route migration requires redirects, saved-link analysis, and coordinated integration; visible labels and metadata migrate now. |
 
@@ -106,7 +106,7 @@ The product currently has no localization framework. Each new shared copy entry 
 ## Validation results
 
 - `prettier --check .`, ESLint (19 pre-existing warnings, zero errors), TypeScript `--noEmit`, and `scripts/validate-user-facing-language.ts` passed in the dedicated local validation runtime.
-- The prohibited-language validator scans `src/app`, `src/components`, `src/platform`, and `src/tall-tale`; it excludes technical identifiers and requires narrow, owned, review-dated exceptions. The approved exception list is currently empty.
+- The prohibited-language validator scans `src/app`, `src/components`, `src/platform`, and `src/chronicle`; it excludes technical identifiers and requires narrow, owned, review-dated exceptions. The approved exception list is currently empty.
 - The language-owned focused suites passed. The full non-PlayerExperience unit run passed **84 files / 790 tests**. The production build passed.
 - `scripts/test-all.ps1 -SkipBrowserInstall` was attempted in an isolated database/runtime on ports 3100 and 3200. It reached formatting, lint, typecheck, and language validation, then exposed the existing `src/components/player/PlayerExperience.test.tsx` progression-scene failure (109 tests, 105 failing). This path and its test have no language-branch semantic diff from the starting Lanternwake baseline, so it remains Lanternwake-owned and is not modified here.
 - Browser acceptance, production performance, and restart proof remain integration-gate work because the harness stops at that existing Lanternwake failure. No server or database was shared with a Lanternwake worktree.

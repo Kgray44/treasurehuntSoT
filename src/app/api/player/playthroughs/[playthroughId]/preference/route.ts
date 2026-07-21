@@ -3,7 +3,7 @@ import { z } from "zod";
 import { requirePlayerIdentity, verifyPlayerCsrf } from "@/platform/auth";
 import { writePlatformAudit } from "@/platform/audit";
 import { updatePlayerPlaythroughPreference } from "@/platform/libraries";
-import { apiError } from "@/tall-tale/api";
+import { apiError } from "@/chronicle/api";
 
 const schema = z.object({ action: z.enum(["pin", "unpin", "hide", "show"]) });
 

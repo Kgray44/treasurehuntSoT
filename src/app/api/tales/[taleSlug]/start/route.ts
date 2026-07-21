@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
-import { apiError } from "@/tall-tale/api";
-import { startTaleSession } from "@/tall-tale/progression";
-import { setTaleSessionCookie } from "@/tall-tale/session-cookie";
+import { apiError } from "@/chronicle/api";
+import { startTaleSession } from "@/chronicle/progression";
+import { setTaleSessionCookie } from "@/chronicle/session-cookie";
 
 export async function POST(request: Request, context: { params: Promise<{ taleSlug: string }> }) {
   try {

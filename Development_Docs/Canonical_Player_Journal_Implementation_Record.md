@@ -1,21 +1,21 @@
-# Canonical Player Tall Tale Journal implementation record
+# Canonical Player Chronicle Journal implementation record
 
 Status: implementation and release-gate validation complete on 2026-07-18  
 Repository baseline: `main` at `0192a16`, synchronized with `origin/main` (`0` behind, `0` ahead) before edits  
-Governing rule: **The Player Library is the place where Tall Tales are browsed. The immersive journal is the place where Tall Tales are played.**
+Governing rule: **The Player Library is the place where Chronicles are browsed. The immersive journal is the place where Chronicles are played.**
 
 ## Investigation findings
 
 The repository contains two Player storytelling implementations:
 
 - The original campaign companion at `/tale/[campaignSlug]` already owns the reusable immersive journal work. Its implementation is centered in `src/components/player/workspace/JournalWorkspace.tsx`, `src/components/animation/PageFlipBook.tsx`, `src/animation/journal/page-model.ts`, `src/animation/journal/opening-machine.ts`, and the journal portions of `src/styles/player.css`. It includes the closed cover, attached latch, wax-seal opening, worn left/right page geometry, center binding, page stacks, StPageFlip turns, chapter tabs, reduced-motion semantic reader, keyboard page controls, and responsive single-page behavior.
-- Published Tall Tale playthroughs currently enter `/play/[taleSlug]/session/[sessionId]` and render `PlayerRuntime.tsx`. That runtime receives only the current block and presents it as one centered `runtime-block` card. Completed platform playthroughs instead enter `/player/playthroughs/[playthroughId]/archive` and render `VoyageArchive.tsx` as a separate metadata-and-list screen.
+- Published Chronicle playthroughs currently enter `/play/[taleSlug]/session/[sessionId]` and render `PlayerRuntime.tsx`. That runtime receives only the current block and presents it as one centered `runtime-block` card. Completed platform playthroughs instead enter `/player/playthroughs/[playthroughId]/archive` and render `VoyageArchive.tsx` as a separate metadata-and-list screen.
 
 The canonical Player Library already exists at `/player/library`. Its cards are correctly grouped by invitation, waiting, active/paused, completed, replay, and closed states. The accepted-invitation waiting room at `/player/playthroughs/[playthroughId]` is also correctly separated from active play.
 
 ## Existing data and synchronization
 
-`TallTale`, `TaleDraft`, chapters, story blocks, and immutable `PublishedTaleVersion.contentSnapshot` already form one Creator/runtime content model. `TaleSession` is the version-pinned playthrough aggregate. It stores lifecycle state, current chapter/block, ordered event sequence, variables, inventory, timestamps, and completion. `RevealState` records disclosed blocks and assets; `TaleSessionEvent` is ordered, durable, idempotent, and replayed over the existing authenticated SSE endpoint. Captain controls and helper verification both call the same progression engine.
+`Chronicle`, `TaleDraft`, chapters, story blocks, and immutable `PublishedTaleVersion.contentSnapshot` already form one Creator/runtime content model. `TaleSession` is the version-pinned playthrough aggregate. It stores lifecycle state, current chapter/block, ordered event sequence, variables, inventory, timestamps, and completion. `RevealState` records disclosed blocks and assets; `TaleSessionEvent` is ordered, durable, idempotent, and replayed over the existing authenticated SSE endpoint. Captain controls and helper verification both call the same progression engine.
 
 The current Player session API safely authenticates both durable Player memberships and legacy opaque runtime cookies, but it projects only the current block. Its block shape also includes more authoring structure than an immersive Player renderer requires. The archive API correctly rebuilds released history from the session's pinned published version, but it uses a competing visual surface.
 
@@ -49,7 +49,7 @@ Canonical route plan:
 
 The implementation adds a typed journal presentation contract over the existing canonical `PublishedBlock` data rather than copying Creator content. A Player-safe journal projection exposes only revealed blocks, safe presentation metadata, current/complete progress, authorized assets, and exact edition metadata. Logic-only blocks remain durable in the event stream but do not become visible pages.
 
-One reusable physical book frame now serves both the original campaign journal and the Tall Tale runtime. A Tall Tale page model converts released blocks into stable page IDs and explicit story, riddle, map/location, artifact, decision, objective/waiting, message, cinematic/media, and completion page modes. Active and historical sessions use the same renderer; historical mode disables mutations and continues reading from the pinned immutable version.
+One reusable physical book frame now serves both the original campaign journal and the Chronicle runtime. A Chronicle page model converts released blocks into stable page IDs and explicit story, riddle, map/location, artifact, decision, objective/waiting, message, cinematic/media, and completion page modes. Active and historical sessions use the same renderer; historical mode disables mutations and continues reading from the pinned immutable version.
 
 Canonical progress remains in `TaleSession`, `RevealState`, verification records, inventory, variables, and ordered events. Per-Player reading position and journal UI preferences are persisted separately through the existing Player preference record, so browsing an older page never mutates the current block. Legacy cookie sessions use a local reading-state fallback only and do not change canonical progress.
 
@@ -83,12 +83,12 @@ The reusable book work originated in:
 ### 4. Components created
 
 - `PhysicalJournalBook.tsx`: shared physical cover, binding, page stacks, latch, seal, tabs, and PageFlipBook frame.
-- `TallTaleJournalSession.tsx`: canonical live/resume/historical shell, opening phases, SSE reconciliation, persistence, actions, drawers, announcements, and recovery UI.
-- `TallTaleJournalPage.tsx`: parchment-native renderer for the ten Player journal modes.
+- `ChronicleJournalSession.tsx`: canonical live/resume/historical shell, opening phases, SSE reconciliation, persistence, actions, drawers, announcements, and recovery UI.
+- `ChronicleJournalPage.tsx`: parchment-native renderer for the ten Player journal modes.
 
 ### 5. Components reused
 
-`PageFlipBook`, its semantic reduced-motion fallback, the existing opening-state vocabulary, the campaign journal's physical CSS/material language, the Studio block registry/published snapshot, the Tall Tale progression engine, the Player Library/lobby flow, and the authenticated SSE route remain authoritative and shared.
+`PageFlipBook`, its semantic reduced-motion fallback, the existing opening-state vocabulary, the campaign journal's physical CSS/material language, the Studio block registry/published snapshot, the Chronicle progression engine, the Player Library/lobby flow, and the authenticated SSE route remain authoritative and shared.
 
 ### 6. Components retired
 
@@ -96,7 +96,7 @@ The unused `src/components/tales/PlayerRuntime.tsx` centered-card runtime and `s
 
 ### 7. Database changes
 
-No schema or migration was needed. Reading position and UI preferences use the existing `PlayerProfile.preferences` JSON without modifying `TaleSession`. Canonical progress continues to use the existing platform migration `20260718020000_tall_tale_platform` (MySQL `0004_tall_tale_platform`); this task adds no migration name.
+No schema or migration was needed. Reading position and UI preferences use the existing `PlayerProfile.preferences` JSON without modifying `TaleSession`. Canonical progress continues to use the existing platform migration `20260718020000_chronicle_platform` (MySQL `0004_chronicle_platform`); this task adds no migration name.
 
 ### 8. API changes
 
@@ -112,7 +112,7 @@ The contract covers story, riddle, map, artifact, decision, objective, location 
 
 ### 11. Captain synchronization
 
-Captain and helper actions still enter `src/tall-tale/progression.ts`. Persisted state/events arrive over the existing SSE endpoint. When the Player is following live progress, a new current block turns the physical book; when reading history, the page is preserved and a live-content notice plus Return to Current Objective action appears. Reconnect starts after the last processed sequence and refreshes canonical state.
+Captain and helper actions still enter `src/chronicle/progression.ts`. Persisted state/events arrive over the existing SSE endpoint. When the Player is following live progress, a new current block turns the physical book; when reading history, the page is preserved and a live-content notice plus Return to Current Objective action appears. Reconnect starts after the last processed sequence and refreshes canonical state.
 
 ### 12. Historical mode
 
@@ -128,10 +128,10 @@ The journal provides semantic headings/regions, keyboard page navigation, visibl
 
 ### 15. Tests added or expanded
 
-- `src/tall-tale/journal-contract.test.ts`: all visible registry mappings, recursive secret filtering, released hints/choices, presentation normalization.
-- `src/tall-tale/journal-page-model.test.ts`: stable leaves/parity/spreads, separate reading restoration, historical projection.
+- `src/chronicle/journal-contract.test.ts`: all visible registry mappings, recursive secret filtering, released hints/choices, presentation normalization.
+- `src/chronicle/journal-page-model.test.ts`: stable leaves/parity/spreads, separate reading restoration, historical projection.
 - `src/components/animation/PageFlipBook.test.tsx`: same-ID revision refresh, locked/queued turns, left/right geometry.
-- `tests/e2e/tall-tale-platform.spec.ts`: canonical journal entry, Player-safe projection, separate reading persistence, completed library route, read-only historical edition/checksum.
+- `tests/e2e/chronicle-platform.spec.ts`: canonical journal entry, Player-safe projection, separate reading persistence, completed library route, read-only historical edition/checksum.
 
 ### 16-18. Tests, build, and lint results
 
@@ -140,7 +140,7 @@ Commands run:
 ```powershell
 npx prettier --write <task-scoped files>
 npx eslint <task-scoped files>
-npx vitest run src/tall-tale/journal-contract.test.ts src/tall-tale/journal-page-model.test.ts src/components/animation/PageFlipBook.test.tsx --reporter=verbose
+npx vitest run src/chronicle/journal-contract.test.ts src/chronicle/journal-page-model.test.ts src/components/animation/PageFlipBook.test.tsx --reporter=verbose
 npm run lint
 npm run typecheck
 npm run validate
@@ -168,12 +168,12 @@ Created:
 - `src/app/api/player/playthroughs/[playthroughId]/journal-state/route.ts`
 - `src/app/player/playthroughs/[playthroughId]/journal/page.tsx`
 - `src/components/player/journal/PhysicalJournalBook.tsx`
-- `src/components/player/journal/TallTaleJournalPage.tsx`
-- `src/components/player/journal/TallTaleJournalSession.tsx`
-- `src/tall-tale/journal-contract.ts`
-- `src/tall-tale/journal-contract.test.ts`
-- `src/tall-tale/journal-page-model.ts`
-- `src/tall-tale/journal-page-model.test.ts`
+- `src/components/player/journal/ChronicleJournalPage.tsx`
+- `src/components/player/journal/ChronicleJournalSession.tsx`
+- `src/chronicle/journal-contract.ts`
+- `src/chronicle/journal-contract.test.ts`
+- `src/chronicle/journal-page-model.ts`
+- `src/chronicle/journal-page-model.test.ts`
 
 Modified:
 
@@ -181,7 +181,7 @@ Modified:
 - `docs/future-vision-helper.md`
 - `docs/journal-system.md`
 - `docs/responsive-behavior.md`
-- `docs/tall-tale-platform.md`
+- `docs/chronicle-platform.md`
 - `docs/testing.md`
 - `src/app/play/[taleSlug]/session/[sessionId]/page.tsx`
 - `src/app/player/playthroughs/[playthroughId]/archive/page.tsx`
@@ -191,10 +191,10 @@ Modified:
 - `src/components/player/workspace/JournalWorkspace.tsx`
 - `src/components/studio/TaleEditor.tsx`
 - `src/platform/libraries.ts`
-- `src/styles/tall-tale.css`
-- `src/tall-tale/progression.ts`
-- `src/tall-tale/studio-service.ts`
-- `tests/e2e/tall-tale-platform.spec.ts`
+- `src/styles/chronicle.css`
+- `src/chronicle/progression.ts`
+- `src/chronicle/studio-service.ts`
+- `tests/e2e/chronicle-platform.spec.ts`
 
 Deleted:
 

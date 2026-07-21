@@ -2,7 +2,7 @@
 
 - The repository is public. Final story, riddles, personal material, surprise content, production credentials, and private media remain intentionally blocked.
 - SSE fan-out and interactive rate-limit counters are process-local. Database replay is durable, but multi-instance production needs shared pub/sub and rate limiting such as Redis.
-- Tall Tale media uses one local filesystem root. Multi-instance production needs shared object storage; antivirus scanning, resumable large uploads, and asynchronous processing remain hardening work.
+- Chronicle media uses one local filesystem root. Multi-instance production needs shared object storage; antivirus scanning, resumable large uploads, and asynchronous processing remain hardening work.
 - The additive MySQL migrations are maintained in parity with SQLite but still require a live MySQL 8 integration run before production rollout.
 - The full shared-database mutation workflow runs once in Chromium. Privacy, access gates, the role gateway, accessibility, reduced motion, and mobile behavior also run as read-only WebKit coverage.
 - Captain scheduling persists timezone-aware future state but has no background launch worker; the Captain must explicitly launch a ready or scheduled voyage.

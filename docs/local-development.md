@@ -24,7 +24,7 @@ Run `npm run dev:stop` before switching branches or replacing the runtime. Shutd
 - GM URL: `http://127.0.0.1:3000/quartermaster`
 - GM username/password: `kato` / `development-captain-only`
 - Animation showcase: `http://127.0.0.1:3000/dev/animations` (development only)
-- Tall Tale catalog: `http://127.0.0.1:3000/tales`
+- Chronicle catalog: `http://127.0.0.1:3000/tales`
 - Creator Studio: `http://127.0.0.1:3000/studio/library`
 - Captain command/library: `http://127.0.0.1:3000/captain/library`
 
@@ -55,11 +55,11 @@ Open `/dev/animations` or use the development-only `TEST ANIMATIONS` button. The
 
 Use `npm run assets:validate` after any asset-contract change. Keep all runtime files and fallbacks under `public`, add provenance to `docs/asset-licenses.md`, and never use a remote CDN placeholder. See `docs/animation/showcase.md` for the manual pass and `docs/animation/` for scene/asset extension contracts.
 
-## Tall Tale Studio development
+## Chronicle Studio development
 
-The seed creates `development-studio-voyage`, its editable draft, and published version 1.0 without replacing the original campaign seed. Sign in through Quartermaster and use Studio to edit it. Asset originals and generated derivatives live under ignored `.data/tall-tale-assets` by default. Override that location with an absolute `TALL_TALE_ASSET_ROOT`; set the upload ceiling with `TALL_TALE_MAX_UPLOAD_MB`.
+The seed creates `development-studio-voyage`, its editable draft, and published version 1.0 without replacing the original campaign seed. Sign in through Quartermaster and use Studio to edit it. Asset originals and generated derivatives live under ignored `.data/chronicle-assets` by default. Override that location with an absolute `CHRONICLE_ASSET_ROOT`; set the upload ceiling with `CHRONICLE_MAX_UPLOAD_MB`.
 
-Draft preview sessions are explicitly marked and may read draft assets only through an authenticated Creator session. Real Player playthroughs normally begin with a Captain invitation. The development catalog compatibility route remains available, but `/player/*`, `/captain/*`, and `/studio/*` are the canonical role workspaces. Every real playthrough pins itself to an immutable published version. Normal `--ensure` startup also adds missing platform roles/Player credentials and backfills memberships/reveal history for legacy Tall Tale sessions without resetting progress.
+Draft preview sessions are explicitly marked and may read draft assets only through an authenticated Creator session. Real Player playthroughs normally begin with a Captain invitation. The development catalog compatibility route remains available, but `/player/*`, `/captain/*`, and `/studio/*` are the canonical role workspaces. Every real playthrough pins itself to an immutable published version. Normal `--ensure` startup also adds missing platform roles/Player credentials and backfills memberships/reveal history for legacy Chronicle sessions without resetting progress.
 
 ## Clean-clone continuation
 

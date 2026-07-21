@@ -4,7 +4,7 @@
 import { useState } from "react";
 import { errorCopy } from "@/language/error-copy";
 import { playerCopy } from "@/language/player-copy";
-import type { JsonObject } from "@/tall-tale/types";
+import type { JsonObject } from "@/chronicle/types";
 
 type PlayerBlock = { id: string; blockType: string; title: string; configuration: JsonObject };
 type PlayerAsset = { id: string; displayName: string; url: string };

@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { db } from "@/lib/db";
-import { requirePlayer } from "@/lib/security";
+import { requireLegacyCompatibilityAccess } from "@/compatibility/legacy-companion";
 
 const preferences = z.object({
   muted: z.boolean(),
@@ -16,27 +16,41 @@ const preferences = z.object({
 });
 
 async function accessFor(campaignSlug: string) {
-  return requirePlayer(campaignSlug);
+  return requireLegacyCompatibilityAccess(campaignSlug);
+}
+
+const defaults = {
+  muted: false,
+  masterVolume: 0.45,
+  ambientVolume: 0.25,
+  effectsVolume: 0.55,
+  motionMode: "SYSTEM" as const,
+  textScale: 1,
+  ambientEffects: true,
+  textureIntensity: 1,
+  fullscreenPreferred: false,
+};
+
+function legacyPreferences(raw: string) {
+  try {
+    const parsed: unknown = JSON.parse(raw);
+    if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) return defaults;
+    const value = (parsed as Record<string, unknown>).legacyCompanion;
+    return value && typeof value === "object" && !Array.isArray(value) ? { ...defaults, ...value } : defaults;
+  } catch {
+    return defaults;
+  }
 }
 
 export async function GET(_: Request, context: { params: Promise<{ campaignSlug: string }> }) {
   const { campaignSlug } = await context.params;
   const access = await accessFor(campaignSlug);
   if (!access) return NextResponse.json({ error: "Invitation required." }, { status: 401 });
-  const value = await db.audioPreference.findUnique({ where: { playerAccessId: access.id } });
-  return NextResponse.json(
-    value ?? {
-      muted: false,
-      masterVolume: 0.45,
-      ambientVolume: 0.25,
-      effectsVolume: 0.55,
-      motionMode: "SYSTEM",
-      textScale: 1,
-      ambientEffects: true,
-      textureIntensity: 1,
-      fullscreenPreferred: false,
-    },
-  );
+  const player = await db.playerProfile.findUniqueOrThrow({
+    where: { id: access.playerId },
+    select: { preferences: true },
+  });
+  return NextResponse.json(legacyPreferences(player.preferences));
 }
 
 export async function PUT(request: Request, context: { params: Promise<{ campaignSlug: string }> }) {
@@ -46,10 +60,19 @@ export async function PUT(request: Request, context: { params: Promise<{ campaig
   const parsed = preferences.safeParse(await request.json().catch(() => null));
   if (!parsed.success)
     return NextResponse.json({ error: "Those companion preferences are not valid." }, { status: 400 });
-  const value = await db.audioPreference.upsert({
-    where: { playerAccessId: access.id },
-    update: parsed.data,
-    create: { playerAccessId: access.id, ...parsed.data },
+  const player = await db.playerProfile.findUniqueOrThrow({
+    where: { id: access.playerId },
+    select: { preferences: true },
   });
-  return NextResponse.json(value);
+  let allPreferences: Record<string, unknown> = {};
+  try {
+    const parsedPreferences: unknown = JSON.parse(player.preferences);
+    if (parsedPreferences && typeof parsedPreferences === "object" && !Array.isArray(parsedPreferences))
+      allPreferences = parsedPreferences as Record<string, unknown>;
+  } catch {}
+  await db.playerProfile.update({
+    where: { id: access.playerId },
+    data: { preferences: JSON.stringify({ ...allPreferences, legacyCompanion: parsed.data }) },
+  });
+  return NextResponse.json(parsed.data);
 }

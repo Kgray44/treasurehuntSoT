@@ -36,7 +36,7 @@ import { useMotionMode } from "@/animation/motion/useMotionMode";
 import { platformMotionEasing, resolvePlatformMotionToken } from "@/animation/platform/motion-tokens";
 import { PublishedBlockView } from "@/components/tales/PublishedBlockView";
 import { studioCopy } from "@/language/studio-copy";
-import type { InspectorField, JsonObject } from "@/tall-tale/types";
+import type { InspectorField, JsonObject } from "@/chronicle/types";
 
 type Block = {
   id: string;
@@ -607,7 +607,7 @@ export function TaleEditor({
   function drop(event: React.DragEvent, chapterIndex: number, blockIndex: number) {
     event.preventDefault();
     try {
-      const payload = JSON.parse(event.dataTransfer.getData("application/x-tall-tale")) as {
+      const payload = JSON.parse(event.dataTransfer.getData("application/x-chronicle")) as {
         kind: string;
         type?: string;
         id?: string;
@@ -2253,7 +2253,7 @@ export function TaleEditor({
                 onDragStart={(event) => {
                   event.dataTransfer.effectAllowed = "copy";
                   event.dataTransfer.setData(
-                    "application/x-tall-tale-asset",
+                    "application/x-chronicle-asset",
                     JSON.stringify({ id: asset.id, mediaType: asset.mediaType }),
                   );
                 }}
@@ -2437,12 +2437,12 @@ function Field({
       <label
         className="asset-field-drop"
         onDragOver={(event) => {
-          if (event.dataTransfer.types.includes("application/x-tall-tale-asset")) event.preventDefault();
+          if (event.dataTransfer.types.includes("application/x-chronicle-asset")) event.preventDefault();
         }}
         onDrop={(event) => {
           event.preventDefault();
           try {
-            const dropped = JSON.parse(event.dataTransfer.getData("application/x-tall-tale-asset")) as {
+            const dropped = JSON.parse(event.dataTransfer.getData("application/x-chronicle-asset")) as {
               id?: string;
               mediaType?: string;
             };

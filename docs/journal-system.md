@@ -2,7 +2,7 @@
 
 ## Governing Player rule
 
-**The Player Library is the place where Tall Tales are browsed. The immersive journal is the place where Tall Tales are played.** Cards remain selectors in `/player/library`; they do not become the live story surface.
+**The Player Library is the place where Chronicles are browsed. The immersive journal is the place where Chronicles are played.** Cards remain selectors in `/player/library`; they do not become the live story surface.
 
 ### Phase 3 opening and PageFlip readiness
 
@@ -12,7 +12,7 @@ Journal opening profiles are first/full, returning/abbreviated, completed/archiv
 
 Page turns emit `turn-start`, `turn-commit`, `turn-settle`, `turn-cancel`, and `turn-failed` with book/mount identity and current boundary generation. A queued turn rebases against the current page/generation when dispatched, while a same-page request cancels as a no-op. The fallback abandons the failed PageFlip runtime and renders the current semantic page without assigning curl ownership elsewhere. Session-identity changes reset session-scoped opening, cursor, page, and callback state; access revocation is terminal for that identity.
 
-Published playthroughs use one physical journal renderer at `/player/playthroughs/[playthroughId]/journal`. The legacy token route renders that same component, and the old archive route redirects to it. Active, paused, resumed, and completed playthroughs therefore share one visual and interaction model. The original campaign journal and the published Tall Tale journal also share `PhysicalJournalBook` and `PageFlipBook`, preserving the cover, attached latch, seal, binding, left/right page geometry, page stacks, page curl, reduced-motion reader, and responsive transformations.
+Published playthroughs use one physical journal renderer at `/player/playthroughs/[playthroughId]/journal`. The legacy token route renders that same component, and the old archive route redirects to it. Active, paused, resumed, and completed playthroughs therefore share one visual and interaction model. The original campaign journal and the published Chronicle journal also share `PhysicalJournalBook` and `PageFlipBook`, preserving the cover, attached latch, seal, binding, left/right page geometry, page stacks, page curl, reduced-motion reader, and responsive transformations.
 
 `journal-contract.ts` is the Player presentation boundary. Its typed modes are story, riddle, map, artifact, decision, objective, location verification, message, cinematic, and chapter complete. A small optional presentation object selects spread mode, page-turn behavior, and paper/ink treatment without duplicating story content. The recursive Player projection removes answer keys, solutions, Captain/Creator notes, condition expressions, future branches, private consequences, and unreleased hints before the renderer sees them. Logic-only condition and variable blocks remain in canonical progression but do not become readable leaves.
 
@@ -20,7 +20,7 @@ Published playthroughs use one physical journal renderer at `/player/playthrough
 
 The existing authenticated SSE endpoint is the single live transport. Reconnect resumes after the last processed sequence, duplicate or stale events only refresh canonical state, and a newly released block turns the physical journal only while the reader is following live progress. Otherwise the journal announces new content and exposes Return to Current Objective. Captain-driven changes and helper verification enter through the progression engine, never through a second journal state machine.
 
-The canonical durable journal continues to use its own `TallTaleJournalSession`; the compatibility `/tale/[campaignSlug]` progression host is not implied to exist there. Shared opening, PageFlip lifecycle, focus, fallback, and access-revocation behavior are reused without creating a second business-state engine.
+The canonical durable journal continues to use its own `ChronicleJournalSession`; the compatibility `/tale/[campaignSlug]` progression host is not implied to exist there. Shared opening, PageFlip lifecycle, focus, fallback, and access-revocation behavior are reused without creating a second business-state engine.
 
 The book is dominant on desktop, becomes a compact two-page layout at medium widths, and becomes one readable parchment sheet with bottom drawers and a persistent objective control on narrow or short-landscape screens. Page-turn controls, chapter tabs, drawers, actions, text scaling, Escape, Arrow/Page keys, live announcements, focus-visible states, and reduced-motion behavior remain keyboard and assistive-technology accessible.
 

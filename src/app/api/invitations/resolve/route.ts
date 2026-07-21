@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { readPendingInvitationCsrf, readPendingInvitationToken } from "@/platform/auth";
 import { resolveInvitation } from "@/platform/invitations";
-import { apiError } from "@/tall-tale/api";
+import { apiError } from "@/chronicle/api";
 
 export async function GET() {
   const credential = await readPendingInvitationToken();

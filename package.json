@@ -18,6 +18,7 @@
     "language:validate": "tsx scripts/validate-user-facing-language.ts",
     "test:e2e": "playwright test",
     "assets:validate": "tsx scripts/validate-animation-assets.ts",
+    "architecture:validate": "tsx scripts/validate-project-one-voyage.ts",
     "validate": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/test-all.ps1",
     "dev:full": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/start-dev.ps1",
     "dev:stop": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/stop-dev.ps1",
@@ -30,8 +31,12 @@
     "db:migrate:mysql:init": "prisma db execute --file prisma/mysql-migrations/0001_init/migration.sql --schema prisma/schema.prisma",
     "db:migrate:mysql:companion": "prisma db execute --file prisma/mysql-migrations/0002_player_companion_shell/migration.sql --schema prisma/schema.prisma",
     "db:migrate:mysql:command-center": "prisma db execute --file prisma/mysql-migrations/0002_game_master_command_center/migration.sql --schema prisma/schema.prisma",
-    "db:migrate:mysql:studio": "prisma db execute --file prisma/mysql-migrations/0003_tall_tale_studio_phase1/migration.sql --schema prisma/schema.prisma",
-    "db:migrate:mysql:platform": "prisma db execute --file prisma/mysql-migrations/0004_tall_tale_platform/migration.sql --schema prisma/schema.prisma"
+    "db:migrate:mysql:studio": "prisma db execute --file prisma/mysql-migrations/0003_chronicle_studio_phase1/migration.sql --schema prisma/schema.prisma",
+    "db:migrate:mysql:platform": "prisma db execute --file prisma/mysql-migrations/0004_chronicle_platform/migration.sql --schema prisma/schema.prisma",
+    "db:migrate:mysql:project-one-voyage": "prisma db execute --file prisma/mysql-migrations/0005_project_one_voyage/migration.sql --schema prisma/schema.prisma",
+    "migrate:legacy-companion": "tsx scripts/migrate-legacy-companion.ts",
+    "migrate:legacy-companion:verify": "tsx scripts/migrate-legacy-companion.ts --verify",
+    "parity:legacy-shadow": "tsx scripts/verify-legacy-shadow-parity.ts"
   },
   "dependencies": {
     "@dnd-kit/core": "6.3.1",

@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { apiError } from "@/tall-tale/api";
-import { submitHelperVerification } from "@/tall-tale/progression";
-import type { VerificationSubmission } from "@/tall-tale/types";
+import { apiError } from "@/chronicle/api";
+import { submitHelperVerification } from "@/chronicle/progression";
+import type { VerificationSubmission } from "@/chronicle/types";
 import { createHash } from "node:crypto";
 import { consumeRateLimit, rateLimitHeaders } from "@/lib/rate-limit";
 

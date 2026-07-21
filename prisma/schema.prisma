@@ -421,7 +421,7 @@ model LoginAttempt {
   @@index([fingerprint, createdAt])
 }
 
-model TallTale {
+model Chronicle {
   id                       String                 @id @default(cuid())
   slug                     String                 @unique
   title                    String
@@ -452,6 +452,7 @@ model TallTale {
   collections              TaleAssetCollection[]
   locations                TaleLocation[]
   storyArtifacts           TaleArtifact[]
+  sideQuests               TaleSideQuest[]
   sessions                 TaleSession[]
 
   @@index([status, visibility, sortOrder])
@@ -470,7 +471,7 @@ model TaleDraft {
   lastValidatedAt           DateTime?
   createdAt                 DateTime      @default(now())
   updatedAt                 DateTime      @updatedAt
-  tale                      TallTale      @relation(fields: [taleId], references: [id], onDelete: Cascade)
+  tale                      Chronicle      @relation(fields: [taleId], references: [id], onDelete: Cascade)
   chapters                  TaleChapter[]
 
   @@unique([taleId, revisionNumber])
@@ -551,7 +552,7 @@ model PublishedTaleVersion {
   schemaVersion   Int           @default(1)
   checksum        String
   isCurrent       Boolean       @default(true)
-  tale            TallTale      @relation(fields: [taleId], references: [id], onDelete: Cascade)
+  tale            Chronicle      @relation(fields: [taleId], references: [id], onDelete: Cascade)
   sessions        TaleSession[]
 
   @@unique([taleId, versionNumber])
@@ -576,7 +577,7 @@ model TaleAsset {
   createdAt        DateTime                  @default(now())
   updatedAt        DateTime                  @updatedAt
   deletedAt        DateTime?
-  tale             TallTale                  @relation(fields: [taleId], references: [id], onDelete: Cascade)
+  tale             Chronicle                  @relation(fields: [taleId], references: [id], onDelete: Cascade)
   variants         TaleAssetVariant[]
   tags             TaleAssetTagLink[]
   roles            TaleAssetRole[]
@@ -644,7 +645,7 @@ model TaleAssetCollection {
   artifactId     String?
   createdAt      DateTime                  @default(now())
   updatedAt      DateTime                  @updatedAt
-  tale           TallTale                  @relation(fields: [taleId], references: [id], onDelete: Cascade)
+  tale           Chronicle                  @relation(fields: [taleId], references: [id], onDelete: Cascade)
   items          TaleAssetCollectionItem[]
 
   @@unique([taleId, name])
@@ -677,14 +678,23 @@ model TaleLocation {
   mapAssetId              String?
   displayAssetId          String?
   referenceCollectionId   String?
+  legacyKey               String?
+  locationType            String    @default("STORY")
+  safeLabel               String?
+  exactness               String    @default("APPROXIMATE")
+  mapX                    Float?
+  mapY                    Float?
+  mobileMapX              Float?
+  mobileMapY              Float?
   verificationProfile     String    @default("{}") @db.LongText
   orderIndex              Int       @default(0)
   archivedAt              DateTime?
   createdAt               DateTime  @default(now())
   updatedAt               DateTime  @updatedAt
-  tale                    TallTale  @relation(fields: [taleId], references: [id], onDelete: Cascade)
+  tale                    Chronicle  @relation(fields: [taleId], references: [id], onDelete: Cascade)
 
   @@unique([taleId, slug])
+  @@unique([taleId, legacyKey])
   @@index([taleId, orderIndex])
 }
 
@@ -700,14 +710,58 @@ model TaleArtifact {
   modelAssetId            String?
   inventoryCategory       String    @default("RELIC")
   collectionGroup         String?
+  legacyKey               String?
+  safeName                String?
+  silhouetteLabel         String?
+  displayX                Float?
+  displayY                Float?
+  assemblyPosition        String?
+  connectedArtifactKey    String?
+  sourceChapterOrdinal    Int?
   sortOrder               Int       @default(0)
   persistentAfterUnlock   Boolean   @default(true)
   archivedAt              DateTime?
   createdAt               DateTime  @default(now())
   updatedAt               DateTime  @updatedAt
-  tale                    TallTale  @relation(fields: [taleId], references: [id], onDelete: Cascade)
+  tale                    Chronicle  @relation(fields: [taleId], references: [id], onDelete: Cascade)
 
   @@index([taleId, sortOrder])
+  @@unique([taleId, legacyKey])
+}
+
+/// Typed canonical extension for optional Companion branches. Definitions are
+/// immutable in a Published Chronicle Version; live completion lives in the
+/// Chronicle Session variables and events.
+model TaleSideQuest {
+  id                   String                   @id @default(cuid())
+  taleId               String
+  legacyKey            String
+  title                String
+  safeTeaser           String?
+  description          String?                  @db.Text
+  rewardType           String?
+  rewardLabel          String?
+  completionSummary    String?                  @db.Text
+  sourceChapterOrdinal Int?
+  mapLocationKey       String?
+  artifactKey          String?
+  createdAt            DateTime                 @default(now())
+  updatedAt            DateTime                 @updatedAt
+  tale                 Chronicle                @relation(fields: [taleId], references: [id], onDelete: Cascade)
+  objectives           TaleSideQuestObjective[]
+
+  @@unique([taleId, legacyKey])
+  @@index([taleId, sourceChapterOrdinal])
+}
+
+model TaleSideQuestObjective {
+  id          String        @id @default(cuid())
+  sideQuestId String
+  ordinal     Int
+  body        String        @db.Text
+  sideQuest   TaleSideQuest @relation(fields: [sideQuestId], references: [id], onDelete: Cascade)
+
+  @@unique([sideQuestId, ordinal])
 }
 
 model TaleSession {
@@ -742,7 +796,7 @@ model TaleSession {
   completedAt          DateTime?
   expiresAt            DateTime?
   lastHeartbeatAt      DateTime?
-  tale                 TallTale                  @relation(fields: [taleId], references: [id], onDelete: Cascade)
+  tale                 Chronicle                  @relation(fields: [taleId], references: [id], onDelete: Cascade)
   version              PublishedTaleVersion?     @relation(fields: [publishedVersionId], references: [id])
   events               TaleSessionEvent[]
   verificationRequests TaleVerificationRequest[]
@@ -973,4 +1027,38 @@ model TaleHelperPairing {
   session    TaleSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
 
   @@index([sessionId, status])
+}
+
+/// Immutable, rerunnable provenance for a legacy Companion record imported
+/// into the Chronicle domain. This is the only legacy-to-canonical ID map.
+model LegacyEntityReference {
+  id               String   @id @default(cuid())
+  sourceDomain     String
+  sourceModel      String
+  sourceId         String
+  canonicalModel   String
+  canonicalId      String
+  migrationVersion String
+  sourceChecksum   String
+  migratedAt       DateTime @default(now())
+  verifiedAt       DateTime?
+
+  @@unique([sourceDomain, sourceModel, sourceId, canonicalModel, migrationVersion])
+  @@index([canonicalModel, canonicalId])
+  @@index([sourceDomain, sourceModel, sourceId])
+}
+
+/// Records each migration attempt without retaining private source payloads.
+model LegacyMigrationRun {
+  id               String   @id @default(cuid())
+  migrationVersion String
+  mode             String
+  status           String
+  sourceSelector   String?
+  report           String   @default("{}") @db.LongText
+  startedAt        DateTime @default(now())
+  completedAt      DateTime?
+
+  @@index([migrationVersion, startedAt])
+  @@index([status, startedAt])
 }

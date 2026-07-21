@@ -1,18 +1,12 @@
 import { NextResponse } from "next/server";
-import { requirePlayer } from "@/lib/security";
-import { buildPublicSnapshot } from "@/lib/snapshot";
+import { requireLegacyCompatibilityAccess } from "@/compatibility/legacy-companion";
+import { getTaleSessionState } from "@/chronicle/progression";
 
-export async function GET(request: Request, context: { params: Promise<{ campaignSlug: string }> }) {
-  const { campaignSlug } = await context.params;
-  const access = await requirePlayer(campaignSlug);
+/** Compatibility response sourced exclusively from the mapped Chronicle Session. */
+export async function GET(_: Request, context: { params: Promise<{ campaignSlug: string }> }) {
+  const access = await requireLegacyCompatibilityAccess((await context.params).campaignSlug);
   if (!access) return NextResponse.json({ error: "Invitation required." }, { status: 401 });
-  const requestedBoundary = new URL(request.url).searchParams.get("offlineAfterSequence");
-  const offlineAfterSequence = requestedBoundary === null ? undefined : Number(requestedBoundary);
-  const synchronization =
-    Number.isSafeInteger(offlineAfterSequence) && offlineAfterSequence! >= 0
-      ? { offlineAfterSequence, synchronizedAt: new Date() }
-      : undefined;
-  return NextResponse.json(await buildPublicSnapshot(access.campaignId, access.id, synchronization), {
+  return NextResponse.json(await getTaleSessionState(access.sessionId, undefined, false, true), {
     headers: { "Cache-Control": "no-store, private" },
   });
 }

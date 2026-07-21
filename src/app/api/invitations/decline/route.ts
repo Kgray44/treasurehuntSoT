@@ -6,7 +6,7 @@ import {
   verifyPendingInvitationCsrf,
 } from "@/platform/auth";
 import { declineInvitation } from "@/platform/invitations";
-import { apiError } from "@/tall-tale/api";
+import { apiError } from "@/chronicle/api";
 
 export async function POST(request: Request) {
   if (!(await verifyPendingInvitationCsrf(request.headers.get("x-csrf-token"))))

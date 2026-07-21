@@ -8,7 +8,7 @@ import {
   verifyPendingInvitationCsrf,
 } from "@/platform/auth";
 import { acceptInvitation } from "@/platform/invitations";
-import { apiError } from "@/tall-tale/api";
+import { apiError } from "@/chronicle/api";
 
 const schema = z.object({ pin: z.string().max(80).optional(), displayName: z.string().trim().max(80).optional() });
 

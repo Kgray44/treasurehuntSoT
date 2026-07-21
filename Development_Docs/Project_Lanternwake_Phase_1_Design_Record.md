@@ -72,7 +72,7 @@ At preflight:
 - `src/app/layout.tsx`, `src/styles/tokens.css`, and the untracked original reconciliation source are explicit collision/preservation paths.
 - The existing persisted data model is sufficient for replay. Phase 1 will not edit Prisma schemas or create a migration unless new evidence invalidates that conclusion.
 
-Concurrent shell, landing, platform, Studio, Tall Tale, style, and unrelated test changes must not be staged, overwritten, normalized, or attributed to Phase 1. Reduced-motion implementation will avoid editing the concurrent root layout and global token file unless an explicit serialized handoff becomes unavoidable.
+Concurrent shell, landing, platform, Studio, Chronicle, style, and unrelated test changes must not be staged, overwritten, normalized, or attributed to Phase 1. Reduced-motion implementation will avoid editing the concurrent root layout and global token file unless an explicit serialized handoff becomes unavoidable.
 
 ## 4. Frozen core types
 
@@ -512,7 +512,7 @@ The implementation followed the critical path D1 -> W1 -> W6 -> I1 -> V1/V2 -> F
 | V1/V2 validation    | exclusive             | tests, browser, database copy, ports 3100/3200, full gate                                                   | I1         | exact exit statuses and isolation proof            |
 | F1 finalization     | exclusive coordinator | chat/docs synchronizer                                                                                      | validation | dry-run, sync, validate, remote report             |
 
-Exactly one agent writes a file at a time. `PlayerExperience.tsx` is never split across replay and acknowledgment lanes. `src/app/layout.tsx`, `src/styles/tokens.css`, the existing shell/platform/landing/Studio/Tall Tale changes, Prisma schemas, manifests/lockfiles, generated files, port 3000, and canonical local database are forbidden unless the coordinator explicitly records a new handoff.
+Exactly one agent writes a file at a time. `PlayerExperience.tsx` is never split across replay and acknowledgment lanes. `src/app/layout.tsx`, `src/styles/tokens.css`, the existing shell/platform/landing/Studio/Chronicle changes, Prisma schemas, manifests/lockfiles, generated files, port 3000, and canonical local database are forbidden unless the coordinator explicitly records a new handoff.
 
 ## 18. Shared resources and runtime strategy
 

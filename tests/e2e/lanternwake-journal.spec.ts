@@ -87,9 +87,9 @@ async function installJournalProbe(page: Page) {
       if ((type === "finish" || type === "cancel") && target instanceof Animation) {
         const effect = target.effect as (AnimationEffect & { target?: Element | null }) | null;
         const effectTarget = effect && "target" in effect ? effect.target : null;
-        if (effectTarget instanceof Element && effectTarget.closest(".tall-tale-journal-shell")) return "animation";
+        if (effectTarget instanceof Element && effectTarget.closest(".chronicle-journal-shell")) return "animation";
       }
-      if (type === "keydown" && target instanceof Element && target.closest(".tall-tale-journal-shell")) {
+      if (type === "keydown" && target instanceof Element && target.closest(".chronicle-journal-shell")) {
         return "journal-keydown";
       }
       return null;
@@ -112,7 +112,7 @@ async function installJournalProbe(page: Page) {
     Object.defineProperty(window, "__armLanternwakeJournalUnmountProbe", {
       configurable: true,
       value: () => {
-        const capturedRoot = document.querySelector(".tall-tale-journal-shell");
+        const capturedRoot = document.querySelector(".chronicle-journal-shell");
         if (!(capturedRoot instanceof Element) || !capturedRoot.isConnected) {
           throw new Error("Cannot arm Journal unmount measurement without a connected Journal root.");
         }
@@ -375,7 +375,7 @@ async function armJournalUnmountProbe(page: Page) {
 
 async function leaveJournalForLibrary(page: Page, documentToken: string) {
   await armJournalUnmountProbe(page);
-  await page.getByRole("link", { name: /Tall Tale Library/ }).click();
+  await page.getByRole("link", { name: /Chronicle Library/ }).click();
   await expect
     .poll(async () => {
       const probe = await readProbe(page);
@@ -397,7 +397,7 @@ async function leaveJournalForLibrary(page: Page, documentToken: string) {
   expect(released.lifecycleCleanupMs).not.toBeNull();
   expect(released.lifecycleCleanupMs!).toBeLessThan(250);
   await expect(page).toHaveURL(/\/player\/library$/);
-  await expect(page.getByRole("heading", { name: "My Tall Tale Library" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "My Chronicle Library" })).toBeVisible();
   return released;
 }
 
@@ -407,14 +407,14 @@ async function returnToJournalFromLibrary(page: Page, documentToken: string) {
   await expect(journalLink).toHaveAccessibleName("Continue Adventure");
   await journalLink.click();
   await expect(page).toHaveURL(new RegExp(`${journalPath}$`));
-  await expect(page.locator(".tall-tale-journal-shell")).toBeVisible();
+  await expect(page.locator(".chronicle-journal-shell")).toBeVisible();
   expect((await readProbe(page)).documentToken, "The Journal must remount without replacing the document.").toBe(
     documentToken,
   );
 }
 
 async function expectReadyFinalPose(page: Page) {
-  const shell = page.locator(".tall-tale-journal-shell");
+  const shell = page.locator(".chronicle-journal-shell");
   await expect(shell).toHaveAttribute("data-journal-phase", "JOURNAL_READY");
   await expect(page.locator(".open-page-stage")).toBeVisible();
   await expect(page.locator(".closed-book")).toBeHidden();
@@ -430,7 +430,7 @@ async function skipCeremonyWhenAvailable(page: Page) {
   try {
     await page.getByRole("button", { name: "Skip ceremony" }).click({ timeout: 1_500 });
   } catch (error) {
-    const phase = await page.locator(".tall-tale-journal-shell").getAttribute("data-journal-phase");
+    const phase = await page.locator(".chronicle-journal-shell").getAttribute("data-journal-phase");
     if (phase !== "JOURNAL_READY") throw error;
   }
 }
@@ -467,7 +467,7 @@ async function expectReadableStaticFallback(page: Page, expectedPage: number) {
 
 async function startOpeningAtFinitePhase(page: Page) {
   await page.getByRole("button", { name: "Open the journal" }).click();
-  await expect(page.locator(".tall-tale-journal-shell")).toHaveAttribute("data-journal-phase", "CLOSED_BOOK_REVEAL");
+  await expect(page.locator(".chronicle-journal-shell")).toHaveAttribute("data-journal-phase", "CLOSED_BOOK_REVEAL");
   await expect.poll(async () => (await readProbe(page)).activeAnimationListeners).toBeGreaterThan(0);
 }
 
@@ -500,7 +500,7 @@ test.describe.serial("Project Lanternwake Journal browser lifecycle", () => {
       const libraryBody = await expectOk(await captain.get("/api/captain/library"));
       const library = JSON.parse(libraryBody) as CaptainLibrary;
       const tale = library.publishedTales.find((item) => item.title.includes("Studio Development Voyage"));
-      expect(tale?.versions[0], "The isolated preset must expose the published development Tall Tale.").toBeTruthy();
+      expect(tale?.versions[0], "The isolated preset must expose the published development Chronicle.").toBeTruthy();
 
       const createdBody = await expectOk(
         await captain.post("/api/captain/playthroughs", {
@@ -540,7 +540,7 @@ test.describe.serial("Project Lanternwake Journal browser lifecycle", () => {
       journalPath = `/player/playthroughs/${created.playthroughId}/journal`;
       journalUrl = new URL(journalPath, invitation.link).href;
       playerCookies = await playerContext.cookies();
-      expect(playerCookies.some((cookie) => cookie.name === "tall_tale_player")).toBe(true);
+      expect(playerCookies.some((cookie) => cookie.name === "chronicle_player")).toBe(true);
     } finally {
       await Promise.all([playerContext.close(), captainContext.close()]);
     }
@@ -571,12 +571,12 @@ test.describe.serial("Project Lanternwake Journal browser lifecycle", () => {
   test("mode change and skip both reconcile the Journal to a readable final pose", async ({ page }) => {
     await page.emulateMedia({ reducedMotion: "no-preference" });
     await page.goto(journalUrl);
-    await expect(page.locator(".tall-tale-journal-shell")).toHaveAttribute("data-motion-mode", "full");
+    await expect(page.locator(".chronicle-journal-shell")).toHaveAttribute("data-motion-mode", "full");
     const documentToken = (await readProbe(page)).documentToken;
     await page.getByRole("button", { name: "Open the journal" }).click();
-    await expect(page.locator(".tall-tale-journal-shell")).toHaveAttribute("data-journal-phase", "CLOSED_BOOK_REVEAL");
+    await expect(page.locator(".chronicle-journal-shell")).toHaveAttribute("data-journal-phase", "CLOSED_BOOK_REVEAL");
     await page.getByRole("button", { name: "Motion: full", exact: true }).click();
-    await expect(page.locator(".tall-tale-journal-shell")).toHaveAttribute("data-journal-opening-outcome", "aborted");
+    await expect(page.locator(".chronicle-journal-shell")).toHaveAttribute("data-journal-opening-outcome", "aborted");
     await expectReadyFinalPose(page);
 
     await leaveJournalForLibrary(page, documentToken);
@@ -590,14 +590,14 @@ test.describe.serial("Project Lanternwake Journal browser lifecycle", () => {
     );
     await page.getByRole("button", { name: "Skip ceremony" }).click();
     await persisted;
-    await expect(page.locator(".tall-tale-journal-shell")).toHaveAttribute("data-journal-opening-outcome", "skipped");
+    await expect(page.locator(".chronicle-journal-shell")).toHaveAttribute("data-journal-opening-outcome", "skipped");
     await expectReadyFinalPose(page);
   });
 
   test("browser reduced motion reaches deterministic JOURNAL_READY with the static readable book", async ({ page }) => {
     await page.emulateMedia({ reducedMotion: "reduce" });
     await page.goto(journalUrl);
-    const shell = page.locator(".tall-tale-journal-shell");
+    const shell = page.locator(".chronicle-journal-shell");
     await expect(page.locator("html")).toHaveAttribute("data-motion-level", "reduced");
     await expect(shell).toHaveAttribute("data-motion-mode", "reduced");
     const firstOpening = page.getByRole("button", { name: "Open the journal" });
@@ -613,7 +613,7 @@ test.describe.serial("Project Lanternwake Journal browser lifecycle", () => {
     await expect(page.locator(".main-journal-book")).toHaveAttribute("data-pageflip-status", "reduced");
     await expect(page.locator("[data-pageflip-runtime]")).toHaveCount(0);
 
-    const pose = await page.locator(".tall-tale-journal-shell").evaluate((root) => {
+    const pose = await page.locator(".chronicle-journal-shell").evaluate((root) => {
       const closed = getComputedStyle(root.querySelector<HTMLElement>(".closed-book")!);
       const open = getComputedStyle(root.querySelector<HTMLElement>(".open-page-stage")!);
       return {
@@ -635,7 +635,7 @@ test.describe.serial("Project Lanternwake Journal browser lifecycle", () => {
 
     for (let cycle = 0; cycle < 3; cycle += 1) {
       if (cycle > 0) await returnToJournalFromLibrary(page, documentToken);
-      const shell = page.locator(".tall-tale-journal-shell");
+      const shell = page.locator(".chronicle-journal-shell");
       await expect(shell).toHaveAttribute("data-journal-phase", "BOOK_SETTLING");
       await expect.poll(async () => (await readProbe(page)).activeAnimationListeners).toBeGreaterThan(0);
       await expectReadyFinalPose(page);
@@ -669,7 +669,7 @@ test.describe.serial("Project Lanternwake Journal browser lifecycle", () => {
     const fullReplay = page.getByRole("button", { name: "Replay full opening" });
     await fullReplay.focus();
     await fullReplay.click();
-    await expect(page.locator(".tall-tale-journal-shell")).not.toHaveAttribute("data-journal-phase", "JOURNAL_READY");
+    await expect(page.locator(".chronicle-journal-shell")).not.toHaveAttribute("data-journal-phase", "JOURNAL_READY");
     await skipCeremonyWhenAvailable(page);
     await expectReadyFinalPose(page);
     await expect(fullReplay).toBeFocused();
@@ -677,7 +677,7 @@ test.describe.serial("Project Lanternwake Journal browser lifecycle", () => {
     const shortReplay = page.getByRole("button", { name: "Replay short opening" });
     await shortReplay.focus();
     await shortReplay.click();
-    await expect(page.locator(".tall-tale-journal-shell")).toHaveAttribute("data-journal-phase", "BOOK_SETTLING");
+    await expect(page.locator(".chronicle-journal-shell")).toHaveAttribute("data-journal-phase", "BOOK_SETTLING");
     await skipCeremonyWhenAvailable(page);
     await expectReadyFinalPose(page);
     await expect(shortReplay).toBeFocused();
@@ -748,7 +748,7 @@ test.describe.serial("Project Lanternwake Journal browser lifecycle", () => {
     await page.locator('[data-opening-actor="closed-book"]').evaluate((actor) => actor.remove());
     await page.getByRole("button", { name: "Replay full opening" }).click();
     await expectReadyFinalPose(page);
-    await expect(page.locator(".tall-tale-journal-shell")).toHaveAttribute(
+    await expect(page.locator(".chronicle-journal-shell")).toHaveAttribute(
       "data-journal-opening-outcome",
       /completed-fallback|failure/,
     );
@@ -757,11 +757,11 @@ test.describe.serial("Project Lanternwake Journal browser lifecycle", () => {
     await expectReadyFinalPose(page);
     await page.addStyleTag({
       content:
-        "@keyframes phase3-infinite-opening { from { opacity: .99; } to { opacity: 1; } } .tall-tale-journal-shell [data-opening-actor] { animation: phase3-infinite-opening 1s linear infinite !important; transition: none !important; }",
+        "@keyframes phase3-infinite-opening { from { opacity: .99; } to { opacity: 1; } } .chronicle-journal-shell [data-opening-actor] { animation: phase3-infinite-opening 1s linear infinite !important; transition: none !important; }",
     });
     await page.getByRole("button", { name: "Replay full opening" }).click();
     await expectReadyFinalPose(page);
-    await expect(page.locator(".tall-tale-journal-shell")).toHaveAttribute(
+    await expect(page.locator(".chronicle-journal-shell")).toHaveAttribute(
       "data-journal-opening-outcome",
       /completed-fallback|failure/,
     );
@@ -883,7 +883,7 @@ test.describe.serial("Project Lanternwake Journal browser lifecycle", () => {
     expect((await readState()).session.status).toBe("COMPLETED");
 
     await page.goto(journalUrl);
-    const shell = page.locator(".tall-tale-journal-shell");
+    const shell = page.locator(".chronicle-journal-shell");
     await expect(shell).toHaveClass(/mode-historical/);
     await expect(page.getByText("Completed archive")).toBeVisible();
     await expect(page.getByRole("button", { name: "Open the journal" })).toHaveCount(0);

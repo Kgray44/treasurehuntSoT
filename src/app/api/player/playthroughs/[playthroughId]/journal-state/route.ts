@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { consumeRateLimit, rateLimitHeaders } from "@/lib/rate-limit";
 import { requirePlayerIdentity, verifyPlayerCsrf } from "@/platform/auth";
 import { getPlayerJournalReadingState, updatePlayerJournalReadingState } from "@/platform/libraries";
-import { journalReadingStateInputSchema } from "@/tall-tale/journal-contract";
+import { journalReadingStateInputSchema } from "@/chronicle/journal-contract";
 
 export async function GET(_: Request, context: { params: Promise<{ playthroughId: string }> }) {
   const session = await requirePlayerIdentity();

@@ -235,9 +235,9 @@ src/components/platform/StaffSignIn.test.tsx
 src/components/platform/StaffSignIn.tsx
 src/components/player/AccessGate.test.tsx
 src/components/player/AccessGate.tsx
-src/components/player/journal/TallTaleJournalPage.tsx
-src/components/player/journal/TallTaleJournalSession.test.ts
-src/components/player/journal/TallTaleJournalSession.tsx
+src/components/player/journal/ChronicleJournalPage.tsx
+src/components/player/journal/ChronicleJournalSession.test.ts
+src/components/player/journal/ChronicleJournalSession.tsx
 src/components/player/PlayerExperience.test.tsx
 src/components/player/workspace/ArtifactInspection.tsx
 src/components/player/workspace/CompanionHeader.test.tsx
@@ -275,15 +275,15 @@ src/platform/invitations.ts
 src/platform/libraries.ts
 src/server/admin-command.test.ts
 src/server/admin-command.ts
-src/tall-tale/api.ts
-src/tall-tale/assets.ts
-src/tall-tale/block-registry.test.ts
-src/tall-tale/block-registry.ts
-src/tall-tale/journal-page-model.ts
-src/tall-tale/progression.ts
-src/tall-tale/publishing.ts
-src/tall-tale/studio-service.ts
-src/tall-tale/validation.ts
+src/chronicle/api.ts
+src/chronicle/assets.ts
+src/chronicle/block-registry.test.ts
+src/chronicle/block-registry.ts
+src/chronicle/journal-page-model.ts
+src/chronicle/progression.ts
+src/chronicle/publishing.ts
+src/chronicle/studio-service.ts
+src/chronicle/validation.ts
 tests/e2e/voyagewright-language.spec.ts
 ```
 

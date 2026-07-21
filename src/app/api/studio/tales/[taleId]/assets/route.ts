@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 import { requireGmCapability, verifyCsrf } from "@/lib/security";
-import { apiError } from "@/tall-tale/api";
-import { ingestAsset } from "@/tall-tale/assets";
-import { getStudioTale } from "@/tall-tale/studio-service";
+import { apiError } from "@/chronicle/api";
+import { ingestAsset } from "@/chronicle/assets";
+import { getStudioTale } from "@/chronicle/studio-service";
 import { consumeRateLimit, rateLimitHeaders } from "@/lib/rate-limit";
 
 export async function GET(_: Request, context: { params: Promise<{ taleId: string }> }) {

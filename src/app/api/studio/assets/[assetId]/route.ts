@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { requireGmCapability, verifyCsrf } from "@/lib/security";
-import { apiError } from "@/tall-tale/api";
-import { archiveAsset, assetUsages, ingestAsset, updateAsset } from "@/tall-tale/assets";
+import { apiError } from "@/chronicle/api";
+import { archiveAsset, assetUsages, ingestAsset, updateAsset } from "@/chronicle/assets";
 import { db } from "@/lib/db";
 import { consumeRateLimit, rateLimitHeaders } from "@/lib/rate-limit";
 

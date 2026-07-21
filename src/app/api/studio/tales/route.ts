@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { requireGmCapability, verifyCsrf } from "@/lib/security";
-import { apiError } from "@/tall-tale/api";
-import { createStudioTale, listStudioTales } from "@/tall-tale/studio-service";
+import { apiError } from "@/chronicle/api";
+import { createStudioTale, listStudioTales } from "@/chronicle/studio-service";
 
 export async function GET() {
   const session = await requireGmCapability("CREATE_TALES");

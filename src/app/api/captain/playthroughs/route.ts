@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { requireGmCapability, verifyCsrf } from "@/lib/security";
 import { createPlaythroughAndInvitations } from "@/platform/invitations";
-import { apiError } from "@/tall-tale/api";
+import { apiError } from "@/chronicle/api";
 
 export async function POST(request: Request) {
   const session = await requireGmCapability("CAPTAIN");

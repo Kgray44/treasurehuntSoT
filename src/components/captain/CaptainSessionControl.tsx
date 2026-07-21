@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import { captainCopy } from "@/language/captain-copy";
-import type { JsonObject } from "@/tall-tale/types";
+import type { JsonObject } from "@/chronicle/types";
 
 type State = {
   session: {

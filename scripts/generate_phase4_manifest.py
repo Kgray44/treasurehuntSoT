@@ -85,14 +85,14 @@ SURFACE_EVIDENCE = {
     },
     "studio": {
         "sources": "src/components/studio/StudioHome.tsx; src/components/studio/NewTaleForm.tsx; src/components/studio/TaleEditor.tsx; src/animation/director/scene-registry.ts; src/styles/studio.css",
-        "tests": "src/components/studio/TaleEditor.test.tsx; src/animation/director/scene-registry.test.ts; src/animation/scenes/scene-builders.test.ts; tests/e2e/lanternwake-phase4.spec.ts; tests/e2e/tall-tale-studio.spec.ts",
+        "tests": "src/components/studio/TaleEditor.test.tsx; src/animation/director/scene-registry.test.ts; src/animation/scenes/scene-builders.test.ts; tests/e2e/lanternwake-phase4.spec.ts; tests/e2e/chronicle-studio.spec.ts",
         "checkpoints": "library; editor section; drag placeholder; drag overlay; drop settle; validation; autosave; preview; publish; version; upload; comparison; immutable lock",
         "one_shot": "operation-local publish/version receipt; dnd-kit remains sole drag transform owner",
         "duration": "state 320/200/60 ms; layout 420/260/0 ms; ceremony 1100/700/0 ms (full/gentle/reduced)",
     },
     "studio authoring": {
         "sources": "src/components/studio/StudioHome.tsx; src/components/studio/NewTaleForm.tsx; src/components/studio/TaleEditor.tsx; src/animation/director/scene-registry.ts; src/styles/studio.css",
-        "tests": "src/components/studio/TaleEditor.test.tsx; src/animation/director/scene-registry.test.ts; src/animation/scenes/scene-builders.test.ts; tests/e2e/lanternwake-phase4.spec.ts; tests/e2e/tall-tale-studio.spec.ts",
+        "tests": "src/components/studio/TaleEditor.test.tsx; src/animation/director/scene-registry.test.ts; src/animation/scenes/scene-builders.test.ts; tests/e2e/lanternwake-phase4.spec.ts; tests/e2e/chronicle-studio.spec.ts",
         "checkpoints": "library; editor section; drag placeholder; drag overlay; drop settle; validation; autosave; preview; publish; version; upload; comparison; immutable lock",
         "one_shot": "operation-local publish/version receipt; dnd-kit remains sole drag transform owner",
         "duration": "state 320/200/60 ms; layout 420/260/0 ms; ceremony 1100/700/0 ms (full/gentle/reduced)",

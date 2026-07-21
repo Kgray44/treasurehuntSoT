@@ -4,7 +4,7 @@ import QRCode from "qrcode";
 import { z } from "zod";
 import { db } from "@/lib/db";
 import { hashToken, makeToken } from "@/lib/security";
-import { parsePublishedSnapshot } from "@/tall-tale/publishing";
+import { parsePublishedSnapshot } from "@/chronicle/publishing";
 import { invitationUsable } from "@/platform/state";
 import { safeAuditMetadata } from "@/platform/audit";
 

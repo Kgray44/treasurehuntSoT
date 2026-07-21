@@ -1,8 +1,8 @@
 import { randomUUID } from "node:crypto";
 import { NextResponse } from "next/server";
 import { requireGmCapability, verifyCsrf } from "@/lib/security";
-import { apiError } from "@/tall-tale/api";
-import { getTaleSessionState, submitVerification } from "@/tall-tale/progression";
+import { apiError } from "@/chronicle/api";
+import { getTaleSessionState, submitVerification } from "@/chronicle/progression";
 
 export async function POST(request: Request, context: { params: Promise<{ sessionId: string }> }) {
   const session = await requireGmCapability("CAPTAIN");

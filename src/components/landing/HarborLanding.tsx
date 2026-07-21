@@ -329,7 +329,7 @@ function HarborGatewayContent({ motionMode }: { motionMode: ReturnType<typeof us
     if (!root.current || !sceneHost || !targetsReady) return;
     const presentationAbort = new AbortController();
     presentationAbortRef.current = presentationAbort;
-    const key = "tall-tale-role-gateway";
+    const key = "chronicle-role-gateway";
     const scene =
       automaticSceneRef.current ?? (sessionStorage.getItem(key) === "seen" ? "session-reentry" : "first-arrival");
     automaticSceneRef.current = scene;

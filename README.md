@@ -1,10 +1,10 @@
 # The Forever Treasure Companion
 
-Production-oriented foundation and fully automated local demo for a private nautical-fantasy date-night Tall Tale. All committed story material is generic development seed content; no final surprise content belongs in this public repository.
+Production-oriented foundation and fully automated local demo for a private nautical-fantasy date-night Chronicle. All committed story material is generic development seed content; no final surprise content belongs in this public repository.
 
 ## Current phase
 
-The application is now a unified Tall Tale platform. The cinematic gateway opens distinct Player, Captain, and Creator workspaces without treating role choice as authorization. Players have durable identities, invitation acceptance, a multi-voyage library, live waiting/runtime state, and exact-version archives. Captains can create version-pinned crew voyages, deliver individually hashed link/QR/code/PIN invitations, manage invitation lifecycle, preview the Player-safe surface, and launch accepted crews. Creator Studio retains immutable publishing and now adds structured version comparison, restore-to-draft, and fork provenance.
+The application is now a unified Chronicle platform. The cinematic gateway opens distinct Player, Captain, and Creator workspaces without treating role choice as authorization. Players have durable identities, invitation acceptance, a multi-voyage library, live waiting/runtime state, and exact-version archives. Captains can create version-pinned crew voyages, deliver individually hashed link/QR/code/PIN invitations, manage invitation lifecycle, preview the Player-safe surface, and launch accepted crews. Creator Studio retains immutable publishing and now adds structured version comparison, restore-to-draft, and fork provenance.
 
 The original companion and expanded Game Master Command Center remain integrated compatibility surfaces. A shared animation director coordinates the harbor, journal, chart, artifact, gateway, and finale experiences without allowing presentation timing to outrun server truth. All committed content remains fictional development seed material.
 
@@ -34,7 +34,7 @@ The launcher creates an ignored `.env` when absent, installs the exact lockfile,
 - Role gateway: `http://127.0.0.1:3000/`
 - Player: `http://127.0.0.1:3000/tale/development-forever-treasure`
 - Player library: `http://127.0.0.1:3000/player`
-- Tall Tale catalog: `http://127.0.0.1:3000/tales`
+- Chronicle catalog: `http://127.0.0.1:3000/tales`
 - Player phrase: `development-moonwake`
 - Returning Player development login: `sera` / the configured `PLAYER_PASSWORD` (or `PLAYER_ACCESS_CODE` fallback)
 - GM: `http://127.0.0.1:3000/quartermaster`
@@ -77,10 +77,10 @@ Set unique local values in `.env`; the seed’s fallback values are development-
 | `npm run db:preset -- mid-voyage`         | Reset to a repeatable development-only companion preset               |
 | `npm run db:generate:mysql`               | Generate production MySQL client                                      |
 | `npm run db:migrate:mysql:command-center` | Apply the Phase 3 production MySQL migration                          |
-| `npm run db:migrate:mysql:studio`         | Apply the production-parity Tall Tale Studio migration                |
-| `npm run db:migrate:mysql:platform`       | Apply the unified Tall Tale Platform migration                        |
+| `npm run db:migrate:mysql:studio`         | Apply the production-parity Chronicle Studio migration                |
+| `npm run db:migrate:mysql:platform`       | Apply the unified Chronicle Platform migration                        |
 
-Full setup, validation stages, output locations, clean-clone instructions, and troubleshooting are in [local development](docs/local-development.md) and [testing](docs/testing.md). Unified identity, invitations, libraries, authorization, history, and migration are in [Tall Tale Platform](docs/tall-tale-platform.md); Studio architecture and operations are in [Tall Tale Studio](docs/tall-tale-studio.md). The future recognition seam is in [vision helper boundary](docs/future-vision-helper.md). Animation ownership, scene contracts, assets, performance, and the development lab are indexed from [animation architecture](docs/animation/architecture.md).
+Full setup, validation stages, output locations, clean-clone instructions, and troubleshooting are in [local development](docs/local-development.md) and [testing](docs/testing.md). Unified identity, invitations, libraries, authorization, history, and migration are in [Chronicle Platform](docs/chronicle-platform.md); Studio architecture and operations are in [Chronicle Studio](docs/chronicle-studio.md). The future recognition seam is in [vision helper boundary](docs/future-vision-helper.md). Animation ownership, scene contracts, assets, performance, and the development lab are indexed from [animation architecture](docs/animation/architecture.md).
 
 ## Repository workflow
 

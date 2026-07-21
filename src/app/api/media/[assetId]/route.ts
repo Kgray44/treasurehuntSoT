@@ -1,10 +1,10 @@
 import { NextResponse } from "next/server";
 import { requireGmCapability } from "@/lib/security";
-import { resolveAssetVariant } from "@/tall-tale/assets";
+import { resolveAssetVariant } from "@/chronicle/assets";
 import { db } from "@/lib/db";
 import { authorizeTaleSessionPlayer, pendingInvitationMatches } from "@/platform/auth";
 import { playerSafeAssetIds } from "@/platform/libraries";
-import { parsePublishedSnapshot } from "@/tall-tale/publishing";
+import { parsePublishedSnapshot } from "@/chronicle/publishing";
 
 export async function GET(request: Request, context: { params: Promise<{ assetId: string }> }) {
   try {
@@ -41,7 +41,7 @@ export async function GET(request: Request, context: { params: Promise<{ assetId
         }
       } else if (url.searchParams.get("public") === "cover") {
         authorized = Boolean(
-          await db.tallTale.findFirst({
+          await db.chronicle.findFirst({
             where: {
               coverAssetId: assetId,
               status: "PUBLISHED",
@@ -63,7 +63,7 @@ export async function GET(request: Request, context: { params: Promise<{ assetId
     const asset = download
       ? await db.taleAsset.findUnique({ where: { id: assetId }, select: { originalFilename: true } })
       : null;
-    const safeFilename = asset?.originalFilename.replace(/[\r\n"\\/]/g, "_") ?? "tall-tale-asset";
+    const safeFilename = asset?.originalFilename.replace(/[\r\n"\\/]/g, "_") ?? "chronicle-asset";
     return new Response(new Uint8Array(buffer), {
       headers: {
         "Content-Type": variant.mimeType,

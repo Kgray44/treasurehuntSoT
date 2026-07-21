@@ -1,6 +1,11 @@
 import type { Prisma } from "@prisma/client";
 import { canTransition, type ClientProgressEvent, type ChapterState, type ProgressEventType } from "@/domain/story";
 import { db } from "@/lib/db";
+
+// Project One Voyage leaves this historical implementation available only for
+// forensic replay tests. No production route imports it; all production
+// mutations enter the Chronicle command boundary in server/admin-command.
+export const LEGACY_WRITERS_DISABLED = true;
 import { publishCampaignEvent } from "@/lib/events";
 import { buildPublicSnapshot } from "@/lib/snapshot";
 import { toClientEvent } from "@/domain/visibility";

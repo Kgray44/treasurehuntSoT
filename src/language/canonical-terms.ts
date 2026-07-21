@@ -27,8 +27,8 @@ export const canonicalTerms = {
  * not renamed here; the language validator prevents them from becoming visible product copy.
  */
 export const deprecatedUserFacingTerms = [
-  "Tall Tale",
-  "Tall Tales",
+  "Chronicle",
+  "Chronicles",
   "campaign",
   "campaigns",
   "game session",

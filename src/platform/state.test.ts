@@ -7,7 +7,7 @@ import {
   invitationUsable,
 } from "@/platform/state";
 
-describe("Tall Tale platform state machines", () => {
+describe("Chronicle platform state machines", () => {
   it("allows only declared playthrough transitions", () => {
     expect(canTransitionPlaythrough("INVITING", "READY")).toBe(true);
     expect(canTransitionPlaythrough("READY", "ACTIVE")).toBe(true);

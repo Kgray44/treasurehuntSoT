@@ -1,9 +1,9 @@
 import { NextResponse } from "next/server";
 import { requireGmCapability, verifyCsrf } from "@/lib/security";
-import { apiError } from "@/tall-tale/api";
-import { startPublishedPreviewSession } from "@/tall-tale/progression";
-import { setTaleSessionCookie } from "@/tall-tale/session-cookie";
-import { forkPublishedVersion, restorePublishedVersionToDraft } from "@/tall-tale/studio-service";
+import { apiError } from "@/chronicle/api";
+import { startPublishedPreviewSession } from "@/chronicle/progression";
+import { setTaleSessionCookie } from "@/chronicle/session-cookie";
+import { forkPublishedVersion, restorePublishedVersionToDraft } from "@/chronicle/studio-service";
 
 async function authorize() {
   const session = await requireGmCapability("CREATE_TALES");

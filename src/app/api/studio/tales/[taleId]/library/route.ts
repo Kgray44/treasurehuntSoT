@@ -2,8 +2,8 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { db } from "@/lib/db";
 import { requireGmCapability, verifyCsrf } from "@/lib/security";
-import { apiError } from "@/tall-tale/api";
-import { slugify } from "@/tall-tale/studio-service";
+import { apiError } from "@/chronicle/api";
+import { slugify } from "@/chronicle/studio-service";
 
 const schema = z.object({
   entity: z.enum(["collection", "location", "artifact"]),

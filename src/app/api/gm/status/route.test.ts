@@ -3,16 +3,20 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 const dependencies = vi.hoisted(() => ({
   requireGm: vi.fn(),
   requireGmCapability: vi.fn(),
-  campaign: { findFirstOrThrow: vi.fn() },
-  buildPublicSnapshot: vi.fn(),
+  resolveFirstMigratedLegacyCampaign: vi.fn(),
+  getTaleSessionState: vi.fn(),
+  platformAuditEvent: { findMany: vi.fn() },
 }));
 
 vi.mock("@/lib/security", () => ({
   requireGm: dependencies.requireGm,
   requireGmCapability: dependencies.requireGmCapability,
 }));
-vi.mock("@/lib/db", () => ({ db: { campaign: dependencies.campaign } }));
-vi.mock("@/lib/snapshot", () => ({ buildPublicSnapshot: dependencies.buildPublicSnapshot }));
+vi.mock("@/compatibility/legacy-companion", () => ({
+  resolveFirstMigratedLegacyCampaign: dependencies.resolveFirstMigratedLegacyCampaign,
+}));
+vi.mock("@/chronicle/progression", () => ({ getTaleSessionState: dependencies.getTaleSessionState }));
+vi.mock("@/lib/db", () => ({ db: { platformAuditEvent: dependencies.platformAuditEvent } }));
 
 import { GET } from "./route";
 
@@ -21,37 +25,24 @@ describe("GET /api/gm/status captain boundary", () => {
     vi.clearAllMocks();
     dependencies.requireGm.mockResolvedValue(null);
     dependencies.requireGmCapability.mockResolvedValue({ userId: "captain-1", csrfToken: "csrf-captain" });
-    dependencies.campaign.findFirstOrThrow.mockResolvedValue({
-      id: "campaign-1",
-      slug: "test-voyage",
-      title: "Test Voyage",
-      status: "ACTIVE",
-      currentSequence: 4,
-      createdAt: new Date("2026-07-18T12:00:00.000Z"),
-      updatedAt: new Date("2026-07-18T12:00:00.000Z"),
-      chapters: [
-        {
-          id: "chapter-1",
-          ordinal: 1,
-          state: "ACTIVE",
-          content: { title: "Chapter", objective: "Objective", developmentOnly: true },
-          hints: [],
-          revealedAt: null,
-          solvedAt: null,
-        },
-      ],
-      events: [],
-      artifacts: [],
-      mapLocations: [],
-      sideQuests: [],
-      playerAccesses: [],
-      playerPresences: [],
-      preparedActions: [],
-      auditLogs: [],
-      saveStates: [],
-      journalEntries: [],
+    dependencies.resolveFirstMigratedLegacyCampaign.mockResolvedValue({
+      campaignSlug: "test-voyage",
+      sessionId: "session-1",
     });
-    dependencies.buildPublicSnapshot.mockResolvedValue({ sequence: 4, chapter: { state: "ACTIVE" } });
+    dependencies.getTaleSessionState.mockResolvedValue({
+      tale: { title: "Test Chronicle" },
+      session: {
+        status: "ACTIVE",
+        currentSequence: 4,
+        startedAt: null,
+        updatedAt: new Date("2026-07-18T12:00:00.000Z"),
+      },
+      chapter: { orderIndex: 1, title: "Chapter" },
+      chapters: [],
+      events: [],
+      inventory: [],
+    });
+    dependencies.platformAuditEvent.findMany.mockResolvedValue([]);
   });
 
   it("returns 401 when no authenticated staff session exists", async () => {
@@ -62,7 +53,7 @@ describe("GET /api/gm/status captain boundary", () => {
 
     expect(response.status).toBe(401);
     expect(await response.json()).toMatchObject({ code: "UNAUTHENTICATED" });
-    expect(dependencies.campaign.findFirstOrThrow).not.toHaveBeenCalled();
+    expect(dependencies.resolveFirstMigratedLegacyCampaign).not.toHaveBeenCalled();
   });
 
   it("returns 403 to authenticated non-captain staff", async () => {
@@ -73,7 +64,7 @@ describe("GET /api/gm/status captain boundary", () => {
 
     expect(response.status).toBe(403);
     expect(await response.json()).toEqual({ error: "Captain access is required to continue.", code: "FORBIDDEN" });
-    expect(dependencies.campaign.findFirstOrThrow).not.toHaveBeenCalled();
+    expect(dependencies.resolveFirstMigratedLegacyCampaign).not.toHaveBeenCalled();
   });
 
   it("returns status only for a captain-capable session", async () => {

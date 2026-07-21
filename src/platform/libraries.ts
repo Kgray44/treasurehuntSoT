@@ -1,12 +1,12 @@
 import { db } from "@/lib/db";
-import { parsePublishedSnapshot } from "@/tall-tale/publishing";
-import { parseJsonArray, type JsonObject, type PublishedBlock } from "@/tall-tale/types";
+import { parsePublishedSnapshot } from "@/chronicle/publishing";
+import { parseJsonArray, type JsonObject, type PublishedBlock } from "@/chronicle/types";
 import {
   emptyJournalReadingState,
   sanitizePlayerObject,
   type PlayerJournalReadingState,
   type PlayerJournalReadingStateInput,
-} from "@/tall-tale/journal-contract";
+} from "@/chronicle/journal-contract";
 
 const pendingInvitationStates = ["CREATED", "SENT", "COPIED", "VIEWED"];
 const validMembershipStates = ["INVITED", "ACCEPTED", "READY", "ACTIVE_MEMBER", "COMPLETED_MEMBER"];
@@ -375,7 +375,7 @@ export async function listCaptainLibrary(captainId: string) {
       verificationRequests: { where: { status: "PENDING" }, take: 1 },
     },
   });
-  const tales = await db.tallTale.findMany({
+  const tales = await db.chronicle.findMany({
     where: { archivedAt: null, latestPublishedVersionId: { not: null } },
     orderBy: { title: "asc" },
     include: { versions: { orderBy: { versionNumber: "desc" }, include: { _count: { select: { sessions: true } } } } },

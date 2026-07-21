@@ -1,10 +1,10 @@
 import { redirect } from "next/navigation";
-import { TallTaleJournalSession } from "@/components/player/journal/TallTaleJournalSession";
+import { ChronicleJournalSession } from "@/components/player/journal/ChronicleJournalSession";
 import { requirePlayerIdentity } from "@/platform/auth";
 
 export const dynamic = "force-dynamic";
 
 export default async function PlayerJournalPage({ params }: { params: Promise<{ playthroughId: string }> }) {
   if (!(await requirePlayerIdentity())) redirect("/player/sign-in");
-  return <TallTaleJournalSession sessionId={(await params).playthroughId} identitySession />;
+  return <ChronicleJournalSession sessionId={(await params).playthroughId} identitySession />;
 }

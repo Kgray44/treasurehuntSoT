@@ -58,7 +58,7 @@ async function main() {
     "every progression event must have a successful audit record",
   );
   assert(campaign.awards.length <= campaign.artifacts.length, "artifact awards must remain unique");
-  const studioTale = await db.tallTale.findUnique({
+  const studioTale = await db.chronicle.findUnique({
     where: { slug: "development-studio-voyage" },
     include: {
       drafts: { orderBy: { revisionNumber: "desc" }, include: { chapters: { include: { blocks: true } } } },

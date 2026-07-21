@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { requireGmCapability, verifyCsrf } from "@/lib/security";
 import { manageInvitation } from "@/platform/invitations";
-import { apiError } from "@/tall-tale/api";
+import { apiError } from "@/chronicle/api";
 
 const schema = z.object({
   action: z.enum(["copied", "extend", "revoke", "replace"]),

@@ -1,8 +1,8 @@
 import { createHash } from "node:crypto";
 import { NextResponse } from "next/server";
 import { consumeRateLimit, rateLimitHeaders } from "@/lib/rate-limit";
-import { apiError } from "@/tall-tale/api";
-import { getHelperScope } from "@/tall-tale/progression";
+import { apiError } from "@/chronicle/api";
+import { getHelperScope } from "@/chronicle/progression";
 
 export async function GET(request: Request) {
   const authorization = request.headers.get("authorization") ?? "";

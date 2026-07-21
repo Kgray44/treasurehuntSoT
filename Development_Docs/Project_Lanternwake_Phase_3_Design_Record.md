@@ -18,7 +18,7 @@ The controlling Phase 3 denominator is **189 unique accepted requirements: 90 Co
 
 All 152 Phase 3 physical rows use `MX-*`. Therefore the stable legacy-prefix measure finds zero assigned existing-animation-defect rows. Separately, eight Phase 3 MX rows have non-`Missing` current-quality evidence (`MX-051`, `MX-054`, `MX-056`, `MX-061`, `MX-063`–`MX-066`) and remain current-quality/partial-compatibility work. The schema has no explicit defect flag; both definitions are preserved.
 
-The six-section, uppercase 17-event system named by the Phase 3 brief is the compatibility `/tale/[campaignSlug]` `PlayerExperience`. The repository's canonical durable route is `/player/playthroughs/[playthroughId]/journal`, with the legacy session route reusing `TallTaleJournalSession`. Phase 3 will not create a second Player application or claim that changing `/tale` adds the 17-event system to the canonical durable route. Shared Journal opening, PageFlip, focus, fallback, and archival behavior may improve both stacks; a future normalized event/projection bridge must be explicit.
+The six-section, uppercase 17-event system named by the Phase 3 brief is the compatibility `/tale/[campaignSlug]` `PlayerExperience`. The repository's canonical durable route is `/player/playthroughs/[playthroughId]/journal`, with the legacy session route reusing `ChronicleJournalSession`. Phase 3 will not create a second Player application or claim that changing `/tale` adds the 17-event system to the canonical durable route. Shared Journal opening, PageFlip, focus, fallback, and archival behavior may improve both stacks; a future normalized event/projection bridge must be explicit.
 
 Phase 2's full `npm run validate` exited 1 at its production-build step because its temporary worktree used a `node_modules` junction. After that junction was removed and local dependencies were installed, canonical `npm run build` and two restart proofs passed. Phase 3 preserves both facts.
 
@@ -213,7 +213,7 @@ Critical path: freeze this record → implement pure policy/queue and persistent
 
 Phase 4 reuses the existing provider/host/ownership systems, persistent notification-queue integration, Motion route-presence policy, access final-state handoff, focus restoration, resolved motion policy, semantic audio labels, and truthful fallback/Rive boundary. It must not create a second queue, host, or ownership system. Phase 4 does not start automatically.
 
-Phase 5 receives frozen Journal Clasp, Voyage Compass, and Finale Mechanism states/inputs/transitions/reduced poses/fallbacks/mounts/labels/load failures; Lottie label semantics; and the PageFlip lifecycle/readiness contract. Cards remain for browsing Tall Tales; the Journal remains for experiencing them.
+Phase 5 receives frozen Journal Clasp, Voyage Compass, and Finale Mechanism states/inputs/transitions/reduced poses/fallbacks/mounts/labels/load failures; Lottie label semantics; and the PageFlip lifecycle/readiness contract. Cards remain for browsing Chronicles; the Journal remains for experiencing them.
 
 ## 11. Completion rule
 

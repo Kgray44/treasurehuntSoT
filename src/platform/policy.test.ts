@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { authorizePlatform } from "@/platform/policy";
 
-describe("Tall Tale platform authorization policy", () => {
+describe("Chronicle platform authorization policy", () => {
   it("does not treat role choice or anonymity as authorization", () => {
     expect(authorizePlatform({ kind: "anonymous" }, "PLAYER_LIBRARY_VIEW")).toBe(false);
     expect(authorizePlatform({ kind: "anonymous" }, "CAPTAIN_LIBRARY_VIEW")).toBe(false);

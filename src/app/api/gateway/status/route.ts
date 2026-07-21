@@ -19,7 +19,7 @@ export async function GET() {
         })
       : 0,
     creator
-      ? db.tallTale.findFirst({
+      ? db.chronicle.findFirst({
           where: { creatorId: staffSession.userId, archivedAt: null },
           orderBy: { updatedAt: "desc" },
           select: { id: true, title: true },

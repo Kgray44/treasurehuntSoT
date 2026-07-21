@@ -226,6 +226,6 @@ Cross-phase disposition is accepted by the Phase 3 ledger and validation report.
 
 ## 36. Phase 5 handoff
 
-Phase 5 receives the frozen Journal Clasp, Voyage Compass, and Finale Mechanism state machines, inputs, states, reduced poses, semantic signals, fallback paths, mount/status/retraction behavior, labels, and load-failure truth. It also receives Lottie command semantics and the PageFlip lifecycle/readiness/fallback contract. Authored production `.riv` files must be local, provenance-verified, and validated without removing fallback. Cards remain for browsing Tall Tales; the Journal remains for experiencing them.
+Phase 5 receives the frozen Journal Clasp, Voyage Compass, and Finale Mechanism state machines, inputs, states, reduced poses, semantic signals, fallback paths, mount/status/retraction behavior, labels, and load-failure truth. It also receives Lottie command semantics and the PageFlip lifecycle/readiness/fallback contract. Authored production `.riv` files must be local, provenance-verified, and validated without removing fallback. Cards remain for browsing Chronicles; the Journal remains for experiencing them.
 
 Phase 5 does not start automatically, and missing Phase 5 art does not reduce Phase 3's readable outcomes.

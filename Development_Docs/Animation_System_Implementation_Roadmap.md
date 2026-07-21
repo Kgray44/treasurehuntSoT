@@ -383,7 +383,7 @@ GSAP for narrative scenes, Motion for host/section presence and shared-layout UI
 - `src/components/studio/NewTaleForm.tsx`
 - platform/invitation/auth API consumers without changing their domain behavior
 - `src/styles/platform.css`, `src/styles/landing.css`, `src/styles/studio.css`, and one centrally owned shell/global style surface
-- `tests/e2e/access-gates.spec.ts`, `tests/e2e/tall-tale-platform.spec.ts`, and `tests/e2e/tall-tale-studio.spec.ts`
+- `tests/e2e/access-gates.spec.ts`, `tests/e2e/chronicle-platform.spec.ts`, and `tests/e2e/chronicle-studio.spec.ts`
 
 ### Libraries involved
 
@@ -550,7 +550,7 @@ Rive, Lottie/web SVG renderer, StPageFlip, React, Motion/GSAP wrapper handoffs, 
 - `src/animation/core/visibility.ts`
 - `src/animation/core/metrics.ts`
 - runtime wrappers and scene files proven by profiling to require changes
-- `src/styles/landing.css`, `src/styles/platform.css`, `src/styles/player.css`, `src/styles/studio.css`, `src/styles/tall-tale.css`, and shared tokens/global styles under one owner
+- `src/styles/landing.css`, `src/styles/platform.css`, `src/styles/player.css`, `src/styles/studio.css`, `src/styles/chronicle.css`, and shared tokens/global styles under one owner
 - focused unit/component/E2E tests
 - `docs/design-system.md`, `docs/responsive-behavior.md`, `docs/testing.md`, and relevant `Development_Docs` architecture records when implementation makes them inaccurate
 

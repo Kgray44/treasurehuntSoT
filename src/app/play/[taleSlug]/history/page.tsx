@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { getTaleSessionState } from "@/tall-tale/progression";
-import { readTaleSessionCookie } from "@/tall-tale/session-cookie";
+import { getTaleSessionState } from "@/chronicle/progression";
+import { readTaleSessionCookie } from "@/chronicle/session-cookie";
 export const dynamic = "force-dynamic";
 export default async function HistoryPage() {
   const access = await readTaleSessionCookie();

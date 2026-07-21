@@ -115,7 +115,7 @@ Creators see **Passage** even when an internal type is named `StoryBlock`. A Pas
 
 | Generic or inherited language | Voyagewright language                   |
 | ----------------------------- | --------------------------------------- |
-| Start Tall Tale               | Begin Chronicle                         |
+| Start Chronicle               | Begin Chronicle                         |
 | Active game session           | Active Voyage                           |
 | Create new story              | Create Chronicle                        |
 | Game master dashboard         | Captain's Console                       |
@@ -206,7 +206,7 @@ When two versions are equally clear, choose the more human one. When one is clea
 - Clarity: the user knows what happened and what to do next; heading and action stand alone.
 - Voice: warm, precise, restrained; nautical texture supports comprehension; the user is trusted; emotion is not prescribed.
 - Tone: serious states have no humor; Captain actions are direct; finales are quieter rather than louder.
-- Terminology: the canonical glossary is used; inherited Tall Tale language is removed from platform copy; literal controls remain literal; Chronicle, Voyage, Chapter, Passage, Waypoint, Echo, and Artifact are consistent.
+- Terminology: the canonical glossary is used; inherited Chronicle language is removed from platform copy; literal controls remain literal; Chronicle, Voyage, Chapter, Passage, Waypoint, Echo, and Artifact are consistent.
 - Accessibility and localization: screen-reader meaning is complete; color/animation/iconography is not the only meaning; strings survive translation; translation context identifies speaker, audience, and delivery context.
 - Recovery: impact, current system action, concrete next step, and dignity are present.
 

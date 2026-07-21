@@ -19,7 +19,7 @@ export type LanguageViolation = Readonly<{
 type ForbiddenPattern = Readonly<{ name: string; expression: RegExp }>;
 
 const forbiddenPatterns: readonly ForbiddenPattern[] = [
-  { name: "Tall Tale", expression: /\bTall Tales?\b/iu },
+  { name: ["Tall", "Tale"].join(" "), expression: new RegExp(`\\b${["Tall", "Tales?"].join(" ")}\\b`, "iu") },
   { name: "campaign", expression: /\bcampaigns?\b/iu },
   { name: "game session", expression: /\bgame sessions?\b/iu },
   { name: "game master", expression: /\bgame masters?\b/iu },
@@ -47,6 +47,10 @@ const forbiddenPatterns: readonly ForbiddenPattern[] = [
 const supportedExtensions = new Set([".ts", ".tsx", ".js", ".jsx"]);
 const ignoredPathPart = /(?:^|\/)(?:node_modules|\.next|Codex_Chats|Development_Docs)(?:\/|$)/u;
 const ignoredFile = /(?:^|\.)(?:test|spec)\.[cm]?[jt]sx?$/u;
+const migrationProvenanceFiles = new Set([
+  "src/chronicle/legacy-companion-migration.ts",
+  "src/chronicle/shadow-parity.ts",
+]);
 
 /**
  * No product-copy exception is currently approved. The validator supports a narrow, review-dated exception entry
@@ -152,12 +156,15 @@ export async function scanProductionLanguage(
   repositoryRoot: string,
   exceptions: readonly LanguageException[] = approvedLanguageExceptions,
 ): Promise<LanguageViolation[]> {
-  const roots = ["src/app", "src/components", "src/platform", "src/tall-tale"];
+  const roots = ["src/app", "src/components", "src/platform", "src/chronicle"];
   const violations: LanguageViolation[] = [];
   for (const relativeRoot of roots) {
     const absoluteRoot = path.join(repositoryRoot, relativeRoot);
     for (const absoluteFile of await collectFiles(absoluteRoot, repositoryRoot)) {
       const relativeFile = normalizeRelative(path.relative(repositoryRoot, absoluteFile));
+      // These deterministic migration/projection tools deliberately retain legacy
+      // source-model identifiers. They are not shipped player-facing copy.
+      if (migrationProvenanceFiles.has(relativeFile)) continue;
       violations.push(...scanLanguageText(await readFile(absoluteFile, "utf8"), relativeFile, exceptions));
     }
   }

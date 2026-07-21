@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { requireGmCapability, verifyCsrf } from "@/lib/security";
-import { apiError } from "@/tall-tale/api";
-import { captainSessionAction, getTaleSessionState } from "@/tall-tale/progression";
+import { apiError } from "@/chronicle/api";
+import { captainSessionAction, getTaleSessionState } from "@/chronicle/progression";
 import { consumeRateLimit, rateLimitHeaders } from "@/lib/rate-limit";
 import { db } from "@/lib/db";
 

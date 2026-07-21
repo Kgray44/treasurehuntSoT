@@ -6,26 +6,26 @@ Repository baseline: work began from `main` at `481dc92`, synchronized with `ori
 
 ## Governing boundaries
 
-- Preserve the unified Tall Tale platform, immutable published versions, role/resource policy, Player-safe projections, audited Captain operations, and canonical journal runtime.
-- The library helps a Player choose or continue an adventure; the physical journal remains the canonical place where a Tall Tale is played.
+- Preserve the unified Chronicle platform, immutable published versions, role/resource policy, Player-safe projections, audited Captain operations, and canonical journal runtime.
+- The library helps a Player choose or continue an adventure; the physical journal remains the canonical place where a Chronicle is played.
 - The Phase B Vision Waypoint roadmap and governing specification are parallel future-program inputs. This polish pass must remain compatible with their shared-product and design-system rules, but it must not invent capture, vision, PWA, or desktop behavior.
-- System copy stays broadly reusable. Authored Tall Tale copy may be specific to its selected story or event.
+- System copy stays broadly reusable. Authored Chronicle copy may be specific to its selected story or event.
 - Existing local changes and governing documents were preserved. The mandatory synchronizer later committed the two governing PDFs and this implementation record through its own eligible-path workflow.
 
 ## Product terminology map
 
 | Term         | Product meaning                                                   | Usage rule                                                                            |
 | ------------ | ----------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
-| Tall Tale    | A reusable, creator-authored interactive story                    | Primary noun for content in discovery, Studio, and invitations                        |
-| Experience   | Broad description of what participants create or join             | Use in explanatory marketing copy; do not substitute it for stored Tall Tale entities |
+| Chronicle    | A reusable, creator-authored interactive story                    | Primary noun for content in discovery, Studio, and invitations                        |
+| Experience   | Broad description of what participants create or join             | Use in explanatory marketing copy; do not substitute it for stored Chronicle entities |
 | Voyage       | A configured, version-pinned playthrough shared by a group        | Use for Captain setup, invitations, lobby, history, and continuation                  |
 | Session      | The live technical/runtime state of a voyage                      | Use for operational status, reconnect behavior, and Captain controls                  |
-| Player       | A person experiencing the Tall Tale                               | Primary participant role in controls and permissions                                  |
+| Player       | A person experiencing the Chronicle                               | Primary participant role in controls and permissions                                  |
 | Participant  | Inclusive collective label when role detail is not important      | Use in general explanations and accessibility copy                                    |
 | Captain      | The host who configures and guides a voyage                       | Use consistently for host-only actions                                                |
-| Creator      | A person who authors and publishes Tall Tales                     | Use consistently for Studio access and authoring actions                              |
+| Creator      | A person who authors and publishes Chronicles                     | Use consistently for Studio access and authoring actions                              |
 | Crew         | Optional thematic collective for Players                          | Flavor only; critical controls continue to use Player or participant                  |
-| Chapter      | A published structural division of a Tall Tale                    | Never substitute step or stage for the authored chapter entity                        |
+| Chapter      | A published structural division of a Chronicle                    | Never substitute step or stage for the authored chapter entity                        |
 | Story moment | A prompt, passage, decision, activity, or reveal inside a chapter | Human-readable umbrella term for block-level content                                  |
 | Invitation   | A single-recipient credential and joining flow                    | Use for links, short codes, PINs, lifecycle, and acceptance                           |
 | Waiting room | The pre-launch Player state after invitation acceptance           | Use instead of lobby where the existing route and domain already use this term        |
@@ -42,7 +42,7 @@ Repository baseline: work began from `main` at `481dc92`, synchronized with `ori
 
 ### Product and visual findings
 
-- Landing, platform, Studio, Tall Tale, legacy Player, Quartermaster, and animation surfaces use related materials but do not yet share one explicit product shell.
+- Landing, platform, Studio, Chronicle, legacy Player, Quartermaster, and animation surfaces use related materials but do not yet share one explicit product shell.
 - Page metadata is global, so major routes expose the same title and private-one-tale description.
 - `tokens.css` defines the original palette and a few primitives, while surface styles duplicate semantic colors, radii, timings, shadows, and layer numbers.
 - Buttons, form fields, selected controls, alerts, loading states, and empty states are styled through several local patterns. Disabled contrast is poor on parchment surfaces.
@@ -73,8 +73,8 @@ Repository baseline: work began from `main` at `481dc92`, synchronized with `ori
 
 ### Public and onboarding
 
-- [x] Explain what a Tall Tale is, how hosting/joining differs, supported experience categories, persistence, and privacy/control on the landing page.
-- [x] Add clear `Explore Tall Tales`, `Join with an invitation`, and role-specific calls to action.
+- [x] Explain what a Chronicle is, how hosting/joining differs, supported experience categories, persistence, and privacy/control on the landing page.
+- [x] Add clear `Explore Chronicles`, `Join with an invitation`, and role-specific calls to action.
 - [x] Prevent mobile presentation controls from covering meaningful content.
 
 ### Discovery and setup
@@ -123,7 +123,7 @@ Repository baseline: work began from `main` at `481dc92`, synchronized with `ori
 
 - Application frame and metadata: `src/app/layout.tsx`, route-family `layout.tsx` files under `player`, `captain`, `studio`, `tales`, and `play`, plus `src/components/shell/ProductShell.tsx`.
 - Shared design/state foundation: `src/styles/tokens.css`, `src/styles/shell.css`, and `src/components/ui/AsyncState.tsx`.
-- Public/onboarding: `src/components/landing/HarborLanding.tsx`, `src/styles/landing.css`, `src/components/tales/TaleCatalog.tsx`, `src/components/tales/TaleStart.tsx`, and `src/styles/tall-tale.css`.
+- Public/onboarding: `src/components/landing/HarborLanding.tsx`, `src/styles/landing.css`, `src/components/tales/TaleCatalog.tsx`, `src/components/tales/TaleStart.tsx`, and `src/styles/chronicle.css`.
 - Player/joining: `PlayerLibrary.tsx`, `PlayerSignIn.tsx`, `InvitationCeremony.tsx`, and `PlayerVoyageRoom.tsx` under `src/components/platform`.
 - Captain/Creator: `CaptainLibrary.tsx`, `StaffSignIn.tsx`, `StudioHome.tsx`, `src/styles/platform.css`, and `src/styles/studio.css`.
 - Tests: `src/components/shell/ProductShell.test.tsx` and `src/components/tales/TaleCatalog.test.tsx`.

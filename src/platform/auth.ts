@@ -3,10 +3,10 @@ import { cookies } from "next/headers";
 import { db } from "@/lib/db";
 import { hashToken, makeToken } from "@/lib/security";
 import { safeEqual } from "@/lib/security";
-import { readTaleSessionCookie } from "@/tall-tale/session-cookie";
+import { readTaleSessionCookie } from "@/chronicle/session-cookie";
 
-const PLAYER_IDENTITY_COOKIE = "tall_tale_player";
-const PENDING_INVITATION_COOKIE = "tall_tale_pending_invitation";
+const PLAYER_IDENTITY_COOKIE = "chronicle_player";
+const PENDING_INVITATION_COOKIE = "chronicle_pending_invitation";
 const playerSessionAgeMs = 1000 * 60 * 60 * 24 * 30;
 
 const cookieOptions = (maxAge: number) => ({

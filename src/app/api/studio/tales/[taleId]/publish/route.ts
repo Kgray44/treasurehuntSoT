@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { requireGmCapability, verifyCsrf } from "@/lib/security";
-import { apiError } from "@/tall-tale/api";
-import { publishTale } from "@/tall-tale/publishing";
+import { apiError } from "@/chronicle/api";
+import { publishTale } from "@/chronicle/publishing";
 
 export async function POST(request: Request, context: { params: Promise<{ taleId: string }> }) {
   const session = await requireGmCapability("PUBLISH_TALES");

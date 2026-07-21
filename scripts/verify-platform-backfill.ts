@@ -9,7 +9,7 @@ function assert(condition: unknown, message: string): asserts condition {
 }
 
 async function prepare() {
-  const tale = await db.tallTale.findUniqueOrThrow({
+  const tale = await db.chronicle.findUniqueOrThrow({
     where: { slug: "development-studio-voyage" },
     include: { versions: { where: { isCurrent: true }, take: 1 } },
   });

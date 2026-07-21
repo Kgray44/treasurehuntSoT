@@ -250,7 +250,7 @@ describe("HarborLanding gateway SceneHost", () => {
   });
 
   it("preserves automatic session reentry while using the provider-minted host", async () => {
-    sessionStorage.setItem("tall-tale-role-gateway", "seen");
+    sessionStorage.setItem("chronicle-role-gateway", "seen");
     renderWithRegistry(<HarborLanding />);
 
     await waitFor(() => expect(resolvedPlays).toHaveLength(1));
@@ -290,7 +290,7 @@ describe("HarborLanding gateway SceneHost", () => {
   });
 
   it("keeps identical target keys isolated when two gateway roots are mounted", async () => {
-    sessionStorage.setItem("tall-tale-role-gateway", "seen");
+    sessionStorage.setItem("chronicle-role-gateway", "seen");
     renderWithRegistry(
       <>
         <HarborLanding />

@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { requireGmCapability, verifyCsrf } from "@/lib/security";
-import { apiError } from "@/tall-tale/api";
-import { archiveStudioTale, duplicateStudioTale, getStudioTale } from "@/tall-tale/studio-service";
+import { apiError } from "@/chronicle/api";
+import { archiveStudioTale, duplicateStudioTale, getStudioTale } from "@/chronicle/studio-service";
 
 export async function GET(_: Request, context: { params: Promise<{ taleId: string }> }) {
   const session = await requireGmCapability("CREATE_TALES");

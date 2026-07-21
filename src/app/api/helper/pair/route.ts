@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { requireGmCapability, verifyCsrf } from "@/lib/security";
-import { apiError } from "@/tall-tale/api";
-import { createHelperPairing } from "@/tall-tale/progression";
+import { apiError } from "@/chronicle/api";
+import { createHelperPairing } from "@/chronicle/progression";
 
 const pairingSchema = z.object({
   sessionId: z.string().min(8).max(128),
