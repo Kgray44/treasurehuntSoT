@@ -4,8 +4,10 @@ import { db } from "@/lib/db";
 import { hashToken, makeToken } from "@/lib/security";
 import { safeEqual } from "@/lib/security";
 import { readTaleSessionCookie } from "@/chronicle/session-cookie";
+import { authenticateAccount, createAccountSession, currentAccount, revokeAccountSession } from "@/wayfarer/accounts";
 
 const PLAYER_IDENTITY_COOKIE = "chronicle_player";
+const ACCOUNT_IDENTITY_COOKIE = "wayfarer_account";
 const PENDING_INVITATION_COOKIE = "chronicle_pending_invitation";
 const playerSessionAgeMs = 1000 * 60 * 60 * 24 * 30;
 
@@ -18,6 +20,12 @@ const cookieOptions = (maxAge: number) => ({
 });
 
 export async function createPlayerIdentitySession(playerProfileId: string) {
+  const profile = await db.playerProfile.findUnique({ where: { id: playerProfileId }, select: { accountId: true } });
+  if (profile?.accountId) {
+    const session = await createAccountSession(profile.accountId);
+    (await cookies()).set(ACCOUNT_IDENTITY_COOKIE, session.token, cookieOptions(playerSessionAgeMs / 1000));
+    return session.csrfToken;
+  }
   const jar = await cookies();
   const previous = jar.get(PLAYER_IDENTITY_COOKIE)?.value;
   if (previous)
@@ -41,6 +49,19 @@ export async function createPlayerIdentitySession(playerProfileId: string) {
 }
 
 export async function requirePlayerIdentity() {
+  const canonicalToken = (await cookies()).get(ACCOUNT_IDENTITY_COOKIE)?.value;
+  if (canonicalToken) {
+    const session = await currentAccount(canonicalToken);
+    if (session?.account.profile)
+      return {
+        id: session.id,
+        accountId: session.accountId,
+        playerProfileId: session.account.profile.id,
+        csrfToken: session.csrfToken,
+        expiresAt: session.expiresAt,
+        player: session.account.profile,
+      };
+  }
   const token = (await cookies()).get(PLAYER_IDENTITY_COOKIE)?.value;
   if (!token) return null;
   return db.playerIdentitySession.findFirst({
@@ -55,12 +76,16 @@ export async function requirePlayerIdentity() {
 }
 
 export async function signInPlayer(username: string, password: string) {
+  const account = await authenticateAccount(username, password);
+  if (account?.account.profile) {
+    (await cookies()).set(ACCOUNT_IDENTITY_COOKIE, account.session.token, cookieOptions(playerSessionAgeMs / 1000));
+    return { player: account.account.profile, csrfToken: account.session.csrfToken };
+  }
   const player = await db.playerProfile.findFirst({
     where: { username: username.trim().toLocaleLowerCase(), status: "ACTIVE" },
   });
   if (!player?.passwordHash || !(await compare(password, player.passwordHash))) return null;
-  const csrfToken = await createPlayerIdentitySession(player.id);
-  return { player, csrfToken };
+  return { player, csrfToken: await createPlayerIdentitySession(player.id) };
 }
 
 export async function verifyPlayerCsrf(provided: string | null) {
@@ -70,6 +95,12 @@ export async function verifyPlayerCsrf(provided: string | null) {
 
 export async function clearPlayerIdentitySession() {
   const jar = await cookies();
+  const canonicalToken = jar.get(ACCOUNT_IDENTITY_COOKIE)?.value;
+  if (canonicalToken) {
+    const session = await currentAccount(canonicalToken);
+    if (session) await revokeAccountSession(session.accountId, session.id);
+    jar.delete(ACCOUNT_IDENTITY_COOKIE);
+  }
   const token = jar.get(PLAYER_IDENTITY_COOKIE)?.value;
   if (token)
     await db.playerIdentitySession.updateMany({

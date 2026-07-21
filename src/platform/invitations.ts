@@ -7,6 +7,7 @@ import { hashToken, makeToken } from "@/lib/security";
 import { parsePublishedSnapshot } from "@/chronicle/publishing";
 import { invitationUsable } from "@/platform/state";
 import { safeAuditMetadata } from "@/platform/audit";
+import { canonicalAccountForLegacyActor, ensureGuestAccountForProfile } from "@/wayfarer/accounts";
 
 const alphabet = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
 
@@ -196,6 +197,7 @@ export async function createPlaythroughAndInvitations(
   captainId: string,
   baseUrl: string,
 ) {
+  const captainAccountId = await canonicalAccountForLegacyActor(captainId);
   const input = createPlaythroughSchema.parse(unchecked);
   const version = await db.publishedTaleVersion.findFirst({
     where: { id: input.versionId, taleId: input.taleId },
@@ -228,6 +230,7 @@ export async function createPlaythroughAndInvitations(
         ownerLabel: input.players.map((player) => player.displayName).join(", "),
         voyageName: input.voyageName,
         captainId,
+        captainAccountId,
         accessTokenHash: hashToken(makeToken()),
         status: input.plannedStartAt ? "SCHEDULED" : "INVITING",
         captainMode: input.progressionMode ?? input.captainMode,
@@ -275,6 +278,7 @@ export async function createPlaythroughAndInvitations(
           expiresAt: new Date(Date.now() + input.expiresInHours * 60 * 60 * 1000),
           maxRedemptions: input.maxRedemptions,
           createdBy: captainId,
+          creatorAccountId: captainAccountId,
         },
       });
       await tx.invitationEvent.create({
@@ -283,6 +287,7 @@ export async function createPlaythroughAndInvitations(
           eventType: "CREATED",
           actorType: "CAPTAIN",
           actorId: captainId,
+          actorAccountId: captainAccountId,
           metadata: JSON.stringify({ versionLabel: version.versionLabel }),
         },
       });
@@ -292,6 +297,7 @@ export async function createPlaythroughAndInvitations(
       data: {
         actorType: "CAPTAIN",
         actorId: captainId,
+        actorAccountId: captainAccountId,
         action: "PLAYTHROUGH_CREATED",
         resourceType: "PLAYTHROUGH",
         resourceId: created.id,
@@ -365,7 +371,7 @@ export async function acceptInvitation(
       throw new InvitationUnavailableError("This invitation belongs to another Player profile.", "INVALID");
   }
   const correlationId = randomUUID();
-  return db.$transaction(async (tx) => {
+  const result = await db.$transaction(async (tx) => {
     const claimed = await tx.invitation.updateMany({
       where: {
         id: invitation.id,
@@ -440,6 +446,8 @@ export async function acceptInvitation(
     });
     return { playerId, playthroughId: invitation.playthroughId, idempotent: false };
   });
+  await ensureGuestAccountForProfile(result.playerId);
+  return result;
 }
 
 export async function declineInvitation(credential: string, signedInPlayerId?: string) {

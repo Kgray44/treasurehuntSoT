@@ -1,6 +1,7 @@
 import { createHash, randomBytes, timingSafeEqual } from "node:crypto";
 import { cookies, headers } from "next/headers";
 import { db } from "@/lib/db";
+import { createAccountSession, currentAccount, revokeAccountSession } from "@/wayfarer/accounts";
 
 const PLAYER_COOKIE = "forever_player";
 const GM_COOKIE = "forever_gm";
@@ -36,6 +37,26 @@ export async function requirePlayer(campaignSlug: string) {
 }
 
 export async function createGmSession(userId: string) {
+  const canonical = await db.userAccount.findUnique({ where: { legacyGameMasterId: userId } });
+  if (canonical) {
+    const session = await createAccountSession(canonical.id);
+    const jar = await cookies();
+    jar.set(GM_COOKIE, session.token, {
+      httpOnly: true,
+      sameSite: "strict",
+      secure: process.env.NODE_ENV === "production",
+      path: "/",
+      maxAge: sessionAge / 1000,
+    });
+    jar.set("wayfarer_account", session.token, {
+      httpOnly: true,
+      sameSite: "lax",
+      secure: process.env.NODE_ENV === "production",
+      path: "/",
+      maxAge: 60 * 60 * 24 * 30,
+    });
+    return session.csrfToken;
+  }
   const id = makeToken();
   const csrfToken = makeToken(24);
   await db.gameMasterSession.create({
@@ -55,6 +76,30 @@ export async function createGmSession(userId: string) {
 export async function requireGm() {
   const raw = (await cookies()).get(GM_COOKIE)?.value;
   if (!raw) return null;
+  const canonical = await currentAccount(raw);
+  if (canonical) {
+    const roles = canonical.account.roles.map((assignment) => assignment.role);
+    const capabilities = [
+      ...(roles.includes("CAPTAIN") ? ["CAPTAIN"] : []),
+      ...(roles.includes("CREATOR") ? ["CREATE_TALES", "MANAGE_ASSETS", "PUBLISH_TALES"] : []),
+      ...(roles.includes("ADMINISTRATOR")
+        ? ["ADMIN", "CAPTAIN", "CREATE_TALES", "MANAGE_ASSETS", "PUBLISH_TALES"]
+        : []),
+    ];
+    return {
+      id: canonical.id,
+      userId: canonical.account.legacyGameMasterId ?? canonical.accountId,
+      accountId: canonical.accountId,
+      csrfToken: canonical.csrfToken,
+      expiresAt: canonical.expiresAt,
+      user: {
+        id: canonical.accountId,
+        username: canonical.account.profile?.displayName ?? "Account",
+        role: "CANONICAL",
+        capabilities: JSON.stringify(capabilities),
+      },
+    };
+  }
   return db.gameMasterSession.findFirst({
     where: { id: hashToken(raw), expiresAt: { gt: new Date() } },
     include: { user: true },
@@ -92,6 +137,10 @@ export async function verifyCsrf(session: { csrfToken: string }) {
 export async function clearGmSession() {
   const jar = await cookies();
   const raw = jar.get(GM_COOKIE)?.value;
-  if (raw) await db.gameMasterSession.deleteMany({ where: { id: hashToken(raw) } });
+  if (raw) {
+    const canonical = await currentAccount(raw);
+    if (canonical) await revokeAccountSession(canonical.accountId, canonical.id);
+    else await db.gameMasterSession.deleteMany({ where: { id: hashToken(raw) } });
+  }
   jar.delete(GM_COOKIE);
 }

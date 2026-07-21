@@ -4,6 +4,7 @@ import { getBlockDefinition, serializeBlockRegistry } from "@/chronicle/block-re
 import { journalPresentationSchema } from "@/chronicle/journal-contract";
 import type { JsonObject, PublishedTaleSnapshot, StudioDraftInput } from "@/chronicle/types";
 import { parseJsonObject } from "@/chronicle/types";
+import { canonicalAccountForLegacyActor } from "@/wayfarer/accounts";
 
 export const slugSchema = z
   .string()
@@ -127,6 +128,7 @@ export async function createStudioTale(input: {
   creatorId: string;
 }) {
   const slug = slugSchema.parse(input.slug?.trim() || slugify(input.title));
+  const creatorAccountId = await canonicalAccountForLegacyActor(input.creatorId);
   return db.$transaction(async (tx) => {
     const tale = await tx.chronicle.create({
       data: {
@@ -138,12 +140,15 @@ export async function createStudioTale(input: {
         theme: input.theme ?? "CARTOGRAPHERS_TABLE",
         visibility: input.visibility ?? "PRIVATE",
         creatorId: input.creatorId,
+        creatorAccountId,
         playerCountMin: input.playerCountMin ?? 1,
         playerCountMax: input.playerCountMax ?? 4,
         estimatedDuration: input.estimatedDuration ?? null,
       },
     });
-    const draft = await tx.taleDraft.create({ data: { taleId: tale.id, createdBy: input.creatorId } });
+    const draft = await tx.taleDraft.create({
+      data: { taleId: tale.id, createdBy: input.creatorId, createdByAccountId: creatorAccountId },
+    });
     await tx.taleChapter.create({
       data: { draftRevisionId: draft.id, title: input.initialChapterTitle?.trim() || "Chapter One", orderIndex: 0 },
     });

@@ -1,0 +1,9 @@
+area,inputs,decision,status
+baseline,One Voyage;Wayfarer;Sealed Hold,One Voyage atop accepted main/a0a2111c is the canonical runtime baseline,resolved
+Chronicle modules,One Voyage chronicle rename;Wayfarer tall-tale edits,apply Wayfarer actor-account behavior in src/chronicle and retain no duplicate tall-tale writer,resolved
+account session,legacy Player session;Wayfarer UserAccount session,prefer canonical account session then securely fall back to legacy Player session,resolved
+actor ownership,legacy Creator/Captain strings;Wayfarer account keys,retain strings as historical snapshots and populate nullable canonical account keys,resolved
+SQLite migration,One Voyage Chronicle table rename;Wayfarer TallTale reference,target Chronicle after One Voyage migration,resolved
+MySQL migration id,One Voyage 0005;Wayfarer 0005,keep One Voyage 0005 and rename Wayfarer to 0006,resolved
+private-content schema,Sealed Hold;Wayfarer;One Voyage,await inspected Sealed Hold application and create canonical account/Chronicle links,pending
+package scripts,all candidates,reconcile ordered MySQL runners and private-content commands,pending
