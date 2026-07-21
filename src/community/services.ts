@@ -3,7 +3,6 @@ import { db } from "@/lib/db";
 import { consumeRateLimit } from "@/lib/rate-limit";
 import {
   CommunityError,
-  assertPublishingAllowed,
   assertTransition,
   listingInputSchema,
   manifestChecksum,
@@ -282,13 +281,8 @@ export async function createRelease(actor: CommunityActor, listingId: string, ra
   const request = releaseManifestSchema.parse(raw);
   if (request.listingId !== listingId)
     throw new CommunityError("COMMUNITY_SOURCE_VERSION_MISMATCH", "Release manifest targets another listing.");
-  assertPublishingAllowed(
-    {
-      enabled: process.env.COMMUNITY_ENABLED !== "false",
-      publicPublishingEnabled: process.env.COMMUNITY_PUBLIC_PUBLISHING_ENABLED === "true",
-    },
-    { role: actor.role ?? "CREATOR", suspended: false },
-  );
+  if (process.env.COMMUNITY_ENABLED === "false")
+    throw new CommunityError("COMMUNITY_NOT_ENABLED", "Community Harbor is disabled.");
   return db.$transaction(async (tx) => {
     const listing = await tx.communityListing.findFirst({ where: { id: listingId, ownerProfileId: profile.id } });
     if (!listing) throw new CommunityError("COMMUNITY_ACCESS_DENIED", "You cannot release this listing.");
