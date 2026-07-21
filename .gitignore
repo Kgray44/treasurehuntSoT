@@ -16,6 +16,7 @@
 
 # next.js
 /.next/
+/.sealed-build/
 /out/
 
 # production
@@ -57,6 +58,12 @@ yarn-error.log*
 
 # local certificates, archives, logs, and editor state
 *.key
+*.ftprivate
+*.ftkey
+/.private-content/
+/private-content/
+/private-exports/
+/decrypted-private-content/
 *.crt
 *.pfx
 *.log
@@ -85,6 +92,7 @@ __pycache__/
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+/.sealed-build*/
 # Deprecated repository guidance files. Do not reintroduce or track them.
 AGENTS.md
 PLANS.md

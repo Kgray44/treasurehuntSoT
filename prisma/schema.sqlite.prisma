@@ -977,3 +977,71 @@ model TaleHelperPairing {
 
   @@index([sessionId, status])
 }
+
+// Sealed Hold is deliberately identity-neutral: owner/actor fields are opaque
+// compatibility references until Wayfarer's canonical account model is merged.
+model PrivateContentImport {
+  id                    String                        @id @default(cuid())
+  packageId             String
+  packageRevision       Int
+  packageSha256         String                        @unique
+  planSha256            String
+  status                String
+  ownerActorId          String?
+  sourceTaleId          String?
+  contentJson           String
+  importedTaleIds       String                        @default("[]")
+  importedAssetIds      String                        @default("[]")
+  warnings              String                        @default("[]")
+  correlationId         String
+  finalizationErrorCode String?
+  createdAt             DateTime                      @default(now())
+  completedAt           DateTime?
+  mappings              PrivateContentImportMapping[]
+  assetReferences       PrivateAssetReference[]
+
+  @@unique([packageId, packageRevision])
+  @@index([status, createdAt])
+}
+
+model PrivateContentImportMapping {
+  id             String               @id @default(cuid())
+  importId       String
+  sourceLogicalId String
+  targetId       String
+  kind           String
+  import         PrivateContentImport @relation(fields: [importId], references: [id], onDelete: Cascade)
+
+  @@unique([importId, sourceLogicalId])
+}
+
+model PrivateAssetObject {
+  id          String                  @id @default(cuid())
+  sha256      String                  @unique
+  byteLength  Int
+  mediaType   String
+  representation String
+  storageKey  String                  @unique
+  finalizedAt DateTime?
+  createdAt   DateTime                @default(now())
+  references  PrivateAssetReference[]
+}
+
+model PrivateAssetReference {
+  id            String               @id @default(cuid())
+  importId      String
+  objectId      String
+  logicalId     String
+  ownerActorId  String?
+  taleId        String?
+  playthroughId String?
+  visibility    String               @default("PRIVATE")
+  revealState   String               @default("LOCKED")
+  available     Boolean              @default(false)
+  createdAt     DateTime             @default(now())
+  import        PrivateContentImport @relation(fields: [importId], references: [id], onDelete: Cascade)
+  object        PrivateAssetObject   @relation(fields: [objectId], references: [id], onDelete: Restrict)
+
+  @@unique([importId, logicalId])
+  @@index([playthroughId, revealState, available])
+}

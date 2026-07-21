@@ -1,0 +1,4 @@
+import { PRIVATE_SENTINEL } from "../../src/private-content/core";
+import { makePayload } from "../../src/private-content/package";
+function main() { const content = Buffer.from(`Synthetic fixture only: ${PRIVATE_SENTINEL}`).toString("base64url"); makePayload({ manifest: { packageId: "synthetic-fixture", packageRevision: 1, formatVersion: 1, createdAt: "2026-07-21T00:00:00.000Z", sourceApplicationVersion: "0.2.0", minimumApplicationVersion: "0.2.0", classification: "private", contentType: "tale-draft", tales: [{ logicalId: "tale-fixture", slug: "clockmaker-lantern", title: "The Clockmaker's Lantern", contentPath: "content/tales.json" }], assets: [], dependencies: [], totals: { files: 1, assets: 0, plaintextBytes: Buffer.from(content, "base64url").length } }, entries: { "content/tales.json": content } }); process.stdout.write("Synthetic private-content fixture verification passed.\n"); }
+main();

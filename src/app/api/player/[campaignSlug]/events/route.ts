@@ -3,13 +3,15 @@ import { eventBus } from "@/lib/events";
 import { requirePlayer } from "@/lib/security";
 import type { ClientProgressEvent } from "@/domain/story";
 import { toClientEvent } from "@/domain/visibility";
+import {
+  PLAYER_EVENT_DEDUPE_WINDOW_SIZE,
+  PLAYER_EVENT_HEARTBEAT_MS,
+  PLAYER_EVENT_HISTORY_PAGE_SIZE,
+  PLAYER_EVENT_LIVE_BUFFER_LIMIT,
+  PLAYER_EVENT_STREAM_HIGH_WATER_MARK,
+} from "@/platform/player-event-stream";
 
 export const dynamic = "force-dynamic";
-export const PLAYER_EVENT_HEARTBEAT_MS = 15_000;
-export const PLAYER_EVENT_HISTORY_PAGE_SIZE = 50;
-export const PLAYER_EVENT_DEDUPE_WINDOW_SIZE = 256;
-export const PLAYER_EVENT_LIVE_BUFFER_LIMIT = 128;
-export const PLAYER_EVENT_STREAM_HIGH_WATER_MARK = 64;
 
 function requestedCursor(request: Request) {
   const raw = request.headers.get("last-event-id") ?? new URL(request.url).searchParams.get("after") ?? "0";

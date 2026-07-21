@@ -44,6 +44,16 @@ The launcher creates an ignored `.env` when absent, installs the exact lockfile,
 
 These values are disposable local defaults, never production credentials. To opt into LAN access, run `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/start-dev.ps1 -Lan`; Windows Firewall and network policy still determine whether another device can connect.
 
+## Private Chronicle packages
+
+Creator-authorized private packages are encrypted `.ftprivate` files. Configure
+`PRIVATE_CONTENT_ROOT` and `PRIVATE_CONTENT_STAGING_ROOT` as distinct absolute
+paths outside the repository and public/build directories. Inspect before an
+explicit import; imports remain unpublished and never create sessions or
+invitations. Use `npm run private-content:inspect`, `private-content:verify`,
+and the repository/build scanners for operational checks. Never pass a
+passphrase as a command-line argument or commit an export.
+
 ### Portable manual setup
 
 ```bash

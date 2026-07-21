@@ -974,3 +974,71 @@ model TaleHelperPairing {
 
   @@index([sessionId, status])
 }
+
+// Sealed Hold deliberately keeps ownership references opaque until the
+// concurrent Wayfarer account model is accepted and reconciled.
+model PrivateContentImport {
+  id                    String                        @id @default(cuid())
+  packageId             String
+  packageRevision       Int
+  packageSha256         String                        @unique
+  planSha256            String
+  status                String
+  ownerActorId          String?                       @db.VarChar(191)
+  sourceTaleId          String?                       @db.VarChar(191)
+  contentJson           String                        @db.LongText
+  importedTaleIds       String                        @default("[]") @db.LongText
+  importedAssetIds      String                        @default("[]") @db.LongText
+  warnings              String                        @default("[]") @db.LongText
+  correlationId         String                        @db.VarChar(191)
+  finalizationErrorCode String?                       @db.VarChar(191)
+  createdAt             DateTime                      @default(now())
+  completedAt           DateTime?
+  mappings              PrivateContentImportMapping[]
+  assetReferences       PrivateAssetReference[]
+
+  @@unique([packageId, packageRevision])
+  @@index([status, createdAt])
+}
+
+model PrivateContentImportMapping {
+  id              String               @id @default(cuid())
+  importId        String
+  sourceLogicalId String               @db.VarChar(191)
+  targetId        String               @db.VarChar(191)
+  kind            String               @db.VarChar(64)
+  import          PrivateContentImport @relation(fields: [importId], references: [id], onDelete: Cascade)
+
+  @@unique([importId, sourceLogicalId])
+}
+
+model PrivateAssetObject {
+  id             String                  @id @default(cuid())
+  sha256         String                  @unique @db.Char(64)
+  byteLength     Int
+  mediaType      String                  @db.VarChar(191)
+  representation String                  @db.VarChar(32)
+  storageKey     String                  @unique @db.VarChar(255)
+  finalizedAt    DateTime?
+  createdAt      DateTime                @default(now())
+  references     PrivateAssetReference[]
+}
+
+model PrivateAssetReference {
+  id            String               @id @default(cuid())
+  importId      String
+  objectId      String
+  logicalId     String               @db.VarChar(191)
+  ownerActorId  String?              @db.VarChar(191)
+  taleId        String?              @db.VarChar(191)
+  playthroughId String?              @db.VarChar(191)
+  visibility    String               @default("PRIVATE") @db.VarChar(32)
+  revealState   String               @default("LOCKED") @db.VarChar(32)
+  available     Boolean              @default(false)
+  createdAt     DateTime             @default(now())
+  import        PrivateContentImport @relation(fields: [importId], references: [id], onDelete: Cascade)
+  object        PrivateAssetObject   @relation(fields: [objectId], references: [id], onDelete: Restrict)
+
+  @@unique([importId, logicalId])
+  @@index([playthroughId, revealState, available])
+}

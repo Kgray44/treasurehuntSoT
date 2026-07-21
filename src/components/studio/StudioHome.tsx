@@ -134,6 +134,7 @@ export function StudioHome({ authenticated }: { authenticated: boolean }) {
           <p>Create, validate, and publish Chronicles from one place.</p>
         </div>
         <nav aria-label="Studio destinations">
+          <Link className="button-secondary" href="/studio/private-content">Private Chronicle</Link>
           <Link className="brass-button" href="/studio/tales/new">
             {studioCopy.createChronicle.value}
           </Link>
