@@ -95,7 +95,11 @@ export type PrivatePackageEnvelope = {
   createdAt: string;
 };
 
-export type PrivatePayload = { manifest: PrivatePackageManifest; entries: Record<string, string>; checksums: Record<string, string> };
+export type PrivatePayload = {
+  manifest: PrivatePackageManifest;
+  entries: Record<string, string>;
+  checksums: Record<string, string>;
+};
 
 export function assertSafeArchivePath(candidate: string) {
   const normalized = candidate.normalize("NFC").replaceAll("\\", "/");
@@ -106,7 +110,12 @@ export function assertSafeArchivePath(candidate: string) {
     normalized.startsWith("/") ||
     normalized.startsWith("//") ||
     /^[a-z]:/i.test(normalized) ||
-    normalized.split("/").some((part) => !part || part === "." || part === ".." || /^(con|prn|aux|nul|com[1-9]|lpt[1-9])(?:\..*)?$/i.test(part)) ||
+    normalized
+      .split("/")
+      .some(
+        (part) =>
+          !part || part === "." || part === ".." || /^(con|prn|aux|nul|com[1-9]|lpt[1-9])(?:\..*)?$/i.test(part),
+      ) ||
     /\.(?:exe|dll|bat|cmd|ps1|sh|js|ts|zip|tar|gz|ftprivate)$/i.test(normalized)
   )
     throw privateFailure("PRIVATE_PACKAGE_PATH_REJECTED");
@@ -116,7 +125,8 @@ export function assertSafeArchivePath(candidate: string) {
 export function isWithin(parent: string, candidate: string) {
   const resolvedParent = path.resolve(parent);
   const resolvedCandidate = path.resolve(candidate);
-  if (path.parse(resolvedParent).root.toLocaleLowerCase() !== path.parse(resolvedCandidate).root.toLocaleLowerCase()) return false;
+  if (path.parse(resolvedParent).root.toLocaleLowerCase() !== path.parse(resolvedCandidate).root.toLocaleLowerCase())
+    return false;
   const relative = path.relative(resolvedParent, resolvedCandidate);
   return relative === "" || (!relative.startsWith(`..${path.sep}`) && relative !== "..");
 }
@@ -126,7 +136,10 @@ export function redactPrivate(value: unknown): unknown {
   if (Array.isArray(value)) return value.map(redactPrivate);
   if (value && typeof value === "object")
     return Object.fromEntries(
-      Object.entries(value as Record<string, unknown>).map(([key, item]) => [key, forbiddenLogKey.test(key) ? "[REDACTED]" : redactPrivate(item)]),
+      Object.entries(value as Record<string, unknown>).map(([key, item]) => [
+        key,
+        forbiddenLogKey.test(key) ? "[REDACTED]" : redactPrivate(item),
+      ]),
     );
   return typeof value === "string" && value.includes(PRIVATE_SENTINEL) ? "[REDACTED]" : value;
 }

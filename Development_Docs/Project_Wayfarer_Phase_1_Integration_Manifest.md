@@ -2,12 +2,12 @@
 
 Status: **pushed implementation candidate; not accepted for integration or merged**.
 
-| Field                        | Value                                                  |
-| ---------------------------- | ------------------------------------------------------ |
-| Base SHA                     | `0ecd2f9cca6116e2f7f9ab4408ade749fb061e72`             |
-| Latest fetched `origin/main` | `0ecd2f9cca6116e2f7f9ab4408ade749fb061e72`             |
-| Branch                       | `codex/project-wayfarer-phase1-unified-identity`       |
-| Ending SHA                   | `876d7aaa944ddd9a3cc9ef76a5e49c3996eb73f3`             |
+| Field                        | Value                                            |
+| ---------------------------- | ------------------------------------------------ |
+| Base SHA                     | `0ecd2f9cca6116e2f7f9ab4408ade749fb061e72`       |
+| Latest fetched `origin/main` | `0ecd2f9cca6116e2f7f9ab4408ade749fb061e72`       |
+| Branch                       | `codex/project-wayfarer-phase1-unified-identity` |
+| Ending SHA                   | `876d7aaa944ddd9a3cc9ef76a5e49c3996eb73f3`       |
 
 ## Current branch files
 

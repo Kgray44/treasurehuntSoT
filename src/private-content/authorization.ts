@@ -17,6 +17,10 @@ export const privateContentAuthorization: PrivateContentAuthorization = {
     const creator = await requireGmCapability("CREATE_TALES");
     if (creator) return Boolean(await db.privateAssetReference.findFirst({ where: { id: assetId, available: true } }));
     if (!playthroughId || !(await authorizeTaleSessionPlayer(playthroughId))) return false;
-    return Boolean(await db.privateAssetReference.findFirst({ where: { id: assetId, available: true, revealState: "REVEALED", playthroughId } }));
+    return Boolean(
+      await db.privateAssetReference.findFirst({
+        where: { id: assetId, available: true, revealState: "REVEALED", playthroughId },
+      }),
+    );
   },
 };

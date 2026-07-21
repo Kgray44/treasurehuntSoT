@@ -16,13 +16,13 @@ The branch starts at Project One Voyage `4e8f385687b01aa6b1e97452ff76e6e7e3b58b8
 
 ## Compatibility and removal gates
 
-| Retained component | Boundary | Removal gate |
-| --- | --- | --- |
-| Legacy Player identity session | secure exchange to canonical account session | all active Player identities backfilled, reconciled, and accepted |
-| Game Master strings | historical actor snapshot and lookup input | canonical Creator/Captain ownership coverage plus audited no-reader release |
-| Legacy invitations | controlled acceptance path | all unexpired invitations reconciled and a migration-window approval |
-| Campaign/legacy tables | read-only compatibility source | exact parity, owner sign-off, backup/restore rehearsal |
-| Quartermaster route | invokes canonical Captain service | Captain route telemetry proves no legacy writer use |
+| Retained component             | Boundary                                     | Removal gate                                                                |
+| ------------------------------ | -------------------------------------------- | --------------------------------------------------------------------------- |
+| Legacy Player identity session | secure exchange to canonical account session | all active Player identities backfilled, reconciled, and accepted           |
+| Game Master strings            | historical actor snapshot and lookup input   | canonical Creator/Captain ownership coverage plus audited no-reader release |
+| Legacy invitations             | controlled acceptance path                   | all unexpired invitations reconciled and a migration-window approval        |
+| Campaign/legacy tables         | read-only compatibility source               | exact parity, owner sign-off, backup/restore rehearsal                      |
+| Quartermaster route            | invokes canonical Captain service            | Captain route telemetry proves no legacy writer use                         |
 
 ## Final migration order
 

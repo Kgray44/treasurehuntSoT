@@ -4,15 +4,15 @@ Status: **implementation candidate; repository-wide acceptance not complete** as
 
 ## Successful evidence
 
-| Command                                                    | Environment                                                                      | Result                                                                                                  |
-| ---------------------------------------------------------- | -------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
-| Prisma format and validate, SQLite schema                  | local bundled Prisma against Phase 1 worktree                                    | passed                                                                                                  |
-| Prisma validate, MySQL schema with a syntactic MySQL URL   | local bundled Prisma against Phase 1 worktree                                    | passed                                                                                                  |
-| Prisma generate and migration deploy                | `C:\Users\kgray\AppData\Local\ForeverTreasureCompanion\wayfarer-phase1`, disposable `wayfarer-validation.db` | six migrations, including `20260721120000_wayfarer_unified_identity`, applied successfully |
-| TypeScript typecheck                                | dedicated Wayfarer runtime                                                        | passed |
-| `vitest run`                                        | dedicated Wayfarer runtime                                                        | 85 files and 904 tests passed |
-| focused `AnimationShowcase.test.tsx`                 | dedicated Wayfarer runtime                                                        | 9 tests passed |
-| `git diff --check`                                         | Phase 1 worktree                                                                 | passed                                                                                                  |
+| Command                                                  | Environment                                                                                                  | Result                                                                                     |
+| -------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------ |
+| Prisma format and validate, SQLite schema                | local bundled Prisma against Phase 1 worktree                                                                | passed                                                                                     |
+| Prisma validate, MySQL schema with a syntactic MySQL URL | local bundled Prisma against Phase 1 worktree                                                                | passed                                                                                     |
+| Prisma generate and migration deploy                     | `C:\Users\kgray\AppData\Local\ForeverTreasureCompanion\wayfarer-phase1`, disposable `wayfarer-validation.db` | six migrations, including `20260721120000_wayfarer_unified_identity`, applied successfully |
+| TypeScript typecheck                                     | dedicated Wayfarer runtime                                                                                   | passed                                                                                     |
+| `vitest run`                                             | dedicated Wayfarer runtime                                                                                   | 85 files and 904 tests passed                                                              |
+| focused `AnimationShowcase.test.tsx`                     | dedicated Wayfarer runtime                                                                                   | 9 tests passed                                                                             |
+| `git diff --check`                                       | Phase 1 worktree                                                                                             | passed                                                                                     |
 
 ## Acceptance limitations
 
