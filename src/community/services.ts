@@ -344,6 +344,67 @@ export async function getPublicRelease(id: string) {
   });
   return release ? publicReleaseProjection(release) : null;
 }
+export async function getOwnerRelease(actor: CommunityActor, id: string) {
+  const profile = await ownProfile(actor);
+  const release = await db.communityRelease.findFirst({ where: { id, listing: { ownerProfileId: profile.id } } });
+  if (!release) throw new CommunityError("COMMUNITY_RELEASE_NOT_FOUND", "Release not found.");
+  return ownerReleaseProjection(release);
+}
+export async function deprecateRelease(actor: CommunityActor, id: string, replacementReleaseId?: string) {
+  const profile = await ownProfile(actor);
+  const release = await db.communityRelease.findFirst({ where: { id, listing: { ownerProfileId: profile.id } } });
+  if (!release) throw new CommunityError("COMMUNITY_ACCESS_DENIED", "You cannot deprecate this release.");
+  if (replacementReleaseId) {
+    const replacement = await db.communityRelease.findFirst({
+      where: { id: replacementReleaseId, listingId: release.listingId },
+    });
+    if (!replacement)
+      throw new CommunityError("COMMUNITY_RELEASE_NOT_FOUND", "Replacement must belong to the same listing.");
+  }
+  return db.$transaction(async (tx) => {
+    const updated = await tx.communityRelease.update({
+      where: { id },
+      data: { deprecatedAt: new Date(), replacementReleaseId: replacementReleaseId ?? null },
+    });
+    await outbox(tx, "COMMUNITY_RELEASE_DEPRECATED", "COMMUNITY_RELEASE", id, { replacementReleaseId });
+    await audit(
+      tx,
+      actor,
+      replacementReleaseId ? "COMMUNITY_RELEASE_REPLACEMENT_SET" : "COMMUNITY_RELEASE_DEPRECATED",
+      "COMMUNITY_RELEASE",
+      id,
+      { replacementReleaseId },
+    );
+    return ownerReleaseProjection(updated);
+  });
+}
+export async function quarantineRelease(actor: CommunityActor, id: string) {
+  if (actor.role !== "MODERATOR" && actor.role !== "ADMIN")
+    throw new CommunityError("COMMUNITY_ACCESS_DENIED", "Moderation capability is required.");
+  return db.$transaction(async (tx) => {
+    const updated = await tx.communityRelease.update({ where: { id }, data: { moderationStatus: "QUARANTINED" } });
+    await outbox(tx, "COMMUNITY_RELEASE_QUARANTINED", "COMMUNITY_RELEASE", id, {});
+    await audit(tx, actor, "COMMUNITY_RELEASE_QUARANTINED", "COMMUNITY_RELEASE", id, {});
+    return ownerReleaseProjection(updated);
+  });
+}
+export async function restoreRelease(actor: CommunityActor, id: string) {
+  if (actor.role !== "MODERATOR" && actor.role !== "ADMIN")
+    throw new CommunityError("COMMUNITY_ACCESS_DENIED", "Moderation capability is required.");
+  return db.$transaction(async (tx) => {
+    const updated = await tx.communityRelease.update({ where: { id }, data: { moderationStatus: "ACTIVE" } });
+    await outbox(tx, "COMMUNITY_RELEASE_RESTORED", "COMMUNITY_RELEASE", id, {});
+    await audit(tx, actor, "COMMUNITY_RELEASE_RESTORED", "COMMUNITY_RELEASE", id, {});
+    return ownerReleaseProjection(updated);
+  });
+}
+export async function verifyReleaseIntegrity(actor: CommunityActor, id: string) {
+  const release = await getOwnerRelease(actor, id);
+  const stored = await db.communityRelease.findUnique({ where: { id } });
+  if (!stored) throw new CommunityError("COMMUNITY_RELEASE_NOT_FOUND", "Release not found.");
+  const manifest = releaseManifestSchema.parse(JSON.parse(stored.manifest));
+  return { ...release, valid: manifestChecksum(manifest) === stored.manifestChecksum };
+}
 
 export function publicProfileProjection(profile: {
   handle: string;
