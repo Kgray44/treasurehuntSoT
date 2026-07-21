@@ -62,6 +62,12 @@ export async function markEventRetryableFailure(id: string, workerId: string, fa
   });
   return true;
 }
+export async function markEventTerminalFailure(id: string, workerId: string, failureCode: string) {
+  return db.communityOutboxEvent.updateMany({
+    where: { id, claimOwner: workerId, processedAt: null, terminalFailureAt: null },
+    data: { terminalFailureAt: new Date(), failureCode, claimExpiresAt: null },
+  });
+}
 export async function releaseExpiredClaims() {
   return db.communityOutboxEvent.updateMany({
     where: { processedAt: null, terminalFailureAt: null, claimExpiresAt: { lt: new Date() } },

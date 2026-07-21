@@ -18,6 +18,8 @@ export function communityApiError(cause: unknown) {
       { status, headers: cause.code === "COMMUNITY_RATE_LIMITED" ? { "Retry-After": "60" } : undefined },
     );
   }
+  // Do not serialize Prisma, storage, or database exception details to a
+  // browser. Those details are deliberately left for the server logger.
   return NextResponse.json(
     { code: "COMMUNITY_TRANSACTION_FAILED", error: "The Community Harbor request could not be completed." },
     { status: 400 },

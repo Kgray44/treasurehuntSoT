@@ -1,4 +1,4 @@
-import { randomUUID } from "node:crypto";
+import { createHash, randomUUID } from "node:crypto";
 import { db } from "@/lib/db";
 import { consumeRateLimit } from "@/lib/rate-limit";
 import {
@@ -52,14 +52,15 @@ async function outbox(
   aggregateId: string,
   payload: Record<string, string | number | boolean | null | undefined>,
 ) {
-  await tx.communityOutboxEvent.create({
-    data: {
-      eventType: type,
-      aggregateType,
-      aggregateId,
-      payload: safeEventPayload(payload),
-      idempotencyKey: `${type}:${aggregateId}:${randomUUID()}`,
-    },
+  const serializedPayload = safeEventPayload(payload);
+  // A retried transaction must not enqueue a second externally-visible job.
+  // The payload fingerprint deliberately makes a materially changed update a
+  // distinct event while making an identical retry idempotent.
+  const idempotencyKey = `${type}:${aggregateId}:${createHash("sha256").update(serializedPayload).digest("hex")}`;
+  await tx.communityOutboxEvent.upsert({
+    where: { idempotencyKey },
+    create: { eventType: type, aggregateType, aggregateId, payload: serializedPayload, idempotencyKey },
+    update: {},
   });
 }
 
@@ -240,6 +241,8 @@ export async function transitionListing(
   const profile = await ownProfile(actor);
   const listing = await db.communityListing.findFirst({ where: { id, ownerProfileId: profile.id } });
   if (!listing) throw new CommunityError("COMMUNITY_ACCESS_DENIED", "You cannot change this listing.");
+  if (actor.role !== "MODERATOR" && actor.role !== "ADMIN" && !["DRAFT", "VALIDATING", "READY_FOR_REVIEW"].includes(next))
+    throw new CommunityError("COMMUNITY_ACCESS_DENIED", "Only moderation may change this publication state.");
   assertTransition(listing.publicationStatus as Parameters<typeof assertTransition>[0], next);
   return db.$transaction(async (tx) => {
     const updated = await tx.communityListing.update({ where: { id }, data: { publicationStatus: next } });
@@ -313,10 +316,11 @@ export async function createRelease(actor: CommunityActor, listingId: string, ra
         publishedByProfileId: profile.id,
       },
     });
-    await tx.communityListing.update({
-      where: { id: listingId },
-      data: { currentReleaseId: release.id, publicationStatus: "UPDATE_PENDING" },
-    });
+    const listingUpdate =
+      listing.publicationStatus === "PUBLISHED"
+        ? (assertTransition("PUBLISHED", "UPDATE_PENDING"), { currentReleaseId: release.id, publicationStatus: "UPDATE_PENDING" })
+        : { currentReleaseId: release.id };
+    await tx.communityListing.update({ where: { id: listingId }, data: listingUpdate });
     await outbox(tx, "COMMUNITY_RELEASE_CREATED", "COMMUNITY_RELEASE", release.id, {
       listingId,
       semanticVersion: release.semanticVersion,
@@ -396,6 +400,23 @@ export async function restoreRelease(actor: CommunityActor, id: string) {
     await outbox(tx, "COMMUNITY_RELEASE_RESTORED", "COMMUNITY_RELEASE", id, {});
     await audit(tx, actor, "COMMUNITY_RELEASE_RESTORED", "COMMUNITY_RELEASE", id, {});
     return ownerReleaseProjection(updated);
+  });
+}
+export async function setProfileSuspension(actor: CommunityActor, profileId: string, suspended: boolean) {
+  if (actor.role !== "MODERATOR" && actor.role !== "ADMIN")
+    throw new CommunityError("COMMUNITY_ACCESS_DENIED", "Moderation capability is required.");
+  return db.$transaction(async (tx) => {
+    const updated = await tx.communityProfile.update({
+      where: { id: profileId },
+      data: { creatorStatus: suspended ? "SUSPENDED" : "ACTIVE" },
+    });
+    await outbox(tx, suspended ? "COMMUNITY_PROFILE_SUSPENDED" : "COMMUNITY_PROFILE_RESTORED", "COMMUNITY_PROFILE", profileId, {
+      suspended,
+    });
+    await audit(tx, actor, suspended ? "COMMUNITY_PROFILE_SUSPENDED" : "COMMUNITY_PROFILE_RESTORED", "COMMUNITY_PROFILE", profileId, {
+      suspended,
+    });
+    return ownerProfileProjection(updated);
   });
 }
 export async function verifyReleaseIntegrity(actor: CommunityActor, id: string) {
