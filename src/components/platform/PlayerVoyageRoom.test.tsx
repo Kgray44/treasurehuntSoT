@@ -209,4 +209,19 @@ describe("PlayerVoyageRoom", () => {
     expect(screen.getByRole("main")).toHaveAttribute("data-connection-state", "revoked");
     expect(screen.queryByRole("button", { name: "Reconnect and Refresh" })).not.toBeInTheDocument();
   });
+
+  it("keeps revocation terminal when an in-flight load resolves after the access event", async () => {
+    const pending = deferred<Response>();
+    vi.stubGlobal("EventSource", FakeEventSource);
+    vi.stubGlobal("fetch", vi.fn().mockReturnValueOnce(pending.promise));
+    renderRoom();
+    await waitFor(() => expect(FakeEventSource.current).not.toBeNull());
+
+    FakeEventSource.current?.emit("access-revoked");
+    pending.resolve(response(200, body()));
+
+    expect(await screen.findByRole("alert")).toHaveTextContent("revoked");
+    expect(screen.getByRole("link", { name: "Return to My Library" })).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Reconnect and Refresh" })).not.toBeInTheDocument();
+  });
 });

@@ -227,6 +227,31 @@ describe("ProgressionSceneHost", () => {
     await waitFor(() => expect(screen.getByRole("heading", { name: "A chapter wakes" })).toHaveFocus());
   });
 
+  it("returns focus to the originating content when a presentation closes", async () => {
+    const action = vi.fn();
+    const view = render(
+      <AnimationProvider>
+        <ProgressionSceneHost {...baseProps} active={false} skip={{ label: "Skip ceremony", onActivate: action }} />
+      </AnimationProvider>,
+    );
+
+    const origin = screen.getByRole("button", { name: "Continue voyage" });
+    origin.focus();
+    view.rerender(
+      <AnimationProvider>
+        <ProgressionSceneHost {...baseProps} skip={{ label: "Skip ceremony", onActivate: action }} />
+      </AnimationProvider>,
+    );
+    await waitFor(() => expect(screen.getByRole("button", { name: "Skip ceremony" })).toHaveFocus());
+
+    view.rerender(
+      <AnimationProvider>
+        <ProgressionSceneHost {...baseProps} active={false} skip={{ label: "Skip ceremony", onActivate: action }} />
+      </AnimationProvider>,
+    );
+    await waitFor(() => expect(origin).toHaveFocus());
+  });
+
   it("cycles Tab within enabled visible controls and guards focus from escaping the active modal", async () => {
     const action = vi.fn();
     const outside = document.createElement("button");

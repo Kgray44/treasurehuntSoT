@@ -253,7 +253,10 @@ export function TaleEditor({
   const [uploadEntries, setUploadEntries] = useState<UploadEntry[]>([]);
   const [placedAssetId, setPlacedAssetId] = useState<string | null>(null);
   const [moreOpen, setMoreOpen] = useState(false);
+  const [autosaveKick, setAutosaveKick] = useState(0);
   const saving = useRef(false);
+  const draftRevision = useRef(0);
+  const autosaveVersionRef = useRef<number | null>(null);
   const root = useRef<HTMLElement>(null);
   const publishHost = useRef<SceneHostHandle | null>(null);
   const inspectorReturnFocus = useRef<HTMLElement | null>(null);
@@ -271,8 +274,11 @@ export function TaleEditor({
       setError(body.error ?? "The chart could not be opened.");
       return;
     }
+    const nextDraft = { tale: body.tale, chapters: body.draft.chapters };
+    draftRevision.current = 0;
+    autosaveVersionRef.current = body.draft.autosaveVersion;
     setData(body);
-    setDraft({ tale: body.tale, chapters: body.draft.chapters });
+    setDraft(nextDraft);
     setSaveState(`Saved at ${new Date(body.draft.savedAt).toLocaleTimeString()}`);
   }, [taleId]);
   useEffect(() => {
@@ -299,7 +305,7 @@ export function TaleEditor({
   }, [insertedId]);
 
   const save = useCallback(
-    async (state: DraftState, quiet = true) => {
+    async (state: DraftState, quiet = true, revision = draftRevision.current) => {
       if (!data || saving.current) return false;
       saving.current = true;
       setSaveState("Saving…");
@@ -308,7 +314,7 @@ export function TaleEditor({
         method: "PATCH",
         headers: { "Content-Type": "application/json", "x-csrf-token": data.csrfToken },
         body: JSON.stringify({
-          autosaveVersion: data.draft.autosaveVersion,
+          autosaveVersion: autosaveVersionRef.current ?? data.draft.autosaveVersion,
           tale: state.tale,
           chapters: state.chapters,
         }),
@@ -325,6 +331,9 @@ export function TaleEditor({
         setError(body.error ?? "Autosave failed.");
         return false;
       }
+      const nextAutosaveVersion =
+        body.autosaveVersion ?? (autosaveVersionRef.current ?? data.draft.autosaveVersion) + 1;
+      autosaveVersionRef.current = nextAutosaveVersion;
       setData((current) =>
         current
           ? {
@@ -332,29 +341,37 @@ export function TaleEditor({
               tale: state.tale,
               draft: {
                 ...current.draft,
-                autosaveVersion: body.autosaveVersion ?? current.draft.autosaveVersion + 1,
+                autosaveVersion: nextAutosaveVersion,
                 savedAt: body.savedAt ?? new Date().toISOString(),
                 validationState: "STALE",
               },
             }
           : current,
       );
-      setDirty(false);
-      setSaveState(`Saved at ${new Date(body.savedAt ?? Date.now()).toLocaleTimeString()}`);
+      if (draftRevision.current > revision) {
+        setDirty(true);
+        setSaveState("Unsaved changes");
+        setAutosaveKick((value) => value + 1);
+      } else {
+        setDirty(false);
+        setSaveState(`Saved at ${new Date(body.savedAt ?? Date.now()).toLocaleTimeString()}`);
+      }
       return true;
     },
     [data, taleId],
   );
   useEffect(() => {
     if (!draft || !dirty) return;
-    const timer = setTimeout(() => void save(draft), 1100);
+    const revision = draftRevision.current;
+    const timer = setTimeout(() => void save(draft, true, revision), 1100);
     return () => clearTimeout(timer);
-  }, [draft, dirty, save]);
+  }, [autosaveKick, draft, dirty, save]);
 
   function change(mutator: (next: DraftState) => void) {
     if (!draft) return;
     const next = clone(draft);
     mutator(next);
+    draftRevision.current += 1;
     setPast((items) => [...items.slice(-24), draft]);
     setFuture([]);
     setDraft(next);
@@ -365,6 +382,7 @@ export function TaleEditor({
   function undo() {
     if (!draft || !past.length) return;
     const previous = past.at(-1)!;
+    draftRevision.current += 1;
     setPast(past.slice(0, -1));
     setFuture([draft, ...future]);
     setDraft(previous);
@@ -374,6 +392,7 @@ export function TaleEditor({
   function redo() {
     if (!draft || !future.length) return;
     const next = future[0];
+    draftRevision.current += 1;
     setFuture(future.slice(1));
     setPast([...past, draft]);
     setDraft(next);
@@ -655,6 +674,7 @@ export function TaleEditor({
     if (!(await save(next, false))) return;
     setPast((items) => [...items.slice(-24), draft]);
     setFuture([]);
+    draftRevision.current += 1;
     setDraft(next);
     setDirty(false);
     setDeletedBlock({ chapterId: chapter.id, index, block: removed });
@@ -672,6 +692,7 @@ export function TaleEditor({
     if (!(await save(next, false))) return;
     setPast((items) => [...items.slice(-24), draft]);
     setFuture([]);
+    draftRevision.current += 1;
     setDraft(next);
     setDirty(false);
     setSelectedId(deletedBlock.block.id);

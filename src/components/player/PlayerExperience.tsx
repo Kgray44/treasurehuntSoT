@@ -99,6 +99,13 @@ type ViewedFeedback = Readonly<{
   message: string;
 }>;
 
+function viewedContentRequestKey(
+  view: CompanionView,
+  entry: Readonly<{ contentType: string; contentKeys: readonly string[] }>,
+) {
+  return `${view}\u0000${entry.contentType}\u0000${entry.contentKeys.join("\u0000")}`;
+}
+
 type ChapterSolvedLocalTargetReady = Readonly<{
   eventId: string;
   host: SceneHostHandle;
@@ -449,6 +456,7 @@ export function PlayerExperience({ initialSnapshot }: { initialSnapshot: PublicS
   const companionDesktopDim = useRef<CompanionNavigationDimTargetRegistration | null>(null);
   const companionMobileDim = useRef<CompanionNavigationDimTargetRegistration | null>(null);
   const activeExternalHandles = useRef(new Map<string, Set<ExternalSceneTargetHandle>>());
+  const viewedContentRequests = useRef(new Set<string>());
   const snapshotRef = useRef(initialSnapshot);
   const offlineAfterSequenceRef = useRef<number | null>(null);
   const [snapshot, setSnapshot] = useState(initialSnapshot);
@@ -743,7 +751,9 @@ export function PlayerExperience({ initialSnapshot }: { initialSnapshot: PublicS
       targetView: CompanionView,
       entry: { contentType: string; contentKeys: readonly string[] },
       signal?: AbortSignal,
+      requestKey = viewedContentRequestKey(targetView, entry),
     ) => {
+      viewedContentRequests.current.add(requestKey);
       setViewedFeedback({
         view: targetView,
         contentType: entry.contentType,
@@ -768,6 +778,7 @@ export function PlayerExperience({ initialSnapshot }: { initialSnapshot: PublicS
           message: "Viewed state confirmed by the voyage ledger.",
         });
       } catch (cause) {
+        viewedContentRequests.current.delete(requestKey);
         if (signal?.aborted || (cause instanceof DOMException && cause.name === "AbortError")) {
           setViewedFeedback((current) =>
             current?.view === targetView
@@ -1308,7 +1319,27 @@ export function PlayerExperience({ initialSnapshot }: { initialSnapshot: PublicS
         setActiveRequest(null);
         setActiveEvent(null);
       });
-      const restorationResult = restoreSection(restoration, sectionFocusTarget.current);
+      // WebKit clears focus asynchronously when the active overlay is hidden.
+      // Restore only after that teardown frame so the destination retains focus.
+      await nextFrame();
+      let restorationResult = restoreSection(restoration, sectionFocusTarget.current);
+      await new Promise<void>((resolve) => window.setTimeout(resolve, 0));
+      const activeFocus = playerRoot.ownerDocument.activeElement;
+      const focusWasLost =
+        !(activeFocus instanceof HTMLElement) ||
+        activeFocus === playerRoot.ownerDocument.body ||
+        !isSafeFocusTarget(activeFocus);
+      if (focusWasLost) {
+        const activeSectionHeading = playerRoot.querySelector<HTMLElement>(
+          ".section-transition [data-section-heading]",
+        );
+        if (activeSectionHeading && isSafeFocusTarget(activeSectionHeading)) {
+          activeSectionHeading.focus({ preventScroll: true });
+          restorationResult = "section-heading";
+        } else {
+          restorationResult = restoreSection(restoration, sectionFocusTarget.current);
+        }
+      }
       if (presentationRun.current === controller) presentationRun.current = null;
       return { ...execution, restorationResult };
     },
@@ -1500,11 +1531,14 @@ export function PlayerExperience({ initialSnapshot }: { initialSnapshot: PublicS
     source.onopen = () => (offlineAfterSequenceRef.current === null ? setConnection("live") : online());
     source.onerror = offline;
     const submitLiveEvent = async (event: ClientProgressEvent) => {
-      if (disposed) return;
+      // A received event may still be waiting behind reconciliation while this
+      // effect refreshes. Do not discard that authoritative delivery merely
+      // because the old EventSource was closed; the controller deduplicates it.
+      if (accessRevokedRef.current || !root.current) return;
       if (event.type === "CHAPTER_RELEASED") {
         const next = await refreshSnapshot();
         const authorized = next.presentationHistory?.find((candidate) => candidate.id === event.id);
-        if (!authorized || disposed) return;
+        if (!authorized || accessRevokedRef.current || !root.current) return;
         eventHistory.current.set(
           authorized.id,
           Object.freeze({ ...authorized, payload: Object.freeze({ ...authorized.payload }) }),
@@ -1659,11 +1693,19 @@ export function PlayerExperience({ initialSnapshot }: { initialSnapshot: PublicS
     };
     const entry = entries[view];
     if (!entry.contentKeys.length) return;
+    const requestKey = viewedContentRequestKey(view, entry);
+    if (viewedContentRequests.current.has(requestKey)) return;
     const controller = new AbortController();
-    const timer = window.setTimeout(() => void submitViewedAcknowledgment(view, entry, controller.signal), 0);
+    let started = false;
+    const timer = window.setTimeout(() => {
+      started = true;
+      void submitViewedAcknowledgment(view, entry, controller.signal, requestKey);
+    }, 0);
     return () => {
       window.clearTimeout(timer);
-      controller.abort();
+      // A dependency change before the timer fires leaves the request eligible
+      // for the replacement effect. Once started, it is a single-flight write.
+      if (!started) controller.abort();
     };
   }, [
     activeRequest,
@@ -1680,6 +1722,7 @@ export function PlayerExperience({ initialSnapshot }: { initialSnapshot: PublicS
     if (openingBusy.current || !root.current) return;
     openingBusy.current = true;
     setJournalOpeningNotice(null);
+    const requestedView = viewRef.current;
     const controller = new AbortController();
     openingRun.current = controller;
     audio.current.stopAll();
@@ -1706,6 +1749,7 @@ export function PlayerExperience({ initialSnapshot }: { initialSnapshot: PublicS
       if (forceFull) {
         flushSync(() => {
           setResettingJournal(true);
+          viewRef.current = "journal";
           setView("journal");
           setOpeningPhase("ENTRY_IDLE");
         });
@@ -1741,6 +1785,14 @@ export function PlayerExperience({ initialSnapshot }: { initialSnapshot: PublicS
       await advance("SEALED_PAGE_REVEAL", "seal-pressure");
       await advance("SEAL_BREAKING", "wax-crack");
       await advance("BOOK_SETTLING", "paper-flutter");
+      // The physical book is a required opening actor, even when a deep link
+      // asks for another readable section. Restore that section only after the
+      // book has settled, before progression can start against its local actors.
+      if (!forceFull && requestedView !== "journal") {
+        viewRef.current = requestedView;
+        flushSync(() => setView(requestedView));
+        await nextFrame();
+      }
       await advance("JOURNAL_READY");
       sessionStorage.setItem(key, "seen");
     } catch (cause) {

@@ -101,6 +101,24 @@ function Sync-ForeverRuntime {
     return $runtimeRoot
 }
 
+function Get-ForeverCanonicalDatabase {
+    $canonicalRoot = if ($script:ProjectRoot.StartsWith("\\")) {
+        Join-Path $script:RuntimeBase "development"
+    } else {
+        $script:ProjectRoot
+    }
+    $resolvedRoot = [System.IO.Path]::GetFullPath($canonicalRoot)
+    $databasePath = [System.IO.Path]::GetFullPath((Join-Path $resolvedRoot "prisma\dev.db"))
+    $rootPrefix = $resolvedRoot.TrimEnd('\', '/') + [System.IO.Path]::DirectorySeparatorChar
+    if (-not $databasePath.StartsWith($rootPrefix, [System.StringComparison]::OrdinalIgnoreCase)) {
+        throw "Canonical database path is outside the approved development runtime."
+    }
+    if (-not (Test-Path -LiteralPath $databasePath -PathType Leaf)) {
+        throw "Canonical development database is missing: $databasePath"
+    }
+    return $databasePath
+}
+
 function Install-ForeverDependencies {
     param([Parameter(Mandatory)][string]$RuntimeRoot)
     $lock = Join-Path $RuntimeRoot "package-lock.json"

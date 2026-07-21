@@ -378,6 +378,7 @@ export function InvitationCeremony({ onRouteHandoff }: { onRouteHandoff?: Invita
         setAnnouncement("Invitation declined. Returning to Player Entry.");
         await new Promise((resolve) => window.setTimeout(resolve, stateToken.durationMs));
         await handOffRoute("/player/sign-in", run.controller.signal);
+        asyncState.release(run, "success");
         return;
       }
       if (!ceremonyHost.current) {
@@ -432,6 +433,7 @@ export function InvitationCeremony({ onRouteHandoff }: { onRouteHandoff?: Invita
       setStage("accepted");
       setAnnouncement("Invitation accepted. Opening the waiting room.");
       await handOffRoute(`/player/playthroughs/${result.playthroughId}`, run.controller.signal);
+      asyncState.release(run, "success");
     } catch {
       restoreFailure(run, operationError, operationCode);
     }
@@ -591,7 +593,7 @@ export function InvitationCeremony({ onRouteHandoff }: { onRouteHandoff?: Invita
         <div className="invitation-actions">
           <button
             className="brass-button"
-            disabled={asyncState.busy || !displayName || (invitation.requiresPin && !pin)}
+            disabled={asyncState.busy || stage === "accepted" || !displayName || (invitation.requiresPin && !pin)}
             aria-busy={asyncState.busy}
             onClick={() => void act("accept")}
           >

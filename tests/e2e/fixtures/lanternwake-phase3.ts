@@ -550,6 +550,7 @@ async function createCaseFixture(captain: APIRequestContext, caseId: string, eve
       : eventType === "SIDE_QUEST_UPDATED" || eventType === "SIDE_QUEST_COMPLETED"
         ? "DISCOVERED"
         : "HIDDEN";
+  const routePrerequisitesRevealed = eventType === "MAP_ROUTE_REVEALED";
   const accessCodeHash = await bcrypt.hash(accessCode, 10);
   try {
     const campaign = await db.$transaction(async (tx) => {
@@ -610,8 +611,22 @@ async function createCaseFixture(captain: APIRequestContext, caseId: string, eve
           },
           mapLocations: {
             create: [
-              { key: mapLocationKey, name: "Validation Shoal", regionLabel: "Test Waters", x: 30, y: 40 },
-              { key: mapDestinationKey, name: "Validation Cay", regionLabel: "Test Waters", x: 70, y: 60 },
+              {
+                key: mapLocationKey,
+                name: "Validation Shoal",
+                regionLabel: "Test Waters",
+                x: 30,
+                y: 40,
+                ...(routePrerequisitesRevealed ? { state: "REVEALED", revealedAt: new Date() } : {}),
+              },
+              {
+                key: mapDestinationKey,
+                name: "Validation Cay",
+                regionLabel: "Test Waters",
+                x: 70,
+                y: 60,
+                ...(routePrerequisitesRevealed ? { state: "REVEALED", revealedAt: new Date() } : {}),
+              },
             ],
           },
           mapRoutes: {
@@ -655,6 +670,14 @@ async function createCaseFixture(captain: APIRequestContext, caseId: string, eve
       prerequisiteEventId: null,
       preseeded: false,
     });
+    if (routePrerequisitesRevealed) {
+      await db.viewedContent.createMany({
+        data: [
+          { playerAccessId: campaign.playerAccesses[0]!.id, contentType: "map", contentKey: mapLocationKey },
+          { playerAccessId: campaign.playerAccesses[0]!.id, contentType: "map", contentKey: mapDestinationKey },
+        ],
+      });
+    }
     if (eventType === "STATE_REVERTED") {
       const precursor = await publishCommand(captain, fixture, "PLAYER_LOG_ENTRY_ADDED");
       await db.viewedCeremony.create({

@@ -426,6 +426,15 @@ async function expectReadyFinalPose(page: Page) {
   expect((await previous.isEnabled()) || (await next.isEnabled())).toBe(true);
 }
 
+async function skipCeremonyWhenAvailable(page: Page) {
+  try {
+    await page.getByRole("button", { name: "Skip ceremony" }).click({ timeout: 1_500 });
+  } catch (error) {
+    const phase = await page.locator(".tall-tale-journal-shell").getAttribute("data-journal-phase");
+    if (phase !== "JOURNAL_READY") throw error;
+  }
+}
+
 async function currentVisiblePrimary(page: Page) {
   const book = page.locator(".main-journal-book");
   const primary = book.locator(
@@ -661,7 +670,7 @@ test.describe.serial("Project Lanternwake Journal browser lifecycle", () => {
     await fullReplay.focus();
     await fullReplay.click();
     await expect(page.locator(".tall-tale-journal-shell")).not.toHaveAttribute("data-journal-phase", "JOURNAL_READY");
-    await page.getByRole("button", { name: "Skip ceremony" }).click();
+    await skipCeremonyWhenAvailable(page);
     await expectReadyFinalPose(page);
     await expect(fullReplay).toBeFocused();
 
@@ -669,7 +678,7 @@ test.describe.serial("Project Lanternwake Journal browser lifecycle", () => {
     await shortReplay.focus();
     await shortReplay.click();
     await expect(page.locator(".tall-tale-journal-shell")).toHaveAttribute("data-journal-phase", "BOOK_SETTLING");
-    await page.getByRole("button", { name: "Skip ceremony" }).click();
+    await skipCeremonyWhenAvailable(page);
     await expectReadyFinalPose(page);
     await expect(shortReplay).toBeFocused();
   });

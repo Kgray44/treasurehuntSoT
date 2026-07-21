@@ -159,6 +159,13 @@ function isAvailableOverlayControl(control: HTMLButtonElement | null): control i
   return style?.display !== "none" && style?.visibility !== "hidden" && style?.visibility !== "collapse";
 }
 
+function isAvailableReturnTarget(target: HTMLElement | null): target is HTMLElement {
+  if (!target?.isConnected || target.matches(":disabled,[hidden],[inert]")) return false;
+  if (target.closest('[inert],[hidden],[aria-hidden="true"],[data-pageflip-source]')) return false;
+  const style = target.ownerDocument.defaultView?.getComputedStyle(target);
+  return style?.display !== "none" && style?.visibility !== "hidden" && style?.visibility !== "collapse";
+}
+
 function SceneHostHandleBridge({ onChange }: { onChange?: (host: SceneHostHandle | null) => void }) {
   const host = useOptionalSceneHost();
   useEffect(() => {
@@ -484,11 +491,13 @@ export function ProgressionSceneHost({
 }: ProgressionSceneHostProps) {
   const headingId = "player-progression-heading";
   const summaryId = "player-progression-summary";
+  const contentRef = useRef<HTMLDivElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
   const skipRef = useRef<HTMLButtonElement>(null);
   const replayRef = useRef<HTMLButtonElement>(null);
   const destinationRef = useRef<HTMLButtonElement>(null);
+  const returnFocusTarget = useRef<HTMLElement | null>(null);
   const wasActive = useRef(false);
   const activeRequestIdentity = useRef<string | null>(null);
   const skipEnabled = Boolean(skip && !skip.disabled);
@@ -516,12 +525,44 @@ export function ProgressionSceneHost({
   }, [destinationEnabled, replayEnabled, skipEnabled]);
 
   useLayoutEffect(() => {
-    const activating = active && !wasActive.current;
+    const wasPreviouslyActive = wasActive.current;
+    const activating = active && !wasPreviouslyActive;
     const replacingRequest =
       active && activeRequestIdentity.current !== null && activeRequestIdentity.current !== requestIdentity;
     wasActive.current = active;
     activeRequestIdentity.current = active ? requestIdentity : null;
-    if (!active) return;
+    if (!active) {
+      if (!wasPreviouslyActive) return;
+      const ownerDocument = overlayRef.current?.ownerDocument ?? document;
+      const rememberedTarget = returnFocusTarget.current;
+      ownerDocument.defaultView?.setTimeout(() => {
+        if (wasActive.current) return;
+        const activeElement = ownerDocument.activeElement;
+        if (
+          activeElement instanceof HTMLElement &&
+          activeElement !== ownerDocument.body &&
+          isAvailableReturnTarget(activeElement)
+        ) {
+          returnFocusTarget.current = null;
+          return;
+        }
+        const fallback = contentRef.current?.querySelector<HTMLElement>(
+          "[data-section-heading], [data-route-focus], h1, h2, [tabindex='-1']",
+        );
+        const destination = isAvailableReturnTarget(rememberedTarget)
+          ? rememberedTarget
+          : isAvailableReturnTarget(fallback ?? null)
+            ? fallback
+            : null;
+        destination?.focus({ preventScroll: true });
+        returnFocusTarget.current = null;
+      }, 0);
+      return;
+    }
+    if (activating) {
+      const current = document.activeElement;
+      if (current instanceof HTMLElement && isAvailableReturnTarget(current)) returnFocusTarget.current = current;
+    }
     const targets = focusTargets();
     const current = document.activeElement;
     const currentIsContainedTarget = current instanceof HTMLElement && targets.includes(current);
@@ -571,7 +612,13 @@ export function ProgressionSceneHost({
     >
       <SceneHostHandleBridge onChange={onHostChange} />
       <div
+        ref={contentRef}
         className={styles.content}
+        onFocusCapture={(event) => {
+          const target = event.target;
+          if (!active && target instanceof HTMLElement && isAvailableReturnTarget(target))
+            returnFocusTarget.current = target;
+        }}
         data-progression-content
         data-testid="progression-content"
         aria-hidden={active ? true : undefined}

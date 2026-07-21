@@ -162,6 +162,8 @@ export function PlayerSignIn({
         `${message.replace(/\.$/u, "")} could not complete. Please try again.`,
         refresh ? "username" : "code",
       );
+    } finally {
+      asyncState.release(run, "success");
     }
   }
 

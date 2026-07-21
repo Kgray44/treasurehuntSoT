@@ -164,6 +164,7 @@ export function StaffSignIn({
       setCeremonyState("accepted");
       setStatus(`Sign-in accepted. Opening ${title}.`);
       await handOffRoute(run.controller.signal);
+      asyncState.release(run, "success");
     } catch {
       restoreAfterFailure(
         run,

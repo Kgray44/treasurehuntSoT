@@ -33,6 +33,10 @@ type Playthrough = {
 type ConnectionState = "connecting" | "live" | "polling" | "offline" | "reconnecting" | "reconciling" | "revoked";
 type RouteHandoff = (destination: string) => void | Promise<void>;
 
+function isAccessRevoked(connection: ConnectionState) {
+  return connection === "revoked";
+}
+
 const launchProperties = ["opacity", "transform", "filter"] as const satisfies readonly AnimatedProperty[];
 
 function LaunchTarget({ part }: { part: "latch" | "terminal-pose" }) {
@@ -132,7 +136,7 @@ export function PlayerVoyageRoom({
 
   const load = useCallback(
     async (nextConnection?: ConnectionState) => {
-      if (activeLoad.current || connectionRef.current === "revoked") return;
+      if (activeLoad.current || isAccessRevoked(connectionRef.current)) return;
       const controller = new AbortController();
       activeLoad.current = controller;
       try {
@@ -147,11 +151,13 @@ export function PlayerVoyageRoom({
         };
         if (!response.ok || !body.playthrough) {
           if ([403, 404, 410].includes(response.status) && voyageRef.current) {
+            connectionRef.current = "revoked";
             setConnection("revoked");
             setError(body.error ?? "Your access to this voyage was revoked.");
           } else setError(body.error ?? "This voyage is unavailable.");
           return;
         }
+        if (controller.signal.aborted || isAccessRevoked(connectionRef.current)) return;
         requestVersion.current += 1;
         if (body.serverTime) serverOffset.current = new Date(body.serverTime).getTime() - Date.now();
         const previous = voyageRef.current;
@@ -219,6 +225,10 @@ export function PlayerVoyageRoom({
       reconcile("live");
     });
     source.addEventListener("access-revoked", () => {
+      const currentLoad = activeLoad.current;
+      activeLoad.current = null;
+      currentLoad?.abort("access-revoked");
+      connectionRef.current = "revoked";
       setConnection("revoked");
       setError("Your access to this voyage was revoked.");
     });

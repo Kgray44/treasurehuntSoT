@@ -75,6 +75,7 @@ describe("PlayerSignIn route handoff", () => {
     await route.promise;
     expect(main).toHaveAttribute("data-auth-state", "accepted");
     expect(screen.queryByRole("alert")).not.toBeInTheDocument();
+    await waitFor(() => expect(screen.getByRole("button", { name: "Open my library" })).toBeEnabled());
   });
 
   it("restores a stable focused form when route handoff fails after authentication", async () => {

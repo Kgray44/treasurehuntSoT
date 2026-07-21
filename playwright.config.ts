@@ -65,7 +65,9 @@ export default defineConfig({
   webServer: useOwnedExternalServer
     ? undefined
     : {
-        command: `node node_modules/next/dist/bin/next dev -H 127.0.0.1 -p ${playwrightPort}`,
+        // Match the owned acceptance server. Webpack avoids Next 16 dev-chunk
+        // invalidation during long-lived WebKit matrices.
+        command: `node node_modules/next/dist/bin/next dev --webpack -H 127.0.0.1 -p ${playwrightPort}`,
         url: baseURL,
         reuseExistingServer: false,
         timeout: 120_000,

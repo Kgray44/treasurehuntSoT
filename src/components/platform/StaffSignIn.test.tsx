@@ -118,6 +118,7 @@ describe("StaffSignIn", () => {
     route.resolve();
     await route.promise;
     expect(screen.getByRole("main")).toHaveAttribute("data-auth-state", "accepted");
+    await waitFor(() => expect(screen.getByRole("button", { name: "Enter Captain's Command" })).toBeEnabled());
   });
 
   it("restores focus and never retains success when route handoff fails", async () => {

@@ -129,6 +129,10 @@ describe("InvitationCeremony", () => {
     accept.resolve(response(200, { ok: true, playthroughId: "voyage-1" }));
     await waitFor(() => expect(handoff).toHaveBeenCalledWith("/player/playthroughs/voyage-1", expect.any(AbortSignal)));
     expect(screen.getByRole("main")).toHaveAttribute("data-invitation-state", "accepted");
+    await waitFor(() =>
+      expect(screen.getByRole("button", { name: "Invitation accepted" })).toHaveAttribute("aria-busy", "false"),
+    );
+    expect(screen.getByRole("button", { name: "Invitation accepted" })).toBeDisabled();
   });
 
   it("clears rejected PIN progress and restores the PIN-required state", async () => {

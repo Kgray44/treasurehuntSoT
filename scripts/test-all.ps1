@@ -2,9 +2,25 @@ param([switch]$SkipBrowserInstall)
 $ErrorActionPreference = "Stop"
 . (Join-Path $PSScriptRoot "dev-common.ps1")
 
+$validationLockDirectory = Join-Path $env:LOCALAPPDATA "ForeverTreasureCompanion"
+[System.IO.Directory]::CreateDirectory($validationLockDirectory) | Out-Null
+$validationLockPath = Join-Path $validationLockDirectory "validation-runtime.lock"
+try {
+    # The validation runtime is intentionally shared so it can preserve the
+    # canonical database boundary. Hold an exclusive OS lock for the entire
+    # run so another checkout cannot mirror into it mid-validation.
+    $validationRuntimeLock = [System.IO.File]::Open(
+        $validationLockPath,
+        [System.IO.FileMode]::OpenOrCreate,
+        [System.IO.FileAccess]::ReadWrite,
+        [System.IO.FileShare]::None
+    )
+} catch [System.IO.IOException] {
+    throw "Another Forever Treasure validation run owns $validationLockPath. Wait for it to finish before starting a new run."
+}
+
 $projectRoot = [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot ".."))
-$canonicalDatabase = [System.IO.Path]::GetFullPath((Join-Path $projectRoot "prisma\dev.db"))
-if (-not (Test-Path -LiteralPath $canonicalDatabase -PathType Leaf)) { throw "Canonical prisma/dev.db is missing." }
+$canonicalDatabase = Get-ForeverCanonicalDatabase
 
 function Get-CanonicalDatabaseFamilyFingerprint {
     $members = @(
@@ -290,7 +306,10 @@ function Start-OwnedValidationServer {
     Assert-TcpPortAvailable -Port 3100
     $stdout = Join-Path $validationArtifacts "development-3100.out.log"
     $stderr = Join-Path $validationArtifacts "development-3100.err.log"
-    $serverProcess = Start-Process -FilePath $node -ArgumentList "node_modules/next/dist/bin/next", "dev", "-H", "127.0.0.1", "-p", "3100" -WorkingDirectory $runtimeRoot -WindowStyle Hidden -RedirectStandardOutput $stdout -RedirectStandardError $stderr -PassThru
+    # Keep the long-running cross-browser harness on Webpack. Next 16's default
+    # Turbopack development server can invalidate chunks while WebKit is still
+    # consuming them, which turns one transport failure into a matrix-wide cascade.
+    $serverProcess = Start-Process -FilePath $node -ArgumentList "node_modules/next/dist/bin/next", "dev", "--webpack", "-H", "127.0.0.1", "-p", "3100" -WorkingDirectory $runtimeRoot -WindowStyle Hidden -RedirectStandardOutput $stdout -RedirectStandardError $stderr -PassThru
     $launcherIdentity = Get-ProcessIdentity -ProcessId $serverProcess.Id
     if (-not $launcherIdentity) { throw "Owned validation launcher identity could not be recorded." }
     $listenerProcessId = $null
