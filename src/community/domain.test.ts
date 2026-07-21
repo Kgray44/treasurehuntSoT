@@ -46,7 +46,7 @@ describe("Harborlight domain foundation", () => {
         visibility: "COMMUNITY",
         publicationStatus: "PUBLISHED",
         locationClass: "FICTIONAL",
-        owner: { handle: "maker", displayName: "Maker", email: "secret@example.test" },
+        owner: { handle: "maker", displayName: "Maker", email: "secret@example.test" } as never,
         privateSnapshot: { answers: "secret", captainNotes: "secret" },
       }),
     ).toEqual(expect.not.objectContaining({ privateSnapshot: expect.anything() }));
