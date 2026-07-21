@@ -1142,13 +1142,16 @@ model CommunityOutboxEvent {
   idempotencyKey    String   @unique
   availableAt       DateTime @default(now())
   claimedAt         DateTime?
+  claimOwner        String?
+  claimExpiresAt    DateTime?
   processedAt       DateTime?
   attemptCount      Int      @default(0)
+  maxAttempts       Int      @default(5)
   terminalFailureAt DateTime?
   failureCode       String?
   createdAt         DateTime @default(now())
 
-  @@index([processedAt, availableAt])
+  @@index([processedAt, availableAt, claimExpiresAt])
   @@index([aggregateType, aggregateId, createdAt])
 }
 
