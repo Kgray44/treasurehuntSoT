@@ -356,10 +356,18 @@ The isolated browser evidence used application port `3100`, a uniquely named `va
 
 The first Phase 5 merge commit is created immediately after staging this record and the lifecycle correction. Its exact SHA is appended after commit creation.
 
+**Phase 5 merge commit:** `bbd86bd0fb9ebfab3d777adf91a2ae299ef3eb4d`.
+
 ### Universal Language merge
 
-Pending.
+`development/universal-language` was merged with `git merge --no-ff --no-commit development/universal-language` after the Phase 5 merge. Git had no unresolved paths. The semantic review retained the Phase 4 + Phase 5 implementation layer in `InvitationCeremony.tsx` and `JournalWorkspace.tsx`; Universal Language controlled user-visible terminology in every shared copy surface.
+
+**Universal Language merge commit:** `b5b5d63514cca3e00af38bd491626c65c361d64c`.
+
+The language inventory contains 22 rows with 0 pending, 0 open BLOCKER, and 0 open HIGH items. `scripts/validate-user-facing-language.ts` passed, as did the public Chromium Voyagewright language test. One stale delayed-handoff `StaffSignIn` assertion retained `Captain's Command`; it was corrected to `Captain's Console` and the 11-file/174-test combined suite passed.
+
+Formatting reconciliation identified eight checked paths: the Phase 4 validation report, Phase 5 design record, `validate-animation-assets.ts`, `rive-contracts.ts`, `RiveRuntime.tsx`, and three affected workspace tests. They were formatted individually, with no repository-wide formatting operation. The final full formatter check passed.
 
 ### Final reconciliation, manifest, archive synchronization, push, and cleanup
 
-Pending.
+Validation details, runtime-isolation evidence, remaining blockers, and the one-time full-harness classification are recorded in `Project_Lanternwake_Phase_5_Universal_Language_Integration_Validation_Report.md`. Hash, archive synchronization, remote verification, and cleanup results are appended by the final reconciliation commit.
