@@ -68,7 +68,7 @@ export function AccountFlow({ mode }: Props) {
           sessionStorage.setItem("wayfarer-csrf", body.csrfToken);
         }
       })
-      .catch(() => setError("Unable to load active sessions."));
+      .catch(() => setError("Unable to load signed-in devices."));
   }, [mode]);
   async function revoke(url: string, method = "POST") {
     const response = await fetch(url, { method, headers: { "x-csrf-token": csrf } });
