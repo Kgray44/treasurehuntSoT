@@ -2,7 +2,7 @@
 
 ## Authority and relationships
 
-Harborlight is a catalog and distribution domain, not a second Chronicle runtime. `TallTale` remains authored Chronicle identity, `TaleDraft` is mutable Studio state, `PublishedTaleVersion` is the immutable source, and `TaleSession` remains a live voyage. `CommunityProfile` has an optional one-to-one foreign key to the currently canonical `PlayerProfile`; `identityKey` is retained only as a Wayfarer migration seam. Credentials, session data, email, and invitation state are not copied.
+Harborlight is a catalog and distribution domain, not a second Chronicle runtime. `Chronicle` remains the authored canonical domain, `TaleDraft` is mutable Studio state, `PublishedTaleVersion` is the immutable source, and `TaleSession` remains a live voyage. `CommunityProfile.accountId` has a required one-to-one foreign key to canonical `UserAccount`; credentials, sessions, email, and invitation state are never copied.
 
 `CommunityProfile 1--* CommunityListing 1--* CommunityRelease`; a listing optionally points at its current release, while every release retains its listing history. A release optionally references one `PublishedTaleVersion`, is published by a profile, has ordered attributions, optional ownership declarations, and optional immutable asset references. Assets belong to a profile and may attach to one release. The outbox is independent so it can preserve aggregate events even when a business relationship is later removed.
 

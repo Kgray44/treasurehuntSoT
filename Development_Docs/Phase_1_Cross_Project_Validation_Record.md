@@ -1,21 +1,23 @@
 # Phase 1 Cross-Project Validation Record
 
-Status: pushed blocked-acceptance candidate. No final acceptance claim is made by this record.
+Status: four-project mainline validation record. Rive production acceptance remains blocked; all recorded non-Rive gates below are current integration evidence.
 
-| Gate | Command/environment | Result |
-| --- | --- | --- |
-| Remote preflight | isolated bare mirror; live `git ls-remote` | passed; `origin/main=0ecd2f9cca6116e2f7f9ab4408ade749fb061e72` and all three frozen candidate commits verified |
-| SQLite migration rehearsal | `scripts/test-all.ps1 -SkipBrowserInstall`; disposable local validation `prisma/validation.db` | passed; all 9 ordered migrations applied to an empty isolated SQLite database |
-| Prisma generate | same isolated local validation runtime | passed |
-| Formatting | same | passed after convergence formatting commit |
-| Lint | same | passed with 23 warnings and 0 errors |
-| TypeScript | same | passed |
-| Voyagewright language | same | passed |
-| Unit tests | Vitest 4.1.10 in isolated local runtime | 89 files, 852 tests passed |
-| One Voyage architecture validator | isolated local validation runtime | passed |
-| Private repository/build scans | isolated local validation runtime | both passed |
-| Lanternwake production assets | `tsx scripts/validate-animation-assets.ts` | NO-GO: four genuine Rive authoring/export pairs are absent |
+| Gate                                | Command/environment                                                               | Result                                                                                                                                                                         |
+| ----------------------------------- | --------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Remote preflight                    | `git fetch --prune` and `git ls-remote`                                           | passed; `origin/main=0ecd2f9cca6116e2f7f9ab4408ade749fb061e72`, convergence `25e557458e1cc1b24be211aad44cea2b370e8151`, Harborlight `7abd4cac72a32e0088ef7702c3bfe4c852ed8787` |
+| SQLite migration rehearsal          | direct ordered SQL execution against a new disposable SQLite database             | passed; all 12 ordered migrations applied, `CommunityProfile.accountId -> UserAccount.id`, and `PRAGMA foreign_key_check` passed                                               |
+| Prisma format / validate / generate | isolated local validation runtime                                                 | passed for SQLite and MySQL schemas                                                                                                                                            |
+| Formatting                          | Prettier check after final formatting                                             | pending final documentation synchronization check                                                                                                                              |
+| Lint                                | same                                                                              | passed with 23 warnings and 0 errors                                                                                                                                           |
+| TypeScript                          | same                                                                              | passed                                                                                                                                                                         |
+| Voyagewright language               | same                                                                              | passed                                                                                                                                                                         |
+| Unit tests                          | Vitest 4.1.10 in isolated local runtime                                           | 92 files, 862 tests passed                                                                                                                                                     |
+| One Voyage architecture validator   | isolated local validation runtime                                                 | passed                                                                                                                                                                         |
+| Private repository/build scans      | isolated local validation runtime                                                 | repository, fixture, and production-build scans passed                                                                                                                         |
+| Harborlight focused suite           | Community domain, storage, scene contract, Wayfarer and Sealed Hold focused tests | 5 files, 18 tests passed                                                                                                                                                       |
+| Production build                    | `next build --webpack`                                                            | passed after a safe inherited route-export repair; baseline `origin/main` exhibited the same pre-repair Next route-export failure                                              |
+| Lanternwake production assets       | `tsx scripts/validate-animation-assets.ts`                                        | NO-GO: four genuine Rive authoring/export pairs are absent                                                                                                                     |
 
-The full harness correctly stopped at the asset NO-GO, so production build, browser journeys, restart proof, and the harness's later database checks are **not run**. No isolated MySQL endpoint/schema was configured for this task, so live MySQL migration/runtime proof is **not run**. These are skips/blockers, not passes.
+The broad harness's Rive gate remains a NO-GO, but independent non-Rive validation was run directly. Browser journeys and restart proof remain not run; no isolated MySQL endpoint/schema was configured, so live MySQL migration/runtime proof is not run. These are skips/limitations, not passes.
 
 The missing external artifacts are: invitation seal, journal clasp, voyage compass, and finale mechanism Rive source/export pairs. The implementation candidate remains durable and pushable; release acceptance remains blocked until those artifacts and the deferred browser/MySQL/restart gates are supplied and passed.

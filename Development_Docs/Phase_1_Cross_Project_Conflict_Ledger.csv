@@ -10,3 +10,7 @@ package scripts,all candidates,reconcile ordered MySQL runners and private-conte
 private-content schema,Sealed Hold opaque owner/tale/session strings;Wayfarer accounts;One Voyage Chronicle,retain historical strings and add nullable account Chronicle and Session relations with MySQL FK constraints,resolved
 package scripts,all candidates,add ordered Wayfarer 0006 Sealed Hold 0007 and cross-project 0008 runners,resolved
 asset event stream,One Voyage legacy-compatible Chronicle stream;Sealed Hold generic stream helper,retain the canonical compatibility adapter and do not create a second player event writer,resolved
+Harborlight schema,Harborlight PlayerProfile-owned Community Profile;Wayfarer UserAccount,CommunityProfile.accountId is the only Community identity relation and all Community actions/audits use canonical account IDs,resolved
+Harborlight source relation,Harborlight TallTale publication seam;One Voyage Chronicle runtime,CommunityRelease.sourcePublishedTaleVersionId references immutable PublishedTaleVersion on Chronicle,resolved
+Harborlight migrations,Harborlight SQLite 20260721140000 and MySQL 0006/0007 collide with convergence chain,renumber Harborlight after cross-project ownership to SQLite 150000-170000 and MySQL 0009-0010,resolved
+Community storage/outbox,Harborlight community assets/outbox;Sealed Hold encrypted private storage,retain separate namespaces and a typed idempotent Community outbox without exposing private package metadata,resolved

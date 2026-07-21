@@ -1,10 +1,12 @@
 Phase 1 Cross-Project Convergence Manifest
-Status: pushed blocked-acceptance integration candidate; never merged to main.
+Status: four-project Phase 1 mainline candidate. Mainline publication is pending final non-Rive validation and fast-forward.
 
 Frozen inputs
 - Project One Voyage: 4e8f385687b01aa6b1e97452ff76e6e7e3b58b8c
 - Project Wayfarer: a478d7957e112c9ce6f63fd423746d3df2a697ce
 - Project Sealed Hold: 4b93b4f4554ba504bec6d6462d39960dd28b4afe
+- Project Harborlight: 7abd4cac72a32e0088ef7702c3bfe4c852ed8787
+- Previous three-project convergence: 25e557458e1cc1b24be211aad44cea2b370e8151
 - Verified live origin/main at preflight: 0ecd2f9cca6116e2f7f9ab4408ade749fb061e72
 - One Voyage base a0a2111ced1c9ef840fde214763fda9144ce41d4
 
@@ -18,7 +20,10 @@ Migration sequence
 3. deterministic Wayfarer actor backfill within the identity migration; ambiguous identities remain recorded, not merged
 4. 20260721130000_project_sealed_hold_phase1 / MySQL 0007_project_sealed_hold_phase1
 5. 20260721140000_cross_project_ownership_constraints / MySQL 0008_cross_project_ownership_constraints
-6. no destructive compatibility retirement
+6. 20260721150000_project_harborlight_phase1 / MySQL 0009_project_harborlight_phase1
+7. 20260721160000_project_harborlight_relations_outbox / MySQL 0010_project_harborlight_relations_outbox
+8. 20260721170000_project_harborlight_sqlite_foreign_keys
+9. no destructive compatibility retirement
 
 Canonical decisions
 - Chronicle, immutable versions, Tale Sessions, session events, snapshots, and commands have one runtime authority.
@@ -26,6 +31,7 @@ Canonical decisions
 - Actor strings are retained as historical snapshots alongside canonical nullable account keys.
 - Private imports/assets retain historical actor strings and link to canonical account, Chronicle, and Tale Session relationships.
 - Imports are private by default and do not publish, launch, invite, or grant Player access.
+- Harborlight is an immutable Community catalog/release surface, not a second Chronicle runtime. Its Community Profile belongs to canonical `UserAccount`; public publishing remains disabled.
 
 Validation evidence
 - Empty isolated SQLite migration chain: passed, 9 migrations.

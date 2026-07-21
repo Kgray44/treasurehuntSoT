@@ -1,6 +1,6 @@
 # Phase 1 Cross-Project Convergence Design Record
 
-Status: integration candidate; not merged to `main` and not production accepted.
+Status: four-project Phase 1 mainline candidate; production release acceptance remains separately blocked by external Rive artwork.
 
 ## Baseline decision
 
@@ -9,10 +9,11 @@ The branch starts at Project One Voyage `4e8f385687b01aa6b1e97452ff76e6e7e3b58b8
 ## Canonical model
 
 - `Chronicle`, `PublishedTaleVersion`, `TaleSession`, `TaleSessionEvent`, the snapshot builder, and the command path are the single content/runtime authority. Legacy Companion writers remain compatibility-only and must not be called by canonical mutations.
-- `UserAccount` is the claimed-person root. `PlayerProfile` is one optional Player projection per account. Player, Captain, and Creator are account capabilities, never separate identities.
+- `UserAccount` is the claimed-person root. `PlayerProfile` is one optional Player projection per account. Player, Captain, Creator, and Community Profile are account capabilities/profiles, never separate identities.
 - Creator and Captain mutations retain historical actor strings but write canonical account foreign keys. Audits retain historical actor snapshots and use canonical account ownership when resolvable. Ambiguous source identities remain unresolved; they are never auto-merged.
 - Canonical sessions, invitations, membership, Chronicle ownership, and private import ownership resolve through `UserAccount`. Legacy Player cookies and invitations remain secure compatibility exchanges.
 - Private packages point to canonical Chronicle content. Imports are private drafts only: they do not publish, launch, invite, or grant Player access. Private assets require canonical role, session membership, publication/reveal state, and availability checks.
+- Harborlight owns Community Profiles, listings, immutable releases, attribution, license policy, Community assets, and its transactional outbox. Releases reference `PublishedTaleVersion`; they never create a mutable Chronicle, campaign, or Tale Session. Community storage remains distinct from Sealed Hold private encrypted storage.
 
 ## Compatibility and removal gates
 
@@ -31,6 +32,7 @@ The branch starts at Project One Voyage `4e8f385687b01aa6b1e97452ff76e6e7e3b58b8
 3. Wayfarer actor ownership and deterministic backfill, with unresolved candidates recorded rather than merged.
 4. Sealed Hold package, import, and private-asset models.
 5. Cross-project account/Chronicle/private-content constraints and indexes.
-6. Compatibility deprecation only after the documented removal gates pass; no legacy table is dropped in this release.
+6. Harborlight's Community catalog, account ownership relation, outbox, and SQLite foreign-key closure follow the ownership chain.
+7. Compatibility deprecation only after the documented removal gates pass; no legacy table is dropped in this release.
 
 SQLite adds the ordered ownership columns and indexes; its existing-table limitation means the physical cross-domain foreign keys are enforced by Prisma/application relations in this release. MySQL `0008_cross_project_ownership_constraints` adds the physical account, Chronicle, and Tale Session foreign keys. A production MySQL rehearsal remains required before acceptance.

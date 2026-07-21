@@ -6,4 +6,4 @@ The integrated journey proves one account across Player/Captain/Creator, Chronic
 
 Skips are recorded as skips, never passes. The Rive source/export gate remains independently required.
 
-Current result: the focused convergence suite reached 852 passing unit tests, but the full harness stopped at the intentional Rive production-asset NO-GO. Browser, production-build, and restart journeys therefore remain deferred acceptance work, as does a provisioned isolated MySQL proof.
+Current four-project requirement: run focused One Voyage, Wayfarer, Sealed Hold, Harborlight, ownership, projection-privacy, migration, and scan proofs directly; then run formatting, lint, TypeScript, complete Vitest, and production build even if the broad harness stops at the Rive asset gate. Browser/restart and live MySQL proof are reported truthfully when unavailable.
