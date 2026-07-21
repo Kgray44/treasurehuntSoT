@@ -7,3 +7,6 @@ SQLite migration,One Voyage Chronicle table rename;Wayfarer TallTale reference,t
 MySQL migration id,One Voyage 0005;Wayfarer 0005,keep One Voyage 0005 and rename Wayfarer to 0006,resolved
 private-content schema,Sealed Hold;Wayfarer;One Voyage,await inspected Sealed Hold application and create canonical account/Chronicle links,pending
 package scripts,all candidates,reconcile ordered MySQL runners and private-content commands,pending
+private-content schema,Sealed Hold opaque owner/tale/session strings;Wayfarer accounts;One Voyage Chronicle,retain historical strings and add nullable account Chronicle and Session relations with MySQL FK constraints,resolved
+package scripts,all candidates,add ordered Wayfarer 0006 Sealed Hold 0007 and cross-project 0008 runners,resolved
+asset event stream,One Voyage legacy-compatible Chronicle stream;Sealed Hold generic stream helper,retain the canonical compatibility adapter and do not create a second player event writer,resolved

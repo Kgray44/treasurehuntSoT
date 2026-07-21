@@ -1,7 +1,40 @@
 Phase 1 Cross-Project Convergence Manifest
-Status: draft; finalized only immediately before the final commit.
-Frozen sources:
-- One Voyage 4e8f385687b01aa6b1e97452ff76e6e7e3b58b8c
-- Wayfarer a478d7957e112c9ce6f63fd423746d3df2a697ce
-- Sealed Hold 4b93b4f4554ba504bec6d6462d39960dd28b4afe
-Verified origin/main at preflight: 0ecd2f9cca6116e2f7f9ab4408ade749fb061e72
+Status: pushed blocked-acceptance integration candidate; never merged to main.
+
+Frozen inputs
+- Project One Voyage: 4e8f385687b01aa6b1e97452ff76e6e7e3b58b8c
+- Project Wayfarer: a478d7957e112c9ce6f63fd423746d3df2a697ce
+- Project Sealed Hold: 4b93b4f4554ba504bec6d6462d39960dd28b4afe
+- Verified live origin/main at preflight: 0ecd2f9cca6116e2f7f9ab4408ade749fb061e72
+- One Voyage base a0a2111ced1c9ef840fde214763fda9144ce41d4
+
+Convergence branch
+- codex/phase1-cross-project-convergence
+- Baseline: One Voyage, because it is built on accepted Lanternwake/Universal Language history and supplies the canonical Chronicle runtime.
+
+Migration sequence
+1. 20260721113000_project_one_voyage / MySQL 0005_project_one_voyage
+2. 20260721120000_wayfarer_unified_identity / MySQL 0006_wayfarer_unified_identity
+3. deterministic Wayfarer actor backfill within the identity migration; ambiguous identities remain recorded, not merged
+4. 20260721130000_project_sealed_hold_phase1 / MySQL 0007_project_sealed_hold_phase1
+5. 20260721140000_cross_project_ownership_constraints / MySQL 0008_cross_project_ownership_constraints
+6. no destructive compatibility retirement
+
+Canonical decisions
+- Chronicle, immutable versions, Tale Sessions, session events, snapshots, and commands have one runtime authority.
+- UserAccount is the identity root; Player is one optional profile; Captain and Creator are capabilities.
+- Actor strings are retained as historical snapshots alongside canonical nullable account keys.
+- Private imports/assets retain historical actor strings and link to canonical account, Chronicle, and Tale Session relationships.
+- Imports are private by default and do not publish, launch, invite, or grant Player access.
+
+Validation evidence
+- Empty isolated SQLite migration chain: passed, 9 migrations.
+- Prisma generate, formatting, TypeScript, and Voyagewright language: passed.
+- Lint: passed with 23 warnings and 0 errors.
+- Vitest: 89 files / 852 tests passed.
+- One Voyage architecture validation and private repository/build scans: passed.
+- Full browser, restart, production-build, and live isolated MySQL proofs: not run because the full harness stopped at the external Rive gate.
+
+Release blocker
+- Four genuine Rive authoring/export pairs are absent: invitation seal, journal clasp, voyage compass, finale mechanism.
+- This blocker is external to the convergence code but blocks acceptance until supplied and validated.

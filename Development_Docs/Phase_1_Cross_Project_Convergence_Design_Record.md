@@ -32,3 +32,5 @@ The branch starts at Project One Voyage `4e8f385687b01aa6b1e97452ff76e6e7e3b58b8
 4. Sealed Hold package, import, and private-asset models.
 5. Cross-project account/Chronicle/private-content constraints and indexes.
 6. Compatibility deprecation only after the documented removal gates pass; no legacy table is dropped in this release.
+
+SQLite adds the ordered ownership columns and indexes; its existing-table limitation means the physical cross-domain foreign keys are enforced by Prisma/application relations in this release. MySQL `0008_cross_project_ownership_constraints` adds the physical account, Chronicle, and Tale Session foreign keys. A production MySQL rehearsal remains required before acceptance.

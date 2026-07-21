@@ -5,3 +5,5 @@ Focused gates are run after each candidate. Final acceptance requires formatting
 The integrated journey proves one account across Player/Captain/Creator, Chronicle creation and account ownership, canonical Session ownership, legacy invitation membership, guest claim/merge collision safety, encrypted export/import as a private draft, asset denial/reveal/revocation, restart preservation, untouched legacy writers, and absence of private sentinels from public/unauthorized output.
 
 Skips are recorded as skips, never passes. The Rive source/export gate remains independently required.
+
+Current result: the focused convergence suite reached 852 passing unit tests, but the full harness stopped at the intentional Rive production-asset NO-GO. Browser, production-build, and restart journeys therefore remain deferred acceptance work, as does a provisioned isolated MySQL proof.
