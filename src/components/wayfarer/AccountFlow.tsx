@@ -19,7 +19,9 @@ export function AccountFlow({ mode }: Props) {
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
-  const [csrf, setCsrf] = useState("");
+  const [csrf, setCsrf] = useState(() =>
+    typeof window === "undefined" ? "" : (sessionStorage.getItem("wayfarer-csrf") ?? ""),
+  );
   const [sessions, setSessions] = useState<Array<{ id: string; deviceLabel?: string; current: boolean }>>([]);
   const queryToken =
     typeof window === "undefined" ? "" : (new URLSearchParams(window.location.search).get("token") ?? "");
@@ -57,8 +59,6 @@ export function AccountFlow({ mode }: Props) {
 
   useEffect(() => {
     if (mode !== "security") return;
-    const stored = sessionStorage.getItem("wayfarer-csrf") ?? "";
-    setCsrf(stored);
     fetch("/api/auth/sessions")
       .then((r) => r.json())
       .then((body) => {
