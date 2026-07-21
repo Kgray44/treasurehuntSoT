@@ -553,6 +553,7 @@ model PublishedTaleVersion {
   isCurrent       Boolean       @default(true)
   tale            TallTale      @relation(fields: [taleId], references: [id], onDelete: Cascade)
   sessions        TaleSession[]
+  communityReleases CommunityRelease[] @relation("CommunityReleaseSource")
 
   @@unique([taleId, versionNumber])
   @@index([taleId, isCurrent])
@@ -769,6 +770,7 @@ model PlayerProfile {
   sessions     PlayerIdentitySession[]
   memberships  PlaythroughMembership[]
   invitations  Invitation[]
+  communityProfile CommunityProfile?
 
   @@index([status, displayName])
 }
@@ -995,6 +997,12 @@ model CommunityProfile {
   lastPublishedAt    DateTime?
   createdAt          DateTime @default(now())
   updatedAt          DateTime @updatedAt
+  playerProfile      PlayerProfile? @relation(fields: [playerProfileId], references: [id], onDelete: SetNull)
+  listings           CommunityListing[] @relation("CommunityListingOwner")
+  publishedReleases  CommunityRelease[] @relation("CommunityReleasePublisher")
+  creditedAttributions CommunityReleaseAttribution[]
+  declarations       CommunityOwnershipDeclaration[]
+  assets             CommunityAssetReference[]
 
   @@index([moderationStatus, visibility])
 }
@@ -1021,6 +1029,10 @@ model CommunityListing {
   removedAt         DateTime?
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
+  owner             CommunityProfile @relation("CommunityListingOwner", fields: [ownerProfileId], references: [id], onDelete: Restrict)
+  currentRelease    CommunityRelease? @relation("CommunityListingCurrentRelease", fields: [currentReleaseId], references: [id], onDelete: SetNull)
+  releases          CommunityRelease[] @relation("CommunityListingReleases")
+  declarations      CommunityOwnershipDeclaration[]
 
   @@index([ownerProfileId, updatedAt])
   @@index([publicationStatus, visibility])
@@ -1047,6 +1059,13 @@ model CommunityRelease {
   deprecatedAt                 DateTime?
   replacementReleaseId         String?
   createdAt                    DateTime @default(now())
+  listing                      CommunityListing @relation("CommunityListingReleases", fields: [listingId], references: [id], onDelete: Restrict)
+  currentForListing            CommunityListing? @relation("CommunityListingCurrentRelease")
+  sourcePublishedTaleVersion   PublishedTaleVersion? @relation("CommunityReleaseSource", fields: [sourcePublishedTaleVersionId], references: [id], onDelete: Restrict)
+  publishedBy                  CommunityProfile @relation("CommunityReleasePublisher", fields: [publishedByProfileId], references: [id], onDelete: Restrict)
+  attributions                 CommunityReleaseAttribution[]
+  declarations                 CommunityOwnershipDeclaration[]
+  assets                       CommunityAssetReference[]
 
   @@unique([listingId, semanticVersion])
   @@index([listingId, publishedAt])
@@ -1064,6 +1083,8 @@ model CommunityReleaseAttribution {
   licenseReference    String?
   sortOrder           Int
   createdAt           DateTime @default(now())
+  release             CommunityRelease @relation(fields: [releaseId], references: [id], onDelete: Cascade)
+  creditedProfile     CommunityProfile? @relation(fields: [creditedProfileId], references: [id], onDelete: SetNull)
 
   @@index([releaseId, sortOrder])
 }
@@ -1077,6 +1098,9 @@ model CommunityOwnershipDeclaration {
   acceptedStatements String   @db.LongText
   evidenceReferences String   @default("[]") @db.LongText
   createdAt          DateTime @default(now())
+  listing            CommunityListing @relation(fields: [listingId], references: [id], onDelete: Restrict)
+  release            CommunityRelease? @relation(fields: [releaseId], references: [id], onDelete: Restrict)
+  declarant          CommunityProfile @relation(fields: [declarantProfileId], references: [id], onDelete: Restrict)
 
   @@index([listingId, releaseId])
 }
@@ -1098,6 +1122,8 @@ model CommunityAssetReference {
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
   removedAt        DateTime?
+  owner            CommunityProfile @relation(fields: [ownerProfileId], references: [id], onDelete: Restrict)
+  release          CommunityRelease? @relation(fields: [releaseId], references: [id], onDelete: SetNull)
 
   @@unique([ownerProfileId, checksum])
   @@index([releaseId, visibility])
