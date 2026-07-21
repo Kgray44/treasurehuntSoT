@@ -543,19 +543,19 @@ model BlockConnection {
 }
 
 model PublishedTaleVersion {
-  id              String        @id @default(cuid())
-  taleId          String
-  versionNumber   Int
-  versionLabel    String
-  publishedAt     DateTime      @default(now())
-  publishedBy     String
-  releaseNotes    String?
-  contentSnapshot String
-  schemaVersion   Int           @default(1)
-  checksum        String
-  isCurrent       Boolean       @default(true)
-  tale            TallTale      @relation(fields: [taleId], references: [id], onDelete: Cascade)
-  sessions        TaleSession[]
+  id                String             @id @default(cuid())
+  taleId            String
+  versionNumber     Int
+  versionLabel      String
+  publishedAt       DateTime           @default(now())
+  publishedBy       String
+  releaseNotes      String?
+  contentSnapshot   String
+  schemaVersion     Int                @default(1)
+  checksum          String
+  isCurrent         Boolean            @default(true)
+  tale              TallTale           @relation(fields: [taleId], references: [id], onDelete: Cascade)
+  sessions          TaleSession[]
   communityReleases CommunityRelease[] @relation("CommunityReleaseSource")
 
   @@unique([taleId, versionNumber])
@@ -760,19 +760,19 @@ model TaleSession {
 }
 
 model PlayerProfile {
-  id           String                  @id @default(cuid())
-  username     String?                 @unique
-  passwordHash String?
-  displayName  String
-  status       String                  @default("ACTIVE")
-  preferences  String                  @default("{}")
-  claimedAt    DateTime?
-  createdAt    DateTime                @default(now())
-  updatedAt    DateTime                @updatedAt
-  lastSeenAt   DateTime?
-  sessions     PlayerIdentitySession[]
-  memberships  PlaythroughMembership[]
-  invitations  Invitation[]
+  id               String                  @id @default(cuid())
+  username         String?                 @unique
+  passwordHash     String?
+  displayName      String
+  status           String                  @default("ACTIVE")
+  preferences      String                  @default("{}")
+  claimedAt        DateTime?
+  createdAt        DateTime                @default(now())
+  updatedAt        DateTime                @updatedAt
+  lastSeenAt       DateTime?
+  sessions         PlayerIdentitySession[]
+  memberships      PlaythroughMembership[]
+  invitations      Invitation[]
   communityProfile CommunityProfile?
 
   @@index([status, displayName])
@@ -983,58 +983,58 @@ model TaleHelperPairing {
 // Harborlight catalog records are intentionally additive. identityKey is an
 // adapter seam for current PlayerProfile identity and future Wayfarer accounts.
 model CommunityProfile {
-  id                 String   @id @default(cuid())
-  identityKey        String   @unique
-  identityKind       String   @default("PLAYER_PROFILE")
-  playerProfileId    String?  @unique
-  normalizedHandle   String   @unique
-  handle             String
-  displayName        String
-  biography          String?
-  visibility         String   @default("COMMUNITY")
-  creatorStatus      String   @default("ACTIVE")
-  moderationStatus   String   @default("ACTIVE")
-  verificationStatus String   @default("UNVERIFIED")
-  supportedLanguages String   @default("[]")
-  socialLinks        String   @default("[]")
-  lastPublishedAt    DateTime?
-  createdAt          DateTime @default(now())
-  updatedAt          DateTime @updatedAt
-  playerProfile      PlayerProfile? @relation(fields: [playerProfileId], references: [id], onDelete: SetNull)
-  listings           CommunityListing[] @relation("CommunityListingOwner")
-  publishedReleases  CommunityRelease[] @relation("CommunityReleasePublisher")
+  id                   String                          @id @default(cuid())
+  identityKey          String                          @unique
+  identityKind         String                          @default("PLAYER_PROFILE")
+  playerProfileId      String?                         @unique
+  normalizedHandle     String                          @unique
+  handle               String
+  displayName          String
+  biography            String?
+  visibility           String                          @default("COMMUNITY")
+  creatorStatus        String                          @default("ACTIVE")
+  moderationStatus     String                          @default("ACTIVE")
+  verificationStatus   String                          @default("UNVERIFIED")
+  supportedLanguages   String                          @default("[]")
+  socialLinks          String                          @default("[]")
+  lastPublishedAt      DateTime?
+  createdAt            DateTime                        @default(now())
+  updatedAt            DateTime                        @updatedAt
+  playerProfile        PlayerProfile?                  @relation(fields: [playerProfileId], references: [id], onDelete: SetNull)
+  listings             CommunityListing[]              @relation("CommunityListingOwner")
+  publishedReleases    CommunityRelease[]              @relation("CommunityReleasePublisher")
   creditedAttributions CommunityReleaseAttribution[]
-  declarations       CommunityOwnershipDeclaration[]
-  assets             CommunityAssetReference[]
+  declarations         CommunityOwnershipDeclaration[]
+  assets               CommunityAssetReference[]
 
   @@index([moderationStatus, visibility])
 }
 
 model CommunityListing {
-  id                String   @id @default(cuid())
-  slug              String   @unique
+  id                String                          @id @default(cuid())
+  slug              String                          @unique
   itemType          String
   ownerProfileId    String
   title             String
   shortDescription  String?
   longDescription   String?
-  visibility        String   @default("PRIVATE")
-  publicationStatus String   @default("DRAFT")
-  moderationStatus  String   @default("ACTIVE")
-  spoilerLevel      String   @default("PREVIEW_SAFE")
-  locationClass     String   @default("FICTIONAL")
+  visibility        String                          @default("PRIVATE")
+  publicationStatus String                          @default("DRAFT")
+  moderationStatus  String                          @default("ACTIVE")
+  spoilerLevel      String                          @default("PREVIEW_SAFE")
+  locationClass     String                          @default("FICTIONAL")
   primaryCategory   String?
-  tags              String   @default("[]")
-  contentWarnings   String   @default("[]")
-  currentReleaseId  String?  @unique
+  tags              String                          @default("[]")
+  contentWarnings   String                          @default("[]")
+  currentReleaseId  String?                         @unique
   publishedAt       DateTime?
   archivedAt        DateTime?
   removedAt         DateTime?
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
-  owner             CommunityProfile @relation("CommunityListingOwner", fields: [ownerProfileId], references: [id], onDelete: Restrict)
-  currentRelease    CommunityRelease? @relation("CommunityListingCurrentRelease", fields: [currentReleaseId], references: [id], onDelete: SetNull)
-  releases          CommunityRelease[] @relation("CommunityListingReleases")
+  createdAt         DateTime                        @default(now())
+  updatedAt         DateTime                        @updatedAt
+  owner             CommunityProfile                @relation("CommunityListingOwner", fields: [ownerProfileId], references: [id], onDelete: Restrict)
+  currentRelease    CommunityRelease?               @relation("CommunityListingCurrentRelease", fields: [currentReleaseId], references: [id], onDelete: SetNull)
+  releases          CommunityRelease[]              @relation("CommunityListingReleases")
   declarations      CommunityOwnershipDeclaration[]
 
   @@index([ownerProfileId, updatedAt])
@@ -1042,30 +1042,30 @@ model CommunityListing {
 }
 
 model CommunityRelease {
-  id                           String   @id @default(cuid())
+  id                           String                          @id @default(cuid())
   listingId                    String
   semanticVersion              String
-  manifestSchemaVersion        Int      @default(1)
+  manifestSchemaVersion        Int                             @default(1)
   minimumPlatformVersion       String?
   sourcePublishedTaleVersionId String?
   manifest                     String
   manifestChecksum             String
   packageChecksum              String?
   releaseNotes                 String?
-  compatibility                String   @default("{}")
+  compatibility                String                          @default("{}")
   licenseSnapshot              String
-  attributionSnapshot          String   @default("[]")
-  spoilerSnapshot              String   @default("{}")
-  moderationStatus             String   @default("ACTIVE")
+  attributionSnapshot          String                          @default("[]")
+  spoilerSnapshot              String                          @default("{}")
+  moderationStatus             String                          @default("ACTIVE")
   publishedByProfileId         String
-  publishedAt                  DateTime @default(now())
+  publishedAt                  DateTime                        @default(now())
   deprecatedAt                 DateTime?
   replacementReleaseId         String?
-  createdAt                    DateTime @default(now())
-  listing                      CommunityListing @relation("CommunityListingReleases", fields: [listingId], references: [id], onDelete: Restrict)
-  currentForListing            CommunityListing? @relation("CommunityListingCurrentRelease")
-  sourcePublishedTaleVersion   PublishedTaleVersion? @relation("CommunityReleaseSource", fields: [sourcePublishedTaleVersionId], references: [id], onDelete: Restrict)
-  publishedBy                  CommunityProfile @relation("CommunityReleasePublisher", fields: [publishedByProfileId], references: [id], onDelete: Restrict)
+  createdAt                    DateTime                        @default(now())
+  listing                      CommunityListing                @relation("CommunityListingReleases", fields: [listingId], references: [id], onDelete: Restrict)
+  currentForListing            CommunityListing?               @relation("CommunityListingCurrentRelease")
+  sourcePublishedTaleVersion   PublishedTaleVersion?           @relation("CommunityReleaseSource", fields: [sourcePublishedTaleVersionId], references: [id], onDelete: Restrict)
+  publishedBy                  CommunityProfile                @relation("CommunityReleasePublisher", fields: [publishedByProfileId], references: [id], onDelete: Restrict)
   attributions                 CommunityReleaseAttribution[]
   declarations                 CommunityOwnershipDeclaration[]
   assets                       CommunityAssetReference[]
@@ -1076,7 +1076,7 @@ model CommunityRelease {
 }
 
 model CommunityReleaseAttribution {
-  id                  String   @id @default(cuid())
+  id                  String            @id @default(cuid())
   releaseId           String
   creditedProfileId   String?
   creditedDisplayName String
@@ -1085,31 +1085,31 @@ model CommunityReleaseAttribution {
   requiredCreditText  String?
   licenseReference    String?
   sortOrder           Int
-  createdAt           DateTime @default(now())
-  release             CommunityRelease @relation(fields: [releaseId], references: [id], onDelete: Cascade)
+  createdAt           DateTime          @default(now())
+  release             CommunityRelease  @relation(fields: [releaseId], references: [id], onDelete: Cascade)
   creditedProfile     CommunityProfile? @relation(fields: [creditedProfileId], references: [id], onDelete: SetNull)
 
   @@index([releaseId, sortOrder])
 }
 
 model CommunityOwnershipDeclaration {
-  id                 String   @id @default(cuid())
+  id                 String            @id @default(cuid())
   listingId          String
   releaseId          String?
   declarantProfileId String
   declarationVersion Int
   acceptedStatements String
-  evidenceReferences String   @default("[]")
-  createdAt          DateTime @default(now())
-  listing            CommunityListing @relation(fields: [listingId], references: [id], onDelete: Restrict)
+  evidenceReferences String            @default("[]")
+  createdAt          DateTime          @default(now())
+  listing            CommunityListing  @relation(fields: [listingId], references: [id], onDelete: Restrict)
   release            CommunityRelease? @relation(fields: [releaseId], references: [id], onDelete: Restrict)
-  declarant          CommunityProfile @relation(fields: [declarantProfileId], references: [id], onDelete: Restrict)
+  declarant          CommunityProfile  @relation(fields: [declarantProfileId], references: [id], onDelete: Restrict)
 
   @@index([listingId, releaseId])
 }
 
 model CommunityAssetReference {
-  id               String   @id @default(cuid())
+  id               String            @id @default(cuid())
   ownerProfileId   String
   releaseId        String?
   checksum         String
@@ -1117,15 +1117,15 @@ model CommunityAssetReference {
   detectedMimeType String?
   fileSize         Int
   storageProvider  String
-  storageKey       String   @unique
-  visibility       String   @default("PRIVATE")
-  scanStatus       String   @default("SCAN_NOT_CONFIGURED")
-  processingStatus String   @default("UPLOADED")
-  accessibility    String   @default("{}")
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @updatedAt
+  storageKey       String            @unique
+  visibility       String            @default("PRIVATE")
+  scanStatus       String            @default("SCAN_NOT_CONFIGURED")
+  processingStatus String            @default("UPLOADED")
+  accessibility    String            @default("{}")
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
   removedAt        DateTime?
-  owner            CommunityProfile @relation(fields: [ownerProfileId], references: [id], onDelete: Restrict)
+  owner            CommunityProfile  @relation(fields: [ownerProfileId], references: [id], onDelete: Restrict)
   release          CommunityRelease? @relation(fields: [releaseId], references: [id], onDelete: SetNull)
 
   @@unique([ownerProfileId, checksum])
@@ -1133,23 +1133,23 @@ model CommunityAssetReference {
 }
 
 model CommunityOutboxEvent {
-  id                String   @id @default(cuid())
+  id                String    @id @default(cuid())
   eventType         String
   aggregateType     String
   aggregateId       String
-  payloadVersion    Int      @default(1)
+  payloadVersion    Int       @default(1)
   payload           String
-  idempotencyKey    String   @unique
-  availableAt       DateTime @default(now())
+  idempotencyKey    String    @unique
+  availableAt       DateTime  @default(now())
   claimedAt         DateTime?
   claimOwner        String?
   claimExpiresAt    DateTime?
   processedAt       DateTime?
-  attemptCount      Int      @default(0)
-  maxAttempts       Int      @default(5)
+  attemptCount      Int       @default(0)
+  maxAttempts       Int       @default(5)
   terminalFailureAt DateTime?
   failureCode       String?
-  createdAt         DateTime @default(now())
+  createdAt         DateTime  @default(now())
 
   @@index([processedAt, availableAt, claimExpiresAt])
   @@index([aggregateType, aggregateId, createdAt])
