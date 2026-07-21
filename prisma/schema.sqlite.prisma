@@ -114,6 +114,7 @@ model UserAccount {
   auditActions        PlatformAuditEvent[]      @relation("PlatformAuditActorAccount")
   privateImports      PrivateContentImport[]    @relation("PrivateImportOwnerAccount")
   privateAssetRefs    PrivateAssetReference[]   @relation("PrivateAssetOwnerAccount")
+  communityProfile    CommunityProfile?
 
   @@index([status, lastSeenAt])
 }
@@ -556,31 +557,31 @@ model LoginAttempt {
 // continue to power the existing Forever Treasure experience while authored tales
 // use an immutable publish-and-session model.
 model Chronicle {
-  id                       String                 @id @default(cuid())
-  slug                     String                 @unique
+  id                       String                  @id @default(cuid())
+  slug                     String                  @unique
   title                    String
   subtitle                 String?
   shortDescription         String?
   longDescription          String?
   coverAssetId             String?
-  theme                    String                 @default("CARTOGRAPHERS_TABLE")
-  status                   String                 @default("DRAFT")
-  visibility               String                 @default("PRIVATE")
+  theme                    String                  @default("CARTOGRAPHERS_TABLE")
+  status                   String                  @default("DRAFT")
+  visibility               String                  @default("PRIVATE")
   creatorId                String
   creatorAccountId         String?
   currentDraftRevisionId   String?
   latestPublishedVersionId String?
   forkedFromTaleId         String?
   forkedFromVersionId      String?
-  playerCountMin           Int                    @default(1)
-  playerCountMax           Int                    @default(4)
+  playerCountMin           Int                     @default(1)
+  playerCountMax           Int                     @default(4)
   estimatedDuration        Int?
   contentWarnings          String?
-  sortOrder                Int                    @default(0)
-  featured                 Boolean                @default(false)
+  sortOrder                Int                     @default(0)
+  featured                 Boolean                 @default(false)
   archivedAt               DateTime?
-  createdAt                DateTime               @default(now())
-  updatedAt                DateTime               @updatedAt
+  createdAt                DateTime                @default(now())
+  updatedAt                DateTime                @updatedAt
   drafts                   TaleDraft[]
   versions                 PublishedTaleVersion[]
   assets                   TaleAsset[]
@@ -591,7 +592,7 @@ model Chronicle {
   sessions                 TaleSession[]
   privateImports           PrivateContentImport[]
   privateAssetReferences   PrivateAssetReference[]
-  creatorAccount           UserAccount?           @relation("ChronicleCreatorAccount", fields: [creatorAccountId], references: [id], onDelete: SetNull)
+  creatorAccount           UserAccount?            @relation("ChronicleCreatorAccount", fields: [creatorAccountId], references: [id], onDelete: SetNull)
 
   @@index([status, visibility, sortOrder])
   @@index([creatorId, updatedAt])
@@ -611,7 +612,7 @@ model TaleDraft {
   lastValidatedAt           DateTime?
   createdAt                 DateTime      @default(now())
   updatedAt                 DateTime      @updatedAt
-  tale                      Chronicle      @relation(fields: [taleId], references: [id], onDelete: Cascade)
+  tale                      Chronicle     @relation(fields: [taleId], references: [id], onDelete: Cascade)
   chapters                  TaleChapter[]
   createdByAccount          UserAccount?  @relation("TaleDraftAuthorAccount", fields: [createdByAccountId], references: [id], onDelete: SetNull)
 
@@ -683,21 +684,22 @@ model BlockConnection {
 }
 
 model PublishedTaleVersion {
-  id                   String        @id @default(cuid())
+  id                   String             @id @default(cuid())
   taleId               String
   versionNumber        Int
   versionLabel         String
-  publishedAt          DateTime      @default(now())
+  publishedAt          DateTime           @default(now())
   publishedBy          String
   publishedByAccountId String?
   releaseNotes         String?
   contentSnapshot      String
-  schemaVersion        Int           @default(1)
+  schemaVersion        Int                @default(1)
   checksum             String
-  isCurrent            Boolean       @default(true)
-  tale                 Chronicle     @relation(fields: [taleId], references: [id], onDelete: Cascade)
+  isCurrent            Boolean            @default(true)
+  tale                 Chronicle          @relation(fields: [taleId], references: [id], onDelete: Cascade)
   sessions             TaleSession[]
-  publishedByAccount   UserAccount?  @relation("PublishedVersionAuthorAccount", fields: [publishedByAccountId], references: [id], onDelete: SetNull)
+  publishedByAccount   UserAccount?       @relation("PublishedVersionAuthorAccount", fields: [publishedByAccountId], references: [id], onDelete: SetNull)
+  communityReleases    CommunityRelease[] @relation("CommunityReleaseSource")
 
   @@unique([taleId, versionNumber])
   @@index([taleId, isCurrent])
@@ -793,7 +795,7 @@ model TaleAssetCollection {
   artifactId     String?
   createdAt      DateTime                  @default(now())
   updatedAt      DateTime                  @updatedAt
-  tale           Chronicle                  @relation(fields: [taleId], references: [id], onDelete: Cascade)
+  tale           Chronicle                 @relation(fields: [taleId], references: [id], onDelete: Cascade)
   items          TaleAssetCollectionItem[]
 
   @@unique([taleId, name])
@@ -839,7 +841,7 @@ model TaleLocation {
   archivedAt              DateTime?
   createdAt               DateTime  @default(now())
   updatedAt               DateTime  @updatedAt
-  tale                    Chronicle  @relation(fields: [taleId], references: [id], onDelete: Cascade)
+  tale                    Chronicle @relation(fields: [taleId], references: [id], onDelete: Cascade)
 
   @@unique([taleId, slug])
   @@unique([taleId, legacyKey])
@@ -871,32 +873,32 @@ model TaleArtifact {
   archivedAt              DateTime?
   createdAt               DateTime  @default(now())
   updatedAt               DateTime  @updatedAt
-  tale                    Chronicle  @relation(fields: [taleId], references: [id], onDelete: Cascade)
+  tale                    Chronicle @relation(fields: [taleId], references: [id], onDelete: Cascade)
 
-  @@index([taleId, sortOrder])
   @@unique([taleId, legacyKey])
+  @@index([taleId, sortOrder])
 }
 
 /// Typed canonical extension for optional Companion branches. Definitions are
 /// immutable in a Published Chronicle Version; live completion lives in the
 /// Chronicle Session variables and events.
 model TaleSideQuest {
-  id                String                   @id @default(cuid())
-  taleId            String
-  legacyKey         String
-  title             String
-  safeTeaser        String?
-  description       String?
-  rewardType        String?
-  rewardLabel       String?
-  completionSummary String?
+  id                   String                   @id @default(cuid())
+  taleId               String
+  legacyKey            String
+  title                String
+  safeTeaser           String?
+  description          String?
+  rewardType           String?
+  rewardLabel          String?
+  completionSummary    String?
   sourceChapterOrdinal Int?
-  mapLocationKey    String?
-  artifactKey       String?
-  createdAt         DateTime                 @default(now())
-  updatedAt         DateTime                 @updatedAt
-  tale              Chronicle                @relation(fields: [taleId], references: [id], onDelete: Cascade)
-  objectives        TaleSideQuestObjective[]
+  mapLocationKey       String?
+  artifactKey          String?
+  createdAt            DateTime                 @default(now())
+  updatedAt            DateTime                 @updatedAt
+  tale                 Chronicle                @relation(fields: [taleId], references: [id], onDelete: Cascade)
+  objectives           TaleSideQuestObjective[]
 
   @@unique([taleId, legacyKey])
   @@index([taleId, sourceChapterOrdinal])
@@ -913,48 +915,48 @@ model TaleSideQuestObjective {
 }
 
 model TaleSession {
-  id                   String                    @id @default(cuid())
-  taleId               String
-  publishedVersionId   String?
-  ownerLabel           String?
-  voyageName           String?
-  captainId            String?
-  captainAccountId     String?
-  accessTokenHash      String                    @unique
-  status               String                    @default("ACTIVE")
-  captainMode          String                    @default("CAPTAIN_CONTROLLED")
-  configuration        String                    @default("{}")
-  scheduleTimezone     String?
-  plannedStartAt       DateTime?
-  launchedAt           DateTime?
-  cancelledAt          DateTime?
-  abandonedAt          DateTime?
-  concurrencyVersion   Int                       @default(0)
-  historicalHidden     Boolean                   @default(false)
-  archiveMetadata      String                    @default("{}")
-  currentChapterId     String?
-  currentBlockId       String?
-  currentSequence      Int                       @default(0)
-  previewMode          Boolean                   @default(false)
-  draftRevisionId      String?
-  previewSnapshot      String?
-  variables            String                    @default("{}")
-  inventory            String                    @default("[]")
-  startedAt            DateTime                  @default(now())
-  updatedAt            DateTime                  @updatedAt
-  completedAt          DateTime?
-  expiresAt            DateTime?
-  lastHeartbeatAt      DateTime?
-  tale                 Chronicle                  @relation(fields: [taleId], references: [id], onDelete: Cascade)
-  version              PublishedTaleVersion?     @relation(fields: [publishedVersionId], references: [id])
-  events               TaleSessionEvent[]
+  id                     String                    @id @default(cuid())
+  taleId                 String
+  publishedVersionId     String?
+  ownerLabel             String?
+  voyageName             String?
+  captainId              String?
+  captainAccountId       String?
+  accessTokenHash        String                    @unique
+  status                 String                    @default("ACTIVE")
+  captainMode            String                    @default("CAPTAIN_CONTROLLED")
+  configuration          String                    @default("{}")
+  scheduleTimezone       String?
+  plannedStartAt         DateTime?
+  launchedAt             DateTime?
+  cancelledAt            DateTime?
+  abandonedAt            DateTime?
+  concurrencyVersion     Int                       @default(0)
+  historicalHidden       Boolean                   @default(false)
+  archiveMetadata        String                    @default("{}")
+  currentChapterId       String?
+  currentBlockId         String?
+  currentSequence        Int                       @default(0)
+  previewMode            Boolean                   @default(false)
+  draftRevisionId        String?
+  previewSnapshot        String?
+  variables              String                    @default("{}")
+  inventory              String                    @default("[]")
+  startedAt              DateTime                  @default(now())
+  updatedAt              DateTime                  @updatedAt
+  completedAt            DateTime?
+  expiresAt              DateTime?
+  lastHeartbeatAt        DateTime?
+  tale                   Chronicle                 @relation(fields: [taleId], references: [id], onDelete: Cascade)
+  version                PublishedTaleVersion?     @relation(fields: [publishedVersionId], references: [id])
+  events                 TaleSessionEvent[]
   privateAssetReferences PrivateAssetReference[]
-  verificationRequests TaleVerificationRequest[]
-  helperPairings       TaleHelperPairing[]
-  memberships          PlaythroughMembership[]
-  invitations          Invitation[]
-  revealStates         RevealState[]
-  captainAccount       UserAccount?              @relation("TaleSessionCaptainAccount", fields: [captainAccountId], references: [id], onDelete: SetNull)
+  verificationRequests   TaleVerificationRequest[]
+  helperPairings         TaleHelperPairing[]
+  memberships            PlaythroughMembership[]
+  invitations            Invitation[]
+  revealStates           RevealState[]
+  captainAccount         UserAccount?              @relation("TaleSessionCaptainAccount", fields: [captainAccountId], references: [id], onDelete: SetNull)
 
   @@index([taleId, status, previewMode])
   @@index([publishedVersionId, status])
@@ -1198,16 +1200,16 @@ model TaleHelperPairing {
 /// Immutable, rerunnable provenance for a legacy Companion record imported
 /// into the Chronicle domain. This is the only legacy-to-canonical ID map.
 model LegacyEntityReference {
-  id             String   @id @default(cuid())
-  sourceDomain   String
-  sourceModel    String
-  sourceId       String
-  canonicalModel String
-  canonicalId    String
+  id               String    @id @default(cuid())
+  sourceDomain     String
+  sourceModel      String
+  sourceId         String
+  canonicalModel   String
+  canonicalId      String
   migrationVersion String
-  sourceChecksum String
-  migratedAt     DateTime @default(now())
-  verifiedAt     DateTime?
+  sourceChecksum   String
+  migratedAt       DateTime  @default(now())
+  verifiedAt       DateTime?
 
   @@unique([sourceDomain, sourceModel, sourceId, canonicalModel, migrationVersion])
   @@index([canonicalModel, canonicalId])
@@ -1216,13 +1218,13 @@ model LegacyEntityReference {
 
 /// Records each migration attempt without retaining private source payloads.
 model LegacyMigrationRun {
-  id               String   @id @default(cuid())
+  id               String    @id @default(cuid())
   migrationVersion String
   mode             String
   status           String
   sourceSelector   String?
-  report           String   @default("{}")
-  startedAt        DateTime @default(now())
+  report           String    @default("{}")
+  startedAt        DateTime  @default(now())
   completedAt      DateTime?
 
   @@index([migrationVersion, startedAt])
@@ -1259,47 +1261,239 @@ model PrivateContentImport {
 }
 
 model PrivateContentImportMapping {
-  id             String               @id @default(cuid())
-  importId       String
+  id              String               @id @default(cuid())
+  importId        String
   sourceLogicalId String
-  targetId       String
-  kind           String
-  import         PrivateContentImport @relation(fields: [importId], references: [id], onDelete: Cascade)
+  targetId        String
+  kind            String
+  import          PrivateContentImport @relation(fields: [importId], references: [id], onDelete: Cascade)
 
   @@unique([importId, sourceLogicalId])
 }
 
 model PrivateAssetObject {
-  id          String                  @id @default(cuid())
-  sha256      String                  @unique
-  byteLength  Int
-  mediaType   String
+  id             String                  @id @default(cuid())
+  sha256         String                  @unique
+  byteLength     Int
+  mediaType      String
   representation String
-  storageKey  String                  @unique
-  finalizedAt DateTime?
-  createdAt   DateTime                @default(now())
-  references  PrivateAssetReference[]
+  storageKey     String                  @unique
+  finalizedAt    DateTime?
+  createdAt      DateTime                @default(now())
+  references     PrivateAssetReference[]
 }
 
 model PrivateAssetReference {
-  id            String               @id @default(cuid())
-  importId      String
-  objectId      String
-  logicalId     String
-  ownerActorId  String?
+  id             String               @id @default(cuid())
+  importId       String
+  objectId       String
+  logicalId      String
+  ownerActorId   String?
   ownerAccountId String?
-  taleId        String?
-  playthroughId String?
-  visibility    String               @default("PRIVATE")
-  revealState   String               @default("LOCKED")
-  available     Boolean              @default(false)
-  createdAt     DateTime             @default(now())
-  import        PrivateContentImport @relation(fields: [importId], references: [id], onDelete: Cascade)
-  object        PrivateAssetObject   @relation(fields: [objectId], references: [id], onDelete: Restrict)
-  ownerAccount  UserAccount?         @relation("PrivateAssetOwnerAccount", fields: [ownerAccountId], references: [id], onDelete: SetNull)
-  chronicle     Chronicle?           @relation(fields: [taleId], references: [id], onDelete: SetNull)
-  session       TaleSession?         @relation(fields: [playthroughId], references: [id], onDelete: SetNull)
+  taleId         String?
+  playthroughId  String?
+  visibility     String               @default("PRIVATE")
+  revealState    String               @default("LOCKED")
+  available      Boolean              @default(false)
+  createdAt      DateTime             @default(now())
+  import         PrivateContentImport @relation(fields: [importId], references: [id], onDelete: Cascade)
+  object         PrivateAssetObject   @relation(fields: [objectId], references: [id], onDelete: Restrict)
+  ownerAccount   UserAccount?         @relation("PrivateAssetOwnerAccount", fields: [ownerAccountId], references: [id], onDelete: SetNull)
+  chronicle      Chronicle?           @relation(fields: [taleId], references: [id], onDelete: SetNull)
+  session        TaleSession?         @relation(fields: [playthroughId], references: [id], onDelete: SetNull)
 
   @@unique([importId, logicalId])
   @@index([playthroughId, revealState, available])
+}
+
+// Harborlight catalog records belong to the canonical Wayfarer account root.
+model CommunityProfile {
+  id                   String                          @id @default(cuid())
+  accountId            String                          @unique
+  normalizedHandle     String                          @unique
+  handle               String
+  displayName          String
+  biography            String?
+  visibility           String                          @default("COMMUNITY")
+  creatorStatus        String                          @default("ACTIVE")
+  moderationStatus     String                          @default("ACTIVE")
+  verificationStatus   String                          @default("UNVERIFIED")
+  supportedLanguages   String                          @default("[]")
+  socialLinks          String                          @default("[]")
+  lastPublishedAt      DateTime?
+  createdAt            DateTime                        @default(now())
+  updatedAt            DateTime                        @updatedAt
+  account              UserAccount                     @relation(fields: [accountId], references: [id], onDelete: Restrict)
+  listings             CommunityListing[]              @relation("CommunityListingOwner")
+  publishedReleases    CommunityRelease[]              @relation("CommunityReleasePublisher")
+  creditedAttributions CommunityReleaseAttribution[]
+  declarations         CommunityOwnershipDeclaration[]
+  assets               CommunityAssetReference[]
+
+  @@index([moderationStatus, visibility])
+}
+
+model CommunityListing {
+  id                String                          @id @default(cuid())
+  slug              String                          @unique
+  itemType          String
+  ownerProfileId    String
+  title             String
+  shortDescription  String?
+  longDescription   String?
+  visibility        String                          @default("PRIVATE")
+  publicationStatus String                          @default("DRAFT")
+  moderationStatus  String                          @default("ACTIVE")
+  spoilerLevel      String                          @default("PREVIEW_SAFE")
+  locationClass     String                          @default("FICTIONAL")
+  primaryCategory   String?
+  tags              String                          @default("[]")
+  contentWarnings   String                          @default("[]")
+  currentReleaseId  String?                         @unique
+  publishedAt       DateTime?
+  archivedAt        DateTime?
+  removedAt         DateTime?
+  createdAt         DateTime                        @default(now())
+  updatedAt         DateTime                        @updatedAt
+  owner             CommunityProfile                @relation("CommunityListingOwner", fields: [ownerProfileId], references: [id], onDelete: Restrict)
+  currentRelease    CommunityRelease?               @relation("CommunityListingCurrentRelease", fields: [currentReleaseId], references: [id], onDelete: SetNull)
+  releases          CommunityRelease[]              @relation("CommunityListingReleases")
+  declarations      CommunityOwnershipDeclaration[]
+
+  @@index([ownerProfileId, updatedAt])
+  @@index([publicationStatus, visibility])
+}
+
+model CommunityRelease {
+  id                           String                          @id @default(cuid())
+  listingId                    String
+  semanticVersion              String
+  manifestSchemaVersion        Int                             @default(1)
+  minimumPlatformVersion       String?
+  sourcePublishedTaleVersionId String?
+  manifest                     String
+  manifestChecksum             String
+  packageChecksum              String?
+  releaseNotes                 String?
+  compatibility                String                          @default("{}")
+  licenseSnapshot              String
+  attributionSnapshot          String                          @default("[]")
+  spoilerSnapshot              String                          @default("{}")
+  moderationStatus             String                          @default("ACTIVE")
+  publishedByProfileId         String
+  publishedAt                  DateTime                        @default(now())
+  deprecatedAt                 DateTime?
+  replacementReleaseId         String?
+  createdAt                    DateTime                        @default(now())
+  listing                      CommunityListing                @relation("CommunityListingReleases", fields: [listingId], references: [id], onDelete: Restrict)
+  currentForListing            CommunityListing?               @relation("CommunityListingCurrentRelease")
+  sourcePublishedTaleVersion   PublishedTaleVersion?           @relation("CommunityReleaseSource", fields: [sourcePublishedTaleVersionId], references: [id], onDelete: Restrict)
+  publishedBy                  CommunityProfile                @relation("CommunityReleasePublisher", fields: [publishedByProfileId], references: [id], onDelete: Restrict)
+  attributions                 CommunityReleaseAttribution[]
+  declarations                 CommunityOwnershipDeclaration[]
+  assets                       CommunityAssetReference[]
+
+  @@unique([listingId, semanticVersion])
+  @@index([listingId, publishedAt])
+  @@index([sourcePublishedTaleVersionId])
+}
+
+model CommunityReleaseAttribution {
+  id                  String            @id @default(cuid())
+  releaseId           String
+  creditedProfileId   String?
+  creditedDisplayName String
+  contributionType    String
+  sourceUrl           String?
+  requiredCreditText  String?
+  licenseReference    String?
+  sortOrder           Int
+  createdAt           DateTime          @default(now())
+  release             CommunityRelease  @relation(fields: [releaseId], references: [id], onDelete: Cascade)
+  creditedProfile     CommunityProfile? @relation(fields: [creditedProfileId], references: [id], onDelete: SetNull)
+
+  @@index([releaseId, sortOrder])
+}
+
+model CommunityOwnershipDeclaration {
+  id                 String            @id @default(cuid())
+  listingId          String
+  releaseId          String?
+  declarantProfileId String
+  declarationVersion Int
+  acceptedStatements String
+  evidenceReferences String            @default("[]")
+  createdAt          DateTime          @default(now())
+  listing            CommunityListing  @relation(fields: [listingId], references: [id], onDelete: Restrict)
+  release            CommunityRelease? @relation(fields: [releaseId], references: [id], onDelete: Restrict)
+  declarant          CommunityProfile  @relation(fields: [declarantProfileId], references: [id], onDelete: Restrict)
+
+  @@index([listingId, releaseId])
+}
+
+model CommunityAssetReference {
+  id               String            @id @default(cuid())
+  ownerProfileId   String
+  releaseId        String?
+  checksum         String
+  declaredMimeType String
+  detectedMimeType String?
+  fileSize         Int
+  storageProvider  String
+  storageKey       String            @unique
+  visibility       String            @default("PRIVATE")
+  scanStatus       String            @default("SCAN_NOT_CONFIGURED")
+  processingStatus String            @default("UPLOADED")
+  accessibility    String            @default("{}")
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+  removedAt        DateTime?
+  owner            CommunityProfile  @relation(fields: [ownerProfileId], references: [id], onDelete: Restrict)
+  release          CommunityRelease? @relation(fields: [releaseId], references: [id], onDelete: SetNull)
+
+  @@unique([ownerProfileId, checksum])
+  @@index([releaseId, visibility])
+}
+
+model CommunityOutboxEvent {
+  id                String    @id @default(cuid())
+  eventType         String
+  aggregateType     String
+  aggregateId       String
+  payloadVersion    Int       @default(1)
+  payload           String
+  idempotencyKey    String    @unique
+  availableAt       DateTime  @default(now())
+  claimedAt         DateTime?
+  claimOwner        String?
+  claimExpiresAt    DateTime?
+  processedAt       DateTime?
+  attemptCount      Int       @default(0)
+  maxAttempts       Int       @default(5)
+  terminalFailureAt DateTime?
+  failureCode       String?
+  createdAt         DateTime  @default(now())
+
+  @@index([processedAt, availableAt, claimExpiresAt])
+  @@index([aggregateType, aggregateId, createdAt])
+}
+
+model CommunityLicensePolicy {
+  id                   String   @id @default(cuid())
+  key                  String   @unique
+  displayName          String
+  policyVersion        Int      @default(1)
+  allowsPrivateUse     Boolean  @default(true)
+  allowsPublicUse      Boolean  @default(false)
+  allowsModification   Boolean  @default(false)
+  allowsRedistribution Boolean  @default(false)
+  allowsCommercialUse  Boolean  @default(false)
+  requiresAttribution  Boolean  @default(true)
+  requiresSourceLink   Boolean  @default(false)
+  shareAlike           Boolean  @default(false)
+  customTerms          String?
+  termsUrl             String?
+  active               Boolean  @default(true)
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
 }

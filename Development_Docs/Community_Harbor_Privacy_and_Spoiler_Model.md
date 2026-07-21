@@ -1,0 +1,9 @@
+# Community Harbor privacy and spoiler model
+
+Public projection types are deliberately separate: public profile, listing summary/detail, and release summary/detail; owner and moderator projections are separate positive allowlists. No public route returns an ORM record or installable manifest. Public fields are safe handle/display name, title, short description, normalized tags, item type, safe spoiler/location classification, and limited release metadata. Release pages do not expose private Chronicle payloads.
+
+The server excludes identity keys, PlayerProfile IDs, email, credentials, sessions, invitations, source drafts/snapshots, accepted answers, variables, Captain/Creator notes, finale/chapter content, participants, coordinates/routes, asset keys/paths, audit/outbox data, and moderation notes. Spoiler levels are NONE, PREVIEW_SAFE, MINOR, CHAPTER, FINALE, CREATOR_ONLY, CAPTAIN_ONLY, and PARTICIPANT_PRIVATE. Default public projection is NONE/PREVIEW_SAFE only; higher levels require future authorization/reveal policy.
+
+PRIVATE, CREW_ONLY, and UNLISTED records are excluded from enumeration. UNLISTED direct access requires the exact published slug and returns the same safe not-found result on failure. CREW_ONLY policy uses `PlaythroughMembership` for a Tale Session with the release source Tale. PRIVATE_REAL_WORLD has no public projection; APPROXIMATE_REAL_WORLD must be generalized by a future publishing flow. Search/Open Graph remains disabled for non-public records and must use the same projection service when introduced.
+
+Hostile fixtures use synthetic answers, notes, finale text, coordinates, invitations, email, session IDs, participants, unpublished paths, moderation/audit/outbox metadata, and raw source content. Tests must assert their absence from every public service and route response. Process-local rate limits are a current limitation; distributed enforcement is a later operational phase.

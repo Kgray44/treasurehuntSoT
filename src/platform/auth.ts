@@ -75,6 +75,13 @@ export async function requirePlayerIdentity() {
   });
 }
 
+/** Community authorization is deliberately account-rooted; legacy profile-only
+ * sessions remain valid for legacy play but cannot become Community actors. */
+export async function requireCanonicalAccountIdentity() {
+  const identity = await requirePlayerIdentity();
+  return identity && "accountId" in identity ? identity : null;
+}
+
 export async function signInPlayer(username: string, password: string) {
   const account = await authenticateAccount(username, password);
   if (account?.account.profile) {
