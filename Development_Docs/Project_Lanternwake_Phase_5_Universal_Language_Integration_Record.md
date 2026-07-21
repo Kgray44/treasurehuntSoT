@@ -370,4 +370,16 @@ Formatting reconciliation identified eight checked paths: the Phase 4 validation
 
 ### Final reconciliation, manifest, archive synchronization, push, and cleanup
 
-Validation details, runtime-isolation evidence, remaining blockers, and the one-time full-harness classification are recorded in `Project_Lanternwake_Phase_5_Universal_Language_Integration_Validation_Report.md`. Hash, archive synchronization, remote verification, and cleanup results are appended by the final reconciliation commit.
+Validation details, runtime-isolation evidence, remaining blockers, and the one-time full-harness classification are recorded in `Project_Lanternwake_Phase_5_Universal_Language_Integration_Validation_Report.md`.
+
+### Archive and Development_Docs synchronization
+
+The scoped rendered/redacted archive synchronizer completed locally in commit `03d5733eab7af233e2c1e8c4ec757c8b7c4c8ccd` with 7 chats added, 1 updated, 8 unchanged, 147 excluded, and 1 deliberately ambiguous conversation excluded. It included 1 added and 1 modified `Development_Docs` file. The source coverage was the local Codex session store; the synchronizer recorded 104 redactions across credential/connection-string categories and found no unredacted suspected-secret classification.
+
+`python scripts/sync_codex_chats.py --validate` passed afterward: 55 conversations, 29,979 messages, a valid archive manifest, and no pending `Development_Docs` change.
+
+### Manifest and hash evidence
+
+`python scripts/generate_phase4_manifest.py --check` passed with 273 current rows. The Phase 4 manifest SHA-256 is `D7B17B043A4A0D699C8969B1A066B43A49791B68CA234C9BE33DE11A16537262`; the dedicated hash record is committed with this reconciliation.
+
+The final reconciliation and post-commit hash-record SHAs are captured by the final local/remote verification steps. No cleanup is performed before that verification.
