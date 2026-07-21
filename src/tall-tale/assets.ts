@@ -23,17 +23,17 @@ const supported = new Map([
 function storageRoot() {
   const configured = process.env.TALL_TALE_ASSET_ROOT;
   if (configured) {
-    if (!path.isAbsolute(configured)) throw new Error("TALL_TALE_ASSET_ROOT must be an absolute path.");
+    if (!path.isAbsolute(configured)) throw new Error("Asset storage is not configured correctly.");
     return path.normalize(configured);
   }
   return path.join(process.cwd(), ".data", "tall-tale-assets");
 }
 
 function keyPath(storageKey: string) {
-  if (!/^[a-f0-9-]+\/[a-f0-9-]+\.[a-z0-9]+$/.test(storageKey)) throw new Error("Invalid opaque storage key.");
+  if (!/^[a-f0-9-]+\/[a-f0-9-]+\.[a-z0-9]+$/.test(storageKey)) throw new Error("The requested asset cannot be opened.");
   const root = storageRoot();
   const resolved = path.join(/* turbopackIgnore: true */ root, storageKey);
-  if (!resolved.startsWith(`${root}${path.sep}`)) throw new Error("Invalid storage path.");
+  if (!resolved.startsWith(`${root}${path.sep}`)) throw new Error("The requested asset cannot be opened.");
   return resolved;
 }
 
@@ -118,12 +118,17 @@ async function derivativeSet(buffer: Buffer, folder: string) {
 export async function ingestAsset(taleId: string, file: File, userId: string, replaceAssetId?: string) {
   const definition = supported.get(file.type);
   if (!definition)
-    throw new Error("Unsupported file type. Use PNG, JPEG, WebP, AVIF, MP4, WebM, MP3, Ogg, WAV, or PDF.");
+    throw new Error(
+      "This file type cannot be uploaded. Choose PNG, JPEG, WebP, AVIF, MP4, WebM, MP3, Ogg, WAV, or PDF.",
+    );
   const maximum = Number(process.env.TALL_TALE_MAX_UPLOAD_MB ?? 25) * 1024 * 1024;
   if (!file.size || file.size > maximum)
-    throw new Error(`Files must be smaller than ${Math.round(maximum / 1024 / 1024)} MB.`);
+    throw new Error(`Choose a file smaller than ${Math.round(maximum / 1024 / 1024)} MB.`);
   const buffer = Buffer.from(await file.arrayBuffer());
-  if (!hasValidSignature(buffer, file.type)) throw new Error("The file contents do not match the reported media type.");
+  if (!hasValidSignature(buffer, file.type))
+    throw new Error(
+      "The file content does not match its file type. Choose the file again or export it in a supported format.",
+    );
   const checksum = createHash("sha256").update(buffer).digest("hex");
   if (!replaceAssetId) {
     const duplicate = await db.taleAsset.findUnique({
@@ -226,7 +231,7 @@ export async function ingestAsset(taleId: string, file: File, userId: string, re
       mediaType: asset.mediaType,
       replacement: Boolean(replaceAssetId),
     },
-    "Tall Tale asset ingested",
+    "Chronicle asset ingested",
   );
   return { asset, duplicate: false };
 }
@@ -235,7 +240,7 @@ export async function assetUsages(taleId: string, assetId: string) {
   const studio = await getStudioTale(taleId);
   const usages: Array<{ type: string; id: string; label: string; field?: string }> = [];
   if (studio.tale.coverAssetId === assetId)
-    usages.push({ type: "tale", id: taleId, label: "Tall Tale cover", field: "coverAssetId" });
+    usages.push({ type: "tale", id: taleId, label: "Chronicle cover", field: "coverAssetId" });
   for (const chapter of studio.draft.chapters) {
     if (chapter.coverAssetId === assetId)
       usages.push({ type: "chapter", id: chapter.id, label: `${chapter.title} cover`, field: "coverAssetId" });
@@ -301,9 +306,9 @@ export async function resolveAssetVariant(assetId: string, requestedRole: string
   let allowedVariantIds: Set<string> | null = null;
   if (versionIdentity && !versionIdentity.startsWith("draft:")) {
     const version = await db.publishedTaleVersion.findUnique({ where: { id: versionIdentity } });
-    if (!version) throw new Error("Published asset version not found.");
+    if (!version) throw new Error("This published Version could not be found.");
     const asset = parsePublishedSnapshot(version.contentSnapshot).assets.find((item) => item.id === assetId);
-    if (!asset) throw new Error("Asset is not part of this published version.");
+    if (!asset) throw new Error("This asset is not part of the selected published Version.");
     allowedVariantIds = new Set(asset.variants?.map((variant) => variant.id) ?? []);
   }
   const candidates = await db.taleAssetVariant.findMany({ where: { assetId }, orderBy: { createdAt: "desc" } });
@@ -314,6 +319,6 @@ export async function resolveAssetVariant(assetId: string, requestedRole: string
     allowed.find((candidate) => candidate.role === requestedRole) ??
     allowed.find((candidate) => candidate.role === "OPTIMIZED") ??
     allowed.find((candidate) => candidate.role === "ORIGINAL");
-  if (!variant) throw new Error("Asset file is unavailable.");
+  if (!variant) throw new Error("This asset file is unavailable. Upload it again or choose another asset.");
   return { variant, buffer: await assetStorage.read(variant.storageKey) };
 }

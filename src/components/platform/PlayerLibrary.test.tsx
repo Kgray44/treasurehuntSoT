@@ -11,7 +11,7 @@ function card(id: string, title: string, state: string, overrides: Partial<Playe
     id,
     title,
     subtitle: null,
-    shortDescription: "A charted Tall Tale.",
+    shortDescription: "A charted Chronicle.",
     coverUrl: null,
     captainName: "Captain Kato",
     voyageName: "Lanternwake",
@@ -26,7 +26,7 @@ function card(id: string, title: string, state: string, overrides: Partial<Playe
     memoriesCollected: 0,
     lastSynchronizedAt: "2026-07-19T12:00:00.000Z",
     primaryHref: `/player/playthroughs/${id}`,
-    primaryLabel: "Open Tall Tale",
+    primaryLabel: "Open Chronicle",
     ...overrides,
   };
 }
@@ -74,7 +74,7 @@ describe("PlayerLibrary motion and authority", () => {
     vi.stubGlobal("fetch", vi.fn().mockResolvedValue(response(200, library({ invitations: [invite] }))));
     render(<PlayerLibrary />);
 
-    await screen.findByRole("heading", { name: "My Tall Tale Library" });
+    await screen.findByRole("heading", { name: "My Chronicle Library" });
     expect(screen.getByText("New invitation")).toBeInTheDocument();
     const collapse = screen.getByRole("button", { name: "Invitations" });
     fireEvent.click(collapse);
@@ -104,7 +104,7 @@ describe("PlayerLibrary motion and authority", () => {
     expect(screen.getByRole("heading", { name: "Moon Key" }).closest("article")).toBe(originalCard);
     fireEvent.change(screen.getByRole("searchbox"), { target: { value: "Sun" } });
 
-    expect(screen.getByText("1 Tall Tale result")).toBeInTheDocument();
+    expect(screen.getByText("1 Chronicle result")).toBeInTheDocument();
     await waitFor(() => expect(screen.queryByRole("heading", { name: "Moon Key" })).not.toBeInTheDocument());
   });
 
@@ -124,7 +124,7 @@ describe("PlayerLibrary motion and authority", () => {
     );
     render(<PlayerLibrary />);
     await screen.findByRole("heading", { name: "First Voyage" });
-    const group = screen.getByRole("heading", { name: "In Progress" }).closest("section")!;
+    const group = screen.getByRole("heading", { name: "Active Voyages" }).closest("section")!;
     const secondCard = screen.getByRole("heading", { name: "Second Voyage" }).closest("article")!;
 
     fireEvent.click(within(secondCard).getByRole("button", { name: "Pin to top" }));

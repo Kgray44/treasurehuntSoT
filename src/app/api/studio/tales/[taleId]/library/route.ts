@@ -14,9 +14,12 @@ const schema = z.object({
 
 export async function POST(request: Request, context: { params: Promise<{ taleId: string }> }) {
   const session = await requireGmCapability("CREATE_TALES");
-  if (!session) return NextResponse.json({ error: "Creator authentication required." }, { status: 401 });
+  if (!session) return NextResponse.json({ error: "Sign in with a creator account to continue." }, { status: 401 });
   if (!(await verifyCsrf(session)))
-    return NextResponse.json({ error: "The creator session expired." }, { status: 403 });
+    return NextResponse.json(
+      { error: "Your creator session has expired. Reload the page and try again." },
+      { status: 403 },
+    );
   try {
     const { taleId } = await context.params;
     const input = schema.parse(await request.json());
@@ -32,7 +35,7 @@ export async function POST(request: Request, context: { params: Promise<{ taleId
             },
           }),
         );
-      if (!input.id) throw new Error("Collection ID required.");
+      if (!input.id) throw new Error("Choose a collection to update.");
       if (input.action === "archive")
         return NextResponse.json(await db.taleAssetCollection.delete({ where: { id: input.id } }));
       return NextResponse.json(
@@ -49,7 +52,7 @@ export async function POST(request: Request, context: { params: Promise<{ taleId
     }
     if (input.entity === "location") {
       if (input.action === "create") {
-        const name = String(input.data.name ?? "New location").trim();
+        const name = String(input.data.name ?? "New Waypoint").trim();
         return NextResponse.json(
           await db.taleLocation.create({
             data: {
@@ -64,7 +67,7 @@ export async function POST(request: Request, context: { params: Promise<{ taleId
           }),
         );
       }
-      if (!input.id) throw new Error("Location ID required.");
+      if (!input.id) throw new Error("Choose a Waypoint to update.");
       if (input.action === "archive")
         return NextResponse.json(
           await db.taleLocation.update({ where: { id: input.id }, data: { archivedAt: new Date() } }),
@@ -107,7 +110,7 @@ export async function POST(request: Request, context: { params: Promise<{ taleId
           },
         }),
       );
-    if (!input.id) throw new Error("Artifact ID required.");
+    if (!input.id) throw new Error("Choose an Artifact to update.");
     if (input.action === "archive")
       return NextResponse.json(
         await db.taleArtifact.update({ where: { id: input.id }, data: { archivedAt: new Date() } }),

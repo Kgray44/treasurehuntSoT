@@ -69,7 +69,9 @@ export const studioDraftSchema = z.object({
 
 export class DraftConflictError extends Error {
   constructor(public readonly currentVersion: number) {
-    super("This draft changed in another window. Your unsaved work has been preserved in this browser.");
+    super(
+      "This Chronicle changed in another window. Your unsaved changes remain in this browser. Review the latest saved draft before continuing.",
+    );
   }
 }
 
@@ -183,7 +185,7 @@ export async function getStudioTale(taleId: string) {
     },
   });
   const draft = tale.drafts[0];
-  if (!draft) throw new Error("The tale has no editable draft.");
+  if (!draft) throw new Error("This Chronicle has no editable draft.");
   return {
     tale: {
       id: tale.id,
@@ -279,7 +281,8 @@ export async function saveStudioDraft(taleId: string, unchecked: StudioDraftInpu
   const input = studioDraftSchema.parse(unchecked);
   for (const chapter of input.chapters) {
     for (const block of chapter.blocks) {
-      if (!getBlockDefinition(block.blockType)) throw new Error(`Unknown block type: ${block.blockType}`);
+      if (!getBlockDefinition(block.blockType))
+        throw new Error("This Chronicle contains an unrecognized Passage type.");
     }
   }
   return db.$transaction(async (tx) => {
@@ -288,12 +291,12 @@ export async function saveStudioDraft(taleId: string, unchecked: StudioDraftInpu
       include: { drafts: { orderBy: { revisionNumber: "desc" }, take: 1 } },
     });
     const draft = tale.drafts[0];
-    if (!draft) throw new Error("The tale has no editable draft.");
+    if (!draft) throw new Error("This Chronicle has no editable draft.");
     const reserved = await tx.tallTale.findFirst({
       where: { slug: input.tale.slug, id: { not: taleId } },
       select: { id: true },
     });
-    if (reserved) throw new Error("That tale address is already in use.");
+    if (reserved) throw new Error("That Chronicle address is already in use.");
     const claimed = await tx.taleDraft.updateMany({
       where: { id: draft.id, autosaveVersion: input.autosaveVersion },
       data: {
@@ -492,7 +495,7 @@ export async function restorePublishedVersionToDraft(taleId: string, versionId: 
   ]);
   const snapshot = JSON.parse(version.contentSnapshot) as PublishedTaleSnapshot;
   if (snapshot.schemaVersion !== 1 || !Array.isArray(snapshot.chapters))
-    throw new Error("This published version cannot be copied by the current Studio.");
+    throw new Error("This Chronicle version cannot be copied into the current draft.");
 
   const previousDraftId = tale.currentDraftRevisionId;
   const draft = await db.taleDraft.create({
@@ -560,7 +563,7 @@ export async function comparePublishedVersions(taleId: string, leftVersionId: st
   });
   const leftRow = versions.find((version) => version.id === leftVersionId);
   const rightRow = versions.find((version) => version.id === rightVersionId);
-  if (!leftRow || !rightRow) throw new Error("Choose two published versions from this Tall Tale.");
+  if (!leftRow || !rightRow) throw new Error("Choose two published Versions from this Chronicle.");
   const left = JSON.parse(leftRow.contentSnapshot) as PublishedTaleSnapshot;
   const right = JSON.parse(rightRow.contentSnapshot) as PublishedTaleSnapshot;
   const changes: Array<{ type: string; path: string; before?: string; after?: string }> = [];
@@ -644,12 +647,12 @@ export async function comparePublishedVersions(taleId: string, leftVersionId: st
 export async function forkPublishedVersion(taleId: string, versionId: string, creatorId: string) {
   const version = await db.publishedTaleVersion.findFirstOrThrow({ where: { id: versionId, taleId } });
   const snapshot = JSON.parse(version.contentSnapshot) as PublishedTaleSnapshot;
-  let slug = slugify(`${snapshot.tale.slug}-fork`);
+  let slug = slugify(`${snapshot.tale.slug}-copy`);
   let suffix = 2;
   const base = slug;
   while (await db.tallTale.findUnique({ where: { slug }, select: { id: true } })) slug = `${base}-${suffix++}`;
   const created = await createStudioTale({
-    title: `${snapshot.tale.title} Fork`,
+    title: `${snapshot.tale.title} Copy`,
     slug,
     subtitle: snapshot.tale.subtitle ?? undefined,
     shortDescription: snapshot.tale.shortDescription ?? undefined,
@@ -676,7 +679,7 @@ export async function forkPublishedVersion(taleId: string, versionId: string, cr
     created.id,
     {
       autosaveVersion: target.draft.autosaveVersion,
-      tale: { ...snapshot.tale, title: `${snapshot.tale.title} Fork`, slug, visibility: "PRIVATE" },
+      tale: { ...snapshot.tale, title: `${snapshot.tale.title} Copy`, slug, visibility: "PRIVATE" },
       chapters: snapshot.chapters.map((chapter) => ({
         ...chapter,
         id: chapterIds.get(chapter.id)!,

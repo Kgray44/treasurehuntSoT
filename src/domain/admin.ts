@@ -103,7 +103,7 @@ const campaignSlugSchema = z
   .trim()
   .min(3)
   .max(80)
-  .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/u, "Use a canonical campaign slug.");
+  .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/u, "Use a valid Voyage identifier.");
 const commandKeySchema = z
   .string()
   .trim()
@@ -301,12 +301,12 @@ export function planSideQuestTransition(
 ): SideQuestTransitionPlan {
   if (command === "DISCOVER_SIDE_QUEST") {
     if (!["HIDDEN", "RUMORED"].includes(state))
-      return { allowed: false, message: "The side quest has already been discovered." };
+      return { allowed: false, message: "This Echo has already been discovered." };
     return { allowed: true, state: "DISCOVERED", eventType: "SIDE_QUEST_DISCOVERED" };
   }
   if (state === "DISCOVERED") return { allowed: true, state: "ACTIVE", eventType: "SIDE_QUEST_UPDATED" };
   if (!["ACTIVE", "PARTIALLY_COMPLETE"].includes(state))
-    return { allowed: false, message: "Discover the side quest before advancing it." };
+    return { allowed: false, message: "Discover this Echo before advancing it." };
   const objective = objectives.find((item) => !item.complete);
   if (!objective) return { allowed: true, state: "COMPLETE", eventType: "SIDE_QUEST_COMPLETED" };
   const completesQuest = objectives.filter((item) => !item.complete).length === 1;

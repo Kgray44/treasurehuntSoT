@@ -197,8 +197,7 @@ function LiveRiveRuntime({
       if (!visible) {
         rive.pause();
         onStatusRef.current?.("hidden");
-      }
-      else if (allowStateTravel && !document.hidden) rive.play();
+      } else if (allowStateTravel && !document.hidden) rive.play();
       else {
         rive.pause();
         onStatusRef.current?.("paused");
@@ -208,8 +207,7 @@ function LiveRiveRuntime({
       if (!visible) {
         rive.pause();
         onStatusRef.current?.("hidden");
-      }
-      else if (allowStateTravel) rive.play();
+      } else if (allowStateTravel) rive.play();
       else {
         rive.pause();
         onStatusRef.current?.("paused");

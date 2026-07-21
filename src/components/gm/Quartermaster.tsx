@@ -141,17 +141,17 @@ function isCommandResult(value: unknown): value is CommandResult {
 function receiptTruth(result: CommandResult) {
   const publication =
     result.publication === "PROCESS_PUBLISHED"
-      ? "Published to this server process."
+      ? "The event was published to this server's live subscribers."
       : result.publication === "PROCESS_PUBLICATION_FAILED"
-        ? "The server could not confirm process publication after commit."
-        : "This staging action created no Player event, so process publication was not attempted.";
-  return `${publication} Player delivery, presentation, and acknowledgment remain unconfirmed. Correlation ${result.correlationId}.`;
+        ? "The action was saved, but this server could not confirm live delivery."
+        : "This prepared action does not send a Crew event.";
+  return `${publication} Crew delivery, presentation, and acknowledgment remain unconfirmed. Reference ${result.correlationId}.`;
 }
 
 function receiptMessage(result: CommandResult) {
   return result.kind === "STAGED_ACTION"
-    ? `Prepared action ${result.preparedActionId} recorded at sequence ${result.stagedAction.reservedSequence}.`
-    : `Event ${result.event.id} recorded at sequence ${result.event.sequence}.`;
+    ? `Prepared action saved at sequence ${result.stagedAction.reservedSequence}.`
+    : `Voyage event saved at sequence ${result.event.sequence}.`;
 }
 
 function safeServerError(value: unknown, fallback: string) {
@@ -177,51 +177,43 @@ function presentationFailed(outcome: PresentationOutcome) {
 function readablePresentationWarning(subject: "sign-in" | "order") {
   return subject === "sign-in"
     ? "Sign-in succeeded, but its entrance presentation could not be displayed."
-    : "The order was recorded, but its presentation could not be displayed. The ledger result remains authoritative.";
+    : "The Voyage action was saved, but its presentation could not be displayed. The saved result remains authoritative.";
 }
 
 const actions = [
   [
     "PREPARE_CHAPTER",
     "Prepare Chapter",
-    "Move the sealed chapter into a ready state. The player still receives no clue text.",
+    "Make this Chapter ready for later release. The Crew cannot see its content yet.",
   ],
-  ["RELEASE_CHAPTER", "Release Chapter", "Publish the clue, begin the player ceremony, and make Chapter One active."],
-  ["MARK_SOLVED", "Mark Chapter Solved", "Record that the current chapter has been solved."],
-  ["AWARD_ARTIFACT", "Award Test Artifact", "Place the Broken Compass Needle in the player's relic frame."],
-  ["REVEAL_MAP", "Reveal Test Map Location", "Mark Port Merrick on the voyage chart."],
-  ["REVEAL_ROUTE", "Reveal Route Segment", "Draw the next safe development route between revealed locations."],
-  [
-    "REVEAL_ARTIFACT_SILHOUETTE",
-    "Reveal Artifact Silhouette",
-    "Expose only the next artifact's approved safe outline.",
-  ],
-  [
-    "CONNECT_ARTIFACTS",
-    "Connect Test Artifacts",
-    "Reveal the neutral development connection between configured relics.",
-  ],
-  ["DISCOVER_SIDE_QUEST", "Discover Side Quest", "Move the next optional mystery from rumor to discovered."],
-  ["UPDATE_SIDE_QUEST", "Update Side Quest", "Advance one released optional objective."],
-  ["COMPLETE_SIDE_QUEST", "Complete Side Quest", "Complete the active optional mystery and grant its safe reward."],
-  ["ADD_JOURNAL_ANNOTATION", "Add Journal Annotation", "Release a generic development note beside the active chapter."],
-  ["ADD_LOG_ENTRY", "Add Player Log Entry", "Record a generic player-facing captain's note."],
-  ["TEASE_FINALE", "Tease Sealed Finale", "Wake the dormant shell without releasing finale content."],
-  ["UPDATE_FINALE_REQUIREMENT", "Update Finale Requirement", "Advance one generic symbolic requirement."],
+  ["RELEASE_CHAPTER", "Release Chapter", "Make this Chapter available to the Crew and begin its presentation."],
+  ["MARK_SOLVED", "Mark Chapter solved", "Record that the active Chapter has been solved."],
+  ["AWARD_ARTIFACT", "Award test Artifact", "Add the Broken Compass Needle to the Crew's Artifact collection."],
+  ["REVEAL_MAP", "Reveal test Waypoint", "Mark Port Merrick on the Voyage chart."],
+  ["REVEAL_ROUTE", "Reveal route segment", "Reveal the next safe development route between Waypoints."],
+  ["REVEAL_ARTIFACT_SILHOUETTE", "Reveal Artifact silhouette", "Show only the next Artifact's approved safe outline."],
+  ["CONNECT_ARTIFACTS", "Connect test Artifacts", "Reveal the development connection between configured Artifacts."],
+  ["DISCOVER_SIDE_QUEST", "Discover Echo", "Make the next optional Echo available to the Crew."],
+  ["UPDATE_SIDE_QUEST", "Update Echo", "Advance one released Echo objective."],
+  ["COMPLETE_SIDE_QUEST", "Complete Echo", "Complete the active Echo and grant its configured reward."],
+  ["ADD_JOURNAL_ANNOTATION", "Add journal annotation", "Release a development note beside the active Chapter."],
+  ["ADD_LOG_ENTRY", "Add Crew log entry", "Record a generic Crew-facing Captain note."],
+  ["TEASE_FINALE", "Preview sealed finale", "Prepare the finale shell without releasing finale content."],
+  ["UPDATE_FINALE_REQUIREMENT", "Update finale requirement", "Advance one configured finale requirement."],
   [
     "UNDO_LAST",
-    "Undo Last Progression Action",
-    "Restore the last saved progression state and publish a reconciliation event.",
+    "Restore prior progression state",
+    "Restore the prior saved progression state and publish a reconciliation event for the Crew.",
   ],
-  ["PAUSE", "Pause Campaign", "Pause the voyage without hiding already released material."],
-  ["RESUME", "Resume Campaign", "Return the voyage to active status."],
+  ["PAUSE", "Pause Voyage", "Pause progression without hiding material already released to the Crew."],
+  ["RESUME", "Resume Voyage", "Return this Voyage to active progression."],
 ] as const;
 
 type Action = (typeof actions)[number];
 
 function commandPreflight(action: Action, status: Status) {
   const previous = status.events[0];
-  const campaignTarget = `${status.campaign.title} at ledger sequence ${status.campaign.sequence}`;
+  const campaignTarget = `${status.campaign.title} at Voyage record sequence ${status.campaign.sequence}`;
   switch (action[0]) {
     case "PREPARE_CHAPTER":
     case "RELEASE_CHAPTER":
@@ -235,7 +227,7 @@ function commandPreflight(action: Action, status: Status) {
       return {
         target: previous
           ? `${previous.type.replaceAll("_", " ")} at sequence ${previous.sequence}`
-          : "No previous ledger event",
+          : "No previous Voyage event",
         current: campaignTarget,
         consequence: previous
           ? `Restore the persisted state immediately before event ${previous.id}.`
@@ -247,7 +239,7 @@ function commandPreflight(action: Action, status: Status) {
     default:
       return {
         target: `${status.campaign.title} / ${status.chapter.title}`,
-        current: `Sequence ${status.campaign.sequence}`,
+        current: `Voyage record sequence ${status.campaign.sequence}`,
         consequence: action[2],
       };
   }
@@ -732,10 +724,10 @@ function QuartermasterLoginHost({
         className="chart-room-light"
       />
       <LoginTarget part="cabin-door" targetKey="quartermaster-login:cabin-door" className="cabin-door">
-        <span>Private command surface</span>
+        <span>Captain’s Console access</span>
         <LoginTarget as="i" part="door-bolt" targetKey="quartermaster-login:door-bolt" />
         <LoginTarget part="lock" targetKey="quartermaster-login:lock" className="door-keyhole">
-          <RiveStatefulObject asset={riveAssets.invitationSeal} mode={mode} label="Quartermaster door lock" />
+          <RiveStatefulObject asset={riveAssets.invitationSeal} mode={mode} label="Captain's Console door lock" />
         </LoginTarget>
       </LoginTarget>
       <LoginTarget part="lantern" targetKey="quartermaster-login:lantern" className="login-lantern">
@@ -933,7 +925,10 @@ export function Quartermaster({ authenticated }: { authenticated: boolean }) {
         });
         const data = await readJson(response);
         if (!response.ok) {
-          operationError = safeServerError(data, "The lock refused the key.");
+          operationError = safeServerError(
+            data,
+            "We couldn't sign you in. Check the Captain name and passphrase, then try again.",
+          );
           throw new Error("authoritative-login-failed");
         }
         authoritativeLoginSucceeded = true;
@@ -955,7 +950,7 @@ export function Quartermaster({ authenticated }: { authenticated: boolean }) {
         finalStateRuntime: {
           holdSafePose: (semanticState) => {
             if (semanticState !== "quartermaster-result-readable" || controller.signal.aborted) return;
-            publishPresentationWarning("Sign-in accepted. Opening the chart room.");
+            publishPresentationWarning("Sign-in accepted. Opening Captain's Console.");
           },
           verifyReadableState: (semanticState) =>
             semanticState === "quartermaster-result-readable" &&
@@ -974,7 +969,7 @@ export function Quartermaster({ authenticated }: { authenticated: boolean }) {
           try {
             fallbackLoginResult = await authenticate();
             const readable = publishPresentationWarning(
-              "Sign-in succeeded. The entrance animation is unavailable; opening the chart room directly.",
+              "Sign-in succeeded. The entrance presentation is unavailable; opening Captain's Console directly.",
             );
             return readable
               ? { completed: true, readable: true, semanticState: "quartermaster-result-readable" }
@@ -992,7 +987,7 @@ export function Quartermaster({ authenticated }: { authenticated: boolean }) {
           controller,
           operationError ||
             (operationStarted
-              ? "The lock refused the key."
+              ? "We couldn't sign you in. Check the Captain name and passphrase, then try again."
               : "Sign-in was not attempted because its presentation could not start."),
           !operationStarted && presentationFailed(receipt.outcome)
             ? "The entrance presentation is unavailable. Sign-in was not recorded."
@@ -1004,14 +999,14 @@ export function Quartermaster({ authenticated }: { authenticated: boolean }) {
       if (receipt.outcome === "presented-fallback" || presentationFailed(receipt.outcome)) {
         setPresentationWarning(readablePresentationWarning("sign-in"));
       } else {
-        publishPresentationWarning("Sign-in accepted. Opening the chart room.");
+        publishPresentationWarning("Sign-in accepted. Opening Captain's Console.");
       }
       const refreshed = await refresh(controller.signal);
       if (!mounted.current || controller.signal.aborted) return;
       if (!refreshed) {
         restoreLoginFailure(
           controller,
-          "Sign-in succeeded, but the chart room could not be opened. Please try again.",
+          "Sign-in succeeded, but Captain's Console could not be opened. Please try again.",
           readablePresentationWarning("sign-in"),
         );
       }
@@ -1023,12 +1018,15 @@ export function Quartermaster({ authenticated }: { authenticated: boolean }) {
         if (!refreshed && mounted.current) {
           restoreLoginFailure(
             controller,
-            "Sign-in succeeded, but the chart room could not be opened. Please try again.",
+            "Sign-in succeeded, but Captain's Console could not be opened. Please try again.",
             readablePresentationWarning("sign-in"),
           );
         }
       } else {
-        restoreLoginFailure(controller, operationError || "The lock refused the key.");
+        restoreLoginFailure(
+          controller,
+          operationError || "We couldn't sign you in. Check the Captain name and passphrase, then try again.",
+        );
       }
     } finally {
       if (inFlight.current === controller) {
@@ -1048,7 +1046,7 @@ export function Quartermaster({ authenticated }: { authenticated: boolean }) {
     const idempotencyKey = confirmationIdempotencyKey.current;
     if (!idempotencyKey) {
       setBusy(false);
-      setError("This confirmation expired. Close it and review the action again.");
+      setError("This confirmation expired. Close it and review the Voyage action again.");
       return;
     }
     const controller = new AbortController();
@@ -1092,7 +1090,7 @@ export function Quartermaster({ authenticated }: { authenticated: boolean }) {
         });
         const body = await readJson(response);
         if (!response.ok || !isCommandResult(body)) {
-          operationError = safeServerError(body, "The order could not be recorded.");
+          operationError = safeServerError(body, "The Voyage action could not be recorded. No progress has changed.");
           throw new Error("authoritative-command-failed");
         }
         authoritativeResult = body;
@@ -1119,16 +1117,16 @@ export function Quartermaster({ authenticated }: { authenticated: boolean }) {
         finalStateRuntime: {
           holdSafePose: (semanticState) => {
             if (semanticState !== fallbackContract.semanticState || controller.signal.aborted) return;
-            publishPresentationWarning("The order was recorded. Updating the voyage ledger.");
+            publishPresentationWarning("The Voyage action was saved. Updating the Voyage record.");
           },
           reconcileFinalState: (semanticState) => {
             if (semanticState !== fallbackContract.semanticState || controller.signal.aborted) return;
-            publishPresentationWarning("The order was recorded. Updating the voyage ledger.");
+            publishPresentationWarning("The Voyage action was saved. Updating the Voyage record.");
           },
           verifyReadableState: (semanticState) =>
             semanticState === fallbackContract.semanticState &&
             presentationWarningTarget.current?.getAttribute("role") === "status" &&
-            presentationWarningTarget.current?.textContent?.includes("The order was recorded") === true,
+            presentationWarningTarget.current?.textContent?.includes("The Voyage action was saved") === true,
         },
         presentationFallback: async (context) => {
           if (
@@ -1142,7 +1140,7 @@ export function Quartermaster({ authenticated }: { authenticated: boolean }) {
           try {
             fallbackOperationResult = await submitCommand();
             const readable = publishPresentationWarning(
-              "The order was recorded. Its animation is unavailable; refreshing the ledger directly.",
+              "The Voyage action was saved. Its presentation is unavailable; refreshing the Voyage record directly.",
             );
             return readable
               ? { completed: true, readable: true, semanticState: fallbackContract.semanticState }
@@ -1163,11 +1161,11 @@ export function Quartermaster({ authenticated }: { authenticated: boolean }) {
         setError(
           operationError ||
             (operationStarted
-              ? "The order could not be recorded."
-              : "The order was not sent because its presentation could not start."),
+              ? "The Voyage action could not be recorded. No progress has changed."
+              : "The Voyage action was not sent because its presentation could not start."),
         );
         if (!operationStarted && presentationFailed(receipt.outcome)) {
-          setPresentationWarning("The command presentation is unavailable. No order was recorded.");
+          setPresentationWarning("The Voyage action presentation is unavailable. No action was recorded.");
         }
         return;
       }
@@ -1180,7 +1178,7 @@ export function Quartermaster({ authenticated }: { authenticated: boolean }) {
       if (receipt.outcome === "presented-fallback" || presentationFailed(receipt.outcome)) {
         setPresentationWarning(readablePresentationWarning("order"));
       } else if (!refreshed) {
-        setPresentationWarning("The order was recorded, but the latest ledger status could not be loaded.");
+        setPresentationWarning("The Voyage action was saved, but the latest Voyage record could not be loaded.");
       } else {
         setPresentationWarning("");
       }
@@ -1195,12 +1193,14 @@ export function Quartermaster({ authenticated }: { authenticated: boolean }) {
         setPresentationWarning(
           refreshed
             ? readablePresentationWarning("order")
-            : "The order was recorded, but its presentation and latest ledger status could not be loaded.",
+            : "The Voyage action was saved, but its presentation and latest Voyage record could not be loaded.",
         );
       } else {
         setError(
           operationError ||
-            (operationStarted ? "The order could not be recorded." : "The command presentation could not be prepared."),
+            (operationStarted
+              ? "The Voyage action could not be recorded. No progress has changed."
+              : "The Voyage action presentation could not be prepared."),
         );
       }
     } finally {
@@ -1234,12 +1234,12 @@ export function Quartermaster({ authenticated }: { authenticated: boolean }) {
           className="login-door-dust"
         />
         <section className="login-ledger">
-          <p className="eyebrow">Restricted chart room</p>
-          <h1>Quartermaster&apos;s Log</h1>
-          <p>Captain, identify yourself before touching the voyage ledger.</p>
+          <p className="eyebrow">Restricted Captain’s Console</p>
+          <h1>Captain’s Console</h1>
+          <p>Captain, sign in before changing Voyage progress.</p>
           <form onSubmit={login} aria-busy={busy} aria-describedby={error ? "quartermaster-login-error" : undefined}>
             <label>
-              Captain&apos;s name
+              Captain name
               <input ref={loginInput} name="username" autoComplete="username" required />
             </label>
             <label>
@@ -1252,7 +1252,7 @@ export function Quartermaster({ authenticated }: { authenticated: boolean }) {
               aria-busy={busy}
               {...pressable(mode)}
             >
-              {busy || animation.isPlaying ? "Turning the key…" : "Enter the chart room"}
+              {busy || animation.isPlaying ? "Signing in..." : "Sign in to Captain's Console"}
             </motion.button>
             {error && (
               <p id="quartermaster-login-error" className="form-error" role="alert">
@@ -1267,7 +1267,7 @@ export function Quartermaster({ authenticated }: { authenticated: boolean }) {
           </form>
         </section>
         <div className="quartermaster-login-controls">
-          <button onClick={cycle} aria-label={`Motion: ${mode}. Change motion setting`}>
+          <button onClick={cycle} aria-label={`Motion setting: ${mode}. Change motion setting`}>
             {mode} motion
           </button>
           {animation.isPlaying && <button onClick={() => director.skip()}>Skip nonessential motion</button>}
@@ -1277,7 +1277,7 @@ export function Quartermaster({ authenticated }: { authenticated: boolean }) {
     );
   }
 
-  if (!status) return <main className="quartermaster-shell loading-quarters">Opening the voyage ledger…</main>;
+  if (!status) return <main className="quartermaster-shell loading-quarters">Opening Captain’s Console...</main>;
   const selectedPreflight = selected ? commandPreflight(selected, status) : null;
 
   return (
@@ -1291,25 +1291,25 @@ export function Quartermaster({ authenticated }: { authenticated: boolean }) {
       <div className="quartermaster-desk" aria-hidden="true" />
       <header className="quartermaster-header">
         <div>
-          <p className="eyebrow">Private command surface</p>
-          <h1>Quartermaster&apos;s Log</h1>
+          <p className="eyebrow">Live Voyage control</p>
+          <h1>Captain’s Console</h1>
         </div>
         <div className="gm-header-tools">
-          <a href="/studio">Tall Tale Studio</a>
-          <a href="/captain">Captain sessions</a>
-          <button onClick={cycle} aria-label={`Motion: ${mode}. Change motion setting`}>
+          <a href="/studio">Voyagewright Studio</a>
+          <a href="/captain">Voyage dashboard</a>
+          <button onClick={cycle} aria-label={`Motion setting: ${mode}. Change motion setting`}>
             {mode} motion
           </button>
           <div className="campaign-stamp">
             <span>{status.campaign.status}</span>
-            <b>Sequence {status.campaign.sequence}</b>
+            <b>Voyage sequence {status.campaign.sequence}</b>
           </div>
         </div>
       </header>
       {presentationWarning && (
         <p ref={presentationWarningTarget} className="gm-presentation-warning" role="status">
           {presentationWarning}
-          <button onClick={() => setPresentationWarning("")} aria-label="Dismiss presentation warning">
+          <button onClick={() => setPresentationWarning("")} aria-label="Dismiss Captain's Console notice">
             ×
           </button>
         </p>
@@ -1322,12 +1322,12 @@ export function Quartermaster({ authenticated }: { authenticated: boolean }) {
           animate="enter"
           custom={0}
         >
-          <p className="card-kicker">Active voyage</p>
+          <p className="card-kicker">Active Voyage</p>
           <h2>{status.campaign.title}</h2>
           <div className="status-instruments">
             <div className={`connection-lamp ${status.playerConnected ? "live" : "quiet"}`}>
               <i />
-              {status.playerConnected ? "Player signal" : "No recent signal"}
+              {status.playerConnected ? "Crew member connected" : "No recent Crew connection"}
             </div>
             <div className="campaign-instrument" data-authoritative-sequence={status.campaign.sequence}>
               <motion.i
@@ -1337,7 +1337,7 @@ export function Quartermaster({ authenticated }: { authenticated: boolean }) {
                 transition={{ duration: mode === "reduced" ? 0 : 0.28 }}
               />
               <span>{status.campaign.status}</span>
-              <b>Ledger sequence {status.campaign.sequence}</b>
+              <b>Voyage record sequence {status.campaign.sequence}</b>
             </div>
           </div>
           <dl>
@@ -1352,7 +1352,7 @@ export function Quartermaster({ authenticated }: { authenticated: boolean }) {
               <dd>{status.chapter.state}</dd>
             </div>
             <div>
-              <dt>Side quest</dt>
+              <dt>Echo</dt>
               <dd>{status.sideQuest?.state ?? "None"}</dd>
             </div>
           </dl>
@@ -1364,13 +1364,13 @@ export function Quartermaster({ authenticated }: { authenticated: boolean }) {
           animate="enter"
           custom={1}
         >
-          <p className="card-kicker">Player&apos;s present view</p>
+          <p className="card-kicker">Crew’s current view</p>
           <div className="mini-page">
             <span>{status.chapter.state}</span>
-            <strong>{status.preview.chapter.objective ?? "Awaiting the captain's signal."}</strong>
+            <strong>{status.preview.chapter.objective ?? "Awaiting the Captain's signal."}</strong>
           </div>
           <a href={`/tale/${status.campaign.slug}`} target="_blank">
-            Open player view ↗
+            Open Crew view ↗
           </a>
         </motion.article>
         <motion.article
@@ -1380,7 +1380,7 @@ export function Quartermaster({ authenticated }: { authenticated: boolean }) {
           animate="enter"
           custom={2}
         >
-          <p className="card-kicker">Progression controls</p>
+          <p className="card-kicker">Voyage controls</p>
           <div className="action-list">
             {actions.map((action) => (
               <motion.button
@@ -1414,7 +1414,7 @@ export function Quartermaster({ authenticated }: { authenticated: boolean }) {
           animate="enter"
           custom={3}
         >
-          <p className="card-kicker">Recent ledger entries</p>
+          <p className="card-kicker">Recent Voyage events</p>
           <ol>
             {status.events.map((event) => (
               <motion.li layout key={event.id}>
@@ -1424,7 +1424,7 @@ export function Quartermaster({ authenticated }: { authenticated: boolean }) {
               </motion.li>
             ))}
           </ol>
-          <p>Relics aboard: {status.inventory.length ? status.inventory.join(", ") : "none"}</p>
+          <p>Artifacts recovered: {status.inventory.length ? status.inventory.join(", ") : "None"}</p>
         </motion.article>
       </section>
       <AnimatePresence>
@@ -1438,7 +1438,7 @@ export function Quartermaster({ authenticated }: { authenticated: boolean }) {
           >
             {message}
             {commandTruth && <span>{commandTruth}</span>}
-            <button onClick={() => setMessage("")} aria-label="Dismiss message">
+            <button onClick={() => setMessage("")} aria-label="Dismiss Captain's Console message">
               ×
             </button>
           </motion.div>
@@ -1458,7 +1458,7 @@ export function Quartermaster({ authenticated }: { authenticated: boolean }) {
                 initial={{ opacity: 0, y: 24, scale: 0.98 }}
                 animate={{ opacity: activeAction ? 0 : 1, y: activeAction ? -8 : 0, scale: activeAction ? 0.985 : 1 }}
               >
-                <p className="eyebrow">Confirm ledger action</p>
+                <p className="eyebrow">Confirm Voyage action</p>
                 <h2 id="confirm-title">{selected[1]}</h2>
                 <p>{selected[2]}</p>
                 {selectedPreflight && (
@@ -1480,8 +1480,8 @@ export function Quartermaster({ authenticated }: { authenticated: boolean }) {
                 <div className="impact-note">
                   <b>What happens next</b>
                   <span>
-                    This runs atomically, writes an audit entry, creates one ordered event and a state point for undo,
-                    then attempts in-process publication. Player delivery is confirmed separately.
+                    This runs atomically, records an audit entry, saves a recovery point, and then attempts live
+                    delivery. Crew delivery and presentation are confirmed separately.
                   </span>
                 </div>
                 {error && (
@@ -1491,7 +1491,7 @@ export function Quartermaster({ authenticated }: { authenticated: boolean }) {
                 )}
                 {busy && (
                   <p className="command-queue-state" role="status">
-                    This command owns the ledger queue. Other commands remain serialized until it settles.
+                    This action holds the Voyage queue. Other actions wait until it finishes.
                   </p>
                 )}
                 <div>
@@ -1499,7 +1499,7 @@ export function Quartermaster({ authenticated }: { authenticated: boolean }) {
                     Cancel
                   </button>
                   <button ref={confirmAction} className="confirm-action" disabled={busy} onClick={execute}>
-                    {busy ? "Recording…" : "Confirm action"}
+                    {busy ? "Recording..." : "Confirm Voyage action"}
                   </button>
                 </div>
               </motion.section>
@@ -1545,18 +1545,18 @@ function QuartermasterActionScene({
   skip: () => void;
 }) {
   const descriptions: Record<Action[0], string> = {
-    PREPARE_CHAPTER: "A blank leaf aligns beneath the captain's press.",
-    RELEASE_CHAPTER: "The chapter seal parts and released ink finds the page.",
+    PREPARE_CHAPTER: "A blank leaf aligns beneath the Captain's press.",
+    RELEASE_CHAPTER: "The Chapter seal parts and released ink finds the page.",
     MARK_SOLVED: "The solved stamp falls with an imperfect edge.",
     AWARD_ARTIFACT: "Velvet darkens while the recovered object finds its brass slot.",
     REVEAL_MAP: "Fog withdraws and a new marker meets the chart.",
     REVEAL_ROUTE: "A route scratches itself between truthful bearings.",
     REVEAL_ARTIFACT_SILHOUETTE: "Only the approved silhouette enters the cabinet.",
-    CONNECT_ARTIFACTS: "A fine brass line joins the released relics.",
+    CONNECT_ARTIFACTS: "A fine brass line joins the released Artifacts.",
     DISCOVER_SIDE_QUEST: "A rumor note slips from its envelope.",
     UPDATE_SIDE_QUEST: "Fresh ink checks the next optional objective.",
     COMPLETE_SIDE_QUEST: "The optional course receives its completion stamp.",
-    ADD_JOURNAL_ANNOTATION: "A captain's note settles into the margin.",
+    ADD_JOURNAL_ANNOTATION: "A Captain's note settles into the margin.",
     ADD_LOG_ENTRY: "The next dated line enters the logbook.",
     TEASE_FINALE: "The outer rings wake while the core stays sealed.",
     UPDATE_FINALE_REQUIREMENT: "One truthful socket receives light.",
@@ -1583,7 +1583,7 @@ function QuartermasterActionScene({
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0 }}
         aria-live="polite"
-        aria-label={`${action[1]} ceremony: ${label}`}
+        aria-label={`${action[1]} presentation: ${label}`}
       >
         <p className="eyebrow">{action[1]}</p>
         <h2>{label.replaceAll("-", " ")}</h2>

@@ -5,6 +5,8 @@ import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { ErrorState, LoadingState } from "@/components/ui/AsyncState";
+import { errorCopy } from "@/language/error-copy";
+import { platformCopy } from "@/language/platform-copy";
 
 type Tale = {
   slug: string;
@@ -32,10 +34,10 @@ export function TaleStart({ taleSlug }: { taleSlug: string }) {
     try {
       const response = await fetch(`/api/tales/${taleSlug}`, { cache: "no-store" });
       const body = (await response.json()) as { tale?: Tale; error?: string };
-      if (!response.ok) setError(body.error ?? "This Tall Tale cannot be opened.");
+      if (!response.ok) setError(body.error ?? errorCopy.chronicleCouldNotOpen.value);
       else setTale(body.tale ?? null);
     } catch {
-      setError("This Tall Tale could not be reached. Check your connection and try again.");
+      setError(errorCopy.chronicleCouldNotOpenDetail.value);
     }
   }, [taleSlug]);
 
@@ -46,7 +48,7 @@ export function TaleStart({ taleSlug }: { taleSlug: string }) {
     return (
       <main className="tale-start error">
         <ErrorState
-          title="This Tall Tale is unavailable"
+          title={errorCopy.chronicleCouldNotOpen.value}
           detail={error}
           action={{ label: "Try Again", onClick: () => void load() }}
         />
@@ -55,7 +57,10 @@ export function TaleStart({ taleSlug }: { taleSlug: string }) {
   if (!tale)
     return (
       <main className="tale-start">
-        <LoadingState title="Opening the Tall Tale preview" detail="Loading story details and the published edition." />
+        <LoadingState
+          title={platformCopy.loadingChronicle.value}
+          detail="Loading the published Chronicle and its version."
+        />
       </main>
     );
   return (
@@ -63,8 +68,8 @@ export function TaleStart({ taleSlug }: { taleSlug: string }) {
       {tale.coverUrl && <img className="tale-start-cover" src={tale.coverUrl} alt="" />}
       <div className="tale-start-shade" />
       <section>
-        <Link href="/tales">← Published tales</Link>
-        <p className="eyebrow tale-preview-label">Preview this Tall Tale</p>
+        <Link href="/tales">← Published Chronicles</Link>
+        <p className="eyebrow tale-preview-label">Preview this Chronicle</p>
         <p className="tale-edition-line">
           Version {tale.version} · {tale.estimatedDuration ? `${tale.estimatedDuration} minutes` : "duration uncharted"}
         </p>
@@ -105,7 +110,7 @@ export function TaleStart({ taleSlug }: { taleSlug: string }) {
               }
               router.push(body.url);
             } catch {
-              setError("The Tall Tale could not begin. Check your connection and try again.");
+              setError("The Voyage could not begin. Check your connection, then try again.");
             } finally {
               setBusy(false);
             }
@@ -121,7 +126,7 @@ export function TaleStart({ taleSlug }: { taleSlug: string }) {
             />
           </label>
           <button className="brass-button" disabled={busy} aria-busy={busy}>
-            {busy ? "Preparing the session…" : "Begin this Tall Tale"}
+            {busy ? "Preparing your Voyage…" : platformCopy.beginVoyage.value}
           </button>
           {error && (
             <p id="tale-start-error" className="platform-error" role="alert">

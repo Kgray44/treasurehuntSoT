@@ -21,7 +21,8 @@ const errors: string[] = [];
 const blockers: string[] = [];
 
 function localPath(publicPath: string) {
-  if (!publicPath.startsWith("/animations/")) throw new Error(`asset path must remain local to /animations: ${publicPath}`);
+  if (!publicPath.startsWith("/animations/"))
+    throw new Error(`asset path must remain local to /animations: ${publicPath}`);
   return path.join(root, "public", publicPath.slice(1));
 }
 
@@ -68,7 +69,8 @@ for (const asset of manifest.assets) {
       errors.push(`manifest ${asset.id}: blocked asset unexpectedly exists; register and validate it atomically`);
     }
     if (asset.sha256 !== null) errors.push(`manifest ${asset.id}: blocked asset must not claim a SHA-256`);
-    if (!asset.blockedReason?.trim()) errors.push(`manifest ${asset.id}: blocked asset needs a specific blocked reason`);
+    if (!asset.blockedReason?.trim())
+      errors.push(`manifest ${asset.id}: blocked asset needs a specific blocked reason`);
     blockers.push(`${asset.id}: ${asset.blockedReason ?? "missing blocked reason"}`);
     continue;
   }
@@ -107,7 +109,8 @@ for (const directory of ["svg", "stills"]) {
   if (!fs.existsSync(location)) continue;
   for (const file of fs.readdirSync(location).filter((name) => name.endsWith(".svg"))) {
     const source = fs.readFileSync(path.join(location, file), "utf8");
-    if (!source.includes("<svg") || !source.includes("</svg>")) errors.push(`${directory}/${file}: malformed SVG wrapper`);
+    if (!source.includes("<svg") || !source.includes("</svg>"))
+      errors.push(`${directory}/${file}: malformed SVG wrapper`);
     if (/https?:\/\//i.test(source.replace("http://www.w3.org/2000/svg", ""))) {
       errors.push(`${directory}/${file}: remote dependency found`);
     }

@@ -72,9 +72,7 @@ export const finaleMechanismStage = Object.freeze({
   resetting: 9,
 });
 
-const blockedProductionAsset = (
-  asset: Omit<RiveAssetContract, "availability" | "provenance">,
-): RiveAssetContract => ({
+const blockedProductionAsset = (asset: Omit<RiveAssetContract, "availability" | "provenance">): RiveAssetContract => ({
   ...asset,
   availability: "blocked_external_asset",
   provenance:
@@ -152,7 +150,19 @@ export const riveAssets = {
       { name: "reset", type: "trigger" },
       { name: "reducedMotion", type: "boolean" },
     ],
-    states: ["locked", "idle", "hover", "focus", "awake", "pressure", "releasing", "opening", "open", "interrupted", "resetting"],
+    states: [
+      "locked",
+      "idle",
+      "hover",
+      "focus",
+      "awake",
+      "pressure",
+      "releasing",
+      "opening",
+      "open",
+      "interrupted",
+      "resetting",
+    ],
     reducedPose: { openingPhase: journalClaspOpeningPhase.locked, pressure: 0, reducedMotion: true },
     reducedSemanticSignals: ["openingPhase", "pressure", "reducedMotion"],
     fallback: "/animations/stills/journal-clasp-fallback.svg",
@@ -228,7 +238,18 @@ export const riveAssets = {
       { name: "reset", type: "trigger" },
       { name: "reducedMotion", type: "boolean" },
     ],
-    states: ["dormant", "teased", "sealed", "partial", "ready", "unlocking", "unlocked", "complete", "historical", "resetting"],
+    states: [
+      "dormant",
+      "teased",
+      "sealed",
+      "partial",
+      "ready",
+      "unlocking",
+      "unlocked",
+      "complete",
+      "historical",
+      "resetting",
+    ],
     reducedPose: {
       stage: finaleMechanismStage.dormant,
       overallProgress: 0,
@@ -237,7 +258,14 @@ export const riveAssets = {
       isReady: false,
       reducedMotion: true,
     },
-    reducedSemanticSignals: ["stage", "overallProgress", "activeRequirement", "requirementProgress", "isReady", "reducedMotion"],
+    reducedSemanticSignals: [
+      "stage",
+      "overallProgress",
+      "activeRequirement",
+      "requirementProgress",
+      "isReady",
+      "reducedMotion",
+    ],
     fallback: "/animations/stills/finale-fallback.svg",
     fallbackStates: ["dormant", "teased", "partial", "ready", "unlocked", "complete", "historical"],
     version: "v1",
@@ -272,7 +300,8 @@ export const riveAssets = {
       reduced: "autoplay disabled; inputs remain available",
     },
     priority: "intent",
-    provenance: "Rive runtime repository example, MIT License, Copyright 2020-2021 Rive. Development-only; never production proof.",
+    provenance:
+      "Rive runtime repository example, MIT License, Copyright 2020-2021 Rive. Development-only; never production proof.",
     dimensions: "400 x 400 source; responsive contain",
     developmentOnly: true,
   },

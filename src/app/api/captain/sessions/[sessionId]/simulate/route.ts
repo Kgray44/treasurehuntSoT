@@ -7,9 +7,12 @@ import { getTaleSessionState, submitVerification } from "@/tall-tale/progression
 export async function POST(request: Request, context: { params: Promise<{ sessionId: string }> }) {
   const session = await requireGmCapability("CAPTAIN");
   if (!session || process.env.NODE_ENV === "production")
-    return NextResponse.json({ error: "The development simulator is unavailable." }, { status: 403 });
+    return NextResponse.json({ error: "The development verification simulator is unavailable." }, { status: 403 });
   if (!(await verifyCsrf(session)))
-    return NextResponse.json({ error: "The Captain session expired." }, { status: 403 });
+    return NextResponse.json(
+      { error: "Your Captain session expired. Sign in again; no Voyage progress has changed." },
+      { status: 403 },
+    );
   try {
     const { sessionId } = await context.params;
     const body = (await request.json()) as {
@@ -20,7 +23,7 @@ export async function POST(request: Request, context: { params: Promise<{ sessio
     };
     const state = await getTaleSessionState(sessionId, undefined, true);
     if (!state.pendingVerification || !state.block)
-      throw new Error("The session has no pending verification to simulate.");
+      throw new Error("This Voyage has no pending verification to simulate. No progress has changed.");
     const key = body.idempotencyKey ?? randomUUID();
     const submission = {
       schemaVersion: 1 as const,

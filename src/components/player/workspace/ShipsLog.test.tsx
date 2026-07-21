@@ -262,7 +262,7 @@ describe("ShipsLog animation boundary", () => {
         <ShipsLog snapshot={{ ...snapshot, log: [] }} navigate={navigate} />
       </AnimationProvider>,
     );
-    expect(screen.getByRole("heading", { name: "The log awaits its first line" })).toBeVisible();
-    expect(screen.getByText(/Released voyage events will be recorded/)).toBeVisible();
+    expect(screen.getByRole("heading", { name: "Nothing has been recorded yet" })).toBeVisible();
+    expect(screen.getByText(/Released Voyage events will appear here without revealing private details/)).toBeVisible();
   });
 });

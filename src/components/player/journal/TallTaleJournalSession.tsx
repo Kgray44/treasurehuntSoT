@@ -33,6 +33,8 @@ import {
   pageIndexForReadingState,
 } from "@/tall-tale/journal-page-model";
 import type { JsonObject } from "@/tall-tale/types";
+import { platformCopy } from "@/language/platform-copy";
+import { playerCopy } from "@/language/player-copy";
 
 type SessionState = {
   csrfToken?: string;
@@ -306,7 +308,7 @@ function TallTaleJournalSessionIdentity({ sessionId, identitySession = false }: 
         const body = (await response.json()) as SessionState & { error?: string };
         if (request.registry.isDisposed()) return null;
         if (!response.ok) {
-          setError(body.error ?? "This voyage journal could not be read.");
+          setError(body.error ?? "This Voyage Journal could not be opened. Your progress has not changed. Try again.");
           return null;
         }
         stateRef.current = body;
@@ -497,14 +499,14 @@ function TallTaleJournalSessionIdentity({ sessionId, identitySession = false }: 
         if (readiness?.status === "aborted") {
           if (!forcePageFlipReadableFallback("Journal opening readiness was interrupted")) {
             setOpeningOutcome("failure");
-            setOpeningNotice("The journal could not prepare a readable page. Try Skip ceremony again.");
+            setOpeningNotice("The Voyage Journal could not prepare a readable page. Try Skip opening again.");
             return;
           }
           settleJournalReady(
             policy,
             "recoverable-interruption",
             "aborted",
-            "Page preparation was interrupted. The journal is ready in its readable final state.",
+            "Page preparation was interrupted. The Voyage Journal is ready in its readable final state.",
           );
           return;
         }
@@ -513,14 +515,14 @@ function TallTaleJournalSessionIdentity({ sessionId, identitySession = false }: 
             readiness?.status === "timed-out" ? "PageFlip readiness timed out" : "PageFlip readiness probe failed";
           if (!forcePageFlipReadableFallback(fallbackReason)) {
             setOpeningOutcome("failure");
-            setOpeningNotice("The journal could not prepare a readable page. Try Skip ceremony again.");
+            setOpeningNotice("The Voyage Journal could not prepare a readable page. Try Skip opening again.");
             return;
           }
           settleJournalReady(
             policy,
             "pageflip-readiness-failure",
             "failure",
-            "Page turning could not report ready in time. The journal is available in a readable fallback state.",
+            "Page turning could not report ready in time. The Voyage Journal is available in a readable fallback state.",
           );
           return;
         }
@@ -532,9 +534,9 @@ function TallTaleJournalSessionIdentity({ sessionId, identitySession = false }: 
           settledOutcome,
           settledOutcome,
           readinessFallback
-            ? "Page turning is using its readable fallback. The journal is ready."
+            ? "Page turning is using its readable fallback. The Voyage Journal is ready."
             : result.status === "completed-fallback"
-              ? "Motion was reduced. The journal is open in its readable final state."
+              ? "Motion was reduced. The Voyage Journal is open in its readable final state."
               : "",
         );
         return;
@@ -543,7 +545,7 @@ function TallTaleJournalSessionIdentity({ sessionId, identitySession = false }: 
       if (result.status === "aborted") {
         if (!forcePageFlipReadableFallback("Journal opening was interrupted")) {
           setOpeningOutcome("failure");
-          setOpeningNotice("The journal could not prepare a readable page. Try Skip ceremony again.");
+          setOpeningNotice("The Voyage Journal could not prepare a readable page. Try Skip opening again.");
           return;
         }
         settleJournalReady(
@@ -571,7 +573,7 @@ function TallTaleJournalSessionIdentity({ sessionId, identitySession = false }: 
 
       if (!forcePageFlipReadableFallback(`Journal opening phase failed: ${result.outcome.status}`)) {
         setOpeningOutcome("failure");
-        setOpeningNotice("The journal could not prepare a readable page. Try Skip ceremony again.");
+        setOpeningNotice("The Voyage Journal could not prepare a readable page. Try Skip opening again.");
         return;
       }
       settleJournalReady(
@@ -599,7 +601,7 @@ function TallTaleJournalSessionIdentity({ sessionId, identitySession = false }: 
       return;
     }
     setOpeningOutcome("failure");
-    setOpeningNotice("The journal could not prepare a readable page. Try Skip ceremony again.");
+    setOpeningNotice("The Voyage Journal could not prepare a readable page. Try Skip opening again.");
   }, [forcePageFlipReadableFallback, settleJournalReady, stopOpeningRun]);
 
   const changeMotionMode = useCallback(() => {
@@ -807,7 +809,7 @@ function TallTaleJournalSessionIdentity({ sessionId, identitySession = false }: 
       return;
     }
     setOpeningOutcome("failure");
-    setOpeningNotice("The journal could not prepare a readable page. Try Skip ceremony again.");
+    setOpeningNotice("The Voyage Journal could not prepare a readable page. Try Skip opening again.");
   }
 
   function toggleDrawer(drawer: NonNullable<PlayerJournalReadingState["openDrawer"]>, trigger: HTMLElement) {
@@ -850,7 +852,8 @@ function TallTaleJournalSessionIdentity({ sessionId, identitySession = false }: 
       });
       const body = (await response.json()) as { state?: SessionState; accepted?: boolean; error?: string };
       if (request.registry.isDisposed()) return;
-      if (!response.ok) setError(body.error ?? "The story could not advance.");
+      if (!response.ok)
+        setError(body.error ?? "The Voyage could not advance. Your progress has not changed. Try again.");
       else if (body.state) {
         const next = { ...body.state, csrfToken: body.state.csrfToken ?? state.csrfToken };
         stateRef.current = next;
@@ -865,7 +868,7 @@ function TallTaleJournalSessionIdentity({ sessionId, identitySession = false }: 
       }
     } catch {
       if (!request.controller.signal.aborted && !request.registry.isDisposed()) {
-        setError("The story could not advance.");
+        setError("The Voyage could not advance. Your progress has not changed. Try again.");
       }
     } finally {
       request.release();
@@ -876,8 +879,8 @@ function TallTaleJournalSessionIdentity({ sessionId, identitySession = false }: 
   if (!state || !readingReady)
     return (
       <JournalStatus
-        title="Unbinding the journal"
-        message={error || "Finding the current leafâ€¦"}
+        title="Opening Voyage Journal"
+        message={error || "Loading the current Passage..."}
         error={Boolean(error)}
         motionMode={mode}
         motionLevel={motionPolicy.level}
@@ -926,8 +929,8 @@ function TallTaleJournalSessionIdentity({ sessionId, identitySession = false }: 
         inert={openingActive ? true : undefined}
       >
         <div>
-          <Link href="/player/library">â† Tall Tale Library</Link>
-          <p className="eyebrow">{historical ? "Completed journal" : (state.chapter?.title ?? "Tall Tale session")}</p>
+          <Link href="/player/library">← {platformCopy.chronicleLibrary.value}</Link>
+          <p className="eyebrow">{historical ? "Voyage Record" : (state.chapter?.title ?? "Active Voyage")}</p>
           <h1>{state.tale.title}</h1>
         </div>
         <div className="journal-session-tools">
@@ -977,7 +980,7 @@ function TallTaleJournalSessionIdentity({ sessionId, identitySession = false }: 
       >
         <header className="section-masthead">
           <div>
-            <p className="eyebrow">{historical ? "Immutable adventure record" : "Canonical Player session"}</p>
+            <p className="eyebrow">{historical ? "Preserved Voyage Record" : "Active Voyage"}</p>
             <h2 ref={journalHeading} id="tall-tale-journal-heading" tabIndex={-1}>
               {state.session.versionLabel} Voyage Journal
             </h2>
@@ -985,7 +988,7 @@ function TallTaleJournalSessionIdentity({ sessionId, identitySession = false }: 
           <p>
             {historical
               ? "Read-only pages from the exact edition this crew experienced."
-              : "The shared session releases every playable leaf."}
+              : "The Captain releases each Passage for this Voyage."}
           </p>
         </header>
         <PhysicalJournalBook
@@ -997,7 +1000,7 @@ function TallTaleJournalSessionIdentity({ sessionId, identitySession = false }: 
           interactive={journalReady}
           initialPage={initialPage}
           coverTitle={state.tale.title}
-          coverSubtitle={historical ? "Preserved Tall Tale Journal" : "Player Tall Tale Journal"}
+          coverSubtitle={historical ? "Preserved Voyage Record" : "Voyage Journal"}
           sealedMessage={
             historical
               ? "This completed voyage remains sealed to its original edition."
@@ -1037,9 +1040,9 @@ function TallTaleJournalSessionIdentity({ sessionId, identitySession = false }: 
           <button className="wax-open" onClick={(event) => void openJournal(event.currentTarget)}>
             <span>âœ¦</span>
             <strong>Open the journal</strong>
-            <small>{reading.hasOpened ? "Return to your place" : "Begin the Tall Tale"}</small>
+            <small>{reading.hasOpened ? "Return to your place" : platformCopy.beginVoyage.value}</small>
           </button>
-          <Link href="/player/library">Leave for Tall Tale Library</Link>
+          <Link href="/player/library">Return to {platformCopy.chronicleLibrary.value}</Link>
         </div>
       )}
       {openingPhase !== "ENTRY_IDLE" && !journalReady && (
@@ -1055,7 +1058,7 @@ function TallTaleJournalSessionIdentity({ sessionId, identitySession = false }: 
           {openingNotice && openingOutcome === "failure" && <p role="alert">{openingNotice}</p>}
           <button onClick={skipOpening}>Skip ceremony</button>
           <button onClick={changeMotionMode}>Motion: {mode}</button>
-          <Link href="/player/library">Leave for Tall Tale Library</Link>
+          <Link href="/player/library">Return to {platformCopy.chronicleLibrary.value}</Link>
         </div>
       )}
       {openingNotice && (journalReady || openingOutcome === "aborted") && (
@@ -1139,7 +1142,7 @@ function TallTaleJournalSessionIdentity({ sessionId, identitySession = false }: 
           <p>{historical ? "Historical volume" : "Current objective"}</p>
           <strong>{historical ? "Browse every released page from this completed voyage." : currentObjective}</strong>
           <span>
-            {state.session.status.replaceAll("_", " ").toLocaleLowerCase()} · sequence {state.session.currentSequence}
+            {state.session.status.replaceAll("_", " ").toLocaleLowerCase()} · update {state.session.currentSequence}
           </span>
         </div>
         {newContent && (
@@ -1173,16 +1176,16 @@ function TallTaleJournalSessionIdentity({ sessionId, identitySession = false }: 
 
       {connection === "revoked" && journalReady && (
         <div className="journal-connection-note" role="alert">
-          <strong>Your access to this voyage was revoked.</strong>
-          <span>The released pages remain readable, but this journal will not reconnect or request new progress.</span>
+          <strong>Your access to this Voyage was revoked.</strong>
+          <span>
+            The released Passages remain readable, but this Journal will not reconnect or request new progress.
+          </span>
         </div>
       )}
       {connection !== "live" && connection !== "archived" && connection !== "revoked" && journalReady && (
         <div className="journal-connection-note" role="status">
-          <strong>
-            {connection === "offline" ? "You appear to be offline." : "The signal is crossing rough water."}
-          </strong>
-          <span>Reading remains available while canonical state reconnects.</span>
+          <strong>{connection === "offline" ? "You appear to be offline." : "Reconnecting to the Captain."}</strong>
+          <span>Your released Passages remain available while Voyage updates reconnect.</span>
           <button onClick={() => void load()}>Retry now</button>
         </div>
       )}
@@ -1215,15 +1218,15 @@ function JournalActions({
   if (state.session.status === "PAUSED")
     return (
       <div className="awaiting-captain">
-        <strong>The Captain has paused this Tall Tale.</strong>
-        <p>Your page and progress are preserved.</p>
+        <strong>The Captain has paused this Voyage.</strong>
+        <p>Your current Passage and progress are preserved.</p>
       </div>
     );
   if (state.pendingVerification?.providerType === "captainManual")
     return (
       <div className="awaiting-captain">
-        <strong>{String(currentBlock?.configuration.waitingText ?? "Awaiting the Captain's approvalâ€¦")}</strong>
-        <p>The journal will respond when the shared session advances.</p>
+        <strong>{String(currentBlock?.configuration.waitingText ?? playerCopy.awaitingCaptain.value)}</strong>
+        <p>{playerCopy.awaitingCaptainDetail.value}</p>
       </div>
     );
   if (state.pendingVerification?.providerType === "textAnswer")
@@ -1271,7 +1274,7 @@ function JournalActions({
         : String(
             currentBlock?.configuration.buttonLabel ??
               currentBlock?.configuration.primaryLabel ??
-              "Continue the Tall Tale",
+              platformCopy.continueVoyage.value,
           )}
     </button>
   );
@@ -1284,7 +1287,7 @@ function findCurrentBlock(journal: PlayerJournalProjection) {
 }
 
 function objectiveOf(block: PlayerJournalBlock | null) {
-  if (!block) return "Await the Captain's signal.";
+  if (!block) return playerCopy.awaitingCaptain.value;
   const config = block.configuration;
   for (const key of [
     "objective",
@@ -1333,8 +1336,8 @@ function openingLabel(phase: JournalOpeningPhase) {
 function eventLabel(eventType: string, state: SessionState) {
   if (eventType === "hintReleased") return "The Captain released a new note in the margin.";
   if (eventType === "artifactGranted") return "A recovered artifact has settled into the journal.";
-  if (eventType === "sessionPaused") return "The Captain paused the Tall Tale. Your place is preserved.";
-  if (eventType === "sessionResumed") return "The Captain resumed the Tall Tale.";
+  if (eventType === "sessionPaused") return "The Captain paused this Voyage. Your progress is preserved.";
+  if (eventType === "sessionResumed") return "The Captain resumed this Voyage.";
   if (eventType === "sessionCompleted") return "The final page is now preserved as a completed journal.";
   return `A new page was released: ${state.block?.title ?? "the current objective"}.`;
 }
@@ -1365,10 +1368,10 @@ function JournalStatus({
       </div>
       <section className="closed-status-journal">
         <div aria-hidden="true">F</div>
-        <p className="eyebrow">Tall Tale journal</p>
+        <p className="eyebrow">Voyage Journal</p>
         <h1>{title}</h1>
         <p role={error ? "alert" : "status"}>{message}</p>
-        {error && <Link href="/player/library">Return to the Tall Tale Library</Link>}
+        {error && <Link href="/player/library">Return to {platformCopy.chronicleLibrary.value}</Link>}
       </section>
     </main>
   );

@@ -337,10 +337,10 @@ export function JournalWorkspace({
       <SceneHostHandleBridge onChange={setCeremonyHost} />
       <header className="section-masthead">
         <div>
-          <p className="eyebrow">Primary story artifact</p>
+          <p className="eyebrow">Chronicle record</p>
           <h2 id="journal-heading">The Voyage Journal</h2>
         </div>
-        <p>Selectable parchment, physical leaves, and only the words the tide has released.</p>
+        <p>Read the released Passages in this Voyage Journal.</p>
       </header>
       <PhysicalJournalBook
         ref={book}
@@ -351,7 +351,7 @@ export function JournalWorkspace({
         playbackRate={playbackRate}
         revision={snapshot.sequence}
         initialPage={pageIndexForChapter(pages, snapshot.chapter.ordinal)}
-        coverTitle="The Forever Treasure"
+        coverTitle="Voyagewright"
         coverSubtitle="Captain's Voyage Journal"
         tabs={snapshot.chapters.map((chapter) => ({
           id: String(chapter.ordinal),

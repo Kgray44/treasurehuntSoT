@@ -411,7 +411,8 @@ describe("FinaleChamber Phase 3 interface", () => {
   });
 
   it("retracts stale mechanism status on event replacement and unmount before a fresh adapter reports", async () => {
-    const statuses = vi.fn<(status: "loading" | "ready" | "timed-out" | "failed" | "fallback" | "paused" | "hidden" | null) => void>();
+    const statuses =
+      vi.fn<(status: "loading" | "ready" | "timed-out" | "failed" | "fallback" | "paused" | "hidden" | null) => void>();
     const view = render(
       <AnimationProvider>
         <FinaleChamber
@@ -452,7 +453,8 @@ describe("FinaleChamber Phase 3 interface", () => {
     expect(statuses).toHaveBeenCalledOnce();
     expect(statuses).toHaveBeenLastCalledWith(null);
 
-    const remountStatuses = vi.fn<(status: "loading" | "ready" | "timed-out" | "failed" | "fallback" | "paused" | "hidden" | null) => void>();
+    const remountStatuses =
+      vi.fn<(status: "loading" | "ready" | "timed-out" | "failed" | "fallback" | "paused" | "hidden" | null) => void>();
     render(
       <AnimationProvider>
         <FinaleChamber

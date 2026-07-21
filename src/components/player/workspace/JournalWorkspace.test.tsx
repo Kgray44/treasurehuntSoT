@@ -471,7 +471,9 @@ describe("JournalWorkspace chapter ceremony host", () => {
       contract?.querySelector("[data-scene-part], [data-scene-target-id], [data-animation-owner], [data-gsap-owned]"),
     ).toBeNull();
     expect(view.container.querySelector(".latch-assembly")).toBeInTheDocument();
-    expect(screen.getByText("The journal clasp is releasing while the journal cover remains supported.")).toBeInTheDocument();
+    expect(
+      screen.getByText("The journal clasp is releasing while the journal cover remains supported."),
+    ).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Next journal page" })).toBeEnabled();
     await waitFor(() => expect(contract).toHaveAttribute("data-rive-runtime-status", "fallback"));
     expect(statuses.at(-1)).toBe("fallback");

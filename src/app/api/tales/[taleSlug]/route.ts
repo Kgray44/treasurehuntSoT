@@ -12,7 +12,7 @@ export async function GET(_: Request, context: { params: Promise<{ taleSlug: str
     include: { versions: { where: { isCurrent: true }, take: 1 } },
   });
   const version = tale?.versions[0];
-  if (!tale || !version) return NextResponse.json({ error: "This Tall Tale is not available." }, { status: 404 });
+  if (!tale || !version) return NextResponse.json({ error: "This Chronicle is not available." }, { status: 404 });
   return NextResponse.json({
     tale: {
       id: tale.id,

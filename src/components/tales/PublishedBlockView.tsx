@@ -2,6 +2,8 @@
 
 /* eslint-disable @next/next/no-img-element -- Version-bound media is served by the application's authorized asset endpoint. */
 import { useState } from "react";
+import { errorCopy } from "@/language/error-copy";
+import { playerCopy } from "@/language/player-copy";
 import type { JsonObject } from "@/tall-tale/types";
 
 type PlayerBlock = { id: string; blockType: string; title: string; configuration: JsonObject };
@@ -50,7 +52,7 @@ export function PublishedBlockView({ block, assets }: { block: PlayerBlock; asse
         {Boolean(config.caption || config.messageText) && (
           <p>{value(config, "caption") || value(config, "messageText")}</p>
         )}
-        <button onClick={() => setReplay((item) => item + 1)}>Replay transformation</button>
+        <button onClick={() => setReplay((item) => item + 1)}>{playerCopy.replayPresentation.value}</button>
       </article>
     );
   }
@@ -81,7 +83,7 @@ export function PublishedBlockView({ block, assets }: { block: PlayerBlock; asse
       <article className="runtime-block artifact-block">
         {asset(config.revealArtworkId) && <img src={asset(config.revealArtworkId)} alt="" />}
         <span aria-hidden="true">✦</span>
-        <p className="eyebrow">Recovered treasure</p>
+        <p className="eyebrow">{playerCopy.artifactRecovered.value}</p>
         <h2>{value(config, "loreTitle") || value(config, "progressLabel") || block.title}</h2>
         <p>{value(config, "loreDescription")}</p>
       </article>
@@ -146,9 +148,10 @@ export function PublishedBlockView({ block, assets }: { block: PlayerBlock; asse
     );
   return (
     <article className="runtime-block unknown-block" role="alert">
-      <h2>This story block needs a newer player.</h2>
+      <h2>{errorCopy.newerVersionRequired.value}</h2>
       <p>
-        Block type <code>{block.blockType}</code> is not supported. Progression has been held safely.
+        This Passage type (<code>{block.blockType}</code>) is not supported.{" "}
+        {errorCopy.newerVersionRequiredDetail.value}
       </p>
     </article>
   );

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { AnimationProvider } from "@/animation/director/AnimationProvider";
 import { ProductShell } from "@/components/shell/ProductShell";
+import { canonicalTerms } from "@/language/canonical-terms";
 import "./globals.css";
 import "../styles/tokens.css";
 import "../styles/shell.css";
@@ -14,11 +15,10 @@ import "../styles/tall-tale.css";
 import "../styles/platform.css";
 
 export const metadata: Metadata = {
-  applicationName: "Forever Treasure",
-  title: { default: "Forever Treasure · Interactive Tall Tales", template: "%s · Forever Treasure" },
-  description:
-    "Create, host, join, and experience interactive Tall Tales for friends, families, groups, and celebrations.",
-  keywords: ["interactive stories", "Tall Tales", "group experiences", "collaborative storytelling"],
+  applicationName: canonicalTerms.product,
+  title: { default: "Voyagewright | Stories made to be played", template: `%s | ${canonicalTerms.product}` },
+  description: "Create a Chronicle, guide a Voyage, and gather your Crew for stories made to be played.",
+  keywords: ["interactive experiences", "Chronicles", "Voyages", "group storytelling"],
   robots: { index: false, follow: false },
 };
 

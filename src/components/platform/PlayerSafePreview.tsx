@@ -39,7 +39,7 @@ export function PlayerSafePreview({ playthroughId }: { playthroughId: string }) 
   return (
     <main className="player-safe-preview">
       <header>
-        <Link href="/captain/library">Back to Captain&apos;s Command</Link>
+        <Link href="/captain/library">Back to Captain’s Command</Link>
         <p className="eyebrow">Non-mutating Player preview</p>
         <h1>{preview.tale.title}</h1>
         <p>

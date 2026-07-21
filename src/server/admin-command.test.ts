@@ -291,7 +291,7 @@ describe("admin command receipts and concurrency", () => {
     dependencies.transaction.adminAuditLog.create.mockResolvedValue({});
   });
 
-  it("does not convert process publication into Player delivery or presentation claims", () => {
+  it("does not convert process publication into Crew delivery or presentation claims", () => {
     expect(commandReceipt({ event: publicEvent }, "correlation-1")).toMatchObject({
       kind: "PROGRESSION_EVENT",
       persistence: "COMMITTED",
@@ -433,7 +433,7 @@ describe("admin command receipts and concurrency", () => {
       executeAdminCommand(input, "gm-1", { correlationId: "request-correlation-failure" }),
     ).rejects.toMatchObject({
       correlationId: "request-correlation-failure",
-      message: "The command could not be completed.",
+      message: "The Voyage action could not be completed. No progress has changed.",
     } satisfies Partial<CommandFailure>);
 
     expect(dependencies.db.commandExecution.create).toHaveBeenCalledWith({
@@ -689,7 +689,7 @@ describe("admin command receipts and concurrency", () => {
     });
   });
 
-  it("marks PREPARE_HINT committed without claiming any Player publication", async () => {
+  it("marks PREPARE_HINT committed without claiming any Crew publication", async () => {
     const result = await executeAdminCommand(preparedInput, "gm-1");
 
     expect(result).toMatchObject({

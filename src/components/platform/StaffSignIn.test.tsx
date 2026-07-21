@@ -39,7 +39,7 @@ function submitCaptainSignIn() {
   renderCaptain();
   fireEvent.change(screen.getByLabelText("Username"), { target: { value: "kato" } });
   fireEvent.change(screen.getByLabelText("Password"), { target: { value: "development-captain-only" } });
-  fireEvent.click(screen.getByRole("button", { name: "Enter Captain's Command" }));
+  fireEvent.click(screen.getByRole("button", { name: "Enter Captain's Console" }));
 }
 
 function deferred<T>() {
@@ -77,7 +77,9 @@ describe("StaffSignIn", () => {
 
     submitCaptainSignIn();
 
-    expect(await screen.findByRole("alert")).toHaveTextContent("Sign-in failed. Please try again.");
+    expect(await screen.findByRole("alert")).toHaveTextContent(
+      "We couldn't sign you in. Check your details, then try again.",
+    );
     expect(fetch).toHaveBeenCalledOnce();
     expect(navigation.push).not.toHaveBeenCalled();
   });
@@ -88,9 +90,9 @@ describe("StaffSignIn", () => {
     submitCaptainSignIn();
 
     expect(await screen.findByRole("alert")).toHaveTextContent(
-      "Captain's Command could not be reached. Check that the app is running and try again.",
+      "Captain's Console could not be reached. Check that the app is running and try again.",
     );
-    expect(screen.getByRole("button", { name: "Enter Captain's Command" })).toBeEnabled();
+    expect(screen.getByRole("button", { name: "Enter Captain's Console" })).toBeEnabled();
   });
 
   it("holds accepted state during delayed route handoff and ignores a repeated submit", async () => {
@@ -104,7 +106,7 @@ describe("StaffSignIn", () => {
     renderCaptain(handoff);
     fireEvent.change(screen.getByLabelText("Username"), { target: { value: "kato" } });
     fireEvent.change(screen.getByLabelText("Password"), { target: { value: "development-captain-only" } });
-    const form = screen.getByRole("button", { name: "Enter Captain's Command" }).closest("form")!;
+    const form = screen.getByRole("button", { name: "Enter Captain's Console" }).closest("form")!;
 
     fireEvent.submit(form);
 
@@ -118,7 +120,7 @@ describe("StaffSignIn", () => {
     route.resolve();
     await route.promise;
     expect(screen.getByRole("main")).toHaveAttribute("data-auth-state", "accepted");
-    await waitFor(() => expect(screen.getByRole("button", { name: "Enter Captain's Command" })).toBeEnabled());
+    await waitFor(() => expect(screen.getByRole("button", { name: "Enter Captain's Console" })).toBeEnabled());
   });
 
   it("restores focus and never retains success when route handoff fails", async () => {
@@ -133,10 +135,10 @@ describe("StaffSignIn", () => {
     fireEvent.change(screen.getByLabelText("Username"), { target: { value: "kato" } });
     fireEvent.change(screen.getByLabelText("Password"), { target: { value: "development-captain-only" } });
 
-    fireEvent.click(screen.getByRole("button", { name: "Enter Captain's Command" }));
+    fireEvent.click(screen.getByRole("button", { name: "Enter Captain's Console" }));
 
     expect(await screen.findByRole("alert")).toHaveTextContent(
-      "Sign-in succeeded, but Captain's Command could not be opened",
+      "Sign-in succeeded, but Captain's Console could not be opened",
     );
     expect(screen.queryByRole("status")).not.toBeInTheDocument();
     expect(screen.getByRole("main")).toHaveAttribute("data-auth-state", "rejected");
@@ -155,7 +157,7 @@ describe("StaffSignIn", () => {
     const view = renderCaptain();
     fireEvent.change(screen.getByLabelText("Username"), { target: { value: "kato" } });
     fireEvent.change(screen.getByLabelText("Password"), { target: { value: "development-captain-only" } });
-    fireEvent.click(screen.getByRole("button", { name: "Enter Captain's Command" }));
+    fireEvent.click(screen.getByRole("button", { name: "Enter Captain's Console" }));
     await waitFor(() => expect(signal).toBeDefined());
 
     view.unmount();

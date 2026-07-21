@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "motion/react";
 import { useMotionMode } from "@/animation/motion/useMotionMode";
 import { platformMotionEasing, resolvePlatformMotionToken } from "@/animation/platform/motion-tokens";
+import { studioCopy } from "@/language/studio-copy";
 
 function slugify(value: string) {
   return value
@@ -39,9 +40,9 @@ export function NewTaleForm({ authenticated }: { authenticated: boolean }) {
     return (
       <main className="studio-auth-gate">
         <section>
-          <h1>Creator authentication required</h1>
+          <h1>Creator sign-in required</h1>
           <Link className="brass-button" href="/quartermaster">
-            Open Quartermaster login
+            Sign in
           </Link>
         </section>
       </main>
@@ -74,7 +75,7 @@ export function NewTaleForm({ authenticated }: { authenticated: boolean }) {
           });
           const body = (await response.json()) as { id?: string; error?: string };
           if (!response.ok || !body.id) {
-            setError(body.error ?? "The new tale could not be created.");
+            setError(body.error ?? "The Chronicle could not be created. Review the details and try again.");
             setBusy(false);
             setPhase("failed");
             return;
@@ -95,7 +96,7 @@ export function NewTaleForm({ authenticated }: { authenticated: boolean }) {
             const coverAssetId = uploaded.assets?.[0]?.asset?.id;
             if (!uploadResponse.ok || !coverAssetId) {
               setError(
-                `The tale was created, but its cover could not be uploaded: ${uploaded.error ?? "unknown upload error"}`,
+                `The Chronicle was created, but its cover image could not be uploaded: ${uploaded.error ?? "The upload did not finish."}`,
               );
               setBusy(false);
               setPhase("failed");
@@ -110,7 +111,7 @@ export function NewTaleForm({ authenticated }: { authenticated: boolean }) {
             };
             if (!studioResponse.ok || !studio.tale || !studio.draft) {
               setError(
-                `The tale and cover were created, but the cover could not be assigned: ${studio.error ?? "draft unavailable"}`,
+                `The Chronicle and cover image were created, but the cover could not be assigned: ${studio.error ?? "The draft is unavailable."}`,
               );
               setBusy(false);
               setPhase("failed");
@@ -128,7 +129,7 @@ export function NewTaleForm({ authenticated }: { authenticated: boolean }) {
             if (!saveResponse.ok) {
               const saved = (await saveResponse.json()) as { error?: string };
               setError(
-                `The tale and cover were created, but the cover could not be assigned: ${saved.error ?? "save failed"}`,
+                `The Chronicle and cover image were created, but the cover could not be assigned: ${saved.error ?? "The draft could not be saved."}`,
               );
               setBusy(false);
               setPhase("failed");
@@ -140,9 +141,9 @@ export function NewTaleForm({ authenticated }: { authenticated: boolean }) {
         }}
       >
         <Link href="/studio">← Back to Studio</Link>
-        <p className="eyebrow">Lay a fresh chart</p>
-        <h1>Create a New Tall Tale</h1>
-        <p>Start with the voyage identity and first chapter. Every field remains editable.</p>
+        <p className="eyebrow">Chronicle authoring</p>
+        <h1>{studioCopy.createChronicle.value}</h1>
+        <p>Start with a title, premise, and first Chapter. Every field remains editable.</p>
         <div className="form-grid">
           <label className="wide">
             <span>Title</span>
@@ -176,9 +177,9 @@ export function NewTaleForm({ authenticated }: { authenticated: boolean }) {
           <label>
             <span>Theme</span>
             <select name="theme">
-              <option value="CARTOGRAPHERS_TABLE">Cartographer&apos;s Table</option>
+              <option value="CARTOGRAPHERS_TABLE">Cartographer’s Table</option>
               <option value="MOONLIT_JOURNAL">Moonlit Journal</option>
-              <option value="CAPTAINS_CABIN">Captain&apos;s Cabin</option>
+              <option value="CAPTAINS_CABIN">Captain’s Cabin</option>
             </select>
           </label>
           <label className="wide">
@@ -204,9 +205,9 @@ export function NewTaleForm({ authenticated }: { authenticated: boolean }) {
           <label>
             <span>Visibility</span>
             <select name="visibility">
-              <option value="PRIVATE">Private draft</option>
-              <option value="UNLISTED">Unlisted after publish</option>
-              <option value="PUBLIC">Public after publish</option>
+              <option value="PRIVATE">Private</option>
+              <option value="UNLISTED">Unlisted after publishing</option>
+              <option value="PUBLIC">Public after publishing</option>
             </select>
           </label>
           <label className="wide">
@@ -239,18 +240,18 @@ export function NewTaleForm({ authenticated }: { authenticated: boolean }) {
         {busy && (
           <p className="new-tale-progress" role="status" aria-live="polite">
             {phase === "creating"
-              ? "Creating the editable tale…"
+              ? "Creating Chronicle..."
               : phase === "uploading"
-                ? "Uploading the cover…"
+                ? "Uploading cover image..."
                 : phase === "assigning"
-                  ? "Assigning the ready cover to the draft…"
-                  : "Opening the editor…"}
+                  ? "Assigning the cover image to the draft..."
+                  : "Opening Voyagewright Studio..."}
           </p>
         )}
         <div className="form-actions">
           <Link href="/studio">Cancel</Link>
           <button className="brass-button" disabled={busy}>
-            {busy ? "Opening the chart…" : "Create and open editor"}
+            {busy ? "Opening Chronicle..." : "Create and open Chronicle"}
           </button>
         </div>
       </motion.form>

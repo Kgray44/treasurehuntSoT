@@ -277,10 +277,10 @@ export function TreasureAltar({
     >
       <header className="section-masthead">
         <div>
-          <p className="eyebrow">Recovered curiosities</p>
-          <h2 id={headingId}>Treasure Altar</h2>
+          <p className="eyebrow">Recovered Artifacts</p>
+          <h2 id={headingId}>Artifact Collection</h2>
         </div>
-        <p>Every silhouette, name, and connection remains driven by the captain&apos;s ledger.</p>
+        <p>Only Artifacts released for this Voyage appear here.</p>
       </header>
       <div className="altar-cabinet">
         <div className="altar-curtain left" aria-hidden="true" />
@@ -325,8 +325,8 @@ export function TreasureAltar({
         ) : (
           <div className="empty-altar">
             <span aria-hidden="true">◇</span>
-            <strong>The velvet remembers no relic yet</strong>
-            <p>Empty mounts wait without revealing what belongs to them.</p>
+            <strong>No Artifacts recovered yet</strong>
+            <p>New Artifacts will appear here when the Captain releases them.</p>
           </div>
         )}
       </div>

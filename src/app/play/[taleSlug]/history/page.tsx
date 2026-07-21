@@ -8,8 +8,8 @@ export default async function HistoryPage() {
     return (
       <main className="tale-history">
         <section>
-          <h1>No voyage history in this browser</h1>
-          <Link href="/tales">Choose a Tall Tale</Link>
+          <h1>No Voyage History in this browser</h1>
+          <Link href="/tales">Choose a Chronicle</Link>
         </section>
       </main>
     );
@@ -21,8 +21,9 @@ export default async function HistoryPage() {
     return (
       <main className="tale-history">
         <section>
-          <h1>Voyage history unavailable</h1>
-          <Link href="/tales">Return to catalog</Link>
+          <h1>Voyage History is unavailable</h1>
+          <p>Your progress has not changed. Try again, or return to the Chronicle Library.</p>
+          <Link href="/tales">Return to Chronicle Library</Link>
         </section>
       </main>
     );
@@ -31,10 +32,10 @@ export default async function HistoryPage() {
     return (
       <main className="tale-history">
         <section>
-          <p className="eyebrow">Studio preview</p>
-          <h1>Preview voyages are not recorded</h1>
-          <p>This session is an isolated creator preview and does not appear in player history.</p>
-          <Link href="/tales">Return to catalog</Link>
+          <p className="eyebrow">Preview Voyage</p>
+          <h1>Preview Voyages are not recorded</h1>
+          <p>This Creator preview is isolated and does not appear in Voyage History.</p>
+          <Link href="/tales">Return to Chronicle Library</Link>
         </section>
       </main>
     );
@@ -47,7 +48,7 @@ export default async function HistoryPage() {
         <p>
           {state.session.status === "COMPLETED"
             ? `Completed ${new Date(state.session.completedAt ?? state.session.updatedAt).toLocaleString()}.`
-            : `This voyage is ${state.session.status.toLocaleLowerCase()}.`}
+            : `This Voyage is ${state.session.status.toLocaleLowerCase()}.`}
         </p>
         <h2>Recorded events</h2>
         <ol>
@@ -59,7 +60,7 @@ export default async function HistoryPage() {
           ))}
         </ol>
         <Link className="brass-button" href="/tales">
-          Return to catalog
+          Return to Chronicle Library
         </Link>
       </section>
     </main>

@@ -310,7 +310,10 @@ export function PlayerVoyageRoom({
   if (voyage.state === "COMPLETED")
     return (
       <main className="waiting-room platform-loading">
-        <LoadingState title="Opening your completed journal" detail="Restoring the exact edition and story history." />
+        <LoadingState
+          title="Opening your completed journal"
+          detail="Restoring this Voyage Record and its saved progress."
+        />
       </main>
     );
 

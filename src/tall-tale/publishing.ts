@@ -8,7 +8,7 @@ import { logger } from "@/lib/logger";
 
 export class PublishValidationError extends Error {
   constructor(public readonly validation: Awaited<ReturnType<typeof validateTaleDraft>>) {
-    super("Draft validation failed. Resolve the blocking issues before publishing.");
+    super("This Chronicle cannot be published yet. Resolve the blocking validation issues, then publish again.");
   }
 }
 
@@ -95,14 +95,14 @@ export async function publishTale(
   releaseNotes: string,
   expectedAutosaveVersion?: number,
 ) {
-  logger.info({ area: "tall-tale-publish", taleId, publisherId }, "Tall Tale publish validation started");
+  logger.info({ area: "tall-tale-publish", taleId, publisherId }, "Chronicle publish validation started");
   const validation = await validateTaleDraft(taleId);
   if (!validation.valid) throw new PublishValidationError(validation);
   if (expectedAutosaveVersion !== undefined && validation.autosaveVersion !== expectedAutosaveVersion)
-    throw new Error("The draft changed before publishing. Review the latest saved version and try again.");
+    throw new Error("This Chronicle changed before publishing. Review the latest saved draft, then try again.");
   const studio = await getStudioTale(taleId);
   if (studio.draft.autosaveVersion !== validation.autosaveVersion)
-    throw new Error("The draft changed during validation. Publish again after reviewing the current draft.");
+    throw new Error("This Chronicle changed during validation. Review the current draft, then publish again.");
   const snapshot = snapshotFromStudio(studio);
   const contentSnapshot = JSON.stringify(snapshot);
   const checksum = createHash("sha256").update(contentSnapshot).digest("hex");
@@ -111,7 +111,7 @@ export async function publishTale(
     const versionNumber = (latest?.versionNumber ?? 0) + 1;
     const structuredReleaseNotes =
       releaseNotes.trim() ||
-      `Published ${snapshot.chapters.length} chapters, ${snapshot.chapters.reduce((count, chapter) => count + chapter.blocks.length, 0)} story blocks, and ${snapshot.assets.length} assets${latest ? ` from version ${latest.versionLabel}` : " as the initial release"}.`;
+      `Published ${snapshot.chapters.length} Chapters, ${snapshot.chapters.reduce((count, chapter) => count + chapter.blocks.length, 0)} Passages, and ${snapshot.assets.length} assets${latest ? ` from Version ${latest.versionLabel}` : " as the first published Version"}.`;
     await tx.publishedTaleVersion.updateMany({ where: { taleId, isCurrent: true }, data: { isCurrent: false } });
     const created = await tx.publishedTaleVersion.create({
       data: {
@@ -150,7 +150,7 @@ export async function publishTale(
   });
   logger.info(
     { area: "tall-tale-publish", taleId, versionId: version.id, versionLabel: version.versionLabel },
-    "Immutable Tall Tale version published",
+    "Immutable Chronicle version published",
   );
   return {
     id: version.id,
@@ -164,6 +164,6 @@ export async function publishTale(
 export function parsePublishedSnapshot(raw: string): PublishedTaleSnapshot {
   const snapshot = JSON.parse(raw) as PublishedTaleSnapshot;
   if (snapshot.schemaVersion !== 1 || !Array.isArray(snapshot.chapters))
-    throw new Error("This published tale uses an unsupported schema version.");
+    throw new Error("This Chronicle version uses an unsupported format. Update Voyagewright, then try again.");
   return snapshot;
 }

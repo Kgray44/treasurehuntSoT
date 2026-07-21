@@ -35,6 +35,7 @@ import type { SceneHostHandle } from "@/animation/hosts/scene-host-types";
 import { useMotionMode } from "@/animation/motion/useMotionMode";
 import { platformMotionEasing, resolvePlatformMotionToken } from "@/animation/platform/motion-tokens";
 import { PublishedBlockView } from "@/components/tales/PublishedBlockView";
+import { studioCopy } from "@/language/studio-copy";
 import type { InspectorField, JsonObject } from "@/tall-tale/types";
 
 type Block = {
@@ -218,7 +219,7 @@ export function TaleEditor({
   const [past, setPast] = useState<DraftState[]>([]);
   const [future, setFuture] = useState<DraftState[]>([]);
   const [dirty, setDirty] = useState(false);
-  const [saveState, setSaveState] = useState("Loading chart…");
+  const [saveState, setSaveState] = useState("Loading Chronicle...");
   const [error, setError] = useState("");
   const [validation, setValidation] = useState<{
     valid: boolean;
@@ -271,7 +272,7 @@ export function TaleEditor({
     const response = await fetch(`/api/studio/tales/${taleId}`, { cache: "no-store" });
     const body = (await response.json()) as EditorData & { error?: string };
     if (!response.ok) {
-      setError(body.error ?? "The chart could not be opened.");
+      setError(body.error ?? "This Chronicle could not be opened. Reload the page and try again.");
       return;
     }
     const nextDraft = { tale: body.tale, chapters: body.draft.chapters };
@@ -308,7 +309,7 @@ export function TaleEditor({
     async (state: DraftState, quiet = true, revision = draftRevision.current) => {
       if (!data || saving.current) return false;
       saving.current = true;
-      setSaveState("Saving…");
+      setSaveState("Saving...");
       if (!quiet) setError("");
       const response = await fetch(`/api/studio/tales/${taleId}/draft`, {
         method: "PATCH",
@@ -327,8 +328,8 @@ export function TaleEditor({
       };
       saving.current = false;
       if (!response.ok) {
-        setSaveState(body.code === "DRAFT_CONFLICT" ? "Conflict — unsaved work preserved" : "Save failed");
-        setError(body.error ?? "Autosave failed.");
+        setSaveState(body.code === "DRAFT_CONFLICT" ? "Conflict - unsaved changes preserved" : "Save failed");
+        setError(body.error ?? "This Chronicle could not be saved. Your changes remain in this browser.");
         return false;
       }
       const nextAutosaveVersion =
@@ -618,22 +619,22 @@ export function TaleEditor({
   function dndStart(event: DragStartEvent) {
     const id = String(event.active.id);
     setActiveDragId(id);
-    setDragAnnouncement(`Picked up ${id.startsWith("library:") ? "a new story block" : "story block"}.`);
+    setDragAnnouncement(`Picked up ${id.startsWith("library:") ? "a new Passage" : "a Passage"}.`);
   }
   function dndCancel(_event: DragCancelEvent) {
     setActiveDragId(null);
-    setDragAnnouncement("Move cancelled. The story order is unchanged.");
+    setDragAnnouncement("Move cancelled. The Passage order is unchanged.");
   }
   function dndEnd(event: DragEndEvent) {
     setActiveDragId(null);
     if (!event.over || !draft) {
-      setDragAnnouncement("Move cancelled. The story order is unchanged.");
+      setDragAnnouncement("Move cancelled. The Passage order is unchanged.");
       return;
     }
     const activeId = String(event.active.id);
     const overId = String(event.over.id);
     if (activeId === overId) {
-      setDragAnnouncement("Block returned to its original position.");
+      setDragAnnouncement("Passage returned to its original position.");
       return;
     }
     let chapterIndex = -1;
@@ -652,7 +653,7 @@ export function TaleEditor({
     }
     if (activeId.startsWith("library:")) addBlock(activeId.slice("library:".length), chapterIndex, blockIndex);
     else moveBlock(activeId, chapterIndex, blockIndex);
-    setDragAnnouncement(`Placed the block in chapter ${chapterIndex + 1}, position ${blockIndex + 1}.`);
+    setDragAnnouncement(`Placed the Passage in Chapter ${chapterIndex + 1}, position ${blockIndex + 1}.`);
   }
   function updateSelected(mutator: (block: Block) => void) {
     if (!selectedId) return;
@@ -664,13 +665,13 @@ export function TaleEditor({
 
   async function deleteSelectedAuthoritatively() {
     if (!selected || !draft) return;
-    if (!window.confirm(`Delete “${selected.block.title}”? The block will remain visible if saving fails.`)) return;
+    if (!window.confirm(`Delete “${selected.block.title}”? The Passage will remain visible if saving fails.`)) return;
     const next = clone(draft);
     const chapter = next.chapters.find((item) => item.id === selected.chapter.id);
     const index = chapter?.blocks.findIndex((block) => block.id === selected.block.id) ?? -1;
     if (!chapter || index < 0) return;
     const [removed] = chapter.blocks.splice(index, 1);
-    setSaveState("Saving block deletion…");
+    setSaveState("Saving Passage deletion...");
     if (!(await save(next, false))) return;
     setPast((items) => [...items.slice(-24), draft]);
     setFuture([]);
@@ -678,7 +679,7 @@ export function TaleEditor({
     setDraft(next);
     setDirty(false);
     setDeletedBlock({ chapterId: chapter.id, index, block: removed });
-    setSaveState(`Deleted ${removed.title} · Undo available`);
+    setSaveState(`Deleted ${removed.title}. Undo is available.`);
     closeInspector();
   }
 
@@ -688,7 +689,7 @@ export function TaleEditor({
     const chapter = next.chapters.find((item) => item.id === deletedBlock.chapterId);
     if (!chapter) return;
     chapter.blocks.splice(Math.min(deletedBlock.index, chapter.blocks.length), 0, clone(deletedBlock.block));
-    setSaveState("Restoring deleted block…");
+    setSaveState("Restoring deleted Passage...");
     if (!(await save(next, false))) return;
     setPast((items) => [...items.slice(-24), draft]);
     setFuture([]);
@@ -704,14 +705,14 @@ export function TaleEditor({
   async function validate() {
     if (!draft || !data) return;
     if (dirty && !(await save(draft, false))) return;
-    setSaveState("Validating…");
+    setSaveState("Validating...");
     const response = await fetch(`/api/studio/tales/${taleId}/validate`, {
       method: "POST",
       headers: { "x-csrf-token": data.csrfToken },
     });
     const body = (await response.json()) as typeof validation & { error?: string };
     if (!response.ok || !body) {
-      setError(body?.error ?? "Validation failed.");
+      setError(body?.error ?? "Validation could not be completed. Try again.");
       return;
     }
     setValidation(body);
@@ -720,19 +721,25 @@ export function TaleEditor({
   async function publish() {
     if (!draft || !data) return;
     if (dirty && !(await save(draft, false))) return;
-    const notes = window.prompt("Release notes for this immutable version:", "Phase 1 authoring release");
-    if (notes === null || !window.confirm("Publish this saved draft as a new immutable player version?")) return;
+    const notes = window.prompt("Release notes for this immutable Version:", "Initial Chronicle release");
+    if (
+      notes === null ||
+      !window.confirm(
+        "Publish this saved Chronicle as a new immutable Version? New Voyages will use it. Existing Voyages will not change.",
+      )
+    )
+      return;
     setPublishState("publishing");
     setPublishedVersion(null);
-    setSaveState("Publishing…");
+    setSaveState("Publishing...");
     if (!root.current || !publishHost.current) {
-      setError("The publish ceremony is still preparing. Try again.");
-      setSaveState("Publish failed");
+      setError("Publishing is not ready. Try again.");
+      setSaveState("Publishing failed");
       setPublishState("failed");
       return;
     }
     type PublishResult = { versionLabel?: string; validation?: typeof validation; error?: string };
-    let operationError = "Publishing failed.";
+    let operationError = "This Chronicle could not be published.";
     let operationValidation: typeof validation | undefined;
     let operationPromise: Promise<PublishResult> | null = null;
     const operation = () => {
@@ -782,14 +789,14 @@ export function TaleEditor({
     } catch {
       setError(operationError);
       if (operationValidation) setValidation(operationValidation);
-      setSaveState("Publish failed");
+      setSaveState("Publishing failed");
       setPublishState("failed");
       return;
     }
     setPublishState("published");
-    setSaveState(`Published as version ${publishedLabel}`);
+    setSaveState(`Published as Version ${publishedLabel}`);
     await load();
-    setSaveState(`Published as version ${publishedLabel}`);
+    setSaveState(`Published as Version ${publishedLabel}`);
   }
   async function preview(blockId?: string) {
     if (!draft || !data) return;
@@ -800,13 +807,16 @@ export function TaleEditor({
       body: JSON.stringify({ blockId }),
     });
     const body = (await response.json()) as { url?: string; error?: string };
-    if (!response.ok || !body.url) return setError(body.error ?? "Preview could not be started.");
+    if (!response.ok || !body.url) return setError(body.error ?? "The Preview Voyage could not be started. Try again.");
     window.open(body.url, "_blank", "noopener,noreferrer");
   }
 
   async function taleAction(action: "duplicate" | "archive") {
     if (!data) return;
-    if (action === "archive" && !window.confirm("Archive this Tall Tale? Published sessions remain pinned and safe."))
+    if (
+      action === "archive" &&
+      !window.confirm("Archive this Chronicle? Published Versions and existing Voyages will not change.")
+    )
       return;
     const response = await fetch(`/api/studio/tales/${taleId}`, {
       method: "POST",
@@ -814,7 +824,7 @@ export function TaleEditor({
       body: JSON.stringify({ action }),
     });
     const body = (await response.json()) as { id?: string; error?: string };
-    if (!response.ok) return setError(body.error ?? `The tale could not be ${action}d.`);
+    if (!response.ok) return setError(body.error ?? "The Chronicle action could not be completed.");
     window.location.assign(action === "duplicate" && body.id ? `/studio/tales/${body.id}` : "/studio");
   }
 
@@ -825,7 +835,7 @@ export function TaleEditor({
       !window.confirm(
         action === "restore"
           ? `Copy version ${version.versionLabel} into a new editable draft? The immutable release and current draft history will remain intact.`
-          : `Fork version ${version.versionLabel} into a new Tall Tale identity? Provenance will be preserved.`,
+          : `Create a new Chronicle from Version ${version.versionLabel}? Version history will be preserved.`,
       )
     )
       return;
@@ -835,13 +845,13 @@ export function TaleEditor({
       body: JSON.stringify({ action }),
     });
     const body = (await response.json()) as { id?: string; url?: string; error?: string };
-    if (!response.ok) return setError(body.error ?? `Version ${version.versionLabel} could not be ${action}ed.`);
+    if (!response.ok) return setError(body.error ?? `Version ${version.versionLabel} could not be updated.`);
     if (action === "preview" && body.url) window.open(body.url, "_blank", "noopener,noreferrer");
     else if (action === "fork" && body.id) window.location.assign(`/studio/tales/${body.id}`);
     else {
       setSelectedId(null);
       await load();
-      setSaveState(`Version ${version.versionLabel} copied into a new draft`);
+      setSaveState(`Version ${version.versionLabel} copied into a new Chronicle draft`);
     }
   }
 
@@ -865,7 +875,7 @@ export function TaleEditor({
     window.alert(
       body.usages?.length
         ? `${asset.displayName} is used by:\n${body.usages.map((item) => `• ${item.label}${item.field ? ` (${item.field})` : ""}`).join("\n")}`
-        : `${asset.displayName} is not referenced by the current draft.`,
+        : `${asset.displayName} is not referenced by the current Chronicle draft.`,
     );
   }
 
@@ -987,6 +997,7 @@ export function TaleEditor({
   ) {
     if (!data) return;
     let values: JsonObject = {};
+    const entityLabel = entity === "location" ? "Waypoint" : entity === "artifact" ? "Artifact" : "collection";
     if (action === "create" || action === "update") {
       const existing =
         entity === "collection"
@@ -994,7 +1005,7 @@ export function TaleEditor({
           : entity === "location"
             ? data.locations.find((item) => item.id === id)
             : data.artifacts.find((item) => item.id === id);
-      const name = window.prompt(`${action === "create" ? "Name the new" : "Rename"} ${entity}:`, existing?.name);
+      const name = window.prompt(`${action === "create" ? "Name the new" : "Rename"} ${entityLabel}:`, existing?.name);
       if (!name) return;
       values = { name };
       if (entity === "collection") {
@@ -1019,7 +1030,7 @@ export function TaleEditor({
         values.shortDescription = window.prompt("Short description:", existing?.shortDescription ?? "") ?? "";
         values.loreDescription = window.prompt("Lore description:", existing?.loreDescription ?? "") ?? "";
       }
-    } else if (!window.confirm(`Archive this ${entity}?`)) return;
+    } else if (!window.confirm(`Archive this ${entityLabel}?`)) return;
     const response = await fetch(`/api/studio/tales/${taleId}/library`, {
       method: "POST",
       headers: { "Content-Type": "application/json", "x-csrf-token": data.csrfToken },
@@ -1034,16 +1045,24 @@ export function TaleEditor({
     return (
       <main className="studio-auth-gate">
         <section>
-          <h1>Creator authentication required</h1>
+          <h1>Creator sign-in required</h1>
           <Link className="brass-button" href="/quartermaster">
-            Open Quartermaster login
+            Sign in
           </Link>
         </section>
       </main>
     );
-  if (!data || !draft) return <main className="studio-loading">{error || "Unrolling the Tall Tale chart…"}</main>;
+  if (!data || !draft) return <main className="studio-loading">{error || "Opening your Chronicle..."}</main>;
 
   const nav = ["story", "settings", "assets", "locations", "artifacts", "versions"] as const;
+  const navLabels = {
+    story: "Passages",
+    settings: "Chronicle",
+    assets: "Assets",
+    locations: "Waypoints",
+    artifacts: "Artifacts",
+    versions: "Versions",
+  } as const;
   return (
     <motion.main ref={root} className="tale-editor" layout={mode !== "reduced"} data-motion-mode={mode}>
       <SceneHost
@@ -1102,19 +1121,19 @@ export function TaleEditor({
               exit={{ opacity: 0 }}
               transition={{ duration: resolvePlatformMotionToken("ceremony", mode).durationSeconds }}
             >
-              <span aria-hidden="true">◆</span> Version {publishedVersion} sealed
+              <span aria-hidden="true">◆</span> Version {publishedVersion} published
             </motion.span>
           )}
         </AnimatePresence>
         <div className="editor-primary-actions">
           <button disabled={!selected} onClick={() => setPreviewBlock(true)}>
-            Preview Block
+            Preview Passage
           </button>
-          <button onClick={() => void preview()}>Full Tale Preview</button>
+          <button onClick={() => void preview()}>{studioCopy.previewVoyage.value}</button>
           <button disabled={!selected} onClick={() => void preview(selected?.block.id)}>
-            Play From Here
+            Preview from here
           </button>
-          <button onClick={() => void validate()}>Validate</button>
+          <button onClick={() => void validate()}>{studioCopy.validateChronicle.value}</button>
           <button
             className="publish-button"
             data-authority-state={publishState}
@@ -1122,7 +1141,7 @@ export function TaleEditor({
             aria-busy={publishState === "publishing"}
             onClick={() => void publish()}
           >
-            {publishState === "publishing" ? "Publishing…" : "Publish"}
+            {publishState === "publishing" ? "Publishing..." : studioCopy.publishChronicle.value}
           </button>
           <div className="editor-more">
             <button
@@ -1139,15 +1158,15 @@ export function TaleEditor({
             </button>
             {moreOpen ? (
               <div id="studio-more-actions">
-                <Link href={`/studio/tales/${taleId}/settings`}>Tale settings</Link>
-                <Link href={`/studio/tales/${taleId}/versions`}>Version history</Link>
+                <Link href={`/studio/tales/${taleId}/settings`}>Chronicle settings</Link>
+                <Link href={`/studio/tales/${taleId}/versions`}>{studioCopy.versionHistory.value}</Link>
                 <button
                   onClick={() => {
                     setMoreOpen(false);
                     void taleAction("duplicate");
                   }}
                 >
-                  Duplicate tale
+                  {studioCopy.duplicateChronicle.value}
                 </button>
                 <button
                   className="danger"
@@ -1156,14 +1175,14 @@ export function TaleEditor({
                     void taleAction("archive");
                   }}
                 >
-                  Archive tale
+                  {studioCopy.archiveChronicle.value}
                 </button>
               </div>
             ) : null}
           </div>
         </div>
       </motion.header>
-      <nav className="editor-section-nav" aria-label="Tall Tale authoring sections">
+      <nav className="editor-section-nav" aria-label="Chronicle authoring sections">
         {nav.map((item) => (
           <Link
             key={item}
@@ -1173,7 +1192,7 @@ export function TaleEditor({
             {initialSection === item && (
               <motion.span className="studio-active-section" layoutId="studio-active-section" />
             )}
-            <span>{item}</span>
+            <span>{navLabels[item]}</span>
           </Link>
         ))}
       </nav>
@@ -1192,7 +1211,7 @@ export function TaleEditor({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0 }}
           >
-            <span>{deletedBlock.block.title} was deleted after the draft save completed.</span>
+            <span>{deletedBlock.block.title} was deleted after the draft was saved.</span>
             <button onClick={() => void restoreDeletedBlock()}>Undo deletion</button>
           </motion.div>
         )}
@@ -1206,7 +1225,7 @@ export function TaleEditor({
             <header>
               <strong>
                 {validation.valid
-                  ? "Draft is publishable"
+                  ? "Chronicle is ready to publish"
                   : `${validation.errors.length} blocking issue${validation.errors.length === 1 ? "" : "s"}`}
               </strong>
               <button onClick={() => setValidation(null)}>Close</button>
@@ -1236,11 +1255,11 @@ export function TaleEditor({
           <div className="editor-workbench">
             <aside className="block-library">
               <div>
-                <p className="eyebrow">Block library</p>
-                <h2>Story pieces</h2>
-                <p>Build, navigate, and inspect the complete story flow.</p>
+                <p className="eyebrow">Passage library</p>
+                <h2>Passages</h2>
+                <p>Build, navigate, and inspect the complete Chronicle flow.</p>
               </div>
-              <div className="library-tabs" role="tablist" aria-label="Story tools">
+              <div className="library-tabs" role="tablist" aria-label="Chronicle tools">
                 {(["blocks", "chapters", "outline"] as const).map((tab) => (
                   <button
                     key={tab}
@@ -1249,7 +1268,7 @@ export function TaleEditor({
                     className={libraryTab === tab ? "active" : ""}
                     onClick={() => setLibraryTab(tab)}
                   >
-                    {tab === "blocks" ? "Blocks" : tab === "chapters" ? "Chapters" : "Outline"}
+                    {tab === "blocks" ? "Passages" : tab === "chapters" ? "Chapters" : "Outline"}
                   </button>
                 ))}
               </div>
@@ -1260,8 +1279,8 @@ export function TaleEditor({
                     type="search"
                     value={blockSearch}
                     onChange={(event) => setBlockSearch(event.target.value)}
-                    placeholder="Search blocks"
-                    aria-label="Search story blocks"
+                    placeholder="Search Passages"
+                    aria-label="Search Passages"
                   />
                   {[...new Set(filteredRegistry.map((item) => item.category))].map((category) => (
                     <details key={category} open>
@@ -1286,7 +1305,7 @@ export function TaleEditor({
                     >
                       <span>{String(index + 1).padStart(2, "0")}</span>
                       <strong>{chapter.title}</strong>
-                      <small>{chapter.blocks.length} blocks</small>
+                      <small>{chapter.blocks.length} Passages</small>
                     </button>
                   ))}
                 </nav>
@@ -1307,10 +1326,10 @@ export function TaleEditor({
                 </ol>
               )}
             </aside>
-            <section className="story-canvas" aria-label="Story timeline">
+            <section className="story-canvas" aria-label="Chronicle timeline">
               <header>
                 <div>
-                  <p className="eyebrow">Vertical story graph</p>
+                  <p className="eyebrow">Chronicle flow</p>
                   <h2>
                     {draft.chapters.length} chapter{draft.chapters.length === 1 ? "" : "s"}
                   </h2>
@@ -1332,7 +1351,7 @@ export function TaleEditor({
                     )
                   }
                 >
-                  + Add chapter
+                  + {studioCopy.addChapter.value}
                 </button>
               </header>
               {draft.chapters.map((chapter, chapterIndex) => (
@@ -1400,7 +1419,7 @@ export function TaleEditor({
                       strategy={verticalListSortingStrategy}
                     >
                       <DropZone id={`drop:${chapterIndex}:0`} onDrop={(event) => drop(event, chapterIndex, 0)} />
-                      {!chapter.blocks.length && <div className="empty-chapter">Drop the first story block here.</div>}
+                      {!chapter.blocks.length && <div className="empty-chapter">Drop the first Passage here.</div>}
                       {chapter.blocks.map((block, blockIndex) => {
                         const definition = data.registry.find((item) => item.type === block.blockType);
                         return (
@@ -1449,7 +1468,7 @@ export function TaleEditor({
                                         event.stopPropagation();
                                         moveBlock(block.id, chapterIndex, blockIndex - 1);
                                       }}
-                                      aria-label="Move block up"
+                                      aria-label="Move Passage up"
                                     >
                                       ↑
                                     </button>
@@ -1465,7 +1484,7 @@ export function TaleEditor({
                                         else
                                           moveBlock(block.id, Math.min(chapterIndex + 1, draft.chapters.length - 1), 0);
                                       }}
-                                      aria-label="Move block down"
+                                      aria-label="Move Passage down"
                                     >
                                       ↓
                                     </button>
@@ -1481,7 +1500,7 @@ export function TaleEditor({
                         );
                       })}
                       <button className="chapter-add" onClick={() => addBlock("narrative", chapterIndex)}>
-                        + Add block
+                        + {studioCopy.addPassage.value}
                       </button>
                     </SortableContext>
                   )}
@@ -1504,7 +1523,7 @@ export function TaleEditor({
                     <button
                       className="inspector-mobile-close"
                       onClick={closeInspector}
-                      aria-label="Close block inspector"
+                      aria-label="Close Passage inspector"
                     >
                       ×
                     </button>
@@ -1512,7 +1531,7 @@ export function TaleEditor({
                     <input
                       ref={inspectorTitle}
                       value={selected.block.title}
-                      aria-label="Block title"
+                      aria-label="Passage title"
                       onChange={(event) =>
                         updateSelected((block) => {
                           block.title = event.target.value;
@@ -1562,7 +1581,7 @@ export function TaleEditor({
                             })
                           }
                         >
-                          <option value="">Automatic for block type</option>
+                          <option value="">Automatic for this Passage type</option>
                           <option value="left">Left page</option>
                           <option value="right">Right page</option>
                           <option value="two-page">Two-page spread</option>
@@ -1644,15 +1663,15 @@ export function TaleEditor({
                         });
                       }}
                     >
-                      Duplicate block
+                      Duplicate Passage
                     </button>
-                    <button onClick={() => void deleteSelectedAuthoritatively()}>Delete block</button>
+                    <button onClick={() => void deleteSelectedAuthoritatively()}>Delete Passage</button>
                   </div>
                 </>
               ) : (
                 <div className="inspector-empty">
                   <span>☞</span>
-                  <h2>Select a story block</h2>
+                  <h2>Select a Passage</h2>
                   <p>Its content, presentation, verification, assets, and private notes will appear here.</p>
                 </div>
               )}
@@ -1662,7 +1681,7 @@ export function TaleEditor({
             {activeDragId && (
               <div className="studio-drag-overlay" aria-hidden="true">
                 <span>Move</span>
-                <strong>{activeDragLabel ?? "Story block"}</strong>
+                <strong>{activeDragLabel ?? "Passage"}</strong>
               </div>
             )}
           </DragOverlay>
@@ -1679,10 +1698,10 @@ export function TaleEditor({
           >
             <header>
               <div>
-                <p className="eyebrow">Isolated player preview</p>
+                <p className="eyebrow">Preview Voyage</p>
                 <h2 id="block-preview-title">{selected.block.title}</h2>
               </div>
-              <button onClick={() => setPreviewBlock(false)} aria-label="Close block preview">
+              <button onClick={() => setPreviewBlock(false)} aria-label="Close Passage preview">
                 ×
               </button>
             </header>
@@ -1709,7 +1728,7 @@ export function TaleEditor({
                 />
                 Reduced motion
               </label>
-              <button onClick={() => setPreviewReplay((value) => value + 1)}>Replay block</button>
+              <button onClick={() => setPreviewReplay((value) => value + 1)}>Replay Passage</button>
             </div>
             <div
               className={`block-preview-viewport ${previewViewport} ${previewReducedMotion ? "reduced-motion" : ""}`}
@@ -1733,10 +1752,10 @@ export function TaleEditor({
                     .filter((issue) => issue.blockId === selected.block.id)
                     .map((issue, index) => <p key={`${issue.message}-${index}`}>{issue.message}</p>)
                 ) : (
-                  <p>No reported issue for this block in the last draft validation.</p>
+                  <p>No issue was reported for this Passage in the last draft validation.</p>
                 )
               ) : (
-                <p>Run Validate to show schema and connection issues beside this preview.</p>
+                <p>Run Validate Chronicle to show schema and connection issues beside this preview.</p>
               )}
             </aside>
           </section>
@@ -1745,7 +1764,7 @@ export function TaleEditor({
       {initialSection === "settings" && (
         <section className="editor-single-panel settings-panel">
           <header>
-            <p className="eyebrow">Tale identity</p>
+            <p className="eyebrow">Chronicle identity</p>
             <h2>Settings</h2>
           </header>
           <div className="settings-grid">
@@ -1883,9 +1902,9 @@ export function TaleEditor({
             </select>
             <select value={assetContext} onChange={(event) => setAssetContext(event.target.value)} aria-label="Used by">
               <option value="ALL">Any context</option>
-              <option value="TALE">Tale cover</option>
-              <option value="CHAPTER">Chapter / block</option>
-              <option value="LOCATION">Location</option>
+              <option value="TALE">Chronicle cover</option>
+              <option value="CHAPTER">Chapter / Passage</option>
+              <option value="LOCATION">Waypoint</option>
               <option value="ARTIFACT">Artifact</option>
             </select>
             <select value={assetRole} onChange={(event) => setAssetRole(event.target.value)} aria-label="Asset role">
@@ -1988,9 +2007,9 @@ export function TaleEditor({
       )}
       {initialSection === "locations" && (
         <LibraryPanel
-          title="Locations"
+          title="Waypoints"
           eyebrow="Destinations and verification references"
-          action={<button onClick={() => void libraryAction("location", "create")}>Create location</button>}
+          action={<button onClick={() => void libraryAction("location", "create")}>Create Waypoint</button>}
         >
           <p className="panel-note">
             Reference and negative-reference collections can be prepared now for the future vision helper. Recognition
@@ -2001,7 +2020,7 @@ export function TaleEditor({
               type="search"
               value={librarySearch}
               onChange={(event) => setLibrarySearch(event.target.value)}
-              placeholder="Search locations"
+              placeholder="Search Waypoints"
             />
             <select value={librarySort} onChange={(event) => setLibrarySort(event.target.value as "name" | "region")}>
               <option value="name">Sort by name</option>
@@ -2013,12 +2032,12 @@ export function TaleEditor({
               <article key={item.id}>
                 <p className="card-kicker">{item.region || "Uncharted region"}</p>
                 <h3>{item.name}</h3>
-                <p>{item.playerFacingDescription || "No player description yet."}</p>
+                <p>{item.playerFacingDescription || "No player-facing description yet."}</p>
                 <small>
                   {item.referenceCollectionId ? "Reference collection assigned" : "No verification references"}
                 </small>
-                <small>Used by {recordUsageCount(item.id)} story blocks</small>
-                <button onClick={() => void libraryAction("location", "update", item.id)}>Edit</button>
+                <small>Used by {recordUsageCount(item.id)} Passages</small>
+                <button onClick={() => void libraryAction("location", "update", item.id)}>Edit Waypoint</button>
                 <button onClick={() => void libraryAction("location", "create", item.id)}>Duplicate</button>
                 <button onClick={() => void libraryAction("location", "archive", item.id)}>Archive</button>
               </article>
@@ -2046,10 +2065,10 @@ export function TaleEditor({
           <div className="record-grid">
             {filteredArtifacts.map((item) => (
               <article key={item.id}>
-                <p className="card-kicker">{item.ordinaryGameObjectLabel || "Story object"}</p>
+                <p className="card-kicker">{item.ordinaryGameObjectLabel || "Artifact"}</p>
                 <h3>{item.name}</h3>
                 <p>{item.shortDescription || item.loreDescription || "No lore has been written."}</p>
-                <small>Used by {recordUsageCount(item.id)} story blocks</small>
+                <small>Used by {recordUsageCount(item.id)} Passages</small>
                 <button onClick={() => void libraryAction("artifact", "update", item.id)}>Edit</button>
                 <button onClick={() => void libraryAction("artifact", "create", item.id)}>Duplicate</button>
                 <button onClick={() => void libraryAction("artifact", "archive", item.id)}>Archive</button>
@@ -2060,12 +2079,12 @@ export function TaleEditor({
       )}
       {initialSection === "versions" && (
         <LibraryPanel
-          title="Version History"
+          title="Version history"
           eyebrow="Immutable releases"
-          action={<button onClick={() => void publish()}>Publish current draft</button>}
+          action={<button onClick={() => void publish()}>Publish current Chronicle draft</button>}
         >
           <div className="version-list">
-            {!data.versions.length && <p>No published version exists yet.</p>}
+            {!data.versions.length && <p>No published Version exists yet.</p>}
             {data.versions.map((version) => (
               <motion.article
                 key={version.id}
@@ -2077,17 +2096,17 @@ export function TaleEditor({
                 <div>
                   <strong>{new Date(version.publishedAt).toLocaleString()}</strong>
                   <p>{version.releaseNotes || "No release notes."}</p>
-                  <small className="immutable-version-lock" aria-label="Immutable published version">
+                  <small className="immutable-version-lock" aria-label="Immutable published Version">
                     <span aria-hidden="true">◆</span> Immutable release
                   </small>
                 </div>
                 <small>
-                  {version.activeSessions} pinned session{version.activeSessions === 1 ? "" : "s"}
+                  {version.activeSessions} active Voyage{version.activeSessions === 1 ? "" : "s"}
                 </small>
                 <div className="version-actions">
                   <button onClick={() => void versionAction(version, "preview")}>Preview release</button>
                   <button onClick={() => void versionAction(version, "restore")}>Copy into new draft</button>
-                  <button onClick={() => void versionAction(version, "fork")}>Fork as new Tale</button>
+                  <button onClick={() => void versionAction(version, "fork")}>Create new Chronicle</button>
                   {!version.isCurrent && (
                     <button onClick={() => void compareVersion(version)}>Compare to current</button>
                   )}
@@ -2282,7 +2301,7 @@ function DraggableLibraryItem({ item, onAdd }: { item: RegistryItem; onAdd: () =
   const { attributes, isDragging, listeners, setNodeRef, transform } = useDraggable({
     id: `library:${item.type}`,
     data: { kind: "library", type: item.type },
-    attributes: { roleDescription: "sortable story block" },
+    attributes: { roleDescription: "sortable Passage" },
   });
   return (
     <article className={isDragging ? "dnd-dragging" : ""}>
@@ -2454,11 +2473,12 @@ function Field({
     );
   if (field.kind === "location" || field.kind === "artifact") {
     const records = field.kind === "location" ? locations : artifacts;
+    const recordLabel = field.kind === "location" ? "Waypoint" : "Artifact";
     return (
       <label>
         {label}
         <select value={String(value ?? "")} onChange={(event) => onChange(event.target.value || null)}>
-          <option value="">Choose {field.kind}</option>
+          <option value="">Choose {recordLabel}</option>
           {records.map((item) => (
             <option key={item.id} value={item.id}>
               {item.name}

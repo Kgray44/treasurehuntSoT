@@ -4,6 +4,7 @@
 import Link from "next/link";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { EmptyState, ErrorState, LoadingState } from "@/components/ui/AsyncState";
+import { platformCopy } from "@/language/platform-copy";
 
 type CatalogTale = {
   id: string;
@@ -35,10 +36,10 @@ export function TaleCatalog() {
     try {
       const response = await fetch("/api/tales", { cache: "no-store" });
       const body = (await response.json()) as { tales?: CatalogTale[]; error?: string };
-      if (!response.ok) setError(body.error ?? "The Tall Tale library is unavailable.");
+      if (!response.ok) setError(body.error ?? "The Chronicle Library is unavailable.");
       else setTales(body.tales ?? []);
     } catch {
-      setError("The Tall Tale library could not be reached. Check your connection and try again.");
+      setError("The Chronicle Library could not be reached. Check your connection, then try again.");
     } finally {
       setLoading(false);
     }
@@ -78,13 +79,13 @@ export function TaleCatalog() {
     <main className="tale-catalog">
       <header>
         <div>
-          <p className="eyebrow">Published interactive stories</p>
-          <h1>Choose an Adventure</h1>
-          <p>Preview the story, time, and group size before beginning a Tall Tale or returning to one in progress.</p>
+          <p className="eyebrow">Published Chronicles</p>
+          <h1>Choose a Chronicle</h1>
+          <p>Review the Chronicle, duration, and Crew size before you begin or continue a Voyage.</p>
         </div>
       </header>
       {!loading && !error && tales.length > 0 && (
-        <section className="catalog-tools" aria-label="Search and filter Tall Tales">
+        <section className="catalog-tools" aria-label="Search and filter Chronicles">
           <label className="catalog-search">
             <span>Search</span>
             <input
@@ -124,7 +125,7 @@ export function TaleCatalog() {
           </label>
           <div className="catalog-result-summary" aria-live="polite">
             <strong>{filteredTales.length}</strong>
-            <span>{filteredTales.length === 1 ? "Tall Tale" : "Tall Tales"}</span>
+            <span>{filteredTales.length === 1 ? "Chronicle" : "Chronicles"}</span>
             {hasFilters && (
               <button className="button-subtle" type="button" onClick={clearFilters}>
                 Clear filters
@@ -133,26 +134,26 @@ export function TaleCatalog() {
           </div>
         </section>
       )}
-      {loading && <LoadingState title="Charting available Tall Tales" detail="Loading published story details." />}
+      {loading && <LoadingState title="Opening published Chronicles" detail="Loading Chronicle details." />}
       {error && (
         <ErrorState
-          title="Tall Tales could not be loaded"
+          title="Chronicles could not be loaded"
           detail={error}
           action={{ label: "Try Again", onClick: () => void load() }}
         />
       )}
       {!loading && !error && !tales.length && (
         <EmptyState
-          title="No published Tall Tales are available"
-          detail="A Creator must validate and publish a public Tall Tale before it appears in discovery."
+          title={platformCopy.noChronicles.value}
+          detail="A Creator must validate and publish a Chronicle before it appears here."
           action={{ label: "Return to Role Gateway", href: "/" }}
           symbol="☾"
         />
       )}
       {!loading && !error && tales.length > 0 && !filteredTales.length && (
         <EmptyState
-          title="No Tall Tales match these filters"
-          detail="Try a different title, a longer duration, or a broader group size."
+          title="No Chronicles match these filters"
+          detail="Try a different title, a longer duration, or a broader Crew size."
           action={{ label: "Clear Filters", onClick: clearFilters }}
           symbol="⌕"
         />
@@ -200,10 +201,10 @@ export function TaleCatalog() {
                 }
               >
                 {tale.playerState === "IN_PROGRESS"
-                  ? "Resume Story"
+                  ? platformCopy.continueVoyage.value
                   : tale.playerState === "COMPLETED"
-                    ? "Replay Tall Tale"
-                    : "Preview Tall Tale"}
+                    ? "Begin a new Voyage"
+                    : "Preview Chronicle"}
               </Link>
             </div>
           </article>

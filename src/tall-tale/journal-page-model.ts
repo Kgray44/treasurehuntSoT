@@ -37,7 +37,7 @@ export function buildTallTaleJournalPages(
       label: `${tale.title} title page`,
       folio: 1,
       title: tale.title,
-      body: tale.subtitle ?? "A Tall Tale preserved in this journal.",
+      body: tale.subtitle ?? "A Chronicle preserved in this journal.",
     },
     {
       id: "journal-edition",

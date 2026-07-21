@@ -231,7 +231,7 @@ describe("HarborLanding gateway SceneHost", () => {
     expect(automatic.options.root.querySelectorAll("[data-scene-target-id]")).toHaveLength(14);
     expect(automatic.options.root.querySelector("[data-gsap-owned]")).toBeNull();
 
-    const replayButton = screen.getByRole("button", { name: "Replay gateway" });
+    const replayButton = screen.getByRole("button", { name: "Replay presentation" });
     expect(replayButton).toBeEnabled();
     fireEvent.click(replayButton);
 
@@ -280,7 +280,7 @@ describe("HarborLanding gateway SceneHost", () => {
 
   it("softens sibling roles only after a role handoff is selected", async () => {
     renderWithRegistry(<HarborLanding />);
-    expect(await screen.findAllByText("Adventure role")).toHaveLength(3);
+    expect(await screen.findAllByText("Choose a role")).toHaveLength(3);
     const captainLink = screen.getByRole("link", { name: "Enter as Captain" });
     captainLink.addEventListener("click", (event) => event.preventDefault());
     fireEvent.click(captainLink);

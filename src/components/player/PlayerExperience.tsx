@@ -1349,8 +1349,7 @@ export function PlayerExperience({ initialSnapshot }: { initialSnapshot: PublicS
   const ensureProgressionController = useCallback(() => {
     if (controllerRef.current) return controllerRef.current;
     let stagedRequestIdentity: string | null = null;
-    let controller: ProgressionPresentationController;
-    controller = new ProgressionPresentationController(
+    const controller = new ProgressionPresentationController(
       {
         createIdentity: (kind, event, source) => {
           const identity = `${kind}:${source}:${event.id}:${crypto.randomUUID()}`;

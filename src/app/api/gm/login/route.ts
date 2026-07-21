@@ -9,7 +9,8 @@ const schema = z.object({ username: z.string().min(2).max(80), password: z.strin
 export async function POST(request: Request) {
   try {
     const parsed = schema.safeParse(await request.json().catch(() => null));
-    if (!parsed.success) return NextResponse.json({ error: "Enter the captain's credentials." }, { status: 400 });
+    if (!parsed.success)
+      return NextResponse.json({ error: "Enter a Captain name and passphrase to sign in." }, { status: 400 });
     const fingerprint = hashToken(
       `${request.headers.get("x-forwarded-for") ?? "local"}:${parsed.data.username.toLowerCase()}`,
     );
@@ -23,7 +24,10 @@ export async function POST(request: Request) {
     const valid = Boolean(user && (await bcrypt.compare(parsed.data.password, user.passwordHash)));
     await db.loginAttempt.create({ data: { fingerprint, succeeded: valid } });
     if (!valid || !user)
-      return NextResponse.json({ error: "The quartermaster does not recognize those credentials." }, { status: 401 });
+      return NextResponse.json(
+        { error: "The Captain name or passphrase is incorrect. Check both and try again." },
+        { status: 401 },
+      );
     const csrfToken = await createGmSession(user.id);
     return NextResponse.json({ ok: true, csrfToken });
   } catch (error) {

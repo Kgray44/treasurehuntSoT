@@ -273,7 +273,7 @@ function ArtifactInspectionContents({
       <article className="artifact-story-card" data-artifact-key={artifact.key} data-static-readable="true">
         <p className="eyebrow">{artifact.state.replaceAll("_", " ")}</p>
         <h2 id={titleId}>{artifact.name}</h2>
-        <p>{artifact.description ?? "The recovered artifact remains safely recorded in the captain's ledger."}</p>
+        <p>{artifact.description ?? "This recovered Artifact is recorded in the Captain's Voyage Record."}</p>
         {artifact.discoveryText && <blockquote>{artifact.discoveryText}</blockquote>}
         <dl>
           <div>

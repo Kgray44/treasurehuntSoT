@@ -331,7 +331,13 @@ describe("VoyageChart animation boundary", () => {
     );
     expect(contract).toHaveAttribute(
       "data-rive-reduced-pose",
-      JSON.stringify({ bearingDegrees: 0, courseProgress: 0, connectionStatus: 0, hasCourse: false, reducedMotion: true }),
+      JSON.stringify({
+        bearingDegrees: 0,
+        courseProgress: 0,
+        connectionStatus: 0,
+        hasCourse: false,
+        reducedMotion: true,
+      }),
     );
     expect(contract).toHaveAttribute("data-rive-reduced-equivalent", "semantic-final-state");
     expect(Number(contract?.dataset.riveBearingValue)).toBeCloseTo(63.43488, 2);

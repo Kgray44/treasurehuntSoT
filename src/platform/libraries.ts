@@ -98,7 +98,7 @@ function cardOf(membership: PlayerMembership, captainName?: string) {
         )}&session=${encodeURIComponent(playthrough.id)}`
       : null,
     captainName: captainName ?? "Captain",
-    voyageName: playthrough.voyageName ?? playthrough.ownerLabel ?? "Tall Tale voyage",
+    voyageName: playthrough.voyageName ?? playthrough.ownerLabel ?? "Voyage",
     state,
     status: invitation && state === "INVITATIONS" ? invitation.status : playthrough.status,
     membershipStatus: membership.status,
@@ -390,7 +390,7 @@ export async function listCaptainLibrary(captainId: string) {
     id: session.id,
     taleId: session.taleId,
     taleTitle: session.tale.title,
-    voyageName: session.voyageName ?? session.ownerLabel ?? "Tall Tale voyage",
+    voyageName: session.voyageName ?? session.ownerLabel ?? "Voyage",
     versionLabel: session.version?.versionLabel ?? "Unpublished",
     status: session.status,
     plannedStartAt: session.plannedStartAt?.toISOString() ?? null,

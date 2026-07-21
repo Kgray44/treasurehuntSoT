@@ -10,11 +10,11 @@ Phase 5 preserves the existing SceneHost, Director, target ownership, event orde
 
 ## 2. Frozen production Rive contract
 
-| Asset ID | Export | Artboard | State machine | Timeout | Reduced pose owner |
-| --- | --- | --- | --- | --- | --- |
-| `invitationSeal` | `public/animations/rive/invitation-seal-v1.riv` | `InvitationSeal` | `InvitationSealSM` | 5000 ms | `status`, `pinProgress`, `reducedMotion` |
-| `journalClasp` | `public/animations/rive/journal-clasp-v1.riv` | `JournalClasp` | `JournalClaspSM` | 5000 ms | `openingPhase`, `pressure`, `reducedMotion` |
-| `voyageCompass` | `public/animations/rive/voyage-compass-v1.riv` | `VoyageCompass` | `VoyageCompassSM` | 5000 ms | `bearingDegrees`, `courseProgress`, `connectionStatus`, `hasCourse`, `reducedMotion` |
+| Asset ID          | Export                                           | Artboard          | State machine       | Timeout | Reduced pose owner                                                                                 |
+| ----------------- | ------------------------------------------------ | ----------------- | ------------------- | ------- | -------------------------------------------------------------------------------------------------- |
+| `invitationSeal`  | `public/animations/rive/invitation-seal-v1.riv`  | `InvitationSeal`  | `InvitationSealSM`  | 5000 ms | `status`, `pinProgress`, `reducedMotion`                                                           |
+| `journalClasp`    | `public/animations/rive/journal-clasp-v1.riv`    | `JournalClasp`    | `JournalClaspSM`    | 5000 ms | `openingPhase`, `pressure`, `reducedMotion`                                                        |
+| `voyageCompass`   | `public/animations/rive/voyage-compass-v1.riv`   | `VoyageCompass`   | `VoyageCompassSM`   | 5000 ms | `bearingDegrees`, `courseProgress`, `connectionStatus`, `hasCourse`, `reducedMotion`               |
 | `finaleMechanism` | `public/animations/rive/finale-mechanism-v1.riv` | `FinaleMechanism` | `FinaleMechanismSM` | 6000 ms | `stage`, `overallProgress`, `activeRequirement`, `requirementProgress`, `isReady`, `reducedMotion` |
 
 The complete input schemas, documented numeric enums, states, fallbacks, version, and availability are source-controlled in `src/animation/assets/rive-contracts.ts`. Numeric state values are exported constants, never implicit array indexes. The Rive authoring specification is the required handoff for the genuine assets.

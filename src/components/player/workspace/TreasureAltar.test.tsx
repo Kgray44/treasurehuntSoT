@@ -433,7 +433,7 @@ describe("TreasureAltar animation boundary", () => {
         <TreasureAltar snapshot={snapshot([star])} inspect={vi.fn()} />
       </>,
     );
-    const headings = screen.getAllByRole("heading", { name: "Treasure Altar" });
+    const headings = screen.getAllByRole("heading", { name: "Artifact Collection" });
     expect(headings[0].id).not.toBe(headings[1].id);
     const sections = document.querySelectorAll<HTMLElement>(".treasure-altar-section");
     expect(sections[0]).toHaveAttribute("aria-labelledby", headings[0].id);
