@@ -1,6 +1,6 @@
 # Project Wayfarer Phase 1 Test Plan
 
-Status: **planned coverage; not yet complete**. This plan distinguishes implemented surfaces from unproven requirements.
+Status: **implementation candidate with incomplete acceptance coverage**. This plan distinguishes implemented surfaces from unproven requirements.
 
 | Acceptance area               | Implemented surface                              | Required proof                                                  | Current result                                |
 | ----------------------------- | ------------------------------------------------ | --------------------------------------------------------------- | --------------------------------------------- |
@@ -14,6 +14,6 @@ Status: **planned coverage; not yet complete**. This plan distinguishes implemen
 | Legacy migration              | deterministic SQLite SQL backfill                | exact source/reconciliation fixture test                        | migration applies; reconciliation test absent |
 | Actor references              | inventory and design only                        | Creator/Captain/new-write FK tests                              | not implemented                               |
 | Privacy                       | private email/token storage design               | response-shaping and log-redaction tests                        | not run                                       |
-| Full regression               | repository `scripts/test-all.ps1`                | format/lint/type/unit/E2E/build                                 | blocked by validation runtime                 |
+| Full regression               | repository `scripts/test-all.ps1`                | format/lint/type/unit/E2E/build                                 | dedicated-runtime full gate not yet captured  |
 
 The final test plan must not be signed off until every row marked not run, absent, or not implemented has focused automated coverage and the full isolated gate is green.
