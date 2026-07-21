@@ -4,9 +4,9 @@ title: "Implement **EOAT Atlas Web Foundation Phase 0** in a completely isolated
 project: "Forever Treasure Companion"
 source_type: "codex_session"
 created_at: "2026-07-21T18:48:41.803Z"
-updated_at: "2026-07-21T22:43:50.359Z"
-message_count: 1055
-content_sha256: "fa38fa8df4e6dc4d818c2a2dc28f1a3338811249b2038526eafdb3353a7e8421"
+updated_at: "2026-07-21T22:44:07.853Z"
+message_count: 1056
+content_sha256: "0a7f888a45e16785b0aafd11d606608dce5848b52f2cff2456b1e4d19890d23e"
 archived_at: "2026-07-21T22:42:34Z"
 ---
 
@@ -7870,3 +7870,63 @@ Output:
 **Timestamp:** 2026-07-21T22:43:39.966Z
 
 [{"text": "Script completed\nWall time 2.2 seconds\nOutput:\n", "type": "input_text"}, {"text": "Exit code: 0\nWall time: 14.1 seconds\nOutput:\nlocal=6ebf59746b7fccffb894222761e6ce107f86b313\r\nremote=6ebf59746b7fccffb894222761e6ce107f86b313\r\nTo https://github.com/Kgray44/EOAT_Tool.git\n   6d39823d0..6ebf59746  codex/web-foundation-phase0 -> codex/web-foundation-phase0\n", "type": "input_text"}]
+
+## Assistant
+**Timestamp:** 2026-07-21T22:44:07.733Z
+
+Implemented and pushed EOAT Atlas Web Phase 2.
+
+1. Repository: `Kgray44/EOAT_Tool`
+2. Worktree: `\\gwplastics.com\VT\Users\kgray\My Documents\eoat-web-foundation-phase0`
+3. Branch: `codex/web-foundation-phase0`
+4. Starting commit: `7918d0da79dc244081937d2f67a1fc2389123d39`
+5. Final commit: `6ebf59746b7fccffb894222761e6ce107f86b313`
+6. Remote parity: confirmed `origin/codex/web-foundation-phase0` equals the final SHA.
+7. Version: `0.18.0 → 0.19.0`, via the repository’s canonical version workflow.
+
+Delivered:
+
+- Real responsive machine and tool profiles with independent section loading/error states, relationships, media, documents, history, Fit Check links, QR labels, and local recents.
+- Unified `/library` discovery with server search, type filters, pagination, URL persistence, and local-only recent records. `/search` redirects to Library.
+- Read-only `/fit-check` using `POST /api/v1/web-fit-checks/evaluate`; the server forcibly sets `persist=False`.
+- UUID-only browser media routes:
+  - `/api/v1/web-documents/{uuid}/content`
+  - `/api/v1/web-photos/{uuid}/content`
+  - `/api/v1/web-photos/{uuid}/thumbnail`
+- Server-side approved-root enforcement through `EOAT_WEB_CONTENT_ROOTS`, path normalization, traversal/encoded traversal/absolute path/symlink escape rejection, safe MIME/disposition policy, and no path leakage.
+- QR label previews for EOATs, machines, and tools, with encoded canonical paths, unsafe-origin warning, print CSS, and accessible URL fallback.
+- Generated OpenAPI contract/types for all browser-safe routes.
+
+Files outside `web/` changed:
+
+- `app/atlas/version.json`
+- `release_history.json`
+- `docs/architecture/ADR-001-web-foundation.md`
+- `docs/WEB_PHASE_2_READ_ONLY_DISCOVERY.md`
+- `server/eoat_api/app.py`
+- `server/eoat_api/contracts.py`
+- `server/eoat_api/web_content.py`
+- `tests/test_web_content_delivery.py`
+
+Validation results:
+
+- `npm ci`: passed; 323 packages installed, 324 audited.
+- Vitest: 7 files, 22 tests passed.
+- Playwright: 4 browser smoke tests passed.
+- Ruff: passed.
+- Focused backend/API tests: 14 passed, 1 skipped (Windows symlink-creation privilege); the symlink-escape test is present.
+- ESLint, TypeScript, and production Vite build: passed.
+- OpenAPI export/type generation: deterministic source/mirror SHA-256 match.
+- Version validator: passed for `0.18.0 → 0.19.0`.
+- Production dependency audit: 0 vulnerabilities.
+- Full dependency audit: one `js-yaml` advisory affecting two development-only generator-chain packages; documented, not blanket-fixed.
+- `git diff --check`: passed.
+- Secret scan: no credential-like assignments found in the diff; `gitleaks` was not installed.
+
+Security controls remain intact: no browser device token, credentials, persistent writes, authentication, uploads, deployment, database migration, or desktop changes. No other branch, worktree, production server, database, packaging, or deployment implementation was modified.
+
+Known limitations / Phase 3 candidates: authenticated writes after SAML/LDAP readiness, controlled upload/management workflows, production NGINX hosting, deployment/DNS/TLS, richer compatibility alternatives, and physical QR print integration.
+
+::git-stage{cwd="\\gwplastics.com\VT\Users\kgray\My Documents\eoat-web-foundation-phase0"}
+::git-commit{cwd="\\gwplastics.com\VT\Users\kgray\My Documents\eoat-web-foundation-phase0"}
+::git-push{cwd="\\gwplastics.com\VT\Users\kgray\My Documents\eoat-web-foundation-phase0" branch="codex/web-foundation-phase0"}

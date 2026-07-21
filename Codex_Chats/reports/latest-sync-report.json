@@ -47,7 +47,7 @@
     "Codex_Chats/manifest.json",
     "Codex_Chats/reports/latest-sync-report.json"
   ],
-  "finished_at": "2026-07-21T22:44:24Z",
+  "finished_at": "2026-07-21T22:46:55Z",
   "included": 24,
   "push_attempted": false,
   "push_result": "not requested",
@@ -67,7 +67,7 @@
   "source_types_inspected": [
     "codex_session"
   ],
-  "started_at": "2026-07-21T22:43:55Z",
+  "started_at": "2026-07-21T22:46:29Z",
   "suspected_secret_categories": [],
   "synchronizer_version": "1.1.0",
   "unavailable": 0,
