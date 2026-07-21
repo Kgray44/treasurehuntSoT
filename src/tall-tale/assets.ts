@@ -3,6 +3,7 @@ import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import sharp from "sharp";
 import { db } from "@/lib/db";
+import { canonicalAccountForLegacyActor } from "@/wayfarer/accounts";
 import { parsePublishedSnapshot } from "@/tall-tale/publishing";
 import { getStudioTale } from "@/tall-tale/studio-service";
 import { logger } from "@/lib/logger";
@@ -116,6 +117,7 @@ async function derivativeSet(buffer: Buffer, folder: string) {
 }
 
 export async function ingestAsset(taleId: string, file: File, userId: string, replaceAssetId?: string) {
+  const creatorAccountId = await canonicalAccountForLegacyActor(userId);
   const definition = supported.get(file.type);
   if (!definition)
     throw new Error(
@@ -184,6 +186,7 @@ export async function ingestAsset(taleId: string, file: File, userId: string, re
             height,
             checksum,
             createdBy: userId,
+            createdByAccountId: creatorAccountId,
           },
         });
     const original = await tx.taleAssetVariant.create({

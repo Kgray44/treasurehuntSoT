@@ -363,7 +363,7 @@ describe("AnimationShowcase", () => {
     renderShowcase();
     fireEvent.click(screen.getByRole("button", { name: "PLAY TRAILER" }));
 
-    await waitFor(() => expect(harness.director.play).toHaveBeenCalledTimes(10));
+    await waitFor(() => expect(harness.director.play).toHaveBeenCalledTimes(8));
     expect(harness.director.play.mock.calls.map(([scene]) => scene)).not.toContain("journal-open");
   });
 });

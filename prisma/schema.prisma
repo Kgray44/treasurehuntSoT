@@ -80,6 +80,135 @@ model GameMasterUser {
   sessions      GameMasterSession[]
   auditLogs     AdminAuditLog[]
   platformRoles PlatformRoleAssignment[]
+  canonicalAccount UserAccount? @relation("LegacyGameMasterAccount")
+}
+
+model UserAccount {
+  id                  String                  @id @default(cuid())
+  status              String                  @default("PENDING_VERIFICATION")
+  legacyGameMasterId  String?                 @unique
+  claimedAt           DateTime?
+  lastSeenAt          DateTime?
+  lockedAt            DateTime?
+  suspendedAt         DateTime?
+  mergedIntoAccountId String?
+  createdAt           DateTime                @default(now())
+  updatedAt           DateTime                @updatedAt
+  profile             PlayerProfile?
+  legacyGameMaster    GameMasterUser?         @relation("LegacyGameMasterAccount", fields: [legacyGameMasterId], references: [id], onDelete: SetNull)
+  emails              AccountEmail[]
+  credential          AccountCredential?
+  tokens              AccountToken[]
+  sessions            AccountSession[]
+  roles               AccountRoleAssignment[]
+  securityEvents      SecurityEvent[]
+  migrationRecords    WayfarerMigrationRecord[]
+  createdTales        TallTale[]              @relation("TallTaleCreatorAccount")
+  authoredDrafts      TaleDraft[]             @relation("TaleDraftAuthorAccount")
+  publishedVersions   PublishedTaleVersion[]  @relation("PublishedVersionAuthorAccount")
+  createdAssets       TaleAsset[]             @relation("TaleAssetAuthorAccount")
+  captainedSessions   TaleSession[]           @relation("TaleSessionCaptainAccount")
+  createdInvitations  Invitation[]            @relation("InvitationCreatorAccount")
+  invitationEvents    InvitationEvent[]       @relation("InvitationEventActorAccount")
+  revealActions       RevealState[]           @relation("RevealActorAccount")
+  auditActions        PlatformAuditEvent[]    @relation("PlatformAuditActorAccount")
+
+  @@index([status, lastSeenAt])
+}
+
+model AccountEmail {
+  id              String      @id @default(cuid())
+  accountId       String
+  normalizedEmail String      @unique
+  displayEmail    String
+  isPrimary       Boolean     @default(true)
+  verificationState String    @default("PENDING")
+  verifiedAt      DateTime?
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+  account         UserAccount @relation(fields: [accountId], references: [id], onDelete: Cascade)
+
+  @@unique([accountId, isPrimary])
+  @@index([accountId, verificationState])
+}
+
+model AccountCredential {
+  id           String      @id @default(cuid())
+  accountId    String      @unique
+  passwordHash String
+  algorithm    String      @default("bcrypt")
+  changedAt    DateTime    @default(now())
+  createdAt    DateTime    @default(now())
+  account      UserAccount @relation(fields: [accountId], references: [id], onDelete: Cascade)
+}
+
+model AccountToken {
+  id          String      @id @default(cuid())
+  accountId   String
+  purpose     String
+  tokenHash   String      @unique
+  expiresAt   DateTime
+  consumedAt  DateTime?
+  createdAt   DateTime    @default(now())
+  account     UserAccount @relation(fields: [accountId], references: [id], onDelete: Cascade)
+
+  @@index([accountId, purpose, expiresAt])
+}
+
+model AccountSession {
+  id          String      @id @default(cuid())
+  accountId   String
+  tokenHash   String      @unique
+  csrfToken   String
+  deviceLabel String?
+  expiresAt   DateTime
+  lastSeenAt  DateTime    @default(now())
+  revokedAt   DateTime?
+  createdAt   DateTime    @default(now())
+  account     UserAccount @relation(fields: [accountId], references: [id], onDelete: Cascade)
+
+  @@index([accountId, expiresAt])
+}
+
+model AccountRoleAssignment {
+  id        String      @id @default(cuid())
+  accountId String
+  role      String
+  scopeType String      @default("GLOBAL")
+  scopeId   String?
+  grantedBy String?
+  grantedAt DateTime    @default(now())
+  revokedAt DateTime?
+  account   UserAccount @relation(fields: [accountId], references: [id], onDelete: Cascade)
+
+  @@unique([accountId, role, scopeType, scopeId])
+  @@index([role, scopeType, scopeId, revokedAt])
+}
+
+model SecurityEvent {
+  id          String      @id @default(cuid())
+  accountId   String
+  eventType   String
+  correlationId String?
+  metadata    String      @default("{}") @db.LongText
+  createdAt   DateTime    @default(now())
+  account     UserAccount @relation(fields: [accountId], references: [id], onDelete: Cascade)
+
+  @@index([accountId, createdAt])
+}
+
+model WayfarerMigrationRecord {
+  id          String      @id @default(cuid())
+  sourceType  String
+  sourceId    String      @unique
+  accountId   String?
+  status      String
+  detail      String      @default("{}") @db.LongText
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  account     UserAccount? @relation(fields: [accountId], references: [id], onDelete: SetNull)
+
+  @@index([status, sourceType])
 }
 
 model GameMasterSession {
@@ -433,6 +562,7 @@ model TallTale {
   status                   String                 @default("DRAFT")
   visibility               String                 @default("PRIVATE")
   creatorId                String
+  creatorAccountId         String?
   currentDraftRevisionId   String?
   latestPublishedVersionId String?
   forkedFromTaleId         String?
@@ -453,9 +583,11 @@ model TallTale {
   locations                TaleLocation[]
   storyArtifacts           TaleArtifact[]
   sessions                 TaleSession[]
+  creatorAccount           UserAccount?       @relation("TallTaleCreatorAccount", fields: [creatorAccountId], references: [id], onDelete: SetNull)
 
   @@index([status, visibility, sortOrder])
   @@index([creatorId, updatedAt])
+  @@index([creatorAccountId, updatedAt])
 }
 
 model TaleDraft {
@@ -464,6 +596,7 @@ model TaleDraft {
   revisionNumber            Int           @default(1)
   basedOnPublishedVersionId String?
   createdBy                 String
+  createdByAccountId        String?
   autosaveVersion           Int           @default(1)
   validationState           String        @default("NOT_VALIDATED")
   validationSummary         String        @default("{}") @db.LongText
@@ -472,9 +605,11 @@ model TaleDraft {
   updatedAt                 DateTime      @updatedAt
   tale                      TallTale      @relation(fields: [taleId], references: [id], onDelete: Cascade)
   chapters                  TaleChapter[]
+  createdByAccount          UserAccount? @relation("TaleDraftAuthorAccount", fields: [createdByAccountId], references: [id], onDelete: SetNull)
 
   @@unique([taleId, revisionNumber])
   @@index([taleId, updatedAt])
+  @@index([createdByAccountId])
 }
 
 model TaleChapter {
@@ -546,6 +681,7 @@ model PublishedTaleVersion {
   versionLabel    String
   publishedAt     DateTime      @default(now())
   publishedBy     String
+  publishedByAccountId String?
   releaseNotes    String?       @db.Text
   contentSnapshot String        @db.LongText
   schemaVersion   Int           @default(1)
@@ -553,9 +689,11 @@ model PublishedTaleVersion {
   isCurrent       Boolean       @default(true)
   tale            TallTale      @relation(fields: [taleId], references: [id], onDelete: Cascade)
   sessions        TaleSession[]
+  publishedByAccount UserAccount? @relation("PublishedVersionAuthorAccount", fields: [publishedByAccountId], references: [id], onDelete: SetNull)
 
   @@unique([taleId, versionNumber])
   @@index([taleId, isCurrent])
+  @@index([publishedByAccountId])
 }
 
 model TaleAsset {
@@ -573,6 +711,7 @@ model TaleAsset {
   duration         Float?
   checksum         String
   createdBy        String
+  createdByAccountId String?
   createdAt        DateTime                  @default(now())
   updatedAt        DateTime                  @updatedAt
   deletedAt        DateTime?
@@ -581,9 +720,11 @@ model TaleAsset {
   tags             TaleAssetTagLink[]
   roles            TaleAssetRole[]
   collectionItems  TaleAssetCollectionItem[]
+  createdByAccount UserAccount? @relation("TaleAssetAuthorAccount", fields: [createdByAccountId], references: [id], onDelete: SetNull)
 
   @@unique([taleId, checksum])
   @@index([taleId, mediaType, deletedAt])
+  @@index([createdByAccountId])
 }
 
 model TaleAssetVariant {
@@ -717,6 +858,7 @@ model TaleSession {
   ownerLabel           String?
   voyageName           String?
   captainId            String?
+  captainAccountId     String?
   accessTokenHash      String                    @unique
   status               String                    @default("ACTIVE")
   captainMode          String                    @default("CAPTAIN_CONTROLLED")
@@ -750,13 +892,16 @@ model TaleSession {
   memberships          PlaythroughMembership[]
   invitations          Invitation[]
   revealStates         RevealState[]
+  captainAccount       UserAccount? @relation("TaleSessionCaptainAccount", fields: [captainAccountId], references: [id], onDelete: SetNull)
 
   @@index([taleId, status, previewMode])
   @@index([publishedVersionId, status])
+  @@index([captainAccountId, status])
 }
 
 model PlayerProfile {
   id           String                  @id @default(cuid())
+  accountId    String?                 @unique
   username     String?                 @unique
   passwordHash String?
   displayName  String
@@ -769,6 +914,7 @@ model PlayerProfile {
   sessions     PlayerIdentitySession[]
   memberships  PlaythroughMembership[]
   invitations  Invitation[]
+  account      UserAccount?            @relation(fields: [accountId], references: [id], onDelete: SetNull)
 
   @@index([status, displayName])
 }
@@ -845,6 +991,7 @@ model Invitation {
   lastValidatedAt      DateTime?
   replacesInvitationId String?           @unique
   createdBy            String
+  creatorAccountId     String?
   createdAt            DateTime          @default(now())
   updatedAt            DateTime          @updatedAt
   playthrough          TaleSession       @relation(fields: [playthroughId], references: [id], onDelete: Cascade)
@@ -852,9 +999,11 @@ model Invitation {
   replaces             Invitation?       @relation("InvitationReplacement", fields: [replacesInvitationId], references: [id], onDelete: SetNull)
   replacement          Invitation?       @relation("InvitationReplacement")
   events               InvitationEvent[]
+  creatorAccount       UserAccount? @relation("InvitationCreatorAccount", fields: [creatorAccountId], references: [id], onDelete: SetNull)
 
   @@index([playthroughId, status, expiresAt])
   @@index([intendedPlayerId, status])
+  @@index([creatorAccountId, status])
 }
 
 model InvitationEvent {
@@ -863,11 +1012,14 @@ model InvitationEvent {
   eventType    String
   actorType    String
   actorId      String?
+  actorAccountId String?
   metadata     String     @default("{}") @db.LongText
   createdAt    DateTime   @default(now())
   invitation   Invitation @relation(fields: [invitationId], references: [id], onDelete: Cascade)
+  actorAccount UserAccount? @relation("InvitationEventActorAccount", fields: [actorAccountId], references: [id], onDelete: SetNull)
 
   @@index([invitationId, createdAt])
+  @@index([actorAccountId, createdAt])
 }
 
 model RevealState {
@@ -877,17 +1029,21 @@ model RevealState {
   contentKey    String
   status        String      @default("REVEALED")
   revealedBy    String?
+  revealedByAccountId String?
   revealedAt    DateTime    @default(now())
   playthrough   TaleSession @relation(fields: [playthroughId], references: [id], onDelete: Cascade)
+  revealedByAccount UserAccount? @relation("RevealActorAccount", fields: [revealedByAccountId], references: [id], onDelete: SetNull)
 
   @@unique([playthroughId, contentType, contentKey])
   @@index([playthroughId, revealedAt])
+  @@index([revealedByAccountId, revealedAt])
 }
 
 model PlatformAuditEvent {
   id            String   @id @default(cuid())
   actorType     String
   actorId       String?
+  actorAccountId String?
   action        String
   resourceType  String
   resourceId    String
@@ -895,9 +1051,11 @@ model PlatformAuditEvent {
   correlationId String
   metadata      String   @default("{}") @db.LongText
   createdAt     DateTime @default(now())
+  actorAccount  UserAccount? @relation("PlatformAuditActorAccount", fields: [actorAccountId], references: [id], onDelete: SetNull)
 
   @@index([resourceType, resourceId, createdAt])
   @@index([actorType, actorId, createdAt])
+  @@index([actorAccountId, createdAt])
   @@index([correlationId])
 }
 

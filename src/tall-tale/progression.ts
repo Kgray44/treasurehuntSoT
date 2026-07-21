@@ -2,6 +2,7 @@ import { createHash, randomBytes, randomUUID } from "node:crypto";
 import type { Prisma } from "@prisma/client";
 import { z } from "zod";
 import { db } from "@/lib/db";
+import { canonicalAccountForLegacyActor } from "@/wayfarer/accounts";
 import { publishTaleSessionEvent } from "@/lib/events";
 import { providerForBlock } from "@/tall-tale/block-registry";
 import { snapshotFromStudio, parsePublishedSnapshot } from "@/tall-tale/publishing";
@@ -439,6 +440,7 @@ export async function startTaleSession(slug: string, ownerLabel?: string) {
 }
 
 export async function launchTalePlaythrough(sessionId: string, actorId: string, expectedVersion?: number) {
+  const captainAccountId = await canonicalAccountForLegacyActor(actorId);
   const session = await db.taleSession.findUniqueOrThrow({
     where: { id: sessionId },
     include: { version: true, memberships: true, invitations: true },
@@ -466,6 +468,7 @@ export async function launchTalePlaythrough(sessionId: string, actorId: string, 
         status: "ACTIVE",
         launchedAt: new Date(),
         captainId: actorId,
+        captainAccountId,
         concurrencyVersion: { increment: 1 },
       },
     });
@@ -519,6 +522,7 @@ export async function getCatalogSessionStatus(sessionId: string, token: string) 
 }
 
 export async function startPreviewSession(taleId: string, creatorId: string, startBlockId?: string) {
+  const creatorAccountId = await canonicalAccountForLegacyActor(creatorId);
   const studio = await getStudioTale(taleId);
   const snapshot = snapshotFromStudio(studio);
   const first = blockById(snapshot, startBlockId ?? null) ?? blocksOf(snapshot)[0];
@@ -531,6 +535,7 @@ export async function startPreviewSession(taleId: string, creatorId: string, sta
         taleId,
         ownerLabel: "Studio preview",
         captainId: creatorId,
+        captainAccountId: creatorAccountId,
         accessTokenHash: digest(token),
         currentChapterId: chapterByBlock(snapshot, first.id)?.id,
         currentBlockId: first.id,
@@ -557,6 +562,7 @@ export async function startPreviewSession(taleId: string, creatorId: string, sta
 }
 
 export async function startPublishedPreviewSession(taleId: string, versionId: string, creatorId: string) {
+  const creatorAccountId = await canonicalAccountForLegacyActor(creatorId);
   const version = await db.publishedTaleVersion.findFirstOrThrow({
     where: { id: versionId, taleId },
     include: { tale: true },
@@ -573,6 +579,7 @@ export async function startPublishedPreviewSession(taleId: string, versionId: st
         publishedVersionId: version.id,
         ownerLabel: `Studio preview v${version.versionLabel}`,
         captainId: creatorId,
+        captainAccountId: creatorAccountId,
         accessTokenHash: digest(token),
         currentChapterId: chapterByBlock(snapshot, first.id)?.id,
         currentBlockId: first.id,

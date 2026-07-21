@@ -1,5 +1,6 @@
 import { createHash } from "node:crypto";
 import { db } from "@/lib/db";
+import { canonicalAccountForLegacyActor } from "@/wayfarer/accounts";
 import { eventBus } from "@/lib/events";
 import { getStudioTale } from "@/tall-tale/studio-service";
 import type { PublishedTaleSnapshot } from "@/tall-tale/types";
@@ -95,6 +96,7 @@ export async function publishTale(
   releaseNotes: string,
   expectedAutosaveVersion?: number,
 ) {
+  const publisherAccountId = await canonicalAccountForLegacyActor(publisherId);
   logger.info({ area: "tall-tale-publish", taleId, publisherId }, "Chronicle publish validation started");
   const validation = await validateTaleDraft(taleId);
   if (!validation.valid) throw new PublishValidationError(validation);
@@ -119,6 +121,7 @@ export async function publishTale(
         versionNumber,
         versionLabel: versionNumber === 1 ? "1.0" : `1.${versionNumber - 1}`,
         publishedBy: publisherId,
+        publishedByAccountId: publisherAccountId,
         releaseNotes: structuredReleaseNotes,
         contentSnapshot,
         checksum,

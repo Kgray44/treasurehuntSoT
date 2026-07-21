@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { db } from "@/lib/db";
+import { canonicalAccountForLegacyActor } from "@/wayfarer/accounts";
 import { getBlockDefinition, serializeBlockRegistry } from "@/tall-tale/block-registry";
 import { journalPresentationSchema } from "@/tall-tale/journal-contract";
 import type { JsonObject, PublishedTaleSnapshot, StudioDraftInput } from "@/tall-tale/types";
@@ -127,6 +128,7 @@ export async function createStudioTale(input: {
   creatorId: string;
 }) {
   const slug = slugSchema.parse(input.slug?.trim() || slugify(input.title));
+  const creatorAccountId = await canonicalAccountForLegacyActor(input.creatorId);
   return db.$transaction(async (tx) => {
     const tale = await tx.tallTale.create({
       data: {
@@ -138,12 +140,15 @@ export async function createStudioTale(input: {
         theme: input.theme ?? "CARTOGRAPHERS_TABLE",
         visibility: input.visibility ?? "PRIVATE",
         creatorId: input.creatorId,
+        creatorAccountId,
         playerCountMin: input.playerCountMin ?? 1,
         playerCountMax: input.playerCountMax ?? 4,
         estimatedDuration: input.estimatedDuration ?? null,
       },
     });
-    const draft = await tx.taleDraft.create({ data: { taleId: tale.id, createdBy: input.creatorId } });
+    const draft = await tx.taleDraft.create({
+      data: { taleId: tale.id, createdBy: input.creatorId, createdByAccountId: creatorAccountId },
+    });
     await tx.taleChapter.create({
       data: { draftRevisionId: draft.id, title: input.initialChapterTitle?.trim() || "Chapter One", orderIndex: 0 },
     });
