@@ -76,7 +76,7 @@ export function assertPublishingAllowed(flags: { enabled: boolean; publicPublish
 }
 
 export type PublicCommunityListing = { slug: string; itemType: CommunityItemType; title: string; shortDescription?: string; tags: string[]; spoilerLevel: "NONE" | "PREVIEW_SAFE"; creator: { handle: string; displayName: string } };
-export function toPublicListing(input: { slug: string; itemType: CommunityItemType; title: string; shortDescription?: string | null; tags: string[]; spoilerLevel: (typeof spoilerLevels)[number]; visibility: string; publicationStatus: string; locationClass: (typeof locationClasses)[number]; owner: { handle: string; displayName: string; email?: string; passwordHash?: string }; privateSnapshot?: unknown }): PublicCommunityListing | null {
+export function toPublicListing(input: { slug: string; itemType: CommunityItemType; title: string; shortDescription?: string | null; tags: string[]; spoilerLevel: (typeof spoilerLevels)[number]; visibility: (typeof communityVisibility)[number]; publicationStatus: (typeof publicationStatuses)[number]; locationClass: (typeof locationClasses)[number]; owner: { handle: string; displayName: string; email?: string; passwordHash?: string }; privateSnapshot?: unknown }): PublicCommunityListing | null {
   if (!canView({ ...input, ownerProfileId: "" })) return null;
   if (input.locationClass === "PRIVATE_REAL_WORLD") return null;
   return { slug: input.slug, itemType: input.itemType, title: input.title, ...(input.shortDescription ? { shortDescription: input.shortDescription } : {}), tags: input.tags, spoilerLevel: input.spoilerLevel === "NONE" ? "NONE" : "PREVIEW_SAFE", creator: { handle: input.owner.handle, displayName: input.owner.displayName } };
