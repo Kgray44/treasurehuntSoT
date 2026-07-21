@@ -1255,31 +1255,31 @@
     },
     {
       "archive_path": "Codex_Chats/chats/019f8602-14dc-7853-a32d-2e01181ad801--implement-eoat-atlas-web-foundation-phase-0-in-a-completely-isol.md",
-      "content_sha256": "00ce7c2f780de9e121824d2fa024c3906916fb699cfaf2407b11a1c04c68458e",
+      "content_sha256": "fa38fa8df4e6dc4d818c2a2dc28f1a3338811249b2038526eafdb3353a7e8421",
       "conversation_id": "019f8602-14dc-7853-a32d-2e01181ad801",
       "created_at": "2026-07-21T18:48:41.803Z",
       "first_archived_at": "2026-07-21T22:42:34Z",
-      "last_synchronized_at": "2026-07-21T22:42:34Z",
-      "message_count": 1042,
+      "last_synchronized_at": "2026-07-21T22:43:55Z",
+      "message_count": 1055,
       "project_identifier": "treasurehunt",
       "redaction_categories": {},
       "redactions": 0,
       "source_export_timestamp": null,
       "source_identifier": "rollout-2026-07-21T14-48-36-019f8602-14dc-7853-a32d-2e01181ad801.jsonl",
-      "source_sha256": "b7ef1bab181cb1cc62e839325102a84694d2a8fed1e4571cec49292e80fefd9d",
+      "source_sha256": "617b80d1672677dd4ccd98a139562618962f0d691f514696791420d8b1009ee3",
       "source_type": "codex_session",
       "status": "active",
       "title": "Implement **EOAT Atlas Web Foundation Phase 0** in a completely isolated Git branch and Git worktree",
-      "updated_at": "2026-07-21T22:42:42.148Z"
+      "updated_at": "2026-07-21T22:43:50.359Z"
     },
     {
       "archive_path": "Codex_Chats/chats/019f86c4-c714-73d2-a58a-d1ef61ab1729--untitled.md",
-      "content_sha256": "2f64a32483a0b9528c1301e76a6de76053a8a5edff547d38df1cdbcbeac0c0dc",
+      "content_sha256": "f093822f7d45f254c5a85d810fb68859e92da39b51f6575dcf648893d53af96d",
       "conversation_id": "019f86c4-c714-73d2-a58a-d1ef61ab1729",
       "created_at": "2026-07-21T22:21:20.900Z",
       "first_archived_at": "2026-07-21T22:42:34Z",
-      "last_synchronized_at": "2026-07-21T22:42:34Z",
-      "message_count": 240,
+      "last_synchronized_at": "2026-07-21T22:43:55Z",
+      "message_count": 252,
       "project_identifier": "treasurehunt",
       "redaction_categories": {
         "connection_string": 4,
@@ -1289,14 +1289,14 @@
       "redactions": 9,
       "source_export_timestamp": null,
       "source_identifier": "rollout-2026-07-21T18-21-15-019f86c4-c714-73d2-a58a-d1ef61ab1729.jsonl",
-      "source_sha256": "8f639d1f61edb766d45ba6cd5c3583300234abe8b1b0240e98a0b02aacb11a4c",
+      "source_sha256": "d068d092462732d40f22280eb5b923c4a677615279f211cf1eaf5d8a0367bf96",
       "source_type": "codex_session",
       "status": "active",
       "title": "",
-      "updated_at": "2026-07-21T22:42:44.515Z"
+      "updated_at": "2026-07-21T22:44:02.342Z"
     }
   ],
-  "last_successful_synchronization_at": "2026-07-21T22:42:34Z",
+  "last_successful_synchronization_at": "2026-07-21T22:43:55Z",
   "migration_history": [
     {
       "schema_version": "1.0",
@@ -1323,7 +1323,7 @@
   },
   "synchronizer_version": "1.1.0",
   "total_conversation_count": 63,
-  "total_message_count": 35573,
+  "total_message_count": 35598,
   "warnings": [
     "Duplicate source record reconciled for 019f80c0-4fd6-7dd2-9ac0-46e67ecbe900",
     "Duplicate source record reconciled for 019f80c0-4fd6-7dd2-9ac0-46e67ecbe900",

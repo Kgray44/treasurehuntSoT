@@ -1,5 +1,5 @@
 {
-  "added": 8,
+  "added": 0,
   "ambiguous": 1,
   "ambiguous_candidates": [
     {
@@ -22,64 +22,13 @@
       "added": [],
       "conflicted": [],
       "deleted": [],
-      "modified": [
-        {
-          "path": "Development_Docs/Community_Harbor_Data_Model.md",
-          "status": ".M"
-        },
-        {
-          "path": "Development_Docs/Phase_1_Cross_Project_Conflict_Ledger.csv",
-          "status": ".M"
-        },
-        {
-          "path": "Development_Docs/Phase_1_Cross_Project_Convergence_Design_Record.md",
-          "status": ".M"
-        },
-        {
-          "path": "Development_Docs/Phase_1_Cross_Project_Integration_Manifest.txt",
-          "status": ".M"
-        },
-        {
-          "path": "Development_Docs/Phase_1_Cross_Project_Migration_Order.md",
-          "status": ".M"
-        },
-        {
-          "path": "Development_Docs/Phase_1_Cross_Project_Test_Plan.md",
-          "status": ".M"
-        },
-        {
-          "path": "Development_Docs/Phase_1_Cross_Project_Validation_Record.md",
-          "status": ".M"
-        },
-        {
-          "path": "Development_Docs/Project_Harborlight_Phase_1_Integration_Manifest.md",
-          "status": ".M"
-        }
-      ],
+      "modified": [],
       "renamed": []
     },
     "commit_included": false,
     "directory": "Development_Docs",
-    "eligible_fingerprints": {
-      "Development_Docs/Community_Harbor_Data_Model.md": "d74270025395f906787ea56463ddc0c203a454013524b72eae034902cca12aa1",
-      "Development_Docs/Phase_1_Cross_Project_Conflict_Ledger.csv": "6dd5b5c6621ea3db42dcc9654bbf657a972153e36846519fedba8ff3a5931658",
-      "Development_Docs/Phase_1_Cross_Project_Convergence_Design_Record.md": "f0c33a14a835021df2efeee7e222b4eab04dff96c439784a4761e55024eaab04",
-      "Development_Docs/Phase_1_Cross_Project_Integration_Manifest.txt": "65183360450d0cb749a6b90955b85aa78b686a8af3efa2f689ad1f8fe8163ab7",
-      "Development_Docs/Phase_1_Cross_Project_Migration_Order.md": "6adab68d0b73a603d56d64ecaed6726fcf1853049edb2f6ca7614cb1b915a7e2",
-      "Development_Docs/Phase_1_Cross_Project_Test_Plan.md": "bb1aef2749079196d3ea4eb8c0ff95bd0bb81a2dd2e4debc545206a465d832c7",
-      "Development_Docs/Phase_1_Cross_Project_Validation_Record.md": "a68e7ecada010ec9ed7c91434ceb9671d222734ed43e52d36b42fa8f815f4745",
-      "Development_Docs/Project_Harborlight_Phase_1_Integration_Manifest.md": "014e322a28717487b7b91a5dbf6e37a112c8336d56f154c1b92388bac270ecb9"
-    },
-    "eligible_paths": [
-      "Development_Docs/Community_Harbor_Data_Model.md",
-      "Development_Docs/Phase_1_Cross_Project_Conflict_Ledger.csv",
-      "Development_Docs/Phase_1_Cross_Project_Convergence_Design_Record.md",
-      "Development_Docs/Phase_1_Cross_Project_Integration_Manifest.txt",
-      "Development_Docs/Phase_1_Cross_Project_Migration_Order.md",
-      "Development_Docs/Phase_1_Cross_Project_Test_Plan.md",
-      "Development_Docs/Phase_1_Cross_Project_Validation_Record.md",
-      "Development_Docs/Project_Harborlight_Phase_1_Integration_Manifest.md"
-    ],
+    "eligible_fingerprints": {},
+    "eligible_paths": [],
     "empty_directories": [],
     "excluded": [],
     "exists": true,
@@ -93,19 +42,12 @@
   "excluded": 147,
   "failed": 0,
   "files_changed": [
-    "Codex_Chats/chats/019f84f5-6e1d-74f2-a7ac-f8fd46a5738f--untitled.md",
-    "Codex_Chats/chats/019f853d-d7d6-7ed1-91de-7e3c9a1913f8--untitled.md",
-    "Codex_Chats/chats/019f8549-1001-7582-9ac9-65eca6fa3cc8--untitled.md",
-    "Codex_Chats/chats/019f854e-6112-7c33-ac11-a976c0c71e0c--create-sealed-hold-worktree.md",
-    "Codex_Chats/chats/019f85e9-90b3-72f0-824e-6de3748eef42--converge-phase-1-projects.md",
-    "Codex_Chats/chats/019f85ec-bda8-7bc3-bcee-2729bb97b37a--set-up-harborlight-phase-1.md",
-    "Codex_Chats/chats/019f85f2-83ec-7001-bbc8-b7f6e5523b44--integrate-lanternwake-phase-6.md",
     "Codex_Chats/chats/019f8602-14dc-7853-a32d-2e01181ad801--implement-eoat-atlas-web-foundation-phase-0-in-a-completely-isol.md",
     "Codex_Chats/chats/019f86c4-c714-73d2-a58a-d1ef61ab1729--untitled.md",
     "Codex_Chats/manifest.json",
     "Codex_Chats/reports/latest-sync-report.json"
   ],
-  "finished_at": "2026-07-21T22:43:05Z",
+  "finished_at": "2026-07-21T22:44:24Z",
   "included": 24,
   "push_attempted": false,
   "push_result": "not requested",
@@ -125,12 +67,12 @@
   "source_types_inspected": [
     "codex_session"
   ],
-  "started_at": "2026-07-21T22:42:34Z",
+  "started_at": "2026-07-21T22:43:55Z",
   "suspected_secret_categories": [],
   "synchronizer_version": "1.1.0",
   "unavailable": 0,
-  "unchanged": 15,
-  "updated": 1,
+  "unchanged": 22,
+  "updated": 2,
   "warnings": [
     "Duplicate source record reconciled for 019f80c0-4fd6-7dd2-9ac0-46e67ecbe900",
     "Duplicate source record reconciled for 019f80c0-4fd6-7dd2-9ac0-46e67ecbe900",
