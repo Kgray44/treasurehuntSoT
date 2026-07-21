@@ -48,6 +48,7 @@
     "db:migrate:mysql:wayfarer": "prisma db execute --file prisma/mysql-migrations/0006_wayfarer_unified_identity/migration.sql --schema prisma/schema.prisma",
     "db:migrate:mysql:sealed-hold": "prisma db execute --file prisma/mysql-migrations/0007_project_sealed_hold_phase1/migration.sql --schema prisma/schema.prisma",
     "db:migrate:mysql:cross-project": "prisma db execute --file prisma/mysql-migrations/0008_cross_project_ownership_constraints/migration.sql --schema prisma/schema.prisma",
+    "db:migrate:mysql:harborlight": "prisma db execute --file prisma/mysql-migrations/0009_project_harborlight_phase1/migration.sql --schema prisma/schema.prisma && prisma db execute --file prisma/mysql-migrations/0010_project_harborlight_relations_outbox/migration.sql --schema prisma/schema.prisma",
     "migrate:legacy-companion": "tsx scripts/migrate-legacy-companion.ts",
     "migrate:legacy-companion:verify": "tsx scripts/migrate-legacy-companion.ts --verify",
     "parity:legacy-shadow": "tsx scripts/verify-legacy-shadow-parity.ts"
