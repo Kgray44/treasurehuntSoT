@@ -1224,6 +1224,8 @@ model LegacyMigrationRun {
 
   @@index([migrationVersion, startedAt])
   @@index([status, startedAt])
+}
+
 model PrivateContentImport {
   id                    String                        @id @default(cuid())
   packageId             String
