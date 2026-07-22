@@ -1,7 +1,11 @@
 import { randomBytes } from "node:crypto";
 import { describe, expect, it } from "vitest";
 import { canTransitionPrivateOperation } from "@/private-content/contracts";
-import { LocalPrivateKeyProvider, UnconfiguredProductionKeyProvider } from "@/private-content/key-provider";
+import {
+  LocalPrivateKeyProvider,
+  RotatingLocalPrivateKeyProvider,
+  UnconfiguredProductionKeyProvider,
+} from "@/private-content/key-provider";
 import { decryptNormalizedPayload, encryptNormalizedPayload } from "@/private-content/payloads";
 import { SyntheticPrivateScanner, UnconfiguredPrivateScanner } from "@/private-content/scanner";
 import {
@@ -28,6 +32,17 @@ describe("Sealed Hold Phase 2 frozen contracts", () => {
     await expect(provider.unwrap({ ...wrapped, wrappedKey: `x${wrapped.wrappedKey.slice(1)}` })).rejects.toMatchObject({
       code: "PRIVATE_PACKAGE_AUTHENTICATION_FAILED",
     });
+  });
+  it("rewraps retained envelope keys and prevents premature old-key retirement", async () => {
+    const oldKey = randomBytes(32);
+    const keyring = new RotatingLocalPrivateKeyProvider({ old: oldKey, current: randomBytes(32) }, "current");
+    const oldRing = new RotatingLocalPrivateKeyProvider({ old: oldKey, current: randomBytes(32) }, "old");
+    const wrapped = await oldRing.wrap(Buffer.from("01234567890123456789012345678901"));
+    const rewrapped = await keyring.rewrap(wrapped);
+    expect(rewrapped.keyVersion).toBe("current");
+    expect(await keyring.unwrap(rewrapped)).toHaveLength(32);
+    expect(keyring.canRetire("old", ["old"])).toBe(false);
+    expect(keyring.canRetire("old", [])).toBe(true);
   });
   it("reports scanner configuration truthfully", async () => {
     expect((await new SyntheticPrivateScanner().scan()).state).toBe("CLEAN");

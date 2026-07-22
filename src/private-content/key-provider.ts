@@ -57,3 +57,47 @@ export class UnconfiguredProductionKeyProvider implements PrivateKeyProvider {
     throw privateFailure("PRIVATE_CONTENT_CONFIGURATION_INVALID");
   }
 }
+
+/**
+ * Development/test key ring used to prove envelope-key rotation semantics. The
+ * active version wraps new DEKs while retained versions may only unwrap until
+ * the caller has verified that no durable references remain.
+ */
+export class RotatingLocalPrivateKeyProvider implements PrivateKeyProvider {
+  readonly name = "local-development-keyring";
+  constructor(
+    private readonly keys: Readonly<Record<string, Buffer>>,
+    private readonly activeVersion: string,
+  ) {
+    if (!keys[activeVersion] || Object.values(keys).some((key) => key.length !== 32))
+      throw privateFailure("PRIVATE_CONTENT_CONFIGURATION_INVALID");
+  }
+  async health() {
+    return { configured: true, healthy: true, keyVersion: this.activeVersion };
+  }
+  private provider(version: string) {
+    const key = this.keys[version];
+    if (!key) throw privateFailure("PRIVATE_CONTENT_FORBIDDEN");
+    return new LocalPrivateKeyProvider(key, version);
+  }
+  async wrap(dataKey: Buffer) {
+    const wrapped = await this.provider(this.activeVersion).wrap(dataKey);
+    return { ...wrapped, provider: this.name };
+  }
+  async unwrap(wrapped: WrappedPrivateDataKey) {
+    if (wrapped.provider !== this.name) throw privateFailure("PRIVATE_CONTENT_FORBIDDEN");
+    const { provider: _provider, ...local } = wrapped;
+    return this.provider(wrapped.keyVersion).unwrap({ ...local, provider: "local-development" });
+  }
+  async rewrap(wrapped: WrappedPrivateDataKey) {
+    const dataKey = await this.unwrap(wrapped);
+    try {
+      return await this.wrap(dataKey);
+    } finally {
+      dataKey.fill(0);
+    }
+  }
+  canRetire(version: string, referencedVersions: readonly string[]) {
+    return version !== this.activeVersion && !referencedVersions.includes(version);
+  }
+}
