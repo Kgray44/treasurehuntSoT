@@ -21,3 +21,9 @@
 The live MySQL proof exposed and corrected previously unproven production SQL
 parity: parenthesized LONGTEXT JSON defaults, a valid-width LegacyEntityReference
 unique index, and the missing Wayfarer actor-account columns/foreign keys.
+
+## 2026-07-22 acceptance closure
+
+The historical blocked Chromium attempt remains valid evidence: it was blocked by Harborlight's inherited dynamic route conflict. Harborlight repaired it on `fix/harborlight-community-listing-routes`; corrected `origin/main` is `4a84b9fd2dfa439127c35b8ce865ff8b7a5742b7`, moving the public route to `/api/community/listings/public/[slug]`. This branch merged that repair at `867656befd2b2e83b531539a80b2e63b95b49352`.
+
+`node node_modules/@playwright/test/cli.js test tests/e2e/project-one-voyage-phase2.spec.ts --project=chromium --no-deps` ran on port 3100 (passing-run PID 45788) against nonce-bound `phase2-browser-isolated-r4.db` (final SHA-256 `3380cd542033f3a2c7756d00b8d5a674111d1cde5660c0386d7756cb5f77581c`). Chromium 1.56.1 passed 3/3 journeys in 83.1 seconds: startup/root and Community route 200; historical Player exchange/canonical state and refresh; revoked credential denial without a session; and Quartermaster to Captain handoff with one command. That command produced exactly one canonical event, one audit, one Quartermaster observation; all journeys recorded four safe observations and zero legacy `ProgressEvent` or `AdminAuditLog` writes. The canonical seed database family was unchanged. Focused browser gate: pass.

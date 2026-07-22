@@ -17,6 +17,17 @@ export class LegacyCompatibilityError extends Error {
 
 type MappingModel = "Chronicle" | "PublishedTaleVersion" | "TaleSession" | "PlayerProfile" | "PlaythroughMembership";
 
+const activeMembershipStatuses = new Set(["INVITED", "ACCEPTED", "READY", "ACTIVE_MEMBER", "COMPLETED_MEMBER"]);
+
+async function requireActiveMappedMembership(membershipId: string) {
+  const membership = await db.playthroughMembership.findUnique({
+    where: { id: membershipId },
+    select: { status: true },
+  });
+  if (!membership || !activeMembershipStatuses.has(membership.status))
+    throw new LegacyCompatibilityError("This invitation no longer grants access to this Voyage.", "ACCESS_DENIED");
+}
+
 async function mapping(sourceModel: string, sourceId: string, canonicalModel: MappingModel) {
   return db.legacyEntityReference.findFirst({
     where: {
@@ -90,6 +101,7 @@ async function canonicalGuestForCampaign(campaignId: string, sessionId: string, 
   if (existing) {
     const membership = await mapping("LegacyAccessCode", campaignId, "PlaythroughMembership");
     if (!membership) throw new LegacyCompatibilityError("Legacy credential mapping is incomplete.", "MISSING_MAPPING");
+    await requireActiveMappedMembership(membership.canonicalId);
     const player = await db.playerProfile.findUnique({
       where: { id: existing.canonicalId },
       select: { accountId: true },
@@ -120,6 +132,12 @@ async function canonicalGuestForCampaign(campaignId: string, sessionId: string, 
       });
       if (!membership)
         throw new LegacyCompatibilityError("Legacy credential mapping is incomplete.", "MISSING_MAPPING");
+      const mappedMembership = await tx.playthroughMembership.findUnique({
+        where: { id: membership.canonicalId },
+        select: { status: true },
+      });
+      if (!mappedMembership || !activeMembershipStatuses.has(mappedMembership.status))
+        throw new LegacyCompatibilityError("This invitation no longer grants access to this Voyage.", "ACCESS_DENIED");
       const player = await tx.playerProfile.findUnique({
         where: { id: raced.canonicalId },
         select: { accountId: true },
@@ -202,7 +220,21 @@ export async function exchangeLegacyAccessCode(campaignSlug: string, accessCode:
     throw new LegacyCompatibilityError("That invitation could not be recognized.", "INVALID_CREDENTIAL");
   const resolved = await resolveLegacyCampaign(campaignSlug);
   if (!resolved) throw new LegacyCompatibilityError("That invitation could not be recognized.", "INVALID_CREDENTIAL");
-  const guest = await canonicalGuestForCampaign(campaign.id, resolved.sessionId, campaign.accessCodeHash);
+  let guest: Awaited<ReturnType<typeof canonicalGuestForCampaign>>;
+  try {
+    guest = await canonicalGuestForCampaign(campaign.id, resolved.sessionId, campaign.accessCodeHash);
+  } catch (error) {
+    if (error instanceof LegacyCompatibilityError && error.code === "ACCESS_DENIED")
+      await recordCompatibilityObservation({
+        correlationId: `legacy-access-code:${campaign.id}`,
+        operation: "LEGACY_ACCESS_EXCHANGE",
+        routeKey: "player-access",
+        disposition: "DENIED",
+        canonicalSessionId: resolved.sessionId,
+        testTraffic: compatibilityTestTraffic(),
+      });
+    throw error;
+  }
   const csrfToken = await createPlayerIdentitySession(guest.playerId);
   await recordCompatibilityObservation({
     correlationId: `legacy-access-code:${campaign.id}`,
