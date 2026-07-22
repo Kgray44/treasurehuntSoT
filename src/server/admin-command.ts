@@ -488,7 +488,7 @@ function isPublicLogEntry(value: unknown): value is PublicSnapshot["log"][number
     hasAllowedKeys(
       value,
       ["key", "sequence", "title", "summary", "timestamp", "symbol", "importance", "section", "unseen"],
-      ["targetKey", "synchronization"],
+      ["targetKey", "synchronization", "moonPhase"],
     ) &&
     isNonEmptyString(value.key) &&
     isNonNegativeInteger(value.sequence) &&
@@ -505,6 +505,15 @@ function isPublicLogEntry(value: unknown): value is PublicSnapshot["log"][number
       value.section === "finale") &&
     typeof value.unseen === "boolean" &&
     optionalNonEmptyString(value, "targetKey") &&
+    (value.moonPhase === undefined ||
+      value.moonPhase === "new" ||
+      value.moonPhase === "waxing-crescent" ||
+      value.moonPhase === "first-quarter" ||
+      value.moonPhase === "waxing-gibbous" ||
+      value.moonPhase === "full" ||
+      value.moonPhase === "waning-gibbous" ||
+      value.moonPhase === "last-quarter" ||
+      value.moonPhase === "waning-crescent") &&
     (value.synchronization === undefined ||
       (isRecord(value.synchronization) &&
         hasExactKeys(value.synchronization, ["source", "synchronizedAt"]) &&

@@ -45,13 +45,13 @@ vi.mock("@/lib/db", () => ({
   },
 }));
 
+import { GET } from "./route";
 import {
-  GET,
   PLAYER_EVENT_DEDUPE_WINDOW_SIZE,
   PLAYER_EVENT_HEARTBEAT_MS,
   PLAYER_EVENT_HISTORY_PAGE_SIZE,
   PLAYER_EVENT_STREAM_HIGH_WATER_MARK,
-} from "./route";
+} from "./stream-config";
 
 const context = { params: Promise.resolve({ campaignSlug: "lantern-test" }) };
 const channel = "campaign:campaign-1";
