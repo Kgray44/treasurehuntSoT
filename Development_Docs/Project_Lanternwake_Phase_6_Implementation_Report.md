@@ -39,7 +39,7 @@ Focused validation in local mirror `C:/Users/kgray/AppData/Local/ForeverTreasure
 - `ShipsLog`, `VoyageChart`, and domain ships-log: 18 tests.
 - Rive runtime/contracts/consumers, Journal, Ledger, Altar, Finale, Harbor landing, Lottie, PageFlip, and audio cue contracts: 119 tests.
 
-The complete typecheck was attempted. It currently fails before these Phase 6 files due to the validation mirror's stale generated Prisma client (`PrismaClient.tallTale` is absent across existing Studio/Tall Tale files). This is recorded as an environment/runtime dependency condition; no Phase 6 type error was emitted.
+The complete typecheck was first attempted and failed before these Phase 6 files due to the validation mirror's stale generated Prisma client (`PrismaClient.tallTale` was absent across existing Studio/Tall Tale files). The mirror-only command `prisma generate --schema prisma/schema.sqlite.prisma` refreshed that generated dependency without changing authoritative source. A second `tsc --noEmit` then passed. The initial failure remains recorded as validation-environment evidence rather than being erased.
 
 ## Next closure work
 

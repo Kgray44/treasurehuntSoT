@@ -186,16 +186,18 @@ function ArtifactSlot({
         data-artifact-target-role="silhouette"
         style={{ pointerEvents: "none" }}
       >
-        {artifact.key.includes("compass") || artifact.name?.toLowerCase().includes("compass") ? (
-          <img
-            src="/illustrations/artifacts/compass-needle.svg"
-            alt=""
-            aria-hidden="true"
-            style={{ width: 72, height: 105, objectFit: "contain" }}
-          />
-        ) : (
-          <span aria-hidden="true">{artifact.state === "SILHOUETTE" ? "?" : "✦"}</span>
-        )}
+        <span className="artifact-tilt" aria-hidden="true">
+          {artifact.key.includes("compass") || artifact.name?.toLowerCase().includes("compass") ? (
+            <img
+              src="/illustrations/artifacts/compass-needle.svg"
+              alt=""
+              aria-hidden="true"
+              style={{ width: 72, height: 105, objectFit: "contain" }}
+            />
+          ) : (
+            <span aria-hidden="true">{artifact.state === "SILHOUETTE" ? "?" : "✦"}</span>
+          )}
+        </span>
       </span>
       <b>{artifact.name ?? artifact.safeName ?? "Unknown"}</b>
       <small>{artifact.category?.replaceAll("_", " ") ?? artifact.state}</small>
