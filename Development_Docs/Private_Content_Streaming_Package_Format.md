@@ -1,6 +1,12 @@
 # Private Content Streaming Package Format
 
-**Status:** v1 is implemented compatibility behavior; v2 describes the implemented framing primitive and its intended integration boundary.
+**Status:** v1 is bounded compatibility behavior. Under the 2026-07-22 owner-authorized amendment, v2 is completed in place: no non-synthetic persisted or distributed v2 package was found in repository files, history, fixtures, or documentation.
+
+## Owner-authorized complete v2 package contract
+
+The `FTH2` header is UTF-8 JSON bounded to 64 KiB and contains only opaque package/transport metadata: package ID/revision, random stream ID, UTC creation time, AES-256-GCM parameters, scrypt (`N=32768`, `r=8`, `p=1`, 32-byte key, 16-byte random salt, 64 MiB maximum), and record-format v1. The exact UTF-8 passphrase is used without trimming or normalization; it is transient and never becomes a retry key.
+
+Every data frame carries exactly one record: a 4-byte metadata length, JSON metadata, and payload. Manifest is first and unique; files are non-interleaved `file-start`, contiguous `file-chunk`, `file-end` sequences. Paths, IDs, byte counts, checksums, manifest declarations, and terminal receipt are validated. Frame AAD deterministically binds the exact-header SHA-256, package ID, stream ID, sequence, kind, cipher bytes, and plain bytes. The terminal authenticates the header/data chain plus record/file/plaintext/manifest counts; trailing bytes fail.
 
 ## Version selection
 
