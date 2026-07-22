@@ -1,5 +1,13 @@
 # Local development
 
+## Wayfarer profile configuration
+
+Set `PROFILE_MEDIA_ROOT` to a local non-repository directory when exercising
+avatar/banner uploads. `WAYFARER_PROVIDER_TOKEN_KEY` is required to complete a
+provider link. Real Discord linking additionally requires `DISCORD_CLIENT_ID`,
+`DISCORD_CLIENT_SECRET`, and `DISCORD_REDIRECT_URI`; use the simulator only in
+non-production validation.
+
 ## One-command Windows startup
 
 Double-click `Start Forever Treasure Dev.cmd` or run `npm run dev:full`. The idempotent launcher:

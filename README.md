@@ -1,5 +1,13 @@
 # The Forever Treasure Companion
 
+## Project Wayfarer Phase 2
+
+The private **Chronicle Passport** is available at `/passport`; a safe public
+**Profile** is resolved by optional canonical handle at `/profile/[handle]`.
+Profile identity, providers, typed preferences, and privacy are Wayfarer-owned.
+Discord OAuth requires deployment configuration; the local Discord simulator is
+test-only and is never external-provider proof.
+
 Production-oriented foundation and fully automated local demo for a private nautical-fantasy date-night Chronicle. All committed story material is generic development seed content; no final surprise content belongs in this public repository.
 
 ## Current phase

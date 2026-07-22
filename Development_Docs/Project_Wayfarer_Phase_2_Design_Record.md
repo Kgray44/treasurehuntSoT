@@ -16,26 +16,26 @@ Status: contract freeze; implementation follows this record.
 
 ## Frozen cross-project contracts
 
-| Concern | Canonical owner | Phase 2 rule |
-| --- | --- | --- |
-| Account, visible person identity, preferences, providers, privacy | Wayfarer | `UserAccount` remains private identity root; its one `PlayerProfile` is the canonical person-facing profile. |
-| Chronicle and live runtime state | One Voyage | Phase 2 reads only safe summaries. It creates no parallel Chronicle, session, event, snapshot, or personal-history writer. |
-| Private packages, scanning, quarantine, and encrypted private assets | Sealed Hold | Profile media uses a separate restricted profile-media store and is never represented as a private Chronicle package. |
-| Community listings, releases, installation, updates, dependencies, lineage | Harborlight | `CommunityProfile` remains Community-specific. Its copied display fields are compatibility snapshots, and new public identity projection reads Wayfarer. |
-| Scene registration, reduced-motion resolution, and presentation lifecycle | Lanternwake | Profile UI uses semantic UI state and system motion preferences; it adds no local GSAP/Rive timeline. |
-| Terminology | Universal Language | Public page is “Profile”; private hub is “Chronicle Passport”; runtime content is “Chronicle”. |
+| Concern                                                                    | Canonical owner    | Phase 2 rule                                                                                                                                             |
+| -------------------------------------------------------------------------- | ------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Account, visible person identity, preferences, providers, privacy          | Wayfarer           | `UserAccount` remains private identity root; its one `PlayerProfile` is the canonical person-facing profile.                                             |
+| Chronicle and live runtime state                                           | One Voyage         | Phase 2 reads only safe summaries. It creates no parallel Chronicle, session, event, snapshot, or personal-history writer.                               |
+| Private packages, scanning, quarantine, and encrypted private assets       | Sealed Hold        | Profile media uses a separate restricted profile-media store and is never represented as a private Chronicle package.                                    |
+| Community listings, releases, installation, updates, dependencies, lineage | Harborlight        | `CommunityProfile` remains Community-specific. Its copied display fields are compatibility snapshots, and new public identity projection reads Wayfarer. |
+| Scene registration, reduced-motion resolution, and presentation lifecycle  | Lanternwake        | Profile UI uses semantic UI state and system motion preferences; it adds no local GSAP/Rive timeline.                                                    |
+| Terminology                                                                | Universal Language | Public page is “Profile”; private hub is “Chronicle Passport”; runtime content is “Chronicle”.                                                           |
 
 ## Data and migration reservation
 
 Wayfarer reserves only the assignment supplied for this phase:
 
-| Store | Identifier | Purpose |
-| --- | --- | --- |
-| SQLite/Prisma | `20260722120000_wayfarer_profile_identity` | Canonical profile fields, profile media, handles, providers, typed preferences, and privacy rules. |
-| SQLite/Prisma | `20260722121000_wayfarer_profile_reconciliation` | Additive legacy preference/profile reconciliation and Harborlight compatibility snapshots. |
-| MySQL | `0013_wayfarer_profile_identity` | MySQL equivalent of the Phase 2 identity additions. |
-| MySQL | `0014_wayfarer_profile_reconciliation` | MySQL equivalent reconciliation/index additions. |
-| MySQL | `0015_wayfarer_profile_privacy_constraints` | MySQL visibility and provider/profile constraint indexes. |
+| Store         | Identifier                                       | Purpose                                                                                            |
+| ------------- | ------------------------------------------------ | -------------------------------------------------------------------------------------------------- |
+| SQLite/Prisma | `20260722120000_wayfarer_profile_identity`       | Canonical profile fields, profile media, handles, providers, typed preferences, and privacy rules. |
+| SQLite/Prisma | `20260722121000_wayfarer_profile_reconciliation` | Additive legacy preference/profile reconciliation and Harborlight compatibility snapshots.         |
+| MySQL         | `0013_wayfarer_profile_identity`                 | MySQL equivalent of the Phase 2 identity additions.                                                |
+| MySQL         | `0014_wayfarer_profile_reconciliation`           | MySQL equivalent reconciliation/index additions.                                                   |
+| MySQL         | `0015_wayfarer_profile_privacy_constraints`      | MySQL visibility and provider/profile constraint indexes.                                          |
 
 The fetched active Phase 2 branches for One Voyage, Sealed Hold, and
 Harborlight still resolve to the shared baseline and do not consume these

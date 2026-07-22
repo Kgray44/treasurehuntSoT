@@ -1,5 +1,14 @@
 # Architecture
 
+## Wayfarer profile boundary
+
+`UserAccount` is the private person root and `PlayerProfile` is its canonical
+person-facing projection. Public profile data is shaped by the Wayfarer server
+projection service; Harborlight Community records retain Community-specific
+status and releases but must not become a second writer for visible identity.
+Chronicle runtime facts stay with One Voyage, private package/assets stay with
+Sealed Hold, and animation policy stays with Lanternwake.
+
 ## Lanternwake Phase 3 presentation boundary
 
 Phase 3 adds one persistent `ProgressionSceneHost` to the compatibility companion at `/tale/[campaignSlug]`. It remains mounted while the six sections (`journal`, `chart`, `treasures`, `quests`, `log`, and `finale`) change and is the sole global presentation authority for the exact 17 Player progression-event types. The host owns readable ceremony, notification controls, focus capture/restoration, fallback, and receipt production; it does not own business state, section navigation, or event persistence. This is not a claim that the compatibility host exists on the canonical durable journal route at `/player/playthroughs/[playthroughId]/journal`.
