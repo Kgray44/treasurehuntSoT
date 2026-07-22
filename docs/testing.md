@@ -1,5 +1,11 @@
 # Testing
 
+## Project One Voyage Phase 2
+
+Run `npm run rehearse:one-voyage:mysql` for the disposable MySQL 8 ordered
+migration, migration/rerun/parity, canonical compatibility, DDL denial,
+backup/restore, and restart rehearsal. It is not a production deployment test.
+
 Run the complete release gate with:
 
 ```powershell

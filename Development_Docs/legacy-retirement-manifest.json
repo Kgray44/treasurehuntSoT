@@ -31,7 +31,7 @@
     {
       "component": "PlayerAccess",
       "status": "migration-source",
-      "canonicalReplacement": "PlayerProfile, PlayerIdentitySession, PlaythroughMembership, Invitation",
+      "canonicalReplacement": "UserAccount, AccountSession, PlayerProfile, PlaythroughMembership, Invitation",
       "productionCallersRemaining": "legacy credential is accepted only for canonical identity/membership exchange",
       "canWrite": false,
       "removalGate": "all active credentials migrated, revocation proof, and one compatibility release"
@@ -51,6 +51,14 @@
       "productionCallersRemaining": "historical bookmark redirects to Captain; API compatibility delegates to canonical services",
       "canWrite": false,
       "removalGate": "bookmark, command, and authorization compatibility release plus one"
+    },
+    {
+      "component": "PlayerIdentitySession and GameMasterSession",
+      "status": "read-only-session-rotation-source",
+      "canonicalReplacement": "AccountSession",
+      "productionCallersRemaining": "existing browser-session rotation only; no new legacy session creation",
+      "canWrite": false,
+      "removalGate": "all surviving sessions have expired or rotated and one compatibility release has completed"
     }
   ]
 }

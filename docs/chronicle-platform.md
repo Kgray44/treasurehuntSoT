@@ -2,6 +2,11 @@
 
 ## Product surfaces
 
+Phase 2: `UserAccount` is the private identity root and `AccountSession` is
+the only new authentication session. Legacy Player/Game Master session rows are
+read-only rotation compatibility sources; retained adapters observe use safely
+without recording credentials or payloads.
+
 `/` is a cinematic three-role gateway. Choosing Player, Captain, or Creator selects a workspace; it never grants a permission. Server sessions, capabilities, scoped assignments, playthrough membership, and exact resource ownership remain authoritative.
 
 - `/player/sign-in`, `/player/invitation`, and `/player/library` provide durable Player identity, code/link acceptance, and card-based browsing. `/player/playthroughs/[id]` owns invitation/lobby/waiting state. `/player/playthroughs/[id]/journal` is the canonical active, resumed, paused, and completed story surface; the former archive route redirects there.

@@ -22,6 +22,11 @@ Player presentation history is allowlist-projected and bounded. Chapter-release 
 
 ## Unified Chronicle Platform boundary
 
+`UserAccount` and `AccountSession` are the canonical identity/session root.
+Compatibility observation is durable but privacy-safe (no secret, payload,
+email, display name, or private asset key) and cannot block or retry a
+canonical action.
+
 Gateway role choice is presentation only. Player APIs require a live `PlayerIdentitySession` plus resource membership; Captain and Creator APIs require the existing server-side staff session plus the matching capability and, where applicable, Captain assignment or Creator ownership. New cookie-authenticated mutations use per-session CSRF. Runtime actions made through durable Player identity require Player CSRF; the legacy opaque session-cookie flow remains isolated for compatibility. SSE and asset routes enforce resource authorization independently and recheck Player membership during long-lived streams.
 
 Invitation links and codes are high-entropy or human-friendly credentials whose clear values are returned only at creation/replacement. The database stores SHA-256 token/code hashes, bcrypt PIN hashes, safe prefixes, redemption/expiry state, and lifecycle events. Pending invitation and Player identity cookies are HttpOnly, SameSite, Secure in production, time-bounded, and rotated or cleared after acceptance/logout. Code lookup, login, and interactive routes are rate-limited. Revoked, replaced, declined, and expired links fail before Player-safe invitation content renders.

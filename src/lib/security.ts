@@ -57,20 +57,9 @@ export async function createGmSession(userId: string) {
     });
     return session.csrfToken;
   }
-  const id = makeToken();
-  const csrfToken = makeToken(24);
-  await db.gameMasterSession.create({
-    data: { id: hashToken(id), userId, csrfToken, expiresAt: new Date(Date.now() + sessionAge) },
-  });
-  const jar = await cookies();
-  jar.set(GM_COOKIE, id, {
-    httpOnly: true,
-    sameSite: "strict",
-    secure: process.env.NODE_ENV === "production",
-    path: "/",
-    maxAge: sessionAge / 1000,
-  });
-  return csrfToken;
+  // New staff authentication is account-rooted. A historical GameMasterSession
+  // may be read long enough to rotate a browser, but cannot be created again.
+  throw new Error("This historical staff identity has not been reconciled to a canonical account.");
 }
 
 export async function requireGm() {

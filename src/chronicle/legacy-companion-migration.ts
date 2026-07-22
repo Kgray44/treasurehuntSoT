@@ -661,12 +661,23 @@ async function migrateCampaign(campaign: LegacyCampaign, report: LegacyMigration
             fullscreenPreferred: access.audio.fullscreenPreferred,
           }
         : {};
+      const account = await tx.userAccount.create({ data: { status: "GUEST_UNCLAIMED" } });
       const player = await tx.playerProfile.create({
         data: {
+          accountId: account.id,
           displayName: access.label ?? "Legacy Player",
           preferences: JSON.stringify({ legacyCompanion: preference }),
           createdAt: access.createdAt,
           lastSeenAt: access.lastSeenAt,
+        },
+      });
+      await tx.accountRoleAssignment.create({ data: { accountId: account.id, role: "PLAYER" } });
+      await tx.securityEvent.create({
+        data: {
+          accountId: account.id,
+          eventType: "LEGACY_PLAYER_ACCESS_MIGRATED",
+          correlationId: `legacy-player-access:${access.id}`,
+          metadata: JSON.stringify({ sourceDomain: LEGACY_COMPANION_DOMAIN }),
         },
       });
       await createReference(tx, report, "PlayerAccess", access.id, "PlayerProfile", player.id, checksum(access));

@@ -6,16 +6,16 @@ remove legacy persistence or to begin Phase 3.
 
 ## Preflight
 
-| Item | Recorded value |
-| --- | --- |
-| Repository | `Kgray44/treasurehuntSoT` |
-| Canonical checkout | `\\gwplastics.com\VT\Users\kgray\My Documents\treasurehunt\forever-treasure-companion` |
-| Phase 2 worktree | `C:\Users\kgray\AppData\Local\ForeverTreasureCompanion\project-one-voyage-phase2-close-the-old-passage` |
-| Branch | `codex/project-one-voyage-phase2-close-the-old-passage` |
-| Starting `origin/main` | `f4bfc4b4f3585bc8f60ce4d94375dc77a7092da2` |
-| Upstream at creation | `origin/main` |
-| Initial Phase 2 worktree status | clean |
-| Existing concurrent Phase 2 branch observed | Harborlight Phase 2; no One Voyage Phase 2 branch existed |
+| Item                                        | Recorded value                                                                                          |
+| ------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| Repository                                  | `Kgray44/treasurehuntSoT`                                                                               |
+| Canonical checkout                          | `\\gwplastics.com\VT\Users\kgray\My Documents\treasurehunt\forever-treasure-companion`                  |
+| Phase 2 worktree                            | `C:\Users\kgray\AppData\Local\ForeverTreasureCompanion\project-one-voyage-phase2-close-the-old-passage` |
+| Branch                                      | `codex/project-one-voyage-phase2-close-the-old-passage`                                                 |
+| Starting `origin/main`                      | `f4bfc4b4f3585bc8f60ce4d94375dc77a7092da2`                                                              |
+| Upstream at creation                        | `origin/main`                                                                                           |
+| Initial Phase 2 worktree status             | clean                                                                                                   |
+| Existing concurrent Phase 2 branch observed | Harborlight Phase 2; no One Voyage Phase 2 branch existed                                               |
 
 The canonical checkout is on an unrelated owner worktree with untracked
 governing files and is not modified by this phase. The worktree inventory also

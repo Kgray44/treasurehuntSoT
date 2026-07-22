@@ -1,5 +1,11 @@
 # Local development
 
+## Phase 2 MySQL proof
+
+The normal local application remains SQLite. The Phase 2 MySQL rehearsal owns
+an isolated local MySQL data directory and never targets the development or
+production database.
+
 ## One-command Windows startup
 
 Double-click `Start Forever Treasure Dev.cmd` or run `npm run dev:full`. The idempotent launcher:

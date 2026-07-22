@@ -98,6 +98,10 @@ Full setup, validation stages, output locations, clean-clone instructions, and t
 
 ## Important limitations
 
+Project One Voyage Phase 2 passed an isolated MySQL 8.0.46 cutover, canonical
+compatibility, backup/restore, and restart rehearsal. Legacy persistence is
+retained pending its one-release compatibility-observation gate.
+
 The full story, final Rive artwork/audio, horizontal scale-out for SSE, and production deployment are later work. The current sound is restrained and procedural. The sole third-party visual sample is MIT-licensed, local, documented, and development-only; production uses original SVG/CSS fallbacks. The repository is public, so only generic development content is permitted. See [known limitations](docs/known-limitations.md).
 
 ## Next steps

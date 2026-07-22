@@ -4,6 +4,9 @@ import { db } from "@/lib/db";
 import { publishTaleSessionEvent } from "@/lib/events";
 import { parseJsonArray, parseJsonObject, parsePublishedSnapshot, type JsonObject } from "@/chronicle/types";
 import { resolveLegacyCampaign } from "@/compatibility/legacy-companion";
+import { canonicalWritesEnabled } from "@/compatibility/project-one-voyage-stage";
+import { compatibilityTestTraffic, recordCompatibilityObservation } from "@/compatibility/compatibility-observation";
+import { canonicalAccountForLegacyActor } from "@/wayfarer/accounts";
 
 export class LegacyQuartermasterConflict extends Error {
   constructor(
@@ -118,9 +121,15 @@ export async function executeLegacyQuartermasterCommand(
   userId: string,
   correlationId: string = randomUUID(),
 ) {
+  if (!canonicalWritesEnabled())
+    throw new LegacyQuartermasterConflict(
+      "Canonical compatibility writes are not enabled for this rollout stage.",
+      "NOT_FOUND",
+    );
   const resolved = await resolveLegacyCampaign(input.campaignSlug);
   if (!resolved) throw new LegacyQuartermasterConflict("This Voyage is unavailable.", "NOT_FOUND");
   const key = `legacy-quartermaster:${resolved.sessionId}:${input.idempotencyKey}`;
+  const canonicalAccountId = await canonicalAccountForLegacyActor(userId);
   const event = await db.$transaction(async (tx) => {
     const prior = await tx.taleSessionEvent.findUnique({ where: { idempotencyKey: key } });
     if (prior) return prior;
@@ -265,6 +274,7 @@ export async function executeLegacyQuartermasterCommand(
       data: {
         actorType: "CAPTAIN",
         actorId: userId,
+        actorAccountId: canonicalAccountId,
         action: `LEGACY_QUARTERMASTER_${input.command}`,
         resourceType: "CHRONICLE_SESSION",
         resourceId: session.id,
@@ -279,6 +289,15 @@ export async function executeLegacyQuartermasterCommand(
     eventType: event.eventType,
     sequence: event.sequence,
     createdAt: event.createdAt.toISOString(),
+  });
+  await recordCompatibilityObservation({
+    correlationId,
+    operation: "LEGACY_QUARTERMASTER_COMMAND",
+    routeKey: "quartermaster-command",
+    disposition: "ADAPTED",
+    canonicalSessionId: resolved.sessionId,
+    canonicalAccountId: canonicalAccountId ?? undefined,
+    testTraffic: compatibilityTestTraffic(),
   });
   return receipt(event, correlationId);
 }

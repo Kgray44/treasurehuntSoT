@@ -51,7 +51,8 @@
     "db:migrate:mysql:harborlight": "prisma db execute --file prisma/mysql-migrations/0009_project_harborlight_phase1/migration.sql --schema prisma/schema.prisma && prisma db execute --file prisma/mysql-migrations/0010_project_harborlight_relations_outbox/migration.sql --schema prisma/schema.prisma",
     "migrate:legacy-companion": "tsx scripts/migrate-legacy-companion.ts",
     "migrate:legacy-companion:verify": "tsx scripts/migrate-legacy-companion.ts --verify",
-    "parity:legacy-shadow": "tsx scripts/verify-legacy-shadow-parity.ts"
+    "parity:legacy-shadow": "tsx scripts/verify-legacy-shadow-parity.ts",
+    "rehearse:one-voyage:mysql": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/rehearse-project-one-voyage-phase2-mysql.ps1"
   },
   "dependencies": {
     "@dnd-kit/core": "6.3.1",
