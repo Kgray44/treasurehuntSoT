@@ -28,10 +28,30 @@ export const privateContentAuthorization: PrivateContentAuthorization = {
           },
         }),
       );
-    if (!playthroughId || !(await authorizeTaleSessionPlayer(playthroughId))) return false;
+    const resolvedPlaythroughId = playthroughId ?? undefined;
+    const player = resolvedPlaythroughId ? await authorizeTaleSessionPlayer(resolvedPlaythroughId) : null;
+    // A legacy session token can open the legacy experience, but is not enough
+    // to disclose a sealed asset: Phase 2 delivery is profile-membership and
+    // canonical-reveal scoped.
+    if (!player || player.kind !== "identity") return false;
+    const reference = await db.privateAssetReference.findFirst({
+      where: { id: assetId, available: true, revealState: "REVEALED", playthroughId: resolvedPlaythroughId },
+      include: { session: true },
+    });
+    if (!reference?.session || !reference.taleId || reference.session.taleId !== reference.taleId) return false;
+    // A playthrough is pinned to a published version when it is eligible for
+    // Player delivery.  The reference is session-scoped, so a caller cannot
+    // substitute a different version or playthrough in the query string.
+    if (!reference.session.publishedVersionId || reference.session.status !== "ACTIVE") return false;
     return Boolean(
-      await db.privateAssetReference.findFirst({
-        where: { id: assetId, available: true, revealState: "REVEALED", playthroughId },
+      await db.revealState.findFirst({
+        where: {
+          playthroughId: resolvedPlaythroughId,
+          status: "REVEALED",
+          contentType: { in: ["PRIVATE_ASSET", "TALE_ASSET"] },
+          contentKey: { in: [reference.id, reference.logicalId] },
+        },
+        select: { id: true },
       }),
     );
   },
