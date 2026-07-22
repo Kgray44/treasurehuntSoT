@@ -324,4 +324,29 @@ describe("ShipsLog animation boundary", () => {
     expect(screen.getByRole("heading", { name: "Log day 1" })).toBeVisible();
     expect(screen.getAllByRole("button", { name: "Open chart" })).not.toHaveLength(0);
   });
+
+  it("paginates a dense single-day authoritative history instead of requiring artificial date changes", () => {
+    const denseHistory = Array.from({ length: 25 }, (_, index) => ({
+      ...log[index % log.length],
+      key: `dense-history-${index + 1}`,
+      sequence: index + 1,
+      timestamp: `2026-07-22T${String(12 + Math.floor(index / 60)).padStart(2, "0")}:${String(index % 60).padStart(2, "0")}:00.000Z`,
+      title: `Dense log entry ${index + 1}`,
+      unseen: false,
+    }));
+    const view = render(
+      <AnimationProvider>
+        <ShipsLog snapshot={{ ...snapshot, sequence: 100, log: denseHistory }} navigate={vi.fn()} />
+      </AnimationProvider>,
+    );
+
+    expect(view.container.querySelector("[data-pageflip-book='ships-log-history']")).toBeInTheDocument();
+    expect(pageFlipProbe.pages).toHaveLength(3);
+    expect(pageFlipProbe.pages.map((page) => page.id)).toEqual([
+      "log-day-dense-history-1",
+      "log-day-dense-history-13",
+      "log-day-dense-history-25",
+    ]);
+    expect(pageFlipProbe.pages.at(-1)?.label).toContain("leaf 3 of 3");
+  });
 });

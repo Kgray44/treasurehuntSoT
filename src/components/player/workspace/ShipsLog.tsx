@@ -32,6 +32,8 @@ export type ShipsLogProps = Readonly<{
 
 /** The log only becomes a physical book when its history is genuinely long. */
 const LOG_BOOK_DAY_THRESHOLD = 7;
+const LOG_BOOK_ENTRY_THRESHOLD = 24;
+const LOG_BOOK_PAGE_ENTRY_CAPACITY = 12;
 
 function useReportTarget(
   kind: ShipsLogTargetKind,
@@ -302,23 +304,34 @@ function ShipsLogContents({
     }, {});
   }, [filter, snapshot.log]);
   const logDays = useMemo(() => Object.entries(groups), [groups]);
-  const shouldUsePhysicalBook = logDays.length > LOG_BOOK_DAY_THRESHOLD;
+  const shouldUsePhysicalBook =
+    logDays.length > LOG_BOOK_DAY_THRESHOLD || snapshot.log.length > LOG_BOOK_ENTRY_THRESHOLD;
   const logPages = useMemo<FlipBookPage[]>(
     () =>
-      logDays.map(([day, entries], index) => ({
-        id: `log-day-${entries[0]?.key ?? index}`,
-        density: index === 0 ? "hard" : "soft",
-        label: `Voyage Log: ${day}`,
-        content: (
-          <LogDaySection
-            day={day}
-            entries={entries}
-            progressEntryKey={progressEventId}
-            navigate={navigate}
-            report={onTargetRegistrationChange}
-          />
-        ),
-      })),
+      logDays.flatMap(([day, entries], dayIndex) => {
+        const leaves = Array.from(
+          { length: Math.ceil(entries.length / LOG_BOOK_PAGE_ENTRY_CAPACITY) },
+          (_, leafIndex) =>
+            entries.slice(leafIndex * LOG_BOOK_PAGE_ENTRY_CAPACITY, (leafIndex + 1) * LOG_BOOK_PAGE_ENTRY_CAPACITY),
+        );
+        return leaves.map((leafEntries, leafIndex) => ({
+          id: `log-day-${leafEntries[0]?.key ?? `${dayIndex}-${leafIndex}`}`,
+          density: dayIndex === 0 && leafIndex === 0 ? "hard" : "soft",
+          label:
+            leaves.length === 1
+              ? `Voyage Log: ${day}`
+              : `Voyage Log: ${day}, leaf ${leafIndex + 1} of ${leaves.length}`,
+          content: (
+            <LogDaySection
+              day={day}
+              entries={leafEntries}
+              progressEntryKey={progressEventId}
+              navigate={navigate}
+              report={onTargetRegistrationChange}
+            />
+          ),
+        }));
+      }),
     [logDays, navigate, onTargetRegistrationChange, progressEventId],
   );
 
