@@ -114,6 +114,7 @@ model UserAccount {
   auditActions        PlatformAuditEvent[]      @relation("PlatformAuditActorAccount")
   privateImports      PrivateContentImport[]    @relation("PrivateImportOwnerAccount")
   privateAssetRefs    PrivateAssetReference[]   @relation("PrivateAssetOwnerAccount")
+  privateOperations   PrivateContentOperation[] @relation("PrivateOperationOwnerAccount")
   communityProfile    CommunityProfile?
 
   @@index([status, lastSeenAt])
@@ -1241,7 +1242,9 @@ model PrivateContentImport {
   ownerActorId          String?
   ownerAccountId        String?
   sourceTaleId          String?
-  contentJson           String
+  contentJson           String?
+  normalizedPayloadId   String?
+  materializationStatus String                        @default("NOT_STARTED")
   importedTaleIds       String                        @default("[]")
   importedAssetIds      String                        @default("[]")
   warnings              String                        @default("[]")
@@ -1251,6 +1254,7 @@ model PrivateContentImport {
   completedAt           DateTime?
   mappings              PrivateContentImportMapping[]
   assetReferences       PrivateAssetReference[]
+  operations            PrivateContentOperation[]
   ownerAccount          UserAccount?                  @relation("PrivateImportOwnerAccount", fields: [ownerAccountId], references: [id], onDelete: SetNull)
   sourceChronicle       Chronicle?                    @relation(fields: [sourceTaleId], references: [id], onDelete: SetNull)
 
@@ -1258,6 +1262,7 @@ model PrivateContentImport {
   @@index([status, createdAt])
   @@index([ownerAccountId, createdAt])
   @@index([sourceTaleId])
+  @@index([materializationStatus, createdAt])
 }
 
 model PrivateContentImportMapping {
@@ -1272,15 +1277,115 @@ model PrivateContentImportMapping {
 }
 
 model PrivateAssetObject {
+  id              String                  @id @default(cuid())
+  sha256          String                  @unique
+  byteLength      Int
+  mediaType       String
+  representation  String
+  storageKey      String                  @unique
+  storageProvider String                  @default("local")
+  scanStatus      String                  @default("PENDING")
+  quarantinedAt   DateTime?
+  finalizedAt     DateTime?
+  createdAt       DateTime                @default(now())
+  references      PrivateAssetReference[]
+  scans           PrivateContentScan[]
+}
+
+model PrivateContentOperation {
+  id                String                @id @default(cuid())
+  importId          String?
+  ownerAccountId    String?
+  kind              String
+  state             String                @default("CREATED")
+  idempotencyKey    String                @unique
+  correlationId     String
+  progress          String                @default("{}")
+  cancelRequestedAt DateTime?
+  claimedAt         DateTime?
+  claimOwner        String?
+  claimExpiresAt    DateTime?
+  failureCode       String?
+  createdAt         DateTime              @default(now())
+  updatedAt         DateTime              @updatedAt
+  import            PrivateContentImport? @relation(fields: [importId], references: [id], onDelete: SetNull)
+  ownerAccount      UserAccount?          @relation("PrivateOperationOwnerAccount", fields: [ownerAccountId], references: [id], onDelete: SetNull)
+  upload            PrivateContentUpload?
+  jobs              PrivateContentJob[]
+
+  @@index([state, claimExpiresAt])
+  @@index([ownerAccountId, createdAt])
+}
+
+model PrivateContentUpload {
+  id              String                     @id @default(cuid())
+  operationId     String                     @unique
+  storageProvider String
+  storageKey      String                     @unique
+  expectedSha256  String?
+  receivedBytes   Int                        @default(0)
+  expectedBytes   Int?
+  expiresAt       DateTime
+  completedAt     DateTime?
+  cancelledAt     DateTime?
+  createdAt       DateTime                   @default(now())
+  updatedAt       DateTime                   @updatedAt
+  operation       PrivateContentOperation    @relation(fields: [operationId], references: [id], onDelete: Cascade)
+  parts           PrivateContentUploadPart[]
+
+  @@index([expiresAt, completedAt])
+}
+
+model PrivateContentUploadPart {
+  id          String               @id @default(cuid())
+  uploadId    String
+  partNumber  Int
+  sha256      String
+  byteLength  Int
+  providerTag String?
+  createdAt   DateTime             @default(now())
+  upload      PrivateContentUpload @relation(fields: [uploadId], references: [id], onDelete: Cascade)
+
+  @@unique([uploadId, partNumber])
+}
+
+model PrivateContentJob {
   id             String                  @id @default(cuid())
-  sha256         String                  @unique
-  byteLength     Int
-  mediaType      String
-  representation String
-  storageKey     String                  @unique
-  finalizedAt    DateTime?
+  operationId    String
+  type           String
+  payloadVersion Int                     @default(1)
+  payload        String
+  idempotencyKey String                  @unique
+  state          String                  @default("PENDING")
+  availableAt    DateTime                @default(now())
+  claimedAt      DateTime?
+  claimOwner     String?
+  claimExpiresAt DateTime?
+  attemptCount   Int                     @default(0)
+  maxAttempts    Int                     @default(5)
+  completedAt    DateTime?
+  cancelledAt    DateTime?
+  failureCode    String?
+  progress       String                  @default("{}")
+  correlationId  String
   createdAt      DateTime                @default(now())
-  references     PrivateAssetReference[]
+  operation      PrivateContentOperation @relation(fields: [operationId], references: [id], onDelete: Cascade)
+
+  @@index([state, availableAt, claimExpiresAt])
+}
+
+model PrivateContentScan {
+  id        String             @id @default(cuid())
+  objectId  String
+  provider  String
+  state     String
+  safeCode  String?
+  scannedAt DateTime?
+  createdAt DateTime           @default(now())
+  object    PrivateAssetObject @relation(fields: [objectId], references: [id], onDelete: Cascade)
+
+  @@index([objectId, createdAt])
+  @@index([state, createdAt])
 }
 
 model PrivateAssetReference {
