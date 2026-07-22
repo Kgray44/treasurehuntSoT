@@ -8,6 +8,7 @@ import type { SceneHostHandle, SceneTargetHandle } from "@/animation/hosts/scene
 import { useMotionMode } from "@/animation/motion/useMotionMode";
 import { consumeOneShot, hasConsumedOneShot, platformOneShotKey } from "@/animation/platform/one-shot";
 import { platformMotionEasing, resolvePlatformMotionToken } from "@/animation/platform/motion-tokens";
+import { PageFlipBook, type FlipBookPage } from "@/components/animation/PageFlipBook";
 import type { ClientProgressEvent, PublicLogEntry, PublicSnapshot } from "@/domain/story";
 import type { CompanionView } from "./types";
 
@@ -28,6 +29,11 @@ export type ShipsLogProps = Readonly<{
   /** Gives the progression-host integrator the source host and exact target handle needed for a bounded export. */
   onTargetRegistrationChange?: (registration: ShipsLogTargetRegistration) => void;
 }>;
+
+/** The log only becomes a physical book when its history is genuinely long. */
+const LOG_BOOK_DAY_THRESHOLD = 7;
+const LOG_BOOK_ENTRY_THRESHOLD = 24;
+const LOG_BOOK_PAGE_ENTRY_CAPACITY = 12;
 
 function useReportTarget(
   kind: ShipsLogTargetKind,
@@ -214,7 +220,9 @@ function LogDaySection({
   progressEntryKey: ShipsLogProps["progressEventId"];
   report: ShipsLogProps["onTargetRegistrationChange"];
 }>) {
+  const { mode } = useMotionMode();
   const firstTimestamp = entries[0]?.timestamp ?? "1970-01-01T00:00:00.000Z";
+  const moonPhase = entries[0]?.moonPhase ?? "new";
   const dayKey = useMemo(() => {
     const date = new Date(firstTimestamp);
     return [date.getFullYear(), date.getMonth() + 1, date.getDate()]
@@ -248,9 +256,18 @@ function LogDaySection({
       data-log-day-key={dayKey}
     >
       <header>
-        <span className="moon-phase" aria-hidden="true">
+        <motion.span
+          key={moonPhase}
+          className="moon-phase"
+          aria-label={`Moon phase: ${moonPhase.replaceAll("-", " ")}`}
+          initial={mode === "reduced" ? false : { opacity: 0, scale: 0.92 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={mode === "reduced" ? undefined : { opacity: 0, scale: 0.96 }}
+          transition={{ duration: mode === "reduced" ? 0 : 0.16 }}
+          data-moon-phase={moonPhase}
+        >
           ◐
-        </span>
+        </motion.span>
         <h3>{day}</h3>
         <small>Weather: calm ink</small>
       </header>
@@ -277,6 +294,7 @@ function ShipsLogContents({
   onTargetRegistrationChange,
 }: ShipsLogProps & Readonly<{ headingId: string }>) {
   const [filter, setFilter] = useState("all");
+  const { mode } = useMotionMode();
   const groups = useMemo(() => {
     const entries = filter === "all" ? snapshot.log : snapshot.log.filter((entry) => entry.section === filter);
     return entries.reduce<Record<string, typeof entries>>((result, entry) => {
@@ -285,6 +303,37 @@ function ShipsLogContents({
       return result;
     }, {});
   }, [filter, snapshot.log]);
+  const logDays = useMemo(() => Object.entries(groups), [groups]);
+  const shouldUsePhysicalBook =
+    logDays.length > LOG_BOOK_DAY_THRESHOLD || snapshot.log.length > LOG_BOOK_ENTRY_THRESHOLD;
+  const logPages = useMemo<FlipBookPage[]>(
+    () =>
+      logDays.flatMap(([day, entries], dayIndex) => {
+        const leaves = Array.from(
+          { length: Math.ceil(entries.length / LOG_BOOK_PAGE_ENTRY_CAPACITY) },
+          (_, leafIndex) =>
+            entries.slice(leafIndex * LOG_BOOK_PAGE_ENTRY_CAPACITY, (leafIndex + 1) * LOG_BOOK_PAGE_ENTRY_CAPACITY),
+        );
+        return leaves.map((leafEntries, leafIndex) => ({
+          id: `log-day-${leafEntries[0]?.key ?? `${dayIndex}-${leafIndex}`}`,
+          density: dayIndex === 0 && leafIndex === 0 ? "hard" : "soft",
+          label:
+            leaves.length === 1
+              ? `Voyage Log: ${day}`
+              : `Voyage Log: ${day}, leaf ${leafIndex + 1} of ${leaves.length}`,
+          content: (
+            <LogDaySection
+              day={day}
+              entries={leafEntries}
+              progressEntryKey={progressEventId}
+              navigate={navigate}
+              report={onTargetRegistrationChange}
+            />
+          ),
+        }));
+      }),
+    [logDays, navigate, onTargetRegistrationChange, progressEventId],
+  );
 
   return (
     <>
@@ -306,20 +355,30 @@ function ShipsLogContents({
           <option value="finale">Finale</option>
         </select>
       </label>
-      {Object.keys(groups).length ? (
+      {logDays.length ? (
         <div className="captains-logbook">
-          <AnimatePresence initial={false} mode="popLayout">
-            {Object.entries(groups).map(([day, entries]) => (
-              <LogDaySection
-                key={day}
-                day={day}
-                entries={entries}
-                progressEntryKey={progressEventId}
-                navigate={navigate}
-                report={onTargetRegistrationChange}
-              />
-            ))}
-          </AnimatePresence>
+          {shouldUsePhysicalBook ? (
+            <PageFlipBook
+              pages={logPages}
+              mode={mode}
+              bookId="ships-log-history"
+              revision={`${snapshot.sequence}:${filter}:${logPages.map((page) => page.id).join("|")}`}
+              className="ships-log-page-book"
+            />
+          ) : (
+            <AnimatePresence initial={false} mode="popLayout">
+              {logDays.map(([day, entries]) => (
+                <LogDaySection
+                  key={day}
+                  day={day}
+                  entries={entries}
+                  progressEntryKey={progressEventId}
+                  navigate={navigate}
+                  report={onTargetRegistrationChange}
+                />
+              ))}
+            </AnimatePresence>
+          )}
         </div>
       ) : (
         <div className="physical-empty">

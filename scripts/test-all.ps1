@@ -553,6 +553,15 @@ try {
     Invoke-ValidationStep -Name "Running unit tests" -Arguments @("node_modules/vitest/vitest.mjs", "run")
     Invoke-ValidationStep -Name "Validating animation assets" -Arguments @("node_modules/tsx/dist/cli.mjs", "scripts/validate-animation-assets.ts")
     Invoke-ValidationStep -Name "Verifying seeded database" -Arguments @("node_modules/tsx/dist/cli.mjs", "scripts/verify-database.ts")
+    Invoke-ValidationStep -Name "Migrating legacy Companion compatibility projection" -Arguments @(
+        "node_modules/tsx/dist/cli.mjs",
+        "scripts/migrate-legacy-companion.ts"
+    )
+    Invoke-ValidationStep -Name "Verifying legacy Companion compatibility projection" -Arguments @(
+        "node_modules/tsx/dist/cli.mjs",
+        "scripts/migrate-legacy-companion.ts",
+        "--verify"
+    )
     Invoke-ValidationStep -Name "Preparing legacy playthrough backfill proof" -Arguments @("node_modules/tsx/dist/cli.mjs", "scripts/verify-platform-backfill.ts", "--prepare")
     Invoke-ValidationStep -Name "Running additive platform backfill" -Arguments @("node_modules/tsx/dist/cli.mjs", "prisma/seed.ts", "--ensure")
     Invoke-ValidationStep -Name "Verifying additive platform backfill" -Arguments @("node_modules/tsx/dist/cli.mjs", "scripts/verify-platform-backfill.ts", "--verify")

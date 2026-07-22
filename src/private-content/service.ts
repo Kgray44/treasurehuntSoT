@@ -238,6 +238,7 @@ export async function retryPrivateImportFinalization(input: { importId: string; 
   });
   if (!["FINALIZING_ASSETS", "FINALIZATION_RETRY"].includes(record.status))
     throw privateFailure("PRIVATE_PACKAGE_CONFLICT");
+  if (!record.contentJson) throw privateFailure("PRIVATE_PACKAGE_INVALID");
   const payload = JSON.parse(record.contentJson) as PrivatePayload;
   const store = new LocalPrivateAssetStore({ root: input.root, stagingRoot: input.stagingRoot });
   const staged: StagedPrivateObject[] = [];
@@ -284,6 +285,7 @@ function assertPrivateOutputPath(outputPath: string) {
 
 export async function exportPrivateImport(importId: string, passphrase: string): Promise<PrivateExportReceipt> {
   const record = await db.privateContentImport.findUniqueOrThrow({ where: { id: importId } });
+  if (!record.contentJson) throw privateFailure("PRIVATE_PACKAGE_INVALID");
   const payload = JSON.parse(record.contentJson) as PrivatePayload;
   const packageBytes = await encryptPrivatePayload(payload, passphrase);
   const verified = await decryptPrivatePackage(packageBytes, passphrase);

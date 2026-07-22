@@ -18,10 +18,13 @@ const pageFlipProbe = vi.hoisted(() => ({
 vi.mock("@/components/animation/PageFlipBook", async () => {
   const { forwardRef, useEffect } = await import("react");
   return {
-    PageFlipBook: forwardRef(function PageFlipBookMock(props: {
-      pages: Array<{ id: string; content: ReactNode }>;
-      onPageTargetsChange?: (authority: PageFlipPageTargetExportAuthority | null) => void;
-    }) {
+    PageFlipBook: forwardRef(function PageFlipBookMock(
+      props: {
+        pages: Array<{ id: string; content: ReactNode }>;
+        onPageTargetsChange?: (authority: PageFlipPageTargetExportAuthority | null) => void;
+      },
+      _ref,
+    ) {
       pageFlipProbe.props = props;
       useEffect(() => {
         pageFlipProbe.mounts += 1;
@@ -211,5 +214,22 @@ describe("SideQuestLedger local progression targets", () => {
     await waitFor(() => expect(changes.at(-1)).toBeNull());
     view.unmount();
     expect(changes.at(-1)).toBeNull();
+  });
+
+  it("moves one Motion-owned physical divider between filter tabs without remounting the readable ledger", () => {
+    render(<SideQuestLedger snapshot={snapshot} mode="full" />);
+
+    expect(screen.getByRole("button", { name: "all" })).toHaveAttribute("aria-pressed", "true");
+    expect(document.querySelector('[data-ledger-filter-divider="all"]')).toBeInTheDocument();
+    expect(pageFlipProbe.mounts).toBe(1);
+
+    fireEvent.click(screen.getByRole("button", { name: "complete" }));
+
+    expect(screen.getByRole("button", { name: "complete" })).toHaveAttribute("aria-pressed", "true");
+    expect(screen.getByRole("button", { name: "all" })).toHaveAttribute("aria-pressed", "false");
+    expect(document.querySelector('[data-ledger-filter-divider="complete"]')).toBeInTheDocument();
+    expect(document.querySelector('[data-ledger-filter-divider="all"]')).not.toBeInTheDocument();
+    expect(pageFlipProbe.mounts).toBe(1);
+    expect(pageFlipProbe.unmounts).toBe(0);
   });
 });

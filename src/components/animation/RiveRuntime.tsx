@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Alignment, Fit, Layout, StateMachineInputType, useRive } from "@rive-app/react-webgl2";
 import type { MotionMode } from "@/animation/core/animation-types";
-import type { RiveAssetContract } from "@/animation/assets/rive-contracts";
+import type { RiveAssetContract, RiveInputContract } from "@/animation/assets/rive-contracts";
 import { changeMountedMetric, recordAssetFailure } from "@/animation/core/metrics";
 import { observeDocumentVisibility, observeElementVisibility } from "@/animation/core/visibility";
 import type {
@@ -16,6 +16,13 @@ import type {
 import { AssetFallback } from "./AssetFallback";
 
 type RuntimeInput = { name: string; type: number; value?: boolean | number; fire?: () => void };
+type ViewModelValue = { value: boolean | number };
+type ViewModelTrigger = { trigger: () => void };
+type ViewModelInstance = {
+  boolean: (name: string) => ViewModelValue | null;
+  number: (name: string) => ViewModelValue | null;
+  trigger: (name: string) => ViewModelTrigger | null;
+};
 type RiveRuntimeProps = {
   asset: RiveAssetContract;
   mode: MotionMode;
@@ -52,6 +59,43 @@ function setStableInput(input: RuntimeInput, value: boolean | number) {
     return true;
   }
   return false;
+}
+
+function viewModelInput(viewModel: ViewModelInstance, contract: RiveInputContract): RuntimeInput | null {
+  if (contract.type === "trigger") {
+    const property = viewModel.trigger(contract.name);
+    return property
+      ? { name: contract.name, type: StateMachineInputType.Trigger, fire: () => property.trigger() }
+      : null;
+  }
+  const property = contract.type === "boolean" ? viewModel.boolean(contract.name) : viewModel.number(contract.name);
+  if (!property) return null;
+  return {
+    name: contract.name,
+    type: contract.type === "boolean" ? StateMachineInputType.Boolean : StateMachineInputType.Number,
+    get value() {
+      return property.value;
+    },
+    set value(value: boolean | number | undefined) {
+      if (value !== undefined) property.value = value;
+    },
+  };
+}
+
+function runtimeInputs(
+  asset: RiveAssetContract,
+  rive: {
+    stateMachineInputs: (name: string) => RuntimeInput[];
+    viewModelInstance?: ViewModelInstance | null;
+  },
+): RuntimeInput[] {
+  if (asset.runtimeInterface.kind === "state-machine-inputs") return rive.stateMachineInputs(asset.stateMachine);
+  const viewModel = rive.viewModelInstance;
+  if (!viewModel) return [];
+  return asset.inputs.flatMap((contract) => {
+    const input = viewModelInput(viewModel, contract);
+    return input ? [input] : [];
+  });
 }
 
 export function RiveRuntime(props: RiveRuntimeProps) {
@@ -100,12 +144,14 @@ function LiveRiveRuntime({
   const onFailureRef = useRef(onFailure);
   const failureReported = useRef(false);
   const loaded = useRef(false);
+  const [runtimeRevision, setRuntimeRevision] = useState(0);
   const clearLoadTimeout = useRef<() => void>(() => undefined);
   const riveOptions = useMemo(
     () => ({
       src: asset.path!,
       artboard: asset.artboard,
       stateMachines: asset.stateMachine,
+      autoBind: asset.runtimeInterface.kind === "view-model",
       autoplay: false,
       layout: new Layout({ fit: Fit.Contain, alignment: Alignment.Center }),
       useOffscreenRenderer: true,
@@ -115,6 +161,7 @@ function LiveRiveRuntime({
       onLoad: () => {
         loaded.current = true;
         clearLoadTimeout.current();
+        setRuntimeRevision((revision) => revision + 1);
         onStatusRef.current?.("ready");
       },
       onLoadError: () => {
@@ -126,7 +173,7 @@ function LiveRiveRuntime({
         onFailureRef.current();
       },
     }),
-    [asset.artboard, asset.key, asset.path, asset.stateMachine],
+    [asset.artboard, asset.key, asset.path, asset.runtimeInterface.kind, asset.stateMachine],
   );
   const { rive, RiveComponent } = useRive(riveOptions);
   const allowStateTravel =
@@ -177,7 +224,7 @@ function LiveRiveRuntime({
 
   useEffect(() => {
     if (!rive) return;
-    const inputs = rive.stateMachineInputs(asset.stateMachine) as RuntimeInput[];
+    const inputs = runtimeInputs(asset, rive as Parameters<typeof runtimeInputs>[1]);
     if (!allowStateTravel) {
       rive.pause();
       const pose = reducedMotion?.stablePose ?? {};
@@ -189,7 +236,7 @@ function LiveRiveRuntime({
       if (changed) rive.drawFrame();
     }
     onInputsRef.current?.(serializeInputs(inputs));
-  }, [allowStateTravel, asset.stateMachine, reducedMotion?.stablePose, rive]);
+  }, [allowStateTravel, asset, reducedMotion?.stablePose, rive, runtimeRevision]);
 
   useEffect(() => {
     if (!rive || !wrapper.current) return;
@@ -222,7 +269,7 @@ function LiveRiveRuntime({
   useEffect(() => {
     const latestSignals = signals ?? (signal ? [signal] : []);
     if (!rive || latestSignals.length === 0) return;
-    const inputs = rive.stateMachineInputs(asset.stateMachine) as RuntimeInput[];
+    const inputs = runtimeInputs(asset, rive as Parameters<typeof runtimeInputs>[1]);
     let reducedPoseChanged = false;
     for (const nextSignal of latestSignals) {
       const input = inputs.find((item) => item.name === nextSignal.name);
@@ -240,7 +287,7 @@ function LiveRiveRuntime({
       rive.drawFrame();
     }
     onInputsRef.current?.(serializeInputs(inputs));
-  }, [allowStateTravel, asset.stateMachine, reducedMotion?.allowedSemanticSignals, rive, signal, signals]);
+  }, [allowStateTravel, asset, reducedMotion?.allowedSemanticSignals, rive, runtimeRevision, signal, signals]);
 
   return (
     <div ref={wrapper} className={`rive-object ${className}`} data-animation-owner="rive" role="img" aria-label={label}>

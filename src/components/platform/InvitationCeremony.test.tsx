@@ -18,6 +18,15 @@ vi.mock("@/animation/motion/useMotionMode", () => ({
 vi.mock("@/animation/director/useAnimationDirector", () => ({
   useAnimationDirector: () => ({ director, snapshot: { isPlaying: false } }),
 }));
+vi.mock("@/components/animation/RiveStatefulObject", async () => {
+  const React = await import("react");
+  return {
+    RiveStatefulObject: ({ onStatus }: { onStatus?: (status: "ready") => void }) => {
+      React.useEffect(() => onStatus?.("ready"), [onStatus]);
+      return <div data-animation-owner="rive" data-rive-runtime="ready" />;
+    },
+  };
+});
 
 function TestAuthority({ children }: { children: React.ReactNode }) {
   const hosts = useMemo(() => new SceneHostRegistry(), []);
@@ -86,10 +95,7 @@ describe("InvitationCeremony", () => {
     expect(screen.getByRole("main")).toHaveAttribute("data-invitation-state", "pin-required");
     expect(document.querySelector('[data-scene-host-boundary="access"]')).toBeInTheDocument();
     expect(document.querySelectorAll('[data-runtime-boundary="gsap"]')).toHaveLength(5);
-    expect(document.querySelector('[data-rive-interface="invitation-seal"]')).toHaveAttribute(
-      "data-rive-fallback",
-      "css-svg",
-    );
+    expect(document.querySelector('[data-animation-owner="rive"]')).toHaveAttribute("data-rive-runtime", "ready");
   });
 
   it("renders a distinct terminal state from an authoritative revoked result", async () => {

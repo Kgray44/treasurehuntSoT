@@ -1,9 +1,35 @@
 import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
+import type { ReactNode } from "react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { AnimationOwnershipRegistry } from "@/animation/core/ownership";
 import { AnimationProvider } from "@/animation/director/AnimationProvider";
 import type { PublicSnapshot } from "@/domain/story";
 import { ShipsLog, type ShipsLogTargetRegistration } from "./ShipsLog";
+
+const pageFlipProbe = vi.hoisted(() => ({ pages: [] as Array<{ id: string; label: string }> }));
+
+vi.mock("@/components/animation/PageFlipBook", () => ({
+  PageFlipBook: ({
+    pages,
+    bookId,
+    revision,
+  }: {
+    pages: Array<{ id: string; label: string; content: ReactNode }>;
+    bookId: string;
+    revision: string;
+  }) => {
+    pageFlipProbe.pages = pages.map(({ id, label }) => ({ id, label }));
+    return (
+      <div data-pageflip-book={bookId} data-pageflip-revision={revision}>
+        {pages.map((page) => (
+          <section key={page.id} data-pageflip-page={page.id} aria-label={page.label}>
+            {page.content}
+          </section>
+        ))}
+      </div>
+    );
+  },
+}));
 
 const log: PublicSnapshot["log"] = [
   {
@@ -65,6 +91,7 @@ describe("ShipsLog animation boundary", () => {
     sessionStorage.clear();
     document.documentElement.removeAttribute("data-motion-level");
     vi.restoreAllMocks();
+    pageFlipProbe.pages = [];
   });
 
   it("keeps Motion ownership on the semantic row and registers separate GSAP ink and symbol children", async () => {
@@ -157,6 +184,16 @@ describe("ShipsLog animation boundary", () => {
     expect(row).toHaveAttribute("data-offline-synchronized", "true");
     expect(row).toHaveAttribute("data-synchronized-at", "2026-07-18T15:35:00.000Z");
     expect(screen.getByText(/Added after reconnect · server synchronized/)).toBeVisible();
+  });
+
+  it("renders the server-projected moon phase with an equivalent accessible label", () => {
+    render(
+      <AnimationProvider>
+        <ShipsLog snapshot={{ ...snapshot, log: [{ ...log[0], moonPhase: "full" }, log[1]] }} navigate={vi.fn()} />
+      </AnimationProvider>,
+    );
+
+    expect(screen.getByLabelText("Moon phase: full")).toHaveAttribute("data-moon-phase", "full");
   });
 
   it("selects by immutable ProgressEvent id, never by payload target or row order", () => {
@@ -264,5 +301,52 @@ describe("ShipsLog animation boundary", () => {
     );
     expect(screen.getByRole("heading", { name: "Nothing has been recorded yet" })).toBeVisible();
     expect(screen.getByText(/Released Voyage events will appear here without revealing private details/)).toBeVisible();
+  });
+
+  it("uses StPageFlip only after history becomes long, keeping chronological day pages and reduced controls readable", () => {
+    const longHistory = Array.from({ length: 8 }, (_, index) => ({
+      ...log[index % log.length],
+      key: `history-${index + 1}`,
+      sequence: index + 1,
+      timestamp: `2026-07-${String(index + 1).padStart(2, "0")}T12:00:00.000Z`,
+      title: `Log day ${index + 1}`,
+      unseen: false,
+    }));
+    const view = render(
+      <AnimationProvider>
+        <ShipsLog snapshot={{ ...snapshot, sequence: 99, log: longHistory }} navigate={vi.fn()} />
+      </AnimationProvider>,
+    );
+
+    expect(view.container.querySelector("[data-pageflip-book='ships-log-history']")).toBeInTheDocument();
+    expect(pageFlipProbe.pages).toHaveLength(8);
+    expect(pageFlipProbe.pages.map((page) => page.id)).toEqual(longHistory.map((entry) => `log-day-${entry.key}`));
+    expect(screen.getByRole("heading", { name: "Log day 1" })).toBeVisible();
+    expect(screen.getAllByRole("button", { name: "Open chart" })).not.toHaveLength(0);
+  });
+
+  it("paginates a dense single-day authoritative history instead of requiring artificial date changes", () => {
+    const denseHistory = Array.from({ length: 25 }, (_, index) => ({
+      ...log[index % log.length],
+      key: `dense-history-${index + 1}`,
+      sequence: index + 1,
+      timestamp: `2026-07-22T${String(12 + Math.floor(index / 60)).padStart(2, "0")}:${String(index % 60).padStart(2, "0")}:00.000Z`,
+      title: `Dense log entry ${index + 1}`,
+      unseen: false,
+    }));
+    const view = render(
+      <AnimationProvider>
+        <ShipsLog snapshot={{ ...snapshot, sequence: 100, log: denseHistory }} navigate={vi.fn()} />
+      </AnimationProvider>,
+    );
+
+    expect(view.container.querySelector("[data-pageflip-book='ships-log-history']")).toBeInTheDocument();
+    expect(pageFlipProbe.pages).toHaveLength(3);
+    expect(pageFlipProbe.pages.map((page) => page.id)).toEqual([
+      "log-day-dense-history-1",
+      "log-day-dense-history-13",
+      "log-day-dense-history-25",
+    ]);
+    expect(pageFlipProbe.pages.at(-1)?.label).toContain("leaf 3 of 3");
   });
 });

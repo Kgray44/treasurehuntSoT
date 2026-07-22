@@ -7,6 +7,7 @@ import { motion } from "motion/react";
 import type { PublicArtifact, PublicSnapshot } from "@/domain/story";
 import { useRuntimeOwnedSceneTarget, useSceneTargetRegistration } from "@/animation/hosts/SceneHost";
 import { useOptionalSceneHost } from "@/animation/hosts/SceneHostContext";
+import { consumeOneShot, hasConsumedOneShot, platformOneShotKey } from "@/animation/platform/one-shot";
 import type {
   ExternalSceneTargetHandle,
   ExternalTargetExportRequest,
@@ -71,6 +72,15 @@ function ArtifactSlot({
   onArtifactTargetHandlesChange?: TreasureAltarProps["onArtifactTargetHandlesChange"];
 }) {
   const known = Boolean(artifact.name) && artifact.state !== "SILHOUETTE";
+  const awardLightKey = platformOneShotKey("artifact-award-light", artifact.key, artifact.awardedAt ?? "unversioned");
+  const shouldShowAwardLight =
+    artifact.state === "AWARDED" &&
+    artifact.unseen &&
+    typeof window !== "undefined" &&
+    !hasConsumedOneShot(awardLightKey);
+  useEffect(() => {
+    if (shouldShowAwardLight) consumeOneShot(awardLightKey);
+  }, [awardLightKey, shouldShowAwardLight]);
   const layoutInput = useMemo(
     () => ({
       targetKey: `artifact:${artifact.key}:altar-layout-source`,
@@ -168,6 +178,14 @@ function ArtifactSlot({
         <i />
         <i />
       </span>
+      {shouldShowAwardLight ? (
+        <span
+          className="artifact-award-light"
+          data-artifact-award-light={artifact.key}
+          aria-hidden="true"
+          style={{ pointerEvents: "none" }}
+        />
+      ) : null}
       <span
         ref={bindSilhouette}
         className="artifact-silhouette"
@@ -178,16 +196,18 @@ function ArtifactSlot({
         data-artifact-target-role="silhouette"
         style={{ pointerEvents: "none" }}
       >
-        {artifact.key.includes("compass") || artifact.name?.toLowerCase().includes("compass") ? (
-          <img
-            src="/illustrations/artifacts/compass-needle.svg"
-            alt=""
-            aria-hidden="true"
-            style={{ width: 72, height: 105, objectFit: "contain" }}
-          />
-        ) : (
-          <span aria-hidden="true">{artifact.state === "SILHOUETTE" ? "?" : "✦"}</span>
-        )}
+        <span className="artifact-tilt" aria-hidden="true">
+          {artifact.key.includes("compass") || artifact.name?.toLowerCase().includes("compass") ? (
+            <img
+              src="/illustrations/artifacts/compass-needle.svg"
+              alt=""
+              aria-hidden="true"
+              style={{ width: 72, height: 105, objectFit: "contain" }}
+            />
+          ) : (
+            <span aria-hidden="true">{artifact.state === "SILHOUETTE" ? "?" : "✦"}</span>
+          )}
+        </span>
       </span>
       <b>{artifact.name ?? artifact.safeName ?? "Unknown"}</b>
       <small>{artifact.category?.replaceAll("_", " ") ?? artifact.state}</small>

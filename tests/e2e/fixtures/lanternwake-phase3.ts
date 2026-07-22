@@ -15,6 +15,8 @@ import type {
   ProgressionReceiptEventDetail,
   ProgressionStateEventDetail,
 } from "../../../src/components/player/PlayerExperience";
+import { resolveLegacyCampaign } from "../../../src/compatibility/legacy-companion";
+import { migrateLegacyCompanion } from "../../../src/chronicle/legacy-companion-migration";
 import { db } from "../../../src/lib/db";
 
 export { expect };
@@ -479,12 +481,15 @@ function commandInput(fixture: Phase3CaseFixture, eventType: Phase3EventType, ex
 }
 
 async function publishCommand(captain: APIRequestContext, fixture: Phase3CaseFixture, eventType: Phase3EventType) {
-  const campaign = await db.campaign.findUniqueOrThrow({
-    where: { id: fixture.campaignId },
+  const resolved = await resolveLegacyCampaign(fixture.slug);
+  if (!resolved)
+    throw new Error(`Phase 3 fixture ${fixture.slug} was not migrated into a canonical Chronicle Session.`);
+  const session = await db.taleSession.findUniqueOrThrow({
+    where: { id: resolved.sessionId },
     select: { currentSequence: true },
   });
   const response = await captain.post("/api/gm/commands", {
-    data: commandInput(fixture, eventType, campaign.currentSequence),
+    data: commandInput(fixture, eventType, session.currentSequence),
   });
   const body = (await response.json().catch(() => null)) as
     | (Phase3CommandReceipt & { error?: string; code?: string })
@@ -497,7 +502,7 @@ async function publishCommand(captain: APIRequestContext, fixture: Phase3CaseFix
     playerDelivery: "UNCONFIRMED",
     playerPresentation: "UNCONFIRMED",
     playerAcknowledgment: "UNCONFIRMED",
-    event: { type: eventType, sequence: campaign.currentSequence + 1 },
+    event: { type: eventType, sequence: session.currentSequence + 1 },
   });
   return body!;
 }
@@ -678,6 +683,11 @@ async function createCaseFixture(captain: APIRequestContext, caseId: string, eve
         ],
       });
     }
+    const migration = await migrateLegacyCompanion({ campaignSlug: slug });
+    if (migration.failures.length || migration.checksumMismatches.length)
+      throw new Error(
+        `Phase 3 fixture migration failed: ${[...migration.failures, ...migration.checksumMismatches].join("; ")}`,
+      );
     if (eventType === "STATE_REVERTED") {
       const precursor = await publishCommand(captain, fixture, "PLAYER_LOG_ENTRY_ADDED");
       await db.viewedCeremony.create({
