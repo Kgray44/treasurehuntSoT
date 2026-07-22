@@ -9,6 +9,16 @@ import {
   type FinaleMechanismTargetReady,
 } from "./FinaleChamber";
 
+vi.mock("@/components/animation/RiveStatefulObject", async () => {
+  const React = await import("react");
+  return {
+    RiveStatefulObject: ({ onStatus }: { onStatus?: (status: "ready") => void }) => {
+      React.useEffect(() => onStatus?.("ready"), [onStatus]);
+      return <div data-animation-owner="rive" data-rive-runtime="ready" />;
+    },
+  };
+});
+
 const snapshot: PublicSnapshot = {
   campaign: { slug: "test-voyage", title: "Test Voyage", status: "ACTIVE" },
   sequence: 28,
@@ -327,12 +337,12 @@ describe("FinaleChamber Phase 3 interface", () => {
       expect(fallback).toHaveAttribute("data-finale-progress", progress);
       expect(fallback).toHaveAttribute("data-finale-motion-mode", "full");
       expect(fallback).toHaveAttribute("data-finale-reduced-equivalent", "semantic-final-state");
-      expect(fallback).toHaveAttribute("data-finale-production-art-status", "blocked_external_asset");
+      expect(fallback).toHaveAttribute("data-finale-production-art-status", "runtime-ready");
       expect(fallback).toHaveAttribute("data-runtime-boundary", "css");
       expect(fallback).toHaveAttribute("aria-hidden", "true");
       expect(screen.getByText(`${description} ${current} of 8 progress steps are visible.`)).toBeVisible();
-      expect(view.container.querySelector('[data-rive-contract-availability="blocked_external_asset"]')).not.toBeNull();
-      expect(view.container.querySelector('[data-rive-runtime-status="ready"]')).toBeNull();
+      expect(view.container.querySelector('[data-rive-contract-availability="runtime-ready"]')).not.toBeNull();
+      expect(view.container.querySelector('[data-rive-runtime-status="ready"]')).not.toBeNull();
     },
   );
 
@@ -355,7 +365,7 @@ describe("FinaleChamber Phase 3 interface", () => {
     expect(screen.getByText(/The seal is parting into its unlocking pose\. 6 of 8 progress steps/)).toBeVisible();
   });
 
-  it("reports the missing Phase 5 binary as fallback while reduced mode preserves the same meaning", async () => {
+  it("reports the authored Phase 6 runtime as ready while reduced mode preserves the same meaning", async () => {
     const statuses = vi.fn();
     const view = render(
       <AnimationProvider>
@@ -368,15 +378,10 @@ describe("FinaleChamber Phase 3 interface", () => {
       </AnimationProvider>,
     );
 
-    expect(
-      screen.getByRole("img", {
-        name: /Finale mechanism, partial; 3 of 5 progress.*Original Rive artwork is not yet supplied/,
-      }),
-    ).toBeVisible();
-    await waitFor(() => expect(statuses).toHaveBeenCalledWith("fallback"));
-    expect(view.container.querySelector('[data-rive-contract-availability="blocked_external_asset"]')).toHaveAttribute(
+    await waitFor(() => expect(statuses).toHaveBeenCalledWith("ready"));
+    expect(view.container.querySelector('[data-rive-contract-availability="runtime-ready"]')).toHaveAttribute(
       "data-rive-runtime-status",
-      "fallback",
+      "ready",
     );
     expect(view.container.querySelector('[data-finale-pose="partial"]')).toHaveAttribute(
       "data-finale-presentation-state",
@@ -424,7 +429,7 @@ describe("FinaleChamber Phase 3 interface", () => {
         />
       </AnimationProvider>,
     );
-    await waitFor(() => expect(statuses).toHaveBeenLastCalledWith("fallback"));
+    await waitFor(() => expect(statuses).toHaveBeenLastCalledWith("ready"));
     const firstAdapter = view.container.querySelector(".finale-rive-contract");
     expect(firstAdapter).not.toBeNull();
 
@@ -442,11 +447,11 @@ describe("FinaleChamber Phase 3 interface", () => {
       </AnimationProvider>,
     );
 
-    await waitFor(() => expect(statuses).toHaveBeenLastCalledWith("fallback"));
+    await waitFor(() => expect(statuses).toHaveBeenLastCalledWith("ready"));
     expect(statuses.mock.calls[0]?.[0]).toBeNull();
     const replacementAdapter = view.container.querySelector(".finale-rive-contract");
     expect(replacementAdapter).not.toBe(firstAdapter);
-    expect(replacementAdapter).toHaveAttribute("data-rive-runtime-status", "fallback");
+    expect(replacementAdapter).toHaveAttribute("data-rive-runtime-status", "ready");
 
     statuses.mockClear();
     view.unmount();
@@ -467,6 +472,6 @@ describe("FinaleChamber Phase 3 interface", () => {
         />
       </AnimationProvider>,
     );
-    await waitFor(() => expect(remountStatuses).toHaveBeenLastCalledWith("fallback"));
+    await waitFor(() => expect(remountStatuses).toHaveBeenLastCalledWith("ready"));
   });
 });
