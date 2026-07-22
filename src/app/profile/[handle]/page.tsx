@@ -1,5 +1,6 @@
 import { notFound, permanentRedirect } from "next/navigation";
 import Image from "next/image";
+import { connection } from "next/server";
 import { requireWayfarerAccount } from "@/wayfarer/http";
 import { publicProfileProjection } from "@/wayfarer/profile";
 
@@ -8,6 +9,7 @@ import { publicProfileProjection } from "@/wayfarer/profile";
 export const dynamic = "force-dynamic";
 
 export default async function PublicProfilePage({ params }: { params: Promise<{ handle: string }> }) {
+  await connection();
   const { handle } = await params;
   const session = await requireWayfarerAccount();
   const profile = await publicProfileProjection(handle, {

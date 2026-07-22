@@ -51,6 +51,17 @@ export function ChroniclePassport() {
       status: string;
     }>
   >([]);
+  const [adapters, setAdapters] = useState<
+    Array<{
+      provider: string;
+      name: string;
+      status: string;
+      protocol: string;
+      available: boolean;
+      link: boolean;
+      externalApproval: string;
+    }>
+  >([]);
   const [csrf, setCsrf] = useState("");
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
@@ -65,6 +76,7 @@ export function ChroniclePassport() {
       .then(([nextProfile, providers, sessions]) => {
         setProfile(nextProfile);
         setIdentities(providers.identities);
+        setAdapters(providers.adapters);
         setCsrf(sessions.csrfToken ?? "");
       })
       .catch((cause) => setError(cause instanceof Error ? cause.message : "Unable to open Chronicle Passport."));
@@ -183,6 +195,20 @@ export function ChroniclePassport() {
       setError(cause instanceof Error ? cause.message : "Unable to link provider.");
     }
   }
+  async function startProviderLink(provider: string) {
+    setError("");
+    try {
+      const begin = await fetch("/api/passport/providers/begin", {
+        method: "POST",
+        headers,
+        body: JSON.stringify({ provider }),
+      }).then(responseJson);
+      if (!begin.authorizationUrl) throw new Error("This provider did not return an authorization address.");
+      window.location.assign(begin.authorizationUrl);
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : "Unable to begin provider linking.");
+    }
+  }
   async function providerUpdate(id: string, patch: Record<string, unknown>) {
     try {
       const next = await fetch("/api/passport/providers", {
@@ -204,6 +230,12 @@ export function ChroniclePassport() {
     );
   const rule = (section: string) =>
     profile.privacyRules.find((item) => item.section === section)?.visibility ?? "ONLY_ME";
+  const providerGroups = [
+    ["Ready when configured", "IMPLEMENTED_CONFIGURATION_REQUIRED"],
+    ["Partner access required", "PARTNER_GATED"],
+    ["Planned", "PLANNED"],
+    ["Test-only validation", "SIMULATED_TEST_ONLY"],
+  ] as const;
   return (
     <main className="chronicle-passport">
       <header>
@@ -263,7 +295,31 @@ export function ChroniclePassport() {
       </section>
       <section id="providers">
         <h2>Linked identities</h2>
-        <p>Provider visibility and sign-in permission are independent. Provider tokens never appear here.</p>
+        <p>
+          Provider visibility and sign-in permission are independent. Provider tokens never appear here. Xbox Network is
+          a separately governed partner capability, not a Microsoft-account alias.
+        </p>
+        {providerGroups.map(([label, status]) => {
+          const providers = adapters.filter((adapter) => adapter.status === status);
+          return providers.length ? (
+            <div key={status}>
+              <h3>{label}</h3>
+              <ul>
+                {providers.map((adapter) => (
+                  <li key={adapter.provider}>
+                    <strong>{adapter.name}</strong> — {adapter.protocol};{" "}
+                    {adapter.available && adapter.link ? "ready to begin" : adapter.externalApproval}
+                    {adapter.available && adapter.link && !adapter.provider.endsWith("_SIMULATOR") ? (
+                      <button type="button" onClick={() => void startProviderLink(adapter.provider)}>
+                        Link {adapter.name}
+                      </button>
+                    ) : null}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ) : null;
+        })}
         <label>
           Discord simulator code
           <input
