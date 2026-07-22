@@ -73,6 +73,7 @@ async function main() {
         planSha256: sha256(`plan:${importId}`),
         status: "FINALIZING_ASSETS",
         ownerActorId: "phase2-isolated-proof",
+        contentJson: "",
         correlationId: randomUUID(),
       },
     });
@@ -138,7 +139,7 @@ async function main() {
     });
     if (imported.status !== "COMPLETED") throw new Error("V1 service proof did not complete.");
     const importedRecord = await db.privateContentImport.findUniqueOrThrow({ where: { id: imported.importId } });
-    if (importedRecord.contentJson !== null || !importedRecord.normalizedPayloadId)
+    if ((importedRecord as { contentJson?: string | null; normalizedPayloadId?: string | null }).contentJson !== null || !(importedRecord as { normalizedPayloadId?: string | null }).normalizedPayloadId)
       throw new Error("V1 service proof retained a plaintext retry payload.");
     const taleId = JSON.parse(importedRecord.importedTaleIds)[0] as string;
     const studio = await getStudioTale(taleId);

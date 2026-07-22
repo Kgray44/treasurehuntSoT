@@ -43,12 +43,20 @@ async function* asBuffers(source: AsyncIterable<Buffer | Uint8Array>) {
   }
 }
 
-type StreamHeaderV2 = {
+export type PrivateStreamHeaderV2 = {
   format: typeof streamFormat; version: 2; streamId: string; packageId: string; packageRevision: number; createdAt: string;
   cipher: { name: "aes-256-gcm"; keyBytes: 32; nonceBytes: 12; authenticationTagBytes: 16 };
   keyDerivation: { name: "scrypt"; salt: string; N: 32768; r: 8; p: 1; keyBytes: 32; maxmemBytes: 67108864 };
   recordFormat: { name: typeof recordFormat; version: 1 };
 };
+type StreamHeaderV2 = PrivateStreamHeaderV2;
+export type PrivatePackageV2Event =
+  | { kind: "header"; header: PrivateStreamHeaderV2 }
+  | { kind: "manifest"; manifest: PrivatePayload["manifest"] }
+  | { kind: "file-start"; record: Record<string, unknown> }
+  | { kind: "file-chunk"; record: Record<string, unknown>; bytes: Uint8Array }
+  | { kind: "file-end"; record: Record<string, unknown> }
+  | { kind: "terminal"; receipt: Record<string, unknown> };
 type StreamRecord = Record<string, unknown> & { recordFormatVersion: 1; kind: "manifest" | "file-start" | "file-chunk" | "file-end" };
 
 const deriveStreamKey = (passphrase: string, salt: Buffer) => {
@@ -215,6 +223,37 @@ export async function decryptPrivatePackageV2(source: AsyncIterable<Buffer | Uin
     if (new Set(declaredPaths).size !== declaredPaths.length || declaredPaths.length !== Object.keys(entries).length || declaredPaths.some((path) => !entries[path]))
       throw privateFailure("PRIVATE_PACKAGE_INVALID");
     return { manifest: verifiedManifest, entries, checksums };
+  } finally { key.fill(0); }
+}
+
+/** Production v2 reader: emits bounded semantic events and retains no file payload. */
+export async function* readPrivatePackageV2Events(source: AsyncIterable<Buffer | Uint8Array>, passphrase: string): AsyncGenerator<PrivatePackageV2Event> {
+  const reader = new FramedReader(source);
+  if (!(await reader.readExact(4)).equals(magic)) throw privateFailure("PRIVATE_PACKAGE_UNSUPPORTED");
+  const headerBytes = await reader.readFrame(MAX_HEADER_BYTES); let header: StreamHeaderV2;
+  try { header = JSON.parse(headerBytes.toString("utf8")); } catch { throw privateFailure("PRIVATE_PACKAGE_INVALID"); }
+  const salt = Buffer.from(header?.keyDerivation?.salt ?? "", "base64url");
+  if (header?.format !== streamFormat || header.version !== 2 || header.cipher?.name !== "aes-256-gcm" || header.cipher?.keyBytes !== 32 || header.keyDerivation?.N !== 32768 || header.keyDerivation?.r !== 8 || header.keyDerivation?.p !== 1 || header.keyDerivation?.maxmemBytes !== 67108864 || header.recordFormat?.name !== recordFormat || salt.length !== 16) throw privateFailure("PRIVATE_PACKAGE_UNSUPPORTED");
+  const key = await deriveStreamKey(passphrase, salt);
+  try {
+    const headerDigest = sha256(headerBytes), chain = createHmac("sha256", key).update(headerBytes); let sequence = 0, recordCount = 0, fileCount = 0, plaintextBytes = 0;
+    let manifest: PrivatePayload["manifest"] | undefined; let open: { id: string; bytes: number; index: number; expected: number; digest: string; hash: ReturnType<typeof createHash> } | undefined;
+    yield { kind: "header", header };
+    while (true) {
+      const rawHeader = await reader.readFrame(MAX_HEADER_BYTES), cipherText = await reader.readFrame(MAX_FRAME_BYTES + 16); let frame: FrameHeader;
+      try { frame = JSON.parse(rawHeader.toString("utf8")); } catch { throw privateFailure("PRIVATE_PACKAGE_INVALID"); }
+      if (frame.sequence !== sequence++ || frame.cipherBytes !== cipherText.length || frame.plainBytes < 0 || frame.plainBytes > MAX_FRAME_BYTES || sha256(cipherText) !== frame.sha256) throw privateFailure("PRIVATE_PACKAGE_AUTHENTICATION_FAILED");
+      const nonce = Buffer.from(frame.nonce, "base64url"); if (nonce.length !== 12) throw privateFailure("PRIVATE_PACKAGE_INVALID"); let plain: Buffer;
+      try { const d = createDecipheriv("aes-256-gcm", key, nonce); d.setAAD(v2Aad(headerDigest, header, frame.sequence, frame.kind, frame.cipherBytes, frame.plainBytes)); d.setAuthTag(cipherText.subarray(-16)); plain = Buffer.concat([d.update(cipherText.subarray(0, -16)), d.final()]); } catch { throw privateFailure("PRIVATE_PACKAGE_AUTHENTICATION_FAILED"); }
+      if (frame.kind === "terminal") { let receipt: Record<string, unknown>; try { receipt = JSON.parse(plain.toString("utf8")); } catch { throw privateFailure("PRIVATE_PACKAGE_INVALID"); } if (!manifest || open || receipt.chainDigest !== chain.digest("hex") || receipt.recordCount !== recordCount || receipt.fileCount !== fileCount || receipt.plaintextBytes !== plaintextBytes) throw privateFailure("PRIVATE_PACKAGE_AUTHENTICATION_FAILED"); yield { kind: "terminal", receipt }; break; }
+      if (frame.kind !== "data" || plain.length !== frame.plainBytes) throw privateFailure("PRIVATE_PACKAGE_INVALID"); chain.update(rawHeader).update(cipherText); const parsed = parseRecord(plain); recordCount++;
+      if (parsed.meta.kind === "manifest") { if (manifest || open || parsed.payload.length !== parsed.meta.payloadBytes || sha256(parsed.payload) !== parsed.meta.sha256) throw privateFailure("PRIVATE_PACKAGE_INVALID"); let parsedManifest: PrivatePayload["manifest"]; try { parsedManifest = JSON.parse(parsed.payload.toString("utf8")) as PrivatePayload["manifest"]; } catch { throw privateFailure("PRIVATE_PACKAGE_INVALID"); } if (parsedManifest.packageId !== header.packageId || parsedManifest.packageRevision !== header.packageRevision) throw privateFailure("PRIVATE_PACKAGE_INVALID"); manifest = parsedManifest; plaintextBytes += parsed.payload.length; yield { kind: "manifest", manifest: parsedManifest }; continue; }
+      if (!manifest) throw privateFailure("PRIVATE_PACKAGE_INVALID");
+      if (parsed.meta.kind === "file-start") { if (open || parsed.payload.length || typeof parsed.meta.logicalId !== "string" || typeof parsed.meta.byteLength !== "number" || typeof parsed.meta.sha256 !== "string" || typeof parsed.meta.relativePath !== "string") throw privateFailure("PRIVATE_PACKAGE_INVALID"); assertSafeArchivePath(parsed.meta.relativePath); open = { id: parsed.meta.logicalId, bytes: 0, index: 0, expected: parsed.meta.byteLength, digest: parsed.meta.sha256, hash: createHash("sha256") }; yield { kind: "file-start", record: parsed.meta }; continue; }
+      if (parsed.meta.kind === "file-chunk") { if (!open || parsed.meta.logicalId !== open.id || parsed.meta.chunkIndex !== open.index || parsed.meta.offset !== open.bytes || parsed.meta.payloadBytes !== parsed.payload.length || open.bytes + parsed.payload.length > open.expected) throw privateFailure("PRIVATE_PACKAGE_INVALID"); open.hash.update(parsed.payload); open.bytes += parsed.payload.length; open.index++; plaintextBytes += parsed.payload.length; yield { kind: "file-chunk", record: parsed.meta, bytes: parsed.payload }; continue; }
+      if (!open || parsed.meta.logicalId !== open.id || parsed.meta.byteLength !== open.expected || parsed.meta.sha256 !== open.digest || open.bytes !== open.expected || open.hash.digest("hex") !== open.digest) throw privateFailure("PRIVATE_PACKAGE_CHECKSUM_MISMATCH"); open = undefined; fileCount++; yield { kind: "file-end", record: parsed.meta };
+    }
+    await reader.ensureEnd();
   } finally { key.fill(0); }
 }
 

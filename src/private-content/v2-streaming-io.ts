@@ -3,6 +3,7 @@ import { createReadStream } from "node:fs";
 import { mkdir, open, rename, rm } from "node:fs/promises";
 import path from "node:path";
 import { assertSafeArchivePath, privateFailure, sha256, type PrivatePackageManifest } from "./core";
+import { readPrivatePackageV2Events } from "./streaming";
 
 export type PrivatePackageFileSource = {
   logicalId: string; relativePath: string; mediaType: string;
@@ -42,4 +43,19 @@ export class LocalPrivatePackageV2Sink {
 
 export function localFileSource(input: Omit<PrivatePackageFileSource, "openStream"> & { filePath: string }): PrivatePackageFileSource {
   return { ...input, openStream(signal) { const stream = createReadStream(input.filePath); if (signal) signal.addEventListener("abort", () => stream.destroy(privateFailure("PRIVATE_CONTENT_FORBIDDEN")), { once: true }); return stream; } };
+}
+
+/** Binds the production event reader to protected staging without base64 conversion. */
+export async function stagePrivatePackageV2(input: { source: AsyncIterable<Buffer | Uint8Array>; passphrase: string; stagingRoot: string }) {
+  const sink = new LocalPrivatePackageV2Sink(input.stagingRoot);
+  try {
+    for await (const event of readPrivatePackageV2Events(input.source, input.passphrase)) {
+      if (event.kind === "manifest") await sink.beginPackage(event.manifest);
+      else if (event.kind === "file-start") await sink.beginFile(event.record as any);
+      else if (event.kind === "file-chunk") await sink.writeFileChunk({ ...(event.record as any), bytes: event.bytes });
+      else if (event.kind === "file-end") await sink.completeFile(event.record as any);
+      else if (event.kind === "terminal") return sink.completePackage();
+    }
+    throw privateFailure("PRIVATE_PACKAGE_INVALID");
+  } catch (error) { await sink.abort(); throw error; }
 }
