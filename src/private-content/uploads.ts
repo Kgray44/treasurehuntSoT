@@ -29,6 +29,7 @@ export type UploadDependencies = {
   complete: typeof completePrivateUpload;
   requestCancellation: typeof requestPrivateOperationCancellation;
   findUpload: (uploadId: string) => Promise<UploadRecord | null>;
+  findExpiredUploads: (before: Date, take: number) => Promise<UploadRecord[]>;
   updateProgress: (operationId: string, progress: MultipartProgress) => Promise<void>;
   setOperationState: (operationId: string, state: "RECEIVING" | "UPLOAD_PAUSED") => Promise<void>;
   cancelUpload: (upload: UploadRecord) => Promise<void>;
@@ -51,6 +52,13 @@ const defaults: UploadDependencies = {
     privateDb.privateContentUpload.findUnique({
       where: { id: uploadId },
       include: { operation: true, parts: { orderBy: { partNumber: "asc" } } },
+    }),
+  findExpiredUploads: (before, take) =>
+    privateDb.privateContentUpload.findMany({
+      where: { expiresAt: { lte: before }, completedAt: null, cancelledAt: null },
+      include: { operation: true, parts: { orderBy: { partNumber: "asc" } } },
+      orderBy: { expiresAt: "asc" },
+      take,
     }),
   updateProgress: async (operationId, progress) => {
     await privateDb.privateContentOperation.update({
@@ -315,6 +323,27 @@ export async function resumePrivateUpload(
   if (!parseProgress(upload.operation.progress).multipartUploadId) throw privateFailure("PRIVATE_PACKAGE_CONFLICT");
   await deps.setOperationState(upload.operationId, "RECEIVING");
   return { uploadId: upload.id, operationId: upload.operationId, state: "RECEIVING" as const };
+}
+
+/** Bounded worker-facing expiry cleanup; provider abort precedes durable cancellation. */
+export async function expirePrivateUploads(
+  input: { now?: Date; limit?: number } = {},
+  overrides: Partial<UploadDependencies> = {},
+) {
+  const deps = dependencies(overrides);
+  const now = input.now ?? new Date();
+  const limit = input.limit ?? 100;
+  if (!Number.isSafeInteger(limit) || limit < 1 || limit > 1000) throw privateFailure("PRIVATE_PACKAGE_INVALID");
+  const uploads = await deps.findExpiredUploads(now, limit);
+  let expired = 0;
+  for (const upload of uploads) {
+    if (upload.completedAt || upload.cancelledAt || upload.expiresAt > now) continue;
+    const multipartUploadId = parseProgress(upload.operation?.progress).multipartUploadId;
+    if (multipartUploadId) await deps.storage().abortMultipart(multipartUploadId).catch(() => undefined);
+    await deps.cancelUpload(upload);
+    expired++;
+  }
+  return { expired, inspected: uploads.length };
 }
 
 export async function privateUploadStatus(

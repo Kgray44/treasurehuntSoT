@@ -5,6 +5,7 @@ import { describe, expect, it, vi } from "vitest";
 import {
   cancelPrivateUpload,
   completePrivateUploadStream,
+  expirePrivateUploads,
   initiatePrivateUpload,
   inspectCompletedPrivateUploadV2,
   pausePrivateUpload,
@@ -40,6 +41,14 @@ const storage = {
 };
 
 describe("Phase 2 raw private upload service", () => {
+  it("expires a bounded batch only after aborting its provider multipart receiver", async () => {
+    const expired: any = { id: "upload-expired", operationId: "operation-expired", expiresAt: new Date("2026-07-21T00:00:00.000Z"), completedAt: null, cancelledAt: null, operation: { progress: JSON.stringify({ multipartUploadId: "11111111-1111-1111-1111-111111111111" }) } };
+    const cancelUpload = vi.fn(async () => undefined);
+    const abortMultipart = vi.fn(async () => undefined);
+    await expect(expirePrivateUploads({ now: new Date("2026-07-22T00:00:00.000Z"), limit: 10 }, { findExpiredUploads: async () => [expired], cancelUpload, storage: () => ({ ...storage, abortMultipart }) as any })).resolves.toEqual({ expired: 1, inspected: 1 });
+    expect(abortMultipart).toHaveBeenCalledWith("11111111-1111-1111-1111-111111111111");
+    expect(cancelUpload).toHaveBeenCalledWith(expired);
+  });
   it("pauses and resumes only the owned durable multipart receiver", async () => {
     const upload: any = { id: "upload-paused", operationId: "operation-paused", storageKey: "uploads/paused", expiresAt: new Date(Date.now() + 60_000), completedAt: null, cancelledAt: null, operation: { ownerAccountId: "account-1", state: "RECEIVING", progress: JSON.stringify({ multipartUploadId: "11111111-1111-1111-1111-111111111111" }) }, parts: [] };
     const setOperationState = vi.fn(async (_operationId: string, state: string) => { upload.operation.state = state; });
