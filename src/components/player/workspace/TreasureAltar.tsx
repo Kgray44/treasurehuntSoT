@@ -168,6 +168,14 @@ function ArtifactSlot({
         <i />
         <i />
       </span>
+      {artifact.state === "AWARDED" ? (
+        <span
+          className="artifact-award-light"
+          data-artifact-award-light={artifact.key}
+          aria-hidden="true"
+          style={{ pointerEvents: "none" }}
+        />
+      ) : null}
       <span
         ref={bindSilhouette}
         className="artifact-silhouette"
