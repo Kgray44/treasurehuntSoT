@@ -11,6 +11,7 @@ type ManifestAsset = Readonly<{
   fallbackPath: string;
   artboard?: string | null;
   stateMachine?: string | null;
+  inputContract?: readonly Readonly<{ name: string; type: "boolean" | "number" | "trigger" }>[];
   sourceBackupPath?: string | null;
   sourceSha256?: string | null;
   blockedReason?: string;
@@ -109,6 +110,19 @@ for (const asset of manifest.assets) {
       }
       if (!asset.stateMachine?.trim() || !contractText.includes(asset.stateMachine)) {
         errors.push(`${asset.id}: canonical state machine is absent from the runtime binary`);
+      }
+      if (!asset.inputContract?.length) {
+        errors.push(`manifest ${asset.id}: runtime-ready Rive asset needs a frozen input contract`);
+      } else {
+        for (const input of asset.inputContract) {
+          if (!input.name?.trim() || !["boolean", "number", "trigger"].includes(input.type)) {
+            errors.push(`manifest ${asset.id}: invalid frozen Rive input contract entry`);
+            continue;
+          }
+          if (!contractText.includes(input.name)) {
+            errors.push(`${asset.id}: runtime binary is missing frozen ${input.type} input ${input.name}`);
+          }
+        }
       }
       if (!asset.sourceBackupPath) {
         errors.push(`manifest ${asset.id}: runtime-ready Rive asset needs a governed .rev source backup path`);
