@@ -1647,6 +1647,17 @@
   font-size: 2rem;
   text-shadow: 0 2px #e0c782;
 }
+.ship-wake-trail {
+  position: absolute;
+  z-index: -1;
+  top: 54%;
+  right: 78%;
+  width: 3.6rem;
+  height: 0.34rem;
+  transform-origin: right center;
+  border-radius: 999px;
+  background: linear-gradient(90deg, transparent, rgba(207, 238, 244, 0.9));
+}
 .illustrated-marker {
   position: absolute;
   z-index: 8;

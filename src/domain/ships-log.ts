@@ -3,6 +3,26 @@ import type { PublicLogEntry, ProgressEventType } from "./story";
 type LogSource = { id: string; type: string; sequence: number; payload: string; releaseAt: Date };
 type OfflineSynchronization = Readonly<{ afterSequence: number; synchronizedAt: Date }>;
 
+const SYNODIC_MONTH_MS = 29.530588853 * 24 * 60 * 60 * 1000;
+const REFERENCE_NEW_MOON_MS = Date.UTC(2000, 0, 6, 18, 14, 0);
+const moonPhases = [
+  "new",
+  "waxing-crescent",
+  "first-quarter",
+  "waxing-gibbous",
+  "full",
+  "waning-gibbous",
+  "last-quarter",
+  "waning-crescent",
+] as const satisfies readonly PublicLogEntry["moonPhase"][];
+
+/** Server projection from persistent event time; no viewer-clock data is read. */
+export function authoritativeMoonPhase(releaseAt: Date): PublicLogEntry["moonPhase"] {
+  const age =
+    (((releaseAt.getTime() - REFERENCE_NEW_MOON_MS) % SYNODIC_MONTH_MS) + SYNODIC_MONTH_MS) % SYNODIC_MONTH_MS;
+  return moonPhases[Math.floor((age / SYNODIC_MONTH_MS) * moonPhases.length)] ?? "new";
+}
+
 const copy: Partial<
   Record<
     ProgressEventType,
@@ -176,6 +196,7 @@ export function eventToLogEntry(
     title: template.title,
     summary: template.summary,
     timestamp: event.releaseAt.toISOString(),
+    moonPhase: authoritativeMoonPhase(event.releaseAt),
     symbol: template.symbol,
     importance: template.importance,
     section: template.section,

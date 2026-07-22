@@ -181,6 +181,27 @@ describe("VoyageChart animation boundary", () => {
     expect(view.container.querySelector('[data-location-key="cove"]')).not.toHaveAttribute("data-progress-target");
   });
 
+  it("adds one bounded wake only when an authoritative current route is present", () => {
+    const view = render(
+      <AnimationProvider>
+        <VoyageChart snapshot={snapshot} mode="full" progressRouteKey="harbor-to-cove" />
+      </AnimationProvider>,
+    );
+
+    expect(view.container.querySelectorAll("[data-ship-wake-route]")).toHaveLength(1);
+    expect(view.container.querySelector("[data-ship-wake-route='harbor-to-cove']")).toHaveAttribute(
+      "aria-hidden",
+      "true",
+    );
+
+    view.rerender(
+      <AnimationProvider>
+        <VoyageChart snapshot={snapshot} mode="reduced" />
+      </AnimationProvider>,
+    );
+    expect(view.container.querySelector("[data-ship-wake-route]")).toBeNull();
+  });
+
   it("deduplicates exact entity producers, excludes unplotted targets, and retracts stale capabilities", async () => {
     const changes: VoyageChartTargetRegistration[] = [];
     const onChange = (registration: VoyageChartTargetRegistration) => changes.push(registration);
