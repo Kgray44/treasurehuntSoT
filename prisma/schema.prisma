@@ -1385,6 +1385,27 @@ model PrivateContentScan {
   @@index([state, createdAt])
 }
 
+model PrivateContentWrappedKey {
+  id         String   @id @default(cuid())
+  provider   String   @db.VarChar(64)
+  keyVersion String   @db.VarChar(191)
+  wrappedKey String   @db.LongText
+  algorithm  String   @db.VarChar(32)
+  createdAt  DateTime @default(now())
+  @@index([provider, keyVersion])
+}
+
+model PrivateContentEncryptedPayload {
+  id           String   @id @default(cuid())
+  objectKey    String   @unique @db.VarChar(255)
+  sha256       String   @db.Char(64)
+  byteLength   Int
+  cipher       String   @db.VarChar(32)
+  wrappedKeyId String   @db.VarChar(191)
+  createdAt    DateTime @default(now())
+  @@index([wrappedKeyId])
+}
+
 model PrivateAssetReference {
   id             String               @id @default(cuid())
   importId       String
