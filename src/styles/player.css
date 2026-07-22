@@ -2129,7 +2129,38 @@
 }
 .moon-phase {
   grid-row: 1 / 3;
+  display: grid;
+  width: 2rem;
+  height: 2rem;
+  place-items: center;
+  font-size: 0;
+}
+.moon-phase::before {
+  color: #4f3b25;
+  content: "\25cf";
   font-size: 2rem;
+  line-height: 1;
+}
+.moon-phase[data-moon-phase="waxing-crescent"]::before {
+  content: "\263d";
+}
+.moon-phase[data-moon-phase="first-quarter"]::before {
+  content: "\25d0";
+}
+.moon-phase[data-moon-phase="waxing-gibbous"]::before {
+  content: "\25d1";
+}
+.moon-phase[data-moon-phase="full"]::before {
+  content: "\25cb";
+}
+.moon-phase[data-moon-phase="waning-gibbous"]::before {
+  content: "\25d5";
+}
+.moon-phase[data-moon-phase="last-quarter"]::before {
+  content: "\25d1";
+}
+.moon-phase[data-moon-phase="waning-crescent"]::before {
+  content: "\263e";
 }
 .log-day ol {
   margin: 0;
