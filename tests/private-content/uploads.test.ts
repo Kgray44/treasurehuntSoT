@@ -3,6 +3,7 @@ import { createHash } from "node:crypto";
 import { Readable } from "node:stream";
 import { describe, expect, it, vi } from "vitest";
 import {
+  cancelPrivateUpload,
   completePrivateUploadStream,
   initiatePrivateUpload,
   receivePrivateUploadPart,
@@ -117,5 +118,31 @@ describe("Phase 2 raw private upload service", () => {
     await expect(
       completePrivateUploadStream({ actorId: "creator", uploadId: "upload-1" }, deps as any),
     ).resolves.toMatchObject({ operationId: "operation-1", receivedBytes: 11 });
+  });
+
+  it("aborts the provider multipart upload before marking a durable upload cancelled", async () => {
+    const upload: any = {
+      id: "upload-cancel",
+      operationId: "operation-cancel",
+      expiresAt: new Date(Date.now() + 60_000),
+      completedAt: null,
+      cancelledAt: null,
+      operation: { ownerAccountId: "account-1", progress: JSON.stringify({ multipartUploadId: "multipart-cancel" }) },
+      parts: [],
+    };
+    const requestCancellation = vi.fn(async () => undefined);
+    const cancelUpload = vi.fn(async () => undefined);
+    await expect(
+      cancelPrivateUpload({ actorId: "creator", uploadId: upload.id }, {
+        storage: () => storage as any,
+        accountForActor: async () => "account-1",
+        findUpload: async () => upload,
+        requestCancellation,
+        cancelUpload,
+      } as any),
+    ).resolves.toEqual({ cancelled: true });
+    expect(storage.abortMultipart).toHaveBeenCalledWith("multipart-cancel");
+    expect(requestCancellation).toHaveBeenCalledWith("operation-cancel");
+    expect(cancelUpload).toHaveBeenCalledWith(upload);
   });
 });
