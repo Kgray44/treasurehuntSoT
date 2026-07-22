@@ -1,0 +1,3 @@
+# Community Exchange Test Plan
+
+Focused tests cover canonical package checksums; missing/extra files; traversal, absolute, symlink, duplicate, case-collision and executable rejection; 2D metadata/accessibility; GLB structure/fallback; dependency and licence closure; preflight; install plan remapping/conflicts; transaction/idempotency/finalization retry; lineage/update/local-edit protection; and public-projection/privacy guards. Migration rehearsal applies every SQLite migration to a disposable database and checks foreign keys. Full repository validation runs formatting, lint, TypeScript, unit tests, language/privacy scans and `next build --webpack`; browser and MySQL gates are separately classified when infrastructure is unavailable.
