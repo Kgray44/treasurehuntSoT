@@ -156,6 +156,12 @@ export async function enqueuePrivateJob(input: {
 
 export async function claimPrivateJobs(workerId: string, limit = 10, leaseMs = 30_000) {
   const now = new Date();
+  // A process crash leaves a durable lease, never process-memory authority. Once
+  // it expires, any worker may safely put the idempotent job back on the queue.
+  await privateDb.privateContentJob.updateMany({
+    where: { state: "CLAIMED", claimExpiresAt: { lt: now } },
+    data: { state: "PENDING", claimOwner: null, claimedAt: null, claimExpiresAt: null },
+  });
   const candidates = await privateDb.privateContentJob.findMany({
     where: {
       state: "PENDING",
@@ -179,6 +185,21 @@ export async function claimPrivateJobs(workerId: string, limit = 10, leaseMs = 3
     if (result.count) claimed.push(job.id);
   }
   return privateDb.privateContentJob.findMany({ where: { id: { in: claimed } }, orderBy: { createdAt: "asc" } });
+}
+
+export async function renewPrivateJobLease(id: string, workerId: string, leaseMs = 30_000) {
+  if (!Number.isSafeInteger(leaseMs) || leaseMs < 1_000) throw privateFailure("PRIVATE_PACKAGE_INVALID");
+  return privateDb.privateContentJob.updateMany({
+    where: { id, state: "CLAIMED", claimOwner: workerId },
+    data: { claimExpiresAt: new Date(Date.now() + leaseMs) },
+  });
+}
+
+export async function cancelClaimedPrivateJob(id: string, workerId: string) {
+  return privateDb.privateContentJob.updateMany({
+    where: { id, state: "CLAIMED", claimOwner: workerId },
+    data: { state: "CANCELLED", completedAt: new Date(), claimExpiresAt: null },
+  });
 }
 
 export async function finishPrivateJob(id: string, workerId: string) {
