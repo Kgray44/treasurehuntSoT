@@ -119,6 +119,7 @@ export const privateJobTypes = [
   "PRIVATE_PACKAGE_INSPECT",
   "PRIVATE_PACKAGE_NORMALIZE",
   "PRIVATE_IMPORT_MATERIALIZE",
+  "PRIVATE_ASSET_VALIDATE",
   "PRIVATE_ASSET_SCAN",
   "PRIVATE_ASSET_FINALIZE",
   "PRIVATE_EXPORT_BUILD",
@@ -128,7 +129,9 @@ export const privateJobTypes = [
   "PRIVATE_KEY_REWRAP",
   "PRIVATE_INTEGRITY_RECONCILE",
   "PRIVATE_STAGING_CLEANUP",
+  "PRIVATE_UPLOAD_CLEANUP",
   "PRIVATE_ORPHAN_CLEANUP",
+  "PRIVATE_QUARANTINE_RETENTION",
 ] as const;
 export type PrivateJobType = (typeof privateJobTypes)[number];
 export type PrivateJobPayload = {
