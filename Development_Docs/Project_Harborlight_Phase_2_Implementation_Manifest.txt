@@ -1,0 +1,14 @@
+PROJECT HARBORLIGHT PHASE 2 - OPEN THE EXCHANGE
+
+Base: f4bfc4b4f3585bc8f60ce4d94375dc77a7092da2
+Branch: codex/project-harborlight-phase2-open-the-exchange
+
+Added: typed consumer ports; canonical package manifest/checksum/security verifier;
+GLB and artifact accessibility validation; dependency graph and licence-compatible
+install planning; idempotent install operation and finalization retry model; update
+comparison/local-edit protection; eight additive Exchange models; six SQLite and six
+MySQL reserved-range migrations; focused package and installation tests; Phase 2
+architecture, threat, workflow, test and convergence records.
+
+No Chronicle/runtime, Wayfarer person-profile, Sealed Hold private package/storage,
+or Lanternwake director implementation was duplicated or altered.
