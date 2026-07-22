@@ -115,3 +115,17 @@ per-person artifacts, achievements, detailed Captain/Creator analytics,
 follows/reviews/collections, blocks/reports, passkeys, MFA, export, deletion,
 additional provider approvals, and live MySQL deployment proof are not started
 by this branch.
+
+## Final continuation decision (2026-07-22)
+
+Repository Playwright Chromium, with an owned loopback server and isolated
+resources, is the Phase 2 browser authority. The embedded browser's
+`ERR_BLOCKED_BY_CLIENT` occurred before navigation and is environment-specific
+only. The focused browser journey proved the real 32x32-or-larger media path,
+server-backed privacy projection, provider visibility/login separation, and
+confirmation-based unlink; no provider token is projected. The Community
+public-listing route's inherited dynamic segment was corrected from `[slug]` to
+`[id]` to match its route family without changing Harborlight ownership.
+
+Live OAuth and live MySQL remain deferred external staging/deployment proof;
+they do not change the complete Phase 2 implementation classification.

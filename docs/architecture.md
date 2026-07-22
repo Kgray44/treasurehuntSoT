@@ -71,3 +71,15 @@ The Player Library is the place where Chronicles are browsed. The immersive jour
 `src/chronicle/progression.ts` remains authoritative. It projects a recursive Player-safe `journal` view from the pinned published snapshot, reveal ledger, ordered events, and current session pointers. `src/chronicle/journal-contract.ts` defines the ten presentation modes and secret boundary, while `src/chronicle/journal-page-model.ts` converts only released content into stable physical pages. `PhysicalJournalBook` owns the shared book shell and `ChronicleJournalSession` owns SSE reconciliation, reading position, presentation state, and Player actions. Reading state is persisted separately from progression through the existing Player preferences record.
 
 This separation keeps Creator content canonical, the Captain engine authoritative, and historical reading immutable. A future location/vision provider can submit a scoped verification outcome through the existing envelope; the resulting ordered event and canonical state projection drive the same journal without a provider-specific Player runtime.
+
+## Wayfarer Phase 2 ownership closure
+
+Wayfarer owns profile, preferences, providers, privacy, and profile media. One
+Voyage remains the Chronicle/runtime authority; Sealed Hold owns private-package
+security; Harborlight owns Community publication while resolving canonical
+identity through `CommunityProfile.accountId`; Lanternwake owns animation policy.
+The repaired Community public listing dynamic segment preserves that boundary.
+Provider adapters return safe projection data only, while unlink revokes the
+identity and clears retained token material after server-side recovery checks.
+Repository Playwright is the browser acceptance authority; live providers and
+live MySQL remain external deployment/staging validation.

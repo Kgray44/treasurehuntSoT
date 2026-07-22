@@ -51,6 +51,7 @@ export function ChroniclePassport() {
       status: string;
     }>
   >([]);
+  const [unlinkingIdentityId, setUnlinkingIdentityId] = useState<string | null>(null);
   const [adapters, setAdapters] = useState<
     Array<{
       provider: string;
@@ -221,6 +222,21 @@ export function ChroniclePassport() {
       setError(cause instanceof Error ? cause.message : "Unable to update provider.");
     }
   }
+  async function unlinkProvider(id: string) {
+    setError("");
+    try {
+      await fetch("/api/passport/providers", {
+        method: "DELETE",
+        headers,
+        body: JSON.stringify({ id }),
+      }).then(responseJson);
+      setIdentities((items) => items.filter((item) => item.id !== id));
+      setUnlinkingIdentityId(null);
+      setMessage("Linked identity removed and its token material cleared.");
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : "Unable to unlink provider.");
+    }
+  }
   if (!profile)
     return (
       <main>
@@ -355,6 +371,24 @@ export function ChroniclePassport() {
                 />{" "}
                 Permit sign-in
               </label>
+              {unlinkingIdentityId === identity.id ? (
+                <div role="status">
+                  <p>
+                    Remove this linked identity? It will no longer be available for sign-in. The account must retain
+                    another login or recovery method before removal.
+                  </p>
+                  <button type="button" onClick={() => void unlinkProvider(identity.id)}>
+                    Confirm unlink identity
+                  </button>
+                  <button type="button" onClick={() => setUnlinkingIdentityId(null)}>
+                    Cancel unlink
+                  </button>
+                </div>
+              ) : (
+                <button type="button" onClick={() => setUnlinkingIdentityId(identity.id)}>
+                  Unlink identity
+                </button>
+              )}
             </li>
           ))}
         </ul>

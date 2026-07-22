@@ -81,3 +81,13 @@ An authorized session on another computer needs only Git, Node/npm, and this rep
 - **Resetting disposable data is explicit:** `npm run db:preset -- awaiting-first-release` intentionally replaces the development fixture. Normal `npm run dev:stop` / `npm run dev:full` cycles preserve it. For validation, `npm run validate` always rebuilds `validation.db` from migrations.
 - **Browser binaries are missing:** `npm run validate` installs pinned Chromium and WebKit builds automatically.
 - **UNC/network checkout is slow:** the first mirror/install is expected to take longer; subsequent runs retain the dependency cache and only synchronize project files.
+
+## Wayfarer Phase 2 isolated browser run
+
+Use repository Playwright Chromium against an owned loopback server, never an
+embedded or personal browser. Give every run a new SQLite file and a new
+`WAYFARER_PROFILE_MEDIA_ROOT`; set `NO_PROXY` for `localhost`, `127.0.0.1`, and
+`::1`. Provider simulators are test-only. Production browser harnesses must
+explicitly set `WAYFARER_PROVIDER_SIMULATORS=1`; this does not supply or imply
+live OAuth credentials. Keep live provider and MySQL proof for staging or
+deployment environments.

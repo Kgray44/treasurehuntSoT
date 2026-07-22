@@ -33,3 +33,19 @@ and Ubisoft Connect remain partner-gated. Twitch, Google, Apple, and Battle.net
 are planned only; custom OIDC remains disabled pending issuer-by-issuer review.
 The three deterministic simulators are non-production test evidence only and
 never claim external authorization.
+
+## Closure classification (2026-07-22)
+
+Discord, Steam, and Microsoft Account are implemented but configuration
+required. Xbox Network, EA Account, Epic Games, PlayStation Network, Nintendo
+Account, and Ubisoft Connect are partner-gated. Twitch, Google, Apple, and
+Battle.net are planned. Deterministic simulators are test-only and may be
+enabled in a production browser harness only with the explicit
+`WAYFARER_PROVIDER_SIMULATORS=1` opt-in; ordinary production remains disabled.
+
+Live Discord OAuth, Steam identity, Microsoft OAuth, and partner provisioning
+are deferred external deployment validation, not Phase 2 blockers. The final
+browser proof linked a simulator privately, independently changed visibility
+and login permission, and removed it through an accessible confirmation; the
+authoritative unlink clears token material and retains server-side recovery
+protection.

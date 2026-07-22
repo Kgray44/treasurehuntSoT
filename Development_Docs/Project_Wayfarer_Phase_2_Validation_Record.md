@@ -40,3 +40,38 @@ Current completed evidence:
   navigation with `ERR_BLOCKED_BY_CLIENT`; no browser E2E interaction could be
   run in this host. No external provider credentials, Discord desktop app,
   Microsoft tenant, or Steam approval was used or claimed.
+
+## 2026-07-22 final continuation resolution
+
+- The embedded-browser result is classified as `EMBEDDED_BROWSER_ONLY`, not an
+  acceptance environment. Repository Playwright Chromium is the authoritative
+  browser harness.
+- A Playwright-owned production server on `http://127.0.0.1:3122` used fresh
+  SQLite database `artifacts/playwright/wayfarer-phase2-pw-028.db`, a separate
+  `wayfarer-phase2-pw-028-media` root, loopback proxy bypass, and the explicit
+  production-harness simulator opt-in. The server released its owned port on
+  normal completion.
+- The initial browser media failure was a test-fixture defect: its synthetic
+  PNG was below the legitimate 32x32 minimum. The final deterministic 32x32
+  Sharp-generated PNG passed the real media path for both avatar and banner.
+- Focused Chromium browser acceptance: 1 spec file, 2 tests, 2 passed, 0
+  failed, 0 skipped (8.2 seconds). It proved Passport/profile editing, handle
+  redirect, avatar and banner upload, persisted reduced-motion preferences,
+  private privacy projection, simulator visibility and sign-in control,
+  confirmation-based unlink with token-clearing acknowledgement, keyboard
+  controls, and the 1440x900, 430x932, 390x844, and 844x390 layouts.
+- The unlink control now waits for an explicit accessible confirmation and
+  explains the sign-in/recovery consequence. The inherited Community public
+  listing route now consistently uses its `[id]` dynamic segment; the final
+  production build generated 65 routes.
+- Final local gates passed: focused Wayfarer/community tests (4 files, 15
+  tests), full Vitest (94 files, 869 tests), Prettier, TypeScript, Voyagewright
+  language validation, ESLint (0 errors, 23 inherited warnings), privacy scan,
+  and production build.
+- External deployment validation is deferred, not blocking: live Discord
+  OAuth, Steam OpenID, Microsoft OAuth, and partner-gated gaming networks.
+  Live isolated MySQL migration/runtime proof is likewise deferred to external
+  staging. The unrelated Lanternwake production Rive asset NO-GO remains
+  separate.
+
+**PROJECT WAYFARER PHASE 2 COMPLETE**

@@ -62,3 +62,15 @@ The Phase 3 evidence set is:
 - `Development_Docs/Project_Lanternwake_Phase_3_Visual_Checkpoint_Index.md` for exactly 57 semantic checkpoints: 11 Journal, 14 chapter, six map, seven artifact, five quest, five log, and nine finale.
 
 Run `npm run validate` for the serialized release gate. Focused commands remain `npm run format:check`, `npm run lint`, `npm run typecheck`, `npm test`, `npm run assets:validate`, `npm run test:e2e`, and `npm run build`; focused browser commands do not authorize bypassing mutation isolation. Skipped, pending, `blocked`, `missing-phase-5-asset`, and nonzero results are not passes.
+
+## Wayfarer Phase 2 browser evidence
+
+For Wayfarer, use the `wayfarer-phase2` Playwright Chromium project with an
+owned server and a fresh migrated SQLite database plus `WAYFARER_PROFILE_MEDIA_ROOT`.
+Set `NO_PROXY=localhost,127.0.0.1,::1`; do not use the embedded browser or a
+personal browser profile. The 2026-07-22 acceptance run passed 2/2 focused
+tests using a deterministic 32x32 Sharp PNG through the actual upload route.
+It exercises profile persistence/redirects, private privacy projection,
+provider simulator visibility/login/unlink, keyboard controls, and 1440x900,
+430x932, 390x844, and 844x390 responsive layouts. Live OAuth and MySQL are
+external validation, not local browser prerequisites.

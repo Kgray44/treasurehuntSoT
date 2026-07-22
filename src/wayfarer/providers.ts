@@ -52,7 +52,7 @@ export function decryptProviderToken(value: string) {
 
 export function listProviderAdapters() {
   const configured = (...keys: string[]) => keys.every((key) => Boolean(process.env[key]));
-  const simulated = process.env.NODE_ENV !== "production";
+  const simulated = process.env.NODE_ENV !== "production" || process.env.WAYFARER_PROVIDER_SIMULATORS === "1";
   return [
     {
       provider: "DISCORD",

@@ -100,6 +100,12 @@ Set unique local values in `.env`; the seed’s fallback values are development-
 
 Full setup, validation stages, output locations, clean-clone instructions, and troubleshooting are in [local development](docs/local-development.md) and [testing](docs/testing.md). Unified identity, invitations, libraries, authorization, history, and migration are in [Chronicle Platform](docs/chronicle-platform.md); Studio architecture and operations are in [Chronicle Studio](docs/chronicle-studio.md). The future recognition seam is in [vision helper boundary](docs/future-vision-helper.md). Animation ownership, scene contracts, assets, performance, and the development lab are indexed from [animation architecture](docs/animation/architecture.md).
 
+Wayfarer Phase 2 is complete on its dedicated branch. Its focused browser proof
+uses repository Playwright Chromium with an owned loopback server, newly
+migrated isolated SQLite database, isolated profile-media root, and explicit
+test-only provider simulators. Live provider authorization and live MySQL
+remain external staging/deployment validation, not local implementation gates.
+
 ## Repository workflow
 
 `main` is canonical. At task start: fetch, inspect status/remotes, and pull with rebase when clean. At task end: validate, review the complete diff, commit intentionally, fetch/rebase if needed, push without force, and verify local `HEAD` equals `origin/main`. See [Codex handoff](docs/codex-handoff.md).
