@@ -7,6 +7,18 @@ import { RiveStatefulObject } from "./RiveStatefulObject";
 
 const runtime = vi.hoisted(() => {
   const trigger = vi.fn();
+  const viewModelTrigger = vi.fn();
+  const viewModelNumbers = new Map([
+    ["pinProgress", { value: 0 }],
+    ["status", { value: 0 }],
+  ]);
+  const viewModelBooleans = new Map([
+    ["isHovering", { value: false }],
+    ["isFocused", { value: false }],
+    ["isPressed", { value: false }],
+    ["isListening", { value: false }],
+    ["reducedMotion", { value: false }],
+  ]);
   const inputs = [
     { name: "amount", type: 56, value: 2 },
     { name: "submit", type: 58, fire: trigger },
@@ -14,12 +26,26 @@ const runtime = vi.hoisted(() => {
   ];
   const rive = {
     stateMachineInputs: vi.fn(() => inputs),
+    viewModelInstance: {
+      boolean: vi.fn((name: string) => viewModelBooleans.get(name) ?? null),
+      number: vi.fn((name: string) => viewModelNumbers.get(name) ?? null),
+      trigger: vi.fn(() => ({ trigger: viewModelTrigger })),
+    },
     pause: vi.fn(),
     play: vi.fn(),
     drawFrame: vi.fn(),
     cleanup: vi.fn(),
   };
-  return { options: null as Record<string, unknown> | null, loadCalls: 0, trigger, inputs, rive };
+  return {
+    options: null as Record<string, unknown> | null,
+    loadCalls: 0,
+    trigger,
+    viewModelTrigger,
+    viewModelNumbers,
+    viewModelBooleans,
+    inputs,
+    rive,
+  };
 });
 
 vi.mock("@rive-app/react-webgl2", async () => {
@@ -56,6 +82,11 @@ describe("Rive runtime", () => {
     runtime.loadCalls = 0;
     runtime.inputs[0].value = 2;
     runtime.inputs[2].value = true;
+    runtime.viewModelNumbers.get("pinProgress")!.value = 0;
+    runtime.viewModelNumbers.get("status")!.value = 0;
+    runtime.viewModelBooleans.forEach((property) => {
+      property.value = false;
+    });
     vi.clearAllMocks();
     resetAnimationMetrics();
     Object.defineProperty(document, "hidden", { configurable: true, value: false });
@@ -197,21 +228,54 @@ describe("Rive runtime", () => {
     vi.useRealTimers();
   });
 
-  it("identifies unavailable production artwork honestly and never attempts a remote runtime load", async () => {
+  it("loads the authored Invitation Seal runtime through its frozen production contract", async () => {
     const status = vi.fn();
     const before = runtime.loadCalls;
     render(
       <RiveStatefulObject asset={riveAssets.invitationSeal} mode="full" label="Invitation seal" onStatus={status} />,
     );
-    expect(
-      screen.getByRole("img", {
-        name: /Original Rive artwork is not yet supplied; showing the production fallback/,
-      }),
-    ).toBeVisible();
-    await waitFor(() => expect(status).toHaveBeenCalledWith("fallback"));
-    expect(status).not.toHaveBeenCalledWith("ready");
-    expect(runtime.loadCalls).toBe(before);
-    expect(screen.queryByTestId("rive-canvas")).not.toBeInTheDocument();
+
+    await waitFor(() => expect(runtime.loadCalls).toBe(before + 1));
+    expect(runtime.options).toMatchObject({
+      src: "/animations/rive/invitation-seal-v1.riv",
+      artboard: "InvitationSeal",
+      stateMachines: "InvitationSealSM",
+      autoBind: true,
+    });
+    expect(screen.getByTestId("rive-canvas")).toBeVisible();
+    expect(screen.queryByText(/Original Rive artwork is not yet supplied/)).not.toBeInTheDocument();
+
+    act(() => (runtime.options?.onLoad as (() => void) | undefined)?.());
+    await waitFor(() => expect(status).toHaveBeenCalledWith("ready"));
+    expect(runtime.rive.viewModelInstance.boolean).toHaveBeenCalledWith("isHovering");
+    expect(runtime.rive.stateMachineInputs).not.toHaveBeenCalledWith("InvitationSealSM");
+  });
+
+  it("drives a data-bound relic through its frozen view-model properties", async () => {
+    const onInputs = vi.fn();
+    render(
+      <RiveRuntime
+        asset={riveAssets.invitationSeal}
+        mode="full"
+        label="Invitation seal"
+        className=""
+        signals={[
+          { name: "status", value: 2, nonce: 1 },
+          { name: "open", nonce: 2 },
+        ]}
+        onInputs={onInputs}
+      />,
+    );
+
+    await waitFor(() => expect(runtime.viewModelNumbers.get("status")!.value).toBe(2));
+    expect(runtime.viewModelTrigger).toHaveBeenCalledOnce();
+    expect(onInputs).toHaveBeenLastCalledWith(
+      expect.arrayContaining([
+        { name: "status", type: "number", value: 2 },
+        { name: "open", type: "trigger", value: undefined },
+        { name: "reducedMotion", type: "boolean", value: false },
+      ]),
+    );
   });
 
   it("refuses a path-bearing asset whose production availability is still blocked", async () => {

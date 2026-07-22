@@ -1,5 +1,14 @@
 export type RiveInputContract = Readonly<{ name: string; type: "boolean" | "number" | "trigger" }>;
 
+/**
+ * The first three Lanternwake relics are authored with Rive's current data-binding
+ * interface. Finale remains a native legacy-input artboard. Both transports expose
+ * the same frozen public input names and types to application consumers.
+ */
+export type RiveRuntimeInterface =
+  | Readonly<{ kind: "state-machine-inputs" }>
+  | Readonly<{ kind: "view-model"; viewModel: string }>;
+
 export type RiveAssetContract = Readonly<{
   /** Stable Project Lanternwake asset identity. It is distinct from a filename or UI label. */
   key: string;
@@ -7,6 +16,7 @@ export type RiveAssetContract = Readonly<{
   path?: string;
   artboard?: string;
   stateMachine: string;
+  runtimeInterface: RiveRuntimeInterface;
   inputs: readonly RiveInputContract[];
   states: readonly string[];
   /** Input values that produce the stable, non-travelling reduced pose before an authoritative semantic signal. */
@@ -72,13 +82,6 @@ export const finaleMechanismStage = Object.freeze({
   resetting: 9,
 });
 
-const blockedProductionAsset = (asset: Omit<RiveAssetContract, "availability" | "provenance">): RiveAssetContract => ({
-  ...asset,
-  availability: "blocked_external_asset",
-  provenance:
-    "Project Lanternwake production contract is frozen; the genuine project-authored Rive export is pending the external Rive authoring handoff. The SVG/CSS fallback remains the only production rendering until that handoff is validated.",
-});
-
 const runtimeReadyProductionAsset = (
   asset: Omit<RiveAssetContract, "availability" | "provenance">,
 ): RiveAssetContract => ({
@@ -95,6 +98,7 @@ export const riveAssets = {
     path: "/animations/rive/invitation-seal-v1.riv",
     artboard: "InvitationSeal",
     stateMachine: "InvitationSealSM",
+    runtimeInterface: { kind: "view-model", viewModel: "ViewModel1" },
     inputs: [
       { name: "isHovering", type: "boolean" },
       { name: "isFocused", type: "boolean" },
@@ -147,6 +151,7 @@ export const riveAssets = {
     path: "/animations/rive/journal-clasp-v1.riv",
     artboard: "JournalClasp",
     stateMachine: "JournalClaspSM",
+    runtimeInterface: { kind: "view-model", viewModel: "ViewModel1" },
     inputs: [
       { name: "isHovering", type: "boolean" },
       { name: "isFocused", type: "boolean" },
@@ -193,6 +198,7 @@ export const riveAssets = {
     path: "/animations/rive/voyage-compass-v1.riv",
     artboard: "VoyageCompass",
     stateMachine: "VoyageCompassSM",
+    runtimeInterface: { kind: "view-model", viewModel: "ViewModel1" },
     inputs: [
       { name: "bearingDegrees", type: "number" },
       { name: "courseProgress", type: "number" },
@@ -227,12 +233,13 @@ export const riveAssets = {
     priority: "intent",
     dimensions: "512 x 512 source; responsive contain",
   }),
-  finaleMechanism: blockedProductionAsset({
+  finaleMechanism: runtimeReadyProductionAsset({
     key: "finale-mechanism",
     assetId: "finaleMechanism",
     path: "/animations/rive/finale-mechanism-v1.riv",
     artboard: "FinaleMechanism",
     stateMachine: "FinaleMechanismSM",
+    runtimeInterface: { kind: "state-machine-inputs" },
     inputs: [
       { name: "stage", type: "number" },
       { name: "overallProgress", type: "number" },
@@ -293,6 +300,7 @@ export const riveAssets = {
     assetId: "developmentRating",
     path: "/animations/rive/rating-animation.riv",
     stateMachine: "State Machine 1",
+    runtimeInterface: { kind: "state-machine-inputs" },
     inputs: [],
     states: ["runtime-ready", "input-controlled"],
     reducedPose: {},

@@ -592,28 +592,31 @@ test.describe.serial("Project Lanternwake Phase 3 extended runtime lifecycle", (
     });
   }
 
-  test("blocked invitation seal fallback remounts cleanly for twenty route cycles", async ({ page }) => {
+  test("authored invitation seal runtime remounts cleanly for twenty route cycles", async ({ page }) => {
     test.setTimeout(extendedTimeout);
     await installExtendedLifecycleProbe(page);
-    const expectInvitationFallback = async () => {
+    const expectInvitationRuntime = async () => {
+      const runtime = page.locator('.quartermaster-login [data-animation-owner="rive"]');
+      await expect(runtime).toHaveCount(1);
+      await expect(runtime).toHaveAttribute("aria-label", "Captain's Console door lock");
+      await expect(runtime.locator("canvas")).toHaveCount(1, { timeout: 20_000 });
       await expect(
         page.getByRole("img", {
-          name: /Quartermaster door lock\. Original Rive artwork is not yet supplied; showing the production fallback/u,
+          name: /Captain's Console door lock fallback after WebGL or asset failure/u,
         }),
-      ).toBeVisible();
-      await expect(page.locator('.quartermaster-login [data-animation-owner="rive"]')).toHaveCount(0);
+      ).toHaveCount(0);
     };
     await page.goto("/quartermaster");
-    await expectInvitationFallback();
+    await expectInvitationRuntime();
     await runTwentyCycles(page, async () => {
       await page.goto("/");
       await expect(page.getByRole("heading", { name: "Choose your place in the Tale" })).toBeVisible();
       await page.goto("/quartermaster");
-      await expectInvitationFallback();
+      await expectInvitationRuntime();
     });
   });
 
-  test("Journal Clasp, Voyage Compass, and Finale Mechanism blocked contracts retract on every section leave", async ({
+  test("Journal Clasp, Voyage Compass, and Finale Mechanism runtimes retract cleanly across route cycles", async ({
     page,
     phase3,
   }) => {
@@ -623,28 +626,27 @@ test.describe.serial("Project Lanternwake Phase 3 extended runtime lifecycle", (
     await openPhase3Player(page, fixture, "journal");
     const journalClasp = page.locator("[data-journal-clasp-contract]");
     const voyageCompass = page.locator("[data-voyage-compass-contract]");
-    const finaleMechanism = page.locator(
-      "[data-rive-contract-availability='blocked_external_asset'].finale-rive-contract",
-    );
-    const expectBlockedFallback = async (contract: Locator) => {
-      await expect(contract).toHaveAttribute("data-rive-contract-availability", "blocked_external_asset");
-      await expect(contract).toHaveAttribute("data-rive-runtime-status", "fallback");
-      await expect(contract.locator('[data-fallback-active="true"]')).toHaveCount(1);
-      await expect(contract.locator('[data-animation-owner="rive"]')).toHaveCount(0);
+    const finaleMechanism = page.locator("[data-rive-contract-availability='runtime-ready'].finale-rive-contract");
+    const expectRuntime = async (contract: Locator) => {
+      await expect(contract).toHaveAttribute("data-rive-contract-availability", "runtime-ready");
+      await expect(contract).toHaveAttribute("data-rive-runtime-status", "ready", { timeout: 20_000 });
+      await expect(contract.locator('[data-animation-owner="rive"]')).toHaveCount(1);
+      await expect(contract.locator('[data-animation-owner="rive"] canvas')).toHaveCount(1);
+      await expect(contract.locator('[data-fallback-active="true"]')).toHaveCount(0);
     };
     const contractCycle = async () => {
-      await expectBlockedFallback(journalClasp);
+      await expectRuntime(journalClasp);
       await expect(voyageCompass).toHaveCount(0);
       await expect(finaleMechanism).toHaveCount(0);
       await navigatePhase3Section(page, "chart");
       await expect(journalClasp).toHaveCount(0);
-      await expectBlockedFallback(voyageCompass);
+      await expectRuntime(voyageCompass);
       await navigatePhase3Section(page, "finale");
       await expect(voyageCompass).toHaveCount(0);
-      await expectBlockedFallback(finaleMechanism);
+      await expectRuntime(finaleMechanism);
       await navigatePhase3Section(page, "journal");
       await expect(finaleMechanism).toHaveCount(0);
-      await expectBlockedFallback(journalClasp);
+      await expectRuntime(journalClasp);
     };
     await runTwentyCycles(page, async () => contractCycle());
   });

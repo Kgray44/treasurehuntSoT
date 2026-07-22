@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
   "program": "Project Lanternwake",
-  "phase": "Phase 5: Awaken the Relics",
-  "generatedAt": "2026-07-20",
+  "phase": "Phase 6: Make It Seaworthy",
+  "generatedAt": "2026-07-22",
   "assets": [
     {
       "id": "invitationSeal",
@@ -12,7 +12,7 @@
       "exportFilename": "invitation-seal-v1.riv",
       "expectedPath": "/animations/rive/invitation-seal-v1.riv",
       "sourceBackupPath": "Development_Docs/Animation_Assets/Rive_Sources/lanternwake-invitation-seal-v1.rev",
-      "sourceSha256": "8eb02972cbaa9d6a8a7c97842b0b59fa09a4c4cbaa2f7dfbcb6bb2088bcef2ad",
+      "sourceSha256": "259df9da1ed0d72d447a58224ff29de8bf739c30e0240809d0b9136bb5b027a8",
       "author": "Gray",
       "creationTool": "Rive editor",
       "creationDate": "2026-07-22",
@@ -20,6 +20,7 @@
       "projectOwnership": "confirmed_repository_asset",
       "artboard": "InvitationSeal",
       "stateMachine": "InvitationSealSM",
+      "runtimeInterface": { "kind": "view-model", "viewModel": "ViewModel1" },
       "inputContract": [
         { "name": "isHovering", "type": "boolean" },
         { "name": "isFocused", "type": "boolean" },
@@ -36,9 +37,25 @@
         { "name": "reducedMotion", "type": "boolean" }
       ],
       "inputSchema": "rive-contracts.ts#invitationSeal",
+      "stateContract": [
+        "idle",
+        "hover",
+        "focus",
+        "pressed",
+        "listening",
+        "validating",
+        "pin-progress",
+        "accepted",
+        "rejected",
+        "expired",
+        "revoked",
+        "opening",
+        "open",
+        "resetting"
+      ],
       "fallbackPath": "/animations/stills/seal-fallback.svg",
       "version": "v1",
-      "sha256": "6312568d88c72f82988ab0959932e6c2ba6ec5dbd3ec4a0754c6c0099bc56611"
+      "sha256": "3432c0fd2a06192ecde97c9e931045eaa8aab37025ab81f60234b75e2684c2f5"
     },
     {
       "id": "journalClasp",
@@ -48,7 +65,7 @@
       "exportFilename": "journal-clasp-v1.riv",
       "expectedPath": "/animations/rive/journal-clasp-v1.riv",
       "sourceBackupPath": "Development_Docs/Animation_Assets/Rive_Sources/lanternwake-journal-clasp-v1.rev",
-      "sourceSha256": "0a441bf2a67e53804905245750c5ce3ae1601996856a3ce534a99b8f5c0a4b0c",
+      "sourceSha256": "57c9e198e167c945f5a412c8a0c8d37fbf137e4ceb5d30f885624163611f7c5a",
       "author": "Gray",
       "creationTool": "Rive editor",
       "creationDate": "2026-07-22",
@@ -56,6 +73,7 @@
       "projectOwnership": "confirmed_repository_asset",
       "artboard": "JournalClasp",
       "stateMachine": "JournalClaspSM",
+      "runtimeInterface": { "kind": "view-model", "viewModel": "ViewModel1" },
       "inputContract": [
         { "name": "isHovering", "type": "boolean" },
         { "name": "isFocused", "type": "boolean" },
@@ -69,9 +87,22 @@
         { "name": "reducedMotion", "type": "boolean" }
       ],
       "inputSchema": "rive-contracts.ts#journalClasp",
+      "stateContract": [
+        "locked",
+        "idle",
+        "hover",
+        "focus",
+        "awake",
+        "pressure",
+        "releasing",
+        "opening",
+        "open",
+        "interrupted",
+        "resetting"
+      ],
       "fallbackPath": "/animations/stills/journal-clasp-fallback.svg",
       "version": "v1",
-      "sha256": "76db2cd7df9dabee28e96b1c54e4dc05c32336b355649b28df6fcfdb32c379f2"
+      "sha256": "0673ce171281bd63513eb3ade2e29a37d400577c300b2c89ce771fc25f3b0af2"
     },
     {
       "id": "voyageCompass",
@@ -81,7 +112,7 @@
       "exportFilename": "voyage-compass-v1.riv",
       "expectedPath": "/animations/rive/voyage-compass-v1.riv",
       "sourceBackupPath": "Development_Docs/Animation_Assets/Rive_Sources/lanternwake-voyage-compass-v1.rev",
-      "sourceSha256": "7b008bf934020afb9213a563f918628916f106c1e8475261083b66abb1557380",
+      "sourceSha256": "e51522c647bdd862f9ed2e046cc0129f5593c701061985d9bcbf1d8c30c49627",
       "author": "Gray",
       "creationTool": "Rive editor",
       "creationDate": "2026-07-22",
@@ -89,6 +120,7 @@
       "projectOwnership": "confirmed_repository_asset",
       "artboard": "VoyageCompass",
       "stateMachine": "VoyageCompassSM",
+      "runtimeInterface": { "kind": "view-model", "viewModel": "ViewModel1" },
       "inputContract": [
         { "name": "bearingDegrees", "type": "number" },
         { "name": "courseProgress", "type": "number" },
@@ -102,29 +134,70 @@
         { "name": "reducedMotion", "type": "boolean" }
       ],
       "inputSchema": "rive-contracts.ts#voyageCompass",
+      "stateContract": [
+        "idle",
+        "seeking",
+        "bearing",
+        "course-set",
+        "arrived",
+        "disconnected",
+        "adrift",
+        "locked",
+        "resetting"
+      ],
       "fallbackPath": "/animations/stills/compass-fallback.svg",
       "version": "v1",
-      "sha256": "26207e0c3827a8bca737d128d276b7f16b5e6a049d857b5b69fa7a23e740b452"
+      "sha256": "7dbbaa18d6487334bba5f77dff85f674a1f9294f7b43b8b96d4f165a3fe43f49"
     },
     {
       "id": "finaleMechanism",
       "type": "rive",
-      "status": "blocked_external_asset",
-      "sourceFilename": null,
+      "status": "runtime-ready",
+      "sourceFilename": "lanternwake-finale-mechanism-v1.rev",
+      "svgSourcePath": "Development_Docs/Animation_Assets/Rive_Sources/lanternwake-finale-mechanism-v1.svg",
+      "svgSourceSha256": "eb2a8653d0b4ea094464e75b613787bd51037fbce02ee035535963cf1f64912d",
       "exportFilename": "finale-mechanism-v1.riv",
       "expectedPath": "/animations/rive/finale-mechanism-v1.riv",
-      "author": "Unassigned external Rive author",
-      "creationTool": "Rive editor",
-      "creationDate": null,
-      "license": "Project-owned source and export required before intake",
-      "projectOwnership": "blocked_pending_authoring",
+      "sourceBackupPath": "Development_Docs/Animation_Assets/Rive_Sources/lanternwake-finale-mechanism-v1.rev",
+      "sourceSha256": "022ef282c30abba40c3e3e8ce4fc6609a4b81f1e3bd7175df95c0064428e8341",
+      "author": "Project Lanternwake",
+      "creationTool": "Rive editor; frozen-contract label preservation",
+      "creationDate": "2026-07-22",
+      "license": "Project-owned original Lanternwake SVG and Rive source/export pair",
+      "projectOwnership": "confirmed_repository_asset",
       "artboard": "FinaleMechanism",
       "stateMachine": "FinaleMechanismSM",
+      "runtimeInterface": { "kind": "state-machine-inputs" },
       "inputSchema": "rive-contracts.ts#finaleMechanism",
+      "stateContract": [
+        "dormant",
+        "teased",
+        "sealed",
+        "partial",
+        "ready",
+        "unlocking",
+        "unlocked",
+        "complete",
+        "historical",
+        "resetting"
+      ],
+      "inputContract": [
+        { "name": "stage", "type": "number" },
+        { "name": "overallProgress", "type": "number" },
+        { "name": "activeRequirement", "type": "number" },
+        { "name": "requirementProgress", "type": "number" },
+        { "name": "isReady", "type": "boolean" },
+        { "name": "tease", "type": "trigger" },
+        { "name": "activateRequirement", "type": "trigger" },
+        { "name": "unlock", "type": "trigger" },
+        { "name": "complete", "type": "trigger" },
+        { "name": "showHistorical", "type": "trigger" },
+        { "name": "reset", "type": "trigger" },
+        { "name": "reducedMotion", "type": "boolean" }
+      ],
       "fallbackPath": "/animations/stills/finale-fallback.svg",
       "version": "v1",
-      "sha256": null,
-      "blockedReason": "No Rive authoring/export tool or project-authored binary is available in this workspace."
+      "sha256": "6465b2540d031a64ef449d9c3ecac4cb8889534e8c821877b0f0f636dc5da6a1"
     },
     {
       "id": "moonlitWaves",

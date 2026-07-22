@@ -1014,7 +1014,7 @@ async function assertAuthoritativeFinaleState(page: Page, state: AuthoritativeFi
   await expect(chamber).toBeVisible();
   await expect(chamber.locator("[data-finale-readable-status]")).toBeVisible();
   const fallback = chamber.locator(
-    `[data-finale-fallback="css-svg"][data-finale-state="${semantics.pose}"][data-finale-state-index="${semantics.stateIndex}"][data-finale-semantic-label="${semantics.label}"][data-finale-progress="${semantics.progress}"][data-finale-production-art-status="blocked_external_asset"][data-runtime-boundary="css"]`,
+    `[data-finale-fallback="css-svg"][data-finale-state="${semantics.pose}"][data-finale-state-index="${semantics.stateIndex}"][data-finale-semantic-label="${semantics.label}"][data-finale-progress="${semantics.progress}"][data-finale-production-art-status="runtime-ready"][data-runtime-boundary="css"]`,
   );
   await expect(fallback).toHaveCount(1);
 }

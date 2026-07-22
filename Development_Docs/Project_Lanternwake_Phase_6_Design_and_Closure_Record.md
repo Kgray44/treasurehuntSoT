@@ -10,14 +10,14 @@ An accepted requirement closes only when it is reachable on its production surfa
 
 ## Current reconciliation inventory
 
-The programmatic mapping validator confirms 458 separately tracked obligations and zero *mapping* gaps: 238 OA records and 220 Codex records. That does **not** mean production closure.
+The programmatic mapping validator confirms 458 separately tracked obligations and zero _mapping_ gaps: 238 OA records and 220 Codex records. That does **not** mean production closure.
 
 At the Phase 6 base, the authoritative ledgers contain:
 
-| Family | Validated / passed | Still requiring Phase 6 closure |
-| --- | ---: | ---: |
-| OA | 220 / 238 | 18 |
-| Codex matrix rows | 317 / 361 | 44 |
+| Family            | Validated / passed | Still requiring Phase 6 closure |
+| ----------------- | -----------------: | ------------------------------: |
+| OA                |          220 / 238 |                              18 |
+| Codex matrix rows |          317 / 361 |                              44 |
 
 The 18 OA rows are `OA-089`, `OA-090`, `OA-123`, `OA-136`, `OA-141`, `OA-144`, `OA-149`, `OA-151`, `OA-152`, `OA-161`, `OA-162`, `OA-167`, `OA-173`, `OA-174`, `OA-175`, `OA-178`, `OA-183`, and `OA-188`. Their corresponding matrix rows remain working obligations; they must not be marked complete by metadata alone.
 
@@ -32,9 +32,9 @@ The 18 OA rows are `OA-089`, `OA-090`, `OA-123`, `OA-136`, `OA-141`, `OA-144`, `
 
 ## Rive remediation gate
 
-The four required production Rive objects are invitation seal, journal clasp, voyage compass, and finale mechanism. The local repository has no production Rive binary, no project-owned authoring source, and no installed authoring tool. The Rive web editor is reachable but its editor sign-in page requires an authorized project account before project-owned source can be created and exported. No credential, account creation, upload, or external asset substitution has been attempted.
+The four required production Rive objects are invitation seal, journal clasp, voyage compass, and finale mechanism. On 2026-07-22, the authorized Rive editor account exported the project-owned `.riv` runtime and `.rev` backup pairs for each object. The governed sources and exports are present locally, hash-recorded in `public/animations/manifest.json`, and validated by the Rive WebGL runtime.
 
-Until that authorized authoring handoff is available, the four `AR-*` records are deliberately not eligible for acceptance. Repository-local work on their mounting, contracts, fallbacks, and lifecycle continues independently.
+Invitation Seal, Journal Clasp, and Voyage Compass use their editor-authored `ViewModel1` data-binding interface; Finale Mechanism retains native state-machine inputs. The runtime adapter preserves the frozen consumer names and types for both transports. Each asset still retains its local SVG static fallback. This closes the external export-entitlement portion of the Rive gate; Phase 6 program acceptance remains pending the remaining OA and matrix closure gates.
 
 ## Immediate implementation order
 
