@@ -6,8 +6,14 @@ import {
   cancelPrivateUpload,
   completePrivateUploadStream,
   initiatePrivateUpload,
+  inspectCompletedPrivateUploadV2,
   receivePrivateUploadPart,
 } from "@/private-content/uploads";
+import { encryptPrivatePackageV2 } from "@/private-content/streaming";
+import { makePayload } from "@/private-content/package";
+import { mkdtemp, rm } from "node:fs/promises";
+import os from "node:os";
+import path from "node:path";
 
 const digest = (value: string | Buffer) => createHash("sha256").update(value).digest("hex");
 const storage = {
@@ -32,6 +38,17 @@ const storage = {
 };
 
 describe("Phase 2 raw private upload service", () => {
+  it("inspects a completed v2 upload directly from its provider stream", async () => {
+    const entry = Buffer.from('{"schemaVersion":1}').toString("base64url");
+    const payload = makePayload({ manifest: { packageId: "upload-v2-proof", packageRevision: 1, formatVersion: 1, createdAt: "2026-07-22T00:00:00.000Z", sourceApplicationVersion: "0.2", minimumApplicationVersion: "0.2", classification: "private", contentType: "tale-draft", tales: [{ logicalId: "tale", slug: "upload-v2", title: "Upload v2", contentPath: "tales/proof.json" }], assets: [], dependencies: [], totals: { files: 1, assets: 0, plaintextBytes: Buffer.from(entry, "base64url").length } }, entries: { "tales/proof.json": entry } });
+    const wire: Buffer[] = []; for await (const chunk of encryptPrivatePackageV2(payload, "upload passphrase")) wire.push(chunk);
+    const root = await mkdtemp(path.join(os.tmpdir(), "sealed-upload-v2-"));
+    try {
+      const upload: any = { id: "upload-v2", operationId: "operation-v2", storageKey: "uploads/v2", expectedSha256: digest(Buffer.concat(wire)), receivedBytes: Buffer.concat(wire).length, expiresAt: new Date(Date.now() + 60_000), completedAt: new Date(), cancelledAt: null, parts: [], operation: { ownerAccountId: "account-1", state: "UPLOADED", progress: "{}" } };
+      const result = await inspectCompletedPrivateUploadV2({ actorId: "creator", uploadId: upload.id, passphrase: "upload passphrase", stagingRoot: root }, { storage: () => ({ ...storage, read: async () => Readable.from(wire) }) as any, accountForActor: async () => "account-1", findUpload: async () => upload });
+      expect(result).toMatchObject({ packageId: "upload-v2-proof", fileCount: 1 });
+    } finally { await rm(root, { recursive: true, force: true }); }
+  });
   it("initiates an opaque durable upload and persists its multipart receiver", async () => {
     const updateProgress = vi.fn(async () => undefined);
     const result = await initiatePrivateUpload(

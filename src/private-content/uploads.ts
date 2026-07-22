@@ -11,6 +11,7 @@ import {
   requestPrivateOperationCancellation,
 } from "./operations";
 import { LocalPhase2PrivateStorageProvider, UnconfiguredS3CompatiblePrivateStorageProvider } from "./provider-storage";
+import { stagePrivatePackageV2 } from "./v2-streaming-io";
 
 const privateDb = db as any;
 const MAX_PART_BYTES = 8 * 1024 * 1024;
@@ -300,6 +301,30 @@ export async function privateUploadStatus(
     expiresAt: upload.expiresAt,
     completedAt: upload.completedAt,
     cancelledAt: upload.cancelledAt,
+  };
+}
+
+/** Authenticated v2 inspection reads the immutable upload object directly from private storage. */
+export async function inspectCompletedPrivateUploadV2(
+  input: { actorId: string; uploadId: string; passphrase: string; stagingRoot: string },
+  overrides: Partial<UploadDependencies> = {},
+) {
+  const deps = dependencies(overrides);
+  const upload = await ownedUpload(input.uploadId, input.actorId, deps);
+  if (!upload.completedAt || upload.operation.state !== "UPLOADED" || !upload.expectedSha256)
+    throw privateFailure("PRIVATE_PACKAGE_CONFLICT");
+  const source = await deps.storage().read({
+    key: upload.storageKey,
+    sha256: upload.expectedSha256,
+    byteLength: upload.receivedBytes,
+  });
+  const staged = await stagePrivatePackageV2({ source, passphrase: input.passphrase, stagingRoot: input.stagingRoot });
+  return {
+    operationId: upload.operationId,
+    packageId: staged.manifest.packageId,
+    packageRevision: staged.manifest.packageRevision,
+    fileCount: staged.files.length,
+    assetCount: staged.manifest.assets.length,
   };
 }
 
