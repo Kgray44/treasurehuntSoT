@@ -2,7 +2,7 @@
 
 ## Status
 
-In progress. This report is a durable execution record and is not a completion receipt.
+Closure implementation complete; final integrated validation is recorded in the companion validation report and completion receipt.
 
 ## Branch reconstruction
 
@@ -12,8 +12,8 @@ In progress. This report is a durable execution record and is not a completion r
 | Branch                                   | `codex/project-lanternwake-phase-6-make-it-seaworthy`                                            |
 | Original Phase 6 base                    | `0ecd2f9cca6116e2f7f9ab4408ade749fb061e72`                                                       |
 | Retrieved pushed starting tip            | `d9b20219633e44ef2ddf1bedee792188bf8220b5`                                                       |
-| Current checkpoint                       | `d81ec95d5e049e4a3d11a65ccd42fce14f116a10`                                                       |
-| Remote parity at checkpoint              | Equal to `origin/codex/project-lanternwake-phase-6-make-it-seaworthy`                            |
+| Continuation implementation checkpoints  | `d81ec95d5`, `2748913f`, `db26a616`, `884ece6`, `4f05823e`, `fb1b3e9e`, `0eab86e2`               |
+| Remote parity at report update           | Verified again before the completion receipt                                                     |
 | `origin/main` observed before checkpoint | `4a84b9fd2dfa439127c35b8ce865ff8b7a5742b7`; untouched                                            |
 
 ## Programmatic inventory at reconstruction
@@ -41,8 +41,9 @@ Focused validation in local mirror `C:/Users/kgray/AppData/Local/ForeverTreasure
 
 The complete typecheck was first attempted and failed before these Phase 6 files due to the validation mirror's stale generated Prisma client (`PrismaClient.tallTale` was absent across existing Studio/Tall Tale files). The mirror-only command `prisma generate --schema prisma/schema.sqlite.prisma` refreshed that generated dependency without changing authoritative source. A second `tsc --noEmit` then passed. The initial failure remains recorded as validation-environment evidence rather than being erased.
 
-## Next closure work
+## Final implementation additions
 
-1. Close and evidence the remaining Altar interaction/light requirements without sharing transforms between Motion, GSAP, and CSS.
-2. Verify the remaining journal, PageFlip, Finale/Rive/audio, Lottie, scene, and shell rows on production callers and reconcile their ledger states.
-3. Establish the isolated database/browser owner before mutation-dependent end-to-end validation.
+1. The Ship's Log now uses a server projection of the immutable released-event time for moon phase and renders a phase-specific glyph with equivalent accessible text. It never derives phase from a client clock.
+2. Dense same-day logs now paginate after 24 entries into stable 12-entry PageFlip leaves; the former seven-day-only threshold could leave a long one-day voyage unpaged.
+3. Award-light rendering is keyed to a newly unseen awarded artifact and a session one-shot. Historical artifact remounts do not replay the sweep.
+4. The final ledger contains 592 validated records, five explicit supersession decisions for duplicate/tombstoned scenes, and two explicit rejections for the non-required sound-reactive mechanism request. No source ledger record remains in a nonterminal implementation state.
