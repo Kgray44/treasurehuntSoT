@@ -26,6 +26,11 @@ Current completed evidence:
   expansion. Steam verifies its signed OpenID assertion; Microsoft validates
   PKCE, nonce, JWKS signature, issuer, audience, and expiry. Xbox remains
   separately partner-gated.
+- Prisma schema validation, Prettier, TypeScript, Voyagewright language
+  validation, and the continuation-diff privacy scan passed. ESLint completed
+  with zero errors and 23 pre-existing warnings. The separate animation-asset
+  validation remains Lanternwake's documented production Rive NO-GO, not a
+  Wayfarer failure.
 - A fresh isolated SQLite database was created by direct ordered migration
   rehearsal; all 14 migrations applied and `PRAGMA foreign_key_check` returned
   no rows. The host's Prisma `migrate deploy` engine still emits its known empty
