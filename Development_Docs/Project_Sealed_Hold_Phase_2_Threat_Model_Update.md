@@ -1,17 +1,17 @@
 # Project Sealed Hold Phase 2 Threat Model Update
 
-**Status:** implementation-grounded update; not an acceptance claim.  
+**Status:** implementation-grounded update; not an acceptance claim.
 **Scope:** private package import, private assets, and the Phase 2 durable-operation foundation.
 
 ## Trust boundaries
 
-| Boundary | Required control | Current implementation record |
-| --- | --- | --- |
-| Package author to server | authenticated v1 envelope; bounded schema/path/media validation | Implemented for bounded v1 payloads in `package.ts`. |
-| Streaming sender to receiver | ordered, authenticated framed v2 container | Framing primitive exists in `streaming.ts`; end-to-end streaming receipt is not yet recorded here. |
-| Server to object storage | private root/namespace, checksums, immutable promotion | Local hash-addressed staging/finalization exists; provider-neutral production adapter work remains. |
-| Retry data to worker | server encryption and wrapped DEK | Schema/contracts are reserved; legacy `contentJson` remains the current retry source. |
-| Asset to consumer | canonical authorization plus clean scan state | Required policy; full delivery enforcement is not yet evidenced by this record. |
+| Boundary                     | Required control                                                | Current implementation record                                                                       |
+| ---------------------------- | --------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| Package author to server     | authenticated v1 envelope; bounded schema/path/media validation | Implemented for bounded v1 payloads in `package.ts`.                                                |
+| Streaming sender to receiver | ordered, authenticated framed v2 container                      | Framing primitive exists in `streaming.ts`; end-to-end streaming receipt is not yet recorded here.  |
+| Server to object storage     | private root/namespace, checksums, immutable promotion          | Local hash-addressed staging/finalization exists; provider-neutral production adapter work remains. |
+| Retry data to worker         | server encryption and wrapped DEK                               | Schema/contracts are reserved; legacy `contentJson` remains the current retry source.               |
+| Asset to consumer            | canonical authorization plus clean scan state                   | Required policy; full delivery enforcement is not yet evidenced by this record.                     |
 
 ## Principal threats and controls
 
