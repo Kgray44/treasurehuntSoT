@@ -116,12 +116,34 @@ describe("Sealed Hold Phase 2 frozen contracts", () => {
   it("round-trips an authenticated v2 manifest and ordered file records", async () => {
     const entry = Buffer.from(JSON.stringify({ schemaVersion: 1 })).toString("base64url");
     const payload = makePayload({
-      manifest: { packageId: "v2-proof-package", packageRevision: 1, formatVersion: 1, createdAt: "2026-07-22T00:00:00.000Z", sourceApplicationVersion: "0.2.0", minimumApplicationVersion: "0.2.0", classification: "private", contentType: "tale-draft", tales: [{ logicalId: "tale", slug: "v2-proof", title: "V2 proof", contentPath: "tales/proof.json" }], assets: [], dependencies: [], totals: { files: 1, assets: 0, plaintextBytes: Buffer.from(entry, "base64url").length } },
+      manifest: {
+        packageId: "v2-proof-package",
+        packageRevision: 1,
+        formatVersion: 1,
+        createdAt: "2026-07-22T00:00:00.000Z",
+        sourceApplicationVersion: "0.2.0",
+        minimumApplicationVersion: "0.2.0",
+        classification: "private",
+        contentType: "tale-draft",
+        tales: [{ logicalId: "tale", slug: "v2-proof", title: "V2 proof", contentPath: "tales/proof.json" }],
+        assets: [],
+        dependencies: [],
+        totals: { files: 1, assets: 0, plaintextBytes: Buffer.from(entry, "base64url").length },
+      },
       entries: { "tales/proof.json": entry },
     });
     const wire = await collect(encryptPrivatePackageV2(payload, " exact passphrase "));
-    const fragmented = (async function* () { for (let i = 0; i < wire.length; i += 7) yield wire.subarray(i, i + 7); })();
+    const fragmented = (async function* () {
+      for (let i = 0; i < wire.length; i += 7) yield wire.subarray(i, i + 7);
+    })();
     await expect(decryptPrivatePackageV2(fragmented, " exact passphrase ")).resolves.toEqual(payload);
-    await expect(decryptPrivatePackageV2((async function* () { yield wire; })(), "exact passphrase")).rejects.toMatchObject({ code: "PRIVATE_PACKAGE_AUTHENTICATION_FAILED" });
+    await expect(
+      decryptPrivatePackageV2(
+        (async function* () {
+          yield wire;
+        })(),
+        "exact passphrase",
+      ),
+    ).rejects.toMatchObject({ code: "PRIVATE_PACKAGE_AUTHENTICATION_FAILED" });
   });
 });

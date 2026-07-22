@@ -54,7 +54,9 @@ export async function privatePayloadFromCanonicalImport(input: {
       ? null
       : await client.taleDraft.findFirstOrThrow({
           where: { taleId, ...(tale.currentDraftRevisionId ? { id: tale.currentDraftRevisionId } : {}) },
-          include: { chapters: { orderBy: { orderIndex: "asc" }, include: { blocks: { orderBy: { orderIndex: "asc" } } } } },
+          include: {
+            chapters: { orderBy: { orderIndex: "asc" }, include: { blocks: { orderBy: { orderIndex: "asc" } } } },
+          },
         });
     const [locations, artifacts, taleAssets] = await Promise.all([
       client.taleLocation.findMany({ where: { taleId }, orderBy: { orderIndex: "asc" } }),
@@ -66,71 +68,71 @@ export async function privatePayloadFromCanonicalImport(input: {
     const currentDraft = immutableVersion
       ? JSON.parse(immutableVersion.contentSnapshot)
       : {
-      autosaveVersion: draft!.autosaveVersion,
-      tale: {
-        id: tale.id,
-        slug: tale.slug,
-        title: tale.title,
-        subtitle: tale.subtitle ?? undefined,
-        shortDescription: tale.shortDescription ?? undefined,
-        longDescription: tale.longDescription ?? undefined,
-        coverAssetId: tale.coverAssetId ?? undefined,
-        theme: tale.theme,
-        visibility: "PRIVATE",
-        playerCountMin: tale.playerCountMin,
-        playerCountMax: tale.playerCountMax,
-        estimatedDuration: tale.estimatedDuration ?? undefined,
-        contentWarnings: tale.contentWarnings ?? undefined,
-      },
-      chapters: draft!.chapters.map((chapter: any) => ({
-        id: chapter.id,
-        title: chapter.title,
-        subtitle: chapter.subtitle ?? undefined,
-        description: chapter.description ?? undefined,
-        coverAssetId: chapter.coverAssetId ?? undefined,
-        estimatedDuration: chapter.estimatedDuration ?? undefined,
-        isOptional: chapter.isOptional,
-        metadata: jsonObject(chapter.metadata),
-        blocks: chapter.blocks.map((block: any) => ({
-          id: block.id,
-          blockType: block.blockType,
-          title: block.title,
-          internalLabel: block.internalLabel ?? undefined,
-          configuration: jsonObject(block.configuration),
-          presentation: jsonObject(block.presentation),
-          completion: jsonObject(block.completion),
-          creatorNotes: block.creatorNotes ?? undefined,
-          isEnabled: block.isEnabled,
-          schemaVersion: block.schemaVersion,
-        })),
-      })),
-      locations: locations.map((location: any) => ({
-        logicalId: location.legacyKey ?? location.id,
-        name: location.name,
-        slug: location.slug,
-        region: location.region ?? undefined,
-        generalDescription: location.generalDescription ?? undefined,
-        playerFacingDescription: location.playerFacingDescription ?? undefined,
-        captainNotes: location.captainNotes ?? undefined,
-        locationType: location.locationType,
-        safeLabel: location.safeLabel ?? undefined,
-        exactness: location.exactness,
-        verificationProfile: jsonObject(location.verificationProfile),
-      })),
-      artifacts: artifacts.map((artifact: any) => ({
-        logicalId: artifact.legacyKey ?? artifact.id,
-        name: artifact.name,
-        shortDescription: artifact.shortDescription ?? undefined,
-        loreDescription: artifact.loreDescription ?? undefined,
-        ordinaryGameObjectLabel: artifact.ordinaryGameObjectLabel ?? undefined,
-        artworkAssetId: artifact.artworkAssetId ?? undefined,
-        revealVideoAssetId: artifact.revealVideoAssetId ?? undefined,
-        modelAssetId: artifact.modelAssetId ?? undefined,
-        inventoryCategory: artifact.inventoryCategory,
-        collectionGroup: artifact.collectionGroup ?? undefined,
-        safeName: artifact.safeName ?? undefined,
-        silhouetteLabel: artifact.silhouetteLabel ?? undefined,
-      })),
+          autosaveVersion: draft!.autosaveVersion,
+          tale: {
+            id: tale.id,
+            slug: tale.slug,
+            title: tale.title,
+            subtitle: tale.subtitle ?? undefined,
+            shortDescription: tale.shortDescription ?? undefined,
+            longDescription: tale.longDescription ?? undefined,
+            coverAssetId: tale.coverAssetId ?? undefined,
+            theme: tale.theme,
+            visibility: "PRIVATE",
+            playerCountMin: tale.playerCountMin,
+            playerCountMax: tale.playerCountMax,
+            estimatedDuration: tale.estimatedDuration ?? undefined,
+            contentWarnings: tale.contentWarnings ?? undefined,
+          },
+          chapters: draft!.chapters.map((chapter: any) => ({
+            id: chapter.id,
+            title: chapter.title,
+            subtitle: chapter.subtitle ?? undefined,
+            description: chapter.description ?? undefined,
+            coverAssetId: chapter.coverAssetId ?? undefined,
+            estimatedDuration: chapter.estimatedDuration ?? undefined,
+            isOptional: chapter.isOptional,
+            metadata: jsonObject(chapter.metadata),
+            blocks: chapter.blocks.map((block: any) => ({
+              id: block.id,
+              blockType: block.blockType,
+              title: block.title,
+              internalLabel: block.internalLabel ?? undefined,
+              configuration: jsonObject(block.configuration),
+              presentation: jsonObject(block.presentation),
+              completion: jsonObject(block.completion),
+              creatorNotes: block.creatorNotes ?? undefined,
+              isEnabled: block.isEnabled,
+              schemaVersion: block.schemaVersion,
+            })),
+          })),
+          locations: locations.map((location: any) => ({
+            logicalId: location.legacyKey ?? location.id,
+            name: location.name,
+            slug: location.slug,
+            region: location.region ?? undefined,
+            generalDescription: location.generalDescription ?? undefined,
+            playerFacingDescription: location.playerFacingDescription ?? undefined,
+            captainNotes: location.captainNotes ?? undefined,
+            locationType: location.locationType,
+            safeLabel: location.safeLabel ?? undefined,
+            exactness: location.exactness,
+            verificationProfile: jsonObject(location.verificationProfile),
+          })),
+          artifacts: artifacts.map((artifact: any) => ({
+            logicalId: artifact.legacyKey ?? artifact.id,
+            name: artifact.name,
+            shortDescription: artifact.shortDescription ?? undefined,
+            loreDescription: artifact.loreDescription ?? undefined,
+            ordinaryGameObjectLabel: artifact.ordinaryGameObjectLabel ?? undefined,
+            artworkAssetId: artifact.artworkAssetId ?? undefined,
+            revealVideoAssetId: artifact.revealVideoAssetId ?? undefined,
+            modelAssetId: artifact.modelAssetId ?? undefined,
+            inventoryCategory: artifact.inventoryCategory,
+            collectionGroup: artifact.collectionGroup ?? undefined,
+            safeName: artifact.safeName ?? undefined,
+            silhouetteLabel: artifact.silhouetteLabel ?? undefined,
+          })),
         };
     entries[contentPath] = Buffer.from(JSON.stringify(currentDraft)).toString("base64url");
     manifestTales.push({
@@ -141,7 +143,8 @@ export async function privatePayloadFromCanonicalImport(input: {
     });
     for (const asset of taleAssets) {
       const source = sourceAssets.get(asset.checksum);
-      if (!source) throw privateFailure("PRIVATE_PACKAGE_INVALID", "A private asset cannot be exported without retained bytes.");
+      if (!source)
+        throw privateFailure("PRIVATE_PACKAGE_INVALID", "A private asset cannot be exported without retained bytes.");
       const bytes = input.sourcePayload.entries[source.relativePath];
       if (!bytes) throw privateFailure("PRIVATE_PACKAGE_CHECKSUM_MISMATCH");
       const relativePath = `assets/${asset.id}`;

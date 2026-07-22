@@ -339,7 +339,11 @@ export async function expirePrivateUploads(
   for (const upload of uploads) {
     if (upload.completedAt || upload.cancelledAt || upload.expiresAt > now) continue;
     const multipartUploadId = parseProgress(upload.operation?.progress).multipartUploadId;
-    if (multipartUploadId) await deps.storage().abortMultipart(multipartUploadId).catch(() => undefined);
+    if (multipartUploadId)
+      await deps
+        .storage()
+        .abortMultipart(multipartUploadId)
+        .catch(() => undefined);
     await deps.cancelUpload(upload);
     expired++;
   }

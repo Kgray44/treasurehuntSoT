@@ -1,6 +1,10 @@
 # Project Sealed Hold Phase 2 Design Record: Fortify the Hold
 
-**Status:** contracts frozen before implementation.
+**Status:** implementation closed subject to the shared-route browser gate recorded below.
+
+## 2026-07-22 continuation closure addendum
+
+The owner-authorized V2 amendment supersedes every earlier `blocked-governing` statement. V1 compatibility remains intact; V2 uses the authenticated framed contract in `Private_Content_Streaming_Package_Format.md`. Client generation, isolated SQLite materialization/export, full automated validation, static gates, build, and scans passed as recorded in the validation record. Browser acceptance is scope-rejected rather than passed because a shared Harborlight route conflict prevents the app from rendering and is outside this branch's authorization.
 **Branch:** `codex/project-sealed-hold-phase2-fortify-the-hold`
 **Base:** `origin/main` `f4bfc4b4f3585bc8f60ce4d94375dc77a7092da2`
 **Date:** 2026-07-22 America/New_York

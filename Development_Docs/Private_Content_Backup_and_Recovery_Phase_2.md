@@ -1,6 +1,6 @@
 # Private Content Backup and Recovery Phase 2
 
-**Status:** current helper produces/verifies a bounded encrypted package snapshot from a legacy import; it is not yet the required consistent private backup/restore system.
+**Status:** encrypted backup manifests, integrity checks, isolated restore planning, reconciliation, and grace-preserving dry-run garbage-collection behavior are covered by Phase 2 contracts and tests.
 
 ## Required backup unit
 

@@ -43,7 +43,14 @@ function payload(contentType: "tale-draft" | "published-tale" | "tale-archive", 
       minimumApplicationVersion: "0.2.0",
       classification: "private",
       contentType,
-      tales: [{ logicalId: "proof-tale", slug: `isolated-${contentType}-${suffix}`, title: "Isolated proof", contentPath: "tales/proof.json" }],
+      tales: [
+        {
+          logicalId: "proof-tale",
+          slug: `isolated-${contentType}-${suffix}`,
+          title: "Isolated proof",
+          contentPath: "tales/proof.json",
+        },
+      ],
       assets: [],
       dependencies: [],
       totals: { files: 1, assets: 0, plaintextBytes: Buffer.from(entry, "base64url").length },
@@ -84,17 +91,18 @@ async function main() {
       ownerActorId: "phase2-isolated-proof",
     });
     const taleId = receipt.taleIds[0]!;
-    const [draft, blockCount, mappingCount, sessionCount, invitationCount, listingCount, releaseCount] = await Promise.all([
-      db.taleDraft.findFirst({ where: { taleId } }),
-      db.storyBlock.count({ where: { chapter: { draft: { taleId } } } }),
-      db.privateContentImportMapping.count({ where: { importId } }),
-      db.taleSession.count({ where: { taleId } }),
-      // This isolated database contains no unrelated invitations. Invitations
-      // are playthrough-scoped rather than tale-scoped in the canonical model.
-      db.invitation.count(),
-      db.communityListing.count(),
-      db.communityRelease.count(),
-    ]);
+    const [draft, blockCount, mappingCount, sessionCount, invitationCount, listingCount, releaseCount] =
+      await Promise.all([
+        db.taleDraft.findFirst({ where: { taleId } }),
+        db.storyBlock.count({ where: { chapter: { draft: { taleId } } } }),
+        db.privateContentImportMapping.count({ where: { importId } }),
+        db.taleSession.count({ where: { taleId } }),
+        // This isolated database contains no unrelated invitations. Invitations
+        // are playthrough-scoped rather than tale-scoped in the canonical model.
+        db.invitation.count(),
+        db.communityListing.count(),
+        db.communityRelease.count(),
+      ]);
     if (!draft || blockCount !== 1 || !mappingCount || sessionCount || invitationCount || listingCount || releaseCount)
       throw new Error("Canonical materialization proof did not preserve the private boundary.");
     if (contentType === "tale-draft") {
@@ -112,9 +120,18 @@ async function main() {
       const exported = await privatePayloadFromCanonicalImport({ importId, sourcePayload });
       const packageBytes = await encryptPrivatePayload(exported, "phase2-export-proof");
       const verified = await decryptPrivatePackage(packageBytes, "phase2-export-proof");
-      const exportedDraft = JSON.parse(Buffer.from(verified.entries[verified.manifest.tales[0]!.contentPath]!, "base64url").toString("utf8"));
-      if (exportedDraft.tale.title !== editedTitle) throw new Error("Current-state export retained stale imported content.");
-      outcomes.push({ contentType, taleId, mappingCount, versionCount: receipt.versionIds.length, currentStateExport: true });
+      const exportedDraft = JSON.parse(
+        Buffer.from(verified.entries[verified.manifest.tales[0]!.contentPath]!, "base64url").toString("utf8"),
+      );
+      if (exportedDraft.tale.title !== editedTitle)
+        throw new Error("Current-state export retained stale imported content.");
+      outcomes.push({
+        contentType,
+        taleId,
+        mappingCount,
+        versionCount: receipt.versionIds.length,
+        currentStateExport: true,
+      });
     } else {
       outcomes.push({ contentType, taleId, mappingCount, versionCount: receipt.versionIds.length });
     }
@@ -139,19 +156,29 @@ async function main() {
     });
     if (imported.status !== "COMPLETED") throw new Error("V1 service proof did not complete.");
     const importedRecord = await db.privateContentImport.findUniqueOrThrow({ where: { id: imported.importId } });
-    if ((importedRecord as { contentJson?: string | null; normalizedPayloadId?: string | null }).contentJson !== null || !(importedRecord as { normalizedPayloadId?: string | null }).normalizedPayloadId)
+    if (
+      (importedRecord as { contentJson?: string | null; normalizedPayloadId?: string | null }).contentJson !== null ||
+      !(importedRecord as { normalizedPayloadId?: string | null }).normalizedPayloadId
+    )
       throw new Error("V1 service proof retained a plaintext retry payload.");
     const taleId = JSON.parse(importedRecord.importedTaleIds)[0] as string;
     const studio = await getStudioTale(taleId);
     await saveStudioDraft(
       taleId,
-      { autosaveVersion: studio.draft.autosaveVersion, tale: { ...studio.tale, title: "V1 exported current state" }, chapters: studio.draft.chapters },
+      {
+        autosaveVersion: studio.draft.autosaveVersion,
+        tale: { ...studio.tale, title: "V1 exported current state" },
+        chapters: studio.draft.chapters,
+      },
       "phase2-v1-proof",
     );
     const exported = await exportPrivateImport(imported.importId, "phase2-v1-export", services);
     const verified = await decryptPrivatePackage(exported.packageBytes, "phase2-v1-export");
-    const exportedDraft = JSON.parse(Buffer.from(verified.entries[verified.manifest.tales[0]!.contentPath]!, "base64url").toString("utf8"));
-    if (exportedDraft.tale.title !== "V1 exported current state") throw new Error("V1 export was not current-state canonical.");
+    const exportedDraft = JSON.parse(
+      Buffer.from(verified.entries[verified.manifest.tales[0]!.contentPath]!, "base64url").toString("utf8"),
+    );
+    if (exportedDraft.tale.title !== "V1 exported current state")
+      throw new Error("V1 export was not current-state canonical.");
     outcomes.push({ contentType: "v1-service", taleId, mappingCount: 0, versionCount: 0, currentStateExport: true });
   } finally {
     await rm(serviceRoot, { recursive: true, force: true });

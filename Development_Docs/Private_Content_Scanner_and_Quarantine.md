@@ -1,6 +1,6 @@
 # Private Content Scanner and Quarantine
 
-**Status:** provider contract and deterministic synthetic fixture scanner implemented; production scanner integration is not asserted.
+**Status:** provider contract and deterministic synthetic fixture scanner implemented; ClamAV is implemented-external-unconfigured and never asserted clean when absent.
 
 ## States and invariant
 

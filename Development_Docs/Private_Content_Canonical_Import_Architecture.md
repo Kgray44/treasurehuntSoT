@@ -1,6 +1,6 @@
 # Private Content Canonical Import Architecture
 
-**Status:** ownership/contract record. Existing package import currently persists private import and asset records; full Chronicle materialization must be evidenced separately.
+**Status:** canonical materialization is private, additive, and evidenced separately by the isolated SQLite proof; it creates no invitation, Session, Voyage, Community listing, or Community release.
 
 ## Authority boundary
 

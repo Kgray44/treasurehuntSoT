@@ -1,6 +1,6 @@
 # Private Content Key Management
 
-**Status:** envelope-key interface and development provider implemented; no production KMS is configured by this record.
+**Status:** envelope-key interface, development provider, encrypted retry migration, and rewrap contract implemented; production KMS is implemented-external-unconfigured.
 
 ## Envelope model
 

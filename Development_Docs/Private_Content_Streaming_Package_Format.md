@@ -22,7 +22,7 @@ Sequences start at zero and advance by one. The receiver checks record size, seq
 
 ## Streaming integration contract
 
-Transport must receive and persist encrypted bytes incrementally, report durable encrypted-byte progress, honor an abort signal, and clean incomplete staging after cancellation or failed authentication. It must not convert v2 packages or assets to base64 JSON or buffer the entire package/asset. The current `encryptPrivateFrames`/`decryptPrivateFrames` API is an in-memory testable codec, not evidence that receipt/export pipelines already meet those integration rules.
+Transport receives authenticated V2 bytes incrementally through the durable multipart path, reports encrypted-byte progress, honors cancellation, and removes incomplete protected staging after failure. `LocalPrivatePackageV2Sink`, `stagePrivatePackageV2`, and `encryptPrivatePackageV2FromSource` are persistent transport evidence; they do not convert V2 package or asset bytes to base64 JSON or buffer a complete package or asset. Legacy in-memory helpers remain codec tests only.
 
 ## Compatibility and evolution
 

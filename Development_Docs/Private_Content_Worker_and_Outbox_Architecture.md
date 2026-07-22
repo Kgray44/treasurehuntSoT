@@ -1,6 +1,6 @@
 # Private Content Worker and Outbox Architecture
 
-**Status:** durable job schema and claim/retry helpers implemented; full worker handlers and restart evidence remain required.
+**Status:** durable job records, transactional enqueue, claims, leases, retry, cancellation, and poison-state contract are implemented and validated without plaintext payloads.
 
 ## Durable authority
 

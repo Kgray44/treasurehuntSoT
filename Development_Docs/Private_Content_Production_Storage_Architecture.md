@@ -1,6 +1,6 @@
 # Private Content Production Storage Architecture
 
-**Status:** local store implemented; production S3-compatible integration remains a contract/implementation gate.
+**Status:** local store proven in isolated validation; S3-compatible storage is implemented-external-unconfigured.
 
 ## Contract and namespaces
 
