@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any -- additive Phase 2 Prisma fields can precede generated client types */
 import { randomUUID } from "node:crypto";
 import { db } from "@/lib/db";
 import {

@@ -40,7 +40,7 @@ export async function GET(request: Request, context: { params: Promise<{ assetId
           sha256: reference.object.sha256,
           byteLength: reference.object.byteLength,
         },
-        scanState: (reference.object as any).scanStatus as "CLEAN",
+        scanState: (reference.object as unknown as { scanStatus: "CLEAN" }).scanStatus,
         mediaType: reference.object.mediaType,
       },
       playthroughId,

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any -- durable upload fixtures use intentionally partial database records */
 import { createHash } from "node:crypto";
 import { Readable } from "node:stream";
 import { describe, expect, it, vi } from "vitest";

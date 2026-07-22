@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any -- additive Phase 2 Prisma fields can precede generated client types */
 import { createHash } from "node:crypto";
 import { getBlockDefinition } from "@/chronicle/block-registry";
 import { studioDraftSchema } from "@/chronicle/studio-service";
