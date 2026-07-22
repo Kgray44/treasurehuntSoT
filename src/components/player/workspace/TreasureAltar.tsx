@@ -7,6 +7,7 @@ import { motion } from "motion/react";
 import type { PublicArtifact, PublicSnapshot } from "@/domain/story";
 import { useRuntimeOwnedSceneTarget, useSceneTargetRegistration } from "@/animation/hosts/SceneHost";
 import { useOptionalSceneHost } from "@/animation/hosts/SceneHostContext";
+import { consumeOneShot, hasConsumedOneShot, platformOneShotKey } from "@/animation/platform/one-shot";
 import type {
   ExternalSceneTargetHandle,
   ExternalTargetExportRequest,
@@ -71,6 +72,15 @@ function ArtifactSlot({
   onArtifactTargetHandlesChange?: TreasureAltarProps["onArtifactTargetHandlesChange"];
 }) {
   const known = Boolean(artifact.name) && artifact.state !== "SILHOUETTE";
+  const awardLightKey = platformOneShotKey("artifact-award-light", artifact.key, artifact.awardedAt ?? "unversioned");
+  const shouldShowAwardLight =
+    artifact.state === "AWARDED" &&
+    artifact.unseen &&
+    typeof window !== "undefined" &&
+    !hasConsumedOneShot(awardLightKey);
+  useEffect(() => {
+    if (shouldShowAwardLight) consumeOneShot(awardLightKey);
+  }, [awardLightKey, shouldShowAwardLight]);
   const layoutInput = useMemo(
     () => ({
       targetKey: `artifact:${artifact.key}:altar-layout-source`,
@@ -168,7 +178,7 @@ function ArtifactSlot({
         <i />
         <i />
       </span>
-      {artifact.state === "AWARDED" ? (
+      {shouldShowAwardLight ? (
         <span
           className="artifact-award-light"
           data-artifact-award-light={artifact.key}

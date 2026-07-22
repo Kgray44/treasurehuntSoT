@@ -19,7 +19,7 @@ const compass: PublicArtifact = {
   displayX: 24,
   displayY: 42,
   connectedArtifactKey: "keel-star",
-  unseen: false,
+  unseen: true,
 };
 
 const star: PublicArtifact = {
@@ -51,6 +51,7 @@ function snapshot(artifacts: PublicArtifact[]) {
 }
 
 beforeEach(() => {
+  sessionStorage.clear();
   Object.defineProperty(window, "matchMedia", {
     configurable: true,
     value: vi.fn(() => ({
@@ -440,7 +441,7 @@ describe("TreasureAltar animation boundary", () => {
     expect(sections[1]).toHaveAttribute("aria-labelledby", headings[1].id);
   });
 
-  it("renders one contained, noninteractive light sweep for each awarded artifact", () => {
+  it("renders one contained, noninteractive light sweep for each newly awarded artifact", () => {
     const view = render(<TreasureAltar snapshot={snapshot([compass, star])} inspect={vi.fn()} />);
 
     expect(view.container.querySelectorAll(`[data-artifact-award-light='${compass.key}']`)).toHaveLength(1);
@@ -449,6 +450,15 @@ describe("TreasureAltar animation boundary", () => {
       "true",
     );
     expect(view.container.querySelector(`[data-artifact-award-light='${star.key}']`)).toBeNull();
+  });
+
+  it("does not replay an award light when a historical artifact remounts", () => {
+    const first = render(<TreasureAltar snapshot={snapshot([compass])} inspect={vi.fn()} />);
+    expect(first.container.querySelector(`[data-artifact-award-light='${compass.key}']`)).toBeInTheDocument();
+    first.unmount();
+
+    const second = render(<TreasureAltar snapshot={snapshot([compass])} inspect={vi.fn()} />);
+    expect(second.container.querySelector(`[data-artifact-award-light='${compass.key}']`)).toBeNull();
   });
 
   it("keeps hover and keyboard emphasis inside the GSAP silhouette boundary", () => {
