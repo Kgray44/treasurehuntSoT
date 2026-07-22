@@ -4,7 +4,7 @@
 
 ## Continuation closure result
 
-Focused private-content tests, the 102-file/905-test Vitest run, both Prisma validations, clean SQLite migration/materialization proof, typecheck, formatting, lint-with-zero-errors, Webpack production build, and private-content scans passed on 2026-07-22. Optional MySQL, S3/MinIO, ClamAV, and KMS live exercises remain intentionally unconfigured. Browser validation was attempted with an owned isolated server and stopped before page rendering on the shared `[id]`/`[slug]` route conflict; it is scope-rejected, not passed.
+Focused private-content tests, the 102-file/905-test Vitest run, both Prisma validations, clean SQLite migration/materialization proof, typecheck, formatting, lint-with-zero-errors, Webpack production build, and private-content scans passed on 2026-07-22. Optional MySQL, S3/MinIO, ClamAV, and KMS live exercises remain intentionally unconfigured. Browser acceptance passed after the owner-authorized public-listing route correction: an isolated authenticated Studio run covered synthetic V1 inspection/import/materialization, passphrase clearing, verified export/download, status semantics, 390x844 mobile portrait, and 1440x900 desktop.
 
 ## Current focused coverage
 

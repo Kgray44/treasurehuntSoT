@@ -23,6 +23,6 @@ The owner-authorized 2026-07-22 V2 amendment is governing. The prior `blocked-go
 
 Docker, `mysql`, MinIO/S3, ClamAV, and a KMS emulator were absent. Their provider-neutral implementations and deterministic tests are complete, while live integration status is `implemented-external-unconfigured`. No unavailable provider was recorded as passed.
 
-## Browser gate boundary
+## Browser acceptance
 
-The owned isolated server on port 4317 encountered the existing Next route-tree error: `You cannot use different slug names for the same dynamic path ('id' !== 'slug')`. The conflicting shared routes are `src/app/api/community/listings/[id]` and `src/app/api/community/listings/[slug]`; the latter is Harborlight/shared-app ownership outside this branch. The task prohibits modifying another active feature branch. The owned server was stopped. This is a scope-rejected browser validation gap, not a Sealed Hold code failure.
+The owner-authorized mainline correction `4a84b9fd2dfa439127c35b8ce865ff8b7a5742b7` was cherry-picked as `b3fe602d0a643914b7b53e5e9c508b85e3e2aaf5`. It moved only the public listing route to `src/app/api/community/listings/public/[slug]/route.ts`. The owned production server (PID `28644`, port `4317`) then rendered the authenticated private-content console against `sealed-hold-phase2-browser.db` and isolated private provider/object/staging roots. Synthetic V1 package selection, inspection, import, canonical materialization, passphrase clearing, status announcements, verified export/download, mobile portrait, and desktop checks passed. The server was stopped after validation.
