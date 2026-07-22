@@ -79,8 +79,17 @@ const blockedProductionAsset = (asset: Omit<RiveAssetContract, "availability" | 
     "Project Lanternwake production contract is frozen; the genuine project-authored Rive export is pending the external Rive authoring handoff. The SVG/CSS fallback remains the only production rendering until that handoff is validated.",
 });
 
+const runtimeReadyProductionAsset = (
+  asset: Omit<RiveAssetContract, "availability" | "provenance">,
+): RiveAssetContract => ({
+  ...asset,
+  availability: "runtime-ready",
+  provenance:
+    "Project-owned Lanternwake source SVG and Rive .rev backup are governed in Development_Docs/Animation_Assets/Rive_Sources; the matching local .riv export is validated for production runtime use.",
+});
+
 export const riveAssets = {
-  invitationSeal: blockedProductionAsset({
+  invitationSeal: runtimeReadyProductionAsset({
     key: "invitation-seal",
     assetId: "invitationSeal",
     path: "/animations/rive/invitation-seal-v1.riv",
@@ -132,7 +141,7 @@ export const riveAssets = {
     priority: "critical",
     dimensions: "512 x 512 source; responsive contain",
   }),
-  journalClasp: blockedProductionAsset({
+  journalClasp: runtimeReadyProductionAsset({
     key: "journal-clasp",
     assetId: "journalClasp",
     path: "/animations/rive/journal-clasp-v1.riv",
@@ -178,7 +187,7 @@ export const riveAssets = {
     priority: "critical",
     dimensions: "512 x 512 source; responsive contain",
   }),
-  voyageCompass: blockedProductionAsset({
+  voyageCompass: runtimeReadyProductionAsset({
     key: "voyage-compass",
     assetId: "voyageCompass",
     path: "/animations/rive/voyage-compass-v1.riv",

@@ -21,7 +21,7 @@ function inputNames(asset: RiveAssetContract) {
 
 describe("Project Lanternwake Phase 5 Rive asset contracts", () => {
   it.each(productionAssets)(
-    "freezes a provenance-ready external-authoring contract for $assetId without treating it as runtime-ready",
+    "keeps the frozen production contract and distinguishes validated source pairs from the remaining external authoring gap for $assetId",
     (asset) => {
       expect(asset.path).toMatch(/^\/animations\/rive\/.+-v1\.riv$/);
       expect(asset.artboard).toBeTruthy();
@@ -30,8 +30,13 @@ describe("Project Lanternwake Phase 5 Rive asset contracts", () => {
       expect(asset.inputs.length).toBeGreaterThan(3);
       expect(asset.fallbackStates.length).toBeGreaterThan(2);
       expect(asset.loadTimeoutMs).toBeGreaterThan(0);
-      expect(asset.availability).toBe("blocked_external_asset");
-      expect(asset.provenance).toMatch(/external Rive authoring handoff/i);
+      if (asset.assetId === "finaleMechanism") {
+        expect(asset.availability).toBe("blocked_external_asset");
+        expect(asset.provenance).toMatch(/external Rive authoring handoff/i);
+      } else {
+        expect(asset.availability).toBe("runtime-ready");
+        expect(asset.provenance).toMatch(/Project-owned Lanternwake source SVG and Rive \.rev backup/i);
+      }
 
       const names = inputNames(asset);
       for (const name of Object.keys(asset.reducedPose)) expect(names.has(name)).toBe(true);

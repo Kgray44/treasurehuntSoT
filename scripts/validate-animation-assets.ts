@@ -9,6 +9,10 @@ type ManifestAsset = Readonly<{
   expectedPath: string;
   sha256: string | null;
   fallbackPath: string;
+  artboard?: string | null;
+  stateMachine?: string | null;
+  sourceBackupPath?: string | null;
+  sourceSha256?: string | null;
   blockedReason?: string;
 }>;
 
@@ -28,6 +32,14 @@ function localPath(publicPath: string) {
 
 function sha256(file: string) {
   return createHash("sha256").update(fs.readFileSync(file)).digest("hex");
+}
+
+function sourceBackupLocalPath(sourceBackupPath: string) {
+  const normalized = sourceBackupPath.replace(/\\/g, "/");
+  if (!normalized.startsWith("Development_Docs/Animation_Assets/Rive_Sources/")) {
+    throw new Error(`Rive source must remain in the governed Rive_Sources directory: ${sourceBackupPath}`);
+  }
+  return path.join(root, ...normalized.split("/"));
 }
 
 function loadManifest(): AnimationManifest {
@@ -87,6 +99,34 @@ for (const asset of manifest.assets) {
   if (asset.type === "rive") {
     if (bytes.length < 1_000) errors.push(`${asset.id}: unexpectedly small Rive binary`);
     if (bytes.subarray(0, 1).toString() === "{") errors.push(`${asset.id}: JSON is not a Rive binary`);
+    if (requiredProductionRive.includes(asset.id)) {
+      if (bytes.subarray(0, 4).toString("utf8") !== "RIVE") {
+        errors.push(`${asset.id}: runtime file does not have a RIVE binary header`);
+      }
+      const contractText = bytes.toString("latin1");
+      if (!asset.artboard?.trim() || !contractText.includes(asset.artboard)) {
+        errors.push(`${asset.id}: canonical artboard is absent from the runtime binary`);
+      }
+      if (!asset.stateMachine?.trim() || !contractText.includes(asset.stateMachine)) {
+        errors.push(`${asset.id}: canonical state machine is absent from the runtime binary`);
+      }
+      if (!asset.sourceBackupPath) {
+        errors.push(`manifest ${asset.id}: runtime-ready Rive asset needs a governed .rev source backup path`);
+      } else {
+        try {
+          const sourceBackup = sourceBackupLocalPath(asset.sourceBackupPath);
+          if (!fs.existsSync(sourceBackup)) {
+            errors.push(`manifest ${asset.id}: missing governed Rive source backup ${asset.sourceBackupPath}`);
+          } else if (!asset.sourceSha256 || sha256(sourceBackup) !== asset.sourceSha256.toLowerCase()) {
+            errors.push(`manifest ${asset.id}: Rive source-backup SHA-256 mismatch`);
+          }
+        } catch (error) {
+          errors.push(
+            `manifest ${asset.id}: ${error instanceof Error ? error.message : "invalid Rive source backup path"}`,
+          );
+        }
+      }
+    }
   } else {
     try {
       const data = JSON.parse(bytes.toString("utf8")) as Record<string, unknown>;
@@ -131,4 +171,6 @@ if (blockers.length) {
   process.exit(2);
 }
 
-console.log("Animation assets validated: 4 production Rive binaries, 3 Lottie JSON assets, and local SVG fallbacks.");
+console.log(
+  "Animation assets validated: 4 production Rive binaries, 4 governed Rive sources, 3 Lottie JSON assets, and local SVG fallbacks.",
+);
