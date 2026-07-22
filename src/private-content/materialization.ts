@@ -403,6 +403,38 @@ export async function materializePrivatePackage(
       };
     }
     const ids = new Map<string, string>(Object.entries(plan.references));
+    // Chronicle owns the canonical asset rows.  Create its parents first so this
+    // transaction is valid under immediate SQLite as well as MySQL foreign keys.
+    for (const tale of plan.tales) {
+      await tx.chronicle.create({
+        data: {
+          id: tale.taleId,
+          slug: tale.slug,
+          title: tale.draft.tale.title,
+          subtitle: tale.draft.tale.subtitle || null,
+          shortDescription: tale.draft.tale.shortDescription || null,
+          longDescription: tale.draft.tale.longDescription || null,
+          theme: tale.draft.tale.theme ?? "CARTOGRAPHERS_TABLE",
+          status: "DRAFT",
+          visibility: "PRIVATE",
+          creatorId: input.ownerActorId,
+          creatorAccountId: input.ownerAccountId ?? null,
+          playerCountMin: tale.draft.tale.playerCountMin ?? 1,
+          playerCountMax: tale.draft.tale.playerCountMax ?? 4,
+          estimatedDuration: tale.draft.tale.estimatedDuration ?? null,
+          contentWarnings: tale.draft.tale.contentWarnings || null,
+        },
+      });
+      await tx.taleDraft.create({
+        data: {
+          id: tale.draftId,
+          taleId: tale.taleId,
+          createdBy: input.ownerActorId,
+          createdByAccountId: input.ownerAccountId ?? null,
+          validationState: "STALE",
+        },
+      });
+    }
     for (const { asset, assetId, variantId } of plan.assets) {
       const ownerTale = plan.tales[0];
       await tx.taleAsset.create({
@@ -439,34 +471,6 @@ export async function materializePrivatePackage(
       });
     }
     for (const tale of plan.tales) {
-      await tx.chronicle.create({
-        data: {
-          id: tale.taleId,
-          slug: tale.slug,
-          title: tale.draft.tale.title,
-          subtitle: tale.draft.tale.subtitle || null,
-          shortDescription: tale.draft.tale.shortDescription || null,
-          longDescription: tale.draft.tale.longDescription || null,
-          theme: tale.draft.tale.theme ?? "CARTOGRAPHERS_TABLE",
-          status: "DRAFT",
-          visibility: "PRIVATE",
-          creatorId: input.ownerActorId,
-          creatorAccountId: input.ownerAccountId ?? null,
-          playerCountMin: tale.draft.tale.playerCountMin ?? 1,
-          playerCountMax: tale.draft.tale.playerCountMax ?? 4,
-          estimatedDuration: tale.draft.tale.estimatedDuration ?? null,
-          contentWarnings: tale.draft.tale.contentWarnings || null,
-        },
-      });
-      await tx.taleDraft.create({
-        data: {
-          id: tale.draftId,
-          taleId: tale.taleId,
-          createdBy: input.ownerActorId,
-          createdByAccountId: input.ownerAccountId ?? null,
-          validationState: "STALE",
-        },
-      });
       for (const [chapterIndex, chapter] of tale.draft.chapters.entries()) {
         const chapterId = ids.get(chapter.id)!;
         await tx.taleChapter.create({

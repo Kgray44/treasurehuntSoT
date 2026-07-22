@@ -1,12 +1,194 @@
 import { randomUUID } from "node:crypto";
 import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
+import { Readable } from "node:stream";
 import { db } from "@/lib/db";
 import { writePlatformAudit } from "@/platform/audit";
 import { canonicalAccountForLegacyActor } from "@/wayfarer/accounts";
 import { decryptPrivatePackage, encryptPrivatePayload } from "./package";
 import { isWithin, privateFailure, redactPrivate, sha256, type PrivatePayload } from "./core";
+import type { PrivateKeyProvider, PrivateObjectDescriptor, PrivateStorageProvider } from "./contracts";
+import { LocalPrivateKeyProvider } from "./key-provider";
+import { decryptNormalizedPayload, encryptNormalizedPayload, type EncryptedNormalizedPayload } from "./payloads";
+import { LocalPhase2PrivateStorageProvider } from "./provider-storage";
+import { materializePrivatePackage } from "./materialization";
 import { LocalPrivateAssetStore, type StagedPrivateObject } from "./storage";
+
+// The generated Prisma client can lag an additive migration in a fresh checkout.
+const privateDb = db as any;
+
+export type PrivatePayloadServices = {
+  storage: PrivateStorageProvider;
+  keyProvider: PrivateKeyProvider;
+};
+
+function configuredLocalKeyProvider() {
+  const encoded = process.env.PRIVATE_CONTENT_LOCAL_MASTER_KEY;
+  if (!encoded) throw privateFailure("PRIVATE_CONTENT_CONFIGURATION_INVALID", "Private key storage is not configured.");
+  const key = /^[a-f0-9]{64}$/i.test(encoded) ? Buffer.from(encoded, "hex") : Buffer.from(encoded, "base64url");
+  if (key.length !== 32)
+    throw privateFailure("PRIVATE_CONTENT_CONFIGURATION_INVALID", "Private key storage is not configured.");
+  return new LocalPrivateKeyProvider(key);
+}
+
+function payloadServices(services?: PrivatePayloadServices): PrivatePayloadServices {
+  return (
+    services ?? {
+      storage: new LocalPhase2PrivateStorageProvider(),
+      keyProvider: configuredLocalKeyProvider(),
+    }
+  );
+}
+
+async function readAll(stream: Readable, maximumBytes: number) {
+  const chunks: Buffer[] = [];
+  let length = 0;
+  for await (const chunk of stream) {
+    const bytes = Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk);
+    length += bytes.length;
+    if (length > maximumBytes) throw privateFailure("PRIVATE_PACKAGE_LIMIT_EXCEEDED");
+    chunks.push(bytes);
+  }
+  return Buffer.concat(chunks, length);
+}
+
+type StoredEncryptedPayload = {
+  encryptedPayload: EncryptedNormalizedPayload;
+  descriptor: PrivateObjectDescriptor;
+};
+
+/** Persist retry data outside the database, then read/decrypt it before it becomes authoritative. */
+async function storeNormalizedPayload(input: {
+  importId: string;
+  payload: PrivatePayload;
+  services: PrivatePayloadServices;
+}): Promise<StoredEncryptedPayload> {
+  const encryptedPayload = await encryptNormalizedPayload(input.payload, input.services.keyProvider);
+  const descriptor = await input.services.storage.put(
+    "normalized",
+    `imports/${input.importId}/${encryptedPayload.digest}`,
+    Readable.from([encryptedPayload.bytes]),
+    {
+      expectedSha256: encryptedPayload.digest,
+      contentLength: encryptedPayload.bytes.length,
+      metadata: { cipher: encryptedPayload.cipher, purpose: "normalized-retry" },
+    },
+  );
+  try {
+    const verified = await decryptNormalizedPayload(
+      {
+        ...encryptedPayload,
+        bytes: await readAll(await input.services.storage.read(descriptor), encryptedPayload.bytes.length),
+      },
+      input.services.keyProvider,
+    );
+    if (JSON.stringify(verified) !== JSON.stringify(input.payload))
+      throw privateFailure("PRIVATE_PACKAGE_CHECKSUM_MISMATCH");
+    return { encryptedPayload, descriptor };
+  } catch (error) {
+    await input.services.storage.remove(descriptor).catch(() => undefined);
+    throw error;
+  }
+}
+
+async function recordNormalizedPayload(input: {
+  importId: string;
+  stored: StoredEncryptedPayload;
+  clearLegacy?: boolean;
+}) {
+  const wrapped = await privateDb.privateContentWrappedKey.create({
+    data: {
+      provider: input.stored.encryptedPayload.wrappedKey.provider,
+      keyVersion: input.stored.encryptedPayload.wrappedKey.keyVersion,
+      wrappedKey: input.stored.encryptedPayload.wrappedKey.wrappedKey,
+      algorithm: input.stored.encryptedPayload.wrappedKey.algorithm,
+    },
+  });
+  const encrypted = await privateDb.privateContentEncryptedPayload.create({
+    data: {
+      objectKey: input.stored.descriptor.key,
+      sha256: input.stored.descriptor.sha256,
+      byteLength: input.stored.descriptor.byteLength,
+      cipher: input.stored.encryptedPayload.cipher,
+      wrappedKeyId: wrapped.id,
+    },
+  });
+  await privateDb.privateContentImport.update({
+    where: { id: input.importId },
+    data: { normalizedPayloadId: encrypted.id, ...(input.clearLegacy ? { contentJson: null } : {}) },
+  });
+  return encrypted;
+}
+
+async function encryptedPayloadForRecord(
+  record: { normalizedPayloadId: string | null },
+  services: PrivatePayloadServices,
+) {
+  if (!record.normalizedPayloadId) return null;
+  const encrypted = await privateDb.privateContentEncryptedPayload.findUniqueOrThrow({
+    where: { id: record.normalizedPayloadId },
+  });
+  const wrapped = await privateDb.privateContentWrappedKey.findUniqueOrThrow({ where: { id: encrypted.wrappedKeyId } });
+  const bytes = await readAll(
+    await services.storage.read({
+      key: encrypted.objectKey,
+      sha256: encrypted.sha256,
+      byteLength: encrypted.byteLength,
+    }),
+    encrypted.byteLength,
+  );
+  return decryptNormalizedPayload(
+    {
+      bytes,
+      digest: encrypted.sha256,
+      cipher: encrypted.cipher,
+      wrappedKey: {
+        provider: wrapped.provider,
+        keyVersion: wrapped.keyVersion,
+        wrappedKey: wrapped.wrappedKey,
+        algorithm: wrapped.algorithm,
+      },
+    },
+    services.keyProvider,
+  );
+}
+
+/** Migration-window dual read: encrypted retry data wins; legacy plaintext is read only for backfill. */
+export async function readPrivateImportRetryPayload(
+  record: { normalizedPayloadId: string | null; contentJson: string | null },
+  services?: PrivatePayloadServices,
+) {
+  const encrypted = await encryptedPayloadForRecord(record, payloadServices(services));
+  if (encrypted) return encrypted;
+  if (!record.contentJson) throw privateFailure("PRIVATE_PACKAGE_CONFLICT", "The retry source is unavailable.");
+  try {
+    return JSON.parse(record.contentJson) as PrivatePayload;
+  } catch {
+    throw privateFailure("PRIVATE_PACKAGE_INVALID");
+  }
+}
+
+/** Resumable, verify-before-clear migration for Phase 1 plaintext retry rows. */
+export async function migrateLegacyPrivateImportPayload(input: {
+  importId: string;
+  services?: PrivatePayloadServices;
+}) {
+  const record = await privateDb.privateContentImport.findUniqueOrThrow({ where: { id: input.importId } });
+  const services = payloadServices(input.services);
+  if (record.normalizedPayloadId) {
+    await readPrivateImportRetryPayload(record, services);
+    return { importId: record.id, migrated: false as const, alreadyEncrypted: true as const };
+  }
+  const payload = await readPrivateImportRetryPayload(record, services);
+  const stored = await storeNormalizedPayload({ importId: record.id, payload, services });
+  try {
+    await recordNormalizedPayload({ importId: record.id, stored, clearLegacy: true });
+  } catch (error) {
+    await services.storage.remove(stored.descriptor).catch(() => undefined);
+    throw error;
+  }
+  return { importId: record.id, migrated: true as const, alreadyEncrypted: false as const };
+}
 
 export type PrivateImportPlan = {
   packageId: string;
@@ -85,8 +267,11 @@ export async function importPrivatePackage(input: {
   confirm: boolean;
   root?: string;
   stagingRoot?: string;
+  services?: PrivatePayloadServices;
+  slugConflict?: "reject" | "remap";
 }): Promise<PrivateImportReceipt> {
   const payload = await decryptPrivatePackage(input.packageBytes, input.passphrase);
+  const importId = randomUUID();
   const ownerAccountId = await canonicalAccountForLegacyActor(input.actorId);
   const existing = await db.privateContentImport.findUnique({
     where: {
@@ -114,9 +299,13 @@ export async function importPrivatePackage(input: {
       correlationId: existing.correlationId,
     };
   const correlationId = randomUUID();
+  const services = payloadServices(input.services);
   const store = new LocalPrivateAssetStore({ root: input.root, stagingRoot: input.stagingRoot });
   const staged = new Map<string, StagedPrivateObject>();
   const reused: string[] = [];
+  // New imports retain only verified encrypted retry data. Neither this object
+  // nor the passphrase is placed in contentJson, jobs, or audit events.
+  const stored = await storeNormalizedPayload({ importId, payload, services });
   try {
     for (const asset of payload.manifest.assets) {
       if (await store.objectExists(asset.sha256)) reused.push(asset.sha256);
@@ -129,6 +318,7 @@ export async function importPrivatePackage(input: {
     const record = await db.$transaction(async (tx) => {
       const created = await tx.privateContentImport.create({
         data: {
+          id: importId,
           packageId: plan.packageId,
           packageRevision: plan.packageRevision,
           packageSha256: plan.packageSha256,
@@ -136,9 +326,9 @@ export async function importPrivatePackage(input: {
           status: "FINALIZING_ASSETS",
           ownerActorId: input.actorId,
           ownerAccountId,
-          contentJson: JSON.stringify(payload),
+          contentJson: null,
           correlationId,
-        },
+        } as any,
       });
       const assetIds: string[] = [];
       for (const asset of payload.manifest.assets) {
@@ -167,6 +357,12 @@ export async function importPrivatePackage(input: {
       }
       return { id: created.id, assetIds };
     });
+    try {
+      await recordNormalizedPayload({ importId: record.id, stored });
+    } catch (error) {
+      await services.storage.remove(stored.descriptor).catch(() => undefined);
+      throw error;
+    }
     for (const stagedObject of staged.values()) await store.finalizeObject(stagedObject);
     await db.$transaction(async (tx) => {
       await tx.privateAssetReference.updateMany({ where: { importId: record.id }, data: { available: true } });
@@ -176,8 +372,19 @@ export async function importPrivatePackage(input: {
       });
       await tx.privateContentImport.update({
         where: { id: record.id },
-        data: { status: "COMPLETED", importedAssetIds: JSON.stringify(record.assetIds), completedAt: new Date() },
+        data: { status: "FINALIZING_ASSETS", importedAssetIds: JSON.stringify(record.assetIds) },
       });
+    });
+    await materializePrivatePackage({
+      importId: record.id,
+      payload,
+      ownerActorId: input.actorId,
+      ownerAccountId,
+      slugConflict: input.slugConflict,
+    });
+    await privateDb.privateContentImport.update({
+      where: { id: record.id },
+      data: { status: "COMPLETED", completedAt: new Date() },
     });
     await writePlatformAudit({
       actorType: "CREATOR",
@@ -226,20 +433,25 @@ export async function importPrivatePackage(input: {
         correlationId: raced.correlationId,
       };
     await Promise.all([...staged.values()].map((item) => store.deleteStagedObject(item.stagingId)));
+    await services.storage.remove(stored.descriptor).catch(() => undefined);
     throw error;
   }
 }
 
 /** Re-stage missing objects from the encrypted-import record and finish a safe retry. */
-export async function retryPrivateImportFinalization(input: { importId: string; root?: string; stagingRoot?: string }) {
+export async function retryPrivateImportFinalization(input: {
+  importId: string;
+  root?: string;
+  stagingRoot?: string;
+  services?: PrivatePayloadServices;
+}) {
   const record = await db.privateContentImport.findUniqueOrThrow({
     where: { id: input.importId },
     include: { assetReferences: { include: { object: true } } },
   });
   if (!["FINALIZING_ASSETS", "FINALIZATION_RETRY"].includes(record.status))
     throw privateFailure("PRIVATE_PACKAGE_CONFLICT");
-  if (!record.contentJson) throw privateFailure("PRIVATE_PACKAGE_CONFLICT", "The legacy retry source is unavailable.");
-  const payload = JSON.parse(record.contentJson) as PrivatePayload;
+  const payload = await readPrivateImportRetryPayload(record as any, input.services);
   const store = new LocalPrivateAssetStore({ root: input.root, stagingRoot: input.stagingRoot });
   const staged: StagedPrivateObject[] = [];
   try {
@@ -261,6 +473,13 @@ export async function retryPrivateImportFinalization(input: { importId: string; 
         data: { status: "COMPLETED", completedAt: new Date(), finalizationErrorCode: null },
       });
     });
+    if ((record as any).materializationStatus !== "COMPLETED")
+      await materializePrivatePackage({
+        importId: record.id,
+        payload,
+        ownerActorId: record.ownerActorId ?? "private-import",
+        ownerAccountId: record.ownerAccountId,
+      });
     return { importId: record.id, status: "COMPLETED" as const };
   } catch (error) {
     await db.privateContentImport.update({
@@ -283,10 +502,13 @@ function assertPrivateOutputPath(outputPath: string) {
   return destination;
 }
 
-export async function exportPrivateImport(importId: string, passphrase: string): Promise<PrivateExportReceipt> {
+export async function exportPrivateImport(
+  importId: string,
+  passphrase: string,
+  services?: PrivatePayloadServices,
+): Promise<PrivateExportReceipt> {
   const record = await db.privateContentImport.findUniqueOrThrow({ where: { id: importId } });
-  if (!record.contentJson) throw privateFailure("PRIVATE_PACKAGE_CONFLICT", "The legacy export source is unavailable.");
-  const payload = JSON.parse(record.contentJson) as PrivatePayload;
+  const payload = await readPrivateImportRetryPayload(record as any, services);
   const packageBytes = await encryptPrivatePayload(payload, passphrase);
   const verified = await decryptPrivatePackage(packageBytes, passphrase);
   if (verified.manifest.packageId !== record.packageId || verified.manifest.packageRevision !== record.packageRevision)
@@ -300,8 +522,13 @@ export async function exportPrivateImport(importId: string, passphrase: string):
   };
 }
 
-export async function writePrivateExport(input: { importId: string; passphrase: string; outputPath: string }) {
-  const receipt = await exportPrivateImport(input.importId, input.passphrase);
+export async function writePrivateExport(input: {
+  importId: string;
+  passphrase: string;
+  outputPath: string;
+  services?: PrivatePayloadServices;
+}) {
+  const receipt = await exportPrivateImport(input.importId, input.passphrase, input.services);
   const destination = assertPrivateOutputPath(input.outputPath);
   await mkdir(path.dirname(destination), { recursive: true, mode: 0o700 });
   await writeFile(destination, receipt.packageBytes, { flag: "wx", mode: 0o600 });

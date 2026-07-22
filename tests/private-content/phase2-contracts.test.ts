@@ -27,7 +27,10 @@ describe("Sealed Hold Phase 2 frozen contracts", () => {
     const encrypted = await encryptNormalizedPayload({ manifest: {} as never, entries: {}, checksums: {} }, provider);
     expect(encrypted.bytes.toString("utf8")).not.toContain("manifest");
     await expect(
-      decryptNormalizedPayload({ ...encrypted, digest: `0${encrypted.digest.slice(1)}` }, provider),
+      decryptNormalizedPayload(
+        { ...encrypted, digest: `${encrypted.digest[0] === "0" ? "1" : "0"}${encrypted.digest.slice(1)}` },
+        provider,
+      ),
     ).rejects.toMatchObject({ code: "PRIVATE_PACKAGE_AUTHENTICATION_FAILED" });
   });
   it("fails closed for a truncated v2 framed stream", () => {
