@@ -7,12 +7,19 @@ import { writePlatformAudit } from "@/platform/audit";
 import { canonicalAccountForLegacyActor } from "@/wayfarer/accounts";
 import { decryptPrivatePackage, encryptPrivatePayload } from "./package";
 import { isWithin, privateFailure, redactPrivate, sha256, type PrivatePayload } from "./core";
-import type { PrivateKeyProvider, PrivateObjectDescriptor, PrivateStorageProvider } from "./contracts";
+import type {
+  PrivateKeyProvider,
+  PrivateObjectDescriptor,
+  PrivateScannerProvider,
+  PrivateStorageProvider,
+} from "./contracts";
 import { LocalPrivateKeyProvider } from "./key-provider";
 import { decryptNormalizedPayload, encryptNormalizedPayload, type EncryptedNormalizedPayload } from "./payloads";
 import { LocalPhase2PrivateStorageProvider } from "./provider-storage";
 import { materializePrivatePackage } from "./materialization";
 import { LocalPrivateAssetStore, type StagedPrivateObject } from "./storage";
+import { LegacyPrivateAssetDeliveryStorageProvider } from "./storage";
+import { UnconfiguredPrivateScanner } from "./scanner";
 
 // The generated Prisma client can lag an additive migration in a fresh checkout.
 const privateDb = db as any;
@@ -20,6 +27,7 @@ const privateDb = db as any;
 export type PrivatePayloadServices = {
   storage: PrivateStorageProvider;
   keyProvider: PrivateKeyProvider;
+  scanner?: PrivateScannerProvider;
 };
 
 function configuredLocalKeyProvider() {
@@ -29,6 +37,48 @@ function configuredLocalKeyProvider() {
   if (key.length !== 32)
     throw privateFailure("PRIVATE_CONTENT_CONFIGURATION_INVALID", "Private key storage is not configured.");
   return new LocalPrivateKeyProvider(key);
+}
+
+async function scanImportedAssets(input: {
+  importId: string;
+  scanner: PrivateScannerProvider;
+  store: LocalPrivateAssetStore;
+}) {
+  const references = await privateDb.privateAssetReference.findMany({
+    where: { importId: input.importId },
+    include: { object: true },
+  });
+  const storage = new LegacyPrivateAssetDeliveryStorageProvider(input.store);
+  const results: Array<{ objectId: string; state: string }> = [];
+  for (const reference of references) {
+    const result = await input.scanner.scan({
+      object: {
+        key: reference.object.storageKey,
+        sha256: reference.object.sha256,
+        byteLength: reference.object.byteLength,
+        mediaType: reference.object.mediaType,
+      },
+      mediaType: reference.object.mediaType,
+    });
+    await privateDb.privateContentScan.create({
+      data: {
+        objectId: reference.objectId,
+        provider: result.provider,
+        state: result.state,
+        safeCode: result.safeCode ?? null,
+        scannedAt: new Date(),
+      },
+    });
+    await privateDb.privateAssetObject.update({
+      where: { id: reference.objectId },
+      data: {
+        scanStatus: result.state,
+        ...(result.state === "CLEAN" ? {} : { quarantinedAt: new Date() }),
+      },
+    });
+    results.push({ objectId: reference.objectId, state: result.state });
+  }
+  return { clean: results.every((result) => result.state === "CLEAN"), results };
 }
 
 function payloadServices(services?: PrivatePayloadServices): PrivatePayloadServices {
@@ -175,6 +225,7 @@ export async function migrateLegacyPrivateImportPayload(input: {
 }) {
   const record = await privateDb.privateContentImport.findUniqueOrThrow({ where: { id: input.importId } });
   const services = payloadServices(input.services);
+  const scanner = services.scanner ?? new UnconfiguredPrivateScanner();
   if (record.normalizedPayloadId) {
     await readPrivateImportRetryPayload(record, services);
     return { importId: record.id, migrated: false as const, alreadyEncrypted: true as const };
@@ -300,6 +351,7 @@ export async function importPrivatePackage(input: {
     };
   const correlationId = randomUUID();
   const services = payloadServices(input.services);
+  const scanner = services.scanner ?? new UnconfiguredPrivateScanner();
   const store = new LocalPrivateAssetStore({ root: input.root, stagingRoot: input.stagingRoot });
   const staged = new Map<string, StagedPrivateObject>();
   const reused: string[] = [];
@@ -364,6 +416,23 @@ export async function importPrivatePackage(input: {
       throw error;
     }
     for (const stagedObject of staged.values()) await store.finalizeObject(stagedObject);
+    const scan = await scanImportedAssets({ importId: record.id, scanner, store });
+    if (!scan.clean) {
+      await privateDb.privateContentImport.update({
+        where: { id: record.id },
+        data: { status: "QUARANTINED", importedAssetIds: JSON.stringify(record.assetIds) },
+      });
+      return {
+        importId: record.id,
+        packageId: plan.packageId,
+        packageRevision: plan.packageRevision,
+        packageSha256: plan.packageSha256,
+        status: "QUARANTINED",
+        importedAssetIds: record.assetIds,
+        reusedAssetIds: reused,
+        correlationId,
+      };
+    }
     await db.$transaction(async (tx) => {
       await tx.privateAssetReference.updateMany({ where: { importId: record.id }, data: { available: true } });
       await tx.privateAssetObject.updateMany({
@@ -453,6 +522,7 @@ export async function retryPrivateImportFinalization(input: {
     throw privateFailure("PRIVATE_PACKAGE_CONFLICT");
   const payload = await readPrivateImportRetryPayload(record as any, input.services);
   const store = new LocalPrivateAssetStore({ root: input.root, stagingRoot: input.stagingRoot });
+  const scanner = payloadServices(input.services).scanner ?? new UnconfiguredPrivateScanner();
   const staged: StagedPrivateObject[] = [];
   try {
     for (const asset of payload.manifest.assets) {
@@ -462,6 +532,14 @@ export async function retryPrivateImportFinalization(input: {
         );
     }
     for (const stagedObject of staged) await store.finalizeObject(stagedObject);
+    const scan = await scanImportedAssets({ importId: record.id, scanner, store });
+    if (!scan.clean) {
+      await privateDb.privateContentImport.update({
+        where: { id: record.id },
+        data: { status: "QUARANTINED", finalizationErrorCode: null },
+      });
+      return { importId: record.id, status: "QUARANTINED" as const };
+    }
     await db.$transaction(async (tx) => {
       await tx.privateAssetReference.updateMany({ where: { importId: record.id }, data: { available: true } });
       await tx.privateAssetObject.updateMany({
