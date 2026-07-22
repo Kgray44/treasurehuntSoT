@@ -1,4 +1,4 @@
-import { mkdtemp, rm, writeFile } from "node:fs/promises";
+import { mkdir, mkdtemp, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
@@ -92,5 +92,32 @@ describe("private-content security boundary", () => {
       `-----BEGIN PRIVATE KEY-----\n${"A".repeat(24)}\n-----END PRIVATE KEY-----`,
     );
     await expect(scanPrivateContent(workspace)).resolves.toContainEqual({ path: "key.md", rule: "sensitive-content" });
+  });
+
+  it("allows only the two approved immutable archive records and still rejects new archive or source sentinels", async () => {
+    workspace = await mkdtemp(path.join(tmpdir(), "sealed-archive-scan-"));
+    const approved = path.join(
+      workspace,
+      "Codex_Chats",
+      "chats",
+      "019f854e-6112-7c33-ac11-a976c0c71e0c--create-sealed-hold-worktree.md",
+    );
+    const unapproved = path.join(workspace, "Codex_Chats", "chats", "new-archive.md");
+    const source = path.join(workspace, "src", "unsafe.ts");
+    await mkdir(path.dirname(approved), { recursive: true });
+    await writeFile(approved, PRIVATE_SENTINEL);
+    await writeFile(unapproved, PRIVATE_SENTINEL);
+    await mkdir(path.dirname(source), { recursive: true });
+    await writeFile(source, PRIVATE_SENTINEL);
+    const hits = await scanPrivateContent(workspace);
+    expect(hits).not.toContainEqual({
+      path: path.join("Codex_Chats", "chats", "019f854e-6112-7c33-ac11-a976c0c71e0c--create-sealed-hold-worktree.md"),
+      rule: "sensitive-content",
+    });
+    expect(hits).toContainEqual({
+      path: path.join("Codex_Chats", "chats", "new-archive.md"),
+      rule: "sensitive-content",
+    });
+    expect(hits).toContainEqual({ path: path.join("src", "unsafe.ts"), rule: "sensitive-content" });
   });
 });
