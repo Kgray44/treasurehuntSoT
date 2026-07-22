@@ -30,6 +30,7 @@ export type UploadDependencies = {
   requestCancellation: typeof requestPrivateOperationCancellation;
   findUpload: (uploadId: string) => Promise<UploadRecord | null>;
   updateProgress: (operationId: string, progress: MultipartProgress) => Promise<void>;
+  setOperationState: (operationId: string, state: "RECEIVING" | "UPLOAD_PAUSED") => Promise<void>;
   cancelUpload: (upload: UploadRecord) => Promise<void>;
 };
 
@@ -56,6 +57,9 @@ const defaults: UploadDependencies = {
       where: { id: operationId },
       data: { progress: JSON.stringify(progress) },
     });
+  },
+  setOperationState: async (operationId, state) => {
+    await privateDb.privateContentOperation.update({ where: { id: operationId }, data: { state } });
   },
   cancelUpload: async (upload) => {
     await privateDb.$transaction([
@@ -284,6 +288,33 @@ export async function cancelPrivateUpload(
   if (multipartUploadId) await deps.storage().abortMultipart(multipartUploadId);
   await deps.cancelUpload(upload);
   return { cancelled: true };
+}
+
+/** Pause preserves durable multipart state; it never aborts or deletes uploaded parts. */
+export async function pausePrivateUpload(
+  input: { actorId: string; uploadId: string },
+  overrides: Partial<UploadDependencies> = {},
+) {
+  const deps = dependencies(overrides);
+  const upload = await ownedUpload(input.uploadId, input.actorId, deps);
+  if (upload.completedAt || upload.cancelledAt || upload.operation.state !== "RECEIVING")
+    throw privateFailure("PRIVATE_PACKAGE_CONFLICT");
+  await deps.setOperationState(upload.operationId, "UPLOAD_PAUSED");
+  return { uploadId: upload.id, operationId: upload.operationId, state: "UPLOAD_PAUSED" as const };
+}
+
+/** Resume accepts the existing multipart receiver and only transitions a paused upload. */
+export async function resumePrivateUpload(
+  input: { actorId: string; uploadId: string },
+  overrides: Partial<UploadDependencies> = {},
+) {
+  const deps = dependencies(overrides);
+  const upload = await ownedUpload(input.uploadId, input.actorId, deps);
+  if (upload.completedAt || upload.cancelledAt || upload.operation.state !== "UPLOAD_PAUSED")
+    throw privateFailure("PRIVATE_PACKAGE_CONFLICT");
+  if (!parseProgress(upload.operation.progress).multipartUploadId) throw privateFailure("PRIVATE_PACKAGE_CONFLICT");
+  await deps.setOperationState(upload.operationId, "RECEIVING");
+  return { uploadId: upload.id, operationId: upload.operationId, state: "RECEIVING" as const };
 }
 
 export async function privateUploadStatus(

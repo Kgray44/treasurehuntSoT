@@ -7,7 +7,9 @@ import {
   completePrivateUploadStream,
   initiatePrivateUpload,
   inspectCompletedPrivateUploadV2,
+  pausePrivateUpload,
   receivePrivateUploadPart,
+  resumePrivateUpload,
 } from "@/private-content/uploads";
 import { encryptPrivatePackageV2 } from "@/private-content/streaming";
 import { makePayload } from "@/private-content/package";
@@ -38,6 +40,14 @@ const storage = {
 };
 
 describe("Phase 2 raw private upload service", () => {
+  it("pauses and resumes only the owned durable multipart receiver", async () => {
+    const upload: any = { id: "upload-paused", operationId: "operation-paused", storageKey: "uploads/paused", expiresAt: new Date(Date.now() + 60_000), completedAt: null, cancelledAt: null, operation: { ownerAccountId: "account-1", state: "RECEIVING", progress: JSON.stringify({ multipartUploadId: "11111111-1111-1111-1111-111111111111" }) }, parts: [] };
+    const setOperationState = vi.fn(async (_operationId: string, state: string) => { upload.operation.state = state; });
+    const deps: any = { accountForActor: async () => "account-1", findUpload: async () => upload, setOperationState };
+    await expect(pausePrivateUpload({ actorId: "creator", uploadId: upload.id }, deps)).resolves.toMatchObject({ state: "UPLOAD_PAUSED" });
+    await expect(resumePrivateUpload({ actorId: "creator", uploadId: upload.id }, deps)).resolves.toMatchObject({ state: "RECEIVING" });
+    expect(setOperationState.mock.calls).toEqual([["operation-paused", "UPLOAD_PAUSED"], ["operation-paused", "RECEIVING"]]);
+  });
   it("inspects a completed v2 upload directly from its provider stream", async () => {
     const entry = Buffer.from('{"schemaVersion":1}').toString("base64url");
     const payload = makePayload({ manifest: { packageId: "upload-v2-proof", packageRevision: 1, formatVersion: 1, createdAt: "2026-07-22T00:00:00.000Z", sourceApplicationVersion: "0.2", minimumApplicationVersion: "0.2", classification: "private", contentType: "tale-draft", tales: [{ logicalId: "tale", slug: "upload-v2", title: "Upload v2", contentPath: "tales/proof.json" }], assets: [], dependencies: [], totals: { files: 1, assets: 0, plaintextBytes: Buffer.from(entry, "base64url").length } }, entries: { "tales/proof.json": entry } });
