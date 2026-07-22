@@ -18,6 +18,7 @@ import { LocalPrivateKeyProvider } from "./key-provider";
 import { decryptNormalizedPayload, encryptNormalizedPayload, type EncryptedNormalizedPayload } from "./payloads";
 import { LocalPhase2PrivateStorageProvider } from "./provider-storage";
 import { materializePrivatePackage } from "./materialization";
+import { privatePayloadFromCanonicalImport } from "./canonical-export";
 import { LocalPrivateAssetStore, type StagedPrivateObject } from "./storage";
 import { LegacyPrivateAssetDeliveryStorageProvider } from "./storage";
 import { UnconfiguredPrivateScanner } from "./scanner";
@@ -587,7 +588,8 @@ export async function exportPrivateImport(
   services?: PrivatePayloadServices,
 ): Promise<PrivateExportReceipt> {
   const record = await db.privateContentImport.findUniqueOrThrow({ where: { id: importId } });
-  const payload = await readPrivateImportRetryPayload(record as any, services);
+  const retainedPayload = await readPrivateImportRetryPayload(record as any, services);
+  const payload = await privatePayloadFromCanonicalImport({ importId, sourcePayload: retainedPayload });
   const packageBytes = await encryptPrivatePayload(payload, passphrase);
   const verified = await decryptPrivatePackage(packageBytes, passphrase);
   if (verified.manifest.packageId !== record.packageId || verified.manifest.packageRevision !== record.packageRevision)

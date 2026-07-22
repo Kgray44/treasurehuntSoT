@@ -1,7 +1,17 @@
 import { randomUUID } from "node:crypto";
+import { mkdtemp, rm } from "node:fs/promises";
+import { tmpdir } from "node:os";
+import path from "node:path";
 import { db } from "@/lib/db";
+import { getStudioTale, saveStudioDraft } from "@/chronicle/studio-service";
 import { sha256, type PrivatePayload } from "@/private-content/core";
+import { privatePayloadFromCanonicalImport } from "@/private-content/canonical-export";
 import { materializePrivatePackage } from "@/private-content/materialization";
+import { decryptPrivatePackage, encryptPrivatePayload } from "@/private-content/package";
+import { LocalPrivateKeyProvider } from "@/private-content/key-provider";
+import { LocalPhase2PrivateStorageProvider } from "@/private-content/provider-storage";
+import { SyntheticPrivateScanner } from "@/private-content/scanner";
+import { exportPrivateImport, importPrivatePackage } from "@/private-content/service";
 
 function payload(contentType: "tale-draft" | "published-tale" | "tale-archive", suffix: string): PrivatePayload {
   const draft = {
@@ -44,7 +54,13 @@ function payload(contentType: "tale-draft" | "published-tale" | "tale-archive", 
 }
 
 async function main() {
-  const outcomes = [] as Array<{ contentType: string; taleId: string; mappingCount: number; versionCount: number }>;
+  const outcomes = [] as Array<{
+    contentType: string;
+    taleId: string;
+    mappingCount: number;
+    versionCount: number;
+    currentStateExport?: boolean;
+  }>;
   for (const contentType of ["tale-draft", "published-tale", "tale-archive"] as const) {
     const importId = `proof_${contentType}_${randomUUID()}`;
     const suffix = randomUUID().slice(0, 8);
@@ -60,9 +76,10 @@ async function main() {
         correlationId: randomUUID(),
       },
     });
+    const sourcePayload = payload(contentType, suffix);
     const receipt = await materializePrivatePackage({
       importId,
-      payload: payload(contentType, suffix),
+      payload: sourcePayload,
       ownerActorId: "phase2-isolated-proof",
     });
     const taleId = receipt.taleIds[0]!;
@@ -79,7 +96,64 @@ async function main() {
     ]);
     if (!draft || blockCount !== 1 || !mappingCount || sessionCount || invitationCount || listingCount || releaseCount)
       throw new Error("Canonical materialization proof did not preserve the private boundary.");
-    outcomes.push({ contentType, taleId, mappingCount, versionCount: receipt.versionIds.length });
+    if (contentType === "tale-draft") {
+      const studio = await getStudioTale(taleId);
+      const editedTitle = "Edited after private import";
+      await saveStudioDraft(
+        taleId,
+        {
+          autosaveVersion: studio.draft.autosaveVersion,
+          tale: { ...studio.tale, title: editedTitle, visibility: "PRIVATE" },
+          chapters: studio.draft.chapters,
+        },
+        "phase2-isolated-proof",
+      );
+      const exported = await privatePayloadFromCanonicalImport({ importId, sourcePayload });
+      const packageBytes = await encryptPrivatePayload(exported, "phase2-export-proof");
+      const verified = await decryptPrivatePackage(packageBytes, "phase2-export-proof");
+      const exportedDraft = JSON.parse(Buffer.from(verified.entries[verified.manifest.tales[0]!.contentPath]!, "base64url").toString("utf8"));
+      if (exportedDraft.tale.title !== editedTitle) throw new Error("Current-state export retained stale imported content.");
+      outcomes.push({ contentType, taleId, mappingCount, versionCount: receipt.versionIds.length, currentStateExport: true });
+    } else {
+      outcomes.push({ contentType, taleId, mappingCount, versionCount: receipt.versionIds.length });
+    }
+  }
+  const serviceRoot = await mkdtemp(path.join(tmpdir(), "sealed-hold-v1-proof-"));
+  try {
+    const suffix = randomUUID().slice(0, 8);
+    const sourcePayload = payload("tale-draft", suffix);
+    const services = {
+      storage: new LocalPhase2PrivateStorageProvider({ root: path.join(serviceRoot, "provider") }),
+      keyProvider: new LocalPrivateKeyProvider(Buffer.alloc(32, 7)),
+      scanner: new SyntheticPrivateScanner(),
+    };
+    const imported = await importPrivatePackage({
+      packageBytes: await encryptPrivatePayload(sourcePayload, "phase2-v1-proof"),
+      passphrase: "phase2-v1-proof",
+      actorId: "phase2-v1-proof",
+      confirm: true,
+      root: path.join(serviceRoot, "objects"),
+      stagingRoot: path.join(serviceRoot, "staging"),
+      services,
+    });
+    if (imported.status !== "COMPLETED") throw new Error("V1 service proof did not complete.");
+    const importedRecord = await db.privateContentImport.findUniqueOrThrow({ where: { id: imported.importId } });
+    if (importedRecord.contentJson !== null || !importedRecord.normalizedPayloadId)
+      throw new Error("V1 service proof retained a plaintext retry payload.");
+    const taleId = JSON.parse(importedRecord.importedTaleIds)[0] as string;
+    const studio = await getStudioTale(taleId);
+    await saveStudioDraft(
+      taleId,
+      { autosaveVersion: studio.draft.autosaveVersion, tale: { ...studio.tale, title: "V1 exported current state" }, chapters: studio.draft.chapters },
+      "phase2-v1-proof",
+    );
+    const exported = await exportPrivateImport(imported.importId, "phase2-v1-export", services);
+    const verified = await decryptPrivatePackage(exported.packageBytes, "phase2-v1-export");
+    const exportedDraft = JSON.parse(Buffer.from(verified.entries[verified.manifest.tales[0]!.contentPath]!, "base64url").toString("utf8"));
+    if (exportedDraft.tale.title !== "V1 exported current state") throw new Error("V1 export was not current-state canonical.");
+    outcomes.push({ contentType: "v1-service", taleId, mappingCount: 0, versionCount: 0, currentStateExport: true });
+  } finally {
+    await rm(serviceRoot, { recursive: true, force: true });
   }
   const foreignKeyFindings = (await db.$queryRawUnsafe<Array<unknown>>("PRAGMA foreign_key_check")).length;
   if (foreignKeyFindings) throw new Error(`Foreign-key check reported ${foreignKeyFindings} finding(s).`);
