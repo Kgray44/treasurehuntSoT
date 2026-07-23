@@ -6,20 +6,40 @@ const MAX_FILES = 256;
 const MAX_FILE_BYTES = 16 * 1024 * 1024;
 const MAX_PACKAGE_BYTES = 64 * 1024 * 1024;
 const executableExtensions = /\.(?:exe|dll|bat|cmd|ps1|sh|js|mjs|cjs|html?|svg)$/i;
-const safeMediaTypes = new Set(["application/json", "image/png", "image/jpeg", "image/webp", "model/gltf-binary"]);
+const safeMediaTypes = new Set([
+  "application/json",
+  "image/png",
+  "image/jpeg",
+  "image/webp",
+  "model/gltf-binary",
+  "audio/mpeg",
+  "audio/ogg",
+  "audio/wav",
+  "text/plain",
+  "text/markdown",
+]);
+const packageItemTypes = [
+  "CHRONICLE",
+  "CHRONICLE_TEMPLATE",
+  "STORY_BLOCK_PRESET",
+  "ARTIFACT_2D",
+  "ARTIFACT_3D",
+  "ARTIFACT_COLLECTION",
+  "MAP_PACK",
+  "LOCATION_PACK",
+  "AUDIO_PACK",
+  "REVEAL_PRESET",
+  "INVITATION_STYLE",
+  "COMPLETION_STYLE",
+  "GUIDE",
+  "ARTIFACT_ASSEMBLY",
+] as const;
+export type CommunityPackageItemType = (typeof packageItemTypes)[number];
 
 export const packageItemSchema = z
   .object({
     id: z.string().regex(/^[A-Za-z0-9._-]{1,96}$/),
-    type: z.enum([
-      "CHRONICLE",
-      "CHRONICLE_TEMPLATE",
-      "STORY_BLOCK_PRESET",
-      "ARTIFACT_2D",
-      "ARTIFACT_3D",
-      "ARTIFACT_COLLECTION",
-      "ARTIFACT_ASSEMBLY",
-    ]),
+    type: z.enum(packageItemTypes),
     path: z.string().min(1).max(240),
     checksum: z.string().regex(/^[a-f0-9]{64}$/),
     mediaType: z.string().max(128),
@@ -88,10 +108,31 @@ function assertItem(item: CommunityPackageItem) {
       "COMMUNITY_PACKAGE_FORBIDDEN_CONTENT",
       "Executable or unsupported package content is forbidden.",
     );
-  if ((item.type === "ARTIFACT_2D" || item.type === "ARTIFACT_3D") && !item.accessibility)
+  if ((item.type === "ARTIFACT_2D" || item.type === "ARTIFACT_3D" || item.type === "AUDIO_PACK") && !item.accessibility)
     throw new CommunityError("COMMUNITY_ACCESSIBILITY_REQUIRED", "Artifacts require an accessible description.");
   if (item.type === "ARTIFACT_3D" && (!item.accessibility?.posterPath || item.mediaType !== "model/gltf-binary"))
     throw new CommunityError("COMMUNITY_3D_FALLBACK_REQUIRED", "3D artifacts require a GLB poster fallback.");
+}
+
+export type CommunityScanStatus =
+  | "CLEAN"
+  | "PENDING"
+  | "SCAN_NOT_CONFIGURED"
+  | "SUSPICIOUS"
+  | "MALICIOUS"
+  | "QUARANTINED";
+export function assertPublicationScanStatus(status: CommunityScanStatus, files: readonly CommunityPackageFile[]) {
+  const requiresScan = files.some(
+    (file) =>
+      file.mediaType !== "application/json" && file.mediaType !== "text/plain" && file.mediaType !== "text/markdown",
+  );
+  if (requiresScan && status !== "CLEAN")
+    throw new CommunityError(
+      "COMMUNITY_SCAN_REQUIRED",
+      status === "SCAN_NOT_CONFIGURED"
+        ? "Binary package assets cannot be published because scanner verification is not configured."
+        : "Binary package assets require clean scanner evidence before publication.",
+    );
 }
 export function assertDependencyGraph(items: readonly CommunityPackageItem[]) {
   const byId = new Map(items.map((item) => [item.id, item]));

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { CommunityError } from "./domain";
-import { packageChecksum, sha256, verifyCommunityPackage } from "./package";
+import { assertPublicationScanStatus, packageChecksum, sha256, verifyCommunityPackage } from "./package";
 
 const bytes = new TextEncoder().encode('{"title":"Safe"}');
 const item = {
@@ -51,5 +51,18 @@ describe("Community package verification", () => {
     expect(() =>
       verifyCommunityPackage({ ...manifest, items: [loop] }, [{ path: loop.path, mediaType: loop.mediaType, bytes }]),
     ).toThrow("cycle");
+  });
+  it("supports the full Phase 2 taxonomy but reserves Voyage Logs and enforces truthful binary scans", () => {
+    const guide = { ...item, id: "guide", type: "GUIDE" as const, path: "guides/guide.md", mediaType: "text/markdown" };
+    const guideBytes = new TextEncoder().encode("# Guide");
+    expect(
+      verifyCommunityPackage(
+        { ...manifest, items: [{ ...guide, checksum: sha256(guideBytes), byteLength: guideBytes.byteLength }] },
+        [{ path: guide.path, mediaType: guide.mediaType, bytes: guideBytes }],
+      ).manifest.items[0].type,
+    ).toBe("GUIDE");
+    expect(() =>
+      assertPublicationScanStatus("SCAN_NOT_CONFIGURED", [{ path: "assets/p.png", mediaType: "image/png", bytes }]),
+    ).toThrow("scanner verification is not configured");
   });
 });
