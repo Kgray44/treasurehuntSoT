@@ -115,6 +115,8 @@ model UserAccount {
   privateImports      PrivateContentImport[]    @relation("PrivateImportOwnerAccount")
   privateAssetRefs    PrivateAssetReference[]   @relation("PrivateAssetOwnerAccount")
   communityProfile    CommunityProfile?
+  externalIdentities  ExternalIdentity[]
+  providerAttempts    ProviderLinkAttempt[]
 
   @@index([status, lastSeenAt])
 }
@@ -964,23 +966,129 @@ model TaleSession {
 }
 
 model PlayerProfile {
-  id           String                  @id @default(cuid())
-  accountId    String?                 @unique
-  username     String?                 @unique
-  passwordHash String?
-  displayName  String
-  status       String                  @default("ACTIVE")
-  preferences  String                  @default("{}")
-  claimedAt    DateTime?
-  createdAt    DateTime                @default(now())
-  updatedAt    DateTime                @updatedAt
-  lastSeenAt   DateTime?
-  sessions     PlayerIdentitySession[]
-  memberships  PlaythroughMembership[]
-  invitations  Invitation[]
-  account      UserAccount?            @relation(fields: [accountId], references: [id], onDelete: SetNull)
+  id                String                  @id @default(cuid())
+  accountId         String?                 @unique
+  username          String?                 @unique
+  passwordHash      String?
+  displayName       String
+  handle            String?
+  normalizedHandle  String?                 @unique
+  biography         String?
+  avatarMediaId     String?                 @unique
+  bannerMediaId     String?                 @unique
+  defaultVisibility String                  @default("REGISTERED_USERS")
+  status            String                  @default("ACTIVE")
+  preferences       String                  @default("{}")
+  claimedAt         DateTime?
+  createdAt         DateTime                @default(now())
+  updatedAt         DateTime                @updatedAt
+  lastSeenAt        DateTime?
+  sessions          PlayerIdentitySession[]
+  memberships       PlaythroughMembership[]
+  invitations       Invitation[]
+  handleHistory     ProfileHandleHistory[]
+  media             ProfileMedia[]          @relation("ProfileMediaOwner")
+  avatarMedia       ProfileMedia?           @relation("ProfileAvatar", fields: [avatarMediaId], references: [id], onDelete: SetNull)
+  bannerMedia       ProfileMedia?           @relation("ProfileBanner", fields: [bannerMediaId], references: [id], onDelete: SetNull)
+  preferenceSet     ProfilePreferenceSet?
+  privacyRules      ProfilePrivacyRule[]
+  account           UserAccount?            @relation(fields: [accountId], references: [id], onDelete: SetNull)
 
   @@index([status, displayName])
+  @@index([normalizedHandle, status])
+}
+
+model ProfileHandleHistory {
+  id               String        @id @default(cuid())
+  playerProfileId  String
+  handle           String
+  normalizedHandle String        @unique
+  changedAt        DateTime      @default(now())
+  releasedAt       DateTime?
+  player           PlayerProfile @relation(fields: [playerProfileId], references: [id], onDelete: Cascade)
+
+  @@index([playerProfileId, changedAt])
+}
+
+model ProfileMedia {
+  id         String         @id @default(cuid())
+  profileId  String
+  kind       String
+  storageKey String         @unique
+  mimeType   String
+  byteLength Int
+  width      Int?
+  height     Int?
+  altText    String?
+  createdAt  DateTime       @default(now())
+  removedAt  DateTime?
+  profile    PlayerProfile  @relation("ProfileMediaOwner", fields: [profileId], references: [id], onDelete: Cascade)
+  avatarFor  PlayerProfile? @relation("ProfileAvatar")
+  bannerFor  PlayerProfile? @relation("ProfileBanner")
+
+  @@index([profileId, kind, removedAt])
+}
+
+model ExternalIdentity {
+  id                  String      @id @default(cuid())
+  accountId           String
+  provider            String
+  providerAccountId   String
+  providerDisplayName String?
+  avatarReference     String?
+  allowedScopes       String      @default("[]")
+  useForLogin         Boolean     @default(false)
+  visibility          String      @default("ONLY_ME")
+  status              String      @default("LINKED")
+  encryptedToken      String?
+  linkedAt            DateTime    @default(now())
+  lastVerifiedAt      DateTime?
+  refreshedAt         DateTime?
+  revokedAt           DateTime?
+  account             UserAccount @relation(fields: [accountId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@index([accountId, status, visibility])
+}
+
+model ProviderLinkAttempt {
+  id           String      @id @default(cuid())
+  accountId    String
+  provider     String
+  stateHash    String      @unique
+  pkceVerifier String
+  nonceHash    String
+  redirectPath String      @default("/passport/providers")
+  expiresAt    DateTime
+  consumedAt   DateTime?
+  createdAt    DateTime    @default(now())
+  account      UserAccount @relation(fields: [accountId], references: [id], onDelete: Cascade)
+
+  @@index([accountId, provider, expiresAt])
+}
+
+model ProfilePreferenceSet {
+  id              String        @id @default(cuid())
+  playerProfileId String        @unique
+  schemaVersion   Int           @default(1)
+  payload         String        @default("{}")
+  migratedAt      DateTime?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  player          PlayerProfile @relation(fields: [playerProfileId], references: [id], onDelete: Cascade)
+}
+
+model ProfilePrivacyRule {
+  id              String        @id @default(cuid())
+  playerProfileId String
+  section         String
+  visibility      String
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  player          PlayerProfile @relation(fields: [playerProfileId], references: [id], onDelete: Cascade)
+
+  @@unique([playerProfileId, section])
+  @@index([playerProfileId, visibility])
 }
 
 model PlayerIdentitySession {

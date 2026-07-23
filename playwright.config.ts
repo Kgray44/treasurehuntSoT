@@ -3,6 +3,7 @@ import { defineConfig, devices } from "@playwright/test";
 const baseURL = process.env.PLAYWRIGHT_BASE_URL ?? "http://127.0.0.1:3100";
 const playwrightPort = new URL(baseURL).port || "3100";
 const useOwnedExternalServer = process.env.FOREVER_PLAYWRIGHT_EXTERNAL_SERVER === "1";
+const useWayfarerProductionServer = process.env.WAYFARER_PLAYWRIGHT_PRODUCTION === "1";
 const phase3ReadOnlySetup = /phase3-readonly-setup\.setup\.ts/u;
 const phase3PerformanceSpec = /phase3-performance\.spec\.ts/u;
 const phase3MutationSpecs =
@@ -56,6 +57,11 @@ export default defineConfig({
       use: { ...devices["Desktop Chrome"] },
     },
     {
+      name: "wayfarer-phase2",
+      testMatch: /wayfarer-phase2\.spec\.ts/u,
+      use: { ...devices["Desktop Chrome"] },
+    },
+    {
       name: "webkit-mobile",
       dependencies: ["phase3-readonly-setup"],
       testIgnore: [phase3ReadOnlySetup, phase3MutationSpecs],
@@ -67,9 +73,12 @@ export default defineConfig({
     : {
         // Match the owned acceptance server. Webpack avoids Next 16 dev-chunk
         // invalidation during long-lived WebKit matrices.
-        command: `node node_modules/next/dist/bin/next dev --webpack -H 127.0.0.1 -p ${playwrightPort}`,
+        command: useWayfarerProductionServer
+          ? `"${process.execPath}" node_modules/next/dist/bin/next start -H 127.0.0.1 -p ${playwrightPort}`
+          : `"${process.execPath}" node_modules/next/dist/bin/next dev --webpack -H 127.0.0.1 -p ${playwrightPort}`,
         url: baseURL,
         reuseExistingServer: false,
         timeout: 120_000,
+        env: useWayfarerProductionServer ? { WAYFARER_PROVIDER_SIMULATORS: "1" } : undefined,
       },
 });

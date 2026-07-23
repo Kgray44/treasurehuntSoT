@@ -1,5 +1,13 @@
 # Security
 
+## Profile and provider data
+
+Public Profile responses are explicit DTOs. They never include account email,
+sessions, credentials, provider tokens, invitations, private Chronicle facts,
+private asset paths, or moderation data. Provider linking uses account-bound
+expiring state, PKCE, nonce verification, immutable-subject collision checks,
+and encrypted token storage via `WAYFARER_PROVIDER_TOKEN_KEY`.
+
 ## Companion release boundary
 
 Serialization is allowlist-based. Locked chapters omit narrative/objective/clues; unreleased hints and annotations are absent; rumored map locations omit coordinates/internal regions; unknown artifacts omit names/descriptions; hidden quests are absent and rumors expose only safe teasers; hidden finale details are never modeled in public content. SSE payloads pass through the same explicit allowlist and never stream raw stored payloads. Player routes require a campaign-bound, unexpired access identity and expose no mutation endpoint.
