@@ -1752,3 +1752,127 @@ model CommunityLicensePolicy {
   createdAt            DateTime @default(now())
   updatedAt            DateTime @updatedAt
 }
+
+// Phase 2 Exchange records are deliberately separate from One Voyage's
+// Chronicle/runtime tables and Sealed Hold's private package infrastructure.
+model CommunityPackage {
+  id              String    @id @default(cuid())
+  releaseId       String    @unique
+  packageSchema   Int       @default(1)
+  packageChecksum String    @unique
+  manifest        String
+  byteLength      Int
+  storageStatus   String    @default("STAGED")
+  scanStatus      String    @default("PENDING")
+  finalizedAt     DateTime?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  @@index([storageStatus, scanStatus])
+}
+
+model CommunityPackageItem {
+  id            String   @id @default(cuid())
+  packageId     String
+  logicalId     String
+  itemType      String
+  relativePath  String
+  checksum      String
+  mediaType     String
+  byteLength    Int
+  metadata      String   @default("{}")
+  accessibility String   @default("{}")
+  createdAt     DateTime @default(now())
+
+  @@unique([packageId, logicalId])
+  @@unique([packageId, relativePath])
+  @@index([packageId, itemType])
+}
+
+model CommunityPackageDependency {
+  id                 String   @id @default(cuid())
+  packageId          String
+  dependentLogicalId String
+  requiredPackageId  String?
+  requiredLogicalId  String
+  versionRange       String?
+  createdAt          DateTime @default(now())
+
+  @@unique([packageId, dependentLogicalId, requiredLogicalId])
+  @@index([packageId])
+}
+
+model CommunityInstallOperation {
+  id                    String    @id @default(cuid())
+  requestId             String
+  idempotencyKey        String    @unique
+  packageId             String
+  releaseId             String
+  accountId             String
+  mode                  String
+  status                String    @default("PLANNED")
+  destinationRevision   String
+  plan                  String
+  finalizationErrorCode String?
+  completedAt           DateTime?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  @@unique([accountId, requestId])
+  @@index([packageId, status])
+}
+
+model CommunityInstallMapping {
+  id          String   @id @default(cuid())
+  operationId String
+  sourceId    String
+  targetId    String
+  kind        String
+  createdAt   DateTime @default(now())
+
+  @@unique([operationId, sourceId])
+}
+
+model CommunityInstallation {
+  id                        String   @id @default(cuid())
+  accountId                 String
+  packageId                 String
+  releaseId                 String
+  operationId               String   @unique
+  mode                      String
+  installedPackageChecksum  String
+  localModificationChecksum String?
+  upstreamReleaseId         String?
+  installedAt               DateTime @default(now())
+  updatedAt                 DateTime @updatedAt
+
+  @@index([accountId, upstreamReleaseId])
+}
+
+model CommunityRemixLineage {
+  id                    String   @id @default(cuid())
+  derivedReleaseId      String   @unique
+  sourceReleaseId       String
+  rootReleaseId         String
+  sourcePackageChecksum String
+  mode                  String
+  attributionSnapshot   String
+  createdAt             DateTime @default(now())
+
+  @@index([sourceReleaseId])
+  @@index([rootReleaseId])
+}
+
+model CommunityReleaseUpdate {
+  id                 String    @id @default(cuid())
+  installationId     String
+  currentReleaseId   String
+  candidateReleaseId String
+  comparison         String
+  localEditProtected Boolean   @default(false)
+  resolvedAt         DateTime?
+  createdAt          DateTime  @default(now())
+
+  @@unique([installationId, candidateReleaseId])
+  @@index([installationId, resolvedAt])
+}

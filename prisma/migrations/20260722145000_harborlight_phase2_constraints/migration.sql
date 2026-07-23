@@ -1,0 +1,2 @@
+-- Service-level validation owns graph, licence, archive and GLB constraints.
+-- This migration reserves the final Harborlight Phase 2 reconciliation slot.

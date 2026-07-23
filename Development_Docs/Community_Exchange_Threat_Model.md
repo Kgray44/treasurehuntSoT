@@ -1,0 +1,3 @@
+# Community Exchange Threat Model
+
+Threats include archive traversal, duplicate/case-folded paths, symlink escape, executable payloads, decompression abuse, MIME deception, 2D metadata leakage, malformed GLB, external resources, checksum substitution, package guessing, stale-plan overwrite, dependency cycles, licence laundering, partial finalization, public projection leakage and spoofed success UI. Controls are strict schemas, canonical checksums, bounded validators, Sealed Hold ports, package/release separation, transaction/idempotency records, allowlisted projections, owner/moderator authorization, audit/outbox records and receipt-driven animation. Production malware scanning, durable object storage and worker operations remain external deployment controls.
