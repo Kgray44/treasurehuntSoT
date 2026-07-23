@@ -1,6 +1,21 @@
 # Harborlight Phase 2 Validation Record
 
-Environment: isolated local worktree `C:\Users\kgray\AppData\Local\ForeverTreasureCompanion\project-harborlight-phase2-open-the-exchange`, with a disposable SQLite database and the local development dependency runtime.
+Environment: isolated local worktree `C:\Users\kgray\AppData\Local\ForeverTreasureCompanion\harborlight-phase2-complete-convergence`, with a disposable SQLite rehearsal database and the local development dependency runtime.
+
+## Convergence validation (2026-07-22)
+
+| Command / gate | Result |
+| --- | --- |
+| Ordered SQLite migration rehearsal through `20260722145000` | passed; 101 tables; `PRAGMA foreign_key_check` = 0 |
+| `prisma validate` SQLite and MySQL schema | passed with disposable URLs |
+| Focused Exchange, artifact, and accessible-surface Vitest | passed; 4 files, 17 tests |
+| Full Vitest | passed; 110 files, 931 tests |
+| `tsc --noEmit` | passed |
+| Focused ESLint | passed; 0 errors, 1 new `img` optimization warning |
+| Product-language validation | passed |
+| `next build --webpack` | passed |
+
+Live MySQL migration execution, production scanner/object-storage/worker deployment, and browser acceptance are explicitly external staging/deployment proofs and have not been counted as passing.
 
 | Command / gate                                                                                         | Result                    |
 | ------------------------------------------------------------------------------------------------------ | ------------------------- |

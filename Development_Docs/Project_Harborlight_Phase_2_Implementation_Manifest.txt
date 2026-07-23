@@ -1,7 +1,10 @@
 PROJECT HARBORLIGHT PHASE 2 - OPEN THE EXCHANGE
 
-Base: f4bfc4b4f3585bc8f60ce4d94375dc77a7092da2
-Branch: codex/project-harborlight-phase2-open-the-exchange
+Base: 4a84b9fd2dfa439127c35b8ce865ff8b7a5742b7
+Branch: codex/project-harborlight-phase2-complete-convergence
+Integration sources: One Voyage 3f0b12680; Wayfarer 331274855; Sealed Hold
+2c28f0618; Harborlight v2 df11c2dd0. Integration order was One Voyage,
+Wayfarer, Sealed Hold, Harborlight, then cross-project reconciliation.
 
 Added: typed consumer ports; canonical package manifest/checksum/security verifier;
 GLB and artifact accessibility validation; dependency graph and licence-compatible
@@ -12,3 +15,12 @@ architecture, threat, workflow, test and convergence records.
 
 No Chronicle/runtime, Wayfarer person-profile, Sealed Hold private package/storage,
 or Lanternwake director implementation was duplicated or altered.
+
+Convergence completion adds all taxonomy manifests, truthful binary scan gating,
+typed 2D/3D GLB budgets and collections/assemblies, canonical-session/CSRF
+Exchange API handlers, accessible publication/install/preview components, and
+deterministic library-reference/editable/fork/draft-import/preview plans. Focused
+and full unit validation, schema validation, ordered SQLite rehearsal, language
+validation, and Webpack production build are recorded in the validation record.
+External-unconfigured: production MySQL, scanner, object storage, and workers.
+Remaining Phase 3 work: public discovery/social features and moderation dashboard.
