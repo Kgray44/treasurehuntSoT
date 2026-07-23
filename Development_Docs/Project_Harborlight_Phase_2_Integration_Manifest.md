@@ -1,8 +1,8 @@
 # Project Harborlight Phase 2 Integration Manifest
 
-Repository: `Kgray44/treasurehuntSoT`  
-Convergence branch: `codex/project-harborlight-phase2-complete-convergence`  
-Base: `origin/main` `4a84b9fd2dfa439127c35b8ce865ff8b7a5742b7`  
+Repository: `Kgray44/treasurehuntSoT`
+Convergence branch: `codex/project-harborlight-phase2-complete-convergence`
+Base: `origin/main` `4a84b9fd2dfa439127c35b8ce865ff8b7a5742b7`
 Harborlight implementation commit: `5455d55b8ae6c8af773b62c5fd6559bad291b882`
 
 Implementation manifest SHA-256: `85419068e24d015e3770035bfc46c6cbb5e1267631abc01a10147b280e348a89`
