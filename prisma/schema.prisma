@@ -114,6 +114,7 @@ model UserAccount {
   auditActions        PlatformAuditEvent[]      @relation("PlatformAuditActorAccount")
   privateImports      PrivateContentImport[]    @relation("PrivateImportOwnerAccount")
   privateAssetRefs    PrivateAssetReference[]   @relation("PrivateAssetOwnerAccount")
+  privateOperations   PrivateContentOperation[] @relation("PrivateOperationOwnerAccount")
   communityProfile    CommunityProfile?
   externalIdentities  ExternalIdentity[]
   providerAttempts    ProviderLinkAttempt[]
@@ -1365,7 +1366,9 @@ model PrivateContentImport {
   ownerActorId          String?                       @db.VarChar(191)
   ownerAccountId        String?                       @db.VarChar(191)
   sourceTaleId          String?                       @db.VarChar(191)
-  contentJson           String                        @db.LongText
+  contentJson           String?                       @db.LongText
+  normalizedPayloadId   String?                       @db.VarChar(191)
+  materializationStatus String                        @default("NOT_STARTED") @db.VarChar(64)
   importedTaleIds       String                        @default("[]") @db.LongText
   importedAssetIds      String                        @default("[]") @db.LongText
   warnings              String                        @default("[]") @db.LongText
@@ -1375,6 +1378,7 @@ model PrivateContentImport {
   completedAt           DateTime?
   mappings              PrivateContentImportMapping[]
   assetReferences       PrivateAssetReference[]
+  operations            PrivateContentOperation[]
   ownerAccount          UserAccount?                  @relation("PrivateImportOwnerAccount", fields: [ownerAccountId], references: [id], onDelete: SetNull)
   sourceChronicle       Chronicle?                    @relation(fields: [sourceTaleId], references: [id], onDelete: SetNull)
 
@@ -1382,6 +1386,7 @@ model PrivateContentImport {
   @@index([status, createdAt])
   @@index([ownerAccountId, createdAt])
   @@index([sourceTaleId])
+  @@index([materializationStatus, createdAt])
 }
 
 model PrivateContentImportMapping {
@@ -1396,15 +1401,136 @@ model PrivateContentImportMapping {
 }
 
 model PrivateAssetObject {
+  id              String                  @id @default(cuid())
+  sha256          String                  @unique @db.Char(64)
+  byteLength      Int
+  mediaType       String                  @db.VarChar(191)
+  representation  String                  @db.VarChar(32)
+  storageKey      String                  @unique @db.VarChar(255)
+  storageProvider String                  @default("local") @db.VarChar(64)
+  scanStatus      String                  @default("PENDING") @db.VarChar(32)
+  quarantinedAt   DateTime?
+  finalizedAt     DateTime?
+  createdAt       DateTime                @default(now())
+  references      PrivateAssetReference[]
+  scans           PrivateContentScan[]
+}
+
+model PrivateContentOperation {
+  id                String                @id @default(cuid())
+  importId          String?               @db.VarChar(191)
+  ownerAccountId    String?               @db.VarChar(191)
+  kind              String                @db.VarChar(64)
+  state             String                @default("CREATED") @db.VarChar(64)
+  idempotencyKey    String                @unique @db.VarChar(191)
+  correlationId     String                @db.VarChar(191)
+  progress          String                @default("{}") @db.LongText
+  cancelRequestedAt DateTime?
+  claimedAt         DateTime?
+  claimOwner        String?               @db.VarChar(191)
+  claimExpiresAt    DateTime?
+  failureCode       String?               @db.VarChar(191)
+  createdAt         DateTime              @default(now())
+  updatedAt         DateTime              @updatedAt
+  import            PrivateContentImport? @relation(fields: [importId], references: [id], onDelete: SetNull)
+  ownerAccount      UserAccount?          @relation("PrivateOperationOwnerAccount", fields: [ownerAccountId], references: [id], onDelete: SetNull)
+  upload            PrivateContentUpload?
+  jobs              PrivateContentJob[]
+
+  @@index([state, claimExpiresAt])
+  @@index([ownerAccountId, createdAt])
+}
+
+model PrivateContentUpload {
+  id              String                     @id @default(cuid())
+  operationId     String                     @unique @db.VarChar(191)
+  storageProvider String                     @db.VarChar(64)
+  storageKey      String                     @unique @db.VarChar(255)
+  expectedSha256  String?                    @db.Char(64)
+  receivedBytes   Int                        @default(0)
+  expectedBytes   Int?
+  expiresAt       DateTime
+  completedAt     DateTime?
+  cancelledAt     DateTime?
+  createdAt       DateTime                   @default(now())
+  updatedAt       DateTime                   @updatedAt
+  operation       PrivateContentOperation    @relation(fields: [operationId], references: [id], onDelete: Cascade)
+  parts           PrivateContentUploadPart[]
+
+  @@index([expiresAt, completedAt])
+}
+
+model PrivateContentUploadPart {
+  id          String               @id @default(cuid())
+  uploadId    String               @db.VarChar(191)
+  partNumber  Int
+  sha256      String               @db.Char(64)
+  byteLength  Int
+  providerTag String?              @db.VarChar(191)
+  createdAt   DateTime             @default(now())
+  upload      PrivateContentUpload @relation(fields: [uploadId], references: [id], onDelete: Cascade)
+
+  @@unique([uploadId, partNumber])
+}
+
+model PrivateContentJob {
   id             String                  @id @default(cuid())
-  sha256         String                  @unique @db.Char(64)
-  byteLength     Int
-  mediaType      String                  @db.VarChar(191)
-  representation String                  @db.VarChar(32)
-  storageKey     String                  @unique @db.VarChar(255)
-  finalizedAt    DateTime?
+  operationId    String                  @db.VarChar(191)
+  type           String                  @db.VarChar(64)
+  payloadVersion Int                     @default(1)
+  payload        String                  @db.LongText
+  idempotencyKey String                  @unique @db.VarChar(191)
+  state          String                  @default("PENDING") @db.VarChar(64)
+  availableAt    DateTime                @default(now())
+  claimedAt      DateTime?
+  claimOwner     String?                 @db.VarChar(191)
+  claimExpiresAt DateTime?
+  attemptCount   Int                     @default(0)
+  maxAttempts    Int                     @default(5)
+  completedAt    DateTime?
+  cancelledAt    DateTime?
+  failureCode    String?                 @db.VarChar(191)
+  progress       String                  @default("{}") @db.LongText
+  correlationId  String                  @db.VarChar(191)
   createdAt      DateTime                @default(now())
-  references     PrivateAssetReference[]
+  operation      PrivateContentOperation @relation(fields: [operationId], references: [id], onDelete: Cascade)
+
+  @@index([state, availableAt, claimExpiresAt])
+}
+
+model PrivateContentScan {
+  id        String             @id @default(cuid())
+  objectId  String             @db.VarChar(191)
+  provider  String             @db.VarChar(64)
+  state     String             @db.VarChar(32)
+  safeCode  String?            @db.VarChar(191)
+  scannedAt DateTime?
+  createdAt DateTime           @default(now())
+  object    PrivateAssetObject @relation(fields: [objectId], references: [id], onDelete: Cascade)
+
+  @@index([objectId, createdAt])
+  @@index([state, createdAt])
+}
+
+model PrivateContentWrappedKey {
+  id         String   @id @default(cuid())
+  provider   String   @db.VarChar(64)
+  keyVersion String   @db.VarChar(191)
+  wrappedKey String   @db.LongText
+  algorithm  String   @db.VarChar(32)
+  createdAt  DateTime @default(now())
+  @@index([provider, keyVersion])
+}
+
+model PrivateContentEncryptedPayload {
+  id           String   @id @default(cuid())
+  objectKey    String   @unique @db.VarChar(255)
+  sha256       String   @db.Char(64)
+  byteLength   Int
+  cipher       String   @db.VarChar(32)
+  wrappedKeyId String   @db.VarChar(191)
+  createdAt    DateTime @default(now())
+  @@index([wrappedKeyId])
 }
 
 model PrivateAssetReference {

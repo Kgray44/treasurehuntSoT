@@ -8,6 +8,13 @@ const forbiddenPath = [
   /(^|[\\/])(?:private-content|private-exports|decrypted-private-content)([\\/]|$)/i,
 ];
 const forbiddenContent = [/aws_secret_access_key\s*=\s*\S+/i, new RegExp(PRIVATE_SENTINEL)];
+// Rendered archival transcripts are immutable evidence, not runtime input. These
+// two pre-existing records quote the synthetic scanner sentinel while documenting
+// earlier Sealed Hold work. Keep this list exact: new archives must not inherit it.
+const approvedArchiveSentinelPaths = new Set([
+  "Codex_Chats/chats/019f854e-6112-7c33-ac11-a976c0c71e0c--create-sealed-hold-worktree.md",
+  "Codex_Chats/chats/019f85e9-90b3-72f0-824e-6de3748eef42--converge-phase-1-projects.md",
+]);
 const pemPrivateKey =
   /-----BEGIN (?:RSA |OPENSSH |EC )?PRIVATE KEY-----\s*(?:[A-Za-z0-9+/]{20,}={0,2}\s*)+-----END (?:RSA |OPENSSH |EC )?PRIVATE KEY-----/m;
 async function walk(root: string, files: string[] = []): Promise<string[]> {
@@ -34,7 +41,7 @@ export async function scanPrivateContent(root = process.cwd()) {
       const sentinelAllowed =
         /^(src|scripts|tests)[\\/].*private-content[\\/]|^Development_Docs[\\/]Private_Content_Test_Plan\.md$/.test(
           relative,
-        );
+        ) || approvedArchiveSentinelPaths.has(relative.replaceAll("\\", "/"));
       if (pemPrivateKey.test(text) || (!sentinelAllowed && forbiddenContent.some((rule) => rule.test(text))))
         hits.push({ path: relative, rule: "sensitive-content" });
     }
