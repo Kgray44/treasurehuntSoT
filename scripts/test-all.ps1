@@ -1,4 +1,9 @@
-param([switch]$SkipBrowserInstall)
+param(
+    [switch]$SkipBrowserInstall,
+    [string[]]$BrowserArgs = @(),
+    [string]$BrowserGrep = "",
+    [switch]$SkipProductionPerformance
+)
 $ErrorActionPreference = "Stop"
 . (Join-Path $PSScriptRoot "dev-common.ps1")
 
@@ -570,11 +575,19 @@ try {
     Write-Host "`n==> Starting owned isolated validation server" -ForegroundColor Cyan
     $ownedValidationServer = Start-OwnedValidationServer
     $playwrightInvoked = $true
-    Invoke-ValidationStep -Name "Running browser acceptance tests" -Arguments @("node_modules/playwright/cli.js", "test")
+    $browserCommand = @("node_modules/playwright/cli.js", "test") + $BrowserArgs
+    if ($BrowserGrep) { $browserCommand += @("--grep", $BrowserGrep) }
+    Invoke-ValidationStep -Name "Running browser acceptance tests" -Arguments $browserCommand
     Stop-OwnedValidationServer -ServerOwnership $ownedValidationServer
     $ownedValidationServer = $null
     Assert-TcpPortAvailable -Port 3100
     $defaultBrowserSucceeded = $true
+
+    if ($SkipProductionPerformance) {
+        $browserSucceeded = $defaultBrowserSucceeded
+        Write-Host "`n==> Production performance and restart gates skipped for this focused browser repair run" -ForegroundColor Yellow
+        return
+    }
 
     Invoke-ValidationStep -Name "Verifying accepted database state" -Arguments @("node_modules/tsx/dist/cli.mjs", "scripts/verify-database.ts", "--acceptance")
     Invoke-ValidationStep -Name "Proving launcher seed preserves accepted progress" -Arguments @("node_modules/tsx/dist/cli.mjs", "prisma/seed.ts", "--ensure")

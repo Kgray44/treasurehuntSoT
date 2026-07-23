@@ -2,6 +2,7 @@ import type { Locator, Page } from "@playwright/test";
 import { PAGE_FLIP_DEVELOPMENT_FAILPOINT_GLOBAL } from "../../src/components/animation/PageFlipBook";
 import {
   expect,
+  ensurePhase3JournalReady,
   navigatePhase3Section,
   openPhase3Player,
   PHASE3_PLAYER_SECTIONS,
@@ -443,7 +444,8 @@ async function replayJournalIntroduction(page: Page) {
   const replay = page.getByRole("button", { name: "Replay introduction" });
   await replay.click();
   const skip = page.getByRole("button", { name: "Skip ceremony" });
-  if (await visible(skip)) await skip.click();
+  await expect(skip).toBeVisible({ timeout: 4_000 });
+  await skip.click();
   await expect(page.locator("[data-player-experience-root]")).toHaveAttribute("data-journal-phase", "JOURNAL_READY");
 }
 
@@ -461,12 +463,7 @@ async function clearLifecycleEvidence(page: Page) {
 
 async function restorePlayerAfterReadOnlyRevocation(page: Page) {
   await page.reload();
-  const open = page.getByRole("button", { name: "Open the journal" });
-  if (await visible(open)) {
-    await open.click();
-    const skip = page.getByRole("button", { name: "Skip ceremony" });
-    if (await visible(skip)) await skip.click();
-  }
+  await ensurePhase3JournalReady(page);
   await expect(page.locator(".voyage-shell")).toHaveAttribute("data-journal-phase", "JOURNAL_READY", {
     timeout: 20_000,
   });
@@ -721,12 +718,7 @@ test.describe("Project Lanternwake Phase 3 twenty-cycle lifecycle stress", () =>
         eventIds = [resume.event.id, pause.event.id];
 
         await page.reload();
-        const open = page.getByRole("button", { name: "Open the journal" });
-        if (await visible(open)) {
-          await open.click();
-          const skip = page.getByRole("button", { name: "Skip ceremony" });
-          if (await visible(skip)) await skip.click();
-        }
+        await ensurePhase3JournalReady(page);
         await expect(page.locator(".voyage-shell")).toHaveAttribute("data-journal-phase", "JOURNAL_READY", {
           timeout: 20_000,
         });

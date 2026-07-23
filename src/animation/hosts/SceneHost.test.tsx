@@ -190,4 +190,31 @@ describe("SceneHost React boundary", () => {
       activeClaimCount: 0,
     });
   });
+
+  it("keeps one keyed host when React re-delivers the same connected ref", async () => {
+    let registry: SceneHostRegistry | undefined;
+    const view = render(
+      <AnimationProvider>
+        <RegistryCapture capture={(value) => (registry = value)} />
+        <StrictMode>
+          <SceneHost kind="development-showcase" hostKey="stable-showcase-host">
+            <HostProbe name="stable" />
+          </SceneHost>
+        </StrictMode>
+      </AnimationProvider>,
+    );
+    await waitFor(() => expect(screen.getByTestId("host-stable").dataset.hostId).not.toBe("pending"));
+    expect(registry?.snapshot().registeredHostCount).toBe(1);
+    view.rerender(
+      <AnimationProvider>
+        <RegistryCapture capture={(value) => (registry = value)} />
+        <StrictMode>
+          <SceneHost kind="development-showcase" hostKey="stable-showcase-host">
+            <HostProbe name="stable" />
+          </SceneHost>
+        </StrictMode>
+      </AnimationProvider>,
+    );
+    expect(registry?.snapshot().registeredHostCount).toBe(1);
+  });
 });

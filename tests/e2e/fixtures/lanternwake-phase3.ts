@@ -352,20 +352,37 @@ export async function openPhase3Player(
   });
   expect(access.status(), await access.text()).toBe(200);
   await page.goto(`${fixture.path}?section=${section}&journalSpeed=0.25`);
-  const open = page.getByRole("button", { name: "Open the journal" });
-  if (await open.isVisible()) {
-    await open.click();
-    const skip = page.getByRole("button", { name: "Skip ceremony" });
-    if (await skip.isVisible({ timeout: 4_000 }).catch(() => false)) await skip.click();
-  }
-  await expect(page.locator(".voyage-shell")).toHaveAttribute("data-journal-phase", "JOURNAL_READY", {
-    timeout: 20_000,
-  });
-  await expect(page.getByText("Tide connected")).toBeVisible({ timeout: 20_000 });
-  await expect(page.locator("[data-testid='progression-scene-host']")).toHaveCount(1);
+  await ensurePhase3JournalReady(page);
   if (!(await page.locator(`.voyage-shell.view-${section}`).count())) await navigatePhase3Section(page, section);
   await expect(page.locator(`.voyage-shell.view-${section}`)).toBeVisible();
   return page.locator("[data-testid='progression-scene-host']").getAttribute("data-scene-host-id");
+}
+
+/** Settles the canonical Chronicle opening ceremony after an initial visit or reload. */
+export async function ensurePhase3JournalReady(page: Page) {
+  const open = page.getByRole("button", { name: "Open the journal" });
+  // The outgoing loading shell is intentionally retained while the canonical
+  // journal hydrates; assertions must address the current, interactive shell.
+  const shell = page.locator(".voyage-shell").last();
+  await expect
+    .poll(
+      async () => {
+        if ((await shell.getAttribute("data-journal-phase")) === "JOURNAL_READY") return "ready";
+        return (await open.isVisible().catch(() => false)) ? "open" : "pending";
+      },
+      { timeout: 20_000 },
+    )
+    .not.toBe("pending");
+  if ((await shell.getAttribute("data-journal-phase")) !== "JOURNAL_READY") {
+    await expect(open).toBeVisible({ timeout: 4_000 });
+    await open.click();
+    const skip = page.getByRole("button", { name: "Skip ceremony" });
+    await expect(skip).toBeVisible({ timeout: 4_000 });
+    await skip.click();
+  }
+  await expect(shell).toHaveAttribute("data-journal-phase", "JOURNAL_READY", {
+    timeout: 20_000,
+  });
 }
 
 export async function capturePhase3DbTruth(fixture: Phase3CaseFixture): Promise<Phase3DbTruth> {

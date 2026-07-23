@@ -66,6 +66,10 @@ export function SceneHost({ kind, hostKey, as = "div", children, ...props }: Sce
   const handle = useSyncExternalStore(cell.subscribe, cell.getSnapshot, cell.getSnapshot);
   const registerRoot = useCallback(
     (root: HTMLElement | null) => {
+      // React can re-deliver the same ref during a retained subtree update.
+      // Registering it again would violate the registry's unique host-key
+      // contract even though no second host exists.
+      if (root && cell.getSnapshot() && authority.hosts.hostForRoot(root) === cell.getSnapshot()) return;
       cell.replace(root ? authority.hosts.registerHost({ kind, root, ...(hostKey ? { hostKey } : {}) }) : null);
     },
     [authority.hosts, cell, hostKey, kind],
