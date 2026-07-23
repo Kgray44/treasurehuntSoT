@@ -4,7 +4,13 @@ import { db } from "@/lib/db";
 import { hashToken, makeToken } from "@/lib/security";
 import { safeEqual } from "@/lib/security";
 import { readTaleSessionCookie } from "@/chronicle/session-cookie";
-import { authenticateAccount, createAccountSession, currentAccount, revokeAccountSession } from "@/wayfarer/accounts";
+import {
+  authenticateAccount,
+  createAccountSession,
+  currentAccount,
+  ensureGuestAccountForProfile,
+  revokeAccountSession,
+} from "@/wayfarer/accounts";
 
 const PLAYER_IDENTITY_COOKIE = "chronicle_player";
 const ACCOUNT_IDENTITY_COOKIE = "wayfarer_account";
@@ -21,31 +27,16 @@ const cookieOptions = (maxAge: number) => ({
 
 export async function createPlayerIdentitySession(playerProfileId: string) {
   const profile = await db.playerProfile.findUnique({ where: { id: playerProfileId }, select: { accountId: true } });
-  if (profile?.accountId) {
-    const session = await createAccountSession(profile.accountId);
-    (await cookies()).set(ACCOUNT_IDENTITY_COOKIE, session.token, cookieOptions(playerSessionAgeMs / 1000));
-    return session.csrfToken;
-  }
+  if (!profile) throw new Error("Player profile no longer exists.");
+  // Phase 2 closes the identity-write passage: legacy PlayerIdentitySession
+  // rows may be read only to rotate existing browser sessions, while every
+  // new Player session is an account-rooted Wayfarer AccountSession.
+  const accountId = profile.accountId ?? (await ensureGuestAccountForProfile(playerProfileId));
+  const session = await createAccountSession(accountId);
   const jar = await cookies();
-  const previous = jar.get(PLAYER_IDENTITY_COOKIE)?.value;
-  if (previous)
-    await db.playerIdentitySession.updateMany({
-      where: { tokenHash: hashToken(previous), revokedAt: null },
-      data: { revokedAt: new Date() },
-    });
-  const token = makeToken();
-  const csrfToken = makeToken(24);
-  await db.playerIdentitySession.create({
-    data: {
-      playerProfileId,
-      tokenHash: hashToken(token),
-      csrfToken,
-      expiresAt: new Date(Date.now() + playerSessionAgeMs),
-    },
-  });
-  jar.set(PLAYER_IDENTITY_COOKIE, token, cookieOptions(playerSessionAgeMs / 1000));
-  await db.playerProfile.update({ where: { id: playerProfileId }, data: { lastSeenAt: new Date() } });
-  return csrfToken;
+  jar.set(ACCOUNT_IDENTITY_COOKIE, session.token, cookieOptions(playerSessionAgeMs / 1000));
+  jar.delete(PLAYER_IDENTITY_COOKIE);
+  return session.csrfToken;
 }
 
 export async function requirePlayerIdentity() {

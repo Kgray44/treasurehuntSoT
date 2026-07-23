@@ -24,4 +24,25 @@ ALTER TABLE `AccountRoleAssignment` ADD CONSTRAINT `AccountRoleAssignment_accoun
 ALTER TABLE `SecurityEvent` ADD CONSTRAINT `SecurityEvent_accountId_fkey` FOREIGN KEY (`accountId`) REFERENCES `UserAccount`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE `WayfarerMigrationRecord` ADD CONSTRAINT `WayfarerMigrationRecord_accountId_fkey` FOREIGN KEY (`accountId`) REFERENCES `UserAccount`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 ALTER TABLE `PlayerProfile` ADD CONSTRAINT `PlayerProfile_accountId_fkey` FOREIGN KEY (`accountId`) REFERENCES `UserAccount`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+-- These nullable actor relations are part of the same additive Wayfarer
+-- identity contract as PlayerProfile.accountId. They retain historical string
+-- snapshots while ensuring every new Chronicle write can be account-rooted.
+ALTER TABLE `Chronicle` ADD COLUMN `creatorAccountId` VARCHAR(191) NULL, ADD INDEX `Chronicle_creatorAccountId_updatedAt_idx` (`creatorAccountId`, `updatedAt`);
+ALTER TABLE `TaleDraft` ADD COLUMN `createdByAccountId` VARCHAR(191) NULL, ADD INDEX `TaleDraft_createdByAccountId_idx` (`createdByAccountId`);
+ALTER TABLE `PublishedTaleVersion` ADD COLUMN `publishedByAccountId` VARCHAR(191) NULL, ADD INDEX `PublishedTaleVersion_publishedByAccountId_idx` (`publishedByAccountId`);
+ALTER TABLE `TaleAsset` ADD COLUMN `createdByAccountId` VARCHAR(191) NULL, ADD INDEX `TaleAsset_createdByAccountId_idx` (`createdByAccountId`);
+ALTER TABLE `TaleSession` ADD COLUMN `captainAccountId` VARCHAR(191) NULL, ADD INDEX `TaleSession_captainAccountId_status_idx` (`captainAccountId`, `status`);
+ALTER TABLE `Invitation` ADD COLUMN `creatorAccountId` VARCHAR(191) NULL, ADD INDEX `Invitation_creatorAccountId_status_idx` (`creatorAccountId`, `status`);
+ALTER TABLE `InvitationEvent` ADD COLUMN `actorAccountId` VARCHAR(191) NULL, ADD INDEX `InvitationEvent_actorAccountId_createdAt_idx` (`actorAccountId`, `createdAt`);
+ALTER TABLE `RevealState` ADD COLUMN `revealedByAccountId` VARCHAR(191) NULL, ADD INDEX `RevealState_revealedByAccountId_revealedAt_idx` (`revealedByAccountId`, `revealedAt`);
+ALTER TABLE `PlatformAuditEvent` ADD COLUMN `actorAccountId` VARCHAR(191) NULL, ADD INDEX `PlatformAuditEvent_actorAccountId_createdAt_idx` (`actorAccountId`, `createdAt`);
+ALTER TABLE `Chronicle` ADD CONSTRAINT `Chronicle_creatorAccountId_fkey` FOREIGN KEY (`creatorAccountId`) REFERENCES `UserAccount`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE `TaleDraft` ADD CONSTRAINT `TaleDraft_createdByAccountId_fkey` FOREIGN KEY (`createdByAccountId`) REFERENCES `UserAccount`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE `PublishedTaleVersion` ADD CONSTRAINT `PublishedTaleVersion_publishedByAccountId_fkey` FOREIGN KEY (`publishedByAccountId`) REFERENCES `UserAccount`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE `TaleAsset` ADD CONSTRAINT `TaleAsset_createdByAccountId_fkey` FOREIGN KEY (`createdByAccountId`) REFERENCES `UserAccount`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE `TaleSession` ADD CONSTRAINT `TaleSession_captainAccountId_fkey` FOREIGN KEY (`captainAccountId`) REFERENCES `UserAccount`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE `Invitation` ADD CONSTRAINT `Invitation_creatorAccountId_fkey` FOREIGN KEY (`creatorAccountId`) REFERENCES `UserAccount`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE `InvitationEvent` ADD CONSTRAINT `InvitationEvent_actorAccountId_fkey` FOREIGN KEY (`actorAccountId`) REFERENCES `UserAccount`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE `RevealState` ADD CONSTRAINT `RevealState_revealedByAccountId_fkey` FOREIGN KEY (`revealedByAccountId`) REFERENCES `UserAccount`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE `PlatformAuditEvent` ADD CONSTRAINT `PlatformAuditEvent_actorAccountId_fkey` FOREIGN KEY (`actorAccountId`) REFERENCES `UserAccount`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 -- The production runbook executes the deterministic player/Game Master backfill in bounded batches through scripts/wayfarer-migrate.ts.

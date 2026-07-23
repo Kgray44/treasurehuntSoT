@@ -4,16 +4,16 @@ RENAME TABLE `TallTale` TO `Chronicle`;
 
 CREATE TABLE `LegacyEntityReference` (
     `id` VARCHAR(191) NOT NULL,
-    `sourceDomain` VARCHAR(191) NOT NULL,
-    `sourceModel` VARCHAR(191) NOT NULL,
+    `sourceDomain` VARCHAR(64) NOT NULL,
+    `sourceModel` VARCHAR(64) NOT NULL,
     `sourceId` VARCHAR(191) NOT NULL,
-    `canonicalModel` VARCHAR(191) NOT NULL,
+    `canonicalModel` VARCHAR(64) NOT NULL,
     `canonicalId` VARCHAR(191) NOT NULL,
-    `migrationVersion` VARCHAR(191) NOT NULL,
+    `migrationVersion` VARCHAR(64) NOT NULL,
     `sourceChecksum` VARCHAR(191) NOT NULL,
     `migratedAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `verifiedAt` DATETIME(3) NULL,
-    UNIQUE INDEX `LegacyEntityReference_sourceDomain_sourceModel_sourceId_canonicalModel_migrationVersion_key`(`sourceDomain`, `sourceModel`, `sourceId`, `canonicalModel`, `migrationVersion`),
+    UNIQUE INDEX `LegacyEntityReference_source_mapping_key`(`sourceDomain`, `sourceModel`, `sourceId`, `canonicalModel`, `migrationVersion`),
     INDEX `LegacyEntityReference_canonicalModel_canonicalId_idx`(`canonicalModel`, `canonicalId`),
     INDEX `LegacyEntityReference_sourceDomain_sourceModel_sourceId_idx`(`sourceDomain`, `sourceModel`, `sourceId`),
     PRIMARY KEY (`id`)

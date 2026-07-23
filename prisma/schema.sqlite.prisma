@@ -1231,6 +1231,25 @@ model LegacyMigrationRun {
   @@index([status, startedAt])
 }
 
+/// Privacy-safe, best-effort evidence that a retained legacy doorway was used.
+/// It deliberately contains canonical IDs only and never request or credential
+/// material; failures to write this table cannot affect the canonical action.
+model CompatibilityObservation {
+  id                 String   @id @default(cuid())
+  correlationId      String
+  operation          String
+  routeKey           String
+  disposition        String
+  canonicalSessionId String?
+  canonicalAccountId String?
+  testTraffic        Boolean  @default(false)
+  occurredAt         DateTime @default(now())
+
+  @@index([operation, occurredAt])
+  @@index([canonicalSessionId, occurredAt])
+  @@index([correlationId])
+}
+
 model PrivateContentImport {
   id                    String                        @id @default(cuid())
   packageId             String

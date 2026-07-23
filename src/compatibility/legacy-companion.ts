@@ -1,8 +1,10 @@
 import bcrypt from "bcryptjs";
 import { db } from "@/lib/db";
 import { createPlayerIdentitySession, playerCanAccessPlaythrough, requirePlayerIdentity } from "@/platform/auth";
+import { ensureGuestAccountForProfile } from "@/wayfarer/accounts";
 import { LEGACY_COMPANION_DOMAIN, LEGACY_COMPANION_MIGRATION_VERSION } from "@/chronicle/legacy-companion-migration";
 import { canonicalReadsEnabled, canonicalWritesEnabled } from "@/compatibility/project-one-voyage-stage";
+import { compatibilityTestTraffic, recordCompatibilityObservation } from "@/compatibility/compatibility-observation";
 
 export class LegacyCompatibilityError extends Error {
   constructor(
@@ -14,6 +16,17 @@ export class LegacyCompatibilityError extends Error {
 }
 
 type MappingModel = "Chronicle" | "PublishedTaleVersion" | "TaleSession" | "PlayerProfile" | "PlaythroughMembership";
+
+const activeMembershipStatuses = new Set(["INVITED", "ACCEPTED", "READY", "ACTIVE_MEMBER", "COMPLETED_MEMBER"]);
+
+async function requireActiveMappedMembership(membershipId: string) {
+  const membership = await db.playthroughMembership.findUnique({
+    where: { id: membershipId },
+    select: { status: true },
+  });
+  if (!membership || !activeMembershipStatuses.has(membership.status))
+    throw new LegacyCompatibilityError("This invitation no longer grants access to this Voyage.", "ACCESS_DENIED");
+}
 
 async function mapping(sourceModel: string, sourceId: string, canonicalModel: MappingModel) {
   return db.legacyEntityReference.findFirst({
@@ -88,7 +101,14 @@ async function canonicalGuestForCampaign(campaignId: string, sessionId: string, 
   if (existing) {
     const membership = await mapping("LegacyAccessCode", campaignId, "PlaythroughMembership");
     if (!membership) throw new LegacyCompatibilityError("Legacy credential mapping is incomplete.", "MISSING_MAPPING");
-    return { playerId: existing.canonicalId, membershipId: membership.canonicalId };
+    await requireActiveMappedMembership(membership.canonicalId);
+    const player = await db.playerProfile.findUnique({
+      where: { id: existing.canonicalId },
+      select: { accountId: true },
+    });
+    if (!player) throw new LegacyCompatibilityError("Legacy credential identity is incomplete.", "MISSING_MAPPING");
+    const accountId = player.accountId ?? (await ensureGuestAccountForProfile(existing.canonicalId));
+    return { playerId: existing.canonicalId, membershipId: membership.canonicalId, accountId };
   }
   return db.$transaction(async (tx) => {
     const raced = await tx.legacyEntityReference.findFirst({
@@ -112,13 +132,36 @@ async function canonicalGuestForCampaign(campaignId: string, sessionId: string, 
       });
       if (!membership)
         throw new LegacyCompatibilityError("Legacy credential mapping is incomplete.", "MISSING_MAPPING");
-      return { playerId: raced.canonicalId, membershipId: membership.canonicalId };
+      const mappedMembership = await tx.playthroughMembership.findUnique({
+        where: { id: membership.canonicalId },
+        select: { status: true },
+      });
+      if (!mappedMembership || !activeMembershipStatuses.has(mappedMembership.status))
+        throw new LegacyCompatibilityError("This invitation no longer grants access to this Voyage.", "ACCESS_DENIED");
+      const player = await tx.playerProfile.findUnique({
+        where: { id: raced.canonicalId },
+        select: { accountId: true },
+      });
+      if (!player?.accountId)
+        throw new LegacyCompatibilityError("Legacy credential identity is incomplete.", "MISSING_MAPPING");
+      return { playerId: raced.canonicalId, membershipId: membership.canonicalId, accountId: player.accountId };
     }
     const session = await tx.taleSession.findUniqueOrThrow({ where: { id: sessionId } });
+    const account = await tx.userAccount.create({ data: { status: "GUEST_UNCLAIMED" } });
     const player = await tx.playerProfile.create({
       data: {
+        accountId: account.id,
         displayName: "Legacy guest",
         preferences: JSON.stringify({ legacyCredential: "exchanged" }),
+      },
+    });
+    await tx.accountRoleAssignment.create({ data: { accountId: account.id, role: "PLAYER" } });
+    await tx.securityEvent.create({
+      data: {
+        accountId: account.id,
+        eventType: "LEGACY_CREDENTIAL_EXCHANGED",
+        correlationId: `legacy-access-code:${campaignId}`,
+        metadata: JSON.stringify({ sourceDomain: LEGACY_COMPANION_DOMAIN }),
       },
     });
     const membership = await tx.playthroughMembership.create({
@@ -154,7 +197,7 @@ async function canonicalGuestForCampaign(campaignId: string, sessionId: string, 
         metadata: JSON.stringify({ sourceDomain: LEGACY_COMPANION_DOMAIN, sourceCampaignId: campaignId }),
       },
     });
-    return { playerId: player.id, membershipId: membership.id };
+    return { playerId: player.id, membershipId: membership.id, accountId: account.id };
   });
 }
 
@@ -177,8 +220,31 @@ export async function exchangeLegacyAccessCode(campaignSlug: string, accessCode:
     throw new LegacyCompatibilityError("That invitation could not be recognized.", "INVALID_CREDENTIAL");
   const resolved = await resolveLegacyCampaign(campaignSlug);
   if (!resolved) throw new LegacyCompatibilityError("That invitation could not be recognized.", "INVALID_CREDENTIAL");
-  const guest = await canonicalGuestForCampaign(campaign.id, resolved.sessionId, campaign.accessCodeHash);
+  let guest: Awaited<ReturnType<typeof canonicalGuestForCampaign>>;
+  try {
+    guest = await canonicalGuestForCampaign(campaign.id, resolved.sessionId, campaign.accessCodeHash);
+  } catch (error) {
+    if (error instanceof LegacyCompatibilityError && error.code === "ACCESS_DENIED")
+      await recordCompatibilityObservation({
+        correlationId: `legacy-access-code:${campaign.id}`,
+        operation: "LEGACY_ACCESS_EXCHANGE",
+        routeKey: "player-access",
+        disposition: "DENIED",
+        canonicalSessionId: resolved.sessionId,
+        testTraffic: compatibilityTestTraffic(),
+      });
+    throw error;
+  }
   const csrfToken = await createPlayerIdentitySession(guest.playerId);
+  await recordCompatibilityObservation({
+    correlationId: `legacy-access-code:${campaign.id}`,
+    operation: "LEGACY_ACCESS_EXCHANGE",
+    routeKey: "player-access",
+    disposition: "ADAPTED",
+    canonicalSessionId: resolved.sessionId,
+    canonicalAccountId: guest.accountId,
+    testTraffic: compatibilityTestTraffic(),
+  });
   return { ...resolved, playerId: guest.playerId, csrfToken };
 }
 
@@ -187,5 +253,14 @@ export async function requireLegacyCompatibilityAccess(campaignSlug: string) {
   if (!resolved) return null;
   const identity = await requirePlayerIdentity();
   if (!identity || !(await playerCanAccessPlaythrough(resolved.sessionId, identity.playerProfileId))) return null;
+  await recordCompatibilityObservation({
+    correlationId: `legacy-player-read:${resolved.sessionId}:${identity.id}`,
+    operation: "LEGACY_PLAYER_READ",
+    routeKey: "player-compatibility",
+    disposition: "ADAPTED",
+    canonicalSessionId: resolved.sessionId,
+    canonicalAccountId: "accountId" in identity ? identity.accountId : undefined,
+    testTraffic: compatibilityTestTraffic(),
+  });
   return { ...resolved, playerId: identity.playerProfileId, csrfToken: identity.csrfToken };
 }
