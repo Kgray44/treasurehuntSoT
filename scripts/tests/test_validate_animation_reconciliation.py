@@ -205,7 +205,7 @@ class ReconciliationValidatorTests(unittest.TestCase):
 
     def test_green_fixture_and_cli_are_deterministic_and_read_only(self) -> None:
         self.assertEqual(len(validator_module.FROZEN_MATRIX_COLUMNS), 41)
-        self.assertEqual(len(validator_module.MATRIX_REQUIRED_COLUMNS), 58)
+        self.assertEqual(len(validator_module.MATRIX_REQUIRED_COLUMNS), 63)
         self.assertNotIn("Status Hazard", validator_module.MATRIX_REQUIRED_COLUMNS)
         report = self.fixture.validate()
         self.assertTrue(report.ok, [item.as_dict() for item in report.errors])
@@ -379,6 +379,56 @@ class ReconciliationValidatorTests(unittest.TestCase):
         self.fixture.write_ledger()
         codes = self.codes(self.fixture.validate())
         self.assertTrue({"E-DISPOSITION-001", "E-DISPOSITION-002"} <= codes)
+
+    def test_approved_terminal_dispositions_require_complete_evidence(self) -> None:
+        rejected, superseded = self.fixture.ledger_rows[:2]
+        rejected.update(
+            {
+                "Implementation Status": "rejected-approved",
+                "Coverage Status": "rejected",
+                "Validation Status": "not_applicable",
+                "Implemented In Commit": "",
+            }
+        )
+        superseded.update(
+            {
+                "Implementation Status": "superseded-approved",
+                "Coverage Status": "superseded",
+                "Validation Status": "not_applicable",
+                "Implemented In Commit": "",
+                "Superseded By": "MX-001",
+            }
+        )
+        self.fixture.write_ledger()
+        codes = self.codes(self.fixture.validate())
+        self.assertIn("E-DISPOSITION-001", codes)
+
+        decision = {
+            "Disposition Decision ID": "P6-DISPOSITION-2026-07-22",
+            "Disposition Date": "2026-07-22",
+            "Disposition Rationale": "The requirement is explicitly terminal by approved design decision.",
+            "Approval Reference": "Development_Docs/Project_Lanternwake_Completion_Receipt.md",
+        }
+        rejected.update(decision)
+        superseded.update(decision)
+        self.fixture.write_ledger()
+        report = self.fixture.validate()
+        self.assertTrue(report.ok, [item.as_dict() for item in report.errors])
+
+    def test_final_repository_ledgers_are_resolved_and_hash_preserving(self) -> None:
+        root = SCRIPT.parents[1]
+        report = validator_module.ReconciliationValidator(mode="final").validate(
+            root / "Development_Docs/KG_Original_Animation_Audit_Reconciliation_Source.md",
+            root / "Development_Docs/Animation_System_Audit_Matrix.csv",
+            root / "Development_Docs/Animation_Original_Audit_Reconciliation_Ledger.csv",
+            root / "Development_Docs/Project_Lanternwake_Phase_2_Reconciliation_Shard_Manifest.csv",
+        )
+        self.assertTrue(report.ok, [item.as_dict() for item in report.errors])
+        self.assertEqual(report.matrix_rows, 361)
+        self.assertEqual(report.existing_mappings, 97)
+        self.assertEqual(report.dedicated_mappings, 141)
+        self.assertEqual(report.accepted_unmapped, set())
+        self.assertEqual(report.all_source_unresolved, set())
 
     def test_phase_library_enums_and_required_semantic_fields(self) -> None:
         row = self.fixture.ledger_rows[0]
