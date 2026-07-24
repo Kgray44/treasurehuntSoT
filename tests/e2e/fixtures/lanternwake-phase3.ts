@@ -870,6 +870,10 @@ export type Phase3FixtureManager = Readonly<{
   proveIsolation(): Promise<void>;
   createCase(caseId: string, eventType: Phase3EventType): Promise<Phase3CaseFixture>;
   publish(fixture: Phase3CaseFixture, eventType?: Phase3EventType): Promise<Phase3CommandReceipt>;
+  canonicalCaptainAction(
+    fixture: Phase3CaseFixture,
+    action: "pause" | "resume" | "presentation" | "releaseHint",
+  ): Promise<{ sessionId: string; eventType: string }>;
   replay(page: Page, eventId: string): Promise<Phase3ReceiptEvidence>;
   revokeAccess(fixture: Phase3CaseFixture): Promise<void>;
   retainForReadOnly(fixture: Phase3CaseFixture): void;
@@ -987,6 +991,31 @@ export const phase3Test = baseTest.extend<Phase3TestFixtures, Phase3WorkerFixtur
       async publish(fixture, eventType = fixture.eventType) {
         await requireMutationAuthority();
         return publishCommand(phase3Captain.context, fixture, eventType);
+      },
+      async canonicalCaptainAction(fixture, action) {
+        await requireMutationAuthority();
+        const resolved = await resolveLegacyCampaign(fixture.slug);
+        expect(resolved, `Phase 3 fixture ${fixture.slug} must resolve to a canonical TaleSession.`).toBeTruthy();
+        const response = await phase3Captain.context.post(`/api/captain/sessions/${resolved!.sessionId}`, {
+          data: {
+            action,
+            reason: `Canonical Phase 6 validation ${fixture.caseId}`,
+            idempotencyKey: `phase3-canonical-${fixture.caseId}-${action}-${randomUUID()}`,
+          },
+        });
+        const body = (await response.json().catch(() => null)) as { error?: string } | null;
+        expect(response.status(), `Canonical Captain action failed: ${JSON.stringify(body)}`).toBe(200);
+        return {
+          sessionId: resolved!.sessionId,
+          eventType:
+            action === "pause"
+              ? "sessionPaused"
+              : action === "resume"
+                ? "sessionResumed"
+                : action === "releaseHint"
+                  ? "hintReleased"
+                  : "presentationTriggered",
+        };
       },
       async replay(replayPage, eventId) {
         const priorReceipt = (await readPhase3Evidence(replayPage)).receipts

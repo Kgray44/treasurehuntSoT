@@ -623,7 +623,12 @@ try {
     $browserCommand = @("node_modules/playwright/cli.js", "test") + $BrowserArgs
     if ($BrowserGrep) { $browserCommand += @("--grep", $BrowserGrep) }
     if ($BrowserTestPath) {
-        $browserCommand += @("--project=harborlight-phase2", $runtimeRelativeBrowserTestPath.Replace('\', '/'))
+        # Harborlight owns a dedicated browser project. Other targeted
+        # acceptance files retain the routing declared by playwright.config.ts.
+        if ($runtimeRelativeBrowserTestPath.Replace('\', '/') -eq 'tests/e2e/harborlight-phase2.spec.ts') {
+            $browserCommand += "--project=harborlight-phase2"
+        }
+        $browserCommand += $runtimeRelativeBrowserTestPath.Replace('\', '/')
     }
     Invoke-ValidationStep -Name "Running browser acceptance tests" -Arguments $browserCommand
     Stop-OwnedValidationServer -ServerOwnership $ownedValidationServer
