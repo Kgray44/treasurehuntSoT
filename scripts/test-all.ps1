@@ -1,4 +1,16 @@
-param([switch]$SkipBrowserInstall)
+# .SYNOPSIS
+# Runs the isolated local validation suite.
+#
+# .DESCRIPTION
+# When a dedicated worktree has no canonical prisma/dev.db, provide an
+# existing absolute baseline path. The baseline is fingerprinted before and
+# after the run and is never used as the mutable validation database.
+param(
+    [switch]$SkipBrowserInstall,
+    [string]$BaselineDatabasePath,
+    [switch]$BrowserOnly,
+    [string]$BrowserTestPath
+)
 $ErrorActionPreference = "Stop"
 . (Join-Path $PSScriptRoot "dev-common.ps1")
 
@@ -20,7 +32,39 @@ try {
 }
 
 $projectRoot = [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot ".."))
-$canonicalDatabase = Get-ForeverCanonicalDatabase
+if ($BrowserTestPath -and -not $BrowserOnly) {
+    throw "BrowserTestPath is supported only with BrowserOnly."
+}
+if ($BrowserTestPath) {
+    $resolvedBrowserTestPath = [System.IO.Path]::GetFullPath((Join-Path $projectRoot $BrowserTestPath))
+    $e2eRoot = [System.IO.Path]::GetFullPath((Join-Path $projectRoot "tests\e2e"))
+    $e2ePrefix = $e2eRoot.TrimEnd('\', '/') + [System.IO.Path]::DirectorySeparatorChar
+    if (-not $resolvedBrowserTestPath.StartsWith($e2ePrefix, [System.StringComparison]::OrdinalIgnoreCase) -or
+        -not (Test-Path -LiteralPath $resolvedBrowserTestPath -PathType Leaf)) {
+        throw "BrowserTestPath must identify an existing test file under tests/e2e."
+    }
+    $projectPrefix = $projectRoot.TrimEnd('\', '/') + [System.IO.Path]::DirectorySeparatorChar
+    if (-not $resolvedBrowserTestPath.StartsWith($projectPrefix, [System.StringComparison]::OrdinalIgnoreCase)) {
+        throw "BrowserTestPath must remain inside the active project root."
+    }
+    $runtimeRelativeBrowserTestPath = $resolvedBrowserTestPath.Substring($projectPrefix.Length)
+}
+if ($BaselineDatabasePath) {
+    if (-not ($BaselineDatabasePath -match '^[A-Za-z]:[\\/]' -or $BaselineDatabasePath.StartsWith('\\'))) {
+        throw "BaselineDatabasePath must be an absolute database file path."
+    }
+    $canonicalDatabase = [System.IO.Path]::GetFullPath($BaselineDatabasePath)
+    if (-not (Test-Path -LiteralPath $canonicalDatabase)) {
+        throw "BaselineDatabasePath must identify an existing database file."
+    }
+    if ((Get-Item -LiteralPath $canonicalDatabase).PSIsContainer) {
+        throw "BaselineDatabasePath must identify a file, not a directory."
+    }
+    $baselineSource = "explicit-external"
+} else {
+    $canonicalDatabase = Get-ForeverCanonicalDatabase
+    $baselineSource = "auto-discovered"
+}
 
 function Get-CanonicalDatabaseFamilyFingerprint {
     $members = @(
@@ -137,7 +181,16 @@ $seedDatabase = Assert-ValidationChildPath -Path (Join-Path $runtimeRoot "prisma
 $copyFileName = "validation-isolated-{0}-{1}.db" -f (Get-Date -Format "yyyyMMdd-HHmmssfff"), ([Guid]::NewGuid().ToString("N"))
 $isolatedDatabase = Assert-ValidationChildPath -Path (Join-Path $runtimeRoot "prisma\$copyFileName") -Label "Isolated validation database"
 $isolationReport = Assert-ValidationChildPath -Path (Join-Path $validationArtifacts "database-isolation-report.json") -Label "Isolation report"
+$runtimeBrowserTestPath = if ($BrowserTestPath) {
+    Assert-ValidationChildPath -Path (Join-Path $runtimeRoot $runtimeRelativeBrowserTestPath) -Label "Runtime browser test"
+}
+if ($BrowserTestPath -and -not (Test-Path -LiteralPath $runtimeBrowserTestPath -PathType Leaf)) {
+    throw "BrowserTestPath was not synchronized into the task-owned validation runtime."
+}
 if (Test-Path -LiteralPath $isolatedDatabase) { throw "Unique isolated validation database already exists." }
+if ([System.StringComparer]::OrdinalIgnoreCase.Equals($canonicalDatabase, $isolatedDatabase)) {
+    throw "BaselineDatabasePath must not identify the isolated mutation database."
+}
 
 function Invoke-ValidationStep {
     param([Parameter(Mandatory)][string]$Name, [Parameter(Mandatory)][string[]]$Arguments)
@@ -280,25 +333,9 @@ function Stop-OwnedProcessTree {
         $remainingIds = @($remaining | ForEach-Object { $_.ProcessId }) -join ", "
         throw "Explicitly owned process identities remained after termination: $remainingIds."
     }
-    $allRemainingProcesses = @(Get-CimInstance -ClassName Win32_Process -ErrorAction Stop)
-    $descendantIdSet = @{}
-    $descendantIdSet[[int]$ServerOwnership.LauncherIdentity.ProcessId] = $true
-    for ($pass = 0; $pass -lt 24; $pass++) {
-        $added = $false
-        foreach ($processInfo in $allRemainingProcesses) {
-            $processId = [int]$processInfo.ProcessId
-            if (-not $descendantIdSet.ContainsKey($processId) -and $descendantIdSet.ContainsKey([int]$processInfo.ParentProcessId)) {
-                $descendantIdSet[$processId] = $true
-                $added = $true
-            }
-        }
-        if (-not $added) { break }
-    }
-    [void]$descendantIdSet.Remove([int]$ServerOwnership.LauncherIdentity.ProcessId)
-    $remainingDescendantIds = @($descendantIdSet.Keys)
-    if ($remainingDescendantIds.Count -gt 0) {
-        throw "Owned launcher descendants remained after termination: $($remainingDescendantIds -join ', ')."
-    }
+    # The identity snapshot above is the authoritative ownership boundary.
+    # Do not infer descendants again from a terminated launcher PID: Windows
+    # may recycle that PID, which would misclassify an unrelated process.
     Assert-TcpPortAvailable -Port ([int]$ServerOwnership.Port)
 }
 
@@ -533,6 +570,7 @@ try {
         "--canonical-size", "$canonicalSize",
         "--canonical-mtime-iso", $canonicalMtimeIso,
         "--canonical-family-base64", $canonicalFamilyBase64,
+        "--baseline-source", $baselineSource,
         "--report", $isolationReport
     )
     if ($isolation.copyFileName -ne $copyFileName) { throw "Isolation helper returned an unexpected database filename." }
@@ -551,7 +589,9 @@ try {
     Invoke-ValidationStep -Name "Type checking" -Arguments @("node_modules/typescript/bin/tsc", "--noEmit")
     Invoke-ValidationStep -Name "Validating Voyagewright product language" -Arguments @("node_modules/tsx/dist/cli.mjs", "scripts/validate-user-facing-language.ts")
     Invoke-ValidationStep -Name "Running unit tests" -Arguments @("node_modules/vitest/vitest.mjs", "run")
-    Invoke-ValidationStep -Name "Validating animation assets" -Arguments @("node_modules/tsx/dist/cli.mjs", "scripts/validate-animation-assets.ts")
+    if (-not $BrowserOnly) {
+        Invoke-ValidationStep -Name "Validating animation assets" -Arguments @("node_modules/tsx/dist/cli.mjs", "scripts/validate-animation-assets.ts")
+    }
     Invoke-ValidationStep -Name "Verifying seeded database" -Arguments @("node_modules/tsx/dist/cli.mjs", "scripts/verify-database.ts")
     Invoke-ValidationStep -Name "Preparing legacy playthrough backfill proof" -Arguments @("node_modules/tsx/dist/cli.mjs", "scripts/verify-platform-backfill.ts", "--prepare")
     Invoke-ValidationStep -Name "Running additive platform backfill" -Arguments @("node_modules/tsx/dist/cli.mjs", "prisma/seed.ts", "--ensure")
@@ -561,39 +601,45 @@ try {
     Write-Host "`n==> Starting owned isolated validation server" -ForegroundColor Cyan
     $ownedValidationServer = Start-OwnedValidationServer
     $playwrightInvoked = $true
-    Invoke-ValidationStep -Name "Running browser acceptance tests" -Arguments @("node_modules/playwright/cli.js", "test")
+    $playwrightArguments = @("node_modules/playwright/cli.js", "test")
+    if ($BrowserTestPath) { $playwrightArguments += $runtimeRelativeBrowserTestPath.Replace('\', '/') }
+    Invoke-ValidationStep -Name "Running browser acceptance tests" -Arguments $playwrightArguments
     Stop-OwnedValidationServer -ServerOwnership $ownedValidationServer
     $ownedValidationServer = $null
     Assert-TcpPortAvailable -Port 3100
     $defaultBrowserSucceeded = $true
 
-    Invoke-ValidationStep -Name "Verifying accepted database state" -Arguments @("node_modules/tsx/dist/cli.mjs", "scripts/verify-database.ts", "--acceptance")
-    Invoke-ValidationStep -Name "Proving launcher seed preserves accepted progress" -Arguments @("node_modules/tsx/dist/cli.mjs", "prisma/seed.ts", "--ensure")
-    Invoke-ValidationStep -Name "Rechecking preserved database state" -Arguments @("node_modules/tsx/dist/cli.mjs", "scripts/verify-database.ts", "--acceptance")
-    Invoke-ValidationStep -Name "Creating production build" -Arguments @("node_modules/next/dist/bin/next", "build")
+    if ($BrowserOnly) {
+        $browserSucceeded = $defaultBrowserSucceeded
+    } else {
+        Invoke-ValidationStep -Name "Verifying accepted database state" -Arguments @("node_modules/tsx/dist/cli.mjs", "scripts/verify-database.ts", "--acceptance")
+        Invoke-ValidationStep -Name "Proving launcher seed preserves accepted progress" -Arguments @("node_modules/tsx/dist/cli.mjs", "prisma/seed.ts", "--ensure")
+        Invoke-ValidationStep -Name "Rechecking preserved database state" -Arguments @("node_modules/tsx/dist/cli.mjs", "scripts/verify-database.ts", "--acceptance")
+        Invoke-ValidationStep -Name "Creating production build" -Arguments @("node_modules/next/dist/bin/next", "build")
 
-    Write-Host "`n==> Starting owned production performance server" -ForegroundColor Cyan
-    $env:FOREVER_VALIDATION_PRODUCTION_IDENTITY = "1"
-    $env:PHASE3_BASE_URL = "http://127.0.0.1:$productionPort"
-    $ownedProductionServer = Start-OwnedProductionServer -Port $productionPort -ArtifactLabel "performance"
-    Invoke-ValidationStep -Name "Running Chromium production performance gates" -Arguments @(
-        "node_modules/playwright/cli.js",
-        "test",
-        "--config=playwright.phase3-performance.config.ts"
-    )
-    [void](Invoke-IsolationHelper -Arguments @(
-        "verify-canonical",
-        "--canonical-db", $canonicalDatabase,
-        "--canonical-family-base64", $canonicalFamilyBase64
-    ))
-    Stop-OwnedValidationServer -ServerOwnership $ownedProductionServer
-    $ownedProductionServer = $null
-    Assert-TcpPortAvailable -Port $productionPort
-    $productionPerformanceSucceeded = $true
+        Write-Host "`n==> Starting owned production performance server" -ForegroundColor Cyan
+        $env:FOREVER_VALIDATION_PRODUCTION_IDENTITY = "1"
+        $env:PHASE3_BASE_URL = "http://127.0.0.1:$productionPort"
+        $ownedProductionServer = Start-OwnedProductionServer -Port $productionPort -ArtifactLabel "performance"
+        Invoke-ValidationStep -Name "Running Chromium production performance gates" -Arguments @(
+            "node_modules/playwright/cli.js",
+            "test",
+            "--config=playwright.phase3-performance.config.ts"
+        )
+        [void](Invoke-IsolationHelper -Arguments @(
+            "verify-canonical",
+            "--canonical-db", $canonicalDatabase,
+            "--canonical-family-base64", $canonicalFamilyBase64
+        ))
+        Stop-OwnedValidationServer -ServerOwnership $ownedProductionServer
+        $ownedProductionServer = $null
+        Assert-TcpPortAvailable -Port $productionPort
+        $productionPerformanceSucceeded = $true
 
-    Write-Host "`n==> Proving the second production restart" -ForegroundColor Cyan
-    Test-ProductionStart -Port $productionPort
-    $browserSucceeded = $defaultBrowserSucceeded -and $productionPerformanceSucceeded
+        Write-Host "`n==> Proving the second production restart" -ForegroundColor Cyan
+        Test-ProductionStart -Port $productionPort
+        $browserSucceeded = $defaultBrowserSucceeded -and $productionPerformanceSucceeded
+    }
     if (-not $browserSucceeded) { throw "Browser validation success state is incomplete." }
 } catch {
     $validationFailure = $_.Exception
