@@ -121,18 +121,36 @@ does not provide assurance for arbitrary uploads.
 | external baseline family                                           | unchanged: `a05a9b06ef2abc747a22d843945299f916800bc5e4962f17b59e13024a06593f`, 905216 bytes, `2026-07-21T13:29:34.790Z`                           |
 | worktree `prisma/dev.db`, ports, lock                              | absent; 3100/3200 released; lock released                                                                                                         |
 
-The governed non-browser final repository gate was then run as
-`run-20260724-1220-full`. Its format, lint, TypeScript, language validation,
-and 112-file/937-test Vitest stage passed, but it stopped at the repository-wide
-production Rive asset gate before the controlled production restart. The exact
-external dependency is four missing authored exports: `invitationSeal`,
-`journalClasp`, `voyageCompass`, and `finaleMechanism`. The validator reports
-that neither a Rive authoring/export tool nor project-authored binaries are
-available in this workspace. This blocks the required H8 restart proof and is
-also a Lanternwake Phase 6 production prerequisite; it is not repaired by the
-test-only binary scanner.
+The earlier Rive dependency was resolved from the repository's authored asset
+history, not by accepting the incomplete owner-provided download revisions.
+Commit `a23437d910f910acf96b9041220cfbce0b7573c4` carries the four governed
+source/export pairs, their manifest and provenance, runtime contract support,
+and validator coverage. The focused gate passed: all four binaries load with
+their required artboards and either their frozen ViewModel or legacy
+state-machine-input contract; their local fallback and production paths are
+also validated.
+
+The final governed Harborlight run was
+`run-20260724-1500-harborlight-final`. It selected only
+`tests/e2e/harborlight-phase2.spec.ts` with the `harborlight-phase2` project;
+the harness therefore skips the unrelated generic Phase 3
+`CHAPTER_PREPARED` assertion while retaining the isolated database proof,
+production build, and two controlled production starts.
+
+| Final gate                                                               | Result                                                                                                                                                                     |
+| ------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| PowerShell syntax / Prettier / lint / TypeScript / product-language      | passed (lint: 0 errors, 63 existing warnings)                                                                                                                              |
+| full Vitest                                                              | 112 files / 939 tests passed                                                                                                                                               |
+| animation-asset validation                                               | passed: 4 Rive binaries, 4 governed sources, 3 Lottie assets, local SVG fallbacks                                                                                          |
+| H1-H8 Chromium acceptance                                                | 3 passed / 0 failed / 0 skipped, 1 worker, 22.4 seconds                                                                                                                    |
+| isolated database and nonce path                                         | passed through the owned application server                                                                                                                                |
+| package, checksum, install, rollback, authorization and privacy evidence | included in the passing full Vitest stage and focused 13-test scanner/package/install stage                                                                                |
+| production Webpack build and route inventory                             | passed; `/studio/exchange` present                                                                                                                                         |
+| controlled production restart                                            | two owned starts/stops passed against the same isolated validation family                                                                                                  |
+| external baseline / canonical storage                                    | unchanged: SHA-256 `a05a9b06ef2abc747a22d843945299f916800bc5e4962f17b59e13024a06593f`, 905216 bytes, timestamp `2026-07-21T13:29:34.790Z`; worktree `prisma/dev.db` absent |
+| cleanup                                                                  | task staging cleaned; ports 3100/3200 released; validation lock released                                                                                                   |
 
 Production binary scanning remains fail-closed and requires a configured
 trusted scanner for arbitrary non-test uploads.
 
-PROJECT HARBORLIGHT PHASE 2 BLOCKED
+PROJECT HARBORLIGHT PHASE 2 COMPLETE

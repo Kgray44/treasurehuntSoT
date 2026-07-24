@@ -254,6 +254,9 @@ test("H2: hash-attested synthetic 2D artifact publication persists its immutable
     where: { isCurrent: true },
     select: { id: true, taleId: true },
   });
+  const sentinelPlayer = await db.playerProfile.create({
+    data: { displayName: "Harborlight isolation sentinel player", preferences: JSON.stringify({ sentinel: true }) },
+  });
   const activeSession = await db.taleSession.create({
     data: {
       taleId: pinnedVersion.taleId,
@@ -262,6 +265,14 @@ test("H2: hash-attested synthetic 2D artifact publication persists its immutable
       accessTokenHash: createHash("sha256").update(`harborlight-session:${creator.unique}`).digest("hex"),
       variables: JSON.stringify({ pinned: true }),
       inventory: JSON.stringify(["unchanged"]),
+    },
+  });
+  await db.playthroughMembership.create({
+    data: {
+      playthroughId: activeSession.id,
+      playerProfileId: sentinelPlayer.id,
+      status: "ACTIVE_MEMBER",
+      joinedAt: activeSession.startedAt,
     },
   });
   const activeSessionBefore = await db.taleSession.findUniqueOrThrow({
