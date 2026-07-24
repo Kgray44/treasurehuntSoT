@@ -32,7 +32,10 @@ describe("Sealed Hold Phase 2 frozen contracts", () => {
   it("wraps data keys and rejects tampering", async () => {
     const provider = new LocalPrivateKeyProvider(randomBytes(32));
     const wrapped = await provider.wrap(randomBytes(32));
-    await expect(provider.unwrap({ ...wrapped, wrappedKey: `x${wrapped.wrappedKey.slice(1)}` })).rejects.toMatchObject({
+    const alteredFirstCharacter = wrapped.wrappedKey.startsWith("x") ? "y" : "x";
+    await expect(
+      provider.unwrap({ ...wrapped, wrappedKey: `${alteredFirstCharacter}${wrapped.wrappedKey.slice(1)}` }),
+    ).rejects.toMatchObject({
       code: "PRIVATE_PACKAGE_AUTHENTICATION_FAILED",
     });
   });

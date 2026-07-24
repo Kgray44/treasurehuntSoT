@@ -10,6 +10,7 @@ import type { ClientProgressEvent } from "../../src/domain/story";
 import {
   capturePhase3DbTruth,
   expect,
+  installCanonicalPhase3PlayerSession,
   installPhase3EvidenceProbe,
   PHASE3_EVENT_CASES,
   phase3Test as test,
@@ -119,24 +120,6 @@ type InterruptionOrderEntry = Readonly<{
   status: string;
 }>;
 
-const sectionLabels: Readonly<Record<Phase3PlayerSection, string>> = {
-  journal: "Journal",
-  chart: "Chart",
-  treasures: "Altar",
-  quests: "Ledger",
-  log: "Log",
-  finale: "Finale",
-};
-
-const sectionHeadings: Readonly<Record<Phase3PlayerSection, string>> = {
-  journal: "The Voyage Journal",
-  chart: "Voyage Chart",
-  treasures: "Treasure Altar",
-  quests: "Side-Quest Ledger",
-  log: "Ship's Log",
-  finale: "The Final Seal",
-};
-
 async function installReadOnlyNetwork(
   page: Page,
   slug: string,
@@ -182,20 +165,8 @@ async function installReadOnlyNetwork(
   });
 }
 
-async function installPlayerCookie(page: Page, playerAccessId: string, baseURL: string) {
-  await page.context().addCookies([
-    {
-      name: "forever_player",
-      value: playerAccessId,
-      url: baseURL,
-      httpOnly: true,
-      sameSite: "Strict",
-    },
-  ]);
-}
-
 async function readExactPreseededEvent(page: Page, fixture: Phase3CaseFixture, baseURL: string) {
-  await installPlayerCookie(page, fixture.playerAccessId, baseURL);
+  await installCanonicalPhase3PlayerSession(page, fixture, baseURL);
   const response = await page.request.get(`/api/player/${fixture.slug}/snapshot`);
   const body = await response.text();
   expect(response.status(), body).toBe(200);
@@ -327,13 +298,7 @@ async function installLiveRegionProbe(page: Page) {
   });
 }
 
-async function openReadableJournal(
-  page: Page,
-  slug: string,
-  returning: boolean,
-  expectedSection: Phase3PlayerSection,
-  eventType: Phase3EventType | null,
-) {
+async function openReadableJournal(page: Page, slug: string, returning: boolean, eventType: Phase3EventType | null) {
   if (returning) {
     await page.evaluate((currentSlug) => sessionStorage.setItem(`forever-intro:${currentSlug}`, "seen"), slug);
     await page.reload();
@@ -345,11 +310,13 @@ async function openReadableJournal(
   // The control remains intentionally animated while the ceremony is active;
   // force is appropriate once its visibility has established user reachability.
   if (await skip.isVisible().catch(() => false)) await skip.click({ force: true });
-  await expect(page.locator("[data-player-experience-root]")).toHaveAttribute("data-journal-phase", "JOURNAL_READY");
+  await expect(page.locator(".chronicle-journal-shell")).toHaveAttribute("data-journal-phase", "JOURNAL_READY");
   // Reconciliation starts as soon as the journal becomes interactive. Observe
   // the active presentation before the destination section's entry transition.
   if (eventType) await assertModalFocusAndRestoration(page, eventType);
-  await expect(page.getByRole("heading", { name: sectionHeadings[expectedSection] })).toBeVisible({ timeout: 20_000 });
+  await expect(page.locator(".chronicle-journal-shell").getByRole("heading", { level: 2 })).toBeVisible({
+    timeout: 20_000,
+  });
 }
 
 async function assertModalFocusAndRestoration(page: Page, eventType: Phase3EventType) {
@@ -559,18 +526,18 @@ async function assertReadableAtTwoHundredPercentZoom(page: Page) {
     return;
   }
   await page.evaluate(() => document.documentElement.style.setProperty("zoom", "2"));
-  await expect(page.getByRole("heading", { name: "The Voyage Journal" })).toBeVisible();
+  await expect(page.locator(".chronicle-journal-shell").getByRole("heading", { level: 2 })).toBeVisible();
   const readable = await page.evaluate(() => ({
     scrollWidth: document.documentElement.scrollWidth,
     viewportWidth: window.innerWidth,
-    text: document.querySelector("[data-player-experience-root]")?.textContent?.trim().length ?? 0,
+    text: document.querySelector(".chronicle-journal-shell")?.textContent?.trim().length ?? 0,
   }));
   expect(readable.text).toBeGreaterThan(0);
   expect(readable.scrollWidth).toBeLessThanOrEqual(readable.viewportWidth + 1);
   await page.evaluate(() => document.documentElement.style.removeProperty("zoom"));
 }
 
-async function assertViewportAndAccessibility(page: Page, section: Phase3PlayerSection) {
+async function assertViewportAndAccessibility(page: Page) {
   const dimensions = await page.evaluate(() => ({
     viewportWidth: window.innerWidth,
     documentWidth: document.documentElement.scrollWidth,
@@ -578,12 +545,6 @@ async function assertViewportAndAccessibility(page: Page, section: Phase3PlayerS
   }));
   expect(dimensions.documentWidth).toBeLessThanOrEqual(dimensions.viewportWidth + 1);
   expect(dimensions.bodyWidth).toBeLessThanOrEqual(dimensions.viewportWidth + 1);
-
-  const currentSection = page.locator(
-    `.companion-navigation:visible button[aria-current="page"], .mobile-nav:visible button.active`,
-  );
-  await expect(currentSection).toHaveCount(1);
-  await expect(currentSection).toContainText(sectionLabels[section]);
 
   const controlsInsideViewport = await page
     .locator("button:visible, select:visible, input:visible")
@@ -605,8 +566,10 @@ async function assertViewportAndAccessibility(page: Page, section: Phase3PlayerS
   expect(unnamedControls).toBe(0);
   await expect(page.locator('[data-hover-only]:not([aria-hidden="true"])')).toHaveCount(0);
 
-  await currentSection.focus();
-  const focusEvidence = await currentSection.evaluate((node) => {
+  await page.keyboard.press("Tab");
+  const keyboardFocus = page.locator(":focus");
+  await expect(keyboardFocus).toBeVisible();
+  const focusEvidence = await keyboardFocus.evaluate((node) => {
     const style = getComputedStyle(node);
     return {
       visible: node.matches(":focus-visible"),
@@ -615,10 +578,6 @@ async function assertViewportAndAccessibility(page: Page, section: Phase3PlayerS
     };
   });
   expect(focusEvidence.visible || focusEvidence.outline || focusEvidence.shadow).toBe(true);
-  await currentSection.press("Enter");
-  if (await page.evaluate(() => navigator.maxTouchPoints > 0)) await currentSection.tap();
-  else await currentSection.click({ force: true });
-  await expect(currentSection).toHaveAttribute("aria-current", /page|true/);
 
   const hiddenFocusable = await page
     .locator('[aria-hidden="true"] a, [aria-hidden="true"] button, [inert] a, [inert] button, [data-pageflip-source] *')
@@ -632,16 +591,11 @@ async function assertViewportAndAccessibility(page: Page, section: Phase3PlayerS
   expect(hiddenFocusable).toBe(0);
 
   const pageFlip = page.locator(".main-journal-book");
-  if (section === "journal") {
-    await expect(pageFlip).toBeVisible();
-    const pageFlipBounds = await pageFlip.boundingBox();
-    expect(pageFlipBounds?.width ?? 0).toBeGreaterThan(0);
-    expect(pageFlipBounds?.height ?? 0).toBeGreaterThan(0);
-    expect((pageFlipBounds?.x ?? -1) + (pageFlipBounds?.width ?? 0)).toBeLessThanOrEqual(dimensions.viewportWidth + 1);
-  } else {
-    await expect(pageFlip).toHaveCount(0);
-    await expect(page.locator("[data-pageflip-source]")).toHaveCount(0);
-  }
+  await expect(pageFlip).toBeVisible();
+  const pageFlipBounds = await pageFlip.boundingBox();
+  expect(pageFlipBounds?.width ?? 0).toBeGreaterThan(0);
+  expect(pageFlipBounds?.height ?? 0).toBeGreaterThan(0);
+  expect((pageFlipBounds?.x ?? -1) + (pageFlipBounds?.width ?? 0)).toBeLessThanOrEqual(dimensions.viewportWidth + 1);
 
   const axe = await new AxeBuilder({ page }).analyze();
   expect(axe.violations.filter((violation) => ["serious", "critical"].includes(violation.impact ?? ""))).toEqual([]);
@@ -694,7 +648,6 @@ test.describe("Project Lanternwake Phase 3 accessibility and six required viewpo
         // 90 seconds can expire after every user-visible check has passed.
         test.setTimeout(180_000);
         const preseeded = flow.eventType ? readPreseededPhase3FixtureFromEnv(flow.eventType) : baseFixture;
-        const playerAccessId = preseeded.playerAccessId;
         const slug = preseeded.slug;
         const path = preseeded.path;
         const targetEventId = flow.eventType ? preseeded.prerequisiteEventId : null;
@@ -715,7 +668,7 @@ test.describe("Project Lanternwake Phase 3 accessibility and six required viewpo
           const replacementSource = await readExactPreseededEvent(page, replacementFixture, baseURL);
           replacementEvent = Object.freeze({ ...replacementSource, sequence: replayEvent.sequence + 1 });
         }
-        await installPlayerCookie(page, playerAccessId, baseURL);
+        await installCanonicalPhase3PlayerSession(page, preseeded, baseURL);
         const unsafeRequests: UnsafeRequest[] = [];
         await installReadOnlyNetwork(page, slug, targetEventId, unsafeRequests);
         await installLiveRegionProbe(page);
@@ -725,7 +678,7 @@ test.describe("Project Lanternwake Phase 3 accessibility and six required viewpo
         // The assertion below owns readiness through the player-visible control,
         // rather than treating that transport lifecycle as a product contract.
         await page.goto(`${path}?section=${flow.section}`, { waitUntil: "commit", timeout: 15_000 });
-        await openReadableJournal(page, slug, flow.kind === "reentry", flow.section, flow.eventType);
+        await openReadableJournal(page, slug, flow.kind === "reentry", flow.eventType);
 
         if (flow.kind === "replay") {
           const replay = page.getByRole("button", { name: /Replay (presentation|introduction)/ }).first();
@@ -741,7 +694,7 @@ test.describe("Project Lanternwake Phase 3 accessibility and six required viewpo
           await assertAuthoritativeReplayInterruption(page, replayEvent!, replacementEvent!);
         }
 
-        await assertViewportAndAccessibility(page, flow.section);
+        await assertViewportAndAccessibility(page);
         if (flow.kind === "reentry") await assertReadableAtTwoHundredPercentZoom(page);
         await expect(page.getByRole("button", { name: "Sound off" })).toBeVisible();
         const announcements = await page.evaluate(

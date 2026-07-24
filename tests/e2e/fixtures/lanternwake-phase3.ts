@@ -16,8 +16,13 @@ import type {
   ProgressionStateEventDetail,
 } from "../../../src/components/player/PlayerExperience";
 import { resolveLegacyCampaign } from "../../../src/compatibility/legacy-companion";
-import { migrateLegacyCompanion } from "../../../src/chronicle/legacy-companion-migration";
+import {
+  LEGACY_COMPANION_DOMAIN,
+  LEGACY_COMPANION_MIGRATION_VERSION,
+  migrateLegacyCompanion,
+} from "../../../src/chronicle/legacy-companion-migration";
 import { db } from "../../../src/lib/db";
+import { createAccountSession, ensureGuestAccountForProfile } from "../../../src/wayfarer/accounts";
 
 export { expect };
 
@@ -362,6 +367,38 @@ export async function openPhase3Player(
   }
   const compatibilityHost = page.locator("[data-testid='progression-scene-host']");
   return (await compatibilityHost.count()) === 1 ? compatibilityHost.getAttribute("data-scene-host-id") : null;
+}
+
+/**
+ * Installs an account-rooted Player session for a migrated, nonce-bound Phase 3
+ * fixture.  The retired forever_player cookie cannot authorize the canonical
+ * compatibility route after Phase 2; this helper follows the same migrated
+ * PlayerProfile and AccountSession authority used by application sign-in.
+ */
+export async function installCanonicalPhase3PlayerSession(page: Page, fixture: Phase3CaseFixture, baseURL: string) {
+  fileDatabasePath();
+  const mapping = await db.legacyEntityReference.findFirst({
+    where: {
+      sourceDomain: LEGACY_COMPANION_DOMAIN,
+      sourceModel: "PlayerAccess",
+      sourceId: fixture.playerAccessId,
+      canonicalModel: "PlayerProfile",
+      migrationVersion: LEGACY_COMPANION_MIGRATION_VERSION,
+    },
+    select: { canonicalId: true },
+  });
+  expect(mapping, `Phase 3 fixture ${fixture.caseId} must retain its migrated PlayerProfile mapping.`).toBeTruthy();
+  const accountId = await ensureGuestAccountForProfile(mapping!.canonicalId);
+  const session = await createAccountSession(accountId, "phase3-validation");
+  await page.context().addCookies([
+    {
+      name: "wayfarer_account",
+      value: session.token,
+      url: baseURL,
+      httpOnly: true,
+      sameSite: "Lax",
+    },
+  ]);
 }
 
 /** Settles the canonical Chronicle opening ceremony after an initial visit or reload. */
