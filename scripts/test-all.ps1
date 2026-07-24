@@ -586,6 +586,10 @@ try {
     $env:NODE_ENV = "test"
     $env:FOREVER_VALIDATION_NODE_ENV = "test"
     $env:COMMUNITY_BINARY_SCANNER_PROVIDER = "synthetic-test"
+    # This ephemeral validation-only key permits the simulator fixture to
+    # exercise encrypted provider-token storage. It is never used by ordinary
+    # development or production servers and is removed before the build proof.
+    $env:WAYFARER_PROVIDER_TOKEN_KEY = "validation-only-provider-token-key"
 
     if (-not $SkipBrowserInstall) {
         Invoke-ValidationStep -Name "Installing Playwright browsers" -Arguments @("node_modules/playwright/cli.js", "install", "chromium", "webkit")
@@ -630,6 +634,7 @@ try {
     # carry its selection into a later production build or restart proof.
     Remove-Item Env:COMMUNITY_BINARY_SCANNER_PROVIDER -ErrorAction SilentlyContinue
     Remove-Item Env:FOREVER_VALIDATION_NODE_ENV -ErrorAction SilentlyContinue
+    Remove-Item Env:WAYFARER_PROVIDER_TOKEN_KEY -ErrorAction SilentlyContinue
     $env:NODE_ENV = "production"
 
     if ($BrowserOnly) {
