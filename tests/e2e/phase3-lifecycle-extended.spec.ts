@@ -4,8 +4,8 @@ import {
   type LottieDevelopmentFailpoint,
 } from "../../src/components/animation/LottieEffect";
 import {
+  ensurePhase3JournalReady,
   expect,
-  navigatePhase3Section,
   openPhase3Player,
   PHASE3_MOTION_MODES,
   phase3Test as test,
@@ -616,7 +616,7 @@ test.describe.serial("Project Lanternwake Phase 3 extended runtime lifecycle", (
     });
   });
 
-  test("Journal Clasp, Voyage Compass, and Finale Mechanism runtimes retract cleanly across route cycles", async ({
+  test("Journal Clasp compatibility is not required by the canonical Chronicle journal across route cycles", async ({
     page,
     phase3,
   }) => {
@@ -624,31 +624,41 @@ test.describe.serial("Project Lanternwake Phase 3 extended runtime lifecycle", (
     await installExtendedLifecycleProbe(page);
     const fixture = await phase3.createCase("P3-LIFE-RIVE-BLOCKED-CONTRACTS", "CHAPTER_RELEASED");
     await openPhase3Player(page, fixture, "journal");
-    const journalClasp = page.locator("[data-journal-clasp-contract]");
-    const voyageCompass = page.locator("[data-voyage-compass-contract]");
-    const finaleMechanism = page.locator("[data-rive-contract-availability='runtime-ready'].finale-rive-contract");
-    const expectRuntime = async (contract: Locator) => {
-      await expect(contract).toHaveAttribute("data-rive-contract-availability", "runtime-ready");
-      await expect(contract).toHaveAttribute("data-rive-runtime-status", "ready", { timeout: 20_000 });
-      await expect(contract.locator('[data-animation-owner="rive"]')).toHaveCount(1);
-      await expect(contract.locator('[data-animation-owner="rive"] canvas')).toHaveCount(1);
-      await expect(contract.locator('[data-fallback-active="true"]')).toHaveCount(0);
+    const shell = page.locator(".chronicle-journal-shell");
+    const book = page.locator(".main-journal-book");
+    const assertCanonicalJournal = async () => {
+      await ensurePhase3JournalReady(page);
+      await expect(shell).toHaveAttribute("data-journal-phase", "JOURNAL_READY");
+      await expect(book).toHaveCount(1);
+      await expect(book).toBeVisible();
+      await expect(page.locator("[data-journal-clasp-contract]")).toHaveCount(0);
+      await expect(page.locator("[data-voyage-compass-contract]")).toHaveCount(0);
+      await expect(page.locator(".finale-rive-contract")).toHaveCount(0);
+      await expect(page.getByRole("navigation", { name: "Companion sections" })).toHaveCount(0);
+      await expect(page.locator("[data-testid='progression-scene-host']")).toHaveCount(0);
+      const status = await book.getAttribute("data-pageflip-status");
+      if (status === "fallback" || status === "reduced") {
+        await expect(page.locator("[data-pageflip-runtime]")).toHaveCount(0);
+        await expect(page.locator("[data-pageflip-boundary-host='true']")).toHaveCount(0);
+      } else {
+        await expect(page.locator("[data-pageflip-runtime]")).toHaveCount(1);
+        await expect(page.locator("[data-pageflip-boundary-host='true']")).toHaveCount(1);
+        await expect(
+          page.locator("[data-pageflip-boundary-host='true'][data-scene-host-boundary='player-section-enhancement']"),
+        ).toHaveCount(1);
+      }
+      await expect(book.locator('[data-pageflip-lifecycle="stale"]')).toHaveCount(0);
     };
-    const contractCycle = async () => {
-      await expectRuntime(journalClasp);
-      await expect(voyageCompass).toHaveCount(0);
-      await expect(finaleMechanism).toHaveCount(0);
-      await navigatePhase3Section(page, "chart");
-      await expect(journalClasp).toHaveCount(0);
-      await expectRuntime(voyageCompass);
-      await navigatePhase3Section(page, "finale");
-      await expect(voyageCompass).toHaveCount(0);
-      await expectRuntime(finaleMechanism);
-      await navigatePhase3Section(page, "journal");
-      await expect(finaleMechanism).toHaveCount(0);
-      await expectRuntime(journalClasp);
-    };
-    await runTwentyCycles(page, async () => contractCycle());
+    // A reload creates a new document.  The Chronicle may legitimately settle
+    // either the full PageFlip runtime or its governed readable fallback in
+    // that new document, so the legacy exact-counter probe cannot compare the
+    // two documents as though they shared one runtime.  Assert the bounded
+    // production contract on every reentry instead; the journal teardown
+    // suite separately verifies listener and request release on unmount.
+    for (let cycle = 0; cycle <= lifecycleCycles; cycle += 1) {
+      if (cycle > 0) await page.reload();
+      await assertCanonicalJournal();
+    }
   });
 
   test("all three Lottie contracts succeed across twenty route mount-unmount cycles", async ({ page }) => {

@@ -367,6 +367,7 @@ export async function openPhase3Player(
 /** Settles the canonical Chronicle opening ceremony after an initial visit or reload. */
 export async function ensurePhase3JournalReady(page: Page) {
   const open = page.getByRole("button", { name: "Open the journal" });
+  const skip = page.getByRole("button", { name: "Skip ceremony" });
   // The outgoing loading shell is intentionally retained while the canonical
   // journal hydrates; assertions must address the current, interactive shell.
   const shell = page.locator(".voyage-shell").last();
@@ -380,11 +381,20 @@ export async function ensurePhase3JournalReady(page: Page) {
     )
     .not.toBe("pending");
   if ((await shell.getAttribute("data-journal-phase")) !== "JOURNAL_READY") {
-    await expect(open).toBeVisible({ timeout: 4_000 });
-    await open.click();
-    const skip = page.getByRole("button", { name: "Skip ceremony" });
-    await expect(skip).toBeVisible({ timeout: 4_000 });
-    await skip.click();
+    // A reentry can advance from ENTRY_IDLE to an opening phase between the
+    // initial observation and the click.  Act on the control that is still
+    // present, then wait for the governed readable skip/ready outcome.
+    if (await open.isVisible().catch(() => false)) await open.click();
+    await expect
+      .poll(
+        async () => {
+          if ((await shell.getAttribute("data-journal-phase")) === "JOURNAL_READY") return "ready";
+          return (await skip.isVisible().catch(() => false)) ? "skip" : "pending";
+        },
+        { timeout: 20_000 },
+      )
+      .not.toBe("pending");
+    if ((await shell.getAttribute("data-journal-phase")) !== "JOURNAL_READY") await skip.click();
   }
   await expect(shell).toHaveAttribute("data-journal-phase", "JOURNAL_READY", {
     timeout: 20_000,
