@@ -26,6 +26,14 @@ test("Harborlight Studio access and Exchange package installation are isolated a
     data: { username, passwordHash: await bcrypt.hash(password, 10), role: "CAPTAIN_CREATOR" },
   });
   const account = await db.userAccount.create({ data: { status: "ACTIVE", legacyGameMasterId: gm.id } });
+  await db.playerProfile.create({
+    data: {
+      accountId: account.id,
+      displayName: "Synthetic Harborlight Creator",
+      status: "ACTIVE",
+      claimedAt: new Date(),
+    },
+  });
   await db.accountRoleAssignment.create({ data: { accountId: account.id, role: "CREATOR", scopeType: "GLOBAL" } });
 
   const creator = await browser.newContext();

@@ -77,4 +77,23 @@ the global validation lock, a separate Phase 3 validation task reacquired it
 and owns port 3100. It has not been interrupted. Browser acceptance, restart,
 and final Phase 2 validation remain pending exclusive runtime ownership.
 
+After the runtime was released, the dedicated `harborlight-phase2` project ran
+through the repaired harness successfully. The run used the explicit external
+baseline above, created
+`validation-isolated-20260724-100904465-6adb6e9282d44a8bab65fa0f3c37d499.db`,
+and proved nonce `6522cd57ebfb828d3ae06b83c193eb3444611077ceebfa8e6f97ac8c30cce2f2`
+through the application on owned server PID `31004` / port `3100`. Playwright
+reported 1 passed in 24.5 seconds. The isolated copy showed the expected
+`platformAuditEvent` mutation; the external baseline family remained unchanged
+and ports 3100/3200 were released afterward. The synthetic Creator fixture was
+corrected to include the canonical PlayerProfile required by Community
+authorization. Focused Harborlight Vitest passed (5 files / 18 tests), and
+`next build --webpack` passed with `/studio/exchange` in the route inventory.
+
+This is a valid Studio/Exchange smoke journey, not the full Phase 2 browser
+acceptance matrix. It does not yet cover the required 2D and 3D artifact
+publication flows, second-Creator install review, fork/lineage, forced rollback
+cases, active-session pinning, or restart persistence. Those absent terminal
+proofs are the remaining Phase 2 blocker.
+
 PROJECT HARBORLIGHT PHASE 2 BLOCKED
