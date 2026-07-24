@@ -1,0 +1,27 @@
+{
+  "branch": "integration/lanternwake-phase6-mainline",
+  "checkpoint": "577ff327ebedddfe479be893ac16c56f0aae6474",
+  "completedGates": [
+    "canonical journal accessibility: setup, Chromium, WebKit/mobile: 3 passed",
+    "canonical event matrix: setup plus seven canonical groups: 9 passed"
+  ],
+  "canonicalEventMatrix": {
+    "legacyCaseIds": 102,
+    "unmapped": 0,
+    "retiredProtocolRestored": false,
+    "evidence": "577ff327ebedddfe479be893ac16c56f0aae6474"
+  },
+  "nextCommand": "powershell -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\test-all.ps1 -SkipBrowserInstall -BrowserOnly -BaselineDatabasePath C:\\Users\\kgray\\AppData\\Local\\ForeverTreasureCompanion\\development\\prisma\\dev.db -BrowserTestPath tests/e2e/phase3-player-motion.spec.ts -BrowserGrep P3-MOTION-001",
+  "currentRepair": "Replace the retired PlayerExperience receipt assumptions in phase3-player-motion.spec.ts with the canonical Chronicle journal motion policy assertions before running its terminal shards.",
+  "remainingStages": [
+    "motion-policy canonical shards",
+    "replay, lifecycle, extended lifecycle, and remaining authored browser families",
+    "core validators, production build, restart/isolation, final gate",
+    "Lanternwake evidence, integration push, non-destructive main merge, and post-merge validation"
+  ],
+  "runtime": {
+    "ports3100And3200": "released",
+    "validationLock": "released",
+    "externalBaseline": "unchanged"
+  }
+}
