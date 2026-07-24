@@ -353,9 +353,15 @@ export async function openPhase3Player(
   expect(access.status(), await access.text()).toBe(200);
   await page.goto(`${fixture.path}?section=${section}&journalSpeed=0.25`);
   await ensurePhase3JournalReady(page);
-  if (!(await page.locator(`.voyage-shell.view-${section}`).count())) await navigatePhase3Section(page, section);
-  await expect(page.locator(`.voyage-shell.view-${section}`)).toBeVisible();
-  return page.locator("[data-testid='progression-scene-host']").getAttribute("data-scene-host-id");
+  // The canonical Chronicle session is a single physical journal.  The old
+  // six-section Companion navigation remains a compatibility-only surface and
+  // must not be required to prove canonical journal readiness.
+  if (section !== "journal") {
+    await navigatePhase3Section(page, section);
+    await expect(page.locator(`.voyage-shell.view-${section}`)).toBeVisible();
+  }
+  const compatibilityHost = page.locator("[data-testid='progression-scene-host']");
+  return (await compatibilityHost.count()) === 1 ? compatibilityHost.getAttribute("data-scene-host-id") : null;
 }
 
 /** Settles the canonical Chronicle opening ceremony after an initial visit or reload. */

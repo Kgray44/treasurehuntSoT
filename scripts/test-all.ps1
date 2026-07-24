@@ -302,7 +302,26 @@ function Stop-OwnedProcessTree {
     [void]$descendantIdSet.Remove([int]$ServerOwnership.LauncherIdentity.ProcessId)
     $remainingDescendantIds = @($descendantIdSet.Keys)
     if ($remainingDescendantIds.Count -gt 0) {
-        throw "Owned launcher descendants remained after termination: $($remainingDescendantIds -join ', ')."
+        # Next may spawn a worker between the startup snapshot and teardown.
+        # These PIDs are still proven descendants of this exact launcher, so
+        # terminate them before declaring cleanup incomplete.
+        foreach ($processId in $remainingDescendantIds) {
+            $identity = Get-ProcessIdentity -ProcessId ([int]$processId)
+            if ($identity) {
+                try { Stop-Process -Id ([int]$processId) -Force -ErrorAction Stop }
+                catch {
+                    if (Test-ProcessIdentityMatches -ExpectedIdentity $identity) { throw }
+                }
+            }
+        }
+        Start-Sleep -Milliseconds 400
+        $stillRemaining = @($remainingDescendantIds | Where-Object {
+            $identity = Get-ProcessIdentity -ProcessId ([int]$_)
+            $null -ne $identity
+        })
+        if ($stillRemaining.Count -gt 0) {
+            throw "Owned launcher descendants remained after termination: $($stillRemaining -join ', ')."
+        }
     }
     Assert-TcpPortAvailable -Port ([int]$ServerOwnership.Port)
 }
