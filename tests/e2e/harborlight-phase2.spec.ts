@@ -4,8 +4,6 @@ import { expect, test } from "@playwright/test";
 import { db } from "../../src/lib/db";
 import { packageChecksum, sha256 } from "../../src/community/package";
 
-test.skip(({ browserName }) => browserName !== "chromium", "The isolated Exchange mutation journey runs once.");
-
 const fixtureId = randomUUID();
 const username = `harborlight-${fixtureId.slice(0, 12)}`;
 const password = `Harborlight-${fixtureId}-safe`;

@@ -602,7 +602,9 @@ try {
     $ownedValidationServer = Start-OwnedValidationServer
     $playwrightInvoked = $true
     $playwrightArguments = @("node_modules/playwright/cli.js", "test")
-    if ($BrowserTestPath) { $playwrightArguments += $runtimeRelativeBrowserTestPath.Replace('\', '/') }
+    if ($BrowserTestPath) {
+        $playwrightArguments += @("--project=harborlight-phase2", $runtimeRelativeBrowserTestPath.Replace('\', '/'))
+    }
     Invoke-ValidationStep -Name "Running browser acceptance tests" -Arguments $playwrightArguments
     Stop-OwnedValidationServer -ServerOwnership $ownedValidationServer
     $ownedValidationServer = $null
