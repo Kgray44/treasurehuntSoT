@@ -585,6 +585,7 @@ async function assertViewportAndAccessibility(page: Page) {
       (nodes) =>
         nodes.filter((node) => {
           if (!(node instanceof HTMLElement)) return false;
+          if (node.closest('[aria-hidden="true"], [inert]')) return false;
           return node.tabIndex >= 0 && !node.hasAttribute("disabled");
         }).length,
     );
