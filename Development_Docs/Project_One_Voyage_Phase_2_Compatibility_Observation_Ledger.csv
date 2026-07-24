@@ -1,0 +1,5 @@
+operation,route_key,disposition,canonical_evidence,privacy_boundary,availability_rule,observation_window_status
+LEGACY_ACCESS_EXCHANGE,player-access,ADAPTED,canonical account session membership and audit,no credential payload or raw access code,best effort cannot block or retry canonical exchange,not yet one release
+LEGACY_PLAYER_READ,player-compatibility,ADAPTED,canonical session and membership,no story payload email or display name,best effort after access resolution,not yet one release
+LEGACY_QUARTERMASTER_COMMAND,quartermaster-command,ADAPTED,one canonical event and one audit,no command payload or target prose,best effort after canonical commit,not yet one release
+LEGACY_QUARTERMASTER_REDIRECT,quartermaster,REDIRECTED,canonical Captain destination,no caller identity or token,best effort,not yet one release

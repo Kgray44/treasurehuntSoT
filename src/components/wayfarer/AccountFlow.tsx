@@ -138,8 +138,10 @@ export function AccountFlow({ mode }: Props) {
                   : field[0].toUpperCase() + field.slice(1)}
             <input
               name={field}
-              type={field.includes("password") ? "password" : field === "email" ? "email" : "text"}
-              autoComplete={field === "email" ? "email" : field.includes("password") ? "new-password" : "nickname"}
+              type={field.toLowerCase().includes("password") ? "password" : field === "email" ? "email" : "text"}
+              autoComplete={
+                field === "email" ? "email" : field.toLowerCase().includes("password") ? "new-password" : "nickname"
+              }
               required
             />
           </label>

@@ -6,7 +6,7 @@ Status: **not approved for production execution**. The additive SQLite migration
 
 1. Take and verify a restorable MySQL backup.
 2. Stop application writers or put the deployment into maintenance mode.
-3. Run this branch in a separate isolated database and record source counts for Player profiles, Game Master users, memberships, invitations, invitation events, Creator-owned Tall Tales, Captain-owned Tale Sessions, and sessions.
+3. Run this branch in a separate isolated database and record source counts for Player profiles, Game Master users, memberships, invitations, invitation events, Creator-owned Chronicles, Captain-owned Tale Sessions, and sessions.
 4. Resolve duplicate-account mappings explicitly. Matching display names or legacy usernames are not sufficient evidence for merging people.
 
 ## Rehearsed additive sequence

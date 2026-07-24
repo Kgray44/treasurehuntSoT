@@ -25,6 +25,11 @@ Do not claim a simple rollback is available until one path has been rehearsed on
 
 ## Verification after recovery
 
+Phase 2's isolated MySQL rehearsal adds backup hash, restored semantic/audit
+count equality, runtime DDL denial, and restart evidence. It does not claim a
+production rollback; canonical events still require maintenance restore or
+approved reconciliation.
+
 - Confirm the database identity nonce through `/api/dev/validation/database-identity` in the isolated environment.
 - Run migration verification in read-only mode and confirm no duplicate mappings.
 - Compare current position, sequence, artifacts, side quests, map/routes, presentation acknowledgements, memberships, invitations, session lifecycle, and audit correlation.

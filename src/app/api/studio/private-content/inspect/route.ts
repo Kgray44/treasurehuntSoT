@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { requireGmCapability, verifyCsrf } from "@/lib/security";
 import { inspectPrivatePackage } from "@/private-content/service";
 import { PrivateContentError } from "@/private-content/core";
+import { inspectCompletedPrivateUploadV2 } from "@/private-content/uploads";
 
 const MAX_UPLOAD_BASE64_CHARS = 48 * 1024 * 1024;
 
@@ -21,7 +22,17 @@ export async function POST(request: Request) {
   if (!session || !(await verifyCsrf(session)))
     return NextResponse.json({ error: "Creator authorization is required." }, { status: 403 });
   try {
-    const body = (await request.json()) as { packageBase64?: string; passphrase?: string };
+    const body = (await request.json()) as { packageBase64?: string; uploadId?: string; passphrase?: string };
+    if (body.uploadId && typeof body.passphrase === "string")
+      return NextResponse.json(
+        await inspectCompletedPrivateUploadV2({
+          actorId: session.userId,
+          uploadId: body.uploadId,
+          passphrase: body.passphrase,
+          stagingRoot: process.env.PRIVATE_CONTENT_STAGING_ROOT ?? "",
+        }),
+        { headers: { "Cache-Control": "private, no-store" } },
+      );
     if (
       !body.packageBase64 ||
       body.packageBase64.length > MAX_UPLOAD_BASE64_CHARS ||

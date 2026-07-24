@@ -8,7 +8,7 @@
 
 ## Repository inventory and boundaries
 
-`TallTale` is the canonical authored Chronicle; `TaleDraft` is mutable authoring state; `PublishedTaleVersion` is immutable source content; `TaleSession` is a live voyage; old `Campaign` tables remain production compatibility surfaces. `PlayerProfile` is the currently available canonical person/profile; `PlatformAuditEvent`, `TaleAssetStorage`, `consumeRateLimit`, and the Lanternwake scene registry are existing seams. Harborlight creates no alternate Chronicle, chapter, session, or login identity.
+`Chronicle` is the canonical authored Chronicle; `TaleDraft` is mutable authoring state; `PublishedTaleVersion` is immutable source content; `TaleSession` is a live voyage; old `Campaign` tables remain production compatibility surfaces. `PlayerProfile` is the currently available canonical person/profile; `PlatformAuditEvent`, `TaleAssetStorage`, `consumeRateLimit`, and the Lanternwake scene registry are existing seams. Harborlight creates no alternate Chronicle, chapter, session, or login identity.
 
 `CommunityListing` is mutable catalog identity and release history. `CommunityRelease` is immutable distribution identity, bound by scalar source ID to an immutable `PublishedTaleVersion`; its manifest, checksum, attribution, license, and spoiler snapshots never change. A later correction creates a new release; listing quarantine/removal controls delivery without rewriting the release.
 

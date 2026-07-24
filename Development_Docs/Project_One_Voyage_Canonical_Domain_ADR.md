@@ -20,7 +20,7 @@ The model/table naming compatibility is deliberate and temporary: live applicati
 | Published content                              | Published Chronicle Version                                                 | immutable snapshot, checksum, schema version                              |
 | Live playthrough                               | Chronicle Session                                                           | one pinned version, mutable only through canonical commands               |
 | Runtime history                                | Chronicle Session Event                                                     | ordered, monotonic, idempotent command correlation                        |
-| Player identity                                | PlayerProfile and PlayerIdentitySession                                     | rotating canonical credential, never a Campaign token as authority        |
+| Player identity                                | UserAccount, AccountSession, and PlayerProfile                              | account-rooted rotating credential; legacy profile sessions only rotate   |
 | Player access                                  | PlaythroughMembership and Invitation                                        | membership is the resource scope; invitation is an acquisition credential |
 | Captain / Creator access                       | PlatformRoleAssignment plus existing staff account capability               | explicit role and resource policy checks                                  |
 | Artifacts, side quests, map, routes, variables | Chronicle authored definitions plus session variables/inventory/RevealState | definitions are versioned; earned/revealed state is session-local         |
@@ -40,6 +40,12 @@ Events are the authoritative history for progression, commands, presentation, an
 `LegacyEntityReference` is the deterministic mapping authority: source domain, model, source ID, canonical model/ID, migration version, source checksum, and timestamps are unique. The runner can resume, reject changed source checksums, resolve legacy URLs, and prove a rerun did not duplicate records. Legacy public slugs are retained by the Chronicle. A valid legacy access code exchanges for a canonical scoped identity/membership; it cannot grant global identity or broaden a role.
 
 Compatibility adapters may translate request/response shape, resolve source IDs, redirect URLs, and exchange old credentials. They call canonical policy, command, projection, and audit services. They may never independently mutate Campaign, chapter, artifact, snapshot, access, command, or audit tables. Stage F is the current default: canonical reads and writes are enabled, and legacy tables are retained only read-only for provenance and bounded adapters.
+
+Phase 2 records privacy-safe compatibility observation outside the authoritative
+transaction. It stores operation/disposition/correlation and canonical IDs only,
+never credentials or payloads; failed observation cannot block or duplicate a
+canonical action. `UserAccount` is the identity root, `AccountSession` is the
+only new authentication session, and `AccountRoleAssignment` is role authority.
 
 ## Rollout and rollback
 

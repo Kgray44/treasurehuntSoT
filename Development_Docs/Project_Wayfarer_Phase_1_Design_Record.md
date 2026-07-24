@@ -22,7 +22,7 @@ Phase 1, **Establish the Wayfarer**, implements the unified private account and 
 
 `git fetch origin --prune --no-tags` completed before worktree creation. The worktree was created directly from the recorded remote commit. The initial checkout on the UNC share exceeded the normal command window but completed cleanly; no partially-created directory was reused.
 
-High-conflict baseline files were inspected before implementation: `prisma/schema.prisma`, `src/platform/auth.ts`, `src/platform/invitations.ts`, `src/platform/libraries.ts`, `src/platform/policy.ts`, Tall Tale authoring/progression services, Captain routes, and Player invitation routes. The base commit contains integrated Lanternwake and Universal Language work; Phase 1 preserves those surfaces rather than restoring older code.
+High-conflict baseline files were inspected before implementation: `prisma/schema.prisma`, `src/platform/auth.ts`, `src/platform/invitations.ts`, `src/platform/libraries.ts`, `src/platform/policy.ts`, Chronicle authoring/progression services, Captain routes, and Player invitation routes. The base commit contains integrated Lanternwake and Universal Language work; Phase 1 preserves those surfaces rather than restoring older code.
 
 ## Frozen architecture
 
@@ -60,7 +60,7 @@ Claiming into an existing authenticated account is an explicit merge. It moves g
 
 ### Canonical actor cutover
 
-The frozen target is that new Tall Tale, draft, published version, asset, Tale Session Captain, invitation, invitation-event, reveal, platform-audit, and Tale Session event writes receive optional canonical `actorAccountId` relations. Existing raw IDs remain immutable historical snapshots and compatibility lookups; they must no longer be authorization sources for new code. Actor display snapshots are stored as existing labels or explicit metadata rather than resolved from private email. This branch currently contains the full inventory but has **not** completed that foreign-key/schema/write-path cutover.
+The frozen target is that new Chronicle, draft, published version, asset, Tale Session Captain, invitation, invitation-event, reveal, platform-audit, and Tale Session event writes receive optional canonical `actorAccountId` relations. Existing raw IDs remain immutable historical snapshots and compatibility lookups; they must no longer be authorization sources for new code. Actor display snapshots are stored as existing labels or explicit metadata rather than resolved from private email. This branch currently contains the full inventory but has **not** completed that foreign-key/schema/write-path cutover.
 
 Legacy Campaign `ProgressEvent.actor`, `PreparedAction.preparedBy`, and `AdminAuditLog.userId` are inventoried but deliberately not broadly migrated in Phase 1; compatible canonical actor seams are added only where current services write them.
 
@@ -72,7 +72,7 @@ Email delivery is a narrow interface with a development/test outbox. Failed deli
 
 | Existing field                                                                                                 | Current source          | Phase 1 disposition                                                                           |
 | -------------------------------------------------------------------------------------------------------------- | ----------------------- | --------------------------------------------------------------------------------------------- |
-| `TallTale.creatorId`                                                                                           | Game Master string      | add `creatorAccountId`; new studio writes use it                                              |
+| `Chronicle.creatorId`                                                                                          | Game Master string      | add `creatorAccountId`; new studio writes use it                                              |
 | `TaleDraft.createdBy`, `PublishedTaleVersion.publishedBy`, `TaleAsset.createdBy`                               | Game Master string      | add canonical account relations; retain snapshot strings                                      |
 | `TaleSession.captainId`                                                                                        | Game Master string      | add `captainAccountId`; new Captain/preview writes use it                                     |
 | `Invitation.createdBy`                                                                                         | Captain string          | add `creatorAccountId`; new invitation writes use it                                          |

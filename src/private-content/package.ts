@@ -11,6 +11,7 @@ import {
   type PrivatePackageManifest,
   type PrivatePayload,
 } from "./core";
+import { validatePrivateMediaAsset } from "./media-validation";
 
 const base64 = z.string().regex(/^[A-Za-z0-9_-]+={0,2}$/);
 const envelopeSchema = z.object({
@@ -231,6 +232,7 @@ export function validatePayload(payload: PrivatePayload): PrivatePackageManifest
       (expectedMagic && !bytes.subarray(0, expectedMagic.length).equals(expectedMagic))
     )
       throw privateFailure("PRIVATE_PACKAGE_CHECKSUM_MISMATCH");
+    validatePrivateMediaAsset(asset, bytes);
   }
   return manifest;
 }

@@ -1,0 +1,9 @@
+component,kind,production_disposition,canonical_path,canWrite,reachability_proof,removal_gate
+Campaign,table,read-only provenance and legacy-slug lookup,Chronicle plus PublishedTaleVersion,false,architecture validator and MySQL runtime proof,one compatibility release and observation window
+PlayerAccess,table,read-only legacy credential source,UserAccount AccountSession PlayerProfile PlaythroughMembership,false,legacy exchange creates only canonical account/session rows,all active credentials reconciled and revocation observed
+PlayerIdentitySession,table,read-only browser-rotation compatibility,AccountSession,false,static validator rejects new creates,all retained browser sessions expired or migrated
+GameMasterSession,table,read-only browser-rotation compatibility,AccountSession,false,static validator rejects new creates,all retained staff sessions expired or migrated
+LegacyProgressionService,module,disabled for production routes,Chronicle command/projection service,false,architecture validator and route import scan,zero adapter reachability after compatibility release
+Quartermaster,route,redirect and bounded adapter,Captain runtime,false,MySQL canonical event/audit/observation proof,bookmark telemetry plus one release
+CampaignSnapshotBuilder,module,adapter-only projection input,canonical projection,false,architecture validator,legacy Player URLs no longer observed
+AdminAuditLog,table,migration source only,PlatformAuditEvent,false,adapter transaction writes canonical audit,all migration provenance retained per retention policy

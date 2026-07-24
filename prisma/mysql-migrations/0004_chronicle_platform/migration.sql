@@ -23,13 +23,13 @@ SET `voyageName` = COALESCE(`ownerLabel`, 'Legacy voyage'),
     `launchedAt` = CASE WHEN `previewMode` = false THEN `startedAt` ELSE NULL END;
 
 ALTER TABLE `TaleSession`
-  MODIFY COLUMN `configuration` LONGTEXT NOT NULL DEFAULT '{}',
-  MODIFY COLUMN `archiveMetadata` LONGTEXT NOT NULL DEFAULT '{}';
+  MODIFY COLUMN `configuration` LONGTEXT NOT NULL DEFAULT ('{}'),
+  MODIFY COLUMN `archiveMetadata` LONGTEXT NOT NULL DEFAULT ('{}');
 
 CREATE TABLE `PlayerProfile` (
   `id` VARCHAR(191) NOT NULL, `username` VARCHAR(191) NULL, `passwordHash` VARCHAR(191) NULL,
   `displayName` VARCHAR(191) NOT NULL, `status` VARCHAR(191) NOT NULL DEFAULT 'ACTIVE',
-  `preferences` LONGTEXT NOT NULL DEFAULT '{}', `claimedAt` DATETIME(3) NULL,
+  `preferences` LONGTEXT NOT NULL DEFAULT ('{}'), `claimedAt` DATETIME(3) NULL,
   `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3), `updatedAt` DATETIME(3) NOT NULL,
   `lastSeenAt` DATETIME(3) NULL,
   UNIQUE INDEX `PlayerProfile_username_key`(`username`),
@@ -68,7 +68,7 @@ CREATE TABLE `Invitation` (
   `tokenHash` VARCHAR(191) NOT NULL, `tokenPrefix` VARCHAR(191) NOT NULL,
   `shortCodeHash` VARCHAR(191) NOT NULL, `shortCodePrefix` VARCHAR(191) NOT NULL, `pinHash` VARCHAR(191) NULL,
   `recipientName` VARCHAR(191) NOT NULL, `status` VARCHAR(191) NOT NULL DEFAULT 'CREATED',
-  `deliveryMethods` LONGTEXT NOT NULL DEFAULT '[]', `expiresAt` DATETIME(3) NOT NULL, `maxRedemptions` INTEGER NOT NULL DEFAULT 1,
+  `deliveryMethods` LONGTEXT NOT NULL DEFAULT ('[]'), `expiresAt` DATETIME(3) NOT NULL, `maxRedemptions` INTEGER NOT NULL DEFAULT 1,
   `redemptionCount` INTEGER NOT NULL DEFAULT 0, `viewedAt` DATETIME(3) NULL, `acceptedAt` DATETIME(3) NULL,
   `declinedAt` DATETIME(3) NULL, `revokedAt` DATETIME(3) NULL, `lastValidatedAt` DATETIME(3) NULL,
   `replacesInvitationId` VARCHAR(191) NULL, `createdBy` VARCHAR(191) NOT NULL,
@@ -81,7 +81,7 @@ CREATE TABLE `Invitation` (
 
 CREATE TABLE `InvitationEvent` (
   `id` VARCHAR(191) NOT NULL, `invitationId` VARCHAR(191) NOT NULL, `eventType` VARCHAR(191) NOT NULL,
-  `actorType` VARCHAR(191) NOT NULL, `actorId` VARCHAR(191) NULL, `metadata` LONGTEXT NOT NULL DEFAULT '{}',
+  `actorType` VARCHAR(191) NOT NULL, `actorId` VARCHAR(191) NULL, `metadata` LONGTEXT NOT NULL DEFAULT ('{}'),
   `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
   INDEX `InvitationEvent_invitationId_createdAt_idx`(`invitationId`, `createdAt`), PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -98,7 +98,7 @@ CREATE TABLE `PlatformAuditEvent` (
   `id` VARCHAR(191) NOT NULL, `actorType` VARCHAR(191) NOT NULL, `actorId` VARCHAR(191) NULL,
   `action` VARCHAR(191) NOT NULL, `resourceType` VARCHAR(191) NOT NULL, `resourceId` VARCHAR(191) NOT NULL,
   `outcome` VARCHAR(191) NOT NULL DEFAULT 'SUCCEEDED', `correlationId` VARCHAR(191) NOT NULL,
-  `metadata` LONGTEXT NOT NULL DEFAULT '{}', `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+  `metadata` LONGTEXT NOT NULL DEFAULT ('{}'), `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
   INDEX `PlatformAuditEvent_resourceType_resourceId_createdAt_idx`(`resourceType`, `resourceId`, `createdAt`),
   INDEX `PlatformAuditEvent_actorType_actorId_createdAt_idx`(`actorType`, `actorId`, `createdAt`),
   INDEX `PlatformAuditEvent_correlationId_idx`(`correlationId`), PRIMARY KEY (`id`)
