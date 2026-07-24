@@ -697,7 +697,7 @@ test.describe("Project Lanternwake Phase 3 accessibility and six required viewpo
 
         await assertViewportAndAccessibility(page);
         if (flow.kind === "reentry") await assertReadableAtTwoHundredPercentZoom(page);
-        await expect(page.getByRole("button", { name: "Sound off" })).toBeVisible();
+        await expect(page.getByRole("button", { name: /^Motion:/ })).toBeVisible();
         const announcements = await page.evaluate(
           () =>
             (
