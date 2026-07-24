@@ -17,6 +17,12 @@ Environment: isolated local worktree `C:\Users\kgray\AppData\Local\ForeverTreasu
 
 Live MySQL migration execution, production scanner/object-storage/worker deployment, and browser acceptance are explicitly external staging/deployment proofs and have not been counted as passing.
 
+## Studio route completion attempt (2026-07-24)
+
+`/studio/exchange` and the Studio-library Exchange navigation were added, with focused component coverage for publication requirements, installation modes, reduced-motion fallback, and no fabricated success receipt. Focused Vitest passed: 5 files / 18 tests. TypeScript and Webpack production build passed; the built route inventory includes `/studio/exchange`.
+
+Dedicated task-owned browser acceptance remains unrun in this attempt. It is not counted as passed.
+
 | Command / gate                                                                                         | Result                    |
 | ------------------------------------------------------------------------------------------------------ | ------------------------- |
 | `prisma format --schema prisma/schema.sqlite.prisma` and MySQL schema                                  | passed                    |
