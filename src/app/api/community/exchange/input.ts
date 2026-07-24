@@ -69,6 +69,13 @@ export const installCommitInputSchema = installPlanInputSchema
   })
   .strict();
 
+export const installReviewInputSchema = installPlanInputSchema
+  .extend({
+    releaseId: z.string().min(1).max(128),
+    packageId: z.string().min(1).max(128),
+  })
+  .strict();
+
 export const updateComparisonInputSchema = z
   .object({
     installedChecksum: z.string().regex(/^[a-f0-9]{64}$/),

@@ -580,6 +580,12 @@ try {
     $env:DATABASE_URL = [string]$isolation.databaseUrl
     $env:FOREVER_VALIDATION_ISOLATION = "1"
     $env:FOREVER_VALIDATION_NONCE_HASH = [string]$isolation.nonceHash
+    # This provider can be selected only after the nonce-bound isolated copy has
+    # been created. Production and ordinary development retain fail-closed
+    # scanner behavior because neither marker is present there.
+    $env:NODE_ENV = "test"
+    $env:FOREVER_VALIDATION_NODE_ENV = "test"
+    $env:COMMUNITY_BINARY_SCANNER_PROVIDER = "synthetic-test"
 
     if (-not $SkipBrowserInstall) {
         Invoke-ValidationStep -Name "Installing Playwright browsers" -Arguments @("node_modules/playwright/cli.js", "install", "chromium", "webkit")
@@ -610,6 +616,11 @@ try {
     $ownedValidationServer = $null
     Assert-TcpPortAvailable -Port 3100
     $defaultBrowserSucceeded = $true
+    # The synthetic scanner is scoped to the owned browser server only. Do not
+    # carry its selection into a later production build or restart proof.
+    Remove-Item Env:COMMUNITY_BINARY_SCANNER_PROVIDER -ErrorAction SilentlyContinue
+    Remove-Item Env:FOREVER_VALIDATION_NODE_ENV -ErrorAction SilentlyContinue
+    $env:NODE_ENV = "production"
 
     if ($BrowserOnly) {
         $browserSucceeded = $defaultBrowserSucceeded

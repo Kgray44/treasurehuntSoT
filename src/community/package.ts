@@ -101,6 +101,20 @@ function assertGlb(bytes: Uint8Array) {
       "GLB needs an embedded mesh and cannot reference external resources.",
     );
 }
+function assertPng(bytes: Uint8Array) {
+  const signature = [0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a];
+  if (bytes.byteLength < 33 || !signature.every((value, index) => bytes[index] === value))
+    throw new CommunityError("COMMUNITY_IMAGE_INVALID", "PNG signature is invalid.");
+  const view = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength);
+  const width = view.getUint32(16, false);
+  const height = view.getUint32(20, false);
+  if (!width || !height || width > 8192 || height > 8192)
+    throw new CommunityError("COMMUNITY_IMAGE_INVALID", "PNG dimensions are invalid.");
+}
+export function assertCommunityBinaryFormat(file: CommunityPackageFile) {
+  if (file.mediaType === "model/gltf-binary") return assertGlb(file.bytes);
+  if (file.mediaType === "image/png") return assertPng(file.bytes);
+}
 function assertItem(item: CommunityPackageItem) {
   assertPackagePath(item.path);
   if (executableExtensions.test(item.path) || !safeMediaTypes.has(item.mediaType))
@@ -120,6 +134,7 @@ export type CommunityScanStatus =
   | "SCAN_NOT_CONFIGURED"
   | "SUSPICIOUS"
   | "MALICIOUS"
+  | "FAILED"
   | "QUARANTINED";
 export function assertPublicationScanStatus(status: CommunityScanStatus, files: readonly CommunityPackageFile[]) {
   const requiresScan = files.some(
@@ -169,7 +184,7 @@ export function verifyCommunityPackage(rawManifest: unknown, files: readonly Com
       throw new CommunityError("COMMUNITY_PACKAGE_LIMIT", "Package exceeds permitted size.");
     if (executableExtensions.test(file.path) || !safeMediaTypes.has(file.mediaType))
       throw new CommunityError("COMMUNITY_PACKAGE_FORBIDDEN_CONTENT", "Package contains forbidden content.");
-    if (file.mediaType === "model/gltf-binary") assertGlb(file.bytes);
+    assertCommunityBinaryFormat(file);
   }
   const fileByPath = new Map(files.map((file) => [file.path, file]));
   if (fileByPath.size !== manifest.items.length)

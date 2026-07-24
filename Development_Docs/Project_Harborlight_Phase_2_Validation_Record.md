@@ -96,4 +96,43 @@ publication flows, second-Creator install review, fork/lineage, forced rollback
 cases, active-session pinning, or restart persistence. Those absent terminal
 proofs are the remaining Phase 2 blocker.
 
+## Isolated binary and finalization continuation (2026-07-24)
+
+The Exchange now obtains binary evidence from a provider seam. The ordinary
+provider returns `SCAN_NOT_CONFIGURED` and binary publication remains denied.
+The only alternative is `synthetic-test`, which requires the harness-selected
+provider, `NODE_ENV=test` (or the private nonce-bound harness bridge), an
+isolated validation database, and a valid run nonce. It recognizes exactly two
+compiled repository-owned fixtures by SHA-256, byte length, media type, magic
+bytes, and the existing PNG/GLB validators. It is not a malware scanner and
+does not provide assurance for arbitrary uploads.
+
+| Gate                                                               | Result                                                                                                                                            |
+| ------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| scanner/package/install focused Vitest                             | passed; 3 files / 13 tests                                                                                                                        |
+| scanner provider checks in full Vitest                             | passed; 112 files / 937 tests                                                                                                                     |
+| H1-H8 compact Chromium matrix                                      | passed; 3 tests / 0 failed / 0 skipped, 23.1 seconds (`run-20260724-1218`)                                                                        |
+| H4 trusted second-Creator review                                   | passed; persisted creator/listing/release/schema/license/attribution/inventory/compatibility/accessibility/performance/rights/script-safety facts |
+| H6 fork and lineage                                                | passed; transactional fork listing/release/lineage, source identity and attribution retained                                                      |
+| H7 rollback/idempotency                                            | passed; failed finalization creates no mappings or installation, retry commits exactly once                                                       |
+| H8 active-session non-mutation                                     | passed; pinned version, sequence, variables, inventory and event count unchanged by install/fork                                                  |
+| formatting / TypeScript                                            | passed                                                                                                                                            |
+| production `next build --webpack` and `/studio/exchange` inventory | passed                                                                                                                                            |
+| external baseline family                                           | unchanged: `a05a9b06ef2abc747a22d843945299f916800bc5e4962f17b59e13024a06593f`, 905216 bytes, `2026-07-21T13:29:34.790Z`                           |
+| worktree `prisma/dev.db`, ports, lock                              | absent; 3100/3200 released; lock released                                                                                                         |
+
+The governed non-browser final repository gate was then run as
+`run-20260724-1220-full`. Its format, lint, TypeScript, language validation,
+and 112-file/937-test Vitest stage passed, but it stopped at the repository-wide
+production Rive asset gate before the controlled production restart. The exact
+external dependency is four missing authored exports: `invitationSeal`,
+`journalClasp`, `voyageCompass`, and `finaleMechanism`. The validator reports
+that neither a Rive authoring/export tool nor project-authored binaries are
+available in this workspace. This blocks the required H8 restart proof and is
+also a Lanternwake Phase 6 production prerequisite; it is not repaired by the
+test-only binary scanner.
+
+Production binary scanning remains fail-closed and requires a configured
+trusted scanner for arbitrary non-test uploads.
+
 PROJECT HARBORLIGHT PHASE 2 BLOCKED
