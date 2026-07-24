@@ -66,4 +66,15 @@ validation. Per the single-owner isolation rule, it was not terminated or
 shared. Therefore there is no completed Harborlight browser pass/fail/skip
 total, restart proof, or final-gate result yet.
 
+The first exclusive Harborlight browser attempt subsequently reached the
+task-owned server and Playwright, but the generic Chromium project executed a
+Phase 3 read-only setup dependency first. That unrelated setup failed its
+Captain login with HTTP 500, so the Harborlight test never began and the
+isolation receipt correctly rejected the absence of an expected browser
+mutation. The harness was narrowed again to an independent
+`harborlight-phase2` Chromium project. Before the corrected run could acquire
+the global validation lock, a separate Phase 3 validation task reacquired it
+and owns port 3100. It has not been interrupted. Browser acceptance, restart,
+and final Phase 2 validation remain pending exclusive runtime ownership.
+
 PROJECT HARBORLIGHT PHASE 2 BLOCKED
