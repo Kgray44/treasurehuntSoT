@@ -1,5 +1,12 @@
 # Project One Voyage validation record
 
+## Phase 2 superseding proof
+
+An isolated MySQL 8.0.46 ordered migration/runtime/backup/restore/restart
+rehearsal passed on the dedicated Phase 2 branch. The detailed current record
+is `Project_One_Voyage_Phase_2_Validation_Record.md`; production deployment and
+the one-release legacy observation window remain separate gates.
+
 Date: 2026-07-21
 Worktree: `integration/lanternwake-phase5-universal-language` from `a0a2111c`
 Configured stage: `F_COMPATIBILITY_ONLY` (canonical read and write paths are the application default; legacy surfaces are bounded adapters)

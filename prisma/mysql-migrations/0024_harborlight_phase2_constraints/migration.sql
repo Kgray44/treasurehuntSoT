@@ -1,0 +1,2 @@
+-- Harborlight Phase 2 final reconciliation slot. Archive, dependency, licence,
+-- and GLB structural constraints are validated before persistence by services.

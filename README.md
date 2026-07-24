@@ -1,5 +1,13 @@
 # The Forever Treasure Companion
 
+## Project Wayfarer Phase 2
+
+The private **Chronicle Passport** is available at `/passport`; a safe public
+**Profile** is resolved by optional canonical handle at `/profile/[handle]`.
+Profile identity, providers, typed preferences, and privacy are Wayfarer-owned.
+Discord OAuth requires deployment configuration; the local Discord simulator is
+test-only and is never external-provider proof.
+
 Production-oriented foundation and fully automated local demo for a private nautical-fantasy date-night Chronicle. All committed story material is generic development seed content; no final surprise content belongs in this public repository.
 
 ## Current phase
@@ -92,11 +100,21 @@ Set unique local values in `.env`; the seed’s fallback values are development-
 
 Full setup, validation stages, output locations, clean-clone instructions, and troubleshooting are in [local development](docs/local-development.md) and [testing](docs/testing.md). Unified identity, invitations, libraries, authorization, history, and migration are in [Chronicle Platform](docs/chronicle-platform.md); Studio architecture and operations are in [Chronicle Studio](docs/chronicle-studio.md). The future recognition seam is in [vision helper boundary](docs/future-vision-helper.md). Animation ownership, scene contracts, assets, performance, and the development lab are indexed from [animation architecture](docs/animation/architecture.md).
 
+Wayfarer Phase 2 is complete on its dedicated branch. Its focused browser proof
+uses repository Playwright Chromium with an owned loopback server, newly
+migrated isolated SQLite database, isolated profile-media root, and explicit
+test-only provider simulators. Live provider authorization and live MySQL
+remain external staging/deployment validation, not local implementation gates.
+
 ## Repository workflow
 
 `main` is canonical. At task start: fetch, inspect status/remotes, and pull with rebase when clean. At task end: validate, review the complete diff, commit intentionally, fetch/rebase if needed, push without force, and verify local `HEAD` equals `origin/main`. See [Codex handoff](docs/codex-handoff.md).
 
 ## Important limitations
+
+Project One Voyage Phase 2 passed an isolated MySQL 8.0.46 cutover, canonical
+compatibility, backup/restore, and restart rehearsal. Legacy persistence is
+retained pending its one-release compatibility-observation gate.
 
 The full story, final Rive artwork/audio, horizontal scale-out for SSE, and production deployment are later work. The current sound is restrained and procedural. The sole third-party visual sample is MIT-licensed, local, documented, and development-only; production uses original SVG/CSS fallbacks. The repository is public, so only generic development content is permitted. See [known limitations](docs/known-limitations.md).
 

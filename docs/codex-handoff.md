@@ -1,5 +1,11 @@
 # Codex handoff
 
+## Project One Voyage Phase 2
+
+The dedicated Phase 2 branch adds account-rooted compatibility cutover proof,
+safe observation, a live isolated MySQL rehearsal, and retirement evidence.
+It must stop for convergence review; it is not merged to `main` here.
+
 - Canonical repository: `Kgray44/treasurehuntSoT`
 - Integrated branches: `feature/game-master-command-center` and `feature/cinematic-animation-rebuild`
 - Integration method: normal merge commits on `main`, preserving both source histories

@@ -1,5 +1,13 @@
 # Security
 
+## Profile and provider data
+
+Public Profile responses are explicit DTOs. They never include account email,
+sessions, credentials, provider tokens, invitations, private Chronicle facts,
+private asset paths, or moderation data. Provider linking uses account-bound
+expiring state, PKCE, nonce verification, immutable-subject collision checks,
+and encrypted token storage via `WAYFARER_PROVIDER_TOKEN_KEY`.
+
 ## Companion release boundary
 
 Serialization is allowlist-based. Locked chapters omit narrative/objective/clues; unreleased hints and annotations are absent; rumored map locations omit coordinates/internal regions; unknown artifacts omit names/descriptions; hidden quests are absent and rumors expose only safe teasers; hidden finale details are never modeled in public content. SSE payloads pass through the same explicit allowlist and never stream raw stored payloads. Player routes require a campaign-bound, unexpired access identity and expose no mutation endpoint.
@@ -21,6 +29,11 @@ The Phase 3 Quartermaster bridge additionally requires the server-side `CAPTAIN`
 Player presentation history is allowlist-projected and bounded. Chapter-release prose is reconstructed only through the currently authorized `PublicChapter`; unreadable or missing chapters cause that history event to be omitted. SSE performs periodic access revalidation and sends a terminal access-revoked signal. Both Player surfaces stop reconnecting for the revoked identity; the compatibility companion additionally clears protected workspace and in-memory replay history before showing the access state. Replay cannot call mutations or create a viewed acknowledgment.
 
 ## Unified Chronicle Platform boundary
+
+`UserAccount` and `AccountSession` are the canonical identity/session root.
+Compatibility observation is durable but privacy-safe (no secret, payload,
+email, display name, or private asset key) and cannot block or retry a
+canonical action.
 
 Gateway role choice is presentation only. Player APIs require a live `PlayerIdentitySession` plus resource membership; Captain and Creator APIs require the existing server-side staff session plus the matching capability and, where applicable, Captain assignment or Creator ownership. New cookie-authenticated mutations use per-session CSRF. Runtime actions made through durable Player identity require Player CSRF; the legacy opaque session-cookie flow remains isolated for compatibility. SSE and asset routes enforce resource authorization independently and recheck Player membership during long-lived streams.
 

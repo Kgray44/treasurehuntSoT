@@ -91,6 +91,16 @@ vi.mock("@/components/animation/LottieEffect", async () => {
   };
 });
 
+vi.mock("@/components/animation/RiveStatefulObject", async () => {
+  const React = await import("react");
+  return {
+    RiveStatefulObject: ({ onStatus }: { onStatus?: (status: "ready") => void }) => {
+      React.useEffect(() => onStatus?.("ready"), [onStatus]);
+      return <div data-animation-owner="rive" data-rive-runtime="ready" />;
+    },
+  };
+});
+
 const chapter: PublicSnapshot["chapter"] = {
   ordinal: 1,
   state: "ACTIVE",
@@ -433,7 +443,7 @@ describe("JournalWorkspace chapter ceremony host", () => {
     await waitFor(() => expect(commands.at(-1)).toBeNull());
   });
 
-  it("mounts the truthful decorative Journal Clasp fallback and retracts lifecycle-scoped status", async () => {
+  it("mounts the authored Journal Clasp runtime contract and retracts lifecycle-scoped status", async () => {
     const statuses: Array<"loading" | "ready" | "timed-out" | "failed" | "fallback" | "paused" | "hidden" | null> = [];
     const view = render(
       <AnimationProvider>
@@ -452,8 +462,8 @@ describe("JournalWorkspace chapter ceremony host", () => {
     const contract = view.container.querySelector<HTMLElement>("[data-journal-clasp-contract]");
     expect(contract).not.toBeNull();
     expect(contract).toHaveAttribute("aria-hidden", "true");
-    expect(contract).toHaveAttribute("data-rive-contract-availability", "blocked_external_asset");
-    expect(contract).toHaveAttribute("data-rive-production-art-status", "blocked_external_asset");
+    expect(contract).toHaveAttribute("data-rive-contract-availability", "runtime-ready");
+    expect(contract).toHaveAttribute("data-rive-production-art-status", "runtime-ready");
     expect(contract).toHaveAttribute("data-rive-state", "releasing");
     expect(contract).toHaveAttribute("data-rive-state-value", "2");
     expect(contract).toHaveAttribute(
@@ -466,17 +476,15 @@ describe("JournalWorkspace chapter ceremony host", () => {
     );
     expect(contract).toHaveAttribute("data-rive-reduced-equivalent", "semantic-final-state");
     expect(contract).toHaveStyle({ pointerEvents: "none" });
-    expect(contract?.querySelector("img")).toHaveAttribute("src", "/animations/stills/journal-clasp-fallback.svg");
-    expect(
-      contract?.querySelector("[data-scene-part], [data-scene-target-id], [data-animation-owner], [data-gsap-owned]"),
-    ).toBeNull();
+    expect(contract?.querySelector("img")).toBeNull();
+    expect(contract?.querySelector('[data-animation-owner="rive"]')).toHaveAttribute("data-rive-runtime", "ready");
     expect(view.container.querySelector(".latch-assembly")).toBeInTheDocument();
     expect(
       screen.getByText("The journal clasp is releasing while the journal cover remains supported."),
     ).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Next journal page" })).toBeEnabled();
-    await waitFor(() => expect(contract).toHaveAttribute("data-rive-runtime-status", "fallback"));
-    expect(statuses.at(-1)).toBe("fallback");
+    await waitFor(() => expect(contract).toHaveAttribute("data-rive-runtime-status", "ready"));
+    expect(statuses.at(-1)).toBe("ready");
 
     view.rerender(
       <AnimationProvider>
@@ -492,13 +500,13 @@ describe("JournalWorkspace chapter ceremony host", () => {
       </AnimationProvider>,
     );
     const settled = view.container.querySelector<HTMLElement>("[data-journal-clasp-contract]");
-    await waitFor(() => expect(settled).toHaveAttribute("data-rive-runtime-status", "fallback"));
+    await waitFor(() => expect(settled).toHaveAttribute("data-rive-runtime-status", "ready"));
     expect(settled).toHaveAttribute("data-rive-state", "open");
     expect(settled).toHaveAttribute("data-rive-state-value", "4");
     expect(settled).toHaveAttribute("data-rive-reduced-equivalent", "semantic-final-state");
     expect(screen.getByText("The journal clasp is open and the readable journal is ready.")).toBeInTheDocument();
     expect(statuses).toContain(null);
-    expect(statuses.at(-1)).toBe("fallback");
+    expect(statuses.at(-1)).toBe("ready");
 
     view.unmount();
     expect(statuses.at(-1)).toBeNull();

@@ -1,5 +1,6 @@
 import { readdir, readFile } from "node:fs/promises";
 import path from "node:path";
+import { pathToFileURL } from "node:url";
 
 const textExtensions = new Set([".ts", ".tsx", ".css", ".md", ".json", ".csv", ".mjs"]);
 const excludedDirectories = new Set([".git", ".next", "node_modules", "Codex_Chats", "migrations", "mysql-migrations"]);
@@ -34,7 +35,7 @@ export async function validateProjectOneVoyage(root = process.cwd()) {
   for (const file of sourceFiles) {
     const relative = path.relative(root, file);
     const content = await readFile(file, "utf8");
-    if (legacyWriter.test(content) && relative !== disabledLegacyWriterModule)
+    if (legacyWriter.test(content) && !relative.endsWith(".test.ts") && relative !== disabledLegacyWriterModule)
       violations.push(`${relative} contains a direct legacy persistence writer.`);
     if (relative === disabledLegacyWriterModule && !content.includes("LEGACY_WRITERS_DISABLED = true"))
       violations.push(`${relative} must explicitly declare legacy writers disabled.`);
@@ -44,6 +45,21 @@ export async function validateProjectOneVoyage(root = process.cwd()) {
     const content = await readFile(file, "utf8");
     if (content.includes("@/server/progression"))
       violations.push(`${path.relative(root, file)} imports the disabled legacy progression writer.`);
+  }
+  const identitySources = [path.join(root, "src", "platform", "auth.ts"), path.join(root, "src", "lib", "security.ts")];
+  for (const file of identitySources) {
+    const content = await readFile(file, "utf8");
+    if (/\bdb\.(?:playerIdentitySession|gameMasterSession)\.create\b/u.test(content))
+      violations.push(`${path.relative(root, file)} creates a retired identity session instead of AccountSession.`);
+  }
+  const adapterSources = [
+    path.join(root, "src", "compatibility", "legacy-companion.ts"),
+    path.join(root, "src", "compatibility", "legacy-quartermaster.ts"),
+  ];
+  for (const file of adapterSources) {
+    const content = await readFile(file, "utf8");
+    if (!content.includes("recordCompatibilityObservation"))
+      violations.push(`${path.relative(root, file)} does not record safe compatibility observation.`);
   }
   return violations;
 }
@@ -58,4 +74,4 @@ async function main() {
   process.stdout.write("Project One Voyage architecture validation passed.\n");
 }
 
-if (process.argv[1] && path.resolve(process.argv[1]) === path.resolve(new URL(import.meta.url).pathname)) void main();
+if (process.argv[1] && import.meta.url === pathToFileURL(path.resolve(process.argv[1])).href) void main();

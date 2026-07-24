@@ -1,5 +1,8 @@
 # Chronicle Studio Phase 1
 
+Studio remains a Chronicle authoring surface in Phase 2. Compatibility proof
+does not create a second authored root or alter immutable version semantics.
+
 ## Delivered workflow
 
 Chronicle Studio is an additive authoring and play system. It does not replace the original single-campaign companion.

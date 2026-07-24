@@ -2,7 +2,14 @@ import { createReadStream } from "node:fs";
 import { access, mkdir, readFile, rename, rm, stat, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { randomUUID } from "node:crypto";
+import { Readable } from "node:stream";
 import { isWithin, privateFailure, sha256 } from "./core";
+import type {
+  PrivateObjectDescriptor,
+  PrivateObjectNamespace,
+  PrivateStorageProvider,
+  PrivateWriteOptions,
+} from "./contracts";
 
 export type StagedPrivateObject = { stagingId: string; sha256: string; byteLength: number };
 export type StoredPrivateObject = { sha256: string; storageKey: string; byteLength: number };
@@ -90,8 +97,8 @@ export class LocalPrivateAssetStore {
   async readObject(hash: string) {
     return readFile(this.objectPath(hash));
   }
-  readObjectStream(hash: string) {
-    return createReadStream(this.objectPath(hash));
+  readObjectStream(hash: string, range?: { start: number; end?: number }) {
+    return createReadStream(this.objectPath(hash), range ? { start: range.start, end: range.end } : undefined);
   }
   async deleteStagedObject(stagingId: string) {
     if (!/^[a-f0-9-]{36}$/i.test(stagingId)) return;
@@ -106,5 +113,74 @@ export class LocalPrivateAssetStore {
     } catch {
       return false;
     }
+  }
+}
+
+/**
+ * Compatibility read adapter for Phase 1 objects. It permits the Phase 2
+ * application-mediated delivery service to protect pre-migration objects while
+ * imports progressively move to the provider namespace contract.
+ */
+export class LegacyPrivateAssetDeliveryStorageProvider implements PrivateStorageProvider {
+  readonly name = "legacy-local-private-delivery";
+  readonly supportsMultipart = false;
+  readonly supportsSignedRead = false;
+  constructor(private readonly store = new LocalPrivateAssetStore()) {}
+  async health() {
+    return { configured: await this.store.storageUsage(), healthy: await this.store.storageUsage() };
+  }
+  private unsupported(): never {
+    throw privateFailure("PRIVATE_CONTENT_CONFIGURATION_INVALID");
+  }
+  async read(object: PrivateObjectDescriptor, range?: { start: number; end?: number }): Promise<Readable> {
+    const hash = object.sha256;
+    const check = await this.store.verifyObject(hash);
+    if (!check.exists || !check.valid || check.byteLength !== object.byteLength)
+      throw privateFailure("PRIVATE_CONTENT_FORBIDDEN");
+    return this.store.readObjectStream(hash, range);
+  }
+  async exists(object: Pick<PrivateObjectDescriptor, "key" | "sha256">) {
+    const check = await this.store.verifyObject(object.sha256);
+    return check.exists && check.valid;
+  }
+  async put(
+    _namespace: PrivateObjectNamespace,
+    _key: string,
+    _body: Readable,
+    _options: PrivateWriteOptions,
+  ): Promise<PrivateObjectDescriptor> {
+    return this.unsupported();
+  }
+  async promote(
+    _source: PrivateObjectDescriptor,
+    _destination: { namespace: PrivateObjectNamespace; key: string },
+  ): Promise<PrivateObjectDescriptor> {
+    return this.unsupported();
+  }
+  async moveToQuarantine(_object: PrivateObjectDescriptor, _reason: string): Promise<PrivateObjectDescriptor> {
+    return this.unsupported();
+  }
+  async remove(_object: PrivateObjectDescriptor): Promise<void> {
+    return this.unsupported();
+  }
+  async beginMultipart(_input: { key: string; expectedBytes?: number }): Promise<{ uploadId: string }> {
+    return this.unsupported();
+  }
+  async uploadPart(_input: {
+    uploadId: string;
+    partNumber: number;
+    body: Readable;
+    expectedSha256: string;
+  }): Promise<{ etag: string; byteLength: number }> {
+    return this.unsupported();
+  }
+  async completeMultipart(_input: {
+    uploadId: string;
+    parts: Array<{ partNumber: number; etag: string }>;
+  }): Promise<PrivateObjectDescriptor> {
+    return this.unsupported();
+  }
+  async abortMultipart(_uploadId: string): Promise<void> {
+    return this.unsupported();
   }
 }

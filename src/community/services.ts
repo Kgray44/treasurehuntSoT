@@ -10,6 +10,7 @@ import {
   releaseManifestSchema,
   sanitizeChronicleMetadata,
 } from "./domain";
+import { updateProfile } from "@/wayfarer/profile";
 
 export type CommunityActor = {
   accountId: string;
@@ -128,16 +129,19 @@ export async function updateOwnProfile(
 ) {
   rate(actor, "community-profile-update", 15);
   const profile = await ownProfile(actor);
-  const handle = input.handle === undefined ? undefined : normalizeHandle(input.handle);
-  if (input.displayName !== undefined && (!input.displayName.trim() || input.displayName.length > 120))
-    throw new CommunityError("COMMUNITY_INVALID_PROFILE", "Display name is invalid.");
+  // Core identity is owned by Wayfarer. Preserve Harborlight's existing fields
+  // as compatibility snapshots, but never use this Community endpoint as a
+  // second writer for name, biography, or handle.
+  if (input.handle !== undefined || input.displayName !== undefined || input.biography !== undefined)
+    await updateProfile(actor.accountId, {
+      ...(input.handle !== undefined ? { handle: input.handle } : {}),
+      ...(input.displayName !== undefined ? { displayName: input.displayName } : {}),
+      ...(input.biography !== undefined ? { biography: input.biography } : {}),
+    });
   return db.$transaction(async (tx) => {
     const updated = await tx.communityProfile.update({
       where: { id: profile.id },
       data: {
-        ...(handle ? { handle, normalizedHandle: handle } : {}),
-        ...(input.displayName !== undefined ? { displayName: input.displayName.trim() } : {}),
-        ...(input.biography !== undefined ? { biography: input.biography?.trim() || null } : {}),
         ...(input.visibility ? { visibility: input.visibility } : {}),
         ...(input.supportedLanguages ? { supportedLanguages: JSON.stringify(input.supportedLanguages) } : {}),
       },
@@ -146,7 +150,7 @@ export async function updateOwnProfile(
     await audit(
       tx,
       actor,
-      handle ? "COMMUNITY_HANDLE_CHANGED" : "COMMUNITY_PROFILE_UPDATED",
+      input.handle !== undefined ? "WAYFARER_HANDLE_CHANGED_FROM_COMMUNITY" : "COMMUNITY_PROFILE_UPDATED",
       "COMMUNITY_PROFILE",
       updated.id,
       { handle: updated.handle },
@@ -155,9 +159,22 @@ export async function updateOwnProfile(
   });
 }
 export async function getPublicProfile(handle: string) {
-  const profile = await db.communityProfile.findUnique({ where: { normalizedHandle: normalizeHandle(handle) } });
+  const normalized = normalizeHandle(handle);
+  let profile = await db.communityProfile.findUnique({ where: { normalizedHandle: normalized } });
+  if (!profile) {
+    const canonical = await db.playerProfile.findUnique({
+      where: { normalizedHandle: normalized },
+      select: { accountId: true },
+    });
+    if (canonical?.accountId)
+      profile = await db.communityProfile.findUnique({ where: { accountId: canonical.accountId } });
+  }
   if (!profile || profile.visibility !== "COMMUNITY" || profile.moderationStatus !== "ACTIVE") return null;
-  return publicProfileProjection(profile);
+  const identity = await db.playerProfile.findFirst({
+    where: { accountId: profile.accountId, status: "ACTIVE" },
+    select: { handle: true, displayName: true, biography: true },
+  });
+  return publicProfileProjection(profile, identity);
 }
 
 export async function createListing(actor: CommunityActor, raw: unknown) {
@@ -445,16 +462,19 @@ export async function verifyReleaseIntegrity(actor: CommunityActor, id: string) 
   return { ...release, valid: manifestChecksum(manifest) === stored.manifestChecksum };
 }
 
-export function publicProfileProjection(profile: {
-  handle: string;
-  displayName: string;
-  biography: string | null;
-  verificationStatus: string;
-}) {
+export function publicProfileProjection(
+  profile: {
+    handle: string;
+    displayName: string;
+    biography: string | null;
+    verificationStatus: string;
+  },
+  identity?: { handle: string | null; displayName: string; biography: string | null } | null,
+) {
   return {
-    handle: profile.handle,
-    displayName: profile.displayName,
-    biography: profile.biography,
+    handle: identity?.handle ?? profile.handle,
+    displayName: identity?.displayName ?? profile.displayName,
+    biography: identity?.biography ?? profile.biography,
     verificationStatus: profile.verificationStatus,
   };
 }

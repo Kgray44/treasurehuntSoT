@@ -114,7 +114,10 @@ model UserAccount {
   auditActions        PlatformAuditEvent[]      @relation("PlatformAuditActorAccount")
   privateImports      PrivateContentImport[]    @relation("PrivateImportOwnerAccount")
   privateAssetRefs    PrivateAssetReference[]   @relation("PrivateAssetOwnerAccount")
+  privateOperations   PrivateContentOperation[] @relation("PrivateOperationOwnerAccount")
   communityProfile    CommunityProfile?
+  externalIdentities  ExternalIdentity[]
+  providerAttempts    ProviderLinkAttempt[]
 
   @@index([status, lastSeenAt])
 }
@@ -961,23 +964,129 @@ model TaleSession {
 }
 
 model PlayerProfile {
-  id           String                  @id @default(cuid())
-  accountId    String?                 @unique
-  username     String?                 @unique
-  passwordHash String?
-  displayName  String
-  status       String                  @default("ACTIVE")
-  preferences  String                  @default("{}") @db.LongText
-  claimedAt    DateTime?
-  createdAt    DateTime                @default(now())
-  updatedAt    DateTime                @updatedAt
-  lastSeenAt   DateTime?
-  sessions     PlayerIdentitySession[]
-  memberships  PlaythroughMembership[]
-  invitations  Invitation[]
-  account      UserAccount?            @relation(fields: [accountId], references: [id], onDelete: SetNull)
+  id                String                  @id @default(cuid())
+  accountId         String?                 @unique
+  username          String?                 @unique
+  passwordHash      String?
+  displayName       String
+  handle            String?                 @db.VarChar(64)
+  normalizedHandle  String?                 @unique @db.VarChar(64)
+  biography         String?                 @db.Text
+  avatarMediaId     String?                 @unique @db.VarChar(191)
+  bannerMediaId     String?                 @unique @db.VarChar(191)
+  defaultVisibility String                  @default("REGISTERED_USERS") @db.VarChar(32)
+  status            String                  @default("ACTIVE")
+  preferences       String                  @default("{}") @db.LongText
+  claimedAt         DateTime?
+  createdAt         DateTime                @default(now())
+  updatedAt         DateTime                @updatedAt
+  lastSeenAt        DateTime?
+  sessions          PlayerIdentitySession[]
+  memberships       PlaythroughMembership[]
+  invitations       Invitation[]
+  handleHistory     ProfileHandleHistory[]
+  media             ProfileMedia[]          @relation("ProfileMediaOwner")
+  avatarMedia       ProfileMedia?           @relation("ProfileAvatar", fields: [avatarMediaId], references: [id], onDelete: SetNull)
+  bannerMedia       ProfileMedia?           @relation("ProfileBanner", fields: [bannerMediaId], references: [id], onDelete: SetNull)
+  preferenceSet     ProfilePreferenceSet?
+  privacyRules      ProfilePrivacyRule[]
+  account           UserAccount?            @relation(fields: [accountId], references: [id], onDelete: SetNull)
 
   @@index([status, displayName])
+  @@index([normalizedHandle, status])
+}
+
+model ProfileHandleHistory {
+  id               String        @id @default(cuid())
+  playerProfileId  String
+  handle           String        @db.VarChar(64)
+  normalizedHandle String        @unique @db.VarChar(64)
+  changedAt        DateTime      @default(now())
+  releasedAt       DateTime?
+  player           PlayerProfile @relation(fields: [playerProfileId], references: [id], onDelete: Cascade)
+
+  @@index([playerProfileId, changedAt])
+}
+
+model ProfileMedia {
+  id         String         @id @default(cuid())
+  profileId  String
+  kind       String         @db.VarChar(16)
+  storageKey String         @unique @db.VarChar(255)
+  mimeType   String         @db.VarChar(191)
+  byteLength Int
+  width      Int?
+  height     Int?
+  altText    String?        @db.VarChar(240)
+  createdAt  DateTime       @default(now())
+  removedAt  DateTime?
+  profile    PlayerProfile  @relation("ProfileMediaOwner", fields: [profileId], references: [id], onDelete: Cascade)
+  avatarFor  PlayerProfile? @relation("ProfileAvatar")
+  bannerFor  PlayerProfile? @relation("ProfileBanner")
+
+  @@index([profileId, kind, removedAt])
+}
+
+model ExternalIdentity {
+  id                  String      @id @default(cuid())
+  accountId           String
+  provider            String      @db.VarChar(64)
+  providerAccountId   String      @db.VarChar(191)
+  providerDisplayName String?     @db.VarChar(191)
+  avatarReference     String?     @db.Text
+  allowedScopes       String      @default("[]") @db.LongText
+  useForLogin         Boolean     @default(false)
+  visibility          String      @default("ONLY_ME") @db.VarChar(32)
+  status              String      @default("LINKED") @db.VarChar(32)
+  encryptedToken      String?     @db.LongText
+  linkedAt            DateTime    @default(now())
+  lastVerifiedAt      DateTime?
+  refreshedAt         DateTime?
+  revokedAt           DateTime?
+  account             UserAccount @relation(fields: [accountId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@index([accountId, status, visibility])
+}
+
+model ProviderLinkAttempt {
+  id           String      @id @default(cuid())
+  accountId    String
+  provider     String      @db.VarChar(64)
+  stateHash    String      @unique @db.Char(64)
+  pkceVerifier String      @db.VarChar(191)
+  nonceHash    String      @db.Char(64)
+  redirectPath String      @default("/passport/providers") @db.VarChar(255)
+  expiresAt    DateTime
+  consumedAt   DateTime?
+  createdAt    DateTime    @default(now())
+  account      UserAccount @relation(fields: [accountId], references: [id], onDelete: Cascade)
+
+  @@index([accountId, provider, expiresAt])
+}
+
+model ProfilePreferenceSet {
+  id              String        @id @default(cuid())
+  playerProfileId String        @unique
+  schemaVersion   Int           @default(1)
+  payload         String        @default("{}") @db.LongText
+  migratedAt      DateTime?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  player          PlayerProfile @relation(fields: [playerProfileId], references: [id], onDelete: Cascade)
+}
+
+model ProfilePrivacyRule {
+  id              String        @id @default(cuid())
+  playerProfileId String
+  section         String        @db.VarChar(64)
+  visibility      String        @db.VarChar(32)
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  player          PlayerProfile @relation(fields: [playerProfileId], references: [id], onDelete: Cascade)
+
+  @@unique([playerProfileId, section])
+  @@index([playerProfileId, visibility])
 }
 
 model PlayerIdentitySession {
@@ -1228,6 +1337,25 @@ model LegacyMigrationRun {
   @@index([status, startedAt])
 }
 
+/// Privacy-safe, best-effort evidence that a retained legacy doorway was used.
+/// It deliberately contains canonical IDs only and never request or credential
+/// material; failures to write this table cannot affect the canonical action.
+model CompatibilityObservation {
+  id                 String   @id @default(cuid())
+  correlationId      String
+  operation          String
+  routeKey           String
+  disposition        String
+  canonicalSessionId String?
+  canonicalAccountId String?
+  testTraffic        Boolean  @default(false)
+  occurredAt         DateTime @default(now())
+
+  @@index([operation, occurredAt])
+  @@index([canonicalSessionId, occurredAt])
+  @@index([correlationId])
+}
+
 model PrivateContentImport {
   id                    String                        @id @default(cuid())
   packageId             String
@@ -1238,7 +1366,9 @@ model PrivateContentImport {
   ownerActorId          String?                       @db.VarChar(191)
   ownerAccountId        String?                       @db.VarChar(191)
   sourceTaleId          String?                       @db.VarChar(191)
-  contentJson           String                        @db.LongText
+  contentJson           String?                       @db.LongText
+  normalizedPayloadId   String?                       @db.VarChar(191)
+  materializationStatus String                        @default("NOT_STARTED") @db.VarChar(64)
   importedTaleIds       String                        @default("[]") @db.LongText
   importedAssetIds      String                        @default("[]") @db.LongText
   warnings              String                        @default("[]") @db.LongText
@@ -1248,6 +1378,7 @@ model PrivateContentImport {
   completedAt           DateTime?
   mappings              PrivateContentImportMapping[]
   assetReferences       PrivateAssetReference[]
+  operations            PrivateContentOperation[]
   ownerAccount          UserAccount?                  @relation("PrivateImportOwnerAccount", fields: [ownerAccountId], references: [id], onDelete: SetNull)
   sourceChronicle       Chronicle?                    @relation(fields: [sourceTaleId], references: [id], onDelete: SetNull)
 
@@ -1255,6 +1386,7 @@ model PrivateContentImport {
   @@index([status, createdAt])
   @@index([ownerAccountId, createdAt])
   @@index([sourceTaleId])
+  @@index([materializationStatus, createdAt])
 }
 
 model PrivateContentImportMapping {
@@ -1269,15 +1401,136 @@ model PrivateContentImportMapping {
 }
 
 model PrivateAssetObject {
+  id              String                  @id @default(cuid())
+  sha256          String                  @unique @db.Char(64)
+  byteLength      Int
+  mediaType       String                  @db.VarChar(191)
+  representation  String                  @db.VarChar(32)
+  storageKey      String                  @unique @db.VarChar(255)
+  storageProvider String                  @default("local") @db.VarChar(64)
+  scanStatus      String                  @default("PENDING") @db.VarChar(32)
+  quarantinedAt   DateTime?
+  finalizedAt     DateTime?
+  createdAt       DateTime                @default(now())
+  references      PrivateAssetReference[]
+  scans           PrivateContentScan[]
+}
+
+model PrivateContentOperation {
+  id                String                @id @default(cuid())
+  importId          String?               @db.VarChar(191)
+  ownerAccountId    String?               @db.VarChar(191)
+  kind              String                @db.VarChar(64)
+  state             String                @default("CREATED") @db.VarChar(64)
+  idempotencyKey    String                @unique @db.VarChar(191)
+  correlationId     String                @db.VarChar(191)
+  progress          String                @default("{}") @db.LongText
+  cancelRequestedAt DateTime?
+  claimedAt         DateTime?
+  claimOwner        String?               @db.VarChar(191)
+  claimExpiresAt    DateTime?
+  failureCode       String?               @db.VarChar(191)
+  createdAt         DateTime              @default(now())
+  updatedAt         DateTime              @updatedAt
+  import            PrivateContentImport? @relation(fields: [importId], references: [id], onDelete: SetNull)
+  ownerAccount      UserAccount?          @relation("PrivateOperationOwnerAccount", fields: [ownerAccountId], references: [id], onDelete: SetNull)
+  upload            PrivateContentUpload?
+  jobs              PrivateContentJob[]
+
+  @@index([state, claimExpiresAt])
+  @@index([ownerAccountId, createdAt])
+}
+
+model PrivateContentUpload {
+  id              String                     @id @default(cuid())
+  operationId     String                     @unique @db.VarChar(191)
+  storageProvider String                     @db.VarChar(64)
+  storageKey      String                     @unique @db.VarChar(255)
+  expectedSha256  String?                    @db.Char(64)
+  receivedBytes   Int                        @default(0)
+  expectedBytes   Int?
+  expiresAt       DateTime
+  completedAt     DateTime?
+  cancelledAt     DateTime?
+  createdAt       DateTime                   @default(now())
+  updatedAt       DateTime                   @updatedAt
+  operation       PrivateContentOperation    @relation(fields: [operationId], references: [id], onDelete: Cascade)
+  parts           PrivateContentUploadPart[]
+
+  @@index([expiresAt, completedAt])
+}
+
+model PrivateContentUploadPart {
+  id          String               @id @default(cuid())
+  uploadId    String               @db.VarChar(191)
+  partNumber  Int
+  sha256      String               @db.Char(64)
+  byteLength  Int
+  providerTag String?              @db.VarChar(191)
+  createdAt   DateTime             @default(now())
+  upload      PrivateContentUpload @relation(fields: [uploadId], references: [id], onDelete: Cascade)
+
+  @@unique([uploadId, partNumber])
+}
+
+model PrivateContentJob {
   id             String                  @id @default(cuid())
-  sha256         String                  @unique @db.Char(64)
-  byteLength     Int
-  mediaType      String                  @db.VarChar(191)
-  representation String                  @db.VarChar(32)
-  storageKey     String                  @unique @db.VarChar(255)
-  finalizedAt    DateTime?
+  operationId    String                  @db.VarChar(191)
+  type           String                  @db.VarChar(64)
+  payloadVersion Int                     @default(1)
+  payload        String                  @db.LongText
+  idempotencyKey String                  @unique @db.VarChar(191)
+  state          String                  @default("PENDING") @db.VarChar(64)
+  availableAt    DateTime                @default(now())
+  claimedAt      DateTime?
+  claimOwner     String?                 @db.VarChar(191)
+  claimExpiresAt DateTime?
+  attemptCount   Int                     @default(0)
+  maxAttempts    Int                     @default(5)
+  completedAt    DateTime?
+  cancelledAt    DateTime?
+  failureCode    String?                 @db.VarChar(191)
+  progress       String                  @default("{}") @db.LongText
+  correlationId  String                  @db.VarChar(191)
   createdAt      DateTime                @default(now())
-  references     PrivateAssetReference[]
+  operation      PrivateContentOperation @relation(fields: [operationId], references: [id], onDelete: Cascade)
+
+  @@index([state, availableAt, claimExpiresAt])
+}
+
+model PrivateContentScan {
+  id        String             @id @default(cuid())
+  objectId  String             @db.VarChar(191)
+  provider  String             @db.VarChar(64)
+  state     String             @db.VarChar(32)
+  safeCode  String?            @db.VarChar(191)
+  scannedAt DateTime?
+  createdAt DateTime           @default(now())
+  object    PrivateAssetObject @relation(fields: [objectId], references: [id], onDelete: Cascade)
+
+  @@index([objectId, createdAt])
+  @@index([state, createdAt])
+}
+
+model PrivateContentWrappedKey {
+  id         String   @id @default(cuid())
+  provider   String   @db.VarChar(64)
+  keyVersion String   @db.VarChar(191)
+  wrappedKey String   @db.LongText
+  algorithm  String   @db.VarChar(32)
+  createdAt  DateTime @default(now())
+  @@index([provider, keyVersion])
+}
+
+model PrivateContentEncryptedPayload {
+  id           String   @id @default(cuid())
+  objectKey    String   @unique @db.VarChar(255)
+  sha256       String   @db.Char(64)
+  byteLength   Int
+  cipher       String   @db.VarChar(32)
+  wrappedKeyId String   @db.VarChar(191)
+  createdAt    DateTime @default(now())
+  @@index([wrappedKeyId])
 }
 
 model PrivateAssetReference {
@@ -1493,4 +1746,128 @@ model CommunityLicensePolicy {
   active               Boolean  @default(true)
   createdAt            DateTime @default(now())
   updatedAt            DateTime @updatedAt
+}
+
+// Phase 2 Exchange records are deliberately separate from One Voyage's
+// Chronicle/runtime tables and Sealed Hold's private package infrastructure.
+model CommunityPackage {
+  id              String    @id @default(cuid())
+  releaseId       String    @unique
+  packageSchema   Int       @default(1)
+  packageChecksum String    @unique
+  manifest        String    @db.LongText
+  byteLength      Int
+  storageStatus   String    @default("STAGED")
+  scanStatus      String    @default("PENDING")
+  finalizedAt     DateTime?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  @@index([storageStatus, scanStatus])
+}
+
+model CommunityPackageItem {
+  id            String   @id @default(cuid())
+  packageId     String
+  logicalId     String
+  itemType      String
+  relativePath  String
+  checksum      String
+  mediaType     String
+  byteLength    Int
+  metadata      String   @default("{}") @db.LongText
+  accessibility String   @default("{}") @db.LongText
+  createdAt     DateTime @default(now())
+
+  @@unique([packageId, logicalId])
+  @@unique([packageId, relativePath])
+  @@index([packageId, itemType])
+}
+
+model CommunityPackageDependency {
+  id                 String   @id @default(cuid())
+  packageId          String
+  dependentLogicalId String
+  requiredPackageId  String?
+  requiredLogicalId  String
+  versionRange       String?
+  createdAt          DateTime @default(now())
+
+  @@unique([packageId, dependentLogicalId, requiredLogicalId])
+  @@index([packageId])
+}
+
+model CommunityInstallOperation {
+  id                    String    @id @default(cuid())
+  requestId             String
+  idempotencyKey        String    @unique
+  packageId             String
+  releaseId             String
+  accountId             String
+  mode                  String
+  status                String    @default("PLANNED")
+  destinationRevision   String
+  plan                  String    @db.LongText
+  finalizationErrorCode String?
+  completedAt           DateTime?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  @@unique([accountId, requestId])
+  @@index([packageId, status])
+}
+
+model CommunityInstallMapping {
+  id          String   @id @default(cuid())
+  operationId String
+  sourceId    String
+  targetId    String
+  kind        String
+  createdAt   DateTime @default(now())
+
+  @@unique([operationId, sourceId])
+}
+
+model CommunityInstallation {
+  id                        String   @id @default(cuid())
+  accountId                 String
+  packageId                 String
+  releaseId                 String
+  operationId               String   @unique
+  mode                      String
+  installedPackageChecksum  String
+  localModificationChecksum String?
+  upstreamReleaseId         String?
+  installedAt               DateTime @default(now())
+  updatedAt                 DateTime @updatedAt
+
+  @@index([accountId, upstreamReleaseId])
+}
+
+model CommunityRemixLineage {
+  id                    String   @id @default(cuid())
+  derivedReleaseId      String   @unique
+  sourceReleaseId       String
+  rootReleaseId         String
+  sourcePackageChecksum String
+  mode                  String
+  attributionSnapshot   String   @db.LongText
+  createdAt             DateTime @default(now())
+
+  @@index([sourceReleaseId])
+  @@index([rootReleaseId])
+}
+
+model CommunityReleaseUpdate {
+  id                 String    @id @default(cuid())
+  installationId     String
+  currentReleaseId   String
+  candidateReleaseId String
+  comparison         String    @db.LongText
+  localEditProtected Boolean   @default(false)
+  resolvedAt         DateTime?
+  createdAt          DateTime  @default(now())
+
+  @@unique([installationId, candidateReleaseId])
+  @@index([installationId, resolvedAt])
 }

@@ -278,7 +278,7 @@ function StaticFinaleMechanism({
         data-finale-progress={progress.toFixed(3)}
         data-finale-motion-mode={mode}
         data-finale-reduced-equivalent="semantic-final-state"
-        data-finale-production-art-status="blocked_external_asset"
+        data-finale-production-art-status={riveAssets.finaleMechanism.availability}
         data-runtime-boundary="css"
         aria-hidden="true"
       >
