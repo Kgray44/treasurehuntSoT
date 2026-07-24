@@ -124,9 +124,13 @@ phase3Test.describe("Lanternwake Phase 3 exact Player event matrix", () => {
         await phase3.proveIsolation();
         const fixture = await phase3.createCase(matrixCase.caseId, matrixCase.eventType);
         const persistentHostId = await openPhase3Player(page, fixture, matrixCase.startingSection);
-        expect(persistentHostId).toMatch(/\S/u);
+        // The canonical Chronicle journal owns presentation directly.  A
+        // legacy Companion SceneHost may remain available for compatibility,
+        // but it is not a required runtime dependency.
+        if (persistentHostId !== null) expect(persistentHostId).toMatch(/\S/u);
 
-        const focusTarget = page.locator(".section-transition [data-section-heading]");
+        const focusTarget = page.locator(".chronicle-journal-shell").getByRole("heading", { level: 2 });
+        await expect(focusTarget).toBeVisible();
         await focusTarget.focus();
         const focusIdentity = crypto.randomUUID();
         await focusTarget.evaluate((element, identity) => {
