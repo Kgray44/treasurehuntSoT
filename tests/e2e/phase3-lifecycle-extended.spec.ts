@@ -639,8 +639,8 @@ test.describe.serial("Project Lanternwake Phase 3 extended runtime lifecycle", (
     await expectInvitationRuntime();
     await runTwentyCycles(page, async () => {
       await page.goto("/");
-      await expect(page.getByRole("heading", { name: "Choose your place in the Tale" })).toBeVisible();
-      await page.goto("/quartermaster");
+      await expect(page.getByRole("heading", { name: "Choose your role in Voyagewright" })).toBeVisible();
+      await page.goto("/quartermaster/chapters");
       await expectInvitationRuntime();
     });
   });
@@ -970,7 +970,7 @@ test.describe.serial("Project Lanternwake Phase 3 Quartermaster and audio lifecy
         }),
       });
     });
-    await page.goto("/quartermaster");
+    await page.goto("/quartermaster/chapters");
     await expect(page.locator("main.quartermaster-shell:not(.loading-quarters)")).toBeVisible({ timeout: 20_000 });
     const trigger = page.getByRole("button", { name: "Add Player Log Entry" });
     const runConfirmation = async () => {
