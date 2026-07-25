@@ -7,6 +7,7 @@
 - Branch: `codex/project-true-north-navigation-shell`
 - Worktree: `C:\Users\kgray\AppData\Local\ForeverTreasureCompanion\treasurehuntSoT-true-north`
 - Base: `origin/main` `6bd8209d2d7f0edc73da9566fd06e825ae51a602`
+- Implementation commit: `82eb5ffbb37fd9e23701cd914976f4f4dfcfdd15`
 - Mainline mutation: none
 
 ## Delivered architecture
