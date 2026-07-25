@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getPublicListingBySlug } from "@/community/services";
+import { harborSharingMetadata } from "@/community/sharing-metadata";
 import { CommunityReviewList } from "@/components/community/CommunityReviewList";
 import { CommunitySocialControls } from "@/components/community/CommunitySocialControls";
 
@@ -10,12 +11,8 @@ export const dynamic = "force-dynamic";
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const listing = await getPublicListingBySlug((await params).slug);
-  if (!listing) return { title: "Community listing unavailable", robots: { index: false, follow: false } };
-  return {
-    title: listing.title,
-    description: listing.shortDescription ?? "A public Community Harbor listing.",
-    openGraph: { title: listing.title, description: listing.shortDescription ?? "A public Community Harbor listing." },
-  };
+  if (!listing) return harborSharingMetadata({ kind: "listing", visibility: "PRIVATE", canonicalPath: "/community" });
+  return harborSharingMetadata({ kind: "listing", visibility: "COMMUNITY", canonicalPath: `/community/${encodeURIComponent(listing.slug)}`, title: listing.title, safeDescription: listing.shortDescription ?? undefined });
 }
 
 export default async function CommunityListingPage({ params }: Props) {
