@@ -1034,14 +1034,12 @@ test.describe.serial("Project Lanternwake Phase 3 Quartermaster and audio lifecy
       await expect(confirm).toBeFocused();
       await confirm.click();
       await expect(dialog).toHaveCount(0, { timeout: 20_000 });
-      const skip = page.getByRole("button", { name: "Skip nonessential motion" });
-      if (await skip.isVisible().catch(() => false)) await skip.click();
       await expect(page.locator(".cinematic-command-overlay")).toHaveCount(0, { timeout: 20_000 });
       await expect(trigger).toBeFocused();
       await expect(page.locator("main.quartermaster-shell")).not.toHaveAttribute("aria-hidden", "true");
       await expect(page.locator("main.quartermaster-shell")).not.toHaveAttribute("inert", "");
-      const dismiss = page.getByRole("button", { name: "Dismiss message" });
-      if (await dismiss.isVisible().catch(() => false)) await dismiss.click();
+      const dismiss = page.getByRole("button", { name: /^Dismiss Captain's Console (?:notice|message)$/u });
+      while ((await dismiss.count()) > 0) await dismiss.first().click();
     };
     await runTwentyCycles(page, async () => runConfirmation());
     expect(commandRequests).toBe(lifecycleCycles + 1);
