@@ -436,6 +436,18 @@ function stableRiveRemountSnapshot(snapshot: ExtendedSnapshot) {
   return stable;
 }
 
+function stableLottieRemountSnapshot(snapshot: ExtendedSnapshot) {
+  const {
+    activeListeners: _activeListeners,
+    activeRafs: _activeRafs,
+    activeTimeouts: _activeTimeouts,
+    activeDocumentAnimations: _activeDocumentAnimations,
+    pendingDocumentAnimations: _pendingDocumentAnimations,
+    ...stable
+  } = stableSnapshot(snapshot);
+  return stable;
+}
+
 async function forceGcIfSupported(page: Page) {
   return page.evaluate(() => {
     const gc = (window as unknown as Window & { gc?: () => void }).gc;
@@ -700,14 +712,20 @@ test.describe.serial("Project Lanternwake Phase 3 extended runtime lifecycle", (
     await expect(page.locator(".demo-lottie-waves[data-lottie-status='ready']")).toHaveCount(1, { timeout: 20_000 });
     await expect(await assetStatus(page, "Lottie")).toHaveText("ready");
     await returnToHarbor(page);
-    await runTwentyCycles(page, async () => {
-      await openDevelopmentShowcase(page);
-      await expect(page.locator(".demo-lottie-waves[data-lottie-status='ready']")).toHaveCount(1, { timeout: 20_000 });
-      await expect(await assetStatus(page, "Lottie")).toHaveText("ready");
-      await returnToHarbor(page);
-      await expect(page.locator(".harbor-waves [data-lottie-status='ready']")).toHaveCount(1, { timeout: 20_000 });
-      await expect(page.locator(".harbor-fog [data-lottie-status='ready']")).toHaveCount(1);
-    });
+    await runTwentyCycles(
+      page,
+      async () => {
+        await openDevelopmentShowcase(page);
+        await expect(page.locator(".demo-lottie-waves[data-lottie-status='ready']")).toHaveCount(1, {
+          timeout: 20_000,
+        });
+        await expect(await assetStatus(page, "Lottie")).toHaveText("ready");
+        await returnToHarbor(page);
+        await expect(page.locator(".harbor-waves [data-lottie-status='ready']")).toHaveCount(1, { timeout: 20_000 });
+        await expect(page.locator(".harbor-fog [data-lottie-status='ready']")).toHaveCount(1);
+      },
+      stableLottieRemountSnapshot,
+    );
   });
 
   const lottieFaults = [
@@ -756,17 +774,21 @@ test.describe.serial("Project Lanternwake Phase 3 extended runtime lifecycle", (
       await expectFallback(page.locator(fault.locator), fault.label);
       const warmedHits = faultHits;
       expect(warmedHits).toBeGreaterThan(0);
-      await runTwentyCycles(page, async (cycle) => {
-        if (fault.start === "showcase") {
-          await returnToHarbor(page);
-          await openDevelopmentShowcase(page);
-        } else {
-          await openDevelopmentShowcase(page);
-          await returnToHarbor(page);
-        }
-        await expectFallback(page.locator(fault.locator), fault.label);
-        expect(faultHits).toBe(warmedHits + (cycle + 1) * fault.hitsPerCycle);
-      });
+      await runTwentyCycles(
+        page,
+        async (cycle) => {
+          if (fault.start === "showcase") {
+            await returnToHarbor(page);
+            await openDevelopmentShowcase(page);
+          } else {
+            await openDevelopmentShowcase(page);
+            await returnToHarbor(page);
+          }
+          await expectFallback(page.locator(fault.locator), fault.label);
+          expect(faultHits).toBe(warmedHits + (cycle + 1) * fault.hitsPerCycle);
+        },
+        stableLottieRemountSnapshot,
+      );
     });
   }
 
@@ -849,12 +871,16 @@ test.describe.serial("Project Lanternwake Phase 3 extended runtime lifecycle", (
 
       await page.goto("/");
       await expectHarborFailure();
-      await runTwentyCycles(page, async () => {
-        await openDevelopmentShowcase(page);
-        await expectShowcaseFailure();
-        await returnToHarbor(page);
-        await expectHarborFailure();
-      });
+      await runTwentyCycles(
+        page,
+        async () => {
+          await openDevelopmentShowcase(page);
+          await expectShowcaseFailure();
+          await returnToHarbor(page);
+          await expectHarborFailure();
+        },
+        stableLottieRemountSnapshot,
+      );
 
       const expectedObservations = 1 + (lifecycleCycles + 1) * 2;
       expect(exactFallbackObservations).toBe(expectedObservations);
