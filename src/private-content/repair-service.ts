@@ -79,11 +79,16 @@ export async function executePrivateRepairPlan(input: {
   const claim = await privateDb.privateRepairPlan.updateMany({
     where: {
       digest: input.digest,
-      state: "APPROVED",
       dryRun: false,
       snapshotDigest: input.currentSnapshotDigest,
       expiresAt: { gt: now },
-      OR: [{ executionUntil: null }, { executionUntil: { lt: now } }],
+      // A process can die after recording EXECUTING but before it has written
+      // an action receipt.  Only an expired execution lease is reclaimable;
+      // an active owner is never displaced.
+      OR: [
+        { state: "APPROVED", OR: [{ executionUntil: null }, { executionUntil: { lt: now } }] },
+        { state: "EXECUTING", executionUntil: { lt: now } },
+      ],
     },
     data: { state: "EXECUTING", executionLease: lease, executionUntil: leaseUntil },
   });
@@ -93,23 +98,45 @@ export async function executePrivateRepairPlan(input: {
     include: { actions: true },
   });
   try {
-    for (const action of plan.actions) {
+    // An interrupted action may have reached a provider boundary before its
+    // durable completion receipt.  A replacement lease is the only authority
+    // permitted to make it retryable again.  Completed receipts are immutable
+    // and are never replayed.
+    await privateDb.privateRepairAction.updateMany({
+      where: { planId: plan.id, state: "EXECUTING" },
+      data: { state: "PENDING", resultCode: "RETRY_RECOVERED" },
+    });
+    const actions = await privateDb.privateRepairAction.findMany({
+      where: { planId: plan.id },
+      orderBy: { ordinal: "asc" },
+    });
+    for (const action of actions) {
+      if (action.state === "COMPLETED") continue;
       if (action.action === "DELETE_AFTER_GRACE" && action.reason !== "ORPHAN")
         throw privateFailure("PRIVATE_CONTENT_FORBIDDEN", "Private garbage collection target is blocked.");
-      const stillOwned = await privateDb.privateRepairPlan.count({
-        where: { digest: input.digest, state: "EXECUTING", executionLease: lease, executionUntil: { gt: new Date() } },
+      await assertPrivateRepairLease(input.digest, lease);
+      const actionClaim = await privateDb.privateRepairAction.updateMany({
+        where: { id: action.id, state: "PENDING" },
+        data: { state: "EXECUTING", resultCode: null },
       });
-      if (!stillOwned) throw privateFailure("PRIVATE_CONTENT_FORBIDDEN", "Private repair lease was lost.");
+      if (!actionClaim.count) {
+        const current = await privateDb.privateRepairAction.findUnique({ where: { id: action.id } });
+        if (current?.state === "COMPLETED") continue;
+        throw privateFailure("PRIVATE_CONTENT_FORBIDDEN", "Private repair action claim was lost.");
+      }
       await input.apply(action);
-      await privateDb.privateRepairAction.update({
-        where: { id: action.id },
+      await assertPrivateRepairLease(input.digest, lease);
+      const receipt = await privateDb.privateRepairAction.updateMany({
+        where: { id: action.id, state: "EXECUTING" },
         data: { state: "COMPLETED", resultCode: "APPLIED" },
       });
+      if (!receipt.count) throw privateFailure("PRIVATE_CONTENT_FORBIDDEN", "Private repair action receipt was rejected.");
     }
-    await privateDb.privateRepairPlan.update({
-      where: { digest: input.digest },
+    const completion = await privateDb.privateRepairPlan.updateMany({
+      where: { digest: input.digest, state: "EXECUTING", executionLease: lease },
       data: { state: "COMPLETED", executionUntil: null },
     });
+    if (!completion.count) throw privateFailure("PRIVATE_CONTENT_FORBIDDEN", "Private repair lease was lost.");
     await writePlatformAudit({
       actorType: "SYSTEM",
       actorId: input.owner,
@@ -128,6 +155,18 @@ export async function executePrivateRepairPlan(input: {
       .catch(() => undefined);
     throw error;
   }
+}
+
+/**
+ * Recheck ownership at every provider and receipt boundary.  A lost lease is
+ * a hard stop: a returning worker may not mutate or complete another owner's
+ * repair plan.
+ */
+async function assertPrivateRepairLease(digest: string, lease: string) {
+  const stillOwned = await privateDb.privateRepairPlan.count({
+    where: { digest, state: "EXECUTING", executionLease: lease, executionUntil: { gt: new Date() } },
+  });
+  if (!stillOwned) throw privateFailure("PRIVATE_CONTENT_FORBIDDEN", "Private repair lease was lost.");
 }
 
 /**

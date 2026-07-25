@@ -1,8 +1,8 @@
 import type { PrivateJobType } from "./contracts";
 import {
-  cancelClaimedPrivateJob,
   claimPrivateJobs,
   finishPrivateJob,
+  releaseClaimedPrivateJob,
   renewPrivateJobLease,
   retryPrivateJob,
 } from "./operations";
@@ -69,7 +69,7 @@ export async function dispatchPrivateJobBatch(
       continue;
     }
     if (input.signal?.aborted) {
-      await cancelClaimedPrivateJob(job.id, workerId);
+      await releaseClaimedPrivateJob(job.id, workerId);
       cancelled += 1;
       continue;
     }
@@ -95,14 +95,14 @@ export async function dispatchPrivateJobBatch(
     try {
       await handler(job, controller.signal);
       if (controller.signal.aborted) {
-        await cancelClaimedPrivateJob(job.id, workerId);
+        await releaseClaimedPrivateJob(job.id, workerId);
         cancelled += 1;
       } else if ((await finishPrivateJob(job.id, workerId)).count) {
         processed += 1;
       }
     } catch {
       if (controller.signal.aborted) {
-        await cancelClaimedPrivateJob(job.id, workerId);
+        await releaseClaimedPrivateJob(job.id, workerId);
         cancelled += 1;
       } else {
         await retryPrivateJob(job.id, workerId, "HANDLER_FAILED");

@@ -204,10 +204,14 @@ export class LocalPhase2PrivateStorageProvider implements PrivateStorageProvider
 
   async moveToQuarantine(object: PrivateObjectDescriptor, reason: string) {
     const reasonCode = /^[A-Z0-9_]{1,64}$/.test(reason) ? reason : "PRIVATE_QUARANTINE";
-    const promoted = await this.promote(object, {
-      namespace: "quarantine",
-      key: `${reasonCode.toLowerCase()}/${randomUUID()}`,
-    });
+    // A repair retry must address the same immutable quarantine object.  A
+    // random destination would turn a crash after copy and before the database
+    // receipt into duplicate provider effects.
+    const quarantineKey = `${reasonCode.toLowerCase()}/${object.sha256}`;
+    const expected = digestDescriptor(descriptorKey("quarantine", quarantineKey), object.byteLength, object.sha256);
+    const promoted = (await this.exists(expected))
+      ? expected
+      : await this.promote(object, { namespace: "quarantine", key: quarantineKey });
     await this.remove(object);
     return { ...promoted, metadata: { ...object.metadata, quarantineReason: reasonCode } };
   }
@@ -477,7 +481,13 @@ export class S3CompatiblePrivateStorageProvider implements PrivateStorageProvide
   }
   async moveToQuarantine(object: PrivateObjectDescriptor, reason: string) {
     const safeReason = /^[A-Z0-9_]{1,64}$/.test(reason) ? reason.toLowerCase() : "private_quarantine";
-    const quarantined = await this.promote(object, { namespace: "quarantine", key: `${safeReason}/${randomUUID()}` });
+    // Deterministic target makes a retry after a copied-but-unrecorded repair
+    // idempotent for both S3 and MinIO implementations.
+    const key = `${safeReason}/${object.sha256}`;
+    const expected = this.descriptor("quarantine", key, object.sha256, object.byteLength, object.metadata);
+    const quarantined = (await this.exists(expected))
+      ? expected
+      : await this.promote(object, { namespace: "quarantine", key });
     await this.remove(object);
     return { ...quarantined, metadata: { ...object.metadata, quarantineReason: safeReason } };
   }

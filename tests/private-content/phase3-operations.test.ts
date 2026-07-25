@@ -102,6 +102,9 @@ describe("Phase 3 operational controls", () => {
     await expect(
       provider.completeMultipart({ uploadId: upload.uploadId, parts: [{ partNumber: 1, etag: part.etag }] }),
     ).resolves.toMatchObject({ byteLength: 5 });
+    const firstQuarantine = await provider.moveToQuarantine(final, "CORRUPT_OBJECT");
+    const retryQuarantine = await provider.moveToQuarantine(final, "CORRUPT_OBJECT");
+    expect(retryQuarantine).toMatchObject({ key: firstQuarantine.key, sha256: final.sha256, byteLength: final.byteLength });
   });
 
   it("binds KMS decrypt to context and clears transient plaintext after rewrap", async () => {

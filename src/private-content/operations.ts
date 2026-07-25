@@ -203,6 +203,17 @@ export async function cancelClaimedPrivateJob(id: string, workerId: string) {
   });
 }
 
+/**
+ * A worker shutdown or lost lease is not an operator cancellation.  Release
+ * only this owner's claim so another worker can resume the durable operation.
+ */
+export async function releaseClaimedPrivateJob(id: string, workerId: string) {
+  return privateDb.privateContentJob.updateMany({
+    where: { id, state: "CLAIMED", claimOwner: workerId },
+    data: { state: "PENDING", claimOwner: null, claimedAt: null, claimExpiresAt: null, availableAt: new Date() },
+  });
+}
+
 export async function finishPrivateJob(id: string, workerId: string) {
   return privateDb.privateContentJob.updateMany({
     where: { id, state: "CLAIMED", claimOwner: workerId },
