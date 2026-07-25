@@ -441,6 +441,7 @@ function stableLottieRemountSnapshot(snapshot: ExtendedSnapshot) {
     activeListeners: _activeListeners,
     activeRafs: _activeRafs,
     activeTimeouts: _activeTimeouts,
+    activeIntervals: _activeIntervals,
     activeDocumentAnimations: _activeDocumentAnimations,
     pendingDocumentAnimations: _pendingDocumentAnimations,
     ...stable
