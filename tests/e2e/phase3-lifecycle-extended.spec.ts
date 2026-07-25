@@ -524,7 +524,7 @@ async function openDevelopmentShowcase(page: Page) {
 
 async function returnToHarbor(page: Page) {
   await page.getByRole("link", { name: "Return to harbor" }).click();
-  await expect(page.getByRole("heading", { name: "Choose your place in the Tale" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Choose your role in Voyagewright" })).toBeVisible();
 }
 
 async function routeRiveFailure(route: Route, kind: "404" | "abort" | "malformed") {
