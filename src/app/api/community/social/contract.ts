@@ -44,3 +44,18 @@ export async function executeSocialMutation<T>(
     return communityApiError(cause);
   }
 }
+
+/** Use for idempotent actions that intentionally have no request body. */
+export async function executeSocialAction(
+  request: Request,
+  mutation: (actor: CommunityActor) => Promise<unknown>,
+  status = 200,
+) {
+  const actor = await requireSocialActor(request);
+  if (!actor) return socialAccessDenied();
+  try {
+    return NextResponse.json(await mutation(actor), { status });
+  } catch (cause) {
+    return communityApiError(cause);
+  }
+}

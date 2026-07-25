@@ -2077,7 +2077,10 @@ model CommunityProfileBadgeGrant {
 model CommunityReview {
   id                   String    @id @default(cuid())
   listingId            String
+  reviewedReleaseId    String?
   authorAccountId      String
+  authorDisplayName    String?
+  authorHandle         String?
   rating               Int
   spoilerFreeBody      String?
   spoilerBody          String?
@@ -2117,7 +2120,11 @@ model CommunityCreatorResponse {
   id               String    @id @default(cuid())
   reviewId         String    @unique
   creatorAccountId String
+  creatorDisplayName String?
+  creatorHandle      String?
   body             String
+  spoilerBody      String?
+  spoilerLevel     String    @default("NONE")
   editedAt         DateTime?
   deletedAt        DateTime?
   createdAt        DateTime  @default(now())
@@ -2128,6 +2135,8 @@ model CommunityComment {
   subjectType     String
   subjectId       String
   authorAccountId String
+  authorDisplayName String?
+  authorHandle      String?
   parentCommentId String?
   depth           Int       @default(0)
   body            String

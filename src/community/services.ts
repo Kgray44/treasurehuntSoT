@@ -523,6 +523,7 @@ export function ownerListingProjection(listing: {
   };
 }
 export function publicListingProjection(listing: {
+  id: string;
   slug: string;
   itemType: string;
   title: string;
@@ -533,6 +534,7 @@ export function publicListingProjection(listing: {
   owner: { handle: string; displayName: string };
 }) {
   return {
+    id: listing.id,
     slug: listing.slug,
     itemType: listing.itemType,
     title: listing.title,

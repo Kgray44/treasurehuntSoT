@@ -23,6 +23,10 @@
 | `vitest run src/components/community/CommunityDiscoveryBrowser.test.tsx` | exit 0; 1 file, 4 tests passed | passed public search/filter URL, loading, empty, error, and retry behavior |
 | `tsc --noEmit` after public routes/filter controls | exit 0 | passed strict TypeScript |
 | Final `next build --webpack` with a non-live dummy MySQL URL | initial retry exposed an invalid extra route-module export; query moved to `src/community/voyage-log-public.ts`; final retry exit 0, 84 routes generated | passed production build after genuine task regression repair |
+| Prisma validate for both current MySQL and SQLite schemas after review/comment snapshot additions | exit 0 for both schemas | passed schema validation only; no MySQL executed |
+| Direct ordered SQLite migration rehearsal through `20260725145000_harborlight_phase3_review_snapshots` | exit 0; 129 tables; review/comment snapshot columns present; `PRAGMA foreign_key_check` empty | passed isolated migration rehearsal |
+| Focused reviews/comments/Keepsake/component Vitest selection | exit 0; 7 files, 24 tests passed | passed focused privacy, contract, and canonical-generation validation |
+| Final `tsc --noEmit` and `next build --webpack` after persisted review/comment/Keepsake changes | exit 0; production build generated 87 routes | passed strict TypeScript and production build |
 
 ## Not executed or not a pass
 

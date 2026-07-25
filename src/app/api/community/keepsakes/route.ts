@@ -1,7 +1,9 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 
-import type { KeepsakeStore } from "@/community/keepsakes";
+import { generatePrivateVoyageKeepsake, toPrivateKeepsakeProjection } from "@/community/keepsakes";
+import { databaseKeepsakeStore, findCompletedSessionForOwner } from "@/community/keepsake-store";
+import { communityApiError } from "@/community/api";
 import { requireCanonicalAccountIdentity, verifyPlayerCsrf } from "@/platform/auth";
 
 const generateKeepsakeSchema = z
@@ -9,26 +11,6 @@ const generateKeepsakeSchema = z
     taleSessionId: z.string().trim().min(1).max(191),
   })
   .strict();
-
-/**
- * This endpoint is intentionally closed until the shared Community service
- * owner wires an atomic KeepsakeStore over the Phase 3 migrations.  A route
- * must not substitute a process-local store or report a generated Keepsake
- * before canonical completion and unique persistence can be proven.
- */
-async function resolveKeepsakeStore(): Promise<KeepsakeStore | null> {
-  return null;
-}
-
-function unavailable() {
-  return NextResponse.json(
-    {
-      code: "COMMUNITY_KEEPSAKE_STORE_UNAVAILABLE",
-      error: "Voyage Keepsake generation is not available until its secure storage service is configured.",
-    },
-    { status: 503 },
-  );
-}
 
 export async function POST(request: Request) {
   const identity = await requireCanonicalAccountIdentity();
@@ -43,17 +25,31 @@ export async function POST(request: Request) {
       { status: 403 },
     );
 
+  let input: z.infer<typeof generateKeepsakeSchema>;
   try {
-    generateKeepsakeSchema.parse(await request.json());
+    input = generateKeepsakeSchema.parse(await request.json());
   } catch {
     return NextResponse.json(
       { code: "COMMUNITY_INVALID_KEEPSAKE", error: "The Voyage Keepsake request is invalid." },
       { status: 400 },
     );
   }
-
-  // Keep this explicit integration seam visible to avoid a misleading 201
-  // response while the schema has no migration-backed shared store adapter.
-  if (!(await resolveKeepsakeStore())) return unavailable();
-  return unavailable();
+  try {
+    const session = await findCompletedSessionForOwner(input.taleSessionId, identity.accountId);
+    // The source title is selected from the canonical Chronicle in the
+    // adapter. It is never accepted from a browser request.
+    if (!session)
+      return NextResponse.json(
+        { code: "COMMUNITY_COMPLETION_REQUIRED", error: "A completed canonical voyage is required for a Voyage Keepsake." },
+        { status: 403 },
+      );
+    const result = await generatePrivateVoyageKeepsake(databaseKeepsakeStore, {
+      ownerAccountId: identity.accountId,
+      taleSessionId: input.taleSessionId,
+      taleTitle: session.taleTitle,
+    });
+    return NextResponse.json({ state: result.created ? "CREATED" : "EXISTING", keepsake: toPrivateKeepsakeProjection(result.keepsake) }, { status: result.created ? 201 : 200 });
+  } catch (cause) {
+    return communityApiError(cause);
+  }
 }

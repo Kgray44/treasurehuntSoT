@@ -14,6 +14,7 @@ const MAX_COLLECTION_ITEMS = 500;
 const MAX_COMMENT_DEPTH = 2;
 const SUBJECT_TYPES = ["LISTING", "RELEASE", "CREATOR", "VOYAGE_LOG", "COLLECTION", "GUIDE"] as const;
 const COMMENT_SUBJECT_TYPES = ["LISTING", "VOYAGE_LOG", "GUIDE"] as const;
+const REPORT_SUBJECT_TYPES = ["LISTING", "CREATOR", "REVIEW", "COMMENT", "COLLECTION", "VOYAGE_LOG", "GUIDE"] as const;
 const COLLECTION_VISIBILITIES = ["PRIVATE", "UNLISTED", "COMMUNITY"] as const;
 const REVIEW_STATUSES = ["ACTIVE", "QUARANTINED", "REMOVED"] as const;
 
@@ -22,7 +23,7 @@ export type CollectionVisibility = (typeof COLLECTION_VISIBILITIES)[number];
 export type IdempotentState = "CREATED" | "EXISTING" | "REMOVED" | "ABSENT" | "UPDATED";
 export type IdempotentOutcome<T = undefined> = { state: IdempotentState; value?: T };
 
-type Profile = { id: string; accountId: string; moderationStatus: string; creatorStatus: string; visibility?: string };
+type Profile = { id: string; accountId: string; displayName: string; handle: string; moderationStatus: string; creatorStatus: string; visibility?: string };
 type Subject = { type: SocialSubjectType; id: string; ownerAccountId?: string; public: boolean; commentsEnabled?: boolean };
 
 export const reviewDimensionRegistry = {
@@ -77,6 +78,9 @@ function isSubjectType(value: string): value is SocialSubjectType {
 }
 function isCommentSubjectType(value: string): value is (typeof COMMENT_SUBJECT_TYPES)[number] {
   return (COMMENT_SUBJECT_TYPES as readonly string[]).includes(value);
+}
+function isReportSubjectType(value: string): value is (typeof REPORT_SUBJECT_TYPES)[number] {
+  return (REPORT_SUBJECT_TYPES as readonly string[]).includes(value);
 }
 
 async function activeProfile(tx: any, actor: CommunityActor): Promise<Profile> {
@@ -360,11 +364,30 @@ async function reviewEligibility(tx: any, actor: CommunityActor, listing: any, r
     const release = await tx.communityRelease.findFirst({ where: { id: releaseId, listingId: listing.id } });
     if (!release) fail("COMMUNITY_REVIEW_RELEASE_MISMATCH", "The reviewed release does not belong to this listing.");
   }
-  const installation = reviewedReleaseId ? await tx.communityInstallation.findFirst({ where: { accountId: actor.accountId, releaseId: reviewedReleaseId, mode: { not: "PREVIEW" } }, select: { id: true } }) : null;
+  const installation = reviewedReleaseId
+    ? await tx.communityInstallation.findFirst({
+        where: { accountId: actor.accountId, releaseId: reviewedReleaseId, mode: { not: "PREVIEW_SANDBOX" } },
+        select: { id: true, operationId: true },
+      })
+    : null;
+  // An installation row alone is not eligibility evidence: Phase 2 writes it
+  // only after commit, and this explicit status check protects future adapters.
+  const committedInstallation = installation
+    ? await tx.communityInstallOperation.findFirst({
+        where: { id: installation.operationId, accountId: actor.accountId, releaseId: reviewedReleaseId, status: "COMMITTED" },
+        select: { id: true },
+      })
+    : null;
   const player = await tx.playerProfile.findUnique({ where: { accountId: actor.accountId }, select: { id: true } });
   const release = reviewedReleaseId ? await tx.communityRelease.findUnique({ where: { id: reviewedReleaseId }, select: { sourcePublishedTaleVersionId: true } }) : null;
   const completion = player && release?.sourcePublishedTaleVersionId ? await tx.playthroughMembership.findFirst({ where: { playerProfileId: player.id, completedAt: { not: null }, playthrough: { status: "COMPLETED", publishedVersionId: release.sourcePublishedTaleVersionId, previewMode: false } }, select: { playthroughId: true } }) : null;
-  return { reviewedReleaseId, verifiedInstallation: Boolean(installation), verifiedCompletion: Boolean(completion), completionSessionId: completion?.playthroughId ?? null };
+  return {
+    reviewedReleaseId,
+    verifiedInstallation: Boolean(committedInstallation),
+    verifiedCompletion: Boolean(completion),
+    // Stored only for server-derived eligibility/audit; never projected.
+    completionSessionId: completion?.playthroughId ?? null,
+  };
 }
 export async function createOrUpdateReview(actor: CommunityActor, input: { listingId: string; reviewedReleaseId?: string; rating: number; spoilerFreeBody?: string | null; spoilerBody?: string | null; dimensions?: Record<string, number> }): Promise<IdempotentOutcome<unknown>> {
   socialRate(actor, "review", 12);
@@ -373,13 +396,18 @@ export async function createOrUpdateReview(actor: CommunityActor, input: { listi
     const listing = await tx.communityListing.findUnique({ where: { id: input.listingId }, include: { owner: { select: { accountId: true } } } });
     if (!listing || listing.publicationStatus !== "PUBLISHED" || listing.moderationStatus !== "ACTIVE") fail("COMMUNITY_SUBJECT_UNAVAILABLE", "This listing cannot be reviewed.");
     if (listing.ownerProfileId === profile.id || listing.owner.accountId === actor.accountId) fail("COMMUNITY_SELF_REVIEW", "You cannot review your own content.");
+    const coCreator = await tx.communityReleaseAttribution.findFirst({
+      where: { creditedProfileId: profile.id, release: { listingId: listing.id } },
+      select: { id: true },
+    });
+    if (coCreator) fail("COMMUNITY_SELF_REVIEW", "Creators cannot review work they co-created.");
     await assertNotBlocked(tx, actor.accountId, listing.owner.accountId);
     const data = validateReviewInput(input, listing.itemType);
     const eligibility = await reviewEligibility(tx, actor, listing, input.reviewedReleaseId);
     const existing = await tx.communityReview.findUnique({ where: { listingId_authorAccountId: { listingId: listing.id, authorAccountId: actor.accountId } } });
     const review = existing
-      ? await tx.communityReview.update({ where: { id: existing.id }, data: { ...data, spoilerLevel: data.spoilerBody ? "SPOILER" : "NONE", ...eligibility, status: "ACTIVE", deletedAt: null, editedAt: new Date() } })
-      : await tx.communityReview.create({ data: { listingId: listing.id, authorAccountId: actor.accountId, ...data, spoilerLevel: data.spoilerBody ? "SPOILER" : "NONE", ...eligibility } });
+      ? await tx.communityReview.update({ where: { id: existing.id }, data: { ...data, spoilerLevel: data.spoilerBody ? "SPOILER" : "NONE", ...eligibility, authorDisplayName: profile.displayName, authorHandle: profile.handle, status: "ACTIVE", deletedAt: null, editedAt: new Date() } })
+      : await tx.communityReview.create({ data: { listingId: listing.id, authorAccountId: actor.accountId, authorDisplayName: profile.displayName, authorHandle: profile.handle, ...data, spoilerLevel: data.spoilerBody ? "SPOILER" : "NONE", ...eligibility } });
     await tx.communityReviewDimension.deleteMany({ where: { reviewId: review.id } });
     if (data.dimensions.length) await tx.communityReviewDimension.createMany({ data: data.dimensions.map(([dimension, score]) => ({ reviewId: review.id, dimension, score })) });
     return { state: existing ? "UPDATED" as const : "CREATED" as const, value: publicReviewProjection(review, data.dimensions) };
@@ -395,11 +423,21 @@ export async function deleteReview(actor: CommunityActor, reviewId: string): Pro
     return { state: "REMOVED" as const };
   });
 }
+export async function updateReview(
+  actor: CommunityActor,
+  reviewId: string,
+  input: Omit<Parameters<typeof createOrUpdateReview>[1], "listingId">,
+): Promise<IdempotentOutcome<unknown>> {
+  const existing = await socialDb.communityReview.findUnique({ where: { id: reviewId }, select: { listingId: true, authorAccountId: true } });
+  if (!existing || existing.authorAccountId !== actor.accountId) fail("COMMUNITY_ACCESS_DENIED", "You cannot edit this review.");
+  return createOrUpdateReview(actor, { ...input, listingId: existing.listingId });
+}
 export function publicReviewProjection(review: any, dimensions: readonly (readonly [string, number])[] = []) {
   return {
     id: review.id,
     listingId: review.listingId,
     rating: review.rating,
+    author: review.authorDisplayName ? { displayName: review.authorDisplayName, ...(review.authorHandle ? { handle: review.authorHandle } : {}) } : null,
     spoilerFreeBody: review.deletedAt || review.status !== "ACTIVE" ? null : review.spoilerFreeBody,
     hasSpoiler: Boolean(!review.deletedAt && review.status === "ACTIVE" && review.spoilerBody),
     spoilerLevel: review.spoilerLevel,
@@ -440,8 +478,38 @@ export async function helpfulVoteCount(reviewId: string) {
   return socialDb.communityReviewHelpfulVote.count({ where: { reviewId } });
 }
 
+export async function listPublicReviews(listingId: string) {
+  const listing = await socialDb.communityListing.findFirst({
+    where: { id: listingId, publicationStatus: "PUBLISHED", moderationStatus: "ACTIVE", visibility: { in: ["COMMUNITY", "FEATURED"] } },
+    select: { id: true },
+  });
+  if (!listing) return [];
+  const reviews = await socialDb.communityReview.findMany({
+    where: { listingId, status: "ACTIVE", deletedAt: null },
+    include: { },
+    orderBy: [{ createdAt: "desc" }, { id: "desc" }],
+    take: 100,
+  });
+  const responses = reviews.length
+    ? await socialDb.communityCreatorResponse.findMany({ where: { reviewId: { in: reviews.map((review: any) => review.id) } } })
+    : [];
+  const responseByReviewId = new Map(responses.map((response: any) => [response.reviewId, response]));
+  return Promise.all(
+    reviews.map(async (review: any) => ({
+      ...publicReviewProjection(review),
+      helpfulCount: await helpfulVoteCount(review.id),
+      creatorResponse: responseByReviewId.has(review.id)
+        ? publicCreatorResponseProjection(responseByReviewId.get(review.id))
+        : null,
+    })),
+  );
+}
+
 export function validateCommentBody(body: string) {
-  return boundedText(body, "Comment", 1, 5_000);
+  const safe = boundedText(body, "Comment", 1, 5_000);
+  if (/(?:javascript|data)\s*:/iu.test(safe) || /\bon[a-z]+\s*=/iu.test(safe))
+    fail("COMMUNITY_UNSAFE_TEXT", "Comment cannot contain executable URLs or event handlers.");
+  return safe;
 }
 export async function createComment(actor: CommunityActor, input: { subjectType: "LISTING" | "VOYAGE_LOG" | "GUIDE"; subjectId: string; body: string; spoilerBody?: string | null; parentCommentId?: string; idempotencyKey: string }): Promise<IdempotentOutcome<unknown>> {
   socialRate(actor, "comment", 30);
@@ -450,7 +518,7 @@ export async function createComment(actor: CommunityActor, input: { subjectType:
   const body = validateCommentBody(input.body);
   const spoilerBody = input.spoilerBody == null ? null : boundedText(input.spoilerBody, "Comment spoiler", 0, 5_000, true) || null;
   return socialDb.$transaction(async (tx: any) => {
-    await activeProfile(tx, actor);
+    const profile = await activeProfile(tx, actor);
     const existing = await tx.communityComment.findUnique({ where: { id } });
     if (existing) return { state: "EXISTING" as const, value: publicCommentProjection(existing) };
     const subject = await resolveSubject(tx, input.subjectType, input.subjectId);
@@ -465,12 +533,12 @@ export async function createComment(actor: CommunityActor, input: { subjectType:
       depth = parent.depth + 1;
     }
     if (depth > MAX_COMMENT_DEPTH) fail("COMMUNITY_COMMENT_DEPTH", `Replies are limited to depth ${MAX_COMMENT_DEPTH}.`);
-    const comment = await tx.communityComment.create({ data: { id, subjectType: input.subjectType, subjectId: input.subjectId, authorAccountId: actor.accountId, parentCommentId: input.parentCommentId ?? null, depth, body, spoilerBody, spoilerLevel: spoilerBody ? "SPOILER" : "NONE" } });
+    const comment = await tx.communityComment.create({ data: { id, subjectType: input.subjectType, subjectId: input.subjectId, authorAccountId: actor.accountId, authorDisplayName: profile.displayName, authorHandle: profile.handle, parentCommentId: input.parentCommentId ?? null, depth, body, spoilerBody, spoilerLevel: spoilerBody ? "SPOILER" : "NONE" } });
     return { state: "CREATED" as const, value: publicCommentProjection(comment) };
   });
 }
 export function publicCommentProjection(comment: any) {
-  return { id: comment.id, subjectType: comment.subjectType, subjectId: comment.subjectId, parentCommentId: comment.parentCommentId, depth: comment.depth, body: comment.deletedAt || comment.status !== "ACTIVE" ? null : comment.body, hasSpoiler: Boolean(!comment.deletedAt && comment.status === "ACTIVE" && comment.spoilerBody), spoilerLevel: comment.spoilerLevel, editedAt: comment.editedAt, deletedAt: comment.deletedAt, createdAt: comment.createdAt };
+  return { id: comment.id, subjectType: comment.subjectType, subjectId: comment.subjectId, parentCommentId: comment.parentCommentId, depth: comment.depth, author: comment.authorDisplayName ? { displayName: comment.authorDisplayName, ...(comment.authorHandle ? { handle: comment.authorHandle } : {}) } : null, body: comment.deletedAt || comment.status !== "ACTIVE" ? null : comment.body, hasSpoiler: Boolean(!comment.deletedAt && comment.status === "ACTIVE" && comment.spoilerBody), spoilerLevel: comment.spoilerLevel, editedAt: comment.editedAt, deletedAt: comment.deletedAt, createdAt: comment.createdAt };
 }
 export async function revealCommentSpoiler(commentIdValue: string) {
   const comment = await socialDb.communityComment.findUnique({ where: { id: commentIdValue } });
@@ -499,9 +567,46 @@ export async function deleteComment(actor: CommunityActor, commentIdValue: strin
   });
 }
 
-export async function respondToReview(actor: CommunityActor, reviewId: string, body: string): Promise<IdempotentOutcome<unknown>> {
+export async function listPublicComments(subjectType: (typeof COMMENT_SUBJECT_TYPES)[number], subjectId: string) {
+  if (!isCommentSubjectType(subjectType)) return [];
+  const subject = await socialDb.$transaction((tx: any) => resolveSubject(tx, subjectType, subjectId));
+  if (!subject.public || !subject.commentsEnabled) return [];
+  const comments = await socialDb.communityComment.findMany({
+    where: { subjectType, subjectId, status: "ACTIVE", deletedAt: null },
+    orderBy: [{ depth: "asc" }, { createdAt: "asc" }, { id: "asc" }],
+    take: 200,
+  });
+  return comments.map(publicCommentProjection);
+}
+
+async function resolveReportSubject(tx: any, subjectType: string, subjectId: string) {
+  if (!isReportSubjectType(subjectType)) return null;
+  if (subjectType === "REVIEW") {
+    const review = await tx.communityReview.findUnique({ where: { id: subjectId } });
+    if (!review || review.status !== "ACTIVE" || review.deletedAt) return null;
+    const listing = await resolveSubject(tx, "LISTING", review.listingId);
+    return listing.public ? { ownerAccountId: listing.ownerAccountId } : null;
+  }
+  if (subjectType === "COMMENT") {
+    const comment = await tx.communityComment.findUnique({ where: { id: subjectId } });
+    if (!comment || comment.status !== "ACTIVE" || comment.deletedAt || !isCommentSubjectType(comment.subjectType)) return null;
+    const parent = await resolveSubject(tx, comment.subjectType, comment.subjectId);
+    return parent.public ? { ownerAccountId: comment.authorAccountId } : null;
+  }
+  const subject = await resolveSubject(tx, subjectType, subjectId);
+  return subject.public ? subject : null;
+}
+
+export async function respondToReview(
+  actor: CommunityActor,
+  reviewId: string,
+  input: string | { body: string; spoilerBody?: string | null },
+): Promise<IdempotentOutcome<unknown>> {
   socialRate(actor, "creator-response", 15);
+  const body = typeof input === "string" ? input : input.body;
+  const spoilerBody = typeof input === "string" ? null : input.spoilerBody ?? null;
   const safeBody = boundedText(body, "Creator response", 1, 5_000);
+  const safeSpoilerBody = spoilerBody == null ? null : boundedText(spoilerBody, "Creator response spoiler", 0, 5_000, true) || null;
   return socialDb.$transaction(async (tx: any) => {
     const profile = await activeProfile(tx, actor);
     const review = await tx.communityReview.findUnique({ where: { id: reviewId } });
@@ -509,12 +614,47 @@ export async function respondToReview(actor: CommunityActor, reviewId: string, b
     if (!review || !listing || review.status !== "ACTIVE" || review.deletedAt || listing.ownerProfileId !== profile.id) fail("COMMUNITY_ACCESS_DENIED", "You cannot respond to this review.");
     await assertNotBlocked(tx, actor.accountId, review.authorAccountId);
     const existing = await tx.communityCreatorResponse.findUnique({ where: { reviewId } });
-    const response = existing ? await tx.communityCreatorResponse.update({ where: { reviewId }, data: { body: safeBody, deletedAt: null, editedAt: new Date() } }) : await tx.communityCreatorResponse.create({ data: { reviewId, creatorAccountId: actor.accountId, body: safeBody } });
+    const response = existing
+      ? await tx.communityCreatorResponse.update({ where: { reviewId }, data: { body: safeBody, spoilerBody: safeSpoilerBody, spoilerLevel: safeSpoilerBody ? "SPOILER" : "NONE", creatorDisplayName: profile.displayName, creatorHandle: profile.handle, deletedAt: null, editedAt: new Date() } })
+      : await tx.communityCreatorResponse.create({ data: { reviewId, creatorAccountId: actor.accountId, creatorDisplayName: profile.displayName, creatorHandle: profile.handle, body: safeBody, spoilerBody: safeSpoilerBody, spoilerLevel: safeSpoilerBody ? "SPOILER" : "NONE" } });
     return { state: existing ? "UPDATED" as const : "CREATED" as const, value: publicCreatorResponseProjection(response) };
   });
 }
 export function publicCreatorResponseProjection(response: any) {
-  return { id: response.id, reviewId: response.reviewId, body: response.deletedAt ? null : response.body, editedAt: response.editedAt, deletedAt: response.deletedAt, createdAt: response.createdAt };
+  return {
+    id: response.id,
+    reviewId: response.reviewId,
+    creator: response.creatorDisplayName ? { displayName: response.creatorDisplayName, ...(response.creatorHandle ? { handle: response.creatorHandle } : {}) } : null,
+    body: response.deletedAt ? null : response.body,
+    hasSpoiler: Boolean(!response.deletedAt && response.spoilerBody),
+    editedAt: response.editedAt,
+    deletedAt: response.deletedAt,
+    createdAt: response.createdAt,
+  };
+}
+
+export async function deleteCreatorResponse(actor: CommunityActor, reviewId: string): Promise<IdempotentOutcome> {
+  socialRate(actor, "creator-response-delete", 15);
+  return socialDb.$transaction(async (tx: any) => {
+    const profile = await activeProfile(tx, actor);
+    const review = await tx.communityReview.findUnique({ where: { id: reviewId } });
+    const listing = review ? await tx.communityListing.findUnique({ where: { id: review.listingId } }) : null;
+    const response = await tx.communityCreatorResponse.findUnique({ where: { reviewId } });
+    if (!listing || listing.ownerProfileId !== profile.id || !response) fail("COMMUNITY_ACCESS_DENIED", "You cannot delete this Creator response.");
+    if (response.deletedAt) return { state: "ABSENT" as const };
+    await tx.communityCreatorResponse.update({ where: { id: response.id }, data: { deletedAt: new Date() } });
+    return { state: "REMOVED" as const };
+  });
+}
+
+export async function revealCreatorResponseSpoiler(reviewId: string) {
+  const response = await socialDb.communityCreatorResponse.findUnique({ where: { reviewId } });
+  const review = response ? await socialDb.communityReview.findUnique({ where: { id: response.reviewId } }) : null;
+  if (!response || !review || response.deletedAt || !response.spoilerBody) fail("COMMUNITY_SPOILER_UNAVAILABLE", "This spoiler section is unavailable.");
+  const listing = await socialDb.communityListing.findUnique({ where: { id: review.listingId } });
+  if (!listing || listing.publicationStatus !== "PUBLISHED" || !["COMMUNITY", "FEATURED"].includes(listing.visibility))
+    fail("COMMUNITY_SPOILER_UNAVAILABLE", "This spoiler section is unavailable.");
+  return { spoilerBody: response.spoilerBody };
 }
 
 export async function createReport(actor: CommunityActor, input: { subjectType: string; subjectId: string; reason: string; detail?: string; idempotencyKey?: string }): Promise<IdempotentOutcome<unknown>> {
@@ -524,6 +664,11 @@ export async function createReport(actor: CommunityActor, input: { subjectType: 
   const id = reportId(actor, input.idempotencyKey);
   return socialDb.$transaction(async (tx: any) => {
     await activeProfile(tx, actor);
+    const subject = await resolveReportSubject(tx, input.subjectType, input.subjectId);
+    // This uniform result intentionally does not distinguish a missing,
+    // private, blocked, or unauthorized report target.
+    if (!subject) fail("COMMUNITY_REPORT_SUBJECT_UNAVAILABLE", "This report target is unavailable.");
+    await assertNotBlocked(tx, actor.accountId, subject.ownerAccountId);
     if (id) {
       const existing = await tx.communityReport.findUnique({ where: { id } });
       if (existing) return { state: "EXISTING" as const, value: reportProjection(existing) };
