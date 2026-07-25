@@ -1519,6 +1519,7 @@ model PrivateContentWrappedKey {
   wrappedKey String   @db.LongText
   algorithm  String   @db.VarChar(32)
   createdAt  DateTime @default(now())
+
   @@index([provider, keyVersion])
 }
 
@@ -1530,6 +1531,7 @@ model PrivateContentEncryptedPayload {
   cipher       String   @db.VarChar(32)
   wrappedKeyId String   @db.VarChar(191)
   createdAt    DateTime @default(now())
+
   @@index([wrappedKeyId])
 }
 
@@ -1870,4 +1872,390 @@ model CommunityReleaseUpdate {
 
   @@unique([installationId, candidateReleaseId])
   @@index([installationId, resolvedAt])
+}
+
+// Phase 3 public Harbor records are deliberately scalar-bound to the existing
+// canonical domains. Services resolve and authorize those IDs; no session or
+// Chronicle payload is duplicated into this public layer.
+model CommunityListingDiscoveryMetadata {
+  id                          String    @id @default(cuid())
+  listingId                   String    @unique
+  themes                      String    @default("[]")
+  secondaryCategories         String    @default("[]")
+  durationMinimum             Int?
+  durationMaximum             Int?
+  minimumPlayerCount          Int?
+  maximumPlayerCount          Int?
+  environment                 String    @default("NOT_APPLICABLE")
+  recommendedMinimumAge       Int?
+  recommendedMaximumAge       Int?
+  difficulty                  String?
+  travelRequirement           String    @default("NONE")
+  physicalPropRequirement     String    @default("NONE")
+  printingRequirement         String    @default("NONE")
+  setupComplexity             String?
+  visionWaypointRequired      Boolean   @default(false)
+  helperAppRequired           Boolean   @default(false)
+  offlineSupport              Boolean   @default(false)
+  mobileSupport               Boolean   @default(false)
+  representation              String    @default("MIXED")
+  languages                   String    @default("[]")
+  accessibilityFeatures       String    @default("[]")
+  minimumPlatformVersion      String?
+  compatibilityFeatures       String    @default("[]")
+  maintenanceState            String    @default("ACTIVE")
+  freeContent                 Boolean   @default(true)
+  remixPermission             String    @default("PROHIBITED")
+  lastMeaningfulReleaseUpdate DateTime?
+  createdAt                   DateTime  @default(now())
+  updatedAt                   DateTime  @updatedAt
+
+  @@index([environment, difficulty])
+  @@index([lastMeaningfulReleaseUpdate])
+}
+
+model CommunitySearchDocument {
+  id                      String   @id @default(cuid())
+  listingId               String   @unique
+  normalizedTitle         String
+  normalizedSummary       String
+  normalizedCreator       String
+  searchableText          String
+  publicProjectionVersion Int      @default(1)
+  indexedAt               DateTime @default(now())
+
+  @@index([normalizedTitle])
+  @@index([normalizedCreator])
+  @@index([indexedAt])
+}
+
+model CommunitySearchToken {
+  id         String @id @default(cuid())
+  documentId String
+  token      String
+  weight     Int    @default(1)
+
+  @@unique([documentId, token])
+  @@index([token, weight])
+}
+
+model CommunityEditorialFeature {
+  id          String    @id @default(cuid())
+  subjectType String
+  subjectId   String
+  placement   String
+  sortOrder   Int       @default(0)
+  startsAt    DateTime?
+  endsAt      DateTime?
+  active      Boolean   @default(true)
+  createdAt   DateTime  @default(now())
+
+  @@unique([placement, subjectType, subjectId])
+  @@index([placement, active, sortOrder])
+}
+
+model CommunityListingAggregate {
+  listingId        String   @id
+  installCount     Int      @default(0)
+  saveCount        Int      @default(0)
+  favoriteCount    Int      @default(0)
+  followCount      Int      @default(0)
+  reviewCount      Int      @default(0)
+  completionCount  Int      @default(0)
+  helpfulVoteCount Int      @default(0)
+  averageRating    Float?
+  updatedAt        DateTime @updatedAt
+}
+
+model CommunityTrendBucket {
+  id               String   @id @default(cuid())
+  listingId        String
+  bucketDate       DateTime
+  installActors    Int      @default(0)
+  completionActors Int      @default(0)
+  saveActors       Int      @default(0)
+  helpfulActors    Int      @default(0)
+  score            Float    @default(0)
+
+  @@unique([listingId, bucketDate])
+  @@index([bucketDate, score])
+}
+
+model CommunityCreatorFollow {
+  id                String   @id @default(cuid())
+  followerAccountId String
+  creatorProfileId  String
+  createdAt         DateTime @default(now())
+
+  @@unique([followerAccountId, creatorProfileId])
+  @@index([creatorProfileId, createdAt])
+}
+
+model CommunityBlock {
+  id               String   @id @default(cuid())
+  blockerAccountId String
+  blockedAccountId String
+  createdAt        DateTime @default(now())
+
+  @@unique([blockerAccountId, blockedAccountId])
+  @@index([blockedAccountId])
+}
+
+model CommunitySave {
+  id          String   @id @default(cuid())
+  accountId   String
+  subjectType String
+  subjectId   String
+  kind        String   @default("SAVE")
+  createdAt   DateTime @default(now())
+
+  @@unique([accountId, subjectType, subjectId, kind])
+  @@index([subjectType, subjectId, createdAt])
+}
+
+model CommunityCollection {
+  id             String   @id @default(cuid())
+  ownerAccountId String
+  slug           String   @unique
+  title          String
+  description    String?
+  visibility     String   @default("PRIVATE")
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@index([ownerAccountId, visibility])
+}
+
+model CommunityCollectionItem {
+  id           String   @id @default(cuid())
+  collectionId String
+  subjectType  String
+  subjectId    String
+  position     Int
+  createdAt    DateTime @default(now())
+
+  @@unique([collectionId, subjectType, subjectId])
+  @@unique([collectionId, position])
+  @@index([collectionId, position])
+}
+
+model CommunityProfileFeaturedItem {
+  id          String @id @default(cuid())
+  profileId   String
+  subjectType String
+  subjectId   String
+  position    Int
+
+  @@unique([profileId, subjectType, subjectId])
+  @@unique([profileId, position])
+}
+
+model CommunityBadgeDefinition {
+  id          String   @id @default(cuid())
+  key         String   @unique
+  displayName String
+  description String
+  grantPolicy String
+  active      Boolean  @default(true)
+  createdAt   DateTime @default(now())
+}
+
+model CommunityProfileBadgeGrant {
+  id                 String   @id @default(cuid())
+  profileId          String
+  badgeId            String
+  source             String
+  grantedByAccountId String?
+  grantedAt          DateTime @default(now())
+
+  @@unique([profileId, badgeId])
+}
+
+model CommunityReview {
+  id                   String    @id @default(cuid())
+  listingId            String
+  authorAccountId      String
+  rating               Int
+  spoilerFreeBody      String?
+  spoilerBody          String?
+  spoilerLevel         String    @default("NONE")
+  verifiedInstallation Boolean   @default(false)
+  verifiedCompletion   Boolean   @default(false)
+  completionSessionId  String?
+  status               String    @default("ACTIVE")
+  editedAt             DateTime?
+  deletedAt            DateTime?
+  createdAt            DateTime  @default(now())
+  updatedAt            DateTime  @updatedAt
+
+  @@unique([listingId, authorAccountId])
+  @@index([listingId, status, createdAt])
+}
+
+model CommunityReviewDimension {
+  id        String @id @default(cuid())
+  reviewId  String
+  dimension String
+  score     Int
+
+  @@unique([reviewId, dimension])
+}
+
+model CommunityReviewHelpfulVote {
+  id        String   @id @default(cuid())
+  reviewId  String
+  accountId String
+  createdAt DateTime @default(now())
+
+  @@unique([reviewId, accountId])
+}
+
+model CommunityCreatorResponse {
+  id               String    @id @default(cuid())
+  reviewId         String    @unique
+  creatorAccountId String
+  body             String
+  editedAt         DateTime?
+  deletedAt        DateTime?
+  createdAt        DateTime  @default(now())
+}
+
+model CommunityComment {
+  id              String    @id @default(cuid())
+  subjectType     String
+  subjectId       String
+  authorAccountId String
+  parentCommentId String?
+  depth           Int       @default(0)
+  body            String
+  spoilerBody     String?
+  spoilerLevel    String    @default("NONE")
+  status          String    @default("ACTIVE")
+  editedAt        DateTime?
+  deletedAt       DateTime?
+  createdAt       DateTime  @default(now())
+
+  @@index([subjectType, subjectId, createdAt])
+  @@index([parentCommentId])
+}
+
+model CommunityReport {
+  id                String   @id @default(cuid())
+  subjectType       String
+  subjectId         String
+  reporterAccountId String
+  reason            String
+  detail            String?
+  status            String   @default("OPEN")
+  createdAt         DateTime @default(now())
+
+  @@index([subjectType, subjectId, status])
+}
+
+model CommunityVoyageKeepsake {
+  id                     String   @id @default(cuid())
+  ownerAccountId         String
+  taleSessionId          String
+  publishedVersionId     String?
+  safeSnapshot           String
+  favoriteMoment         String?
+  representationChecksum String?
+  status                 String   @default("READY")
+  createdAt              DateTime @default(now())
+  updatedAt              DateTime @updatedAt
+
+  @@unique([ownerAccountId, taleSessionId])
+  @@index([taleSessionId])
+}
+
+model CommunityVoyageLog {
+  id                  String    @id @default(cuid())
+  keepsakeId          String    @unique
+  ownerAccountId      String
+  slug                String    @unique
+  visibility          String    @default("PRIVATE")
+  title               String
+  safeSummary         String?
+  spoilerLevel        String    @default("NONE")
+  approximateLocation String?
+  verifiedCompletion  Boolean   @default(false)
+  commentsEnabled     Boolean   @default(true)
+  publishedAt         DateTime?
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+
+  @@index([visibility, publishedAt])
+}
+
+model CommunityVoyageLogParticipant {
+  id                  String  @id @default(cuid())
+  voyageLogId         String
+  accountId           String?
+  displayNameSnapshot String
+  isChild             Boolean @default(false)
+
+  @@index([voyageLogId])
+}
+
+model CommunityVoyageLogParticipantConsent {
+  id            String    @id @default(cuid())
+  voyageLogId   String
+  participantId String
+  purpose       String
+  grantedAt     DateTime?
+  revokedAt     DateTime?
+
+  @@unique([voyageLogId, participantId, purpose])
+}
+
+model CommunityVoyageLogMedia {
+  id                         String   @id @default(cuid())
+  voyageLogId                String
+  privateMediaReference      String
+  derivativeChecksum         String
+  derivativeStorageReference String
+  processingStatus           String   @default("PENDING")
+  scanStatus                 String   @default("SCAN_NOT_CONFIGURED")
+  exifGpsRemoved             Boolean  @default(false)
+  createdAt                  DateTime @default(now())
+
+  @@unique([voyageLogId, derivativeChecksum])
+}
+
+model CommunityVoyageLogMediaConsent {
+  id               String    @id @default(cuid())
+  voyageLogMediaId String
+  accountId        String
+  purpose          String
+  grantedAt        DateTime?
+  revokedAt        DateTime?
+
+  @@unique([voyageLogMediaId, accountId, purpose])
+}
+
+model CommunityVoyageLogShareRestriction {
+  id               String   @id @default(cuid())
+  voyageLogId      String
+  restrictionType  String
+  subjectReference String?
+  createdAt        DateTime @default(now())
+
+  @@index([voyageLogId, restrictionType])
+}
+
+model CommunityGuideContent {
+  id             String    @id @default(cuid())
+  ownerProfileId String
+  slug           String    @unique
+  title          String
+  safeSummary    String
+  sanitizedBody  String
+  category       String
+  status         String    @default("DRAFT")
+  publishedAt    DateTime?
+  deprecatedAt   DateTime?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  @@index([status, category, publishedAt])
 }

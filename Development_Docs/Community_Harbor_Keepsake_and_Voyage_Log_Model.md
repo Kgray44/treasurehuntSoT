@@ -1,0 +1,7 @@
+# Community Harbor Keepsake and Voyage Log Model
+
+A private `CommunityVoyageKeepsake` is generated idempotently only from a completed canonical `TaleSession`; it retains a private session reference for verification and a selected safe snapshot. Generation never writes the session, its events, variables, inventory, membership, or pinned release. Download uses a generated safe representation rather than source session data.
+
+A Voyage Log is an explicit publication choice from a Keepsake and supports `PRIVATE`, `CREW_ONLY`, `UNLISTED`, and `COMMUNITY` visibility. Participant and media consent are purpose-specific, revocable, and checked at publication/projection time. Public media requires eligible scan/processing status and a separately checksummed sanitized derivative. GPS EXIF is removed; private locations are omitted and approximate locations are generalized. Creator sharing restrictions prevent governed artifacts, finale references, or story text from publication even after completion.
+
+The public Voyage Log projection has safe Chronicle identity, opted-in display names, safe duration and selected reaction, verified-completion badge, sanitized media, spoiler-safe summary, and permitted comments. It never exposes raw session IDs, prose snapshots, events, answers, variables, Captain notes, invitations, private participant identity, original media, raw storage keys, or exact private coordinates.
