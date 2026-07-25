@@ -83,7 +83,12 @@ export async function dispatchPrivateJobBatch(
     input.signal?.addEventListener("abort", onAbort, { once: true });
     const heartbeat = setInterval(
       () => {
-        void renewPrivateJobLease(job.id, workerId, leaseMs);
+        // A lease is the authority boundary, not merely a recovery hint.  If a
+        // competing worker has reclaimed this job, abort the cooperative
+        // handler immediately so it cannot begin another provider mutation.
+        void renewPrivateJobLease(job.id, workerId, leaseMs).then((renewal) => {
+          if (!renewal.count) controller.abort();
+        });
       },
       Math.max(1_000, Math.floor(leaseMs / 3)),
     );

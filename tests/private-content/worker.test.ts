@@ -62,4 +62,17 @@ describe("private durable worker", () => {
     expect(handler).not.toHaveBeenCalled();
     expect(operations.cancelClaimedPrivateJob).toHaveBeenCalledWith("job-1", "worker");
   });
+
+  it("aborts the active cooperative handler when its durable lease is lost", async () => {
+    operations.renewPrivateJobLease.mockResolvedValue({ count: 0 });
+    const handler = vi.fn(
+      (_job: unknown, signal: AbortSignal) =>
+        new Promise<void>((resolve) => signal.addEventListener("abort", () => resolve(), { once: true })),
+    );
+    const result = dispatchPrivateJobBatch("worker", { PRIVATE_ASSET_SCAN: handler }, { leaseMs: 1_000 });
+    await new Promise((resolve) => setTimeout(resolve, 1_050));
+    await expect(result).resolves.toMatchObject({ cancelled: 1, processed: 0 });
+    expect(operations.finishPrivateJob).not.toHaveBeenCalled();
+    expect(operations.cancelClaimedPrivateJob).toHaveBeenCalledWith("job-1", "worker");
+  }, 3_000);
 });

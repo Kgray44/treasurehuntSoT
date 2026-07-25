@@ -3,13 +3,17 @@ import { parsePrivateContentConfiguration } from "../../src/private-content/conf
 import { createPrivateProviderRuntime, requirePrivateReadiness } from "../../src/private-content/providers";
 import { dispatchPrivateJobBatch, type PrivateJobHandlerRegistry } from "../../src/private-content/worker";
 import { createPrivateOperationalHandlerRegistry } from "../../src/private-content/worker-handlers";
+import { createLocalPrivateOperationExecutors } from "../../src/private-content/worker-composition";
 
 const configuration = parsePrivateContentConfiguration();
 const runtime = createPrivateProviderRuntime(configuration);
 const controller = new AbortController();
 let stopping = false;
 const workerId = `private-worker-${randomUUID()}`;
-const handlers: PrivateJobHandlerRegistry = createPrivateOperationalHandlerRegistry({ runtime });
+const handlers: PrivateJobHandlerRegistry = createPrivateOperationalHandlerRegistry({
+  runtime,
+  execute: createLocalPrivateOperationExecutors({ runtime }),
+});
 async function run() {
   await requirePrivateReadiness(runtime, "worker");
   while (!stopping) {

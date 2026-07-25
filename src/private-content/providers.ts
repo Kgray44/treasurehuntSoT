@@ -12,7 +12,7 @@ import {
   LocalPhase2PrivateStorageProvider,
   S3CompatiblePrivateStorageProvider,
 } from "./provider-storage";
-import { ClamAvPrivateScanner, UnconfiguredPrivateScanner } from "./scanner";
+import { ClamAvPrivateScanner, SyntheticPrivateScanner, UnconfiguredPrivateScanner } from "./scanner";
 import { privateFailure } from "./core";
 
 export type PrivateProviderRuntime = {
@@ -56,7 +56,9 @@ export function createPrivateProviderRuntime(configuration: PrivateContentConfig
           port: configuration.PRIVATE_CONTENT_CLAMAV_PORT,
           timeoutMs: configuration.PRIVATE_CONTENT_CLAMAV_TIMEOUT_MS,
         })
-      : new UnconfiguredPrivateScanner();
+      : configuration.PRIVATE_CONTENT_SCANNER_PROVIDER === "synthetic"
+        ? new SyntheticPrivateScanner()
+        : new UnconfiguredPrivateScanner();
   const keyProvider: PrivateKeyProvider =
     configuration.PRIVATE_CONTENT_KEY_PROVIDER === "aws-kms"
       ? new AwsKmsPrivateKeyProvider({
