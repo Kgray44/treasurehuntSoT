@@ -1,14 +1,18 @@
 Project: Project Sealed Hold
 Phase: Phase 3 - Stand the Watch
-Scope: Production Provider Realization, Integrity Operations, Recovery Drills, and Operational Readiness
+Status: LOCALLY COMPLETE - EXTERNAL GATES BLOCKED
 Repository: Kgray44/treasurehuntSoT
 Branch: codex/project-sealed-hold-phase3-stand-the-watch
 Base SHA: 6bd8209d2d7f0edc73da9566fd06e825ae51a602
-Package version: unchanged (0.2.0)
-Migrations: SQLite 20260725130000, 20260725131000; MySQL 0028, 0029
-Providers: typed configuration, local development storage/key, S3/MinIO SigV4 adapter, ClamAV configuration, AWS KMS SigV4 adapter
-Operations: provider health, role readiness, repair-plan approval gates, recovery snapshot closure, restore isolation, key retirement policy, worker entrypoint
-Deployment: server environment examples, NGINX hardening, private worker unit, backup/reconcile timers
-Tests: phase3 operations provider/recovery contract plus existing private-content suite
-Documents: design record, provider matrix, operations/incident runbooks, test plan, validation record, implementation/integration manifests
-Limitations: no live MySQL/S3/ClamAV/AWS KMS; backup/restore durable service integration, admin UI/browser matrix, migration runner, and production worker handlers remain incomplete.
+Implementation closure SHA: 661fdb8efb18f367db9d722d166832540e2848de
+Phase 3 SQLite migrations: 20260725130000, 20260725131000, 20260725132000
+Phase 3 MySQL migrations: 0028, 0029, 0030
+Provider foundations: typed server configuration; role readiness; local development storage/key; S3/MinIO SigV4; ClamAV contract; AWS KMS SigV4
+Operational foundations: provider status; sanitized metrics/alerts; durable worker registry/composition; durable schedules; migration ledger; repair plan persistence/approval; key lifecycle policy
+Recovery evidence: verified encrypted worker backup; two independent synthetic isolated database-and-object restore drills; controlled owned web restart; durable replacement-worker handoff
+Repair evidence: immutable stored actions; explicit approval; expiry/source-state/lease gates; deterministic quarantine retry; refusal, interruption, receipt, retry, lease-loss, crash-reclaim, and idempotency coverage
+Operational UI: Administrator status console with safe readiness/backup/repair/restore projections; server authorization/CSRF/error coverage; component and browser accessibility acceptance at desktop and 430 x 932
+Final local validation: 122 Vitest files / 967 tests; Prisma SQLite/MySQL schema validation with synthetic URLs; SQLite client generation; source and staged-diff privacy scans
+External live gates: MySQL, S3/MinIO, ClamAV, AWS KMS, external alert delivery, Linux/systemd host proof
+Separate tooling limitations: Prisma SQLite db push; unrelated @rive-app/webgl2 TypeScript resolution prevents final Next build sentinel execution
+Safety: synthetic fixtures only; canonical development and production data are outside scope

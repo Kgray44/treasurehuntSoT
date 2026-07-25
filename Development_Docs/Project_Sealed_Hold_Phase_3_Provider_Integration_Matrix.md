@@ -1,18 +1,20 @@
 # Project Sealed Hold Phase 3 Provider Integration Matrix
 
-| Provider | Implementation | Current evidence | Status / blocker | Safe probe and cleanup |
-| --- | --- | --- | --- | --- |
-| SQLite | Prisma schemas and isolated local tests | schema validation planned | simulated-local | disposable DB only; remove exact test file |
-| MySQL 8 | ordered 0028/0029 SQL, runtime parity schema | no server/client discovered | blocked-external | create isolated schema; use separate migration/runtime identities; drop only that named schema |
-| Local private storage | `LocalPhase2PrivateStorageProvider` | Phase 2 + focused contract | simulated-local | disposable absolute root, exact cleanup |
-| S3/MinIO | SigV4 `FetchS3CompatibleObjectClient` and `S3CompatiblePrivateStorageProvider` | fake-client contract | blocked-external | isolated TLS bucket/prefix; HEAD/list only before write; remove exact prefix |
-| Synthetic scanner | test-only fixture scanner | Phase 2 tests | simulated-local | no external cleanup |
-| ClamAV | INSTREAM adapter with bounded PING | no service discovered | blocked-external | isolated PING then synthetic EICAR-equivalent policy fixture; clear quarantine prefix |
-| Local development key | injected 32-byte key ring | focused tests | simulated-local | test process only |
-| AWS KMS | SigV4 Encrypt/Decrypt/DescribeKey with encryption context | fake-client contract | blocked-external | describe isolated key alias; use protected credentials; no key deletion |
-| Web process | Next process readiness composition | source-level evidence | unconfigured | owned isolated process only |
-| Worker | `scripts/private-content/worker.ts`, systemd unit | source-level evidence | unconfigured | owned PID, SIGTERM, confirm lease release |
-| Backup target | private `backups` namespace | recovery snapshot tests | simulated-local | isolated prefix and exact cleanup |
-| Alerting | sanitized structured state codes | source-level evidence | implemented | no private payloads logged |
+`implemented`, `configured`, `simulated-local`, and `live-validated` are separate states. No simulator is a live-service claim.
 
-Minimum external permissions: S3 HEAD/GET/PUT/COPY/DELETE only under the private prefix; ClamAV byte-stream scan only; KMS DescribeKey/Encrypt/Decrypt with the fixed context; MySQL runtime has no DDL; migration identity alone applies DDL. Credentials belong only in protected server configuration and are never committed or printed.
+| Provider / surface | Implemented | Configured in Phase 3 evidence | Local evidence | Live validation | Current classification |
+| --- | --- | --- | --- | --- | --- |
+| SQLite and ordered migration ledger | Yes | Isolated synthetic database | 29 migrations, 108 tables, checksums and drift tests | Not applicable | simulated-local |
+| MySQL 8 migration parity | Yes: ordered `0028`-`0030` SQL and schema contract | No safe service | parser/order/checksum and Prisma static validation | No | blocked-external |
+| Local private storage | Yes | Isolated synthetic roots | contract, deterministic quarantine retry, encrypted backup, restore drills | Not applicable | simulated-local |
+| S3/MinIO storage | Yes: SigV4-compatible client | No isolated endpoint/bucket | fake-client contract | No | blocked-external |
+| Synthetic scanner | Test-only | Synthetic fixture only | scan/fail-closed/quarantine contracts | Not applicable | simulated-local |
+| ClamAV | Yes: bounded INSTREAM/PING adapter | No service | configuration and failure contract | No | blocked-external |
+| Local development key provider | Yes | Isolated synthetic key ring | backup, restore, wrong-context/key-version contracts | Not applicable | simulated-local |
+| AWS KMS | Yes: SigV4 Encrypt/Decrypt/DescribeKey adapter | No authorized key/credentials | fake-client contract | No | blocked-external |
+| Worker composition | Yes | Isolated synthetic runtime | typed payload, cancellation, lease loss, release/restart handoff, receipts, stored repair | Not applicable | simulated-local |
+| Web operational status route | Yes | Isolated localhost development server | authorization, CSRF, error/redaction, read-only repetition, component and browser acceptance | Not applicable | simulated-local |
+| Alert sink | Yes: sanitized deterministic evidence | No external destination | redaction contract | No | blocked-external |
+| Linux systemd units/timers | Files exist | No suitable Linux host | static deployment configuration | No | blocked-external |
+
+Minimum live permissions remain deliberately narrow: S3 access only beneath a dedicated private prefix; ClamAV byte-stream scan; KMS DescribeKey/Encrypt/Decrypt with fixed context; and a migration identity separate from MySQL runtime credentials. Credentials remain server configuration, never UI/API payloads, documentation values, or test artifacts.

@@ -1,27 +1,30 @@
-# Project Sealed Hold · Phase 3: Stand the Watch
+# Project Sealed Hold - Phase 3: Stand the Watch
 
-**Formal scope:** Production Provider Realization, Integrity Operations, Recovery Drills, and Operational Readiness.  **Status:** implementation in progress; no production-readiness claim.
+**Scope:** production-provider realization, integrity operations, recovery drills, and operational readiness.
+**Current status:** `PROJECT SEALED HOLD PHASE 3 LOCALLY COMPLETE — EXTERNAL GATES BLOCKED`; this is not a production-readiness claim.
 
-## Current-state audit and reconciliation
+## Boundary and ownership
 
-Repository: `Kgray44/treasurehuntSoT`. Canonical checkout: `\\gwplastics.com\VT\Users\kgray\My Documents\treasurehunt\forever-treasure-companion` (preserved untouched and dirty). Phase 3 worktree: `C:\Users\kgray\AppData\Local\ForeverTreasureCompanion\treasurehuntSoT-sealed-hold-phase3`. Branch: `codex/project-sealed-hold-phase3-stand-the-watch`. Known accepted SHA and fetched `origin/main` at start: `6bd8209d2d7f0edc73da9566fd06e825ae51a602`; branch base is the same and upstream is `origin/main`.
+Phase 3 work is confined to `codex/project-sealed-hold-phase3-stand-the-watch`, based on `6bd8209d2d7f0edc73da9566fd06e825ae51a602`. The canonical checkout, canonical development data, production data, and `main` are out of scope. Phase 2 package codecs, encryption, scanning, canonical materialization, and private delivery are reused; Phase 3 introduces neither public sharing nor a new package format or Community release path.
 
-The governing Phase 1/2 records contain no newer formal Phase 3 name, so this execution contract's name **Stand the Watch** is retained. Phase 2's package codecs, encrypted retry material, local storage, scanner contract, durable jobs, canonical materialization, delivery, and manifest helper are reused without rebuilding them. Phase 3 adds typed configuration/readiness, real S3/KMS protocol clients, operational records, repair gates, recovery snapshots, worker process composition, and deployment/runbook work. Public sharing, new package formats, multi-tenant infrastructure, and later Sealed Hold phases are excluded.
+The additive migrations are SQLite `20260725130000`, `20260725131000`, and `20260725132000`; MySQL `0028`, `0029`, and `0030`. Historical migrations remain immutable. The focused ledger discovers the full governed sequence deterministically and records checksums before applying pending migrations.
 
-The reserved ranges were checked on fetched `origin/main`: SQLite `20260725130000`-`20260725132999`, MySQL `0028`-`0030`; this branch uses SQLite `20260725130000`, `20260725131000` and MySQL `0028`, `0029`. Historical migrations remain unchanged.
+## Security architecture
 
-The shell initially had no Node/npm on PATH. Validation uses the bundled Node 24.14.0 and pnpm 11.9.0. No Docker/Podman, MySQL, MinIO/S3, ClamAV, KMS command, or known provider port was found; environment inspection recorded names only and read no values. Provider live evidence is therefore blocked unless an isolated configured service becomes available.
+`src/private-content/config.ts` remains the server-side configuration boundary. Production rejects local storage/key fallback, missing required services, unsafe roots, non-TLS S3 configuration, and malformed worker limits. Provider factories expose only safe health codes and capabilities; never credentials, endpoints, object keys, local roots, private prose, or ciphertext.
 
-## Frozen security architecture
+Private delivery is a separate authorization path. Pending, failed, unavailable, and quarantined scan states are unavailable. Scanner absence is never clean. Operational receipts, metrics, alerts, audit metadata, and the UI use opaque identifiers and safe codes only.
 
-`src/private-content/config.ts` is the sole server-side parser. Production rejects local storage/key fallback, missing scanner/KMS/MySQL, non-TLS S3, invalid roots, unsafe worker bounds, and malformed context. Factories build S3/MinIO, ClamAV, and AWS KMS only from this configuration. Health contains kind, safe state/code, capabilities, and version metadata only; it contains no endpoint, object key, credentials, private prose, or ciphertext.
+Backups encrypt a sealed manifest and bounded object envelopes through the selected key provider. Verification authenticates the manifest, checks digests, lengths, hashes, required key versions, and referential closure. Restore rejects source-equivalent, canonical, and production-like targets before writes. Two independent synthetic database-and-object restore drills exercised the ordered SQLite path and verified semantic record counts and object digests.
 
-Process readiness is role-specific. Web/worker writes fail closed when their required database/storage/scanner/KMS health is absent. Existing clean delivery remains a separately governed read path; no scanner failure is ever clean. Repair plans are immutable, digest-bound, dry-run by default, explicitly approved, revalidated against a current snapshot, and permit deletion only for confirmed orphan targets. Backups are referentially closed snapshot manifests; restore targets must be technically isolated and never names resembling canonical or production environments. Key retirement requires no live or backup references, restore verification, and explicit approval.
+Repair plans persist immutable actions, source-state digest, expiry, dry-run state, digest, and explicit Administrator approval. Worker composition loads the stored plan only. Each action is lease-checked before its provider boundary and receipt; completed receipts are never replayed. Expired crashed execution leases are reclaimed, while active owners are never displaced. Quarantine destinations are deterministic, review is availability-only, and deletion remains limited to a proven orphan. The governed action, refusal, provider interruption, crash, retry, cancellation, lease-loss, and replacement-worker matrix is locally accepted.
 
-## External boundary
+## Local evidence and tooling limitation
 
-Local deterministic tests prove adapter contracts but are labelled `simulated-local`. They are not S3, ClamAV, AWS KMS, or MySQL live validation. No production data, credentials, canonical development database, public bucket, or real private content is in scope.
+Bundled Node was used in this worktree. Prisma schema validation and SQLite client generation succeed. Prisma `db push` fails against a short ASCII-only empty SQLite target even though the schema-engine launches, Python can mutate that target, all 29 governed SQLite migrations apply through the ordered SQL path, and the path produces 108 tables. This is a local Prisma tooling limitation, not provider evidence.
 
-## Continuation remaining-local-work ledger
+All provider, key, scanner, backup, restore, and worker tests use synthetic data and deterministic local providers. They are `simulated-local`, never live-provider evidence. Full Vitest passed `122` files / `967` tests; source and staged-diff privacy scans passed. The production build compiled, then stopped on the unrelated declared `@rive-app/webgl2` TypeScript resolution failure in `scripts/validate-animation-assets.ts`, so no build sentinel is claimed.
 
-The pushed foundations checkpoint was reverified at `5922853ef8b156070648d8b36b7afa25bd6c592f`, with local/remote parity and no `origin/main` merge. The local ledger is: (1) durable encrypted backup creation, verification, retention, and two isolated restore drills; (2) durable repair execution and leases; (3) complete composed worker handlers, scheduling, metrics, and alerting; (4) operational API/UI and browser acceptance; (5) forward migration ledger and isolated SQLite rehearsal; (6) documentation, scans, focused/full validation. These are locally attainable and remain in progress. Live MySQL, S3/MinIO, ClamAV, AWS KMS, external alert dispatch, and Linux systemd restart evidence are separate external gates only.
+## Closure ledger
+
+All locally attainable Phase 3 requirements are complete: guarded repair catalog and failure proof; owned web restart and durable worker handoff proof; operational authorization/CSRF/error/idempotency taxonomy; desktop and `430 x 932` browser/accessibility acceptance; final tests, scans, manifests, and review. Live S3/MinIO, ClamAV, AWS KMS, MySQL, external alert delivery, and Linux/systemd restart evidence are the only remaining external gates.
