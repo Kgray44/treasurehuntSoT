@@ -112,6 +112,12 @@ export function createLocalPrivateOperationExecutors(input: {
         "PRIVATE_UPLOAD_CLEANUP",
         "PRIVATE_ORPHAN_CLEANUP",
         "PRIVATE_QUARANTINE_RETENTION",
+        "PRIVATE_MEDIA_DERIVATIVE_BUILD",
+        "PRIVATE_MEDIA_DERIVATIVE_VERIFY",
+        "PRIVATE_MEDIA_GRANT_RECONCILE",
+        "PRIVATE_MEDIA_WITHDRAW",
+        "PRIVATE_MEDIA_DERIVATIVE_CLEANUP",
+        "PRIVATE_MEDIA_INTEGRITY_RECONCILE",
       ] as const
     ).map((type) => [
       type,

@@ -10,7 +10,22 @@ export async function GET() {
   if (!session) return NextResponse.json({ error: "Administrator authorization is required." }, { status: 403 });
   try {
     const runtime = createPrivateProviderRuntime(parsePrivateContentConfiguration());
-    const [providers, backupRuns, repairs, drills] = await Promise.all([
+    const privateDb = db as typeof db & {
+      protectedMedia: { count(input: unknown): Promise<number> };
+      protectedMediaDerivative: { count(input: unknown): Promise<number> };
+      protectedMediaGrant: { count(input: unknown): Promise<number> };
+    };
+    const [
+      providers,
+      backupRuns,
+      repairs,
+      drills,
+      protectedMedia,
+      readyDerivatives,
+      blockedConsent,
+      withdrawnDerivatives,
+      staleGrants,
+    ] = await Promise.all([
       collectPrivateProviderHealth(runtime),
       db.privateBackupRun.findMany({
         select: { backupId: true, state: true, verifiedAt: true, createdAt: true },
@@ -34,6 +49,11 @@ export async function GET() {
         orderBy: { createdAt: "desc" },
         take: 20,
       }),
+      privateDb.protectedMedia.count({}),
+      privateDb.protectedMediaDerivative.count({ where: { state: "READY" } }),
+      privateDb.protectedMediaDerivative.count({ where: { state: "BLOCKED_CONSENT" } }),
+      privateDb.protectedMediaDerivative.count({ where: { state: "WITHDRAWN" } }),
+      privateDb.protectedMediaGrant.count({ where: { state: { in: ["INVALIDATED", "EXPIRED"] } } }),
     ]);
     return NextResponse.json(
       {
@@ -47,6 +67,7 @@ export async function GET() {
           ...drill,
           targetIdentity: `restore-${sha256(drill.targetIdentity).slice(0, 16)}`,
         })),
+        protectedMedia: { total: protectedMedia, readyDerivatives, blockedConsent, withdrawnDerivatives, staleGrants },
       },
       { headers: { "Cache-Control": "private, no-store" } },
     );

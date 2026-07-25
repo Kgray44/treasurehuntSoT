@@ -5,6 +5,13 @@ type State = {
   backupRuns?: Array<{ backupId: string; state: string; verifiedAt?: string }>;
   repairs?: Array<{ digest: string; state: string; dryRun: boolean; expiresAt: string; _count: { actions: number } }>;
   drills?: Array<{ targetIdentity: string; state: string; resultCode?: string }>;
+  protectedMedia?: {
+    total: number;
+    readyDerivatives: number;
+    blockedConsent: number;
+    withdrawnDerivatives: number;
+    staleGrants: number;
+  };
 };
 export function PrivateOperationsConsole() {
   const [state, setState] = useState<State>({});
@@ -52,6 +59,17 @@ export function PrivateOperationsConsole() {
       >
         {loading ? "Refreshing provider readiness" : "Refresh provider readiness"}
       </button>
+      <section className="studio-editor-section">
+        <h2>Protected media</h2>
+        <p>Metadata only; protected originals and derivatives are never previewed here.</p>
+        <ul>
+          <li>Registered media: {state.protectedMedia?.total ?? 0}</li>
+          <li>Ready derivatives: {state.protectedMedia?.readyDerivatives ?? 0}</li>
+          <li>Blocked by consent: {state.protectedMedia?.blockedConsent ?? 0}</li>
+          <li>Withdrawn derivatives: {state.protectedMedia?.withdrawnDerivatives ?? 0}</li>
+          <li>Stale or expired grants: {state.protectedMedia?.staleGrants ?? 0}</li>
+        </ul>
+      </section>
       <section className="studio-editor-section">
         <h2>Provider readiness</h2>
         <ul>
