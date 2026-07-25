@@ -649,12 +649,16 @@ test.describe.serial("Project Lanternwake Phase 3 extended runtime lifecycle", (
     // workspace route, which is the surface this lifecycle test exercises.
     await page.goto("/quartermaster/chapters");
     await expectInvitationRuntime();
-    await runTwentyCycles(page, async () => {
-      await page.goto("/");
-      await expect(page.getByRole("heading", { name: "Choose your role in Voyagewright" })).toBeVisible();
-      await page.goto("/quartermaster/chapters");
-      await expectInvitationRuntime();
-    });
+    await runTwentyCycles(
+      page,
+      async () => {
+        await page.goto("/");
+        await expect(page.getByRole("heading", { name: "Choose your role in Voyagewright" })).toBeVisible();
+        await page.goto("/quartermaster/chapters");
+        await expectInvitationRuntime();
+      },
+      stableRiveRemountSnapshot,
+    );
   });
 
   test("Journal Clasp compatibility is not required by the canonical Chronicle journal across route cycles", async ({
