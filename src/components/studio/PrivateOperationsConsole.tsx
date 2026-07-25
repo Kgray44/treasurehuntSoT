@@ -9,31 +9,49 @@ type State = {
 export function PrivateOperationsConsole() {
   const [state, setState] = useState<State>({});
   const [message, setMessage] = useState("Loading operational status.");
+  const [loading, setLoading] = useState(true);
   const refresh = async () => {
-    const response = await fetch("/api/studio/private-content/operations", { cache: "no-store" });
-    if (!response.ok) {
-      setMessage("Operational status is unavailable or requires Administrator access.");
-      return;
+    try {
+      const response = await fetch("/api/studio/private-content/operations", { cache: "no-store" });
+      if (!response.ok) {
+        setMessage("Operational status is unavailable or requires Administrator access.");
+        return;
+      }
+      setState((await response.json()) as State);
+      setMessage("Operational status is current.");
+    } catch {
+      setMessage("Operational status is temporarily unavailable.");
+    } finally {
+      setLoading(false);
     }
-    setState((await response.json()) as State);
-    setMessage("Operational status is current.");
   };
   useEffect(() => {
-    void refresh();
+    const initialFetch = setTimeout(() => void refresh(), 0);
+    return () => clearTimeout(initialFetch);
   }, []);
   return (
-    <main className="studio-home">
+    <main className="studio-home" aria-labelledby="private-operations-title">
       <header className="studio-home-header">
         <div>
           <p className="eyebrow">Private Chronicle</p>
-          <h1>Operational readiness</h1>
+          <h1 id="private-operations-title">Operational readiness</h1>
           <p>Provider state, backups, restore drills, and repair plans use sanitized identifiers only.</p>
         </div>
       </header>
-      <p role="status" aria-live="polite">
+      <p role="status" aria-live="polite" aria-atomic="true">
         {message}
       </p>
-      <button onClick={() => void refresh()}>Refresh provider readiness</button>
+      <button
+        type="button"
+        onClick={() => {
+          setLoading(true);
+          void refresh();
+        }}
+        aria-busy={loading}
+        disabled={loading}
+      >
+        {loading ? "Refreshing provider readiness" : "Refresh provider readiness"}
+      </button>
       <section className="studio-editor-section">
         <h2>Provider readiness</h2>
         <ul>
