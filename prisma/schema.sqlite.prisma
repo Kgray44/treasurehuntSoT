@@ -2167,7 +2167,13 @@ model CommunityReport {
 model CommunityVoyageKeepsake {
   id                     String   @id @default(cuid())
   ownerAccountId         String
-  taleSessionId          String
+  // Legacy direct-session provenance is retained only for pre-port rows.
+  // New Harborlight sharing preparation uses the opaque Wayfarer source below.
+  taleSessionId          String?
+  wayfarerKeepsakeId     String?
+  sourceWatermark        String?
+  sourceProjectionChecksum String?
+  preparationState       String   @default("PENDING_SOURCE")
   publishedVersionId     String?
   safeSnapshot           String
   favoriteMoment         String?
@@ -2177,7 +2183,9 @@ model CommunityVoyageKeepsake {
   updatedAt              DateTime @updatedAt
 
   @@unique([ownerAccountId, taleSessionId])
+  @@unique([ownerAccountId, wayfarerKeepsakeId])
   @@index([taleSessionId])
+  @@index([wayfarerKeepsakeId])
 }
 
 model CommunityVoyageLog {

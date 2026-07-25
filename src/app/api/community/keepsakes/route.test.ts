@@ -3,17 +3,15 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 const dependencies = vi.hoisted(() => ({
   requireCanonicalAccountIdentity: vi.fn(),
   verifyPlayerCsrf: vi.fn(),
-  findCompletedSessionForOwner: vi.fn(),
-  createKeepsakeIfMissing: vi.fn(),
+  createVoyageLogDraftFromWayfarer: vi.fn(),
+  databaseKeepsakeStore: { createIfMissing: vi.fn() },
 }));
 
 vi.mock("@/platform/auth", () => dependencies);
-vi.mock("@/community/keepsake-store", () => ({
-  findCompletedSessionForOwner: dependencies.findCompletedSessionForOwner,
-  databaseKeepsakeStore: {
-    findCompletedSessionForOwner: dependencies.findCompletedSessionForOwner,
-    createKeepsakeIfMissing: dependencies.createKeepsakeIfMissing,
-  },
+vi.mock("@/community/keepsake-store", () => ({ databaseKeepsakeStore: dependencies.databaseKeepsakeStore }));
+vi.mock("@/community/wayfarer-keepsake-source", () => ({
+  unavailableWayfarerKeepsakeSource: { getEligiblePrivateKeepsake: vi.fn(), getPublicSharingCandidates: vi.fn(), verifySourceWatermark: vi.fn() },
+  createVoyageLogDraftFromWayfarer: dependencies.createVoyageLogDraftFromWayfarer,
 }));
 
 import { POST } from "@/app/api/community/keepsakes/route";
@@ -23,33 +21,13 @@ describe("POST /api/community/keepsakes", () => {
     vi.resetAllMocks();
     dependencies.requireCanonicalAccountIdentity.mockResolvedValue({ accountId: "account-1", playerProfileId: "profile-1" });
     dependencies.verifyPlayerCsrf.mockResolvedValue(true);
-    dependencies.findCompletedSessionForOwner.mockResolvedValue({
-      id: "session-1",
-      taleId: "tale-1",
-      publishedVersionId: "version-1",
-      status: "COMPLETED",
-      completedAt: new Date("2026-07-25T12:00:00Z"),
-      previewMode: false,
-      taleTitle: "The Safe Harbor",
-    });
-    dependencies.createKeepsakeIfMissing.mockResolvedValue({
+    dependencies.createVoyageLogDraftFromWayfarer.mockResolvedValue({
       created: true,
-      keepsake: {
-        id: "keepsake-1",
-        ownerAccountId: "account-1",
-        taleSessionId: "session-1",
-        publishedVersionId: "version-1",
-        safeSnapshot: JSON.stringify({ schemaVersion: 1, taleId: "tale-1", taleTitle: "The Safe Harbor", publishedVersionId: "version-1", completedAt: "2026-07-25T12:00:00.000Z" }),
-        favoriteMoment: null,
-        representationChecksum: "checksum",
-        status: "READY",
-        createdAt: new Date("2026-07-25T12:00:00Z"),
-        updatedAt: new Date("2026-07-25T12:00:00Z"),
-      },
+      record: { id: "preparation-1", preparationState: "DRAFT_CREATED" },
     });
   });
 
-  it("requires a canonical account before accepting a private-generation request", async () => {
+  it("requires a canonical account before accepting public-sharing preparation", async () => {
     dependencies.requireCanonicalAccountIdentity.mockResolvedValue(null);
     const response = await POST(new Request("http://localhost/api/community/keepsakes", { method: "POST" }));
     expect(response.status).toBe(401);
@@ -59,43 +37,37 @@ describe("POST /api/community/keepsakes", () => {
 
   it("requires a valid CSRF token after identity resolution", async () => {
     dependencies.verifyPlayerCsrf.mockResolvedValue(false);
-    const response = await POST(
-      new Request("http://localhost/api/community/keepsakes", {
-        method: "POST",
-        headers: { "content-type": "application/json", "x-csrf-token": "expired" },
-        body: JSON.stringify({ taleSessionId: "session-1" }),
-      }),
-    );
+    const response = await POST(new Request("http://localhost/api/community/keepsakes", {
+      method: "POST", headers: { "content-type": "application/json", "x-csrf-token": "expired" },
+      body: JSON.stringify({ wayfarerKeepsakeId: "wayfarer-keepsake-1" }),
+    }));
     expect(response.status).toBe(403);
     expect(await response.json()).toMatchObject({ code: "COMMUNITY_ACCESS_DENIED" });
   });
 
-  it("rejects malformed or surplus input without exposing a validation detail", async () => {
-    const response = await POST(
-      new Request("http://localhost/api/community/keepsakes", {
-        method: "POST",
-        headers: { "content-type": "application/json", "x-csrf-token": "valid" },
-        body: JSON.stringify({ taleSessionId: "session-1", taleTitle: "Client supplied text is forbidden" }),
-      }),
-    );
+  it("rejects malformed or surplus input without exposing source validation detail", async () => {
+    const response = await POST(new Request("http://localhost/api/community/keepsakes", {
+      method: "POST", headers: { "content-type": "application/json", "x-csrf-token": "valid" },
+      body: JSON.stringify({ wayfarerKeepsakeId: "source-1", taleSessionId: "forged-session" }),
+    }));
     expect(response.status).toBe(400);
     expect(await response.json()).toEqual({
-      code: "COMMUNITY_INVALID_KEEPSAKE",
-      error: "The Voyage Keepsake request is invalid.",
+      code: "COMMUNITY_INVALID_KEEPSAKE_SOURCE",
+      error: "The Wayfarer Keepsake request is invalid.",
     });
   });
 
-  it("derives the title and completion eligibility server-side before generating once", async () => {
-    const response = await POST(
-      new Request("http://localhost/api/community/keepsakes", {
-        method: "POST",
-        headers: { "content-type": "application/json", "x-csrf-token": "valid" },
-        body: JSON.stringify({ taleSessionId: "session-1" }),
-      }),
-    );
+  it("creates a private no-store Voyage Log draft through the Wayfarer port", async () => {
+    const response = await POST(new Request("http://localhost/api/community/keepsakes", {
+      method: "POST", headers: { "content-type": "application/json", "x-csrf-token": "valid" },
+      body: JSON.stringify({ wayfarerKeepsakeId: "wayfarer-keepsake-1" }),
+    }));
     expect(response.status).toBe(201);
-    expect(await response.json()).toMatchObject({ state: "CREATED", keepsake: { id: "keepsake-1", taleTitle: "The Safe Harbor" } });
-    expect(dependencies.findCompletedSessionForOwner).toHaveBeenCalledWith("session-1", "account-1");
-    expect(dependencies.createKeepsakeIfMissing).toHaveBeenCalledWith(expect.objectContaining({ ownerAccountId: "account-1", taleSessionId: "session-1" }));
+    expect(response.headers.get("cache-control")).toBe("private, no-store");
+    expect(await response.json()).toEqual({ state: "DRAFT_CREATED", voyageLogDraft: { id: "preparation-1", state: "DRAFT_CREATED" } });
+    expect(dependencies.createVoyageLogDraftFromWayfarer).toHaveBeenCalledWith(
+      expect.anything(), dependencies.databaseKeepsakeStore,
+      { ownerAccountId: "account-1", sourceKeepsakeId: "wayfarer-keepsake-1" },
+    );
   });
 });

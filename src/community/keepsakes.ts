@@ -1,135 +1,14 @@
-import { createHash } from "node:crypto";
+import { CommunityError } from "@/community/domain";
 
-import { CommunityError, stableJson } from "@/community/domain";
-
-/**
- * Harborlight owns a private, deliberately small record of a completed Voyage.
- * It never reads or writes TaleSession progression, variables, events, answers,
- * Captain notes, or private Chronicle prose.  The caller must resolve the
- * canonical session through One Voyage and pass this constrained projection.
- */
-export type CanonicalCompletedTaleSession = Readonly<{
-  id: string;
-  taleId: string;
-  publishedVersionId: string | null;
-  status: string;
-  completedAt: Date | null;
-  previewMode: boolean;
-}>;
-
-export type KeepsakeSafeSnapshot = Readonly<{
-  schemaVersion: 1;
-  taleId: string;
-  taleTitle: string;
-  publishedVersionId: string;
-  completedAt: string;
-}>;
-
-export type PrivateVoyageKeepsake = Readonly<{
-  id: string;
-  ownerAccountId: string;
-  taleSessionId: string;
-  publishedVersionId: string | null;
-  safeSnapshot: string;
-  favoriteMoment: string | null;
-  representationChecksum: string | null;
-  status: string;
-  createdAt: Date;
-  updatedAt: Date;
-}>;
-
-export type CreateKeepsakeRecord = Readonly<{
-  ownerAccountId: string;
-  taleSessionId: string;
-  publishedVersionId: string;
-  safeSnapshot: string;
-  representationChecksum: string;
-}>;
-
-/**
- * The persistence adapter must enforce the schema's unique(ownerAccountId,
- * taleSessionId) constraint atomically. Returning an existing row turns retry
- * and concurrent requests into the same successful private generation.
- */
-export interface KeepsakeStore {
-  findCompletedSessionForOwner(
-    sessionId: string,
-    ownerAccountId: string,
-  ): Promise<CanonicalCompletedTaleSession | null>;
-  createKeepsakeIfMissing(input: CreateKeepsakeRecord): Promise<{ keepsake: PrivateVoyageKeepsake; created: boolean }>;
-}
-
-export type GenerateKeepsakeInput = Readonly<{
-  ownerAccountId: string;
-  taleSessionId: string;
-  taleTitle: string;
-}>;
+// Canonical private Keepsakes, history, reflection, and private consent belong
+// to Wayfarer. Harborlight retains only the public Voyage Log policy below;
+// sharing preparation is implemented through wayfarer-keepsake-source.ts.
 
 function requiredText(value: string, field: string, maximum = 280) {
   const normalized = value.normalize("NFKC").trim();
   if (!normalized || normalized.length > maximum || /[\u0000-\u001f\u007f-\u009f]/u.test(normalized))
-    throw new CommunityError("COMMUNITY_INVALID_KEEPSAKE", `${field} is invalid.`);
+    throw new CommunityError("COMMUNITY_INVALID_VOYAGE_LOG", `${field} is invalid.`);
   return normalized;
-}
-
-export function assertCanonicalCompletedSession(
-  session: CanonicalCompletedTaleSession | null,
-): asserts session is CanonicalCompletedTaleSession & { completedAt: Date; publishedVersionId: string } {
-  if (!session || session.status !== "COMPLETED" || !session.completedAt || session.previewMode || !session.publishedVersionId)
-    throw new CommunityError(
-      "COMMUNITY_COMPLETION_REQUIRED",
-      "A completed canonical, non-preview Tale Session is required for a Voyage Keepsake.",
-    );
-}
-
-/** Builds a versioned allowlist rather than copying a Chronicle/session payload. */
-export function createKeepsakeSafeSnapshot(input: {
-  session: CanonicalCompletedTaleSession;
-  taleTitle: string;
-}): KeepsakeSafeSnapshot {
-  assertCanonicalCompletedSession(input.session);
-  return Object.freeze({
-    schemaVersion: 1,
-    taleId: requiredText(input.session.taleId, "Tale ID", 191),
-    taleTitle: requiredText(input.taleTitle, "Tale title", 140),
-    publishedVersionId: requiredText(input.session.publishedVersionId, "Published version ID", 191),
-    completedAt: input.session.completedAt.toISOString(),
-  });
-}
-
-export function checksumKeepsakeRepresentation(snapshot: KeepsakeSafeSnapshot) {
-  return createHash("sha256").update(stableJson(snapshot)).digest("hex");
-}
-
-export async function generatePrivateVoyageKeepsake(
-  store: KeepsakeStore,
-  input: GenerateKeepsakeInput,
-): Promise<{ keepsake: PrivateVoyageKeepsake; created: boolean }> {
-  const ownerAccountId = requiredText(input.ownerAccountId, "Owner account ID", 191);
-  const taleSessionId = requiredText(input.taleSessionId, "Tale Session ID", 191);
-  const session = await store.findCompletedSessionForOwner(taleSessionId, ownerAccountId);
-  assertCanonicalCompletedSession(session);
-  const snapshot = createKeepsakeSafeSnapshot({ session, taleTitle: input.taleTitle });
-  return store.createKeepsakeIfMissing({
-    ownerAccountId,
-    taleSessionId,
-    publishedVersionId: snapshot.publishedVersionId,
-    safeSnapshot: stableJson(snapshot),
-    representationChecksum: checksumKeepsakeRepresentation(snapshot),
-  });
-}
-
-/** An owner may view their safe record, but source identity/progression evidence remains private. */
-export function toPrivateKeepsakeProjection(keepsake: PrivateVoyageKeepsake) {
-  const snapshot = JSON.parse(keepsake.safeSnapshot) as KeepsakeSafeSnapshot;
-  return {
-    id: keepsake.id,
-    taleTitle: snapshot.taleTitle,
-    completedAt: snapshot.completedAt,
-    favoriteMoment: keepsake.favoriteMoment,
-    representationChecksum: keepsake.representationChecksum,
-    status: keepsake.status,
-  };
 }
 
 export const voyageLogVisibilities = ["PRIVATE", "CREW_ONLY", "UNLISTED", "COMMUNITY"] as const;
