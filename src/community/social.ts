@@ -314,6 +314,16 @@ async function containsCollection(tx: any, collectionId: string, targetId: strin
   for (const child of children) if (await containsCollection(tx, child.subjectId, targetId, depth + 1)) return true;
   return false;
 }
+async function collectionAncestorDepth(tx: any, collectionId: string, depth = 0): Promise<number> {
+  if (depth >= 3) return depth;
+  const parent = await tx.communityCollectionItem.findFirst({ where: { subjectType: "COLLECTION", subjectId: collectionId }, select: { collectionId: true } });
+  return parent ? collectionAncestorDepth(tx, parent.collectionId, depth + 1) : depth;
+}
+async function collectionDescendantDepth(tx: any, collectionId: string, depth = 0): Promise<number> {
+  const children = await tx.communityCollectionItem.findMany({ where: { collectionId, subjectType: "COLLECTION" }, select: { subjectId: true } });
+  if (!children.length) return depth;
+  return Math.max(...(await Promise.all(children.map((child: { subjectId: string }) => collectionDescendantDepth(tx, child.subjectId, depth + 1)))));
+}
 export async function addCollectionItem(actor: CommunityActor, input: { collectionId: string; subjectType: SocialSubjectType; subjectId: string }): Promise<IdempotentOutcome<unknown>> {
   socialRate(actor, "collection-add", 60);
   if (!isSubjectType(input.subjectType)) fail("COMMUNITY_INVALID_SUBJECT", "Unsupported collection subject.");
@@ -327,6 +337,8 @@ export async function addCollectionItem(actor: CommunityActor, input: { collecti
     if (input.subjectType === "COLLECTION") {
       if (input.subjectId === collection.id || (await containsCollection(tx, input.subjectId, collection.id)))
         fail("COMMUNITY_COLLECTION_CYCLE", "Collections cannot contain themselves or form a cycle.");
+      if ((await collectionAncestorDepth(tx, collection.id)) + 1 + (await collectionDescendantDepth(tx, input.subjectId)) > 2)
+        fail("COMMUNITY_COLLECTION_DEPTH", "Collections can nest no more than two levels deep.");
       if (collection.visibility === "COMMUNITY" && !subject.public)
         fail("COMMUNITY_COLLECTION_PRIVATE_ITEM", "Public collections cannot contain a private collection.");
     }
@@ -350,6 +362,54 @@ export async function reorderCollection(actor: CommunityActor, input: { collecti
     await Promise.all(items.map((item: any, index: number) => tx.communityCollectionItem.update({ where: { id: item.id }, data: { position: -(index + 1) } })));
     await Promise.all(input.orderedItemIds.map((id, position) => tx.communityCollectionItem.update({ where: { id }, data: { position } })));
     await tx.communityCollection.update({ where: { id: collection.id }, data: {} });
+    return { state: "UPDATED" as const };
+  });
+}
+export async function updateCollection(actor: CommunityActor, input: { collectionId: string; title?: string; description?: string | null; coverReference?: string | null; visibility?: CollectionVisibility; expectedUpdatedAt: string }) {
+  socialRate(actor, "collection-update", 30);
+  return socialDb.$transaction(async (tx: any) => {
+    const collection = await ownCollection(tx, actor, input.collectionId);
+    if (collection.updatedAt.toISOString() !== input.expectedUpdatedAt) fail("COMMUNITY_COLLECTION_REVISION_CONFLICT", "This collection changed before it could be saved.");
+    if (input.visibility && !isCollectionVisibility(input.visibility)) fail("COMMUNITY_INVALID_COLLECTION_VISIBILITY", "Unsupported collection visibility.");
+    if (input.visibility === "COMMUNITY") {
+      const items = await tx.communityCollectionItem.findMany({ where: { collectionId: collection.id } });
+      for (const item of items) if (!(await resolveSubject(tx, item.subjectType, item.subjectId)).public) fail("COMMUNITY_COLLECTION_PRIVATE_ITEM", "Public collections can contain only current public items.");
+    }
+    const data = {
+      ...(input.title !== undefined ? { title: boundedText(input.title, "Collection title", 1, 120) } : {}),
+      ...(input.description !== undefined ? { description: input.description === null ? null : boundedText(input.description, "Collection description", 0, 2_000, true) || null } : {}),
+      ...(input.coverReference !== undefined ? { coverReference: input.coverReference === null ? null : requiredId(input.coverReference, "Collection cover") } : {}),
+      ...(input.visibility ? { visibility: input.visibility } : {}),
+    };
+    return { state: "UPDATED" as const, value: await tx.communityCollection.update({ where: { id: collection.id }, data }) };
+  });
+}
+export async function removeCollectionItem(actor: CommunityActor, collectionId: string, itemId: string) {
+  socialRate(actor, "collection-remove", 60);
+  return socialDb.$transaction(async (tx: any) => {
+    const collection = await ownCollection(tx, actor, collectionId);
+    const item = await tx.communityCollectionItem.findFirst({ where: { id: itemId, collectionId: collection.id } });
+    if (!item) return { state: "ABSENT" as const };
+    await tx.communityCollectionItem.delete({ where: { id: item.id } });
+    const remaining = await tx.communityCollectionItem.findMany({ where: { collectionId: collection.id }, orderBy: { position: "asc" } });
+    await Promise.all(remaining.map((entry: any, position: number) => tx.communityCollectionItem.update({ where: { id: entry.id }, data: { position } })));
+    await tx.communityCollection.update({ where: { id: collection.id }, data: {} });
+    return { state: "REMOVED" as const };
+  });
+}
+export async function archiveCollection(actor: CommunityActor, collectionId: string) {
+  return socialDb.$transaction(async (tx: any) => {
+    const collection = await ownCollection(tx, actor, collectionId);
+    if (collection.archivedAt) return { state: "EXISTING" as const };
+    await tx.communityCollection.update({ where: { id: collection.id }, data: { archivedAt: new Date(), visibility: "PRIVATE" } });
+    return { state: "UPDATED" as const };
+  });
+}
+export async function tombstoneCollection(actor: CommunityActor, collectionId: string) {
+  return socialDb.$transaction(async (tx: any) => {
+    const collection = await ownCollection(tx, actor, collectionId);
+    if (collection.deletedAt) return { state: "EXISTING" as const };
+    await tx.communityCollection.update({ where: { id: collection.id }, data: { deletedAt: new Date(), archivedAt: collection.archivedAt ?? new Date(), visibility: "PRIVATE", title: "Unavailable collection", description: null, coverReference: null } });
     return { state: "UPDATED" as const };
   });
 }

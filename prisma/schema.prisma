@@ -2019,11 +2019,15 @@ model CommunityCollection {
   slug           String   @unique
   title          String
   description    String?
+  coverReference String?
   visibility     String   @default("PRIVATE")
+  archivedAt     DateTime?
+  deletedAt      DateTime?
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 
   @@index([ownerAccountId, visibility])
+  @@index([visibility, archivedAt, deletedAt])
 }
 
 model CommunityCollectionItem {

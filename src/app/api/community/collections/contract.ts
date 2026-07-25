@@ -15,6 +15,15 @@ export const createCollectionInputSchema = z
 
 export const addCollectionItemInputSchema = z.object({ subjectType, subjectId: opaqueId }).strict();
 
+export const updateCollectionInputSchema = z.object({
+  title: z.string().trim().min(1).max(120).optional(),
+  description: z.string().trim().max(2_000).nullable().optional(),
+  coverReference: z.string().trim().min(1).max(191).nullable().optional(),
+  visibility: collectionVisibility.optional(),
+  expectedUpdatedAt: z.string().datetime({ offset: true }),
+}).strict();
+export const removeCollectionItemInputSchema = z.object({ itemId: opaqueId }).strict();
+
 export const reorderCollectionInputSchema = z
   .object({
     orderedItemIds: z.array(opaqueId).min(0).max(500).superRefine((ids, context) => {

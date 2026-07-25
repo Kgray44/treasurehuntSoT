@@ -40,7 +40,7 @@ async function sectionItems(section: CommunitySection): Promise<Array<{ href: st
   }
   if (section === "creators") return (await db.communityProfile.findMany({ where: { visibility: "COMMUNITY", moderationStatus: "ACTIVE" }, orderBy: { lastPublishedAt: "desc" }, take: 24 })).map((profile) => ({ href: `/community/creators/${encodeURIComponent(profile.handle)}`, title: profile.displayName, summary: profile.biography }));
   if (section === "guides") return (await db.communityGuideContent.findMany({ where: { status: "PUBLISHED" }, orderBy: { publishedAt: "desc" }, take: 24 })).map((guide) => ({ href: `/community/guides/${encodeURIComponent(guide.slug)}`, title: guide.title, summary: guide.safeSummary }));
-  if (section === "collections") return (await db.communityCollection.findMany({ where: { visibility: "COMMUNITY" }, orderBy: { updatedAt: "desc" }, take: 24 })).map((collection) => ({ href: `/community/collections/${encodeURIComponent(collection.slug)}`, title: collection.title, summary: collection.description }));
+  if (section === "collections") return (await db.communityCollection.findMany({ where: { visibility: "COMMUNITY", archivedAt: null, deletedAt: null }, orderBy: { updatedAt: "desc" }, take: 24 })).map((collection) => ({ href: `/community/collections/${encodeURIComponent(collection.slug)}`, title: collection.title, summary: collection.description }));
   return (await readPublicVoyageLogs()).map((log) => ({
     href: `/community/voyage-logs/${encodeURIComponent(log.slug)}`,
     title: log.title,

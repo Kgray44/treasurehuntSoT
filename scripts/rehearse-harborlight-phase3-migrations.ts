@@ -66,6 +66,7 @@ async function main() {
     const columns = await prisma.$queryRawUnsafe<Array<{ name: string; dflt_value: string | null }>>("PRAGMA table_info('CommunityVoyageKeepsake')");
     const legacy = await prisma.$queryRawUnsafe<Array<{ taleSessionId: string; wayfarerKeepsakeId: string | null }>>("SELECT taleSessionId, wayfarerKeepsakeId FROM CommunityVoyageKeepsake WHERE id = 'legacy-keepsake'");
     const indexes = await prisma.$queryRawUnsafe<Array<{ name: string }>>("PRAGMA index_list('CommunityVoyageKeepsake')");
+    const collectionIndexes = await prisma.$queryRawUnsafe<Array<{ name: string }>>("PRAGMA index_list('CommunityCollection')");
     const foreignKeys = await prisma.$queryRawUnsafe<Array<unknown>>("PRAGMA foreign_key_check");
     const tableCount = await prisma.$queryRawUnsafe<Array<{ count: bigint }>>("SELECT COUNT(*) AS count FROM sqlite_master WHERE type = 'table' AND name NOT LIKE 'sqlite_%'");
     await prisma.$executeRawUnsafe("INSERT INTO CommunityVoyageKeepsake (id, ownerAccountId, wayfarerKeepsakeId, sourceWatermark, sourceProjectionChecksum, safeSnapshot, status, updatedAt) VALUES ('source-keepsake', 'owner-source', 'wayfarer-1', 'watermark-1', 'checksum-1', '{}', 'READY', CURRENT_TIMESTAMP)");
@@ -76,6 +77,7 @@ async function main() {
     const requiredColumns = ["taleSessionId", "wayfarerKeepsakeId", "sourceWatermark", "sourceProjectionChecksum", "preparationState"];
     const defaultState = columns.find((column) => column.name === "preparationState")?.dflt_value;
     const requiredIndexes = ["CommunityVoyageKeepsake_ownerAccountId_taleSessionId_key", "CommunityVoyageKeepsake_ownerAccountId_wayfarerKeepsakeId_key", "CommunityVoyageKeepsake_taleSessionId_idx", "CommunityVoyageKeepsake_wayfarerKeepsakeId_idx"];
+    const collectionColumns = await prisma.$queryRawUnsafe<Array<{ name: string }>>("PRAGMA table_info('CommunityCollection')");
     const result = {
       appliedMigrations: (await migrations()).length,
       tableCount: Number(tableCount[0]?.count ?? 0),
@@ -83,12 +85,13 @@ async function main() {
       legacyRowSurvived: legacy[0]?.taleSessionId === "legacy-session" && legacy[0]?.wayfarerKeepsakeId === null,
       nullableSourceFields: ["wayfarerKeepsakeId", "sourceWatermark", "sourceProjectionChecksum"].every((name) => columns.find((column) => column.name === name)?.dflt_value === null),
       requiredColumnsPresent: requiredColumns.every((name) => columns.some((column) => column.name === name)),
+      collectionLifecycleColumnsPresent: ["coverReference", "archivedAt", "deletedAt"].every((name) => collectionColumns.some((column) => column.name === name)),
       preparationStateDefault: defaultState,
       legacyUnique,
       sourceUnique,
-      requiredIndexesPresent: requiredIndexes.every((name) => indexes.some((index) => index.name === name)),
+      requiredIndexesPresent: requiredIndexes.every((name) => indexes.some((index) => index.name === name)) && collectionIndexes.some((index) => index.name === "CommunityCollection_visibility_archivedAt_deletedAt_idx"),
     };
-    if (result.foreignKeyFindings || !result.legacyRowSurvived || !result.nullableSourceFields || !result.requiredColumnsPresent || result.preparationStateDefault !== "'PENDING_SOURCE'" || !result.legacyUnique || !result.sourceUnique || !result.requiredIndexesPresent)
+    if (result.foreignKeyFindings || !result.legacyRowSurvived || !result.nullableSourceFields || !result.requiredColumnsPresent || !result.collectionLifecycleColumnsPresent || result.preparationStateDefault !== "'PENDING_SOURCE'" || !result.legacyUnique || !result.sourceUnique || !result.requiredIndexesPresent)
       throw new Error(`Migration rehearsal invariant failed: ${JSON.stringify(result)}`);
     process.stdout.write(`${JSON.stringify(result)}\n`);
   } finally {
