@@ -38,6 +38,7 @@
 | Public-raster sanitizer and ordered SQLite rehearsal through `20260725149000_harborlight_phase3_public_media_binding` | exit 0; 3 files / 8 tests; 35 migrations / 130 tables / empty `PRAGMA foreign_key_check` | passed synthetic metadata removal, source/derivative checksum distinction, exact-consent replay rejection, scanner fail-closed behavior, and media-consent binding migration evidence |
 | Public-location policy tests | exit 0; 1 file / 3 tests | passed private omission, approximate generalization, and permission-gated public coordinate policy |
 | Voyage Log lifecycle/readiness policy tests | exit 0; 1 file / 2 tests | passed complete publication gate explanation and irreversible consent-review/removal transitions |
+| Publication-consent owner/participant panel tests | exit 0; 1 file / 2 tests | passed accessible consent state display, CSRF-protected approval request, and protected-participant UI redaction |
 
 ## Not executed or not a pass
 

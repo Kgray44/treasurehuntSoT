@@ -230,3 +230,68 @@ export async function revokeVoyageLogPublicationConsent(input: {
   });
   return { voyageLogId: input.voyageLogId, scope: input.scope, state: "REVOKED" as const, idempotent: false };
 }
+
+export async function readOwnerVoyageLogConsentDashboard(ownerAccountId: string, voyageLogId: string) {
+  const log = await ownedLog(ownerAccountId, voyageLogId);
+  const [participants, consents] = await Promise.all([
+    db.communityVoyageLogParticipant.findMany({
+      where: { voyageLogId: log.id },
+      select: { id: true, displayNameSnapshot: true, isChild: true },
+      orderBy: { id: "asc" },
+    }),
+    db.communityVoyageLogParticipantConsent.findMany({
+      where: { voyageLogId: log.id, purpose: { startsWith: `${harborlightVoyageLogPublicationPurpose}:` } },
+      select: {
+        participantId: true,
+        purpose: true,
+        state: true,
+        requestedAt: true,
+        expiresAt: true,
+        grantedAt: true,
+        revokedAt: true,
+      },
+      orderBy: { updatedAt: "desc" },
+    }),
+  ]);
+  return {
+    voyageLogId: log.id,
+    lifecycleState: log.lifecycleState,
+    participants: participants.map((participant) => ({
+      id: participant.id,
+      displayName: participant.isChild ? "Protected participant" : participant.displayNameSnapshot,
+      protected: participant.isChild,
+      consents: consents
+        .filter((consent) => consent.participantId === participant.id)
+        .map((consent) => ({
+          scope: consent.purpose.slice(`${harborlightVoyageLogPublicationPurpose}:`.length),
+          state: consent.state,
+          requestedAt: consent.requestedAt,
+          expiresAt: consent.expiresAt,
+          grantedAt: consent.grantedAt,
+          revokedAt: consent.revokedAt,
+        })),
+    })),
+  };
+}
+
+export async function readParticipantVoyageLogConsentInbox(accountId: string) {
+  const participants = await db.communityVoyageLogParticipant.findMany({
+    where: { accountId },
+    select: { id: true, voyageLogId: true },
+  });
+  if (!participants.length) return [];
+  const consents = await db.communityVoyageLogParticipantConsent.findMany({
+    where: {
+      participantId: { in: participants.map((participant) => participant.id) },
+      purpose: { startsWith: `${harborlightVoyageLogPublicationPurpose}:` },
+    },
+    select: { voyageLogId: true, participantId: true, purpose: true, state: true, expiresAt: true },
+    orderBy: { updatedAt: "desc" },
+  });
+  return consents.map((consent) => ({
+    voyageLogId: consent.voyageLogId,
+    scope: consent.purpose.slice(`${harborlightVoyageLogPublicationPurpose}:`.length),
+    state: consent.state,
+    expiresAt: consent.expiresAt,
+  }));
+}
