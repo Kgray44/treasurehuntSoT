@@ -271,3 +271,39 @@ export async function removeVoyageLogPublicMedia(input: {
     });
   });
 }
+
+/** Owner-only projection; protected storage references never leave the server. */
+export async function readOwnerVoyageLogPublicMedia(input: { ownerAccountId: string; voyageLogId: string }) {
+  const log = await db.communityVoyageLog.findUnique({
+    where: { id: input.voyageLogId },
+    select: { ownerAccountId: true },
+  });
+  if (!log || log.ownerAccountId !== input.ownerAccountId)
+    throw new CommunityError("COMMUNITY_VOYAGE_LOG_NOT_FOUND", "Voyage Log not found.");
+  const media = await db.communityVoyageLogMedia.findMany({
+    where: { voyageLogId: input.voyageLogId },
+    orderBy: { createdAt: "asc" },
+    select: {
+      id: true,
+      privateMediaReference: true,
+      subjectParticipantId: true,
+      detectedMediaType: true,
+      sourceChecksum: true,
+      derivativeChecksum: true,
+      processingStatus: true,
+      scanStatus: true,
+      exifGpsRemoved: true,
+    },
+  });
+  return media.map((item) => ({
+    id: item.id,
+    sourceOpaqueId: item.privateMediaReference,
+    subjectParticipantId: item.subjectParticipantId,
+    detectedMediaType: item.detectedMediaType,
+    sourceChecksum: item.sourceChecksum,
+    derivativeChecksum: item.derivativeChecksum,
+    processingStatus: item.processingStatus,
+    scanStatus: item.scanStatus,
+    exifGpsRemoved: item.exifGpsRemoved,
+  }));
+}

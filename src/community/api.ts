@@ -6,13 +6,15 @@ export function communityApiError(cause: unknown) {
     const status =
       cause.code === "COMMUNITY_RATE_LIMITED"
         ? 429
-        : cause.code.includes("NOT_FOUND")
-          ? 404
-          : cause.code.includes("ACCESS_DENIED")
-            ? 403
-            : cause.code.includes("CONFLICT") || cause.code.includes("TAKEN") || cause.code.includes("EXISTS")
-              ? 409
-              : 400;
+        : cause.code.includes("NOT_CONFIGURED")
+          ? 503
+          : cause.code.includes("NOT_FOUND")
+            ? 404
+            : cause.code.includes("ACCESS_DENIED")
+              ? 403
+              : cause.code.includes("CONFLICT") || cause.code.includes("TAKEN") || cause.code.includes("EXISTS")
+                ? 409
+                : 400;
     return NextResponse.json(
       { code: cause.code, error: cause.message },
       { status, headers: cause.code === "COMMUNITY_RATE_LIMITED" ? { "Retry-After": "60" } : undefined },
