@@ -1,6 +1,6 @@
 import { createHash } from "node:crypto";
 import { Readable } from "node:stream";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { assessPrivateReadiness, parsePrivateContentConfiguration } from "@/private-content/config";
 import { AwsKmsPrivateKeyProvider } from "@/private-content/key-provider";
 import { S3CompatiblePrivateStorageProvider, type S3CompatibleObjectClient } from "@/private-content/provider-storage";
@@ -138,15 +138,17 @@ describe("Phase 3 operational controls", () => {
       explicitDigest: plan.digest,
       now: new Date("2029-01-01"),
     });
+    const apply = vi.fn().mockResolvedValue(undefined);
     await expect(
       executeApprovedPrivateRepairPlan({
         plan: approved,
         currentSnapshotDigest: snapshot,
         explicitDigest: approved.digest,
         now: new Date("2029-01-01"),
-        apply: async () => undefined,
+        apply,
       }),
-    ).rejects.toMatchObject({ code: "PRIVATE_CONTENT_FORBIDDEN" });
+    ).resolves.toMatchObject({ state: "COMPLETED", dryRun: false });
+    expect(apply).toHaveBeenCalledTimes(1);
     expect(() =>
       assertIsolatedPrivateRestoreTarget({
         targetEnvironmentId: "production",

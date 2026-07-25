@@ -63,7 +63,7 @@ export function approvePrivateRepairPlan(
     new Date(plan.expiresAt) <= now
   )
     throw privateFailure("PRIVATE_CONTENT_FORBIDDEN", "Private repair approval was rejected.");
-  return { ...plan, state: "APPROVED" as const, approvedById: input.administratorAccountId };
+  return { ...plan, dryRun: false, state: "APPROVED" as const, approvedById: input.administratorAccountId };
 }
 
 /** Re-validates immutable action preconditions immediately before each side effect. */
