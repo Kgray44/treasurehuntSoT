@@ -14,3 +14,6 @@ Tests added: discovery, social, and Keepsake focused Vitest files.
 Validation: schema validation, direct ordered SQLite rehearsal, focused Vitest, strict TypeScript, production build.
 Known external limitations: MySQL execution, browser/Axe/IDOR/performance/restart/full validation, production scanner/object store/worker/distributed rate limit/monitoring/incident tooling remain unconfigured or unrun.
 No Phase 4 claim is made.
+
+Continuation additions (not a completion claim): public persisted district pages for Featured, Chronicles, Artifacts, Templates, Maps, Audio, Creators, Collections, Guides, and consent-filtered Voyage Logs; Creator/collection/Guide/Voyage Log details; Community loading/error states; Discovery Browser search/sort/visible bounded filters; strict social and collection mutation contracts; fail-closed Keepsake request contract; public Guide and Voyage Log APIs; and a shared consent/restriction-aware Voyage Log projection.
+Continuation focused validation: 33 selected Vitest tests, 4 Voyage Log projection tests, 4 Discovery Browser tests, strict TypeScript, and a production webpack build passed. The known limitations above remain unrun/unimplemented, and this branch is not merged.

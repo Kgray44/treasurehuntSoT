@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { listPublicListingsFoundation } from "@/community/services";
+import { CommunityDiscoveryBrowser } from "@/components/community/CommunityDiscoveryBrowser";
 
 export const metadata = {
   title: "Community Harbor",
@@ -7,9 +7,7 @@ export const metadata = {
 };
 export const dynamic = "force-dynamic";
 
-export default async function CommunityHarborPage() {
-  const listings = await listPublicListingsFoundation();
-
+export default function CommunityHarborPage() {
   return (
     <main className="page-shell" aria-labelledby="community-harbor-title">
       <p className="eyebrow">Community Harbor</p>
@@ -19,32 +17,24 @@ export default async function CommunityHarborPage() {
       </p>
       <nav aria-label="Community Harbor districts">
         <ul>
-          <li><Link href="/community?district=featured">Featured</Link></li>
-          <li><Link href="/community?district=chronicles">Chronicles</Link></li>
-          <li><Link href="/community?district=artifacts">Artifacts</Link></li>
-          <li><Link href="/community?district=guides">Shipwright&apos;s Workshop</Link></li>
-          <li><Link href="/community?district=voyage-logs">Voyage Logs</Link></li>
+          <li>
+            <Link href="/community/featured">Featured</Link>
+          </li>
+          <li>
+            <Link href="/community/chronicles">Chronicles</Link>
+          </li>
+          <li>
+            <Link href="/community/artifacts">Artifacts</Link>
+          </li>
+          <li>
+            <Link href="/community/guides">Shipwright&apos;s Workshop</Link>
+          </li>
+          <li>
+            <Link href="/community/voyage-logs">Voyage Logs</Link>
+          </li>
         </ul>
       </nav>
-      {listings.length ? (
-        <ul aria-label="Published Community listings">
-          {listings.map((listing) => (
-            <li key={listing.slug}>
-              <article>
-                <p>{listing.itemType}</p>
-                <h2><Link href={`/community/${encodeURIComponent(listing.slug)}`}>{listing.title}</Link></h2>
-                {listing.shortDescription ? <p>{listing.shortDescription}</p> : null}
-                <p>By {listing.creator.displayName}</p>
-              </article>
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <section aria-live="polite">
-          <h2>The Harbor is preparing its first public charts</h2>
-          <p>There are no public listings to discover yet. Check back after a Creator publishes a safe Community release.</p>
-        </section>
-      )}
+      <CommunityDiscoveryBrowser />
     </main>
   );
 }

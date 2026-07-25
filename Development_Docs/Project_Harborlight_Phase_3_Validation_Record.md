@@ -17,6 +17,12 @@
 | `vitest run src/community/discovery.test.ts src/community/social.test.ts src/community/keepsakes.test.ts` | exit 0; 3 files, 17 tests passed | passed focused unit validation |
 | `tsc --noEmit` | exit 0 | passed strict TypeScript |
 | `next build --webpack` | first attempt failed because the new data-backed page was statically rendered with a SQLite URL against the MySQL Prisma client; corrected by explicitly making Community data pages dynamic. Retry exit 0. | passed production build after genuine task regression repair |
+| Continuation preflight: fetch/prune, remote branch ancestry, clean owned worktree | branch remote matched `f788d515b25b557056b112460e86c6c16e0c9f1e`; original base/main remained `6bd8209d2d7f0edc73da9566fd06e825ae51a602` | passed provenance check |
+| Final focused discovery/social/Keepsake/collection/Guide/Voyage Log/API/component Vitest selection | exit 0; 9 files, 38 tests passed | passed focused continuation validation |
+| `vitest run src/app/api/community/voyage-logs/route.test.ts` | exit 0; 1 file, 4 tests passed | passed public consent/restriction projection |
+| `vitest run src/components/community/CommunityDiscoveryBrowser.test.tsx` | exit 0; 1 file, 4 tests passed | passed public search/filter URL, loading, empty, error, and retry behavior |
+| `tsc --noEmit` after public routes/filter controls | exit 0 | passed strict TypeScript |
+| Final `next build --webpack` with a non-live dummy MySQL URL | initial retry exposed an invalid extra route-module export; query moved to `src/community/voyage-log-public.ts`; final retry exit 0, 84 routes generated | passed production build after genuine task regression repair |
 
 ## Not executed or not a pass
 

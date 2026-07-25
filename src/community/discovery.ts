@@ -223,6 +223,7 @@ export function selectBoundedCommunityRecommendations(
 
 export type DiscoveryRecord = {
   id: string;
+  slug?: string;
   itemType: string;
   title: string;
   safeSummary: string | null;
@@ -539,6 +540,7 @@ function toDiscoveryRecord(
 ): DiscoveryRecord {
   return {
     id: listing.id,
+    slug: listing.slug,
     itemType: listing.itemType,
     title: listing.title,
     safeSummary: listing.shortDescription,
