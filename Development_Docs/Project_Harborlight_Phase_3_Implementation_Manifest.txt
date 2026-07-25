@@ -1,0 +1,16 @@
+Repository: treasurehuntSoT
+Branch: codex/project-harborlight-phase3-welcome-the-fleet
+Worktree: dedicated local Harborlight Phase 3 worktree
+Base SHA: 6bd8209d2d7f0edc73da9566fd06e825ae51a602
+Implementation SHA: 005acbbb56ca5d5a1ea8918d3bbd77d13094c864
+Origin main at start: 6bd8209d2d7f0edc73da9566fd06e825ae51a602
+Files added: Phase 3 design/test/validation records; discovery/social/Keepsake services and tests; Community pages; discovery API; five SQLite and five MySQL migration scripts.
+Files modified: prisma/schema.prisma; prisma/schema.sqlite.prisma.
+Models added: 28 Phase 3 Community models across discovery, relationships, reviews/comments/reports, Keepsakes/Voyage Logs/consent, and Guides.
+Migration identifiers: SQLite 20260725140000 through 20260725144000; MySQL 0031 through 0035.
+Routes added: /community, /community/[slug], GET /api/community/discover.
+Services added: discovery query/cursor/filter/sort/reconciliation provider; social interaction service; Keepsake/Voyage Log policy/projection service.
+Tests added: discovery, social, and Keepsake focused Vitest files.
+Validation: schema validation, direct ordered SQLite rehearsal, focused Vitest, strict TypeScript, production build.
+Known external limitations: MySQL execution, browser/Axe/IDOR/performance/restart/full validation, production scanner/object store/worker/distributed rate limit/monitoring/incident tooling remain unconfigured or unrun.
+No Phase 4 claim is made.
