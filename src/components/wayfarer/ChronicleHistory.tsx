@@ -31,13 +31,6 @@ export function ChronicleHistory() {
         .catch((cause) => setMessage(cause instanceof Error ? cause.message : "Unable to load Chronicle history."));
     });
   }, []);
-  const reconcile = async () => {
-    const response = await fetch("/api/passport/history", { method: "POST", headers: { "x-csrf-token": csrf } });
-    const body = await response.json();
-    if (!response.ok) throw new Error(body.error ?? "Unable to reconcile history.");
-    setMessage(`History reconciled: ${body.recordsCreated} created, ${body.recordsUpdated} updated.`);
-    await load();
-  };
   const keepsake = async (id: string) => {
     const response = await fetch(`/api/passport/history/${id}/keepsake`, {
       method: "POST",
@@ -51,10 +44,10 @@ export function ChronicleHistory() {
   return (
     <section id="history">
       <h2>Chronicle history</h2>
-      <p>Version-pinned private Voyage records. Timing reports unavailable evidence explicitly rather than guessing.</p>
-      <button type="button" onClick={() => void reconcile().catch((cause) => setMessage(cause.message))}>
-        Reconcile history
-      </button>
+      <p>
+        Version-pinned private Voyage records update automatically. Timing reports unavailable evidence explicitly
+        rather than guessing.
+      </p>
       <p aria-live="polite">{message}</p>
       <ul>
         {items.map((item) => (

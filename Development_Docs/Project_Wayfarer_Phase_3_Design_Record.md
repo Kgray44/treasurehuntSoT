@@ -26,13 +26,18 @@ The canonical UNC checkout is not modified.
 - Reconciliation reads memberships, invitations, version-pinned sessions, and
   event type/created-at metadata. It never parses or copies raw event payloads,
   answers, variables, notes, credentials, tokens, or object keys.
-- A record stores only safe count and event-type summaries. Missing canonical
-  evidence produces `UNAVAILABLE`, never zero. The timing definition is
-  `WAYFARER_TIMING_V1`.
+- Chapter and artifact summaries use only the pinned snapshot plus canonical
+  event block IDs, sequences, and timestamps. Choice selection is explicitly
+  `UNAVAILABLE` because the canonical event contract does not preserve an
+  option identity safely. Missing evidence is never represented as zero.
+- Personal wall-clock timing begins at the later of session start and membership
+  join, then ends at personal completion or the governed session fallback.
+  The timing definition is `WAYFARER_TIMING_V1`.
 - Reflection and Memory content are separate editable owner annotations;
   projection upserts never replace them. Keepsake content is a bounded private
-  presentation payload and contains another participant only after that
-  participant has recorded consent.
+  presentation payload validated with Zod. A durable crew snapshot is frozen
+  on first projection. Consent is scoped (`DISPLAY_NAME`, `AVATAR`, `QUOTE`,
+  `PHOTO`, `AUDIO`, `GENERAL_MEDIA`) and defaults to pending.
 - Detailed records are `ONLY_ME` by default. There is no Captain, Creator,
   public Profile, Community, or general crew detail route in Phase 3.
 

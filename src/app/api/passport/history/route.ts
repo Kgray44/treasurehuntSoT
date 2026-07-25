@@ -6,6 +6,7 @@ export async function GET(request: Request) {
   const session = await requireWayfarerAccount();
   if (!session?.account.profile) return NextResponse.json({ error: "Sign in again to continue." }, { status: 401 });
   const url = new URL(request.url);
+  await materializeChronicleHistory(session.account.profile.id);
   return NextResponse.json(
     await listChronicleHistory(session.account.profile.id, {
       cursor: url.searchParams.get("cursor") ?? undefined,

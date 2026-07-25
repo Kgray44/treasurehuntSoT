@@ -1,21 +1,54 @@
 import { createHash } from "node:crypto";
 import { z } from "zod";
+import { parsePublishedSnapshot, type PublishedTaleSnapshot } from "@/chronicle/types";
 import { db } from "@/lib/db";
 
 export const TIMING_DEFINITION_VERSION = "WAYFARER_TIMING_V1";
 const completedStatuses = new Set(["COMPLETED", "COMPLETED_MEMBER"]);
 const terminalStatuses = new Set(["DECLINED", "EXPIRED", "REVOKED", "REMOVED", "ABANDONED", "COMPLETED"]);
-const safeEventTypes = new Set([
-  "CHAPTER_COMPLETED",
-  "BLOCK_COMPLETED",
-  "OBJECTIVE_COMPLETED",
-  "HINT_USED",
-  "ATTEMPT_RECORDED",
-  "SESSION_PAUSED",
-  "SESSION_RESUMED",
-  "SESSION_COMPLETED",
-  "SESSION_ABANDONED",
-]);
+const safeEventTypes = new Set(["chapterCompleted", "blockCompleted", "artifactGranted", "sessionCompleted"]);
+const chapterSummarySchema = z.array(
+  z
+    .object({
+      schemaVersion: z.literal(1),
+      blockId: z.string(),
+      chapterId: z.string(),
+      title: z.string(),
+      completedAt: z.string().datetime(),
+      sourceSequence: z.number().int().nonnegative(),
+      accuracy: z.enum(["EXACT", "UNAVAILABLE"]),
+    })
+    .strict(),
+);
+const unavailableSummarySchema = z.array(z.object({ schemaVersion: z.literal(1), reason: z.string() }).strict());
+const artifactSummarySchema = z.array(
+  z
+    .object({
+      schemaVersion: z.literal(1),
+      artifactId: z.string(),
+      name: z.string(),
+      sourceBlockId: z.string(),
+      eventType: z.literal("artifactGranted"),
+      revealedAt: z.string().datetime(),
+      sourceSequence: z.number().int().nonnegative(),
+      classification: z.literal("SHARED_VOYAGE_ARTIFACT"),
+    })
+    .strict(),
+);
+const keepsakePayloadSchema = z
+  .object({
+    schemaVersion: z.literal(1),
+    generationVersion: z.literal("WAYFARER_KEEPSAKE_V1"),
+    chronicle: z.object({ title: z.string(), cover: z.string().nullable(), versionChecksum: z.string() }).strict(),
+    outcome: z.string(),
+    completedAt: z.string().datetime().nullable(),
+    chapters: chapterSummarySchema,
+    artifacts: artifactSummarySchema,
+    reflection: z.object({ privateNote: z.string().nullable() }).strict().nullable(),
+    crew: z.array(z.object({ name: z.string(), role: z.string(), crewRole: z.string().nullable() }).strict()),
+    generatedAt: z.string().datetime(),
+  })
+  .strict();
 
 const memorySchema = z.object({
   title: z.string().trim().min(1).max(120),
@@ -34,20 +67,16 @@ const reflectionSchema = z.object({
 function sha(value: unknown) {
   return createHash("sha256").update(JSON.stringify(value)).digest("hex");
 }
-function parsedSnapshot(input: string) {
-  try {
-    const value = JSON.parse(input) as { tale?: { title?: string; coverAssetId?: string; creatorName?: string } };
-    return value.tale ?? {};
-  } catch {
-    return {};
-  }
-}
 function nonNegativeSeconds(start?: Date | null, end?: Date | null) {
   if (!start || !end || end < start) return null;
   return Math.floor((end.getTime() - start.getTime()) / 1000);
 }
-function timing(startedAt: Date | null, completedAt: Date | null) {
-  const wallClockSeconds = nonNegativeSeconds(startedAt, completedAt);
+function timing(sessionStartedAt: Date | null, membershipJoinedAt: Date | null, personalCompletedAt: Date | null) {
+  const personalStart =
+    sessionStartedAt && membershipJoinedAt
+      ? new Date(Math.max(+sessionStartedAt, +membershipJoinedAt))
+      : (sessionStartedAt ?? membershipJoinedAt);
+  const wallClockSeconds = nonNegativeSeconds(personalStart, personalCompletedAt);
   return {
     wallClockSeconds,
     wallClockAccuracy: wallClockSeconds === null ? "UNAVAILABLE" : "EXACT",
@@ -70,22 +99,77 @@ function lifecycle(membershipStatus: string, sessionStatus: string) {
   if (sessionStatus === "ABANDONED") return "ABANDONED";
   return membershipStatus;
 }
-function outcome(status: string) {
-  if (status === "COMPLETED") return "COMPLETED";
+function outcome(status: string, snapshot: PublishedTaleSnapshot, finalBlockId: string | null) {
+  if (status === "COMPLETED") {
+    const finalBlock = snapshot.chapters
+      .flatMap((chapter) => chapter.blocks)
+      .find((block) => block.id === finalBlockId);
+    return finalBlock ? `COMPLETED:${finalBlock.id}` : "COMPLETED";
+  }
   if (status === "ABANDONED") return "ABANDONED";
+  if (["REMOVED", "DECLINED", "EXPIRED", "REVOKED", "CANCELLED"].includes(status)) return status;
   return "UNAVAILABLE";
 }
 
-function safeSummary(events: Array<{ eventType: string; createdAt: Date }>) {
+function safeSummary(
+  snapshot: PublishedTaleSnapshot,
+  events: Array<{ id: string; eventType: string; blockId: string | null; sequence: number; createdAt: Date }>,
+) {
   const selected = events.filter((event) => safeEventTypes.has(event.eventType));
-  const count = (name: string) => selected.filter((event) => event.eventType === name).length;
+  const blocks = new Map(
+    snapshot.chapters.flatMap((chapter) => chapter.blocks.map((block) => [block.id, { block, chapter }] as const)),
+  );
+  const chapters = selected.flatMap((event) => {
+    if (event.eventType !== "chapterCompleted" || !event.blockId) return [];
+    const reference = blocks.get(event.blockId);
+    return reference
+      ? [
+          {
+            schemaVersion: 1 as const,
+            blockId: event.blockId,
+            chapterId: reference.chapter.id,
+            title: reference.chapter.title,
+            completedAt: event.createdAt.toISOString(),
+            sourceSequence: event.sequence,
+            accuracy: "EXACT" as const,
+          },
+        ]
+      : [];
+  });
+  const artifacts = selected.flatMap((event) => {
+    if (event.eventType !== "artifactGranted" || !event.blockId) return [];
+    const reference = blocks.get(event.blockId);
+    const artifactId =
+      reference && typeof reference.block.configuration.artifactId === "string"
+        ? reference.block.configuration.artifactId
+        : null;
+    const artifact = artifactId ? snapshot.artifacts.find((item) => item.id === artifactId) : null;
+    const name = artifact && typeof artifact.displayName === "string" ? artifact.displayName : null;
+    return artifactId && name
+      ? [
+          {
+            schemaVersion: 1 as const,
+            artifactId,
+            name,
+            sourceBlockId: event.blockId,
+            eventType: "artifactGranted" as const,
+            revealedAt: event.createdAt.toISOString(),
+            sourceSequence: event.sequence,
+            classification: "SHARED_VOYAGE_ARTIFACT" as const,
+          },
+        ]
+      : [];
+  });
   return {
-    completedChapters: Array.from({ length: count("CHAPTER_COMPLETED") }, (_, index) => ({ ordinal: index + 1 })),
-    optionalObjectives: Array.from({ length: count("OBJECTIVE_COMPLETED") }, (_, index) => ({ ordinal: index + 1 })),
+    completedChapters: chapters,
+    optionalObjectives: [],
     choiceSummary: [
-      ...(count("HINT_USED") ? [{ kind: "HINT_USED", count: count("HINT_USED") }] : []),
-      ...(count("ATTEMPT_RECORDED") ? [{ kind: "ATTEMPT_RECORDED", count: count("ATTEMPT_RECORDED") }] : []),
+      {
+        schemaVersion: 1 as const,
+        reason: "UNAVAILABLE: canonical completion events do not retain selected choice identity.",
+      },
     ],
+    artifactSummary: artifacts,
   };
 }
 
@@ -98,7 +182,8 @@ export async function materializeChronicleHistory(playerProfileId: string) {
         include: {
           tale: { select: { title: true, coverAssetId: true, creatorId: true } },
           version: true,
-          events: { select: { eventType: true, createdAt: true } },
+          events: { select: { id: true, eventType: true, blockId: true, sequence: true, createdAt: true } },
+          memberships: { include: { player: { include: { avatarMedia: { select: { altText: true } } } } } },
         },
       },
     },
@@ -112,10 +197,19 @@ export async function materializeChronicleHistory(playerProfileId: string) {
       failures++;
       continue;
     }
-    const snapshot = parsedSnapshot(version.contentSnapshot);
+    let snapshot: PublishedTaleSnapshot;
+    try {
+      snapshot = parsePublishedSnapshot(version.contentSnapshot);
+    } catch {
+      failures++;
+      continue;
+    }
     const nextLifecycle = lifecycle(membership.status, membership.playthrough.status);
-    const summary = safeSummary(membership.playthrough.events);
-    const nextTiming = timing(membership.playthrough.startedAt, membership.playthrough.completedAt);
+    const summary = safeSummary(snapshot, membership.playthrough.events);
+    const personalCompletedAt = membership.completedAt ?? membership.playthrough.completedAt;
+    const nextTiming = timing(membership.playthrough.startedAt, membership.joinedAt, personalCompletedAt);
+    const finalBlockId =
+      membership.playthrough.events.findLast((event) => event.eventType === "sessionCompleted")?.blockId ?? null;
     const sourceFingerprint = sha({
       membership: {
         id: membership.id,
@@ -145,36 +239,62 @@ export async function materializeChronicleHistory(playerProfileId: string) {
       participationRole: membership.role,
       crewRoleSnapshot: membership.crewRole,
       lifecycleStatus: nextLifecycle,
-      outcome: outcome(nextLifecycle),
-      startedAt: membership.playthrough.startedAt,
+      outcome: outcome(nextLifecycle, snapshot, finalBlockId),
+      startedAt:
+        membership.playthrough.startedAt && membership.joinedAt
+          ? new Date(Math.max(+membership.playthrough.startedAt, +membership.joinedAt))
+          : (membership.playthrough.startedAt ?? membership.joinedAt),
       joinedAt: membership.joinedAt,
       completedAt: membership.completedAt ?? membership.playthrough.completedAt,
       ...nextTiming,
-      completedChapters: JSON.stringify(summary.completedChapters),
-      optionalObjectives: JSON.stringify(summary.optionalObjectives),
-      choiceSummary: JSON.stringify(summary.choiceSummary),
-      artifactSummary: "[]",
+      completedChapters: JSON.stringify(chapterSummarySchema.parse(summary.completedChapters)),
+      optionalObjectives: JSON.stringify(unavailableSummarySchema.parse(summary.optionalObjectives)),
+      choiceSummary: JSON.stringify(unavailableSummarySchema.parse(summary.choiceSummary)),
+      artifactSummary: JSON.stringify(artifactSummarySchema.parse(summary.artifactSummary)),
       sourceFingerprint,
       projectionStatus: "CURRENT",
       projectionReason: null,
       lastDerivedAt: new Date(),
     };
+    const record = existing
+      ? await db.playerChronicleRecord.update({ where: { id: existing.id }, data })
+      : await db.playerChronicleRecord.create({
+          data: {
+            ...data,
+            playerProfileId,
+            sourcePlaythroughId: membership.playthroughId,
+            chronicleTitleSnapshot: snapshot.tale.title,
+            chronicleCoverSnapshot: snapshot.tale.coverAssetId ?? membership.playthrough.tale.coverAssetId,
+            creatorAttributionSnapshot: membership.playthrough.tale.creatorId,
+            playerNameSnapshot: membership.player.displayName,
+            playerAvatarSnapshot: membership.player.avatarMedia?.storageKey ?? null,
+          },
+        });
+    await Promise.all(
+      membership.playthrough.memberships.map((participant) =>
+        db.playerChronicleParticipantSnapshot.upsert({
+          where: {
+            historyRecordId_sourceMembershipId: { historyRecordId: record.id, sourceMembershipId: participant.id },
+          },
+          update: {},
+          create: {
+            historyRecordId: record.id,
+            sourceMembershipId: participant.id,
+            participantProfileId: participant.playerProfileId,
+            displayNameSnapshot: participant.player.displayName,
+            avatarAltSnapshot: participant.player.avatarMedia?.altText ?? null,
+            participationRole: participant.role,
+            crewRoleSnapshot: participant.crewRole,
+            joinedAt: participant.joinedAt,
+            completedAt: participant.completedAt,
+            removedAt: participant.removedAt,
+          },
+        }),
+      ),
+    );
     if (existing) {
-      await db.playerChronicleRecord.update({ where: { id: existing.id }, data });
       updated++;
     } else {
-      await db.playerChronicleRecord.create({
-        data: {
-          ...data,
-          playerProfileId,
-          sourcePlaythroughId: membership.playthroughId,
-          chronicleTitleSnapshot: snapshot.title ?? membership.playthrough.tale.title,
-          chronicleCoverSnapshot: snapshot.coverAssetId ?? membership.playthrough.tale.coverAssetId,
-          creatorAttributionSnapshot: snapshot.creatorName ?? membership.playthrough.tale.creatorId,
-          playerNameSnapshot: membership.player.displayName,
-          playerAvatarSnapshot: membership.player.avatarMedia?.storageKey ?? null,
-        },
-      });
       created++;
     }
   }
@@ -189,7 +309,8 @@ export async function materializeChronicleHistory(playerProfileId: string) {
 const recordInclude = {
   reflection: true,
   memories: { where: { deletedAt: null }, orderBy: { createdAt: "desc" as const } },
-  keepsake: { include: { consents: { where: { granted: true }, select: { participantId: true } } } },
+  participantSnapshots: { orderBy: { createdAt: "asc" as const } },
+  keepsake: { include: { consents: { where: { state: "GRANTED" }, select: { participantId: true, scope: true } } } },
 };
 
 export async function listChronicleHistory(
@@ -211,7 +332,57 @@ export async function listChronicleHistory(
   });
   const hasMore = records.length > limit;
   const items = records.slice(0, limit).map(ownerRecordProjection);
-  return { items, nextCursor: hasMore ? (items.at(-1)?.id ?? null) : null };
+  const membershipPlaythroughIds = new Set(records.map((record) => record.sourcePlaythroughId));
+  const invitations = await db.invitation.findMany({
+    where: { intendedPlayerId: playerProfileId, ...(input.status ? { status: input.status } : {}) },
+    orderBy: [{ updatedAt: "desc" }, { id: "desc" }],
+    take: limit,
+    select: {
+      id: true,
+      playthroughId: true,
+      status: true,
+      recipientName: true,
+      createdAt: true,
+      viewedAt: true,
+      acceptedAt: true,
+      declinedAt: true,
+      revokedAt: true,
+      expiresAt: true,
+      replacesInvitationId: true,
+      playthrough: { select: { version: { select: { versionLabel: true, checksum: true, contentSnapshot: true } } } },
+    },
+  });
+  const invitationItems = invitations
+    .filter((invitation) => !membershipPlaythroughIds.has(invitation.playthroughId))
+    .map((invitation) => {
+      let title = "Historical Chronicle";
+      try {
+        title = invitation.playthrough.version
+          ? parsePublishedSnapshot(invitation.playthrough.version.contentSnapshot).tale.title
+          : title;
+      } catch {
+        /* unavailable snapshot is intentionally neutral */
+      }
+      return {
+        id: invitation.id,
+        kind: "INVITATION" as const,
+        chronicleTitle: title,
+        lifecycleStatus: invitation.status,
+        timestamps: {
+          createdAt: invitation.createdAt,
+          viewedAt: invitation.viewedAt,
+          acceptedAt: invitation.acceptedAt,
+          declinedAt: invitation.declinedAt,
+          revokedAt: invitation.revokedAt,
+          expiresAt: invitation.expiresAt,
+        },
+        version: invitation.playthrough.version
+          ? { label: invitation.playthrough.version.versionLabel, checksum: invitation.playthrough.version.checksum }
+          : null,
+        replaced: Boolean(invitation.replacesInvitationId),
+      };
+    });
+  return { items, invitations: invitationItems, nextCursor: hasMore ? (items.at(-1)?.id ?? null) : null };
 }
 
 export async function ownerChronicleRecord(playerProfileId: string, recordId: string) {
@@ -256,8 +427,27 @@ type OwnerRecord = {
   artifactSummary: string;
   reflection: unknown;
   memories: unknown[];
+  participantSnapshots: Array<{
+    displayNameSnapshot: string;
+    avatarAltSnapshot: string | null;
+    participationRole: string;
+    crewRoleSnapshot: string | null;
+    joinedAt: Date | null;
+    completedAt: Date | null;
+    removedAt: Date | null;
+    projectionEligibility: string;
+    tombstoneState: string;
+  }>;
   keepsake: { status: string; generatedAt: Date; consents: unknown[] } | null;
 };
+
+function parseStored<T>(schema: z.ZodType<T>, value: string, field: string): T {
+  try {
+    return schema.parse(JSON.parse(value));
+  } catch {
+    throw new Error(`Chronicle history ${field} is unavailable until reconciliation repairs this record.`);
+  }
+}
 
 function ownerRecordProjection(record: OwnerRecord) {
   return {
@@ -285,12 +475,50 @@ function ownerRecordProjection(record: OwnerRecord) {
       interactive: { seconds: record.interactiveSeconds, accuracy: record.interactiveAccuracy },
       captainWait: { seconds: record.captainWaitSeconds, accuracy: record.captainWaitAccuracy },
     },
-    completedChapters: JSON.parse(record.completedChapters),
-    optionalObjectives: JSON.parse(record.optionalObjectives),
-    choiceSummary: JSON.parse(record.choiceSummary),
-    artifactSummary: JSON.parse(record.artifactSummary),
-    reflection: record.reflection,
-    memories: record.memories,
+    completedChapters: parseStored(chapterSummarySchema, record.completedChapters, "chapter summary"),
+    optionalObjectives: parseStored(unavailableSummarySchema, record.optionalObjectives, "objective summary"),
+    choiceSummary: parseStored(unavailableSummarySchema, record.choiceSummary, "choice summary"),
+    artifactSummary: parseStored(artifactSummarySchema, record.artifactSummary, "artifact summary"),
+    reflection: record.reflection
+      ? {
+          favoriteChapterId: (record.reflection as { favoriteChapterId?: string | null }).favoriteChapterId ?? null,
+          favoriteClueReference:
+            (record.reflection as { favoriteClueReference?: string | null }).favoriteClueReference ?? null,
+          favoriteMomentReference:
+            (record.reflection as { favoriteMomentReference?: string | null }).favoriteMomentReference ?? null,
+          favoriteArtifactReference:
+            (record.reflection as { favoriteArtifactReference?: string | null }).favoriteArtifactReference ?? null,
+          privateNote: (record.reflection as { privateNote?: string | null }).privateNote ?? null,
+        }
+      : null,
+    memories: record.memories.map((memory) => {
+      const value = memory as {
+        id: string;
+        title: string;
+        body?: string | null;
+        referenceType?: string | null;
+        referenceId?: string | null;
+        createdAt: Date;
+      };
+      return {
+        id: value.id,
+        title: value.title,
+        body: value.body ?? null,
+        referenceType: value.referenceType ?? null,
+        referenceId: value.referenceId ?? null,
+        createdAt: value.createdAt,
+      };
+    }),
+    crew: record.participantSnapshots.map((participant) => ({
+      name: participant.tombstoneState === "ACTIVE" ? participant.displayNameSnapshot : "Former crew member",
+      avatarAlt: participant.tombstoneState === "ACTIVE" ? participant.avatarAltSnapshot : null,
+      role: participant.participationRole,
+      crewRole: participant.crewRoleSnapshot,
+      joinedAt: participant.joinedAt,
+      completedAt: participant.completedAt,
+      removedAt: participant.removedAt,
+      visibility: participant.projectionEligibility,
+    })),
     keepsake: record.keepsake
       ? {
           status: record.keepsake.status,
@@ -335,15 +563,39 @@ export async function removeMemory(playerProfileId: string, recordId: string, me
   if (!result.count) throw new Error("Chronicle Memory not found.");
 }
 export async function generateKeepsake(playerProfileId: string, recordId: string) {
-  const record = await ownedRecord(playerProfileId, recordId);
-  const payload = JSON.stringify({ version: 1, recordId: record.id, crew: [] });
+  await ownedRecord(playerProfileId, recordId);
+  const detail = await ownerChronicleRecord(playerProfileId, recordId);
+  if (!detail) throw new Error("Chronicle history record not found.");
+  const payload = JSON.stringify(
+    keepsakePayloadSchema.parse({
+      schemaVersion: 1,
+      generationVersion: "WAYFARER_KEEPSAKE_V1",
+      chronicle: detail.chronicle,
+      outcome: detail.outcome,
+      completedAt: detail.timestamps.completedAt?.toISOString() ?? null,
+      chapters: detail.completedChapters,
+      artifacts: detail.artifactSummary,
+      reflection: detail.reflection ? { privateNote: detail.reflection.privateNote } : null,
+      crew: detail.crew.map((participant) => ({
+        name: participant.name,
+        role: participant.role,
+        crewRole: participant.crewRole,
+      })),
+      generatedAt: new Date().toISOString(),
+    }),
+  );
   return db.voyageKeepsake.upsert({
     where: { playerChronicleRecordId: recordId },
     update: { presentationPayload: payload, regeneratedAt: new Date() },
     create: { playerChronicleRecordId: recordId, presentationPayload: payload },
   });
 }
-export async function recordKeepsakeConsent(participantId: string, recordId: string, granted: boolean) {
+export async function recordKeepsakeConsent(
+  participantId: string,
+  recordId: string,
+  scope: "DISPLAY_NAME" | "AVATAR" | "QUOTE" | "PHOTO" | "AUDIO" | "GENERAL_MEDIA",
+  state: "GRANTED" | "DENIED" | "REVOKED",
+) {
   const record = await db.playerChronicleRecord.findUnique({
     where: { id: recordId },
     select: { sourcePlaythroughId: true },
@@ -358,14 +610,21 @@ export async function recordKeepsakeConsent(participantId: string, recordId: str
   const keepsake = await db.voyageKeepsake.findUnique({ where: { playerChronicleRecordId: recordId } });
   if (!keepsake) throw new Error("Generate the private Keepsake before recording consent.");
   return db.voyageKeepsakeConsent.upsert({
-    where: { keepsakeId_participantId: { keepsakeId: keepsake.id, participantId } },
-    update: { granted, grantedAt: granted ? new Date() : null, revokedAt: granted ? null : new Date() },
+    where: { keepsakeId_participantId_scope: { keepsakeId: keepsake.id, participantId, scope } },
+    update: {
+      state,
+      decidedAt: new Date(),
+      grantedAt: state === "GRANTED" ? new Date() : null,
+      revokedAt: state === "REVOKED" ? new Date() : null,
+    },
     create: {
       keepsakeId: keepsake.id,
       participantId,
-      granted,
-      grantedAt: granted ? new Date() : null,
-      revokedAt: granted ? null : new Date(),
+      scope,
+      state,
+      decidedAt: new Date(),
+      grantedAt: state === "GRANTED" ? new Date() : null,
+      revokedAt: state === "REVOKED" ? new Date() : null,
     },
   });
 }
