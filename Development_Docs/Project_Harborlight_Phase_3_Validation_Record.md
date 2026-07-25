@@ -31,6 +31,8 @@
 | Final `tsc --noEmit` and `next build --webpack` after social controls | exit 0; production build generated 89 routes | passed strict TypeScript and production build |
 | Focused persisted social-state reconciliation component test and `tsc --noEmit` | exit 0; 1 file, 1 test passed | passed no-optimistic-success hydration/reconciliation behavior |
 | Focused social-state unavailable route/component tests and `tsc --noEmit` | exit 0; 2 files, 3 tests passed | passed typed 503/private failure and indeterminate retry behavior |
+| Direct ordered SQLite rehearsal through `20260725146000_harborlight_phase3_wayfarer_source` | exit 0; 32 migrations, 129 tables, legacy `CommunityVoyageKeepsake` survived table rebuild, nullable source columns/default/indexes/unique constraints verified, `PRAGMA foreign_key_check` empty | passed disposable rehearsal; generated database, journal, WAL, and SHM files were removed by the owned runner |
+| Focused Wayfarer-source mismatch and draft-route tests; `tsc --noEmit` | exit 0; 2 files, 12 tests | passed requested/projection/verification opaque-ID equality, stale-watermark/checksum, unavailability, and idempotency boundary |
 
 ## Not executed or not a pass
 

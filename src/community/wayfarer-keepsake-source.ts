@@ -112,6 +112,8 @@ export async function createVoyageLogDraftFromWayfarer(
   const projection = await source.getEligiblePrivateKeepsake({ ownerAccountId, sourceKeepsakeId });
   if (!projection)
     throw new CommunityError("COMMUNITY_KEEPSAKE_NOT_AVAILABLE", "An eligible private Keepsake was not found.");
+  if (projection.sourceKeepsakeId !== sourceKeepsakeId)
+    throw new CommunityError("COMMUNITY_KEEPSAKE_SOURCE_MISMATCH", "The private Keepsake source could not be verified.");
   const draft = prepareWayfarerVoyageLogDraft(projection);
   const verified = await source.verifySourceWatermark({
     ownerAccountId,
@@ -119,6 +121,8 @@ export async function createVoyageLogDraftFromWayfarer(
     sourceWatermark: draft.sourceWatermark,
     sourceProjectionChecksum: draft.sourceProjectionChecksum,
   });
+  if (verified.sourceKeepsakeId !== sourceKeepsakeId || verified.sourceKeepsakeId !== projection.sourceKeepsakeId)
+    throw new CommunityError("COMMUNITY_KEEPSAKE_SOURCE_MISMATCH", "The private Keepsake source could not be verified.");
   if (!verified.valid || verified.sourceWatermark !== draft.sourceWatermark || verified.sourceProjectionChecksum !== draft.sourceProjectionChecksum)
     throw new CommunityError("COMMUNITY_KEEPSAKE_SOURCE_STALE", "The private Keepsake changed before sharing preparation completed.");
   return store.createIfMissing({ ...draft, ownerAccountId });
