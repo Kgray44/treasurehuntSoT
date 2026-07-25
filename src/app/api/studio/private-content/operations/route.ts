@@ -3,6 +3,7 @@ import { requireGmCapability, verifyCsrf } from "@/lib/security";
 import { parsePrivateContentConfiguration } from "@/private-content/config";
 import { collectPrivateProviderHealth, createPrivateProviderRuntime } from "@/private-content/providers";
 import { db } from "@/lib/db";
+import { sha256 } from "@/private-content/core";
 
 export async function GET() {
   const session = await requireGmCapability("ADMIN");
@@ -35,7 +36,18 @@ export async function GET() {
       }),
     ]);
     return NextResponse.json(
-      { providers, backupRuns, repairs, drills },
+      {
+        providers,
+        backupRuns: backupRuns.map((backup) => ({
+          ...backup,
+          backupId: `backup-${sha256(backup.backupId).slice(0, 16)}`,
+        })),
+        repairs: repairs.map((repair) => ({ ...repair, digest: repair.digest.slice(0, 16) })),
+        drills: drills.map((drill) => ({
+          ...drill,
+          targetIdentity: `restore-${sha256(drill.targetIdentity).slice(0, 16)}`,
+        })),
+      },
       { headers: { "Cache-Control": "private, no-store" } },
     );
   } catch {
