@@ -924,11 +924,19 @@ test.describe.serial("Project Lanternwake Phase 3 extended runtime lifecycle", (
       await expect(page.getByText("No runtime errors.")).toBeVisible();
     };
     await page.goto("/");
-    await runTwentyCycles(page, async () => {
-      await openDevelopmentShowcase(page);
-      await runTrailer();
-      await returnToHarbor(page);
-    });
+    await runTwentyCycles(
+      page,
+      async () => {
+        await openDevelopmentShowcase(page);
+        await runTrailer();
+        await returnToHarbor(page);
+      },
+      // Route transitions and Lottie own ambient browser scheduling. The
+      // authoritative host, target, claim, renderer, fallback, and focus-trap
+      // counts remain exact; ignore only the framework-global counters, as in
+      // the other canonical Lottie route remount proofs.
+      stableLottieRemountSnapshot,
+    );
   });
 });
 
