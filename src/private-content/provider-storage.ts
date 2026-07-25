@@ -11,7 +11,14 @@ import type {
 } from "./contracts";
 import { isWithin, privateFailure } from "./core";
 
-const namespaces = new Set<PrivateObjectNamespace>(["uploads", "normalized", "objects", "quarantine", "backups"]);
+const namespaces = new Set<PrivateObjectNamespace>([
+  "uploads",
+  "normalized",
+  "objects",
+  "derivatives",
+  "quarantine",
+  "backups",
+]);
 type MultipartManifest = {
   key: string;
   expectedBytes?: number;

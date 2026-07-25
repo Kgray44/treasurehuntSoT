@@ -23,6 +23,13 @@ export type PrivateBackupRecordSet = {
   scans: readonly Record<string, unknown>[];
   operations: readonly Record<string, unknown>[];
   scheduledOperations: readonly Record<string, unknown>[];
+  protectedMedia?: readonly Record<string, unknown>[];
+  protectedMediaAssociations?: readonly Record<string, unknown>[];
+  protectedMediaConsentAssertions?: readonly Record<string, unknown>[];
+  protectedMediaDerivatives?: readonly Record<string, unknown>[];
+  protectedMediaGrants?: readonly Record<string, unknown>[];
+  protectedMediaReceipts?: readonly Record<string, unknown>[];
+  protectedMediaWithdrawals?: readonly Record<string, unknown>[];
 };
 export type PrivateSealedBackupValue = {
   version: 1;

@@ -21,6 +21,13 @@ export async function collectPrivateBackupRecordSet(): Promise<{
     scans,
     operations,
     schedules,
+    protectedMedia,
+    protectedMediaAssociations,
+    protectedMediaConsentAssertions,
+    protectedMediaDerivatives,
+    protectedMediaGrants,
+    protectedMediaReceipts,
+    protectedMediaWithdrawals,
   ] = await Promise.all([
     privateDb.privateContentImport.findMany({
       select: {
@@ -50,10 +57,17 @@ export async function collectPrivateBackupRecordSet(): Promise<{
     privateDb.privateContentScan.findMany(),
     privateDb.privateContentOperation.findMany(),
     privateDb.privateScheduledOperation.findMany(),
+    privateDb.protectedMedia.findMany(),
+    privateDb.protectedMediaAssociation.findMany(),
+    privateDb.protectedMediaConsentAssertion.findMany(),
+    privateDb.protectedMediaDerivative.findMany(),
+    privateDb.protectedMediaGrant.findMany(),
+    privateDb.protectedMediaTransformationReceipt.findMany(),
+    privateDb.protectedMediaWithdrawal.findMany(),
   ]);
   return {
     records: {
-      schemaVersion: "sealed-hold-phase3-v1",
+      schemaVersion: "sealed-hold-phase4-v1",
       imports,
       mappings,
       assetObjects,
@@ -63,6 +77,13 @@ export async function collectPrivateBackupRecordSet(): Promise<{
       scans,
       operations,
       scheduledOperations: schedules,
+      protectedMedia,
+      protectedMediaAssociations,
+      protectedMediaConsentAssertions,
+      protectedMediaDerivatives,
+      protectedMediaGrants,
+      protectedMediaReceipts,
+      protectedMediaWithdrawals,
     },
     objects: assetObjects.map((object: any) => ({
       key: object.storageKey,

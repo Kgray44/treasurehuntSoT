@@ -15,17 +15,7 @@ export async function GET() {
       protectedMediaDerivative: { count(input: unknown): Promise<number> };
       protectedMediaGrant: { count(input: unknown): Promise<number> };
     };
-    const [
-      providers,
-      backupRuns,
-      repairs,
-      drills,
-      protectedMedia,
-      readyDerivatives,
-      blockedConsent,
-      withdrawnDerivatives,
-      staleGrants,
-    ] = await Promise.all([
+    const [providers, backupRuns, repairs, drills] = await Promise.all([
       collectPrivateProviderHealth(runtime),
       db.privateBackupRun.findMany({
         select: { backupId: true, state: true, verifiedAt: true, createdAt: true },
@@ -49,12 +39,17 @@ export async function GET() {
         orderBy: { createdAt: "desc" },
         take: 20,
       }),
-      privateDb.protectedMedia.count({}),
-      privateDb.protectedMediaDerivative.count({ where: { state: "READY" } }),
-      privateDb.protectedMediaDerivative.count({ where: { state: "BLOCKED_CONSENT" } }),
-      privateDb.protectedMediaDerivative.count({ where: { state: "WITHDRAWN" } }),
-      privateDb.protectedMediaGrant.count({ where: { state: { in: ["INVALIDATED", "EXPIRED"] } } }),
     ]);
+    // A rolling Phase 3 deployment may serve the existing operations console
+    // before Phase 4 migrations are present. Do not hide all operational state
+    // because the additive metadata projection is not available yet.
+    const protectedMedia = await Promise.all([
+      privateDb.protectedMedia?.count({}),
+      privateDb.protectedMediaDerivative?.count({ where: { state: "READY" } }),
+      privateDb.protectedMediaDerivative?.count({ where: { state: "BLOCKED_CONSENT" } }),
+      privateDb.protectedMediaDerivative?.count({ where: { state: "WITHDRAWN" } }),
+      privateDb.protectedMediaGrant?.count({ where: { state: { in: ["INVALIDATED", "EXPIRED"] } } }),
+    ]).catch(() => [undefined, undefined, undefined, undefined, undefined]);
     return NextResponse.json(
       {
         providers,
@@ -67,7 +62,13 @@ export async function GET() {
           ...drill,
           targetIdentity: `restore-${sha256(drill.targetIdentity).slice(0, 16)}`,
         })),
-        protectedMedia: { total: protectedMedia, readyDerivatives, blockedConsent, withdrawnDerivatives, staleGrants },
+        protectedMedia: {
+          total: protectedMedia[0] ?? 0,
+          readyDerivatives: protectedMedia[1] ?? 0,
+          blockedConsent: protectedMedia[2] ?? 0,
+          withdrawnDerivatives: protectedMedia[3] ?? 0,
+          staleGrants: protectedMedia[4] ?? 0,
+        },
       },
       { headers: { "Cache-Control": "private, no-store" } },
     );

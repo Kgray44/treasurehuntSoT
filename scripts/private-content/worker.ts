@@ -4,6 +4,7 @@ import { createPrivateProviderRuntime, requirePrivateReadiness } from "../../src
 import { dispatchPrivateJobBatch, type PrivateJobHandlerRegistry } from "../../src/private-content/worker";
 import { createPrivateOperationalHandlerRegistry } from "../../src/private-content/worker-handlers";
 import { createLocalPrivateOperationExecutors } from "../../src/private-content/worker-composition";
+import { createProtectedMediaOperationExecutors } from "../../src/private-content/media-worker-composition";
 
 const configuration = parsePrivateContentConfiguration();
 const runtime = createPrivateProviderRuntime(configuration);
@@ -12,7 +13,7 @@ let stopping = false;
 const workerId = `private-worker-${randomUUID()}`;
 const handlers: PrivateJobHandlerRegistry = createPrivateOperationalHandlerRegistry({
   runtime,
-  execute: createLocalPrivateOperationExecutors({ runtime }),
+  execute: { ...createLocalPrivateOperationExecutors({ runtime }), ...createProtectedMediaOperationExecutors(runtime) },
 });
 async function run() {
   await requirePrivateReadiness(runtime, "worker");

@@ -34,6 +34,13 @@ const records = () => ({
   scans: [{ objectId: "object-1", state: "CLEAN" }],
   operations: [{ id: "operation-1", state: "COMPLETED" }],
   scheduledOperations: [{ id: "schedule-1", state: "PENDING" }],
+  protectedMedia: [{ id: "media-1", sha256: "a".repeat(64), scanState: "CLEAN" }],
+  protectedMediaAssociations: [{ id: "association-1", protectedMediaId: "media-1" }],
+  protectedMediaConsentAssertions: [{ id: "consent-1", state: "REVOKED" }],
+  protectedMediaDerivatives: [{ id: "derivative-1", outputChecksum: "b".repeat(64), state: "WITHDRAWN" }],
+  protectedMediaGrants: [{ id: "grant-1", state: "REVOKED" }],
+  protectedMediaReceipts: [{ id: "receipt-1", derivativeId: "derivative-1" }],
+  protectedMediaWithdrawals: [{ id: "withdrawal-1", derivativeId: "derivative-1" }],
 });
 afterEach(async () => Promise.all(roots.splice(0).map((root) => rm(root, { recursive: true, force: true }))));
 
@@ -78,6 +85,9 @@ describe("Phase 3 encrypted operational backups", () => {
       expect(await new LocalPhase2PrivateStorageProvider({ root: destination.root }).exists(object)).toBe(true);
     }
     expect(restored).toHaveLength(2);
+    expect(
+      (restored[0] as { protectedMediaDerivatives?: Array<{ state: string }> }).protectedMediaDerivatives?.[0]?.state,
+    ).toBe("WITHDRAWN");
     expect(
       planPrivateBackupRetention({
         backups: [

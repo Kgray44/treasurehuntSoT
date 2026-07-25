@@ -1,7 +1,22 @@
 import { NextResponse } from "next/server";
 import { requireGmCapability, verifyCsrf } from "@/lib/security";
-import { ProtectedMediaError, protectedMediaKinds } from "@/private-content/media/contracts";
-import { listOwnerProtectedMedia, registerProtectedMedia } from "@/private-content/media/service";
+import {
+  ProtectedMediaError,
+  protectedMediaAudiences,
+  protectedMediaKinds,
+  protectedMediaPurposes,
+  protectedMediaWithdrawalReasons,
+  type ProtectedMediaAudience,
+  type ProtectedMediaPurpose,
+  type ProtectedMediaWithdrawalReason,
+} from "@/private-content/media/contracts";
+import {
+  listOwnerProtectedMedia,
+  registerProtectedMedia,
+  requestProtectedMediaDerivative,
+  updateProtectedMediaAccessibilityDescription,
+  withdrawProtectedMediaDerivative,
+} from "@/private-content/media/service";
 
 function responseError(error: unknown) {
   const known = error instanceof ProtectedMediaError;
@@ -38,11 +53,68 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Creator authorization is required." }, { status: 403 });
   try {
     const body = (await request.json()) as {
+      action?: string;
       sourcePrivateAssetObjectId?: string;
       mediaKind?: string;
       declaredMediaType?: string;
       accessibilityDescription?: string;
+      mediaId?: string;
+      associationId?: string;
+      purpose?: string;
+      audience?: string;
+      idempotencyKey?: string;
+      derivativeId?: string;
+      reason?: string;
     };
+    const ownerAccountId = "accountId" in session ? session.accountId : session.userId;
+    if (body.action === "request-derivative") {
+      if (
+        !body.mediaId ||
+        !body.associationId ||
+        !body.purpose ||
+        !body.audience ||
+        !body.idempotencyKey ||
+        !(protectedMediaPurposes as readonly string[]).includes(body.purpose) ||
+        !(protectedMediaAudiences as readonly string[]).includes(body.audience)
+      )
+        throw new ProtectedMediaError("PROTECTED_MEDIA_INVALID");
+      return NextResponse.json(
+        await requestProtectedMediaDerivative({
+          ownerAccountId,
+          mediaId: body.mediaId,
+          associationId: body.associationId,
+          purpose: body.purpose as ProtectedMediaPurpose,
+          audience: body.audience as ProtectedMediaAudience,
+          idempotencyKey: body.idempotencyKey,
+        }),
+        { status: 202, headers: { "Cache-Control": "private, no-store" } },
+      );
+    }
+    if (body.action === "update-description") {
+      if (!body.mediaId || !body.accessibilityDescription) throw new ProtectedMediaError("PROTECTED_MEDIA_INVALID");
+      await updateProtectedMediaAccessibilityDescription({
+        ownerAccountId,
+        mediaId: body.mediaId,
+        description: body.accessibilityDescription,
+      });
+      return new NextResponse(null, { status: 204, headers: { "Cache-Control": "private, no-store" } });
+    }
+    if (body.action === "withdraw-derivative") {
+      if (
+        !body.derivativeId ||
+        !body.reason ||
+        !(protectedMediaWithdrawalReasons as readonly string[]).includes(body.reason)
+      )
+        throw new ProtectedMediaError("PROTECTED_MEDIA_INVALID");
+      return NextResponse.json(
+        await withdrawProtectedMediaDerivative({
+          ownerAccountId,
+          derivativeId: body.derivativeId,
+          reason: body.reason as ProtectedMediaWithdrawalReason,
+        }),
+        { headers: { "Cache-Control": "private, no-store" } },
+      );
+    }
     if (
       !body.sourcePrivateAssetObjectId ||
       !body.declaredMediaType ||
@@ -50,7 +122,6 @@ export async function POST(request: Request) {
       !(protectedMediaKinds as readonly string[]).includes(body.mediaKind)
     )
       throw new ProtectedMediaError("PROTECTED_MEDIA_INVALID");
-    const ownerAccountId = "accountId" in session ? session.accountId : session.userId;
     const result = await registerProtectedMedia({
       ownerAccountId,
       sourcePrivateAssetObjectId: body.sourcePrivateAssetObjectId,
