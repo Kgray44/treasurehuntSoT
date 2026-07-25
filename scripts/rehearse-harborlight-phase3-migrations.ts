@@ -89,6 +89,9 @@ async function main() {
     const consentAuditColumns = await prisma.$queryRawUnsafe<Array<{ name: string }>>(
       "PRAGMA table_info('CommunityVoyageLogConsentAudit')",
     );
+    const mediaConsentColumns = await prisma.$queryRawUnsafe<Array<{ name: string }>>(
+      "PRAGMA table_info('CommunityVoyageLogMediaConsent')",
+    );
     const foreignKeys = await prisma.$queryRawUnsafe<Array<unknown>>("PRAGMA foreign_key_check");
     const tableCount = await prisma.$queryRawUnsafe<Array<{ count: bigint }>>(
       "SELECT COUNT(*) AS count FROM sqlite_master WHERE type = 'table' AND name NOT LIKE 'sqlite_%'",
@@ -151,6 +154,12 @@ async function main() {
         ["voyageLogId", "participantId", "actorAccountId", "purpose", "action", "state", "occurredAt"].every((name) =>
           consentAuditColumns.some((column) => column.name === name),
         ),
+      mediaConsentBindingColumnsPresent: [
+        "approvedOpaqueMediaId",
+        "approvedSourceChecksum",
+        "approvedDerivativeChecksum",
+        "subjectParticipantId",
+      ].every((name) => mediaConsentColumns.some((column) => column.name === name)),
       preparationStateDefault: defaultState,
       legacyUnique,
       sourceUnique,
@@ -165,6 +174,7 @@ async function main() {
       !result.requiredColumnsPresent ||
       !result.collectionLifecycleColumnsPresent ||
       !result.publicationConsentColumnsPresent ||
+      !result.mediaConsentBindingColumnsPresent ||
       result.preparationStateDefault !== "'PENDING_SOURCE'" ||
       !result.legacyUnique ||
       !result.sourceUnique ||

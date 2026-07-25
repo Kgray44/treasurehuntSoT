@@ -2267,12 +2267,16 @@ model CommunityVoyageLogMedia {
 }
 
 model CommunityVoyageLogMediaConsent {
-  id               String    @id @default(cuid())
-  voyageLogMediaId String
-  accountId        String
-  purpose          String
-  grantedAt        DateTime?
-  revokedAt        DateTime?
+  id                         String    @id @default(cuid())
+  voyageLogMediaId           String
+  accountId                  String
+  purpose                    String
+  approvedOpaqueMediaId      String?
+  approvedSourceChecksum     String?
+  approvedDerivativeChecksum String?
+  subjectParticipantId       String?
+  grantedAt                  DateTime?
+  revokedAt                  DateTime?
 
   @@unique([voyageLogMediaId, accountId, purpose])
 }
