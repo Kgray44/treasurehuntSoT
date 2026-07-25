@@ -1022,7 +1022,7 @@ test.describe.serial("Project Lanternwake Phase 3 Quartermaster and audio lifecy
     const runConfirmation = async () => {
       await trigger.click();
       const dialog = page.getByRole("dialog", { name: "Add Crew log entry" });
-      const confirm = dialog.getByRole("button", { name: "Confirm action" });
+      const confirm = dialog.getByRole("button", { name: "Confirm Voyage action" });
       const cancel = dialog.getByRole("button", { name: "Cancel" });
       await expect(dialog).toHaveAttribute("aria-modal", "true");
       await expect(page.locator("main.quartermaster-shell")).toHaveAttribute("aria-hidden", "true");
