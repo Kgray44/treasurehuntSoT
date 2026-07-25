@@ -891,7 +891,13 @@ test.describe.serial("Project Lanternwake Phase 3 extended runtime lifecycle", (
       const expectedObservations = 1 + (lifecycleCycles + 1) * 2;
       expect(exactFallbackObservations).toBe(expectedObservations);
       if (failure.kind === "stalled-load") {
-        expect(stalledTransportHits).toBe(expectedObservations);
+        // The route boundary deliberately serializes its outgoing visual
+        // layer. That layer can initiate the same asset request while it is
+        // leaving, so transport count is not a proxy for the authoritative
+        // Lottie mount. Every logical observation must still traverse the
+        // failpoint, while the assertions above retain the exact one-static-
+        // fallback product contract.
+        expect(stalledTransportHits).toBeGreaterThanOrEqual(expectedObservations);
         await expect.poll(() => pendingStalledTransports.size).toBe(0);
         await expectHarborFailure();
         expect(exactFallbackObservations).toBe(expectedObservations + 1);
