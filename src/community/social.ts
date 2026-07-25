@@ -222,6 +222,16 @@ export async function unblockAccount(actor: CommunityActor, blockedAccountId: st
     removeUnique(tx, tx.communityBlock, { blockerAccountId_blockedAccountId: { blockerAccountId: actor.accountId, blockedAccountId } }),
   );
 }
+export async function blockCreatorProfile(actor: CommunityActor, creatorProfileId: string): Promise<IdempotentOutcome<unknown>> {
+  const creator = await socialDb.communityProfile.findUnique({ where: { id: creatorProfileId }, select: { accountId: true } });
+  if (!creator) fail("COMMUNITY_SUBJECT_UNAVAILABLE", "That Creator is unavailable.");
+  return blockAccount(actor, creator.accountId);
+}
+export async function unblockCreatorProfile(actor: CommunityActor, creatorProfileId: string): Promise<IdempotentOutcome> {
+  const creator = await socialDb.communityProfile.findUnique({ where: { id: creatorProfileId }, select: { accountId: true } });
+  if (!creator) return { state: "ABSENT" };
+  return unblockAccount(actor, creator.accountId);
+}
 
 export async function followCreator(actor: CommunityActor, creatorProfileId: string): Promise<IdempotentOutcome<unknown>> {
   socialRate(actor, "follow", 30);

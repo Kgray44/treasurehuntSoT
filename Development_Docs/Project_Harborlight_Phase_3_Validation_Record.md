@@ -27,6 +27,8 @@
 | Direct ordered SQLite migration rehearsal through `20260725145000_harborlight_phase3_review_snapshots` | exit 0; 129 tables; review/comment snapshot columns present; `PRAGMA foreign_key_check` empty | passed isolated migration rehearsal |
 | Focused reviews/comments/Keepsake/component Vitest selection | exit 0; 7 files, 24 tests passed | passed focused privacy, contract, and canonical-generation validation |
 | Final `tsc --noEmit` and `next build --webpack` after persisted review/comment/Keepsake changes | exit 0; production build generated 87 routes | passed strict TypeScript and production build |
+| Focused social-control/component contract selection | exit 0; 4 files, 13 tests passed | passed committed-response and server-resolved Creator-block behavior |
+| Final `tsc --noEmit` and `next build --webpack` after social controls | exit 0; production build generated 89 routes | passed strict TypeScript and production build |
 
 ## Not executed or not a pass
 

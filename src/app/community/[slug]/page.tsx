@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getPublicListingBySlug } from "@/community/services";
 import { CommunityReviewList } from "@/components/community/CommunityReviewList";
+import { CommunitySocialControls } from "@/components/community/CommunitySocialControls";
 
 type Props = { params: Promise<{ slug: string }> };
 export const dynamic = "force-dynamic";
@@ -29,6 +30,7 @@ export default async function CommunityListingPage({ params }: Props) {
       <p>Created by {listing.creator.displayName}</p>
       {listing.tags.length ? <p aria-label="Tags">{listing.tags.join(", ")}</p> : null}
       {listing.spoilerLevel !== "NONE" ? <p>Preview-safe details only.</p> : null}
+      <CommunitySocialControls creatorProfileId={listing.creator.id} subjectType="LISTING" subjectId={listing.id} />
       <CommunityReviewList listingId={listing.id} />
     </main>
   );

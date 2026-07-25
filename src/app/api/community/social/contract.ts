@@ -9,6 +9,7 @@ const subjectType = z.enum(["LISTING", "RELEASE", "CREATOR", "VOYAGE_LOG", "COLL
 
 export const followInputSchema = z.object({ creatorProfileId: opaqueId }).strict();
 export const blockInputSchema = z.object({ accountId: opaqueId }).strict();
+export const creatorProfileInputSchema = z.object({ creatorProfileId: opaqueId }).strict();
 export const saveInputSchema = z.object({ subjectType, subjectId: opaqueId }).strict();
 
 export async function requireSocialActor(request: Request): Promise<CommunityActor | null> {
