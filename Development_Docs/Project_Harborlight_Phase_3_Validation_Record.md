@@ -36,6 +36,7 @@
 | Publication-consent focused tests and ordered SQLite rehearsal through `20260725148000_harborlight_phase3_publication_consent` | exit 0; 2 files / 6 tests; 34 migrations / 130 tables / empty `PRAGMA foreign_key_check`                                                                                                                    | passed purpose/scope separation from Wayfarer, active/revoked/expired fail-closed public projection, and consent lifecycle/audit migration evidence |
 | `next build --webpack` after publication-consent routes | exit 0; 93 routes generated | passed production build with the new owner/participant consent endpoints |
 | Public-raster sanitizer and ordered SQLite rehearsal through `20260725149000_harborlight_phase3_public_media_binding` | exit 0; 3 files / 8 tests; 35 migrations / 130 tables / empty `PRAGMA foreign_key_check` | passed synthetic metadata removal, source/derivative checksum distinction, exact-consent replay rejection, scanner fail-closed behavior, and media-consent binding migration evidence |
+| Public-location policy tests | exit 0; 1 file / 3 tests | passed private omission, approximate generalization, and permission-gated public coordinate policy |
 
 ## Not executed or not a pass
 
