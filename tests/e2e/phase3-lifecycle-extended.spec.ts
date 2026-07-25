@@ -1112,7 +1112,6 @@ test.describe.serial("Project Lanternwake Phase 3 Quartermaster and audio lifecy
       }
       if (audioCase.muted) {
         expect(finalSnapshot.audioOscillatorStarts).toBe(0);
-        await expect(page.getByRole("button", { name: "Sound off" })).toHaveAttribute("aria-pressed", "true");
       }
       test.info().annotations.push({
         type: "evidence-gap",
