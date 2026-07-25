@@ -1072,7 +1072,7 @@ test.describe.serial("Project Lanternwake Phase 3 Quartermaster and audio lifecy
       await page.addInitScript(({ muted }) => localStorage.setItem("forever-muted", String(muted)), audioCase);
       const fixture = await phase3.createCase(`P3-LIFE-AUDIO-${audioCase.id}`, "CHAPTER_RELEASED");
       await openPhase3Player(page, fixture, "journal");
-      const journal = page.locator(".voyage-shell.view-journal");
+      const journal = page.locator(".chronicle-journal-shell");
       const next = page.getByRole("button", { name: "Next journal page" });
       const previous = page.getByRole("button", { name: "Previous journal page" });
       const pagePosition = page.getByText(/^Page \d+ of \d+$/u);
