@@ -5,6 +5,7 @@ import type { PrivateProviderRuntime } from "./providers";
 import { requirePrivateReadiness } from "./providers";
 import type { PrivateDurableJob } from "./worker";
 import type { PrivateHandlerExecutor } from "./worker-handlers";
+import { createDurablePrivateBackup } from "./backup-service";
 
 type OperationalPayload = {
   schemaVersion: 1;
@@ -12,6 +13,7 @@ type OperationalPayload = {
   correlationId: string;
   /** A caller-controlled opaque operation revision, never private content. */
   revision?: string;
+  backup?: { sourceEnvironmentId: string; sourceDatabaseIdentity: string; idempotencyKey: string };
 };
 
 const keyRequired = new Set<PrivateJobType>([
@@ -34,6 +36,13 @@ function parsePayload(job: PrivateDurableJob): OperationalPayload {
       (parsed.revision !== undefined && !/^[A-Za-z0-9_.:-]{1,160}$/.test(parsed.revision))
     )
       throw new Error("invalid payload");
+    if (
+      parsed.backup &&
+      (!/^[A-Za-z0-9_.:-]{3,160}$/.test(parsed.backup.sourceEnvironmentId) ||
+        !/^[a-f0-9]{64}$/i.test(parsed.backup.sourceDatabaseIdentity) ||
+        !/^[A-Za-z0-9_.:-]{3,160}$/.test(parsed.backup.idempotencyKey))
+    )
+      throw new Error("invalid backup payload");
     return parsed;
   } catch {
     throw privateFailure("PRIVATE_CONTENT_CONFIGURATION_INVALID", "Private worker payload is invalid.");
@@ -106,6 +115,13 @@ export function createLocalPrivateOperationExecutors(input: {
           throw privateFailure("PRIVATE_CONTENT_FORBIDDEN", "Private worker operation lost its lease.");
         const domainExecutor = input.execute?.[type];
         if (domainExecutor) await domainExecutor(type, job, signal);
+        else if (type === "PRIVATE_BACKUP_BUILD" && payload.backup)
+          await createDurablePrivateBackup({
+            runtime: input.runtime,
+            sourceEnvironmentId: payload.backup.sourceEnvironmentId,
+            sourceDatabaseIdentity: payload.backup.sourceDatabaseIdentity,
+            idempotencyKey: payload.backup.idempotencyKey,
+          });
         if (signal.aborted)
           throw privateFailure("PRIVATE_CONTENT_FORBIDDEN", "Private worker operation lost its lease.");
         const body = Buffer.from(

@@ -123,10 +123,10 @@ export async function unsealPrivateBackupValue(
   }
 }
 function backupObjectKey(backupId: string, source: PrivateObjectDescriptor) {
-  return `${backupId}/objects/${sha256(source.key)}-${source.sha256}`;
+  return `${sha256(backupId)}/objects/${sha256(source.key)}-${source.sha256}`;
 }
 function backupManifestKey(backupId: string) {
-  return `${backupId}/manifest`;
+  return `${sha256(backupId)}/manifest`;
 }
 function keyWithoutNamespace(key: string, namespace: string) {
   const prefix = `${namespace}/`;
