@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { voyageLogConsentScopes } from "@/community/voyage-log-consent";
+import { voyageLogConsentScopes } from "@/community/voyage-log-consent-contract";
 
 type Consent = { scope: string; state: string; expiresAt?: string | null };
 type InboxItem = { voyageLogId: string; scope: string; state: string; expiresAt?: string | null };
