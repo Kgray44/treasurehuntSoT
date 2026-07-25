@@ -687,22 +687,23 @@ model BlockConnection {
 }
 
 model PublishedTaleVersion {
-  id                   String             @id @default(cuid())
+  id                   String                  @id @default(cuid())
   taleId               String
   versionNumber        Int
   versionLabel         String
-  publishedAt          DateTime           @default(now())
+  publishedAt          DateTime                @default(now())
   publishedBy          String
   publishedByAccountId String?
   releaseNotes         String?
   contentSnapshot      String
-  schemaVersion        Int                @default(1)
+  schemaVersion        Int                     @default(1)
   checksum             String
-  isCurrent            Boolean            @default(true)
-  tale                 Chronicle          @relation(fields: [taleId], references: [id], onDelete: Cascade)
+  isCurrent            Boolean                 @default(true)
+  tale                 Chronicle               @relation(fields: [taleId], references: [id], onDelete: Cascade)
   sessions             TaleSession[]
-  publishedByAccount   UserAccount?       @relation("PublishedVersionAuthorAccount", fields: [publishedByAccountId], references: [id], onDelete: SetNull)
-  communityReleases    CommunityRelease[] @relation("CommunityReleaseSource")
+  publishedByAccount   UserAccount?            @relation("PublishedVersionAuthorAccount", fields: [publishedByAccountId], references: [id], onDelete: SetNull)
+  communityReleases    CommunityRelease[]      @relation("CommunityReleaseSource")
+  chronicleRecords     PlayerChronicleRecord[]
 
   @@unique([taleId, versionNumber])
   @@index([taleId, isCurrent])
@@ -993,6 +994,9 @@ model PlayerProfile {
   bannerMedia       ProfileMedia?           @relation("ProfileBanner", fields: [bannerMediaId], references: [id], onDelete: SetNull)
   preferenceSet     ProfilePreferenceSet?
   privacyRules      ProfilePrivacyRule[]
+  chronicleRecords  PlayerChronicleRecord[]
+  chronicleMemories ChronicleMemory[]
+  keepsakeConsents  VoyageKeepsakeConsent[]
   account           UserAccount?            @relation(fields: [accountId], references: [id], onDelete: SetNull)
 
   @@index([status, displayName])
@@ -1140,6 +1144,124 @@ model PlaythroughMembership {
 
   @@unique([playthroughId, playerProfileId])
   @@index([playerProfileId, status, updatedAt])
+}
+
+// A Wayfarer-owned, materialized historical projection. Source identifiers are
+// scalar by design so source retention or future tombstoning cannot rewrite a
+// person's historical record.
+model PlayerChronicleRecord {
+  id                         String               @id @default(cuid())
+  playerProfileId            String
+  sourcePlaythroughId        String
+  sourceMembershipId         String?
+  publishedVersionId         String
+  publishedVersionChecksum   String
+  chronicleTitleSnapshot     String
+  chronicleCoverSnapshot     String?
+  creatorAttributionSnapshot String?
+  playerNameSnapshot         String
+  playerAvatarSnapshot       String?
+  participationRole          String               @default("PLAYER")
+  crewRoleSnapshot           String?
+  lifecycleStatus            String
+  outcome                    String               @default("UNAVAILABLE")
+  startedAt                  DateTime?
+  joinedAt                   DateTime?
+  completedAt                DateTime?
+  wallClockSeconds           Int?
+  activeSeconds              Int?
+  pausedSeconds              Int?
+  connectedSeconds           Int?
+  interactiveSeconds         Int?
+  captainWaitSeconds         Int?
+  wallClockAccuracy          String               @default("UNAVAILABLE")
+  activeAccuracy             String               @default("UNAVAILABLE")
+  pausedAccuracy             String               @default("UNAVAILABLE")
+  connectedAccuracy          String               @default("UNAVAILABLE")
+  interactiveAccuracy        String               @default("UNAVAILABLE")
+  captainWaitAccuracy        String               @default("UNAVAILABLE")
+  metricDefinitionVersion    String               @default("WAYFARER_TIMING_V1")
+  completedChapters          String               @default("[]")
+  optionalObjectives         String               @default("[]")
+  choiceSummary              String               @default("[]")
+  artifactSummary            String               @default("[]")
+  sourceFingerprint          String
+  projectionStatus           String               @default("CURRENT")
+  projectionReason           String?
+  lastDerivedAt              DateTime             @default(now())
+  createdAt                  DateTime             @default(now())
+  updatedAt                  DateTime             @updatedAt
+  player                     PlayerProfile        @relation(fields: [playerProfileId], references: [id], onDelete: Cascade)
+  publishedVersion           PublishedTaleVersion @relation(fields: [publishedVersionId], references: [id], onDelete: Restrict)
+  reflection                 ChronicleReflection?
+  memories                   ChronicleMemory[]
+  keepsake                   VoyageKeepsake?
+
+  @@unique([playerProfileId, sourcePlaythroughId])
+  @@index([playerProfileId, lifecycleStatus, completedAt])
+  @@index([playerProfileId, chronicleTitleSnapshot])
+  @@index([publishedVersionId])
+}
+
+model ChronicleReflection {
+  id                        String                @id @default(cuid())
+  playerChronicleRecordId   String                @unique
+  favoriteChapterId         String?
+  favoriteClueReference     String?
+  favoriteMomentReference   String?
+  favoriteArtifactReference String?
+  privateNote               String?
+  createdAt                 DateTime              @default(now())
+  updatedAt                 DateTime              @updatedAt
+  record                    PlayerChronicleRecord @relation(fields: [playerChronicleRecordId], references: [id], onDelete: Cascade)
+}
+
+model ChronicleMemory {
+  id                      String                @id @default(cuid())
+  playerChronicleRecordId String
+  playerProfileId         String
+  title                   String
+  body                    String?
+  referenceType           String?
+  referenceId             String?
+  visibility              String                @default("ONLY_ME")
+  createdAt               DateTime              @default(now())
+  updatedAt               DateTime              @updatedAt
+  deletedAt               DateTime?
+  record                  PlayerChronicleRecord @relation(fields: [playerChronicleRecordId], references: [id], onDelete: Cascade)
+  owner                   PlayerProfile         @relation(fields: [playerProfileId], references: [id], onDelete: Cascade)
+
+  @@index([playerChronicleRecordId, deletedAt, createdAt])
+  @@index([playerProfileId, deletedAt])
+}
+
+model VoyageKeepsake {
+  id                      String                  @id @default(cuid())
+  playerChronicleRecordId String                  @unique
+  status                  String                  @default("READY")
+  presentationPayload     String                  @default("{}")
+  generatedAt             DateTime                @default(now())
+  regeneratedAt           DateTime?
+  createdAt               DateTime                @default(now())
+  updatedAt               DateTime                @updatedAt
+  record                  PlayerChronicleRecord   @relation(fields: [playerChronicleRecordId], references: [id], onDelete: Cascade)
+  consents                VoyageKeepsakeConsent[]
+}
+
+model VoyageKeepsakeConsent {
+  id            String         @id @default(cuid())
+  keepsakeId    String
+  participantId String
+  granted       Boolean        @default(false)
+  grantedAt     DateTime?
+  revokedAt     DateTime?
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  keepsake      VoyageKeepsake @relation(fields: [keepsakeId], references: [id], onDelete: Cascade)
+  participant   PlayerProfile  @relation(fields: [participantId], references: [id], onDelete: Cascade)
+
+  @@unique([keepsakeId, participantId])
+  @@index([participantId, granted])
 }
 
 model Invitation {
