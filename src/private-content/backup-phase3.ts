@@ -21,6 +21,8 @@ export type PrivateBackupRecordSet = {
   encryptedPayloads: readonly Record<string, unknown>[];
   wrappedKeys: readonly { provider: string; keyVersion: string; algorithm: string; wrappedKey: string }[];
   scans: readonly Record<string, unknown>[];
+  operations: readonly Record<string, unknown>[];
+  scheduledOperations: readonly Record<string, unknown>[];
 };
 export type PrivateSealedBackupValue = {
   version: 1;

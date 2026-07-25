@@ -32,6 +32,8 @@ const records = () => ({
     { provider: "local-development", keyVersion: "test-v1", algorithm: "AES-256-GCM", wrappedKey: "opaque" },
   ],
   scans: [{ objectId: "object-1", state: "CLEAN" }],
+  operations: [{ id: "operation-1", state: "COMPLETED" }],
+  scheduledOperations: [{ id: "schedule-1", state: "PENDING" }],
 });
 afterEach(async () => Promise.all(roots.splice(0).map((root) => rm(root, { recursive: true, force: true }))));
 

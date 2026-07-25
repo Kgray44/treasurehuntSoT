@@ -11,7 +11,17 @@ export async function collectPrivateBackupRecordSet(): Promise<{
   records: PrivateBackupRecordSet;
   objects: Array<{ key: string; sha256: string; byteLength: number; mediaType?: string }>;
 }> {
-  const [imports, mappings, assetObjects, assetReferences, encryptedPayloads, wrappedKeys, scans] = await Promise.all([
+  const [
+    imports,
+    mappings,
+    assetObjects,
+    assetReferences,
+    encryptedPayloads,
+    wrappedKeys,
+    scans,
+    operations,
+    schedules,
+  ] = await Promise.all([
     privateDb.privateContentImport.findMany({
       select: {
         id: true,
@@ -38,6 +48,8 @@ export async function collectPrivateBackupRecordSet(): Promise<{
     privateDb.privateContentEncryptedPayload.findMany(),
     privateDb.privateContentWrappedKey.findMany(),
     privateDb.privateContentScan.findMany(),
+    privateDb.privateContentOperation.findMany(),
+    privateDb.privateScheduledOperation.findMany(),
   ]);
   return {
     records: {
@@ -49,6 +61,8 @@ export async function collectPrivateBackupRecordSet(): Promise<{
       encryptedPayloads,
       wrappedKeys,
       scans,
+      operations,
+      scheduledOperations: schedules,
     },
     objects: assetObjects.map((object: any) => ({
       key: object.storageKey,
