@@ -63,6 +63,11 @@ export default defineConfig({
       use: { ...devices["Desktop Chrome"] },
     },
     {
+      name: "wayfarer-phase3",
+      testMatch: /wayfarer-phase3\.spec\.ts/u,
+      use: { ...devices["Desktop Chrome"] },
+    },
+    {
       // Harborlight owns its own isolated browser journey. It must not depend
       // on the Phase 3 fixture setup, whose Captain/session data is unrelated
       // to Exchange publication and installation evidence.
