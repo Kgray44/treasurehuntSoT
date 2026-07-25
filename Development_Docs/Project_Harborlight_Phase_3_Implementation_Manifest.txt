@@ -7,7 +7,7 @@ Origin main at start: 6bd8209d2d7f0edc73da9566fd06e825ae51a602
 Files added: Phase 3 design/test/validation records; discovery/social/Keepsake services and tests; Community pages; discovery API; five SQLite and five MySQL migration scripts.
 Files modified: prisma/schema.prisma; prisma/schema.sqlite.prisma.
 Models added: 28 Phase 3 Community models across discovery, relationships, reviews/comments/reports, Keepsakes/Voyage Logs/consent, and Guides.
-Migration identifiers: SQLite 20260725140000 through 20260725144000; MySQL 0031 through 0035.
+Migration identifiers: SQLite 20260725140000 through 20260725145000; MySQL 0031 through 0036.
 Routes added: /community, /community/[slug], GET /api/community/discover.
 Services added: discovery query/cursor/filter/sort/reconciliation provider; social interaction service; Keepsake/Voyage Log policy/projection service.
 Tests added: discovery, social, and Keepsake focused Vitest files.
@@ -22,3 +22,5 @@ Current vertical additions (not a completion claim): reviewed-release associatio
 Current validation: both Prisma schemas validated; ordered SQLite rehearsal reached 129 tables with snapshot columns and no foreign-key violations; 7 focused files / 24 tests, strict TypeScript, and a production webpack build with 87 routes passed.
 
 Social-control addition (not a completion claim): Creator and listing controls obtain the canonical session CSRF token, surface pending/success/error accessibly, wait for an authoritative mutation response before changing presentation, and use server-resolved Creator profile blocking so public UI never needs an account identifier.
+Persisted social-state addition: a bounded, private/no-store relationship-state projection resolves only visible listing/Creator/Guide/Community-collection subjects in grouped queries. It carries no target account ID or block-list rows, rechecks visibility/moderation, and controls reconcile after committed mutations and browser history restoration.
+Extended migration reservation: SQLite 20260725145000_harborlight_phase3_review_snapshots and MySQL 0036_harborlight_phase3_review_snapshots are Harborlight-owned additions. Active Wayfarer, Sealed Hold, and Lanternwake remote trees were checked on 2026-07-25 with no collision; the pushed identifiers remain unchanged.

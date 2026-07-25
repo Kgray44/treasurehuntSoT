@@ -14,22 +14,36 @@ describe("CommunitySocialControls", () => {
     const fetch = vi
       .fn()
       .mockResolvedValueOnce(new Response(JSON.stringify({ csrfToken: "csrf-1" }), { status: 200 }))
+      .mockResolvedValueOnce(
+        new Response(
+          JSON.stringify({ states: [{ following: false, saved: false, favorited: false, blocked: false, canInteract: true }] }),
+          { status: 200 },
+        ),
+      )
       .mockImplementationOnce(
         () =>
           new Promise<Response>((resolve) => {
             resolveMutation = resolve;
           }),
+      )
+      .mockResolvedValueOnce(
+        new Response(
+          JSON.stringify({ states: [{ following: true, saved: false, favorited: false, blocked: false, canInteract: true }] }),
+          { status: 200 },
+        ),
       );
     vi.stubGlobal("fetch", fetch);
     render(<CommunitySocialControls creatorProfileId="creator_1" subjectType="LISTING" subjectId="listing_1" />);
     const button = await screen.findByRole("button", { name: "Follow Creator" });
+    await waitFor(() => expect(fetch).toHaveBeenCalledTimes(2));
     fireEvent.click(button);
     expect(button).toBeDisabled();
     expect(screen.queryByRole("button", { name: "Unfollow Creator" })).not.toBeInTheDocument();
     resolveMutation!(new Response(JSON.stringify({ state: "CREATED" }), { status: 201 }));
     expect(await screen.findByRole("button", { name: "Unfollow Creator" })).toBeInTheDocument();
     await waitFor(() =>
-      expect(fetch).toHaveBeenLastCalledWith(
+      expect(fetch).toHaveBeenNthCalledWith(
+        3,
         "/api/community/social/follow",
         expect.objectContaining({ headers: expect.objectContaining({ "x-csrf-token": "csrf-1" }) }),
       ),

@@ -22,15 +22,46 @@ export function CommunitySocialControls({
   const [mode, setMode] = useState<Mode>("idle");
   const [message, setMessage] = useState("");
 
+  async function hydrate() {
+    const parameters = new URLSearchParams({
+      subjects: JSON.stringify([{ subjectType, subjectId }]),
+    });
+    const response = await fetch(`/api/community/social/state?${parameters.toString()}`, { cache: "no-store" });
+    if (!response.ok) throw new Error("Community Harbor controls are unavailable.");
+    const value = (await response.json()) as {
+      states?: Array<{ following: boolean; saved: boolean; favorited: boolean; blocked: boolean; canInteract: boolean }>;
+    };
+    const state = value.states?.[0];
+    if (!state) {
+      setMode("error");
+      setMessage("Community Harbor controls are unavailable.");
+      return;
+    }
+    setFollowing(state.following);
+    setSaved(state.saved);
+    setFavorited(state.favorited);
+    setBlocked(state.blocked);
+    if (!state.canInteract) setMessage("Community interaction is unavailable.");
+  }
+
   useEffect(() => {
     fetch("/api/auth/sessions")
       .then(async (response) => (response.ok ? ((await response.json()) as { csrfToken?: string }) : null))
       .then((session) => {
-        if (session?.csrfToken) setCsrf(session.csrfToken);
+        if (session?.csrfToken) {
+          setCsrf(session.csrfToken);
+          void hydrate().catch(() => {
+            setMode("error");
+            setMessage("Community Harbor controls are unavailable.");
+          });
+        }
         else setMode("signed-out");
       })
       .catch(() => setMode("signed-out"));
-  }, []);
+    const restore = () => void hydrate().catch(() => undefined);
+    window.addEventListener("popstate", restore);
+    return () => window.removeEventListener("popstate", restore);
+  }, [subjectId, subjectType]);
 
   async function mutate(path: string, payload: Record<string, string>, onSuccess: () => void) {
     if (!csrf) {
@@ -49,6 +80,7 @@ export function CommunitySocialControls({
       const body = (await response.json().catch(() => null)) as { error?: string } | null;
       if (!response.ok) throw new Error(body?.error ?? "The Community action could not be completed.");
       onSuccess();
+      await hydrate();
       setMode("success");
       setMessage("Community Harbor updated.");
     } catch (cause) {

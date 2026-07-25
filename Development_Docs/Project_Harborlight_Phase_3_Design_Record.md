@@ -12,7 +12,7 @@
 
 Harborlight reads canonical completion and Wayfarer public identity projections; it neither mutates sessions nor copies Chronicle prose, event payloads, answers, variables, invitations, Captain notes, account secrets, or raw media. Public, search, sharing, and Open Graph responses use explicit server projections. A value absent from a public projection cannot be recovered by client rendering, facets, cursors, logs, or error responses.
 
-The Phase 3 schema is additive and uses only the reserved SQLite migrations `20260725140000` through `20260725144000` and MySQL migrations `0031` through `0035`. No down migration, `db push`, reset, truncation, or mutable release update is allowed.
+The Phase 3 schema is additive and uses the reserved SQLite migrations `20260725140000` through `20260725145000_harborlight_phase3_review_snapshots` and MySQL migrations `0031` through `0036_harborlight_phase3_review_snapshots`. Harborlight owns the extended identifiers: on 2026-07-25, direct remote-tree inspection of active Wayfarer Phase 3 (`1403e64e`), Sealed Hold Phase 3 (`9f158e74`), and Lanternwake integration (`b168ecba`) found neither path. No down migration, `db push`, reset, truncation, or mutable release update is allowed.
 
 ## Frozen model and service contracts
 

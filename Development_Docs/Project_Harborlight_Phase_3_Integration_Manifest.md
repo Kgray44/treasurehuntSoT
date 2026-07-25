@@ -3,6 +3,7 @@
 - Original base: `6bd8209d2d7f0edc73da9566fd06e825ae51a602`.
 - Latest fetched main before this implementation: `6bd8209d2d7f0edc73da9566fd06e825ae51a602`.
 - Main movement at implementation start: none.
+- Extended migration reservation: Harborlight owns SQLite `20260725145000_harborlight_phase3_review_snapshots` and MySQL `0036_harborlight_phase3_review_snapshots`. Direct remote-tree checks on 2026-07-25 found no matching path on active Wayfarer Phase 3 `1403e64e`, Sealed Hold Phase 3 `9f158e74`, or Lanternwake integration `b168ecba`; do not renumber the pushed migrations.
 - Branch changes add only Phase 3 Community models/migrations, isolated Harbor services/tests, Community route family, and Phase 3 evidence records.
 - Convergence risks: Wayfarer/Sealed Hold Phase 3 branches may concurrently touch schema migration order, identity/consent seams, and provider contracts. Do not merge or rebase automatically. Reconcile migration order, canonical identity/completion adapters, and storage/scan ports by owning-domain review.
 - Required future post-merge tests: ordered SQLite and owned MySQL migration rehearsal, full private-projection/IDOR suite, focused browsers/Axe/reduced-motion, restart proof, complete validation, and provider-state checks.

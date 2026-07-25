@@ -29,6 +29,7 @@
 | Final `tsc --noEmit` and `next build --webpack` after persisted review/comment/Keepsake changes | exit 0; production build generated 87 routes | passed strict TypeScript and production build |
 | Focused social-control/component contract selection | exit 0; 4 files, 13 tests passed | passed committed-response and server-resolved Creator-block behavior |
 | Final `tsc --noEmit` and `next build --webpack` after social controls | exit 0; production build generated 89 routes | passed strict TypeScript and production build |
+| Focused persisted social-state reconciliation component test and `tsc --noEmit` | exit 0; 1 file, 1 test passed | passed no-optimistic-success hydration/reconciliation behavior |
 
 ## Not executed or not a pass
 
