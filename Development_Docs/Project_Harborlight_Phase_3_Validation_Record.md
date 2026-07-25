@@ -30,6 +30,7 @@
 | Focused social-control/component contract selection | exit 0; 4 files, 13 tests passed | passed committed-response and server-resolved Creator-block behavior |
 | Final `tsc --noEmit` and `next build --webpack` after social controls | exit 0; production build generated 89 routes | passed strict TypeScript and production build |
 | Focused persisted social-state reconciliation component test and `tsc --noEmit` | exit 0; 1 file, 1 test passed | passed no-optimistic-success hydration/reconciliation behavior |
+| Focused social-state unavailable route/component tests and `tsc --noEmit` | exit 0; 2 files, 3 tests passed | passed typed 503/private failure and indeterminate retry behavior |
 
 ## Not executed or not a pass
 

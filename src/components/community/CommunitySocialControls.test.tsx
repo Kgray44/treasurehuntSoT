@@ -49,4 +49,25 @@ describe("CommunitySocialControls", () => {
       ),
     );
   });
+
+  it("withholds contradictory action controls while persisted state is unavailable and retries safely", async () => {
+    const fetch = vi
+      .fn()
+      .mockResolvedValueOnce(new Response(JSON.stringify({ csrfToken: "csrf-1" }), { status: 200 }))
+      .mockResolvedValueOnce(
+        new Response(JSON.stringify({ code: "COMMUNITY_SOCIAL_STATE_UNAVAILABLE" }), { status: 503 }),
+      )
+      .mockResolvedValueOnce(
+        new Response(
+          JSON.stringify({ states: [{ following: false, saved: false, favorited: false, blocked: false, canInteract: true }] }),
+          { status: 200 },
+        ),
+      );
+    vi.stubGlobal("fetch", fetch);
+    render(<CommunitySocialControls creatorProfileId="creator_1" subjectType="LISTING" subjectId="listing_1" />);
+    expect(await screen.findByRole("button", { name: "Retry Community controls" })).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Follow Creator" })).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Retry Community controls" }));
+    expect(await screen.findByRole("button", { name: "Follow Creator" })).toBeInTheDocument();
+  });
 });

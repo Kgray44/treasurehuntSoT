@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 
-import { getSocialRelationshipStates, socialStateSubjectTypes } from "@/community/social-state";
+import { CommunitySocialStateUnavailable, getSocialRelationshipStates, socialStateSubjectTypes } from "@/community/social-state";
 import { requireCanonicalAccountIdentity } from "@/platform/auth";
 
 const subjectSchema = z.object({
@@ -23,7 +23,15 @@ export async function GET(request: Request) {
       { states: await getSocialRelationshipStates(identity?.accountId ?? null, subjects) },
       { headers: { "Cache-Control": "private, no-store" } },
     );
-  } catch {
-    return NextResponse.json({ states: [] }, { headers: { "Cache-Control": "private, no-store" } });
+  } catch (cause) {
+    if (cause instanceof CommunitySocialStateUnavailable)
+      return NextResponse.json(
+        { code: cause.code, error: "Community relationship state is temporarily unavailable." },
+        { status: 503, headers: { "Cache-Control": "private, no-store" } },
+      );
+    return NextResponse.json(
+      { code: "COMMUNITY_SOCIAL_STATE_UNAVAILABLE", error: "Community relationship state is temporarily unavailable." },
+      { status: 503, headers: { "Cache-Control": "private, no-store" } },
+    );
   }
 }
