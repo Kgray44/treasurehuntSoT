@@ -10,7 +10,14 @@ import {
   type ReactNode,
 } from "react";
 import type { AnimatedProperty, SceneHostKind } from "../core/animation-types";
-import { SceneHostContext, useAnimationAuthority, useOptionalSceneHost } from "./SceneHostContext";
+import {
+  SceneHostContext,
+  SceneHostLeaseContext,
+  useAnimationAuthority,
+  useOptionalSceneHost,
+  type AnimationAuthority,
+  type SceneHostLease,
+} from "./SceneHostContext";
 import type {
   RuntimeOwnedSceneTargetBinding,
   RuntimeOwnedSceneTargetInput,
@@ -53,6 +60,171 @@ class BoundElementCell {
   }
 }
 
+class PendingSceneTargetHandle implements SceneTargetHandle {
+  private handle: SceneTargetHandle | null = null;
+  private released = false;
+
+  constructor(
+    readonly input: SceneTargetRegistration,
+    private readonly onRelease: () => void,
+  ) {}
+
+  get providerId() {
+    return this.requireActive().providerId;
+  }
+
+  get hostId() {
+    return this.requireActive().hostId;
+  }
+
+  get hostGeneration() {
+    return this.requireActive().hostGeneration;
+  }
+
+  get targetId() {
+    return this.requireActive().targetId;
+  }
+
+  get part() {
+    return this.requireActive().part;
+  }
+
+  get targetGeneration() {
+    return this.requireActive().targetGeneration;
+  }
+
+  activate(handle: SceneTargetHandle) {
+    if (this.released) {
+      handle.release();
+      return;
+    }
+    this.handle = handle;
+  }
+
+  release = () => {
+    if (this.released) return;
+    this.released = true;
+    this.handle?.release();
+    this.handle = null;
+    this.onRelease();
+  };
+
+  private requireActive() {
+    if (!this.handle) throw new Error("Scene target lease is pending or released");
+    return this.handle;
+  }
+}
+
+class PhysicalSceneHostLease implements SceneHostHandle, SceneHostLease {
+  private handle: SceneHostHandle | null = null;
+  private root: HTMLElement | null = null;
+  private readonly listeners = new Set<() => void>();
+  private readonly pendingTargets = new Set<PendingSceneTargetHandle>();
+
+  constructor(
+    private readonly authority: AnimationAuthority,
+    private readonly hostKind: SceneHostKind,
+    private readonly logicalKey: string | undefined,
+  ) {}
+
+  get providerId() {
+    return this.requireActive().providerId;
+  }
+
+  get hostId() {
+    return this.requireActive().hostId;
+  }
+
+  get kind() {
+    return this.hostKind;
+  }
+
+  get generation() {
+    return this.requireActive().generation;
+  }
+
+  getHandle = () => this.handle;
+
+  subscribe = (listener: () => void) => {
+    this.listeners.add(listener);
+    return () => this.listeners.delete(listener);
+  };
+
+  attach(root: HTMLElement) {
+    if (this.root === root && this.handle && this.authority.hosts.hostForRoot(root) === this.handle) return;
+    const existingForRoot = this.authority.hosts.hostForRoot(root);
+    if (existingForRoot && existingForRoot !== this.handle) existingForRoot.release();
+    this.detach();
+    this.root = root;
+    this.handle = this.authority.hosts.registerHost({
+      kind: this.hostKind,
+      root,
+      ...(this.logicalKey ? { hostKey: this.logicalKey } : {}),
+    });
+    this.activatePendingTargets();
+    this.notify();
+  }
+
+  detach(root?: HTMLElement | null) {
+    if (root && this.root !== root) return;
+    const current = this.handle;
+    this.pendingTargets.forEach((target) => target.release());
+    this.pendingTargets.clear();
+    this.handle = null;
+    this.root = null;
+    current?.release();
+    this.notify();
+  }
+
+  beginScene(request: Parameters<SceneHostHandle["beginScene"]>[0]) {
+    return this.requireActive().beginScene(request);
+  }
+
+  registerTarget(input: SceneTargetRegistration) {
+    const current = this.handle;
+    if (current && this.root && this.authority.hosts.hostForRoot(this.root) === current) {
+      return current.registerTarget(input);
+    }
+    const pending = new PendingSceneTargetHandle(input, () => this.pendingTargets.delete(pending));
+    this.pendingTargets.add(pending);
+    return pending;
+  }
+
+  claimRuntimeSurface(input: Parameters<SceneHostHandle["claimRuntimeSurface"]>[0]) {
+    return this.requireActive().claimRuntimeSurface(input);
+  }
+
+  exportTarget(input: Parameters<SceneHostHandle["exportTarget"]>[0]) {
+    return this.requireActive().exportTarget(input);
+  }
+
+  snapshot() {
+    return this.requireActive().snapshot();
+  }
+
+  release = () => this.detach();
+
+  private requireActive() {
+    const current = this.handle;
+    if (!current || !this.root || this.authority.hosts.hostForRoot(this.root) !== current) {
+      throw new Error("Scene host lease is not active");
+    }
+    return current;
+  }
+
+  private notify() {
+    this.listeners.forEach((listener) => listener());
+  }
+
+  private activatePendingTargets() {
+    const current = this.requireActive();
+    for (const pending of [...this.pendingTargets]) {
+      this.pendingTargets.delete(pending);
+      pending.activate(current.registerTarget(pending.input));
+    }
+  }
+}
+
 export type SceneHostProps = Omit<HTMLAttributes<HTMLElement>, "children"> & {
   kind: SceneHostKind;
   hostKey?: string;
@@ -62,23 +234,22 @@ export type SceneHostProps = Omit<HTMLAttributes<HTMLElement>, "children"> & {
 
 export function SceneHost({ kind, hostKey, as = "div", children, ...props }: SceneHostProps) {
   const authority = useAnimationAuthority();
-  const cell = useMemo(() => new RegistrationCell<SceneHostHandle>(), []);
-  const handle = useSyncExternalStore(cell.subscribe, cell.getSnapshot, cell.getSnapshot);
+  const lease = useMemo(() => new PhysicalSceneHostLease(authority, kind, hostKey), [authority, hostKey, kind]);
+  const handle = useSyncExternalStore(lease.subscribe, lease.getHandle, lease.getHandle);
   const registerRoot = useCallback(
     (root: HTMLElement | null) => {
-      // React can re-deliver the same ref during a retained subtree update.
-      // Registering it again would violate the registry's unique host-key
-      // contract even though no second host exists.
-      if (root && cell.getSnapshot() && authority.hosts.hostForRoot(root) === cell.getSnapshot()) return;
-      cell.replace(root ? authority.hosts.registerHost({ kind, root, ...(hostKey ? { hostKey } : {}) }) : null);
+      if (root) lease.attach(root);
+      else lease.detach();
     },
-    [authority.hosts, cell, hostKey, kind],
+    [lease],
   );
 
   return createElement(
     as,
     { ...props, ref: registerRoot, "data-scene-host-boundary": kind },
-    <SceneHostContext.Provider value={handle}>{children}</SceneHostContext.Provider>,
+    <SceneHostLeaseContext.Provider value={lease}>
+      <SceneHostContext.Provider value={handle}>{children}</SceneHostContext.Provider>
+    </SceneHostLeaseContext.Provider>,
   );
 }
 

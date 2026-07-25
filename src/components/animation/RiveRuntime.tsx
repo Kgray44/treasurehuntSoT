@@ -175,7 +175,10 @@ function LiveRiveRuntime({
     }),
     [asset.artboard, asset.key, asset.path, asset.runtimeInterface.kind, asset.stateMachine],
   );
-  const { rive, RiveComponent } = useRive(riveOptions);
+  // Visibility is owned below by the product policy so it can publish the
+  // truthful ready/paused/hidden state. Avoid a second Rive-hook observer
+  // with a competing rendering lifecycle for the same canvas.
+  const { rive, RiveComponent } = useRive(riveOptions, { shouldUseIntersectionObserver: false });
   const allowStateTravel =
     mode !== "reduced" && motionPolicy?.level !== "reduced" && (motionPolicy?.allowRiveStateTravel ?? true);
 
