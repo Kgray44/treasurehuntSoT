@@ -39,6 +39,7 @@
 | Public-location policy tests | exit 0; 1 file / 3 tests | passed private omission, approximate generalization, and permission-gated public coordinate policy |
 | Voyage Log lifecycle/readiness policy tests | exit 0; 1 file / 2 tests | passed complete publication gate explanation and irreversible consent-review/removal transitions |
 | Publication-consent owner/participant panel tests | exit 0; 1 file / 2 tests | passed accessible consent state display, CSRF-protected approval request, and protected-participant UI redaction |
+| Sharing-metadata and Voyage Log public-route tests | exit 0; 2 files / 6 tests | passed allowlisted canonical/Open Graph projection, private/crew denial, unlisted robots, and safe Voyage Log detail reads |
 
 ## Not executed or not a pass
 
