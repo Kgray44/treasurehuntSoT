@@ -2,6 +2,7 @@ import { createHash } from "node:crypto";
 import sharp from "sharp";
 import { CommunityError } from "./domain";
 import type { CommunityBinaryScanReceipt } from "./scanner";
+import { db } from "@/lib/db";
 
 const supportedRasterFormats = new Map([
   ["png", "image/png"],
@@ -126,4 +127,147 @@ export function assertExactMediaPublicationConsent(input: {
       "COMMUNITY_MEDIA_NOT_READY",
       "Public media requires a clean scanner receipt for this exact derivative.",
     );
+}
+
+/** Sealed Hold owns the protected original and durable public derivative storage. */
+export interface SealedHoldPublicDerivativePort {
+  writePublicDerivative(input: {
+    voyageLogId: string;
+    sourceOpaqueId: string;
+    derivativeChecksum: string;
+    mediaType: string;
+    bytes: Uint8Array;
+  }): Promise<{ opaqueDerivativeReference: string }>;
+}
+
+export async function selectVoyageLogPublicMedia(input: {
+  ownerAccountId: string;
+  voyageLogId: string;
+  sourceOpaqueId: string;
+  subjectParticipantId?: string;
+  declaredMediaType: string;
+  sourceBytes: Uint8Array;
+  scannerReceipt: Pick<CommunityBinaryScanReceipt, "result" | "sha256">;
+  derivatives: SealedHoldPublicDerivativePort;
+}) {
+  const log = await db.communityVoyageLog.findUnique({
+    where: { id: input.voyageLogId },
+    select: { ownerAccountId: true },
+  });
+  if (!log || log.ownerAccountId !== input.ownerAccountId)
+    throw new CommunityError("COMMUNITY_VOYAGE_LOG_NOT_FOUND", "Voyage Log not found.");
+  const derivative = await createSafePublicImageDerivative({
+    bytes: input.sourceBytes,
+    declaredMediaType: input.declaredMediaType,
+  });
+  if (input.scannerReceipt.result !== "CLEAN" || input.scannerReceipt.sha256 !== derivative.sourceChecksum)
+    throw new CommunityError(
+      "COMMUNITY_MEDIA_NOT_READY",
+      "Selected media is not clean for this exact source checksum.",
+    );
+  const stored = await input.derivatives.writePublicDerivative({
+    voyageLogId: input.voyageLogId,
+    sourceOpaqueId: input.sourceOpaqueId,
+    derivativeChecksum: derivative.derivativeChecksum,
+    mediaType: "image/webp",
+    bytes: derivative.bytes,
+  });
+  const existing = await db.communityVoyageLogMedia.findUnique({
+    where: {
+      voyageLogId_privateMediaReference: {
+        voyageLogId: input.voyageLogId,
+        privateMediaReference: input.sourceOpaqueId,
+      },
+    },
+    select: { id: true, sourceChecksum: true, derivativeChecksum: true },
+  });
+  const changed =
+    !!existing &&
+    (existing.sourceChecksum !== derivative.sourceChecksum ||
+      existing.derivativeChecksum !== derivative.derivativeChecksum);
+  const media = await db.$transaction(async (tx) => {
+    const record = await tx.communityVoyageLogMedia.upsert({
+      where: {
+        voyageLogId_privateMediaReference: {
+          voyageLogId: input.voyageLogId,
+          privateMediaReference: input.sourceOpaqueId,
+        },
+      },
+      update: {
+        sourceChecksum: derivative.sourceChecksum,
+        subjectParticipantId: input.subjectParticipantId ?? null,
+        detectedMediaType: derivative.detectedMediaType,
+        derivativeChecksum: derivative.derivativeChecksum,
+        derivativeStorageReference: stored.opaqueDerivativeReference,
+        processingStatus: "READY",
+        scanStatus: "CLEAN",
+        exifGpsRemoved: true,
+      },
+      create: {
+        voyageLogId: input.voyageLogId,
+        privateMediaReference: input.sourceOpaqueId,
+        sourceChecksum: derivative.sourceChecksum,
+        subjectParticipantId: input.subjectParticipantId ?? null,
+        detectedMediaType: derivative.detectedMediaType,
+        derivativeChecksum: derivative.derivativeChecksum,
+        derivativeStorageReference: stored.opaqueDerivativeReference,
+        processingStatus: "READY",
+        scanStatus: "CLEAN",
+        exifGpsRemoved: true,
+      },
+    });
+    if (changed) {
+      await tx.communityVoyageLogMediaConsent.deleteMany({ where: { voyageLogMediaId: record.id } });
+      await tx.communityVoyageLog.update({
+        where: { id: input.voyageLogId },
+        data: {
+          lifecycleState: "CONSENT_REVIEW_REQUIRED",
+          consentRevision: { increment: 1 },
+          publishedAt: null,
+          searchIndexedAt: null,
+          openGraphInvalidatedAt: new Date(),
+        },
+      });
+    }
+    return record;
+  });
+  return {
+    id: media.id,
+    sourceOpaqueId: input.sourceOpaqueId,
+    sourceChecksum: derivative.sourceChecksum,
+    derivativeChecksum: derivative.derivativeChecksum,
+    detectedMediaType: derivative.detectedMediaType,
+    changed,
+  };
+}
+
+export async function removeVoyageLogPublicMedia(input: {
+  ownerAccountId: string;
+  voyageLogId: string;
+  mediaId: string;
+}) {
+  const media = await db.communityVoyageLogMedia.findFirst({
+    where: { id: input.mediaId, voyageLogId: input.voyageLogId },
+    select: { id: true, voyageLogId: true },
+  });
+  const log = await db.communityVoyageLog.findUnique({
+    where: { id: input.voyageLogId },
+    select: { ownerAccountId: true },
+  });
+  if (!media || !log || log.ownerAccountId !== input.ownerAccountId)
+    throw new CommunityError("COMMUNITY_VOYAGE_LOG_NOT_FOUND", "Voyage Log media not found.");
+  await db.$transaction(async (tx) => {
+    await tx.communityVoyageLogMediaConsent.deleteMany({ where: { voyageLogMediaId: media.id } });
+    await tx.communityVoyageLogMedia.delete({ where: { id: media.id } });
+    await tx.communityVoyageLog.update({
+      where: { id: media.voyageLogId },
+      data: {
+        lifecycleState: "CONSENT_REVIEW_REQUIRED",
+        consentRevision: { increment: 1 },
+        publishedAt: null,
+        searchIndexedAt: null,
+        openGraphInvalidatedAt: new Date(),
+      },
+    });
+  });
 }

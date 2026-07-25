@@ -40,6 +40,7 @@
 | Voyage Log lifecycle/readiness policy tests | exit 0; 1 file / 2 tests | passed complete publication gate explanation and irreversible consent-review/removal transitions |
 | Publication-consent owner/participant panel tests | exit 0; 1 file / 2 tests | passed accessible consent state display, CSRF-protected approval request, and protected-participant UI redaction |
 | Sharing-metadata and Voyage Log public-route tests | exit 0; 2 files / 6 tests | passed allowlisted canonical/Open Graph projection, private/crew denial, unlisted robots, and safe Voyage Log detail reads |
+| Media lifecycle focused tests and ordered SQLite rehearsal through `20260725150000_harborlight_phase3_media_selection` | exit 0; 1 file / 2 tests; 36 migrations / 130 tables / empty `PRAGMA foreign_key_check` | passed raster safety policy and migration application; runtime Sealed Hold adapter/UI remains unvalidated |
 
 ## Not executed or not a pass
 

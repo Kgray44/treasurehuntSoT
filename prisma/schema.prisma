@@ -2256,6 +2256,9 @@ model CommunityVoyageLogMedia {
   id                         String   @id @default(cuid())
   voyageLogId                String
   privateMediaReference      String
+  sourceChecksum             String
+  subjectParticipantId       String?
+  detectedMediaType          String
   derivativeChecksum         String
   derivativeStorageReference String
   processingStatus           String   @default("PENDING")
@@ -2264,6 +2267,7 @@ model CommunityVoyageLogMedia {
   createdAt                  DateTime @default(now())
 
   @@unique([voyageLogId, derivativeChecksum])
+  @@unique([voyageLogId, privateMediaReference])
 }
 
 model CommunityVoyageLogMediaConsent {
