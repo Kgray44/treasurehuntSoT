@@ -5,24 +5,19 @@ export const communitySceneNames = [
   "community-featured-reveal",
   "community-card-collection-enter",
   "community-listing-open",
-  "community-chronicle-preview",
-  "community-artifact-inspection",
-  "community-artifact-assembly-preview",
   "community-profile-arrival",
   "community-voyage-log-unfurl",
   "community-save-to-collection",
-  "community-install-confirmation",
-  "community-fork-confirmation",
-  "community-publish-launch",
-  "community-release-update",
+  "community-filter-results",
   "community-report-submitted",
-  "community-moderation-state-change",
+  "community-keepsake-created",
+  "community-voyage-log-published",
 ] as const;
 export type CommunitySceneName = (typeof communitySceneNames)[number];
 export type CommunitySceneContract = Readonly<{
   name: CommunitySceneName;
   family: "community-harbor";
-  reachability: SceneReachability;
+  reachability: Extract<SceneReachability, "production">;
   expectedHostKind: SceneHostKind;
   requiredSemanticTargets: readonly string[];
   optionalDecorativeTargets: readonly string[];
@@ -41,7 +36,7 @@ const contract = (
   Object.freeze({
     name,
     family: "community-harbor",
-    reachability: "future-contract",
+    reachability: "production",
     expectedHostKind: "platform-ceremony",
     requiredSemanticTargets,
     optionalDecorativeTargets: ["community-light", "community-parchment", "community-route"],
@@ -58,8 +53,8 @@ export const communitySceneContracts = Object.freeze(
       name,
       contract(
         name,
-        name.includes("publish") || name.includes("install") ? ["community-receipt"] : ["community-heading"],
-        name.includes("publish") || name.includes("install") ? "server-confirmed" : "static-readable",
+        name.includes("published") || name.includes("created") || name.includes("submitted") ? ["community-receipt"] : ["community-heading"],
+        name.includes("published") || name.includes("created") || name.includes("submitted") ? "server-confirmed" : "static-readable",
       ),
     ]),
   ) as Record<CommunitySceneName, CommunitySceneContract>,

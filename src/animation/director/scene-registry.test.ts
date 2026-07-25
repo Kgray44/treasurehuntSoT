@@ -12,7 +12,7 @@ import { sceneContracts, sceneReachabilityEvidence, sceneRegistry } from "./scen
 import { progressionEventPresentationPolicy } from "@/components/player/progression/event-policy";
 
 const expectedReachability: Record<SceneReachability, number> = {
-  production: 17,
+  production: 28,
   legacy: 4,
   "future-contract": 5,
   deprecated: 3,
@@ -228,7 +228,7 @@ describe("scene registry", () => {
         sourceMappedProductionScenes.has(contract.sceneName),
       );
       expect(contract.expectedHostKinds, contract.sceneName).not.toContain("development-showcase");
-      if (contract.sceneName !== "studio-publish")
+      if (contract.sceneName !== "studio-publish" && !contract.sceneName.startsWith("community-"))
         expect(contract.expectedHostKinds, contract.sceneName).not.toContain("platform-ceremony");
 
       const evidence = sceneReachabilityEvidence[contract.sceneName];
@@ -271,7 +271,7 @@ describe("scene registry", () => {
     }
   });
 
-  it("keeps reachability evidence exhaustive and aligned with all 29 contracts", () => {
+  it("keeps reachability evidence exhaustive and aligned with all registered contracts", () => {
     expect(Object.keys(sceneReachabilityEvidence).sort()).toEqual([...sceneNames].sort());
 
     for (const contract of Object.values(sceneContracts)) {
@@ -318,9 +318,9 @@ describe("scene registry", () => {
   });
 
   it("preserves Phase 2 declaration identity and cardinality while Phase 3 moves Player visuals host-local", () => {
-    expect(Object.values(sceneContracts).flatMap((contract) => requiredTargets(contract))).toHaveLength(44);
+    expect(Object.values(sceneContracts).flatMap((contract) => requiredTargets(contract))).toHaveLength(55);
     expect(Object.values(sceneContracts).flatMap((contract) => optionalTargets(contract))).toHaveLength(103);
-    expect(Object.values(sceneContracts).filter((contract) => contract.playbackPolicy.replayable)).toHaveLength(15);
+    expect(Object.values(sceneContracts).filter((contract) => contract.playbackPolicy.replayable)).toHaveLength(23);
     expect(
       Object.values(sceneContracts).filter(
         (contract) => contract.acknowledgmentPolicy.acknowledgmentOwner === "player-presentation",

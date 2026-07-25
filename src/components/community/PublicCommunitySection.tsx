@@ -2,6 +2,7 @@ import Link from "next/link";
 import { db } from "@/lib/db";
 import { listPublicListingsFoundation } from "@/community/services";
 import { readPublicVoyageLogs } from "@/community/voyage-log-public";
+import { CommunitySceneCeremony } from "./CommunitySceneCeremony";
 
 export type CommunitySection = "featured" | "chronicles" | "artifacts" | "templates" | "maps" | "audio" | "creators" | "voyage-logs" | "collections" | "guides";
 
@@ -21,7 +22,9 @@ const copy: Record<CommunitySection, { title: string; description: string }> = {
 export async function PublicCommunitySection({ section }: { section: CommunitySection }) {
   const items = await sectionItems(section);
   const detail = copy[section];
+  const scene = section === "featured" ? "community-featured-reveal" : section === "voyage-logs" ? "community-voyage-log-unfurl" : "community-harbor-arrival" as const;
   return (
+    <CommunitySceneCeremony sceneName={scene}>
     <main className="page-shell" aria-labelledby="community-section-title">
       <p><Link href="/community">Back to Community Harbor</Link></p>
       <p className="eyebrow">Community Harbor</p>
@@ -29,6 +32,7 @@ export async function PublicCommunitySection({ section }: { section: CommunitySe
       <p>{detail.description}</p>
       {items.length ? <ul aria-label={detail.title}>{items.map((item) => <li key={item.href}><article><h2><Link href={item.href}>{item.title}</Link></h2>{item.summary ? <p>{item.summary}</p> : null}</article></li>)}</ul> : <section aria-live="polite"><h2>No public entries yet</h2><p>This district will fill as safe, persisted Community records are published.</p></section>}
     </main>
+    </CommunitySceneCeremony>
   );
 }
 
