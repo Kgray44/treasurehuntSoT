@@ -1018,10 +1018,10 @@ test.describe.serial("Project Lanternwake Phase 3 Quartermaster and audio lifecy
     });
     await page.goto("/quartermaster/chapters");
     await expect(page.locator("main.quartermaster-shell:not(.loading-quarters)")).toBeVisible({ timeout: 20_000 });
-    const trigger = page.getByRole("button", { name: "Add Player Log Entry" });
+    const trigger = page.getByRole("button", { name: "Add Crew log entry" });
     const runConfirmation = async () => {
       await trigger.click();
-      const dialog = page.getByRole("dialog", { name: "Add Player Log Entry" });
+      const dialog = page.getByRole("dialog", { name: "Add Crew log entry" });
       const confirm = dialog.getByRole("button", { name: "Confirm action" });
       const cancel = dialog.getByRole("button", { name: "Cancel" });
       await expect(dialog).toHaveAttribute("aria-modal", "true");
