@@ -605,12 +605,16 @@ test.describe.serial("Project Lanternwake Phase 3 extended runtime lifecycle", (
       await expect(page.getByRole("img", { name: /fallback after WebGL or asset failure/u })).toBeVisible();
       const warmedHits = faultHits;
       expect(warmedHits).toBeGreaterThan(0);
-      await runTwentyCycles(page, async (cycle) => {
-        await page.getByRole("button", { name: "Reset" }).click();
-        await expect(await assetStatus(page, "Rive")).toHaveText("fallback", { timeout: 20_000 });
-        await expect(page.getByRole("img", { name: /fallback after WebGL or asset failure/u })).toHaveCount(1);
-        expect(faultHits).toBe(warmedHits + cycle + 1);
-      });
+      await runTwentyCycles(
+        page,
+        async (cycle) => {
+          await page.getByRole("button", { name: "Reset" }).click();
+          await expect(await assetStatus(page, "Rive")).toHaveText("fallback", { timeout: 20_000 });
+          await expect(page.getByRole("img", { name: /fallback after WebGL or asset failure/u })).toHaveCount(1);
+          expect(faultHits).toBe(warmedHits + cycle + 1);
+        },
+        stableRiveRemountSnapshot,
+      );
     });
   }
 
@@ -628,7 +632,10 @@ test.describe.serial("Project Lanternwake Phase 3 extended runtime lifecycle", (
         }),
       ).toHaveCount(0);
     };
-    await page.goto("/quartermaster");
+    // `/quartermaster` deliberately preserves old bookmarks by redirecting to
+    // the Captain overview. The live command surface is its canonical
+    // workspace route, which is the surface this lifecycle test exercises.
+    await page.goto("/quartermaster/chapters");
     await expectInvitationRuntime();
     await runTwentyCycles(page, async () => {
       await page.goto("/");
