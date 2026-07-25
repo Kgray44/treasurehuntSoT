@@ -1561,6 +1561,104 @@ model PrivateAssetReference {
   @@index([playthroughId, revealState, available])
 }
 
+model PrivateProviderHealthSnapshot {
+  id        String   @id @default(cuid())
+  kind      String
+  provider  String
+  state     String
+  safeCode  String
+  evidence  String   @default("{}")
+  checkedAt DateTime @default(now())
+
+  @@index([kind, checkedAt])
+}
+
+model PrivateScheduledOperation {
+  id          String    @id @default(cuid())
+  kind        String
+  scheduleKey String    @unique
+  state       String    @default("PENDING")
+  runAfter    DateTime
+  leaseOwner  String?
+  leaseUntil  DateTime?
+  lastError   String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([state, runAfter, leaseUntil])
+}
+
+model PrivateRepairPlan {
+  id             String                @id @default(cuid())
+  digest         String                @unique
+  snapshotDigest String
+  state          String                @default("DRAFT")
+  dryRun         Boolean               @default(true)
+  expiresAt      DateTime
+  approvedById   String?
+  approvedAt     DateTime?
+  executionLease String?
+  executionUntil DateTime?
+  createdAt      DateTime              @default(now())
+  actions        PrivateRepairAction[]
+
+  @@index([state, expiresAt])
+}
+
+model PrivateRepairAction {
+  id                 String            @id @default(cuid())
+  planId             String
+  ordinal            Int
+  action             String
+  opaqueTarget       String
+  preconditionDigest String
+  state              String            @default("PENDING")
+  resultCode         String?
+  plan               PrivateRepairPlan @relation(fields: [planId], references: [id], onDelete: Cascade)
+
+  @@unique([planId, ordinal])
+}
+
+model PrivateBackupRun {
+  id               String    @id @default(cuid())
+  backupId         String    @unique
+  state            String
+  manifestDigest   String
+  snapshotIdentity String
+  objectSetDigest  String
+  keyVersions      String
+  verifiedAt       DateTime?
+  createdAt        DateTime  @default(now())
+
+  @@index([state, createdAt])
+}
+
+model PrivateRestoreDrill {
+  id                 String    @id @default(cuid())
+  backupRunId        String
+  targetIdentity     String
+  state              String
+  resultCode         String?
+  cleanupCompletedAt DateTime?
+  createdAt          DateTime  @default(now())
+
+  @@index([backupRunId, createdAt])
+}
+
+model PrivateKeyLifecycleRecord {
+  id                   String    @id @default(cuid())
+  provider             String
+  sourceVersion        String?
+  destinationVersion   String
+  state                String
+  plannedCount         Int       @default(0)
+  completedCount       Int       @default(0)
+  retirementApprovedAt DateTime?
+  createdAt            DateTime  @default(now())
+
+  @@index([provider, destinationVersion, createdAt])
+}
+
 // Harborlight catalog records belong to the canonical Wayfarer account root.
 model CommunityProfile {
   id                   String                          @id @default(cuid())

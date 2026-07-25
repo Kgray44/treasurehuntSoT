@@ -54,12 +54,20 @@ export type PrivateWriteOptions = {
   metadata?: Record<string, string>;
   signal?: AbortSignal;
 };
+export type PrivateProviderProbe = {
+  configured: boolean;
+  healthy: boolean;
+  providerVersion?: string;
+  keyVersion?: string;
+  capabilities?: string[];
+};
 
 /** Production providers must keep every namespace private and immutable on promotion. */
 export interface PrivateStorageProvider {
   readonly name: string;
   readonly supportsMultipart: boolean;
   readonly supportsSignedRead: boolean;
+  health(): Promise<PrivateProviderProbe>;
   put(
     namespace: PrivateObjectNamespace,
     key: string,
@@ -96,7 +104,7 @@ export type PrivateScanResult = {
 };
 export interface PrivateScannerProvider {
   readonly name: string;
-  health(): Promise<{ configured: boolean; healthy: boolean }>;
+  health(): Promise<PrivateProviderProbe>;
   scan(input: { object: PrivateObjectDescriptor; mediaType: string; signal?: AbortSignal }): Promise<PrivateScanResult>;
 }
 
@@ -108,7 +116,7 @@ export type WrappedPrivateDataKey = {
 };
 export interface PrivateKeyProvider {
   readonly name: string;
-  health(): Promise<{ configured: boolean; healthy: boolean; keyVersion?: string }>;
+  health(): Promise<PrivateProviderProbe>;
   wrap(dataKey: Buffer): Promise<WrappedPrivateDataKey>;
   unwrap(wrapped: WrappedPrivateDataKey): Promise<Buffer>;
   rewrap(wrapped: WrappedPrivateDataKey): Promise<WrappedPrivateDataKey>;

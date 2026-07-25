@@ -1,13 +1,14 @@
 [Unit]
-Description=Forever Treasure Companion
+Description=Forever Treasure private-content worker
 After=network.target mysql.service
 
 [Service]
 Type=simple
 User=forever-treasure
+Group=forever-treasure
 WorkingDirectory=/opt/forever-treasure
 EnvironmentFile=/etc/forever-treasure.env
-ExecStart=/usr/bin/npm start
+ExecStart=/usr/bin/npx tsx scripts/private-content/worker.ts
 Restart=on-failure
 RestartSec=5
 NoNewPrivileges=true

@@ -1519,6 +1519,7 @@ model PrivateContentWrappedKey {
   wrappedKey String   @db.LongText
   algorithm  String   @db.VarChar(32)
   createdAt  DateTime @default(now())
+
   @@index([provider, keyVersion])
 }
 
@@ -1530,6 +1531,7 @@ model PrivateContentEncryptedPayload {
   cipher       String   @db.VarChar(32)
   wrappedKeyId String   @db.VarChar(191)
   createdAt    DateTime @default(now())
+
   @@index([wrappedKeyId])
 }
 
@@ -1554,6 +1556,104 @@ model PrivateAssetReference {
 
   @@unique([importId, logicalId])
   @@index([playthroughId, revealState, available])
+}
+
+model PrivateProviderHealthSnapshot {
+  id        String   @id @default(cuid()) @db.VarChar(191)
+  kind      String   @db.VarChar(64)
+  provider  String   @db.VarChar(191)
+  state     String   @db.VarChar(64)
+  safeCode  String   @db.VarChar(191)
+  evidence  String   @default("{}") @db.LongText
+  checkedAt DateTime @default(now())
+
+  @@index([kind, checkedAt])
+}
+
+model PrivateScheduledOperation {
+  id          String    @id @default(cuid()) @db.VarChar(191)
+  kind        String    @db.VarChar(64)
+  scheduleKey String    @unique @db.VarChar(191)
+  state       String    @default("PENDING") @db.VarChar(64)
+  runAfter    DateTime
+  leaseOwner  String?   @db.VarChar(191)
+  leaseUntil  DateTime?
+  lastError   String?   @db.VarChar(191)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([state, runAfter, leaseUntil])
+}
+
+model PrivateRepairPlan {
+  id             String                @id @default(cuid()) @db.VarChar(191)
+  digest         String                @unique @db.Char(64)
+  snapshotDigest String                @db.Char(64)
+  state          String                @default("DRAFT") @db.VarChar(64)
+  dryRun         Boolean               @default(true)
+  expiresAt      DateTime
+  approvedById   String?               @db.VarChar(191)
+  approvedAt     DateTime?
+  executionLease String?               @db.VarChar(191)
+  executionUntil DateTime?
+  createdAt      DateTime              @default(now())
+  actions        PrivateRepairAction[]
+
+  @@index([state, expiresAt])
+}
+
+model PrivateRepairAction {
+  id                 String            @id @default(cuid()) @db.VarChar(191)
+  planId             String            @db.VarChar(191)
+  ordinal            Int
+  action             String            @db.VarChar(64)
+  opaqueTarget       String            @db.VarChar(191)
+  preconditionDigest String            @db.Char(64)
+  state              String            @default("PENDING") @db.VarChar(64)
+  resultCode         String?           @db.VarChar(191)
+  plan               PrivateRepairPlan @relation(fields: [planId], references: [id], onDelete: Cascade)
+
+  @@unique([planId, ordinal])
+}
+
+model PrivateBackupRun {
+  id               String    @id @default(cuid()) @db.VarChar(191)
+  backupId         String    @unique @db.VarChar(191)
+  state            String    @db.VarChar(64)
+  manifestDigest   String    @db.Char(64)
+  snapshotIdentity String    @db.VarChar(191)
+  objectSetDigest  String    @db.Char(64)
+  keyVersions      String    @db.LongText
+  verifiedAt       DateTime?
+  createdAt        DateTime  @default(now())
+
+  @@index([state, createdAt])
+}
+
+model PrivateRestoreDrill {
+  id                 String    @id @default(cuid()) @db.VarChar(191)
+  backupRunId        String    @db.VarChar(191)
+  targetIdentity     String    @db.VarChar(191)
+  state              String    @db.VarChar(64)
+  resultCode         String?   @db.VarChar(191)
+  cleanupCompletedAt DateTime?
+  createdAt          DateTime  @default(now())
+
+  @@index([backupRunId, createdAt])
+}
+
+model PrivateKeyLifecycleRecord {
+  id                   String    @id @default(cuid()) @db.VarChar(191)
+  provider             String    @db.VarChar(191)
+  sourceVersion        String?   @db.VarChar(191)
+  destinationVersion   String    @db.VarChar(191)
+  state                String    @db.VarChar(64)
+  plannedCount         Int       @default(0)
+  completedCount       Int       @default(0)
+  retirementApprovedAt DateTime?
+  createdAt            DateTime  @default(now())
+
+  @@index([provider, destinationVersion, createdAt])
 }
 
 // Harborlight catalog records belong to the canonical Wayfarer account root.

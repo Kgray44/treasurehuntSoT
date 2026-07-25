@@ -1,0 +1,14 @@
+Project: Project Sealed Hold
+Phase: Phase 3 - Stand the Watch
+Scope: Production Provider Realization, Integrity Operations, Recovery Drills, and Operational Readiness
+Repository: Kgray44/treasurehuntSoT
+Branch: codex/project-sealed-hold-phase3-stand-the-watch
+Base SHA: 6bd8209d2d7f0edc73da9566fd06e825ae51a602
+Package version: unchanged (0.2.0)
+Migrations: SQLite 20260725130000, 20260725131000; MySQL 0028, 0029
+Providers: typed configuration, local development storage/key, S3/MinIO SigV4 adapter, ClamAV configuration, AWS KMS SigV4 adapter
+Operations: provider health, role readiness, repair-plan approval gates, recovery snapshot closure, restore isolation, key retirement policy, worker entrypoint
+Deployment: server environment examples, NGINX hardening, private worker unit, backup/reconcile timers
+Tests: phase3 operations provider/recovery contract plus existing private-content suite
+Documents: design record, provider matrix, operations/incident runbooks, test plan, validation record, implementation/integration manifests
+Limitations: no live MySQL/S3/ClamAV/AWS KMS; backup/restore durable service integration, admin UI/browser matrix, migration runner, and production worker handlers remain incomplete.
