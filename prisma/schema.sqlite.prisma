@@ -2017,17 +2017,17 @@ model CommunitySave {
 }
 
 model CommunityCollection {
-  id             String   @id @default(cuid())
+  id             String    @id @default(cuid())
   ownerAccountId String
-  slug           String   @unique
+  slug           String    @unique
   title          String
   description    String?
   coverReference String?
-  visibility     String   @default("PRIVATE")
+  visibility     String    @default("PRIVATE")
   archivedAt     DateTime?
   deletedAt      DateTime?
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
 
   @@index([ownerAccountId, visibility])
   @@index([visibility, archivedAt, deletedAt])
@@ -2121,35 +2121,35 @@ model CommunityReviewHelpfulVote {
 }
 
 model CommunityCreatorResponse {
-  id               String    @id @default(cuid())
-  reviewId         String    @unique
-  creatorAccountId String
+  id                 String    @id @default(cuid())
+  reviewId           String    @unique
+  creatorAccountId   String
   creatorDisplayName String?
   creatorHandle      String?
-  body             String
-  spoilerBody      String?
-  spoilerLevel     String    @default("NONE")
-  editedAt         DateTime?
-  deletedAt        DateTime?
-  createdAt        DateTime  @default(now())
+  body               String
+  spoilerBody        String?
+  spoilerLevel       String    @default("NONE")
+  editedAt           DateTime?
+  deletedAt          DateTime?
+  createdAt          DateTime  @default(now())
 }
 
 model CommunityComment {
-  id              String    @id @default(cuid())
-  subjectType     String
-  subjectId       String
-  authorAccountId String
+  id                String    @id @default(cuid())
+  subjectType       String
+  subjectId         String
+  authorAccountId   String
   authorDisplayName String?
   authorHandle      String?
-  parentCommentId String?
-  depth           Int       @default(0)
-  body            String
-  spoilerBody     String?
-  spoilerLevel    String    @default("NONE")
-  status          String    @default("ACTIVE")
-  editedAt        DateTime?
-  deletedAt       DateTime?
-  createdAt       DateTime  @default(now())
+  parentCommentId   String?
+  depth             Int       @default(0)
+  body              String
+  spoilerBody       String?
+  spoilerLevel      String    @default("NONE")
+  status            String    @default("ACTIVE")
+  editedAt          DateTime?
+  deletedAt         DateTime?
+  createdAt         DateTime  @default(now())
 
   @@index([subjectType, subjectId, createdAt])
   @@index([parentCommentId])
@@ -2169,22 +2169,22 @@ model CommunityReport {
 }
 
 model CommunityVoyageKeepsake {
-  id                     String   @id @default(cuid())
-  ownerAccountId         String
+  id                       String   @id @default(cuid())
+  ownerAccountId           String
   // Legacy direct-session provenance is retained only for pre-port rows.
   // New Harborlight sharing preparation uses the opaque Wayfarer source below.
-  taleSessionId          String?
-  wayfarerKeepsakeId     String?
-  sourceWatermark        String?
+  taleSessionId            String?
+  wayfarerKeepsakeId       String?
+  sourceWatermark          String?
   sourceProjectionChecksum String?
-  preparationState       String   @default("PENDING_SOURCE")
-  publishedVersionId     String?
-  safeSnapshot           String
-  favoriteMoment         String?
-  representationChecksum String?
-  status                 String   @default("READY")
-  createdAt              DateTime @default(now())
-  updatedAt              DateTime @updatedAt
+  preparationState         String   @default("PENDING_SOURCE")
+  publishedVersionId       String?
+  safeSnapshot             String
+  favoriteMoment           String?
+  representationChecksum   String?
+  status                   String   @default("READY")
+  createdAt                DateTime @default(now())
+  updatedAt                DateTime @updatedAt
 
   @@unique([ownerAccountId, taleSessionId])
   @@unique([ownerAccountId, wayfarerKeepsakeId])
@@ -2193,20 +2193,25 @@ model CommunityVoyageKeepsake {
 }
 
 model CommunityVoyageLog {
-  id                  String    @id @default(cuid())
-  keepsakeId          String    @unique
-  ownerAccountId      String
-  slug                String    @unique
-  visibility          String    @default("PRIVATE")
-  title               String
-  safeSummary         String?
-  spoilerLevel        String    @default("NONE")
-  approximateLocation String?
-  verifiedCompletion  Boolean   @default(false)
-  commentsEnabled     Boolean   @default(true)
-  publishedAt         DateTime?
-  createdAt           DateTime  @default(now())
-  updatedAt           DateTime  @updatedAt
+  id                     String    @id @default(cuid())
+  keepsakeId             String    @unique
+  ownerAccountId         String
+  slug                   String    @unique
+  visibility             String    @default("PRIVATE")
+  title                  String
+  safeSummary            String?
+  spoilerLevel           String    @default("NONE")
+  approximateLocation    String?
+  verifiedCompletion     Boolean   @default(false)
+  commentsEnabled        Boolean   @default(true)
+  lifecycleState         String    @default("DRAFT")
+  consentRevision        Int       @default(0)
+  projectionChecksum     String?
+  searchIndexedAt        DateTime?
+  openGraphInvalidatedAt DateTime?
+  publishedAt            DateTime?
+  createdAt              DateTime  @default(now())
+  updatedAt              DateTime  @updatedAt
 
   @@index([visibility, publishedAt])
 }
@@ -2226,10 +2231,28 @@ model CommunityVoyageLogParticipantConsent {
   voyageLogId   String
   participantId String
   purpose       String
+  state         String    @default("PENDING")
+  requestedAt   DateTime?
+  expiresAt     DateTime?
   grantedAt     DateTime?
   revokedAt     DateTime?
+  updatedAt     DateTime  @updatedAt
 
   @@unique([voyageLogId, participantId, purpose])
+}
+
+model CommunityVoyageLogConsentAudit {
+  id             String   @id @default(cuid())
+  voyageLogId    String
+  participantId  String?
+  actorAccountId String
+  purpose        String
+  action         String
+  state          String
+  occurredAt     DateTime @default(now())
+
+  @@index([voyageLogId, occurredAt])
+  @@index([participantId, occurredAt])
 }
 
 model CommunityVoyageLogMedia {

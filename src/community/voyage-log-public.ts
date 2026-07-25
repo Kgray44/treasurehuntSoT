@@ -24,8 +24,40 @@ const publicFields = {
   spoilerLevel: true,
 } as const;
 
-function activeConsent(consents: readonly { purpose: string; grantedAt: Date | null; revokedAt: Date | null }[], purpose: string) {
+function activeConsent(
+  consents: readonly {
+    purpose: string;
+    state?: string | null;
+    expiresAt?: Date | null;
+    grantedAt: Date | null;
+    revokedAt: Date | null;
+  }[],
+  purpose: string,
+) {
   return consents.some((consent) => consent.purpose === purpose && consent.grantedAt && !consent.revokedAt);
+}
+
+function activePublicationDisplayConsent(
+  consents: readonly {
+    purpose: string;
+    state?: string | null;
+    expiresAt?: Date | null;
+    grantedAt: Date | null;
+    revokedAt: Date | null;
+  }[],
+) {
+  const now = new Date();
+  return (
+    activeConsent(consents, "DISPLAY_IN_LOG") ||
+    consents.some(
+      (consent) =>
+        consent.purpose === "HARBORLIGHT_VOYAGE_LOG_PUBLICATION:DISPLAY_NAME" &&
+        consent.state === "APPROVED" &&
+        !!consent.grantedAt &&
+        !consent.revokedAt &&
+        (!consent.expiresAt || consent.expiresAt > now),
+    )
+  );
 }
 
 function project(record: PublicVoyageLogRecord): PublicVoyageLog {
@@ -50,6 +82,7 @@ export async function readPublicVoyageLogs(slug?: string): Promise<readonly Publ
     where: {
       visibility: "COMMUNITY",
       publishedAt: { not: null },
+      lifecycleState: "PUBLISHED",
       verifiedCompletion: true,
       ...(slug ? { slug } : {}),
     },
@@ -70,7 +103,15 @@ export async function readPublicVoyageLogs(slug?: string): Promise<readonly Publ
     }),
     db.communityVoyageLogParticipantConsent.findMany({
       where: { voyageLogId: { in: ids } },
-      select: { voyageLogId: true, participantId: true, purpose: true, grantedAt: true, revokedAt: true },
+      select: {
+        voyageLogId: true,
+        participantId: true,
+        purpose: true,
+        state: true,
+        expiresAt: true,
+        grantedAt: true,
+        revokedAt: true,
+      },
     }),
     db.communityVoyageLogMedia.findMany({
       where: { voyageLogId: { in: ids } },
@@ -105,7 +146,8 @@ export async function readPublicVoyageLogs(slug?: string): Promise<readonly Publ
       const consentRows = participantConsentsByLog[log.id] ?? [];
       if (
         (participantsByLog[log.id] ?? []).some(
-          (participant) => !activeConsent(consentRows.filter((consent) => consent.participantId === participant.id), "DISPLAY_IN_LOG"),
+          (participant) =>
+            !activePublicationDisplayConsent(consentRows.filter((consent) => consent.participantId === participant.id)),
         )
       )
         return false;

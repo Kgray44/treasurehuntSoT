@@ -28,7 +28,7 @@ function configureRows() {
   ]);
   dependencies.db.communityVoyageLogParticipant.findMany.mockResolvedValue([{ id: "participant-private-id", voyageLogId: "public" }]);
   dependencies.db.communityVoyageLogParticipantConsent.findMany.mockResolvedValue([
-    { voyageLogId: "public", participantId: "participant-private-id", purpose: "DISPLAY_IN_LOG", grantedAt: now, revokedAt: null },
+    { voyageLogId: "public", participantId: "participant-private-id", purpose: "HARBORLIGHT_VOYAGE_LOG_PUBLICATION:DISPLAY_NAME", state: "APPROVED", expiresAt: null, grantedAt: now, revokedAt: null },
   ]);
   dependencies.db.communityVoyageLogMedia.findMany.mockResolvedValue([{ id: "media-private-id", voyageLogId: "public", processingStatus: "READY", scanStatus: "CLEAN", exifGpsRemoved: true }]);
   dependencies.db.communityVoyageLogMediaConsent.findMany.mockResolvedValue([
@@ -63,7 +63,7 @@ describe("public Voyage Log reads", () => {
 
   it("fails closed for revoked consent, unclean media, and Creator restrictions", async () => {
     dependencies.db.communityVoyageLogParticipantConsent.findMany.mockResolvedValue([
-      { voyageLogId: "public", participantId: "participant-private-id", purpose: "DISPLAY_IN_LOG", grantedAt: now, revokedAt: now },
+      { voyageLogId: "public", participantId: "participant-private-id", purpose: "HARBORLIGHT_VOYAGE_LOG_PUBLICATION:DISPLAY_NAME", state: "REVOKED", expiresAt: null, grantedAt: now, revokedAt: now },
     ]);
     const revoked = await list(new Request("http://localhost/api/community/voyage-logs"));
     expect(await revoked.json()).toEqual([]);
