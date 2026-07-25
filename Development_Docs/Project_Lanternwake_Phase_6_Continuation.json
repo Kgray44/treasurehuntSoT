@@ -1,9 +1,10 @@
 {
   "branch": "integration/lanternwake-phase6-mainline",
-  "checkpoint": "577ff327ebedddfe479be893ac16c56f0aae6474",
+  "checkpoint": "23cd82e58e1b4c2f9f9351b6c0b71b5fe0c454fe",
   "completedGates": [
     "canonical journal accessibility: setup, Chromium, WebKit/mobile: 3 passed",
-    "canonical event matrix: setup plus seven canonical groups: 9 passed"
+    "canonical event matrix: setup plus seven canonical groups: 9 passed",
+    "canonical motion policy: P3-MOTION-001 through P3-MOTION-005, each setup plus Chromium: 10 passed"
   ],
   "canonicalEventMatrix": {
     "legacyCaseIds": 102,
@@ -11,11 +12,11 @@
     "retiredProtocolRestored": false,
     "evidence": "577ff327ebedddfe479be893ac16c56f0aae6474"
   },
-  "nextCommand": "powershell -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\test-all.ps1 -SkipBrowserInstall -BrowserOnly -BaselineDatabasePath C:\\Users\\kgray\\AppData\\Local\\ForeverTreasureCompanion\\development\\prisma\\dev.db -BrowserTestPath tests/e2e/phase3-player-motion.spec.ts -BrowserGrep P3-MOTION-001",
-  "currentRepair": "Replace the retired PlayerExperience receipt assumptions in phase3-player-motion.spec.ts with the canonical Chronicle journal motion policy assertions before running its terminal shards.",
+  "nextCommand": "powershell -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\test-all.ps1 -SkipBrowserInstall -BrowserOnly -BaselineDatabasePath C:\\Users\\kgray\\AppData\\Local\\ForeverTreasureCompanion\\development\\prisma\\dev.db -BrowserTestPath tests/e2e/phase3-replay-resilience.spec.ts -BrowserGrep canonical",
+  "currentRepair": "Replace the retired PlayerExperience receipt and six-section replay assertions in phase3-replay-resilience.spec.ts with canonical Chronicle journal replay and TaleSessionEvent non-mutation assertions before running terminal replay shards.",
   "remainingStages": [
-    "motion-policy canonical shards",
-    "replay, lifecycle, extended lifecycle, and remaining authored browser families",
+    "replay canonical shards",
+    "lifecycle, extended lifecycle, and remaining authored browser families",
     "core validators, production build, restart/isolation, final gate",
     "Lanternwake evidence, integration push, non-destructive main merge, and post-merge validation"
   ],
