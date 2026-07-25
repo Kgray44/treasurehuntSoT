@@ -35,4 +35,15 @@ describe("Phase 3 worker handlers and observability", () => {
       labels: { job_type: "PRIVATE_BACKUP_BUILD" },
     });
   });
+  it("redacts private values from deterministic metric and alert evidence", () => {
+    const metrics = new PrivateOperationalMetrics();
+    const alerts = new DeterministicPrivateAlertSink();
+    metrics.set("private_backup_age_seconds", 5, {
+      backup_id: "safe",
+      privatePayload: "SEALED-HOLD-SYNTHETIC-PRIVATE-SENTINEL-73A9C1",
+    });
+    alerts.emit("PRIVATE_BACKUP_FAILED", "CRITICAL", { backup_id: "safe", credential: "never-log" });
+    expect(JSON.stringify(metrics.snapshot())).not.toContain("SENTINEL");
+    expect(JSON.stringify(alerts.alerts)).not.toContain("never-log");
+  });
 });

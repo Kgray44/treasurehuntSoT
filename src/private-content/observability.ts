@@ -9,8 +9,10 @@ export type PrivateAlert = {
 };
 const safeLabel = /^[A-Z0-9_.:-]{1,80}$/;
 function labels(input: Record<string, unknown>) {
+  const forbidden = /passphrase|password|secret|token|credential|key|payload|private|path|url/i;
   return Object.fromEntries(
     Object.entries(redactPrivate(input) as Record<string, unknown>).flatMap(([key, value]) =>
+      !forbidden.test(key) &&
       safeLabel.test(key.toUpperCase()) &&
       (typeof value === "string" || typeof value === "number" || typeof value === "boolean")
         ? [[key, String(value).slice(0, 80)]]
