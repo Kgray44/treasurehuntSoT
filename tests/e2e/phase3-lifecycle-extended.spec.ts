@@ -1075,26 +1075,25 @@ test.describe.serial("Project Lanternwake Phase 3 Quartermaster and audio lifecy
       const journal = page.locator(".voyage-shell.view-journal");
       const next = page.getByRole("button", { name: "Next journal page" });
       const previous = page.getByRole("button", { name: "Previous journal page" });
-      const currentPage = page.locator(
-        '[data-pageflip-current="true"][data-pageflip-lifecycle="visible"][data-pageflip-page-id]',
-      );
+      const pagePosition = journal.locator(".main-journal-book .page-controls [aria-live='polite']");
       await expect(next).toBeEnabled();
-      const initialPageId = await currentPage.first().getAttribute("data-pageflip-page-id");
-      expect(initialPageId).toMatch(/\S/u);
+      await expect(pagePosition).toHaveText(/^Page \d+ of \d+$/u);
+      const initialPagePosition = await pagePosition.textContent();
+      expect(initialPagePosition).toMatch(/^Page \d+ of \d+$/u);
       const turnPair = async () => {
         const before = await readSnapshot(page);
         await next.click();
         await expect
-          .poll(() => currentPage.first().getAttribute("data-pageflip-page-id"), {
+          .poll(() => pagePosition.textContent(), {
             message: "The forward page turn did not reach a different semantic page.",
           })
-          .not.toBe(initialPageId);
+          .not.toBe(initialPagePosition);
         await previous.click();
         await expect
-          .poll(() => currentPage.first().getAttribute("data-pageflip-page-id"), {
+          .poll(() => pagePosition.textContent(), {
             message: "The reverse page turn did not restore the original semantic page.",
           })
-          .toBe(initialPageId);
+          .toBe(initialPagePosition);
         await expect(journal).toHaveAttribute("data-journal-phase", "JOURNAL_READY");
         const after = await readSnapshot(page);
         expect(after.audioOscillatorStarts - before.audioOscillatorStarts).toBe(audioCase.startsPerTurnPair);
