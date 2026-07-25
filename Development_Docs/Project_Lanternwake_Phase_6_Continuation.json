@@ -1,12 +1,16 @@
 {
   "branch": "integration/lanternwake-phase6-mainline",
-  "checkpoint": "678137606d18869bf8a53ed4885f95755798fc2e",
+  "checkpoint": "be7be3300dc5b4e81f535dc908166919a4fa5c56",
   "completedGates": [
     "canonical journal accessibility: setup, Chromium, WebKit/mobile: 3 passed",
     "canonical event matrix: setup plus seven canonical groups: 9 passed",
     "canonical motion policy: P3-MOTION-001 through P3-MOTION-005, each setup plus Chromium: 10 passed",
     "canonical replay persistence: setup plus Chromium: 2 passed",
-    "canonical Chronicle lifecycle: setup plus Chromium: 2 passed"
+    "canonical Chronicle lifecycle: setup plus Chromium: 2 passed",
+    "extended lifecycle focused Rive showcase success: setup plus Chromium: 2 passed",
+    "extended lifecycle focused invitation Rive remount: setup plus Chromium: 2 passed",
+    "extended lifecycle focused Lottie success: setup plus Chromium: 2 passed",
+    "extended lifecycle focused Lottie static fallbacks (404, abort, malformed): setup plus Chromium: 4 passed"
   ],
   "canonicalEventMatrix": {
     "legacyCaseIds": 102,
@@ -14,8 +18,8 @@
     "retiredProtocolRestored": false,
     "evidence": "577ff327ebedddfe479be893ac16c56f0aae6474"
   },
-  "nextCommand": "powershell -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\test-all.ps1 -SkipBrowserInstall -BrowserOnly -BaselineDatabasePath C:\\Users\\kgray\\AppData\\Local\\ForeverTreasureCompanion\\development\\prisma\\dev.db -BrowserTestPath tests/e2e/phase3-lifecycle-extended.spec.ts -BrowserGrep 'development Rive runtime remounts cleanly'",
-  "currentRepair": "Run the authored extended lifecycle file in terminal title-filtered shards; retain only canonical journal and governed animation-runtime cases and repair narrow routing or cleanup failures.",
+  "nextCommand": "powershell -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\test-all.ps1 -SkipBrowserInstall -BrowserOnly -BrowserTestPath tests/e2e/phase3-lifecycle-extended.spec.ts",
+  "currentRepair": "Resume the full authored extended lifecycle family from be7be3300. Focused Rive and Lottie success/fault gates are green; the last full-family run stopped at the Lottie success comparison before the ambient-interval exclusion was committed.",
   "remainingStages": [
     "extended lifecycle terminal shards and remaining authored browser families",
     "core validators, production build, restart/isolation, final gate",
