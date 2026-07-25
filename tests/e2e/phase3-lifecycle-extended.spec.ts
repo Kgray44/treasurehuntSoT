@@ -1075,7 +1075,7 @@ test.describe.serial("Project Lanternwake Phase 3 Quartermaster and audio lifecy
       const journal = page.locator(".voyage-shell.view-journal");
       const next = page.getByRole("button", { name: "Next journal page" });
       const previous = page.getByRole("button", { name: "Previous journal page" });
-      const pagePosition = journal.locator(".main-journal-book .page-controls [aria-live='polite']");
+      const pagePosition = page.getByText(/^Page \d+ of \d+$/u);
       await expect(next).toBeEnabled();
       await expect(pagePosition).toHaveText(/^Page \d+ of \d+$/u);
       const initialPagePosition = await pagePosition.textContent();
