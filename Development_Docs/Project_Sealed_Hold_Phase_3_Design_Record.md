@@ -21,3 +21,7 @@ Process readiness is role-specific. Web/worker writes fail closed when their req
 ## External boundary
 
 Local deterministic tests prove adapter contracts but are labelled `simulated-local`. They are not S3, ClamAV, AWS KMS, or MySQL live validation. No production data, credentials, canonical development database, public bucket, or real private content is in scope.
+
+## Continuation remaining-local-work ledger
+
+The pushed foundations checkpoint was reverified at `5922853ef8b156070648d8b36b7afa25bd6c592f`, with local/remote parity and no `origin/main` merge. The local ledger is: (1) durable encrypted backup creation, verification, retention, and two isolated restore drills; (2) durable repair execution and leases; (3) complete composed worker handlers, scheduling, metrics, and alerting; (4) operational API/UI and browser acceptance; (5) forward migration ledger and isolated SQLite rehearsal; (6) documentation, scans, focused/full validation. These are locally attainable and remain in progress. Live MySQL, S3/MinIO, ClamAV, AWS KMS, external alert dispatch, and Linux systemd restart evidence are separate external gates only.

@@ -1607,6 +1607,7 @@ model PrivateRepairAction {
   planId             String            @db.VarChar(191)
   ordinal            Int
   action             String            @db.VarChar(64)
+  reason             String            @db.VarChar(64)
   opaqueTarget       String            @db.VarChar(191)
   preconditionDigest String            @db.Char(64)
   state              String            @default("PENDING") @db.VarChar(64)
