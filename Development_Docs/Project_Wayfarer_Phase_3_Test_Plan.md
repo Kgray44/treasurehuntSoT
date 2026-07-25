@@ -1,8 +1,12 @@
 # Phase 3 Test Plan
 
-Focused service tests cover version pinning, snapshot stability, safe event
-summaries, unavailable timing, idempotency, reflection/Memory preservation,
-owner IDOR denial, and consent membership enforcement. Migration rehearsal
-uses isolated SQLite and MySQL environments. Browser acceptance covers empty,
-reconciled, and responsive Passport history. Full validation remains separate;
-an unavailable external MySQL service is not a pass.
+Implemented focused coverage lives in `src/wayfarer/chronicle-history.test.ts`,
+`src/app/api/passport/history/route.test.ts`, and
+`src/components/wayfarer/ChronicleHistory.test.tsx`. It proves personal timing,
+canonical safe summaries, unavailable choice detail, consent-filtered Keepsake
+crew output, automatic route projection, owner-only route inputs, empty and
+failure component states, and absence of a manual reconciliation control.
+
+The full suite is a separate gate. A live authenticated synthetic-Voyage browser
+matrix and isolated live MySQL rehearsal remain required acceptance evidence;
+neither is inferred from unit, component, or unauthenticated browser smoke.

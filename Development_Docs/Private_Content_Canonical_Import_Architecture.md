@@ -8,7 +8,7 @@ One Voyage remains the sole canonical Chronicle/runtime authority. Sealed Hold m
 
 ## Required materialization shape
 
-After authentication, inspection, conflict review, and explicit confirmation, one transaction materializes supported `tale-draft`, `published-tale`, and `tale-archive` content through canonical `TallTale`, `TaleDraft`, `StoryBlock`, `BlockConnection`, `TaleLocation`, `TaleArtifact`, and `TaleAsset` models. A policy-permitted published package additionally creates an immutable `PublishedTaleVersion`; a draft does not publish.
+After authentication, inspection, conflict review, and explicit confirmation, one transaction materializes supported `tale-draft`, `published-tale`, and `tale-archive` content through canonical `Chronicle`, `TaleDraft`, `StoryBlock`, `BlockConnection`, `TaleLocation`, `TaleArtifact`, and `TaleAsset` models. A policy-permitted published package additionally creates an immutable `PublishedTaleVersion`; a draft does not publish.
 
 Logical source IDs map deterministically to canonical IDs through `PrivateContentImportMapping`, scoped to the import and source type. Replays return the existing mapping. Source identity/revision collision, mutable-published-source, invalid Studio schema, and incompatible canonical relations produce explicit conflict codes and a reviewable plan instead of implicit remapping.
 

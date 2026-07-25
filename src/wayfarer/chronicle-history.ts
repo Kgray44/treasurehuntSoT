@@ -71,7 +71,11 @@ function nonNegativeSeconds(start?: Date | null, end?: Date | null) {
   if (!start || !end || end < start) return null;
   return Math.floor((end.getTime() - start.getTime()) / 1000);
 }
-function timing(sessionStartedAt: Date | null, membershipJoinedAt: Date | null, personalCompletedAt: Date | null) {
+export function derivePersonalTiming(
+  sessionStartedAt: Date | null,
+  membershipJoinedAt: Date | null,
+  personalCompletedAt: Date | null,
+) {
   const personalStart =
     sessionStartedAt && membershipJoinedAt
       ? new Date(Math.max(+sessionStartedAt, +membershipJoinedAt))
@@ -111,7 +115,7 @@ function outcome(status: string, snapshot: PublishedTaleSnapshot, finalBlockId: 
   return "UNAVAILABLE";
 }
 
-function safeSummary(
+export function summarizeHistoricalEvents(
   snapshot: PublishedTaleSnapshot,
   events: Array<{ id: string; eventType: string; blockId: string | null; sequence: number; createdAt: Date }>,
 ) {
@@ -205,9 +209,9 @@ export async function materializeChronicleHistory(playerProfileId: string) {
       continue;
     }
     const nextLifecycle = lifecycle(membership.status, membership.playthrough.status);
-    const summary = safeSummary(snapshot, membership.playthrough.events);
+    const summary = summarizeHistoricalEvents(snapshot, membership.playthrough.events);
     const personalCompletedAt = membership.completedAt ?? membership.playthrough.completedAt;
-    const nextTiming = timing(membership.playthrough.startedAt, membership.joinedAt, personalCompletedAt);
+    const nextTiming = derivePersonalTiming(membership.playthrough.startedAt, membership.joinedAt, personalCompletedAt);
     const finalBlockId =
       membership.playthrough.events.findLast((event) => event.eventType === "sessionCompleted")?.blockId ?? null;
     const sourceFingerprint = sha({
@@ -224,14 +228,31 @@ export async function materializeChronicleHistory(playerProfileId: string) {
         completedAt: membership.playthrough.completedAt,
       },
       version: { id: version.id, checksum: version.checksum },
-      events: membership.playthrough.events.map((event) => [event.eventType, event.createdAt.toISOString()]),
+      events: membership.playthrough.events.map((event) => [
+        event.id,
+        event.eventType,
+        event.blockId,
+        event.sequence,
+        event.createdAt.toISOString(),
+      ]),
+      participants: membership.playthrough.memberships.map((participant) => [
+        participant.id,
+        participant.playerProfileId,
+        participant.status,
+        participant.role,
+        participant.crewRole,
+        participant.joinedAt?.toISOString() ?? null,
+        participant.completedAt?.toISOString() ?? null,
+        participant.removedAt?.toISOString() ?? null,
+      ]),
     });
     const existing = await db.playerChronicleRecord.findUnique({
       where: {
         playerProfileId_sourcePlaythroughId: { playerProfileId, sourcePlaythroughId: membership.playthroughId },
       },
-      select: { id: true },
+      select: { id: true, sourceFingerprint: true },
     });
+    if (existing?.sourceFingerprint === sourceFingerprint) continue;
     const data = {
       sourceMembershipId: membership.id,
       publishedVersionId: version.id,
@@ -304,6 +325,39 @@ export async function materializeChronicleHistory(playerProfileId: string) {
     recordsUpdated: updated,
     projectionFailures: failures,
   };
+}
+
+export type KeepsakeCrewMember = {
+  participantId: string | null;
+  name: string;
+  role: string;
+  crewRole: string | null;
+};
+
+export type KeepsakeConsentState = {
+  participantId: string;
+  scope: string;
+  state: string;
+};
+
+/**
+ * Keepsakes never infer a participant's sharing permission. A solo voyage
+ * contains no crew section; a multi-person voyage lists only participants
+ * who explicitly granted a name-capable scope on this Keepsake.
+ */
+export function filterKeepsakeCrew(
+  crew: KeepsakeCrewMember[],
+  consents: KeepsakeConsentState[],
+): Array<{ name: string; role: string; crewRole: string | null }> {
+  if (crew.length < 2) return [];
+  const granted = new Set(
+    consents
+      .filter((consent) => consent.state === "GRANTED" && ["DISPLAY_NAME", "GENERAL_MEDIA"].includes(consent.scope))
+      .map((consent) => consent.participantId),
+  );
+  return crew
+    .filter((participant) => participant.participantId !== null && granted.has(participant.participantId))
+    .map(({ name, role, crewRole }) => ({ name, role, crewRole }));
 }
 
 const recordInclude = {
@@ -566,6 +620,19 @@ export async function generateKeepsake(playerProfileId: string, recordId: string
   await ownedRecord(playerProfileId, recordId);
   const detail = await ownerChronicleRecord(playerProfileId, recordId);
   if (!detail) throw new Error("Chronicle history record not found.");
+  const existingKeepsake = await db.voyageKeepsake.findUnique({
+    where: { playerChronicleRecordId: recordId },
+    include: { consents: { select: { participantId: true, scope: true, state: true } } },
+  });
+  const crewSnapshots = await db.playerChronicleParticipantSnapshot.findMany({
+    where: { historyRecordId: recordId },
+    select: {
+      participantProfileId: true,
+      displayNameSnapshot: true,
+      participationRole: true,
+      crewRoleSnapshot: true,
+    },
+  });
   const payload = JSON.stringify(
     keepsakePayloadSchema.parse({
       schemaVersion: 1,
@@ -576,11 +643,15 @@ export async function generateKeepsake(playerProfileId: string, recordId: string
       chapters: detail.completedChapters,
       artifacts: detail.artifactSummary,
       reflection: detail.reflection ? { privateNote: detail.reflection.privateNote } : null,
-      crew: detail.crew.map((participant) => ({
-        name: participant.name,
-        role: participant.role,
-        crewRole: participant.crewRole,
-      })),
+      crew: filterKeepsakeCrew(
+        crewSnapshots.map((participant) => ({
+          participantId: participant.participantProfileId,
+          name: participant.displayNameSnapshot,
+          role: participant.participationRole,
+          crewRole: participant.crewRoleSnapshot,
+        })),
+        existingKeepsake?.consents ?? [],
+      ),
       generatedAt: new Date().toISOString(),
     }),
   );
