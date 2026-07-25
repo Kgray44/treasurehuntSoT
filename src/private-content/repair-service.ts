@@ -5,6 +5,7 @@ import { writePlatformAudit } from "@/platform/audit";
 import type { PrivateIntegrityAction } from "./recovery";
 import { createPrivateRepairPlan } from "./operations-phase3";
 import { privateFailure } from "./core";
+import type { PrivateProviderRuntime } from "./providers";
 const privateDb = db as any;
 export async function persistPrivateRepairPlan(input: {
   snapshotDigest: string;
@@ -62,7 +63,13 @@ export async function executePrivateRepairPlan(input: {
   digest: string;
   currentSnapshotDigest: string;
   owner: string;
-  apply: (action: { action: string; opaqueTarget: string; preconditionDigest: string }) => Promise<void>;
+  apply: (action: {
+    id: string;
+    action: string;
+    reason: string;
+    opaqueTarget: string;
+    preconditionDigest: string;
+  }) => Promise<void>;
   now?: Date;
   leaseMs?: number;
 }) {
@@ -121,4 +128,57 @@ export async function executePrivateRepairPlan(input: {
       .catch(() => undefined);
     throw error;
   }
+}
+
+/**
+ * Local durable repair realization. It deliberately loads the stored plan and
+ * action rows by digest; callers cannot supply a replacement action list.
+ * Destructive deletion is limited to a proven unreferenced ORPHAN action.
+ */
+export async function executeStoredPrivateRepair(input: {
+  runtime: PrivateProviderRuntime;
+  digest: string;
+  currentSnapshotDigest: string;
+  owner: string;
+}) {
+  return executePrivateRepairPlan({
+    digest: input.digest,
+    currentSnapshotDigest: input.currentSnapshotDigest,
+    owner: input.owner,
+    apply: async (action) => {
+      const object = await privateDb.privateAssetObject.findFirst({ where: { storageKey: action.opaqueTarget } });
+      if (action.action === "REVIEW") {
+        if (object)
+          await privateDb.privateAssetReference.updateMany({
+            where: { objectId: object.id },
+            data: { available: false },
+          });
+        return;
+      }
+      if (!object) throw privateFailure("PRIVATE_CONTENT_FORBIDDEN", "Private repair target is unavailable.");
+      const descriptor = {
+        key: object.storageKey,
+        sha256: object.sha256,
+        byteLength: object.byteLength,
+        mediaType: object.mediaType,
+      };
+      if (action.action === "QUARANTINE") {
+        const quarantined = await input.runtime.storage.moveToQuarantine(descriptor, action.reason);
+        await privateDb.$transaction([
+          privateDb.privateAssetObject.update({
+            where: { id: object.id },
+            data: { storageKey: quarantined.key, scanStatus: "QUARANTINED", quarantinedAt: new Date() },
+          }),
+          privateDb.privateAssetReference.updateMany({ where: { objectId: object.id }, data: { available: false } }),
+        ]);
+        return;
+      }
+      if (action.action !== "DELETE_AFTER_GRACE" || action.reason !== "ORPHAN")
+        throw privateFailure("PRIVATE_CONTENT_FORBIDDEN", "Private repair action is blocked.");
+      const references = await privateDb.privateAssetReference.count({ where: { objectId: object.id } });
+      if (references) throw privateFailure("PRIVATE_CONTENT_FORBIDDEN", "Private repair target is still referenced.");
+      await input.runtime.storage.remove(descriptor);
+      await privateDb.privateAssetObject.delete({ where: { id: object.id } });
+    },
+  });
 }

@@ -6,6 +6,7 @@ import { requirePrivateReadiness } from "./providers";
 import type { PrivateDurableJob } from "./worker";
 import type { PrivateHandlerExecutor } from "./worker-handlers";
 import { createDurablePrivateBackup } from "./backup-service";
+import { executeStoredPrivateRepair } from "./repair-service";
 
 type OperationalPayload = {
   schemaVersion: 1;
@@ -14,6 +15,7 @@ type OperationalPayload = {
   /** A caller-controlled opaque operation revision, never private content. */
   revision?: string;
   backup?: { sourceEnvironmentId: string; sourceDatabaseIdentity: string; idempotencyKey: string };
+  repair?: { digest: string; snapshotDigest: string; owner: string };
 };
 
 const keyRequired = new Set<PrivateJobType>([
@@ -43,6 +45,13 @@ function parsePayload(job: PrivateDurableJob): OperationalPayload {
         !/^[A-Za-z0-9_.:-]{3,160}$/.test(parsed.backup.idempotencyKey))
     )
       throw new Error("invalid backup payload");
+    if (
+      parsed.repair &&
+      (!/^[a-f0-9]{64}$/i.test(parsed.repair.digest) ||
+        !/^[a-f0-9]{64}$/i.test(parsed.repair.snapshotDigest) ||
+        !/^[A-Za-z0-9_.:-]{3,160}$/.test(parsed.repair.owner))
+    )
+      throw new Error("invalid repair payload");
     return parsed;
   } catch {
     throw privateFailure("PRIVATE_CONTENT_CONFIGURATION_INVALID", "Private worker payload is invalid.");
@@ -121,6 +130,13 @@ export function createLocalPrivateOperationExecutors(input: {
             sourceEnvironmentId: payload.backup.sourceEnvironmentId,
             sourceDatabaseIdentity: payload.backup.sourceDatabaseIdentity,
             idempotencyKey: payload.backup.idempotencyKey,
+          });
+        else if (type === "PRIVATE_INTEGRITY_RECONCILE" && payload.repair)
+          await executeStoredPrivateRepair({
+            runtime: input.runtime,
+            digest: payload.repair.digest,
+            currentSnapshotDigest: payload.repair.snapshotDigest,
+            owner: payload.repair.owner,
           });
         if (signal.aborted)
           throw privateFailure("PRIVATE_CONTENT_FORBIDDEN", "Private worker operation lost its lease.");
