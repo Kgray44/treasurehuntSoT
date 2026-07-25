@@ -91,6 +91,7 @@
 
 .product-navigation {
   display: flex;
+  flex: 1 1 auto;
   align-items: center;
   gap: 0.25rem;
 }
@@ -145,6 +146,138 @@
 .product-menu-button,
 .product-menu-backdrop {
   display: none;
+}
+
+.shell-profile-region {
+  position: relative;
+  z-index: 3;
+  flex: 0 0 auto;
+}
+
+.shell-profile-trigger {
+  display: inline-flex;
+  min-height: var(--control-height);
+  align-items: center;
+  gap: 0.48rem;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-pill);
+  padding: 0.28rem 0.42rem 0.28rem 0.32rem;
+  color: var(--text-primary);
+  background: var(--surface-raised);
+  font: inherit;
+  font-size: 0.83rem;
+  font-weight: 750;
+}
+
+.shell-profile-trigger:hover,
+.shell-profile-trigger[aria-expanded="true"] {
+  border-color: color-mix(in srgb, var(--shell-accent) 60%, var(--border-emphasis));
+  background: var(--surface-hover);
+}
+
+.shell-avatar {
+  display: grid;
+  width: 1.82rem;
+  height: 1.82rem;
+  place-items: center;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--shell-accent) 65%, transparent);
+  border-radius: 50%;
+  color: var(--shell-accent);
+  background: color-mix(in srgb, var(--shell-accent) 12%, var(--surface-default));
+  font-size: 0.68rem;
+  letter-spacing: 0.04em;
+}
+
+.shell-profile-caret {
+  color: var(--text-muted);
+  font-size: 0.7rem;
+}
+
+.shell-profile-menu {
+  position: absolute;
+  z-index: 4;
+  top: calc(100% + 0.55rem);
+  right: 0;
+  display: grid;
+  width: min(18rem, calc(100vw - 1.6rem));
+  gap: 0.15rem;
+  border: 1px solid var(--border-emphasis);
+  border-radius: var(--radius-large);
+  padding: 0.55rem;
+  background: var(--surface-overlay);
+  box-shadow: var(--shadow-deep);
+}
+
+.shell-profile-menu[hidden] {
+  display: none;
+}
+
+.shell-profile-menu a,
+.shell-profile-menu button {
+  min-height: var(--control-height);
+  border: 0;
+  border-radius: var(--radius-medium);
+  padding: 0.7rem 0.8rem;
+  color: var(--text-primary);
+  background: transparent;
+  font: inherit;
+  font-size: 0.86rem;
+  font-weight: 700;
+  text-align: left;
+  text-decoration: none;
+}
+
+.shell-profile-menu a:hover,
+.shell-profile-menu button:hover {
+  background: var(--surface-hover);
+}
+
+.shell-profile-menu form {
+  margin: 0;
+}
+
+.shell-profile-menu form button {
+  width: 100%;
+}
+
+.shell-profile-menu hr {
+  width: 100%;
+  height: 1px;
+  margin: 0.3rem 0;
+  border: 0;
+  background: var(--border-subtle);
+}
+
+.shell-profile-summary {
+  display: grid;
+  gap: 0.16rem;
+  margin: 0;
+  padding: 0.55rem 0.8rem 0.7rem;
+  color: var(--text-primary);
+}
+
+.shell-profile-summary small {
+  color: var(--text-muted);
+  font-size: 0.76rem;
+  font-weight: 600;
+}
+
+.shell-sign-in {
+  margin-left: auto;
+  color: var(--text-secondary);
+  font-size: 0.84rem;
+  font-weight: 750;
+  text-decoration: none;
+}
+
+.shell-mode-compact .product-navigation,
+.shell-mode-immersive-player .product-navigation {
+  justify-content: center;
+}
+
+.shell-mode-immersive-player .product-navigation a {
+  padding-inline: 0.65rem;
 }
 
 .product-shell-content {
@@ -222,6 +355,7 @@ html[data-motion-level="reduced"] .product-route-layer {
     right: 0.8rem;
     left: 0.8rem;
     display: none;
+    flex: initial;
     border: 1px solid var(--border-emphasis);
     border-radius: var(--radius-large);
     padding: 0.55rem;
@@ -251,6 +385,25 @@ html[data-motion-level="reduced"] .product-route-layer {
     backdrop-filter: blur(3px);
   }
 
+  .shell-profile-name {
+    display: none;
+  }
+
+  .shell-profile-trigger {
+    min-width: var(--control-height);
+    justify-content: center;
+    padding: 0.25rem;
+  }
+
+  .shell-profile-caret {
+    display: none;
+  }
+
+  .shell-profile-menu {
+    top: calc(100% + 0.55rem);
+    right: 0;
+  }
+
   .product-shell-content {
     min-height: calc(100svh - var(--shell-header-height-compact));
   }
@@ -272,6 +425,10 @@ html[data-motion-level="reduced"] .product-route-layer {
 
   .product-menu-button {
     padding-inline: 0.75rem;
+  }
+
+  .product-menu-button span:last-child {
+    display: none;
   }
 }
 

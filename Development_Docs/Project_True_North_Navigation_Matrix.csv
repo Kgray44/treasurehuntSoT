@@ -1,0 +1,22 @@
+Route,Current shell classification,Final workspace,Shell mode,Workspace navigation,Context navigation,Profile/sign-out,Canonical treatment,Concurrent owner,Conflict risk
+/,gateway,public,gateway,none,role selection,anonymous,canonical gateway,platform,low
+/tales,standard,public,standard,public menu,page-local,profile or sign in,canonical public catalog,platform,low
+/player,standard,player,standard,Player menu,page-local,profile menu,canonical Player landing,platform,low
+/player/library,standard,player,standard,Player menu,library-local,profile menu,canonical My Voyages,platform,low
+/player/playthroughs/:id,standard,player,immersive-player,reduced Player only,Player-owned,profile and exit,active Chronicle,Lanternwake,high
+/player/playthroughs/:id/journal,immersive,player,immersive-player,reduced Player only,Player-owned,profile and exit,active Chronicle Journal,Lanternwake,high
+/play/:slug/session/:id,immersive,player,immersive-player,reduced Player only,Player-owned,profile and exit,active compatibility session,Player/Lanternwake,high
+/passport,public fallback,account,standard,account menu,Passport sections,profile menu,canonical Passport,Wayfarer,medium
+/account/security,public fallback,account,standard,account menu,security sections,profile menu,canonical Security,Wayfarer,medium
+/captain,/captain,captain,standard,Captain menu,page-local,profile menu,redirect alias to /captain/library,platform,medium
+/captain/library,standard,captain,standard,Captain menu,library tabs,profile menu,canonical Voyages,platform,medium
+/captain/invitations,standard,captain,standard,Captain menu,invitations tabs,profile menu,canonical invitations,platform,medium
+/captain/sessions/:id,standard,captain,compact,reduced Captain only,console controls,profile menu,live Captain console,platform,medium
+/quartermaster,immersive,captain,compact,reduced Captain only,Quartermaster controls,profile menu,legacy compact Captain route,platform,medium
+/studio,standard,creator,standard,Creator menu,page-local,profile menu,canonical Studio,platform,medium
+/studio/library,standard,creator,standard,Creator menu,library-local,profile menu,canonical Chronicle Library,platform,medium
+/studio/tales/:id,standard,creator,standard,Creator menu,editor sections,profile menu,canonical editor,platform,medium
+/studio/exchange,standard,creator,standard,Creator menu,exchange-local,profile menu,canonical Exchange,Harborlight,medium
+/studio/private-content,standard,creator,standard,Creator menu,private-content-local,profile menu,conditional extension,Sealed Hold,medium
+/community/*,absent,community extension,standard,Community extension,district-local,profile/sign in,unregistered until routes land,Harborlight,high
+/profile/:handle,public,public,standard,public menu,profile-local,profile/sign in,public-safe profile,Wayfarer,medium

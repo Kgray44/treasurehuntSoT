@@ -1,0 +1,22 @@
+# Project True North integration manifest
+
+## Base and reconciliation point
+
+True North is based on `origin/main` `6bd8209d2d7f0edc73da9566fd06e825ae51a602` as fetched on 2026-07-25. No active branch was merged. The following heads were fetched again at close-out.
+
+| Project             | Branch and head                                                                                   | Overlap                                                          | Owner and mechanical reconciliation                                                                                                                                                                                               | Required validation                                                                         |
+| ------------------- | ------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
+| Wayfarer Phase 3    | `codex/project-wayfarer-phase3-chronicle-history` `a880a5db8e607797e86b4a0549866bbca1f72553`      | `ChroniclePassport.tsx`, Passport history API                    | Wayfarer retains level-3 Passport sections. Add History to the account-context extension only after its route is mounted; do not change the universal/profile menu.                                                               | Passport unit and account browser back/forward.                                             |
+| Wayfarer Phase 4    | `codex/project-wayfarer-phase4-artifacts-achievements` `ba241a68c90f5fa5ff32b8a3fbded9ff1431d1a3` | Passport artifact and achievement surfaces                       | Enable the `wayfarer-passport` extension, preserving True North account routes and the shared profile menu.                                                                                                                       | Artifact/Achievement and account accessibility tests.                                       |
+| Harborlight Phase 3 | `codex/project-harborlight-phase3-welcome-the-fleet` `4509ecbd6dab63a228526f1ba0513631744095d5`   | `/community` route family and Community components               | Enable the registered Community extension only once all Harbor routes land. Feed its district list into the registry; do not alter `ProductShell` with a second header.                                                           | Community deep links, mobile district menu and Axe.                                         |
+| Sealed Hold Phase 3 | `codex/project-sealed-hold-phase3-stand-the-watch` `d09c16e21e3945b219420ff3fc575fac93cbe591`     | `/studio/private-content/operations`, `PrivateOperationsConsole` | Keep `Private Chronicle` in the Creator workspace. Enable the disabled Administrator-only Operational Readiness extension after the route lands. No sensitive operation data belongs in shell context.                            | Administrator projection and private-operations browser gate.                               |
+| Lanternwake Phase 6 | `codex/project-lanternwake-phase-6-make-it-seaworthy` `8b8d75651b5450bf9b31d5c29397aa39b34b39f2`  | Player workspace files and `src/styles/player.css`               | Lanternwake retains Player sections, scene targets, PageFlip, and transitions. True North changes only enclosing route classification and compact shell chrome. Do not merge/rewrite `PlayerExperience` or `CompanionNavigation`. | Lanternwake target contract, reduced motion, Player shell no-Captain/no-Creator acceptance. |
+
+## Safe cherry-pick order
+
+1. Land/resolve Wayfarer Passport work, then enable its context extension.
+2. Land Harborlight Community routes, then enable the Community extension and register its districts.
+3. Land Sealed Hold operations, then enable the Administrator-only entry.
+4. Reconcile Lanternwake last around `ProductShell` route behavior; its Player-owned source files remain untouched by True North.
+
+All extension contracts are present in `src/navigation/extensions.ts`; disabled entries deliberately render no links. This keeps future integration mechanical and prevents navigation from drifting into independent per-project menus.

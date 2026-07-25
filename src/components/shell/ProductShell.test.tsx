@@ -5,6 +5,7 @@ import { ProductShell } from "./ProductShell";
 const navigation = vi.hoisted(() => ({ pathname: "/tales" }));
 
 vi.mock("next/navigation", () => ({ usePathname: () => navigation.pathname }));
+vi.mock("@/app/actions/sign-out", () => ({ signOutFromShell: vi.fn() }));
 vi.mock("@/animation/motion/useMotionMode", () => ({
   useMotionMode: () => ({ mode: "reduced" }),
 }));
@@ -13,6 +14,7 @@ describe("ProductShell", () => {
   afterEach(() => {
     cleanup();
     navigation.pathname = "/tales";
+    vi.unstubAllGlobals();
   });
 
   it("identifies the current route and exposes a skip target", () => {
@@ -51,7 +53,7 @@ describe("ProductShell", () => {
     expect(menuButton).toHaveAttribute("aria-expanded", "false");
   });
 
-  it("leaves the canonical journal route immersive", () => {
+  it("uses a reduced Player shell for an active Chronicle without Captain or Creator destinations", () => {
     navigation.pathname = "/player/playthroughs/playthrough-1/journal";
     render(
       <ProductShell>
@@ -60,7 +62,41 @@ describe("ProductShell", () => {
     );
 
     expect(screen.getByText("Immersive journal")).toBeInTheDocument();
-    expect(screen.queryByRole("banner")).not.toBeInTheDocument();
+    const navigationRegion = screen.getByRole("navigation", { name: "Voyagewright Player navigation" });
+    expect(within(navigationRegion).getByRole("link", { name: "My Voyages" })).toBeInTheDocument();
+    expect(within(navigationRegion).queryByRole("link", { name: /Captain/i })).not.toBeInTheDocument();
+    expect(within(navigationRegion).queryByRole("link", { name: /Studio/i })).not.toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /Account/ })).toBeInTheDocument();
+  });
+
+  it("keeps account pages out of the public workspace and exposes the profile menu for a signed-in identity", async () => {
+    navigation.pathname = "/account/security";
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue({
+        ok: true,
+        json: async () => ({
+          authenticated: true,
+          canUsePlayer: true,
+          canUseCaptain: true,
+          canUseCreator: true,
+          isAdministrator: false,
+          profile: { displayName: "Mara Tide", initials: "MT", handle: "mara" },
+        }),
+      }),
+    );
+    render(
+      <ProductShell>
+        <main>Security content</main>
+      </ProductShell>,
+    );
+
+    await waitFor(() => expect(screen.getByRole("navigation", { name: "Account navigation" })).toBeInTheDocument());
+    await waitFor(() => expect(screen.getByRole("button", { name: /Mara Tide/ })).toBeInTheDocument());
+    fireEvent.click(screen.getByRole("button", { name: /Mara Tide/ }));
+    expect(screen.getByRole("link", { name: "Captain workspace" })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Creator workspace" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Sign out" })).toBeInTheDocument();
   });
 
   it("hands route focus to the destination heading exactly once", async () => {
