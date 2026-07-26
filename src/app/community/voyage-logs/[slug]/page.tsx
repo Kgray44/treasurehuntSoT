@@ -15,7 +15,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
         visibility: log.visibility as "COMMUNITY" | "UNLISTED",
         canonicalPath: `/community/voyage-logs/${encodeURIComponent(log.slug)}`,
         title: log.title,
-        safeDescription: log.safeSummary,
+        safeDescription: log.safeSummary ?? undefined,
       })
     : { robots: { index: false, follow: false, nocache: true } };
 }
