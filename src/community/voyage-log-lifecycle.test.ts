@@ -40,4 +40,11 @@ describe("Voyage Log lifecycle", () => {
     expect(() => assertVoyageLogTransition("CONSENT_REVIEW_REQUIRED", "PUBLISHED")).toThrow("cannot transition");
     expect(() => assertVoyageLogTransition("REMOVED", "PUBLISHED")).toThrow("cannot transition");
   });
+  it("does not make non-discoverable visibility modes searchable to publish", () => {
+    for (const visibility of ["PRIVATE", "CREW_ONLY", "UNLISTED"] as const)
+      expect(voyageLogReadiness({ ...input, visibility, searchEligible: false, openGraphEligible: false })).toEqual({
+        ready: true,
+        reasons: [],
+      });
+  });
 });

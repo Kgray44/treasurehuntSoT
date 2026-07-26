@@ -44,8 +44,10 @@ export function voyageLogReadiness(
     reasons.push("The Wayfarer source changed after sharing preparation.");
   if (!input.publishedTaleVersionId) reasons.push("An exact published Tale Version is required.");
   if (!input.projectionChecksum) reasons.push("The public projection has not been checksummed.");
-  if (!input.searchEligible) reasons.push("The selected visibility is not eligible for safe search indexing.");
-  if (!input.openGraphEligible) reasons.push("The selected visibility is not eligible for safe sharing metadata.");
+  if (input.visibility === "COMMUNITY" && !input.searchEligible)
+    reasons.push("The selected visibility is not eligible for safe search indexing.");
+  if (input.visibility === "COMMUNITY" && !input.openGraphEligible)
+    reasons.push("The selected visibility is not eligible for safe sharing metadata.");
   try {
     assertVoyageLogPublicationAllowed(input);
   } catch (cause) {
