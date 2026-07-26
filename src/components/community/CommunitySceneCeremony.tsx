@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, type ReactNode } from "react";
+import { useCallback, useEffect, useMemo, useState, type ReactNode } from "react";
 import type { AnimationSceneName } from "@/animation/core/animation-types";
 import { useAnimationDirector } from "@/animation/director/useAnimationDirector";
 import { SceneHost, useSceneTargetRegistration } from "@/animation/hosts/SceneHost";
@@ -11,7 +11,7 @@ function CommunitySceneTrigger({ sceneName, root }: { sceneName: AnimationSceneN
   const host = useOptionalSceneHost();
   useEffect(() => {
     if (!host || !root) return;
-    void director.play<void>(sceneName, {
+    const presentation = director.play<void>(sceneName, {
       root,
       hostId: host.hostId,
       hostKind: host.kind,
@@ -23,6 +23,8 @@ function CommunitySceneTrigger({ sceneName, root }: { sceneName: AnimationSceneN
         verifyReadableState: (state) => state === "community-readable",
       },
     });
+    // Presentation is never allowed to break the public semantic surface.
+    void presentation.catch(() => undefined);
   }, [director, host, root, sceneName]);
   return null;
 }
@@ -40,20 +42,25 @@ function CommunitySceneTarget({
     sceneName === "community-report-submitted" ||
     sceneName === "community-keepsake-created" ||
     sceneName === "community-voyage-log-published";
-  const { bindTarget } = useSceneTargetRegistration({
-    targetKey: receipt ? "community-receipt" : "community-heading",
-    part: receipt ? "community-receipt" : "community-heading",
-    ownerHint: "gsap",
-    allowedProperties: ["transform", "opacity"],
-  });
+  const registration = useMemo(
+    () => ({
+      targetKey: receipt ? "community-receipt" : "community-heading",
+      part: receipt ? "community-receipt" : "community-heading",
+      ownerHint: "gsap" as const,
+      allowedProperties: ["transform", "opacity"] as const,
+    }),
+    [receipt],
+  );
+  const { bindTarget } = useSceneTargetRegistration(registration);
+  const bindRoot = useCallback(
+    (node: HTMLDivElement | null) => {
+      bindTarget(node);
+      onRoot(node);
+    },
+    [bindTarget, onRoot],
+  );
   return (
-    <div
-      ref={(node) => {
-        bindTarget(node);
-        onRoot(node);
-      }}
-      data-scene-part={receipt ? "community-receipt" : "community-heading"}
-    >
+    <div ref={bindRoot} data-scene-part={receipt ? "community-receipt" : "community-heading"}>
       {children}
     </div>
   );

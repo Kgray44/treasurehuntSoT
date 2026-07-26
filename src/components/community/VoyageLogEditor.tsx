@@ -79,12 +79,12 @@ export function VoyageLogEditor({ voyageLogId }: { voyageLogId: string }) {
       await refresh();
       return;
     }
-    setMessage(
-      response.ok
-        ? "Draft saved. Publication eligibility is checked again when you publish."
-        : "The draft could not be saved.",
-    );
-    if (response.ok) await refresh();
+    if (!response.ok) {
+      setMessage("The draft could not be saved.");
+      return;
+    }
+    await refresh();
+    setMessage("Draft saved. Publication eligibility is checked again when you publish.");
   }
 
   async function addParticipant(event: FormEvent<HTMLFormElement>) {
@@ -95,13 +95,13 @@ export function VoyageLogEditor({ voyageLogId }: { voyageLogId: string }) {
       headers: csrfHeaders(csrf),
       body: JSON.stringify({ displayName: participantName.trim() }),
     });
-    setMessage(
-      response.ok ? "Participant added. Publication consent is now required." : "The participant could not be added.",
-    );
-    if (response.ok) {
-      setParticipantName("");
-      await refresh();
+    if (!response.ok) {
+      setMessage("The participant could not be added.");
+      return;
     }
+    setParticipantName("");
+    await refresh();
+    setMessage("Participant added. Publication consent is now required.");
   }
 
   async function removeParticipant(participantId: string) {
@@ -111,12 +111,12 @@ export function VoyageLogEditor({ voyageLogId }: { voyageLogId: string }) {
       headers: csrfHeaders(csrf),
       body: JSON.stringify({ participantId }),
     });
-    setMessage(
-      response.ok
-        ? "Participant removed. Review publication consent before sharing."
-        : "The participant could not be removed.",
-    );
-    if (response.ok) await refresh();
+    if (!response.ok) {
+      setMessage("The participant could not be removed.");
+      return;
+    }
+    await refresh();
+    setMessage("Participant removed. Review publication consent before sharing.");
   }
 
   async function transition(action: "READY" | "ARCHIVED" | "REMOVED") {
@@ -126,8 +126,12 @@ export function VoyageLogEditor({ voyageLogId }: { voyageLogId: string }) {
       headers: csrfHeaders(csrf),
       body: JSON.stringify({ action }),
     });
-    setMessage(response.ok ? `Voyage Log ${action.toLowerCase()}.` : "That lifecycle change is not currently allowed.");
-    if (response.ok) await refresh();
+    if (!response.ok) {
+      setMessage("That lifecycle change is not currently allowed.");
+      return;
+    }
+    await refresh();
+    setMessage(`Voyage Log ${action.toLowerCase()}.`);
   }
 
   async function publish() {
@@ -136,12 +140,12 @@ export function VoyageLogEditor({ voyageLogId }: { voyageLogId: string }) {
       method: "POST",
       headers: csrfHeaders(csrf),
     });
-    setMessage(
-      response.ok
-        ? "Voyage Log published."
-        : "Publication is blocked until the current provenance, consent, media, and sharing checks pass.",
-    );
-    if (response.ok) await refresh();
+    if (!response.ok) {
+      setMessage("Publication is blocked until the current provenance, consent, media, and sharing checks pass.");
+      return;
+    }
+    await refresh();
+    setMessage("Voyage Log published.");
   }
 
   if (!log)

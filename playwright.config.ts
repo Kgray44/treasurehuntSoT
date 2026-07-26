@@ -7,6 +7,7 @@ const useWayfarerProductionServer = process.env.WAYFARER_PLAYWRIGHT_PRODUCTION =
 const phase3ReadOnlySetup = /phase3-readonly-setup\.setup\.ts/u;
 const phase3PerformanceSpec = /phase3-performance\.spec\.ts/u;
 const harborlightPhase2Spec = /harborlight-phase2\.spec\.ts/u;
+const harborlightPhase3Spec = /harborlight-phase3\.spec\.ts/u;
 const phase3MutationSpecs =
   /phase3-(?:player-event-matrix|player-motion|replay-resilience|lifecycle(?:-extended)?|performance)\.spec\.ts/u;
 const phase3MutationSpecGuard = [
@@ -68,6 +69,14 @@ export default defineConfig({
       // to Exchange publication and installation evidence.
       name: "harborlight-phase2",
       testMatch: harborlightPhase2Spec,
+      use: { ...devices["Desktop Chrome"] },
+    },
+    {
+      // The persisted Community Harbor acceptance matrix has its own synthetic
+      // identities and never reuses the Exchange fixture or the Lanternwake
+      // mutation setup.
+      name: "harborlight-phase3",
+      testMatch: harborlightPhase3Spec,
       use: { ...devices["Desktop Chrome"] },
     },
     {

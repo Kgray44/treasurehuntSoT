@@ -45,6 +45,11 @@ if ($BrowserTestPath) {
         throw "BrowserTestPath must remain inside the active project root."
     }
     $runtimeRelativeBrowserTestPath = $resolvedBrowserTestPath.Substring($projectPrefix.Length)
+    $browserTestProject = switch ([System.IO.Path]::GetFileName($runtimeRelativeBrowserTestPath)) {
+        "harborlight-phase2.spec.ts" { "harborlight-phase2"; break }
+        "harborlight-phase3.spec.ts" { "harborlight-phase3"; break }
+        default { throw "BrowserTestPath must identify a governed Harborlight browser suite." }
+    }
 }
 if ($BaselineDatabasePath) {
     if (-not ($BaselineDatabasePath -match '^[A-Za-z]:[\\/]' -or $BaselineDatabasePath.StartsWith('\\'))) {
@@ -606,7 +611,7 @@ try {
     $playwrightInvoked = $true
     $playwrightArguments = @("node_modules/playwright/cli.js", "test")
     if ($BrowserTestPath) {
-        $playwrightArguments += @("--project=harborlight-phase2", $runtimeRelativeBrowserTestPath.Replace('\', '/'))
+        $playwrightArguments += @("--project=$browserTestProject", $runtimeRelativeBrowserTestPath.Replace('\', '/'))
     }
     Invoke-ValidationStep -Name "Running browser acceptance tests" -Arguments $playwrightArguments
     Stop-OwnedValidationServer -ServerOwnership $ownedValidationServer

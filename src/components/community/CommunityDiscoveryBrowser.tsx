@@ -110,7 +110,9 @@ export function CommunityDiscoveryBrowser() {
         parameters.delete("cursor");
       }
       const suffix = parameters.toString();
-      router.replace(suffix ? `/community?${suffix}` : "/community", { scroll: false });
+      // Filters and searches are user navigation. Preserve each committed
+      // state so the browser Back button restores the prior public result set.
+      router.push(suffix ? `/community?${suffix}` : "/community", { scroll: false });
     },
     [router, searchParams],
   );
