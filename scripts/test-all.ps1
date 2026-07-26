@@ -590,6 +590,27 @@ try {
     # exercise encrypted provider-token storage. It is never used by ordinary
     # development or production servers and is removed before the build proof.
     $env:WAYFARER_PROVIDER_TOKEN_KEY = "validation-only-provider-token-key"
+    # Sealed Hold browser coverage uses a separate, task-owned provider root
+    # and a fixed validation-only key. This prevents a local .env file from
+    # selecting a relative or user-owned provider directory.
+    $privateProviderParent = [System.IO.Path]::GetFullPath($validationLockDirectory)
+    $privateProviderRoot = [System.IO.Path]::GetFullPath(
+        (Join-Path $privateProviderParent ("validation-private-provider-" + $isolation.nonceHash.Substring(0, 16)))
+    )
+    $privateProviderPrefix = $privateProviderParent.TrimEnd('\', '/') + [System.IO.Path]::DirectorySeparatorChar
+    if (-not $privateProviderRoot.StartsWith($privateProviderPrefix, [System.StringComparison]::OrdinalIgnoreCase)) {
+        throw "Private provider root escaped the validation parent."
+    }
+    New-Item -ItemType Directory -Path $privateProviderRoot -Force | Out-Null
+    $env:PRIVATE_CONTENT_ENVIRONMENT_ID = "validation-isolated"
+    $env:PRIVATE_CONTENT_ENABLED = "true"
+    $env:PRIVATE_CONTENT_STORAGE_PROVIDER = "local"
+    $env:PRIVATE_CONTENT_PROVIDER_ROOT = $privateProviderRoot
+    $env:PRIVATE_CONTENT_SCANNER_PROVIDER = "synthetic"
+    $env:PRIVATE_CONTENT_KEY_PROVIDER = "local"
+    $env:PRIVATE_CONTENT_LOCAL_MASTER_KEY = "f21fc30ddbc49c5e4a31265525beb562e439bc82ce8d146d8e4df4325f517a50"
+    $env:PRIVATE_CONTENT_WORKER_ENABLED = "true"
+    $env:PRIVATE_CONTENT_REQUIRE_READY = "true"
 
     if (-not $SkipBrowserInstall) {
         Invoke-ValidationStep -Name "Installing Playwright browsers" -Arguments @("node_modules/playwright/cli.js", "install", "chromium", "webkit")
@@ -640,6 +661,15 @@ try {
     Remove-Item Env:COMMUNITY_BINARY_SCANNER_PROVIDER -ErrorAction SilentlyContinue
     Remove-Item Env:FOREVER_VALIDATION_NODE_ENV -ErrorAction SilentlyContinue
     Remove-Item Env:WAYFARER_PROVIDER_TOKEN_KEY -ErrorAction SilentlyContinue
+    Remove-Item Env:PRIVATE_CONTENT_ENVIRONMENT_ID -ErrorAction SilentlyContinue
+    Remove-Item Env:PRIVATE_CONTENT_ENABLED -ErrorAction SilentlyContinue
+    Remove-Item Env:PRIVATE_CONTENT_STORAGE_PROVIDER -ErrorAction SilentlyContinue
+    Remove-Item Env:PRIVATE_CONTENT_PROVIDER_ROOT -ErrorAction SilentlyContinue
+    Remove-Item Env:PRIVATE_CONTENT_SCANNER_PROVIDER -ErrorAction SilentlyContinue
+    Remove-Item Env:PRIVATE_CONTENT_KEY_PROVIDER -ErrorAction SilentlyContinue
+    Remove-Item Env:PRIVATE_CONTENT_LOCAL_MASTER_KEY -ErrorAction SilentlyContinue
+    Remove-Item Env:PRIVATE_CONTENT_WORKER_ENABLED -ErrorAction SilentlyContinue
+    Remove-Item Env:PRIVATE_CONTENT_REQUIRE_READY -ErrorAction SilentlyContinue
     $env:NODE_ENV = "production"
 
     if ($BrowserOnly) {

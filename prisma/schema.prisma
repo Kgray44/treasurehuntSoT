@@ -1759,44 +1759,250 @@ model PrivateContentImportMapping {
 }
 
 model PrivateAssetObject {
-  id              String                  @id @default(cuid())
-  sha256          String                  @unique @db.Char(64)
-  byteLength      Int
-  mediaType       String                  @db.VarChar(191)
-  representation  String                  @db.VarChar(32)
-  storageKey      String                  @unique @db.VarChar(255)
-  storageProvider String                  @default("local") @db.VarChar(64)
-  scanStatus      String                  @default("PENDING") @db.VarChar(32)
-  quarantinedAt   DateTime?
-  finalizedAt     DateTime?
-  createdAt       DateTime                @default(now())
-  references      PrivateAssetReference[]
-  scans           PrivateContentScan[]
+  id                         String                     @id @default(cuid())
+  sha256                     String                     @unique @db.Char(64)
+  byteLength                 Int
+  mediaType                  String                     @db.VarChar(191)
+  representation             String                     @db.VarChar(32)
+  storageKey                 String                     @unique @db.VarChar(255)
+  storageProvider            String                     @default("local") @db.VarChar(64)
+  scanStatus                 String                     @default("PENDING") @db.VarChar(32)
+  quarantinedAt              DateTime?
+  finalizedAt                DateTime?
+  createdAt                  DateTime                   @default(now())
+  references                 PrivateAssetReference[]
+  scans                      PrivateContentScan[]
+  protectedMediaSources      ProtectedMedia[]           @relation("ProtectedMediaSourceObject")
+  protectedDerivativeSources ProtectedMediaDerivative[] @relation("ProtectedDerivativeSourceObject")
+  protectedDerivativeObjects ProtectedMediaDerivative[] @relation("ProtectedDerivativeObject")
 }
 
 model PrivateContentOperation {
-  id                String                @id @default(cuid())
-  importId          String?               @db.VarChar(191)
-  ownerAccountId    String?               @db.VarChar(191)
-  kind              String                @db.VarChar(64)
-  state             String                @default("CREATED") @db.VarChar(64)
-  idempotencyKey    String                @unique @db.VarChar(191)
-  correlationId     String                @db.VarChar(191)
-  progress          String                @default("{}") @db.LongText
+  id                String                     @id @default(cuid())
+  importId          String?                    @db.VarChar(191)
+  ownerAccountId    String?                    @db.VarChar(191)
+  kind              String                     @db.VarChar(64)
+  state             String                     @default("CREATED") @db.VarChar(64)
+  idempotencyKey    String                     @unique @db.VarChar(191)
+  correlationId     String                     @db.VarChar(191)
+  progress          String                     @default("{}") @db.LongText
   cancelRequestedAt DateTime?
   claimedAt         DateTime?
-  claimOwner        String?               @db.VarChar(191)
+  claimOwner        String?                    @db.VarChar(191)
   claimExpiresAt    DateTime?
-  failureCode       String?               @db.VarChar(191)
-  createdAt         DateTime              @default(now())
-  updatedAt         DateTime              @updatedAt
-  import            PrivateContentImport? @relation(fields: [importId], references: [id], onDelete: SetNull)
-  ownerAccount      UserAccount?          @relation("PrivateOperationOwnerAccount", fields: [ownerAccountId], references: [id], onDelete: SetNull)
+  failureCode       String?                    @db.VarChar(191)
+  createdAt         DateTime                   @default(now())
+  updatedAt         DateTime                   @updatedAt
+  import            PrivateContentImport?      @relation(fields: [importId], references: [id], onDelete: SetNull)
+  ownerAccount      UserAccount?               @relation("PrivateOperationOwnerAccount", fields: [ownerAccountId], references: [id], onDelete: SetNull)
   upload            PrivateContentUpload?
   jobs              PrivateContentJob[]
+  mediaDerivatives  ProtectedMediaDerivative[]
 
   @@index([state, claimExpiresAt])
   @@index([ownerAccountId, createdAt])
+}
+
+/// Phase 4 protected-media metadata. It references existing private objects and
+/// never makes a storage key available to routes or consuming projects.
+model ProtectedMedia {
+  id                           String                           @id @default(cuid())
+  ownerAccountId               String
+  ownerProfileId               String?
+  sourcePrivateAssetObjectId   String
+  mediaKind                    String
+  declaredMediaType            String
+  detectedMediaType            String
+  byteLength                   Int
+  sha256                       String
+  scanState                    String
+  availabilityState            String                           @default("AVAILABLE")
+  privacyClassification        String                           @default("PRIVATE")
+  originalFilenameSafeSnapshot String?
+  accessibilityDescription     String?
+  withdrawnAt                  DateTime?
+  archivedAt                   DateTime?
+  createdAt                    DateTime                         @default(now())
+  updatedAt                    DateTime                         @updatedAt
+  sourceObject                 PrivateAssetObject               @relation("ProtectedMediaSourceObject", fields: [sourcePrivateAssetObjectId], references: [id], onDelete: Restrict)
+  associations                 ProtectedMediaAssociation[]
+  consentAssertions            ProtectedMediaConsentAssertion[]
+  derivatives                  ProtectedMediaDerivative[]
+  grants                       ProtectedMediaGrant[]
+  withdrawals                  ProtectedMediaWithdrawal[]
+
+  @@unique([sourcePrivateAssetObjectId, ownerAccountId])
+  @@index([ownerAccountId, createdAt])
+  @@index([scanState, availabilityState])
+}
+
+model ProtectedMediaAssociation {
+  id               String                @id @default(cuid())
+  protectedMediaId String
+  authority        String
+  subjectKind      String
+  subjectOpaqueId  String
+  purpose          String
+  role             String
+  ordinal          Int                   @default(0)
+  ownerAccountId   String
+  sourceRevision   String
+  removedAt        DateTime?
+  createdAt        DateTime              @default(now())
+  updatedAt        DateTime              @updatedAt
+  protectedMedia   ProtectedMedia        @relation(fields: [protectedMediaId], references: [id], onDelete: Restrict)
+  grants           ProtectedMediaGrant[]
+
+  @@unique([protectedMediaId, authority, subjectKind, subjectOpaqueId, purpose, role, ordinal])
+  @@index([ownerAccountId, removedAt])
+  @@index([authority, subjectKind, subjectOpaqueId])
+}
+
+model ProtectedMediaDerivative {
+  id                          String                               @id @default(cuid())
+  sourceProtectedMediaId      String
+  sourcePrivateAssetObjectId  String
+  derivativeObjectId          String
+  sourceChecksum              String
+  transformationPolicy        String
+  transformationPolicyVersion Int
+  purpose                     String
+  mediaKind                   String
+  outputMediaType             String
+  outputByteLength            Int
+  outputChecksum              String
+  width                       Int?
+  height                      Int?
+  durationMilliseconds        Int?
+  storageNamespace            String                               @default("derivatives")
+  storageOpaqueReference      String                               @unique
+  wrappedKeyReference         String?
+  scanState                   String
+  state                       String
+  operationId                 String
+  supersedesDerivativeId      String?
+  verifiedAt                  DateTime?
+  readyAt                     DateTime?
+  withdrawnAt                 DateTime?
+  failureCode                 String?
+  createdAt                   DateTime                             @default(now())
+  sourceMedia                 ProtectedMedia                       @relation(fields: [sourceProtectedMediaId], references: [id], onDelete: Restrict)
+  sourceObject                PrivateAssetObject                   @relation("ProtectedDerivativeSourceObject", fields: [sourcePrivateAssetObjectId], references: [id], onDelete: Restrict)
+  derivativeObject            PrivateAssetObject                   @relation("ProtectedDerivativeObject", fields: [derivativeObjectId], references: [id], onDelete: Restrict)
+  operation                   PrivateContentOperation              @relation(fields: [operationId], references: [id], onDelete: Restrict)
+  consentAssertions           ProtectedMediaConsentAssertion[]
+  grants                      ProtectedMediaGrant[]
+  receipt                     ProtectedMediaTransformationReceipt?
+  withdrawals                 ProtectedMediaWithdrawal[]
+
+  @@unique([sourceProtectedMediaId, purpose, transformationPolicy, transformationPolicyVersion, outputChecksum])
+  @@index([state, scanState, createdAt])
+  @@index([operationId])
+}
+
+model ProtectedMediaConsentAssertion {
+  id                            String                    @id @default(cuid())
+  authority                     String
+  authorityRecordOpaqueId       String
+  authorityRevision             String
+  subjectOpaqueId               String
+  subjectParticipantOpaqueId    String?
+  consumingAggregateKind        String
+  consumingAggregateOpaqueId    String
+  purpose                       String
+  scopes                        String
+  state                         String
+  sourceProtectedMediaId        String
+  sourceChecksum                String
+  requestedTransformationPolicy String
+  derivativeId                  String?
+  derivativeChecksum            String?
+  validFrom                     DateTime
+  validUntil                    DateTime?
+  revokedAt                     DateTime?
+  sourceWatermark               String
+  assertionDigest               String                    @unique
+  createdAt                     DateTime                  @default(now())
+  sourceMedia                   ProtectedMedia            @relation(fields: [sourceProtectedMediaId], references: [id], onDelete: Restrict)
+  derivative                    ProtectedMediaDerivative? @relation(fields: [derivativeId], references: [id], onDelete: SetNull)
+  grants                        ProtectedMediaGrant[]
+
+  @@index([authority, authorityRecordOpaqueId, authorityRevision])
+  @@index([sourceProtectedMediaId, state])
+}
+
+model ProtectedMediaGrant {
+  id                         String                          @id @default(cuid())
+  protectedMediaId           String
+  derivativeId               String?
+  associationId              String
+  purpose                    String
+  audience                   String
+  consumingAuthority         String
+  consumingAggregateKind     String
+  consumingAggregateOpaqueId String
+  authorizationRevision      String
+  consentAssertionId         String?
+  state                      String
+  activeFrom                 DateTime
+  expiresAt                  DateTime?
+  revokedAt                  DateTime?
+  revocationReasonCode       String?
+  createdByAccountId         String
+  createdAt                  DateTime                        @default(now())
+  updatedAt                  DateTime                        @updatedAt
+  sourceMedia                ProtectedMedia                  @relation(fields: [protectedMediaId], references: [id], onDelete: Restrict)
+  derivative                 ProtectedMediaDerivative?       @relation(fields: [derivativeId], references: [id], onDelete: SetNull)
+  association                ProtectedMediaAssociation       @relation(fields: [associationId], references: [id], onDelete: Restrict)
+  consentAssertion           ProtectedMediaConsentAssertion? @relation(fields: [consentAssertionId], references: [id], onDelete: SetNull)
+
+  @@index([derivativeId, state])
+  @@index([consumingAuthority, consumingAggregateKind, consumingAggregateOpaqueId])
+}
+
+model ProtectedMediaTransformationReceipt {
+  id                           String                   @id @default(cuid())
+  derivativeId                 String                   @unique
+  sourceProtectedMediaOpaqueId String
+  sourceChecksum               String
+  policyName                   String
+  policyVersion                Int
+  outputChecksum               String
+  outputByteLength             Int
+  outputMediaType              String
+  safeMetadata                 String
+  scanReceiptOpaqueId          String?
+  operationCorrelation         String
+  startedAt                    DateTime
+  completedAt                  DateTime
+  createdAt                    DateTime                 @default(now())
+  derivative                   ProtectedMediaDerivative @relation(fields: [derivativeId], references: [id], onDelete: Restrict)
+}
+
+model ProtectedMediaWithdrawal {
+  id                        String                    @id @default(cuid())
+  protectedMediaId          String
+  derivativeId              String?
+  reasonCode                String
+  actorAccountId            String?
+  consumerInvalidationState String                    @default("PENDING")
+  occurredAt                DateTime                  @default(now())
+  sourceMedia               ProtectedMedia            @relation(fields: [protectedMediaId], references: [id], onDelete: Restrict)
+  derivative                ProtectedMediaDerivative? @relation(fields: [derivativeId], references: [id], onDelete: SetNull)
+
+  @@index([derivativeId, occurredAt])
+  @@index([protectedMediaId, occurredAt])
+}
+
+model ProtectedMediaReconciliationRecord {
+  id             String    @id @default(cuid())
+  mode           String
+  snapshotDigest String
+  findings       String
+  createdAt      DateTime  @default(now())
+  completedAt    DateTime?
+
+  @@index([mode, createdAt])
 }
 
 model PrivateContentUpload {
@@ -1914,6 +2120,105 @@ model PrivateAssetReference {
 
   @@unique([importId, logicalId])
   @@index([playthroughId, revealState, available])
+}
+
+model PrivateProviderHealthSnapshot {
+  id        String   @id @default(cuid()) @db.VarChar(191)
+  kind      String   @db.VarChar(64)
+  provider  String   @db.VarChar(191)
+  state     String   @db.VarChar(64)
+  safeCode  String   @db.VarChar(191)
+  evidence  String   @default("{}") @db.LongText
+  checkedAt DateTime @default(now())
+
+  @@index([kind, checkedAt])
+}
+
+model PrivateScheduledOperation {
+  id          String    @id @default(cuid()) @db.VarChar(191)
+  kind        String    @db.VarChar(64)
+  scheduleKey String    @unique @db.VarChar(191)
+  state       String    @default("PENDING") @db.VarChar(64)
+  runAfter    DateTime
+  leaseOwner  String?   @db.VarChar(191)
+  leaseUntil  DateTime?
+  lastError   String?   @db.VarChar(191)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([state, runAfter, leaseUntil])
+}
+
+model PrivateRepairPlan {
+  id             String                @id @default(cuid()) @db.VarChar(191)
+  digest         String                @unique @db.Char(64)
+  snapshotDigest String                @db.Char(64)
+  state          String                @default("DRAFT") @db.VarChar(64)
+  dryRun         Boolean               @default(true)
+  expiresAt      DateTime
+  approvedById   String?               @db.VarChar(191)
+  approvedAt     DateTime?
+  executionLease String?               @db.VarChar(191)
+  executionUntil DateTime?
+  createdAt      DateTime              @default(now())
+  actions        PrivateRepairAction[]
+
+  @@index([state, expiresAt])
+}
+
+model PrivateRepairAction {
+  id                 String            @id @default(cuid()) @db.VarChar(191)
+  planId             String            @db.VarChar(191)
+  ordinal            Int
+  action             String            @db.VarChar(64)
+  reason             String            @db.VarChar(64)
+  opaqueTarget       String            @db.VarChar(191)
+  preconditionDigest String            @db.Char(64)
+  state              String            @default("PENDING") @db.VarChar(64)
+  resultCode         String?           @db.VarChar(191)
+  plan               PrivateRepairPlan @relation(fields: [planId], references: [id], onDelete: Cascade)
+
+  @@unique([planId, ordinal])
+}
+
+model PrivateBackupRun {
+  id               String    @id @default(cuid()) @db.VarChar(191)
+  backupId         String    @unique @db.VarChar(191)
+  state            String    @db.VarChar(64)
+  manifestDigest   String    @db.Char(64)
+  snapshotIdentity String    @db.VarChar(191)
+  objectSetDigest  String    @db.Char(64)
+  keyVersions      String    @db.LongText
+  verifiedAt       DateTime?
+  createdAt        DateTime  @default(now())
+
+  @@index([state, createdAt])
+}
+
+model PrivateRestoreDrill {
+  id                 String    @id @default(cuid()) @db.VarChar(191)
+  backupRunId        String    @db.VarChar(191)
+  targetIdentity     String    @db.VarChar(191)
+  state              String    @db.VarChar(64)
+  resultCode         String?   @db.VarChar(191)
+  cleanupCompletedAt DateTime?
+  createdAt          DateTime  @default(now())
+
+  @@index([backupRunId, createdAt])
+}
+
+model PrivateKeyLifecycleRecord {
+  id                   String    @id @default(cuid()) @db.VarChar(191)
+  provider             String    @db.VarChar(191)
+  sourceVersion        String?   @db.VarChar(191)
+  destinationVersion   String    @db.VarChar(191)
+  state                String    @db.VarChar(64)
+  plannedCount         Int       @default(0)
+  completedCount       Int       @default(0)
+  retirementApprovedAt DateTime?
+  createdAt            DateTime  @default(now())
+
+  @@index([provider, destinationVersion, createdAt])
 }
 
 // Harborlight catalog records belong to the canonical Wayfarer account root.

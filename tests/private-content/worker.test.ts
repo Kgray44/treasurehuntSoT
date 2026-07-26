@@ -5,7 +5,7 @@ const operations = vi.hoisted(() => ({
   finishPrivateJob: vi.fn(),
   retryPrivateJob: vi.fn(),
   renewPrivateJobLease: vi.fn(),
-  cancelClaimedPrivateJob: vi.fn(),
+  releaseClaimedPrivateJob: vi.fn(),
 }));
 
 vi.mock("@/private-content/operations", () => operations);
@@ -26,7 +26,7 @@ describe("private durable worker", () => {
     operations.claimPrivateJobs.mockResolvedValue([job]);
     operations.finishPrivateJob.mockResolvedValue({ count: 1 });
     operations.renewPrivateJobLease.mockResolvedValue({ count: 1 });
-    operations.cancelClaimedPrivateJob.mockResolvedValue({ count: 1 });
+    operations.releaseClaimedPrivateJob.mockResolvedValue({ count: 1 });
     operations.retryPrivateJob.mockResolvedValue(true);
   });
 
@@ -50,7 +50,7 @@ describe("private durable worker", () => {
     expect(operations.retryPrivateJob).toHaveBeenCalledWith("job-1", "worker", "HANDLER_NOT_CONFIGURED");
   });
 
-  it("cancels claimed work on graceful shutdown before handler execution", async () => {
+  it("releases claimed work on graceful shutdown before handler execution", async () => {
     const controller = new AbortController();
     controller.abort();
     const handler = vi.fn();
@@ -60,6 +60,44 @@ describe("private durable worker", () => {
       cancelled: 1,
     });
     expect(handler).not.toHaveBeenCalled();
-    expect(operations.cancelClaimedPrivateJob).toHaveBeenCalledWith("job-1", "worker");
+    expect(operations.releaseClaimedPrivateJob).toHaveBeenCalledWith("job-1", "worker");
+  });
+
+  it("aborts the active cooperative handler when its durable lease is lost", async () => {
+    operations.renewPrivateJobLease.mockResolvedValue({ count: 0 });
+    const handler = vi.fn(
+      (_job: unknown, signal: AbortSignal) =>
+        new Promise<void>((resolve) => signal.addEventListener("abort", () => resolve(), { once: true })),
+    );
+    const result = dispatchPrivateJobBatch("worker", { PRIVATE_ASSET_SCAN: handler }, { leaseMs: 1_000 });
+    await new Promise((resolve) => setTimeout(resolve, 1_050));
+    await expect(result).resolves.toMatchObject({ cancelled: 1, processed: 0 });
+    expect(operations.finishPrivateJob).not.toHaveBeenCalled();
+    expect(operations.releaseClaimedPrivateJob).toHaveBeenCalledWith("job-1", "worker");
+  }, 3_000);
+
+  it("requeues an interrupted owned job for a controlled replacement worker", async () => {
+    operations.claimPrivateJobs.mockResolvedValueOnce([job]).mockResolvedValueOnce([job]);
+    const stoppingWorker = new AbortController();
+    stoppingWorker.abort();
+    await expect(
+      dispatchPrivateJobBatch(
+        "worker-before-restart",
+        { PRIVATE_ASSET_SCAN: vi.fn() },
+        { signal: stoppingWorker.signal },
+      ),
+    ).resolves.toMatchObject({ claimed: 1, processed: 0, cancelled: 1 });
+    expect(operations.releaseClaimedPrivateJob).toHaveBeenCalledWith("job-1", "worker-before-restart");
+
+    const resumed = vi.fn().mockResolvedValue(undefined);
+    await expect(
+      dispatchPrivateJobBatch("worker-after-restart", { PRIVATE_ASSET_SCAN: resumed }),
+    ).resolves.toMatchObject({
+      claimed: 1,
+      processed: 1,
+      cancelled: 0,
+    });
+    expect(resumed).toHaveBeenCalledTimes(1);
+    expect(operations.finishPrivateJob).toHaveBeenCalledWith("job-1", "worker-after-restart");
   });
 });

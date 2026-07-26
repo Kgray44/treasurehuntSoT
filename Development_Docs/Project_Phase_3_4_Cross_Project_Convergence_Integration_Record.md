@@ -10,11 +10,11 @@
 
 ## Verified source heads
 
-| Domain | Remote branch | Head | Merge base with `origin/main` | Main / branch divergence |
-| --- | --- | --- | --- | --- |
-| Wayfarer Phases 3-4 | `codex/project-wayfarer-phase4-artifacts-achievements` | `ba241a68c90f5fa5ff32b8a3fbded9ff1431d1a3` | `6bd8209d2d7f0edc73da9566fd06e825ae51a602` | 64 / 5 |
-| Sealed Hold Phases 3-4 | `codex/project-sealed-hold-phase4-grant-safe-passage` | `4dadbdead260b530faca0b8024a05e39e21450e7` | `6bd8209d2d7f0edc73da9566fd06e825ae51a602` | 64 / 19 |
-| Harborlight Phase 3 | `codex/project-harborlight-phase3-welcome-the-fleet` | `9457202155da5bdbea25582137ed61959fee2ac6` | `6bd8209d2d7f0edc73da9566fd06e825ae51a602` | 64 / 41 |
+| Domain                 | Remote branch                                          | Head                                       | Merge base with `origin/main`              | Main / branch divergence |
+| ---------------------- | ------------------------------------------------------ | ------------------------------------------ | ------------------------------------------ | ------------------------ |
+| Wayfarer Phases 3-4    | `codex/project-wayfarer-phase4-artifacts-achievements` | `ba241a68c90f5fa5ff32b8a3fbded9ff1431d1a3` | `6bd8209d2d7f0edc73da9566fd06e825ae51a602` | 64 / 5                   |
+| Sealed Hold Phases 3-4 | `codex/project-sealed-hold-phase4-grant-safe-passage`  | `4dadbdead260b530faca0b8024a05e39e21450e7` | `6bd8209d2d7f0edc73da9566fd06e825ae51a602` | 64 / 19                  |
+| Harborlight Phase 3    | `codex/project-harborlight-phase3-welcome-the-fleet`   | `9457202155da5bdbea25582137ed61959fee2ac6` | `6bd8209d2d7f0edc73da9566fd06e825ae51a602` | 64 / 41                  |
 
 The source heads were fetched from `origin` and inspected before merging. Wayfarer Phase 4 contains its Phase 3 ancestry; Sealed Hold Phase 4 contains its Phase 3 ancestry; and Harborlight Phase 3 includes its implementation manifest and acceptance closure commits.
 
