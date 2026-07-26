@@ -72,6 +72,7 @@ export async function editVoyageLogDraft(input: {
 export async function transitionOwnedVoyageLog(input: { ownerAccountId: string; voyageLogId: string; to: VoyageLogLifecycleState }) {
   const log = await db.communityVoyageLog.findFirst({ where: { id: input.voyageLogId, ownerAccountId: input.ownerAccountId } });
   if (!log) throw new CommunityError("COMMUNITY_VOYAGE_LOG_NOT_FOUND", "Voyage Log not found.");
+  assertVoyageLogTransition(log.lifecycleState as VoyageLogLifecycleState, "PUBLISHED");
   assertVoyageLogTransition(log.lifecycleState as VoyageLogLifecycleState, input.to);
   return db.communityVoyageLog.update({ where: { id: log.id }, data: { lifecycleState: input.to, ...(input.to === "ARCHIVED" || input.to === "REMOVED" ? { publishedAt: null, searchIndexedAt: null, openGraphInvalidatedAt: new Date() } : {}) } });
 }
