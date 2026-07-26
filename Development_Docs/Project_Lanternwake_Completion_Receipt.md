@@ -27,3 +27,20 @@ The branch is pushed for owner review. No merge, production service change, prod
 ## Canonical mainline integration attempt — 2026-07-22
 
 Phase 6 branch completion remains the historical record above. A separate non-squash integration attempt from `8b8d75651b5450bf9b31d5c29397aa39b34b39f2` onto `origin/main` `4a84b9fd2dfa439127c35b8ce865ff8b7a5742b7` was **blocked**. The dedicated `integration/lanternwake-phase6-mainline` worktree retained the reconciled implementation and documentation, but no `origin/main` push occurred. See `Project_Lanternwake_Phase_6_Mainline_Integration_Report.md` for the exact validation failures, including the reconciliation-validator and browser-matrix gates.
+
+## Mainline finalization — 2026-07-25
+
+| Field | Final value |
+| --- | --- |
+| Authoritative Lanternwake integration | `2097848e47cd85903927960f4bff920becbb9d27` |
+| Non-destructive main merge | `b070d541a5c4e428b54d9030029d7e6c8f81aca2` (`--no-ff`) |
+| Phase 2 mainline convergence | Preserved and verified from current `origin/main`; Project One Voyage, Wayfarer, Sealed Hold, and Harborlight Phase 2 convergence records remain in ancestry. |
+| SceneHost / Showcase closure | Complete 20-entry extended lifecycle run passed, including the authored 20-cycle Rive Showcase remount with one authoritative SceneHost ownership path. No randomized logical keys or last-writer-wins registry behavior was introduced. |
+| Browser / production proof | Targeted canonical journal accessibility passed 3/3 (setup, Chromium, WebKit/mobile); optimized production build and two controlled production restarts passed. |
+| Post-merge proof | `tsc --noEmit`, 3 focused files / 35 tests, optimized Webpack production build, and private-content production-output scan passed. |
+| Reconciliation / governance | 458 accepted obligations, zero mapping/source gaps; 102/102 historical event IDs mapped; asset, event-ledger, fixture, staged/repository, and build scans passed. |
+| Isolation / cleanup | Canonical `prisma/dev.db` SHA-256 remained `81e05080578e2247d24190c8bc7f163e198cafed7bba9baaa6b3b659bcee2710`; ports 3100/3200 and the validation lock were released; no owned validation process remained. |
+
+The former broad Phase 3 compatibility viewport matrix was not used as a final gate because its event assertions require the retired `PlayerExperience` overlay rather than the canonical Chronicle presentation architecture. Its scoped canonical opening equivalent, canonical event/motion/replay families, and full extended lifecycle family provide the governed replacement evidence.
+
+**PROJECT LANTERNWAKE COMPLETE.**
