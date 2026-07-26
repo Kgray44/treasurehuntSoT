@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 
-import { readPublicVoyageLogs } from "@/community/voyage-log-public";
+import { readVoyageLogForViewer } from "@/community/voyage-log-public";
+import { requireCanonicalAccountIdentity } from "@/platform/auth";
 
 const slugSchema = z.string().trim().min(3).max(160).regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/);
 
@@ -10,7 +11,8 @@ export async function GET(_: Request, context: { params: Promise<{ slug: string 
   if (!parsed.success)
     return NextResponse.json({ code: "COMMUNITY_VOYAGE_LOG_NOT_FOUND", error: "Voyage Log not found." }, { status: 404 });
   try {
-    const [log] = await readPublicVoyageLogs(parsed.data);
+    const identity = await requireCanonicalAccountIdentity();
+    const log = await readVoyageLogForViewer(parsed.data, identity?.accountId);
     return log
       ? NextResponse.json(log)
       : NextResponse.json({ code: "COMMUNITY_VOYAGE_LOG_NOT_FOUND", error: "Voyage Log not found." }, { status: 404 });

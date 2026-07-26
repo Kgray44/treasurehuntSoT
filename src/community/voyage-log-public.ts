@@ -77,10 +77,10 @@ function project(record: PublicVoyageLogRecord): PublicVoyageLog {
  * exclude owner/session IDs, participant account/name data, private-media and
  * derivative-storage references, and all location fields.
  */
-export async function readPublicVoyageLogs(slug?: string): Promise<readonly PublicVoyageLog[]> {
+async function readSharedVoyageLogs(slug: string | undefined, visibility: "COMMUNITY" | "UNLISTED" | "CREW_ONLY"): Promise<readonly PublicVoyageLog[]> {
   const logs = await db.communityVoyageLog.findMany({
     where: {
-      visibility: "COMMUNITY",
+      visibility,
       publishedAt: { not: null },
       lifecycleState: "PUBLISHED",
       verifiedCompletion: true,
@@ -162,4 +162,25 @@ export async function readPublicVoyageLogs(slug?: string): Promise<readonly Publ
       );
     })
     .map(project);
+}
+
+export async function readPublicVoyageLogs(slug?: string): Promise<readonly PublicVoyageLog[]> {
+  return readSharedVoyageLogs(slug, "COMMUNITY");
+}
+
+/** Exact-link unlisted access and crew access share the same consent/restriction projection as Community. */
+export async function readVoyageLogForViewer(slug: string, accountId?: string | null): Promise<PublicVoyageLog | null> {
+  const record = await db.communityVoyageLog.findUnique({
+    where: { slug }, select: { id: true, ownerAccountId: true, visibility: true, lifecycleState: true, publishedAt: true, verifiedCompletion: true },
+  });
+  if (!record || record.lifecycleState === "REMOVED") return null;
+  if (record.ownerAccountId === accountId) {
+    const [ownerView] = await db.communityVoyageLog.findMany({ where: { id: record.id }, select: publicFields });
+    return ownerView ? project(ownerView) : null;
+  }
+  if (record.visibility === "COMMUNITY") return (await readSharedVoyageLogs(slug, "COMMUNITY"))[0] ?? null;
+  if (record.visibility === "UNLISTED") return (await readSharedVoyageLogs(slug, "UNLISTED"))[0] ?? null;
+  if (record.visibility !== "CREW_ONLY" || !accountId) return null;
+  const crew = await db.communityVoyageLogParticipant.findFirst({ where: { voyageLogId: record.id, accountId }, select: { id: true } });
+  return crew ? (await readSharedVoyageLogs(slug, "CREW_ONLY"))[0] ?? null : null;
 }
