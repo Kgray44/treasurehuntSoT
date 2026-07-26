@@ -1,27 +1,28 @@
-Repository: treasurehuntSoT
+Project Harborlight Phase 3 Implementation Manifest
+
+Repository: Kgray44/treasurehuntSoT
 Branch: codex/project-harborlight-phase3-welcome-the-fleet
-Worktree: dedicated local Harborlight Phase 3 worktree
-Base SHA: 6bd8209d2d7f0edc73da9566fd06e825ae51a602
-Implementation SHA: 005acbbb56ca5d5a1ea8918d3bbd77d13094c864
-Origin main at start: 6bd8209d2d7f0edc73da9566fd06e825ae51a602
-Files added: Phase 3 design/test/validation records; discovery/social/Keepsake services and tests; Community pages; discovery API; five SQLite and five MySQL migration scripts.
-Files modified: prisma/schema.prisma; prisma/schema.sqlite.prisma.
-Models added: 28 Phase 3 Community models across discovery, relationships, reviews/comments/reports, Keepsakes/Voyage Logs/consent, and Guides.
-Migration identifiers: SQLite 20260725140000 through 20260725145000; MySQL 0031 through 0036.
-Routes added: /community, /community/[slug], GET /api/community/discover.
-Services added: discovery query/cursor/filter/sort/reconciliation provider; social interaction service; Keepsake/Voyage Log policy/projection service.
-Tests added: discovery, social, and Keepsake focused Vitest files.
-Validation: schema validation, direct ordered SQLite rehearsal, focused Vitest, strict TypeScript, production build.
-Known external limitations: MySQL execution, browser/Axe/IDOR/performance/restart/full validation, production scanner/object store/worker/distributed rate limit/monitoring/incident tooling remain unconfigured or unrun.
-No Phase 4 claim is made.
+Base: 6bd8209d2d7f0edc73da9566fd06e825ae51a602
+Acceptance-record commit: b922b36262070cc83f1e478ed9a098338f8a30de
 
-Continuation additions (not a completion claim): public persisted district pages for Featured, Chronicles, Artifacts, Templates, Maps, Audio, Creators, Collections, Guides, and consent-filtered Voyage Logs; Creator/collection/Guide/Voyage Log details; Community loading/error states; Discovery Browser search/sort/visible bounded filters; strict social and collection mutation contracts; fail-closed Keepsake request contract; public Guide and Voyage Log APIs; and a shared consent/restriction-aware Voyage Log projection.
-Continuation focused validation: 33 selected Vitest tests, 4 Voyage Log projection tests, 4 Discovery Browser tests, strict TypeScript, and a production webpack build passed. The known limitations above remain unrun/unimplemented, and this branch is not merged.
+Delivered product:
+- Persisted Community discovery, Creator profiles, social relationships, collections, reviews, helpful votes, Creator responses, comments, reports, Guides, and deterministic bounded recommendations.
+- Transactional Voyage Log draft/edit/revision/readiness/publication/correction/archive/removal lifecycle with opaque Wayfarer source provenance, consent, media, Creator restriction, spoiler, location, checksum, search, and metadata gates.
+- PRIVATE, CREW_ONLY, UNLISTED, and COMMUNITY routes/projections with owner, crew, exact-link and public authorization rules; safe spoiler retrieval and governed robots.
+- Sealed Hold public-derivative bridge with opaque identity, separate derivative checksum, CLEAN scanner/quarantine enforcement, metadata stripping, consent invalidation on replacement, IDOR denial, and fail-closed unconfigured-provider behavior.
+- Allowlisted canonical/Open Graph metadata and governed search/deindexing that exclude sensitive source, participant, coordinate, storage, scanner, spoiler, and session data.
+- Eleven production Community Lanternwake scenes with director ownership, authoritative-success triggers, cancellation/cleanup, presentation receipts, semantic completion, and reduced-motion behavior.
 
-Current vertical additions (not a completion claim): reviewed-release association and immutable author/Creator/comment display snapshots; canonical Phase 2 committed-install and canonical completed-session review eligibility; strict Review, Helpful Vote, Creator response, Comment, spoiler-reveal, and Report API routes; public Review rendering that does not receive spoilers until an explicit no-store request; an account-rooted atomic Keepsake adapter that reads only completed membership facts and creates only CommunityVoyageKeepsake.
-Current validation: both Prisma schemas validated; ordered SQLite rehearsal reached 129 tables with snapshot columns and no foreign-key violations; 7 focused files / 24 tests, strict TypeScript, and a production webpack build with 87 routes passed.
+Validation evidence:
+- Full isolated validation passed using a task-owned migrated SQLite copy and owned browser/production ports.
+- 36 ordered SQLite migrations; 130 tables; clean foreign keys; required index and legacy-row checks passed.
+- Both Prisma schemas validated and both clients generated; SQLite client regenerated last for SQLite rehearsal.
+- ESLint completed with zero errors; formatting, strict TypeScript, language validation, animation asset validation, and production build passed.
+- Full Vitest passed: 1,008/1,008 tests.
+- Authenticated Phase 3 browser acceptance passed with keyboard, mobile, reduced-motion, privacy/IDOR, robots, metadata and Axe checks (serious=0, critical=0).
+- Two controlled production restarts passed; isolation report confirms expected disposable mutation and unchanged canonical database family; ports 3100 and 3200 were released.
 
-Social-control addition (not a completion claim): Creator and listing controls obtain the canonical session CSRF token, surface pending/success/error accessibly, wait for an authoritative mutation response before changing presentation, and use server-resolved Creator profile blocking so public UI never needs an account identifier.
-Persisted social-state addition: a bounded, private/no-store relationship-state projection resolves only visible listing/Creator/Guide/Community-collection subjects in grouped queries. It carries no target account ID or block-list rows, rechecks visibility/moderation, and controls reconcile after committed mutations and browser history restoration.
-Social-state failure contract: projection failures return typed `COMMUNITY_SOCIAL_STATE_UNAVAILABLE` HTTP 503 responses with private/no-store headers. Controls enter an indeterminate retry state and do not display Follow, Save, or Favorite actions until persisted state is available. The service uses a narrow typed Prisma interface rather than an untyped database escape hatch.
-Extended migration reservation: SQLite 20260725145000_harborlight_phase3_review_snapshots and MySQL 0036_harborlight_phase3_review_snapshots are Harborlight-owned additions. Active Wayfarer, Sealed Hold, and Lanternwake remote trees were checked on 2026-07-25 with no collision; the pushed identifiers remain unchanged.
+Explicit Phase 4 infrastructure exclusions:
+- Live production MySQL, production scanner/object storage, distributed workers/rate limits, monitoring, alerting, incident tooling and external-search deployment were neither used nor claimed.
+
+Manifest SHA-256 (UTF-8 LF-normalized content excluding this line): 32a5cb672071b29dcca476b610d9a9d010207f06a80a31d7e6688423a90596d6
