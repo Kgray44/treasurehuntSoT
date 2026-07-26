@@ -9,6 +9,7 @@ import { parsePrivateContentConfiguration } from "../../src/private-content/conf
 import { createProtectedMediaOperationExecutors } from "../../src/private-content/media-worker-composition";
 import { submitProtectedMediaConsentAssertion } from "../../src/private-content/media/service";
 import { createPrivateProviderRuntime } from "../../src/private-content/providers";
+import { claimPrivateJobs } from "../../src/private-content/operations";
 import { createLocalPrivateOperationExecutors } from "../../src/private-content/worker-composition";
 import { createPrivateOperationalHandlerRegistry } from "../../src/private-content/worker-handlers";
 import { dispatchPrivateJobBatch } from "../../src/private-content/worker";
@@ -124,6 +125,10 @@ test("Phase 4 authenticated protected-media workflow is private, accessible, rev
   const requestBody = (await request.json()) as { operationId: string; state: string };
   expect(requestBody.state).toBe("QUEUED");
 
+  const staleLease = await claimPrivateJobs(`phase4-worker-terminated-${id}`, 1, 1);
+  expect(staleLease).toHaveLength(1);
+  await new Promise((resolve) => setTimeout(resolve, 10));
+
   // Worker one processes the durable build. Worker two is a fresh composition,
   // proving durable completion rather than in-memory derivative/grant state.
   const handlers = () =>
@@ -155,6 +160,25 @@ test("Phase 4 authenticated protected-media workflow is private, accessible, rev
   const grants = await db.protectedMediaGrant.findMany({ where: { derivativeId: ready.id, state: "ACTIVE" } });
   expect(ready.state).toBe("READY");
   expect(grants).toHaveLength(1);
+  const duplicate = await creator.request.post("/api/studio/private-content/media", {
+    headers: { "x-csrf-token": csrfToken },
+    data: {
+      action: "request-derivative",
+      mediaId: media.id,
+      associationId: association.id,
+      purpose: "DISPLAY_CASE_PUBLIC",
+      audience: "PUBLIC",
+      idempotencyKey: `browser-request-${id}`,
+      consentAssertionId: initialConsent.id,
+    },
+  });
+  expect(duplicate.status(), await duplicate.text()).toBe(202);
+  expect((await duplicate.json()) as { operationId: string; reused: boolean }).toMatchObject({
+    operationId: requestBody.operationId,
+    reused: true,
+  });
+  expect(await db.protectedMediaDerivative.count({ where: { operationId: requestBody.operationId } })).toBe(2);
+  expect(await db.protectedMediaGrant.count({ where: { derivativeId: ready.id, state: "ACTIVE" } })).toBe(1);
 
   const publicPath = `/api/private-content/media/public/${ready.storageOpaqueReference}?revision=revision-1`;
   const publicDelivery = await creator.request.get(publicPath);
