@@ -52,3 +52,17 @@ Source edits remain in the registered network-share Phase 6 worktree. A non-Git 
 ### Final ledger calculation
 
 The source ledger now has 237 `validated` and one `rejected-approved` OA row. The matrix has 355 `validated`, five `superseded-approved`, and one `rejected-approved` rows. The generated final completion ledger contains 599 source-row dispositions: 592 validated, five superseded-approved, and two rejected-approved. There are zero remaining nonterminal implementation statuses.
+
+## Final integration validation addendum — 2026-07-25
+
+| Gate | Result | Evidence |
+| --- | --- | --- |
+| Authoritative SceneHost / Rive remount lifecycle | Passed | The complete `phase3-lifecycle-extended.spec.ts` file completed all 20 entries (readonly setup plus 19 product cases), including 20-cycle Showcase Rive remount, invitation Rive remount, serial trailer, PageFlip, Lottie success/fallbacks, and all five audio cases. |
+| Audio reachability | Passed | `ChronicleJournalSession` owns `AudioCuePlayer` for canonical page turns, uses persisted mute preference, unlocks only from user interaction, and closes on unmount. Focused source/unit proof: 3 files, 35 tests passed; browser targeted audio family: 6 entries passed. |
+| Canonical accessible production surface | Passed | The current Chronicle opening route passed setup + Chromium + WebKit/mobile (3 entries), with keyboard/focus, readable PageFlip content, no sound dependency, and current canonical selector coverage. |
+| Production build / reachability / restarts | Passed | `test-all.ps1` targeted canonical gate completed the optimized Next build and two owned production starts; `/dev/animations` correctly returned 404 in production and ports were released. |
+| Strict reconciliation and ledger | Passed | 458 accepted obligations; 0 accepted-unmapped; 0 source-unresolved; Player ledger 301 rows, 17/17 event types, 6/6 sections, and 102/102 historical matrix cases. |
+| Assets and private-content governance | Passed | 4 production Rive binaries, 4 governed sources, 3 Lottie assets and SVG fallbacks validated; fixture, staged-diff, repository, and production-build private-content scans passed. Governed historical `Codex_Chats` archives were classified rather than treated as product leakage. |
+| Isolation / cleanup | Passed | The complete lifecycle isolation receipt reported `isolation-verified`; the later targeted production receipt retained canonical database-family integrity. The canonical `prisma/dev.db` SHA-256 remained `81e05080578e2247d24190c8bc7f163e198cafed7bba9baaa6b3b659bcee2710`; validation lock and ports 3100/3200 were released. |
+
+The broad legacy compatibility viewport matrix was deliberately not used as a final gate. Its event rows require the retired `PlayerExperience` `data-progression-overlay`, whereas the authoritative Chronicle route has the governed journal/session presentation model. A representative canonical opening case passes in both browser projects; the 102-event canonical matrix, motion, replay, Chronicle lifecycle, and complete extended lifecycle families retain the event and fallback coverage. This is a retired-test-architecture finding, not a product failure or a relaxed SceneHost invariant.

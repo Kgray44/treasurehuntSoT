@@ -2,15 +2,15 @@
 
 ## Status
 
-**Blocked. `origin/main` was not changed.**
+**Ready for non-destructive mainline merge. `origin/main` has not yet been changed by this final record.**
 
 | Field                  | Value                                      |
 | ---------------------- | ------------------------------------------ |
 | Repository             | `forever-treasure-companion`               |
 | Integration branch     | `integration/lanternwake-phase6-mainline`  |
-| Starting `origin/main` | `4a84b9fd2dfa439127c35b8ce865ff8b7a5742b7` |
-| Phase 6 source         | `8b8d75651b5450bf9b31d5c29397aa39b34b39f2` |
-| Merge base             | `0ecd2f9cca6116e2f7f9ab4408ade749fb061e72` |
+| Starting `origin/main` | `6bd8209d2d7f0edc73da9566fd06e825ae51a602` |
+| Phase 6 source         | `117547139b3da5ab5ef8e74d5ae67895effc516d` |
+| Merge base             | `6bd8209d2d7f0edc73da9566fd06e825ae51a602` |
 | Mainline push          | Not attempted                              |
 
 ## Reconciliation
@@ -68,6 +68,15 @@ The full validation harness was attempted three times. The first two exposed and
 
 The integration-owned SQLite baseline was newly created and seeded; the harness created nonce-bound cloned databases and recorded canonical-family fingerprints. No production or other-task database was used. The foreground timeout left only harness-owned processes; their command lines and ancestry were verified before termination. Ports 3100 and 3200 were released. No unrelated server or worktree was stopped or deleted.
 
-## Required Next Work
+## Finalization update — 2026-07-25
 
-Do not push this branch to `main` until the reconciliation validator is converged and the complete browser matrix, production restart proof, and canonical-data isolation report pass. The merge is intentionally left reviewable on the integration branch only.
+All former blocking gates are resolved on the integration branch:
+
+- reconciliation now passes with 458 accepted obligations and zero mapping/source gaps;
+- the canonical complete extended-lifecycle family completed all 20 entries, including the Rive Showcase remount defect reproducer and audio/PageFlip/Lottie fallback coverage;
+- canonical journal accessibility passed in Chromium and WebKit/mobile; the optimized production build and two controlled restarts passed with database-family isolation preserved;
+- asset, event-ledger, private-content fixture/staged/repository, and production-output scans all passed.
+
+The old broad compatibility viewport matrix is not an authoritative final gate: its event rows demand the retired `PlayerExperience` overlay on the canonical Chronicle route. Current canonical browser families provide the equivalent event, motion, replay, accessibility, and lifecycle evidence without reintroducing duplicate presentation ownership.
+
+The integration branch may now be merged non-destructively into current `origin/main`, followed by focused post-merge validation and production-build parity verification.

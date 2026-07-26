@@ -1,6 +1,6 @@
 {
   "branch": "integration/lanternwake-phase6-mainline",
-  "checkpoint": "be7be3300dc5b4e81f535dc908166919a4fa5c56",
+  "checkpoint": "117547139b3da5ab5ef8e74d5ae67895effc516d",
   "completedGates": [
     "canonical journal accessibility: setup, Chromium, WebKit/mobile: 3 passed",
     "canonical event matrix: setup plus seven canonical groups: 9 passed",
@@ -10,7 +10,11 @@
     "extended lifecycle focused Rive showcase success: setup plus Chromium: 2 passed",
     "extended lifecycle focused invitation Rive remount: setup plus Chromium: 2 passed",
     "extended lifecycle focused Lottie success: setup plus Chromium: 2 passed",
-    "extended lifecycle focused Lottie static fallbacks (404, abort, malformed): setup plus Chromium: 4 passed"
+    "extended lifecycle focused Lottie static fallbacks (404, abort, malformed): setup plus Chromium: 4 passed",
+    "targeted audio lifecycle: setup plus five audio success/failure/muted variants: 6 passed",
+    "complete extended lifecycle: setup plus nineteen lifecycle cases: 20 passed",
+    "canonical journal production accessibility: setup, Chromium, WebKit/mobile: 3 passed",
+    "targeted production build and controlled restart proof: passed"
   ],
   "canonicalEventMatrix": {
     "legacyCaseIds": 102,
@@ -18,16 +22,16 @@
     "retiredProtocolRestored": false,
     "evidence": "577ff327ebedddfe479be893ac16c56f0aae6474"
   },
-  "nextCommand": "powershell -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\test-all.ps1 -SkipBrowserInstall -BrowserOnly -BrowserTestPath tests/e2e/phase3-lifecycle-extended.spec.ts",
-  "currentRepair": "Resume the full authored extended lifecycle family from be7be3300. Focused Rive and Lottie success/fault gates are green; the last full-family run stopped at the Lottie success comparison before the ambient-interval exclusion was committed.",
+  "nextCommand": "git fetch origin; git -C C:\\Users\\kgray\\AppData\\Local\\ForeverTreasureCompanion\\fix-harborlight-community-listing-routes merge --no-ff integration/lanternwake-phase6-mainline",
+  "currentRepair": "No source repair remains. The authoritative 20-entry extended lifecycle file passed after the canonical Chronicle audio integration and the retired selector repairs.",
   "remainingStages": [
-    "extended lifecycle terminal shards and remaining authored browser families",
-    "core validators, production build, restart/isolation, final gate",
-    "Lanternwake evidence, integration push, non-destructive main merge, and post-merge validation"
+    "commit and push the final Phase 6 records",
+    "non-destructive merge into current main, focused post-merge validation, production build, and origin/main parity verification"
   ],
   "runtime": {
     "ports3100And3200": "released",
     "validationLock": "released",
-    "externalBaseline": "unchanged"
+    "externalBaseline": "unchanged",
+    "latestLifecycleIsolation": "isolation-verified; canonical dev.db SHA-256 81e05080578e2247d24190c8bc7f163e198cafed7bba9baaa6b3b659bcee2710 remained unchanged"
   }
 }
