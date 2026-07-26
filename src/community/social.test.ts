@@ -19,8 +19,15 @@ describe("Community social interaction contracts", () => {
 
   it("uses the typed dimension registry rather than accepting arbitrary review JSON", () => {
     expect(reviewDimensionRegistry.CHRONICLE).toContain("pacing");
-    expect(validateReviewInput({ rating: 5, spoilerFreeBody: "A safe review body with enough detail.", dimensions: { pacing: 4 } }, "CHRONICLE")).toMatchObject({ rating: 5 });
-    expect(() => validateReviewInput({ rating: 3, dimensions: { notARealDimension: 4 } }, "CHRONICLE")).toThrow("dimension");
+    expect(
+      validateReviewInput(
+        { rating: 5, spoilerFreeBody: "A safe review body with enough detail.", dimensions: { pacing: 4 } },
+        "CHRONICLE",
+      ),
+    ).toMatchObject({ rating: 5 });
+    expect(() => validateReviewInput({ rating: 3, dimensions: { notARealDimension: 4 } }, "CHRONICLE")).toThrow(
+      "dimension",
+    );
     expect(() => validateReviewInput({ rating: 0 }, "CHRONICLE")).toThrow("rating");
   });
 
@@ -31,7 +38,22 @@ describe("Community social interaction contracts", () => {
   });
 
   it("never returns review spoiler bodies from the default public projection", () => {
-    const projection = publicReviewProjection({ id: "review-1", listingId: "listing-1", authorDisplayName: "First Mate", authorHandle: "first-mate", rating: 5, spoilerFreeBody: "Safe body", spoilerBody: "Hidden finale", spoilerLevel: "SPOILER", verifiedInstallation: true, verifiedCompletion: false, completionSessionId: "private-session", status: "ACTIVE", editedAt: null, deletedAt: null });
+    const projection = publicReviewProjection({
+      id: "review-1",
+      listingId: "listing-1",
+      authorDisplayName: "First Mate",
+      authorHandle: "first-mate",
+      rating: 5,
+      spoilerFreeBody: "Safe body",
+      spoilerBody: "Hidden finale",
+      spoilerLevel: "SPOILER",
+      verifiedInstallation: true,
+      verifiedCompletion: false,
+      completionSessionId: "private-session",
+      status: "ACTIVE",
+      editedAt: null,
+      deletedAt: null,
+    });
     expect(projection).toMatchObject({ spoilerFreeBody: "Safe body", hasSpoiler: true });
     expect(projection).not.toHaveProperty("spoilerBody");
     expect(projection).not.toHaveProperty("completionSessionId");
@@ -39,13 +61,38 @@ describe("Community social interaction contracts", () => {
   });
 
   it("never returns Creator-response spoiler bodies from the ordinary projection", () => {
-    const projection = publicCreatorResponseProjection({ id: "response-1", reviewId: "review-1", creatorDisplayName: "Chartmaker", creatorHandle: "chartmaker", body: "Thank you.", spoilerBody: "Hidden ending note", deletedAt: null, editedAt: null, createdAt: new Date("2026-07-25") });
+    const projection = publicCreatorResponseProjection({
+      id: "response-1",
+      reviewId: "review-1",
+      creatorDisplayName: "Chartmaker",
+      creatorHandle: "chartmaker",
+      body: "Thank you.",
+      spoilerBody: "Hidden ending note",
+      deletedAt: null,
+      editedAt: null,
+      createdAt: new Date("2026-07-25"),
+    });
     expect(projection).toMatchObject({ hasSpoiler: true, creator: { displayName: "Chartmaker" } });
     expect(projection).not.toHaveProperty("spoilerBody");
   });
 
   it("never returns comment spoiler bodies from the default public projection", () => {
-    const projection = publicCommentProjection({ id: "comment-1", subjectType: "GUIDE", subjectId: "guide-1", authorDisplayName: "Deckhand", authorHandle: "deckhand", parentCommentId: null, depth: 0, body: "Safe", spoilerBody: "Hidden", spoilerLevel: "SPOILER", status: "ACTIVE", editedAt: null, deletedAt: null, createdAt: new Date("2026-07-25") });
+    const projection = publicCommentProjection({
+      id: "comment-1",
+      subjectType: "GUIDE",
+      subjectId: "guide-1",
+      authorDisplayName: "Deckhand",
+      authorHandle: "deckhand",
+      parentCommentId: null,
+      depth: 0,
+      body: "Safe",
+      spoilerBody: "Hidden",
+      spoilerLevel: "SPOILER",
+      status: "ACTIVE",
+      editedAt: null,
+      deletedAt: null,
+      createdAt: new Date("2026-07-25"),
+    });
     expect(projection).toMatchObject({ body: "Safe", hasSpoiler: true });
     expect(projection).not.toHaveProperty("spoilerBody");
     expect(projection).toMatchObject({ author: { displayName: "Deckhand", handle: "deckhand" } });

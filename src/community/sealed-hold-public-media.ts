@@ -86,7 +86,12 @@ export class LocalSealedHoldPublicMediaPort implements SealedHoldPublicMediaPort
       where: {
         ownerAccountId: input.ownerAccountId,
         available: true,
-        object: { finalizedAt: { not: null }, quarantinedAt: null, scanStatus: "CLEAN", mediaType: { in: [...permittedMediaTypes] } },
+        object: {
+          finalizedAt: { not: null },
+          quarantinedAt: null,
+          scanStatus: "CLEAN",
+          mediaType: { in: [...permittedMediaTypes] },
+        },
       },
       select: { id: true, object: { select: { mediaType: true } } },
       orderBy: { id: "asc" },
@@ -114,7 +119,12 @@ export class LocalSealedHoldPublicMediaPort implements SealedHoldPublicMediaPort
         id: input.sourceOpaqueId,
         ownerAccountId: input.ownerAccountId,
         available: true,
-        object: { finalizedAt: { not: null }, quarantinedAt: null, scanStatus: "CLEAN", mediaType: { in: [...permittedMediaTypes] } },
+        object: {
+          finalizedAt: { not: null },
+          quarantinedAt: null,
+          scanStatus: "CLEAN",
+          mediaType: { in: [...permittedMediaTypes] },
+        },
       },
       select: { id: true, object: { select: { sha256: true, mediaType: true } } },
     });

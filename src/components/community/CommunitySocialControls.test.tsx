@@ -16,7 +16,9 @@ describe("CommunitySocialControls", () => {
       .mockResolvedValueOnce(new Response(JSON.stringify({ csrfToken: "csrf-1" }), { status: 200 }))
       .mockResolvedValueOnce(
         new Response(
-          JSON.stringify({ states: [{ following: false, saved: false, favorited: false, blocked: false, canInteract: true }] }),
+          JSON.stringify({
+            states: [{ following: false, saved: false, favorited: false, blocked: false, canInteract: true }],
+          }),
           { status: 200 },
         ),
       )
@@ -28,7 +30,9 @@ describe("CommunitySocialControls", () => {
       )
       .mockResolvedValueOnce(
         new Response(
-          JSON.stringify({ states: [{ following: true, saved: false, favorited: false, blocked: false, canInteract: true }] }),
+          JSON.stringify({
+            states: [{ following: true, saved: false, favorited: false, blocked: false, canInteract: true }],
+          }),
           { status: 200 },
         ),
       );
@@ -59,7 +63,9 @@ describe("CommunitySocialControls", () => {
       )
       .mockResolvedValueOnce(
         new Response(
-          JSON.stringify({ states: [{ following: false, saved: false, favorited: false, blocked: false, canInteract: true }] }),
+          JSON.stringify({
+            states: [{ following: false, saved: false, favorited: false, blocked: false, canInteract: true }],
+          }),
           { status: 200 },
         ),
       );

@@ -84,7 +84,10 @@ export function assertVoyageLogPublicationAllowed(input: VoyageLogPublicationInp
   if (input.visibility === "PRIVATE") return;
   for (const participant of input.participants) {
     if (!hasActiveConsent(participant.consents, "DISPLAY_IN_LOG"))
-      throw new CommunityError("COMMUNITY_PARTICIPANT_CONSENT_REQUIRED", "Every included participant must consent to sharing.");
+      throw new CommunityError(
+        "COMMUNITY_PARTICIPANT_CONSENT_REQUIRED",
+        "Every included participant must consent to sharing.",
+      );
   }
   if (input.media.some((media) => !isPublicMediaReady(media)))
     throw new CommunityError(
@@ -106,14 +109,16 @@ export type PublicVoyageLog = Readonly<{
   media: readonly Readonly<{ id: string; checksum: string }>[];
 }>;
 
-export function toPublicVoyageLogProjection(input: VoyageLogPublicationInput & {
-  slug: string;
-  title: string;
-  safeSummary?: string | null;
-  spoilerLevel: string;
-  verifiedCompletion: boolean;
-  publishedAt: Date | null;
-}): PublicVoyageLog | null {
+export function toPublicVoyageLogProjection(
+  input: VoyageLogPublicationInput & {
+    slug: string;
+    title: string;
+    safeSummary?: string | null;
+    spoilerLevel: string;
+    verifiedCompletion: boolean;
+    publishedAt: Date | null;
+  },
+): PublicVoyageLog | null {
   if (input.visibility !== "COMMUNITY" || !input.publishedAt || !input.verifiedCompletion) return null;
   try {
     assertVoyageLogPublicationAllowed(input);
@@ -129,7 +134,9 @@ export function toPublicVoyageLogProjection(input: VoyageLogPublicationInput & {
           : [],
       );
   const location =
-    !restrictions.has("NO_LOCATION") && input.location?.classification === "APPROXIMATE" && input.location.generalizedLabel
+    !restrictions.has("NO_LOCATION") &&
+    input.location?.classification === "APPROXIMATE" &&
+    input.location.generalizedLabel
       ? requiredText(input.location.generalizedLabel, "Approximate location", 140)
       : undefined;
   return Object.freeze({
@@ -140,6 +147,8 @@ export function toPublicVoyageLogProjection(input: VoyageLogPublicationInput & {
     ...(location ? { approximateLocation: location } : {}),
     verifiedCompletion: true,
     participants: Object.freeze(participants),
-    media: Object.freeze(input.media.map((media) => Object.freeze({ id: media.id, checksum: media.derivativeChecksum }))),
+    media: Object.freeze(
+      input.media.map((media) => Object.freeze({ id: media.id, checksum: media.derivativeChecksum })),
+    ),
   });
 }

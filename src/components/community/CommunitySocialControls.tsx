@@ -35,7 +35,13 @@ export function CommunitySocialControls({
       return false;
     }
     const value = (await response.json()) as {
-      states?: Array<{ following: boolean; saved: boolean; favorited: boolean; blocked: boolean; canInteract: boolean }>;
+      states?: Array<{
+        following: boolean;
+        saved: boolean;
+        favorited: boolean;
+        blocked: boolean;
+        canInteract: boolean;
+      }>;
     };
     const state = value.states?.[0];
     if (!state) {
@@ -62,8 +68,7 @@ export function CommunitySocialControls({
             setMode("indeterminate");
             setMessage("Community relationship state is temporarily unavailable.");
           });
-        }
-        else setMode("signed-out");
+        } else setMode("signed-out");
       })
       .catch(() => setMode("signed-out"));
     const restore = () => void hydrate().catch(() => undefined);
@@ -121,7 +126,9 @@ export function CommunitySocialControls({
   const disabled = mode === "pending" || blocked;
   return (
     <section aria-label="Community Harbor controls">
-      <p aria-live="polite" role={mode === "error" ? "alert" : "status"}>{message}</p>
+      <p aria-live="polite" role={mode === "error" ? "alert" : "status"}>
+        {message}
+      </p>
       <button
         type="button"
         disabled={disabled}
@@ -142,7 +149,9 @@ export function CommunitySocialControls({
         type="button"
         disabled={disabled}
         aria-pressed={favorited}
-        onClick={() => void mutate(`/api/community/social/${favorited ? "unfavorite" : "favorite"}`, { subjectType, subjectId })}
+        onClick={() =>
+          void mutate(`/api/community/social/${favorited ? "unfavorite" : "favorite"}`, { subjectType, subjectId })
+        }
       >
         {favorited ? "Remove favorite" : "Favorite"}
       </button>
@@ -150,7 +159,9 @@ export function CommunitySocialControls({
         type="button"
         disabled={mode === "pending"}
         aria-pressed={blocked}
-        onClick={() => void mutate(`/api/community/social/${blocked ? "unblock-profile" : "block-profile"}`, { creatorProfileId })}
+        onClick={() =>
+          void mutate(`/api/community/social/${blocked ? "unblock-profile" : "block-profile"}`, { creatorProfileId })
+        }
       >
         {blocked ? "Unblock Creator" : "Block Creator"}
       </button>

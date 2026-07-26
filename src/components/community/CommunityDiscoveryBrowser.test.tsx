@@ -64,15 +64,11 @@ describe("CommunityDiscoveryBrowser", () => {
     render(<CommunityDiscoveryBrowser />);
     await screen.findByText("No public charts matched this search");
     fireEvent.click(screen.getByLabelText("Chronicle"));
-    expect(replace).toHaveBeenLastCalledWith(
-      "/community?filters=%7B%22itemTypes%22%3A%5B%22CHRONICLE%22%5D%7D",
-      { scroll: false },
-    );
+    expect(replace).toHaveBeenLastCalledWith("/community?filters=%7B%22itemTypes%22%3A%5B%22CHRONICLE%22%5D%7D", {
+      scroll: false,
+    });
     fireEvent.click(screen.getByLabelText("Free content only"));
-    expect(replace).toHaveBeenLastCalledWith(
-      "/community?filters=%7B%22freeOnly%22%3Atrue%7D",
-      { scroll: false },
-    );
+    expect(replace).toHaveBeenLastCalledWith("/community?filters=%7B%22freeOnly%22%3Atrue%7D", { scroll: false });
   });
 
   it("announces failures and retries without exposing an implementation detail", async () => {

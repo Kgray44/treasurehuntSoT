@@ -1132,7 +1132,10 @@ const coreSceneContracts = {
 
 const communitySceneContracts = Object.fromEntries(
   governedCommunitySceneNames.map((name) => {
-    const receipt = name === "community-report-submitted" || name === "community-keepsake-created" || name === "community-voyage-log-published";
+    const receipt =
+      name === "community-report-submitted" ||
+      name === "community-keepsake-created" ||
+      name === "community-voyage-log-published";
     return [
       name,
       v2Contract(name, {

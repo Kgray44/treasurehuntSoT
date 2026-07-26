@@ -12,7 +12,13 @@ export const dynamic = "force-dynamic";
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const listing = await getPublicListingBySlug((await params).slug);
   if (!listing) return harborSharingMetadata({ kind: "listing", visibility: "PRIVATE", canonicalPath: "/community" });
-  return harborSharingMetadata({ kind: "listing", visibility: "COMMUNITY", canonicalPath: `/community/${encodeURIComponent(listing.slug)}`, title: listing.title, safeDescription: listing.shortDescription ?? undefined });
+  return harborSharingMetadata({
+    kind: "listing",
+    visibility: "COMMUNITY",
+    canonicalPath: `/community/${encodeURIComponent(listing.slug)}`,
+    title: listing.title,
+    safeDescription: listing.shortDescription ?? undefined,
+  });
 }
 
 export default async function CommunityListingPage({ params }: Props) {
@@ -20,7 +26,9 @@ export default async function CommunityListingPage({ params }: Props) {
   if (!listing) notFound();
   return (
     <main className="page-shell" aria-labelledby="community-listing-title">
-      <p><Link href="/community">Back to Community Harbor</Link></p>
+      <p>
+        <Link href="/community">Back to Community Harbor</Link>
+      </p>
       <p className="eyebrow">{listing.itemType}</p>
       <h1 id="community-listing-title">{listing.title}</h1>
       {listing.shortDescription ? <p>{listing.shortDescription}</p> : null}

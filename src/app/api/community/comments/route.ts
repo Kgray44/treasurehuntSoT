@@ -8,8 +8,15 @@ import { commentInputSchema, commentQuerySchema } from "./contract";
 
 export async function GET(request: Request) {
   const search = new URL(request.url).searchParams;
-  const parsed = commentQuerySchema.safeParse({ subjectType: search.get("subjectType") ?? "", subjectId: search.get("subjectId") ?? "" });
-  if (!parsed.success) return NextResponse.json({ code: "COMMUNITY_INVALID_INPUT", error: "A valid comment subject is required." }, { status: 400 });
+  const parsed = commentQuerySchema.safeParse({
+    subjectType: search.get("subjectType") ?? "",
+    subjectId: search.get("subjectId") ?? "",
+  });
+  if (!parsed.success)
+    return NextResponse.json(
+      { code: "COMMUNITY_INVALID_INPUT", error: "A valid comment subject is required." },
+      { status: 400 },
+    );
   try {
     return NextResponse.json({ comments: await listPublicComments(parsed.data.subjectType, parsed.data.subjectId) });
   } catch {

@@ -4,7 +4,12 @@ import { communityApiError } from "@/community/api";
 import type { CommunityActor } from "@/community/services";
 import { requireCanonicalAccountIdentity, verifyPlayerCsrf } from "@/platform/auth";
 
-const opaqueId = z.string().trim().min(1).max(128).regex(/^[A-Za-z0-9_-]+$/, "Identifier is invalid.");
+const opaqueId = z
+  .string()
+  .trim()
+  .min(1)
+  .max(128)
+  .regex(/^[A-Za-z0-9_-]+$/, "Identifier is invalid.");
 const subjectType = z.enum(["LISTING", "RELEASE", "CREATOR", "VOYAGE_LOG", "COLLECTION", "GUIDE"]);
 
 export const followInputSchema = z.object({ creatorProfileId: opaqueId }).strict();

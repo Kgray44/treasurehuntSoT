@@ -31,8 +31,19 @@ describe("Community comment and report contracts", () => {
   });
 
   it("accepts only durable report targets and never a forged reporter", () => {
-    expect(reportInputSchema.parse({ subjectType: "REVIEW", subjectId: "review_1", reason: "Spoiler was not marked." })).toMatchObject({ subjectType: "REVIEW" });
-    expect(() => reportInputSchema.parse({ subjectType: "TALE_SESSION", subjectId: "session_1", reason: "private" })).toThrow();
-    expect(() => reportInputSchema.parse({ subjectType: "GUIDE", subjectId: "guide_1", reason: "unsafe", reporterAccountId: "forged" })).toThrow();
+    expect(
+      reportInputSchema.parse({ subjectType: "REVIEW", subjectId: "review_1", reason: "Spoiler was not marked." }),
+    ).toMatchObject({ subjectType: "REVIEW" });
+    expect(() =>
+      reportInputSchema.parse({ subjectType: "TALE_SESSION", subjectId: "session_1", reason: "private" }),
+    ).toThrow();
+    expect(() =>
+      reportInputSchema.parse({
+        subjectType: "GUIDE",
+        subjectId: "guide_1",
+        reason: "unsafe",
+        reporterAccountId: "forged",
+      }),
+    ).toThrow();
   });
 });

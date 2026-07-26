@@ -160,7 +160,10 @@ export function CommunityDiscoveryBrowser() {
                 checked={filters.itemTypes?.includes(itemType) ?? false}
                 onChange={() => toggleFilter("itemTypes", itemType)}
               />
-              {itemType.toLocaleLowerCase().replace(/(^|_)([a-z])/g, (_, gap, letter) => `${gap} ${letter.toUpperCase()}`).trim()}
+              {itemType
+                .toLocaleLowerCase()
+                .replace(/(^|_)([a-z])/g, (_, gap, letter) => `${gap} ${letter.toUpperCase()}`)
+                .trim()}
             </label>
           ))}
         </fieldset>
@@ -225,7 +228,13 @@ export function CommunityDiscoveryBrowser() {
               <li key={item.id}>
                 <article>
                   <p>{item.itemType}</p>
-                  <h3>{item.slug ? <Link href={`/community/${encodeURIComponent(item.slug)}`}>{item.title}</Link> : item.title}</h3>
+                  <h3>
+                    {item.slug ? (
+                      <Link href={`/community/${encodeURIComponent(item.slug)}`}>{item.title}</Link>
+                    ) : (
+                      item.title
+                    )}
+                  </h3>
                   {item.safeSummary ? <p>{item.safeSummary}</p> : null}
                   <p>By {item.creatorHandle}</p>
                 </article>
@@ -249,7 +258,9 @@ function readFilters(value: string | null): DiscoveryFilters {
     if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) return {};
     const candidate = parsed as Record<string, unknown>;
     const strings = (key: "itemTypes" | "difficulties") =>
-      Array.isArray(candidate[key]) ? candidate[key].filter((item): item is string => typeof item === "string").slice(0, 12) : undefined;
+      Array.isArray(candidate[key])
+        ? candidate[key].filter((item): item is string => typeof item === "string").slice(0, 12)
+        : undefined;
     return {
       ...(strings("itemTypes")?.length ? { itemTypes: strings("itemTypes") } : {}),
       ...(strings("difficulties")?.length ? { difficulties: strings("difficulties") } : {}),

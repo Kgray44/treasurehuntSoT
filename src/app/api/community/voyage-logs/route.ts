@@ -10,7 +10,11 @@ function unavailable() {
 }
 
 export async function GET(request: Request) {
-  if (new URL(request.url).search) return NextResponse.json({ code: "COMMUNITY_INVALID_QUERY", error: "Query parameters are not supported." }, { status: 400 });
+  if (new URL(request.url).search)
+    return NextResponse.json(
+      { code: "COMMUNITY_INVALID_QUERY", error: "Query parameters are not supported." },
+      { status: 400 },
+    );
   try {
     return NextResponse.json(await readPublicVoyageLogs());
   } catch {

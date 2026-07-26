@@ -53,8 +53,12 @@ export const communitySceneContracts = Object.freeze(
       name,
       contract(
         name,
-        name.includes("published") || name.includes("created") || name.includes("submitted") ? ["community-receipt"] : ["community-heading"],
-        name.includes("published") || name.includes("created") || name.includes("submitted") ? "server-confirmed" : "static-readable",
+        name.includes("published") || name.includes("created") || name.includes("submitted")
+          ? ["community-receipt"]
+          : ["community-heading"],
+        name.includes("published") || name.includes("created") || name.includes("submitted")
+          ? "server-confirmed"
+          : "static-readable",
       ),
     ]),
   ) as Record<CommunitySceneName, CommunitySceneContract>,

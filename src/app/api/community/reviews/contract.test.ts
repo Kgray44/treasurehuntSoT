@@ -24,7 +24,12 @@ describe("Community review request contracts", () => {
   });
 
   it("keeps Creator response spoilers separate and rejects markup", () => {
-    expect(creatorResponseInputSchema.parse({ body: "Thank you for the thoughtful review.", spoilerBody: "A future finale detail." })).toMatchObject({ body: "Thank you for the thoughtful review." });
+    expect(
+      creatorResponseInputSchema.parse({
+        body: "Thank you for the thoughtful review.",
+        spoilerBody: "A future finale detail.",
+      }),
+    ).toMatchObject({ body: "Thank you for the thoughtful review." });
     expect(() => creatorResponseInputSchema.parse({ body: "<script>alert(1)</script>" })).toThrow();
   });
 });

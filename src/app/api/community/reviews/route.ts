@@ -9,7 +9,10 @@ import { listingQuerySchema, reviewInputSchema } from "./contract";
 export async function GET(request: Request) {
   const parsed = listingQuerySchema.safeParse({ listingId: new URL(request.url).searchParams.get("listingId") ?? "" });
   if (!parsed.success)
-    return NextResponse.json({ code: "COMMUNITY_INVALID_INPUT", error: "A valid listing is required." }, { status: 400 });
+    return NextResponse.json(
+      { code: "COMMUNITY_INVALID_INPUT", error: "A valid listing is required." },
+      { status: 400 },
+    );
   try {
     return NextResponse.json({ reviews: await listPublicReviews(parsed.data.listingId) });
   } catch (cause) {

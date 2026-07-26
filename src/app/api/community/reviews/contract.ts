@@ -1,7 +1,17 @@
 import { z } from "zod";
 
-const opaqueId = z.string().trim().min(1).max(128).regex(/^[A-Za-z0-9_-]+$/, "Identifier is invalid.");
-const safeText = z.string().trim().min(1).max(5_000).refine((value) => !/<\/?[a-z][^>]*>/iu.test(value), "HTML is not permitted.");
+const opaqueId = z
+  .string()
+  .trim()
+  .min(1)
+  .max(128)
+  .regex(/^[A-Za-z0-9_-]+$/, "Identifier is invalid.");
+const safeText = z
+  .string()
+  .trim()
+  .min(1)
+  .max(5_000)
+  .refine((value) => !/<\/?[a-z][^>]*>/iu.test(value), "HTML is not permitted.");
 const optionalSafeText = safeText.nullable().optional();
 
 export const reviewInputSchema = z

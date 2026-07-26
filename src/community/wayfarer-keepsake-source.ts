@@ -15,12 +15,12 @@ export type HarborlightKeepsakeSourceProjection = Readonly<{
   publishedVersionChecksum: string;
   completedAt: string;
   title: string;
-  selectedSafeCandidates: readonly Readonly<{ kind: "MOMENT" | "ARTIFACT" | "MEDIA"; label: string }> [];
+  selectedSafeCandidates: readonly Readonly<{ kind: "MOMENT" | "ARTIFACT" | "MEDIA"; label: string }>[];
 }>;
 
 export type HarborlightSharingCandidateProjection = Readonly<{
   sourceKeepsakeId: string;
-  candidates: readonly Readonly<{ kind: "MOMENT" | "ARTIFACT" | "MEDIA"; label: string }> [];
+  candidates: readonly Readonly<{ kind: "MOMENT" | "ARTIFACT" | "MEDIA"; label: string }>[];
 }>;
 
 export type HarborlightSourceVerification = Readonly<{
@@ -31,14 +31,20 @@ export type HarborlightSourceVerification = Readonly<{
 }>;
 
 export interface HarborlightKeepsakeSource {
-  getEligiblePrivateKeepsake(input: Readonly<{ ownerAccountId: string; sourceKeepsakeId: string }>): Promise<HarborlightKeepsakeSourceProjection | null>;
-  getPublicSharingCandidates(input: Readonly<{ ownerAccountId: string; sourceKeepsakeId: string }>): Promise<HarborlightSharingCandidateProjection | null>;
-  verifySourceWatermark(input: Readonly<{
-    ownerAccountId: string;
-    sourceKeepsakeId: string;
-    sourceWatermark: string;
-    sourceProjectionChecksum: string;
-  }>): Promise<HarborlightSourceVerification>;
+  getEligiblePrivateKeepsake(
+    input: Readonly<{ ownerAccountId: string; sourceKeepsakeId: string }>,
+  ): Promise<HarborlightKeepsakeSourceProjection | null>;
+  getPublicSharingCandidates(
+    input: Readonly<{ ownerAccountId: string; sourceKeepsakeId: string }>,
+  ): Promise<HarborlightSharingCandidateProjection | null>;
+  verifySourceWatermark(
+    input: Readonly<{
+      ownerAccountId: string;
+      sourceKeepsakeId: string;
+      sourceWatermark: string;
+      sourceProjectionChecksum: string;
+    }>,
+  ): Promise<HarborlightSourceVerification>;
 }
 
 export type HarborlightSharingPreparation = Readonly<{
@@ -78,7 +84,9 @@ function text(value: string, field: string, maximum = 191) {
   return normalized;
 }
 
-export function prepareWayfarerVoyageLogDraft(source: HarborlightKeepsakeSourceProjection): HarborlightSharingPreparation {
+export function prepareWayfarerVoyageLogDraft(
+  source: HarborlightKeepsakeSourceProjection,
+): HarborlightSharingPreparation {
   const safeSnapshot = Object.freeze({
     schemaVersion: 1 as const,
     source: "WAYFARER_PRIVATE_KEEPSAKE" as const,
@@ -113,7 +121,10 @@ export async function createVoyageLogDraftFromWayfarer(
   if (!projection)
     throw new CommunityError("COMMUNITY_KEEPSAKE_NOT_AVAILABLE", "An eligible private Keepsake was not found.");
   if (projection.sourceKeepsakeId !== sourceKeepsakeId)
-    throw new CommunityError("COMMUNITY_KEEPSAKE_SOURCE_MISMATCH", "The private Keepsake source could not be verified.");
+    throw new CommunityError(
+      "COMMUNITY_KEEPSAKE_SOURCE_MISMATCH",
+      "The private Keepsake source could not be verified.",
+    );
   const draft = prepareWayfarerVoyageLogDraft(projection);
   const verified = await source.verifySourceWatermark({
     ownerAccountId,
@@ -122,21 +133,40 @@ export async function createVoyageLogDraftFromWayfarer(
     sourceProjectionChecksum: draft.sourceProjectionChecksum,
   });
   if (verified.sourceKeepsakeId !== sourceKeepsakeId || verified.sourceKeepsakeId !== projection.sourceKeepsakeId)
-    throw new CommunityError("COMMUNITY_KEEPSAKE_SOURCE_MISMATCH", "The private Keepsake source could not be verified.");
-  if (!verified.valid || verified.sourceWatermark !== draft.sourceWatermark || verified.sourceProjectionChecksum !== draft.sourceProjectionChecksum)
-    throw new CommunityError("COMMUNITY_KEEPSAKE_SOURCE_STALE", "The private Keepsake changed before sharing preparation completed.");
+    throw new CommunityError(
+      "COMMUNITY_KEEPSAKE_SOURCE_MISMATCH",
+      "The private Keepsake source could not be verified.",
+    );
+  if (
+    !verified.valid ||
+    verified.sourceWatermark !== draft.sourceWatermark ||
+    verified.sourceProjectionChecksum !== draft.sourceProjectionChecksum
+  )
+    throw new CommunityError(
+      "COMMUNITY_KEEPSAKE_SOURCE_STALE",
+      "The private Keepsake changed before sharing preparation completed.",
+    );
   return store.createIfMissing({ ...draft, ownerAccountId });
 }
 
 /** The production adapter cannot exist until Wayfarer Phase 3 is converged. */
 export const unavailableWayfarerKeepsakeSource: HarborlightKeepsakeSource = {
   async getEligiblePrivateKeepsake() {
-    throw new CommunityError("COMMUNITY_WAYFARER_SOURCE_UNAVAILABLE", "Private Keepsake sharing is temporarily unavailable.");
+    throw new CommunityError(
+      "COMMUNITY_WAYFARER_SOURCE_UNAVAILABLE",
+      "Private Keepsake sharing is temporarily unavailable.",
+    );
   },
   async getPublicSharingCandidates() {
-    throw new CommunityError("COMMUNITY_WAYFARER_SOURCE_UNAVAILABLE", "Private Keepsake sharing is temporarily unavailable.");
+    throw new CommunityError(
+      "COMMUNITY_WAYFARER_SOURCE_UNAVAILABLE",
+      "Private Keepsake sharing is temporarily unavailable.",
+    );
   },
   async verifySourceWatermark() {
-    throw new CommunityError("COMMUNITY_WAYFARER_SOURCE_UNAVAILABLE", "Private Keepsake sharing is temporarily unavailable.");
+    throw new CommunityError(
+      "COMMUNITY_WAYFARER_SOURCE_UNAVAILABLE",
+      "Private Keepsake sharing is temporarily unavailable.",
+    );
   },
 };

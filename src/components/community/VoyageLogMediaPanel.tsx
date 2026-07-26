@@ -47,7 +47,8 @@ export function VoyageLogMediaPanel({ voyageLogId }: { voyageLogId?: string }) {
     );
   }
   useEffect(() => {
-    void refresh();
+    const timer = window.setTimeout(() => void refresh(), 0);
+    return () => window.clearTimeout(timer);
   }, [voyageLogId]);
   async function select(sourceOpaqueId: string) {
     if (!voyageLogId || !csrf) return;

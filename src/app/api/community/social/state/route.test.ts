@@ -28,7 +28,11 @@ describe("GET /api/community/social/state", () => {
 
   it("returns a typed private unavailable result instead of an empty success set", async () => {
     dependencies.getSocialRelationshipStates.mockRejectedValue(new dependencies.Unavailable());
-    const response = await GET(new Request("http://localhost/api/community/social/state?subjects=%5B%7B%22subjectType%22%3A%22LISTING%22%2C%22subjectId%22%3A%22listing_1%22%7D%5D"));
+    const response = await GET(
+      new Request(
+        "http://localhost/api/community/social/state?subjects=%5B%7B%22subjectType%22%3A%22LISTING%22%2C%22subjectId%22%3A%22listing_1%22%7D%5D",
+      ),
+    );
     expect(response.status).toBe(503);
     expect(response.headers.get("cache-control")).toBe("private, no-store");
     expect(await response.json()).toEqual({

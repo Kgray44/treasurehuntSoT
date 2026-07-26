@@ -16,7 +16,11 @@ export const governedCommunitySceneNames = [
 ] as const satisfies readonly AnimationSceneName[];
 
 function receiptScene(name: AnimationSceneName) {
-  return name === "community-report-submitted" || name === "community-keepsake-created" || name === "community-voyage-log-published";
+  return (
+    name === "community-report-submitted" ||
+    name === "community-keepsake-created" ||
+    name === "community-voyage-log-published"
+  );
 }
 
 function openingLabel(name: AnimationSceneName) {

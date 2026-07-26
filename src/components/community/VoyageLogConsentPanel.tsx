@@ -41,7 +41,8 @@ export function VoyageLogConsentPanel({ voyageLogId }: { voyageLogId?: string })
     if (inboxResponse.ok) setInbox((await inboxResponse.json()) as InboxItem[]);
   }
   useEffect(() => {
-    void refresh();
+    const timer = window.setTimeout(() => void refresh(), 0);
+    return () => window.clearTimeout(timer);
   }, [voyageLogId]);
   async function respond(item: InboxItem, decision: "APPROVED" | "DECLINED") {
     const response = await fetch("/api/community/voyage-logs/consent/respond", {

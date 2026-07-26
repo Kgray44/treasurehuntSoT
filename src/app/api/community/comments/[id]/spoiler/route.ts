@@ -6,7 +6,10 @@ import { revealCommentSpoiler } from "@/community/social";
 export async function GET(_: Request, context: { params: Promise<{ id: string }> }) {
   const { id } = await context.params;
   if (!/^[A-Za-z0-9_-]{1,128}$/.test(id))
-    return NextResponse.json({ code: "COMMUNITY_SPOILER_UNAVAILABLE", error: "This spoiler section is unavailable." }, { status: 404 });
+    return NextResponse.json(
+      { code: "COMMUNITY_SPOILER_UNAVAILABLE", error: "This spoiler section is unavailable." },
+      { status: 404 },
+    );
   try {
     return NextResponse.json(await revealCommentSpoiler(id), { headers: { "Cache-Control": "private, no-store" } });
   } catch (cause) {
