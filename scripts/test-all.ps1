@@ -9,7 +9,10 @@ param(
     [switch]$SkipBrowserInstall,
     [string]$BaselineDatabasePath,
     [switch]$BrowserOnly,
-    [string]$BrowserTestPath
+    [string]$BrowserTestPath,
+    [string[]]$BrowserArgs = @(),
+    [string]$BrowserGrep = "",
+    [switch]$SkipProductionPerformance
 )
 $ErrorActionPreference = "Stop"
 . (Join-Path $PSScriptRoot "dev-common.ps1")
@@ -583,6 +586,10 @@ try {
     $env:NODE_ENV = "test"
     $env:FOREVER_VALIDATION_NODE_ENV = "test"
     $env:COMMUNITY_BINARY_SCANNER_PROVIDER = "synthetic-test"
+    # This ephemeral validation-only key permits the simulator fixture to
+    # exercise encrypted provider-token storage. It is never used by ordinary
+    # development or production servers and is removed before the build proof.
+    $env:WAYFARER_PROVIDER_TOKEN_KEY = "validation-only-provider-token-key"
 
     if (-not $SkipBrowserInstall) {
         Invoke-ValidationStep -Name "Installing Playwright browsers" -Arguments @("node_modules/playwright/cli.js", "install", "chromium", "webkit")
@@ -596,6 +603,15 @@ try {
         Invoke-ValidationStep -Name "Validating animation assets" -Arguments @("node_modules/tsx/dist/cli.mjs", "scripts/validate-animation-assets.ts")
     }
     Invoke-ValidationStep -Name "Verifying seeded database" -Arguments @("node_modules/tsx/dist/cli.mjs", "scripts/verify-database.ts")
+    Invoke-ValidationStep -Name "Migrating legacy Companion compatibility projection" -Arguments @(
+        "node_modules/tsx/dist/cli.mjs",
+        "scripts/migrate-legacy-companion.ts"
+    )
+    Invoke-ValidationStep -Name "Verifying legacy Companion compatibility projection" -Arguments @(
+        "node_modules/tsx/dist/cli.mjs",
+        "scripts/migrate-legacy-companion.ts",
+        "--verify"
+    )
     Invoke-ValidationStep -Name "Preparing legacy playthrough backfill proof" -Arguments @("node_modules/tsx/dist/cli.mjs", "scripts/verify-platform-backfill.ts", "--prepare")
     Invoke-ValidationStep -Name "Running additive platform backfill" -Arguments @("node_modules/tsx/dist/cli.mjs", "prisma/seed.ts", "--ensure")
     Invoke-ValidationStep -Name "Verifying additive platform backfill" -Arguments @("node_modules/tsx/dist/cli.mjs", "scripts/verify-platform-backfill.ts", "--verify")
@@ -604,11 +620,17 @@ try {
     Write-Host "`n==> Starting owned isolated validation server" -ForegroundColor Cyan
     $ownedValidationServer = Start-OwnedValidationServer
     $playwrightInvoked = $true
-    $playwrightArguments = @("node_modules/playwright/cli.js", "test")
+    $browserCommand = @("node_modules/playwright/cli.js", "test") + $BrowserArgs
+    if ($BrowserGrep) { $browserCommand += @("--grep", $BrowserGrep) }
     if ($BrowserTestPath) {
-        $playwrightArguments += @("--project=harborlight-phase2", $runtimeRelativeBrowserTestPath.Replace('\', '/'))
+        # Harborlight owns a dedicated browser project. Other targeted
+        # acceptance files retain the routing declared by playwright.config.ts.
+        if ($runtimeRelativeBrowserTestPath.Replace('\', '/') -eq 'tests/e2e/harborlight-phase2.spec.ts') {
+            $browserCommand += "--project=harborlight-phase2"
+        }
+        $browserCommand += $runtimeRelativeBrowserTestPath.Replace('\', '/')
     }
-    Invoke-ValidationStep -Name "Running browser acceptance tests" -Arguments $playwrightArguments
+    Invoke-ValidationStep -Name "Running browser acceptance tests" -Arguments $browserCommand
     Stop-OwnedValidationServer -ServerOwnership $ownedValidationServer
     $ownedValidationServer = $null
     Assert-TcpPortAvailable -Port 3100
@@ -617,10 +639,15 @@ try {
     # carry its selection into a later production build or restart proof.
     Remove-Item Env:COMMUNITY_BINARY_SCANNER_PROVIDER -ErrorAction SilentlyContinue
     Remove-Item Env:FOREVER_VALIDATION_NODE_ENV -ErrorAction SilentlyContinue
+    Remove-Item Env:WAYFARER_PROVIDER_TOKEN_KEY -ErrorAction SilentlyContinue
     $env:NODE_ENV = "production"
 
     if ($BrowserOnly) {
         $browserSucceeded = $defaultBrowserSucceeded
+    } elseif ($SkipProductionPerformance) {
+        $browserSucceeded = $defaultBrowserSucceeded
+        Write-Host "`n==> Production performance and restart gates skipped for this focused browser repair run" -ForegroundColor Yellow
+        return
     } else {
         if ($BrowserTestPath) {
             # A targeted project owns only its stated acceptance state.  The

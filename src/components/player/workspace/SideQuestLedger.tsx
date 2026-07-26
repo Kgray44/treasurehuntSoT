@@ -281,8 +281,17 @@ export function SideQuestLedger({
       </header>
       <div className="ledger-filter" role="group" aria-label="Filter Echoes">
         {(["all", "rumor", "active", "complete"] as Filter[]).map((item) => (
-          <button key={item} aria-pressed={filter === item} onClick={() => setFilter(item)}>
-            {item}
+          <button key={item} aria-pressed={filter === item} onClick={() => setFilter(item)} data-ledger-filter={item}>
+            {filter === item && (
+              <motion.span
+                aria-hidden="true"
+                className="ledger-filter-divider"
+                data-ledger-filter-divider={item}
+                layoutId="side-quest-ledger-active-divider"
+                transition={{ duration: mode === "reduced" ? 0 : 0.18, ease: "easeOut" }}
+              />
+            )}
+            <span className="ledger-filter-label">{item}</span>
           </button>
         ))}
       </div>

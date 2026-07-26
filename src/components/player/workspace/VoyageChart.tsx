@@ -225,8 +225,15 @@ function ChartRoutePath({
 
 function ChartShipToken({
   campaignKey,
+  mode,
+  wakeKey,
   report,
-}: Readonly<{ campaignKey: string; report: VoyageChartProps["onTargetRegistrationChange"] }>) {
+}: Readonly<{
+  campaignKey: string;
+  mode: MotionMode;
+  wakeKey: string | undefined;
+  report: VoyageChartProps["onTargetRegistrationChange"];
+}>) {
   const target = useMemo(
     () => ({
       targetKey: `ship:${campaignKey}:token`,
@@ -249,6 +256,18 @@ function ChartShipToken({
       aria-hidden="true"
       style={{ pointerEvents: "none" }}
     >
+      {wakeKey ? (
+        <motion.span
+          key={wakeKey}
+          className="ship-wake-trail"
+          data-ship-wake-route={wakeKey}
+          aria-hidden="true"
+          initial={mode === "reduced" ? false : { opacity: 0.72, scaleX: 0.35 }}
+          animate={{ opacity: mode === "reduced" ? 0.42 : 0, scaleX: mode === "reduced" ? 0.7 : 1.4 }}
+          transition={{ duration: mode === "reduced" ? 0 : mode === "gentle" ? 0.32 : 0.52, ease: "easeOut" }}
+          style={{ pointerEvents: "none" }}
+        />
+      ) : null}
       ▲
     </div>
   );
@@ -447,7 +466,12 @@ function VoyageChartContents({
               );
             })}
           </svg>
-          <ChartShipToken campaignKey={snapshot.campaign.slug} report={onTargetRegistrationChange} />
+          <ChartShipToken
+            campaignKey={snapshot.campaign.slug}
+            mode={mode}
+            wakeKey={progressRouteKey}
+            report={onTargetRegistrationChange}
+          />
           {chartLocations
             .filter((location) => location.x !== undefined && location.y !== undefined)
             .map((location) => (

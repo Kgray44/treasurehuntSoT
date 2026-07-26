@@ -151,6 +151,16 @@ export type PublicLogEntry = {
   title: string;
   summary: string;
   timestamp: string;
+  /** Server-projected from the immutable event timestamp; never inferred from the viewer's clock. */
+  moonPhase?:
+    | "new"
+    | "waxing-crescent"
+    | "first-quarter"
+    | "waxing-gibbous"
+    | "full"
+    | "waning-gibbous"
+    | "last-quarter"
+    | "waning-crescent";
   symbol: string;
   importance: "quiet" | "notable" | "major";
   section: "journal" | "chart" | "treasures" | "quests" | "log" | "finale";

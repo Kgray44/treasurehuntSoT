@@ -120,6 +120,11 @@ MATRIX_REQUIRED_COLUMNS = (
     "Architecture Validation Status",
     "Architecture Evidence",
     "Validation Evidence",
+    "Superseded By",
+    "Disposition Decision ID",
+    "Disposition Date",
+    "Disposition Rationale",
+    "Approval Reference",
 )
 
 LEDGER_COLUMNS = (
@@ -180,6 +185,8 @@ IMPLEMENTATION_STATUSES = frozenset(
         "blocked_environment",
         "superseded",
         "rejected",
+        "superseded-approved",
+        "rejected-approved",
     }
 )
 COVERAGE_STATUSES = frozenset(
@@ -207,6 +214,13 @@ LIBRARIES = frozenset(
     }
 )
 TERMINAL_DISPOSITIONS = frozenset({"rejected", "superseded"})
+APPROVED_TERMINAL_DISPOSITIONS: Mapping[str, str] = {
+    "rejected-approved": "rejected",
+    "superseded-approved": "superseded",
+}
+TERMINAL_IMPLEMENTATION_STATUSES = frozenset(
+    {*TERMINAL_DISPOSITIONS, *APPROVED_TERMINAL_DISPOSITIONS}
+)
 
 
 @dataclass(frozen=True, order=True)
@@ -444,13 +458,20 @@ class ReconciliationValidator:
         self.add(code, source, row, f"invalid {field_name}: {value!r}", record=record)
         return False
 
+    @staticmethod
+    def _terminal_kind(status: str) -> str | None:
+        if status in TERMINAL_DISPOSITIONS:
+            return status
+        return APPROVED_TERMINAL_DISPOSITIONS.get(status)
+
     def _validate_phases(self, row: Mapping[str, str], source: str, row_id: str, record: str) -> None:
         status = row.get("Implementation Status", "")
         for field_name in ("Roadmap Phase", "Project Lanternwake Phase"):
             value = row.get(field_name, "")
             if not self._enum(value, PHASES, source, row_id, field_name, code="E-PHASE-001", record=record):
                 continue
-            if value == "Not Applicable" and status != "rejected":
+            terminal_kind = self._terminal_kind(status)
+            if value == "Not Applicable" and terminal_kind != "rejected":
                 self.add(
                     "E-PHASE-001",
                     source,
@@ -458,7 +479,7 @@ class ReconciliationValidator:
                     "Not Applicable is permitted only for rejected requirements",
                     record=record,
                 )
-            if status == "superseded" and value == "Not Applicable":
+            if terminal_kind == "superseded" and value == "Not Applicable":
                 self.add("E-PHASE-001", source, row_id, "superseded rows use the replacement phase", record=record)
 
     def _validate_status(self, row: Mapping[str, str], source: str, row_id: str, record: str) -> None:
@@ -487,6 +508,7 @@ class ReconciliationValidator:
             record=record,
         )
         evidence = (row.get("Architecture Evidence", "") + " " + row.get("Validation Evidence", "")).strip()
+        terminal_kind = self._terminal_kind(status)
         if status in {"implemented", "validated"}:
             if not commits:
                 self.add("E-STATUS-002", source, row_id, f"{status} requires a real 40-hex commit", record=record)
@@ -500,6 +522,45 @@ class ReconciliationValidator:
                 "validated requires Validation Status=passed and Validation Evidence",
                 record=record,
             )
+        if terminal_kind:
+            if validation != "not_applicable":
+                self.add(
+                    "E-DISPOSITION-003",
+                    source,
+                    row_id,
+                    "approved terminal disposition requires Validation Status=not_applicable",
+                    record=record,
+                )
+            if commits:
+                self.add(
+                    "E-DISPOSITION-003",
+                    source,
+                    row_id,
+                    "approved terminal disposition cannot claim an implementation commit",
+                    record=record,
+                )
+            required = (
+                "Disposition Decision ID",
+                "Disposition Date",
+                "Disposition Rationale",
+                "Approval Reference",
+            )
+            if not all(row.get(name, "") for name in required):
+                self.add(
+                    "E-DISPOSITION-001",
+                    source,
+                    row_id,
+                    "approved terminal disposition requires decision, date, rationale, and approval",
+                    record=record,
+                )
+            if terminal_kind == "superseded" and not row.get("Superseded By", ""):
+                self.add(
+                    "E-DISPOSITION-002",
+                    source,
+                    row_id,
+                    "approved supersession requires an explicit replacement",
+                    record=record,
+                )
         if status == "partially_implemented":
             if source == "matrix":
                 remaining = row.get("Remaining limitation", "") or row.get("Blocked By", "")
@@ -589,7 +650,7 @@ class ReconciliationValidator:
         )
         if source == "matrix":
             fields = ("Acceptance Criteria", "Test Plan References")
-            if row.get("Implementation Status", "") not in TERMINAL_DISPOSITIONS:
+            if row.get("Implementation Status", "") not in TERMINAL_IMPLEMENTATION_STATUSES:
                 fields = (
                     "Expected trigger",
                     "Recommended replay policy",
@@ -732,14 +793,14 @@ class ReconciliationValidator:
                 )
 
             if record and matrix_schema_ok:
-                if row.get("Implementation Status", "") in TERMINAL_DISPOSITIONS:
+                if row.get("Implementation Status", "") in TERMINAL_IMPLEMENTATION_STATUSES:
                     self.codex_terminal.add(record)
                 self._validate_phases(row, "matrix", row_id, record)
                 self._validate_status(row, "matrix", row_id, record)
                 self._validate_required_text(row, "matrix", row_id, record)
                 if (
                     not row.get("Correct library", "")
-                    and row.get("Implementation Status", "") not in TERMINAL_DISPOSITIONS
+                    and row.get("Implementation Status", "") not in TERMINAL_IMPLEMENTATION_STATUSES
                 ):
                     self.add("E-LIBRARY-001", "matrix", row_id, "Correct library must be nonblank", record=record)
 
@@ -882,7 +943,8 @@ class ReconciliationValidator:
             )
             coverage_totals[coverage] += 1
             implementation_totals[status] += 1
-            if status in TERMINAL_DISPOSITIONS:
+            terminal_kind = self._terminal_kind(status)
+            if terminal_kind:
                 self.oa_terminal.add(record)
             self._validate_phases(row, "ledger", source_id, record)
             self._validate_status(row, "ledger", source_id, record)
@@ -908,7 +970,7 @@ class ReconciliationValidator:
             for library in libraries:
                 if library not in LIBRARIES:
                     self.add("E-LIBRARY-001", "ledger", source_id, f"invalid library: {library}", record=record)
-            if "none" in libraries and (len(libraries) != 1 or status != "rejected"):
+            if "none" in libraries and (len(libraries) != 1 or terminal_kind != "rejected"):
                 self.add("E-LIBRARY-001", "ledger", source_id, "none is valid only for rejected rows", record=record)
 
             if row.get("Disposition Date") and not DATE_RE.fullmatch(row["Disposition Date"]):
@@ -917,36 +979,14 @@ class ReconciliationValidator:
                 self.add("E-COVERAGE-003", "ledger", source_id, "partial requires Uncovered Scope", record=record)
             if coverage == "missing" and self.mode == "final":
                 self.add("E-COVERAGE-004", "ledger", source_id, "missing cannot survive final mode", record=record)
-            if coverage == "rejected" or status == "rejected":
-                if coverage != "rejected" or status != "rejected":
-                    self.add("E-STATUS-001", "ledger", source_id, "rejected coverage/status mismatch", record=record)
-                if not all(
-                    row.get(name, "")
-                    for name in (
-                        "Disposition Decision ID",
-                        "Disposition Date",
-                        "Disposition Rationale",
-                        "Approval Reference",
-                    )
-                ):
-                    self.add(
-                        "E-DISPOSITION-001",
-                        "ledger",
-                        source_id,
-                        "rejected requires decision, date, rationale, and approval",
-                        record=record,
-                    )
-            if coverage == "superseded" or status == "superseded":
-                if coverage != "superseded" or status != "superseded":
-                    self.add("E-STATUS-001", "ledger", source_id, "superseded coverage/status mismatch", record=record)
-                if not row.get("Superseded By", "") or not row.get("Disposition Rationale", ""):
-                    self.add(
-                        "E-DISPOSITION-002",
-                        "ledger",
-                        source_id,
-                        "superseded requires replacement and rationale",
-                        record=record,
-                    )
+            if terminal_kind and coverage != terminal_kind:
+                self.add(
+                    "E-STATUS-001",
+                    "ledger",
+                    source_id,
+                    f"{terminal_kind} coverage/status mismatch",
+                    record=record,
+                )
 
         if len(ledger_by_id) != OA_COUNT:
             self.add("E-OA-001", "ledger", "count", f"expected {OA_COUNT} rows; found {len(ledger_by_id)}")
@@ -974,7 +1014,10 @@ class ReconciliationValidator:
 
         active_by_target: defaultdict[str, set[str]] = defaultdict(set)
         for source_id, targets in ledger_targets.items():
-            if ledger_by_id.get(source_id, {}).get("Implementation Status") not in TERMINAL_DISPOSITIONS:
+            if (
+                ledger_by_id.get(source_id, {}).get("Implementation Status")
+                not in TERMINAL_IMPLEMENTATION_STATUSES
+            ):
                 for target in targets:
                     active_by_target[target].add(source_id)
         for source_id, row in ledger_by_id.items():

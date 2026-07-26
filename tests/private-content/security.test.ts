@@ -1,10 +1,11 @@
+import { createHash } from "node:crypto";
 import { mkdir, mkdtemp, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
 import { PRIVATE_SENTINEL, assertSafeArchivePath } from "@/private-content/core";
 import { decryptPrivatePackage, encryptPrivatePayload, makePayload } from "@/private-content/package";
-import { scanPrivateContent } from "@/private-content/security";
+import { scanPrivateContent, scanPrivateContentReport } from "@/private-content/security";
 import { LocalPrivateAssetStore } from "@/private-content/storage";
 
 function payload() {
@@ -94,30 +95,80 @@ describe("private-content security boundary", () => {
     await expect(scanPrivateContent(workspace)).resolves.toContainEqual({ path: "key.md", rule: "sensitive-content" });
   });
 
-  it("allows only the two approved immutable archive records and still rejects new archive or source sentinels", async () => {
+  it("classifies only exact unchanged governed chat archives while retaining strict scans elsewhere", async () => {
     workspace = await mkdtemp(path.join(tmpdir(), "sealed-archive-scan-"));
-    const approved = path.join(
-      workspace,
-      "Codex_Chats",
-      "chats",
-      "019f854e-6112-7c33-ac11-a976c0c71e0c--create-sealed-hold-worktree.md",
+    const archiveRelative = "Codex_Chats/chats/019f854e-6112-7c33-ac11-a976c0c71e0c--fixture.md";
+    const archivePath = path.join(workspace, archiveRelative);
+    const archiveText = `Historical synthetic prompt marker: ${PRIVATE_SENTINEL}`;
+    await mkdir(path.dirname(archivePath), { recursive: true });
+    await mkdir(path.join(workspace, "Codex_Chats"), { recursive: true });
+    await writeFile(archivePath, archiveText);
+    const manifestContentSha256 = createHash("sha256").update("canonical archive content").digest("hex");
+    await writeFile(
+      path.join(workspace, "Codex_Chats/manifest.json"),
+      JSON.stringify({ conversations: [{ archive_path: archiveRelative, content_sha256: manifestContentSha256 }] }),
     );
-    const unapproved = path.join(workspace, "Codex_Chats", "chats", "new-archive.md");
-    const source = path.join(workspace, "src", "unsafe.ts");
-    await mkdir(path.dirname(approved), { recursive: true });
-    await writeFile(approved, PRIVATE_SENTINEL);
-    await writeFile(unapproved, PRIVATE_SENTINEL);
-    await mkdir(path.dirname(source), { recursive: true });
-    await writeFile(source, PRIVATE_SENTINEL);
-    const hits = await scanPrivateContent(workspace);
-    expect(hits).not.toContainEqual({
-      path: path.join("Codex_Chats", "chats", "019f854e-6112-7c33-ac11-a976c0c71e0c--create-sealed-hold-worktree.md"),
+    await writeFile(
+      path.join(workspace, "Codex_Chats/governed-private-content-archives.json"),
+      JSON.stringify({
+        archives: [
+          {
+            path: archiveRelative,
+            archiveSha256: createHash("sha256").update(archiveText).digest("hex"),
+            manifestContentSha256,
+            classification: "historical-synthetic-prompt-sentinel",
+          },
+        ],
+      }),
+    );
+    const governed = await scanPrivateContentReport(workspace);
+    expect(governed.violations).toEqual([]);
+    expect(governed.classifications).toContainEqual({
+      path: archiveRelative,
+      classification: "governed-historical-archive",
+    });
+
+    await writeFile(archivePath, `${archiveText} changed`);
+    await expect(scanPrivateContent(workspace)).resolves.toContainEqual({
+      path: archiveRelative,
       rule: "sensitive-content",
     });
-    expect(hits).toContainEqual({
-      path: path.join("Codex_Chats", "chats", "new-archive.md"),
+
+    const newArchive = path.join(workspace, "Codex_Chats/chats/019f85e9-90b3-72f0-824e-6de3748eef42--new.md");
+    await writeFile(newArchive, `-----BEGIN PRIVATE KEY-----\n${"A".repeat(24)}\n-----END PRIVATE KEY-----`);
+    await expect(scanPrivateContent(workspace)).resolves.toContainEqual({
+      path: "Codex_Chats/chats/019f85e9-90b3-72f0-824e-6de3748eef42--new.md",
       rule: "sensitive-content",
     });
-    expect(hits).toContainEqual({ path: path.join("src", "unsafe.ts"), rule: "sensitive-content" });
+
+    const activeSource = path.join(workspace, "src/active.ts");
+    await mkdir(path.dirname(activeSource), { recursive: true });
+    await writeFile(activeSource, PRIVATE_SENTINEL);
+    await expect(scanPrivateContent(workspace)).resolves.toContainEqual({
+      path: "src/active.ts",
+      rule: "sensitive-content",
+    });
+  });
+
+  it("rejects broad or malformed governed archive policy entries", async () => {
+    workspace = await mkdtemp(path.join(tmpdir(), "sealed-archive-policy-"));
+    await mkdir(path.join(workspace, "Codex_Chats"), { recursive: true });
+    await writeFile(
+      path.join(workspace, "Codex_Chats/governed-private-content-archives.json"),
+      JSON.stringify({
+        archives: [
+          {
+            path: "Codex_Chats/chats/*.md",
+            archiveSha256: "a".repeat(64),
+            manifestContentSha256: "b".repeat(64),
+            classification: "historical-synthetic-prompt-sentinel",
+          },
+        ],
+      }),
+    );
+    await expect(scanPrivateContent(workspace)).resolves.toContainEqual({
+      path: "Codex_Chats/governed-private-content-archives.json",
+      rule: "invalid-governed-archive-policy",
+    });
   });
 });

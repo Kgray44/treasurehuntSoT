@@ -19,7 +19,7 @@ import { riveAssets } from "@/animation/assets/rive-contracts";
 import { sceneContracts } from "@/animation/director/scene-registry";
 import { useAnimationDirector } from "@/animation/director/useAnimationDirector";
 import { SceneHost } from "@/animation/hosts/SceneHost";
-import { useOptionalSceneHost } from "@/animation/hosts/SceneHostContext";
+import { useOptionalSceneHost, useOptionalSceneHostLease } from "@/animation/hosts/SceneHostContext";
 import type { ExternalSceneTargetHandle, SceneHostHandle, SceneTargetHandle } from "@/animation/hosts/scene-host-types";
 import { useMotionMode } from "@/animation/motion/useMotionMode";
 import { AnimationControls } from "@/components/animation/AnimationControls";
@@ -663,7 +663,7 @@ export function AnimationShowcase() {
             </p>
           </div>
         </aside>
-        <section key={runtimeEpoch} className="showcase-stage" aria-label="Animation demonstration stage">
+        <section className="showcase-stage" aria-label="Animation demonstration stage">
           <AnimatePresence mode="wait">
             <motion.div
               key={selected}
@@ -688,7 +688,7 @@ export function AnimationShowcase() {
             </motion.div>
           </AnimatePresence>
           <ShowcaseSceneHost
-            key={`${runtimeEpoch}:${hostRequest.nonce}`}
+            runtimeEpoch={runtimeEpoch}
             request={hostRequest}
             mode={mode}
             onRuntimeChange={handleRuntimeChange}
@@ -735,6 +735,7 @@ export function AnimationShowcase() {
             <section>
               <h2>Rive state machine</h2>
               <RiveStatefulObject
+                key={runtimeEpoch}
                 asset={riveAssets.developmentRating}
                 mode={mode}
                 label="MIT-licensed Rive rating state-machine demonstration"
@@ -894,10 +895,12 @@ export function AnimationShowcase() {
 }
 
 function ShowcaseSceneHost({
+  runtimeEpoch,
   request,
   mode,
   onRuntimeChange,
 }: {
+  runtimeEpoch: number;
   request: ShowcaseHostRequest;
   mode: ReturnType<typeof useMotionMode>["mode"];
   onRuntimeChange: (nonce: number, runtime: ShowcaseSceneRuntime | null) => void;
@@ -912,9 +915,9 @@ function ShowcaseSceneHost({
       hostKey={`development-showcase:${request.scene}:${request.nonce}`}
       className="showcase-scene-host"
       data-showcase-scene={request.scene}
-      data-showcase-host-instance={request.nonce}
+      data-showcase-host-instance={runtimeEpoch}
     >
-      <DemoStage scene={request.scene} mode={mode} onRuntimeChange={handleRuntimeChange} />
+      <DemoStage key={runtimeEpoch} scene={request.scene} mode={mode} onRuntimeChange={handleRuntimeChange} />
     </SceneHost>
   );
 }
@@ -983,6 +986,7 @@ function DemoStage({
   onRuntimeChange: (runtime: ShowcaseSceneRuntime | null) => void;
 }) {
   const host = useOptionalSceneHost();
+  const hostLease = useOptionalSceneHostLease();
   const root = useRef<HTMLDivElement>(null);
   const requirements = useMemo(() => targetRequirementsForScene(scene), [scene]);
   const supplementalParts = useMemo(
@@ -995,7 +999,8 @@ function DemoStage({
 
   useLayoutEffect(() => {
     const stage = root.current;
-    if (!host || !stage) return;
+    const registrationHost = hostLease ?? host;
+    if (!registrationHost || !stage) return;
     const handles = new Map<string, SceneTargetHandle>();
     try {
       for (const requirement of requirements) {
@@ -1004,7 +1009,7 @@ function DemoStage({
           if (requirement.required) throw new Error(`Required showcase fixture is missing: ${requirement.domPart}`);
           continue;
         }
-        const handle = host.registerTarget({
+        const handle = registrationHost.registerTarget({
           targetKey: requirement.targetKey,
           part: requirement.part,
           element,
@@ -1021,16 +1026,17 @@ function DemoStage({
           `Required showcase targets did not register: ${missingRequired.map((item) => item.targetKey).join(", ")}`,
         );
       }
-      onRuntimeChange(Object.freeze({ host, root: stage, targets: handles, requirements }));
+      const activeHost = hostLease?.getHandle() ?? host;
+      if (activeHost) onRuntimeChange(Object.freeze({ host: activeHost, root: stage, targets: handles, requirements }));
     } catch (cause) {
       [...handles.values()].reverse().forEach((handle) => handle.release());
       throw cause;
     }
     return () => {
-      onRuntimeChange(null);
+      if (hostLease?.getHandle() ?? host) onRuntimeChange(null);
       [...handles.values()].reverse().forEach((handle) => handle.release());
     };
-  }, [host, onRuntimeChange, requirements]);
+  }, [host, hostLease, onRuntimeChange, requirements]);
 
   return (
     <div ref={root} className="demo-physical-stage">

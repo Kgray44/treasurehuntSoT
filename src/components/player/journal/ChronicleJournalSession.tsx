@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { flushSync } from "react-dom";
+import { AudioCuePlayer } from "@/animation/core/audio-cues";
 import type { JournalPhaseOutcome, MotionMode } from "@/animation/core/animation-types";
 import { useMotionMode } from "@/animation/motion/useMotionMode";
 import {
@@ -231,6 +232,7 @@ function ChronicleJournalSessionIdentity({ sessionId, identitySession = false }:
   const initializedPage = useRef(false);
   const processedSequence = useRef(0);
   const followingCurrent = useRef(true);
+  const audio = useRef(new AudioCuePlayer());
   const readingRef = useRef<PlayerJournalReadingState>(emptyJournalReadingState);
   const stateRef = useRef<SessionState | null>(null);
   const [state, setState] = useState<SessionState | null>(null);
@@ -255,6 +257,14 @@ function ChronicleJournalSessionIdentity({ sessionId, identitySession = false }:
   const openingMode = useRef(mode);
   const teardownRegistry = useRef<JournalTeardownRegistry>(createJournalTeardownRegistry());
   const archiveMode = Boolean(state && (state.journal.mode === "historical" || state.session.status === "COMPLETED"));
+
+  useEffect(() => {
+    const audioEngine = audio.current;
+    audioEngine.setMuted(localStorage.getItem("forever-muted") === "true");
+    return () => {
+      void audioEngine.close();
+    };
+  }, []);
 
   const trackedRequest = useCallback(() => {
     const registry = teardownRegistry.current;
@@ -462,6 +472,7 @@ function ChronicleJournalSessionIdentity({ sessionId, identitySession = false }:
     async (policy: JournalOpeningPolicy, focusOrigin?: HTMLElement | null) => {
       const rootElement = root.current;
       if (openingBusy.current || !rootElement) return;
+      audio.current.unlock();
       openingBusy.current = true;
       activeOpeningPolicy.current = policy;
       openingFocusOrigin.current =
@@ -1021,6 +1032,17 @@ function ChronicleJournalSessionIdentity({ sessionId, identitySession = false }:
             followingCurrent.current = currentPageBlock === state.journal.currentBlockId;
             if (followingCurrent.current) setNewContent(false);
             saveReading({ pageId: pages[page]?.id ?? null });
+          }}
+          onPageTurn={() => {
+            audio.current.unlock();
+            audio.current.playValidated({
+              name: "page-turn",
+              motionPolicy,
+              motionOnly: true,
+              presentationValidated: true,
+              semanticLabel: "page-turn-complete",
+              allowedSemanticLabels: ["page-turn-complete"],
+            });
           }}
         />
       </section>

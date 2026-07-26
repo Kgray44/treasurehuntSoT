@@ -58,6 +58,7 @@ test("Wayfarer Passport persists a private profile, preferences, media, and a si
   await page.locator('select[name="BIOGRAPHY"]').selectOption("ONLY_ME");
   await page.getByRole("button", { name: "Save privacy controls" }).click();
   await expect(page.getByText("Privacy rules saved.")).toBeVisible();
+  await page.getByLabel("Discord simulator code").fill(`sim:wayfarer-${suffix}:Discord voyager`);
   await page.getByRole("button", { name: "Link Discord simulator" }).click();
   await expect(page.getByText("Discord simulator identity linked privately.")).toBeVisible();
   const linkedProvider = page.locator("#providers li").filter({ hasText: "DISCORD_SIMULATOR" });

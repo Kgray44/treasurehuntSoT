@@ -136,6 +136,26 @@ async function main() {
     update: { passwordHash: await bcrypt.hash(gmPassword, 12) },
     create: { username: gmUsername, passwordHash: await bcrypt.hash(gmPassword, 12) },
   });
+  // Staff sign-in is verified against the historical development credential,
+  // then rotates into a canonical account session. Keep the development seed
+  // coherent across that boundary instead of re-enabling legacy sessions.
+  const canonicalStaff = await db.userAccount.upsert({
+    where: { legacyGameMasterId: user.id },
+    update: { status: "ACTIVE", lastSeenAt: new Date() },
+    create: { legacyGameMasterId: user.id, status: "ACTIVE", claimedAt: new Date(), lastSeenAt: new Date() },
+  });
+  for (const role of ["CAPTAIN", "CREATOR", "PUBLISHER"]) {
+    const existing = await db.accountRoleAssignment.findFirst({
+      where: { accountId: canonicalStaff.id, role, scopeType: "GLOBAL", scopeId: null },
+    });
+    if (existing) {
+      await db.accountRoleAssignment.update({ where: { id: existing.id }, data: { revokedAt: null } });
+    } else {
+      await db.accountRoleAssignment.create({
+        data: { accountId: canonicalStaff.id, role, scopeType: "GLOBAL", grantedBy: canonicalStaff.id },
+      });
+    }
+  }
   const platform = await ensurePlatformFoundation(user.id, accessCode);
 
   const prior = await db.campaign.findUnique({ where: { slug: "development-forever-treasure" } });
