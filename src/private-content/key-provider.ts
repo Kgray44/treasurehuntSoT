@@ -30,6 +30,11 @@ export class LocalPrivateKeyProvider implements PrivateKeyProvider {
       throw privateFailure("PRIVATE_CONTENT_FORBIDDEN");
     try {
       const value = Buffer.from(wrapped.wrappedKey, "base64url");
+      // Node accepts several non-canonical base64url spellings. Requiring the
+      // canonical encoding prevents a tampered envelope from being silently
+      // normalized into an authenticated one before GCM gets to inspect it.
+      if (value.length < 29 || value.toString("base64url") !== wrapped.wrappedKey)
+        throw privateFailure("PRIVATE_PACKAGE_AUTHENTICATION_FAILED");
       const decipher = createDecipheriv("aes-256-gcm", this.masterKey, value.subarray(0, 12));
       decipher.setAuthTag(value.subarray(12, 28));
       return Buffer.concat([decipher.update(value.subarray(28)), decipher.final()]);

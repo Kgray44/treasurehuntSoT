@@ -1,0 +1,28 @@
+Project Harborlight Phase 3 Implementation Manifest
+
+Repository: Kgray44/treasurehuntSoT
+Branch: codex/project-harborlight-phase3-welcome-the-fleet
+Base: 6bd8209d2d7f0edc73da9566fd06e825ae51a602
+Acceptance-record commit: b922b36262070cc83f1e478ed9a098338f8a30de
+
+Delivered product:
+- Persisted Community discovery, Creator profiles, social relationships, collections, reviews, helpful votes, Creator responses, comments, reports, Guides, and deterministic bounded recommendations.
+- Transactional Voyage Log draft/edit/revision/readiness/publication/correction/archive/removal lifecycle with opaque Wayfarer source provenance, consent, media, Creator restriction, spoiler, location, checksum, search, and metadata gates.
+- PRIVATE, CREW_ONLY, UNLISTED, and COMMUNITY routes/projections with owner, crew, exact-link and public authorization rules; safe spoiler retrieval and governed robots.
+- Sealed Hold public-derivative bridge with opaque identity, separate derivative checksum, CLEAN scanner/quarantine enforcement, metadata stripping, consent invalidation on replacement, IDOR denial, and fail-closed unconfigured-provider behavior.
+- Allowlisted canonical/Open Graph metadata and governed search/deindexing that exclude sensitive source, participant, coordinate, storage, scanner, spoiler, and session data.
+- Eleven production Community Lanternwake scenes with director ownership, authoritative-success triggers, cancellation/cleanup, presentation receipts, semantic completion, and reduced-motion behavior.
+
+Validation evidence:
+- Full isolated validation passed using a task-owned migrated SQLite copy and owned browser/production ports.
+- 36 ordered SQLite migrations; 130 tables; clean foreign keys; required index and legacy-row checks passed.
+- Both Prisma schemas validated and both clients generated; SQLite client regenerated last for SQLite rehearsal.
+- ESLint completed with zero errors; formatting, strict TypeScript, language validation, animation asset validation, and production build passed.
+- Full Vitest passed: 1,008/1,008 tests.
+- Authenticated Phase 3 browser acceptance passed with keyboard, mobile, reduced-motion, privacy/IDOR, robots, metadata and Axe checks (serious=0, critical=0).
+- Two controlled production restarts passed; isolation report confirms expected disposable mutation and unchanged canonical database family; ports 3100 and 3200 were released.
+
+Explicit Phase 4 infrastructure exclusions:
+- Live production MySQL, production scanner/object storage, distributed workers/rate limits, monitoring, alerting, incident tooling and external-search deployment were neither used nor claimed.
+
+Manifest SHA-256 (UTF-8 LF-normalized content excluding this line): 32a5cb672071b29dcca476b610d9a9d010207f06a80a31d7e6688423a90596d6

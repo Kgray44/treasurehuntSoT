@@ -48,6 +48,11 @@ if ($BrowserTestPath) {
         throw "BrowserTestPath must remain inside the active project root."
     }
     $runtimeRelativeBrowserTestPath = $resolvedBrowserTestPath.Substring($projectPrefix.Length)
+    $browserTestProject = switch ([System.IO.Path]::GetFileName($runtimeRelativeBrowserTestPath)) {
+        "harborlight-phase2.spec.ts" { "harborlight-phase2"; break }
+        "harborlight-phase3.spec.ts" { "harborlight-phase3"; break }
+        default { throw "BrowserTestPath must identify a governed Harborlight browser suite." }
+    }
 }
 if ($BaselineDatabasePath) {
     if (-not ($BaselineDatabasePath -match '^[A-Za-z]:[\\/]' -or $BaselineDatabasePath.StartsWith('\\'))) {
@@ -648,6 +653,9 @@ try {
         # acceptance files retain the routing declared by playwright.config.ts.
         if ($runtimeRelativeBrowserTestPath.Replace('\', '/') -eq 'tests/e2e/harborlight-phase2.spec.ts') {
             $browserCommand += "--project=harborlight-phase2"
+        }
+        if ($runtimeRelativeBrowserTestPath.Replace('\', '/') -eq 'tests/e2e/harborlight-phase3.spec.ts') {
+            $browserCommand += "--project=harborlight-phase3"
         }
         $browserCommand += $runtimeRelativeBrowserTestPath.Replace('\', '/')
     }

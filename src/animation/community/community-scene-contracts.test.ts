@@ -1,9 +1,9 @@
 import { describe, expect, it } from "vitest";
 import { communitySceneContracts, communitySceneNames } from "./community-scene-contracts";
-describe("Harborlight Lanternwake future contracts", () => {
-  it("registers unique future-only Community Harbor contracts", () => {
-    expect(new Set(communitySceneNames).size).toBe(16);
-    expect(Object.values(communitySceneContracts).every((item) => item.reachability === "future-contract")).toBe(true);
+describe("Harborlight Lanternwake Community contracts", () => {
+  it("registers unique governed Community Harbor contracts", () => {
+    expect(new Set(communitySceneNames).size).toBe(11);
+    expect(Object.values(communitySceneContracts).every((item) => item.reachability === "production")).toBe(true);
   });
   it("inherits Lanternwake ownership, reduced motion, cleanup and truth boundaries", () => {
     for (const item of Object.values(communitySceneContracts)) {
