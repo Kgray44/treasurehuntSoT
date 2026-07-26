@@ -33,13 +33,16 @@ describe("CommunityReviewList", () => {
           { status: 200 },
         ),
       )
-      .mockResolvedValueOnce(new Response(JSON.stringify({ spoilerBody: "The final chart changes course." }), { status: 200 }));
+      .mockResolvedValueOnce(new Response(JSON.stringify({ csrfToken: "csrf-token" }), { status: 200 }))
+      .mockResolvedValueOnce(
+        new Response(JSON.stringify({ spoilerBody: "The final chart changes course." }), { status: 200 }),
+      );
     vi.stubGlobal("fetch", fetch);
     render(<CommunityReviewList listingId="listing_1" />);
     expect(await screen.findByText("The opening was well paced.")).toBeInTheDocument();
     expect(screen.queryByText("The final chart changes course.")).not.toBeInTheDocument();
     fireEvent.click(screen.getByRole("button", { name: "Reveal spoiler details" }));
     expect(await screen.findByText("The final chart changes course.")).toBeInTheDocument();
-    expect(fetch).toHaveBeenNthCalledWith(2, "/api/community/reviews/review_1/spoiler", { cache: "no-store" });
+    expect(fetch).toHaveBeenNthCalledWith(3, "/api/community/reviews/review_1/spoiler", { cache: "no-store" });
   });
 });

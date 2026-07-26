@@ -2,7 +2,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const dependencies = vi.hoisted(() => ({
   db: {
-    communityVoyageLog: { findMany: vi.fn() },
+    communityVoyageLog: { findMany: vi.fn(), findUnique: vi.fn() },
     communityVoyageLogShareRestriction: { findMany: vi.fn() },
     communityVoyageLogParticipant: { findMany: vi.fn() },
     communityVoyageLogParticipantConsent: { findMany: vi.fn() },
@@ -12,6 +12,7 @@ const dependencies = vi.hoisted(() => ({
 }));
 
 vi.mock("@/lib/db", () => dependencies);
+vi.mock("@/platform/auth", () => ({ requireCanonicalAccountIdentity: vi.fn().mockResolvedValue(null) }));
 
 import { GET as detail } from "@/app/api/community/voyage-logs/[slug]/route";
 import { GET as list } from "@/app/api/community/voyage-logs/route";
@@ -20,17 +21,41 @@ const now = new Date("2026-07-25T12:00:00.000Z");
 
 function configureRows() {
   dependencies.db.communityVoyageLog.findMany.mockResolvedValue([
-    { id: "public", slug: "safe-voyage", title: "Safe Voyage", safeSummary: "A safe account of the Voyage.", spoilerLevel: "NONE" },
+    {
+      id: "public",
+      slug: "safe-voyage",
+      title: "Safe Voyage",
+      safeSummary: "A safe account of the Voyage.",
+      spoilerLevel: "NONE",
+    },
     { id: "restricted", slug: "restricted-voyage", title: "Restricted", safeSummary: null, spoilerLevel: "NONE" },
   ]);
   dependencies.db.communityVoyageLogShareRestriction.findMany.mockResolvedValue([
     { voyageLogId: "restricted", restrictionType: "NO_PUBLIC_SHARING" },
   ]);
-  dependencies.db.communityVoyageLogParticipant.findMany.mockResolvedValue([{ id: "participant-private-id", voyageLogId: "public" }]);
-  dependencies.db.communityVoyageLogParticipantConsent.findMany.mockResolvedValue([
-    { voyageLogId: "public", participantId: "participant-private-id", purpose: "HARBORLIGHT_VOYAGE_LOG_PUBLICATION:DISPLAY_NAME", state: "APPROVED", expiresAt: null, grantedAt: now, revokedAt: null },
+  dependencies.db.communityVoyageLogParticipant.findMany.mockResolvedValue([
+    { id: "participant-private-id", voyageLogId: "public" },
   ]);
-  dependencies.db.communityVoyageLogMedia.findMany.mockResolvedValue([{ id: "media-private-id", voyageLogId: "public", processingStatus: "READY", scanStatus: "CLEAN", exifGpsRemoved: true }]);
+  dependencies.db.communityVoyageLogParticipantConsent.findMany.mockResolvedValue([
+    {
+      voyageLogId: "public",
+      participantId: "participant-private-id",
+      purpose: "HARBORLIGHT_VOYAGE_LOG_PUBLICATION:DISPLAY_NAME",
+      state: "APPROVED",
+      expiresAt: null,
+      grantedAt: now,
+      revokedAt: null,
+    },
+  ]);
+  dependencies.db.communityVoyageLogMedia.findMany.mockResolvedValue([
+    {
+      id: "media-private-id",
+      voyageLogId: "public",
+      processingStatus: "READY",
+      scanStatus: "CLEAN",
+      exifGpsRemoved: true,
+    },
+  ]);
   dependencies.db.communityVoyageLogMediaConsent.findMany.mockResolvedValue([
     { voyageLogMediaId: "media-private-id", purpose: "PUBLIC_MEDIA", grantedAt: now, revokedAt: null },
   ]);
@@ -63,24 +88,48 @@ describe("public Voyage Log reads", () => {
 
   it("fails closed for revoked consent, unclean media, and Creator restrictions", async () => {
     dependencies.db.communityVoyageLogParticipantConsent.findMany.mockResolvedValue([
-      { voyageLogId: "public", participantId: "participant-private-id", purpose: "HARBORLIGHT_VOYAGE_LOG_PUBLICATION:DISPLAY_NAME", state: "REVOKED", expiresAt: null, grantedAt: now, revokedAt: now },
+      {
+        voyageLogId: "public",
+        participantId: "participant-private-id",
+        purpose: "HARBORLIGHT_VOYAGE_LOG_PUBLICATION:DISPLAY_NAME",
+        state: "REVOKED",
+        expiresAt: null,
+        grantedAt: now,
+        revokedAt: now,
+      },
     ]);
     const revoked = await list(new Request("http://localhost/api/community/voyage-logs"));
     expect(await revoked.json()).toEqual([]);
 
     configureRows();
     dependencies.db.communityVoyageLogMedia.findMany.mockResolvedValue([
-      { id: "media-private-id", voyageLogId: "public", processingStatus: "READY", scanStatus: "CLEAN", exifGpsRemoved: false },
+      {
+        id: "media-private-id",
+        voyageLogId: "public",
+        processingStatus: "READY",
+        scanStatus: "CLEAN",
+        exifGpsRemoved: false,
+      },
     ]);
     const unsafeMedia = await list(new Request("http://localhost/api/community/voyage-logs"));
     expect(await unsafeMedia.json()).toEqual([]);
   });
 
   it("uses the same policy for detail and does not distinguish a private log from a missing one", async () => {
+    dependencies.db.communityVoyageLog.findUnique.mockResolvedValue({
+      id: "private",
+      ownerAccountId: "another-account",
+      visibility: "COMMUNITY",
+      lifecycleState: "PUBLISHED",
+      publishedAt: now,
+      verifiedCompletion: true,
+    });
     dependencies.db.communityVoyageLog.findMany.mockResolvedValue([
       { id: "private", slug: "not-public", title: "Not public", safeSummary: null, spoilerLevel: "NONE" },
     ]);
-    dependencies.db.communityVoyageLogShareRestriction.findMany.mockResolvedValue([{ voyageLogId: "private", restrictionType: "PRIVATE_ONLY" }]);
+    dependencies.db.communityVoyageLogShareRestriction.findMany.mockResolvedValue([
+      { voyageLogId: "private", restrictionType: "PRIVATE_ONLY" },
+    ]);
     dependencies.db.communityVoyageLogParticipant.findMany.mockResolvedValue([]);
     dependencies.db.communityVoyageLogParticipantConsent.findMany.mockResolvedValue([]);
     dependencies.db.communityVoyageLogMedia.findMany.mockResolvedValue([]);
