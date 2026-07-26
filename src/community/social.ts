@@ -1,5 +1,5 @@
 import { createHash } from "node:crypto";
-import type { Prisma } from "@prisma/client";
+import type { CommunityCreatorResponse, CommunityReport, CommunityReview, Prisma } from "@prisma/client";
 import { db } from "@/lib/db";
 import { consumeRateLimit } from "@/lib/rate-limit";
 import { CommunityError } from "./domain";
@@ -41,6 +41,54 @@ type Subject = {
   public: boolean;
   commentsEnabled?: boolean;
 };
+type PublicReviewRecord = Pick<
+  CommunityReview,
+  | "id"
+  | "listingId"
+  | "authorDisplayName"
+  | "authorHandle"
+  | "rating"
+  | "spoilerFreeBody"
+  | "spoilerBody"
+  | "spoilerLevel"
+  | "verifiedInstallation"
+  | "verifiedCompletion"
+  | "status"
+  | "editedAt"
+  | "deletedAt"
+> &
+  Readonly<Record<string, unknown>>;
+type PublicCommentRecord = Pick<
+  Prisma.CommunityCommentGetPayload<object>,
+  | "id"
+  | "subjectType"
+  | "subjectId"
+  | "authorDisplayName"
+  | "authorHandle"
+  | "parentCommentId"
+  | "depth"
+  | "body"
+  | "spoilerBody"
+  | "spoilerLevel"
+  | "status"
+  | "editedAt"
+  | "deletedAt"
+  | "createdAt"
+> &
+  Readonly<Record<string, unknown>>;
+type PublicCreatorResponseRecord = Pick<
+  CommunityCreatorResponse,
+  | "id"
+  | "reviewId"
+  | "creatorDisplayName"
+  | "creatorHandle"
+  | "body"
+  | "spoilerBody"
+  | "deletedAt"
+  | "editedAt"
+  | "createdAt"
+> &
+  Readonly<Record<string, unknown>>;
 
 export const reviewDimensionRegistry = {
   CHRONICLE: ["story", "clarity", "pacing", "technicalReliability", "accessibility", "setupDifficulty"],
@@ -133,7 +181,11 @@ async function assertNotBlocked(tx: SocialTransaction, firstAccountId: string, s
     fail("COMMUNITY_BLOCKED", "This Community interaction is unavailable.");
 }
 
-async function resolveSubject(tx: SocialTransaction, subjectType: SocialSubjectType, subjectId: string): Promise<Subject> {
+async function resolveSubject(
+  tx: SocialTransaction,
+  subjectType: SocialSubjectType,
+  subjectId: string,
+): Promise<Subject> {
   if (subjectType === "LISTING") {
     const listing = await tx.communityListing.findUnique({
       where: { id: subjectId },
@@ -223,7 +275,12 @@ type UniqueDelegate = Readonly<{
   create(input: { data: Record<string, unknown> }): Promise<unknown>;
   delete(input: { where: Record<string, unknown> }): Promise<unknown>;
 }>;
-async function createUnique(_tx: SocialTransaction, delegate: UniqueDelegate, where: Record<string, unknown>, data: Record<string, unknown>) {
+async function createUnique(
+  _tx: SocialTransaction,
+  delegate: UniqueDelegate,
+  where: Record<string, unknown>,
+  data: Record<string, unknown>,
+) {
   const existing = await delegate.findUnique({ where });
   if (existing) return { state: "EXISTING" as const, value: existing };
   try {
@@ -395,7 +452,7 @@ export async function createCollection(
     input.description === undefined
       ? null
       : boundedText(input.description, "Collection description", 0, 2_000, true) || null;
-  return socialDb.$transaction(async (tx: any) => {
+  return socialDb.$transaction(async (tx) => {
     await activeProfile(tx, actor);
     const existing = await tx.communityCollection.findUnique({ where: { slug } });
     if (existing) {
@@ -411,13 +468,18 @@ export async function createCollection(
     };
   });
 }
-async function ownCollection(tx: any, actor: CommunityActor, collectionId: string) {
+async function ownCollection(tx: SocialTransaction, actor: CommunityActor, collectionId: string) {
   const collection = await tx.communityCollection.findUnique({ where: { id: collectionId } });
   if (!collection || collection.ownerAccountId !== actor.accountId)
     fail("COMMUNITY_ACCESS_DENIED", "You cannot change this collection.");
   return collection;
 }
-async function containsCollection(tx: any, collectionId: string, targetId: string, depth = 0): Promise<boolean> {
+async function containsCollection(
+  tx: SocialTransaction,
+  collectionId: string,
+  targetId: string,
+  depth = 0,
+): Promise<boolean> {
   if (collectionId === targetId) return true;
   if (depth >= 2) return false;
   const children = await tx.communityCollectionItem.findMany({
@@ -427,7 +489,7 @@ async function containsCollection(tx: any, collectionId: string, targetId: strin
   for (const child of children) if (await containsCollection(tx, child.subjectId, targetId, depth + 1)) return true;
   return false;
 }
-async function collectionAncestorDepth(tx: any, collectionId: string, depth = 0): Promise<number> {
+async function collectionAncestorDepth(tx: SocialTransaction, collectionId: string, depth = 0): Promise<number> {
   if (depth >= 3) return depth;
   const parent = await tx.communityCollectionItem.findFirst({
     where: { subjectType: "COLLECTION", subjectId: collectionId },
@@ -435,7 +497,7 @@ async function collectionAncestorDepth(tx: any, collectionId: string, depth = 0)
   });
   return parent ? collectionAncestorDepth(tx, parent.collectionId, depth + 1) : depth;
 }
-async function collectionDescendantDepth(tx: any, collectionId: string, depth = 0): Promise<number> {
+async function collectionDescendantDepth(tx: SocialTransaction, collectionId: string, depth = 0): Promise<number> {
   const children = await tx.communityCollectionItem.findMany({
     where: { collectionId, subjectType: "COLLECTION" },
     select: { subjectId: true },
@@ -453,7 +515,7 @@ export async function addCollectionItem(
 ): Promise<IdempotentOutcome<unknown>> {
   socialRate(actor, "collection-add", 60);
   if (!isSubjectType(input.subjectType)) fail("COMMUNITY_INVALID_SUBJECT", "Unsupported collection subject.");
-  return socialDb.$transaction(async (tx: any) => {
+  return socialDb.$transaction(async (tx) => {
     await activeProfile(tx, actor);
     const collection = await ownCollection(tx, actor, input.collectionId);
     const subject = await resolveSubject(tx, input.subjectType, input.subjectId);
@@ -504,7 +566,7 @@ export async function reorderCollection(
   input: { collectionId: string; orderedItemIds: string[]; expectedUpdatedAt: string },
 ): Promise<IdempotentOutcome> {
   socialRate(actor, "collection-reorder", 30);
-  return socialDb.$transaction(async (tx: any) => {
+  return socialDb.$transaction(async (tx) => {
     const collection = await ownCollection(tx, actor, input.collectionId);
     if (collection.updatedAt.toISOString() !== input.expectedUpdatedAt)
       fail("COMMUNITY_COLLECTION_REVISION_CONFLICT", "This collection changed before it could be reordered.");
@@ -515,12 +577,12 @@ export async function reorderCollection(
     if (
       items.length !== input.orderedItemIds.length ||
       new Set(input.orderedItemIds).size !== items.length ||
-      items.some((item: any) => !input.orderedItemIds.includes(item.id))
+      items.some((item) => !input.orderedItemIds.includes(item.id))
     )
       fail("COMMUNITY_INVALID_COLLECTION_ORDER", "The collection order does not match its current items.");
     // Free unique positions before assigning the requested keyboard/drag order.
     await Promise.all(
-      items.map((item: any, index: number) =>
+      items.map((item, index: number) =>
         tx.communityCollectionItem.update({ where: { id: item.id }, data: { position: -(index + 1) } }),
       ),
     );
@@ -545,7 +607,7 @@ export async function updateCollection(
   },
 ) {
   socialRate(actor, "collection-update", 30);
-  return socialDb.$transaction(async (tx: any) => {
+  return socialDb.$transaction(async (tx) => {
     const collection = await ownCollection(tx, actor, input.collectionId);
     if (collection.updatedAt.toISOString() !== input.expectedUpdatedAt)
       fail("COMMUNITY_COLLECTION_REVISION_CONFLICT", "This collection changed before it could be saved.");
@@ -553,9 +615,10 @@ export async function updateCollection(
       fail("COMMUNITY_INVALID_COLLECTION_VISIBILITY", "Unsupported collection visibility.");
     if (input.visibility === "COMMUNITY") {
       const items = await tx.communityCollectionItem.findMany({ where: { collectionId: collection.id } });
-      for (const item of items)
-        if (!(await resolveSubject(tx, item.subjectType, item.subjectId)).public)
+      for (const item of items) {
+        if (!isSubjectType(item.subjectType) || !(await resolveSubject(tx, item.subjectType, item.subjectId)).public)
           fail("COMMUNITY_COLLECTION_PRIVATE_ITEM", "Public collections can contain only current public items.");
+      }
     }
     const data = {
       ...(input.title !== undefined ? { title: boundedText(input.title, "Collection title", 1, 120) } : {}),
@@ -582,7 +645,7 @@ export async function updateCollection(
 }
 export async function removeCollectionItem(actor: CommunityActor, collectionId: string, itemId: string) {
   socialRate(actor, "collection-remove", 60);
-  return socialDb.$transaction(async (tx: any) => {
+  return socialDb.$transaction(async (tx) => {
     const collection = await ownCollection(tx, actor, collectionId);
     const item = await tx.communityCollectionItem.findFirst({ where: { id: itemId, collectionId: collection.id } });
     if (!item) return { state: "ABSENT" as const };
@@ -592,7 +655,7 @@ export async function removeCollectionItem(actor: CommunityActor, collectionId: 
       orderBy: { position: "asc" },
     });
     await Promise.all(
-      remaining.map((entry: any, position: number) =>
+      remaining.map((entry, position: number) =>
         tx.communityCollectionItem.update({ where: { id: entry.id }, data: { position } }),
       ),
     );
@@ -601,7 +664,7 @@ export async function removeCollectionItem(actor: CommunityActor, collectionId: 
   });
 }
 export async function archiveCollection(actor: CommunityActor, collectionId: string) {
-  return socialDb.$transaction(async (tx: any) => {
+  return socialDb.$transaction(async (tx) => {
     const collection = await ownCollection(tx, actor, collectionId);
     if (collection.archivedAt) return { state: "EXISTING" as const };
     await tx.communityCollection.update({
@@ -612,7 +675,7 @@ export async function archiveCollection(actor: CommunityActor, collectionId: str
   });
 }
 export async function tombstoneCollection(actor: CommunityActor, collectionId: string) {
-  return socialDb.$transaction(async (tx: any) => {
+  return socialDb.$transaction(async (tx) => {
     const collection = await ownCollection(tx, actor, collectionId);
     if (collection.deletedAt) return { state: "EXISTING" as const };
     await tx.communityCollection.update({
@@ -655,7 +718,12 @@ export function validateReviewInput(
   }
   return { rating: input.rating, spoilerFreeBody, spoilerBody, dimensions };
 }
-async function reviewEligibility(tx: any, actor: CommunityActor, listing: any, releaseId?: string) {
+async function reviewEligibility(
+  tx: SocialTransaction,
+  actor: CommunityActor,
+  listing: { id: string; ownerProfileId: string; currentReleaseId: string | null },
+  releaseId?: string,
+) {
   const reviewedReleaseId = releaseId ?? listing.currentReleaseId;
   if (releaseId) {
     const release = await tx.communityRelease.findFirst({ where: { id: releaseId, listingId: listing.id } });
@@ -674,7 +742,7 @@ async function reviewEligibility(tx: any, actor: CommunityActor, listing: any, r
         where: {
           id: installation.operationId,
           accountId: actor.accountId,
-          releaseId: reviewedReleaseId,
+          ...(reviewedReleaseId ? { releaseId: reviewedReleaseId } : {}),
           status: "COMMITTED",
         },
         select: { id: true },
@@ -722,7 +790,7 @@ export async function createOrUpdateReview(
   },
 ): Promise<IdempotentOutcome<unknown>> {
   socialRate(actor, "review", 12);
-  return socialDb.$transaction(async (tx: any) => {
+  return socialDb.$transaction(async (tx) => {
     const profile = await activeProfile(tx, actor);
     const listing = await tx.communityListing.findUnique({
       where: { id: input.listingId },
@@ -781,7 +849,7 @@ export async function createOrUpdateReview(
 }
 export async function deleteReview(actor: CommunityActor, reviewId: string): Promise<IdempotentOutcome> {
   socialRate(actor, "review-delete", 12);
-  return socialDb.$transaction(async (tx: any) => {
+  return socialDb.$transaction(async (tx) => {
     const review = await tx.communityReview.findUnique({ where: { id: reviewId } });
     if (!review || review.authorAccountId !== actor.accountId)
       fail("COMMUNITY_ACCESS_DENIED", "You cannot delete this review.");
@@ -803,7 +871,10 @@ export async function updateReview(
     fail("COMMUNITY_ACCESS_DENIED", "You cannot edit this review.");
   return createOrUpdateReview(actor, { ...input, listingId: existing.listingId });
 }
-export function publicReviewProjection(review: any, dimensions: readonly (readonly [string, number])[] = []) {
+export function publicReviewProjection(
+  review: PublicReviewRecord,
+  dimensions: readonly (readonly [string, number])[] = [],
+) {
   return {
     id: review.id,
     listingId: review.listingId,
@@ -839,7 +910,7 @@ export async function revealReviewSpoiler(reviewId: string) {
 
 export async function voteReviewHelpful(actor: CommunityActor, reviewId: string): Promise<IdempotentOutcome<unknown>> {
   socialRate(actor, "helpful-vote", 30);
-  return socialDb.$transaction(async (tx: any) => {
+  return socialDb.$transaction(async (tx) => {
     await activeProfile(tx, actor);
     const review = await tx.communityReview.findUnique({ where: { id: reviewId } });
     if (!review || review.status !== "ACTIVE" || review.deletedAt)
@@ -863,7 +934,7 @@ export async function voteReviewHelpful(actor: CommunityActor, reviewId: string)
 }
 export async function removeReviewHelpfulVote(actor: CommunityActor, reviewId: string): Promise<IdempotentOutcome> {
   socialRate(actor, "helpful-unvote", 30);
-  return socialDb.$transaction(async (tx: any) =>
+  return socialDb.$transaction(async (tx) =>
     removeUnique(tx, tx.communityReviewHelpfulVote, { reviewId_accountId: { reviewId, accountId: actor.accountId } }),
   );
 }
@@ -889,16 +960,16 @@ export async function listPublicReviews(listingId: string) {
   });
   const responses: Awaited<ReturnType<typeof socialDb.communityCreatorResponse.findMany>> = reviews.length
     ? await socialDb.communityCreatorResponse.findMany({
-        where: { reviewId: { in: reviews.map((review: any) => review.id) } },
+        where: { reviewId: { in: reviews.map((review) => review.id) } },
       })
     : [];
-  const responseByReviewId = new Map(responses.map((response: any) => [response.reviewId, response]));
+  const responseByReviewId = new Map(responses.map((response) => [response.reviewId, response]));
   return Promise.all(
-    reviews.map(async (review: any) => ({
+    reviews.map(async (review) => ({
       ...publicReviewProjection(review),
       helpfulCount: await helpfulVoteCount(review.id),
       creatorResponse: responseByReviewId.has(review.id)
-        ? publicCreatorResponseProjection(responseByReviewId.get(review.id))
+        ? publicCreatorResponseProjection(responseByReviewId.get(review.id)!)
         : null,
     })),
   );
@@ -928,7 +999,7 @@ export async function createComment(
   const body = validateCommentBody(input.body);
   const spoilerBody =
     input.spoilerBody == null ? null : boundedText(input.spoilerBody, "Comment spoiler", 0, 5_000, true) || null;
-  return socialDb.$transaction(async (tx: any) => {
+  return socialDb.$transaction(async (tx) => {
     const profile = await activeProfile(tx, actor);
     const existing = await tx.communityComment.findUnique({ where: { id } });
     if (existing) return { state: "EXISTING" as const, value: publicCommentProjection(existing) };
@@ -966,7 +1037,7 @@ export async function createComment(
     return { state: "CREATED" as const, value: publicCommentProjection(comment) };
   });
 }
-export function publicCommentProjection(comment: any) {
+export function publicCommentProjection(comment: PublicCommentRecord) {
   return {
     id: comment.id,
     subjectType: comment.subjectType,
@@ -988,7 +1059,7 @@ export async function revealCommentSpoiler(commentIdValue: string) {
   const comment = await socialDb.communityComment.findUnique({ where: { id: commentIdValue } });
   if (!comment || comment.status !== "ACTIVE" || comment.deletedAt || !comment.spoilerBody)
     fail("COMMUNITY_SPOILER_UNAVAILABLE", "This spoiler section is unavailable.");
-  const subject = await socialDb.$transaction((tx: any) =>
+  const subject = await socialDb.$transaction((tx) =>
     resolveSubject(tx, comment.subjectType as SocialSubjectType, comment.subjectId),
   );
   if (!subject.public) fail("COMMUNITY_SPOILER_UNAVAILABLE", "This spoiler section is unavailable.");
@@ -1001,7 +1072,7 @@ export async function updateComment(
   spoilerBody?: string | null,
 ): Promise<IdempotentOutcome<unknown>> {
   socialRate(actor, "comment-update", 30);
-  return socialDb.$transaction(async (tx: any) => {
+  return socialDb.$transaction(async (tx) => {
     const comment = await tx.communityComment.findUnique({ where: { id: commentIdValue } });
     if (!comment || comment.authorAccountId !== actor.accountId || comment.deletedAt)
       fail("COMMUNITY_ACCESS_DENIED", "You cannot edit this comment.");
@@ -1019,7 +1090,7 @@ export async function updateComment(
 }
 export async function deleteComment(actor: CommunityActor, commentIdValue: string): Promise<IdempotentOutcome> {
   socialRate(actor, "comment-delete", 30);
-  return socialDb.$transaction(async (tx: any) => {
+  return socialDb.$transaction(async (tx) => {
     const comment = await tx.communityComment.findUnique({ where: { id: commentIdValue } });
     if (!comment || comment.authorAccountId !== actor.accountId)
       fail("COMMUNITY_ACCESS_DENIED", "You cannot delete this comment.");
@@ -1031,7 +1102,7 @@ export async function deleteComment(actor: CommunityActor, commentIdValue: strin
 
 export async function listPublicComments(subjectType: (typeof COMMENT_SUBJECT_TYPES)[number], subjectId: string) {
   if (!isCommentSubjectType(subjectType)) return [];
-  const subject = await socialDb.$transaction((tx: any) => resolveSubject(tx, subjectType, subjectId));
+  const subject = await socialDb.$transaction((tx) => resolveSubject(tx, subjectType, subjectId));
   if (!subject.public || !subject.commentsEnabled) return [];
   const comments = await socialDb.communityComment.findMany({
     where: { subjectType, subjectId, status: "ACTIVE", deletedAt: null },
@@ -1041,7 +1112,7 @@ export async function listPublicComments(subjectType: (typeof COMMENT_SUBJECT_TY
   return comments.map(publicCommentProjection);
 }
 
-async function resolveReportSubject(tx: any, subjectType: string, subjectId: string) {
+async function resolveReportSubject(tx: SocialTransaction, subjectType: string, subjectId: string) {
   if (!isReportSubjectType(subjectType)) return null;
   if (subjectType === "REVIEW") {
     const review = await tx.communityReview.findUnique({ where: { id: subjectId } });
@@ -1071,7 +1142,7 @@ export async function respondToReview(
   const safeBody = boundedText(body, "Creator response", 1, 5_000);
   const safeSpoilerBody =
     spoilerBody == null ? null : boundedText(spoilerBody, "Creator response spoiler", 0, 5_000, true) || null;
-  return socialDb.$transaction(async (tx: any) => {
+  return socialDb.$transaction(async (tx) => {
     const profile = await activeProfile(tx, actor);
     const review = await tx.communityReview.findUnique({ where: { id: reviewId } });
     const listing = review ? await tx.communityListing.findUnique({ where: { id: review.listingId } }) : null;
@@ -1109,7 +1180,7 @@ export async function respondToReview(
     };
   });
 }
-export function publicCreatorResponseProjection(response: any) {
+export function publicCreatorResponseProjection(response: PublicCreatorResponseRecord) {
   return {
     id: response.id,
     reviewId: response.reviewId,
@@ -1129,7 +1200,7 @@ export function publicCreatorResponseProjection(response: any) {
 
 export async function deleteCreatorResponse(actor: CommunityActor, reviewId: string): Promise<IdempotentOutcome> {
   socialRate(actor, "creator-response-delete", 15);
-  return socialDb.$transaction(async (tx: any) => {
+  return socialDb.$transaction(async (tx) => {
     const profile = await activeProfile(tx, actor);
     const review = await tx.communityReview.findUnique({ where: { id: reviewId } });
     const listing = review ? await tx.communityListing.findUnique({ where: { id: review.listingId } }) : null;
@@ -1161,7 +1232,7 @@ export async function createReport(
   const reason = boundedText(input.reason, "Report reason", 2, 120);
   const detail = input.detail === undefined ? null : boundedText(input.detail, "Report detail", 0, 2_000, true) || null;
   const id = reportId(actor, input.idempotencyKey);
-  return socialDb.$transaction(async (tx: any) => {
+  return socialDb.$transaction(async (tx) => {
     await activeProfile(tx, actor);
     const subject = await resolveReportSubject(tx, input.subjectType, input.subjectId);
     // This uniform result intentionally does not distinguish a missing,
@@ -1185,7 +1256,7 @@ export async function createReport(
     return { state: "CREATED" as const, value: reportProjection(report) };
   });
 }
-export function reportProjection(report: any) {
+export function reportProjection(report: CommunityReport) {
   // Reporters can see receipt status, never moderation notes or another reporter.
   return {
     id: report.id,

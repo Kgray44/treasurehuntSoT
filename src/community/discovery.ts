@@ -269,6 +269,47 @@ export type DiscoveryRecord = {
   featured?: { sortOrder: number; startsAt: Date | null };
 };
 
+/** The deliberately small read shape used to turn persisted listings into public discovery records. */
+type DiscoveryListingRow = Readonly<{
+  id: string;
+  slug: string;
+  itemType: string;
+  ownerProfileId: string;
+  title: string;
+  shortDescription: string | null;
+  visibility: string;
+  publicationStatus: string;
+  moderationStatus: string;
+  locationClass: string;
+  primaryCategory: string | null;
+  publishedAt: Date | null;
+  updatedAt: Date;
+  owner: Readonly<{ normalizedHandle: string }>;
+}>;
+
+type DiscoveryMetadataRow = Readonly<{
+  themes: string;
+  secondaryCategories: string;
+  durationMinimum: number | null;
+  durationMaximum: number | null;
+  minimumPlayerCount: number | null;
+  maximumPlayerCount: number | null;
+  environment: string;
+  recommendedMinimumAge: number | null;
+  recommendedMaximumAge: number | null;
+  difficulty: string | null;
+  travelRequirement: string;
+  physicalPropRequirement: string;
+  visionWaypointRequired: boolean;
+  helperAppRequired: boolean;
+  representation: string;
+  languages: string;
+  accessibilityFeatures: string;
+  freeContent: boolean;
+  remixPermission: string;
+  lastMeaningfulReleaseUpdate: Date | null;
+}>;
+
 /** This check is intentionally duplicated at search return time: documents are caches, never authorization. */
 export function isPublicDiscoveryEligible(
   record: Pick<DiscoveryRecord, "visibility" | "publicationStatus" | "moderationStatus" | "locationClass">,
@@ -533,7 +574,7 @@ function normalizeFilters(input: unknown): CommunityDiscoveryFilters {
 }
 
 function toDiscoveryRecord(
-  listing: any,
+  listing: DiscoveryListingRow,
   metadata: DiscoveryRecord["metadata"],
   aggregate: DiscoveryRecord["aggregate"],
   featured: DiscoveryRecord["featured"],
@@ -559,7 +600,7 @@ function toDiscoveryRecord(
   };
 }
 
-function toMetadata(row: any): NonNullable<DiscoveryRecord["metadata"]> {
+function toMetadata(row: DiscoveryMetadataRow): NonNullable<DiscoveryRecord["metadata"]> {
   return {
     themes: parseStringArray(row.themes),
     secondaryCategories: parseStringArray(row.secondaryCategories),

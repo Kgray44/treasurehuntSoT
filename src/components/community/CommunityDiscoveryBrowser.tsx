@@ -34,6 +34,9 @@ type DiscoveryItem = {
   publishedAt: string | null;
 };
 type DiscoveryResponse = { items: DiscoveryItem[]; nextCursor?: string };
+type DiscoveryLoad =
+  | { requestKey: string; state: "ready" | "empty"; items: DiscoveryItem[]; error: "" }
+  | { requestKey: string; state: "error"; items: DiscoveryItem[]; error: string };
 
 export function CommunityDiscoveryBrowser() {
   const router = useRouter();
@@ -43,13 +46,15 @@ export function CommunityDiscoveryBrowser() {
   const sort = isSort(sortParameter) ? sortParameter : "FEATURED";
   const rawFilters = searchParams.get("filters");
   const filters = useMemo(() => readFilters(rawFilters), [rawFilters]);
-  const [draftQuery, setDraftQuery] = useState(query);
-  const [state, setState] = useState<"loading" | "ready" | "empty" | "error">("loading");
-  const [items, setItems] = useState<DiscoveryItem[]>([]);
-  const [error, setError] = useState("");
   const [retryKey, setRetryKey] = useState(0);
-
-  useEffect(() => setDraftQuery(query), [query]);
+  const [load, setLoad] = useState<DiscoveryLoad | null>(null);
+  const requestKey = useMemo(
+    () => JSON.stringify({ query, sort, filters, retryKey }),
+    [filters, query, retryKey, sort],
+  );
+  const state = load?.requestKey === requestKey ? load.state : "loading";
+  const items = load?.requestKey === requestKey ? load.items : [];
+  const error = load?.requestKey === requestKey ? load.error : "";
 
   useEffect(() => {
     const controller = new AbortController();
@@ -57,8 +62,6 @@ export function CommunityDiscoveryBrowser() {
     if (query) parameters.set("q", query);
     parameters.set("sort", sort);
     if (Object.keys(filters).length) parameters.set("filters", JSON.stringify(filters));
-    setState("loading");
-    setError("");
     fetch(`/api/community/discover?${parameters.toString()}`, { signal: controller.signal })
       .then(async (response) => {
         if (!response.ok) {
@@ -69,17 +72,20 @@ export function CommunityDiscoveryBrowser() {
       })
       .then((result) => {
         if (controller.signal.aborted) return;
-        setItems(Array.isArray(result.items) ? result.items : []);
-        setState(result.items.length ? "ready" : "empty");
+        const safeItems = Array.isArray(result.items) ? result.items : [];
+        setLoad({ requestKey, state: safeItems.length ? "ready" : "empty", items: safeItems, error: "" });
       })
       .catch((reason: unknown) => {
         if (controller.signal.aborted) return;
-        setItems([]);
-        setError(reason instanceof Error ? reason.message : "Community discovery is unavailable.");
-        setState("error");
+        setLoad({
+          requestKey,
+          state: "error",
+          items: [],
+          error: reason instanceof Error ? reason.message : "Community discovery is unavailable.",
+        });
       });
     return () => controller.abort();
-  }, [filters, query, retryKey, sort]);
+  }, [filters, query, requestKey, sort]);
 
   const updateUrl = useCallback(
     (next: { q?: string; sort?: string; filters?: DiscoveryFilters; clear?: boolean }) => {
@@ -111,7 +117,8 @@ export function CommunityDiscoveryBrowser() {
 
   function submitSearch(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    updateUrl({ q: draftQuery });
+    const value = new FormData(event.currentTarget).get("q");
+    updateUrl({ q: typeof value === "string" ? value : "" });
   }
 
   function toggleFilter(field: "itemTypes" | "difficulties", value: string) {
@@ -129,8 +136,8 @@ export function CommunityDiscoveryBrowser() {
           id="community-search-query"
           name="q"
           type="search"
-          value={draftQuery}
-          onChange={(event) => setDraftQuery(event.target.value)}
+          key={query}
+          defaultValue={query}
           maxLength={160}
           autoComplete="off"
         />
