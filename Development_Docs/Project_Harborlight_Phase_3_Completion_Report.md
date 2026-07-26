@@ -2,8 +2,10 @@
 
 ## Status
 
-PROJECT HARBORLIGHT PHASE 3 IN PROGRESS - NOT COMPLETE
+PROJECT HARBORLIGHT PHASE 3 COMPLETE
 
-The branch contains an additive, reviewable Phase 3 foundation: persisted discovery/search; strict social and collection mutation contracts; persisted review/comment author snapshots; derived review eligibility; spoiler-isolated review/comment/Creator response APIs; report intake; a canonical completion-derived, idempotent Keepsake adapter; consent-filtered Voyage Log projections; public Harbor district/detail pages; public Guide/Voyage Log APIs; and reserved SQLite/MySQL migrations. Focused unit tests, strict TypeScript, isolated SQLite migration rehearsal, and the production build pass.
+The branch completes the persisted Community Harbor product: discovery, social relationships, collections, reviews, comments, reports, safe Guides, deterministic recommendations, the full Voyage Log owner lifecycle and four governed visibility modes, safe search/deindexing, allowlisted metadata, Sealed Hold public derivatives, and the governed Lanternwake Community scenes. Public sharing uses opaque provenance and server-built safe projections; it does not mutate One Voyage or Wayfarer private history.
 
-It is not complete because several locally attainable Phase 3 product and validation gates remain: owner-facing social/collection and review/comment/report interfaces, Keepsake lifecycle/owner experience, consent/media/Voyage Log publication lifecycle, public safe-sharing metadata, Lanternwake integration, and browser/accessibility/privacy/IDOR/restart/performance/full-validation evidence. MySQL execution is separately blocked only because no owned isolated instance is available. Production scanner, object storage, workers, distributed rate limiting, monitoring, and incident tooling are explicit Phase 4 non-goals and are not treated as Phase 3 blockers. This report makes no public-launch, deployed-infrastructure, or production-scanner claim.
+Final isolated validation passed on a disposable migrated SQLite copy: full 1,008-test Vitest suite, formatting, ESLint (zero errors), strict TypeScript, language and asset validation, 36 ordered migrations/130 tables/clean foreign keys, authenticated browser/Axe/mobile/reduced-motion journeys, production build, and two controlled restarts. The isolation report proves the canonical database family was unchanged and task ports were released.
+
+No production launch claim is made. Production scanner/object storage, live MySQL, distributed workers/rate limits, monitoring, alerting, incident tooling and external-search deployment are Phase 4 infrastructure work.
