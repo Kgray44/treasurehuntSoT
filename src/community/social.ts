@@ -1,4 +1,5 @@
 import { createHash } from "node:crypto";
+import type { Prisma } from "@prisma/client";
 import { db } from "@/lib/db";
 import { consumeRateLimit } from "@/lib/rate-limit";
 import { CommunityError } from "./domain";
@@ -9,7 +10,8 @@ import type { CommunityActor } from "./services";
  * This module is the authorization and projection boundary for those records;
  * callers must never return raw social rows to a public client.
  */
-const socialDb = db as any;
+const socialDb = db;
+type SocialTransaction = Prisma.TransactionClient;
 const MAX_COLLECTION_ITEMS = 500;
 const MAX_COMMENT_DEPTH = 2;
 const SUBJECT_TYPES = ["LISTING", "RELEASE", "CREATOR", "VOYAGE_LOG", "COLLECTION", "GUIDE"] as const;
@@ -99,20 +101,20 @@ function isReportSubjectType(value: string): value is (typeof REPORT_SUBJECT_TYP
   return (REPORT_SUBJECT_TYPES as readonly string[]).includes(value);
 }
 
-async function activeProfile(tx: any, actor: CommunityActor): Promise<Profile> {
+async function activeProfile(tx: SocialTransaction, actor: CommunityActor): Promise<Profile> {
   const profile = await tx.communityProfile.findUnique({ where: { accountId: actor.accountId } });
   if (!profile) fail("COMMUNITY_PROFILE_REQUIRED", "Create a Community Profile first.");
   if (profile.moderationStatus !== "ACTIVE" || profile.creatorStatus === "SUSPENDED")
     fail("COMMUNITY_ACCESS_DENIED", "This Community Profile is not active.");
   return profile;
 }
-async function activeAccount(tx: any, accountId: string) {
+async function activeAccount(tx: SocialTransaction, accountId: string) {
   const account = await tx.userAccount.findUnique({ where: { id: accountId }, select: { id: true, status: true } });
   if (!account || ["REMOVED", "SUSPENDED", "MERGED"].includes(account.status))
     fail("COMMUNITY_SUBJECT_UNAVAILABLE", "That Community account is unavailable.");
   return account;
 }
-export async function blockedBetween(tx: any, firstAccountId: string, secondAccountId: string) {
+export async function blockedBetween(tx: SocialTransaction, firstAccountId: string, secondAccountId: string) {
   if (firstAccountId === secondAccountId) return false;
   return Boolean(
     await tx.communityBlock.findFirst({
@@ -126,12 +128,12 @@ export async function blockedBetween(tx: any, firstAccountId: string, secondAcco
     }),
   );
 }
-async function assertNotBlocked(tx: any, firstAccountId: string, secondAccountId?: string) {
+async function assertNotBlocked(tx: SocialTransaction, firstAccountId: string, secondAccountId?: string) {
   if (secondAccountId && (await blockedBetween(tx, firstAccountId, secondAccountId)))
     fail("COMMUNITY_BLOCKED", "This Community interaction is unavailable.");
 }
 
-async function resolveSubject(tx: any, subjectType: SocialSubjectType, subjectId: string): Promise<Subject> {
+async function resolveSubject(tx: SocialTransaction, subjectType: SocialSubjectType, subjectId: string): Promise<Subject> {
   if (subjectType === "LISTING") {
     const listing = await tx.communityListing.findUnique({
       where: { id: subjectId },
@@ -216,7 +218,12 @@ async function resolveSubject(tx: any, subjectType: SocialSubjectType, subjectId
   };
 }
 
-async function createUnique(tx: any, delegate: any, where: Record<string, unknown>, data: Record<string, unknown>) {
+type UniqueDelegate = Readonly<{
+  findUnique(input: { where: Record<string, unknown> }): Promise<unknown>;
+  create(input: { data: Record<string, unknown> }): Promise<unknown>;
+  delete(input: { where: Record<string, unknown> }): Promise<unknown>;
+}>;
+async function createUnique(_tx: SocialTransaction, delegate: UniqueDelegate, where: Record<string, unknown>, data: Record<string, unknown>) {
   const existing = await delegate.findUnique({ where });
   if (existing) return { state: "EXISTING" as const, value: existing };
   try {
@@ -226,7 +233,7 @@ async function createUnique(tx: any, delegate: any, where: Record<string, unknow
     return { state: "EXISTING" as const, value: await delegate.findUnique({ where }) };
   }
 }
-async function removeUnique(tx: any, delegate: any, where: Record<string, unknown>) {
+async function removeUnique(_tx: SocialTransaction, delegate: UniqueDelegate, where: Record<string, unknown>) {
   const existing = await delegate.findUnique({ where });
   if (!existing) return { state: "ABSENT" as const };
   await delegate.delete({ where });
@@ -240,7 +247,7 @@ export async function blockAccount(
   socialRate(actor, "block", 15);
   requiredId(blockedAccountId, "Blocked account");
   if (actor.accountId === blockedAccountId) fail("COMMUNITY_SELF_BLOCK", "You cannot block yourself.");
-  return socialDb.$transaction(async (tx: any) => {
+  return socialDb.$transaction(async (tx) => {
     await activeProfile(tx, actor);
     await activeAccount(tx, blockedAccountId);
     return createUnique(
@@ -253,7 +260,7 @@ export async function blockAccount(
 }
 export async function unblockAccount(actor: CommunityActor, blockedAccountId: string): Promise<IdempotentOutcome> {
   socialRate(actor, "unblock", 15);
-  return socialDb.$transaction(async (tx: any) =>
+  return socialDb.$transaction(async (tx) =>
     removeUnique(tx, tx.communityBlock, {
       blockerAccountId_blockedAccountId: { blockerAccountId: actor.accountId, blockedAccountId },
     }),
@@ -287,7 +294,7 @@ export async function followCreator(
   creatorProfileId: string,
 ): Promise<IdempotentOutcome<unknown>> {
   socialRate(actor, "follow", 30);
-  return socialDb.$transaction(async (tx: any) => {
+  return socialDb.$transaction(async (tx) => {
     await activeProfile(tx, actor);
     const creator = await tx.communityProfile.findUnique({ where: { id: creatorProfileId } });
     if (!creator || creator.moderationStatus !== "ACTIVE" || creator.creatorStatus === "SUSPENDED")
@@ -304,7 +311,7 @@ export async function followCreator(
 }
 export async function unfollowCreator(actor: CommunityActor, creatorProfileId: string): Promise<IdempotentOutcome> {
   socialRate(actor, "unfollow", 30);
-  return socialDb.$transaction(async (tx: any) =>
+  return socialDb.$transaction(async (tx) =>
     removeUnique(tx, tx.communityCreatorFollow, {
       followerAccountId_creatorProfileId: { followerAccountId: actor.accountId, creatorProfileId },
     }),
@@ -322,7 +329,7 @@ export async function saveSubject(
   if (!isSubjectType(input.subjectType)) fail("COMMUNITY_INVALID_SUBJECT", "Unsupported saved subject.");
   const kind = input.kind ?? "SAVE";
   if (kind !== "SAVE" && kind !== "FAVORITE") fail("COMMUNITY_INVALID_SAVE_KIND", "Unsupported save kind.");
-  return socialDb.$transaction(async (tx: any) => {
+  return socialDb.$transaction(async (tx) => {
     await activeProfile(tx, actor);
     const subject = await resolveSubject(tx, input.subjectType, requiredId(input.subjectId, "Subject"));
     await assertNotBlocked(tx, actor.accountId, subject.ownerAccountId);
@@ -349,7 +356,7 @@ export async function unsaveSubject(
 ): Promise<IdempotentOutcome> {
   socialRate(actor, "unsave", 60);
   const kind = input.kind ?? "SAVE";
-  return socialDb.$transaction(async (tx: any) =>
+  return socialDb.$transaction(async (tx) =>
     removeUnique(tx, tx.communitySave, {
       accountId_subjectType_subjectId_kind: {
         accountId: actor.accountId,
@@ -877,11 +884,10 @@ export async function listPublicReviews(listingId: string) {
   if (!listing) return [];
   const reviews = await socialDb.communityReview.findMany({
     where: { listingId, status: "ACTIVE", deletedAt: null },
-    include: {},
     orderBy: [{ createdAt: "desc" }, { id: "desc" }],
     take: 100,
   });
-  const responses = reviews.length
+  const responses: Awaited<ReturnType<typeof socialDb.communityCreatorResponse.findMany>> = reviews.length
     ? await socialDb.communityCreatorResponse.findMany({
         where: { reviewId: { in: reviews.map((review: any) => review.id) } },
       })
