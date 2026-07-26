@@ -3,6 +3,7 @@ import { z } from "zod";
 
 import { databaseKeepsakeStore } from "@/community/keepsake-store";
 import { createVoyageLogDraftFromWayfarer, unavailableWayfarerKeepsakeSource } from "@/community/wayfarer-keepsake-source";
+import { ensureVoyageLogDraft } from "@/community/voyage-log-owner";
 import { communityApiError } from "@/community/api";
 import { requireCanonicalAccountIdentity, verifyPlayerCsrf } from "@/platform/auth";
 
@@ -39,8 +40,9 @@ export async function POST(request: Request) {
       ownerAccountId: identity.accountId,
       sourceKeepsakeId: input.wayfarerKeepsakeId,
     });
+    const voyageLog = await ensureVoyageLogDraft({ ownerAccountId: identity.accountId, keepsakeId: result.record.id });
     return NextResponse.json(
-      { state: result.created ? "DRAFT_CREATED" : "DRAFT_EXISTING", voyageLogDraft: { id: result.record.id, state: result.record.preparationState } },
+      { state: result.created ? "DRAFT_CREATED" : "DRAFT_EXISTING", voyageLogDraft: { id: voyageLog.id, state: voyageLog.lifecycleState } },
       { status: result.created ? 201 : 200, headers: { "Cache-Control": "private, no-store" } },
     );
   } catch (cause) {

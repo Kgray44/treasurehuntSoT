@@ -4,6 +4,7 @@ const dependencies = vi.hoisted(() => ({
   requireCanonicalAccountIdentity: vi.fn(),
   verifyPlayerCsrf: vi.fn(),
   createVoyageLogDraftFromWayfarer: vi.fn(),
+  ensureVoyageLogDraft: vi.fn(),
   databaseKeepsakeStore: { createIfMissing: vi.fn() },
 }));
 
@@ -13,6 +14,7 @@ vi.mock("@/community/wayfarer-keepsake-source", () => ({
   unavailableWayfarerKeepsakeSource: { getEligiblePrivateKeepsake: vi.fn(), getPublicSharingCandidates: vi.fn(), verifySourceWatermark: vi.fn() },
   createVoyageLogDraftFromWayfarer: dependencies.createVoyageLogDraftFromWayfarer,
 }));
+vi.mock("@/community/voyage-log-owner", () => ({ ensureVoyageLogDraft: dependencies.ensureVoyageLogDraft }));
 
 import { POST } from "@/app/api/community/keepsakes/route";
 
@@ -25,6 +27,7 @@ describe("POST /api/community/keepsakes", () => {
       created: true,
       record: { id: "preparation-1", preparationState: "DRAFT_CREATED" },
     });
+    dependencies.ensureVoyageLogDraft.mockResolvedValue({ id: "voyage-log-1", lifecycleState: "DRAFT" });
   });
 
   it("requires a canonical account before accepting public-sharing preparation", async () => {
@@ -64,10 +67,11 @@ describe("POST /api/community/keepsakes", () => {
     }));
     expect(response.status).toBe(201);
     expect(response.headers.get("cache-control")).toBe("private, no-store");
-    expect(await response.json()).toEqual({ state: "DRAFT_CREATED", voyageLogDraft: { id: "preparation-1", state: "DRAFT_CREATED" } });
+    expect(await response.json()).toEqual({ state: "DRAFT_CREATED", voyageLogDraft: { id: "voyage-log-1", state: "DRAFT" } });
     expect(dependencies.createVoyageLogDraftFromWayfarer).toHaveBeenCalledWith(
       expect.anything(), dependencies.databaseKeepsakeStore,
       { ownerAccountId: "account-1", sourceKeepsakeId: "wayfarer-keepsake-1" },
     );
+    expect(dependencies.ensureVoyageLogDraft).toHaveBeenCalledWith({ ownerAccountId: "account-1", keepsakeId: "preparation-1" });
   });
 });
