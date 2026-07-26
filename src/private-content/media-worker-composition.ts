@@ -7,6 +7,7 @@ import type { PrivateDurableJob } from "./worker";
 import type { PrivateHandlerExecutor } from "./worker-handlers";
 import { buildProtectedMediaRasterDerivatives } from "./media/derivatives";
 import { protectedMediaRasterPolicyV1, protectedMediaRasterPolicyVersion } from "./media/image-policy-v1";
+import { reconcileProtectedMediaRecord } from "./media/reconciliation";
 
 const privateDb = db as any;
 
@@ -125,7 +126,10 @@ async function build(runtime: PrivateProviderRuntime, job: PrivateDurableJob, si
         outputChecksum: output.outputChecksum,
         width: output.width,
         height: output.height,
-        storageOpaqueReference: `media-${sha256(output.outputChecksum).slice(0, 24)}`,
+        // A sanitized output can legitimately match another source byte-for-byte.
+        // Scope the opaque delivery reference to its protected-media identity so
+        // deduplicated object bytes never collide across authorization records.
+        storageOpaqueReference: `media-${sha256(`${state.protectedMedia.id}:${output.outputChecksum}`).slice(0, 24)}`,
         scanState: "CLEAN",
         state: activated ? "READY" : "BLOCKED_CONSENT",
         operationId: job.operationId,
@@ -240,16 +244,123 @@ async function reconcileGrant(job: PrivateDurableJob) {
   ]);
 }
 
+function jobTarget(job: PrivateDurableJob, field: "derivativeId" | "mediaId") {
+  const payload = JSON.parse(job.payload) as Record<string, unknown>;
+  const value = payload[field];
+  if (typeof value !== "string" || !/^[A-Za-z0-9_-]{8,64}$/.test(value))
+    throw new Error("PROTECTED_MEDIA_JOB_INVALID");
+  return value;
+}
+
+async function verifyDerivative(job: PrivateDurableJob) {
+  const derivativeId = jobTarget(job, "derivativeId");
+  const derivative = await privateDb.protectedMediaDerivative.findUnique({
+    where: { id: derivativeId },
+    include: { derivativeObject: true, sourceMedia: true },
+  });
+  if (!derivative) throw new Error("PROTECTED_MEDIA_DERIVATIVE_NOT_FOUND");
+  const clean =
+    derivative.scanState === "CLEAN" &&
+    derivative.derivativeObject.scanStatus === "CLEAN" &&
+    derivative.sourceMedia.scanState === "CLEAN";
+  await privateDb.protectedMediaDerivative.update({
+    where: { id: derivative.id },
+    data: clean
+      ? { verifiedAt: new Date(), failureCode: null }
+      : { state: "BLOCKED_SCAN", failureCode: "PROTECTED_MEDIA_DERIVATIVE_NOT_CLEAN" },
+  });
+}
+
+async function convergeWithdrawal(job: PrivateDurableJob) {
+  const derivativeId = jobTarget(job, "derivativeId");
+  const now = new Date();
+  await privateDb.$transaction([
+    privateDb.protectedMediaDerivative.updateMany({
+      where: { id: derivativeId, state: { not: "WITHDRAWN" } },
+      data: { state: "WITHDRAWN", withdrawnAt: now },
+    }),
+    privateDb.protectedMediaGrant.updateMany({
+      where: { derivativeId, state: "ACTIVE" },
+      data: { state: "REVOKED", revokedAt: now, revocationReasonCode: "WITHDRAWN" },
+    }),
+    privateDb.protectedMediaWithdrawal.updateMany({
+      where: { derivativeId, consumerInvalidationState: "PENDING" },
+      data: { consumerInvalidationState: "COMPLETED" },
+    }),
+  ]);
+}
+
+async function reconcileMediaIntegrity(job: PrivateDurableJob) {
+  const mediaId = jobTarget(job, "mediaId");
+  const media = await privateDb.protectedMedia.findUnique({
+    where: { id: mediaId },
+    include: { sourceObject: true, derivatives: { include: { grants: { include: { association: true } } } } },
+  });
+  if (!media) throw new Error("PROTECTED_MEDIA_NOT_FOUND");
+  const findings = media.derivatives.flatMap((derivative: any) =>
+    derivative.grants.flatMap((grant: any) =>
+      reconcileProtectedMediaRecord({
+        mediaId: media.id,
+        sourceExists: Boolean(media.sourceObject),
+        derivative,
+        grant: {
+          ...grant,
+          currentAuthorizationRevision: grant.association.sourceRevision,
+          derivativeId: grant.derivativeId ?? undefined,
+        },
+      }),
+    ),
+  );
+  const unsafeDerivativeIds = new Set(
+    media.derivatives
+      .filter((derivative: any) => derivative.state === "READY" && derivative.scanState !== "CLEAN")
+      .map((derivative: any) => derivative.id),
+  );
+  if (unsafeDerivativeIds.size)
+    await privateDb.protectedMediaDerivative.updateMany({
+      where: { id: { in: [...unsafeDerivativeIds] } },
+      data: { state: "QUARANTINED", failureCode: "PROTECTED_MEDIA_INTEGRITY_QUARANTINE" },
+    });
+  const unsafeGrantIds = new Set(
+    media.derivatives.flatMap((derivative: any) =>
+      derivative.grants
+        .filter(
+          (grant: any) =>
+            grant.state === "ACTIVE" &&
+            (Boolean(derivative.withdrawnAt) ||
+              grant.authorizationRevision !== grant.association.sourceRevision ||
+              (grant.audience === "PUBLIC" && !grant.derivativeId)),
+        )
+        .map((grant: any) => grant.id),
+    ),
+  );
+  if (unsafeGrantIds.size)
+    await privateDb.protectedMediaGrant.updateMany({
+      where: { id: { in: [...unsafeGrantIds] }, state: "ACTIVE" },
+      data: { state: "REVOKED", revokedAt: new Date(), revocationReasonCode: "INTEGRITY_RECONCILE" },
+    });
+  await privateDb.protectedMediaReconciliationRecord.create({
+    data: {
+      mode: "PHASE4_WORKER",
+      snapshotDigest: sha256(JSON.stringify({ mediaId, derivativeCount: media.derivatives.length })),
+      findings: JSON.stringify(findings.map((finding: { code: string }) => finding.code)),
+      completedAt: new Date(),
+    },
+  });
+}
+
 /** Concrete Phase 4 executors layered over the Phase 3 durable worker. */
 export function createProtectedMediaOperationExecutors(
   runtime: PrivateProviderRuntime,
 ): Partial<Record<PrivateJobType, PrivateHandlerExecutor>> {
   return {
     PRIVATE_MEDIA_DERIVATIVE_BUILD: async (_type, job, signal) => build(runtime, job, signal),
-    PRIVATE_MEDIA_DERIVATIVE_VERIFY: async () => undefined,
+    PRIVATE_MEDIA_DERIVATIVE_VERIFY: async (_type, job) => verifyDerivative(job),
     PRIVATE_MEDIA_GRANT_RECONCILE: async (_type, job) => reconcileGrant(job),
-    PRIVATE_MEDIA_WITHDRAW: async () => undefined,
-    PRIVATE_MEDIA_DERIVATIVE_CLEANUP: async () => undefined,
-    PRIVATE_MEDIA_INTEGRITY_RECONCILE: async () => undefined,
+    PRIVATE_MEDIA_WITHDRAW: async (_type, job) => convergeWithdrawal(job),
+    // Cleanup is intentionally metadata-only: physical object retirement stays
+    // behind the retention scheduler so retries cannot erase forensic evidence.
+    PRIVATE_MEDIA_DERIVATIVE_CLEANUP: async (_type, job) => convergeWithdrawal(job),
+    PRIVATE_MEDIA_INTEGRITY_RECONCILE: async (_type, job) => reconcileMediaIntegrity(job),
   };
 }

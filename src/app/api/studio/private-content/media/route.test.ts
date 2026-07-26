@@ -41,6 +41,7 @@ describe("protected media owner route", () => {
           purpose: "VOYAGE_LOG_COMMUNITY",
           audience: "PUBLIC",
           idempotencyKey: "request-key-0001",
+          consentAssertionId: "consent-0001",
         }),
       });
     expect((await POST(request())).status).toBe(403);
@@ -48,7 +49,7 @@ describe("protected media owner route", () => {
     mocks.request.mockResolvedValueOnce({ operationId: "op", state: "QUEUED", reused: false });
     expect((await POST(request())).status).toBe(202);
     expect(mocks.request).toHaveBeenCalledWith(
-      expect.objectContaining({ ownerAccountId: "account-id", mediaId: "media" }),
+      expect.objectContaining({ ownerAccountId: "account-id", mediaId: "media", consentAssertionId: "consent-0001" }),
     );
   });
 });

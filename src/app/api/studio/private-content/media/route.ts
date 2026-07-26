@@ -63,6 +63,7 @@ export async function POST(request: Request) {
       purpose?: string;
       audience?: string;
       idempotencyKey?: string;
+      consentAssertionId?: string;
       derivativeId?: string;
       reason?: string;
     };
@@ -86,6 +87,7 @@ export async function POST(request: Request) {
           purpose: body.purpose as ProtectedMediaPurpose,
           audience: body.audience as ProtectedMediaAudience,
           idempotencyKey: body.idempotencyKey,
+          consentAssertionId: body.consentAssertionId,
         }),
         { status: 202, headers: { "Cache-Control": "private, no-store" } },
       );

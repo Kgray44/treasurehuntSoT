@@ -14,7 +14,7 @@ type PublicDerivative = {
   outputByteLength: number;
   purpose: string;
   derivativeObject: { storageKey: string; sha256: string; byteLength: number };
-  sourceMedia: { scanState: string };
+  sourceMedia: { scanState: string; sourceObject: { scanStatus: string } };
   grants: Array<{
     authorizationRevision: string;
     purpose: string;
@@ -35,7 +35,7 @@ export async function GET(request: Request, context: { params: Promise<{ opaqueI
       where: { storageOpaqueReference: opaqueId },
       include: {
         derivativeObject: true,
-        sourceMedia: true,
+        sourceMedia: { include: { sourceObject: true } },
         grants: { where: { state: "ACTIVE", audience: "PUBLIC" }, include: { association: true } },
       },
     });
@@ -51,7 +51,8 @@ export async function GET(request: Request, context: { params: Promise<{ opaqueI
       derivative.state !== "READY" ||
       derivative.scanState !== "CLEAN" ||
       derivative.withdrawnAt ||
-      derivative.sourceMedia.scanState !== "CLEAN"
+      derivative.sourceMedia.scanState !== "CLEAN" ||
+      derivative.sourceMedia.sourceObject.scanStatus !== "CLEAN"
     )
       return new NextResponse(null, { status: 404 });
     const etag = `\"${derivative.outputChecksum}\"`;
