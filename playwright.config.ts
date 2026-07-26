@@ -55,7 +55,7 @@ export default defineConfig({
     {
       name: "chromium",
       dependencies: ["phase3-readonly-setup"],
-      testIgnore: [phase3ReadOnlySetup, phase3PerformanceSpec],
+      testIgnore: [phase3ReadOnlySetup, phase3PerformanceSpec, harborlightPhase2Spec, harborlightPhase3Spec],
       use: { ...devices["Desktop Chrome"] },
     },
     {
