@@ -684,22 +684,25 @@ model BlockConnection {
 }
 
 model PublishedTaleVersion {
-  id                   String             @id @default(cuid())
+  id                   String                   @id @default(cuid())
   taleId               String
   versionNumber        Int
   versionLabel         String
-  publishedAt          DateTime           @default(now())
+  publishedAt          DateTime                 @default(now())
   publishedBy          String
   publishedByAccountId String?
-  releaseNotes         String?            @db.Text
-  contentSnapshot      String             @db.LongText
-  schemaVersion        Int                @default(1)
+  releaseNotes         String?                  @db.Text
+  contentSnapshot      String                   @db.LongText
+  schemaVersion        Int                      @default(1)
   checksum             String
-  isCurrent            Boolean            @default(true)
-  tale                 Chronicle          @relation(fields: [taleId], references: [id], onDelete: Cascade)
+  isCurrent            Boolean                  @default(true)
+  tale                 Chronicle                @relation(fields: [taleId], references: [id], onDelete: Cascade)
   sessions             TaleSession[]
-  publishedByAccount   UserAccount?       @relation("PublishedVersionAuthorAccount", fields: [publishedByAccountId], references: [id], onDelete: SetNull)
-  communityReleases    CommunityRelease[] @relation("CommunityReleaseSource")
+  publishedByAccount   UserAccount?             @relation("PublishedVersionAuthorAccount", fields: [publishedByAccountId], references: [id], onDelete: SetNull)
+  communityReleases    CommunityRelease[]       @relation("CommunityReleaseSource")
+  chronicleRecords     PlayerChronicleRecord[]
+  artifactRecords      PlayerArtifactRecord[]
+  assemblyInstances    PlayerArtifactAssembly[]
 
   @@unique([taleId, versionNumber])
   @@index([taleId, isCurrent])
@@ -956,6 +959,7 @@ model TaleSession {
   memberships            PlaythroughMembership[]
   invitations            Invitation[]
   revealStates           RevealState[]
+  artifactGrantReceipts  ArtifactGrantReceipt[]
   captainAccount         UserAccount?              @relation("TaleSessionCaptainAccount", fields: [captainAccountId], references: [id], onDelete: SetNull)
 
   @@index([taleId, status, previewMode])
@@ -963,34 +967,74 @@ model TaleSession {
   @@index([captainAccountId, status])
 }
 
+// One Voyage-owned immutable recipient resolution for a canonical artifactGranted
+// event. Wayfarer projects this receipt and never invents personal ownership.
+model ArtifactGrantReceipt {
+  id                             String      @id @default(cuid())
+  sessionId                      String
+  sourceEventId                  String      @unique
+  grantId                        String      @unique
+  schemaVersion                  Int         @default(1)
+  artifactDefinitionId           String
+  artifactOccurrenceId           String
+  publishedVersionId             String
+  sourceBlockId                  String?
+  recipientPolicy                String
+  resolvedRecipientMembershipIds String      @db.LongText
+  resolvedRecipientProfileIds    String      @db.LongText
+  discoveringMembershipId        String?
+  requiredCrewRole               String?
+  sharedInventoryAction          String
+  personalGrantState             String
+  custodyKind                    String
+  assemblyDefinitionId           String?
+  componentRole                  String?
+  receiptState                   String      @default("ACTIVE")
+  occurredAt                     DateTime
+  correctionOfGrantId            String?
+  correctionReason               String?     @db.Text
+  createdAt                      DateTime    @default(now())
+  session                        TaleSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  @@index([sessionId, occurredAt])
+  @@index([publishedVersionId, artifactDefinitionId])
+}
+
 model PlayerProfile {
-  id                String                  @id @default(cuid())
-  accountId         String?                 @unique
-  username          String?                 @unique
-  passwordHash      String?
-  displayName       String
-  handle            String?                 @db.VarChar(64)
-  normalizedHandle  String?                 @unique @db.VarChar(64)
-  biography         String?                 @db.Text
-  avatarMediaId     String?                 @unique @db.VarChar(191)
-  bannerMediaId     String?                 @unique @db.VarChar(191)
-  defaultVisibility String                  @default("REGISTERED_USERS") @db.VarChar(32)
-  status            String                  @default("ACTIVE")
-  preferences       String                  @default("{}") @db.LongText
-  claimedAt         DateTime?
-  createdAt         DateTime                @default(now())
-  updatedAt         DateTime                @updatedAt
-  lastSeenAt        DateTime?
-  sessions          PlayerIdentitySession[]
-  memberships       PlaythroughMembership[]
-  invitations       Invitation[]
-  handleHistory     ProfileHandleHistory[]
-  media             ProfileMedia[]          @relation("ProfileMediaOwner")
-  avatarMedia       ProfileMedia?           @relation("ProfileAvatar", fields: [avatarMediaId], references: [id], onDelete: SetNull)
-  bannerMedia       ProfileMedia?           @relation("ProfileBanner", fields: [bannerMediaId], references: [id], onDelete: SetNull)
-  preferenceSet     ProfilePreferenceSet?
-  privacyRules      ProfilePrivacyRule[]
-  account           UserAccount?            @relation(fields: [accountId], references: [id], onDelete: SetNull)
+  id                 String                   @id @default(cuid())
+  accountId          String?                  @unique
+  username           String?                  @unique
+  passwordHash       String?
+  displayName        String
+  handle             String?                  @db.VarChar(64)
+  normalizedHandle   String?                  @unique @db.VarChar(64)
+  biography          String?                  @db.Text
+  avatarMediaId      String?                  @unique @db.VarChar(191)
+  bannerMediaId      String?                  @unique @db.VarChar(191)
+  defaultVisibility  String                   @default("REGISTERED_USERS") @db.VarChar(32)
+  status             String                   @default("ACTIVE")
+  preferences        String                   @default("{}") @db.LongText
+  claimedAt          DateTime?
+  createdAt          DateTime                 @default(now())
+  updatedAt          DateTime                 @updatedAt
+  lastSeenAt         DateTime?
+  sessions           PlayerIdentitySession[]
+  memberships        PlaythroughMembership[]
+  invitations        Invitation[]
+  handleHistory      ProfileHandleHistory[]
+  media              ProfileMedia[]           @relation("ProfileMediaOwner")
+  avatarMedia        ProfileMedia?            @relation("ProfileAvatar", fields: [avatarMediaId], references: [id], onDelete: SetNull)
+  bannerMedia        ProfileMedia?            @relation("ProfileBanner", fields: [bannerMediaId], references: [id], onDelete: SetNull)
+  preferenceSet      ProfilePreferenceSet?
+  privacyRules       ProfilePrivacyRule[]
+  chronicleRecords   PlayerChronicleRecord[]
+  chronicleMemories  ChronicleMemory[]
+  keepsakeConsents   VoyageKeepsakeConsent[]
+  artifactRecords    PlayerArtifactRecord[]
+  artifactCases      ArtifactDisplayCase[]
+  artifactAssemblies PlayerArtifactAssembly[]
+  achievements       PlayerAchievement[]
+  account            UserAccount?             @relation(fields: [accountId], references: [id], onDelete: SetNull)
 
   @@index([status, displayName])
   @@index([normalizedHandle, status])
@@ -1137,6 +1181,320 @@ model PlaythroughMembership {
 
   @@unique([playthroughId, playerProfileId])
   @@index([playerProfileId, status, updatedAt])
+}
+
+// A Wayfarer-owned, materialized historical projection. Source identifiers are
+// scalar by design so source retention or future tombstoning cannot rewrite a
+// person's historical record.
+model PlayerChronicleRecord {
+  id                         String                               @id @default(cuid())
+  playerProfileId            String
+  sourcePlaythroughId        String
+  sourceMembershipId         String?
+  publishedVersionId         String
+  publishedVersionChecksum   String
+  chronicleTitleSnapshot     String
+  chronicleCoverSnapshot     String?
+  creatorAttributionSnapshot String?
+  playerNameSnapshot         String
+  playerAvatarSnapshot       String?
+  participationRole          String                               @default("PLAYER")
+  crewRoleSnapshot           String?
+  lifecycleStatus            String
+  outcome                    String                               @default("UNAVAILABLE")
+  startedAt                  DateTime?
+  joinedAt                   DateTime?
+  completedAt                DateTime?
+  wallClockSeconds           Int?
+  activeSeconds              Int?
+  pausedSeconds              Int?
+  connectedSeconds           Int?
+  interactiveSeconds         Int?
+  captainWaitSeconds         Int?
+  wallClockAccuracy          String                               @default("UNAVAILABLE")
+  activeAccuracy             String                               @default("UNAVAILABLE")
+  pausedAccuracy             String                               @default("UNAVAILABLE")
+  connectedAccuracy          String                               @default("UNAVAILABLE")
+  interactiveAccuracy        String                               @default("UNAVAILABLE")
+  captainWaitAccuracy        String                               @default("UNAVAILABLE")
+  metricDefinitionVersion    String                               @default("WAYFARER_TIMING_V1")
+  completedChapters          String                               @default("[]")
+  optionalObjectives         String                               @default("[]")
+  choiceSummary              String                               @default("[]")
+  artifactSummary            String                               @default("[]")
+  sourceFingerprint          String
+  projectionStatus           String                               @default("CURRENT")
+  projectionReason           String?
+  lastDerivedAt              DateTime                             @default(now())
+  createdAt                  DateTime                             @default(now())
+  updatedAt                  DateTime                             @updatedAt
+  player                     PlayerProfile                        @relation(fields: [playerProfileId], references: [id], onDelete: Cascade)
+  publishedVersion           PublishedTaleVersion                 @relation(fields: [publishedVersionId], references: [id], onDelete: Restrict)
+  reflection                 ChronicleReflection?
+  memories                   ChronicleMemory[]
+  keepsake                   VoyageKeepsake?
+  participantSnapshots       PlayerChronicleParticipantSnapshot[]
+
+  @@unique([playerProfileId, sourcePlaythroughId])
+  @@index([playerProfileId, lifecycleStatus, completedAt])
+  @@index([playerProfileId, chronicleTitleSnapshot])
+  @@index([publishedVersionId])
+}
+
+model ChronicleReflection {
+  id                        String                @id @default(cuid())
+  playerChronicleRecordId   String                @unique
+  favoriteChapterId         String?
+  favoriteClueReference     String?
+  favoriteMomentReference   String?
+  favoriteArtifactReference String?
+  privateNote               String?
+  createdAt                 DateTime              @default(now())
+  updatedAt                 DateTime              @updatedAt
+  record                    PlayerChronicleRecord @relation(fields: [playerChronicleRecordId], references: [id], onDelete: Cascade)
+}
+
+model ChronicleMemory {
+  id                      String                @id @default(cuid())
+  playerChronicleRecordId String
+  playerProfileId         String
+  title                   String
+  body                    String?
+  referenceType           String?
+  referenceId             String?
+  visibility              String                @default("ONLY_ME")
+  createdAt               DateTime              @default(now())
+  updatedAt               DateTime              @updatedAt
+  deletedAt               DateTime?
+  record                  PlayerChronicleRecord @relation(fields: [playerChronicleRecordId], references: [id], onDelete: Cascade)
+  owner                   PlayerProfile         @relation(fields: [playerProfileId], references: [id], onDelete: Cascade)
+
+  @@index([playerChronicleRecordId, deletedAt, createdAt])
+  @@index([playerProfileId, deletedAt])
+}
+
+model PlayerChronicleParticipantSnapshot {
+  id                    String                @id @default(cuid())
+  historyRecordId       String
+  sourceMembershipId    String
+  participantProfileId  String?
+  displayNameSnapshot   String
+  avatarAltSnapshot     String?
+  participationRole     String
+  crewRoleSnapshot      String?
+  joinedAt              DateTime?
+  completedAt           DateTime?
+  removedAt             DateTime?
+  projectionEligibility String                @default("ONLY_ME")
+  tombstoneState        String                @default("ACTIVE")
+  createdAt             DateTime              @default(now())
+  updatedAt             DateTime              @updatedAt
+  record                PlayerChronicleRecord @relation(fields: [historyRecordId], references: [id], onDelete: Cascade)
+
+  @@unique([historyRecordId, sourceMembershipId])
+  @@index([historyRecordId, projectionEligibility])
+}
+
+model VoyageKeepsake {
+  id                      String                  @id @default(cuid())
+  playerChronicleRecordId String                  @unique
+  status                  String                  @default("READY")
+  presentationPayload     String                  @default("{}")
+  generatedAt             DateTime                @default(now())
+  regeneratedAt           DateTime?
+  createdAt               DateTime                @default(now())
+  updatedAt               DateTime                @updatedAt
+  record                  PlayerChronicleRecord   @relation(fields: [playerChronicleRecordId], references: [id], onDelete: Cascade)
+  consents                VoyageKeepsakeConsent[]
+}
+
+model VoyageKeepsakeConsent {
+  id                   String         @id @default(cuid())
+  keepsakeId           String
+  participantId        String
+  scope                String         @default("GENERAL_MEDIA")
+  state                String         @default("PENDING")
+  historicalLabel      String?
+  requestedAt          DateTime       @default(now())
+  decidedAt            DateTime?
+  requestedByProfileId String?
+  correlationId        String?
+  grantedAt            DateTime?
+  revokedAt            DateTime?
+  createdAt            DateTime       @default(now())
+  updatedAt            DateTime       @updatedAt
+  keepsake             VoyageKeepsake @relation(fields: [keepsakeId], references: [id], onDelete: Cascade)
+  participant          PlayerProfile  @relation(fields: [participantId], references: [id], onDelete: Cascade)
+
+  @@unique([keepsakeId, participantId, scope])
+  @@index([participantId, state])
+}
+
+// Wayfarer-owned, person-level projections. Source Voyage identifiers remain
+// scalar so reconciliation never needs to write or retain mutable One Voyage rows.
+model PlayerArtifactRecord {
+  id                       String                         @id @default(cuid())
+  playerProfileId          String
+  sourcePlaythroughId      String
+  sourceGrantEventId       String
+  sourceGrantSequence      Int
+  sourceBlockId            String?
+  publishedVersionId       String
+  publishedVersionChecksum String
+  chronicleTitleSnapshot   String
+  artifactDefinitionId     String
+  artifactNameSnapshot     String
+  artifactTypeSnapshot     String                         @default("ARTIFACT")
+  representationSnapshot   String                         @default("FALLBACK")
+  collectionKeySnapshot    String?
+  assemblyKeySnapshot      String?
+  componentRoleSnapshot    String?
+  recipientPolicy          String
+  recipientEvidence        String                         @default("{}") @db.LongText
+  ownershipState           String
+  custody                  String                         @default("PERSONAL")
+  recordStatus             String                         @default("ACTIVE")
+  discoveredAt             DateTime?
+  grantedAt                DateTime?
+  witnessedAt              DateTime?
+  revokedAt                DateTime?
+  archivedAt               DateTime?
+  correctedAt              DateTime?
+  correctionReason         String?                        @db.Text
+  sourceFingerprint        String
+  lastDerivedAt            DateTime                       @default(now())
+  createdAt                DateTime                       @default(now())
+  updatedAt                DateTime                       @updatedAt
+  player                   PlayerProfile                  @relation(fields: [playerProfileId], references: [id], onDelete: Cascade)
+  publishedVersion         PublishedTaleVersion           @relation(fields: [publishedVersionId], references: [id], onDelete: Restrict)
+  personalization          PlayerArtifactPersonalization?
+  displayItems             ArtifactDisplayItem[]
+  contributions            PlayerArtifactContribution[]
+
+  @@unique([playerProfileId, sourceGrantEventId])
+  @@index([playerProfileId, recordStatus, grantedAt])
+  @@index([playerProfileId, ownershipState, artifactDefinitionId])
+  @@index([sourcePlaythroughId, sourceGrantSequence])
+}
+
+model PlayerArtifactPersonalization {
+  id                String               @id @default(cuid())
+  artifactRecordId  String               @unique
+  favorite          Boolean              @default(false)
+  privateNote       String?              @db.Text
+  chronicleMemoryId String?
+  visibility        String               @default("ONLY_ME")
+  createdAt         DateTime             @default(now())
+  updatedAt         DateTime             @updatedAt
+  artifact          PlayerArtifactRecord @relation(fields: [artifactRecordId], references: [id], onDelete: Cascade)
+}
+
+model ArtifactDisplayCase {
+  id              String                @id @default(cuid())
+  playerProfileId String
+  name            String
+  description     String?               @db.Text
+  visibility      String                @default("ONLY_ME")
+  unlistedToken   String?               @unique
+  createdAt       DateTime              @default(now())
+  updatedAt       DateTime              @updatedAt
+  player          PlayerProfile         @relation(fields: [playerProfileId], references: [id], onDelete: Cascade)
+  items           ArtifactDisplayItem[]
+
+  @@unique([playerProfileId, name])
+  @@index([playerProfileId, visibility])
+}
+
+model ArtifactDisplayItem {
+  id               String               @id @default(cuid())
+  displayCaseId    String
+  artifactRecordId String
+  position         Int                  @default(0)
+  createdAt        DateTime             @default(now())
+  displayCase      ArtifactDisplayCase  @relation(fields: [displayCaseId], references: [id], onDelete: Cascade)
+  artifact         PlayerArtifactRecord @relation(fields: [artifactRecordId], references: [id], onDelete: Cascade)
+
+  @@unique([displayCaseId, artifactRecordId])
+  @@unique([displayCaseId, position])
+  @@index([artifactRecordId])
+}
+
+model PlayerArtifactAssembly {
+  id                    String                       @id @default(cuid())
+  playerProfileId       String
+  publishedVersionId    String
+  sourcePlaythroughId   String
+  assemblyKeySnapshot   String
+  assembledArtifactName String
+  recipeSnapshot        String                       @db.LongText
+  status                String                       @default("IN_PROGRESS")
+  completedAt           DateTime?
+  sourceFingerprint     String
+  createdAt             DateTime                     @default(now())
+  updatedAt             DateTime                     @updatedAt
+  player                PlayerProfile                @relation(fields: [playerProfileId], references: [id], onDelete: Cascade)
+  publishedVersion      PublishedTaleVersion         @relation(fields: [publishedVersionId], references: [id], onDelete: Restrict)
+  contributions         PlayerArtifactContribution[]
+
+  @@unique([playerProfileId, sourcePlaythroughId, assemblyKeySnapshot])
+  @@index([playerProfileId, status, completedAt])
+}
+
+model PlayerArtifactContribution {
+  id               String                 @id @default(cuid())
+  assemblyId       String
+  artifactRecordId String
+  componentKey     String
+  componentRole    String?
+  state            String                 @default("ACTIVE")
+  contributedAt    DateTime               @default(now())
+  assembly         PlayerArtifactAssembly @relation(fields: [assemblyId], references: [id], onDelete: Cascade)
+  artifact         PlayerArtifactRecord   @relation(fields: [artifactRecordId], references: [id], onDelete: Cascade)
+
+  @@unique([assemblyId, artifactRecordId])
+  @@index([artifactRecordId, state])
+}
+
+model AchievementDefinition {
+  id                  String              @id @default(cuid())
+  key                 String
+  definitionVersion   Int                 @default(1)
+  scope               String              @default("GLOBAL")
+  publishedVersionId  String?
+  titleSnapshot       String
+  descriptionSnapshot String              @db.Text
+  criteria            String              @db.LongText
+  activeFrom          DateTime?
+  inactiveAt          DateTime?
+  createdAt           DateTime            @default(now())
+  updatedAt           DateTime            @updatedAt
+  achievements        PlayerAchievement[]
+
+  @@unique([key, definitionVersion])
+  @@index([scope, publishedVersionId, inactiveAt])
+}
+
+model PlayerAchievement {
+  id                      String                @id @default(cuid())
+  playerProfileId         String
+  achievementDefinitionId String
+  definitionVersion       Int
+  state                   String                @default("EARNED")
+  evidenceSnapshot        String                @db.LongText
+  sourceFingerprint       String
+  earnedAt                DateTime?
+  revokedAt               DateTime?
+  correctedAt             DateTime?
+  correctionReason        String?               @db.Text
+  showcased               Boolean               @default(false)
+  visibility              String                @default("ONLY_ME")
+  createdAt               DateTime              @default(now())
+  updatedAt               DateTime              @updatedAt
+  player                  PlayerProfile         @relation(fields: [playerProfileId], references: [id], onDelete: Cascade)
+  definition              AchievementDefinition @relation(fields: [achievementDefinitionId], references: [id], onDelete: Restrict)
+
+  @@unique([playerProfileId, achievementDefinitionId])
+  @@index([playerProfileId, state, earnedAt])
 }
 
 model Invitation {
@@ -1519,6 +1877,7 @@ model PrivateContentWrappedKey {
   wrappedKey String   @db.LongText
   algorithm  String   @db.VarChar(32)
   createdAt  DateTime @default(now())
+
   @@index([provider, keyVersion])
 }
 
@@ -1530,6 +1889,7 @@ model PrivateContentEncryptedPayload {
   cipher       String   @db.VarChar(32)
   wrappedKeyId String   @db.VarChar(191)
   createdAt    DateTime @default(now())
+
   @@index([wrappedKeyId])
 }
 

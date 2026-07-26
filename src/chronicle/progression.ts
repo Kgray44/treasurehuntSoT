@@ -18,6 +18,7 @@ import { parseJsonArray, parseJsonObject } from "@/chronicle/types";
 import { logger } from "@/lib/logger";
 import { playerSafeAssetIds, playerSafeObject } from "@/platform/libraries";
 import { projectPlayerBlock } from "@/chronicle/journal-contract";
+import { resolveArtifactGrantReceipt } from "@/chronicle/artifact-grant";
 
 const digest = (value: string) => createHash("sha256").update(value).digest("hex");
 const futureProviders = new Set(["visionLocation", "visionObject", "externalWebhook"]);
@@ -270,7 +271,7 @@ async function completeBlock(
           revealedBy: sourceId ?? sourceType,
         },
       });
-      await appendEvent(tx, session, {
+      const grantEvent = await appendEvent(tx, session, {
         eventType: "artifactGranted",
         sourceType,
         sourceId,
@@ -279,6 +280,51 @@ async function completeBlock(
         payload: { artifactId },
         correlationId: key,
       });
+      // The event remains the canonical progression fact.  The receipt freezes
+      // server-resolved recipients so later membership/role changes cannot
+      // rewrite personal ownership.
+      if (session.publishedVersionId) {
+        const memberships = await tx.playthroughMembership.findMany({
+          where: { playthroughId: session.id },
+          select: { id: true, playerProfileId: true, status: true, crewRole: true, joinedAt: true, removedAt: true },
+        });
+        const receipt = resolveArtifactGrantReceipt({
+          artifactDefinitionId: artifactId,
+          playthroughId: session.id,
+          publishedVersionId: session.publishedVersionId,
+          sourceEventId: grantEvent.id,
+          sourceBlockId: block.id,
+          occurredAt: grantEvent.createdAt,
+          configuration: block.configuration,
+          memberships,
+        });
+        await tx.artifactGrantReceipt.create({
+          data: {
+            sessionId: session.id,
+            sourceEventId: receipt.sourceEventId,
+            grantId: receipt.grantId,
+            schemaVersion: receipt.schemaVersion,
+            artifactDefinitionId: receipt.artifactDefinitionId,
+            artifactOccurrenceId: receipt.artifactOccurrenceId,
+            publishedVersionId: receipt.publishedVersionId,
+            sourceBlockId: receipt.sourceBlockId,
+            recipientPolicy: receipt.recipientPolicy,
+            resolvedRecipientMembershipIds: JSON.stringify(receipt.resolvedRecipientMembershipIds),
+            resolvedRecipientProfileIds: JSON.stringify(receipt.resolvedRecipientProfileIds),
+            discoveringMembershipId: receipt.discoveringMembershipId,
+            requiredCrewRole: receipt.requiredCrewRole,
+            sharedInventoryAction: receipt.sharedInventoryAction,
+            personalGrantState: receipt.personalGrantState,
+            custodyKind: receipt.custodyKind,
+            assemblyDefinitionId: receipt.assemblyDefinitionId,
+            componentRole: receipt.componentRole,
+            receiptState: receipt.receiptState,
+            occurredAt: new Date(receipt.occurredAt),
+            correctionOfGrantId: receipt.correctionOfGrantId,
+            correctionReason: receipt.correctionReason,
+          },
+        });
+      }
     }
   }
   if (block.blockType === "choice" && selectedTarget) variables[`choice:${block.id}`] = selectedTarget;

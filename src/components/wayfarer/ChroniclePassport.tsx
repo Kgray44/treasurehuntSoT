@@ -1,6 +1,8 @@
 "use client";
 
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import { ChronicleHistory } from "@/components/wayfarer/ChronicleHistory";
+import { ArtifactCabinet } from "@/components/wayfarer/ArtifactCabinet";
 
 type Profile = {
   displayName: string;
@@ -265,6 +267,8 @@ export function ChroniclePassport() {
         <a href="#providers">Linked identities</a>
         <a href="#preferences">Preferences</a>
         <a href="#privacy">Privacy</a>
+        <a href="#history">Chronicle history</a>
+        <a href="#artifacts">Artifact Cabinet</a>
         <a href="/account/security">Security</a>
       </nav>
       <section id="profile">
@@ -453,9 +457,12 @@ export function ChroniclePassport() {
           <button>Save privacy controls</button>
         </form>
         <p>
-          Voyage history, artifacts, memories, and detailed crew records are future Phase 3 surfaces and remain private.
+          Voyage history, private memories, and detailed crew records remain private by default. Artifact and
+          achievement sharing require an explicit owner visibility choice.
         </p>
       </section>
+      <ChronicleHistory />
+      <ArtifactCabinet />
     </main>
   );
 }

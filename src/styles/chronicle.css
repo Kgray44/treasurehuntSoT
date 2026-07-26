@@ -159,6 +159,64 @@
   font-size: 3rem;
 }
 
+/* Passport is a personal control surface, so its form controls must remain
+   readable and reachable at narrow authenticated viewports. */
+.chronicle-passport {
+  min-width: 0;
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: clamp(1rem, 4vw, 3rem);
+}
+.chronicle-passport > header,
+.chronicle-passport > section {
+  min-width: 0;
+  margin-block: 1.5rem;
+}
+.chronicle-passport > nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem 1rem;
+}
+.chronicle-passport form {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.85rem;
+  align-items: end;
+}
+.chronicle-passport label {
+  display: grid;
+  min-width: 0;
+  gap: 0.35rem;
+}
+.chronicle-passport input,
+.chronicle-passport select,
+.chronicle-passport textarea {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+}
+.chronicle-passport textarea {
+  min-height: 7rem;
+  resize: vertical;
+}
+.chronicle-passport button {
+  width: fit-content;
+  max-width: 100%;
+}
+.chronicle-passport #history li {
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 640px) {
+  .chronicle-passport {
+    padding-inline: 0.9rem;
+  }
+
+  .chronicle-passport form {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
 @media (max-width: 1050px) {
   .catalog-tools {
     grid-template-columns: repeat(3, minmax(0, 1fr));
