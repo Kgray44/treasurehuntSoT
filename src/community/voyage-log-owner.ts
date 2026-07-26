@@ -2,6 +2,8 @@ import { createHash } from "node:crypto";
 import { CommunityError, stableJson } from "./domain";
 import { assertVoyageLogTransition, type VoyageLogLifecycleState } from "./voyage-log-lifecycle";
 import { voyageLogVisibilities, type VoyageLogVisibility } from "./keepsakes";
+import { assertVoyageLogPublishable } from "./voyage-log-lifecycle";
+import type { HarborlightKeepsakeSource } from "./wayfarer-keepsake-source";
 import { db } from "@/lib/db";
 
 function safeText(value: string, field: string, max: number) {
@@ -76,4 +78,26 @@ export async function transitionOwnedVoyageLog(input: { ownerAccountId: string; 
 
 export function voyageLogProjectionChecksum(input: { slug: string; title: string; safeSummary?: string | null; visibility: string; spoilerLevel: string; approximateLocation?: string | null }) {
   return createHash("sha256").update(stableJson(input)).digest("hex");
+}
+
+/** Revalidates the upstream watermark before a single atomic public-state transition. */
+export async function publishVoyageLog(input: { ownerAccountId: string; voyageLogId: string; source: HarborlightKeepsakeSource }) {
+  const log = await db.communityVoyageLog.findFirst({ where: { id: input.voyageLogId, ownerAccountId: input.ownerAccountId } });
+  if (!log) throw new CommunityError("COMMUNITY_VOYAGE_LOG_NOT_FOUND", "Voyage Log not found.");
+  const keepsake = await db.communityVoyageKeepsake.findFirst({ where: { id: log.keepsakeId, ownerAccountId: input.ownerAccountId }, select: { wayfarerKeepsakeId: true, sourceWatermark: true, sourceProjectionChecksum: true, publishedVersionId: true } });
+  if (!keepsake?.wayfarerKeepsakeId || !keepsake.sourceWatermark || !keepsake.sourceProjectionChecksum)
+    throw new CommunityError("COMMUNITY_KEEPSAKE_SOURCE_STALE", "Voyage Log provenance is incomplete.");
+  const verified = await input.source.verifySourceWatermark({ ownerAccountId: input.ownerAccountId, sourceKeepsakeId: keepsake.wayfarerKeepsakeId, sourceWatermark: keepsake.sourceWatermark, sourceProjectionChecksum: keepsake.sourceProjectionChecksum });
+  const [restrictions, participants, participantConsents, media] = await Promise.all([
+    db.communityVoyageLogShareRestriction.findMany({ where: { voyageLogId: log.id }, select: { restrictionType: true } }),
+    db.communityVoyageLogParticipant.findMany({ where: { voyageLogId: log.id }, select: { id: true, displayNameSnapshot: true, isChild: true } }),
+    db.communityVoyageLogParticipantConsent.findMany({ where: { voyageLogId: log.id }, select: { participantId: true, purpose: true, state: true, grantedAt: true, revokedAt: true } }),
+    db.communityVoyageLogMedia.findMany({ where: { voyageLogId: log.id }, select: { id: true, derivativeChecksum: true, processingStatus: true, scanStatus: true, exifGpsRemoved: true } }),
+  ]);
+  const mediaConsents = media.length ? await db.communityVoyageLogMediaConsent.findMany({ where: { voyageLogMediaId: { in: media.map((item) => item.id) } }, select: { voyageLogMediaId: true, purpose: true, grantedAt: true, revokedAt: true } }) : [];
+  const participantInput = participants.map((participant) => ({ id: participant.id, displayNameSnapshot: participant.displayNameSnapshot, isChild: participant.isChild, consents: participantConsents.filter((consent) => consent.participantId === participant.id).map((consent) => ({ purpose: consent.purpose.endsWith(":DISPLAY_NAME") && consent.state === "APPROVED" ? "DISPLAY_IN_LOG" : consent.purpose, grantedAt: consent.grantedAt, revokedAt: consent.revokedAt })) }));
+  const mediaInput = media.map((item) => ({ ...item, consents: mediaConsents.filter((consent) => consent.voyageLogMediaId === item.id).map((consent) => ({ purpose: consent.purpose, grantedAt: consent.grantedAt, revokedAt: consent.revokedAt })) }));
+  const checksum = voyageLogProjectionChecksum(log);
+  assertVoyageLogPublishable({ visibility: log.visibility as VoyageLogVisibility, restrictions: restrictions.map((item) => item.restrictionType) as never, participants: participantInput, media: mediaInput, sourceProvenanceVerified: verified.valid, sourceWatermarkUnchanged: verified.sourceWatermark === keepsake.sourceWatermark, sourceChecksumUnchanged: verified.sourceProjectionChecksum === keepsake.sourceProjectionChecksum, publishedTaleVersionId: keepsake.publishedVersionId, projectionChecksum: checksum, searchEligible: log.visibility === "COMMUNITY", openGraphEligible: log.visibility === "COMMUNITY" });
+  return db.$transaction((tx) => tx.communityVoyageLog.update({ where: { id: log.id }, data: { lifecycleState: "PUBLISHED", verifiedCompletion: true, projectionChecksum: checksum, publishedAt: new Date(), searchIndexedAt: log.visibility === "COMMUNITY" ? new Date() : null, openGraphInvalidatedAt: null } }));
 }
