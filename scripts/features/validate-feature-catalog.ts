@@ -61,7 +61,10 @@ export function validateFeatureCatalog(entries: FeatureCatalogEntry[]): string[]
 export function validateCommittedFeatureCatalog(): string[] {
   const { entries } = loadFeatureCatalog();
   const errors = validateFeatureCatalog(entries);
-  const commit = execFileSync("git", ["rev-parse", "HEAD"], { cwd: repositoryRoot, encoding: "utf8" }).trim();
+  const commit = execFileSync("git", ["merge-base", "HEAD", "origin/main"], {
+    cwd: repositoryRoot,
+    encoding: "utf8",
+  }).trim();
   const expected = renderFeatureCatalog(sortedEntries(entries), commit);
   const output = path.join(catalogRoot, "FEATURE_CATALOG.md");
   if (!fs.existsSync(output) || fs.readFileSync(output, "utf8") !== expected)

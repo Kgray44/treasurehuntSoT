@@ -68,7 +68,10 @@ export function renderFeatureCatalog(entries: FeatureCatalogEntry[], auditedComm
 }
 
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
-  const commit = execFileSync("git", ["rev-parse", "HEAD"], { cwd: repositoryRoot, encoding: "utf8" }).trim();
+  const commit = execFileSync("git", ["merge-base", "HEAD", "origin/main"], {
+    cwd: repositoryRoot,
+    encoding: "utf8",
+  }).trim();
   const { entries } = loadFeatureCatalog();
   fs.writeFileSync(path.join(catalogRoot, "FEATURE_CATALOG.md"), renderFeatureCatalog(entries, commit));
   console.log(`Generated Feature Catalog from ${entries.length} entries at ${commit}.`);
