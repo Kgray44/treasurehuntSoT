@@ -1,0 +1,136 @@
+[
+  {
+    "id": "FT-008",
+    "title": "Creator Studio",
+    "summary": "Creator Studio supports protected Chronicle authoring, graph editing, previews, and controlled archive actions.",
+    "status": "MAINLINE",
+    "program": "Studio",
+    "surfaces": ["/studio"],
+    "subfeatures": [
+      "Chronicle library",
+      "Block graph editing",
+      "Optimistic autosave",
+      "Accessible movement controls",
+      "Draft preview sessions"
+    ],
+    "evidence": [
+      { "kind": "path", "value": "src/chronicle/studio-service.ts" },
+      { "kind": "path", "value": "src/chronicle/api.ts" }
+    ],
+    "catalogVersion": 1
+  },
+  {
+    "id": "FT-009",
+    "title": "Twenty-Three-Type Story Block System",
+    "summary": "A stable registry defines reusable story blocks, validation, metadata, and safe unknown-type behavior.",
+    "status": "MAINLINE",
+    "program": "Studio",
+    "surfaces": ["/studio/chronicles/[id]"],
+    "subfeatures": [
+      "Narrative and direction blocks",
+      "Media and reveal blocks",
+      "Interaction blocks",
+      "Logic and completion blocks",
+      "Safe diagnostic fallback"
+    ],
+    "evidence": [
+      { "kind": "path", "value": "src/chronicle/block-registry.ts" },
+      { "kind": "path", "value": "src/chronicle/types.ts" }
+    ],
+    "catalogVersion": 1
+  },
+  {
+    "id": "FT-010",
+    "title": "Immutable Publishing, Editions, and Forks",
+    "summary": "Published Chronicle versions are immutable checksummed editions that active Voyages can pin safely.",
+    "status": "MAINLINE",
+    "program": "Studio",
+    "surfaces": ["/studio/chronicles/[id]/versions"],
+    "subfeatures": ["Graph validation", "Immutable snapshots", "Checksums", "Edition comparison", "Fork provenance"],
+    "evidence": [
+      { "kind": "path", "value": "src/chronicle/publishing.ts" },
+      { "kind": "path", "value": "src/chronicle/validation.ts" }
+    ],
+    "catalogVersion": 1
+  },
+  {
+    "id": "FT-011",
+    "title": "Asset Library and Media Pipeline",
+    "summary": "Creators manage validated reusable assets and safe derivative media through a version-aware library.",
+    "status": "MAINLINE",
+    "program": "Studio",
+    "surfaces": ["/studio/assets"],
+    "subfeatures": [
+      "MIME and magic-byte validation",
+      "Checksums",
+      "Derivative variants",
+      "Usage lookup",
+      "Authorized originals"
+    ],
+    "evidence": [
+      { "kind": "path", "value": "src/chronicle/assets.ts" },
+      { "kind": "path", "value": "src/private-content/media-validation.ts" }
+    ],
+    "catalogVersion": 1
+  },
+  {
+    "id": "FT-012",
+    "title": "Waypoint and Reference Library",
+    "summary": "Reusable Waypoints and references support authored directions and future provider integration without exposing private notes.",
+    "status": "MAINLINE",
+    "program": "Studio",
+    "surfaces": ["/studio/waypoints"],
+    "subfeatures": [
+      "Searchable Waypoints",
+      "Reference collections",
+      "Positive and negative references",
+      "Published snapshots",
+      "Player-safe projection"
+    ],
+    "evidence": [
+      { "kind": "path", "value": "src/domain/story.ts" },
+      { "kind": "path", "value": "src/chronicle/publishing.ts" }
+    ],
+    "catalogVersion": 1
+  },
+  {
+    "id": "FT-013",
+    "title": "Chronicle Artifact Definitions",
+    "summary": "Creators define reusable artifacts with visual, collection, relationship, and published-edition metadata.",
+    "status": "MAINLINE",
+    "program": "Studio",
+    "surfaces": ["/studio/artifacts"],
+    "subfeatures": [
+      "Artwork and reveal media",
+      "Inventory category",
+      "Assembly metadata",
+      "Artifact relationships",
+      "Published capture"
+    ],
+    "evidence": [
+      { "kind": "path", "value": "src/domain/story.ts" },
+      { "kind": "path", "value": "src/chronicle/publishing.ts" }
+    ],
+    "catalogVersion": 1
+  },
+  {
+    "id": "FT-014",
+    "title": "Authoritative Progression Engine",
+    "summary": "One transaction-aware progression engine evaluates authored rules and emits ordered canonical Voyage events.",
+    "status": "MAINLINE",
+    "program": "Studio and One Voyage",
+    "surfaces": ["/api/voyages", "/captain"],
+    "subfeatures": [
+      "Monotonic sequence",
+      "Idempotency keys",
+      "Typed variables",
+      "Rule evaluation",
+      "Transactional notifications"
+    ],
+    "evidence": [
+      { "kind": "path", "value": "src/chronicle/progression.ts" },
+      { "kind": "path", "value": "src/server/progression.ts" }
+    ],
+    "catalogVersion": 1
+  }
+]

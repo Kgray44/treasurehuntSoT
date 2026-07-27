@@ -1,0 +1,182 @@
+[
+  {
+    "id": "FT-005",
+    "title": "Invitation and Crew Lifecycle",
+    "summary": "Captains assemble exact-edition crews through individualized invitations with auditable, revocable lifecycle transitions.",
+    "status": "MAINLINE",
+    "program": "Player",
+    "surfaces": ["/join", "/player"],
+    "subfeatures": [
+      "Per-Player invitation credentials",
+      "Hash-only credential storage",
+      "Account-required acceptance",
+      "Atomic membership activation",
+      "Terminal access revocation"
+    ],
+    "evidence": [
+      { "kind": "path", "value": "src/platform/invitations.ts" },
+      { "kind": "path", "value": "src/platform/audit.ts" }
+    ],
+    "catalogVersion": 1
+  },
+  {
+    "id": "FT-006",
+    "title": "Player Library and Voyage Lifecycle",
+    "summary": "Players can discover, resume, archive, and reconcile exact-edition Voyage experiences across lifecycle states.",
+    "status": "MAINLINE",
+    "program": "Player",
+    "surfaces": ["/player"],
+    "subfeatures": [
+      "State-aware Voyage groups",
+      "Edition metadata",
+      "Pinned and hidden items",
+      "Historical archive",
+      "Realtime and polling reconciliation"
+    ],
+    "evidence": [
+      { "kind": "path", "value": "src/platform/libraries.ts" },
+      { "kind": "path", "value": "src/platform/state.ts" }
+    ],
+    "catalogVersion": 1
+  },
+  {
+    "id": "FT-015",
+    "title": "Canonical Player Journal",
+    "summary": "A Player-safe Journal represents active and historical Chronicles with physical and accessible reading modes.",
+    "status": "MAINLINE",
+    "program": "Player",
+    "surfaces": ["/player/voyages/[id]"],
+    "subfeatures": [
+      "Secret-filtered page model",
+      "Stable page identity",
+      "Physical PageFlip reader",
+      "Reduced-motion fallback",
+      "Historical presentation"
+    ],
+    "evidence": [
+      { "kind": "path", "value": "src/chronicle/journal-page-model.ts" },
+      { "kind": "path", "value": "src/chronicle/journal-contract.ts" }
+    ],
+    "catalogVersion": 1
+  },
+  {
+    "id": "FT-016",
+    "title": "Voyage Chart",
+    "summary": "The Player chart presents safe geography, progression, revealed routes, and current objectives.",
+    "status": "MAINLINE",
+    "program": "Player",
+    "surfaces": ["/player/voyages/[id]/chart"],
+    "subfeatures": [
+      "Authored locations",
+      "Reveal state",
+      "Route progression",
+      "Player-safe labels",
+      "Reduced-motion chart state"
+    ],
+    "evidence": [
+      { "kind": "path", "value": "src/domain/story.ts" },
+      { "kind": "path", "value": "src/chronicle/api.ts" }
+    ],
+    "catalogVersion": 1
+  },
+  {
+    "id": "FT-017",
+    "title": "Treasure Altar and Artifact Reveal",
+    "summary": "Awarded artifacts have authoritative reveal, inspection, collection, and fallback presentation states.",
+    "status": "MAINLINE",
+    "program": "Player",
+    "surfaces": ["/player/voyages/[id]/treasure"],
+    "subfeatures": [
+      "Unknown through awarded states",
+      "Collection grants",
+      "Artifact relationships",
+      "Inspection behavior",
+      "Server-confirmed success"
+    ],
+    "evidence": [
+      { "kind": "path", "value": "src/chronicle/progression.ts" },
+      { "kind": "path", "value": "src/domain/story.ts" }
+    ],
+    "catalogVersion": 1
+  },
+  {
+    "id": "FT-018",
+    "title": "Side-Quest Ledger",
+    "summary": "Optional Chronicle branches retain independent discovery, progression, reward, and completion behavior.",
+    "status": "MAINLINE",
+    "program": "Player",
+    "surfaces": ["/player/voyages/[id]/ledger"],
+    "subfeatures": [
+      "Optional objectives",
+      "Waypoint and artifact links",
+      "Captain commands",
+      "Player filters",
+      "Replay-safe presentation"
+    ],
+    "evidence": [
+      { "kind": "path", "value": "src/domain/story.ts" },
+      { "kind": "path", "value": "src/chronicle/progression.ts" }
+    ],
+    "catalogVersion": 1
+  },
+  {
+    "id": "FT-019",
+    "title": "Ship's Log",
+    "summary": "A readable, filterable, Player-safe event history records the Voyage's ordered narrative and operational moments.",
+    "status": "MAINLINE",
+    "program": "Player",
+    "surfaces": ["/player/voyages/[id]/log"],
+    "subfeatures": [
+      "Ordered event history",
+      "Captain annotations",
+      "Read state",
+      "Search and filters",
+      "Realtime insertion"
+    ],
+    "evidence": [
+      { "kind": "path", "value": "src/domain/ships-log.ts" },
+      { "kind": "path", "value": "src/platform/player-event-stream.ts" }
+    ],
+    "catalogVersion": 1
+  },
+  {
+    "id": "FT-020",
+    "title": "Finale Chamber",
+    "summary": "The finale has explicit protected release states and replay behavior that never repeats authoritative mutation.",
+    "status": "MAINLINE",
+    "program": "Player",
+    "surfaces": ["/player/voyages/[id]/finale"],
+    "subfeatures": [
+      "Sealed and unlocked states",
+      "Requirement progress",
+      "Captain controls",
+      "Static fallback",
+      "Nonmutating replay"
+    ],
+    "evidence": [
+      { "kind": "path", "value": "src/chronicle/progression.ts" },
+      { "kind": "path", "value": "src/animation/scenes/story.scene.ts" }
+    ],
+    "catalogVersion": 1
+  },
+  {
+    "id": "FT-021",
+    "title": "Realtime Delivery, Presence, and Replay",
+    "summary": "Authenticated event delivery separates durable server replay from observed and acknowledged Player presentation.",
+    "status": "MAINLINE",
+    "program": "Player",
+    "surfaces": ["/api/player/events", "/player"],
+    "subfeatures": [
+      "Authenticated SSE",
+      "Durable replay",
+      "Idempotent acknowledgment",
+      "Access revalidation",
+      "Polling fallback"
+    ],
+    "evidence": [
+      { "kind": "path", "value": "src/platform/player-event-stream.ts" },
+      { "kind": "path", "value": "src/domain/replay.ts" }
+    ],
+    "catalogVersion": 1
+  }
+]

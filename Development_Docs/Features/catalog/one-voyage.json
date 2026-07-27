@@ -1,0 +1,23 @@
+[
+  {
+    "id": "FT-023",
+    "title": "Verification Provider Framework",
+    "summary": "A narrow versioned verification boundary accepts trusted evidence without giving helpers or providers unrestricted progression control.",
+    "status": "MAINLINE",
+    "program": "One Voyage",
+    "surfaces": ["/api/verification", "/captain"],
+    "subfeatures": [
+      "Bound verification requests",
+      "Versioned evidence envelope",
+      "Idempotent recovery",
+      "Captain override",
+      "Development simulator"
+    ],
+    "evidence": [
+      { "kind": "path", "value": "src/server/progression.ts" },
+      { "kind": "path", "value": "src/domain/story.ts" }
+    ],
+    "limitations": ["Real camera capture and recognition are not implemented."],
+    "catalogVersion": 1
+  }
+]

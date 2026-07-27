@@ -1,0 +1,22 @@
+[
+  {
+    "id": "FT-004",
+    "title": "Chronicle Passport and Public Profile",
+    "summary": "Wayfarer separates a private Chronicle Passport from a privacy-governed public identity.",
+    "status": "MAINLINE",
+    "program": "Wayfarer",
+    "surfaces": ["/passport", "/profile/[handle]"],
+    "subfeatures": [
+      "Canonical handles",
+      "Historical redirects",
+      "Granular visibility",
+      "Typed preferences",
+      "External identity simulator"
+    ],
+    "evidence": [
+      { "kind": "path", "value": "src/wayfarer/profile.ts" },
+      { "kind": "path", "value": "src/wayfarer/providers.ts" }
+    ],
+    "catalogVersion": 1
+  }
+]

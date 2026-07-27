@@ -1,0 +1,22 @@
+[
+  {
+    "id": "FT-007",
+    "title": "Captain Voyage Operations",
+    "summary": "Captains create, launch, operate, recover, and reconcile live Voyages through authoritative commands.",
+    "status": "MAINLINE",
+    "program": "Captain",
+    "surfaces": ["/captain", "/captain/voyages/[id]"],
+    "subfeatures": [
+      "Voyage creation wizard",
+      "Crew readiness",
+      "Command idempotency",
+      "Pause and resume",
+      "Operational audit trail"
+    ],
+    "evidence": [
+      { "kind": "path", "value": "src/server/admin-command.ts" },
+      { "kind": "path", "value": "src/domain/admin.ts" }
+    ],
+    "catalogVersion": 1
+  }
+]
