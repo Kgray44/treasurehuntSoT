@@ -135,7 +135,7 @@ export async function scanPrivateContentReport(root = process.cwd()): Promise<Pr
     if (/\.(?:ts|tsx|js|json|md|env|txt)$/i.test(file)) {
       const text = await readFile(file, "utf8");
       const sentinelAllowed =
-        /^(src|scripts|tests)[\\/].*private-content[\\/]|^Development_Docs[\\/]Private_Content_Test_Plan\.md$/.test(
+        /^(src|scripts|tests)[\\/].*private-content[\\/]|^Development_Docs[\\/]Archive[\\/]Private_Content_Test_Plan\.md$/.test(
           relative,
         );
       const nonWaivableSecret = pemPrivateKey.test(text) || forbiddenContent[0].test(text);
