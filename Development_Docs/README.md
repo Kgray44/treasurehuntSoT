@@ -25,3 +25,13 @@ Deleting a tracked file locally and committing that deletion also removes it fro
 Preserve authored formatting and native file types. Do not rewrite a document merely to normalize it, and do not use this directory as a dumping ground for terminal output, build artifacts, dependency archives, database dumps, application installers, or routine generated test results.
 
 Git tracks files rather than empty directories. A new subdirectory is synchronized automatically when it contains an eligible file; use an intentional `.gitkeep` only when preserving an otherwise empty directory is genuinely necessary.
+
+## Project Sounding Line
+
+[Project Sounding Line](Project_Sounding_Line_Governing_Document.md) is the
+repository's governing baseline for software verification, parallel test
+infrastructure, evidence, release gates, and Codex testing obligations. Its
+[testing documentation index](Testing/README.md) distinguishes the current
+serialized validation harness from the future architecture. **GOVERNING
+BASELINE COMPLETE — IMPLEMENTATION NOT STARTED.** It remains separate from
+Project Drydock, which owns authored Chronicle validity and simulation.
