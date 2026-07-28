@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "status": "target-policy-not-implemented",
+  "resources": [
+    { "id": "node-slot", "capacity": "configured-worker-capacity", "exclusive": false },
+    { "id": "vitest-worker-pool", "capacity": 4, "exclusive": false },
+    { "id": "validation-runtime", "capacity": 1, "exclusive": true },
+    { "id": "prisma-sqlite-client", "capacity": 1, "exclusive": true },
+    { "id": "sqlite-clone", "capacity": "per-run", "exclusive": true },
+    { "id": "mysql-schema", "capacity": "per-run", "exclusive": true },
+    { "id": "application-port", "capacity": "per-run", "exclusive": true },
+    { "id": "restart-port", "capacity": "per-run", "exclusive": true },
+    { "id": "browser-chromium", "capacity": "per-shard", "exclusive": true },
+    { "id": "browser-webkit", "capacity": "per-shard", "exclusive": true },
+    { "id": "media-root", "capacity": "per-run", "exclusive": true },
+    { "id": "private-content-root", "capacity": "per-run", "exclusive": true },
+    { "id": "trace-root", "capacity": "per-run", "exclusive": true },
+    { "id": "production-build-directory", "capacity": "per-run", "exclusive": true },
+    { "id": "scanner", "capacity": "provider-configured", "exclusive": true },
+    { "id": "external-provider", "capacity": "provider-configured", "exclusive": true }
+  ]
+}

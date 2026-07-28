@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "status": "governed-empty-registry",
+  "requiredFields": [
+    "suiteId",
+    "signature",
+    "owner",
+    "authority",
+    "openedAt",
+    "expiresAt",
+    "remediationDeadline",
+    "releaseEffect",
+    "reason"
+  ],
+  "entries": []
+}

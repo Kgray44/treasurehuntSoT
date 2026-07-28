@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "status": "target-policy-not-implemented",
+  "gates": [
+    {
+      "id": "local-change",
+      "requiredSuites": ["static.core"],
+      "conditionalSuites": ["unit.core", "browser.auth", "browser.player-journal", "security.private-content"]
+    },
+    {
+      "id": "subsystem",
+      "requiredSuites": ["static.core", "unit.core"],
+      "conditionalSuites": ["database.sqlite", "browser.auth", "browser.player-journal", "security.private-content"]
+    },
+    {
+      "id": "cross-project",
+      "requiredSuites": ["static.core", "unit.core", "contract.wayfarer-history"],
+      "conditionalSuites": ["database.sqlite", "browser.auth", "browser.player-journal", "security.private-content"]
+    },
+    {
+      "id": "mainline",
+      "requiredSuites": [
+        "static.core",
+        "unit.core",
+        "database.sqlite",
+        "compatibility.browser",
+        "security.private-content",
+        "release.full"
+      ],
+      "conditionalSuites": ["migration.mysql"]
+    },
+    {
+      "id": "release-candidate",
+      "requiredSuites": ["release.full"],
+      "conditionalSuites": ["migration.mysql", "compatibility.browser", "security.private-content"]
+    },
+    { "id": "external-provider", "requiredSuites": ["migration.mysql"], "conditionalSuites": [] }
+  ]
+}

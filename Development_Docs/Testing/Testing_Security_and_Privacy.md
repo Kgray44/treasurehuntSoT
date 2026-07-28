@@ -1,0 +1,5 @@
+# Testing Security and Privacy
+
+Tests use synthetic data only. They must not include real names (unless explicitly approved synthetic fixtures), invitation secrets, passwords, non-approved emails, private Chronicle content, raw location history, object-store keys, KMS ciphertext/credentials, access tokens, or session cookies. Current `.gitignore` already excludes database, private-content, runtime, artifact, environment, certificate, and log material; Sounding Line preserves and validates that boundary.
+
+Fixtures are generated/minimal and have approved test-email domains. Screenshots, traces, browser storage, logs, reports, and receipts are redacted, restricted to run roots, and retained per governed policy. Browser local storage/cookies are cleaned with the run. Protected-media and location fixtures are synthetic; provider namespaces are isolated. Tests never touch production data or canonical development data. Security scans require authorization; malicious fixtures and EICAR handling, if used, stay isolated and cannot reach real scanners/providers without explicit configured permission. Repository and staged-diff private-content scans remain release inputs.

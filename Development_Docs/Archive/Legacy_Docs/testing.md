@@ -1,5 +1,15 @@
 # Testing
 
+## Project Sounding Line
+
+The repository's testing-system governing baseline is [Project Sounding
+Line](../Development_Docs/Project_Sounding_Line_Governing_Document.md), with
+the [current-state audit and future architecture](../Development_Docs/Testing/README.md).
+It documents the current harness and future policy only: **GOVERNING BASELINE
+COMPLETE — IMPLEMENTATION NOT STARTED.** Project Drydock remains responsible
+for authored Chronicle validation and simulation; Sounding Line coordinates
+software-system evidence without interpreting story semantics.
+
 ## Project One Voyage Phase 2
 
 Run `npm run rehearse:one-voyage:mysql` for the disposable MySQL 8 ordered

@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "status": "seed-map-conservative-not-complete",
+  "pathMappings": [
+    {
+      "path": "src/components/animation/PageFlipBook.tsx",
+      "suiteIds": ["unit.core", "browser.player-journal", "compatibility.browser"],
+      "contractIds": ["journal-ready-state", "lanternwake-presentation-receipt"]
+    },
+    {
+      "path": "prisma/schema.prisma",
+      "suiteIds": ["static.core", "database.sqlite", "migration.mysql", "release.full"],
+      "contractIds": ["migration-parity", "public-privacy-projection"]
+    },
+    {
+      "path": "src/wayfarer/**",
+      "suiteIds": ["unit.core", "contract.wayfarer-history", "browser.auth"],
+      "contractIds": ["wayfarer-history-projection", "public-privacy-projection"]
+    },
+    {
+      "path": "src/private-content/**",
+      "suiteIds": ["security.private-content", "release.full"],
+      "contractIds": ["sealed-hold-private-delivery", "public-privacy-projection"]
+    },
+    { "path": "tests/e2e/**", "suiteIds": ["compatibility.browser", "release.full"], "contractIds": [] }
+  ],
+  "contractMappings": [
+    { "contractId": "migration-parity", "suiteIds": ["database.sqlite", "migration.mysql", "release.full"] },
+    {
+      "contractId": "journal-ready-state",
+      "suiteIds": ["unit.core", "browser.player-journal", "compatibility.browser"]
+    },
+    { "contractId": "sealed-hold-private-delivery", "suiteIds": ["security.private-content", "release.full"] },
+    { "contractId": "authentication-authorization", "suiteIds": ["unit.core", "browser.auth", "release.full"] }
+  ],
+  "uncertainImpact": "select-owner-and-release-policy-expansion"
+}
