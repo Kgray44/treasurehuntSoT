@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "status": "seed-map-conservative-not-complete",
+  "status": "phase-1-conservative-plan-only-map",
   "pathMappings": [
     {
       "path": "src/components/animation/PageFlipBook.tsx",

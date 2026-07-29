@@ -1,0 +1,16 @@
+{
+  "version": "1.0.0",
+  "status": "phase-1-implemented-plan-only",
+  "registries": [
+    "ownership.json",
+    "contracts.json",
+    "resources.json",
+    "suites.json",
+    "impact-map.json",
+    "release-gates.json",
+    "quarantine.json",
+    "validation-debt.json"
+  ],
+  "authority": "current-harness-remains-authoritative",
+  "plannerAuthority": "non-authoritative-plan-only"
+}

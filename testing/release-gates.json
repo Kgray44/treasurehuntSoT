@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "status": "target-policy-not-implemented",
+  "status": "phase-1-non-authoritative-gate-catalog",
   "gates": [
     {
       "id": "local-change",

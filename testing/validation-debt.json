@@ -1,0 +1,33 @@
+{
+  "version": 1,
+  "status": "phase-1-visible-debt",
+  "entries": [
+    {
+      "id": "debt.historical-timing",
+      "owner": "breakwater",
+      "severity": "medium",
+      "reason": "No trustworthy per-suite timing and failure-signature store exists at this source watermark.",
+      "effect": "Plans retain stable order and do not make duration-aware scheduling claims.",
+      "openedAt": "2026-07-29",
+      "resolution": "Populate governed normalized receipts in a later phase."
+    },
+    {
+      "id": "debt.harborlight-phase4-reconciliation",
+      "owner": "harborlight",
+      "severity": "high",
+      "reason": "Concurrent Harborlight Phase 4 surfaces are intentionally not copied into this source watermark.",
+      "effect": "Unknown Harborlight impact broadens to all registered suites and requires post-merge metadata reconciliation.",
+      "openedAt": "2026-07-29",
+      "resolution": "Re-inventory accepted Harborlight changes after its merge."
+    },
+    {
+      "id": "debt.external-provider-evidence",
+      "owner": "platform-foundation",
+      "severity": "high",
+      "reason": "MySQL and configured provider proof are environment-dependent and are not locally asserted by the plan-only tool.",
+      "effect": "External-provider gates remain explicit and unavailable evidence is never reported as a pass.",
+      "openedAt": "2026-07-29",
+      "resolution": "Run the existing configured rehearsal in an authorized isolated environment."
+    }
+  ]
+}

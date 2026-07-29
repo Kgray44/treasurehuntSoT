@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "status": "target-policy-not-implemented",
+  "status": "phase-1-current-resource-declarations",
   "resources": [
     { "id": "node-slot", "capacity": "configured-worker-capacity", "exclusive": false },
     { "id": "vitest-worker-pool", "capacity": 4, "exclusive": false },

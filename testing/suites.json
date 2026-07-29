@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "status": "governing-baseline-not-implemented",
+  "status": "phase-1-current-suite-catalog",
   "suites": [
     {
       "id": "static.core",
