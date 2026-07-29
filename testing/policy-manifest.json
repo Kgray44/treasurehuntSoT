@@ -1,6 +1,6 @@
 {
-  "version": "1.0.0",
-  "status": "phase-1-implemented-plan-only",
+  "version": "1.1.0",
+  "status": "phase-2-harborlight-reconciled-governed-execution",
   "registries": [
     "ownership.json",
     "contracts.json",
@@ -13,5 +13,5 @@
     "file-dispositions.json"
   ],
   "authority": "current-harness-remains-authoritative",
-  "plannerAuthority": "non-authoritative-plan-only"
+  "plannerAuthority": "governed-local-execution-with-allowlisted-adapters"
 }

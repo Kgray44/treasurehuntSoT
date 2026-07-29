@@ -1,9 +1,9 @@
 /*
  * Project Sounding Line Phase 2 runtime.
  *
- * This module is deliberately dependency-free and only executes internal,
- * allowlisted fixtures.  Product commands remain under the legacy harness
- * until an adapter has separately been accepted.
+ * This module is deliberately dependency-free. Product execution crosses an
+ * explicit allowlisted adapter boundary; the legacy full harness remains the
+ * sole global-release authority.
  */
 import { createHash, randomUUID } from "node:crypto";
 import { copyFile, mkdir, open, readFile, realpath, rm, writeFile } from "node:fs/promises";
@@ -13,6 +13,7 @@ import os from "node:os";
 import path from "node:path";
 import process from "node:process";
 import { DatabaseSync } from "node:sqlite";
+import { executeAdapter as invokeAdapter } from "./adapters.mjs";
 
 const MARKER = "project-sounding-line-phase-2";
 const LEASE_FILE = "broker-leases.json";
@@ -54,6 +55,31 @@ const safeName = (value, label = "identifier") => {
     throw new SoundingLineError("UNSAFE_IDENTIFIER", `${label} is unsafe`);
   return value;
 };
+export function processIdentity({
+  pid = process.pid,
+  startedAt = String(process.uptime()),
+  hostBootId = os.hostname(),
+  controllerToken,
+  commandFingerprint,
+} = {}) {
+  if (!Number.isInteger(pid) || pid < 1 || !controllerToken || !commandFingerprint)
+    throw new SoundingLineError(
+      "INVALID_PROCESS_IDENTITY",
+      "process identity must include pid, start, boot, controller, and command proof",
+    );
+  return {
+    pid,
+    startedAt: String(startedAt),
+    hostBootId: String(hostBootId),
+    controllerToken: String(controllerToken),
+    commandFingerprint: String(commandFingerprint),
+  };
+}
+export function classifyProcessOwnership(recorded, observed) {
+  const fields = ["pid", "startedAt", "hostBootId", "controllerToken", "commandFingerprint"];
+  if (!recorded || !observed || fields.some((field) => recorded[field] !== observed[field])) return "QUARANTINED";
+  return "OWNED";
+}
 export const readJson = async (file, fallback) => {
   try {
     return JSON.parse(await readFile(file, "utf8"));
@@ -130,8 +156,8 @@ export async function createRuntime({ base = defaultRuntimeBase(), repositoryRoo
 
 export function validateSealedPlan(plan, identity = {}) {
   if (!plan || typeof plan !== "object") throw new SoundingLineError("INVALID_PLAN", "plan must be an object");
-  if (plan.nonAuthoritative !== true || plan.execution !== "forbidden")
-    throw new SoundingLineError("INVALID_PLAN_IDENTITY", "only Phase 1 sealed nonauthoritative plans are accepted");
+  if (plan.nonAuthoritative !== true || !["forbidden", "governed-local"].includes(plan.execution))
+    throw new SoundingLineError("INVALID_PLAN_IDENTITY", "only sealed nonauthoritative plans are accepted");
   if (!/^[a-f0-9]{64}$/u.test(plan.policyDigest ?? "") || !/^[a-f0-9]{64}$/u.test(plan.sourceDigest ?? ""))
     throw new SoundingLineError("INVALID_PLAN_DIGEST", "plan lacks policy or source digest");
   const unsigned = { ...plan };
@@ -278,14 +304,18 @@ export async function releaseRunLeases(run, reason = "cleanup") {
   });
 }
 
-export async function inspectOrphans(base = defaultRuntimeBase()) {
+export async function inspectOrphans(base = defaultRuntimeBase(), { observeProcess = () => null } = {}) {
   const safeBase = await assertSafeBase(base);
   const state = await readJson(path.join(safeBase, LEASE_FILE), { version: 1, leases: [] });
   const result = [];
   for (const lease of state.leases.filter((item) => item.state === "ACTIVE" && item.expiresAt <= now())) {
     const root = path.join(safeBase, lease.runId);
     const marker = await markerFor(root);
-    const classification = marker?.controllerToken === lease.controllerToken ? "SAFE_STALE" : "AMBIGUOUS";
+    const controllerMatches = marker?.controllerToken === lease.controllerToken;
+    const processState = lease.ownerProcess
+      ? classifyProcessOwnership(lease.ownerProcess, observeProcess(lease.ownerProcess))
+      : "OWNED";
+    const classification = controllerMatches && processState === "OWNED" ? "SAFE_STALE" : "AMBIGUOUS";
     result.push({ leaseId: lease.id, runId: lease.runId, classification });
     if (classification === "AMBIGUOUS") {
       lease.state = "QUARANTINED";
@@ -455,6 +485,50 @@ export async function cleanupRuntime(run, reason = "success", services = []) {
   return { released: released.length, state: run.state };
 }
 
+const redactLog = (value) =>
+  String(value).replace(
+    /((?:api[_-]?key|access[_-]?token|auth[_-]?token|password|secret)\s*[=:]\s*)[^\s]+/giu,
+    "$1[REDACTED]",
+  );
+
+/** Execute an already-resolved allowlisted adapter.  The adapter catalogue is
+ * deliberately outside policy data; this boundary prevents policy injection
+ * from becoming shell execution. */
+export async function executeProductAdapter(run, adapter, { cwd, env = {} } = {}) {
+  await assertRun(run);
+  if (!adapter?.id || !Array.isArray(adapter.resources) || !Array.isArray(adapter.command))
+    throw new SoundingLineError("INVALID_ADAPTER", "adapter was not resolved by the governed catalogue");
+  const leases = await acquireBundle(
+    run,
+    adapter.resources.map((type) => ({ type, key: capacities[type] ? "shared-capacity" : adapter.id })),
+  );
+  const startedAt = now();
+  await writeReceipt(run, "adapter-started", {
+    adapter: adapter.id,
+    command: adapter.command,
+    leaseIds: leases.map((lease) => lease.id),
+  });
+  try {
+    const result = await invokeAdapter(adapter, { cwd, env: { ...env, SOUNDING_LINE_RUN_ROOT: run.root } });
+    const log = redactLog(result.log);
+    await writeFile(path.join(run.root, "logs", `adapter-${safeName(adapter.id, "adapter id")}.log`), log, "utf8");
+    const receipt = await writeReceipt(run, "adapter-finished", {
+      adapter: adapter.id,
+      command: adapter.command,
+      startedAt,
+      finishedAt: now(),
+      exitCode: result.exitCode,
+      signal: result.signal,
+      childPid: result.pid ?? null,
+      logBytes: Buffer.byteLength(log),
+      status: result.exitCode === 0 ? "PASS" : "FAIL",
+    });
+    return { ...result, log, receipt, status: result.exitCode === 0 ? "PASS" : "FAIL" };
+  } finally {
+    await releaseRunLeases(run, `adapter-${adapter.id}-complete`);
+  }
+}
+
 export async function executeGraph(plan, handlers, { cancelled = () => false } = {}) {
   validateExecutionGraph(plan);
   const graph = new Map(plan.graph.map((node) => [node.suiteId, node]));
@@ -490,11 +564,25 @@ export async function executeGraph(plan, handlers, { cancelled = () => false } =
 
 export function compatibilityFor(suite) {
   safeName(suite, "suite id");
+  const certified = new Set([
+    "sounding-line.runtime",
+    "harborlight.phase4.unit",
+    "harborlight.phase4.sqlite",
+    "harborlight.phase4.browser",
+  ]);
+  if (certified.has(suite))
+    return {
+      suiteId: suite,
+      legacyAuthority: "scripts/test-all.ps1",
+      mode: "RESOURCE_LEASED_FOCUSED",
+      phase2Authority: "governed-local-allowlisted-adapter",
+      globalLockNarrowing: "CERTIFIED_FOCUSED_ONLY",
+    };
   return {
     suiteId: suite,
     legacyAuthority: "scripts/test-all.ps1",
     mode: "EMERGENCY_SERIAL",
     phase2Authority: "nonauthoritative-pilot",
-    globalLockNarrowing: "PENDING_HARBORLIGHT_INTEGRATION",
+    globalLockNarrowing: "GLOBAL_LOCK_RETAINED",
   };
 }

@@ -22,7 +22,36 @@
       "suiteIds": ["security.private-content", "release.full"],
       "contractIds": ["sealed-hold-private-delivery", "public-privacy-projection"]
     },
-    { "path": "tests/e2e/**", "suiteIds": ["compatibility.browser", "release.full"], "contractIds": [] }
+    { "path": "tests/e2e/**", "suiteIds": ["compatibility.browser", "release.full"], "contractIds": [] },
+    {
+      "path": "src/community/**",
+      "suiteIds": [
+        "harborlight.phase4.unit",
+        "harborlight.phase4.sqlite",
+        "harborlight.phase4.browser",
+        "release.full"
+      ],
+      "contractIds": [
+        "community-moderation-integrity",
+        "community-trusted-scan-receipt",
+        "community-operational-leases"
+      ]
+    },
+    {
+      "path": "prisma/migrations/20260729120000_harborlight_phase4_moderation_operations/**",
+      "suiteIds": ["harborlight.phase4.sqlite", "harborlight.phase4.browser", "release.full"],
+      "contractIds": ["community-migration-integrity"]
+    },
+    {
+      "path": "prisma/migrations/20260729121000_harborlight_phase4_relational_integrity/**",
+      "suiteIds": ["harborlight.phase4.sqlite", "harborlight.phase4.browser", "release.full"],
+      "contractIds": ["community-migration-integrity"]
+    },
+    {
+      "path": "tests/e2e/harborlight-phase4.spec.ts",
+      "suiteIds": ["harborlight.phase4.browser", "release.full"],
+      "contractIds": ["community-moderation-integrity"]
+    }
   ],
   "contractMappings": [
     { "contractId": "migration-parity", "suiteIds": ["database.sqlite", "migration.mysql", "release.full"] },
@@ -31,7 +60,23 @@
       "suiteIds": ["unit.core", "browser.player-journal", "compatibility.browser"]
     },
     { "contractId": "sealed-hold-private-delivery", "suiteIds": ["security.private-content", "release.full"] },
-    { "contractId": "authentication-authorization", "suiteIds": ["unit.core", "browser.auth", "release.full"] }
+    {
+      "contractId": "authentication-authorization",
+      "suiteIds": ["unit.core", "browser.auth", "harborlight.phase4.browser", "release.full"]
+    },
+    {
+      "contractId": "community-moderation-integrity",
+      "suiteIds": ["harborlight.phase4.unit", "harborlight.phase4.browser", "release.full"]
+    },
+    {
+      "contractId": "community-trusted-scan-receipt",
+      "suiteIds": ["harborlight.phase4.unit", "harborlight.phase4.browser", "release.full"]
+    },
+    { "contractId": "community-operational-leases", "suiteIds": ["harborlight.phase4.unit", "release.full"] },
+    {
+      "contractId": "community-migration-integrity",
+      "suiteIds": ["harborlight.phase4.sqlite", "harborlight.phase4.browser", "release.full"]
+    }
   ],
   "uncertainImpact": "select-owner-and-release-policy-expansion"
 }

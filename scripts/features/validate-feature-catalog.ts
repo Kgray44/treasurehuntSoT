@@ -19,6 +19,24 @@ function gitRefExists(ref: string): boolean {
   }
 }
 
+function auditedCommitForCatalog(output: string): string {
+  try {
+    return execFileSync("git", ["merge-base", "HEAD", "origin/main"], {
+      cwd: repositoryRoot,
+      encoding: "utf8",
+    }).trim();
+  } catch {
+    // The isolated validation runtime intentionally excludes .git. Its copied
+    // generated catalog is still verifiable when the embedded audited commit
+    // is used as the render identity; branch-only entries continue to require
+    // Git when present through validateEntry.
+    const existing = fs.readFileSync(output, "utf8");
+    const match = existing.match(/^Audited source commit: `([a-f0-9]{40})`$/mu);
+    if (!match?.[1]) throw new Error("Feature Catalog cannot establish an audited commit without Git metadata.");
+    return match[1];
+  }
+}
+
 function validateEntry(entry: FeatureCatalogEntry, errors: string[]): void {
   const text = [entry.title, entry.summary, ...entry.subfeatures, ...entry.surfaces].join(" ");
   if (forbiddenText.test(text))
@@ -61,12 +79,9 @@ export function validateFeatureCatalog(entries: FeatureCatalogEntry[]): string[]
 export function validateCommittedFeatureCatalog(): string[] {
   const { entries } = loadFeatureCatalog();
   const errors = validateFeatureCatalog(entries);
-  const commit = execFileSync("git", ["merge-base", "HEAD", "origin/main"], {
-    cwd: repositoryRoot,
-    encoding: "utf8",
-  }).trim();
-  const expected = renderFeatureCatalog(sortedEntries(entries), commit);
   const output = path.join(catalogRoot, "FEATURE_CATALOG.md");
+  const commit = auditedCommitForCatalog(output);
+  const expected = renderFeatureCatalog(sortedEntries(entries), commit);
   if (!fs.existsSync(output) || fs.readFileSync(output, "utf8") !== expected)
     errors.push("Generated FEATURE_CATALOG.md is stale; run npm run features:sync.");
   return errors;

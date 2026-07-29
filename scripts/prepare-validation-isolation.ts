@@ -29,6 +29,7 @@ type FileFamilyFingerprint =
 type MutationCounts = {
   adminAuditLog: number;
   commandExecution: number;
+  communityModerationCase: number;
   communityVoyageLog: number;
   platformAuditEvent: number;
   progressEvent: number;
@@ -82,6 +83,7 @@ type PrismaClientLike = {
   $disconnect(): Promise<void>;
   adminAuditLog: { count(): Promise<number> };
   commandExecution: { count(): Promise<number> };
+  communityModerationCase: { count(): Promise<number> };
   communityVoyageLog: { count(): Promise<number> };
   platformAuditEvent: {
     count(args?: unknown): Promise<number>;
@@ -296,21 +298,30 @@ async function createClient(databasePath: string): Promise<PrismaClientLike> {
 }
 
 async function mutationCounts(client: PrismaClientLike): Promise<MutationCounts> {
-  const [adminAuditLog, commandExecution, communityVoyageLog, platformAuditEvent, progressEvent, taleSessionEvent] =
-    await Promise.all([
-      client.adminAuditLog.count(),
-      client.commandExecution.count(),
-      client.communityVoyageLog.count(),
-      client.platformAuditEvent.count({
-        where: { action: { not: "VALIDATION_DATABASE_IDENTITY" } },
-      }),
-      client.progressEvent.count(),
-      client.taleSessionEvent.count(),
-    ]);
+  const [
+    adminAuditLog,
+    commandExecution,
+    communityModerationCase,
+    communityVoyageLog,
+    platformAuditEvent,
+    progressEvent,
+    taleSessionEvent,
+  ] = await Promise.all([
+    client.adminAuditLog.count(),
+    client.commandExecution.count(),
+    client.communityModerationCase.count(),
+    client.communityVoyageLog.count(),
+    client.platformAuditEvent.count({
+      where: { action: { not: "VALIDATION_DATABASE_IDENTITY" } },
+    }),
+    client.progressEvent.count(),
+    client.taleSessionEvent.count(),
+  ]);
 
   return {
     adminAuditLog,
     commandExecution,
+    communityModerationCase,
     communityVoyageLog,
     platformAuditEvent,
     progressEvent,
@@ -448,8 +459,12 @@ async function recordServer(args: ReturnType<typeof parseArguments>) {
   if (!Number.isSafeInteger(launcherProcessId) || launcherProcessId <= 0) {
     throw new Error("Server launcher PID is invalid.");
   }
-  if (port !== 3100) {
-    throw new Error("The validation server must own port 3100.");
+  const soundingLineLane = process.env.FOREVER_SOUNDING_LINE_LANE;
+  const isCertifiedSoundingLineLane = /^(harborlight-a|harborlight-b)$/u.test(soundingLineLane ?? "");
+  if (port !== 3100 && !(isCertifiedSoundingLineLane && port >= 3101 && port <= 3199)) {
+    throw new Error(
+      "The validation server must own port 3100, or a certified Sounding Line lane port from 3101 through 3199.",
+    );
   }
   if (
     path.basename(copyDatabase) !== report.isolatedDatabase.fileName ||
@@ -469,7 +484,7 @@ async function recordServer(args: ReturnType<typeof parseArguments>) {
   report.server = {
     pid: processId,
     port,
-    baseUrl: "http://127.0.0.1:3100",
+    baseUrl: `http://127.0.0.1:${port}`,
     databaseFileName: path.basename(copyDatabase),
     nonceHash,
     launcherPid: launcherProcessId,

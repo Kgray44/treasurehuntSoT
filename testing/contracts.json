@@ -92,6 +92,34 @@
       "authority": "landfall",
       "owners": ["landfall", "one-voyage"],
       "critical": true
+    },
+    {
+      "id": "community-moderation-integrity",
+      "name": "Community moderation transitions and conflict-of-interest denial",
+      "authority": "harborlight",
+      "owners": ["harborlight"],
+      "critical": true
+    },
+    {
+      "id": "community-trusted-scan-receipt",
+      "name": "Community scanner receipt trust and fail-closed verification",
+      "authority": "harborlight",
+      "owners": ["harborlight", "sealed-hold"],
+      "critical": true
+    },
+    {
+      "id": "community-operational-leases",
+      "name": "Community worker, scheduler, outbox, and rate-limit lease behavior",
+      "authority": "harborlight",
+      "owners": ["harborlight"],
+      "critical": true
+    },
+    {
+      "id": "community-migration-integrity",
+      "name": "Community SQLite and MySQL migration integrity",
+      "authority": "harborlight",
+      "owners": ["harborlight", "platform-foundation"],
+      "critical": true
     }
   ]
 }

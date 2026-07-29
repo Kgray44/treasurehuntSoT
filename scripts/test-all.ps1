@@ -13,10 +13,31 @@ param(
     [string]$BrowserTestPath,
     [string[]]$BrowserArgs = @(),
     [string]$BrowserGrep = "",
-    [switch]$SkipProductionPerformance
+    [switch]$SkipProductionPerformance,
+    [string]$SoundingLineLane = "",
+    [int]$SoundingLinePort = 0
 )
 $ErrorActionPreference = "Stop"
 . (Join-Path $PSScriptRoot "dev-common.ps1")
+
+# This opt-in is intentionally narrower than the legacy harness.  It exists
+# only for the two, explicitly named, Sounding Line Harborlight browser lanes;
+# every ordinary invocation keeps the historical global lock and port 3100.
+$isSoundingLineLane = $SoundingLineLane -ne ""
+if ($isSoundingLineLane) {
+    if ($SoundingLineLane -notin @("harborlight-a", "harborlight-b")) {
+        throw "SoundingLineLane must be harborlight-a or harborlight-b."
+    }
+    if (-not $BrowserOnly -or -not $BrowserTestPath -or $BrowserTestPath.Replace('\', '/') -ne "tests/e2e/harborlight-phase4.spec.ts") {
+        throw "Sounding Line lanes are limited to BrowserOnly Harborlight Phase 4 acceptance."
+    }
+    if ($SoundingLinePort -lt 3101 -or $SoundingLinePort -gt 3199) {
+        throw "SoundingLinePort must be an owned loopback port from 3101 through 3199."
+    }
+} elseif ($SoundingLinePort -ne 0) {
+    throw "SoundingLinePort requires a named SoundingLineLane."
+}
+$validationServerPort = if ($isSoundingLineLane) { $SoundingLinePort } else { 3100 }
 
 if ($BrowserOnly -and $SkipBrowser) {
     throw "BrowserOnly and SkipBrowser cannot be used together."
@@ -27,7 +48,8 @@ if ($SkipBrowser -and ($BrowserTestPath -or $BrowserGrep -or $BrowserArgs.Count 
 
 $validationLockDirectory = Join-Path $env:LOCALAPPDATA "ForeverTreasureCompanion"
 [System.IO.Directory]::CreateDirectory($validationLockDirectory) | Out-Null
-$validationLockPath = Join-Path $validationLockDirectory "validation-runtime.lock"
+$validationLockName = if ($isSoundingLineLane) { "validation-runtime-$SoundingLineLane.lock" } else { "validation-runtime.lock" }
+$validationLockPath = Join-Path $validationLockDirectory $validationLockName
 try {
     # The validation runtime is intentionally shared so it can preserve the
     # canonical database boundary. Hold an exclusive OS lock for the entire
@@ -152,8 +174,8 @@ New-Item -ItemType Directory -Path $validationArtifacts -Force | Out-Null
 $node = Get-ForeverNode
 $nodeDirectory = Split-Path $node
 $env:PATH = "$nodeDirectory;$env:PATH"
-if ($env:PLAYWRIGHT_BASE_URL -and $env:PLAYWRIGHT_BASE_URL -ne "http://127.0.0.1:3100") {
-    throw "Validation requires PLAYWRIGHT_BASE_URL=http://127.0.0.1:3100."
+if ($env:PLAYWRIGHT_BASE_URL -and $env:PLAYWRIGHT_BASE_URL -ne "http://127.0.0.1:$validationServerPort") {
+    throw "Validation requires PLAYWRIGHT_BASE_URL=http://127.0.0.1:$validationServerPort."
 }
 if ($env:FOREVER_VALIDATION_PRODUCTION_PORT -and [int]$env:FOREVER_VALIDATION_PRODUCTION_PORT -ne 3200) {
     throw "Production restart validation is serialized on port 3200."
@@ -161,12 +183,13 @@ if ($env:FOREVER_VALIDATION_PRODUCTION_PORT -and [int]$env:FOREVER_VALIDATION_PR
 if ($env:FOREVER_PHASE3_PERFORMANCE_BASE_URL -and $env:FOREVER_PHASE3_PERFORMANCE_BASE_URL -ne "http://127.0.0.1:3200") {
     throw "Phase 3 production performance requires http://127.0.0.1:3200."
 }
-if ($env:PHASE3_BASE_URL -and $env:PHASE3_BASE_URL -notin @("http://127.0.0.1:3100", "http://127.0.0.1:3200")) {
+if ($env:PHASE3_BASE_URL -and $env:PHASE3_BASE_URL -notin @("http://127.0.0.1:$validationServerPort", "http://127.0.0.1:3200")) {
     throw "Phase 3 validation base URL must use the harness-owned port 3100 or 3200."
 }
-$env:PLAYWRIGHT_BASE_URL = "http://127.0.0.1:3100"
-$env:PHASE3_BASE_URL = "http://127.0.0.1:3100"
+$env:PLAYWRIGHT_BASE_URL = "http://127.0.0.1:$validationServerPort"
+$env:PHASE3_BASE_URL = "http://127.0.0.1:$validationServerPort"
 $env:FOREVER_PLAYWRIGHT_EXTERNAL_SERVER = "1"
+$env:FOREVER_SOUNDING_LINE_LANE = if ($isSoundingLineLane) { $SoundingLineLane } else { "" }
 $env:FOREVER_PHASE3_PERFORMANCE_BASE_URL = "http://127.0.0.1:3200"
 $productionPort = 3200
 if (-not $env:GM_USERNAME) { $env:GM_USERNAME = "kato" }
@@ -354,13 +377,13 @@ function Stop-OwnedProcessTree {
 }
 
 function Start-OwnedValidationServer {
-    Assert-TcpPortAvailable -Port 3100
-    $stdout = Join-Path $validationArtifacts "development-3100.out.log"
-    $stderr = Join-Path $validationArtifacts "development-3100.err.log"
+    Assert-TcpPortAvailable -Port $validationServerPort
+    $stdout = Join-Path $validationArtifacts "development-$validationServerPort.out.log"
+    $stderr = Join-Path $validationArtifacts "development-$validationServerPort.err.log"
     # Keep the long-running cross-browser harness on Webpack. Next 16's default
     # Turbopack development server can invalidate chunks while WebKit is still
     # consuming them, which turns one transport failure into a matrix-wide cascade.
-    $serverProcess = Start-Process -FilePath $node -ArgumentList "node_modules/next/dist/bin/next", "dev", "--webpack", "-H", "127.0.0.1", "-p", "3100" -WorkingDirectory $runtimeRoot -WindowStyle Hidden -RedirectStandardOutput $stdout -RedirectStandardError $stderr -PassThru
+    $serverProcess = Start-Process -FilePath $node -ArgumentList "node_modules/next/dist/bin/next", "dev", "--webpack", "-H", "127.0.0.1", "-p", "$validationServerPort" -WorkingDirectory $runtimeRoot -WindowStyle Hidden -RedirectStandardOutput $stdout -RedirectStandardError $stderr -PassThru
     $launcherIdentity = Get-ProcessIdentity -ProcessId $serverProcess.Id
     if (-not $launcherIdentity) { throw "Owned validation launcher identity could not be recorded." }
     $listenerProcessId = $null
@@ -371,7 +394,7 @@ function Start-OwnedValidationServer {
         while ([DateTime]::UtcNow -lt $deadline) {
             if ($serverProcess.HasExited) { throw "Owned validation server exited before identity verification." }
             try {
-                $identity = Invoke-RestMethod -Uri "http://127.0.0.1:3100/api/dev/validation/database-identity" -Method Get -TimeoutSec 3
+                $identity = Invoke-RestMethod -Uri "http://127.0.0.1:$validationServerPort/api/dev/validation/database-identity" -Method Get -TimeoutSec 3
                 if ($identity.validationDatabase -eq $true -and $identity.nonceMatch -eq $true) { break }
                 $identity = $null
             } catch {
@@ -381,25 +404,25 @@ function Start-OwnedValidationServer {
         }
         if (-not $identity) { throw "Owned validation server did not prove the isolated database identity." }
 
-        $ownerIds = @(Get-TcpPortOwnerIds -Port 3100)
+        $ownerIds = @(Get-TcpPortOwnerIds -Port $validationServerPort)
         if ($ownerIds.Count -ne 1) {
-            throw "Port 3100 does not have exactly one listener owner."
+            throw "Port $validationServerPort does not have exactly one listener owner."
         }
         $listenerProcessId = [int]$ownerIds[0]
         Assert-ProcessIdentityMatches -ExpectedIdentity $launcherIdentity -Label "Owned validation launcher"
         if (-not (Test-ProcessDescendsFrom -ChildProcessId $listenerProcessId -AncestorProcessId $serverProcess.Id)) {
-            throw "Port 3100 listener is not owned by the process tree started by validation."
+            throw "Port $validationServerPort listener is not owned by the process tree started by validation."
         }
         $listenerIdentity = Get-ProcessIdentity -ProcessId $listenerProcessId
-        if (-not $listenerIdentity) { throw "Port 3100 listener identity could not be recorded." }
+        if (-not $listenerIdentity) { throw "Port $validationServerPort listener identity could not be recorded." }
         $processIdentities = @(Get-OwnedProcessTreeSnapshot -LauncherIdentity $launcherIdentity)
         $recordedListener = @($processIdentities | Where-Object {
             [int]$_.ProcessId -eq [int]$listenerIdentity.ProcessId -and
             [long]$_.CreationTimeUtcTicks -eq [long]$listenerIdentity.CreationTimeUtcTicks
         })
-        if ($recordedListener.Count -ne 1) { throw "Port 3100 listener was not present in the recorded owned process tree." }
+        if ($recordedListener.Count -ne 1) { throw "Port $validationServerPort listener was not present in the recorded owned process tree." }
         $ownership = [pscustomobject]@{
-            Port = 3100
+            Port = $validationServerPort
             LauncherIdentity = $launcherIdentity
             ListenerIdentity = $listenerIdentity
             ProcessIdentities = $processIdentities
@@ -414,7 +437,7 @@ function Start-OwnedValidationServer {
             "--launcher-creation-utc", $launcherIdentity.CreationTimeUtc,
             "--listener-creation-utc", $listenerIdentity.CreationTimeUtc,
             "--ancestry-verified", "true",
-            "--port", "3100",
+            "--port", "$validationServerPort",
             "--nonce-hash", $env:FOREVER_VALIDATION_NONCE_HASH
         ))
         [void](Invoke-IsolationHelper -Arguments @(
@@ -427,7 +450,7 @@ function Start-OwnedValidationServer {
         $startFailure = $_.Exception
         $partialOwnership = if ($ownership) { $ownership } else {
             [pscustomobject]@{
-                Port = 3100
+                Port = $validationServerPort
                 LauncherIdentity = $launcherIdentity
                 ListenerIdentity = $null
                 ProcessIdentities = @($launcherIdentity)
@@ -680,7 +703,7 @@ try {
         Invoke-ValidationStep -Name "Running browser acceptance tests" -Arguments $browserCommand
         Stop-OwnedValidationServer -ServerOwnership $ownedValidationServer
         $ownedValidationServer = $null
-        Assert-TcpPortAvailable -Port 3100
+        Assert-TcpPortAvailable -Port $validationServerPort
         $defaultBrowserSucceeded = $true
     } else {
         Write-Host "`n==> Browser acceptance tests skipped by explicit non-browser validation mode" -ForegroundColor Yellow
@@ -778,7 +801,7 @@ try {
         catch { $finalizationFailures += "Owned production server cleanup failed: $($_.Exception.Message)" }
     }
     $portsReleased = $true
-    foreach ($port in @(3100, 3200)) {
+    foreach ($port in @($validationServerPort, 3200) | Select-Object -Unique) {
         try { Assert-TcpPortAvailable -Port $port }
         catch {
             $portsReleased = $false

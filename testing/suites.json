@@ -142,6 +142,89 @@
       "currentImplementationState": "existing-one-worker-project"
     },
     {
+      "id": "sounding-line.runtime",
+      "name": "Sounding Line policy, broker, adapter, cleanup, and PID ownership proof",
+      "tier": 1,
+      "owner": "platform-foundation",
+      "command": "governed adapter: runtime",
+      "estimatedDuration": "target-under-30-seconds",
+      "parallelSafe": true,
+      "resources": ["node-slot", "vitest-worker-pool"],
+      "dependencies": [],
+      "contracts": ["authentication-authorization"],
+      "affectedPaths": ["scripts/sounding-line/**", "tests/sounding-line/**", "src/sounding-line/**", "testing/**"],
+      "releaseGates": ["local-change", "mainline", "release-candidate"],
+      "currentImplementationState": "certified-governed-local-adapter"
+    },
+    {
+      "id": "harborlight.phase4.unit",
+      "name": "Harborlight Phase 4 moderation, scanner, outbox, scheduler, and rate-limit units",
+      "tier": 1,
+      "owner": "harborlight",
+      "command": "governed adapter: vitest Harborlight Phase 4 files",
+      "estimatedDuration": "target-under-60-seconds",
+      "parallelSafe": true,
+      "resources": ["node-slot", "vitest-worker-pool"],
+      "dependencies": [],
+      "contracts": ["community-moderation-integrity", "community-trusted-scan-receipt", "community-operational-leases"],
+      "affectedPaths": [
+        "src/community/moderation.*",
+        "src/community/scanner.*",
+        "src/community/outbox.*",
+        "src/community/scheduler.*",
+        "src/community/rate-limit.*"
+      ],
+      "releaseGates": ["subsystem", "mainline", "release-candidate"],
+      "currentImplementationState": "certified-governed-vitest-adapter"
+    },
+    {
+      "id": "harborlight.phase4.sqlite",
+      "name": "Harborlight Phase 4 isolated SQLite migration and relational integrity",
+      "tier": 3,
+      "owner": "harborlight",
+      "command": "governed adapter: isolated SQLite migration rehearsal",
+      "estimatedDuration": "target-under-90-seconds",
+      "parallelSafe": true,
+      "resources": ["sqlite-clone", "prisma-sqlite-client"],
+      "dependencies": ["harborlight.phase4.unit"],
+      "contracts": ["community-migration-integrity", "migration-parity"],
+      "affectedPaths": [
+        "prisma/schema.sqlite.prisma",
+        "prisma/migrations/20260729120000_harborlight_phase4_moderation_operations/**",
+        "prisma/migrations/20260729121000_harborlight_phase4_relational_integrity/**"
+      ],
+      "releaseGates": ["subsystem", "mainline", "release-candidate"],
+      "currentImplementationState": "certified-isolated-sqlite-adapter"
+    },
+    {
+      "id": "harborlight.phase4.browser",
+      "name": "Harborlight Phase 4 moderator browser acceptance",
+      "tier": 4,
+      "owner": "harborlight",
+      "command": "governed adapter: playwright harborlight-phase4",
+      "estimatedDuration": "target-under-180-seconds",
+      "parallelSafe": true,
+      "resources": [
+        "application-port",
+        "sqlite-clone",
+        "browser-chromium",
+        "browser-context",
+        "trace-root",
+        "community-account-namespace",
+        "community-storage-root"
+      ],
+      "dependencies": ["harborlight.phase4.sqlite"],
+      "contracts": ["community-moderation-integrity", "authentication-authorization", "community-trusted-scan-receipt"],
+      "affectedPaths": [
+        "tests/e2e/harborlight-phase4.spec.ts",
+        "src/app/community/moderation/**",
+        "src/community/**",
+        "playwright.config.ts"
+      ],
+      "releaseGates": ["subsystem", "mainline", "release-candidate"],
+      "currentImplementationState": "certified-isolated-product-browser-adapter"
+    },
+    {
       "id": "release.full",
       "name": "Current serialized full validation gate",
       "tier": 7,

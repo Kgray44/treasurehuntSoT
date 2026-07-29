@@ -1,16 +1,30 @@
 {
   "version": 1,
-  "status": "phase-1-non-authoritative-gate-catalog",
+  "status": "phase-2-governed-gate-catalog",
   "gates": [
     {
       "id": "local-change",
-      "requiredSuites": ["static.core"],
-      "conditionalSuites": ["unit.core", "browser.auth", "browser.player-journal", "security.private-content"]
+      "requiredSuites": ["static.core", "sounding-line.runtime"],
+      "conditionalSuites": [
+        "unit.core",
+        "browser.auth",
+        "browser.player-journal",
+        "security.private-content",
+        "harborlight.phase4.unit"
+      ]
     },
     {
       "id": "subsystem",
       "requiredSuites": ["static.core", "unit.core"],
-      "conditionalSuites": ["database.sqlite", "browser.auth", "browser.player-journal", "security.private-content"]
+      "conditionalSuites": [
+        "database.sqlite",
+        "browser.auth",
+        "browser.player-journal",
+        "security.private-content",
+        "harborlight.phase4.unit",
+        "harborlight.phase4.sqlite",
+        "harborlight.phase4.browser"
+      ]
     },
     {
       "id": "cross-project",
@@ -25,6 +39,10 @@
         "database.sqlite",
         "compatibility.browser",
         "security.private-content",
+        "sounding-line.runtime",
+        "harborlight.phase4.unit",
+        "harborlight.phase4.sqlite",
+        "harborlight.phase4.browser",
         "release.full"
       ],
       "conditionalSuites": ["migration.mysql"]
