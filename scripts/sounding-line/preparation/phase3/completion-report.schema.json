@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Sounding Line Phase 3 Preparation Completion Report",
+  "description": "PREPARATORY, NONAUTHORITATIVE, SYNTHETIC INPUT ONLY, NOT CONNECTED TO ACTIVE RUNTIME.",
+  "type": "object",
+  "required": [
+    "sourceWatermark",
+    "policyVersion",
+    "planDigest",
+    "selectedSuites",
+    "omittedSuites",
+    "results",
+    "cleanup",
+    "finalStatus",
+    "executionUsage"
+  ],
+  "properties": {
+    "executionUsage": {
+      "type": "object",
+      "required": ["elapsed", "tokens", "toolCalls", "source", "availability"],
+      "properties": {
+        "elapsed": { "type": "string", "pattern": "^P" },
+        "tokens": {
+          "type": "object",
+          "required": ["input", "output", "cached", "total"],
+          "properties": {
+            "input": { "type": ["number", "null"], "minimum": 0 },
+            "output": { "type": ["number", "null"], "minimum": 0 },
+            "cached": { "type": ["number", "null"], "minimum": 0 },
+            "total": { "type": ["number", "null"], "minimum": 0 }
+          }
+        },
+        "toolCalls": { "type": ["number", "null"], "minimum": 0 },
+        "source": { "type": "string", "minLength": 1 },
+        "availability": {
+          "type": "object",
+          "required": ["input", "output", "cached", "total", "toolCalls"],
+          "additionalProperties": { "enum": ["AVAILABLE", "UNAVAILABLE_FROM_HOST"] }
+        }
+      }
+    }
+  }
+}

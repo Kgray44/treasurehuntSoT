@@ -1413,6 +1413,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Phase_2_Validation_Record.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Phase_3_Codex_Enforcement_Design.md",
       "record_type": "program-record",
       "status": "preserved",
@@ -1461,6 +1467,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Phase_3_Post_Phase_2_Reconciliation_Record.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Phase_3_Preparation_Completion_Receipt.md",
       "record_type": "program-record",
       "status": "preserved",
@@ -1492,12 +1504,6 @@
     },
     {
       "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Phase_3_Security_and_Privacy_Threat_Model.md",
-      "record_type": "program-record",
-      "status": "preserved",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Phase_2_Validation_Record.md",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null

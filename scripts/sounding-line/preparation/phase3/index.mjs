@@ -32,6 +32,21 @@ const required = (value, name) => {
 };
 const secretKey = /(?:password|secret|token|cookie|authorization|rawEnvironment|privateContent)/iu;
 const timingFields = ["queue", "provision", "setup", "execution", "teardown", "cleanup"];
+export const UNAVAILABLE_FROM_HOST = "UNAVAILABLE_FROM_HOST";
+export const finalPhase2ReceiptFields = Object.freeze([
+  "runId",
+  "controllerToken",
+  "planDigest",
+  "policyDigest",
+  "sourceDigest",
+  "adapterId",
+  "laneId",
+  "processIdentity",
+  "serverIdentity",
+  "browserProject",
+  "databaseBaseline",
+  "cleanupReceipt",
+]);
 
 export function validateHistoricalRecord(record) {
   for (const key of [
@@ -160,6 +175,40 @@ export function classifyFreshness(current, evidence) {
   return { status: "FRESH_EXACT", reason: "ALL_IDENTITIES_MATCH" };
 }
 
+export function ingestFinalPhase2Receipt(receipt) {
+  if (!receipt || typeof receipt !== "object") throw new Error("INVALID_PHASE2_RECEIPT");
+  const fieldAvailability = {};
+  const values = {};
+  for (const field of finalPhase2ReceiptFields) {
+    values[field] = receipt[field] ?? "UNKNOWN";
+    fieldAvailability[field] =
+      receipt[field] === undefined || receipt[field] === null ? "MISSING_ADDITIVE_FIELD" : "AVAILABLE_STABLE";
+  }
+  const timings = Object.fromEntries(
+    timingFields.map((phase) => {
+      const startedAt = receipt[`${phase}StartedAt`] ?? "UNKNOWN";
+      const completedAt = receipt[`${phase}CompletedAt`] ?? "UNKNOWN";
+      return [
+        phase,
+        {
+          startedAt,
+          completedAt,
+          availability:
+            startedAt === "UNKNOWN" || completedAt === "UNKNOWN" ? "MISSING_ADDITIVE_FIELD" : "AVAILABLE_STABLE",
+        },
+      ];
+    }),
+  );
+  return {
+    banner: PREPARATION_BANNER,
+    schemaVersion: "phase3-preparation/phase2-ingestion-v1",
+    values,
+    timings,
+    unknownIsZero: false,
+    canonicalDigest: digest({ values, timings }),
+  };
+}
+
 export function planInvalidation({ nodes = [], changed = [], repairImpactUnknown = false }) {
   const changedSet = new Set(changed);
   const invalidated = new Set(changedSet);
@@ -251,6 +300,26 @@ export function transitionThrottle(previous, signals) {
   };
 }
 
+const availability = new Set(["AVAILABLE", UNAVAILABLE_FROM_HOST]);
+const isoDuration = /^P(?:\d+D)?(?:T(?=\d)(?:\d+H)?(?:\d+M)?(?:\d+(?:\.\d+)?S)?)?$/u;
+export function validateExecutionUsage(usage) {
+  if (!usage || typeof usage !== "object") throw new Error("EXECUTION_USAGE_REQUIRED");
+  required(usage.elapsed, "EXECUTION_USAGE_ELAPSED");
+  if (!isoDuration.test(usage.elapsed)) throw new Error("INVALID_EXECUTION_USAGE_DURATION");
+  required(usage.source, "EXECUTION_USAGE_SOURCE");
+  if (!usage.tokens || !usage.availability) throw new Error("EXECUTION_USAGE_FIELDS_REQUIRED");
+  for (const field of ["input", "output", "cached", "total", "toolCalls"]) {
+    if (!availability.has(usage.availability[field]))
+      throw new Error(`INVALID_EXECUTION_USAGE_AVAILABILITY_${field.toUpperCase()}`);
+    const value = field === "toolCalls" ? usage.toolCalls : usage.tokens[field];
+    if (usage.availability[field] === UNAVAILABLE_FROM_HOST && value !== null)
+      throw new Error(`UNAVAILABLE_EXECUTION_USAGE_MUST_BE_NULL_${field.toUpperCase()}`);
+    if (usage.availability[field] === "AVAILABLE" && (!Number.isFinite(value) || value < 0))
+      throw new Error(`AVAILABLE_EXECUTION_USAGE_MUST_BE_NONNEGATIVE_${field.toUpperCase()}`);
+  }
+  return true;
+}
+
 export function validateCompletionReport(report) {
   for (const field of [
     "sourceWatermark",
@@ -261,6 +330,7 @@ export function validateCompletionReport(report) {
     "results",
     "cleanup",
     "finalStatus",
+    "executionUsage",
   ])
     required(report[field], field.toUpperCase());
   if (report.cleanup !== "CLEAN") throw new Error("CLEANUP_REQUIRED");
@@ -272,5 +342,6 @@ export function validateCompletionReport(report) {
     )
   )
     throw new Error("STALE_EVIDENCE_CANNOT_CLOSE");
+  validateExecutionUsage(report.executionUsage);
   return true;
 }

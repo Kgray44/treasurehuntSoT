@@ -30,4 +30,10 @@ The focused survey found sealed-plan validation, graph validation/scheduling, lo
 
 ## Start and rollback gates
 
+## Post-Phase-2 reconciliation addendum
+
+Accepted mainline is `ee5cffd457708559041cfc3331eb315906812e15`; its policy is `1.1.0` with 14 suites, 17 contracts, 19 resources, and zero critical inventory unknowns. Stable inputs are canonical source/policy/plan digests; graph ordering; run marker/controller token; lease revision/state; conjunctive process identity; SQLite baseline/clone; service/browser/context/lane identity; allowlisted array adapters; bounded logs; cleanup/quarantine receipts; focused lane leases; emergency serial compatibility; and the global full-release lock.
+
+Phase 3 adds without reinterpreting Phase 2: normalized historical run/node/attempt records, test-case identity, durable timing history, evidence artifact references, failure signatures, freshness/invalidation decisions, controller/client journals, resume tokens, and usage-report metadata. Missing Phase 2 timing or identity fields ingest as `UNKNOWN`, never zero. Version-1 Phase 2 receipts stay stable inputs; Phase 3 uses versioned additive ingestion records.
+
 Real implementation requires accepted Phase 2 in mainline, Harborlight reconciliation, stable receipt schemas and adapters, authoritative cleanup, no critical isolation defect, reconciliation of these drafts to final interfaces, and a superseding implementation design record. Rollback of this preparation package is removal of only its documentation and isolated prototypes; no runtime, database, package, CI, or release state is involved.

@@ -36,5 +36,32 @@
     "resumable-run",
     "non-resumable-changed-source-run"
   ],
+  "finalPhase2": {
+    "policy": { "version": "1.1.0", "status": "phase-2-harborlight-reconciled-governed-execution" },
+    "suiteCount": 14,
+    "contractCount": 17,
+    "resourceCount": 19,
+    "lanes": ["harborlight-a", "harborlight-b"],
+    "ports": [3101, 3102],
+    "reconciliationScenarios": [
+      "harborlight-moderation-route-change",
+      "harborlight-migration-change",
+      "lane-runner-change",
+      "legacy-harness-change",
+      "resource-contract-change",
+      "feature-catalog-validator-change",
+      "playwright-lane-configuration-change",
+      "process-ownership-change",
+      "cleanup-receipt-change",
+      "lane-database-setup-failure",
+      "lane-server-identity-failure",
+      "lane-port-contention",
+      "browser-context-failure",
+      "full-release-lock-conflict",
+      "cleanup-failure-after-product-pass",
+      "ambiguous-pid-and-reused-pid",
+      "concurrent-independent-product-defects"
+    ]
+  },
   "privacy": "All identifiers, paths, and results are synthetic. No repository evidence, credential, private Chronicle text, browser trace, account identifier, or database row is present."
 }
