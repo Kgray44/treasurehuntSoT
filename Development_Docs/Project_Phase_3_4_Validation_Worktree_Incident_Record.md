@@ -72,6 +72,8 @@ Validation runs now create a new marker-owned directory below `C:\Users\kgray\Ap
 
 `scripts/test-validation-runtime-safety.ps1` regression-tests Git-worktree rejection, dirty-Git rejection, existing non-owned-directory rejection, fresh non-Git runtime creation, marker verification, owned-only cleanup, sibling preservation, and avoidance of the historical fixed path.
 
-## Required user decision
+## Resolution and subsequent validation boundary
 
-The original uncommitted `InvitationCeremony.tsx` content is not recoverable with high confidence. User confirmation is required before any attempt to repair the affected validation directory, accept its current version, or resume convergence validation.
+The original uncommitted `InvitationCeremony.tsx` content is unrecoverable with high confidence. On 2026-07-26, the user explicitly accepted the current committed version as the intended repository state and instructed the convergence to continue. No automatic reconstruction or restoration was attempted, and the affected fixed `validation` path remains retired and untouched.
+
+All subsequent validation attempts use only a newly-created, marker-owned, non-Git directory below `C:\Users\kgray\AppData\Local\ForeverTreasureCompanion\Validation_Runs`; the historical fixed path is never selected. A first full post-repair attempt used `Validation_Runs\validation-20260726T123310042Z-60655b5f5af2` and was stopped after stale browser expectations failed. Its owned process tree and ports were released, and its failure evidence was preserved outside the retired worktree. It is not acceptance evidence. The normal full-matrix replacement requirement is superseded only by the explicit bounded owner exception `P34-BME-20260729`, recorded in `Phase_3_4_Convergence_Browser_Matrix_Risk_Acceptance.md`; it does not represent a matrix pass.

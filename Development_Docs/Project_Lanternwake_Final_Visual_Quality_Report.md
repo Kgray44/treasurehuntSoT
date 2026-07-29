@@ -2,7 +2,7 @@
 
 ## Production-surface review
 
-The isolated validation browser exercised the real landing, invitation, player workspace, published Chronicle, and Tall Tale journal routes. It did not use the development animation showcase as acceptance evidence.
+The isolated validation browser exercised the real landing, invitation, player workspace, published Chronicle, and Studio journal routes. It did not use the development animation showcase as acceptance evidence.
 
 | Surface                        | Observed production result                                                                                                                                                                | Motion modes exercised |
 | ------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------- |
