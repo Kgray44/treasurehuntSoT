@@ -37,6 +37,12 @@ This is not live-provider evidence. Isolated storage restore drills, actual
 MySQL, actual ClamAV, S3-compatible storage, alert delivery, trusted deployment,
 and the complete canonical validation matrix remain required before acceptance.
 
+The logical backup command and two independent isolated restore drills passed
+against the same task-owned SQLite copy. Backup identity
+`harborlight-1785349234154-b747181d` verified before each write; the `drill-a`
+and `drill-b` targets both restored and re-verified the logical snapshot. The
+drill targets were outside the repository and distinct from backup storage.
+
 Run locally with the task-owned Node runtime:
 
 ```powershell

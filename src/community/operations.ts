@@ -141,6 +141,19 @@ function backupRoot() {
   return root;
 }
 
+function restoreRoot() {
+  const value = process.env.COMMUNITY_RESTORE_ROOT;
+  if (!value || !path.isAbsolute(value))
+    throw new CommunityError("COMMUNITY_RESTORE_NOT_CONFIGURED", "An isolated restore target is required.");
+  const root = path.resolve(value);
+  const repository = path.resolve(process.cwd());
+  if (root === repository || root.startsWith(`${repository}${path.sep}`))
+    throw new CommunityError("COMMUNITY_RESTORE_TARGET_UNSAFE", "Restore target must be outside the repository.");
+  if (root === backupRoot())
+    throw new CommunityError("COMMUNITY_RESTORE_TARGET_UNSAFE", "Restore target must differ from backup storage.");
+  return root;
+}
+
 export async function createCommunityBackupManifest() {
   const root = backupRoot();
   const [cases, actions, appeals, receipts, sanctions, restorations, releases, packages, documents, assets] =
@@ -199,6 +212,41 @@ export async function verifyCommunityBackupManifest(id: string) {
   const inventory = body.inventory;
   const referentiallyClosed = typeof inventory === "object" && inventory !== null;
   return { id, verified, referentiallyClosed, mode: "SIMULATED_LOCAL" as const, restoreWritesPerformed: false };
+}
+
+/** Restores a logical snapshot only into an explicitly configured isolated
+ * drill target. It never writes the application database or any provider
+ * object; production restoration remains a separately governed runbook. */
+export async function restoreCommunityBackupDrill(id: string, drillId: string) {
+  if (!/^[a-z0-9-]{3,64}$/u.test(drillId))
+    throw new CommunityError("COMMUNITY_RESTORE_DRILL_INVALID", "Restore drill identity is invalid.");
+  const verified = await verifyCommunityBackupManifest(id);
+  if (!verified.verified || !verified.referentiallyClosed)
+    throw new CommunityError("COMMUNITY_BACKUP_INVALID", "Backup integrity verification failed.");
+  const source = await readFile(path.join(backupRoot(), `${id}.json`), "utf8");
+  const parsed = JSON.parse(source) as { checksum: string; inventory?: Record<string, unknown> };
+  const requiredCollections = [
+    "cases",
+    "actions",
+    "appeals",
+    "receipts",
+    "sanctions",
+    "restorations",
+    "releases",
+    "packages",
+    "documents",
+    "assets",
+  ];
+  if (!parsed.inventory || requiredCollections.some((key) => !Array.isArray(parsed.inventory?.[key])))
+    throw new CommunityError("COMMUNITY_BACKUP_INVALID", "Backup inventory is incomplete.");
+  const target = path.join(restoreRoot(), `${id}-${drillId}.json`);
+  await mkdir(path.dirname(target), { recursive: true });
+  await writeFile(target, source, { encoding: "utf8", flag: "wx" });
+  const restored = JSON.parse(await readFile(target, "utf8")) as { checksum?: string };
+  const checksumVerified = restored.checksum === parsed.checksum;
+  if (!checksumVerified)
+    throw new CommunityError("COMMUNITY_RESTORE_VERIFY_FAILED", "Restored logical backup did not verify.");
+  return { id, drillId, verified: true, restoreWritesPerformed: true, mode: "SIMULATED_LOCAL" as const };
 }
 
 export async function reconcileCommunityOperationalState(dryRun = true) {
