@@ -27,7 +27,7 @@ async function main() {
     }).catch(() => ({ stdout: "" }));
     const syntheticFixture =
       /^(?:src|scripts|tests)\/.*private-content\//.test(normalizedName) ||
-      normalizedName === "Development_Docs/Private_Content_Test_Plan.md";
+      normalizedName === "Development_Docs/Archive/Private_Content_Test_Plan.md";
     if (pem.test(content.stdout) || (content.stdout.includes(sentinel) && !syntheticFixture))
       throw new Error("Staged protected-content content detected.");
   }

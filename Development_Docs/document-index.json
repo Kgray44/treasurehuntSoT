@@ -1,0 +1,1524 @@
+{
+  "version": 1,
+  "generated_at": "2026-07-29",
+  "records": [
+    {
+      "path": "Development_Docs/Architecture_Decisions/0001-use-nextjs-app-router.md",
+      "record_type": "architecture-decision",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Architecture_Decisions/0002-use-server-sent-events.md",
+      "record_type": "architecture-decision",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Architecture_Decisions/0003-use-event-driven-story-state.md",
+      "record_type": "architecture-decision",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Archive/Chronicle_Platform_Codex_Implementation_Specification.pdf",
+      "record_type": "archived-history",
+      "status": "archived",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Archive/Chronicle_Studio_Phase_1_Codex_Implementation_Prompt.pdf",
+      "record_type": "archived-history",
+      "status": "archived",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Archive/Forever_Treasure_Cinematic_Animation_Codex_Prompt.pdf",
+      "record_type": "archived-history",
+      "status": "archived",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Archive/Legacy_Docs/action-risk-model.md",
+      "record_type": "archived-history",
+      "status": "archived",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Archive/Legacy_Docs/admin-command-pipeline.md",
+      "record_type": "archived-history",
+      "status": "archived",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Archive/Legacy_Docs/animation-architecture.md",
+      "record_type": "archived-history",
+      "status": "archived",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Archive/Legacy_Docs/animation-assets.md",
+      "record_type": "archived-history",
+      "status": "archived",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Archive/Legacy_Docs/animation-library-ownership.md",
+      "record_type": "archived-history",
+      "status": "archived",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Archive/Legacy_Docs/animation-lottie-assets.md",
+      "record_type": "archived-history",
+      "status": "archived",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Archive/Legacy_Docs/animation-performance.md",
+      "record_type": "archived-history",
+      "status": "archived",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Archive/Legacy_Docs/animation-rive-assets.md",
+      "record_type": "archived-history",
+      "status": "archived",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Archive/Legacy_Docs/animation-scenes.md",
+      "record_type": "archived-history",
+      "status": "archived",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Archive/Legacy_Docs/animation-showcase.md",
+      "record_type": "archived-history",
+      "status": "archived",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Archive/Legacy_Docs/animation-testing.md",
+      "record_type": "archived-history",
+      "status": "archived",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Archive/Legacy_Docs/architecture.md",
+      "record_type": "archived-history",
+      "status": "archived",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Archive/Legacy_Docs/artifact-system.md",
+      "record_type": "archived-history",
+      "status": "archived",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Archive/Legacy_Docs/asset-licenses.md",
+      "record_type": "archived-history",
+      "status": "archived",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Archive/Legacy_Docs/audit-and-event-history.md",
+      "record_type": "archived-history",
+      "status": "archived",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Archive/Legacy_Docs/chronicle-platform.md",
+      "record_type": "archived-history",
+      "status": "archived",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Archive/Legacy_Docs/chronicle-studio.md",
+      "record_type": "archived-history",
+      "status": "archived",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Archive/Legacy_Docs/cinematic-system.md",
+      "record_type": "archived-history",
+      "status": "archived",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Archive/Legacy_Docs/command-center-information-architecture.md",
+      "record_type": "archived-history",
+      "status": "archived",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Archive/Legacy_Docs/deployment.md",
+      "record_type": "archived-history",
+      "status": "archived",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Archive/Legacy_Docs/design-system.md",
+      "record_type": "archived-history",
+      "status": "archived",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Archive/Legacy_Docs/finale-shell.md",
+      "record_type": "archived-history",
+      "status": "archived",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Archive/Legacy_Docs/future-vision-helper.md",
+      "record_type": "archived-history",
+      "status": "archived",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Archive/Legacy_Docs/game-master-controls.md",
+      "record_type": "archived-history",
+      "status": "archived",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Archive/Legacy_Docs/journal-system.md",
+      "record_type": "archived-history",
+      "status": "archived",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Archive/Legacy_Docs/known-limitations.md",
+      "record_type": "archived-history",
+      "status": "archived",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Archive/Legacy_Docs/local-development.md",
+      "record_type": "archived-history",
+      "status": "archived",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Archive/Legacy_Docs/parallel-development-phase-3.md",
+      "record_type": "archived-history",
+      "status": "archived",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Archive/Legacy_Docs/phase-2-phase-3-integration.md",
+      "record_type": "archived-history",
+      "status": "archived",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Archive/Legacy_Docs/player-companion-information-architecture.md",
+      "record_type": "archived-history",
+      "status": "archived",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Archive/Legacy_Docs/player-presence-and-sync.md",
+      "record_type": "archived-history",
+      "status": "archived",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Archive/Legacy_Docs/recovery-and-reversal.md",
+      "record_type": "archived-history",
+      "status": "archived",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Archive/Legacy_Docs/responsive-behavior.md",
+      "record_type": "archived-history",
+      "status": "archived",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Archive/Legacy_Docs/security.md",
+      "record_type": "archived-history",
+      "status": "archived",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Archive/Legacy_Docs/ships-log.md",
+      "record_type": "archived-history",
+      "status": "archived",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Archive/Legacy_Docs/side-quest-system.md",
+      "record_type": "archived-history",
+      "status": "archived",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Archive/Legacy_Docs/story-state-machine.md",
+      "record_type": "archived-history",
+      "status": "archived",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Archive/Legacy_Docs/testing.md",
+      "record_type": "archived-history",
+      "status": "archived",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Archive/Legacy_Docs/theatrical-event-system.md",
+      "record_type": "archived-history",
+      "status": "archived",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Archive/Legacy_Docs/unseen-content.md",
+      "record_type": "archived-history",
+      "status": "archived",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Archive/Legacy_Docs/voyage-chart.md",
+      "record_type": "archived-history",
+      "status": "archived",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Archive/Private_Content_Test_Plan.md",
+      "record_type": "archived-history",
+      "status": "archived",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Community_Harbor_Keepsake_and_Voyage_Log_Model.md",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Community_Harbor_Phase_3_Test_Plan.md",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Community_Harbor_Search_and_Discovery_Architecture.md",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Community_Harbor_Social_Interaction_Model.md",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Completion_Receipts/Chronicle_Platform_Implementation_Record.md",
+      "record_type": "completion-receipt",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Completion_Receipts/Full_System_Product_Polish_Implementation_Record.md",
+      "record_type": "completion-receipt",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/document-index.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Governing/Phase_1_Cross_Project_Convergence_Design_Record.md",
+      "record_type": "governing-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Governing/phase_b_implementation_roadmap_v1_0.pdf",
+      "record_type": "governing-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Governing/Project_Phase_2_Mainline_Convergence_Record.md",
+      "record_type": "governing-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Governing/vision_waypoint_external_ar_governing_specification_v1_0.pdf",
+      "record_type": "governing-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Governing/Voyagewright_Language_Design_Foundation.md",
+      "record_type": "governing-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Governing/Voyagewright_Language_Design_Foundation.pdf",
+      "record_type": "governing-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Governing/Voyagewright_User_Facing_Copy_Inventory.csv",
+      "record_type": "governing-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/INDEX.md",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Migrations/Phase_1_Cross_Project_Migration_Order.md",
+      "record_type": "migration-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Migrations/Voyagewright_Universal_Language_Migration_Record.md",
+      "record_type": "migration-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Phase_3_4_Convergence_Browser_Matrix_Risk_Acceptance.md",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Harborlight/Community_Artifact_2D_3D_Architecture.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Harborlight/Community_Exchange_Package_Format.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Harborlight/Community_Exchange_Test_Plan.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Harborlight/Community_Exchange_Threat_Model.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Harborlight/Community_Harbor_Data_Model.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Harborlight/Community_Harbor_Licensing_and_Attribution.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Harborlight/Community_Harbor_Privacy_and_Spoiler_Model.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Harborlight/Community_Harbor_Release_Manifest.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Harborlight/Community_Harbor_Storage_and_Job_Architecture.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Harborlight/Community_Harbor_Test_Plan.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Harborlight/Community_Installation_and_Rollback_Architecture.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Harborlight/Community_Publication_Workflow.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Harborlight/Community_Release_Update_Model.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Harborlight/Community_Remix_Lineage_and_Licensing.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_1_Acceptance_Closure_Ledger.csv",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_1_Acceptance_Closure_Report.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_1_Design_Record.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_1_Gap_Analysis.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_1_Integration_Manifest.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_2_Completion_Report.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_2_Convergence_Ledger.csv",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_2_Cross_Project_Integration_Manifest.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_2_Design_Record.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_2_Implementation_Manifest.txt",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_2_Integration_Manifest.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_2_Reconciliation_Record.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_2_Validation_Record.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Lanternwake/Animation_Original_Audit_Reconciliation_Ledger.csv",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Lanternwake/Animation_System_Audit_Matrix.csv",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Lanternwake/Animation_System_Full_Audit.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Lanternwake/Animation_System_Implementation_Roadmap.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Lanternwake/Animation_System_Test_Plan.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Lanternwake/Project_Lanternwake_Canonical_Event_Matrix_Mapping.csv",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Lanternwake/Project_Lanternwake_Completion_Receipt.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Lanternwake/Project_Lanternwake_Final_Accessibility_Report.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Lanternwake/Project_Lanternwake_Final_Animation_Completion_Ledger.csv",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Lanternwake/Project_Lanternwake_Final_Performance_Report.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Lanternwake/Project_Lanternwake_Final_Visual_Quality_Report.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Lanternwake/Project_Lanternwake_Phase_1_Design_Record.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Lanternwake/Project_Lanternwake_Phase_2_Design_Record.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Lanternwake/Project_Lanternwake_Phase_2_Implementation_Report.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Lanternwake/Project_Lanternwake_Phase_2_Reconciliation_Shard_Manifest.csv",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Lanternwake/Project_Lanternwake_Phase_2_Validation_Report.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Lanternwake/Project_Lanternwake_Phase_3_Design_Record.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Lanternwake/Project_Lanternwake_Phase_3_Implementation_Report.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Lanternwake/Project_Lanternwake_Phase_3_Player_Event_Coverage_Ledger.csv",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Lanternwake/Project_Lanternwake_Phase_3_Validation_Report.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Lanternwake/Project_Lanternwake_Phase_3_Visual_Checkpoint_Index.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Lanternwake/Project_Lanternwake_Phase_4_Animation_Manifest.csv",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Lanternwake/Project_Lanternwake_Phase_4_Design_Record.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Lanternwake/Project_Lanternwake_Phase_4_Implementation_Report.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Lanternwake/Project_Lanternwake_Phase_4_Validation_Report.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Lanternwake/Project_Lanternwake_Phase_4_Visual_Checkpoint_Index.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Lanternwake/Project_Lanternwake_Phase_5_Animation_Ledger.csv",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Lanternwake/Project_Lanternwake_Phase_5_Asset_Contract_Ledger.csv",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Lanternwake/Project_Lanternwake_Phase_5_Design_Record.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Lanternwake/Project_Lanternwake_Phase_5_Implementation_Report.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Lanternwake/Project_Lanternwake_Phase_5_PageFlip_Lifecycle_Specification.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Lanternwake/Project_Lanternwake_Phase_5_Rive_Authoring_Specification.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Lanternwake/Project_Lanternwake_Phase_5_Universal_Language_Integration_Hashes.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Lanternwake/Project_Lanternwake_Phase_5_Universal_Language_Integration_Record.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Lanternwake/Project_Lanternwake_Phase_5_Universal_Language_Integration_Validation_Report.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Lanternwake/Project_Lanternwake_Phase_5_Validation_Report.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Lanternwake/Project_Lanternwake_Phase_6_Account_Switch_Continuation.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Lanternwake/Project_Lanternwake_Phase_6_Baseline_Record.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Lanternwake/Project_Lanternwake_Phase_6_Continuation.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Lanternwake/Project_Lanternwake_Phase_6_Design_and_Closure_Record.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Lanternwake/Project_Lanternwake_Phase_6_Implementation_Report.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Lanternwake/Project_Lanternwake_Phase_6_Mainline_Integration_Report.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Lanternwake/Project_Lanternwake_Phase_6_Manual_Rive_Authoring_Specification.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Lanternwake/Project_Lanternwake_Phase_6_Validation_Report.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/One_Voyage/Canonical_Player_Journal_Implementation_Record.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/One_Voyage/Project_One_Voyage_Architecture_Inventory.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/One_Voyage/Project_One_Voyage_Canonical_Domain_ADR.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/One_Voyage/Project_One_Voyage_Domain_Mapping.csv",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/One_Voyage/Project_One_Voyage_Phase_2_Backup_Restore_Rehearsal.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/One_Voyage/Project_One_Voyage_Phase_2_Compatibility_Observation_Ledger.csv",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/One_Voyage/Project_One_Voyage_Phase_2_Completion_Report.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/One_Voyage/Project_One_Voyage_Phase_2_Design_Record.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/One_Voyage/Project_One_Voyage_Phase_2_Integration_Manifest.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/One_Voyage/Project_One_Voyage_Phase_2_Legacy_Reachability_Ledger.csv",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/One_Voyage/Project_One_Voyage_Phase_2_Legacy_Removal_Plan.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/One_Voyage/Project_One_Voyage_Phase_2_MySQL_Rehearsal_Runbook.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/One_Voyage/Project_One_Voyage_Phase_2_Test_Plan.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/One_Voyage/Project_One_Voyage_Phase_2_Validation_Record.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/One_Voyage/Project_One_Voyage_Rollback_Runbook.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/One_Voyage/Project_One_Voyage_Validation_Record.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Other/Project_Ledgerlight_Completion_Receipt.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Other/Project_Ledgerlight_Design_Record.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Other/Project_Ledgerlight_Documentation_Audit.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Other/Project_Ledgerlight_Validation_Record.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sealed_Hold/Private_Chronicle_Package_Format.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sealed_Hold/Private_Content_Backup_and_Recovery_Phase_2.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sealed_Hold/Private_Content_Canonical_Import_Architecture.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sealed_Hold/Private_Content_Key_Management.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sealed_Hold/Private_Content_Operations_Runbook.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sealed_Hold/Private_Content_Production_Storage_Architecture.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sealed_Hold/Private_Content_Scanner_and_Quarantine.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sealed_Hold/Private_Content_Streaming_Package_Format.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sealed_Hold/Private_Content_Threat_Model.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sealed_Hold/Private_Content_Worker_and_Outbox_Architecture.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sealed_Hold/Project_Sealed_Hold_Migration_Reconciliation_Note.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sealed_Hold/Project_Sealed_Hold_Parallel_Work_Record.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sealed_Hold/Project_Sealed_Hold_Phase_1_Completion_Checklist.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sealed_Hold/Project_Sealed_Hold_Phase_1_Completion_Report.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sealed_Hold/Project_Sealed_Hold_Phase_1_Design_Record.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sealed_Hold/Project_Sealed_Hold_Phase_1_Implementation_Manifest.txt",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sealed_Hold/Project_Sealed_Hold_Phase_2_Completion_Receipt.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sealed_Hold/Project_Sealed_Hold_Phase_2_Design_Record.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sealed_Hold/Project_Sealed_Hold_Phase_2_Remaining_Gap_Ledger.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sealed_Hold/Project_Sealed_Hold_Phase_2_Test_Plan.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sealed_Hold/Project_Sealed_Hold_Phase_2_Threat_Model_Update.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sealed_Hold/Project_Sealed_Hold_Phase_2_Validation_Record.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Wayfarer/Project_Wayfarer_Phase_1_Design_Record.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Wayfarer/Project_Wayfarer_Phase_1_Integration_Manifest.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Wayfarer/Project_Wayfarer_Phase_1_Migration_Runbook.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Wayfarer/Project_Wayfarer_Phase_1_Test_Plan.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Wayfarer/Project_Wayfarer_Phase_1_Validation_Record.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Wayfarer/Project_Wayfarer_Phase_2_Design_Record.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Wayfarer/Project_Wayfarer_Phase_2_Integration_Manifest.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Wayfarer/Project_Wayfarer_Phase_2_Migration_Runbook.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Wayfarer/Project_Wayfarer_Phase_2_Preference_Catalog.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Wayfarer/Project_Wayfarer_Phase_2_Privacy_Matrix.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Wayfarer/Project_Wayfarer_Phase_2_Profile_Data_Model.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Wayfarer/Project_Wayfarer_Phase_2_Provider_Architecture.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Wayfarer/Project_Wayfarer_Phase_2_Test_Plan.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Wayfarer/Project_Wayfarer_Phase_2_Validation_Record.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Project_Harborlight_Phase_3_Completion_Report.md",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Project_Harborlight_Phase_3_Design_Record.md",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Project_Harborlight_Phase_3_Gap_Ledger.md",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Project_Harborlight_Phase_3_Implementation_Manifest.txt",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Project_Harborlight_Phase_3_Integration_Manifest.md",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Project_Harborlight_Phase_3_Validation_Record.md",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Project_Ledgerlight_Documentation_Migration_Matrix.csv",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Project_Ledgerlight_Mainline_Reconciliation_Receipt.md",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Project_Phase_3_4_Browser_Compatibility_Map.md",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Project_Phase_3_4_Cross_Project_Convergence_Integration_Record.md",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Project_Phase_3_4_Validation_Worktree_Incident_Record.md",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Project_Sealed_Hold_Phase_3_Completion_Receipt.md",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Project_Sealed_Hold_Phase_3_Design_Record.md",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Project_Sealed_Hold_Phase_3_Disaster_Recovery_Runbook.md",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Project_Sealed_Hold_Phase_3_Implementation_Manifest.txt",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Project_Sealed_Hold_Phase_3_Incident_Response_Runbook.md",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Project_Sealed_Hold_Phase_3_Integration_Manifest.md",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Project_Sealed_Hold_Phase_3_Operations_Runbook.md",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Project_Sealed_Hold_Phase_3_Production_Threat_Model_Update.md",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Project_Sealed_Hold_Phase_3_Provider_Integration_Matrix.md",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Project_Sealed_Hold_Phase_3_Test_Plan.md",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Project_Sealed_Hold_Phase_3_Validation_Record.md",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Project_Sealed_Hold_Phase_4_Completion_Receipt.md",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Project_Sealed_Hold_Phase_4_Design_Record.md",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Project_Sealed_Hold_Phase_4_Implementation_Manifest.md",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Project_Sealed_Hold_Phase_4_Integration_Manifest.md",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Project_Sealed_Hold_Phase_4_Test_Plan.md",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Project_Sealed_Hold_Phase_4_Threat_Model_Update.md",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Project_Sealed_Hold_Phase_4_Validation_Record.md",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Project_True_North_Completion_Receipt.md",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Project_True_North_Design_Record.md",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Project_True_North_Integration_Manifest.md",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Project_True_North_Mainline_Reconciliation_Receipt.md",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Project_True_North_Navigation_Matrix.csv",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Project_True_North_Test_Plan.md",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Project_Wayfarer_Phase_3_Completion_Receipt.md",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Project_Wayfarer_Phase_3_Design_Record.md",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Project_Wayfarer_Phase_3_History_Data_Model.md",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Project_Wayfarer_Phase_3_Implementation_Record.md",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Project_Wayfarer_Phase_3_Integration_Manifest.md",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Project_Wayfarer_Phase_3_Migration_Runbook.md",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Project_Wayfarer_Phase_3_Privacy_and_Consent_Matrix.md",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Project_Wayfarer_Phase_3_Source_Mapping.md",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Project_Wayfarer_Phase_3_Test_Plan.md",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Project_Wayfarer_Phase_3_Timing_Metric_Catalog.md",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Project_Wayfarer_Phase_3_Validation_Record.md",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Project_Wayfarer_Phase_4_Design_Record.md",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Project_Wayfarer_Phase_4_Implementation_Record.md",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Protected_Media_Cross_Project_Integration_Contract.md",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Protected_Media_Derivative_Policy.md",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Protected_Media_Purpose_and_Consent_Model.md",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Protected_Personal_Media_Architecture.md",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/README.md",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Validation/Isolated_Validation_Baselines.md",
+      "record_type": "validation-evidence",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Validation/KG_Original_Animation_Audit_Reconciliation_Source.md",
+      "record_type": "validation-evidence",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Validation/legacy-retirement-manifest.json",
+      "record_type": "validation-evidence",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Validation/Phase_1_Cross_Project_Conflict_Ledger.csv",
+      "record_type": "validation-evidence",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Validation/Phase_1_Cross_Project_Integration_Manifest.txt",
+      "record_type": "validation-evidence",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Validation/Phase_1_Cross_Project_Test_Plan.md",
+      "record_type": "validation-evidence",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Validation/Phase_1_Cross_Project_Validation_Record.md",
+      "record_type": "validation-evidence",
+      "status": "preserved",
+      "canonical_for": null
+    }
+  ]
+}
