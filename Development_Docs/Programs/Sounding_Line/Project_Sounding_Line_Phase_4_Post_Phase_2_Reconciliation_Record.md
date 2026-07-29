@@ -27,6 +27,11 @@ Phase 4, or alter current release authority.
   minimum policy population.
 - Only reviewed local product adapters in `scripts/sounding-line/adapters.mjs`
   may be selected; policy metadata cannot supply a command.
+- Active package aliases are `test:inventory`, `test:policy`,
+  `test:plan`, `test:runtime`, `test:runtime:status`,
+  `test:runtime:cleanup`, `test:certification`, and
+  `test:compatibility`. They remain local governed tooling aliases; none
+  activates CI, a worker fleet, a release decision, or a Phase 4 protocol.
 - Lane-specific, all-or-nothing leases carry run/controller identity, revision,
   heartbeat, expiry, and allocation, adapter, release, cleanup, and quarantine
   receipts.
