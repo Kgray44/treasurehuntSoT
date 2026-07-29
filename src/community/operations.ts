@@ -143,18 +143,21 @@ function backupRoot() {
 
 export async function createCommunityBackupManifest() {
   const root = backupRoot();
-  const [cases, actions, appeals, receipts, sanctions, restorations, releases, packages, documents, assets] = await Promise.all([
-    db.communityModerationCase.findMany({ include: { subjects: true, reportLinks: true, evidence: true, assignments: true, events: true } }),
-    db.communityModerationAction.findMany(),
-    db.communityModerationAppeal.findMany({ include: { events: true } }),
-    db.communityScanReceipt.findMany(),
-    db.communitySanction.findMany(),
-    db.communityRestorationReceipt.findMany(),
-    db.communityRelease.findMany(),
-    db.communityPackage.findMany(),
-    db.communitySearchDocument.findMany(),
-    db.communityAssetReference.findMany(),
-  ]);
+  const [cases, actions, appeals, receipts, sanctions, restorations, releases, packages, documents, assets] =
+    await Promise.all([
+      db.communityModerationCase.findMany({
+        include: { subjects: true, reportLinks: true, evidence: true, assignments: true, events: true },
+      }),
+      db.communityModerationAction.findMany(),
+      db.communityModerationAppeal.findMany({ include: { events: true } }),
+      db.communityScanReceipt.findMany(),
+      db.communitySanction.findMany(),
+      db.communityRestorationReceipt.findMany(),
+      db.communityRelease.findMany(),
+      db.communityPackage.findMany(),
+      db.communitySearchDocument.findMany(),
+      db.communityAssetReference.findMany(),
+    ]);
   const body = {
     schema: "harborlight-phase4-logical-backup-v2",
     createdAt: new Date().toISOString(),
@@ -162,7 +165,18 @@ export async function createCommunityBackupManifest() {
     migration: "20260729121000_harborlight_phase4_relational_integrity",
     sourceCommit: process.env.GIT_COMMIT ?? "local-unset",
     inventory: { cases, actions, appeals, receipts, sanctions, restorations, releases, packages, documents, assets },
-    counts: { cases: cases.length, actions: actions.length, appeals: appeals.length, receipts: receipts.length, sanctions: sanctions.length, restorations: restorations.length, releases: releases.length, packages: packages.length, documents: documents.length, assets: assets.length },
+    counts: {
+      cases: cases.length,
+      actions: actions.length,
+      appeals: appeals.length,
+      receipts: receipts.length,
+      sanctions: sanctions.length,
+      restorations: restorations.length,
+      releases: releases.length,
+      packages: packages.length,
+      documents: documents.length,
+      assets: assets.length,
+    },
   };
   const serialized = JSON.stringify(body);
   const checksum = createHash("sha256").update(serialized).digest("hex");
@@ -212,24 +226,38 @@ export async function reconcileCommunityOperationalState(dryRun = true) {
 /** Bounded operational projection for moderators and alert evaluation. It
  * contains counts/ages only, never event payloads, identities, keys, or URLs. */
 export async function communityOperationalSnapshot(now = new Date()) {
-  const [queueDepth, deadLetters, oldestClaim, staleScans, quarantined, caseQueue, oldestCase, backupSchedules] = await Promise.all([
-    db.communityOutboxEvent.count({ where: { processedAt: null, terminalFailureAt: null } }),
-    db.communityOutboxEvent.count({ where: { terminalFailureAt: { not: null } } }),
-    db.communityOutboxEvent.findFirst({ where: { processedAt: null, claimExpiresAt: { not: null } }, orderBy: { claimedAt: "asc" }, select: { claimedAt: true } }),
-    db.communityScanReceipt.count({ where: { expiresAt: { lt: now } } }),
-    db.communityRelease.count({ where: { moderationStatus: "QUARANTINED" } }),
-    db.communityModerationCase.count({ where: { status: { in: ["OPEN", "TRIAGED", "ACTION_REQUIRED", "APPEAL_PENDING"] } } }),
-    db.communityModerationCase.findFirst({ orderBy: { openedAt: "asc" }, select: { openedAt: true } }),
-    db.communityOperationalSchedule.findMany({ where: { scheduleType: { in: ["BACKUP", "RESTORE_DRILL_REMINDER"] } }, select: { scheduleType: true, lastRunAt: true } }),
-  ]);
+  const [queueDepth, deadLetters, oldestClaim, staleScans, quarantined, caseQueue, oldestCase, backupSchedules] =
+    await Promise.all([
+      db.communityOutboxEvent.count({ where: { processedAt: null, terminalFailureAt: null } }),
+      db.communityOutboxEvent.count({ where: { terminalFailureAt: { not: null } } }),
+      db.communityOutboxEvent.findFirst({
+        where: { processedAt: null, claimExpiresAt: { not: null } },
+        orderBy: { claimedAt: "asc" },
+        select: { claimedAt: true },
+      }),
+      db.communityScanReceipt.count({ where: { expiresAt: { lt: now } } }),
+      db.communityRelease.count({ where: { moderationStatus: "QUARANTINED" } }),
+      db.communityModerationCase.count({
+        where: { status: { in: ["OPEN", "TRIAGED", "ACTION_REQUIRED", "APPEAL_PENDING"] } },
+      }),
+      db.communityModerationCase.findFirst({ orderBy: { openedAt: "asc" }, select: { openedAt: true } }),
+      db.communityOperationalSchedule.findMany({
+        where: { scheduleType: { in: ["BACKUP", "RESTORE_DRILL_REMINDER"] } },
+        select: { scheduleType: true, lastRunAt: true },
+      }),
+    ]);
   return {
     queueDepth,
     deadLetters,
-    leaseAgeSeconds: oldestClaim?.claimedAt ? Math.max(0, Math.floor((now.getTime() - oldestClaim.claimedAt.getTime()) / 1000)) : 0,
+    leaseAgeSeconds: oldestClaim?.claimedAt
+      ? Math.max(0, Math.floor((now.getTime() - oldestClaim.claimedAt.getTime()) / 1000))
+      : 0,
     staleScans,
     quarantined,
     caseQueue,
-    oldestCaseAgeSeconds: oldestCase ? Math.max(0, Math.floor((now.getTime() - oldestCase.openedAt.getTime()) / 1000)) : 0,
+    oldestCaseAgeSeconds: oldestCase
+      ? Math.max(0, Math.floor((now.getTime() - oldestCase.openedAt.getTime()) / 1000))
+      : 0,
     backupSchedules: backupSchedules.map((item) => ({ scheduleType: item.scheduleType, lastRunAt: item.lastRunAt })),
     releaseIdentity: process.env.GIT_COMMIT ? process.env.GIT_COMMIT.slice(0, 64) : "local-unset",
   };

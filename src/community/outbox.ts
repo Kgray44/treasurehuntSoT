@@ -97,12 +97,7 @@ export async function releaseExpiredClaims() {
     data: { claimOwner: null, claimedAt: null, claimExpiresAt: null },
   });
 }
-export async function dispatchOutboxBatch(
-  workerId: string,
-  handler: OutboxHandler,
-  limit = 25,
-  signal?: AbortSignal,
-) {
+export async function dispatchOutboxBatch(workerId: string, handler: OutboxHandler, limit = 25, signal?: AbortSignal) {
   const events = await claimAvailableEvents(workerId, limit);
   let processed = 0;
   for (const event of events) {

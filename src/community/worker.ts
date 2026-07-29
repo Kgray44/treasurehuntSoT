@@ -116,8 +116,7 @@ export async function runCommunityWorker(options: CommunityWorkerOptions = {}) {
           releasedClaims: totals.releasedClaims + run.releasedClaims,
         };
       }
-      if (runs.every((run) => run.claimed === 0))
-        await new Promise<void>((resolve) => setTimeout(resolve, pollMs));
+      if (runs.every((run) => run.claimed === 0)) await new Promise<void>((resolve) => setTimeout(resolve, pollMs));
     }
   } finally {
     await releaseWorkerClaims(workerId);

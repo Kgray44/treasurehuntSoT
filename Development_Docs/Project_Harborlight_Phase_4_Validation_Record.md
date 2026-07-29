@@ -4,7 +4,7 @@
 
 The migration engine wrapper initially failed before a diagnostic when pointed at an absolute external SQLite URL. The task-owned raw rehearsal and the canonical validation wrapper both subsequently applied the complete migration history; the latter is authoritative migration evidence. MySQL schema validation and client generation passed, but no isolated MySQL service was configured.
 
-No live scanner, object store, MySQL, alert destination, deployed worker, browser/Axe acceptance environment, or production host is configured in this worktree; none is represented as live validation.
+No live scanner, object store, MySQL, alert destination, deployed worker, or production host is configured in this worktree; none is represented as live validation.
 
 ## Current deterministic evidence
 
@@ -20,10 +20,22 @@ migration rehearsal.
 
 Focused deterministic tests cover case/appeal transition rejection, minimal
 reporter receipts, current digest-bound receipts, bounded outbox backoff, and
-privacy-preserving rate-limit hashing/window rollover. They are not live
-provider evidence. The full Phase 4 browser, Axe, isolated-storage, actual
-MySQL, actual ClamAV, S3-compatible, alert-delivery, and deployment exercises
-remain required before acceptance.
+privacy-preserving rate-limit hashing/window rollover. The current full
+deterministic suite passed 161 files and 1105 tests. Type checking,
+documentation validation, and Feature Catalog validation pass.
+
+The isolated moderator browser route passed 2 tests in
+`harborlight-phase4`: anonymous denial, canonical role resolution, protected
+queue and case navigation, keyboard focus, mobile layout, 200% zoom,
+reduced-motion behavior, serious/critical Axe checks, CSRF denial, revision
+conflict, and conflict-of-interest denial. It used the nonce-bound task-owned
+SQLite copy in
+`Validation_Runs/validation-20260729T140952979Z-9a8f76888b31`, applied all 48
+SQLite migrations, and released the owned port 3100 afterward.
+
+This is not live-provider evidence. Isolated storage restore drills, actual
+MySQL, actual ClamAV, S3-compatible storage, alert delivery, trusted deployment,
+and the complete canonical validation matrix remain required before acceptance.
 
 Run locally with the task-owned Node runtime:
 

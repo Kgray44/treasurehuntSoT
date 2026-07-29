@@ -59,6 +59,7 @@ if ($BrowserTestPath) {
     $browserTestProject = switch ([System.IO.Path]::GetFileName($runtimeRelativeBrowserTestPath)) {
         "harborlight-phase2.spec.ts" { "harborlight-phase2"; break }
         "harborlight-phase3.spec.ts" { "harborlight-phase3"; break }
+        "harborlight-phase4.spec.ts" { "harborlight-phase4"; break }
         default { throw "BrowserTestPath must identify a governed Harborlight browser suite." }
     }
 }
@@ -670,6 +671,9 @@ try {
             }
             if ($runtimeRelativeBrowserTestPath.Replace('\', '/') -eq 'tests/e2e/harborlight-phase3.spec.ts') {
                 $browserCommand += "--project=harborlight-phase3"
+            }
+            if ($runtimeRelativeBrowserTestPath.Replace('\', '/') -eq 'tests/e2e/harborlight-phase4.spec.ts') {
+                $browserCommand += "--project=harborlight-phase4"
             }
             $browserCommand += $runtimeRelativeBrowserTestPath.Replace('\', '/')
         }

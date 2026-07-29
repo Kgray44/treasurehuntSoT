@@ -3,7 +3,13 @@ import { communityRateLimitKeyHash, LocalCommunityRateLimiter } from "./rate-lim
 
 describe("Community rate limiting", () => {
   it("hashes all privacy-sensitive dimensions without preserving raw input", () => {
-    const hash = communityRateLimitKeyHash({ scope: "report", accountId: "account@example.test", network: "203.0.113.1", subject: "listing-a", action: "submit" });
+    const hash = communityRateLimitKeyHash({
+      scope: "report",
+      accountId: "account@example.test",
+      network: "203.0.113.1",
+      subject: "listing-a",
+      action: "submit",
+    });
     expect(hash).toMatch(/^[a-f0-9]{64}$/);
     expect(hash).not.toContain("203.0.113.1");
     expect(hash).not.toContain("account@example.test");

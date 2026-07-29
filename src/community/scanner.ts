@@ -248,7 +248,12 @@ export async function persistCommunityScanReceipt(
   receipt: CommunityBinaryScanReceipt,
   expiresAt = new Date(Date.now() + Number(process.env.COMMUNITY_SCAN_MAX_AGE_MS ?? 24 * 60 * 60 * 1000)),
 ) {
-  if (!/^[a-f0-9]{64}$/u.test(receipt.sha256) || receipt.byteLength < 0 || !receipt.provider || !receipt.providerVersion)
+  if (
+    !/^[a-f0-9]{64}$/u.test(receipt.sha256) ||
+    receipt.byteLength < 0 ||
+    !receipt.provider ||
+    !receipt.providerVersion
+  )
     throw new CommunityError("COMMUNITY_SCANNER_RECEIPT_INVALID", "Scanner evidence is incomplete.");
   return db.communityScanReceipt.create({
     data: {

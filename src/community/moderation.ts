@@ -282,26 +282,28 @@ export async function transitionModerationCase(
   if (existing.revision !== input.expectedRevision)
     throw new CommunityError("COMMUNITY_MODERATION_CONFLICT", "The case changed; refresh before continuing.");
   assertModerationTransition(existing.status, input.nextStatus);
-  const result = await db.communityModerationCase.updateMany({
-    where: { id: input.caseId, revision: input.expectedRevision },
-    data: {
-      status: input.nextStatus,
-      revision: { increment: 1 },
-      ...(input.nextStatus === "CLOSED" ? { closedAt: new Date() } : {}),
-    },
-  });
-  if (!result.count)
-    throw new CommunityError("COMMUNITY_MODERATION_CONFLICT", "The case changed; refresh before continuing.");
-  await db.communityModerationCaseEvent.create({
-    data: {
-      caseId: input.caseId,
-      eventType: "CASE_TRANSITION",
-      fromStatus: existing.status,
-      toStatus: input.nextStatus,
-      reasonCode: reason,
-      actorAccountId: actor.accountId,
-      correlationId: correlation(actor),
-    },
+  await db.$transaction(async (tx) => {
+    const result = await tx.communityModerationCase.updateMany({
+      where: { id: input.caseId, revision: input.expectedRevision },
+      data: {
+        status: input.nextStatus,
+        revision: { increment: 1 },
+        ...(input.nextStatus === "CLOSED" ? { closedAt: new Date() } : {}),
+      },
+    });
+    if (!result.count)
+      throw new CommunityError("COMMUNITY_MODERATION_CONFLICT", "The case changed; refresh before continuing.");
+    await tx.communityModerationCaseEvent.create({
+      data: {
+        caseId: input.caseId,
+        eventType: "CASE_TRANSITION",
+        fromStatus: existing.status,
+        toStatus: input.nextStatus,
+        reasonCode: reason,
+        actorAccountId: actor.accountId,
+        correlationId: correlation(actor),
+      },
+    });
   });
   return db.communityModerationCase.findUniqueOrThrow({ where: { id: input.caseId } });
 }
@@ -370,13 +372,20 @@ export async function unassignModerationCase(
       where: { id: input.caseId, revision: input.expectedRevision },
       data: { assignedAccountId: null, revision: { increment: 1 } },
     });
-    if (!changed.count) throw new CommunityError("COMMUNITY_MODERATION_CONFLICT", "The case changed; refresh before continuing.");
+    if (!changed.count)
+      throw new CommunityError("COMMUNITY_MODERATION_CONFLICT", "The case changed; refresh before continuing.");
     await tx.communityModerationCaseAssignment.updateMany({
       where: { caseId: input.caseId, endedAt: null },
       data: { state: "UNASSIGNED", endedAt: new Date() },
     });
     await tx.communityModerationCaseEvent.create({
-      data: { caseId: input.caseId, eventType: "CASE_UNASSIGNED", reasonCode: reason, actorAccountId: actor.accountId, correlationId: correlation(actor) },
+      data: {
+        caseId: input.caseId,
+        eventType: "CASE_UNASSIGNED",
+        reasonCode: reason,
+        actorAccountId: actor.accountId,
+        correlationId: correlation(actor),
+      },
     });
   });
 }
@@ -388,7 +397,9 @@ export async function addModerationEvidence(
   requireModerator(actor);
   if (!/^[a-f0-9]{64}$/u.test(input.checksum))
     throw new CommunityError("COMMUNITY_EVIDENCE_CHECKSUM_INVALID", "Evidence must have a SHA-256 checksum.");
-  const found = await db.communityModerationCase.findFirst({ where: { id: input.caseId, conflictAccountId: { not: actor.accountId } } });
+  const found = await db.communityModerationCase.findFirst({
+    where: { id: input.caseId, conflictAccountId: { not: actor.accountId } },
+  });
   if (!found) throw new CommunityError("COMMUNITY_MODERATION_CASE_NOT_FOUND", "This moderation case is unavailable.");
   return db.communityModerationCaseEvidence.upsert({
     where: { caseId_kind_checksum: { caseId: input.caseId, kind: input.kind.slice(0, 64), checksum: input.checksum } },
@@ -406,14 +417,22 @@ export async function addModerationEvidence(
 
 export async function listModerationEvidence(actor: CommunityModeratorActor, caseId: string) {
   requireModerator(actor);
-  const found = await db.communityModerationCase.findFirst({ where: { id: caseId, conflictAccountId: { not: actor.accountId } } });
+  const found = await db.communityModerationCase.findFirst({
+    where: { id: caseId, conflictAccountId: { not: actor.accountId } },
+  });
   if (!found) throw new CommunityError("COMMUNITY_MODERATION_CASE_NOT_FOUND", "This moderation case is unavailable.");
   const evidence = await db.communityModerationCaseEvidence.findMany({
     where: { caseId },
     select: { id: true, kind: true, checksum: true, schemaVersion: true, createdAt: true, createdBy: true },
   });
   await db.communityModerationCaseEvent.create({
-    data: { caseId, eventType: "EVIDENCE_ACCESSED", reasonCode: "OTHER", actorAccountId: actor.accountId, correlationId: correlation(actor) },
+    data: {
+      caseId,
+      eventType: "EVIDENCE_ACCESSED",
+      reasonCode: "OTHER",
+      actorAccountId: actor.accountId,
+      correlationId: correlation(actor),
+    },
   });
   return evidence;
 }
@@ -434,16 +453,43 @@ async function assertAppealEntitlement(accountId: string, subjectType: string, s
 
 export async function previewModerationAction(
   actor: CommunityModeratorActor,
-  input: { caseId: string; subjectType: string; subjectId: string; actionType: string; expectedRevision: number; reasonCode: string; secondReviewerId?: string },
+  input: {
+    caseId: string;
+    subjectType: string;
+    subjectId: string;
+    actionType: string;
+    expectedRevision: number;
+    reasonCode: string;
+    secondReviewerId?: string;
+  },
 ) {
-  requireModerator(actor, highImpactActions.has(input.actionType) && process.env.COMMUNITY_REQUIRE_ADMIN_FOR_HIGH_IMPACT === "true");
+  requireModerator(
+    actor,
+    highImpactActions.has(input.actionType) && process.env.COMMUNITY_REQUIRE_ADMIN_FOR_HIGH_IMPACT === "true",
+  );
   const reason = requiredReason(input.reasonCode);
   await assertNotSelfModeration(actor, input.subjectType, input.subjectId);
   const moderationCase = await db.communityModerationCase.findUnique({ where: { id: input.caseId } });
-  if (!moderationCase || moderationCase.revision !== input.expectedRevision || moderationCase.conflictAccountId === actor.accountId)
+  if (
+    !moderationCase ||
+    moderationCase.revision !== input.expectedRevision ||
+    moderationCase.conflictAccountId === actor.accountId
+  )
     throw new CommunityError("COMMUNITY_MODERATION_CONFLICT", "The case changed; refresh before continuing.");
-  const attached = await db.communityModerationCaseSubject.findUnique({ where: { caseId_subjectType_subjectId: { caseId: input.caseId, subjectType: input.subjectType, subjectId: input.subjectId } } });
-  if (!attached) throw new CommunityError("COMMUNITY_MODERATION_CROSS_CASE_ACTION", "The action target is not attached to this case.");
+  const attached = await db.communityModerationCaseSubject.findUnique({
+    where: {
+      caseId_subjectType_subjectId: {
+        caseId: input.caseId,
+        subjectType: input.subjectType,
+        subjectId: input.subjectId,
+      },
+    },
+  });
+  if (!attached)
+    throw new CommunityError(
+      "COMMUNITY_MODERATION_CROSS_CASE_ACTION",
+      "The action target is not attached to this case.",
+    );
   if (input.secondReviewerId === actor.accountId)
     throw new CommunityError("COMMUNITY_SELF_REVIEW_FORBIDDEN", "A moderator cannot review their own action.");
   return {
@@ -486,7 +532,10 @@ export async function applyModerationAction(
       replay.actionType !== input.actionType ||
       replay.reasonCode !== reason
     )
-      throw new CommunityError("COMMUNITY_IDEMPOTENCY_CONFLICT", "This idempotency key was used for a different action.");
+      throw new CommunityError(
+        "COMMUNITY_IDEMPOTENCY_CONFLICT",
+        "This idempotency key was used for a different action.",
+      );
     return replay;
   }
   const moderationCase = await db.communityModerationCase.findUnique({ where: { id: input.caseId } });
@@ -495,13 +544,31 @@ export async function applyModerationAction(
   if (moderationCase.conflictAccountId === actor.accountId)
     throw new CommunityError("COMMUNITY_MODERATION_CASE_NOT_FOUND", "This moderation case is unavailable.");
   const caseSubject = await db.communityModerationCaseSubject.findUnique({
-    where: { caseId_subjectType_subjectId: { caseId: input.caseId, subjectType: input.subjectType, subjectId: input.subjectId } },
+    where: {
+      caseId_subjectType_subjectId: {
+        caseId: input.caseId,
+        subjectType: input.subjectType,
+        subjectId: input.subjectId,
+      },
+    },
   });
   if (!caseSubject)
-    throw new CommunityError("COMMUNITY_MODERATION_CROSS_CASE_ACTION", "The action target is not attached to this case.");
+    throw new CommunityError(
+      "COMMUNITY_MODERATION_CROSS_CASE_ACTION",
+      "The action target is not attached to this case.",
+    );
   if (input.secondReviewerId === actor.accountId)
     throw new CommunityError("COMMUNITY_SELF_REVIEW_FORBIDDEN", "A moderator cannot review their own action.");
   const action = await db.$transaction(async (tx) => {
+    // Claim the revision before persisting any action. Reading the revision
+    // above only makes validation and error reporting clearer; this predicate
+    // prevents two moderators from applying actions to the same case revision.
+    const claimed = await tx.communityModerationCase.updateMany({
+      where: { id: input.caseId, revision: input.expectedRevision },
+      data: { status: "ACTIONED", revision: { increment: 1 } },
+    });
+    if (!claimed.count)
+      throw new CommunityError("COMMUNITY_MODERATION_CONFLICT", "The case changed; refresh before continuing.");
     const created = await tx.communityModerationAction.create({
       data: {
         caseId: input.caseId,
@@ -523,7 +590,10 @@ export async function applyModerationAction(
       await tx.communityRelease.update({ where: { id: input.subjectId }, data: { moderationStatus: "QUARANTINED" } });
       // Eligibility is denied synchronously before storage/index cleanup. A
       // current release also removes its public listing projection immediately.
-      await tx.communityListing.updateMany({ where: { currentReleaseId: input.subjectId }, data: { moderationStatus: "QUARANTINED", publicationStatus: "QUARANTINED" } });
+      await tx.communityListing.updateMany({
+        where: { currentReleaseId: input.subjectId },
+        data: { moderationStatus: "QUARANTINED", publicationStatus: "QUARANTINED" },
+      });
     }
     if (input.actionType === "QUARANTINE_LISTING")
       await tx.communityListing.update({
@@ -535,10 +605,6 @@ export async function applyModerationAction(
         where: { id: input.subjectId },
         data: { creatorStatus: "SUSPENDED", moderationStatus: "SUSPENDED" },
       });
-    await tx.communityModerationCase.update({
-      where: { id: input.caseId },
-      data: { status: "ACTIONED", revision: { increment: 1 } },
-    });
     await tx.communityModerationCaseEvent.create({
       data: {
         caseId: input.caseId,
@@ -600,10 +666,20 @@ export async function assignModerationAppeal(
   input: { appealId: string; moderatorAccountId: string },
 ) {
   requireModerator(actor);
-  const appeal = await db.communityModerationAppeal.findUnique({ where: { id: input.appealId }, include: { action: true } });
-  if (!appeal || appeal.appellantAccountId === input.moderatorAccountId || appeal.action.actorAccountId === input.moderatorAccountId)
+  const appeal = await db.communityModerationAppeal.findUnique({
+    where: { id: input.appealId },
+    include: { action: true },
+  });
+  if (
+    !appeal ||
+    appeal.appellantAccountId === input.moderatorAccountId ||
+    appeal.action.actorAccountId === input.moderatorAccountId
+  )
     throw new CommunityError("COMMUNITY_APPEAL_REVIEW_FORBIDDEN", "That reviewer cannot be assigned to this appeal.");
-  return db.communityModerationAppeal.update({ where: { id: appeal.id }, data: { assignedAccountId: input.moderatorAccountId } });
+  return db.communityModerationAppeal.update({
+    where: { id: appeal.id },
+    data: { assignedAccountId: input.moderatorAccountId },
+  });
 }
 
 export async function transitionModerationAppeal(
@@ -612,7 +688,10 @@ export async function transitionModerationAppeal(
 ) {
   requireModerator(actor);
   const reason = requiredReason(input.reasonCode);
-  const appeal = await db.communityModerationAppeal.findUnique({ where: { id: input.appealId }, include: { action: true } });
+  const appeal = await db.communityModerationAppeal.findUnique({
+    where: { id: input.appealId },
+    include: { action: true },
+  });
   if (!appeal || appeal.appellantAccountId === actor.accountId || appeal.action.actorAccountId === actor.accountId)
     throw new CommunityError("COMMUNITY_APPEAL_REVIEW_FORBIDDEN", "That appeal is unavailable for this reviewer.");
   if (appeal.assignedAccountId && appeal.assignedAccountId !== actor.accountId)
@@ -621,14 +700,34 @@ export async function transitionModerationAppeal(
   const updated = await db.$transaction(async (tx) => {
     const next = await tx.communityModerationAppeal.update({
       where: { id: appeal.id },
-      data: { status: input.nextStatus, assignedAccountId: actor.accountId, decisionReasonCode: reason, closedAt: ["UPHELD", "OVERTURNED", "PARTIALLY_OVERTURNED", "WITHDRAWN", "CLOSED"].includes(input.nextStatus) ? new Date() : null },
+      data: {
+        status: input.nextStatus,
+        assignedAccountId: actor.accountId,
+        decisionReasonCode: reason,
+        closedAt: ["UPHELD", "OVERTURNED", "PARTIALLY_OVERTURNED", "WITHDRAWN", "CLOSED"].includes(input.nextStatus)
+          ? new Date()
+          : null,
+      },
     });
     await tx.communityModerationAppealEvent.create({
-      data: { appealId: appeal.id, eventType: "APPEAL_TRANSITION", fromStatus: appeal.status, toStatus: input.nextStatus, reasonCode: reason, actorAccountId: actor.accountId },
+      data: {
+        appealId: appeal.id,
+        eventType: "APPEAL_TRANSITION",
+        fromStatus: appeal.status,
+        toStatus: input.nextStatus,
+        reasonCode: reason,
+        actorAccountId: actor.accountId,
+      },
     });
     if (["OVERTURNED", "PARTIALLY_OVERTURNED"].includes(input.nextStatus)) {
-      await tx.communityModerationAction.update({ where: { id: appeal.actionId }, data: { state: input.nextStatus, reversedAt: new Date(), restorationEligible: true } });
-      await tx.communitySanction.updateMany({ where: { actionId: appeal.actionId, state: "ACTIVE" }, data: { state: "LIFTED", endsAt: new Date() } });
+      await tx.communityModerationAction.update({
+        where: { id: appeal.actionId },
+        data: { state: input.nextStatus, reversedAt: new Date(), restorationEligible: true },
+      });
+      await tx.communitySanction.updateMany({
+        where: { actionId: appeal.actionId, state: "ACTIVE" },
+        data: { state: "LIFTED", endsAt: new Date() },
+      });
     }
     return next;
   });
@@ -652,20 +751,49 @@ export async function restoreModerationAction(
   if (activeSanction)
     throw new CommunityError("COMMUNITY_RESTORATION_SANCTION_ACTIVE", "An active sanction prevents restoration.");
   if (!scan || scan.result !== "CLEAN" || scan.expiresAt <= new Date() || scan.objectChecksum !== input.objectChecksum)
-    throw new CommunityError("COMMUNITY_RESTORATION_SCAN_INVALID", "A current matching clean scan receipt is required.");
+    throw new CommunityError(
+      "COMMUNITY_RESTORATION_SCAN_INVALID",
+      "A current matching clean scan receipt is required.",
+    );
   return db.$transaction(async (tx) => {
     if (action.actionType === "QUARANTINE_RELEASE") {
       await tx.communityRelease.update({ where: { id: action.subjectId }, data: { moderationStatus: "ACTIVE" } });
-      await tx.communityListing.updateMany({ where: { currentReleaseId: action.subjectId }, data: { moderationStatus: "ACTIVE", publicationStatus: "PUBLISHED" } });
+      await tx.communityListing.updateMany({
+        where: { currentReleaseId: action.subjectId },
+        data: { moderationStatus: "ACTIVE", publicationStatus: "PUBLISHED" },
+      });
     }
     if (action.actionType === "QUARANTINE_LISTING")
-      await tx.communityListing.update({ where: { id: action.subjectId }, data: { moderationStatus: "ACTIVE", publicationStatus: "PUBLISHED" } });
+      await tx.communityListing.update({
+        where: { id: action.subjectId },
+        data: { moderationStatus: "ACTIVE", publicationStatus: "PUBLISHED" },
+      });
     const receipt = await tx.communityRestorationReceipt.create({
-      data: { actionId: action.id, caseId: action.caseId, subjectType: action.subjectType, subjectId: action.subjectId, objectChecksum: input.objectChecksum, packageChecksum: input.packageChecksum, scanReceiptId: scan.id, eligibility: JSON.stringify({ actionState: action.state, scan: "CURRENT_CLEAN", sanctioned: false }), restoredBy: actor.accountId, correlationId: correlation(actor) },
+      data: {
+        actionId: action.id,
+        caseId: action.caseId,
+        subjectType: action.subjectType,
+        subjectId: action.subjectId,
+        objectChecksum: input.objectChecksum,
+        packageChecksum: input.packageChecksum,
+        scanReceiptId: scan.id,
+        eligibility: JSON.stringify({ actionState: action.state, scan: "CURRENT_CLEAN", sanctioned: false }),
+        restoredBy: actor.accountId,
+        correlationId: correlation(actor),
+      },
     });
-    await tx.communityModerationAction.update({ where: { id: action.id }, data: { state: "RESTORED", reversedAt: new Date() } });
+    await tx.communityModerationAction.update({
+      where: { id: action.id },
+      data: { state: "RESTORED", reversedAt: new Date() },
+    });
     await tx.communityModerationCaseEvent.create({
-      data: { caseId: action.caseId, eventType: "RESTORATION_EXECUTED", reasonCode: "OTHER", actorAccountId: actor.accountId, correlationId: correlation(actor) },
+      data: {
+        caseId: action.caseId,
+        eventType: "RESTORATION_EXECUTED",
+        reasonCode: "OTHER",
+        actorAccountId: actor.accountId,
+        correlationId: correlation(actor),
+      },
     });
     return receipt;
   });

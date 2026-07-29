@@ -18,7 +18,10 @@ export async function DELETE(request: Request, context: { params: Promise<{ id: 
   const actor = await canonicalCommunityActor(request);
   if (!actor) return denied();
   try {
-    await unassignModerationCase(actor, { ...schema.omit({ moderatorAccountId: true }).parse(await request.json()), caseId: (await context.params).id });
+    await unassignModerationCase(actor, {
+      ...schema.omit({ moderatorAccountId: true }).parse(await request.json()),
+      caseId: (await context.params).id,
+    });
     return NextResponse.json({ ok: true });
   } catch (cause) {
     return routeError(cause);
