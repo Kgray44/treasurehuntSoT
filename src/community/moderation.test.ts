@@ -14,6 +14,13 @@ describe("Harborlight Phase 4 moderation contracts", () => {
     expect(() => assertAppealTransition("UPHELD", "OVERTURNED")).toThrow("not permitted");
   });
 
+  it("rejects stale and terminal case transitions", () => {
+    expect(() => assertModerationTransition("TRIAGED", "CLOSED")).toThrow("not permitted");
+    expect(() => assertModerationTransition("DISMISSED", "ACTIONED")).toThrow("not permitted");
+    expect(() => assertAppealTransition("WITHDRAWN", "UNDER_REVIEW")).toThrow("not permitted");
+    expect(() => assertAppealTransition("CLOSED", "UPHELD")).toThrow("not permitted");
+  });
+
   it("keeps reporter receipts minimal", () => {
     expect(
       moderationPublicReceipt({

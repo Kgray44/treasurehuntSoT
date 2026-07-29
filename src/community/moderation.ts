@@ -2,6 +2,7 @@ import { createHash, randomUUID } from "node:crypto";
 import type { Prisma } from "@prisma/client";
 import { db } from "@/lib/db";
 import { CommunityError } from "./domain";
+import { requireLiveModerationSubject, resolveModerationSubject } from "./moderation-subject";
 
 export const moderationStatuses = [
   "OPEN",
@@ -188,7 +189,7 @@ export async function attachReportToModerationCase(
       caseId: moderationCase.id,
       subjectType: report.subjectType,
       subjectId: report.subjectId,
-      tombstone: "{}",
+      tombstone: JSON.stringify((await resolveModerationSubject(report.subjectType, report.subjectId)).tombstone),
     },
     update: {},
   });
@@ -353,50 +354,106 @@ export async function assignModerationCase(
   });
 }
 
-async function assertNotSelfModeration(actor: CommunityModeratorActor, subjectType: string, subjectId: string) {
-  if (subjectType === "LISTING") {
-    const listing = await db.communityListing.findUnique({ where: { id: subjectId }, include: { owner: true } });
-    if (!listing)
-      throw new CommunityError("COMMUNITY_MODERATION_SUBJECT_UNAVAILABLE", "This moderation target is unavailable.");
-    if (listing.owner.accountId === actor.accountId)
-      throw new CommunityError("COMMUNITY_SELF_MODERATION_FORBIDDEN", "A moderator cannot action their own content.");
-  }
-  if (subjectType === "RELEASE") {
-    const release = await db.communityRelease.findUnique({
-      where: { id: subjectId },
-      include: { listing: { include: { owner: true } } },
+export async function unassignModerationCase(
+  actor: CommunityModeratorActor,
+  input: { caseId: string; expectedRevision: number; reasonCode: string },
+) {
+  requireModerator(actor);
+  const reason = requiredReason(input.reasonCode);
+  const found = await db.communityModerationCase.findUnique({ where: { id: input.caseId } });
+  if (!found || found.conflictAccountId === actor.accountId)
+    throw new CommunityError("COMMUNITY_MODERATION_CASE_NOT_FOUND", "This moderation case is unavailable.");
+  if (found.revision !== input.expectedRevision)
+    throw new CommunityError("COMMUNITY_MODERATION_CONFLICT", "The case changed; refresh before continuing.");
+  await db.$transaction(async (tx) => {
+    const changed = await tx.communityModerationCase.updateMany({
+      where: { id: input.caseId, revision: input.expectedRevision },
+      data: { assignedAccountId: null, revision: { increment: 1 } },
     });
-    if (!release)
-      throw new CommunityError("COMMUNITY_MODERATION_SUBJECT_UNAVAILABLE", "This moderation target is unavailable.");
-    if (release.listing.owner.accountId === actor.accountId)
-      throw new CommunityError("COMMUNITY_SELF_MODERATION_FORBIDDEN", "A moderator cannot action their own content.");
-  }
+    if (!changed.count) throw new CommunityError("COMMUNITY_MODERATION_CONFLICT", "The case changed; refresh before continuing.");
+    await tx.communityModerationCaseAssignment.updateMany({
+      where: { caseId: input.caseId, endedAt: null },
+      data: { state: "UNASSIGNED", endedAt: new Date() },
+    });
+    await tx.communityModerationCaseEvent.create({
+      data: { caseId: input.caseId, eventType: "CASE_UNASSIGNED", reasonCode: reason, actorAccountId: actor.accountId, correlationId: correlation(actor) },
+    });
+  });
+}
+
+export async function addModerationEvidence(
+  actor: CommunityModeratorActor,
+  input: { caseId: string; kind: string; checksum: string; snapshot: Record<string, unknown> },
+) {
+  requireModerator(actor);
+  if (!/^[a-f0-9]{64}$/u.test(input.checksum))
+    throw new CommunityError("COMMUNITY_EVIDENCE_CHECKSUM_INVALID", "Evidence must have a SHA-256 checksum.");
+  const found = await db.communityModerationCase.findFirst({ where: { id: input.caseId, conflictAccountId: { not: actor.accountId } } });
+  if (!found) throw new CommunityError("COMMUNITY_MODERATION_CASE_NOT_FOUND", "This moderation case is unavailable.");
+  return db.communityModerationCaseEvidence.upsert({
+    where: { caseId_kind_checksum: { caseId: input.caseId, kind: input.kind.slice(0, 64), checksum: input.checksum } },
+    create: {
+      caseId: input.caseId,
+      kind: input.kind.slice(0, 64),
+      checksum: input.checksum,
+      safeSnapshot: safeSnapshot(input.snapshot),
+      createdBy: actor.accountId,
+      correlationId: correlation(actor),
+    },
+    update: {},
+  });
+}
+
+export async function listModerationEvidence(actor: CommunityModeratorActor, caseId: string) {
+  requireModerator(actor);
+  const found = await db.communityModerationCase.findFirst({ where: { id: caseId, conflictAccountId: { not: actor.accountId } } });
+  if (!found) throw new CommunityError("COMMUNITY_MODERATION_CASE_NOT_FOUND", "This moderation case is unavailable.");
+  const evidence = await db.communityModerationCaseEvidence.findMany({
+    where: { caseId },
+    select: { id: true, kind: true, checksum: true, schemaVersion: true, createdAt: true, createdBy: true },
+  });
+  await db.communityModerationCaseEvent.create({
+    data: { caseId, eventType: "EVIDENCE_ACCESSED", reasonCode: "OTHER", actorAccountId: actor.accountId, correlationId: correlation(actor) },
+  });
+  return evidence;
+}
+
+async function assertNotSelfModeration(actor: CommunityModeratorActor, subjectType: string, subjectId: string) {
+  const subject = await requireLiveModerationSubject(subjectType, subjectId);
+  if (subject.ownerAccountId === actor.accountId)
+    throw new CommunityError("COMMUNITY_SELF_MODERATION_FORBIDDEN", "A moderator cannot action their own content.");
 }
 
 async function assertAppealEntitlement(accountId: string, subjectType: string, subjectId: string) {
-  let ownerAccountId: string | null = null;
-  if (subjectType === "LISTING")
-    ownerAccountId =
-      (await db.communityListing.findUnique({ where: { id: subjectId }, include: { owner: true } }))?.owner.accountId ??
-      null;
-  if (subjectType === "RELEASE")
-    ownerAccountId =
-      (
-        await db.communityRelease.findUnique({
-          where: { id: subjectId },
-          include: { listing: { include: { owner: true } } },
-        })
-      )?.listing.owner.accountId ?? null;
-  if (subjectType === "PROFILE" || subjectType === "CREATOR")
-    ownerAccountId = (await db.communityProfile.findUnique({ where: { id: subjectId } }))?.accountId ?? null;
-  if (subjectType === "REVIEW")
-    ownerAccountId = (await db.communityReview.findUnique({ where: { id: subjectId } }))?.authorAccountId ?? null;
-  if (subjectType === "COMMENT")
-    ownerAccountId = (await db.communityComment.findUnique({ where: { id: subjectId } }))?.authorAccountId ?? null;
+  const { ownerAccountId } = await resolveModerationSubject(subjectType, subjectId);
   // New action subjects must define an explicit appeal owner before becoming
   // appealable; foreign accounts cannot probe or contest another user's action.
   if (!ownerAccountId || ownerAccountId !== accountId)
     throw new CommunityError("COMMUNITY_APPEAL_UNAVAILABLE", "This action is not eligible for appeal.");
+}
+
+export async function previewModerationAction(
+  actor: CommunityModeratorActor,
+  input: { caseId: string; subjectType: string; subjectId: string; actionType: string; expectedRevision: number; reasonCode: string; secondReviewerId?: string },
+) {
+  requireModerator(actor, highImpactActions.has(input.actionType) && process.env.COMMUNITY_REQUIRE_ADMIN_FOR_HIGH_IMPACT === "true");
+  const reason = requiredReason(input.reasonCode);
+  await assertNotSelfModeration(actor, input.subjectType, input.subjectId);
+  const moderationCase = await db.communityModerationCase.findUnique({ where: { id: input.caseId } });
+  if (!moderationCase || moderationCase.revision !== input.expectedRevision || moderationCase.conflictAccountId === actor.accountId)
+    throw new CommunityError("COMMUNITY_MODERATION_CONFLICT", "The case changed; refresh before continuing.");
+  const attached = await db.communityModerationCaseSubject.findUnique({ where: { caseId_subjectType_subjectId: { caseId: input.caseId, subjectType: input.subjectType, subjectId: input.subjectId } } });
+  if (!attached) throw new CommunityError("COMMUNITY_MODERATION_CROSS_CASE_ACTION", "The action target is not attached to this case.");
+  if (input.secondReviewerId === actor.accountId)
+    throw new CommunityError("COMMUNITY_SELF_REVIEW_FORBIDDEN", "A moderator cannot review their own action.");
+  return {
+    dryRun: true as const,
+    nextCaseStatus: "ACTIONED",
+    reasonCode: reason,
+    requiresConfirmation: highImpactActions.has(input.actionType),
+    requiresSecondReview: highImpactActions.has(input.actionType),
+    restorationEligible: ["QUARANTINE_RELEASE", "QUARANTINE_LISTING"].includes(input.actionType),
+  };
 }
 
 export async function applyModerationAction(
@@ -421,10 +478,29 @@ export async function applyModerationAction(
     throw new CommunityError("COMMUNITY_IDEMPOTENCY_INVALID", "A valid idempotency key is required.");
   await assertNotSelfModeration(actor, input.subjectType, input.subjectId);
   const replay = await db.communityModerationAction.findUnique({ where: { idempotencyKey: input.idempotencyKey } });
-  if (replay) return replay;
+  if (replay) {
+    if (
+      replay.caseId !== input.caseId ||
+      replay.subjectType !== input.subjectType ||
+      replay.subjectId !== input.subjectId ||
+      replay.actionType !== input.actionType ||
+      replay.reasonCode !== reason
+    )
+      throw new CommunityError("COMMUNITY_IDEMPOTENCY_CONFLICT", "This idempotency key was used for a different action.");
+    return replay;
+  }
   const moderationCase = await db.communityModerationCase.findUnique({ where: { id: input.caseId } });
   if (!moderationCase || moderationCase.revision !== input.expectedRevision)
     throw new CommunityError("COMMUNITY_MODERATION_CONFLICT", "The case changed; refresh before continuing.");
+  if (moderationCase.conflictAccountId === actor.accountId)
+    throw new CommunityError("COMMUNITY_MODERATION_CASE_NOT_FOUND", "This moderation case is unavailable.");
+  const caseSubject = await db.communityModerationCaseSubject.findUnique({
+    where: { caseId_subjectType_subjectId: { caseId: input.caseId, subjectType: input.subjectType, subjectId: input.subjectId } },
+  });
+  if (!caseSubject)
+    throw new CommunityError("COMMUNITY_MODERATION_CROSS_CASE_ACTION", "The action target is not attached to this case.");
+  if (input.secondReviewerId === actor.accountId)
+    throw new CommunityError("COMMUNITY_SELF_REVIEW_FORBIDDEN", "A moderator cannot review their own action.");
   const action = await db.$transaction(async (tx) => {
     const created = await tx.communityModerationAction.create({
       data: {
@@ -443,8 +519,12 @@ export async function applyModerationAction(
         correlationId: correlation(actor),
       },
     });
-    if (input.actionType === "QUARANTINE_RELEASE")
+    if (input.actionType === "QUARANTINE_RELEASE") {
       await tx.communityRelease.update({ where: { id: input.subjectId }, data: { moderationStatus: "QUARANTINED" } });
+      // Eligibility is denied synchronously before storage/index cleanup. A
+      // current release also removes its public listing projection immediately.
+      await tx.communityListing.updateMany({ where: { currentReleaseId: input.subjectId }, data: { moderationStatus: "QUARANTINED", publicationStatus: "QUARANTINED" } });
+    }
     if (input.actionType === "QUARANTINE_LISTING")
       await tx.communityListing.update({
         where: { id: input.subjectId },
@@ -513,6 +593,82 @@ export async function submitAppeal(actor: CommunityModeratorActor, input: { acti
     data: { status: "APPEAL_PENDING", revision: { increment: 1 } },
   });
   return { id: appeal.id, status: appeal.status, createdAt: appeal.createdAt };
+}
+
+export async function assignModerationAppeal(
+  actor: CommunityModeratorActor,
+  input: { appealId: string; moderatorAccountId: string },
+) {
+  requireModerator(actor);
+  const appeal = await db.communityModerationAppeal.findUnique({ where: { id: input.appealId }, include: { action: true } });
+  if (!appeal || appeal.appellantAccountId === input.moderatorAccountId || appeal.action.actorAccountId === input.moderatorAccountId)
+    throw new CommunityError("COMMUNITY_APPEAL_REVIEW_FORBIDDEN", "That reviewer cannot be assigned to this appeal.");
+  return db.communityModerationAppeal.update({ where: { id: appeal.id }, data: { assignedAccountId: input.moderatorAccountId } });
+}
+
+export async function transitionModerationAppeal(
+  actor: CommunityModeratorActor,
+  input: { appealId: string; nextStatus: string; reasonCode: string },
+) {
+  requireModerator(actor);
+  const reason = requiredReason(input.reasonCode);
+  const appeal = await db.communityModerationAppeal.findUnique({ where: { id: input.appealId }, include: { action: true } });
+  if (!appeal || appeal.appellantAccountId === actor.accountId || appeal.action.actorAccountId === actor.accountId)
+    throw new CommunityError("COMMUNITY_APPEAL_REVIEW_FORBIDDEN", "That appeal is unavailable for this reviewer.");
+  if (appeal.assignedAccountId && appeal.assignedAccountId !== actor.accountId)
+    throw new CommunityError("COMMUNITY_APPEAL_REVIEW_FORBIDDEN", "That appeal is assigned to another reviewer.");
+  assertAppealTransition(appeal.status, input.nextStatus);
+  const updated = await db.$transaction(async (tx) => {
+    const next = await tx.communityModerationAppeal.update({
+      where: { id: appeal.id },
+      data: { status: input.nextStatus, assignedAccountId: actor.accountId, decisionReasonCode: reason, closedAt: ["UPHELD", "OVERTURNED", "PARTIALLY_OVERTURNED", "WITHDRAWN", "CLOSED"].includes(input.nextStatus) ? new Date() : null },
+    });
+    await tx.communityModerationAppealEvent.create({
+      data: { appealId: appeal.id, eventType: "APPEAL_TRANSITION", fromStatus: appeal.status, toStatus: input.nextStatus, reasonCode: reason, actorAccountId: actor.accountId },
+    });
+    if (["OVERTURNED", "PARTIALLY_OVERTURNED"].includes(input.nextStatus)) {
+      await tx.communityModerationAction.update({ where: { id: appeal.actionId }, data: { state: input.nextStatus, reversedAt: new Date(), restorationEligible: true } });
+      await tx.communitySanction.updateMany({ where: { actionId: appeal.actionId, state: "ACTIVE" }, data: { state: "LIFTED", endsAt: new Date() } });
+    }
+    return next;
+  });
+  return updated;
+}
+
+export async function restoreModerationAction(
+  actor: CommunityModeratorActor,
+  input: { actionId: string; scanReceiptId: string; objectChecksum: string; packageChecksum?: string },
+) {
+  requireModerator(actor, true);
+  if (!/^[a-f0-9]{64}$/u.test(input.objectChecksum))
+    throw new CommunityError("COMMUNITY_RESTORATION_CHECKSUM_INVALID", "Restoration requires a valid object checksum.");
+  const action = await db.communityModerationAction.findUnique({ where: { id: input.actionId } });
+  if (!action || !action.restorationEligible)
+    throw new CommunityError("COMMUNITY_RESTORATION_INELIGIBLE", "This action is not eligible for restoration.");
+  const [scan, activeSanction] = await Promise.all([
+    db.communityScanReceipt.findUnique({ where: { id: input.scanReceiptId } }),
+    db.communitySanction.findFirst({ where: { actionId: action.id, state: "ACTIVE" } }),
+  ]);
+  if (activeSanction)
+    throw new CommunityError("COMMUNITY_RESTORATION_SANCTION_ACTIVE", "An active sanction prevents restoration.");
+  if (!scan || scan.result !== "CLEAN" || scan.expiresAt <= new Date() || scan.objectChecksum !== input.objectChecksum)
+    throw new CommunityError("COMMUNITY_RESTORATION_SCAN_INVALID", "A current matching clean scan receipt is required.");
+  return db.$transaction(async (tx) => {
+    if (action.actionType === "QUARANTINE_RELEASE") {
+      await tx.communityRelease.update({ where: { id: action.subjectId }, data: { moderationStatus: "ACTIVE" } });
+      await tx.communityListing.updateMany({ where: { currentReleaseId: action.subjectId }, data: { moderationStatus: "ACTIVE", publicationStatus: "PUBLISHED" } });
+    }
+    if (action.actionType === "QUARANTINE_LISTING")
+      await tx.communityListing.update({ where: { id: action.subjectId }, data: { moderationStatus: "ACTIVE", publicationStatus: "PUBLISHED" } });
+    const receipt = await tx.communityRestorationReceipt.create({
+      data: { actionId: action.id, caseId: action.caseId, subjectType: action.subjectType, subjectId: action.subjectId, objectChecksum: input.objectChecksum, packageChecksum: input.packageChecksum, scanReceiptId: scan.id, eligibility: JSON.stringify({ actionState: action.state, scan: "CURRENT_CLEAN", sanctioned: false }), restoredBy: actor.accountId, correlationId: correlation(actor) },
+    });
+    await tx.communityModerationAction.update({ where: { id: action.id }, data: { state: "RESTORED", reversedAt: new Date() } });
+    await tx.communityModerationCaseEvent.create({
+      data: { caseId: action.caseId, eventType: "RESTORATION_EXECUTED", reasonCode: "OTHER", actorAccountId: actor.accountId, correlationId: correlation(actor) },
+    });
+    return receipt;
+  });
 }
 
 export function moderationPublicReceipt(report: {

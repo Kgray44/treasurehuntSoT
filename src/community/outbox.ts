@@ -8,7 +8,17 @@ export type OutboxHandler = (event: {
   payload: string;
 }) => Promise<void>;
 
-export async function claimAvailableEvents(workerId: string, limit = 25, leaseMs = 30_000) {
+export const communityOutboxLeaseMs = 30_000;
+export const communityOutboxMaxBackoffMs = 5 * 60_000;
+
+/** Bounded deterministic backoff avoids retry storms without making a poison
+ * event invisible. It deliberately has no random jitter so recovery tests and
+ * reconciliation can explain the next eligible attempt. */
+export function communityOutboxBackoffMs(attempt: number) {
+  return Math.min(communityOutboxMaxBackoffMs, 1_000 * 2 ** Math.max(0, Math.min(attempt - 1, 12)));
+}
+
+export async function claimAvailableEvents(workerId: string, limit = 25, leaseMs = communityOutboxLeaseMs) {
   const now = new Date();
   const candidates = await db.communityOutboxEvent.findMany({
     where: {
@@ -42,6 +52,19 @@ export async function markEventProcessed(id: string, workerId: string) {
     data: { processedAt: new Date(), claimExpiresAt: null },
   });
 }
+export async function renewEventClaim(id: string, workerId: string, leaseMs = communityOutboxLeaseMs) {
+  const now = new Date();
+  return db.communityOutboxEvent.updateMany({
+    where: { id, claimOwner: workerId, processedAt: null, terminalFailureAt: null, claimExpiresAt: { gt: now } },
+    data: { claimExpiresAt: new Date(now.getTime() + leaseMs) },
+  });
+}
+export async function releaseWorkerClaims(workerId: string) {
+  return db.communityOutboxEvent.updateMany({
+    where: { claimOwner: workerId, processedAt: null, terminalFailureAt: null },
+    data: { claimOwner: null, claimedAt: null, claimExpiresAt: null },
+  });
+}
 export async function markEventRetryableFailure(id: string, workerId: string, failureCode: string) {
   const event = await db.communityOutboxEvent.findFirst({ where: { id, claimOwner: workerId, processedAt: null } });
   if (!event) return false;
@@ -57,7 +80,7 @@ export async function markEventRetryableFailure(id: string, workerId: string, fa
             claimOwner: null,
             claimedAt: null,
             claimExpiresAt: null,
-            availableAt: new Date(Date.now() + attempts * 1_000),
+            availableAt: new Date(Date.now() + communityOutboxBackoffMs(attempts)),
           },
   });
   return true;
@@ -74,10 +97,16 @@ export async function releaseExpiredClaims() {
     data: { claimOwner: null, claimedAt: null, claimExpiresAt: null },
   });
 }
-export async function dispatchOutboxBatch(workerId: string, handler: OutboxHandler, limit = 25) {
+export async function dispatchOutboxBatch(
+  workerId: string,
+  handler: OutboxHandler,
+  limit = 25,
+  signal?: AbortSignal,
+) {
   const events = await claimAvailableEvents(workerId, limit);
   let processed = 0;
   for (const event of events) {
+    if (signal?.aborted) break;
     try {
       await handler(event);
       if ((await markEventProcessed(event.id, workerId)).count) processed += 1;

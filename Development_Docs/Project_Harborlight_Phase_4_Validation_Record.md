@@ -5,3 +5,34 @@
 The migration engine wrapper initially failed before a diagnostic when pointed at an absolute external SQLite URL. The task-owned raw rehearsal and the canonical validation wrapper both subsequently applied the complete migration history; the latter is authoritative migration evidence. MySQL schema validation and client generation passed, but no isolated MySQL service was configured.
 
 No live scanner, object store, MySQL, alert destination, deployed worker, browser/Axe acceptance environment, or production host is configured in this worktree; none is represented as live validation.
+
+## Current deterministic evidence
+
+The continuation adds an additive relational-integrity migration after the
+preserved Phase 4 migration. Prisma SQLite validation, Prisma MySQL validation
+with a non-secret dummy URL, and SQLite client generation pass. The correction
+adds foreign-key behavior for reports, report links, evidence, assignments,
+events, actions, sanctions, appeals, appeal events, restoration receipts, and
+case subjects. The intended SQLite rehearsal also runs `PRAGMA
+foreign_key_check`; a Prisma Windows schema-engine failure that emits no
+diagnostic remains under investigation and is not classified as a successful
+migration rehearsal.
+
+Focused deterministic tests cover case/appeal transition rejection, minimal
+reporter receipts, current digest-bound receipts, bounded outbox backoff, and
+privacy-preserving rate-limit hashing/window rollover. They are not live
+provider evidence. The full Phase 4 browser, Axe, isolated-storage, actual
+MySQL, actual ClamAV, S3-compatible, alert-delivery, and deployment exercises
+remain required before acceptance.
+
+Run locally with the task-owned Node runtime:
+
+```powershell
+npm run typecheck
+npm exec vitest run src/community/moderation.test.ts src/community/rate-limit.test.ts src/community/outbox.test.ts
+npx prisma validate --schema prisma/schema.sqlite.prisma
+$env:DATABASE_URL='mysql://harborlight:harborlight@127.0.0.1:3306/harborlight'; npx prisma validate --schema prisma/schema.prisma
+```
+
+Do not interpret an unavailable provider, unconfigured alert destination, or
+the Ledgerlight Markdown formatter finding as a Harborlight product pass.

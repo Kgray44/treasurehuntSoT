@@ -651,7 +651,7 @@ The public engine can import, store, deliver, recover, and govern protected Chro
 ## FT-025 - Project Harborlight Community Exchange
 
 **Status:** MAINLINE
-**Program or subsystem:** Harborlight Phases 1 through 4
+**Program or subsystem:** Harborlight Phases 1 through 3
 
 A governed community system supports immutable reusable Chronicle packages, licensing, attribution, installation, remix lineage, discovery, consent-aware social projections, and durable moderated operations.
 
@@ -666,8 +666,6 @@ A governed community system supports immutable reusable Chronicle packages, lice
 - Discovery and search projections
 - Reviews, comments, reports, and collections
 - Consent-aware keepsakes and voyage logs
-- Durable moderation cases, actions, appeals, and restoration receipts
-- Fail-closed scanner receipts and operational provider diagnostics
 
 ### Primary surfaces
 
@@ -677,7 +675,6 @@ A governed community system supports immutable reusable Chronicle packages, lice
 
 - path: `src/community/exchange-service.ts`
 - completion-record: `Development_Docs/Project_Harborlight_Phase_3_Completion_Report.md`
-- path: `Development_Docs/Project_Harborlight_Phase_4_Design_Record.md`
 
 ---
 

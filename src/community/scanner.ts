@@ -2,6 +2,7 @@ import { createHash } from "node:crypto";
 import { CommunityError } from "./domain";
 import { assertCommunityBinaryFormat, type CommunityPackageFile } from "./package";
 import { scanClamAvBytes } from "@/private-content/clamav-transport";
+import { db } from "@/lib/db";
 
 export type CommunityBinaryScanResult =
   | "CLEAN"
@@ -238,4 +239,38 @@ export function isTrustedCurrentCommunityScanReceipt(
     Number.isFinite(maxAgeMs) &&
     new Date(receipt.scannedAt).getTime() + maxAgeMs >= now
   );
+}
+
+/** Persists a bounded provider receipt; raw bytes, scanner responses, object
+ * locations, and original names remain outside the moderation database. */
+export async function persistCommunityScanReceipt(
+  subject: { subjectType: string; subjectId: string; correlationId: string },
+  receipt: CommunityBinaryScanReceipt,
+  expiresAt = new Date(Date.now() + Number(process.env.COMMUNITY_SCAN_MAX_AGE_MS ?? 24 * 60 * 60 * 1000)),
+) {
+  if (!/^[a-f0-9]{64}$/u.test(receipt.sha256) || receipt.byteLength < 0 || !receipt.provider || !receipt.providerVersion)
+    throw new CommunityError("COMMUNITY_SCANNER_RECEIPT_INVALID", "Scanner evidence is incomplete.");
+  return db.communityScanReceipt.create({
+    data: {
+      subjectType: subject.subjectType,
+      subjectId: subject.subjectId,
+      provider: receipt.provider,
+      providerVersion: receipt.providerVersion,
+      definitionsVersion: receipt.safeReasonCode?.slice(0, 191),
+      result: receipt.result,
+      objectChecksum: receipt.sha256,
+      byteLength: receipt.byteLength,
+      detectedMediaType: receipt.detectedMediaType,
+      evidenceKind: receipt.evidenceKind,
+      correlationId: subject.correlationId,
+      expiresAt,
+    },
+  });
+}
+
+export async function currentCommunityScanReceipt(subjectType: string, subjectId: string, expectedChecksum: string) {
+  return db.communityScanReceipt.findFirst({
+    where: { subjectType, subjectId, objectChecksum: expectedChecksum, result: "CLEAN", expiresAt: { gt: new Date() } },
+    orderBy: { scannedAt: "desc" },
+  });
 }
