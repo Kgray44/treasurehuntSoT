@@ -1,0 +1,10 @@
+Requirement,Disposition,Evidence
+Deterministic sealed plan,Implemented,scripts/sounding-line/cli.mjs
+Allowlisted product adapters,Implemented,scripts/sounding-line/adapters.mjs
+Marker and process ownership,Implemented,scripts/sounding-line/runtime.mjs
+SQLite baseline and clone boundary,Implemented,scripts/sounding-line/runtime.mjs
+Two Harborlight browser lanes,Implemented,scripts/test-all.ps1
+Harborlight Phase 4 policy mapping,Implemented,testing/suites.json
+Legacy release authority,Retained,scripts/test-all.ps1
+External provider evidence,Pending,testing/validation-debt.json
+P34 browser matrix,Accepted exception,Development_Docs/Project_Sounding_Line_Governing_Document.md

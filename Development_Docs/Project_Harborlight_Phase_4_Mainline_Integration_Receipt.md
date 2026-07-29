@@ -41,8 +41,8 @@ keyboard focus, mobile, 200% zoom, reduced motion, serious/critical Axe, CSRF,
 revision conflict, and conflict-of-interest denial; its owned port 3100 was
 released afterward.
 
-The wrapper's whole-repository typecheck is currently blocked by pre-existing
-`src/tall-tale` Prisma client/schema drift already present on `origin/main`.
+The wrapper's whole-repository typecheck was historically blocked by
+pre-existing legacy Prisma client/schema drift already present on `origin/main`.
 It is not a Harborlight regression and is not represented as a pass. No result
 in this receipt represents live ClamAV, MinIO/S3, MySQL, external alert
 delivery, or trusted Linux/systemd deployment evidence.

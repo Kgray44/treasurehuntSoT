@@ -459,6 +459,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Features/catalog/sounding-line.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Features/catalog/studio.json",
       "record_type": "archive-index",
       "status": "preserved",
@@ -1287,6 +1293,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Phase_1_Post_Harborlight_Reconciliation_Receipt.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Phase_1_Requirement_Ledger.csv",
       "record_type": "program-record",
       "status": "preserved",
@@ -1305,13 +1317,91 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Phase_2_Browser_Isolation_and_Shards.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Phase_2_Compatibility_Adapter_Map.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Phase_2_Completion_Receipt.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Phase_2_Database_Isolation.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Phase_2_Design_Record.md",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Phase_2_Execution_Graph_and_Scheduler.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Phase_2_Harborlight_Reconciliation_Record.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Phase_2_Implementation_Report.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Phase_2_Integration_Manifest.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Phase_2_Parallel_Safety_Register.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Phase_2_Requirement_Ledger.csv",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Phase_2_Resource_Broker_and_Lease_Model.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Phase_2_Rollback_Instructions.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Phase_2_Runtime_Root_and_Process_Ownership.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Phase_2_Test_Plan.md",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
@@ -1402,6 +1492,12 @@
     },
     {
       "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Phase_3_Security_and_Privacy_Threat_Model.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Phase_2_Validation_Record.md",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null

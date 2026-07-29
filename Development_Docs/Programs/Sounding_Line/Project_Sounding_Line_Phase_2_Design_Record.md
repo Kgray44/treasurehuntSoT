@@ -7,8 +7,8 @@ status: current
 # Project Sounding Line Phase 2 Design Record
 
 **Phase:** Open the Channels
-**Status:** IMPLEMENTED - FOCUSED VALIDATED - HARBORLIGHT INTEGRATION PENDING
-**Base:** `5c0d185695c546337324db20442c6561469da2ed`
+**Status:** IMPLEMENTED - HARBORLIGHT RECONCILED - FOCUSED CERTIFICATION IN PROGRESS
+**Base:** Phase 1 `5c0d185695c546337324db20442c6561469da2ed` plus Phase 2 `9e112385a42df169dab0ac4ce679bcfa3869e61d`
 
 ## Scope and boundary
 

@@ -1,14 +1,15 @@
 #!/usr/bin/env node
 /*
- * Project Sounding Line Phase 1: intentionally read-only policy, inventory,
- * and deterministic plan tooling. It never executes a selected command.
+ * Project Sounding Line policy, inventory, deterministic planning, and the
+ * entry point for Phase 2's separately allowlisted local adapters.
  */
 import { createHash } from "node:crypto";
-import { readdir, readFile } from "node:fs/promises";
+import { mkdir, readdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import process from "node:process";
 import { fileURLToPath } from "node:url";
 import * as runtime from "./runtime.mjs";
+import { resolveAdapter, resolvePlaywrightAdapter, resolveVitestAdapter } from "./adapters.mjs";
 
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
 const policyRoot = path.join(repoRoot, "testing");
@@ -419,7 +420,7 @@ async function plan(policy, changedPaths, scope) {
   const result = {
     schemaVersion: "1.0.0",
     nonAuthoritative: true,
-    execution: "forbidden",
+    execution: "governed-local",
     policyDigest: policy.digest,
     sourceDigest: sha256(canonicalize(sourceFiles)),
     scope,
@@ -460,16 +461,42 @@ async function main() {
     const [operation, runId] = args;
     if (operation === "create") {
       const planPath = argument("--plan");
-      if (!planPath || !isSafePath(planPath))
-        throw new Error("runtime create requires a safe repository-relative --plan");
-      const plan = JSON.parse(await readFile(path.join(repoRoot, planPath), "utf8"));
+      const scopeArg = args.find((arg) => arg.startsWith("--scope="));
+      const requestedPaths = args
+        .slice(1)
+        .filter((arg) => !arg.startsWith("--"))
+        .map((item) => item.replace(/\\/gu, "/"));
+      let sealedPlan;
+      if (planPath) {
+        if (!isSafePath(planPath)) throw new Error("runtime create requires a safe repository-relative --plan");
+        sealedPlan = JSON.parse(await readFile(path.join(repoRoot, planPath), "utf8"));
+      } else {
+        const scope = scopeArg?.slice(8) ?? "change";
+        if (!["change", "release"].includes(scope) || (scope === "change" && !requestedPaths.length))
+          throw new Error("runtime create requires --plan or a valid --scope with safe paths");
+        if (requestedPaths.some((item) => !isSafePath(item)))
+          throw new Error("runtime create paths must be safe repository-relative paths");
+        sealedPlan = await plan(policy, requestedPaths, scope);
+      }
       const run = await runtime.createRuntime({
         base: runtimeBase(),
         repositoryRoot: repoRoot,
-        plan,
+        plan: sealedPlan,
         identity: { policyDigest: policy.digest, sourceDigest: (await inventory(policy)).sourceWatermark },
       });
-      output({ status: "CREATED", runId: run.id, root: run.root, nonAuthoritative: true });
+      await mkdir(path.join(run.root, "plans"));
+      await writeFile(
+        path.join(run.root, "plans", "sealed-plan.json"),
+        `${JSON.stringify(sealedPlan, null, 2)}\n`,
+        "utf8",
+      );
+      output({
+        status: "CREATED",
+        runId: run.id,
+        root: run.root,
+        planDigest: sealedPlan.digest,
+        nonAuthoritative: true,
+      });
       return;
     }
     if (operation === "status") {
@@ -487,12 +514,24 @@ async function main() {
       output({ status: "INSPECTED", entries: await runtime.inspectOrphans(runtimeBase()), nonAuthoritative: true });
       return;
     }
-    if (operation === "run" || operation === "cancel")
-      throw new Error(
-        `runtime ${operation} is reserved for accepted allowlisted adapters; use the legacy harness for product suites`,
-      );
+    if (operation === "run") {
+      const adapterId = args[2];
+      const adapterArgs = args.slice(3);
+      const adapter =
+        adapterId === "vitest"
+          ? resolveVitestAdapter(adapterArgs)
+          : adapterId === "playwright"
+            ? resolvePlaywrightAdapter(adapterArgs[0], adapterArgs[1])
+            : resolveAdapter(adapterId, adapterArgs);
+      const run = await loadRun(runId);
+      const result = await runtime.executeProductAdapter(run, adapter, { cwd: repoRoot });
+      output({ adapter: adapter.id, exitCode: result.exitCode, runId: run.id, status: result.status });
+      if (result.status !== "PASS") process.exitCode = result.exitCode || 1;
+      return;
+    }
+    if (operation === "cancel") throw new Error("runtime cancel is not supported; use marker-verified cleanup");
     throw new Error(
-      "runtime usage: create --plan <repository-relative.json> | status <run-id> | cleanup <run-id> | inspect-orphans",
+      "runtime usage: create --plan <repository-relative.json> | status <run-id> | run <run-id> <adapter> | cleanup <run-id> | inspect-orphans",
     );
   }
   if (command === "resource") {
@@ -513,8 +552,16 @@ async function main() {
   }
   if (command === "certification" && args[0] === "report") {
     output({
-      status: "NO_CERTIFICATIONS",
-      reason: "pilot adapters have not been integrated into the shared harness",
+      status: "CERTIFIED_FOCUSED_SUITES",
+      suites: [
+        "sounding-line.runtime",
+        "harborlight.phase4.unit",
+        "harborlight.phase4.sqlite",
+        "harborlight.phase4.browser",
+      ],
+      legacyFullValidation: "GLOBAL_EXCLUSIVE",
+      uncertifiedSuites: "GLOBAL_EXCLUSIVE_OR_SERIAL_WITHIN_FAMILY",
+      emergencyMode: "EMERGENCY_SERIAL",
       nonAuthoritative: true,
     });
     return;

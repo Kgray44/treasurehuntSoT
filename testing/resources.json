@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "status": "phase-1-current-resource-declarations",
+  "status": "phase-2-certified-resource-declarations",
   "resources": [
     { "id": "node-slot", "capacity": "configured-worker-capacity", "exclusive": false },
     { "id": "vitest-worker-pool", "capacity": 4, "exclusive": false },
@@ -17,6 +17,9 @@
     { "id": "trace-root", "capacity": "per-run", "exclusive": true },
     { "id": "production-build-directory", "capacity": "per-run", "exclusive": true },
     { "id": "scanner", "capacity": "provider-configured", "exclusive": true },
-    { "id": "external-provider", "capacity": "provider-configured", "exclusive": true }
+    { "id": "external-provider", "capacity": "provider-configured", "exclusive": true },
+    { "id": "browser-context", "capacity": "per-run", "exclusive": true },
+    { "id": "community-storage-root", "capacity": "per-run", "exclusive": true },
+    { "id": "community-account-namespace", "capacity": "per-run", "exclusive": true }
   ]
 }
