@@ -327,6 +327,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Consolidated_Mainline_Receipt_2026-07-29.md",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/document-index.json",
       "record_type": "archive-index",
       "status": "preserved",
@@ -400,6 +406,12 @@
     },
     {
       "path": "Development_Docs/Features/catalog/wayfarer.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Features/Feature_Catalog_Mainline_Reconciliation_Receipt.md",
       "record_type": "archive-index",
       "status": "preserved",
       "canonical_for": null
