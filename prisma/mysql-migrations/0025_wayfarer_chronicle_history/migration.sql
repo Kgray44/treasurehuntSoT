@@ -28,7 +28,7 @@ CREATE TABLE `PlayerChronicleRecord` (
   `projectionReason` VARCHAR(191) NULL, `lastDerivedAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
   `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3), `updatedAt` DATETIME(3) NOT NULL,
   PRIMARY KEY (`id`), UNIQUE KEY `PlayerChronicleRecord_playerProfileId_sourcePlaythroughId_key` (`playerProfileId`, `sourcePlaythroughId`),
-  KEY `PlayerChronicleRecord_playerProfileId_lifecycleStatus_completedAt_idx` (`playerProfileId`, `lifecycleStatus`, `completedAt`),
+  KEY `PlayerChronicleRecord_profile_status_completed_idx` (`playerProfileId`, `lifecycleStatus`, `completedAt`),
   KEY `PlayerChronicleRecord_playerProfileId_chronicleTitleSnapshot_idx` (`playerProfileId`, `chronicleTitleSnapshot`),
   KEY `PlayerChronicleRecord_publishedVersionId_idx` (`publishedVersionId`),
   CONSTRAINT `PlayerChronicleRecord_playerProfileId_fkey` FOREIGN KEY (`playerProfileId`) REFERENCES `PlayerProfile`(`id`) ON DELETE CASCADE ON UPDATE CASCADE,

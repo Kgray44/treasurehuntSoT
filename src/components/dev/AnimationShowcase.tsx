@@ -763,6 +763,7 @@ export function AnimationShowcase() {
             <section>
               <h2>StPageFlip</h2>
               <PageFlipBook
+                key={`animation-showcase-pageflip-${runtimeEpoch}`}
                 ref={book}
                 pages={bookPages}
                 mode={mode}

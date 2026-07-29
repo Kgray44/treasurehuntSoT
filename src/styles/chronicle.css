@@ -994,6 +994,7 @@
   display: flex;
   align-items: center;
   justify-content: flex-end;
+  flex-wrap: wrap;
   gap: 0.65rem;
 }
 .journal-session-tools > label {
@@ -1482,6 +1483,7 @@
   .journal-session-tools {
     display: grid;
     justify-items: end;
+    min-width: 0;
   }
   .runtime-connection {
     max-width: 140px;
@@ -1551,9 +1553,38 @@
   }
 }
 
+@media (max-height: 500px) and (orientation: landscape) {
+  .chronicle-session-header {
+    min-height: 0;
+    align-items: center;
+    padding-block: 0.35rem;
+  }
+  .chronicle-session-header .eyebrow,
+  .chronicle-session-header p {
+    display: none;
+  }
+  .chronicle-session-header h1 {
+    font-size: 1.1rem;
+  }
+  .journal-session-tools {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, max-content));
+    justify-content: end;
+    align-items: center;
+    gap: 0.35rem;
+  }
+  .journal-session-tools [role="group"] {
+    display: contents;
+  }
+  .journal-session-tools button {
+    min-height: 2rem;
+  }
+}
+
 @media (orientation: landscape) and (max-height: 500px) {
   .chronicle-session-header {
-    display: none;
+    display: flex;
+    gap: 0.5rem;
   }
   .chronicle-journal-workspace {
     margin-top: 0;

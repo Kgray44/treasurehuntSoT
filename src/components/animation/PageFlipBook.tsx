@@ -153,6 +153,16 @@ type PageFlipCollectionView = Readonly<{
   getSpreadIndexByPage: (page: number) => number | null;
 }>;
 type PageFlipWithCollection = PageFlipInstance & Readonly<{ getPageCollection: () => PageFlipCollectionView }>;
+/**
+ * The installed StPageFlip runtime exposes these geometry methods, but its
+ * published TypeScript declarations omit them. Keep the capability local to
+ * the responsive boundary instead of widening the runtime throughout the book.
+ */
+type PageFlipResponsiveRuntime = PageFlipInstance &
+  Readonly<{
+    getSettings: () => { minWidth: number };
+    update: () => void;
+  }>;
 
 const pageFlipRuntimeProperties = ["transform", "clip-path", "width", "height"] as const;
 
@@ -166,6 +176,23 @@ function deterministicMountToken(value: string) {
     .toLowerCase()
     .replace(/[^a-z0-9_-]+/g, "-")
     .replace(/^-+|-+$/g, "");
+}
+
+function effectivePageFlipLayout(ownerWindow: Window) {
+  const root = ownerWindow.document.documentElement;
+  const computedZoom = Number.parseFloat(ownerWindow.getComputedStyle(root).zoom);
+  const inlineZoom = Number.parseFloat(root.style.zoom);
+  const rootZoom = Number.isFinite(inlineZoom) ? inlineZoom : computedZoom;
+  const zoom = Number.isFinite(rootZoom) && rootZoom > 0 ? rootZoom : 1;
+  // CSS zoom changes the effective page width without changing innerWidth.
+  // visualViewport width is itself zoom-dependent in Chromium, so using it
+  // here would cancel the root zoom and retain the stale spread geometry.
+  const width = Math.max(1, Math.round(ownerWindow.innerWidth / zoom));
+  return { width, zoom: Math.round(zoom * 1000) / 1000 };
+}
+
+function pageFlipMinWidthForLayout(width: number) {
+  return Math.max(140, Math.min(300, width));
 }
 
 function isSafeFocusTarget(element: HTMLElement | null, root: HTMLElement) {
@@ -314,6 +341,7 @@ export const PageFlipBook = forwardRef<
   const turnReadinessFrame = useRef<number | null>(null);
   const turnRuntimeIdentity = useRef(0);
   const focusMemory = useRef<FocusMemory | null>(null);
+  const restoreFocusRef = useRef<() => void>(() => undefined);
   const pagesLength = useRef(pages.length);
   const initialCurrent = clampPage(initialPage, pages.length);
   const currentPage = useRef(initialCurrent);
@@ -334,6 +362,8 @@ export const PageFlipBook = forwardRef<
   const [fallbackReason, setFallbackReason] = useState<string | null>(null);
   const abandonRuntime = useRef<(() => void) | null>(null);
   const [sceneHost, setSceneHost] = useState<SceneHostHandle | null>(null);
+  const runtimeLayoutSignature = useRef<string | null>(null);
+  const runtimeMinWidthRef = useRef(300);
   const readiness = useRef<PageFlipReadinessSnapshot>({
     status: mode === "reduced" ? "reduced" : "initializing",
     ready: mode === "reduced",
@@ -374,6 +404,69 @@ export const PageFlipBook = forwardRef<
   useEffect(() => {
     pagesLength.current = pages.length;
   }, [pages.length]);
+
+  useEffect(() => {
+    const hostElement = host.current;
+    if (reduced || failed || !hostElement) return;
+
+    const ownerWindow = hostElement.ownerDocument.defaultView ?? window;
+    const refreshLayout = () => {
+      const layout = effectivePageFlipLayout(ownerWindow);
+      const signature = `${String(layout.width)}:${String(layout.zoom)}`;
+      if (runtimeLayoutSignature.current === signature) return;
+
+      runtimeLayoutSignature.current = signature;
+      const nextMinWidth = pageFlipMinWidthForLayout(layout.width);
+      runtimeMinWidthRef.current = nextMinWidth;
+      const activeBook = instance.current as PageFlipResponsiveRuntime | null;
+      if (!activeBook || activeBook.getSettings().minWidth === nextMinWidth) return;
+
+      try {
+        const runtimeParent = hostElement.querySelector<HTMLElement>(".stf__parent");
+        if (!runtimeParent) throw new Error("PageFlip resize target is unavailable");
+        activeBook.getSettings().minWidth = nextMinWidth;
+        runtimeParent.style.minWidth = `${String(nextMinWidth)}px`;
+        const safeCurrent = clampPage(currentPage.current, pagesLength.current);
+        activeBook.update();
+        if (activeBook.getCurrentPageIndex() !== safeCurrent) activeBook.turnToPage(safeCurrent);
+      } catch {
+        // A transient library resize failure must not discard the readable
+        // runtime and replace it with the fallback during a zoom transition.
+        return;
+      }
+
+      try {
+        const safeCurrent = clampPage(currentPage.current, pagesLength.current);
+        const nextOrientation = activeBook.getOrientation() as "portrait" | "landscape";
+        orientationRef.current = nextOrientation;
+        setOrientation(nextOrientation);
+        boundary.current?.bindPrimaryPages(safeCurrent, nextOrientation);
+        ownerWindow.requestAnimationFrame(() => restoreFocusRef.current());
+      } catch {
+        // Primary geometry remains valid even if an auxiliary focus/boundary
+        // update cannot complete on this frame.
+      }
+    };
+
+    refreshLayout();
+    const resizeObserver = typeof ResizeObserver === "undefined" ? null : new ResizeObserver(() => refreshLayout());
+    resizeObserver?.observe(hostElement);
+    ownerWindow.addEventListener("resize", refreshLayout);
+    ownerWindow.visualViewport?.addEventListener("resize", refreshLayout);
+    const rootObserver = new MutationObserver(refreshLayout);
+    rootObserver.observe(hostElement.ownerDocument.documentElement, {
+      attributes: true,
+      attributeFilter: ["class", "style"],
+    });
+
+    return () => {
+      resizeObserver?.disconnect();
+      ownerWindow.removeEventListener("resize", refreshLayout);
+      ownerWindow.visualViewport?.removeEventListener("resize", refreshLayout);
+      rootObserver.disconnect();
+      runtimeLayoutSignature.current = null;
+    };
+  }, [failed, reduced, sceneHost]);
 
   const changePage = useCallback((page: number) => {
     const next = clampPage(page, pagesLength.current);
@@ -555,7 +648,6 @@ export const PageFlipBook = forwardRef<
       readinessCallback.current?.(disposedSnapshot);
     };
   }, [logicalBookId, mountId]);
-
   const rememberFocus = useCallback((event: React.FocusEvent<HTMLElement>) => {
     const target = event.target as HTMLElement;
     const control = target.closest<HTMLElement>("[data-pageflip-focus]");
@@ -661,6 +753,7 @@ export const PageFlipBook = forwardRef<
       rootElement;
     fallback.focus({ preventScroll: true });
   }, [logicalBookId, mountId]);
+  restoreFocusRef.current = restoreFocus;
 
   const scheduleTurnReadiness = useCallback(
     function schedule(book: PageFlipInstance, runtimeIdentity: number) {
@@ -942,7 +1035,7 @@ export const PageFlipBook = forwardRef<
             width: 560,
             height: 760,
             size: "stretch",
-            minWidth: 300,
+            minWidth: runtimeMinWidthRef.current,
             maxWidth: 720,
             minHeight: 420,
             maxHeight: 960,
