@@ -3,9 +3,7 @@
     "id": "FT-033",
     "title": "Sounding Line Governed Focused Validation Runtime",
     "summary": "A nonauthoritative local validation runtime provides sealed plans, reviewed adapters, marker-verified resource leases, isolated SQLite/browser state, and narrowly certified Harborlight moderator browser lanes without weakening release authority.",
-    "status": "BRANCH_COMPLETE_NOT_MERGED",
-    "branch": "integration/sounding-line-phase1-phase2-mainline",
-    "commit": "9e112385a42df169dab0ac4ce679bcfa3869e61d",
+    "status": "MAINLINE",
     "program": "Sounding Line Phase 2",
     "surfaces": ["npm run test:policy", "scripts/sounding-line", "scripts/test-all.ps1"],
     "subfeatures": [

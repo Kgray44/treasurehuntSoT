@@ -866,11 +866,9 @@ Audience-separated current documentation, indexed engineering records, and a fra
 
 ---
 
-# Completed Branch Features Not Yet Available on Main
-
 ## FT-033 - Sounding Line Governed Focused Validation Runtime
 
-**Status:** BRANCH COMPLETE NOT MERGED
+**Status:** MAINLINE
 **Program or subsystem:** Sounding Line Phase 2
 
 A nonauthoritative local validation runtime provides sealed plans, reviewed adapters, marker-verified resource leases, isolated SQLite/browser state, and narrowly certified Harborlight moderator browser lanes without weakening release authority.
@@ -895,6 +893,8 @@ A nonauthoritative local validation runtime provides sealed plans, reviewed adap
 - completion-record: `Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Phase_2_Implementation_Report.md`
 
 ---
+
+# Completed Branch Features Not Yet Available on Main
 
 # Deliberately Excluded Until Complete
 

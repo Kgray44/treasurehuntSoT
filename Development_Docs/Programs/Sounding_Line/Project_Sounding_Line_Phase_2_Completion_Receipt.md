@@ -1,12 +1,12 @@
 ---
 title: Project Sounding Line Phase 2 Completion Receipt
 audience: engineering
-status: draft
+status: current
 ---
 
 # Completion Receipt
 
-This receipt is finalized only after the integration commit is on `main`, its
-exact head is revalidated, and `origin/main...HEAD` parity is zero/zero. It
-records focused certification separately from the legacy full release harness,
-the external provider gate, and the retained P34 browser exception.
+Integration commit `f3ee2de614f9bd14ab298d7a6af388a3d234d149` was fast-forwarded
+to local `main`. Focused certification is recorded separately from the legacy
+full release harness, the external provider gate, and the retained P34 browser
+exception; none is represented as a substituted release pass.
