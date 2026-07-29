@@ -96,9 +96,14 @@ export class LocalCommunityRateLimiter {
     const now = this.now();
     const keyHash = communityRateLimitKeyHash(key);
     const current = this.buckets.get(keyHash);
-    const bucket = !current || current.windowEndsAt <= now ? { count: 0, windowEndsAt: windowEnd(now, windowMs) } : current;
+    const bucket =
+      !current || current.windowEndsAt <= now ? { count: 0, windowEndsAt: windowEnd(now, windowMs) } : current;
     if (bucket.count >= limit)
-      return { allowed: false, remaining: 0, retryAfterSeconds: Math.max(1, Math.ceil((bucket.windowEndsAt.getTime() - now.getTime()) / 1000)) };
+      return {
+        allowed: false,
+        remaining: 0,
+        retryAfterSeconds: Math.max(1, Math.ceil((bucket.windowEndsAt.getTime() - now.getTime()) / 1000)),
+      };
     bucket.count += 1;
     this.buckets.set(keyHash, bucket);
     return { allowed: true, remaining: limit - bucket.count, retryAfterSeconds: 0 };

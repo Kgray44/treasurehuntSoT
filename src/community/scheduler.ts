@@ -43,7 +43,10 @@ function key(value: string) {
 /** Scheduler work is limited to durable enqueuing. Handlers, never the
  * scheduler, own object changes, quarantine, restoration, or cleanup. */
 export async function enqueueDueCommunitySchedules(now = new Date(), nextDelayMs = 60 * 60 * 1000) {
-  const due = await db.communityOperationalSchedule.findMany({ where: { nextRunAt: { lte: now } }, orderBy: { nextRunAt: "asc" } });
+  const due = await db.communityOperationalSchedule.findMany({
+    where: { nextRunAt: { lte: now } },
+    orderBy: { nextRunAt: "asc" },
+  });
   let enqueued = 0;
   for (const schedule of due) {
     if (!(communityScheduleTypes as readonly string[]).includes(schedule.scheduleType)) continue;
@@ -52,10 +55,24 @@ export async function enqueueDueCommunitySchedules(now = new Date(), nextDelayMs
     await db.$transaction(async (tx) => {
       await tx.communityOutboxEvent.upsert({
         where: { idempotencyKey },
-        create: { eventType: communityScheduleEventType(type), aggregateType: "COMMUNITY_SCHEDULE", aggregateId: schedule.id, payload: JSON.stringify({ scheduleType: type, dryRun: false }), idempotencyKey },
+        create: {
+          eventType: communityScheduleEventType(type),
+          aggregateType: "COMMUNITY_SCHEDULE",
+          aggregateId: schedule.id,
+          payload: JSON.stringify({ scheduleType: type, dryRun: false }),
+          idempotencyKey,
+        },
         update: {},
       });
-      await tx.communityOperationalSchedule.update({ where: { id: schedule.id }, data: { lastRunAt: now, lastOutcome: "ENQUEUED", nextRunAt: new Date(now.getTime() + nextDelayMs), revision: { increment: 1 } } });
+      await tx.communityOperationalSchedule.update({
+        where: { id: schedule.id },
+        data: {
+          lastRunAt: now,
+          lastOutcome: "ENQUEUED",
+          nextRunAt: new Date(now.getTime() + nextDelayMs),
+          revision: { increment: 1 },
+        },
+      });
     });
     enqueued += 1;
   }
@@ -64,6 +81,10 @@ export async function enqueueDueCommunitySchedules(now = new Date(), nextDelayMs
 
 export async function seedCommunityOperationalSchedules(now = new Date()) {
   for (const scheduleType of communityScheduleTypes)
-    await db.communityOperationalSchedule.upsert({ where: { scheduleType }, create: { scheduleType, nextRunAt: now }, update: {} });
+    await db.communityOperationalSchedule.upsert({
+      where: { scheduleType },
+      create: { scheduleType, nextRunAt: now },
+      update: {},
+    });
   return { schedules: communityScheduleTypes.length };
 }
