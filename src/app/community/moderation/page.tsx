@@ -2,6 +2,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { db } from "@/lib/db";
 import { requireWayfarerAccount } from "@/wayfarer/http";
+import { collectCommunityProviderHealth } from "@/community/operations";
 
 export const dynamic = "force-dynamic";
 
@@ -23,11 +24,12 @@ export default async function CommunityModerationPage() {
     orderBy: [{ priority: "desc" }, { openedAt: "asc" }],
     take: 50,
   });
-  const [queueDepth, deadLetters] = await Promise.all([
+  const [queueDepth, deadLetters, providerHealth] = await Promise.all([
     db.communityModerationCase.count({
       where: { status: { in: ["OPEN", "TRIAGED", "ACTION_REQUIRED", "APPEAL_PENDING"] } },
     }),
     db.communityOutboxEvent.count({ where: { terminalFailureAt: { not: null } } }),
+    collectCommunityProviderHealth().catch(() => []),
   ]);
   return (
     <main className="mx-auto max-w-6xl space-y-8 px-4 py-8" aria-labelledby="moderation-heading">
@@ -41,7 +43,7 @@ export default async function CommunityModerationPage() {
           expected revision; this queue never exposes reporter identity or private evidence.
         </p>
       </header>
-      <section aria-label="Operational summary" className="grid gap-4 sm:grid-cols-2">
+      <section aria-label="Operational summary" className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <article className="rounded border border-slate-300 bg-white p-4">
           <h2 className="font-semibold">Actionable cases</h2>
           <p className="mt-1 text-2xl" aria-label={`${queueDepth} actionable cases`}>
@@ -54,6 +56,39 @@ export default async function CommunityModerationPage() {
             {deadLetters}
           </p>
         </article>
+        <article className="rounded border border-slate-300 bg-white p-4">
+          <h2 className="font-semibold">Providers requiring attention</h2>
+          <p
+            className="mt-1 text-2xl"
+            aria-label={`${providerHealth.filter((item) => !item.ready).length} providers requiring attention`}
+          >
+            {providerHealth.filter((item) => !item.ready).length}
+          </p>
+        </article>
+        <article className="rounded border border-slate-300 bg-white p-4">
+          <h2 className="font-semibold">Alert delivery</h2>
+          <p className="mt-1 text-sm">
+            {providerHealth.find((item) => item.kind === "ALERTING")?.safeCode ?? "ALERTING_NOT_CONFIGURED"}
+          </p>
+        </article>
+      </section>
+      <section className="rounded border border-slate-300 bg-white p-4" aria-labelledby="provider-heading">
+        <h2 id="provider-heading" className="text-xl font-semibold">
+          Provider health
+        </h2>
+        <ul className="mt-3 grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
+          {providerHealth.map((item) => (
+            <li key={item.kind} className="rounded bg-slate-50 p-3">
+              <strong>{item.kind}</strong>
+              <p className="text-sm">
+                {item.state} / {item.safeCode}
+              </p>
+            </li>
+          ))}
+          {!providerHealth.length && (
+            <li className="text-slate-700">Provider health is unavailable; no provider details are disclosed.</li>
+          )}
+        </ul>
       </section>
       <section
         aria-labelledby="case-table-heading"
@@ -86,7 +121,7 @@ export default async function CommunityModerationPage() {
             {cases.map((item) => (
               <tr key={item.id} className="border-b border-slate-100">
                 <td className="p-3">
-                  <Link className="underline underline-offset-2" href={`/api/community/moderation/cases/${item.id}`}>
+                  <Link className="underline underline-offset-2" href={`/community/moderation/${item.id}`}>
                     {item.caseKey}
                   </Link>
                 </td>
