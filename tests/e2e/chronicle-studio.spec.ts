@@ -179,27 +179,27 @@ test("Studio editor exposes searchable authoring tools and responsive isolated p
   expect(tale).toBeTruthy();
 
   await page.goto(`/studio/tales/${tale!.id}`);
-  await expect(page.getByRole("tab", { name: "Blocks" })).toBeVisible();
+  await expect(page.getByRole("tab", { name: "Passages" })).toBeVisible();
   await expect(page.getByRole("tab", { name: "Chapters" })).toBeVisible();
   await expect(page.getByRole("tab", { name: "Outline" })).toBeVisible();
-  await expect(page.getByRole("searchbox", { name: "Search story blocks" })).toBeVisible();
+  await expect(page.getByRole("searchbox", { name: "Search Passages" })).toBeVisible();
   await expect(page.locator(".block-library-drag-handle").first()).toHaveAttribute(
     "aria-roledescription",
-    "sortable story block",
+    "sortable Passage",
   );
   await page.locator(".timeline-block").first().click();
-  await expect(page.getByRole("button", { name: "Preview Block" })).toBeEnabled();
-  await page.getByRole("button", { name: "Preview Block" }).click();
+  await expect(page.getByRole("button", { name: "Preview Passage" })).toBeEnabled();
+  await page.getByRole("button", { name: "Preview Passage" }).click();
   await expect(page.getByRole("dialog", { name: "The Lantern Wakes" })).toBeVisible();
   await page.getByRole("button", { name: "Mobile" }).click();
   await page.getByLabel("Reduced motion").check();
   await expect(page.locator(".block-preview-viewport.mobile.reduced-motion")).toBeVisible();
-  await page.getByRole("button", { name: "Close block preview" }).click();
+  await page.getByRole("button", { name: "Close Passage preview" }).click();
 
   await page.setViewportSize({ width: 390, height: 844 });
   await page.locator(".timeline-block").first().click();
-  await expect(page.getByRole("button", { name: "Close block inspector" })).toBeVisible();
-  await page.getByRole("button", { name: "Close block inspector" }).click();
+  await expect(page.getByRole("button", { name: "Close Passage inspector" })).toBeVisible();
+  await page.getByRole("button", { name: "Close Passage inspector" }).click();
   await expect(page.locator(".block-inspector.empty")).toBeHidden();
 
   const detail = (await (await page.request.get(`/api/studio/tales/${tale!.id}`)).json()) as {
@@ -239,7 +239,7 @@ test("creator authors, aligns, publishes, plays, and reviews a media-rich tale",
   await page.getByLabel(/Address/).fill(taleSlug);
   await page.getByLabel("Short description", { exact: true }).fill("A disposable media-rich authoring proof.");
   await page.getByLabel("Visibility").selectOption("PUBLIC");
-  await page.getByRole("button", { name: "Create and open editor" }).click();
+  await page.getByRole("button", { name: "Create and open Chronicle" }).click();
   await expect.poll(() => new URL(page.url()).pathname).not.toBe("/studio/tales/new");
   const taleId = new URL(page.url()).pathname.split("/").at(-1)!;
   const assetLibrary = await page.request.get(`/api/studio/tales/${taleId}/assets`);
@@ -290,7 +290,7 @@ test("creator authors, aligns, publishes, plays, and reviews a media-rich tale",
     "Artifact Reveal",
     "Image",
     "Confirmation",
-    "Tale Complete",
+    "Voyage Complete",
   ])
     await dragLibraryBlock(page, name);
   await expect(page.locator(".save-state")).toContainText("Saved at", { timeout: 15_000 });
@@ -388,22 +388,26 @@ test("creator authors, aligns, publishes, plays, and reviews a media-rich tale",
   const opacity = page.locator('.alignment-editor input[type="range"]').first();
   await opacity.fill("68");
   await expect(page.locator(".save-state")).toContainText("Saved at", { timeout: 15_000 });
-  await page.getByRole("button", { name: "Preview Block" }).click();
+  await page.getByRole("button", { name: "Preview Passage" }).click();
   await expect(page.getByRole("dialog", { name: "Moon Ink Transformation" })).toBeVisible();
-  await page.getByRole("button", { name: "Replay block" }).click();
-  await page.getByRole("button", { name: "Close block preview" }).click();
+  await page.getByRole("button", { name: "Replay Passage" }).click();
+  await page.getByRole("button", { name: "Close Passage preview" }).click();
 
-  const publishDetail = (await (await page.request.get(`/api/studio/tales/${taleId}`)).json()) as {
-    draft: { autosaveVersion: number };
+  let publishDialogs = 0;
+  const publishDialogHandler = (dialog: import("@playwright/test").Dialog) => {
+    publishDialogs += 1;
+    if (dialog.type() === "prompt") return dialog.accept("Media-rich Playwright authoring proof");
+    expect(dialog.type()).toBe("confirm");
+    return dialog.accept();
   };
-  const publish = await page.request.post(`/api/studio/tales/${taleId}/publish`, {
-    headers: { "x-csrf-token": csrfToken },
-    data: {
-      releaseNotes: "Media-rich Playwright authoring proof",
-      autosaveVersion: publishDetail.draft.autosaveVersion,
-    },
-  });
-  expect(publish.ok()).toBeTruthy();
+  page.on("dialog", publishDialogHandler);
+  try {
+    await page.getByRole("button", { name: "Publish Chronicle" }).click();
+    await expect(page.locator(".save-state")).toContainText(/Published as Version/, { timeout: 30_000 });
+    expect(publishDialogs).toBe(2);
+  } finally {
+    page.off("dialog", publishDialogHandler);
+  }
 
   const start = await page.request.post(`/api/tales/${taleSlug}/start`, {
     data: { ownerLabel: "Moon Chart Crew" },

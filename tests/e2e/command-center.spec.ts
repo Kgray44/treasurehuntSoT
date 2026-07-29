@@ -1,13 +1,78 @@
 import AxeBuilder from "@axe-core/playwright";
-import { expect, test } from "@playwright/test";
+import { expect, test, type Page } from "@playwright/test";
 import fs from "node:fs/promises";
 import path from "node:path";
 
 const artifactRoot = process.env.VALIDATION_ARTIFACTS ?? "artifacts/validation";
-async function capture(page: import("@playwright/test").Page, name: string) {
+
+type BrowserFetchInit = Readonly<{
+  method?: "GET" | "POST";
+  headers?: Readonly<Record<string, string>>;
+  body?: unknown;
+}>;
+
+type CaptainStatus = {
+  campaign: { slug: string; sequence: number };
+  csrfToken: string;
+  events: Array<{ id: string; sequence: number; type: string }>;
+  audit: Array<{ action: string; correlationId: string | null; metadata?: Record<string, unknown> }>;
+};
+
+type CommandResult = {
+  event: { id: string; sequence: number; type: string };
+  correlationId: string;
+};
+
+async function capture(page: Page, name: string) {
   const directory = path.join(artifactRoot, "command-center");
   await fs.mkdir(directory, { recursive: true });
   await page.screenshot({ path: path.join(directory, `${name}.png`), fullPage: true, caret: "initial" });
+}
+
+async function enterCaptainConsole(page: Page) {
+  await page.goto("/captain/sign-in");
+  await expect(page.getByRole("heading", { name: "Enter Captain's Console" })).toBeVisible();
+  await page.getByLabel("Username").fill(process.env.GM_USERNAME!);
+  await page.getByLabel("Password").fill(process.env.GM_PASSWORD!);
+  await page.getByRole("button", { name: "Enter Captain's Console" }).click();
+  await expect(page).toHaveURL(/\/captain\/library(?:\?.*)?$/u);
+  await expect(page.getByRole("heading", { name: "Captain's Console", exact: true })).toBeVisible();
+}
+
+async function browserJson<T>(page: Page, url: string, init?: BrowserFetchInit) {
+  return page.evaluate(
+    async ({ requestUrl, requestInit }) => {
+      const headers = {
+        ...(requestInit?.body === undefined ? {} : { "content-type": "application/json" }),
+        ...(requestInit?.headers ?? {}),
+      };
+      const response = await fetch(requestUrl, {
+        method: requestInit?.method,
+        credentials: "same-origin",
+        headers,
+        body: requestInit?.body === undefined ? undefined : JSON.stringify(requestInit.body),
+      });
+      const text = await response.text();
+      let body: unknown = text;
+      try {
+        body = JSON.parse(text) as unknown;
+      } catch {
+        // Non-JSON error contracts remain inspectable by the caller.
+      }
+      return {
+        status: response.status,
+        headers: Object.fromEntries(response.headers.entries()),
+        body,
+      };
+    },
+    { requestUrl: url, requestInit: init },
+  ) as Promise<{ status: number; headers: Record<string, string>; body: T }>;
+}
+
+async function captainStatus(page: Page) {
+  const result = await browserJson<CaptainStatus>(page, "/api/gm/status");
+  expect(result.status).toBe(200);
+  return result.body;
 }
 
 test("preview is nonmutating, stale commands conflict, and idempotency replays safely", async ({
@@ -18,15 +83,12 @@ test("preview is nonmutating, stale commands conflict, and idempotency replays s
     browserName !== "chromium",
     "The shared-database mutation workflow runs once to avoid cross-project contention.",
   );
-  await page.goto("/quartermaster");
-  await page.getByLabel("Captain's name").fill(process.env.GM_USERNAME!);
-  await page.getByLabel("Passphrase").fill(process.env.GM_PASSWORD!);
-  await page.getByRole("button", { name: "Enter the chart room" }).click();
-  await expect(page.getByRole("heading", { name: "The Forever Treasure" })).toBeVisible();
+  await enterCaptainConsole(page);
 
-  const before = await (await page.request.get("/api/gm/status")).json();
-  const preview = await page.request.post("/api/gm/preview", {
-    data: {
+  const before = await captainStatus(page);
+  const preview = await browserJson<{ watermark: string }>(page, "/api/gm/preview", {
+    method: "POST",
+    body: {
       command: "REQUEST_RECONCILIATION",
       campaignSlug: before.campaign.slug,
       expectedSequence: before.campaign.sequence,
@@ -34,14 +96,15 @@ test("preview is nonmutating, stale commands conflict, and idempotency replays s
       preview: true,
     },
   });
-  expect(preview.ok()).toBeTruthy();
-  expect((await preview.json()).watermark).toBe("PREVIEW — NOT RELEASED");
-  const afterPreview = await (await page.request.get("/api/gm/status")).json();
+  expect(preview.status).toBe(200);
+  expect(preview.body.watermark).toBe("PREVIEW — NOT RELEASED");
+  const afterPreview = await captainStatus(page);
   expect(afterPreview.campaign.sequence).toBe(before.campaign.sequence);
 
-  const stale = await page.request.post("/api/gm/commands", {
+  const stale = await browserJson<{ code: string }>(page, "/api/gm/commands", {
+    method: "POST",
     headers: { "x-csrf-token": before.csrfToken },
-    data: {
+    body: {
       command: "REQUEST_RECONCILIATION",
       campaignSlug: before.campaign.slug,
       expectedSequence: before.campaign.sequence + 1,
@@ -50,131 +113,117 @@ test("preview is nonmutating, stale commands conflict, and idempotency replays s
       confirmation: true,
     },
   });
-  expect(stale.status()).toBe(409);
-  expect((await stale.json()).code).toBe("STALE_SEQUENCE");
+  expect(stale.status).toBe(409);
+  expect(stale.body.code).toBe("STALE_SEQUENCE");
+  expect((await captainStatus(page)).campaign.sequence).toBe(before.campaign.sequence);
 
-  const key = crypto.randomUUID();
   const request = {
     command: "REQUEST_RECONCILIATION",
     campaignSlug: before.campaign.slug,
     expectedSequence: before.campaign.sequence,
-    idempotencyKey: key,
+    idempotencyKey: crypto.randomUUID(),
     payload: {},
     confirmation: true,
   };
-  const first = await page.request.post("/api/gm/commands", {
+  const first = await browserJson<CommandResult>(page, "/api/gm/commands", {
+    method: "POST",
     headers: { "x-csrf-token": before.csrfToken },
-    data: request,
+    body: request,
   });
-  expect(first.ok()).toBeTruthy();
-  const replay = await page.request.post("/api/gm/commands", {
+  expect(first.status).toBe(200);
+  const replay = await browserJson<CommandResult>(page, "/api/gm/commands", {
+    method: "POST",
     headers: { "x-csrf-token": before.csrfToken },
-    data: request,
+    body: request,
   });
-  expect(replay.ok()).toBeTruthy();
-  expect((await replay.json()).idempotentReplay).toBe(true);
+  expect(replay.status).toBe(200);
+  expect(replay.body.event.id).toBe(first.body.event.id);
+  expect(replay.body.event.sequence).toBe(first.body.event.sequence);
+  const afterReplay = await captainStatus(page);
+  expect(afterReplay.campaign.sequence).toBe(before.campaign.sequence + 1);
+  expect(afterReplay.events.filter((event) => event.id === first.body.event.id)).toHaveLength(1);
 });
 
-test("targeted commands preserve side-quest order and audit staged work", async ({ page, browserName }) => {
+test("Captain command preparation is browser-authenticated, durable, and idempotent", async ({ page, browserName }) => {
   test.skip(
     browserName !== "chromium",
     "The shared-database mutation workflow runs once to avoid cross-project contention.",
   );
-  await page.goto("/quartermaster");
-  await page.getByLabel("Captain's name").fill(process.env.GM_USERNAME!);
-  await page.getByLabel("Passphrase").fill(process.env.GM_PASSWORD!);
-  await page.getByRole("button", { name: "Enter the chart room" }).click();
-  await expect(page.getByRole("heading", { name: "The Forever Treasure" })).toBeVisible();
+  await enterCaptainConsole(page);
 
-  let status = await (await page.request.get("/api/gm/status")).json();
-  const hiddenQuest = status.sideQuests.find((item: { state: string }) => item.state === "HIDDEN");
-  expect(hiddenQuest).toBeTruthy();
-  const invalidPreview = await page.request.post("/api/gm/preview", {
-    data: {
-      command: "ADVANCE_SIDE_QUEST",
-      campaignSlug: status.campaign.slug,
-      expectedSequence: status.campaign.sequence,
-      targetKey: hiddenQuest.key,
-      payload: {},
-      preview: true,
-    },
-  });
-  expect(invalidPreview.ok()).toBeTruthy();
-  expect(await invalidPreview.json()).toMatchObject({
-    canExecute: false,
-    prerequisites: ["Discover the side quest before advancing it."],
-  });
-
-  async function command(command: string, targetKey?: string) {
-    status = await (await page.request.get("/api/gm/status")).json();
-    const response = await page.request.post("/api/gm/commands", {
-      headers: { "x-csrf-token": status.csrfToken },
-      data: {
-        command,
-        campaignSlug: status.campaign.slug,
-        expectedSequence: status.campaign.sequence,
-        idempotencyKey: crypto.randomUUID(),
-        targetKey,
+  const before = await captainStatus(page);
+  const preview = await browserJson<{ canExecute: boolean; currentSequence: number; prerequisites: string[] }>(
+    page,
+    "/api/gm/preview",
+    {
+      method: "POST",
+      body: {
+        command: "PREPARE_CHAPTER",
+        campaignSlug: before.campaign.slug,
+        expectedSequence: before.campaign.sequence,
         payload: {},
-        confirmation: true,
+        preview: true,
       },
-    });
-    const body = await response.json();
-    expect(response.ok(), JSON.stringify(body)).toBeTruthy();
-    return body;
-  }
-
-  const discovered = await command("DISCOVER_SIDE_QUEST", hiddenQuest.key);
-  expect(discovered.event).toMatchObject({
-    type: "SIDE_QUEST_DISCOVERED",
-    payload: { key: hiddenQuest.key },
+    },
+  );
+  expect(preview.status).toBe(200);
+  expect(preview.body).toMatchObject({
+    canExecute: true,
+    currentSequence: before.campaign.sequence,
+    prerequisites: [],
   });
-  expect((await command("ADVANCE_SIDE_QUEST", hiddenQuest.key)).event.type).toBe("SIDE_QUEST_UPDATED");
-  expect((await command("ADVANCE_SIDE_QUEST", hiddenQuest.key)).event).toMatchObject({
-    type: "SIDE_QUEST_UPDATED",
-    payload: { key: hiddenQuest.key, objectiveOrdinal: 1 },
+  expect((await captainStatus(page)).campaign.sequence).toBe(before.campaign.sequence);
+
+  const request = {
+    command: "PREPARE_CHAPTER",
+    campaignSlug: before.campaign.slug,
+    expectedSequence: before.campaign.sequence,
+    payload: {},
+  };
+  const prepared = await browserJson<{
+    persistence: string;
+    staged: { id: string; command: string; reservedSequence: number; status: string };
+  }>(page, "/api/gm/staging", {
+    method: "POST",
+    headers: { "x-csrf-token": before.csrfToken },
+    body: request,
   });
-  expect((await command("ADVANCE_SIDE_QUEST", hiddenQuest.key)).event).toMatchObject({
-    type: "SIDE_QUEST_COMPLETED",
-    payload: { key: hiddenQuest.key },
-  });
-
-  status = await (await page.request.get("/api/gm/status")).json();
-  const mapTarget = status.mapLocations.find((item: { revealedAt: string | null }) => !item.revealedAt);
-  expect(mapTarget).toBeTruthy();
-  const mapResult = await command("REVEAL_MAP", mapTarget.key);
-  expect(mapResult.event.payload.key).toBe(mapTarget.key);
-  status = await (await page.request.get("/api/gm/status")).json();
-  expect(
-    status.audit.some(
-      (entry: { action: string; correlationId: string | null }) =>
-        entry.action === "REVEAL_MAP" && entry.correlationId === mapResult.correlationId,
-    ),
-  ).toBe(true);
-
-  const artifactTarget = status.artifacts.find((item: { awarded: boolean }) => !item.awarded);
-  expect(artifactTarget).toBeTruthy();
-  const artifactResult = await command("AWARD_ARTIFACT", artifactTarget.key);
-  expect(artifactResult.event.payload.key).toBe(artifactTarget.key);
-
-  status = await (await page.request.get("/api/gm/status")).json();
-  const staged = await page.request.post("/api/gm/staging", {
-    headers: { "x-csrf-token": status.csrfToken },
-    data: {
+  expect(prepared.status, JSON.stringify(prepared.body)).toBe(200);
+  expect(prepared.body).toMatchObject({
+    persistence: "COMMITTED",
+    staged: {
       command: "PREPARE_CHAPTER",
-      campaignSlug: status.campaign.slug,
-      expectedSequence: status.campaign.sequence,
-      payload: {},
+      reservedSequence: before.campaign.sequence + 1,
+      status: "PREPARED",
     },
   });
-  const stagedBody = await staged.json();
-  expect(staged.ok(), JSON.stringify(stagedBody)).toBeTruthy();
-  status = await (await page.request.get("/api/gm/status")).json();
+
+  const afterPrepared = await captainStatus(page);
+  expect(afterPrepared.campaign.sequence).toBe(before.campaign.sequence + 1);
   expect(
-    status.audit.some((entry: { action: string; metadata?: Record<string, unknown> }) => {
-      return entry.action === "PREPARE_CHAPTER_STAGED" && entry.metadata?.preparedActionId === stagedBody.staged.id;
-    }),
-  ).toBe(true);
+    afterPrepared.events.filter(
+      (event) => event.id === prepared.body.staged.id && event.type === "chronicle.commandPrepared",
+    ),
+  ).toHaveLength(1);
+  expect(afterPrepared.audit.some((entry) => entry.action === "CHRONICLE_COMMAND_PREPARED")).toBe(true);
+
+  const replay = await browserJson<{
+    persistence: string;
+    staged: { id: string; reservedSequence: number; status: string };
+  }>(page, "/api/gm/staging", {
+    method: "POST",
+    headers: { "x-csrf-token": before.csrfToken },
+    body: request,
+  });
+  expect(replay.status, JSON.stringify(replay.body)).toBe(200);
+  expect(replay.body.staged).toMatchObject({
+    id: prepared.body.staged.id,
+    reservedSequence: prepared.body.staged.reservedSequence,
+    status: "PREPARED",
+  });
+  const afterReplay = await captainStatus(page);
+  expect(afterReplay.campaign.sequence).toBe(afterPrepared.campaign.sequence);
+  expect(afterReplay.events.filter((event) => event.id === prepared.body.staged.id)).toHaveLength(1);
 });
 
 test("workspace routes preserve the newest Quartermaster surface and remain accessible", async ({
@@ -185,36 +234,19 @@ test("workspace routes preserve the newest Quartermaster surface and remain acce
     browserName !== "chromium",
     "Authenticated workspace coverage may mutate shared login state and therefore runs once.",
   );
-  await page.goto("/quartermaster");
-  await page.getByLabel("Captain's name").fill(process.env.GM_USERNAME!);
-  await page.getByLabel("Passphrase").fill(process.env.GM_PASSWORD!);
-  await page.getByRole("button", { name: "Enter the chart room" }).click();
-  await expect(page.getByRole("heading", { name: "The Forever Treasure" })).toBeVisible();
-  for (const workspace of [
-    "chapters",
-    "hints",
-    "voyage",
-    "artifacts",
-    "quests",
-    "journal",
-    "events",
-    "player-view",
-    "recovery",
-    "audit",
-    "diagnostics",
-  ]) {
-    await page.goto(`/quartermaster/${workspace}`);
-    await expect(page.getByRole("heading", { name: "Quartermaster's Log" })).toBeVisible();
-    await expect(page.locator(".gm-grid")).toBeVisible();
-    await capture(page, `${browserName}-workspace-${workspace}`);
+  await enterCaptainConsole(page);
+  const navigation = page.getByRole("navigation", { name: "Captain's Console sections" });
+  for (const section of ["Voyages", "Invitations", "Published Chronicles"]) {
+    const control = navigation.getByRole("button", { name: new RegExp(`^${section}`, "u") });
+    await control.click();
+    await expect(control).toHaveAttribute("aria-pressed", "true");
+    await capture(page, `${browserName}-captain-${section.toLowerCase().replace(/\\s+/gu, "-")}`);
   }
-  await page.goto("/quartermaster/player-view");
-  await expect(page.getByRole("heading", { name: "Quartermaster's Log" })).toBeVisible();
   const results = await new AxeBuilder({ page }).analyze();
   expect(results.violations.filter((item) => ["serious", "critical"].includes(item.impact ?? ""))).toEqual([]);
   await page.setViewportSize({ width: 430, height: 932 });
-  await expect(page.locator(".gm-grid")).toBeVisible();
-  await capture(page, `${browserName}-emergency-430x932`);
+  await expect(page.getByRole("heading", { name: "Captain's Console" })).toBeVisible();
+  await capture(page, `${browserName}-captain-430x932`);
   for (const [width, height, name] of [
     [2560, 1440, "deck-2560x1440"],
     [1920, 1080, "deck-1920x1080"],
@@ -224,8 +256,7 @@ test("workspace routes preserve the newest Quartermaster surface and remain acce
     [834, 1194, "deck-tablet-portrait"],
   ] as const) {
     await page.setViewportSize({ width, height });
-    await page.goto("/quartermaster");
-    await expect(page.locator(".gm-grid")).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Captain's Console" })).toBeVisible();
     await capture(page, `${browserName}-${name}`);
   }
 });

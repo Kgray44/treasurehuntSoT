@@ -55,6 +55,7 @@ test("Harborlight Studio access and Exchange package installation are isolated a
   const profile = await creator.request.post("/api/community/profile", {
     headers,
     data: { handle: `creator-${fixtureId.slice(0, 12)}`, displayName: "Synthetic Harborlight Creator" },
+    maxRetries: 2,
   });
   expect(profile.status(), await profile.text()).toBe(201);
   const listing = await creator.request.post("/api/community/listings", {

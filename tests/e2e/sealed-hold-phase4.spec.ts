@@ -63,7 +63,7 @@ test("Phase 4 authenticated protected-media workflow is private, accessible, rev
   await db.accountRoleAssignment.create({ data: { accountId: account.id, role: "CREATOR", scopeType: "GLOBAL" } });
 
   const anonymous = await browser.newContext();
-  expect((await anonymous.request.get("/api/studio/private-content/media")).status()).toBe(403);
+  expect((await anonymous.request.get("/api/studio/private-content/media", { maxRetries: 2 })).status()).toBe(403);
   expect(
     (
       await anonymous.request.get("/api/private-content/media/public/not-a-real-opaque-id?revision=revision-1")

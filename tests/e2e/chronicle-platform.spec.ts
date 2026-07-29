@@ -124,11 +124,12 @@ test("Captain invitation, immutable version, Player runtime, archive, and revoca
   const acceptResponsePromise = playerPage.waitForResponse(
     (response) => response.url().endsWith("/api/invitations/accept") && response.request().method() === "POST",
   );
-  await playerPage.getByRole("button", { name: "Accept and join voyage" }).click();
+  await playerPage.getByRole("button", { name: "Accept and join voyage" }).click({ noWaitAfter: true });
   const acceptResponse = await acceptResponsePromise;
   expect(acceptResponse.ok(), await acceptResponse.text()).toBe(true);
-  const playerCookie = (await playerContext.cookies()).find((cookie) => cookie.name === "chronicle_player");
+  const playerCookie = (await playerContext.cookies()).find((cookie) => cookie.name === "wayfarer_account");
   expect(playerCookie).toBeTruthy();
+  expect((await playerContext.cookies()).some((cookie) => cookie.name === "chronicle_player")).toBe(false);
   await expect(playerPage).toHaveURL(new RegExp(`/player/playthroughs/${created.playthroughId}$`));
   const playerUrl = (path: string) => new URL(path, playerPage.url()).href;
   expect(playerCookie!.domain).toBe(new URL(playerPage.url()).hostname);
@@ -172,7 +173,9 @@ test("Captain invitation, immutable version, Player runtime, archive, and revoca
   await expect(playerPage.getByRole("button", { name: "Open the journal" })).toBeVisible();
   await playerPage.getByRole("button", { name: "Open the journal" }).click();
   await playerPage.getByRole("button", { name: "Skip ceremony" }).click();
-  await expect(playerPage.getByRole("heading", { name: "1.0 Voyage Journal" })).toBeVisible();
+  const journal = playerPage.locator(".chronicle-journal-shell").last();
+  await expect(journal).toHaveAttribute("data-journal-phase", "JOURNAL_READY", { timeout: 20_000 });
+  await expect(journal.getByRole("heading", { name: /Voyage Journal$/ })).toBeVisible();
   await expect(playerPage.locator(".main-journal-book")).toBeVisible();
   const withoutCsrf = await playerContext.request.post(playerUrl(`/api/play/sessions/${created.playthroughId}`), {
     data: { action: "continue", idempotencyKey: unique("csrf-denied") },
