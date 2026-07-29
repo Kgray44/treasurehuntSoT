@@ -11,7 +11,7 @@ const run = async (...args) => JSON.parse((await execFileAsync(node, [cli, ...ar
 test("policy validates with referential integrity", async () => {
   const result = await run("validate-policy");
   assert.equal(result.ok, true);
-  assert.equal(result.counts.validationDebt, 3);
+  assert.equal(result.counts.validationDebt, 2);
 });
 
 test("inventory is read-only and recognizes current test families", async () => {
@@ -30,20 +30,25 @@ test("plans are deterministic and unknown impact broadens", async () => {
   const second = await run("plan", "unknown-area/new-file.ts");
   assert.equal(first.digest, second.digest);
   assert.equal(first.nonAuthoritative, true);
-  assert.equal(first.execution, "forbidden");
+  assert.equal(first.execution, "governed-local");
   assert.equal(first.uncertaintyBroadened, true);
-  assert.equal(first.selected.length, 10);
+  assert.equal(first.selected.length, 14);
 });
 
 test("release plans remain comprehensive", async () => {
   const result = await run("plan", "--scope=release");
   assert.equal(result.omitted.length, 0);
-  assert.equal(result.selected.length, 10);
+  assert.equal(result.selected.length, 14);
 });
 
 test("path ordering, duplicates, and Windows separators normalize deterministically", async () => {
   const posix = await run("plan", "src/wayfarer/example.ts", "src/private-content/example.ts");
-  const shuffled = await run("plan", "src/private-content/example.ts", "src/wayfarer/example.ts", "src/wayfarer/example.ts");
+  const shuffled = await run(
+    "plan",
+    "src/private-content/example.ts",
+    "src/wayfarer/example.ts",
+    "src/wayfarer/example.ts",
+  );
   const windows = await run("plan", "src\\private-content\\example.ts", "src\\wayfarer\\example.ts");
   assert.equal(posix.digest, shuffled.digest);
   assert.equal(posix.digest, windows.digest);

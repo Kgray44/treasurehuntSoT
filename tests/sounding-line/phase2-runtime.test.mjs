@@ -22,8 +22,11 @@ import {
   validateExecutionGraph,
   verifyServiceIdentity,
   createOwnedHttpService,
+  classifyProcessOwnership,
+  executeProductAdapter,
   verifyHttpServiceIdentity,
 } from "../../scripts/sounding-line/runtime.mjs";
+import { resolveAdapter, resolveVitestAdapter } from "../../scripts/sounding-line/adapters.mjs";
 
 async function fixture() {
   const base = await mkdtemp(path.join(os.tmpdir(), "sl-phase2-"));
@@ -179,4 +182,33 @@ test("scheduler is deterministic, concurrent for independent nodes, and rejects 
     /cycle/i,
   );
   assert.equal(compatibilityFor("release.full").mode, "EMERGENCY_SERIAL");
+});
+
+test("governed adapters use fixed argument arrays and retain bounded receipts", async () => {
+  const { base, run } = await fixture();
+  try {
+    assert.throws(() => resolveAdapter("policy", ["; Write-Host owned"]), /does not accept/i);
+    assert.throws(() => resolveVitestAdapter(["../outside.test.ts"]), /repository-relative/i);
+    const result = await executeProductAdapter(run, resolveAdapter("policy"), { cwd: process.cwd() });
+    assert.equal(result.status, "PASS");
+    assert.match(await readFile(path.join(run.root, "logs", "adapter-policy.log"), "utf8"), /policyDigest/);
+  } finally {
+    await cleanupRuntime(run);
+    await dispose(base);
+  }
+});
+
+test("PID reuse is quarantined unless every process identity proof matches", () => {
+  const owned = {
+    pid: 42,
+    startedAt: "start-a",
+    hostBootId: "boot-a",
+    controllerToken: "controller-a",
+    commandFingerprint: "command-a",
+  };
+  assert.equal(classifyProcessOwnership(owned, { ...owned }), "OWNED");
+  assert.equal(classifyProcessOwnership(owned, { ...owned, startedAt: "start-b" }), "QUARANTINED");
+  assert.equal(classifyProcessOwnership(owned, { ...owned, hostBootId: "boot-b" }), "QUARANTINED");
+  assert.equal(classifyProcessOwnership(owned, { ...owned, controllerToken: "controller-b" }), "QUARANTINED");
+  assert.equal(classifyProcessOwnership(owned, { ...owned, commandFingerprint: "command-b" }), "QUARANTINED");
 });

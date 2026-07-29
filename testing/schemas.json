@@ -6,15 +6,33 @@
     },
     "failure": {
       "required": ["classification", "rootCauseKnown", "affectedSuites", "evidenceRef"],
-      "classifications": ["ROOT_FAILURE", "SETUP_FAILURE", "CASCADE_BLOCKED", "FLAKY", "EXTERNAL_UNAVAILABLE", "POLICY_INVALID"]
+      "classifications": [
+        "ROOT_FAILURE",
+        "SETUP_FAILURE",
+        "CASCADE_BLOCKED",
+        "FLAKY",
+        "EXTERNAL_UNAVAILABLE",
+        "POLICY_INVALID"
+      ]
     },
     "evidence": {
       "required": ["sourceDigest", "policyDigest", "command", "status", "createdAt"],
       "prohibited": ["raw-private-content", "credentials", "absolute-private-path"]
     },
     "plan": {
-      "required": ["schemaVersion", "policyDigest", "sourceDigest", "scope", "selected", "omitted", "graph", "digest", "nonAuthoritative"],
-      "nonAuthoritative": true
+      "required": [
+        "schemaVersion",
+        "policyDigest",
+        "sourceDigest",
+        "scope",
+        "selected",
+        "omitted",
+        "graph",
+        "digest",
+        "nonAuthoritative"
+      ],
+      "nonAuthoritative": true,
+      "execution": "governed-local"
     }
   }
 }

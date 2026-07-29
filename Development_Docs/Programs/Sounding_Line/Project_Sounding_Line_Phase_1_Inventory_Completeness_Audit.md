@@ -4,11 +4,11 @@
 
 `node scripts/sounding-line/cli.mjs inventory --completeness` generates a per-file machine-readable `fileMappings` register. Every record has its normalized repository path, discovery family, disposition, parent suite, owner, tier, contracts, resource profile, execution adapter, and current parallel-safety classification.
 
-| Family | Discovered | Mapped | Excluded | Unknown | Unregistered |
-| --- | ---: | ---: | ---: | ---: | ---: |
-| Vitest | 157 | 157 | 0 | 0 | 0 |
-| Playwright | 28 | 28 | 0 | 0 | 0 |
-| PowerShell | 7 | 7 | 0 | 0 | 0 |
+| Family     | Discovered | Mapped | Excluded | Unknown | Unregistered |
+| ---------- | ---------: | -----: | -------: | ------: | -----------: |
+| Vitest     |        157 |    157 |        0 |       0 |            0 |
+| Playwright |         28 |     28 |        0 |       0 |            0 |
+| PowerShell |          7 |      7 |        0 |       0 |            0 |
 
 The reconciliation is exact: 185 discovered files equals 185 registered suite children/adapters plus zero excluded, unknown, obsolete, or unregistered files. There are zero critical unknowns. Child parallel safety is conservative: current Vitest children are `UNKNOWN_PARALLEL_SAFETY`; Playwright and PowerShell children are `GLOBAL_EXCLUSIVE_LEGACY` because current execution shares server/database/lock topology. These classifications do not authorize Phase 2 execution; they identify the certification work it must perform.
 

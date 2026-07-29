@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "status": "phase-1-visible-debt",
+  "status": "phase-2-reconciled-debt",
   "entries": [
     {
       "id": "debt.historical-timing",
@@ -18,23 +18,6 @@
       "effect": "Plans retain stable order and do not make duration-aware scheduling claims.",
       "openedAt": "2026-07-29",
       "resolution": "Populate governed normalized receipts in a later phase."
-    },
-    {
-      "id": "debt.harborlight-phase4-reconciliation",
-      "owner": "harborlight",
-      "severity": "high",
-      "classification": "POST_HARBORLIGHT_RECONCILIATION",
-      "targetPhase": "Post-Harborlight integration",
-      "affectedContracts": ["community-public-projection", "public-privacy-projection"],
-      "affectedSuites": ["browser.auth", "security.private-content"],
-      "affectedGates": ["cross-project", "mainline"],
-      "compensatingCoverage": "Unmapped Harborlight paths broaden to all registered suites.",
-      "releaseEffect": "No Sounding Line metadata is treated as representing unmerged Harborlight work.",
-      "reviewTrigger": "Accepted Harborlight branch merge to mainline.",
-      "reason": "Concurrent Harborlight Phase 4 surfaces are intentionally not copied into this source watermark.",
-      "effect": "Unknown Harborlight impact broadens to all registered suites and requires post-merge metadata reconciliation.",
-      "openedAt": "2026-07-29",
-      "resolution": "Re-inventory accepted Harborlight changes after its merge."
     },
     {
       "id": "debt.external-provider-evidence",

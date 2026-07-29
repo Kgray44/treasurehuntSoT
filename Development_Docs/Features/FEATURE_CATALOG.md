@@ -5,7 +5,7 @@ This generated catalog records completed, meaningful platform capabilities. It i
 ## Audited repository and commit
 
 Repository: `Kgray44/treasurehuntSoT`
-Audited source commit: `3699f5e7c638d950aab3b55169b603121b57c85b`
+Audited source commit: `e721956a401228f8da70d27af257bd20af96a0ab`
 
 ## Status vocabulary
 
@@ -868,6 +868,34 @@ Audience-separated current documentation, indexed engineering records, and a fra
 
 # Completed Branch Features Not Yet Available on Main
 
+## FT-033 - Sounding Line Governed Focused Validation Runtime
+
+**Status:** BRANCH COMPLETE NOT MERGED
+**Program or subsystem:** Sounding Line Phase 2
+
+A nonauthoritative local validation runtime provides sealed plans, reviewed adapters, marker-verified resource leases, isolated SQLite/browser state, and narrowly certified Harborlight moderator browser lanes without weakening release authority.
+
+### Important subfeatures
+
+- Deterministic signed-identity plan records
+- Fixed command adapter catalogue with bounded receipts
+- Marker and process-identity ownership proof
+- Immutable SQLite baseline clone boundary
+- Two isolated Harborlight Phase 4 browser lanes
+- Explicit emergency-serial legacy release authority
+
+### Primary surfaces
+
+`npm run test:policy`, `scripts/sounding-line`, `scripts/test-all.ps1`
+
+### Evidence
+
+- path: `scripts/sounding-line/runtime.mjs`
+- path: `scripts/sounding-line/adapters.mjs`
+- completion-record: `Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Phase_2_Implementation_Report.md`
+
+---
+
 # Deliberately Excluded Until Complete
 
 - Harborlight Phase 4 is planned and is not cataloged as an implemented capability.
@@ -881,4 +909,4 @@ Audience-separated current documentation, indexed engineering records, and a fra
 
 Update the owning machine-readable fragment only when completed work changes a major capability, important subfeature, availability, or meaningful limitation. Regenerate this file with `npm run features:sync`; never hand-edit it. Validate before closeout with `npm run features:validate`.
 
-Generation source commit: `3699f5e7c638d950aab3b55169b603121b57c85b`
+Generation source commit: `e721956a401228f8da70d27af257bd20af96a0ab`

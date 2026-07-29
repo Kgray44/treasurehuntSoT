@@ -3,6 +3,8 @@ import { defineConfig, devices } from "@playwright/test";
 const baseURL = process.env.PLAYWRIGHT_BASE_URL ?? "http://127.0.0.1:3100";
 const playwrightPort = new URL(baseURL).port || "3100";
 const useOwnedExternalServer = process.env.FOREVER_PLAYWRIGHT_EXTERNAL_SERVER === "1";
+const soundingLineLane = process.env.FOREVER_SOUNDING_LINE_LANE ?? "";
+const usesSoundingLineLane = /^(?:harborlight-a|harborlight-b)$/u.test(soundingLineLane);
 const useWayfarerProductionServer = process.env.WAYFARER_PLAYWRIGHT_PRODUCTION === "1";
 const phase3ReadOnlySetup = /phase3-readonly-setup\.setup\.ts/u;
 const phase3PerformanceSpec = /phase3-performance\.spec\.ts/u;
@@ -30,8 +32,11 @@ if (
   throw new Error("Phase 3 Playwright project routing must isolate exactly the six mutation spec families.");
 }
 
-if (useOwnedExternalServer && baseURL !== "http://127.0.0.1:3100") {
+if (useOwnedExternalServer && !usesSoundingLineLane && baseURL !== "http://127.0.0.1:3100") {
   throw new Error("Owned external Playwright validation must use http://127.0.0.1:3100.");
+}
+if (usesSoundingLineLane && !/^http:\/\/127\.0\.0\.1:31(?:0[1-9]|[1-9][0-9])$/u.test(baseURL)) {
+  throw new Error("Sounding Line browser lanes require an owned loopback port from 3101 through 3199.");
 }
 
 export default defineConfig({
@@ -40,8 +45,11 @@ export default defineConfig({
   expect: { timeout: 10_000 },
   fullyParallel: false,
   workers: 1,
-  outputDir: "artifacts/validation/playwright",
-  reporter: [["list"], ["html", { outputFolder: "artifacts/validation/report", open: "never" }]],
+  outputDir: process.env.PLAYWRIGHT_OUTPUT_DIR ?? "artifacts/validation/playwright",
+  reporter: [
+    ["list"],
+    ["html", { outputFolder: process.env.PLAYWRIGHT_REPORT_DIR ?? "artifacts/validation/report", open: "never" }],
+  ],
   use: {
     baseURL,
     trace: "retain-on-failure",

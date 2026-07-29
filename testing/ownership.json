@@ -46,9 +46,18 @@
       "testPaths": [
         "src/community/**/*.test.*",
         "src/components/community/**/*.test.*",
-        "tests/e2e/harborlight-phase2.spec.ts"
+        "tests/e2e/harborlight-phase2.spec.ts",
+        "tests/e2e/harborlight-phase3.spec.ts",
+        "tests/e2e/harborlight-phase4.spec.ts"
       ],
-      "contractIds": ["community-public-projection", "artifact-grant-projection"]
+      "contractIds": [
+        "community-public-projection",
+        "artifact-grant-projection",
+        "community-moderation-integrity",
+        "community-trusted-scan-receipt",
+        "community-operational-leases",
+        "community-migration-integrity"
+      ]
     },
     {
       "id": "sealed-hold",
