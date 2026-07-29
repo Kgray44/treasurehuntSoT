@@ -13,7 +13,7 @@ const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../
 const policyRoot = path.join(repoRoot, "testing");
 const ignoredDirectories = new Set([".git", "node_modules", ".next", "artifacts", "coverage"]);
 const secretPattern = /(?:api[_-]?key|access[_-]?token|auth[_-]?token|password|secret|private[_-]?key|credential)/iu;
-const registryFiles = ["ownership.json", "contracts.json", "resources.json", "suites.json", "impact-map.json", "release-gates.json", "quarantine.json", "validation-debt.json"];
+const registryFiles = ["ownership.json", "contracts.json", "resources.json", "suites.json", "impact-map.json", "release-gates.json", "quarantine.json", "validation-debt.json", "file-dispositions.json"];
 
 const sha256 = (value) => createHash("sha256").update(value).digest("hex");
 const canonicalize = (value) => {
@@ -100,9 +100,18 @@ function validatePolicy(policy) {
     if (!suiteIds.has(entry.suiteId)) errors.push(`quarantine: unknown suite ${entry.suiteId}`);
   }
   for (const entry of debt.entries) {
-    if (!entry.id || !ownerIds.has(entry.owner) || !entry.reason || !entry.effect) errors.push(`validation debt: invalid entry ${entry.id ?? "missing"}`);
+    if (!entry.id || !ownerIds.has(entry.owner) || !entry.reason || !entry.effect) errors.push(`SLP1010 validation debt: invalid entry ${entry.id ?? "missing"}`);
+    if (!entry.targetPhase || !entry.classification || !entry.releaseEffect || !entry.reviewTrigger) errors.push(`SLP1011 validation debt: incomplete closure fields ${entry.id ?? "missing"}`);
+    if (!['PHASE_1_RESOLVABLE_NOW','PHASE_2_OWNED','POST_HARBORLIGHT_RECONCILIATION','EXTERNAL_VALIDATION','LEGACY_HARNESS_RETIREMENT'].includes(entry.classification)) errors.push(`SLP1012 validation debt: invalid classification ${entry.id}`);
   }
   scanSensitive(policy, "policy", errors);
+  const dispositions = policy["file-dispositions"];
+  for (const rule of dispositions.rules) {
+    if (!suiteIds.has(rule.suiteId)) errors.push(`SLP1001 disposition: missing parent suite ${rule.suiteId}`);
+    if (!ownerIds.has(rule.owner)) errors.push(`SLP1002 disposition: missing owner ${rule.owner}`);
+    if (!isSafePath(rule.match)) errors.push(`SLP1003 disposition: unsafe match ${rule.match}`);
+    if (!['REGISTERED_SUITE_CHILD','REGISTERED_SETUP_NODE','REGISTERED_TEARDOWN_NODE','REGISTERED_FIXTURE','REGISTERED_ADAPTER','INTENTIONALLY_EXCLUDED','DISCOVERED_UNREGISTERED','OBSOLETE_CANDIDATE','UNKNOWN'].includes(rule.role)) errors.push(`SLP1004 disposition: invalid role ${rule.role}`);
+  }
   return { ok: errors.length === 0, errors, counts: { suites: suites.suites.length, contracts: contracts.contracts.length, owners: ownership.owners.length, resources: resources.resources.length, gates: gates.gates.length, quarantine: quarantine.entries.length, validationDebt: debt.entries.length } };
 }
 
@@ -140,11 +149,22 @@ async function inventory(policy) {
   const discovered = [...vitest, ...playwright];
   const unregistered = discovered.filter((file) => registeredForFile(file, policy.suites.suites).length === 0);
   const duplicateExecution = discovered.filter((file) => registeredForFile(file, policy.suites.suites).length > 1).map((file) => ({ file, suiteIds: registeredForFile(file, policy.suites.suites).map((suite) => suite.id).sort() }));
+  const dispositionFor = (file) => policy["file-dispositions"].rules.find((rule) => matches(file, rule.match));
+  const mapFile = (file, family) => {
+    const rule = dispositionFor(file);
+    if (!rule) return { path: file, family, disposition: "DISCOVERED_UNREGISTERED", errorCode: "SLP2001" };
+    const suite = policy.suites.suites.find((item) => item.id === rule.suiteId);
+    return { path: file, family, disposition: rule.role, parentSuiteId: rule.suiteId, owner: rule.owner, tier: rule.tier, adapter: rule.adapter, parallelSafety: rule.parallelSafety, contracts: suite.contracts, resources: suite.resources, executionAdapter: suite.command };
+  };
+  const fileMappings = [...vitest.map((file) => mapFile(file, "vitest")), ...playwright.map((file) => mapFile(file, "playwright")), ...powershell.map((file) => mapFile(file, "powershell"))].sort((a,b) => a.path.localeCompare(b.path));
+  const byFamily = Object.fromEntries(["vitest", "playwright", "powershell"].map((family) => { const rows=fileMappings.filter((row)=>row.family===family); const count=(value)=>rows.filter((row)=>row.disposition===value).length; return [family,{ discovered:rows.length, mapped:rows.filter((row)=>row.parentSuiteId).length, excluded:count("INTENTIONALLY_EXCLUDED"), unknown:count("UNKNOWN"), unregistered:count("DISCOVERED_UNREGISTERED"), reconciled: rows.length===rows.filter((row)=>row.parentSuiteId||row.disposition==="INTENTIONALLY_EXCLUDED"||row.disposition==="OBSOLETE_CANDIDATE"||row.disposition==="UNKNOWN"||row.disposition==="DISCOVERED_UNREGISTERED").length }]; }));
+  const criticalUnknowns = fileMappings.filter((row) => row.disposition === "UNKNOWN" || row.disposition === "DISCOVERED_UNREGISTERED");
   return {
     schemaVersion: "1.0.0", sourceWatermark: sha256(canonicalize(files)), readOnly: true,
     commands: Object.keys(packageJson.scripts).sort(), files: { vitest, playwright, powershell },
     resources: { hardCodedPortFiles: hardCodedPorts.sort(), lockFiles: lockFiles.sort(), databasePathFiles: databasePaths.sort() },
-    reconciliation: { discoveredTestFiles: discovered.length, unregistered, duplicateExecution, registeredSuites: policy.suites.suites.map((suite) => suite.id).sort() }
+    reconciliation: { discoveredTestFiles: discovered.length, unregistered, duplicateExecution, registeredSuites: policy.suites.suites.map((suite) => suite.id).sort() }, fileMappings,
+    completeness: { status: criticalUnknowns.length ? "INCOMPLETE" : policy["validation-debt"].entries.length ? "COMPLETE_WITH_NONCRITICAL_DEBT" : "COMPLETE", byFramework: byFamily, logicalSuiteCount: policy.suites.suites.length, suiteChildCount: fileMappings.filter((row)=>row.disposition==="REGISTERED_SUITE_CHILD").length, criticalUnknownCount: criticalUnknowns.length, unresolvedMappingDefects: criticalUnknowns.map((row)=>row.path) }
   };
 }
 
@@ -188,7 +208,7 @@ async function main() {
   const policy = await loadPolicy();
   if (command === "validate-policy") { const result = validatePolicy(policy); output({ ...result, policyDigest: policy.digest }); if (!result.ok) process.exitCode = 1; return; }
   if (command === "inventory") { const result = validatePolicy(policy); if (!result.ok) throw new Error(result.errors.join("; ")); output(await inventory(policy)); return; }
-  if (command === "plan") { const scopeArg = args.find((arg) => arg.startsWith("--scope=")); const paths = args.filter((arg) => !arg.startsWith("--")); const scope = scopeArg?.slice(8) ?? "change"; if (!['change', 'release'].includes(scope)) throw new Error("--scope must be change or release"); if (scope === "change" && paths.length === 0) throw new Error("plan change requires one or more repository-relative paths"); if (paths.some((item) => !isSafePath(item))) throw new Error("plan paths must be safe repository-relative paths"); const result = validatePolicy(policy); if (!result.ok) throw new Error(result.errors.join("; ")); output(await plan(policy, paths, scope)); return; }
+  if (command === "plan") { const scopeArg = args.find((arg) => arg.startsWith("--scope=")); const paths = args.filter((arg) => !arg.startsWith("--")).map((item) => item.replace(/\\/gu, "/")); const scope = scopeArg?.slice(8) ?? "change"; if (!['change', 'release'].includes(scope)) throw new Error("--scope must be change or release"); if (scope === "change" && paths.length === 0) throw new Error("plan change requires one or more repository-relative paths"); if (paths.some((item) => !isSafePath(item))) throw new Error("plan paths must be safe repository-relative paths"); const result = validatePolicy(policy); if (!result.ok) throw new Error(result.errors.join("; ")); output(await plan(policy, paths, scope)); return; }
   fail("usage: node scripts/sounding-line/cli.mjs <validate-policy|inventory|plan> [--scope=change|release] [paths...]");
 }
 main().catch((error) => fail(error instanceof Error ? error.message : String(error)));

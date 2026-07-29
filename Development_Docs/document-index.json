@@ -1197,7 +1197,31 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Phase_1_Inventory_Completeness_Audit.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Phase_1_Legacy_Harness_Map.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Phase_1_Ownership_and_Contract_Register.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Phase_1_Post_Harborlight_Reconciliation_Manifest.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Phase_1_Requirement_Ledger.csv",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null

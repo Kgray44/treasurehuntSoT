@@ -20,6 +20,9 @@ test("inventory is read-only and recognizes current test families", async () => 
   assert.ok(result.files.vitest.length > 0);
   assert.ok(result.files.playwright.length > 0);
   assert.ok(result.resources.lockFiles.includes("scripts/test-all.ps1"));
+  assert.equal(result.completeness.criticalUnknownCount, 0);
+  assert.equal(result.completeness.status, "COMPLETE_WITH_NONCRITICAL_DEBT");
+  assert.ok(Object.values(result.completeness.byFramework).every((entry) => entry.reconciled));
 });
 
 test("plans are deterministic and unknown impact broadens", async () => {
@@ -36,4 +39,12 @@ test("release plans remain comprehensive", async () => {
   const result = await run("plan", "--scope=release");
   assert.equal(result.omitted.length, 0);
   assert.equal(result.selected.length, 10);
+});
+
+test("path ordering, duplicates, and Windows separators normalize deterministically", async () => {
+  const posix = await run("plan", "src/wayfarer/example.ts", "src/private-content/example.ts");
+  const shuffled = await run("plan", "src/private-content/example.ts", "src/wayfarer/example.ts", "src/wayfarer/example.ts");
+  const windows = await run("plan", "src\\private-content\\example.ts", "src\\wayfarer\\example.ts");
+  assert.equal(posix.digest, shuffled.digest);
+  assert.equal(posix.digest, windows.digest);
 });
