@@ -1,0 +1,48 @@
+[
+  {
+    "id": "FT-B001",
+    "title": "Personal Chronicle History",
+    "summary": "A private version-pinned Voyage history preserves personal records, reflections, keepsakes, and consent-aware participant context.",
+    "status": "BRANCH_COMPLETE_NOT_MERGED",
+    "program": "Wayfarer Phase 3",
+    "surfaces": ["/passport/history"],
+    "subfeatures": [
+      "Personal Chronicle records",
+      "Version and participant snapshots",
+      "Lifecycle and timing history",
+      "Private reflections",
+      "Consent grants and revocation",
+      "Owner and crew-safe projections"
+    ],
+    "evidence": [
+      { "kind": "commit", "value": "ba241a68c90f5fa5ff32b8a3fbded9ff1431d1a3" },
+      { "kind": "branch", "value": "codex/project-wayfarer-phase4-artifacts-achievements" }
+    ],
+    "branch": "codex/project-wayfarer-phase4-artifacts-achievements",
+    "commit": "ba241a68c90f5fa5ff32b8a3fbded9ff1431d1a3",
+    "catalogVersion": 1
+  },
+  {
+    "id": "FT-B002",
+    "title": "Artifact Cabinet and Achievements",
+    "summary": "Person-level artifact provenance, custody, display, assembly, and achievements remain separate from shared Voyage inventory.",
+    "status": "BRANCH_COMPLETE_NOT_MERGED",
+    "program": "Wayfarer Phase 4",
+    "surfaces": ["/passport/artifacts"],
+    "subfeatures": [
+      "Immutable grant receipts",
+      "Recipient-policy evidence",
+      "Personal artifact records",
+      "Display cases",
+      "Assembly recipes",
+      "Versioned achievements"
+    ],
+    "evidence": [
+      { "kind": "commit", "value": "ba241a68c90f5fa5ff32b8a3fbded9ff1431d1a3" },
+      { "kind": "branch", "value": "codex/project-wayfarer-phase4-artifacts-achievements" }
+    ],
+    "branch": "codex/project-wayfarer-phase4-artifacts-achievements",
+    "commit": "ba241a68c90f5fa5ff32b8a3fbded9ff1431d1a3",
+    "catalogVersion": 1
+  }
+]

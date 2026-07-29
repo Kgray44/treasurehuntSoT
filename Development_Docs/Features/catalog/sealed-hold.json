@@ -1,0 +1,26 @@
+[
+  {
+    "id": "FT-024",
+    "title": "Project Sealed Hold Private Chronicle Protection",
+    "summary": "The public engine can import, store, deliver, and scan protected Chronicle packages without placing private story content in the repository.",
+    "status": "MAINLINE",
+    "program": "Sealed Hold Phases 1 and 2",
+    "surfaces": ["/studio/private-content", "CLI"],
+    "subfeatures": [
+      "Authenticated encrypted package format",
+      "Streaming package handling",
+      "Import review and rollback",
+      "Content-addressed protected objects",
+      "Fail-closed scanner states",
+      "Protected media delivery"
+    ],
+    "evidence": [
+      { "kind": "path", "value": "src/private-content/package.ts" },
+      {
+        "kind": "completion-record",
+        "value": "Development_Docs/Programs/Sealed_Hold/Project_Sealed_Hold_Phase_2_Completion_Receipt.md"
+      }
+    ],
+    "catalogVersion": 1
+  }
+]

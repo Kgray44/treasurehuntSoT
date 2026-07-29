@@ -1,0 +1,26 @@
+[
+  {
+    "id": "FT-022",
+    "title": "Project Lanternwake Cinematic System",
+    "summary": "A governed cinematic runtime coordinates authored presentation while preserving server truth, accessibility, cleanup, and scene ownership.",
+    "status": "MAINLINE",
+    "program": "Lanternwake",
+    "surfaces": ["/player", "/captain", "/dev/animations"],
+    "subfeatures": [
+      "AnimationDirector and scene contracts",
+      "Scoped target resolution",
+      "Semantic presentation receipts",
+      "Authoritative replay queue",
+      "Reduced-motion static fallbacks",
+      "Lifecycle leak validation"
+    ],
+    "evidence": [
+      { "kind": "path", "value": "src/animation" },
+      {
+        "kind": "completion-record",
+        "value": "Development_Docs/Programs/Lanternwake/Project_Lanternwake_Completion_Receipt.md"
+      }
+    ],
+    "catalogVersion": 1
+  }
+]

@@ -1,0 +1,102 @@
+[
+  {
+    "id": "FT-001",
+    "title": "Unified Chronicle Platform",
+    "summary": "Canonical authored Chronicles, immutable editions, live Voyages, memberships, and compatibility adapters share explicit ownership boundaries.",
+    "status": "MAINLINE",
+    "program": "Platform",
+    "surfaces": ["/", "/player", "/captain", "/studio"],
+    "subfeatures": [
+      "Checksummed published editions",
+      "Version-pinned Voyage sessions",
+      "Ordered session events",
+      "Cross-project ownership boundaries",
+      "Compatibility observation"
+    ],
+    "evidence": [
+      { "kind": "path", "value": "prisma/schema.sqlite.prisma" },
+      { "kind": "path", "value": "src/compatibility/compatibility-observation.ts" }
+    ],
+    "catalogVersion": 1
+  },
+  {
+    "id": "FT-002",
+    "title": "Secure Account, Session, and Role System",
+    "summary": "One protected account can hold person, role, session, recovery, and authorization state across product workspaces.",
+    "status": "MAINLINE",
+    "program": "Platform",
+    "surfaces": ["/account", "/verify-email", "/forgot-password"],
+    "subfeatures": [
+      "Canonical account identity",
+      "Hashed session tokens",
+      "CSRF-protected mutations",
+      "Scoped roles",
+      "Security audit events"
+    ],
+    "evidence": [
+      { "kind": "path", "value": "src/platform/auth.ts" },
+      { "kind": "path", "value": "src/platform/policy.ts" }
+    ],
+    "catalogVersion": 1
+  },
+  {
+    "id": "FT-003",
+    "title": "Cinematic Role Gateway and Workspace Routing",
+    "summary": "The role-aware arrival flow routes Players, Captains, and Creators to protected workspaces with accessible alternatives.",
+    "status": "MAINLINE",
+    "program": "Platform",
+    "surfaces": ["/", "/player", "/captain", "/studio"],
+    "subfeatures": [
+      "Role-specific arrivals",
+      "Remembered-session continuation",
+      "Destination authorization",
+      "Keyboard navigation",
+      "Reduced-motion behavior"
+    ],
+    "evidence": [
+      { "kind": "path", "value": "src/app/page.tsx" },
+      { "kind": "path", "value": "src/components/landing/HarborLanding.tsx" }
+    ],
+    "catalogVersion": 1
+  },
+  {
+    "id": "FT-027",
+    "title": "Security and Privacy Platform",
+    "summary": "Authorization, safe projections, transport protection, and private-content controls are integrated across product systems.",
+    "status": "MAINLINE",
+    "program": "Security",
+    "surfaces": ["/account/security", "/api"],
+    "subfeatures": [
+      "Hash-only credentials",
+      "Explicit projection boundaries",
+      "Rate limiting",
+      "Optimistic concurrency",
+      "Private-content scanning"
+    ],
+    "evidence": [
+      { "kind": "path", "value": "src/lib/security.ts" },
+      { "kind": "path", "value": "scripts/private-content/scan.ts" }
+    ],
+    "catalogVersion": 1
+  },
+  {
+    "id": "FT-028",
+    "title": "Validation, Local Development, and Operational Tooling",
+    "summary": "The repository provides repeatable local setup, parity checks, release validation, and operational rehearsal tooling.",
+    "status": "MAINLINE",
+    "program": "Operations",
+    "surfaces": ["npm scripts", "scripts/test-all.ps1"],
+    "subfeatures": [
+      "One-command development runtime",
+      "Prisma migration generation",
+      "SQLite and MySQL parity",
+      "Static and browser validation",
+      "Controlled restart proof"
+    ],
+    "evidence": [
+      { "kind": "path", "value": "scripts/test-all.ps1" },
+      { "kind": "path", "value": "scripts/prepare-validation-isolation.ts" }
+    ],
+    "catalogVersion": 1
+  }
+]

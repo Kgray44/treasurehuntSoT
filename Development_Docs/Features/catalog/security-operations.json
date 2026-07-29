@@ -1,0 +1,23 @@
+[
+  {
+    "id": "FT-026",
+    "title": "Universal Language and Chronicle Design System",
+    "summary": "A shared product language and accessible visual system joins Player, Captain, Creator, Community, private operations, and cinematic surfaces.",
+    "status": "MAINLINE",
+    "program": "Universal Language",
+    "surfaces": ["/", "/player", "/captain", "/studio"],
+    "subfeatures": [
+      "Canonical terminology",
+      "Role-aware shell",
+      "Responsive navigation",
+      "Keyboard-first controls",
+      "Reduced-motion alternatives",
+      "Resilient state presentation"
+    ],
+    "evidence": [
+      { "kind": "path", "value": "src/language/canonical-terms.ts" },
+      { "kind": "path", "value": "src/components/shell/ProductShell.tsx" }
+    ],
+    "catalogVersion": 1
+  }
+]

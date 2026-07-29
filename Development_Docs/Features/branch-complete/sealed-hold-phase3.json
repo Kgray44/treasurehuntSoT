@@ -1,0 +1,26 @@
+[
+  {
+    "id": "FT-B003",
+    "title": "Private Content Operations and Recovery",
+    "summary": "Sealed Hold operations add durable worker, backup, restore, repair, lease, key-lifecycle, and administrator readiness capabilities.",
+    "status": "BRANCH_COMPLETE_NOT_MERGED",
+    "program": "Sealed Hold Phase 3",
+    "surfaces": ["/studio/private-content/operations", "worker"],
+    "subfeatures": [
+      "Provider readiness",
+      "Durable jobs and leases",
+      "Encrypted backups",
+      "Restore verification",
+      "Immutable repair plans",
+      "Key rotation safeguards"
+    ],
+    "evidence": [
+      { "kind": "commit", "value": "d09c16e21e3945b219420ff3fc575fac93cbe591" },
+      { "kind": "branch", "value": "codex/project-sealed-hold-phase3-stand-the-watch" }
+    ],
+    "branch": "codex/project-sealed-hold-phase3-stand-the-watch",
+    "commit": "d09c16e21e3945b219420ff3fc575fac93cbe591",
+    "limitations": ["Live infrastructure proof requires separately authorized services."],
+    "catalogVersion": 1
+  }
+]

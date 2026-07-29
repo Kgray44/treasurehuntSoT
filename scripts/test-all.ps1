@@ -636,6 +636,7 @@ try {
     Invoke-ValidationStep -Name "Linting" -Arguments @("node_modules/eslint/bin/eslint.js", ".")
     Invoke-ValidationStep -Name "Type checking" -Arguments @("node_modules/typescript/bin/tsc", "--noEmit")
     Invoke-ValidationStep -Name "Validating Voyagewright product language" -Arguments @("node_modules/tsx/dist/cli.mjs", "scripts/validate-user-facing-language.ts")
+    Invoke-ValidationStep -Name "Validating completed Feature Catalog" -Arguments @("node_modules/tsx/dist/cli.mjs", "scripts/features/validate-feature-catalog.ts")
     Invoke-ValidationStep -Name "Running unit tests" -Arguments @("node_modules/vitest/vitest.mjs", "run")
     if (-not $BrowserOnly) {
         Invoke-ValidationStep -Name "Validating animation assets" -Arguments @("node_modules/tsx/dist/cli.mjs", "scripts/validate-animation-assets.ts")

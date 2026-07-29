@@ -333,6 +333,96 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Features/branch-complete/sealed-hold-phase3.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Features/branch-complete/wayfarer-phase3-phase4.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Features/catalog/captain.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Features/catalog/harborlight.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Features/catalog/lanternwake.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Features/catalog/one-voyage.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Features/catalog/platform.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Features/catalog/player.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Features/catalog/sealed-hold.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Features/catalog/security-operations.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Features/catalog/studio.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Features/catalog/wayfarer.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Features/FEATURE_CATALOG_SCHEMA.md",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Features/FEATURE_CATALOG.md",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Features/README.md",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Governing/Phase_1_Cross_Project_Convergence_Design_Record.md",
       "record_type": "governing-record",
       "status": "preserved",
