@@ -1,7 +1,8 @@
 # Ledgerlight Mainline Cleanup Receipt
 
-**Status:** cleanup complete; final mainline merge and push pending.  
+**Status:** cleanup complete; remote parity verified.  
 **Starting remote main:** `cea12ce12150635aa593ba214d21a6db7ec425a9`
+**Initial cleanup integration:** `6af4834bac3b231df7a3f92b5c2cb2cea72fb336`
 
 ## Consolidation result
 
@@ -64,6 +65,11 @@ registered worktrees and contain no `.git` link:
 - `treasurehuntSoT-phase3-phase4-convergence-continuation`
 - `treasurehuntSoT-sealed-hold-phase3`
 - `treasurehuntSoT-wayfarer-phase3`
+
+The task-owned local validation clone
+`C:\Users\kgray\AppData\Local\ForeverTreasureCompanion\ledgerlight-mainline-cleanup-runtime`
+is also disposable but remained after a Windows policy blocked its recursive
+deletion. It is not a registered worktree and was never used for implementation.
 
 The configured shell lacked npm and UNC installation failed; the isolated local
 fallback is documented in the validation record. No private content or secrets
