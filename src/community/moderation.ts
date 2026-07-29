@@ -373,6 +373,32 @@ async function assertNotSelfModeration(actor: CommunityModeratorActor, subjectTy
   }
 }
 
+async function assertAppealEntitlement(accountId: string, subjectType: string, subjectId: string) {
+  let ownerAccountId: string | null = null;
+  if (subjectType === "LISTING")
+    ownerAccountId =
+      (await db.communityListing.findUnique({ where: { id: subjectId }, include: { owner: true } }))?.owner.accountId ??
+      null;
+  if (subjectType === "RELEASE")
+    ownerAccountId =
+      (
+        await db.communityRelease.findUnique({
+          where: { id: subjectId },
+          include: { listing: { include: { owner: true } } },
+        })
+      )?.listing.owner.accountId ?? null;
+  if (subjectType === "PROFILE" || subjectType === "CREATOR")
+    ownerAccountId = (await db.communityProfile.findUnique({ where: { id: subjectId } }))?.accountId ?? null;
+  if (subjectType === "REVIEW")
+    ownerAccountId = (await db.communityReview.findUnique({ where: { id: subjectId } }))?.authorAccountId ?? null;
+  if (subjectType === "COMMENT")
+    ownerAccountId = (await db.communityComment.findUnique({ where: { id: subjectId } }))?.authorAccountId ?? null;
+  // New action subjects must define an explicit appeal owner before becoming
+  // appealable; foreign accounts cannot probe or contest another user's action.
+  if (!ownerAccountId || ownerAccountId !== accountId)
+    throw new CommunityError("COMMUNITY_APPEAL_UNAVAILABLE", "This action is not eligible for appeal.");
+}
+
 export async function applyModerationAction(
   actor: CommunityModeratorActor,
   input: {
@@ -461,6 +487,7 @@ export async function submitAppeal(actor: CommunityModeratorActor, input: { acti
     throw new CommunityError("COMMUNITY_APPEAL_UNAVAILABLE", "This action is not eligible for appeal.");
   if (action.actorAccountId === actor.accountId)
     throw new CommunityError("COMMUNITY_APPEAL_UNAVAILABLE", "This action is not eligible for appeal.");
+  await assertAppealEntitlement(actor.accountId, action.subjectType, action.subjectId);
   const deadline = new Date(action.appliedAt.getTime() + 30 * 24 * 60 * 60 * 1000);
   if (deadline < new Date()) throw new CommunityError("COMMUNITY_APPEAL_WINDOW_CLOSED", "The appeal period has ended.");
   const appeal = await db.communityModerationAppeal.create({
