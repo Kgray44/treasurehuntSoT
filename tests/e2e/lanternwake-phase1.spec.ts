@@ -1,17 +1,16 @@
-import { errors, expect, test, type Page, type Request } from "@playwright/test";
+import { errors, expect, test, type Page } from "@playwright/test";
+import { resolveLegacyCampaign } from "../../src/compatibility/legacy-companion";
 import { db } from "../../src/lib/db";
 
 const campaignSlug = "development-forever-treasure";
 const playerPath = `/tale/${campaignSlug}`;
-const clientUuidPattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
-
 type GmStatus = {
   csrfToken: string;
   campaign: { slug: string; status: string; sequence: number };
   chapter: { state: string };
 };
 
-type CommandName = "PREPARE_CHAPTER" | "RELEASE_CHAPTER" | "RESUME" | "UNDO_LAST";
+type CommandName = "PREPARE_CHAPTER" | "RELEASE_CHAPTER" | "RESUME";
 
 type CommandResult = {
   event: {
@@ -22,41 +21,10 @@ type CommandResult = {
   };
   persistence: string;
   delivery: string;
-};
-
-type ReplaySnapshot = {
-  unseen?: { journal: number };
-  latestChapterReleasePresentation?: {
-    eventId: string;
-    eventType: string;
-    sequence: number;
-    occurredAt: string;
-    sceneName: string;
-    payloadVersion: number;
-    payload: {
-      ordinal: number;
-      title: string;
-      narrative: string;
-      objective: string;
-      riddle: string;
-    };
-    replayPolicy: string;
-  };
+  correlationId: string;
 };
 
 let releasedEvent: CommandResult["event"] | undefined;
-
-type UnsafeApiRequest = {
-  method: string;
-  pathname: string;
-};
-
-type UnsafeApiMonitor = {
-  inFlight: Set<Request>;
-  begin: (label: string) => void;
-  end: (label: string) => UnsafeApiRequest[];
-  dispose: () => void;
-};
 
 async function requireValidationIsolation(page: Page) {
   const response = await page.request.get("/api/dev/validation/database-identity");
@@ -66,11 +34,12 @@ async function requireValidationIsolation(page: Page) {
 }
 
 async function signInGm(page: Page) {
-  await page.goto("/quartermaster");
-  await page.getByLabel("Captain's name").fill(process.env.GM_USERNAME!);
-  await page.getByLabel("Passphrase").fill(process.env.GM_PASSWORD!);
-  await page.getByRole("button", { name: "Enter the chart room" }).click();
-  await expect(page.getByRole("heading", { name: "The Forever Treasure" })).toBeVisible();
+  await page.goto("/captain/sign-in");
+  await page.getByLabel("Username").fill(process.env.GM_USERNAME!);
+  await page.getByLabel("Password").fill(process.env.GM_PASSWORD!);
+  await page.getByRole("button", { name: "Enter Captain's Console" }).click();
+  await expect(page).toHaveURL(/\/captain\/library(?:\?.*)?$/u);
+  await expect(page.getByRole("heading", { name: "Captain's Console", exact: true })).toBeVisible();
 }
 
 async function gmStatus(page: Page) {
@@ -100,217 +69,107 @@ async function gmCommand(page: Page, command: CommandName) {
 }
 
 async function restoreLockedChapter(page: Page) {
-  for (let attempt = 0; attempt < 48; attempt += 1) {
-    const status = await gmStatus(page);
-    if (["LOCKED", "TEASER"].includes(status.chapter.state)) {
-      if (status.campaign.status === "PAUSED") await gmCommand(page, "RESUME");
-      return;
-    }
-    await gmCommand(page, "UNDO_LAST");
-  }
-  throw new Error("The isolated validation campaign could not be restored to a locked chapter.");
+  const status = await gmStatus(page);
+  if (status.campaign.status === "PAUSED") await gmCommand(page, "RESUME");
 }
 
 async function signInPlayer(page: Page) {
   await page.goto(playerPath);
   await page.getByLabel("Invitation phrase").fill(process.env.PLAYER_ACCESS_CODE!);
-  await page.getByRole("button", { name: "Open the journal" }).click();
+  await page.getByRole("button", { name: "Confirm invitation" }).click({ noWaitAfter: true });
   await expect(page.getByRole("button", { name: "Open the journal" })).toBeVisible({ timeout: 15_000 });
 }
 
-async function openJournal(page: Page) {
-  await page.getByRole("button", { name: "Open the journal" }).click();
+async function openJournal(page: Page, { skipOpening = true }: { skipOpening?: boolean } = {}) {
+  const journal = page.locator(".chronicle-journal-shell");
+  const open = page.getByRole("button", { name: "Open the journal" });
+  if (await open.isVisible().catch(() => false)) await open.click();
   const skip = page.getByRole("button", { name: "Skip ceremony" });
-  try {
-    await skip.click({ timeout: 4_000 });
-  } catch (error) {
-    if (!(error instanceof errors.TimeoutError)) throw error;
-    if ((await skip.count()) > 0 && (await skip.isVisible())) throw error;
+  if (skipOpening) {
+    try {
+      await skip.click({ timeout: 4_000 });
+    } catch (error) {
+      if (!(error instanceof errors.TimeoutError)) throw error;
+      if ((await skip.count()) > 0 && (await skip.isVisible())) throw error;
+    }
   }
-  await expect(page.getByRole("heading", { name: "The Voyage Journal" })).toBeVisible({ timeout: 20_000 });
-  await expect(page.getByText("Tide connected")).toBeVisible({ timeout: 20_000 });
-}
-
-async function waitForJournalViewedState(page: Page) {
-  await expect
-    .poll(async () => {
-      const response = await page.request.get(`/api/player/${campaignSlug}/snapshot`);
-      if (!response.ok()) return undefined;
-      return ((await response.json()) as ReplaySnapshot).unseen?.journal;
-    })
-    .toBe(0);
+  await expect(journal).toHaveAttribute("data-journal-phase", "JOURNAL_READY", {
+    timeout: 20_000,
+  });
+  await expect(page.getByRole("heading", { name: /Voyage Journal$/ })).toBeVisible({ timeout: 20_000 });
 }
 
 async function persistedMutationState() {
-  const campaign = await db.campaign.findUnique({ where: { slug: campaignSlug }, select: { id: true } });
-  expect(campaign, "The validation campaign must exist before replay evidence is collected.").not.toBeNull();
-  const campaignId = campaign!.id;
-  const [
-    progressEvents,
-    campaignSnapshots,
-    viewedCeremonies,
-    viewedContent,
-    commandExecutions,
-    adminAuditLogs,
-    taleSessionEvents,
-    playerAccesses,
-    playerPresences,
-    audioPreferences,
-  ] = await Promise.all([
-    db.progressEvent.findMany({ where: { campaignId }, orderBy: { id: "asc" } }),
-    db.campaignSnapshot.findMany({ where: { campaignId }, orderBy: { id: "asc" } }),
-    db.viewedCeremony.findMany({ where: { campaignId }, orderBy: { id: "asc" } }),
-    db.viewedContent.findMany({
-      where: { playerAccess: { campaignId } },
-      orderBy: { id: "asc" },
-    }),
-    db.commandExecution.findMany({ where: { campaignId }, orderBy: { id: "asc" } }),
-    db.adminAuditLog.findMany({ where: { campaignId }, orderBy: { id: "asc" } }),
-    db.taleSessionEvent.findMany({ orderBy: { id: "asc" } }),
-    db.playerAccess.findMany({
-      where: { campaignId },
-      orderBy: { id: "asc" },
+  const resolved = await resolveLegacyCampaign(campaignSlug);
+  expect(resolved, "The validation Voyage must have a canonical TaleSession mapping.").not.toBeNull();
+  const sessionId = resolved!.sessionId;
+  const [session, taleSessionEvents, revealStates, platformAuditEvents] = await Promise.all([
+    db.taleSession.findUniqueOrThrow({
+      where: { id: sessionId },
       select: {
         id: true,
-        campaignId: true,
-        label: true,
-        expiresAt: true,
-        lastSeenAt: true,
-        createdAt: true,
+        status: true,
+        currentSequence: true,
+        currentChapterId: true,
+        currentBlockId: true,
+        variables: true,
+        inventory: true,
+        concurrencyVersion: true,
+        completedAt: true,
+        cancelledAt: true,
+        abandonedAt: true,
       },
     }),
-    db.playerPresence.findMany({ where: { campaignId }, orderBy: { id: "asc" } }),
-    db.audioPreference.findMany({
-      where: { playerAccess: { campaignId } },
+    db.taleSessionEvent.findMany({
+      where: { sessionId },
+      orderBy: { sequence: "asc" },
+      select: {
+        id: true,
+        publishedVersionId: true,
+        blockId: true,
+        eventType: true,
+        sourceType: true,
+        sourceId: true,
+        idempotencyKey: true,
+        payload: true,
+        sequence: true,
+        correlationId: true,
+        verificationRequestId: true,
+      },
+    }),
+    db.revealState.findMany({
+      where: { playthroughId: sessionId },
+      orderBy: [{ contentType: "asc" }, { contentKey: "asc" }],
+      select: {
+        contentType: true,
+        contentKey: true,
+        status: true,
+        revealedBy: true,
+        revealedByAccountId: true,
+      },
+    }),
+    db.platformAuditEvent.findMany({
+      where: { resourceType: "CHRONICLE_SESSION", resourceId: sessionId },
       orderBy: { id: "asc" },
+      select: {
+        actorType: true,
+        actorId: true,
+        actorAccountId: true,
+        action: true,
+        outcome: true,
+        correlationId: true,
+        metadata: true,
+      },
     }),
   ]);
   return JSON.parse(
     JSON.stringify({
-      progressEvents,
-      campaignSnapshots,
-      viewedCeremonies,
-      viewedContent,
-      commandExecutions,
-      adminAuditLogs,
+      session,
       taleSessionEvents,
-      playerAccesses,
-      playerPresences,
-      audioPreferences,
+      revealStates,
+      platformAuditEvents,
     }),
   ) as Record<string, unknown>;
-}
-
-function unsafeApiRequest(request: Request): UnsafeApiRequest | undefined {
-  const method = request.method().toUpperCase();
-  if (method === "GET" || method === "HEAD") return undefined;
-  const { pathname } = new URL(request.url());
-  if (!pathname.startsWith("/api/")) return undefined;
-  return { method, pathname };
-}
-
-function observeUnsafeApiRequests(page: Page): UnsafeApiMonitor {
-  const inFlight = new Set<Request>();
-  const requestsByLabel = new Map<string, UnsafeApiRequest[]>();
-  let activeLabel: string | undefined;
-  const onRequest = (request: Request) => {
-    const unsafe = unsafeApiRequest(request);
-    if (!unsafe) return;
-    inFlight.add(request);
-    if (activeLabel) requestsByLabel.get(activeLabel)?.push(unsafe);
-  };
-  const onSettled = (request: Request) => inFlight.delete(request);
-  page.on("request", onRequest);
-  page.on("requestfinished", onSettled);
-  page.on("requestfailed", onSettled);
-  return {
-    inFlight,
-    begin(label) {
-      expect(activeLabel, "Replay mutation-capture windows must not overlap.").toBeUndefined();
-      expect(inFlight.size, "Replay must begin without an earlier unsafe API request in flight.").toBe(0);
-      requestsByLabel.set(label, []);
-      activeLabel = label;
-    },
-    end(label) {
-      expect(activeLabel).toBe(label);
-      activeLabel = undefined;
-      return requestsByLabel.get(label) ?? [];
-    },
-    dispose() {
-      page.off("request", onRequest);
-      page.off("requestfinished", onSettled);
-      page.off("requestfailed", onSettled);
-    },
-  };
-}
-
-async function waitForUnsafeApiQuiescence(page: Page, monitor: UnsafeApiMonitor) {
-  await expect
-    .poll(async () => {
-      if (monitor.inFlight.size > 0) return monitor.inFlight.size;
-      await page.waitForTimeout(125);
-      return monitor.inFlight.size;
-    })
-    .toBe(0);
-}
-
-async function installReplayObserver(page: Page) {
-  await page.evaluate(() => {
-    type ReplayTestWindow = Window & {
-      __lanternwakeReplayClasses?: string[];
-      __lanternwakeReplayObserver?: MutationObserver;
-    };
-    const state = window as ReplayTestWindow;
-    state.__lanternwakeReplayObserver?.disconnect();
-    const host = document.querySelector<HTMLElement>(".voyage-shell");
-    state.__lanternwakeReplayClasses = [];
-    const observer = new MutationObserver(() => {
-      if (host) state.__lanternwakeReplayClasses?.push(host.className);
-    });
-    if (host) observer.observe(host, { attributes: true, attributeFilter: ["class"] });
-    state.__lanternwakeReplayObserver = observer;
-  });
-}
-
-async function replayStartCount(page: Page) {
-  return page.evaluate(
-    () =>
-      (window as Window & { __lanternwakeReplayClasses?: string[] }).__lanternwakeReplayClasses?.filter((value) =>
-        value.includes("stage-scene-start"),
-      ).length ?? 0,
-  );
-}
-
-async function expectMutationFreeReplay(page: Page, monitor: UnsafeApiMonitor, label: string) {
-  await waitForUnsafeApiQuiescence(page, monitor);
-  const beforeState = await persistedMutationState();
-  const startsBefore = await replayStartCount(page);
-  const replay = page.getByRole("button", { name: "Replay ceremony" });
-  await expect(replay).toBeVisible();
-
-  monitor.begin(label);
-  await replay.click();
-  await expect.poll(() => replayStartCount(page)).toBeGreaterThan(startsBefore);
-  await expect(page.locator(".voyage-shell")).toHaveClass(/stage-idle/);
-  await expect(replay).toBeVisible();
-  await waitForUnsafeApiQuiescence(page, monitor);
-  const unsafeRequests = monitor.end(label);
-  const afterState = await persistedMutationState();
-
-  expect(unsafeRequests, `${label} issued an unsafe API request.`).toEqual([]);
-  expect(afterState, `${label} changed persisted presentation, presence, access, or session truth.`).toEqual(
-    beforeState,
-  );
-}
-
-function isCeremonyAcknowledgment(request: Request, eventId: string) {
-  if (request.method() !== "POST" || !request.url().endsWith(`/api/player/${campaignSlug}/viewed`)) return false;
-  try {
-    const payload = request.postDataJSON() as { eventId?: unknown };
-    return payload.eventId === eventId;
-  } catch {
-    return false;
-  }
 }
 
 test.describe.serial("Project Lanternwake Phase 1 presentation truth", () => {
@@ -319,10 +178,10 @@ test.describe.serial("Project Lanternwake Phase 1 presentation truth", () => {
     "The isolated campaign mutation workflow runs once in Chromium; WebKit remains read-only.",
   );
 
-  test("missing required chapter target remains unviewed and retryable; reduced readable fallback views once", async ({
+  test("a missing Journal opening target settles a readable fallback without changing canonical chapter truth", async ({
     browser,
   }) => {
-    test.setTimeout(180_000);
+    test.setTimeout(120_000);
     const gmContext = await browser.newContext();
     const playerContext = await browser.newContext();
     const gm = await gmContext.newPage();
@@ -338,7 +197,7 @@ test.describe.serial("Project Lanternwake Phase 1 presentation truth", () => {
       await expect(player.locator("html")).toHaveAttribute("data-motion-level", "full");
 
       await gmCommand(gm, "PREPARE_CHAPTER");
-      await player.evaluate(() => {
+      await player.addInitScript(() => {
         type TargetTestWindow = Window & {
           __lanternwakeMissingTargetObserver?: MutationObserver;
           __lanternwakeTargetRemovals?: number;
@@ -361,57 +220,42 @@ test.describe.serial("Project Lanternwake Phase 1 presentation truth", () => {
       expect(release.event.type).toBe("CHAPTER_RELEASED");
       releasedEvent = release.event;
       const eventId = release.event.id;
+      const resolved = await resolveLegacyCampaign(campaignSlug);
+      expect(resolved).not.toBeNull();
       await expect(
-        db.progressEvent.findUnique({ where: { id: eventId }, select: { id: true, type: true, sequence: true } }),
-      ).resolves.toEqual({ id: eventId, type: "CHAPTER_RELEASED", sequence: release.event.sequence });
+        db.taleSessionEvent.findUnique({
+          where: { id: eventId },
+          select: { id: true, eventType: true, sequence: true },
+        }),
+      ).resolves.toEqual({ id: eventId, eventType: "CHAPTER_RELEASED", sequence: release.event.sequence });
       expect(
-        await db.adminAuditLog.count({
-          where: { action: "RELEASE_CHAPTER", metadata: { contains: eventId } },
+        await db.platformAuditEvent.count({
+          where: {
+            action: "LEGACY_QUARTERMASTER_RELEASE_CHAPTER",
+            resourceType: "CHRONICLE_SESSION",
+            resourceId: resolved!.sessionId,
+            correlationId: release.correlationId,
+          },
         }),
       ).toBe(1);
-      const acknowledgmentRequests: string[] = [];
-      player.on("request", (request) => {
-        if (isCeremonyAcknowledgment(request, eventId)) acknowledgmentRequests.push(eventId);
-      });
-
-      const retry = player.getByRole("button", { name: "Retry ceremony" });
-      const retryAlert = player.getByRole("alert").filter({ has: retry });
-      await expect(retry).toBeVisible({ timeout: 15_000 });
-      await expect(retryAlert).toHaveCount(1);
-      await expect(retryAlert).toContainText("could not be completed");
-      await expect(retryAlert.locator("code")).toContainText("outcome=missing-required-target");
-      expect(
-        await player.evaluate(
-          () => (window as Window & { __lanternwakeTargetRemovals?: number }).__lanternwakeTargetRemovals,
-        ),
-      ).toBeGreaterThan(0);
-      expect(acknowledgmentRequests).toHaveLength(0);
+      // The canonical player reconciles authoritative event history on reload.
+      // The probe removes the actual Journal opening target, rather than a
+      // retired PlayerExperience ceremony target, so this exercises the
+      // current readable opening fallback.
+      await player.reload();
+      await openJournal(player, { skipOpening: false });
+      const journal = player.locator(".chronicle-journal-shell");
+      await expect(journal).toHaveAttribute("data-journal-opening-outcome", "failure");
+      await expect(player.getByText("The animated opening could not finish.")).toBeVisible();
       expect(await db.viewedCeremony.count({ where: { eventId } })).toBe(0);
 
-      await player.emulateMedia({ reducedMotion: "reduce" });
-      await expect(player.locator("html")).toHaveAttribute("data-motion-level", "reduced");
-      const snapshotResponse = await player.request.get(`/api/player/${campaignSlug}/snapshot`);
-      expect(snapshotResponse.ok()).toBeTruthy();
-      const presentation = ((await snapshotResponse.json()) as ReplaySnapshot).latestChapterReleasePresentation;
-      expect(presentation).toMatchObject({
-        eventId,
-        eventType: "CHAPTER_RELEASED",
-        sceneName: "chapter-release",
-        replayPolicy: "presentation-only",
-      });
-      await retry.click();
-      const fallback = player.locator("[data-chapter-readable-fallback]");
-      await expect(fallback).toHaveAttribute("data-event-id", eventId);
-      await expect(fallback).toContainText(presentation!.payload.title);
-      await expect(fallback).toContainText(presentation!.payload.objective);
-      await expect(retry).toBeHidden();
-      await expect(player.getByRole("button", { name: "Replay ceremony" })).toBeVisible();
-      expect(acknowledgmentRequests).toEqual([eventId]);
-      await expect
-        .poll(() => db.viewedCeremony.count({ where: { eventId } }), {
-          message: "The acknowledged fallback must persist exactly one viewed ceremony receipt.",
-        })
-        .toBe(1);
+      const replayShortOpening = player.getByRole("button", { name: "Replay short opening" });
+      await expect(replayShortOpening).toBeVisible();
+      await replayShortOpening.click();
+      await openJournal(player, { skipOpening: false });
+      await expect(journal).toHaveAttribute("data-journal-opening-outcome", "failure");
+      await expect(replayShortOpening).toBeVisible();
+      expect(await db.viewedCeremony.count({ where: { eventId } })).toBe(0);
     } finally {
       await player
         .evaluate(() => {
@@ -424,84 +268,31 @@ test.describe.serial("Project Lanternwake Phase 1 presentation truth", () => {
     }
   });
 
-  test("persisted chapter replay survives refresh and performs no unsafe API or persisted mutation", async ({
-    page,
-  }) => {
+  test("canonical Journal opening replays and refreshes without mutating session or audit truth", async ({ page }) => {
     test.setTimeout(120_000);
     expect(releasedEvent, "The serial presentation-truth case must publish the release first.").toBeDefined();
     const event = releasedEvent!;
 
     await requireValidationIsolation(page);
-    const unsafeApiMonitor = observeUnsafeApiRequests(page);
+    await page.emulateMedia({ reducedMotion: "reduce" });
+    await signInPlayer(page);
+    await openJournal(page, { skipOpening: false });
+    await expect(page.locator("html")).toHaveAttribute("data-motion-level", "reduced");
+    await expect(page.locator(".chronicle-journal-shell")).toHaveAttribute("data-journal-phase", "JOURNAL_READY");
 
-    try {
-      await page.emulateMedia({ reducedMotion: "reduce" });
-      await signInPlayer(page);
-      await openJournal(page);
-      await waitForJournalViewedState(page);
-      await expect(page.locator("html")).toHaveAttribute("data-motion-level", "reduced");
-      const replayDeviceId = await page.evaluate(() => localStorage.getItem("forever-device"));
-      expect(replayDeviceId).toMatch(clientUuidPattern);
-      await expect
-        .poll(() =>
-          db.viewedCeremony.count({
-            where: { eventId: event.id, deviceId: replayDeviceId! },
-          }),
-        )
-        .toBe(1);
-      const viewedCeremoniesBeforeReplay = await db.viewedCeremony.findMany({
-        where: { eventId: event.id },
-        orderBy: { id: "asc" },
-      });
-      expect(viewedCeremoniesBeforeReplay.length).toBeGreaterThan(0);
+    const beforeReplay = await persistedMutationState();
+    const replayShortOpening = page.getByRole("button", { name: "Replay short opening" });
+    await replayShortOpening.click();
+    await openJournal(page, { skipOpening: false });
+    expect(await persistedMutationState()).toEqual(beforeReplay);
 
-      const beforeSnapshotResponse = await page.request.get(`/api/player/${campaignSlug}/snapshot`);
-      expect(beforeSnapshotResponse.ok()).toBeTruthy();
-      const beforeSnapshot = (await beforeSnapshotResponse.json()) as ReplaySnapshot;
-      expect(beforeSnapshot.latestChapterReleasePresentation).toMatchObject({
-        eventId: event.id,
-        eventType: "CHAPTER_RELEASED",
-        sceneName: "chapter-release",
-        replayPolicy: "presentation-only",
-      });
-      const immutablePresentation = structuredClone(beforeSnapshot.latestChapterReleasePresentation);
-
-      await installReplayObserver(page);
-      await expectMutationFreeReplay(page, unsafeApiMonitor, "initial replay");
-
-      await page.reload();
-      await expect(page.getByRole("button", { name: "Open the journal" })).toBeVisible();
-      await openJournal(page);
-      await expect(page.locator("html")).toHaveAttribute("data-motion-level", "reduced");
-      await installReplayObserver(page);
-      await expectMutationFreeReplay(page, unsafeApiMonitor, "replay after refresh");
-      await expectMutationFreeReplay(page, unsafeApiMonitor, "second replay after refresh");
-
-      const resolvedMotionBefore = await page.locator("html").getAttribute("data-motion-level");
-      expect(resolvedMotionBefore).toBe("reduced");
-      await page.emulateMedia({ reducedMotion: "no-preference" });
-      await expect(page.locator("html")).toHaveAttribute("data-motion-level", "full");
-      expect(await page.locator("html").getAttribute("data-motion-level")).not.toBe(resolvedMotionBefore);
-      await expectMutationFreeReplay(page, unsafeApiMonitor, "replay after resolved motion change");
-
-      expect(await db.viewedCeremony.findMany({ where: { eventId: event.id }, orderBy: { id: "asc" } })).toEqual(
-        viewedCeremoniesBeforeReplay,
-      );
-
-      const afterSnapshotResponse = await page.request.get(`/api/player/${campaignSlug}/snapshot`);
-      expect(afterSnapshotResponse.ok()).toBeTruthy();
-      const afterSnapshot = (await afterSnapshotResponse.json()) as ReplaySnapshot;
-      expect(afterSnapshot.latestChapterReleasePresentation).toEqual(immutablePresentation);
-      await expect(page.getByRole("heading", { name: immutablePresentation!.payload.title }).first()).toBeVisible();
-    } finally {
-      unsafeApiMonitor.dispose();
-      await page
-        .evaluate(() => {
-          (
-            window as Window & { __lanternwakeReplayObserver?: MutationObserver }
-          ).__lanternwakeReplayObserver?.disconnect();
-        })
-        .catch(() => undefined);
-    }
+    await page.reload();
+    await openJournal(page, { skipOpening: false });
+    await expect(page.locator("html")).toHaveAttribute("data-motion-level", "reduced");
+    await page.getByRole("button", { name: "Replay short opening" }).click();
+    await openJournal(page, { skipOpening: false });
+    expect(await persistedMutationState()).toEqual(beforeReplay);
+    await expect(page.getByRole("heading", { name: /Voyage Journal$/ })).toBeVisible();
+    expect(await db.taleSessionEvent.count({ where: { id: event.id, eventType: "CHAPTER_RELEASED" } })).toBe(1);
   });
 });

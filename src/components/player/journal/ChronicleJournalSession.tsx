@@ -815,6 +815,14 @@ function ChronicleJournalSessionIdentity({ sessionId, identitySession = false }:
     const policy = activeOpeningPolicy.current;
     stopOpeningRun();
     if (!policy) return;
+    // Skipping the ceremony settles the presentation, not the book runtime.
+    // Preserve an already-ready PageFlip so its responsive lifecycle remains
+    // available; the static current-page fallback is only for an unavailable
+    // runtime.
+    if (book.current?.readiness().ready) {
+      settleJournalReady(policy, "skipped", "skipped", "Opening skipped. The journal is ready.");
+      return;
+    }
     if (forcePageFlipReadableFallback("Journal opening skipped")) {
       settleJournalReady(policy, "skipped", "skipped", "Opening skipped. The journal is ready.");
       return;

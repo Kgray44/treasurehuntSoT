@@ -577,13 +577,13 @@ export function CaptainLibrary() {
                         data-row-changed={changedIds.has(invitation.id)}
                         exit={{ opacity: 0, scale: mode === "reduced" ? 1 : 0.98 }}
                       >
-                        <div>
+                        <div role="cell">
                           <strong>{invitation.recipientName}</strong>
                           <span>
                             {invitation.taleTitle} · {invitation.voyageName}
                           </span>
                         </div>
-                        <div>
+                        <div role="cell">
                           <b className={`status-pill status-${invitation.status.toLocaleLowerCase()}`}>
                             {invitation.status}
                           </b>
@@ -591,7 +591,7 @@ export function CaptainLibrary() {
                             token {invitation.tokenPrefix}… · code {invitation.shortCodePrefix}…
                           </small>
                         </div>
-                        <div>
+                        <div role="cell">
                           <time>{new Date(invitation.expiresAt).toLocaleString()}</time>
                           <small>
                             {invitation.viewedAt
@@ -599,7 +599,7 @@ export function CaptainLibrary() {
                               : "Not viewed"}
                           </small>
                         </div>
-                        <div className="row-actions">
+                        <div className="row-actions" role="cell">
                           {["CREATED", "SENT", "COPIED", "VIEWED"].includes(invitation.status) && (
                             <>
                               <button disabled={busy} onClick={() => void invitationAction(invitation, "extend")}>

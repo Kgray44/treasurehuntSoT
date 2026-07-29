@@ -124,6 +124,7 @@ export function PlayerVoyageRoom({
   const activeLoad = useRef<AbortController | null>(null);
   const crewTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const launchStarted = useRef(false);
+  const launchHandoffTimer = useRef<number | null>(null);
   const serverOffset = useRef(0);
   const [voyage, setVoyage] = useState<Playthrough | null>(null);
   const [error, setError] = useState("");
@@ -133,6 +134,9 @@ export function PlayerVoyageRoom({
   const [clock, setClock] = useState<number | null>(null);
   const [launchReady, setLaunchReady] = useState(false);
   const [routeFailed, setRouteFailed] = useState(false);
+  const launchCeremonyKey = voyage
+    ? platformOneShotKey("waiting-launch", voyage.id, `${voyage.status}:${voyage.lastSynchronizedAt}`)
+    : null;
 
   const load = useCallback(
     async (nextConnection?: ConnectionState) => {
@@ -228,6 +232,10 @@ export function PlayerVoyageRoom({
       const currentLoad = activeLoad.current;
       activeLoad.current = null;
       currentLoad?.abort("access-revoked");
+      if (launchHandoffTimer.current) {
+        window.clearTimeout(launchHandoffTimer.current);
+        launchHandoffTimer.current = null;
+      }
       connectionRef.current = "revoked";
       setConnection("revoked");
       setError("Your access to this voyage was revoked.");
@@ -245,6 +253,10 @@ export function PlayerVoyageRoom({
       source.close();
       activeLoad.current?.abort("unmounted");
       if (crewTimer.current) clearTimeout(crewTimer.current);
+      if (launchHandoffTimer.current) {
+        window.clearTimeout(launchHandoffTimer.current);
+        launchHandoffTimer.current = null;
+      }
       window.removeEventListener("offline", onOffline);
       window.removeEventListener("online", onOnline);
     };
@@ -264,15 +276,22 @@ export function PlayerVoyageRoom({
   }, [voyage?.plannedStartAt]);
 
   useEffect(() => {
-    if (!voyage?.canEnter || !voyage.runtimeHref || launchStarted.current || routeFailed || connection === "revoked")
+    if (
+      !voyage?.canEnter ||
+      !voyage.runtimeHref ||
+      !launchCeremonyKey ||
+      launchStarted.current ||
+      routeFailed ||
+      connectionRef.current === "revoked"
+    )
       return;
     launchStarted.current = true;
     setLaunchReady(true);
-    const showCeremony = consumeOneShot(
-      platformOneShotKey("waiting-launch", voyage.id, `${voyage.status}:${voyage.lastSynchronizedAt}`),
-    );
+    const showCeremony = consumeOneShot(launchCeremonyKey);
     const timer = window.setTimeout(
       async () => {
+        launchHandoffTimer.current = null;
+        if (connectionRef.current === "revoked") return;
         try {
           if (onRouteHandoff) await onRouteHandoff(voyage.runtimeHref!);
           else router.push(voyage.runtimeHref!);
@@ -284,8 +303,17 @@ export function PlayerVoyageRoom({
       },
       showCeremony ? ceremonyToken.durationMs : 0,
     );
-    return () => window.clearTimeout(timer);
-  }, [ceremonyToken.durationMs, connection, onRouteHandoff, routeFailed, router, voyage]);
+    launchHandoffTimer.current = timer;
+  }, [
+    ceremonyToken.durationMs,
+    launchCeremonyKey,
+    onRouteHandoff,
+    routeFailed,
+    router,
+    voyage?.canEnter,
+    voyage?.id,
+    voyage?.runtimeHref,
+  ]);
 
   useEffect(() => {
     if (voyage?.state === "COMPLETED") router.replace(`/player/playthroughs/${playthroughId}/journal`);

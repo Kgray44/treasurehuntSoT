@@ -18,9 +18,43 @@ import { parseJsonArray, parseJsonObject } from "@/chronicle/types";
 import { logger } from "@/lib/logger";
 import { playerSafeAssetIds, playerSafeObject } from "@/platform/libraries";
 import { projectPlayerBlock } from "@/chronicle/journal-contract";
+import { resolveArtifactGrantReceipt } from "@/chronicle/artifact-grant";
+import { isPlayerPresentationEventType, toClientEvent } from "@/domain/visibility";
+import type { ClientProgressEvent } from "@/domain/story";
 
 const digest = (value: string) => createHash("sha256").update(value).digest("hex");
 const futureProviders = new Set(["visionLocation", "visionObject", "externalWebhook"]);
+const MAX_CANONICAL_PLAYER_PRESENTATION_HISTORY = 100;
+
+type CanonicalPresentationEvent = Readonly<{
+  id: string;
+  eventType: string;
+  sequence: number;
+  payload: string;
+  createdAt: Date;
+}>;
+
+/**
+ * The compatibility Player route is sourced from a canonical TaleSession.
+ * Keep the delivery history on that same source rather than attempting to
+ * reconstruct a legacy Campaign event for newly issued canonical commands.
+ */
+export function buildCanonicalPlayerPresentationHistory(
+  events: readonly CanonicalPresentationEvent[],
+): ClientProgressEvent[] {
+  return events
+    .filter((event) => isPlayerPresentationEventType(event.eventType))
+    .sort((left, right) => left.sequence - right.sequence || left.id.localeCompare(right.id))
+    .map((event) =>
+      toClientEvent({
+        id: event.id,
+        type: event.eventType,
+        sequence: event.sequence,
+        payload: event.payload,
+        releaseAt: event.createdAt,
+      }),
+    );
+}
 
 export const verificationSubmissionSchema = z.object({
   schemaVersion: z.literal(1),
@@ -270,7 +304,7 @@ async function completeBlock(
           revealedBy: sourceId ?? sourceType,
         },
       });
-      await appendEvent(tx, session, {
+      const grantEvent = await appendEvent(tx, session, {
         eventType: "artifactGranted",
         sourceType,
         sourceId,
@@ -279,6 +313,51 @@ async function completeBlock(
         payload: { artifactId },
         correlationId: key,
       });
+      // The event remains the canonical progression fact.  The receipt freezes
+      // server-resolved recipients so later membership/role changes cannot
+      // rewrite personal ownership.
+      if (session.publishedVersionId) {
+        const memberships = await tx.playthroughMembership.findMany({
+          where: { playthroughId: session.id },
+          select: { id: true, playerProfileId: true, status: true, crewRole: true, joinedAt: true, removedAt: true },
+        });
+        const receipt = resolveArtifactGrantReceipt({
+          artifactDefinitionId: artifactId,
+          playthroughId: session.id,
+          publishedVersionId: session.publishedVersionId,
+          sourceEventId: grantEvent.id,
+          sourceBlockId: block.id,
+          occurredAt: grantEvent.createdAt,
+          configuration: block.configuration,
+          memberships,
+        });
+        await tx.artifactGrantReceipt.create({
+          data: {
+            sessionId: session.id,
+            sourceEventId: receipt.sourceEventId,
+            grantId: receipt.grantId,
+            schemaVersion: receipt.schemaVersion,
+            artifactDefinitionId: receipt.artifactDefinitionId,
+            artifactOccurrenceId: receipt.artifactOccurrenceId,
+            publishedVersionId: receipt.publishedVersionId,
+            sourceBlockId: receipt.sourceBlockId,
+            recipientPolicy: receipt.recipientPolicy,
+            resolvedRecipientMembershipIds: JSON.stringify(receipt.resolvedRecipientMembershipIds),
+            resolvedRecipientProfileIds: JSON.stringify(receipt.resolvedRecipientProfileIds),
+            discoveringMembershipId: receipt.discoveringMembershipId,
+            requiredCrewRole: receipt.requiredCrewRole,
+            sharedInventoryAction: receipt.sharedInventoryAction,
+            personalGrantState: receipt.personalGrantState,
+            custodyKind: receipt.custodyKind,
+            assemblyDefinitionId: receipt.assemblyDefinitionId,
+            componentRole: receipt.componentRole,
+            receiptState: receipt.receiptState,
+            occurredAt: new Date(receipt.occurredAt),
+            correctionOfGrantId: receipt.correctionOfGrantId,
+            correctionReason: receipt.correctionReason,
+          },
+        });
+      }
     }
   }
   if (block.blockType === "choice" && selectedTarget) variables[`choice:${block.id}`] = selectedTarget;
@@ -609,7 +688,7 @@ export async function getTaleSessionState(
   captain = false,
   authorizedPlayer = false,
 ) {
-  const [session, journalEvents] = await Promise.all([
+  const [session, journalEvents, presentationEvents] = await Promise.all([
     db.taleSession.findUniqueOrThrow({
       where: { id: sessionId },
       include: {
@@ -623,6 +702,12 @@ export async function getTaleSessionState(
       where: { sessionId, eventType: { in: ["blockEntered", "blockCompleted", "hintReleased"] } },
       orderBy: { sequence: "asc" },
       select: { blockId: true, eventType: true, createdAt: true },
+    }),
+    db.taleSessionEvent.findMany({
+      where: { sessionId },
+      orderBy: [{ sequence: "desc" }, { id: "desc" }],
+      take: MAX_CANONICAL_PLAYER_PRESENTATION_HISTORY,
+      select: { id: true, eventType: true, sequence: true, payload: true, createdAt: true },
     }),
   ]);
   if (!captain && !authorizedPlayer && (!token || digest(token) !== session.accessTokenHash))
@@ -652,6 +737,7 @@ export async function getTaleSessionState(
       .map(([key, value]) => [key.slice("choice:".length), String(value)]),
   );
   const playerBlock = block ? projectPlayerBlock(block, { releasedHintCount: releasedHintCounts.get(block.id) }) : null;
+  const presentationHistory = buildCanonicalPlayerPresentationHistory(presentationEvents);
   const journal = {
     mode: session.previewMode
       ? ("preview" as const)
@@ -729,6 +815,7 @@ export async function getTaleSessionState(
     inventory: parseJsonArray<string>(session.inventory),
     variables: captain ? parseJsonObject(session.variables) : undefined,
     journal: captain ? undefined : journal,
+    presentationHistory: captain ? undefined : presentationHistory,
     events: session.events.map((event) => ({
       id: event.id,
       eventType: event.eventType,

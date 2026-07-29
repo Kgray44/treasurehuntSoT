@@ -21,6 +21,7 @@ import type {
 import { firstArrivalScene, sessionReentryScene } from "../scenes/arrival.scene";
 import { playerAccessScene, quartermasterLoginScene, studioPublishScene } from "../scenes/access.scene";
 import { markSolvedScene, pauseScene, prepareChapterScene, resumeScene, undoScene } from "../scenes/command.scene";
+import { communityHarborScenes, governedCommunitySceneNames } from "../scenes/community.scene";
 import {
   artifactAwardScene,
   artifactConnectionScene,
@@ -347,7 +348,9 @@ const quartermasterProductionCaller = (sceneBinding: string): readonly SceneCall
  * a scene with a current non-development caller; the showcase is deliberately
  * absent because a synthetic harness is not production reachability proof.
  */
-export const sceneReachabilityEvidence: Readonly<Record<AnimationSceneName, SceneReachabilityEvidence>> = {
+const coreSceneReachabilityEvidence: Readonly<
+  Record<Exclude<AnimationSceneName, (typeof governedCommunitySceneNames)[number]>, SceneReachabilityEvidence>
+> = {
   "first-arrival": {
     reachability: "production",
     caller: playerJournalCaller,
@@ -508,7 +511,21 @@ export const sceneReachabilityEvidence: Readonly<Record<AnimationSceneName, Scen
   },
 };
 
-export const sceneContracts = {
+const communitySceneCaller: SceneCallerAnchor = {
+  sourcePath: "src/components/community/CommunitySceneCeremony.tsx",
+  callerSymbol: "function CommunitySceneTrigger",
+  sceneBinding: "sceneName",
+  invocation: "director.play<void>(sceneName,",
+};
+
+export const sceneReachabilityEvidence: Readonly<Record<AnimationSceneName, SceneReachabilityEvidence>> = {
+  ...coreSceneReachabilityEvidence,
+  ...Object.fromEntries(
+    governedCommunitySceneNames.map((name) => [name, { reachability: "production", caller: communitySceneCaller }]),
+  ),
+} as Readonly<Record<AnimationSceneName, SceneReachabilityEvidence>>;
+
+const coreSceneContracts = {
   "first-arrival": v2Contract("first-arrival", {
     reachability: "production",
     expectedHostKinds: ["gateway", "journal-opening"],
@@ -1111,7 +1128,40 @@ export const sceneContracts = {
     finalStatePolicy: v2Reconcile("state-restored-readable", "undo-mark"),
     reducedFallback: "semantic-final-state",
   }),
-} satisfies Record<AnimationSceneName, AnySceneTargetContract>;
+} satisfies Record<Exclude<AnimationSceneName, (typeof governedCommunitySceneNames)[number]>, AnySceneTargetContract>;
+
+const communitySceneContracts = Object.fromEntries(
+  governedCommunitySceneNames.map((name) => {
+    const receipt =
+      name === "community-report-submitted" ||
+      name === "community-keepsake-created" ||
+      name === "community-voyage-log-published";
+    return [
+      name,
+      v2Contract(name, {
+        reachability: "production",
+        expectedHostKinds: ["platform-ceremony"],
+        targets: [v2Required(receipt ? "community-receipt" : "community-heading", ["transform", "opacity"])],
+        timeoutMs: 2_500,
+        playbackPolicy: playback(receipt ? "operation" : "explicit", {
+          replayable: !receipt,
+          allowUserSkip: true,
+          userSkipFinalState: "community-readable",
+          allowedFallback: "community-readable",
+          priority: 55,
+        }),
+        acknowledgmentPolicy: receipt ? callerAcknowledgment() : noAcknowledgment(),
+        finalStatePolicy: v2Reconcile("community-readable", receipt ? "community-receipt" : "community-heading"),
+        reducedFallback: "semantic-final-state",
+      }),
+    ] as const;
+  }),
+) as Record<(typeof governedCommunitySceneNames)[number], SceneTargetContractV2>;
+
+export const sceneContracts = { ...coreSceneContracts, ...communitySceneContracts } satisfies Record<
+  AnimationSceneName,
+  AnySceneTargetContract
+>;
 
 type AnySceneDefinition = SceneDefinition | SceneDefinitionV2;
 
@@ -1145,6 +1195,7 @@ const definitions: AnySceneDefinition[] = [
   pauseScene,
   resumeScene,
   undoScene,
+  ...communityHarborScenes,
 ];
 
 export type RegisteredSceneDefinition = AnySceneDefinition & { contract: AnySceneTargetContract };

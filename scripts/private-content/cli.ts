@@ -10,6 +10,8 @@ import {
 } from "../../src/private-content/service";
 import { decryptPrivatePackage } from "../../src/private-content/package";
 import { scanBuildOutput, scanPrivateContent } from "../../src/private-content/security";
+import { parsePrivateContentConfiguration } from "../../src/private-content/config";
+import { collectPrivateProviderHealth, createPrivateProviderRuntime } from "../../src/private-content/providers";
 
 const [command, ...args] = process.argv.slice(2);
 const usage = `Usage: private-content <command> [arguments]\n\nCommands:\n  inspect <package>              inspect an encrypted package\n  verify <package>               authenticate and verify a package\n  import-dry-run <package>       validate without creating content\n  import-commit <package> <actor> explicit durable import\n  export <import-id> <output>    export and round-trip verify\n  backup <import-id> <output>    encrypted backup and verification\n  restore-verify <package>       verify an isolated restore source\n  finalize-retry <import-id>     retry protected asset finalization\n  repository-scan                scan the repository\n  build-output-scan [root]       scan public build output\n\nPass the passphrase only through standard input. It is never accepted on the command line.\n`;
@@ -31,13 +33,30 @@ async function packageInput() {
 
 async function main() {
   if (!command || command === "--help" || command === "help") {
-    process.stdout.write(usage);
+    process.stdout.write(
+      `${usage}  providers-check                report sanitized provider health\n  ops-status                     report sanitized operational configuration\n`,
+    );
     return;
   }
   if (command === "repository-scan") {
     const hits = await scanPrivateContent();
     if (hits.length) throw new Error("Repository scan found protected-content indicators.");
     output({ status: "clean" });
+    return;
+  }
+  if (command === "providers-check" || command === "ops-status") {
+    const runtime = createPrivateProviderRuntime(parsePrivateContentConfiguration());
+    const health = await collectPrivateProviderHealth(runtime);
+    output(
+      command === "providers-check"
+        ? { providers: health }
+        : {
+            environmentId: runtime.configuration.PRIVATE_CONTENT_ENVIRONMENT_ID,
+            storageProvider: runtime.configuration.PRIVATE_CONTENT_STORAGE_PROVIDER,
+            workerEnabled: runtime.configuration.PRIVATE_CONTENT_WORKER_ENABLED,
+            providers: health.map(({ kind, configurationState, safeCode }) => ({ kind, configurationState, safeCode })),
+          },
+    );
     return;
   }
   if (command === "build-output-scan") {

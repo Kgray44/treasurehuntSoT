@@ -29,6 +29,7 @@ type FileFamilyFingerprint =
 type MutationCounts = {
   adminAuditLog: number;
   commandExecution: number;
+  communityVoyageLog: number;
   platformAuditEvent: number;
   progressEvent: number;
   taleSessionEvent: number;
@@ -81,6 +82,7 @@ type PrismaClientLike = {
   $disconnect(): Promise<void>;
   adminAuditLog: { count(): Promise<number> };
   commandExecution: { count(): Promise<number> };
+  communityVoyageLog: { count(): Promise<number> };
   platformAuditEvent: {
     count(args?: unknown): Promise<number>;
     create(args: unknown): Promise<unknown>;
@@ -294,19 +296,22 @@ async function createClient(databasePath: string): Promise<PrismaClientLike> {
 }
 
 async function mutationCounts(client: PrismaClientLike): Promise<MutationCounts> {
-  const [adminAuditLog, commandExecution, platformAuditEvent, progressEvent, taleSessionEvent] = await Promise.all([
-    client.adminAuditLog.count(),
-    client.commandExecution.count(),
-    client.platformAuditEvent.count({
-      where: { action: { not: "VALIDATION_DATABASE_IDENTITY" } },
-    }),
-    client.progressEvent.count(),
-    client.taleSessionEvent.count(),
-  ]);
+  const [adminAuditLog, commandExecution, communityVoyageLog, platformAuditEvent, progressEvent, taleSessionEvent] =
+    await Promise.all([
+      client.adminAuditLog.count(),
+      client.commandExecution.count(),
+      client.communityVoyageLog.count(),
+      client.platformAuditEvent.count({
+        where: { action: { not: "VALIDATION_DATABASE_IDENTITY" } },
+      }),
+      client.progressEvent.count(),
+      client.taleSessionEvent.count(),
+    ]);
 
   return {
     adminAuditLog,
     commandExecution,
+    communityVoyageLog,
     platformAuditEvent,
     progressEvent,
     taleSessionEvent,

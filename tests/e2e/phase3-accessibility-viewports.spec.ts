@@ -1,20 +1,17 @@
 import AxeBuilder from "@axe-core/playwright";
-import type { Locator, Page } from "@playwright/test";
+import type { Page } from "@playwright/test";
 import {
   PAGE_FLIP_DEVELOPMENT_FAILPOINT_GLOBAL,
   PAGE_TURN_LIFECYCLE_BROWSER_EVENT,
   type PageTurnLifecycleBrowserDetail,
 } from "../../src/components/animation/PageFlipBook";
-import { policyForProgressionEvent } from "../../src/components/player/progression/event-policy";
 import type { ClientProgressEvent } from "../../src/domain/story";
 import {
   capturePhase3DbTruth,
   expect,
   installCanonicalPhase3PlayerSession,
-  installPhase3EvidenceProbe,
   PHASE3_EVENT_CASES,
   phase3Test as test,
-  readPhase3Evidence,
   readPreseededPhase3BaseFixture,
   readPreseededPhase3FixtureFromEnv,
   type Phase3CaseFixture,
@@ -304,101 +301,34 @@ async function openReadableJournal(page: Page, slug: string, returning: boolean,
     await page.reload();
   }
   const open = page.getByRole("button", { name: "Open the journal" });
+  const shell = page.locator(".chronicle-journal-shell");
+  await expect
+    .poll(async () => {
+      if ((await shell.getAttribute("data-journal-phase")) === "JOURNAL_READY") return "ready";
+      return (await open.isVisible().catch(() => false)) ? "openable" : "pending";
+    })
+    .not.toBe("pending");
+  if ((await shell.getAttribute("data-journal-phase")) === "JOURNAL_READY") return;
   await expect(open).toBeVisible();
   await open.click();
   const skip = page.getByRole("button", { name: "Skip ceremony" });
   // The control remains intentionally animated while the ceremony is active;
   // force is appropriate once its visibility has established user reachability.
   if (await skip.isVisible().catch(() => false)) await skip.click({ force: true });
-  await expect(page.locator(".chronicle-journal-shell")).toHaveAttribute("data-journal-phase", "JOURNAL_READY");
-  // Reconciliation starts as soon as the journal becomes interactive. Observe
-  // the active presentation before the destination section's entry transition.
-  if (eventType) await assertModalFocusAndRestoration(page, eventType);
-  await expect(page.locator(".chronicle-journal-shell").getByRole("heading", { level: 2 })).toBeVisible({
+  await expect(shell).toHaveAttribute("data-journal-phase", "JOURNAL_READY");
+  // The canonical Journal renders the authorized event as its readable current
+  // Passage. The retired compatibility overlay is not part of this surface;
+  // keep the event-specific assertion on the Player-visible projection.
+  if (eventType) await expect(shell).toContainText(`P3-READONLY-${eventType}`);
+  await expect(shell.getByRole("heading", { level: 2 })).toBeVisible({
     timeout: 20_000,
   });
-}
-
-async function assertModalFocusAndRestoration(page: Page, eventType: Phase3EventType) {
-  const overlay = page.locator(
-    `[data-progression-overlay][data-progression-state="active"][data-presentation-event="${eventType}"]`,
-  );
-  await expect(overlay).toBeVisible({ timeout: 20_000 });
-  await expect(overlay).toHaveAttribute("aria-modal", "true");
-  const requiredTargets = overlay.locator('[data-presentation-relevance="relevant"]');
-  expect(await requiredTargets.count()).toBeGreaterThan(0);
-  await expect
-    .poll(() =>
-      requiredTargets.evaluateAll(
-        (targets) =>
-          Boolean(targets.length) &&
-          targets.every((target) => {
-            const style = getComputedStyle(target);
-            const bounds = target.getBoundingClientRect();
-            return (
-              style.display !== "none" && style.visibility !== "hidden" && Number(style.opacity) > 0 && bounds.width > 0
-            );
-          }),
-      ),
-    )
-    .toBe(true);
-  const stacking = await overlay.evaluate((node) => {
-    const content = document.querySelector<HTMLElement>("[data-progression-content]");
-    const zIndex = (element: Element | null) => {
-      const value = Number.parseInt(element ? getComputedStyle(element).zIndex : "0", 10);
-      return Number.isFinite(value) ? value : 0;
-    };
-    return {
-      overlay: zIndex(node),
-      content: zIndex(content),
-    };
-  });
-  expect(stacking.overlay).toBeGreaterThan(stacking.content);
-  const controls = overlay.getByRole("button").filter({ visible: true });
-  const count = await controls.count();
-  expect(count).toBeGreaterThan(0);
-  const first = controls.first();
-  const last = controls.last();
-  const focusOrNaturalCompletion = async (target: Locator) =>
-    (await Promise.race([
-      expect(target)
-        .toBeFocused({ timeout: 2_000 })
-        .then(() => "focused" as const),
-      expect(overlay)
-        .toBeHidden({ timeout: 2_000 })
-        .then(() => "closed" as const),
-    ])) === "closed";
-  let completedNaturally = await focusOrNaturalCompletion(first);
-  if (!completedNaturally) {
-    await page.keyboard.press("Shift+Tab");
-    completedNaturally = await focusOrNaturalCompletion(last);
-  }
-  if (!completedNaturally) {
-    await page.keyboard.press("Tab");
-    completedNaturally = await focusOrNaturalCompletion(first);
-  }
-  // A finite presentation may complete while this accessibility probe is
-  // running. Otherwise dismiss its still-visible, intentionally animated control.
-  if (!completedNaturally) await first.click({ force: true });
-  await expect(overlay).toBeHidden();
-  await expect
-    .poll(() =>
-      page.evaluate(() => {
-        const active = document.activeElement;
-        return Boolean(
-          active &&
-            active !== document.body &&
-            !(active instanceof HTMLElement && active.closest('[inert], [aria-hidden="true"], [data-pageflip-source]')),
-        );
-      }),
-    )
-    .toBe(true);
 }
 
 async function assertPageFlipReadinessFallback(page: Page) {
   const book = page.locator(".main-journal-book");
   await expect(book).toHaveAttribute("data-pageflip-status", "fallback");
-  await expect(book).toHaveAttribute("data-pageflip-fallback-reason", "development-readiness-probe");
+  await expect(book).toHaveAttribute("data-pageflip-fallback-reason", "development-failpoint:readiness-probe");
   await expect(book.locator("[data-pageflip-runtime], [data-pageflip-source]")).toHaveCount(0);
   const staticPage = book.locator(".reduced-page-stage > [data-page-index]");
   await expect(staticPage).toHaveCount(1);
@@ -422,22 +352,7 @@ async function assertPageFlipReadinessFallback(page: Page) {
   ).toHaveLength(1);
 }
 
-async function startExactReplay(page: Page, eventId: string) {
-  const notice = page.locator(`[data-progress-event-id="${eventId}"]`);
-  if (await notice.isVisible().catch(() => false)) {
-    await notice.getByRole("button", { name: "Replay presentation" }).click();
-    return;
-  }
-  const history = page.locator("[data-presentation-history] details");
-  if (!(await history.getAttribute("open"))) await history.locator("summary").click();
-  await history.locator(`[data-replay-event-id="${eventId}"]`).click();
-}
-
-async function assertAuthoritativeReplayInterruption(
-  page: Page,
-  replayEvent: ClientProgressEvent,
-  replacementEvent: ClientProgressEvent,
-) {
+async function assertCanonicalJournalAuthoritativeRefresh(page: Page, replacementEvent: ClientProgressEvent) {
   await expect
     .poll(() =>
       page.evaluate(
@@ -450,9 +365,6 @@ async function assertAuthoritativeReplayInterruption(
       ),
     )
     .toBe(1);
-  await startExactReplay(page, replayEvent.id);
-  const overlay = page.locator('[data-progression-overlay][data-progression-state="active"]');
-  await expect(overlay).toHaveAttribute("data-presentation-id", new RegExp(replayEvent.id));
   await page.evaluate((event) => {
     (
       window as unknown as Window & {
@@ -460,54 +372,10 @@ async function assertAuthoritativeReplayInterruption(
       }
     ).__phase3ReadOnlyAuthoritativeEventSeam.emit(event);
   }, replacementEvent);
-  await expect(overlay).toHaveAttribute("data-presentation-id", new RegExp(replacementEvent.id));
-  await expect(overlay).toHaveAttribute("data-presentation-event", replacementEvent.type);
-  await overlay.getByRole("button", { name: "Reveal readable result" }).click();
-  await expect(overlay).toBeHidden();
-
-  const evidence = await readPhase3Evidence(page);
-  const interrupted = evidence.receipts.filter(
-    (receipt) => receipt.eventId === replayEvent.id && receipt.source === "replay" && receipt.status === "interrupted",
-  );
-  const replacement = evidence.receipts.filter(
-    (receipt) => receipt.eventId === replacementEvent.id && receipt.source === "live" && receipt.status === "skipped",
-  );
-  expect(interrupted).toHaveLength(1);
-  expect(replacement).toHaveLength(1);
-  expect(replacement[0]).toMatchObject({
-    eventType: replacementEvent.type,
-    eventSequence: replacementEvent.sequence,
-    acknowledgmentEligible: true,
-    acknowledgmentAttempted: true,
-  });
-  const order = await page.evaluate(
-    () =>
-      (
-        window as unknown as Window & {
-          __phase3InterruptionOrder: InterruptionOrderEntry[];
-        }
-      ).__phase3InterruptionOrder,
-  );
-  const interruptedRequest = interrupted[0]!.requestId;
-  const replacementRequest = replacement[0]!.requestId;
-  const positions = {
-    interruptedReceipt: order.findIndex(
-      (entry) => entry.kind === "receipt" && entry.requestId === interruptedRequest && entry.status === "interrupted",
-    ),
-    interruptedSettled: order.findIndex(
-      (entry) => entry.kind === "state" && entry.requestId === interruptedRequest && entry.status === "settled",
-    ),
-    replacementReceipt: order.findIndex(
-      (entry) => entry.kind === "receipt" && entry.requestId === replacementRequest && entry.status === "skipped",
-    ),
-    replacementSettled: order.findIndex(
-      (entry) => entry.kind === "state" && entry.requestId === replacementRequest && entry.status === "settled",
-    ),
-  };
-  expect(positions.interruptedReceipt).toBeGreaterThanOrEqual(0);
-  expect(positions.interruptedSettled).toBeGreaterThan(positions.interruptedReceipt);
-  expect(positions.replacementReceipt).toBeGreaterThan(positions.interruptedSettled);
-  expect(positions.replacementSettled).toBeGreaterThan(positions.replacementReceipt);
+  const journal = page.locator(".chronicle-journal-shell");
+  await expect(journal).toHaveAttribute("data-live-event", "revealed");
+  await expect(journal).toHaveAttribute("data-journal-phase", "JOURNAL_READY");
+  await expect(page.locator("[data-progression-overlay]")).toHaveCount(0);
   const seam = await page.evaluate(
     () =>
       (
@@ -516,7 +384,7 @@ async function assertAuthoritativeReplayInterruption(
         }
       ).__phase3ReadOnlyAuthoritativeEventSeam,
   );
-  expect(seam).toMatchObject({ dispatchCount: 1, lastEventId: replacementEvent.id });
+  expect(seam).toMatchObject({ connectionCount: 1, dispatchCount: 1, lastEventId: replacementEvent.id });
 }
 
 async function assertReadableAtTwoHundredPercentZoom(page: Page) {
@@ -659,15 +527,14 @@ test.describe("Project Lanternwake Phase 3 accessibility and six required viewpo
         await page.setViewportSize({ width: viewport.width, height: viewport.height });
         await page.emulateMedia({ reducedMotion: "no-preference" });
         if (flow.kind === "fallback") await installPageFlipReadinessFailure(page);
-        let replayEvent: ClientProgressEvent | null = null;
         let replacementEvent: ClientProgressEvent | null = null;
         if (flow.kind === "interruption") {
-          await installPhase3EvidenceProbe(page);
           await installReadOnlyAuthoritativeEventSeam(page);
-          replayEvent = await readExactPreseededEvent(page, preseeded, baseURL);
+          const canonicalEvent = await readExactPreseededEvent(page, preseeded, baseURL);
+          expect(canonicalEvent.id).toBe(preseeded.prerequisiteEventId);
           const replacementFixture = readPreseededPhase3FixtureFromEnv("PLAYER_LOG_ENTRY_ADDED");
           const replacementSource = await readExactPreseededEvent(page, replacementFixture, baseURL);
-          replacementEvent = Object.freeze({ ...replacementSource, sequence: replayEvent.sequence + 1 });
+          replacementEvent = Object.freeze({ ...replacementSource, sequence: canonicalEvent.sequence + 1 });
         }
         await installCanonicalPhase3PlayerSession(page, preseeded, baseURL);
         const unsafeRequests: UnsafeRequest[] = [];
@@ -676,71 +543,64 @@ test.describe("Project Lanternwake Phase 3 accessibility and six required viewpo
         await page.addInitScript(() => localStorage.setItem("forever-muted", "true"));
 
         // Next dev can keep a document response open while it streams diagnostics.
+        // Warm the authenticated canonical route before the visible navigation.
+        // Its first dev-server compilation can otherwise refresh the page during
+        // a real Player action; the warmup is read-only and shares this browser's
+        // account-rooted cookie jar.
+        const warmup = await page.request.get(`${path}?section=${flow.section}`);
+        expect(warmup.ok(), `Canonical Journal route warmup returned ${warmup.status()}.`).toBe(true);
         // The assertion below owns readiness through the player-visible control,
-        // rather than treating that transport lifecycle as a product contract.
+        // rather than treating transport lifecycle as a product contract.
         await page.goto(`${path}?section=${flow.section}`, { waitUntil: "commit", timeout: 15_000 });
         await openReadableJournal(page, slug, flow.kind === "reentry", flow.eventType);
 
         if (flow.kind === "replay") {
-          const replay = page.getByRole("button", { name: /Replay (presentation|introduction)/ }).first();
+          const replay = page.getByRole("button", { name: "Replay full opening" });
           await expect(replay).toBeVisible();
           await replay.click();
-          const skip = page.getByRole("button", { name: /Reveal readable result|Skip ceremony/ }).first();
-          if (await skip.isVisible().catch(() => false)) await skip.click();
+          // In WebKit the full-opening completion can replace the transient
+          // skip control between the visibility probe and its actionability
+          // check. Treat that replacement as a completed presentation, then
+          // require the same semantic Journal-ready destination below.
+          for (let attempt = 0; attempt < 2; attempt += 1) {
+            const skip = page.getByRole("button", { name: /Reveal readable result|Skip ceremony/ }).first();
+            if (!(await skip.isVisible().catch(() => false))) break;
+            try {
+              await skip.click({ force: true, timeout: 2_500 });
+              break;
+            } catch {
+              // The opening may have completed while this click was being
+              // dispatched. Re-query once before relying on Journal-ready.
+            }
+          }
+          await expect(page.locator(".chronicle-journal-shell")).toHaveAttribute("data-journal-phase", "JOURNAL_READY");
         }
         if (flow.kind === "fallback") await assertPageFlipReadinessFallback(page);
         if (flow.kind === "interruption") {
-          expect(replayEvent).not.toBeNull();
           expect(replacementEvent).not.toBeNull();
-          await assertAuthoritativeReplayInterruption(page, replayEvent!, replacementEvent!);
+          await assertCanonicalJournalAuthoritativeRefresh(page, replacementEvent!);
         }
 
         await assertViewportAndAccessibility(page);
         if (flow.kind === "reentry") await assertReadableAtTwoHundredPercentZoom(page);
         await expect(page.getByRole("button", { name: /^Motion:/ })).toBeVisible();
-        const announcements = await page.evaluate(
-          () =>
-            (
-              window as unknown as Window & {
-                __phase3Announcements: Array<{ politeness: string; text: string }>;
-              }
-            ).__phase3Announcements,
-        );
-        const progressionAnnouncements = announcements.filter(({ text }) =>
-          PHASE3_EVENT_CASES.some((item) =>
-            text.includes(policyForProgressionEvent(item.eventType).globalPresentation.heading),
-          ),
-        );
         if (flow.eventType && targetEventId) {
-          const policy = policyForProgressionEvent(flow.eventType);
-          const matchingAnnouncements = progressionAnnouncements.filter(({ text }) =>
-            text.includes(policy.globalPresentation.heading),
-          );
-          expect(matchingAnnouncements).toHaveLength(1);
-          expect(matchingAnnouncements[0]?.politeness).toBe(policy.globalPresentation.announcement);
+          await expect(page.locator(".chronicle-journal-shell")).toContainText(`P3-READONLY-${flow.eventType}`);
         }
         if (replacementEvent) {
-          const replacementPolicy = policyForProgressionEvent(replacementEvent.type as Phase3EventType);
-          const replacementAnnouncements = progressionAnnouncements.filter(({ text }) =>
-            text.includes(replacementPolicy.globalPresentation.heading),
-          );
-          expect(replacementAnnouncements).toHaveLength(1);
-          expect(replacementAnnouncements[0]?.politeness).toBe(replacementPolicy.globalPresentation.announcement);
+          expect(replacementEvent.type).toBe("PLAYER_LOG_ENTRY_ADDED");
+          await expect(page.locator(".chronicle-journal-shell")).toContainText("P3-READONLY-MAP_LOCATION_REVEALED");
         }
 
         expect(
           unsafeRequests.filter((request) => unsafeMutation(request, slug)),
           `${browserName} must remain mutation-free; presence calls are intercepted before the server.`,
         ).toEqual([]);
-        const expectedViewedPosts = flow.kind === "interruption" ? 2 : flow.eventType ? 1 : 0;
         const viewedPostCount = unsafeRequests.filter((request) => request.pathname.endsWith("/viewed")).length;
-        if (flow.eventType === "MAP_ROUTE_REVEALED") {
-          // Both route endpoints may already be acknowledged by the preseeded
-          // fixture; the contract is single-flight, not an unnecessary write.
-          expect(viewedPostCount).toBeLessThanOrEqual(1);
-        } else {
-          expect(viewedPostCount).toBe(expectedViewedPosts);
-        }
+        // Canonical Journal readiness is local/read-only. It does not invoke
+        // the retired Companion acknowledgement endpoint for an already
+        // authorized projection.
+        expect(viewedPostCount).toBe(0);
       });
     }
   }

@@ -145,6 +145,7 @@ describe("CaptainLibrary motion and authority", () => {
     await screen.findByRole("heading", { name: "Captain's Console" });
     fireEvent.click(screen.getByRole("button", { name: /Invitations/ }));
     const row = await screen.findByRole("row");
+    expect(within(row).getAllByRole("cell")).toHaveLength(4);
 
     fireEvent.click(within(row).getByRole("button", { name: "Replace invitation" }));
     expect(row).toHaveAttribute("data-invitation-transition", "replace-pending");

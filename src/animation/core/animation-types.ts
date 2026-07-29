@@ -52,6 +52,17 @@ export const sceneNames = [
   "pause",
   "resume",
   "undo",
+  "community-harbor-arrival",
+  "community-featured-reveal",
+  "community-card-collection-enter",
+  "community-listing-open",
+  "community-profile-arrival",
+  "community-voyage-log-unfurl",
+  "community-save-to-collection",
+  "community-filter-results",
+  "community-report-submitted",
+  "community-keepsake-created",
+  "community-voyage-log-published",
 ] as const;
 
 export type AnimationSceneName = (typeof sceneNames)[number];

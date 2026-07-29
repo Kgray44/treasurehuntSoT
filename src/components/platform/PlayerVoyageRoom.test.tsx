@@ -6,9 +6,10 @@ import { SceneHostRegistry } from "@/animation/hosts/scene-host-registry";
 import { PlayerVoyageRoom } from "./PlayerVoyageRoom";
 
 const navigation = vi.hoisted(() => ({ push: vi.fn(), replace: vi.fn() }));
+const motion = vi.hoisted(() => ({ mode: "reduced" as "full" | "gentle" | "reduced" }));
 vi.mock("next/navigation", () => ({ useRouter: () => navigation }));
 vi.mock("@/animation/motion/useMotionMode", () => ({
-  useMotionMode: () => ({ mode: "reduced", source: "system", userOverride: null, setUserOverride: vi.fn() }),
+  useMotionMode: () => ({ mode: motion.mode, source: "system", userOverride: null, setUserOverride: vi.fn() }),
 }));
 
 class FakeEventSource {
@@ -81,6 +82,7 @@ describe("PlayerVoyageRoom", () => {
     cleanup();
     sessionStorage.clear();
     FakeEventSource.current = null;
+    motion.mode = "reduced";
     vi.unstubAllGlobals();
     vi.restoreAllMocks();
     vi.clearAllMocks();
@@ -170,6 +172,28 @@ describe("PlayerVoyageRoom", () => {
 
     await waitFor(() => expect(handoff).toHaveBeenCalledWith("/play/voyage-1"));
     expect(screen.getByRole("main")).toHaveAttribute("data-launch-state", "launch-ready");
+  });
+
+  it("preserves the authoritative launch handoff through live-channel reconciliation", async () => {
+    const handoff = vi.fn();
+    const active = {
+      ...voyage,
+      status: "ACTIVE",
+      state: "IN_PROGRESS",
+      canEnter: true,
+      runtimeHref: "/player/playthroughs/voyage-1/journal",
+    };
+    motion.mode = "full";
+    vi.stubGlobal("EventSource", FakeEventSource);
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue(response(200, body(active))));
+    renderRoom(handoff);
+
+    await waitFor(() => expect(screen.getByRole("main")).toHaveAttribute("data-launch-state", "launch-ready"));
+    FakeEventSource.current?.onopen?.();
+    await waitFor(() => expect(screen.getByRole("main")).toHaveAttribute("data-connection-state", "live"));
+    await waitFor(() => expect(handoff).toHaveBeenCalledWith("/player/playthroughs/voyage-1/journal"), {
+      timeout: 2_000,
+    });
   });
 
   it("does not lose an authoritative progression event while an older load is pending", async () => {

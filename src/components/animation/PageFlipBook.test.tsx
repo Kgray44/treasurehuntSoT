@@ -28,6 +28,7 @@ const calls = vi.hoisted(() => ({
   orientation: "landscape" as "portrait" | "landscape",
   load: vi.fn(),
   update: vi.fn(),
+  runtimeUpdate: vi.fn(),
   destroy: vi.fn(),
   next: vi.fn(),
   previous: vi.fn(),
@@ -37,29 +38,38 @@ const calls = vi.hoisted(() => ({
   instances: [] as Array<{
     current: number;
     destroyMock: ReturnType<typeof vi.fn>;
+    getSettings: () => { minWidth: number };
     handlers: Map<string, (event: { data: number | string }) => void>;
     host: HTMLElement;
   }>,
   instance: null as null | {
     current: number;
     destroyMock: ReturnType<typeof vi.fn>;
+    getSettings: () => { minWidth: number };
     handlers: Map<string, (event: { data: number | string }) => void>;
     host: HTMLElement;
   },
 }));
+const initialVisualViewport = window.visualViewport;
 
 vi.mock("page-flip", () => ({
   PageFlip: class {
     current = 0;
     pageCount = 0;
     showCover: boolean;
+    settings: { minWidth: number };
     destroyMock = vi.fn(() => calls.destroy(this));
     handlers = new Map<string, (event: { data: number | string }) => void>();
     host: HTMLElement;
-    constructor(host: HTMLElement, options: { flippingTime: number; startPage: number; showCover: boolean }) {
+    constructor(
+      host: HTMLElement,
+      options: { flippingTime: number; minWidth: number; startPage: number; showCover: boolean },
+    ) {
       this.host = host;
+      this.host.classList.add("stf__parent");
       this.current = options.startPage;
       this.showCover = options.showCover;
+      this.settings = { minWidth: options.minWidth };
       calls.constructors(host, options);
       calls.instance = this;
       calls.instances.push(this);
@@ -75,6 +85,7 @@ vi.mock("page-flip", () => ({
       calls.update(pages);
       this.host.replaceChildren(...pages);
     };
+    update = () => calls.runtimeUpdate(this);
     destroy = () => {
       this.destroyMock();
       this.host.remove();
@@ -92,6 +103,7 @@ vi.mock("page-flip", () => ({
     getCurrentPageIndex = () => this.current;
     getPageCount = () => this.pageCount;
     getOrientation = () => calls.orientation;
+    getSettings = () => this.settings;
     getSpreadIndexByPage = (page: number) => {
       if (page < 0 || page >= this.pageCount) return null;
       if (!this.showCover) return Math.floor(page / 2);
@@ -161,6 +173,9 @@ describe("PageFlipBook", () => {
   afterEach(() => {
     cleanup();
     localStorage.clear();
+    Object.defineProperty(window, "innerWidth", { configurable: true, value: 1024 });
+    Object.defineProperty(window, "visualViewport", { configurable: true, value: initialVisualViewport });
+    document.documentElement.style.removeProperty("zoom");
     document.documentElement.removeAttribute("data-motion-level");
     delete window.__FOREVER_PAGEFLIP_FAILPOINT__;
     vi.unstubAllEnvs();
@@ -236,6 +251,39 @@ describe("PageFlipBook", () => {
     await waitFor(() => expect(calls.update).toHaveBeenCalled());
     expect(calls.constructors).toHaveBeenCalledOnce();
     unmount();
+    expect(calls.destroy).toHaveBeenCalledOnce();
+  });
+
+  it("updates its one owned runtime when the effective viewport width changes, preserving the current page", async () => {
+    Object.defineProperty(window, "innerWidth", { configurable: true, value: 430 });
+    const viewportListeners = new Set<EventListener>();
+    Object.defineProperty(window, "visualViewport", {
+      configurable: true,
+      value: {
+        addEventListener: (_name: string, listener: EventListener) => viewportListeners.add(listener),
+        removeEventListener: (_name: string, listener: EventListener) => viewportListeners.delete(listener),
+      },
+    });
+    const { container, unmount } = renderPageFlip(<PageFlipBook initialPage={3} pages={fourPages} mode="full" />);
+    await waitFor(() => expect(calls.constructors).toHaveBeenCalledOnce());
+    const originalRuntime = container.querySelector<HTMLElement>(".page-flip-runtime")!;
+    const originalInstance = calls.instance!;
+
+    act(() => {
+      document.documentElement.style.zoom = "2";
+      viewportListeners.forEach((listener) => listener(new Event("resize")));
+    });
+
+    await waitFor(() => expect(calls.runtimeUpdate).toHaveBeenCalledOnce());
+    expect(calls.constructors).toHaveBeenCalledOnce();
+    expect(calls.destroy).not.toHaveBeenCalled();
+    expect(originalRuntime.isConnected).toBe(true);
+    expect(calls.instance?.getSettings()).toMatchObject({ minWidth: 215 });
+    expect(container.querySelectorAll(".page-flip-runtime")).toHaveLength(1);
+    expect(calls.instance).toBe(originalInstance);
+
+    unmount();
+    document.documentElement.style.removeProperty("zoom");
     expect(calls.destroy).toHaveBeenCalledOnce();
   });
 

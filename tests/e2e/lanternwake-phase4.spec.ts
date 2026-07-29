@@ -13,12 +13,17 @@ test("Phase 4 gateway and authentication remain readable, responsive, and truthf
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto("/");
 
-  await expect(page.getByRole("heading", { name: "Choose your place in the Tale" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Choose your role in Voyagewright" })).toBeVisible();
   await expect(page.locator(".role-gateway")).toHaveAttribute("data-motion-mode", "reduced");
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1)).toBe(true);
   await expectNoSeriousAccessibilityViolations(page);
 
   await page.goto("/player/sign-in");
+  const signInWarmup = await page.request.post("/api/player/sign-in", {
+    data: { playerName: "not-a-player", password: "not-a-password" },
+    maxRetries: 2,
+  });
+  expect([400, 401]).toContain(signInWarmup.status());
   await page.getByLabel("Player name", { exact: true }).fill("not-a-player");
   await page.getByLabel("Password", { exact: true }).fill("not-a-password");
   await page.getByRole("button", { name: "Open my library" }).click();
@@ -52,7 +57,7 @@ test("Phase 4 Studio More actions are keyboard-operated and stay inside the mobi
   await more.focus();
   await page.keyboard.press("Enter");
   await expect(more).toHaveAttribute("aria-expanded", "true");
-  await expect(page.getByRole("button", { name: "Duplicate tale" })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Duplicate Chronicle" })).toBeVisible();
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1)).toBe(true);
   await page.keyboard.press("Escape");
   await expect(more).toHaveAttribute("aria-expanded", "false");

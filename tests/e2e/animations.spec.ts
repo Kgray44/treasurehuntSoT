@@ -4,19 +4,31 @@ import { expect, test } from "@playwright/test";
 test("first arrival supports skip, replay, reduced motion, and a semantic destination", async ({ page }) => {
   await page.addInitScript(() => sessionStorage.clear());
   await page.goto("/");
-  await expect(page.getByRole("heading", { name: "Choose your place in the Tale" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Choose your role in Voyagewright" })).toBeVisible();
   await expect(page.getByRole("link", { name: "Enter as Player" })).toBeVisible();
   await expect(page.getByRole("link", { name: /TEST ANIMATIONS/ })).toBeVisible();
-  await expect(page.getByRole("button", { name: "Skip arrival" })).toBeVisible({ timeout: 4_000 });
-  await page.getByRole("button", { name: "Skip arrival" }).click();
-  await expect(page.getByRole("button", { name: "Replay gateway" })).toBeEnabled();
+  const replay = page.getByRole("button", { name: "Replay presentation" });
+  await expect(replay).toBeEnabled();
+  await replay.click();
+  const skip = page.getByRole("button", { name: "Skip opening presentation" });
+  await expect(skip).toBeVisible();
+  await skip.click();
+  await expect(replay).toBeEnabled();
 
   await page.getByRole("button", { name: "Motion: full. Change motion setting" }).click();
   await expect(page.getByRole("button", { name: "Motion: gentle. Change motion setting" })).toBeVisible();
   await page.getByRole("button", { name: "Motion: gentle. Change motion setting" }).click();
   await expect(page.getByRole("button", { name: "Motion: reduced. Change motion setting" })).toBeVisible();
-  await page.getByRole("button", { name: "Replay gateway" }).click();
-  await expect(page.getByRole("button", { name: "Replay gateway" })).toBeEnabled({ timeout: 3_000 });
+  await replay.click();
+  const reducedSkip = page.getByRole("button", { name: "Skip opening presentation" });
+  if (await reducedSkip.isVisible().catch(() => false)) {
+    try {
+      await reducedSkip.click({ force: true, timeout: 2_500 });
+    } catch {
+      // Reduced-motion completion can detach the optional skip control while its click is dispatched.
+    }
+  }
+  await expect(replay).toBeEnabled();
 
   const axe = await new AxeBuilder({ page }).analyze();
   expect(axe.violations.filter((violation) => ["serious", "critical"].includes(violation.impact ?? ""))).toEqual([]);

@@ -3,6 +3,7 @@ $ErrorActionPreference = "Stop"
 
 $script:ProjectRoot = (Resolve-Path (Join-Path $PSScriptRoot "..")).ProviderPath
 $script:RuntimeBase = Join-Path $env:LOCALAPPDATA "ForeverTreasureCompanion"
+$script:ValidationRunParent = Join-Path $script:RuntimeBase "Validation_Runs"
 
 function Get-ForeverNode {
     $command = Get-Command node -ErrorAction SilentlyContinue
@@ -71,15 +72,141 @@ function Import-ForeverEnvironment {
     }
 }
 
+function Test-ForeverGitWorktree {
+    param([Parameter(Mandatory)][string]$Path)
+    if (-not (Test-Path -LiteralPath $Path -PathType Container)) { return $false }
+    $previousPreference = $ErrorActionPreference
+    $ErrorActionPreference = "Continue"
+    try {
+        $result = @(& git -C $Path rev-parse --is-inside-work-tree 2>$null)
+        $exitCode = $LASTEXITCODE
+    } finally {
+        $ErrorActionPreference = $previousPreference
+    }
+    return $exitCode -eq 0 -and ($result -join "").Trim() -eq "true"
+}
+
+function Assert-ForeverValidationRunParent {
+    param([Parameter(Mandatory)][string]$RunParent)
+    $resolvedParent = [System.IO.Path]::GetFullPath($RunParent)
+    $historicalRoot = [System.IO.Path]::GetFullPath((Join-Path $script:RuntimeBase "validation"))
+    if ([string]::Equals($resolvedParent, $historicalRoot, [System.StringComparison]::OrdinalIgnoreCase)) {
+        throw "The historical validation runtime path is permanently forbidden: $historicalRoot"
+    }
+    if (Test-ForeverGitWorktree -Path $resolvedParent) {
+        throw "Validation runtime parent is inside a Git worktree: $resolvedParent"
+    }
+    return $resolvedParent
+}
+
+function Write-ForeverValidationRunEvent {
+    param([Parameter(Mandatory)][string]$RuntimeRoot, [Parameter(Mandatory)][string]$Event)
+    $eventPath = Join-Path $RuntimeRoot ".forever-validation-events.jsonl"
+    $entry = [ordered]@{
+        timestampUtc = [DateTime]::UtcNow.ToString("o", [System.Globalization.CultureInfo]::InvariantCulture)
+        event = $Event
+        runtimeRoot = [System.IO.Path]::GetFullPath($RuntimeRoot)
+    } | ConvertTo-Json -Compress
+    Add-Content -LiteralPath $eventPath -Value $entry -Encoding UTF8
+}
+
+function Assert-ForeverValidationRuntimeOwnership {
+    param([Parameter(Mandatory)][string]$RuntimeRoot)
+    $resolvedRoot = [System.IO.Path]::GetFullPath($RuntimeRoot)
+    if (Test-ForeverGitWorktree -Path $resolvedRoot) {
+        throw "Validation runtime is inside a Git worktree: $resolvedRoot"
+    }
+    if (Test-Path -LiteralPath (Join-Path $resolvedRoot ".git")) {
+        throw "Validation runtime must never contain .git: $resolvedRoot"
+    }
+    $markerPath = Join-Path $resolvedRoot ".forever-validation-run.json"
+    if (-not (Test-Path -LiteralPath $markerPath -PathType Leaf)) {
+        throw "Validation runtime ownership marker is missing: $markerPath"
+    }
+    $marker = Get-Content -LiteralPath $markerPath -Raw | ConvertFrom-Json
+    if (-not [string]::Equals([string]$marker.runtimeRoot, $resolvedRoot, [System.StringComparison]::OrdinalIgnoreCase)) {
+        throw "Validation runtime ownership marker does not match its directory: $resolvedRoot"
+    }
+    return $marker
+}
+
+function New-ForeverValidationRuntime {
+    param(
+        [string]$RunParent = $script:ValidationRunParent,
+        [string]$RunId = ("validation-{0}-{1}" -f (Get-Date -Format "yyyyMMddTHHmmssfffZ"), ([Guid]::NewGuid().ToString("N").Substring(0, 12)))
+    )
+    if ($RunId -notmatch '^[a-z0-9][a-z0-9-]{7,127}$') { throw "Validation run identity is invalid." }
+    $resolvedParent = Assert-ForeverValidationRunParent -RunParent $RunParent
+    if (-not (Test-Path -LiteralPath $resolvedParent)) {
+        New-Item -ItemType Directory -Path $resolvedParent -ErrorAction Stop | Out-Null
+    }
+    $resolvedParent = (Resolve-Path -LiteralPath $resolvedParent).ProviderPath
+    [void](Assert-ForeverValidationRunParent -RunParent $resolvedParent)
+    $runtimeRoot = [System.IO.Path]::GetFullPath((Join-Path $resolvedParent $RunId))
+    $parentPrefix = $resolvedParent.TrimEnd('\', '/') + [System.IO.Path]::DirectorySeparatorChar
+    if (-not $runtimeRoot.StartsWith($parentPrefix, [System.StringComparison]::OrdinalIgnoreCase)) {
+        throw "Validation runtime escaped its approved parent."
+    }
+    if (Test-Path -LiteralPath $runtimeRoot) {
+        throw "Validation runtime destination already exists and is not owned by this new run: $runtimeRoot"
+    }
+    New-Item -ItemType Directory -Path $runtimeRoot -ErrorAction Stop | Out-Null
+    try {
+        if ((Test-ForeverGitWorktree -Path $runtimeRoot) -or (Test-Path -LiteralPath (Join-Path $runtimeRoot ".git"))) {
+            throw "New validation runtime unexpectedly resolves as a Git worktree: $runtimeRoot"
+        }
+        $marker = [ordered]@{
+            schemaVersion = 1
+            runId = $RunId
+            runtimeRoot = $runtimeRoot
+            createdUtc = [DateTime]::UtcNow.ToString("o", [System.Globalization.CultureInfo]::InvariantCulture)
+            owner = "forever-treasure-validation"
+        } | ConvertTo-Json
+        Set-Content -LiteralPath (Join-Path $runtimeRoot ".forever-validation-run.json") -Value $marker -Encoding UTF8
+        Write-ForeverValidationRunEvent -RuntimeRoot $runtimeRoot -Event "created"
+        [void](Assert-ForeverValidationRuntimeOwnership -RuntimeRoot $runtimeRoot)
+        Write-Host "Created task-owned validation runtime: $runtimeRoot" -ForegroundColor DarkGray
+        return $runtimeRoot
+    } catch {
+        if (Test-Path -LiteralPath $runtimeRoot) {
+            $markerPath = Join-Path $runtimeRoot ".forever-validation-run.json"
+            if (Test-Path -LiteralPath $markerPath) { Remove-Item -LiteralPath $runtimeRoot -Recurse -Force }
+        }
+        throw
+    }
+}
+
+function Clear-ForeverValidationRuntime {
+    param([Parameter(Mandatory)][string]$RuntimeRoot)
+    $marker = Assert-ForeverValidationRuntimeOwnership -RuntimeRoot $RuntimeRoot
+    $resolvedRoot = [System.IO.Path]::GetFullPath($RuntimeRoot)
+    Write-ForeverValidationRunEvent -RuntimeRoot $resolvedRoot -Event "cleanup-requested"
+    $parent = Split-Path -Parent $resolvedRoot
+    $receipt = Join-Path $parent ("{0}.cleanup.json" -f [string]$marker.runId)
+    $receiptBody = [ordered]@{
+        runId = [string]$marker.runId
+        runtimeRoot = $resolvedRoot
+        cleanupStartedUtc = [DateTime]::UtcNow.ToString("o", [System.Globalization.CultureInfo]::InvariantCulture)
+        reason = "owned-validation-runtime-cleanup"
+    } | ConvertTo-Json
+    Set-Content -LiteralPath $receipt -Value $receiptBody -Encoding UTF8
+    Remove-Item -LiteralPath $resolvedRoot -Recurse -Force
+    if (Test-Path -LiteralPath $resolvedRoot) { throw "Owned validation runtime cleanup did not remove $resolvedRoot" }
+    Add-Content -LiteralPath $receipt -Value ("cleanupCompletedUtc={0}" -f [DateTime]::UtcNow.ToString("o", [System.Globalization.CultureInfo]::InvariantCulture)) -Encoding UTF8
+}
+
 function Sync-ForeverRuntime {
     param([ValidateSet("development", "validation")][string]$Mode = "development")
     $isNetworkPath = $script:ProjectRoot.StartsWith("\\")
     if (-not $isNetworkPath -and $Mode -eq "development") { return $script:ProjectRoot }
-    $runtimeRoot = Join-Path $script:RuntimeBase $Mode
-    if (-not (Test-Path -LiteralPath $runtimeRoot)) { New-Item -ItemType Directory -Path $runtimeRoot -Force | Out-Null }
-    $resolvedBase = (Resolve-Path $script:RuntimeBase).ProviderPath
-    $resolvedRuntime = (Resolve-Path $runtimeRoot).ProviderPath
-    if (-not $resolvedRuntime.StartsWith($resolvedBase, [StringComparison]::OrdinalIgnoreCase)) { throw "Unsafe runtime mirror path." }
+    if ($Mode -eq "validation") {
+        $runtimeRoot = New-ForeverValidationRuntime
+    } else {
+        $runtimeRoot = Join-Path $script:RuntimeBase $Mode
+        if (-not (Test-Path -LiteralPath $runtimeRoot)) { New-Item -ItemType Directory -Path $runtimeRoot -Force | Out-Null }
+    }
+    $resolvedRuntime = [System.IO.Path]::GetFullPath($runtimeRoot)
+    if ($Mode -eq "validation") { [void](Assert-ForeverValidationRuntimeOwnership -RuntimeRoot $resolvedRuntime) }
     $excludedDirectories = @(
         foreach ($directoryName in @(
             ".git",
@@ -93,12 +220,15 @@ function Sync-ForeverRuntime {
             "playwright-report"
         )) {
             Join-Path $script:ProjectRoot $directoryName
-            Join-Path $runtimeRoot $directoryName
         }
     )
-    & robocopy $script:ProjectRoot $runtimeRoot /MIR /XD $excludedDirectories /XF *.db *.db-journal *.log .forever-dev.json .forever-lock.sha | Out-Null
+    & robocopy $script:ProjectRoot $resolvedRuntime /E /XD $excludedDirectories /XF .git *.db *.db-journal *.log .forever-dev.json .forever-lock.sha | Out-Null
     if ($LASTEXITCODE -gt 7) { throw "Unable to synchronize the local runtime mirror (robocopy exit $LASTEXITCODE)." }
-    return $runtimeRoot
+    if ($Mode -eq "validation") {
+        [void](Assert-ForeverValidationRuntimeOwnership -RuntimeRoot $resolvedRuntime)
+        Write-ForeverValidationRunEvent -RuntimeRoot $resolvedRuntime -Event "source-synchronized"
+    }
+    return $resolvedRuntime
 }
 
 function Get-ForeverCanonicalDatabase {

@@ -141,6 +141,46 @@ describe("InvitationCeremony", () => {
     expect(screen.getByRole("button", { name: "Invitation accepted" })).toBeDisabled();
   });
 
+  it("pushes the accepted Player route without refreshing the spent invitation route", async () => {
+    const fetch = vi
+      .fn()
+      .mockResolvedValueOnce(response(200, { invitation, csrfToken: "csrf" }))
+      .mockResolvedValueOnce(response(200, { ok: true, playthroughId: "voyage-1" }));
+    vi.stubGlobal("fetch", fetch);
+    director.play.mockImplementation(async (_scene, options) => {
+      const result = await options.operation();
+      options.finalStateRuntime?.holdSafePose("access-result-readable");
+      return { outcome: "presented", finalSemanticState: "access-result-readable", operationResult: result };
+    });
+    renderInvitation();
+    await screen.findByLabelText("Invitation PIN");
+    fireEvent.change(screen.getByLabelText("Invitation PIN"), { target: { value: "1234" } });
+
+    fireEvent.click(screen.getByRole("button", { name: "Accept and Join Voyage" }));
+
+    await waitFor(() => expect(navigation.push).toHaveBeenCalledWith("/player/playthroughs/voyage-1"));
+    expect(navigation.refresh).not.toHaveBeenCalled();
+  });
+
+  it("starts the authoritative accept request even when presentation never invokes its operation", async () => {
+    const fetch = vi
+      .fn()
+      .mockResolvedValueOnce(response(200, { invitation, csrfToken: "csrf" }))
+      .mockResolvedValueOnce(response(200, { ok: true, playthroughId: "voyage-1" }));
+    vi.stubGlobal("fetch", fetch);
+    director.play.mockImplementation(() => new Promise(() => undefined));
+    renderInvitation();
+    await screen.findByLabelText("Invitation PIN");
+    fireEvent.change(screen.getByLabelText("Invitation PIN"), { target: { value: "1234" } });
+    expect(screen.getByRole("button", { name: "Accept and Join Voyage" })).toHaveAttribute("type", "button");
+    expect(screen.getByRole("button", { name: "Decline Invitation" })).toHaveAttribute("type", "button");
+
+    fireEvent.click(screen.getByRole("button", { name: "Accept and Join Voyage" }));
+
+    await waitFor(() => expect(fetch).toHaveBeenCalledTimes(2));
+    expect(fetch.mock.calls[1]?.[0]).toBe("/api/invitations/accept");
+  });
+
   it("clears rejected PIN progress and restores the PIN-required state", async () => {
     vi.stubGlobal(
       "fetch",

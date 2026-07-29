@@ -52,6 +52,11 @@ function captureWrites(page: Page) {
 }
 
 test.describe.serial("Project One Voyage Phase 2 compatibility acceptance", () => {
+  test.skip(
+    ({ browserName }) => browserName !== "chromium",
+    "The retained-doorway fixture mutates the isolated validation database once in Chromium.",
+  );
+
   test.beforeAll(async () => {
     expect(credential, "PHASE2_LEGACY_ACCESS_CODE must be supplied only to the isolated runtime.").toMatch(/\S{12,}/u);
 

@@ -135,6 +135,72 @@ export const showcaseDemos: ShowcaseDemo[] = [
   { id: "pause", label: "Pause", scene: "pause", libraries: ["gsap", "rive"] },
   { id: "resume", label: "Resume", scene: "resume", libraries: ["gsap", "rive"] },
   { id: "undo", label: "Undo reversal", scene: "undo", libraries: ["gsap"] },
+  {
+    id: "community-harbor-arrival",
+    label: "Community Harbor arrival",
+    scene: "community-harbor-arrival",
+    libraries: ["gsap"],
+  },
+  {
+    id: "community-featured-reveal",
+    label: "Community featured reveal",
+    scene: "community-featured-reveal",
+    libraries: ["gsap"],
+  },
+  {
+    id: "community-card-collection-enter",
+    label: "Community collection entry",
+    scene: "community-card-collection-enter",
+    libraries: ["gsap"],
+  },
+  {
+    id: "community-listing-open",
+    label: "Community listing open",
+    scene: "community-listing-open",
+    libraries: ["gsap"],
+  },
+  {
+    id: "community-profile-arrival",
+    label: "Community profile arrival",
+    scene: "community-profile-arrival",
+    libraries: ["gsap"],
+  },
+  {
+    id: "community-voyage-log-unfurl",
+    label: "Community Voyage Log unfurl",
+    scene: "community-voyage-log-unfurl",
+    libraries: ["gsap"],
+  },
+  {
+    id: "community-save-to-collection",
+    label: "Community save to collection",
+    scene: "community-save-to-collection",
+    libraries: ["gsap"],
+  },
+  {
+    id: "community-filter-results",
+    label: "Community filtered results",
+    scene: "community-filter-results",
+    libraries: ["gsap"],
+  },
+  {
+    id: "community-report-submitted",
+    label: "Community report receipt",
+    scene: "community-report-submitted",
+    libraries: ["gsap"],
+  },
+  {
+    id: "community-keepsake-created",
+    label: "Community Keepsake receipt",
+    scene: "community-keepsake-created",
+    libraries: ["gsap"],
+  },
+  {
+    id: "community-voyage-log-published",
+    label: "Community Voyage Log receipt",
+    scene: "community-voyage-log-published",
+    libraries: ["gsap"],
+  },
   { id: "motion-nav", label: "Motion navigation transitions", scene: "session-reentry", libraries: ["motion"] },
   { id: "rive-inputs", label: "Rive state-machine inputs", scene: "session-reentry", libraries: ["rive"] },
   {
@@ -697,6 +763,7 @@ export function AnimationShowcase() {
             <section>
               <h2>StPageFlip</h2>
               <PageFlipBook
+                key={`animation-showcase-pageflip-${runtimeEpoch}`}
                 ref={book}
                 pages={bookPages}
                 mode={mode}
