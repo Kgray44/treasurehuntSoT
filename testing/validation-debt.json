@@ -1,0 +1,57 @@
+{
+  "version": 1,
+  "status": "phase-1-visible-debt",
+  "entries": [
+    {
+      "id": "debt.historical-timing",
+      "owner": "breakwater",
+      "severity": "medium",
+      "classification": "PHASE_2_OWNED",
+      "targetPhase": "Phase 2",
+      "affectedContracts": [],
+      "affectedSuites": ["static.core", "unit.core"],
+      "affectedGates": [],
+      "compensatingCoverage": "Deterministic canonical plan ordering; no duration-aware scheduling claim.",
+      "releaseEffect": "Does not narrow release coverage.",
+      "reviewTrigger": "Before any duration-aware scheduling proposal.",
+      "reason": "No trustworthy per-suite timing and failure-signature store exists at this source watermark.",
+      "effect": "Plans retain stable order and do not make duration-aware scheduling claims.",
+      "openedAt": "2026-07-29",
+      "resolution": "Populate governed normalized receipts in a later phase."
+    },
+    {
+      "id": "debt.harborlight-phase4-reconciliation",
+      "owner": "harborlight",
+      "severity": "high",
+      "classification": "POST_HARBORLIGHT_RECONCILIATION",
+      "targetPhase": "Post-Harborlight integration",
+      "affectedContracts": ["community-public-projection", "public-privacy-projection"],
+      "affectedSuites": ["browser.auth", "security.private-content"],
+      "affectedGates": ["cross-project", "mainline"],
+      "compensatingCoverage": "Unmapped Harborlight paths broaden to all registered suites.",
+      "releaseEffect": "No Sounding Line metadata is treated as representing unmerged Harborlight work.",
+      "reviewTrigger": "Accepted Harborlight branch merge to mainline.",
+      "reason": "Concurrent Harborlight Phase 4 surfaces are intentionally not copied into this source watermark.",
+      "effect": "Unknown Harborlight impact broadens to all registered suites and requires post-merge metadata reconciliation.",
+      "openedAt": "2026-07-29",
+      "resolution": "Re-inventory accepted Harborlight changes after its merge."
+    },
+    {
+      "id": "debt.external-provider-evidence",
+      "owner": "platform-foundation",
+      "severity": "high",
+      "classification": "EXTERNAL_VALIDATION",
+      "targetPhase": "External-provider validation",
+      "affectedContracts": ["migration-parity"],
+      "affectedSuites": ["migration.mysql"],
+      "affectedGates": ["external-provider", "release-candidate"],
+      "compensatingCoverage": "Existing external-provider gate remains explicit and cannot pass by omission.",
+      "releaseEffect": "External evidence remains pending, never PASS.",
+      "reviewTrigger": "Configured isolated MySQL/provider rehearsal becomes available.",
+      "reason": "MySQL and configured provider proof are environment-dependent and are not locally asserted by the plan-only tool.",
+      "effect": "External-provider gates remain explicit and unavailable evidence is never reported as a pass.",
+      "openedAt": "2026-07-29",
+      "resolution": "Run the existing configured rehearsal in an authorized isolated environment."
+    }
+  ]
+}

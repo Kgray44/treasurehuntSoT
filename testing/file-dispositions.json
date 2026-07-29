@@ -1,0 +1,16 @@
+{
+  "version": "1.0.0",
+  "status": "phase-1-complete-file-disposition-rules",
+  "defaultDisposition": "REGISTERED_SUITE_CHILD",
+  "rules": [
+    { "match": "tests/private-content/**", "suiteId": "security.private-content", "role": "REGISTERED_SUITE_CHILD", "owner": "sealed-hold", "tier": 5, "parallelSafety": "UNKNOWN_PARALLEL_SAFETY", "adapter": "vitest" },
+    { "match": "src/wayfarer/**", "suiteId": "contract.wayfarer-history", "role": "REGISTERED_SUITE_CHILD", "owner": "wayfarer", "tier": 5, "parallelSafety": "UNKNOWN_PARALLEL_SAFETY", "adapter": "vitest" },
+    { "match": "tests/e2e/wayfarer-*.spec.ts", "suiteId": "contract.wayfarer-history", "role": "REGISTERED_SUITE_CHILD", "owner": "wayfarer", "tier": 5, "parallelSafety": "GLOBAL_EXCLUSIVE_LEGACY", "adapter": "playwright" },
+    { "match": "tests/e2e/harborlight-*.spec.ts", "suiteId": "browser.auth", "role": "REGISTERED_SUITE_CHILD", "owner": "harborlight", "tier": 4, "parallelSafety": "GLOBAL_EXCLUSIVE_LEGACY", "adapter": "playwright" },
+    { "match": "tests/e2e/phase3-readonly-setup.setup.ts", "suiteId": "browser.player-journal", "role": "REGISTERED_SETUP_NODE", "owner": "lanternwake", "tier": 4, "parallelSafety": "GLOBAL_EXCLUSIVE_LEGACY", "adapter": "playwright" },
+    { "match": "tests/e2e/**", "suiteId": "browser.player-journal", "role": "REGISTERED_SUITE_CHILD", "owner": "lanternwake", "tier": 4, "parallelSafety": "GLOBAL_EXCLUSIVE_LEGACY", "adapter": "playwright" },
+    { "match": "scripts/*.ps1", "suiteId": "release.full", "role": "REGISTERED_ADAPTER", "owner": "breakwater", "tier": 7, "parallelSafety": "GLOBAL_EXCLUSIVE_LEGACY", "adapter": "powershell" },
+    { "match": "src/**", "suiteId": "unit.core", "role": "REGISTERED_SUITE_CHILD", "owner": "platform-foundation", "tier": 1, "parallelSafety": "UNKNOWN_PARALLEL_SAFETY", "adapter": "vitest" },
+    { "match": "scripts/features/**", "suiteId": "unit.core", "role": "REGISTERED_SUITE_CHILD", "owner": "platform-foundation", "tier": 1, "parallelSafety": "UNKNOWN_PARALLEL_SAFETY", "adapter": "vitest" }
+  ]
+}

@@ -1,0 +1,97 @@
+{
+  "version": 1,
+  "status": "phase-1-catalog-validated",
+  "contracts": [
+    {
+      "id": "invitation-acceptance",
+      "name": "Invitation acceptance",
+      "authority": "one-voyage",
+      "owners": ["one-voyage", "wayfarer"],
+      "critical": true
+    },
+    {
+      "id": "player-session-restoration",
+      "name": "Player session restoration",
+      "authority": "one-voyage",
+      "owners": ["one-voyage"],
+      "critical": true
+    },
+    {
+      "id": "journal-ready-state",
+      "name": "Player Journal ready state",
+      "authority": "lanternwake",
+      "owners": ["lanternwake"],
+      "critical": true
+    },
+    {
+      "id": "drydock-progression",
+      "name": "Chronicle progression consumes valid authored content",
+      "authority": "drydock",
+      "owners": ["drydock", "one-voyage"],
+      "critical": true
+    },
+    {
+      "id": "wayfarer-history-projection",
+      "name": "Wayfarer history projection",
+      "authority": "wayfarer",
+      "owners": ["wayfarer", "one-voyage"],
+      "critical": true
+    },
+    {
+      "id": "artifact-grant-projection",
+      "name": "Artifact grant projection",
+      "authority": "wayfarer",
+      "owners": ["wayfarer", "harborlight"],
+      "critical": true
+    },
+    {
+      "id": "community-public-projection",
+      "name": "Community public projection",
+      "authority": "harborlight",
+      "owners": ["harborlight", "wayfarer"],
+      "critical": true
+    },
+    {
+      "id": "sealed-hold-private-delivery",
+      "name": "Sealed Hold private delivery",
+      "authority": "sealed-hold",
+      "owners": ["sealed-hold", "wayfarer"],
+      "critical": true
+    },
+    {
+      "id": "lanternwake-presentation-receipt",
+      "name": "Lanternwake presentation receipt",
+      "authority": "lanternwake",
+      "owners": ["lanternwake", "one-voyage"],
+      "critical": true
+    },
+    {
+      "id": "authentication-authorization",
+      "name": "Authentication and authorization",
+      "authority": "platform-foundation",
+      "owners": ["platform-foundation"],
+      "critical": true
+    },
+    {
+      "id": "migration-parity",
+      "name": "SQLite and MySQL migration parity",
+      "authority": "platform-foundation",
+      "owners": ["platform-foundation"],
+      "critical": true
+    },
+    {
+      "id": "public-privacy-projection",
+      "name": "Public privacy projection",
+      "authority": "wayfarer",
+      "owners": ["wayfarer", "harborlight", "sealed-hold"],
+      "critical": true
+    },
+    {
+      "id": "completion-provider",
+      "name": "Landfall completion provider boundary",
+      "authority": "landfall",
+      "owners": ["landfall", "one-voyage"],
+      "critical": true
+    }
+  ]
+}

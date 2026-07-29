@@ -1,0 +1,82 @@
+{
+  "version": 1,
+  "status": "phase-1-current-source-classification",
+  "owners": [
+    {
+      "id": "platform-foundation",
+      "project": "platform",
+      "sourcePaths": ["src/platform/**", "src/server/**", "src/app/api/**", "prisma/**", "scripts/**"],
+      "testPaths": ["src/platform/**/*.test.*", "src/server/**/*.test.*", "src/app/api/**/*.test.*"],
+      "contractIds": ["authentication-authorization", "migration-parity"]
+    },
+    {
+      "id": "one-voyage",
+      "project": "one-voyage",
+      "sourcePaths": ["src/chronicle/**", "src/components/platform/**"],
+      "testPaths": [
+        "src/chronicle/**/*.test.*",
+        "tests/e2e/access-gates.spec.ts",
+        "tests/e2e/chronicle-platform.spec.ts"
+      ],
+      "contractIds": ["invitation-acceptance", "player-session-restoration", "drydock-progression"]
+    },
+    {
+      "id": "lanternwake",
+      "project": "lanternwake",
+      "sourcePaths": ["src/animation/**", "src/components/animation/**", "src/components/player/**"],
+      "testPaths": [
+        "src/animation/**/*.test.*",
+        "src/components/player/**/*.test.*",
+        "tests/e2e/lanternwake-*.spec.ts",
+        "tests/e2e/phase3-*.spec.ts"
+      ],
+      "contractIds": ["journal-ready-state", "lanternwake-presentation-receipt"]
+    },
+    {
+      "id": "wayfarer",
+      "project": "wayfarer",
+      "sourcePaths": ["src/wayfarer/**"],
+      "testPaths": ["src/wayfarer/**/*.test.*", "tests/e2e/wayfarer-phase2.spec.ts"],
+      "contractIds": ["wayfarer-history-projection", "artifact-grant-projection", "public-privacy-projection"]
+    },
+    {
+      "id": "harborlight",
+      "project": "harborlight",
+      "sourcePaths": ["src/community/**", "src/components/community/**"],
+      "testPaths": [
+        "src/community/**/*.test.*",
+        "src/components/community/**/*.test.*",
+        "tests/e2e/harborlight-phase2.spec.ts"
+      ],
+      "contractIds": ["community-public-projection", "artifact-grant-projection"]
+    },
+    {
+      "id": "sealed-hold",
+      "project": "sealed-hold",
+      "sourcePaths": ["src/private-content/**", "scripts/private-content/**"],
+      "testPaths": ["tests/private-content/**/*.test.*"],
+      "contractIds": ["sealed-hold-private-delivery", "public-privacy-projection"]
+    },
+    {
+      "id": "breakwater",
+      "project": "breakwater",
+      "sourcePaths": ["scripts/test-all.ps1", "playwright.config.ts"],
+      "testPaths": [],
+      "contractIds": []
+    },
+    {
+      "id": "drydock",
+      "project": "drydock",
+      "sourcePaths": ["src/chronicle/**"],
+      "testPaths": ["src/chronicle/**/*.test.*"],
+      "contractIds": ["drydock-progression"]
+    },
+    {
+      "id": "landfall",
+      "project": "landfall",
+      "sourcePaths": [],
+      "testPaths": [],
+      "contractIds": ["completion-provider"]
+    }
+  ]
+}
