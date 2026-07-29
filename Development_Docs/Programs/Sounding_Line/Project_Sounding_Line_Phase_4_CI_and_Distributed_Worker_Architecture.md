@@ -24,6 +24,18 @@ default and cannot receive private material or an authoritative release node.
 Artifact/evidence storage is append-only by run and node identity; workers may
 write only their allocated prefix and may never replace a completed receipt.
 
+## Accepted Phase 2 local boundary
+
+The distributed design starts from the accepted local policy identity (14
+suites, 17 contracts, 19 resources), not from a speculative worker protocol.
+Its reviewed adapters use argument arrays with `shell: false`; a worker may
+only receive an eventual sealed dispatch for the corresponding allowlisted
+adapter. The controller must preserve Phase 2 lane-specific lease keys,
+all-or-nothing allocation, controller token, heartbeat/expiry revision, and
+allocation/setup/finish/release/cleanup/quarantine receipts. It must also
+preserve process and PID-reuse identity protections, SQLite clone isolation,
+browser-context/storage/trace identity, and retained loopback-server handle.
+
 ## Worker identity and lifecycle
 
 Each registration declares these fields: `workerId`, `hostId`, `bootIdentity`,
@@ -61,6 +73,12 @@ the controller trust domain, and expires. Claims cannot select a worker if a
 required runtime, browser, database, provider, capacity, or trust capability is
 missing. Clock skew beyond policy turns the worker `UNHEALTHY`; a partition
 cannot extend an expired lease.
+
+The certified concurrent `harborlight-a` and `harborlight-b` lanes are
+local execution-isolation evidence only. They do not establish worker trust,
+distributed dispatch, local/CI parity, dual-run equivalence, release cutover,
+or a weaker global full-release lock. `legacy-full` remains the emergency
+serial adapter and the legacy release harness retains its full lock.
 
 ## Required draft schemas
 

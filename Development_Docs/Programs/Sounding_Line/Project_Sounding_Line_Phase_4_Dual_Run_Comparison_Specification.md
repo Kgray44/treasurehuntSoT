@@ -16,6 +16,13 @@ scope. It is an observation program, not a preparation test. Neither runner may
 become authoritative while a mandatory difference is unexplained. The legacy
 harness stays authoritative throughout the required observation window.
 
+Accepted Phase 2 two-lane Harborlight execution is not a dual run. It proves
+only that two reviewed product lanes can hold separate local leases and state.
+It neither compares legacy and Sounding Line selections/results nor proves
+local/CI parity, distributed-worker behavior, release authority, or cutover.
+The legacy full-release harness retains its global lock; focused lock narrowing
+does not alter the comparison baseline.
+
 ## Comparison record
 
 Each paired run records selection, results, skips, retries, failure diagnosis,

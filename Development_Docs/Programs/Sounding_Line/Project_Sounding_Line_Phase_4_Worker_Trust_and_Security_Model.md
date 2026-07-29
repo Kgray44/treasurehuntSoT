@@ -34,6 +34,15 @@ identity and dependency-lock digest are independently verified before command
 selection. Untrusted pull-request code is treated as hostile and cannot access
 protected secrets, caches, artifacts, or a trusted checkout.
 
+Phase 2 proves only a local controller identity. Future worker enrollment must
+extend, not replace, its run marker, controller token, lease revision,
+allocation and cleanup receipts. Process cleanup remains conjunctive across
+PID, start time, boot identity, controller identity, and command fingerprint;
+PID reuse or a forged/missing marker is quarantined rather than killed. A
+distributed worker must attest the same source, policy, dependency-lock,
+SQLite-clone, browser/server, and adapter identity before it can claim a
+Phase 2-compatible node.
+
 ## Evidence and secret protection
 
 Evidence integrity uses canonical serialization, digest-bound manifests, and

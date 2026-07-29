@@ -25,6 +25,13 @@ No stage jump is permitted because one run passed. Each advancement needs the
 previous stage's retained evidence, named authorization, observation window,
 and verified rollback. This preparation does not enable any stage beyond 0.
 
+Accepted Phase 2 changes the Stage 0 baseline, not the cutover stage: focused
+allowlisted adapters, lane-specific leases, process/PID-reuse protection,
+SQLite clone isolation, browser/server identity, cleanup receipts, quarantine,
+and the two Harborlight lanes are available locally. The legacy full-release
+lock, full harness authority, and emergency serial adapter remain intact.
+Neither the P34 exception nor external-provider debt permits advancement.
+
 ## Rollback and emergency serial mode
 
 Rollback scenarios include bad planner, missing tests, worker compromise,

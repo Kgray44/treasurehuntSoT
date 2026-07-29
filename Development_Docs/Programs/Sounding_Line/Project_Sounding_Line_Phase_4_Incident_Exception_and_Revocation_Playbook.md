@@ -30,3 +30,10 @@ non-transferable, cannot weaken mandatory privacy/authorization/migration/
 lifecycle/accessibility requirements without an explicit release effect, and
 expires automatically. A recurring or extension-only exception is a defect to
 remediate, not a permanent exception disguised as temporary.
+
+For accepted Phase 2 operations, a missing marker, forged marker, PID reuse,
+token mismatch, stale lease ambiguity, clone/browser/server identity mismatch,
+or cleanup escape is a quarantine and evidence-revocation trigger. The
+historical P34 exception and external-provider debt have named scope and
+release effect; they are not operational exceptions that permit authority or
+coverage weakening.

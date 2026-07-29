@@ -13,7 +13,9 @@ last_reviewed: 2026-07-29
 **Program:** Project Sounding Line
 **Phase:** Phase 4, Prove the Passage
 **Status:** PREPARATION ONLY - NONAUTHORITATIVE
-**Base:** `integration/sounding-line-phase1-phase2-mainline` at `3d26ebc697a89efd7ff19d28399f3d41e32e423e`
+**Original base:** `3d26ebc697a89efd7ff19d28399f3d41e32e423e`
+**Accepted Phase 2 mainline:** `ee5cffd457708559041cfc3331eb315906812e15`
+**Phase 2 policy identity:** `testing/policy-manifest.json` version `1.1.0`, SHA-256 `ec128882869984f9ec1775bea23126281209e029ee5c0f1721a9b7a0fcc5e0f1`
 
 This record defines the future release and distributed-execution design. It does
 not activate CI, create a workflow, connect a worker, issue a release decision,
@@ -31,10 +33,13 @@ Ledgerlight records, and Breakwater-owned release boundaries. Project Drydock
 continues to govern authored Chronicle validity; Sounding Line governs software
 verification only.
 
-Phase 1 is the inventory and deterministic-plan foundation. Phase 2 is the
-local, single-host, sealed-plan and lease foundation. Their integration is the
-source baseline, not a claim of final acceptance. No Phase 3 preparation record
-is available at this base; Phase 3 remains an explicit prerequisite.
+Phase 1 is **ACCEPTED AND MAINLINE**. Phase 2 is **ACCEPTED AND MAINLINE**:
+it supplies the local, single-host, sealed-plan, allowlisted-adapter, resource
+lease, process-ownership, clone-isolation, browser/server-identity, cleanup,
+and quarantine foundations. Phase 3 is **PREPARATION COMPLETE /
+IMPLEMENTATION NOT STARTED**. Phase 4 is **PREPARATION COMPLETE /
+IMPLEMENTATION NOT STARTED**. Neither preparation state is an accepted
+implementation or release-authority claim.
 
 ## Prepared record set
 
@@ -67,6 +72,30 @@ workflow. They are validated only as preparation artifacts.
    a pass by omission.
 5. The legacy harness and emergency serial mode remain recoverable through the
    full observation period after any future authority change.
+
+## Accepted Phase 2 assumptions
+
+Phase 4 design consumes the final 14-suite, 17-contract, and 19-resource
+catalogue. It assumes only the reviewed product adapters in
+`scripts/sounding-line/adapters.mjs`, never caller-supplied executables.
+Phase 2 leases are lane-specific and atomic, retain run/controller identity,
+and write allocation, adapter, release, cleanup, and quarantine receipts.
+Process ownership requires PID, start time, boot identity, controller identity,
+and command fingerprint, preventing PID-reuse cleanup. SQLite clones, browser
+contexts, traces, storage, and loopback servers are run-owned; server shutdown
+requires the retained handle and matching token.
+
+The two certified Harborlight browser lanes are execution-isolation evidence:
+separate mirrors, SQLite copies, Chromium trees, artifacts, storage state, and
+listeners. They are not Phase 4 dual-run authority evidence, local/CI parity,
+distributed-worker proof, or release cutover. Focused Phase 2 lanes may narrow
+their reviewed resource locks, while `npm run validate` retains the global
+full-release lock and remains the emergency-serial authority.
+
+The current Feature Catalog includes Sounding Line. The retained
+`P34-BME-20260729` browser-matrix exception and external-provider/MySQL debt
+remain explicit blockers or pending evidence; neither becomes a pass by
+integration, planning, or focused certification.
 
 ## Handoff
 

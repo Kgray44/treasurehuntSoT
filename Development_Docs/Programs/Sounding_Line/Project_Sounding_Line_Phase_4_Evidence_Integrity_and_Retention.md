@@ -28,3 +28,11 @@ Expiration, legal/privacy limits, access control, backup, restore verification,
 and destruction rules are policy-controlled. Logs/traces are redacted and use
 synthetic data; private content, credentials, and unrestricted location/session
 data are never retained as general evidence.
+
+Phase 2 receipts are the required local predecessor: allocation, adapter
+start/finish, lease release, cleanup, and quarantine bind the controller token
+and resource identity. A future manifest must additionally bind Phase 2
+process/PID-reuse identity, SQLite clone receipt, browser-context/storage/trace
+identity, loopback-server token, policy version/digest, and reviewed adapter.
+The P34 exception and external-provider debt must remain explicit evidence
+status, never disappear through receipt normalization.

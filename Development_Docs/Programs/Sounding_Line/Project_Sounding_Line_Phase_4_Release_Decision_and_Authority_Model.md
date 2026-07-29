@@ -42,3 +42,11 @@ Only an approved future release authority, operating under accepted policy and
 with no unresolved veto, may issue a decision. A new source, policy, lockfile,
 worker revocation, artifact discrepancy, or missing cleanup invalidates the
 receipt and requires fresh evidence.
+
+The current policy identity is Phase 2 manifest version `1.1.0` over 14
+suites, 17 contracts, and 19 resources. Its focused certification and two
+Harborlight lanes cannot issue any decision. The `P34-BME-20260729` exception
+and external-provider/MySQL debt remain named non-pass conditions. A future
+decision must preserve their release effect, rather than treating accepted
+mainline integration, a catalog entry, or a focused receipt as substituted
+release evidence.

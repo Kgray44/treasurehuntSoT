@@ -30,3 +30,9 @@ below describe future proof and are not evidence of completion.
 The controlling requirement ledger expands these gates and maps each to a named
 preparation record. No matrix row authorizes a release until every applicable
 future command and evidence reference is accepted.
+
+Current baseline facts for every future row are Phase 1 and Phase 2 accepted
+and mainline; 14 suites, 17 contracts, and 19 resources; reviewed adapters;
+and the protected legacy full-release lock. The local concurrent Harborlight
+lanes satisfy none of the dual-run, CI parity, distributed-worker, release
+authority, or cutover rows. P34 and external-provider rows remain unresolved.

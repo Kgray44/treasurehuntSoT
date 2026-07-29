@@ -17,6 +17,7 @@ const docs = [
   "Project_Sounding_Line_Phase_4_Final_Acceptance_Matrix.md",
   "Project_Sounding_Line_Phase_4_Prerequisite_Checklist.md",
   "Project_Sounding_Line_Phase_4_Preparation_Completion_Receipt.md",
+  "Project_Sounding_Line_Phase_4_Post_Phase_2_Reconciliation_Record.md",
 ];
 const directory = path.join(root, "Development_Docs", "Programs", "Sounding_Line");
 const schemaDirectory = path.join(directory, "Phase_4_Drafts");
@@ -60,7 +61,7 @@ test("phase 4 schema drafts parse and require future integrity identities", asyn
   ]);
 });
 
-test("acceptance and prerequisite records retain future veto and missing-prerequisite truth", async () => {
+test("acceptance and prerequisite records retain reconciled prerequisite truth", async () => {
   const matrix = await readFile(
     path.join(directory, "Project_Sounding_Line_Phase_4_Final_Acceptance_Matrix.md"),
     "utf8",
@@ -71,13 +72,30 @@ test("acceptance and prerequisite records retain future veto and missing-prerequ
   );
   assert.match(matrix, /veto/);
   assert.match(matrix, /Stage 0/);
-  assert.match(prerequisites, /Phase 2\s+\|\s+`MISSING`/);
-  assert.match(prerequisites, /Phase 3\s+\|\s+`MISSING`/);
+  assert.match(prerequisites, /Phase 1\s+\|\s+`ACCEPTED_AND_MAINLINE`/);
+  assert.match(prerequisites, /Phase 2\s+\|\s+`ACCEPTED_AND_MAINLINE`/);
+  assert.match(prerequisites, /Phase 3\s+\|\s+`PREPARATION_COMPLETE_IMPLEMENTATION_NOT_STARTED`/);
   const receipt = await readFile(
     path.join(directory, "Project_Sounding_Line_Phase_4_Preparation_Completion_Receipt.md"),
     "utf8",
   );
-  assert.match(receipt, /PREPARATION COMPLETE/);
+  assert.match(receipt, /PREPARATION REFRESH COMPLETE/);
+});
+
+test("post-phase-2 reconciliation retains local boundaries and exact usage fields", async () => {
+  const record = await readFile(
+    path.join(directory, "Project_Sounding_Line_Phase_4_Post_Phase_2_Reconciliation_Record.md"),
+    "utf8",
+  );
+  for (const term of [
+    "14 suites, 17 contracts, and 19 resources",
+    "execution-isolation\\s+evidence only",
+    "not dual-run authority, local/CI parity, distributed-worker",
+    "P34-BME-20260729",
+    "UNAVAILABLE_FROM_HOST",
+  ]) {
+    assert.match(record, new RegExp(term, "i"));
+  }
 });
 
 test("worker, evidence, incident, and dual-run requirements have a preparation record", async () => {

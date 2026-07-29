@@ -17,6 +17,13 @@ runtime identity, resource contention, retries, and evidence/cleanup outcome.
 Budgets diagnose work; a missed budget creates owned remediation and never
 authorizes weaker coverage, a smaller matrix, or omitted cleanup.
 
+The initial population is the accepted Phase 2 14-suite, 17-contract,
+19-resource policy. Measurements must retain its per-lane resource keys,
+local clone/browser/server identities, process ownership, cleanup/quarantine
+receipts, and emergency-serial comparison. The two concurrent Harborlight
+lanes supply a local isolation sample only; they are not a distributed capacity
+claim or a local/CI parity result.
+
 ## Required experiment matrix
 
 The qualification plan covers focused static; unit/component; service
