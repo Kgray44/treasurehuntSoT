@@ -1,10 +1,9 @@
 # Project Harborlight Phase 4 Completion Receipt
 
-Status: PROJECT HARBORLIGHT PHASE 4 LOCALLY COMPLETE — EXTERNAL GATES PENDING.
+Status: PROJECT HARBORLIGHT PHASE 4 MAINLINE INTEGRATION COMPLETE — EXTERNAL GATES PENDING.
 
-Branch commit `f8db7efa3ea7c01f4a7aa19248a32adc648391f2` is pushed to
-`codex/project-harborlight-phase4-secure-the-harbor`; local and remote heads
-match. Local evidence includes the 161-file/1105-test deterministic suite,
+Source branch commit `171d699cbab0def827bd13f56e4901e10509ca6e` is now an
+ancestor of main through merge commit `b6c5aaf35`. Local evidence includes the 161-file/1105-test deterministic suite,
 schema validation for SQLite and MySQL, production build, documentation,
 Feature Catalog, language, architecture, and private-content checks, the
 isolated authenticated moderator browser route, and two isolated logical
