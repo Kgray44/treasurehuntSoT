@@ -202,3 +202,29 @@ export async function reconcileCommunityOperationalState(dryRun = true) {
     result: staleDocuments.length || staleReceipts || expiredClaims ? "FINDINGS" : "CLEAN",
   };
 }
+
+/** Bounded operational projection for moderators and alert evaluation. It
+ * contains counts/ages only, never event payloads, identities, keys, or URLs. */
+export async function communityOperationalSnapshot(now = new Date()) {
+  const [queueDepth, deadLetters, oldestClaim, staleScans, quarantined, caseQueue, oldestCase, backupSchedules] = await Promise.all([
+    db.communityOutboxEvent.count({ where: { processedAt: null, terminalFailureAt: null } }),
+    db.communityOutboxEvent.count({ where: { terminalFailureAt: { not: null } } }),
+    db.communityOutboxEvent.findFirst({ where: { processedAt: null, claimExpiresAt: { not: null } }, orderBy: { claimedAt: "asc" }, select: { claimedAt: true } }),
+    db.communityScanReceipt.count({ where: { expiresAt: { lt: now } } }),
+    db.communityRelease.count({ where: { moderationStatus: "QUARANTINED" } }),
+    db.communityModerationCase.count({ where: { status: { in: ["OPEN", "TRIAGED", "ACTION_REQUIRED", "APPEAL_PENDING"] } } }),
+    db.communityModerationCase.findFirst({ orderBy: { openedAt: "asc" }, select: { openedAt: true } }),
+    db.communityOperationalSchedule.findMany({ where: { scheduleType: { in: ["BACKUP", "RESTORE_DRILL_REMINDER"] } }, select: { scheduleType: true, lastRunAt: true } }),
+  ]);
+  return {
+    queueDepth,
+    deadLetters,
+    leaseAgeSeconds: oldestClaim?.claimedAt ? Math.max(0, Math.floor((now.getTime() - oldestClaim.claimedAt.getTime()) / 1000)) : 0,
+    staleScans,
+    quarantined,
+    caseQueue,
+    oldestCaseAgeSeconds: oldestCase ? Math.max(0, Math.floor((now.getTime() - oldestCase.openedAt.getTime()) / 1000)) : 0,
+    backupSchedules: backupSchedules.map((item) => ({ scheduleType: item.scheduleType, lastRunAt: item.lastRunAt })),
+    releaseIdentity: process.env.GIT_COMMIT ? process.env.GIT_COMMIT.slice(0, 64) : "local-unset",
+  };
+}
