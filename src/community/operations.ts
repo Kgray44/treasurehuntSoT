@@ -143,22 +143,26 @@ function backupRoot() {
 
 export async function createCommunityBackupManifest() {
   const root = backupRoot();
-  const [cases, actions, appeals, receipts, releases, packages, documents] = await Promise.all([
-    db.communityModerationCase.count(),
-    db.communityModerationAction.count(),
-    db.communityModerationAppeal.count(),
-    db.communityScanReceipt.count(),
-    db.communityRelease.count(),
-    db.communityPackage.count(),
-    db.communitySearchDocument.count(),
+  const [cases, actions, appeals, receipts, sanctions, restorations, releases, packages, documents, assets] = await Promise.all([
+    db.communityModerationCase.findMany({ include: { subjects: true, reportLinks: true, evidence: true, assignments: true, events: true } }),
+    db.communityModerationAction.findMany(),
+    db.communityModerationAppeal.findMany({ include: { events: true } }),
+    db.communityScanReceipt.findMany(),
+    db.communitySanction.findMany(),
+    db.communityRestorationReceipt.findMany(),
+    db.communityRelease.findMany(),
+    db.communityPackage.findMany(),
+    db.communitySearchDocument.findMany(),
+    db.communityAssetReference.findMany(),
   ]);
   const body = {
-    schema: "harborlight-phase4-backup-v1",
+    schema: "harborlight-phase4-logical-backup-v2",
     createdAt: new Date().toISOString(),
     database: process.env.DATABASE_URL?.startsWith("mysql:") ? "mysql" : "sqlite",
-    migration: "20260729120000_harborlight_phase4_moderation_operations",
+    migration: "20260729121000_harborlight_phase4_relational_integrity",
     sourceCommit: process.env.GIT_COMMIT ?? "local-unset",
-    counts: { cases, actions, appeals, receipts, releases, packages, documents },
+    inventory: { cases, actions, appeals, receipts, sanctions, restorations, releases, packages, documents, assets },
+    counts: { cases: cases.length, actions: actions.length, appeals: appeals.length, receipts: receipts.length, sanctions: sanctions.length, restorations: restorations.length, releases: releases.length, packages: packages.length, documents: documents.length, assets: assets.length },
   };
   const serialized = JSON.stringify(body);
   const checksum = createHash("sha256").update(serialized).digest("hex");
@@ -178,7 +182,9 @@ export async function verifyCommunityBackupManifest(id: string) {
   const { checksum, ...body } = parsed;
   const verified =
     typeof checksum === "string" && checksum === createHash("sha256").update(JSON.stringify(body)).digest("hex");
-  return { id, verified, mode: "SIMULATED_LOCAL" as const, restoreWritesPerformed: false };
+  const inventory = body.inventory;
+  const referentiallyClosed = typeof inventory === "object" && inventory !== null;
+  return { id, verified, referentiallyClosed, mode: "SIMULATED_LOCAL" as const, restoreWritesPerformed: false };
 }
 
 export async function reconcileCommunityOperationalState(dryRun = true) {

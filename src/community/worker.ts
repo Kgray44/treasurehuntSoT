@@ -7,6 +7,7 @@ import {
   type OutboxHandler,
 } from "./outbox";
 import { CommunityError } from "./domain";
+import { createCommunityBackupManifest, reconcileCommunityOperationalState } from "./operations";
 
 export const communityWorkerEventTypes = [
   "SCAN_DISPATCH",
@@ -37,6 +38,26 @@ export type CommunityWorkerOptions = {
   signal?: AbortSignal;
   handlers?: Partial<Record<CommunityWorkerEventType, OutboxHandler>>;
 };
+
+/** Built-in operational handlers are safe and idempotent. Product effects
+ * whose payload needs a storage/scanner port are injected by the production
+ * host; an absent port fails the event and never fabricates completion. */
+export function createDefaultCommunityWorkerHandlers(): Partial<Record<CommunityWorkerEventType, OutboxHandler>> {
+  const reconcile: OutboxHandler = async () => {
+    await reconcileCommunityOperationalState(false);
+  };
+  return {
+    AGGREGATE_RECONCILIATION: reconcile,
+    TREND_RECONCILIATION: reconcile,
+    SEARCH_INDEX: reconcile,
+    SEARCH_DEINDEX: reconcile,
+    ORPHAN_DETECTION: reconcile,
+    STALE_SCAN_DETECTION: reconcile,
+    BACKUP_SCHEDULING: async () => {
+      await createCommunityBackupManifest();
+    },
+  };
+}
 
 function isCommunityWorkerEventType(value: string): value is CommunityWorkerEventType {
   return (communityWorkerEventTypes as readonly string[]).includes(value);
