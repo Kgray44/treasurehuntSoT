@@ -5,4 +5,4 @@
 
 The read-only inventory found 157 Vitest files, 28 Playwright specs, 7 PowerShell scripts, 9 fixed-port consumers, one validation-lock consumer, and 17 database-path/configuration consumers. It found 185 test files, zero unregistered files, and 185 intentional logical-family overlaps; those overlaps describe catalog coverage and do not execute duplicate commands.
 
-The catalog registers 10 suites: one Tier 0, one Tier 1, two Tier 3, two Tier 4, two Tier 5, one Tier 6, and one Tier 7 full gate. The full raw report is reproduced by `node scripts/sounding-line/cli.mjs inventory`. Historical timing, concurrent Harborlight surfaces, and external-provider evidence are visible validation debt; none reduces coverage.
+This historical inventory predates Phase 2. Current policy registers 14 suites, including governed Sounding Line and Harborlight Phase 4 focused surfaces. Historical timing and external-provider evidence remain visible debt; Harborlight reconciliation is complete and no debt reduces release coverage.

@@ -2,9 +2,9 @@ Requirement,Result,Evidence
 All discovered verification files mapped,PASS,inventory --completeness: 157 Vitest + 28 Playwright + 7 PowerShell
 Critical unknowns,PASS,0
 Logical suite granularity,PASS WITH PHASE 2 CERTIFICATION,child owner/resource/parallel metadata retained conservatively
-Validation debt,PASS,3 later-phase or external records with target/review fields
+Validation debt,PASS,2 later-phase or external records with target/review fields
 Legacy harness mapping,PASS,7 PowerShell adapters mapped; harness unchanged
 Deterministic plan,PASS,native plan tests
-Harborlight reconciliation,PENDING POST MERGE,unmerged work not represented as current mainline
+Harborlight reconciliation,COMPLETE,accepted Phase 4 work is represented in Phase 2 policy and records
 Shared harness,PENDING,not acquired or altered
 Full Vitest,PASS,157 files and 1096 tests after local SQLite client generation

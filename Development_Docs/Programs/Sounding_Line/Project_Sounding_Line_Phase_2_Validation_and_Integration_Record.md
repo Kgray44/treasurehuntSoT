@@ -6,7 +6,7 @@ status: current
 
 # Project Sounding Line Phase 2 Validation and Integration Record
 
-**Status:** PHASE 2 FOCUSED VALIDATED - HARBORLIGHT INTEGRATION PENDING
+**Status:** PHASE 2 FOCUSED VALIDATED - HARBORLIGHT RECONCILED ON MAINLINE
 
 ## Focused evidence
 
@@ -45,3 +45,25 @@ Sounding Line created its own local worktree, runtime base, ports, databases,
 browser contexts, storage, logs, and receipts. No Harborlight file, database,
 port, process, browser state, storage root, or validation lock was acquired,
 read for execution, or modified.
+
+## 2026-07-29 canonical closeout recheck
+
+The closure worktree was based on consolidated mainline
+`a6409e1a6103cc38bd1487acbf17892bd59b2e11`. Documentation validation,
+Prettier, ESLint (82 warnings and zero errors), strict TypeScript, product
+language, feature-catalog generation/validation, the complete Vitest suite
+(162 files / 1,106 tests), animation-asset checks, SQLite database identity,
+legacy migration verification, and additive platform-backfill verification all
+passed in a fresh marker-owned runtime.
+
+The browser stage is **not a pass**. It began the current 322-test serial
+matrix and reached 85 reported entries: 54 passed, 19 failed, and 12 skipped.
+The run was stopped after it reproduced the explicitly accepted
+`P34-BME-20260729` roots: canonical invitation/Captain handoff timeouts,
+Journal setup fallout, and the known Phase 3 retired-overlay cascade. The
+passed portion includes the Harborlight Phase 2, Phase 3, and Phase 4 routes,
+the canonical Studio and Captain command routes, Wayfarer coverage, and the
+Lanternwake Phase 2 boundary. The matrix result remains an accepted bounded
+exception, not a green gate; the retained P34 risk-acceptance record remains
+authoritative for the full-matrix decision. The current task-owned runtime,
+server, ports, and generated environment file were released after the stop.
