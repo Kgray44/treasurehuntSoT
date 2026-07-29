@@ -41,6 +41,7 @@
     "private-content:worker": "tsx scripts/private-content/worker.ts",
     "private-content:migrations:status": "tsx scripts/private-content/migration-ledger.ts",
     "community:worker": "tsx scripts/community/worker.ts",
+    "community:schedule": "tsx scripts/community/schedule.ts",
     "community:providers:check": "tsx scripts/community/providers-check.ts",
     "community:ops:status": "tsx scripts/community/ops-status.ts",
     "community:reconcile": "tsx scripts/community/reconcile.ts",
