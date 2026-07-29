@@ -9,7 +9,8 @@ export const fragmentRoot = path.join(catalogRoot, "catalog");
 export const branchFragmentRoot = path.join(catalogRoot, "branch-complete");
 
 export const exclusionNotes = [
-  "Harborlight Phase 3 has substantial implementation but is not cataloged as complete until its remaining local acceptance gates pass.",
+  "Harborlight Phase 4 is planned and is not cataloged as an implemented capability.",
+  "Project Sounding Line is planned browser-validation remediation, not an implemented product capability.",
   "Project Landfall is governed but not implemented.",
   "Vision Waypoint recognition is not implemented beyond its provider seam and simulator.",
   "Production multi-instance pub/sub, distributed rate limiting, production scanner/KMS/storage/alerting, and full deployment proof remain separate work.",
@@ -17,6 +18,7 @@ export const exclusionNotes = [
 ];
 
 function jsonFiles(directory: string): string[] {
+  if (!fs.existsSync(directory)) return [];
   return fs
     .readdirSync(directory, { withFileTypes: true })
     .filter((entry) => entry.isFile() && entry.name.endsWith(".json"))
