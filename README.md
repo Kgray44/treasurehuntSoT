@@ -1,18 +1,28 @@
 # The Forever Treasure Companion
 
-## Project Wayfarer Phase 2
+## Consolidated mainline
 
 The private **Chronicle Passport** is available at `/passport`; a safe public
 **Profile** is resolved by optional canonical handle at `/profile/[handle]`.
-Profile identity, providers, typed preferences, and privacy are Wayfarer-owned.
-Discord OAuth requires deployment configuration; the local Discord simulator is
-test-only and is never external-provider proof.
+Wayfarer also provides private Chronicle history and an Artifact Cabinet;
+identity, consent, providers, typed preferences, and privacy remain
+Wayfarer-owned. Discord OAuth requires deployment configuration; the local
+Discord simulator is test-only and is never external-provider proof.
 
 Production-oriented foundation and fully automated local demo for a private nautical-fantasy date-night Chronicle. All committed story material is generic development seed content; no final surprise content belongs in this public repository.
 
 ## Current phase
 
-The application is now a unified Chronicle platform. The cinematic gateway opens distinct Player, Captain, and Creator workspaces without treating role choice as authorization. Players have durable identities, invitation acceptance, a multi-voyage library, live waiting/runtime state, and exact-version archives. Captains can create version-pinned crew voyages, deliver individually hashed link/QR/code/PIN invitations, manage invitation lifecycle, preview the Player-safe surface, and launch accepted crews. Creator Studio retains immutable publishing and now adds structured version comparison, restore-to-draft, and fork provenance.
+The application is now a unified Chronicle platform. The cinematic gateway and
+True North navigation open distinct Player, Captain, and Creator workspaces
+without treating role choice as authorization. Players have durable identities,
+invitation acceptance, a multi-voyage library, live waiting/runtime state,
+exact-version archives, personal history, and artifact custody projections.
+Captains can create version-pinned crew voyages, deliver individually hashed
+link/QR/code/PIN invitations, manage invitation lifecycle, preview the
+Player-safe surface, and launch accepted crews. Creator Studio retains
+immutable publishing and structured version comparison, restore-to-draft, and
+fork provenance.
 
 The original companion and expanded Game Master Command Center remain integrated compatibility surfaces. A shared animation director coordinates the harbor, journal, chart, artifact, gateway, and finale experiences without allowing presentation timing to outrun server truth. All committed content remains fictional development seed material.
 
@@ -27,7 +37,9 @@ The original companion and expanded Game Master Command Center remain integrated
 
 ## Reproducible setup
 
-Requirements: Windows PowerShell 5.1+, Node.js 24, npm 11, and Git. MySQL 8 is only required for production parity; the supported local/demo/test strategy is SQLite.
+Requirements: Windows PowerShell 5.1+, Node.js 22 or newer, npm 11, and Git.
+MySQL 8 is only required for production parity; the supported local/demo/test
+strategy is SQLite.
 
 ### Fastest Windows demo
 
@@ -107,11 +119,11 @@ Set unique local values in `.env`; the seed’s fallback values are development-
 
 Full setup, validation stages, output locations, clean-clone instructions, and troubleshooting are in [local development](docs/developer/local-development.md) and [testing](docs/developer/testing.md). Unified identity, invitations, libraries, authorization, history, and migration are documented in the [architecture guide](docs/developer/architecture.md); product and Studio context are in the [product overview](docs/product/overview.md). The future roadmap and recognition boundary are in the [product roadmap](docs/product/roadmap.md). Animation ownership, scene contracts, assets, performance, and the development lab are indexed from [animation architecture](docs/developer/animation/architecture.md).
 
-Wayfarer Phase 2 is complete on its dedicated branch. Its focused browser proof
-uses repository Playwright Chromium with an owned loopback server, newly
-migrated isolated SQLite database, isolated profile-media root, and explicit
-test-only provider simulators. Live provider authorization and live MySQL
-remain external staging/deployment validation, not local implementation gates.
+Wayfarer Phases 3 and 4, Sealed Hold Phases 3 and 4, Harborlight Phase 3, True
+North, Ledgerlight, and the Feature Catalog are consolidated on main. Focused
+and integration evidence is retained in `Development_Docs`; live provider
+authorization, production MySQL, deployment, and hosted storage/scanning proof
+remain external validation.
 
 ## Repository workflow
 
@@ -121,10 +133,18 @@ remain external staging/deployment validation, not local implementation gates.
 
 Project One Voyage Phase 2 passed an isolated MySQL 8.0.46 cutover, canonical
 compatibility, backup/restore, and restart rehearsal. Legacy persistence is
-retained pending its one-release compatibility-observation gate.
+retained pending its one-release compatibility-observation gate. The
+P34-BME-20260729 browser-matrix risk acceptance is an explicit exception, not
+a full browser-matrix pass; its scope and follow-up are recorded in
+`Development_Docs/Phase_3_4_Convergence_Browser_Matrix_Risk_Acceptance.md`.
 
 The full story, final Rive artwork/audio, horizontal scale-out for SSE, and production deployment are later work. The current sound is restrained and procedural. The sole third-party visual sample is MIT-licensed, local, documented, and development-only; production uses original SVG/CSS fallbacks. The repository is public, so only generic development content is permitted. See the [product roadmap](docs/product/roadmap.md).
 
 ## Next steps
 
-Add CI for the complete validation gate, exercise the parallel MySQL schema in an integration environment, and replace process-local SSE fan-out before multi-instance deployment. Real surprise content remains blocked until repository visibility is verified private.
+Project Sounding Line, Harborlight Phase 4, Project Drydock, Project Landfall,
+and Project Watchglass are planned or governed work, not implemented product
+claims. Add CI for the complete validation gate, exercise the parallel MySQL
+schema in an integration environment, and replace process-local SSE fan-out
+before multi-instance deployment. Real surprise content remains blocked until
+repository visibility is verified private.

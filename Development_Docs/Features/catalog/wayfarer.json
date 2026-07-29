@@ -18,5 +18,46 @@
       { "kind": "path", "value": "src/wayfarer/providers.ts" }
     ],
     "catalogVersion": 1
+  },
+  {
+    "id": "FT-030",
+    "title": "Personal Chronicle History",
+    "summary": "Private, version-pinned Voyage history preserves personal records, reflections, keepsakes, and consent-aware participant context.",
+    "status": "MAINLINE",
+    "program": "Wayfarer Phase 3",
+    "surfaces": ["/passport/history"],
+    "subfeatures": [
+      "Personal Chronicle records",
+      "Version and participant snapshots",
+      "Lifecycle and timing history",
+      "Private reflections",
+      "Consent grants and revocation"
+    ],
+    "evidence": [
+      { "kind": "path", "value": "src/wayfarer/chronicle-history.ts" },
+      { "kind": "completion-record", "value": "Development_Docs/Project_Wayfarer_Phase_3_Completion_Receipt.md" }
+    ],
+    "catalogVersion": 1
+  },
+  {
+    "id": "FT-031",
+    "title": "Artifact Cabinet and Achievements",
+    "summary": "Person-level artifact provenance, custody, display, assembly, and achievements remain separate from shared Voyage inventory.",
+    "status": "MAINLINE",
+    "program": "Wayfarer Phase 4",
+    "surfaces": ["/passport/artifacts"],
+    "subfeatures": [
+      "Immutable grant receipts",
+      "Recipient-policy evidence",
+      "Personal artifact records",
+      "Display cases",
+      "Assembly recipes",
+      "Versioned achievements"
+    ],
+    "evidence": [
+      { "kind": "path", "value": "src/wayfarer/artifacts.ts" },
+      { "kind": "path", "value": "prisma/migrations/20260725120000_wayfarer_phase4_artifacts_achievements/migration.sql" }
+    ],
+    "catalogVersion": 1
   }
 ]

@@ -1,6 +1,6 @@
 # Project Ledgerlight validation record
 
-**Status:** implementation complete; final acceptance blocked by unrelated browser-matrix regressions. **Base:** 676b21ed.
+**Status:** implementation complete; historical pre-convergence validation record. **Base:** 676b21ed.
 
 Documentation validation and its focused tests passed. Lint and type checking passed with pre-existing warnings. The unit suite passed (112 files, 950 tests), and the private-content scan plus its focused security tests passed.
 

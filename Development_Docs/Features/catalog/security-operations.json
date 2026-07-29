@@ -19,5 +19,24 @@
       { "kind": "path", "value": "src/components/shell/ProductShell.tsx" }
     ],
     "catalogVersion": 1
+  },
+  {
+    "id": "FT-029",
+    "title": "True North Role-Aware Navigation Shell",
+    "summary": "A persistent, accessible navigation shell provides role-aware workspace routing without weakening authorization boundaries.",
+    "status": "MAINLINE",
+    "program": "True North",
+    "surfaces": ["/", "/player", "/captain", "/studio"],
+    "subfeatures": [
+      "Persistent workspace navigation",
+      "Role-aware destinations",
+      "Keyboard and reduced-motion support",
+      "Responsive information hierarchy"
+    ],
+    "evidence": [
+      { "kind": "path", "value": "src/components/shell/ProductShell.tsx" },
+      { "kind": "completion-record", "value": "Development_Docs/Project_True_North_Completion_Receipt.md" }
+    ],
+    "catalogVersion": 1
   }
 ]

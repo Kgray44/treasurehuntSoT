@@ -327,6 +327,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Completion_Receipts/Ledgerlight_Mainline_Cleanup_Receipt.md",
+      "record_type": "completion-receipt",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Consolidated_Mainline_Receipt_2026-07-29.md",
       "record_type": "archive-index",
       "status": "preserved",
@@ -334,18 +340,6 @@
     },
     {
       "path": "Development_Docs/document-index.json",
-      "record_type": "archive-index",
-      "status": "preserved",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Features/branch-complete/sealed-hold-phase3.json",
-      "record_type": "archive-index",
-      "status": "preserved",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Features/branch-complete/wayfarer-phase3-phase4.json",
       "record_type": "archive-index",
       "status": "preserved",
       "canonical_for": null
@@ -1041,6 +1035,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Programs/Other/Project_Ledgerlight_Mainline_Truth_Reconciliation.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Programs/Other/Project_Ledgerlight_Validation_Record.md",
       "record_type": "program-record",
       "status": "preserved",
@@ -1588,6 +1588,12 @@
     },
     {
       "path": "Development_Docs/Validation/KG_Original_Animation_Audit_Reconciliation_Source.md",
+      "record_type": "validation-evidence",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Validation/Ledgerlight_Mainline_Cleanup_Validation.md",
       "record_type": "validation-evidence",
       "status": "preserved",
       "canonical_for": null

@@ -15,3 +15,8 @@ Operational provider health, metrics, backup receipts, repair plans, and restore
 drills use opaque IDs and safe codes only. Do not place provider endpoints,
 storage keys, wrapped keys, plaintext keys, or private package data in support
 evidence.
+
+Protected-media grants, derivatives, withdrawal, and consent records are
+authorization-bound operational data. Their local tests and repository scans do
+not prove live storage, scanning, identity, or deployment-provider behavior;
+that proof requires a separately configured external environment.

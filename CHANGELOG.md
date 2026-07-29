@@ -5,6 +5,11 @@
 ### Changed
 
 - Reorganized documentation into audience-specific guides and an indexed engineering-record archive.
+- Reconciled current-main documentation, Ledgerlight records, and the generated Feature Catalog after the Phase 3-4, Wayfarer, Sealed Hold, Harborlight, and True North convergence.
+
+### Validation
+
+- Recorded the explicit `P34-BME-20260729` browser-matrix risk acceptance as an exception; it is not represented as a full matrix pass.
 
 ## Current mainline
 

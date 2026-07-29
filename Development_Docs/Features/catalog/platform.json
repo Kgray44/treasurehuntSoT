@@ -98,5 +98,25 @@
       { "kind": "path", "value": "scripts/prepare-validation-isolation.ts" }
     ],
     "catalogVersion": 1
+  },
+  {
+    "id": "FT-032",
+    "title": "Ledgerlight Documentation Governance and Feature Catalog",
+    "summary": "Audience-separated current documentation, indexed engineering records, and a fragment-driven capability catalog keep mainline claims reviewable.",
+    "status": "MAINLINE",
+    "program": "Ledgerlight",
+    "surfaces": ["docs", "Development_Docs", "npm run docs:validate", "npm run features:validate"],
+    "subfeatures": [
+      "Audience and canonical-topic governance",
+      "Generated engineering-record index",
+      "Historical archive classification",
+      "Machine-readable capability fragments",
+      "Generated Feature Catalog validation"
+    ],
+    "evidence": [
+      { "kind": "path", "value": "scripts/validate-documentation.mjs" },
+      { "kind": "path", "value": "scripts/features/build-feature-catalog.ts" }
+    ],
+    "catalogVersion": 1
   }
 ]
