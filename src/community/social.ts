@@ -4,6 +4,7 @@ import { db } from "@/lib/db";
 import { consumeRateLimit } from "@/lib/rate-limit";
 import { CommunityError } from "./domain";
 import type { CommunityActor } from "./services";
+import { attachReportToModerationCase, moderationPublicReceipt } from "./moderation";
 
 /**
  * The Phase 3 schema deliberately stores Community links as scalar records.
@@ -1251,9 +1252,12 @@ export async function createReport(
         reporterAccountId: actor.accountId,
         reason,
         detail,
+        ...(input.idempotencyKey ? { idempotencyKey: input.idempotencyKey } : {}),
       },
     });
-    return { state: "CREATED" as const, value: reportProjection(report) };
+    await attachReportToModerationCase(tx, report);
+    const receipt = await tx.communityReport.findUniqueOrThrow({ where: { id: report.id } });
+    return { state: "CREATED" as const, value: moderationPublicReceipt(receipt) };
   });
 }
 export function reportProjection(report: CommunityReport) {

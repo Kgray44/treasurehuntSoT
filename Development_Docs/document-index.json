@@ -291,13 +291,67 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Community_Harbor_Appeal_and_Restoration_Policy.md",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Community_Harbor_Backup_and_Recovery.md",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Community_Harbor_Deployment_and_Rollout_Runbook.md",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Community_Harbor_Keepsake_and_Voyage_Log_Model.md",
       "record_type": "archive-index",
       "status": "preserved",
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Community_Harbor_Moderation_Case_Architecture.md",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Community_Harbor_Moderation_Policy.md",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Community_Harbor_Observability_and_Alerting.md",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Community_Harbor_Phase_3_Test_Plan.md",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Community_Harbor_Phase_4_Test_Plan.md",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Community_Harbor_Production_Provider_Architecture.md",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Community_Harbor_Rate_Limit_and_Abuse_Model.md",
       "record_type": "archive-index",
       "status": "preserved",
       "canonical_for": null
@@ -310,6 +364,12 @@
     },
     {
       "path": "Development_Docs/Community_Harbor_Social_Interaction_Model.md",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Community_Harbor_Worker_and_Outbox_Operations.md",
       "record_type": "archive-index",
       "status": "preserved",
       "canonical_for": null
@@ -652,6 +712,12 @@
     },
     {
       "path": "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_2_Validation_Record.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_4_Sounding_Line_Handoff.json",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
@@ -1263,6 +1329,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Project_Harborlight_Completion_Receipt.md",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Project_Harborlight_Phase_3_Completion_Report.md",
       "record_type": "archive-index",
       "status": "preserved",
@@ -1294,6 +1366,42 @@
     },
     {
       "path": "Development_Docs/Project_Harborlight_Phase_3_Validation_Record.md",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Project_Harborlight_Phase_4_Completion_Receipt.md",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Project_Harborlight_Phase_4_Design_Record.md",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Project_Harborlight_Phase_4_Implementation_Manifest.txt",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Project_Harborlight_Phase_4_Integration_Manifest.md",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Project_Harborlight_Phase_4_Production_Threat_Model.md",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Project_Harborlight_Phase_4_Validation_Record.md",
       "record_type": "archive-index",
       "status": "preserved",
       "canonical_for": null

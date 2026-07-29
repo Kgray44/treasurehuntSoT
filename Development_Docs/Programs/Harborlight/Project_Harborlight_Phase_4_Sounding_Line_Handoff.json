@@ -1,0 +1,45 @@
+{
+  "program": "Harborlight Phase 4",
+  "schemaVersion": 1,
+  "owner": "Harborlight",
+  "integration": "temporary-project-owned-fragment",
+  "suites": [
+    {
+      "id": "harborlight.phase4.moderation.unit",
+      "owner": "Harborlight",
+      "tier": "unit",
+      "contracts": ["case-transition", "appeal-transition", "reporter-privacy", "trusted-scan-receipt"],
+      "paths": ["src/community/moderation.ts", "src/community/scanner.ts"],
+      "resources": ["none"],
+      "databaseMode": "none",
+      "storageMode": "none",
+      "scannerMode": "deterministic",
+      "browserProjects": [],
+      "parallelSafety": "safe",
+      "releaseGate": true,
+      "cleanup": "none",
+      "command": "npm test -- src/community/moderation.test.ts src/community/scanner.test.ts",
+      "migrationStatus": "not-required"
+    },
+    {
+      "id": "harborlight.phase4.migration.sqlite",
+      "owner": "Harborlight",
+      "tier": "integration",
+      "contracts": ["sqlite-migration-parity", "moderation-schema"],
+      "paths": [
+        "prisma/schema.sqlite.prisma",
+        "prisma/migrations/20260729120000_harborlight_phase4_moderation_operations"
+      ],
+      "resources": ["task-owned-sqlite"],
+      "databaseMode": "isolated-sqlite",
+      "storageMode": "none",
+      "scannerMode": "not-configured",
+      "browserProjects": [],
+      "parallelSafety": "serialized",
+      "releaseGate": true,
+      "cleanup": "remove-task-owned-database",
+      "command": "npx prisma migrate deploy --schema prisma/schema.sqlite.prisma",
+      "migrationStatus": "implemented"
+    }
+  ]
+}

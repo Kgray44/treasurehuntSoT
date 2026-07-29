@@ -135,6 +135,9 @@ export type CommunityScanStatus =
   | "SUSPICIOUS"
   | "MALICIOUS"
   | "FAILED"
+  | "TIMEOUT"
+  | "PROVIDER_UNAVAILABLE"
+  | "DEFINITIONS_STALE"
   | "QUARANTINED";
 export function assertPublicationScanStatus(status: CommunityScanStatus, files: readonly CommunityPackageFile[]) {
   const requiresScan = files.some(

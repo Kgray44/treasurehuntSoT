@@ -5,7 +5,7 @@ This generated catalog records completed, meaningful platform capabilities. It i
 ## Audited repository and commit
 
 Repository: `Kgray44/treasurehuntSoT`
-Audited source commit: `cea12ce12150635aa593ba214d21a6db7ec425a9`
+Audited source commit: `3699f5e7c638d950aab3b55169b603121b57c85b`
 
 ## Status vocabulary
 
@@ -651,9 +651,9 @@ The public engine can import, store, deliver, recover, and govern protected Chro
 ## FT-025 - Project Harborlight Community Exchange
 
 **Status:** MAINLINE
-**Program or subsystem:** Harborlight Phases 1 through 3
+**Program or subsystem:** Harborlight Phases 1 through 4
 
-A governed community system supports immutable reusable Chronicle packages, licensing, attribution, installation, remix lineage, discovery, and consent-aware social projections.
+A governed community system supports immutable reusable Chronicle packages, licensing, attribution, installation, remix lineage, discovery, consent-aware social projections, and durable moderated operations.
 
 ### Important subfeatures
 
@@ -666,6 +666,8 @@ A governed community system supports immutable reusable Chronicle packages, lice
 - Discovery and search projections
 - Reviews, comments, reports, and collections
 - Consent-aware keepsakes and voyage logs
+- Durable moderation cases, actions, appeals, and restoration receipts
+- Fail-closed scanner receipts and operational provider diagnostics
 
 ### Primary surfaces
 
@@ -675,6 +677,7 @@ A governed community system supports immutable reusable Chronicle packages, lice
 
 - path: `src/community/exchange-service.ts`
 - completion-record: `Development_Docs/Project_Harborlight_Phase_3_Completion_Report.md`
+- path: `Development_Docs/Project_Harborlight_Phase_4_Design_Record.md`
 
 ---
 
@@ -876,4 +879,4 @@ Audience-separated current documentation, indexed engineering records, and a fra
 
 Update the owning machine-readable fragment only when completed work changes a major capability, important subfeature, availability, or meaningful limitation. Regenerate this file with `npm run features:sync`; never hand-edit it. Validate before closeout with `npm run features:validate`.
 
-Generation source commit: `cea12ce12150635aa593ba214d21a6db7ec425a9`
+Generation source commit: `3699f5e7c638d950aab3b55169b603121b57c85b`

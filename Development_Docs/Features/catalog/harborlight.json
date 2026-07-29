@@ -2,9 +2,9 @@
   {
     "id": "FT-025",
     "title": "Project Harborlight Community Exchange",
-    "summary": "A governed community system supports immutable reusable Chronicle packages, licensing, attribution, installation, remix lineage, discovery, and consent-aware social projections.",
+    "summary": "A governed community system supports immutable reusable Chronicle packages, licensing, attribution, installation, remix lineage, discovery, consent-aware social projections, and durable moderated operations.",
     "status": "MAINLINE",
-    "program": "Harborlight Phases 1 through 3",
+    "program": "Harborlight Phases 1 through 4",
     "surfaces": ["/tales", "/studio/community"],
     "subfeatures": [
       "Stable listings and immutable releases",
@@ -15,13 +15,19 @@
       "Remix lineage",
       "Discovery and search projections",
       "Reviews, comments, reports, and collections",
-      "Consent-aware keepsakes and voyage logs"
+      "Consent-aware keepsakes and voyage logs",
+      "Durable moderation cases, actions, appeals, and restoration receipts",
+      "Fail-closed scanner receipts and operational provider diagnostics"
     ],
     "evidence": [
       { "kind": "path", "value": "src/community/exchange-service.ts" },
       {
         "kind": "completion-record",
         "value": "Development_Docs/Project_Harborlight_Phase_3_Completion_Report.md"
+      },
+      {
+        "kind": "path",
+        "value": "Development_Docs/Project_Harborlight_Phase_4_Design_Record.md"
       }
     ],
     "catalogVersion": 1

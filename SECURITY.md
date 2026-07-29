@@ -20,3 +20,10 @@ Protected-media grants, derivatives, withdrawal, and consent records are
 authorization-bound operational data. Their local tests and repository scans do
 not prove live storage, scanning, identity, or deployment-provider behavior;
 that proof requires a separately configured external environment.
+
+Community Harbor moderation evidence is private operational data. Do not expose
+reporter identities, report/appeal prose, moderator notes, case evidence,
+scanner endpoints, storage keys, or provider diagnostics in public projections,
+browser traces, metrics, or issue reports. Quarantine and restoration must be
+database-authorized and checksum/scan-bound; moving an object alone is never a
+delivery control.

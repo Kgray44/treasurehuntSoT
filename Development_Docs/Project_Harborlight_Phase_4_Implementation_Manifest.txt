@@ -1,0 +1,9 @@
+Project Harborlight Phase 4 implementation manifest
+Base: 3699f5e7c638d950aab3b55169b603121b57c85b
+Branch: codex/project-harborlight-phase4-secure-the-harbor
+SQLite migration: 20260729120000_harborlight_phase4_moderation_operations
+MySQL migration: 0046_harborlight_phase4_moderation_operations
+Source: src/community/moderation.ts, scanner.ts, operations.ts, worker.ts
+Routes: /api/community/moderation/cases, actions, appeals
+Scripts: community worker/providers/ops/reconcile/backup/restore-verify
+Classification: implementation candidate; external-provider acceptance remains pending.
