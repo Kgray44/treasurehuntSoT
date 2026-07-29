@@ -670,6 +670,28 @@ describe("ChronicleJournalSession mounted synchronous teardown", () => {
     expect(document.activeElement).toBe(chapters);
   });
 
+  it("settles a skipped opening without replacing an already-ready PageFlip runtime", async () => {
+    const pendingOpening = deferred<JournalPhaseOutcome>();
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(() => Promise.resolve(jsonResponse(sessionState("skip-ready-pageflip")))),
+    );
+    openingTestDouble.waitForPhase.mockImplementation(() => pendingOpening.promise);
+
+    const view = render(createElement(ChronicleJournalSession, { sessionId: "skip-ready-pageflip" }));
+    await act(flushMicrotasks);
+    fireEvent.click(screen.getByRole("button", { name: /Open the journal/i }));
+    await act(flushMicrotasks);
+
+    fireEvent.click(screen.getByRole("button", { name: "Skip ceremony" }));
+    await act(flushMicrotasks);
+
+    expect(pageFlipTestDouble.forceReadableFallback).not.toHaveBeenCalled();
+    expect(view.container.querySelector("main")?.dataset.journalPhase).toBe("JOURNAL_READY");
+    expect(view.container.querySelector("main")?.dataset.journalReadyReason).toBe("skipped");
+    expect(view.container.querySelector("main")?.dataset.pageFlipReadiness).toBe("reduced");
+  });
+
   it("offers manual full and abbreviated replay and restores the replay trigger", async () => {
     vi.stubGlobal(
       "fetch",

@@ -15,7 +15,14 @@ import type {
   ProgressionReceiptEventDetail,
   ProgressionStateEventDetail,
 } from "../../../src/components/player/PlayerExperience";
+import { resolveLegacyCampaign } from "../../../src/compatibility/legacy-companion";
+import {
+  LEGACY_COMPANION_DOMAIN,
+  LEGACY_COMPANION_MIGRATION_VERSION,
+  migrateLegacyCompanion,
+} from "../../../src/chronicle/legacy-companion-migration";
 import { db } from "../../../src/lib/db";
+import { createAccountSession, ensureGuestAccountForProfile } from "../../../src/wayfarer/accounts";
 
 export { expect };
 
@@ -350,20 +357,85 @@ export async function openPhase3Player(
   });
   expect(access.status(), await access.text()).toBe(200);
   await page.goto(`${fixture.path}?section=${section}&journalSpeed=0.25`);
-  const open = page.getByRole("button", { name: "Open the journal" });
-  if (await open.isVisible()) {
-    await open.click();
-    const skip = page.getByRole("button", { name: "Skip ceremony" });
-    if (await skip.isVisible({ timeout: 4_000 }).catch(() => false)) await skip.click();
+  await ensurePhase3JournalReady(page);
+  // The canonical Chronicle session is a single physical journal.  The old
+  // six-section Companion navigation remains a compatibility-only surface and
+  // must not be required to prove canonical journal readiness.
+  if (section !== "journal") {
+    await navigatePhase3Section(page, section);
+    await expect(page.locator(`.voyage-shell.view-${section}`)).toBeVisible();
   }
-  await expect(page.locator(".voyage-shell")).toHaveAttribute("data-journal-phase", "JOURNAL_READY", {
+  const compatibilityHost = page.locator("[data-testid='progression-scene-host']");
+  return (await compatibilityHost.count()) === 1 ? compatibilityHost.getAttribute("data-scene-host-id") : null;
+}
+
+/**
+ * Installs an account-rooted Player session for a migrated, nonce-bound Phase 3
+ * fixture.  The retired forever_player cookie cannot authorize the canonical
+ * compatibility route after Phase 2; this helper follows the same migrated
+ * PlayerProfile and AccountSession authority used by application sign-in.
+ */
+export async function installCanonicalPhase3PlayerSession(page: Page, fixture: Phase3CaseFixture, baseURL: string) {
+  fileDatabasePath();
+  const mapping = await db.legacyEntityReference.findFirst({
+    where: {
+      sourceDomain: LEGACY_COMPANION_DOMAIN,
+      sourceModel: "PlayerAccess",
+      sourceId: fixture.playerAccessId,
+      canonicalModel: "PlayerProfile",
+      migrationVersion: LEGACY_COMPANION_MIGRATION_VERSION,
+    },
+    select: { canonicalId: true },
+  });
+  expect(mapping, `Phase 3 fixture ${fixture.caseId} must retain its migrated PlayerProfile mapping.`).toBeTruthy();
+  const accountId = await ensureGuestAccountForProfile(mapping!.canonicalId);
+  const session = await createAccountSession(accountId, "phase3-validation");
+  await page.context().addCookies([
+    {
+      name: "wayfarer_account",
+      value: session.token,
+      url: baseURL,
+      httpOnly: true,
+      sameSite: "Lax",
+    },
+  ]);
+}
+
+/** Settles the canonical Chronicle opening ceremony after an initial visit or reload. */
+export async function ensurePhase3JournalReady(page: Page) {
+  const open = page.getByRole("button", { name: "Open the journal" });
+  const skip = page.getByRole("button", { name: "Skip ceremony" });
+  // The outgoing loading shell is intentionally retained while the canonical
+  // journal hydrates; assertions must address the current, interactive shell.
+  const shell = page.locator(".voyage-shell").last();
+  await expect
+    .poll(
+      async () => {
+        if ((await shell.getAttribute("data-journal-phase")) === "JOURNAL_READY") return "ready";
+        return (await open.isVisible().catch(() => false)) ? "open" : "pending";
+      },
+      { timeout: 20_000 },
+    )
+    .not.toBe("pending");
+  if ((await shell.getAttribute("data-journal-phase")) !== "JOURNAL_READY") {
+    // A reentry can advance from ENTRY_IDLE to an opening phase between the
+    // initial observation and the click.  Act on the control that is still
+    // present, then wait for the governed readable skip/ready outcome.
+    if (await open.isVisible().catch(() => false)) await open.click();
+    await expect
+      .poll(
+        async () => {
+          if ((await shell.getAttribute("data-journal-phase")) === "JOURNAL_READY") return "ready";
+          return (await skip.isVisible().catch(() => false)) ? "skip" : "pending";
+        },
+        { timeout: 20_000 },
+      )
+      .not.toBe("pending");
+    if ((await shell.getAttribute("data-journal-phase")) !== "JOURNAL_READY") await skip.click();
+  }
+  await expect(shell).toHaveAttribute("data-journal-phase", "JOURNAL_READY", {
     timeout: 20_000,
   });
-  await expect(page.getByText("Tide connected")).toBeVisible({ timeout: 20_000 });
-  await expect(page.locator("[data-testid='progression-scene-host']")).toHaveCount(1);
-  if (!(await page.locator(`.voyage-shell.view-${section}`).count())) await navigatePhase3Section(page, section);
-  await expect(page.locator(`.voyage-shell.view-${section}`)).toBeVisible();
-  return page.locator("[data-testid='progression-scene-host']").getAttribute("data-scene-host-id");
 }
 
 export async function capturePhase3DbTruth(fixture: Phase3CaseFixture): Promise<Phase3DbTruth> {
@@ -479,12 +551,15 @@ function commandInput(fixture: Phase3CaseFixture, eventType: Phase3EventType, ex
 }
 
 async function publishCommand(captain: APIRequestContext, fixture: Phase3CaseFixture, eventType: Phase3EventType) {
-  const campaign = await db.campaign.findUniqueOrThrow({
-    where: { id: fixture.campaignId },
+  const resolved = await resolveLegacyCampaign(fixture.slug);
+  if (!resolved)
+    throw new Error(`Phase 3 fixture ${fixture.slug} was not migrated into a canonical Chronicle Session.`);
+  const session = await db.taleSession.findUniqueOrThrow({
+    where: { id: resolved.sessionId },
     select: { currentSequence: true },
   });
   const response = await captain.post("/api/gm/commands", {
-    data: commandInput(fixture, eventType, campaign.currentSequence),
+    data: commandInput(fixture, eventType, session.currentSequence),
   });
   const body = (await response.json().catch(() => null)) as
     | (Phase3CommandReceipt & { error?: string; code?: string })
@@ -497,7 +572,7 @@ async function publishCommand(captain: APIRequestContext, fixture: Phase3CaseFix
     playerDelivery: "UNCONFIRMED",
     playerPresentation: "UNCONFIRMED",
     playerAcknowledgment: "UNCONFIRMED",
-    event: { type: eventType, sequence: campaign.currentSequence + 1 },
+    event: { type: eventType, sequence: session.currentSequence + 1 },
   });
   return body!;
 }
@@ -678,6 +753,11 @@ async function createCaseFixture(captain: APIRequestContext, caseId: string, eve
         ],
       });
     }
+    const migration = await migrateLegacyCompanion({ campaignSlug: slug });
+    if (migration.failures.length || migration.checksumMismatches.length)
+      throw new Error(
+        `Phase 3 fixture migration failed: ${[...migration.failures, ...migration.checksumMismatches].join("; ")}`,
+      );
     if (eventType === "STATE_REVERTED") {
       const precursor = await publishCommand(captain, fixture, "PLAYER_LOG_ENTRY_ADDED");
       await db.viewedCeremony.create({
@@ -790,6 +870,10 @@ export type Phase3FixtureManager = Readonly<{
   proveIsolation(): Promise<void>;
   createCase(caseId: string, eventType: Phase3EventType): Promise<Phase3CaseFixture>;
   publish(fixture: Phase3CaseFixture, eventType?: Phase3EventType): Promise<Phase3CommandReceipt>;
+  canonicalCaptainAction(
+    fixture: Phase3CaseFixture,
+    action: "pause" | "resume" | "presentation" | "releaseHint",
+  ): Promise<{ sessionId: string; eventType: string }>;
   replay(page: Page, eventId: string): Promise<Phase3ReceiptEvidence>;
   revokeAccess(fixture: Phase3CaseFixture): Promise<void>;
   retainForReadOnly(fixture: Phase3CaseFixture): void;
@@ -907,6 +991,31 @@ export const phase3Test = baseTest.extend<Phase3TestFixtures, Phase3WorkerFixtur
       async publish(fixture, eventType = fixture.eventType) {
         await requireMutationAuthority();
         return publishCommand(phase3Captain.context, fixture, eventType);
+      },
+      async canonicalCaptainAction(fixture, action) {
+        await requireMutationAuthority();
+        const resolved = await resolveLegacyCampaign(fixture.slug);
+        expect(resolved, `Phase 3 fixture ${fixture.slug} must resolve to a canonical TaleSession.`).toBeTruthy();
+        const response = await phase3Captain.context.post(`/api/captain/sessions/${resolved!.sessionId}`, {
+          data: {
+            action,
+            reason: `Canonical Phase 6 validation ${fixture.caseId}`,
+            idempotencyKey: `phase3-canonical-${fixture.caseId}-${action}-${randomUUID()}`,
+          },
+        });
+        const body = (await response.json().catch(() => null)) as { error?: string } | null;
+        expect(response.status(), `Canonical Captain action failed: ${JSON.stringify(body)}`).toBe(200);
+        return {
+          sessionId: resolved!.sessionId,
+          eventType:
+            action === "pause"
+              ? "sessionPaused"
+              : action === "resume"
+                ? "sessionResumed"
+                : action === "releaseHint"
+                  ? "hintReleased"
+                  : "presentationTriggered",
+        };
       },
       async replay(replayPage, eventId) {
         const priorReceipt = (await readPhase3Evidence(replayPage)).receipts

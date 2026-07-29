@@ -1,0 +1,21 @@
+[Unit]
+Description=Forever Treasure private-content worker
+After=network.target mysql.service
+
+[Service]
+Type=simple
+User=forever-treasure
+Group=forever-treasure
+WorkingDirectory=/opt/forever-treasure
+EnvironmentFile=/etc/forever-treasure.env
+ExecStart=/usr/bin/npx tsx scripts/private-content/worker.ts
+Restart=on-failure
+RestartSec=5
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=full
+ProtectHome=true
+UMask=0077
+
+[Install]
+WantedBy=multi-user.target

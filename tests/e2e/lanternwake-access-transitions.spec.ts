@@ -61,10 +61,9 @@ async function installTransitionProbe(page: Page, kind: TransitionKind) {
     };
     probeWindow.__lanternwakeTransitionProbe = state;
 
-    const sourceSelector = probeKind === "player-access" ? ".access-scene" : ".quartermaster-login";
-    const targetSelector = probeKind === "player-access" ? "[data-scene-part='seal']" : ".cabin-door";
-    const destinationSelector =
-      probeKind === "player-access" ? ".voyage-shell" : ".quartermaster-shell:not(.loading-quarters)";
+    const sourceSelector = probeKind === "player-access" ? ".access-scene" : ".platform-auth.intent-captain";
+    const targetSelector = probeKind === "player-access" ? "[data-scene-part='seal']" : ".relic-captain-lock";
+    const destinationSelector = probeKind === "player-access" ? ".voyage-shell" : ".captain-library";
 
     const isVisible = (element: Element | null) => {
       if (!(element instanceof HTMLElement) || !element.isConnected) return false;
@@ -98,8 +97,10 @@ async function installTransitionProbe(page: Page, kind: TransitionKind) {
         if (Number.isFinite(poseValue)) {
           state.sampleCount += 1;
           state.lastPoseValue = poseValue;
-          const initialPose = probeKind === "player-access" ? poseValue >= 0.9 : poseValue >= 0.95;
-          const finalPose = probeKind === "player-access" ? poseValue <= 0.08 : poseValue <= 0.55;
+          const initialPose =
+            probeKind === "player-access" ? poseValue >= 0.9 : target.getAttribute("data-relic-state") === "idle";
+          const finalPose =
+            probeKind === "player-access" ? poseValue <= 0.08 : target.getAttribute("data-relic-state") === "arrived";
           if (initialPose && !state.finalPoseSeenAfterCommit) state.initialPoseSeen = true;
           if (finalPose && state.operationCommitted) state.finalPoseSeenAfterCommit = true;
           if (state.finalPoseSeenAfterCommit && initialPose) state.snappedBack = true;
@@ -171,15 +172,15 @@ test.describe("Lanternwake Phase 1 access transition final-state holds", () => {
     ).toBeTruthy();
 
     await page.goto(`/tale/${campaignSlug}`);
-    await expect(page.getByRole("heading", { name: "The journal knows its sailor" })).toBeVisible();
-    await expect(page.getByRole("button", { name: "Open the journal" })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Confirm your invitation" })).toBeVisible();
+    await expect(page.getByRole("button", { name: "Confirm invitation" })).toBeVisible();
     await installTransitionProbe(page, "player-access");
 
     await page.getByLabel("Invitation phrase").fill(process.env.PLAYER_ACCESS_CODE!);
     const accessResponsePromise = page.waitForResponse(
       (response) => new URL(response.url()).pathname === "/api/player/access" && response.request().method() === "POST",
     );
-    await page.getByRole("button", { name: "Open the journal" }).click();
+    await page.getByRole("button", { name: "Confirm invitation" }).click();
     const accessResponse = await accessResponsePromise;
     expect(accessResponse.status()).toBe(200);
     expect((await accessResponse.json()) as { ok?: unknown }).toEqual(expect.objectContaining({ ok: true }));
@@ -188,7 +189,7 @@ test.describe("Lanternwake Phase 1 access transition final-state holds", () => {
     await expectCommittedPoseWithoutSnapback(page, "player-access");
     await expect(page.locator(".voyage-shell")).toBeVisible();
     await expect(page.getByRole("button", { name: "Open the journal" })).toBeVisible();
-    await expect(page.getByRole("heading", { name: "The journal knows its sailor" })).toHaveCount(0);
+    await expect(page.getByRole("heading", { name: "Confirm your invitation" })).toHaveCount(0);
     const snapshot = await page.request.get(`/api/player/${campaignSlug}/snapshot`);
     expect(snapshot.status()).toBe(200);
   });
@@ -201,24 +202,24 @@ test.describe("Lanternwake Phase 1 access transition final-state holds", () => {
     expect(process.env.GM_USERNAME, "GM_USERNAME is required for the isolated validation fixture.").toBeTruthy();
     expect(process.env.GM_PASSWORD, "GM_PASSWORD is required for the isolated validation fixture.").toBeTruthy();
 
-    await page.goto("/quartermaster");
-    await expect(page.getByRole("button", { name: "Enter the chart room" })).toBeVisible();
+    await page.goto("/captain/sign-in");
+    await expect(page.getByRole("button", { name: "Enter Captain's Console" })).toBeVisible();
     await installTransitionProbe(page, "quartermaster-login");
 
-    await page.getByLabel("Captain's name").fill(process.env.GM_USERNAME!);
-    await page.getByLabel("Passphrase").fill(process.env.GM_PASSWORD!);
+    await page.getByLabel("Username").fill(process.env.GM_USERNAME!);
+    await page.getByLabel("Password").fill(process.env.GM_PASSWORD!);
     const loginResponsePromise = page.waitForResponse(
       (response) => new URL(response.url()).pathname === "/api/gm/login" && response.request().method() === "POST",
     );
-    await page.getByRole("button", { name: "Enter the chart room" }).click();
+    await page.getByRole("button", { name: "Enter Captain's Console" }).click();
     const loginResponse = await loginResponsePromise;
     expect(loginResponse.status()).toBe(200);
     await markOperationCommitted(page);
 
     await expectCommittedPoseWithoutSnapback(page, "quartermaster-login");
-    await expect(page.locator(".quartermaster-shell:not(.loading-quarters)")).toBeVisible();
-    await expect(page.getByText(/^Sequence \d+$/)).toBeVisible();
-    await expect(page.getByRole("button", { name: "Enter the chart room" })).toHaveCount(0);
+    await expect(page.locator(".captain-library")).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Captain's Console", exact: true })).toBeVisible();
+    await expect(page.getByRole("button", { name: "Enter Captain's Console" })).toHaveCount(0);
     const status = await page.request.get("/api/gm/status");
     expect(status.status()).toBe(200);
   });

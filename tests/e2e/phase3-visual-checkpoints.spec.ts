@@ -9,6 +9,7 @@ import {
 import {
   capturePhase3DbTruth,
   expect,
+  installCanonicalPhase3PlayerSession,
   installPhase3EvidenceProbe,
   PHASE3_MOTION_MODES,
   phase3Test as test,
@@ -1207,15 +1208,7 @@ async function installReadOnlyAccess(
 ) {
   await installPhase3EvidenceProbe(page);
   await page.addInitScript(({ deviceId }) => localStorage.setItem("forever-device", deviceId), fixture);
-  await page.context().addCookies([
-    {
-      name: "forever_player",
-      value: fixture.playerAccessId,
-      url: baseURL,
-      httpOnly: true,
-      sameSite: "Strict",
-    },
-  ]);
+  await installCanonicalPhase3PlayerSession(page, fixture, baseURL);
   const eventsPath = `/api/player/${fixture.slug}/events`;
   const presencePath = `/api/player/${fixture.slug}/presence`;
   const viewedPath = `/api/player/${fixture.slug}/viewed`;
@@ -1257,7 +1250,7 @@ async function enterJournal(page: Page, allowSkip: boolean) {
     const skip = page.getByRole("button", { name: "Skip ceremony" });
     if (await skip.isVisible().catch(() => false)) await skip.click();
   }
-  await expect(page.locator("[data-player-experience-root]")).toHaveAttribute("data-journal-phase", "JOURNAL_READY", {
+  await expect(page.locator(".chronicle-journal-shell")).toHaveAttribute("data-journal-phase", "JOURNAL_READY", {
     timeout: 20_000,
   });
 }
@@ -1278,7 +1271,7 @@ async function runOpeningFlow(
     await setPhase3Motion(page, motionForMode[checkpoint.mode]);
     await installReadOnlyAccess(page, fixture, null, testInfo.project.use.baseURL as string, networkGuard);
     await page.goto(`${fixture.path}?section=journal`);
-    const root = page.locator("[data-player-experience-root]");
+    const root = page.locator(".chronicle-journal-shell");
     await expect(root).toHaveAttribute("data-journal-phase", "ENTRY_IDLE");
 
     const phaseGroups = new Map<string, VisualCheckpoint[]>();

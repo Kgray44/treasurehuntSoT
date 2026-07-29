@@ -9,10 +9,21 @@ param(
     [switch]$SkipBrowserInstall,
     [string]$BaselineDatabasePath,
     [switch]$BrowserOnly,
-    [string]$BrowserTestPath
+    [switch]$SkipBrowser,
+    [string]$BrowserTestPath,
+    [string[]]$BrowserArgs = @(),
+    [string]$BrowserGrep = "",
+    [switch]$SkipProductionPerformance
 )
 $ErrorActionPreference = "Stop"
 . (Join-Path $PSScriptRoot "dev-common.ps1")
+
+if ($BrowserOnly -and $SkipBrowser) {
+    throw "BrowserOnly and SkipBrowser cannot be used together."
+}
+if ($SkipBrowser -and ($BrowserTestPath -or $BrowserGrep -or $BrowserArgs.Count -gt 0)) {
+    throw "SkipBrowser cannot be combined with targeted browser selection."
+}
 
 $validationLockDirectory = Join-Path $env:LOCALAPPDATA "ForeverTreasureCompanion"
 [System.IO.Directory]::CreateDirectory($validationLockDirectory) | Out-Null
@@ -45,6 +56,11 @@ if ($BrowserTestPath) {
         throw "BrowserTestPath must remain inside the active project root."
     }
     $runtimeRelativeBrowserTestPath = $resolvedBrowserTestPath.Substring($projectPrefix.Length)
+    $browserTestProject = switch ([System.IO.Path]::GetFileName($runtimeRelativeBrowserTestPath)) {
+        "harborlight-phase2.spec.ts" { "harborlight-phase2"; break }
+        "harborlight-phase3.spec.ts" { "harborlight-phase3"; break }
+        default { throw "BrowserTestPath must identify a governed Harborlight browser suite." }
+    }
 }
 if ($BaselineDatabasePath) {
     if (-not ($BaselineDatabasePath -match '^[A-Za-z]:[\\/]' -or $BaselineDatabasePath.StartsWith('\\'))) {
@@ -583,8 +599,36 @@ try {
     $env:NODE_ENV = "test"
     $env:FOREVER_VALIDATION_NODE_ENV = "test"
     $env:COMMUNITY_BINARY_SCANNER_PROVIDER = "synthetic-test"
+    # This ephemeral validation-only key permits the simulator fixture to
+    # exercise encrypted provider-token storage. It is never used by ordinary
+    # development or production servers and is removed before the build proof.
+    $env:WAYFARER_PROVIDER_TOKEN_KEY = "validation-only-provider-token-key"
+    # Project One Voyage's retained doorway needs a synthetic credential that
+    # exists only in the nonce-bound validation process and database copy.
+    $env:PHASE2_LEGACY_ACCESS_CODE = "phase2-validation-legacy-access-code"
+    # Sealed Hold browser coverage uses a separate, task-owned provider root
+    # and a fixed validation-only key. This prevents a local .env file from
+    # selecting a relative or user-owned provider directory.
+    $privateProviderParent = [System.IO.Path]::GetFullPath($validationLockDirectory)
+    $privateProviderRoot = [System.IO.Path]::GetFullPath(
+        (Join-Path $privateProviderParent ("validation-private-provider-" + $isolation.nonceHash.Substring(0, 16)))
+    )
+    $privateProviderPrefix = $privateProviderParent.TrimEnd('\', '/') + [System.IO.Path]::DirectorySeparatorChar
+    if (-not $privateProviderRoot.StartsWith($privateProviderPrefix, [System.StringComparison]::OrdinalIgnoreCase)) {
+        throw "Private provider root escaped the validation parent."
+    }
+    New-Item -ItemType Directory -Path $privateProviderRoot -Force | Out-Null
+    $env:PRIVATE_CONTENT_ENVIRONMENT_ID = "validation-isolated"
+    $env:PRIVATE_CONTENT_ENABLED = "true"
+    $env:PRIVATE_CONTENT_STORAGE_PROVIDER = "local"
+    $env:PRIVATE_CONTENT_PROVIDER_ROOT = $privateProviderRoot
+    $env:PRIVATE_CONTENT_SCANNER_PROVIDER = "synthetic"
+    $env:PRIVATE_CONTENT_KEY_PROVIDER = "local"
+    $env:PRIVATE_CONTENT_LOCAL_MASTER_KEY = "f21fc30ddbc49c5e4a31265525beb562e439bc82ce8d146d8e4df4325f517a50"
+    $env:PRIVATE_CONTENT_WORKER_ENABLED = "true"
+    $env:PRIVATE_CONTENT_REQUIRE_READY = "true"
 
-    if (-not $SkipBrowserInstall) {
+    if (-not $SkipBrowserInstall -and -not $SkipBrowser) {
         Invoke-ValidationStep -Name "Installing Playwright browsers" -Arguments @("node_modules/playwright/cli.js", "install", "chromium", "webkit")
     }
     Invoke-ValidationStep -Name "Checking formatting" -Arguments @("node_modules/prettier/bin/prettier.cjs", "--check", ".")
@@ -596,31 +640,71 @@ try {
         Invoke-ValidationStep -Name "Validating animation assets" -Arguments @("node_modules/tsx/dist/cli.mjs", "scripts/validate-animation-assets.ts")
     }
     Invoke-ValidationStep -Name "Verifying seeded database" -Arguments @("node_modules/tsx/dist/cli.mjs", "scripts/verify-database.ts")
+    Invoke-ValidationStep -Name "Migrating legacy Companion compatibility projection" -Arguments @(
+        "node_modules/tsx/dist/cli.mjs",
+        "scripts/migrate-legacy-companion.ts"
+    )
+    Invoke-ValidationStep -Name "Verifying legacy Companion compatibility projection" -Arguments @(
+        "node_modules/tsx/dist/cli.mjs",
+        "scripts/migrate-legacy-companion.ts",
+        "--verify"
+    )
     Invoke-ValidationStep -Name "Preparing legacy playthrough backfill proof" -Arguments @("node_modules/tsx/dist/cli.mjs", "scripts/verify-platform-backfill.ts", "--prepare")
     Invoke-ValidationStep -Name "Running additive platform backfill" -Arguments @("node_modules/tsx/dist/cli.mjs", "prisma/seed.ts", "--ensure")
     Invoke-ValidationStep -Name "Verifying additive platform backfill" -Arguments @("node_modules/tsx/dist/cli.mjs", "scripts/verify-platform-backfill.ts", "--verify")
     [void](Invoke-IsolationHelper -Arguments @("checkpoint", "--report", $isolationReport, "--copy-db", $isolatedDatabase))
 
-    Write-Host "`n==> Starting owned isolated validation server" -ForegroundColor Cyan
-    $ownedValidationServer = Start-OwnedValidationServer
-    $playwrightInvoked = $true
-    $playwrightArguments = @("node_modules/playwright/cli.js", "test")
-    if ($BrowserTestPath) {
-        $playwrightArguments += @("--project=harborlight-phase2", $runtimeRelativeBrowserTestPath.Replace('\', '/'))
+    if (-not $SkipBrowser) {
+        Write-Host "`n==> Starting owned isolated validation server" -ForegroundColor Cyan
+        $ownedValidationServer = Start-OwnedValidationServer
+        $playwrightInvoked = $true
+        $browserCommand = @("node_modules/playwright/cli.js", "test") + $BrowserArgs
+        if ($BrowserGrep) { $browserCommand += @("--grep", $BrowserGrep) }
+        if ($BrowserTestPath) {
+            # Harborlight owns a dedicated browser project. Other targeted
+            # acceptance files retain the routing declared by playwright.config.ts.
+            if ($runtimeRelativeBrowserTestPath.Replace('\', '/') -eq 'tests/e2e/harborlight-phase2.spec.ts') {
+                $browserCommand += "--project=harborlight-phase2"
+            }
+            if ($runtimeRelativeBrowserTestPath.Replace('\', '/') -eq 'tests/e2e/harborlight-phase3.spec.ts') {
+                $browserCommand += "--project=harborlight-phase3"
+            }
+            $browserCommand += $runtimeRelativeBrowserTestPath.Replace('\', '/')
+        }
+        Invoke-ValidationStep -Name "Running browser acceptance tests" -Arguments $browserCommand
+        Stop-OwnedValidationServer -ServerOwnership $ownedValidationServer
+        $ownedValidationServer = $null
+        Assert-TcpPortAvailable -Port 3100
+        $defaultBrowserSucceeded = $true
+    } else {
+        Write-Host "`n==> Browser acceptance tests skipped by explicit non-browser validation mode" -ForegroundColor Yellow
     }
-    Invoke-ValidationStep -Name "Running browser acceptance tests" -Arguments $playwrightArguments
-    Stop-OwnedValidationServer -ServerOwnership $ownedValidationServer
-    $ownedValidationServer = $null
-    Assert-TcpPortAvailable -Port 3100
-    $defaultBrowserSucceeded = $true
     # The synthetic scanner is scoped to the owned browser server only. Do not
     # carry its selection into a later production build or restart proof.
     Remove-Item Env:COMMUNITY_BINARY_SCANNER_PROVIDER -ErrorAction SilentlyContinue
     Remove-Item Env:FOREVER_VALIDATION_NODE_ENV -ErrorAction SilentlyContinue
+    Remove-Item Env:WAYFARER_PROVIDER_TOKEN_KEY -ErrorAction SilentlyContinue
+    Remove-Item Env:PHASE2_LEGACY_ACCESS_CODE -ErrorAction SilentlyContinue
+    Remove-Item Env:PRIVATE_CONTENT_ENVIRONMENT_ID -ErrorAction SilentlyContinue
+    Remove-Item Env:PRIVATE_CONTENT_ENABLED -ErrorAction SilentlyContinue
+    Remove-Item Env:PRIVATE_CONTENT_STORAGE_PROVIDER -ErrorAction SilentlyContinue
+    Remove-Item Env:PRIVATE_CONTENT_PROVIDER_ROOT -ErrorAction SilentlyContinue
+    Remove-Item Env:PRIVATE_CONTENT_SCANNER_PROVIDER -ErrorAction SilentlyContinue
+    Remove-Item Env:PRIVATE_CONTENT_KEY_PROVIDER -ErrorAction SilentlyContinue
+    Remove-Item Env:PRIVATE_CONTENT_LOCAL_MASTER_KEY -ErrorAction SilentlyContinue
+    Remove-Item Env:PRIVATE_CONTENT_WORKER_ENABLED -ErrorAction SilentlyContinue
+    Remove-Item Env:PRIVATE_CONTENT_REQUIRE_READY -ErrorAction SilentlyContinue
     $env:NODE_ENV = "production"
 
     if ($BrowserOnly) {
         $browserSucceeded = $defaultBrowserSucceeded
+    } elseif ($SkipBrowser) {
+        Invoke-ValidationStep -Name "Creating production build" -Arguments @("node_modules/next/dist/bin/next", "build")
+        $browserSucceeded = $true
+    } elseif ($SkipProductionPerformance) {
+        $browserSucceeded = $defaultBrowserSucceeded
+        Write-Host "`n==> Production performance and restart gates skipped for this focused browser repair run" -ForegroundColor Yellow
+        return
     } else {
         if ($BrowserTestPath) {
             # A targeted project owns only its stated acceptance state.  The
@@ -687,9 +771,20 @@ try {
         try { Stop-OwnedValidationServer -ServerOwnership $ownedProductionServer }
         catch { $finalizationFailures += "Owned production server cleanup failed: $($_.Exception.Message)" }
     }
+    $portsReleased = $true
     foreach ($port in @(3100, 3200)) {
         try { Assert-TcpPortAvailable -Port $port }
-        catch { $finalizationFailures += "Port $port release proof failed: $($_.Exception.Message)" }
+        catch {
+            $portsReleased = $false
+            $finalizationFailures += "Port $port release proof failed: $($_.Exception.Message)"
+        }
+    }
+    try {
+        Write-ForeverValidationRunEvent -RuntimeRoot $runtimeRoot -Event $(
+            if ($portsReleased) { "ports-released" } else { "ports-release-failed" }
+        )
+    } catch {
+        $finalizationFailures += "Validation port-release event recording failed: $($_.Exception.Message)"
     }
     if ($prepareAttempted) {
         try {

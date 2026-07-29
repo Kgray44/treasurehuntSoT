@@ -341,7 +341,6 @@ export function InvitationCeremony({ onRouteHandoff }: { onRouteHandoff?: Invita
   async function handOffRoute(destination: string, signal: AbortSignal) {
     if (onRouteHandoff) return onRouteHandoff(destination, signal);
     router.push(destination);
-    router.refresh();
   }
 
   function restoreFailure(run: AuthoritativeAsyncRun, message: string, code?: string) {
@@ -416,8 +415,22 @@ export function InvitationCeremony({ onRouteHandoff }: { onRouteHandoff?: Invita
         asyncState.release(run, "success");
         return;
       }
+      // Membership authorization is authoritative and must begin from the visible
+      // Player action, not wait for an optional presentation runtime to schedule it
+      // or even finish mounting. The ceremony receives this same promise, so it
+      // still renders the canonical accept outcome without issuing a duplicate request.
+      const authoritativeOperation = submitAction();
       if (!ceremonyHost.current) {
-        restoreFailure(run, "The invitation ceremony is still preparing. Try again.");
+        try {
+          const result = await authoritativeOperation;
+          if (!result.ok || !result.playthroughId || !asyncState.succeed(run)) return;
+          setStage("accepted");
+          setAnnouncement("Invitation accepted. Opening the waiting room.");
+          await handOffOnce(result);
+          asyncState.release(run, "success");
+        } catch {
+          restoreFailure(run, operationError, operationCode);
+        }
         return;
       }
       let fallbackResult: InvitationActionResult | undefined;
@@ -431,7 +444,7 @@ export function InvitationCeremony({ onRouteHandoff }: { onRouteHandoff?: Invita
         eventOrActionId: invitation.id,
         queue: false,
         signal: run.controller.signal,
-        operation: submitAction,
+        operation: () => authoritativeOperation,
         finalStateRuntime: {
           holdSafePose: (semanticState) => {
             if (semanticState !== accessFinalState || run.controller.signal.aborted) return;
@@ -643,6 +656,7 @@ export function InvitationCeremony({ onRouteHandoff }: { onRouteHandoff?: Invita
         </AnimatePresence>
         <div className="invitation-actions">
           <button
+            type="button"
             className="brass-button"
             disabled={asyncState.busy || stage === "accepted" || !displayName || (invitation.requiresPin && !pin)}
             aria-busy={asyncState.busy}
@@ -656,7 +670,12 @@ export function InvitationCeremony({ onRouteHandoff }: { onRouteHandoff?: Invita
                   ? "Invitation accepted"
                   : "Accept and Join Voyage"}
           </button>
-          <button className="button-subtle" disabled={asyncState.busy} onClick={() => void act("decline")}>
+          <button
+            type="button"
+            className="button-subtle"
+            disabled={asyncState.busy}
+            onClick={() => void act("decline")}
+          >
             Decline Invitation
           </button>
         </div>

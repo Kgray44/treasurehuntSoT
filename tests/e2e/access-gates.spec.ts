@@ -1,36 +1,34 @@
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test } from "@playwright/test";
 
-test("player gate stays private and accessible across supported browsers", async ({ page }) => {
-  const response = await page.goto("/tale/development-forever-treasure");
+test("Player sign-in remains public, accessible, and does not grant a Chronicle session", async ({ page }) => {
+  const response = await page.goto("/player/sign-in#invitation-code");
   expect(response?.status()).toBe(200);
   const markup = await response!.text();
-  for (const secret of ["The Lantern Test", "Where painted waves meet borrowed light", "Confirm the lantern mark"]) {
+  for (const secret of ["The Lantern Test", "Where painted waves meet borrowed light", "Captain instruction"]) {
     expect(markup).not.toContain(secret);
   }
-  await expect(page.getByRole("heading", { name: "The journal knows its sailor" })).toBeVisible();
-  await expect(page.getByLabel("Invitation phrase")).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Open your Chronicle Library" })).toBeVisible();
+  await expect(page.getByRole("tab", { name: "Invitation code" })).toBeVisible();
+  expect((await page.request.get("/api/player/library")).status()).toBe(401);
   const results = await new AxeBuilder({ page }).analyze();
   expect(results.violations.filter((violation) => ["serious", "critical"].includes(violation.impact ?? ""))).toEqual(
     [],
   );
 });
 
-test("quartermaster remains protected across supported browsers", async ({ page }) => {
+test("Quartermaster bookmarks redirect to canonical Captain sign-in across supported browsers", async ({ page }) => {
   await page.goto("/quartermaster");
-  await expect(page.getByRole("heading", { name: "Quartermaster's Log" })).toBeVisible();
-  await expect(page.getByRole("button", { name: "Enter the chart room" })).toBeVisible();
-  const status = await page.request.get("/api/gm/status");
-  expect(status.status()).toBe(401);
+  await expect(page).toHaveURL(/\/captain\/sign-in$/);
+  await expect(page.getByRole("heading", { name: "Enter Captain's Console" })).toBeVisible();
+  expect((await page.request.get("/api/captain/library")).status()).toBe(401);
 });
 
-test("published tale catalog is public while Studio remains protected", async ({ page }) => {
+test("published Chronicle catalog is public while Studio remains protected", async ({ page }) => {
   await page.goto("/tales");
-  await expect(page.getByRole("heading", { name: "Choose an Adventure" })).toBeVisible();
-  const seededTale = page.getByRole("article").filter({
-    has: page.getByRole("heading", { name: "The Forever Treasure — Studio Development Voyage" }),
-  });
-  await expect(seededTale.getByRole("link", { name: "Preview Chronicle" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Choose a Chronicle" })).toBeVisible();
+  await expect(page.getByRole("article").first().getByRole("link", { name: "Preview Chronicle" })).toBeVisible();
   await page.goto("/studio");
-  await expect(page.getByRole("heading", { name: "The Cartographer's Table is locked." })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Creator access is required." })).toBeVisible();
+  expect((await page.request.get("/api/studio/tales")).status()).toBe(401);
 });

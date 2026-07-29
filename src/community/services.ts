@@ -523,6 +523,7 @@ export function ownerListingProjection(listing: {
   };
 }
 export function publicListingProjection(listing: {
+  id: string;
   slug: string;
   itemType: string;
   title: string;
@@ -530,9 +531,10 @@ export function publicListingProjection(listing: {
   tags: string;
   spoilerLevel: string;
   locationClass: string;
-  owner: { handle: string; displayName: string };
+  owner: { id: string; handle: string; displayName: string };
 }) {
   return {
+    id: listing.id,
     slug: listing.slug,
     itemType: listing.itemType,
     title: listing.title,
@@ -540,7 +542,7 @@ export function publicListingProjection(listing: {
     tags: JSON.parse(listing.tags),
     spoilerLevel: listing.spoilerLevel === "NONE" ? "NONE" : "PREVIEW_SAFE",
     locationClass: listing.locationClass,
-    creator: { handle: listing.owner.handle, displayName: listing.owner.displayName },
+    creator: { id: listing.owner.id, handle: listing.owner.handle, displayName: listing.owner.displayName },
   };
 }
 export function ownerReleaseProjection(release: {

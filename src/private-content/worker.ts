@@ -1,8 +1,8 @@
 import type { PrivateJobType } from "./contracts";
 import {
-  cancelClaimedPrivateJob,
   claimPrivateJobs,
   finishPrivateJob,
+  releaseClaimedPrivateJob,
   renewPrivateJobLease,
   retryPrivateJob,
 } from "./operations";
@@ -35,6 +35,12 @@ const privateJobTypeSet = new Set<string>([
   "PRIVATE_UPLOAD_CLEANUP",
   "PRIVATE_ORPHAN_CLEANUP",
   "PRIVATE_QUARANTINE_RETENTION",
+  "PRIVATE_MEDIA_DERIVATIVE_BUILD",
+  "PRIVATE_MEDIA_DERIVATIVE_VERIFY",
+  "PRIVATE_MEDIA_GRANT_RECONCILE",
+  "PRIVATE_MEDIA_WITHDRAW",
+  "PRIVATE_MEDIA_DERIVATIVE_CLEANUP",
+  "PRIVATE_MEDIA_INTEGRITY_RECONCILE",
 ]);
 
 function asDurableJob(job: {
@@ -69,7 +75,7 @@ export async function dispatchPrivateJobBatch(
       continue;
     }
     if (input.signal?.aborted) {
-      await cancelClaimedPrivateJob(job.id, workerId);
+      await releaseClaimedPrivateJob(job.id, workerId);
       cancelled += 1;
       continue;
     }
@@ -83,21 +89,26 @@ export async function dispatchPrivateJobBatch(
     input.signal?.addEventListener("abort", onAbort, { once: true });
     const heartbeat = setInterval(
       () => {
-        void renewPrivateJobLease(job.id, workerId, leaseMs);
+        // A lease is the authority boundary, not merely a recovery hint.  If a
+        // competing worker has reclaimed this job, abort the cooperative
+        // handler immediately so it cannot begin another provider mutation.
+        void renewPrivateJobLease(job.id, workerId, leaseMs).then((renewal) => {
+          if (!renewal.count) controller.abort();
+        });
       },
       Math.max(1_000, Math.floor(leaseMs / 3)),
     );
     try {
       await handler(job, controller.signal);
       if (controller.signal.aborted) {
-        await cancelClaimedPrivateJob(job.id, workerId);
+        await releaseClaimedPrivateJob(job.id, workerId);
         cancelled += 1;
       } else if ((await finishPrivateJob(job.id, workerId)).count) {
         processed += 1;
       }
     } catch {
       if (controller.signal.aborted) {
-        await cancelClaimedPrivateJob(job.id, workerId);
+        await releaseClaimedPrivateJob(job.id, workerId);
         cancelled += 1;
       } else {
         await retryPrivateJob(job.id, workerId, "HANDLER_FAILED");

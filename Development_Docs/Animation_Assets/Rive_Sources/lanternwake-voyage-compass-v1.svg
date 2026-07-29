@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <radialGradient id="glass" cx="205" cy="170" r="255" gradientUnits="userSpaceOnUse"><stop stop-color="#C6FBF0" stop-opacity=".72"/><stop offset=".3" stop-color="#4C8C87" stop-opacity=".3"/><stop offset="1" stop-color="#0E1B20" stop-opacity=".6"/></radialGradient>
+    <linearGradient id="rim" x1="105" y1="105" x2="408" y2="408" gradientUnits="userSpaceOnUse"><stop stop-color="#FFF0A4"/><stop offset=".2" stop-color="#C89535"/><stop offset=".55" stop-color="#503516"/><stop offset=".77" stop-color="#182B2B"/><stop offset="1" stop-color="#DBB04A"/></linearGradient>
+    <linearGradient id="needle" x1="256" y1="155" x2="256" y2="357" gradientUnits="userSpaceOnUse"><stop stop-color="#F9D266"/><stop offset=".48" stop-color="#B3443B"/><stop offset=".5" stop-color="#2D2220"/><stop offset="1" stop-color="#72B8AD"/></linearGradient>
+  </defs>
+  <circle cx="256" cy="256" r="224" fill="#111517"/>
+  <circle cx="256" cy="256" r="212" fill="url(#rim)"/>
+  <circle cx="256" cy="256" r="195" fill="#312816"/>
+  <circle cx="256" cy="256" r="181" fill="#C7A247"/>
+  <circle cx="256" cy="256" r="168" fill="#23383A"/>
+  <circle cx="256" cy="256" r="158" fill="url(#glass)"/>
+  <circle cx="256" cy="256" r="150" fill="#10252A"/>
+  <path fill="#C59E40" d="m256 108 9 118-9 30-9-30zM404 256l-118 9-30-9 30-9zM256 404l-9-118 9-30 9 30zM108 256l118-9 30 9-30 9z"/>
+  <path fill="#D8B85A" d="m256 126 6 103-6 19-6-19zM386 256l-103 6-19-6 19-6zM256 386l-6-103 6-19 6 19zM126 256l103-6 19 6-19 6z"/>
+  <g fill="#B78C31">
+    <path d="m319 123-18 65-12-7zM389 193l-65 18 7-12zM389 319l-65-18 7 12zM319 389l-18-65-12 7zM193 389l18-65 12 7zM123 319l65-18-7 12zM123 193l65 18-7-12zM193 123l18 65 12-7z"/>
+  </g>
+  <g fill="#E8C760"><circle cx="256" cy="111" r="7"/><circle cx="401" cy="256" r="7"/><circle cx="256" cy="401" r="7"/><circle cx="111" cy="256" r="7"/></g>
+  <g fill="#75A9A0"><circle cx="359" cy="153" r="5"/><circle cx="359" cy="359" r="5"/><circle cx="153" cy="359" r="5"/><circle cx="153" cy="153" r="5"/></g>
+  <path fill="#3F6F6B" d="M141 282c42 50 120 78 195 45-55 49-152 36-195-45z"/>
+  <path fill="#81C9BE" opacity=".6" d="M149 168c23-30 54-49 91-57-32 19-59 45-74 77z"/>
+  <path fill="url(#needle)" d="m256 143 26 105-26 8-26-8zM256 369l-26-105 26-8 26 8z"/>
+  <path fill="#F0D26B" d="m256 155 13 91-13 4-13-4z"/>
+  <path fill="#6FB8AD" d="m256 357-13-91 13-4 13 4z"/>
+  <circle cx="256" cy="256" r="30" fill="#1D1E1D"/><circle cx="256" cy="256" r="22" fill="url(#rim)"/><circle cx="256" cy="256" r="11" fill="#2B776F"/><circle cx="256" cy="256" r="5" fill="#FFF1A4"/>
+  <path fill="#D4AF37" d="M256 71l8 20-8 20-8-20zM441 256l-20 8-20-8 20-8zM256 441l-8-20 8-20 8 20zM71 256l20-8 20 8-20 8z"/>
+  <path fill="#845F24" d="M207 92h15v28h-15zM290 92h15v28h-15zM207 392h15v28h-15zM290 392h15v28h-15z"/>
+  <path fill="#F5DB7D" opacity=".5" d="M170 137c38-25 95-35 138-14-50-8-101 12-133 51-8-11-8-25-5-37z"/>
+</svg>

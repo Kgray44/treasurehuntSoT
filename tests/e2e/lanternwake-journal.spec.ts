@@ -52,6 +52,16 @@ async function expectValidationIsolation(response: APIResponse) {
   expect(JSON.parse(body)).toEqual({ validationDatabase: true, nonceMatch: true });
 }
 
+async function openInvitationWhenReady(page: Page, invitationLink: string) {
+  await page.goto(invitationLink);
+  await expect(page).toHaveURL(/\/player\/invitation$/);
+  const unavailable = page.getByRole("heading", { name: "The invitation could not be reached" });
+  if (await unavailable.isVisible().catch(() => false)) {
+    await page.getByRole("button", { name: "Try again" }).click();
+  }
+  await expect(page.locator("main.invitation-page")).toHaveAttribute("data-invitation-state", "valid");
+}
+
 async function installJournalProbe(page: Page) {
   await page.addInitScript(() => {
     const probe: JournalProbe = {
@@ -426,6 +436,21 @@ async function expectReadyFinalPose(page: Page) {
   expect((await previous.isEnabled()) || (await next.isEnabled())).toBe(true);
 }
 
+async function openJournalIfRequired(page: Page) {
+  const shell = page.locator(".chronicle-journal-shell");
+  if ((await shell.getAttribute("data-journal-phase")) === "JOURNAL_READY") return;
+  const opener = page.getByRole("button", { name: "Open the journal" });
+  await expect
+    .poll(async () => {
+      if ((await shell.getAttribute("data-journal-phase")) === "JOURNAL_READY") return "ready";
+      return (await opener.isVisible().catch(() => false)) ? "openable" : "pending";
+    })
+    .not.toBe("pending");
+  if ((await shell.getAttribute("data-journal-phase")) === "JOURNAL_READY") return;
+  await expect(opener).toBeVisible();
+  await opener.click();
+}
+
 async function skipCeremonyWhenAvailable(page: Page) {
   try {
     await page.getByRole("button", { name: "Skip ceremony" }).click({ timeout: 1_500 });
@@ -525,9 +550,13 @@ test.describe.serial("Project Lanternwake Journal browser lifecycle", () => {
       const invitation = created.invitations[0];
       expect(invitation).toBeTruthy();
 
-      await playerPage.goto(invitation.link);
-      await expect(playerPage).toHaveURL(/\/player\/invitation$/);
+      await openInvitationWhenReady(playerPage, invitation.link);
       await expect(playerPage.getByRole("heading", { name: /Studio Development Voyage/ })).toBeVisible();
+      // Warm the authenticated destination without a Player session. This
+      // compiles the route before the visible acceptance handoff, preventing
+      // a development-server refresh from interrupting that user transition.
+      const destinationWarmup = await playerPage.request.get(`/player/playthroughs/${created.playthroughId}`);
+      expect([200, 302, 303, 307, 308]).toContain(destinationWarmup.status());
       await playerPage.getByRole("button", { name: "Accept and join voyage" }).click();
       await expect(playerPage).toHaveURL(new RegExp(`/player/playthroughs/${created.playthroughId}$`));
       await expectOk(
@@ -540,7 +569,8 @@ test.describe.serial("Project Lanternwake Journal browser lifecycle", () => {
       journalPath = `/player/playthroughs/${created.playthroughId}/journal`;
       journalUrl = new URL(journalPath, invitation.link).href;
       playerCookies = await playerContext.cookies();
-      expect(playerCookies.some((cookie) => cookie.name === "chronicle_player")).toBe(true);
+      expect(playerCookies.some((cookie) => cookie.name === "wayfarer_account")).toBe(true);
+      expect(playerCookies.some((cookie) => cookie.name === "chronicle_player")).toBe(false);
     } finally {
       await Promise.all([playerContext.close(), captainContext.close()]);
     }
@@ -636,11 +666,16 @@ test.describe.serial("Project Lanternwake Journal browser lifecycle", () => {
     for (let cycle = 0; cycle < 3; cycle += 1) {
       if (cycle > 0) await returnToJournalFromLibrary(page, documentToken);
       const shell = page.locator(".chronicle-journal-shell");
-      await expect(shell).toHaveAttribute("data-journal-phase", "BOOK_SETTLING");
-      await expect.poll(async () => (await readProbe(page)).activeAnimationListeners).toBeGreaterThan(0);
+      const priorPeakAnimationListeners = (await readProbe(page)).peakAnimationListeners;
       await expectReadyFinalPose(page);
+      await expect.poll(async () => shell.getAttribute("data-journal-opening-outcome")).not.toBeNull();
+      const openingOutcome = (await shell.getAttribute("data-journal-opening-outcome"))!;
+      expect(openingOutcome).toMatch(/^(completed|completed-fallback|failure)$/);
       await expect.poll(async () => (await readProbe(page)).activeRequests).toBe(0);
       const mounted = await readProbe(page);
+      if (openingOutcome === "completed") {
+        expect(mounted.peakAnimationListeners).toBeGreaterThan(priorPeakAnimationListeners);
+      }
       expect(mounted.activeAnimationListeners).toBe(0);
       expect(mounted.activeJournalKeydownListeners).toBe(1);
       expect(mounted.activeEventSources).toBe(1);
@@ -686,6 +721,7 @@ test.describe.serial("Project Lanternwake Journal browser lifecycle", () => {
   test("PageFlip control and keyboard turns retain exact visible-primary authority and focus", async ({ page }) => {
     await page.emulateMedia({ reducedMotion: "no-preference" });
     await page.goto(journalUrl);
+    await openJournalIfRequired(page);
     await expectReadyFinalPose(page);
     const book = page.locator(".main-journal-book");
     const previous = page.getByRole("button", { name: "Previous journal page" });

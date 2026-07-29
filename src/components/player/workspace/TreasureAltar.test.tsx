@@ -19,7 +19,7 @@ const compass: PublicArtifact = {
   displayX: 24,
   displayY: 42,
   connectedArtifactKey: "keel-star",
-  unseen: false,
+  unseen: true,
 };
 
 const star: PublicArtifact = {
@@ -51,6 +51,7 @@ function snapshot(artifacts: PublicArtifact[]) {
 }
 
 beforeEach(() => {
+  sessionStorage.clear();
   Object.defineProperty(window, "matchMedia", {
     configurable: true,
     value: vi.fn(() => ({
@@ -438,5 +439,38 @@ describe("TreasureAltar animation boundary", () => {
     const sections = document.querySelectorAll<HTMLElement>(".treasure-altar-section");
     expect(sections[0]).toHaveAttribute("aria-labelledby", headings[0].id);
     expect(sections[1]).toHaveAttribute("aria-labelledby", headings[1].id);
+  });
+
+  it("renders one contained, noninteractive light sweep for each newly awarded artifact", () => {
+    const view = render(<TreasureAltar snapshot={snapshot([compass, star])} inspect={vi.fn()} />);
+
+    expect(view.container.querySelectorAll(`[data-artifact-award-light='${compass.key}']`)).toHaveLength(1);
+    expect(view.container.querySelector(`[data-artifact-award-light='${compass.key}']`)).toHaveAttribute(
+      "aria-hidden",
+      "true",
+    );
+    expect(view.container.querySelector(`[data-artifact-award-light='${star.key}']`)).toBeNull();
+  });
+
+  it("does not replay an award light when a historical artifact remounts", () => {
+    const first = render(<TreasureAltar snapshot={snapshot([compass])} inspect={vi.fn()} />);
+    expect(first.container.querySelector(`[data-artifact-award-light='${compass.key}']`)).toBeInTheDocument();
+    first.unmount();
+
+    const second = render(<TreasureAltar snapshot={snapshot([compass])} inspect={vi.fn()} />);
+    expect(second.container.querySelector(`[data-artifact-award-light='${compass.key}']`)).toBeNull();
+  });
+
+  it("keeps hover and keyboard emphasis inside the GSAP silhouette boundary", () => {
+    const view = render(<TreasureAltar snapshot={snapshot([compass])} inspect={vi.fn()} />);
+    const button = screen.getByRole("button", { name: /Development Compass, awarded/i });
+    const silhouette = view.container.querySelector(
+      `[data-artifact-key='${compass.key}'][data-artifact-target-role='silhouette']`,
+    );
+
+    expect(button).not.toHaveClass("artifact-tilt");
+    expect(silhouette?.querySelector(".artifact-tilt")).toBeInTheDocument();
+    button.focus();
+    expect(button).toHaveFocus();
   });
 });

@@ -2,7 +2,6 @@ import { expect, test } from "@playwright/test";
 
 const publicRoutes = ["/", "/tales", "/player/sign-in", "/captain/sign-in", "/studio/sign-in"] as const;
 const prohibitedVisibleLanguage = [
-  /\bChronicles?\b/iu,
   /\bcampaigns?\b/iu,
   /\bgame sessions?\b/iu,
   /\bgame masters?\b/iu,

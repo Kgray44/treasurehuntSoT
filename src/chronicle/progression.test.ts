@@ -1,11 +1,45 @@
 import { describe, expect, it } from "vitest";
-import { conditionPasses, mutateVariables, normalized } from "@/chronicle/progression";
+import {
+  buildCanonicalPlayerPresentationHistory,
+  conditionPasses,
+  mutateVariables,
+  normalized,
+} from "@/chronicle/progression";
 import type { PublishedBlock } from "@/chronicle/types";
 
 const block = (configuration: PublishedBlock["configuration"], blockType = "condition") =>
   ({ blockType, configuration }) as PublishedBlock;
 
 describe("authoritative Chronicle progression rules", () => {
+  it("projects canonical Player presentation history with exact identity and safe payload", () => {
+    const history = buildCanonicalPlayerPresentationHistory([
+      {
+        id: "map-event",
+        eventType: "MAP_LOCATION_REVEALED",
+        sequence: 7,
+        payload: JSON.stringify({ key: "lantern-cove", name: "Lantern Cove", internalNote: "never expose" }),
+        createdAt: new Date("2026-07-28T12:00:00.000Z"),
+      },
+      {
+        id: "non-presentation",
+        eventType: "hintReleased",
+        sequence: 6,
+        payload: "{}",
+        createdAt: new Date("2026-07-28T11:00:00.000Z"),
+      },
+    ]);
+
+    expect(history).toEqual([
+      {
+        id: "map-event",
+        type: "MAP_LOCATION_REVEALED",
+        sequence: 7,
+        payload: { key: "lantern-cove", name: "Lantern Cove" },
+        releaseAt: "2026-07-28T12:00:00.000Z",
+      },
+    ]);
+  });
+
   it("normalizes text answers deterministically", () => {
     expect(normalized("  Moon   LANTERN  ", {})).toBe("moon lantern");
     expect(normalized("  Moon   LANTERN  ", { caseSensitive: true, normalizeWhitespace: false })).toBe(

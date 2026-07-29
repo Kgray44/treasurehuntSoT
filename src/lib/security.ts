@@ -95,7 +95,7 @@ export async function requireGm() {
   });
 }
 
-export type GmCapability = "CAPTAIN" | "CREATE_TALES" | "PUBLISH_TALES" | "MANAGE_ASSETS";
+export type GmCapability = "ADMIN" | "CAPTAIN" | "CREATE_TALES" | "PUBLISH_TALES" | "MANAGE_ASSETS";
 
 const roleCapabilities: Record<string, GmCapability[]> = {
   CAPTAIN: ["CAPTAIN"],

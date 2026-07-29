@@ -40,7 +40,7 @@ export function RouteMotionBoundary({ pathname, children }: { pathname: string; 
 
   return (
     <LayoutGroup id="lanternwake-route-layout">
-      <AnimatePresence initial={false} mode="sync">
+      <AnimatePresence initial={false} mode="wait">
         <motion.div
           key={pathname}
           className="product-route-layer"

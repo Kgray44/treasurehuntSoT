@@ -62,6 +62,13 @@ invitations. Use `npm run private-content:inspect`, `private-content:verify`,
 and the repository/build scanners for operational checks. Never pass a
 passphrase as a command-line argument or commit an export.
 
+Phase 3 operational controls are available to an authenticated Administrator at
+`/studio/private-content/operations`. They report sanitized provider readiness,
+backup, restore-drill, and repair-plan status only. Use
+`npm run private-content:providers:check` and
+`npm run private-content:migrations:status` for server-side operational checks;
+these commands never accept credentials or passphrases as command-line values.
+
 ### Portable manual setup
 
 ```bash

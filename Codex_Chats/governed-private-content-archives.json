@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "archives": [
+    {
+      "path": "Codex_Chats/chats/019f854e-6112-7c33-ac11-a976c0c71e0c--create-sealed-hold-worktree.md",
+      "archiveSha256": "bf1ec333bc4d3b3f627994418d77556857ece7b0eb4eade3b87d2f0b58d1c11c",
+      "manifestContentSha256": "180b1d47f3dd9075e278a7ba4bd994d71fd5774904a1aa6df99fb92cd59b62d4",
+      "classification": "historical-synthetic-prompt-sentinel"
+    },
+    {
+      "path": "Codex_Chats/chats/019f85e9-90b3-72f0-824e-6de3748eef42--converge-phase-1-projects.md",
+      "archiveSha256": "c7a8ce8e9e8a720bad94b07f931287c8fa4d4b047ddbc5dbef15a5d9a84b6e2a",
+      "manifestContentSha256": "e851fef015f5a743399f020deb88f6d5c83d8cca26f152a9ddd20df0a2aaded5",
+      "classification": "historical-synthetic-prompt-sentinel"
+    }
+  ]
+}

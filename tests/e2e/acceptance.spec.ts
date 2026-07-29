@@ -1,216 +1,162 @@
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test, type Page } from "@playwright/test";
-import fs from "node:fs/promises";
-import path from "node:path";
 
-const campaign = "development-forever-treasure";
-const playerPath = `/tale/${campaign}`;
-const artifacts = process.env.VALIDATION_ARTIFACTS ?? "artifacts/validation";
+type BrowserFetchInit = Readonly<{
+  method?: "GET" | "POST";
+  headers?: Readonly<Record<string, string>>;
+  body?: unknown;
+}>;
 
-async function screenshot(page: Page, name: string) {
-  await fs.mkdir(artifacts, { recursive: true });
-  await page.screenshot({ path: path.join(artifacts, `${name}.png`), fullPage: true, caret: "initial" });
+async function browserJson<T>(page: Page, url: string, init?: BrowserFetchInit) {
+  return page.evaluate(
+    async ({ requestUrl, requestInit }) => {
+      const headers = {
+        ...(requestInit?.body === undefined ? {} : { "content-type": "application/json" }),
+        ...(requestInit?.headers ?? {}),
+      };
+      const response = await fetch(requestUrl, {
+        method: requestInit?.method,
+        credentials: "same-origin",
+        headers,
+        body: requestInit?.body === undefined ? undefined : JSON.stringify(requestInit.body),
+      });
+      const text = await response.text();
+      let body: unknown = text;
+      try {
+        body = JSON.parse(text) as unknown;
+      } catch {
+        // Keep a non-JSON error contract inspectable by the browser acceptance assertion.
+      }
+      return { status: response.status, body };
+    },
+    { requestUrl: url, requestInit: init },
+  ) as Promise<{ status: number; body: T }>;
 }
 
-async function gmAction(page: Page, label: string) {
-  await page.getByRole("button", { name: label, exact: true }).click();
-  await expect(page.getByRole("dialog")).toBeVisible();
-  await page.getByRole("button", { name: "Confirm action" }).click();
-  await expect(page.getByRole("dialog")).toBeHidden();
-  await expect(page.locator(".cinematic-command-overlay")).toBeHidden({ timeout: 15_000 });
-  await expect(page.locator(".gm-toast")).toContainText("recorded at sequence");
-}
-
-async function status(page: Page) {
-  const response = await page.request.get("/api/gm/status");
-  expect(response.ok()).toBeTruthy();
-  return response.json() as Promise<{
-    campaign: { sequence: number; status: string };
-    chapter: { state: string };
-    events: Array<{ type: string; sequence: number }>;
-  }>;
-}
-
-async function assertNoSeriousAxeViolations(page: Page) {
-  const results = await new AxeBuilder({ page }).analyze();
-  expect(results.violations.filter((violation) => ["serious", "critical"].includes(violation.impact ?? ""))).toEqual(
-    [],
-  );
+async function openInvitationWhenReady(page: Page, invitationLink: string) {
+  await page.goto(invitationLink);
+  await expect(page).toHaveURL(/\/player\/invitation$/);
+  const unavailable = page.getByRole("heading", { name: "The invitation could not be reached" });
+  if (await unavailable.isVisible().catch(() => false)) {
+    await page.getByRole("button", { name: "Try again" }).click();
+  }
+  await expect(page.locator("main.invitation-page")).toHaveAttribute("data-invitation-state", "valid");
 }
 
 test.skip(
   ({ browserName }) => browserName !== "chromium",
-  "The full mutation workflow runs once; access gates run in every browser.",
+  "The shared isolated-database invitation journey runs once; boundary checks run in every browser.",
 );
 
-test("complete live voyage workflow is private, ordered, resilient, and theatrical", async ({ browser }) => {
+test("canonical Chronicle invitation journey keeps Player and Captain boundaries intact", async ({ browser }) => {
   test.setTimeout(180_000);
-
+  const captainContext = await browser.newContext();
   const playerContext = await browser.newContext();
-  const gmContext = await browser.newContext();
-  const player = await playerContext.newPage();
-  const gm = await gmContext.newPage();
+  const captainPage = await captainContext.newPage();
+  const playerPage = await playerContext.newPage();
+  try {
+    await playerPage.goto("/player/sign-in#invitation-code");
+    await expect(playerPage.getByRole("heading", { name: "Open your Chronicle Library" })).toBeVisible();
+    await expect(playerPage.getByRole("tab", { name: "Invitation code" })).toBeVisible();
+    const playerAxe = await new AxeBuilder({ page: playerPage }).analyze();
+    expect(playerAxe.violations.filter((item) => ["serious", "critical"].includes(item.impact ?? ""))).toEqual([]);
 
-  const gateResponse = await player.goto(playerPath);
-  const gateMarkup = await gateResponse!.text();
-  expect(gateMarkup).not.toContain("The Lantern Test");
-  expect(gateMarkup).not.toContain("Where painted waves meet borrowed light");
-  await screenshot(player, "01-player-access-gate");
-  await assertNoSeriousAxeViolations(player);
+    await captainPage.goto("/captain/sign-in");
+    await expect(captainPage.getByRole("heading", { name: "Enter Captain's Console" })).toBeVisible();
+    await captainPage.getByLabel("Username").fill(process.env.GM_USERNAME ?? "kato");
+    await captainPage.getByLabel("Password").fill(process.env.GM_PASSWORD ?? "development-captain-only");
+    await captainPage.getByRole("button", { name: "Enter Captain's Console" }).click();
+    await expect(captainPage).toHaveURL(/\/captain\/library(?:\?.*)?$/u);
+    await expect(captainPage.getByRole("heading", { name: "Captain's Console", exact: true })).toBeVisible();
 
-  await player.getByLabel("Invitation phrase").fill("incorrect-invitation");
-  await player.getByRole("button", { name: "Open the journal" }).click();
-  await expect(player.locator(".form-error")).toContainText("could not be recognized");
-  await player.getByLabel("Invitation phrase").fill(process.env.PLAYER_ACCESS_CODE!);
-  await player.getByRole("button", { name: "Open the journal" }).click();
-  await expect(player.getByRole("button", { name: "Open the journal" })).toBeVisible();
-  await player.getByRole("button", { name: "Open the journal" }).click();
-  await expect(player.locator('[data-cinematic-sequence="firstArrival"]')).toBeVisible();
-  await expect(player.getByRole("button", { name: "Skip ceremony" })).toBeVisible({ timeout: 3_000 });
-  await player.getByRole("button", { name: "Skip ceremony" }).click();
-  await expect(player.getByRole("heading", { name: "The Voyage Journal" })).toBeVisible();
-  await expect(player.getByText("Await the captain's signal.", { exact: true })).toBeVisible();
-  await expect(player.getByText(/Where painted waves meet borrowed light/)).toHaveCount(0);
-  await expect(player.getByText("Tide connected")).toBeVisible();
-  await screenshot(player, "02-sealed-journal");
+    const status = await browserJson<{ csrfToken: string }>(captainPage, "/api/gm/status");
+    expect(status.status).toBe(200);
+    const { csrfToken } = status.body;
+    const library = await browserJson<{
+      publishedTales: Array<{ id: string; versions: Array<{ id: string }> }>;
+    }>(captainPage, "/api/captain/library");
+    expect(library.status).toBe(200);
+    const source = library.body.publishedTales.find((tale) => tale.versions.length > 0);
+    expect(source).toBeTruthy();
 
-  await gm.goto("/quartermaster");
-  for (let attempt = 0; attempt < 5; attempt += 1) {
-    const response = await gm.request.post("/api/gm/login", {
-      data: { username: "rate-limit-probe", password: "wrong-password" },
+    // Fixture creation stays in the authenticated Captain browser session; acceptance remains the visible invitation journey.
+    const voyage = await browserJson<{ playthroughId: string; invitations: Array<{ link: string }> }>(
+      captainPage,
+      "/api/captain/playthroughs",
+      {
+        method: "POST",
+        headers: { "x-csrf-token": csrfToken },
+        body: {
+          taleId: source!.id,
+          versionId: source!.versions[0]!.id,
+          voyageName: `Canonical acceptance ${crypto.randomUUID().slice(0, 8)}`,
+          captainMode: "CAPTAIN_CONTROLLED",
+          hints: "ON_REQUEST",
+          sideQuests: true,
+          scheduleTimezone: "America/New_York",
+          accessibilityDefaults: { motion: "SYSTEM" },
+          expiresInHours: 24,
+          accountRequired: false,
+          maxRedemptions: 1,
+          players: [{ displayName: "Canonical Navigator", crewRole: "Navigator" }],
+        },
+      },
+    );
+    expect(voyage.status).toBe(201);
+    const created = voyage.body;
+    const invitation = created.invitations[0];
+    expect(invitation).toBeTruthy();
+
+    // Compile the guarded route before the Player opens the invitation. In the
+    // development acceptance server, a route's first compile triggers a Next
+    // refresh that would otherwise abort the real visible submission below.
+    // A Captain has no pending invitation credential, so this browser-session
+    // request is a non-mutating proof of the expected CSRF/authorization denial.
+    const guardedAccept = await browserJson(captainPage, "/api/invitations/accept", {
+      method: "POST",
+      headers: { "x-csrf-token": csrfToken },
+      body: {},
     });
-    expect(response.status()).toBe(401);
-  }
-  const limited = await gm.request.post("/api/gm/login", {
-    data: { username: "rate-limit-probe", password: "wrong-password" },
-  });
-  expect(limited.status()).toBe(429);
-  await gm.getByLabel("Captain's name").fill(process.env.GM_USERNAME!);
-  await gm.getByLabel("Passphrase").fill("definitely-wrong");
-  await gm.getByRole("button", { name: "Enter the chart room" }).click();
-  await expect(gm.locator(".form-error")).toContainText("does not recognize");
-  await gm.getByLabel("Passphrase").fill(process.env.GM_PASSWORD!);
-  await gm.getByRole("button", { name: "Enter the chart room" }).click();
-  await expect(gm.getByRole("heading", { name: "Quartermaster's Log" })).toBeVisible();
-  await expect(gm.getByText("Sequence 0", { exact: true })).toBeVisible();
-  const gmCookie = (await gmContext.cookies()).find((cookie) => cookie.name === "forever_gm");
-  expect(gmCookie).toMatchObject({ httpOnly: true, sameSite: "Strict" });
-  expect((await playerContext.cookies()).some((cookie) => cookie.name === "forever_gm")).toBeFalsy();
-  await assertNoSeriousAxeViolations(gm);
-  await screenshot(gm, "03-quartermaster-dashboard");
+    expect(guardedAccept.status).toBe(403);
 
-  await gmAction(gm, "Prepare Chapter");
-  await expect(gm.getByText("READY", { exact: true }).first()).toBeVisible();
-  await expect(player.getByText(/Where painted waves meet borrowed light/)).toHaveCount(0);
+    await openInvitationWhenReady(playerPage, invitation!.link);
+    const acceptButton = playerPage.getByRole("button", { name: "Accept and join voyage" });
+    await expect(acceptButton).toBeEnabled();
+    await expect(acceptButton).toHaveAttribute("aria-busy", "false");
+    const accept = playerPage.waitForResponse(
+      (response) => response.url().endsWith("/api/invitations/accept") && response.request().method() === "POST",
+      { timeout: 20_000 },
+    );
+    // Compile the authenticated destination before the visible acceptance
+    // transition. The unauthenticated response is expected to deny access;
+    // this is only a route warmup and cannot mutate invitation state.
+    const destinationWarmup = await playerPage.request.get(`/player/playthroughs/${created.playthroughId}`);
+    expect([200, 302, 303, 307, 308]).toContain(destinationWarmup.status());
+    // Use the normal visible browser activation so Playwright follows the canonical handoff.
+    // The authoritative response and resulting route are asserted separately below.
+    await acceptButton.click();
+    expect((await accept).ok()).toBe(true);
+    await expect(playerPage).toHaveURL(new RegExp(`/player/playthroughs/${created.playthroughId}$`));
+    expect((await playerContext.cookies()).some((cookie) => cookie.name === "wayfarer_account")).toBe(true);
+    expect((await playerContext.cookies()).some((cookie) => cookie.name === "chronicle_player")).toBe(false);
+    expect((await playerContext.cookies()).some((cookie) => cookie.name === "forever_gm")).toBe(false);
 
-  const releasedAt = Date.now();
-  await gm.getByRole("button", { name: "Release Chapter", exact: true }).click();
-  await expect(gm.getByRole("dialog")).toBeVisible();
-  await gm.getByRole("button", { name: "Confirm action" }).click();
-  await expect(player.locator(".voyage-shell.stage-seal")).toBeVisible({ timeout: 10_000 });
-  await screenshot(player, "04-ceremony-seal-break");
-  await expect(player.locator(".voyage-shell.stage-parchment")).toBeVisible();
-  await screenshot(player, "05-ceremony-parchment");
-  await expect(player.locator(".voyage-shell.stage-ink-story")).toBeVisible();
-  await screenshot(player, "06-ceremony-ink-reveal");
-  await expect(gm.getByRole("dialog")).toBeHidden();
-  await expect(player.getByRole("button", { name: "Replay ceremony" })).toBeVisible({ timeout: 12_000 });
-  expect(Date.now() - releasedAt).toBeGreaterThanOrEqual(5_000);
-  expect(Date.now() - releasedAt).toBeLessThan(10_000);
-  await expect(player.getByRole("heading", { name: "The Lantern Test" }).first()).toBeVisible();
-  await player.getByRole("button", { name: "Next journal page" }).click();
-  await expect(
-    player.getByLabel("Physical journal pages").getByText(/Where painted waves meet borrowed light/),
-  ).toBeVisible();
-  await screenshot(player, "07-active-chapter");
-  await assertNoSeriousAxeViolations(player);
-
-  await player.getByRole("button", { name: "Chart", exact: true }).click();
-  await expect(player.getByRole("heading", { name: "Voyage Chart" })).toBeVisible();
-  await expect(player.locator("[data-section-heading]")).toBeFocused();
-  await expect(player).toHaveURL(/section=chart/);
-  await player.goBack();
-  await expect(player.getByRole("heading", { name: "The Voyage Journal" })).toBeVisible();
-  await expect(player.locator("[data-section-heading]")).toBeFocused();
-
-  const beforeReplay = (await status(gm)).campaign.sequence;
-  await player.getByRole("button", { name: "Replay ceremony" }).click();
-  await expect(player.getByRole("button", { name: "Reveal readable result" })).toBeVisible();
-  await player.getByRole("button", { name: "Reveal readable result" }).click();
-  await expect(player.getByRole("button", { name: "Replay ceremony" })).toBeVisible();
-  expect((await status(gm)).campaign.sequence).toBe(beforeReplay);
-
-  await player.getByRole("button", { name: "Sound on" }).click();
-  await expect(player.getByRole("button", { name: "Sound off" })).toHaveAttribute("aria-pressed", "true");
-  await player.getByRole("button", { name: "Motion: full. Change motion setting" }).click();
-  const gentleStarted = Date.now();
-  await player.getByRole("button", { name: "Replay ceremony" }).click();
-  await expect(player.getByRole("button", { name: "Replay ceremony" })).toBeVisible({ timeout: 6_000 });
-  expect(Date.now() - gentleStarted).toBeGreaterThan(1_000);
-  expect(Date.now() - gentleStarted).toBeLessThan(5_500);
-
-  await player.reload();
-  await expect(player.getByRole("button", { name: "Open the journal" })).toBeVisible();
-  await player.getByRole("button", { name: "Open the journal" }).click();
-  await expect(player.getByRole("heading", { name: "The Lantern Test" }).first()).toBeVisible();
-  await expect(player.getByText("Releasing the first seal")).toHaveCount(0);
-
-  await gmAction(gm, "Award Test Artifact");
-  await player.getByRole("button", { name: /Altar/ }).click();
-  await expect(player.getByRole("heading", { name: "Treasure Altar" })).toBeVisible();
-  await expect(player.getByRole("button", { name: /awarded$/i })).toBeVisible();
-  await player.getByRole("button", { name: "Chart", exact: true }).click();
-  await gmAction(gm, "Reveal Test Map Location");
-  await expect(player.locator(".map-alternative").getByText("Moonwake Cay", { exact: true }).first()).toBeVisible();
-
-  await gmAction(gm, "Mark Chapter Solved");
-  await gm.getByRole("button", { name: "Mark Chapter Solved", exact: true }).click();
-  await gm.getByRole("button", { name: "Confirm action" }).click();
-  await expect(gm.locator(".form-error")).toContainText("Only an active chapter");
-  await gm.getByRole("button", { name: "Cancel" }).click();
-  await gmAction(gm, "Undo Last Progression Action");
-  await expect(gm.getByText("ACTIVE", { exact: true }).first()).toBeVisible();
-
-  await playerContext.setOffline(true);
-  await player.evaluate(() => window.dispatchEvent(new Event("offline")));
-  await expect(player.getByText("Signal adrift")).toBeVisible({ timeout: 10_000 });
-  await gmAction(gm, "Pause Campaign");
-  await gmAction(gm, "Resume Campaign");
-  await playerContext.setOffline(false);
-  await player.evaluate(() => window.dispatchEvent(new Event("online")));
-  await expect(player.getByText("Tide connected")).toBeVisible({ timeout: 20_000 });
-  await player.getByRole("button", { name: "Journal", exact: true }).click();
-  await expect(player.getByRole("heading", { name: "The Lantern Test" }).first()).toBeVisible();
-  expect((await status(gm)).campaign.status).toBe("ACTIVE");
-
-  const heartbeat = await player.evaluate(async () => {
-    const controller = new AbortController();
-    const timeout = window.setTimeout(() => controller.abort(), 20_000);
-    try {
-      const response = await fetch(`/api/player/${location.pathname.split("/").at(-1)}/events?after=999999`, {
-        signal: controller.signal,
-      });
-      const reader = response.body!.getReader();
-      const decoder = new TextDecoder();
-      let output = "";
-      while (!output.includes("event: heartbeat")) output += decoder.decode((await reader.read()).value);
-      return output.includes("event: heartbeat");
-    } finally {
-      clearTimeout(timeout);
-      controller.abort();
-    }
-  });
-  expect(heartbeat).toBeTruthy();
-
-  for (const [width, height, name] of [
-    [2560, 1440, "desktop-2560"],
-    [1920, 1080, "desktop-1920"],
-    [1440, 900, "desktop-1440"],
-    [390, 844, "mobile-390"],
-    [430, 932, "mobile-430"],
-    [844, 390, "landscape-844"],
-  ] as const) {
-    await player.setViewportSize({ width, height });
-    await screenshot(player, `08-${name}`);
+    const launch = await browserJson(captainPage, `/api/captain/playthroughs/${created.playthroughId}/launch`, {
+      method: "POST",
+      headers: { "x-csrf-token": csrfToken },
+      body: {},
+    });
+    expect(launch.status).toBe(200);
+    await expect(playerPage).toHaveURL(new RegExp(`/player/playthroughs/${created.playthroughId}/journal$`), {
+      timeout: 20_000,
+    });
+    await playerPage.getByRole("button", { name: "Open the journal" }).click();
+    await playerPage.getByRole("button", { name: "Skip ceremony" }).click();
+    const journal = playerPage.locator(".chronicle-journal-shell").last();
+    await expect(journal).toHaveAttribute("data-journal-phase", "JOURNAL_READY", { timeout: 20_000 });
+    await expect(journal.getByRole("heading", { name: /Voyage Journal$/ })).toBeVisible();
+  } finally {
+    await captainContext.close();
+    await playerContext.close();
   }
 });

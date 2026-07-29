@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { eventToLogEntry } from "./ships-log";
+import { authoritativeMoonPhase, eventToLogEntry } from "./ships-log";
 
 const event = (type: string, payload: Record<string, unknown> = {}) => ({
   id: "event-1",
@@ -45,5 +45,12 @@ describe("event-to-log transformation", () => {
     });
     expect(alreadyKnown).not.toHaveProperty("synchronization");
     expect(recovered?.timestamp).toBe("2026-07-16T12:00:00.000Z");
+  });
+
+  it("projects a stable moon phase from the immutable server event time", () => {
+    const releaseAt = new Date("2026-07-16T12:00:00.000Z");
+    const first = authoritativeMoonPhase(releaseAt);
+    expect(authoritativeMoonPhase(new Date(releaseAt.getTime()))).toBe(first);
+    expect(eventToLogEntry({ ...event("PLAYER_LOG_ENTRY_ADDED"), releaseAt }, false)?.moonPhase).toBe(first);
   });
 });

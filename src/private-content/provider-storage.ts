@@ -1,4 +1,4 @@
-import { createHash, randomUUID } from "node:crypto";
+import { createHash, createHmac, randomUUID } from "node:crypto";
 import { createReadStream } from "node:fs";
 import { access, copyFile, mkdir, open, readFile, rename, rm, stat, writeFile } from "node:fs/promises";
 import path from "node:path";
@@ -11,7 +11,14 @@ import type {
 } from "./contracts";
 import { isWithin, privateFailure } from "./core";
 
-const namespaces = new Set<PrivateObjectNamespace>(["uploads", "normalized", "objects", "quarantine", "backups"]);
+const namespaces = new Set<PrivateObjectNamespace>([
+  "uploads",
+  "normalized",
+  "objects",
+  "derivatives",
+  "quarantine",
+  "backups",
+]);
 type MultipartManifest = {
   key: string;
   expectedBytes?: number;
@@ -204,10 +211,14 @@ export class LocalPhase2PrivateStorageProvider implements PrivateStorageProvider
 
   async moveToQuarantine(object: PrivateObjectDescriptor, reason: string) {
     const reasonCode = /^[A-Z0-9_]{1,64}$/.test(reason) ? reason : "PRIVATE_QUARANTINE";
-    const promoted = await this.promote(object, {
-      namespace: "quarantine",
-      key: `${reasonCode.toLowerCase()}/${randomUUID()}`,
-    });
+    // A repair retry must address the same immutable quarantine object.  A
+    // random destination would turn a crash after copy and before the database
+    // receipt into duplicate provider effects.
+    const quarantineKey = `${reasonCode.toLowerCase()}/${object.sha256}`;
+    const expected = digestDescriptor(descriptorKey("quarantine", quarantineKey), object.byteLength, object.sha256);
+    const promoted = (await this.exists(expected))
+      ? expected
+      : await this.promote(object, { namespace: "quarantine", key: quarantineKey });
     await this.remove(object);
     return { ...promoted, metadata: { ...object.metadata, quarantineReason: reasonCode } };
   }
@@ -344,5 +355,342 @@ export class UnconfiguredS3CompatiblePrivateStorageProvider implements PrivateSt
   }
   async abortMultipart(_uploadId: string): Promise<void> {
     return this.unavailable();
+  }
+}
+
+export type S3CompatibleObjectClient = {
+  health(): Promise<{ healthy: boolean; providerVersion?: string }>;
+  put(key: string, body: Readable, options: PrivateWriteOptions): Promise<{ sha256?: string; byteLength?: number }>;
+  read(key: string, range?: { start: number; end?: number }): Promise<Readable>;
+  head(key: string): Promise<{ sha256?: string; byteLength: number } | null>;
+  copy(sourceKey: string, destinationKey: string): Promise<void>;
+  remove(key: string): Promise<void>;
+  beginMultipart(key: string): Promise<{ uploadId: string }>;
+  uploadPart(
+    uploadId: string,
+    key: string,
+    partNumber: number,
+    body: Readable,
+    expectedSha256: string,
+  ): Promise<{ etag: string; byteLength: number }>;
+  completeMultipart(
+    uploadId: string,
+    key: string,
+    parts: Array<{ partNumber: number; etag: string }>,
+  ): Promise<{ sha256?: string; byteLength?: number }>;
+  abortMultipart(uploadId: string, key: string): Promise<void>;
+};
+
+function privateS3Key(prefix: string, namespace: PrivateObjectNamespace, key: string) {
+  const normalizedPrefix = prefix.replace(/^\/+|\/+$/g, "");
+  return `${normalizedPrefix}/${descriptorKey(namespace, key)}`;
+}
+
+async function digestStream(stream: Readable) {
+  const digest = createHash("sha256");
+  let byteLength = 0;
+  for await (const chunk of stream) {
+    const bytes = Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk);
+    digest.update(bytes);
+    byteLength += bytes.length;
+  }
+  return { sha256: digest.digest("hex"), byteLength };
+}
+
+/**
+ * Concrete S3/MinIO provider. It keeps namespace policy in this layer and delegates
+ * protocol credentials to the injected S3 client, so route code cannot select a
+ * bucket, prefix, or public access mode.
+ */
+export class S3CompatiblePrivateStorageProvider implements PrivateStorageProvider {
+  readonly name: string;
+  readonly supportsMultipart = true;
+  readonly supportsSignedRead = false;
+  private readonly uploads = new Map<string, { key: string }>();
+  constructor(private readonly input: { client: S3CompatibleObjectClient; prefix: string; providerName?: string }) {
+    if (!input.prefix || input.prefix.includes("..")) throw privateFailure("PRIVATE_CONTENT_CONFIGURATION_INVALID");
+    this.name = input.providerName ?? "s3-compatible-private-storage";
+  }
+  async health() {
+    try {
+      const result = await this.input.client.health();
+      return {
+        configured: true,
+        healthy: result.healthy,
+        providerVersion: result.providerVersion,
+        capabilities: ["private", "range", "multipart", "immutable-copy"],
+      };
+    } catch {
+      return { configured: true, healthy: false, capabilities: ["private", "range", "multipart", "immutable-copy"] };
+    }
+  }
+  private key(namespace: PrivateObjectNamespace, key: string) {
+    return privateS3Key(this.input.prefix, namespace, key);
+  }
+  private async inspect(key: string) {
+    const present = await this.input.client.head(key);
+    if (!present) return null;
+    if (present.sha256) return present;
+    return { ...present, ...(await digestStream(await this.input.client.read(key))) };
+  }
+  private descriptor(
+    namespace: PrivateObjectNamespace,
+    key: string,
+    sha256: string,
+    byteLength: number,
+    metadata?: Record<string, string>,
+  ) {
+    return digestDescriptor(descriptorKey(namespace, key), byteLength, sha256, metadata);
+  }
+  async put(namespace: PrivateObjectNamespace, key: string, body: Readable, options: PrivateWriteOptions) {
+    const storageKey = this.key(namespace, key);
+    const result = await this.input.client.put(storageKey, body, options);
+    const present = await this.inspect(storageKey);
+    if (
+      !present ||
+      (options.expectedSha256 && present.sha256 !== options.expectedSha256) ||
+      (options.contentLength !== undefined && present.byteLength !== options.contentLength)
+    )
+      throw privateFailure("PRIVATE_PACKAGE_CHECKSUM_MISMATCH");
+    return this.descriptor(
+      namespace,
+      key,
+      present.sha256 ?? result.sha256 ?? options.expectedSha256 ?? "",
+      present.byteLength,
+      options.metadata,
+    );
+  }
+  async read(object: PrivateObjectDescriptor, range?: { start: number; end?: number }) {
+    return this.input.client.read(this.keyFromDescriptor(object.key), range);
+  }
+  private keyFromDescriptor(storageKey: string) {
+    const [namespace, ...rest] = safeKey(storageKey).split("/");
+    if (!namespaces.has(namespace as PrivateObjectNamespace)) throw privateFailure("PRIVATE_PACKAGE_PATH_REJECTED");
+    return privateS3Key(this.input.prefix, namespace as PrivateObjectNamespace, rest.join("/"));
+  }
+  async exists(object: Pick<PrivateObjectDescriptor, "key" | "sha256">) {
+    const present = await this.inspect(this.keyFromDescriptor(object.key));
+    return Boolean(present && present.sha256 === object.sha256);
+  }
+  async promote(source: PrivateObjectDescriptor, destination: { namespace: PrivateObjectNamespace; key: string }) {
+    const current = await this.inspect(this.keyFromDescriptor(source.key));
+    if (!current || current.sha256 !== source.sha256 || current.byteLength !== source.byteLength)
+      throw privateFailure("PRIVATE_PACKAGE_CHECKSUM_MISMATCH");
+    const target = this.key(destination.namespace, destination.key);
+    const existing = await this.inspect(target);
+    if (existing && (existing.sha256 !== source.sha256 || existing.byteLength !== source.byteLength))
+      throw privateFailure("PRIVATE_PACKAGE_CONFLICT");
+    if (!existing) await this.input.client.copy(this.keyFromDescriptor(source.key), target);
+    const verified = await this.inspect(target);
+    if (!verified || verified.sha256 !== source.sha256 || verified.byteLength !== source.byteLength)
+      throw privateFailure("PRIVATE_PACKAGE_CHECKSUM_MISMATCH");
+    return this.descriptor(destination.namespace, destination.key, source.sha256, source.byteLength, source.metadata);
+  }
+  async moveToQuarantine(object: PrivateObjectDescriptor, reason: string) {
+    const safeReason = /^[A-Z0-9_]{1,64}$/.test(reason) ? reason.toLowerCase() : "private_quarantine";
+    // Deterministic target makes a retry after a copied-but-unrecorded repair
+    // idempotent for both S3 and MinIO implementations.
+    const key = `${safeReason}/${object.sha256}`;
+    const expected = this.descriptor("quarantine", key, object.sha256, object.byteLength, object.metadata);
+    const quarantined = (await this.exists(expected))
+      ? expected
+      : await this.promote(object, { namespace: "quarantine", key });
+    await this.remove(object);
+    return { ...quarantined, metadata: { ...object.metadata, quarantineReason: safeReason } };
+  }
+  async remove(object: PrivateObjectDescriptor) {
+    await this.input.client.remove(this.keyFromDescriptor(object.key));
+  }
+  async beginMultipart(input: { key: string; expectedBytes?: number }) {
+    const key = safeKey(input.key);
+    const started = await this.input.client.beginMultipart(this.key("uploads", key));
+    this.uploads.set(started.uploadId, { key });
+    return started;
+  }
+  async uploadPart(input: { uploadId: string; partNumber: number; body: Readable; expectedSha256: string }) {
+    const upload = this.uploads.get(input.uploadId);
+    if (!upload) throw privateFailure("PRIVATE_PACKAGE_INVALID");
+    return this.input.client.uploadPart(
+      input.uploadId,
+      this.key("uploads", upload.key),
+      input.partNumber,
+      input.body,
+      input.expectedSha256,
+    );
+  }
+  async completeMultipart(input: { uploadId: string; parts: Array<{ partNumber: number; etag: string }> }) {
+    const upload = this.uploads.get(input.uploadId);
+    if (!upload) throw privateFailure("PRIVATE_PACKAGE_INVALID");
+    try {
+      await this.input.client.completeMultipart(input.uploadId, this.key("uploads", upload.key), input.parts);
+      const present = await this.inspect(this.key("uploads", upload.key));
+      if (!present?.sha256) throw privateFailure("PRIVATE_PACKAGE_CHECKSUM_MISMATCH");
+      return this.descriptor("uploads", upload.key, present.sha256, present.byteLength);
+    } finally {
+      this.uploads.delete(input.uploadId);
+    }
+  }
+  async abortMultipart(uploadId: string) {
+    const upload = this.uploads.get(uploadId);
+    if (!upload) return;
+    try {
+      await this.input.client.abortMultipart(uploadId, this.key("uploads", upload.key));
+    } finally {
+      this.uploads.delete(uploadId);
+    }
+  }
+}
+
+type S3Credentials = { accessKeyId: string; secretAccessKey: string; sessionToken?: string };
+const s3Hash = (value: string) => createHash("sha256").update(value).digest("hex");
+const s3Hmac = (key: Buffer | string, value: string) => createHmac("sha256", key).update(value).digest();
+const xmlValue = (xml: string, name: string) => new RegExp(`<${name}>([^<]+)</${name}>`).exec(xml)?.[1];
+
+/** Native HTTPS SigV4 S3 client for AWS S3 and MinIO-compatible endpoints. It deliberately has no public-URL operation. */
+export class FetchS3CompatibleObjectClient implements S3CompatibleObjectClient {
+  constructor(
+    private readonly input: {
+      endpoint: string;
+      region: string;
+      bucket: string;
+      forcePathStyle: boolean;
+      credentials: S3Credentials;
+    },
+  ) {}
+  private address(key = "", query?: Record<string, string>) {
+    const endpoint = new URL(this.input.endpoint);
+    const encodedKey = key.split("/").filter(Boolean).map(encodeURIComponent).join("/");
+    if (this.input.forcePathStyle)
+      endpoint.pathname = `/${encodeURIComponent(this.input.bucket)}${encodedKey ? `/${encodedKey}` : ""}`;
+    else {
+      endpoint.hostname = `${this.input.bucket}.${endpoint.hostname}`;
+      endpoint.pathname = `/${encodedKey}`;
+    }
+    if (query) for (const [name, value] of Object.entries(query)) endpoint.searchParams.set(name, value);
+    return endpoint;
+  }
+  private async request(
+    method: string,
+    key: string,
+    input: {
+      query?: Record<string, string>;
+      headers?: Record<string, string>;
+      body?: BodyInit | null;
+      payloadHash?: string;
+      signal?: AbortSignal;
+    } = {},
+  ) {
+    const url = this.address(key, input.query);
+    const now = new Date();
+    const stamp = now.toISOString().replace(/[-:]|\.\d{3}/g, "");
+    const date = stamp.slice(0, 8);
+    const headers: Record<string, string> = { host: url.host, "x-amz-date": stamp, ...(input.headers ?? {}) };
+    if (this.input.credentials.sessionToken) headers["x-amz-security-token"] = this.input.credentials.sessionToken;
+    const names = Object.keys(headers)
+      .map((name) => name.toLowerCase())
+      .sort();
+    const headerValues = Object.fromEntries(
+      Object.entries(headers).map(([name, value]) => [name.toLowerCase(), value.trim().replace(/\s+/g, " ")]),
+    );
+    const canonicalHeaders = names.map((name) => `${name}:${headerValues[name]}\n`).join("");
+    const query = [...url.searchParams.entries()]
+      .sort(([a], [b]) => a.localeCompare(b))
+      .map(([a, b]) => `${encodeURIComponent(a)}=${encodeURIComponent(b)}`)
+      .join("&");
+    const payloadHash = input.payloadHash ?? (typeof input.body === "string" ? s3Hash(input.body) : "UNSIGNED-PAYLOAD");
+    const canonicalRequest = `${method}\n${url.pathname}\n${query}\n${canonicalHeaders}\n${names.join(";")}\n${payloadHash}`;
+    const scope = `${date}/${this.input.region}/s3/aws4_request`;
+    const signingKey = s3Hmac(
+      s3Hmac(s3Hmac(s3Hmac(`AWS4${this.input.credentials.secretAccessKey}`, date), this.input.region), "s3"),
+      "aws4_request",
+    );
+    const signature = createHmac("sha256", signingKey)
+      .update(`AWS4-HMAC-SHA256\n${stamp}\n${scope}\n${s3Hash(canonicalRequest)}`)
+      .digest("hex");
+    const authorization = `AWS4-HMAC-SHA256 Credential=${this.input.credentials.accessKeyId}/${scope}, SignedHeaders=${names.join(";")}, Signature=${signature}`;
+    const response = await fetch(url, {
+      method,
+      headers: { ...headers, authorization, "x-amz-content-sha256": payloadHash },
+      body: input.body,
+      signal: input.signal ?? AbortSignal.timeout(5000),
+      ...(input.body && typeof input.body !== "string" ? { duplex: "half" } : {}),
+    } as RequestInit);
+    if (!response.ok) throw privateFailure("PRIVATE_CONTENT_FORBIDDEN", "Private object provider request failed.");
+    return response;
+  }
+  async health() {
+    await this.request("HEAD", "");
+    return { healthy: true, providerVersion: "s3-compatible-sigv4" };
+  }
+  async put(key: string, body: Readable, options: PrivateWriteOptions) {
+    const sha = options.expectedSha256;
+    await this.request("PUT", key, {
+      body: Readable.toWeb(body) as BodyInit,
+      payloadHash: "UNSIGNED-PAYLOAD",
+      signal: options.signal,
+      headers: {
+        ...(options.contentLength !== undefined ? { "content-length": String(options.contentLength) } : {}),
+        ...(sha
+          ? { "x-amz-meta-sha256": sha, "x-amz-checksum-sha256": Buffer.from(sha, "hex").toString("base64") }
+          : {}),
+      },
+    });
+    return { sha256: sha, byteLength: options.contentLength };
+  }
+  async read(key: string, range?: { start: number; end?: number }) {
+    const response = await this.request("GET", key, {
+      headers: range ? { range: `bytes=${range.start}-${range.end ?? ""}` } : {},
+    });
+    if (!response.body) throw privateFailure("PRIVATE_CONTENT_FORBIDDEN");
+    return Readable.fromWeb(response.body as import("node:stream/web").ReadableStream);
+  }
+  async head(key: string) {
+    try {
+      const response = await this.request("HEAD", key);
+      const size = Number(response.headers.get("content-length"));
+      return Number.isSafeInteger(size) && size >= 0
+        ? { sha256: response.headers.get("x-amz-meta-sha256") ?? undefined, byteLength: size }
+        : null;
+    } catch {
+      return null;
+    }
+  }
+  async copy(sourceKey: string, destinationKey: string) {
+    await this.request("PUT", destinationKey, {
+      headers: {
+        "x-amz-copy-source": `/${this.input.bucket}/${sourceKey.split("/").map(encodeURIComponent).join("/")}`,
+      },
+    });
+  }
+  async remove(key: string) {
+    await this.request("DELETE", key);
+  }
+  async beginMultipart(key: string) {
+    const response = await this.request("POST", key, { query: { uploads: "" } });
+    const uploadId = xmlValue(await response.text(), "UploadId");
+    if (!uploadId) throw privateFailure("PRIVATE_CONTENT_FORBIDDEN");
+    return { uploadId };
+  }
+  async uploadPart(uploadId: string, key: string, partNumber: number, body: Readable, expectedSha256: string) {
+    const response = await this.request("PUT", key, {
+      query: { partNumber: String(partNumber), uploadId },
+      body: Readable.toWeb(body) as BodyInit,
+      payloadHash: "UNSIGNED-PAYLOAD",
+      headers: { "x-amz-checksum-sha256": Buffer.from(expectedSha256, "hex").toString("base64") },
+    });
+    const etag = response.headers.get("etag")?.replaceAll('"', "");
+    if (!etag) throw privateFailure("PRIVATE_CONTENT_FORBIDDEN");
+    return { etag, byteLength: Number(response.headers.get("content-length") ?? 0) };
+  }
+  async completeMultipart(uploadId: string, key: string, parts: Array<{ partNumber: number; etag: string }>) {
+    const body = `<CompleteMultipartUpload>${parts
+      .sort((a, b) => a.partNumber - b.partNumber)
+      .map((part) => `<Part><PartNumber>${part.partNumber}</PartNumber><ETag>\"${part.etag}\"</ETag></Part>`)
+      .join("")}</CompleteMultipartUpload>`;
+    await this.request("POST", key, { query: { uploadId }, body, headers: { "content-type": "application/xml" } });
+    return {};
+  }
+  async abortMultipart(uploadId: string, key: string) {
+    await this.request("DELETE", key, { query: { uploadId } });
   }
 }

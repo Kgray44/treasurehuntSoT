@@ -15,6 +15,17 @@ export type AnimationAuthority = Readonly<{
 export const AnimationAuthorityContext = createContext<AnimationAuthority | null>(null);
 export const SceneHostContext = createContext<SceneHostHandle | null>(null);
 
+export type SceneHostLease = Pick<
+  SceneHostHandle,
+  "beginScene" | "registerTarget" | "claimRuntimeSurface" | "exportTarget" | "snapshot" | "release"
+> &
+  Readonly<{
+    getHandle: () => SceneHostHandle | null;
+    subscribe: (listener: () => void) => () => void;
+  }>;
+
+export const SceneHostLeaseContext = createContext<SceneHostLease | null>(null);
+
 export function useAnimationAuthority() {
   const authority = useContext(AnimationAuthorityContext);
   if (!authority) throw new Error("SceneHost requires an AnimationProvider");
@@ -29,4 +40,8 @@ export function useSceneHost() {
 
 export function useOptionalSceneHost() {
   return useContext(SceneHostContext);
+}
+
+export function useOptionalSceneHostLease() {
+  return useContext(SceneHostLeaseContext);
 }

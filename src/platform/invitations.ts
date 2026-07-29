@@ -7,7 +7,7 @@ import { hashToken, makeToken } from "@/lib/security";
 import { parsePublishedSnapshot } from "@/chronicle/publishing";
 import { invitationUsable } from "@/platform/state";
 import { safeAuditMetadata } from "@/platform/audit";
-import { canonicalAccountForLegacyActor, ensureGuestAccountForProfile } from "@/wayfarer/accounts";
+import { canonicalAccountForLegacyActor } from "@/wayfarer/accounts";
 
 const alphabet = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
 
@@ -446,7 +446,10 @@ export async function acceptInvitation(
     });
     return { playerId, playthroughId: invitation.playthroughId, idempotent: false };
   });
-  await ensureGuestAccountForProfile(result.playerId);
+  // The sole caller is the browser acceptance route, where createPlayerIdentitySession
+  // owns guest-account bootstrap and session issuance as one follow-up operation.
+  // Avoiding a duplicate account transaction here keeps invitation acceptance bounded
+  // on SQLite while preserving the same account-rooted Player session.
   return result;
 }
 

@@ -19,7 +19,7 @@ import { riveAssets } from "@/animation/assets/rive-contracts";
 import { sceneContracts } from "@/animation/director/scene-registry";
 import { useAnimationDirector } from "@/animation/director/useAnimationDirector";
 import { SceneHost } from "@/animation/hosts/SceneHost";
-import { useOptionalSceneHost } from "@/animation/hosts/SceneHostContext";
+import { useOptionalSceneHost, useOptionalSceneHostLease } from "@/animation/hosts/SceneHostContext";
 import type { ExternalSceneTargetHandle, SceneHostHandle, SceneTargetHandle } from "@/animation/hosts/scene-host-types";
 import { useMotionMode } from "@/animation/motion/useMotionMode";
 import { AnimationControls } from "@/components/animation/AnimationControls";
@@ -135,6 +135,72 @@ export const showcaseDemos: ShowcaseDemo[] = [
   { id: "pause", label: "Pause", scene: "pause", libraries: ["gsap", "rive"] },
   { id: "resume", label: "Resume", scene: "resume", libraries: ["gsap", "rive"] },
   { id: "undo", label: "Undo reversal", scene: "undo", libraries: ["gsap"] },
+  {
+    id: "community-harbor-arrival",
+    label: "Community Harbor arrival",
+    scene: "community-harbor-arrival",
+    libraries: ["gsap"],
+  },
+  {
+    id: "community-featured-reveal",
+    label: "Community featured reveal",
+    scene: "community-featured-reveal",
+    libraries: ["gsap"],
+  },
+  {
+    id: "community-card-collection-enter",
+    label: "Community collection entry",
+    scene: "community-card-collection-enter",
+    libraries: ["gsap"],
+  },
+  {
+    id: "community-listing-open",
+    label: "Community listing open",
+    scene: "community-listing-open",
+    libraries: ["gsap"],
+  },
+  {
+    id: "community-profile-arrival",
+    label: "Community profile arrival",
+    scene: "community-profile-arrival",
+    libraries: ["gsap"],
+  },
+  {
+    id: "community-voyage-log-unfurl",
+    label: "Community Voyage Log unfurl",
+    scene: "community-voyage-log-unfurl",
+    libraries: ["gsap"],
+  },
+  {
+    id: "community-save-to-collection",
+    label: "Community save to collection",
+    scene: "community-save-to-collection",
+    libraries: ["gsap"],
+  },
+  {
+    id: "community-filter-results",
+    label: "Community filtered results",
+    scene: "community-filter-results",
+    libraries: ["gsap"],
+  },
+  {
+    id: "community-report-submitted",
+    label: "Community report receipt",
+    scene: "community-report-submitted",
+    libraries: ["gsap"],
+  },
+  {
+    id: "community-keepsake-created",
+    label: "Community Keepsake receipt",
+    scene: "community-keepsake-created",
+    libraries: ["gsap"],
+  },
+  {
+    id: "community-voyage-log-published",
+    label: "Community Voyage Log receipt",
+    scene: "community-voyage-log-published",
+    libraries: ["gsap"],
+  },
   { id: "motion-nav", label: "Motion navigation transitions", scene: "session-reentry", libraries: ["motion"] },
   { id: "rive-inputs", label: "Rive state-machine inputs", scene: "session-reentry", libraries: ["rive"] },
   {
@@ -663,7 +729,7 @@ export function AnimationShowcase() {
             </p>
           </div>
         </aside>
-        <section key={runtimeEpoch} className="showcase-stage" aria-label="Animation demonstration stage">
+        <section className="showcase-stage" aria-label="Animation demonstration stage">
           <AnimatePresence mode="wait">
             <motion.div
               key={selected}
@@ -688,7 +754,7 @@ export function AnimationShowcase() {
             </motion.div>
           </AnimatePresence>
           <ShowcaseSceneHost
-            key={`${runtimeEpoch}:${hostRequest.nonce}`}
+            runtimeEpoch={runtimeEpoch}
             request={hostRequest}
             mode={mode}
             onRuntimeChange={handleRuntimeChange}
@@ -697,6 +763,7 @@ export function AnimationShowcase() {
             <section>
               <h2>StPageFlip</h2>
               <PageFlipBook
+                key={`animation-showcase-pageflip-${runtimeEpoch}`}
                 ref={book}
                 pages={bookPages}
                 mode={mode}
@@ -735,6 +802,7 @@ export function AnimationShowcase() {
             <section>
               <h2>Rive state machine</h2>
               <RiveStatefulObject
+                key={runtimeEpoch}
                 asset={riveAssets.developmentRating}
                 mode={mode}
                 label="MIT-licensed Rive rating state-machine demonstration"
@@ -894,10 +962,12 @@ export function AnimationShowcase() {
 }
 
 function ShowcaseSceneHost({
+  runtimeEpoch,
   request,
   mode,
   onRuntimeChange,
 }: {
+  runtimeEpoch: number;
   request: ShowcaseHostRequest;
   mode: ReturnType<typeof useMotionMode>["mode"];
   onRuntimeChange: (nonce: number, runtime: ShowcaseSceneRuntime | null) => void;
@@ -912,9 +982,9 @@ function ShowcaseSceneHost({
       hostKey={`development-showcase:${request.scene}:${request.nonce}`}
       className="showcase-scene-host"
       data-showcase-scene={request.scene}
-      data-showcase-host-instance={request.nonce}
+      data-showcase-host-instance={runtimeEpoch}
     >
-      <DemoStage scene={request.scene} mode={mode} onRuntimeChange={handleRuntimeChange} />
+      <DemoStage key={runtimeEpoch} scene={request.scene} mode={mode} onRuntimeChange={handleRuntimeChange} />
     </SceneHost>
   );
 }
@@ -983,6 +1053,7 @@ function DemoStage({
   onRuntimeChange: (runtime: ShowcaseSceneRuntime | null) => void;
 }) {
   const host = useOptionalSceneHost();
+  const hostLease = useOptionalSceneHostLease();
   const root = useRef<HTMLDivElement>(null);
   const requirements = useMemo(() => targetRequirementsForScene(scene), [scene]);
   const supplementalParts = useMemo(
@@ -995,7 +1066,8 @@ function DemoStage({
 
   useLayoutEffect(() => {
     const stage = root.current;
-    if (!host || !stage) return;
+    const registrationHost = hostLease ?? host;
+    if (!registrationHost || !stage) return;
     const handles = new Map<string, SceneTargetHandle>();
     try {
       for (const requirement of requirements) {
@@ -1004,7 +1076,7 @@ function DemoStage({
           if (requirement.required) throw new Error(`Required showcase fixture is missing: ${requirement.domPart}`);
           continue;
         }
-        const handle = host.registerTarget({
+        const handle = registrationHost.registerTarget({
           targetKey: requirement.targetKey,
           part: requirement.part,
           element,
@@ -1021,16 +1093,17 @@ function DemoStage({
           `Required showcase targets did not register: ${missingRequired.map((item) => item.targetKey).join(", ")}`,
         );
       }
-      onRuntimeChange(Object.freeze({ host, root: stage, targets: handles, requirements }));
+      const activeHost = hostLease?.getHandle() ?? host;
+      if (activeHost) onRuntimeChange(Object.freeze({ host: activeHost, root: stage, targets: handles, requirements }));
     } catch (cause) {
       [...handles.values()].reverse().forEach((handle) => handle.release());
       throw cause;
     }
     return () => {
-      onRuntimeChange(null);
+      if (hostLease?.getHandle() ?? host) onRuntimeChange(null);
       [...handles.values()].reverse().forEach((handle) => handle.release());
     };
-  }, [host, onRuntimeChange, requirements]);
+  }, [host, hostLease, onRuntimeChange, requirements]);
 
   return (
     <div ref={root} className="demo-physical-stage">

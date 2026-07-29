@@ -40,7 +40,7 @@ export const privateScanStates = [
 ] as const;
 export type PrivateScanState = (typeof privateScanStates)[number];
 
-export type PrivateObjectNamespace = "uploads" | "normalized" | "objects" | "quarantine" | "backups";
+export type PrivateObjectNamespace = "uploads" | "normalized" | "objects" | "derivatives" | "quarantine" | "backups";
 export type PrivateObjectDescriptor = {
   key: string;
   sha256: string;
@@ -54,12 +54,20 @@ export type PrivateWriteOptions = {
   metadata?: Record<string, string>;
   signal?: AbortSignal;
 };
+export type PrivateProviderProbe = {
+  configured: boolean;
+  healthy: boolean;
+  providerVersion?: string;
+  keyVersion?: string;
+  capabilities?: string[];
+};
 
 /** Production providers must keep every namespace private and immutable on promotion. */
 export interface PrivateStorageProvider {
   readonly name: string;
   readonly supportsMultipart: boolean;
   readonly supportsSignedRead: boolean;
+  health(): Promise<PrivateProviderProbe>;
   put(
     namespace: PrivateObjectNamespace,
     key: string,
@@ -96,7 +104,7 @@ export type PrivateScanResult = {
 };
 export interface PrivateScannerProvider {
   readonly name: string;
-  health(): Promise<{ configured: boolean; healthy: boolean }>;
+  health(): Promise<PrivateProviderProbe>;
   scan(input: { object: PrivateObjectDescriptor; mediaType: string; signal?: AbortSignal }): Promise<PrivateScanResult>;
 }
 
@@ -108,7 +116,7 @@ export type WrappedPrivateDataKey = {
 };
 export interface PrivateKeyProvider {
   readonly name: string;
-  health(): Promise<{ configured: boolean; healthy: boolean; keyVersion?: string }>;
+  health(): Promise<PrivateProviderProbe>;
   wrap(dataKey: Buffer): Promise<WrappedPrivateDataKey>;
   unwrap(wrapped: WrappedPrivateDataKey): Promise<Buffer>;
   rewrap(wrapped: WrappedPrivateDataKey): Promise<WrappedPrivateDataKey>;
@@ -132,6 +140,12 @@ export const privateJobTypes = [
   "PRIVATE_UPLOAD_CLEANUP",
   "PRIVATE_ORPHAN_CLEANUP",
   "PRIVATE_QUARANTINE_RETENTION",
+  "PRIVATE_MEDIA_DERIVATIVE_BUILD",
+  "PRIVATE_MEDIA_DERIVATIVE_VERIFY",
+  "PRIVATE_MEDIA_GRANT_RECONCILE",
+  "PRIVATE_MEDIA_WITHDRAW",
+  "PRIVATE_MEDIA_DERIVATIVE_CLEANUP",
+  "PRIVATE_MEDIA_INTEGRITY_RECONCILE",
 ] as const;
 export type PrivateJobType = (typeof privateJobTypes)[number];
 export type PrivateJobPayload = {
