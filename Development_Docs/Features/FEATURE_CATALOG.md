@@ -5,7 +5,7 @@ This generated catalog records completed, meaningful platform capabilities. It i
 ## Audited repository and commit
 
 Repository: `Kgray44/treasurehuntSoT`
-Audited source commit: `d69adb6581d1c38ea77b746c0354b619636aa1d8`
+Audited source commit: `cea12ce12150635aa593ba214d21a6db7ec425a9`
 
 ## Status vocabulary
 
@@ -621,9 +621,9 @@ A narrow versioned verification boundary accepts trusted evidence without giving
 ## FT-024 - Project Sealed Hold Private Chronicle Protection
 
 **Status:** MAINLINE
-**Program or subsystem:** Sealed Hold Phases 1 and 2
+**Program or subsystem:** Sealed Hold Phases 1 through 4
 
-The public engine can import, store, deliver, and scan protected Chronicle packages without placing private story content in the repository.
+The public engine can import, store, deliver, recover, and govern protected Chronicle packages and media without placing private story content in the repository.
 
 ### Important subfeatures
 
@@ -633,6 +633,9 @@ The public engine can import, store, deliver, and scan protected Chronicle packa
 - Content-addressed protected objects
 - Fail-closed scanner states
 - Protected media delivery
+- Durable operations, backup, restore, and repair
+- Key lifecycle safeguards
+- Opaque grants, consent, derivatives, and withdrawal
 
 ### Primary surfaces
 
@@ -641,16 +644,16 @@ The public engine can import, store, deliver, and scan protected Chronicle packa
 ### Evidence
 
 - path: `src/private-content/package.ts`
-- completion-record: `Development_Docs/Programs/Sealed_Hold/Project_Sealed_Hold_Phase_2_Completion_Receipt.md`
+- completion-record: `Development_Docs/Project_Sealed_Hold_Phase_4_Completion_Receipt.md`
 
 ---
 
 ## FT-025 - Project Harborlight Community Exchange
 
 **Status:** MAINLINE
-**Program or subsystem:** Harborlight Phases 1 and 2
+**Program or subsystem:** Harborlight Phases 1 through 3
 
-A governed exchange supports immutable reusable Chronicle packages, licensing, attribution, installation, and remix lineage.
+A governed community system supports immutable reusable Chronicle packages, licensing, attribution, installation, remix lineage, discovery, and consent-aware social projections.
 
 ### Important subfeatures
 
@@ -660,6 +663,9 @@ A governed exchange supports immutable reusable Chronicle packages, licensing, a
 - Scanner-gated packages
 - Rollback-safe installation
 - Remix lineage
+- Discovery and search projections
+- Reviews, comments, reports, and collections
+- Consent-aware keepsakes and voyage logs
 
 ### Primary surfaces
 
@@ -668,7 +674,7 @@ A governed exchange supports immutable reusable Chronicle packages, licensing, a
 ### Evidence
 
 - path: `src/community/exchange-service.ts`
-- completion-record: `Development_Docs/Programs/Harborlight/Project_Harborlight_Phase_2_Completion_Report.md`
+- completion-record: `Development_Docs/Project_Harborlight_Phase_3_Completion_Report.md`
 
 ---
 
@@ -751,14 +757,37 @@ The repository provides repeatable local setup, parity checks, release validatio
 
 ---
 
-# Completed Branch Features Not Yet Available on Main
+## FT-029 - True North Role-Aware Navigation Shell
 
-## FT-B001 - Personal Chronicle History
+**Status:** MAINLINE
+**Program or subsystem:** True North
 
-**Status:** BRANCH COMPLETE NOT MERGED
+A persistent, accessible navigation shell provides role-aware workspace routing without weakening authorization boundaries.
+
+### Important subfeatures
+
+- Persistent workspace navigation
+- Role-aware destinations
+- Keyboard and reduced-motion support
+- Responsive information hierarchy
+
+### Primary surfaces
+
+`/`, `/player`, `/captain`, `/studio`
+
+### Evidence
+
+- path: `src/components/shell/ProductShell.tsx`
+- completion-record: `Development_Docs/Project_True_North_Completion_Receipt.md`
+
+---
+
+## FT-030 - Personal Chronicle History
+
+**Status:** MAINLINE
 **Program or subsystem:** Wayfarer Phase 3
 
-A private version-pinned Voyage history preserves personal records, reflections, keepsakes, and consent-aware participant context.
+Private, version-pinned Voyage history preserves personal records, reflections, keepsakes, and consent-aware participant context.
 
 ### Important subfeatures
 
@@ -767,7 +796,6 @@ A private version-pinned Voyage history preserves personal records, reflections,
 - Lifecycle and timing history
 - Private reflections
 - Consent grants and revocation
-- Owner and crew-safe projections
 
 ### Primary surfaces
 
@@ -775,14 +803,14 @@ A private version-pinned Voyage history preserves personal records, reflections,
 
 ### Evidence
 
-- commit: `ba241a68c90f5fa5ff32b8a3fbded9ff1431d1a3`
-- branch: `codex/project-wayfarer-phase4-artifacts-achievements`
+- path: `src/wayfarer/chronicle-history.ts`
+- completion-record: `Development_Docs/Project_Wayfarer_Phase_3_Completion_Receipt.md`
 
 ---
 
-## FT-B002 - Artifact Cabinet and Achievements
+## FT-031 - Artifact Cabinet and Achievements
 
-**Status:** BRANCH COMPLETE NOT MERGED
+**Status:** MAINLINE
 **Program or subsystem:** Wayfarer Phase 4
 
 Person-level artifact provenance, custody, display, assembly, and achievements remain separate from shared Voyage inventory.
@@ -802,45 +830,43 @@ Person-level artifact provenance, custody, display, assembly, and achievements r
 
 ### Evidence
 
-- commit: `ba241a68c90f5fa5ff32b8a3fbded9ff1431d1a3`
-- branch: `codex/project-wayfarer-phase4-artifacts-achievements`
+- path: `src/wayfarer/artifacts.ts`
+- path: `prisma/migrations/20260725120000_wayfarer_phase4_artifacts_achievements/migration.sql`
 
 ---
 
-## FT-B003 - Private Content Operations and Recovery
+## FT-032 - Ledgerlight Documentation Governance and Feature Catalog
 
-**Status:** BRANCH COMPLETE NOT MERGED
-**Program or subsystem:** Sealed Hold Phase 3
+**Status:** MAINLINE
+**Program or subsystem:** Ledgerlight
 
-Sealed Hold operations add durable worker, backup, restore, repair, lease, key-lifecycle, and administrator readiness capabilities.
+Audience-separated current documentation, indexed engineering records, and a fragment-driven capability catalog keep mainline claims reviewable.
 
 ### Important subfeatures
 
-- Provider readiness
-- Durable jobs and leases
-- Encrypted backups
-- Restore verification
-- Immutable repair plans
-- Key rotation safeguards
+- Audience and canonical-topic governance
+- Generated engineering-record index
+- Historical archive classification
+- Machine-readable capability fragments
+- Generated Feature Catalog validation
 
 ### Primary surfaces
 
-`/studio/private-content/operations`, `worker`
-
-### Meaningful limitations
-
-- Live infrastructure proof requires separately authorized services.
+`docs`, `Development_Docs`, `npm run docs:validate`, `npm run features:validate`
 
 ### Evidence
 
-- commit: `d09c16e21e3945b219420ff3fc575fac93cbe591`
-- branch: `codex/project-sealed-hold-phase3-stand-the-watch`
+- path: `scripts/validate-documentation.mjs`
+- path: `scripts/features/build-feature-catalog.ts`
 
 ---
 
+# Completed Branch Features Not Yet Available on Main
+
 # Deliberately Excluded Until Complete
 
-- Harborlight Phase 3 has substantial implementation but is not cataloged as complete until its remaining local acceptance gates pass.
+- Harborlight Phase 4 is planned and is not cataloged as an implemented capability.
+- Project Sounding Line is planned browser-validation remediation, not an implemented product capability.
 - Project Landfall is governed but not implemented.
 - Vision Waypoint recognition is not implemented beyond its provider seam and simulator.
 - Production multi-instance pub/sub, distributed rate limiting, production scanner/KMS/storage/alerting, and full deployment proof remain separate work.
@@ -850,4 +876,4 @@ Sealed Hold operations add durable worker, backup, restore, repair, lease, key-l
 
 Update the owning machine-readable fragment only when completed work changes a major capability, important subfeature, availability, or meaningful limitation. Regenerate this file with `npm run features:sync`; never hand-edit it. Validate before closeout with `npm run features:validate`.
 
-Generation source commit: `d69adb6581d1c38ea77b746c0354b619636aa1d8`
+Generation source commit: `cea12ce12150635aa593ba214d21a6db7ec425a9`
