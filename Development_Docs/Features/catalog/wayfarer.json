@@ -56,7 +56,10 @@
     ],
     "evidence": [
       { "kind": "path", "value": "src/wayfarer/artifacts.ts" },
-      { "kind": "path", "value": "prisma/migrations/20260725120000_wayfarer_phase4_artifacts_achievements/migration.sql" }
+      {
+        "kind": "path",
+        "value": "prisma/migrations/20260725120000_wayfarer_phase4_artifacts_achievements/migration.sql"
+      }
     ],
     "catalogVersion": 1
   }
