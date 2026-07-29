@@ -41,7 +41,7 @@ describe("ProductShell", () => {
       </ProductShell>,
     );
 
-    const menuButton = screen.getByRole("button", { name: /Menu/ });
+    const menuButton = screen.getByRole("button", { name: "Open navigation menu" });
     const navigationRegion = screen.getByRole("navigation", { name: "Voyagewright navigation" });
     fireEvent.click(menuButton);
     await waitFor(() =>
