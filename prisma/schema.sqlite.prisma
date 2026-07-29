@@ -2819,16 +2819,267 @@ model CommunityComment {
 }
 
 model CommunityReport {
-  id                String   @id @default(cuid())
+  id                String                         @id @default(cuid())
   subjectType       String
   subjectId         String
   reporterAccountId String
   reason            String
   detail            String?
-  status            String   @default("OPEN")
-  createdAt         DateTime @default(now())
+  status            String                         @default("OPEN")
+  caseId            String?
+  idempotencyKey    String?                        @unique
+  createdAt         DateTime                       @default(now())
+  moderationCase    CommunityModerationCase?       @relation("CommunityReportCase", fields: [caseId], references: [id], onDelete: SetNull)
+  caseReport        CommunityModerationCaseReport?
 
   @@index([subjectType, subjectId, status])
+  @@index([caseId, createdAt])
+}
+
+// Phase 4 moderation data is intentionally normalized and private-by-default.
+// It stores only bounded public snapshots and opaque identifiers, never private
+// Chronicle content, provider keys, or raw evidence-object locations.
+model CommunityModerationCase {
+  id                  String                              @id @default(cuid())
+  caseKey             String                              @unique
+  status              String                              @default("OPEN")
+  severity            String                              @default("MEDIUM")
+  priority            String                              @default("MEDIUM")
+  primaryReasonCode   String
+  subjectFingerprint  String
+  revision            Int                                 @default(1)
+  assignedAccountId   String?
+  conflictAccountId   String?
+  correlationId       String
+  openedAt            DateTime                            @default(now())
+  closedAt            DateTime?
+  updatedAt           DateTime                            @updatedAt
+  reports             CommunityReport[]                   @relation("CommunityReportCase")
+  subjects            CommunityModerationCaseSubject[]
+  reportLinks         CommunityModerationCaseReport[]
+  evidence            CommunityModerationCaseEvidence[]
+  assignments         CommunityModerationCaseAssignment[]
+  events              CommunityModerationCaseEvent[]
+  actions             CommunityModerationAction[]
+  appeals             CommunityModerationAppeal[]
+  restorationReceipts CommunityRestorationReceipt[]
+
+  @@index([status, priority, openedAt])
+  @@index([subjectFingerprint, status])
+  @@index([assignedAccountId, status])
+}
+
+model CommunityModerationCaseSubject {
+  id              String                  @id @default(cuid())
+  caseId          String
+  subjectType     String
+  subjectId       String
+  subjectChecksum String?
+  tombstone       String                  @default("{}")
+  createdAt       DateTime                @default(now())
+  moderationCase  CommunityModerationCase @relation(fields: [caseId], references: [id], onDelete: Restrict)
+
+  @@unique([caseId, subjectType, subjectId])
+  @@index([subjectType, subjectId])
+}
+
+model CommunityModerationCaseReport {
+  id             String                  @id @default(cuid())
+  caseId         String
+  reportId       String                  @unique
+  createdAt      DateTime                @default(now())
+  moderationCase CommunityModerationCase @relation(fields: [caseId], references: [id], onDelete: Restrict)
+  report         CommunityReport         @relation(fields: [reportId], references: [id], onDelete: Restrict)
+
+  @@index([caseId, createdAt])
+}
+
+model CommunityModerationCaseEvidence {
+  id             String                  @id @default(cuid())
+  caseId         String
+  kind           String
+  checksum       String
+  schemaVersion  Int                     @default(1)
+  safeSnapshot   String                  @default("{}")
+  accessClass    String                  @default("MODERATOR")
+  createdBy      String
+  correlationId  String
+  createdAt      DateTime                @default(now())
+  moderationCase CommunityModerationCase @relation(fields: [caseId], references: [id], onDelete: Restrict)
+
+  @@unique([caseId, kind, checksum])
+  @@index([caseId, createdAt])
+}
+
+model CommunityModerationCaseAssignment {
+  id                  String                  @id @default(cuid())
+  caseId              String
+  moderatorAccountId  String
+  assignedByAccountId String
+  state               String                  @default("ASSIGNED")
+  reasonCode          String
+  createdAt           DateTime                @default(now())
+  endedAt             DateTime?
+  moderationCase      CommunityModerationCase @relation(fields: [caseId], references: [id], onDelete: Restrict)
+
+  @@index([caseId, endedAt])
+  @@index([moderatorAccountId, endedAt])
+}
+
+model CommunityModerationCaseEvent {
+  id             String                  @id @default(cuid())
+  caseId         String
+  eventType      String
+  fromStatus     String?
+  toStatus       String?
+  reasonCode     String
+  actorAccountId String
+  correlationId  String
+  detail         String                  @default("{}")
+  createdAt      DateTime                @default(now())
+  moderationCase CommunityModerationCase @relation(fields: [caseId], references: [id], onDelete: Restrict)
+
+  @@index([caseId, createdAt])
+}
+
+model CommunityModerationAction {
+  id                  String                       @id @default(cuid())
+  caseId              String
+  subjectType         String
+  subjectId           String
+  actionType          String
+  state               String                       @default("APPLIED")
+  reasonCode          String
+  expectedRevision    Int
+  idempotencyKey      String                       @unique
+  actorAccountId      String
+  secondReviewerId    String?
+  reversible          Boolean                      @default(true)
+  appealEligible      Boolean                      @default(true)
+  restorationEligible Boolean                      @default(false)
+  correlationId       String
+  appliedAt           DateTime                     @default(now())
+  reversedAt          DateTime?
+  moderationCase      CommunityModerationCase      @relation(fields: [caseId], references: [id], onDelete: Restrict)
+  sanction            CommunitySanction?
+  appeals             CommunityModerationAppeal[]
+  restorationReceipt  CommunityRestorationReceipt?
+
+  @@index([caseId, appliedAt])
+  @@index([subjectType, subjectId, state])
+}
+
+model CommunitySanction {
+  id               String                    @id @default(cuid())
+  actionId         String                    @unique
+  subjectAccountId String?
+  sanctionType     String
+  startsAt         DateTime                  @default(now())
+  endsAt           DateTime?
+  state            String                    @default("ACTIVE")
+  createdAt        DateTime                  @default(now())
+  action           CommunityModerationAction @relation(fields: [actionId], references: [id], onDelete: Restrict)
+
+  @@index([subjectAccountId, state])
+}
+
+model CommunityModerationAppeal {
+  id                 String                           @id @default(cuid())
+  actionId           String
+  caseId             String
+  appellantAccountId String
+  status             String                           @default("SUBMITTED")
+  reason             String
+  filingDeadlineAt   DateTime
+  assignedAccountId  String?
+  decisionReasonCode String?
+  createdAt          DateTime                         @default(now())
+  updatedAt          DateTime                         @updatedAt
+  closedAt           DateTime?
+  action             CommunityModerationAction        @relation(fields: [actionId], references: [id], onDelete: Restrict)
+  moderationCase     CommunityModerationCase          @relation(fields: [caseId], references: [id], onDelete: Restrict)
+  events             CommunityModerationAppealEvent[]
+
+  @@unique([actionId, appellantAccountId])
+  @@index([caseId, status, createdAt])
+}
+
+model CommunityModerationAppealEvent {
+  id             String                    @id @default(cuid())
+  appealId       String
+  eventType      String
+  fromStatus     String?
+  toStatus       String?
+  reasonCode     String
+  actorAccountId String
+  createdAt      DateTime                  @default(now())
+  appeal         CommunityModerationAppeal @relation(fields: [appealId], references: [id], onDelete: Restrict)
+
+  @@index([appealId, createdAt])
+}
+
+model CommunityRestorationReceipt {
+  id              String                    @id @default(cuid())
+  actionId        String                    @unique
+  caseId          String
+  subjectType     String
+  subjectId       String
+  objectChecksum  String?
+  scanReceiptId   String?
+  packageChecksum String?
+  eligibility     String
+  restoredBy      String
+  correlationId   String
+  createdAt       DateTime                  @default(now())
+  action          CommunityModerationAction @relation(fields: [actionId], references: [id], onDelete: Restrict)
+  moderationCase  CommunityModerationCase   @relation(fields: [caseId], references: [id], onDelete: Restrict)
+  scanReceipt     CommunityScanReceipt?     @relation(fields: [scanReceiptId], references: [id], onDelete: SetNull)
+
+  @@index([caseId, createdAt])
+}
+
+model CommunityScanReceipt {
+  id                  String                        @id @default(cuid())
+  subjectType         String
+  subjectId           String
+  provider            String
+  providerVersion     String
+  definitionsVersion  String?
+  result              String
+  objectChecksum      String
+  byteLength          Int
+  detectedMediaType   String
+  evidenceKind        String
+  correlationId       String
+  expiresAt           DateTime
+  scannedAt           DateTime                      @default(now())
+  restorationReceipts CommunityRestorationReceipt[]
+
+  @@index([subjectType, subjectId, scannedAt])
+  @@index([objectChecksum, result, expiresAt])
+}
+
+model CommunityRateLimitBucket {
+  id           String   @id @default(cuid())
+  keyHash      String   @unique
+  scope        String
+  count        Int      @default(0)
+  windowEndsAt DateTime
+  updatedAt    DateTime @updatedAt
+
+  @@index([scope, windowEndsAt])
+}
+
+model CommunityOperationalSchedule {
+  id           String    @id @default(cuid())
+  scheduleType String    @unique
+  nextRunAt    DateTime
+  lastRunAt    DateTime?
+  lastOutcome  String?
+  revision     Int       @default(1)
+  updatedAt    DateTime  @updatedAt
+
+  @@index([nextRunAt])
 }
 
 model CommunityVoyageKeepsake {

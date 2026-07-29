@@ -5,7 +5,7 @@ This generated catalog records completed, meaningful platform capabilities. It i
 ## Audited repository and commit
 
 Repository: `Kgray44/treasurehuntSoT`
-Audited source commit: `cea12ce12150635aa593ba214d21a6db7ec425a9`
+Audited source commit: `3699f5e7c638d950aab3b55169b603121b57c85b`
 
 ## Status vocabulary
 
@@ -653,7 +653,7 @@ The public engine can import, store, deliver, recover, and govern protected Chro
 **Status:** MAINLINE
 **Program or subsystem:** Harborlight Phases 1 through 3
 
-A governed community system supports immutable reusable Chronicle packages, licensing, attribution, installation, remix lineage, discovery, and consent-aware social projections.
+A governed community system supports immutable reusable Chronicle packages, licensing, attribution, installation, remix lineage, discovery, consent-aware social projections, and durable moderated operations.
 
 ### Important subfeatures
 
@@ -876,4 +876,4 @@ Audience-separated current documentation, indexed engineering records, and a fra
 
 Update the owning machine-readable fragment only when completed work changes a major capability, important subfeature, availability, or meaningful limitation. Regenerate this file with `npm run features:sync`; never hand-edit it. Validate before closeout with `npm run features:validate`.
 
-Generation source commit: `cea12ce12150635aa593ba214d21a6db7ec425a9`
+Generation source commit: `3699f5e7c638d950aab3b55169b603121b57c85b`

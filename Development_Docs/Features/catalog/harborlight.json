@@ -2,7 +2,7 @@
   {
     "id": "FT-025",
     "title": "Project Harborlight Community Exchange",
-    "summary": "A governed community system supports immutable reusable Chronicle packages, licensing, attribution, installation, remix lineage, discovery, and consent-aware social projections.",
+    "summary": "A governed community system supports immutable reusable Chronicle packages, licensing, attribution, installation, remix lineage, discovery, consent-aware social projections, and durable moderated operations.",
     "status": "MAINLINE",
     "program": "Harborlight Phases 1 through 3",
     "surfaces": ["/tales", "/studio/community"],

@@ -1,8 +1,18 @@
 import { createHash } from "node:crypto";
 import { CommunityError } from "./domain";
 import { assertCommunityBinaryFormat, type CommunityPackageFile } from "./package";
+import { scanClamAvBytes } from "@/private-content/clamav-transport";
+import { db } from "@/lib/db";
 
-export type CommunityBinaryScanResult = "CLEAN" | "SUSPICIOUS" | "MALICIOUS" | "FAILED" | "SCAN_NOT_CONFIGURED";
+export type CommunityBinaryScanResult =
+  | "CLEAN"
+  | "SUSPICIOUS"
+  | "MALICIOUS"
+  | "FAILED"
+  | "TIMEOUT"
+  | "PROVIDER_UNAVAILABLE"
+  | "DEFINITIONS_STALE"
+  | "SCAN_NOT_CONFIGURED";
 
 export type CommunityBinaryScanInput = {
   bytes: Uint8Array;
@@ -150,6 +160,23 @@ class SyntheticCommunityBinaryScanner implements CommunityBinaryScanner {
   }
 }
 
+class ClamAvCommunityBinaryScanner implements CommunityBinaryScanner {
+  async scan(input: CommunityBinaryScanInput) {
+    const result = await scanClamAvBytes({
+      bytes: input.bytes,
+      host: process.env.COMMUNITY_CLAMAV_HOST,
+      port: Number(process.env.COMMUNITY_CLAMAV_PORT ?? 3310),
+      timeoutMs: Number(process.env.COMMUNITY_CLAMAV_TIMEOUT_MS ?? 15_000),
+    });
+    return receipt(input, result.result, {
+      provider: "clamav-instream",
+      providerVersion: process.env.COMMUNITY_CLAMAV_VERSION ?? "unverified",
+      evidenceKind: "clamav-instream",
+      safeReasonCode: result.safeCode,
+    });
+  }
+}
+
 export function createCommunityBinaryScanner(): CommunityBinaryScanner {
   const selected = process.env[providerName] ?? "not-configured";
   if (selected === "not-configured") return new NotConfiguredCommunityBinaryScanner();
@@ -157,6 +184,7 @@ export function createCommunityBinaryScanner(): CommunityBinaryScanner {
     assertSyntheticTestGuards();
     return new SyntheticCommunityBinaryScanner();
   }
+  if (selected === "clamav") return new ClamAvCommunityBinaryScanner();
   throw new CommunityError(
     "COMMUNITY_SCANNER_PROVIDER_INVALID",
     "The configured Community scanner provider is not recognized.",
@@ -192,4 +220,62 @@ export function assertTrustedCommunityScanReceipts(receipts: readonly CommunityB
     if (!/^[a-f0-9]{64}$/u.test(item.sha256) || item.byteLength < 0 || !item.provider || !item.evidenceKind)
       throw new CommunityError("COMMUNITY_SCANNER_RECEIPT_INVALID", "Scanner evidence is incomplete.");
   }
+}
+
+/** Publication and restoration require current, provider-bound CLEAN evidence.
+ * Synthetic receipts are accepted only while the validation guard remains live. */
+export function isTrustedCurrentCommunityScanReceipt(
+  receipt: CommunityBinaryScanReceipt,
+  expectedSha256: string,
+  now = Date.now(),
+) {
+  const maxAgeMs = Number(process.env.COMMUNITY_SCAN_MAX_AGE_MS ?? 24 * 60 * 60 * 1000);
+  return (
+    receipt.result === "CLEAN" &&
+    receipt.sha256 === expectedSha256 &&
+    /^[a-f0-9]{64}$/u.test(expectedSha256) &&
+    receipt.provider !== "not-configured" &&
+    receipt.provider !== "synthetic-test" &&
+    Number.isFinite(maxAgeMs) &&
+    new Date(receipt.scannedAt).getTime() + maxAgeMs >= now
+  );
+}
+
+/** Persists a bounded provider receipt; raw bytes, scanner responses, object
+ * locations, and original names remain outside the moderation database. */
+export async function persistCommunityScanReceipt(
+  subject: { subjectType: string; subjectId: string; correlationId: string },
+  receipt: CommunityBinaryScanReceipt,
+  expiresAt = new Date(Date.now() + Number(process.env.COMMUNITY_SCAN_MAX_AGE_MS ?? 24 * 60 * 60 * 1000)),
+) {
+  if (
+    !/^[a-f0-9]{64}$/u.test(receipt.sha256) ||
+    receipt.byteLength < 0 ||
+    !receipt.provider ||
+    !receipt.providerVersion
+  )
+    throw new CommunityError("COMMUNITY_SCANNER_RECEIPT_INVALID", "Scanner evidence is incomplete.");
+  return db.communityScanReceipt.create({
+    data: {
+      subjectType: subject.subjectType,
+      subjectId: subject.subjectId,
+      provider: receipt.provider,
+      providerVersion: receipt.providerVersion,
+      definitionsVersion: receipt.safeReasonCode?.slice(0, 191),
+      result: receipt.result,
+      objectChecksum: receipt.sha256,
+      byteLength: receipt.byteLength,
+      detectedMediaType: receipt.detectedMediaType,
+      evidenceKind: receipt.evidenceKind,
+      correlationId: subject.correlationId,
+      expiresAt,
+    },
+  });
+}
+
+export async function currentCommunityScanReceipt(subjectType: string, subjectId: string, expectedChecksum: string) {
+  return db.communityScanReceipt.findFirst({
+    where: { subjectType, subjectId, objectChecksum: expectedChecksum, result: "CLEAN", expiresAt: { gt: new Date() } },
+    orderBy: { scannedAt: "desc" },
+  });
 }

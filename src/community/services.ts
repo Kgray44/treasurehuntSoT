@@ -409,6 +409,10 @@ export async function quarantineRelease(actor: CommunityActor, id: string) {
     throw new CommunityError("COMMUNITY_ACCESS_DENIED", "Moderation capability is required.");
   return db.$transaction(async (tx) => {
     const updated = await tx.communityRelease.update({ where: { id }, data: { moderationStatus: "QUARANTINED" } });
+    await tx.communityListing.updateMany({
+      where: { currentReleaseId: id },
+      data: { moderationStatus: "QUARANTINED", publicationStatus: "QUARANTINED" },
+    });
     await outbox(tx, "COMMUNITY_RELEASE_QUARANTINED", "COMMUNITY_RELEASE", id, {});
     await audit(tx, actor, "COMMUNITY_RELEASE_QUARANTINED", "COMMUNITY_RELEASE", id, {});
     return ownerReleaseProjection(updated);
@@ -417,12 +421,10 @@ export async function quarantineRelease(actor: CommunityActor, id: string) {
 export async function restoreRelease(actor: CommunityActor, id: string) {
   if (actor.role !== "MODERATOR" && actor.role !== "ADMIN")
     throw new CommunityError("COMMUNITY_ACCESS_DENIED", "Moderation capability is required.");
-  return db.$transaction(async (tx) => {
-    const updated = await tx.communityRelease.update({ where: { id }, data: { moderationStatus: "ACTIVE" } });
-    await outbox(tx, "COMMUNITY_RELEASE_RESTORED", "COMMUNITY_RELEASE", id, {});
-    await audit(tx, actor, "COMMUNITY_RELEASE_RESTORED", "COMMUNITY_RELEASE", id, {});
-    return ownerReleaseProjection(updated);
-  });
+  // Phase 4 restoration has to bind a moderation action, a current clean scan
+  // receipt, matching checksums, and sanction state. This legacy seam must not
+  // bypass that evidence chain.
+  throw new CommunityError("COMMUNITY_RESTORATION_REQUIRES_RECEIPT", "Use the governed restoration workflow.");
 }
 export async function setProfileSuspension(actor: CommunityActor, profileId: string, suspended: boolean) {
   if (actor.role !== "MODERATOR" && actor.role !== "ADMIN")
