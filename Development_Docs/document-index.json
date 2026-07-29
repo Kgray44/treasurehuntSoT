@@ -1251,6 +1251,30 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Programs/Sounding_Line/Phase_4_Drafts/evidence-manifest.schema.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sounding_Line/Phase_4_Drafts/release-decision.schema.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sounding_Line/Phase_4_Drafts/sealed-plan-dispatch.schema.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sounding_Line/Phase_4_Drafts/worker-registration.schema.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Phase_1_Current_Verification_Inventory.md",
       "record_type": "program-record",
       "status": "preserved",
@@ -1318,6 +1342,84 @@
     },
     {
       "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Phase_2_Validation_and_Integration_Record.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Phase_4_CI_and_Distributed_Worker_Architecture.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Phase_4_Cutover_and_Rollback_Plan.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Phase_4_Dual_Run_Comparison_Specification.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Phase_4_Evidence_Integrity_and_Retention.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Phase_4_Final_Acceptance_Matrix.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Phase_4_Incident_Exception_and_Revocation_Playbook.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Phase_4_Performance_and_Capacity_Qualification.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Phase_4_Preparation_Completion_Receipt.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Phase_4_Preparation_Design_Record.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Phase_4_Preparation_Requirement_Ledger.csv",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Phase_4_Prerequisite_Checklist.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Phase_4_Release_Decision_and_Authority_Model.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Phase_4_Worker_Trust_and_Security_Model.md",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null

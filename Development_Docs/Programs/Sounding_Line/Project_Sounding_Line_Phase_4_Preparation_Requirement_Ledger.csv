@@ -1,0 +1,24 @@
+Requirement ID,Requirement,Preparation record,Preparation state,Implementation state,Verification
+SL4-001,Preparation-only boundary,Project_Sounding_Line_Phase_4_Preparation_Design_Record.md,complete,not started,static documentation check
+SL4-002,Provider-neutral CI controller architecture,Project_Sounding_Line_Phase_4_CI_and_Distributed_Worker_Architecture.md,complete,not started,schema and terminology check
+SL4-003,Worker identity fields,Phase_4_Drafts/worker-registration.schema.json,complete,not started,JSON parse and required fields
+SL4-004,Worker lifecycle states,Project_Sounding_Line_Phase_4_CI_and_Distributed_Worker_Architecture.md,complete,not started,terminology check
+SL4-005,Capability-matched sealed dispatch,Phase_4_Drafts/sealed-plan-dispatch.schema.json,complete,not started,JSON parse and required fields
+SL4-006,Worker trust classes,Project_Sounding_Line_Phase_4_Worker_Trust_and_Security_Model.md,complete,not started,terminology check
+SL4-007,Short-lived least-privilege credentials,Project_Sounding_Line_Phase_4_Worker_Trust_and_Security_Model.md,complete,not started,threat-model check
+SL4-008,Compromise replay revocation handling,Project_Sounding_Line_Phase_4_Worker_Trust_and_Security_Model.md,complete,not started,threat-model check
+SL4-009,Dual-run comparison dimensions,Project_Sounding_Line_Phase_4_Dual_Run_Comparison_Specification.md,complete,not started,referential check
+SL4-010,Allowed and unacceptable dual-run differences,Project_Sounding_Line_Phase_4_Dual_Run_Comparison_Specification.md,complete,not started,terminology check
+SL4-011,Release decision states,Phase_4_Drafts/release-decision.schema.json,complete,not started,JSON parse and enum check
+SL4-012,Release veto external pending and staleness rules,Project_Sounding_Line_Phase_4_Release_Decision_and_Authority_Model.md,complete,not started,referential check
+SL4-013,Future branch-protection proposal,Project_Sounding_Line_Phase_4_Release_Decision_and_Authority_Model.md,complete,not started,non-activation scan
+SL4-014,Cutover stages 0 through 7,Project_Sounding_Line_Phase_4_Cutover_and_Rollback_Plan.md,complete,not started,terminology check
+SL4-015,Rollback and emergency serial preservation,Project_Sounding_Line_Phase_4_Cutover_and_Rollback_Plan.md,complete,not started,referential check
+SL4-016,Evidence canonicalization and manifest,Project_Sounding_Line_Phase_4_Evidence_Integrity_and_Retention.md,complete,not started,JSON parse and terminology check
+SL4-017,Evidence invalidation retention privacy and restore,Project_Sounding_Line_Phase_4_Evidence_Integrity_and_Retention.md,complete,not started,threat-model check
+SL4-018,Performance decomposition and capacity experiments,Project_Sounding_Line_Phase_4_Performance_and_Capacity_Qualification.md,complete,not started,terminology check
+SL4-019,Incident classes stop-work and revalidation,Project_Sounding_Line_Phase_4_Incident_Exception_and_Revocation_Playbook.md,complete,not started,terminology check
+SL4-020,Temporary exception governance,Project_Sounding_Line_Phase_4_Incident_Exception_and_Revocation_Playbook.md,complete,not started,referential check
+SL4-021,Final acceptance gate ownership and vetoes,Project_Sounding_Line_Phase_4_Final_Acceptance_Matrix.md,complete,not started,referential check
+SL4-022,Prerequisite truth states,Project_Sounding_Line_Phase_4_Prerequisite_Checklist.md,complete,not started,terminology check
+SL4-023,Completion receipt and handoff,Project_Sounding_Line_Phase_4_Preparation_Completion_Receipt.md,complete,not started,final validation record

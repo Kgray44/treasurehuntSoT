@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Project Sounding Line Phase 4 Release Decision Draft",
+  "type": "object",
+  "preparationOnly": true,
+  "required": [
+    "synthetic",
+    "decision",
+    "sourceIdentity",
+    "policyIdentity",
+    "evidenceManifestDigest",
+    "cleanupVerified",
+    "authorizedBy"
+  ],
+  "properties": {
+    "synthetic": { "const": true },
+    "decision": {
+      "enum": [
+        "RELEASE_GO",
+        "RELEASE_GO_WITH_EXTERNAL_PENDING",
+        "RELEASE_NO_GO",
+        "RELEASE_INCOMPLETE",
+        "EVIDENCE_INVALID"
+      ]
+    },
+    "sourceIdentity": { "type": "string" },
+    "policyIdentity": { "type": "string" },
+    "evidenceManifestDigest": { "type": "string" },
+    "cleanupVerified": { "type": "boolean" },
+    "authorizedBy": { "type": "string" }
+  },
+  "additionalProperties": false
+}

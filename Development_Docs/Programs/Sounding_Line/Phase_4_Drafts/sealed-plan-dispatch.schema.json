@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Project Sounding Line Phase 4 Sealed Plan Dispatch Draft",
+  "type": "object",
+  "preparationOnly": true,
+  "required": [
+    "runId",
+    "nodeId",
+    "planDigest",
+    "sourceIdentity",
+    "policyIdentity",
+    "dependencyLockIdentity",
+    "requiredTrustClass",
+    "requiredCapabilities",
+    "leaseExpiresAt",
+    "artifactPrefix",
+    "cleanupAction"
+  ],
+  "properties": {
+    "runId": { "type": "string" },
+    "nodeId": { "type": "string" },
+    "planDigest": { "type": "string" },
+    "sourceIdentity": { "type": "string" },
+    "policyIdentity": { "type": "string" },
+    "dependencyLockIdentity": { "type": "string" },
+    "requiredTrustClass": {
+      "enum": ["LOCAL_TRUSTED", "CI_TRUSTED", "PROVIDER_VALIDATION_TRUSTED", "EXTERNAL_RESTRICTED", "UNTRUSTED_PR"]
+    },
+    "requiredCapabilities": { "type": "array", "items": { "type": "string" } },
+    "leaseExpiresAt": { "type": "string", "format": "date-time" },
+    "artifactPrefix": { "type": "string" },
+    "cleanupAction": { "type": "string" }
+  },
+  "additionalProperties": false
+}
