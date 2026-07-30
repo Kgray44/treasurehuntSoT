@@ -1,6 +1,6 @@
 {
-  "version": "1.1.0",
-  "status": "phase-2-harborlight-reconciled-governed-execution",
+  "version": "1.2.0",
+  "status": "phase-3-local-verification-intelligence",
   "registries": [
     "ownership.json",
     "contracts.json",
@@ -13,5 +13,11 @@
     "file-dispositions.json"
   ],
   "authority": "current-harness-remains-authoritative",
-  "plannerAuthority": "governed-local-execution-with-allowlisted-adapters"
+  "plannerAuthority": "governed-local-execution-with-allowlisted-adapters",
+  "phase3": {
+    "historyStore": "local-outside-worktree-sqlite",
+    "evidenceReuse": "focused-only-fail-closed",
+    "releaseGateReuse": "prohibited",
+    "durableRuntime": "local-journal-with-identity-checked-resume"
+  }
 }
