@@ -20,12 +20,28 @@ export async function buildPlan({ root, gateId, serial = false, sourceSha = proc
   const gate = gatesFile.gates.find((candidate) => candidate.id === gateId);
   if (!gate) throw new Error(`UNKNOWN_GATE:${gateId}`);
   const suites = new Map(suitesFile.suites.map((suite) => [suite.id, suite]));
-  const nodes = [...new Set(gate.requiredSuites)].map((suiteId) => {
+  const selected = new Set(gate.requiredSuites);
+  const visiting = new Set();
+  const resolved = new Set();
+  const includeDependencies = (suiteId) => {
+    if (resolved.has(suiteId)) return;
+    if (visiting.has(suiteId)) throw new Error(`SUITE_DEPENDENCY_CYCLE:${suiteId}`);
+    visiting.add(suiteId);
     const suite = suites.get(suiteId);
     if (!suite) throw new Error(`UNKNOWN_SUITE:${suiteId}`);
     if (suite.status === "ARCHIVED_HISTORICAL_MATRIX" || suiteId.toLowerCase().includes("p34"))
       throw new Error(`ARCHIVED_SUITE_SELECTED:${suiteId}`);
     if (!suite.adapter && !Array.isArray(suite.testFiles)) throw new Error(`SUITE_HAS_NO_GOVERNED_ADAPTER:${suiteId}`);
+    for (const dependency of suite.dependencies ?? []) {
+      if (!selected.has(dependency)) selected.add(dependency);
+      includeDependencies(dependency);
+    }
+    visiting.delete(suiteId);
+    resolved.add(suiteId);
+  };
+  for (const suiteId of [...selected]) includeDependencies(suiteId);
+  const nodes = [...selected].sort().map((suiteId) => {
+    const suite = suites.get(suiteId);
     return {
       id: suiteId,
       dependencies: [...(suite.dependencies ?? [])],
