@@ -89,6 +89,12 @@ test("BrowserOnly Harborlight lanes do not repeat independent broad gates", asyn
   );
 });
 
+test("concurrent Harborlight lanes may share only their validation-run parent", async () => {
+  const common = await readFile(path.join(root, "scripts", "dev-common.ps1"), "utf8");
+  assert.match(common, /New-Item -ItemType Directory -Path \$resolvedParent -Force -ErrorAction Stop/u);
+  assert.match(common, /Validation runtime destination already exists and is not owned by this new run/u);
+});
+
 test("public repository commands route through Sounding Line", async () => {
   const manifest = JSON.parse(await readFile(path.join(root, "package.json"), "utf8"));
   const required = [

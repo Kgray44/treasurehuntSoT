@@ -138,7 +138,7 @@ function New-ForeverValidationRuntime {
     if ($RunId -notmatch '^[a-z0-9][a-z0-9-]{7,127}$') { throw "Validation run identity is invalid." }
     $resolvedParent = Assert-ForeverValidationRunParent -RunParent $RunParent
     if (-not (Test-Path -LiteralPath $resolvedParent)) {
-        New-Item -ItemType Directory -Path $resolvedParent -ErrorAction Stop | Out-Null
+        New-Item -ItemType Directory -Path $resolvedParent -Force -ErrorAction Stop | Out-Null
     }
     $resolvedParent = (Resolve-Path -LiteralPath $resolvedParent).ProviderPath
     [void](Assert-ForeverValidationRunParent -RunParent $resolvedParent)
