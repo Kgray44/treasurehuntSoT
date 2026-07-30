@@ -37,7 +37,7 @@
         "static.core",
         "unit.core",
         "database.sqlite",
-        "compatibility.browser",
+        "browser.access-sentinel",
         "security.private-content",
         "sounding-line.runtime",
         "retirement.matrix-proof",

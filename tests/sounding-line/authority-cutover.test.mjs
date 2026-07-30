@@ -15,8 +15,12 @@ test("planner is deterministic and rejects archived P34 suites", async () => {
   assert.ok(first.nodes.every((node) => !node.id.toLowerCase().includes("p34")));
   const mainline = await buildPlan({ root, gateId: "mainline", sourceSha: "test-sha" });
   assert.ok(mainline.nodes.some((node) => node.id === "build.production"));
-  assert.ok(mainline.nodes.some((node) => node.id === "browser.auth"));
-  assert.ok(mainline.nodes.some((node) => node.id === "browser.player-journal"));
+  assert.ok(mainline.nodes.some((node) => node.id === "browser.access-sentinel"));
+  assert.ok(
+    mainline.nodes.every(
+      (node) => !["browser.auth", "browser.player-journal", "compatibility.browser"].includes(node.id),
+    ),
+  );
 });
 
 test("only the finalizer produces an accepted decision from source-bound clean receipts", () => {

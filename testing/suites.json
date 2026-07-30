@@ -238,6 +238,22 @@
       "adapter": "harborlight-browser-lanes"
     },
     {
+      "id": "browser.access-sentinel",
+      "name": "Focused browser access and invitation sentinel",
+      "tier": 4,
+      "owner": "one-voyage",
+      "command": "governed adapter: playwright-access-sentinel",
+      "estimatedDuration": "target-under-180-seconds",
+      "parallelSafe": false,
+      "resources": ["application-port", "sqlite-clone", "browser-chromium", "trace-root"],
+      "dependencies": ["database.sqlite"],
+      "contracts": ["invitation-acceptance", "authentication-authorization"],
+      "affectedPaths": ["tests/e2e/access-gates.spec.ts", "src/app/**", "src/components/platform/**"],
+      "releaseGates": ["mainline", "release-candidate"],
+      "currentImplementationState": "focused-canonical-browser-sentinel",
+      "adapter": "playwright-access-sentinel"
+    },
+    {
       "id": "retirement.matrix-proof",
       "name": "P34 historical-matrix retirement proof",
       "tier": 7,
@@ -274,15 +290,7 @@
         "production-build-directory",
         "trace-root"
       ],
-      "dependencies": [
-        "static.core",
-        "unit.core",
-        "database.sqlite",
-        "browser.auth",
-        "browser.player-journal",
-        "compatibility.browser",
-        "security.private-content"
-      ],
+      "dependencies": ["static.core", "unit.core", "database.sqlite", "security.private-content"],
       "contracts": ["migration-parity", "authentication-authorization", "public-privacy-projection"],
       "affectedPaths": ["**"],
       "releaseGates": ["mainline", "release-candidate"],

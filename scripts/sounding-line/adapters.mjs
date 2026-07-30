@@ -34,6 +34,17 @@ export const adapters = Object.freeze({
     resources: ["application-port", "sqlite-clone", "browser-webkit", "trace-root"],
     mode: "SERIAL_WITHIN_FAMILY",
   },
+  "playwright-access-sentinel": {
+    command: [
+      node,
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--project=chromium",
+      "tests/e2e/access-gates.spec.ts",
+    ],
+    resources: ["application-port", "sqlite-clone", "browser-chromium", "trace-root"],
+    mode: "SERIAL_WITHIN_FAMILY",
+  },
   static: { command: [node, "scripts/sounding-line/static.mjs"], resources: ["node-slot"], mode: "CERTIFIED" },
   policy: {
     command: [node, "scripts/sounding-line/cli.mjs", "validate-policy"],
