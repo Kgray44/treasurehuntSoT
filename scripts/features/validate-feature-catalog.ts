@@ -21,10 +21,33 @@ function gitRefExists(ref: string): boolean {
 
 function auditedCommitForCatalog(output: string): string {
   try {
-    return execFileSync("git", ["merge-base", "HEAD", "origin/main"], {
+    const mergeBase = execFileSync("git", ["merge-base", "HEAD", "origin/main"], {
       cwd: repositoryRoot,
       encoding: "utf8",
     }).trim();
+    const head = execFileSync("git", ["rev-parse", "HEAD"], { cwd: repositoryRoot, encoding: "utf8" }).trim();
+    const main = execFileSync("git", ["rev-parse", "origin/main"], {
+      cwd: repositoryRoot,
+      encoding: "utf8",
+    }).trim();
+    const outputPath = path.relative(repositoryRoot, output);
+    const outputHasUncommittedChange = [[], ["--cached"]].some((argumentsPrefix) => {
+      try {
+        execFileSync("git", ["diff", ...argumentsPrefix, "--quiet", "--", outputPath], {
+          cwd: repositoryRoot,
+          stdio: "ignore",
+        });
+        return false;
+      } catch {
+        return true;
+      }
+    });
+    // A generated catalog is committed after rendering its audited source. Once
+    // that commit is accepted on main, HEAD names the catalog commit itself;
+    // validate the recorded parent source rather than requiring a new commit.
+    return head === main && !outputHasUncommittedChange
+      ? execFileSync("git", ["rev-parse", "HEAD^"], { cwd: repositoryRoot, encoding: "utf8" }).trim()
+      : mergeBase;
   } catch {
     // The isolated validation runtime intentionally excludes .git. Its copied
     // generated catalog is still verifiable when the embedded audited commit
