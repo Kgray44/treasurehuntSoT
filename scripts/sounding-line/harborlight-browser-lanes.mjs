@@ -22,6 +22,7 @@ const lanes = Object.freeze([
 ]);
 const logsRoot = path.join(runRoot, "logs");
 await mkdir(logsRoot, { recursive: true });
+const failureTail = (log) => log.slice(-12_000);
 
 function executeLane(lane) {
   const args = [
@@ -83,6 +84,7 @@ const receipt = {
     signal: result.signal,
     runtimeRoot: result.runtimeRoot,
     status: result.exitCode === 0 ? "PASS" : "FAIL",
+    ...(result.exitCode === 0 ? {} : { diagnosticTail: failureTail(result.log) }),
   })),
 };
 await writeFile(path.join(logsRoot, "harborlight-browser-lanes.json"), `${JSON.stringify(receipt, null, 2)}\n`, "utf8");

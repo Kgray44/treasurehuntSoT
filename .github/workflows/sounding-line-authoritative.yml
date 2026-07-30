@@ -29,7 +29,7 @@ jobs:
       # P34 must be fully mapped and archived before any hosted browser worker
       # may receive a mainline plan.
       - run: node scripts/sounding-line/p34-retirement.mjs
-      - run: node -e "import('./scripts/sounding-line/planner.mjs').then(async m=>console.log(JSON.stringify(await m.buildPlan({root:process.cwd(),gateId:'mainline',sourceSha:process.env.GITHUB_SHA}),null,2)))" > sounding-line-plan.json
+      - run: node -e "import('./scripts/sounding-line/planner.mjs').then(async m=>console.log(JSON.stringify(await m.buildPlan({root:process.cwd(),gateId:'mainline',serial:true,sourceSha:process.env.GITHUB_SHA}),null,2)))" > sounding-line-plan.json
       - uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08
         with: { name: sounding-line-plan, path: sounding-line-plan.json, retention-days: 14 }
 
