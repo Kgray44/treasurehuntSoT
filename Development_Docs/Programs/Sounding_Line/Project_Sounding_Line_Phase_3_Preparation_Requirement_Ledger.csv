@@ -1,0 +1,11 @@
+requirement_id,deliverable,status,verification,boundary
+P3P-ARCH,Preparation design and architecture records,COMPLETE,documentation validation,No active runtime integration
+P3P-HISTORY,Historical evidence and statistics design,COMPLETE,synthetic schema tests,No database created
+P3P-IMPACT,Impact/risk/freshness/rerun design,COMPLETE,deterministic synthetic tests,No product planning execution
+P3P-NORMALIZE,Root cascade and signatures design,COMPLETE,synthetic normalization tests,No real evidence ingestion
+P3P-GOVERN,Flake stale slow durable Codex security design,COMPLETE,acceptance documentation,No policy enforcement activated
+P3P-FIXTURES,Versioned privacy-safe fixture corpus,COMPLETE,fixture-name inventory,Synthetic input only
+P3P-HANDOFF,Final Phase 2 interface classification,COMPLETE,post-mainline reconciliation record,No critical provisional inputs remain
+P3P-INGEST,Additive Phase 2 receipt ingestion contract,COMPLETE,synthetic compatibility fixture,Unknown is never interpreted as zero
+P3P-USAGE,Execution Usage Footer completion-report governance,COMPLETE,schema and deterministic unit test,Host telemetry only; unavailable is explicit
+P3P-VALIDATE,Preparation reconciliation validation,IN_PROGRESS,run after staged reconciliation,No browser/concurrency/release matrix
