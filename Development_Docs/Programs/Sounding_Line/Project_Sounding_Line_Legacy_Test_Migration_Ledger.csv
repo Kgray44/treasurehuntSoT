@@ -12,6 +12,7 @@
 "harborlight.phase4.unit","governed adapter: vitest Harborlight Phase 4 files","vitest-all","certified-governed-vitest-adapter","GOVERNED"
 "harborlight.phase4.sqlite","governed adapter: isolated SQLite migration rehearsal","harborlight-sqlite","certified-isolated-sqlite-adapter","GOVERNED"
 "harborlight.phase4.browser","governed adapter: playwright harborlight-phase4","harborlight-browser-lanes","certified-isolated-product-browser-adapter","GOVERNED"
+"browser.access-sentinel","governed adapter: playwright-access-sentinel","playwright-access-sentinel","focused-canonical-browser-sentinel","GOVERNED"
 "retirement.matrix-proof","governed adapter: p34-retirement","p34-retirement","fail-closed-until-case-mapping-complete","GOVERNED"
 "build.production","governed adapter: build","build","governed-build-adapter","REPLACED_LEGACY_RELEASE_FULL"
 "scripts/test-all.ps1","legacy serialized harness","authority.mjs mainline --serial","THIN_COMPATIBILITY_WRAPPER","MIGRATED"

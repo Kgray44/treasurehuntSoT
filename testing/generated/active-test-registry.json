@@ -27386,7 +27386,7 @@
     {
       "id": "sl-test-73858e45cf24bf58f194",
       "title": "planner is deterministic and rejects archived P34 suites",
-      "line": 10,
+      "line": 11,
       "file": "tests/sounding-line/authority-cutover.test.mjs",
       "suiteId": "unit.core",
       "tier": 1,
@@ -27417,7 +27417,38 @@
     {
       "id": "sl-test-48be453f85cafb6a6642",
       "title": "only the finalizer produces an accepted decision from source-bound clean receipts",
-      "line": 17,
+      "line": 26,
+      "file": "tests/sounding-line/authority-cutover.test.mjs",
+      "suiteId": "unit.core",
+      "tier": 1,
+      "risk": "MODERATE",
+      "sourcePaths": [
+        "tests/sounding-line/authority-cutover.test.mjs"
+      ],
+      "consumerPaths": [],
+      "dependencies": [],
+      "fixtureFamily": "repository-fixtures",
+      "resources": [
+        "node-slot"
+      ],
+      "parallelSafety": "READ_ONLY_PARALLEL",
+      "expectedDurationMs": 30000,
+      "hardBudgetMs": 60000,
+      "retryPolicy": "NONE",
+      "gates": [
+        "local-change",
+        "mainline"
+      ],
+      "supersessionPolicy": "ACTIVE",
+      "owner": "platform-foundation",
+      "contracts": [
+        "authentication-authorization"
+      ]
+    },
+    {
+      "id": "sl-test-41e176d38988253670ff",
+      "title": "public repository commands route through Sounding Line",
+      "line": 64,
       "file": "tests/sounding-line/authority-cutover.test.mjs",
       "suiteId": "unit.core",
       "tier": 1,
@@ -37676,6 +37707,153 @@
       "browser": {
         "engines": [
           "chromium"
+        ],
+        "devices": [
+          "configured-project"
+        ],
+        "inputModes": [
+          "mouse",
+          "keyboard"
+        ]
+      }
+    },
+    {
+      "id": "sl-test-37701265758a00f974de",
+      "title": "Player sign-in remains public, accessible, and does not grant a Chronicle session",
+      "line": 4,
+      "file": "tests/e2e/access-gates.spec.ts",
+      "project": "sounding-line-access-sentinel",
+      "suiteId": "browser.player-journal",
+      "tier": 4,
+      "risk": "MODERATE",
+      "sourcePaths": [
+        "tests/e2e/access-gates.spec.ts"
+      ],
+      "consumerPaths": [],
+      "dependencies": [],
+      "fixtureFamily": "repository-fixtures",
+      "resources": [
+        "application-port",
+        "sqlite-clone",
+        "browser-chromium",
+        "trace-root"
+      ],
+      "parallelSafety": "ISOLATED_MUTABLE_PARALLEL",
+      "expectedDurationMs": 120000,
+      "hardBudgetMs": 600000,
+      "retryPolicy": "NONE",
+      "gates": [
+        "local-change",
+        "mainline"
+      ],
+      "supersessionPolicy": "ACTIVE",
+      "owner": "one-voyage",
+      "contracts": [
+        "invitation-acceptance",
+        "player-session-restoration",
+        "drydock-progression"
+      ],
+      "browser": {
+        "engines": [
+          "sounding-line-access-sentinel"
+        ],
+        "devices": [
+          "configured-project"
+        ],
+        "inputModes": [
+          "mouse",
+          "keyboard"
+        ]
+      }
+    },
+    {
+      "id": "sl-test-11ccd62075643edb0c6b",
+      "title": "Quartermaster bookmarks redirect to canonical Captain sign-in across supported browsers",
+      "line": 20,
+      "file": "tests/e2e/access-gates.spec.ts",
+      "project": "sounding-line-access-sentinel",
+      "suiteId": "browser.player-journal",
+      "tier": 4,
+      "risk": "MODERATE",
+      "sourcePaths": [
+        "tests/e2e/access-gates.spec.ts"
+      ],
+      "consumerPaths": [],
+      "dependencies": [],
+      "fixtureFamily": "repository-fixtures",
+      "resources": [
+        "application-port",
+        "sqlite-clone",
+        "browser-chromium",
+        "trace-root"
+      ],
+      "parallelSafety": "ISOLATED_MUTABLE_PARALLEL",
+      "expectedDurationMs": 120000,
+      "hardBudgetMs": 600000,
+      "retryPolicy": "NONE",
+      "gates": [
+        "local-change",
+        "mainline"
+      ],
+      "supersessionPolicy": "ACTIVE",
+      "owner": "one-voyage",
+      "contracts": [
+        "invitation-acceptance",
+        "player-session-restoration",
+        "drydock-progression"
+      ],
+      "browser": {
+        "engines": [
+          "sounding-line-access-sentinel"
+        ],
+        "devices": [
+          "configured-project"
+        ],
+        "inputModes": [
+          "mouse",
+          "keyboard"
+        ]
+      }
+    },
+    {
+      "id": "sl-test-b27d0edba35c3fba89a8",
+      "title": "published Chronicle catalog is public while Studio remains protected",
+      "line": 27,
+      "file": "tests/e2e/access-gates.spec.ts",
+      "project": "sounding-line-access-sentinel",
+      "suiteId": "browser.player-journal",
+      "tier": 4,
+      "risk": "MODERATE",
+      "sourcePaths": [
+        "tests/e2e/access-gates.spec.ts"
+      ],
+      "consumerPaths": [],
+      "dependencies": [],
+      "fixtureFamily": "repository-fixtures",
+      "resources": [
+        "application-port",
+        "sqlite-clone",
+        "browser-chromium",
+        "trace-root"
+      ],
+      "parallelSafety": "ISOLATED_MUTABLE_PARALLEL",
+      "expectedDurationMs": 120000,
+      "hardBudgetMs": 600000,
+      "retryPolicy": "NONE",
+      "gates": [
+        "local-change",
+        "mainline"
+      ],
+      "supersessionPolicy": "ACTIVE",
+      "owner": "one-voyage",
+      "contracts": [
+        "invitation-acceptance",
+        "player-session-restoration",
+        "drydock-progression"
+      ],
+      "browser": {
+        "engines": [
+          "sounding-line-access-sentinel"
         ],
         "devices": [
           "configured-project"

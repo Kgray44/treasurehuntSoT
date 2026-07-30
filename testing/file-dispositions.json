@@ -40,6 +40,15 @@
       "adapter": "playwright"
     },
     {
+      "match": "scripts/sounding-line/isolated-validation-runtime.ps1",
+      "suiteId": "harborlight.phase4.browser",
+      "role": "REGISTERED_ADAPTER",
+      "owner": "harborlight",
+      "tier": 4,
+      "parallelSafety": "CERTIFIED_RESOURCE_LEASED",
+      "adapter": "powershell"
+    },
+    {
       "match": "src/community/moderation.test.ts",
       "suiteId": "harborlight.phase4.unit",
       "role": "REGISTERED_SUITE_CHILD",

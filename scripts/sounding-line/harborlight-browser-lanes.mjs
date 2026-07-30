@@ -1,7 +1,7 @@
 /*
  * Executes the two explicitly certified Harborlight Phase 4 browser lanes.
  * Each lane receives a separately marker-owned validation mirror, SQLite copy,
- * loopback port, browser context, and artifact root from scripts/test-all.ps1.
+ * loopback port, browser context, and artifact root from the internal runtime.
  * This runner deliberately has no arbitrary-command or arbitrary-spec inputs.
  */
 import { mkdir, writeFile } from "node:fs/promises";
@@ -29,7 +29,7 @@ function executeLane(lane) {
     "-ExecutionPolicy",
     "Bypass",
     "-File",
-    "scripts/test-all.ps1",
+    "scripts/sounding-line/isolated-validation-runtime.ps1",
     "-BrowserOnly",
     "-SkipBrowserInstall",
     "-BrowserTestPath",
@@ -44,7 +44,7 @@ function executeLane(lane) {
   return new Promise((resolve, reject) => {
     const child = spawn("powershell.exe", args, {
       cwd: process.cwd(),
-      env: process.env,
+      env: { ...process.env, SOUNDING_LINE_INTERNAL_RUNTIME: "1" },
       shell: false,
       windowsHide: true,
     });

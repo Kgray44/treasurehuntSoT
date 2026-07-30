@@ -3,6 +3,7 @@
 import path from "node:path";
 import process from "node:process";
 import { fileURLToPath } from "node:url";
+import { access, mkdir, readFile, writeFile } from "node:fs/promises";
 import { executeAdapter, resolveAdapter, resolveVitestAdapter } from "./adapters.mjs";
 import { finalize } from "./finalizer.mjs";
 import { buildPlan } from "./planner.mjs";
@@ -16,18 +17,29 @@ function suiteAdapter(suite) {
   throw new Error(`SUITE_HAS_NO_GOVERNED_ADAPTER:${suite.id}`);
 }
 
-async function run(gateId, serial) {
+async function run(gateId, { serial, executeOnly = false, receiptPath } = {}) {
   const plan = await buildPlan({ root, gateId, serial });
   const suites = JSON.parse(
-    await (await import("node:fs/promises")).readFile(path.join(root, "testing", "suites.json"), "utf8"),
+    await readFile(path.join(root, "testing", "suites.json"), "utf8"),
   );
   const suiteMap = new Map(suites.suites.map((suite) => [suite.id, suite]));
   const receipts = [];
+  const runtimeRoot = path.join(root, "artifacts", "sounding-line", "runs", process.env.GITHUB_RUN_ID ?? "local");
   for (const node of plan.nodes) {
     const suite = suiteMap.get(node.id);
     const adapter = suiteAdapter(suite);
     const startedAt = new Date().toISOString();
-    const result = await executeAdapter(adapter, { cwd: root });
+    const adapterEnv = {};
+    if (adapter.id === "harborlight-browser-lanes") {
+      const baseline = path.join(root, "prisma", "dev.db");
+      await access(baseline);
+      await mkdir(runtimeRoot, { recursive: true });
+      Object.assign(adapterEnv, {
+        SOUNDING_LINE_BASELINE_DATABASE: baseline,
+        SOUNDING_LINE_RUN_ROOT: runtimeRoot,
+      });
+    }
+    const result = await executeAdapter(adapter, { cwd: root, env: adapterEnv });
     receipts.push({
       suiteId: node.id,
       adapterId: adapter.id,
@@ -40,7 +52,12 @@ async function run(gateId, serial) {
       result: result.exitCode === 0 ? "PASSED" : "FAILED",
       ...result,
     });
-    if (result.exitCode !== 0) break;
+  }
+  const evidence = { version: 1, plan, receipts };
+  if (receiptPath) await writeFile(path.resolve(root, receiptPath), `${JSON.stringify(evidence, null, 2)}\n`, "utf8");
+  if (executeOnly) {
+    output(evidence);
+    return;
   }
   const result = finalize({ plan, receipts });
   output({ plan, finalization: result });
@@ -50,4 +67,11 @@ async function run(gateId, serial) {
 const command = process.argv[2] ?? "local-change";
 if (!new Set(["local-change", "mainline", "release-candidate", "subsystem", "contract"]).has(command))
   throw new Error(`UNKNOWN_AUTHORITY_COMMAND:${command}`);
-await run(command, process.argv.includes("--serial"));
+const receiptIndex = process.argv.indexOf("--receipt-out");
+const receiptPath = receiptIndex >= 0 ? process.argv[receiptIndex + 1] : undefined;
+if (receiptIndex >= 0 && !receiptPath) throw new Error("RECEIPT_OUTPUT_PATH_REQUIRED");
+await run(command, {
+  serial: process.argv.includes("--serial"),
+  executeOnly: process.argv.includes("--execute-only"),
+  receiptPath,
+});

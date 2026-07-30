@@ -39,7 +39,7 @@ export const adapters = Object.freeze({
       node,
       "node_modules/@playwright/test/cli.js",
       "test",
-      "--project=chromium",
+      "--project=sounding-line-access-sentinel",
       "tests/e2e/access-gates.spec.ts",
     ],
     resources: ["application-port", "sqlite-clone", "browser-chromium", "trace-root"],
