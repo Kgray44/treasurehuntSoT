@@ -10,6 +10,12 @@ The canonical active definition source is `testing/generated/active-test-registr
 
 Current evidence: generated inventory has 1,262 active execution definitions, including 326 non-executing Playwright-discovered browser rows and eight governed PowerShell validation entries in addition to Node/Vitest definitions. `validate-policy`, registry generation, design lint, the P34 retirement validator, and planner/finalizer focused tests pass. The hosted mainline worker and finalizer remain fail-closed until they produce a complete durable receipt; branch protection and final integration remain open.
 
+## Focused hosted checkpoint (2026-07-30)
+
+Serial authoritative mainline run `30565017300` completed successfully with a complete 11-suite receipt and finalizer decision. The focused hosted workflow job `30569722225` completed successfully in 7m38s on `ba3da7a5e795267cde1305006335c5395b4c4e3d`, selecting only `harborlight.phase4.browser`. Its uploaded governed receipt must nevertheless remain authoritative for interpretation: it records `harborlight-a` as passed and `harborlight-b` as failed because concurrent initialization raced while creating the shared, approved `Validation_Runs` parent. The later `b69315f9b606ae9338cc1ae9edc9f86c64298a49` repair makes only that parent creation idempotent; each marker-owned child runtime still fails closed on collision.
+
+Focused execution is evidence-only. It cannot emit a release decision, and job-level success cannot override a failed node receipt. The dynamic three-wave hosted design is implemented but does not yet have a complete hosted authoritative finalizer proof: wave 0 distributes five independent nodes, wave 1 runs two independent nodes beside the serialized SQLite node, and wave 2 runs the Harborlight browser node beside serial access/build nodes. No additional authoritative mainline candidate was launched for this checkpoint.
+
 `scripts/sounding-line/p34-retirement.mjs` is fail-closed. The recovered historical source at `073e09b1bc0ded5b0d595bf99f0db1b11aafb3b9` now yields 316 historical execution identities, each mapped directly to a current governed execution identity; the validator passes. Historical outcomes remain archival evidence and are not current release evidence.
 
 This record supersedes neither historical Phase 1–4 receipts nor their historical claims. Their P34/non-green statements remain historical evidence only.
