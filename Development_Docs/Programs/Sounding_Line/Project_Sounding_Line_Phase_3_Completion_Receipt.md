@@ -22,6 +22,7 @@ Phase 3 is locally complete on its implementation branch. The local historical s
 This receipt certifies only Phase 3 local branch completion. It does not certify mainline acceptance, release authority, a green P34 matrix, external providers, or Phase 4 implementation.
 
 Execution usage:
+
 - Elapsed time: UNAVAILABLE_FROM_HOST
 - Total tokens: UNAVAILABLE_FROM_HOST
 - Input tokens: UNAVAILABLE_FROM_HOST
