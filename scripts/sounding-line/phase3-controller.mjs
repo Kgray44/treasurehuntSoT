@@ -35,12 +35,14 @@ async function executeGovernedAdapter(current) {
     throw new Error("UNSAFE_CONTROLLER_REPOSITORY_ROOT");
   if (typeof execution.runtimeBase !== "string" || !path.isAbsolute(execution.runtimeBase))
     throw new Error("UNSAFE_CONTROLLER_RUNTIME_BASE");
+  if (typeof execution.sourceDigest !== "string" || !/^[a-f0-9]{64}$/u.test(execution.sourceDigest))
+    throw new Error("UNSAFE_CONTROLLER_SOURCE_DIGEST");
   const adapter = resolveAdapter(execution.adapterId);
   const unsignedPlan = {
     nonAuthoritative: true,
     execution: "governed-local",
     policyDigest: current.policyDigest,
-    sourceDigest: current.sourceWatermark,
+    sourceDigest: execution.sourceDigest,
     selected: [{ suiteId: adapter.id }],
     graph: [{ suiteId: adapter.id, dependsOn: [] }],
   };
@@ -49,7 +51,7 @@ async function executeGovernedAdapter(current) {
     base: execution.runtimeBase,
     repositoryRoot: execution.repositoryRoot,
     plan,
-    identity: { policyDigest: current.policyDigest, sourceDigest: current.sourceWatermark },
+    identity: { policyDigest: current.policyDigest, sourceDigest: execution.sourceDigest },
   });
   await phase3.updateRun(
     id,

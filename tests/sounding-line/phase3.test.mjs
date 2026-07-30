@@ -301,7 +301,12 @@ test("detached controller executes an allowlisted governed adapter through the P
       policyDigest: "b".repeat(64),
       planDigest: "controller-governed-adapter",
       purpose: "governed-controller-test",
-      execution: { adapterId: "policy", repositoryRoot: process.cwd(), runtimeBase: path.join(root, "phase2") },
+      execution: {
+        adapterId: "policy",
+        repositoryRoot: process.cwd(),
+        runtimeBase: path.join(root, "phase2"),
+        sourceDigest: "c".repeat(64),
+      },
     });
     for (let attempt = 0; attempt < 30; attempt += 1) {
       const current = await phase3.readRun(started.run.id, root);
