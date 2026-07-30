@@ -78,6 +78,17 @@ test("focused suite execution is evidence-only and cannot invoke authority", asy
   );
 });
 
+test("BrowserOnly Harborlight lanes do not repeat independent broad gates", async () => {
+  const runtime = await readFile(
+    path.join(root, "scripts", "sounding-line", "isolated-validation-runtime.ps1"),
+    "utf8",
+  );
+  assert.match(
+    runtime,
+    /if \(-not \$BrowserOnly\) \{[\s\S]*Running unit tests[\s\S]*Verifying additive platform backfill[\s\S]*\n    \}\n    \[void\]\(Invoke-IsolationHelper -Arguments @\("checkpoint"/u,
+  );
+});
+
 test("public repository commands route through Sounding Line", async () => {
   const manifest = JSON.parse(await readFile(path.join(root, "package.json"), "utf8"));
   const required = [

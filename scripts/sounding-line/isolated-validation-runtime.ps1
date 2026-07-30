@@ -658,32 +658,37 @@ try {
     $env:PRIVATE_CONTENT_WORKER_ENABLED = "true"
     $env:PRIVATE_CONTENT_REQUIRE_READY = "true"
 
-    if (-not $SkipBrowserInstall -and -not $SkipBrowser) {
-        Invoke-ValidationStep -Name "Installing Playwright browsers" -Arguments @("node_modules/playwright/cli.js", "install", "chromium", "webkit")
-    }
-    Invoke-ValidationStep -Name "Validating documentation" -Arguments @("scripts/validate-documentation.mjs")
-    Invoke-ValidationStep -Name "Checking formatting" -Arguments @("node_modules/prettier/bin/prettier.cjs", "--check", ".")
-    Invoke-ValidationStep -Name "Linting" -Arguments @("node_modules/eslint/bin/eslint.js", ".")
-    Invoke-ValidationStep -Name "Type checking" -Arguments @("node_modules/typescript/bin/tsc", "--noEmit")
-    Invoke-ValidationStep -Name "Validating Voyagewright product language" -Arguments @("node_modules/tsx/dist/cli.mjs", "scripts/validate-user-facing-language.ts")
-    Invoke-ValidationStep -Name "Validating completed Feature Catalog" -Arguments @("node_modules/tsx/dist/cli.mjs", "scripts/features/validate-feature-catalog.ts")
-    Invoke-ValidationStep -Name "Running unit tests" -Arguments @("node_modules/vitest/vitest.mjs", "run")
+    # BrowserOnly is a selected governed browser suite. Its caller has already
+    # supplied the generated, migrated, seeded baseline; run only the
+    # per-lane isolation and browser proof here. The broad static, unit, and
+    # legacy-projection gates remain distinct plan nodes and must not be
+    # silently repeated in each lane.
     if (-not $BrowserOnly) {
+        if (-not $SkipBrowserInstall -and -not $SkipBrowser) {
+            Invoke-ValidationStep -Name "Installing Playwright browsers" -Arguments @("node_modules/playwright/cli.js", "install", "chromium", "webkit")
+        }
+        Invoke-ValidationStep -Name "Validating documentation" -Arguments @("scripts/validate-documentation.mjs")
+        Invoke-ValidationStep -Name "Checking formatting" -Arguments @("node_modules/prettier/bin/prettier.cjs", "--check", ".")
+        Invoke-ValidationStep -Name "Linting" -Arguments @("node_modules/eslint/bin/eslint.js", ".")
+        Invoke-ValidationStep -Name "Type checking" -Arguments @("node_modules/typescript/bin/tsc", "--noEmit")
+        Invoke-ValidationStep -Name "Validating Voyagewright product language" -Arguments @("node_modules/tsx/dist/cli.mjs", "scripts/validate-user-facing-language.ts")
+        Invoke-ValidationStep -Name "Validating completed Feature Catalog" -Arguments @("node_modules/tsx/dist/cli.mjs", "scripts/features/validate-feature-catalog.ts")
+        Invoke-ValidationStep -Name "Running unit tests" -Arguments @("node_modules/vitest/vitest.mjs", "run")
         Invoke-ValidationStep -Name "Validating animation assets" -Arguments @("node_modules/tsx/dist/cli.mjs", "scripts/validate-animation-assets.ts")
+        Invoke-ValidationStep -Name "Verifying seeded database" -Arguments @("node_modules/tsx/dist/cli.mjs", "scripts/verify-database.ts")
+        Invoke-ValidationStep -Name "Migrating legacy Companion compatibility projection" -Arguments @(
+            "node_modules/tsx/dist/cli.mjs",
+            "scripts/migrate-legacy-companion.ts"
+        )
+        Invoke-ValidationStep -Name "Verifying legacy Companion compatibility projection" -Arguments @(
+            "node_modules/tsx/dist/cli.mjs",
+            "scripts/migrate-legacy-companion.ts",
+            "--verify"
+        )
+        Invoke-ValidationStep -Name "Preparing legacy playthrough backfill proof" -Arguments @("node_modules/tsx/dist/cli.mjs", "scripts/verify-platform-backfill.ts", "--prepare")
+        Invoke-ValidationStep -Name "Running additive platform backfill" -Arguments @("node_modules/tsx/dist/cli.mjs", "prisma/seed.ts", "--ensure")
+        Invoke-ValidationStep -Name "Verifying additive platform backfill" -Arguments @("node_modules/tsx/dist/cli.mjs", "scripts/verify-platform-backfill.ts", "--verify")
     }
-    Invoke-ValidationStep -Name "Verifying seeded database" -Arguments @("node_modules/tsx/dist/cli.mjs", "scripts/verify-database.ts")
-    Invoke-ValidationStep -Name "Migrating legacy Companion compatibility projection" -Arguments @(
-        "node_modules/tsx/dist/cli.mjs",
-        "scripts/migrate-legacy-companion.ts"
-    )
-    Invoke-ValidationStep -Name "Verifying legacy Companion compatibility projection" -Arguments @(
-        "node_modules/tsx/dist/cli.mjs",
-        "scripts/migrate-legacy-companion.ts",
-        "--verify"
-    )
-    Invoke-ValidationStep -Name "Preparing legacy playthrough backfill proof" -Arguments @("node_modules/tsx/dist/cli.mjs", "scripts/verify-platform-backfill.ts", "--prepare")
-    Invoke-ValidationStep -Name "Running additive platform backfill" -Arguments @("node_modules/tsx/dist/cli.mjs", "prisma/seed.ts", "--ensure")
-    Invoke-ValidationStep -Name "Verifying additive platform backfill" -Arguments @("node_modules/tsx/dist/cli.mjs", "scripts/verify-platform-backfill.ts", "--verify")
     [void](Invoke-IsolationHelper -Arguments @("checkpoint", "--report", $isolationReport, "--copy-db", $isolatedDatabase))
 
     if (-not $SkipBrowser) {
