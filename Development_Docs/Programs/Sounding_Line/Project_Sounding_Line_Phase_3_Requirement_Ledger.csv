@@ -8,4 +8,4 @@ P3-SHARD,Duration shards and throttling primitives,COMPLETE,focused deterministi
 P3-RUNTIME,Detached controller journal cancellation orphan recovery and constrained adapter execution,COMPLETE,focused lifecycle identity and Phase 2 delegated adapter tests,Browser build and legacy-full adapters remain separately governed
 P3-GOVERNANCE,Completion validator and flake stale slow review bridge,COMPLETE,focused valid invalid authority external and usage-footer tests,No report may claim mainline or release authority
 P3-PILOTS,Real Phase 2 receipt and focused execution pilots,COMPLETE,committed Phase 2 receipt targeted Harborlight lanes and bounded controller evidence,Must not fabricate evidence
-P3-CLOSURE,Full validation and local completion receipt,IN_PROGRESS,exact-head validation receipt in progress,No completion claim before all gates
+P3-CLOSURE,Full validation and local completion receipt,COMPLETE,completion receipt full exact-head Vitest and recorded non-green P34 boundary,No mainline or release claim
