@@ -238,6 +238,66 @@ test("impact, rerun, signatures, root cascades, shards, and throttle stay determ
     ["db", "unit"],
   );
   assert.equal(policyPlan.nodes.find((node) => node.suiteId === "db").action, "EXECUTE");
+  const riskPlan = phase3.contractAwareImpact({
+    changedPaths: ["src/auth/session.ts"],
+    policy: {
+      identities: { sourceWatermark: "source", policyDigest: "policy" },
+      suites: [
+        { id: "auth", affectedPaths: ["src/auth/**"], dependencies: [], resources: [], contracts: [] },
+        { id: "privacy", affectedPaths: ["src/private-content/**"], dependencies: [], resources: [], contracts: [] },
+      ],
+    },
+  });
+  assert.equal(riskPlan.conservativeBroadening, true);
+  assert.equal(
+    riskPlan.nodes.every((node) => node.action === "EXECUTE"),
+    true,
+  );
+  const reusePlan = phase3.contractAwareImpact({
+    changedPaths: ["docs/readme.md"],
+    policy: {
+      identities: { sourceWatermark: "source", policyDigest: "policy" },
+      suites: [{ id: "docs", affectedPaths: ["docs/**"], dependencies: [], resources: [], contracts: [] }],
+    },
+    historicalEvidence: [
+      {
+        runId: "r",
+        suiteId: "docs",
+        sourceWatermark: "source",
+        policyDigest: "policy",
+        fixtureVersion: "v",
+        environmentDigest: "e",
+        cleanupStatus: "CLEAN",
+      },
+    ],
+  });
+  assert.equal(reusePlan.nodes[0].action, "REUSE_EXACT_CLEAN_EVIDENCE");
+  assert.equal(
+    phase3.contractAwareImpact({
+      ...JSON.parse(
+        JSON.stringify({
+          changedPaths: ["docs/readme.md"],
+          policy: {
+            identities: { sourceWatermark: "source", policyDigest: "policy" },
+            suites: [{ id: "docs", affectedPaths: ["docs/**"], dependencies: [], resources: [], contracts: [] }],
+          },
+          historicalEvidence: [
+            {
+              runId: "r",
+              suiteId: "docs",
+              sourceWatermark: "source",
+              policyDigest: "policy",
+              fixtureVersion: "v",
+              environmentDigest: "e",
+              cleanupStatus: "CLEAN",
+            },
+          ],
+        }),
+      ),
+      scope: "release",
+    }).nodes[0].action,
+    "EXECUTE",
+  );
 });
 
 test("durable run journal suppresses equivalent work and refuses unsafe resume", async () => {

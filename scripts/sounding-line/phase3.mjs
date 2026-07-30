@@ -389,6 +389,14 @@ export function contractAwareImpact({ changedPaths, policy, scope = "change", hi
     );
     if (!matched.length) uncertain = true;
     for (const suite of matched) add(suite.id, `AFFECTED_PATH_${changed}`);
+    if (/(?:auth|authoriz|permission|role|session|csrf|access[-_]?control)/iu.test(changed)) {
+      for (const suite of suites) add(suite.id, `AUTHORIZATION_RISK_ESCALATION_${changed}`);
+      uncertain = true;
+    }
+    if (/(?:privacy|private[-_]?content|consent|redact|sensitive)/iu.test(changed)) {
+      for (const suite of suites) add(suite.id, `PRIVACY_RISK_ESCALATION_${changed}`);
+      uncertain = true;
+    }
     if (/(?:^|\/)(?:prisma\/migrations|schema\..*prisma)(?:\/|$)/iu.test(changed)) {
       for (const suite of suites.filter((suite) =>
         (suite.resources ?? []).some((resource) => /database|sqlite|mysql/iu.test(resource)),

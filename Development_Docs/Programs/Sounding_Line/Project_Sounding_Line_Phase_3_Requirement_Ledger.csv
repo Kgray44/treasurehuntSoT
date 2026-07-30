@@ -1,7 +1,7 @@
 requirement_id,deliverable,status,verification,boundary
 P3-ARCH,Implementation design record,COMPLETE,phase3 focused tests,No Phase 4 behavior
 P3-STORE,External SQLite history store,COMPLETE,ordered migrations integrity corrupt-store legacy and current ingest plus entity schema tests,Not application Prisma
-P3-IMPACT,Deterministic conservative planner,IN_PROGRESS,focused deterministic and contract-aware migration expansion tests,Release remains comprehensive
+P3-IMPACT,Deterministic conservative planner,COMPLETE,focused deterministic migration authorization privacy reuse and release non-narrowing tests,Release remains comprehensive
 P3-EVIDENCE,Fail-closed freshness and reuse,COMPLETE,focused negative test,Exact clean evidence only
 P3-DIAGNOSE,Root cascade signatures reruns,IN_PROGRESS,focused reconciliation test,No product fault masking
 P3-SHARD,Duration shards and throttling primitives,IN_PROGRESS,focused deterministic test,No evidence reduction
