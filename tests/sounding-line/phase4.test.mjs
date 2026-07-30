@@ -125,4 +125,29 @@ test("release and cutover preserve vetoes and rollback readiness", () => {
       }),
     /DENIED/,
   );
+  const evidence = phase4.createEvidenceManifest({
+    sourceDigest: plan.sourceDigest,
+    policyDigest: plan.policyDigest,
+    planDigest: plan.digest,
+    nodeId: node.id,
+    attemptId: "attempt-revoke",
+    workerId: "worker-a",
+    workerBootId: "boot-a",
+    environmentDigest: hex("e"),
+    dependencyLockDigest: hex("f"),
+    executableDigest: hex("a"),
+    artifacts: [],
+    outcome: "PASS",
+    cleanup: "CLEAN",
+    retentionClass: "LOCAL",
+  });
+  assert.equal(
+    phase4.revokeEvidence({ manifest: evidence, reason: "ARTIFACT_TAMPERED", affectedDecisions: ["decision-a"] })
+      .status,
+    "REVOKED",
+  );
+  assert.equal(
+    phase4.emergencySerial({ legacyAvailable: true, reason: "rollback-proof" }).releaseAuthority,
+    "LEGACY_HARNESS",
+  );
 });

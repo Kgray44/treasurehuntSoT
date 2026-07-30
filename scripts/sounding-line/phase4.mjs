@@ -224,6 +224,36 @@ export function decideRelease(input) {
   };
 }
 
+export function revokeEvidence({ manifest, reason, affectedDecisions = [] }) {
+  const allowed = new Set([
+    "WORKER_REVOKED",
+    "ARTIFACT_TAMPERED",
+    "POLICY_MOVED",
+    "SOURCE_MISMATCH",
+    "CLEANUP_INVALID",
+    "HISTORY_CORRUPT",
+  ]);
+  if (!manifest?.digest || !allowed.has(reason)) throw new Error("EVIDENCE_REVOCATION_INVALID");
+  return {
+    status: "REVOKED",
+    manifestDigest: manifest.digest,
+    reason,
+    affectedDecisions: [...new Set(affectedDecisions)].sort(),
+    requiredRerunScope: "RECOMPUTE_AFFECTED_PLAN_AND_MANDATORY_DEPENDENTS",
+  };
+}
+
+export function emergencySerial({ legacyAvailable, reason }) {
+  if (!legacyAvailable || !required(reason, "EMERGENCY_SERIAL_REASON")) throw new Error("EMERGENCY_SERIAL_UNAVAILABLE");
+  return {
+    mode: "EMERGENCY_SERIAL",
+    releaseAuthority: "LEGACY_HARNESS",
+    distributedDispatch: "DISABLED",
+    evidenceReuse: "DISABLED",
+    reason,
+  };
+}
+
 export function transitionCutover(current, next, evidence) {
   if (!cutoverStages.includes(current) || !cutoverStages.includes(next)) throw new Error("INVALID_CUTOVER_STAGE");
   const delta = cutoverStages.indexOf(next) - cutoverStages.indexOf(current);
