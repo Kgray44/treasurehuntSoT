@@ -37,6 +37,38 @@ test("worker enrollment, capability matching, and sealed assignment fail closed"
   );
 });
 
+test("worker lifecycle and local/CI parity reject identity and proof drift", () => {
+  const registered = worker();
+  const heartbeated = phase4.heartbeatWorker(registered, { sessionNonce: registered.sessionNonce });
+  assert.equal(heartbeated.state, "AVAILABLE");
+  assert.equal(phase4.transitionWorker(heartbeated, "DRAINING", "operator-drain").state, "DRAINING");
+  assert.throws(() => phase4.transitionWorker(heartbeated, "EXECUTING", "skip-reservation"), /DENIED/);
+  assert.throws(() => phase4.heartbeatWorker(registered, { sessionNonce: "forged" }), /IDENTITY/);
+  const local = { ...plan, selected: [{ suiteId: "unit.core" }] };
+  assert.equal(phase4.comparePlans(local, { ...local }).equivalent, true);
+  assert.equal(phase4.comparePlans(local, { ...local, policyDigest: hex("e") }).equivalent, false);
+  assert.equal(
+    phase4.compareDualRun(
+      {
+        sourceDigest: hex("1"),
+        policyDigest: hex("2"),
+        mandatorySuites: ["unit"],
+        contractCoverage: ["contract"],
+        cleanup: "CLEAN",
+      },
+      {
+        sourceDigest: hex("1"),
+        policyDigest: hex("2"),
+        mandatorySuites: ["unit"],
+        contractCoverage: ["contract"],
+        cleanup: "CLEAN",
+        p34Green: false,
+      },
+    ).equivalent,
+    true,
+  );
+});
+
 test("evidence binds assignment, worker, cleanup, digest, and replay identity", () => {
   const registered = worker();
   const assignment = phase4.sealAssignment({ worker: registered, plan, node, grantNonce: "nonce-b" });

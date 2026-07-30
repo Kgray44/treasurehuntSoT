@@ -89,6 +89,57 @@ export function capabilityDecision(worker, node) {
   return { accepted: true, reason: "CAPABILITY_MATCH" };
 }
 
+export function heartbeatWorker(worker, { sessionNonce, at = new Date().toISOString() }) {
+  if (!worker || worker.revoked || !["AVAILABLE", "RESERVED", "EXECUTING", "DRAINING"].includes(worker.state))
+    throw new Error("HEARTBEAT_WORKER_UNAVAILABLE");
+  if (sessionNonce !== worker.sessionNonce) throw new Error("HEARTBEAT_IDENTITY_INVALID");
+  return { ...worker, lastHeartbeatAt: at };
+}
+
+export function transitionWorker(worker, next, reason) {
+  if (!workerStates.includes(next) || !required(reason, "WORKER_TRANSITION_REASON"))
+    throw new Error("INVALID_WORKER_TRANSITION");
+  const permitted = {
+    AVAILABLE: ["RESERVED", "DRAINING", "UNHEALTHY", "QUARANTINED", "REVOKED", "OFFLINE"],
+    RESERVED: ["AVAILABLE", "EXECUTING", "DRAINING", "QUARANTINED", "REVOKED", "OFFLINE"],
+    EXECUTING: ["AVAILABLE", "DRAINING", "UNHEALTHY", "QUARANTINED", "REVOKED", "OFFLINE"],
+    DRAINING: ["AVAILABLE", "QUARANTINED", "REVOKED", "OFFLINE"],
+    UNHEALTHY: ["AVAILABLE", "QUARANTINED", "REVOKED", "OFFLINE"],
+    QUARANTINED: ["REVOKED", "OFFLINE"],
+    REGISTERING: ["AVAILABLE", "QUARANTINED", "REVOKED"],
+    REVOKED: [],
+    OFFLINE: [],
+  };
+  if (!permitted[worker?.state]?.includes(next)) throw new Error("WORKER_TRANSITION_DENIED");
+  return {
+    ...worker,
+    state: next,
+    revoked: next === "REVOKED" || worker.revoked,
+    transitionReason: reason,
+    assignment: next === "AVAILABLE" ? null : worker.assignment,
+  };
+}
+
+export function comparePlans(local, ci) {
+  for (const key of ["sourceDigest", "policyDigest", "digest"]) {
+    if (local?.[key] !== ci?.[key]) return { equivalent: false, reason: `PLAN_${key.toUpperCase()}_MISMATCH` };
+  }
+  const selected = (plan) =>
+    JSON.stringify([...new Set((plan.selected ?? []).map((item) => item.suiteId ?? item))].sort());
+  if (selected(local) !== selected(ci)) return { equivalent: false, reason: "PLAN_SELECTION_MISMATCH" };
+  return { equivalent: true, reason: "PLAN_PARITY" };
+}
+
+export function compareDualRun(legacy, soundingLine) {
+  const differences = [];
+  for (const key of ["sourceDigest", "policyDigest", "mandatorySuites", "contractCoverage", "cleanup"]) {
+    if (canonicalize(legacy?.[key]) !== canonicalize(soundingLine?.[key])) differences.push(key);
+  }
+  if (soundingLine?.p34Green === true || soundingLine?.externalProviderValidated === true)
+    differences.push("unsupported-authority-claim");
+  return { equivalent: differences.length === 0, unacceptableDifferences: differences };
+}
+
 export function sealAssignment({ worker, plan, node, grantNonce = randomUUID() }) {
   const decision = capabilityDecision(worker, node);
   if (!decision.accepted) throw new Error(decision.reason);
