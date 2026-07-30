@@ -292,6 +292,33 @@ test("detached controller survives the client launch, handles cooperative cancel
   }
 });
 
+test("detached controller executes an allowlisted governed adapter through the Phase 2 runtime", async () => {
+  const root = await mkdtemp(path.join(os.tmpdir(), "sounding-line-governed-controller-"));
+  try {
+    const started = await phase3.launchController({
+      root,
+      sourceWatermark: "a".repeat(64),
+      policyDigest: "b".repeat(64),
+      planDigest: "controller-governed-adapter",
+      purpose: "governed-controller-test",
+      execution: { adapterId: "policy", repositoryRoot: process.cwd(), runtimeBase: path.join(root, "phase2") },
+    });
+    for (let attempt = 0; attempt < 30; attempt += 1) {
+      const current = await phase3.readRun(started.run.id, root);
+      if (current.state !== "RUNNING") {
+        assert.equal(current.state, "COMPLETED");
+        assert.equal(current.executionOutcome, "PASS");
+        assert.equal(current.cleanup, "CLEAN");
+        return;
+      }
+      await new Promise((resolve) => setTimeout(resolve, 150));
+    }
+    assert.fail("governed controller did not reach a terminal state");
+  } finally {
+    await rm(root, { recursive: true, force: true });
+  }
+});
+
 test("completion governance rejects premature authority and unsupported external claims", () => {
   const base = {
     sourceWatermark: "s",

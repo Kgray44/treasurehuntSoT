@@ -494,6 +494,7 @@ export async function startRun({
   planDigest,
   purpose = "focused",
   nodes = [],
+  execution = null,
 }) {
   for (const [key, value] of Object.entries({ sourceWatermark, policyDigest, planDigest }))
     if (!value) throw new Error(`MISSING_${key.toUpperCase()}`);
@@ -510,6 +511,7 @@ export async function startRun({
     planDigest,
     purpose,
     nodes,
+    execution,
     createdAt: new Date().toISOString(),
     heartbeat: new Date().toISOString(),
     cleanup: "PENDING",

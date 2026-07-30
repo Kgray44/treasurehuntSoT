@@ -5,7 +5,7 @@ P3-IMPACT,Deterministic conservative planner,IN_PROGRESS,focused deterministic a
 P3-EVIDENCE,Fail-closed freshness and reuse,COMPLETE,focused negative test,Exact clean evidence only
 P3-DIAGNOSE,Root cascade signatures reruns,IN_PROGRESS,focused reconciliation test,No product fault masking
 P3-SHARD,Duration shards and throttling primitives,IN_PROGRESS,focused deterministic test,No evidence reduction
-P3-RUNTIME,Detached controller journal cancellation orphan and recovery,IN_PROGRESS,focused lifecycle test,Product-adapter allocation and cleanup remain Phase 2 governed
+P3-RUNTIME,Detached controller journal cancellation orphan recovery and constrained adapter execution,IN_PROGRESS,focused lifecycle and Phase 2 delegated adapter test,Browser build and legacy-full adapters remain separately governed
 P3-GOVERNANCE,Completion validator and flake stale slow review bridge,IN_PROGRESS,focused compatibility tests,Report integration pending
 P3-PILOTS,Real Phase 2 receipt and focused execution pilots,IN_PROGRESS,recorded local evidence,Must not fabricate evidence
 P3-CLOSURE,Full validation and local completion receipt,NOT_STARTED,not run,No completion claim before all gates
