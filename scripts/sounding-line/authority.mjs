@@ -17,13 +17,14 @@ function suiteAdapter(suite) {
   throw new Error(`SUITE_HAS_NO_GOVERNED_ADAPTER:${suite.id}`);
 }
 
-async function run(gateId, { serial, executeOnly = false, receiptPath } = {}) {
+async function run(gateId, { serial, executeOnly = false, receiptPath, suiteId } = {}) {
   const plan = await buildPlan({ root, gateId, serial });
+  if (suiteId && !plan.nodes.some((node) => node.id === suiteId)) throw new Error(`SUITE_NOT_SELECTED_BY_PLAN:${suiteId}`);
   const suites = JSON.parse(await readFile(path.join(root, "testing", "suites.json"), "utf8"));
   const suiteMap = new Map(suites.suites.map((suite) => [suite.id, suite]));
   const receipts = [];
   const runtimeRoot = path.join(root, "artifacts", "sounding-line", "runs", process.env.GITHUB_RUN_ID ?? "local");
-  for (const node of plan.nodes) {
+  for (const node of plan.nodes.filter((node) => !suiteId || node.id === suiteId)) {
     const suite = suiteMap.get(node.id);
     const adapter = suiteAdapter(suite);
     const startedAt = new Date().toISOString();
@@ -80,8 +81,14 @@ if (!new Set(["local-change", "mainline", "release-candidate", "subsystem", "con
 const receiptIndex = process.argv.indexOf("--receipt-out");
 const receiptPath = receiptIndex >= 0 ? process.argv[receiptIndex + 1] : undefined;
 if (receiptIndex >= 0 && !receiptPath) throw new Error("RECEIPT_OUTPUT_PATH_REQUIRED");
+const suiteIndex = process.argv.indexOf("--suite");
+const suiteId = suiteIndex >= 0 ? process.argv[suiteIndex + 1] : undefined;
+if (suiteIndex >= 0 && !suiteId) throw new Error("SUITE_ID_REQUIRED");
+if (suiteId && !process.argv.includes("--execute-only"))
+  throw new Error("FOCUSED_SUITE_EXECUTION_IS_NONAUTHORITATIVE");
 await run(command, {
   serial: process.argv.includes("--serial"),
   executeOnly: process.argv.includes("--execute-only"),
   receiptPath,
+  suiteId,
 });
