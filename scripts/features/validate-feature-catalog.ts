@@ -42,12 +42,35 @@ function auditedCommitForCatalog(output: string): string {
         return true;
       }
     });
-    // A generated catalog is committed after rendering its audited source. Once
-    // that commit is accepted on main, HEAD names the catalog commit itself;
-    // validate the recorded parent source rather than requiring a new commit.
-    return head === main && !outputHasUncommittedChange
-      ? execFileSync("git", ["rev-parse", "HEAD^"], { cwd: repositoryRoot, encoding: "utf8" }).trim()
-      : mergeBase;
+    if (head === main && !outputHasUncommittedChange) {
+      const existing = fs.readFileSync(output, "utf8");
+      const match = existing.match(/^Audited source commit: `([a-f0-9]{40})`$/mu);
+      if (match?.[1]) {
+        const catalogSource = match[1];
+        try {
+          execFileSync("git", ["merge-base", "--is-ancestor", catalogSource, "HEAD"], {
+            cwd: repositoryRoot,
+            stdio: "ignore",
+          });
+          execFileSync(
+            "git",
+            ["diff", "--quiet", `${catalogSource}..HEAD`, "--", "Development_Docs/Features/catalog"],
+            {
+              cwd: repositoryRoot,
+              stdio: "ignore",
+            },
+          );
+          // A later mainline commit that does not alter the machine-readable
+          // catalog fragments does not invalidate an already-audited catalog.
+          return catalogSource;
+        } catch {
+          // A non-ancestor record or changed source fragments must take the
+          // normal current-source path and fail as stale until regenerated.
+        }
+      }
+      return execFileSync("git", ["rev-parse", "HEAD^"], { cwd: repositoryRoot, encoding: "utf8" }).trim();
+    }
+    return mergeBase;
   } catch {
     // The isolated validation runtime intentionally excludes .git. Its copied
     // generated catalog is still verifiable when the embedded audited commit
