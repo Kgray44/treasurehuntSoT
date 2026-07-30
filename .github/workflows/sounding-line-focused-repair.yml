@@ -1,0 +1,55 @@
+name: Sounding Line focused repair
+
+on:
+  push:
+    branches: [codex/project-sounding-line-authority-cutover]
+    paths:
+      - ".github/workflows/sounding-line-*.yml"
+      - "scripts/sounding-line/**"
+      - "testing/**"
+      - "tests/sounding-line/**"
+      - "tests/e2e/harborlight-phase4.spec.ts"
+      - "src/community/**"
+      - "src/app/community/moderation/**"
+      - "prisma/**"
+  workflow_dispatch:
+    inputs:
+      suite:
+        description: Governed suite selected from the sealed mainline plan
+        required: true
+        type: choice
+        options:
+          - harborlight.phase4.browser
+          - harborlight.phase4.unit
+          - harborlight.phase4.sqlite
+          - browser.access-sentinel
+
+permissions:
+  contents: read
+
+jobs:
+  focused-suite:
+    name: Sounding Line / Focused Harborlight Repair
+    runs-on: windows-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with: { node-version-file: .nvmrc, cache: npm }
+      - run: npm ci
+      - run: npm run db:generate
+      - run: npx prisma migrate deploy --schema prisma/schema.sqlite.prisma
+        env: { DATABASE_URL: "file:./dev.db" }
+      - run: npm run db:seed
+        env: { DATABASE_URL: "file:./dev.db" }
+      - run: npx playwright install chromium
+      - run: node -e "import('./scripts/sounding-line/planner.mjs').then(async m=>console.log(JSON.stringify(await m.buildPlan({root:process.cwd(),gateId:'mainline',serial:false,sourceSha:process.env.GITHUB_SHA}),null,2)))" > sounding-line-plan.json
+      # A push is deliberately narrow and always proves the Harborlight browser
+      # lane. workflow_dispatch may select another governed focused suite.
+      - run: node scripts/sounding-line/authority.mjs mainline --execute-only --plan-in sounding-line-plan.json --suite ${{ inputs.suite || 'harborlight.phase4.browser' }} --receipt-out sounding-line-worker-evidence.json
+      - uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08
+        if: always()
+        with:
+          name: "sounding-line-focused-${{ inputs.suite || 'harborlight.phase4.browser' }}"
+          path: sounding-line-worker-evidence.json
+          retention-days: 14

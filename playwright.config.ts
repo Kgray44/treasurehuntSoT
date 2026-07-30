@@ -12,6 +12,7 @@ const harborlightPhase2Spec = /harborlight-phase2\.spec\.ts/u;
 const wayfarerPhase2Spec = /wayfarer-phase2\.spec\.ts/u;
 const harborlightPhase3Spec = /harborlight-phase3\.spec\.ts/u;
 const harborlightPhase4Spec = /harborlight-phase4\.spec\.ts/u;
+const soundingLineAccessSentinelSpec = /access-gates\.spec\.ts/u;
 const phase3MutationSpecs =
   /phase3-(?:player-event-matrix|player-motion|replay-resilience|lifecycle(?:-extended)?|performance)\.spec\.ts/u;
 const phase3MutationSpecGuard = [
@@ -73,6 +74,15 @@ export default defineConfig({
         harborlightPhase3Spec,
         harborlightPhase4Spec,
       ],
+      use: { ...devices["Desktop Chrome"] },
+    },
+    {
+      // This is the narrow Sounding Line browser sentinel.  It deliberately
+      // has no Phase 3 fixture dependency: access-gates never creates a
+      // mutation fixture, and adding the dependency would require an
+      // unnecessary mutable database copy just to prove access controls.
+      name: "sounding-line-access-sentinel",
+      testMatch: soundingLineAccessSentinelSpec,
       use: { ...devices["Desktop Chrome"] },
     },
     {

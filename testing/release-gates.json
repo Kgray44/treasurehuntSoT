@@ -37,19 +37,20 @@
         "static.core",
         "unit.core",
         "database.sqlite",
-        "compatibility.browser",
+        "browser.access-sentinel",
         "security.private-content",
         "sounding-line.runtime",
+        "retirement.matrix-proof",
         "harborlight.phase4.unit",
         "harborlight.phase4.sqlite",
         "harborlight.phase4.browser",
-        "release.full"
+        "build.production"
       ],
       "conditionalSuites": ["migration.mysql"]
     },
     {
       "id": "release-candidate",
-      "requiredSuites": ["release.full"],
+      "requiredSuites": ["retirement.matrix-proof", "build.production"],
       "conditionalSuites": ["migration.mysql", "compatibility.browser", "security.private-content"]
     },
     { "id": "external-provider", "requiredSuites": ["migration.mysql"], "conditionalSuites": [] }

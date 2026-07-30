@@ -1,0 +1,34 @@
+{
+  "version": 1,
+  "capabilities": [
+    {
+      "id": "chromium-only-heavy-labs",
+      "files": [
+        "tests/e2e/acceptance.spec.ts",
+        "tests/e2e/animations.spec.ts",
+        "tests/e2e/chronicle-platform.spec.ts",
+        "tests/e2e/chronicle-studio.spec.ts",
+        "tests/e2e/command-center.spec.ts",
+        "tests/e2e/lanternwake-access-transitions.spec.ts",
+        "tests/e2e/lanternwake-journal.spec.ts",
+        "tests/e2e/lanternwake-phase1.spec.ts",
+        "tests/e2e/lanternwake-phase2.spec.ts",
+        "tests/e2e/project-one-voyage-phase2.spec.ts"
+      ],
+      "condition": "browserName !== chromium",
+      "reason": "Stateful mutation and bounded stress cases are currently isolated to one Chromium lane.",
+      "owner": "lanternwake",
+      "expires": "2026-08-31",
+      "migration": "Split capability-specific journeys into independently selectable governed browser families."
+    },
+    {
+      "id": "external-game-master-credentials",
+      "files": ["tests/e2e/lanternwake-phase2.spec.ts"],
+      "condition": "required external credentials absent",
+      "reason": "The external-provider journey is not a mainline mandatory contract.",
+      "owner": "one-voyage",
+      "expires": "2026-08-31",
+      "migration": "Declare external-provider capability in the planner and emit pending evidence rather than skip in test code."
+    }
+  ]
+}

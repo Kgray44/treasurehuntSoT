@@ -103,12 +103,12 @@ test("release and cutover preserve vetoes and rollback readiness", () => {
       p34NonGreen: true,
       externalPending: true,
     }).state,
-    "RELEASE_NO_GO",
+    "HISTORICAL_SIMULATION_REJECTED",
   );
   assert.equal(
     phase4.decideRelease({ trustedController: true, mandatoryComplete: true, evidenceValid: false, cleanupClean: true })
       .state,
-    "EVIDENCE_INVALID",
+    "HISTORICAL_SIMULATION_INVALID",
   );
   assert.deepEqual(
     phase4.transitionCutover("STAGE_0_LEGACY_AUTHORITATIVE", "STAGE_1_SHADOW_PLANNING", {
