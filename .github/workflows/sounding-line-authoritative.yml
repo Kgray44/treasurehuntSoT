@@ -24,6 +24,7 @@ jobs:
       parallel0: ${{ steps.matrix.outputs.parallel0 }}
       parallel1: ${{ steps.matrix.outputs.parallel1 }}
       parallel2: ${{ steps.matrix.outputs.parallel2 }}
+      exclusive0: ${{ steps.matrix.outputs.exclusive0 }}
       exclusive1: ${{ steps.matrix.outputs.exclusive1 }}
       exclusive2: ${{ steps.matrix.outputs.exclusive2 }}
     steps:
@@ -63,9 +64,20 @@ jobs:
     with:
       suite: ${{ matrix.suiteId }}
 
+  governed-exclusive-wave-0:
+    name: Sounding Line / Exclusive wave 0
+    needs: plan
+    strategy:
+      fail-fast: false
+      max-parallel: 1
+      matrix: ${{ fromJSON(needs.plan.outputs.exclusive0) }}
+    uses: ./.github/workflows/sounding-line-governed-worker.yml
+    with:
+      suite: ${{ matrix.suiteId }}
+
   governed-parallel-wave-1:
     name: Sounding Line / Parallel wave 1
-    needs: [plan, governed-parallel-wave-0]
+    needs: [plan, governed-parallel-wave-0, governed-exclusive-wave-0]
     strategy:
       fail-fast: false
       matrix: ${{ fromJSON(needs.plan.outputs.parallel1) }}
@@ -75,7 +87,7 @@ jobs:
 
   governed-exclusive-wave-1:
     name: Sounding Line / Exclusive wave 1
-    needs: [plan, governed-parallel-wave-0]
+    needs: [plan, governed-parallel-wave-0, governed-exclusive-wave-0]
     strategy:
       fail-fast: false
       max-parallel: 1
@@ -111,6 +123,7 @@ jobs:
       [
         plan,
         governed-parallel-wave-0,
+        governed-exclusive-wave-0,
         governed-parallel-wave-1,
         governed-exclusive-wave-1,
         governed-parallel-wave-2,
