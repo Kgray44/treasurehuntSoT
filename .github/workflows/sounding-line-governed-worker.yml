@@ -22,7 +22,7 @@ jobs:
         with: { node-version-file: .nvmrc, cache: npm }
       - run: npm ci
       - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
-        with: { name: sounding-line-plan, path: sounding-line-plan }
+        with: { name: sounding-line-plan, path: ${{ runner.temp }}/sounding-line-plan }
       - run: npm run db:generate
       # This is a seeded baseline for a worker-local disposable runtime.
       - run: npx prisma migrate deploy --schema prisma/schema.sqlite.prisma
@@ -30,7 +30,9 @@ jobs:
       - run: npm run db:seed
         env: { DATABASE_URL: "file:./dev.db" }
       - run: npx playwright install chromium
-      - run: node scripts/sounding-line/authority.mjs mainline --execute-only --plan-in sounding-line-plan/sounding-line-plan.json --suite ${{ inputs.suite }} --receipt-out sounding-line-worker-evidence.json
+      - env:
+          SOUNDING_LINE_PLAN: ${{ runner.temp }}/sounding-line-plan/sounding-line-plan.json
+        run: node scripts/sounding-line/authority.mjs mainline --execute-only --plan-in "$env:SOUNDING_LINE_PLAN" --suite ${{ inputs.suite }} --receipt-out sounding-line-worker-evidence.json
       - if: always()
         uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08
         with:
