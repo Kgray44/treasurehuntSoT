@@ -1512,12 +1512,17 @@
     right: 0;
     bottom: calc(10.9rem + env(safe-area-inset-bottom));
     left: 0;
-    grid-template-columns: repeat(4, 1fr);
+    /* At browser zoom, an `fr` track otherwise preserves each label's
+       min-content width and can make the fixed tool bar wider than the
+       viewport. These four controls must remain reachable at 200% zoom. */
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     transform: none;
   }
   .journal-context-tabs button {
+    min-width: 0;
     border-radius: 7px 7px 0 0;
     padding: 0.55rem 0.2rem;
+    overflow-wrap: anywhere;
     writing-mode: horizontal-tb;
   }
   .journal-context-drawer {
