@@ -43,7 +43,7 @@ function executeLane(lane) {
     String(lane.port),
   ];
   return new Promise((resolve, reject) => {
-    const child = spawn("powershell.exe", args, {
+    const child = spawn("pwsh.exe", args, {
       cwd: process.cwd(),
       env: { ...process.env, SOUNDING_LINE_INTERNAL_RUNTIME: "1" },
       shell: false,
