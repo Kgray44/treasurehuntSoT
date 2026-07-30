@@ -1,0 +1,2 @@
+historical_case_id,source_file,title,protected_contract,architecture_dependency,current_relevance,classification,canonical_replacement_suite,canonical_replacement_test_ids,equivalent_or_stronger_coverage,retirement_evidence,remaining_limitation
+P34-BME-20260729,Historical browser-matrix corpus,Historical P34 corpus index required before classification,UNMAPPED,Historical PlayerExperience/browser matrix,UNDER_DISCOVERY,UNMAPPED,,,,,No case-level source index has yet been recovered from current repository records; no P34 case is selectable by the planner or gate.

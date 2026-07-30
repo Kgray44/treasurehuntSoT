@@ -1,0 +1,29 @@
+{
+  "version": "1.0.0",
+  "required": [
+    "id",
+    "suiteId",
+    "title",
+    "owner",
+    "tier",
+    "risk",
+    "contracts",
+    "sourcePaths",
+    "consumerPaths",
+    "dependencies",
+    "resources",
+    "parallelSafety",
+    "expectedDurationMs",
+    "hardBudgetMs",
+    "retryPolicy",
+    "gates",
+    "supersessionPolicy"
+  ],
+  "enums": {
+    "tier": [0, 1, 2, 3, 4, 5, 6, 7],
+    "risk": ["LOW", "MODERATE", "HIGH", "CRITICAL", "RELEASE_CRITICAL"],
+    "parallelSafety": ["READ_ONLY_PARALLEL", "ISOLATED_MUTABLE_PARALLEL", "CAPACITY_LIMITED", "SERIAL_EXCEPTION"],
+    "retryPolicy": ["NONE", "INFRASTRUCTURE_ONLY", "GOVERNED_FLAKE_PROBE"]
+  },
+  "identity": "Stable IDs are derived from governed source identity and retained through ordinary title/file movement by an explicit migration alias."
+}

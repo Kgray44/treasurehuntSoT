@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "retired": [
+    {
+      "id": "P34-BME-20260729",
+      "status": "ARCHIVED_HISTORICAL_MATRIX",
+      "active": false,
+      "selectable": false,
+      "plannerAuthority": "none",
+      "ciAuthority": "none",
+      "releaseAuthority": "none",
+      "ledger": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_P34_Retirement_Ledger.csv"
+    }
+  ]
+}

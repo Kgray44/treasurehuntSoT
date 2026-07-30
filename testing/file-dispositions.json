@@ -113,7 +113,7 @@
     },
     {
       "match": "scripts/*.ps1",
-      "suiteId": "release.full",
+      "suiteId": "build.production",
       "role": "REGISTERED_ADAPTER",
       "owner": "breakwater",
       "tier": 7,

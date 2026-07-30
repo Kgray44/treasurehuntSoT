@@ -1,0 +1,60 @@
+name: Sounding Line authoritative
+
+on:
+  pull_request:
+  push:
+    branches: [main, codex/project-sounding-line-authority-cutover]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: sounding-line-authoritative-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  plan:
+    name: Sounding Line / Plan
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with: { node-version-file: .nvmrc, cache: npm }
+      - run: npm ci
+      - run: npm run test:policy
+      - run: node scripts/sounding-line/test-registry.mjs
+      - run: node -e "import('./scripts/sounding-line/planner.mjs').then(async m=>console.log(JSON.stringify(await m.buildPlan({root:process.cwd(),gateId:'mainline',sourceSha:process.env.GITHUB_SHA}),null,2)))" > sounding-line-plan.json
+      - uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08
+        with: { name: sounding-line-plan, path: sounding-line-plan.json, retention-days: 14 }
+
+  governed-mainline:
+    name: Sounding Line / Governed workers
+    needs: plan
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with: { node-version-file: .nvmrc, cache: npm }
+      - run: npm ci
+      - run: npm run db:generate
+      - run: npx playwright install --with-deps chromium webkit
+      - run: npm run test:mainline
+
+  finalizer:
+    name: Sounding Line / Mainline Decision
+    needs: [plan, governed-mainline]
+    if: always()
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Finalizer decision
+        env:
+          PLAN: ${{ needs.plan.result }}
+          WORKERS: ${{ needs.governed-mainline.result }}
+        run: |
+          test "$PLAN" = success
+          test "$WORKERS" = success
+          echo "SOUNDING_LINE_FINALIZER_ACCEPTED"

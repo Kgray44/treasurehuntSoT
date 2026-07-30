@@ -27,6 +27,9 @@ const registryFiles = [
   "quarantine.json",
   "validation-debt.json",
   "file-dispositions.json",
+  "test-definition-schema.json",
+  "retired-suites.json",
+  "browser-capabilities.json",
 ];
 
 const sha256 = (value) => createHash("sha256").update(value).digest("hex");
@@ -51,6 +54,9 @@ async function loadPolicy() {
   const policy = { manifest };
   for (const file of registryFiles)
     policy[file.replace(/\.json$/u, "")] = JSON.parse(await readFile(path.join(policyRoot, file), "utf8"));
+  policy.activeTests = JSON.parse(
+    await readFile(path.join(policyRoot, "generated", "active-test-registry.json"), "utf8"),
+  );
   policy.digest = sha256(canonicalize(policy));
   return policy;
 }
@@ -86,6 +92,9 @@ function validatePolicy(policy) {
     "release-gates": gates,
     quarantine,
     "validation-debt": debt,
+    "test-definition-schema": testDefinitionSchema,
+    "retired-suites": retired,
+    activeTests,
     manifest,
   } = policy;
   assertKeys(
@@ -111,6 +120,56 @@ function validatePolicy(policy) {
   const resourceIds = ids(resources.resources, "resources");
   const suiteIds = ids(suites.suites, "suites");
   const gateIds = ids(gates.gates, "gates");
+  for (const field of testDefinitionSchema.required ?? [])
+    if (typeof field !== "string") errors.push("test-definition-schema: invalid required field");
+  for (const record of retired.retired ?? []) {
+    if (
+      record.status !== "ARCHIVED_HISTORICAL_MATRIX" ||
+      record.active ||
+      record.selectable ||
+      record.plannerAuthority !== "none" ||
+      record.ciAuthority !== "none" ||
+      record.releaseAuthority !== "none"
+    )
+      errors.push(`retired suite ${record.id}: invalid retirement state`);
+    for (const gate of gates.gates)
+      if ([...gate.requiredSuites, ...gate.conditionalSuites].some((id) => id.toLowerCase().includes("p34")))
+        errors.push(`gate ${gate.id}: active P34 reference`);
+  }
+  const activeIds = new Set();
+  for (const definition of activeTests.cases ?? []) {
+    for (const field of testDefinitionSchema.required ?? [])
+      if (definition[field] === undefined || definition[field] === null || definition[field] === "")
+        errors.push(`test definition ${definition.id ?? "missing"}: missing ${field}`);
+    if (!/^sl-test-[a-f0-9]{20}$/u.test(definition.id ?? ""))
+      errors.push(`test definition: invalid stable id ${definition.id ?? "missing"}`);
+    if (activeIds.has(definition.id)) errors.push(`test definition: duplicate stable id ${definition.id}`);
+    activeIds.add(definition.id);
+    if (!suiteIds.has(definition.suiteId))
+      errors.push(`test definition ${definition.id}: unknown suite ${definition.suiteId}`);
+    if (!ownerIds.has(definition.owner))
+      errors.push(`test definition ${definition.id}: unknown owner ${definition.owner}`);
+    if (!Number.isInteger(definition.tier) || definition.tier < 0 || definition.tier > 7)
+      errors.push(`test definition ${definition.id}: invalid tier`);
+    if (!testDefinitionSchema.enums.risk.includes(definition.risk))
+      errors.push(`test definition ${definition.id}: invalid risk`);
+    if (!testDefinitionSchema.enums.parallelSafety.includes(definition.parallelSafety))
+      errors.push(`test definition ${definition.id}: invalid parallel safety`);
+    if (!testDefinitionSchema.enums.retryPolicy.includes(definition.retryPolicy))
+      errors.push(`test definition ${definition.id}: invalid retry policy`);
+    for (const id of definition.contracts ?? [])
+      if (!contractIds.has(id)) errors.push(`test definition ${definition.id}: unknown contract ${id}`);
+    for (const id of definition.resources ?? [])
+      if (!resourceIds.has(id)) errors.push(`test definition ${definition.id}: unknown resource ${id}`);
+    for (const id of definition.gates ?? [])
+      if (!gateIds.has(id)) errors.push(`test definition ${definition.id}: unknown gate ${id}`);
+    if (
+      !Number.isFinite(definition.expectedDurationMs) ||
+      definition.expectedDurationMs <= 0 ||
+      definition.hardBudgetMs < definition.expectedDurationMs
+    )
+      errors.push(`test definition ${definition.id}: invalid duration budget`);
+  }
   for (const owner of ownership.owners) {
     assertKeys(owner, ["id", "project", "sourcePaths", "testPaths", "contractIds"], `owner ${owner.id}`, errors);
     for (const value of [...owner.sourcePaths, ...owner.testPaths])
@@ -142,6 +201,8 @@ function validatePolicy(policy) {
         "affectedPaths",
         "releaseGates",
         "currentImplementationState",
+        "adapter",
+        "testFiles",
       ],
       `suite ${suite.id}`,
       errors,
@@ -158,6 +219,22 @@ function validatePolicy(policy) {
     for (const id of suite.releaseGates) if (!gateIds.has(id)) errors.push(`suite ${suite.id}: missing gate ${id}`);
     for (const value of suite.affectedPaths)
       if (!isSafePath(value)) errors.push(`suite ${suite.id}: unsafe affected path ${value}`);
+    if (suite.adapter !== undefined && typeof suite.adapter !== "string")
+      errors.push(`suite ${suite.id}: invalid adapter`);
+    if (!suite.adapter && (!Array.isArray(suite.testFiles) || !suite.testFiles.length))
+      errors.push(`suite ${suite.id}: missing governed adapter`);
+    if (typeof suite.adapter === "string") {
+      try {
+        resolveAdapter(suite.adapter);
+      } catch {
+        errors.push(`suite ${suite.id}: unknown governed adapter ${suite.adapter}`);
+      }
+    }
+    if (
+      suite.testFiles !== undefined &&
+      (!Array.isArray(suite.testFiles) || suite.testFiles.some((value) => !isSafePath(value)))
+    )
+      errors.push(`suite ${suite.id}: invalid test files`);
   }
   for (const gate of gates.gates) {
     assertKeys(gate, ["id", "requiredSuites", "conditionalSuites"], `gate ${gate.id}`, errors);
