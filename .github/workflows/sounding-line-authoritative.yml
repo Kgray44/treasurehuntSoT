@@ -3,7 +3,7 @@ name: Sounding Line authoritative
 on:
   pull_request:
   push:
-    branches: [main, codex/project-sounding-line-authority-cutover]
+    branches: [main]
   workflow_dispatch:
 
 permissions:
