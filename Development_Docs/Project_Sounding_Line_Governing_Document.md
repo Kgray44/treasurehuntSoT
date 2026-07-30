@@ -7,7 +7,7 @@
 
 ## 1. Executive summary
 
-Project Sounding Line is the repository-wide governing system for software verification, parallel execution, resource isolation, test selection, evidence, and release decisions in the Chronicles platform. Its local, nonauthoritative control plane implements policy/planning, leased runtime execution, durable history, root/cascade classification, and fail-closed Phase 4 worker/evidence controls. It does **not** establish hosted execution, remote-worker proof, provider validation, production signing, branch protection, or authoritative release decisions.
+Project Sounding Line is the repository-wide governing system for software verification, parallel execution, resource isolation, test selection, evidence, and release decisions in the Chronicles platform. Its local, nonauthoritative control plane implements policy/planning, leased runtime execution, durable history, root/cascade classification, and fail-closed Phase 4 worker/evidence controls. Its focused hosted workflow has passed on the integrated source. It does **not** establish remote-worker proof, provider validation, production signing, branch protection, or authoritative release decisions.
 
 The governing order is: correctness; depth; determinism; diagnostic quality; speed; resource cost. Independent work should run concurrently only when it has independently leased state. A successful exit code alone is not a release decision.
 

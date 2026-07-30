@@ -15,7 +15,7 @@ repository's governing system for software verification, parallel test
 infrastructure, evidence, release gates, and Codex testing obligations. Its
 [testing documentation index](Testing/README.md) distinguishes the retained
 legacy harness from the implemented local control plane. **PHASES 1-4 LOCAL
-CONTROL PLANE COMPLETE — NONAUTHORITATIVE.** Hosted execution, remote workers,
-provider/MySQL proof, production signing, branch protection, and P34 remain
-separate non-pass boundaries. It remains separate from Project Drydock, which
+CONTROL PLANE COMPLETE — NONAUTHORITATIVE.** The focused hosted workflow has
+passed; remote workers, provider/MySQL proof, production signing, branch
+protection, and P34 remain separate non-pass boundaries. It remains separate from Project Drydock, which
 owns authored Chronicle validity and simulation.

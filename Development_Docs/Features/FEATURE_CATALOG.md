@@ -5,7 +5,7 @@ This generated catalog records completed, meaningful platform capabilities. It i
 ## Audited repository and commit
 
 Repository: `Kgray44/treasurehuntSoT`
-Audited source commit: `89d79089e675761ba806aa87c950bc8e75c0e094`
+Audited source commit: `84295f65a86efa4777084b587063d57fa75b07fe`
 
 ## Status vocabulary
 
@@ -903,7 +903,7 @@ A nonauthoritative, provider-neutral local verification control plane provides s
 # Deliberately Excluded Until Complete
 
 - Harborlight Phase 4 is planned and is not cataloged as an implemented capability.
-- Project Sounding Line's local governance and verification control plane is cataloged; hosted execution, remote workers, provider/MySQL proof, production signing, branch protection, and the P34 browser matrix remain separate non-pass work.
+- Project Sounding Line's local governance and verification control plane is cataloged, and its focused hosted workflow has passed; remote workers, provider/MySQL proof, production signing, branch protection, and the P34 browser matrix remain separate non-pass work.
 - Project Landfall is governed but not implemented.
 - Vision Waypoint recognition is not implemented beyond its provider seam and simulator.
 - Production multi-instance pub/sub, distributed rate limiting, production scanner/KMS/storage/alerting, and full deployment proof remain separate work.
@@ -913,4 +913,4 @@ A nonauthoritative, provider-neutral local verification control plane provides s
 
 Update the owning machine-readable fragment only when completed work changes a major capability, important subfeature, availability, or meaningful limitation. Regenerate this file with `npm run features:sync`; never hand-edit it. Validate before closeout with `npm run features:validate`.
 
-Generation source commit: `89d79089e675761ba806aa87c950bc8e75c0e094`
+Generation source commit: `84295f65a86efa4777084b587063d57fa75b07fe`
