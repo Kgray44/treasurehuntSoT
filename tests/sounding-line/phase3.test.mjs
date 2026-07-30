@@ -441,6 +441,10 @@ test("completion governance rejects premature authority and unsupported external
   };
   assert.equal(phase3.validateCompletionReport(base), true);
   assert.throws(
+    () => phase3.validateCompletionReport({ ...base, executionUsage: undefined }),
+    /MISSING_EXECUTION_?USAGE|execution usage/i,
+  );
+  assert.throws(
     () => phase3.validateCompletionReport({ ...base, finalStatus: "PHASE_3_MAINLINE" }),
     /UNSUPPORTED_COMPLETION_AUTHORITY/,
   );
