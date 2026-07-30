@@ -109,6 +109,28 @@ test("focused suite execution is evidence-only and cannot invoke authority", asy
   );
 });
 
+test("the protected main PR emits the stable authority decision while focused repair remains evidence-only", async () => {
+  const authoritative = await readFile(
+    path.join(root, ".github", "workflows", "sounding-line-authoritative.yml"),
+    "utf8",
+  );
+  const focused = await readFile(path.join(root, ".github", "workflows", "sounding-line-focused-repair.yml"), "utf8");
+  const pullRequestBranches = authoritative.match(
+    /pull_request:\s*\n\s+branches:\s*\n(?<branches>(?:\s+-\s+[^\n]+\n)+)/u,
+  )?.groups?.branches;
+
+  assert.ok(pullRequestBranches, "authoritative workflow must run for pull requests");
+  assert.deepEqual(
+    [...pullRequestBranches.matchAll(/^\s+-\s+([^\s#]+).*$/gmu)].map((match) => match[1]),
+    ["main"],
+    "only pull requests targeting main may trigger authority",
+  );
+  assert.match(authoritative, /^\s+workflow_dispatch:\s*$/mu);
+  assert.match(authoritative, /^\s*name:\s+Sounding Line \/ Mainline Decision\s*$/mu);
+  assert.match(focused, /--execute-only/u);
+  assert.doesNotMatch(focused, /finalize-ci\.mjs|finalizer\.mjs|Sounding Line \/ Mainline Decision|RELEASE_GO/u);
+});
+
 test("BrowserOnly Harborlight lanes do not repeat independent broad gates", async () => {
   const runtime = await readFile(
     path.join(root, "scripts", "sounding-line", "isolated-validation-runtime.ps1"),

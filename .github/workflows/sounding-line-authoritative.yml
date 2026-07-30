@@ -1,8 +1,11 @@
 name: Sounding Line authoritative
 
 on:
-  # A complete mainline graph is an explicit candidate, never an automatic
-  # response to an incremental repair push.
+  # The protected main PR is the sole automatic authority path. Incremental
+  # repair pushes remain nonauthoritative because no push trigger is present.
+  pull_request:
+    branches:
+      - main
   workflow_dispatch:
 
 permissions:
