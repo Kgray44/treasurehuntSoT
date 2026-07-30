@@ -444,7 +444,7 @@ async function main() {
   const policy = await loadPolicy();
   if (command === "history") {
     const operation = args[0];
-    const store = await phase3.openHistory();
+    const store = await phase3.openHistory(process.env.SOUNDING_LINE_HISTORY_ROOT ?? phase3.defaultHistoryRoot());
     try {
       if (operation === "init" || operation === "migrate")
         return output({
@@ -464,12 +464,14 @@ async function main() {
       if (operation === "prune")
         return output(phase3.pruneHistory(store, JSON.parse(await readFile(path.resolve(repoRoot, args[1]), "utf8"))));
       if (operation === "stats") return output(phase3.historyStats(store, args[1]));
+      if (operation === "entities")
+        return output(phase3.listHistoricalEntities(store, args[1], { subjectId: args[2] }));
       if (operation === "ingest") {
         const receipt = JSON.parse(await readFile(path.resolve(repoRoot, args[1]), "utf8"));
         return output(await phase3.ingestReceipt(store, receipt));
       }
       throw new Error(
-        "history usage: init | migrate | status | verify | export-manifest | prune <retention.json> | stats <suite-id> | ingest <repository-relative.json>",
+        "history usage: init | migrate | status | verify | export-manifest | prune <retention.json> | stats <suite-id> | entities <entity> [subject-id] | ingest <repository-relative.json>",
       );
     } finally {
       store.close();
@@ -477,8 +479,11 @@ async function main() {
   }
   if (command === "phase3") {
     const operation = args[0];
+    const phase3RuntimeRoot = process.env.SOUNDING_LINE_PHASE3_RUNTIME_ROOT ?? phase3.defaultRuntimeRoot();
     if (operation === "impact")
       return output(phase3.planImpact(JSON.parse(await readFile(path.resolve(repoRoot, args[1]), "utf8"))));
+    if (operation === "impact-policy")
+      return output(phase3.contractAwareImpact(JSON.parse(await readFile(path.resolve(repoRoot, args[1]), "utf8"))));
     if (operation === "freshness")
       return output(
         phase3.freshness(
@@ -491,31 +496,67 @@ async function main() {
     if (operation === "runtime") {
       const action = args[1];
       if (action === "start")
-        return output(await phase3.startRun(JSON.parse(await readFile(path.resolve(repoRoot, args[2]), "utf8"))));
+        return output(
+          await phase3.launchController({
+            ...JSON.parse(await readFile(path.resolve(repoRoot, args[2]), "utf8")),
+            root: phase3RuntimeRoot,
+          }),
+        );
       if (action === "find-equivalent")
         return output(
-          (await phase3.findEquivalentRun(JSON.parse(await readFile(path.resolve(repoRoot, args[2]), "utf8")))) ?? {
+          (await phase3.findEquivalentRun({
+            ...JSON.parse(await readFile(path.resolve(repoRoot, args[2]), "utf8")),
+            root: phase3RuntimeRoot,
+          })) ?? {
             status: "NONE",
           },
         );
-      if (action === "status") return output(await phase3.readRun(args[2]));
-      if (action === "follow") return output(await phase3.followRunLog(args[2], { offset: Number(args[3] ?? 0) }));
-      if (action === "cancel") return output(await phase3.cancelRun(args[2]));
-      if (action === "complete") return output(await phase3.completeRun(args[2], args[3] ?? "CLEAN"));
+      if (action === "status") return output(await phase3.readRun(args[2], phase3RuntimeRoot));
+      if (action === "follow")
+        return output(await phase3.followRunLog(args[2], { root: phase3RuntimeRoot, offset: Number(args[3] ?? 0) }));
+      if (action === "cancel") return output(await phase3.cancelRun(args[2], phase3RuntimeRoot));
+      if (action === "complete")
+        return output(await phase3.completeRun(args[2], args[3] ?? "CLEAN", phase3RuntimeRoot));
       if (action === "resume")
         return output(
-          await phase3.resumeRun(args[2], JSON.parse(await readFile(path.resolve(repoRoot, args[3]), "utf8"))),
+          await phase3.resumeRun(
+            args[2],
+            JSON.parse(await readFile(path.resolve(repoRoot, args[3]), "utf8")),
+            phase3RuntimeRoot,
+          ),
+        );
+      if (action === "inspect-orphans") return output(await phase3.inspectOrphans(phase3RuntimeRoot));
+      if (action === "recover")
+        return output(
+          await phase3.recoverRun(args[2], JSON.parse(await readFile(path.resolve(repoRoot, args[3]), "utf8")), {
+            root: phase3RuntimeRoot,
+          }),
         );
       throw new Error(
-        "phase3 runtime usage: start <run.json> | find-equivalent <run.json> | status <run-id> | follow <run-id> [offset] | cancel <run-id> | complete <run-id> [CLEAN] | resume <run-id> <identities.json>",
+        "phase3 runtime usage: start <run.json> | find-equivalent <run.json> | status <run-id> | follow <run-id> [offset] | cancel <run-id> | complete <run-id> [CLEAN] | resume <run-id> <identities.json> | inspect-orphans | recover <run-id> <identities.json>",
       );
     }
     if (operation === "governance" && args[1] === "validate-completion")
       return output({
         valid: phase3.validateCompletionReport(JSON.parse(await readFile(path.resolve(repoRoot, args[2]), "utf8"))),
       });
+    if (operation === "governance" && ["record-flake", "record-stale", "record-slow"].includes(args[1])) {
+      const store = await phase3.openHistory(process.env.SOUNDING_LINE_HISTORY_ROOT ?? phase3.defaultHistoryRoot());
+      try {
+        const record = JSON.parse(await readFile(path.resolve(repoRoot, args[2]), "utf8"));
+        const result =
+          args[1] === "record-flake"
+            ? phase3.recordFlakeObservation(store, record)
+            : args[1] === "record-stale"
+              ? phase3.recordStaleTest(store, record)
+              : phase3.recordSlowSuite(store, record);
+        return output(result);
+      } finally {
+        store.close();
+      }
+    }
     throw new Error(
-      "phase3 usage: impact <input.json> | freshness <current.json> <evidence.json> | rerun <input.json> | governance validate-completion <report.json>",
+      "phase3 usage: impact <input.json> | impact-policy <input.json> | freshness <current.json> <evidence.json> | rerun <input.json> | governance validate-completion <report.json> | governance record-flake|record-stale|record-slow <record.json>",
     );
   }
   const argument = (name) => {

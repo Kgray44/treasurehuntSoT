@@ -19,6 +19,8 @@
     "test:policy": "node scripts/sounding-line/cli.mjs validate-policy",
     "test:plan": "node scripts/sounding-line/cli.mjs plan",
     "test:runtime": "node --test tests/sounding-line/phase2-runtime.test.mjs scripts/sounding-line/cli.test.mjs",
+    "test:runtime:phase3": "node --test tests/sounding-line/phase3.test.mjs",
+    "test:runtime:recover": "node scripts/sounding-line/cli.mjs phase3 runtime inspect-orphans",
     "test:runtime:status": "node scripts/sounding-line/cli.mjs resource leases",
     "test:runtime:cleanup": "node scripts/sounding-line/cli.mjs runtime inspect-orphans",
     "test:history": "node --test tests/sounding-line/phase3.test.mjs",
