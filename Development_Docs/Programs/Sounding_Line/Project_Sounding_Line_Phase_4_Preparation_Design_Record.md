@@ -14,8 +14,8 @@ last_reviewed: 2026-07-29
 **Phase:** Phase 4, Prove the Passage
 **Status:** PREPARATION ONLY - NONAUTHORITATIVE
 **Original base:** `3d26ebc697a89efd7ff19d28399f3d41e32e423e`
-**Accepted Phase 2 mainline:** `ee5cffd457708559041cfc3331eb315906812e15`
-**Phase 2 policy identity:** `testing/policy-manifest.json` version `1.1.0`, SHA-256 `ec128882869984f9ec1775bea23126281209e029ee5c0f1721a9b7a0fcc5e0f1`
+**Accepted Phase 3 mainline:** `0aad93f49eae6a39db2571ccbbc79c850c565a6e`
+**Phase 3 policy identity:** `testing/policy-manifest.json` version `1.1.0`, SHA-256 `c0cf74d2c24e23a2bd0a2d40a6efee0a9c342ac5c2576f49f61301abc726c946`
 
 This record defines the future release and distributed-execution design. It does
 not activate CI, create a workflow, connect a worker, issue a release decision,
@@ -33,7 +33,11 @@ Ledgerlight records, and Breakwater-owned release boundaries. Project Drydock
 continues to govern authored Chronicle validity; Sounding Line governs software
 verification only.
 
-Phase 1 is **ACCEPTED AND MAINLINE**. Phase 2 is **ACCEPTED AND MAINLINE**:
+Phase 1, Phase 2, and Phase 3 are **ACCEPTED AND MAINLINE**. Phase 3 supplies
+schema-2 history, evidence intelligence, deterministic planning, capacity
+governance, durable control, and completion-report validation. Phase 4 consumes
+those interfaces without redefining their proof meaning. Phase 2 remains the
+local runtime foundation:
 it supplies the local, single-host, sealed-plan, allowlisted-adapter, resource
 lease, process-ownership, clone-isolation, browser/server-identity, cleanup,
 and quarantine foundations. Phase 3 is **PREPARATION COMPLETE /

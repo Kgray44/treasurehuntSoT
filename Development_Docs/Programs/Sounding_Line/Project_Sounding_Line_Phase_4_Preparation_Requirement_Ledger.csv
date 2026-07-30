@@ -25,3 +25,5 @@ SL4-023,Completion receipt and handoff,Project_Sounding_Line_Phase_4_Preparation
 SL4-024,Accepted Phase 1 and Phase 2 mainline reconciliation,Project_Sounding_Line_Phase_4_Post_Phase_2_Reconciliation_Record.md,complete,not started,mainline source and policy identity review
 SL4-025,Future completion report execution usage footer,Project_Sounding_Line_Phase_4_Post_Phase_2_Reconciliation_Record.md,complete,not started,required-field referential check
 SL4-026,Phase 3 preparation boundary,Project_Sounding_Line_Phase_4_Prerequisite_Checklist.md,complete,not started,preparation not implementation wording check
+SL4-027,Accepted Phase 3 interface reconciliation,Project_Sounding_Line_Phase_4_Post_Phase_3_Reconciliation_Record.md,complete,not started,mainline source policy schema and handoff review
+SL4-028,Phase 3 to Phase 4 handoff classifications,Project_Sounding_Line_Phase_3_to_Phase_4_Handoff_Matrix.md,complete,not started,handoff classification and non-executable boundary test

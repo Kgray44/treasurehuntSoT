@@ -15,7 +15,7 @@ PROJECT SOUNDING LINE PHASE 4 PREPARATION REFRESH COMPLETE
 
 **Branch:** `codex/project-sounding-line-phase4-preparation`
 **Original base:** `3d26ebc697a89efd7ff19d28399f3d41e32e423e`
-**Accepted Phase 2 mainline:** `ee5cffd457708559041cfc3331eb315906812e15`
+**Accepted Phase 3 mainline:** `0aad93f49eae6a39db2571ccbbc79c850c565a6e`
 **Final commit:** recorded after intentional commit
 **Remote parity:** recorded after push
 
@@ -45,7 +45,7 @@ legacy harness remains the authoritative execution path. Future implementation
 is blocked by the prerequisite checklist, not unblocked by these preparation
 records.
 
-The refreshed design consumes Phase 2's 14 suites, 17 contracts, 19 resources,
+The refreshed design consumes Phase 3's 14 suites, 17 contracts, 19 resources,
 allowlisted adapters, local lane leases, identity-safe cleanup/quarantine
 receipts, and legacy emergency serial boundary. Its two Harborlight concurrent
 lanes remain execution-isolation evidence only; they are not dual-run, parity,

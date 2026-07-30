@@ -18,6 +18,8 @@ const docs = [
   "Project_Sounding_Line_Phase_4_Prerequisite_Checklist.md",
   "Project_Sounding_Line_Phase_4_Preparation_Completion_Receipt.md",
   "Project_Sounding_Line_Phase_4_Post_Phase_2_Reconciliation_Record.md",
+  "Project_Sounding_Line_Phase_4_Post_Phase_3_Reconciliation_Record.md",
+  "Project_Sounding_Line_Phase_3_to_Phase_4_Handoff_Matrix.md",
 ];
 const directory = path.join(root, "Development_Docs", "Programs", "Sounding_Line");
 const schemaDirectory = path.join(directory, "Phase_4_Drafts");
@@ -74,12 +76,34 @@ test("acceptance and prerequisite records retain reconciled prerequisite truth",
   assert.match(matrix, /Stage 0/);
   assert.match(prerequisites, /Phase 1\s+\|\s+`ACCEPTED_AND_MAINLINE`/);
   assert.match(prerequisites, /Phase 2\s+\|\s+`ACCEPTED_AND_MAINLINE`/);
-  assert.match(prerequisites, /Phase 3\s+\|\s+`PREPARATION_COMPLETE_IMPLEMENTATION_NOT_STARTED`/);
+  assert.match(prerequisites, /Phase 3\s+\|\s+`ACCEPTED_AND_MAINLINE`/);
   const receipt = await readFile(
     path.join(directory, "Project_Sounding_Line_Phase_4_Preparation_Completion_Receipt.md"),
     "utf8",
   );
   assert.match(receipt, /PREPARATION REFRESH COMPLETE/);
+});
+
+test("accepted Phase 3 interfaces are classified without starting Phase 4", async () => {
+  const handoff = await readFile(
+    path.join(directory, "Project_Sounding_Line_Phase_3_to_Phase_4_Handoff_Matrix.md"),
+    "utf8",
+  );
+  const reconciliation = await readFile(
+    path.join(directory, "Project_Sounding_Line_Phase_4_Post_Phase_3_Reconciliation_Record.md"),
+    "utf8",
+  );
+  for (const term of [
+    "0aad93f49eae6a39db2571ccbbc79c850c565a6e",
+    "c0cf74d2c24e23a2bd0a2d40a6efee0a9c342ac5c2576f49f61301abc726c946",
+    "ACCEPTED_PHASE3_INPUT",
+    "ADDITIVE_PHASE4_EXTENSION_REQUIRED",
+    "EXTERNAL_PENDING",
+    "P34-BME-20260729",
+    "non-executable",
+  ]) {
+    assert.match(`${handoff}\n${reconciliation}`, new RegExp(term, "i"));
+  }
 });
 
 test("post-phase-2 reconciliation retains local boundaries and exact usage fields", async () => {
