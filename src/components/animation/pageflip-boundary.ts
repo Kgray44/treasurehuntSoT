@@ -420,6 +420,14 @@ export class PageFlipBoundaryController {
       source.dataset.pageflipPageId = pageId;
       source.dataset.pageflipPageIndex = String(pageIndex);
       source.dataset.pageflipContentRevision = contentRevision;
+      // The source tree is an inaccessible cloning template. Mark every
+      // source-page root as well as the shared source container: canonical
+      // event updates can leave one source page mounted while the runtime
+      // promotes its clone, and that individual marked page must never become
+      // focusable or discoverable to assistive technology.
+      source.setAttribute("aria-hidden", "true");
+      source.setAttribute("inert", "");
+      source.style.pointerEvents = "none";
       const boundary: PageFlipSourceBoundary = {
         pageFlipInstanceId: this.pageFlipInstanceId,
         sourceGeneration: this.sourceGeneration,
