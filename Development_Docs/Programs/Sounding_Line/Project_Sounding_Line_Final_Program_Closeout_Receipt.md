@@ -18,10 +18,11 @@ revocation, local/CI comparison, and emergency serial fallback. The focused
 workflow uses `npm ci` and is secret-free and read-only.
 
 This receipt is not release authorization. `P34-BME-20260729` remains a
-historical non-green browser-matrix exception, not a 316-case pass. Hosted CI
-execution, separate remote workers, provider/MySQL validation, production
-signing, and branch-protection application are `EXTERNAL_PENDING`; none is
-counted as a local or release pass.
+historical non-green browser-matrix exception, not a 316-case pass. GitHub
+Actions run `30545314821` passed the focused workflow on integration SHA
+`68b18b40c0b4ee2cee66324aa8643789c4172f41`. Separate remote workers,
+provider/MySQL validation, production signing, and branch-protection
+application remain `EXTERNAL_PENDING`; none is counted as a release pass.
 
 ## P34 compatibility review
 
@@ -47,8 +48,9 @@ checkpoint-catalog compatibility code was retained by this closeout.
 
 ## Evidence and continuation
 
-The definitive final-validation results, pushed source identity, hosted focused
-workflow result, and protected-main integration identity are recorded only
-after those operations complete. A failed, blocked, unavailable, or skipped
-gate remains a non-pass. The next safe action is the bounded final validation
-sequence defined by this closeout; it excludes the retired full P34 matrix.
+Local validation and the hosted focused workflow both passed. GitHub merged the
+protected-main pull request as `84295f65a86efa4777084b587063d57fa75b07fe`; its
+tree is identical to the hosted-tested integration SHA. A failed, blocked,
+unavailable, or skipped gate remains a non-pass. Any future validation follows
+the bounded sequence defined by this closeout and excludes the retired full P34
+matrix.

@@ -7,7 +7,7 @@ SL4-005,Local CI plan parity and dual-run comparison,COMPLETE_LOCAL,phase4 compa
 SL4-006,Governed local release decision and cutover transition,COMPLETE_LOCAL,phase4 decideRelease and transitionCutover tests
 SL4-007,Evidence revocation and emergency serial fallback,COMPLETE_LOCAL,phase4 revokeEvidence and emergencySerial tests
 SL4-008,Focused read-only CI workflow,COMPLETE_LOCAL,.github/workflows/sounding-line-phase4.yml
-SL4-009,Hosted CI execution,EXTERNAL_PENDING,no observed hosted run
+SL4-009,Hosted CI execution,COMPLETE_HOSTED,GitHub Actions run 30545314821 passed on integration SHA 68b18b40c0b4ee2cee66324aa8643789c4172f41
 SL4-010,Remote distributed worker proof,EXTERNAL_PENDING,no separate worker connected
 SL4-011,Provider/MySQL validation,EXTERNAL_PENDING,credentials and services not configured
 SL4-012,Production signing key proof,EXTERNAL_PENDING,no production key used or committed

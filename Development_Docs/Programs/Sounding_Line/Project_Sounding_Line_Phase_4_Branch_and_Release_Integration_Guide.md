@@ -17,10 +17,11 @@ alter branch protection, or retire the legacy serial harness. Pull-request
 execution is restricted to public repository inputs and cannot satisfy a trusted
 release gate without an independent trusted re-execution.
 
-Hosted execution has not been observed in this local implementation. Required
-future branch-protection check name is `sounding-line-phase4-focused`; remote
-application is pending repository-owner authority. P34 remains non-green and
-external provider/MySQL evidence remains pending.
+GitHub Actions run `30545314821` passed this focused workflow on integration
+SHA `68b18b40c0b4ee2cee66324aa8643789c4172f41`. The workflow remains
+non-authoritative: remote-worker proof, provider/MySQL evidence, production
+signing, and branch-protection application remain pending. P34 remains
+non-green.
 
 Execution usage:
 
