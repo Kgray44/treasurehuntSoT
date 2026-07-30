@@ -22,6 +22,7 @@
     "test:runtime:phase3": "node --test tests/sounding-line/phase3.test.mjs",
     "test:runtime:phase4": "node --test tests/sounding-line/phase4.test.mjs",
     "test:runtime:phase4:controller": "node --test tests/sounding-line/phase4-controller.test.mjs",
+    "test:runtime:phase4:attestation": "node --test tests/sounding-line/phase4-attestation.test.mjs",
     "test:runtime:recover": "node scripts/sounding-line/cli.mjs phase3 runtime inspect-orphans",
     "test:runtime:status": "node scripts/sounding-line/cli.mjs resource leases",
     "test:runtime:cleanup": "node scripts/sounding-line/cli.mjs runtime inspect-orphans",

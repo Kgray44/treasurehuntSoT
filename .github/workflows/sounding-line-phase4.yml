@@ -53,6 +53,7 @@ jobs:
       - run: npm run test:runtime:phase3
       - run: npm run test:runtime:phase4
       - run: npm run test:runtime:phase4:controller
+      - run: npm run test:runtime:phase4:attestation
       - run: npm test
       - run: npm run typecheck
       - run: npm run format:check
