@@ -711,6 +711,11 @@ try {
             }
             $browserCommand += $runtimeRelativeBrowserTestPath.Replace('\', '/')
         }
+        # A named Sounding Line lane is a focused repair boundary. Its deadline
+        # is enforced by Playwright so cleanup and receipt emission can run.
+        if ($isSoundingLineLane) {
+            $browserCommand += "--global-timeout=420000"
+        }
         Invoke-ValidationStep -Name "Running browser acceptance tests" -Arguments $browserCommand
         Stop-OwnedValidationServer -ServerOwnership $ownedValidationServer
         $ownedValidationServer = $null

@@ -118,6 +118,7 @@ test("BrowserOnly Harborlight lanes do not repeat independent broad gates", asyn
     runtime,
     /if \(-not \$BrowserOnly\) \{[\s\S]*Running unit tests[\s\S]*Verifying additive platform backfill[\s\S]*\n    \}\n    \[void\]\(Invoke-IsolationHelper -Arguments @\("checkpoint"/u,
   );
+  assert.match(runtime, /if \(\$isSoundingLineLane\) \{[\s\S]*--global-timeout=420000/u);
 });
 
 test("concurrent Harborlight lanes may share only their validation-run parent", async () => {
