@@ -1,5 +1,7 @@
 import assert from "node:assert/strict";
+import { execFile } from "node:child_process";
 import { readFile } from "node:fs/promises";
+import { promisify } from "node:util";
 import test from "node:test";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -7,6 +9,7 @@ import { finalize } from "../../scripts/sounding-line/finalizer.mjs";
 import { buildPlan } from "../../scripts/sounding-line/planner.mjs";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
+const execute = promisify(execFile);
 
 test("planner is deterministic and rejects archived P34 suites", async () => {
   const first = await buildPlan({ root, gateId: "local-change", sourceSha: "test-sha" });
@@ -16,6 +19,11 @@ test("planner is deterministic and rejects archived P34 suites", async () => {
   const mainline = await buildPlan({ root, gateId: "mainline", sourceSha: "test-sha" });
   assert.ok(mainline.nodes.some((node) => node.id === "build.production"));
   assert.ok(mainline.nodes.some((node) => node.id === "browser.access-sentinel"));
+  for (const node of mainline.nodes)
+    for (const dependency of node.dependencies)
+      assert.ok(mainline.nodes.find((candidate) => candidate.id === dependency).execution.wave < node.execution.wave);
+  assert.equal(mainline.nodes.find((node) => node.id === "database.sqlite").execution.mode, "exclusive");
+  assert.equal(mainline.nodes.find((node) => node.id === "harborlight.phase4.unit").execution.mode, "parallel");
   assert.ok(
     mainline.nodes.every(
       (node) => !["browser.auth", "browser.player-journal", "compatibility.browser"].includes(node.id),
@@ -59,6 +67,15 @@ test("only the finalizer produces an accepted decision from source-bound clean r
     ],
   });
   assert.equal(invalid.decision, "EVIDENCE_INVALID");
+});
+
+test("focused suite execution is evidence-only and cannot invoke authority", async () => {
+  await assert.rejects(
+    execute(process.execPath, ["scripts/sounding-line/authority.mjs", "mainline", "--suite", "static.core"], {
+      cwd: root,
+    }),
+    /FOCUSED_SUITE_EXECUTION_IS_NONAUTHORITATIVE/u,
+  );
 });
 
 test("public repository commands route through Sounding Line", async () => {

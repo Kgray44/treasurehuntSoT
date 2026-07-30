@@ -1,9 +1,8 @@
 name: Sounding Line authoritative
 
 on:
-  pull_request:
-  push:
-    branches: [main]
+  # A complete mainline graph is an explicit candidate, never an automatic
+  # response to an incremental repair push.
   workflow_dispatch:
 
 permissions:
@@ -19,7 +18,11 @@ jobs:
     runs-on: windows-latest
     timeout-minutes: 10
     outputs:
-      matrix: ${{ steps.matrix.outputs.matrix }}
+      parallel0: ${{ steps.matrix.outputs.parallel0 }}
+      parallel1: ${{ steps.matrix.outputs.parallel1 }}
+      parallel2: ${{ steps.matrix.outputs.parallel2 }}
+      exclusive1: ${{ steps.matrix.outputs.exclusive1 }}
+      exclusive2: ${{ steps.matrix.outputs.exclusive2 }}
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
@@ -36,44 +39,80 @@ jobs:
         shell: pwsh
         run: |
           $plan = Get-Content -Raw sounding-line-plan.json | ConvertFrom-Json
-          $matrix = @{ include = @($plan.nodes | ForEach-Object { @{ suiteId = $_.id } }) } | ConvertTo-Json -Compress
-          "matrix=$matrix" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+          if (($plan.nodes | Measure-Object -Property { $_.execution.wave } -Maximum).Maximum -gt 2) { throw "HOSTED_EXECUTION_WAVE_LIMIT_EXCEEDED" }
+          foreach ($wave in 0..2) {
+            foreach ($mode in @('parallel', 'exclusive')) {
+              $nodes = @($plan.nodes | Where-Object { $_.execution.wave -eq $wave -and $_.execution.mode -eq $mode } | ForEach-Object { @{ suiteId = $_.id } })
+              $matrix = @{ include = $nodes } | ConvertTo-Json -Compress
+              "$mode$wave=$matrix" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+            }
+          }
       - uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08
         with: { name: sounding-line-plan, path: sounding-line-plan.json, retention-days: 14 }
 
-  governed-mainline:
-    name: Sounding Line / Governed workers
+  governed-parallel-wave-0:
+    name: Sounding Line / Parallel wave 0
     needs: plan
-    runs-on: windows-latest
-    timeout-minutes: 60
     strategy:
       fail-fast: false
-      matrix: ${{ fromJSON(needs.plan.outputs.matrix) }}
-    steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
-      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
-        with: { node-version-file: .nvmrc, cache: npm }
-      - run: npm ci
-      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
-        with: { name: sounding-line-plan, path: sounding-line-plan }
-      - run: npm run db:generate
-      # The browser runtime receives this disposable, seeded baseline only to
-      # create its own nonce-bound copy. It is never the mutable test database.
-      - run: npx prisma migrate deploy --schema prisma/schema.sqlite.prisma
-        env: { DATABASE_URL: "file:./dev.db" }
-      - run: npm run db:seed
-        env: { DATABASE_URL: "file:./dev.db" }
-      - run: npx playwright install chromium
-      - id: governed-workers
-        continue-on-error: true
-        run: node scripts/sounding-line/authority.mjs mainline --execute-only --suite ${{ matrix.suiteId }} --receipt-out sounding-line-worker-evidence.json
-      - if: always()
-        uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08
-        with: { name: sounding-line-worker-evidence-${{ matrix.suiteId }}, path: sounding-line-worker-evidence.json, retention-days: 14 }
+      matrix: ${{ fromJSON(needs.plan.outputs.parallel0) }}
+    uses: ./.github/workflows/sounding-line-governed-worker.yml
+    with:
+      suite: ${{ matrix.suiteId }}
+
+  governed-parallel-wave-1:
+    name: Sounding Line / Parallel wave 1
+    needs: [plan, governed-parallel-wave-0]
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.plan.outputs.parallel1) }}
+    uses: ./.github/workflows/sounding-line-governed-worker.yml
+    with:
+      suite: ${{ matrix.suiteId }}
+
+  governed-exclusive-wave-1:
+    name: Sounding Line / Exclusive wave 1
+    needs: [plan, governed-parallel-wave-0]
+    strategy:
+      fail-fast: false
+      max-parallel: 1
+      matrix: ${{ fromJSON(needs.plan.outputs.exclusive1) }}
+    uses: ./.github/workflows/sounding-line-governed-worker.yml
+    with:
+      suite: ${{ matrix.suiteId }}
+
+  governed-parallel-wave-2:
+    name: Sounding Line / Parallel wave 2
+    needs: [plan, governed-parallel-wave-1, governed-exclusive-wave-1]
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.plan.outputs.parallel2) }}
+    uses: ./.github/workflows/sounding-line-governed-worker.yml
+    with:
+      suite: ${{ matrix.suiteId }}
+
+  governed-exclusive-wave-2:
+    name: Sounding Line / Exclusive wave 2
+    needs: [plan, governed-parallel-wave-1, governed-exclusive-wave-1]
+    strategy:
+      fail-fast: false
+      max-parallel: 1
+      matrix: ${{ fromJSON(needs.plan.outputs.exclusive2) }}
+    uses: ./.github/workflows/sounding-line-governed-worker.yml
+    with:
+      suite: ${{ matrix.suiteId }}
 
   finalizer:
     name: Sounding Line / Mainline Decision
-    needs: [plan, governed-mainline]
+    needs:
+      [
+        plan,
+        governed-parallel-wave-0,
+        governed-parallel-wave-1,
+        governed-exclusive-wave-1,
+        governed-parallel-wave-2,
+        governed-exclusive-wave-2,
+      ]
     if: always()
     runs-on: windows-latest
     timeout-minutes: 5
@@ -87,4 +126,4 @@ jobs:
         uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
         with: { pattern: sounding-line-worker-evidence-*, path: sounding-line-worker-evidence, merge-multiple: false }
       - name: Finalizer decision
-        run: node scripts/sounding-line/finalize-ci.mjs sounding-line-plan/sounding-line-plan.json sounding-line-worker-evidence/sounding-line-worker-evidence.json
+        run: node scripts/sounding-line/finalize-ci.mjs sounding-line-plan/sounding-line-plan.json sounding-line-worker-evidence

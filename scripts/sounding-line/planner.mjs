@@ -48,6 +48,7 @@ export async function buildPlan({ root, gateId, serial = false, sourceSha = proc
       resources: [...(suite.resources ?? [])],
       explanation: "REQUIRED_BY_GATE",
       adapter: suite.adapter ?? "vitest",
+      execution: { mode: suite.parallelSafe ? "parallel" : "exclusive", wave: 0 },
       testIds: registry.cases.filter((entry) => entry.suiteId === suiteId).map((entry) => entry.id),
     };
   });
@@ -55,6 +56,18 @@ export async function buildPlan({ root, gateId, serial = false, sourceSha = proc
   for (const node of nodes)
     for (const dependency of node.dependencies)
       if (!ids.has(dependency)) throw new Error(`PLAN_DEPENDENCY_NOT_SELECTED:${node.id}:${dependency}`);
+  const nodesById = new Map(nodes.map((node) => [node.id, node]));
+  const waveFor = (node, visiting = new Set()) => {
+    if (node.execution.wave) return node.execution.wave;
+    if (visiting.has(node.id)) throw new Error(`PLAN_DEPENDENCY_CYCLE:${node.id}`);
+    visiting.add(node.id);
+    node.execution.wave = node.dependencies.length
+      ? Math.max(...node.dependencies.map((dependency) => waveFor(nodesById.get(dependency), visiting))) + 1
+      : 0;
+    visiting.delete(node.id);
+    return node.execution.wave;
+  };
+  for (const node of nodes) waveFor(node);
   const plan = {
     version: 1,
     authority: "SOUNDING_LINE",

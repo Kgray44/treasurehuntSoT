@@ -19,7 +19,8 @@ function suiteAdapter(suite) {
 
 async function run(gateId, { serial, executeOnly = false, receiptPath, suiteId } = {}) {
   const plan = await buildPlan({ root, gateId, serial });
-  if (suiteId && !plan.nodes.some((node) => node.id === suiteId)) throw new Error(`SUITE_NOT_SELECTED_BY_PLAN:${suiteId}`);
+  if (suiteId && !plan.nodes.some((node) => node.id === suiteId))
+    throw new Error(`SUITE_NOT_SELECTED_BY_PLAN:${suiteId}`);
   const suites = JSON.parse(await readFile(path.join(root, "testing", "suites.json"), "utf8"));
   const suiteMap = new Map(suites.suites.map((suite) => [suite.id, suite]));
   const receipts = [];
@@ -84,8 +85,7 @@ if (receiptIndex >= 0 && !receiptPath) throw new Error("RECEIPT_OUTPUT_PATH_REQU
 const suiteIndex = process.argv.indexOf("--suite");
 const suiteId = suiteIndex >= 0 ? process.argv[suiteIndex + 1] : undefined;
 if (suiteIndex >= 0 && !suiteId) throw new Error("SUITE_ID_REQUIRED");
-if (suiteId && !process.argv.includes("--execute-only"))
-  throw new Error("FOCUSED_SUITE_EXECUTION_IS_NONAUTHORITATIVE");
+if (suiteId && !process.argv.includes("--execute-only")) throw new Error("FOCUSED_SUITE_EXECUTION_IS_NONAUTHORITATIVE");
 await run(command, {
   serial: process.argv.includes("--serial"),
   executeOnly: process.argv.includes("--execute-only"),

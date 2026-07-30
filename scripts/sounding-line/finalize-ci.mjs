@@ -10,7 +10,11 @@ if (!planPath || !evidencePath) throw new Error("CI_FINALIZER_REQUIRES_PLAN_AND_
 const plan = JSON.parse(await readFile(path.resolve(planPath), "utf8"));
 const evidenceRoot = path.resolve(evidencePath);
 const evidencePaths = await readdir(evidenceRoot, { recursive: true })
-  .then((files) => files.filter((file) => file === "sounding-line-worker-evidence.json").map((file) => path.join(evidenceRoot, file)))
+  .then((files) =>
+    files
+      .filter((file) => path.basename(file) === "sounding-line-worker-evidence.json")
+      .map((file) => path.join(evidenceRoot, file)),
+  )
   .catch((error) => {
     if (error?.code !== "ENOENT" && error?.code !== "ENOTDIR") throw error;
     return [evidenceRoot];
@@ -19,7 +23,11 @@ const evidence = await Promise.all(
   evidencePaths.map((file) =>
     readFile(file, "utf8")
       .then(JSON.parse)
-      .catch((error) => (error?.code === "ENOENT" ? { version: 1, plan: { planDigest: plan.planDigest }, receipts: [] } : Promise.reject(error))),
+      .catch((error) =>
+        error?.code === "ENOENT"
+          ? { version: 1, plan: { planDigest: plan.planDigest }, receipts: [] }
+          : Promise.reject(error),
+      ),
   ),
 );
 if (evidence.some((item) => item.plan?.planDigest !== plan.planDigest)) throw new Error("CI_EVIDENCE_PLAN_MISMATCH");
