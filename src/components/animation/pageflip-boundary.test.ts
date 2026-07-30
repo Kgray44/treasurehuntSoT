@@ -114,6 +114,10 @@ describe("PageFlip source and clone boundary", () => {
     expect(sourceRoot).toHaveAttribute("inert");
     expect(sourceRoot).toHaveAttribute("data-pageflip-role", "source");
     expect(sourceRoot.querySelector("[data-scene-instance]")).toBeNull();
+    for (const sourcePage of Array.from(sourceRoot.children)) {
+      expect(sourcePage).toHaveAttribute("aria-hidden", "true");
+      expect(sourcePage).toHaveAttribute("inert");
+    }
 
     const first = getPageFlipCloneBoundary(pages[0]!);
     const second = getPageFlipCloneBoundary(pages[1]!);

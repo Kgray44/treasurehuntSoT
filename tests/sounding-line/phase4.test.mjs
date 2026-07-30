@@ -103,7 +103,7 @@ test("release and cutover preserve vetoes and rollback readiness", () => {
       p34NonGreen: true,
       externalPending: true,
     }).state,
-    "RELEASE_GO_WITH_EXTERNAL_PENDING",
+    "RELEASE_NO_GO",
   );
   assert.equal(
     phase4.decideRelease({ trustedController: true, mandatoryComplete: true, evidenceValid: false, cleanupClean: true })

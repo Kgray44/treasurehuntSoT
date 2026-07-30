@@ -31,8 +31,11 @@ document index. No production source ownership was moved.
   MySQL, deployment, and hosted-service proof.
 - **Blocked exception:** `P34-BME-20260729` is explicit browser-matrix risk
   acceptance. It is not a 316-case or full-matrix pass.
-- **Planned or not validated:** Project Sounding Line, Harborlight Phase 4,
-  Project Drydock, Project Landfall, and Project Watchglass.
+- **Implemented local control plane, external proof pending:** Project Sounding
+  Line Phases 1-4. Hosted CI, remote workers, provider/MySQL, signing, branch
+  protection, and the P34 browser matrix remain non-pass work.
+- **Planned or not validated:** Harborlight Phase 4, Project Drydock, Project
+  Landfall, and Project Watchglass.
 
 ## Reconciliation decisions
 

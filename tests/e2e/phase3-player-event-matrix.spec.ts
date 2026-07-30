@@ -20,7 +20,13 @@ const groups = [
 }[];
 
 function mappingPath() {
-  return path.join(process.cwd(), "Development_Docs", "Project_Lanternwake_Canonical_Event_Matrix_Mapping.csv");
+  return path.join(
+    process.cwd(),
+    "Development_Docs",
+    "Programs",
+    "Lanternwake",
+    "Project_Lanternwake_Canonical_Event_Matrix_Mapping.csv",
+  );
 }
 
 function readMappingRows() {
