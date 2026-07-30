@@ -5,18 +5,28 @@ const digest = (value) => createHash("sha256").update(JSON.stringify(value)).dig
 
 export function finalize({ plan, receipts }) {
   const mandatory = new Set(plan.nodes.map((node) => node.id));
+  const duplicates = [
+    ...new Set(receipts.map((receipt) => receipt.suiteId).filter((id, index, ids) => ids.indexOf(id) !== index)),
+  ];
+  const unknown = receipts.filter((receipt) => !mandatory.has(receipt.suiteId));
   const seen = new Set(receipts.map((receipt) => receipt.suiteId));
   const missing = [...mandatory].filter((id) => !seen.has(id));
   const invalid = receipts.filter(
     (receipt) =>
       receipt.sourceSha !== plan.sourceSha ||
       receipt.policyDigest !== plan.policyDigest ||
+      receipt.inventoryDigest !== plan.inventoryDigest ||
       receipt.planDigest !== plan.planDigest ||
+      receipt.gate !== plan.gate ||
       receipt.cleanupState !== "CLEAN",
   );
   const failed = receipts.filter((receipt) => receipt.result !== "PASSED");
   const decision =
-    missing.length || invalid.length ? "EVIDENCE_INVALID" : failed.length ? "RELEASE_NO_GO" : "RELEASE_GO";
+    missing.length || invalid.length || duplicates.length || unknown.length
+      ? "EVIDENCE_INVALID"
+      : failed.length
+        ? "RELEASE_NO_GO"
+        : "RELEASE_GO";
   return {
     authority: "SOUNDING_LINE_FINALIZER",
     decision,
@@ -24,6 +34,8 @@ export function finalize({ plan, receipts }) {
     planDigest: plan.planDigest,
     receipts,
     missingMandatorySuites: missing,
+    duplicateSuiteReceipts: duplicates,
+    unknownSuiteReceipts: unknown.map((receipt) => receipt.suiteId),
     invalidEvidence: invalid.map((receipt) => receipt.suiteId),
     evidenceDigest: digest(receipts),
   };

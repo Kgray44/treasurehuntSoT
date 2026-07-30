@@ -35,6 +35,7 @@ test("only the finalizer produces an accepted decision from source-bound clean r
   const plan = {
     sourceSha: "abc",
     policyDigest: "policy",
+    inventoryDigest: "inventory",
     planDigest: "plan",
     gate: "mainline",
     nodes: [{ id: "static.core" }],
@@ -46,7 +47,9 @@ test("only the finalizer produces an accepted decision from source-bound clean r
         suiteId: "static.core",
         sourceSha: "abc",
         policyDigest: "policy",
+        inventoryDigest: "inventory",
         planDigest: "plan",
+        gate: "mainline",
         cleanupState: "CLEAN",
         result: "PASSED",
       },
@@ -60,13 +63,41 @@ test("only the finalizer produces an accepted decision from source-bound clean r
         suiteId: "static.core",
         sourceSha: "wrong",
         policyDigest: "policy",
+        inventoryDigest: "inventory",
         planDigest: "plan",
+        gate: "mainline",
         cleanupState: "CLEAN",
         result: "PASSED",
       },
     ],
   });
   assert.equal(invalid.decision, "EVIDENCE_INVALID");
+  const duplicate = finalize({
+    plan,
+    receipts: [
+      {
+        suiteId: "static.core",
+        sourceSha: "abc",
+        policyDigest: "policy",
+        inventoryDigest: "inventory",
+        planDigest: "plan",
+        gate: "mainline",
+        cleanupState: "CLEAN",
+        result: "PASSED",
+      },
+      {
+        suiteId: "static.core",
+        sourceSha: "abc",
+        policyDigest: "policy",
+        inventoryDigest: "inventory",
+        planDigest: "plan",
+        gate: "mainline",
+        cleanupState: "CLEAN",
+        result: "PASSED",
+      },
+    ],
+  });
+  assert.equal(duplicate.decision, "EVIDENCE_INVALID");
 });
 
 test("focused suite execution is evidence-only and cannot invoke authority", async () => {

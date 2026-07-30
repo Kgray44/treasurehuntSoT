@@ -43,9 +43,10 @@ jobs:
       - run: npm run db:seed
         env: { DATABASE_URL: "file:./dev.db" }
       - run: npx playwright install chromium
+      - run: node -e "import('./scripts/sounding-line/planner.mjs').then(async m=>console.log(JSON.stringify(await m.buildPlan({root:process.cwd(),gateId:'mainline',serial:false,sourceSha:process.env.GITHUB_SHA}),null,2)))" > sounding-line-plan.json
       # A push is deliberately narrow and always proves the Harborlight browser
       # lane. workflow_dispatch may select another governed focused suite.
-      - run: node scripts/sounding-line/authority.mjs mainline --execute-only --suite ${{ inputs.suite || 'harborlight.phase4.browser' }} --receipt-out sounding-line-worker-evidence.json
+      - run: node scripts/sounding-line/authority.mjs mainline --execute-only --plan-in sounding-line-plan.json --suite ${{ inputs.suite || 'harborlight.phase4.browser' }} --receipt-out sounding-line-worker-evidence.json
       - uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08
         with:
           name: "sounding-line-focused-${{ inputs.suite || 'harborlight.phase4.browser' }}"
