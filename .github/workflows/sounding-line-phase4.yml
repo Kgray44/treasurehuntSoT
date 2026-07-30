@@ -3,6 +3,11 @@ name: Sounding Line final closure
 on:
   pull_request:
     paths:
+      - "src/**"
+      - "tests/**"
+      - "scripts/**"
+      - "prisma/**"
+      - "public/**"
       - "scripts/sounding-line/**"
       - "tests/sounding-line/**"
       - "testing/**"
@@ -15,6 +20,11 @@ on:
       - main
       - codex/project-sounding-line-final-program-closure
     paths:
+      - "src/**"
+      - "tests/**"
+      - "scripts/**"
+      - "prisma/**"
+      - "public/**"
       - "scripts/sounding-line/**"
       - "tests/sounding-line/**"
       - "testing/**"
