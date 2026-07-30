@@ -3,9 +3,9 @@ P3-ARCH,Implementation design record,COMPLETE,phase3 focused tests,No Phase 4 be
 P3-STORE,External SQLite history store,COMPLETE,ordered migrations integrity corrupt-store legacy and current ingest plus entity schema tests,Not application Prisma
 P3-IMPACT,Deterministic conservative planner,COMPLETE,focused deterministic migration authorization privacy reuse and release non-narrowing tests,Release remains comprehensive
 P3-EVIDENCE,Fail-closed freshness and reuse,COMPLETE,focused negative test,Exact clean evidence only
-P3-DIAGNOSE,Root cascade signatures reruns,IN_PROGRESS,focused reconciliation test,No product fault masking
-P3-SHARD,Duration shards and throttling primitives,IN_PROGRESS,focused deterministic test,No evidence reduction
+P3-DIAGNOSE,Root cascade signatures reruns,COMPLETE,focused cascade multi-root signature and surgical broad rerun tests,No product fault masking
+P3-SHARD,Duration shards and throttling primitives,COMPLETE,focused deterministic balance pressure and hysteresis tests,No evidence reduction
 P3-RUNTIME,Detached controller journal cancellation orphan recovery and constrained adapter execution,IN_PROGRESS,focused lifecycle and Phase 2 delegated adapter test,Browser build and legacy-full adapters remain separately governed
-P3-GOVERNANCE,Completion validator and flake stale slow review bridge,IN_PROGRESS,focused compatibility tests,Report integration pending
+P3-GOVERNANCE,Completion validator and flake stale slow review bridge,COMPLETE,focused valid invalid authority external and usage-footer tests,No report may claim mainline or release authority
 P3-PILOTS,Real Phase 2 receipt and focused execution pilots,IN_PROGRESS,recorded local evidence,Must not fabricate evidence
 P3-CLOSURE,Full validation and local completion receipt,NOT_STARTED,not run,No completion claim before all gates
