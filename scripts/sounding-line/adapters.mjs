@@ -23,8 +23,36 @@ const node = process.execPath;
 const vitest = ["node_modules/vitest/vitest.mjs", "run"];
 
 export const adapters = Object.freeze({
+  "vitest-all": { command: [node, ...vitest], resources: ["node-slot", "vitest-worker-pool"], mode: "CERTIFIED" },
+  "playwright-chromium": {
+    command: [node, "node_modules/@playwright/test/cli.js", "test", "--project=chromium"],
+    resources: ["application-port", "sqlite-clone", "browser-chromium", "trace-root"],
+    mode: "SERIAL_WITHIN_FAMILY",
+  },
+  "playwright-webkit": {
+    command: [node, "node_modules/@playwright/test/cli.js", "test", "--project=webkit-mobile"],
+    resources: ["application-port", "sqlite-clone", "browser-webkit", "trace-root"],
+    mode: "SERIAL_WITHIN_FAMILY",
+  },
+  "playwright-access-sentinel": {
+    command: [
+      node,
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--project=sounding-line-access-sentinel",
+      "tests/e2e/access-gates.spec.ts",
+    ],
+    resources: ["application-port", "sqlite-clone", "browser-chromium", "trace-root"],
+    mode: "SERIAL_WITHIN_FAMILY",
+  },
+  static: { command: [node, "scripts/sounding-line/static.mjs"], resources: ["node-slot"], mode: "CERTIFIED" },
   policy: {
     command: [node, "scripts/sounding-line/cli.mjs", "validate-policy"],
+    resources: ["node-slot"],
+    mode: "CERTIFIED",
+  },
+  "p34-retirement": {
+    command: [node, "scripts/sounding-line/p34-retirement.mjs"],
     resources: ["node-slot"],
     mode: "CERTIFIED",
   },
@@ -34,7 +62,13 @@ export const adapters = Object.freeze({
     mode: "CERTIFIED",
   },
   runtime: {
-    command: [node, "--test", "tests/sounding-line/phase2-runtime.test.mjs"],
+    command: [
+      node,
+      "--test",
+      "tests/sounding-line/phase2-runtime.test.mjs",
+      "scripts/sounding-line/cli.test.mjs",
+      "tests/sounding-line/authority-cutover.test.mjs",
+    ],
     resources: ["node-slot"],
     mode: "CERTIFIED",
   },
@@ -60,7 +94,7 @@ export const adapters = Object.freeze({
     mode: "CERTIFIED",
   },
   build: {
-    command: [node, "node_modules/next/dist/bin/next", "build", "--webpack"],
+    command: [node, "scripts/sounding-line/build.mjs"],
     resources: ["node-slot", "production-build-directory"],
     mode: "SERIAL_WITHIN_FAMILY",
   },
@@ -74,14 +108,14 @@ export const adapters = Object.freeze({
     resources: ["node-slot", "mysql-schema"],
     mode: "SERIAL_WITHIN_FAMILY",
   },
-  "legacy-full": {
-    command: ["powershell", "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", "scripts/test-all.ps1"],
-    resources: ["validation-runtime"],
-    mode: "EMERGENCY_SERIAL",
-  },
   "harborlight-browser-lanes": {
     command: [node, "scripts/sounding-line/harborlight-browser-lanes.mjs"],
     resources: ["browser-lane-a", "browser-lane-b", "sqlite-clone", "trace-root"],
+    mode: "CERTIFIED",
+  },
+  "harborlight-sqlite": {
+    command: [node, "node_modules/prisma/build/index.js", "validate", "--schema", "prisma/schema.sqlite.prisma"],
+    resources: ["sqlite-clone", "prisma-sqlite-client"],
     mode: "CERTIFIED",
   },
 });

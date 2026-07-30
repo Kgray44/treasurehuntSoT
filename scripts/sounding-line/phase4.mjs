@@ -14,12 +14,12 @@ export const workerStates = Object.freeze([
   "OFFLINE",
 ]);
 export const trustDomains = Object.freeze(["LOCAL_TRUSTED", "CI_TRUSTED", "PR_RESTRICTED", "EXTERNAL_RESTRICTED"]);
+// Historical simulations are diagnostic only. Authoritative decision strings
+// are deliberately reserved for finalizer.mjs.
 export const releaseStates = Object.freeze([
-  "RELEASE_GO",
-  "RELEASE_GO_WITH_EXTERNAL_PENDING",
-  "RELEASE_NO_GO",
-  "RELEASE_INCOMPLETE",
-  "EVIDENCE_INVALID",
+  "HISTORICAL_SIMULATION_ACCEPTED",
+  "HISTORICAL_SIMULATION_REJECTED",
+  "HISTORICAL_SIMULATION_INVALID",
 ]);
 export const cutoverStages = Object.freeze([
   "STAGE_0_LEGACY_AUTHORITATIVE",
@@ -213,16 +213,23 @@ export function decideRelease(input) {
   const vetoes = [];
   if (!input?.trustedController) vetoes.push("UNTRUSTED_CONTROLLER");
   if (!input?.mandatoryComplete) vetoes.push("MANDATORY_PROOF_INCOMPLETE");
-  if (!input?.evidenceValid) vetoes.push("EVIDENCE_INVALID");
+  if (!input?.evidenceValid) vetoes.push("EVIDENCE_IDENTITY_INVALID");
   if (!input?.cleanupClean) vetoes.push("CLEANUP_INVALID");
   if (input?.p34Green === true) vetoes.push("P34_FALSELY_GREEN");
   if (input?.p34NonGreen) vetoes.push("P34_NON_GREEN");
   if (input?.externalPending) vetoes.push("EXTERNAL_GATES_PENDING");
   if (vetoes.length)
-    return { state: vetoes.includes("EVIDENCE_INVALID") ? "EVIDENCE_INVALID" : "RELEASE_NO_GO", vetoes };
+    return {
+      state: vetoes.includes("EVIDENCE_IDENTITY_INVALID")
+        ? "HISTORICAL_SIMULATION_INVALID"
+        : "HISTORICAL_SIMULATION_REJECTED",
+      vetoes,
+      nonAuthoritative: true,
+    };
   return {
-    state: input.externalPending || input.p34NonGreen ? "RELEASE_GO_WITH_EXTERNAL_PENDING" : "RELEASE_GO",
+    state: "HISTORICAL_SIMULATION_ACCEPTED",
     vetoes: [],
+    nonAuthoritative: true,
   };
 }
 

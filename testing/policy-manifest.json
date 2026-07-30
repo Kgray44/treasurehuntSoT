@@ -1,6 +1,6 @@
 {
-  "version": "1.2.0",
-  "status": "phase-3-local-verification-intelligence",
+  "version": "2.0.0",
+  "status": "authority-cutover-in-progress",
   "registries": [
     "ownership.json",
     "contracts.json",
@@ -10,9 +10,12 @@
     "release-gates.json",
     "quarantine.json",
     "validation-debt.json",
-    "file-dispositions.json"
+    "file-dispositions.json",
+    "test-definition-schema.json",
+    "retired-suites.json",
+    "browser-capabilities.json"
   ],
-  "authority": "current-harness-remains-authoritative",
+  "authority": "sounding-line-authoritative",
   "plannerAuthority": "governed-local-execution-with-allowlisted-adapters",
   "phase3": {
     "historyStore": "local-outside-worktree-sqlite",

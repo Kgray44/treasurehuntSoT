@@ -15,7 +15,8 @@
       "contracts": [],
       "affectedPaths": ["src/**", "scripts/**", "*.config.*"],
       "releaseGates": ["local-change", "mainline", "release-candidate"],
-      "currentImplementationState": "existing-commands-adapter"
+      "currentImplementationState": "existing-commands-adapter",
+      "adapter": "static"
     },
     {
       "id": "unit.core",
@@ -30,14 +31,15 @@
       "contracts": ["authentication-authorization", "journal-ready-state"],
       "affectedPaths": ["src/**/*.test.*", "src/**"],
       "releaseGates": ["local-change", "subsystem", "mainline", "release-candidate"],
-      "currentImplementationState": "existing-command-adapter"
+      "currentImplementationState": "governed-vitest-adapter",
+      "adapter": "vitest-all"
     },
     {
       "id": "database.sqlite",
       "name": "SQLite generation, migration, seed, and isolation proof",
       "tier": 3,
       "owner": "platform-foundation",
-      "command": "powershell -File scripts/test-all.ps1",
+      "command": "governed adapter: sqlite-validate",
       "estimatedDuration": "part-of-full-gate",
       "parallelSafe": false,
       "resources": ["sqlite-clone", "prisma-sqlite-client", "validation-runtime"],
@@ -45,7 +47,8 @@
       "contracts": ["migration-parity"],
       "affectedPaths": ["prisma/schema.sqlite.prisma", "prisma/migrations/**", "prisma/seed.ts"],
       "releaseGates": ["subsystem", "mainline", "release-candidate"],
-      "currentImplementationState": "serialized-harness-adapter"
+      "currentImplementationState": "governed-sqlite-adapter",
+      "adapter": "sqlite-validate"
     },
     {
       "id": "migration.mysql",
@@ -60,7 +63,8 @@
       "contracts": ["migration-parity"],
       "affectedPaths": ["prisma/schema.prisma", "prisma/mysql-migrations/**"],
       "releaseGates": ["external-provider", "release-candidate"],
-      "currentImplementationState": "existing-external-rehearsal"
+      "currentImplementationState": "governed-external-schema-adapter",
+      "adapter": "mysql-validate"
     },
     {
       "id": "browser.auth",
@@ -75,7 +79,8 @@
       "contracts": ["invitation-acceptance", "authentication-authorization"],
       "affectedPaths": ["src/app/**", "src/components/platform/**", "tests/e2e/access-gates.spec.ts"],
       "releaseGates": ["subsystem", "mainline", "release-candidate"],
-      "currentImplementationState": "existing-one-worker-project"
+      "currentImplementationState": "governed-focused-browser-adapter",
+      "adapter": "playwright-chromium"
     },
     {
       "id": "browser.player-journal",
@@ -94,7 +99,8 @@
         "tests/e2e/lanternwake-journal.spec.ts"
       ],
       "releaseGates": ["subsystem", "mainline", "release-candidate"],
-      "currentImplementationState": "existing-one-worker-project"
+      "currentImplementationState": "governed-focused-browser-adapter",
+      "adapter": "playwright-chromium"
     },
     {
       "id": "contract.wayfarer-history",
@@ -109,7 +115,8 @@
       "contracts": ["wayfarer-history-projection"],
       "affectedPaths": ["src/wayfarer/**", "tests/e2e/wayfarer-phase2.spec.ts"],
       "releaseGates": ["cross-project", "mainline", "release-candidate"],
-      "currentImplementationState": "representative-existing-tests"
+      "currentImplementationState": "governed-vitest-adapter",
+      "adapter": "vitest-all"
     },
     {
       "id": "security.private-content",
@@ -124,7 +131,8 @@
       "contracts": ["sealed-hold-private-delivery", "public-privacy-projection"],
       "affectedPaths": ["src/private-content/**", "tests/private-content/**", "scripts/private-content/**"],
       "releaseGates": ["subsystem", "mainline", "release-candidate"],
-      "currentImplementationState": "existing-tests-and-scanners"
+      "currentImplementationState": "governed-vitest-adapter",
+      "adapter": "vitest-all"
     },
     {
       "id": "compatibility.browser",
@@ -139,7 +147,8 @@
       "contracts": ["journal-ready-state", "authentication-authorization"],
       "affectedPaths": ["tests/e2e/**", "playwright.config.ts"],
       "releaseGates": ["mainline", "release-candidate"],
-      "currentImplementationState": "existing-one-worker-project"
+      "currentImplementationState": "governed-browser-adapter",
+      "adapter": "playwright-webkit"
     },
     {
       "id": "sounding-line.runtime",
@@ -154,7 +163,8 @@
       "contracts": ["authentication-authorization"],
       "affectedPaths": ["scripts/sounding-line/**", "tests/sounding-line/**", "src/sounding-line/**", "testing/**"],
       "releaseGates": ["local-change", "mainline", "release-candidate"],
-      "currentImplementationState": "certified-governed-local-adapter"
+      "currentImplementationState": "certified-governed-local-adapter",
+      "adapter": "runtime"
     },
     {
       "id": "harborlight.phase4.unit",
@@ -175,7 +185,8 @@
         "src/community/rate-limit.*"
       ],
       "releaseGates": ["subsystem", "mainline", "release-candidate"],
-      "currentImplementationState": "certified-governed-vitest-adapter"
+      "currentImplementationState": "certified-governed-vitest-adapter",
+      "adapter": "vitest-all"
     },
     {
       "id": "harborlight.phase4.sqlite",
@@ -194,7 +205,8 @@
         "prisma/migrations/20260729121000_harborlight_phase4_relational_integrity/**"
       ],
       "releaseGates": ["subsystem", "mainline", "release-candidate"],
-      "currentImplementationState": "certified-isolated-sqlite-adapter"
+      "currentImplementationState": "certified-isolated-sqlite-adapter",
+      "adapter": "harborlight-sqlite"
     },
     {
       "id": "harborlight.phase4.browser",
@@ -222,14 +234,50 @@
         "playwright.config.ts"
       ],
       "releaseGates": ["subsystem", "mainline", "release-candidate"],
-      "currentImplementationState": "certified-isolated-product-browser-adapter"
+      "currentImplementationState": "certified-isolated-product-browser-adapter",
+      "adapter": "harborlight-browser-lanes"
     },
     {
-      "id": "release.full",
-      "name": "Current serialized full validation gate",
+      "id": "browser.access-sentinel",
+      "name": "Focused browser access and invitation sentinel",
+      "tier": 4,
+      "owner": "one-voyage",
+      "command": "governed adapter: playwright-access-sentinel",
+      "estimatedDuration": "target-under-180-seconds",
+      "parallelSafe": false,
+      "resources": ["application-port", "sqlite-clone", "browser-chromium", "trace-root"],
+      "dependencies": ["database.sqlite"],
+      "contracts": ["invitation-acceptance", "authentication-authorization"],
+      "affectedPaths": ["tests/e2e/access-gates.spec.ts", "src/app/**", "src/components/platform/**"],
+      "releaseGates": ["mainline", "release-candidate"],
+      "currentImplementationState": "focused-canonical-browser-sentinel",
+      "adapter": "playwright-access-sentinel"
+    },
+    {
+      "id": "retirement.matrix-proof",
+      "name": "P34 historical-matrix retirement proof",
+      "tier": 7,
+      "owner": "lanternwake",
+      "command": "governed adapter: p34-retirement",
+      "estimatedDuration": "target-under-10-seconds",
+      "parallelSafe": true,
+      "resources": ["node-slot"],
+      "dependencies": ["sounding-line.runtime"],
+      "contracts": ["journal-ready-state"],
+      "affectedPaths": [
+        "testing/retired-suites.json",
+        "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_P34_Retirement_Ledger.csv"
+      ],
+      "releaseGates": ["mainline", "release-candidate"],
+      "currentImplementationState": "fail-closed-until-case-mapping-complete",
+      "adapter": "p34-retirement"
+    },
+    {
+      "id": "build.production",
+      "name": "Governed production build node",
       "tier": 7,
       "owner": "breakwater",
-      "command": "npm run validate",
+      "command": "governed adapter: build",
       "estimatedDuration": "not-yet-measured",
       "parallelSafe": false,
       "resources": [
@@ -242,19 +290,12 @@
         "production-build-directory",
         "trace-root"
       ],
-      "dependencies": [
-        "static.core",
-        "unit.core",
-        "database.sqlite",
-        "browser.auth",
-        "browser.player-journal",
-        "compatibility.browser",
-        "security.private-content"
-      ],
+      "dependencies": ["static.core", "unit.core", "database.sqlite", "security.private-content"],
       "contracts": ["migration-parity", "authentication-authorization", "public-privacy-projection"],
       "affectedPaths": ["**"],
       "releaseGates": ["mainline", "release-candidate"],
-      "currentImplementationState": "existing-serialized-harness"
+      "currentImplementationState": "governed-build-adapter",
+      "adapter": "build"
     }
   ]
 }

@@ -502,9 +502,25 @@ async function runTwentyCycles(
   // the interactive surface and one-time runtime initialization. Establish
   // the exact lifecycle baseline after a warm-up remount has released those
   // bounded resources; every remaining measured remount must return to it.
-  await page.waitForTimeout(750);
+  await expect
+    .poll(
+      async () => {
+        const snapshot = await readSnapshot(page);
+        return snapshot.stalePageFlipNodes === 0 && snapshot.focusTraps === 0;
+      },
+      { message: "The warm-up lifecycle left stale PageFlip nodes or an active focus trap." },
+    )
+    .toBe(true);
   await action(1);
-  await page.waitForTimeout(750);
+  await expect
+    .poll(
+      async () => {
+        const snapshot = await readSnapshot(page);
+        return snapshot.stalePageFlipNodes === 0 && snapshot.focusTraps === 0;
+      },
+      { message: "The second warm-up lifecycle left stale PageFlip nodes or an active focus trap." },
+    )
+    .toBe(true);
   const forcedGc = await forceGcIfSupported(page);
   const baseline = await readSnapshot(page);
   expect(baseline.stalePageFlipNodes).toBe(0);

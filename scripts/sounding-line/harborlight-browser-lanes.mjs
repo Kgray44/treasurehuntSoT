@@ -1,10 +1,11 @@
 /*
  * Executes the two explicitly certified Harborlight Phase 4 browser lanes.
  * Each lane receives a separately marker-owned validation mirror, SQLite copy,
- * loopback port, browser context, and artifact root from scripts/test-all.ps1.
+ * loopback port, browser context, and artifact root from the internal runtime.
  * This runner deliberately has no arbitrary-command or arbitrary-spec inputs.
  */
 import { mkdir, writeFile } from "node:fs/promises";
+import { randomBytes } from "node:crypto";
 import path from "node:path";
 import process from "node:process";
 import { spawn } from "node:child_process";
@@ -22,6 +23,29 @@ const lanes = Object.freeze([
 ]);
 const logsRoot = path.join(runRoot, "logs");
 await mkdir(logsRoot, { recursive: true });
+const failureTail = (log) => log.slice(-12_000);
+
+async function ensureDisposableEnvironment() {
+  const environment = path.join(process.cwd(), ".env");
+  const secret = randomBytes(48).toString("base64");
+  const body = [
+    'DATABASE_URL="file:./dev.db"',
+    `SESSION_SECRET="${secret}"`,
+    'GM_USERNAME="kato"',
+    'GM_PASSWORD="development-captain-only"',
+    'PLAYER_ACCESS_CODE="development-moonwake"',
+    'NEXT_PUBLIC_APP_URL="http://127.0.0.1:3000"',
+    'LOG_LEVEL="info"',
+    "",
+  ].join("\n");
+  try {
+    await writeFile(environment, body, { encoding: "utf8", flag: "wx" });
+  } catch (error) {
+    if (error?.code !== "EEXIST") throw error;
+  }
+}
+
+await ensureDisposableEnvironment();
 
 function executeLane(lane) {
   const args = [
@@ -29,7 +53,7 @@ function executeLane(lane) {
     "-ExecutionPolicy",
     "Bypass",
     "-File",
-    "scripts/test-all.ps1",
+    "scripts/sounding-line/isolated-validation-runtime.ps1",
     "-BrowserOnly",
     "-SkipBrowserInstall",
     "-BrowserTestPath",
@@ -42,9 +66,9 @@ function executeLane(lane) {
     String(lane.port),
   ];
   return new Promise((resolve, reject) => {
-    const child = spawn("powershell.exe", args, {
+    const child = spawn("pwsh.exe", args, {
       cwd: process.cwd(),
-      env: process.env,
+      env: { ...process.env, SOUNDING_LINE_INTERNAL_RUNTIME: "1" },
       shell: false,
       windowsHide: true,
     });
@@ -83,6 +107,7 @@ const receipt = {
     signal: result.signal,
     runtimeRoot: result.runtimeRoot,
     status: result.exitCode === 0 ? "PASS" : "FAIL",
+    ...(result.exitCode === 0 ? {} : { diagnosticTail: failureTail(result.log) }),
   })),
 };
 await writeFile(path.join(logsRoot, "harborlight-browser-lanes.json"), `${JSON.stringify(receipt, null, 2)}\n`, "utf8");
