@@ -19,9 +19,7 @@ function suiteAdapter(suite) {
 
 async function run(gateId, { serial, executeOnly = false, receiptPath } = {}) {
   const plan = await buildPlan({ root, gateId, serial });
-  const suites = JSON.parse(
-    await readFile(path.join(root, "testing", "suites.json"), "utf8"),
-  );
+  const suites = JSON.parse(await readFile(path.join(root, "testing", "suites.json"), "utf8"));
   const suiteMap = new Map(suites.suites.map((suite) => [suite.id, suite]));
   const receipts = [];
   const runtimeRoot = path.join(root, "artifacts", "sounding-line", "runs", process.env.GITHUB_RUN_ID ?? "local");
@@ -30,9 +28,21 @@ async function run(gateId, { serial, executeOnly = false, receiptPath } = {}) {
     const adapter = suiteAdapter(suite);
     const startedAt = new Date().toISOString();
     const adapterEnv = {};
-    if (adapter.id === "harborlight-browser-lanes") {
+    if (
+      new Set([
+        "sqlite-validate",
+        "harborlight-sqlite",
+        "playwright-access-sentinel",
+        "harborlight-browser-lanes",
+        "build",
+      ]).has(adapter.id)
+    ) {
       const baseline = path.join(root, "prisma", "dev.db");
       await access(baseline);
+      Object.assign(adapterEnv, { DATABASE_URL: `file:${baseline.replaceAll("\\", "/")}` });
+    }
+    if (adapter.id === "harborlight-browser-lanes") {
+      const baseline = path.join(root, "prisma", "dev.db");
       await mkdir(runtimeRoot, { recursive: true });
       Object.assign(adapterEnv, {
         SOUNDING_LINE_BASELINE_DATABASE: baseline,

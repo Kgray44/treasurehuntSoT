@@ -94,7 +94,7 @@ export const adapters = Object.freeze({
     mode: "CERTIFIED",
   },
   build: {
-    command: [node, "node_modules/next/dist/bin/next", "build", "--webpack"],
+    command: [node, "scripts/sounding-line/build.mjs"],
     resources: ["node-slot", "production-build-directory"],
     mode: "SERIAL_WITHIN_FAMILY",
   },
