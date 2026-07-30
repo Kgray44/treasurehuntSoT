@@ -216,6 +216,8 @@ export function decideRelease(input) {
   if (!input?.evidenceValid) vetoes.push("EVIDENCE_INVALID");
   if (!input?.cleanupClean) vetoes.push("CLEANUP_INVALID");
   if (input?.p34Green === true) vetoes.push("P34_FALSELY_GREEN");
+  if (input?.p34NonGreen) vetoes.push("P34_NON_GREEN");
+  if (input?.externalPending) vetoes.push("EXTERNAL_GATES_PENDING");
   if (vetoes.length)
     return { state: vetoes.includes("EVIDENCE_INVALID") ? "EVIDENCE_INVALID" : "RELEASE_NO_GO", vetoes };
   return {
