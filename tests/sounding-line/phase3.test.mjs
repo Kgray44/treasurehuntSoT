@@ -35,6 +35,18 @@ test("historical store is outside the repository, migrates idempotently, and ing
     assert.ok(store.file.startsWith(root));
     assert.equal((await phase3.ingestReceipt(store, receipt)).idempotent, false);
     assert.equal((await phase3.ingestReceipt(store, receipt)).idempotent, true);
+    const legacy = await phase3.ingestReceipt(store, {
+      runId: "sl3-legacy-record",
+      sourceWatermark: "source-legacy",
+      policyDigest: "policy-legacy",
+      planDigest: "plan-legacy",
+    });
+    assert.equal(legacy.idempotent, false);
+    assert.equal(
+      store.db.prepare("SELECT cleanup_status FROM historical_runs WHERE id = ?").get("sl3-legacy-record")
+        .cleanup_status,
+      "UNKNOWN",
+    );
     assert.equal(phase3.historyStats(store, "unit.core").outcomes.PASSED, 1);
     assert.equal(
       phase3.recordHistoricalEntity(store, "historical_attempts", {
@@ -68,7 +80,7 @@ test("historical store is outside the repository, migrates idempotently, and ing
       "historical_slow_suite_records",
     );
     assert.equal(phase3.verifyHistory(store).valid, true);
-    assert.equal(phase3.exportHistoryManifest(store).runs.length, 1);
+    assert.equal(phase3.exportHistoryManifest(store).runs.length, 2);
     await assert.rejects(
       () => phase3.ingestReceipt(store, { ...receipt, policyDigest: "forged" }),
       /CONFLICTING_DUPLICATE_RECEIPT/,
