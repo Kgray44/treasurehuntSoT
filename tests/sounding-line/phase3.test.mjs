@@ -64,6 +64,16 @@ test("historical store is outside the repository, migrates idempotently, and ing
       }).entity,
       "historical_flake_observations",
     );
+    assert.equal(
+      phase3
+        .recordFlakeObservation(store, {
+          runId: receipt.runId,
+          suiteId: "unit.flaky",
+          attempts: [{ outcome: "FAILED_ROOT" }, { outcome: "FAILED_ROOT" }, { outcome: "PASSED" }],
+        })
+        .id.includes("historical_flake_observations"),
+      true,
+    );
     assert.throws(
       () =>
         phase3.recordStaleTest(store, { testId: "contract.test", classification: "STALE", protectedContract: true }),
@@ -199,6 +209,14 @@ test("impact, rerun, signatures, root cascades, shards, and throttle stay determ
     ["FAILED_ROOT", "CASCADE_BLOCKED"],
   );
   assert.equal(normalized.reconciles, true);
+  assert.equal(
+    phase3.normalizeRootCascade([
+      { id: "a", outcome: "FAILED" },
+      { id: "b", outcome: "FAILED" },
+      { id: "c", outcome: "FAILED", dependsOn: ["a"] },
+    ]).totals.FAILED_ROOT,
+    2,
+  );
   assert.deepEqual(
     phase3.balanceShards(
       [
@@ -216,6 +234,7 @@ test("impact, rerun, signatures, root cascades, shards, and throttle stay determ
     ),
   );
   assert.equal(phase3.transitionThrottle("NORMAL", { cpu: 99 }).launchHeavy, false);
+  assert.equal(phase3.transitionThrottle("CRITICAL", { cpu: 10 }).state, "RECOVERING");
   const policyPlan = phase3.contractAwareImpact({
     changedPaths: ["prisma/migrations/20260730/migration.sql"],
     policy: {
