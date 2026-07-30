@@ -47,7 +47,9 @@ jobs:
       # The browser runtime receives this disposable, seeded baseline only to
       # create its own nonce-bound copy. It is never the mutable test database.
       - run: npx prisma migrate deploy --schema prisma/schema.sqlite.prisma
+        env: { DATABASE_URL: "file:./dev.db" }
       - run: npm run db:seed
+        env: { DATABASE_URL: "file:./dev.db" }
       - run: npx playwright install chromium
       - id: governed-workers
         continue-on-error: true
@@ -68,7 +70,8 @@ jobs:
         with: { node-version-file: .nvmrc, cache: npm }
       - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
         with: { name: sounding-line-plan, path: sounding-line-plan }
-      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+      - continue-on-error: true
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
         with: { name: sounding-line-worker-evidence, path: sounding-line-worker-evidence }
       - name: Finalizer decision
         run: node scripts/sounding-line/finalize-ci.mjs sounding-line-plan/sounding-line-plan.json sounding-line-worker-evidence/sounding-line-worker-evidence.json
