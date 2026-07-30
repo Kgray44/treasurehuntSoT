@@ -297,7 +297,7 @@ test("detached controller executes an allowlisted governed adapter through the P
   try {
     const started = await phase3.launchController({
       root,
-      sourceWatermark: "a".repeat(64),
+      sourceWatermark: "a".repeat(40),
       policyDigest: "b".repeat(64),
       planDigest: "controller-governed-adapter",
       purpose: "governed-controller-test",
