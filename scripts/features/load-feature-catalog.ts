@@ -10,7 +10,7 @@ export const branchFragmentRoot = path.join(catalogRoot, "branch-complete");
 
 export const exclusionNotes = [
   "Harborlight Phase 4 is planned and is not cataloged as an implemented capability.",
-  "Project Sounding Line is planned browser-validation remediation, not an implemented product capability.",
+  "Project Sounding Line's local governance and verification control plane is cataloged; hosted execution, remote workers, provider/MySQL proof, production signing, branch protection, and the P34 browser matrix remain separate non-pass work.",
   "Project Landfall is governed but not implemented.",
   "Vision Waypoint recognition is not implemented beyond its provider seam and simulator.",
   "Production multi-instance pub/sub, distributed rate limiting, production scanner/KMS/storage/alerting, and full deployment proof remain separate work.",

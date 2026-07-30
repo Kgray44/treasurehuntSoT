@@ -1,15 +1,17 @@
 [
   {
     "id": "FT-033",
-    "title": "Sounding Line Governed Focused Validation Runtime",
-    "summary": "A nonauthoritative local validation runtime provides sealed plans, reviewed adapters, marker-verified resource leases, isolated SQLite/browser state, and narrowly certified Harborlight moderator browser lanes without weakening release authority.",
+    "title": "Sounding Line Governed Verification Control Plane",
+    "summary": "A nonauthoritative, provider-neutral local verification control plane provides sealed plans, reviewed adapters, marker-verified resource leases, durable history, fail-closed worker and evidence controls, isolated SQLite/browser state, and narrowly certified Harborlight moderator browser lanes without weakening release authority.",
     "status": "MAINLINE",
-    "program": "Sounding Line Phase 2",
+    "program": "Sounding Line Phases 1-4",
     "surfaces": ["npm run test:policy", "scripts/sounding-line", "scripts/test-all.ps1"],
     "subfeatures": [
       "Deterministic signed-identity plan records",
       "Fixed command adapter catalogue with bounded receipts",
       "Marker and process-identity ownership proof",
+      "Deterministic impact analysis, history, and root/cascade classification",
+      "Fail-closed local worker enrollment, sealed assignments, evidence, and attestations",
       "Immutable SQLite baseline clone boundary",
       "Two isolated Harborlight Phase 4 browser lanes",
       "Explicit emergency-serial legacy release authority"
@@ -17,9 +19,11 @@
     "evidence": [
       { "kind": "path", "value": "scripts/sounding-line/runtime.mjs" },
       { "kind": "path", "value": "scripts/sounding-line/adapters.mjs" },
+      { "kind": "path", "value": "scripts/sounding-line/phase3.mjs" },
+      { "kind": "path", "value": "scripts/sounding-line/phase4.mjs" },
       {
         "kind": "completion-record",
-        "value": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Phase_2_Implementation_Report.md"
+        "value": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Final_Program_Closeout_Receipt.md"
       }
     ],
     "catalogVersion": 1

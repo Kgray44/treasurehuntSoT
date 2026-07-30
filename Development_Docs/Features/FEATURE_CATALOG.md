@@ -5,7 +5,7 @@ This generated catalog records completed, meaningful platform capabilities. It i
 ## Audited repository and commit
 
 Repository: `Kgray44/treasurehuntSoT`
-Audited source commit: `0aad93f49eae6a39db2571ccbbc79c850c565a6e`
+Audited source commit: `89d79089e675761ba806aa87c950bc8e75c0e094`
 
 ## Status vocabulary
 
@@ -866,18 +866,20 @@ Audience-separated current documentation, indexed engineering records, and a fra
 
 ---
 
-## FT-033 - Sounding Line Governed Focused Validation Runtime
+## FT-033 - Sounding Line Governed Verification Control Plane
 
 **Status:** MAINLINE
-**Program or subsystem:** Sounding Line Phase 2
+**Program or subsystem:** Sounding Line Phases 1-4
 
-A nonauthoritative local validation runtime provides sealed plans, reviewed adapters, marker-verified resource leases, isolated SQLite/browser state, and narrowly certified Harborlight moderator browser lanes without weakening release authority.
+A nonauthoritative, provider-neutral local verification control plane provides sealed plans, reviewed adapters, marker-verified resource leases, durable history, fail-closed worker and evidence controls, isolated SQLite/browser state, and narrowly certified Harborlight moderator browser lanes without weakening release authority.
 
 ### Important subfeatures
 
 - Deterministic signed-identity plan records
 - Fixed command adapter catalogue with bounded receipts
 - Marker and process-identity ownership proof
+- Deterministic impact analysis, history, and root/cascade classification
+- Fail-closed local worker enrollment, sealed assignments, evidence, and attestations
 - Immutable SQLite baseline clone boundary
 - Two isolated Harborlight Phase 4 browser lanes
 - Explicit emergency-serial legacy release authority
@@ -890,7 +892,9 @@ A nonauthoritative local validation runtime provides sealed plans, reviewed adap
 
 - path: `scripts/sounding-line/runtime.mjs`
 - path: `scripts/sounding-line/adapters.mjs`
-- completion-record: `Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Phase_2_Implementation_Report.md`
+- path: `scripts/sounding-line/phase3.mjs`
+- path: `scripts/sounding-line/phase4.mjs`
+- completion-record: `Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Final_Program_Closeout_Receipt.md`
 
 ---
 
@@ -899,7 +903,7 @@ A nonauthoritative local validation runtime provides sealed plans, reviewed adap
 # Deliberately Excluded Until Complete
 
 - Harborlight Phase 4 is planned and is not cataloged as an implemented capability.
-- Project Sounding Line is planned browser-validation remediation, not an implemented product capability.
+- Project Sounding Line's local governance and verification control plane is cataloged; hosted execution, remote workers, provider/MySQL proof, production signing, branch protection, and the P34 browser matrix remain separate non-pass work.
 - Project Landfall is governed but not implemented.
 - Vision Waypoint recognition is not implemented beyond its provider seam and simulator.
 - Production multi-instance pub/sub, distributed rate limiting, production scanner/KMS/storage/alerting, and full deployment proof remain separate work.
@@ -909,4 +913,4 @@ A nonauthoritative local validation runtime provides sealed plans, reviewed adap
 
 Update the owning machine-readable fragment only when completed work changes a major capability, important subfeature, availability, or meaningful limitation. Regenerate this file with `npm run features:sync`; never hand-edit it. Validate before closeout with `npm run features:validate`.
 
-Generation source commit: `0aad93f49eae6a39db2571ccbbc79c850c565a6e`
+Generation source commit: `89d79089e675761ba806aa87c950bc8e75c0e094`

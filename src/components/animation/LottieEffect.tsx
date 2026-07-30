@@ -213,14 +213,25 @@ export const LottieEffect = forwardRef<LottieEffectHandle, LottieEffectProps>(fu
       developmentFailpoint?.kind === "stalled-load"
         ? developmentFailpoint.timeoutMs
         : Math.max(0, loadTimeoutRef.current);
-    loadTimer = setTimeout(
-      () =>
-        markFailed(developmentFailpoint?.kind === "stalled-load" ? "development-stalled-load-timeout" : "load-timeout"),
-      effectiveLoadTimeout,
-    );
+    const startsAfterRuntimeImport = developmentFailpoint?.kind === "stalled-load";
+    const startLoadTimer = () => {
+      loadTimer = setTimeout(
+        () =>
+          markFailed(
+            developmentFailpoint?.kind === "stalled-load" ? "development-stalled-load-timeout" : "load-timeout",
+          ),
+        effectiveLoadTimeout,
+      );
+    };
+    if (!startsAfterRuntimeImport) startLoadTimer();
     void import("lottie-web")
       .then(({ default: lottie }) => {
         if (disposed || failed) return;
+        // The development stalled-load seam validates the asset transport.
+        // Start its bounded timer only once this mount can initiate that
+        // transport; a cold dynamic import must not fabricate the same
+        // fallback without exercising the configured failure boundary.
+        if (startsAfterRuntimeImport) startLoadTimer();
         const animation = lottie.loadAnimation({
           container: target,
           renderer: assetRenderer,

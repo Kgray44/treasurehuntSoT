@@ -2,12 +2,12 @@
 
 ## The Software Verification and Parallel Test Infrastructure System
 
-**Status:** PHASE 2 IMPLEMENTED — FOCUSED GOVERNED EXECUTION — NONAUTHORITATIVE
+**Status:** PHASES 1-4 LOCAL CONTROL PLANE IMPLEMENTED — GOVERNED EXECUTION — NONAUTHORITATIVE
 **Source baseline:** `origin/main` at `676b21ed030a5470d4ea0a36c0688ed3ecb161e5` (audited 2026-07-28)
 
 ## 1. Executive summary
 
-Project Sounding Line is the repository-wide governing system for software verification, parallel execution, resource isolation, test selection, evidence, and release decisions in the Chronicles platform. It records the actual present system, defines an incremental replacement architecture, and supplies policy data for later implementation. It does **not** implement a planner, broker, orchestrator, CI distributor, or new test runner in this baseline.
+Project Sounding Line is the repository-wide governing system for software verification, parallel execution, resource isolation, test selection, evidence, and release decisions in the Chronicles platform. Its local, nonauthoritative control plane implements policy/planning, leased runtime execution, durable history, root/cascade classification, and fail-closed Phase 4 worker/evidence controls. It does **not** establish hosted execution, remote-worker proof, provider validation, production signing, branch protection, or authoritative release decisions.
 
 The governing order is: correctness; depth; determinism; diagnostic quality; speed; resource cost. Independent work should run concurrently only when it has independently leased state. A successful exit code alone is not a release decision.
 
@@ -39,9 +39,9 @@ One Voyage owns authoritative session/progression behavior; Wayfarer identity/hi
 
 ## 5. Canonical target architecture
 
-Later phases will add five repository-native components.
+The local control plane provides five repository-native components. Their hosted and production extensions remain separately governed.
 
-1. **Test planner.** Given a commit, branch, diff, project, subsystem, contract, or release scope, it inventories changed files; resolves ownership, contracts, imports, routes, schema, and risk; expands dependencies; and writes a deterministic machine-readable plan. Proposed interfaces are `test:plan`, `test:changed`, `test:subsystem`, `test:contract`, `test:release`, `test:matrix`, and `test:explain`; none exists yet.
+1. **Test planner.** Given a commit, branch, diff, project, subsystem, contract, or release scope, it inventories changed files; resolves ownership, contracts, imports, routes, schema, and risk; expands dependencies; and writes a deterministic machine-readable plan. The implemented CLI exposes policy, inventory, and plan validation; the named `test:changed`, `test:subsystem`, `test:contract`, `test:release`, `test:matrix`, and `test:explain` interfaces remain future extensions.
 2. **Orchestrator.** Executes the plan's dependency graph, launches isolated lanes, supervises owned processes, applies governed retries, aggregates evidence, cancels dependents safely, cleans up leases, and returns a classified decision. It contains no product business rules.
 3. **Resource lease broker.** Replaces one broad lock with leases for build capacity, Node/install/Prisma generation, SQLite/MySQL, ports, browser shards/projects, storage/media/private roots, object namespaces, scanners, providers, restart hosts, production-build directories, and trace directories.
 4. **Evidence aggregator.** Normalizes selection, omissions, resources, environment, checksums, counts, timing, artifacts, cleanup, root/cascade failures, flakes, and release decisions.
@@ -77,7 +77,7 @@ Policy changes require owner review, an impact-map update, JSON validation, docu
 
 ## 10. Adoption, acceptance, and glossary
 
-Implementation proceeds through Take the Soundings, Open the Channels, Read the Current, and Prove the Passage. Each phase has bounded scope and acceptance criteria in the [roadmap](Testing/Sounding_Line_Implementation_Roadmap.md). Baseline acceptance means all listed documents and JSON parse/consistency checks exist, correctly distinguish current from future state, and do not claim implementation.
+Implementation proceeds through Take the Soundings, Open the Channels, Read the Current, and Prove the Passage. The local scope of all four phases is complete; each phase's bounded scope and the retained external/non-green boundaries are in the [roadmap](Testing/Sounding_Line_Implementation_Roadmap.md). The control plane remains nonauthoritative: documents and receipts must distinguish locally tested controls from hosted, provider, and release proof.
 
 **Suite**: a named reproducible family of checks. **Contract**: observable boundary behavior owned across subsystems. **Lane**: concurrently schedulable work class. **Lease**: time-bound verified ownership of a resource. **Plan**: deterministic suite graph and selection explanation. **Receipt**: normalized evidence record. **Blocked**: not independently run because a prerequisite failed or was unavailable. **External-only**: requires configured non-local infrastructure.
 

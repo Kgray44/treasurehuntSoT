@@ -298,7 +298,8 @@ test.describe.serial("Project One Voyage Phase 2 compatibility acceptance", () =
     expect(login.status(), await login.text()).toBe(200);
     const { csrfToken } = (await login.json()) as { csrfToken: string };
     await page.goto("/quartermaster");
-    await expect(page).toHaveURL(/\/captain$/);
+    await expect(page).toHaveURL(/\/captain\/library$/);
+    await expect(page.locator(".captain-library")).toBeVisible();
 
     const monitor = captureWrites(page);
     let command: { status: number; body: unknown };
