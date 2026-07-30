@@ -70,7 +70,7 @@ try {
     throw "Another Forever Treasure validation run owns $validationLockPath. Wait for it to finish before starting a new run."
 }
 
-$projectRoot = [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot ".."))
+$projectRoot = [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot "..\.."))
 if ($BrowserTestPath) {
     $resolvedBrowserTestPath = [System.IO.Path]::GetFullPath((Join-Path $projectRoot $BrowserTestPath))
     $e2eRoot = [System.IO.Path]::GetFullPath((Join-Path $projectRoot "tests\e2e"))
