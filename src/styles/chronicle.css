@@ -1367,7 +1367,11 @@
   box-shadow: var(--shadow-deep);
 }
 .journal-opening-status {
-  top: 1rem;
+  /* This dialog is rendered inside the animated route layer. The persistent
+     shell header is a sibling stacking context, so the dialog must begin
+     below its reserved space rather than visually and interactively competing
+     with navigation. */
+  top: calc(var(--shell-header-height) + 1rem);
   left: 50%;
   transform: translateX(-50%);
 }
