@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Project Sounding Line Phase 4 Worker Registration Draft",
+  "type": "object",
+  "preparationOnly": true,
+  "required": [
+    "workerId",
+    "hostId",
+    "bootIdentity",
+    "controllerTrustDomain",
+    "capabilities",
+    "platform",
+    "architecture",
+    "runtimeVersions",
+    "browserVersions",
+    "databaseCapabilities",
+    "providerCapabilities",
+    "capacityProfile",
+    "attestationState",
+    "lastHeartbeat",
+    "status"
+  ],
+  "properties": {
+    "workerId": { "type": "string" },
+    "hostId": { "type": "string" },
+    "bootIdentity": { "type": "string" },
+    "controllerTrustDomain": { "type": "string" },
+    "capabilities": { "type": "array", "items": { "type": "string" } },
+    "platform": { "type": "string" },
+    "architecture": { "type": "string" },
+    "runtimeVersions": { "type": "object" },
+    "browserVersions": { "type": "object" },
+    "databaseCapabilities": { "type": "array", "items": { "type": "string" } },
+    "providerCapabilities": { "type": "array", "items": { "type": "string" } },
+    "capacityProfile": { "type": "object" },
+    "attestationState": { "type": "string" },
+    "lastHeartbeat": { "type": "string", "format": "date-time" },
+    "status": {
+      "enum": ["REGISTERING", "AVAILABLE", "RESERVED", "EXECUTING", "DRAINING", "UNHEALTHY", "QUARANTINED", "REVOKED"]
+    }
+  },
+  "additionalProperties": false
+}

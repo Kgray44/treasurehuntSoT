@@ -5,7 +5,7 @@ This generated catalog records completed, meaningful platform capabilities. It i
 ## Audited repository and commit
 
 Repository: `Kgray44/treasurehuntSoT`
-Audited source commit: `008f9b60ddee7f5aada3cdb7d23b0ec53100892c`
+Audited source commit: `0aad93f49eae6a39db2571ccbbc79c850c565a6e`
 
 ## Status vocabulary
 
@@ -909,4 +909,4 @@ A nonauthoritative local validation runtime provides sealed plans, reviewed adap
 
 Update the owning machine-readable fragment only when completed work changes a major capability, important subfeature, availability, or meaningful limitation. Regenerate this file with `npm run features:sync`; never hand-edit it. Validate before closeout with `npm run features:validate`.
 
-Generation source commit: `008f9b60ddee7f5aada3cdb7d23b0ec53100892c`
+Generation source commit: `0aad93f49eae6a39db2571ccbbc79c850c565a6e`

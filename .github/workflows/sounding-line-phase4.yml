@@ -1,0 +1,41 @@
+name: Sounding Line Phase 4 verification
+
+on:
+  pull_request:
+    paths:
+      - "scripts/sounding-line/**"
+      - "tests/sounding-line/**"
+      - "testing/**"
+      - "Development_Docs/Programs/Sounding_Line/**"
+      - ".github/workflows/sounding-line-phase4.yml"
+  push:
+    branches:
+      - main
+      - codex/project-sounding-line-phase4-prove-the-passage
+
+permissions:
+  contents: read
+
+concurrency:
+  group: sounding-line-phase4-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  focused-local-contracts:
+    name: sounding-line-phase4-focused
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - run: corepack enable
+      - run: pnpm install --no-lockfile --ignore-scripts
+      - run: node scripts/sounding-line/cli.mjs validate-policy
+      - run: node scripts/sounding-line/cli.mjs inventory
+      - run: node --test tests/sounding-line/phase2-runtime.test.mjs scripts/sounding-line/cli.test.mjs tests/sounding-line/phase3.test.mjs tests/sounding-line/phase4.test.mjs
+      - run: node scripts/validate-documentation.mjs
+      - run: node node_modules/tsx/dist/cli.mjs scripts/private-content/scan.ts

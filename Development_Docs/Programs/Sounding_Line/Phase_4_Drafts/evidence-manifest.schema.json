@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Project Sounding Line Phase 4 Evidence Manifest Draft",
+  "type": "object",
+  "preparationOnly": true,
+  "required": [
+    "sourceIdentity",
+    "policyIdentity",
+    "workerIdentity",
+    "environmentIdentity",
+    "artifactHashes",
+    "cleanupIdentity",
+    "retentionClass",
+    "expiration",
+    "revocationState"
+  ],
+  "properties": {
+    "sourceIdentity": { "type": "string" },
+    "policyIdentity": { "type": "string" },
+    "workerIdentity": { "type": "string" },
+    "environmentIdentity": { "type": "string" },
+    "artifactHashes": { "type": "object", "additionalProperties": { "type": "string" } },
+    "cleanupIdentity": { "type": "string" },
+    "retentionClass": { "type": "string" },
+    "expiration": { "type": "string", "format": "date-time" },
+    "revocationState": { "type": "string" }
+  },
+  "additionalProperties": false
+}

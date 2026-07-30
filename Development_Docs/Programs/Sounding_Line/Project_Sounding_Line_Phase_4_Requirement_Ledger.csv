@@ -1,0 +1,15 @@
+Requirement ID,Requirement,State,Evidence
+SL4-001,Provider-neutral worker enrollment and lifecycle,COMPLETE_LOCAL,scripts/sounding-line/phase4.mjs and tests/sounding-line/phase4.test.mjs
+SL4-002,Capability matching and node-scoped sealed assignment,COMPLETE_LOCAL,phase4 capabilityDecision and sealAssignment tests
+SL4-003,Trust-domain and untrusted pull-request restriction,COMPLETE_LOCAL,phase4 trustDomain and restricted-worker tests
+SL4-004,Canonical evidence integrity and replay protection,COMPLETE_LOCAL,phase4 createEvidenceManifest and verifyEvidence tests
+SL4-005,Local CI plan parity and dual-run comparison,COMPLETE_LOCAL,phase4 comparePlans and compareDualRun tests
+SL4-006,Governed local release decision and cutover transition,COMPLETE_LOCAL,phase4 decideRelease and transitionCutover tests
+SL4-007,Evidence revocation and emergency serial fallback,COMPLETE_LOCAL,phase4 revokeEvidence and emergencySerial tests
+SL4-008,Focused read-only CI workflow,COMPLETE_LOCAL,.github/workflows/sounding-line-phase4.yml
+SL4-009,Hosted CI execution,EXTERNAL_PENDING,no observed hosted run
+SL4-010,Remote distributed worker proof,EXTERNAL_PENDING,no separate worker connected
+SL4-011,Provider/MySQL validation,EXTERNAL_PENDING,credentials and services not configured
+SL4-012,Production signing key proof,EXTERNAL_PENDING,no production key used or committed
+SL4-013,Branch-protection application,EXTERNAL_PENDING,requires repository-owner authority
+SL4-014,P34 complete browser matrix,NON_GREEN_EXCEPTION,P34-BME-20260729 retained

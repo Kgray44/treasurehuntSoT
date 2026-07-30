@@ -10,6 +10,7 @@ import process from "node:process";
 import { fileURLToPath } from "node:url";
 import * as runtime from "./runtime.mjs";
 import * as phase3 from "./phase3.mjs";
+import * as phase4 from "./phase4.mjs";
 import { resolveAdapter, resolvePlaywrightAdapter, resolveVitestAdapter } from "./adapters.mjs";
 
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
@@ -441,6 +442,41 @@ async function plan(policy, changedPaths, scope) {
 
 async function main() {
   const [command, ...args] = process.argv.slice(2);
+  const loadPhase4Json = async (value) => {
+    if (!isSafePath(value)) throw new Error("phase4 input must be a safe repository-relative JSON path");
+    return JSON.parse(await readFile(path.join(repoRoot, value), "utf8"));
+  };
+  if (command === "phase4") {
+    const [operation, ...values] = args;
+    if (operation === "plan-parity" && values.length === 2) {
+      output({
+        ...phase4.comparePlans(await loadPhase4Json(values[0]), await loadPhase4Json(values[1])),
+        nonAuthoritative: true,
+      });
+      return;
+    }
+    if (operation === "dual-run" && values.length === 2) {
+      output({
+        ...phase4.compareDualRun(await loadPhase4Json(values[0]), await loadPhase4Json(values[1])),
+        nonAuthoritative: true,
+      });
+      return;
+    }
+    if (operation === "release" && values.length === 1) {
+      output({ ...phase4.decideRelease(await loadPhase4Json(values[0])), nonAuthoritative: true });
+      return;
+    }
+    if (operation === "cutover" && values.length === 3) {
+      output({
+        ...phase4.transitionCutover(values[0], values[1], await loadPhase4Json(values[2])),
+        nonAuthoritative: true,
+      });
+      return;
+    }
+    throw new Error(
+      "phase4 usage: plan-parity <local.json> <ci.json> | dual-run <legacy.json> <sounding-line.json> | release <input.json> | cutover <current> <next> <evidence.json>",
+    );
+  }
   const policy = await loadPolicy();
   if (command === "history") {
     const operation = args[0];
