@@ -24,6 +24,7 @@ jobs:
         with: { node-version-file: .nvmrc, cache: npm }
       - run: npm ci
       - run: npm run test:policy
+      - run: npm run db:generate
       - run: node scripts/sounding-line/test-registry.mjs
       # P34 must be fully mapped and archived before any hosted browser worker
       # may receive a mainline plan.
