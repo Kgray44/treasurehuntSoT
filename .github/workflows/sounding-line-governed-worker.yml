@@ -30,8 +30,7 @@ jobs:
       - run: npm run db:seed
         env: { DATABASE_URL: "file:./dev.db" }
       - run: npx playwright install chromium
-      - continue-on-error: true
-        run: node scripts/sounding-line/authority.mjs mainline --execute-only --plan-in sounding-line-plan/sounding-line-plan.json --suite ${{ inputs.suite }} --receipt-out sounding-line-worker-evidence.json
+      - run: node scripts/sounding-line/authority.mjs mainline --execute-only --plan-in sounding-line-plan/sounding-line-plan.json --suite ${{ inputs.suite }} --receipt-out sounding-line-worker-evidence.json
       - if: always()
         uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08
         with:
@@ -39,4 +38,19 @@ jobs:
             name: "sounding-line-worker-evidence-${{ inputs.suite }}",
             path: sounding-line-worker-evidence.json,
             retention-days: 14,
+          }
+      - if: always()
+        name: Verify governed worker receipt
+        shell: pwsh
+        run: |
+          if (-not (Test-Path -LiteralPath sounding-line-worker-evidence.json -PathType Leaf)) {
+            throw "GOVERNED_WORKER_RECEIPT_MISSING"
+          }
+          $evidence = Get-Content -Raw sounding-line-worker-evidence.json | ConvertFrom-Json
+          $receipts = @($evidence.receipts)
+          if ($receipts.Count -ne 1 -or $receipts[0].suiteId -ne '${{ inputs.suite }}') {
+            throw "GOVERNED_WORKER_RECEIPT_BOUNDARY_INVALID"
+          }
+          if ($receipts[0].result -ne 'PASSED' -or [int]$receipts[0].exitCode -ne 0 -or $receipts[0].cleanupState -ne 'CLEAN') {
+            throw "GOVERNED_WORKER_RECEIPT_FAILED"
           }

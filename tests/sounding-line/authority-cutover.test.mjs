@@ -127,6 +127,13 @@ test("concurrent Harborlight lanes may share only their validation-run parent", 
   assert.match(common, /Validation runtime destination already exists and is not owned by this new run/u);
 });
 
+test("governed workers consume the sealed plan and fail closed on missing receipts", async () => {
+  const worker = await readFile(path.join(root, ".github", "workflows", "sounding-line-governed-worker.yml"), "utf8");
+  assert.doesNotMatch(worker, /continue-on-error:\s*true\s*\n\s*run: node scripts\/sounding-line\/authority/u);
+  assert.match(worker, /GOVERNED_WORKER_RECEIPT_MISSING/u);
+  assert.match(worker, /GOVERNED_WORKER_RECEIPT_FAILED/u);
+});
+
 test("public repository commands route through Sounding Line", async () => {
   const manifest = JSON.parse(await readFile(path.join(root, "package.json"), "utf8"));
   const required = [

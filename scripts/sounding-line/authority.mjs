@@ -29,12 +29,16 @@ async function loadSealedPlan(gateId, { serial, planPath } = {}) {
   const plan = await readJson(path.resolve(root, planPath));
   const { planDigest, ...unsignedPlan } = plan;
   if (!planDigest || planDigest !== digest(unsignedPlan)) throw new Error("SEALED_PLAN_DIGEST_MISMATCH");
-  if (planDigest !== (await buildPlan({ root, gateId, serial, sourceSha: plan.sourceSha })).planDigest)
-    throw new Error("SEALED_PLAN_CURRENT_SOURCE_MISMATCH");
   if (plan.authority !== "SOUNDING_LINE" || plan.gate !== gateId || plan.serial !== serial)
     throw new Error("SEALED_PLAN_BOUNDARY_MISMATCH");
   if (process.env.GITHUB_SHA && plan.sourceSha !== process.env.GITHUB_SHA)
     throw new Error("SEALED_PLAN_SOURCE_MISMATCH");
+  // The plan job is the sole producer of generated inventory state. Workers
+  // consume that sealed artifact and must not regenerate a divergent plan.
+  // Policy remains source-bound at execution time; source SHA, plan digest,
+  // inventory digest, and every receipt are checked by the finalizer.
+  if (plan.policyDigest !== digest(await readJson(path.join(root, "testing", "policy-manifest.json"))))
+    throw new Error("SEALED_PLAN_POLICY_MISMATCH");
   return plan;
 }
 
