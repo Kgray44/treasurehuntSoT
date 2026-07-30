@@ -1,6 +1,15 @@
 # Project Sounding Line Authority Cutover Design Record
 
-Status: `STAGE_3_DESIGN_ENFORCEMENT_ACTIVE` (implementation in progress; not a completion receipt)
+Status: `STAGE_10_LEGACY_AUTHORITY_REMOVED`
+
+## Completion amendment (2026-07-30)
+
+The authority cutover completed through the protected mainline path at
+`941ec891b89a9c1364d0890f02edcb1e79efa0e8`. Sounding Line remains the only
+test/release authority; the finalizer remains the only release-decision
+emitter; `release.full` remains absent; and `scripts/test-all.ps1` remains a
+compatibility-only entrypoint. The historical Stage 3 notes below are retained
+as dated evidence, not as the current program status.
 
 The authoritative boundary is the allowlisted planner (`scripts/sounding-line/planner.mjs`), governed adapter catalogue, and finalizer (`scripts/sounding-line/finalizer.mjs`). Adapters may return receipts but cannot issue a release decision. Only the finalizer emits a `RELEASE_*` or `EVIDENCE_INVALID` decision after checking source, policy, plan, mandatory-suite, result, and cleanup identity.
 

@@ -166,9 +166,38 @@ function validatePolicy(policy) {
     if (
       !Number.isFinite(definition.expectedDurationMs) ||
       definition.expectedDurationMs <= 0 ||
-      definition.hardBudgetMs < definition.expectedDurationMs
+      definition.hardBudgetMs <= definition.expectedDurationMs
     )
       errors.push(`test definition ${definition.id}: invalid duration budget`);
+    if (!Array.isArray(definition.contracts) || !definition.contracts.length)
+      errors.push(`test definition ${definition.id}: missing protected contract`);
+    if (!Array.isArray(definition.positiveCases) || !definition.positiveCases.length)
+      errors.push(`test definition ${definition.id}: missing positive coverage declaration`);
+    if (
+      ["HIGH", "CRITICAL", "RELEASE_CRITICAL"].includes(definition.risk) &&
+      (!Array.isArray(definition.negativeCases) ||
+        !definition.negativeCases.length ||
+        definition.negativeCases.includes("NOT_APPLICABLE"))
+    )
+      errors.push(`test definition ${definition.id}: high-risk definition lacks negative coverage`);
+    for (const field of [
+      "browserRequirements",
+      "deviceRequirements",
+      "viewportRequirements",
+      "motionRequirements",
+      "networkRequirements",
+    ])
+      if (!Array.isArray(definition[field]) || !definition[field].length)
+        errors.push(`test definition ${definition.id}: missing ${field}`);
+    for (const field of [
+      "accessibilityRelevance",
+      "privacyRelevance",
+      "securityRelevance",
+      "dataMutationClass",
+      "currentStatus",
+    ])
+      if (typeof definition[field] !== "string" || !definition[field])
+        errors.push(`test definition ${definition.id}: missing ${field}`);
   }
   for (const owner of ownership.owners) {
     assertKeys(owner, ["id", "project", "sourcePaths", "testPaths", "contractIds"], `owner ${owner.id}`, errors);
@@ -203,6 +232,8 @@ function validatePolicy(policy) {
         "currentImplementationState",
         "adapter",
         "testFiles",
+        "expectedDurationMs",
+        "hardBudgetMs",
       ],
       `suite ${suite.id}`,
       errors,
@@ -231,11 +262,32 @@ function validatePolicy(policy) {
       }
     }
     if (
+      !Number.isFinite(suite.expectedDurationMs) ||
+      !Number.isFinite(suite.hardBudgetMs) ||
+      suite.expectedDurationMs <= 0 ||
+      suite.hardBudgetMs <= suite.expectedDurationMs
+    )
+      errors.push(`suite ${suite.id}: invalid measured duration budget`);
+    if (
       suite.testFiles !== undefined &&
       (!Array.isArray(suite.testFiles) || suite.testFiles.some((value) => !isSafePath(value)))
     )
       errors.push(`suite ${suite.id}: invalid test files`);
   }
+  for (const legacy of [
+    "unit.core",
+    "compatibility.browser",
+    "contract.wayfarer-history",
+    "security.private-content",
+    "harborlight.phase4.unit",
+  ])
+    if (suiteIds.has(legacy)) errors.push(`stage-10 catalog retains transitional suite ${legacy}`);
+  const bySuite = new Map();
+  for (const definition of activeTests.cases ?? [])
+    bySuite.set(definition.suiteId, (bySuite.get(definition.suiteId) ?? 0) + 1);
+  for (const suite of suites.suites)
+    if (["vitest-family", "playwright-family"].includes(suite.adapter) && !bySuite.get(suite.id))
+      errors.push(`suite ${suite.id}: empty active family`);
   for (const gate of gates.gates) {
     assertKeys(gate, ["id", "requiredSuites", "conditionalSuites"], `gate ${gate.id}`, errors);
     for (const id of [...gate.requiredSuites, ...gate.conditionalSuites])

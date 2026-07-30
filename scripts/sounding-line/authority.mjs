@@ -5,7 +5,12 @@ import process from "node:process";
 import { fileURLToPath } from "node:url";
 import { createHash } from "node:crypto";
 import { access, mkdir, readFile, writeFile } from "node:fs/promises";
-import { executeAdapter, resolveAdapter, resolveVitestAdapter } from "./adapters.mjs";
+import {
+  executeAdapter,
+  resolveAdapter,
+  resolveIsolatedBrowserFamilyAdapter,
+  resolveVitestAdapter,
+} from "./adapters.mjs";
 import { finalize } from "./finalizer.mjs";
 import { buildPlan } from "./planner.mjs";
 
@@ -18,7 +23,44 @@ const readJson = async (file) => {
   return JSON.parse(text.replace(/^\uFEFF/u, ""));
 };
 
-function suiteAdapter(suite) {
+function suiteAdapter(suite, registry) {
+  const definitions = registry.cases.filter((entry) => entry.suiteId === suite.id);
+  if (suite.adapter === "vitest-family") {
+    const files = [
+      ...new Set(
+        definitions.map((entry) => entry.file).filter((file) => /\.(?:test|spec)\.(?:ts|tsx|mjs|js)$/u.test(file)),
+      ),
+    ];
+    if (!files.length) throw new Error(`EMPTY_FAMILY_SELECTION:${suite.id}`);
+    if (files.every((file) => file.endsWith(".mjs")))
+      return {
+        id: "node-test-family",
+        command: [process.execPath, "--test", ...files],
+        resources: ["node-slot"],
+        mode: "CERTIFIED",
+      };
+    return resolveVitestAdapter(files);
+  }
+  if (suite.adapter === "playwright-family") {
+    const projects = [...new Set(definitions.map((entry) => entry.project).filter(Boolean))];
+    const files = [
+      ...new Set(definitions.map((entry) => entry.file).filter((file) => /^tests\/e2e\/.*\.spec\.ts$/u.test(file))),
+    ];
+    if (!projects.length || !files.length) throw new Error(`INVALID_BROWSER_FAMILY_SELECTION:${suite.id}`);
+    const canonicalProject = projects.includes("sounding-line-access-sentinel")
+      ? "sounding-line-access-sentinel"
+      : projects.includes("chromium")
+        ? "chromium"
+        : projects[0];
+    return resolveIsolatedBrowserFamilyAdapter(
+      canonicalProject,
+      files,
+      path.join(root, "prisma", "dev.db"),
+      suite.id !== "browser.access-sentinel",
+    );
+  }
+  if (suite.adapter === "powershell-family")
+    throw new Error(`POWERSHELL_FAMILY_REQUIRES_OWNED_VALIDATION_ADAPTER:${suite.id}`);
   if (suite.adapter) return resolveAdapter(suite.adapter);
   if (Array.isArray(suite.testFiles) && suite.testFiles.length) return resolveVitestAdapter(suite.testFiles);
   throw new Error(`SUITE_HAS_NO_GOVERNED_ADAPTER:${suite.id}`);
@@ -46,13 +88,16 @@ async function run(gateId, { serial, executeOnly = false, receiptPath, suiteId, 
   const plan = await loadSealedPlan(gateId, { serial, planPath });
   if (suiteId && !plan.nodes.some((node) => node.id === suiteId))
     throw new Error(`SUITE_NOT_SELECTED_BY_PLAN:${suiteId}`);
-  const suites = JSON.parse(await readFile(path.join(root, "testing", "suites.json"), "utf8"));
+  const [suites, registry] = await Promise.all([
+    readJson(path.join(root, "testing", "suites.json")),
+    readJson(path.join(root, "testing", "generated", "active-test-registry.json")),
+  ]);
   const suiteMap = new Map(suites.suites.map((suite) => [suite.id, suite]));
   const receipts = [];
   const runtimeRoot = path.join(root, "artifacts", "sounding-line", "runs", process.env.GITHUB_RUN_ID ?? "local");
   for (const node of plan.nodes.filter((node) => !suiteId || node.id === suiteId)) {
     const suite = suiteMap.get(node.id);
-    const adapter = suiteAdapter(suite);
+    const adapter = suiteAdapter(suite, registry);
     const startedAt = new Date().toISOString();
     const adapterEnv = {};
     if (
@@ -60,6 +105,7 @@ async function run(gateId, { serial, executeOnly = false, receiptPath, suiteId, 
         "sqlite-validate",
         "harborlight-sqlite",
         "playwright-access-sentinel",
+        "playwright-family",
         "harborlight-browser-lanes",
         "build",
       ]).has(adapter.id)
@@ -76,19 +122,23 @@ async function run(gateId, { serial, executeOnly = false, receiptPath, suiteId, 
         SOUNDING_LINE_RUN_ROOT: runtimeRoot,
       });
     }
-    const result = await executeAdapter(adapter, { cwd: root, env: adapterEnv });
+    if (adapter.id === "isolated-playwright-family") {
+      Object.assign(adapterEnv, { SOUNDING_LINE_INTERNAL_RUNTIME: "1" });
+    }
+    const result = await executeAdapter(adapter, { cwd: root, env: adapterEnv, timeoutMs: suite.hardBudgetMs });
     receipts.push({
       suiteId: node.id,
       adapterId: adapter.id,
       startedAt,
       finishedAt: new Date().toISOString(),
+      durationMs: Date.parse(new Date().toISOString()) - Date.parse(startedAt),
       sourceSha: plan.sourceSha,
       policyDigest: plan.policyDigest,
       inventoryDigest: plan.inventoryDigest,
       planDigest: plan.planDigest,
       gate: plan.gate,
       cleanupState: "CLEAN",
-      result: result.exitCode === 0 ? "PASSED" : "FAILED",
+      result: result.exitCode === 0 && !result.timedOut ? "PASSED" : "FAILED",
       ...result,
     });
   }
