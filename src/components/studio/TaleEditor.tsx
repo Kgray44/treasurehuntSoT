@@ -258,6 +258,7 @@ export function TaleEditor({
   const saving = useRef(false);
   const draftRevision = useRef(0);
   const autosaveVersionRef = useRef<number | null>(null);
+  const publicationStatusHold = useRef(false);
   const root = useRef<HTMLElement>(null);
   const publishHost = useRef<SceneHostHandle | null>(null);
   const inspectorReturnFocus = useRef<HTMLElement | null>(null);
@@ -349,7 +350,9 @@ export function TaleEditor({
             }
           : current,
       );
-      if (draftRevision.current > revision) {
+      if (publicationStatusHold.current) {
+        setDirty(false);
+      } else if (draftRevision.current > revision) {
         setDirty(true);
         setSaveState("Unsaved changes");
         setAutosaveKick((value) => value + 1);
@@ -370,6 +373,7 @@ export function TaleEditor({
 
   function change(mutator: (next: DraftState) => void) {
     if (!draft) return;
+    publicationStatusHold.current = false;
     const next = clone(draft);
     mutator(next);
     draftRevision.current += 1;
@@ -730,6 +734,7 @@ export function TaleEditor({
     )
       return;
     setPublishState("publishing");
+    publicationStatusHold.current = false;
     setPublishedVersion(null);
     setSaveState("Publishing...");
     if (!root.current || !publishHost.current) {
@@ -794,6 +799,7 @@ export function TaleEditor({
       return;
     }
     setPublishState("published");
+    publicationStatusHold.current = true;
     setSaveState(`Published as Version ${publishedLabel}`);
     await load();
     setSaveState(`Published as Version ${publishedLabel}`);
