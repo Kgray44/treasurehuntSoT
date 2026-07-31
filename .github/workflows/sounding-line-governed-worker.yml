@@ -46,14 +46,18 @@ jobs:
           $plan = Get-Content -Raw $env:SOUNDING_LINE_PLAN | ConvertFrom-Json
           $node = @($plan.nodes | Where-Object { $_.id -eq $env:SOUNDING_LINE_SUITE })
           if ($node.Count -ne 1) { throw "GOVERNED_BROWSER_ENGINE_PLAN_NODE_INVALID" }
+          $browserEngineInstallInvoked = $false
           if ($env:SOUNDING_LINE_SUITE -like 'browser.*') {
+            $browserEngineInstallInvoked = $true
             & npx playwright install chromium webkit
           } elseif (@($node[0].resources) -contains 'browser-chromium') {
+            $browserEngineInstallInvoked = $true
             & npx playwright install chromium
           } elseif (@($node[0].resources) -contains 'browser-webkit') {
+            $browserEngineInstallInvoked = $true
             & npx playwright install webkit
           }
-          if ($LASTEXITCODE -ne 0) { throw "GOVERNED_BROWSER_ENGINE_INSTALL_FAILED" }
+          if ($browserEngineInstallInvoked -and $LASTEXITCODE -ne 0) { throw "GOVERNED_BROWSER_ENGINE_INSTALL_FAILED" }
       - env:
           SOUNDING_LINE_PLAN: ${{ runner.temp }}/sounding-line-plan/sounding-line-plan.json
         run: node scripts/sounding-line/authority.mjs ${{ inputs.gate }} --execute-only --plan-in "$env:SOUNDING_LINE_PLAN" --suite ${{ inputs.suite }} --receipt-out sounding-line-worker-evidence.json

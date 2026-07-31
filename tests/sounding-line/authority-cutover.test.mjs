@@ -216,6 +216,7 @@ test("governed workers consume the sealed plan and fail closed on missing receip
   assert.match(worker, /GOVERNED_WORKER_RECEIPT_FAILED/u);
   assert.match(worker, /Install browser engines required by the sealed suite/u);
   assert.match(worker, /npx playwright install chromium/u);
+  assert.match(worker, /\$browserEngineInstallInvoked -and \$LASTEXITCODE -ne 0/u);
   assert.match(worker, /GOVERNED_BROWSER_ENGINE_INSTALL_FAILED/u);
   assert.match(worker, /inputs\.gate/u);
   assert.match(worker, /timeout-minutes: 120/u);
