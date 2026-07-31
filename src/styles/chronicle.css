@@ -1477,6 +1477,12 @@
   .chronicle-journal-shell {
     padding-bottom: calc(15rem + env(safe-area-inset-bottom));
   }
+  /* The left drawer's top-right close control overlaps the persistent player
+     profile trigger on narrow screens. Keep its interactive target clear. */
+  .journal-chapters-drawer .drawer-close {
+    right: auto;
+    left: 0.6rem;
+  }
   .chronicle-session-header {
     align-items: flex-start;
     padding: 0.7rem 0.25rem;
