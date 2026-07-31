@@ -51,7 +51,7 @@ if ($BrowserSelectionsBase64) {
         if ($null -eq $selection -or
             $selection.project -isnot [string] -or $selection.project -notmatch '^[a-z][a-z0-9-]{0,80}$' -or
             @($selection.files).Count -eq 0 -or
-            @($selection.files | Where-Object { $_ -isnot [string] -or $_.Replace('\\', '/') -notmatch '^tests/e2e/[A-Za-z0-9._/-]+\.spec\.ts$' }).Count -gt 0 -or
+            @($selection.files | Where-Object { $_ -isnot [string] -or $_.Replace('\\', '/') -notmatch '^tests/e2e/[A-Za-z0-9._/-]+\.(?:spec|setup)\.ts$' }).Count -gt 0 -or
             $selection.grep -isnot [string] -or [string]::IsNullOrWhiteSpace($selection.grep) -or
             ([string]$selection.caseCount) -notmatch '^[1-9][0-9]*$') {
             throw "BrowserSelectionsBase64 contains an invalid governed browser selection."
