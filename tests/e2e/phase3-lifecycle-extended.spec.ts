@@ -479,6 +479,9 @@ function stableAudioLifecycleSnapshot(snapshot: ExtendedSnapshot) {
     // lifecycle ownership assertions below.
     activeDocumentAnimations: _activeDocumentAnimations,
     pendingDocumentAnimations: _pendingDocumentAnimations,
+    // PageFlip owns frame scheduling for the journal presentation. AudioCuePlayer
+    // is separately proven to release its contexts and nodes below.
+    activeRafs: _activeRafs,
     ...stable
   } = stableSnapshot(snapshot);
   return stable;
