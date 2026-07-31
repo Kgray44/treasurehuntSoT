@@ -52,8 +52,11 @@ test("proves the canonical read-only journal journey across current product rout
     const journal = page.locator(".chronicle-journal-shell");
     await expect(journal).toHaveAttribute("data-journal-phase", "ENTRY_IDLE");
     await page.getByRole("button", { name: "Open the journal" }).click();
-    await expect(page.getByRole("button", { name: "Skip ceremony" })).toBeVisible();
-    await page.getByRole("button", { name: "Skip ceremony" }).click();
+    const skipCeremony = page.getByRole("button", { name: "Skip ceremony" });
+    await expect(skipCeremony).toBeVisible();
+    // Reduced-motion WebKit correctly settles the ceremony itself and removes
+    // the now-unneeded control; the full-motion path must prove explicit skip.
+    if (!mobile) await skipCeremony.click();
     await expect(journal).toHaveAttribute("data-journal-phase", "JOURNAL_READY", { timeout: 20_000 });
     await expect(journal).toHaveAttribute("data-page-flip-readiness", /^(ready|fallback|reduced)$/u);
     await expect(journal.getByRole("heading", { name: /Voyage Journal$/u })).toBeVisible();
