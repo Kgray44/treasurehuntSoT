@@ -252,7 +252,18 @@ export async function executeAdapter(adapter, { cwd, env = {}, maxLogBytes = 64 
     const timer = timeoutMs
       ? setTimeout(() => {
           timedOut = true;
-          child.kill();
+          // A PowerShell browser adapter owns a child server and Playwright
+          // process tree. Killing only its shell leaves the tree alive on
+          // Windows and prevents a governed timeout receipt from being
+          // written before the hosted-worker deadline.
+          if (process.platform === "win32" && child.pid) {
+            const terminator = spawn("taskkill", ["/pid", String(child.pid), "/T", "/F"], {
+              shell: false,
+              windowsHide: true,
+            });
+            terminator.on("error", () => {});
+            terminator.unref();
+          } else child.kill();
         }, timeoutMs)
       : undefined;
     const append = (chunk) => {

@@ -194,12 +194,15 @@ test("concurrent Harborlight lanes may share only their validation-run parent", 
 
 test("governed workers consume the sealed plan and fail closed on missing receipts", async () => {
   const worker = await readFile(path.join(root, ".github", "workflows", "sounding-line-governed-worker.yml"), "utf8");
+  const adapters = await readFile(path.join(root, "scripts", "sounding-line", "adapters.mjs"), "utf8");
   assert.doesNotMatch(worker, /continue-on-error:\s*true\s*\n\s*run: node scripts\/sounding-line\/authority/u);
   assert.match(worker, /path: \$\{\{ runner\.temp \}\}\/sounding-line-plan/u);
   assert.match(worker, /--plan-in "\$env:SOUNDING_LINE_PLAN"/u);
   assert.match(worker, /GOVERNED_WORKER_RECEIPT_MISSING/u);
   assert.match(worker, /GOVERNED_WORKER_RECEIPT_FAILED/u);
   assert.match(worker, /inputs\.gate/u);
+  assert.match(worker, /timeout-minutes: 20/u);
+  assert.match(adapters, /taskkill", \["\/pid", String\(child\.pid\), "\/T", "\/F"\]/u);
 });
 
 test("public repository commands route through Sounding Line", async () => {
