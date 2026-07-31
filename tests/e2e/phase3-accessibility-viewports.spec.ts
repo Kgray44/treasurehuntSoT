@@ -542,15 +542,10 @@ test.describe("Project Lanternwake Phase 3 accessibility and six required viewpo
         await installLiveRegionProbe(page);
         await page.addInitScript(() => localStorage.setItem("forever-muted", "true"));
 
-        // Next dev can keep a document response open while it streams diagnostics.
-        // Warm the authenticated canonical route before the visible navigation.
-        // Its first dev-server compilation can otherwise refresh the page during
-        // a real Player action; the warmup is read-only and shares this browser's
-        // account-rooted cookie jar.
-        const warmup = await page.request.get(`${path}?section=${flow.section}`);
-        expect(warmup.ok(), `Canonical Journal route warmup returned ${warmup.status()}.`).toBe(true);
-        // The assertion below owns readiness through the player-visible control,
-        // rather than treating transport lifecycle as a product contract.
+        // Navigate through the Player-visible browser channel. A separate
+        // request-context warmup has a distinct connection pool and can reset
+        // during Next's route compilation without representing a user-visible
+        // contract failure. The assertions below own route readiness.
         await page.goto(`${path}?section=${flow.section}`, { waitUntil: "commit", timeout: 15_000 });
         await openReadableJournal(page, slug, flow.kind === "reentry", flow.eventType);
 
