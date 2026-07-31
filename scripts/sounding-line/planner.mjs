@@ -21,6 +21,13 @@ export async function buildPlan({ root, gateId, serial = false, sourceSha = proc
   if (!gate) throw new Error(`UNKNOWN_GATE:${gateId}`);
   const suites = new Map(suitesFile.suites.map((suite) => [suite.id, suite]));
   const selected = new Set(gate.requiredSuites);
+  // The access sentinel is a distinct, fast mainline safety net. Keeping the
+  // invariant here prevents a catalog edit from accidentally dropping it.
+  if (gateId === "mainline" && suites.has("browser.access-sentinel")) selected.add("browser.access-sentinel");
+  if (gateId === "mainline") {
+    selected.delete("browser.auth");
+    selected.delete("browser.player-journal");
+  }
   const visiting = new Set();
   const resolved = new Set();
   const includeDependencies = (suiteId) => {

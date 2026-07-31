@@ -15,7 +15,7 @@ const safePath = (value) =>
 const safeProject = (value) => typeof value === "string" && /^[a-z][a-z0-9-]{0,80}$/u.test(value);
 const safeSuite = (value) =>
   safePath(value) &&
-  /(?:^src\/.*\.test\.(?:ts|tsx)|^tests\/.*\.test\.(?:ts|tsx)|^scripts\/.*\.test\.ts)$/u.test(
+  /(?:^src\/.*\.(?:test|spec)\.(?:ts|tsx|mjs|js)|^tests\/.*\.(?:test|spec)\.(?:ts|tsx|mjs|js)|^scripts\/.*\.(?:test|spec)\.(?:ts|tsx|mjs|js))$/u.test(
     value.replace(/\\/gu, "/"),
   );
 
@@ -23,6 +23,15 @@ const node = process.execPath;
 const vitest = ["node_modules/vitest/vitest.mjs", "run"];
 
 export const adapters = Object.freeze({
+  // Family adapters are resolved from the sealed active registry by authority.mjs.
+  // They intentionally cannot be run without an exact, non-empty file selection.
+  "vitest-family": { command: null, resources: ["node-slot", "vitest-worker-pool"], mode: "CERTIFIED" },
+  "playwright-family": {
+    command: null,
+    resources: ["application-port", "sqlite-clone", "browser-chromium", "trace-root"],
+    mode: "SERIAL_WITHIN_FAMILY",
+  },
+  "powershell-family": { command: null, resources: ["validation-runtime"], mode: "SERIAL_WITHIN_FAMILY" },
   "vitest-all": { command: [node, ...vitest], resources: ["node-slot", "vitest-worker-pool"], mode: "CERTIFIED" },
   "playwright-chromium": {
     command: [node, "node_modules/@playwright/test/cli.js", "test", "--project=chromium"],
@@ -125,6 +134,7 @@ export function resolveAdapter(id, argumentsList = []) {
   if (!adapter) throw new Error(`unallowlisted Sounding Line adapter: ${id}`);
   if (!Array.isArray(argumentsList)) throw new Error("adapter arguments must be an array");
   if (argumentsList.length) throw new Error(`adapter ${id} does not accept arguments`);
+  if (!adapter.command) return { id, command: null, resources: [...adapter.resources], mode: adapter.mode };
   return { id, command: [...adapter.command], resources: [...adapter.resources], mode: adapter.mode };
 }
 
@@ -159,20 +169,93 @@ export function resolvePlaywrightAdapter(project, spec) {
   };
 }
 
-export async function executeAdapter(adapter, { cwd, env = {}, maxLogBytes = 64 * 1024 } = {}) {
+export function resolvePlaywrightFamilyAdapter(project, specs) {
+  if (!safeProject(project) || !Array.isArray(specs) || !specs.length)
+    throw new Error("Playwright family adapter requires declared projects and non-empty specs");
+  const safeSpecs = [...new Set(specs.map((spec) => spec.replace(/\\/gu, "/")))];
+  if (safeSpecs.some((spec) => !safePath(spec) || !/^tests\/e2e\/.*\.(?:spec|setup)\.ts$/u.test(spec)))
+    throw new Error("Playwright family adapter received an unsafe spec");
+  return {
+    id: "playwright-family",
+    command: [node, "node_modules/@playwright/test/cli.js", "test", `--project=${project}`, ...safeSpecs],
+    resources: ["application-port", "sqlite-clone", "browser-chromium", "trace-root"],
+    mode: "SERIAL_WITHIN_FAMILY",
+  };
+}
+
+export function resolveIsolatedBrowserFamilyAdapter(project, specs, baselineDatabase, expectMutation = true) {
+  if (!safeProject(project) || !Array.isArray(specs) || !specs.length)
+    throw new Error("Isolated browser adapter requires a safe project and non-empty e2e spec selection");
+  if (typeof baselineDatabase !== "string" || !path.isAbsolute(baselineDatabase))
+    throw new Error("Isolated browser adapter requires an absolute trusted baseline database");
+  if (typeof expectMutation !== "boolean")
+    throw new Error("Isolated browser adapter mutation expectation must be boolean");
+  const safeSpecs = specs.map((spec) => spec.replace(/\\/gu, "/"));
+  if (safeSpecs.some((spec) => !/^tests\/e2e\/.*\.spec\.ts$/u.test(spec)))
+    throw new Error("Isolated browser adapter accepts only e2e spec files");
+  const browserArgsBase64 = Buffer.from(JSON.stringify([`--project=${project}`, ...safeSpecs]), "utf8").toString(
+    "base64",
+  );
+  return {
+    id: "isolated-playwright-family",
+    command: [
+      "powershell.exe",
+      "-NoProfile",
+      "-ExecutionPolicy",
+      "Bypass",
+      "-File",
+      "scripts/sounding-line/isolated-validation-runtime.ps1",
+      "-SkipBrowserInstall",
+      "-BaselineDatabasePath",
+      baselineDatabase,
+      "-BrowserOnly",
+      "-SoundingLineLane",
+      "browser-family",
+      "-SoundingLinePort",
+      "3100",
+      "-BrowserArgsBase64",
+      browserArgsBase64,
+      "-ExpectMutation",
+      String(expectMutation),
+    ],
+    resources: ["application-port", "sqlite-clone", "browser-chromium", "trace-root"],
+    mode: "SERIAL_WITHIN_FAMILY",
+  };
+}
+
+export async function executeAdapter(adapter, { cwd, env = {}, maxLogBytes = 64 * 1024, timeoutMs } = {}) {
   if (!adapter?.command?.length || !cwd) throw new Error("adapter command and working directory are required");
+  if (timeoutMs !== undefined && (!Number.isInteger(timeoutMs) || timeoutMs <= 0))
+    throw new Error("adapter timeout must be a positive integer when provided");
   return new Promise((resolve, reject) => {
     const [file, ...args] = adapter.command;
     const child = spawn(file, args, { cwd, env: { ...process.env, ...env }, shell: false, windowsHide: true });
     let output = "";
+    let timedOut = false;
+    const timer = timeoutMs
+      ? setTimeout(() => {
+          timedOut = true;
+          child.kill();
+        }, timeoutMs)
+      : undefined;
     const append = (chunk) => {
       if (output.length < maxLogBytes) output += chunk.toString().slice(0, maxLogBytes - output.length);
     };
     child.stdout.on("data", append);
     child.stderr.on("data", append);
-    child.once("error", reject);
-    child.once("close", (exitCode, signal) =>
-      resolve({ exitCode: exitCode ?? -1, signal: signal ?? null, log: output, pid: child.pid }),
-    );
+    child.once("error", (error) => {
+      if (timer) clearTimeout(timer);
+      reject(error);
+    });
+    child.once("close", (exitCode, signal) => {
+      if (timer) clearTimeout(timer);
+      resolve({
+        exitCode: timedOut ? 124 : (exitCode ?? -1),
+        signal: signal ?? null,
+        log: output,
+        pid: child.pid,
+        timedOut,
+      });
+    });
   });
 }

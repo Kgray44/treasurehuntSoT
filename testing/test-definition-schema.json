@@ -1,5 +1,5 @@
 {
-  "version": "1.0.0",
+  "version": "2.0.0",
   "required": [
     "id",
     "suiteId",
@@ -11,13 +11,27 @@
     "sourcePaths",
     "consumerPaths",
     "dependencies",
+    "fixtureFamily",
     "resources",
     "parallelSafety",
+    "browserRequirements",
+    "deviceRequirements",
+    "viewportRequirements",
+    "motionRequirements",
+    "networkRequirements",
+    "positiveCases",
+    "negativeCases",
+    "accessibilityRelevance",
+    "privacyRelevance",
+    "securityRelevance",
+    "dataMutationClass",
     "expectedDurationMs",
     "hardBudgetMs",
     "retryPolicy",
     "gates",
-    "supersessionPolicy"
+    "supersessionPolicy",
+    "historicalAliases",
+    "currentStatus"
   ],
   "enums": {
     "tier": [0, 1, 2, 3, 4, 5, 6, 7],
@@ -25,5 +39,5 @@
     "parallelSafety": ["READ_ONLY_PARALLEL", "ISOLATED_MUTABLE_PARALLEL", "CAPACITY_LIMITED", "SERIAL_EXCEPTION"],
     "retryPolicy": ["NONE", "INFRASTRUCTURE_ONLY", "GOVERNED_FLAKE_PROBE"]
   },
-  "identity": "Stable IDs are derived from governed source identity and retained through ordinary title/file movement by an explicit migration alias."
+  "identity": "Stable IDs are derived from governed source identity. A changed stable identity must retain the former ID in historicalAliases with an explicit migration record."
 }

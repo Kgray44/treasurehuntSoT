@@ -1,0 +1,24 @@
+legacy_suite,replacement_family,execution_boundary,status,coverage_disposition
+unit.core,unit.auth,registry-selected Vitest files,RETIRED,authentication and authorization ownership
+unit.core,unit.one-voyage,registry-selected Vitest files,RETIRED,Chronicle and invitation ownership
+unit.core,unit.wayfarer,registry-selected Vitest files,RETIRED,identity and passport ownership
+unit.core,unit.community,registry-selected Vitest files,RETIRED,community moderation ownership
+unit.core,unit.private-content,registry-selected Vitest files,RETIRED,private-content safety ownership
+unit.core,unit.journal,registry-selected Vitest files,RETIRED,journal progression ownership
+unit.core,unit.animation,registry-selected Vitest files,RETIRED,motion and animation ownership
+unit.core,unit.true-north,registry-selected Vitest files,RETIRED,product-language ownership
+unit.core,unit.feature-catalog,registry-selected Vitest files,RETIRED,feature-catalog governance ownership
+unit.core,unit.sounding-line,Node test family,RETIRED,authority and finalizer ownership
+unit.core,unit.platform-foundation,registry-selected Vitest files,RETIRED,platform foundation ownership
+component.core,component.auth,registry-selected Vitest files,RETIRED,authentication component ownership
+component.core,component.player-shell,registry-selected Vitest files,RETIRED,player shell component ownership
+component.core,component.journal,registry-selected Vitest files,RETIRED,journal component ownership
+component.core,component.artifacts,registry-selected Vitest files,RETIRED,artifact component ownership
+component.core,component.captain,registry-selected Vitest files,RETIRED,Captain component ownership
+component.core,component.studio,registry-selected Vitest files,RETIRED,Studio component ownership
+component.core,component.community,registry-selected Vitest files,RETIRED,community component ownership
+component.core,component.private-operations,registry-selected Vitest files,RETIRED,private operations ownership
+compatibility.browser,browser.access-sentinel,isolated nonce-bound Playwright lane,RETIRED,fast mandatory access safety sentinel
+compatibility.browser,browser.auth and named browser families,isolated registry-selected Playwright lane,RETIRED,conditional contract ownership
+compatibility.browser,browser.accessibility and browser.cross-project,isolated registry-selected Playwright lane,RETIRED,conditional broad-browser evidence; matrix exception retained
+P34 historical matrix,semantic retirement ledger,validation-only ledger checker,ARCHIVED,316 historical identities retained without execution

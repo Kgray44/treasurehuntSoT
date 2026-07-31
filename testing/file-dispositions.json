@@ -1,150 +1,123 @@
 {
-  "version": "1.0.0",
-  "status": "phase-1-complete-file-disposition-rules",
+  "version": "2.0.0",
+  "status": "stage-10-complete-owned-family-dispositions",
   "defaultDisposition": "REGISTERED_SUITE_CHILD",
   "rules": [
     {
+      "match": "tests/e2e/**",
+      "suiteId": "browser.cross-project",
+      "role": "REGISTERED_SUITE_CHILD",
+      "owner": "platform-foundation",
+      "tier": 4,
+      "parallelSafety": "ISOLATED_MUTABLE_PARALLEL",
+      "adapter": "playwright"
+    },
+    {
       "match": "tests/private-content/**",
-      "suiteId": "security.private-content",
+      "suiteId": "unit.private-content",
       "role": "REGISTERED_SUITE_CHILD",
       "owner": "sealed-hold",
-      "tier": 5,
-      "parallelSafety": "UNKNOWN_PARALLEL_SAFETY",
+      "tier": 1,
+      "parallelSafety": "READ_ONLY_PARALLEL",
+      "adapter": "vitest"
+    },
+    {
+      "match": "src/private-content/**",
+      "suiteId": "unit.private-content",
+      "role": "REGISTERED_SUITE_CHILD",
+      "owner": "sealed-hold",
+      "tier": 1,
+      "parallelSafety": "READ_ONLY_PARALLEL",
+      "adapter": "vitest"
+    },
+    {
+      "match": "src/community/**",
+      "suiteId": "unit.community",
+      "role": "REGISTERED_SUITE_CHILD",
+      "owner": "harborlight",
+      "tier": 1,
+      "parallelSafety": "READ_ONLY_PARALLEL",
       "adapter": "vitest"
     },
     {
       "match": "src/wayfarer/**",
-      "suiteId": "contract.wayfarer-history",
+      "suiteId": "unit.wayfarer",
       "role": "REGISTERED_SUITE_CHILD",
       "owner": "wayfarer",
-      "tier": 5,
-      "parallelSafety": "UNKNOWN_PARALLEL_SAFETY",
+      "tier": 1,
+      "parallelSafety": "READ_ONLY_PARALLEL",
       "adapter": "vitest"
     },
     {
-      "match": "tests/e2e/wayfarer-*.spec.ts",
-      "suiteId": "contract.wayfarer-history",
+      "match": "src/animation/**",
+      "suiteId": "unit.animation",
       "role": "REGISTERED_SUITE_CHILD",
-      "owner": "wayfarer",
-      "tier": 5,
-      "parallelSafety": "GLOBAL_EXCLUSIVE_LEGACY",
-      "adapter": "playwright"
+      "owner": "lanternwake",
+      "tier": 1,
+      "parallelSafety": "READ_ONLY_PARALLEL",
+      "adapter": "vitest"
     },
     {
-      "match": "tests/e2e/harborlight-phase4.spec.ts",
-      "suiteId": "harborlight.phase4.browser",
+      "match": "src/chronicle/**",
+      "suiteId": "unit.one-voyage",
       "role": "REGISTERED_SUITE_CHILD",
-      "owner": "harborlight",
-      "tier": 4,
-      "parallelSafety": "CERTIFIED_RESOURCE_LEASED",
-      "adapter": "playwright"
+      "owner": "one-voyage",
+      "tier": 1,
+      "parallelSafety": "READ_ONLY_PARALLEL",
+      "adapter": "vitest"
     },
     {
-      "match": "scripts/sounding-line/isolated-validation-runtime.ps1",
-      "suiteId": "harborlight.phase4.browser",
+      "match": "src/navigation/**",
+      "suiteId": "unit.true-north",
+      "role": "REGISTERED_SUITE_CHILD",
+      "owner": "platform-foundation",
+      "tier": 1,
+      "parallelSafety": "READ_ONLY_PARALLEL",
+      "adapter": "vitest"
+    },
+    {
+      "match": "scripts/sounding-line/**",
+      "suiteId": "unit.sounding-line",
       "role": "REGISTERED_ADAPTER",
-      "owner": "harborlight",
-      "tier": 4,
-      "parallelSafety": "CERTIFIED_RESOURCE_LEASED",
-      "adapter": "powershell"
-    },
-    {
-      "match": "src/community/moderation.test.ts",
-      "suiteId": "harborlight.phase4.unit",
-      "role": "REGISTERED_SUITE_CHILD",
-      "owner": "harborlight",
+      "owner": "platform-foundation",
       "tier": 1,
-      "parallelSafety": "CERTIFIED_RESOURCE_LEASED",
-      "adapter": "vitest"
+      "parallelSafety": "READ_ONLY_PARALLEL",
+      "adapter": "node"
     },
     {
-      "match": "src/community/scanner.test.ts",
-      "suiteId": "harborlight.phase4.unit",
+      "match": "tests/sounding-line/**",
+      "suiteId": "unit.sounding-line",
       "role": "REGISTERED_SUITE_CHILD",
-      "owner": "harborlight",
+      "owner": "platform-foundation",
       "tier": 1,
-      "parallelSafety": "CERTIFIED_RESOURCE_LEASED",
-      "adapter": "vitest"
+      "parallelSafety": "READ_ONLY_PARALLEL",
+      "adapter": "node"
     },
     {
-      "match": "src/community/outbox.test.ts",
-      "suiteId": "harborlight.phase4.unit",
+      "match": "scripts/features/**",
+      "suiteId": "unit.feature-catalog",
       "role": "REGISTERED_SUITE_CHILD",
-      "owner": "harborlight",
+      "owner": "platform-foundation",
       "tier": 1,
-      "parallelSafety": "CERTIFIED_RESOURCE_LEASED",
+      "parallelSafety": "READ_ONLY_PARALLEL",
       "adapter": "vitest"
-    },
-    {
-      "match": "src/community/scheduler.test.ts",
-      "suiteId": "harborlight.phase4.unit",
-      "role": "REGISTERED_SUITE_CHILD",
-      "owner": "harborlight",
-      "tier": 1,
-      "parallelSafety": "CERTIFIED_RESOURCE_LEASED",
-      "adapter": "vitest"
-    },
-    {
-      "match": "src/community/rate-limit.test.ts",
-      "suiteId": "harborlight.phase4.unit",
-      "role": "REGISTERED_SUITE_CHILD",
-      "owner": "harborlight",
-      "tier": 1,
-      "parallelSafety": "CERTIFIED_RESOURCE_LEASED",
-      "adapter": "vitest"
-    },
-    {
-      "match": "tests/e2e/harborlight-*.spec.ts",
-      "suiteId": "browser.auth",
-      "role": "REGISTERED_SUITE_CHILD",
-      "owner": "harborlight",
-      "tier": 4,
-      "parallelSafety": "GLOBAL_EXCLUSIVE_LEGACY",
-      "adapter": "playwright"
-    },
-    {
-      "match": "tests/e2e/phase3-readonly-setup.setup.ts",
-      "suiteId": "browser.player-journal",
-      "role": "REGISTERED_SETUP_NODE",
-      "owner": "lanternwake",
-      "tier": 4,
-      "parallelSafety": "GLOBAL_EXCLUSIVE_LEGACY",
-      "adapter": "playwright"
-    },
-    {
-      "match": "tests/e2e/**",
-      "suiteId": "browser.player-journal",
-      "role": "REGISTERED_SUITE_CHILD",
-      "owner": "lanternwake",
-      "tier": 4,
-      "parallelSafety": "GLOBAL_EXCLUSIVE_LEGACY",
-      "adapter": "playwright"
     },
     {
       "match": "scripts/*.ps1",
-      "suiteId": "build.production",
+      "suiteId": "validation.powershell",
       "role": "REGISTERED_ADAPTER",
       "owner": "breakwater",
-      "tier": 7,
-      "parallelSafety": "GLOBAL_EXCLUSIVE_LEGACY",
+      "tier": 3,
+      "parallelSafety": "SERIAL_EXCEPTION",
       "adapter": "powershell"
     },
     {
       "match": "src/**",
-      "suiteId": "unit.core",
+      "suiteId": "unit.platform-foundation",
       "role": "REGISTERED_SUITE_CHILD",
       "owner": "platform-foundation",
       "tier": 1,
-      "parallelSafety": "UNKNOWN_PARALLEL_SAFETY",
-      "adapter": "vitest"
-    },
-    {
-      "match": "scripts/features/**",
-      "suiteId": "unit.core",
-      "role": "REGISTERED_SUITE_CHILD",
-      "owner": "platform-foundation",
-      "tier": 1,
-      "parallelSafety": "UNKNOWN_PARALLEL_SAFETY",
+      "parallelSafety": "READ_ONLY_PARALLEL",
       "adapter": "vitest"
     }
   ]

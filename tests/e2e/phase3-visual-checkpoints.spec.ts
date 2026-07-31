@@ -872,7 +872,12 @@ function sanitizedSignal(signal: CheckpointSignal) {
 
 async function assertIndexCorrespondence() {
   const source = await readFile(
-    path.resolve("Development_Docs", "Project_Lanternwake_Phase_3_Visual_Checkpoint_Index.md"),
+    path.resolve(
+      "Development_Docs",
+      "Programs",
+      "Lanternwake",
+      "Project_Lanternwake_Phase_3_Visual_Checkpoint_Index.md",
+    ),
     "utf8",
   );
   const rows = source

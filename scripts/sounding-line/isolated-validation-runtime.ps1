@@ -12,6 +12,8 @@ param(
     [switch]$SkipBrowser,
     [string]$BrowserTestPath,
     [string[]]$BrowserArgs = @(),
+    [string]$BrowserArgsBase64 = "",
+    [string]$ExpectMutation = "true",
     [string]$BrowserGrep = "",
     [switch]$SkipProductionPerformance,
     [string]$SoundingLineLane = "",
@@ -21,8 +23,53 @@ $ErrorActionPreference = "Stop"
 if ($env:SOUNDING_LINE_INTERNAL_RUNTIME -ne "1") {
     throw "This runtime can only be launched by a Sounding Line adapter."
 }
+if ($BrowserArgsBase64) {
+    if ($BrowserArgs.Count -gt 0) { throw "BrowserArgs and BrowserArgsBase64 cannot be combined." }
+    try {
+        $decodedBrowserArgs = [System.Text.Encoding]::UTF8.GetString([Convert]::FromBase64String($BrowserArgsBase64)) | ConvertFrom-Json
+    } catch {
+        throw "BrowserArgsBase64 is not valid UTF-8 JSON."
+    }
+    if ($decodedBrowserArgs -isnot [System.Array] -or @($decodedBrowserArgs | Where-Object { $_ -isnot [string] }).Count -gt 0) {
+        throw "BrowserArgsBase64 must decode to a JSON array of strings."
+    }
+    $BrowserArgs = [string[]]$decodedBrowserArgs
+}
+if ($ExpectMutation -notin @("true", "false")) { throw "ExpectMutation must be true or false." }
 if (-not $SoundingLineLane) {
     throw "This internal runtime only supports named Sounding Line browser lanes."
+}
+
+# Do not depend on Get-FileHash being imported into the runner's PowerShell
+# session. The isolated boundary and its shared bootstrap must compute the
+# same SHA-256 proof on both Windows PowerShell and PowerShell Core runners.
+function Get-SoundingLineSha256 {
+    param([Parameter(Mandatory)][string]$LiteralPath)
+    $stream = [System.IO.File]::Open($LiteralPath, [System.IO.FileMode]::Open, [System.IO.FileAccess]::Read, [System.IO.FileShare]::Read)
+    try {
+        $hasher = [System.Security.Cryptography.SHA256]::Create()
+        try {
+            return ([System.BitConverter]::ToString($hasher.ComputeHash($stream))).Replace("-", "").ToLowerInvariant()
+        } finally {
+            $hasher.Dispose()
+        }
+    } finally {
+        $stream.Dispose()
+    }
+}
+if (-not (Get-Command -Name Get-FileHash -ErrorAction SilentlyContinue)) {
+    function Get-FileHash {
+        param(
+            [Parameter(Mandatory)][string]$LiteralPath,
+            [string]$Algorithm = "SHA256"
+        )
+        if ($Algorithm -ne "SHA256") { throw "Only SHA256 is supported by the Sounding Line compatibility hash provider." }
+        [pscustomobject]@{
+            Algorithm = $Algorithm
+            Hash = Get-SoundingLineSha256 -LiteralPath $LiteralPath
+            Path = $LiteralPath
+        }
+    }
 }
 . (Join-Path $PSScriptRoot "..\dev-common.ps1")
 
@@ -31,14 +78,28 @@ if (-not $SoundingLineLane) {
 # every ordinary invocation keeps the historical global lock and port 3100.
 $isSoundingLineLane = $SoundingLineLane -ne ""
 if ($isSoundingLineLane) {
-    if ($SoundingLineLane -notin @("harborlight-a", "harborlight-b")) {
-        throw "SoundingLineLane must be harborlight-a or harborlight-b."
+    if ($SoundingLineLane -notin @("harborlight-a", "harborlight-b", "browser-family")) {
+        throw "SoundingLineLane must be harborlight-a, harborlight-b, or browser-family."
     }
-    if (-not $BrowserOnly -or -not $BrowserTestPath -or $BrowserTestPath.Replace('\', '/') -ne "tests/e2e/harborlight-phase4.spec.ts") {
+    if ($SoundingLineLane -in @("harborlight-a", "harborlight-b") -and
+        (-not $BrowserOnly -or -not $BrowserTestPath -or $BrowserTestPath.Replace('\', '/') -ne "tests/e2e/harborlight-phase4.spec.ts")) {
         throw "Sounding Line lanes are limited to BrowserOnly Harborlight Phase 4 acceptance."
     }
-    if ($SoundingLinePort -lt 3101 -or $SoundingLinePort -gt 3199) {
-        throw "SoundingLinePort must be an owned loopback port from 3101 through 3199."
+    if ($SoundingLineLane -eq "browser-family") {
+        if (-not $BrowserOnly -or $BrowserTestPath -or $BrowserArgs.Count -eq 0) {
+            throw "browser-family requires BrowserOnly and registry-selected BrowserArgs without BrowserTestPath."
+        }
+        foreach ($browserArgument in $BrowserArgs) {
+            $normalizedArgument = $browserArgument.Replace('\', '/')
+            if ($normalizedArgument -notmatch '^--project=[a-z][a-z0-9-]{0,80}$' -and
+                $normalizedArgument -notmatch '^tests/e2e/[A-Za-z0-9._/-]+\.spec\.ts$') {
+                throw "browser-family BrowserArgs must be a governed Playwright project or e2e spec path."
+            }
+        }
+    }
+    if (($SoundingLineLane -eq "browser-family" -and $SoundingLinePort -ne 3100) -or
+        ($SoundingLineLane -ne "browser-family" -and ($SoundingLinePort -lt 3101 -or $SoundingLinePort -gt 3199))) {
+        throw "browser-family must own loopback port 3100; named Harborlight lanes must own ports 3101 through 3199."
     }
 } elseif ($SoundingLinePort -ne 0) {
     throw "SoundingLinePort requires a named SoundingLineLane."
@@ -54,7 +115,7 @@ if ($SkipBrowser -and ($BrowserTestPath -or $BrowserGrep -or $BrowserArgs.Count 
 
 $validationLockDirectory = Join-Path $env:LOCALAPPDATA "ForeverTreasureCompanion"
 [System.IO.Directory]::CreateDirectory($validationLockDirectory) | Out-Null
-$validationLockName = if ($isSoundingLineLane) { "validation-runtime-$SoundingLineLane.lock" } else { "validation-runtime.lock" }
+$validationLockName = if ($SoundingLineLane -in @("harborlight-a", "harborlight-b")) { "validation-runtime-$SoundingLineLane.lock" } else { "validation-runtime.lock" }
 $validationLockPath = Join-Path $validationLockDirectory $validationLockName
 try {
     # The validation runtime is intentionally shared so it can preserve the
@@ -117,7 +178,7 @@ function Get-CanonicalDatabaseFamilyFingerprint {
                 [pscustomobject]@{
                     fileName = [System.IO.Path]::GetFileName($memberPath)
                     present = $true
-                    sha256 = (Get-FileHash -LiteralPath $memberPath -Algorithm SHA256).Hash.ToLowerInvariant()
+                    sha256 = Get-SoundingLineSha256 -LiteralPath $memberPath
                     size = [long]$memberItem.Length
                     mtimeIso = $memberItem.LastWriteTimeUtc.ToString("yyyy-MM-ddTHH:mm:ss.fffZ", [System.Globalization.CultureInfo]::InvariantCulture)
                 }
@@ -234,6 +295,13 @@ if (Test-Path -LiteralPath $isolatedDatabase) { throw "Unique isolated validatio
 if ([System.StringComparer]::OrdinalIgnoreCase.Equals($canonicalDatabase, $isolatedDatabase)) {
     throw "BaselineDatabasePath must not identify the isolated mutation database."
 }
+# The runtime's bootstrap database proves migration/seed reproducibility, but
+# browser families must begin from the stable, caller-approved canonical
+# baseline (including its compatibility projection).  Only the task-owned
+# seed file is replaced; the canonical source remains read-only and is
+# fingerprinted again during finalization.
+Remove-Item -LiteralPath $seedDatabase -Force
+Copy-Item -LiteralPath $canonicalDatabase -Destination $seedDatabase -ErrorAction Stop
 
 function Invoke-ValidationStep {
     param([Parameter(Mandatory)][string]$Name, [Parameter(Mandatory)][string[]]$Arguments)
@@ -851,7 +919,7 @@ try {
                     "--report", $isolationReport,
                     "--copy-db", $isolatedDatabase,
                     "--canonical-db", $canonicalDatabase,
-                    "--expect-mutation", $playwrightInvoked.ToString().ToLowerInvariant(),
+                    "--expect-mutation", $ExpectMutation,
                     "--browser-succeeded", $reportedBrowserSucceeded.ToString().ToLowerInvariant()
                 ))
             } catch {

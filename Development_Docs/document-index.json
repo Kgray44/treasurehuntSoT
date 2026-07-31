@@ -1287,7 +1287,25 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Authority_Cutover_Completion_Receipt.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Authority_Cutover_Design_Record.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Final_Program_Closeout_Receipt.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Governed_Test_Inventory.md",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
@@ -1305,13 +1323,13 @@
       "canonical_for": null
     },
     {
-      "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Test_Contract_Coverage.csv",
+      "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_P34_Semantic_Retirement_Ledger.csv",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
     },
     {
-      "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Final_Program_Closeout_Receipt.md",
+      "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Performance_Budget_Report.md",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
@@ -1846,6 +1864,30 @@
     },
     {
       "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Phase_4_Worker_Trust_and_Security_Model.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Program_Completion_Design_Record.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Program_Completion_Receipt.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Test_Contract_Coverage.csv",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Test_Family_Migration_Ledger.csv",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null

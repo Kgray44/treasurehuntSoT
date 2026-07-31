@@ -23,7 +23,7 @@ test("planner is deterministic and rejects archived P34 suites", async () => {
     for (const dependency of node.dependencies)
       assert.ok(mainline.nodes.find((candidate) => candidate.id === dependency).execution.wave < node.execution.wave);
   assert.equal(mainline.nodes.find((node) => node.id === "database.sqlite").execution.mode, "exclusive");
-  assert.equal(mainline.nodes.find((node) => node.id === "harborlight.phase4.unit").execution.mode, "parallel");
+  assert.equal(mainline.nodes.find((node) => node.id === "unit.community").execution.mode, "parallel");
   assert.ok(
     mainline.nodes.every(
       (node) => !["browser.auth", "browser.player-journal", "compatibility.browser"].includes(node.id),
