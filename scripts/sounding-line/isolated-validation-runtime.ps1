@@ -524,7 +524,12 @@ function Start-OwnedValidationServer {
             }
             Start-Sleep -Milliseconds 250
         }
-        if (-not $identity) { throw "Owned validation server did not prove the isolated database identity. Last identity probe: $lastIdentityProbe" }
+        if (-not $identity) {
+            $serverErrorTail = if (Test-Path -LiteralPath $stderr) {
+                ((Get-Content -LiteralPath $stderr -Tail 24 -ErrorAction SilentlyContinue) -join "`n").Trim()
+            } else { "server-stderr-unavailable" }
+            throw "Owned validation server did not prove the isolated database identity. Last identity probe: $lastIdentityProbe. Server stderr tail: $serverErrorTail"
+        }
 
         $ownerIds = @(Get-TcpPortOwnerIds -Port $validationServerPort)
         if ($ownerIds.Count -ne 1) {
