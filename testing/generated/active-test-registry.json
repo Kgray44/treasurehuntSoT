@@ -53345,7 +53345,7 @@
     {
       "id": "sl-test-5b136a33446121196f86",
       "title": "concurrent Harborlight lanes may share only their validation-run parent",
-      "line": 199,
+      "line": 201,
       "file": "tests/sounding-line/authority-cutover.test.mjs",
       "suiteId": "unit.sounding-line",
       "owner": "platform-foundation",
@@ -53406,7 +53406,7 @@
     {
       "id": "sl-test-9586abcf1c6209260ed8",
       "title": "governed workers consume the sealed plan and fail closed on missing receipts",
-      "line": 205,
+      "line": 207,
       "file": "tests/sounding-line/authority-cutover.test.mjs",
       "suiteId": "unit.sounding-line",
       "owner": "platform-foundation",
@@ -53467,7 +53467,7 @@
     {
       "id": "sl-test-41e176d38988253670ff",
       "title": "public repository commands route through Sounding Line",
-      "line": 218,
+      "line": 221,
       "file": "tests/sounding-line/authority-cutover.test.mjs",
       "suiteId": "unit.sounding-line",
       "owner": "platform-foundation",
@@ -67758,17 +67758,17 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-2f8060eb5d0799679c80",
-      "title": "captures the exact sanitized 57-row Phase 3 visual checkpoint catalog",
-      "line": 1635,
+      "id": "sl-test-ff8ef79c8408daaf890c",
+      "title": "proves the canonical read-only journal journey across current product routes",
+      "line": 32,
       "file": "tests/e2e/phase3-visual-checkpoints.spec.ts",
       "project": "chromium",
-      "suiteId": "browser.cross-project",
+      "suiteId": "browser.player-journal",
       "owner": "platform-foundation",
       "tier": 4,
       "risk": "HIGH",
       "contracts": [
-        "authentication-authorization"
+        "journal-ready-state"
       ],
       "sourcePaths": [
         "tests/e2e/phase3-visual-checkpoints.spec.ts"
@@ -77460,17 +77460,17 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-9e462081d75055849a1b",
-      "title": "captures the exact sanitized 57-row Phase 3 visual checkpoint catalog",
-      "line": 1635,
+      "id": "sl-test-518d57ed287f63e70900",
+      "title": "proves the canonical read-only journal journey across current product routes",
+      "line": 32,
       "file": "tests/e2e/phase3-visual-checkpoints.spec.ts",
       "project": "webkit-mobile",
-      "suiteId": "browser.cross-project",
+      "suiteId": "browser.player-journal",
       "owner": "platform-foundation",
       "tier": 4,
       "risk": "HIGH",
       "contracts": [
-        "authentication-authorization"
+        "journal-ready-state"
       ],
       "sourcePaths": [
         "tests/e2e/phase3-visual-checkpoints.spec.ts"
