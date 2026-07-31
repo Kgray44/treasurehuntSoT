@@ -344,10 +344,12 @@ function Assert-BrowserSelectionDiscovery {
     } finally {
         Pop-Location
     }
-    $projectPattern = '^\s*\[' + [regex]::Escape([string]$Selection.project) + '\]\s+›'
+    # Match only the project envelope. The report's visual separator is
+    # runner/console encoded and is not a stable machine boundary.
+    $projectPattern = '^\s*\[' + [regex]::Escape([string]$Selection.project) + '\]\s+'
     $discoveredCases = @($listing | Where-Object { $_ -match $projectPattern }).Count
     if ($discoveredCases -ne [int]$Selection.caseCount) {
-        throw "GOVERNED_BROWSER_DISCOVERY_MISMATCH:$($Selection.project):expected=$($Selection.caseCount)"
+        throw "GOVERNED_BROWSER_DISCOVERY_MISMATCH:$($Selection.project):expected=$($Selection.caseCount):actual=$discoveredCases"
     }
 }
 
