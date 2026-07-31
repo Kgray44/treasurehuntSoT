@@ -34774,9 +34774,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-12178f3cfd92f3588fc5",
+      "id": "sl-test-e5f3f82def82d3cd1871",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 2560x1440 journal-first-opening is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "chromium",
       "suiteId": "browser.accessibility",
@@ -34810,9 +34810,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-facdef455a69e3c021c3",
+      "id": "sl-test-146037f571d6f62d2298",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 2560x1440 journal-reentry is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "chromium",
       "suiteId": "browser.accessibility",
@@ -34846,9 +34846,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-6c5800fb98e94ce8e517",
+      "id": "sl-test-19b53ad690d6c4be41b9",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 2560x1440 chapter-release is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "chromium",
       "suiteId": "browser.accessibility",
@@ -34882,9 +34882,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-09c1c0eb24aeaab536c6",
+      "id": "sl-test-59af0a2eb881f4b2a00a",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 2560x1440 map-location is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "chromium",
       "suiteId": "browser.accessibility",
@@ -34918,9 +34918,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-8f4373d293639abe96ff",
+      "id": "sl-test-84c15aec3a8e640a2b6b",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 2560x1440 route-reveal is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "chromium",
       "suiteId": "browser.accessibility",
@@ -34954,9 +34954,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-5a5ac040ea34dfd620ce",
+      "id": "sl-test-d26c1bc814e81cee0ddd",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 2560x1440 artifact-award is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "chromium",
       "suiteId": "browser.artifacts",
@@ -34990,9 +34990,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-528abcd1b8401aa4cf49",
+      "id": "sl-test-74a82a4f8623c255319d",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 2560x1440 quest-discovery is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "chromium",
       "suiteId": "browser.accessibility",
@@ -35026,9 +35026,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-494cac4be9f78aebadc3",
+      "id": "sl-test-27010534c082d6059895",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 2560x1440 log-entry is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "chromium",
       "suiteId": "browser.accessibility",
@@ -35062,9 +35062,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-eea0e6b09052b848d5eb",
+      "id": "sl-test-48d9edcdb099762b9f6e",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 2560x1440 finale-tease is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "chromium",
       "suiteId": "browser.accessibility",
@@ -35098,9 +35098,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-08f3662f6ce352341e92",
+      "id": "sl-test-ccf744a93a98ac9e217c",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 2560x1440 pause is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "chromium",
       "suiteId": "browser.accessibility",
@@ -35134,9 +35134,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-8ea3b35c2627a09ef8ff",
+      "id": "sl-test-bc698c6769f2a20675e7",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 2560x1440 replay is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "chromium",
       "suiteId": "browser.accessibility",
@@ -35170,9 +35170,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-2e1aac8ac4bb8fe098ca",
+      "id": "sl-test-8517b6a6c331867cee6b",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 2560x1440 fallback is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "chromium",
       "suiteId": "browser.accessibility",
@@ -35206,9 +35206,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-110fd5d25ecfb168da58",
+      "id": "sl-test-c9b2f9a87f650a388c39",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 2560x1440 interrupted-scene is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "chromium",
       "suiteId": "browser.accessibility",
@@ -35242,9 +35242,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-c5d9fb106b7df1fb8497",
+      "id": "sl-test-8494d71ce02e5f9425b7",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 1920x1080 journal-first-opening is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "chromium",
       "suiteId": "browser.accessibility",
@@ -35278,9 +35278,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-bf0f2e453be7e0c3767d",
+      "id": "sl-test-a27063b583efa6394f63",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 1920x1080 journal-reentry is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "chromium",
       "suiteId": "browser.accessibility",
@@ -35314,9 +35314,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-56d17b8adae775d5826a",
+      "id": "sl-test-d518adb29d2efe09e03b",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 1920x1080 chapter-release is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "chromium",
       "suiteId": "browser.accessibility",
@@ -35350,9 +35350,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-0ca1e78b44b129f3ae46",
+      "id": "sl-test-a4b7ad076ad31d1effdb",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 1920x1080 map-location is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "chromium",
       "suiteId": "browser.accessibility",
@@ -35386,9 +35386,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-095005ee76853f7c1cb6",
+      "id": "sl-test-9bf6de2277447ae69476",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 1920x1080 route-reveal is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "chromium",
       "suiteId": "browser.accessibility",
@@ -35422,9 +35422,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-81e407d5560f731b8ade",
+      "id": "sl-test-c6f2f025beeac51191f2",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 1920x1080 artifact-award is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "chromium",
       "suiteId": "browser.artifacts",
@@ -35458,9 +35458,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-dce2aba00410505e9234",
+      "id": "sl-test-fc15cac5d246048ec6a3",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 1920x1080 quest-discovery is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "chromium",
       "suiteId": "browser.accessibility",
@@ -35494,9 +35494,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-79e8c5fb9a2010d7c639",
+      "id": "sl-test-c88ec1a6ad19481b0456",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 1920x1080 log-entry is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "chromium",
       "suiteId": "browser.accessibility",
@@ -35530,9 +35530,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-b7faa9bc42e5cb23d7d5",
+      "id": "sl-test-aefbde6b681014f0024c",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 1920x1080 finale-tease is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "chromium",
       "suiteId": "browser.accessibility",
@@ -35566,9 +35566,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-ca64ec2c4293dc8a7c4f",
+      "id": "sl-test-e5eff24ff3d7265f0b09",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 1920x1080 pause is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "chromium",
       "suiteId": "browser.accessibility",
@@ -35602,9 +35602,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-53c06d2adce3947207e0",
+      "id": "sl-test-8ed76a5189e0755f9735",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 1920x1080 replay is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "chromium",
       "suiteId": "browser.accessibility",
@@ -35638,9 +35638,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-3061470dcb280b4988d4",
+      "id": "sl-test-1c6ea971cfed955e8469",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 1920x1080 fallback is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "chromium",
       "suiteId": "browser.accessibility",
@@ -35674,9 +35674,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-24cd0d9eeac10bd81962",
+      "id": "sl-test-84c558de860802ede107",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 1920x1080 interrupted-scene is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "chromium",
       "suiteId": "browser.accessibility",
@@ -35710,9 +35710,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-11ee085cd4b8f566e371",
+      "id": "sl-test-61ceb8500fb199cb316d",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 1440x900 journal-first-opening is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "chromium",
       "suiteId": "browser.accessibility",
@@ -35746,9 +35746,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-a5277b5c38a80e1b2dbe",
+      "id": "sl-test-fea103dce51f62c4acda",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 1440x900 journal-reentry is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "chromium",
       "suiteId": "browser.accessibility",
@@ -35782,9 +35782,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-41427821ccaaf5da7d99",
+      "id": "sl-test-60fed10541931fefec36",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 1440x900 chapter-release is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "chromium",
       "suiteId": "browser.accessibility",
@@ -35818,9 +35818,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-769f2d173a9e2ff3660a",
+      "id": "sl-test-c405c0da232c47dfb9ea",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 1440x900 map-location is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "chromium",
       "suiteId": "browser.accessibility",
@@ -35854,9 +35854,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-c153411c9b3d35a20fe0",
+      "id": "sl-test-ae4795ecef5d3580809f",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 1440x900 route-reveal is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "chromium",
       "suiteId": "browser.accessibility",
@@ -35890,9 +35890,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-91f5712a7dd82c079f90",
+      "id": "sl-test-b907e28005a6050640bf",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 1440x900 artifact-award is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "chromium",
       "suiteId": "browser.artifacts",
@@ -35926,9 +35926,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-b2d2bcd2c43b5004c146",
+      "id": "sl-test-923fc90f117c71fcd0fc",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 1440x900 quest-discovery is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "chromium",
       "suiteId": "browser.accessibility",
@@ -35962,9 +35962,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-ee9c6c9d905c570dbad7",
+      "id": "sl-test-32f2b7373fe888a7cbf7",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 1440x900 log-entry is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "chromium",
       "suiteId": "browser.accessibility",
@@ -35998,9 +35998,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-29da235435a4c5e153ba",
+      "id": "sl-test-fc071bee3a2155d2fd0a",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 1440x900 finale-tease is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "chromium",
       "suiteId": "browser.accessibility",
@@ -36034,9 +36034,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-2d4c1900d5685ab815e8",
+      "id": "sl-test-f10a9e03f2fe9418e63a",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 1440x900 pause is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "chromium",
       "suiteId": "browser.accessibility",
@@ -36070,9 +36070,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-0fba3a3971f7acae4c13",
+      "id": "sl-test-3276fd9a26b5555dd293",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 1440x900 replay is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "chromium",
       "suiteId": "browser.accessibility",
@@ -36106,9 +36106,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-1f3bde4fa6b8ff5166d2",
+      "id": "sl-test-77f6d6aea54c92c21490",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 1440x900 fallback is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "chromium",
       "suiteId": "browser.accessibility",
@@ -36142,9 +36142,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-ccffbf2be934cbe54b6b",
+      "id": "sl-test-c2d98bb9ae90d6873768",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 1440x900 interrupted-scene is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "chromium",
       "suiteId": "browser.accessibility",
@@ -36178,9 +36178,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-1d57fdba35e17afa65f3",
+      "id": "sl-test-2baf2ccbc91808a2e6d8",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 430x932 journal-first-opening is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "chromium",
       "suiteId": "browser.accessibility",
@@ -36214,9 +36214,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-a5031247700541b9ac24",
+      "id": "sl-test-3bd0fed539f7d1aed073",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 430x932 journal-reentry is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "chromium",
       "suiteId": "browser.accessibility",
@@ -36250,9 +36250,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-4164bc4d39c173a742a7",
+      "id": "sl-test-769ba458ededaa040afb",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 430x932 chapter-release is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "chromium",
       "suiteId": "browser.accessibility",
@@ -36286,9 +36286,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-ac240a27b475f1cfd558",
+      "id": "sl-test-ffecfaa016b1ce7589fd",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 430x932 map-location is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "chromium",
       "suiteId": "browser.accessibility",
@@ -36322,9 +36322,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-923d7ccc5c6ca965e17b",
+      "id": "sl-test-1baeea30fa2ec81d1a71",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 430x932 route-reveal is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "chromium",
       "suiteId": "browser.accessibility",
@@ -36358,9 +36358,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-15cfcc6bd6036d8eb5c8",
+      "id": "sl-test-cc8ffc2dfb688d881f2b",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 430x932 artifact-award is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "chromium",
       "suiteId": "browser.artifacts",
@@ -36394,9 +36394,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-e4e8d2df64a6110c4786",
+      "id": "sl-test-691e88a12576c85b8d53",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 430x932 quest-discovery is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "chromium",
       "suiteId": "browser.accessibility",
@@ -36430,9 +36430,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-891f04f03e3328d2bafc",
+      "id": "sl-test-12c4ddfdd1eea132b8eb",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 430x932 log-entry is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "chromium",
       "suiteId": "browser.accessibility",
@@ -36466,9 +36466,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-6fb24de36d72f095267f",
+      "id": "sl-test-7e432dac0b1d84ab35cc",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 430x932 finale-tease is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "chromium",
       "suiteId": "browser.accessibility",
@@ -36502,9 +36502,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-d4614e87c614fec3db80",
+      "id": "sl-test-ba94e6674ae599fe0dc3",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 430x932 pause is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "chromium",
       "suiteId": "browser.accessibility",
@@ -36538,9 +36538,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-aea0d3c818d2e78efd5a",
+      "id": "sl-test-061fc2ee220053db113b",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 430x932 replay is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "chromium",
       "suiteId": "browser.accessibility",
@@ -36574,9 +36574,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-3a2112ff6b3485ba9f9a",
+      "id": "sl-test-f4da77dcb93ad7c2610e",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 430x932 fallback is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "chromium",
       "suiteId": "browser.accessibility",
@@ -36610,9 +36610,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-128ab0d330c836c515f0",
+      "id": "sl-test-e6243923e943a4af50e9",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 430x932 interrupted-scene is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "chromium",
       "suiteId": "browser.accessibility",
@@ -36646,9 +36646,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-018e0119cd4a27cc2b1c",
+      "id": "sl-test-40bca892aba710b49275",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 390x844 journal-first-opening is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "chromium",
       "suiteId": "browser.accessibility",
@@ -36682,9 +36682,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-caa9e8c7d02dd525d4ea",
+      "id": "sl-test-ae416dc16293ad648cc8",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 390x844 journal-reentry is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "chromium",
       "suiteId": "browser.accessibility",
@@ -36718,9 +36718,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-078d0b7445057a1aa23d",
+      "id": "sl-test-4f94195057dcf749f562",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 390x844 chapter-release is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "chromium",
       "suiteId": "browser.accessibility",
@@ -36754,9 +36754,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-32351e36ae1c9dbefb6b",
+      "id": "sl-test-ae9704bcaef834066eea",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 390x844 map-location is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "chromium",
       "suiteId": "browser.accessibility",
@@ -36790,9 +36790,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-0201625da13da6e5029e",
+      "id": "sl-test-d1a38d02d270925a713b",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 390x844 route-reveal is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "chromium",
       "suiteId": "browser.accessibility",
@@ -36826,9 +36826,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-82b50813d9efd7180f45",
+      "id": "sl-test-7bfb4bae5b73fa75b3ad",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 390x844 artifact-award is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "chromium",
       "suiteId": "browser.artifacts",
@@ -36862,9 +36862,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-39ed7820791e8ed66f8d",
+      "id": "sl-test-74003425fc170fc4d07d",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 390x844 quest-discovery is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "chromium",
       "suiteId": "browser.accessibility",
@@ -36898,9 +36898,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-3da8c188a76c9dba3b44",
+      "id": "sl-test-ab4bfd442b5d66925d77",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 390x844 log-entry is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "chromium",
       "suiteId": "browser.accessibility",
@@ -36934,9 +36934,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-0ec94f963a200680d30e",
+      "id": "sl-test-757f1fab458971b3a7f5",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 390x844 finale-tease is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "chromium",
       "suiteId": "browser.accessibility",
@@ -36970,9 +36970,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-4b5ef204f3fe8f498c8d",
+      "id": "sl-test-1eea04248a15134a95e1",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 390x844 pause is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "chromium",
       "suiteId": "browser.accessibility",
@@ -37006,9 +37006,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-4336bd14ddbd5e097910",
+      "id": "sl-test-fe4b59c83a29770ec0d0",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 390x844 replay is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "chromium",
       "suiteId": "browser.accessibility",
@@ -37042,9 +37042,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-bbe74233cd2e54227231",
+      "id": "sl-test-3816f772fdfaf0736cd8",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 390x844 fallback is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "chromium",
       "suiteId": "browser.accessibility",
@@ -37078,9 +37078,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-1693db84c5703ce081cf",
+      "id": "sl-test-c620b1de3632530902e1",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 390x844 interrupted-scene is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "chromium",
       "suiteId": "browser.accessibility",
@@ -37114,9 +37114,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-fc733afd4352291ec56f",
+      "id": "sl-test-e01d35c1d230e652d029",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 844x390 journal-first-opening is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "chromium",
       "suiteId": "browser.accessibility",
@@ -37150,9 +37150,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-7812748726cf7c464825",
+      "id": "sl-test-880874ababe0ed5de15a",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 844x390 journal-reentry is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "chromium",
       "suiteId": "browser.accessibility",
@@ -37186,9 +37186,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-d7bdec439d449191314d",
+      "id": "sl-test-30c28aee0b4429f26ac3",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 844x390 chapter-release is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "chromium",
       "suiteId": "browser.accessibility",
@@ -37222,9 +37222,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-0e908a7f7cdbc512f6a5",
+      "id": "sl-test-9844338e169ff4002661",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 844x390 map-location is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "chromium",
       "suiteId": "browser.accessibility",
@@ -37258,9 +37258,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-88d494dd995581f48567",
+      "id": "sl-test-ed55bd08723f9a0ee691",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 844x390 route-reveal is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "chromium",
       "suiteId": "browser.accessibility",
@@ -37294,9 +37294,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-e39873e25ebd2838731b",
+      "id": "sl-test-57bf34ff3a7e0bdf7df9",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 844x390 artifact-award is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "chromium",
       "suiteId": "browser.artifacts",
@@ -37330,9 +37330,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-657c158b995dbf3fdeb6",
+      "id": "sl-test-9b30f26e7d18fdf20ccd",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 844x390 quest-discovery is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "chromium",
       "suiteId": "browser.accessibility",
@@ -37366,9 +37366,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-2155a6014f301711887c",
+      "id": "sl-test-f8e5836d7711ec114ed7",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 844x390 log-entry is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "chromium",
       "suiteId": "browser.accessibility",
@@ -37402,9 +37402,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-3fdde25513d6f1bcad70",
+      "id": "sl-test-010d28e8a39ed58196f6",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 844x390 finale-tease is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "chromium",
       "suiteId": "browser.accessibility",
@@ -37438,9 +37438,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-5f1819bfa7d835d52641",
+      "id": "sl-test-28f7196b432a448f9964",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 844x390 pause is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "chromium",
       "suiteId": "browser.accessibility",
@@ -37474,9 +37474,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-0f6bb948513ef84072ad",
+      "id": "sl-test-94cf0c9a85bdb4685ba4",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 844x390 replay is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "chromium",
       "suiteId": "browser.accessibility",
@@ -37510,9 +37510,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-a1faceea8ad84fdca775",
+      "id": "sl-test-0694fe187b72aee67985",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 844x390 fallback is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "chromium",
       "suiteId": "browser.accessibility",
@@ -37546,9 +37546,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-84f6f4b7eef36a6346be",
+      "id": "sl-test-41b22c85ea895f272e11",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 844x390 interrupted-scene is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "chromium",
       "suiteId": "browser.accessibility",
@@ -41542,9 +41542,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-8082154e82f8b79ffd3b",
+      "id": "sl-test-fbf2f3affedda57756e4",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 2560x1440 journal-first-opening is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "webkit-mobile",
       "suiteId": "browser.accessibility",
@@ -41578,9 +41578,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-f873065cfb114dd14c90",
+      "id": "sl-test-13792c014078e29e1a8a",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 2560x1440 journal-reentry is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "webkit-mobile",
       "suiteId": "browser.accessibility",
@@ -41614,9 +41614,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-480e1dcb6d8fad7ef67b",
+      "id": "sl-test-91929643862c7e04e8a2",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 2560x1440 chapter-release is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "webkit-mobile",
       "suiteId": "browser.accessibility",
@@ -41650,9 +41650,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-207a72a994dfacfecec4",
+      "id": "sl-test-535062941d91ad4f6f15",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 2560x1440 map-location is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "webkit-mobile",
       "suiteId": "browser.accessibility",
@@ -41686,9 +41686,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-c861d5956ffecb73f0e5",
+      "id": "sl-test-485ca649143ba07871b3",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 2560x1440 route-reveal is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "webkit-mobile",
       "suiteId": "browser.accessibility",
@@ -41722,9 +41722,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-80cffb1ca7f6de12c654",
+      "id": "sl-test-d9a0b8c65b4f0be4745a",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 2560x1440 artifact-award is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "webkit-mobile",
       "suiteId": "browser.artifacts",
@@ -41758,9 +41758,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-39d165da682e60f4e057",
+      "id": "sl-test-6baccc38d9c30d1a30e1",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 2560x1440 quest-discovery is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "webkit-mobile",
       "suiteId": "browser.accessibility",
@@ -41794,9 +41794,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-1d6760539a378e3d564f",
+      "id": "sl-test-630138d8d16007bcfbe1",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 2560x1440 log-entry is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "webkit-mobile",
       "suiteId": "browser.accessibility",
@@ -41830,9 +41830,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-8fc19c72e9c0d6f06517",
+      "id": "sl-test-df1223c81e8324093df5",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 2560x1440 finale-tease is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "webkit-mobile",
       "suiteId": "browser.accessibility",
@@ -41866,9 +41866,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-6e47fa1969e9a34a98d8",
+      "id": "sl-test-f660c9619d17c9c13e89",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 2560x1440 pause is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "webkit-mobile",
       "suiteId": "browser.accessibility",
@@ -41902,9 +41902,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-73475b02cd86e4e4de29",
+      "id": "sl-test-c4d6823fa0ab11b06571",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 2560x1440 replay is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "webkit-mobile",
       "suiteId": "browser.accessibility",
@@ -41938,9 +41938,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-876ec2c37b6ce2752e38",
+      "id": "sl-test-2f31e07ace5eaa4a3594",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 2560x1440 fallback is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "webkit-mobile",
       "suiteId": "browser.accessibility",
@@ -41974,9 +41974,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-059089243d37ca5c5914",
+      "id": "sl-test-9419a2a20cc37d9b4fbd",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 2560x1440 interrupted-scene is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "webkit-mobile",
       "suiteId": "browser.accessibility",
@@ -42010,9 +42010,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-b0ed04d1b10305cfc088",
+      "id": "sl-test-5b78c30814cae483bb99",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 1920x1080 journal-first-opening is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "webkit-mobile",
       "suiteId": "browser.accessibility",
@@ -42046,9 +42046,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-62669a725541cc7e73e0",
+      "id": "sl-test-dd27aa9ac98663a6beb9",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 1920x1080 journal-reentry is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "webkit-mobile",
       "suiteId": "browser.accessibility",
@@ -42082,9 +42082,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-3e0d90b556c82a1fbe4f",
+      "id": "sl-test-7fcf75bcfea751957057",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 1920x1080 chapter-release is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "webkit-mobile",
       "suiteId": "browser.accessibility",
@@ -42118,9 +42118,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-50a257ea7e415cc27264",
+      "id": "sl-test-30b7ed9ef4a1ba219d87",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 1920x1080 map-location is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "webkit-mobile",
       "suiteId": "browser.accessibility",
@@ -42154,9 +42154,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-805512ef801ccdb73b26",
+      "id": "sl-test-79f3de226accd9f78954",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 1920x1080 route-reveal is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "webkit-mobile",
       "suiteId": "browser.accessibility",
@@ -42190,9 +42190,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-41e36f816c51ca28f9ae",
+      "id": "sl-test-9d9a95ed154bdf015463",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 1920x1080 artifact-award is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "webkit-mobile",
       "suiteId": "browser.artifacts",
@@ -42226,9 +42226,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-bc7dbcdb20ae576088a1",
+      "id": "sl-test-572470cb4e0b67b4e700",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 1920x1080 quest-discovery is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "webkit-mobile",
       "suiteId": "browser.accessibility",
@@ -42262,9 +42262,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-998e6fe994f519a07810",
+      "id": "sl-test-39e5bd0d932dfd39733f",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 1920x1080 log-entry is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "webkit-mobile",
       "suiteId": "browser.accessibility",
@@ -42298,9 +42298,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-e55b9884f436855658ec",
+      "id": "sl-test-a0383a102257ab044bab",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 1920x1080 finale-tease is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "webkit-mobile",
       "suiteId": "browser.accessibility",
@@ -42334,9 +42334,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-e808155a60a9379ad0ee",
+      "id": "sl-test-665bd3e01f0e36bb4003",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 1920x1080 pause is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "webkit-mobile",
       "suiteId": "browser.accessibility",
@@ -42370,9 +42370,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-bd164e9198ee367197da",
+      "id": "sl-test-25b6625f75f8d9475ecd",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 1920x1080 replay is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "webkit-mobile",
       "suiteId": "browser.accessibility",
@@ -42406,9 +42406,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-1b7dabbfc2ca6fedaa73",
+      "id": "sl-test-42652fda179a855a0875",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 1920x1080 fallback is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "webkit-mobile",
       "suiteId": "browser.accessibility",
@@ -42442,9 +42442,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-20b15e38b8313453fce5",
+      "id": "sl-test-8439f668a78dcd7ec050",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 1920x1080 interrupted-scene is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "webkit-mobile",
       "suiteId": "browser.accessibility",
@@ -42478,9 +42478,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-19e8e8050ce9fb60ade1",
+      "id": "sl-test-e606e1680f30a2be16f3",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 1440x900 journal-first-opening is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "webkit-mobile",
       "suiteId": "browser.accessibility",
@@ -42514,9 +42514,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-5758fa0204f47aa63e4a",
+      "id": "sl-test-985c20c93911a8a46659",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 1440x900 journal-reentry is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "webkit-mobile",
       "suiteId": "browser.accessibility",
@@ -42550,9 +42550,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-61a46dccc63010f3ee9d",
+      "id": "sl-test-15119fd432f0d5a2b46f",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 1440x900 chapter-release is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "webkit-mobile",
       "suiteId": "browser.accessibility",
@@ -42586,9 +42586,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-59c353be03caa0d231c4",
+      "id": "sl-test-a09956bd37d3521ce7c3",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 1440x900 map-location is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "webkit-mobile",
       "suiteId": "browser.accessibility",
@@ -42622,9 +42622,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-43a7b4ae40d00b102efa",
+      "id": "sl-test-6a74a8c488c584a53899",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 1440x900 route-reveal is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "webkit-mobile",
       "suiteId": "browser.accessibility",
@@ -42658,9 +42658,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-be7e04289c6e90fb853d",
+      "id": "sl-test-0ebf4ea177e16fe2b346",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 1440x900 artifact-award is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "webkit-mobile",
       "suiteId": "browser.artifacts",
@@ -42694,9 +42694,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-81b16edd6622583549ce",
+      "id": "sl-test-3d4e0723cc1763013b61",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 1440x900 quest-discovery is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "webkit-mobile",
       "suiteId": "browser.accessibility",
@@ -42730,9 +42730,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-78561af8db2185c85965",
+      "id": "sl-test-80670585102a07a61ba8",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 1440x900 log-entry is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "webkit-mobile",
       "suiteId": "browser.accessibility",
@@ -42766,9 +42766,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-54b93e7442e70b7bf076",
+      "id": "sl-test-da10e55c8a26988299e4",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 1440x900 finale-tease is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "webkit-mobile",
       "suiteId": "browser.accessibility",
@@ -42802,9 +42802,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-29fb38fe265c2eb45b4a",
+      "id": "sl-test-faf649f2fd1e294d509f",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 1440x900 pause is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "webkit-mobile",
       "suiteId": "browser.accessibility",
@@ -42838,9 +42838,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-7f87b6e2b8eb7ccb95ee",
+      "id": "sl-test-d0961b13cdb6acde54c6",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 1440x900 replay is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "webkit-mobile",
       "suiteId": "browser.accessibility",
@@ -42874,9 +42874,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-9dc2c99cc7b18f347652",
+      "id": "sl-test-4f826d80dc30af00a71c",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 1440x900 fallback is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "webkit-mobile",
       "suiteId": "browser.accessibility",
@@ -42910,9 +42910,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-d38dd761659970e45e2d",
+      "id": "sl-test-bf075ee81a065d6435b2",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 1440x900 interrupted-scene is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "webkit-mobile",
       "suiteId": "browser.accessibility",
@@ -42946,9 +42946,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-7debd4c059a854f7a912",
+      "id": "sl-test-45506bff917451daafa7",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 430x932 journal-first-opening is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "webkit-mobile",
       "suiteId": "browser.accessibility",
@@ -42982,9 +42982,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-39b52076fb8d54c4ca72",
+      "id": "sl-test-81e4f828c89a63958868",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 430x932 journal-reentry is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "webkit-mobile",
       "suiteId": "browser.accessibility",
@@ -43018,9 +43018,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-a2f5824fb8ae420016c5",
+      "id": "sl-test-ea4373415498e8935793",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 430x932 chapter-release is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "webkit-mobile",
       "suiteId": "browser.accessibility",
@@ -43054,9 +43054,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-7ea1d276e7b0405948f6",
+      "id": "sl-test-60972ef46c57dcf0f8a9",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 430x932 map-location is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "webkit-mobile",
       "suiteId": "browser.accessibility",
@@ -43090,9 +43090,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-ab06fe4cd43c2a25b408",
+      "id": "sl-test-d21dcfc0d92fe6d344b7",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 430x932 route-reveal is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "webkit-mobile",
       "suiteId": "browser.accessibility",
@@ -43126,9 +43126,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-8a935b3da344c770135c",
+      "id": "sl-test-beee4a689642c10a24c3",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 430x932 artifact-award is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "webkit-mobile",
       "suiteId": "browser.artifacts",
@@ -43162,9 +43162,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-62483be5708a6e6c68e2",
+      "id": "sl-test-51518c554176e64b7843",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 430x932 quest-discovery is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "webkit-mobile",
       "suiteId": "browser.accessibility",
@@ -43198,9 +43198,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-205412283ccd89296170",
+      "id": "sl-test-20995ba6c7bd25987b01",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 430x932 log-entry is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "webkit-mobile",
       "suiteId": "browser.accessibility",
@@ -43234,9 +43234,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-a0d0c9d05267b10e7f0a",
+      "id": "sl-test-2711c6ca4ab75420bb9f",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 430x932 finale-tease is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "webkit-mobile",
       "suiteId": "browser.accessibility",
@@ -43270,9 +43270,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-c18efd912951539936a3",
+      "id": "sl-test-b06906d1b4e0c4587dca",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 430x932 pause is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "webkit-mobile",
       "suiteId": "browser.accessibility",
@@ -43306,9 +43306,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-b7950dfdd4438b266055",
+      "id": "sl-test-de74a97e7adf2e590af2",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 430x932 replay is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "webkit-mobile",
       "suiteId": "browser.accessibility",
@@ -43342,9 +43342,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-208ceb02f2b046be1c00",
+      "id": "sl-test-41414aaaea4c50369f69",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 430x932 fallback is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "webkit-mobile",
       "suiteId": "browser.accessibility",
@@ -43378,9 +43378,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-d3b407a2b8f7273916ff",
+      "id": "sl-test-9b1d074a1e71cdfef9f2",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 430x932 interrupted-scene is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "webkit-mobile",
       "suiteId": "browser.accessibility",
@@ -43414,9 +43414,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-257b7c0947ef53c66abb",
+      "id": "sl-test-0ad88320ece3e6dc267d",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 390x844 journal-first-opening is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "webkit-mobile",
       "suiteId": "browser.accessibility",
@@ -43450,9 +43450,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-e5c4dd6c467b016b25e4",
+      "id": "sl-test-0f4265b0f42a6d905c29",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 390x844 journal-reentry is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "webkit-mobile",
       "suiteId": "browser.accessibility",
@@ -43486,9 +43486,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-41e1e40a892579205f52",
+      "id": "sl-test-ca164ce50879a03bfb9a",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 390x844 chapter-release is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "webkit-mobile",
       "suiteId": "browser.accessibility",
@@ -43522,9 +43522,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-de2aafb32d5dfdca7874",
+      "id": "sl-test-341c87780bf8c6d29bf8",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 390x844 map-location is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "webkit-mobile",
       "suiteId": "browser.accessibility",
@@ -43558,9 +43558,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-74ba855b960b027cdb36",
+      "id": "sl-test-efa5871ded275bc484d6",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 390x844 route-reveal is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "webkit-mobile",
       "suiteId": "browser.accessibility",
@@ -43594,9 +43594,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-393278c6b162cece27f8",
+      "id": "sl-test-2871a7ac7f3ba1721788",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 390x844 artifact-award is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "webkit-mobile",
       "suiteId": "browser.artifacts",
@@ -43630,9 +43630,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-9f5c71997d1b0ea0c8ca",
+      "id": "sl-test-c70e173bfbc0cef93389",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 390x844 quest-discovery is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "webkit-mobile",
       "suiteId": "browser.accessibility",
@@ -43666,9 +43666,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-4b57ec100d3a96111116",
+      "id": "sl-test-428c304b62c44f8bd5aa",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 390x844 log-entry is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "webkit-mobile",
       "suiteId": "browser.accessibility",
@@ -43702,9 +43702,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-68e58980ccc664902937",
+      "id": "sl-test-f18ee1075d44b2595def",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 390x844 finale-tease is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "webkit-mobile",
       "suiteId": "browser.accessibility",
@@ -43738,9 +43738,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-c03cc6187cd1ac949e32",
+      "id": "sl-test-0d878571ddba5197c1e3",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 390x844 pause is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "webkit-mobile",
       "suiteId": "browser.accessibility",
@@ -43774,9 +43774,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-41fbb7489011af5742e0",
+      "id": "sl-test-08d63cff70298b84a3b9",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 390x844 replay is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "webkit-mobile",
       "suiteId": "browser.accessibility",
@@ -43810,9 +43810,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-6dabaa37bac2dae79a80",
+      "id": "sl-test-9ed88bb2c9f7747db24d",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 390x844 fallback is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "webkit-mobile",
       "suiteId": "browser.accessibility",
@@ -43846,9 +43846,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-d2d8e12e31644871ad99",
+      "id": "sl-test-a119ddb228e329f5b3d7",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 390x844 interrupted-scene is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "webkit-mobile",
       "suiteId": "browser.accessibility",
@@ -43882,9 +43882,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-e222077fc66a4a472cb0",
+      "id": "sl-test-61b0f3801fbc55709399",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 844x390 journal-first-opening is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "webkit-mobile",
       "suiteId": "browser.accessibility",
@@ -43918,9 +43918,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-7e5305b3d82430217a5a",
+      "id": "sl-test-656073bd456429ece123",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 844x390 journal-reentry is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "webkit-mobile",
       "suiteId": "browser.accessibility",
@@ -43954,9 +43954,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-f5268c825d467391a153",
+      "id": "sl-test-87d237bf4be3186fa97a",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 844x390 chapter-release is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "webkit-mobile",
       "suiteId": "browser.accessibility",
@@ -43990,9 +43990,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-170839bd327b368f8f6f",
+      "id": "sl-test-ef1c820b24e435041e44",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 844x390 map-location is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "webkit-mobile",
       "suiteId": "browser.accessibility",
@@ -44026,9 +44026,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-8b9fb10a8a78705a4918",
+      "id": "sl-test-24aeb9f50ea6746e35d7",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 844x390 route-reveal is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "webkit-mobile",
       "suiteId": "browser.accessibility",
@@ -44062,9 +44062,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-71ef73d01de380fd5ded",
+      "id": "sl-test-0008ceb392779de47613",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 844x390 artifact-award is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "webkit-mobile",
       "suiteId": "browser.artifacts",
@@ -44098,9 +44098,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-d4f2f23cb54974fbeb6e",
+      "id": "sl-test-9befd195e904b97724d7",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 844x390 quest-discovery is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "webkit-mobile",
       "suiteId": "browser.accessibility",
@@ -44134,9 +44134,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-02616e96cbfcbe9a4988",
+      "id": "sl-test-9c15eebd86aef6ff4313",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 844x390 log-entry is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "webkit-mobile",
       "suiteId": "browser.accessibility",
@@ -44170,9 +44170,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-7d78b8e6ec4c0a88065e",
+      "id": "sl-test-34bf0ece395876e263f7",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 844x390 finale-tease is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "webkit-mobile",
       "suiteId": "browser.accessibility",
@@ -44206,9 +44206,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-ce560e17c9dc23088b25",
+      "id": "sl-test-88a09a3f25da98d73c53",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 844x390 pause is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "webkit-mobile",
       "suiteId": "browser.accessibility",
@@ -44242,9 +44242,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-28925f792ec6c0227574",
+      "id": "sl-test-23584c1345b0964ad82c",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 844x390 replay is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "webkit-mobile",
       "suiteId": "browser.accessibility",
@@ -44278,9 +44278,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-4357dfe8f91a35ba1f0a",
+      "id": "sl-test-0148862a54e7a389c0b5",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 844x390 fallback is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "webkit-mobile",
       "suiteId": "browser.accessibility",
@@ -44314,9 +44314,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-a699ad83f72f7b58b334",
+      "id": "sl-test-76d5a6ec78a1b210dd52",
       "title": "Project Lanternwake Phase 3 accessibility and six required viewports › 844x390 interrupted-scene is readable, reachable, and sound-independent",
-      "line": 512,
+      "line": 515,
       "file": "tests/e2e/phase3-accessibility-viewports.spec.ts",
       "project": "webkit-mobile",
       "suiteId": "browser.accessibility",

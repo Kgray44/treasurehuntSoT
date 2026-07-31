@@ -478,6 +478,9 @@ function unsafeMutation(request: UnsafeRequest, slug: string) {
 }
 
 test.describe("Project Lanternwake Phase 3 accessibility and six required viewports", () => {
+  // Each case owns its browser context and the suite proves its database
+  // fixtures unchanged in afterAll, so viewport journeys may run in parallel.
+  test.describe.configure({ mode: "parallel" });
   let baseFixture: Phase3CaseFixture;
   let fixtures: Phase3CaseFixture[];
   let databaseBaseline: ReadonlyMap<string, Phase3DbTruth>;
