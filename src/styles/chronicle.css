@@ -1477,12 +1477,12 @@
   .chronicle-journal-shell {
     padding-bottom: calc(15rem + env(safe-area-inset-bottom));
   }
-  /* The compact shell header can grow to a second row for its identity and
-     navigation controls. Reserve that measured control row before either
-     journal drawer begins, so its close control never sits beneath the
-     persistent header. */
-  .journal-context-drawer {
-    top: max(112px, calc(var(--shell-header-height-compact) + 5rem));
+  /* Route motion creates a sibling stacking context. While an owned journal
+     drawer is open, raise that route above persistent shell navigation so the
+     drawer's visible controls remain the pointer target. */
+  .product-route-layer:has(.journal-context-drawer.open) {
+    position: relative;
+    z-index: calc(var(--z-navigation) + 1);
   }
   .chronicle-session-header {
     align-items: flex-start;
