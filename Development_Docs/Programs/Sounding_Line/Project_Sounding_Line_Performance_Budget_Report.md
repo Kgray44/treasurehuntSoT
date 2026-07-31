@@ -62,4 +62,9 @@ and then hit the adapter deadline at 583,312 ms; it was not a product failure
 or a retry pass. The family therefore receives a 900,000 ms expected duration
 and a 1,200,000 ms hard budget. The selection remains serial, exact, and
 cleanup-reserved through the suite-derived Playwright deadline. The next
-complete focused receipt is required cold-path confirmation.
+complete focused receipt is required cold-path confirmation. The first
+corrected budget still reached 33 passing cases at 18 minutes before its
+1,200,000 ms boundary, leaving six long audio/lifecycle cases. The measured
+serial envelope is therefore revised to 1,800,000 ms expected and 2,160,000
+ms hard, preserving the same two-minute cleanup reserve. This is the final
+budgeted focused proof before the complete release-candidate run.
