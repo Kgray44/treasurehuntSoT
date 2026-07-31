@@ -184,6 +184,13 @@ test("BrowserOnly Harborlight lanes do not repeat independent broad gates", asyn
   assert.match(runtime, /BrowserSelectionsBase64/u);
   const authority = await readFile(path.join(root, "scripts", "sounding-line", "authority.mjs"), "utf8");
   assert.match(authority, /definition\.title\.split\("\\u203a"\)\.at\(-1\)\.trim\(\)/u);
+  assert.match(authority, /FOREVER_DEPENDENCY_SEED_ROOT: root/u);
+  const common = await readFile(path.join(root, "scripts", "dev-common.ps1"), "utf8");
+  assert.match(common, /function Use-ForeverDependencySeed/u);
+  assert.match(common, /New-Item -ItemType Junction -Path \$runtimeModules -Target \$seedModules/u);
+  assert.match(common, /lockfile does not match the isolated runtime/u);
+  assert.match(common, /Delete the owned link itself before recursive cleanup/u);
+  assert.match(common, /\[System\.IO\.Directory\]::Delete\(\$runtimeModules\)/u);
 });
 
 test("concurrent Harborlight lanes may share only their validation-run parent", async () => {

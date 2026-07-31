@@ -135,7 +135,10 @@ async function run(gateId, { serial, executeOnly = false, receiptPath, suiteId, 
       });
     }
     if (adapter.id === "isolated-playwright-family") {
-      Object.assign(adapterEnv, { SOUNDING_LINE_INTERNAL_RUNTIME: "1" });
+      Object.assign(adapterEnv, {
+        SOUNDING_LINE_INTERNAL_RUNTIME: "1",
+        FOREVER_DEPENDENCY_SEED_ROOT: root,
+      });
     }
     const result = await executeAdapter(adapter, { cwd: root, env: adapterEnv, timeoutMs: suite.hardBudgetMs });
     const browserCounts = suite.adapter === "playwright-family"

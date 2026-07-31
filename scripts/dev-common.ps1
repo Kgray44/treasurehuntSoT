@@ -190,6 +190,16 @@ function Clear-ForeverValidationRuntime {
         reason = "owned-validation-runtime-cleanup"
     } | ConvertTo-Json
     Set-Content -LiteralPath $receipt -Value $receiptBody -Encoding UTF8
+    $runtimeModules = Join-Path $resolvedRoot "node_modules"
+    if (Test-Path -LiteralPath $runtimeModules) {
+        $modulesItem = Get-Item -LiteralPath $runtimeModules -Force
+        if ($modulesItem.LinkType -eq "Junction") {
+            # Delete the owned link itself before recursive cleanup; never
+            # traverse into a dependency seed owned by the hosted checkout.
+            [System.IO.Directory]::Delete($runtimeModules)
+            if (Test-Path -LiteralPath $runtimeModules) { throw "Validation dependency junction cleanup did not remove the owned link." }
+        }
+    }
     Remove-Item -LiteralPath $resolvedRoot -Recurse -Force
     if (Test-Path -LiteralPath $resolvedRoot) { throw "Owned validation runtime cleanup did not remove $resolvedRoot" }
     Add-Content -LiteralPath $receipt -Value ("cleanupCompletedUtc={0}" -f [DateTime]::UtcNow.ToString("o", [System.Globalization.CultureInfo]::InvariantCulture)) -Encoding UTF8
@@ -249,6 +259,37 @@ function Get-ForeverCanonicalDatabase {
     return $databasePath
 }
 
+function Use-ForeverDependencySeed {
+    param([Parameter(Mandatory)][string]$RuntimeRoot)
+    $seedRoot = [string]$env:FOREVER_DEPENDENCY_SEED_ROOT
+    if ([string]::IsNullOrWhiteSpace($seedRoot)) { return $false }
+    $resolvedRuntime = [System.IO.Path]::GetFullPath($RuntimeRoot)
+    $resolvedSeed = [System.IO.Path]::GetFullPath($seedRoot)
+    if ($resolvedSeed -eq $resolvedRuntime) { throw "Dependency seed must not be the validation runtime." }
+    $runtimeLock = Join-Path $resolvedRuntime "package-lock.json"
+    $seedLock = Join-Path $resolvedSeed "package-lock.json"
+    $seedModules = Join-Path $resolvedSeed "node_modules"
+    $runtimeModules = Join-Path $resolvedRuntime "node_modules"
+    if (-not (Test-Path -LiteralPath $seedModules -PathType Container)) { throw "Sounding Line dependency seed is missing node_modules." }
+    if (-not (Test-Path -LiteralPath (Join-Path $seedModules "next\package.json") -PathType Leaf)) { throw "Sounding Line dependency seed is incomplete." }
+    if ((Get-FileHash -Algorithm SHA256 -LiteralPath $runtimeLock).Hash -ne (Get-FileHash -Algorithm SHA256 -LiteralPath $seedLock).Hash) {
+        throw "Sounding Line dependency seed lockfile does not match the isolated runtime."
+    }
+    if (Test-Path -LiteralPath $runtimeModules) { throw "Validation runtime already has a node_modules path before dependency seeding." }
+    # A junction avoids a second npm ci in a disposable browser runtime while
+    # preserving the exact hosted lockfile and isolating all mutable app data.
+    New-Item -ItemType Junction -Path $runtimeModules -Target $seedModules -ErrorAction Stop | Out-Null
+    $link = Get-Item -LiteralPath $runtimeModules -Force
+    if ($link.LinkType -ne "Junction") { throw "Sounding Line dependency seed was not created as a junction." }
+    Set-Content -LiteralPath (Join-Path $resolvedRuntime ".forever-dependency-seed.json") -Encoding UTF8 -Value (@{
+        seedRoot = $resolvedSeed
+        lockSha256 = (Get-FileHash -Algorithm SHA256 -LiteralPath $runtimeLock).Hash
+        mode = "read-only-hosted-dependency-seed"
+    } | ConvertTo-Json)
+    Write-Host "Using lockfile-matched hosted dependency seed." -ForegroundColor DarkGray
+    return $true
+}
+
 function Install-ForeverDependencies {
     param([Parameter(Mandatory)][string]$RuntimeRoot)
     $lock = Join-Path $RuntimeRoot "package-lock.json"
@@ -257,6 +298,10 @@ function Install-ForeverDependencies {
     $installed = Test-Path (Join-Path $RuntimeRoot "node_modules\next\package.json")
     $currentHash = if (Test-Path $marker) { (Get-Content -Raw $marker).Trim() } else { "" }
     if (-not $installed -or $currentHash -ne $hash) {
+        if (Use-ForeverDependencySeed -RuntimeRoot $RuntimeRoot) {
+            Set-Content -LiteralPath $marker -Value $hash -Encoding ASCII
+            return
+        }
         Write-Host "Installing pinned dependencies..." -ForegroundColor Cyan
         Invoke-ForeverNpm -WorkingDirectory $RuntimeRoot -Arguments @("ci", "--no-audit", "--no-fund")
         Set-Content -LiteralPath $marker -Value $hash -Encoding ASCII
