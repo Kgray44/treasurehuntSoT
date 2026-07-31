@@ -13,6 +13,7 @@ param(
     [string]$BrowserTestPath,
     [string[]]$BrowserArgs = @(),
     [string]$BrowserArgsBase64 = "",
+    [string]$BrowserSelectionsBase64 = "",
     [string]$ExpectMutation = "true",
     [string]$BrowserGrep = "",
     [switch]$SkipProductionPerformance,
@@ -23,6 +24,7 @@ $ErrorActionPreference = "Stop"
 if ($env:SOUNDING_LINE_INTERNAL_RUNTIME -ne "1") {
     throw "This runtime can only be launched by a Sounding Line adapter."
 }
+if ($BrowserArgsBase64 -and $BrowserSelectionsBase64) { throw "BrowserArgsBase64 and BrowserSelectionsBase64 cannot be combined." }
 if ($BrowserArgsBase64) {
     if ($BrowserArgs.Count -gt 0) { throw "BrowserArgs and BrowserArgsBase64 cannot be combined." }
     try {
@@ -34,6 +36,27 @@ if ($BrowserArgsBase64) {
         throw "BrowserArgsBase64 must decode to a JSON array of strings."
     }
     $BrowserArgs = [string[]]$decodedBrowserArgs
+}
+$BrowserSelections = @()
+if ($BrowserSelectionsBase64) {
+    if ($BrowserArgs.Count -gt 0) { throw "BrowserArgs and BrowserSelectionsBase64 cannot be combined." }
+    try {
+        $decodedBrowserSelections = [System.Text.Encoding]::UTF8.GetString([Convert]::FromBase64String($BrowserSelectionsBase64)) | ConvertFrom-Json
+    } catch {
+        throw "BrowserSelectionsBase64 is not valid UTF-8 JSON."
+    }
+    $BrowserSelections = @($decodedBrowserSelections)
+    if ($BrowserSelections.Count -eq 0) { throw "BrowserSelectionsBase64 must decode to a non-empty JSON array." }
+    foreach ($selection in $BrowserSelections) {
+        if ($null -eq $selection -or
+            $selection.project -isnot [string] -or $selection.project -notmatch '^[a-z][a-z0-9-]{0,80}$' -or
+            @($selection.files).Count -eq 0 -or
+            @($selection.files | Where-Object { $_ -isnot [string] -or $_.Replace('\\', '/') -notmatch '^tests/e2e/[A-Za-z0-9._/-]+\.spec\.ts$' }).Count -gt 0 -or
+            $selection.grep -isnot [string] -or [string]::IsNullOrWhiteSpace($selection.grep) -or
+            ([string]$selection.caseCount) -notmatch '^[1-9][0-9]*$') {
+            throw "BrowserSelectionsBase64 contains an invalid governed browser selection."
+        }
+    }
 }
 if ($ExpectMutation -notin @("true", "false")) { throw "ExpectMutation must be true or false." }
 if (-not $SoundingLineLane) {
@@ -86,8 +109,8 @@ if ($isSoundingLineLane) {
         throw "Sounding Line lanes are limited to BrowserOnly Harborlight Phase 4 acceptance."
     }
     if ($SoundingLineLane -eq "browser-family") {
-        if (-not $BrowserOnly -or $BrowserTestPath -or $BrowserArgs.Count -eq 0) {
-            throw "browser-family requires BrowserOnly and registry-selected BrowserArgs without BrowserTestPath."
+        if (-not $BrowserOnly -or $BrowserTestPath -or ($BrowserArgs.Count -eq 0 -and $BrowserSelections.Count -eq 0)) {
+            throw "browser-family requires BrowserOnly and registry-selected browser arguments without BrowserTestPath."
         }
         foreach ($browserArgument in $BrowserArgs) {
             $normalizedArgument = $browserArgument.Replace('\', '/')
@@ -109,7 +132,7 @@ $validationServerPort = if ($isSoundingLineLane) { $SoundingLinePort } else { 31
 if ($BrowserOnly -and $SkipBrowser) {
     throw "BrowserOnly and SkipBrowser cannot be used together."
 }
-if ($SkipBrowser -and ($BrowserTestPath -or $BrowserGrep -or $BrowserArgs.Count -gt 0)) {
+if ($SkipBrowser -and ($BrowserTestPath -or $BrowserGrep -or $BrowserArgs.Count -gt 0 -or $BrowserSelections.Count -gt 0)) {
     throw "SkipBrowser cannot be combined with targeted browser selection."
 }
 
@@ -307,6 +330,24 @@ function Invoke-ValidationStep {
     param([Parameter(Mandatory)][string]$Name, [Parameter(Mandatory)][string[]]$Arguments)
     Write-Host "`n==> $Name" -ForegroundColor Cyan
     Invoke-ForeverNode -WorkingDirectory $runtimeRoot -Arguments $Arguments
+}
+
+function Assert-BrowserSelectionDiscovery {
+    param([Parameter(Mandatory)]$Selection)
+    $arguments = @("node_modules/playwright/cli.js", "test", "--list", "--project=$($Selection.project)", "--grep", [string]$Selection.grep) + @($Selection.files | ForEach-Object { ([string]$_).Replace('\\', '/') })
+    Write-Host "`n==> Discovering exact governed browser selection for $($Selection.project)" -ForegroundColor Cyan
+    Push-Location $runtimeRoot
+    try {
+        $listing = @(& (Get-ForeverNode) @arguments)
+        $listing | Out-Host
+        if ($LASTEXITCODE -ne 0) { throw "Playwright discovery failed with exit code $LASTEXITCODE." }
+    } finally {
+        Pop-Location
+    }
+    $summary = @($listing | Where-Object { $_ -match '^Total:\s+(\d+)\s+tests?' } | Select-Object -Last 1)
+    if ($summary.Count -ne 1 -or [int]$summary[0].Matches[1].Value -ne [int]$Selection.caseCount) {
+        throw "GOVERNED_BROWSER_DISCOVERY_MISMATCH:$($Selection.project):expected=$($Selection.caseCount)"
+    }
 }
 
 function Assert-TcpPortAvailable {
@@ -763,28 +804,37 @@ try {
         Write-Host "`n==> Starting owned isolated validation server" -ForegroundColor Cyan
         $ownedValidationServer = Start-OwnedValidationServer
         $playwrightInvoked = $true
-        $browserCommand = @("node_modules/playwright/cli.js", "test") + $BrowserArgs
-        if ($BrowserGrep) { $browserCommand += @("--grep", $BrowserGrep) }
-        if ($BrowserTestPath) {
-            # Harborlight owns a dedicated browser project. Other targeted
-            # acceptance files retain the routing declared by playwright.config.ts.
-            if ($runtimeRelativeBrowserTestPath.Replace('\', '/') -eq 'tests/e2e/harborlight-phase2.spec.ts') {
-                $browserCommand += "--project=harborlight-phase2"
+        if ($BrowserSelections.Count -gt 0) {
+            foreach ($selection in $BrowserSelections) {
+                Assert-BrowserSelectionDiscovery -Selection $selection
+                $browserCommand = @("node_modules/playwright/cli.js", "test", "--project=$($selection.project)", "--grep", [string]$selection.grep) + @($selection.files | ForEach-Object { ([string]$_).Replace('\', '/') })
+                if ($isSoundingLineLane) { $browserCommand += "--global-timeout=420000" }
+                Invoke-ValidationStep -Name "Running exact governed browser acceptance tests for $($selection.project)" -Arguments $browserCommand
             }
-            if ($runtimeRelativeBrowserTestPath.Replace('\', '/') -eq 'tests/e2e/harborlight-phase3.spec.ts') {
-                $browserCommand += "--project=harborlight-phase3"
+        } else {
+            $browserCommand = @("node_modules/playwright/cli.js", "test") + $BrowserArgs
+            if ($BrowserGrep) { $browserCommand += @("--grep", $BrowserGrep) }
+            if ($BrowserTestPath) {
+                # Harborlight owns a dedicated browser project. Other targeted
+                # acceptance files retain the routing declared by playwright.config.ts.
+                if ($runtimeRelativeBrowserTestPath.Replace('\', '/') -eq 'tests/e2e/harborlight-phase2.spec.ts') {
+                    $browserCommand += "--project=harborlight-phase2"
+                }
+                if ($runtimeRelativeBrowserTestPath.Replace('\', '/') -eq 'tests/e2e/harborlight-phase3.spec.ts') {
+                    $browserCommand += "--project=harborlight-phase3"
+                }
+                if ($runtimeRelativeBrowserTestPath.Replace('\', '/') -eq 'tests/e2e/harborlight-phase4.spec.ts') {
+                    $browserCommand += "--project=harborlight-phase4"
+                }
+                $browserCommand += $runtimeRelativeBrowserTestPath.Replace('\', '/')
             }
-            if ($runtimeRelativeBrowserTestPath.Replace('\', '/') -eq 'tests/e2e/harborlight-phase4.spec.ts') {
-                $browserCommand += "--project=harborlight-phase4"
+            # A named Sounding Line lane is a focused repair boundary. Its deadline
+            # is enforced by Playwright so cleanup and receipt emission can run.
+            if ($isSoundingLineLane) {
+                $browserCommand += "--global-timeout=420000"
             }
-            $browserCommand += $runtimeRelativeBrowserTestPath.Replace('\', '/')
+            Invoke-ValidationStep -Name "Running browser acceptance tests" -Arguments $browserCommand
         }
-        # A named Sounding Line lane is a focused repair boundary. Its deadline
-        # is enforced by Playwright so cleanup and receipt emission can run.
-        if ($isSoundingLineLane) {
-            $browserCommand += "--global-timeout=420000"
-        }
-        Invoke-ValidationStep -Name "Running browser acceptance tests" -Arguments $browserCommand
         Stop-OwnedValidationServer -ServerOwnership $ownedValidationServer
         $ownedValidationServer = $null
         Assert-TcpPortAvailable -Port $validationServerPort

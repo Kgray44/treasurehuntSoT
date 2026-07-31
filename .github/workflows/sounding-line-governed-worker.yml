@@ -7,6 +7,10 @@ on:
         description: Sealed-plan suite identifier
         required: true
         type: string
+      gate:
+        description: Sealed-plan gate identifier
+        required: true
+        type: string
 
 permissions:
   contents: read
@@ -31,10 +35,11 @@ jobs:
         env: { DATABASE_URL: "file:./dev.db" }
       - run: npm run db:seed
         env: { DATABASE_URL: "file:./dev.db" }
-      - run: npx playwright install chromium
+      - if: startsWith(inputs.suite, 'browser.')
+        run: npx playwright install chromium webkit
       - env:
           SOUNDING_LINE_PLAN: ${{ runner.temp }}/sounding-line-plan/sounding-line-plan.json
-        run: node scripts/sounding-line/authority.mjs mainline --execute-only --plan-in "$env:SOUNDING_LINE_PLAN" --suite ${{ inputs.suite }} --receipt-out sounding-line-worker-evidence.json
+        run: node scripts/sounding-line/authority.mjs ${{ inputs.gate }} --execute-only --plan-in "$env:SOUNDING_LINE_PLAN" --suite ${{ inputs.suite }} --receipt-out sounding-line-worker-evidence.json
       - if: always()
         uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08
         with:

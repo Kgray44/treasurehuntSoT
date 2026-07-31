@@ -29,6 +29,26 @@ test("planner is deterministic and rejects archived P34 suites", async () => {
       (node) => !["browser.auth", "browser.player-journal", "compatibility.browser"].includes(node.id),
     ),
   );
+  const releaseCandidate = await buildPlan({ root, gateId: "release-candidate", sourceSha: "test-sha" });
+  const requiredBrowserSuites = [
+    "browser.access-sentinel",
+    "browser.auth",
+    "browser.invitations",
+    "browser.player-library",
+    "browser.player-journal",
+    "browser.passport",
+    "browser.artifacts",
+    "browser.captain",
+    "browser.studio",
+    "browser.community",
+    "browser.private-operations",
+    "browser.navigation",
+    "browser.accessibility",
+    "browser.responsive",
+    "browser.animation-lifecycle",
+    "browser.cross-project",
+  ];
+  for (const suiteId of requiredBrowserSuites) assert.ok(releaseCandidate.nodes.some((node) => node.id === suiteId));
 });
 
 test("only the finalizer produces an accepted decision from source-bound clean receipts", () => {
@@ -51,6 +71,8 @@ test("only the finalizer produces an accepted decision from source-bound clean r
         planDigest: "plan",
         gate: "mainline",
         cleanupState: "CLEAN",
+        exitCode: 0,
+        timedOut: false,
         result: "PASSED",
       },
     ],
@@ -67,6 +89,8 @@ test("only the finalizer produces an accepted decision from source-bound clean r
         planDigest: "plan",
         gate: "mainline",
         cleanupState: "CLEAN",
+        exitCode: 0,
+        timedOut: false,
         result: "PASSED",
       },
     ],
@@ -83,6 +107,8 @@ test("only the finalizer produces an accepted decision from source-bound clean r
         planDigest: "plan",
         gate: "mainline",
         cleanupState: "CLEAN",
+        exitCode: 0,
+        timedOut: false,
         result: "PASSED",
       },
       {
@@ -93,6 +119,8 @@ test("only the finalizer produces an accepted decision from source-bound clean r
         planDigest: "plan",
         gate: "mainline",
         cleanupState: "CLEAN",
+        exitCode: 0,
+        timedOut: false,
         result: "PASSED",
       },
     ],
@@ -125,8 +153,10 @@ test("the protected main PR emits the stable authority decision while focused re
     ["main"],
     "only pull requests targeting main may trigger authority",
   );
-  assert.match(authoritative, /^\s+workflow_dispatch:\s*$/mu);
-  assert.match(authoritative, /^\s*name:\s+Sounding Line \/ Mainline Decision\s*$/mu);
+  assert.match(authoritative, /workflow_dispatch:\s*\n\s+inputs:\s*\n\s+gate:/u);
+  assert.match(authoritative, /options: \[mainline, release-candidate\]/u);
+  assert.match(authoritative, /Sounding Line \/ \$\{\{ needs\.plan\.outputs\.gate/u);
+  assert.match(authoritative, /gate: \$\{\{ needs\.plan\.outputs\.gate \}\}/u);
   assert.match(focused, /--execute-only/u);
   assert.doesNotMatch(focused, /finalize-ci\.mjs|finalizer\.mjs|Sounding Line \/ Mainline Decision|RELEASE_GO/u);
 });
@@ -141,6 +171,8 @@ test("BrowserOnly Harborlight lanes do not repeat independent broad gates", asyn
     /if \(-not \$BrowserOnly\) \{[\s\S]*Running unit tests[\s\S]*Verifying additive platform backfill[\s\S]*\n    \}\n    \[void\]\(Invoke-IsolationHelper -Arguments @\("checkpoint"/u,
   );
   assert.match(runtime, /if \(\$isSoundingLineLane\) \{[\s\S]*--global-timeout=420000/u);
+  assert.match(runtime, /GOVERNED_BROWSER_DISCOVERY_MISMATCH/u);
+  assert.match(runtime, /BrowserSelectionsBase64/u);
 });
 
 test("concurrent Harborlight lanes may share only their validation-run parent", async () => {
@@ -156,6 +188,7 @@ test("governed workers consume the sealed plan and fail closed on missing receip
   assert.match(worker, /--plan-in "\$env:SOUNDING_LINE_PLAN"/u);
   assert.match(worker, /GOVERNED_WORKER_RECEIPT_MISSING/u);
   assert.match(worker, /GOVERNED_WORKER_RECEIPT_FAILED/u);
+  assert.match(worker, /inputs\.gate/u);
 });
 
 test("public repository commands route through Sounding Line", async () => {
