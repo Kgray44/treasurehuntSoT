@@ -37,8 +37,25 @@ jobs:
         env: { DATABASE_URL: "file:./dev.db" }
       - run: npm run db:seed
         env: { DATABASE_URL: "file:./dev.db" }
-      - if: startsWith(inputs.suite, 'browser.')
-        run: npx playwright install chromium webkit
+      - name: Install browser engines required by the sealed suite
+        shell: pwsh
+        env:
+          SOUNDING_LINE_PLAN: ${{ runner.temp }}/sounding-line-plan/sounding-line-plan.json
+          SOUNDING_LINE_SUITE: ${{ inputs.suite }}
+        run: |
+          $plan = Get-Content -Raw $env:SOUNDING_LINE_PLAN | ConvertFrom-Json
+          $node = @($plan.nodes | Where-Object { $_.id -eq $env:SOUNDING_LINE_SUITE })
+          if ($node.Count -ne 1) { throw "GOVERNED_BROWSER_ENGINE_PLAN_NODE_INVALID" }
+          $engines = if ($env:SOUNDING_LINE_SUITE -like 'browser.*') {
+            @('chromium', 'webkit')
+          } elseif (@($node[0].resources) -contains 'browser-chromium') {
+            @('chromium')
+          } elseif (@($node[0].resources) -contains 'browser-webkit') {
+            @('webkit')
+          } else {
+            @()
+          }
+          if ($engines.Count -gt 0) { npx playwright install @engines }
       - env:
           SOUNDING_LINE_PLAN: ${{ runner.temp }}/sounding-line-plan/sounding-line-plan.json
         run: node scripts/sounding-line/authority.mjs ${{ inputs.gate }} --execute-only --plan-in "$env:SOUNDING_LINE_PLAN" --suite ${{ inputs.suite }} --receipt-out sounding-line-worker-evidence.json
