@@ -30,7 +30,9 @@ async function preserveReadOnlyJournalState(page: Page) {
 }
 
 test("proves the canonical read-only journal journey across current product routes", async ({ page, browserName }, testInfo) => {
-  test.setTimeout(180_000);
+  // Chromium completes this route in seconds; a minute keeps the mobile
+  // contract responsive while yielding an actionable failing step if it regresses.
+  test.setTimeout(60_000);
   expect(process.env.FOREVER_VALIDATION_ISOLATION).toBe("1");
   const fixture = readPreseededPhase3BaseFixture();
   const before = await capturePhase3DbTruth(fixture);
