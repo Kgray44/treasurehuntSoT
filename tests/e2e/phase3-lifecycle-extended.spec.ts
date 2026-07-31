@@ -585,7 +585,10 @@ async function openDevelopmentShowcase(page: Page) {
   if (!page.url().endsWith("/")) await page.goto("/");
   const skip = page.getByRole("button", { name: "Skip arrival" });
   if (await skip.isVisible().catch(() => false)) await skip.click();
-  await page.getByRole("link", { name: /TEST ANIMATIONS/u }).click();
+  await Promise.all([
+    page.waitForURL(/\/dev\/animations(?:[?#]|$)/u),
+    page.getByRole("link", { name: /TEST ANIMATIONS/u }).click(),
+  ]);
   await expect(page.getByRole("heading", { name: "Forever Treasure Animation Showcase" })).toBeVisible();
 }
 
