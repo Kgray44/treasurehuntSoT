@@ -509,18 +509,22 @@ function Start-OwnedValidationServer {
     try {
         $deadline = [DateTime]::UtcNow.AddSeconds(120)
         $identity = $null
+        $lastIdentityProbe = "no-response"
         while ([DateTime]::UtcNow -lt $deadline) {
             if ($serverProcess.HasExited) { throw "Owned validation server exited before identity verification." }
             try {
                 $identity = Invoke-RestMethod -Uri "http://127.0.0.1:$validationServerPort/api/dev/validation/database-identity" -Method Get -TimeoutSec 3
+                $lastIdentityProbe = "status=200; validationDatabase=$($identity.validationDatabase); nonceMatch=$($identity.nonceMatch)"
                 if ($identity.validationDatabase -eq $true -and $identity.nonceMatch -eq $true) { break }
                 $identity = $null
             } catch {
+                $statusCode = if ($_.Exception.Response) { [int]$_.Exception.Response.StatusCode } else { "unavailable" }
+                $lastIdentityProbe = "status=$statusCode"
                 $identity = $null
             }
             Start-Sleep -Milliseconds 250
         }
-        if (-not $identity) { throw "Owned validation server did not prove the isolated database identity." }
+        if (-not $identity) { throw "Owned validation server did not prove the isolated database identity. Last identity probe: $lastIdentityProbe" }
 
         $ownerIds = @(Get-TcpPortOwnerIds -Port $validationServerPort)
         if ($ownerIds.Count -ne 1) {
