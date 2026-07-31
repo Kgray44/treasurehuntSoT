@@ -41,6 +41,24 @@ if (-not $SoundingLineLane) {
 }
 . (Join-Path $PSScriptRoot "..\dev-common.ps1")
 
+# Do not depend on Get-FileHash being imported into the runner's PowerShell
+# session.  The isolated boundary must compute the same SHA-256 proof on both
+# Windows PowerShell and PowerShell Core hosted runners.
+function Get-SoundingLineSha256 {
+    param([Parameter(Mandatory)][string]$LiteralPath)
+    $stream = [System.IO.File]::Open($LiteralPath, [System.IO.FileMode]::Open, [System.IO.FileAccess]::Read, [System.IO.FileShare]::Read)
+    try {
+        $hasher = [System.Security.Cryptography.SHA256]::Create()
+        try {
+            return ([System.BitConverter]::ToString($hasher.ComputeHash($stream))).Replace("-", "").ToLowerInvariant()
+        } finally {
+            $hasher.Dispose()
+        }
+    } finally {
+        $stream.Dispose()
+    }
+}
+
 # This opt-in is intentionally narrower than the legacy harness.  It exists
 # only for the two, explicitly named, Sounding Line Harborlight browser lanes;
 # every ordinary invocation keeps the historical global lock and port 3100.
@@ -146,7 +164,7 @@ function Get-CanonicalDatabaseFamilyFingerprint {
                 [pscustomobject]@{
                     fileName = [System.IO.Path]::GetFileName($memberPath)
                     present = $true
-                    sha256 = (Get-FileHash -LiteralPath $memberPath -Algorithm SHA256).Hash.ToLowerInvariant()
+                    sha256 = Get-SoundingLineSha256 -LiteralPath $memberPath
                     size = [long]$memberItem.Length
                     mtimeIso = $memberItem.LastWriteTimeUtc.ToString("yyyy-MM-ddTHH:mm:ss.fffZ", [System.Globalization.CultureInfo]::InvariantCulture)
                 }
