@@ -563,6 +563,8 @@ function Start-OwnedValidationServer {
             LauncherIdentity = $launcherIdentity
             ListenerIdentity = $listenerIdentity
             ProcessIdentities = $processIdentities
+            StdoutPath = $stdout
+            StderrPath = $stderr
         }
 
         [void](Invoke-IsolationHelper -Arguments @(
@@ -597,6 +599,15 @@ function Start-OwnedValidationServer {
         catch { throw [System.InvalidOperationException]::new("Validation server start failed and owned-process cleanup also failed: $($_.Exception.Message)", $startFailure) }
         throw $startFailure
     }
+}
+
+function Get-OwnedValidationServerDiagnostics {
+    param([Parameter(Mandatory)]$ServerOwnership)
+    $launcherAlive = Test-ProcessIdentityMatches -ExpectedIdentity $ServerOwnership.LauncherIdentity
+    $stderrTail = if (Test-Path -LiteralPath $ServerOwnership.StderrPath) {
+        ((Get-Content -LiteralPath $ServerOwnership.StderrPath -Tail 48 -ErrorAction SilentlyContinue) -join "`n").Trim()
+    } else { "stderr-unavailable" }
+    return "launcherAlive=$launcherAlive; port=$($ServerOwnership.Port); stderrTail=$stderrTail"
 }
 
 function Stop-OwnedValidationServer {
@@ -841,7 +852,11 @@ try {
                 Assert-BrowserSelectionDiscovery -Selection $selection
                 $browserCommand = @("node_modules/playwright/cli.js", "test", "--project=$($selection.project)", "--grep", [string]$selection.grep) + @($selection.files | ForEach-Object { ([string]$_).Replace('\', '/') })
                 if ($isSoundingLineLane) { $browserCommand += "--global-timeout=$browserGlobalTimeoutMs" }
-                Invoke-ValidationStep -Name "Running exact governed browser acceptance tests for $($selection.project)" -Arguments $browserCommand
+                try {
+                    Invoke-ValidationStep -Name "Running exact governed browser acceptance tests for $($selection.project)" -Arguments $browserCommand
+                } catch {
+                    throw "GOVERNED_BROWSER_SERVER_OR_TEST_FAILURE:$($_.Exception.Message)`n$(Get-OwnedValidationServerDiagnostics -ServerOwnership $ownedValidationServer)"
+                }
             }
         } else {
             $browserCommand = @("node_modules/playwright/cli.js", "test") + $BrowserArgs
