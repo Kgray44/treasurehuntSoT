@@ -49,14 +49,20 @@ function suiteAdapter(suite, registry) {
         throw new Error(`INVALID_BROWSER_FAMILY_SELECTION:${suite.id}`);
       const selection = selections.get(definition.project) ?? { project: definition.project, files: new Set(), titles: [] };
       selection.files.add(definition.file);
-      selection.titles.push(definition.title);
+      // The registry records the readable full title path. Playwright's grep
+      // evaluates that path with a runner-owned separator, so select the
+      // exact leaf title while retaining the registry-selected spec files.
+      selection.titles.push(definition.title.split("\u203a").at(-1).trim());
       selections.set(definition.project, selection);
     }
     if (!selections.size) throw new Error(`INVALID_BROWSER_FAMILY_SELECTION:${suite.id}`);
     const exactSelections = [...selections.values()].map((selection) => ({
       project: selection.project,
       files: [...selection.files].sort(),
-      grep: `^(?:${selection.titles.map(escapeRegex).join("|")})$`,
+      // Playwright matches the complete title path (including project and
+      // describe ancestry). A suffix anchor selects the registered leaf title
+      // exactly without discarding that immutable prefix.
+      grep: `(?:${selection.titles.map(escapeRegex).join("|")})$`,
       caseCount: selection.titles.length,
     }));
     return resolveIsolatedBrowserFamilyAdapter(

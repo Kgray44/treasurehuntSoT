@@ -344,8 +344,9 @@ function Assert-BrowserSelectionDiscovery {
     } finally {
         Pop-Location
     }
-    $summary = @($listing | Where-Object { $_ -match '^Total:\s+(\d+)\s+tests?' } | Select-Object -Last 1)
-    if ($summary.Count -ne 1 -or [int]$summary[0].Matches[1].Value -ne [int]$Selection.caseCount) {
+    $projectPattern = '^\s*\[' + [regex]::Escape([string]$Selection.project) + '\]\s+›'
+    $discoveredCases = @($listing | Where-Object { $_ -match $projectPattern }).Count
+    if ($discoveredCases -ne [int]$Selection.caseCount) {
         throw "GOVERNED_BROWSER_DISCOVERY_MISMATCH:$($Selection.project):expected=$($Selection.caseCount)"
     }
 }

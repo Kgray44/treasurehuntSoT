@@ -173,6 +173,8 @@ test("BrowserOnly Harborlight lanes do not repeat independent broad gates", asyn
   assert.match(runtime, /if \(\$isSoundingLineLane\) \{[\s\S]*--global-timeout=420000/u);
   assert.match(runtime, /GOVERNED_BROWSER_DISCOVERY_MISMATCH/u);
   assert.match(runtime, /BrowserSelectionsBase64/u);
+  const authority = await readFile(path.join(root, "scripts", "sounding-line", "authority.mjs"), "utf8");
+  assert.match(authority, /definition\.title\.split\("\\u203a"\)\.at\(-1\)\.trim\(\)/u);
 });
 
 test("concurrent Harborlight lanes may share only their validation-run parent", async () => {
