@@ -472,6 +472,18 @@ function stableLottieRemountSnapshot(snapshot: ExtendedSnapshot) {
   return stable;
 }
 
+function stableAudioLifecycleSnapshot(snapshot: ExtendedSnapshot) {
+  const {
+    // PageFlip's presentation animation belongs to the journal renderer, not
+    // to AudioCuePlayer. The test keeps exact audio-context, node, timer, and
+    // lifecycle ownership assertions below.
+    activeDocumentAnimations: _activeDocumentAnimations,
+    pendingDocumentAnimations: _pendingDocumentAnimations,
+    ...stable
+  } = stableSnapshot(snapshot);
+  return stable;
+}
+
 async function forceGcIfSupported(page: Page) {
   return page.evaluate(() => {
     const gc = (window as unknown as Window & { gc?: () => void }).gc;
@@ -1130,7 +1142,7 @@ test.describe.serial("Project Lanternwake Phase 3 Quartermaster and audio lifecy
         expect(after.audioNodeFailures - before.audioNodeFailures).toBe(audioCase.failuresPerTurnPair);
         expect(after.activeAudioNodes).toBe(0);
       };
-      const { finalSnapshot } = await runTwentyCycles(page, async () => turnPair());
+      const { finalSnapshot } = await runTwentyCycles(page, async () => turnPair(), stableAudioLifecycleSnapshot);
       if (audioCase.mode === "blocked") {
         expect(finalSnapshot.audioResumeAttempts).toBeGreaterThan(0);
         expect(finalSnapshot.audioResumeFailures).toBe(finalSnapshot.audioResumeAttempts);

@@ -37582,9 +37582,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-d88860d7481e7f73fa38",
+      "id": "sl-test-fd55ff48b0a54d594bd4",
       "title": "Project Lanternwake Phase 3 extended runtime lifecycle › development Rive runtime remounts cleanly for twenty successful cycles",
-      "line": 627,
+      "line": 639,
       "file": "tests/e2e/phase3-lifecycle-extended.spec.ts",
       "project": "chromium",
       "suiteId": "browser.animation-lifecycle",
@@ -37618,9 +37618,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-5ba6e33da9c0cbbe517c",
+      "id": "sl-test-0219ffa319b3be2c3373",
       "title": "Project Lanternwake Phase 3 extended runtime lifecycle › development Rive 404 fault is hit and returns to one static fallback for twenty remounts",
-      "line": 645,
+      "line": 657,
       "file": "tests/e2e/phase3-lifecycle-extended.spec.ts",
       "project": "chromium",
       "suiteId": "browser.animation-lifecycle",
@@ -37654,9 +37654,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-86a27fbd2b5e8548befc",
+      "id": "sl-test-26090cbab65841d1b5b8",
       "title": "Project Lanternwake Phase 3 extended runtime lifecycle › development Rive abort fault is hit and returns to one static fallback for twenty remounts",
-      "line": 645,
+      "line": 657,
       "file": "tests/e2e/phase3-lifecycle-extended.spec.ts",
       "project": "chromium",
       "suiteId": "browser.animation-lifecycle",
@@ -37690,9 +37690,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-0c9753da10e121e24bea",
+      "id": "sl-test-95038cbaa5b81ae292e4",
       "title": "Project Lanternwake Phase 3 extended runtime lifecycle › development Rive malformed fault is hit and returns to one static fallback for twenty remounts",
-      "line": 645,
+      "line": 657,
       "file": "tests/e2e/phase3-lifecycle-extended.spec.ts",
       "project": "chromium",
       "suiteId": "browser.animation-lifecycle",
@@ -37726,9 +37726,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-13b5b30efc4e6c9436e3",
+      "id": "sl-test-593972099e3bc69fb0a4",
       "title": "Project Lanternwake Phase 3 extended runtime lifecycle › authored invitation seal runtime remounts cleanly for twenty route cycles",
-      "line": 673,
+      "line": 685,
       "file": "tests/e2e/phase3-lifecycle-extended.spec.ts",
       "project": "chromium",
       "suiteId": "browser.invitations",
@@ -37762,9 +37762,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-e67f8837167e5ce3efc4",
+      "id": "sl-test-d3a9d3fd713472e2a7c8",
       "title": "Project Lanternwake Phase 3 extended runtime lifecycle › Journal Clasp compatibility is not required by the canonical Chronicle journal across route cycles",
-      "line": 704,
+      "line": 716,
       "file": "tests/e2e/phase3-lifecycle-extended.spec.ts",
       "project": "chromium",
       "suiteId": "browser.animation-lifecycle",
@@ -37798,9 +37798,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-f54d0c0b28cd1cac9074",
+      "id": "sl-test-0aa29f1bacefecb597f4",
       "title": "Project Lanternwake Phase 3 extended runtime lifecycle › all three Lottie contracts succeed across twenty route mount-unmount cycles",
-      "line": 749,
+      "line": 761,
       "file": "tests/e2e/phase3-lifecycle-extended.spec.ts",
       "project": "chromium",
       "suiteId": "browser.animation-lifecycle",
@@ -37834,9 +37834,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-480afec11d2a3697f1e2",
+      "id": "sl-test-64f3f394e4a21ad9268f",
       "title": "Project Lanternwake Phase 3 extended runtime lifecycle › moonlit-waves 404 fault is hit and preserves a static fallback for twenty remounts",
-      "line": 803,
+      "line": 815,
       "file": "tests/e2e/phase3-lifecycle-extended.spec.ts",
       "project": "chromium",
       "suiteId": "browser.animation-lifecycle",
@@ -37870,9 +37870,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-8a16d2fa0b32522e7581",
+      "id": "sl-test-364c931e427997d505a5",
       "title": "Project Lanternwake Phase 3 extended runtime lifecycle › rolling-fog abort fault is hit and preserves a static fallback for twenty remounts",
-      "line": 803,
+      "line": 815,
       "file": "tests/e2e/phase3-lifecycle-extended.spec.ts",
       "project": "chromium",
       "suiteId": "browser.animation-lifecycle",
@@ -37906,9 +37906,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-d119cf4130a771c8fdcf",
+      "id": "sl-test-40990504e61de726b2b9",
       "title": "Project Lanternwake Phase 3 extended runtime lifecycle › ink-bloom malformed fault is hit and preserves a static fallback for twenty remounts",
-      "line": 803,
+      "line": 815,
       "file": "tests/e2e/phase3-lifecycle-extended.spec.ts",
       "project": "chromium",
       "suiteId": "browser.animation-lifecycle",
@@ -37942,9 +37942,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-06527b3e631e4be98282",
+      "id": "sl-test-dfe72d4472ef48be17c8",
       "title": "Project Lanternwake Phase 3 extended runtime lifecycle › development stalled-load failpoint reaches the exact Lottie fallback and cleans up for twenty cycles",
-      "line": 861,
+      "line": 873,
       "file": "tests/e2e/phase3-lifecycle-extended.spec.ts",
       "project": "chromium",
       "suiteId": "browser.animation-lifecycle",
@@ -37978,9 +37978,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-6f2afa00750bc24f3e29",
+      "id": "sl-test-c295ace17092faf96d45",
       "title": "Project Lanternwake Phase 3 extended runtime lifecycle › development renderer-error failpoint reaches the exact Lottie fallback and cleans up for twenty cycles",
-      "line": 861,
+      "line": 873,
       "file": "tests/e2e/phase3-lifecycle-extended.spec.ts",
       "project": "chromium",
       "suiteId": "browser.animation-lifecycle",
@@ -38014,9 +38014,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-4280c9bc6339d3ffa7d7",
+      "id": "sl-test-fd8fe7ade844003e00b9",
       "title": "Project Lanternwake Phase 3 extended runtime lifecycle › animation showcase serial trailer completes across twenty enter-leave cycles",
-      "line": 954,
+      "line": 966,
       "file": "tests/e2e/phase3-lifecycle-extended.spec.ts",
       "project": "chromium",
       "suiteId": "browser.animation-lifecycle",
@@ -38050,9 +38050,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-83de4ff6371c52bb6e3e",
+      "id": "sl-test-c5e6a1984ad51b3d67c5",
       "title": "Project Lanternwake Phase 3 Quartermaster and audio lifecycle › mocked Quartermaster confirmations restore focus and release overlays for twenty cycles",
-      "line": 983,
+      "line": 995,
       "file": "tests/e2e/phase3-lifecycle-extended.spec.ts",
       "project": "chromium",
       "suiteId": "browser.animation-lifecycle",
@@ -38086,9 +38086,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-ab73d67b72540b6c9259",
+      "id": "sl-test-f8d66f16642b7e072d99",
       "title": "Project Lanternwake Phase 3 Quartermaster and audio lifecycle › audio success remains nonblocking and releases work for twenty page-turn cycles",
-      "line": 1095,
+      "line": 1107,
       "file": "tests/e2e/phase3-lifecycle-extended.spec.ts",
       "project": "chromium",
       "suiteId": "browser.animation-lifecycle",
@@ -38122,9 +38122,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-18f35be42a2d6b80db55",
+      "id": "sl-test-1a304eeccfc9f5fb8e1b",
       "title": "Project Lanternwake Phase 3 Quartermaster and audio lifecycle › audio blocked-context remains nonblocking and releases work for twenty page-turn cycles",
-      "line": 1095,
+      "line": 1107,
       "file": "tests/e2e/phase3-lifecycle-extended.spec.ts",
       "project": "chromium",
       "suiteId": "browser.animation-lifecycle",
@@ -38158,9 +38158,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-de3d7b520f56257b896d",
+      "id": "sl-test-439f0e13493929881ef6",
       "title": "Project Lanternwake Phase 3 Quartermaster and audio lifecycle › audio missing-context remains nonblocking and releases work for twenty page-turn cycles",
-      "line": 1095,
+      "line": 1107,
       "file": "tests/e2e/phase3-lifecycle-extended.spec.ts",
       "project": "chromium",
       "suiteId": "browser.animation-lifecycle",
@@ -38194,9 +38194,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-f85600d26d7237b9d8c8",
+      "id": "sl-test-e839b856c82c94fabc0c",
       "title": "Project Lanternwake Phase 3 Quartermaster and audio lifecycle › audio oscillator-play-failure remains nonblocking and releases work for twenty page-turn cycles",
-      "line": 1095,
+      "line": 1107,
       "file": "tests/e2e/phase3-lifecycle-extended.spec.ts",
       "project": "chromium",
       "suiteId": "browser.animation-lifecycle",
@@ -38230,9 +38230,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-e74146aab15727de1c69",
+      "id": "sl-test-9c7aaddf379b7781f775",
       "title": "Project Lanternwake Phase 3 Quartermaster and audio lifecycle › audio muted remains nonblocking and releases work for twenty page-turn cycles",
-      "line": 1095,
+      "line": 1107,
       "file": "tests/e2e/phase3-lifecycle-extended.spec.ts",
       "project": "chromium",
       "suiteId": "browser.animation-lifecycle",
