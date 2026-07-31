@@ -138,6 +138,7 @@ async function run(gateId, { serial, executeOnly = false, receiptPath, suiteId, 
       Object.assign(adapterEnv, {
         SOUNDING_LINE_INTERNAL_RUNTIME: "1",
         FOREVER_DEPENDENCY_SEED_ROOT: root,
+        SOUNDING_LINE_SUITE_HARD_BUDGET_MS: String(suite.hardBudgetMs),
       });
     }
     const result = await executeAdapter(adapter, { cwd: root, env: adapterEnv, timeoutMs: suite.hardBudgetMs });

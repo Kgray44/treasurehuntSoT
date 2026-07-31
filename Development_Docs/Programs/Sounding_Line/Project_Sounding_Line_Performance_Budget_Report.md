@@ -2,7 +2,7 @@
 title: Project Sounding Line Performance Budget Report
 audience: engineering
 status: current
-last_reviewed: 2026-07-30
+last_reviewed: 2026-07-31
 ---
 
 # Project Sounding Line Performance Budget Report
@@ -25,3 +25,29 @@ The source of truth is
 `ea07b1f3b4ffb8fec0d40d168bf5da60091a362368bc371563f4826b96bee91e`, and
 final evidence digest
 `a68bf1c7d135af6ae35959f0c96f90dd77e5a72a65fca24615c039f33fc74682`.
+
+## Serial accessibility browser-family budget review — 2026-07-31
+
+Owner: `lanternwake`. Review date: `2026-08-07` (or immediately after the
+first complete governed receipt). This is a measured correction to a serial
+two-project family, not an authorization to parallelize it. The attempted
+parallel run `30610144261` exposed shared journal-readiness contention and is
+retained as failed evidence; `parallelSafe` remains `false`.
+
+The serial governed run `30609493591` exhausted its former inner 420,000 ms
+Playwright deadline after 61 Chromium cases. Its corrected 30-minute run
+`30610819644` reached Chromium plus 28 WebKit cases before the governed
+1,800,000 ms hard budget expired (`exitCode 124`, elapsed `1,800,234 ms`).
+Those receipts establish that the former budget cannot represent the required
+two-browser serial proof. The new expected duration is 5,400,000 ms and hard
+budget is 6,300,000 ms, with a 120-minute hosted-job envelope. The runtime
+derives Playwright's global deadline from each selected suite hard budget and
+reserves 120,000 ms for server teardown, isolation verification, and receipt
+emission; the adapter hard budget remains authoritative.
+
+The runtime deliberately creates a fresh disposable dependency and database
+root for every governed browser run, so a conventional warm-cache measurement
+would not exercise the governed path. The first complete receipt under this
+budget is the required cold-path confirmation; no retry is being treated as
+evidence. The review must inspect setup, test, cleanup, and artifact-upload
+timings before retaining or revising the budget.

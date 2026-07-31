@@ -175,7 +175,8 @@ test("BrowserOnly Harborlight lanes do not repeat independent broad gates", asyn
     runtime,
     /if \(-not \$BrowserOnly\) \{[\s\S]*Running unit tests[\s\S]*Verifying additive platform backfill[\s\S]*\n    \}\n    \[void\]\(Invoke-IsolationHelper -Arguments @\("checkpoint"/u,
   );
-  assert.match(runtime, /if \(\$isSoundingLineLane\) \{[\s\S]*--global-timeout=420000/u);
+  assert.match(runtime, /SOUNDING_LINE_SUITE_HARD_BUDGET_MS/u);
+  assert.match(runtime, /--global-timeout=\$browserGlobalTimeoutMs/u);
   assert.match(runtime, /GOVERNED_BROWSER_DISCOVERY_MISMATCH/u);
   assert.match(runtime, /runner\/console encoded/u);
   assert.match(runtime, /Preparing focused browser legacy playthrough fixture/u);
@@ -187,6 +188,7 @@ test("BrowserOnly Harborlight lanes do not repeat independent broad gates", asyn
   const authority = await readFile(path.join(root, "scripts", "sounding-line", "authority.mjs"), "utf8");
   assert.match(authority, /definition\.title\.split\("\\u203a"\)\.at\(-1\)\.trim\(\)/u);
   assert.match(authority, /FOREVER_DEPENDENCY_SEED_ROOT: root/u);
+  assert.match(authority, /SOUNDING_LINE_SUITE_HARD_BUDGET_MS: String\(suite\.hardBudgetMs\)/u);
   const common = await readFile(path.join(root, "scripts", "dev-common.ps1"), "utf8");
   assert.match(common, /function Copy-ForeverDependencySeed/u);
   assert.match(common, /robocopy \$seedModules \$runtimeModules \/E \/COPY:DAT/u);
@@ -209,7 +211,7 @@ test("governed workers consume the sealed plan and fail closed on missing receip
   assert.match(worker, /GOVERNED_WORKER_RECEIPT_MISSING/u);
   assert.match(worker, /GOVERNED_WORKER_RECEIPT_FAILED/u);
   assert.match(worker, /inputs\.gate/u);
-  assert.match(worker, /timeout-minutes: 40/u);
+  assert.match(worker, /timeout-minutes: 120/u);
   assert.match(adapters, /taskkill", \["\/pid", String\(child\.pid\), "\/T", "\/F"\]/u);
 });
 

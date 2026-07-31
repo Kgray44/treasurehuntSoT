@@ -38,8 +38,9 @@ jobs:
   focused-suite:
     name: Sounding Line / Focused Browser Evidence
     runs-on: windows-latest
-    # Retains the suite hard budget while allowing measured setup and receipt cleanup.
-    timeout-minutes: 40
+    # Accommodates the 105-minute serial accessibility hard budget plus measured
+    # runtime setup, teardown, receipt emission, and artifact upload headroom.
+    timeout-minutes: 120
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020

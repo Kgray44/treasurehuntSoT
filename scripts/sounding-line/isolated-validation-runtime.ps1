@@ -100,6 +100,7 @@ if (-not (Get-Command -Name Get-FileHash -ErrorAction SilentlyContinue)) {
 # only for the two, explicitly named, Sounding Line Harborlight browser lanes;
 # every ordinary invocation keeps the historical global lock and port 3100.
 $isSoundingLineLane = $SoundingLineLane -ne ""
+$browserGlobalTimeoutMs = 420000
 if ($isSoundingLineLane) {
     if ($SoundingLineLane -notin @("harborlight-a", "harborlight-b", "browser-family")) {
         throw "SoundingLineLane must be harborlight-a, harborlight-b, or browser-family."
@@ -123,6 +124,15 @@ if ($isSoundingLineLane) {
     if (($SoundingLineLane -eq "browser-family" -and $SoundingLinePort -ne 3100) -or
         ($SoundingLineLane -ne "browser-family" -and ($SoundingLinePort -lt 3101 -or $SoundingLinePort -gt 3199))) {
         throw "browser-family must own loopback port 3100; named Harborlight lanes must own ports 3101 through 3199."
+    }
+    if ($env:SOUNDING_LINE_SUITE_HARD_BUDGET_MS) {
+        $suiteHardBudgetMs = 0
+        if (-not [int]::TryParse($env:SOUNDING_LINE_SUITE_HARD_BUDGET_MS, [ref]$suiteHardBudgetMs) -or $suiteHardBudgetMs -lt 180000) {
+            throw "SOUNDING_LINE_SUITE_HARD_BUDGET_MS must be an integer of at least 180000."
+        }
+        # Retain two minutes for owned server teardown, isolation verification,
+        # and receipt emission; the adapter remains the hard authority deadline.
+        $browserGlobalTimeoutMs = [Math]::Max(60000, $suiteHardBudgetMs - 120000)
     }
 } elseif ($SoundingLinePort -ne 0) {
     throw "SoundingLinePort requires a named SoundingLineLane."
@@ -830,7 +840,7 @@ try {
             foreach ($selection in $BrowserSelections) {
                 Assert-BrowserSelectionDiscovery -Selection $selection
                 $browserCommand = @("node_modules/playwright/cli.js", "test", "--project=$($selection.project)", "--grep", [string]$selection.grep) + @($selection.files | ForEach-Object { ([string]$_).Replace('\', '/') })
-                if ($isSoundingLineLane) { $browserCommand += "--global-timeout=1680000" }
+                if ($isSoundingLineLane) { $browserCommand += "--global-timeout=$browserGlobalTimeoutMs" }
                 Invoke-ValidationStep -Name "Running exact governed browser acceptance tests for $($selection.project)" -Arguments $browserCommand
             }
         } else {
@@ -853,7 +863,7 @@ try {
             # A named Sounding Line lane is a focused repair boundary. Its deadline
             # is enforced by Playwright so cleanup and receipt emission can run.
             if ($isSoundingLineLane) {
-                $browserCommand += "--global-timeout=420000"
+                $browserCommand += "--global-timeout=$browserGlobalTimeoutMs"
             }
             Invoke-ValidationStep -Name "Running browser acceptance tests" -Arguments $browserCommand
         }
