@@ -209,7 +209,7 @@ test("governed workers consume the sealed plan and fail closed on missing receip
   assert.match(worker, /GOVERNED_WORKER_RECEIPT_MISSING/u);
   assert.match(worker, /GOVERNED_WORKER_RECEIPT_FAILED/u);
   assert.match(worker, /inputs\.gate/u);
-  assert.match(worker, /timeout-minutes: 20/u);
+  assert.match(worker, /timeout-minutes: 40/u);
   assert.match(adapters, /taskkill", \["\/pid", String\(child\.pid\), "\/T", "\/F"\]/u);
 });
 

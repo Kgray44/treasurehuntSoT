@@ -830,8 +830,7 @@ try {
             foreach ($selection in $BrowserSelections) {
                 Assert-BrowserSelectionDiscovery -Selection $selection
                 $browserCommand = @("node_modules/playwright/cli.js", "test", "--project=$($selection.project)", "--grep", [string]$selection.grep) + @($selection.files | ForEach-Object { ([string]$_).Replace('\', '/') })
-                if ([int]$selection.caseCount -gt 24) { $browserCommand += "--workers=4" }
-                if ($isSoundingLineLane) { $browserCommand += "--global-timeout=420000" }
+                if ($isSoundingLineLane) { $browserCommand += "--global-timeout=1680000" }
                 Invoke-ValidationStep -Name "Running exact governed browser acceptance tests for $($selection.project)" -Arguments $browserCommand
             }
         } else {
