@@ -5,6 +5,18 @@ import path from "node:path";
 import test from "node:test";
 import * as phase3 from "../../scripts/sounding-line/phase3.mjs";
 
+async function waitForRunState(id, root, expected, timeoutMs = 3000) {
+  const deadline = Date.now() + timeoutMs;
+  let lastState;
+  do {
+    const run = await phase3.readRun(id, root);
+    lastState = run.state;
+    if (lastState === expected) return run;
+    await new Promise((resolve) => setTimeout(resolve, 100));
+  } while (Date.now() < deadline);
+  assert.fail(`controller run ${id} did not reach ${expected}; last state was ${lastState}`);
+}
+
 async function withStore(fn) {
   const root = await mkdtemp(path.join(os.tmpdir(), "sounding-line-phase3-"));
   let store;
@@ -347,11 +359,9 @@ test("detached controller survives the client launch, handles cooperative cancel
     const input = { root, sourceWatermark: "s", policyDigest: "p", planDigest: "d", purpose: "controller-test" };
     const started = await phase3.launchController(input);
     assert.equal(started.controllerStarted, true);
-    await new Promise((resolve) => setTimeout(resolve, 650));
-    assert.equal((await phase3.readRun(started.run.id, root)).state, "RUNNING");
+    assert.equal((await waitForRunState(started.run.id, root, "RUNNING")).state, "RUNNING");
     await phase3.cancelRun(started.run.id, root);
-    await new Promise((resolve) => setTimeout(resolve, 650));
-    assert.equal((await phase3.readRun(started.run.id, root)).state, "COMPLETED");
+    assert.equal((await waitForRunState(started.run.id, root, "COMPLETED")).state, "COMPLETED");
     const orphan = await phase3.startRun({ ...input, purpose: "orphan-test" });
     await phase3.updateRun(orphan.run.id, { controller: { pid: 999999, host: os.hostname() } }, root);
     const inspected = await phase3.inspectOrphans(root);

@@ -30946,7 +30946,7 @@
     {
       "id": "sl-test-7348ab49169db2cd5038",
       "title": "historical store is outside the repository, migrates idempotently, and ingests a receipt transactionally",
-      "line": 33,
+      "line": 45,
       "file": "tests/sounding-line/phase3.test.mjs",
       "suiteId": "unit.sounding-line",
       "owner": "platform-foundation",
@@ -30981,7 +30981,7 @@
     {
       "id": "sl-test-afaeea55488918c2ba3d",
       "title": "receipt ingestion rejects sensitive data and unknown cleanup does not become clean",
-      "line": 118,
+      "line": 130,
       "file": "tests/sounding-line/phase3.test.mjs",
       "suiteId": "unit.sounding-line",
       "owner": "platform-foundation",
@@ -31016,7 +31016,7 @@
     {
       "id": "sl-test-c10869f00eb329735075",
       "title": "corrupt historical storage fails closed",
-      "line": 171,
+      "line": 183,
       "file": "tests/sounding-line/phase3.test.mjs",
       "suiteId": "unit.sounding-line",
       "owner": "platform-foundation",
@@ -31051,7 +31051,7 @@
     {
       "id": "sl-test-223963f807778ee72d3b",
       "title": "impact, rerun, signatures, root cascades, shards, and throttle stay deterministic and conservative",
-      "line": 181,
+      "line": 193,
       "file": "tests/sounding-line/phase3.test.mjs",
       "suiteId": "unit.sounding-line",
       "owner": "platform-foundation",
@@ -31086,7 +31086,7 @@
     {
       "id": "sl-test-d51df641081ab700c803",
       "title": "durable run journal suppresses equivalent work and refuses unsafe resume",
-      "line": 322,
+      "line": 334,
       "file": "tests/sounding-line/phase3.test.mjs",
       "suiteId": "unit.sounding-line",
       "owner": "platform-foundation",
@@ -31121,7 +31121,7 @@
     {
       "id": "sl-test-25b0061cf5be49f8f12d",
       "title": "detached controller survives the client launch, handles cooperative cancellation, and records orphan recovery",
-      "line": 344,
+      "line": 356,
       "file": "tests/sounding-line/phase3.test.mjs",
       "suiteId": "unit.sounding-line",
       "owner": "platform-foundation",
@@ -31156,7 +31156,7 @@
     {
       "id": "sl-test-e807f15698b00309c8b3",
       "title": "detached controller executes an allowlisted governed adapter through the Phase 2 runtime",
-      "line": 386,
+      "line": 396,
       "file": "tests/sounding-line/phase3.test.mjs",
       "suiteId": "unit.sounding-line",
       "owner": "platform-foundation",
@@ -31191,7 +31191,7 @@
     {
       "id": "sl-test-0a9760ecf5184335eda8",
       "title": "completion governance rejects premature authority and unsupported external claims",
-      "line": 418,
+      "line": 428,
       "file": "tests/sounding-line/phase3.test.mjs",
       "suiteId": "unit.sounding-line",
       "owner": "platform-foundation",
