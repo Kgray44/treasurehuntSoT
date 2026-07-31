@@ -740,7 +740,7 @@
       "classification": "CURRENT_CONTRACT_MIGRATED",
       "canonicalReplacementSuite": "browser.player-journal",
       "canonicalReplacementTestIds": [
-        "sl-test-9b45fcef0b55784fb86a"
+        "sl-test-f2e08d07faba3dc92bda"
       ],
       "coverageExplanation": "The current governed case protects the same observable product contract in its owned focused family.",
       "retirementEvidence": "Historical Playwright discovery at 073e09b1bc0ded5b0d595bf99f0db1b11aafb3b9; P34 remains archived, unselectable, and unexecuted.",
@@ -765,7 +765,7 @@
       "classification": "CURRENT_CONTRACT_MIGRATED",
       "canonicalReplacementSuite": "browser.player-journal",
       "canonicalReplacementTestIds": [
-        "sl-test-2be0a83c7f7b0054deb1"
+        "sl-test-e99d54d6b376b6b129e3"
       ],
       "coverageExplanation": "The current governed case protects the same observable product contract in its owned focused family.",
       "retirementEvidence": "Historical Playwright discovery at 073e09b1bc0ded5b0d595bf99f0db1b11aafb3b9; P34 remains archived, unselectable, and unexecuted.",
@@ -5243,7 +5243,7 @@
       "classification": "CURRENT_CONTRACT_MIGRATED",
       "canonicalReplacementSuite": "browser.player-journal",
       "canonicalReplacementTestIds": [
-        "sl-test-67303d1166a8f912330b"
+        "sl-test-bd921d643fad3f5585c3"
       ],
       "coverageExplanation": "The current governed case protects the same observable product contract in its owned focused family.",
       "retirementEvidence": "Historical Playwright discovery at 073e09b1bc0ded5b0d595bf99f0db1b11aafb3b9; P34 remains archived, unselectable, and unexecuted.",
@@ -5268,7 +5268,7 @@
       "classification": "CURRENT_CONTRACT_MIGRATED",
       "canonicalReplacementSuite": "browser.player-journal",
       "canonicalReplacementTestIds": [
-        "sl-test-d444fa6efb261d6d9170"
+        "sl-test-684e37881b038b06c9f0"
       ],
       "coverageExplanation": "The current governed case protects the same observable product contract in its owned focused family.",
       "retirementEvidence": "Historical Playwright discovery at 073e09b1bc0ded5b0d595bf99f0db1b11aafb3b9; P34 remains archived, unselectable, and unexecuted.",

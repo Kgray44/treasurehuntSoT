@@ -76,7 +76,14 @@ async function restoreLockedChapter(page: Page) {
 async function signInPlayer(page: Page) {
   await page.goto(playerPath);
   await page.getByLabel("Invitation phrase").fill(process.env.PLAYER_ACCESS_CODE!);
-  await page.getByRole("button", { name: "Confirm invitation" }).click({ noWaitAfter: true });
+  const accessResponsePromise = page.waitForResponse(
+    (response) => new URL(response.url()).pathname === "/api/player/access" && response.request().method() === "POST",
+  );
+  await page.getByRole("button", { name: "Confirm invitation" }).click();
+  const accessResponse = await accessResponsePromise;
+  expect(accessResponse.status()).toBe(200);
+  expect((await accessResponse.json()) as { ok?: unknown }).toEqual(expect.objectContaining({ ok: true }));
+  await expect(page.locator(".voyage-shell")).toBeVisible();
   await expect(page.getByRole("button", { name: "Open the journal" })).toBeVisible({ timeout: 15_000 });
 }
 

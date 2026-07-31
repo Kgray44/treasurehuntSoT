@@ -59379,9 +59379,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-9b45fcef0b55784fb86a",
+      "id": "sl-test-f2e08d07faba3dc92bda",
       "title": "Project Lanternwake Phase 1 presentation truth › a missing Journal opening target settles a readable fallback without changing canonical chapter truth",
-      "line": 181,
+      "line": 188,
       "file": "tests/e2e/lanternwake-phase1.spec.ts",
       "project": "chromium",
       "suiteId": "browser.player-journal",
@@ -59442,9 +59442,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-2be0a83c7f7b0054deb1",
+      "id": "sl-test-e99d54d6b376b6b129e3",
       "title": "Project Lanternwake Phase 1 presentation truth › canonical Journal opening replays and refreshes without mutating session or audit truth",
-      "line": 271,
+      "line": 278,
       "file": "tests/e2e/lanternwake-phase1.spec.ts",
       "project": "chromium",
       "suiteId": "browser.player-journal",
@@ -71223,9 +71223,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-67303d1166a8f912330b",
+      "id": "sl-test-bd921d643fad3f5585c3",
       "title": "Project Lanternwake Phase 1 presentation truth › a missing Journal opening target settles a readable fallback without changing canonical chapter truth",
-      "line": 181,
+      "line": 188,
       "file": "tests/e2e/lanternwake-phase1.spec.ts",
       "project": "webkit-mobile",
       "suiteId": "browser.player-journal",
@@ -71286,9 +71286,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-d444fa6efb261d6d9170",
+      "id": "sl-test-684e37881b038b06c9f0",
       "title": "Project Lanternwake Phase 1 presentation truth › canonical Journal opening replays and refreshes without mutating session or audit truth",
-      "line": 271,
+      "line": 278,
       "file": "tests/e2e/lanternwake-phase1.spec.ts",
       "project": "webkit-mobile",
       "suiteId": "browser.player-journal",
