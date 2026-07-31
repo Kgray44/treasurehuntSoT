@@ -54,12 +54,13 @@ function componentFamily(file) {
   return "component.player-shell";
 }
 
-function browserFamily(file, title) {
+function browserFamily(project, file, title) {
   const value = `${file} ${title}`.toLowerCase();
-  // The sentinel project executes this complete specification as one protected
-  // access family.  Classifying only one title would make registry coverage
-  // disagree with the file-level Playwright command actually executed.
-  if (file.endsWith("access-gates.spec.ts")) return "browser.access-sentinel";
+  // Only the dedicated project is the fast, dependency-free access sentinel.
+  // Chromium/WebKit copies remain primary browser.auth cases and must not
+  // inherit a fixture-free ownership contract they do not satisfy.
+  if (file.endsWith("access-gates.spec.ts") && project === "sounding-line-access-sentinel")
+    return "browser.access-sentinel";
   if (file.endsWith("chronicle-platform.spec.ts") || file.endsWith("acceptance.spec.ts"))
     return "browser.player-library";
   if (value.includes("access-gates") || value.includes("authentication") || value.includes("sign-in"))
@@ -147,7 +148,7 @@ async function discoverPlaywright() {
     const [, project, filename, line, title] = match;
     const file = `tests/e2e/${filename}`;
     const browser = { project, file, line: Number(line), title };
-    const suiteId = browserFamily(file, title);
+    const suiteId = browserFamily(project, file, title);
     cases.push({
       id: `sl-test-${hash(`${project}:${file}:${line}:${title}`)}`,
       title,
