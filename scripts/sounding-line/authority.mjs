@@ -45,7 +45,7 @@ function suiteAdapter(suite, registry) {
   if (suite.adapter === "playwright-family") {
     const selections = new Map();
     for (const definition of definitions) {
-      if (!definition.project || !/^tests\/e2e\/.*\.spec\.ts$/u.test(definition.file) || !definition.title)
+      if (!definition.project || !/^tests\/e2e\/.*\.(?:spec|setup)\.ts$/u.test(definition.file) || !definition.title)
         throw new Error(`INVALID_BROWSER_FAMILY_SELECTION:${suite.id}`);
       const selection = selections.get(definition.project) ?? { project: definition.project, files: new Set(), titles: [] };
       selection.files.add(definition.file);

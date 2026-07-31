@@ -201,7 +201,7 @@ export function resolveIsolatedBrowserFamilyAdapter(selections, baselineDatabase
       (selection) =>
         !safeProject(selection.project) ||
         !selection.files.length ||
-        selection.files.some((file) => !/^tests\/e2e\/.*\.spec\.ts$/u.test(file)) ||
+        selection.files.some((file) => !/^tests\/e2e\/.*\.(?:spec|setup)\.ts$/u.test(file)) ||
         typeof selection.grep !== "string" ||
         !selection.grep.length ||
         !Number.isInteger(selection.caseCount) ||

@@ -187,6 +187,7 @@ test("BrowserOnly Harborlight lanes do not repeat independent broad gates", asyn
   assert.match(runtime, /Server stderr tail: \$serverErrorTail/u);
   const authority = await readFile(path.join(root, "scripts", "sounding-line", "authority.mjs"), "utf8");
   assert.match(authority, /definition\.title\.split\("\\u203a"\)\.at\(-1\)\.trim\(\)/u);
+  assert.match(authority, /\(\?:spec\|setup\)\\\.ts/u);
   assert.match(authority, /FOREVER_DEPENDENCY_SEED_ROOT: root/u);
   assert.match(authority, /SOUNDING_LINE_SUITE_HARD_BUDGET_MS: String\(suite\.hardBudgetMs\)/u);
   const common = await readFile(path.join(root, "scripts", "dev-common.ps1"), "utf8");
@@ -213,6 +214,7 @@ test("governed workers consume the sealed plan and fail closed on missing receip
   assert.match(worker, /inputs\.gate/u);
   assert.match(worker, /timeout-minutes: 120/u);
   assert.match(adapters, /taskkill", \["\/pid", String\(child\.pid\), "\/T", "\/F"\]/u);
+  assert.match(adapters, /\(\?:spec\|setup\)\\\.ts/u);
 });
 
 test("public repository commands route through Sounding Line", async () => {
