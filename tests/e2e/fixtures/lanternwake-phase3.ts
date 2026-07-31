@@ -261,12 +261,22 @@ export async function waitForPhase3Receipt(
     }
     return receipts.slice(startIndex).find(matches);
   };
-  await expect
-    .poll(async () => select((await readPhase3Evidence(page)).receipts), {
-      message: `No sanitized settled presentation receipt arrived for ${eventId}`,
-      timeout: 20_000,
-    })
-    .toBeTruthy();
+  try {
+    await expect
+      .poll(async () => select((await readPhase3Evidence(page)).receipts), {
+        message: `No sanitized settled presentation receipt arrived for ${eventId}`,
+        timeout: 20_000,
+      })
+      .toBeTruthy();
+  } catch (error) {
+    const evidence = await readPhase3Evidence(page);
+    const receipts = evidence.receipts.map((receipt) => `${receipt.eventId}:${receipt.status}`).join(",") || "none";
+    const states = evidence.states.map((state) => `${state.eventId ?? "none"}:${state.transition}`).join(",") || "none";
+    throw new Error(
+      `No sanitized settled presentation receipt arrived for ${eventId}; observed receipts=${receipts}; states=${states}`,
+      { cause: error },
+    );
+  }
   const receipt = select((await readPhase3Evidence(page)).receipts)!;
   assertReceiptEvidence(receipt, eventId);
   return receipt;
