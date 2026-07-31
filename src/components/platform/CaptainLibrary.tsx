@@ -121,6 +121,7 @@ export function CaptainLibrary() {
   const [error, setError] = useState("");
   const [tab, setTab] = useState<"voyages" | "invitations" | "published">("voyages");
   const [wizard, setWizard] = useState(false);
+  const wizardTrigger = useRef<HTMLElement | null>(null);
   const [step, setStep] = useState(0);
   const [wizardDirection, setWizardDirection] = useState<1 | -1>(1);
   const [taleId, setTaleId] = useState("");
@@ -441,7 +442,8 @@ export function CaptainLibrary() {
         <div>
           <button
             className="brass-button"
-            onClick={() => {
+            onClick={(event) => {
+              wizardTrigger.current = event.currentTarget;
               setWizard(true);
               setWizardDirection(1);
               setStep(0);
@@ -684,6 +686,7 @@ export function CaptainLibrary() {
               setStep(nextStep);
             }}
             close={() => setWizard(false)}
+            restoreTarget={wizardTrigger.current}
             library={library}
             taleId={taleId}
             chooseTale={chooseTale}
@@ -865,6 +868,7 @@ type WizardProps = Record<string, unknown> & {
   busy: boolean;
   mode: ReturnType<typeof useMotionMode>["mode"];
   createVoyage: () => void;
+  restoreTarget: HTMLElement | null;
 };
 function VoyageWizard(props: WizardProps) {
   const dialogRef = useRef<HTMLElement>(null);
@@ -907,7 +911,7 @@ function VoyageWizard(props: WizardProps) {
   }, [props.step, token.durationMs]);
 
   useEffect(() => {
-    const previous = document.activeElement as HTMLElement | null;
+    const previous = props.restoreTarget ?? (document.activeElement as HTMLElement | null);
     const dialog = dialogRef.current;
     const focusable = () =>
       Array.from(
@@ -938,7 +942,9 @@ function VoyageWizard(props: WizardProps) {
     dialog?.addEventListener("keydown", keydown);
     return () => {
       dialog?.removeEventListener("keydown", keydown);
-      previous?.focus();
+      window.requestAnimationFrame(() => {
+        if (previous?.isConnected) previous.focus();
+      });
     };
   }, []);
 
