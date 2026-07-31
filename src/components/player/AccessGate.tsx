@@ -256,7 +256,11 @@ export function AccessGate({
           body: JSON.stringify({ campaignSlug, accessCode: form.get("accessCode") }),
           signal: controller.signal,
         });
-        const data = (await response.json().catch(() => ({}))) as { ok?: unknown; error?: unknown; redirectTo?: unknown };
+        const data = (await response.json().catch(() => ({}))) as {
+          ok?: unknown;
+          error?: unknown;
+          redirectTo?: unknown;
+        };
         if (!response.ok) {
           operationError = typeof data.error === "string" && data.error.trim() ? data.error : genericAccessError;
           throw new Error("access-operation-rejected");
@@ -267,7 +271,8 @@ export function AccessGate({
         }
         return {
           ok: true,
-          redirectTo: typeof data.redirectTo === "string" && data.redirectTo.startsWith("/play/") ? data.redirectTo : undefined,
+          redirectTo:
+            typeof data.redirectTo === "string" && data.redirectTo.startsWith("/play/") ? data.redirectTo : undefined,
         };
       })();
       return authentication;
@@ -330,7 +335,10 @@ export function AccessGate({
         setAccessState("accepted");
         if (!approvedFallbackPresented) publishReadableStatus(accessSuccessStatus);
         try {
-          await handOffRoute(controller.signal, receipt.operationResult?.redirectTo ?? fallbackOperationResult?.redirectTo);
+          await handOffRoute(
+            controller.signal,
+            receipt.operationResult?.redirectTo ?? fallbackOperationResult?.redirectTo,
+          );
         } catch {
           restoreInteractiveFailure(
             controller,
