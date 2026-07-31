@@ -1260,6 +1260,35 @@ async function enterJournal(page: Page, allowSkip: boolean) {
   });
 }
 
+async function waitForJournalPhase(page: Page, phase: string) {
+  await page.evaluate(
+    ({ expectedPhase }) =>
+      new Promise<void>((resolve, reject) => {
+        const root = document.querySelector<HTMLElement>(".chronicle-journal-shell");
+        if (!root) {
+          reject(new Error("Journal shell was unavailable while observing its opening phases."));
+          return;
+        }
+        if (root.dataset.journalPhase === expectedPhase) {
+          resolve();
+          return;
+        }
+        const timeout = window.setTimeout(() => {
+          observer.disconnect();
+          reject(new Error(`Journal phase ${expectedPhase} was not observed within the governed assertion window.`));
+        }, 20_000);
+        const observer = new MutationObserver(() => {
+          if (root.dataset.journalPhase !== expectedPhase) return;
+          window.clearTimeout(timeout);
+          observer.disconnect();
+          resolve();
+        });
+        observer.observe(root, { attributes: true, attributeFilter: ["data-journal-phase"] });
+      }),
+    { expectedPhase: phase },
+  );
+}
+
 async function runOpeningFlow(
   context: BrowserContext,
   selected: readonly VisualCheckpoint[],
@@ -1287,7 +1316,7 @@ async function runOpeningFlow(
     const watchers = [...phaseGroups.values()].map(async (items) => {
       const signal = items[0]!.signal;
       if (signal.kind === "journal-phase") {
-        await expect(root).toHaveAttribute("data-journal-phase", signal.phase, { timeout: 20_000 });
+        await waitForJournalPhase(page, signal.phase);
         for (const item of items) {
           if (item.signal.kind !== "journal-phase" || !item.signal.actor) continue;
           const actor = page.locator(`[data-opening-actor="${item.signal.actor}"]`).first();
