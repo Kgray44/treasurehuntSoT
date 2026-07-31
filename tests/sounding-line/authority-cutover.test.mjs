@@ -180,6 +180,7 @@ test("BrowserOnly Harborlight lanes do not repeat independent broad gates", asyn
   assert.match(runtime, /runner\/console encoded/u);
   assert.match(runtime, /Preparing focused browser legacy playthrough fixture/u);
   assert.match(runtime, /Verifying focused browser legacy playthrough fixture/u);
+  assert.match(runtime, /Migrating focused browser legacy compatibility projection/u);
   assert.match(runtime, /BrowserSelectionsBase64/u);
   const authority = await readFile(path.join(root, "scripts", "sounding-line", "authority.mjs"), "utf8");
   assert.match(authority, /definition\.title\.split\("\\u203a"\)\.at\(-1\)\.trim\(\)/u);

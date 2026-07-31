@@ -803,9 +803,11 @@ try {
     }
     [void](Invoke-IsolationHelper -Arguments @("checkpoint", "--report", $isolationReport, "--copy-db", $isolatedDatabase))
     if ($BrowserOnly) {
-        # Focused browser families still require the canonical migrated Voyage
-        # fixture. Prepare it only in the disposable copy, then prove it
-        # before the owned server starts; this is fixture setup, not authority.
+        # Focused browser families still require canonical migration provenance
+        # and the migrated Voyage fixture. Prepare both only in the disposable
+        # copy before the owned server starts; this is fixture setup, not authority.
+        Invoke-ValidationStep -Name "Migrating focused browser legacy compatibility projection" -Arguments @("node_modules/tsx/dist/cli.mjs", "scripts/migrate-legacy-companion.ts")
+        Invoke-ValidationStep -Name "Verifying focused browser legacy compatibility projection" -Arguments @("node_modules/tsx/dist/cli.mjs", "scripts/migrate-legacy-companion.ts", "--verify")
         Invoke-ValidationStep -Name "Preparing focused browser legacy playthrough fixture" -Arguments @("node_modules/tsx/dist/cli.mjs", "scripts/verify-platform-backfill.ts", "--prepare")
         Invoke-ValidationStep -Name "Seeding focused browser legacy playthrough fixture" -Arguments @("node_modules/tsx/dist/cli.mjs", "prisma/seed.ts", "--ensure")
         Invoke-ValidationStep -Name "Verifying focused browser legacy playthrough fixture" -Arguments @("node_modules/tsx/dist/cli.mjs", "scripts/verify-platform-backfill.ts", "--verify")
