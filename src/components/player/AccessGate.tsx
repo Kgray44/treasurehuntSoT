@@ -76,7 +76,7 @@ const accessTargetGeometry = {
   },
 } as const satisfies Readonly<Record<keyof typeof accessTargetProperties, CSSProperties>>;
 
-type AccessOperationResult = { ok: true };
+type AccessOperationResult = { ok: true; redirectTo?: string };
 type AccessState = "idle" | "pending" | "accepted" | "rejected";
 type AccessRouteHandoff = (signal: AbortSignal) => void | Promise<void>;
 
@@ -211,8 +211,12 @@ export function AccessGate({
     );
   }
 
-  async function handOffRoute(signal: AbortSignal) {
+  async function handOffRoute(signal: AbortSignal, redirectTo?: string) {
     if (onRouteHandoff) return onRouteHandoff(signal);
+    if (redirectTo?.startsWith("/play/")) {
+      router.replace(redirectTo);
+      return;
+    }
     router.refresh();
   }
 
@@ -252,7 +256,7 @@ export function AccessGate({
           body: JSON.stringify({ campaignSlug, accessCode: form.get("accessCode") }),
           signal: controller.signal,
         });
-        const data = (await response.json().catch(() => ({}))) as { ok?: unknown; error?: unknown };
+        const data = (await response.json().catch(() => ({}))) as { ok?: unknown; error?: unknown; redirectTo?: unknown };
         if (!response.ok) {
           operationError = typeof data.error === "string" && data.error.trim() ? data.error : genericAccessError;
           throw new Error("access-operation-rejected");
@@ -261,7 +265,10 @@ export function AccessGate({
           operationError = genericAccessError;
           throw new Error("access-operation-invalid-response");
         }
-        return { ok: true } as const;
+        return {
+          ok: true,
+          redirectTo: typeof data.redirectTo === "string" && data.redirectTo.startsWith("/play/") ? data.redirectTo : undefined,
+        };
       })();
       return authentication;
     };
@@ -323,7 +330,7 @@ export function AccessGate({
         setAccessState("accepted");
         if (!approvedFallbackPresented) publishReadableStatus(accessSuccessStatus);
         try {
-          await handOffRoute(controller.signal);
+          await handOffRoute(controller.signal, receipt.operationResult?.redirectTo ?? fallbackOperationResult?.redirectTo);
         } catch {
           restoreInteractiveFailure(
             controller,
