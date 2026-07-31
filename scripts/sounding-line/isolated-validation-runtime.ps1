@@ -39,11 +39,10 @@ if ($ExpectMutation -notin @("true", "false")) { throw "ExpectMutation must be t
 if (-not $SoundingLineLane) {
     throw "This internal runtime only supports named Sounding Line browser lanes."
 }
-. (Join-Path $PSScriptRoot "..\dev-common.ps1")
 
 # Do not depend on Get-FileHash being imported into the runner's PowerShell
-# session.  The isolated boundary must compute the same SHA-256 proof on both
-# Windows PowerShell and PowerShell Core hosted runners.
+# session. The isolated boundary and its shared bootstrap must compute the
+# same SHA-256 proof on both Windows PowerShell and PowerShell Core runners.
 function Get-SoundingLineSha256 {
     param([Parameter(Mandatory)][string]$LiteralPath)
     $stream = [System.IO.File]::Open($LiteralPath, [System.IO.FileMode]::Open, [System.IO.FileAccess]::Read, [System.IO.FileShare]::Read)
@@ -58,6 +57,21 @@ function Get-SoundingLineSha256 {
         $stream.Dispose()
     }
 }
+if (-not (Get-Command -Name Get-FileHash -ErrorAction SilentlyContinue)) {
+    function Get-FileHash {
+        param(
+            [Parameter(Mandatory)][string]$LiteralPath,
+            [string]$Algorithm = "SHA256"
+        )
+        if ($Algorithm -ne "SHA256") { throw "Only SHA256 is supported by the Sounding Line compatibility hash provider." }
+        [pscustomobject]@{
+            Algorithm = $Algorithm
+            Hash = Get-SoundingLineSha256 -LiteralPath $LiteralPath
+            Path = $LiteralPath
+        }
+    }
+}
+. (Join-Path $PSScriptRoot "..\dev-common.ps1")
 
 # This opt-in is intentionally narrower than the legacy harness.  It exists
 # only for the two, explicitly named, Sounding Line Harborlight browser lanes;
