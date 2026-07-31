@@ -51,3 +51,15 @@ would not exercise the governed path. The first complete receipt under this
 budget is the required cold-path confirmation; no retry is being treated as
 evidence. The review must inspect setup, test, cleanup, and artifact-upload
 timings before retaining or revising the budget.
+
+## Animation lifecycle browser-family budget review — 2026-07-31
+
+Owner: `lanternwake`. Review date: `2026-08-07`. Focused receipts
+`30615341155` and `30616032473` recorded clean teardown but reached only 24
+and 27 of 39 Chromium cases before the former 600,000 ms adapter deadline.
+The second run passed the previously failing Rive and Quartermaster assertions
+and then hit the adapter deadline at 583,312 ms; it was not a product failure
+or a retry pass. The family therefore receives a 900,000 ms expected duration
+and a 1,200,000 ms hard budget. The selection remains serial, exact, and
+cleanup-reserved through the suite-derived Playwright deadline. The next
+complete focused receipt is required cold-path confirmation.
