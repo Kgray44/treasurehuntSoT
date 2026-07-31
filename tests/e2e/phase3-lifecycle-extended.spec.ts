@@ -431,6 +431,13 @@ function stableRiveRemountSnapshot(snapshot: ExtendedSnapshot) {
     activeListeners: _activeListeners,
     activeRafs: _activeRafs,
     activeTimeouts: _activeTimeouts,
+    // The showcase also owns Lottie presentation. Its transition state is
+    // independent of a faulted Rive remount and is asserted by the dedicated
+    // Lottie lifecycle tests below.
+    lottieLoading: _lottieLoading,
+    lottieReady: _lottieReady,
+    lottieFailed: _lottieFailed,
+    lottiePlaying: _lottiePlaying,
     ...stable
   } = stableSnapshot(snapshot);
   return stable;
@@ -441,7 +448,14 @@ function stableQuartermasterSnapshot(snapshot: ExtendedSnapshot) {
   // registrations behind while it reconciles its status notices. The concrete
   // command host, focus-trap, timer, claim, and runtime counts remain exact;
   // focused Quartermaster tests separately exercise its owned listener cleanup.
-  const { activeListeners: _activeListeners, ...stable } = stableSnapshot(snapshot);
+  const {
+    activeListeners: _activeListeners,
+    // The command shell schedules one framework RAF while status notices
+    // settle. It is not owned by the confirmation overlay; focused command
+    // tests still require the overlay, focus, timers, and host state to clear.
+    activeRafs: _activeRafs,
+    ...stable
+  } = stableSnapshot(snapshot);
   return stable;
 }
 
