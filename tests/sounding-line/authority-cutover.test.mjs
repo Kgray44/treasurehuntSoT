@@ -49,7 +49,9 @@ test("planner is deterministic and rejects archived P34 suites", async () => {
     "browser.cross-project",
   ];
   for (const suiteId of requiredBrowserSuites) assert.ok(releaseCandidate.nodes.some((node) => node.id === suiteId));
-  const registry = JSON.parse(await readFile(path.join(root, "testing", "generated", "active-test-registry.json"), "utf8"));
+  const registry = JSON.parse(
+    await readFile(path.join(root, "testing", "generated", "active-test-registry.json"), "utf8"),
+  );
   const sentinelCases = registry.cases.filter((entry) => entry.suiteId === "browser.access-sentinel");
   assert.equal(sentinelCases.length, 3);
   assert.ok(sentinelCases.every((entry) => entry.project === "sounding-line-access-sentinel"));

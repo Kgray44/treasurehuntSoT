@@ -192,7 +192,9 @@ export function resolveIsolatedBrowserFamilyAdapter(selections, baselineDatabase
     throw new Error("Isolated browser adapter mutation expectation must be boolean");
   const normalizedSelections = selections.map((selection) => ({
     project: selection?.project,
-    files: Array.isArray(selection?.files) ? [...new Set(selection.files.map((file) => file.replace(/\\/gu, "/")))].sort() : [],
+    files: Array.isArray(selection?.files)
+      ? [...new Set(selection.files.map((file) => file.replace(/\\/gu, "/")))].sort()
+      : [],
     grep: selection?.grep,
     caseCount: selection?.caseCount,
   }));
@@ -209,9 +211,7 @@ export function resolveIsolatedBrowserFamilyAdapter(selections, baselineDatabase
     )
   )
     throw new Error("Isolated browser adapter accepts only exact registered e2e selections");
-  const browserSelectionsBase64 = Buffer.from(JSON.stringify(normalizedSelections), "utf8").toString(
-    "base64",
-  );
+  const browserSelectionsBase64 = Buffer.from(JSON.stringify(normalizedSelections), "utf8").toString("base64");
   return {
     id: "isolated-playwright-family",
     command: [

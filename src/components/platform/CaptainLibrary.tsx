@@ -121,7 +121,7 @@ export function CaptainLibrary() {
   const [error, setError] = useState("");
   const [tab, setTab] = useState<"voyages" | "invitations" | "published">("voyages");
   const [wizard, setWizard] = useState(false);
-  const wizardTrigger = useRef<HTMLElement | null>(null);
+  const [wizardRestoreTarget, setWizardRestoreTarget] = useState<HTMLElement | null>(null);
   const [step, setStep] = useState(0);
   const [wizardDirection, setWizardDirection] = useState<1 | -1>(1);
   const [taleId, setTaleId] = useState("");
@@ -443,7 +443,7 @@ export function CaptainLibrary() {
           <button
             className="brass-button"
             onClick={(event) => {
-              wizardTrigger.current = event.currentTarget;
+              setWizardRestoreTarget(event.currentTarget);
               setWizard(true);
               setWizardDirection(1);
               setStep(0);
@@ -508,6 +508,7 @@ export function CaptainLibrary() {
                   action={{
                     label: "Create a Voyage",
                     onClick: () => {
+                      setWizardRestoreTarget(null);
                       setWizard(true);
                       setWizardDirection(1);
                       setStep(0);
@@ -559,6 +560,7 @@ export function CaptainLibrary() {
                   action={{
                     label: "Create a Voyage",
                     onClick: () => {
+                      setWizardRestoreTarget(null);
                       setWizard(true);
                       setWizardDirection(1);
                       setStep(0);
@@ -654,7 +656,8 @@ export function CaptainLibrary() {
                       ))}
                     </ul>
                     <button
-                      onClick={() => {
+                      onClick={(event) => {
+                        setWizardRestoreTarget(event.currentTarget);
                         chooseTale(tale.id);
                         setWizard(true);
                         setWizardDirection(1);
@@ -686,7 +689,7 @@ export function CaptainLibrary() {
               setStep(nextStep);
             }}
             close={() => setWizard(false)}
-            restoreTarget={wizardTrigger.current}
+            restoreTarget={wizardRestoreTarget}
             library={library}
             taleId={taleId}
             chooseTale={chooseTale}

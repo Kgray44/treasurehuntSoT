@@ -47,7 +47,11 @@ function suiteAdapter(suite, registry) {
     for (const definition of definitions) {
       if (!definition.project || !/^tests\/e2e\/.*\.(?:spec|setup)\.ts$/u.test(definition.file) || !definition.title)
         throw new Error(`INVALID_BROWSER_FAMILY_SELECTION:${suite.id}`);
-      const selection = selections.get(definition.project) ?? { project: definition.project, files: new Set(), titles: [] };
+      const selection = selections.get(definition.project) ?? {
+        project: definition.project,
+        files: new Set(),
+        titles: [],
+      };
       selection.files.add(definition.file);
       // The registry records the readable full title path. Playwright's grep
       // evaluates that path with a runner-owned separator, so select the
@@ -142,16 +146,17 @@ async function run(gateId, { serial, executeOnly = false, receiptPath, suiteId, 
       });
     }
     const result = await executeAdapter(adapter, { cwd: root, env: adapterEnv, timeoutMs: suite.hardBudgetMs });
-    const browserCounts = suite.adapter === "playwright-family"
-      ? {
-          registeredCaseCount: node.testIds.length,
-          discoveredCaseCount: adapter.caseCount,
-          executedCaseCount: result.exitCode === 0 && !result.timedOut ? adapter.caseCount : null,
-          passedCaseCount: result.exitCode === 0 && !result.timedOut ? adapter.caseCount : 0,
-          failedCaseCount: result.exitCode === 0 && !result.timedOut ? 0 : null,
-          skippedCaseCount: 0,
-        }
-      : {};
+    const browserCounts =
+      suite.adapter === "playwright-family"
+        ? {
+            registeredCaseCount: node.testIds.length,
+            discoveredCaseCount: adapter.caseCount,
+            executedCaseCount: result.exitCode === 0 && !result.timedOut ? adapter.caseCount : null,
+            passedCaseCount: result.exitCode === 0 && !result.timedOut ? adapter.caseCount : 0,
+            failedCaseCount: result.exitCode === 0 && !result.timedOut ? 0 : null,
+            skippedCaseCount: 0,
+          }
+        : {};
     receipts.push({
       suiteId: node.id,
       adapterId: adapter.id,

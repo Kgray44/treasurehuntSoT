@@ -13,7 +13,8 @@ async function preserveReadOnlyJournalState(page: Page) {
   page.on("request", (request) => {
     const method = request.method().toUpperCase();
     const pathname = new URL(request.url()).pathname;
-    if (pathname.startsWith("/api/") && method !== "GET" && method !== "HEAD") unsafeRequests.push(`${method} ${pathname}`);
+    if (pathname.startsWith("/api/") && method !== "GET" && method !== "HEAD")
+      unsafeRequests.push(`${method} ${pathname}`);
   });
   await page.route("**/api/player/playthroughs/*/journal-state", async (route) => {
     if (route.request().method().toUpperCase() !== "POST") return route.fallback();
@@ -21,15 +22,16 @@ async function preserveReadOnlyJournalState(page: Page) {
   });
   return () => {
     expect(
-      unsafeRequests.filter(
-        (request) => !/^POST \/api\/player\/playthroughs\/[^/]+\/journal-state$/u.test(request),
-      ),
+      unsafeRequests.filter((request) => !/^POST \/api\/player\/playthroughs\/[^/]+\/journal-state$/u.test(request)),
       "The canonical journal journey may persist only through its locally intercepted reading-state boundary.",
     ).toEqual([]);
   };
 }
 
-test("proves the canonical read-only journal journey across current product routes", async ({ page, browserName }, testInfo) => {
+test("proves the canonical read-only journal journey across current product routes", async ({
+  page,
+  browserName,
+}, testInfo) => {
   // Chromium completes this route in seconds; a minute keeps the mobile
   // contract responsive while yielding an actionable failing step if it regresses.
   test.setTimeout(60_000);
