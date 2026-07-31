@@ -214,6 +214,9 @@ test("governed workers consume the sealed plan and fail closed on missing receip
   assert.match(worker, /--plan-in "\$env:SOUNDING_LINE_PLAN"/u);
   assert.match(worker, /GOVERNED_WORKER_RECEIPT_MISSING/u);
   assert.match(worker, /GOVERNED_WORKER_RECEIPT_FAILED/u);
+  assert.match(worker, /Install browser engines required by the sealed suite/u);
+  assert.match(worker, /npx playwright install chromium/u);
+  assert.match(worker, /GOVERNED_BROWSER_ENGINE_INSTALL_FAILED/u);
   assert.match(worker, /inputs\.gate/u);
   assert.match(worker, /timeout-minutes: 120/u);
   assert.match(adapters, /taskkill", \["\/pid", String\(child\.pid\), "\/T", "\/F"\]/u);
