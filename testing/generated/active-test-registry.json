@@ -30561,7 +30561,7 @@
     {
       "id": "sl-test-5b136a33446121196f86",
       "title": "concurrent Harborlight lanes may share only their validation-run parent",
-      "line": 186,
+      "line": 188,
       "file": "tests/sounding-line/authority-cutover.test.mjs",
       "suiteId": "unit.sounding-line",
       "owner": "platform-foundation",
@@ -30596,7 +30596,7 @@
     {
       "id": "sl-test-9586abcf1c6209260ed8",
       "title": "governed workers consume the sealed plan and fail closed on missing receipts",
-      "line": 192,
+      "line": 194,
       "file": "tests/sounding-line/authority-cutover.test.mjs",
       "suiteId": "unit.sounding-line",
       "owner": "platform-foundation",
@@ -30631,7 +30631,7 @@
     {
       "id": "sl-test-41e176d38988253670ff",
       "title": "public repository commands route through Sounding Line",
-      "line": 202,
+      "line": 204,
       "file": "tests/sounding-line/authority-cutover.test.mjs",
       "suiteId": "unit.sounding-line",
       "owner": "platform-foundation",

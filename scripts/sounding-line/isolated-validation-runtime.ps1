@@ -802,6 +802,14 @@ try {
         Invoke-ValidationStep -Name "Verifying additive platform backfill" -Arguments @("node_modules/tsx/dist/cli.mjs", "scripts/verify-platform-backfill.ts", "--verify")
     }
     [void](Invoke-IsolationHelper -Arguments @("checkpoint", "--report", $isolationReport, "--copy-db", $isolatedDatabase))
+    if ($BrowserOnly) {
+        # Focused browser families still require the canonical migrated Voyage
+        # fixture. Prepare it only in the disposable copy, then prove it
+        # before the owned server starts; this is fixture setup, not authority.
+        Invoke-ValidationStep -Name "Preparing focused browser legacy playthrough fixture" -Arguments @("node_modules/tsx/dist/cli.mjs", "scripts/verify-platform-backfill.ts", "--prepare")
+        Invoke-ValidationStep -Name "Seeding focused browser legacy playthrough fixture" -Arguments @("node_modules/tsx/dist/cli.mjs", "prisma/seed.ts", "--ensure")
+        Invoke-ValidationStep -Name "Verifying focused browser legacy playthrough fixture" -Arguments @("node_modules/tsx/dist/cli.mjs", "scripts/verify-platform-backfill.ts", "--verify")
+    }
 
     if (-not $SkipBrowser) {
         Write-Host "`n==> Starting owned isolated validation server" -ForegroundColor Cyan
