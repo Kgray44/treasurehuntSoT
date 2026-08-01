@@ -803,11 +803,16 @@ export function TaleEditor({
       publishedLabel = body.versionLabel;
       setPublishedVersion(body.versionLabel);
     } catch {
-      setError(operationError);
-      if (operationValidation) setValidation(operationValidation);
-      setSaveState("Publishing failed");
-      setPublishState("failed");
-      return;
+      const completedOperation = await (operationPromise as Promise<PublishResult> | null)?.catch(() => undefined);
+      if (!completedOperation?.versionLabel) {
+        setError(operationError);
+        if (operationValidation) setValidation(operationValidation);
+        setSaveState("Publishing failed");
+        setPublishState("failed");
+        return;
+      }
+      publishedLabel = completedOperation.versionLabel;
+      setPublishedVersion(completedOperation.versionLabel);
     }
     setPublishState("published");
     publicationStatusHold.current = true;

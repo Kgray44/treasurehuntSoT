@@ -2,18 +2,15 @@ import { act, cleanup, fireEvent, render, screen, waitFor, within } from "@testi
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { TaleEditor } from "./TaleEditor";
 
+const animationDirector = vi.hoisted(() => ({ play: vi.fn() }));
+
 vi.mock("@/animation/motion/useMotionMode", () => ({
   useMotionMode: () => ({ mode: "reduced", source: "system", userOverride: null, setUserOverride: vi.fn() }),
 }));
 
 vi.mock("@/animation/director/useAnimationDirector", () => ({
   useAnimationDirector: () => ({
-    director: {
-      play: vi.fn(async (_scene: string, options: { operation?: () => Promise<unknown> }) => ({
-        outcome: "presented",
-        operationResult: await options.operation?.(),
-      })),
-    },
+    director: animationDirector,
   }),
 }));
 
@@ -105,6 +102,12 @@ function editorData() {
 
 describe("Voyagewright Studio editor motion and authority", () => {
   beforeEach(() => {
+    animationDirector.play.mockImplementation(
+      async (_scene: string, options: { operation?: () => Promise<unknown> }) => ({
+        outcome: "presented",
+        operationResult: await options.operation?.(),
+      }),
+    );
     Object.defineProperty(Element.prototype, "scrollIntoView", { configurable: true, value: vi.fn() });
     vi.stubGlobal(
       "confirm",
@@ -231,6 +234,30 @@ describe("Voyagewright Studio editor motion and authority", () => {
 
     await act(async () => resolvePublish(response(201, { versionLabel: "4" })));
     expect(await screen.findByText(/Version 4 published/)).toHaveAttribute("data-authority-state", "confirmed");
+  });
+
+  it("keeps a successfully published version confirmed when its presentation director interrupts afterward", async () => {
+    animationDirector.play.mockImplementationOnce(
+      async (_scene: string, options: { operation?: () => Promise<unknown> }) => {
+        await options.operation?.();
+        throw new Error("presentation-interrupted-after-publish");
+      },
+    );
+    vi.stubGlobal(
+      "fetch",
+      vi
+        .fn()
+        .mockResolvedValueOnce(response(200, editorData()))
+        .mockResolvedValueOnce(response(201, { versionLabel: "4" }))
+        .mockResolvedValueOnce(response(200, editorData())),
+    );
+
+    render(<TaleEditor taleId="tale-1" authenticated />);
+    await screen.findByRole("heading", { name: "A Test Chronicle" });
+    fireEvent.click(screen.getByRole("button", { name: "Publish Chronicle" }));
+
+    expect(await screen.findByText(/Version 4 published/)).toHaveAttribute("data-authority-state", "confirmed");
+    expect(screen.queryByText("Publishing failed")).not.toBeInTheDocument();
   });
 
   it("waits for an in-flight autosave before publishing the immutable version", async () => {
