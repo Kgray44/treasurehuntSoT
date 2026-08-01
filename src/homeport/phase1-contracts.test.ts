@@ -11,7 +11,8 @@ describe("Project Homeport Phase 1 integration contracts", () => {
     const passport = source("src/components/wayfarer/ChroniclePassport.tsx");
     expect(page).toContain('resolveCapability("player")');
     expect(passport).toContain("useCurrentUser()");
-    expect(passport).toContain("setProfile(null)");
+    expect(passport).toContain("loadedSessionId === activeSessionId");
+    expect(passport).toContain("hasCurrentSessionData ? storedProfile : null");
   });
 
   it("homeport.compatibility.observation keeps compatibility readers bounded and ordinary writers closed", () => {

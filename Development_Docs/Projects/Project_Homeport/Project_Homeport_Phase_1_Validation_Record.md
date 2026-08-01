@@ -14,14 +14,15 @@ last_reviewed: 2026-08-01
 
 ## Focused and acceptance evidence
 
-| Lane                                     | Result                                               | Truth boundary                                                   |
-| ---------------------------------------- | ---------------------------------------------------- | ---------------------------------------------------------------- |
-| Focused Homeport unit/API/component run  | 9 files, 43 tests passed                             | Local diagnostic proof for changed Homeport contracts            |
-| Invitation/provider/resolver focused run | 3 files, 21 tests passed                             | Local diagnostic proof after invitation context/focus repair     |
-| Homeport browser A-Q                     | 15 tests passed in Chromium on copied task DB        | Isolated browser acceptance; not deployed or live-user proof     |
-| Visual baseline                          | 15 checksum-bound PNG after-states visually reviewed | Synthetic desktop/mobile/zoom evidence; Phase 0 images preserved |
-| TypeScript                               | Passed                                               | Static local proof                                               |
-| Schema migration                         | None required                                        | No schema change; no destructive migration command used          |
+| Lane                                     | Result                                                 | Truth boundary                                                                                                           |
+| ---------------------------------------- | ------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------ |
+| Focused Homeport unit/API/component run  | 9 files, 43 tests passed                               | Local diagnostic proof for changed Homeport contracts                                                                    |
+| Invitation/provider/resolver focused run | 3 files, 21 tests passed                               | Local diagnostic proof after invitation context/focus repair                                                             |
+| Final focused lane split                 | API 2 files/3 tests; unit-service 3/24; component 5/22 | Current local diagnostic proof after aligning the Passport projection contract with session-keyed stale-data suppression |
+| Homeport browser A-Q                     | 15 tests passed in Chromium on copied task DB          | Isolated browser acceptance; not deployed or live-user proof                                                             |
+| Visual baseline                          | 15 checksum-bound PNG after-states visually reviewed   | Synthetic desktop/mobile/zoom evidence; Phase 0 images preserved                                                         |
+| TypeScript                               | Passed                                                 | Static local proof                                                                                                       |
+| Schema migration                         | None required                                          | No schema change; no destructive migration command used                                                                  |
 
 ## Governed release receipts
 
