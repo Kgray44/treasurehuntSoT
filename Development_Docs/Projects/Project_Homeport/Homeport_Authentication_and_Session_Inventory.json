@@ -398,7 +398,7 @@
         "telemetry": "No value telemetry; behavioral tests inspect absence only",
         "retirementCriteria": "Retire only with a governed server-bound anti-CSRF replacement",
         "finalStatus": "CLIENT_HINT_ONLY",
-        "evidenceIds": ["HP-P1-EV-J-cross-tab-sign-out"]
+        "evidenceIds": ["HP-P1-EV-J-multitab-sign-out"]
       }
     },
     {
@@ -438,7 +438,7 @@
         "telemetry": "No private-value telemetry",
         "retirementCriteria": "Per-hint owner decision after replacement or zero-use evidence",
         "finalStatus": "CLIENT_HINT_ONLY",
-        "evidenceIds": ["HP-P1-EV-G-permission-denied", "HP-P1-EV-K-role-change-refresh"]
+        "evidenceIds": ["HP-P1-EV-G-permission-denied", "HP-P1-EV-K-role-removal"]
       }
     }
   ],

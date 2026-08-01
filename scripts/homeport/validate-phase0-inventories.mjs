@@ -425,6 +425,8 @@ for (const record of compatibility) {
   requireKeys(record, compatibilityRequired, record.authority_id);
   assert.ok(authorityIds.has(record.authority_id), `${record.authority_id} is absent from the session inventory`);
   requireVocabulary(record.final_status, compatibilityStatuses, record.authority_id);
+  for (const evidenceId of record.evidence_ids.split(";").filter(Boolean))
+    assert.ok(evidenceIds.has(evidenceId), `${record.authority_id} references unknown ${evidenceId}`);
 }
 
 const requiredPhase1Documents = [

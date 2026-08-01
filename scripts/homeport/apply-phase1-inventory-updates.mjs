@@ -483,7 +483,8 @@ for (const record of controlCsv.records) {
   if (!update) continue;
   record.current_status = update[0];
   record.evidence_id = update[1];
-  record.reproduction_steps = `${record.reproduction_steps} Phase 1 after-state: run the matching HP-P1 browser journey.`;
+  const baseReproductionSteps = record.reproduction_steps.split(" Phase 1 after-state:")[0];
+  record.reproduction_steps = `${baseReproductionSteps} Phase 1 after-state: run the matching HP-P1 browser journey.`;
 }
 const addedControls = [
   [
