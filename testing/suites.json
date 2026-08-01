@@ -780,6 +780,31 @@
       "adapter": "p34-retirement"
     },
     {
+      "id": "unit.homeport",
+      "name": "Project Homeport Phase 0 artifact contracts",
+      "tier": 1,
+      "owner": "project-homeport",
+      "command": "registry-selected Node test files",
+      "estimatedDuration": "measured-budget",
+      "expectedDurationMs": 10000,
+      "hardBudgetMs": 60000,
+      "parallelSafe": true,
+      "resources": ["node-slot"],
+      "dependencies": [],
+      "contracts": [
+        "homeport.route-inventory.complete",
+        "homeport.session-inventory.complete",
+        "homeport.screen-catalog.complete",
+        "homeport.journey-catalog.complete",
+        "homeport.evidence-manifest.complete",
+        "homeport.nonconformity-ledger.complete"
+      ],
+      "affectedPaths": ["Development_Docs/Projects/Project_Homeport/**", "scripts/homeport/**", "tests/homeport/**"],
+      "releaseGates": ["local-change", "subsystem", "mainline", "release-candidate"],
+      "currentImplementationState": "phase-0-artifact-contract",
+      "adapter": "vitest-family"
+    },
+    {
       "id": "build.production",
       "name": "Governed production build",
       "tier": 7,

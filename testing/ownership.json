@@ -81,6 +81,25 @@
       "contractIds": ["drydock-progression"]
     },
     {
+      "id": "project-homeport",
+      "project": "project-homeport",
+      "sourcePaths": [
+        "Development_Docs/Projects/Project_Homeport/**",
+        "Development_Docs/Governance/**",
+        "scripts/homeport/**",
+        ".agents/project-homeport.md"
+      ],
+      "testPaths": ["tests/homeport/**/*.test.*"],
+      "contractIds": [
+        "homeport.route-inventory.complete",
+        "homeport.session-inventory.complete",
+        "homeport.screen-catalog.complete",
+        "homeport.journey-catalog.complete",
+        "homeport.evidence-manifest.complete",
+        "homeport.nonconformity-ledger.complete"
+      ]
+    },
+    {
       "id": "landfall",
       "project": "landfall",
       "sourcePaths": [],

@@ -120,6 +120,48 @@
       "authority": "harborlight",
       "owners": ["harborlight", "platform-foundation"],
       "critical": true
+    },
+    {
+      "id": "homeport.route-inventory.complete",
+      "name": "Homeport route inventory is complete and cross-referenced",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.session-inventory.complete",
+      "name": "Homeport authentication and session inventory is complete",
+      "authority": "project-homeport",
+      "owners": ["project-homeport", "wayfarer"],
+      "critical": true
+    },
+    {
+      "id": "homeport.screen-catalog.complete",
+      "name": "Homeport screen and screen-contract catalogs are complete",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.journey-catalog.complete",
+      "name": "Homeport governed journey catalog is complete",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.evidence-manifest.complete",
+      "name": "Homeport visual evidence manifest is complete and checksum-valid",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.nonconformity-ledger.complete",
+      "name": "Homeport nonconformity ledger preserves all governing findings",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
     }
   ]
 }

@@ -19,13 +19,15 @@ async function walk(directory) {
 }
 
 function classify(relativePath) {
+  if (relativePath.includes("/Projects/Project_Homeport/evidence/")) return "validation-evidence";
+  if (relativePath.includes("/Projects/")) return "program-record";
   if (relativePath.includes("/Programs/")) return "program-record";
   if (relativePath.includes("/Validation/")) return "validation-evidence";
   if (relativePath.includes("/Migrations/")) return "migration-record";
   if (relativePath.includes("/Completion_Receipts/")) return "completion-receipt";
   if (relativePath.includes("/Architecture_Decisions/")) return "architecture-decision";
   if (relativePath.includes("/Archive/")) return "archived-history";
-  if (relativePath.includes("/Governing/")) return "governing-record";
+  if (relativePath.includes("/Governing/") || relativePath.includes("/Governance/")) return "governing-record";
   return "archive-index";
 }
 
@@ -34,7 +36,11 @@ const indexPath = "Development_Docs/document-index.json";
 const records = files.map((file) => ({
   path: file,
   record_type: classify(file),
-  status: file.includes("/Archive/") ? "archived" : "preserved",
+  status: file.includes("/Archive/")
+    ? "archived"
+    : file.includes("/Projects/Project_Homeport/") || file.includes("/Governance/")
+      ? "current"
+      : "preserved",
   canonical_for: null,
 }));
 if (!records.some((entry) => entry.path === indexPath)) {

@@ -13,6 +13,7 @@ const execFileAsync = promisify(execFile);
 const normal = (value) => value.replaceAll("\\", "/");
 
 function ownerFor(file) {
+  if (file.includes("homeport")) return "project-homeport";
   if (file.includes("private-content")) return "sealed-hold";
   if (file.includes("community")) return "harborlight";
   if (file.includes("wayfarer") || file.includes("passport")) return "wayfarer";
@@ -23,6 +24,7 @@ function ownerFor(file) {
 }
 
 function unitFamily(file) {
+  if (file.startsWith("scripts/homeport/") || file.startsWith("tests/homeport/")) return "unit.homeport";
   if (file.startsWith("scripts/sounding-line/") || file.startsWith("tests/sounding-line/")) return "unit.sounding-line";
   if (file.startsWith("scripts/features/") || file.includes("feature-catalog")) return "unit.feature-catalog";
   if (file.includes("private-content")) return "unit.private-content";
@@ -85,6 +87,15 @@ function browserFamily(project, file, title) {
 }
 
 function contractFor(file, family) {
+  if (file.includes("homeport") || family === "unit.homeport")
+    return [
+      "homeport.route-inventory.complete",
+      "homeport.session-inventory.complete",
+      "homeport.screen-catalog.complete",
+      "homeport.journey-catalog.complete",
+      "homeport.evidence-manifest.complete",
+      "homeport.nonconformity-ledger.complete",
+    ];
   if (file.includes("private-content")) return ["sealed-hold-private-delivery", "public-privacy-projection"];
   if (file.includes("community")) return ["community-public-projection"];
   if (file.includes("wayfarer") || file.includes("passport")) return ["wayfarer-history-projection"];

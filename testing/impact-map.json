@@ -3,6 +3,99 @@
   "status": "stage-10-owned-family-impact-map",
   "pathMappings": [
     {
+      "path": "Development_Docs/Governance/**",
+      "suiteIds": ["unit.homeport", "static.core"],
+      "contractIds": [
+        "homeport.route-inventory.complete",
+        "homeport.session-inventory.complete",
+        "homeport.screen-catalog.complete",
+        "homeport.journey-catalog.complete",
+        "homeport.evidence-manifest.complete",
+        "homeport.nonconformity-ledger.complete"
+      ]
+    },
+    {
+      "path": ".agents/project-homeport.md",
+      "suiteIds": ["unit.homeport", "static.core"],
+      "contractIds": ["homeport.nonconformity-ledger.complete"]
+    },
+    {
+      "path": "AGENTS.md",
+      "suiteIds": ["static.core"],
+      "contractIds": []
+    },
+    {
+      "path": ".agents/README.md",
+      "suiteIds": ["static.core"],
+      "contractIds": []
+    },
+    {
+      "path": "Development_Docs/README.md",
+      "suiteIds": ["static.core"],
+      "contractIds": []
+    },
+    {
+      "path": "Development_Docs/Features/FEATURE_CATALOG.md",
+      "suiteIds": ["unit.feature-catalog", "static.core"],
+      "contractIds": []
+    },
+    {
+      "path": "Development_Docs/document-index.json",
+      "suiteIds": ["static.core"],
+      "contractIds": []
+    },
+    {
+      "path": "Development_Docs/Project_Ledgerlight_Documentation_Migration_Matrix.csv",
+      "suiteIds": ["static.core"],
+      "contractIds": []
+    },
+    {
+      "path": "scripts/generate-document-index.mjs",
+      "suiteIds": ["static.core"],
+      "contractIds": []
+    },
+    {
+      "path": "package.json",
+      "suiteIds": ["unit.homeport", "unit.sounding-line", "static.core"],
+      "contractIds": ["homeport.route-inventory.complete"]
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/**",
+      "suiteIds": ["unit.homeport", "static.core"],
+      "contractIds": [
+        "homeport.route-inventory.complete",
+        "homeport.session-inventory.complete",
+        "homeport.screen-catalog.complete",
+        "homeport.journey-catalog.complete",
+        "homeport.evidence-manifest.complete",
+        "homeport.nonconformity-ledger.complete"
+      ]
+    },
+    {
+      "path": "scripts/homeport/**",
+      "suiteIds": ["unit.homeport", "static.core"],
+      "contractIds": [
+        "homeport.route-inventory.complete",
+        "homeport.session-inventory.complete",
+        "homeport.screen-catalog.complete",
+        "homeport.journey-catalog.complete",
+        "homeport.evidence-manifest.complete",
+        "homeport.nonconformity-ledger.complete"
+      ]
+    },
+    {
+      "path": "tests/homeport/**",
+      "suiteIds": ["unit.homeport"],
+      "contractIds": [
+        "homeport.route-inventory.complete",
+        "homeport.session-inventory.complete",
+        "homeport.screen-catalog.complete",
+        "homeport.journey-catalog.complete",
+        "homeport.evidence-manifest.complete",
+        "homeport.nonconformity-ledger.complete"
+      ]
+    },
+    {
       "path": "scripts/sounding-line/**",
       "suiteIds": ["unit.sounding-line", "static.core"],
       "contractIds": ["authentication-authorization"]
@@ -79,7 +172,13 @@
     {
       "contractId": "community-public-projection",
       "suiteIds": ["unit.community", "component.community", "browser.community"]
-    }
+    },
+    { "contractId": "homeport.route-inventory.complete", "suiteIds": ["unit.homeport"] },
+    { "contractId": "homeport.session-inventory.complete", "suiteIds": ["unit.homeport"] },
+    { "contractId": "homeport.screen-catalog.complete", "suiteIds": ["unit.homeport"] },
+    { "contractId": "homeport.journey-catalog.complete", "suiteIds": ["unit.homeport"] },
+    { "contractId": "homeport.evidence-manifest.complete", "suiteIds": ["unit.homeport"] },
+    { "contractId": "homeport.nonconformity-ledger.complete", "suiteIds": ["unit.homeport"] }
   ],
   "impactClasses": [
     "direct-source-ownership",

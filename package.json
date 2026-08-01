@@ -57,6 +57,8 @@
     "features:validate": "tsx scripts/features/validate-feature-catalog.ts",
     "features:test": "vitest run scripts/features/feature-catalog.test.ts",
     "architecture:validate": "tsx scripts/validate-project-one-voyage.ts",
+    "homeport:generate": "node scripts/homeport/generate-phase0-inventories.mjs",
+    "homeport:validate": "node scripts/homeport/validate-phase0-inventories.mjs",
     "docs:index": "node scripts/generate-document-index.mjs",
     "docs:validate": "node scripts/validate-documentation.mjs",
     "test:docs": "node --test tests/validate-documentation.test.mjs",
