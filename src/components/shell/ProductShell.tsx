@@ -4,10 +4,11 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { motion } from "motion/react";
-import { signOutFromShell } from "@/app/actions/sign-out";
 import { useMotionMode } from "@/animation/motion/useMotionMode";
 import { platformMotionEasing, resolvePlatformMotionToken } from "@/animation/platform/motion-tokens";
 import { RouteMotionBoundary } from "@/animation/platform/RouteMotionBoundary";
+import { SignOutButton } from "@/components/auth/SignOutButton";
+import { useCurrentUser } from "@/components/auth/CurrentUserProvider";
 import { canonicalTerms } from "@/language/canonical-terms";
 import {
   classifyRoute,
@@ -16,15 +17,6 @@ import {
   workspaceRegistry,
   type ShellContext,
 } from "@/navigation";
-
-const anonymousContext: ShellContext = {
-  authenticated: false,
-  canUsePlayer: false,
-  canUseCaptain: false,
-  canUseCreator: false,
-  isAdministrator: false,
-  profile: null,
-};
 
 function ShellBrand({ label, compact = false }: { label: string; compact?: boolean }) {
   return (
@@ -43,7 +35,7 @@ export function ProductShell({ children }: { children: React.ReactNode }) {
   const route = classifyRoute(pathname);
   const workspace = workspaceRegistry[route.workspace];
   const { mode } = useMotionMode();
-  const [context, setContext] = useState<ShellContext | null>(null);
+  const { state: currentUser, refresh: refreshCurrentUser } = useCurrentUser();
   const [workspaceMenuOpen, setWorkspaceMenuOpen] = useState(false);
   const [profileMenuOpen, setProfileMenuOpen] = useState(false);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
@@ -51,35 +43,41 @@ export function ProductShell({ children }: { children: React.ReactNode }) {
   const workspaceNavigationRef = useRef<HTMLElement>(null);
   const profileMenuRef = useRef<HTMLDivElement>(null);
   const previousPathnameRef = useRef(pathname);
-  // Hold the route's established menu geometry while identity projection loads.
-  // Access is still enforced by the destination routes; this only avoids a menu jump.
+  const context: ShellContext | null =
+    currentUser.status === "authenticated"
+      ? {
+          authenticated: true,
+          canUsePlayer: currentUser.capabilities.canUsePlayer,
+          canUseCaptain: currentUser.capabilities.canUseCaptain,
+          canUseCreator: currentUser.capabilities.canUseCreator,
+          isAdministrator: currentUser.capabilities.isAdministrator,
+          profile: {
+            displayName: currentUser.user.displayName,
+            initials: currentUser.user.initials,
+            ...(currentUser.user.handle ? { handle: currentUser.user.handle } : {}),
+          },
+        }
+      : currentUser.status === "loading"
+        ? null
+        : {
+            authenticated: false,
+            canUsePlayer: false,
+            canUseCaptain: false,
+            canUseCreator: false,
+            isAdministrator: false,
+            profile: null,
+          };
   const navigationCapabilities = context ?? {
-    authenticated: route.workspace !== "public" && route.workspace !== "community",
-    canUsePlayer: route.workspace === "player",
-    canUseCaptain: route.workspace === "captain",
-    canUseCreator: route.workspace === "creator",
+    authenticated: false,
+    canUsePlayer: false,
+    canUseCaptain: false,
+    canUseCreator: false,
     isAdministrator: false,
   };
   const items = projectWorkspaceNavigation(route.workspace, navigationCapabilities, route.shellMode);
   const activeItem = resolveActiveWorkspaceItem(pathname, items);
   const micro = resolvePlatformMotionToken("micro", mode);
   const compact = route.shellMode === "compact" || route.shellMode === "immersive-player";
-
-  useEffect(() => {
-    let cancelled = false;
-    if (typeof fetch !== "function") return;
-    fetch("/api/shell/context", { cache: "no-store" })
-      .then(async (response) => (response.ok ? ((await response.json()) as ShellContext) : anonymousContext))
-      .then((next) => {
-        if (!cancelled) setContext(next);
-      })
-      .catch(() => {
-        if (!cancelled) setContext(anonymousContext);
-      });
-    return () => {
-      cancelled = true;
-    };
-  }, []);
 
   const closeWorkspaceMenu = useCallback(
     (restoreFocus = false) => {
@@ -126,10 +124,10 @@ export function ProductShell({ children }: { children: React.ReactNode }) {
 
   if (route.shellMode === "gateway") return <RouteMotionBoundary pathname={pathname}>{children}</RouteMotionBoundary>;
 
-  const profileLabel = context?.profile?.displayName ?? "Account";
+  const profileLabel =
+    context?.profile?.displayName ?? (currentUser.status === "unavailable" ? "Account unavailable" : "Account");
   const profileInitials = context?.profile?.initials ?? "…";
-  const signInHref =
-    route.workspace === "captain" ? "/captain/sign-in" : route.workspace === "creator" ? "/studio/sign-in" : "/sign-in";
+  const signInHref = `/sign-in?returnTo=${encodeURIComponent(pathname)}`;
   const showWorkspaceMenu = route.shellMode !== "authentication" && items.length > 0;
 
   return (
@@ -233,10 +231,23 @@ export function ProductShell({ children }: { children: React.ReactNode }) {
                     <Link href="/studio/library">Creator workspace</Link>
                   )}
                   <hr />
-                  <form action={signOutFromShell}>
-                    <button type="submit">Sign out</button>
-                  </form>
+                  <SignOutButton />
                 </>
+              ) : currentUser.status === "unavailable" ? (
+                <>
+                  <p className="shell-profile-summary" role="alert">
+                    <b>Account service unavailable</b>
+                    <small>No identity or workspace permission was assumed.</small>
+                  </p>
+                  <button type="button" onClick={() => void refreshCurrentUser()}>
+                    Retry account check
+                  </button>
+                </>
+              ) : currentUser.status === "loading" ? (
+                <p className="shell-profile-summary" role="status">
+                  <b>Checking account…</b>
+                  <small>Workspace access will appear after the server responds.</small>
+                </p>
               ) : (
                 <>
                   <p className="shell-profile-summary">
@@ -244,6 +255,7 @@ export function ProductShell({ children }: { children: React.ReactNode }) {
                     <small>Sign in to reach your profile and workspaces.</small>
                   </p>
                   <Link href={signInHref}>Sign in</Link>
+                  <Link href="/register">Create Account</Link>
                   <Link href="/">Choose a workspace</Link>
                 </>
               )}

@@ -3,9 +3,17 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import { ProductShell } from "./ProductShell";
 
 const navigation = vi.hoisted(() => ({ pathname: "/tales" }));
+const currentUser = vi.hoisted(() => ({
+  state: { status: "anonymous", authenticated: false } as Record<string, unknown>,
+  refresh: vi.fn(),
+  invalidate: vi.fn(),
+}));
 
-vi.mock("next/navigation", () => ({ usePathname: () => navigation.pathname }));
-vi.mock("@/app/actions/sign-out", () => ({ signOutFromShell: vi.fn() }));
+vi.mock("next/navigation", () => ({
+  usePathname: () => navigation.pathname,
+  useRouter: () => ({ replace: vi.fn(), refresh: vi.fn() }),
+}));
+vi.mock("@/components/auth/CurrentUserProvider", () => ({ useCurrentUser: () => currentUser }));
 vi.mock("@/animation/motion/useMotionMode", () => ({
   useMotionMode: () => ({ mode: "reduced" }),
 }));
@@ -14,6 +22,7 @@ describe("ProductShell", () => {
   afterEach(() => {
     cleanup();
     navigation.pathname = "/tales";
+    currentUser.state = { status: "anonymous", authenticated: false };
     vi.unstubAllGlobals();
   });
 
@@ -55,6 +64,17 @@ describe("ProductShell", () => {
 
   it("uses a reduced Player shell for an active Chronicle without Captain or Creator destinations", () => {
     navigation.pathname = "/player/playthroughs/playthrough-1/journal";
+    currentUser.state = {
+      status: "authenticated",
+      authenticated: true,
+      user: { displayName: "Mara Tide", initials: "MT" },
+      capabilities: {
+        canUsePlayer: true,
+        canUseCaptain: true,
+        canUseCreator: true,
+        isAdministrator: false,
+      },
+    };
     render(
       <ProductShell>
         <main>Immersive journal</main>
@@ -66,25 +86,23 @@ describe("ProductShell", () => {
     expect(within(navigationRegion).getByRole("link", { name: "My Voyages" })).toBeInTheDocument();
     expect(within(navigationRegion).queryByRole("link", { name: /Captain/i })).not.toBeInTheDocument();
     expect(within(navigationRegion).queryByRole("link", { name: /Studio/i })).not.toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /Account/ })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /Mara Tide/ })).toBeInTheDocument();
   });
 
-  it("keeps account pages out of the public workspace and exposes the profile menu for a signed-in identity", async () => {
+  it("homeport.signout.visible keeps account pages out of public space and exposes sign-out", async () => {
     navigation.pathname = "/account/security";
-    vi.stubGlobal(
-      "fetch",
-      vi.fn().mockResolvedValue({
-        ok: true,
-        json: async () => ({
-          authenticated: true,
-          canUsePlayer: true,
-          canUseCaptain: true,
-          canUseCreator: true,
-          isAdministrator: false,
-          profile: { displayName: "Mara Tide", initials: "MT", handle: "mara" },
-        }),
-      }),
-    );
+    currentUser.state = {
+      status: "authenticated",
+      authenticated: true,
+      user: { displayName: "Mara Tide", initials: "MT", handle: "mara" },
+      capabilities: {
+        canUsePlayer: true,
+        canUseCaptain: true,
+        canUseCreator: true,
+        isAdministrator: false,
+      },
+      csrfToken: "csrf",
+    };
     render(
       <ProductShell>
         <main>Security content</main>
@@ -97,6 +115,19 @@ describe("ProductShell", () => {
     expect(screen.getByRole("link", { name: "Captain workspace" })).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "Creator workspace" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Sign out" })).toBeInTheDocument();
+  });
+
+  it("homeport.current-user.no-client-authority does not infer protected access from the route while loading", () => {
+    navigation.pathname = "/player/library";
+    currentUser.state = { status: "loading", authenticated: false };
+    render(
+      <ProductShell>
+        <main>Server-owned route result</main>
+      </ProductShell>,
+    );
+    expect(screen.queryByRole("link", { name: "My Voyages" })).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Account" }));
+    expect(screen.getByText("Checking account…")).toBeInTheDocument();
   });
 
   it("hands route focus to the destination heading exactly once", async () => {

@@ -1,17 +1,26 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { db } from "@/lib/db";
-import { requireWayfarerAccount } from "@/wayfarer/http";
+import { AccessDecisionState } from "@/components/auth/AccessDecisionState";
 import { collectCommunityProviderHealth } from "@/community/operations";
+import { resolveCapability } from "@/homeport/current-user.server";
+import { signInHref } from "@/homeport/return-to";
+import { db } from "@/lib/db";
 
 export const dynamic = "force-dynamic";
 
 export default async function CommunityModerationPage() {
-  const session = await requireWayfarerAccount();
-  const roles = new Set(session?.account.roles.map((assignment) => assignment.role) ?? []);
-  if (!session || (!roles.has("MODERATOR") && !roles.has("ADMINISTRATOR"))) redirect("/sign-in");
+  const decision = await resolveCapability("moderator");
+  if (
+    decision.status === "auth-required" ||
+    decision.status === "expired" ||
+    decision.status === "revoked" ||
+    decision.status === "invalid"
+  )
+    redirect(signInHref("/community/moderation", decision.status));
+  if (decision.status !== "allowed") return <AccessDecisionState decision={decision} />;
+  const accountId = decision.context.user.accountId;
   const cases = await db.communityModerationCase.findMany({
-    where: { conflictAccountId: { not: session.accountId } },
+    where: { conflictAccountId: { not: accountId } },
     select: {
       id: true,
       caseKey: true,

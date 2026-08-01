@@ -21,15 +21,28 @@ export async function requireWayfarerAccount(request?: Request) {
 }
 
 export async function setWayfarerCookie(token: string) {
-  (await cookies()).set(WAYFARER_COOKIE, token, wayfarerCookieOptions);
+  const jar = await cookies();
+  jar.set(WAYFARER_COOKIE, token, wayfarerCookieOptions);
+  jar.delete("forever_gm");
+  jar.delete("chronicle_player");
 }
 
 export async function setWayfarerRoleCookie(token: string, roles: string[]) {
   await setWayfarerCookie(token);
-  if (roles.some((role) => ["CAPTAIN", "CREATOR", "MODERATOR", "ADMINISTRATOR"].includes(role)))
-    (await cookies()).set("forever_gm", token, { ...wayfarerCookieOptions, sameSite: "strict", maxAge: 60 * 60 * 10 });
+  // Homeport Phase 1: role assignment is server-owned AccountSession context.
+  // Keep the argument for response-shape compatibility, but stop minting a
+  // second staff cookie for ordinary account sign-in.
+  void roles;
+  (await cookies()).delete("forever_gm");
 }
 
 export async function clearWayfarerCookie() {
   (await cookies()).delete(WAYFARER_COOKIE);
+}
+
+export async function clearProductIdentityCookies() {
+  const jar = await cookies();
+  jar.delete(WAYFARER_COOKIE);
+  jar.delete("forever_gm");
+  jar.delete("chronicle_player");
 }

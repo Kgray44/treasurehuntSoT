@@ -3,7 +3,7 @@ title: Features and subfeatures
 audience: product
 status: current
 canonical_for: product-features
-last_reviewed: 2026-07-29
+last_reviewed: 2026-08-01
 ---
 
 # Features and subfeatures
@@ -14,6 +14,12 @@ last_reviewed: 2026-07-29
 Account flows, role gateways, profile handles, preferences, privacy controls,
 Chronicle Passport, private history, and personal artifact custody provide an
 owned identity surface. [Guide](../user/chronicle-passport.md).
+
+Project Homeport Phase 1 is complete on its governed development branch but is
+not yet on main. That branch adds one canonical current-user contract, one
+ordinary sign-in surface, explicit capability decisions, session invalidation
+across tabs, and bounded observe-and-rotate compatibility for historical
+Player and staff sessions.
 
 ## Player experience
 

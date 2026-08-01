@@ -8,6 +8,37 @@ import { promisify } from "node:util";
 
 const root = process.cwd();
 const ignored = new Set(["node_modules", ".git", ".next", "coverage", "artifacts"]);
+const homeportContracts = [
+  "homeport.route-inventory.complete",
+  "homeport.session-inventory.complete",
+  "homeport.screen-catalog.complete",
+  "homeport.journey-catalog.complete",
+  "homeport.evidence-manifest.complete",
+  "homeport.nonconformity-ledger.complete",
+  "homeport.auth.single-product",
+  "homeport.registration.reachable",
+  "homeport.registration.success-destination",
+  "homeport.signin.lifecycle-links",
+  "homeport.session.convergence",
+  "homeport.session.expiry",
+  "homeport.session.revocation",
+  "homeport.session.restricted-account",
+  "homeport.context.failure-state",
+  "homeport.current-user.no-stale-overwrite",
+  "homeport.current-user.no-client-authority",
+  "homeport.capability.player-agreement",
+  "homeport.capability.staff-agreement",
+  "homeport.permission.explicit",
+  "homeport.signout.visible",
+  "homeport.signout.multitab",
+  "homeport.signout.compatibility",
+  "homeport.return-to.safe",
+  "homeport.passport.session",
+  "homeport.invitation.account-handoff",
+  "homeport.legacy-player.rotation",
+  "homeport.legacy-staff.bridge",
+  "homeport.compatibility.observation",
+];
 const hash = (text) => createHash("sha256").update(text).digest("hex").slice(0, 20);
 const execFileAsync = promisify(execFile);
 const normal = (value) => value.replaceAll("\\", "/");
@@ -87,15 +118,7 @@ function browserFamily(project, file, title) {
 }
 
 function contractFor(file, family) {
-  if (file.includes("homeport") || family === "unit.homeport")
-    return [
-      "homeport.route-inventory.complete",
-      "homeport.session-inventory.complete",
-      "homeport.screen-catalog.complete",
-      "homeport.journey-catalog.complete",
-      "homeport.evidence-manifest.complete",
-      "homeport.nonconformity-ledger.complete",
-    ];
+  if (file.includes("homeport") || family === "unit.homeport") return homeportContracts;
   if (file.includes("private-content")) return ["sealed-hold-private-delivery", "public-privacy-projection"];
   if (file.includes("community")) return ["community-public-projection"];
   if (file.includes("wayfarer") || file.includes("passport")) return ["wayfarer-history-projection"];

@@ -1,17 +1,6 @@
 import { NextResponse } from "next/server";
 import type { ShellContext } from "@/navigation";
-import { requireWayfarerAccount } from "@/wayfarer/http";
-
-function initials(displayName: string) {
-  const value = displayName.trim();
-  const letters = value
-    .split(/\s+/)
-    .filter(Boolean)
-    .slice(0, 2)
-    .map((part) => part[0]?.toLocaleUpperCase("en-US") ?? "")
-    .join("");
-  return letters || "A";
-}
+import { resolveCurrentUser } from "@/homeport/current-user.server";
 
 const anonymousContext: ShellContext = {
   authenticated: false,
@@ -23,24 +12,23 @@ const anonymousContext: ShellContext = {
 };
 
 export async function GET() {
-  const session = await requireWayfarerAccount();
-  if (!session?.account.profile)
-    return NextResponse.json(anonymousContext, { headers: { "Cache-Control": "no-store" } });
-
-  const roles = new Set(session.account.roles.map((assignment) => assignment.role));
-  const isAdministrator = roles.has("ADMINISTRATOR");
-  const profile = session.account.profile;
+  const context = await resolveCurrentUser({ rotateCompatibility: true });
+  if (context.status !== "authenticated")
+    return NextResponse.json(anonymousContext, {
+      status: context.status === "unavailable" ? 503 : 200,
+      headers: { "Cache-Control": "no-store, private", Vary: "Cookie" },
+    });
   const body: ShellContext = {
     authenticated: true,
-    canUsePlayer: roles.has("PLAYER") || isAdministrator,
-    canUseCaptain: roles.has("CAPTAIN") || isAdministrator,
-    canUseCreator: roles.has("CREATOR") || roles.has("PUBLISHER") || isAdministrator,
-    isAdministrator,
+    canUsePlayer: context.capabilities.canUsePlayer,
+    canUseCaptain: context.capabilities.canUseCaptain,
+    canUseCreator: context.capabilities.canUseCreator,
+    isAdministrator: context.capabilities.isAdministrator,
     profile: {
-      displayName: profile.displayName.slice(0, 80),
-      initials: initials(profile.displayName),
-      ...(profile.handle ? { handle: profile.handle.slice(0, 32) } : {}),
+      displayName: context.user.displayName,
+      initials: context.user.initials,
+      ...(context.user.handle ? { handle: context.user.handle } : {}),
     },
   };
-  return NextResponse.json(body, { headers: { "Cache-Control": "no-store" } });
+  return NextResponse.json(body, { headers: { "Cache-Control": "no-store, private", Vary: "Cookie" } });
 }

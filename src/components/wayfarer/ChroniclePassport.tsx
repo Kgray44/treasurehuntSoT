@@ -1,6 +1,8 @@
 "use client";
 
+import Link from "next/link";
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import { useCurrentUser } from "@/components/auth/CurrentUserProvider";
 import { ChronicleHistory } from "@/components/wayfarer/ChronicleHistory";
 import { ArtifactCabinet } from "@/components/wayfarer/ArtifactCabinet";
 
@@ -42,8 +44,11 @@ async function responseJson(response: Response) {
 }
 
 export function ChroniclePassport() {
-  const [profile, setProfile] = useState<Profile | null>(null);
-  const [identities, setIdentities] = useState<
+  const { state: currentUser, refresh: refreshCurrentUser } = useCurrentUser();
+  const activeSessionId = currentUser.status === "authenticated" ? currentUser.session.id : null;
+  const [loadedSessionId, setLoadedSessionId] = useState<string | null>(null);
+  const [storedProfile, setProfile] = useState<Profile | null>(null);
+  const [storedIdentities, setIdentities] = useState<
     Array<{
       id: string;
       provider: string;
@@ -54,7 +59,7 @@ export function ChroniclePassport() {
     }>
   >([]);
   const [unlinkingIdentityId, setUnlinkingIdentityId] = useState<string | null>(null);
-  const [adapters, setAdapters] = useState<
+  const [storedAdapters, setAdapters] = useState<
     Array<{
       provider: string;
       name: string;
@@ -65,25 +70,38 @@ export function ChroniclePassport() {
       externalApproval: string;
     }>
   >([]);
-  const [csrf, setCsrf] = useState("");
+  const [storedCsrf, setCsrf] = useState("");
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
   const [simulatorCode, setSimulatorCode] = useState("sim:wayfarer-demo:Discord voyager");
 
   useEffect(() => {
+    if (!activeSessionId) return;
+    const controller = new AbortController();
     Promise.all([
-      fetch("/api/passport/profile").then(responseJson),
-      fetch("/api/passport/providers").then(responseJson),
-      fetch("/api/auth/sessions").then(responseJson),
+      fetch("/api/passport/profile", { signal: controller.signal }).then(responseJson),
+      fetch("/api/passport/providers", { signal: controller.signal }).then(responseJson),
+      fetch("/api/auth/sessions", { signal: controller.signal }).then(responseJson),
     ])
       .then(([nextProfile, providers, sessions]) => {
         setProfile(nextProfile);
         setIdentities(providers.identities);
         setAdapters(providers.adapters);
         setCsrf(sessions.csrfToken ?? "");
+        setLoadedSessionId(activeSessionId);
       })
-      .catch((cause) => setError(cause instanceof Error ? cause.message : "Unable to open Chronicle Passport."));
-  }, []);
+      .catch((cause) => {
+        if (!controller.signal.aborted)
+          setError(cause instanceof Error ? cause.message : "Unable to open Chronicle Passport.");
+      });
+    return () => controller.abort();
+  }, [activeSessionId]);
+
+  const hasCurrentSessionData = activeSessionId !== null && loadedSessionId === activeSessionId;
+  const profile = hasCurrentSessionData ? storedProfile : null;
+  const identities = hasCurrentSessionData ? storedIdentities : [];
+  const adapters = hasCurrentSessionData ? storedAdapters : [];
+  const csrf = hasCurrentSessionData ? storedCsrf : "";
   const headers = { "content-type": "application/json", ...(csrf ? { "x-csrf-token": csrf } : {}) };
   async function updateProfile(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -239,6 +257,26 @@ export function ChroniclePassport() {
       setError(cause instanceof Error ? cause.message : "Unable to unlink provider.");
     }
   }
+  if (currentUser.status !== "authenticated")
+    return (
+      <main className="chronicle-passport" data-account-state={currentUser.status}>
+        <h1>Chronicle Passport</h1>
+        {currentUser.status === "loading" ? <p>Opening your account…</p> : null}
+        {currentUser.status === "unavailable" ? (
+          <>
+            <p role="alert">Account context is unavailable. No private profile data is being shown.</p>
+            <button type="button" onClick={() => void refreshCurrentUser()}>
+              Retry account check
+            </button>
+          </>
+        ) : null}
+        {currentUser.status !== "loading" && currentUser.status !== "unavailable" ? (
+          <p>
+            Your account session ended. <Link href="/sign-in?returnTo=%2Fpassport">Sign in again</Link>.
+          </p>
+        ) : null}
+      </main>
+    );
   if (!profile)
     return (
       <main>

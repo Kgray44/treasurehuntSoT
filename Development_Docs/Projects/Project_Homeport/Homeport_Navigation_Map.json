@@ -194,7 +194,11 @@
       "disabledCondition": null,
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
-      "evidenceId": null
+      "evidenceId": null,
+      "phase1Implementation": {
+        "authority": "HP-SES-001",
+        "state": "VALIDATED"
+      }
     },
     {
       "nodeId": "nav-2",
@@ -211,7 +215,11 @@
       "disabledCondition": null,
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
-      "evidenceId": null
+      "evidenceId": null,
+      "phase1Implementation": {
+        "authority": "HP-SES-001",
+        "state": "VALIDATED"
+      }
     },
     {
       "nodeId": "nav-3",
@@ -228,7 +236,11 @@
       "disabledCondition": null,
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
-      "evidenceId": null
+      "evidenceId": null,
+      "phase1Implementation": {
+        "authority": "HP-SES-001",
+        "state": "VALIDATED"
+      }
     },
     {
       "nodeId": "nav-4",
@@ -245,7 +257,11 @@
       "disabledCondition": null,
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
-      "evidenceId": "HP-EV-005"
+      "evidenceId": "HP-EV-005",
+      "phase1Implementation": {
+        "authority": "HP-SES-001",
+        "state": "VALIDATED"
+      }
     },
     {
       "nodeId": "nav-5",
@@ -262,7 +278,11 @@
       "disabledCondition": null,
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
-      "evidenceId": "HP-EV-011"
+      "evidenceId": "HP-EV-011",
+      "phase1Implementation": {
+        "authority": "HP-SES-001",
+        "state": "VALIDATED"
+      }
     },
     {
       "nodeId": "nav-6",
@@ -279,7 +299,11 @@
       "disabledCondition": null,
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
-      "evidenceId": "HP-EV-012"
+      "evidenceId": "HP-EV-012",
+      "phase1Implementation": {
+        "authority": "HP-SES-001",
+        "state": "VALIDATED"
+      }
     },
     {
       "nodeId": "nav-7",
@@ -296,7 +320,11 @@
       "disabledCondition": null,
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
-      "evidenceId": "HP-EV-011"
+      "evidenceId": "HP-EV-011",
+      "phase1Implementation": {
+        "authority": "HP-SES-001",
+        "state": "VALIDATED"
+      }
     },
     {
       "nodeId": "nav-8",
@@ -313,7 +341,11 @@
       "disabledCondition": null,
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
-      "evidenceId": null
+      "evidenceId": null,
+      "phase1Implementation": {
+        "authority": "HP-SES-001",
+        "state": "VALIDATED"
+      }
     },
     {
       "nodeId": "nav-9",
@@ -330,7 +362,11 @@
       "disabledCondition": null,
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
-      "evidenceId": null
+      "evidenceId": null,
+      "phase1Implementation": {
+        "authority": "HP-SES-001",
+        "state": "VALIDATED"
+      }
     },
     {
       "nodeId": "nav-10",
@@ -347,7 +383,11 @@
       "disabledCondition": null,
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
-      "evidenceId": "HP-EV-011"
+      "evidenceId": "HP-EV-011",
+      "phase1Implementation": {
+        "authority": "HP-SES-001",
+        "state": "VALIDATED"
+      }
     },
     {
       "nodeId": "nav-11",
@@ -364,7 +404,11 @@
       "disabledCondition": null,
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
-      "evidenceId": null
+      "evidenceId": null,
+      "phase1Implementation": {
+        "authority": "HP-SES-001",
+        "state": "VALIDATED"
+      }
     },
     {
       "nodeId": "nav-12",
@@ -432,7 +476,11 @@
       "disabledCondition": null,
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
-      "evidenceId": "HP-EV-027"
+      "evidenceId": "HP-EV-027",
+      "phase1Implementation": {
+        "authority": "HP-SES-001",
+        "state": "VALIDATED"
+      }
     },
     {
       "nodeId": "nav-16",
@@ -449,7 +497,11 @@
       "disabledCondition": null,
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
-      "evidenceId": null
+      "evidenceId": null,
+      "phase1Implementation": {
+        "authority": "HP-SES-001",
+        "state": "VALIDATED"
+      }
     },
     {
       "nodeId": "nav-17",
@@ -466,7 +518,11 @@
       "disabledCondition": null,
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
-      "evidenceId": "HP-EV-027"
+      "evidenceId": "HP-EV-027",
+      "phase1Implementation": {
+        "authority": "HP-SES-001",
+        "state": "VALIDATED"
+      }
     },
     {
       "nodeId": "nav-18",
@@ -721,7 +777,11 @@
       "disabledCondition": null,
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
-      "evidenceId": "HP-EV-007"
+      "evidenceId": "HP-EV-007",
+      "phase1Implementation": {
+        "authority": "HP-SES-001",
+        "state": "VALIDATED"
+      }
     },
     {
       "nodeId": "nav-33",
@@ -738,7 +798,11 @@
       "disabledCondition": null,
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
-      "evidenceId": "HP-EV-007"
+      "evidenceId": "HP-EV-007",
+      "phase1Implementation": {
+        "authority": "HP-SES-001",
+        "state": "VALIDATED"
+      }
     },
     {
       "nodeId": "nav-34",
@@ -755,7 +819,11 @@
       "disabledCondition": null,
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
-      "evidenceId": "HP-EV-007"
+      "evidenceId": "HP-EV-007",
+      "phase1Implementation": {
+        "authority": "HP-SES-001",
+        "state": "VALIDATED"
+      }
     },
     {
       "nodeId": "nav-35",
@@ -1010,7 +1078,11 @@
       "disabledCondition": null,
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
-      "evidenceId": "HP-EV-007"
+      "evidenceId": "HP-EV-007",
+      "phase1Implementation": {
+        "authority": "HP-SES-001",
+        "state": "VALIDATED"
+      }
     },
     {
       "nodeId": "nav-50",
@@ -1027,7 +1099,11 @@
       "disabledCondition": null,
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
-      "evidenceId": "HP-EV-007"
+      "evidenceId": "HP-EV-007",
+      "phase1Implementation": {
+        "authority": "HP-SES-001",
+        "state": "VALIDATED"
+      }
     },
     {
       "nodeId": "nav-51",
@@ -1044,7 +1120,11 @@
       "disabledCondition": null,
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
-      "evidenceId": "HP-EV-007"
+      "evidenceId": "HP-EV-007",
+      "phase1Implementation": {
+        "authority": "HP-SES-001",
+        "state": "VALIDATED"
+      }
     },
     {
       "nodeId": "nav-52",
@@ -1061,7 +1141,11 @@
       "disabledCondition": null,
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
-      "evidenceId": null
+      "evidenceId": null,
+      "phase1Implementation": {
+        "authority": "HP-SES-001",
+        "state": "VALIDATED"
+      }
     },
     {
       "nodeId": "nav-53",
@@ -1078,7 +1162,11 @@
       "disabledCondition": null,
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
-      "evidenceId": null
+      "evidenceId": null,
+      "phase1Implementation": {
+        "authority": "HP-SES-001",
+        "state": "VALIDATED"
+      }
     },
     {
       "nodeId": "nav-54",
@@ -1095,7 +1183,11 @@
       "disabledCondition": null,
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
-      "evidenceId": "HP-EV-012"
+      "evidenceId": "HP-EV-012",
+      "phase1Implementation": {
+        "authority": "HP-SES-001",
+        "state": "VALIDATED"
+      }
     },
     {
       "nodeId": "nav-55",
@@ -1112,7 +1204,11 @@
       "disabledCondition": null,
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
-      "evidenceId": "HP-EV-007"
+      "evidenceId": "HP-EV-007",
+      "phase1Implementation": {
+        "authority": "HP-SES-001",
+        "state": "VALIDATED"
+      }
     },
     {
       "nodeId": "nav-56",
@@ -1129,7 +1225,11 @@
       "disabledCondition": null,
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
-      "evidenceId": "HP-EV-007"
+      "evidenceId": "HP-EV-007",
+      "phase1Implementation": {
+        "authority": "HP-SES-001",
+        "state": "VALIDATED"
+      }
     },
     {
       "nodeId": "nav-57",
@@ -1146,7 +1246,11 @@
       "disabledCondition": null,
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
-      "evidenceId": "HP-EV-007"
+      "evidenceId": "HP-EV-007",
+      "phase1Implementation": {
+        "authority": "HP-SES-001",
+        "state": "VALIDATED"
+      }
     },
     {
       "nodeId": "nav-58",
@@ -1163,7 +1267,11 @@
       "disabledCondition": null,
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
-      "evidenceId": "HP-EV-011"
+      "evidenceId": "HP-EV-011",
+      "phase1Implementation": {
+        "authority": "HP-SES-001",
+        "state": "VALIDATED"
+      }
     },
     {
       "nodeId": "nav-59",
@@ -1180,7 +1288,11 @@
       "disabledCondition": null,
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
-      "evidenceId": "HP-EV-005"
+      "evidenceId": "HP-EV-005",
+      "phase1Implementation": {
+        "authority": "HP-SES-001",
+        "state": "VALIDATED"
+      }
     },
     {
       "nodeId": "nav-60",
@@ -1197,7 +1309,11 @@
       "disabledCondition": null,
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
-      "evidenceId": "HP-EV-005"
+      "evidenceId": "HP-EV-005",
+      "phase1Implementation": {
+        "authority": "HP-SES-001",
+        "state": "VALIDATED"
+      }
     },
     {
       "nodeId": "nav-61",
@@ -1214,7 +1330,11 @@
       "disabledCondition": null,
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
-      "evidenceId": "HP-EV-005"
+      "evidenceId": "HP-EV-005",
+      "phase1Implementation": {
+        "authority": "HP-SES-001",
+        "state": "VALIDATED"
+      }
     },
     {
       "nodeId": "nav-62",
@@ -1231,7 +1351,11 @@
       "disabledCondition": null,
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
-      "evidenceId": "HP-EV-005"
+      "evidenceId": "HP-EV-005",
+      "phase1Implementation": {
+        "authority": "HP-SES-001",
+        "state": "VALIDATED"
+      }
     },
     {
       "nodeId": "nav-63",
@@ -1248,7 +1372,11 @@
       "disabledCondition": null,
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
-      "evidenceId": "HP-EV-005"
+      "evidenceId": "HP-EV-005",
+      "phase1Implementation": {
+        "authority": "HP-SES-001",
+        "state": "VALIDATED"
+      }
     },
     {
       "nodeId": "nav-64",
@@ -1265,7 +1393,11 @@
       "disabledCondition": null,
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
-      "evidenceId": "HP-EV-005"
+      "evidenceId": "HP-EV-005",
+      "phase1Implementation": {
+        "authority": "HP-SES-001",
+        "state": "VALIDATED"
+      }
     },
     {
       "nodeId": "nav-65",
@@ -1316,7 +1448,11 @@
       "disabledCondition": null,
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
-      "evidenceId": "HP-EV-013"
+      "evidenceId": "HP-EV-013",
+      "phase1Implementation": {
+        "authority": "HP-SES-001",
+        "state": "VALIDATED"
+      }
     },
     {
       "nodeId": "nav-68",
@@ -1333,7 +1469,11 @@
       "disabledCondition": null,
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
-      "evidenceId": "HP-EV-025"
+      "evidenceId": "HP-EV-025",
+      "phase1Implementation": {
+        "authority": "HP-SES-001",
+        "state": "VALIDATED"
+      }
     },
     {
       "nodeId": "nav-69",
@@ -1350,7 +1490,11 @@
       "disabledCondition": null,
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
-      "evidenceId": "HP-EV-005"
+      "evidenceId": "HP-EV-005",
+      "phase1Implementation": {
+        "authority": "HP-SES-001",
+        "state": "VALIDATED"
+      }
     },
     {
       "nodeId": "nav-70",
@@ -1367,7 +1511,11 @@
       "disabledCondition": null,
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
-      "evidenceId": "HP-EV-011"
+      "evidenceId": "HP-EV-011",
+      "phase1Implementation": {
+        "authority": "HP-SES-001",
+        "state": "VALIDATED"
+      }
     },
     {
       "nodeId": "nav-71",
@@ -1384,7 +1532,11 @@
       "disabledCondition": null,
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
-      "evidenceId": "HP-EV-012"
+      "evidenceId": "HP-EV-012",
+      "phase1Implementation": {
+        "authority": "HP-SES-001",
+        "state": "VALIDATED"
+      }
     },
     {
       "nodeId": "nav-72",
@@ -1656,7 +1808,11 @@
       "disabledCondition": null,
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
-      "evidenceId": "HP-EV-025"
+      "evidenceId": "HP-EV-025",
+      "phase1Implementation": {
+        "authority": "HP-SES-001",
+        "state": "VALIDATED"
+      }
     },
     {
       "nodeId": "nav-88",
@@ -1741,7 +1897,11 @@
       "disabledCondition": null,
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
-      "evidenceId": "HP-EV-011"
+      "evidenceId": "HP-EV-011",
+      "phase1Implementation": {
+        "authority": "HP-SES-001",
+        "state": "VALIDATED"
+      }
     },
     {
       "nodeId": "nav-93",
@@ -1775,7 +1935,11 @@
       "disabledCondition": null,
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
-      "evidenceId": "HP-EV-005"
+      "evidenceId": "HP-EV-005",
+      "phase1Implementation": {
+        "authority": "HP-SES-001",
+        "state": "VALIDATED"
+      }
     },
     {
       "nodeId": "nav-95",
@@ -1809,7 +1973,11 @@
       "disabledCondition": null,
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
-      "evidenceId": "HP-EV-013"
+      "evidenceId": "HP-EV-013",
+      "phase1Implementation": {
+        "authority": "HP-SES-001",
+        "state": "VALIDATED"
+      }
     },
     {
       "nodeId": "nav-97",
@@ -1826,7 +1994,11 @@
       "disabledCondition": null,
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
-      "evidenceId": "HP-EV-011"
+      "evidenceId": "HP-EV-011",
+      "phase1Implementation": {
+        "authority": "HP-SES-001",
+        "state": "VALIDATED"
+      }
     },
     {
       "nodeId": "nav-98",
@@ -1877,7 +2049,11 @@
       "disabledCondition": null,
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
-      "evidenceId": "HP-EV-012"
+      "evidenceId": "HP-EV-012",
+      "phase1Implementation": {
+        "authority": "HP-SES-001",
+        "state": "VALIDATED"
+      }
     },
     {
       "nodeId": "nav-101",
@@ -1928,7 +2104,11 @@
       "disabledCondition": null,
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
-      "evidenceId": "HP-EV-013"
+      "evidenceId": "HP-EV-013",
+      "phase1Implementation": {
+        "authority": "HP-SES-001",
+        "state": "VALIDATED"
+      }
     },
     {
       "nodeId": "nav-104",
@@ -1945,7 +2125,11 @@
       "disabledCondition": null,
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
-      "evidenceId": "HP-EV-025"
+      "evidenceId": "HP-EV-025",
+      "phase1Implementation": {
+        "authority": "HP-SES-001",
+        "state": "VALIDATED"
+      }
     },
     {
       "nodeId": "nav-105",
@@ -1963,6 +2147,118 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
       "evidenceId": "HP-EV-018"
+    }
+  ],
+  "phase1Implementation": {
+    "phase": "PHASE_1_UNITE_IDENTITY_AND_SESSION_AUTHORITY",
+    "implementationBaseSha": "bda5217a67d8ce2b56a02163371c137d9ed07275",
+    "implementationDigest": "5d00714b83b258f21cbcd848befe307933fd35056f9c767c9d5116be6e07df7a",
+    "state": "VALIDATED",
+    "updatedAt": "2026-08-01T19:00:00.000Z",
+    "historicalPhase0Preserved": true
+  },
+  "phase1AcceptanceEdges": [
+    {
+      "journeyId": "HP-P1-JRN-A",
+      "routeTransitions": ["/", "/player/sign-in", "/sign-in", "/player/library"],
+      "accountAuthority": "HP-SES-001",
+      "result": "PASSED"
+    },
+    {
+      "journeyId": "HP-P1-JRN-B",
+      "routeTransitions": ["/", "/player/sign-in", "/sign-in", "/register", "/player/library"],
+      "accountAuthority": "HP-SES-001",
+      "result": "PASSED"
+    },
+    {
+      "journeyId": "HP-P1-JRN-C",
+      "routeTransitions": ["/", "/sign-in", "/player/library", "/passport", "reload"],
+      "accountAuthority": "HP-SES-001",
+      "result": "PASSED"
+    },
+    {
+      "journeyId": "HP-P1-JRN-D",
+      "routeTransitions": ["/", "/sign-in", "/player/library", "/captain/library"],
+      "accountAuthority": "HP-SES-001",
+      "result": "PASSED"
+    },
+    {
+      "journeyId": "HP-P1-JRN-E",
+      "routeTransitions": ["/", "/sign-in", "/player/library", "/studio/library"],
+      "accountAuthority": "HP-SES-001",
+      "result": "PASSED"
+    },
+    {
+      "journeyId": "HP-P1-JRN-F",
+      "routeTransitions": ["/player/library", "/captain/library", "/studio/library", "/passport", "/player/library"],
+      "accountAuthority": "HP-SES-001",
+      "result": "PASSED"
+    },
+    {
+      "journeyId": "HP-P1-JRN-G",
+      "routeTransitions": ["/", "/sign-in", "/community/moderation"],
+      "accountAuthority": "HP-SES-001",
+      "result": "PASSED"
+    },
+    {
+      "journeyId": "HP-P1-JRN-H",
+      "routeTransitions": ["/player/library", "/sign-in?reason=expired", "/player/library"],
+      "accountAuthority": "HP-SES-001",
+      "result": "PASSED"
+    },
+    {
+      "journeyId": "HP-P1-JRN-I",
+      "routeTransitions": ["/player/library", "/", "protected route denied"],
+      "accountAuthority": "HP-SES-001",
+      "result": "PASSED"
+    },
+    {
+      "journeyId": "HP-P1-JRN-J",
+      "routeTransitions": ["two tabs", "sign out", "second tab refetch", "protected route denied"],
+      "accountAuthority": "HP-SES-001",
+      "result": "PASSED"
+    },
+    {
+      "journeyId": "HP-P1-JRN-K",
+      "routeTransitions": ["/captain/library denied", "/player/library allowed"],
+      "accountAuthority": "HP-SES-001",
+      "result": "PASSED"
+    },
+    {
+      "journeyId": "HP-P1-JRN-L",
+      "routeTransitions": ["chronicle_player", "/tales", "wayfarer_account"],
+      "accountAuthority": "HP-SES-001",
+      "result": "PASSED"
+    },
+    {
+      "journeyId": "HP-P1-JRN-M",
+      "routeTransitions": ["forever_gm", "/tales", "/captain/library", "wayfarer_account"],
+      "accountAuthority": "HP-SES-001",
+      "result": "PASSED"
+    },
+    {
+      "journeyId": "HP-P1-JRN-N",
+      "routeTransitions": ["synthetic invitation", "accept", "canonical Player waiting room"],
+      "accountAuthority": "HP-SES-001",
+      "result": "PASSED"
+    },
+    {
+      "journeyId": "HP-P1-JRN-O",
+      "routeTransitions": ["external returnTo", "sign-in", "/passport"],
+      "accountAuthority": "HP-SES-001",
+      "result": "PASSED"
+    },
+    {
+      "journeyId": "HP-P1-JRN-P",
+      "routeTransitions": ["mobile /", "sign-in", "/player/library", "sign-out"],
+      "accountAuthority": "HP-SES-001",
+      "result": "PASSED"
+    },
+    {
+      "journeyId": "HP-P1-JRN-Q",
+      "routeTransitions": ["sign-in expiry", "registration", "moderation permission"],
+      "accountAuthority": "HP-SES-001",
+      "result": "PASSED"
     }
   ]
 }

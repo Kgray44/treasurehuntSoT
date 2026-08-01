@@ -1,17 +1,26 @@
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
+import { AccessDecisionState } from "@/components/auth/AccessDecisionState";
+import { resolveCapability } from "@/homeport/current-user.server";
+import { signInHref } from "@/homeport/return-to";
 import { db } from "@/lib/db";
-import { requireWayfarerAccount } from "@/wayfarer/http";
 
 export const dynamic = "force-dynamic";
 
 export default async function CommunityModerationCasePage({ params }: { params: Promise<{ id: string }> }) {
-  const session = await requireWayfarerAccount();
-  const roles = new Set(session?.account.roles.map((assignment) => assignment.role) ?? []);
-  if (!session || (!roles.has("MODERATOR") && !roles.has("ADMINISTRATOR"))) redirect("/sign-in");
   const caseId = (await params).id;
+  const decision = await resolveCapability("moderator");
+  if (
+    decision.status === "auth-required" ||
+    decision.status === "expired" ||
+    decision.status === "revoked" ||
+    decision.status === "invalid"
+  )
+    redirect(signInHref(`/community/moderation/${caseId}`, decision.status));
+  if (decision.status !== "allowed") return <AccessDecisionState decision={decision} />;
+  const accountId = decision.context.user.accountId;
   const record = await db.communityModerationCase.findFirst({
-    where: { id: caseId, conflictAccountId: { not: session.accountId } },
+    where: { id: caseId, conflictAccountId: { not: accountId } },
     include: {
       subjects: { select: { subjectType: true, subjectId: true, subjectChecksum: true, tombstone: true } },
       reportLinks: { select: { createdAt: true } },

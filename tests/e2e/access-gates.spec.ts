@@ -20,7 +20,9 @@ test("Player sign-in remains public, accessible, and does not grant a Chronicle 
 test("Quartermaster bookmarks redirect to canonical Captain sign-in across supported browsers", async ({ page }) => {
   await page.goto("/quartermaster");
   await expect(page).toHaveURL(/\/captain\/sign-in$/);
-  await expect(page.getByRole("heading", { name: "Enter Captain's Console" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Open the Captain's Console" })).toBeVisible();
+  await expect(page.getByRole("link", { name: "Continue to account sign-in" })).toBeVisible();
+  await expect(page.getByLabel("Password", { exact: true })).toHaveCount(0);
   expect((await page.request.get("/api/captain/library")).status()).toBe(401);
 });
 

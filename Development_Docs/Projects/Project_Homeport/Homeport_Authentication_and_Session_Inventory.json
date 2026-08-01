@@ -47,7 +47,19 @@
       "targetDisposition": "PROBABLE_PHASE_1_CANONICAL_AUTHORITY",
       "migrationRisk": "Existing legacy profiles and staff mappings must remain reconcilable.",
       "retirementCriteria": "Not retired; competing browser authority projections converge on this model.",
-      "evidence": ["src/wayfarer/accounts.ts", "src/wayfarer/http.ts", "HP-EV-009", "HP-EV-025"]
+      "evidence": ["src/wayfarer/accounts.ts", "src/wayfarer/http.ts", "HP-EV-009", "HP-EV-025"],
+      "phase1Implementation": {
+        "classification": "CANONICAL",
+        "currentReads": "resolveCurrentUser; currentAccount; account and workspace guards",
+        "currentWrites": "registration; sign-in; reset; guest claim/merge; compatibility rotation",
+        "action": "Retain as the only ordinary account authority and expose one bounded current-user DTO.",
+        "newWrites": "YES_CANONICAL_ONLY",
+        "fallbackReads": "YES",
+        "telemetry": "SecurityEvent session and auth events; current-user contract evidence",
+        "retirementCriteria": "Not applicable while canonical",
+        "finalStatus": "CANONICAL_ACTIVE",
+        "evidenceIds": ["HP-P1-EV-A-sign-in-desktop", "HP-P1-EV-C-passport-continuity", "HP-P1-EV-H-session-expired"]
+      }
     },
     {
       "authorityId": "HP-SES-002",
@@ -80,7 +92,19 @@
       "targetDisposition": "PHASE_1_CONVERGE_OR_BOUND_COMPATIBILITY",
       "migrationRisk": "Removing the cookie before every staff guard reads canonical account context would break Captain and Studio.",
       "retirementCriteria": "All staff guards accept the canonical account session and legacy staff rows are observed-only.",
-      "evidence": ["src/lib/security.ts", "HP-EV-011", "HP-JRN-009"]
+      "evidence": ["src/lib/security.ts", "HP-EV-011", "HP-JRN-009"],
+      "phase1Implementation": {
+        "classification": "GLOBAL_IDENTITY_COMPATIBILITY",
+        "currentReads": "resolveCurrentUser; requireGm bounded bridge",
+        "currentWrites": "none",
+        "action": "Stop ordinary writes; require a canonical mapping; rotate to wayfarer_account; delete cookie; authorize from canonical roles.",
+        "newWrites": "NO",
+        "fallbackReads": "YES_BOUNDED",
+        "telemetry": "ACCOUNT_COMPATIBILITY_BRIDGED with family only",
+        "retirementCriteria": "Zero observed use through a governed window plus bookmarked-entry and API regression proof",
+        "finalStatus": "NO_NEW_WRITES",
+        "evidenceIds": ["HP-P1-EV-M-legacy-staff-bridge"]
+      }
     },
     {
       "authorityId": "HP-SES-003",
@@ -108,7 +132,19 @@
       "targetDisposition": "OBSERVE_THEN_RETIRE",
       "migrationRisk": "Bookmark/session continuity for historical Players.",
       "retirementCriteria": "No valid rows or cookies remain and rotation telemetry is zero for the governed window.",
-      "evidence": ["src/platform/auth.ts", "prisma/schema.prisma"]
+      "evidence": ["src/platform/auth.ts", "prisma/schema.prisma"],
+      "phase1Implementation": {
+        "classification": "GLOBAL_IDENTITY_COMPATIBILITY",
+        "currentReads": "resolveCurrentUser; requirePlayerIdentity bounded bridge",
+        "currentWrites": "none",
+        "action": "Stop ordinary writes; rotate linked sessions to wayfarer_account; delete cookie; retain only unlinked contextual Player reads.",
+        "newWrites": "NO",
+        "fallbackReads": "YES_BOUNDED",
+        "telemetry": "ACCOUNT_COMPATIBILITY_BRIDGED with family only",
+        "retirementCriteria": "Zero linked-session use through a governed window and separate proof for unlinked contextual identities",
+        "finalStatus": "NO_NEW_WRITES",
+        "evidenceIds": ["HP-P1-EV-L-legacy-player-rotation"]
+      }
     },
     {
       "authorityId": "HP-SES-004",
@@ -141,7 +177,19 @@
       "targetDisposition": "RETAIN_AS_CONTEXTUAL_VOYAGE_CREDENTIAL",
       "migrationRisk": "Do not confuse contextual voyage access with global identity.",
       "retirementCriteria": "Only if all legacy/bookmarked voyage access is migrated with owner acceptance.",
-      "evidence": ["src/chronicle/session-cookie.ts", "src/platform/auth.ts"]
+      "evidence": ["src/chronicle/session-cookie.ts", "src/platform/auth.ts"],
+      "phase1Implementation": {
+        "classification": "CONTEXTUAL_VOYAGE_CREDENTIAL",
+        "currentReads": "readTaleSessionCookie; authorizeTaleSessionPlayer",
+        "currentWrites": "existing Tale Session compatibility flows only",
+        "action": "Retain scope; exclude from global account context and ordinary workspace authorization.",
+        "newWrites": "YES_CONTEXTUAL_ONLY",
+        "fallbackReads": "YES_CONTEXTUAL_ONLY",
+        "telemetry": "Existing Tale Session audit trail",
+        "retirementCriteria": "Governed One Voyage retirement with membership parity; not a Phase 1 target",
+        "finalStatus": "CONTEXTUAL_RETAINED",
+        "evidenceIds": ["HP-P1-EV-N-invitation-handoff"]
+      }
     },
     {
       "authorityId": "HP-SES-005",
@@ -174,7 +222,19 @@
       "targetDisposition": "COMPATIBILITY_ONLY",
       "migrationRisk": "Existing compatibility routes depend on it.",
       "retirementCriteria": "One Voyage migration closes all legacy campaign paths.",
-      "evidence": ["src/lib/security.ts"]
+      "evidence": ["src/lib/security.ts"],
+      "phase1Implementation": {
+        "classification": "LEGACY_CAMPAIGN_CREDENTIAL",
+        "currentReads": "requirePlayer for legacy campaign routes",
+        "currentWrites": "existing legacy campaign entry only",
+        "action": "Retain scoped compatibility; prohibit use by canonical current-user and global workspace guards.",
+        "newWrites": "YES_CONTEXTUAL_ONLY",
+        "fallbackReads": "YES_CONTEXTUAL_ONLY",
+        "telemetry": "Existing compatibility and route evidence",
+        "retirementCriteria": "Legacy campaign retirement with Chronicle parity; not a Phase 1 target",
+        "finalStatus": "CONTEXTUAL_RETAINED",
+        "evidenceIds": ["HP-P1-EV-I-sign-out-complete"]
+      }
     },
     {
       "authorityId": "HP-SES-006",
@@ -207,7 +267,19 @@
       "targetDisposition": "RETAIN_AS_BOUNDED_HANDOFF",
       "migrationRisk": "Preserve existing invitation links and short codes.",
       "retirementCriteria": "Not a global identity authority; no retirement proposed.",
-      "evidence": ["src/platform/auth.ts", "src/app/api/invitations"]
+      "evidence": ["src/platform/auth.ts", "src/app/api/invitations"],
+      "phase1Implementation": {
+        "classification": "INVITATION_HANDOFF",
+        "currentReads": "invitation resolve/accept/decline APIs",
+        "currentWrites": "synthetic invitation open and short-code handoff",
+        "action": "Retain bounded handoff; clear after acceptance; never expose through current-user or logs.",
+        "newWrites": "YES_HANDOFF_ONLY",
+        "fallbackReads": "YES_HANDOFF_ONLY",
+        "telemetry": "InvitationEvent plus governed synthetic browser journey",
+        "retirementCriteria": "Only after an accepted invitation replacement preserves token and short-code compatibility",
+        "finalStatus": "CONTEXTUAL_RETAINED",
+        "evidenceIds": ["HP-P1-EV-N-invitation-handoff"]
+      }
     },
     {
       "authorityId": "HP-SES-007",
@@ -235,7 +307,19 @@
       "targetDisposition": "RETAIN_TOKENIZED_RECOVERY",
       "migrationRisk": "Do not invalidate outstanding links without an explicit cutoff.",
       "retirementCriteria": "Not applicable.",
-      "evidence": ["src/wayfarer/accounts.ts", "src/app/api/auth"]
+      "evidence": ["src/wayfarer/accounts.ts", "src/app/api/auth"],
+      "phase1Implementation": {
+        "classification": "TOKENIZED_RECOVERY",
+        "currentReads": "password reset confirmation",
+        "currentWrites": "requestPasswordReset issues a fresh hashed token",
+        "action": "Retain hashed one-use token; preserve expiry; use safe return; refresh canonical context.",
+        "newWrites": "YES_TOKENIZED_ONLY",
+        "fallbackReads": "YES_TOKENIZED_ONLY",
+        "telemetry": "PASSWORD_RESET_REQUESTED and PASSWORD_RESET_COMPLETED security events",
+        "retirementCriteria": "Replacement must retain one-use expiry and session-rotation proof",
+        "finalStatus": "TOKENIZED_RETAINED",
+        "evidenceIds": []
+      }
     },
     {
       "authorityId": "HP-SES-008",
@@ -263,7 +347,19 @@
       "targetDisposition": "RETAIN_TOKENIZED_RECOVERY",
       "migrationRisk": "Do not invalidate outstanding links without an explicit cutoff.",
       "retirementCriteria": "Not applicable.",
-      "evidence": ["src/wayfarer/accounts.ts", "src/app/api/auth"]
+      "evidence": ["src/wayfarer/accounts.ts", "src/app/api/auth"],
+      "phase1Implementation": {
+        "classification": "TOKENIZED_RECOVERY",
+        "currentReads": "email verification confirmation",
+        "currentWrites": "registration and resend issue a fresh hashed token",
+        "action": "Retain hashed one-use token; preserve expiry; create no competing session.",
+        "newWrites": "YES_TOKENIZED_ONLY",
+        "fallbackReads": "YES_TOKENIZED_ONLY",
+        "telemetry": "EMAIL_VERIFIED and EMAIL_VERIFICATION_RESENT security events",
+        "retirementCriteria": "Replacement must retain one-use expiry and account-state refresh proof",
+        "finalStatus": "TOKENIZED_RETAINED",
+        "evidenceIds": []
+      }
     },
     {
       "authorityId": "HP-SES-009",
@@ -291,7 +387,19 @@
       "targetDisposition": "PHASE_1_REVIEW_CLIENT_CONTEXT",
       "migrationRisk": "Stale tab copies can outlive server revocation.",
       "retirementCriteria": "Replace or explicitly invalidate on canonical context changes.",
-      "evidence": ["src/components/wayfarer/AccountFlow.tsx"]
+      "evidence": ["src/components/wayfarer/AccountFlow.tsx"],
+      "phase1Implementation": {
+        "classification": "CLIENT_HINT_ONLY",
+        "currentReads": "authenticated account mutation clients",
+        "currentWrites": "current-user refresh after canonical session creation/rotation",
+        "action": "Keep tab-scoped; refresh after rotation; clear on ended session, failed context, revocation, and sign-out.",
+        "newWrites": "YES_CLIENT_COPY_ONLY",
+        "fallbackReads": "NO_AUTHORITY",
+        "telemetry": "No value telemetry; behavioral tests inspect absence only",
+        "retirementCriteria": "Retire only with a governed server-bound anti-CSRF replacement",
+        "finalStatus": "CLIENT_HINT_ONLY",
+        "evidenceIds": ["HP-P1-EV-J-cross-tab-sign-out"]
+      }
     },
     {
       "authorityId": "HP-SES-010",
@@ -319,10 +427,30 @@
       "targetDisposition": "RETAIN_AS_NONAUTH_HINTS_WITH_EXPLICIT_BOUNDARY",
       "migrationRisk": "Must never become proof of signed-in state or authoritative progress.",
       "retirementCriteria": "Not required if the authority boundary remains explicit.",
-      "evidence": ["src/components/landing/HarborLanding.tsx", "src/components/player", "src/animation"]
+      "evidence": ["src/components/landing/HarborLanding.tsx", "src/components/player", "src/animation"],
+      "phase1Implementation": {
+        "classification": "CLIENT_HINT_ONLY",
+        "currentReads": "presentation, device-label, and preference consumers",
+        "currentWrites": "presentation and preference controls",
+        "action": "Retain only for presentation; remove route-based capability inference; tampering cannot authorize.",
+        "newWrites": "YES_HINTS_ONLY",
+        "fallbackReads": "NO_AUTHORITY",
+        "telemetry": "No private-value telemetry",
+        "retirementCriteria": "Per-hint owner decision after replacement or zero-use evidence",
+        "finalStatus": "CLIENT_HINT_ONLY",
+        "evidenceIds": ["HP-P1-EV-G-permission-denied", "HP-P1-EV-K-role-change-refresh"]
+      }
     }
   ],
   "visibleSignInProducts": ["/sign-in", "/player/sign-in", "/captain/sign-in", "/studio/sign-in"],
   "confirmedDisagreements": ["HP-NC-021", "HP-NC-022", "HP-NC-023", "HP-NC-027"],
-  "currentArchitectureMermaid": "flowchart TD\n  R[Registration] --> A[Account + AccountSession]\n  S[Generic sign-in] --> A\n  P[Player sign-in] --> A\n  P -. legacy fallback .-> LP[PlayerIdentitySession read only]\n  C[Captain or Studio sign-in] --> GM[forever_gm projection]\n  GM --> A\n  GM -. historical fallback .-> LG[GameMasterSession read]\n  A --> SC[Shell context]\n  A --> PP[Profile and Passport]\n  A --> CH[Community]\n  A --> PW[Player workspace]\n  A -. role projected but cookie missing .-> C\n  A --> O[Sign out and revocation]\n  X[Expired or invalid context] --> AN[Flatten to anonymous or sign-in]"
+  "currentArchitectureMermaid": "flowchart TD\n  R[Registration] --> A[Account + AccountSession]\n  S[Generic sign-in] --> A\n  P[Player sign-in] --> A\n  P -. legacy fallback .-> LP[PlayerIdentitySession read only]\n  C[Captain or Studio sign-in] --> GM[forever_gm projection]\n  GM --> A\n  GM -. historical fallback .-> LG[GameMasterSession read]\n  A --> SC[Shell context]\n  A --> PP[Profile and Passport]\n  A --> CH[Community]\n  A --> PW[Player workspace]\n  A -. role projected but cookie missing .-> C\n  A --> O[Sign out and revocation]\n  X[Expired or invalid context] --> AN[Flatten to anonymous or sign-in]",
+  "phase1Implementation": {
+    "phase": "PHASE_1_UNITE_IDENTITY_AND_SESSION_AUTHORITY",
+    "implementationBaseSha": "bda5217a67d8ce2b56a02163371c137d9ed07275",
+    "implementationDigest": "5d00714b83b258f21cbcd848befe307933fd35056f9c767c9d5116be6e07df7a",
+    "state": "VALIDATED",
+    "updatedAt": "2026-08-01T19:00:00.000Z",
+    "historicalPhase0Preserved": true
+  }
 }

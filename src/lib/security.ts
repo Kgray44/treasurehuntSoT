@@ -1,11 +1,17 @@
 import { createHash, randomBytes, timingSafeEqual } from "node:crypto";
 import { cookies, headers } from "next/headers";
 import { db } from "@/lib/db";
-import { createAccountSession, currentAccount, revokeAccountSession } from "@/wayfarer/accounts";
+import { createAccountSession, currentAccount, recordSecurityEvent, revokeAccountSession } from "@/wayfarer/accounts";
 
 const PLAYER_COOKIE = "forever_player";
 const GM_COOKIE = "forever_gm";
-const sessionAge = 1000 * 60 * 60 * 10;
+const accountCookieOptions = {
+  httpOnly: true,
+  sameSite: "lax" as const,
+  secure: process.env.NODE_ENV === "production",
+  path: "/",
+  maxAge: 60 * 60 * 24 * 30,
+};
 
 export const hashToken = (value: string) => createHash("sha256").update(value).digest("hex");
 export const makeToken = (bytes = 32) => randomBytes(bytes).toString("base64url");
@@ -41,20 +47,8 @@ export async function createGmSession(userId: string) {
   if (canonical) {
     const session = await createAccountSession(canonical.id);
     const jar = await cookies();
-    jar.set(GM_COOKIE, session.token, {
-      httpOnly: true,
-      sameSite: "strict",
-      secure: process.env.NODE_ENV === "production",
-      path: "/",
-      maxAge: sessionAge / 1000,
-    });
-    jar.set("wayfarer_account", session.token, {
-      httpOnly: true,
-      sameSite: "lax",
-      secure: process.env.NODE_ENV === "production",
-      path: "/",
-      maxAge: 60 * 60 * 24 * 30,
-    });
+    jar.set("wayfarer_account", session.token, accountCookieOptions);
+    jar.delete(GM_COOKIE);
     return session.csrfToken;
   }
   // New staff authentication is account-rooted. A historical GameMasterSession
@@ -63,9 +57,31 @@ export async function createGmSession(userId: string) {
 }
 
 export async function requireGm() {
-  const raw = (await cookies()).get(GM_COOKIE)?.value;
+  const jar = await cookies();
+  const canonicalRaw = jar.get("wayfarer_account")?.value;
+  const legacyRaw = jar.get(GM_COOKIE)?.value;
+  const raw = canonicalRaw ?? legacyRaw;
   if (!raw) return null;
-  const canonical = await currentAccount(raw);
+  let canonical = await currentAccount(raw);
+  if (canonical && legacyRaw && !canonicalRaw) {
+    jar.set("wayfarer_account", raw, accountCookieOptions);
+    jar.delete(GM_COOKIE);
+    await recordSecurityEvent(canonical.accountId, "ACCOUNT_COMPATIBILITY_BRIDGED", { family: "legacy-staff" });
+  }
+  if (!canonical && legacyRaw) {
+    const legacy = await db.gameMasterSession.findFirst({
+      where: { id: hashToken(legacyRaw), expiresAt: { gt: new Date() } },
+      include: { user: { include: { canonicalAccount: true } } },
+    });
+    if (!legacy?.user.canonicalAccount) return null;
+    const issued = await createAccountSession(legacy.user.canonicalAccount.id, "Homeport legacy staff API rotation");
+    jar.set("wayfarer_account", issued.token, accountCookieOptions);
+    jar.delete(GM_COOKIE);
+    await recordSecurityEvent(legacy.user.canonicalAccount.id, "ACCOUNT_COMPATIBILITY_BRIDGED", {
+      family: "legacy-staff",
+    });
+    canonical = await currentAccount(issued.token);
+  }
   if (canonical) {
     const roles = canonical.account.roles.map((assignment) => assignment.role);
     const capabilities = [
@@ -89,10 +105,7 @@ export async function requireGm() {
       },
     };
   }
-  return db.gameMasterSession.findFirst({
-    where: { id: hashToken(raw), expiresAt: { gt: new Date() } },
-    include: { user: true },
-  });
+  return null;
 }
 
 export type GmCapability = "ADMIN" | "CAPTAIN" | "CREATE_TALES" | "PUBLISH_TALES" | "MANAGE_ASSETS";
@@ -125,11 +138,12 @@ export async function verifyCsrf(session: { csrfToken: string }) {
 
 export async function clearGmSession() {
   const jar = await cookies();
-  const raw = jar.get(GM_COOKIE)?.value;
+  const raw = jar.get("wayfarer_account")?.value ?? jar.get(GM_COOKIE)?.value;
   if (raw) {
     const canonical = await currentAccount(raw);
     if (canonical) await revokeAccountSession(canonical.accountId, canonical.id);
     else await db.gameMasterSession.deleteMany({ where: { id: hashToken(raw) } });
   }
   jar.delete(GM_COOKIE);
+  jar.delete("wayfarer_account");
 }

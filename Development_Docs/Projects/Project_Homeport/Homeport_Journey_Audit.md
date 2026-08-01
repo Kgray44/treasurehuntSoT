@@ -8,6 +8,14 @@ last_reviewed: 2026-08-01
 
 # Project Homeport Phase 0 natural-journey audit
 
+## Phase 1 linked addendum
+
+The Phase 0 journey records below remain historical observations. Phase 1 adds separate `HP-P1-JRN-A` through `HP-P1-JRN-Q` records in `Homeport_Journey_Catalog.json` and 15 checksum-bound after-state images in `Homeport_Visual_Baseline_Manifest.json`.
+
+The isolated Chromium suite passed all 15 test cases covering 17 governed journeys: canonical sign-in and registration; Player, Captain, Creator, and Passport continuity; explicit moderation denial; session expiry; current and multi-tab sign-out; capability removal; mapped Player/staff compatibility rotation; actual synthetic invitation acceptance; malicious return rejection; mobile lifecycle; and 200% zoom. D, E, and F share one full-capability continuity test without collapsing their separate catalog records.
+
+This is local synthetic acceptance evidence. It does not replace Phase 0 before-state evidence and does not claim deployment, owner walkthrough, Phase 2 navigation completion, or Phase 3 Passport completion.
+
 ## Method and truth boundary
 
 **FACT:** Every ordinary journey began at `/` and used only visible product controls until it reached its destination or blocked. Direct URL entry occurred only afterward to inspect an orphan, dynamic/detail route, bookmark/deep-link behavior, unauthorized entry, or route-level failure. A direct URL never counted as proof of ordinary reachability.

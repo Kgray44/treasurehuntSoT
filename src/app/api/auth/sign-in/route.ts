@@ -2,10 +2,15 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { consumeRateLimit, rateLimitHeaders } from "@/lib/rate-limit";
 import { hashToken } from "@/lib/security";
+import { safeReturnTo } from "@/homeport/return-to";
 import { authenticateAccount } from "@/wayfarer/accounts";
 import { setWayfarerRoleCookie } from "@/wayfarer/http";
 
-const schema = z.object({ login: z.string().trim().min(1).max(254), password: z.string().min(1).max(256) });
+const schema = z.object({
+  login: z.string().trim().min(1).max(254),
+  password: z.string().min(1).max(256),
+  returnTo: z.string().max(2048).optional(),
+});
 export async function POST(request: Request) {
   const parsed = schema.safeParse(await request.json().catch(() => null));
   if (!parsed.success)
@@ -33,5 +38,6 @@ export async function POST(request: Request) {
     csrfToken: result.session.csrfToken,
     player: { id: result.account.profile.id, displayName: result.account.profile.displayName },
     roles,
+    next: safeReturnTo(parsed.data.returnTo, "/passport"),
   });
 }

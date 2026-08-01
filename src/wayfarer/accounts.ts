@@ -45,7 +45,11 @@ function safeDisplayName(displayName: string) {
   return value;
 }
 
-async function recordSecurityEvent(accountId: string, eventType: string, metadata: Record<string, unknown> = {}) {
+export async function recordSecurityEvent(
+  accountId: string,
+  eventType: string,
+  metadata: Record<string, unknown> = {},
+) {
   await db.securityEvent.create({
     data: { accountId, eventType, correlationId: randomUUID(), metadata: JSON.stringify(metadata) },
   });
@@ -351,6 +355,7 @@ export async function resetPassword(rawToken: string, password: string) {
       },
     });
   });
+  return createAccountSession(token.accountId, "Password reset");
 }
 
 export async function revokeAccountSession(accountId: string, sessionId: string) {

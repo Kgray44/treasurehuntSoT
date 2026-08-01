@@ -8,6 +8,8 @@ last_reviewed: 2026-08-01
 
 # Project Homeport Phase 0 audit report
 
+> Phase 1 addendum: Phase 0 observations and screenshots remain historical. Current implemented identity/session truth is recorded in the [Phase 1 Implementation Report](Project_Homeport_Phase_1_Implementation_Report.md), [Phase 1 Validation Record](Project_Homeport_Phase_1_Validation_Record.md), and the additive Phase 1 fields in the machine-readable inventories. This link does not rewrite the Phase 0 result.
+
 ## 1. Document control and source identity
 
 **FACT:** Project Homeport Phase 0 audited repository `Kgray44/treasurehuntSoT` at fetched `origin/main` and worktree base `8d142227d712d27e363b15903dba9b0c99a04bc8` on branch `codex/project-homeport-product-reality-recovery`. Audit run: `homeport-phase0-20260801T152828Z-8d142227`. Date: 2026-08-01.

@@ -269,6 +269,75 @@ html[data-motion-level="reduced"] .platform-relic *,
   margin-top: 1.5rem;
 }
 
+.account-flow-page,
+.platform-state {
+  min-height: min(720px, calc(100vh - 9rem));
+}
+
+.account-flow-page .auth-ledger,
+.platform-state .auth-ledger {
+  max-width: 760px;
+}
+
+.account-flow-intro,
+.account-flow-notice {
+  max-width: 620px;
+}
+
+.account-flow-notice {
+  border-left: 4px solid #8c6b2e;
+  padding: 0.75rem 1rem;
+  background: rgba(255, 250, 232, 0.42);
+}
+
+.account-flow-nav,
+.account-flow-status,
+.account-flow-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem 1rem;
+  margin-top: 1rem;
+}
+
+.account-session-list {
+  display: grid;
+  gap: 0.7rem;
+  max-width: 620px;
+  padding: 0;
+  list-style: none;
+}
+
+.account-session-list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  border: 1px solid rgba(70, 47, 27, 0.24);
+  border-radius: 12px;
+  padding: 0.8rem;
+  background: rgba(255, 250, 232, 0.4);
+}
+
+@media (max-width: 560px) {
+  .account-flow-page,
+  .platform-state {
+    min-height: auto;
+    padding: 1rem;
+  }
+
+  .account-flow-page .auth-ledger,
+  .platform-state .auth-ledger {
+    border-radius: 16px;
+    padding: 1.2rem;
+  }
+
+  .account-session-list li,
+  .account-flow-actions {
+    align-items: stretch;
+    flex-direction: column;
+  }
+}
+
 .auth-ledger button:not(.brass-button),
 .invitation-sheet button:not(.brass-button),
 .waiting-room > section button:not(.brass-button) {

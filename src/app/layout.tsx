@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { AnimationProvider } from "@/animation/director/AnimationProvider";
+import { CurrentUserProvider } from "@/components/auth/CurrentUserProvider";
 import { ProductShell } from "@/components/shell/ProductShell";
 import { canonicalTerms } from "@/language/canonical-terms";
 import "./globals.css";
@@ -27,7 +28,9 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     <html lang="en" data-scroll-behavior="smooth">
       <body>
         <AnimationProvider>
-          <ProductShell>{children}</ProductShell>
+          <CurrentUserProvider>
+            <ProductShell>{children}</ProductShell>
+          </CurrentUserProvider>
         </AnimationProvider>
       </body>
     </html>

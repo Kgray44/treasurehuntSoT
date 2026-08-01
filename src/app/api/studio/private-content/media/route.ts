@@ -37,7 +37,7 @@ export async function GET() {
   const session = await requireGmCapability("CREATE_TALES");
   if (!session) return NextResponse.json({ error: "Creator authorization is required." }, { status: 403 });
   try {
-    const ownerAccountId = "accountId" in session ? session.accountId : session.userId;
+    const ownerAccountId = session.accountId;
     return NextResponse.json(
       { media: await listOwnerProtectedMedia(ownerAccountId) },
       { headers: { "Cache-Control": "private, no-store" } },
@@ -67,7 +67,7 @@ export async function POST(request: Request) {
       derivativeId?: string;
       reason?: string;
     };
-    const ownerAccountId = "accountId" in session ? session.accountId : session.userId;
+    const ownerAccountId = session.accountId;
     if (body.action === "request-derivative") {
       if (
         !body.mediaId ||

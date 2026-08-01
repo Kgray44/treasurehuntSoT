@@ -27,6 +27,7 @@ import {
 } from "@/animation/platform/useAuthoritativeAsyncState";
 import { PlatformRelic } from "./PlatformRelic";
 import { RiveStatefulObject, type RiveSignal } from "@/components/animation/RiveStatefulObject";
+import { useCurrentUser } from "@/components/auth/CurrentUserProvider";
 
 type Invitation = {
   id: string;
@@ -246,6 +247,7 @@ function TerminalInvitationState({
 
 export function InvitationCeremony({ onRouteHandoff }: { onRouteHandoff?: InvitationRouteHandoff } = {}) {
   const router = useRouter();
+  const { invalidate: invalidateCurrentUser } = useCurrentUser();
   const search = useSearchParams();
   const root = useRef<HTMLElement>(null);
   const ceremonyHost = useRef<SceneHostHandle | null>(null);
@@ -392,6 +394,7 @@ export function InvitationCeremony({ onRouteHandoff }: { onRouteHandoff?: Invita
           operationCode = body.code;
           throw new Error("invitation-operation-rejected");
         }
+        if (action === "accept") await invalidateCurrentUser();
         const result = { ok: true as const, playthroughId: body.playthroughId };
         if (action === "accept" && result.playthroughId) {
           // A valid canonical membership must not leave a Player stranded if an

@@ -319,6 +319,12 @@ export function PlayerVoyageRoom({
     if (voyage?.state === "COMPLETED") router.replace(`/player/playthroughs/${playthroughId}/journal`);
   }, [playthroughId, router, voyage?.state]);
 
+  useEffect(() => {
+    if (!voyage || voyage.state === "COMPLETED") return;
+    const frame = requestAnimationFrame(() => document.getElementById("waiting-title")?.focus({ preventScroll: true }));
+    return () => cancelAnimationFrame(frame);
+  }, [voyage?.id, voyage?.state]);
+
   if (error && !voyage)
     return (
       <main className="waiting-room platform-loading">

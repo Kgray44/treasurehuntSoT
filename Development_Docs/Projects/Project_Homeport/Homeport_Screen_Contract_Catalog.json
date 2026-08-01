@@ -170,6 +170,12 @@
         "stateCompleteness": "Loading, populated, empty, no-results, recoverable error, permission, expiry, and dependency-unavailable states where applicable.",
         "responsive": "Desktop, mobile, and critical 200 percent zoom preserve information and controls.",
         "acceptanceOwner": "Project Homeport owner walkthrough after Sounding Line evidence."
+      },
+      "phase1Implementation": {
+        "state": "VALIDATED",
+        "identityAuthority": "HP-SES-001",
+        "responsiveProof": "Desktop, mobile, keyboard, reduced-motion component coverage, and critical 200 percent zoom",
+        "evidenceIds": []
       }
     },
     {
@@ -251,8 +257,8 @@
       "currentVisualMaturity": "PARTIAL",
       "missingStates": ["COMPLETE_LOADING_ERROR_EMPTY_PERMISSION_UNAVAILABLE_SET_NOT_PROVED"],
       "knownDefects": [],
-      "screenshotIds": ["HP-EV-011"],
-      "journeyIds": ["HP-JRN-009"],
+      "screenshotIds": ["HP-EV-011", "HP-P1-EV-M-legacy-staff-bridge"],
+      "journeyIds": ["HP-JRN-009", "HP-P1-JRN-M"],
       "targetHomeportPhase": "PHASE_2_GLOBAL_SHELL_OR_PHASE_5_ROUTE_REACHABILITY",
       "acceptanceContract": "homeport.screen.captain-library.current-contract",
       "status": "CURRENT_SURFACE",
@@ -262,6 +268,12 @@
         "stateCompleteness": "Loading, populated, empty, no-results, recoverable error, permission, expiry, and dependency-unavailable states where applicable.",
         "responsive": "Desktop, mobile, and critical 200 percent zoom preserve information and controls.",
         "acceptanceOwner": "Project Homeport owner walkthrough after Sounding Line evidence."
+      },
+      "phase1Implementation": {
+        "state": "VALIDATED",
+        "identityAuthority": "HP-SES-001",
+        "responsiveProof": "Desktop, mobile, keyboard, reduced-motion component coverage, and critical 200 percent zoom",
+        "evidenceIds": ["HP-P1-EV-M-legacy-staff-bridge"]
       }
     },
     {
@@ -393,6 +405,12 @@
         "stateCompleteness": "Loading, populated, empty, no-results, recoverable error, permission, expiry, and dependency-unavailable states where applicable.",
         "responsive": "Desktop, mobile, and critical 200 percent zoom preserve information and controls.",
         "acceptanceOwner": "Project Homeport owner walkthrough after Sounding Line evidence."
+      },
+      "phase1Implementation": {
+        "state": "VALIDATED",
+        "identityAuthority": "HP-SES-001",
+        "responsiveProof": "Desktop, mobile, keyboard, reduced-motion component coverage, and critical 200 percent zoom",
+        "evidenceIds": []
       }
     },
     {
@@ -1102,8 +1120,8 @@
       "knownDefects": [
         "Community family is absent from global navigation; several district routes are deep-link-dependent."
       ],
-      "screenshotIds": [],
-      "journeyIds": ["HP-JRN-012"],
+      "screenshotIds": ["HP-P1-EV-G-permission-denied", "HP-P1-EV-Q-zoom-permission"],
+      "journeyIds": ["HP-JRN-012", "HP-P1-JRN-G", "HP-P1-JRN-Q"],
       "targetHomeportPhase": "PHASE_4_COMMUNITY_HARBOR",
       "acceptanceContract": "homeport.screen.community-moderation.current-contract",
       "status": "CURRENT_SURFACE",
@@ -1113,6 +1131,12 @@
         "stateCompleteness": "Loading, populated, empty, no-results, recoverable error, permission, expiry, and dependency-unavailable states where applicable.",
         "responsive": "Desktop, mobile, and critical 200 percent zoom preserve information and controls.",
         "acceptanceOwner": "Project Homeport owner walkthrough after Sounding Line evidence."
+      },
+      "phase1Implementation": {
+        "state": "VALIDATED",
+        "identityAuthority": "HP-SES-001",
+        "responsiveProof": "Desktop, mobile, keyboard, reduced-motion component coverage, and critical 200 percent zoom",
+        "evidenceIds": ["HP-P1-EV-G-permission-denied", "HP-P1-EV-Q-zoom-permission"]
       }
     },
     {
@@ -1559,6 +1583,12 @@
         "stateCompleteness": "Loading, populated, empty, no-results, recoverable error, permission, expiry, and dependency-unavailable states where applicable.",
         "responsive": "Desktop, mobile, and critical 200 percent zoom preserve information and controls.",
         "acceptanceOwner": "Project Homeport owner walkthrough after Sounding Line evidence."
+      },
+      "phase1Implementation": {
+        "state": "VALIDATED",
+        "identityAuthority": "HP-SES-001",
+        "responsiveProof": "Desktop, mobile, keyboard, reduced-motion component coverage, and critical 200 percent zoom",
+        "evidenceIds": []
       }
     },
     {
@@ -1641,8 +1671,14 @@
       "currentVisualMaturity": "SKELETAL",
       "missingStates": ["COMPLETE_LOADING_ERROR_EMPTY_PERMISSION_UNAVAILABLE_SET_NOT_PROVED"],
       "knownDefects": ["Large engineering-form composition; planned/test provider material is visible."],
-      "screenshotIds": ["HP-EV-013", "HP-EV-014", "HP-EV-015"],
-      "journeyIds": ["HP-JRN-005", "HP-JRN-013"],
+      "screenshotIds": [
+        "HP-EV-013",
+        "HP-EV-014",
+        "HP-EV-015",
+        "HP-P1-EV-C-passport-continuity",
+        "HP-P1-EV-O-safe-return"
+      ],
+      "journeyIds": ["HP-JRN-005", "HP-JRN-013", "HP-P1-JRN-C", "HP-P1-JRN-O"],
       "targetHomeportPhase": "PHASE_1_IDENTITY_AND_SESSION",
       "acceptanceContract": "homeport.screen.passport.current-contract",
       "status": "CURRENT_SURFACE",
@@ -1652,6 +1688,12 @@
         "stateCompleteness": "Loading, populated, empty, no-results, recoverable error, permission, expiry, and dependency-unavailable states where applicable.",
         "responsive": "Desktop, mobile, and critical 200 percent zoom preserve information and controls.",
         "acceptanceOwner": "Project Homeport owner walkthrough after Sounding Line evidence."
+      },
+      "phase1Implementation": {
+        "state": "VALIDATED",
+        "identityAuthority": "HP-SES-001",
+        "responsiveProof": "Desktop, mobile, keyboard, reduced-motion component coverage, and critical 200 percent zoom",
+        "evidenceIds": ["HP-P1-EV-C-passport-continuity", "HP-P1-EV-O-safe-return"]
       }
     },
     {
@@ -1861,8 +1903,30 @@
       "currentVisualMaturity": "PARTIAL",
       "missingStates": ["COMPLETE_LOADING_ERROR_EMPTY_PERMISSION_UNAVAILABLE_SET_NOT_PROVED"],
       "knownDefects": [],
-      "screenshotIds": ["HP-EV-005", "HP-EV-006", "HP-EV-009", "HP-EV-010", "HP-EV-029"],
-      "journeyIds": ["HP-JRN-003", "HP-JRN-004", "HP-JRN-010", "HP-JRN-011", "HP-JRN-013"],
+      "screenshotIds": [
+        "HP-EV-005",
+        "HP-EV-006",
+        "HP-EV-009",
+        "HP-EV-010",
+        "HP-EV-029",
+        "HP-P1-EV-B-registration-return",
+        "HP-P1-EV-F-workspace-continuity",
+        "HP-P1-EV-K-role-removal",
+        "HP-P1-EV-P-mobile-context"
+      ],
+      "journeyIds": [
+        "HP-JRN-003",
+        "HP-JRN-004",
+        "HP-JRN-010",
+        "HP-JRN-011",
+        "HP-JRN-013",
+        "HP-P1-JRN-B",
+        "HP-P1-JRN-D",
+        "HP-P1-JRN-E",
+        "HP-P1-JRN-F",
+        "HP-P1-JRN-K",
+        "HP-P1-JRN-P"
+      ],
       "targetHomeportPhase": "PHASE_2_GLOBAL_SHELL_OR_PHASE_5_ROUTE_REACHABILITY",
       "acceptanceContract": "homeport.screen.player-library.current-contract",
       "status": "CURRENT_SURFACE",
@@ -1872,6 +1936,17 @@
         "stateCompleteness": "Loading, populated, empty, no-results, recoverable error, permission, expiry, and dependency-unavailable states where applicable.",
         "responsive": "Desktop, mobile, and critical 200 percent zoom preserve information and controls.",
         "acceptanceOwner": "Project Homeport owner walkthrough after Sounding Line evidence."
+      },
+      "phase1Implementation": {
+        "state": "VALIDATED",
+        "identityAuthority": "HP-SES-001",
+        "responsiveProof": "Desktop, mobile, keyboard, reduced-motion component coverage, and critical 200 percent zoom",
+        "evidenceIds": [
+          "HP-P1-EV-B-registration-return",
+          "HP-P1-EV-F-workspace-continuity",
+          "HP-P1-EV-K-role-removal",
+          "HP-P1-EV-P-mobile-context"
+        ]
       }
     },
     {
@@ -2029,8 +2104,8 @@
       "currentVisualMaturity": "PARTIAL",
       "missingStates": ["COMPLETE_LOADING_ERROR_EMPTY_PERMISSION_UNAVAILABLE_SET_NOT_PROVED"],
       "knownDefects": ["No ordinary visible entry found in the Phase 0 static census."],
-      "screenshotIds": [],
-      "journeyIds": [],
+      "screenshotIds": ["HP-P1-EV-N-invitation-handoff"],
+      "journeyIds": ["HP-P1-JRN-N"],
       "targetHomeportPhase": "PHASE_2_GLOBAL_SHELL_OR_PHASE_5_ROUTE_REACHABILITY",
       "acceptanceContract": "homeport.screen.player-playthroughs-playthroughid.current-contract",
       "status": "CURRENT_ORPHAN",
@@ -2040,6 +2115,12 @@
         "stateCompleteness": "Loading, populated, empty, no-results, recoverable error, permission, expiry, and dependency-unavailable states where applicable.",
         "responsive": "Desktop, mobile, and critical 200 percent zoom preserve information and controls.",
         "acceptanceOwner": "Project Homeport owner walkthrough after Sounding Line evidence."
+      },
+      "phase1Implementation": {
+        "state": "VALIDATED",
+        "identityAuthority": "HP-SES-001",
+        "responsiveProof": "Desktop, mobile, keyboard, reduced-motion component coverage, and critical 200 percent zoom",
+        "evidenceIds": ["HP-P1-EV-N-invitation-handoff"]
       }
     },
     {
@@ -2092,6 +2173,12 @@
         "stateCompleteness": "Loading, populated, empty, no-results, recoverable error, permission, expiry, and dependency-unavailable states where applicable.",
         "responsive": "Desktop, mobile, and critical 200 percent zoom preserve information and controls.",
         "acceptanceOwner": "Project Homeport owner walkthrough after Sounding Line evidence."
+      },
+      "phase1Implementation": {
+        "state": "VALIDATED",
+        "identityAuthority": "HP-SES-001",
+        "responsiveProof": "Desktop, mobile, keyboard, reduced-motion component coverage, and critical 200 percent zoom",
+        "evidenceIds": []
       }
     },
     {
@@ -2255,8 +2342,8 @@
       "currentVisualMaturity": "PARTIAL",
       "missingStates": ["COMPLETE_LOADING_ERROR_EMPTY_PERMISSION_UNAVAILABLE_SET_NOT_PROVED"],
       "knownDefects": ["No ordinary visible entry found in the Phase 0 static census."],
-      "screenshotIds": ["HP-EV-028"],
-      "journeyIds": ["HP-JRN-001"],
+      "screenshotIds": ["HP-EV-028", "HP-P1-EV-B-registration-return"],
+      "journeyIds": ["HP-JRN-001", "HP-P1-JRN-B"],
       "targetHomeportPhase": "PHASE_1_IDENTITY_AND_SESSION",
       "acceptanceContract": "homeport.screen.register.current-contract",
       "status": "CURRENT_ORPHAN",
@@ -2266,6 +2353,12 @@
         "stateCompleteness": "Loading, populated, empty, no-results, recoverable error, permission, expiry, and dependency-unavailable states where applicable.",
         "responsive": "Desktop, mobile, and critical 200 percent zoom preserve information and controls.",
         "acceptanceOwner": "Project Homeport owner walkthrough after Sounding Line evidence."
+      },
+      "phase1Implementation": {
+        "state": "VALIDATED",
+        "identityAuthority": "HP-SES-001",
+        "responsiveProof": "Desktop, mobile, keyboard, reduced-motion component coverage, and critical 200 percent zoom",
+        "evidenceIds": ["HP-P1-EV-B-registration-return"]
       }
     },
     {
@@ -2308,6 +2401,12 @@
         "stateCompleteness": "Loading, populated, empty, no-results, recoverable error, permission, expiry, and dependency-unavailable states where applicable.",
         "responsive": "Desktop, mobile, and critical 200 percent zoom preserve information and controls.",
         "acceptanceOwner": "Project Homeport owner walkthrough after Sounding Line evidence."
+      },
+      "phase1Implementation": {
+        "state": "VALIDATED",
+        "identityAuthority": "HP-SES-001",
+        "responsiveProof": "Desktop, mobile, keyboard, reduced-motion component coverage, and critical 200 percent zoom",
+        "evidenceIds": []
       }
     },
     {
@@ -2339,8 +2438,13 @@
       "currentVisualMaturity": "PARTIAL",
       "missingStates": ["COMPLETE_LOADING_ERROR_EMPTY_PERMISSION_UNAVAILABLE_SET_NOT_PROVED"],
       "knownDefects": [],
-      "screenshotIds": ["HP-EV-027"],
-      "journeyIds": ["HP-JRN-002", "HP-JRN-011", "HP-JRN-012"],
+      "screenshotIds": [
+        "HP-EV-027",
+        "HP-P1-EV-A-sign-in-desktop",
+        "HP-P1-EV-I-sign-out-complete",
+        "HP-P1-EV-J-multitab-sign-out"
+      ],
+      "journeyIds": ["HP-JRN-002", "HP-JRN-011", "HP-JRN-012", "HP-P1-JRN-A", "HP-P1-JRN-I", "HP-P1-JRN-J"],
       "targetHomeportPhase": "PHASE_1_IDENTITY_AND_SESSION",
       "acceptanceContract": "homeport.screen.sign-in.current-contract",
       "status": "CURRENT_SURFACE",
@@ -2350,6 +2454,12 @@
         "stateCompleteness": "Loading, populated, empty, no-results, recoverable error, permission, expiry, and dependency-unavailable states where applicable.",
         "responsive": "Desktop, mobile, and critical 200 percent zoom preserve information and controls.",
         "acceptanceOwner": "Project Homeport owner walkthrough after Sounding Line evidence."
+      },
+      "phase1Implementation": {
+        "state": "VALIDATED",
+        "identityAuthority": "HP-SES-001",
+        "responsiveProof": "Desktop, mobile, keyboard, reduced-motion component coverage, and critical 200 percent zoom",
+        "evidenceIds": ["HP-P1-EV-A-sign-in-desktop", "HP-P1-EV-I-sign-out-complete", "HP-P1-EV-J-multitab-sign-out"]
       }
     },
     {
@@ -2439,6 +2549,12 @@
         "stateCompleteness": "Loading, populated, empty, no-results, recoverable error, permission, expiry, and dependency-unavailable states where applicable.",
         "responsive": "Desktop, mobile, and critical 200 percent zoom preserve information and controls.",
         "acceptanceOwner": "Project Homeport owner walkthrough after Sounding Line evidence."
+      },
+      "phase1Implementation": {
+        "state": "VALIDATED",
+        "identityAuthority": "HP-SES-001",
+        "responsiveProof": "Desktop, mobile, keyboard, reduced-motion component coverage, and critical 200 percent zoom",
+        "evidenceIds": []
       }
     },
     {
@@ -2615,6 +2731,12 @@
         "stateCompleteness": "Loading, populated, empty, no-results, recoverable error, permission, expiry, and dependency-unavailable states where applicable.",
         "responsive": "Desktop, mobile, and critical 200 percent zoom preserve information and controls.",
         "acceptanceOwner": "Project Homeport owner walkthrough after Sounding Line evidence."
+      },
+      "phase1Implementation": {
+        "state": "VALIDATED",
+        "identityAuthority": "HP-SES-001",
+        "responsiveProof": "Desktop, mobile, keyboard, reduced-motion component coverage, and critical 200 percent zoom",
+        "evidenceIds": []
       }
     },
     {
@@ -3047,6 +3169,12 @@
         "stateCompleteness": "Loading, populated, empty, no-results, recoverable error, permission, expiry, and dependency-unavailable states where applicable.",
         "responsive": "Desktop, mobile, and critical 200 percent zoom preserve information and controls.",
         "acceptanceOwner": "Project Homeport owner walkthrough after Sounding Line evidence."
+      },
+      "phase1Implementation": {
+        "state": "VALIDATED",
+        "identityAuthority": "HP-SES-001",
+        "responsiveProof": "Desktop, mobile, keyboard, reduced-motion component coverage, and critical 200 percent zoom",
+        "evidenceIds": []
       }
     },
     {
@@ -3084,6 +3212,12 @@
         "stateCompleteness": "Loading, populated, empty, no-results, recoverable error, permission, expiry, and dependency-unavailable states where applicable.",
         "responsive": "Desktop, mobile, and critical 200 percent zoom preserve information and controls.",
         "acceptanceOwner": "Project Homeport owner walkthrough after Sounding Line evidence."
+      },
+      "phase1Implementation": {
+        "state": "VALIDATED",
+        "identityAuthority": "HP-SES-001",
+        "responsiveProof": "Desktop, mobile, keyboard, reduced-motion component coverage, and critical 200 percent zoom",
+        "evidenceIds": []
       }
     },
     {
@@ -3232,6 +3366,12 @@
         "stateCompleteness": "Loading, populated, empty, no-results, recoverable error, permission, expiry, and dependency-unavailable states where applicable.",
         "responsive": "Desktop, mobile, and critical 200 percent zoom preserve information and controls.",
         "acceptanceOwner": "Project Homeport owner walkthrough after Sounding Line evidence."
+      },
+      "phase1Implementation": {
+        "state": "VALIDATED",
+        "identityAuthority": "HP-SES-001",
+        "responsiveProof": "Desktop, mobile, keyboard, reduced-motion component coverage, and critical 200 percent zoom",
+        "evidenceIds": []
       }
     },
     {
@@ -3258,8 +3398,8 @@
       "currentVisualMaturity": "SKELETAL",
       "missingStates": [],
       "knownDefects": [],
-      "screenshotIds": ["HP-EV-026"],
-      "journeyIds": ["HP-JRN-011"],
+      "screenshotIds": ["HP-EV-026", "HP-P1-EV-H-session-expired"],
+      "journeyIds": ["HP-JRN-011", "HP-P1-JRN-H"],
       "targetHomeportPhase": "PHASE_6_PAGE_STATE_COMPLETION",
       "acceptanceContract": "homeport.state-session-expired",
       "status": "CURRENT_STATE_CONTRACT",
@@ -3269,6 +3409,12 @@
         "stateCompleteness": "Loading, populated, empty, no-results, recoverable error, permission, expiry, and dependency-unavailable states where applicable.",
         "responsive": "Desktop, mobile, and critical 200 percent zoom preserve information and controls.",
         "acceptanceOwner": "Project Homeport owner walkthrough after Sounding Line evidence."
+      },
+      "phase1Implementation": {
+        "state": "VALIDATED",
+        "identityAuthority": "HP-SES-001",
+        "responsiveProof": "Desktop, mobile, keyboard, reduced-motion component coverage, and critical 200 percent zoom",
+        "evidenceIds": ["HP-P1-EV-H-session-expired"]
       }
     },
     {
@@ -3295,8 +3441,8 @@
       "currentVisualMaturity": "BROKEN",
       "missingStates": [],
       "knownDefects": ["Authorization denial redirects to generic sign-in."],
-      "screenshotIds": [],
-      "journeyIds": ["HP-JRN-012"],
+      "screenshotIds": ["HP-P1-EV-G-permission-denied", "HP-P1-EV-Q-zoom-permission"],
+      "journeyIds": ["HP-JRN-012", "HP-P1-JRN-G", "HP-P1-JRN-Q"],
       "targetHomeportPhase": "PHASE_6_PAGE_STATE_COMPLETION",
       "acceptanceContract": "homeport.state-permission-restricted",
       "status": "CURRENT_STATE_CONTRACT",
@@ -3306,7 +3452,21 @@
         "stateCompleteness": "Loading, populated, empty, no-results, recoverable error, permission, expiry, and dependency-unavailable states where applicable.",
         "responsive": "Desktop, mobile, and critical 200 percent zoom preserve information and controls.",
         "acceptanceOwner": "Project Homeport owner walkthrough after Sounding Line evidence."
+      },
+      "phase1Implementation": {
+        "state": "VALIDATED",
+        "identityAuthority": "HP-SES-001",
+        "responsiveProof": "Desktop, mobile, keyboard, reduced-motion component coverage, and critical 200 percent zoom",
+        "evidenceIds": ["HP-P1-EV-G-permission-denied", "HP-P1-EV-Q-zoom-permission"]
       }
     }
-  ]
+  ],
+  "phase1Implementation": {
+    "phase": "PHASE_1_UNITE_IDENTITY_AND_SESSION_AUTHORITY",
+    "implementationBaseSha": "bda5217a67d8ce2b56a02163371c137d9ed07275",
+    "implementationDigest": "5d00714b83b258f21cbcd848befe307933fd35056f9c767c9d5116be6e07df7a",
+    "state": "VALIDATED",
+    "updatedAt": "2026-08-01T19:00:00.000Z",
+    "historicalPhase0Preserved": true
+  }
 }

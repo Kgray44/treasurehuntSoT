@@ -2331,6 +2331,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase1/README.md",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Homeport/Homeport_Authentication_and_Session_Inventory.json",
       "record_type": "program-record",
       "status": "current",
@@ -2410,6 +2416,42 @@
     },
     {
       "path": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_0_Audit_Report.md",
+      "record_type": "program-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_1_Compatibility_Cutover_Ledger.csv",
+      "record_type": "program-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_1_Identity_and_Session_Architecture.md",
+      "record_type": "program-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_1_Implementation_Report.md",
+      "record_type": "program-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_1_Integration_Manifest.md",
+      "record_type": "program-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_1_Test_Plan.md",
+      "record_type": "program-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_1_Validation_Record.md",
       "record_type": "program-record",
       "status": "current",
       "canonical_for": null

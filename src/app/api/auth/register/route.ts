@@ -1,17 +1,24 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { AccountError, registerAccount } from "@/wayfarer/accounts";
+import { safeReturnTo } from "@/homeport/return-to";
 import { setWayfarerCookie } from "@/wayfarer/http";
 
-const schema = z.object({ email: z.string().max(254), password: z.string().max(256), displayName: z.string().max(80) });
+const schema = z.object({
+  email: z.string().max(254),
+  password: z.string().max(256),
+  displayName: z.string().max(80),
+  returnTo: z.string().max(2048).optional(),
+});
 
 export async function POST(request: Request) {
   const parsed = schema.safeParse(await request.json().catch(() => null));
   if (!parsed.success)
     return NextResponse.json({ error: "Enter an email, password, and display name." }, { status: 400 });
   try {
+    const { returnTo, ...accountInput } = parsed.data;
     const result = await registerAccount({
-      ...parsed.data,
+      ...accountInput,
       deviceLabel: request.headers.get("user-agent") ?? undefined,
     });
     await setWayfarerCookie(result.session.token);
@@ -20,6 +27,7 @@ export async function POST(request: Request) {
         ok: true,
         csrfToken: result.session.csrfToken,
         player: { id: result.account.profile.id, displayName: result.account.profile.displayName },
+        next: safeReturnTo(returnTo, "/passport"),
       },
       { status: 201 },
     );

@@ -9,6 +9,7 @@ import {
   createAccountSession,
   currentAccount,
   ensureGuestAccountForProfile,
+  recordSecurityEvent,
   revokeAccountSession,
 } from "@/wayfarer/accounts";
 
@@ -28,7 +29,7 @@ const cookieOptions = (maxAge: number) => ({
 export async function createPlayerIdentitySession(playerProfileId: string) {
   const profile = await db.playerProfile.findUnique({ where: { id: playerProfileId }, select: { accountId: true } });
   if (!profile) throw new Error("Player profile no longer exists.");
-  // Phase 2 closes the identity-write passage: legacy PlayerIdentitySession
+  // Phase 1 closes the identity-write passage: legacy PlayerIdentitySession
   // rows may be read only to rotate existing browser sessions, while every
   // new Player session is an account-rooted Wayfarer AccountSession.
   const accountId = profile.accountId ?? (await ensureGuestAccountForProfile(playerProfileId));
@@ -40,10 +41,11 @@ export async function createPlayerIdentitySession(playerProfileId: string) {
 }
 
 export async function requirePlayerIdentity() {
-  const canonicalToken = (await cookies()).get(ACCOUNT_IDENTITY_COOKIE)?.value;
+  const jar = await cookies();
+  const canonicalToken = jar.get(ACCOUNT_IDENTITY_COOKIE)?.value;
   if (canonicalToken) {
     const session = await currentAccount(canonicalToken);
-    if (session?.account.profile)
+    if (session?.account.profile?.status === "ACTIVE")
       return {
         id: session.id,
         accountId: session.accountId,
@@ -53,9 +55,9 @@ export async function requirePlayerIdentity() {
         player: session.account.profile,
       };
   }
-  const token = (await cookies()).get(PLAYER_IDENTITY_COOKIE)?.value;
+  const token = jar.get(PLAYER_IDENTITY_COOKIE)?.value;
   if (!token) return null;
-  return db.playerIdentitySession.findFirst({
+  const legacy = await db.playerIdentitySession.findFirst({
     where: {
       tokenHash: hashToken(token),
       revokedAt: null,
@@ -64,6 +66,19 @@ export async function requirePlayerIdentity() {
     },
     include: { player: true },
   });
+  if (!legacy?.player.accountId) return legacy;
+  const issued = await createAccountSession(legacy.player.accountId, "Homeport legacy Player API rotation");
+  jar.set(ACCOUNT_IDENTITY_COOKIE, issued.token, cookieOptions(playerSessionAgeMs / 1000));
+  jar.delete(PLAYER_IDENTITY_COOKIE);
+  await recordSecurityEvent(legacy.player.accountId, "ACCOUNT_COMPATIBILITY_BRIDGED", { family: "legacy-player" });
+  return {
+    id: issued.id,
+    accountId: legacy.player.accountId,
+    playerProfileId: legacy.player.id,
+    csrfToken: issued.csrfToken,
+    expiresAt: issued.expiresAt,
+    player: legacy.player,
+  };
 }
 
 /** Community authorization is deliberately account-rooted; legacy profile-only

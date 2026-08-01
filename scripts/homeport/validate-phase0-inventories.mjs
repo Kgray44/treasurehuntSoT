@@ -80,6 +80,9 @@ const journeys = readJson("Homeport_Journey_Catalog.json");
 const evidence = readJson("Homeport_Visual_Baseline_Manifest.json");
 const controls = parseCsv(readFileSync(path.join(auditRoot, "Homeport_Control_Inventory.csv"), "utf8"));
 const nonconformities = parseCsv(readFileSync(path.join(auditRoot, "Homeport_Nonconformity_Ledger.csv"), "utf8"));
+const compatibility = parseCsv(
+  readFileSync(path.join(auditRoot, "Project_Homeport_Phase_1_Compatibility_Cutover_Ledger.csv"), "utf8"),
+);
 
 for (const [name, envelope] of Object.entries({
   routes,
@@ -318,8 +321,11 @@ for (const record of evidence.records) {
   assert.equal(record.sourceSha, expectedSourceSha, `${record.evidenceId} source SHA drifted`);
   assert.ok(screenIds.has(record.screenContract), `${record.evidenceId} references unknown screen contract`);
   assert.ok(journeyIds.has(record.journey), `${record.evidenceId} references unknown journey`);
-  const screenshot = path.join(evidenceRoot, path.basename(record.screenshotPath));
-  if (existsSync(evidenceRoot) || requireRawEvidence) {
+  const phase1Record = record.evidenceId.startsWith("HP-P1-EV-");
+  const screenshot = phase1Record
+    ? path.join(root, record.committedScreenshotPath)
+    : path.join(evidenceRoot, path.basename(record.screenshotPath));
+  if (phase1Record || existsSync(evidenceRoot) || requireRawEvidence) {
     assert.ok(existsSync(screenshot), `${record.evidenceId} screenshot is missing at ${screenshot}`);
     assert.equal(sha256(screenshot), record.sha256, `${record.evidenceId} screenshot checksum drifted`);
   }
@@ -369,6 +375,7 @@ for (const control of controls) {
       "BROKEN",
       "UNREACHABLE",
       "NOT_APPLICABLE",
+      "VALIDATED",
     ].includes(control.current_status),
     `${control.control_id} status is invalid`,
   );
@@ -376,6 +383,68 @@ for (const control of controls) {
   if (control.evidence_id)
     assert.ok(evidenceIds.has(control.evidence_id), `${control.control_id} references unknown evidence`);
 }
+
+const compatibilityRequired = [
+  "authority_id",
+  "cookie_or_token",
+  "source_model",
+  "classification",
+  "current_reads",
+  "current_writes",
+  "canonical_mapping",
+  "phase_1_action",
+  "new_writes_after_phase_1",
+  "fallback_reads_after_phase_1",
+  "telemetry",
+  "retirement_criteria",
+  "rollback",
+  "security_risk",
+  "test_ids",
+  "evidence_ids",
+  "final_status",
+  "notes",
+];
+const compatibilityStatuses = [
+  "CANONICAL_ACTIVE",
+  "BOUNDED_COMPATIBILITY",
+  "CONTEXTUAL_RETAINED",
+  "TOKENIZED_RETAINED",
+  "CLIENT_HINT_ONLY",
+  "NO_NEW_WRITES",
+  "OBSERVATION_REQUIRED",
+  "READY_FOR_RETIREMENT",
+  "BLOCKED",
+];
+uniqueBy(compatibility, "authority_id", "Phase 1 compatibility ledger");
+for (let number = 1; number <= 10; number += 1)
+  assert.ok(
+    compatibility.some((record) => record.authority_id === `HP-SES-${String(number).padStart(3, "0")}`),
+    `Phase 1 compatibility authority ${number} is missing`,
+  );
+for (const record of compatibility) {
+  requireKeys(record, compatibilityRequired, record.authority_id);
+  assert.ok(authorityIds.has(record.authority_id), `${record.authority_id} is absent from the session inventory`);
+  requireVocabulary(record.final_status, compatibilityStatuses, record.authority_id);
+}
+
+const requiredPhase1Documents = [
+  "Project_Homeport_Phase_1_Identity_and_Session_Architecture.md",
+  "Project_Homeport_Phase_1_Compatibility_Cutover_Ledger.csv",
+  "Project_Homeport_Phase_1_Test_Plan.md",
+  "Project_Homeport_Phase_1_Implementation_Report.md",
+  "Project_Homeport_Phase_1_Validation_Record.md",
+  "Project_Homeport_Phase_1_Integration_Manifest.md",
+];
+for (const name of requiredPhase1Documents)
+  assert.ok(existsSync(path.join(auditRoot, name)), `Phase 1 required document is missing: ${name}`);
+
+for (const letter of "ABCDEFGHIJKLMNOPQ")
+  assert.ok(journeyIds.has(`HP-P1-JRN-${letter}`), `Phase 1 journey ${letter} is missing`);
+assert.equal(
+  evidence.records.filter((record) => record.evidenceId.startsWith("HP-P1-EV-")).length,
+  15,
+  "Phase 1 visual baseline must contain 15 after-state records",
+);
 
 const ncRequired = [
   "id",
@@ -446,5 +515,8 @@ console.log(
     evidence: evidence.records.length,
     rawEvidenceVerified: existsSync(evidenceRoot),
     nonconformities: nonconformities.length,
+    phase1CompatibilityAuthorities: compatibility.length,
+    phase1Journeys: journeys.journeys.filter((journey) => journey.journeyId.startsWith("HP-P1-JRN-")).length,
+    phase1Evidence: evidence.records.filter((record) => record.evidenceId.startsWith("HP-P1-EV-")).length,
   }),
 );

@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { AccountError, authenticateAccount, createAccountSession, mergeGuestIntoAccount } from "@/wayfarer/accounts";
+import { AccountError, authenticateAccount, mergeGuestIntoAccount } from "@/wayfarer/accounts";
 import { requireWayfarerAccount, setWayfarerCookie } from "@/wayfarer/http";
 const schema = z.object({
   login: z.string().trim().min(1).max(254),
@@ -20,7 +20,7 @@ export async function POST(request: Request) {
   if (!target) return NextResponse.json({ error: "Those credentials were not accepted." }, { status: 401 });
   try {
     const merged = await mergeGuestIntoAccount(guest.accountId, target.account.id);
-    const session = await createAccountSession(target.account.id, request.headers.get("user-agent") ?? undefined);
+    const session = target.session;
     await setWayfarerCookie(session.token);
     return NextResponse.json({
       ok: true,
@@ -29,6 +29,7 @@ export async function POST(request: Request) {
       player: target.account.profile
         ? { id: target.account.profile.id, displayName: target.account.profile.displayName }
         : null,
+      next: "/passport",
     });
   } catch (cause) {
     return NextResponse.json(

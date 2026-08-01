@@ -13,6 +13,7 @@ const wayfarerPhase2Spec = /wayfarer-phase2\.spec\.ts/u;
 const harborlightPhase3Spec = /harborlight-phase3\.spec\.ts/u;
 const harborlightPhase4Spec = /harborlight-phase4\.spec\.ts/u;
 const soundingLineAccessSentinelSpec = /access-gates\.spec\.ts/u;
+const homeportPhase1Spec = /homeport-phase1\.spec\.ts/u;
 const phase3MutationSpecs =
   /phase3-(?:player-event-matrix|player-motion|replay-resilience|lifecycle(?:-extended)?|performance)\.spec\.ts/u;
 const phase3MutationSpecGuard = [
@@ -73,7 +74,13 @@ export default defineConfig({
         harborlightPhase2Spec,
         harborlightPhase3Spec,
         harborlightPhase4Spec,
+        homeportPhase1Spec,
       ],
+      use: { ...devices["Desktop Chrome"] },
+    },
+    {
+      name: "homeport-phase1",
+      testMatch: homeportPhase1Spec,
       use: { ...devices["Desktop Chrome"] },
     },
     {
@@ -133,6 +140,7 @@ export default defineConfig({
         wayfarerPhase2Spec,
         harborlightPhase2Spec,
         harborlightPhase3Spec,
+        homeportPhase1Spec,
       ],
       use: { ...devices["iPhone 14"] },
     },

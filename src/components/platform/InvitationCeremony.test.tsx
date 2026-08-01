@@ -7,6 +7,7 @@ import { InvitationCeremony } from "./InvitationCeremony";
 
 const navigation = vi.hoisted(() => ({ push: vi.fn(), refresh: vi.fn() }));
 const director = vi.hoisted(() => ({ play: vi.fn(), cancel: vi.fn(), skip: vi.fn() }));
+const invalidateCurrentUser = vi.hoisted(() => vi.fn().mockResolvedValue({ status: "authenticated" }));
 
 vi.mock("next/navigation", () => ({
   useRouter: () => navigation,
@@ -17,6 +18,9 @@ vi.mock("@/animation/motion/useMotionMode", () => ({
 }));
 vi.mock("@/animation/director/useAnimationDirector", () => ({
   useAnimationDirector: () => ({ director, snapshot: { isPlaying: false } }),
+}));
+vi.mock("@/components/auth/CurrentUserProvider", () => ({
+  useCurrentUser: () => ({ invalidate: invalidateCurrentUser }),
 }));
 vi.mock("@/components/animation/RiveStatefulObject", async () => {
   const React = await import("react");

@@ -77,21 +77,20 @@ function PlayerCeremonyBoundary({
 export function PlayerSignIn({
   authenticated,
   nextHref = "/player/library",
+  canonicalSignInHref = "/sign-in?returnTo=%2Fplayer%2Flibrary",
   onRouteHandoff,
 }: {
   authenticated: boolean;
   nextHref?: string;
+  canonicalSignInHref?: string;
   onRouteHandoff?: PlayerRouteHandoff;
 }) {
   const router = useRouter();
   const { mode } = useMotionMode();
   const asyncState = useAuthoritativeAsyncState(900);
   const stateToken = resolvePlatformMotionToken("state", mode);
-  const usernameInput = useRef<HTMLInputElement>(null);
   const codeInput = useRef<HTMLInputElement>(null);
   const [authMode, setAuthMode] = useState<"account" | "invitation">("account");
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
   const [code, setCode] = useState("");
   const [error, setError] = useState("");
   const [status, setStatus] = useState("");
@@ -144,11 +143,11 @@ export function PlayerSignIn({
     if (refresh) router.refresh();
   }
 
-  function restoreAfterFailure(run: AuthoritativeAsyncRun, message: string, focus: "username" | "code") {
+  function restoreAfterFailure(run: AuthoritativeAsyncRun, message: string) {
     if (!asyncState.fail(run)) return;
     setStatus("");
     setError(message);
-    requestAnimationFrame(() => (focus === "username" ? usernameInput.current : codeInput.current)?.focus());
+    requestAnimationFrame(() => codeInput.current?.focus());
   }
 
   async function acceptAndNavigate(run: AuthoritativeAsyncRun, destination: string, message: string, refresh: boolean) {
@@ -157,11 +156,7 @@ export function PlayerSignIn({
     try {
       await handOffRoute(destination, run.controller.signal, refresh);
     } catch {
-      restoreAfterFailure(
-        run,
-        `${message.replace(/\.$/u, "")} could not complete. Please try again.`,
-        refresh ? "username" : "code",
-      );
+      restoreAfterFailure(run, `${message.replace(/\.$/u, "")} could not complete. Please try again.`);
     } finally {
       asyncState.release(run, "success");
     }
@@ -171,31 +166,6 @@ export function PlayerSignIn({
     if (response.status !== 429) return;
     const retryAfter = Number(response.headers?.get("retry-after") ?? 30);
     setCooldown(Number.isFinite(retryAfter) && retryAfter > 0 ? Math.ceil(retryAfter) : 30);
-  }
-
-  async function signIn(event: React.FormEvent) {
-    event.preventDefault();
-    const run = beginRun();
-    if (!run) return;
-    try {
-      const response = await fetch("/api/player/sign-in", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password }),
-        signal: run.controller.signal,
-      });
-      const body = await parseJsonResponse<{ error?: string }>(response);
-      if (!response.ok) {
-        applyRateLimit(response);
-        return restoreAfterFailure(run, body?.error ?? "Player sign-in failed.", "username");
-      }
-      setOffline(false);
-      await acceptAndNavigate(run, nextHref, "Player sign-in accepted. Opening your library.", true);
-    } catch {
-      if (run.controller.signal.aborted) return;
-      setOffline(true);
-      restoreAfterFailure(run, "Player sign-in could not be reached. Please try again.", "username");
-    }
   }
 
   async function findInvitation(event: React.FormEvent) {
@@ -212,7 +182,7 @@ export function PlayerSignIn({
       const body = await parseJsonResponse<{ error?: string; next?: string }>(response);
       if (!response.ok) {
         applyRateLimit(response);
-        return restoreAfterFailure(run, body?.error ?? "Invitation code not found.", "code");
+        return restoreAfterFailure(run, body?.error ?? "Invitation code not found.");
       }
       setOffline(false);
       await acceptAndNavigate(
@@ -224,7 +194,7 @@ export function PlayerSignIn({
     } catch {
       if (run.controller.signal.aborted) return;
       setOffline(true);
-      restoreAfterFailure(run, "The invitation service could not be reached. Please try again.", "code");
+      restoreAfterFailure(run, "The invitation service could not be reached. Please try again.");
     }
   }
 
@@ -269,48 +239,22 @@ export function PlayerSignIn({
         <div className="auth-columns auth-mode-panel">
           <AnimatePresence initial={false} mode="wait">
             {authMode === "account" ? (
-              <motion.form
+              <motion.div
                 key="account"
                 initial={{ opacity: 0, x: mode === "reduced" ? 0 : -stateToken.distancePx }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: mode === "reduced" ? 0 : -stateToken.distancePx / 2 }}
                 transition={{ duration: stateToken.durationSeconds, ease: platformMotionEasing("state") }}
-                onSubmit={signIn}
-                aria-busy={busy}
-                aria-describedby={error ? "player-sign-in-error" : undefined}
               >
-                <h2>{authenticated ? "Use a different Player account" : "Player sign-in"}</h2>
-                <label>
-                  <span>Player name</span>
-                  <input
-                    autoFocus
-                    ref={usernameInput}
-                    autoComplete="username"
-                    value={username}
-                    onChange={(event) => setUsername(event.target.value)}
-                    required
-                  />
-                </label>
-                <label>
-                  <span>Password</span>
-                  <input
-                    type="password"
-                    autoComplete="current-password"
-                    value={password}
-                    onChange={(event) => setPassword(event.target.value)}
-                    required
-                  />
-                </label>
-                <button className="brass-button" disabled={busy || cooldown > 0} aria-busy={busy}>
-                  {cooldown > 0
-                    ? `Try again in ${cooldown}s`
-                    : asyncState.phase === "slow"
-                      ? "Still checking…"
-                      : busy
-                        ? "Opening library…"
-                        : "Open my library"}
-                </button>
-              </motion.form>
+                <h2>Player account</h2>
+                <p>Voyagewright uses one account sign-in for Player, Captain, Creator, and Community access.</p>
+                <Link className="brass-button" href={canonicalSignInHref}>
+                  Continue to account sign-in
+                </Link>
+                <p>
+                  <Link href="/register">Create Account</Link> or <Link href="/forgot-password">Forgot Password</Link>
+                </p>
+              </motion.div>
             ) : (
               <motion.form
                 key="invitation"
