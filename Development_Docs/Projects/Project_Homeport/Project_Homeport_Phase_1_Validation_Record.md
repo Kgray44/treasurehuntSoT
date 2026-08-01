@@ -10,7 +10,7 @@ last_reviewed: 2026-08-01
 
 ## Current decision
 
-**SOUNDING_LINE_RELEASE_GO_PENDING_GIT_PUBLICATION.** Phase 1 implementation, compatibility cutover, A-Q acceptance, artifact governance, static checks, provider schema validation, production build, and authoritative subsystem/mainline gates are green. Git publication metadata and the branch-complete Feature Catalog entry are deliberately added after the implementation commit exists. A focused or raw runner result remains diagnostic evidence only.
+**PHASE_1_RELEASE_GO.** Phase 1 implementation, compatibility cutover, A-Q acceptance, artifact governance, static checks, provider schema validation, production build, and authoritative subsystem/mainline gates are green. The branch-complete Feature Catalog entry is anchored to implementation commit `43c0fdc701de1425e651acb06924051fbd3a4a34`. A focused or raw runner result remains diagnostic evidence only.
 
 ## Focused and acceptance evidence
 
@@ -43,12 +43,12 @@ last_reviewed: 2026-08-01
 
 The first mainline attempt failed closed because the access sentinel still expected the retired `Enter Captain's Console` staff-password heading. The product had correctly rendered the canonical `Open the Captain's Console` account adapter. The governed assertion was repaired to require the canonical adapter, its account-sign-in link, and absence of a password field. A focused evidence-only sentinel then passed 3/3 before the final authoritative mainline `RELEASE_GO` above.
 
-## Publication receipts pending commit identity
+## Publication receipts
 
-- staged-diff private-content scan;
-- implementation commit identity;
-- `BRANCH_COMPLETE_NOT_MERGED` Feature Catalog entry, sync, and validation;
-- final branch/upstream SHA parity and clean-tree proof.
+- staged-diff private-content scan passed for the 110-path implementation commit;
+- implementation commit: `43c0fdc701de1425e651acb06924051fbd3a4a34`;
+- Feature Catalog entry `FT-B001` is `BRANCH_COMPLETE_NOT_MERGED`, synchronized, and validated;
+- final upstream SHA parity and clean-tree proof are external Git closure facts reported after the governance commit is pushed, avoiding a self-referential commit claim in this record.
 
 ## Known retained limits
 

@@ -900,6 +900,41 @@ A nonauthoritative, provider-neutral local verification control plane provides s
 
 # Completed Branch Features Not Yet Available on Main
 
+## FT-B001 - Unified Identity and Session Authority
+
+**Status:** BRANCH COMPLETE NOT MERGED
+**Program or subsystem:** Project Homeport Phase 1
+
+One server-resolved account session now drives current-user state, workspace capability, lifecycle invalidation, and bounded legacy-session rotation across product surfaces.
+
+### Important subfeatures
+
+- Canonical AccountSession current-user projection
+- One ordinary account sign-in lifecycle
+- Explicit workspace capability decisions
+- Cross-tab and focus session invalidation
+- Safe intended-return authorization
+- Bounded legacy Player and staff session rotation
+
+### Primary surfaces
+
+`/sign-in`, `/register`, `/api/auth/context`, `/player/sign-in`, `/captain/sign-in`, `/studio/sign-in`, `/passport`
+
+### Meaningful limitations
+
+- Not available on main until separately reviewed and integrated
+- Legacy global-session readers remain observe-and-rotate compatibility paths
+- Deployment, live-user validation, and owner acceptance are not established
+- Gateway navigation, account-menu reconstruction, and Passport visual reconstruction remain later phases
+
+### Evidence
+
+- commit: `43c0fdc701de1425e651acb06924051fbd3a4a34`
+- completion-record: `Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_1_Validation_Record.md`
+- path: `Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_1_Compatibility_Cutover_Ledger.csv`
+
+---
+
 # Deliberately Excluded Until Complete
 
 - Harborlight Phase 4 is planned and is not cataloged as an implemented capability.

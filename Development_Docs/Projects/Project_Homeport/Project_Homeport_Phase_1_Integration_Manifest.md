@@ -14,6 +14,7 @@ last_reviewed: 2026-08-01
 | ------------------------ | ------------------------------------------------------------ |
 | Phase 0 closure          | `bda5217a67d8ce2b56a02163371c137d9ed07275`                   |
 | Phase 1 starting SHA     | `bda5217a67d8ce2b56a02163371c137d9ed07275`                   |
+| Phase 1 implementation   | `43c0fdc701de1425e651acb06924051fbd3a4a34`                   |
 | Reconciled `origin/main` | `8d142227d712d27e363b15903dba9b0c99a04bc8`                   |
 | Worktree                 | `C:\Users\kkids\Documents\Codex_TreasureHunt-homeport`       |
 | Branch                   | `codex/project-homeport-product-reality-recovery`            |
