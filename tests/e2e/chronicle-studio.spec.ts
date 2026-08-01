@@ -404,7 +404,7 @@ test("creator authors, aligns, publishes, plays, and reviews a media-rich tale",
   try {
     const publishResponse = page.waitForResponse(
       (response) =>
-        response.request().method() === "POST" && response.url().endsWith(`/api/studio/tales/${tale!.id}/publish`),
+        response.request().method() === "POST" && response.url().endsWith(`/api/studio/tales/${taleId}/publish`),
     );
     await page.getByRole("button", { name: "Publish Chronicle" }).click();
     const response = await publishResponse;
