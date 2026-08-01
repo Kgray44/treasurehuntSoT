@@ -233,6 +233,39 @@ describe("Voyagewright Studio editor motion and authority", () => {
     expect(await screen.findByText(/Version 4 published/)).toHaveAttribute("data-authority-state", "confirmed");
   });
 
+  it("waits for an in-flight autosave before publishing the immutable version", async () => {
+    let resolveSave!: (value: Response) => void;
+    const save = new Promise<Response>((resolve) => {
+      resolveSave = resolve;
+    });
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValueOnce(response(200, editorData()))
+      .mockReturnValueOnce(save)
+      .mockResolvedValueOnce(response(201, { versionLabel: "5" }))
+      .mockResolvedValueOnce(response(200, editorData()));
+    vi.stubGlobal("fetch", fetchMock);
+    try {
+      render(<TaleEditor taleId="tale-1" authenticated />);
+      const card = (await screen.findByText("Opening Scene")).closest<HTMLElement>("article")!;
+      fireEvent.click(card);
+      vi.useFakeTimers();
+      fireEvent.change(screen.getByRole("textbox", { name: "Passage title" }), {
+        target: { value: "Updated opening scene" },
+      });
+      act(() => vi.advanceTimersByTime(1100));
+      expect(fetchMock).toHaveBeenCalledTimes(2);
+
+      fireEvent.click(screen.getByRole("button", { name: "Publish Chronicle" }));
+      await act(async () => resolveSave(response(200, { autosaveVersion: 4, savedAt: "2026-07-19T12:02:00.000Z" })));
+      vi.useRealTimers();
+
+      expect(await screen.findByText(/Version 5 published/)).toHaveAttribute("data-authority-state", "confirmed");
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
   it("tracks each upload independently and preserves successful files when a sibling fails", async () => {
     vi.stubGlobal(
       "fetch",
