@@ -7,6 +7,23 @@ last_reviewed: 2026-07-31
 
 # Project Sounding Line Performance Budget Report
 
+## Complete governed browser evidence — 2026-07-31
+
+Hosted release-candidate run `30691520484` produced `RELEASE_GO` from 42
+unique clean receipts. All 16 browser families remained within their current
+hard budgets: 325 cases were registered, discovered, executed, and passed;
+zero failed or skipped. The slowest measured browser worker was accessibility
+at 2,112,548 ms against a 6,300,000 ms hard budget, followed by animation
+lifecycle at 1,629,531 ms against 2,160,000 ms. The finalization evidence
+digest is `b77651d013d5d6386bf9307887dd736525fd272824d9d4a58a0bc8e6d1e88fbd`.
+
+The complete per-family durations, declared budgets, isolation, evidence
+artifacts, and receipt digests are retained in
+`Project_Sounding_Line_Final_Browser_Closure_Ledger.csv`. These are governed
+cold-path receipts; no automatic retry was used and no timeout was raised.
+
+## Historical budget reviews
+
 The authoritative mainline receipt dated 2026-07-30 completed 27 required
 families with `RELEASE_GO`. Every receipt recorded a clean cleanup state and
 no timeout. Notable elapsed times were static core 56,876 ms, the isolated
