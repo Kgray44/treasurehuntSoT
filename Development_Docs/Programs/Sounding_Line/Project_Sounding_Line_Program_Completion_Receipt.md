@@ -57,8 +57,18 @@ archived, unselectable, and unexecuted.
 
 ## Protected integration record
 
-The release-candidate evidence is complete. The normal protected PR merge and
-its `Sounding Line / Mainline Decision` are recorded in the final
-documentation-only post-merge amendment so that this receipt contains the
-actual closure PR, merge SHA, and final `origin/main` SHA rather than a
-prediction.
+The browser-closure tree merged normally through PR [#7](https://github.com/Kgray44/treasurehuntSoT/pull/7) at
+`02a723f847ace148a8c3c3c0408aa45d4c4bd66e`. The protected mainline workflow
+run `30696766431` produced `RELEASE_GO` from 27 mandatory clean receipts; its
+required `Sounding Line / Mainline Decision` check completed successfully.
+Branch protection remains strict and requires that exact check context.
+
+This documentation-only amendment is based directly on that merged
+`origin/main` SHA. Its executable-input digest is unchanged from the
+release-candidate-tested closure source:
+`a31c096a258686dc06e22b8bdf5adc5c679f6ddbc4bb3cc4929041a7cba41d09`.
+It records the actual merge rather than changing source, tests, policy,
+workflows, packages, Prisma inputs, or the governed registry. No complete
+browser matrix is therefore invalidated.
+
+**Remaining governed local limitations: `NONE`.**
