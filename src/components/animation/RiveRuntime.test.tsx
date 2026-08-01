@@ -1,4 +1,5 @@
 import { act, cleanup, render, screen, waitFor } from "@testing-library/react";
+import { useState } from "react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { riveAssets } from "@/animation/assets/rive-contracts";
 import { resetAnimationMetrics } from "@/animation/core/metrics";
@@ -204,6 +205,30 @@ describe("Rive runtime", () => {
     ).toBeVisible();
     expect(screen.queryByTestId("rive-canvas")).not.toBeInTheDocument();
     expect(runtime.rive.cleanup).toHaveBeenCalledOnce();
+  });
+
+  it("reports a Rive fallback once when a stateful consumer creates a new status callback each render", async () => {
+    function StatefulStatusConsumer() {
+      const [statuses, setStatuses] = useState<string[]>([]);
+      return (
+        <>
+          <RiveRuntime
+            asset={riveAssets.developmentRating}
+            mode="full"
+            label="Rive development proof"
+            className="proof"
+            onStatus={(status) => setStatuses((current) => [...current, status])}
+          />
+          <output>{statuses.join(",")}</output>
+        </>
+      );
+    }
+
+    render(<StatefulStatusConsumer />);
+    act(() => (runtime.options?.onLoadError as (() => void) | undefined)?.());
+
+    await waitFor(() => expect(screen.getByRole("status")).toHaveTextContent("failed,fallback"));
+    expect(screen.getByRole("status")).toHaveTextContent("failed,fallback");
   });
 
   it("settles to the accessible fallback when a runtime load exceeds its contract timeout", async () => {
