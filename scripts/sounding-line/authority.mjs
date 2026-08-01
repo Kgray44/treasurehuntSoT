@@ -17,6 +17,7 @@ import { buildPlan } from "./planner.mjs";
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
 const output = (value) => process.stdout.write(`${JSON.stringify(value, null, 2)}\n`);
 const digest = (value) => createHash("sha256").update(JSON.stringify(value)).digest("hex");
+const escapeRegex = (value) => value.replace(/[.*+?^${}()|[\]\\]/gu, "\\$&");
 const readJson = async (file) => {
   const content = await readFile(file);
   const text = content[0] === 0xff && content[1] === 0xfe ? content.toString("utf16le") : content.toString("utf8");
@@ -42,19 +43,34 @@ function suiteAdapter(suite, registry) {
     return resolveVitestAdapter(files);
   }
   if (suite.adapter === "playwright-family") {
-    const projects = [...new Set(definitions.map((entry) => entry.project).filter(Boolean))];
-    const files = [
-      ...new Set(definitions.map((entry) => entry.file).filter((file) => /^tests\/e2e\/.*\.spec\.ts$/u.test(file))),
-    ];
-    if (!projects.length || !files.length) throw new Error(`INVALID_BROWSER_FAMILY_SELECTION:${suite.id}`);
-    const canonicalProject = projects.includes("sounding-line-access-sentinel")
-      ? "sounding-line-access-sentinel"
-      : projects.includes("chromium")
-        ? "chromium"
-        : projects[0];
+    const selections = new Map();
+    for (const definition of definitions) {
+      if (!definition.project || !/^tests\/e2e\/.*\.(?:spec|setup)\.ts$/u.test(definition.file) || !definition.title)
+        throw new Error(`INVALID_BROWSER_FAMILY_SELECTION:${suite.id}`);
+      const selection = selections.get(definition.project) ?? {
+        project: definition.project,
+        files: new Set(),
+        titles: [],
+      };
+      selection.files.add(definition.file);
+      // The registry records the readable full title path. Playwright's grep
+      // evaluates that path with a runner-owned separator, so select the
+      // exact leaf title while retaining the registry-selected spec files.
+      selection.titles.push(definition.title.split("\u203a").at(-1).trim());
+      selections.set(definition.project, selection);
+    }
+    if (!selections.size) throw new Error(`INVALID_BROWSER_FAMILY_SELECTION:${suite.id}`);
+    const exactSelections = [...selections.values()].map((selection) => ({
+      project: selection.project,
+      files: [...selection.files].sort(),
+      // Playwright matches the complete title path (including project and
+      // describe ancestry). A suffix anchor selects the registered leaf title
+      // exactly without discarding that immutable prefix.
+      grep: `(?:${selection.titles.map(escapeRegex).join("|")})$`,
+      caseCount: selection.titles.length,
+    }));
     return resolveIsolatedBrowserFamilyAdapter(
-      canonicalProject,
-      files,
+      exactSelections,
       path.join(root, "prisma", "dev.db"),
       suite.id !== "browser.access-sentinel",
     );
@@ -123,9 +139,24 @@ async function run(gateId, { serial, executeOnly = false, receiptPath, suiteId, 
       });
     }
     if (adapter.id === "isolated-playwright-family") {
-      Object.assign(adapterEnv, { SOUNDING_LINE_INTERNAL_RUNTIME: "1" });
+      Object.assign(adapterEnv, {
+        SOUNDING_LINE_INTERNAL_RUNTIME: "1",
+        FOREVER_DEPENDENCY_SEED_ROOT: root,
+        SOUNDING_LINE_SUITE_HARD_BUDGET_MS: String(suite.hardBudgetMs),
+      });
     }
     const result = await executeAdapter(adapter, { cwd: root, env: adapterEnv, timeoutMs: suite.hardBudgetMs });
+    const browserCounts =
+      suite.adapter === "playwright-family"
+        ? {
+            registeredCaseCount: node.testIds.length,
+            discoveredCaseCount: adapter.caseCount,
+            executedCaseCount: result.exitCode === 0 && !result.timedOut ? adapter.caseCount : null,
+            passedCaseCount: result.exitCode === 0 && !result.timedOut ? adapter.caseCount : 0,
+            failedCaseCount: result.exitCode === 0 && !result.timedOut ? 0 : null,
+            skippedCaseCount: 0,
+          }
+        : {};
     receipts.push({
       suiteId: node.id,
       adapterId: adapter.id,
@@ -139,6 +170,7 @@ async function run(gateId, { serial, executeOnly = false, receiptPath, suiteId, 
       gate: plan.gate,
       cleanupState: "CLEAN",
       result: result.exitCode === 0 && !result.timedOut ? "PASSED" : "FAILED",
+      ...browserCounts,
       ...result,
     });
   }

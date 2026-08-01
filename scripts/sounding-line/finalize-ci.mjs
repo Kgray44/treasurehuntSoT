@@ -1,13 +1,17 @@
 #!/usr/bin/env node
 /* CI entrypoint: the finalizer alone decides whether collected evidence passes. */
-import { readFile, readdir } from "node:fs/promises";
+import { readFile, readdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import process from "node:process";
 import { createHash } from "node:crypto";
 import { finalize } from "./finalizer.mjs";
 
-const [planPath, evidencePath] = process.argv.slice(2);
+const [planPath, evidencePath, ...options] = process.argv.slice(2);
 if (!planPath || !evidencePath) throw new Error("CI_FINALIZER_REQUIRES_PLAN_AND_EVIDENCE");
+const outputIndex = options.indexOf("--out");
+const outputPath = outputIndex >= 0 ? options[outputIndex + 1] : undefined;
+if ((outputIndex >= 0 && !outputPath) || options.length !== (outputIndex >= 0 ? 2 : 0))
+  throw new Error("CI_FINALIZER_OUTPUT_OPTION_INVALID");
 const readJson = async (file) => {
   const content = await readFile(file);
   const text = content[0] === 0xff && content[1] === 0xfe ? content.toString("utf16le") : content.toString("utf8");
@@ -40,5 +44,6 @@ const evidence = await Promise.all(
 if (evidence.some((item) => item.plan?.planDigest !== plan.planDigest)) throw new Error("CI_EVIDENCE_PLAN_MISMATCH");
 if (process.env.GITHUB_SHA && plan.sourceSha !== process.env.GITHUB_SHA) throw new Error("CI_PLAN_SOURCE_MISMATCH");
 const result = finalize({ plan, receipts: evidence.flatMap((item) => item.receipts) });
+if (outputPath) await writeFile(path.resolve(outputPath), `${JSON.stringify(result, null, 2)}\n`, "utf8");
 process.stdout.write(`${JSON.stringify(result, null, 2)}\n`);
 process.exitCode = result.decision === "RELEASE_GO" ? 0 : 1;

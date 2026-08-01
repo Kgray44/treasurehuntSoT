@@ -255,9 +255,10 @@ export function TaleEditor({
   const [placedAssetId, setPlacedAssetId] = useState<string | null>(null);
   const [moreOpen, setMoreOpen] = useState(false);
   const [autosaveKick, setAutosaveKick] = useState(0);
-  const saving = useRef(false);
+  const saving = useRef<Promise<boolean> | null>(null);
   const draftRevision = useRef(0);
   const autosaveVersionRef = useRef<number | null>(null);
+  const publicationStatusHold = useRef(false);
   const root = useRef<HTMLElement>(null);
   const publishHost = useRef<SceneHostHandle | null>(null);
   const inspectorReturnFocus = useRef<HTMLElement | null>(null);
@@ -307,57 +308,70 @@ export function TaleEditor({
 
   const save = useCallback(
     async (state: DraftState, quiet = true, revision = draftRevision.current) => {
-      if (!data || saving.current) return false;
-      saving.current = true;
-      setSaveState("Saving...");
-      if (!quiet) setError("");
-      const response = await fetch(`/api/studio/tales/${taleId}/draft`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json", "x-csrf-token": data.csrfToken },
-        body: JSON.stringify({
-          autosaveVersion: autosaveVersionRef.current ?? data.draft.autosaveVersion,
-          tale: state.tale,
-          chapters: state.chapters,
-        }),
-      });
-      const body = (await response.json()) as {
-        autosaveVersion?: number;
-        savedAt?: string;
-        error?: string;
-        code?: string;
-      };
-      saving.current = false;
-      if (!response.ok) {
-        setSaveState(body.code === "DRAFT_CONFLICT" ? "Conflict - unsaved changes preserved" : "Save failed");
-        setError(body.error ?? "This Chronicle could not be saved. Your changes remain in this browser.");
-        return false;
-      }
-      const nextAutosaveVersion =
-        body.autosaveVersion ?? (autosaveVersionRef.current ?? data.draft.autosaveVersion) + 1;
-      autosaveVersionRef.current = nextAutosaveVersion;
-      setData((current) =>
-        current
-          ? {
-              ...current,
+      if (!data) return false;
+      if (saving.current) return saving.current;
+      const savePromise = (async () => {
+        setSaveState("Saving...");
+        if (!quiet) setError("");
+        try {
+          const response = await fetch(`/api/studio/tales/${taleId}/draft`, {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json", "x-csrf-token": data.csrfToken },
+            body: JSON.stringify({
+              autosaveVersion: autosaveVersionRef.current ?? data.draft.autosaveVersion,
               tale: state.tale,
-              draft: {
-                ...current.draft,
-                autosaveVersion: nextAutosaveVersion,
-                savedAt: body.savedAt ?? new Date().toISOString(),
-                validationState: "STALE",
-              },
-            }
-          : current,
-      );
-      if (draftRevision.current > revision) {
-        setDirty(true);
-        setSaveState("Unsaved changes");
-        setAutosaveKick((value) => value + 1);
-      } else {
-        setDirty(false);
-        setSaveState(`Saved at ${new Date(body.savedAt ?? Date.now()).toLocaleTimeString()}`);
-      }
-      return true;
+              chapters: state.chapters,
+            }),
+          });
+          const body = (await response.json()) as {
+            autosaveVersion?: number;
+            savedAt?: string;
+            error?: string;
+            code?: string;
+          };
+          if (!response.ok) {
+            setSaveState(body.code === "DRAFT_CONFLICT" ? "Conflict - unsaved changes preserved" : "Save failed");
+            setError(body.error ?? "This Chronicle could not be saved. Your changes remain in this browser.");
+            return false;
+          }
+          const nextAutosaveVersion =
+            body.autosaveVersion ?? (autosaveVersionRef.current ?? data.draft.autosaveVersion) + 1;
+          autosaveVersionRef.current = nextAutosaveVersion;
+          setData((current) =>
+            current
+              ? {
+                  ...current,
+                  tale: state.tale,
+                  draft: {
+                    ...current.draft,
+                    autosaveVersion: nextAutosaveVersion,
+                    savedAt: body.savedAt ?? new Date().toISOString(),
+                    validationState: "STALE",
+                  },
+                }
+              : current,
+          );
+          if (publicationStatusHold.current) {
+            setDirty(false);
+          } else if (draftRevision.current > revision) {
+            setDirty(true);
+            setSaveState("Unsaved changes");
+            setAutosaveKick((value) => value + 1);
+          } else {
+            setDirty(false);
+            setSaveState(`Saved at ${new Date(body.savedAt ?? Date.now()).toLocaleTimeString()}`);
+          }
+          return true;
+        } catch {
+          setSaveState("Save failed");
+          setError("This Chronicle could not be saved. Your changes remain in this browser.");
+          return false;
+        } finally {
+          saving.current = null;
+        }
+      })();
+      saving.current = savePromise;
+      return savePromise;
     },
     [data, taleId],
   );
@@ -370,6 +384,7 @@ export function TaleEditor({
 
   function change(mutator: (next: DraftState) => void) {
     if (!draft) return;
+    publicationStatusHold.current = false;
     const next = clone(draft);
     mutator(next);
     draftRevision.current += 1;
@@ -730,6 +745,7 @@ export function TaleEditor({
     )
       return;
     setPublishState("publishing");
+    publicationStatusHold.current = false;
     setPublishedVersion(null);
     setSaveState("Publishing...");
     if (!root.current || !publishHost.current) {
@@ -787,13 +803,19 @@ export function TaleEditor({
       publishedLabel = body.versionLabel;
       setPublishedVersion(body.versionLabel);
     } catch {
-      setError(operationError);
-      if (operationValidation) setValidation(operationValidation);
-      setSaveState("Publishing failed");
-      setPublishState("failed");
-      return;
+      const completedOperation = await (operationPromise as Promise<PublishResult> | null)?.catch(() => undefined);
+      if (!completedOperation?.versionLabel) {
+        setError(operationError);
+        if (operationValidation) setValidation(operationValidation);
+        setSaveState("Publishing failed");
+        setPublishState("failed");
+        return;
+      }
+      publishedLabel = completedOperation.versionLabel;
+      setPublishedVersion(completedOperation.versionLabel);
     }
     setPublishState("published");
+    publicationStatusHold.current = true;
     setSaveState(`Published as Version ${publishedLabel}`);
     await load();
     setSaveState(`Published as Version ${publishedLabel}`);

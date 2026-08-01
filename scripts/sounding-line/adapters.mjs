@@ -183,19 +183,35 @@ export function resolvePlaywrightFamilyAdapter(project, specs) {
   };
 }
 
-export function resolveIsolatedBrowserFamilyAdapter(project, specs, baselineDatabase, expectMutation = true) {
-  if (!safeProject(project) || !Array.isArray(specs) || !specs.length)
-    throw new Error("Isolated browser adapter requires a safe project and non-empty e2e spec selection");
+export function resolveIsolatedBrowserFamilyAdapter(selections, baselineDatabase, expectMutation = true) {
+  if (!Array.isArray(selections) || !selections.length)
+    throw new Error("Isolated browser adapter requires non-empty exact browser selections");
   if (typeof baselineDatabase !== "string" || !path.isAbsolute(baselineDatabase))
     throw new Error("Isolated browser adapter requires an absolute trusted baseline database");
   if (typeof expectMutation !== "boolean")
     throw new Error("Isolated browser adapter mutation expectation must be boolean");
-  const safeSpecs = specs.map((spec) => spec.replace(/\\/gu, "/"));
-  if (safeSpecs.some((spec) => !/^tests\/e2e\/.*\.spec\.ts$/u.test(spec)))
-    throw new Error("Isolated browser adapter accepts only e2e spec files");
-  const browserArgsBase64 = Buffer.from(JSON.stringify([`--project=${project}`, ...safeSpecs]), "utf8").toString(
-    "base64",
-  );
+  const normalizedSelections = selections.map((selection) => ({
+    project: selection?.project,
+    files: Array.isArray(selection?.files)
+      ? [...new Set(selection.files.map((file) => file.replace(/\\/gu, "/")))].sort()
+      : [],
+    grep: selection?.grep,
+    caseCount: selection?.caseCount,
+  }));
+  if (
+    normalizedSelections.some(
+      (selection) =>
+        !safeProject(selection.project) ||
+        !selection.files.length ||
+        selection.files.some((file) => !/^tests\/e2e\/.*\.(?:spec|setup)\.ts$/u.test(file)) ||
+        typeof selection.grep !== "string" ||
+        !selection.grep.length ||
+        !Number.isInteger(selection.caseCount) ||
+        selection.caseCount <= 0,
+    )
+  )
+    throw new Error("Isolated browser adapter accepts only exact registered e2e selections");
+  const browserSelectionsBase64 = Buffer.from(JSON.stringify(normalizedSelections), "utf8").toString("base64");
   return {
     id: "isolated-playwright-family",
     command: [
@@ -213,13 +229,14 @@ export function resolveIsolatedBrowserFamilyAdapter(project, specs, baselineData
       "browser-family",
       "-SoundingLinePort",
       "3100",
-      "-BrowserArgsBase64",
-      browserArgsBase64,
+      "-BrowserSelectionsBase64",
+      browserSelectionsBase64,
       "-ExpectMutation",
       String(expectMutation),
     ],
     resources: ["application-port", "sqlite-clone", "browser-chromium", "trace-root"],
     mode: "SERIAL_WITHIN_FAMILY",
+    caseCount: normalizedSelections.reduce((total, selection) => total + selection.caseCount, 0),
   };
 }
 
@@ -235,7 +252,18 @@ export async function executeAdapter(adapter, { cwd, env = {}, maxLogBytes = 64 
     const timer = timeoutMs
       ? setTimeout(() => {
           timedOut = true;
-          child.kill();
+          // A PowerShell browser adapter owns a child server and Playwright
+          // process tree. Killing only its shell leaves the tree alive on
+          // Windows and prevents a governed timeout receipt from being
+          // written before the hosted-worker deadline.
+          if (process.platform === "win32" && child.pid) {
+            const terminator = spawn("taskkill", ["/pid", String(child.pid), "/T", "/F"], {
+              shell: false,
+              windowsHide: true,
+            });
+            terminator.on("error", () => {});
+            terminator.unref();
+          } else child.kill();
         }, timeoutMs)
       : undefined;
     const append = (chunk) => {

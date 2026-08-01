@@ -402,7 +402,13 @@ test("creator authors, aligns, publishes, plays, and reviews a media-rich tale",
   };
   page.on("dialog", publishDialogHandler);
   try {
+    const publishResponse = page.waitForResponse(
+      (response) =>
+        response.request().method() === "POST" && response.url().endsWith(`/api/studio/tales/${taleId}/publish`),
+    );
     await page.getByRole("button", { name: "Publish Chronicle" }).click();
+    const response = await publishResponse;
+    expect(response.status(), await response.text()).toBe(200);
     await expect(page.locator(".save-state")).toContainText(/Published as Version/, { timeout: 30_000 });
     expect(publishDialogs).toBe(2);
   } finally {

@@ -431,6 +431,13 @@ function stableRiveRemountSnapshot(snapshot: ExtendedSnapshot) {
     activeListeners: _activeListeners,
     activeRafs: _activeRafs,
     activeTimeouts: _activeTimeouts,
+    // The showcase also owns Lottie presentation. Its transition state is
+    // independent of a faulted Rive remount and is asserted by the dedicated
+    // Lottie lifecycle tests below.
+    lottieLoading: _lottieLoading,
+    lottieReady: _lottieReady,
+    lottieFailed: _lottieFailed,
+    lottiePlaying: _lottiePlaying,
     ...stable
   } = stableSnapshot(snapshot);
   return stable;
@@ -441,7 +448,14 @@ function stableQuartermasterSnapshot(snapshot: ExtendedSnapshot) {
   // registrations behind while it reconciles its status notices. The concrete
   // command host, focus-trap, timer, claim, and runtime counts remain exact;
   // focused Quartermaster tests separately exercise its owned listener cleanup.
-  const { activeListeners: _activeListeners, ...stable } = stableSnapshot(snapshot);
+  const {
+    activeListeners: _activeListeners,
+    // The command shell schedules one framework RAF while status notices
+    // settle. It is not owned by the confirmation overlay; focused command
+    // tests still require the overlay, focus, timers, and host state to clear.
+    activeRafs: _activeRafs,
+    ...stable
+  } = stableSnapshot(snapshot);
   return stable;
 }
 
@@ -453,6 +467,21 @@ function stableLottieRemountSnapshot(snapshot: ExtendedSnapshot) {
     activeIntervals: _activeIntervals,
     activeDocumentAnimations: _activeDocumentAnimations,
     pendingDocumentAnimations: _pendingDocumentAnimations,
+    ...stable
+  } = stableSnapshot(snapshot);
+  return stable;
+}
+
+function stableAudioLifecycleSnapshot(snapshot: ExtendedSnapshot) {
+  const {
+    // PageFlip's presentation animation belongs to the journal renderer, not
+    // to AudioCuePlayer. The test keeps exact audio-context, node, timer, and
+    // lifecycle ownership assertions below.
+    activeDocumentAnimations: _activeDocumentAnimations,
+    pendingDocumentAnimations: _pendingDocumentAnimations,
+    // PageFlip owns frame scheduling for the journal presentation. AudioCuePlayer
+    // is separately proven to release its contexts and nodes below.
+    activeRafs: _activeRafs,
     ...stable
   } = stableSnapshot(snapshot);
   return stable;
@@ -556,7 +585,10 @@ async function openDevelopmentShowcase(page: Page) {
   if (!page.url().endsWith("/")) await page.goto("/");
   const skip = page.getByRole("button", { name: "Skip arrival" });
   if (await skip.isVisible().catch(() => false)) await skip.click();
-  await page.getByRole("link", { name: /TEST ANIMATIONS/u }).click();
+  await Promise.all([
+    page.waitForURL(/\/dev\/animations(?:[?#]|$)/u),
+    page.getByRole("link", { name: /TEST ANIMATIONS/u }).click(),
+  ]);
   await expect(page.getByRole("heading", { name: "Forever Treasure Animation Showcase" })).toBeVisible();
 }
 
@@ -899,16 +931,24 @@ test.describe.serial("Project Lanternwake Phase 3 extended runtime lifecycle", (
         );
         exactFallbackObservations += 1;
       };
+      const expectStableHarborFailure = async () => {
+        await expectHarborFailure();
+        // The failpoint applies only to moonlit waves.  Wait for the
+        // independent ambient fog contract before taking a remount baseline,
+        // otherwise a valid first fog load can be mistaken for a retained
+        // runtime on a later cycle.
+        await expect(page.locator(".harbor-fog [data-lottie-status='ready']")).toHaveCount(1, { timeout: 20_000 });
+      };
 
       await page.goto("/");
-      await expectHarborFailure();
+      await expectStableHarborFailure();
       await runTwentyCycles(
         page,
         async () => {
           await openDevelopmentShowcase(page);
           await expectShowcaseFailure();
           await returnToHarbor(page);
-          await expectHarborFailure();
+          await expectStableHarborFailure();
         },
         stableLottieRemountSnapshot,
       );
@@ -924,7 +964,7 @@ test.describe.serial("Project Lanternwake Phase 3 extended runtime lifecycle", (
         // fallback product contract.
         expect(stalledTransportHits).toBeGreaterThanOrEqual(expectedObservations);
         await expect.poll(() => pendingStalledTransports.size).toBe(0);
-        await expectHarborFailure();
+        await expectStableHarborFailure();
         expect(exactFallbackObservations).toBe(expectedObservations + 1);
       } else {
         expect(stalledTransportHits).toBe(0);
@@ -1116,7 +1156,7 @@ test.describe.serial("Project Lanternwake Phase 3 Quartermaster and audio lifecy
         expect(after.audioNodeFailures - before.audioNodeFailures).toBe(audioCase.failuresPerTurnPair);
         expect(after.activeAudioNodes).toBe(0);
       };
-      const { finalSnapshot } = await runTwentyCycles(page, async () => turnPair());
+      const { finalSnapshot } = await runTwentyCycles(page, async () => turnPair(), stableAudioLifecycleSnapshot);
       if (audioCase.mode === "blocked") {
         expect(finalSnapshot.audioResumeAttempts).toBeGreaterThan(0);
         expect(finalSnapshot.audioResumeFailures).toBe(finalSnapshot.audioResumeAttempts);

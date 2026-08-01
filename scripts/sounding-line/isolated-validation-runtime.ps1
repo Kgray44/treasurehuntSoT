@@ -13,6 +13,7 @@ param(
     [string]$BrowserTestPath,
     [string[]]$BrowserArgs = @(),
     [string]$BrowserArgsBase64 = "",
+    [string]$BrowserSelectionsBase64 = "",
     [string]$ExpectMutation = "true",
     [string]$BrowserGrep = "",
     [switch]$SkipProductionPerformance,
@@ -23,6 +24,7 @@ $ErrorActionPreference = "Stop"
 if ($env:SOUNDING_LINE_INTERNAL_RUNTIME -ne "1") {
     throw "This runtime can only be launched by a Sounding Line adapter."
 }
+if ($BrowserArgsBase64 -and $BrowserSelectionsBase64) { throw "BrowserArgsBase64 and BrowserSelectionsBase64 cannot be combined." }
 if ($BrowserArgsBase64) {
     if ($BrowserArgs.Count -gt 0) { throw "BrowserArgs and BrowserArgsBase64 cannot be combined." }
     try {
@@ -34,6 +36,27 @@ if ($BrowserArgsBase64) {
         throw "BrowserArgsBase64 must decode to a JSON array of strings."
     }
     $BrowserArgs = [string[]]$decodedBrowserArgs
+}
+$BrowserSelections = @()
+if ($BrowserSelectionsBase64) {
+    if ($BrowserArgs.Count -gt 0) { throw "BrowserArgs and BrowserSelectionsBase64 cannot be combined." }
+    try {
+        $decodedBrowserSelections = [System.Text.Encoding]::UTF8.GetString([Convert]::FromBase64String($BrowserSelectionsBase64)) | ConvertFrom-Json
+    } catch {
+        throw "BrowserSelectionsBase64 is not valid UTF-8 JSON."
+    }
+    $BrowserSelections = @($decodedBrowserSelections)
+    if ($BrowserSelections.Count -eq 0) { throw "BrowserSelectionsBase64 must decode to a non-empty JSON array." }
+    foreach ($selection in $BrowserSelections) {
+        if ($null -eq $selection -or
+            $selection.project -isnot [string] -or $selection.project -notmatch '^[a-z][a-z0-9-]{0,80}$' -or
+            @($selection.files).Count -eq 0 -or
+            @($selection.files | Where-Object { $_ -isnot [string] -or $_.Replace('\\', '/') -notmatch '^tests/e2e/[A-Za-z0-9._/-]+\.(?:spec|setup)\.ts$' }).Count -gt 0 -or
+            $selection.grep -isnot [string] -or [string]::IsNullOrWhiteSpace($selection.grep) -or
+            ([string]$selection.caseCount) -notmatch '^[1-9][0-9]*$') {
+            throw "BrowserSelectionsBase64 contains an invalid governed browser selection."
+        }
+    }
 }
 if ($ExpectMutation -notin @("true", "false")) { throw "ExpectMutation must be true or false." }
 if (-not $SoundingLineLane) {
@@ -77,6 +100,7 @@ if (-not (Get-Command -Name Get-FileHash -ErrorAction SilentlyContinue)) {
 # only for the two, explicitly named, Sounding Line Harborlight browser lanes;
 # every ordinary invocation keeps the historical global lock and port 3100.
 $isSoundingLineLane = $SoundingLineLane -ne ""
+$browserGlobalTimeoutMs = 420000
 if ($isSoundingLineLane) {
     if ($SoundingLineLane -notin @("harborlight-a", "harborlight-b", "browser-family")) {
         throw "SoundingLineLane must be harborlight-a, harborlight-b, or browser-family."
@@ -86,8 +110,8 @@ if ($isSoundingLineLane) {
         throw "Sounding Line lanes are limited to BrowserOnly Harborlight Phase 4 acceptance."
     }
     if ($SoundingLineLane -eq "browser-family") {
-        if (-not $BrowserOnly -or $BrowserTestPath -or $BrowserArgs.Count -eq 0) {
-            throw "browser-family requires BrowserOnly and registry-selected BrowserArgs without BrowserTestPath."
+        if (-not $BrowserOnly -or $BrowserTestPath -or ($BrowserArgs.Count -eq 0 -and $BrowserSelections.Count -eq 0)) {
+            throw "browser-family requires BrowserOnly and registry-selected browser arguments without BrowserTestPath."
         }
         foreach ($browserArgument in $BrowserArgs) {
             $normalizedArgument = $browserArgument.Replace('\', '/')
@@ -101,6 +125,15 @@ if ($isSoundingLineLane) {
         ($SoundingLineLane -ne "browser-family" -and ($SoundingLinePort -lt 3101 -or $SoundingLinePort -gt 3199))) {
         throw "browser-family must own loopback port 3100; named Harborlight lanes must own ports 3101 through 3199."
     }
+    if ($env:SOUNDING_LINE_SUITE_HARD_BUDGET_MS) {
+        $suiteHardBudgetMs = 0
+        if (-not [int]::TryParse($env:SOUNDING_LINE_SUITE_HARD_BUDGET_MS, [ref]$suiteHardBudgetMs) -or $suiteHardBudgetMs -lt 180000) {
+            throw "SOUNDING_LINE_SUITE_HARD_BUDGET_MS must be an integer of at least 180000."
+        }
+        # Retain two minutes for owned server teardown, isolation verification,
+        # and receipt emission; the adapter remains the hard authority deadline.
+        $browserGlobalTimeoutMs = [Math]::Max(60000, $suiteHardBudgetMs - 120000)
+    }
 } elseif ($SoundingLinePort -ne 0) {
     throw "SoundingLinePort requires a named SoundingLineLane."
 }
@@ -109,7 +142,7 @@ $validationServerPort = if ($isSoundingLineLane) { $SoundingLinePort } else { 31
 if ($BrowserOnly -and $SkipBrowser) {
     throw "BrowserOnly and SkipBrowser cannot be used together."
 }
-if ($SkipBrowser -and ($BrowserTestPath -or $BrowserGrep -or $BrowserArgs.Count -gt 0)) {
+if ($SkipBrowser -and ($BrowserTestPath -or $BrowserGrep -or $BrowserArgs.Count -gt 0 -or $BrowserSelections.Count -gt 0)) {
     throw "SkipBrowser cannot be combined with targeted browser selection."
 }
 
@@ -309,6 +342,27 @@ function Invoke-ValidationStep {
     Invoke-ForeverNode -WorkingDirectory $runtimeRoot -Arguments $Arguments
 }
 
+function Assert-BrowserSelectionDiscovery {
+    param([Parameter(Mandatory)]$Selection)
+    $arguments = @("node_modules/playwright/cli.js", "test", "--list", "--project=$($Selection.project)", "--grep", [string]$Selection.grep) + @($Selection.files | ForEach-Object { ([string]$_).Replace('\\', '/') })
+    Write-Host "`n==> Discovering exact governed browser selection for $($Selection.project)" -ForegroundColor Cyan
+    Push-Location $runtimeRoot
+    try {
+        $listing = @(& (Get-ForeverNode) @arguments)
+        $listing | Out-Host
+        if ($LASTEXITCODE -ne 0) { throw "Playwright discovery failed with exit code $LASTEXITCODE." }
+    } finally {
+        Pop-Location
+    }
+    # Match only the project envelope. The report's visual separator is
+    # runner/console encoded and is not a stable machine boundary.
+    $projectPattern = '^\s*\[' + [regex]::Escape([string]$Selection.project) + '\]\s+'
+    $discoveredCases = @($listing | Where-Object { $_ -match $projectPattern }).Count
+    if ($discoveredCases -ne [int]$Selection.caseCount) {
+        throw "GOVERNED_BROWSER_DISCOVERY_MISMATCH:$($Selection.project):expected=$($Selection.caseCount):actual=$discoveredCases"
+    }
+}
+
 function Assert-TcpPortAvailable {
     param([Parameter(Mandatory)][int]$Port)
     $listeners = @([System.Net.NetworkInformation.IPGlobalProperties]::GetIPGlobalProperties().GetActiveTcpListeners() | Where-Object { $_.Port -eq $Port })
@@ -465,18 +519,27 @@ function Start-OwnedValidationServer {
     try {
         $deadline = [DateTime]::UtcNow.AddSeconds(120)
         $identity = $null
+        $lastIdentityProbe = "no-response"
         while ([DateTime]::UtcNow -lt $deadline) {
             if ($serverProcess.HasExited) { throw "Owned validation server exited before identity verification." }
             try {
                 $identity = Invoke-RestMethod -Uri "http://127.0.0.1:$validationServerPort/api/dev/validation/database-identity" -Method Get -TimeoutSec 3
+                $lastIdentityProbe = "status=200; validationDatabase=$($identity.validationDatabase); nonceMatch=$($identity.nonceMatch)"
                 if ($identity.validationDatabase -eq $true -and $identity.nonceMatch -eq $true) { break }
                 $identity = $null
             } catch {
+                $statusCode = if ($_.Exception.Response) { [int]$_.Exception.Response.StatusCode } else { "unavailable" }
+                $lastIdentityProbe = "status=$statusCode"
                 $identity = $null
             }
             Start-Sleep -Milliseconds 250
         }
-        if (-not $identity) { throw "Owned validation server did not prove the isolated database identity." }
+        if (-not $identity) {
+            $serverErrorTail = if (Test-Path -LiteralPath $stderr) {
+                ((Get-Content -LiteralPath $stderr -Tail 24 -ErrorAction SilentlyContinue) -join "`n").Trim()
+            } else { "server-stderr-unavailable" }
+            throw "Owned validation server did not prove the isolated database identity. Last identity probe: $lastIdentityProbe. Server stderr tail: $serverErrorTail"
+        }
 
         $ownerIds = @(Get-TcpPortOwnerIds -Port $validationServerPort)
         if ($ownerIds.Count -ne 1) {
@@ -500,6 +563,8 @@ function Start-OwnedValidationServer {
             LauncherIdentity = $launcherIdentity
             ListenerIdentity = $listenerIdentity
             ProcessIdentities = $processIdentities
+            StdoutPath = $stdout
+            StderrPath = $stderr
         }
 
         [void](Invoke-IsolationHelper -Arguments @(
@@ -534,6 +599,15 @@ function Start-OwnedValidationServer {
         catch { throw [System.InvalidOperationException]::new("Validation server start failed and owned-process cleanup also failed: $($_.Exception.Message)", $startFailure) }
         throw $startFailure
     }
+}
+
+function Get-OwnedValidationServerDiagnostics {
+    param([Parameter(Mandatory)]$ServerOwnership)
+    $launcherAlive = Test-ProcessIdentityMatches -ExpectedIdentity $ServerOwnership.LauncherIdentity
+    $stderrTail = if (Test-Path -LiteralPath $ServerOwnership.StderrPath) {
+        ((Get-Content -LiteralPath $ServerOwnership.StderrPath -Tail 48 -ErrorAction SilentlyContinue) -join "`n").Trim()
+    } else { "stderr-unavailable" }
+    return "launcherAlive=$launcherAlive; port=$($ServerOwnership.Port); stderrTail=$stderrTail"
 }
 
 function Stop-OwnedValidationServer {
@@ -758,33 +832,56 @@ try {
         Invoke-ValidationStep -Name "Verifying additive platform backfill" -Arguments @("node_modules/tsx/dist/cli.mjs", "scripts/verify-platform-backfill.ts", "--verify")
     }
     [void](Invoke-IsolationHelper -Arguments @("checkpoint", "--report", $isolationReport, "--copy-db", $isolatedDatabase))
+    if ($BrowserOnly) {
+        # Focused browser families still require canonical migration provenance
+        # and the migrated Voyage fixture. Prepare both only in the disposable
+        # copy before the owned server starts; this is fixture setup, not authority.
+        Invoke-ValidationStep -Name "Migrating focused browser legacy compatibility projection" -Arguments @("node_modules/tsx/dist/cli.mjs", "scripts/migrate-legacy-companion.ts")
+        Invoke-ValidationStep -Name "Verifying focused browser legacy compatibility projection" -Arguments @("node_modules/tsx/dist/cli.mjs", "scripts/migrate-legacy-companion.ts", "--verify")
+        Invoke-ValidationStep -Name "Preparing focused browser legacy playthrough fixture" -Arguments @("node_modules/tsx/dist/cli.mjs", "scripts/verify-platform-backfill.ts", "--prepare")
+        Invoke-ValidationStep -Name "Seeding focused browser legacy playthrough fixture" -Arguments @("node_modules/tsx/dist/cli.mjs", "prisma/seed.ts", "--ensure")
+        Invoke-ValidationStep -Name "Verifying focused browser legacy playthrough fixture" -Arguments @("node_modules/tsx/dist/cli.mjs", "scripts/verify-platform-backfill.ts", "--verify")
+    }
 
     if (-not $SkipBrowser) {
         Write-Host "`n==> Starting owned isolated validation server" -ForegroundColor Cyan
         $ownedValidationServer = Start-OwnedValidationServer
         $playwrightInvoked = $true
-        $browserCommand = @("node_modules/playwright/cli.js", "test") + $BrowserArgs
-        if ($BrowserGrep) { $browserCommand += @("--grep", $BrowserGrep) }
-        if ($BrowserTestPath) {
-            # Harborlight owns a dedicated browser project. Other targeted
-            # acceptance files retain the routing declared by playwright.config.ts.
-            if ($runtimeRelativeBrowserTestPath.Replace('\', '/') -eq 'tests/e2e/harborlight-phase2.spec.ts') {
-                $browserCommand += "--project=harborlight-phase2"
+        if ($BrowserSelections.Count -gt 0) {
+            foreach ($selection in $BrowserSelections) {
+                Assert-BrowserSelectionDiscovery -Selection $selection
+                $browserCommand = @("node_modules/playwright/cli.js", "test", "--project=$($selection.project)", "--grep", [string]$selection.grep) + @($selection.files | ForEach-Object { ([string]$_).Replace('\', '/') })
+                if ($isSoundingLineLane) { $browserCommand += "--global-timeout=$browserGlobalTimeoutMs" }
+                try {
+                    Invoke-ValidationStep -Name "Running exact governed browser acceptance tests for $($selection.project)" -Arguments $browserCommand
+                } catch {
+                    throw "GOVERNED_BROWSER_SERVER_OR_TEST_FAILURE:$($_.Exception.Message)`n$(Get-OwnedValidationServerDiagnostics -ServerOwnership $ownedValidationServer)"
+                }
             }
-            if ($runtimeRelativeBrowserTestPath.Replace('\', '/') -eq 'tests/e2e/harborlight-phase3.spec.ts') {
-                $browserCommand += "--project=harborlight-phase3"
+        } else {
+            $browserCommand = @("node_modules/playwright/cli.js", "test") + $BrowserArgs
+            if ($BrowserGrep) { $browserCommand += @("--grep", $BrowserGrep) }
+            if ($BrowserTestPath) {
+                # Harborlight owns a dedicated browser project. Other targeted
+                # acceptance files retain the routing declared by playwright.config.ts.
+                if ($runtimeRelativeBrowserTestPath.Replace('\', '/') -eq 'tests/e2e/harborlight-phase2.spec.ts') {
+                    $browserCommand += "--project=harborlight-phase2"
+                }
+                if ($runtimeRelativeBrowserTestPath.Replace('\', '/') -eq 'tests/e2e/harborlight-phase3.spec.ts') {
+                    $browserCommand += "--project=harborlight-phase3"
+                }
+                if ($runtimeRelativeBrowserTestPath.Replace('\', '/') -eq 'tests/e2e/harborlight-phase4.spec.ts') {
+                    $browserCommand += "--project=harborlight-phase4"
+                }
+                $browserCommand += $runtimeRelativeBrowserTestPath.Replace('\', '/')
             }
-            if ($runtimeRelativeBrowserTestPath.Replace('\', '/') -eq 'tests/e2e/harborlight-phase4.spec.ts') {
-                $browserCommand += "--project=harborlight-phase4"
+            # A named Sounding Line lane is a focused repair boundary. Its deadline
+            # is enforced by Playwright so cleanup and receipt emission can run.
+            if ($isSoundingLineLane) {
+                $browserCommand += "--global-timeout=$browserGlobalTimeoutMs"
             }
-            $browserCommand += $runtimeRelativeBrowserTestPath.Replace('\', '/')
+            Invoke-ValidationStep -Name "Running browser acceptance tests" -Arguments $browserCommand
         }
-        # A named Sounding Line lane is a focused repair boundary. Its deadline
-        # is enforced by Playwright so cleanup and receipt emission can run.
-        if ($isSoundingLineLane) {
-            $browserCommand += "--global-timeout=420000"
-        }
-        Invoke-ValidationStep -Name "Running browser acceptance tests" -Arguments $browserCommand
         Stop-OwnedValidationServer -ServerOwnership $ownedValidationServer
         $ownedValidationServer = $null
         Assert-TcpPortAvailable -Port $validationServerPort

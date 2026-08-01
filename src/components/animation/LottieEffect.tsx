@@ -251,6 +251,10 @@ export const LottieEffect = forwardRef<LottieEffectHandle, LottieEffectProps>(fu
         let stopDocument: () => void = () => undefined;
         const ready = () => {
           if (disposed || failed) return;
+          // The development stalled-load seam must exercise the asset request
+          // and then prove the timeout fallback, even when a renderer serves
+          // cached data before the configured transport deadline.
+          if (developmentFailpoint?.kind === "stalled-load") return;
           clearLoadTimer();
           runtimeReady.current = true;
           setStatus("ready");

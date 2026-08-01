@@ -18,7 +18,9 @@ export function finalize({ plan, receipts }) {
       receipt.inventoryDigest !== plan.inventoryDigest ||
       receipt.planDigest !== plan.planDigest ||
       receipt.gate !== plan.gate ||
-      receipt.cleanupState !== "CLEAN",
+      receipt.cleanupState !== "CLEAN" ||
+      receipt.exitCode !== 0 ||
+      receipt.timedOut === true,
   );
   const failed = receipts.filter((receipt) => receipt.result !== "PASSED");
   const decision =

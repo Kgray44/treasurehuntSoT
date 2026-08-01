@@ -133,10 +133,11 @@ remain external validation.
 
 Project One Voyage Phase 2 passed an isolated MySQL 8.0.46 cutover, canonical
 compatibility, backup/restore, and restart rehearsal. Legacy persistence is
-retained pending its one-release compatibility-observation gate. The
-P34-BME-20260729 browser-matrix risk acceptance is an explicit exception, not
-a full browser-matrix pass; its scope and follow-up are recorded in
-`Development_Docs/Phase_3_4_Convergence_Browser_Matrix_Risk_Acceptance.md`.
+retained pending its one-release compatibility-observation gate. The former
+P34-BME-20260729 browser-matrix exception is historical: Sounding Line's
+complete hosted release-candidate proof on 2026-07-31 executed all 16 required
+browser families (325/325 passing) and retained P34 as unselectable archival
+history. See `Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Program_Completion_Receipt.md`.
 
 The full story, final Rive artwork/audio, horizontal scale-out for SSE, and production deployment are later work. The current sound is restrained and procedural. The sole third-party visual sample is MIT-licensed, local, documented, and development-only; production uses original SVG/CSS fallbacks. The repository is public, so only generic development content is permitted. See the [product roadmap](docs/product/roadmap.md).
 

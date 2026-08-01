@@ -249,6 +249,40 @@ function Get-ForeverCanonicalDatabase {
     return $databasePath
 }
 
+function Copy-ForeverDependencySeed {
+    param([Parameter(Mandatory)][string]$RuntimeRoot)
+    $seedRoot = [string]$env:FOREVER_DEPENDENCY_SEED_ROOT
+    if ([string]::IsNullOrWhiteSpace($seedRoot)) { return $false }
+    $resolvedRuntime = [System.IO.Path]::GetFullPath($RuntimeRoot)
+    $resolvedSeed = [System.IO.Path]::GetFullPath($seedRoot)
+    if ($resolvedSeed -eq $resolvedRuntime) { throw "Dependency seed must not be the validation runtime." }
+    $runtimeLock = Join-Path $resolvedRuntime "package-lock.json"
+    $seedLock = Join-Path $resolvedSeed "package-lock.json"
+    $seedModules = Join-Path $resolvedSeed "node_modules"
+    $runtimeModules = Join-Path $resolvedRuntime "node_modules"
+    if (-not (Test-Path -LiteralPath $seedModules -PathType Container)) { throw "Sounding Line dependency seed is missing node_modules." }
+    if (-not (Test-Path -LiteralPath (Join-Path $seedModules "next\package.json") -PathType Leaf)) { throw "Sounding Line dependency seed is incomplete." }
+    if ((Get-FileHash -Algorithm SHA256 -LiteralPath $runtimeLock).Hash -ne (Get-FileHash -Algorithm SHA256 -LiteralPath $seedLock).Hash) {
+        throw "Sounding Line dependency seed lockfile does not match the isolated runtime."
+    }
+    if (Test-Path -LiteralPath $runtimeModules) { throw "Validation runtime already has a node_modules path before dependency seeding." }
+    # Copy the already installed, lockfile-matched dependency tree rather than
+    # repeating npm ci. A physical copy retains Next's runtime-local .next
+    # behavior and Prisma's generated-client isolation.
+    & robocopy $seedModules $runtimeModules /E /COPY:DAT /DCOPY:DAT /R:1 /W:1 | Out-Null
+    if ($LASTEXITCODE -gt 7) { throw "Unable to copy Sounding Line dependency seed (robocopy exit $LASTEXITCODE)." }
+    if (-not (Test-Path -LiteralPath (Join-Path $runtimeModules "next\package.json") -PathType Leaf)) {
+        throw "Sounding Line dependency seed copy is incomplete."
+    }
+    Set-Content -LiteralPath (Join-Path $resolvedRuntime ".forever-dependency-seed.json") -Encoding UTF8 -Value (@{
+        seedRoot = $resolvedSeed
+        lockSha256 = (Get-FileHash -Algorithm SHA256 -LiteralPath $runtimeLock).Hash
+        mode = "copied-hosted-dependency-seed"
+    } | ConvertTo-Json)
+    Write-Host "Using lockfile-matched hosted dependency seed." -ForegroundColor DarkGray
+    return $true
+}
+
 function Install-ForeverDependencies {
     param([Parameter(Mandatory)][string]$RuntimeRoot)
     $lock = Join-Path $RuntimeRoot "package-lock.json"
@@ -257,6 +291,10 @@ function Install-ForeverDependencies {
     $installed = Test-Path (Join-Path $RuntimeRoot "node_modules\next\package.json")
     $currentHash = if (Test-Path $marker) { (Get-Content -Raw $marker).Trim() } else { "" }
     if (-not $installed -or $currentHash -ne $hash) {
+        if (Copy-ForeverDependencySeed -RuntimeRoot $RuntimeRoot) {
+            Set-Content -LiteralPath $marker -Value $hash -Encoding ASCII
+            return
+        }
         Write-Host "Installing pinned dependencies..." -ForegroundColor Cyan
         Invoke-ForeverNpm -WorkingDirectory $RuntimeRoot -Arguments @("ci", "--no-audit", "--no-fund")
         Set-Content -LiteralPath $marker -Value $hash -Encoding ASCII

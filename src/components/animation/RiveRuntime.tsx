@@ -112,9 +112,15 @@ function FailedRiveFallback({
   className,
   onStatus,
 }: Pick<RiveRuntimeProps, "asset" | "label" | "className" | "onStatus">) {
+  const onStatusRef = useRef(onStatus);
+
   useEffect(() => {
-    onStatus?.("fallback");
-  }, [asset.key, onStatus]);
+    onStatusRef.current = onStatus;
+  }, [onStatus]);
+
+  useEffect(() => {
+    onStatusRef.current?.("fallback");
+  }, [asset.key]);
 
   return (
     <AssetFallback

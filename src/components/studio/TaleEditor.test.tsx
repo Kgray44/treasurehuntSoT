@@ -2,18 +2,15 @@ import { act, cleanup, fireEvent, render, screen, waitFor, within } from "@testi
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { TaleEditor } from "./TaleEditor";
 
+const animationDirector = vi.hoisted(() => ({ play: vi.fn() }));
+
 vi.mock("@/animation/motion/useMotionMode", () => ({
   useMotionMode: () => ({ mode: "reduced", source: "system", userOverride: null, setUserOverride: vi.fn() }),
 }));
 
 vi.mock("@/animation/director/useAnimationDirector", () => ({
   useAnimationDirector: () => ({
-    director: {
-      play: vi.fn(async (_scene: string, options: { operation?: () => Promise<unknown> }) => ({
-        outcome: "presented",
-        operationResult: await options.operation?.(),
-      })),
-    },
+    director: animationDirector,
   }),
 }));
 
@@ -105,6 +102,12 @@ function editorData() {
 
 describe("Voyagewright Studio editor motion and authority", () => {
   beforeEach(() => {
+    animationDirector.play.mockImplementation(
+      async (_scene: string, options: { operation?: () => Promise<unknown> }) => ({
+        outcome: "presented",
+        operationResult: await options.operation?.(),
+      }),
+    );
     Object.defineProperty(Element.prototype, "scrollIntoView", { configurable: true, value: vi.fn() });
     vi.stubGlobal(
       "confirm",
@@ -231,6 +234,63 @@ describe("Voyagewright Studio editor motion and authority", () => {
 
     await act(async () => resolvePublish(response(201, { versionLabel: "4" })));
     expect(await screen.findByText(/Version 4 published/)).toHaveAttribute("data-authority-state", "confirmed");
+  });
+
+  it("keeps a successfully published version confirmed when its presentation director interrupts afterward", async () => {
+    animationDirector.play.mockImplementationOnce(
+      async (_scene: string, options: { operation?: () => Promise<unknown> }) => {
+        await options.operation?.();
+        throw new Error("presentation-interrupted-after-publish");
+      },
+    );
+    vi.stubGlobal(
+      "fetch",
+      vi
+        .fn()
+        .mockResolvedValueOnce(response(200, editorData()))
+        .mockResolvedValueOnce(response(201, { versionLabel: "4" }))
+        .mockResolvedValueOnce(response(200, editorData())),
+    );
+
+    render(<TaleEditor taleId="tale-1" authenticated />);
+    await screen.findByRole("heading", { name: "A Test Chronicle" });
+    fireEvent.click(screen.getByRole("button", { name: "Publish Chronicle" }));
+
+    expect(await screen.findByText(/Version 4 published/)).toHaveAttribute("data-authority-state", "confirmed");
+    expect(screen.queryByText("Publishing failed")).not.toBeInTheDocument();
+  });
+
+  it("waits for an in-flight autosave before publishing the immutable version", async () => {
+    let resolveSave!: (value: Response) => void;
+    const save = new Promise<Response>((resolve) => {
+      resolveSave = resolve;
+    });
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValueOnce(response(200, editorData()))
+      .mockReturnValueOnce(save)
+      .mockResolvedValueOnce(response(201, { versionLabel: "5" }))
+      .mockResolvedValueOnce(response(200, editorData()));
+    vi.stubGlobal("fetch", fetchMock);
+    try {
+      render(<TaleEditor taleId="tale-1" authenticated />);
+      const card = (await screen.findByText("Opening Scene")).closest<HTMLElement>("article")!;
+      fireEvent.click(card);
+      vi.useFakeTimers();
+      fireEvent.change(screen.getByRole("textbox", { name: "Passage title" }), {
+        target: { value: "Updated opening scene" },
+      });
+      act(() => vi.advanceTimersByTime(1100));
+      expect(fetchMock).toHaveBeenCalledTimes(2);
+
+      fireEvent.click(screen.getByRole("button", { name: "Publish Chronicle" }));
+      await act(async () => resolveSave(response(200, { autosaveVersion: 4, savedAt: "2026-07-19T12:02:00.000Z" })));
+      vi.useRealTimers();
+
+      expect(await screen.findByText(/Version 5 published/)).toHaveAttribute("data-authority-state", "confirmed");
+    } finally {
+      vi.useRealTimers();
+    }
   });
 
   it("tracks each upload independently and preserves successful files when a sibling fails", async () => {
