@@ -107,3 +107,28 @@ The fresh pre-edit census found the following governing implementation surface:
 ### Explicit non-goals
 
 Phase 1 does not redesign the gateway or global navigation, expose new Community districts, redesign Passport information architecture, alter Tale Session authorization or persisted progress, remove legacy database tables, begin Phase 2, merge to `main`, or issue product/release acceptance.
+
+## Phase 2 architecture freeze amendment
+
+**Decision date:** 2026-08-01. **Source boundary:** Phase 1 final branch SHA
+`dca3480f5369bfa7d5b8fd52e2cca155185fae33`; reconciled `origin/main` and merge
+base `8d142227d712d27e363b15903dba9b0c99a04bc8`. The canonical development
+database SHA-256 before edits is
+`DF33983556CF2C6FF01DF6084AE6619EC5DF5C99B11241FA88B4A88F8E144EEB`.
+
+The architecture is frozen in [Project Homeport Phase 2 Global Shell and
+Wayfinding Architecture](Project_Homeport_Phase_2_Global_Shell_and_Wayfinding_Architecture.md).
+It establishes eight exclusive shell modes, one typed four-layer navigation
+authority, a shared desktop/mobile projection, centralized active matching,
+gateway account/global framing, structured personal and workspace orientation,
+Community global reachability, and explicit compact/immersive exits.
+
+Phase 1 current-user and authorization remain authoritative. Phase 2 introduces
+no schema, migration, identity writer, client capability inference, independent
+animation lifecycle, Community content redesign, or empty account routes. The
+existing Chronicle Passport receives stable section anchors as a bounded
+reachability adapter; Phase 3 retains Personal Harbor reconstruction.
+
+Expected direct closure remains limited to HP-NC-001, HP-NC-006, HP-NC-010,
+and HP-NC-016 after governed evidence. HP-NC-008, HP-NC-014, and HP-NC-026 can
+advance only partially; their later-phase owners remain unchanged.

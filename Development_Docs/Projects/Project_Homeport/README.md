@@ -32,6 +32,13 @@ Project Homeport is the governed product-reality recovery and convergence progra
 - [Integration Manifest](Project_Homeport_Phase_1_Integration_Manifest.md)
 - [Curated Evidence](evidence/phase1/README.md)
 
+## Phase 2 architecture
+
+- [Global Shell and Wayfinding Architecture](Project_Homeport_Phase_2_Global_Shell_and_Wayfinding_Architecture.md)
+
+Implementation, validation, integration, and evidence records are added only
+after the frozen architecture is implemented and governed verification is run.
+
 ## Phase 0 machine-readable records
 
 - `Homeport_Route_Inventory.json`
