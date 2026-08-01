@@ -38014,9 +38014,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-8259f0703f0daddc583b",
+      "id": "sl-test-09ad7256aac5230c1790",
       "title": "Project Lanternwake Phase 3 extended runtime lifecycle › animation showcase serial trailer completes across twenty enter-leave cycles",
-      "line": 972,
+      "line": 980,
       "file": "tests/e2e/phase3-lifecycle-extended.spec.ts",
       "project": "chromium",
       "suiteId": "browser.animation-lifecycle",
@@ -38050,9 +38050,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-1686c2dfea7bca24e9d9",
+      "id": "sl-test-1173a09a9ec81ed31a59",
       "title": "Project Lanternwake Phase 3 Quartermaster and audio lifecycle › mocked Quartermaster confirmations restore focus and release overlays for twenty cycles",
-      "line": 1001,
+      "line": 1009,
       "file": "tests/e2e/phase3-lifecycle-extended.spec.ts",
       "project": "chromium",
       "suiteId": "browser.animation-lifecycle",
@@ -38086,9 +38086,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-315722ee5c072819c53b",
+      "id": "sl-test-b6808855d2fabe69ac2a",
       "title": "Project Lanternwake Phase 3 Quartermaster and audio lifecycle › audio success remains nonblocking and releases work for twenty page-turn cycles",
-      "line": 1113,
+      "line": 1121,
       "file": "tests/e2e/phase3-lifecycle-extended.spec.ts",
       "project": "chromium",
       "suiteId": "browser.animation-lifecycle",
@@ -38122,9 +38122,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-32d3d0969b56e5ecbcb9",
+      "id": "sl-test-f84a5add4fdb4d42acb9",
       "title": "Project Lanternwake Phase 3 Quartermaster and audio lifecycle › audio blocked-context remains nonblocking and releases work for twenty page-turn cycles",
-      "line": 1113,
+      "line": 1121,
       "file": "tests/e2e/phase3-lifecycle-extended.spec.ts",
       "project": "chromium",
       "suiteId": "browser.animation-lifecycle",
@@ -38158,9 +38158,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-93610e899a7aaa4690cc",
+      "id": "sl-test-587321f76d9d445f36b3",
       "title": "Project Lanternwake Phase 3 Quartermaster and audio lifecycle › audio missing-context remains nonblocking and releases work for twenty page-turn cycles",
-      "line": 1113,
+      "line": 1121,
       "file": "tests/e2e/phase3-lifecycle-extended.spec.ts",
       "project": "chromium",
       "suiteId": "browser.animation-lifecycle",
@@ -38194,9 +38194,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-b38bcc39d2b05ceae276",
+      "id": "sl-test-1d3b46250a24a6799e7e",
       "title": "Project Lanternwake Phase 3 Quartermaster and audio lifecycle › audio oscillator-play-failure remains nonblocking and releases work for twenty page-turn cycles",
-      "line": 1113,
+      "line": 1121,
       "file": "tests/e2e/phase3-lifecycle-extended.spec.ts",
       "project": "chromium",
       "suiteId": "browser.animation-lifecycle",
@@ -38230,9 +38230,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-6a128043cbf9c2553c9f",
+      "id": "sl-test-dab686358d0848ec19e2",
       "title": "Project Lanternwake Phase 3 Quartermaster and audio lifecycle › audio muted remains nonblocking and releases work for twenty page-turn cycles",
-      "line": 1113,
+      "line": 1121,
       "file": "tests/e2e/phase3-lifecycle-extended.spec.ts",
       "project": "chromium",
       "suiteId": "browser.animation-lifecycle",

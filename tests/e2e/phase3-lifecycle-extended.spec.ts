@@ -931,16 +931,24 @@ test.describe.serial("Project Lanternwake Phase 3 extended runtime lifecycle", (
         );
         exactFallbackObservations += 1;
       };
+      const expectStableHarborFailure = async () => {
+        await expectHarborFailure();
+        // The failpoint applies only to moonlit waves.  Wait for the
+        // independent ambient fog contract before taking a remount baseline,
+        // otherwise a valid first fog load can be mistaken for a retained
+        // runtime on a later cycle.
+        await expect(page.locator(".harbor-fog [data-lottie-status='ready']")).toHaveCount(1, { timeout: 20_000 });
+      };
 
       await page.goto("/");
-      await expectHarborFailure();
+      await expectStableHarborFailure();
       await runTwentyCycles(
         page,
         async () => {
           await openDevelopmentShowcase(page);
           await expectShowcaseFailure();
           await returnToHarbor(page);
-          await expectHarborFailure();
+          await expectStableHarborFailure();
         },
         stableLottieRemountSnapshot,
       );
@@ -956,7 +964,7 @@ test.describe.serial("Project Lanternwake Phase 3 extended runtime lifecycle", (
         // fallback product contract.
         expect(stalledTransportHits).toBeGreaterThanOrEqual(expectedObservations);
         await expect.poll(() => pendingStalledTransports.size).toBe(0);
-        await expectHarborFailure();
+        await expectStableHarborFailure();
         expect(exactFallbackObservations).toBe(expectedObservations + 1);
       } else {
         expect(stalledTransportHits).toBe(0);
