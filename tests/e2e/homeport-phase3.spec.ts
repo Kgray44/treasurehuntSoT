@@ -64,9 +64,11 @@ async function signIn(page: Page, fixture: AccountFixture) {
   await expect(page.locator(".personal-harbor")).toBeVisible();
 }
 
-async function capture(page: Page, evidenceId: string, viewport: string, zoom = 100) {
-  await expect(page.locator(".personal-harbor")).toBeVisible();
-  await expect.poll(() => page.locator(".harbor-state--loading").count()).toBe(0);
+async function capture(page: Page, evidenceId: string, viewport: string, zoom = 100, expectPersonalHarbor = true) {
+  if (expectPersonalHarbor) {
+    await expect(page.locator(".personal-harbor")).toBeVisible();
+    await expect.poll(() => page.locator(".harbor-state--loading").count()).toBe(0);
+  }
   const buffer = await page.screenshot({ path: path.join(evidenceRoot, `${evidenceId}.png`), fullPage: true });
   manifestRows.push({ evidenceId, file: `${evidenceId}.png`, sha256: createHash("sha256").update(buffer).digest("hex"), sourceSha, fixtureVersion, fixtureChecksum, browser: "chromium", viewport, zoom, route: new URL(page.url()).pathname, capturedAt: new Date().toISOString() });
 }
@@ -83,7 +85,12 @@ test("Homeport Phase 3 A-AE Personal Harbor product journeys and required eviden
   await expect(page.getByRole("heading", { name: "Edit public Profile" })).toBeVisible();
   await capture(page, "HP-P3-EV-C-profile-editor", "1440x1000");
   await expect(page.getByRole("heading", { name: "What another visitor can see" })).toBeVisible();
-  await capture(page, "HP-P3-EV-D-public-profile-preview", "1440x1000");
+  await page.goto(`/profile/${encodeURIComponent(full.handle!)}`);
+  await expect(page.getByRole("heading", { name: full.displayName })).toBeVisible();
+  await expect(page.getByText(full.email)).toHaveCount(0);
+  await capture(page, "HP-P3-EV-D-public-profile-preview", "1440x1000", 100, false);
+  await page.goto("/account/profile");
+  await expect(page.getByRole("heading", { name: "Edit public Profile" })).toBeVisible();
   const image = await sharp({ create: { width: 96, height: 96, channels: 4, background: { r: 28, g: 86, b: 84, alpha: 1 } } }).png().toBuffer();
   await page.getByLabel("Avatar image").setInputFiles({ name: "synthetic-avatar.png", mimeType: "image/png", buffer: image });
   await expect(page.getByText("Image normalized and stored. The public projection has been refreshed.")).toBeVisible();
@@ -102,7 +109,10 @@ test("Homeport Phase 3 A-AE Personal Harbor product journeys and required eviden
 
   await page.goto("/passport"); await capture(page, "HP-P3-EV-L-passport-populated", "1440x1000");
   await page.goto("/passport/history"); await capture(page, "HP-P3-EV-N-history-list", "1440x1000");
-  await page.getByRole("link", { name: "Open record" }).click(); await capture(page, "HP-P3-EV-O-history-detail", "1440x1000");
+  await page.getByRole("link", { name: "Open record" }).click();
+  await expect(page).toHaveURL(new RegExp(`/passport/history/${historyId}$`, "u"));
+  await expect(page.getByRole("heading", { name: "Chronicle Record" })).toBeVisible();
+  await capture(page, "HP-P3-EV-O-history-detail", "1440x1000");
   await expect(page.getByRole("heading", { name: "Private Keepsake" })).toBeVisible(); await capture(page, "HP-P3-EV-P-memory-keepsake", "1440x1000");
   await page.goto("/passport/artifacts"); await capture(page, "HP-P3-EV-Q-artifact-cabinet", "1440x1000");
   await page.goto(`/passport/artifacts/${encodeURIComponent(artifactId)}`); await expect(page.getByText("EXPLICIT_RECIPIENTS")).toBeVisible();
