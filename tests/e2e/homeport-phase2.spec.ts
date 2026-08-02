@@ -301,8 +301,8 @@ test.describe.serial("Project Homeport Phase 2 browser journeys", () => {
     await clickGlobal(page, "Community Harbor");
     await expect(page).toHaveURL(/\/community$/u);
     await navigateAccountLink(page, player, "View My Profile");
-    await expect(page).toHaveURL(/\/passport#profile$/u);
-    await expect(page.locator("#profile")).toBeVisible();
+    await expect(page).toHaveURL(/\/account$/u);
+    await expect(page.getByRole("heading", { name: "Overview", exact: true })).toBeVisible();
     await navigateAccountLink(page, player, "Chronicle Passport");
     await expect(page).toHaveURL(/\/passport(?:#profile)?$/u);
     await navigateAccountLink(page, player, "Security & Sessions");
@@ -382,13 +382,13 @@ test.describe.serial("Project Homeport Phase 2 browser journeys", () => {
       await expect(menu.getByRole("heading", { name: heading, exact: true })).toBeVisible();
     await page.keyboard.press("Escape");
     const destinations = [
-      ["View My Profile", new RegExp(`/profile/${full.handle}$`, "u"), full.displayName],
+      ["View My Profile", /\/account$/u, "Overview"],
       ["Chronicle Passport", /\/passport$/u, "Chronicle Passport"],
-      ["Preferences", /\/passport#preferences$/u, "Preferences"],
-      ["Privacy & Safety", /\/passport#privacy$/u, "Privacy & Safety"],
-      ["Chronicle History", /\/passport#history$/u, "Chronicle history"],
-      ["Artifact Cabinet", /\/passport#artifacts$/u, "Artifact Cabinet"],
-      ["Security & Sessions", /\/account\/security$/u, "Account security"],
+      ["Preferences", /\/account\/preferences$/u, "Preferences"],
+      ["Privacy & Safety", /\/account\/privacy$/u, "Privacy & Safety"],
+      ["Chronicle History", /\/passport\/history$/u, "Chronicle History"],
+      ["Artifact Cabinet", /\/passport\/artifacts$/u, "Artifact Cabinet"],
+      ["Security & Sessions", /\/account\/security$/u, "Security"],
     ] as const;
     for (const [name, url, heading] of destinations) {
       await navigateAccountLink(page, full, name);
@@ -534,7 +534,10 @@ test.describe.serial("Project Homeport Phase 2 browser journeys", () => {
     await expect(page.locator("main.public-profile")).toBeVisible();
     await expect(page.getByRole("heading", { name: full.displayName, exact: true })).toBeVisible();
     menu = await openAccountMenu(page, full.displayName);
-    await expect(menu.locator('[data-navigation-id="account-view-profile"]')).toHaveAttribute("aria-current", "page");
+    await expect(menu.locator('[data-navigation-id="account-view-profile"]')).not.toHaveAttribute(
+      "aria-current",
+      "page",
+    );
     await page.context().clearCookies();
     await page.goto("/player/sign-in");
     await expectShell(page, "AUTHENTICATION", "player");

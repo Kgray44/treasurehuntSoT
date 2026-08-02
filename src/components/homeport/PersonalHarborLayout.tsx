@@ -12,10 +12,7 @@ import {
   type MouseEvent,
   type ReactNode,
 } from "react";
-import {
-  personalHarborNavigation,
-  type PersonalHarborSectionId,
-} from "@/homeport/personal-harbor-navigation";
+import { personalHarborNavigation, type PersonalHarborSectionId } from "@/homeport/personal-harbor-navigation";
 
 type DraftState = {
   dirty: boolean;
@@ -51,7 +48,11 @@ function HarborNavigation({
   return (
     <nav aria-label="Personal Harbor sections" className="personal-harbor__navigation">
       {personalHarborNavigation.map((group) => (
-        <section key={group.label} className="personal-harbor__nav-group" aria-labelledby={`harbor-group-${group.label.replaceAll(" ", "-")}`}>
+        <section
+          key={group.label}
+          className="personal-harbor__nav-group"
+          aria-labelledby={`harbor-group-${group.label.replaceAll(" ", "-")}`}
+        >
           <h2 id={`harbor-group-${group.label.replaceAll(" ", "-")}`}>{group.label}</h2>
           <ul>
             {group.items.map(([sectionId, label, href]) => (
@@ -166,9 +167,16 @@ export function PersonalHarborLayout({
             <h1>{title}</h1>
             <p>{description}</p>
           </div>
-          <Link href="/" className="personal-harbor__return">
-            Return to Home
-          </Link>
+          <div className="personal-harbor__hero-actions">
+            {dirty && (
+              <p className="personal-harbor__draft-status" role="status" aria-live="polite">
+                Unsaved changes
+              </p>
+            )}
+            <Link href="/" className="personal-harbor__return">
+              Return to Home
+            </Link>
+          </div>
         </header>
 
         <details className="personal-harbor__mobile-sections">
@@ -183,8 +191,8 @@ export function PersonalHarborLayout({
           <section className="personal-harbor__content" aria-label={`${title} content`}>
             {compatibilityTarget && (
               <p className="harbor-callout" role="status">
-                This older Passport link now has a dedicated Personal Harbor section. If navigation does not continue,
-                {" "}<Link href={compatibilityTarget}>open the new destination</Link>.
+                This older Passport link now has a dedicated Personal Harbor section. If navigation does not continue,{" "}
+                <Link href={compatibilityTarget}>open the new destination</Link>.
               </p>
             )}
             {children}
@@ -204,10 +212,16 @@ export function PersonalHarborLayout({
           >
             <p className="personal-harbor__eyebrow">Unsaved changes</p>
             <h2 id="unsaved-title">Leave this section?</h2>
-            <p id="unsaved-description">Your changes have not been saved. Stay to keep editing, or discard them and continue.</p>
+            <p id="unsaved-description">
+              Your changes have not been saved. Stay to keep editing, or discard them and continue.
+            </p>
             <div className="personal-harbor__actions">
-              <button type="button" className="button button--primary" onClick={stay}>Stay</button>
-              <button type="button" className="button button--danger" onClick={discard}>Discard changes</button>
+              <button type="button" className="button button--primary" onClick={stay}>
+                Stay
+              </button>
+              <button type="button" className="button button--danger" onClick={discard}>
+                Discard changes
+              </button>
             </div>
           </div>
         </div>

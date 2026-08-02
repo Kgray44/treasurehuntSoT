@@ -39,11 +39,31 @@
       "mutationIds": ["profile-save", "profile-media-upload", "profile-media-remove"],
       "desktopPlacement": "PERSONAL_HARBOR_RAIL",
       "mobilePlacement": "PERSONAL_HARBOR_SECTION_SHEET",
-      "applicableStates": ["INITIAL_LOADING", "READY_CLEAN", "READY_DIRTY", "VALIDATION_ERROR", "MUTATION_PENDING", "MUTATION_SUCCESS", "MUTATION_FAILURE", "STALE_CONFLICT", "RESET_PENDING", "DEPENDENCY_UNAVAILABLE"],
+      "applicableStates": [
+        "INITIAL_LOADING",
+        "READY_CLEAN",
+        "READY_DIRTY",
+        "VALIDATION_ERROR",
+        "MUTATION_PENDING",
+        "MUTATION_SUCCESS",
+        "MUTATION_FAILURE",
+        "STALE_CONFLICT",
+        "RESET_PENDING",
+        "DEPENDENCY_UNAVAILABLE"
+      ],
       "parent": "personal-harbor-overview",
       "return": "/account",
-      "testContracts": ["homeport.profile.owner-edit", "homeport.profile.public-projection", "homeport.profile.media-state", "homeport.profile.no-private-leak"],
-      "evidenceRequirements": ["HP-P3-EV-C-profile-editor", "HP-P3-EV-D-public-profile-preview", "HP-P3-EV-E-profile-media"],
+      "testContracts": [
+        "homeport.profile.owner-edit",
+        "homeport.profile.public-projection",
+        "homeport.profile.media-state",
+        "homeport.profile.no-private-leak"
+      ],
+      "evidenceRequirements": [
+        "HP-P3-EV-C-profile-editor",
+        "HP-P3-EV-D-public-profile-preview",
+        "HP-P3-EV-E-profile-media"
+      ],
       "sensitiveActionPolicy": "CANONICAL_SESSION_CSRF",
       "status": "FROZEN_FOR_IMPLEMENTATION"
     },
@@ -60,7 +80,14 @@
       "mutationIds": ["email-verification-resend"],
       "desktopPlacement": "PERSONAL_HARBOR_RAIL",
       "mobilePlacement": "PERSONAL_HARBOR_SECTION_SHEET",
-      "applicableStates": ["INITIAL_LOADING", "READY_CLEAN", "MUTATION_PENDING", "MUTATION_SUCCESS", "MUTATION_FAILURE", "DEPENDENCY_UNAVAILABLE"],
+      "applicableStates": [
+        "INITIAL_LOADING",
+        "READY_CLEAN",
+        "MUTATION_PENDING",
+        "MUTATION_SUCCESS",
+        "MUTATION_FAILURE",
+        "DEPENDENCY_UNAVAILABLE"
+      ],
       "parent": "personal-harbor-overview",
       "return": "/account",
       "testContracts": ["homeport.personal-harbor.ia", "homeport.profile.no-private-leak"],
@@ -81,10 +108,25 @@
       "mutationIds": ["preferences-save", "preferences-reset"],
       "desktopPlacement": "PERSONAL_HARBOR_RAIL",
       "mobilePlacement": "PERSONAL_HARBOR_SECTION_SHEET",
-      "applicableStates": ["INITIAL_LOADING", "READY_CLEAN", "READY_DIRTY", "VALIDATION_ERROR", "MUTATION_PENDING", "MUTATION_SUCCESS", "MUTATION_FAILURE", "STALE_CONFLICT", "RESET_PENDING", "DEPENDENCY_UNAVAILABLE"],
+      "applicableStates": [
+        "INITIAL_LOADING",
+        "READY_CLEAN",
+        "READY_DIRTY",
+        "VALIDATION_ERROR",
+        "MUTATION_PENDING",
+        "MUTATION_SUCCESS",
+        "MUTATION_FAILURE",
+        "STALE_CONFLICT",
+        "RESET_PENDING",
+        "DEPENDENCY_UNAVAILABLE"
+      ],
       "parent": "personal-harbor-overview",
       "return": "/account",
-      "testContracts": ["homeport.preferences.typed", "homeport.personal-harbor.unsaved-changes", "homeport.personal-harbor.stale-conflict"],
+      "testContracts": [
+        "homeport.preferences.typed",
+        "homeport.personal-harbor.unsaved-changes",
+        "homeport.personal-harbor.stale-conflict"
+      ],
       "evidenceRequirements": ["HP-P3-EV-G-preferences", "HP-P3-EV-X-unsaved-warning", "HP-P3-EV-Y-stale-conflict"],
       "sensitiveActionPolicy": "CANONICAL_SESSION_CSRF",
       "status": "FROZEN_FOR_IMPLEMENTATION"
@@ -102,7 +144,18 @@
       "mutationIds": ["accessibility-save", "accessibility-reset"],
       "desktopPlacement": "PERSONAL_HARBOR_RAIL",
       "mobilePlacement": "PERSONAL_HARBOR_SECTION_SHEET",
-      "applicableStates": ["INITIAL_LOADING", "READY_CLEAN", "READY_DIRTY", "VALIDATION_ERROR", "MUTATION_PENDING", "MUTATION_SUCCESS", "MUTATION_FAILURE", "STALE_CONFLICT", "RESET_PENDING", "DEPENDENCY_UNAVAILABLE"],
+      "applicableStates": [
+        "INITIAL_LOADING",
+        "READY_CLEAN",
+        "READY_DIRTY",
+        "VALIDATION_ERROR",
+        "MUTATION_PENDING",
+        "MUTATION_SUCCESS",
+        "MUTATION_FAILURE",
+        "STALE_CONFLICT",
+        "RESET_PENDING",
+        "DEPENDENCY_UNAVAILABLE"
+      ],
       "parent": "personal-harbor-overview",
       "return": "/account",
       "testContracts": ["homeport.accessibility.preference-consumption", "homeport.personal-harbor.unsaved-changes"],
@@ -123,7 +176,16 @@
       "mutationIds": ["notifications-save"],
       "desktopPlacement": "PERSONAL_HARBOR_RAIL",
       "mobilePlacement": "PERSONAL_HARBOR_SECTION_SHEET",
-      "applicableStates": ["INITIAL_LOADING", "READY_CLEAN", "READY_DIRTY", "MUTATION_PENDING", "MUTATION_SUCCESS", "MUTATION_FAILURE", "STALE_CONFLICT", "DEPENDENCY_UNAVAILABLE"],
+      "applicableStates": [
+        "INITIAL_LOADING",
+        "READY_CLEAN",
+        "READY_DIRTY",
+        "MUTATION_PENDING",
+        "MUTATION_SUCCESS",
+        "MUTATION_FAILURE",
+        "STALE_CONFLICT",
+        "DEPENDENCY_UNAVAILABLE"
+      ],
       "parent": "personal-harbor-overview",
       "return": "/account",
       "testContracts": ["homeport.notifications.feedback", "homeport.personal-harbor.mutation-feedback"],
@@ -144,10 +206,24 @@
       "mutationIds": ["privacy-save"],
       "desktopPlacement": "PERSONAL_HARBOR_RAIL",
       "mobilePlacement": "PERSONAL_HARBOR_SECTION_SHEET",
-      "applicableStates": ["INITIAL_LOADING", "READY_CLEAN", "READY_DIRTY", "VALIDATION_ERROR", "MUTATION_PENDING", "MUTATION_SUCCESS", "MUTATION_FAILURE", "STALE_CONFLICT", "DEPENDENCY_UNAVAILABLE"],
+      "applicableStates": [
+        "INITIAL_LOADING",
+        "READY_CLEAN",
+        "READY_DIRTY",
+        "VALIDATION_ERROR",
+        "MUTATION_PENDING",
+        "MUTATION_SUCCESS",
+        "MUTATION_FAILURE",
+        "STALE_CONFLICT",
+        "DEPENDENCY_UNAVAILABLE"
+      ],
       "parent": "personal-harbor-overview",
       "return": "/account",
-      "testContracts": ["homeport.privacy.server-enforced", "homeport.keepsake.consent", "homeport.profile.no-private-leak"],
+      "testContracts": [
+        "homeport.privacy.server-enforced",
+        "homeport.keepsake.consent",
+        "homeport.profile.no-private-leak"
+      ],
       "evidenceRequirements": ["HP-P3-EV-J-privacy"],
       "sensitiveActionPolicy": "CANONICAL_SESSION_CSRF",
       "status": "FROZEN_FOR_IMPLEMENTATION"
@@ -165,7 +241,14 @@
       "mutationIds": ["identity-link", "identity-update", "identity-unlink"],
       "desktopPlacement": "PERSONAL_HARBOR_RAIL",
       "mobilePlacement": "PERSONAL_HARBOR_SECTION_SHEET",
-      "applicableStates": ["INITIAL_LOADING", "READY_CLEAN", "MUTATION_PENDING", "MUTATION_SUCCESS", "MUTATION_FAILURE", "DEPENDENCY_UNAVAILABLE"],
+      "applicableStates": [
+        "INITIAL_LOADING",
+        "READY_CLEAN",
+        "MUTATION_PENDING",
+        "MUTATION_SUCCESS",
+        "MUTATION_FAILURE",
+        "DEPENDENCY_UNAVAILABLE"
+      ],
       "parent": "personal-harbor-overview",
       "return": "/account",
       "testContracts": ["homeport.linked-identities.safe", "homeport.linked-identities.no-lockout"],
@@ -189,7 +272,11 @@
       "applicableStates": ["INITIAL_LOADING", "READY_CLEAN", "DEPENDENCY_UNAVAILABLE"],
       "parent": "personal-harbor-overview",
       "return": "/account",
-      "testContracts": ["homeport.passport.product-surface", "homeport.passport.no-test-controls", "homeport.passport.session-regression"],
+      "testContracts": [
+        "homeport.passport.product-surface",
+        "homeport.passport.no-test-controls",
+        "homeport.passport.session-regression"
+      ],
       "evidenceRequirements": ["HP-P3-EV-L-passport-populated", "HP-P3-EV-M-passport-empty"],
       "sensitiveActionPolicy": "NONE",
       "status": "FROZEN_FOR_IMPLEMENTATION"
@@ -210,7 +297,11 @@
       "applicableStates": ["INITIAL_LOADING", "READY_CLEAN", "DEPENDENCY_UNAVAILABLE"],
       "parent": "passport-home",
       "return": "/passport",
-      "testContracts": ["homeport.history.owner-only", "homeport.history.version-pinned", "homeport.history.empty-state"],
+      "testContracts": [
+        "homeport.history.owner-only",
+        "homeport.history.version-pinned",
+        "homeport.history.empty-state"
+      ],
       "evidenceRequirements": ["HP-P3-EV-N-history-list"],
       "sensitiveActionPolicy": "NONE",
       "status": "FROZEN_FOR_IMPLEMENTATION"
@@ -228,10 +319,23 @@
       "mutationIds": ["reflection-save", "memory-create", "memory-delete", "keepsake-generate", "keepsake-consent"],
       "desktopPlacement": "DETAIL_CONTEXT",
       "mobilePlacement": "DETAIL_CONTEXT",
-      "applicableStates": ["INITIAL_LOADING", "READY_CLEAN", "READY_DIRTY", "MUTATION_PENDING", "MUTATION_SUCCESS", "MUTATION_FAILURE", "DEPENDENCY_UNAVAILABLE"],
+      "applicableStates": [
+        "INITIAL_LOADING",
+        "READY_CLEAN",
+        "READY_DIRTY",
+        "MUTATION_PENDING",
+        "MUTATION_SUCCESS",
+        "MUTATION_FAILURE",
+        "DEPENDENCY_UNAVAILABLE"
+      ],
       "parent": "passport-history",
       "return": "/passport/history",
-      "testContracts": ["homeport.history.owner-only", "homeport.history.version-pinned", "homeport.memories.owner-authorized", "homeport.keepsake.consent"],
+      "testContracts": [
+        "homeport.history.owner-only",
+        "homeport.history.version-pinned",
+        "homeport.memories.owner-authorized",
+        "homeport.keepsake.consent"
+      ],
       "evidenceRequirements": ["HP-P3-EV-O-history-detail", "HP-P3-EV-P-memory-keepsake"],
       "sensitiveActionPolicy": "CANONICAL_SESSION_CSRF",
       "status": "FROZEN_FOR_IMPLEMENTATION"
@@ -249,7 +353,14 @@
       "mutationIds": ["memory-delete"],
       "desktopPlacement": "PERSONAL_HARBOR_RAIL",
       "mobilePlacement": "PERSONAL_HARBOR_SECTION_SHEET",
-      "applicableStates": ["INITIAL_LOADING", "READY_CLEAN", "MUTATION_PENDING", "MUTATION_SUCCESS", "MUTATION_FAILURE", "DEPENDENCY_UNAVAILABLE"],
+      "applicableStates": [
+        "INITIAL_LOADING",
+        "READY_CLEAN",
+        "MUTATION_PENDING",
+        "MUTATION_SUCCESS",
+        "MUTATION_FAILURE",
+        "DEPENDENCY_UNAVAILABLE"
+      ],
       "parent": "passport-home",
       "return": "/passport",
       "testContracts": ["homeport.memories.owner-authorized", "homeport.keepsake.consent"],
@@ -270,10 +381,21 @@
       "mutationIds": ["artifact-personalize", "display-case-save", "achievement-presentation"],
       "desktopPlacement": "PERSONAL_HARBOR_RAIL",
       "mobilePlacement": "PERSONAL_HARBOR_SECTION_SHEET",
-      "applicableStates": ["INITIAL_LOADING", "READY_CLEAN", "MUTATION_PENDING", "MUTATION_SUCCESS", "MUTATION_FAILURE", "DEPENDENCY_UNAVAILABLE"],
+      "applicableStates": [
+        "INITIAL_LOADING",
+        "READY_CLEAN",
+        "MUTATION_PENDING",
+        "MUTATION_SUCCESS",
+        "MUTATION_FAILURE",
+        "DEPENDENCY_UNAVAILABLE"
+      ],
       "parent": "passport-home",
       "return": "/passport",
-      "testContracts": ["homeport.artifacts.owner-only", "homeport.artifacts.provenance", "homeport.artifacts.empty-state"],
+      "testContracts": [
+        "homeport.artifacts.owner-only",
+        "homeport.artifacts.provenance",
+        "homeport.artifacts.empty-state"
+      ],
       "evidenceRequirements": ["HP-P3-EV-Q-artifact-cabinet", "HP-P3-EV-R-artifact-empty"],
       "sensitiveActionPolicy": "CANONICAL_SESSION_CSRF",
       "status": "FROZEN_FOR_IMPLEMENTATION"
@@ -291,7 +413,14 @@
       "mutationIds": ["artifact-personalize"],
       "desktopPlacement": "DETAIL_CONTEXT",
       "mobilePlacement": "DETAIL_CONTEXT",
-      "applicableStates": ["INITIAL_LOADING", "READY_CLEAN", "MUTATION_PENDING", "MUTATION_SUCCESS", "MUTATION_FAILURE", "DEPENDENCY_UNAVAILABLE"],
+      "applicableStates": [
+        "INITIAL_LOADING",
+        "READY_CLEAN",
+        "MUTATION_PENDING",
+        "MUTATION_SUCCESS",
+        "MUTATION_FAILURE",
+        "DEPENDENCY_UNAVAILABLE"
+      ],
       "parent": "passport-artifacts",
       "return": "/passport/artifacts",
       "testContracts": ["homeport.artifacts.owner-only", "homeport.artifacts.provenance"],
@@ -312,7 +441,14 @@
       "mutationIds": ["saved-content-remove"],
       "desktopPlacement": "PERSONAL_HARBOR_RAIL",
       "mobilePlacement": "PERSONAL_HARBOR_SECTION_SHEET",
-      "applicableStates": ["INITIAL_LOADING", "READY_CLEAN", "MUTATION_PENDING", "MUTATION_SUCCESS", "MUTATION_FAILURE", "DEPENDENCY_UNAVAILABLE"],
+      "applicableStates": [
+        "INITIAL_LOADING",
+        "READY_CLEAN",
+        "MUTATION_PENDING",
+        "MUTATION_SUCCESS",
+        "MUTATION_FAILURE",
+        "DEPENDENCY_UNAVAILABLE"
+      ],
       "parent": "passport-home",
       "return": "/passport",
       "testContracts": ["homeport.saved-content.owner-only", "homeport.saved-content.cross-surface"],
@@ -333,7 +469,14 @@
       "mutationIds": ["sign-out-everywhere"],
       "desktopPlacement": "PERSONAL_HARBOR_RAIL",
       "mobilePlacement": "PERSONAL_HARBOR_SECTION_SHEET",
-      "applicableStates": ["INITIAL_LOADING", "READY_CLEAN", "MUTATION_PENDING", "MUTATION_SUCCESS", "MUTATION_FAILURE", "DEPENDENCY_UNAVAILABLE"],
+      "applicableStates": [
+        "INITIAL_LOADING",
+        "READY_CLEAN",
+        "MUTATION_PENDING",
+        "MUTATION_SUCCESS",
+        "MUTATION_FAILURE",
+        "DEPENDENCY_UNAVAILABLE"
+      ],
       "parent": "personal-harbor-overview",
       "return": "/account",
       "testContracts": ["homeport.security.sensitive-reauth", "homeport.sessions.signout-all"],
@@ -354,7 +497,14 @@
       "mutationIds": ["session-revoke", "sign-out-everywhere"],
       "desktopPlacement": "PERSONAL_HARBOR_RAIL",
       "mobilePlacement": "PERSONAL_HARBOR_SECTION_SHEET",
-      "applicableStates": ["INITIAL_LOADING", "READY_CLEAN", "MUTATION_PENDING", "MUTATION_SUCCESS", "MUTATION_FAILURE", "DEPENDENCY_UNAVAILABLE"],
+      "applicableStates": [
+        "INITIAL_LOADING",
+        "READY_CLEAN",
+        "MUTATION_PENDING",
+        "MUTATION_SUCCESS",
+        "MUTATION_FAILURE",
+        "DEPENDENCY_UNAVAILABLE"
+      ],
       "parent": "personal-harbor-overview",
       "return": "/account",
       "testContracts": ["homeport.sessions.list-safe", "homeport.sessions.revoke", "homeport.sessions.signout-all"],

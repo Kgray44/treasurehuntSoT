@@ -30,7 +30,10 @@ export async function personalInformation(accountId: string) {
     primaryEmail: email?.displayEmail ?? null,
     emailVerificationState: email?.verificationState ?? "UNAVAILABLE",
     emailVerifiedAt: email?.verifiedAt?.toISOString() ?? null,
-    emailChange: { status: "NOT_CURRENTLY_SUPPORTED" as const, reason: "No accepted verified email-change service exists." },
+    emailChange: {
+      status: "NOT_CURRENTLY_SUPPORTED" as const,
+      reason: "No accepted verified email-change service exists.",
+    },
     createdAt: account.createdAt.toISOString(),
     revision: (account.profile?.updatedAt ?? account.updatedAt).toISOString(),
   };
@@ -49,15 +52,27 @@ export async function personalHarborOverview(accountId: string, profileId: strin
     db.playerArtifactRecord.count({ where: { playerProfileId: profileId } }),
     listSavedContent(accountId),
   ]);
-  const completed = [profile?.displayName, profile?.handle, profile?.biography, profile?.avatarMediaId, profile?.bannerMediaId]
-    .filter(Boolean).length;
+  const completed = [
+    profile?.displayName,
+    profile?.handle,
+    profile?.biography,
+    profile?.avatarMediaId,
+    profile?.bannerMediaId,
+  ].filter(Boolean).length;
   return {
     profile: {
       displayName: profile?.displayName ?? "Voyagewright account",
       handle: profile?.handle ?? null,
       completion: { completed, total: 5, percent: completed * 20 },
     },
-    counts: { linkedIdentities: identities, activeSessions: sessions, history, memories, artifacts, saved: saves.items.length },
+    counts: {
+      linkedIdentities: identities,
+      activeSessions: sessions,
+      history,
+      memories,
+      artifacts,
+      saved: saves.items.length,
+    },
     destinations: personalHarborNavigation.flatMap((group) =>
       group.items.map(([sectionId, label, href]) => ({ sectionId, label, href, group: group.label })),
     ),
@@ -73,10 +88,34 @@ export async function passportOverview(accountId: string, profileId: string) {
   ]);
   return {
     sections: [
-      { id: "history", label: "Chronicle History", href: "/passport/history", count: history, empty: "No completed or historical Voyages yet." },
-      { id: "memories", label: "Memories", href: "/passport/memories", count: memories, empty: "No private Chronicle Memories yet." },
-      { id: "artifacts", label: "Artifact Cabinet", href: "/passport/artifacts", count: artifacts, empty: "No personal artifacts have been granted yet." },
-      { id: "saved", label: "Saved from Community", href: "/passport/saved", count: saved.items.length, empty: "No eligible Community items are saved." },
+      {
+        id: "history",
+        label: "Chronicle History",
+        href: "/passport/history",
+        count: history,
+        empty: "No completed or historical Voyages yet.",
+      },
+      {
+        id: "memories",
+        label: "Memories",
+        href: "/passport/memories",
+        count: memories,
+        empty: "No private Chronicle Memories yet.",
+      },
+      {
+        id: "artifacts",
+        label: "Artifact Cabinet",
+        href: "/passport/artifacts",
+        count: artifacts,
+        empty: "No personal artifacts have been granted yet.",
+      },
+      {
+        id: "saved",
+        label: "Saved from Community",
+        href: "/passport/saved",
+        count: saved.items.length,
+        empty: "No eligible Community items are saved.",
+      },
     ],
   };
 }
@@ -84,11 +123,41 @@ export async function passportOverview(accountId: string, profileId: string) {
 export function accountDataAvailability() {
   return {
     operations: [
-      { id: "privacy", label: "Review privacy controls", status: "AVAILABLE", href: "/account/privacy", reason: "Server-enforced Profile privacy controls are available." },
-      { id: "sessions", label: "Review or revoke sessions", status: "AVAILABLE", href: "/account/sessions", reason: "AccountSession is the accepted session authority." },
-      { id: "export", label: "Export account data", status: "NOT_CURRENTLY_SUPPORTED", href: null, reason: "No accepted export scope, packaging, or retention service exists." },
-      { id: "deactivate", label: "Deactivate account", status: "NOT_CURRENTLY_SUPPORTED", href: null, reason: "No accepted account-deactivation lifecycle exists." },
-      { id: "delete", label: "Delete account", status: "NOT_CURRENTLY_SUPPORTED", href: null, reason: "No accepted deletion, retention, tombstone, or reauthentication contract exists." },
+      {
+        id: "privacy",
+        label: "Review privacy controls",
+        status: "AVAILABLE",
+        href: "/account/privacy",
+        reason: "Server-enforced Profile privacy controls are available.",
+      },
+      {
+        id: "sessions",
+        label: "Review or revoke sessions",
+        status: "AVAILABLE",
+        href: "/account/sessions",
+        reason: "AccountSession is the accepted session authority.",
+      },
+      {
+        id: "export",
+        label: "Export account data",
+        status: "NOT_CURRENTLY_SUPPORTED",
+        href: null,
+        reason: "No accepted export scope, packaging, or retention service exists.",
+      },
+      {
+        id: "deactivate",
+        label: "Deactivate account",
+        status: "NOT_CURRENTLY_SUPPORTED",
+        href: null,
+        reason: "No accepted account-deactivation lifecycle exists.",
+      },
+      {
+        id: "delete",
+        label: "Delete account",
+        status: "NOT_CURRENTLY_SUPPORTED",
+        href: null,
+        reason: "No accepted deletion, retention, tombstone, or reauthentication contract exists.",
+      },
     ],
   } as const;
 }
@@ -117,46 +186,133 @@ async function blockedBetween(accountId: string, ownerAccountId: string | undefi
   );
 }
 
-async function savedCard(accountId: string, row: { subjectType: string; subjectId: string; createdAt: Date }): Promise<SavedCard | null> {
+async function savedCard(
+  accountId: string,
+  row: { subjectType: string; subjectId: string; createdAt: Date },
+): Promise<SavedCard | null> {
   if (row.subjectType === "LISTING") {
     const listing = await db.communityListing.findFirst({
-      where: { id: row.subjectId, publicationStatus: "PUBLISHED", visibility: { in: ["COMMUNITY", "FEATURED"] }, moderationStatus: "ACTIVE", locationClass: { not: "PRIVATE_REAL_WORLD" }, archivedAt: null, removedAt: null },
+      where: {
+        id: row.subjectId,
+        publicationStatus: "PUBLISHED",
+        visibility: { in: ["COMMUNITY", "FEATURED"] },
+        moderationStatus: "ACTIVE",
+        locationClass: { not: "PRIVATE_REAL_WORLD" },
+        archivedAt: null,
+        removedAt: null,
+      },
       include: { owner: true },
     });
     if (!listing || (await blockedBetween(accountId, listing.owner.accountId))) return null;
     const value = publicListingProjection(listing);
-    return { subjectType: row.subjectType, subjectId: row.subjectId, title: value.title, summary: value.shortDescription, href: `/community/${encodeURIComponent(value.slug)}`, savedAt: row.createdAt.toISOString() };
+    return {
+      subjectType: row.subjectType,
+      subjectId: row.subjectId,
+      title: value.title,
+      summary: value.shortDescription,
+      href: `/community/${encodeURIComponent(value.slug)}`,
+      savedAt: row.createdAt.toISOString(),
+    };
   }
   if (row.subjectType === "RELEASE") {
     const release = await db.communityRelease.findFirst({
-      where: { id: row.subjectId, moderationStatus: "ACTIVE", deprecatedAt: null, listing: { publicationStatus: "PUBLISHED", visibility: { in: ["COMMUNITY", "FEATURED"] }, moderationStatus: "ACTIVE", archivedAt: null, removedAt: null } },
+      where: {
+        id: row.subjectId,
+        moderationStatus: "ACTIVE",
+        deprecatedAt: null,
+        listing: {
+          publicationStatus: "PUBLISHED",
+          visibility: { in: ["COMMUNITY", "FEATURED"] },
+          moderationStatus: "ACTIVE",
+          archivedAt: null,
+          removedAt: null,
+        },
+      },
       include: { listing: { include: { owner: true } } },
     });
     if (!release || (await blockedBetween(accountId, release.listing.owner.accountId))) return null;
     const value = publicReleaseProjection(release);
-    return { subjectType: row.subjectType, subjectId: row.subjectId, title: `${release.listing.title} ${value.semanticVersion}`, summary: value.releaseNotes, href: `/community/${encodeURIComponent(release.listing.slug)}`, savedAt: row.createdAt.toISOString() };
+    return {
+      subjectType: row.subjectType,
+      subjectId: row.subjectId,
+      title: `${release.listing.title} ${value.semanticVersion}`,
+      summary: value.releaseNotes,
+      href: `/community/${encodeURIComponent(release.listing.slug)}`,
+      savedAt: row.createdAt.toISOString(),
+    };
   }
   if (row.subjectType === "CREATOR") {
-    const profile = await db.communityProfile.findFirst({ where: { id: row.subjectId, visibility: "COMMUNITY", moderationStatus: "ACTIVE", creatorStatus: { not: "SUSPENDED" } } });
+    const profile = await db.communityProfile.findFirst({
+      where: {
+        id: row.subjectId,
+        visibility: "COMMUNITY",
+        moderationStatus: "ACTIVE",
+        creatorStatus: { not: "SUSPENDED" },
+      },
+    });
     if (!profile || (await blockedBetween(accountId, profile.accountId))) return null;
-    return { subjectType: row.subjectType, subjectId: row.subjectId, title: profile.displayName, summary: profile.biography, href: `/community/creators/${encodeURIComponent(profile.handle)}`, savedAt: row.createdAt.toISOString() };
+    return {
+      subjectType: row.subjectType,
+      subjectId: row.subjectId,
+      title: profile.displayName,
+      summary: profile.biography,
+      href: `/community/creators/${encodeURIComponent(profile.handle)}`,
+      savedAt: row.createdAt.toISOString(),
+    };
   }
   if (row.subjectType === "VOYAGE_LOG") {
-    const log = await db.communityVoyageLog.findFirst({ where: { id: row.subjectId, visibility: "COMMUNITY", lifecycleState: "PUBLISHED", publishedAt: { not: null } } });
+    const log = await db.communityVoyageLog.findFirst({
+      where: { id: row.subjectId, visibility: "COMMUNITY", lifecycleState: "PUBLISHED", publishedAt: { not: null } },
+    });
     if (!log || (await blockedBetween(accountId, log.ownerAccountId))) return null;
-    return { subjectType: row.subjectType, subjectId: row.subjectId, title: log.title, summary: log.safeSummary, href: `/community/voyage-logs/${encodeURIComponent(log.slug)}`, savedAt: row.createdAt.toISOString() };
+    return {
+      subjectType: row.subjectType,
+      subjectId: row.subjectId,
+      title: log.title,
+      summary: log.safeSummary,
+      href: `/community/voyage-logs/${encodeURIComponent(log.slug)}`,
+      savedAt: row.createdAt.toISOString(),
+    };
   }
   if (row.subjectType === "COLLECTION") {
-    const collection = await db.communityCollection.findFirst({ where: { id: row.subjectId, visibility: "COMMUNITY", archivedAt: null, deletedAt: null } });
+    const collection = await db.communityCollection.findFirst({
+      where: { id: row.subjectId, visibility: "COMMUNITY", archivedAt: null, deletedAt: null },
+    });
     if (!collection || (await blockedBetween(accountId, collection.ownerAccountId))) return null;
-    return { subjectType: row.subjectType, subjectId: row.subjectId, title: collection.title, summary: collection.description, href: `/community/collections/${encodeURIComponent(collection.slug)}`, savedAt: row.createdAt.toISOString() };
+    return {
+      subjectType: row.subjectType,
+      subjectId: row.subjectId,
+      title: collection.title,
+      summary: collection.description,
+      href: `/community/collections/${encodeURIComponent(collection.slug)}`,
+      savedAt: row.createdAt.toISOString(),
+    };
   }
   if (row.subjectType === "GUIDE") {
-    const guide = await db.communityGuideContent.findFirst({ where: { id: row.subjectId, status: "PUBLISHED", deprecatedAt: null } });
+    const guide = await db.communityGuideContent.findFirst({
+      where: { id: row.subjectId, status: "PUBLISHED", deprecatedAt: null },
+    });
     if (!guide) return null;
-    const owner = await db.communityProfile.findUnique({ where: { id: guide.ownerProfileId }, select: { accountId: true, moderationStatus: true, creatorStatus: true, visibility: true } });
-    if (!owner || owner.moderationStatus !== "ACTIVE" || owner.creatorStatus === "SUSPENDED" || owner.visibility !== "COMMUNITY" || (await blockedBetween(accountId, owner.accountId))) return null;
-    return { subjectType: row.subjectType, subjectId: row.subjectId, title: guide.title, summary: guide.safeSummary, href: `/community/guides/${encodeURIComponent(guide.slug)}`, savedAt: row.createdAt.toISOString() };
+    const owner = await db.communityProfile.findUnique({
+      where: { id: guide.ownerProfileId },
+      select: { accountId: true, moderationStatus: true, creatorStatus: true, visibility: true },
+    });
+    if (
+      !owner ||
+      owner.moderationStatus !== "ACTIVE" ||
+      owner.creatorStatus === "SUSPENDED" ||
+      owner.visibility !== "COMMUNITY" ||
+      (await blockedBetween(accountId, owner.accountId))
+    )
+      return null;
+    return {
+      subjectType: row.subjectType,
+      subjectId: row.subjectId,
+      title: guide.title,
+      summary: guide.safeSummary,
+      href: `/community/guides/${encodeURIComponent(guide.slug)}`,
+      savedAt: row.createdAt.toISOString(),
+    };
   }
   return null;
 }
@@ -174,28 +330,32 @@ export async function listSavedContent(accountId: string) {
 
 export async function listChronicleMemories(profileId: string) {
   return {
-    items: await db.chronicleMemory.findMany({
-      where: { playerProfileId: profileId, deletedAt: null },
-      select: {
-        id: true,
-        playerChronicleRecordId: true,
-        title: true,
-        body: true,
-        referenceType: true,
-        referenceId: true,
-        createdAt: true,
-        record: { select: { chronicleTitleSnapshot: true } },
-      },
-      orderBy: { createdAt: "desc" },
-    }).then((items) => items.map((item) => ({
-      id: item.id,
-      recordId: item.playerChronicleRecordId,
-      chronicleTitle: item.record.chronicleTitleSnapshot,
-      title: item.title,
-      body: item.body,
-      referenceType: item.referenceType,
-      referenceId: item.referenceId,
-      createdAt: item.createdAt.toISOString(),
-    }))),
+    items: await db.chronicleMemory
+      .findMany({
+        where: { playerProfileId: profileId, deletedAt: null },
+        select: {
+          id: true,
+          playerChronicleRecordId: true,
+          title: true,
+          body: true,
+          referenceType: true,
+          referenceId: true,
+          createdAt: true,
+          record: { select: { chronicleTitleSnapshot: true } },
+        },
+        orderBy: { createdAt: "desc" },
+      })
+      .then((items) =>
+        items.map((item) => ({
+          id: item.id,
+          recordId: item.playerChronicleRecordId,
+          chronicleTitle: item.record.chronicleTitleSnapshot,
+          title: item.title,
+          body: item.body,
+          referenceType: item.referenceType,
+          referenceId: item.referenceId,
+          createdAt: item.createdAt.toISOString(),
+        })),
+      ),
   };
 }

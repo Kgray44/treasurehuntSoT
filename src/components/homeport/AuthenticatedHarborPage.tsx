@@ -24,7 +24,10 @@ export async function AuthenticatedHarborPage({
   children: React.ReactNode;
 }) {
   const context = await resolveCurrentUser();
-  if (context.status === "authenticated" && (!capability || decideCapability(context, capability).status === "allowed")) {
+  if (
+    context.status === "authenticated" &&
+    (!capability || decideCapability(context, capability).status === "allowed")
+  ) {
     return (
       <PersonalHarborLayout
         activeSection={activeSection}

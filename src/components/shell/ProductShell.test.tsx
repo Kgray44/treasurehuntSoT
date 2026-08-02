@@ -111,16 +111,28 @@ describe("ProductShell", () => {
     expect(within(disclosure).getByRole("heading", { name: "Personal Harbor" })).toBeInTheDocument();
     expect(within(disclosure).getByRole("heading", { name: "Workspaces" })).toBeInTheDocument();
     expect(within(disclosure).getByRole("heading", { name: "Account actions" })).toBeInTheDocument();
-    expect(within(disclosure).getByRole("link", { name: "View My Profile" })).toHaveAttribute("href", "/profile/mara");
+    expect(within(disclosure).getByRole("link", { name: "View My Profile" })).toHaveAttribute("href", "/account");
     expect(within(disclosure).getByRole("link", { name: "Chronicle Passport" })).toHaveAttribute("href", "/passport");
     expect(within(disclosure).getByRole("link", { name: "Preferences" })).toHaveAttribute(
       "href",
-      "/passport#preferences",
+      "/account/preferences",
     );
-    expect(within(disclosure).getByRole("link", { name: "Privacy & Safety" })).toBeInTheDocument();
-    expect(within(disclosure).getByRole("link", { name: "Chronicle History" })).toBeInTheDocument();
-    expect(within(disclosure).getByRole("link", { name: "Artifact Cabinet" })).toBeInTheDocument();
-    expect(within(disclosure).getByRole("link", { name: "Security & Sessions" })).toBeInTheDocument();
+    expect(within(disclosure).getByRole("link", { name: "Privacy & Safety" })).toHaveAttribute(
+      "href",
+      "/account/privacy",
+    );
+    expect(within(disclosure).getByRole("link", { name: "Chronicle History" })).toHaveAttribute(
+      "href",
+      "/passport/history",
+    );
+    expect(within(disclosure).getByRole("link", { name: "Artifact Cabinet" })).toHaveAttribute(
+      "href",
+      "/passport/artifacts",
+    );
+    expect(within(disclosure).getByRole("link", { name: "Security & Sessions" })).toHaveAttribute(
+      "href",
+      "/account/security",
+    );
     expect(within(disclosure).getByRole("link", { name: /Player/ })).toHaveAttribute("aria-current", "page");
     expect(within(disclosure).getByRole("link", { name: "Captain" })).toBeInTheDocument();
     expect(within(disclosure).getByRole("link", { name: "Creator Studio" })).toBeInTheDocument();

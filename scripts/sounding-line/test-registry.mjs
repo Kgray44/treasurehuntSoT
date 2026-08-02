@@ -9,14 +9,9 @@ import { promisify } from "node:util";
 
 const root = process.cwd();
 const ignored = new Set(["node_modules", ".git", ".next", "coverage", "artifacts"]);
-const homeportContracts = [
-  "homeport.route-inventory.complete",
-  "homeport.session-inventory.complete",
-  "homeport.screen-catalog.complete",
-  "homeport.journey-catalog.complete",
-  "homeport.evidence-manifest.complete",
-  "homeport.nonconformity-ledger.complete",
-];
+const homeportContracts = JSON.parse(await fs.readFile(path.join(root, "testing", "contracts.json"), "utf8"))
+  .contracts.map((contract) => contract.id)
+  .filter((contractId) => contractId.startsWith("homeport."));
 const hash = (text) => createHash("sha256").update(text).digest("hex").slice(0, 20);
 const execFileAsync = promisify(execFile);
 const normal = (value) => value.replaceAll("\\", "/");
@@ -33,7 +28,8 @@ function ownerFor(file) {
 }
 
 function unitFamily(file) {
-  if (file.startsWith("scripts/homeport/") || file.startsWith("tests/homeport/")) return "unit.homeport";
+  if (file.startsWith("src/homeport/") || file.startsWith("scripts/homeport/") || file.startsWith("tests/homeport/"))
+    return "unit.homeport";
   if (file.startsWith("scripts/sounding-line/") || file.startsWith("tests/sounding-line/")) return "unit.sounding-line";
   if (file.startsWith("scripts/features/") || file.includes("feature-catalog")) return "unit.feature-catalog";
   if (file.includes("private-content")) return "unit.private-content";
@@ -50,6 +46,7 @@ function unitFamily(file) {
 }
 
 function componentFamily(file) {
+  if (file.includes("components/homeport")) return "component.homeport";
   if (file.includes("components/animation")) return "component.animation";
   if (file.includes("components/community")) return "component.community";
   if (file.includes("components/studio/Private")) return "component.private-operations";
@@ -72,6 +69,7 @@ function browserFamily(project, file, title) {
   // inherit a fixture-free ownership contract they do not satisfy.
   if (file.endsWith("access-gates.spec.ts") && project === "sounding-line-access-sentinel")
     return "browser.access-sentinel";
+  if (value.includes("homeport") || project.includes("homeport")) return "browser.homeport";
   if (file.endsWith("chronicle-platform.spec.ts") || file.endsWith("acceptance.spec.ts"))
     return "browser.player-library";
   if (value.includes("access-gates") || value.includes("authentication") || value.includes("sign-in"))
@@ -83,9 +81,9 @@ function browserFamily(project, file, title) {
   if (value.includes("harborlight") || value.includes("community")) return "browser.community";
   if (value.includes("studio")) return "browser.studio";
   if (value.includes("command-center") || value.includes("captain")) return "browser.captain";
+  if (value.includes("true-north") || value.includes("navigation")) return "browser.navigation";
   if (value.includes("accessibility") || value.includes("keyboard") || value.includes("aria-"))
     return "browser.accessibility";
-  if (value.includes("true-north") || value.includes("navigation")) return "browser.navigation";
   if (value.includes("viewport") || value.includes("responsive") || value.includes("mobile"))
     return "browser.responsive";
   if (value.includes("animation") || value.includes("lifecycle") || value.includes("pageflip"))
@@ -109,7 +107,7 @@ function contractFor(file, family) {
 }
 
 function metadata(file, family, browser = null) {
-  const privateOrCommunity = /private-content|community|wayfarer|passport|invitation|session/u.test(file);
+  const privateOrCommunity = /homeport|private-content|community|wayfarer|passport|invitation|session/u.test(file);
   const high = privateOrCommunity || Boolean(browser);
   const ui = Boolean(browser) || file.endsWith(".tsx");
   return {

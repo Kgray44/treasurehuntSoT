@@ -12,32 +12,32 @@ last_reviewed: 2026-08-02
 
 This record freezes the Phase 3 architecture before product implementation. It is Project Homeport Phase 3, not Project Wayfarer Phase 3. Wayfarer remains the specialist owner of personal truth; Homeport owns its coherent product presentation.
 
-| Field | Frozen value |
-| --- | --- |
-| Worktree | `C:\Users\kkids\Documents\Codex_TreasureHunt-homeport` |
-| Branch | `codex/project-homeport-product-reality-recovery` |
-| Phase 3 starting SHA | `9ba021c7a7efd50083cb7f0d2ef3c2d19e979843` |
-| Remote branch SHA at start | `9ba021c7a7efd50083cb7f0d2ef3c2d19e979843` |
-| Fetched `origin/main` and merge base | `8d142227d712d27e363b15903dba9b0c99a04bc8` |
-| Starting divergence | Homeport 8 ahead, 0 behind `origin/main`; 0 ahead, 0 behind its remote branch |
-| Canonical database SHA-256 | `DF33983556CF2C6FF01DF6084AE6619EC5DF5C99B11241FA88B4A88F8E144EEB` |
-| Schema decision | No schema or migration change |
+| Field                                | Frozen value                                                                  |
+| ------------------------------------ | ----------------------------------------------------------------------------- |
+| Worktree                             | `C:\Users\kkids\Documents\Codex_TreasureHunt-homeport`                        |
+| Branch                               | `codex/project-homeport-product-reality-recovery`                             |
+| Phase 3 starting SHA                 | `9ba021c7a7efd50083cb7f0d2ef3c2d19e979843`                                    |
+| Remote branch SHA at start           | `9ba021c7a7efd50083cb7f0d2ef3c2d19e979843`                                    |
+| Fetched `origin/main` and merge base | `8d142227d712d27e363b15903dba9b0c99a04bc8`                                    |
+| Starting divergence                  | Homeport 8 ahead, 0 behind `origin/main`; 0 ahead, 0 behind its remote branch |
+| Canonical database SHA-256           | `DF33983556CF2C6FF01DF6084AE6619EC5DF5C99B11241FA88B4A88F8E144EEB`            |
+| Schema decision                      | No schema or migration change                                                 |
 
 No newer accepted mainline contract requires reconciliation. Phase 1 `AccountSession`/`wayfarer_account` and typed current-user states remain authoritative. Phase 2 `ProductShell`, eight shell modes, the one navigation registry, active-route matching, and desktop/mobile functional parity remain authoritative.
 
 ## Current-source census and disposition
 
-| Capability | Current authority | Phase 3 disposition |
-| --- | --- | --- |
-| Account, profile, email, credentials, sessions | `src/wayfarer/accounts.ts`, `src/wayfarer/http.ts`, Prisma account/profile models | Reuse; add explicit Homeport owner projections and designed routes. |
-| Public Profile, handles, preferences, privacy | `src/wayfarer/profile.ts`, `/api/passport/profile`, `/preferences`, `/privacy`, `/profile/[handle]` | Reuse and harden allowlisted DTOs; preserve handle-history redirects. |
-| Profile media | `src/wayfarer/profile-media.ts`, `/api/passport/media`, `/api/profile-media/[id]` | Reuse bounded normalization/private storage. Do not invent Sealed Hold scanner proof or a second store. Expose truthful processing/fallback states and removal. |
-| Linked identities | `src/wayfarer/providers.ts`, `/api/passport/providers/*` | Reuse configured provider flows and lockout protection; project only safe owner fields. Remove simulator and implementation inventory from ordinary UI. |
-| Chronicle history, Memories, Keepsakes | `src/wayfarer/chronicle-history.ts`, `/api/passport/history/*` | Reuse owner-only, version-pinned projections and consent. Add product routes and owner annotation UI only. Never write One Voyage truth. |
-| Artifacts, cases, assemblies, achievements | `src/wayfarer/artifacts.ts`, `/api/passport/artifacts/*`, `/achievements/*` | Reuse receipt-derived owner projections. Add product routes/detail presentation; never infer ownership from shared inventory. |
-| Saved Community content | `CommunitySave`, `src/community/social.ts`, Harborlight public projection services | Add a read-only Homeport composition that joins owner save rows to Harborlight-safe public DTOs and omits private, blocked, quarantined, archived, removed, or unavailable subjects. Unsave remains Harborlight-owned. |
-| Shell and account menu | `src/navigation/*`, `src/components/shell/ProductShell.tsx` | Cut temporary anchors to canonical Phase 3 routes in the single registry. Preserve one shell and equivalent desktop/mobile IDs. |
-| Sounding Line | `testing/*`, `scripts/sounding-line/*` | Register Phase 3 contracts and every changed test through the generated case registry. Raw runners remain diagnostic only. |
+| Capability                                     | Current authority                                                                                   | Phase 3 disposition                                                                                                                                                                                                    |
+| ---------------------------------------------- | --------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Account, profile, email, credentials, sessions | `src/wayfarer/accounts.ts`, `src/wayfarer/http.ts`, Prisma account/profile models                   | Reuse; add explicit Homeport owner projections and designed routes.                                                                                                                                                    |
+| Public Profile, handles, preferences, privacy  | `src/wayfarer/profile.ts`, `/api/passport/profile`, `/preferences`, `/privacy`, `/profile/[handle]` | Reuse and harden allowlisted DTOs; preserve handle-history redirects.                                                                                                                                                  |
+| Profile media                                  | `src/wayfarer/profile-media.ts`, `/api/passport/media`, `/api/profile-media/[id]`                   | Reuse bounded normalization/private storage. Do not invent Sealed Hold scanner proof or a second store. Expose truthful processing/fallback states and removal.                                                        |
+| Linked identities                              | `src/wayfarer/providers.ts`, `/api/passport/providers/*`                                            | Reuse configured provider flows and lockout protection; project only safe owner fields. Remove simulator and implementation inventory from ordinary UI.                                                                |
+| Chronicle history, Memories, Keepsakes         | `src/wayfarer/chronicle-history.ts`, `/api/passport/history/*`                                      | Reuse owner-only, version-pinned projections and consent. Add product routes and owner annotation UI only. Never write One Voyage truth.                                                                               |
+| Artifacts, cases, assemblies, achievements     | `src/wayfarer/artifacts.ts`, `/api/passport/artifacts/*`, `/achievements/*`                         | Reuse receipt-derived owner projections. Add product routes/detail presentation; never infer ownership from shared inventory.                                                                                          |
+| Saved Community content                        | `CommunitySave`, `src/community/social.ts`, Harborlight public projection services                  | Add a read-only Homeport composition that joins owner save rows to Harborlight-safe public DTOs and omits private, blocked, quarantined, archived, removed, or unavailable subjects. Unsave remains Harborlight-owned. |
+| Shell and account menu                         | `src/navigation/*`, `src/components/shell/ProductShell.tsx`                                         | Cut temporary anchors to canonical Phase 3 routes in the single registry. Preserve one shell and equivalent desktop/mobile IDs.                                                                                        |
+| Sounding Line                                  | `testing/*`, `scripts/sounding-line/*`                                                              | Register Phase 3 contracts and every changed test through the generated case registry. Raw runners remain diagnostic only.                                                                                             |
 
 High-conflict files are `src/navigation/registry.ts`, `src/navigation/route-classification.ts`, `src/components/shell/ProductShell.tsx`, `src/components/wayfarer/ChroniclePassport.tsx`, `src/wayfarer/profile.ts`, `src/wayfarer/providers.ts`, account/session routes, `playwright.config.ts`, Sounding Line policy records, and Homeport inventories. Prisma schemas are inspected but remain unchanged.
 
@@ -82,16 +82,16 @@ The Phase 2 account menu changes only through `src/navigation/registry.ts`: View
 
 All Phase 3 routes return explicit DTOs. Raw Prisma objects are not HTTP responses.
 
-| DTO | Contents | Explicit exclusions |
-| --- | --- | --- |
+| DTO                         | Contents                                                                                                                                                            | Explicit exclusions                                                        |
+| --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------- |
 | `PersonalHarborOverviewDto` | display name, handle/no-handle state, biography presence/text, safe media URLs, account verification label, capability labels, real supported summary states/counts | IDs, email-as-identity, role rows, session metadata, private provider data |
-| `OwnerProfileDto` | editable display name, handle, biography, default visibility, media display facts, revision | account/profile IDs, raw preference JSON, credentials, audit, moderation |
-| `PublicProfileDto` | allowlisted handle, display name, biography when permitted, media URLs, public linked labels, public artifact projection | every private account or owner-only field |
-| `PersonalInformationDto` | primary display email, verification label, created date, account/claim availability labels | password/credential data, raw account status, IDs, role/audit data |
-| `PreferenceDto` | typed V1 preferences plus revision and truthful delivery/consumer notes | raw JSON, unsupported settings |
-| `LinkedIdentityDto` | provider label, connection state, safe display label, linked/verified dates, visibility, sign-in eligibility | subject, token, scopes, callback/config/debug values |
-| `SessionDto` | opaque action key, safe device label, created/last-active/expiry times, current marker | token/hash, IP, raw user agent, account ID |
-| `SavedContentDto` | subject kind, title, safe summary/label, governed detail URL, creator label when public | raw save row, private subject, storage/scanner/moderation fields |
+| `OwnerProfileDto`           | editable display name, handle, biography, default visibility, media display facts, revision                                                                         | account/profile IDs, raw preference JSON, credentials, audit, moderation   |
+| `PublicProfileDto`          | allowlisted handle, display name, biography when permitted, media URLs, public linked labels, public artifact projection                                            | every private account or owner-only field                                  |
+| `PersonalInformationDto`    | primary display email, verification label, created date, account/claim availability labels                                                                          | password/credential data, raw account status, IDs, role/audit data         |
+| `PreferenceDto`             | typed V1 preferences plus revision and truthful delivery/consumer notes                                                                                             | raw JSON, unsupported settings                                             |
+| `LinkedIdentityDto`         | provider label, connection state, safe display label, linked/verified dates, visibility, sign-in eligibility                                                        | subject, token, scopes, callback/config/debug values                       |
+| `SessionDto`                | opaque action key, safe device label, created/last-active/expiry times, current marker                                                                              | token/hash, IP, raw user agent, account ID                                 |
+| `SavedContentDto`           | subject kind, title, safe summary/label, governed detail URL, creator label when public                                                                             | raw save row, private subject, storage/scanner/moderation fields           |
 
 Foreign-account access to owner endpoints fails without existence disclosure. Restricted and missing profiles receive typed unavailable/denied states rather than guessed data.
 

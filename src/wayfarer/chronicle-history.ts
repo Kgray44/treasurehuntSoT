@@ -50,19 +50,23 @@ const keepsakePayloadSchema = z
   })
   .strict();
 
-const memorySchema = z.object({
-  title: z.string().trim().min(1).max(120),
-  body: z.string().trim().max(4000).optional(),
-  referenceType: z.enum(["CHAPTER", "CLUE", "MOMENT", "ARTIFACT"]).optional(),
-  referenceId: z.string().trim().min(1).max(191).optional(),
-}).strict();
-const reflectionSchema = z.object({
-  favoriteChapterId: z.string().trim().max(191).nullable().optional(),
-  favoriteClueReference: z.string().trim().max(191).nullable().optional(),
-  favoriteMomentReference: z.string().trim().max(191).nullable().optional(),
-  favoriteArtifactReference: z.string().trim().max(191).nullable().optional(),
-  privateNote: z.string().trim().max(4000).nullable().optional(),
-}).strict();
+const memorySchema = z
+  .object({
+    title: z.string().trim().min(1).max(120),
+    body: z.string().trim().max(4000).optional(),
+    referenceType: z.enum(["CHAPTER", "CLUE", "MOMENT", "ARTIFACT"]).optional(),
+    referenceId: z.string().trim().min(1).max(191).optional(),
+  })
+  .strict();
+const reflectionSchema = z
+  .object({
+    favoriteChapterId: z.string().trim().max(191).nullable().optional(),
+    favoriteClueReference: z.string().trim().max(191).nullable().optional(),
+    favoriteMomentReference: z.string().trim().max(191).nullable().optional(),
+    favoriteArtifactReference: z.string().trim().max(191).nullable().optional(),
+    privateNote: z.string().trim().max(4000).nullable().optional(),
+  })
+  .strict();
 
 function sha(value: unknown) {
   return createHash("sha256").update(JSON.stringify(value)).digest("hex");

@@ -34,13 +34,26 @@ export default async function PublicProfilePage({ params }: { params: Promise<{ 
     <main className="public-profile">
       <header className="public-profile__hero">
         <div className="public-profile__banner" aria-hidden={!profile.bannerUrl}>
-          {profile.bannerUrl ? <Image src={profile.bannerUrl} alt="" fill sizes="(max-width: 800px) 100vw, 1200px" unoptimized /> : <span />}
+          {profile.bannerUrl ? (
+            <Image src={profile.bannerUrl} alt="" fill sizes="(max-width: 800px) 100vw, 1200px" unoptimized />
+          ) : (
+            <span />
+          )}
         </div>
         <div className="public-profile__identity">
           {profile.avatarUrl ? (
-            <Image className="public-profile__avatar" src={profile.avatarUrl} alt={displayName + "'s avatar"} width={176} height={176} unoptimized />
+            <Image
+              className="public-profile__avatar"
+              src={profile.avatarUrl}
+              alt={displayName + "'s avatar"}
+              width={176}
+              height={176}
+              unoptimized
+            />
           ) : (
-            <div className="public-profile__avatar public-profile__avatar--fallback" aria-hidden="true">{initial}</div>
+            <div className="public-profile__avatar public-profile__avatar--fallback" aria-hidden="true">
+              {initial}
+            </div>
           )}
           <div>
             <p className="public-profile__eyebrow">Voyagewright Profile</p>
@@ -54,7 +67,11 @@ export default async function PublicProfilePage({ params }: { params: Promise<{ 
         <section className="public-profile__card public-profile__about">
           <p className="public-profile__eyebrow">About this Wayfinder</p>
           <h2>Charted identity</h2>
-          {profile.biography ? <p>{profile.biography}</p> : <p className="public-profile__empty">No public biography has been charted yet.</p>}
+          {profile.biography ? (
+            <p>{profile.biography}</p>
+          ) : (
+            <p className="public-profile__empty">No public biography has been charted yet.</p>
+          )}
         </section>
 
         <section className="public-profile__card">
@@ -63,10 +80,15 @@ export default async function PublicProfilePage({ params }: { params: Promise<{ 
           {providers.length > 0 ? (
             <ul className="public-profile__connections">
               {providers.map((provider) => (
-                <li key={provider.provider}><span aria-hidden="true">◇</span>{provider.providerDisplayName || provider.provider}</li>
+                <li key={provider.provider}>
+                  <span aria-hidden="true">◇</span>
+                  {provider.providerDisplayName || provider.provider}
+                </li>
               ))}
             </ul>
-          ) : <p className="public-profile__empty">No linked identities are shared publicly.</p>}
+          ) : (
+            <p className="public-profile__empty">No linked identities are shared publicly.</p>
+          )}
         </section>
 
         <section className="public-profile__card public-profile__chronicles">
@@ -75,7 +97,9 @@ export default async function PublicProfilePage({ params }: { params: Promise<{ 
             <h2>Stories remain with their keeper</h2>
             <p>Private Voyage history, Memories, and Keepsakes are never published by this Profile projection.</p>
           </div>
-          <Link className="button button--quiet" href="/explore">Explore Chronicles</Link>
+          <Link className="button button--quiet" href="/explore">
+            Explore Chronicles
+          </Link>
         </section>
       </div>
     </main>

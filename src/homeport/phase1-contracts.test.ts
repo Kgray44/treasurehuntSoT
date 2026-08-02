@@ -8,8 +8,11 @@ function source(path: string) {
 describe("Project Homeport Phase 1 integration contracts", () => {
   it("homeport.passport.session consumes canonical context and clears private projection on session change", () => {
     const page = source("src/app/passport/page.tsx");
+    const authenticatedPage = source("src/components/homeport/AuthenticatedHarborPage.tsx");
     const passport = source("src/components/wayfarer/ChroniclePassport.tsx");
-    expect(page).toContain('resolveCapability("player")');
+    expect(page).toContain('capability="player"');
+    expect(authenticatedPage).toContain("resolveCurrentUser()");
+    expect(authenticatedPage).toContain("decideCapability(context, capability)");
     expect(passport).toContain("useCurrentUser()");
     expect(passport).toContain("loadedSessionId === activeSessionId");
     expect(passport).toContain("hasCurrentSessionData ? storedProfile : null");

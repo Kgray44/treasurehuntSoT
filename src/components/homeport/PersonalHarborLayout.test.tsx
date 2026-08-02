@@ -11,7 +11,11 @@ vi.mock("next/navigation", () => ({
 
 function DraftProbe() {
   const { setDirty } = usePersonalHarbor();
-  return <button type="button" onClick={() => setDirty(true)}>Change draft</button>;
+  return (
+    <button type="button" onClick={() => setDirty(true)}>
+      Change draft
+    </button>
+  );
 }
 
 function renderLayout() {
@@ -29,7 +33,11 @@ function renderLayout() {
 }
 
 describe("PersonalHarborLayout", () => {
-  beforeEach(() => { push.mockReset(); replace.mockReset(); window.history.replaceState({}, "", "/account/profile"); });
+  beforeEach(() => {
+    push.mockReset();
+    replace.mockReset();
+    window.history.replaceState({}, "", "/account/profile");
+  });
   afterEach(cleanup);
 
   it("homeport.personal-harbor.mobile-parity projects the same section links in desktop and mobile navigation", () => {

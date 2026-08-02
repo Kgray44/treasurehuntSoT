@@ -213,17 +213,14 @@ const accountItems = [
     id: "account-view-profile",
     layer: "ACCOUNT",
     label: "View My Profile",
-    href: ({ currentUser }) =>
-      currentUser.status === "authenticated" && currentUser.user.handle
-        ? `/profile/${encodeURIComponent(currentUser.user.handle)}`
-        : "/account/profile",
-    owner: "wayfarer",
+    href: "/account",
+    owner: "project-homeport",
     requiresAuthentication: true,
     authenticatedOnly: true,
     shellModes: accountModes,
     desktop: "account",
     mobile: "account",
-    activeMatch: { type: "DYNAMIC_FAMILY", pattern: "/profile/:handle" },
+    activeMatch: { type: "EXACT" },
     accountGroup: "identity",
     order: 10,
     currentStatus: "active",
@@ -315,7 +312,7 @@ const accountItems = [
   {
     id: "account-security-sessions",
     layer: "ACCOUNT",
-    label: "Security",
+    label: "Security & Sessions",
     href: "/account/security",
     owner: "wayfarer",
     requiresAuthentication: true,

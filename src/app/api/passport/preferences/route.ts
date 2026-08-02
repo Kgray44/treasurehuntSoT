@@ -23,9 +23,10 @@ export async function PUT(request: Request) {
     return NextResponse.json({ error: "A valid signed-in session is required." }, { status: 403 });
   try {
     const body = await request.json();
-    const input = body && typeof body === "object" && "preferences" in body
-      ? updatePreferencesSchema.parse(body)
-      : { preferences: preferenceV1Schema.parse(body), expectedRevision: undefined };
+    const input =
+      body && typeof body === "object" && "preferences" in body
+        ? updatePreferencesSchema.parse(body)
+        : { preferences: preferenceV1Schema.parse(body), expectedRevision: undefined };
     return NextResponse.json(
       await updatePreferences(session.account.profile.id, input.preferences, input.expectedRevision),
     );

@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "status": "phase-1-catalog-validated",
+  "status": "phase-3-homeport-contracts-validated",
   "contracts": [
     {
       "id": "invitation-acceptance",
@@ -161,6 +161,279 @@
       "name": "Homeport nonconformity ledger preserves all governing findings",
       "authority": "project-homeport",
       "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.personal-harbor.ia",
+      "name": "Personal Harbor Ia",
+      "authority": "project-homeport",
+      "owners": ["project-homeport", "wayfarer"],
+      "critical": true
+    },
+    {
+      "id": "homeport.personal-harbor.section-registry",
+      "name": "Personal Harbor Section Registry",
+      "authority": "project-homeport",
+      "owners": ["project-homeport", "wayfarer"],
+      "critical": true
+    },
+    {
+      "id": "homeport.personal-harbor.mobile-parity",
+      "name": "Personal Harbor Mobile Parity",
+      "authority": "project-homeport",
+      "owners": ["project-homeport", "wayfarer"],
+      "critical": true
+    },
+    {
+      "id": "homeport.personal-harbor.deep-links",
+      "name": "Personal Harbor Deep Links",
+      "authority": "project-homeport",
+      "owners": ["project-homeport", "wayfarer"],
+      "critical": true
+    },
+    {
+      "id": "homeport.personal-harbor.unsaved-changes",
+      "name": "Personal Harbor Unsaved Changes",
+      "authority": "project-homeport",
+      "owners": ["project-homeport", "wayfarer"],
+      "critical": true
+    },
+    {
+      "id": "homeport.personal-harbor.mutation-feedback",
+      "name": "Personal Harbor Mutation Feedback",
+      "authority": "project-homeport",
+      "owners": ["project-homeport", "wayfarer"],
+      "critical": true
+    },
+    {
+      "id": "homeport.personal-harbor.stale-conflict",
+      "name": "Personal Harbor Stale Conflict",
+      "authority": "project-homeport",
+      "owners": ["project-homeport", "wayfarer"],
+      "critical": true
+    },
+    {
+      "id": "homeport.profile.overview",
+      "name": "Profile Overview",
+      "authority": "project-homeport",
+      "owners": ["project-homeport", "wayfarer"],
+      "critical": true
+    },
+    {
+      "id": "homeport.profile.public-projection",
+      "name": "Profile Public Projection",
+      "authority": "project-homeport",
+      "owners": ["project-homeport", "wayfarer"],
+      "critical": true
+    },
+    {
+      "id": "homeport.profile.owner-edit",
+      "name": "Profile Owner Edit",
+      "authority": "project-homeport",
+      "owners": ["project-homeport", "wayfarer"],
+      "critical": true
+    },
+    {
+      "id": "homeport.profile.media-state",
+      "name": "Profile Media State",
+      "authority": "project-homeport",
+      "owners": ["project-homeport", "wayfarer"],
+      "critical": true
+    },
+    {
+      "id": "homeport.profile.no-private-leak",
+      "name": "Profile No Private Leak",
+      "authority": "project-homeport",
+      "owners": ["project-homeport", "wayfarer"],
+      "critical": true
+    },
+    {
+      "id": "homeport.preferences.typed",
+      "name": "Preferences Typed",
+      "authority": "project-homeport",
+      "owners": ["project-homeport", "wayfarer"],
+      "critical": true
+    },
+    {
+      "id": "homeport.accessibility.preference-consumption",
+      "name": "Accessibility Preference Consumption",
+      "authority": "project-homeport",
+      "owners": ["project-homeport", "wayfarer"],
+      "critical": true
+    },
+    {
+      "id": "homeport.notifications.feedback",
+      "name": "Notifications Feedback",
+      "authority": "project-homeport",
+      "owners": ["project-homeport", "wayfarer"],
+      "critical": true
+    },
+    {
+      "id": "homeport.privacy.server-enforced",
+      "name": "Privacy Server Enforced",
+      "authority": "project-homeport",
+      "owners": ["project-homeport", "wayfarer"],
+      "critical": true
+    },
+    {
+      "id": "homeport.linked-identities.safe",
+      "name": "Linked Identities Safe",
+      "authority": "project-homeport",
+      "owners": ["project-homeport", "wayfarer"],
+      "critical": true
+    },
+    {
+      "id": "homeport.linked-identities.no-lockout",
+      "name": "Linked Identities No Lockout",
+      "authority": "project-homeport",
+      "owners": ["project-homeport", "wayfarer"],
+      "critical": true
+    },
+    {
+      "id": "homeport.passport.product-surface",
+      "name": "Passport Product Surface",
+      "authority": "project-homeport",
+      "owners": ["project-homeport", "wayfarer"],
+      "critical": true
+    },
+    {
+      "id": "homeport.passport.no-test-controls",
+      "name": "Passport No Test Controls",
+      "authority": "project-homeport",
+      "owners": ["project-homeport", "wayfarer"],
+      "critical": true
+    },
+    {
+      "id": "homeport.passport.session-regression",
+      "name": "Passport Session Regression",
+      "authority": "project-homeport",
+      "owners": ["project-homeport", "wayfarer"],
+      "critical": true
+    },
+    {
+      "id": "homeport.history.owner-only",
+      "name": "History Owner Only",
+      "authority": "project-homeport",
+      "owners": ["project-homeport", "wayfarer"],
+      "critical": true
+    },
+    {
+      "id": "homeport.history.version-pinned",
+      "name": "History Version Pinned",
+      "authority": "project-homeport",
+      "owners": ["project-homeport", "wayfarer"],
+      "critical": true
+    },
+    {
+      "id": "homeport.history.empty-state",
+      "name": "History Empty State",
+      "authority": "project-homeport",
+      "owners": ["project-homeport", "wayfarer"],
+      "critical": true
+    },
+    {
+      "id": "homeport.memories.owner-authorized",
+      "name": "Memories Owner Authorized",
+      "authority": "project-homeport",
+      "owners": ["project-homeport", "wayfarer"],
+      "critical": true
+    },
+    {
+      "id": "homeport.keepsake.consent",
+      "name": "Keepsake Consent",
+      "authority": "project-homeport",
+      "owners": ["project-homeport", "wayfarer"],
+      "critical": true
+    },
+    {
+      "id": "homeport.artifacts.owner-only",
+      "name": "Artifacts Owner Only",
+      "authority": "project-homeport",
+      "owners": ["project-homeport", "wayfarer"],
+      "critical": true
+    },
+    {
+      "id": "homeport.artifacts.provenance",
+      "name": "Artifacts Provenance",
+      "authority": "project-homeport",
+      "owners": ["project-homeport", "wayfarer"],
+      "critical": true
+    },
+    {
+      "id": "homeport.artifacts.empty-state",
+      "name": "Artifacts Empty State",
+      "authority": "project-homeport",
+      "owners": ["project-homeport", "wayfarer"],
+      "critical": true
+    },
+    {
+      "id": "homeport.saved-content.owner-only",
+      "name": "Saved Content Owner Only",
+      "authority": "project-homeport",
+      "owners": ["project-homeport", "wayfarer"],
+      "critical": true
+    },
+    {
+      "id": "homeport.saved-content.cross-surface",
+      "name": "Saved Content Cross Surface",
+      "authority": "project-homeport",
+      "owners": ["project-homeport", "wayfarer"],
+      "critical": true
+    },
+    {
+      "id": "homeport.security.sensitive-reauth",
+      "name": "Security Sensitive Reauth",
+      "authority": "project-homeport",
+      "owners": ["project-homeport", "wayfarer"],
+      "critical": true
+    },
+    {
+      "id": "homeport.sessions.list-safe",
+      "name": "Sessions List Safe",
+      "authority": "project-homeport",
+      "owners": ["project-homeport", "wayfarer"],
+      "critical": true
+    },
+    {
+      "id": "homeport.sessions.revoke",
+      "name": "Sessions Revoke",
+      "authority": "project-homeport",
+      "owners": ["project-homeport", "wayfarer"],
+      "critical": true
+    },
+    {
+      "id": "homeport.sessions.signout-all",
+      "name": "Sessions Signout All",
+      "authority": "project-homeport",
+      "owners": ["project-homeport", "wayfarer"],
+      "critical": true
+    },
+    {
+      "id": "homeport.account-data.truthful-availability",
+      "name": "Account Data Truthful Availability",
+      "authority": "project-homeport",
+      "owners": ["project-homeport", "wayfarer"],
+      "critical": true
+    },
+    {
+      "id": "homeport.personal-harbor.phase1-regression",
+      "name": "Personal Harbor Phase1 Regression",
+      "authority": "project-homeport",
+      "owners": ["project-homeport", "wayfarer"],
+      "critical": true
+    },
+    {
+      "id": "homeport.personal-harbor.phase2-regression",
+      "name": "Personal Harbor Phase2 Regression",
+      "authority": "project-homeport",
+      "owners": ["project-homeport", "wayfarer"],
+      "critical": true
+    },
+    {
+      "id": "homeport.personal-harbor.artifact-idempotency",
+      "name": "Personal Harbor Artifact Idempotency",
+      "authority": "project-homeport",
+      "owners": ["project-homeport", "wayfarer"],
       "critical": true
     }
   ]

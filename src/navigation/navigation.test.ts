@@ -189,14 +189,14 @@ describe("Homeport Phase 2 navigation authority", () => {
     expect(result.accountItems.some((item) => item.id.includes("workspace"))).toBe(false);
   });
 
-  it("homeport.navigation.safe-profile-destination uses a public handle or the canonical Profile editor fallback", () => {
+  it("homeport.navigation.personal-harbor-entry is role-neutral and never exposes private identity data", () => {
     const withHandle = projection(
       "/player/library",
       "WORKSPACE_STANDARD",
       "player",
       authenticated({ canUsePlayer: true }),
     );
-    expect(withHandle.accountItems.find((item) => item.id === "account-view-profile")?.href).toBe("/profile/mara");
+    expect(withHandle.accountItems.find((item) => item.id === "account-view-profile")?.href).toBe("/account");
 
     const withoutHandle = projection(
       "/player/library",
@@ -204,9 +204,7 @@ describe("Homeport Phase 2 navigation authority", () => {
       "player",
       authenticated({ canUsePlayer: true }, null),
     );
-    expect(withoutHandle.accountItems.find((item) => item.id === "account-view-profile")?.href).toBe(
-      "/account/profile",
-    );
+    expect(withoutHandle.accountItems.find((item) => item.id === "account-view-profile")?.href).toBe("/account");
     expect(JSON.stringify(withoutHandle.accountItems)).not.toContain("email");
   });
 

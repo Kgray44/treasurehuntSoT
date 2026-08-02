@@ -20,32 +20,40 @@ const reservedHandles = new Set([
 ]);
 const handlePattern = /^[a-z0-9](?:[a-z0-9-]{1,30}[a-z0-9])?$/;
 
-export const preferenceV1Schema = z.object({
-  version: z.literal(1),
-  experience: z.object({
-    motion: z.enum(["FULL", "GENTLE", "REDUCED", "SYSTEM"]),
-    textScale: z.number().min(0.8).max(2),
-    theme: z.enum(["SYSTEM", "LIGHT", "DARK", "HIGH_CONTRAST"]),
-    captions: z.boolean(),
-    transcripts: z.boolean(),
-    audioDescription: z.boolean(),
-    autoplay: z.boolean(),
-    contrast: z.enum(["SYSTEM", "STANDARD", "HIGH"]),
-    textureIntensity: z.number().min(0).max(1),
-    lowBandwidthMedia: z.boolean(),
-  }).strict(),
-  discovery: z.object({
-    searchable: z.boolean(),
-    themes: z.array(z.string().max(40)).max(12),
-    contentWarnings: z.array(z.string().max(40)).max(12),
-  }).strict(),
-  social: z.object({
-    invitationPolicy: z.enum(["ONLY_ME", "CREW_ONLY", "REGISTERED_USERS", "PUBLIC"]),
-    providerDiscovery: z.boolean(),
-  }).strict(),
-  notifications: z.object({ email: z.boolean(), product: z.boolean(), invitations: z.boolean() }).strict(),
-  privacy: z.object({ defaultVisibility: z.enum(visibilityValues) }).strict(),
-}).strict();
+export const preferenceV1Schema = z
+  .object({
+    version: z.literal(1),
+    experience: z
+      .object({
+        motion: z.enum(["FULL", "GENTLE", "REDUCED", "SYSTEM"]),
+        textScale: z.number().min(0.8).max(2),
+        theme: z.enum(["SYSTEM", "LIGHT", "DARK", "HIGH_CONTRAST"]),
+        captions: z.boolean(),
+        transcripts: z.boolean(),
+        audioDescription: z.boolean(),
+        autoplay: z.boolean(),
+        contrast: z.enum(["SYSTEM", "STANDARD", "HIGH"]),
+        textureIntensity: z.number().min(0).max(1),
+        lowBandwidthMedia: z.boolean(),
+      })
+      .strict(),
+    discovery: z
+      .object({
+        searchable: z.boolean(),
+        themes: z.array(z.string().max(40)).max(12),
+        contentWarnings: z.array(z.string().max(40)).max(12),
+      })
+      .strict(),
+    social: z
+      .object({
+        invitationPolicy: z.enum(["ONLY_ME", "CREW_ONLY", "REGISTERED_USERS", "PUBLIC"]),
+        providerDiscovery: z.boolean(),
+      })
+      .strict(),
+    notifications: z.object({ email: z.boolean(), product: z.boolean(), invitations: z.boolean() }).strict(),
+    privacy: z.object({ defaultVisibility: z.enum(visibilityValues) }).strict(),
+  })
+  .strict();
 export type PreferenceV1 = z.infer<typeof preferenceV1Schema>;
 
 export const defaultPreferences: PreferenceV1 = {
@@ -260,10 +268,7 @@ export async function privacyRulesForProfile(profileId: string) {
     }),
   ]);
   if (!profile) throw new ProfileError("Profile not found.", "NOT_FOUND");
-  const latest = rules.reduce(
-    (value, rule) => (rule.updatedAt > value ? rule.updatedAt : value),
-    profile.updatedAt,
-  );
+  const latest = rules.reduce((value, rule) => (rule.updatedAt > value ? rule.updatedAt : value), profile.updatedAt);
   return {
     rules: rules.map(({ section, visibility }) => ({ section, visibility })),
     revision: `${latest.toISOString()}:${rules.length}`,
