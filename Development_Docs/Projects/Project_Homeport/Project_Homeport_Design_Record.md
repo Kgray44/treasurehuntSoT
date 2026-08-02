@@ -3,7 +3,7 @@ title: Project Homeport Design Record
 audience: product-engineering
 status: current
 canonical_for: project-homeport-design-record
-last_reviewed: 2026-08-01
+last_reviewed: 2026-08-02
 ---
 
 # Project Homeport design record
@@ -157,3 +157,31 @@ not deployment, owner acceptance, or product acceptance.
 After governed closure, HP-NC-001, HP-NC-006, HP-NC-010, and HP-NC-016 are
 eligible for direct closure. HP-NC-008, HP-NC-014, and HP-NC-026 remain
 explicit partial advances with their Phase 3/4/later-state owners preserved.
+
+## Phase 3 architecture freeze amendment
+
+**Decision date:** 2026-08-02. **Source boundary:** completed Phase 2 preparation
+SHA `9ba021c7a7efd50083cb7f0d2ef3c2d19e979843`; reconciled `origin/main` and
+merge base `8d142227d712d27e363b15903dba9b0c99a04bc8`. The canonical development
+database starts at SHA-256
+`DF33983556CF2C6FF01DF6084AE6619EC5DF5C99B11241FA88B4A88F8E144EEB`.
+
+The architecture is frozen in [Project Homeport Phase 3 Personal Harbor
+Architecture](Project_Homeport_Phase_3_Personal_Harbor_Architecture.md), its
+18-section registry, four explicit behavior/projection matrices, and test plan.
+Homeport owns coherent presentation; Wayfarer remains the authority for account,
+Profile, Passport, history, identity, preferences, privacy, session, and artifact
+truth; Harborlight remains the authority for save records and eligible public
+projections. Phase 1 typed current-user state and Phase 2 shell/navigation remain
+unchanged.
+
+The phase introduces no schema, migration, duplicate identity writer, private
+media store, reauthentication grant, export/deactivation/deletion service, or
+provider simulator. Sensitive actions use accepted server authorities and
+explicit confirmation; unsupported operations are labelled truthfully rather
+than represented by decorative controls. `/passport` becomes a record-led
+product surface while accepted descendants remain, and the Phase 2 hash anchors
+become explicit route compatibility adapters.
+
+No implementation, test result, evidence, nonconformity closure, merge,
+deployment, Phase 4 work, or release acceptance is established by this freeze.

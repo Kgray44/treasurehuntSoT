@@ -3,12 +3,12 @@ title: Project Homeport Repository Index
 audience: product-engineering
 status: current
 canonical_for: project-homeport-repository-index
-last_reviewed: 2026-08-01
+last_reviewed: 2026-08-02
 ---
 
 # Project Homeport
 
-Project Homeport is the governed product-reality recovery and convergence program. Phase 0 preserves the historical current-state census. Phase 1 implements identity and session convergence. Phase 2 restores one global shell, navigation authority, account orientation, mobile parity, and governed contextual exits without beginning Phase 3 Personal Harbor reconstruction.
+Project Homeport is the governed product-reality recovery and convergence program. Phase 0 preserves the historical current-state census. Phase 1 implements identity and session convergence. Phase 2 restores one global shell and wayfinding authority. Phase 3 now has a frozen Personal Harbor architecture; implementation and acceptance remain unproven until its governed records are completed.
 
 ## Authority
 
@@ -40,6 +40,23 @@ Project Homeport is the governed product-reality recovery and convergence progra
 - [Validation Record](Project_Homeport_Phase_2_Validation_Record.md)
 - [Integration Manifest](Project_Homeport_Phase_2_Integration_Manifest.md)
 - [Curated Evidence](evidence/phase2/README.md)
+
+## Phase 3 human records
+
+- [Personal Harbor Architecture](Project_Homeport_Phase_3_Personal_Harbor_Architecture.md)
+- [Test Plan](Project_Homeport_Phase_3_Test_Plan.md)
+- [Planned Evidence](evidence/phase3/README.md)
+
+Implementation, validation, and integration records are added only after those
+states exist; the architecture freeze is not acceptance evidence.
+
+## Phase 3 machine-readable records
+
+- `Project_Homeport_Phase_3_Section_Registry.json`
+- `Project_Homeport_Phase_3_Data_Projection_Matrix.csv`
+- `Project_Homeport_Phase_3_Mutation_State_Matrix.csv`
+- `Project_Homeport_Phase_3_Sensitive_Action_Matrix.csv`
+- `Project_Homeport_Phase_3_Desktop_Mobile_Parity_Matrix.csv`
 
 ## Phase 2 machine-readable records
 
