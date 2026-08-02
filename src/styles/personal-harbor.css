@@ -160,6 +160,45 @@
 .public-profile-preview p { margin: 0; }
 .public-profile-preview ul { margin: 0; padding-left: 1.2rem; }
 
+.public-profile {
+  --profile-paper: #f3e6c7;
+  --profile-ink: #24271f;
+  --profile-brass: #d1af69;
+  display: grid;
+  width: min(calc(100% - 2rem), 78rem);
+  gap: clamp(1rem, 3vw, 2rem);
+  margin: 0 auto;
+  padding: clamp(1rem, 3vw, 2.5rem) 0 clamp(3rem, 7vw, 6rem);
+}
+.public-profile__hero { overflow: hidden; border: 1px solid color-mix(in srgb, var(--profile-brass) 45%, transparent); border-radius: 1.5rem; background: #092528; box-shadow: var(--shadow-card); }
+.public-profile__banner { position: relative; min-height: clamp(10rem, 25vw, 19rem); overflow: hidden; background: radial-gradient(circle at 78% 18%, rgb(93 171 154 / 35%), transparent 32%), radial-gradient(circle at 20% 100%, rgb(209 175 105 / 16%), transparent 36%), linear-gradient(135deg, #133f3e, #071d22 70%); }
+.public-profile__banner::after { position: absolute; right: -5rem; bottom: -9rem; width: 23rem; height: 23rem; border: 1px solid rgb(209 175 105 / 28%); border-radius: 50%; box-shadow: inset 0 0 0 2.5rem rgb(209 175 105 / 4%), inset 0 0 0 6rem rgb(209 175 105 / 4%); content: ""; }
+.public-profile__banner img { object-fit: cover; }
+.public-profile__identity { position: relative; display: flex; align-items: end; gap: clamp(1rem, 3vw, 1.7rem); padding: 0 clamp(1.2rem, 4vw, 2.5rem) clamp(1.4rem, 4vw, 2.3rem); }
+.public-profile__avatar { position: relative; width: clamp(6.5rem, 14vw, 10rem); height: clamp(6.5rem, 14vw, 10rem); flex: none; margin-top: clamp(-5rem, -8vw, -3.8rem); border: 5px solid #092528; border-radius: 50%; object-fit: cover; box-shadow: 0 1rem 2.5rem rgb(0 0 0 / 30%); }
+.public-profile__avatar--fallback { display: grid; place-items: center; color: var(--profile-ink); background: linear-gradient(145deg, var(--profile-paper), #caae70); font-family: var(--font-display); font-size: clamp(2.5rem, 6vw, 4.8rem); }
+.public-profile__identity h1 { max-width: 18ch; margin: 0; font-size: clamp(2.2rem, 6vw, 5rem); line-height: 0.95; }
+.public-profile__eyebrow { margin: 0 0 0.35rem; color: var(--profile-brass); font-size: 0.72rem; font-weight: 850; letter-spacing: 0.16em; text-transform: uppercase; }
+.public-profile__handle { margin: 0.6rem 0 0; color: var(--text-secondary); font-size: 1.02rem; }
+.public-profile__grid { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(16rem, 0.65fr); gap: 1rem; }
+.public-profile__card { min-width: 0; border: 1px solid var(--border-default); border-radius: 1.15rem; padding: clamp(1.3rem, 4vw, 2.2rem); background: radial-gradient(circle at 100% 0%, rgb(209 175 105 / 10%), transparent 36%), linear-gradient(145deg, rgb(12 43 45 / 96%), rgb(5 21 24 / 98%)); box-shadow: var(--shadow-card); }
+.public-profile__card h2 { margin: 0 0 0.7rem; font-size: clamp(1.55rem, 3vw, 2.35rem); }
+.public-profile__card p:not(.public-profile__eyebrow) { color: var(--text-secondary); line-height: 1.7; }
+.public-profile__about { min-height: 14rem; }
+.public-profile__connections { display: grid; gap: 0.55rem; margin: 1rem 0 0; padding: 0; list-style: none; }
+.public-profile__connections li { display: flex; gap: 0.6rem; align-items: center; border: 1px solid var(--border-subtle); border-radius: 0.7rem; padding: 0.75rem; }
+.public-profile__connections span { color: var(--profile-brass); }
+.public-profile__empty { border-left: 2px solid rgb(209 175 105 / 42%); padding-left: 0.85rem; }
+.public-profile__chronicles { display: flex; grid-column: 1 / -1; align-items: center; justify-content: space-between; gap: 1.5rem; }
+.public-profile__chronicles p { max-width: 66ch; margin-bottom: 0; }
+
+@media (max-width: 48rem) {
+  .public-profile__identity { align-items: start; flex-direction: column; }
+  .public-profile__grid { grid-template-columns: 1fr; }
+  .public-profile__chronicles { align-items: start; flex-direction: column; }
+  .public-profile__chronicles .button { width: 100%; }
+}
+
 .harbor-rule-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.8rem; }
 .harbor-list,
 .harbor-availability-list,
