@@ -259,6 +259,8 @@ async function capture(page: Page, evidenceId: string, viewport: string, zoom = 
     await expect(page.locator(".personal-harbor")).toBeVisible();
     await expect.poll(() => page.locator(".harbor-state--loading").count()).toBe(0);
   }
+  await page.evaluate(() => window.scrollTo(0, 0));
+  await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(0);
   const buffer = await page.screenshot({ path: path.join(evidenceRoot, `${evidenceId}.png`), fullPage: true });
   manifestRows.push({
     evidenceId,
@@ -368,6 +370,9 @@ test("Homeport Phase 3 A-AE Personal Harbor product journeys and required eviden
   await page.getByLabel("Biography").fill("Unsaved synthetic draft for warning evidence.");
   await page.getByRole("link", { name: "Preferences" }).last().click();
   await expect(page.getByRole("dialog", { name: "Leave this section?" })).toBeVisible();
+  // The dev server may finish a just-triggered route compilation after the
+  // modal is visible. Keep that transient framework chrome out of evidence.
+  await page.waitForTimeout(2_000);
   await capture(page, "HP-P3-EV-X-unsaved-warning", "1440x1000");
   await page.getByRole("button", { name: "Stay" }).click();
 
@@ -392,24 +397,18 @@ test("Homeport Phase 3 A-AE Personal Harbor product journeys and required eviden
   await capture(page, "HP-P3-EV-Z-dependency-unavailable", "1440x1000");
   await page.unroute("**/api/account/overview");
 
+  await page.setViewportSize({ width: 720, height: 500 });
   await page.goto("/account/profile");
-  await page.evaluate(() => {
-    document.documentElement.style.zoom = "2";
-  });
+  await expect(page.locator(".personal-harbor__mobile-sections")).toBeVisible();
+  await expect(page.locator(".personal-harbor__rail")).toBeHidden();
   await noOverflow(page);
-  await capture(page, "HP-P3-EV-AA-zoom-profile", "1440x1000", 200);
-  await page.evaluate(() => {
-    document.documentElement.style.zoom = "";
-  });
+  await capture(page, "HP-P3-EV-AA-zoom-profile", "1440x1000/effective-css-720x500", 200);
   await page.goto("/passport");
-  await page.evaluate(() => {
-    document.documentElement.style.zoom = "2";
-  });
+  await expect(page.locator(".personal-harbor__mobile-sections")).toBeVisible();
+  await expect(page.locator(".personal-harbor__rail")).toBeHidden();
   await noOverflow(page);
-  await capture(page, "HP-P3-EV-AB-zoom-passport", "1440x1000", 200);
-  await page.evaluate(() => {
-    document.documentElement.style.zoom = "";
-  });
+  await capture(page, "HP-P3-EV-AB-zoom-passport", "1440x1000/effective-css-720x500", 200);
+  await page.setViewportSize({ width: 1440, height: 1000 });
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto("/account/accessibility");
   await expect(page.getByText(/semantic final state immediately/iu)).toBeVisible();
@@ -809,6 +808,7 @@ test.describe.serial("Project Homeport Phase 3 governed browser journeys A-AE", 
 
   test("Journey AB: critical Personal Harbor routes survive effective 200 percent zoom", async ({ page }) => {
     await signIn(page, full);
+    await page.setViewportSize({ width: 720, height: 500 });
     for (const route of [
       "/account",
       "/account/profile",
@@ -818,13 +818,9 @@ test.describe.serial("Project Homeport Phase 3 governed browser journeys A-AE", 
     ]) {
       await page.goto(route);
       await waitForHarbor(page);
-      await page.evaluate(() => {
-        document.documentElement.style.zoom = "2";
-      });
+      await expect(page.locator(".personal-harbor__mobile-sections")).toBeVisible();
+      await expect(page.locator(".personal-harbor__rail")).toBeHidden();
       await noOverflow(page);
-      await page.evaluate(() => {
-        document.documentElement.style.zoom = "";
-      });
     }
   });
 
