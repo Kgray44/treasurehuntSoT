@@ -21,7 +21,7 @@ let historyId: string;
 let artifactId: string;
 
 async function account(label: string, handle = false): Promise<AccountFixture> {
-  const suffix = randomUUID().slice(0, 8);
+  const suffix = randomUUID().slice(0, 6);
   const slug = `homeport-p3-${label.toLowerCase()}-${suffix}`;
   const result = await registerAccount({ email: `${slug}@example.invalid`, password, displayName: `Homeport ${label}`, deviceLabel: "Homeport Phase 3 synthetic browser" });
   await db.userAccount.update({ where: { id: result.account.id }, data: { status: "ACTIVE" } });
