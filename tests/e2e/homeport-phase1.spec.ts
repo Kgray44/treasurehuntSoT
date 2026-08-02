@@ -76,7 +76,7 @@ async function signInFromGateway(page: Page, account: AccountFixture, destinatio
 
 async function openAccountMenu(page: Page, account: AccountFixture) {
   await page.getByRole("button", { name: account.displayName }).click();
-  return page.locator("#shell-profile-menu");
+  return page.locator("#shell-account-disclosure");
 }
 
 async function currentSession(page: Page) {
@@ -174,11 +174,11 @@ test.describe.serial("Project Homeport Phase 1 browser journeys", () => {
   }) => {
     await signInFromGateway(page, full);
     let menu = await openAccountMenu(page, full);
-    await menu.getByRole("link", { name: "Captain workspace" }).click();
+    await menu.getByRole("link", { name: "Captain", exact: true }).click();
     await expect(page).toHaveURL(/\/captain\/library$/u);
     await expect(page.getByRole("heading", { name: /Captain/u }).first()).toBeVisible();
     menu = await openAccountMenu(page, full);
-    await menu.getByRole("link", { name: "Creator workspace" }).click();
+    await menu.getByRole("link", { name: "Creator Studio", exact: true }).click();
     await expect(page).toHaveURL(/\/studio\/library$/u);
     menu = await openAccountMenu(page, full);
     await menu.getByRole("link", { name: "Chronicle Passport" }).click();

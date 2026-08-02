@@ -1,77 +1,296 @@
 import { describe, expect, it } from "vitest";
+import { CURRENT_USER_CONTEXT_VERSION, type CurrentUserClientState } from "@/homeport/current-user";
 import {
-  activeNavigationItem,
   allNavigationItems,
   classifyRoute,
-  enabledNavigationExtensions,
-  projectWorkspaceNavigation,
-  workspaceRegistry,
-  type ShellCapabilities,
+  functionalDestinationIds,
+  navigationItemMatches,
+  navigationRegistry,
+  projectNavigation,
+  routeShellDefinitions,
+  type NavigationPresentation,
+  type ShellMode,
+  type WorkspaceId,
 } from ".";
 
-const anonymous: ShellCapabilities = {
+const anonymous: CurrentUserClientState = {
+  contextVersion: CURRENT_USER_CONTEXT_VERSION,
+  status: "anonymous",
   authenticated: false,
-  canUsePlayer: false,
-  canUseCaptain: false,
-  canUseCreator: false,
-  isAdministrator: false,
 };
 
-const combined: ShellCapabilities = {
-  authenticated: true,
-  canUsePlayer: true,
-  canUseCaptain: true,
-  canUseCreator: true,
-  isAdministrator: false,
+const loading: CurrentUserClientState = { status: "loading", authenticated: false };
+
+const unavailable: CurrentUserClientState = {
+  contextVersion: CURRENT_USER_CONTEXT_VERSION,
+  status: "unavailable",
+  authenticated: false,
+  correlationId: "test-unavailable",
+  retryable: true,
 };
 
-describe("True North navigation registry", () => {
-  it("keeps IDs unique and ordering deterministic", () => {
+const restricted: CurrentUserClientState = {
+  contextVersion: CURRENT_USER_CONTEXT_VERSION,
+  status: "restricted",
+  authenticated: false,
+  reason: "suspended",
+};
+
+function authenticated(
+  capabilities: Partial<{
+    canUsePlayer: boolean;
+    canUseCaptain: boolean;
+    canUseCreator: boolean;
+    canModerate: boolean;
+    isAdministrator: boolean;
+  }> = {},
+  handle: string | null = "mara",
+): CurrentUserClientState {
+  return {
+    contextVersion: CURRENT_USER_CONTEXT_VERSION,
+    status: "authenticated",
+    authenticated: true,
+    user: {
+      accountId: "account-test",
+      profileId: "profile-test",
+      displayName: "Mara Tide",
+      initials: "MT",
+      ...(handle ? { handle } : {}),
+    },
+    capabilities: {
+      canUsePlayer: false,
+      canUseCaptain: false,
+      canUseCreator: false,
+      canModerate: false,
+      isAdministrator: false,
+      ...capabilities,
+    },
+    workspaces: ["public", "account"],
+    session: { id: "session-test", expiresAt: "2030-01-01T00:00:00.000Z" },
+    csrfToken: "csrf-test",
+    revision: "revision-test",
+  };
+}
+
+function projection(
+  pathname: string,
+  shellMode: ShellMode,
+  workspace: WorkspaceId,
+  currentUser: CurrentUserClientState,
+  presentation: NavigationPresentation = "desktop",
+) {
+  return projectNavigation({ pathname, shellMode, workspace, currentUser, presentation });
+}
+
+describe("Homeport Phase 2 navigation authority", () => {
+  it("homeport.navigation.one-authority has unique stable IDs, governed layers, owners, and placements", () => {
     expect(new Set(allNavigationItems.map((item) => item.id)).size).toBe(allNavigationItems.length);
-    for (const workspace of Object.values(workspaceRegistry)) {
-      const projection = projectWorkspaceNavigation(workspace.id, combined, "standard");
-      expect(projection.map((item) => item.desktopOrder)).toEqual(
-        [...projection.map((item) => item.desktopOrder)].sort((a, b) => a - b),
-      );
-      expect(projection.map((item) => item.label)).toEqual(
-        projectWorkspaceNavigation(workspace.id, combined, "standard").map((item) => item.label),
-      );
+    expect(new Set(allNavigationItems.map((item) => item.layer))).toEqual(
+      new Set(["GLOBAL", "WORKSPACE", "ACCOUNT", "CONTEXTUAL"]),
+    );
+    for (const item of navigationRegistry) {
+      expect(item.id).toMatch(/^[a-z][a-z0-9-]+$/u);
+      expect(item.label.trim()).not.toBe("");
+      expect(item.owner).toBeTruthy();
+      expect(item.shellModes.length).toBeGreaterThan(0);
+      expect(item.desktop).toBeTruthy();
+      expect(item.mobile).toBeTruthy();
+      if (typeof item.href === "string") expect(item.href).toMatch(/^\//u);
+    }
+    expect(navigationRegistry.filter((item) => item.id === "global-community-harbor")).toHaveLength(1);
+  });
+
+  it("homeport.shell.mode-classification represents all eight modes and keeps APIs out of the page registry", () => {
+    const cases: Array<[string, ShellMode]> = [
+      ["/", "GATEWAY_STANDARD"],
+      ["/tales", "PUBLIC_STANDARD"],
+      ["/community/guides/example", "PUBLIC_STANDARD"],
+      ["/player/library", "WORKSPACE_STANDARD"],
+      ["/captain/sessions/session-1", "COMPACT"],
+      ["/player/playthroughs/voyage-1/journal", "IMMERSIVE"],
+      ["/sign-in", "AUTHENTICATION"],
+      ["/player/sign-in", "AUTHENTICATION"],
+      ["/reset-password", "TOKENIZED"],
+      ["/player/invitation", "TOKENIZED"],
+      ["/dev/animations", "DEVELOPMENT"],
+    ];
+    for (const [pathname, mode] of cases) expect(classifyRoute(pathname).shellMode).toBe(mode);
+    expect(new Set(routeShellDefinitions.map((definition) => definition.shellMode))).toEqual(
+      new Set([
+        "GATEWAY_STANDARD",
+        "PUBLIC_STANDARD",
+        "WORKSPACE_STANDARD",
+        "COMPACT",
+        "IMMERSIVE",
+        "AUTHENTICATION",
+        "TOKENIZED",
+        "DEVELOPMENT",
+      ]),
+    );
+    expect(routeShellDefinitions.some((definition) => definition.pattern.startsWith("/api"))).toBe(false);
+    expect(
+      routeShellDefinitions
+        .filter((definition) => definition.shellMode === "COMPACT" || definition.shellMode === "IMMERSIVE")
+        .every((definition) => definition.exitTarget?.startsWith("/")),
+    ).toBe(true);
+  });
+
+  it("homeport.shell.gateway-anonymous-state projects global destinations and only anonymous account actions", () => {
+    const result = projection("/", "GATEWAY_STANDARD", "public", anonymous);
+    expect(result.globalItems.map((item) => [item.id, item.label])).toEqual([
+      ["global-home", "Home"],
+      ["global-explore-chronicles", "Explore Chronicles"],
+      ["global-community-harbor", "Community Harbor"],
+    ]);
+    expect(result.accountItems.map((item) => item.id)).toEqual(["account-create", "account-sign-in"]);
+    expect(result.activeGlobalItem?.id).toBe("global-home");
+    expect(result.workspaceItems).toEqual([]);
+  });
+
+  it("homeport.shell.account-loading and context-unavailable never project anonymous or capability items", () => {
+    for (const state of [loading, unavailable, restricted]) {
+      const result = projection("/player/library", "WORKSPACE_STANDARD", "player", state);
+      expect(result.globalItems.map((item) => item.id)).toEqual([
+        "global-home",
+        "global-explore-chronicles",
+        "global-community-harbor",
+      ]);
+      expect(result.accountItems).toEqual([]);
+      expect(result.workspaceItems).toEqual([]);
     }
   });
 
-  it("classifies account, Community, Captain, and immersive Player routes explicitly", () => {
-    expect(classifyRoute("/passport")).toMatchObject({ workspace: "account", shellMode: "standard" });
-    expect(classifyRoute("/account/security")).toMatchObject({ workspace: "account", shellMode: "standard" });
-    expect(classifyRoute("/community/districts/guides")).toMatchObject({
-      workspace: "community",
-      shellMode: "standard",
+  it("homeport.navigation.permission-aware projects only server-granted workspace capabilities", () => {
+    const player = projection(
+      "/player/library",
+      "WORKSPACE_STANDARD",
+      "player",
+      authenticated({ canUsePlayer: true }),
+    );
+    expect(player.workspaceItems.map((item) => item.id)).toEqual(["workspace-player-home"]);
+    expect(player.availableWorkspaceItems.map((item) => item.id)).toEqual(["account-workspace-player"]);
+
+    const full = projection(
+      "/captain/library",
+      "WORKSPACE_STANDARD",
+      "captain",
+      authenticated({ canUsePlayer: true, canUseCaptain: true, canUseCreator: true, canModerate: true }),
+    );
+    expect(full.workspaceItems.map((item) => item.id)).toEqual([
+      "workspace-captain-voyages",
+      "workspace-captain-invitations",
+    ]);
+    expect(full.availableWorkspaceItems.map((item) => item.id)).toEqual([
+      "account-workspace-player",
+      "account-workspace-captain",
+      "account-workspace-creator",
+      "account-workspace-moderator",
+    ]);
+  });
+
+  it("homeport.navigation.no-client-authority does not derive capabilities from protected pathnames", () => {
+    const result = projection("/studio/library", "WORKSPACE_STANDARD", "creator", anonymous);
+    expect(result.workspaceItems).toEqual([]);
+    expect(result.accountItems.some((item) => item.id.includes("workspace"))).toBe(false);
+  });
+
+  it("homeport.navigation.safe-profile-destination uses a public handle or the stable Passport fallback", () => {
+    const withHandle = projection("/player/library", "WORKSPACE_STANDARD", "player", authenticated({ canUsePlayer: true }));
+    expect(withHandle.accountItems.find((item) => item.id === "account-view-profile")?.href).toBe("/profile/mara");
+
+    const withoutHandle = projection(
+      "/player/library",
+      "WORKSPACE_STANDARD",
+      "player",
+      authenticated({ canUsePlayer: true }, null),
+    );
+    expect(withoutHandle.accountItems.find((item) => item.id === "account-view-profile")?.href).toBe(
+      "/passport#profile",
+    );
+    expect(JSON.stringify(withoutHandle.accountItems)).not.toContain("email");
+  });
+
+  it("homeport.navigation.personal-destination-reachability maps every governed personal item to a real current route", () => {
+    const result = projection("/passport", "WORKSPACE_STANDARD", "account", authenticated({ canUsePlayer: true }));
+    expect(
+      result.accountItems.filter((item) => item.accountGroup === "personal").map((item) => [item.id, item.href]),
+    ).toEqual([
+      ["account-passport", "/passport"],
+      ["account-preferences", "/passport#preferences"],
+      ["account-privacy", "/passport#privacy"],
+      ["account-history", "/passport#history"],
+      ["account-artifacts", "/passport#artifacts"],
+      ["account-security-sessions", "/account/security"],
+    ]);
+  });
+
+  it("homeport.navigation.desktop-mobile-set-equality preserves functional IDs for equivalent state", () => {
+    const state = authenticated({
+      canUsePlayer: true,
+      canUseCaptain: true,
+      canUseCreator: true,
+      canModerate: true,
+      isAdministrator: true,
     });
-    expect(classifyRoute("/quartermaster")).toMatchObject({ workspace: "captain", shellMode: "compact" });
-    expect(classifyRoute("/player/playthroughs/voyage-1/journal")).toMatchObject({
-      workspace: "player",
-      shellMode: "immersive-player",
-    });
+    const input = { pathname: "/player/library", shellMode: "WORKSPACE_STANDARD" as const, workspace: "player" as const, currentUser: state };
+    expect(functionalDestinationIds({ ...input, presentation: "desktop" })).toEqual(
+      functionalDestinationIds({ ...input, presentation: "mobile" }),
+    );
   });
 
-  it("projects the same Player definitions to desktop and mobile while hiding prohibited immersive destinations", () => {
-    const standard = projectWorkspaceNavigation("player", combined, "standard");
-    const immersive = projectWorkspaceNavigation("player", combined, "immersive-player");
-    expect(standard.map((item) => item.label)).toEqual(["My Voyages", "Explore Chronicles", "Chronicle Passport"]);
-    expect(immersive.map((item) => item.label)).toEqual(["My Voyages", "Chronicle Passport"]);
-    expect(immersive.some((item) => item.href.startsWith("/captain") || item.href.startsWith("/studio"))).toBe(false);
-    expect(immersive.map((item) => item.desktopOrder)).toEqual(immersive.map((item) => item.mobileOrder));
+  it("homeport.shell.active-state handles exact, section, dynamic, aliases, and false prefixes", () => {
+    expect(projection("/community", "PUBLIC_STANDARD", "community", anonymous).activeGlobalItem?.id).toBe(
+      "global-community-harbor",
+    );
+    expect(projection("/community/artifacts", "PUBLIC_STANDARD", "community", anonymous).activeGlobalItem?.id).toBe(
+      "global-community-harbor",
+    );
+    expect(projection("/tales", "PUBLIC_STANDARD", "public", anonymous).activeGlobalItem?.id).toBe(
+      "global-explore-chronicles",
+    );
+    expect(
+      projection("/player", "WORKSPACE_STANDARD", "player", authenticated({ canUsePlayer: true })).activeWorkspaceItem
+        ?.id,
+    ).toBe("workspace-player-home");
+    expect(
+      projection("/captain", "WORKSPACE_STANDARD", "captain", authenticated({ canUseCaptain: true }))
+        .activeWorkspaceItem?.id,
+    ).toBe("workspace-captain-voyages");
+    expect(navigationItemMatches("/player-sign-in", { href: "/player", activeMatch: { type: "SECTION" } })).toBe(
+      false,
+    );
+    expect(projection("/captain/sign-in", "AUTHENTICATION", "captain", anonymous).activeWorkspaceItem).toBeNull();
   });
 
-  it("filters capability-protected entries and resolves aliases to a stable active owner", () => {
-    expect(projectWorkspaceNavigation("captain", anonymous, "standard")).toHaveLength(1);
-    const captainItems = projectWorkspaceNavigation("captain", combined, "standard");
-    expect(activeNavigationItem("/captain", captainItems)?.id).toBe("captain-voyages");
-    expect(activeNavigationItem("/captain/invitations", captainItems)?.id).toBe("captain-invitations");
-    expect(classifyRoute("/captain").canonicalRoute).toBe("/captain/library");
-  });
-
-  it("keeps unavailable Community and private-operations destinations disabled rather than inventing links", () => {
-    expect(enabledNavigationExtensions()).toEqual([]);
-    expect(workspaceRegistry.creator.items.some((item) => item.href.endsWith("/operations"))).toBe(false);
+  it("homeport.navigation.contextual-parent provides stable Community, personal, compact, immersive, and development exits", () => {
+    expect(
+      projection("/community/guides/example", "PUBLIC_STANDARD", "community", anonymous).contextualItems.map(
+        (item) => item.href,
+      ),
+    ).toEqual(["/community"]);
+    expect(
+      projection("/profile/mara", "PUBLIC_STANDARD", "account", authenticated()).contextualItems.map(
+        (item) => item.href,
+      ),
+    ).toEqual(["/passport"]);
+    expect(
+      projection(
+        "/captain/sessions/session-1",
+        "COMPACT",
+        "captain",
+        authenticated({ canUseCaptain: true }),
+      ).contextualItems.map((item) => item.href),
+    ).toEqual(["/captain/library"]);
+    expect(
+      projection(
+        "/player/playthroughs/voyage-1/journal",
+        "IMMERSIVE",
+        "player",
+        authenticated({ canUsePlayer: true }),
+      ).contextualItems.map((item) => item.href),
+    ).toEqual(["/player/library"]);
+    expect(projection("/dev/animations", "DEVELOPMENT", "development", anonymous).contextualItems[0]?.href).toBe(
+      "/",
+    );
   });
 });

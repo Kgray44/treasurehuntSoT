@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useId, useLayoutEffect, useRef, useState } from "react";
 import { motion } from "motion/react";
 import { useMotionMode } from "@/animation/motion/useMotionMode";
 import { platformMotionEasing, resolvePlatformMotionToken } from "@/animation/platform/motion-tokens";
@@ -12,195 +12,285 @@ import { useCurrentUser } from "@/components/auth/CurrentUserProvider";
 import { canonicalTerms } from "@/language/canonical-terms";
 import {
   classifyRoute,
-  projectWorkspaceNavigation,
-  resolveActiveWorkspaceItem,
+  projectNavigation,
   workspaceRegistry,
-  type ShellContext,
+  type AccountGroup,
+  type ProjectedNavigationItem,
 } from "@/navigation";
 
 function ShellBrand({ label, compact = false }: { label: string; compact?: boolean }) {
   return (
-    <Link className="product-mark" href="/" aria-label="Voyagewright home">
+    <Link className="product-mark" href="/" aria-label="Voyagewright home" data-navigation-id="brand-home">
       <span aria-hidden="true">✦</span>
       <span>
         <strong>{canonicalTerms.product}</strong>
-        <small>{compact ? "Active Voyage" : label}</small>
+        <small>{compact ? label : "Stories made to be played"}</small>
       </span>
     </Link>
   );
 }
 
+function NavigationLinks({
+  items,
+  activeId,
+  motionKey,
+  onNavigate,
+}: {
+  items: readonly ProjectedNavigationItem[];
+  activeId?: string;
+  motionKey: string;
+  onNavigate: () => void;
+}) {
+  const { mode } = useMotionMode();
+  const micro = resolvePlatformMotionToken("micro", mode);
+  return items.map((item) => {
+    if (!item.href) return null;
+    const current = activeId === item.id;
+    return (
+      <Link
+        key={item.id}
+        className={current ? "current" : undefined}
+        href={item.href}
+        aria-current={current ? "page" : undefined}
+        data-navigation-id={item.id}
+        onClick={onNavigate}
+      >
+        {current ? (
+          <motion.i
+            className="product-navigation-active-plate"
+            layoutId={`product-navigation-active-${motionKey}`}
+            transition={{ duration: micro.durationSeconds, ease: platformMotionEasing("micro") }}
+            aria-hidden="true"
+          />
+        ) : null}
+        <span>{item.label}</span>
+      </Link>
+    );
+  });
+}
+
+function accountStatusLabel(status: ReturnType<typeof useCurrentUser>["state"]["status"]) {
+  switch (status) {
+    case "loading":
+      return "Checking account";
+    case "unavailable":
+      return "Account unavailable";
+    case "restricted":
+      return "Account restricted";
+    case "expired":
+    case "revoked":
+    case "invalid":
+      return "Session ended";
+    default:
+      return "Account";
+  }
+}
+
+const accountGroupLabels: Readonly<Record<AccountGroup, string>> = {
+  identity: "Identity",
+  personal: "Personal Harbor",
+  workspace: "Workspaces",
+  action: "Account actions",
+};
+
 export function ProductShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const route = classifyRoute(pathname);
   const workspace = workspaceRegistry[route.workspace];
-  const { mode } = useMotionMode();
   const { state: currentUser, refresh: refreshCurrentUser } = useCurrentUser();
-  const [workspaceMenuOpen, setWorkspaceMenuOpen] = useState(false);
-  const [profileMenuOpen, setProfileMenuOpen] = useState(false);
-  const menuButtonRef = useRef<HTMLButtonElement>(null);
-  const profileButtonRef = useRef<HTMLButtonElement>(null);
-  const workspaceNavigationRef = useRef<HTMLElement>(null);
-  const profileMenuRef = useRef<HTMLDivElement>(null);
+  const [navigationOpen, setNavigationOpen] = useState(false);
+  const [accountOpen, setAccountOpen] = useState(false);
+  const navigationButtonRef = useRef<HTMLButtonElement>(null);
+  const accountButtonRef = useRef<HTMLButtonElement>(null);
+  const navigationDrawerRef = useRef<HTMLDivElement>(null);
+  const accountDisclosureRef = useRef<HTMLDivElement>(null);
   const previousPathnameRef = useRef(pathname);
-  const context: ShellContext | null =
-    currentUser.status === "authenticated"
-      ? {
-          authenticated: true,
-          canUsePlayer: currentUser.capabilities.canUsePlayer,
-          canUseCaptain: currentUser.capabilities.canUseCaptain,
-          canUseCreator: currentUser.capabilities.canUseCreator,
-          isAdministrator: currentUser.capabilities.isAdministrator,
-          profile: {
-            displayName: currentUser.user.displayName,
-            initials: currentUser.user.initials,
-            ...(currentUser.user.handle ? { handle: currentUser.user.handle } : {}),
-          },
-        }
-      : currentUser.status === "loading"
-        ? null
-        : {
-            authenticated: false,
-            canUsePlayer: false,
-            canUseCaptain: false,
-            canUseCreator: false,
-            isAdministrator: false,
-            profile: null,
-          };
-  const navigationCapabilities = context ?? {
-    authenticated: false,
-    canUsePlayer: false,
-    canUseCaptain: false,
-    canUseCreator: false,
-    isAdministrator: false,
-  };
-  const items = projectWorkspaceNavigation(route.workspace, navigationCapabilities, route.shellMode);
-  const activeItem = resolveActiveWorkspaceItem(pathname, items);
-  const micro = resolvePlatformMotionToken("micro", mode);
-  const compact = route.shellMode === "compact" || route.shellMode === "immersive-player";
-
-  const closeWorkspaceMenu = useCallback(
-    (restoreFocus = false) => {
-      setWorkspaceMenuOpen(false);
-      if (restoreFocus) queueMicrotask(() => menuButtonRef.current?.focus());
-    },
-    [setWorkspaceMenuOpen],
+  const accountHeadingPrefix = useId();
+  const compact = route.shellMode === "COMPACT" || route.shellMode === "IMMERSIVE";
+  const ordinaryNavigation = ["GATEWAY_STANDARD", "PUBLIC_STANDARD", "WORKSPACE_STANDARD"].includes(route.shellMode);
+  const accountControl = ["GATEWAY_STANDARD", "PUBLIC_STANDARD", "WORKSPACE_STANDARD", "COMPACT", "IMMERSIVE"].includes(
+    route.shellMode,
   );
-  const closeProfileMenu = useCallback(
-    (restoreFocus = false) => {
-      setProfileMenuOpen(false);
-      if (restoreFocus) queueMicrotask(() => profileButtonRef.current?.focus());
-    },
-    [setProfileMenuOpen],
-  );
+  const projection = projectNavigation({
+    pathname,
+    shellMode: route.shellMode,
+    currentUser,
+    workspace: route.workspace,
+    presentation: "desktop",
+  });
+  const mobileProjection = projectNavigation({
+    pathname,
+    shellMode: route.shellMode,
+    currentUser,
+    workspace: route.workspace,
+    presentation: "mobile",
+  });
+  const closeAll = useCallback(() => {
+    setNavigationOpen(false);
+    setAccountOpen(false);
+  }, []);
+  const closeNavigation = useCallback((restoreFocus = false) => {
+    setNavigationOpen(false);
+    if (restoreFocus) queueMicrotask(() => navigationButtonRef.current?.focus());
+  }, []);
+  const closeAccount = useCallback((restoreFocus = false) => {
+    setAccountOpen(false);
+    if (restoreFocus) queueMicrotask(() => accountButtonRef.current?.focus());
+  }, []);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (previousPathnameRef.current === pathname) return;
     previousPathnameRef.current = pathname;
-    setWorkspaceMenuOpen(false);
-    setProfileMenuOpen(false);
-  }, [pathname]);
+    closeAll();
+  }, [closeAll, pathname]);
 
   useEffect(() => {
-    if (!workspaceMenuOpen && !profileMenuOpen) return;
-    const close = (event: KeyboardEvent) => {
-      if (event.key !== "Escape") return;
-      if (profileMenuOpen) closeProfileMenu(true);
-      else closeWorkspaceMenu(true);
+    if (!navigationOpen && !accountOpen) return;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    document.body.dataset.shellOverlay = "open";
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      delete document.body.dataset.shellOverlay;
     };
-    window.addEventListener("keydown", close);
-    return () => window.removeEventListener("keydown", close);
-  }, [closeProfileMenu, closeWorkspaceMenu, profileMenuOpen, workspaceMenuOpen]);
+  }, [accountOpen, navigationOpen]);
 
   useEffect(() => {
-    if (!workspaceMenuOpen) return;
-    queueMicrotask(() => workspaceNavigationRef.current?.querySelector<HTMLAnchorElement>("a")?.focus());
-  }, [workspaceMenuOpen]);
+    if (!navigationOpen && !accountOpen) return;
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key !== "Escape") return;
+      if (accountOpen) closeAccount(true);
+      else closeNavigation(true);
+    };
+    window.addEventListener("keydown", closeOnEscape);
+    return () => window.removeEventListener("keydown", closeOnEscape);
+  }, [accountOpen, closeAccount, closeNavigation, navigationOpen]);
 
   useEffect(() => {
-    if (!profileMenuOpen) return;
-    queueMicrotask(() => profileMenuRef.current?.querySelector<HTMLElement>("a, button")?.focus());
-  }, [profileMenuOpen]);
+    if (!navigationOpen && !accountOpen) return;
+    const closeOnOutsidePointer = (event: PointerEvent) => {
+      if (!(event.target instanceof Node)) return;
+      if (
+        accountOpen &&
+        !accountButtonRef.current?.contains(event.target) &&
+        !accountDisclosureRef.current?.contains(event.target)
+      )
+        closeAccount();
+      if (
+        navigationOpen &&
+        !navigationButtonRef.current?.contains(event.target) &&
+        !navigationDrawerRef.current?.contains(event.target)
+      )
+        closeNavigation();
+    };
+    document.addEventListener("pointerdown", closeOnOutsidePointer);
+    return () => document.removeEventListener("pointerdown", closeOnOutsidePointer);
+  }, [accountOpen, closeAccount, closeNavigation, navigationOpen]);
 
-  if (route.shellMode === "gateway") return <RouteMotionBoundary pathname={pathname}>{children}</RouteMotionBoundary>;
+  useEffect(() => {
+    if (navigationOpen)
+      queueMicrotask(() => navigationDrawerRef.current?.querySelector<HTMLAnchorElement>("a")?.focus());
+  }, [navigationOpen]);
+
+  useEffect(() => {
+    if (accountOpen)
+      queueMicrotask(() => accountDisclosureRef.current?.querySelector<HTMLElement>("a, button")?.focus());
+  }, [accountOpen]);
 
   const profileLabel =
-    context?.profile?.displayName ?? (currentUser.status === "unavailable" ? "Account unavailable" : "Account");
-  const profileInitials = context?.profile?.initials ?? "…";
-  const signInHref = `/sign-in?returnTo=${encodeURIComponent(pathname)}`;
-  const showWorkspaceMenu = route.shellMode !== "authentication" && items.length > 0;
+    currentUser.status === "authenticated" ? currentUser.user.displayName : accountStatusLabel(currentUser.status);
+  const profileInitials = currentUser.status === "authenticated" ? currentUser.user.initials : currentUser.status === "loading" ? "…" : "V";
+  const activeAccountId = projection.activeAccountItem?.id;
+  const accountGroups = (["identity", "personal", "workspace", "action"] as const).map((group) => ({
+    group,
+    items: projection.accountItems.filter((item) => item.accountGroup === group),
+  }));
 
   return (
-    <div className={`product-shell workspace-${route.workspace} shell-mode-${route.shellMode}`}>
+    <div
+      className={`product-shell workspace-${route.workspace} shell-mode-${route.shellMode}`}
+      data-shell-mode={route.shellMode}
+      data-workspace={route.workspace}
+      data-functional-destination-count={mobileProjection.functionalDestinationIds.length}
+    >
       <a className="skip-link" href="#main-content">
         Skip to main content
       </a>
       <header className="product-shell-header">
         <ShellBrand label={workspace.label} compact={compact} />
-        {showWorkspaceMenu && (
-          <>
-            <button
-              ref={menuButtonRef}
-              className="product-menu-button"
-              type="button"
-              aria-label={workspaceMenuOpen ? "Close navigation menu" : "Open navigation menu"}
-              aria-expanded={workspaceMenuOpen}
-              aria-controls="product-navigation"
-              onClick={() => {
-                setWorkspaceMenuOpen((open) => !open);
-                setProfileMenuOpen(false);
-              }}
-            >
-              <span aria-hidden="true">{workspaceMenuOpen ? "×" : "☰"}</span>
-              <span>{workspaceMenuOpen ? "Close" : "Menu"}</span>
-            </button>
-            <nav
-              ref={workspaceNavigationRef}
-              id="product-navigation"
-              className="product-navigation"
-              aria-label={`${workspace.label} navigation`}
-            >
-              {items.map((item) => {
-                const current = activeItem?.id === item.id;
-                return (
-                  <Link
-                    key={item.id}
-                    className={current ? "current" : undefined}
-                    href={item.href}
-                    aria-current={current ? "page" : undefined}
-                  >
-                    {current && (
-                      <motion.i
-                        className="product-navigation-active-plate"
-                        layoutId={`product-navigation-active-${route.workspace}`}
-                        transition={{ duration: micro.durationSeconds, ease: platformMotionEasing("micro") }}
-                        aria-hidden="true"
-                      />
-                    )}
-                    <span>{item.label}</span>
-                  </Link>
-                );
-              })}
-            </nav>
-          </>
-        )}
-        {route.shellMode === "authentication" ? (
-          <Link className="shell-sign-in" href="/">
-            Return to Voyagewright
-          </Link>
+
+        {ordinaryNavigation ? (
+          <button
+            ref={navigationButtonRef}
+            className="product-menu-button"
+            type="button"
+            aria-label={navigationOpen ? "Close navigation" : "Open navigation"}
+            aria-expanded={navigationOpen}
+            aria-controls="product-navigation-drawer"
+            onClick={() => {
+              setNavigationOpen((open) => !open);
+              setAccountOpen(false);
+            }}
+          >
+            <span aria-hidden="true">{navigationOpen ? "×" : "☰"}</span>
+            <span>{navigationOpen ? "Close" : "Navigate"}</span>
+          </button>
         ) : null}
-        {route.shellMode !== "authentication" && (
+
+        {ordinaryNavigation ? (
+          <div
+            ref={navigationDrawerRef}
+            id="product-navigation-drawer"
+            className="product-navigation-drawer"
+            data-open={navigationOpen ? "true" : "false"}
+          >
+            <nav className="product-navigation global-navigation" aria-label="Global navigation">
+              <NavigationLinks
+                items={projection.globalItems}
+                activeId={projection.activeGlobalItem?.id}
+                motionKey="global"
+                onNavigate={closeAll}
+              />
+            </nav>
+            {projection.workspaceItems.length ? (
+              <nav className="product-navigation workspace-navigation" aria-label={`${workspace.label} navigation`}>
+                <span className="navigation-label">{workspace.label}</span>
+                <NavigationLinks
+                  items={projection.workspaceItems}
+                  activeId={projection.activeWorkspaceItem?.id}
+                  motionKey={route.workspace}
+                  onNavigate={closeAll}
+                />
+              </nav>
+            ) : null}
+          </div>
+        ) : null}
+
+        {!ordinaryNavigation ? (
+          <div className="shell-purpose">
+            <span>{route.shellMode === "DEVELOPMENT" ? "Development tool" : workspace.label}</span>
+            {route.exitTarget ? (
+              <Link href={route.exitTarget} onClick={closeAll} data-navigation-id="shell-safe-return">
+                {route.shellMode === "AUTHENTICATION" || route.shellMode === "TOKENIZED"
+                  ? "Safe return"
+                  : "Return"}
+              </Link>
+            ) : null}
+          </div>
+        ) : null}
+
+        {accountControl ? (
           <div className="shell-profile-region">
             <button
-              ref={profileButtonRef}
+              ref={accountButtonRef}
               className="shell-profile-trigger"
               type="button"
               aria-label={profileLabel}
-              aria-expanded={profileMenuOpen}
-              aria-controls="shell-profile-menu"
+              aria-expanded={accountOpen}
+              aria-controls="shell-account-disclosure"
               onClick={() => {
-                setProfileMenuOpen((open) => !open);
-                setWorkspaceMenuOpen(false);
+                setAccountOpen((open) => !open);
+                setNavigationOpen(false);
               }}
             >
               <span className="shell-avatar" aria-hidden="true">
@@ -211,83 +301,129 @@ export function ProductShell({ children }: { children: React.ReactNode }) {
                 ▾
               </span>
             </button>
-            <div ref={profileMenuRef} id="shell-profile-menu" className="shell-profile-menu" hidden={!profileMenuOpen}>
-              {context?.authenticated && context.profile ? (
-                <>
-                  <p className="shell-profile-summary">
-                    <b>{context.profile.displayName}</b>
-                    {context.profile.handle ? <small>@{context.profile.handle}</small> : null}
+            <div
+              ref={accountDisclosureRef}
+              id="shell-account-disclosure"
+              className="shell-account-disclosure"
+              hidden={!accountOpen}
+              aria-label="Account navigation"
+            >
+              {currentUser.status === "authenticated" ? (
+                <div className="account-identity-summary">
+                  <span className="shell-avatar" aria-hidden="true">
+                    {currentUser.user.initials}
+                  </span>
+                  <p>
+                    <b>{currentUser.user.displayName}</b>
+                    {currentUser.user.handle ? <small>@{currentUser.user.handle}</small> : <small>Private profile</small>}
                   </p>
-                  <Link href="/passport">Chronicle Passport</Link>
-                  <Link href="/account/security">Security</Link>
-                  {(context.canUseCaptain || context.canUseCreator) && <hr />}
-                  {context.canUsePlayer && route.workspace !== "player" && (
-                    <Link href="/player/library">Player workspace</Link>
-                  )}
-                  {context.canUseCaptain && route.workspace !== "captain" && (
-                    <Link href="/captain/library">Captain workspace</Link>
-                  )}
-                  {context.canUseCreator && route.workspace !== "creator" && (
-                    <Link href="/studio/library">Creator workspace</Link>
-                  )}
-                  <hr />
-                  <SignOutButton />
-                </>
+                </div>
+              ) : null}
+
+              {currentUser.status === "loading" ? (
+                <div className="account-state-panel" role="status">
+                  <b>Checking your account…</b>
+                  <p>Navigation will appear after the server confirms the current account.</p>
+                </div>
               ) : currentUser.status === "unavailable" ? (
-                <>
-                  <p className="shell-profile-summary" role="alert">
-                    <b>Account service unavailable</b>
-                    <small>No identity or workspace permission was assumed.</small>
-                  </p>
+                <div className="account-state-panel" role="alert">
+                  <b>Account context is unavailable</b>
+                  <p>No identity or workspace permission was assumed.</p>
                   <button type="button" onClick={() => void refreshCurrentUser()}>
                     Retry account check
                   </button>
-                </>
-              ) : currentUser.status === "loading" ? (
-                <p className="shell-profile-summary" role="status">
-                  <b>Checking account…</b>
-                  <small>Workspace access will appear after the server responds.</small>
-                </p>
+                </div>
+              ) : currentUser.status === "restricted" ? (
+                <div className="account-state-panel" role="alert">
+                  <b>Account access is restricted</b>
+                  <p>Workspace navigation is unavailable. Use the account recovery guidance for this status.</p>
+                </div>
               ) : (
                 <>
-                  <p className="shell-profile-summary">
-                    <b>Welcome aboard</b>
-                    <small>Sign in to reach your profile and workspaces.</small>
-                  </p>
-                  <Link href={signInHref}>Sign in</Link>
-                  <Link href="/register">Create Account</Link>
-                  <Link href="/">Choose a workspace</Link>
+                  {currentUser.status === "expired" || currentUser.status === "revoked" || currentUser.status === "invalid" ? (
+                    <p className="account-session-ended" role="status">
+                      Your previous session ended. Sign in again to continue safely.
+                    </p>
+                  ) : null}
+                  {accountGroups.map(({ group, items }) => {
+                    if (!items.length) return null;
+                    const headingId = `${accountHeadingPrefix}-${group}`;
+                    return (
+                      <section key={group} className={`account-group account-group-${group}`} aria-labelledby={headingId}>
+                        <h2 id={headingId}>{accountGroupLabels[group]}</h2>
+                        <nav aria-label={accountGroupLabels[group]}>
+                          {items.map((item) => {
+                            if (item.action === "sign-out")
+                              return (
+                                <div key={item.id} className="account-sign-out" data-navigation-id={item.id}>
+                                  <SignOutButton />
+                                </div>
+                              );
+                            if (!item.href) return null;
+                            const current = activeAccountId === item.id;
+                            const currentWorkspace =
+                              item.accountGroup === "workspace" && item.id === `account-workspace-${route.workspace}`;
+                            return (
+                              <Link
+                                key={item.id}
+                                href={item.href}
+                                data-navigation-id={item.id}
+                                aria-current={current ? "page" : undefined}
+                                onClick={closeAll}
+                              >
+                                <span>{item.label}</span>
+                                {currentWorkspace ? <small>Current</small> : null}
+                              </Link>
+                            );
+                          })}
+                        </nav>
+                      </section>
+                    );
+                  })}
                 </>
               )}
             </div>
           </div>
-        )}
-        {(workspaceMenuOpen || profileMenuOpen) && (
+        ) : null}
+
+        {(navigationOpen || accountOpen) && (
           <button
             className="product-menu-backdrop"
             type="button"
-            aria-label="Close open menu"
+            aria-label="Close open navigation"
             onClick={() => {
-              if (profileMenuOpen) closeProfileMenu(true);
-              else closeWorkspaceMenu(true);
+              if (accountOpen) closeAccount(true);
+              else closeNavigation(true);
             }}
           />
         )}
       </header>
+
+      {projection.contextualItems.length ? (
+        <nav className="shell-contextual-navigation" aria-label="Contextual navigation">
+          <span>{compact ? workspace.label : "Current area"}</span>
+          <NavigationLinks
+            items={projection.contextualItems}
+            motionKey="contextual"
+            onNavigate={closeAll}
+          />
+        </nav>
+      ) : null}
+
       <div className="product-shell-content" id="main-content" tabIndex={-1}>
         <RouteMotionBoundary pathname={pathname}>{children}</RouteMotionBoundary>
       </div>
-      {route.shellMode !== "compact" &&
-        route.shellMode !== "immersive-player" &&
-        route.shellMode !== "authentication" && (
-          <footer className="product-footer">
-            <p>Stories made to be played.</p>
-            <nav aria-label="Product links">
-              <Link href="/">Choose a workspace</Link>
-              <Link href="/tales">Explore Chronicles</Link>
-            </nav>
-          </footer>
-        )}
+
+      {route.shellMode === "PUBLIC_STANDARD" || route.shellMode === "WORKSPACE_STANDARD" ? (
+        <footer className="product-footer">
+          <p>
+            <b>Voyagewright</b> · Stories made to be played.
+          </p>
+          <Link href="/" data-navigation-id="footer-home">
+            Return Home
+          </Link>
+        </footer>
+      ) : null}
     </div>
   );
 }

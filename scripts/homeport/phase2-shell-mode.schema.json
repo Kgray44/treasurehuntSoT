@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://voyagewright.local/schemas/homeport-phase2-shell-mode.schema.json",
+  "title": "Project Homeport Phase 2 shell mode registry",
+  "type": "object",
+  "required": ["schemaVersion", "validModes", "pageCount", "apiRoutesExcluded", "records"],
+  "properties": {
+    "schemaVersion": { "const": "2.0.0" },
+    "validModes": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "enum": [
+          "GATEWAY_STANDARD",
+          "PUBLIC_STANDARD",
+          "WORKSPACE_STANDARD",
+          "COMPACT",
+          "IMMERSIVE",
+          "AUTHENTICATION",
+          "TOKENIZED",
+          "DEVELOPMENT"
+        ]
+      }
+    },
+    "pageCount": { "type": "integer", "minimum": 1 },
+    "apiRoutesExcluded": { "const": true },
+    "records": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "routeId",
+          "routePattern",
+          "mode",
+          "reason",
+          "globalNavigationVisibility",
+          "workspaceNavigationVisibility",
+          "accountControlVisibility",
+          "footerVisibility",
+          "contextualNavigation",
+          "mobileTransformation",
+          "authenticationRule",
+          "capabilityRule",
+          "activeStateFamily",
+          "evidence",
+          "owner"
+        ]
+      }
+    }
+  }
+}

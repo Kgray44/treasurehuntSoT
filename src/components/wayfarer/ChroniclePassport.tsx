@@ -103,6 +103,22 @@ export function ChroniclePassport() {
   const adapters = hasCurrentSessionData ? storedAdapters : [];
   const csrf = hasCurrentSessionData ? storedCsrf : "";
   const headers = { "content-type": "application/json", ...(csrf ? { "x-csrf-token": csrf } : {}) };
+  useEffect(() => {
+    if (!loadedSessionId) return;
+    const focusSection = () => {
+      const sectionId = window.location.hash.slice(1);
+      if (!new Set(["profile", "providers", "preferences", "privacy", "history", "artifacts"]).has(sectionId)) return;
+      const section = document.getElementById(sectionId);
+      const heading = section?.querySelector<HTMLElement>("h2, h3");
+      if (!heading) return;
+      if (!heading.hasAttribute("tabindex")) heading.setAttribute("tabindex", "-1");
+      heading.focus({ preventScroll: true });
+      section?.scrollIntoView({ block: "start" });
+    };
+    queueMicrotask(focusSection);
+    window.addEventListener("hashchange", focusSection);
+    return () => window.removeEventListener("hashchange", focusSection);
+  }, [loadedSessionId]);
   async function updateProfile(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setError("");
@@ -304,10 +320,10 @@ export function ChroniclePassport() {
         <a href="#profile">Profile</a>
         <a href="#providers">Linked identities</a>
         <a href="#preferences">Preferences</a>
-        <a href="#privacy">Privacy</a>
+        <a href="#privacy">Privacy &amp; Safety</a>
         <a href="#history">Chronicle history</a>
         <a href="#artifacts">Artifact Cabinet</a>
-        <a href="/account/security">Security</a>
+        <a href="/account/security">Security &amp; Sessions</a>
       </nav>
       <section id="profile">
         <h2>Profile</h2>
@@ -480,7 +496,7 @@ export function ChroniclePassport() {
         </form>
       </section>
       <section id="privacy">
-        <h2>Privacy</h2>
+        <h2>Privacy &amp; Safety</h2>
         <form onSubmit={updatePrivacy}>
           {["HEADER", "BIOGRAPHY", "PROVIDERS", "CHRONICLE_SUMMARY", "CREWS", "COMMUNITY"].map((section) => (
             <label key={section}>

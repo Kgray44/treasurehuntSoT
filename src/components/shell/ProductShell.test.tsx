@@ -14,110 +14,125 @@ vi.mock("next/navigation", () => ({
   useRouter: () => ({ replace: vi.fn(), refresh: vi.fn() }),
 }));
 vi.mock("@/components/auth/CurrentUserProvider", () => ({ useCurrentUser: () => currentUser }));
-vi.mock("@/animation/motion/useMotionMode", () => ({
-  useMotionMode: () => ({ mode: "reduced" }),
-}));
+vi.mock("@/animation/motion/useMotionMode", () => ({ useMotionMode: () => ({ mode: "reduced" }) }));
+
+function setAuthenticated() {
+  currentUser.state = {
+    status: "authenticated",
+    authenticated: true,
+    user: { displayName: "Mara Tide", initials: "MT", handle: "mara" },
+    capabilities: {
+      canUsePlayer: true,
+      canUseCaptain: true,
+      canUseCreator: true,
+      canModerate: true,
+      isAdministrator: false,
+    },
+    csrfToken: "csrf",
+  };
+}
 
 describe("ProductShell", () => {
   afterEach(() => {
     cleanup();
     navigation.pathname = "/tales";
     currentUser.state = { status: "anonymous", authenticated: false };
+    currentUser.refresh.mockReset();
+    document.body.style.overflow = "";
+    delete document.body.dataset.shellOverlay;
     vi.unstubAllGlobals();
   });
 
-  it("identifies the current route and exposes a skip target", () => {
+  it("homeport.shell.gateway-account-control keeps the cinematic gateway inside a prompt global/account frame", () => {
+    navigation.pathname = "/";
     render(
       <ProductShell>
-        <main>Catalog content</main>
+        <main>Gateway scene</main>
       </ProductShell>,
     );
 
+    expect(document.querySelector(".product-shell")).toHaveAttribute("data-shell-mode", "GATEWAY_STANDARD");
     expect(screen.getByRole("link", { name: "Skip to main content" })).toHaveAttribute("href", "#main-content");
-    const navigationRegion = screen.getByRole("navigation", { name: "Voyagewright navigation" });
-    expect(within(navigationRegion).getByRole("link", { name: "Explore Chronicles" })).toHaveAttribute(
-      "aria-current",
-      "page",
-    );
-    expect(screen.getByText("Catalog content")).toBeInTheDocument();
-    expect(navigationRegion.querySelectorAll(".product-navigation-active-plate")).toHaveLength(1);
+    const global = screen.getByRole("navigation", { name: "Global navigation" });
+    expect(within(global).getByRole("link", { name: "Home" })).toHaveAttribute("aria-current", "page");
+    expect(within(global).getByRole("link", { name: "Explore Chronicles" })).toBeInTheDocument();
+    expect(within(global).getByRole("link", { name: "Community Harbor" })).toBeInTheDocument();
+    expect(screen.getAllByRole("button", { name: "Account" })).toHaveLength(1);
+    expect(screen.getByText("Gateway scene")).toBeInTheDocument();
   });
 
-  it("moves focus into the menu and restores it on Escape", async () => {
+  it("homeport.shell.gateway-anonymous-state exposes a coherent anonymous account group", async () => {
+    navigation.pathname = "/";
     render(
       <ProductShell>
-        <main>Catalog content</main>
+        <main>Gateway scene</main>
       </ProductShell>,
     );
 
-    const menuButton = screen.getByRole("button", { name: "Open navigation menu" });
-    const navigationRegion = screen.getByRole("navigation", { name: "Voyagewright navigation" });
-    fireEvent.click(menuButton);
-    await waitFor(() =>
-      expect(within(navigationRegion).getByRole("link", { name: "Explore Chronicles" })).toHaveFocus(),
+    const trigger = screen.getByRole("button", { name: "Account" });
+    fireEvent.click(trigger);
+    const disclosure = screen.getByLabelText("Account navigation");
+    await waitFor(() => expect(within(disclosure).getByRole("link", { name: "Create Account" })).toHaveFocus());
+    expect(within(disclosure).getByRole("link", { name: "Sign In" })).toHaveAttribute(
+      "href",
+      "/sign-in?returnTo=%2F",
     );
-
+    expect(within(disclosure).queryByText("Security & Sessions")).not.toBeInTheDocument();
     fireEvent.keyDown(window, { key: "Escape" });
-    await waitFor(() => expect(menuButton).toHaveFocus());
-    expect(menuButton).toHaveAttribute("aria-expanded", "false");
+    await waitFor(() => expect(trigger).toHaveFocus());
+    expect(trigger).toHaveAttribute("aria-expanded", "false");
   });
 
-  it("uses a reduced Player shell for an active Chronicle without Captain or Creator destinations", () => {
-    navigation.pathname = "/player/playthroughs/playthrough-1/journal";
-    currentUser.state = {
-      status: "authenticated",
-      authenticated: true,
-      user: { displayName: "Mara Tide", initials: "MT" },
-      capabilities: {
-        canUsePlayer: true,
-        canUseCaptain: true,
-        canUseCreator: true,
-        isAdministrator: false,
-      },
-    };
+  it("homeport.shell.account-menu closes on an outside pointer interaction at desktop width", async () => {
+    navigation.pathname = "/";
     render(
       <ProductShell>
-        <main>Immersive journal</main>
+        <main>Gateway scene</main>
       </ProductShell>,
     );
 
-    expect(screen.getByText("Immersive journal")).toBeInTheDocument();
-    const navigationRegion = screen.getByRole("navigation", { name: "Voyagewright Player navigation" });
-    expect(within(navigationRegion).getByRole("link", { name: "My Voyages" })).toBeInTheDocument();
-    expect(within(navigationRegion).queryByRole("link", { name: /Captain/i })).not.toBeInTheDocument();
-    expect(within(navigationRegion).queryByRole("link", { name: /Studio/i })).not.toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /Mara Tide/ })).toBeInTheDocument();
+    const trigger = screen.getByRole("button", { name: "Account" });
+    fireEvent.click(trigger);
+    expect(screen.getByLabelText("Account navigation")).toBeVisible();
+    fireEvent.pointerDown(screen.getByText("Gateway scene"));
+    await waitFor(() => expect(screen.getByLabelText("Account navigation")).not.toBeVisible());
+    expect(trigger).toHaveAttribute("aria-expanded", "false");
   });
 
-  it("homeport.signout.visible keeps account pages out of public space and exposes sign-out", async () => {
-    navigation.pathname = "/account/security";
-    currentUser.state = {
-      status: "authenticated",
-      authenticated: true,
-      user: { displayName: "Mara Tide", initials: "MT", handle: "mara" },
-      capabilities: {
-        canUsePlayer: true,
-        canUseCaptain: true,
-        canUseCreator: true,
-        isAdministrator: false,
-      },
-      csrfToken: "csrf",
-    };
+  it("homeport.shell.account-menu groups identity, personal destinations, workspaces, and Sign Out", () => {
+    navigation.pathname = "/player/library";
+    setAuthenticated();
     render(
       <ProductShell>
-        <main>Security content</main>
+        <main>Player library</main>
       </ProductShell>,
     );
 
-    await waitFor(() => expect(screen.getByRole("navigation", { name: "Account navigation" })).toBeInTheDocument());
-    await waitFor(() => expect(screen.getByRole("button", { name: /Mara Tide/ })).toBeInTheDocument());
-    fireEvent.click(screen.getByRole("button", { name: /Mara Tide/ }));
-    expect(screen.getByRole("link", { name: "Captain workspace" })).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: "Creator workspace" })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Sign out" })).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Mara Tide" }));
+    const disclosure = screen.getByLabelText("Account navigation");
+    expect(within(disclosure).getByRole("heading", { name: "Identity" })).toBeInTheDocument();
+    expect(within(disclosure).getByRole("heading", { name: "Personal Harbor" })).toBeInTheDocument();
+    expect(within(disclosure).getByRole("heading", { name: "Workspaces" })).toBeInTheDocument();
+    expect(within(disclosure).getByRole("heading", { name: "Account actions" })).toBeInTheDocument();
+    expect(within(disclosure).getByRole("link", { name: "View My Profile" })).toHaveAttribute("href", "/profile/mara");
+    expect(within(disclosure).getByRole("link", { name: "Chronicle Passport" })).toHaveAttribute("href", "/passport");
+    expect(within(disclosure).getByRole("link", { name: "Preferences" })).toHaveAttribute(
+      "href",
+      "/passport#preferences",
+    );
+    expect(within(disclosure).getByRole("link", { name: "Privacy & Safety" })).toBeInTheDocument();
+    expect(within(disclosure).getByRole("link", { name: "Chronicle History" })).toBeInTheDocument();
+    expect(within(disclosure).getByRole("link", { name: "Artifact Cabinet" })).toBeInTheDocument();
+    expect(within(disclosure).getByRole("link", { name: "Security & Sessions" })).toBeInTheDocument();
+    expect(within(disclosure).getByRole("link", { name: /Player/ })).toHaveAttribute("aria-current", "page");
+    expect(within(disclosure).getByRole("link", { name: "Captain" })).toBeInTheDocument();
+    expect(within(disclosure).getByRole("link", { name: "Creator Studio" })).toBeInTheDocument();
+    expect(within(disclosure).getByRole("link", { name: "Moderation" })).toBeInTheDocument();
+    expect(within(disclosure).getByRole("button", { name: "Sign out" })).toBeInTheDocument();
+    expect(disclosure.textContent).not.toMatch(/@.*\.com|email/i);
   });
 
-  it("homeport.current-user.no-client-authority does not infer protected access from the route while loading", () => {
+  it("homeport.shell.account-loading reserves truthful account geometry without anonymous actions", () => {
     navigation.pathname = "/player/library";
     currentUser.state = { status: "loading", authenticated: false };
     render(
@@ -125,12 +140,80 @@ describe("ProductShell", () => {
         <main>Server-owned route result</main>
       </ProductShell>,
     );
+
+    fireEvent.click(screen.getByRole("button", { name: "Checking account" }));
+    expect(screen.getByRole("status")).toHaveTextContent("Checking your account");
+    expect(screen.queryByRole("link", { name: "Sign In" })).not.toBeInTheDocument();
     expect(screen.queryByRole("link", { name: "My Voyages" })).not.toBeInTheDocument();
-    fireEvent.click(screen.getByRole("button", { name: "Account" }));
-    expect(screen.getByText("Checking account…")).toBeInTheDocument();
   });
 
-  it("hands route focus to the destination heading exactly once", async () => {
+  it("homeport.shell.context-unavailable shows deliberate retry and no anonymous misrepresentation", () => {
+    navigation.pathname = "/";
+    currentUser.state = { status: "unavailable", authenticated: false, retryable: true };
+    currentUser.refresh.mockResolvedValue({ status: "anonymous", authenticated: false });
+    render(
+      <ProductShell>
+        <main>Gateway</main>
+      </ProductShell>,
+    );
+
+    fireEvent.click(screen.getByRole("button", { name: "Account unavailable" }));
+    expect(screen.getByRole("alert")).toHaveTextContent("No identity or workspace permission was assumed");
+    expect(screen.queryByRole("link", { name: "Sign In" })).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Retry account check" }));
+    expect(currentUser.refresh).toHaveBeenCalledTimes(1);
+  });
+
+  it("homeport.shell.mobile-parity moves focus into the shared navigation drawer and restores it", async () => {
+    render(
+      <ProductShell>
+        <main>Catalog content</main>
+      </ProductShell>,
+    );
+
+    const trigger = screen.getByRole("button", { name: "Open navigation" });
+    fireEvent.click(trigger);
+    const global = screen.getByRole("navigation", { name: "Global navigation" });
+    await waitFor(() => expect(within(global).getByRole("link", { name: "Home" })).toHaveFocus());
+    expect(document.body.style.overflow).toBe("hidden");
+    expect(document.body).toHaveAttribute("data-shell-overlay", "open");
+    fireEvent.keyDown(window, { key: "Escape" });
+    await waitFor(() => expect(trigger).toHaveFocus());
+    expect(trigger).toHaveAttribute("aria-expanded", "false");
+    expect(document.body.style.overflow).toBe("");
+  });
+
+  it("homeport.shell.compact-exit identifies Captain context and provides a stable exit with account access", () => {
+    navigation.pathname = "/captain/sessions/session-1";
+    setAuthenticated();
+    render(
+      <ProductShell>
+        <main>Captain session</main>
+      </ProductShell>,
+    );
+
+    expect(document.querySelector(".product-shell")).toHaveAttribute("data-shell-mode", "COMPACT");
+    expect(screen.getByRole("link", { name: "Exit to Captain Voyages" })).toHaveAttribute("href", "/captain/library");
+    expect(screen.getByRole("button", { name: "Mara Tide" })).toBeInTheDocument();
+    expect(screen.queryByRole("navigation", { name: "Global navigation" })).not.toBeInTheDocument();
+  });
+
+  it("homeport.shell.immersive-exit preserves reduced Player framing without Captain or Studio chrome", () => {
+    navigation.pathname = "/player/playthroughs/playthrough-1/journal";
+    setAuthenticated();
+    render(
+      <ProductShell>
+        <main>Immersive journal</main>
+      </ProductShell>,
+    );
+
+    expect(document.querySelector(".product-shell")).toHaveAttribute("data-shell-mode", "IMMERSIVE");
+    expect(screen.getByRole("link", { name: "Exit to My Voyages" })).toHaveAttribute("href", "/player/library");
+    expect(screen.getByText("Immersive journal")).toBeInTheDocument();
+    expect(screen.queryByRole("navigation", { name: /Captain|Studio/u })).not.toBeInTheDocument();
+  });
+
+  it("homeport.shell.route-close closes overlays, restores scroll, and hands focus to the destination heading", async () => {
     const view = render(
       <ProductShell>
         <main>
@@ -138,18 +221,22 @@ describe("ProductShell", () => {
         </main>
       </ProductShell>,
     );
-    expect(screen.getByRole("heading", { name: "Catalog" })).not.toHaveFocus();
+    const trigger = screen.getByRole("button", { name: "Open navigation" });
+    fireEvent.click(trigger);
+    expect(trigger).toHaveAttribute("aria-expanded", "true");
 
-    navigation.pathname = "/player/library";
+    navigation.pathname = "/community";
     view.rerender(
       <ProductShell>
         <main>
-          <h1>My Library</h1>
+          <h1>Community Harbor</h1>
         </main>
       </ProductShell>,
     );
 
-    await waitFor(() => expect(screen.getByRole("heading", { name: "My Library" })).toHaveFocus());
-    expect(screen.getByRole("heading", { name: "My Library" })).toHaveAttribute("tabindex", "-1");
+    await waitFor(() => expect(screen.getByRole("heading", { name: "Community Harbor" })).toHaveFocus());
+    expect(screen.getByRole("button", { name: "Open navigation" })).toHaveAttribute("aria-expanded", "false");
+    expect(document.body.style.overflow).toBe("");
+    expect(screen.getByRole("heading", { name: "Community Harbor" })).toHaveAttribute("tabindex", "-1");
   });
 });

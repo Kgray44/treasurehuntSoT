@@ -1,0 +1,1135 @@
+{
+  "schemaVersion": "2.0.0",
+  "phase": "PHASE_2_RESTORE_GLOBAL_SHELL_AND_WAYFINDING",
+  "sourceSha": "befb75625002a0b68093d1c35bfb846055cd9a14",
+  "generatedAt": "2026-08-01T23:00:00.000Z",
+  "canonicalAuthority": "src/navigation/registry.ts",
+  "projectionAuthority": "src/navigation/navigation-projection.ts",
+  "layers": [
+    "GLOBAL",
+    "WORKSPACE",
+    "ACCOUNT",
+    "CONTEXTUAL"
+  ],
+  "activePolicies": [
+    "EXACT",
+    "SECTION",
+    "DYNAMIC_FAMILY",
+    "ALIAS_OF",
+    "NEVER_ACTIVE"
+  ],
+  "capabilitySource": "PHASE_1_CURRENT_USER_PROVIDER_ONLY",
+  "viewportRule": "EQUIVALENT_STATE_FUNCTIONAL_DESTINATION_IDS_EQUAL",
+  "records": [
+    {
+      "itemId": "global-home",
+      "label": "Home",
+      "layer": "GLOBAL",
+      "destination": "/",
+      "description": null,
+      "owner": "true-north",
+      "requiredCapabilities": [],
+      "requiresAuthentication": false,
+      "anonymousOnly": false,
+      "authenticatedOnly": false,
+      "shellModes": [
+        "GATEWAY_STANDARD",
+        "PUBLIC_STANDARD",
+        "WORKSPACE_STANDARD"
+      ],
+      "desktopPlacement": "primary",
+      "mobilePlacement": "drawer",
+      "activePolicy": {
+        "type": "EXACT"
+      },
+      "parentId": null,
+      "accountGroup": null,
+      "contextualPatterns": [],
+      "action": null,
+      "order": 10,
+      "currentStatus": "active",
+      "testContracts": [
+        "homeport.navigation.one-authority",
+        "homeport.navigation.desktop-mobile-set-equality",
+        "homeport.shell.global-navigation",
+        "homeport.shell.active-state"
+      ]
+    },
+    {
+      "itemId": "global-explore-chronicles",
+      "label": "Explore Chronicles",
+      "layer": "GLOBAL",
+      "destination": "/tales",
+      "description": null,
+      "owner": "true-north",
+      "requiredCapabilities": [],
+      "requiresAuthentication": false,
+      "anonymousOnly": false,
+      "authenticatedOnly": false,
+      "shellModes": [
+        "GATEWAY_STANDARD",
+        "PUBLIC_STANDARD",
+        "WORKSPACE_STANDARD"
+      ],
+      "desktopPlacement": "primary",
+      "mobilePlacement": "drawer",
+      "activePolicy": {
+        "type": "SECTION"
+      },
+      "parentId": null,
+      "accountGroup": null,
+      "contextualPatterns": [],
+      "action": null,
+      "order": 20,
+      "currentStatus": "active",
+      "testContracts": [
+        "homeport.navigation.one-authority",
+        "homeport.navigation.desktop-mobile-set-equality",
+        "homeport.shell.global-navigation",
+        "homeport.shell.active-state"
+      ]
+    },
+    {
+      "itemId": "global-community-harbor",
+      "label": "Community Harbor",
+      "layer": "GLOBAL",
+      "destination": "/community",
+      "description": null,
+      "owner": "harborlight",
+      "requiredCapabilities": [],
+      "requiresAuthentication": false,
+      "anonymousOnly": false,
+      "authenticatedOnly": false,
+      "shellModes": [
+        "GATEWAY_STANDARD",
+        "PUBLIC_STANDARD",
+        "WORKSPACE_STANDARD"
+      ],
+      "desktopPlacement": "primary",
+      "mobilePlacement": "drawer",
+      "activePolicy": {
+        "type": "SECTION"
+      },
+      "parentId": null,
+      "accountGroup": null,
+      "contextualPatterns": [],
+      "action": null,
+      "order": 30,
+      "currentStatus": "active",
+      "testContracts": [
+        "homeport.navigation.one-authority",
+        "homeport.navigation.desktop-mobile-set-equality",
+        "homeport.shell.global-navigation",
+        "homeport.shell.active-state",
+        "homeport.community.global-reachability"
+      ]
+    },
+    {
+      "itemId": "workspace-player-home",
+      "label": "My Voyages",
+      "layer": "WORKSPACE",
+      "destination": "/player/library",
+      "description": null,
+      "owner": "one-voyage",
+      "requiredCapabilities": [
+        "player"
+      ],
+      "requiresAuthentication": true,
+      "anonymousOnly": false,
+      "authenticatedOnly": false,
+      "shellModes": [
+        "WORKSPACE_STANDARD"
+      ],
+      "desktopPlacement": "primary",
+      "mobilePlacement": "drawer",
+      "activePolicy": {
+        "type": "SECTION"
+      },
+      "parentId": null,
+      "accountGroup": null,
+      "contextualPatterns": [],
+      "action": null,
+      "order": 10,
+      "currentStatus": "active",
+      "testContracts": [
+        "homeport.navigation.one-authority",
+        "homeport.navigation.desktop-mobile-set-equality",
+        "homeport.shell.workspace-switcher"
+      ]
+    },
+    {
+      "itemId": "workspace-captain-voyages",
+      "label": "Voyages",
+      "layer": "WORKSPACE",
+      "destination": "/captain/library",
+      "description": null,
+      "owner": "one-voyage",
+      "requiredCapabilities": [
+        "captain"
+      ],
+      "requiresAuthentication": true,
+      "anonymousOnly": false,
+      "authenticatedOnly": false,
+      "shellModes": [
+        "WORKSPACE_STANDARD"
+      ],
+      "desktopPlacement": "primary",
+      "mobilePlacement": "drawer",
+      "activePolicy": {
+        "type": "SECTION"
+      },
+      "parentId": null,
+      "accountGroup": null,
+      "contextualPatterns": [],
+      "action": null,
+      "order": 10,
+      "currentStatus": "active",
+      "testContracts": [
+        "homeport.navigation.one-authority",
+        "homeport.navigation.desktop-mobile-set-equality",
+        "homeport.shell.workspace-switcher"
+      ]
+    },
+    {
+      "itemId": "workspace-captain-invitations",
+      "label": "Crew invitations",
+      "layer": "WORKSPACE",
+      "destination": "/captain/invitations",
+      "description": null,
+      "owner": "one-voyage",
+      "requiredCapabilities": [
+        "captain"
+      ],
+      "requiresAuthentication": true,
+      "anonymousOnly": false,
+      "authenticatedOnly": false,
+      "shellModes": [
+        "WORKSPACE_STANDARD"
+      ],
+      "desktopPlacement": "primary",
+      "mobilePlacement": "drawer",
+      "activePolicy": {
+        "type": "SECTION"
+      },
+      "parentId": null,
+      "accountGroup": null,
+      "contextualPatterns": [],
+      "action": null,
+      "order": 20,
+      "currentStatus": "active",
+      "testContracts": [
+        "homeport.navigation.one-authority",
+        "homeport.navigation.desktop-mobile-set-equality",
+        "homeport.shell.workspace-switcher"
+      ]
+    },
+    {
+      "itemId": "workspace-creator-library",
+      "label": "Chronicle Library",
+      "layer": "WORKSPACE",
+      "destination": "/studio/library",
+      "description": null,
+      "owner": "one-voyage",
+      "requiredCapabilities": [
+        "creator"
+      ],
+      "requiresAuthentication": true,
+      "anonymousOnly": false,
+      "authenticatedOnly": false,
+      "shellModes": [
+        "WORKSPACE_STANDARD"
+      ],
+      "desktopPlacement": "primary",
+      "mobilePlacement": "drawer",
+      "activePolicy": {
+        "type": "SECTION"
+      },
+      "parentId": null,
+      "accountGroup": null,
+      "contextualPatterns": [],
+      "action": null,
+      "order": 10,
+      "currentStatus": "active",
+      "testContracts": [
+        "homeport.navigation.one-authority",
+        "homeport.navigation.desktop-mobile-set-equality",
+        "homeport.shell.workspace-switcher"
+      ]
+    },
+    {
+      "itemId": "workspace-creator-exchange",
+      "label": "Exchange",
+      "layer": "WORKSPACE",
+      "destination": "/studio/exchange",
+      "description": null,
+      "owner": "one-voyage",
+      "requiredCapabilities": [
+        "creator"
+      ],
+      "requiresAuthentication": true,
+      "anonymousOnly": false,
+      "authenticatedOnly": false,
+      "shellModes": [
+        "WORKSPACE_STANDARD"
+      ],
+      "desktopPlacement": "primary",
+      "mobilePlacement": "drawer",
+      "activePolicy": {
+        "type": "SECTION"
+      },
+      "parentId": null,
+      "accountGroup": null,
+      "contextualPatterns": [],
+      "action": null,
+      "order": 20,
+      "currentStatus": "active",
+      "testContracts": [
+        "homeport.navigation.one-authority",
+        "homeport.navigation.desktop-mobile-set-equality",
+        "homeport.shell.workspace-switcher"
+      ]
+    },
+    {
+      "itemId": "workspace-creator-private-content",
+      "label": "Private Chronicle",
+      "layer": "WORKSPACE",
+      "destination": "/studio/private-content",
+      "description": null,
+      "owner": "sealed-hold",
+      "requiredCapabilities": [
+        "creator"
+      ],
+      "requiresAuthentication": true,
+      "anonymousOnly": false,
+      "authenticatedOnly": false,
+      "shellModes": [
+        "WORKSPACE_STANDARD"
+      ],
+      "desktopPlacement": "primary",
+      "mobilePlacement": "drawer",
+      "activePolicy": {
+        "type": "SECTION"
+      },
+      "parentId": null,
+      "accountGroup": null,
+      "contextualPatterns": [],
+      "action": null,
+      "order": 30,
+      "currentStatus": "active",
+      "testContracts": [
+        "homeport.navigation.one-authority",
+        "homeport.navigation.desktop-mobile-set-equality",
+        "homeport.shell.workspace-switcher"
+      ]
+    },
+    {
+      "itemId": "account-create",
+      "label": "Create Account",
+      "layer": "ACCOUNT",
+      "destination": "/register",
+      "description": null,
+      "owner": "wayfarer",
+      "requiredCapabilities": [],
+      "requiresAuthentication": false,
+      "anonymousOnly": true,
+      "authenticatedOnly": false,
+      "shellModes": [
+        "GATEWAY_STANDARD",
+        "PUBLIC_STANDARD",
+        "WORKSPACE_STANDARD",
+        "COMPACT",
+        "IMMERSIVE"
+      ],
+      "desktopPlacement": "account",
+      "mobilePlacement": "account",
+      "activePolicy": {
+        "type": "NEVER_ACTIVE"
+      },
+      "parentId": null,
+      "accountGroup": "identity",
+      "contextualPatterns": [],
+      "action": null,
+      "order": 10,
+      "currentStatus": "active",
+      "testContracts": [
+        "homeport.navigation.one-authority",
+        "homeport.navigation.desktop-mobile-set-equality",
+        "homeport.shell.account-menu"
+      ]
+    },
+    {
+      "itemId": "account-sign-in",
+      "label": "Sign In",
+      "layer": "ACCOUNT",
+      "destination": "SAFE_LOCAL_SIGN_IN_RETURN",
+      "description": null,
+      "owner": "wayfarer",
+      "requiredCapabilities": [],
+      "requiresAuthentication": false,
+      "anonymousOnly": true,
+      "authenticatedOnly": false,
+      "shellModes": [
+        "GATEWAY_STANDARD",
+        "PUBLIC_STANDARD",
+        "WORKSPACE_STANDARD",
+        "COMPACT",
+        "IMMERSIVE"
+      ],
+      "desktopPlacement": "account",
+      "mobilePlacement": "account",
+      "activePolicy": {
+        "type": "NEVER_ACTIVE"
+      },
+      "parentId": null,
+      "accountGroup": "identity",
+      "contextualPatterns": [],
+      "action": null,
+      "order": 20,
+      "currentStatus": "active",
+      "testContracts": [
+        "homeport.navigation.one-authority",
+        "homeport.navigation.desktop-mobile-set-equality",
+        "homeport.shell.account-menu"
+      ]
+    },
+    {
+      "itemId": "account-view-profile",
+      "label": "View My Profile",
+      "layer": "ACCOUNT",
+      "destination": "PUBLIC_PROFILE_OR_PASSPORT_PROFILE",
+      "description": null,
+      "owner": "wayfarer",
+      "requiredCapabilities": [],
+      "requiresAuthentication": true,
+      "anonymousOnly": false,
+      "authenticatedOnly": true,
+      "shellModes": [
+        "GATEWAY_STANDARD",
+        "PUBLIC_STANDARD",
+        "WORKSPACE_STANDARD",
+        "COMPACT",
+        "IMMERSIVE"
+      ],
+      "desktopPlacement": "account",
+      "mobilePlacement": "account",
+      "activePolicy": {
+        "type": "DYNAMIC_FAMILY",
+        "pattern": "/profile/:handle"
+      },
+      "parentId": null,
+      "accountGroup": "identity",
+      "contextualPatterns": [],
+      "action": null,
+      "order": 10,
+      "currentStatus": "active",
+      "testContracts": [
+        "homeport.navigation.one-authority",
+        "homeport.navigation.desktop-mobile-set-equality",
+        "homeport.shell.account-menu"
+      ]
+    },
+    {
+      "itemId": "account-passport",
+      "label": "Chronicle Passport",
+      "layer": "ACCOUNT",
+      "destination": "/passport",
+      "description": null,
+      "owner": "wayfarer",
+      "requiredCapabilities": [],
+      "requiresAuthentication": true,
+      "anonymousOnly": false,
+      "authenticatedOnly": true,
+      "shellModes": [
+        "GATEWAY_STANDARD",
+        "PUBLIC_STANDARD",
+        "WORKSPACE_STANDARD",
+        "COMPACT",
+        "IMMERSIVE"
+      ],
+      "desktopPlacement": "account",
+      "mobilePlacement": "account",
+      "activePolicy": {
+        "type": "EXACT"
+      },
+      "parentId": null,
+      "accountGroup": "personal",
+      "contextualPatterns": [],
+      "action": null,
+      "order": 20,
+      "currentStatus": "active",
+      "testContracts": [
+        "homeport.navigation.one-authority",
+        "homeport.navigation.desktop-mobile-set-equality",
+        "homeport.shell.account-menu"
+      ]
+    },
+    {
+      "itemId": "account-preferences",
+      "label": "Preferences",
+      "layer": "ACCOUNT",
+      "destination": "/passport#preferences",
+      "description": null,
+      "owner": "wayfarer",
+      "requiredCapabilities": [],
+      "requiresAuthentication": true,
+      "anonymousOnly": false,
+      "authenticatedOnly": true,
+      "shellModes": [
+        "GATEWAY_STANDARD",
+        "PUBLIC_STANDARD",
+        "WORKSPACE_STANDARD",
+        "COMPACT",
+        "IMMERSIVE"
+      ],
+      "desktopPlacement": "account",
+      "mobilePlacement": "account",
+      "activePolicy": {
+        "type": "NEVER_ACTIVE"
+      },
+      "parentId": "account-passport",
+      "accountGroup": "personal",
+      "contextualPatterns": [],
+      "action": null,
+      "order": 30,
+      "currentStatus": "contextual",
+      "testContracts": [
+        "homeport.navigation.one-authority",
+        "homeport.navigation.desktop-mobile-set-equality",
+        "homeport.shell.account-menu"
+      ]
+    },
+    {
+      "itemId": "account-privacy",
+      "label": "Privacy & Safety",
+      "layer": "ACCOUNT",
+      "destination": "/passport#privacy",
+      "description": null,
+      "owner": "wayfarer",
+      "requiredCapabilities": [],
+      "requiresAuthentication": true,
+      "anonymousOnly": false,
+      "authenticatedOnly": true,
+      "shellModes": [
+        "GATEWAY_STANDARD",
+        "PUBLIC_STANDARD",
+        "WORKSPACE_STANDARD",
+        "COMPACT",
+        "IMMERSIVE"
+      ],
+      "desktopPlacement": "account",
+      "mobilePlacement": "account",
+      "activePolicy": {
+        "type": "NEVER_ACTIVE"
+      },
+      "parentId": "account-passport",
+      "accountGroup": "personal",
+      "contextualPatterns": [],
+      "action": null,
+      "order": 40,
+      "currentStatus": "contextual",
+      "testContracts": [
+        "homeport.navigation.one-authority",
+        "homeport.navigation.desktop-mobile-set-equality",
+        "homeport.shell.account-menu"
+      ]
+    },
+    {
+      "itemId": "account-history",
+      "label": "Chronicle History",
+      "layer": "ACCOUNT",
+      "destination": "/passport#history",
+      "description": null,
+      "owner": "wayfarer",
+      "requiredCapabilities": [],
+      "requiresAuthentication": true,
+      "anonymousOnly": false,
+      "authenticatedOnly": true,
+      "shellModes": [
+        "GATEWAY_STANDARD",
+        "PUBLIC_STANDARD",
+        "WORKSPACE_STANDARD",
+        "COMPACT",
+        "IMMERSIVE"
+      ],
+      "desktopPlacement": "account",
+      "mobilePlacement": "account",
+      "activePolicy": {
+        "type": "NEVER_ACTIVE"
+      },
+      "parentId": "account-passport",
+      "accountGroup": "personal",
+      "contextualPatterns": [],
+      "action": null,
+      "order": 50,
+      "currentStatus": "contextual",
+      "testContracts": [
+        "homeport.navigation.one-authority",
+        "homeport.navigation.desktop-mobile-set-equality",
+        "homeport.shell.account-menu"
+      ]
+    },
+    {
+      "itemId": "account-artifacts",
+      "label": "Artifact Cabinet",
+      "layer": "ACCOUNT",
+      "destination": "/passport#artifacts",
+      "description": null,
+      "owner": "wayfarer",
+      "requiredCapabilities": [],
+      "requiresAuthentication": true,
+      "anonymousOnly": false,
+      "authenticatedOnly": true,
+      "shellModes": [
+        "GATEWAY_STANDARD",
+        "PUBLIC_STANDARD",
+        "WORKSPACE_STANDARD",
+        "COMPACT",
+        "IMMERSIVE"
+      ],
+      "desktopPlacement": "account",
+      "mobilePlacement": "account",
+      "activePolicy": {
+        "type": "NEVER_ACTIVE"
+      },
+      "parentId": "account-passport",
+      "accountGroup": "personal",
+      "contextualPatterns": [],
+      "action": null,
+      "order": 60,
+      "currentStatus": "contextual",
+      "testContracts": [
+        "homeport.navigation.one-authority",
+        "homeport.navigation.desktop-mobile-set-equality",
+        "homeport.shell.account-menu"
+      ]
+    },
+    {
+      "itemId": "account-security-sessions",
+      "label": "Security & Sessions",
+      "layer": "ACCOUNT",
+      "destination": "/account/security",
+      "description": null,
+      "owner": "wayfarer",
+      "requiredCapabilities": [],
+      "requiresAuthentication": true,
+      "anonymousOnly": false,
+      "authenticatedOnly": true,
+      "shellModes": [
+        "GATEWAY_STANDARD",
+        "PUBLIC_STANDARD",
+        "WORKSPACE_STANDARD",
+        "COMPACT",
+        "IMMERSIVE"
+      ],
+      "desktopPlacement": "account",
+      "mobilePlacement": "account",
+      "activePolicy": {
+        "type": "SECTION"
+      },
+      "parentId": null,
+      "accountGroup": "personal",
+      "contextualPatterns": [],
+      "action": null,
+      "order": 70,
+      "currentStatus": "active",
+      "testContracts": [
+        "homeport.navigation.one-authority",
+        "homeport.navigation.desktop-mobile-set-equality",
+        "homeport.shell.account-menu"
+      ]
+    },
+    {
+      "itemId": "account-workspace-player",
+      "label": "Player",
+      "layer": "ACCOUNT",
+      "destination": "/player/library",
+      "description": null,
+      "owner": "one-voyage",
+      "requiredCapabilities": [
+        "player"
+      ],
+      "requiresAuthentication": true,
+      "anonymousOnly": false,
+      "authenticatedOnly": true,
+      "shellModes": [
+        "GATEWAY_STANDARD",
+        "PUBLIC_STANDARD",
+        "WORKSPACE_STANDARD",
+        "COMPACT",
+        "IMMERSIVE"
+      ],
+      "desktopPlacement": "account",
+      "mobilePlacement": "account",
+      "activePolicy": {
+        "type": "SECTION"
+      },
+      "parentId": null,
+      "accountGroup": "workspace",
+      "contextualPatterns": [],
+      "action": null,
+      "order": 10,
+      "currentStatus": "active",
+      "testContracts": [
+        "homeport.navigation.one-authority",
+        "homeport.navigation.desktop-mobile-set-equality",
+        "homeport.shell.account-menu"
+      ]
+    },
+    {
+      "itemId": "account-workspace-captain",
+      "label": "Captain",
+      "layer": "ACCOUNT",
+      "destination": "/captain/library",
+      "description": null,
+      "owner": "one-voyage",
+      "requiredCapabilities": [
+        "captain"
+      ],
+      "requiresAuthentication": true,
+      "anonymousOnly": false,
+      "authenticatedOnly": true,
+      "shellModes": [
+        "GATEWAY_STANDARD",
+        "PUBLIC_STANDARD",
+        "WORKSPACE_STANDARD",
+        "COMPACT",
+        "IMMERSIVE"
+      ],
+      "desktopPlacement": "account",
+      "mobilePlacement": "account",
+      "activePolicy": {
+        "type": "SECTION"
+      },
+      "parentId": null,
+      "accountGroup": "workspace",
+      "contextualPatterns": [],
+      "action": null,
+      "order": 20,
+      "currentStatus": "active",
+      "testContracts": [
+        "homeport.navigation.one-authority",
+        "homeport.navigation.desktop-mobile-set-equality",
+        "homeport.shell.account-menu"
+      ]
+    },
+    {
+      "itemId": "account-workspace-creator",
+      "label": "Creator Studio",
+      "layer": "ACCOUNT",
+      "destination": "/studio/library",
+      "description": null,
+      "owner": "one-voyage",
+      "requiredCapabilities": [
+        "creator"
+      ],
+      "requiresAuthentication": true,
+      "anonymousOnly": false,
+      "authenticatedOnly": true,
+      "shellModes": [
+        "GATEWAY_STANDARD",
+        "PUBLIC_STANDARD",
+        "WORKSPACE_STANDARD",
+        "COMPACT",
+        "IMMERSIVE"
+      ],
+      "desktopPlacement": "account",
+      "mobilePlacement": "account",
+      "activePolicy": {
+        "type": "SECTION"
+      },
+      "parentId": null,
+      "accountGroup": "workspace",
+      "contextualPatterns": [],
+      "action": null,
+      "order": 30,
+      "currentStatus": "active",
+      "testContracts": [
+        "homeport.navigation.one-authority",
+        "homeport.navigation.desktop-mobile-set-equality",
+        "homeport.shell.account-menu"
+      ]
+    },
+    {
+      "itemId": "account-workspace-moderator",
+      "label": "Moderation",
+      "layer": "ACCOUNT",
+      "destination": "/community/moderation",
+      "description": null,
+      "owner": "harborlight",
+      "requiredCapabilities": [
+        "moderator"
+      ],
+      "requiresAuthentication": true,
+      "anonymousOnly": false,
+      "authenticatedOnly": true,
+      "shellModes": [
+        "GATEWAY_STANDARD",
+        "PUBLIC_STANDARD",
+        "WORKSPACE_STANDARD",
+        "COMPACT",
+        "IMMERSIVE"
+      ],
+      "desktopPlacement": "account",
+      "mobilePlacement": "account",
+      "activePolicy": {
+        "type": "SECTION"
+      },
+      "parentId": null,
+      "accountGroup": "workspace",
+      "contextualPatterns": [],
+      "action": null,
+      "order": 40,
+      "currentStatus": "active",
+      "testContracts": [
+        "homeport.navigation.one-authority",
+        "homeport.navigation.desktop-mobile-set-equality",
+        "homeport.shell.account-menu"
+      ]
+    },
+    {
+      "itemId": "account-sign-out",
+      "label": "Sign Out",
+      "layer": "ACCOUNT",
+      "destination": "SIGN_OUT_ACTION",
+      "description": null,
+      "owner": "wayfarer",
+      "requiredCapabilities": [],
+      "requiresAuthentication": true,
+      "anonymousOnly": false,
+      "authenticatedOnly": true,
+      "shellModes": [
+        "GATEWAY_STANDARD",
+        "PUBLIC_STANDARD",
+        "WORKSPACE_STANDARD",
+        "COMPACT",
+        "IMMERSIVE"
+      ],
+      "desktopPlacement": "account",
+      "mobilePlacement": "account",
+      "activePolicy": {
+        "type": "NEVER_ACTIVE"
+      },
+      "parentId": null,
+      "accountGroup": "action",
+      "contextualPatterns": [],
+      "action": "sign-out",
+      "order": 10,
+      "currentStatus": "active",
+      "testContracts": [
+        "homeport.navigation.one-authority",
+        "homeport.navigation.desktop-mobile-set-equality",
+        "homeport.shell.account-menu"
+      ]
+    },
+    {
+      "itemId": "context-community-parent",
+      "label": "Back to Community Harbor",
+      "layer": "CONTEXTUAL",
+      "destination": "/community",
+      "description": null,
+      "owner": "harborlight",
+      "requiredCapabilities": [],
+      "requiresAuthentication": false,
+      "anonymousOnly": false,
+      "authenticatedOnly": false,
+      "shellModes": [
+        "PUBLIC_STANDARD"
+      ],
+      "desktopPlacement": "contextual",
+      "mobilePlacement": "contextual",
+      "activePolicy": {
+        "type": "NEVER_ACTIVE"
+      },
+      "parentId": null,
+      "accountGroup": null,
+      "contextualPatterns": [
+        "/community/*"
+      ],
+      "action": null,
+      "order": 10,
+      "currentStatus": "contextual",
+      "testContracts": [
+        "homeport.navigation.one-authority",
+        "homeport.navigation.desktop-mobile-set-equality",
+        "homeport.navigation.contextual-parent",
+        "homeport.community.global-reachability"
+      ]
+    },
+    {
+      "itemId": "context-chronicles-parent",
+      "label": "Back to Explore Chronicles",
+      "layer": "CONTEXTUAL",
+      "destination": "/tales",
+      "description": null,
+      "owner": "one-voyage",
+      "requiredCapabilities": [],
+      "requiresAuthentication": false,
+      "anonymousOnly": false,
+      "authenticatedOnly": false,
+      "shellModes": [
+        "PUBLIC_STANDARD"
+      ],
+      "desktopPlacement": "contextual",
+      "mobilePlacement": "contextual",
+      "activePolicy": {
+        "type": "NEVER_ACTIVE"
+      },
+      "parentId": null,
+      "accountGroup": null,
+      "contextualPatterns": [
+        "/play/:slug",
+        "/play/:slug/history",
+        "/tale/:slug"
+      ],
+      "action": null,
+      "order": 10,
+      "currentStatus": "contextual",
+      "testContracts": [
+        "homeport.navigation.one-authority",
+        "homeport.navigation.desktop-mobile-set-equality",
+        "homeport.navigation.contextual-parent"
+      ]
+    },
+    {
+      "itemId": "context-personal-parent",
+      "label": "Personal Harbor",
+      "layer": "CONTEXTUAL",
+      "destination": "/passport",
+      "description": null,
+      "owner": "wayfarer",
+      "requiredCapabilities": [],
+      "requiresAuthentication": false,
+      "anonymousOnly": false,
+      "authenticatedOnly": false,
+      "shellModes": [
+        "PUBLIC_STANDARD",
+        "WORKSPACE_STANDARD"
+      ],
+      "desktopPlacement": "contextual",
+      "mobilePlacement": "contextual",
+      "activePolicy": {
+        "type": "NEVER_ACTIVE"
+      },
+      "parentId": null,
+      "accountGroup": null,
+      "contextualPatterns": [
+        "/profile/:handle",
+        "/account/*"
+      ],
+      "action": null,
+      "order": 10,
+      "currentStatus": "contextual",
+      "testContracts": [
+        "homeport.navigation.one-authority",
+        "homeport.navigation.desktop-mobile-set-equality",
+        "homeport.navigation.contextual-parent"
+      ]
+    },
+    {
+      "itemId": "context-captain-exit",
+      "label": "Exit to Captain Voyages",
+      "layer": "CONTEXTUAL",
+      "destination": "/captain/library",
+      "description": null,
+      "owner": "one-voyage",
+      "requiredCapabilities": [
+        "captain"
+      ],
+      "requiresAuthentication": true,
+      "anonymousOnly": false,
+      "authenticatedOnly": false,
+      "shellModes": [
+        "COMPACT"
+      ],
+      "desktopPlacement": "contextual",
+      "mobilePlacement": "contextual",
+      "activePolicy": {
+        "type": "NEVER_ACTIVE"
+      },
+      "parentId": null,
+      "accountGroup": null,
+      "contextualPatterns": [
+        "/quartermaster",
+        "/quartermaster/:workspace",
+        "/captain/sessions/:id"
+      ],
+      "action": null,
+      "order": 10,
+      "currentStatus": "contextual",
+      "testContracts": [
+        "homeport.navigation.one-authority",
+        "homeport.navigation.desktop-mobile-set-equality",
+        "homeport.navigation.contextual-parent"
+      ]
+    },
+    {
+      "itemId": "context-player-exit",
+      "label": "Exit to My Voyages",
+      "layer": "CONTEXTUAL",
+      "destination": "/player/library",
+      "description": null,
+      "owner": "one-voyage",
+      "requiredCapabilities": [
+        "player"
+      ],
+      "requiresAuthentication": true,
+      "anonymousOnly": false,
+      "authenticatedOnly": false,
+      "shellModes": [
+        "IMMERSIVE"
+      ],
+      "desktopPlacement": "contextual",
+      "mobilePlacement": "contextual",
+      "activePolicy": {
+        "type": "NEVER_ACTIVE"
+      },
+      "parentId": null,
+      "accountGroup": null,
+      "contextualPatterns": [
+        "/player/playthroughs/:id",
+        "/player/playthroughs/:id/journal",
+        "/play/:slug/session/:id"
+      ],
+      "action": null,
+      "order": 10,
+      "currentStatus": "contextual",
+      "testContracts": [
+        "homeport.navigation.one-authority",
+        "homeport.navigation.desktop-mobile-set-equality",
+        "homeport.navigation.contextual-parent"
+      ]
+    },
+    {
+      "itemId": "context-development-exit",
+      "label": "Exit development tools",
+      "layer": "CONTEXTUAL",
+      "destination": "/",
+      "description": null,
+      "owner": "project-homeport",
+      "requiredCapabilities": [],
+      "requiresAuthentication": false,
+      "anonymousOnly": false,
+      "authenticatedOnly": false,
+      "shellModes": [
+        "DEVELOPMENT"
+      ],
+      "desktopPlacement": "contextual",
+      "mobilePlacement": "contextual",
+      "activePolicy": {
+        "type": "NEVER_ACTIVE"
+      },
+      "parentId": null,
+      "accountGroup": null,
+      "contextualPatterns": [
+        "/dev/*"
+      ],
+      "action": null,
+      "order": 10,
+      "currentStatus": "development",
+      "testContracts": [
+        "homeport.navigation.one-authority",
+        "homeport.navigation.desktop-mobile-set-equality",
+        "homeport.navigation.contextual-parent"
+      ]
+    },
+    {
+      "itemId": "alias-player-root",
+      "label": "Player compatibility entry",
+      "layer": "WORKSPACE",
+      "destination": "/player",
+      "description": null,
+      "owner": "one-voyage",
+      "requiredCapabilities": [],
+      "requiresAuthentication": false,
+      "anonymousOnly": false,
+      "authenticatedOnly": false,
+      "shellModes": [
+        "WORKSPACE_STANDARD"
+      ],
+      "desktopPlacement": "hidden",
+      "mobilePlacement": "hidden",
+      "activePolicy": {
+        "type": "ALIAS_OF",
+        "canonicalItemId": "workspace-player-home",
+        "pattern": "/player"
+      },
+      "parentId": null,
+      "accountGroup": null,
+      "contextualPatterns": [],
+      "action": null,
+      "order": 900,
+      "currentStatus": "compatibility",
+      "testContracts": [
+        "homeport.navigation.one-authority",
+        "homeport.navigation.desktop-mobile-set-equality",
+        "homeport.shell.workspace-switcher"
+      ]
+    },
+    {
+      "itemId": "alias-captain-root",
+      "label": "Captain compatibility entry",
+      "layer": "WORKSPACE",
+      "destination": "/captain",
+      "description": null,
+      "owner": "one-voyage",
+      "requiredCapabilities": [],
+      "requiresAuthentication": false,
+      "anonymousOnly": false,
+      "authenticatedOnly": false,
+      "shellModes": [
+        "WORKSPACE_STANDARD"
+      ],
+      "desktopPlacement": "hidden",
+      "mobilePlacement": "hidden",
+      "activePolicy": {
+        "type": "ALIAS_OF",
+        "canonicalItemId": "workspace-captain-voyages",
+        "pattern": "/captain"
+      },
+      "parentId": null,
+      "accountGroup": null,
+      "contextualPatterns": [],
+      "action": null,
+      "order": 910,
+      "currentStatus": "compatibility",
+      "testContracts": [
+        "homeport.navigation.one-authority",
+        "homeport.navigation.desktop-mobile-set-equality",
+        "homeport.shell.workspace-switcher"
+      ]
+    },
+    {
+      "itemId": "alias-creator-root",
+      "label": "Creator compatibility entry",
+      "layer": "WORKSPACE",
+      "destination": "/studio",
+      "description": null,
+      "owner": "one-voyage",
+      "requiredCapabilities": [],
+      "requiresAuthentication": false,
+      "anonymousOnly": false,
+      "authenticatedOnly": false,
+      "shellModes": [
+        "WORKSPACE_STANDARD"
+      ],
+      "desktopPlacement": "hidden",
+      "mobilePlacement": "hidden",
+      "activePolicy": {
+        "type": "ALIAS_OF",
+        "canonicalItemId": "workspace-creator-library",
+        "pattern": "/studio"
+      },
+      "parentId": null,
+      "accountGroup": null,
+      "contextualPatterns": [],
+      "action": null,
+      "order": 920,
+      "currentStatus": "compatibility",
+      "testContracts": [
+        "homeport.navigation.one-authority",
+        "homeport.navigation.desktop-mobile-set-equality",
+        "homeport.shell.workspace-switcher"
+      ]
+    }
+  ]
+}
