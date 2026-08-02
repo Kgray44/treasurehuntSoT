@@ -839,8 +839,11 @@ test.describe.serial("Project Homeport Phase 3 governed browser journeys A-AE", 
     const editor = page.locator(".personal-harbor__rail").getByRole("link", { name: "Public Profile", exact: true });
     await editor.focus();
     await page.keyboard.press("Enter");
-    await page.getByLabel("Biography").focus();
-    await page.keyboard.type(" Synthetic keyboard draft.");
+    const biography = page.getByLabel("Biography");
+    await biography.focus();
+    await expect(biography).toBeFocused();
+    await biography.pressSequentially(" Synthetic keyboard draft.");
+    await expect(biography).toHaveValue(/Synthetic keyboard draft\./u);
     await expect(page.locator(".personal-harbor__draft-status")).toHaveText("Unsaved changes");
     const preferences = page.locator(".personal-harbor__rail").getByRole("link", { name: "Preferences", exact: true });
     await preferences.focus();
