@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useMemo, useState, type FormEvent } from "react";
+import { useEffect, useState, type FormEvent } from "react";
 import { useCurrentUser } from "@/components/auth/CurrentUserProvider";
 import { usePersonalHarbor } from "@/components/homeport/PersonalHarborLayout";
 
@@ -18,6 +18,8 @@ function useResource<T>(url: string) {
   const [state, setState] = useState<LoadState<T>>({ status: "loading" });
   useEffect(() => {
     const controller = new AbortController();
+    // A generation change deliberately returns the resource to its loading state before refetch.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setState({ status: "loading" });
     fetch(url, { cache: "no-store", signal: controller.signal })
       .then(responseBody<T>)
@@ -116,7 +118,7 @@ export function AccountOverview() {
             ["Artifacts", counts.artifacts],
             ["Saved", counts.saved],
             ["Linked identities", counts.linkedIdentities],
-            ["Active sessions", counts.activeSessions],
+            ["Signed-in sessions", counts.activeSessions],
           ].map(([label, value]) => (
             <article key={String(label)} className="harbor-stat">
               <strong>{value}</strong>
@@ -175,6 +177,8 @@ export function ProfileEditor() {
   );
 
   useEffect(() => {
+    // Editable drafts intentionally hydrate only after the authoritative resource resolves.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     if (resource.state.status === "ready") setDraft(resource.state.value);
   }, [resource.state]);
   useEffect(() => () => setDirty(false), [setDirty]);
@@ -192,6 +196,8 @@ export function ProfileEditor() {
     }
   };
   useEffect(() => {
+    // The preview is a second authoritative projection triggered by the resolved owner record.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     if (resource.state.status === "ready") void loadPreview(resource.state.value);
   }, [resource.state]);
 
@@ -421,6 +427,8 @@ export function PersonalInformation() {
     { kind: "idle" },
   );
   useEffect(() => {
+    // Editable personal information intentionally hydrates after both server resources resolve.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     if (info.state.status === "ready") setName(info.state.value.displayName);
   }, [info.state]);
   useEffect(() => () => setDirty(false), [setDirty]);
@@ -526,6 +534,8 @@ export function PreferenceEditor({ mode }: { mode: "preferences" | "accessibilit
     { kind: "idle" },
   );
   useEffect(() => {
+    // Editable preference drafts intentionally hydrate from the authoritative async DTO.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     if (resource.state.status === "ready") setDraft(resource.state.value);
   }, [resource.state]);
   useEffect(() => () => setDirty(false), [setDirty]);
@@ -767,6 +777,8 @@ export function PrivacyEditor() {
     { kind: "idle" },
   );
   useEffect(() => {
+    // Editable privacy drafts intentionally hydrate from the authoritative async DTO.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     if (resource.state.status === "ready") setDraft(resource.state.value);
   }, [resource.state]);
   useEffect(() => () => setDirty(false), [setDirty]);
@@ -1020,7 +1032,7 @@ export function SessionManager() {
     }
   };
   const all = async () => {
-    if (!window.confirm("Sign out every active session, including this device?")) return;
+    if (!window.confirm("Sign out every signed-in session, including this device?")) return;
     setMessage({ kind: "saving", message: "Signing out all sessions…" });
     try {
       await responseBody(
@@ -1060,7 +1072,7 @@ export function SessionManager() {
         {current ? (
           <ul className="harbor-list">{card(current)}</ul>
         ) : (
-          <p className="harbor-empty">The current session is no longer active.</p>
+          <p className="harbor-empty">The current session is no longer signed in.</p>
         )}
       </section>
       <section className="harbor-panel">
@@ -1068,7 +1080,7 @@ export function SessionManager() {
         {others.length ? (
           <ul className="harbor-list">{others.map(card)}</ul>
         ) : (
-          <p className="harbor-empty">No other active sessions.</p>
+          <p className="harbor-empty">No other signed-in sessions.</p>
         )}
       </section>
       <section className="harbor-panel harbor-danger-zone">

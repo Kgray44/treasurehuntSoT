@@ -100,6 +100,8 @@ export function PersonalHarborLayout({
     const hash = window.location.hash.slice(1);
     const target = compatibilityAnchors[hash];
     if (pathname === "/passport" && target) {
+      // The compatibility notice is rendered for one frame before the scheduled route adapter runs.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setCompatibilityTarget(target);
       const redirectTimer = window.setTimeout(() => router.replace(target), 0);
       return () => window.clearTimeout(redirectTimer);

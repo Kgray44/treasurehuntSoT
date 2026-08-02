@@ -15,6 +15,8 @@ function useResource<T>(url: string) {
   const [state, setState] = useState<LoadState<T>>({ status: "loading" });
   useEffect(() => {
     const controller = new AbortController();
+    // A generation change deliberately returns the resource to its loading state before refetch.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setState({ status: "loading" });
     fetch(url, { cache: "no-store", signal: controller.signal })
       .then(responseBody<T>)
@@ -226,6 +228,8 @@ export function HistoryDetail({ recordId }: { recordId: string }) {
   const [message, setMessage] = useState("");
   const [error, setError] = useState(false);
   useEffect(() => {
+    // Editable reflection intentionally hydrates from the authoritative async record.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     if (resource.state.status === "ready") setNote(resource.state.value.reflection?.privateNote ?? "");
   }, [resource.state]);
   useEffect(() => () => setDirty(false), [setDirty]);
@@ -583,6 +587,8 @@ export function ArtifactDetail({ artifactId }: { artifactId: string }) {
   const [message, setMessage] = useState("");
   const [error, setError] = useState(false);
   useEffect(() => {
+    // Editable artifact personalization intentionally hydrates from the authoritative async record.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     if (resource.state.status === "ready") setDraft(resource.state.value.personalization);
   }, [resource.state]);
   useEffect(() => () => setDirty(false), [setDirty]);
