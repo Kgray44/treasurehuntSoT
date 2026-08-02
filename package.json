@@ -58,6 +58,7 @@
     "features:test": "vitest run scripts/features/feature-catalog.test.ts",
     "architecture:validate": "tsx scripts/validate-project-one-voyage.ts",
     "homeport:generate": "node scripts/homeport/generate-phase0-inventories.mjs",
+    "homeport:phase2:inventory": "node scripts/homeport/apply-phase2-inventory-updates.mjs --final",
     "homeport:contracts": "tsx scripts/homeport/generate-phase2-contracts.ts",
     "homeport:contracts:check": "tsx scripts/homeport/generate-phase2-contracts.ts --check",
     "homeport:validate": "node scripts/homeport/validate-phase0-inventories.mjs && tsx scripts/homeport/validate-phase2-contracts.ts",

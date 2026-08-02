@@ -45,7 +45,7 @@
       "classification": "USER_NAVIGABLE",
       "ownerProject": "wayfarer",
       "productArea": "Personal Harbor",
-      "shellMode": "standard",
+      "shellMode": "TOKENIZED",
       "logicalParent": "/account",
       "currentVisibleEntries": [],
       "currentDesktopPath": ["DIRECT_URL_ONLY"],
@@ -65,7 +65,19 @@
       "orphanedOrdinaryRoute": true,
       "targetDisposition": "PHASE_1_IDENTITY_AND_SESSION",
       "status": "CURRENT_STATE_AUDITED",
-      "notes": "No literal visible source entry was found; contextual runtime construction may still apply and is recorded as direct-URL-dependent until Phase 1 or Phase 5."
+      "notes": "No literal visible source entry was found; contextual runtime construction may still apply and is recorded as direct-URL-dependent until Phase 1 or Phase 5.",
+      "phase2Implementation": {
+        "state": "VALIDATED",
+        "shellMode": "TOKENIZED",
+        "canonicalRoute": "/account/claim",
+        "globalNavigationVisibility": "TRANSFORMED_OR_HIDDEN",
+        "workspaceNavigationVisibility": "HIDDEN",
+        "accountControlVisibility": "HIDDEN",
+        "contextualNavigation": [],
+        "exitTarget": "/sign-in",
+        "implementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc",
+        "evidenceIds": []
+      }
     },
     {
       "routeId": "route-page-account-merge",
@@ -75,7 +87,7 @@
       "classification": "USER_NAVIGABLE",
       "ownerProject": "wayfarer",
       "productArea": "Personal Harbor",
-      "shellMode": "standard",
+      "shellMode": "TOKENIZED",
       "logicalParent": "/account",
       "currentVisibleEntries": [],
       "currentDesktopPath": ["DIRECT_URL_ONLY"],
@@ -95,7 +107,19 @@
       "orphanedOrdinaryRoute": true,
       "targetDisposition": "PHASE_1_IDENTITY_AND_SESSION",
       "status": "CURRENT_STATE_AUDITED",
-      "notes": "No literal visible source entry was found; contextual runtime construction may still apply and is recorded as direct-URL-dependent until Phase 1 or Phase 5."
+      "notes": "No literal visible source entry was found; contextual runtime construction may still apply and is recorded as direct-URL-dependent until Phase 1 or Phase 5.",
+      "phase2Implementation": {
+        "state": "VALIDATED",
+        "shellMode": "TOKENIZED",
+        "canonicalRoute": "/account/merge",
+        "globalNavigationVisibility": "TRANSFORMED_OR_HIDDEN",
+        "workspaceNavigationVisibility": "HIDDEN",
+        "accountControlVisibility": "HIDDEN",
+        "contextualNavigation": [],
+        "exitTarget": "/passport",
+        "implementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc",
+        "evidenceIds": []
+      }
     },
     {
       "routeId": "route-page-account-roles",
@@ -105,7 +129,7 @@
       "classification": "USER_NAVIGABLE",
       "ownerProject": "wayfarer",
       "productArea": "Personal Harbor",
-      "shellMode": "standard",
+      "shellMode": "WORKSPACE_STANDARD",
       "logicalParent": "/account",
       "currentVisibleEntries": [],
       "currentDesktopPath": ["DIRECT_URL_ONLY"],
@@ -131,6 +155,18 @@
         "behavior": "Canonical account guard and safe role projection.",
         "authority": "AccountSession via resolveCurrentUser",
         "evidence": ["tests/e2e/homeport-phase1.spec.ts"]
+      },
+      "phase2Implementation": {
+        "state": "VALIDATED",
+        "shellMode": "WORKSPACE_STANDARD",
+        "canonicalRoute": "/account/roles",
+        "globalNavigationVisibility": "VISIBLE",
+        "workspaceNavigationVisibility": "CAPABILITY_PROJECTED",
+        "accountControlVisibility": "VISIBLE_WHEN_SAFE",
+        "contextualNavigation": ["context-personal-parent"],
+        "exitTarget": "/passport",
+        "implementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc",
+        "evidenceIds": []
       }
     },
     {
@@ -141,7 +177,7 @@
       "classification": "USER_NAVIGABLE",
       "ownerProject": "wayfarer",
       "productArea": "Personal Harbor",
-      "shellMode": "standard",
+      "shellMode": "WORKSPACE_STANDARD",
       "logicalParent": "/account",
       "currentVisibleEntries": [
         {
@@ -203,6 +239,18 @@
         "behavior": "Canonical account guard; current/all-session revocation invalidates client context.",
         "authority": "AccountSession via resolveCurrentUser",
         "evidence": ["tests/e2e/homeport-phase1.spec.ts"]
+      },
+      "phase2Implementation": {
+        "state": "VALIDATED",
+        "shellMode": "WORKSPACE_STANDARD",
+        "canonicalRoute": "/account/security",
+        "globalNavigationVisibility": "VISIBLE",
+        "workspaceNavigationVisibility": "CAPABILITY_PROJECTED",
+        "accountControlVisibility": "VISIBLE_WHEN_SAFE",
+        "contextualNavigation": ["context-personal-parent"],
+        "exitTarget": "/passport",
+        "implementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc",
+        "evidenceIds": []
       }
     },
     {
@@ -5193,7 +5241,7 @@
       "classification": "USER_NAVIGABLE",
       "ownerProject": "one-voyage",
       "productArea": "Captain",
-      "shellMode": "standard",
+      "shellMode": "WORKSPACE_STANDARD",
       "logicalParent": "/captain",
       "currentVisibleEntries": [
         {
@@ -5223,7 +5271,19 @@
       "orphanedOrdinaryRoute": false,
       "targetDisposition": "PHASE_2_GLOBAL_SHELL_OR_PHASE_5_ROUTE_REACHABILITY",
       "status": "CURRENT_STATE_AUDITED",
-      "notes": "Static source census at the Phase 0 base."
+      "notes": "Static source census at the Phase 0 base.",
+      "phase2Implementation": {
+        "state": "VALIDATED",
+        "shellMode": "WORKSPACE_STANDARD",
+        "canonicalRoute": "/captain/invitations",
+        "globalNavigationVisibility": "VISIBLE",
+        "workspaceNavigationVisibility": "CAPABILITY_PROJECTED",
+        "accountControlVisibility": "VISIBLE_WHEN_SAFE",
+        "contextualNavigation": [],
+        "exitTarget": null,
+        "implementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc",
+        "evidenceIds": []
+      }
     },
     {
       "routeId": "route-page-captain-library",
@@ -5233,7 +5293,7 @@
       "classification": "USER_NAVIGABLE",
       "ownerProject": "one-voyage",
       "productArea": "Captain",
-      "shellMode": "standard",
+      "shellMode": "WORKSPACE_STANDARD",
       "logicalParent": "/captain",
       "currentVisibleEntries": [
         {
@@ -5306,7 +5366,6 @@
         "src/app/captain/page.tsx",
         "src/components/platform/PlayerSafePreview.tsx",
         "src/components/shell/ProductShell.tsx",
-        "src/navigation/registry.ts",
         "src/navigation/registry.ts"
       ],
       "currentMobilePath": [
@@ -5315,7 +5374,6 @@
         "src/app/captain/page.tsx",
         "src/components/platform/PlayerSafePreview.tsx",
         "src/components/shell/ProductShell.tsx",
-        "src/navigation/registry.ts",
         "src/navigation/registry.ts"
       ],
       "authenticationRequirement": "CAPTAIN_OR_CREATOR_CAPABILITY",
@@ -5326,8 +5384,8 @@
       "compatibilityAliases": [],
       "redirects": ["/captain/sign-in?return=/captain/library"],
       "currentSupportedStates": ["CURRENT_DEFAULT", "AUTH_OR_PERMISSION_GUARD", "SOURCE_COMPONENT_STATES"],
-      "currentJourneys": ["HP-JRN-009"],
-      "currentVisualEvidenceIds": ["HP-EV-011"],
+      "currentJourneys": ["HP-JRN-009", "HP-P2-JRN-F"],
+      "currentVisualEvidenceIds": ["HP-EV-011", "HP-P2-EV-I-captain-navigation"],
       "currentMaturity": "PARTIAL",
       "directUrlRequired": false,
       "orphanedOrdinaryRoute": false,
@@ -5339,6 +5397,18 @@
         "behavior": "Canonical Captain capability guard with explicit permission and ended-session states.",
         "authority": "AccountSession via resolveCurrentUser",
         "evidence": ["tests/e2e/homeport-phase1.spec.ts"]
+      },
+      "phase2Implementation": {
+        "state": "VALIDATED",
+        "shellMode": "WORKSPACE_STANDARD",
+        "canonicalRoute": "/captain/library",
+        "globalNavigationVisibility": "VISIBLE",
+        "workspaceNavigationVisibility": "CAPABILITY_PROJECTED",
+        "accountControlVisibility": "VISIBLE_WHEN_SAFE",
+        "contextualNavigation": [],
+        "exitTarget": null,
+        "implementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc",
+        "evidenceIds": ["HP-P2-EV-I-captain-navigation"]
       }
     },
     {
@@ -5349,7 +5419,7 @@
       "classification": "REDIRECT_ALIAS",
       "ownerProject": "one-voyage",
       "productArea": "Captain",
-      "shellMode": "standard",
+      "shellMode": "WORKSPACE_STANDARD",
       "logicalParent": "/",
       "currentVisibleEntries": [
         {
@@ -5416,7 +5486,19 @@
       "orphanedOrdinaryRoute": false,
       "targetDisposition": "PHASE_2_GLOBAL_SHELL_OR_PHASE_5_ROUTE_REACHABILITY",
       "status": "CURRENT_STATE_AUDITED",
-      "notes": "Static source census at the Phase 0 base."
+      "notes": "Static source census at the Phase 0 base.",
+      "phase2Implementation": {
+        "state": "VALIDATED",
+        "shellMode": "WORKSPACE_STANDARD",
+        "canonicalRoute": "/captain/library",
+        "globalNavigationVisibility": "VISIBLE",
+        "workspaceNavigationVisibility": "CAPABILITY_PROJECTED",
+        "accountControlVisibility": "VISIBLE_WHEN_SAFE",
+        "contextualNavigation": [],
+        "exitTarget": null,
+        "implementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc",
+        "evidenceIds": []
+      }
     },
     {
       "routeId": "route-page-captain-sessions-sessionid",
@@ -5426,7 +5508,7 @@
       "classification": "CONTEXTUAL_DYNAMIC",
       "ownerProject": "one-voyage",
       "productArea": "Captain",
-      "shellMode": "compact",
+      "shellMode": "COMPACT",
       "logicalParent": "/captain/sessions",
       "currentVisibleEntries": [],
       "currentDesktopPath": ["DIRECT_URL_ONLY"],
@@ -5439,14 +5521,26 @@
       "compatibilityAliases": [],
       "redirects": [],
       "currentSupportedStates": ["CURRENT_DEFAULT", "AUTH_OR_PERMISSION_GUARD", "SOURCE_COMPONENT_STATES"],
-      "currentJourneys": [],
-      "currentVisualEvidenceIds": [],
+      "currentJourneys": ["HP-P2-JRN-O"],
+      "currentVisualEvidenceIds": ["HP-P2-EV-N-compact-exit"],
       "currentMaturity": "PARTIAL",
       "directUrlRequired": true,
       "orphanedOrdinaryRoute": true,
       "targetDisposition": "PHASE_2_GLOBAL_SHELL_OR_PHASE_5_ROUTE_REACHABILITY",
       "status": "CURRENT_STATE_AUDITED",
-      "notes": "No literal visible source entry was found; contextual runtime construction may still apply and is recorded as direct-URL-dependent until Phase 1 or Phase 5."
+      "notes": "No literal visible source entry was found; contextual runtime construction may still apply and is recorded as direct-URL-dependent until Phase 1 or Phase 5.",
+      "phase2Implementation": {
+        "state": "VALIDATED",
+        "shellMode": "COMPACT",
+        "canonicalRoute": "/captain/sessions/:sessionId",
+        "globalNavigationVisibility": "TRANSFORMED_OR_HIDDEN",
+        "workspaceNavigationVisibility": "HIDDEN",
+        "accountControlVisibility": "VISIBLE_WHEN_SAFE",
+        "contextualNavigation": ["context-captain-exit"],
+        "exitTarget": "/captain/library",
+        "implementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc",
+        "evidenceIds": ["HP-P2-EV-N-compact-exit"]
+      }
     },
     {
       "routeId": "route-page-captain-sign-in",
@@ -5456,7 +5550,7 @@
       "classification": "USER_NAVIGABLE",
       "ownerProject": "one-voyage",
       "productArea": "Captain",
-      "shellMode": "authentication",
+      "shellMode": "AUTHENTICATION",
       "logicalParent": "/captain",
       "currentVisibleEntries": [
         {
@@ -5529,6 +5623,18 @@
         "behavior": "Contextual Captain adapter; granted capability continues without a second credential.",
         "authority": "AccountSession via resolveCurrentUser",
         "evidence": ["tests/e2e/homeport-phase1.spec.ts"]
+      },
+      "phase2Implementation": {
+        "state": "VALIDATED",
+        "shellMode": "AUTHENTICATION",
+        "canonicalRoute": "/captain/sign-in",
+        "globalNavigationVisibility": "TRANSFORMED_OR_HIDDEN",
+        "workspaceNavigationVisibility": "HIDDEN",
+        "accountControlVisibility": "HIDDEN",
+        "contextualNavigation": [],
+        "exitTarget": "/",
+        "implementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc",
+        "evidenceIds": []
       }
     },
     {
@@ -5539,7 +5645,7 @@
       "classification": "CONTEXTUAL_DYNAMIC",
       "ownerProject": "one-voyage",
       "productArea": "Captain",
-      "shellMode": "standard",
+      "shellMode": "WORKSPACE_STANDARD",
       "logicalParent": "/captain/tales",
       "currentVisibleEntries": [],
       "currentDesktopPath": ["DIRECT_URL_ONLY"],
@@ -5559,7 +5665,19 @@
       "orphanedOrdinaryRoute": true,
       "targetDisposition": "PHASE_2_GLOBAL_SHELL_OR_PHASE_5_ROUTE_REACHABILITY",
       "status": "CURRENT_STATE_AUDITED",
-      "notes": "No literal visible source entry was found; contextual runtime construction may still apply and is recorded as direct-URL-dependent until Phase 1 or Phase 5."
+      "notes": "No literal visible source entry was found; contextual runtime construction may still apply and is recorded as direct-URL-dependent until Phase 1 or Phase 5.",
+      "phase2Implementation": {
+        "state": "VALIDATED",
+        "shellMode": "WORKSPACE_STANDARD",
+        "canonicalRoute": "/captain/tales/:taleId",
+        "globalNavigationVisibility": "VISIBLE",
+        "workspaceNavigationVisibility": "CAPABILITY_PROJECTED",
+        "accountControlVisibility": "VISIBLE_WHEN_SAFE",
+        "contextualNavigation": [],
+        "exitTarget": null,
+        "implementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc",
+        "evidenceIds": []
+      }
     },
     {
       "routeId": "route-page-captain-voyages-playthroughid-player-preview",
@@ -5569,7 +5687,7 @@
       "classification": "CONTEXTUAL_DYNAMIC",
       "ownerProject": "one-voyage",
       "productArea": "Captain",
-      "shellMode": "standard",
+      "shellMode": "WORKSPACE_STANDARD",
       "logicalParent": "/captain/voyages/:playthroughId",
       "currentVisibleEntries": [],
       "currentDesktopPath": ["DIRECT_URL_ONLY"],
@@ -5589,7 +5707,19 @@
       "orphanedOrdinaryRoute": true,
       "targetDisposition": "PHASE_2_GLOBAL_SHELL_OR_PHASE_5_ROUTE_REACHABILITY",
       "status": "CURRENT_STATE_AUDITED",
-      "notes": "No literal visible source entry was found; contextual runtime construction may still apply and is recorded as direct-URL-dependent until Phase 1 or Phase 5."
+      "notes": "No literal visible source entry was found; contextual runtime construction may still apply and is recorded as direct-URL-dependent until Phase 1 or Phase 5.",
+      "phase2Implementation": {
+        "state": "VALIDATED",
+        "shellMode": "WORKSPACE_STANDARD",
+        "canonicalRoute": "/captain/voyages/:playthroughId/player-preview",
+        "globalNavigationVisibility": "VISIBLE",
+        "workspaceNavigationVisibility": "CAPABILITY_PROJECTED",
+        "accountControlVisibility": "VISIBLE_WHEN_SAFE",
+        "contextualNavigation": [],
+        "exitTarget": null,
+        "implementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc",
+        "evidenceIds": []
+      }
     },
     {
       "routeId": "route-page-community-slug",
@@ -5599,7 +5729,7 @@
       "classification": "CONTEXTUAL_DYNAMIC",
       "ownerProject": "harborlight",
       "productArea": "Community Harbor",
-      "shellMode": "standard",
+      "shellMode": "PUBLIC_STANDARD",
       "logicalParent": "/community",
       "currentVisibleEntries": [
         {
@@ -5765,7 +5895,19 @@
       "orphanedOrdinaryRoute": false,
       "targetDisposition": "PHASE_4_COMMUNITY_HARBOR",
       "status": "CURRENT_STATE_AUDITED",
-      "notes": "Static source census at the Phase 0 base."
+      "notes": "Static source census at the Phase 0 base.",
+      "phase2Implementation": {
+        "state": "VALIDATED",
+        "shellMode": "PUBLIC_STANDARD",
+        "canonicalRoute": "/community/:slug",
+        "globalNavigationVisibility": "VISIBLE",
+        "workspaceNavigationVisibility": "HIDDEN",
+        "accountControlVisibility": "VISIBLE_WHEN_SAFE",
+        "contextualNavigation": ["context-community-parent"],
+        "exitTarget": "/community",
+        "implementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc",
+        "evidenceIds": []
+      }
     },
     {
       "routeId": "route-page-community-artifacts",
@@ -5775,7 +5917,7 @@
       "classification": "USER_NAVIGABLE",
       "ownerProject": "harborlight",
       "productArea": "Community Harbor",
-      "shellMode": "standard",
+      "shellMode": "PUBLIC_STANDARD",
       "logicalParent": "/community",
       "currentVisibleEntries": [
         {
@@ -5805,7 +5947,19 @@
       "orphanedOrdinaryRoute": false,
       "targetDisposition": "PHASE_4_COMMUNITY_HARBOR",
       "status": "CURRENT_STATE_AUDITED",
-      "notes": "Static source census at the Phase 0 base."
+      "notes": "Static source census at the Phase 0 base.",
+      "phase2Implementation": {
+        "state": "VALIDATED",
+        "shellMode": "PUBLIC_STANDARD",
+        "canonicalRoute": "/community/artifacts",
+        "globalNavigationVisibility": "VISIBLE",
+        "workspaceNavigationVisibility": "HIDDEN",
+        "accountControlVisibility": "VISIBLE_WHEN_SAFE",
+        "contextualNavigation": ["context-community-parent"],
+        "exitTarget": "/community",
+        "implementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc",
+        "evidenceIds": []
+      }
     },
     {
       "routeId": "route-page-community-audio",
@@ -5815,7 +5969,7 @@
       "classification": "USER_NAVIGABLE",
       "ownerProject": "harborlight",
       "productArea": "Community Harbor",
-      "shellMode": "standard",
+      "shellMode": "PUBLIC_STANDARD",
       "logicalParent": "/community",
       "currentVisibleEntries": [],
       "currentDesktopPath": ["DIRECT_URL_ONLY"],
@@ -5835,7 +5989,19 @@
       "orphanedOrdinaryRoute": true,
       "targetDisposition": "PHASE_4_COMMUNITY_HARBOR",
       "status": "CURRENT_STATE_AUDITED",
-      "notes": "No literal visible source entry was found; contextual runtime construction may still apply and is recorded as direct-URL-dependent until Phase 1 or Phase 5."
+      "notes": "No literal visible source entry was found; contextual runtime construction may still apply and is recorded as direct-URL-dependent until Phase 1 or Phase 5.",
+      "phase2Implementation": {
+        "state": "VALIDATED",
+        "shellMode": "PUBLIC_STANDARD",
+        "canonicalRoute": "/community/audio",
+        "globalNavigationVisibility": "VISIBLE",
+        "workspaceNavigationVisibility": "HIDDEN",
+        "accountControlVisibility": "VISIBLE_WHEN_SAFE",
+        "contextualNavigation": ["context-community-parent"],
+        "exitTarget": "/community",
+        "implementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc",
+        "evidenceIds": []
+      }
     },
     {
       "routeId": "route-page-community-chronicles",
@@ -5845,7 +6011,7 @@
       "classification": "USER_NAVIGABLE",
       "ownerProject": "harborlight",
       "productArea": "Community Harbor",
-      "shellMode": "standard",
+      "shellMode": "PUBLIC_STANDARD",
       "logicalParent": "/community",
       "currentVisibleEntries": [
         {
@@ -5875,7 +6041,19 @@
       "orphanedOrdinaryRoute": false,
       "targetDisposition": "PHASE_4_COMMUNITY_HARBOR",
       "status": "CURRENT_STATE_AUDITED",
-      "notes": "Static source census at the Phase 0 base."
+      "notes": "Static source census at the Phase 0 base.",
+      "phase2Implementation": {
+        "state": "VALIDATED",
+        "shellMode": "PUBLIC_STANDARD",
+        "canonicalRoute": "/community/chronicles",
+        "globalNavigationVisibility": "VISIBLE",
+        "workspaceNavigationVisibility": "HIDDEN",
+        "accountControlVisibility": "VISIBLE_WHEN_SAFE",
+        "contextualNavigation": ["context-community-parent"],
+        "exitTarget": "/community",
+        "implementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc",
+        "evidenceIds": []
+      }
     },
     {
       "routeId": "route-page-community-collections-slug",
@@ -5885,7 +6063,7 @@
       "classification": "CONTEXTUAL_DYNAMIC",
       "ownerProject": "harborlight",
       "productArea": "Community Harbor",
-      "shellMode": "standard",
+      "shellMode": "PUBLIC_STANDARD",
       "logicalParent": "/community/collections",
       "currentVisibleEntries": [],
       "currentDesktopPath": ["DIRECT_URL_ONLY"],
@@ -5905,7 +6083,19 @@
       "orphanedOrdinaryRoute": true,
       "targetDisposition": "PHASE_4_COMMUNITY_HARBOR",
       "status": "CURRENT_STATE_AUDITED",
-      "notes": "No literal visible source entry was found; contextual runtime construction may still apply and is recorded as direct-URL-dependent until Phase 1 or Phase 5."
+      "notes": "No literal visible source entry was found; contextual runtime construction may still apply and is recorded as direct-URL-dependent until Phase 1 or Phase 5.",
+      "phase2Implementation": {
+        "state": "VALIDATED",
+        "shellMode": "PUBLIC_STANDARD",
+        "canonicalRoute": "/community/collections/:slug",
+        "globalNavigationVisibility": "VISIBLE",
+        "workspaceNavigationVisibility": "HIDDEN",
+        "accountControlVisibility": "VISIBLE_WHEN_SAFE",
+        "contextualNavigation": ["context-community-parent"],
+        "exitTarget": "/community",
+        "implementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc",
+        "evidenceIds": []
+      }
     },
     {
       "routeId": "route-page-community-collections",
@@ -5915,7 +6105,7 @@
       "classification": "USER_NAVIGABLE",
       "ownerProject": "harborlight",
       "productArea": "Community Harbor",
-      "shellMode": "standard",
+      "shellMode": "PUBLIC_STANDARD",
       "logicalParent": "/community",
       "currentVisibleEntries": [
         {
@@ -5945,7 +6135,19 @@
       "orphanedOrdinaryRoute": false,
       "targetDisposition": "PHASE_4_COMMUNITY_HARBOR",
       "status": "CURRENT_STATE_AUDITED",
-      "notes": "Static source census at the Phase 0 base."
+      "notes": "Static source census at the Phase 0 base.",
+      "phase2Implementation": {
+        "state": "VALIDATED",
+        "shellMode": "PUBLIC_STANDARD",
+        "canonicalRoute": "/community/collections",
+        "globalNavigationVisibility": "VISIBLE",
+        "workspaceNavigationVisibility": "HIDDEN",
+        "accountControlVisibility": "VISIBLE_WHEN_SAFE",
+        "contextualNavigation": ["context-community-parent"],
+        "exitTarget": "/community",
+        "implementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc",
+        "evidenceIds": []
+      }
     },
     {
       "routeId": "route-page-community-creators-handle",
@@ -5955,7 +6157,7 @@
       "classification": "CONTEXTUAL_DYNAMIC",
       "ownerProject": "harborlight",
       "productArea": "Community Harbor",
-      "shellMode": "standard",
+      "shellMode": "PUBLIC_STANDARD",
       "logicalParent": "/community/creators",
       "currentVisibleEntries": [],
       "currentDesktopPath": ["DIRECT_URL_ONLY"],
@@ -5975,7 +6177,19 @@
       "orphanedOrdinaryRoute": true,
       "targetDisposition": "PHASE_4_COMMUNITY_HARBOR",
       "status": "CURRENT_STATE_AUDITED",
-      "notes": "No literal visible source entry was found; contextual runtime construction may still apply and is recorded as direct-URL-dependent until Phase 1 or Phase 5."
+      "notes": "No literal visible source entry was found; contextual runtime construction may still apply and is recorded as direct-URL-dependent until Phase 1 or Phase 5.",
+      "phase2Implementation": {
+        "state": "VALIDATED",
+        "shellMode": "PUBLIC_STANDARD",
+        "canonicalRoute": "/community/creators/:handle",
+        "globalNavigationVisibility": "VISIBLE",
+        "workspaceNavigationVisibility": "HIDDEN",
+        "accountControlVisibility": "VISIBLE_WHEN_SAFE",
+        "contextualNavigation": ["context-community-parent"],
+        "exitTarget": "/community",
+        "implementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc",
+        "evidenceIds": []
+      }
     },
     {
       "routeId": "route-page-community-creators",
@@ -5985,7 +6199,7 @@
       "classification": "USER_NAVIGABLE",
       "ownerProject": "harborlight",
       "productArea": "Community Harbor",
-      "shellMode": "standard",
+      "shellMode": "PUBLIC_STANDARD",
       "logicalParent": "/community",
       "currentVisibleEntries": [
         {
@@ -6015,7 +6229,19 @@
       "orphanedOrdinaryRoute": false,
       "targetDisposition": "PHASE_4_COMMUNITY_HARBOR",
       "status": "CURRENT_STATE_AUDITED",
-      "notes": "Static source census at the Phase 0 base."
+      "notes": "Static source census at the Phase 0 base.",
+      "phase2Implementation": {
+        "state": "VALIDATED",
+        "shellMode": "PUBLIC_STANDARD",
+        "canonicalRoute": "/community/creators",
+        "globalNavigationVisibility": "VISIBLE",
+        "workspaceNavigationVisibility": "HIDDEN",
+        "accountControlVisibility": "VISIBLE_WHEN_SAFE",
+        "contextualNavigation": ["context-community-parent"],
+        "exitTarget": "/community",
+        "implementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc",
+        "evidenceIds": []
+      }
     },
     {
       "routeId": "route-page-community-featured",
@@ -6025,7 +6251,7 @@
       "classification": "USER_NAVIGABLE",
       "ownerProject": "harborlight",
       "productArea": "Community Harbor",
-      "shellMode": "standard",
+      "shellMode": "PUBLIC_STANDARD",
       "logicalParent": "/community",
       "currentVisibleEntries": [
         {
@@ -6055,7 +6281,19 @@
       "orphanedOrdinaryRoute": false,
       "targetDisposition": "PHASE_4_COMMUNITY_HARBOR",
       "status": "CURRENT_STATE_AUDITED",
-      "notes": "Static source census at the Phase 0 base."
+      "notes": "Static source census at the Phase 0 base.",
+      "phase2Implementation": {
+        "state": "VALIDATED",
+        "shellMode": "PUBLIC_STANDARD",
+        "canonicalRoute": "/community/featured",
+        "globalNavigationVisibility": "VISIBLE",
+        "workspaceNavigationVisibility": "HIDDEN",
+        "accountControlVisibility": "VISIBLE_WHEN_SAFE",
+        "contextualNavigation": ["context-community-parent"],
+        "exitTarget": "/community",
+        "implementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc",
+        "evidenceIds": []
+      }
     },
     {
       "routeId": "route-page-community-guides-slug",
@@ -6065,7 +6303,7 @@
       "classification": "CONTEXTUAL_DYNAMIC",
       "ownerProject": "harborlight",
       "productArea": "Community Harbor",
-      "shellMode": "standard",
+      "shellMode": "PUBLIC_STANDARD",
       "logicalParent": "/community/guides",
       "currentVisibleEntries": [],
       "currentDesktopPath": ["DIRECT_URL_ONLY"],
@@ -6085,7 +6323,19 @@
       "orphanedOrdinaryRoute": true,
       "targetDisposition": "PHASE_4_COMMUNITY_HARBOR",
       "status": "CURRENT_STATE_AUDITED",
-      "notes": "No literal visible source entry was found; contextual runtime construction may still apply and is recorded as direct-URL-dependent until Phase 1 or Phase 5."
+      "notes": "No literal visible source entry was found; contextual runtime construction may still apply and is recorded as direct-URL-dependent until Phase 1 or Phase 5.",
+      "phase2Implementation": {
+        "state": "VALIDATED",
+        "shellMode": "PUBLIC_STANDARD",
+        "canonicalRoute": "/community/guides/:slug",
+        "globalNavigationVisibility": "VISIBLE",
+        "workspaceNavigationVisibility": "HIDDEN",
+        "accountControlVisibility": "VISIBLE_WHEN_SAFE",
+        "contextualNavigation": ["context-community-parent"],
+        "exitTarget": "/community",
+        "implementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc",
+        "evidenceIds": []
+      }
     },
     {
       "routeId": "route-page-community-guides",
@@ -6095,7 +6345,7 @@
       "classification": "USER_NAVIGABLE",
       "ownerProject": "harborlight",
       "productArea": "Community Harbor",
-      "shellMode": "standard",
+      "shellMode": "PUBLIC_STANDARD",
       "logicalParent": "/community",
       "currentVisibleEntries": [
         {
@@ -6134,7 +6384,19 @@
       "orphanedOrdinaryRoute": false,
       "targetDisposition": "PHASE_4_COMMUNITY_HARBOR",
       "status": "CURRENT_STATE_AUDITED",
-      "notes": "Static source census at the Phase 0 base."
+      "notes": "Static source census at the Phase 0 base.",
+      "phase2Implementation": {
+        "state": "VALIDATED",
+        "shellMode": "PUBLIC_STANDARD",
+        "canonicalRoute": "/community/guides",
+        "globalNavigationVisibility": "VISIBLE",
+        "workspaceNavigationVisibility": "HIDDEN",
+        "accountControlVisibility": "VISIBLE_WHEN_SAFE",
+        "contextualNavigation": ["context-community-parent"],
+        "exitTarget": "/community",
+        "implementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc",
+        "evidenceIds": []
+      }
     },
     {
       "routeId": "route-page-community-maps",
@@ -6144,7 +6406,7 @@
       "classification": "USER_NAVIGABLE",
       "ownerProject": "harborlight",
       "productArea": "Community Harbor",
-      "shellMode": "standard",
+      "shellMode": "PUBLIC_STANDARD",
       "logicalParent": "/community",
       "currentVisibleEntries": [],
       "currentDesktopPath": ["DIRECT_URL_ONLY"],
@@ -6164,7 +6426,19 @@
       "orphanedOrdinaryRoute": true,
       "targetDisposition": "PHASE_4_COMMUNITY_HARBOR",
       "status": "CURRENT_STATE_AUDITED",
-      "notes": "No literal visible source entry was found; contextual runtime construction may still apply and is recorded as direct-URL-dependent until Phase 1 or Phase 5."
+      "notes": "No literal visible source entry was found; contextual runtime construction may still apply and is recorded as direct-URL-dependent until Phase 1 or Phase 5.",
+      "phase2Implementation": {
+        "state": "VALIDATED",
+        "shellMode": "PUBLIC_STANDARD",
+        "canonicalRoute": "/community/maps",
+        "globalNavigationVisibility": "VISIBLE",
+        "workspaceNavigationVisibility": "HIDDEN",
+        "accountControlVisibility": "VISIBLE_WHEN_SAFE",
+        "contextualNavigation": ["context-community-parent"],
+        "exitTarget": "/community",
+        "implementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc",
+        "evidenceIds": []
+      }
     },
     {
       "routeId": "route-page-community-moderation-id",
@@ -6174,7 +6448,7 @@
       "classification": "CONTEXTUAL_DYNAMIC",
       "ownerProject": "harborlight",
       "productArea": "Community Harbor",
-      "shellMode": "standard",
+      "shellMode": "PUBLIC_STANDARD",
       "logicalParent": "/community/moderation",
       "currentVisibleEntries": [],
       "currentDesktopPath": ["DIRECT_URL_ONLY"],
@@ -6194,7 +6468,19 @@
       "orphanedOrdinaryRoute": true,
       "targetDisposition": "PHASE_4_COMMUNITY_HARBOR",
       "status": "CURRENT_STATE_AUDITED",
-      "notes": "No literal visible source entry was found; contextual runtime construction may still apply and is recorded as direct-URL-dependent until Phase 1 or Phase 5."
+      "notes": "No literal visible source entry was found; contextual runtime construction may still apply and is recorded as direct-URL-dependent until Phase 1 or Phase 5.",
+      "phase2Implementation": {
+        "state": "VALIDATED",
+        "shellMode": "PUBLIC_STANDARD",
+        "canonicalRoute": "/community/moderation/:id",
+        "globalNavigationVisibility": "VISIBLE",
+        "workspaceNavigationVisibility": "HIDDEN",
+        "accountControlVisibility": "VISIBLE_WHEN_SAFE",
+        "contextualNavigation": ["context-community-parent"],
+        "exitTarget": "/community",
+        "implementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc",
+        "evidenceIds": []
+      }
     },
     {
       "routeId": "route-page-community-moderation",
@@ -6204,7 +6490,7 @@
       "classification": "USER_NAVIGABLE",
       "ownerProject": "harborlight",
       "productArea": "Community Harbor",
-      "shellMode": "standard",
+      "shellMode": "PUBLIC_STANDARD",
       "logicalParent": "/community",
       "currentVisibleEntries": [
         {
@@ -6227,8 +6513,8 @@
       "compatibilityAliases": [],
       "redirects": ["/sign-in"],
       "currentSupportedStates": ["CURRENT_DEFAULT", "AUTH_OR_PERMISSION_GUARD", "SOURCE_COMPONENT_STATES"],
-      "currentJourneys": ["HP-JRN-012"],
-      "currentVisualEvidenceIds": [],
+      "currentJourneys": ["HP-JRN-012", "HP-P2-JRN-Q"],
+      "currentVisualEvidenceIds": ["HP-P2-EV-T-permission-return"],
       "currentMaturity": "SKELETAL",
       "directUrlRequired": false,
       "orphanedOrdinaryRoute": false,
@@ -6240,6 +6526,18 @@
         "behavior": "Authenticated non-moderator receives explicit permission denial and remains signed in.",
         "authority": "AccountSession via resolveCurrentUser",
         "evidence": ["tests/e2e/homeport-phase1.spec.ts"]
+      },
+      "phase2Implementation": {
+        "state": "VALIDATED",
+        "shellMode": "PUBLIC_STANDARD",
+        "canonicalRoute": "/community/moderation",
+        "globalNavigationVisibility": "VISIBLE",
+        "workspaceNavigationVisibility": "HIDDEN",
+        "accountControlVisibility": "VISIBLE_WHEN_SAFE",
+        "contextualNavigation": ["context-community-parent"],
+        "exitTarget": "/community",
+        "implementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc",
+        "evidenceIds": ["HP-P2-EV-T-permission-return"]
       }
     },
     {
@@ -6250,7 +6548,7 @@
       "classification": "USER_NAVIGABLE",
       "ownerProject": "harborlight",
       "productArea": "Community Harbor",
-      "shellMode": "standard",
+      "shellMode": "PUBLIC_STANDARD",
       "logicalParent": "/",
       "currentVisibleEntries": [
         {
@@ -6310,14 +6608,26 @@
       "compatibilityAliases": [],
       "redirects": [],
       "currentSupportedStates": ["CURRENT_DEFAULT", "AUTH_OR_PERMISSION_GUARD", "SOURCE_COMPONENT_STATES"],
-      "currentJourneys": ["HP-JRN-006", "HP-JRN-007", "HP-JRN-012", "HP-JRN-013"],
-      "currentVisualEvidenceIds": ["HP-EV-018", "HP-EV-019", "HP-EV-020", "HP-EV-024"],
+      "currentJourneys": ["HP-JRN-006", "HP-JRN-007", "HP-JRN-012", "HP-JRN-013", "HP-P2-JRN-C"],
+      "currentVisualEvidenceIds": ["HP-EV-018", "HP-EV-019", "HP-EV-020", "HP-EV-024", "HP-P2-EV-K-community-shell"],
       "currentMaturity": "SKELETAL",
       "directUrlRequired": false,
       "orphanedOrdinaryRoute": false,
       "targetDisposition": "PHASE_4_COMMUNITY_HARBOR",
       "status": "CURRENT_STATE_AUDITED",
-      "notes": "Static source census at the Phase 0 base."
+      "notes": "Static source census at the Phase 0 base.",
+      "phase2Implementation": {
+        "state": "VALIDATED",
+        "shellMode": "PUBLIC_STANDARD",
+        "canonicalRoute": "/community",
+        "globalNavigationVisibility": "VISIBLE",
+        "workspaceNavigationVisibility": "HIDDEN",
+        "accountControlVisibility": "VISIBLE_WHEN_SAFE",
+        "contextualNavigation": [],
+        "exitTarget": null,
+        "implementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc",
+        "evidenceIds": ["HP-P2-EV-K-community-shell"]
+      }
     },
     {
       "routeId": "route-page-community-templates",
@@ -6327,7 +6637,7 @@
       "classification": "USER_NAVIGABLE",
       "ownerProject": "harborlight",
       "productArea": "Community Harbor",
-      "shellMode": "standard",
+      "shellMode": "PUBLIC_STANDARD",
       "logicalParent": "/community",
       "currentVisibleEntries": [],
       "currentDesktopPath": ["DIRECT_URL_ONLY"],
@@ -6347,7 +6657,19 @@
       "orphanedOrdinaryRoute": true,
       "targetDisposition": "PHASE_4_COMMUNITY_HARBOR",
       "status": "CURRENT_STATE_AUDITED",
-      "notes": "No literal visible source entry was found; contextual runtime construction may still apply and is recorded as direct-URL-dependent until Phase 1 or Phase 5."
+      "notes": "No literal visible source entry was found; contextual runtime construction may still apply and is recorded as direct-URL-dependent until Phase 1 or Phase 5.",
+      "phase2Implementation": {
+        "state": "VALIDATED",
+        "shellMode": "PUBLIC_STANDARD",
+        "canonicalRoute": "/community/templates",
+        "globalNavigationVisibility": "VISIBLE",
+        "workspaceNavigationVisibility": "HIDDEN",
+        "accountControlVisibility": "VISIBLE_WHEN_SAFE",
+        "contextualNavigation": ["context-community-parent"],
+        "exitTarget": "/community",
+        "implementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc",
+        "evidenceIds": []
+      }
     },
     {
       "routeId": "route-page-community-voyage-logs-slug",
@@ -6357,7 +6679,7 @@
       "classification": "CONTEXTUAL_DYNAMIC",
       "ownerProject": "harborlight",
       "productArea": "Community Harbor",
-      "shellMode": "standard",
+      "shellMode": "PUBLIC_STANDARD",
       "logicalParent": "/community/voyage-logs",
       "currentVisibleEntries": [
         {
@@ -6387,7 +6709,19 @@
       "orphanedOrdinaryRoute": false,
       "targetDisposition": "PHASE_4_COMMUNITY_HARBOR",
       "status": "CURRENT_STATE_AUDITED",
-      "notes": "Static source census at the Phase 0 base."
+      "notes": "Static source census at the Phase 0 base.",
+      "phase2Implementation": {
+        "state": "VALIDATED",
+        "shellMode": "PUBLIC_STANDARD",
+        "canonicalRoute": "/community/voyage-logs/:slug",
+        "globalNavigationVisibility": "VISIBLE",
+        "workspaceNavigationVisibility": "HIDDEN",
+        "accountControlVisibility": "VISIBLE_WHEN_SAFE",
+        "contextualNavigation": ["context-community-parent"],
+        "exitTarget": "/community",
+        "implementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc",
+        "evidenceIds": []
+      }
     },
     {
       "routeId": "route-page-community-voyage-logs-consent",
@@ -6397,7 +6731,7 @@
       "classification": "USER_NAVIGABLE",
       "ownerProject": "harborlight",
       "productArea": "Community Harbor",
-      "shellMode": "standard",
+      "shellMode": "PUBLIC_STANDARD",
       "logicalParent": "/community/voyage-logs",
       "currentVisibleEntries": [],
       "currentDesktopPath": ["DIRECT_URL_ONLY"],
@@ -6417,7 +6751,19 @@
       "orphanedOrdinaryRoute": true,
       "targetDisposition": "PHASE_4_COMMUNITY_HARBOR",
       "status": "CURRENT_STATE_AUDITED",
-      "notes": "No literal visible source entry was found; contextual runtime construction may still apply and is recorded as direct-URL-dependent until Phase 1 or Phase 5."
+      "notes": "No literal visible source entry was found; contextual runtime construction may still apply and is recorded as direct-URL-dependent until Phase 1 or Phase 5.",
+      "phase2Implementation": {
+        "state": "VALIDATED",
+        "shellMode": "PUBLIC_STANDARD",
+        "canonicalRoute": "/community/voyage-logs/consent",
+        "globalNavigationVisibility": "VISIBLE",
+        "workspaceNavigationVisibility": "HIDDEN",
+        "accountControlVisibility": "VISIBLE_WHEN_SAFE",
+        "contextualNavigation": ["context-community-parent"],
+        "exitTarget": "/community",
+        "implementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc",
+        "evidenceIds": []
+      }
     },
     {
       "routeId": "route-page-community-voyage-logs-media",
@@ -6427,7 +6773,7 @@
       "classification": "USER_NAVIGABLE",
       "ownerProject": "harborlight",
       "productArea": "Community Harbor",
-      "shellMode": "standard",
+      "shellMode": "PUBLIC_STANDARD",
       "logicalParent": "/community/voyage-logs",
       "currentVisibleEntries": [],
       "currentDesktopPath": ["DIRECT_URL_ONLY"],
@@ -6447,7 +6793,19 @@
       "orphanedOrdinaryRoute": true,
       "targetDisposition": "PHASE_4_COMMUNITY_HARBOR",
       "status": "CURRENT_STATE_AUDITED",
-      "notes": "No literal visible source entry was found; contextual runtime construction may still apply and is recorded as direct-URL-dependent until Phase 1 or Phase 5."
+      "notes": "No literal visible source entry was found; contextual runtime construction may still apply and is recorded as direct-URL-dependent until Phase 1 or Phase 5.",
+      "phase2Implementation": {
+        "state": "VALIDATED",
+        "shellMode": "PUBLIC_STANDARD",
+        "canonicalRoute": "/community/voyage-logs/media",
+        "globalNavigationVisibility": "VISIBLE",
+        "workspaceNavigationVisibility": "HIDDEN",
+        "accountControlVisibility": "VISIBLE_WHEN_SAFE",
+        "contextualNavigation": ["context-community-parent"],
+        "exitTarget": "/community",
+        "implementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc",
+        "evidenceIds": []
+      }
     },
     {
       "routeId": "route-page-community-voyage-logs-owner-id",
@@ -6457,7 +6815,7 @@
       "classification": "CONTEXTUAL_DYNAMIC",
       "ownerProject": "harborlight",
       "productArea": "Community Harbor",
-      "shellMode": "standard",
+      "shellMode": "PUBLIC_STANDARD",
       "logicalParent": "/community/voyage-logs/owner",
       "currentVisibleEntries": [],
       "currentDesktopPath": ["DIRECT_URL_ONLY"],
@@ -6477,7 +6835,19 @@
       "orphanedOrdinaryRoute": true,
       "targetDisposition": "PHASE_4_COMMUNITY_HARBOR",
       "status": "CURRENT_STATE_AUDITED",
-      "notes": "No literal visible source entry was found; contextual runtime construction may still apply and is recorded as direct-URL-dependent until Phase 1 or Phase 5."
+      "notes": "No literal visible source entry was found; contextual runtime construction may still apply and is recorded as direct-URL-dependent until Phase 1 or Phase 5.",
+      "phase2Implementation": {
+        "state": "VALIDATED",
+        "shellMode": "PUBLIC_STANDARD",
+        "canonicalRoute": "/community/voyage-logs/owner/:id",
+        "globalNavigationVisibility": "VISIBLE",
+        "workspaceNavigationVisibility": "HIDDEN",
+        "accountControlVisibility": "VISIBLE_WHEN_SAFE",
+        "contextualNavigation": ["context-community-parent"],
+        "exitTarget": "/community",
+        "implementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc",
+        "evidenceIds": []
+      }
     },
     {
       "routeId": "route-page-community-voyage-logs-owner",
@@ -6487,7 +6857,7 @@
       "classification": "USER_NAVIGABLE",
       "ownerProject": "harborlight",
       "productArea": "Community Harbor",
-      "shellMode": "standard",
+      "shellMode": "PUBLIC_STANDARD",
       "logicalParent": "/community/voyage-logs",
       "currentVisibleEntries": [
         {
@@ -6517,7 +6887,19 @@
       "orphanedOrdinaryRoute": false,
       "targetDisposition": "PHASE_4_COMMUNITY_HARBOR",
       "status": "CURRENT_STATE_AUDITED",
-      "notes": "Static source census at the Phase 0 base."
+      "notes": "Static source census at the Phase 0 base.",
+      "phase2Implementation": {
+        "state": "VALIDATED",
+        "shellMode": "PUBLIC_STANDARD",
+        "canonicalRoute": "/community/voyage-logs/owner",
+        "globalNavigationVisibility": "VISIBLE",
+        "workspaceNavigationVisibility": "HIDDEN",
+        "accountControlVisibility": "VISIBLE_WHEN_SAFE",
+        "contextualNavigation": ["context-community-parent"],
+        "exitTarget": "/community",
+        "implementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc",
+        "evidenceIds": []
+      }
     },
     {
       "routeId": "route-page-community-voyage-logs",
@@ -6527,7 +6909,7 @@
       "classification": "USER_NAVIGABLE",
       "ownerProject": "harborlight",
       "productArea": "Community Harbor",
-      "shellMode": "standard",
+      "shellMode": "PUBLIC_STANDARD",
       "logicalParent": "/community",
       "currentVisibleEntries": [
         {
@@ -6605,7 +6987,19 @@
       "orphanedOrdinaryRoute": false,
       "targetDisposition": "PHASE_4_COMMUNITY_HARBOR",
       "status": "CURRENT_STATE_AUDITED",
-      "notes": "Static source census at the Phase 0 base."
+      "notes": "Static source census at the Phase 0 base.",
+      "phase2Implementation": {
+        "state": "VALIDATED",
+        "shellMode": "PUBLIC_STANDARD",
+        "canonicalRoute": "/community/voyage-logs",
+        "globalNavigationVisibility": "VISIBLE",
+        "workspaceNavigationVisibility": "HIDDEN",
+        "accountControlVisibility": "VISIBLE_WHEN_SAFE",
+        "contextualNavigation": ["context-community-parent"],
+        "exitTarget": "/community",
+        "implementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc",
+        "evidenceIds": []
+      }
     },
     {
       "routeId": "route-page-dev-animations",
@@ -6615,7 +7009,7 @@
       "classification": "DEVELOPMENT_ONLY",
       "ownerProject": "lanternwake",
       "productArea": "Development diagnostics",
-      "shellMode": "standard",
+      "shellMode": "DEVELOPMENT",
       "logicalParent": "/dev",
       "currentVisibleEntries": [
         {
@@ -6645,7 +7039,19 @@
       "orphanedOrdinaryRoute": false,
       "targetDisposition": "RETAIN_DEVELOPMENT_ONLY",
       "status": "CURRENT_STATE_AUDITED",
-      "notes": "Static source census at the Phase 0 base."
+      "notes": "Static source census at the Phase 0 base.",
+      "phase2Implementation": {
+        "state": "VALIDATED",
+        "shellMode": "DEVELOPMENT",
+        "canonicalRoute": "/dev/animations",
+        "globalNavigationVisibility": "TRANSFORMED_OR_HIDDEN",
+        "workspaceNavigationVisibility": "HIDDEN",
+        "accountControlVisibility": "HIDDEN",
+        "contextualNavigation": ["context-development-exit"],
+        "exitTarget": "/",
+        "implementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc",
+        "evidenceIds": []
+      }
     },
     {
       "routeId": "route-page-forgot-password",
@@ -6655,7 +7061,7 @@
       "classification": "USER_NAVIGABLE",
       "ownerProject": "wayfarer",
       "productArea": "Account lifecycle",
-      "shellMode": "authentication",
+      "shellMode": "AUTHENTICATION",
       "logicalParent": "/",
       "currentVisibleEntries": [],
       "currentDesktopPath": ["DIRECT_URL_ONLY"],
@@ -6681,6 +7087,18 @@
         "behavior": "Canonical recovery entry with non-enumerating response and preserved safe return intent.",
         "authority": "AccountSession via resolveCurrentUser",
         "evidence": ["tests/e2e/homeport-phase1.spec.ts"]
+      },
+      "phase2Implementation": {
+        "state": "VALIDATED",
+        "shellMode": "AUTHENTICATION",
+        "canonicalRoute": "/forgot-password",
+        "globalNavigationVisibility": "TRANSFORMED_OR_HIDDEN",
+        "workspaceNavigationVisibility": "HIDDEN",
+        "accountControlVisibility": "HIDDEN",
+        "contextualNavigation": [],
+        "exitTarget": "/",
+        "implementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc",
+        "evidenceIds": []
       }
     },
     {
@@ -6721,7 +7139,7 @@
       "classification": "USER_NAVIGABLE",
       "ownerProject": "platform-foundation",
       "productArea": "Gateway and public shell",
-      "shellMode": "gateway",
+      "shellMode": "GATEWAY_STANDARD",
       "logicalParent": null,
       "currentVisibleEntries": [
         {
@@ -6802,20 +7220,16 @@
         "src/components/captain/CaptainDashboard.tsx",
         "src/components/dev/AnimationShowcase.tsx",
         "src/components/shell/ProductShell.tsx",
-        "src/components/shell/ProductShell.tsx",
-        "src/components/shell/ProductShell.tsx",
-        "src/components/shell/ProductShell.tsx",
-        "src/components/tales/TaleCatalog.tsx"
+        "src/components/tales/TaleCatalog.tsx",
+        "src/navigation/registry.ts"
       ],
       "currentMobilePath": [
         "browser address / application launch",
         "src/components/captain/CaptainDashboard.tsx",
         "src/components/dev/AnimationShowcase.tsx",
         "src/components/shell/ProductShell.tsx",
-        "src/components/shell/ProductShell.tsx",
-        "src/components/shell/ProductShell.tsx",
-        "src/components/shell/ProductShell.tsx",
-        "src/components/tales/TaleCatalog.tsx"
+        "src/components/tales/TaleCatalog.tsx",
+        "src/navigation/registry.ts"
       ],
       "authenticationRequirement": "ANONYMOUS_ALLOWED",
       "capabilityRequirements": [],
@@ -6832,15 +7246,61 @@
         "HP-JRN-006",
         "HP-JRN-011",
         "HP-JRN-012",
-        "HP-JRN-013"
+        "HP-JRN-013",
+        "HP-P2-JRN-A",
+        "HP-P2-JRN-B",
+        "HP-P2-JRN-J",
+        "HP-P2-JRN-K",
+        "HP-P2-JRN-R",
+        "HP-P2-JRN-S",
+        "HP-P2-JRN-T"
       ],
-      "currentVisualEvidenceIds": ["HP-EV-001", "HP-EV-002", "HP-EV-003"],
+      "currentVisualEvidenceIds": [
+        "HP-EV-001",
+        "HP-EV-002",
+        "HP-EV-003",
+        "HP-P2-EV-A-gateway-anonymous-desktop",
+        "HP-P2-EV-B-gateway-authenticated-desktop",
+        "HP-P2-EV-C-gateway-anonymous-mobile",
+        "HP-P2-EV-D-gateway-authenticated-mobile",
+        "HP-P2-EV-E-account-menu-anonymous",
+        "HP-P2-EV-F-account-menu-authenticated",
+        "HP-P2-EV-L-mobile-drawer",
+        "HP-P2-EV-P-context-unavailable",
+        "HP-P2-EV-Q-zoom-gateway",
+        "HP-P2-EV-R-zoom-account-menu",
+        "HP-P2-EV-S-reduced-motion"
+      ],
       "currentMaturity": "PARTIAL",
       "directUrlRequired": false,
       "orphanedOrdinaryRoute": false,
       "targetDisposition": "PHASE_2_GLOBAL_SHELL_OR_PHASE_5_ROUTE_REACHABILITY",
       "status": "CURRENT_STATE_AUDITED",
-      "notes": "Static source census at the Phase 0 base."
+      "notes": "Static source census at the Phase 0 base.",
+      "phase2Implementation": {
+        "state": "VALIDATED",
+        "shellMode": "GATEWAY_STANDARD",
+        "canonicalRoute": "/",
+        "globalNavigationVisibility": "VISIBLE",
+        "workspaceNavigationVisibility": "HIDDEN",
+        "accountControlVisibility": "VISIBLE_WHEN_SAFE",
+        "contextualNavigation": [],
+        "exitTarget": null,
+        "implementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc",
+        "evidenceIds": [
+          "HP-P2-EV-A-gateway-anonymous-desktop",
+          "HP-P2-EV-B-gateway-authenticated-desktop",
+          "HP-P2-EV-C-gateway-anonymous-mobile",
+          "HP-P2-EV-D-gateway-authenticated-mobile",
+          "HP-P2-EV-E-account-menu-anonymous",
+          "HP-P2-EV-F-account-menu-authenticated",
+          "HP-P2-EV-L-mobile-drawer",
+          "HP-P2-EV-P-context-unavailable",
+          "HP-P2-EV-Q-zoom-gateway",
+          "HP-P2-EV-R-zoom-account-menu",
+          "HP-P2-EV-S-reduced-motion"
+        ]
+      }
     },
     {
       "routeId": "route-page-passport",
@@ -6850,7 +7310,7 @@
       "classification": "USER_NAVIGABLE",
       "ownerProject": "wayfarer",
       "productArea": "Personal Harbor",
-      "shellMode": "standard",
+      "shellMode": "WORKSPACE_STANDARD",
       "logicalParent": "/",
       "currentVisibleEntries": [
         {
@@ -6881,16 +7341,8 @@
           "missingCapabilityBehavior": "DESTINATION_GUARD_OR_PROJECTION"
         }
       ],
-      "currentDesktopPath": [
-        "src/components/shell/ProductShell.tsx",
-        "src/navigation/registry.ts",
-        "src/navigation/registry.ts"
-      ],
-      "currentMobilePath": [
-        "src/components/shell/ProductShell.tsx",
-        "src/navigation/registry.ts",
-        "src/navigation/registry.ts"
-      ],
+      "currentDesktopPath": ["src/components/shell/ProductShell.tsx", "src/navigation/registry.ts"],
+      "currentMobilePath": ["src/components/shell/ProductShell.tsx", "src/navigation/registry.ts"],
       "authenticationRequirement": "ANONYMOUS_OR_PAGE_LEVEL_GUARD",
       "capabilityRequirements": [],
       "returnOrBackRoute": "/",
@@ -6912,6 +7364,18 @@
         "behavior": "Canonical Player guard and shared client current-user consumer; no page-local identity authority.",
         "authority": "AccountSession via resolveCurrentUser",
         "evidence": ["tests/e2e/homeport-phase1.spec.ts"]
+      },
+      "phase2Implementation": {
+        "state": "VALIDATED",
+        "shellMode": "WORKSPACE_STANDARD",
+        "canonicalRoute": "/passport",
+        "globalNavigationVisibility": "VISIBLE",
+        "workspaceNavigationVisibility": "CAPABILITY_PROJECTED",
+        "accountControlVisibility": "VISIBLE_WHEN_SAFE",
+        "contextualNavigation": [],
+        "exitTarget": null,
+        "implementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc",
+        "evidenceIds": []
       }
     },
     {
@@ -6922,7 +7386,7 @@
       "classification": "CONTEXTUAL_DYNAMIC",
       "ownerProject": "one-voyage",
       "productArea": "Voyage runtime",
-      "shellMode": "standard",
+      "shellMode": "PUBLIC_STANDARD",
       "logicalParent": "/play/:taleSlug",
       "currentVisibleEntries": [],
       "currentDesktopPath": ["DIRECT_URL_ONLY"],
@@ -6942,7 +7406,19 @@
       "orphanedOrdinaryRoute": true,
       "targetDisposition": "PHASE_2_GLOBAL_SHELL_OR_PHASE_5_ROUTE_REACHABILITY",
       "status": "CURRENT_STATE_AUDITED",
-      "notes": "No literal visible source entry was found; contextual runtime construction may still apply and is recorded as direct-URL-dependent until Phase 1 or Phase 5."
+      "notes": "No literal visible source entry was found; contextual runtime construction may still apply and is recorded as direct-URL-dependent until Phase 1 or Phase 5.",
+      "phase2Implementation": {
+        "state": "VALIDATED",
+        "shellMode": "PUBLIC_STANDARD",
+        "canonicalRoute": "/play/:taleSlug/history",
+        "globalNavigationVisibility": "VISIBLE",
+        "workspaceNavigationVisibility": "HIDDEN",
+        "accountControlVisibility": "VISIBLE_WHEN_SAFE",
+        "contextualNavigation": ["context-chronicles-parent"],
+        "exitTarget": "/tales",
+        "implementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc",
+        "evidenceIds": []
+      }
     },
     {
       "routeId": "route-page-play-taleslug",
@@ -6952,7 +7428,7 @@
       "classification": "CONTEXTUAL_DYNAMIC",
       "ownerProject": "one-voyage",
       "productArea": "Voyage runtime",
-      "shellMode": "standard",
+      "shellMode": "PUBLIC_STANDARD",
       "logicalParent": "/play",
       "currentVisibleEntries": [],
       "currentDesktopPath": ["DIRECT_URL_ONLY"],
@@ -6972,7 +7448,19 @@
       "orphanedOrdinaryRoute": true,
       "targetDisposition": "PHASE_2_GLOBAL_SHELL_OR_PHASE_5_ROUTE_REACHABILITY",
       "status": "CURRENT_STATE_AUDITED",
-      "notes": "No literal visible source entry was found; contextual runtime construction may still apply and is recorded as direct-URL-dependent until Phase 1 or Phase 5."
+      "notes": "No literal visible source entry was found; contextual runtime construction may still apply and is recorded as direct-URL-dependent until Phase 1 or Phase 5.",
+      "phase2Implementation": {
+        "state": "VALIDATED",
+        "shellMode": "PUBLIC_STANDARD",
+        "canonicalRoute": "/play/:taleSlug",
+        "globalNavigationVisibility": "VISIBLE",
+        "workspaceNavigationVisibility": "HIDDEN",
+        "accountControlVisibility": "VISIBLE_WHEN_SAFE",
+        "contextualNavigation": ["context-chronicles-parent"],
+        "exitTarget": "/tales",
+        "implementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc",
+        "evidenceIds": []
+      }
     },
     {
       "routeId": "route-page-play-taleslug-session-sessionid",
@@ -6982,7 +7470,7 @@
       "classification": "CONTEXTUAL_DYNAMIC",
       "ownerProject": "one-voyage",
       "productArea": "Voyage runtime",
-      "shellMode": "immersive-player",
+      "shellMode": "IMMERSIVE",
       "logicalParent": "/play/:taleSlug/session",
       "currentVisibleEntries": [],
       "currentDesktopPath": ["DIRECT_URL_ONLY"],
@@ -7002,7 +7490,19 @@
       "orphanedOrdinaryRoute": true,
       "targetDisposition": "PHASE_2_GLOBAL_SHELL_OR_PHASE_5_ROUTE_REACHABILITY",
       "status": "CURRENT_STATE_AUDITED",
-      "notes": "No literal visible source entry was found; contextual runtime construction may still apply and is recorded as direct-URL-dependent until Phase 1 or Phase 5."
+      "notes": "No literal visible source entry was found; contextual runtime construction may still apply and is recorded as direct-URL-dependent until Phase 1 or Phase 5.",
+      "phase2Implementation": {
+        "state": "VALIDATED",
+        "shellMode": "IMMERSIVE",
+        "canonicalRoute": "/play/:taleSlug/session/:sessionId",
+        "globalNavigationVisibility": "TRANSFORMED_OR_HIDDEN",
+        "workspaceNavigationVisibility": "HIDDEN",
+        "accountControlVisibility": "VISIBLE_WHEN_SAFE",
+        "contextualNavigation": ["context-player-exit"],
+        "exitTarget": "/player/library",
+        "implementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc",
+        "evidenceIds": []
+      }
     },
     {
       "routeId": "route-page-player-invitation",
@@ -7012,7 +7512,7 @@
       "classification": "USER_NAVIGABLE",
       "ownerProject": "one-voyage",
       "productArea": "Player",
-      "shellMode": "standard",
+      "shellMode": "TOKENIZED",
       "logicalParent": "/player",
       "currentVisibleEntries": [],
       "currentDesktopPath": ["DIRECT_URL_ONLY"],
@@ -7032,7 +7532,19 @@
       "orphanedOrdinaryRoute": true,
       "targetDisposition": "PHASE_2_GLOBAL_SHELL_OR_PHASE_5_ROUTE_REACHABILITY",
       "status": "CURRENT_STATE_AUDITED",
-      "notes": "No literal visible source entry was found; contextual runtime construction may still apply and is recorded as direct-URL-dependent until Phase 1 or Phase 5."
+      "notes": "No literal visible source entry was found; contextual runtime construction may still apply and is recorded as direct-URL-dependent until Phase 1 or Phase 5.",
+      "phase2Implementation": {
+        "state": "VALIDATED",
+        "shellMode": "TOKENIZED",
+        "canonicalRoute": "/player/invitation",
+        "globalNavigationVisibility": "TRANSFORMED_OR_HIDDEN",
+        "workspaceNavigationVisibility": "HIDDEN",
+        "accountControlVisibility": "HIDDEN",
+        "contextualNavigation": [],
+        "exitTarget": "/sign-in",
+        "implementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc",
+        "evidenceIds": []
+      }
     },
     {
       "routeId": "route-page-player-library",
@@ -7042,7 +7554,7 @@
       "classification": "USER_NAVIGABLE",
       "ownerProject": "one-voyage",
       "productArea": "Player",
-      "shellMode": "standard",
+      "shellMode": "WORKSPACE_STANDARD",
       "logicalParent": "/player",
       "currentVisibleEntries": [
         {
@@ -7130,10 +7642,6 @@
       "currentDesktopPath": [
         "src/app/api/gateway/status/route.ts",
         "src/components/platform/PlayerVoyageRoom.tsx",
-        "src/components/platform/PlayerVoyageRoom.tsx",
-        "src/components/player/journal/ChronicleJournalSession.tsx",
-        "src/components/player/journal/ChronicleJournalSession.tsx",
-        "src/components/player/journal/ChronicleJournalSession.tsx",
         "src/components/player/journal/ChronicleJournalSession.tsx",
         "src/components/shell/ProductShell.tsx",
         "src/navigation/registry.ts"
@@ -7141,10 +7649,6 @@
       "currentMobilePath": [
         "src/app/api/gateway/status/route.ts",
         "src/components/platform/PlayerVoyageRoom.tsx",
-        "src/components/platform/PlayerVoyageRoom.tsx",
-        "src/components/player/journal/ChronicleJournalSession.tsx",
-        "src/components/player/journal/ChronicleJournalSession.tsx",
-        "src/components/player/journal/ChronicleJournalSession.tsx",
         "src/components/player/journal/ChronicleJournalSession.tsx",
         "src/components/shell/ProductShell.tsx",
         "src/navigation/registry.ts"
@@ -7157,8 +7661,24 @@
       "compatibilityAliases": [],
       "redirects": ["/player/sign-in?return=/player/library"],
       "currentSupportedStates": ["CURRENT_DEFAULT", "AUTH_OR_PERMISSION_GUARD", "SOURCE_COMPONENT_STATES"],
-      "currentJourneys": ["HP-JRN-003", "HP-JRN-004", "HP-JRN-010", "HP-JRN-011", "HP-JRN-013"],
-      "currentVisualEvidenceIds": ["HP-EV-005", "HP-EV-006", "HP-EV-009", "HP-EV-010", "HP-EV-029"],
+      "currentJourneys": [
+        "HP-JRN-003",
+        "HP-JRN-004",
+        "HP-JRN-010",
+        "HP-JRN-011",
+        "HP-JRN-013",
+        "HP-P2-JRN-E",
+        "HP-P2-JRN-H"
+      ],
+      "currentVisualEvidenceIds": [
+        "HP-EV-005",
+        "HP-EV-006",
+        "HP-EV-009",
+        "HP-EV-010",
+        "HP-EV-029",
+        "HP-P2-EV-H-player-navigation",
+        "HP-P2-EV-M-workspace-switcher"
+      ],
       "currentMaturity": "PARTIAL",
       "directUrlRequired": false,
       "orphanedOrdinaryRoute": false,
@@ -7170,6 +7690,18 @@
         "behavior": "Canonical Player capability guard derived from active PlayerProfile.",
         "authority": "AccountSession via resolveCurrentUser",
         "evidence": ["tests/e2e/homeport-phase1.spec.ts"]
+      },
+      "phase2Implementation": {
+        "state": "VALIDATED",
+        "shellMode": "WORKSPACE_STANDARD",
+        "canonicalRoute": "/player/library",
+        "globalNavigationVisibility": "VISIBLE",
+        "workspaceNavigationVisibility": "CAPABILITY_PROJECTED",
+        "accountControlVisibility": "VISIBLE_WHEN_SAFE",
+        "contextualNavigation": [],
+        "exitTarget": null,
+        "implementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc",
+        "evidenceIds": ["HP-P2-EV-H-player-navigation", "HP-P2-EV-M-workspace-switcher"]
       }
     },
     {
@@ -7180,7 +7712,7 @@
       "classification": "REDIRECT_ALIAS",
       "ownerProject": "one-voyage",
       "productArea": "Player",
-      "shellMode": "standard",
+      "shellMode": "WORKSPACE_STANDARD",
       "logicalParent": "/",
       "currentVisibleEntries": [
         {
@@ -7219,7 +7751,19 @@
       "orphanedOrdinaryRoute": false,
       "targetDisposition": "PHASE_2_GLOBAL_SHELL_OR_PHASE_5_ROUTE_REACHABILITY",
       "status": "CURRENT_STATE_AUDITED",
-      "notes": "Static source census at the Phase 0 base."
+      "notes": "Static source census at the Phase 0 base.",
+      "phase2Implementation": {
+        "state": "VALIDATED",
+        "shellMode": "WORKSPACE_STANDARD",
+        "canonicalRoute": "/player/library",
+        "globalNavigationVisibility": "VISIBLE",
+        "workspaceNavigationVisibility": "CAPABILITY_PROJECTED",
+        "accountControlVisibility": "VISIBLE_WHEN_SAFE",
+        "contextualNavigation": [],
+        "exitTarget": null,
+        "implementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc",
+        "evidenceIds": []
+      }
     },
     {
       "routeId": "route-page-player-playthroughs-playthroughid-archive",
@@ -7229,7 +7773,7 @@
       "classification": "CONTEXTUAL_DYNAMIC",
       "ownerProject": "one-voyage",
       "productArea": "Player",
-      "shellMode": "standard",
+      "shellMode": "IMMERSIVE",
       "logicalParent": "/player/playthroughs/:playthroughId",
       "currentVisibleEntries": [],
       "currentDesktopPath": ["DIRECT_URL_ONLY"],
@@ -7249,7 +7793,19 @@
       "orphanedOrdinaryRoute": true,
       "targetDisposition": "PHASE_2_GLOBAL_SHELL_OR_PHASE_5_ROUTE_REACHABILITY",
       "status": "CURRENT_STATE_AUDITED",
-      "notes": "No literal visible source entry was found; contextual runtime construction may still apply and is recorded as direct-URL-dependent until Phase 1 or Phase 5."
+      "notes": "No literal visible source entry was found; contextual runtime construction may still apply and is recorded as direct-URL-dependent until Phase 1 or Phase 5.",
+      "phase2Implementation": {
+        "state": "VALIDATED",
+        "shellMode": "IMMERSIVE",
+        "canonicalRoute": "/player/playthroughs/:playthroughId/archive",
+        "globalNavigationVisibility": "TRANSFORMED_OR_HIDDEN",
+        "workspaceNavigationVisibility": "HIDDEN",
+        "accountControlVisibility": "VISIBLE_WHEN_SAFE",
+        "contextualNavigation": [],
+        "exitTarget": "/player/library",
+        "implementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc",
+        "evidenceIds": []
+      }
     },
     {
       "routeId": "route-page-player-playthroughs-playthroughid-journal",
@@ -7259,7 +7815,7 @@
       "classification": "CONTEXTUAL_DYNAMIC",
       "ownerProject": "one-voyage",
       "productArea": "Player",
-      "shellMode": "immersive-player",
+      "shellMode": "IMMERSIVE",
       "logicalParent": "/player/playthroughs/:playthroughId",
       "currentVisibleEntries": [],
       "currentDesktopPath": ["DIRECT_URL_ONLY"],
@@ -7272,14 +7828,26 @@
       "compatibilityAliases": [],
       "redirects": ["/player/sign-in"],
       "currentSupportedStates": ["CURRENT_DEFAULT", "AUTH_OR_PERMISSION_GUARD", "SOURCE_COMPONENT_STATES"],
-      "currentJourneys": [],
-      "currentVisualEvidenceIds": [],
+      "currentJourneys": ["HP-P2-JRN-P"],
+      "currentVisualEvidenceIds": ["HP-P2-EV-O-immersive-exit"],
       "currentMaturity": "PARTIAL",
       "directUrlRequired": true,
       "orphanedOrdinaryRoute": true,
       "targetDisposition": "PHASE_2_GLOBAL_SHELL_OR_PHASE_5_ROUTE_REACHABILITY",
       "status": "CURRENT_STATE_AUDITED",
-      "notes": "No literal visible source entry was found; contextual runtime construction may still apply and is recorded as direct-URL-dependent until Phase 1 or Phase 5."
+      "notes": "No literal visible source entry was found; contextual runtime construction may still apply and is recorded as direct-URL-dependent until Phase 1 or Phase 5.",
+      "phase2Implementation": {
+        "state": "VALIDATED",
+        "shellMode": "IMMERSIVE",
+        "canonicalRoute": "/player/playthroughs/:playthroughId/journal",
+        "globalNavigationVisibility": "TRANSFORMED_OR_HIDDEN",
+        "workspaceNavigationVisibility": "HIDDEN",
+        "accountControlVisibility": "VISIBLE_WHEN_SAFE",
+        "contextualNavigation": ["context-player-exit"],
+        "exitTarget": "/player/library",
+        "implementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc",
+        "evidenceIds": ["HP-P2-EV-O-immersive-exit"]
+      }
     },
     {
       "routeId": "route-page-player-playthroughs-playthroughid",
@@ -7289,7 +7857,7 @@
       "classification": "CONTEXTUAL_DYNAMIC",
       "ownerProject": "one-voyage",
       "productArea": "Player",
-      "shellMode": "immersive-player",
+      "shellMode": "IMMERSIVE",
       "logicalParent": "/player/playthroughs",
       "currentVisibleEntries": [],
       "currentDesktopPath": ["DIRECT_URL_ONLY"],
@@ -7309,7 +7877,19 @@
       "orphanedOrdinaryRoute": true,
       "targetDisposition": "PHASE_2_GLOBAL_SHELL_OR_PHASE_5_ROUTE_REACHABILITY",
       "status": "CURRENT_STATE_AUDITED",
-      "notes": "No literal visible source entry was found; contextual runtime construction may still apply and is recorded as direct-URL-dependent until Phase 1 or Phase 5."
+      "notes": "No literal visible source entry was found; contextual runtime construction may still apply and is recorded as direct-URL-dependent until Phase 1 or Phase 5.",
+      "phase2Implementation": {
+        "state": "VALIDATED",
+        "shellMode": "IMMERSIVE",
+        "canonicalRoute": "/player/playthroughs/:playthroughId",
+        "globalNavigationVisibility": "TRANSFORMED_OR_HIDDEN",
+        "workspaceNavigationVisibility": "HIDDEN",
+        "accountControlVisibility": "VISIBLE_WHEN_SAFE",
+        "contextualNavigation": ["context-player-exit"],
+        "exitTarget": "/player/library",
+        "implementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc",
+        "evidenceIds": []
+      }
     },
     {
       "routeId": "route-page-player-sign-in",
@@ -7319,7 +7899,7 @@
       "classification": "USER_NAVIGABLE",
       "ownerProject": "one-voyage",
       "productArea": "Player",
-      "shellMode": "authentication",
+      "shellMode": "AUTHENTICATION",
       "logicalParent": "/player",
       "currentVisibleEntries": [
         {
@@ -7447,6 +8027,18 @@
         "behavior": "Contextual Player and invitation adapter; contains no Player password form.",
         "authority": "AccountSession via resolveCurrentUser",
         "evidence": ["tests/e2e/homeport-phase1.spec.ts"]
+      },
+      "phase2Implementation": {
+        "state": "VALIDATED",
+        "shellMode": "AUTHENTICATION",
+        "canonicalRoute": "/player/sign-in",
+        "globalNavigationVisibility": "TRANSFORMED_OR_HIDDEN",
+        "workspaceNavigationVisibility": "HIDDEN",
+        "accountControlVisibility": "HIDDEN",
+        "contextualNavigation": [],
+        "exitTarget": "/",
+        "implementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc",
+        "evidenceIds": []
       }
     },
     {
@@ -7457,7 +8049,7 @@
       "classification": "CONTEXTUAL_DYNAMIC",
       "ownerProject": "wayfarer",
       "productArea": "Personal Harbor",
-      "shellMode": "standard",
+      "shellMode": "PUBLIC_STANDARD",
       "logicalParent": "/profile",
       "currentVisibleEntries": [],
       "currentDesktopPath": ["DIRECT_URL_ONLY"],
@@ -7477,7 +8069,19 @@
       "orphanedOrdinaryRoute": true,
       "targetDisposition": "PHASE_1_IDENTITY_AND_SESSION",
       "status": "CURRENT_STATE_AUDITED",
-      "notes": "No literal visible source entry was found; contextual runtime construction may still apply and is recorded as direct-URL-dependent until Phase 1 or Phase 5."
+      "notes": "No literal visible source entry was found; contextual runtime construction may still apply and is recorded as direct-URL-dependent until Phase 1 or Phase 5.",
+      "phase2Implementation": {
+        "state": "VALIDATED",
+        "shellMode": "PUBLIC_STANDARD",
+        "canonicalRoute": "/profile/:handle",
+        "globalNavigationVisibility": "VISIBLE",
+        "workspaceNavigationVisibility": "HIDDEN",
+        "accountControlVisibility": "VISIBLE_WHEN_SAFE",
+        "contextualNavigation": ["context-personal-parent"],
+        "exitTarget": "/passport",
+        "implementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc",
+        "evidenceIds": []
+      }
     },
     {
       "routeId": "route-page-quartermaster-workspace",
@@ -7487,7 +8091,7 @@
       "classification": "AUTH_COMPATIBILITY_ALIAS",
       "ownerProject": "one-voyage",
       "productArea": "Captain",
-      "shellMode": "compact",
+      "shellMode": "COMPACT",
       "logicalParent": "/quartermaster",
       "currentVisibleEntries": [],
       "currentDesktopPath": ["DIRECT_URL_ONLY"],
@@ -7507,7 +8111,19 @@
       "orphanedOrdinaryRoute": false,
       "targetDisposition": "PHASE_2_GLOBAL_SHELL_OR_PHASE_5_ROUTE_REACHABILITY",
       "status": "CURRENT_STATE_AUDITED",
-      "notes": "Static source census at the Phase 0 base."
+      "notes": "Static source census at the Phase 0 base.",
+      "phase2Implementation": {
+        "state": "VALIDATED",
+        "shellMode": "COMPACT",
+        "canonicalRoute": "/captain/library",
+        "globalNavigationVisibility": "TRANSFORMED_OR_HIDDEN",
+        "workspaceNavigationVisibility": "HIDDEN",
+        "accountControlVisibility": "VISIBLE_WHEN_SAFE",
+        "contextualNavigation": ["context-captain-exit"],
+        "exitTarget": "/captain/library",
+        "implementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc",
+        "evidenceIds": []
+      }
     },
     {
       "routeId": "route-page-quartermaster",
@@ -7517,7 +8133,7 @@
       "classification": "AUTH_COMPATIBILITY_ALIAS",
       "ownerProject": "one-voyage",
       "productArea": "Captain",
-      "shellMode": "compact",
+      "shellMode": "COMPACT",
       "logicalParent": "/",
       "currentVisibleEntries": [
         {
@@ -7595,7 +8211,19 @@
       "orphanedOrdinaryRoute": false,
       "targetDisposition": "PHASE_2_GLOBAL_SHELL_OR_PHASE_5_ROUTE_REACHABILITY",
       "status": "CURRENT_STATE_AUDITED",
-      "notes": "Static source census at the Phase 0 base."
+      "notes": "Static source census at the Phase 0 base.",
+      "phase2Implementation": {
+        "state": "VALIDATED",
+        "shellMode": "COMPACT",
+        "canonicalRoute": "/captain/library",
+        "globalNavigationVisibility": "TRANSFORMED_OR_HIDDEN",
+        "workspaceNavigationVisibility": "HIDDEN",
+        "accountControlVisibility": "VISIBLE_WHEN_SAFE",
+        "contextualNavigation": ["context-captain-exit"],
+        "exitTarget": "/captain/library",
+        "implementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc",
+        "evidenceIds": []
+      }
     },
     {
       "routeId": "route-page-register",
@@ -7605,7 +8233,7 @@
       "classification": "USER_NAVIGABLE",
       "ownerProject": "wayfarer",
       "productArea": "Account lifecycle",
-      "shellMode": "authentication",
+      "shellMode": "AUTHENTICATION",
       "logicalParent": "/",
       "currentVisibleEntries": [],
       "currentDesktopPath": ["DIRECT_URL_ONLY"],
@@ -7631,6 +8259,18 @@
         "behavior": "Reachable canonical registration establishes AccountSession, refreshes context, and completes the authorized return.",
         "authority": "AccountSession via resolveCurrentUser",
         "evidence": ["tests/e2e/homeport-phase1.spec.ts"]
+      },
+      "phase2Implementation": {
+        "state": "VALIDATED",
+        "shellMode": "AUTHENTICATION",
+        "canonicalRoute": "/register",
+        "globalNavigationVisibility": "TRANSFORMED_OR_HIDDEN",
+        "workspaceNavigationVisibility": "HIDDEN",
+        "accountControlVisibility": "HIDDEN",
+        "contextualNavigation": [],
+        "exitTarget": "/",
+        "implementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc",
+        "evidenceIds": []
       }
     },
     {
@@ -7641,7 +8281,7 @@
       "classification": "TOKENIZED_DEEP_LINK",
       "ownerProject": "wayfarer",
       "productArea": "Account lifecycle",
-      "shellMode": "authentication",
+      "shellMode": "TOKENIZED",
       "logicalParent": "/",
       "currentVisibleEntries": [],
       "currentDesktopPath": ["DIRECT_URL_ONLY"],
@@ -7667,6 +8307,18 @@
         "behavior": "Tokenized reset rotates the canonical session and authorizes a bounded return.",
         "authority": "AccountSession via resolveCurrentUser",
         "evidence": ["tests/e2e/homeport-phase1.spec.ts"]
+      },
+      "phase2Implementation": {
+        "state": "VALIDATED",
+        "shellMode": "TOKENIZED",
+        "canonicalRoute": "/reset-password",
+        "globalNavigationVisibility": "TRANSFORMED_OR_HIDDEN",
+        "workspaceNavigationVisibility": "HIDDEN",
+        "accountControlVisibility": "HIDDEN",
+        "contextualNavigation": [],
+        "exitTarget": "/sign-in",
+        "implementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc",
+        "evidenceIds": []
       }
     },
     {
@@ -7677,7 +8329,7 @@
       "classification": "USER_NAVIGABLE",
       "ownerProject": "wayfarer",
       "productArea": "Account lifecycle",
-      "shellMode": "authentication",
+      "shellMode": "AUTHENTICATION",
       "logicalParent": "/",
       "currentVisibleEntries": [
         {
@@ -7722,6 +8374,18 @@
         "behavior": "Canonical password lifecycle with Create Account, Forgot Password, explicit ended-session reason, and safe return.",
         "authority": "AccountSession via resolveCurrentUser",
         "evidence": ["tests/e2e/homeport-phase1.spec.ts"]
+      },
+      "phase2Implementation": {
+        "state": "VALIDATED",
+        "shellMode": "AUTHENTICATION",
+        "canonicalRoute": "/sign-in",
+        "globalNavigationVisibility": "TRANSFORMED_OR_HIDDEN",
+        "workspaceNavigationVisibility": "HIDDEN",
+        "accountControlVisibility": "HIDDEN",
+        "contextualNavigation": [],
+        "exitTarget": "/",
+        "implementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc",
+        "evidenceIds": []
       }
     },
     {
@@ -7732,7 +8396,7 @@
       "classification": "USER_NAVIGABLE",
       "ownerProject": "one-voyage",
       "productArea": "Creator Studio",
-      "shellMode": "standard",
+      "shellMode": "WORKSPACE_STANDARD",
       "logicalParent": "/studio",
       "currentVisibleEntries": [
         {
@@ -7771,7 +8435,19 @@
       "orphanedOrdinaryRoute": false,
       "targetDisposition": "PHASE_2_GLOBAL_SHELL_OR_PHASE_5_ROUTE_REACHABILITY",
       "status": "CURRENT_STATE_AUDITED",
-      "notes": "Static source census at the Phase 0 base."
+      "notes": "Static source census at the Phase 0 base.",
+      "phase2Implementation": {
+        "state": "VALIDATED",
+        "shellMode": "WORKSPACE_STANDARD",
+        "canonicalRoute": "/studio/exchange",
+        "globalNavigationVisibility": "VISIBLE",
+        "workspaceNavigationVisibility": "CAPABILITY_PROJECTED",
+        "accountControlVisibility": "VISIBLE_WHEN_SAFE",
+        "contextualNavigation": [],
+        "exitTarget": null,
+        "implementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc",
+        "evidenceIds": []
+      }
     },
     {
       "routeId": "route-page-studio-library",
@@ -7781,7 +8457,7 @@
       "classification": "USER_NAVIGABLE",
       "ownerProject": "one-voyage",
       "productArea": "Creator Studio",
-      "shellMode": "standard",
+      "shellMode": "WORKSPACE_STANDARD",
       "logicalParent": "/studio",
       "currentVisibleEntries": [
         {
@@ -7841,8 +8517,8 @@
       "compatibilityAliases": [],
       "redirects": [],
       "currentSupportedStates": ["CURRENT_DEFAULT", "AUTH_OR_PERMISSION_GUARD", "SOURCE_COMPONENT_STATES"],
-      "currentJourneys": ["HP-JRN-009"],
-      "currentVisualEvidenceIds": ["HP-EV-012"],
+      "currentJourneys": ["HP-JRN-009", "HP-P2-JRN-G"],
+      "currentVisualEvidenceIds": ["HP-EV-012", "HP-P2-EV-J-creator-navigation"],
       "currentMaturity": "PARTIAL",
       "directUrlRequired": false,
       "orphanedOrdinaryRoute": false,
@@ -7854,6 +8530,18 @@
         "behavior": "Canonical Creator capability guard with explicit permission and ended-session states.",
         "authority": "AccountSession via resolveCurrentUser",
         "evidence": ["tests/e2e/homeport-phase1.spec.ts"]
+      },
+      "phase2Implementation": {
+        "state": "VALIDATED",
+        "shellMode": "WORKSPACE_STANDARD",
+        "canonicalRoute": "/studio/library",
+        "globalNavigationVisibility": "VISIBLE",
+        "workspaceNavigationVisibility": "CAPABILITY_PROJECTED",
+        "accountControlVisibility": "VISIBLE_WHEN_SAFE",
+        "contextualNavigation": [],
+        "exitTarget": null,
+        "implementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc",
+        "evidenceIds": ["HP-P2-EV-J-creator-navigation"]
       }
     },
     {
@@ -7864,7 +8552,7 @@
       "classification": "USER_NAVIGABLE",
       "ownerProject": "one-voyage",
       "productArea": "Creator Studio",
-      "shellMode": "standard",
+      "shellMode": "WORKSPACE_STANDARD",
       "logicalParent": "/",
       "currentVisibleEntries": [
         {
@@ -7964,7 +8652,19 @@
       "orphanedOrdinaryRoute": false,
       "targetDisposition": "PHASE_2_GLOBAL_SHELL_OR_PHASE_5_ROUTE_REACHABILITY",
       "status": "CURRENT_STATE_AUDITED",
-      "notes": "Static source census at the Phase 0 base."
+      "notes": "Static source census at the Phase 0 base.",
+      "phase2Implementation": {
+        "state": "VALIDATED",
+        "shellMode": "WORKSPACE_STANDARD",
+        "canonicalRoute": "/studio/library",
+        "globalNavigationVisibility": "VISIBLE",
+        "workspaceNavigationVisibility": "CAPABILITY_PROJECTED",
+        "accountControlVisibility": "VISIBLE_WHEN_SAFE",
+        "contextualNavigation": [],
+        "exitTarget": null,
+        "implementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc",
+        "evidenceIds": []
+      }
     },
     {
       "routeId": "route-page-studio-private-content-operations",
@@ -7974,7 +8674,7 @@
       "classification": "USER_NAVIGABLE",
       "ownerProject": "sealed-hold",
       "productArea": "Creator Studio",
-      "shellMode": "standard",
+      "shellMode": "WORKSPACE_STANDARD",
       "logicalParent": "/studio/private-content",
       "currentVisibleEntries": [
         {
@@ -8004,7 +8704,19 @@
       "orphanedOrdinaryRoute": false,
       "targetDisposition": "PHASE_2_GLOBAL_SHELL_OR_PHASE_5_ROUTE_REACHABILITY",
       "status": "CURRENT_STATE_AUDITED",
-      "notes": "Static source census at the Phase 0 base."
+      "notes": "Static source census at the Phase 0 base.",
+      "phase2Implementation": {
+        "state": "VALIDATED",
+        "shellMode": "WORKSPACE_STANDARD",
+        "canonicalRoute": "/studio/private-content/operations",
+        "globalNavigationVisibility": "VISIBLE",
+        "workspaceNavigationVisibility": "CAPABILITY_PROJECTED",
+        "accountControlVisibility": "VISIBLE_WHEN_SAFE",
+        "contextualNavigation": [],
+        "exitTarget": null,
+        "implementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc",
+        "evidenceIds": []
+      }
     },
     {
       "routeId": "route-page-studio-private-content",
@@ -8014,7 +8726,7 @@
       "classification": "USER_NAVIGABLE",
       "ownerProject": "sealed-hold",
       "productArea": "Creator Studio",
-      "shellMode": "standard",
+      "shellMode": "WORKSPACE_STANDARD",
       "logicalParent": "/studio",
       "currentVisibleEntries": [
         {
@@ -8053,7 +8765,19 @@
       "orphanedOrdinaryRoute": false,
       "targetDisposition": "PHASE_2_GLOBAL_SHELL_OR_PHASE_5_ROUTE_REACHABILITY",
       "status": "CURRENT_STATE_AUDITED",
-      "notes": "Static source census at the Phase 0 base."
+      "notes": "Static source census at the Phase 0 base.",
+      "phase2Implementation": {
+        "state": "VALIDATED",
+        "shellMode": "WORKSPACE_STANDARD",
+        "canonicalRoute": "/studio/private-content",
+        "globalNavigationVisibility": "VISIBLE",
+        "workspaceNavigationVisibility": "CAPABILITY_PROJECTED",
+        "accountControlVisibility": "VISIBLE_WHEN_SAFE",
+        "contextualNavigation": [],
+        "exitTarget": null,
+        "implementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc",
+        "evidenceIds": []
+      }
     },
     {
       "routeId": "route-page-studio-sign-in",
@@ -8063,7 +8787,7 @@
       "classification": "USER_NAVIGABLE",
       "ownerProject": "one-voyage",
       "productArea": "Creator Studio",
-      "shellMode": "authentication",
+      "shellMode": "AUTHENTICATION",
       "logicalParent": "/studio",
       "currentVisibleEntries": [
         {
@@ -8099,6 +8823,18 @@
         "behavior": "Contextual Creator adapter; granted capability continues without a second credential.",
         "authority": "AccountSession via resolveCurrentUser",
         "evidence": ["tests/e2e/homeport-phase1.spec.ts"]
+      },
+      "phase2Implementation": {
+        "state": "VALIDATED",
+        "shellMode": "AUTHENTICATION",
+        "canonicalRoute": "/studio/sign-in",
+        "globalNavigationVisibility": "TRANSFORMED_OR_HIDDEN",
+        "workspaceNavigationVisibility": "HIDDEN",
+        "accountControlVisibility": "HIDDEN",
+        "contextualNavigation": [],
+        "exitTarget": "/",
+        "implementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc",
+        "evidenceIds": []
       }
     },
     {
@@ -8109,7 +8845,7 @@
       "classification": "CONTEXTUAL_DYNAMIC",
       "ownerProject": "one-voyage",
       "productArea": "Creator Studio",
-      "shellMode": "standard",
+      "shellMode": "WORKSPACE_STANDARD",
       "logicalParent": "/studio/tales/:taleId",
       "currentVisibleEntries": [],
       "currentDesktopPath": ["DIRECT_URL_ONLY"],
@@ -8129,7 +8865,19 @@
       "orphanedOrdinaryRoute": true,
       "targetDisposition": "PHASE_2_GLOBAL_SHELL_OR_PHASE_5_ROUTE_REACHABILITY",
       "status": "CURRENT_STATE_AUDITED",
-      "notes": "No literal visible source entry was found; contextual runtime construction may still apply and is recorded as direct-URL-dependent until Phase 1 or Phase 5."
+      "notes": "No literal visible source entry was found; contextual runtime construction may still apply and is recorded as direct-URL-dependent until Phase 1 or Phase 5.",
+      "phase2Implementation": {
+        "state": "VALIDATED",
+        "shellMode": "WORKSPACE_STANDARD",
+        "canonicalRoute": "/studio/tales/:taleId/artifacts",
+        "globalNavigationVisibility": "VISIBLE",
+        "workspaceNavigationVisibility": "CAPABILITY_PROJECTED",
+        "accountControlVisibility": "VISIBLE_WHEN_SAFE",
+        "contextualNavigation": [],
+        "exitTarget": null,
+        "implementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc",
+        "evidenceIds": []
+      }
     },
     {
       "routeId": "route-page-studio-tales-taleid-assets",
@@ -8139,7 +8887,7 @@
       "classification": "CONTEXTUAL_DYNAMIC",
       "ownerProject": "one-voyage",
       "productArea": "Creator Studio",
-      "shellMode": "standard",
+      "shellMode": "WORKSPACE_STANDARD",
       "logicalParent": "/studio/tales/:taleId",
       "currentVisibleEntries": [],
       "currentDesktopPath": ["DIRECT_URL_ONLY"],
@@ -8159,7 +8907,19 @@
       "orphanedOrdinaryRoute": true,
       "targetDisposition": "PHASE_2_GLOBAL_SHELL_OR_PHASE_5_ROUTE_REACHABILITY",
       "status": "CURRENT_STATE_AUDITED",
-      "notes": "No literal visible source entry was found; contextual runtime construction may still apply and is recorded as direct-URL-dependent until Phase 1 or Phase 5."
+      "notes": "No literal visible source entry was found; contextual runtime construction may still apply and is recorded as direct-URL-dependent until Phase 1 or Phase 5.",
+      "phase2Implementation": {
+        "state": "VALIDATED",
+        "shellMode": "WORKSPACE_STANDARD",
+        "canonicalRoute": "/studio/tales/:taleId/assets",
+        "globalNavigationVisibility": "VISIBLE",
+        "workspaceNavigationVisibility": "CAPABILITY_PROJECTED",
+        "accountControlVisibility": "VISIBLE_WHEN_SAFE",
+        "contextualNavigation": [],
+        "exitTarget": null,
+        "implementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc",
+        "evidenceIds": []
+      }
     },
     {
       "routeId": "route-page-studio-tales-taleid-locations",
@@ -8169,7 +8929,7 @@
       "classification": "CONTEXTUAL_DYNAMIC",
       "ownerProject": "one-voyage",
       "productArea": "Creator Studio",
-      "shellMode": "standard",
+      "shellMode": "WORKSPACE_STANDARD",
       "logicalParent": "/studio/tales/:taleId",
       "currentVisibleEntries": [],
       "currentDesktopPath": ["DIRECT_URL_ONLY"],
@@ -8189,7 +8949,19 @@
       "orphanedOrdinaryRoute": true,
       "targetDisposition": "PHASE_2_GLOBAL_SHELL_OR_PHASE_5_ROUTE_REACHABILITY",
       "status": "CURRENT_STATE_AUDITED",
-      "notes": "No literal visible source entry was found; contextual runtime construction may still apply and is recorded as direct-URL-dependent until Phase 1 or Phase 5."
+      "notes": "No literal visible source entry was found; contextual runtime construction may still apply and is recorded as direct-URL-dependent until Phase 1 or Phase 5.",
+      "phase2Implementation": {
+        "state": "VALIDATED",
+        "shellMode": "WORKSPACE_STANDARD",
+        "canonicalRoute": "/studio/tales/:taleId/locations",
+        "globalNavigationVisibility": "VISIBLE",
+        "workspaceNavigationVisibility": "CAPABILITY_PROJECTED",
+        "accountControlVisibility": "VISIBLE_WHEN_SAFE",
+        "contextualNavigation": [],
+        "exitTarget": null,
+        "implementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc",
+        "evidenceIds": []
+      }
     },
     {
       "routeId": "route-page-studio-tales-taleid",
@@ -8199,7 +8971,7 @@
       "classification": "CONTEXTUAL_DYNAMIC",
       "ownerProject": "one-voyage",
       "productArea": "Creator Studio",
-      "shellMode": "standard",
+      "shellMode": "WORKSPACE_STANDARD",
       "logicalParent": "/studio/tales",
       "currentVisibleEntries": [
         {
@@ -8238,7 +9010,19 @@
       "orphanedOrdinaryRoute": false,
       "targetDisposition": "PHASE_2_GLOBAL_SHELL_OR_PHASE_5_ROUTE_REACHABILITY",
       "status": "CURRENT_STATE_AUDITED",
-      "notes": "Static source census at the Phase 0 base."
+      "notes": "Static source census at the Phase 0 base.",
+      "phase2Implementation": {
+        "state": "VALIDATED",
+        "shellMode": "WORKSPACE_STANDARD",
+        "canonicalRoute": "/studio/tales/:taleId",
+        "globalNavigationVisibility": "VISIBLE",
+        "workspaceNavigationVisibility": "CAPABILITY_PROJECTED",
+        "accountControlVisibility": "VISIBLE_WHEN_SAFE",
+        "contextualNavigation": [],
+        "exitTarget": null,
+        "implementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc",
+        "evidenceIds": []
+      }
     },
     {
       "routeId": "route-page-studio-tales-taleid-settings",
@@ -8248,7 +9032,7 @@
       "classification": "CONTEXTUAL_DYNAMIC",
       "ownerProject": "one-voyage",
       "productArea": "Creator Studio",
-      "shellMode": "standard",
+      "shellMode": "WORKSPACE_STANDARD",
       "logicalParent": "/studio/tales/:taleId",
       "currentVisibleEntries": [],
       "currentDesktopPath": ["DIRECT_URL_ONLY"],
@@ -8268,7 +9052,19 @@
       "orphanedOrdinaryRoute": true,
       "targetDisposition": "PHASE_2_GLOBAL_SHELL_OR_PHASE_5_ROUTE_REACHABILITY",
       "status": "CURRENT_STATE_AUDITED",
-      "notes": "No literal visible source entry was found; contextual runtime construction may still apply and is recorded as direct-URL-dependent until Phase 1 or Phase 5."
+      "notes": "No literal visible source entry was found; contextual runtime construction may still apply and is recorded as direct-URL-dependent until Phase 1 or Phase 5.",
+      "phase2Implementation": {
+        "state": "VALIDATED",
+        "shellMode": "WORKSPACE_STANDARD",
+        "canonicalRoute": "/studio/tales/:taleId/settings",
+        "globalNavigationVisibility": "VISIBLE",
+        "workspaceNavigationVisibility": "CAPABILITY_PROJECTED",
+        "accountControlVisibility": "VISIBLE_WHEN_SAFE",
+        "contextualNavigation": [],
+        "exitTarget": null,
+        "implementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc",
+        "evidenceIds": []
+      }
     },
     {
       "routeId": "route-page-studio-tales-taleid-versions",
@@ -8278,7 +9074,7 @@
       "classification": "CONTEXTUAL_DYNAMIC",
       "ownerProject": "one-voyage",
       "productArea": "Creator Studio",
-      "shellMode": "standard",
+      "shellMode": "WORKSPACE_STANDARD",
       "logicalParent": "/studio/tales/:taleId",
       "currentVisibleEntries": [],
       "currentDesktopPath": ["DIRECT_URL_ONLY"],
@@ -8298,7 +9094,19 @@
       "orphanedOrdinaryRoute": true,
       "targetDisposition": "PHASE_2_GLOBAL_SHELL_OR_PHASE_5_ROUTE_REACHABILITY",
       "status": "CURRENT_STATE_AUDITED",
-      "notes": "No literal visible source entry was found; contextual runtime construction may still apply and is recorded as direct-URL-dependent until Phase 1 or Phase 5."
+      "notes": "No literal visible source entry was found; contextual runtime construction may still apply and is recorded as direct-URL-dependent until Phase 1 or Phase 5.",
+      "phase2Implementation": {
+        "state": "VALIDATED",
+        "shellMode": "WORKSPACE_STANDARD",
+        "canonicalRoute": "/studio/tales/:taleId/versions",
+        "globalNavigationVisibility": "VISIBLE",
+        "workspaceNavigationVisibility": "CAPABILITY_PROJECTED",
+        "accountControlVisibility": "VISIBLE_WHEN_SAFE",
+        "contextualNavigation": [],
+        "exitTarget": null,
+        "implementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc",
+        "evidenceIds": []
+      }
     },
     {
       "routeId": "route-page-studio-tales-new",
@@ -8308,7 +9116,7 @@
       "classification": "USER_NAVIGABLE",
       "ownerProject": "one-voyage",
       "productArea": "Creator Studio",
-      "shellMode": "standard",
+      "shellMode": "WORKSPACE_STANDARD",
       "logicalParent": "/studio/tales",
       "currentVisibleEntries": [
         {
@@ -8347,7 +9155,19 @@
       "orphanedOrdinaryRoute": false,
       "targetDisposition": "PHASE_2_GLOBAL_SHELL_OR_PHASE_5_ROUTE_REACHABILITY",
       "status": "CURRENT_STATE_AUDITED",
-      "notes": "Static source census at the Phase 0 base."
+      "notes": "Static source census at the Phase 0 base.",
+      "phase2Implementation": {
+        "state": "VALIDATED",
+        "shellMode": "WORKSPACE_STANDARD",
+        "canonicalRoute": "/studio/tales/new",
+        "globalNavigationVisibility": "VISIBLE",
+        "workspaceNavigationVisibility": "CAPABILITY_PROJECTED",
+        "accountControlVisibility": "VISIBLE_WHEN_SAFE",
+        "contextualNavigation": [],
+        "exitTarget": null,
+        "implementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc",
+        "evidenceIds": []
+      }
     },
     {
       "routeId": "route-page-tale-campaignslug",
@@ -8357,7 +9177,7 @@
       "classification": "AUTH_COMPATIBILITY_ALIAS",
       "ownerProject": "one-voyage",
       "productArea": "Voyage runtime",
-      "shellMode": "standard",
+      "shellMode": "PUBLIC_STANDARD",
       "logicalParent": "/tale",
       "currentVisibleEntries": [],
       "currentDesktopPath": ["DIRECT_URL_ONLY"],
@@ -8377,7 +9197,19 @@
       "orphanedOrdinaryRoute": false,
       "targetDisposition": "PHASE_2_GLOBAL_SHELL_OR_PHASE_5_ROUTE_REACHABILITY",
       "status": "CURRENT_STATE_AUDITED",
-      "notes": "Static source census at the Phase 0 base."
+      "notes": "Static source census at the Phase 0 base.",
+      "phase2Implementation": {
+        "state": "VALIDATED",
+        "shellMode": "PUBLIC_STANDARD",
+        "canonicalRoute": "/tale/:campaignSlug",
+        "globalNavigationVisibility": "VISIBLE",
+        "workspaceNavigationVisibility": "HIDDEN",
+        "accountControlVisibility": "VISIBLE_WHEN_SAFE",
+        "contextualNavigation": ["context-chronicles-parent"],
+        "exitTarget": "/tales",
+        "implementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc",
+        "evidenceIds": []
+      }
     },
     {
       "routeId": "route-page-tales",
@@ -8387,7 +9219,7 @@
       "classification": "USER_NAVIGABLE",
       "ownerProject": "one-voyage",
       "productArea": "Voyage runtime",
-      "shellMode": "standard",
+      "shellMode": "PUBLIC_STANDARD",
       "logicalParent": "/",
       "currentVisibleEntries": [
         {
@@ -8492,28 +9324,18 @@
       ],
       "currentDesktopPath": [
         "src/app/play/[taleSlug]/history/page.tsx",
-        "src/app/play/[taleSlug]/history/page.tsx",
-        "src/app/play/[taleSlug]/history/page.tsx",
-        "src/app/play/[taleSlug]/history/page.tsx",
         "src/components/captain/CaptainDashboard.tsx",
         "src/components/landing/HarborLanding.tsx",
         "src/components/shell/ProductShell.tsx",
         "src/components/tales/TaleStart.tsx",
-        "src/navigation/registry.ts",
-        "src/navigation/registry.ts",
         "src/navigation/registry.ts"
       ],
       "currentMobilePath": [
         "src/app/play/[taleSlug]/history/page.tsx",
-        "src/app/play/[taleSlug]/history/page.tsx",
-        "src/app/play/[taleSlug]/history/page.tsx",
-        "src/app/play/[taleSlug]/history/page.tsx",
         "src/components/captain/CaptainDashboard.tsx",
         "src/components/landing/HarborLanding.tsx",
         "src/components/shell/ProductShell.tsx",
         "src/components/tales/TaleStart.tsx",
-        "src/navigation/registry.ts",
-        "src/navigation/registry.ts",
         "src/navigation/registry.ts"
       ],
       "authenticationRequirement": "ANONYMOUS_ALLOWED",
@@ -8524,14 +9346,26 @@
       "compatibilityAliases": [],
       "redirects": [],
       "currentSupportedStates": ["CURRENT_DEFAULT", "AUTH_OR_PERMISSION_GUARD", "SOURCE_COMPONENT_STATES"],
-      "currentJourneys": ["HP-JRN-002"],
-      "currentVisualEvidenceIds": ["HP-EV-004", "HP-EV-032"],
+      "currentJourneys": ["HP-JRN-002", "HP-P2-JRN-D"],
+      "currentVisualEvidenceIds": ["HP-EV-004", "HP-EV-032", "HP-P2-EV-G-global-nav-public"],
       "currentMaturity": "PARTIAL",
       "directUrlRequired": false,
       "orphanedOrdinaryRoute": false,
       "targetDisposition": "PHASE_2_GLOBAL_SHELL_OR_PHASE_5_ROUTE_REACHABILITY",
       "status": "CURRENT_STATE_AUDITED",
-      "notes": "Static source census at the Phase 0 base."
+      "notes": "Static source census at the Phase 0 base.",
+      "phase2Implementation": {
+        "state": "VALIDATED",
+        "shellMode": "PUBLIC_STANDARD",
+        "canonicalRoute": "/tales",
+        "globalNavigationVisibility": "VISIBLE",
+        "workspaceNavigationVisibility": "HIDDEN",
+        "accountControlVisibility": "VISIBLE_WHEN_SAFE",
+        "contextualNavigation": [],
+        "exitTarget": null,
+        "implementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc",
+        "evidenceIds": ["HP-P2-EV-G-global-nav-public"]
+      }
     },
     {
       "routeId": "route-page-verify-email",
@@ -8541,7 +9375,7 @@
       "classification": "TOKENIZED_DEEP_LINK",
       "ownerProject": "wayfarer",
       "productArea": "Account lifecycle",
-      "shellMode": "authentication",
+      "shellMode": "TOKENIZED",
       "logicalParent": "/",
       "currentVisibleEntries": [],
       "currentDesktopPath": ["DIRECT_URL_ONLY"],
@@ -8567,6 +9401,18 @@
         "behavior": "Tokenized verification refreshes canonical current-user context and creates no competing session.",
         "authority": "AccountSession via resolveCurrentUser",
         "evidence": ["tests/e2e/homeport-phase1.spec.ts"]
+      },
+      "phase2Implementation": {
+        "state": "VALIDATED",
+        "shellMode": "TOKENIZED",
+        "canonicalRoute": "/verify-email",
+        "globalNavigationVisibility": "TRANSFORMED_OR_HIDDEN",
+        "workspaceNavigationVisibility": "HIDDEN",
+        "accountControlVisibility": "HIDDEN",
+        "contextualNavigation": [],
+        "exitTarget": "/sign-in",
+        "implementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc",
+        "evidenceIds": []
       }
     }
   ],
@@ -8577,5 +9423,15 @@
     "state": "VALIDATED",
     "updatedAt": "2026-08-01T19:00:00.000Z",
     "historicalPhase0Preserved": true
+  },
+  "phase2Implementation": {
+    "phase": "PHASE_2_RESTORE_GLOBAL_SHELL_AND_WAYFINDING",
+    "phase1FinalSha": "dca3480f5369bfa7d5b8fd52e2cca155185fae33",
+    "architectureSha": "befb75625002a0b68093d1c35bfb846055cd9a14",
+    "implementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc",
+    "state": "VALIDATED",
+    "updatedAt": "2026-08-01T23:45:00.000Z",
+    "historicalPhase0Preserved": true,
+    "noSchemaChange": true
   }
 }

@@ -8,7 +8,7 @@ last_reviewed: 2026-08-01
 
 # Project Homeport
 
-Project Homeport is the governed product-reality recovery and convergence program. Phase 0 preserves the historical current-state census. Phase 1 implements identity and session convergence without beginning Phase 2 shell/navigation reconstruction.
+Project Homeport is the governed product-reality recovery and convergence program. Phase 0 preserves the historical current-state census. Phase 1 implements identity and session convergence. Phase 2 restores one global shell, navigation authority, account orientation, mobile parity, and governed contextual exits without beginning Phase 3 Personal Harbor reconstruction.
 
 ## Authority
 
@@ -32,12 +32,21 @@ Project Homeport is the governed product-reality recovery and convergence progra
 - [Integration Manifest](Project_Homeport_Phase_1_Integration_Manifest.md)
 - [Curated Evidence](evidence/phase1/README.md)
 
-## Phase 2 architecture
+## Phase 2 human records
 
 - [Global Shell and Wayfinding Architecture](Project_Homeport_Phase_2_Global_Shell_and_Wayfinding_Architecture.md)
+- [Test Plan](Project_Homeport_Phase_2_Test_Plan.md)
+- [Implementation Report](Project_Homeport_Phase_2_Implementation_Report.md)
+- [Validation Record](Project_Homeport_Phase_2_Validation_Record.md)
+- [Integration Manifest](Project_Homeport_Phase_2_Integration_Manifest.md)
+- [Curated Evidence](evidence/phase2/README.md)
 
-Implementation, validation, integration, and evidence records are added only
-after the frozen architecture is implemented and governed verification is run.
+## Phase 2 machine-readable records
+
+- `Project_Homeport_Phase_2_Shell_Mode_Registry.json`
+- `Project_Homeport_Phase_2_Navigation_Projection_Contract.json`
+- `Project_Homeport_Phase_2_Desktop_Mobile_Parity_Matrix.csv`
+- `Project_Homeport_Phase_2_Contextual_Exit_Matrix.csv`
 
 ## Phase 0 machine-readable records
 
@@ -51,6 +60,6 @@ after the frozen architecture is implemented and governed verification is run.
 - `Homeport_Visual_Baseline_Manifest.json`
 - `Homeport_Nonconformity_Ledger.csv`
 
-These records retain Phase 0 observations and now add explicit Phase 1 implemented-state fields, A-Q journey records, and after-state evidence. The Phase 1 compatibility authority is `Project_Homeport_Phase_1_Compatibility_Cutover_Ledger.csv`.
+These records retain Phase 0 observations and add explicit Phase 1 and Phase 2 implemented-state fields, A-Q and A-U journey records, and checksum-bound after-state evidence. The Phase 1 compatibility authority remains `Project_Homeport_Phase_1_Compatibility_Cutover_Ledger.csv`.
 
-Run `npm run homeport:validate` to validate artifact structure, cross-references, source paths, compatibility status, committed evidence, and screenshot checksums. `PRODUCT_NONCONFORMITIES_PRESENT` remains expected because later-phase findings remain open; it is not a validator failure.
+Run `npm run homeport:phase2:inventory`, `npm run homeport:contracts:check`, and `npm run homeport:validate` to apply and verify the additive inventory, contract determinism, cross-references, committed screenshots/checksums, direct Phase 2 closures, and later-owner boundaries. `PRODUCT_NONCONFORMITIES_PRESENT` remains expected because later-phase findings remain open; it is not a validator failure.

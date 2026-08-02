@@ -3,6 +3,7 @@ import { createHash } from "node:crypto";
 import { execFile } from "node:child_process";
 import { promises as fs } from "node:fs";
 import path from "node:path";
+import { format, resolveConfig } from "prettier";
 import ts from "typescript";
 import { promisify } from "node:util";
 
@@ -15,58 +16,6 @@ const homeportContracts = [
   "homeport.journey-catalog.complete",
   "homeport.evidence-manifest.complete",
   "homeport.nonconformity-ledger.complete",
-  "homeport.auth.single-product",
-  "homeport.registration.reachable",
-  "homeport.registration.success-destination",
-  "homeport.signin.lifecycle-links",
-  "homeport.session.convergence",
-  "homeport.session.expiry",
-  "homeport.session.revocation",
-  "homeport.session.restricted-account",
-  "homeport.context.failure-state",
-  "homeport.current-user.no-stale-overwrite",
-  "homeport.current-user.no-client-authority",
-  "homeport.capability.player-agreement",
-  "homeport.capability.staff-agreement",
-  "homeport.permission.explicit",
-  "homeport.signout.visible",
-  "homeport.signout.multitab",
-  "homeport.signout.compatibility",
-  "homeport.return-to.safe",
-  "homeport.passport.session",
-  "homeport.invitation.account-handoff",
-  "homeport.legacy-player.rotation",
-  "homeport.legacy-staff.bridge",
-  "homeport.compatibility.observation",
-  "homeport.shell.mode-classification",
-  "homeport.shell.gateway-account-control",
-  "homeport.shell.gateway-anonymous-state",
-  "homeport.shell.gateway-authenticated-state",
-  "homeport.shell.global-navigation",
-  "homeport.shell.community-visible",
-  "homeport.shell.account-menu",
-  "homeport.shell.workspace-switcher",
-  "homeport.shell.mobile-parity",
-  "homeport.shell.active-state",
-  "homeport.shell.route-close",
-  "homeport.shell.menu-focus",
-  "homeport.shell.account-loading",
-  "homeport.shell.context-unavailable",
-  "homeport.shell.no-duplicate-account-control",
-  "homeport.shell.compact-exit",
-  "homeport.shell.immersive-exit",
-  "homeport.navigation.one-authority",
-  "homeport.navigation.desktop-mobile-set-equality",
-  "homeport.navigation.permission-aware",
-  "homeport.navigation.no-client-authority",
-  "homeport.navigation.safe-profile-destination",
-  "homeport.navigation.personal-destination-reachability",
-  "homeport.navigation.core-route-reachability",
-  "homeport.navigation.contextual-parent",
-  "homeport.navigation.idempotent-artifact-update",
-  "homeport.community.global-reachability",
-  "homeport.workspace.identity-continuity",
-  "homeport.phase1.no-regression",
 ];
 const hash = (text) => createHash("sha256").update(text).digest("hex").slice(0, 20);
 const execFileAsync = promisify(execFile);
@@ -134,9 +83,9 @@ function browserFamily(project, file, title) {
   if (value.includes("harborlight") || value.includes("community")) return "browser.community";
   if (value.includes("studio")) return "browser.studio";
   if (value.includes("command-center") || value.includes("captain")) return "browser.captain";
-  if (value.includes("true-north") || value.includes("navigation")) return "browser.navigation";
   if (value.includes("accessibility") || value.includes("keyboard") || value.includes("aria-"))
     return "browser.accessibility";
+  if (value.includes("true-north") || value.includes("navigation")) return "browser.navigation";
   if (value.includes("viewport") || value.includes("responsive") || value.includes("mobile"))
     return "browser.responsive";
   if (value.includes("animation") || value.includes("lifecycle") || value.includes("pageflip"))
@@ -303,9 +252,14 @@ for (const entry of cases) {
   ids.add(entry.id);
 }
 await fs.mkdir(path.join(root, "testing", "generated"), { recursive: true });
+const registryPath = path.join(root, "testing", "generated", "active-test-registry.json");
+const prettierConfig = (await resolveConfig(registryPath)) ?? {};
 await fs.writeFile(
-  path.join(root, "testing", "generated", "active-test-registry.json"),
-  `${JSON.stringify({ version: 2, schemaVersion: "2.0.0", generated: true, cases }, null, 2)}\n`,
+  registryPath,
+  await format(JSON.stringify({ version: 2, schemaVersion: "2.0.0", generated: true, cases }), {
+    ...prettierConfig,
+    parser: "json",
+  }),
 );
 console.log(
   `Generated ${cases.length} governed test-case definitions across ${new Set(cases.map((entry) => entry.suiteId)).size} owned families.`,

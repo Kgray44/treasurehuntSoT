@@ -161,12 +161,7 @@ describe("Homeport Phase 2 navigation authority", () => {
   });
 
   it("homeport.navigation.permission-aware projects only server-granted workspace capabilities", () => {
-    const player = projection(
-      "/player/library",
-      "WORKSPACE_STANDARD",
-      "player",
-      authenticated({ canUsePlayer: true }),
-    );
+    const player = projection("/player/library", "WORKSPACE_STANDARD", "player", authenticated({ canUsePlayer: true }));
     expect(player.workspaceItems.map((item) => item.id)).toEqual(["workspace-player-home"]);
     expect(player.availableWorkspaceItems.map((item) => item.id)).toEqual(["account-workspace-player"]);
 
@@ -195,7 +190,12 @@ describe("Homeport Phase 2 navigation authority", () => {
   });
 
   it("homeport.navigation.safe-profile-destination uses a public handle or the stable Passport fallback", () => {
-    const withHandle = projection("/player/library", "WORKSPACE_STANDARD", "player", authenticated({ canUsePlayer: true }));
+    const withHandle = projection(
+      "/player/library",
+      "WORKSPACE_STANDARD",
+      "player",
+      authenticated({ canUsePlayer: true }),
+    );
     expect(withHandle.accountItems.find((item) => item.id === "account-view-profile")?.href).toBe("/profile/mara");
 
     const withoutHandle = projection(
@@ -232,7 +232,12 @@ describe("Homeport Phase 2 navigation authority", () => {
       canModerate: true,
       isAdministrator: true,
     });
-    const input = { pathname: "/player/library", shellMode: "WORKSPACE_STANDARD" as const, workspace: "player" as const, currentUser: state };
+    const input = {
+      pathname: "/player/library",
+      shellMode: "WORKSPACE_STANDARD" as const,
+      workspace: "player" as const,
+      currentUser: state,
+    };
     expect(functionalDestinationIds({ ...input, presentation: "desktop" })).toEqual(
       functionalDestinationIds({ ...input, presentation: "mobile" }),
     );
@@ -256,9 +261,7 @@ describe("Homeport Phase 2 navigation authority", () => {
       projection("/captain", "WORKSPACE_STANDARD", "captain", authenticated({ canUseCaptain: true }))
         .activeWorkspaceItem?.id,
     ).toBe("workspace-captain-voyages");
-    expect(navigationItemMatches("/player-sign-in", { href: "/player", activeMatch: { type: "SECTION" } })).toBe(
-      false,
-    );
+    expect(navigationItemMatches("/player-sign-in", { href: "/player", activeMatch: { type: "SECTION" } })).toBe(false);
     expect(projection("/captain/sign-in", "AUTHENTICATION", "captain", anonymous).activeWorkspaceItem).toBeNull();
   });
 
@@ -289,8 +292,6 @@ describe("Homeport Phase 2 navigation authority", () => {
         authenticated({ canUsePlayer: true }),
       ).contextualItems.map((item) => item.href),
     ).toEqual(["/player/library"]);
-    expect(projection("/dev/animations", "DEVELOPMENT", "development", anonymous).contextualItems[0]?.href).toBe(
-      "/",
-    );
+    expect(projection("/dev/animations", "DEVELOPMENT", "development", anonymous).contextualItems[0]?.href).toBe("/");
   });
 });

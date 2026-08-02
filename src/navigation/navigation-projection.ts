@@ -51,7 +51,9 @@ function resolveItem(item: NavigationItem, context: NavigationProjectionContext)
 function layerItems(layer: NavigationLayer, context: NavigationProjectionContext) {
   return navigationRegistry
     .filter((item) => item.layer === layer)
-    .filter((item) => (item.shellModes as readonly NavigationProjectionContext["shellMode"][]).includes(context.shellMode))
+    .filter((item) =>
+      (item.shellModes as readonly NavigationProjectionContext["shellMode"][]).includes(context.shellMode),
+    )
     .filter((item) => hasPlacement(item, context))
     .filter((item) => resolvesForUser(item, context))
     .filter((item) => matchesContext(item, context.pathname))

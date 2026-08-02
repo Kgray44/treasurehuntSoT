@@ -42,5 +42,46 @@
       "Gateway navigation, account-menu reconstruction, and Passport visual reconstruction remain later phases"
     ],
     "catalogVersion": 1
+  },
+  {
+    "id": "FT-B002",
+    "title": "Global Shell and Wayfinding",
+    "summary": "One route-classified product shell now provides global, workspace, account, and contextual wayfinding with equivalent desktop/mobile destinations and safe focused-surface exits.",
+    "status": "BRANCH_COMPLETE_NOT_MERGED",
+    "program": "Project Homeport Phase 2",
+    "surfaces": ["/", "/tales", "/community", "/player/library", "/captain/library", "/studio/library", "/passport"],
+    "subfeatures": [
+      "Eight-mode exclusive page-shell classification",
+      "One four-layer navigation registry and projection",
+      "Structured anonymous and authenticated account orientation",
+      "Capability-projected workspace switching without second sign-in",
+      "Equivalent desktop and mobile functional destinations",
+      "Governed compact and immersive workspace exits",
+      "Global Community Harbor and Explore Chronicles reachability"
+    ],
+    "evidence": [
+      {
+        "kind": "commit",
+        "value": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc"
+      },
+      {
+        "kind": "completion-record",
+        "value": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_2_Validation_Record.md"
+      },
+      {
+        "kind": "test",
+        "value": "tests/e2e/homeport-phase2.spec.ts"
+      }
+    ],
+    "branch": "codex/project-homeport-product-reality-recovery",
+    "commit": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc",
+    "limitations": [
+      "Not available on main until separately reviewed and integrated",
+      "Not deployed; live-user validation and owner acceptance are not established",
+      "Personal Harbor information architecture and visual reconstruction remain Phase 3",
+      "Community content and district reconstruction remain Phase 4",
+      "Exhaustive ordinary-route reachability remains Phase 5"
+    ],
+    "catalogVersion": 1
   }
 ]

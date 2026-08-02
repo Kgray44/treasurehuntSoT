@@ -132,3 +132,28 @@ reachability adapter; Phase 3 retains Personal Harbor reconstruction.
 Expected direct closure remains limited to HP-NC-001, HP-NC-006, HP-NC-010,
 and HP-NC-016 after governed evidence. HP-NC-008, HP-NC-014, and HP-NC-026 can
 advance only partially; their later-phase owners remain unchanged.
+
+## Phase 2 implementation amendment
+
+**Implementation anchor:** `ce9fd8e70f0e906416cf41cd508ec5f2063570cc`.
+The frozen architecture was implemented without schema or migration changes.
+All 69 page routes receive exactly one typed shell mode; APIs are excluded.
+One 32-record registry owns global, workspace, account, and contextual layers,
+and one projection supplies equivalent desktop/mobile functional IDs.
+
+The implementation resolved three acceptance-discovered product issues at the
+shell owner: desktop outside-click dismissal, route-transition overlay closure,
+and Creator navigation overflow at 1280 pixels. The responsive drawer now
+begins before the full Creator destination set can collide. Stable Passport
+section anchors are a bounded Phase 2 reachability adapter and do not revise
+Phase 3 ownership.
+
+The A-U isolated Chromium project passed 21 journeys and produced 20 visually
+accepted checksum-bound synthetic images. Representative compact and immersive
+exits returned to their owning workspaces; the immersive exit left persisted
+Tale Session fields and event count unchanged. These are local branch facts,
+not deployment, owner acceptance, or product acceptance.
+
+After governed closure, HP-NC-001, HP-NC-006, HP-NC-010, and HP-NC-016 are
+eligible for direct closure. HP-NC-008, HP-NC-014, and HP-NC-026 remain
+explicit partial advances with their Phase 3/4/later-state owners preserved.

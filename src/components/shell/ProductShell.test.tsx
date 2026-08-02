@@ -73,10 +73,7 @@ describe("ProductShell", () => {
     fireEvent.click(trigger);
     const disclosure = screen.getByLabelText("Account navigation");
     await waitFor(() => expect(within(disclosure).getByRole("link", { name: "Create Account" })).toHaveFocus());
-    expect(within(disclosure).getByRole("link", { name: "Sign In" })).toHaveAttribute(
-      "href",
-      "/sign-in?returnTo=%2F",
-    );
+    expect(within(disclosure).getByRole("link", { name: "Sign In" })).toHaveAttribute("href", "/sign-in?returnTo=%2F");
     expect(within(disclosure).queryByText("Security & Sessions")).not.toBeInTheDocument();
     fireEvent.keyDown(window, { key: "Escape" });
     await waitFor(() => expect(trigger).toHaveFocus());

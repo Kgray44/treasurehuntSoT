@@ -26,10 +26,7 @@ export default defineConfig({
   workers: 1,
   retries: 0,
   outputDir: "artifacts/validation/homeport-phase2/playwright",
-  reporter: [
-    ["list"],
-    ["html", { outputFolder: "artifacts/validation/homeport-phase2/report", open: "never" }],
-  ],
+  reporter: [["list"], ["html", { outputFolder: "artifacts/validation/homeport-phase2/report", open: "never" }]],
   use: {
     ...devices["Desktop Chrome"],
     viewport: { width: 1440, height: 900 },

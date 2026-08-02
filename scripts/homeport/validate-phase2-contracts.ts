@@ -82,12 +82,15 @@ for (const policy of ["EXACT", "SECTION", "DYNAMIC_FAMILY", "ALIAS_OF", "NEVER_A
   if (!navigation.activePolicies.includes(policy)) fail(`MISSING_ACTIVE_POLICY:${policy}`);
 const capabilities = new Set(["player", "captain", "creator", "moderator", "administrator"]);
 for (const record of navigation.records) {
-  if (!record.destination.startsWith("/") && !["SAFE_LOCAL_SIGN_IN_RETURN", "PUBLIC_PROFILE_OR_PASSPORT_PROFILE", "SIGN_OUT_ACTION"].includes(record.destination))
+  if (
+    !record.destination.startsWith("/") &&
+    !["SAFE_LOCAL_SIGN_IN_RETURN", "PUBLIC_PROFILE_OR_PASSPORT_PROFILE", "SIGN_OUT_ACTION"].includes(record.destination)
+  )
     fail(`INVALID_DESTINATION:${record.itemId}`);
   if (record.requiredCapabilities.some((capability) => !capabilities.has(capability)))
     fail(`INVALID_CAPABILITY:${record.itemId}`);
   if (record.parentId && !navigationIds.includes(record.parentId)) fail(`INVALID_PARENT:${record.itemId}`);
-  if (record.desktopPlacement === "hidden" !== (record.mobilePlacement === "hidden"))
+  if ((record.desktopPlacement === "hidden") !== (record.mobilePlacement === "hidden"))
     fail(`DESKTOP_MOBILE_PLACEMENT_DRIFT:${record.itemId}`);
   if (record.itemId.includes("moderator") && !record.requiredCapabilities.includes("moderator"))
     fail(`UNGUARDED_PRIVILEGED_ITEM:${record.itemId}`);

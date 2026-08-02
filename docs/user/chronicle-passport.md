@@ -20,3 +20,11 @@ an invitation, changing roles, expiring or revoking a session, and returning
 to a visible tab all trigger a fresh authoritative check. Browser storage and
 route names are never treated as authorization. This branch behavior is not
 yet available on main.
+
+On the Phase 2 branch, Account groups View My Profile, Chronicle Passport,
+Preferences, Privacy & Safety, Chronicle History, Artifact Cabinet, and
+Security & Sessions. Those controls resolve to current Passport sections or
+account security; they do not create empty pages. The stable section anchors
+are a wayfinding adapter only. Personal Harbor information architecture,
+provider-control cleanup, and visual reconstruction remain Phase 3. This
+branch behavior is not on main, deployed, or owner accepted.

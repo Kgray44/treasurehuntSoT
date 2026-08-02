@@ -1,23 +1,12 @@
 {
   "schemaVersion": "2.0.0",
   "phase": "PHASE_2_RESTORE_GLOBAL_SHELL_AND_WAYFINDING",
-  "sourceSha": "befb75625002a0b68093d1c35bfb846055cd9a14",
+  "sourceSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc",
   "generatedAt": "2026-08-01T23:00:00.000Z",
   "canonicalAuthority": "src/navigation/registry.ts",
   "projectionAuthority": "src/navigation/navigation-projection.ts",
-  "layers": [
-    "GLOBAL",
-    "WORKSPACE",
-    "ACCOUNT",
-    "CONTEXTUAL"
-  ],
-  "activePolicies": [
-    "EXACT",
-    "SECTION",
-    "DYNAMIC_FAMILY",
-    "ALIAS_OF",
-    "NEVER_ACTIVE"
-  ],
+  "layers": ["GLOBAL", "WORKSPACE", "ACCOUNT", "CONTEXTUAL"],
+  "activePolicies": ["EXACT", "SECTION", "DYNAMIC_FAMILY", "ALIAS_OF", "NEVER_ACTIVE"],
   "capabilitySource": "PHASE_1_CURRENT_USER_PROVIDER_ONLY",
   "viewportRule": "EQUIVALENT_STATE_FUNCTIONAL_DESTINATION_IDS_EQUAL",
   "records": [
@@ -32,16 +21,10 @@
       "requiresAuthentication": false,
       "anonymousOnly": false,
       "authenticatedOnly": false,
-      "shellModes": [
-        "GATEWAY_STANDARD",
-        "PUBLIC_STANDARD",
-        "WORKSPACE_STANDARD"
-      ],
+      "shellModes": ["GATEWAY_STANDARD", "PUBLIC_STANDARD", "WORKSPACE_STANDARD"],
       "desktopPlacement": "primary",
       "mobilePlacement": "drawer",
-      "activePolicy": {
-        "type": "EXACT"
-      },
+      "activePolicy": { "type": "EXACT" },
       "parentId": null,
       "accountGroup": null,
       "contextualPatterns": [],
@@ -66,16 +49,10 @@
       "requiresAuthentication": false,
       "anonymousOnly": false,
       "authenticatedOnly": false,
-      "shellModes": [
-        "GATEWAY_STANDARD",
-        "PUBLIC_STANDARD",
-        "WORKSPACE_STANDARD"
-      ],
+      "shellModes": ["GATEWAY_STANDARD", "PUBLIC_STANDARD", "WORKSPACE_STANDARD"],
       "desktopPlacement": "primary",
       "mobilePlacement": "drawer",
-      "activePolicy": {
-        "type": "SECTION"
-      },
+      "activePolicy": { "type": "SECTION" },
       "parentId": null,
       "accountGroup": null,
       "contextualPatterns": [],
@@ -100,16 +77,10 @@
       "requiresAuthentication": false,
       "anonymousOnly": false,
       "authenticatedOnly": false,
-      "shellModes": [
-        "GATEWAY_STANDARD",
-        "PUBLIC_STANDARD",
-        "WORKSPACE_STANDARD"
-      ],
+      "shellModes": ["GATEWAY_STANDARD", "PUBLIC_STANDARD", "WORKSPACE_STANDARD"],
       "desktopPlacement": "primary",
       "mobilePlacement": "drawer",
-      "activePolicy": {
-        "type": "SECTION"
-      },
+      "activePolicy": { "type": "SECTION" },
       "parentId": null,
       "accountGroup": null,
       "contextualPatterns": [],
@@ -131,20 +102,14 @@
       "destination": "/player/library",
       "description": null,
       "owner": "one-voyage",
-      "requiredCapabilities": [
-        "player"
-      ],
+      "requiredCapabilities": ["player"],
       "requiresAuthentication": true,
       "anonymousOnly": false,
       "authenticatedOnly": false,
-      "shellModes": [
-        "WORKSPACE_STANDARD"
-      ],
+      "shellModes": ["WORKSPACE_STANDARD"],
       "desktopPlacement": "primary",
       "mobilePlacement": "drawer",
-      "activePolicy": {
-        "type": "SECTION"
-      },
+      "activePolicy": { "type": "SECTION" },
       "parentId": null,
       "accountGroup": null,
       "contextualPatterns": [],
@@ -164,20 +129,14 @@
       "destination": "/captain/library",
       "description": null,
       "owner": "one-voyage",
-      "requiredCapabilities": [
-        "captain"
-      ],
+      "requiredCapabilities": ["captain"],
       "requiresAuthentication": true,
       "anonymousOnly": false,
       "authenticatedOnly": false,
-      "shellModes": [
-        "WORKSPACE_STANDARD"
-      ],
+      "shellModes": ["WORKSPACE_STANDARD"],
       "desktopPlacement": "primary",
       "mobilePlacement": "drawer",
-      "activePolicy": {
-        "type": "SECTION"
-      },
+      "activePolicy": { "type": "SECTION" },
       "parentId": null,
       "accountGroup": null,
       "contextualPatterns": [],
@@ -197,20 +156,14 @@
       "destination": "/captain/invitations",
       "description": null,
       "owner": "one-voyage",
-      "requiredCapabilities": [
-        "captain"
-      ],
+      "requiredCapabilities": ["captain"],
       "requiresAuthentication": true,
       "anonymousOnly": false,
       "authenticatedOnly": false,
-      "shellModes": [
-        "WORKSPACE_STANDARD"
-      ],
+      "shellModes": ["WORKSPACE_STANDARD"],
       "desktopPlacement": "primary",
       "mobilePlacement": "drawer",
-      "activePolicy": {
-        "type": "SECTION"
-      },
+      "activePolicy": { "type": "SECTION" },
       "parentId": null,
       "accountGroup": null,
       "contextualPatterns": [],
@@ -230,20 +183,14 @@
       "destination": "/studio/library",
       "description": null,
       "owner": "one-voyage",
-      "requiredCapabilities": [
-        "creator"
-      ],
+      "requiredCapabilities": ["creator"],
       "requiresAuthentication": true,
       "anonymousOnly": false,
       "authenticatedOnly": false,
-      "shellModes": [
-        "WORKSPACE_STANDARD"
-      ],
+      "shellModes": ["WORKSPACE_STANDARD"],
       "desktopPlacement": "primary",
       "mobilePlacement": "drawer",
-      "activePolicy": {
-        "type": "SECTION"
-      },
+      "activePolicy": { "type": "SECTION" },
       "parentId": null,
       "accountGroup": null,
       "contextualPatterns": [],
@@ -263,20 +210,14 @@
       "destination": "/studio/exchange",
       "description": null,
       "owner": "one-voyage",
-      "requiredCapabilities": [
-        "creator"
-      ],
+      "requiredCapabilities": ["creator"],
       "requiresAuthentication": true,
       "anonymousOnly": false,
       "authenticatedOnly": false,
-      "shellModes": [
-        "WORKSPACE_STANDARD"
-      ],
+      "shellModes": ["WORKSPACE_STANDARD"],
       "desktopPlacement": "primary",
       "mobilePlacement": "drawer",
-      "activePolicy": {
-        "type": "SECTION"
-      },
+      "activePolicy": { "type": "SECTION" },
       "parentId": null,
       "accountGroup": null,
       "contextualPatterns": [],
@@ -296,20 +237,14 @@
       "destination": "/studio/private-content",
       "description": null,
       "owner": "sealed-hold",
-      "requiredCapabilities": [
-        "creator"
-      ],
+      "requiredCapabilities": ["creator"],
       "requiresAuthentication": true,
       "anonymousOnly": false,
       "authenticatedOnly": false,
-      "shellModes": [
-        "WORKSPACE_STANDARD"
-      ],
+      "shellModes": ["WORKSPACE_STANDARD"],
       "desktopPlacement": "primary",
       "mobilePlacement": "drawer",
-      "activePolicy": {
-        "type": "SECTION"
-      },
+      "activePolicy": { "type": "SECTION" },
       "parentId": null,
       "accountGroup": null,
       "contextualPatterns": [],
@@ -333,18 +268,10 @@
       "requiresAuthentication": false,
       "anonymousOnly": true,
       "authenticatedOnly": false,
-      "shellModes": [
-        "GATEWAY_STANDARD",
-        "PUBLIC_STANDARD",
-        "WORKSPACE_STANDARD",
-        "COMPACT",
-        "IMMERSIVE"
-      ],
+      "shellModes": ["GATEWAY_STANDARD", "PUBLIC_STANDARD", "WORKSPACE_STANDARD", "COMPACT", "IMMERSIVE"],
       "desktopPlacement": "account",
       "mobilePlacement": "account",
-      "activePolicy": {
-        "type": "NEVER_ACTIVE"
-      },
+      "activePolicy": { "type": "NEVER_ACTIVE" },
       "parentId": null,
       "accountGroup": "identity",
       "contextualPatterns": [],
@@ -368,18 +295,10 @@
       "requiresAuthentication": false,
       "anonymousOnly": true,
       "authenticatedOnly": false,
-      "shellModes": [
-        "GATEWAY_STANDARD",
-        "PUBLIC_STANDARD",
-        "WORKSPACE_STANDARD",
-        "COMPACT",
-        "IMMERSIVE"
-      ],
+      "shellModes": ["GATEWAY_STANDARD", "PUBLIC_STANDARD", "WORKSPACE_STANDARD", "COMPACT", "IMMERSIVE"],
       "desktopPlacement": "account",
       "mobilePlacement": "account",
-      "activePolicy": {
-        "type": "NEVER_ACTIVE"
-      },
+      "activePolicy": { "type": "NEVER_ACTIVE" },
       "parentId": null,
       "accountGroup": "identity",
       "contextualPatterns": [],
@@ -403,19 +322,10 @@
       "requiresAuthentication": true,
       "anonymousOnly": false,
       "authenticatedOnly": true,
-      "shellModes": [
-        "GATEWAY_STANDARD",
-        "PUBLIC_STANDARD",
-        "WORKSPACE_STANDARD",
-        "COMPACT",
-        "IMMERSIVE"
-      ],
+      "shellModes": ["GATEWAY_STANDARD", "PUBLIC_STANDARD", "WORKSPACE_STANDARD", "COMPACT", "IMMERSIVE"],
       "desktopPlacement": "account",
       "mobilePlacement": "account",
-      "activePolicy": {
-        "type": "DYNAMIC_FAMILY",
-        "pattern": "/profile/:handle"
-      },
+      "activePolicy": { "type": "DYNAMIC_FAMILY", "pattern": "/profile/:handle" },
       "parentId": null,
       "accountGroup": "identity",
       "contextualPatterns": [],
@@ -439,18 +349,10 @@
       "requiresAuthentication": true,
       "anonymousOnly": false,
       "authenticatedOnly": true,
-      "shellModes": [
-        "GATEWAY_STANDARD",
-        "PUBLIC_STANDARD",
-        "WORKSPACE_STANDARD",
-        "COMPACT",
-        "IMMERSIVE"
-      ],
+      "shellModes": ["GATEWAY_STANDARD", "PUBLIC_STANDARD", "WORKSPACE_STANDARD", "COMPACT", "IMMERSIVE"],
       "desktopPlacement": "account",
       "mobilePlacement": "account",
-      "activePolicy": {
-        "type": "EXACT"
-      },
+      "activePolicy": { "type": "EXACT" },
       "parentId": null,
       "accountGroup": "personal",
       "contextualPatterns": [],
@@ -474,18 +376,10 @@
       "requiresAuthentication": true,
       "anonymousOnly": false,
       "authenticatedOnly": true,
-      "shellModes": [
-        "GATEWAY_STANDARD",
-        "PUBLIC_STANDARD",
-        "WORKSPACE_STANDARD",
-        "COMPACT",
-        "IMMERSIVE"
-      ],
+      "shellModes": ["GATEWAY_STANDARD", "PUBLIC_STANDARD", "WORKSPACE_STANDARD", "COMPACT", "IMMERSIVE"],
       "desktopPlacement": "account",
       "mobilePlacement": "account",
-      "activePolicy": {
-        "type": "NEVER_ACTIVE"
-      },
+      "activePolicy": { "type": "NEVER_ACTIVE" },
       "parentId": "account-passport",
       "accountGroup": "personal",
       "contextualPatterns": [],
@@ -509,18 +403,10 @@
       "requiresAuthentication": true,
       "anonymousOnly": false,
       "authenticatedOnly": true,
-      "shellModes": [
-        "GATEWAY_STANDARD",
-        "PUBLIC_STANDARD",
-        "WORKSPACE_STANDARD",
-        "COMPACT",
-        "IMMERSIVE"
-      ],
+      "shellModes": ["GATEWAY_STANDARD", "PUBLIC_STANDARD", "WORKSPACE_STANDARD", "COMPACT", "IMMERSIVE"],
       "desktopPlacement": "account",
       "mobilePlacement": "account",
-      "activePolicy": {
-        "type": "NEVER_ACTIVE"
-      },
+      "activePolicy": { "type": "NEVER_ACTIVE" },
       "parentId": "account-passport",
       "accountGroup": "personal",
       "contextualPatterns": [],
@@ -544,18 +430,10 @@
       "requiresAuthentication": true,
       "anonymousOnly": false,
       "authenticatedOnly": true,
-      "shellModes": [
-        "GATEWAY_STANDARD",
-        "PUBLIC_STANDARD",
-        "WORKSPACE_STANDARD",
-        "COMPACT",
-        "IMMERSIVE"
-      ],
+      "shellModes": ["GATEWAY_STANDARD", "PUBLIC_STANDARD", "WORKSPACE_STANDARD", "COMPACT", "IMMERSIVE"],
       "desktopPlacement": "account",
       "mobilePlacement": "account",
-      "activePolicy": {
-        "type": "NEVER_ACTIVE"
-      },
+      "activePolicy": { "type": "NEVER_ACTIVE" },
       "parentId": "account-passport",
       "accountGroup": "personal",
       "contextualPatterns": [],
@@ -579,18 +457,10 @@
       "requiresAuthentication": true,
       "anonymousOnly": false,
       "authenticatedOnly": true,
-      "shellModes": [
-        "GATEWAY_STANDARD",
-        "PUBLIC_STANDARD",
-        "WORKSPACE_STANDARD",
-        "COMPACT",
-        "IMMERSIVE"
-      ],
+      "shellModes": ["GATEWAY_STANDARD", "PUBLIC_STANDARD", "WORKSPACE_STANDARD", "COMPACT", "IMMERSIVE"],
       "desktopPlacement": "account",
       "mobilePlacement": "account",
-      "activePolicy": {
-        "type": "NEVER_ACTIVE"
-      },
+      "activePolicy": { "type": "NEVER_ACTIVE" },
       "parentId": "account-passport",
       "accountGroup": "personal",
       "contextualPatterns": [],
@@ -614,18 +484,10 @@
       "requiresAuthentication": true,
       "anonymousOnly": false,
       "authenticatedOnly": true,
-      "shellModes": [
-        "GATEWAY_STANDARD",
-        "PUBLIC_STANDARD",
-        "WORKSPACE_STANDARD",
-        "COMPACT",
-        "IMMERSIVE"
-      ],
+      "shellModes": ["GATEWAY_STANDARD", "PUBLIC_STANDARD", "WORKSPACE_STANDARD", "COMPACT", "IMMERSIVE"],
       "desktopPlacement": "account",
       "mobilePlacement": "account",
-      "activePolicy": {
-        "type": "SECTION"
-      },
+      "activePolicy": { "type": "SECTION" },
       "parentId": null,
       "accountGroup": "personal",
       "contextualPatterns": [],
@@ -645,24 +507,14 @@
       "destination": "/player/library",
       "description": null,
       "owner": "one-voyage",
-      "requiredCapabilities": [
-        "player"
-      ],
+      "requiredCapabilities": ["player"],
       "requiresAuthentication": true,
       "anonymousOnly": false,
       "authenticatedOnly": true,
-      "shellModes": [
-        "GATEWAY_STANDARD",
-        "PUBLIC_STANDARD",
-        "WORKSPACE_STANDARD",
-        "COMPACT",
-        "IMMERSIVE"
-      ],
+      "shellModes": ["GATEWAY_STANDARD", "PUBLIC_STANDARD", "WORKSPACE_STANDARD", "COMPACT", "IMMERSIVE"],
       "desktopPlacement": "account",
       "mobilePlacement": "account",
-      "activePolicy": {
-        "type": "SECTION"
-      },
+      "activePolicy": { "type": "SECTION" },
       "parentId": null,
       "accountGroup": "workspace",
       "contextualPatterns": [],
@@ -682,24 +534,14 @@
       "destination": "/captain/library",
       "description": null,
       "owner": "one-voyage",
-      "requiredCapabilities": [
-        "captain"
-      ],
+      "requiredCapabilities": ["captain"],
       "requiresAuthentication": true,
       "anonymousOnly": false,
       "authenticatedOnly": true,
-      "shellModes": [
-        "GATEWAY_STANDARD",
-        "PUBLIC_STANDARD",
-        "WORKSPACE_STANDARD",
-        "COMPACT",
-        "IMMERSIVE"
-      ],
+      "shellModes": ["GATEWAY_STANDARD", "PUBLIC_STANDARD", "WORKSPACE_STANDARD", "COMPACT", "IMMERSIVE"],
       "desktopPlacement": "account",
       "mobilePlacement": "account",
-      "activePolicy": {
-        "type": "SECTION"
-      },
+      "activePolicy": { "type": "SECTION" },
       "parentId": null,
       "accountGroup": "workspace",
       "contextualPatterns": [],
@@ -719,24 +561,14 @@
       "destination": "/studio/library",
       "description": null,
       "owner": "one-voyage",
-      "requiredCapabilities": [
-        "creator"
-      ],
+      "requiredCapabilities": ["creator"],
       "requiresAuthentication": true,
       "anonymousOnly": false,
       "authenticatedOnly": true,
-      "shellModes": [
-        "GATEWAY_STANDARD",
-        "PUBLIC_STANDARD",
-        "WORKSPACE_STANDARD",
-        "COMPACT",
-        "IMMERSIVE"
-      ],
+      "shellModes": ["GATEWAY_STANDARD", "PUBLIC_STANDARD", "WORKSPACE_STANDARD", "COMPACT", "IMMERSIVE"],
       "desktopPlacement": "account",
       "mobilePlacement": "account",
-      "activePolicy": {
-        "type": "SECTION"
-      },
+      "activePolicy": { "type": "SECTION" },
       "parentId": null,
       "accountGroup": "workspace",
       "contextualPatterns": [],
@@ -756,24 +588,14 @@
       "destination": "/community/moderation",
       "description": null,
       "owner": "harborlight",
-      "requiredCapabilities": [
-        "moderator"
-      ],
+      "requiredCapabilities": ["moderator"],
       "requiresAuthentication": true,
       "anonymousOnly": false,
       "authenticatedOnly": true,
-      "shellModes": [
-        "GATEWAY_STANDARD",
-        "PUBLIC_STANDARD",
-        "WORKSPACE_STANDARD",
-        "COMPACT",
-        "IMMERSIVE"
-      ],
+      "shellModes": ["GATEWAY_STANDARD", "PUBLIC_STANDARD", "WORKSPACE_STANDARD", "COMPACT", "IMMERSIVE"],
       "desktopPlacement": "account",
       "mobilePlacement": "account",
-      "activePolicy": {
-        "type": "SECTION"
-      },
+      "activePolicy": { "type": "SECTION" },
       "parentId": null,
       "accountGroup": "workspace",
       "contextualPatterns": [],
@@ -797,18 +619,10 @@
       "requiresAuthentication": true,
       "anonymousOnly": false,
       "authenticatedOnly": true,
-      "shellModes": [
-        "GATEWAY_STANDARD",
-        "PUBLIC_STANDARD",
-        "WORKSPACE_STANDARD",
-        "COMPACT",
-        "IMMERSIVE"
-      ],
+      "shellModes": ["GATEWAY_STANDARD", "PUBLIC_STANDARD", "WORKSPACE_STANDARD", "COMPACT", "IMMERSIVE"],
       "desktopPlacement": "account",
       "mobilePlacement": "account",
-      "activePolicy": {
-        "type": "NEVER_ACTIVE"
-      },
+      "activePolicy": { "type": "NEVER_ACTIVE" },
       "parentId": null,
       "accountGroup": "action",
       "contextualPatterns": [],
@@ -832,19 +646,13 @@
       "requiresAuthentication": false,
       "anonymousOnly": false,
       "authenticatedOnly": false,
-      "shellModes": [
-        "PUBLIC_STANDARD"
-      ],
+      "shellModes": ["PUBLIC_STANDARD"],
       "desktopPlacement": "contextual",
       "mobilePlacement": "contextual",
-      "activePolicy": {
-        "type": "NEVER_ACTIVE"
-      },
+      "activePolicy": { "type": "NEVER_ACTIVE" },
       "parentId": null,
       "accountGroup": null,
-      "contextualPatterns": [
-        "/community/*"
-      ],
+      "contextualPatterns": ["/community/*"],
       "action": null,
       "order": 10,
       "currentStatus": "contextual",
@@ -866,21 +674,13 @@
       "requiresAuthentication": false,
       "anonymousOnly": false,
       "authenticatedOnly": false,
-      "shellModes": [
-        "PUBLIC_STANDARD"
-      ],
+      "shellModes": ["PUBLIC_STANDARD"],
       "desktopPlacement": "contextual",
       "mobilePlacement": "contextual",
-      "activePolicy": {
-        "type": "NEVER_ACTIVE"
-      },
+      "activePolicy": { "type": "NEVER_ACTIVE" },
       "parentId": null,
       "accountGroup": null,
-      "contextualPatterns": [
-        "/play/:slug",
-        "/play/:slug/history",
-        "/tale/:slug"
-      ],
+      "contextualPatterns": ["/play/:slug", "/play/:slug/history", "/tale/:slug"],
       "action": null,
       "order": 10,
       "currentStatus": "contextual",
@@ -901,21 +701,13 @@
       "requiresAuthentication": false,
       "anonymousOnly": false,
       "authenticatedOnly": false,
-      "shellModes": [
-        "PUBLIC_STANDARD",
-        "WORKSPACE_STANDARD"
-      ],
+      "shellModes": ["PUBLIC_STANDARD", "WORKSPACE_STANDARD"],
       "desktopPlacement": "contextual",
       "mobilePlacement": "contextual",
-      "activePolicy": {
-        "type": "NEVER_ACTIVE"
-      },
+      "activePolicy": { "type": "NEVER_ACTIVE" },
       "parentId": null,
       "accountGroup": null,
-      "contextualPatterns": [
-        "/profile/:handle",
-        "/account/*"
-      ],
+      "contextualPatterns": ["/profile/:handle", "/account/*"],
       "action": null,
       "order": 10,
       "currentStatus": "contextual",
@@ -932,27 +724,17 @@
       "destination": "/captain/library",
       "description": null,
       "owner": "one-voyage",
-      "requiredCapabilities": [
-        "captain"
-      ],
+      "requiredCapabilities": ["captain"],
       "requiresAuthentication": true,
       "anonymousOnly": false,
       "authenticatedOnly": false,
-      "shellModes": [
-        "COMPACT"
-      ],
+      "shellModes": ["COMPACT"],
       "desktopPlacement": "contextual",
       "mobilePlacement": "contextual",
-      "activePolicy": {
-        "type": "NEVER_ACTIVE"
-      },
+      "activePolicy": { "type": "NEVER_ACTIVE" },
       "parentId": null,
       "accountGroup": null,
-      "contextualPatterns": [
-        "/quartermaster",
-        "/quartermaster/:workspace",
-        "/captain/sessions/:id"
-      ],
+      "contextualPatterns": ["/quartermaster", "/quartermaster/:workspace", "/captain/sessions/:id"],
       "action": null,
       "order": 10,
       "currentStatus": "contextual",
@@ -969,27 +751,17 @@
       "destination": "/player/library",
       "description": null,
       "owner": "one-voyage",
-      "requiredCapabilities": [
-        "player"
-      ],
+      "requiredCapabilities": ["player"],
       "requiresAuthentication": true,
       "anonymousOnly": false,
       "authenticatedOnly": false,
-      "shellModes": [
-        "IMMERSIVE"
-      ],
+      "shellModes": ["IMMERSIVE"],
       "desktopPlacement": "contextual",
       "mobilePlacement": "contextual",
-      "activePolicy": {
-        "type": "NEVER_ACTIVE"
-      },
+      "activePolicy": { "type": "NEVER_ACTIVE" },
       "parentId": null,
       "accountGroup": null,
-      "contextualPatterns": [
-        "/player/playthroughs/:id",
-        "/player/playthroughs/:id/journal",
-        "/play/:slug/session/:id"
-      ],
+      "contextualPatterns": ["/player/playthroughs/:id", "/player/playthroughs/:id/journal", "/play/:slug/session/:id"],
       "action": null,
       "order": 10,
       "currentStatus": "contextual",
@@ -1010,19 +782,13 @@
       "requiresAuthentication": false,
       "anonymousOnly": false,
       "authenticatedOnly": false,
-      "shellModes": [
-        "DEVELOPMENT"
-      ],
+      "shellModes": ["DEVELOPMENT"],
       "desktopPlacement": "contextual",
       "mobilePlacement": "contextual",
-      "activePolicy": {
-        "type": "NEVER_ACTIVE"
-      },
+      "activePolicy": { "type": "NEVER_ACTIVE" },
       "parentId": null,
       "accountGroup": null,
-      "contextualPatterns": [
-        "/dev/*"
-      ],
+      "contextualPatterns": ["/dev/*"],
       "action": null,
       "order": 10,
       "currentStatus": "development",
@@ -1043,16 +809,10 @@
       "requiresAuthentication": false,
       "anonymousOnly": false,
       "authenticatedOnly": false,
-      "shellModes": [
-        "WORKSPACE_STANDARD"
-      ],
+      "shellModes": ["WORKSPACE_STANDARD"],
       "desktopPlacement": "hidden",
       "mobilePlacement": "hidden",
-      "activePolicy": {
-        "type": "ALIAS_OF",
-        "canonicalItemId": "workspace-player-home",
-        "pattern": "/player"
-      },
+      "activePolicy": { "type": "ALIAS_OF", "canonicalItemId": "workspace-player-home", "pattern": "/player" },
       "parentId": null,
       "accountGroup": null,
       "contextualPatterns": [],
@@ -1076,16 +836,10 @@
       "requiresAuthentication": false,
       "anonymousOnly": false,
       "authenticatedOnly": false,
-      "shellModes": [
-        "WORKSPACE_STANDARD"
-      ],
+      "shellModes": ["WORKSPACE_STANDARD"],
       "desktopPlacement": "hidden",
       "mobilePlacement": "hidden",
-      "activePolicy": {
-        "type": "ALIAS_OF",
-        "canonicalItemId": "workspace-captain-voyages",
-        "pattern": "/captain"
-      },
+      "activePolicy": { "type": "ALIAS_OF", "canonicalItemId": "workspace-captain-voyages", "pattern": "/captain" },
       "parentId": null,
       "accountGroup": null,
       "contextualPatterns": [],
@@ -1109,16 +863,10 @@
       "requiresAuthentication": false,
       "anonymousOnly": false,
       "authenticatedOnly": false,
-      "shellModes": [
-        "WORKSPACE_STANDARD"
-      ],
+      "shellModes": ["WORKSPACE_STANDARD"],
       "desktopPlacement": "hidden",
       "mobilePlacement": "hidden",
-      "activePolicy": {
-        "type": "ALIAS_OF",
-        "canonicalItemId": "workspace-creator-library",
-        "pattern": "/studio"
-      },
+      "activePolicy": { "type": "ALIAS_OF", "canonicalItemId": "workspace-creator-library", "pattern": "/studio" },
       "parentId": null,
       "accountGroup": null,
       "contextualPatterns": [],

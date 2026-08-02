@@ -1,7 +1,7 @@
 {
   "schemaVersion": "2.0.0",
   "phase": "PHASE_2_RESTORE_GLOBAL_SHELL_AND_WAYFINDING",
-  "sourceSha": "befb75625002a0b68093d1c35bfb846055cd9a14",
+  "sourceSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc",
   "generatedAt": "2026-08-01T23:00:00.000Z",
   "canonicalAuthority": "src/navigation/route-classification.ts",
   "validModes": [
@@ -46,7 +46,7 @@
       "evidence": [],
       "owner": "wayfarer",
       "canonicalRoute": "/account/claim",
-      "phase2Status": "ARCHITECTURE_AND_SOURCE_IMPLEMENTED_PENDING_BROWSER_EVIDENCE"
+      "phase2Status": "VALIDATED_WITH_GOVERNED_REPRESENTATIVE_BROWSER_EVIDENCE"
     },
     {
       "routeId": "route-page-account-merge",
@@ -67,7 +67,7 @@
       "evidence": [],
       "owner": "wayfarer",
       "canonicalRoute": "/account/merge",
-      "phase2Status": "ARCHITECTURE_AND_SOURCE_IMPLEMENTED_PENDING_BROWSER_EVIDENCE"
+      "phase2Status": "VALIDATED_WITH_GOVERNED_REPRESENTATIVE_BROWSER_EVIDENCE"
     },
     {
       "routeId": "route-page-account-roles",
@@ -79,9 +79,7 @@
       "workspaceNavigationVisibility": "CAPABILITY_PROJECTED",
       "accountControlVisibility": "VISIBLE_WHEN_SAFE",
       "footerVisibility": "VISIBLE_WHERE_APPROPRIATE",
-      "contextualNavigation": [
-        "context-personal-parent"
-      ],
+      "contextualNavigation": ["context-personal-parent"],
       "exitTarget": "/passport",
       "mobileTransformation": "SHARED_FUNCTIONAL_SET_IN_DRAWER",
       "authenticationRule": "ANONYMOUS_OR_PAGE_LEVEL_GUARD",
@@ -90,7 +88,7 @@
       "evidence": [],
       "owner": "wayfarer",
       "canonicalRoute": "/account/roles",
-      "phase2Status": "ARCHITECTURE_AND_SOURCE_IMPLEMENTED_PENDING_BROWSER_EVIDENCE"
+      "phase2Status": "VALIDATED_WITH_GOVERNED_REPRESENTATIVE_BROWSER_EVIDENCE"
     },
     {
       "routeId": "route-page-account-security",
@@ -102,20 +100,16 @@
       "workspaceNavigationVisibility": "CAPABILITY_PROJECTED",
       "accountControlVisibility": "VISIBLE_WHEN_SAFE",
       "footerVisibility": "VISIBLE_WHERE_APPROPRIATE",
-      "contextualNavigation": [
-        "context-personal-parent"
-      ],
+      "contextualNavigation": ["context-personal-parent"],
       "exitTarget": "/passport",
       "mobileTransformation": "SHARED_FUNCTIONAL_SET_IN_DRAWER",
       "authenticationRule": "ANONYMOUS_OR_PAGE_LEVEL_GUARD",
       "capabilityRule": [],
       "activeStateFamily": "account-security-sessions",
-      "evidence": [
-        "HP-EV-025"
-      ],
+      "evidence": ["HP-EV-025"],
       "owner": "wayfarer",
       "canonicalRoute": "/account/security",
-      "phase2Status": "ARCHITECTURE_AND_SOURCE_IMPLEMENTED_PENDING_BROWSER_EVIDENCE"
+      "phase2Status": "VALIDATED_WITH_GOVERNED_REPRESENTATIVE_BROWSER_EVIDENCE"
     },
     {
       "routeId": "route-page-captain-invitations",
@@ -136,7 +130,7 @@
       "evidence": [],
       "owner": "one-voyage",
       "canonicalRoute": "/captain/invitations",
-      "phase2Status": "ARCHITECTURE_AND_SOURCE_IMPLEMENTED_PENDING_BROWSER_EVIDENCE"
+      "phase2Status": "VALIDATED_WITH_GOVERNED_REPRESENTATIVE_BROWSER_EVIDENCE"
     },
     {
       "routeId": "route-page-captain-library",
@@ -152,16 +146,12 @@
       "exitTarget": null,
       "mobileTransformation": "SHARED_FUNCTIONAL_SET_IN_DRAWER",
       "authenticationRule": "CAPTAIN_OR_CREATOR_CAPABILITY",
-      "capabilityRule": [
-        "CAPTAIN"
-      ],
+      "capabilityRule": ["CAPTAIN"],
       "activeStateFamily": "workspace-captain-voyages",
-      "evidence": [
-        "HP-EV-011"
-      ],
+      "evidence": ["HP-EV-011", "HP-P2-EV-I-captain-navigation"],
       "owner": "one-voyage",
       "canonicalRoute": "/captain/library",
-      "phase2Status": "ARCHITECTURE_AND_SOURCE_IMPLEMENTED_PENDING_BROWSER_EVIDENCE"
+      "phase2Status": "VALIDATED_WITH_GOVERNED_REPRESENTATIVE_BROWSER_EVIDENCE"
     },
     {
       "routeId": "route-page-captain",
@@ -177,14 +167,12 @@
       "exitTarget": null,
       "mobileTransformation": "SHARED_FUNCTIONAL_SET_IN_DRAWER",
       "authenticationRule": "CAPTAIN_OR_CREATOR_CAPABILITY",
-      "capabilityRule": [
-        "CAPTAIN"
-      ],
+      "capabilityRule": ["CAPTAIN"],
       "activeStateFamily": "workspace-captain-voyages",
       "evidence": [],
       "owner": "one-voyage",
       "canonicalRoute": "/captain/library",
-      "phase2Status": "ARCHITECTURE_AND_SOURCE_IMPLEMENTED_PENDING_BROWSER_EVIDENCE"
+      "phase2Status": "VALIDATED_WITH_GOVERNED_REPRESENTATIVE_BROWSER_EVIDENCE"
     },
     {
       "routeId": "route-page-captain-sessions-sessionid",
@@ -196,20 +184,16 @@
       "workspaceNavigationVisibility": "HIDDEN",
       "accountControlVisibility": "VISIBLE_WHEN_SAFE",
       "footerVisibility": "HIDDEN",
-      "contextualNavigation": [
-        "context-captain-exit"
-      ],
+      "contextualNavigation": ["context-captain-exit"],
       "exitTarget": "/captain/library",
       "mobileTransformation": "COMPACT_CONTEXT_AND_EXIT",
       "authenticationRule": "CAPTAIN_OR_CREATOR_CAPABILITY",
-      "capabilityRule": [
-        "CAPTAIN"
-      ],
+      "capabilityRule": ["CAPTAIN"],
       "activeStateFamily": "workspace-captain-voyages",
-      "evidence": [],
+      "evidence": ["HP-P2-EV-N-compact-exit"],
       "owner": "one-voyage",
       "canonicalRoute": "/captain/sessions/:sessionId",
-      "phase2Status": "ARCHITECTURE_AND_SOURCE_IMPLEMENTED_PENDING_BROWSER_EVIDENCE"
+      "phase2Status": "VALIDATED_WITH_GOVERNED_REPRESENTATIVE_BROWSER_EVIDENCE"
     },
     {
       "routeId": "route-page-captain-sign-in",
@@ -225,14 +209,12 @@
       "exitTarget": "/",
       "mobileTransformation": "BRAND_AND_SAFE_RETURN",
       "authenticationRule": "ANONYMOUS_ALLOWED",
-      "capabilityRule": [
-        "CAPTAIN"
-      ],
+      "capabilityRule": ["CAPTAIN"],
       "activeStateFamily": "NEVER_ACTIVE",
       "evidence": [],
       "owner": "wayfarer",
       "canonicalRoute": "/captain/sign-in",
-      "phase2Status": "ARCHITECTURE_AND_SOURCE_IMPLEMENTED_PENDING_BROWSER_EVIDENCE"
+      "phase2Status": "VALIDATED_WITH_GOVERNED_REPRESENTATIVE_BROWSER_EVIDENCE"
     },
     {
       "routeId": "route-page-captain-tales-taleid",
@@ -248,14 +230,12 @@
       "exitTarget": null,
       "mobileTransformation": "SHARED_FUNCTIONAL_SET_IN_DRAWER",
       "authenticationRule": "CAPTAIN_OR_CREATOR_CAPABILITY",
-      "capabilityRule": [
-        "CAPTAIN"
-      ],
+      "capabilityRule": ["CAPTAIN"],
       "activeStateFamily": "workspace-captain-voyages",
       "evidence": [],
       "owner": "one-voyage",
       "canonicalRoute": "/captain/tales/:taleId",
-      "phase2Status": "ARCHITECTURE_AND_SOURCE_IMPLEMENTED_PENDING_BROWSER_EVIDENCE"
+      "phase2Status": "VALIDATED_WITH_GOVERNED_REPRESENTATIVE_BROWSER_EVIDENCE"
     },
     {
       "routeId": "route-page-captain-voyages-playthroughid-player-preview",
@@ -271,14 +251,12 @@
       "exitTarget": null,
       "mobileTransformation": "SHARED_FUNCTIONAL_SET_IN_DRAWER",
       "authenticationRule": "CAPTAIN_OR_CREATOR_CAPABILITY",
-      "capabilityRule": [
-        "CAPTAIN"
-      ],
+      "capabilityRule": ["CAPTAIN"],
       "activeStateFamily": "workspace-captain-voyages",
       "evidence": [],
       "owner": "one-voyage",
       "canonicalRoute": "/captain/voyages/:playthroughId/player-preview",
-      "phase2Status": "ARCHITECTURE_AND_SOURCE_IMPLEMENTED_PENDING_BROWSER_EVIDENCE"
+      "phase2Status": "VALIDATED_WITH_GOVERNED_REPRESENTATIVE_BROWSER_EVIDENCE"
     },
     {
       "routeId": "route-page-community-slug",
@@ -290,9 +268,7 @@
       "workspaceNavigationVisibility": "HIDDEN",
       "accountControlVisibility": "VISIBLE_WHEN_SAFE",
       "footerVisibility": "VISIBLE_WHERE_APPROPRIATE",
-      "contextualNavigation": [
-        "context-community-parent"
-      ],
+      "contextualNavigation": ["context-community-parent"],
       "exitTarget": "/community",
       "mobileTransformation": "SHARED_FUNCTIONAL_SET_IN_DRAWER",
       "authenticationRule": "ANONYMOUS_ALLOWED",
@@ -301,7 +277,7 @@
       "evidence": [],
       "owner": "harborlight",
       "canonicalRoute": "/community/:slug",
-      "phase2Status": "ARCHITECTURE_AND_SOURCE_IMPLEMENTED_PENDING_BROWSER_EVIDENCE"
+      "phase2Status": "VALIDATED_WITH_GOVERNED_REPRESENTATIVE_BROWSER_EVIDENCE"
     },
     {
       "routeId": "route-page-community-artifacts",
@@ -313,9 +289,7 @@
       "workspaceNavigationVisibility": "HIDDEN",
       "accountControlVisibility": "VISIBLE_WHEN_SAFE",
       "footerVisibility": "VISIBLE_WHERE_APPROPRIATE",
-      "contextualNavigation": [
-        "context-community-parent"
-      ],
+      "contextualNavigation": ["context-community-parent"],
       "exitTarget": "/community",
       "mobileTransformation": "SHARED_FUNCTIONAL_SET_IN_DRAWER",
       "authenticationRule": "ANONYMOUS_ALLOWED",
@@ -324,7 +298,7 @@
       "evidence": [],
       "owner": "harborlight",
       "canonicalRoute": "/community/artifacts",
-      "phase2Status": "ARCHITECTURE_AND_SOURCE_IMPLEMENTED_PENDING_BROWSER_EVIDENCE"
+      "phase2Status": "VALIDATED_WITH_GOVERNED_REPRESENTATIVE_BROWSER_EVIDENCE"
     },
     {
       "routeId": "route-page-community-audio",
@@ -336,9 +310,7 @@
       "workspaceNavigationVisibility": "HIDDEN",
       "accountControlVisibility": "VISIBLE_WHEN_SAFE",
       "footerVisibility": "VISIBLE_WHERE_APPROPRIATE",
-      "contextualNavigation": [
-        "context-community-parent"
-      ],
+      "contextualNavigation": ["context-community-parent"],
       "exitTarget": "/community",
       "mobileTransformation": "SHARED_FUNCTIONAL_SET_IN_DRAWER",
       "authenticationRule": "ANONYMOUS_ALLOWED",
@@ -347,7 +319,7 @@
       "evidence": [],
       "owner": "harborlight",
       "canonicalRoute": "/community/audio",
-      "phase2Status": "ARCHITECTURE_AND_SOURCE_IMPLEMENTED_PENDING_BROWSER_EVIDENCE"
+      "phase2Status": "VALIDATED_WITH_GOVERNED_REPRESENTATIVE_BROWSER_EVIDENCE"
     },
     {
       "routeId": "route-page-community-chronicles",
@@ -359,9 +331,7 @@
       "workspaceNavigationVisibility": "HIDDEN",
       "accountControlVisibility": "VISIBLE_WHEN_SAFE",
       "footerVisibility": "VISIBLE_WHERE_APPROPRIATE",
-      "contextualNavigation": [
-        "context-community-parent"
-      ],
+      "contextualNavigation": ["context-community-parent"],
       "exitTarget": "/community",
       "mobileTransformation": "SHARED_FUNCTIONAL_SET_IN_DRAWER",
       "authenticationRule": "ANONYMOUS_ALLOWED",
@@ -370,7 +340,7 @@
       "evidence": [],
       "owner": "harborlight",
       "canonicalRoute": "/community/chronicles",
-      "phase2Status": "ARCHITECTURE_AND_SOURCE_IMPLEMENTED_PENDING_BROWSER_EVIDENCE"
+      "phase2Status": "VALIDATED_WITH_GOVERNED_REPRESENTATIVE_BROWSER_EVIDENCE"
     },
     {
       "routeId": "route-page-community-collections-slug",
@@ -382,9 +352,7 @@
       "workspaceNavigationVisibility": "HIDDEN",
       "accountControlVisibility": "VISIBLE_WHEN_SAFE",
       "footerVisibility": "VISIBLE_WHERE_APPROPRIATE",
-      "contextualNavigation": [
-        "context-community-parent"
-      ],
+      "contextualNavigation": ["context-community-parent"],
       "exitTarget": "/community",
       "mobileTransformation": "SHARED_FUNCTIONAL_SET_IN_DRAWER",
       "authenticationRule": "ANONYMOUS_ALLOWED",
@@ -393,7 +361,7 @@
       "evidence": [],
       "owner": "harborlight",
       "canonicalRoute": "/community/collections/:slug",
-      "phase2Status": "ARCHITECTURE_AND_SOURCE_IMPLEMENTED_PENDING_BROWSER_EVIDENCE"
+      "phase2Status": "VALIDATED_WITH_GOVERNED_REPRESENTATIVE_BROWSER_EVIDENCE"
     },
     {
       "routeId": "route-page-community-collections",
@@ -405,20 +373,16 @@
       "workspaceNavigationVisibility": "HIDDEN",
       "accountControlVisibility": "VISIBLE_WHEN_SAFE",
       "footerVisibility": "VISIBLE_WHERE_APPROPRIATE",
-      "contextualNavigation": [
-        "context-community-parent"
-      ],
+      "contextualNavigation": ["context-community-parent"],
       "exitTarget": "/community",
       "mobileTransformation": "SHARED_FUNCTIONAL_SET_IN_DRAWER",
       "authenticationRule": "ANONYMOUS_ALLOWED",
       "capabilityRule": [],
       "activeStateFamily": "global-community-harbor",
-      "evidence": [
-        "HP-EV-022"
-      ],
+      "evidence": ["HP-EV-022"],
       "owner": "harborlight",
       "canonicalRoute": "/community/collections",
-      "phase2Status": "ARCHITECTURE_AND_SOURCE_IMPLEMENTED_PENDING_BROWSER_EVIDENCE"
+      "phase2Status": "VALIDATED_WITH_GOVERNED_REPRESENTATIVE_BROWSER_EVIDENCE"
     },
     {
       "routeId": "route-page-community-creators-handle",
@@ -430,9 +394,7 @@
       "workspaceNavigationVisibility": "HIDDEN",
       "accountControlVisibility": "VISIBLE_WHEN_SAFE",
       "footerVisibility": "VISIBLE_WHERE_APPROPRIATE",
-      "contextualNavigation": [
-        "context-community-parent"
-      ],
+      "contextualNavigation": ["context-community-parent"],
       "exitTarget": "/community",
       "mobileTransformation": "SHARED_FUNCTIONAL_SET_IN_DRAWER",
       "authenticationRule": "ANONYMOUS_ALLOWED",
@@ -441,7 +403,7 @@
       "evidence": [],
       "owner": "harborlight",
       "canonicalRoute": "/community/creators/:handle",
-      "phase2Status": "ARCHITECTURE_AND_SOURCE_IMPLEMENTED_PENDING_BROWSER_EVIDENCE"
+      "phase2Status": "VALIDATED_WITH_GOVERNED_REPRESENTATIVE_BROWSER_EVIDENCE"
     },
     {
       "routeId": "route-page-community-creators",
@@ -453,20 +415,16 @@
       "workspaceNavigationVisibility": "HIDDEN",
       "accountControlVisibility": "VISIBLE_WHEN_SAFE",
       "footerVisibility": "VISIBLE_WHERE_APPROPRIATE",
-      "contextualNavigation": [
-        "context-community-parent"
-      ],
+      "contextualNavigation": ["context-community-parent"],
       "exitTarget": "/community",
       "mobileTransformation": "SHARED_FUNCTIONAL_SET_IN_DRAWER",
       "authenticationRule": "ANONYMOUS_ALLOWED",
       "capabilityRule": [],
       "activeStateFamily": "global-community-harbor",
-      "evidence": [
-        "HP-EV-023"
-      ],
+      "evidence": ["HP-EV-023"],
       "owner": "harborlight",
       "canonicalRoute": "/community/creators",
-      "phase2Status": "ARCHITECTURE_AND_SOURCE_IMPLEMENTED_PENDING_BROWSER_EVIDENCE"
+      "phase2Status": "VALIDATED_WITH_GOVERNED_REPRESENTATIVE_BROWSER_EVIDENCE"
     },
     {
       "routeId": "route-page-community-featured",
@@ -478,9 +436,7 @@
       "workspaceNavigationVisibility": "HIDDEN",
       "accountControlVisibility": "VISIBLE_WHEN_SAFE",
       "footerVisibility": "VISIBLE_WHERE_APPROPRIATE",
-      "contextualNavigation": [
-        "context-community-parent"
-      ],
+      "contextualNavigation": ["context-community-parent"],
       "exitTarget": "/community",
       "mobileTransformation": "SHARED_FUNCTIONAL_SET_IN_DRAWER",
       "authenticationRule": "ANONYMOUS_ALLOWED",
@@ -489,7 +445,7 @@
       "evidence": [],
       "owner": "harborlight",
       "canonicalRoute": "/community/featured",
-      "phase2Status": "ARCHITECTURE_AND_SOURCE_IMPLEMENTED_PENDING_BROWSER_EVIDENCE"
+      "phase2Status": "VALIDATED_WITH_GOVERNED_REPRESENTATIVE_BROWSER_EVIDENCE"
     },
     {
       "routeId": "route-page-community-guides-slug",
@@ -501,9 +457,7 @@
       "workspaceNavigationVisibility": "HIDDEN",
       "accountControlVisibility": "VISIBLE_WHEN_SAFE",
       "footerVisibility": "VISIBLE_WHERE_APPROPRIATE",
-      "contextualNavigation": [
-        "context-community-parent"
-      ],
+      "contextualNavigation": ["context-community-parent"],
       "exitTarget": "/community",
       "mobileTransformation": "SHARED_FUNCTIONAL_SET_IN_DRAWER",
       "authenticationRule": "ANONYMOUS_ALLOWED",
@@ -512,7 +466,7 @@
       "evidence": [],
       "owner": "harborlight",
       "canonicalRoute": "/community/guides/:slug",
-      "phase2Status": "ARCHITECTURE_AND_SOURCE_IMPLEMENTED_PENDING_BROWSER_EVIDENCE"
+      "phase2Status": "VALIDATED_WITH_GOVERNED_REPRESENTATIVE_BROWSER_EVIDENCE"
     },
     {
       "routeId": "route-page-community-guides",
@@ -524,9 +478,7 @@
       "workspaceNavigationVisibility": "HIDDEN",
       "accountControlVisibility": "VISIBLE_WHEN_SAFE",
       "footerVisibility": "VISIBLE_WHERE_APPROPRIATE",
-      "contextualNavigation": [
-        "context-community-parent"
-      ],
+      "contextualNavigation": ["context-community-parent"],
       "exitTarget": "/community",
       "mobileTransformation": "SHARED_FUNCTIONAL_SET_IN_DRAWER",
       "authenticationRule": "ANONYMOUS_ALLOWED",
@@ -535,7 +487,7 @@
       "evidence": [],
       "owner": "harborlight",
       "canonicalRoute": "/community/guides",
-      "phase2Status": "ARCHITECTURE_AND_SOURCE_IMPLEMENTED_PENDING_BROWSER_EVIDENCE"
+      "phase2Status": "VALIDATED_WITH_GOVERNED_REPRESENTATIVE_BROWSER_EVIDENCE"
     },
     {
       "routeId": "route-page-community-maps",
@@ -547,9 +499,7 @@
       "workspaceNavigationVisibility": "HIDDEN",
       "accountControlVisibility": "VISIBLE_WHEN_SAFE",
       "footerVisibility": "VISIBLE_WHERE_APPROPRIATE",
-      "contextualNavigation": [
-        "context-community-parent"
-      ],
+      "contextualNavigation": ["context-community-parent"],
       "exitTarget": "/community",
       "mobileTransformation": "SHARED_FUNCTIONAL_SET_IN_DRAWER",
       "authenticationRule": "ANONYMOUS_ALLOWED",
@@ -558,7 +508,7 @@
       "evidence": [],
       "owner": "harborlight",
       "canonicalRoute": "/community/maps",
-      "phase2Status": "ARCHITECTURE_AND_SOURCE_IMPLEMENTED_PENDING_BROWSER_EVIDENCE"
+      "phase2Status": "VALIDATED_WITH_GOVERNED_REPRESENTATIVE_BROWSER_EVIDENCE"
     },
     {
       "routeId": "route-page-community-moderation-id",
@@ -570,20 +520,16 @@
       "workspaceNavigationVisibility": "HIDDEN",
       "accountControlVisibility": "VISIBLE_WHEN_SAFE",
       "footerVisibility": "VISIBLE_WHERE_APPROPRIATE",
-      "contextualNavigation": [
-        "context-community-parent"
-      ],
+      "contextualNavigation": ["context-community-parent"],
       "exitTarget": "/community",
       "mobileTransformation": "SHARED_FUNCTIONAL_SET_IN_DRAWER",
       "authenticationRule": "ANONYMOUS_ALLOWED",
-      "capabilityRule": [
-        "MODERATOR_OR_ADMINISTRATOR"
-      ],
+      "capabilityRule": ["MODERATOR_OR_ADMINISTRATOR"],
       "activeStateFamily": "global-community-harbor",
       "evidence": [],
       "owner": "harborlight",
       "canonicalRoute": "/community/moderation/:id",
-      "phase2Status": "ARCHITECTURE_AND_SOURCE_IMPLEMENTED_PENDING_BROWSER_EVIDENCE"
+      "phase2Status": "VALIDATED_WITH_GOVERNED_REPRESENTATIVE_BROWSER_EVIDENCE"
     },
     {
       "routeId": "route-page-community-moderation",
@@ -595,20 +541,16 @@
       "workspaceNavigationVisibility": "HIDDEN",
       "accountControlVisibility": "VISIBLE_WHEN_SAFE",
       "footerVisibility": "VISIBLE_WHERE_APPROPRIATE",
-      "contextualNavigation": [
-        "context-community-parent"
-      ],
+      "contextualNavigation": ["context-community-parent"],
       "exitTarget": "/community",
       "mobileTransformation": "SHARED_FUNCTIONAL_SET_IN_DRAWER",
       "authenticationRule": "ANONYMOUS_ALLOWED",
-      "capabilityRule": [
-        "MODERATOR_OR_ADMINISTRATOR"
-      ],
+      "capabilityRule": ["MODERATOR_OR_ADMINISTRATOR"],
       "activeStateFamily": "global-community-harbor",
-      "evidence": [],
+      "evidence": ["HP-P2-EV-T-permission-return"],
       "owner": "harborlight",
       "canonicalRoute": "/community/moderation",
-      "phase2Status": "ARCHITECTURE_AND_SOURCE_IMPLEMENTED_PENDING_BROWSER_EVIDENCE"
+      "phase2Status": "VALIDATED_WITH_GOVERNED_REPRESENTATIVE_BROWSER_EVIDENCE"
     },
     {
       "routeId": "route-page-community",
@@ -626,15 +568,10 @@
       "authenticationRule": "ANONYMOUS_ALLOWED",
       "capabilityRule": [],
       "activeStateFamily": "global-community-harbor",
-      "evidence": [
-        "HP-EV-018",
-        "HP-EV-019",
-        "HP-EV-020",
-        "HP-EV-024"
-      ],
+      "evidence": ["HP-EV-018", "HP-EV-019", "HP-EV-020", "HP-EV-024", "HP-P2-EV-K-community-shell"],
       "owner": "harborlight",
       "canonicalRoute": "/community",
-      "phase2Status": "ARCHITECTURE_AND_SOURCE_IMPLEMENTED_PENDING_BROWSER_EVIDENCE"
+      "phase2Status": "VALIDATED_WITH_GOVERNED_REPRESENTATIVE_BROWSER_EVIDENCE"
     },
     {
       "routeId": "route-page-community-templates",
@@ -646,9 +583,7 @@
       "workspaceNavigationVisibility": "HIDDEN",
       "accountControlVisibility": "VISIBLE_WHEN_SAFE",
       "footerVisibility": "VISIBLE_WHERE_APPROPRIATE",
-      "contextualNavigation": [
-        "context-community-parent"
-      ],
+      "contextualNavigation": ["context-community-parent"],
       "exitTarget": "/community",
       "mobileTransformation": "SHARED_FUNCTIONAL_SET_IN_DRAWER",
       "authenticationRule": "ANONYMOUS_ALLOWED",
@@ -657,7 +592,7 @@
       "evidence": [],
       "owner": "harborlight",
       "canonicalRoute": "/community/templates",
-      "phase2Status": "ARCHITECTURE_AND_SOURCE_IMPLEMENTED_PENDING_BROWSER_EVIDENCE"
+      "phase2Status": "VALIDATED_WITH_GOVERNED_REPRESENTATIVE_BROWSER_EVIDENCE"
     },
     {
       "routeId": "route-page-community-voyage-logs-slug",
@@ -669,9 +604,7 @@
       "workspaceNavigationVisibility": "HIDDEN",
       "accountControlVisibility": "VISIBLE_WHEN_SAFE",
       "footerVisibility": "VISIBLE_WHERE_APPROPRIATE",
-      "contextualNavigation": [
-        "context-community-parent"
-      ],
+      "contextualNavigation": ["context-community-parent"],
       "exitTarget": "/community",
       "mobileTransformation": "SHARED_FUNCTIONAL_SET_IN_DRAWER",
       "authenticationRule": "ANONYMOUS_ALLOWED",
@@ -680,7 +613,7 @@
       "evidence": [],
       "owner": "harborlight",
       "canonicalRoute": "/community/voyage-logs/:slug",
-      "phase2Status": "ARCHITECTURE_AND_SOURCE_IMPLEMENTED_PENDING_BROWSER_EVIDENCE"
+      "phase2Status": "VALIDATED_WITH_GOVERNED_REPRESENTATIVE_BROWSER_EVIDENCE"
     },
     {
       "routeId": "route-page-community-voyage-logs-consent",
@@ -692,9 +625,7 @@
       "workspaceNavigationVisibility": "HIDDEN",
       "accountControlVisibility": "VISIBLE_WHEN_SAFE",
       "footerVisibility": "VISIBLE_WHERE_APPROPRIATE",
-      "contextualNavigation": [
-        "context-community-parent"
-      ],
+      "contextualNavigation": ["context-community-parent"],
       "exitTarget": "/community",
       "mobileTransformation": "SHARED_FUNCTIONAL_SET_IN_DRAWER",
       "authenticationRule": "ANONYMOUS_ALLOWED",
@@ -703,7 +634,7 @@
       "evidence": [],
       "owner": "harborlight",
       "canonicalRoute": "/community/voyage-logs/consent",
-      "phase2Status": "ARCHITECTURE_AND_SOURCE_IMPLEMENTED_PENDING_BROWSER_EVIDENCE"
+      "phase2Status": "VALIDATED_WITH_GOVERNED_REPRESENTATIVE_BROWSER_EVIDENCE"
     },
     {
       "routeId": "route-page-community-voyage-logs-media",
@@ -715,9 +646,7 @@
       "workspaceNavigationVisibility": "HIDDEN",
       "accountControlVisibility": "VISIBLE_WHEN_SAFE",
       "footerVisibility": "VISIBLE_WHERE_APPROPRIATE",
-      "contextualNavigation": [
-        "context-community-parent"
-      ],
+      "contextualNavigation": ["context-community-parent"],
       "exitTarget": "/community",
       "mobileTransformation": "SHARED_FUNCTIONAL_SET_IN_DRAWER",
       "authenticationRule": "ANONYMOUS_ALLOWED",
@@ -726,7 +655,7 @@
       "evidence": [],
       "owner": "harborlight",
       "canonicalRoute": "/community/voyage-logs/media",
-      "phase2Status": "ARCHITECTURE_AND_SOURCE_IMPLEMENTED_PENDING_BROWSER_EVIDENCE"
+      "phase2Status": "VALIDATED_WITH_GOVERNED_REPRESENTATIVE_BROWSER_EVIDENCE"
     },
     {
       "routeId": "route-page-community-voyage-logs-owner-id",
@@ -738,9 +667,7 @@
       "workspaceNavigationVisibility": "HIDDEN",
       "accountControlVisibility": "VISIBLE_WHEN_SAFE",
       "footerVisibility": "VISIBLE_WHERE_APPROPRIATE",
-      "contextualNavigation": [
-        "context-community-parent"
-      ],
+      "contextualNavigation": ["context-community-parent"],
       "exitTarget": "/community",
       "mobileTransformation": "SHARED_FUNCTIONAL_SET_IN_DRAWER",
       "authenticationRule": "ANONYMOUS_ALLOWED",
@@ -749,7 +676,7 @@
       "evidence": [],
       "owner": "harborlight",
       "canonicalRoute": "/community/voyage-logs/owner/:id",
-      "phase2Status": "ARCHITECTURE_AND_SOURCE_IMPLEMENTED_PENDING_BROWSER_EVIDENCE"
+      "phase2Status": "VALIDATED_WITH_GOVERNED_REPRESENTATIVE_BROWSER_EVIDENCE"
     },
     {
       "routeId": "route-page-community-voyage-logs-owner",
@@ -761,9 +688,7 @@
       "workspaceNavigationVisibility": "HIDDEN",
       "accountControlVisibility": "VISIBLE_WHEN_SAFE",
       "footerVisibility": "VISIBLE_WHERE_APPROPRIATE",
-      "contextualNavigation": [
-        "context-community-parent"
-      ],
+      "contextualNavigation": ["context-community-parent"],
       "exitTarget": "/community",
       "mobileTransformation": "SHARED_FUNCTIONAL_SET_IN_DRAWER",
       "authenticationRule": "ANONYMOUS_ALLOWED",
@@ -772,7 +697,7 @@
       "evidence": [],
       "owner": "harborlight",
       "canonicalRoute": "/community/voyage-logs/owner",
-      "phase2Status": "ARCHITECTURE_AND_SOURCE_IMPLEMENTED_PENDING_BROWSER_EVIDENCE"
+      "phase2Status": "VALIDATED_WITH_GOVERNED_REPRESENTATIVE_BROWSER_EVIDENCE"
     },
     {
       "routeId": "route-page-community-voyage-logs",
@@ -784,9 +709,7 @@
       "workspaceNavigationVisibility": "HIDDEN",
       "accountControlVisibility": "VISIBLE_WHEN_SAFE",
       "footerVisibility": "VISIBLE_WHERE_APPROPRIATE",
-      "contextualNavigation": [
-        "context-community-parent"
-      ],
+      "contextualNavigation": ["context-community-parent"],
       "exitTarget": "/community",
       "mobileTransformation": "SHARED_FUNCTIONAL_SET_IN_DRAWER",
       "authenticationRule": "ANONYMOUS_ALLOWED",
@@ -795,7 +718,7 @@
       "evidence": [],
       "owner": "harborlight",
       "canonicalRoute": "/community/voyage-logs",
-      "phase2Status": "ARCHITECTURE_AND_SOURCE_IMPLEMENTED_PENDING_BROWSER_EVIDENCE"
+      "phase2Status": "VALIDATED_WITH_GOVERNED_REPRESENTATIVE_BROWSER_EVIDENCE"
     },
     {
       "routeId": "route-page-dev-animations",
@@ -807,9 +730,7 @@
       "workspaceNavigationVisibility": "HIDDEN",
       "accountControlVisibility": "HIDDEN",
       "footerVisibility": "HIDDEN",
-      "contextualNavigation": [
-        "context-development-exit"
-      ],
+      "contextualNavigation": ["context-development-exit"],
       "exitTarget": "/",
       "mobileTransformation": "DEVELOPMENT_EXIT",
       "authenticationRule": "ANONYMOUS_OR_PAGE_LEVEL_GUARD",
@@ -818,7 +739,7 @@
       "evidence": [],
       "owner": "project-homeport",
       "canonicalRoute": "/dev/animations",
-      "phase2Status": "ARCHITECTURE_AND_SOURCE_IMPLEMENTED_PENDING_BROWSER_EVIDENCE"
+      "phase2Status": "VALIDATED_WITH_GOVERNED_REPRESENTATIVE_BROWSER_EVIDENCE"
     },
     {
       "routeId": "route-page-forgot-password",
@@ -839,7 +760,7 @@
       "evidence": [],
       "owner": "wayfarer",
       "canonicalRoute": "/forgot-password",
-      "phase2Status": "ARCHITECTURE_AND_SOURCE_IMPLEMENTED_PENDING_BROWSER_EVIDENCE"
+      "phase2Status": "VALIDATED_WITH_GOVERNED_REPRESENTATIVE_BROWSER_EVIDENCE"
     },
     {
       "routeId": "route-page-root",
@@ -860,11 +781,22 @@
       "evidence": [
         "HP-EV-001",
         "HP-EV-002",
-        "HP-EV-003"
+        "HP-EV-003",
+        "HP-P2-EV-A-gateway-anonymous-desktop",
+        "HP-P2-EV-B-gateway-authenticated-desktop",
+        "HP-P2-EV-C-gateway-anonymous-mobile",
+        "HP-P2-EV-D-gateway-authenticated-mobile",
+        "HP-P2-EV-E-account-menu-anonymous",
+        "HP-P2-EV-F-account-menu-authenticated",
+        "HP-P2-EV-L-mobile-drawer",
+        "HP-P2-EV-P-context-unavailable",
+        "HP-P2-EV-Q-zoom-gateway",
+        "HP-P2-EV-R-zoom-account-menu",
+        "HP-P2-EV-S-reduced-motion"
       ],
       "owner": "true-north",
       "canonicalRoute": "/",
-      "phase2Status": "ARCHITECTURE_AND_SOURCE_IMPLEMENTED_PENDING_BROWSER_EVIDENCE"
+      "phase2Status": "VALIDATED_WITH_GOVERNED_REPRESENTATIVE_BROWSER_EVIDENCE"
     },
     {
       "routeId": "route-page-passport",
@@ -882,14 +814,10 @@
       "authenticationRule": "ANONYMOUS_OR_PAGE_LEVEL_GUARD",
       "capabilityRule": [],
       "activeStateFamily": "account-passport",
-      "evidence": [
-        "HP-EV-013",
-        "HP-EV-014",
-        "HP-EV-015"
-      ],
+      "evidence": ["HP-EV-013", "HP-EV-014", "HP-EV-015"],
       "owner": "wayfarer",
       "canonicalRoute": "/passport",
-      "phase2Status": "ARCHITECTURE_AND_SOURCE_IMPLEMENTED_PENDING_BROWSER_EVIDENCE"
+      "phase2Status": "VALIDATED_WITH_GOVERNED_REPRESENTATIVE_BROWSER_EVIDENCE"
     },
     {
       "routeId": "route-page-play-taleslug-history",
@@ -901,9 +829,7 @@
       "workspaceNavigationVisibility": "HIDDEN",
       "accountControlVisibility": "VISIBLE_WHEN_SAFE",
       "footerVisibility": "VISIBLE_WHERE_APPROPRIATE",
-      "contextualNavigation": [
-        "context-chronicles-parent"
-      ],
+      "contextualNavigation": ["context-chronicles-parent"],
       "exitTarget": "/tales",
       "mobileTransformation": "SHARED_FUNCTIONAL_SET_IN_DRAWER",
       "authenticationRule": "ANONYMOUS_OR_PAGE_LEVEL_GUARD",
@@ -912,7 +838,7 @@
       "evidence": [],
       "owner": "one-voyage",
       "canonicalRoute": "/play/:taleSlug/history",
-      "phase2Status": "ARCHITECTURE_AND_SOURCE_IMPLEMENTED_PENDING_BROWSER_EVIDENCE"
+      "phase2Status": "VALIDATED_WITH_GOVERNED_REPRESENTATIVE_BROWSER_EVIDENCE"
     },
     {
       "routeId": "route-page-play-taleslug",
@@ -924,9 +850,7 @@
       "workspaceNavigationVisibility": "HIDDEN",
       "accountControlVisibility": "VISIBLE_WHEN_SAFE",
       "footerVisibility": "VISIBLE_WHERE_APPROPRIATE",
-      "contextualNavigation": [
-        "context-chronicles-parent"
-      ],
+      "contextualNavigation": ["context-chronicles-parent"],
       "exitTarget": "/tales",
       "mobileTransformation": "SHARED_FUNCTIONAL_SET_IN_DRAWER",
       "authenticationRule": "ANONYMOUS_OR_PAGE_LEVEL_GUARD",
@@ -935,7 +859,7 @@
       "evidence": [],
       "owner": "one-voyage",
       "canonicalRoute": "/play/:taleSlug",
-      "phase2Status": "ARCHITECTURE_AND_SOURCE_IMPLEMENTED_PENDING_BROWSER_EVIDENCE"
+      "phase2Status": "VALIDATED_WITH_GOVERNED_REPRESENTATIVE_BROWSER_EVIDENCE"
     },
     {
       "routeId": "route-page-play-taleslug-session-sessionid",
@@ -947,9 +871,7 @@
       "workspaceNavigationVisibility": "HIDDEN",
       "accountControlVisibility": "VISIBLE_WHEN_SAFE",
       "footerVisibility": "HIDDEN",
-      "contextualNavigation": [
-        "context-player-exit"
-      ],
+      "contextualNavigation": ["context-player-exit"],
       "exitTarget": "/player/library",
       "mobileTransformation": "COMPACT_CONTEXT_AND_EXIT",
       "authenticationRule": "ANONYMOUS_OR_PAGE_LEVEL_GUARD",
@@ -958,7 +880,7 @@
       "evidence": [],
       "owner": "one-voyage",
       "canonicalRoute": "/play/:taleSlug/session/:sessionId",
-      "phase2Status": "ARCHITECTURE_AND_SOURCE_IMPLEMENTED_PENDING_BROWSER_EVIDENCE"
+      "phase2Status": "VALIDATED_WITH_GOVERNED_REPRESENTATIVE_BROWSER_EVIDENCE"
     },
     {
       "routeId": "route-page-player-invitation",
@@ -974,14 +896,12 @@
       "exitTarget": "/sign-in",
       "mobileTransformation": "BRAND_AND_SAFE_RETURN",
       "authenticationRule": "ANONYMOUS_OR_PAGE_LEVEL_GUARD",
-      "capabilityRule": [
-        "PLAYER"
-      ],
+      "capabilityRule": ["PLAYER"],
       "activeStateFamily": "NEVER_ACTIVE",
       "evidence": [],
       "owner": "wayfarer",
       "canonicalRoute": "/player/invitation",
-      "phase2Status": "ARCHITECTURE_AND_SOURCE_IMPLEMENTED_PENDING_BROWSER_EVIDENCE"
+      "phase2Status": "VALIDATED_WITH_GOVERNED_REPRESENTATIVE_BROWSER_EVIDENCE"
     },
     {
       "routeId": "route-page-player-library",
@@ -997,20 +917,20 @@
       "exitTarget": null,
       "mobileTransformation": "SHARED_FUNCTIONAL_SET_IN_DRAWER",
       "authenticationRule": "PLAYER_IDENTITY",
-      "capabilityRule": [
-        "PLAYER"
-      ],
+      "capabilityRule": ["PLAYER"],
       "activeStateFamily": "workspace-player-home",
       "evidence": [
         "HP-EV-005",
         "HP-EV-006",
         "HP-EV-009",
         "HP-EV-010",
-        "HP-EV-029"
+        "HP-EV-029",
+        "HP-P2-EV-H-player-navigation",
+        "HP-P2-EV-M-workspace-switcher"
       ],
       "owner": "one-voyage",
       "canonicalRoute": "/player/library",
-      "phase2Status": "ARCHITECTURE_AND_SOURCE_IMPLEMENTED_PENDING_BROWSER_EVIDENCE"
+      "phase2Status": "VALIDATED_WITH_GOVERNED_REPRESENTATIVE_BROWSER_EVIDENCE"
     },
     {
       "routeId": "route-page-player",
@@ -1026,14 +946,12 @@
       "exitTarget": null,
       "mobileTransformation": "SHARED_FUNCTIONAL_SET_IN_DRAWER",
       "authenticationRule": "PLAYER_IDENTITY",
-      "capabilityRule": [
-        "PLAYER"
-      ],
+      "capabilityRule": ["PLAYER"],
       "activeStateFamily": "workspace-player-home",
       "evidence": [],
       "owner": "one-voyage",
       "canonicalRoute": "/player/library",
-      "phase2Status": "ARCHITECTURE_AND_SOURCE_IMPLEMENTED_PENDING_BROWSER_EVIDENCE"
+      "phase2Status": "VALIDATED_WITH_GOVERNED_REPRESENTATIVE_BROWSER_EVIDENCE"
     },
     {
       "routeId": "route-page-player-playthroughs-playthroughid-archive",
@@ -1049,14 +967,12 @@
       "exitTarget": "/player/library",
       "mobileTransformation": "COMPACT_CONTEXT_AND_EXIT",
       "authenticationRule": "PLAYER_IDENTITY",
-      "capabilityRule": [
-        "PLAYER"
-      ],
+      "capabilityRule": ["PLAYER"],
       "activeStateFamily": "workspace-player-home",
       "evidence": [],
       "owner": "one-voyage",
       "canonicalRoute": "/player/playthroughs/:playthroughId/archive",
-      "phase2Status": "ARCHITECTURE_AND_SOURCE_IMPLEMENTED_PENDING_BROWSER_EVIDENCE"
+      "phase2Status": "VALIDATED_WITH_GOVERNED_REPRESENTATIVE_BROWSER_EVIDENCE"
     },
     {
       "routeId": "route-page-player-playthroughs-playthroughid-journal",
@@ -1068,20 +984,16 @@
       "workspaceNavigationVisibility": "HIDDEN",
       "accountControlVisibility": "VISIBLE_WHEN_SAFE",
       "footerVisibility": "HIDDEN",
-      "contextualNavigation": [
-        "context-player-exit"
-      ],
+      "contextualNavigation": ["context-player-exit"],
       "exitTarget": "/player/library",
       "mobileTransformation": "COMPACT_CONTEXT_AND_EXIT",
       "authenticationRule": "PLAYER_IDENTITY",
-      "capabilityRule": [
-        "PLAYER"
-      ],
+      "capabilityRule": ["PLAYER"],
       "activeStateFamily": "workspace-player-home",
-      "evidence": [],
+      "evidence": ["HP-P2-EV-O-immersive-exit"],
       "owner": "one-voyage",
       "canonicalRoute": "/player/playthroughs/:playthroughId/journal",
-      "phase2Status": "ARCHITECTURE_AND_SOURCE_IMPLEMENTED_PENDING_BROWSER_EVIDENCE"
+      "phase2Status": "VALIDATED_WITH_GOVERNED_REPRESENTATIVE_BROWSER_EVIDENCE"
     },
     {
       "routeId": "route-page-player-playthroughs-playthroughid",
@@ -1093,20 +1005,16 @@
       "workspaceNavigationVisibility": "HIDDEN",
       "accountControlVisibility": "VISIBLE_WHEN_SAFE",
       "footerVisibility": "HIDDEN",
-      "contextualNavigation": [
-        "context-player-exit"
-      ],
+      "contextualNavigation": ["context-player-exit"],
       "exitTarget": "/player/library",
       "mobileTransformation": "COMPACT_CONTEXT_AND_EXIT",
       "authenticationRule": "PLAYER_IDENTITY",
-      "capabilityRule": [
-        "PLAYER"
-      ],
+      "capabilityRule": ["PLAYER"],
       "activeStateFamily": "workspace-player-home",
       "evidence": [],
       "owner": "one-voyage",
       "canonicalRoute": "/player/playthroughs/:playthroughId",
-      "phase2Status": "ARCHITECTURE_AND_SOURCE_IMPLEMENTED_PENDING_BROWSER_EVIDENCE"
+      "phase2Status": "VALIDATED_WITH_GOVERNED_REPRESENTATIVE_BROWSER_EVIDENCE"
     },
     {
       "routeId": "route-page-player-sign-in",
@@ -1122,20 +1030,12 @@
       "exitTarget": "/",
       "mobileTransformation": "BRAND_AND_SAFE_RETURN",
       "authenticationRule": "ANONYMOUS_ALLOWED",
-      "capabilityRule": [
-        "PLAYER"
-      ],
+      "capabilityRule": ["PLAYER"],
       "activeStateFamily": "NEVER_ACTIVE",
-      "evidence": [
-        "HP-EV-007",
-        "HP-EV-008",
-        "HP-EV-026",
-        "HP-EV-030",
-        "HP-EV-031"
-      ],
+      "evidence": ["HP-EV-007", "HP-EV-008", "HP-EV-026", "HP-EV-030", "HP-EV-031"],
       "owner": "wayfarer",
       "canonicalRoute": "/player/sign-in",
-      "phase2Status": "ARCHITECTURE_AND_SOURCE_IMPLEMENTED_PENDING_BROWSER_EVIDENCE"
+      "phase2Status": "VALIDATED_WITH_GOVERNED_REPRESENTATIVE_BROWSER_EVIDENCE"
     },
     {
       "routeId": "route-page-profile-handle",
@@ -1147,9 +1047,7 @@
       "workspaceNavigationVisibility": "HIDDEN",
       "accountControlVisibility": "VISIBLE_WHEN_SAFE",
       "footerVisibility": "VISIBLE_WHERE_APPROPRIATE",
-      "contextualNavigation": [
-        "context-personal-parent"
-      ],
+      "contextualNavigation": ["context-personal-parent"],
       "exitTarget": "/passport",
       "mobileTransformation": "SHARED_FUNCTIONAL_SET_IN_DRAWER",
       "authenticationRule": "ANONYMOUS_ALLOWED",
@@ -1158,7 +1056,7 @@
       "evidence": [],
       "owner": "wayfarer",
       "canonicalRoute": "/profile/:handle",
-      "phase2Status": "ARCHITECTURE_AND_SOURCE_IMPLEMENTED_PENDING_BROWSER_EVIDENCE"
+      "phase2Status": "VALIDATED_WITH_GOVERNED_REPRESENTATIVE_BROWSER_EVIDENCE"
     },
     {
       "routeId": "route-page-quartermaster-workspace",
@@ -1170,20 +1068,16 @@
       "workspaceNavigationVisibility": "HIDDEN",
       "accountControlVisibility": "VISIBLE_WHEN_SAFE",
       "footerVisibility": "HIDDEN",
-      "contextualNavigation": [
-        "context-captain-exit"
-      ],
+      "contextualNavigation": ["context-captain-exit"],
       "exitTarget": "/captain/library",
       "mobileTransformation": "COMPACT_CONTEXT_AND_EXIT",
       "authenticationRule": "CAPTAIN_OR_CREATOR_CAPABILITY",
-      "capabilityRule": [
-        "CAPTAIN"
-      ],
+      "capabilityRule": ["CAPTAIN"],
       "activeStateFamily": "workspace-captain-voyages",
       "evidence": [],
       "owner": "one-voyage",
       "canonicalRoute": "/captain/library",
-      "phase2Status": "ARCHITECTURE_AND_SOURCE_IMPLEMENTED_PENDING_BROWSER_EVIDENCE"
+      "phase2Status": "VALIDATED_WITH_GOVERNED_REPRESENTATIVE_BROWSER_EVIDENCE"
     },
     {
       "routeId": "route-page-quartermaster",
@@ -1195,9 +1089,7 @@
       "workspaceNavigationVisibility": "HIDDEN",
       "accountControlVisibility": "VISIBLE_WHEN_SAFE",
       "footerVisibility": "HIDDEN",
-      "contextualNavigation": [
-        "context-captain-exit"
-      ],
+      "contextualNavigation": ["context-captain-exit"],
       "exitTarget": "/captain/library",
       "mobileTransformation": "COMPACT_CONTEXT_AND_EXIT",
       "authenticationRule": "ANONYMOUS_OR_PAGE_LEVEL_GUARD",
@@ -1206,7 +1098,7 @@
       "evidence": [],
       "owner": "one-voyage",
       "canonicalRoute": "/captain/library",
-      "phase2Status": "ARCHITECTURE_AND_SOURCE_IMPLEMENTED_PENDING_BROWSER_EVIDENCE"
+      "phase2Status": "VALIDATED_WITH_GOVERNED_REPRESENTATIVE_BROWSER_EVIDENCE"
     },
     {
       "routeId": "route-page-register",
@@ -1224,12 +1116,10 @@
       "authenticationRule": "ANONYMOUS_ALLOWED",
       "capabilityRule": [],
       "activeStateFamily": "NEVER_ACTIVE",
-      "evidence": [
-        "HP-EV-028"
-      ],
+      "evidence": ["HP-EV-028"],
       "owner": "wayfarer",
       "canonicalRoute": "/register",
-      "phase2Status": "ARCHITECTURE_AND_SOURCE_IMPLEMENTED_PENDING_BROWSER_EVIDENCE"
+      "phase2Status": "VALIDATED_WITH_GOVERNED_REPRESENTATIVE_BROWSER_EVIDENCE"
     },
     {
       "routeId": "route-page-reset-password",
@@ -1250,7 +1140,7 @@
       "evidence": [],
       "owner": "wayfarer",
       "canonicalRoute": "/reset-password",
-      "phase2Status": "ARCHITECTURE_AND_SOURCE_IMPLEMENTED_PENDING_BROWSER_EVIDENCE"
+      "phase2Status": "VALIDATED_WITH_GOVERNED_REPRESENTATIVE_BROWSER_EVIDENCE"
     },
     {
       "routeId": "route-page-sign-in",
@@ -1268,12 +1158,10 @@
       "authenticationRule": "ANONYMOUS_ALLOWED",
       "capabilityRule": [],
       "activeStateFamily": "NEVER_ACTIVE",
-      "evidence": [
-        "HP-EV-027"
-      ],
+      "evidence": ["HP-EV-027"],
       "owner": "wayfarer",
       "canonicalRoute": "/sign-in",
-      "phase2Status": "ARCHITECTURE_AND_SOURCE_IMPLEMENTED_PENDING_BROWSER_EVIDENCE"
+      "phase2Status": "VALIDATED_WITH_GOVERNED_REPRESENTATIVE_BROWSER_EVIDENCE"
     },
     {
       "routeId": "route-page-studio-exchange",
@@ -1289,14 +1177,12 @@
       "exitTarget": null,
       "mobileTransformation": "SHARED_FUNCTIONAL_SET_IN_DRAWER",
       "authenticationRule": "CAPTAIN_OR_CREATOR_CAPABILITY",
-      "capabilityRule": [
-        "CREATE_TALES"
-      ],
+      "capabilityRule": ["CREATE_TALES"],
       "activeStateFamily": "workspace-creator-library",
       "evidence": [],
       "owner": "one-voyage",
       "canonicalRoute": "/studio/exchange",
-      "phase2Status": "ARCHITECTURE_AND_SOURCE_IMPLEMENTED_PENDING_BROWSER_EVIDENCE"
+      "phase2Status": "VALIDATED_WITH_GOVERNED_REPRESENTATIVE_BROWSER_EVIDENCE"
     },
     {
       "routeId": "route-page-studio-library",
@@ -1312,16 +1198,12 @@
       "exitTarget": null,
       "mobileTransformation": "SHARED_FUNCTIONAL_SET_IN_DRAWER",
       "authenticationRule": "CAPTAIN_OR_CREATOR_CAPABILITY",
-      "capabilityRule": [
-        "CREATE_TALES"
-      ],
+      "capabilityRule": ["CREATE_TALES"],
       "activeStateFamily": "workspace-creator-library",
-      "evidence": [
-        "HP-EV-012"
-      ],
+      "evidence": ["HP-EV-012", "HP-P2-EV-J-creator-navigation"],
       "owner": "one-voyage",
       "canonicalRoute": "/studio/library",
-      "phase2Status": "ARCHITECTURE_AND_SOURCE_IMPLEMENTED_PENDING_BROWSER_EVIDENCE"
+      "phase2Status": "VALIDATED_WITH_GOVERNED_REPRESENTATIVE_BROWSER_EVIDENCE"
     },
     {
       "routeId": "route-page-studio",
@@ -1337,14 +1219,12 @@
       "exitTarget": null,
       "mobileTransformation": "SHARED_FUNCTIONAL_SET_IN_DRAWER",
       "authenticationRule": "CAPTAIN_OR_CREATOR_CAPABILITY",
-      "capabilityRule": [
-        "CREATE_TALES"
-      ],
+      "capabilityRule": ["CREATE_TALES"],
       "activeStateFamily": "workspace-creator-library",
       "evidence": [],
       "owner": "one-voyage",
       "canonicalRoute": "/studio/library",
-      "phase2Status": "ARCHITECTURE_AND_SOURCE_IMPLEMENTED_PENDING_BROWSER_EVIDENCE"
+      "phase2Status": "VALIDATED_WITH_GOVERNED_REPRESENTATIVE_BROWSER_EVIDENCE"
     },
     {
       "routeId": "route-page-studio-private-content-operations",
@@ -1360,14 +1240,12 @@
       "exitTarget": null,
       "mobileTransformation": "SHARED_FUNCTIONAL_SET_IN_DRAWER",
       "authenticationRule": "CAPTAIN_OR_CREATOR_CAPABILITY",
-      "capabilityRule": [
-        "ADMIN"
-      ],
+      "capabilityRule": ["ADMIN"],
       "activeStateFamily": "workspace-creator-library",
       "evidence": [],
       "owner": "one-voyage",
       "canonicalRoute": "/studio/private-content/operations",
-      "phase2Status": "ARCHITECTURE_AND_SOURCE_IMPLEMENTED_PENDING_BROWSER_EVIDENCE"
+      "phase2Status": "VALIDATED_WITH_GOVERNED_REPRESENTATIVE_BROWSER_EVIDENCE"
     },
     {
       "routeId": "route-page-studio-private-content",
@@ -1383,14 +1261,12 @@
       "exitTarget": null,
       "mobileTransformation": "SHARED_FUNCTIONAL_SET_IN_DRAWER",
       "authenticationRule": "CAPTAIN_OR_CREATOR_CAPABILITY",
-      "capabilityRule": [
-        "CREATE_TALES"
-      ],
+      "capabilityRule": ["CREATE_TALES"],
       "activeStateFamily": "workspace-creator-library",
       "evidence": [],
       "owner": "one-voyage",
       "canonicalRoute": "/studio/private-content",
-      "phase2Status": "ARCHITECTURE_AND_SOURCE_IMPLEMENTED_PENDING_BROWSER_EVIDENCE"
+      "phase2Status": "VALIDATED_WITH_GOVERNED_REPRESENTATIVE_BROWSER_EVIDENCE"
     },
     {
       "routeId": "route-page-studio-sign-in",
@@ -1406,14 +1282,12 @@
       "exitTarget": "/",
       "mobileTransformation": "BRAND_AND_SAFE_RETURN",
       "authenticationRule": "ANONYMOUS_ALLOWED",
-      "capabilityRule": [
-        "CREATE_TALES"
-      ],
+      "capabilityRule": ["CREATE_TALES"],
       "activeStateFamily": "NEVER_ACTIVE",
       "evidence": [],
       "owner": "wayfarer",
       "canonicalRoute": "/studio/sign-in",
-      "phase2Status": "ARCHITECTURE_AND_SOURCE_IMPLEMENTED_PENDING_BROWSER_EVIDENCE"
+      "phase2Status": "VALIDATED_WITH_GOVERNED_REPRESENTATIVE_BROWSER_EVIDENCE"
     },
     {
       "routeId": "route-page-studio-tales-taleid-artifacts",
@@ -1434,7 +1308,7 @@
       "evidence": [],
       "owner": "one-voyage",
       "canonicalRoute": "/studio/tales/:taleId/artifacts",
-      "phase2Status": "ARCHITECTURE_AND_SOURCE_IMPLEMENTED_PENDING_BROWSER_EVIDENCE"
+      "phase2Status": "VALIDATED_WITH_GOVERNED_REPRESENTATIVE_BROWSER_EVIDENCE"
     },
     {
       "routeId": "route-page-studio-tales-taleid-assets",
@@ -1455,7 +1329,7 @@
       "evidence": [],
       "owner": "one-voyage",
       "canonicalRoute": "/studio/tales/:taleId/assets",
-      "phase2Status": "ARCHITECTURE_AND_SOURCE_IMPLEMENTED_PENDING_BROWSER_EVIDENCE"
+      "phase2Status": "VALIDATED_WITH_GOVERNED_REPRESENTATIVE_BROWSER_EVIDENCE"
     },
     {
       "routeId": "route-page-studio-tales-taleid-locations",
@@ -1476,7 +1350,7 @@
       "evidence": [],
       "owner": "one-voyage",
       "canonicalRoute": "/studio/tales/:taleId/locations",
-      "phase2Status": "ARCHITECTURE_AND_SOURCE_IMPLEMENTED_PENDING_BROWSER_EVIDENCE"
+      "phase2Status": "VALIDATED_WITH_GOVERNED_REPRESENTATIVE_BROWSER_EVIDENCE"
     },
     {
       "routeId": "route-page-studio-tales-taleid",
@@ -1492,14 +1366,12 @@
       "exitTarget": null,
       "mobileTransformation": "SHARED_FUNCTIONAL_SET_IN_DRAWER",
       "authenticationRule": "CAPTAIN_OR_CREATOR_CAPABILITY",
-      "capabilityRule": [
-        "CREATE_TALES"
-      ],
+      "capabilityRule": ["CREATE_TALES"],
       "activeStateFamily": "workspace-creator-library",
       "evidence": [],
       "owner": "one-voyage",
       "canonicalRoute": "/studio/tales/:taleId",
-      "phase2Status": "ARCHITECTURE_AND_SOURCE_IMPLEMENTED_PENDING_BROWSER_EVIDENCE"
+      "phase2Status": "VALIDATED_WITH_GOVERNED_REPRESENTATIVE_BROWSER_EVIDENCE"
     },
     {
       "routeId": "route-page-studio-tales-taleid-settings",
@@ -1520,7 +1392,7 @@
       "evidence": [],
       "owner": "one-voyage",
       "canonicalRoute": "/studio/tales/:taleId/settings",
-      "phase2Status": "ARCHITECTURE_AND_SOURCE_IMPLEMENTED_PENDING_BROWSER_EVIDENCE"
+      "phase2Status": "VALIDATED_WITH_GOVERNED_REPRESENTATIVE_BROWSER_EVIDENCE"
     },
     {
       "routeId": "route-page-studio-tales-taleid-versions",
@@ -1541,7 +1413,7 @@
       "evidence": [],
       "owner": "one-voyage",
       "canonicalRoute": "/studio/tales/:taleId/versions",
-      "phase2Status": "ARCHITECTURE_AND_SOURCE_IMPLEMENTED_PENDING_BROWSER_EVIDENCE"
+      "phase2Status": "VALIDATED_WITH_GOVERNED_REPRESENTATIVE_BROWSER_EVIDENCE"
     },
     {
       "routeId": "route-page-studio-tales-new",
@@ -1557,14 +1429,12 @@
       "exitTarget": null,
       "mobileTransformation": "SHARED_FUNCTIONAL_SET_IN_DRAWER",
       "authenticationRule": "CAPTAIN_OR_CREATOR_CAPABILITY",
-      "capabilityRule": [
-        "CREATE_TALES"
-      ],
+      "capabilityRule": ["CREATE_TALES"],
       "activeStateFamily": "workspace-creator-library",
       "evidence": [],
       "owner": "one-voyage",
       "canonicalRoute": "/studio/tales/new",
-      "phase2Status": "ARCHITECTURE_AND_SOURCE_IMPLEMENTED_PENDING_BROWSER_EVIDENCE"
+      "phase2Status": "VALIDATED_WITH_GOVERNED_REPRESENTATIVE_BROWSER_EVIDENCE"
     },
     {
       "routeId": "route-page-tale-campaignslug",
@@ -1576,9 +1446,7 @@
       "workspaceNavigationVisibility": "HIDDEN",
       "accountControlVisibility": "VISIBLE_WHEN_SAFE",
       "footerVisibility": "VISIBLE_WHERE_APPROPRIATE",
-      "contextualNavigation": [
-        "context-chronicles-parent"
-      ],
+      "contextualNavigation": ["context-chronicles-parent"],
       "exitTarget": "/tales",
       "mobileTransformation": "SHARED_FUNCTIONAL_SET_IN_DRAWER",
       "authenticationRule": "ANONYMOUS_OR_PAGE_LEVEL_GUARD",
@@ -1587,7 +1455,7 @@
       "evidence": [],
       "owner": "one-voyage",
       "canonicalRoute": "/tale/:campaignSlug",
-      "phase2Status": "ARCHITECTURE_AND_SOURCE_IMPLEMENTED_PENDING_BROWSER_EVIDENCE"
+      "phase2Status": "VALIDATED_WITH_GOVERNED_REPRESENTATIVE_BROWSER_EVIDENCE"
     },
     {
       "routeId": "route-page-tales",
@@ -1605,13 +1473,10 @@
       "authenticationRule": "ANONYMOUS_ALLOWED",
       "capabilityRule": [],
       "activeStateFamily": "global-explore-chronicles",
-      "evidence": [
-        "HP-EV-004",
-        "HP-EV-032"
-      ],
+      "evidence": ["HP-EV-004", "HP-EV-032", "HP-P2-EV-G-global-nav-public"],
       "owner": "one-voyage",
       "canonicalRoute": "/tales",
-      "phase2Status": "ARCHITECTURE_AND_SOURCE_IMPLEMENTED_PENDING_BROWSER_EVIDENCE"
+      "phase2Status": "VALIDATED_WITH_GOVERNED_REPRESENTATIVE_BROWSER_EVIDENCE"
     },
     {
       "routeId": "route-page-verify-email",
@@ -1632,7 +1497,7 @@
       "evidence": [],
       "owner": "wayfarer",
       "canonicalRoute": "/verify-email",
-      "phase2Status": "ARCHITECTURE_AND_SOURCE_IMPLEMENTED_PENDING_BROWSER_EVIDENCE"
+      "phase2Status": "VALIDATED_WITH_GOVERNED_REPRESENTATIVE_BROWSER_EVIDENCE"
     }
   ]
 }

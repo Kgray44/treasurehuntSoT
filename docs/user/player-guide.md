@@ -19,3 +19,10 @@ account sign-in as every other workspace. The stable Player sign-in address
 still accepts invitation codes, then hands the signed-in account to the Player
 Library or an explicit access state; it does not operate a second password
 system. This branch behavior is not yet available on main.
+
+On the Phase 2 branch, global Community Harbor remains available from the
+Player shell, while My Voyages remains the Player-owned destination. Account
+provides Profile, Chronicle Passport, Security & Sessions, and any other
+granted workspace without a second sign-in. Immersive Journal routes provide
+an explicit Exit to My Voyages control; using it navigates without issuing a
+progression command. This behavior is local branch evidence, not deployment.

@@ -135,7 +135,7 @@
       "routeIds": ["route-page-account-security"],
       "productArea": "Personal Harbor",
       "owner": "wayfarer",
-      "shellMode": "standard",
+      "shellMode": "WORKSPACE_STANDARD",
       "primaryUserGoal": "Use current Personal Harbor surface at /account/security",
       "logicalParent": "/account",
       "visibleEntryPoints": ["entry-account-security-1", "entry-account-security-2", "entry-account-security-3"],
@@ -176,6 +176,15 @@
         "identityAuthority": "HP-SES-001",
         "responsiveProof": "Desktop, mobile, keyboard, reduced-motion component coverage, and critical 200 percent zoom",
         "evidenceIds": []
+      },
+      "phase2Implementation": {
+        "state": "VALIDATED",
+        "shellMode": "WORKSPACE_STANDARD",
+        "shellAuthority": "src/components/shell/ProductShell.tsx",
+        "navigationAuthority": "src/navigation/registry.ts",
+        "responsiveProof": "Desktop, 390x844 mobile, 200 percent layout equivalent, keyboard, and reduced motion",
+        "evidenceIds": [],
+        "implementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc"
       }
     },
     {
@@ -225,7 +234,7 @@
       "routeIds": ["route-page-captain-library"],
       "productArea": "Captain",
       "owner": "one-voyage",
-      "shellMode": "standard",
+      "shellMode": "WORKSPACE_STANDARD",
       "primaryUserGoal": "Use current Captain surface at /captain/library",
       "logicalParent": "/captain",
       "visibleEntryPoints": [
@@ -257,8 +266,8 @@
       "currentVisualMaturity": "PARTIAL",
       "missingStates": ["COMPLETE_LOADING_ERROR_EMPTY_PERMISSION_UNAVAILABLE_SET_NOT_PROVED"],
       "knownDefects": [],
-      "screenshotIds": ["HP-EV-011", "HP-P1-EV-M-legacy-staff-bridge"],
-      "journeyIds": ["HP-JRN-009", "HP-P1-JRN-M"],
+      "screenshotIds": ["HP-EV-011", "HP-P1-EV-M-legacy-staff-bridge", "HP-P2-EV-I-captain-navigation"],
+      "journeyIds": ["HP-JRN-009", "HP-P1-JRN-M", "HP-P2-JRN-F"],
       "targetHomeportPhase": "PHASE_2_GLOBAL_SHELL_OR_PHASE_5_ROUTE_REACHABILITY",
       "acceptanceContract": "homeport.screen.captain-library.current-contract",
       "status": "CURRENT_SURFACE",
@@ -274,6 +283,15 @@
         "identityAuthority": "HP-SES-001",
         "responsiveProof": "Desktop, mobile, keyboard, reduced-motion component coverage, and critical 200 percent zoom",
         "evidenceIds": ["HP-P1-EV-M-legacy-staff-bridge"]
+      },
+      "phase2Implementation": {
+        "state": "VALIDATED",
+        "shellMode": "WORKSPACE_STANDARD",
+        "shellAuthority": "src/components/shell/ProductShell.tsx",
+        "navigationAuthority": "src/navigation/registry.ts",
+        "responsiveProof": "Desktop, 390x844 mobile, 200 percent layout equivalent, keyboard, and reduced motion",
+        "evidenceIds": ["HP-P2-EV-I-captain-navigation"],
+        "implementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc"
       }
     },
     {
@@ -323,7 +341,7 @@
       "routeIds": ["route-page-captain-sessions-sessionid"],
       "productArea": "Captain",
       "owner": "one-voyage",
-      "shellMode": "compact",
+      "shellMode": "COMPACT",
       "primaryUserGoal": "Use current Captain surface at /captain/sessions/:sessionId",
       "logicalParent": "/captain/sessions",
       "visibleEntryPoints": [],
@@ -347,8 +365,8 @@
       "currentVisualMaturity": "PARTIAL",
       "missingStates": ["COMPLETE_LOADING_ERROR_EMPTY_PERMISSION_UNAVAILABLE_SET_NOT_PROVED"],
       "knownDefects": ["No ordinary visible entry found in the Phase 0 static census."],
-      "screenshotIds": [],
-      "journeyIds": [],
+      "screenshotIds": ["HP-P2-EV-N-compact-exit"],
+      "journeyIds": ["HP-P2-JRN-O"],
       "targetHomeportPhase": "PHASE_2_GLOBAL_SHELL_OR_PHASE_5_ROUTE_REACHABILITY",
       "acceptanceContract": "homeport.screen.captain-sessions-sessionid.current-contract",
       "status": "CURRENT_ORPHAN",
@@ -358,6 +376,15 @@
         "stateCompleteness": "Loading, populated, empty, no-results, recoverable error, permission, expiry, and dependency-unavailable states where applicable.",
         "responsive": "Desktop, mobile, and critical 200 percent zoom preserve information and controls.",
         "acceptanceOwner": "Project Homeport owner walkthrough after Sounding Line evidence."
+      },
+      "phase2Implementation": {
+        "state": "VALIDATED",
+        "shellMode": "COMPACT",
+        "shellAuthority": "src/components/shell/ProductShell.tsx",
+        "navigationAuthority": "src/navigation/registry.ts",
+        "responsiveProof": "Desktop, 390x844 mobile, 200 percent layout equivalent, keyboard, and reduced motion",
+        "evidenceIds": ["HP-P2-EV-N-compact-exit"],
+        "implementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc"
       }
     },
     {
@@ -1094,7 +1121,7 @@
       "routeIds": ["route-page-community-moderation"],
       "productArea": "Community Harbor",
       "owner": "harborlight",
-      "shellMode": "standard",
+      "shellMode": "PUBLIC_STANDARD",
       "primaryUserGoal": "Use current Community Harbor surface at /community/moderation",
       "logicalParent": "/community",
       "visibleEntryPoints": ["entry-community-moderation-1"],
@@ -1120,8 +1147,8 @@
       "knownDefects": [
         "Community family is absent from global navigation; several district routes are deep-link-dependent."
       ],
-      "screenshotIds": ["HP-P1-EV-G-permission-denied", "HP-P1-EV-Q-zoom-permission"],
-      "journeyIds": ["HP-JRN-012", "HP-P1-JRN-G", "HP-P1-JRN-Q"],
+      "screenshotIds": ["HP-P1-EV-G-permission-denied", "HP-P1-EV-Q-zoom-permission", "HP-P2-EV-T-permission-return"],
+      "journeyIds": ["HP-JRN-012", "HP-P1-JRN-G", "HP-P1-JRN-Q", "HP-P2-JRN-Q"],
       "targetHomeportPhase": "PHASE_4_COMMUNITY_HARBOR",
       "acceptanceContract": "homeport.screen.community-moderation.current-contract",
       "status": "CURRENT_SURFACE",
@@ -1137,6 +1164,15 @@
         "identityAuthority": "HP-SES-001",
         "responsiveProof": "Desktop, mobile, keyboard, reduced-motion component coverage, and critical 200 percent zoom",
         "evidenceIds": ["HP-P1-EV-G-permission-denied", "HP-P1-EV-Q-zoom-permission"]
+      },
+      "phase2Implementation": {
+        "state": "VALIDATED",
+        "shellMode": "PUBLIC_STANDARD",
+        "shellAuthority": "src/components/shell/ProductShell.tsx",
+        "navigationAuthority": "src/navigation/registry.ts",
+        "responsiveProof": "Desktop, 390x844 mobile, 200 percent layout equivalent, keyboard, and reduced motion",
+        "evidenceIds": ["HP-P2-EV-T-permission-return"],
+        "implementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc"
       }
     },
     {
@@ -1144,7 +1180,7 @@
       "routeIds": ["route-page-community"],
       "productArea": "Community Harbor",
       "owner": "harborlight",
-      "shellMode": "standard",
+      "shellMode": "PUBLIC_STANDARD",
       "primaryUserGoal": "Use current Community Harbor surface at /community",
       "logicalParent": "/",
       "visibleEntryPoints": ["entry-community-1", "entry-community-2", "entry-community-3", "entry-community-4"],
@@ -1170,8 +1206,8 @@
       "knownDefects": [
         "Community family is absent from global navigation; several district routes are deep-link-dependent."
       ],
-      "screenshotIds": ["HP-EV-018", "HP-EV-019", "HP-EV-020", "HP-EV-024"],
-      "journeyIds": ["HP-JRN-006", "HP-JRN-007", "HP-JRN-012", "HP-JRN-013"],
+      "screenshotIds": ["HP-EV-018", "HP-EV-019", "HP-EV-020", "HP-EV-024", "HP-P2-EV-K-community-shell"],
+      "journeyIds": ["HP-JRN-006", "HP-JRN-007", "HP-JRN-012", "HP-JRN-013", "HP-P2-JRN-C"],
       "targetHomeportPhase": "PHASE_4_COMMUNITY_HARBOR",
       "acceptanceContract": "homeport.screen.community.current-contract",
       "status": "CURRENT_SURFACE",
@@ -1181,6 +1217,15 @@
         "stateCompleteness": "Loading, populated, empty, no-results, recoverable error, permission, expiry, and dependency-unavailable states where applicable.",
         "responsive": "Desktop, mobile, and critical 200 percent zoom preserve information and controls.",
         "acceptanceOwner": "Project Homeport owner walkthrough after Sounding Line evidence."
+      },
+      "phase2Implementation": {
+        "state": "VALIDATED",
+        "shellMode": "PUBLIC_STANDARD",
+        "shellAuthority": "src/components/shell/ProductShell.tsx",
+        "navigationAuthority": "src/navigation/registry.ts",
+        "responsiveProof": "Desktop, 390x844 mobile, 200 percent layout equivalent, keyboard, and reduced motion",
+        "evidenceIds": ["HP-P2-EV-K-community-shell"],
+        "implementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc"
       }
     },
     {
@@ -1596,7 +1641,7 @@
       "routeIds": ["route-page-root"],
       "productArea": "Gateway and public shell",
       "owner": "platform-foundation",
-      "shellMode": "gateway",
+      "shellMode": "GATEWAY_STANDARD",
       "primaryUserGoal": "Use current Gateway and public shell surface at /",
       "logicalParent": null,
       "visibleEntryPoints": [
@@ -1629,8 +1674,36 @@
       "currentVisualMaturity": "PARTIAL",
       "missingStates": ["COMPLETE_LOADING_ERROR_EMPTY_PERMISSION_UNAVAILABLE_SET_NOT_PROVED"],
       "knownDefects": ["Persistent account control and Community entry are absent."],
-      "screenshotIds": ["HP-EV-001", "HP-EV-002", "HP-EV-003"],
-      "journeyIds": ["HP-JRN-001", "HP-JRN-003", "HP-JRN-004", "HP-JRN-006", "HP-JRN-011", "HP-JRN-012", "HP-JRN-013"],
+      "screenshotIds": [
+        "HP-EV-001",
+        "HP-EV-002",
+        "HP-EV-003",
+        "HP-P2-EV-A-gateway-anonymous-desktop",
+        "HP-P2-EV-B-gateway-authenticated-desktop",
+        "HP-P2-EV-C-gateway-anonymous-mobile",
+        "HP-P2-EV-D-gateway-authenticated-mobile",
+        "HP-P2-EV-E-account-menu-anonymous",
+        "HP-P2-EV-F-account-menu-authenticated",
+        "HP-P2-EV-L-mobile-drawer",
+        "HP-P2-EV-Q-zoom-gateway",
+        "HP-P2-EV-R-zoom-account-menu",
+        "HP-P2-EV-S-reduced-motion"
+      ],
+      "journeyIds": [
+        "HP-JRN-001",
+        "HP-JRN-003",
+        "HP-JRN-004",
+        "HP-JRN-006",
+        "HP-JRN-011",
+        "HP-JRN-012",
+        "HP-JRN-013",
+        "HP-P2-JRN-A",
+        "HP-P2-JRN-B",
+        "HP-P2-JRN-J",
+        "HP-P2-JRN-K",
+        "HP-P2-JRN-S",
+        "HP-P2-JRN-T"
+      ],
       "targetHomeportPhase": "PHASE_2_GLOBAL_SHELL_OR_PHASE_5_ROUTE_REACHABILITY",
       "acceptanceContract": "homeport.screen.root.current-contract",
       "status": "CURRENT_SURFACE",
@@ -1640,6 +1713,26 @@
         "stateCompleteness": "Loading, populated, empty, no-results, recoverable error, permission, expiry, and dependency-unavailable states where applicable.",
         "responsive": "Desktop, mobile, and critical 200 percent zoom preserve information and controls.",
         "acceptanceOwner": "Project Homeport owner walkthrough after Sounding Line evidence."
+      },
+      "phase2Implementation": {
+        "state": "VALIDATED",
+        "shellMode": "GATEWAY_STANDARD",
+        "shellAuthority": "src/components/shell/ProductShell.tsx",
+        "navigationAuthority": "src/navigation/registry.ts",
+        "responsiveProof": "Desktop, 390x844 mobile, 200 percent layout equivalent, keyboard, and reduced motion",
+        "evidenceIds": [
+          "HP-P2-EV-A-gateway-anonymous-desktop",
+          "HP-P2-EV-B-gateway-authenticated-desktop",
+          "HP-P2-EV-C-gateway-anonymous-mobile",
+          "HP-P2-EV-D-gateway-authenticated-mobile",
+          "HP-P2-EV-E-account-menu-anonymous",
+          "HP-P2-EV-F-account-menu-authenticated",
+          "HP-P2-EV-L-mobile-drawer",
+          "HP-P2-EV-Q-zoom-gateway",
+          "HP-P2-EV-R-zoom-account-menu",
+          "HP-P2-EV-S-reduced-motion"
+        ],
+        "implementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc"
       }
     },
     {
@@ -1647,7 +1740,7 @@
       "routeIds": ["route-page-passport"],
       "productArea": "Personal Harbor",
       "owner": "wayfarer",
-      "shellMode": "standard",
+      "shellMode": "WORKSPACE_STANDARD",
       "primaryUserGoal": "Use current Personal Harbor surface at /passport",
       "logicalParent": "/",
       "visibleEntryPoints": ["entry-passport-1", "entry-passport-2", "entry-passport-3"],
@@ -1694,6 +1787,15 @@
         "identityAuthority": "HP-SES-001",
         "responsiveProof": "Desktop, mobile, keyboard, reduced-motion component coverage, and critical 200 percent zoom",
         "evidenceIds": ["HP-P1-EV-C-passport-continuity", "HP-P1-EV-O-safe-return"]
+      },
+      "phase2Implementation": {
+        "state": "VALIDATED",
+        "shellMode": "WORKSPACE_STANDARD",
+        "shellAuthority": "src/components/shell/ProductShell.tsx",
+        "navigationAuthority": "src/navigation/registry.ts",
+        "responsiveProof": "Desktop, 390x844 mobile, 200 percent layout equivalent, keyboard, and reduced motion",
+        "evidenceIds": [],
+        "implementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc"
       }
     },
     {
@@ -1869,7 +1971,7 @@
       "routeIds": ["route-page-player-library"],
       "productArea": "Player",
       "owner": "one-voyage",
-      "shellMode": "standard",
+      "shellMode": "WORKSPACE_STANDARD",
       "primaryUserGoal": "Use current Player surface at /player/library",
       "logicalParent": "/player",
       "visibleEntryPoints": [
@@ -1912,7 +2014,9 @@
         "HP-P1-EV-B-registration-return",
         "HP-P1-EV-F-workspace-continuity",
         "HP-P1-EV-K-role-removal",
-        "HP-P1-EV-P-mobile-context"
+        "HP-P1-EV-P-mobile-context",
+        "HP-P2-EV-H-player-navigation",
+        "HP-P2-EV-M-workspace-switcher"
       ],
       "journeyIds": [
         "HP-JRN-003",
@@ -1925,7 +2029,9 @@
         "HP-P1-JRN-E",
         "HP-P1-JRN-F",
         "HP-P1-JRN-K",
-        "HP-P1-JRN-P"
+        "HP-P1-JRN-P",
+        "HP-P2-JRN-E",
+        "HP-P2-JRN-H"
       ],
       "targetHomeportPhase": "PHASE_2_GLOBAL_SHELL_OR_PHASE_5_ROUTE_REACHABILITY",
       "acceptanceContract": "homeport.screen.player-library.current-contract",
@@ -1947,6 +2053,15 @@
           "HP-P1-EV-K-role-removal",
           "HP-P1-EV-P-mobile-context"
         ]
+      },
+      "phase2Implementation": {
+        "state": "VALIDATED",
+        "shellMode": "WORKSPACE_STANDARD",
+        "shellAuthority": "src/components/shell/ProductShell.tsx",
+        "navigationAuthority": "src/navigation/registry.ts",
+        "responsiveProof": "Desktop, 390x844 mobile, 200 percent layout equivalent, keyboard, and reduced motion",
+        "evidenceIds": ["HP-P2-EV-H-player-navigation", "HP-P2-EV-M-workspace-switcher"],
+        "implementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc"
       }
     },
     {
@@ -2038,7 +2153,7 @@
       "routeIds": ["route-page-player-playthroughs-playthroughid-journal"],
       "productArea": "Player",
       "owner": "one-voyage",
-      "shellMode": "immersive-player",
+      "shellMode": "IMMERSIVE",
       "primaryUserGoal": "Use current Player surface at /player/playthroughs/:playthroughId/journal",
       "logicalParent": "/player/playthroughs/:playthroughId",
       "visibleEntryPoints": [],
@@ -2062,8 +2177,8 @@
       "currentVisualMaturity": "PARTIAL",
       "missingStates": ["COMPLETE_LOADING_ERROR_EMPTY_PERMISSION_UNAVAILABLE_SET_NOT_PROVED"],
       "knownDefects": ["No ordinary visible entry found in the Phase 0 static census."],
-      "screenshotIds": [],
-      "journeyIds": [],
+      "screenshotIds": ["HP-P2-EV-O-immersive-exit"],
+      "journeyIds": ["HP-P2-JRN-P"],
       "targetHomeportPhase": "PHASE_2_GLOBAL_SHELL_OR_PHASE_5_ROUTE_REACHABILITY",
       "acceptanceContract": "homeport.screen.player-playthroughs-playthroughid-journal.current-contract",
       "status": "CURRENT_ORPHAN",
@@ -2073,6 +2188,15 @@
         "stateCompleteness": "Loading, populated, empty, no-results, recoverable error, permission, expiry, and dependency-unavailable states where applicable.",
         "responsive": "Desktop, mobile, and critical 200 percent zoom preserve information and controls.",
         "acceptanceOwner": "Project Homeport owner walkthrough after Sounding Line evidence."
+      },
+      "phase2Implementation": {
+        "state": "VALIDATED",
+        "shellMode": "IMMERSIVE",
+        "shellAuthority": "src/components/shell/ProductShell.tsx",
+        "navigationAuthority": "src/navigation/registry.ts",
+        "responsiveProof": "Desktop, 390x844 mobile, 200 percent layout equivalent, keyboard, and reduced motion",
+        "evidenceIds": ["HP-P2-EV-O-immersive-exit"],
+        "implementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc"
       }
     },
     {
@@ -2186,7 +2310,7 @@
       "routeIds": ["route-page-profile-handle"],
       "productArea": "Personal Harbor",
       "owner": "wayfarer",
-      "shellMode": "standard",
+      "shellMode": "PUBLIC_STANDARD",
       "primaryUserGoal": "Use current Personal Harbor surface at /profile/:handle",
       "logicalParent": "/profile",
       "visibleEntryPoints": [],
@@ -2221,6 +2345,15 @@
         "stateCompleteness": "Loading, populated, empty, no-results, recoverable error, permission, expiry, and dependency-unavailable states where applicable.",
         "responsive": "Desktop, mobile, and critical 200 percent zoom preserve information and controls.",
         "acceptanceOwner": "Project Homeport owner walkthrough after Sounding Line evidence."
+      },
+      "phase2Implementation": {
+        "state": "VALIDATED",
+        "shellMode": "PUBLIC_STANDARD",
+        "shellAuthority": "src/components/shell/ProductShell.tsx",
+        "navigationAuthority": "src/navigation/registry.ts",
+        "responsiveProof": "Desktop, 390x844 mobile, 200 percent layout equivalent, keyboard, and reduced motion",
+        "evidenceIds": [],
+        "implementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc"
       }
     },
     {
@@ -2509,7 +2642,7 @@
       "routeIds": ["route-page-studio-library"],
       "productArea": "Creator Studio",
       "owner": "one-voyage",
-      "shellMode": "standard",
+      "shellMode": "WORKSPACE_STANDARD",
       "primaryUserGoal": "Use current Creator Studio surface at /studio/library",
       "logicalParent": "/studio",
       "visibleEntryPoints": [
@@ -2538,8 +2671,8 @@
       "currentVisualMaturity": "PARTIAL",
       "missingStates": ["COMPLETE_LOADING_ERROR_EMPTY_PERMISSION_UNAVAILABLE_SET_NOT_PROVED"],
       "knownDefects": [],
-      "screenshotIds": ["HP-EV-012"],
-      "journeyIds": ["HP-JRN-009"],
+      "screenshotIds": ["HP-EV-012", "HP-P2-EV-J-creator-navigation"],
+      "journeyIds": ["HP-JRN-009", "HP-P2-JRN-G"],
       "targetHomeportPhase": "PHASE_2_GLOBAL_SHELL_OR_PHASE_5_ROUTE_REACHABILITY",
       "acceptanceContract": "homeport.screen.studio-library.current-contract",
       "status": "CURRENT_SURFACE",
@@ -2555,6 +2688,15 @@
         "identityAuthority": "HP-SES-001",
         "responsiveProof": "Desktop, mobile, keyboard, reduced-motion component coverage, and critical 200 percent zoom",
         "evidenceIds": []
+      },
+      "phase2Implementation": {
+        "state": "VALIDATED",
+        "shellMode": "WORKSPACE_STANDARD",
+        "shellAuthority": "src/components/shell/ProductShell.tsx",
+        "navigationAuthority": "src/navigation/registry.ts",
+        "responsiveProof": "Desktop, 390x844 mobile, 200 percent layout equivalent, keyboard, and reduced motion",
+        "evidenceIds": ["HP-P2-EV-J-creator-navigation"],
+        "implementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc"
       }
     },
     {
@@ -3080,7 +3222,7 @@
       "routeIds": ["route-page-tales"],
       "productArea": "Voyage runtime",
       "owner": "one-voyage",
-      "shellMode": "standard",
+      "shellMode": "PUBLIC_STANDARD",
       "primaryUserGoal": "Use current Voyage runtime surface at /tales",
       "logicalParent": "/",
       "visibleEntryPoints": [
@@ -3116,8 +3258,8 @@
       "currentVisualMaturity": "PARTIAL",
       "missingStates": ["COMPLETE_LOADING_ERROR_EMPTY_PERMISSION_UNAVAILABLE_SET_NOT_PROVED"],
       "knownDefects": [],
-      "screenshotIds": ["HP-EV-004", "HP-EV-032"],
-      "journeyIds": ["HP-JRN-002"],
+      "screenshotIds": ["HP-EV-004", "HP-EV-032", "HP-P2-EV-G-global-nav-public"],
+      "journeyIds": ["HP-JRN-002", "HP-P2-JRN-D"],
       "targetHomeportPhase": "PHASE_2_GLOBAL_SHELL_OR_PHASE_5_ROUTE_REACHABILITY",
       "acceptanceContract": "homeport.screen.tales.current-contract",
       "status": "CURRENT_SURFACE",
@@ -3127,6 +3269,15 @@
         "stateCompleteness": "Loading, populated, empty, no-results, recoverable error, permission, expiry, and dependency-unavailable states where applicable.",
         "responsive": "Desktop, mobile, and critical 200 percent zoom preserve information and controls.",
         "acceptanceOwner": "Project Homeport owner walkthrough after Sounding Line evidence."
+      },
+      "phase2Implementation": {
+        "state": "VALIDATED",
+        "shellMode": "PUBLIC_STANDARD",
+        "shellAuthority": "src/components/shell/ProductShell.tsx",
+        "navigationAuthority": "src/navigation/registry.ts",
+        "responsiveProof": "Desktop, 390x844 mobile, 200 percent layout equivalent, keyboard, and reduced motion",
+        "evidenceIds": ["HP-P2-EV-G-global-nav-public"],
+        "implementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc"
       }
     },
     {
@@ -3218,6 +3369,15 @@
         "identityAuthority": "HP-SES-001",
         "responsiveProof": "Desktop, mobile, keyboard, reduced-motion component coverage, and critical 200 percent zoom",
         "evidenceIds": []
+      },
+      "phase2Implementation": {
+        "state": "VALIDATED",
+        "shellMode": "STATE_DEPENDENT",
+        "shellAuthority": "src/components/shell/ProductShell.tsx",
+        "navigationAuthority": "src/navigation/registry.ts",
+        "responsiveProof": "Desktop, 390x844 mobile, 200 percent layout equivalent, keyboard, and reduced motion",
+        "evidenceIds": [],
+        "implementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc"
       }
     },
     {
@@ -3355,8 +3515,8 @@
       "currentVisualMaturity": "UNREACHABLE",
       "missingStates": ["SAFE_REPRODUCTION_NOT_AVAILABLE"],
       "knownDefects": [],
-      "screenshotIds": [],
-      "journeyIds": [],
+      "screenshotIds": ["HP-P2-EV-P-context-unavailable"],
+      "journeyIds": ["HP-P2-JRN-R"],
       "targetHomeportPhase": "PHASE_6_PAGE_STATE_COMPLETION",
       "acceptanceContract": "homeport.state-dependency-unavailable",
       "status": "CURRENT_STATE_CONTRACT",
@@ -3372,6 +3532,15 @@
         "identityAuthority": "HP-SES-001",
         "responsiveProof": "Desktop, mobile, keyboard, reduced-motion component coverage, and critical 200 percent zoom",
         "evidenceIds": []
+      },
+      "phase2Implementation": {
+        "state": "VALIDATED",
+        "shellMode": "STATE_DEPENDENT",
+        "shellAuthority": "src/components/shell/ProductShell.tsx",
+        "navigationAuthority": "src/navigation/registry.ts",
+        "responsiveProof": "Desktop, 390x844 mobile, 200 percent layout equivalent, keyboard, and reduced motion",
+        "evidenceIds": ["HP-P2-EV-P-context-unavailable"],
+        "implementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc"
       }
     },
     {
@@ -3468,5 +3637,15 @@
     "state": "VALIDATED",
     "updatedAt": "2026-08-01T19:00:00.000Z",
     "historicalPhase0Preserved": true
+  },
+  "phase2Implementation": {
+    "phase": "PHASE_2_RESTORE_GLOBAL_SHELL_AND_WAYFINDING",
+    "phase1FinalSha": "dca3480f5369bfa7d5b8fd52e2cca155185fae33",
+    "architectureSha": "befb75625002a0b68093d1c35bfb846055cd9a14",
+    "implementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc",
+    "state": "VALIDATED",
+    "updatedAt": "2026-08-01T23:45:00.000Z",
+    "historicalPhase0Preserved": true,
+    "noSchemaChange": true
   }
 }

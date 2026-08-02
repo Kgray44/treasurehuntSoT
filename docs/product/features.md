@@ -21,6 +21,18 @@ ordinary sign-in surface, explicit capability decisions, session invalidation
 across tabs, and bounded observe-and-rotate compatibility for historical
 Player and staff sessions.
 
+## Global shell and wayfinding
+
+**Audience:** Players, Captains, Creators, and public visitors.
+**Availability:** complete on the Project Homeport branch, not available on
+main. Phase 2 adds one route-classified shell, visible Home/Explore/Community
+navigation, structured account orientation, capability-projected workspace
+switching, equivalent mobile destinations, and explicit compact/immersive
+exits. Its acceptance evidence is local and synthetic; it is not deployed or
+owner accepted. Personal Harbor visual reconstruction remains Phase 3,
+Community content reconstruction Phase 4, and exhaustive route reachability
+Phase 5.
+
 ## Player experience
 
 **Audience:** Players. **Availability:** available on main. Invitations, a Player Library, waiting and access states, a Chronicle Journal, story progression, replay/history surfaces, Ship's Log, side-quest and finale presentation are implemented through the player routes. [Guide](../user/player-guide.md).

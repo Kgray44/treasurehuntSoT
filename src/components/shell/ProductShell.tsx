@@ -199,7 +199,8 @@ export function ProductShell({ children }: { children: React.ReactNode }) {
 
   const profileLabel =
     currentUser.status === "authenticated" ? currentUser.user.displayName : accountStatusLabel(currentUser.status);
-  const profileInitials = currentUser.status === "authenticated" ? currentUser.user.initials : currentUser.status === "loading" ? "…" : "V";
+  const profileInitials =
+    currentUser.status === "authenticated" ? currentUser.user.initials : currentUser.status === "loading" ? "…" : "V";
   const activeAccountId = projection.activeAccountItem?.id;
   const accountGroups = (["identity", "personal", "workspace", "action"] as const).map((group) => ({
     group,
@@ -271,9 +272,7 @@ export function ProductShell({ children }: { children: React.ReactNode }) {
             <span>{route.shellMode === "DEVELOPMENT" ? "Development tool" : workspace.label}</span>
             {route.exitTarget ? (
               <Link href={route.exitTarget} onClick={closeAll} data-navigation-id="shell-safe-return">
-                {route.shellMode === "AUTHENTICATION" || route.shellMode === "TOKENIZED"
-                  ? "Safe return"
-                  : "Return"}
+                {route.shellMode === "AUTHENTICATION" || route.shellMode === "TOKENIZED" ? "Safe return" : "Return"}
               </Link>
             ) : null}
           </div>
@@ -315,7 +314,11 @@ export function ProductShell({ children }: { children: React.ReactNode }) {
                   </span>
                   <p>
                     <b>{currentUser.user.displayName}</b>
-                    {currentUser.user.handle ? <small>@{currentUser.user.handle}</small> : <small>Private profile</small>}
+                    {currentUser.user.handle ? (
+                      <small>@{currentUser.user.handle}</small>
+                    ) : (
+                      <small>Private profile</small>
+                    )}
                   </p>
                 </div>
               ) : null}
@@ -340,7 +343,9 @@ export function ProductShell({ children }: { children: React.ReactNode }) {
                 </div>
               ) : (
                 <>
-                  {currentUser.status === "expired" || currentUser.status === "revoked" || currentUser.status === "invalid" ? (
+                  {currentUser.status === "expired" ||
+                  currentUser.status === "revoked" ||
+                  currentUser.status === "invalid" ? (
                     <p className="account-session-ended" role="status">
                       Your previous session ended. Sign in again to continue safely.
                     </p>
@@ -349,7 +354,11 @@ export function ProductShell({ children }: { children: React.ReactNode }) {
                     if (!items.length) return null;
                     const headingId = `${accountHeadingPrefix}-${group}`;
                     return (
-                      <section key={group} className={`account-group account-group-${group}`} aria-labelledby={headingId}>
+                      <section
+                        key={group}
+                        className={`account-group account-group-${group}`}
+                        aria-labelledby={headingId}
+                      >
                         <h2 id={headingId}>{accountGroupLabels[group]}</h2>
                         <nav aria-label={accountGroupLabels[group]}>
                           {items.map((item) => {
@@ -402,11 +411,7 @@ export function ProductShell({ children }: { children: React.ReactNode }) {
       {projection.contextualItems.length ? (
         <nav className="shell-contextual-navigation" aria-label="Contextual navigation">
           <span>{compact ? workspace.label : "Current area"}</span>
-          <NavigationLinks
-            items={projection.contextualItems}
-            motionKey="contextual"
-            onNavigate={closeAll}
-          />
+          <NavigationLinks items={projection.contextualItems} motionKey="contextual" onNavigate={closeAll} />
         </nav>
       ) : null}
 

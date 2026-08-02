@@ -49,17 +49,23 @@ test("homeport.shell.mode-classification generates one mode for every current pa
     assert.equal(registry.pageCount, 69);
     assert.equal(registry.records.length, 69);
     assert.equal(new Set(registry.records.map((record) => record.routeId)).size, 69);
-    assert.equal(registry.records.some((record) => record.routePattern.startsWith("/api")), false);
-    assert.deepEqual(new Set(registry.validModes), new Set([
-      "GATEWAY_STANDARD",
-      "PUBLIC_STANDARD",
-      "WORKSPACE_STANDARD",
-      "COMPACT",
-      "IMMERSIVE",
-      "AUTHENTICATION",
-      "TOKENIZED",
-      "DEVELOPMENT",
-    ]));
+    assert.equal(
+      registry.records.some((record) => record.routePattern.startsWith("/api")),
+      false,
+    );
+    assert.deepEqual(
+      new Set(registry.validModes),
+      new Set([
+        "GATEWAY_STANDARD",
+        "PUBLIC_STANDARD",
+        "WORKSPACE_STANDARD",
+        "COMPACT",
+        "IMMERSIVE",
+        "AUTHENTICATION",
+        "TOKENIZED",
+        "DEVELOPMENT",
+      ]),
+    );
   } finally {
     rmSync(temporaryRoot, { recursive: true, force: true });
   }

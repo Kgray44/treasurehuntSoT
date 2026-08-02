@@ -321,11 +321,11 @@ for (const record of evidence.records) {
   assert.equal(record.sourceSha, expectedSourceSha, `${record.evidenceId} source SHA drifted`);
   assert.ok(screenIds.has(record.screenContract), `${record.evidenceId} references unknown screen contract`);
   assert.ok(journeyIds.has(record.journey), `${record.evidenceId} references unknown journey`);
-  const phase1Record = record.evidenceId.startsWith("HP-P1-EV-");
-  const screenshot = phase1Record
+  const committedPhaseRecord = /^HP-P[12]-EV-/u.test(record.evidenceId);
+  const screenshot = committedPhaseRecord
     ? path.join(root, record.committedScreenshotPath)
     : path.join(evidenceRoot, path.basename(record.screenshotPath));
-  if (phase1Record || existsSync(evidenceRoot) || requireRawEvidence) {
+  if (committedPhaseRecord || existsSync(evidenceRoot) || requireRawEvidence) {
     assert.ok(existsSync(screenshot), `${record.evidenceId} screenshot is missing at ${screenshot}`);
     assert.equal(sha256(screenshot), record.sha256, `${record.evidenceId} screenshot checksum drifted`);
   }
@@ -448,6 +448,53 @@ assert.equal(
   "Phase 1 visual baseline must contain 15 after-state records",
 );
 
+const phase2ImplementationAnchorSha = "ce9fd8e70f0e906416cf41cd508ec5f2063570cc";
+for (const [name, envelope] of Object.entries({
+  routes,
+  navigation,
+  screens,
+  contracts,
+  journeys,
+  evidence,
+})) {
+  requireKeys(envelope, ["phase2Implementation"], name);
+  assert.equal(envelope.phase2Implementation.state, "VALIDATED", `${name} Phase 2 state is not validated`);
+  assert.equal(
+    envelope.phase2Implementation.implementationAnchorSha,
+    phase2ImplementationAnchorSha,
+    `${name} Phase 2 implementation anchor drifted`,
+  );
+  assert.equal(envelope.phase2Implementation.historicalPhase0Preserved, true, `${name} lost Phase 0 history`);
+}
+
+const requiredPhase2Documents = [
+  "Project_Homeport_Phase_2_Global_Shell_and_Wayfinding_Architecture.md",
+  "Project_Homeport_Phase_2_Shell_Mode_Registry.json",
+  "Project_Homeport_Phase_2_Navigation_Projection_Contract.json",
+  "Project_Homeport_Phase_2_Desktop_Mobile_Parity_Matrix.csv",
+  "Project_Homeport_Phase_2_Contextual_Exit_Matrix.csv",
+  "Project_Homeport_Phase_2_Test_Plan.md",
+  "Project_Homeport_Phase_2_Implementation_Report.md",
+  "Project_Homeport_Phase_2_Validation_Record.md",
+  "Project_Homeport_Phase_2_Integration_Manifest.md",
+  "evidence/phase2/README.md",
+];
+for (const name of requiredPhase2Documents)
+  assert.ok(existsSync(path.join(auditRoot, name)), `Phase 2 required document is missing: ${name}`);
+
+for (const letter of "ABCDEFGHIJKLMNOPQRSTU")
+  assert.ok(journeyIds.has(`HP-P2-JRN-${letter}`), `Phase 2 journey ${letter} is missing`);
+assert.equal(
+  evidence.records.filter((record) => record.evidenceId.startsWith("HP-P2-EV-")).length,
+  20,
+  "Phase 2 visual baseline must contain 20 after-state records",
+);
+assert.equal(
+  routes.routes.filter((route) => route.kind === "page" && route.phase2Implementation).length,
+  routes.totals.pages,
+  "Every page must have one Phase 2 shell implementation record",
+);
+
 const ncRequired = [
   "id",
   "parent_id",
@@ -492,6 +539,21 @@ for (const record of nonconformities) {
     assert.ok(evidenceIds.has(evidenceId), `${record.id} references unknown ${evidenceId}`);
 }
 
+for (const id of ["HP-NC-001", "HP-NC-006", "HP-NC-010", "HP-NC-016"]) {
+  const record = nonconformities.find((candidate) => candidate.id === id);
+  assert.equal(record?.current_status, "CLOSED", `${id} must be closed by validated Phase 2 evidence`);
+  assert.equal(record?.disposition, "CLOSED_PHASE_2_VALIDATED", `${id} has the wrong Phase 2 disposition`);
+}
+for (const id of ["HP-NC-008", "HP-NC-014", "HP-NC-026"]) {
+  const record = nonconformities.find((candidate) => candidate.id === id);
+  assert.equal(record?.current_status, "PARTIALLY_ADVANCED_PHASE_2", `${id} must remain a partial Phase 2 advance`);
+  assert.equal(
+    record?.disposition,
+    "PARTIAL_PHASE_2_LATER_OWNER_RETAINED",
+    `${id} lost its later-phase owner boundary`,
+  );
+}
+
 for (const screen of screens.screens) {
   for (const screenshotId of screen.screenshotIds)
     assert.ok(evidenceIds.has(screenshotId), `${screen.screenId} references unknown ${screenshotId}`);
@@ -520,5 +582,8 @@ console.log(
     phase1CompatibilityAuthorities: compatibility.length,
     phase1Journeys: journeys.journeys.filter((journey) => journey.journeyId.startsWith("HP-P1-JRN-")).length,
     phase1Evidence: evidence.records.filter((record) => record.evidenceId.startsWith("HP-P1-EV-")).length,
+    phase2Journeys: journeys.journeys.filter((journey) => journey.journeyId.startsWith("HP-P2-JRN-")).length,
+    phase2Evidence: evidence.records.filter((record) => record.evidenceId.startsWith("HP-P2-EV-")).length,
+    phase2ShellPages: routes.routes.filter((route) => route.kind === "page" && route.phase2Implementation).length,
   }),
 );

@@ -86,6 +86,13 @@ export default defineConfig({
       use: { ...devices["Desktop Chrome"] },
     },
     {
+      // Discovery lives in the shared registry, while execution is allowed
+      // only through the dedicated config or Sounding Line's isolated clone.
+      name: "homeport-phase2",
+      testMatch: homeportPhase2Spec,
+      use: { ...devices["Desktop Chrome"], viewport: { width: 1440, height: 900 } },
+    },
+    {
       // This is the narrow Sounding Line browser sentinel.  It deliberately
       // has no Phase 3 fixture dependency: access-gates never creates a
       // mutation fixture, and adding the dependency would require an

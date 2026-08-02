@@ -2,9 +2,19 @@ import { canonicalTerms } from "@/language/canonical-terms";
 import { platformCopy } from "@/language/platform-copy";
 import type { NavigationItem, ShellMode, WorkspaceDefinition, WorkspaceId } from "./types";
 
-const ordinaryModes = ["GATEWAY_STANDARD", "PUBLIC_STANDARD", "WORKSPACE_STANDARD"] as const satisfies readonly ShellMode[];
+const ordinaryModes = [
+  "GATEWAY_STANDARD",
+  "PUBLIC_STANDARD",
+  "WORKSPACE_STANDARD",
+] as const satisfies readonly ShellMode[];
 const workspaceModes = ["WORKSPACE_STANDARD"] as const satisfies readonly ShellMode[];
-const accountModes = ["GATEWAY_STANDARD", "PUBLIC_STANDARD", "WORKSPACE_STANDARD", "COMPACT", "IMMERSIVE"] as const satisfies readonly ShellMode[];
+const accountModes = [
+  "GATEWAY_STANDARD",
+  "PUBLIC_STANDARD",
+  "WORKSPACE_STANDARD",
+  "COMPACT",
+  "IMMERSIVE",
+] as const satisfies readonly ShellMode[];
 
 export const workspaceRegistry: Readonly<Record<WorkspaceId, WorkspaceDefinition>> = {
   public: { id: "public", label: canonicalTerms.product, homeHref: "/" },
@@ -460,11 +470,7 @@ const contextualItems = [
     desktop: "contextual",
     mobile: "contextual",
     activeMatch: { type: "NEVER_ACTIVE" },
-    contextPatterns: [
-      "/player/playthroughs/:id",
-      "/player/playthroughs/:id/journal",
-      "/play/:slug/session/:id",
-    ],
+    contextPatterns: ["/player/playthroughs/:id", "/player/playthroughs/:id/journal", "/play/:slug/session/:id"],
     order: 10,
     currentStatus: "contextual",
   },

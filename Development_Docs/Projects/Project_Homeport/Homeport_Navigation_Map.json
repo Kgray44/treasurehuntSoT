@@ -3,179 +3,23 @@
   "sourceSha": "8d142227d712d27e363b15903dba9b0c99a04bc8",
   "generatedAt": "2026-08-01T16:07:07.498Z",
   "shellModes": [
-    {
-      "shellMode": "gateway",
-      "routes": ["route-page-root"],
-      "headerControls": ["role entries", "Chronicle discovery", "invitation"],
-      "accountControlPresence": false,
-      "globalNavigationPresence": false,
-      "communityAccess": false,
-      "workspaceSwitching": false,
-      "mobileBehavior": "mode-specific",
-      "focusBehavior": "skip link and menu-trigger restoration where ProductShell is present",
-      "footerBehavior": "absent",
-      "immersiveExitBehavior": "not-applicable",
-      "currentAccountContextSource": "/api/gateway/status",
-      "knownContradictions": ["No account or Community control"]
-    },
-    {
-      "shellMode": "standard",
-      "routes": [
-        "route-page-account-claim",
-        "route-page-account-merge",
-        "route-page-account-roles",
-        "route-page-account-security",
-        "route-page-captain-invitations",
-        "route-page-captain-library",
-        "route-page-captain",
-        "route-page-captain-tales-taleid",
-        "route-page-captain-voyages-playthroughid-player-preview",
-        "route-page-community-slug",
-        "route-page-community-artifacts",
-        "route-page-community-audio",
-        "route-page-community-chronicles",
-        "route-page-community-collections-slug",
-        "route-page-community-collections",
-        "route-page-community-creators-handle",
-        "route-page-community-creators",
-        "route-page-community-featured",
-        "route-page-community-guides-slug",
-        "route-page-community-guides",
-        "route-page-community-maps",
-        "route-page-community-moderation-id",
-        "route-page-community-moderation",
-        "route-page-community",
-        "route-page-community-templates",
-        "route-page-community-voyage-logs-slug",
-        "route-page-community-voyage-logs-consent",
-        "route-page-community-voyage-logs-media",
-        "route-page-community-voyage-logs-owner-id",
-        "route-page-community-voyage-logs-owner",
-        "route-page-community-voyage-logs",
-        "route-page-dev-animations",
-        "route-route-join-token",
-        "route-page-passport",
-        "route-page-play-taleslug-history",
-        "route-page-play-taleslug",
-        "route-page-player-invitation",
-        "route-page-player-library",
-        "route-page-player",
-        "route-page-player-playthroughs-playthroughid-archive",
-        "route-page-profile-handle",
-        "route-page-studio-exchange",
-        "route-page-studio-library",
-        "route-page-studio",
-        "route-page-studio-private-content-operations",
-        "route-page-studio-private-content",
-        "route-page-studio-tales-taleid-artifacts",
-        "route-page-studio-tales-taleid-assets",
-        "route-page-studio-tales-taleid-locations",
-        "route-page-studio-tales-taleid",
-        "route-page-studio-tales-taleid-settings",
-        "route-page-studio-tales-taleid-versions",
-        "route-page-studio-tales-new",
-        "route-page-tale-campaignslug",
-        "route-page-tales"
-      ],
-      "headerControls": ["brand", "workspace navigation", "account control"],
-      "accountControlPresence": true,
-      "globalNavigationPresence": true,
-      "communityAccess": false,
-      "workspaceSwitching": true,
-      "mobileBehavior": "collapsed Menu plus account button",
-      "focusBehavior": "skip link and menu-trigger restoration where ProductShell is present",
-      "footerBehavior": "product links",
-      "immersiveExitBehavior": "not-applicable",
-      "currentAccountContextSource": "/api/shell/context",
-      "knownContradictions": ["Community absent", "role and cookie projection disagreement"]
-    },
-    {
-      "shellMode": "authentication",
-      "routes": [
-        "route-page-captain-sign-in",
-        "route-page-forgot-password",
-        "route-page-player-sign-in",
-        "route-page-register",
-        "route-page-reset-password",
-        "route-page-sign-in",
-        "route-page-studio-sign-in",
-        "route-page-verify-email"
-      ],
-      "headerControls": ["brand", "workspace navigation", "account control"],
-      "accountControlPresence": false,
-      "globalNavigationPresence": false,
-      "communityAccess": false,
-      "workspaceSwitching": false,
-      "mobileBehavior": "mode-specific",
-      "focusBehavior": "skip link and menu-trigger restoration where ProductShell is present",
-      "footerBehavior": "absent",
-      "immersiveExitBehavior": "not-applicable",
-      "currentAccountContextSource": "/api/shell/context",
-      "knownContradictions": []
-    },
-    {
-      "shellMode": "compact",
-      "routes": [
-        "route-page-captain-sessions-sessionid",
-        "route-page-quartermaster-workspace",
-        "route-page-quartermaster"
-      ],
-      "headerControls": ["brand", "workspace navigation", "account control"],
-      "accountControlPresence": true,
-      "globalNavigationPresence": false,
-      "communityAccess": false,
-      "workspaceSwitching": false,
-      "mobileBehavior": "mode-specific",
-      "focusBehavior": "skip link and menu-trigger restoration where ProductShell is present",
-      "footerBehavior": "absent",
-      "immersiveExitBehavior": "not-applicable",
-      "currentAccountContextSource": "/api/shell/context",
-      "knownContradictions": []
-    },
-    {
-      "shellMode": "immersive-player",
-      "routes": [
-        "route-page-play-taleslug-session-sessionid",
-        "route-page-player-playthroughs-playthroughid-journal",
-        "route-page-player-playthroughs-playthroughid"
-      ],
-      "headerControls": ["brand", "workspace navigation", "account control"],
-      "accountControlPresence": true,
-      "globalNavigationPresence": false,
-      "communityAccess": false,
-      "workspaceSwitching": false,
-      "mobileBehavior": "mode-specific",
-      "focusBehavior": "skip link and menu-trigger restoration where ProductShell is present",
-      "footerBehavior": "absent",
-      "immersiveExitBehavior": "route-specific",
-      "currentAccountContextSource": "/api/shell/context",
-      "knownContradictions": []
-    },
-    {
-      "shellMode": "immersive-captain",
-      "routes": [],
-      "headerControls": ["brand", "workspace navigation", "account control"],
-      "accountControlPresence": true,
-      "globalNavigationPresence": false,
-      "communityAccess": false,
-      "workspaceSwitching": false,
-      "mobileBehavior": "mode-specific",
-      "focusBehavior": "skip link and menu-trigger restoration where ProductShell is present",
-      "footerBehavior": "product links",
-      "immersiveExitBehavior": "route-specific",
-      "currentAccountContextSource": "/api/shell/context",
-      "knownContradictions": []
-    }
+    "GATEWAY_STANDARD",
+    "PUBLIC_STANDARD",
+    "WORKSPACE_STANDARD",
+    "COMPACT",
+    "IMMERSIVE",
+    "AUTHENTICATION",
+    "TOKENIZED",
+    "DEVELOPMENT"
   ],
   "naturalEntryFromGateway": [
     { "control": "Explore Chronicles", "destination": "/tales" },
-    {
-      "control": "Join with an Invitation",
-      "destination": "/player/sign-in#invitation-code"
-    },
+    { "control": "Join with an Invitation", "destination": "/player/sign-in#invitation-code" },
     { "control": "Enter as Player", "destination": "/player/sign-in" },
     { "control": "Enter as Captain", "destination": "/captain/sign-in" },
-    { "control": "Enter as Creator", "destination": "/studio/sign-in" }
+    { "control": "Enter as Creator", "destination": "/studio/sign-in" },
+    "/tales",
+    "/community"
   ],
   "missingGatewayEntries": ["Account", "Create Account", "Community Harbor", "Profile", "Chronicle Passport"],
   "edges": [
@@ -195,10 +39,7 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
       "evidenceId": null,
-      "phase1Implementation": {
-        "authority": "HP-SES-001",
-        "state": "VALIDATED"
-      }
+      "phase1Implementation": { "authority": "HP-SES-001", "state": "VALIDATED" }
     },
     {
       "nodeId": "nav-2",
@@ -216,10 +57,7 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
       "evidenceId": null,
-      "phase1Implementation": {
-        "authority": "HP-SES-001",
-        "state": "VALIDATED"
-      }
+      "phase1Implementation": { "authority": "HP-SES-001", "state": "VALIDATED" }
     },
     {
       "nodeId": "nav-3",
@@ -237,10 +75,7 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
       "evidenceId": null,
-      "phase1Implementation": {
-        "authority": "HP-SES-001",
-        "state": "VALIDATED"
-      }
+      "phase1Implementation": { "authority": "HP-SES-001", "state": "VALIDATED" }
     },
     {
       "nodeId": "nav-4",
@@ -258,10 +93,7 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
       "evidenceId": "HP-EV-005",
-      "phase1Implementation": {
-        "authority": "HP-SES-001",
-        "state": "VALIDATED"
-      }
+      "phase1Implementation": { "authority": "HP-SES-001", "state": "VALIDATED" }
     },
     {
       "nodeId": "nav-5",
@@ -279,10 +111,7 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
       "evidenceId": "HP-EV-011",
-      "phase1Implementation": {
-        "authority": "HP-SES-001",
-        "state": "VALIDATED"
-      }
+      "phase1Implementation": { "authority": "HP-SES-001", "state": "VALIDATED" }
     },
     {
       "nodeId": "nav-6",
@@ -300,10 +129,7 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
       "evidenceId": "HP-EV-012",
-      "phase1Implementation": {
-        "authority": "HP-SES-001",
-        "state": "VALIDATED"
-      }
+      "phase1Implementation": { "authority": "HP-SES-001", "state": "VALIDATED" }
     },
     {
       "nodeId": "nav-7",
@@ -321,10 +147,7 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
       "evidenceId": "HP-EV-011",
-      "phase1Implementation": {
-        "authority": "HP-SES-001",
-        "state": "VALIDATED"
-      }
+      "phase1Implementation": { "authority": "HP-SES-001", "state": "VALIDATED" }
     },
     {
       "nodeId": "nav-8",
@@ -342,10 +165,7 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
       "evidenceId": null,
-      "phase1Implementation": {
-        "authority": "HP-SES-001",
-        "state": "VALIDATED"
-      }
+      "phase1Implementation": { "authority": "HP-SES-001", "state": "VALIDATED" }
     },
     {
       "nodeId": "nav-9",
@@ -363,10 +183,7 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
       "evidenceId": null,
-      "phase1Implementation": {
-        "authority": "HP-SES-001",
-        "state": "VALIDATED"
-      }
+      "phase1Implementation": { "authority": "HP-SES-001", "state": "VALIDATED" }
     },
     {
       "nodeId": "nav-10",
@@ -384,10 +201,7 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
       "evidenceId": "HP-EV-011",
-      "phase1Implementation": {
-        "authority": "HP-SES-001",
-        "state": "VALIDATED"
-      }
+      "phase1Implementation": { "authority": "HP-SES-001", "state": "VALIDATED" }
     },
     {
       "nodeId": "nav-11",
@@ -405,10 +219,7 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
       "evidenceId": null,
-      "phase1Implementation": {
-        "authority": "HP-SES-001",
-        "state": "VALIDATED"
-      }
+      "phase1Implementation": { "authority": "HP-SES-001", "state": "VALIDATED" }
     },
     {
       "nodeId": "nav-12",
@@ -477,10 +288,7 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
       "evidenceId": "HP-EV-027",
-      "phase1Implementation": {
-        "authority": "HP-SES-001",
-        "state": "VALIDATED"
-      }
+      "phase1Implementation": { "authority": "HP-SES-001", "state": "VALIDATED" }
     },
     {
       "nodeId": "nav-16",
@@ -498,10 +306,7 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
       "evidenceId": null,
-      "phase1Implementation": {
-        "authority": "HP-SES-001",
-        "state": "VALIDATED"
-      }
+      "phase1Implementation": { "authority": "HP-SES-001", "state": "VALIDATED" }
     },
     {
       "nodeId": "nav-17",
@@ -519,10 +324,7 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
       "evidenceId": "HP-EV-027",
-      "phase1Implementation": {
-        "authority": "HP-SES-001",
-        "state": "VALIDATED"
-      }
+      "phase1Implementation": { "authority": "HP-SES-001", "state": "VALIDATED" }
     },
     {
       "nodeId": "nav-18",
@@ -778,10 +580,7 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
       "evidenceId": "HP-EV-007",
-      "phase1Implementation": {
-        "authority": "HP-SES-001",
-        "state": "VALIDATED"
-      }
+      "phase1Implementation": { "authority": "HP-SES-001", "state": "VALIDATED" }
     },
     {
       "nodeId": "nav-33",
@@ -799,10 +598,7 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
       "evidenceId": "HP-EV-007",
-      "phase1Implementation": {
-        "authority": "HP-SES-001",
-        "state": "VALIDATED"
-      }
+      "phase1Implementation": { "authority": "HP-SES-001", "state": "VALIDATED" }
     },
     {
       "nodeId": "nav-34",
@@ -820,10 +616,7 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
       "evidenceId": "HP-EV-007",
-      "phase1Implementation": {
-        "authority": "HP-SES-001",
-        "state": "VALIDATED"
-      }
+      "phase1Implementation": { "authority": "HP-SES-001", "state": "VALIDATED" }
     },
     {
       "nodeId": "nav-35",
@@ -1079,10 +872,7 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
       "evidenceId": "HP-EV-007",
-      "phase1Implementation": {
-        "authority": "HP-SES-001",
-        "state": "VALIDATED"
-      }
+      "phase1Implementation": { "authority": "HP-SES-001", "state": "VALIDATED" }
     },
     {
       "nodeId": "nav-50",
@@ -1100,10 +890,7 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
       "evidenceId": "HP-EV-007",
-      "phase1Implementation": {
-        "authority": "HP-SES-001",
-        "state": "VALIDATED"
-      }
+      "phase1Implementation": { "authority": "HP-SES-001", "state": "VALIDATED" }
     },
     {
       "nodeId": "nav-51",
@@ -1121,10 +908,7 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
       "evidenceId": "HP-EV-007",
-      "phase1Implementation": {
-        "authority": "HP-SES-001",
-        "state": "VALIDATED"
-      }
+      "phase1Implementation": { "authority": "HP-SES-001", "state": "VALIDATED" }
     },
     {
       "nodeId": "nav-52",
@@ -1142,10 +926,7 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
       "evidenceId": null,
-      "phase1Implementation": {
-        "authority": "HP-SES-001",
-        "state": "VALIDATED"
-      }
+      "phase1Implementation": { "authority": "HP-SES-001", "state": "VALIDATED" }
     },
     {
       "nodeId": "nav-53",
@@ -1163,10 +944,7 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
       "evidenceId": null,
-      "phase1Implementation": {
-        "authority": "HP-SES-001",
-        "state": "VALIDATED"
-      }
+      "phase1Implementation": { "authority": "HP-SES-001", "state": "VALIDATED" }
     },
     {
       "nodeId": "nav-54",
@@ -1184,10 +962,7 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
       "evidenceId": "HP-EV-012",
-      "phase1Implementation": {
-        "authority": "HP-SES-001",
-        "state": "VALIDATED"
-      }
+      "phase1Implementation": { "authority": "HP-SES-001", "state": "VALIDATED" }
     },
     {
       "nodeId": "nav-55",
@@ -1205,10 +980,7 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
       "evidenceId": "HP-EV-007",
-      "phase1Implementation": {
-        "authority": "HP-SES-001",
-        "state": "VALIDATED"
-      }
+      "phase1Implementation": { "authority": "HP-SES-001", "state": "VALIDATED" }
     },
     {
       "nodeId": "nav-56",
@@ -1226,10 +998,7 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
       "evidenceId": "HP-EV-007",
-      "phase1Implementation": {
-        "authority": "HP-SES-001",
-        "state": "VALIDATED"
-      }
+      "phase1Implementation": { "authority": "HP-SES-001", "state": "VALIDATED" }
     },
     {
       "nodeId": "nav-57",
@@ -1247,10 +1016,7 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
       "evidenceId": "HP-EV-007",
-      "phase1Implementation": {
-        "authority": "HP-SES-001",
-        "state": "VALIDATED"
-      }
+      "phase1Implementation": { "authority": "HP-SES-001", "state": "VALIDATED" }
     },
     {
       "nodeId": "nav-58",
@@ -1268,10 +1034,7 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
       "evidenceId": "HP-EV-011",
-      "phase1Implementation": {
-        "authority": "HP-SES-001",
-        "state": "VALIDATED"
-      }
+      "phase1Implementation": { "authority": "HP-SES-001", "state": "VALIDATED" }
     },
     {
       "nodeId": "nav-59",
@@ -1289,10 +1052,7 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
       "evidenceId": "HP-EV-005",
-      "phase1Implementation": {
-        "authority": "HP-SES-001",
-        "state": "VALIDATED"
-      }
+      "phase1Implementation": { "authority": "HP-SES-001", "state": "VALIDATED" }
     },
     {
       "nodeId": "nav-60",
@@ -1310,10 +1070,7 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
       "evidenceId": "HP-EV-005",
-      "phase1Implementation": {
-        "authority": "HP-SES-001",
-        "state": "VALIDATED"
-      }
+      "phase1Implementation": { "authority": "HP-SES-001", "state": "VALIDATED" }
     },
     {
       "nodeId": "nav-61",
@@ -1331,10 +1088,7 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
       "evidenceId": "HP-EV-005",
-      "phase1Implementation": {
-        "authority": "HP-SES-001",
-        "state": "VALIDATED"
-      }
+      "phase1Implementation": { "authority": "HP-SES-001", "state": "VALIDATED" }
     },
     {
       "nodeId": "nav-62",
@@ -1352,10 +1106,7 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
       "evidenceId": "HP-EV-005",
-      "phase1Implementation": {
-        "authority": "HP-SES-001",
-        "state": "VALIDATED"
-      }
+      "phase1Implementation": { "authority": "HP-SES-001", "state": "VALIDATED" }
     },
     {
       "nodeId": "nav-63",
@@ -1373,10 +1124,7 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
       "evidenceId": "HP-EV-005",
-      "phase1Implementation": {
-        "authority": "HP-SES-001",
-        "state": "VALIDATED"
-      }
+      "phase1Implementation": { "authority": "HP-SES-001", "state": "VALIDATED" }
     },
     {
       "nodeId": "nav-64",
@@ -1394,10 +1142,7 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
       "evidenceId": "HP-EV-005",
-      "phase1Implementation": {
-        "authority": "HP-SES-001",
-        "state": "VALIDATED"
-      }
+      "phase1Implementation": { "authority": "HP-SES-001", "state": "VALIDATED" }
     },
     {
       "nodeId": "nav-65",
@@ -1449,10 +1194,7 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
       "evidenceId": "HP-EV-013",
-      "phase1Implementation": {
-        "authority": "HP-SES-001",
-        "state": "VALIDATED"
-      }
+      "phase1Implementation": { "authority": "HP-SES-001", "state": "VALIDATED" }
     },
     {
       "nodeId": "nav-68",
@@ -1470,10 +1212,7 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
       "evidenceId": "HP-EV-025",
-      "phase1Implementation": {
-        "authority": "HP-SES-001",
-        "state": "VALIDATED"
-      }
+      "phase1Implementation": { "authority": "HP-SES-001", "state": "VALIDATED" }
     },
     {
       "nodeId": "nav-69",
@@ -1491,10 +1230,7 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
       "evidenceId": "HP-EV-005",
-      "phase1Implementation": {
-        "authority": "HP-SES-001",
-        "state": "VALIDATED"
-      }
+      "phase1Implementation": { "authority": "HP-SES-001", "state": "VALIDATED" }
     },
     {
       "nodeId": "nav-70",
@@ -1512,10 +1248,7 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
       "evidenceId": "HP-EV-011",
-      "phase1Implementation": {
-        "authority": "HP-SES-001",
-        "state": "VALIDATED"
-      }
+      "phase1Implementation": { "authority": "HP-SES-001", "state": "VALIDATED" }
     },
     {
       "nodeId": "nav-71",
@@ -1533,10 +1266,7 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
       "evidenceId": "HP-EV-012",
-      "phase1Implementation": {
-        "authority": "HP-SES-001",
-        "state": "VALIDATED"
-      }
+      "phase1Implementation": { "authority": "HP-SES-001", "state": "VALIDATED" }
     },
     {
       "nodeId": "nav-72",
@@ -1809,10 +1539,7 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
       "evidenceId": "HP-EV-025",
-      "phase1Implementation": {
-        "authority": "HP-SES-001",
-        "state": "VALIDATED"
-      }
+      "phase1Implementation": { "authority": "HP-SES-001", "state": "VALIDATED" }
     },
     {
       "nodeId": "nav-88",
@@ -1898,10 +1625,7 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
       "evidenceId": "HP-EV-011",
-      "phase1Implementation": {
-        "authority": "HP-SES-001",
-        "state": "VALIDATED"
-      }
+      "phase1Implementation": { "authority": "HP-SES-001", "state": "VALIDATED" }
     },
     {
       "nodeId": "nav-93",
@@ -1936,10 +1660,7 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
       "evidenceId": "HP-EV-005",
-      "phase1Implementation": {
-        "authority": "HP-SES-001",
-        "state": "VALIDATED"
-      }
+      "phase1Implementation": { "authority": "HP-SES-001", "state": "VALIDATED" }
     },
     {
       "nodeId": "nav-95",
@@ -1974,10 +1695,7 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
       "evidenceId": "HP-EV-013",
-      "phase1Implementation": {
-        "authority": "HP-SES-001",
-        "state": "VALIDATED"
-      }
+      "phase1Implementation": { "authority": "HP-SES-001", "state": "VALIDATED" }
     },
     {
       "nodeId": "nav-97",
@@ -1995,10 +1713,7 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
       "evidenceId": "HP-EV-011",
-      "phase1Implementation": {
-        "authority": "HP-SES-001",
-        "state": "VALIDATED"
-      }
+      "phase1Implementation": { "authority": "HP-SES-001", "state": "VALIDATED" }
     },
     {
       "nodeId": "nav-98",
@@ -2050,10 +1765,7 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
       "evidenceId": "HP-EV-012",
-      "phase1Implementation": {
-        "authority": "HP-SES-001",
-        "state": "VALIDATED"
-      }
+      "phase1Implementation": { "authority": "HP-SES-001", "state": "VALIDATED" }
     },
     {
       "nodeId": "nav-101",
@@ -2105,10 +1817,7 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
       "evidenceId": "HP-EV-013",
-      "phase1Implementation": {
-        "authority": "HP-SES-001",
-        "state": "VALIDATED"
-      }
+      "phase1Implementation": { "authority": "HP-SES-001", "state": "VALIDATED" }
     },
     {
       "nodeId": "nav-104",
@@ -2126,10 +1835,7 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
       "evidenceId": "HP-EV-025",
-      "phase1Implementation": {
-        "authority": "HP-SES-001",
-        "state": "VALIDATED"
-      }
+      "phase1Implementation": { "authority": "HP-SES-001", "state": "VALIDATED" }
     },
     {
       "nodeId": "nav-105",
@@ -2147,6 +1853,582 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
       "evidenceId": "HP-EV-018"
+    },
+    {
+      "nodeId": "phase2-global-home",
+      "routeId": "phase2-navigation-global-home",
+      "label": "Home",
+      "controlId": "global-home",
+      "sourceScreen": "src/navigation/registry.ts",
+      "destinationScreen": "/",
+      "desktopAvailability": true,
+      "mobileAvailability": true,
+      "authentication": "STATE_DEPENDENT",
+      "capabilities": [],
+      "hiddenCondition": null,
+      "disabledCondition": null,
+      "redirectBehavior": "DESTINATION_GUARD",
+      "currentStatus": "PHASE_2_VALIDATED",
+      "evidenceId": "HP-P2-EV-G-global-nav-public",
+      "phase2ImplementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc"
+    },
+    {
+      "nodeId": "phase2-global-explore-chronicles",
+      "routeId": "phase2-navigation-global-explore-chronicles",
+      "label": "Explore Chronicles",
+      "controlId": "global-explore-chronicles",
+      "sourceScreen": "src/navigation/registry.ts",
+      "destinationScreen": "/tales",
+      "desktopAvailability": true,
+      "mobileAvailability": true,
+      "authentication": "STATE_DEPENDENT",
+      "capabilities": [],
+      "hiddenCondition": null,
+      "disabledCondition": null,
+      "redirectBehavior": "DESTINATION_GUARD",
+      "currentStatus": "PHASE_2_VALIDATED",
+      "evidenceId": "HP-P2-EV-G-global-nav-public",
+      "phase2ImplementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc"
+    },
+    {
+      "nodeId": "phase2-global-community-harbor",
+      "routeId": "phase2-navigation-global-community-harbor",
+      "label": "Community Harbor",
+      "controlId": "global-community-harbor",
+      "sourceScreen": "src/navigation/registry.ts",
+      "destinationScreen": "/community",
+      "desktopAvailability": true,
+      "mobileAvailability": true,
+      "authentication": "STATE_DEPENDENT",
+      "capabilities": [],
+      "hiddenCondition": null,
+      "disabledCondition": null,
+      "redirectBehavior": "DESTINATION_GUARD",
+      "currentStatus": "PHASE_2_VALIDATED",
+      "evidenceId": "HP-P2-EV-G-global-nav-public",
+      "phase2ImplementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc"
+    },
+    {
+      "nodeId": "phase2-workspace-player-home",
+      "routeId": "phase2-navigation-workspace-player-home",
+      "label": "My Voyages",
+      "controlId": "workspace-player-home",
+      "sourceScreen": "src/navigation/registry.ts",
+      "destinationScreen": "/player/library",
+      "desktopAvailability": true,
+      "mobileAvailability": true,
+      "authentication": "STATE_DEPENDENT",
+      "capabilities": ["player"],
+      "hiddenCondition": null,
+      "disabledCondition": null,
+      "redirectBehavior": "DESTINATION_GUARD",
+      "currentStatus": "PHASE_2_VALIDATED",
+      "evidenceId": "HP-P2-EV-M-workspace-switcher",
+      "phase2ImplementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc"
+    },
+    {
+      "nodeId": "phase2-workspace-captain-voyages",
+      "routeId": "phase2-navigation-workspace-captain-voyages",
+      "label": "Voyages",
+      "controlId": "workspace-captain-voyages",
+      "sourceScreen": "src/navigation/registry.ts",
+      "destinationScreen": "/captain/library",
+      "desktopAvailability": true,
+      "mobileAvailability": true,
+      "authentication": "STATE_DEPENDENT",
+      "capabilities": ["captain"],
+      "hiddenCondition": null,
+      "disabledCondition": null,
+      "redirectBehavior": "DESTINATION_GUARD",
+      "currentStatus": "PHASE_2_VALIDATED",
+      "evidenceId": "HP-P2-EV-M-workspace-switcher",
+      "phase2ImplementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc"
+    },
+    {
+      "nodeId": "phase2-workspace-captain-invitations",
+      "routeId": "phase2-navigation-workspace-captain-invitations",
+      "label": "Crew invitations",
+      "controlId": "workspace-captain-invitations",
+      "sourceScreen": "src/navigation/registry.ts",
+      "destinationScreen": "/captain/invitations",
+      "desktopAvailability": true,
+      "mobileAvailability": true,
+      "authentication": "STATE_DEPENDENT",
+      "capabilities": ["captain"],
+      "hiddenCondition": null,
+      "disabledCondition": null,
+      "redirectBehavior": "DESTINATION_GUARD",
+      "currentStatus": "PHASE_2_VALIDATED",
+      "evidenceId": "HP-P2-EV-M-workspace-switcher",
+      "phase2ImplementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc"
+    },
+    {
+      "nodeId": "phase2-workspace-creator-library",
+      "routeId": "phase2-navigation-workspace-creator-library",
+      "label": "Chronicle Library",
+      "controlId": "workspace-creator-library",
+      "sourceScreen": "src/navigation/registry.ts",
+      "destinationScreen": "/studio/library",
+      "desktopAvailability": true,
+      "mobileAvailability": true,
+      "authentication": "STATE_DEPENDENT",
+      "capabilities": ["creator"],
+      "hiddenCondition": null,
+      "disabledCondition": null,
+      "redirectBehavior": "DESTINATION_GUARD",
+      "currentStatus": "PHASE_2_VALIDATED",
+      "evidenceId": "HP-P2-EV-M-workspace-switcher",
+      "phase2ImplementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc"
+    },
+    {
+      "nodeId": "phase2-workspace-creator-exchange",
+      "routeId": "phase2-navigation-workspace-creator-exchange",
+      "label": "Exchange",
+      "controlId": "workspace-creator-exchange",
+      "sourceScreen": "src/navigation/registry.ts",
+      "destinationScreen": "/studio/exchange",
+      "desktopAvailability": true,
+      "mobileAvailability": true,
+      "authentication": "STATE_DEPENDENT",
+      "capabilities": ["creator"],
+      "hiddenCondition": null,
+      "disabledCondition": null,
+      "redirectBehavior": "DESTINATION_GUARD",
+      "currentStatus": "PHASE_2_VALIDATED",
+      "evidenceId": "HP-P2-EV-M-workspace-switcher",
+      "phase2ImplementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc"
+    },
+    {
+      "nodeId": "phase2-workspace-creator-private-content",
+      "routeId": "phase2-navigation-workspace-creator-private-content",
+      "label": "Private Chronicle",
+      "controlId": "workspace-creator-private-content",
+      "sourceScreen": "src/navigation/registry.ts",
+      "destinationScreen": "/studio/private-content",
+      "desktopAvailability": true,
+      "mobileAvailability": true,
+      "authentication": "STATE_DEPENDENT",
+      "capabilities": ["creator"],
+      "hiddenCondition": null,
+      "disabledCondition": null,
+      "redirectBehavior": "DESTINATION_GUARD",
+      "currentStatus": "PHASE_2_VALIDATED",
+      "evidenceId": "HP-P2-EV-M-workspace-switcher",
+      "phase2ImplementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc"
+    },
+    {
+      "nodeId": "phase2-account-create",
+      "routeId": "phase2-navigation-account-create",
+      "label": "Create Account",
+      "controlId": "account-create",
+      "sourceScreen": "src/navigation/registry.ts",
+      "destinationScreen": "/register",
+      "desktopAvailability": true,
+      "mobileAvailability": true,
+      "authentication": "ANONYMOUS",
+      "capabilities": [],
+      "hiddenCondition": null,
+      "disabledCondition": null,
+      "redirectBehavior": "DESTINATION_GUARD",
+      "currentStatus": "PHASE_2_VALIDATED",
+      "evidenceId": "HP-P2-EV-F-account-menu-authenticated",
+      "phase2ImplementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc"
+    },
+    {
+      "nodeId": "phase2-account-sign-in",
+      "routeId": "phase2-navigation-account-sign-in",
+      "label": "Sign In",
+      "controlId": "account-sign-in",
+      "sourceScreen": "src/navigation/registry.ts",
+      "destinationScreen": "SAFE_LOCAL_SIGN_IN_RETURN",
+      "desktopAvailability": true,
+      "mobileAvailability": true,
+      "authentication": "ANONYMOUS",
+      "capabilities": [],
+      "hiddenCondition": null,
+      "disabledCondition": null,
+      "redirectBehavior": "DYNAMIC_SAFE_ACTION",
+      "currentStatus": "PHASE_2_VALIDATED",
+      "evidenceId": "HP-P2-EV-F-account-menu-authenticated",
+      "phase2ImplementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc"
+    },
+    {
+      "nodeId": "phase2-account-view-profile",
+      "routeId": "phase2-navigation-account-view-profile",
+      "label": "View My Profile",
+      "controlId": "account-view-profile",
+      "sourceScreen": "src/navigation/registry.ts",
+      "destinationScreen": "PUBLIC_PROFILE_OR_PASSPORT_PROFILE",
+      "desktopAvailability": true,
+      "mobileAvailability": true,
+      "authentication": "AUTHENTICATED",
+      "capabilities": [],
+      "hiddenCondition": null,
+      "disabledCondition": null,
+      "redirectBehavior": "DYNAMIC_SAFE_ACTION",
+      "currentStatus": "PHASE_2_VALIDATED",
+      "evidenceId": "HP-P2-EV-F-account-menu-authenticated",
+      "phase2ImplementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc"
+    },
+    {
+      "nodeId": "phase2-account-passport",
+      "routeId": "phase2-navigation-account-passport",
+      "label": "Chronicle Passport",
+      "controlId": "account-passport",
+      "sourceScreen": "src/navigation/registry.ts",
+      "destinationScreen": "/passport",
+      "desktopAvailability": true,
+      "mobileAvailability": true,
+      "authentication": "AUTHENTICATED",
+      "capabilities": [],
+      "hiddenCondition": null,
+      "disabledCondition": null,
+      "redirectBehavior": "DESTINATION_GUARD",
+      "currentStatus": "PHASE_2_VALIDATED",
+      "evidenceId": "HP-P2-EV-F-account-menu-authenticated",
+      "phase2ImplementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc"
+    },
+    {
+      "nodeId": "phase2-account-preferences",
+      "routeId": "phase2-navigation-account-preferences",
+      "label": "Preferences",
+      "controlId": "account-preferences",
+      "sourceScreen": "src/navigation/registry.ts",
+      "destinationScreen": "/passport#preferences",
+      "desktopAvailability": true,
+      "mobileAvailability": true,
+      "authentication": "AUTHENTICATED",
+      "capabilities": [],
+      "hiddenCondition": null,
+      "disabledCondition": null,
+      "redirectBehavior": "DESTINATION_GUARD",
+      "currentStatus": "PHASE_2_VALIDATED",
+      "evidenceId": "HP-P2-EV-F-account-menu-authenticated",
+      "phase2ImplementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc"
+    },
+    {
+      "nodeId": "phase2-account-privacy",
+      "routeId": "phase2-navigation-account-privacy",
+      "label": "Privacy & Safety",
+      "controlId": "account-privacy",
+      "sourceScreen": "src/navigation/registry.ts",
+      "destinationScreen": "/passport#privacy",
+      "desktopAvailability": true,
+      "mobileAvailability": true,
+      "authentication": "AUTHENTICATED",
+      "capabilities": [],
+      "hiddenCondition": null,
+      "disabledCondition": null,
+      "redirectBehavior": "DESTINATION_GUARD",
+      "currentStatus": "PHASE_2_VALIDATED",
+      "evidenceId": "HP-P2-EV-F-account-menu-authenticated",
+      "phase2ImplementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc"
+    },
+    {
+      "nodeId": "phase2-account-history",
+      "routeId": "phase2-navigation-account-history",
+      "label": "Chronicle History",
+      "controlId": "account-history",
+      "sourceScreen": "src/navigation/registry.ts",
+      "destinationScreen": "/passport#history",
+      "desktopAvailability": true,
+      "mobileAvailability": true,
+      "authentication": "AUTHENTICATED",
+      "capabilities": [],
+      "hiddenCondition": null,
+      "disabledCondition": null,
+      "redirectBehavior": "DESTINATION_GUARD",
+      "currentStatus": "PHASE_2_VALIDATED",
+      "evidenceId": "HP-P2-EV-F-account-menu-authenticated",
+      "phase2ImplementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc"
+    },
+    {
+      "nodeId": "phase2-account-artifacts",
+      "routeId": "phase2-navigation-account-artifacts",
+      "label": "Artifact Cabinet",
+      "controlId": "account-artifacts",
+      "sourceScreen": "src/navigation/registry.ts",
+      "destinationScreen": "/passport#artifacts",
+      "desktopAvailability": true,
+      "mobileAvailability": true,
+      "authentication": "AUTHENTICATED",
+      "capabilities": [],
+      "hiddenCondition": null,
+      "disabledCondition": null,
+      "redirectBehavior": "DESTINATION_GUARD",
+      "currentStatus": "PHASE_2_VALIDATED",
+      "evidenceId": "HP-P2-EV-F-account-menu-authenticated",
+      "phase2ImplementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc"
+    },
+    {
+      "nodeId": "phase2-account-security-sessions",
+      "routeId": "phase2-navigation-account-security-sessions",
+      "label": "Security & Sessions",
+      "controlId": "account-security-sessions",
+      "sourceScreen": "src/navigation/registry.ts",
+      "destinationScreen": "/account/security",
+      "desktopAvailability": true,
+      "mobileAvailability": true,
+      "authentication": "AUTHENTICATED",
+      "capabilities": [],
+      "hiddenCondition": null,
+      "disabledCondition": null,
+      "redirectBehavior": "DESTINATION_GUARD",
+      "currentStatus": "PHASE_2_VALIDATED",
+      "evidenceId": "HP-P2-EV-F-account-menu-authenticated",
+      "phase2ImplementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc"
+    },
+    {
+      "nodeId": "phase2-account-workspace-player",
+      "routeId": "phase2-navigation-account-workspace-player",
+      "label": "Player",
+      "controlId": "account-workspace-player",
+      "sourceScreen": "src/navigation/registry.ts",
+      "destinationScreen": "/player/library",
+      "desktopAvailability": true,
+      "mobileAvailability": true,
+      "authentication": "AUTHENTICATED",
+      "capabilities": ["player"],
+      "hiddenCondition": null,
+      "disabledCondition": null,
+      "redirectBehavior": "DESTINATION_GUARD",
+      "currentStatus": "PHASE_2_VALIDATED",
+      "evidenceId": "HP-P2-EV-F-account-menu-authenticated",
+      "phase2ImplementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc"
+    },
+    {
+      "nodeId": "phase2-account-workspace-captain",
+      "routeId": "phase2-navigation-account-workspace-captain",
+      "label": "Captain",
+      "controlId": "account-workspace-captain",
+      "sourceScreen": "src/navigation/registry.ts",
+      "destinationScreen": "/captain/library",
+      "desktopAvailability": true,
+      "mobileAvailability": true,
+      "authentication": "AUTHENTICATED",
+      "capabilities": ["captain"],
+      "hiddenCondition": null,
+      "disabledCondition": null,
+      "redirectBehavior": "DESTINATION_GUARD",
+      "currentStatus": "PHASE_2_VALIDATED",
+      "evidenceId": "HP-P2-EV-F-account-menu-authenticated",
+      "phase2ImplementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc"
+    },
+    {
+      "nodeId": "phase2-account-workspace-creator",
+      "routeId": "phase2-navigation-account-workspace-creator",
+      "label": "Creator Studio",
+      "controlId": "account-workspace-creator",
+      "sourceScreen": "src/navigation/registry.ts",
+      "destinationScreen": "/studio/library",
+      "desktopAvailability": true,
+      "mobileAvailability": true,
+      "authentication": "AUTHENTICATED",
+      "capabilities": ["creator"],
+      "hiddenCondition": null,
+      "disabledCondition": null,
+      "redirectBehavior": "DESTINATION_GUARD",
+      "currentStatus": "PHASE_2_VALIDATED",
+      "evidenceId": "HP-P2-EV-F-account-menu-authenticated",
+      "phase2ImplementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc"
+    },
+    {
+      "nodeId": "phase2-account-workspace-moderator",
+      "routeId": "phase2-navigation-account-workspace-moderator",
+      "label": "Moderation",
+      "controlId": "account-workspace-moderator",
+      "sourceScreen": "src/navigation/registry.ts",
+      "destinationScreen": "/community/moderation",
+      "desktopAvailability": true,
+      "mobileAvailability": true,
+      "authentication": "AUTHENTICATED",
+      "capabilities": ["moderator"],
+      "hiddenCondition": null,
+      "disabledCondition": null,
+      "redirectBehavior": "DESTINATION_GUARD",
+      "currentStatus": "PHASE_2_VALIDATED",
+      "evidenceId": "HP-P2-EV-F-account-menu-authenticated",
+      "phase2ImplementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc"
+    },
+    {
+      "nodeId": "phase2-account-sign-out",
+      "routeId": "phase2-navigation-account-sign-out",
+      "label": "Sign Out",
+      "controlId": "account-sign-out",
+      "sourceScreen": "src/navigation/registry.ts",
+      "destinationScreen": "SIGN_OUT_ACTION",
+      "desktopAvailability": true,
+      "mobileAvailability": true,
+      "authentication": "AUTHENTICATED",
+      "capabilities": [],
+      "hiddenCondition": null,
+      "disabledCondition": null,
+      "redirectBehavior": "DYNAMIC_SAFE_ACTION",
+      "currentStatus": "PHASE_2_VALIDATED",
+      "evidenceId": "HP-P2-EV-F-account-menu-authenticated",
+      "phase2ImplementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc"
+    },
+    {
+      "nodeId": "phase2-context-community-parent",
+      "routeId": "phase2-navigation-context-community-parent",
+      "label": "Back to Community Harbor",
+      "controlId": "context-community-parent",
+      "sourceScreen": "src/navigation/registry.ts",
+      "destinationScreen": "/community",
+      "desktopAvailability": true,
+      "mobileAvailability": true,
+      "authentication": "STATE_DEPENDENT",
+      "capabilities": [],
+      "hiddenCondition": null,
+      "disabledCondition": null,
+      "redirectBehavior": "DESTINATION_GUARD",
+      "currentStatus": "PHASE_2_VALIDATED",
+      "evidenceId": "HP-P2-EV-N-compact-exit",
+      "phase2ImplementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc"
+    },
+    {
+      "nodeId": "phase2-context-chronicles-parent",
+      "routeId": "phase2-navigation-context-chronicles-parent",
+      "label": "Back to Explore Chronicles",
+      "controlId": "context-chronicles-parent",
+      "sourceScreen": "src/navigation/registry.ts",
+      "destinationScreen": "/tales",
+      "desktopAvailability": true,
+      "mobileAvailability": true,
+      "authentication": "STATE_DEPENDENT",
+      "capabilities": [],
+      "hiddenCondition": null,
+      "disabledCondition": null,
+      "redirectBehavior": "DESTINATION_GUARD",
+      "currentStatus": "PHASE_2_VALIDATED",
+      "evidenceId": "HP-P2-EV-N-compact-exit",
+      "phase2ImplementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc"
+    },
+    {
+      "nodeId": "phase2-context-personal-parent",
+      "routeId": "phase2-navigation-context-personal-parent",
+      "label": "Personal Harbor",
+      "controlId": "context-personal-parent",
+      "sourceScreen": "src/navigation/registry.ts",
+      "destinationScreen": "/passport",
+      "desktopAvailability": true,
+      "mobileAvailability": true,
+      "authentication": "STATE_DEPENDENT",
+      "capabilities": [],
+      "hiddenCondition": null,
+      "disabledCondition": null,
+      "redirectBehavior": "DESTINATION_GUARD",
+      "currentStatus": "PHASE_2_VALIDATED",
+      "evidenceId": "HP-P2-EV-N-compact-exit",
+      "phase2ImplementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc"
+    },
+    {
+      "nodeId": "phase2-context-captain-exit",
+      "routeId": "phase2-navigation-context-captain-exit",
+      "label": "Exit to Captain Voyages",
+      "controlId": "context-captain-exit",
+      "sourceScreen": "src/navigation/registry.ts",
+      "destinationScreen": "/captain/library",
+      "desktopAvailability": true,
+      "mobileAvailability": true,
+      "authentication": "STATE_DEPENDENT",
+      "capabilities": ["captain"],
+      "hiddenCondition": null,
+      "disabledCondition": null,
+      "redirectBehavior": "DESTINATION_GUARD",
+      "currentStatus": "PHASE_2_VALIDATED",
+      "evidenceId": "HP-P2-EV-N-compact-exit",
+      "phase2ImplementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc"
+    },
+    {
+      "nodeId": "phase2-context-player-exit",
+      "routeId": "phase2-navigation-context-player-exit",
+      "label": "Exit to My Voyages",
+      "controlId": "context-player-exit",
+      "sourceScreen": "src/navigation/registry.ts",
+      "destinationScreen": "/player/library",
+      "desktopAvailability": true,
+      "mobileAvailability": true,
+      "authentication": "STATE_DEPENDENT",
+      "capabilities": ["player"],
+      "hiddenCondition": null,
+      "disabledCondition": null,
+      "redirectBehavior": "DESTINATION_GUARD",
+      "currentStatus": "PHASE_2_VALIDATED",
+      "evidenceId": "HP-P2-EV-N-compact-exit",
+      "phase2ImplementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc"
+    },
+    {
+      "nodeId": "phase2-context-development-exit",
+      "routeId": "phase2-navigation-context-development-exit",
+      "label": "Exit development tools",
+      "controlId": "context-development-exit",
+      "sourceScreen": "src/navigation/registry.ts",
+      "destinationScreen": "/",
+      "desktopAvailability": true,
+      "mobileAvailability": true,
+      "authentication": "STATE_DEPENDENT",
+      "capabilities": [],
+      "hiddenCondition": null,
+      "disabledCondition": null,
+      "redirectBehavior": "DESTINATION_GUARD",
+      "currentStatus": "PHASE_2_VALIDATED",
+      "evidenceId": "HP-P2-EV-N-compact-exit",
+      "phase2ImplementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc"
+    },
+    {
+      "nodeId": "phase2-alias-player-root",
+      "routeId": "phase2-navigation-alias-player-root",
+      "label": "Player compatibility entry",
+      "controlId": "alias-player-root",
+      "sourceScreen": "src/navigation/registry.ts",
+      "destinationScreen": "/player",
+      "desktopAvailability": false,
+      "mobileAvailability": false,
+      "authentication": "STATE_DEPENDENT",
+      "capabilities": [],
+      "hiddenCondition": "COMPATIBILITY_ALIAS_NOT_RENDERED",
+      "disabledCondition": null,
+      "redirectBehavior": "DESTINATION_GUARD",
+      "currentStatus": "PHASE_2_VALIDATED",
+      "evidenceId": "HP-P2-EV-M-workspace-switcher",
+      "phase2ImplementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc"
+    },
+    {
+      "nodeId": "phase2-alias-captain-root",
+      "routeId": "phase2-navigation-alias-captain-root",
+      "label": "Captain compatibility entry",
+      "controlId": "alias-captain-root",
+      "sourceScreen": "src/navigation/registry.ts",
+      "destinationScreen": "/captain",
+      "desktopAvailability": false,
+      "mobileAvailability": false,
+      "authentication": "STATE_DEPENDENT",
+      "capabilities": [],
+      "hiddenCondition": "COMPATIBILITY_ALIAS_NOT_RENDERED",
+      "disabledCondition": null,
+      "redirectBehavior": "DESTINATION_GUARD",
+      "currentStatus": "PHASE_2_VALIDATED",
+      "evidenceId": "HP-P2-EV-M-workspace-switcher",
+      "phase2ImplementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc"
+    },
+    {
+      "nodeId": "phase2-alias-creator-root",
+      "routeId": "phase2-navigation-alias-creator-root",
+      "label": "Creator compatibility entry",
+      "controlId": "alias-creator-root",
+      "sourceScreen": "src/navigation/registry.ts",
+      "destinationScreen": "/studio",
+      "desktopAvailability": false,
+      "mobileAvailability": false,
+      "authentication": "STATE_DEPENDENT",
+      "capabilities": [],
+      "hiddenCondition": "COMPATIBILITY_ALIAS_NOT_RENDERED",
+      "disabledCondition": null,
+      "redirectBehavior": "DESTINATION_GUARD",
+      "currentStatus": "PHASE_2_VALIDATED",
+      "evidenceId": "HP-P2-EV-M-workspace-switcher",
+      "phase2ImplementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc"
     }
   ],
   "phase1Implementation": {
@@ -2258,6 +2540,205 @@
       "journeyId": "HP-P1-JRN-Q",
       "routeTransitions": ["sign-in expiry", "registration", "moderation permission"],
       "accountAuthority": "HP-SES-001",
+      "result": "PASSED"
+    }
+  ],
+  "phase2Implementation": {
+    "phase": "PHASE_2_RESTORE_GLOBAL_SHELL_AND_WAYFINDING",
+    "phase1FinalSha": "dca3480f5369bfa7d5b8fd52e2cca155185fae33",
+    "architectureSha": "befb75625002a0b68093d1c35bfb846055cd9a14",
+    "implementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc",
+    "state": "VALIDATED",
+    "updatedAt": "2026-08-01T23:45:00.000Z",
+    "historicalPhase0Preserved": true,
+    "noSchemaChange": true
+  },
+  "phase2AcceptanceEdges": [
+    {
+      "journeyId": "HP-P2-JRN-A",
+      "routeTransitions": ["/", "open Account", "Create Account and Sign In visible", "keyboard close and reopen"],
+      "shellAuthority": "src/components/shell/ProductShell.tsx",
+      "navigationAuthority": "src/navigation/registry.ts",
+      "result": "PASSED"
+    },
+    {
+      "journeyId": "HP-P2-JRN-B",
+      "routeTransitions": ["/", "/sign-in", "/", "authenticated identity and granted workspaces"],
+      "shellAuthority": "src/components/shell/ProductShell.tsx",
+      "navigationAuthority": "src/navigation/registry.ts",
+      "result": "PASSED"
+    },
+    {
+      "journeyId": "HP-P2-JRN-C",
+      "routeTransitions": ["/", "/community", "/"],
+      "shellAuthority": "src/components/shell/ProductShell.tsx",
+      "navigationAuthority": "src/navigation/registry.ts",
+      "result": "PASSED"
+    },
+    {
+      "journeyId": "HP-P2-JRN-D",
+      "routeTransitions": ["/", "/tales", "/"],
+      "shellAuthority": "src/components/shell/ProductShell.tsx",
+      "navigationAuthority": "src/navigation/registry.ts",
+      "result": "PASSED"
+    },
+    {
+      "journeyId": "HP-P2-JRN-E",
+      "routeTransitions": [
+        "/",
+        "/player/library",
+        "/community",
+        "/passport#profile",
+        "/passport",
+        "/account/security",
+        "/player/library"
+      ],
+      "shellAuthority": "src/components/shell/ProductShell.tsx",
+      "navigationAuthority": "src/navigation/registry.ts",
+      "result": "PASSED"
+    },
+    {
+      "journeyId": "HP-P2-JRN-F",
+      "routeTransitions": ["/", "/captain/library", "/community", "/passport", "/player/library", "/captain/library"],
+      "shellAuthority": "src/components/shell/ProductShell.tsx",
+      "navigationAuthority": "src/navigation/registry.ts",
+      "result": "PASSED"
+    },
+    {
+      "journeyId": "HP-P2-JRN-G",
+      "routeTransitions": ["/", "/studio/library", "/community", "/account/security", "/studio/library"],
+      "shellAuthority": "src/components/shell/ProductShell.tsx",
+      "navigationAuthority": "src/navigation/registry.ts",
+      "result": "PASSED"
+    },
+    {
+      "journeyId": "HP-P2-JRN-H",
+      "routeTransitions": ["/player/library", "/captain/library", "/studio/library", "/player/library"],
+      "shellAuthority": "src/components/shell/ProductShell.tsx",
+      "navigationAuthority": "src/navigation/registry.ts",
+      "result": "PASSED"
+    },
+    {
+      "journeyId": "HP-P2-JRN-I",
+      "routeTransitions": ["identity", "personal harbor", "workspaces", "account actions", "all personal destinations"],
+      "shellAuthority": "src/components/shell/ProductShell.tsx",
+      "navigationAuthority": "src/navigation/registry.ts",
+      "result": "PASSED"
+    },
+    {
+      "journeyId": "HP-P2-JRN-J",
+      "routeTransitions": ["390x844 /", "mobile global drawer", "Community and Explore", "anonymous account menu"],
+      "shellAuthority": "src/components/shell/ProductShell.tsx",
+      "navigationAuthority": "src/navigation/registry.ts",
+      "result": "PASSED"
+    },
+    {
+      "journeyId": "HP-P2-JRN-K",
+      "routeTransitions": [
+        "/player/library desktop set",
+        "390x844 mobile set",
+        "exact ID comparison",
+        "/account/security",
+        "Sign Out"
+      ],
+      "shellAuthority": "src/components/shell/ProductShell.tsx",
+      "navigationAuthority": "src/navigation/registry.ts",
+      "result": "PASSED"
+    },
+    {
+      "journeyId": "HP-P2-JRN-L",
+      "routeTransitions": [
+        "skip link",
+        "global navigation",
+        "account disclosure",
+        "Escape restoration",
+        "mobile drawer"
+      ],
+      "shellAuthority": "src/components/shell/ProductShell.tsx",
+      "navigationAuthority": "src/navigation/registry.ts",
+      "result": "PASSED"
+    },
+    {
+      "journeyId": "HP-P2-JRN-M",
+      "routeTransitions": [
+        "open disclosure",
+        "navigate",
+        "close overlay",
+        "restore body scroll",
+        "repeat in mobile drawer"
+      ],
+      "shellAuthority": "src/components/shell/ProductShell.tsx",
+      "navigationAuthority": "src/navigation/registry.ts",
+      "result": "PASSED"
+    },
+    {
+      "journeyId": "HP-P2-JRN-N",
+      "routeTransitions": [
+        "Home",
+        "Explore",
+        "Community root and nested",
+        "Player",
+        "Captain",
+        "Creator",
+        "Passport and Profile",
+        "auth adapter"
+      ],
+      "shellAuthority": "src/components/shell/ProductShell.tsx",
+      "navigationAuthority": "src/navigation/registry.ts",
+      "result": "PASSED"
+    },
+    {
+      "journeyId": "HP-P2-JRN-O",
+      "routeTransitions": ["/captain/sessions/:sessionId", "Exit to Captain Voyages", "/captain/library"],
+      "shellAuthority": "src/components/shell/ProductShell.tsx",
+      "navigationAuthority": "src/navigation/registry.ts",
+      "result": "PASSED"
+    },
+    {
+      "journeyId": "HP-P2-JRN-P",
+      "routeTransitions": [
+        "/player/playthroughs/:playthroughId/journal",
+        "Exit to My Voyages",
+        "/player/library",
+        "compare persisted Voyage state"
+      ],
+      "shellAuthority": "src/components/shell/ProductShell.tsx",
+      "navigationAuthority": "src/navigation/registry.ts",
+      "result": "PASSED"
+    },
+    {
+      "journeyId": "HP-P2-JRN-Q",
+      "routeTransitions": ["/community/moderation", "explicit permission state", "authenticated account retained", "/"],
+      "shellAuthority": "src/components/shell/ProductShell.tsx",
+      "navigationAuthority": "src/navigation/registry.ts",
+      "result": "PASSED"
+    },
+    {
+      "journeyId": "HP-P2-JRN-R",
+      "routeTransitions": ["/", "task-owned 503", "unavailable account state", "retry", "anonymous state restored"],
+      "shellAuthority": "src/components/shell/ProductShell.tsx",
+      "navigationAuthority": "src/navigation/registry.ts",
+      "result": "PASSED"
+    },
+    {
+      "journeyId": "HP-P2-JRN-S",
+      "routeTransitions": ["640 CSS pixels", "gateway", "account menu", "Community", "compact exit", "no overflow"],
+      "shellAuthority": "src/components/shell/ProductShell.tsx",
+      "navigationAuthority": "src/navigation/registry.ts",
+      "result": "PASSED"
+    },
+    {
+      "journeyId": "HP-P2-JRN-T",
+      "routeTransitions": ["reduced motion", "gateway", "disclosures", "immersive exit"],
+      "shellAuthority": "src/components/shell/ProductShell.tsx",
+      "navigationAuthority": "src/navigation/registry.ts",
+      "result": "PASSED"
+    },
+    {
+      "journeyId": "HP-P2-JRN-U",
+      "routeTransitions": ["Sign In", "Player", "Captain", "Creator", "Passport", "Sign Out"],
+      "shellAuthority": "src/components/shell/ProductShell.tsx",
+      "navigationAuthority": "src/navigation/registry.ts",
       "result": "PASSED"
     }
   ]

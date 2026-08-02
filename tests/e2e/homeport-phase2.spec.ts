@@ -11,7 +11,9 @@ import { hash } from "bcryptjs";
 const password = "Homeport-validation-passphrase-2026";
 const evidenceRoot = path.resolve(
   process.env.HOMEPORT_PHASE2_EVIDENCE_ROOT ??
-    path.join("Development_Docs", "Projects", "Project_Homeport", "evidence", "phase2"),
+    (process.env.SOUNDING_LINE_INTERNAL_RUNTIME === "1"
+      ? path.join("artifacts", "validation", "homeport-phase2", "sounding-line-evidence")
+      : path.join("Development_Docs", "Projects", "Project_Homeport", "evidence", "phase2")),
 );
 
 type AccountFixture = {
@@ -44,8 +46,7 @@ async function fixture(label: string, roles: string[] = [], options: { handle?: 
       where: { id: result.account.profile.id },
       data: { username: slug, handle: slug, normalizedHandle: slug },
     });
-  for (const role of roles)
-    await db.accountRoleAssignment.create({ data: { accountId: result.account.id, role } });
+  for (const role of roles) await db.accountRoleAssignment.create({ data: { accountId: result.account.id, role } });
   let gameMasterId: string | undefined;
   if (options.captain) {
     const gameMaster = await db.gameMasterUser.create({
@@ -168,9 +169,7 @@ async function capture(page: Page, evidenceId: string) {
 }
 
 async function clickGlobal(page: Page, name: string) {
-  const link = page
-    .getByRole("navigation", { name: "Global navigation" })
-    .getByRole("link", { name, exact: true });
+  const link = page.getByRole("navigation", { name: "Global navigation" }).getByRole("link", { name, exact: true });
   if (!(await link.isVisible())) await page.getByRole("button", { name: "Open navigation" }).click();
   await link.click();
 }
@@ -221,6 +220,8 @@ async function navigateAccountLink(page: Page, account: AccountFixture, name: st
 
 test.describe.serial("Project Homeport Phase 2 browser journeys", () => {
   test.beforeAll(async () => {
+    if (process.env.SOUNDING_LINE_INTERNAL_RUNTIME !== "1" && !process.env.HOMEPORT_PHASE2_DATABASE_PATH)
+      throw new Error("HOMEPORT_PHASE2_REQUIRES_DEDICATED_OR_SOUNDING_LINE_RUNTIME");
     await mkdir(evidenceRoot, { recursive: true });
     player = await fixture("Player");
     full = await fixture("Full", ["CAPTAIN", "CREATOR"], { handle: true, captain: true });
@@ -405,7 +406,9 @@ test.describe.serial("Project Homeport Phase 2 browser journeys", () => {
     await navigation.click();
     await expect(page.getByRole("navigation", { name: "Global navigation" })).toBeVisible();
     for (const name of ["Community Harbor", "Explore Chronicles"])
-      await expect(page.getByRole("navigation", { name: "Global navigation" }).getByRole("link", { name })).toBeVisible();
+      await expect(
+        page.getByRole("navigation", { name: "Global navigation" }).getByRole("link", { name }),
+      ).toBeVisible();
     await capture(page, "HP-P2-EV-L-mobile-drawer");
     await page.keyboard.press("Escape");
     const menu = await openAccountMenu(page, "Account");
@@ -442,7 +445,11 @@ test.describe.serial("Project Homeport Phase 2 browser journeys", () => {
     await expect(page.locator("#main-content")).toBeFocused();
     await page.goto("/");
     const account = page.getByRole("button", { name: "Account", exact: true });
-    for (let index = 0; index < 12 && !(await account.evaluate((element) => element === document.activeElement)); index += 1)
+    for (
+      let index = 0;
+      index < 12 && !(await account.evaluate((element) => element === document.activeElement));
+      index += 1
+    )
       await page.keyboard.press("Tab");
     await expect(account).toBeFocused();
     await page.keyboard.press("Enter");
@@ -455,7 +462,9 @@ test.describe.serial("Project Homeport Phase 2 browser journeys", () => {
     const openNavigation = page.getByRole("button", { name: "Open navigation" });
     await openNavigation.focus();
     await page.keyboard.press("Enter");
-    await expect(page.getByRole("navigation", { name: "Global navigation" }).getByRole("link", { name: "Home" })).toBeFocused();
+    await expect(
+      page.getByRole("navigation", { name: "Global navigation" }).getByRole("link", { name: "Home" }),
+    ).toBeFocused();
     await page.keyboard.press("Escape");
     await expect(openNavigation).toBeFocused();
   });
@@ -473,7 +482,10 @@ test.describe.serial("Project Homeport Phase 2 browser journeys", () => {
     const openNavigation = page.getByRole("button", { name: "Open navigation" });
     await openNavigation.click();
     await expect.poll(() => page.evaluate(() => document.body.dataset.shellOverlay)).toBe("open");
-    await page.getByRole("navigation", { name: "Global navigation" }).getByRole("link", { name: "Community Harbor" }).click();
+    await page
+      .getByRole("navigation", { name: "Global navigation" })
+      .getByRole("link", { name: "Community Harbor" })
+      .click();
     await expect(page).toHaveURL(/\/community$/u);
     await expect(openNavigation).toHaveAttribute("aria-expanded", "false");
     await expect.poll(() => page.evaluate(() => document.body.dataset.shellOverlay ?? "closed")).toBe("closed");
@@ -483,19 +495,34 @@ test.describe.serial("Project Homeport Phase 2 browser journeys", () => {
     await page.goto("/");
     await expect(page.locator('[data-navigation-id="global-home"]')).toHaveAttribute("aria-current", "page");
     await clickGlobal(page, "Explore Chronicles");
-    await expect(page.locator('[data-navigation-id="global-explore-chronicles"]')).toHaveAttribute("aria-current", "page");
+    await expect(page.locator('[data-navigation-id="global-explore-chronicles"]')).toHaveAttribute(
+      "aria-current",
+      "page",
+    );
     await clickGlobal(page, "Community Harbor");
-    await expect(page.locator('[data-navigation-id="global-community-harbor"]')).toHaveAttribute("aria-current", "page");
+    await expect(page.locator('[data-navigation-id="global-community-harbor"]')).toHaveAttribute(
+      "aria-current",
+      "page",
+    );
     await page.goto("/community/creators");
-    await expect(page.locator('[data-navigation-id="global-community-harbor"]')).toHaveAttribute("aria-current", "page");
+    await expect(page.locator('[data-navigation-id="global-community-harbor"]')).toHaveAttribute(
+      "aria-current",
+      "page",
+    );
     await signInFromGateway(page, full);
     await navigateAccountLink(page, full, "Player");
     await expect(page.locator('[data-navigation-id="workspace-player-home"]')).toHaveAttribute("aria-current", "page");
     await expect(page.locator('[data-navigation-id="global-home"]')).not.toHaveAttribute("aria-current", "page");
     await navigateAccountLink(page, full, "Captain");
-    await expect(page.locator('[data-navigation-id="workspace-captain-voyages"]')).toHaveAttribute("aria-current", "page");
+    await expect(page.locator('[data-navigation-id="workspace-captain-voyages"]')).toHaveAttribute(
+      "aria-current",
+      "page",
+    );
     await navigateAccountLink(page, full, "Creator Studio");
-    await expect(page.locator('[data-navigation-id="workspace-creator-library"]')).toHaveAttribute("aria-current", "page");
+    await expect(page.locator('[data-navigation-id="workspace-creator-library"]')).toHaveAttribute(
+      "aria-current",
+      "page",
+    );
     await navigateAccountLink(page, full, "Chronicle Passport");
     await expect(page.getByRole("heading", { name: "Chronicle Passport", exact: true })).toBeVisible();
     let menu = await openAccountMenu(page, full.displayName);
@@ -530,7 +557,13 @@ test.describe.serial("Project Homeport Phase 2 browser journeys", () => {
     await signInFromGateway(page, full);
     const before = await db.taleSession.findUniqueOrThrow({
       where: { id: immersivePlaythroughId },
-      select: { status: true, currentSequence: true, concurrencyVersion: true, currentChapterId: true, currentBlockId: true },
+      select: {
+        status: true,
+        currentSequence: true,
+        concurrencyVersion: true,
+        currentChapterId: true,
+        currentBlockId: true,
+      },
     });
     const eventCountBefore = await db.taleSessionEvent.count({ where: { sessionId: immersivePlaythroughId } });
     await page.goto(`/player/playthroughs/${immersivePlaythroughId}/journal`);
@@ -544,7 +577,13 @@ test.describe.serial("Project Homeport Phase 2 browser journeys", () => {
     await expect(page).toHaveURL(/\/player\/library$/u);
     const after = await db.taleSession.findUniqueOrThrow({
       where: { id: immersivePlaythroughId },
-      select: { status: true, currentSequence: true, concurrencyVersion: true, currentChapterId: true, currentBlockId: true },
+      select: {
+        status: true,
+        currentSequence: true,
+        concurrencyVersion: true,
+        currentChapterId: true,
+        currentBlockId: true,
+      },
     });
     expect(after).toEqual(before);
     expect(await db.taleSessionEvent.count({ where: { sessionId: immersivePlaythroughId } })).toBe(eventCountBefore);

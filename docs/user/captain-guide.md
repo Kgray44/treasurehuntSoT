@@ -20,3 +20,9 @@ the required capability receives an explicit permission state instead of a
 second password prompt. Historical mapped staff sessions are rotated into the
 canonical account session; an unmapped legacy session grants no authority.
 This branch behavior is not yet available on main.
+
+On the Phase 2 branch, the Captain shell separates global Community Harbor
+from Captain-owned Voyages and Crew invitations. Account switches to Player or
+Creator Studio only when the signed-in account has those capabilities.
+Focused Captain session routes provide Exit to Captain Voyages instead of
+depending on browser history. This behavior is not on main or deployed.

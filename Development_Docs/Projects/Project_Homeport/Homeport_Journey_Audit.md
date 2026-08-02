@@ -99,3 +99,33 @@ This is local synthetic acceptance evidence. It does not replace Phase 0 before-
 ## Unresolved environmental state
 
 **UNRESOLVED:** Dependency-unavailable behavior was not safely inducible without manufacturing a false infrastructure failure. It remains `UNREACHABLE/NOT_REPRODUCED` in the screen-state catalog, not an inferred pass or fail.
+
+## Phase 2 implemented-state addendum
+
+Phase 2 adds 21 isolated Chromium journeys and 20 visually inspected, checksum-bound synthetic after-state images without replacing Phase 0 or Phase 1 history. The implementation anchor is `ce9fd8e70f0e906416cf41cd508ec5f2063570cc`.
+
+| Journey     | Contract                             | Result | Visual evidence                                                                 |
+| ----------- | ------------------------------------ | ------ | ------------------------------------------------------------------------------- |
+| HP-P2-JRN-A | Anonymous gateway account lifecycle  | PASSED | HP-P2-EV-A-gateway-anonymous-desktop, HP-P2-EV-E-account-menu-anonymous         |
+| HP-P2-JRN-B | Authenticated gateway identity       | PASSED | HP-P2-EV-B-gateway-authenticated-desktop, HP-P2-EV-F-account-menu-authenticated |
+| HP-P2-JRN-C | Gateway to Community Harbor          | PASSED | HP-P2-EV-K-community-shell                                                      |
+| HP-P2-JRN-D | Gateway to Explore Chronicles        | PASSED | HP-P2-EV-G-global-nav-public                                                    |
+| HP-P2-JRN-E | Player workspace navigation          | PASSED | HP-P2-EV-H-player-navigation                                                    |
+| HP-P2-JRN-F | Captain workspace navigation         | PASSED | HP-P2-EV-I-captain-navigation                                                   |
+| HP-P2-JRN-G | Creator workspace navigation         | PASSED | HP-P2-EV-J-creator-navigation                                                   |
+| HP-P2-JRN-H | Workspace switcher continuity        | PASSED | HP-P2-EV-M-workspace-switcher                                                   |
+| HP-P2-JRN-I | Authenticated account-menu hierarchy | PASSED | Behavioral contract only                                                        |
+| HP-P2-JRN-J | Anonymous mobile navigation          | PASSED | HP-P2-EV-C-gateway-anonymous-mobile, HP-P2-EV-L-mobile-drawer                   |
+| HP-P2-JRN-K | Authenticated mobile parity          | PASSED | HP-P2-EV-D-gateway-authenticated-mobile                                         |
+| HP-P2-JRN-L | Keyboard navigation                  | PASSED | Behavioral contract only                                                        |
+| HP-P2-JRN-M | Route-change lifecycle               | PASSED | Behavioral contract only                                                        |
+| HP-P2-JRN-N | Active-state matrix                  | PASSED | Behavioral contract only                                                        |
+| HP-P2-JRN-O | Compact surface exit                 | PASSED | HP-P2-EV-N-compact-exit                                                         |
+| HP-P2-JRN-P | Immersive Player exit                | PASSED | HP-P2-EV-O-immersive-exit                                                       |
+| HP-P2-JRN-Q | Permission-restricted destination    | PASSED | HP-P2-EV-T-permission-return                                                    |
+| HP-P2-JRN-R | Current-user context unavailable     | PASSED | HP-P2-EV-P-context-unavailable                                                  |
+| HP-P2-JRN-S | Two-hundred-percent zoom             | PASSED | HP-P2-EV-Q-zoom-gateway, HP-P2-EV-R-zoom-account-menu                           |
+| HP-P2-JRN-T | Reduced motion                       | PASSED | HP-P2-EV-S-reduced-motion                                                       |
+| HP-P2-JRN-U | Phase 1 regression continuity        | PASSED | Behavioral contract only                                                        |
+
+Directly closed after governed final validation: HP-NC-001, HP-NC-006, HP-NC-010, and HP-NC-016. Partially advanced without false closure: HP-NC-008, HP-NC-014, and HP-NC-026. This is local branch evidence, not deployment, owner acceptance, or product acceptance.

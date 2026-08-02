@@ -935,6 +935,43 @@ One server-resolved account session now drives current-user state, workspace cap
 
 ---
 
+## FT-B002 - Global Shell and Wayfinding
+
+**Status:** BRANCH COMPLETE NOT MERGED
+**Program or subsystem:** Project Homeport Phase 2
+
+One route-classified product shell now provides global, workspace, account, and contextual wayfinding with equivalent desktop/mobile destinations and safe focused-surface exits.
+
+### Important subfeatures
+
+- Eight-mode exclusive page-shell classification
+- One four-layer navigation registry and projection
+- Structured anonymous and authenticated account orientation
+- Capability-projected workspace switching without second sign-in
+- Equivalent desktop and mobile functional destinations
+- Governed compact and immersive workspace exits
+- Global Community Harbor and Explore Chronicles reachability
+
+### Primary surfaces
+
+`/`, `/tales`, `/community`, `/player/library`, `/captain/library`, `/studio/library`, `/passport`
+
+### Meaningful limitations
+
+- Not available on main until separately reviewed and integrated
+- Not deployed; live-user validation and owner acceptance are not established
+- Personal Harbor information architecture and visual reconstruction remain Phase 3
+- Community content and district reconstruction remain Phase 4
+- Exhaustive ordinary-route reachability remains Phase 5
+
+### Evidence
+
+- commit: `ce9fd8e70f0e906416cf41cd508ec5f2063570cc`
+- completion-record: `Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_2_Validation_Record.md`
+- test: `tests/e2e/homeport-phase2.spec.ts`
+
+---
+
 # Deliberately Excluded Until Complete
 
 - Harborlight Phase 4 is planned and is not cataloged as an implemented capability.

@@ -316,3 +316,14 @@ Phase 5, and full screen-state/owner acceptance later governed work.
 Rollback is source-only: revert the Phase 2 implementation and artifact commits
 while retaining this decision record and historical evidence. No database
 rollback exists because Phase 2 adds no schema or persisted data.
+
+## Implementation conformance addendum
+
+Implementation anchor `ce9fd8e70f0e906416cf41cd508ec5f2063570cc`
+conforms to this freeze: 69 pages classify once across all eight modes, 32
+registry items project through the four layers, 29 visible parity rows have
+equivalent desktop/mobile destinations, and all seven compact/immersive records
+have canonical exits. The final A-U browser run passed 21 journeys and the 20
+required images were visually accepted. Inventory closure and Sounding Line
+remain separate publication receipts; neither local browser proof nor this
+addendum claims deployment or owner acceptance.
