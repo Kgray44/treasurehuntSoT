@@ -26,7 +26,7 @@ const hash = (value: string) => createHash("sha256").update(value).digest("hex")
 const randomUrlToken = () => randomBytes(32).toString("base64url");
 
 function redirectPath(value: string | undefined) {
-  return value && value.startsWith("/") && !value.startsWith("//") ? value : "/passport/providers";
+  return value && value.startsWith("/") && !value.startsWith("//") ? value : "/account/linked-identities";
 }
 
 function encryptionKey() {
@@ -752,14 +752,13 @@ export async function unlinkExternalIdentity(accountId: string, identityId: stri
 }
 
 export async function safeLinkedIdentities(accountId: string) {
-  return db.externalIdentity.findMany({
+  const identities = await db.externalIdentity.findMany({
     where: { accountId },
     select: {
       id: true,
       provider: true,
       providerDisplayName: true,
       avatarReference: true,
-      allowedScopes: true,
       useForLogin: true,
       visibility: true,
       status: true,
@@ -769,4 +768,16 @@ export async function safeLinkedIdentities(accountId: string) {
     },
     orderBy: { linkedAt: "desc" },
   });
+  return identities.map((identity) => ({
+    id: identity.id,
+    provider: identity.provider,
+    displayName: identity.providerDisplayName,
+    avatarUrl: identity.avatarReference,
+    useForLogin: identity.useForLogin,
+    visibility: identity.visibility,
+    status: identity.status,
+    linkedAt: identity.linkedAt.toISOString(),
+    lastVerifiedAt: identity.lastVerifiedAt?.toISOString() ?? null,
+    revokedAt: identity.revokedAt?.toISOString() ?? null,
+  }));
 }

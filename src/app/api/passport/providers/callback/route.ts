@@ -13,8 +13,8 @@ export async function POST(request: Request) {
 }
 
 export async function GET(request: Request) {
-  const session = await requireWayfarerAccount(request);
-  if (!session) return NextResponse.redirect(new URL("/login?returnTo=/passport/providers", request.url));
+  const session = await requireWayfarerAccount();
+  if (!session) return NextResponse.redirect(new URL("/sign-in?returnTo=/account/linked-identities", request.url));
   const url = new URL(request.url);
   const provider = url.searchParams.get("provider");
   const state = url.searchParams.get("state");
@@ -27,8 +27,8 @@ export async function GET(request: Request) {
       if (!code) throw new Error("Missing provider authorization code.");
       await completeProviderLink({ accountId: session.accountId, provider, state, code });
     }
-    return NextResponse.redirect(new URL("/passport/providers?linked=1", request.url));
+    return NextResponse.redirect(new URL("/account/linked-identities?linked=1", request.url));
   } catch {
-    return NextResponse.redirect(new URL("/passport/providers?providerError=1", request.url));
+    return NextResponse.redirect(new URL("/account/linked-identities?providerError=1", request.url));
   }
 }

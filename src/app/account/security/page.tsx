@@ -1,21 +1,5 @@
-import { redirect } from "next/navigation";
-import { AccessDecisionState } from "@/components/auth/AccessDecisionState";
-import { AccountFlow } from "@/components/wayfarer/AccountFlow";
-import { decideCapability } from "@/homeport/current-user";
-import { resolveCurrentUser } from "@/homeport/current-user.server";
-import { signInHref } from "@/homeport/return-to";
+import { SecurityOverview } from "@/components/homeport/AccountSurfaces";
+import { AuthenticatedHarborPage } from "@/components/homeport/AuthenticatedHarborPage";
 
 export const dynamic = "force-dynamic";
-export default async function AccountSecurityPage() {
-  const context = await resolveCurrentUser();
-  if (context.status === "authenticated") return <AccountFlow mode="security" />;
-  const decision = decideCapability(context, "player");
-  if (
-    decision.status === "auth-required" ||
-    decision.status === "expired" ||
-    decision.status === "revoked" ||
-    decision.status === "invalid"
-  )
-    redirect(signInHref("/account/security", decision.status));
-  return <AccessDecisionState decision={decision} />;
-}
+export default function AccountSecurityPage() { return <AuthenticatedHarborPage returnTo="/account/security" activeSection="security" eyebrow="Personal Harbor · Account" title="Security" description="Use accepted credential recovery and session authorities without duplicating sensitive proof."><SecurityOverview /></AuthenticatedHarborPage>; }

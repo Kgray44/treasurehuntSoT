@@ -87,3 +87,19 @@ export async function readProfileMedia(id: string) {
     return null;
   }
 }
+
+export async function removeProfileMedia(profileId: string, mediaId: string) {
+  const media = await db.profileMedia.findFirst({
+    where: { id: mediaId, profileId, removedAt: null },
+    select: { id: true, kind: true },
+  });
+  if (!media) throw new ProfileError("Profile image not found.", "NOT_FOUND");
+  await db.$transaction([
+    db.playerProfile.update({
+      where: { id: profileId },
+      data: media.kind === "AVATAR" ? { avatarMediaId: null } : { bannerMediaId: null },
+    }),
+    db.profileMedia.update({ where: { id: mediaId }, data: { removedAt: new Date() } }),
+  ]);
+  return { ok: true as const, id: mediaId, kind: media.kind };
+}

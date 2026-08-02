@@ -189,7 +189,7 @@ describe("Homeport Phase 2 navigation authority", () => {
     expect(result.accountItems.some((item) => item.id.includes("workspace"))).toBe(false);
   });
 
-  it("homeport.navigation.safe-profile-destination uses a public handle or the stable Passport fallback", () => {
+  it("homeport.navigation.safe-profile-destination uses a public handle or the canonical Profile editor fallback", () => {
     const withHandle = projection(
       "/player/library",
       "WORKSPACE_STANDARD",
@@ -205,7 +205,7 @@ describe("Homeport Phase 2 navigation authority", () => {
       authenticated({ canUsePlayer: true }, null),
     );
     expect(withoutHandle.accountItems.find((item) => item.id === "account-view-profile")?.href).toBe(
-      "/passport#profile",
+      "/account/profile",
     );
     expect(JSON.stringify(withoutHandle.accountItems)).not.toContain("email");
   });
@@ -215,12 +215,14 @@ describe("Homeport Phase 2 navigation authority", () => {
     expect(
       result.accountItems.filter((item) => item.accountGroup === "personal").map((item) => [item.id, item.href]),
     ).toEqual([
+      ["account-personal-harbor", "/account"],
       ["account-passport", "/passport"],
-      ["account-preferences", "/passport#preferences"],
-      ["account-privacy", "/passport#privacy"],
-      ["account-history", "/passport#history"],
-      ["account-artifacts", "/passport#artifacts"],
+      ["account-preferences", "/account/preferences"],
+      ["account-privacy", "/account/privacy"],
+      ["account-history", "/passport/history"],
+      ["account-artifacts", "/passport/artifacts"],
       ["account-security-sessions", "/account/security"],
+      ["account-sessions", "/account/sessions"],
     ]);
   });
 
@@ -275,7 +277,7 @@ describe("Homeport Phase 2 navigation authority", () => {
       projection("/profile/mara", "PUBLIC_STANDARD", "account", authenticated()).contextualItems.map(
         (item) => item.href,
       ),
-    ).toEqual(["/passport"]);
+    ).toEqual(["/account"]);
     expect(
       projection(
         "/captain/sessions/session-1",

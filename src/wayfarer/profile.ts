@@ -33,19 +33,19 @@ export const preferenceV1Schema = z.object({
     contrast: z.enum(["SYSTEM", "STANDARD", "HIGH"]),
     textureIntensity: z.number().min(0).max(1),
     lowBandwidthMedia: z.boolean(),
-  }),
+  }).strict(),
   discovery: z.object({
     searchable: z.boolean(),
     themes: z.array(z.string().max(40)).max(12),
     contentWarnings: z.array(z.string().max(40)).max(12),
-  }),
+  }).strict(),
   social: z.object({
     invitationPolicy: z.enum(["ONLY_ME", "CREW_ONLY", "REGISTERED_USERS", "PUBLIC"]),
     providerDiscovery: z.boolean(),
-  }),
-  notifications: z.object({ email: z.boolean(), product: z.boolean(), invitations: z.boolean() }),
-  privacy: z.object({ defaultVisibility: z.enum(visibilityValues) }),
-});
+  }).strict(),
+  notifications: z.object({ email: z.boolean(), product: z.boolean(), invitations: z.boolean() }).strict(),
+  privacy: z.object({ defaultVisibility: z.enum(visibilityValues) }).strict(),
+}).strict();
 export type PreferenceV1 = z.infer<typeof preferenceV1Schema>;
 
 export const defaultPreferences: PreferenceV1 = {
@@ -71,7 +71,7 @@ export const defaultPreferences: PreferenceV1 = {
 export class ProfileError extends Error {
   constructor(
     message: string,
-    readonly code: "INVALID" | "CONFLICT" | "NOT_FOUND" | "FORBIDDEN" = "INVALID",
+    readonly code: "INVALID" | "CONFLICT" | "STALE" | "NOT_FOUND" | "FORBIDDEN" = "INVALID",
   ) {
     super(message);
   }
@@ -143,8 +143,27 @@ export async function preferencesForProfile(profileId: string) {
   return value;
 }
 
-export async function updatePreferences(profileId: string, input: unknown) {
+export async function preferencesForProfileDto(profileId: string) {
+  const preferences = await preferencesForProfile(profileId);
+  const row = await db.profilePreferenceSet.findUnique({
+    where: { playerProfileId: profileId },
+    select: { updatedAt: true },
+  });
+  if (!row) throw new ProfileError("Profile preferences are unavailable.", "NOT_FOUND");
+  return { preferences, revision: row.updatedAt.toISOString() };
+}
+
+export async function updatePreferences(profileId: string, input: unknown, expectedRevision?: string) {
   const value = preferenceV1Schema.parse(input);
+  const current = await db.profilePreferenceSet.findUnique({
+    where: { playerProfileId: profileId },
+    select: { updatedAt: true },
+  });
+  if (expectedRevision && current && current.updatedAt.toISOString() !== expectedRevision)
+    throw new ProfileError(
+      "These preferences changed in another window. Your draft is still here; reload the saved values before retrying.",
+      "STALE",
+    );
   await db.$transaction([
     db.profilePreferenceSet.upsert({
       where: { playerProfileId: profileId },
@@ -153,7 +172,7 @@ export async function updatePreferences(profileId: string, input: unknown) {
     }),
     db.playerProfile.update({ where: { id: profileId }, data: { defaultVisibility: value.privacy.defaultVisibility } }),
   ]);
-  return value;
+  return preferencesForProfileDto(profileId);
 }
 
 export function resolvePreferences(input: {
@@ -175,15 +194,26 @@ export function resolvePreferences(input: {
 
 export async function updateProfile(
   accountId: string,
-  input: { displayName?: string; handle?: string | null; biography?: string | null; defaultVisibility?: Visibility },
+  input: {
+    displayName?: string;
+    handle?: string | null;
+    biography?: string | null;
+    defaultVisibility?: Visibility;
+    expectedRevision?: string;
+  },
 ) {
   const profile = await db.playerProfile.findFirst({
     where: { accountId },
-    select: { id: true, handle: true, normalizedHandle: true, status: true },
+    select: { id: true, handle: true, normalizedHandle: true, status: true, updatedAt: true },
   });
   if (!profile) throw new ProfileError("Profile not found.", "NOT_FOUND");
   if (profile.status !== "ACTIVE")
     throw new ProfileError("This profile cannot be changed while it is restricted.", "FORBIDDEN");
+  if (input.expectedRevision && input.expectedRevision !== profile.updatedAt.toISOString())
+    throw new ProfileError(
+      "This profile changed in another window. Your draft is still here; reload the saved profile before retrying.",
+      "STALE",
+    );
   const data: Prisma.PlayerProfileUpdateInput = {};
   if (input.displayName !== undefined) data.displayName = validateDisplayName(input.displayName);
   if (input.biography !== undefined) data.biography = validateBiography(input.biography);
@@ -220,12 +250,41 @@ export async function updateProfile(
   return ownerProfile(accountId);
 }
 
-export async function setPrivacyRules(profileId: string, rules: Partial<Record<ProfileSection, Visibility>>) {
+export async function privacyRulesForProfile(profileId: string) {
+  const [profile, rules] = await Promise.all([
+    db.playerProfile.findUnique({ where: { id: profileId }, select: { updatedAt: true } }),
+    db.profilePrivacyRule.findMany({
+      where: { playerProfileId: profileId },
+      select: { section: true, visibility: true, updatedAt: true },
+      orderBy: { section: "asc" },
+    }),
+  ]);
+  if (!profile) throw new ProfileError("Profile not found.", "NOT_FOUND");
+  const latest = rules.reduce(
+    (value, rule) => (rule.updatedAt > value ? rule.updatedAt : value),
+    profile.updatedAt,
+  );
+  return {
+    rules: rules.map(({ section, visibility }) => ({ section, visibility })),
+    revision: `${latest.toISOString()}:${rules.length}`,
+  };
+}
+
+export async function setPrivacyRules(
+  profileId: string,
+  rules: Partial<Record<ProfileSection, Visibility>>,
+  expectedRevision?: string,
+) {
   const entries = Object.entries(rules) as Array<[ProfileSection, Visibility]>;
   for (const [section, visibility] of entries) {
     if (!profileSections.includes(section) || !visibilityValues.includes(visibility))
       throw new ProfileError("Privacy controls contain an unsupported value.");
   }
+  if (expectedRevision && (await privacyRulesForProfile(profileId)).revision !== expectedRevision)
+    throw new ProfileError(
+      "These privacy rules changed in another window. Your draft is still here; reload the saved rules before retrying.",
+      "STALE",
+    );
   await db.$transaction(
     entries.map(([section, visibility]) =>
       db.profilePrivacyRule.upsert({
@@ -235,6 +294,7 @@ export async function setPrivacyRules(profileId: string, rules: Partial<Record<P
       }),
     ),
   );
+  return privacyRulesForProfile(profileId);
 }
 
 export type ViewerContext = {
@@ -258,6 +318,36 @@ export async function ownerProfile(accountId: string) {
   });
   if (!profile) throw new ProfileError("Profile not found.", "NOT_FOUND");
   return { ...profile, preferences: await preferencesForProfile(profile.id) };
+}
+
+export async function ownerProfileDto(accountId: string) {
+  const profile = await ownerProfile(accountId);
+  const media = (value: typeof profile.avatarMedia) =>
+    value && !value.removedAt
+      ? {
+          id: value.id,
+          kind: value.kind,
+          url: `/api/profile-media/${value.id}`,
+          altText: value.altText,
+          width: value.width,
+          height: value.height,
+          processingState: "READY" as const,
+        }
+      : null;
+  return {
+    id: profile.id,
+    displayName: profile.displayName,
+    handle: profile.handle,
+    biography: profile.biography,
+    defaultVisibility: profile.defaultVisibility,
+    status: profile.status,
+    createdAt: profile.createdAt.toISOString(),
+    updatedAt: profile.updatedAt.toISOString(),
+    revision: profile.updatedAt.toISOString(),
+    avatar: media(profile.avatarMedia),
+    banner: media(profile.bannerMedia),
+    privacyRules: profile.privacyRules.map((rule) => ({ section: rule.section, visibility: rule.visibility })),
+  };
 }
 
 export async function publicProfileProjection(handle: string, viewer: ViewerContext = {}) {

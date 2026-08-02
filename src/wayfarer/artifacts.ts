@@ -32,7 +32,7 @@ const listSchema = z.object({
   sort: z.enum(["RECENT", "NAME", "STATE"]).default("RECENT"),
   cursor: z.string().min(1).max(191).optional(),
   limit: z.number().int().min(1).max(50).default(24),
-});
+}).strict();
 const displayCaseSchema = z
   .object({
     name: z.string().trim().min(1).max(100),

@@ -63,6 +63,7 @@
     "homeport:contracts:check": "tsx scripts/homeport/generate-phase2-contracts.ts --check",
     "homeport:validate": "node scripts/homeport/validate-phase0-inventories.mjs && tsx scripts/homeport/validate-phase2-contracts.ts",
     "homeport:phase2:e2e": "playwright test -c playwright.homeport-phase2.config.ts",
+    "homeport:phase3:e2e": "playwright test -c playwright.homeport-phase3.config.ts",
     "docs:index": "node scripts/generate-document-index.mjs",
     "docs:validate": "node scripts/validate-documentation.mjs",
     "test:docs": "node --test tests/validate-documentation.test.mjs",
