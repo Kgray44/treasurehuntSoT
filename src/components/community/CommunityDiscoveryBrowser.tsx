@@ -98,6 +98,8 @@ export function CommunityDiscoveryBrowser({
   const current = useMemo(() => new URLSearchParams(rawParameters), [rawParameters]);
   const [retryKey, setRetryKey] = useState(0);
   const [load, setLoad] = useState<DiscoveryLoad | null>(null);
+  const [queryState, setQueryState] = useState(() => ({ source: rawParameters, value: current.get("q") ?? "" }));
+  const queryDraft = queryState.source === rawParameters ? queryState.value : (current.get("q") ?? "");
   const [advancedState, setAdvancedState] = useState<{ source: string; value: AdvancedDraft }>(() => ({
     source: rawParameters,
     value: advancedDraftFrom(current),
@@ -168,8 +170,7 @@ export function CommunityDiscoveryBrowser({
 
   function submitSearch(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const value = new FormData(event.currentTarget).get("q");
-    setSingle("q", typeof value === "string" ? value.trim() : "");
+    setSingle("q", queryDraft.trim());
   }
 
   function clear() {
@@ -236,11 +237,11 @@ export function CommunityDiscoveryBrowser({
                 id="community-search-query"
                 name="q"
                 type="search"
-                key={current.get("q") ?? ""}
-                defaultValue={current.get("q") ?? ""}
+                value={queryDraft}
                 maxLength={160}
                 autoComplete="off"
                 placeholder="Title, theme, or Creator"
+                onChange={(event) => setQueryState({ source: rawParameters, value: event.target.value })}
               />
               <button className="community-button community-button--primary" type="submit">
                 Search
