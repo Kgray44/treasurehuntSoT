@@ -353,7 +353,7 @@ export async function followCreator(
 ): Promise<IdempotentOutcome<unknown>> {
   socialRate(actor, "follow", 30);
   return socialDb.$transaction(async (tx) => {
-    await activeProfile(tx, actor);
+    await activeAccount(tx, actor.accountId);
     const creator = await tx.communityProfile.findUnique({ where: { id: creatorProfileId } });
     if (!creator || creator.moderationStatus !== "ACTIVE" || creator.creatorStatus === "SUSPENDED")
       fail("COMMUNITY_SUBJECT_UNAVAILABLE", "That Creator cannot be followed.");
@@ -388,7 +388,7 @@ export async function saveSubject(
   const kind = input.kind ?? "SAVE";
   if (kind !== "SAVE" && kind !== "FAVORITE") fail("COMMUNITY_INVALID_SAVE_KIND", "Unsupported save kind.");
   return socialDb.$transaction(async (tx) => {
-    await activeProfile(tx, actor);
+    await activeAccount(tx, actor.accountId);
     const subject = await resolveSubject(tx, input.subjectType, requiredId(input.subjectId, "Subject"));
     await assertNotBlocked(tx, actor.accountId, subject.ownerAccountId);
     return createUnique(
