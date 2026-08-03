@@ -12,8 +12,10 @@ Project Homeport is the governed product-reality recovery and convergence
 program. Phase 0 preserves the historical current-state census. Phase 1
 implements identity and session convergence. Phase 2 restores one global shell
 and wayfinding authority. Phase 3 builds and validates the Personal Harbor on
-the same branch. These are branch-local results, not `main`, deployment, owner
-acceptance, or product acceptance.
+the same branch. Phase 4 architecture freezes the Community Harbor rebuild on
+that branch; implementation and validation remain separately evidenced. These
+are branch-local results, not `main`, deployment, owner acceptance, or product
+acceptance.
 
 ## Authority
 
@@ -63,6 +65,19 @@ acceptance, or product acceptance.
 - `Project_Homeport_Phase_3_Mutation_State_Matrix.csv`
 - `Project_Homeport_Phase_3_Sensitive_Action_Matrix.csv`
 - `Project_Homeport_Phase_3_Desktop_Mobile_Parity_Matrix.csv`
+
+## Phase 4 records
+
+- [Community Harbor Architecture](Project_Homeport_Phase_4_Community_Harbor_Architecture.md)
+- [Test Plan](Project_Homeport_Phase_4_Test_Plan.md)
+- `Project_Homeport_Phase_4_District_Registry.json`
+- `Project_Homeport_Phase_4_Public_Card_Contract.json`
+- `Project_Homeport_Phase_4_Public_Projection_Matrix.csv`
+- `Project_Homeport_Phase_4_Shelf_Strategy_Matrix.csv`
+- `Project_Homeport_Phase_4_Search_and_Filter_Contract.json`
+- `Project_Homeport_Phase_4_District_State_Matrix.csv`
+- `Project_Homeport_Phase_4_Mutation_State_Matrix.csv`
+- `Project_Homeport_Phase_4_Desktop_Mobile_Parity_Matrix.csv`
 
 ## Phase 2 machine-readable records
 

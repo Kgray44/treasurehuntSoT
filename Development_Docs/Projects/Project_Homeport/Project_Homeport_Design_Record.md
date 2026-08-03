@@ -208,3 +208,32 @@ deployment, live-provider, owner-acceptance, or product-acceptance proof.
 HP-NC-008, HP-NC-009, and HP-NC-028 are eligible for direct Phase 3 closure;
 HP-NC-014, HP-NC-018, and HP-NC-019 retain explicit later-phase boundaries.
 Phase 4 has not started.
+
+## Phase 4 architecture freeze amendment
+
+**Decision date:** 2026-08-03. **Source boundary:** completed Phase 3
+publication/preparation SHA `bb6dc6fab09e0cbf391511f4516999a5e3d03376`;
+reconciled `origin/main` and merge base
+`8d142227d712d27e363b15903dba9b0c99a04bc8`. The canonical development
+database starts at SHA-256
+`DF33983556CF2C6FF01DF6084AE6619EC5DF5C99B11241FA88B4A88F8E144EEB`.
+
+The architecture is frozen in [Project Homeport Phase 4 Community Harbor
+Architecture](Project_Homeport_Phase_4_Community_Harbor_Architecture.md), the
+district registry, public-card and search/filter contracts, behavior matrices,
+and test plan. Harborlight remains authoritative for Community persistence,
+lifecycle, search semantics, privacy, social state, licensing, moderation, and
+installation. Homeport owns the content-first Harbor product, district
+navigation, allowlisted typed cards, public detail composition, URL-state user
+experience, responsive behavior, and isolated Phase 4 evidence.
+
+The existing schema is sufficient. Phase 4 introduces no migration, parallel
+Community writer, client privacy filter, moderation district, live scanner or
+hosted-provider claim, second identity authority, second animation director, or
+parallel Voyage runtime. Shipwright's Workshop is a supported Guide category,
+not a redundant ordinary district. Search results and shelves share one public
+card DTO that excludes lifecycle and authorization fields.
+
+No implementation, test result, evidence, nonconformity closure, merge,
+deployment, Phase 5 work, owner acceptance, or product acceptance is
+established by this freeze.

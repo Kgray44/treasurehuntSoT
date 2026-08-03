@@ -1,0 +1,50 @@
+{
+  "schemaVersion": "1.0.0",
+  "phase": "PROJECT_HOMEPORT_PHASE_4",
+  "architectureStatus": "FROZEN",
+  "implementationStatus": "PLANNED",
+  "sourceSha": "bb6dc6fab09e0cbf391511f4516999a5e3d03376",
+  "route": "/community",
+  "api": "/api/community/discover",
+  "defaultSort": "FEATURED",
+  "sorts": [
+    "FEATURED",
+    "NEWEST",
+    "RECENTLY_UPDATED",
+    "TRENDING",
+    "MOST_INSTALLED",
+    "HIGHEST_RATED",
+    "MOST_COMPLETED",
+    "MOST_SAVED"
+  ],
+  "urlParameters": [
+    { "name": "q", "shape": "single", "maximumLength": 160, "compact": true },
+    { "name": "sort", "shape": "single-enum", "compact": true },
+    { "name": "type", "shape": "repeatable-enum", "compact": true },
+    {
+      "name": "duration",
+      "shape": "single-enum",
+      "values": ["UNDER_60", "ONE_TO_TWO_HOURS", "OVER_TWO_HOURS"],
+      "compact": true
+    },
+    { "name": "difficulty", "shape": "repeatable-enum", "advanced": true },
+    { "name": "players", "shape": "single-enum", "values": ["SOLO", "TWO_TO_FOUR", "FIVE_PLUS"], "advanced": true },
+    { "name": "theme", "shape": "repeatable-string", "advanced": true },
+    { "name": "environment", "shape": "repeatable-enum", "advanced": true },
+    { "name": "accessibility", "shape": "repeatable-enum", "advanced": true },
+    { "name": "free", "shape": "boolean-one", "advanced": true },
+    { "name": "remixable", "shape": "boolean-one", "advanced": true }
+  ],
+  "history": "PUSH_ON_COMMIT",
+  "backForwardRestores": true,
+  "clearRestoresDefaultHarbor": true,
+  "activeSummary": true,
+  "removableChips": true,
+  "advancedControl": "NATIVE_DETAILS_PANEL",
+  "staleRequestPolicy": "ABORT_AND_GENERATION_GUARD",
+  "serverPrivacyFiltering": true,
+  "resultDto": "HomeportCommunityCard",
+  "states": ["DEFAULT_CONTENT", "LOADING", "RESULTS", "NO_RESULTS", "DEPENDENCY_UNAVAILABLE"],
+  "invalidInput": "SAFE_400_WITH_ACTIONABLE_COPY",
+  "cursor": "HARBORLIGHT_STABLE_CURSOR_V1"
+}

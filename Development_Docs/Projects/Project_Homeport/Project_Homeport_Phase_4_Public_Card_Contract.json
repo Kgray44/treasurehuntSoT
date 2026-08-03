@@ -1,0 +1,103 @@
+{
+  "schemaVersion": "1.0.0",
+  "phase": "PROJECT_HOMEPORT_PHASE_4",
+  "architectureStatus": "FROZEN",
+  "implementationStatus": "PLANNED",
+  "sourceSha": "bb6dc6fab09e0cbf391511f4516999a5e3d03376",
+  "dto": "HomeportCommunityCard",
+  "serverEligibility": [
+    "subject is present",
+    "subject is published and publicly enumerable",
+    "subject and owner are moderation-active",
+    "subject is not archived, removed, quarantined, blocked, or private-real-world",
+    "media projection is CLEAN or a governed fallback is used"
+  ],
+  "baseFields": {
+    "required": ["id", "variant", "destination", "artwork", "title", "contentType", "primaryAction", "imageState"],
+    "optional": [
+      "summary",
+      "creator",
+      "category",
+      "themes",
+      "difficulty",
+      "duration",
+      "playerCount",
+      "accessibility",
+      "compatibility",
+      "language",
+      "warnings",
+      "spoiler",
+      "license",
+      "remixable",
+      "free",
+      "publishedAt",
+      "updatedAt",
+      "engagement",
+      "socialSubject"
+    ]
+  },
+  "artwork": {
+    "allowedKinds": ["PUBLIC_MEDIA", "GOVERNED_FALLBACK"],
+    "fallbackStates": ["MISSING", "PENDING", "FAILED", "QUARANTINED", "UNAVAILABLE", "REMOVED"],
+    "forbidden": ["objectKey", "storagePath", "scannerDetail", "privateMediaId"]
+  },
+  "variants": [
+    { "id": "CHRONICLE", "itemTypes": ["CHRONICLE"], "destinationFamily": "/community/:slug" },
+    {
+      "id": "ARTIFACT",
+      "itemTypes": ["ARTIFACT_2D", "ARTIFACT_3D", "ARTIFACT_COLLECTION"],
+      "destinationFamily": "/community/:slug"
+    },
+    {
+      "id": "TEMPLATE",
+      "itemTypes": ["CHRONICLE_TEMPLATE", "STORY_BLOCK_PRESET"],
+      "destinationFamily": "/community/:slug"
+    },
+    {
+      "id": "MAP_OR_LOCATION_PACK",
+      "itemTypes": ["MAP_PACK", "LOCATION_PACK"],
+      "destinationFamily": "/community/:slug"
+    },
+    {
+      "id": "AUDIO_OR_REVEAL",
+      "itemTypes": ["AUDIO_PACK", "REVEAL_PRESET", "INVITATION_STYLE", "COMPLETION_STYLE"],
+      "destinationFamily": "/community/:slug"
+    },
+    { "id": "CREATOR", "itemTypes": ["COMMUNITY_PROFILE"], "destinationFamily": "/community/creators/:handle" },
+    { "id": "COLLECTION", "itemTypes": ["COMMUNITY_COLLECTION"], "destinationFamily": "/community/collections/:slug" },
+    { "id": "GUIDE", "itemTypes": ["COMMUNITY_GUIDE"], "destinationFamily": "/community/guides/:slug" },
+    { "id": "VOYAGE_LOG", "itemTypes": ["PUBLIC_VOYAGE_LOG"], "destinationFamily": "/community/voyage-logs/:slug" }
+  ],
+  "interaction": {
+    "entireCardIsNotNestedInteractive": true,
+    "titleLinkIsPrimaryDestination": true,
+    "minimumTouchTargetCssPixels": 44,
+    "visibleFocus": true,
+    "saveStateAnnouncement": true,
+    "batchSocialProjectionMaximum": 48,
+    "reducedMotionFinalStateImmediate": true
+  },
+  "forbiddenPublicFields": [
+    "accountId",
+    "email",
+    "providerSubject",
+    "session",
+    "rawManifest",
+    "packageChecksum",
+    "objectKey",
+    "storagePath",
+    "privateChronicleBody",
+    "acceptedAnswer",
+    "privateLocation",
+    "exactCoordinates",
+    "unconsentedMedia",
+    "moderationEvidence",
+    "quarantineReason",
+    "report",
+    "sanction",
+    "visibility",
+    "publicationStatus",
+    "moderationStatus",
+    "locationClass"
+  ]
+}
