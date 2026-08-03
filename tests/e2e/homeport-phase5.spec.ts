@@ -990,14 +990,13 @@ async function settleCurrentRoute(page: Page) {
   await page.waitForLoadState("domcontentloaded");
   const pathname = new URL(page.url()).pathname;
   const routeLayer = page.locator(`.product-route-layer[data-route-layer="${pathname}"]`);
-  if ((await routeLayer.count()) === 1) {
-    if (pathname === "/" && (await routeLayer.evaluate((element) => getComputedStyle(element).opacity)) === "0") {
-      const skip = page.getByRole("button", { name: "Skip opening presentation" });
-      if (await skip.isVisible()) await skip.click();
-    }
-    await expect(routeLayer).toHaveCSS("opacity", "1");
-    await expect(routeLayer).toHaveCSS("transform", "none");
+  await expect(routeLayer).toHaveCount(1);
+  if (pathname === "/" && (await routeLayer.evaluate((element) => getComputedStyle(element).opacity)) === "0") {
+    const skip = page.getByRole("button", { name: "Skip opening presentation" });
+    if (await skip.isVisible()) await skip.click();
   }
+  await expect(routeLayer).toHaveCSS("opacity", "1");
+  await expect(routeLayer).toHaveCSS("transform", "none");
   await expect(page.locator("main, h1").first()).toBeVisible();
 }
 
