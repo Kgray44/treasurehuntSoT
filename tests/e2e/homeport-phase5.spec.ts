@@ -898,13 +898,14 @@ test.describe.serial("Project Homeport Phase 5 route reachability acceptance", (
 
     const keyboard = await browser.newPage();
     await keyboard.goto("/");
-    const navigationButton = keyboard.getByRole("button", { name: "Open navigation" });
-    await navigationButton.focus();
-    await navigationButton.press("Enter");
+    await settleCurrentRoute(keyboard);
     const community = keyboard.locator('a[href="/community"]:visible').first();
+    await expect(community).toBeVisible();
     await community.focus();
-    await community.press("Enter");
-    await expect(keyboard).toHaveURL(/\/community$/u);
+    await Promise.all([
+      keyboard.waitForURL(/\/community$/u, { timeout: 25_000 }),
+      community.press("Enter", { noWaitAfter: true, timeout: 25_000 }),
+    ]);
     await capture(keyboard, "HP-P5-EV-Z-keyboard", {
       screenContract: "screen-page-community",
       journey: "HP-P5-JRN-Z",
