@@ -919,16 +919,16 @@ async function traverseFromGateway(page: Page, steps: readonly string[], expecte
 
 async function clickVisibleHref(page: Page, href: string) {
   await settleCurrentRoute(page);
-  let link = page.locator(`a[href="${href}"]:visible`).first();
+  let link = visiblePathLink(page, href);
   if ((await link.count()) === 0) {
     const navigation = page.getByRole("button", { name: "Open navigation" });
     if (await navigation.isVisible()) await navigation.click();
-    link = page.locator(`a[href="${href}"]:visible`).first();
+    link = visiblePathLink(page, href);
   }
   if ((await link.count()) === 0) {
     const account = page.locator('button[aria-controls="shell-account-disclosure"]');
     if (await account.isVisible()) await account.click();
-    link = page.locator(`a[href="${href}"]:visible`).first();
+    link = visiblePathLink(page, href);
   }
   await expect(link, `No visible natural-path control for ${href} from ${page.url()}`).toBeVisible();
   const label = ((await link.getAttribute("aria-label")) ?? (await link.innerText())).trim().replace(/\s+/gu, " ");
@@ -936,6 +936,10 @@ async function clickVisibleHref(page: Page, href: string) {
   await expect(page).toHaveURL(new RegExp(`${escapeRegExp(href)}(?:[?#].*)?$`, "u"));
   await settleCurrentRoute(page);
   return label;
+}
+
+function visiblePathLink(page: Page, href: string) {
+  return page.locator(`a[href="${href}"]:visible, a[href^="${href}?"]:visible, a[href^="${href}#"]:visible`).first();
 }
 
 async function followRegisteredReturn(page: Page, currentPath: string) {
@@ -964,6 +968,10 @@ async function settleCurrentRoute(page: Page) {
   const pathname = new URL(page.url()).pathname;
   const routeLayer = page.locator(`.product-route-layer[data-route-layer="${pathname}"]`);
   if ((await routeLayer.count()) === 1) {
+    if (pathname === "/" && (await routeLayer.evaluate((element) => getComputedStyle(element).opacity)) === "0") {
+      const skip = page.getByRole("button", { name: "Skip opening presentation" });
+      if (await skip.isVisible()) await skip.click();
+    }
     await expect(routeLayer).toHaveCSS("opacity", "1");
     await expect(routeLayer).toHaveCSS("transform", "none");
   }
@@ -1013,6 +1021,14 @@ async function capture(
   },
 ) {
   await settleCurrentRoute(page);
+  if (new URL(page.url()).pathname === "/") {
+    const skip = page.getByRole("button", { name: "Skip opening presentation" });
+    if (await skip.isVisible()) {
+      await skip.click();
+      await expect(skip).toBeHidden();
+    }
+    await expect(page.getByRole("region", { name: "Choose your role in Voyagewright" })).toBeVisible();
+  }
   await page.evaluate(async () => {
     if (document.fonts?.ready) await document.fonts.ready;
   });

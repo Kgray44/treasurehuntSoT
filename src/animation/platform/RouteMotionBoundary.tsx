@@ -38,6 +38,14 @@ export function RouteMotionBoundary({ pathname, children }: { pathname: string; 
     };
   }, [pathname]);
 
+  if (pathname === "/") {
+    return (
+      <div className="product-route-layer" data-route-layer={pathname}>
+        {children}
+      </div>
+    );
+  }
+
   return (
     <LayoutGroup id="lanternwake-route-layout">
       <AnimatePresence initial={false} mode="wait">
