@@ -493,7 +493,7 @@ async function seed() {
     where: {
       placement_subjectType_subjectId: {
         placement: "HARBOR_HOME",
-        subjectType: "LISTING",
+        subjectType: "COMMUNITY_LISTING",
         subjectId: "hp4-listing-lantern-coast",
       },
     },
@@ -501,7 +501,7 @@ async function seed() {
     create: {
       id: "hp4-feature-lantern-coast",
       placement: "HARBOR_HOME",
-      subjectType: "LISTING",
+      subjectType: "COMMUNITY_LISTING",
       subjectId: "hp4-listing-lantern-coast",
       sortOrder: 1,
       startsAt: createdAt,
