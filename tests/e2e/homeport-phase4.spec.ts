@@ -175,6 +175,9 @@ test.describe.serial("Project Homeport Phase 4 Community Harbor acceptance", () 
     await page.goBack();
     await expect(page).toHaveURL(/q=Lantern\+Coast/u);
     await expect(search).toHaveValue("Lantern Coast");
+    await page.getByRole("button", { name: /Search: Lantern Coast/u }).click();
+    await expect(page).toHaveURL(/\/community$/u);
+    await expect(search).toHaveValue("");
 
     await search.fill("unfindable synthetic horizon");
     await expect(search).toHaveValue("unfindable synthetic horizon");
