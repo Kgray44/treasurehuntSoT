@@ -258,6 +258,7 @@ test.describe.serial("Project Homeport Phase 4 Community Harbor acceptance", () 
       await expect(
         page.getByRole("navigation", { name: "Community Harbor districts" }).getByRole("link", { name: district }),
       ).toHaveAttribute("aria-current", "page");
+      await page.waitForLoadState("networkidle");
       await assertNoOverflow(page);
       await capture(page, evidenceId, {
         screen: `${district} district`,
