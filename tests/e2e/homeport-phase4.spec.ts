@@ -4,7 +4,7 @@ import { readFileSync } from "node:fs";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import AxeBuilder from "@axe-core/playwright";
-import { expect, test, type Browser, type BrowserContext, type Page } from "@playwright/test";
+import { expect, test, type Browser, type BrowserContext, type Locator, type Page } from "@playwright/test";
 import { db } from "../../src/lib/db";
 
 const evidenceRoot = path.resolve(required("HOMEPORT_PHASE4_EVIDENCE_ROOT"));
@@ -254,6 +254,7 @@ test.describe.serial("Project Homeport Phase 4 Community Harbor acceptance", () 
         .getByRole("link", { name: district })
         .click();
       await expect(page).toHaveURL(new RegExp(`${route}$`, "u"));
+      await settleCurrentRoute(page);
       await expect(page.getByText(visibleTitle, { exact: true }).first()).toBeVisible();
       await expect(
         page.getByRole("navigation", { name: "Community Harbor districts" }).getByRole("link", { name: district }),
@@ -269,8 +270,11 @@ test.describe.serial("Project Homeport Phase 4 Community Harbor acceptance", () 
       });
     }
 
-    await page.getByRole("link", { name: "Fictional Lantern Voyage Log" }).click();
-    await expect(page).toHaveURL(/\/community\/voyage-logs\/fictional-lantern-voyage$/u);
+    await followLink(
+      page,
+      page.getByRole("link", { name: "Fictional Lantern Voyage Log" }),
+      /\/community\/voyage-logs\/fictional-lantern-voyage$/u,
+    );
     await expect(page.getByText("Participant consent checked")).toBeVisible();
     await expect(page.locator("main")).not.toContainText("fictional harbor district");
 
@@ -279,8 +283,11 @@ test.describe.serial("Project Homeport Phase 4 Community Harbor acceptance", () 
       .getByRole("link", { name: "Guides" })
       .click();
     await expect(page).toHaveURL(/\/community\/guides$/u);
-    await page.getByRole("link", { name: "Reading the Weathered Chart" }).click();
-    await expect(page).toHaveURL(/\/community\/guides\/reading-the-weathered-chart$/u);
+    await followLink(
+      page,
+      page.getByRole("link", { name: "Reading the Weathered Chart" }),
+      /\/community\/guides\/reading-the-weathered-chart$/u,
+    );
     await expect(page.getByRole("heading", { name: "Reading the Weathered Chart", level: 1 })).toBeVisible();
     await capture(page, "HP-P4-EV-R-guide-detail", {
       screen: "Guide detail",
@@ -290,8 +297,11 @@ test.describe.serial("Project Homeport Phase 4 Community Harbor acceptance", () 
       contentState: "PUBLIC_DETAIL",
     });
 
-    await page.getByRole("link", { name: "Captain Almanac" }).first().click();
-    await expect(page).toHaveURL(/\/community\/creators\/captain-almanac$/u);
+    await followLink(
+      page,
+      page.getByRole("link", { name: "Captain Almanac" }).first(),
+      /\/community\/creators\/captain-almanac$/u,
+    );
     await expect(page.getByText("@captain-almanac")).toBeVisible();
     await expect(page.getByRole("heading", { name: "Public collections" })).toBeVisible();
     await capture(page, "HP-P4-EV-M-creator-profile", {
@@ -310,8 +320,7 @@ test.describe.serial("Project Homeport Phase 4 Community Harbor acceptance", () 
       .getByRole("link", { name: "Creators" })
       .click();
     await expect(page).toHaveURL(/\/community\/creators$/u);
-    await page.getByRole("link", { name: "Maker Lumen" }).click();
-    await expect(page).toHaveURL(/\/community\/creators\/maker-lumen$/u);
+    await followLink(page, page.getByRole("link", { name: "Maker Lumen" }), /\/community\/creators\/maker-lumen$/u);
     await expect(page.getByRole("heading", { name: "No public work yet" })).toBeVisible();
     await expect(page.locator("main")).not.toContainText("draft");
     await capture(page, "HP-P4-EV-N-creator-empty", {
@@ -327,8 +336,11 @@ test.describe.serial("Project Homeport Phase 4 Community Harbor acceptance", () 
       .getByRole("link", { name: "Collections" })
       .click();
     await expect(page).toHaveURL(/\/community\/collections$/u);
-    await page.getByRole("link", { name: "Harbor Starter Charts" }).click();
-    await expect(page).toHaveURL(/\/community\/collections\/harbor-starters$/u);
+    await followLink(
+      page,
+      page.getByRole("link", { name: "Harbor Starter Charts" }),
+      /\/community\/collections\/harbor-starters$/u,
+    );
     await expect(page.getByRole("heading", { name: /2 eligible entries/u })).toBeVisible();
     await capture(page, "HP-P4-EV-P-collection-detail", {
       screen: "Collection detail",
@@ -342,8 +354,11 @@ test.describe.serial("Project Homeport Phase 4 Community Harbor acceptance", () 
       .getByRole("link", { name: "Collections" })
       .click();
     await expect(page).toHaveURL(/\/community\/collections$/u);
-    await page.getByRole("link", { name: "Empty Chart Case" }).click();
-    await expect(page).toHaveURL(/\/community\/collections\/empty-chart-case$/u);
+    await followLink(
+      page,
+      page.getByRole("link", { name: "Empty Chart Case" }),
+      /\/community\/collections\/empty-chart-case$/u,
+    );
     await expect(page.getByRole("heading", { name: "This public collection is empty" })).toBeVisible();
 
     await page
@@ -352,11 +367,12 @@ test.describe.serial("Project Homeport Phase 4 Community Harbor acceptance", () 
       .click();
     await expect(page).toHaveURL(/\/community\/artifacts$/u);
     await expect(page.getByRole("img", { name: "Artifact artwork unavailable" }).first()).toBeVisible();
-    const glassBeaconLink = page.getByRole("link", { name: "Glass Beacon Model" });
-    await expect(glassBeaconLink).toHaveAttribute("href", "/community/glass-beacon-artifact");
-    await glassBeaconLink.focus();
-    await glassBeaconLink.press("Enter");
-    await expect(page).toHaveURL(/\/community\/glass-beacon-artifact$/u);
+    await followLink(
+      page,
+      page.getByRole("link", { name: "Glass Beacon Model" }),
+      /\/community\/glass-beacon-artifact$/u,
+      { keyboard: true },
+    );
     await expect(page.getByRole("img", { name: "Artifact artwork unavailable" })).toBeVisible();
     await expect(page.getByText("Not currently supported from public Community Harbor")).toBeVisible();
     await capture(page, "HP-P4-EV-AA-image-fallback", {
@@ -660,7 +676,29 @@ async function enterHarbor(page: Page) {
   await page.goto("/");
   await page.getByRole("link", { name: "Community Harbor" }).first().click();
   await expect(page).toHaveURL(/\/community$/u);
+  await settleCurrentRoute(page);
   await expect(page.getByRole("heading", { name: "Find your next bearing" })).toBeVisible();
+}
+
+async function followLink(page: Page, link: Locator, expectedUrl: RegExp, options: { keyboard?: boolean } = {}) {
+  await settleCurrentRoute(page);
+  await expect(link).toBeVisible();
+  if (options.keyboard) {
+    await link.focus();
+    await link.press("Enter");
+  } else {
+    await link.click();
+  }
+  await expect(page).toHaveURL(expectedUrl);
+  await settleCurrentRoute(page);
+}
+
+async function settleCurrentRoute(page: Page) {
+  const pathname = new URL(page.url()).pathname;
+  const routeLayer = page.locator(`.product-route-layer[data-route-layer="${pathname}"]`);
+  await expect(routeLayer).toHaveCount(1);
+  await expect(routeLayer).toHaveCSS("opacity", "1");
+  await expect(routeLayer).toHaveCSS("transform", "none");
 }
 
 async function capture(
@@ -676,6 +714,7 @@ async function capture(
     motionMode?: string;
   },
 ) {
+  await settleCurrentRoute(page);
   await page.evaluate(async () => {
     if (document.fonts?.ready) await document.fonts.ready;
   });
