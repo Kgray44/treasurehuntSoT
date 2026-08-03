@@ -351,7 +351,10 @@ test.describe.serial("Project Homeport Phase 4 Community Harbor acceptance", () 
       .click();
     await expect(page).toHaveURL(/\/community\/artifacts$/u);
     await expect(page.getByRole("img", { name: "Artifact artwork unavailable" }).first()).toBeVisible();
-    await page.getByRole("link", { name: "Glass Beacon Model" }).click();
+    const glassBeaconLink = page.getByRole("link", { name: "Glass Beacon Model" });
+    await expect(glassBeaconLink).toHaveAttribute("href", "/community/glass-beacon-artifact");
+    await glassBeaconLink.focus();
+    await glassBeaconLink.press("Enter");
     await expect(page).toHaveURL(/\/community\/glass-beacon-artifact$/u);
     await expect(page.getByRole("img", { name: "Artifact artwork unavailable" })).toBeVisible();
     await expect(page.getByText("Not currently supported from public Community Harbor")).toBeVisible();
