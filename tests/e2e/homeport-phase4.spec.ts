@@ -1,5 +1,6 @@
 import { createHash } from "node:crypto";
 import { execFileSync } from "node:child_process";
+import { readFileSync } from "node:fs";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import AxeBuilder from "@axe-core/playwright";
@@ -10,9 +11,7 @@ const evidenceRoot = path.resolve(required("HOMEPORT_PHASE4_EVIDENCE_ROOT"));
 const fixtureManifestPath = path.resolve(
   "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_4_Fixture_Manifest.json",
 );
-const fixtureChecksum = createHash("sha256")
-  .update(await readFile(fixtureManifestPath))
-  .digest("hex");
+const fixtureChecksum = createHash("sha256").update(readFileSync(fixtureManifestPath)).digest("hex");
 const fixtureVersion = "homeport-phase4-synthetic-v1";
 const sourceSha = execFileSync("git", ["rev-parse", "HEAD"], { encoding: "utf8" }).trim();
 const branch = execFileSync("git", ["branch", "--show-current"], { encoding: "utf8" }).trim();
