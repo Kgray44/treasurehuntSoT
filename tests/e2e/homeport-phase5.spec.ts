@@ -603,7 +603,21 @@ test.describe.serial("Project Homeport Phase 5 route reachability acceptance", (
     for (const entry of tokenCases) {
       const page = await browser.newPage();
       await page.goto(entry.path);
-      await expect(page.locator("body")).toContainText(entry.expected);
+      if (entry.id.startsWith("reset")) {
+        await expect(page.getByRole("heading", { name: "Reset password" })).toBeVisible();
+        if (entry.state !== "VALID") {
+          await page.getByLabel("Password", { exact: true }).fill("Phase5-Invalid-Probe!123");
+          await page.getByLabel("Confirm password", { exact: true }).fill("Phase5-Invalid-Probe!123");
+          await page.getByRole("button", { name: "Continue" }).click();
+          await expect(page.locator("body")).toContainText(entry.expected);
+        }
+      } else {
+        await expect(page.getByRole("heading", { name: "Verify email" })).toBeVisible();
+        await page.getByRole("button", { name: "Continue" }).click();
+        await expect(page.locator("body")).toContainText(
+          entry.state === "VALID" ? /email is verified|Continue to your account/u : entry.expected,
+        );
+      }
       if (entry.id === "reset-valid")
         await captureLoose(
           page,
