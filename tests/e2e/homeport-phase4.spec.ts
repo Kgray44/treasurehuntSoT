@@ -238,21 +238,22 @@ test.describe.serial("Project Homeport Phase 4 Community Harbor acceptance", () 
   }) => {
     await enterHarbor(page);
     const districtEvidence = [
-      ["Chronicles", "HP-P4-EV-G-chronicles-district", "The Lantern Coast"],
-      ["Artifacts", "HP-P4-EV-H-artifacts-district", "Glass Beacon Model"],
-      ["Templates", "HP-P4-EV-I-templates-district", "Quiet Watch Template"],
-      ["Maps", "HP-P4-EV-J-maps-district", "Fictional Crescent Map Pack"],
-      ["Audio and reveals", "HP-P4-EV-K-audio-district", "Harbor Bell Audio Cues"],
-      ["Creators", "HP-P4-EV-L-creators-district", "Captain Almanac"],
-      ["Collections", "HP-P4-EV-O-collections-district", "Harbor Starter Charts"],
-      ["Guides", "HP-P4-EV-Q-guides-district", "Reading the Weathered Chart"],
-      ["Voyage Logs", "HP-P4-EV-S-voyage-logs", "Fictional Lantern Voyage Log"],
+      ["Chronicles", "/community/chronicles", "HP-P4-EV-G-chronicles-district", "The Lantern Coast"],
+      ["Artifacts", "/community/artifacts", "HP-P4-EV-H-artifacts-district", "Glass Beacon Model"],
+      ["Templates", "/community/templates", "HP-P4-EV-I-templates-district", "Quiet Watch Template"],
+      ["Maps", "/community/maps", "HP-P4-EV-J-maps-district", "Fictional Crescent Map Pack"],
+      ["Audio and reveals", "/community/audio", "HP-P4-EV-K-audio-district", "Harbor Bell Audio Cues"],
+      ["Creators", "/community/creators", "HP-P4-EV-L-creators-district", "Captain Almanac"],
+      ["Collections", "/community/collections", "HP-P4-EV-O-collections-district", "Harbor Starter Charts"],
+      ["Guides", "/community/guides", "HP-P4-EV-Q-guides-district", "Reading the Weathered Chart"],
+      ["Voyage Logs", "/community/voyage-logs", "HP-P4-EV-S-voyage-logs", "Fictional Lantern Voyage Log"],
     ] as const;
-    for (const [district, evidenceId, visibleTitle] of districtEvidence) {
+    for (const [district, route, evidenceId, visibleTitle] of districtEvidence) {
       await page
         .getByRole("navigation", { name: "Community Harbor districts" })
         .getByRole("link", { name: district })
         .click();
+      await expect(page).toHaveURL(new RegExp(`${route}$`, "u"));
       await expect(page.getByText(visibleTitle, { exact: true }).first()).toBeVisible();
       await expect(
         page.getByRole("navigation", { name: "Community Harbor districts" }).getByRole("link", { name: district }),
@@ -268,6 +269,7 @@ test.describe.serial("Project Homeport Phase 4 Community Harbor acceptance", () 
     }
 
     await page.getByRole("link", { name: "Fictional Lantern Voyage Log" }).click();
+    await expect(page).toHaveURL(/\/community\/voyage-logs\/fictional-lantern-voyage$/u);
     await expect(page.getByText("Participant consent checked")).toBeVisible();
     await expect(page.locator("main")).not.toContainText("fictional harbor district");
 
@@ -275,8 +277,10 @@ test.describe.serial("Project Homeport Phase 4 Community Harbor acceptance", () 
       .getByRole("navigation", { name: "Community Harbor districts" })
       .getByRole("link", { name: "Guides" })
       .click();
+    await expect(page).toHaveURL(/\/community\/guides$/u);
     await page.getByRole("link", { name: "Reading the Weathered Chart" }).click();
-    await expect(page.getByRole("heading", { name: "Reading the Weathered Chart" })).toBeVisible();
+    await expect(page).toHaveURL(/\/community\/guides\/reading-the-weathered-chart$/u);
+    await expect(page.getByRole("heading", { name: "Reading the Weathered Chart", level: 1 })).toBeVisible();
     await capture(page, "HP-P4-EV-R-guide-detail", {
       screen: "Guide detail",
       district: "GUIDES",
@@ -285,7 +289,8 @@ test.describe.serial("Project Homeport Phase 4 Community Harbor acceptance", () 
       contentState: "PUBLIC_DETAIL",
     });
 
-    await page.getByRole("link", { name: "Captain Almanac" }).click();
+    await page.getByRole("link", { name: "Captain Almanac" }).first().click();
+    await expect(page).toHaveURL(/\/community\/creators\/captain-almanac$/u);
     await expect(page.getByText("@captain-almanac")).toBeVisible();
     await expect(page.getByRole("heading", { name: "Public collections" })).toBeVisible();
     await capture(page, "HP-P4-EV-M-creator-profile", {
@@ -303,7 +308,9 @@ test.describe.serial("Project Homeport Phase 4 Community Harbor acceptance", () 
       .getByRole("navigation", { name: "Community Harbor districts" })
       .getByRole("link", { name: "Creators" })
       .click();
+    await expect(page).toHaveURL(/\/community\/creators$/u);
     await page.getByRole("link", { name: "Maker Lumen" }).click();
+    await expect(page).toHaveURL(/\/community\/creators\/maker-lumen$/u);
     await expect(page.getByRole("heading", { name: "No public work yet" })).toBeVisible();
     await expect(page.locator("main")).not.toContainText("draft");
     await capture(page, "HP-P4-EV-N-creator-empty", {
@@ -318,7 +325,9 @@ test.describe.serial("Project Homeport Phase 4 Community Harbor acceptance", () 
       .getByRole("navigation", { name: "Community Harbor districts" })
       .getByRole("link", { name: "Collections" })
       .click();
+    await expect(page).toHaveURL(/\/community\/collections$/u);
     await page.getByRole("link", { name: "Harbor Starter Charts" }).click();
+    await expect(page).toHaveURL(/\/community\/collections\/harbor-starters$/u);
     await expect(page.getByRole("heading", { name: /2 eligible entries/u })).toBeVisible();
     await capture(page, "HP-P4-EV-P-collection-detail", {
       screen: "Collection detail",
@@ -331,15 +340,19 @@ test.describe.serial("Project Homeport Phase 4 Community Harbor acceptance", () 
       .getByRole("navigation", { name: "Community Harbor districts" })
       .getByRole("link", { name: "Collections" })
       .click();
+    await expect(page).toHaveURL(/\/community\/collections$/u);
     await page.getByRole("link", { name: "Empty Chart Case" }).click();
+    await expect(page).toHaveURL(/\/community\/collections\/empty-chart-case$/u);
     await expect(page.getByRole("heading", { name: "This public collection is empty" })).toBeVisible();
 
     await page
       .getByRole("navigation", { name: "Community Harbor districts" })
       .getByRole("link", { name: "Artifacts" })
       .click();
+    await expect(page).toHaveURL(/\/community\/artifacts$/u);
     await expect(page.getByRole("img", { name: "Artifact artwork unavailable" }).first()).toBeVisible();
     await page.getByRole("link", { name: "Glass Beacon Model" }).click();
+    await expect(page).toHaveURL(/\/community\/glass-beacon-artifact$/u);
     await expect(page.getByRole("img", { name: "Artifact artwork unavailable" })).toBeVisible();
     await expect(page.getByText("Not currently supported from public Community Harbor")).toBeVisible();
     await capture(page, "HP-P4-EV-AA-image-fallback", {
@@ -531,7 +544,9 @@ test.describe.serial("Project Homeport Phase 4 Community Harbor acceptance", () 
       .getByRole("navigation", { name: "Community Harbor districts" })
       .getByRole("link", { name: "Chronicles" })
       .click();
+    await expect(page).toHaveURL(/\/community\/chronicles$/u);
     await page.getByRole("link", { name: "The Lantern Coast" }).click();
+    await expect(page).toHaveURL(/\/community\/lantern-coast-chronicle$/u);
     await assertNoOverflow(page);
     await capture(page, "HP-P4-EV-AF-mobile-detail", {
       screen: "Mobile listing detail",
@@ -595,10 +610,15 @@ test.describe.serial("Project Homeport Phase 4 Community Harbor acceptance", () 
       .getByRole("navigation", { name: "Community Harbor districts" })
       .getByRole("link", { name: "Chronicles" })
       .click();
-    await fullLoop.getByRole("link", { name: "The Lantern Coast" }).click();
-    await fullLoop.getByRole("link", { name: "Captain Almanac" }).click();
-    await fullLoop.getByRole("link", { name: "Harbor Starter Charts" }).click();
-    await fullLoop.getByRole("link", { name: "The Lantern Coast" }).click();
+    await expect(fullLoop).toHaveURL(/\/community\/chronicles$/u);
+    await fullLoop.getByRole("link", { name: "The Lantern Coast" }).first().click();
+    await expect(fullLoop).toHaveURL(/\/community\/lantern-coast-chronicle$/u);
+    await fullLoop.getByRole("link", { name: "Captain Almanac" }).first().click();
+    await expect(fullLoop).toHaveURL(/\/community\/creators\/captain-almanac$/u);
+    await fullLoop.getByRole("link", { name: "Harbor Starter Charts" }).first().click();
+    await expect(fullLoop).toHaveURL(/\/community\/collections\/harbor-starters$/u);
+    await fullLoop.getByRole("link", { name: "The Lantern Coast" }).first().click();
+    await expect(fullLoop).toHaveURL(/\/community\/lantern-coast-chronicle$/u);
     await expect(fullLoop.getByRole("button", { name: "Unsave" })).toBeVisible();
     await fullLoop.goto("/passport/saved");
     await fullLoop.getByRole("link", { name: "Open in Community" }).first().click();
