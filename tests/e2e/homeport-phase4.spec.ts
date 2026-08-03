@@ -510,7 +510,7 @@ test.describe.serial("Project Homeport Phase 4 Community Harbor acceptance", () 
       await enterHarbor(page);
       await expect(page.getByRole("heading", { name: "No public Community work has arrived yet" })).toBeVisible();
       await expect(page.getByText(/No public charts match/u)).toHaveCount(0);
-      await expect(page.getByRole("link", { name: "Explore Chronicles" })).toBeVisible();
+      await expect(page.locator("main").getByRole("link", { name: "Explore Chronicles" })).toBeVisible();
       await capture(page, "HP-P4-EV-D-harbor-empty", {
         screen: "Community-wide empty state",
         district: "HARBOR_HOME",
