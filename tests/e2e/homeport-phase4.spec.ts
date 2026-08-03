@@ -703,7 +703,7 @@ test.describe.serial("Project Homeport Phase 4 Community Harbor acceptance", () 
       /\/passport\/saved$/u,
     );
     await followLink(fullLoop, fullLoop.getByRole("link", { name: "Open in Community" }).first(), /\/community\/.+$/u);
-    await followLink(fullLoop, fullLoop.getByRole("link", { name: "Harbor Home" }), /\/community$/u);
+    await followLink(fullLoop, fullLoop.locator("a.community-return"), /\/community$/u);
     await followLink(fullLoop, fullLoop.getByRole("link", { name: "Home", exact: true }).first(), /\/$/u);
     await capture(fullLoop, "HP-P4-EV-AL-full-community-loop", {
       screen: "Full Community loop returned Home",
