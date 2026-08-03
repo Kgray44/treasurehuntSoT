@@ -209,7 +209,7 @@ test.describe.serial("Project Homeport Phase 4 Community Harbor acceptance", () 
     await page.getByLabel("Sort").selectOption("NEWEST");
     await expect(page).toHaveURL(/sort=NEWEST/u);
     await page.reload();
-    await expect(page.getByLabel("Sort")).toHaveValue("NEWEST");
+    await expect(page.getByRole("region", { name: "Search the Harbor" }).getByLabel("Sort")).toHaveValue("NEWEST");
 
     await page.route("**/api/community/discover?**", async (route) => {
       await route.fulfill({
