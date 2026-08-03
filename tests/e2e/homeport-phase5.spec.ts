@@ -294,6 +294,7 @@ test.describe.serial("Project Homeport Phase 5 route reachability acceptance", (
       profile: Profile;
       sourceSteps: string[];
       journey: string;
+      prepareLabel?: string;
     }> = [
       {
         routeId: "route-page-captain-sessions-sessionid",
@@ -310,6 +311,7 @@ test.describe.serial("Project Homeport Phase 5 route reachability acceptance", (
         profile: "full",
         sourceSteps: ["/captain/library"],
         journey: "HP-P5-JRN-D",
+        prepareLabel: "Published Chronicles",
       },
       {
         routeId: "route-page-captain-voyages-playthroughid-player-preview",
@@ -451,11 +453,16 @@ test.describe.serial("Project Homeport Phase 5 route reachability acceptance", (
 
     for (const definition of definitions) {
       const page = await pageForProfile(browser, definition.profile);
-      const controls = await traverseFromGateway(
-        page,
-        [...definition.sourceSteps, definition.actual],
-        definition.actual,
-      );
+      const controls = await traverseFromGateway(page, definition.sourceSteps, definition.sourceSteps.at(-1) ?? "/");
+      if (definition.prepareLabel) {
+        const preparatoryControl = page.getByRole("button", { name: definition.prepareLabel, exact: true });
+        await expect(preparatoryControl).toBeVisible();
+        await preparatoryControl.click();
+        await expect(preparatoryControl).toHaveAttribute("aria-pressed", "true");
+        controls.push(definition.prepareLabel);
+      }
+      controls.push(await clickVisibleHref(page, definition.actual));
+      expect(new URL(page.url()).pathname).toBe(definition.actual);
       dynamicPaths.set(definition.routeId, definition.actual);
       if (definition.routeId === "route-page-play-taleslug")
         await capture(page, "HP-P5-EV-I-dynamic-detail-parent", {
@@ -533,11 +540,12 @@ test.describe.serial("Project Homeport Phase 5 route reachability acceptance", (
 
     const denied = await restrictedContext.newPage();
     await denied.goto("/community/moderation/hp5-moderation-case");
-    await expect(denied).not.toHaveURL(/\/community\/moderation\/hp5-moderation-case$/u);
+    await expect(denied.getByRole("heading", { name: "Account access restricted" })).toBeVisible();
+    await expect(denied.getByRole("link", { name: "Account recovery" })).toBeVisible();
     await captureLoose(
       denied,
       "HP-P5-EV-R-permission",
-      "screen-page-sign-in",
+      "screen-page-community-moderation-id",
       "HP-P5-JRN-R",
       "RESTRICTED_ACCOUNT",
       "PERMISSION_DENIAL_WITH_SAFE_RECOVERY",
