@@ -642,7 +642,7 @@ test.describe.serial("Project Homeport Phase 4 Community Harbor acceptance", () 
     await keyboardPage.keyboard.press("Enter");
     await expect(keyboardPage).toHaveURL(/\/community$/u);
     await settleCurrentRoute(keyboardPage);
-    await tabToTarget(keyboardPage, { ariaLabel: "Search public Community Harbor" });
+    await tabToTarget(keyboardPage, { selector: 'input[type="search"]' });
     await keyboardPage.keyboard.type("Lantern Coast");
     await keyboardPage.keyboard.press("Enter");
     await expect(keyboardPage).toHaveURL(/q=Lantern\+Coast/u);
@@ -759,14 +759,16 @@ async function settleCurrentRoute(page: Page) {
   await expect(routeLayer).toHaveCSS("transform", "none");
 }
 
-async function tabToTarget(page: Page, target: { href?: string; ariaLabel?: string }) {
+async function tabToTarget(page: Page, target: { href?: string; selector?: string }) {
   for (let index = 0; index < 240; index += 1) {
-    const active = await page.evaluate(() => ({
-      href: document.activeElement?.getAttribute("href") ?? undefined,
-      ariaLabel: document.activeElement?.getAttribute("aria-label") ?? undefined,
-    }));
-    if ((!target.href || active.href === target.href) && (!target.ariaLabel || active.ariaLabel === target.ariaLabel))
-      return;
+    const active = await page.evaluate(
+      (selector) => ({
+        href: document.activeElement?.getAttribute("href") ?? undefined,
+        matchesSelector: selector ? Boolean(document.activeElement?.matches(selector)) : true,
+      }),
+      target.selector,
+    );
+    if ((!target.href || active.href === target.href) && active.matchesSelector) return;
     await page.keyboard.press("Tab");
   }
   throw new Error(`Keyboard traversal did not reach ${JSON.stringify(target)}.`);
