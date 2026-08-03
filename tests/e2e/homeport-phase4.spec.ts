@@ -158,7 +158,8 @@ test.describe.serial("Project Homeport Phase 4 Community Harbor acceptance", () 
       contentState: "ACTIVE_FILTERS",
     });
     await results.getByRole("link", { name: "The Lantern Coast" }).click();
-    await expect(page.getByRole("heading", { name: "The Lantern Coast" })).toBeVisible();
+    await expect(page).toHaveURL(/\/community\/lantern-coast-chronicle$/u);
+    await expect(page.getByRole("heading", { name: "The Lantern Coast", level: 1 })).toBeVisible();
     await expect(page.getByRole("link", { name: "Preview Chronicle" })).toHaveAttribute(
       "href",
       "/play/hp4-lantern-coast",
