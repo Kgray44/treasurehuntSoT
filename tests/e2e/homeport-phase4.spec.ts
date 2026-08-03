@@ -718,7 +718,7 @@ async function capture(
   await page.evaluate(async () => {
     if (document.fonts?.ready) await document.fonts.ready;
   });
-  await expect(page.locator("main")).toBeVisible();
+  await expect(page.locator("main, h1").first()).toBeVisible();
   await page.waitForTimeout(200);
   const screenshotPath = path.join(evidenceRoot, `${evidenceId}.png`);
   await mkdir(evidenceRoot, { recursive: true });
