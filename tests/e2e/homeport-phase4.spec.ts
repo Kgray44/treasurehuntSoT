@@ -174,9 +174,12 @@ test.describe.serial("Project Homeport Phase 4 Community Harbor acceptance", () 
     });
     await page.goBack();
     await expect(page).toHaveURL(/q=Lantern\+Coast/u);
+    await expect(search).toHaveValue("Lantern Coast");
 
     await search.fill("unfindable synthetic horizon");
+    await expect(search).toHaveValue("unfindable synthetic horizon");
     await page.getByRole("button", { name: "Search", exact: true }).click();
+    await expect(page).toHaveURL(/q=unfindable\+synthetic\+horizon/u);
     await expect(page.getByRole("heading", { name: "No public charts match these criteria" })).toBeVisible();
     await capture(page, "HP-P4-EV-W-no-results", {
       screen: "No search results",
