@@ -3,7 +3,7 @@ title: Project Homeport Repository Index
 audience: product-engineering
 status: current
 canonical_for: project-homeport-repository-index
-last_reviewed: 2026-08-02
+last_reviewed: 2026-08-03
 ---
 
 # Project Homeport
@@ -92,12 +92,21 @@ the architecture checkpoint.
 
 - [Route Reachability Architecture](Project_Homeport_Phase_5_Route_Reachability_Architecture.md)
 - [Test Plan](Project_Homeport_Phase_5_Test_Plan.md)
+- `Project_Homeport_Phase_5_Route_Node_Registry.json`
+- `Project_Homeport_Phase_5_Route_Edge_Registry.json`
+- `Project_Homeport_Phase_5_Route_Reachability_Graph.json`
+- `Project_Homeport_Phase_5_Dynamic_Source_Matrix.csv`
+- `Project_Homeport_Phase_5_Tokenized_Route_Matrix.csv`
+- `Project_Homeport_Phase_5_Compatibility_Route_Ledger.csv`
+- `Project_Homeport_Phase_5_Dead_End_and_Return_Matrix.csv`
+- `Project_Homeport_Phase_5_Desktop_Mobile_Reachability_Matrix.csv`
+- `Project_Homeport_Phase_5_Natural_Path_Matrix.csv`
 
-The Phase 5 node/edge graph, route matrices, implementation report, evidence,
-validation record, and integration manifest are created during the separately
+The source-derived node/edge graph and provisional route matrices are generated
+idempotently during implementation. The implementation report, evidence,
+validation record, and integration manifest remain reserved for the separately
 validated implementation checkpoint. Phase 5 remains branch-only and does not
-establish Phase 6, Phase 7, deployment, owner acceptance, or product
-acceptance.
+establish Phase 6, Phase 7, deployment, owner acceptance, or product acceptance.
 
 ## Phase 2 machine-readable records
 

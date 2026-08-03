@@ -60,7 +60,7 @@ export function CaptainDashboard({ authenticated, taleFilter }: { authenticated:
           <p className="eyebrow">Captain’s Console</p>
           <h1>Captain access required</h1>
           <p>Sign in to open live Voyages and their controls.</p>
-          <Link className="brass-button" href="/quartermaster">
+          <Link className="brass-button" href="/captain/library">
             Sign in to Captain’s Console
           </Link>
         </section>
@@ -78,7 +78,7 @@ export function CaptainDashboard({ authenticated, taleFilter }: { authenticated:
           </p>
         </div>
         <nav>
-          <Link href="/studio">Voyagewright Studio</Link>
+          <Link href="/studio/library">Voyagewright Studio</Link>
           <Link href="/tales">Chronicle Library</Link>
         </nav>
       </header>

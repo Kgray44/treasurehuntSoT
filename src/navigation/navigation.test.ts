@@ -163,7 +163,10 @@ describe("Homeport Phase 2 navigation authority", () => {
   it("homeport.navigation.permission-aware projects only server-granted workspace capabilities", () => {
     const player = projection("/player/library", "WORKSPACE_STANDARD", "player", authenticated({ canUsePlayer: true }));
     expect(player.workspaceItems.map((item) => item.id)).toEqual(["workspace-player-home"]);
-    expect(player.availableWorkspaceItems.map((item) => item.id)).toEqual(["account-workspace-player"]);
+    expect(player.availableWorkspaceItems.map((item) => item.id)).toEqual([
+      "account-all-workspaces",
+      "account-workspace-player",
+    ]);
 
     const full = projection(
       "/captain/library",
@@ -176,11 +179,15 @@ describe("Homeport Phase 2 navigation authority", () => {
       "workspace-captain-invitations",
     ]);
     expect(full.availableWorkspaceItems.map((item) => item.id)).toEqual([
+      "account-all-workspaces",
       "account-workspace-player",
       "account-workspace-captain",
       "account-workspace-creator",
       "account-workspace-moderator",
     ]);
+    expect(full.workspaceItems.find((item) => item.id === "workspace-captain-invitations")?.href).toBe(
+      "/captain/library?tab=invitations",
+    );
   });
 
   it("homeport.navigation.no-client-authority does not derive capabilities from protected pathnames", () => {

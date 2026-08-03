@@ -97,7 +97,7 @@ export default async function PublicProfilePage({ params }: { params: Promise<{ 
             <h2>Stories remain with their keeper</h2>
             <p>Private Voyage history, Memories, and Keepsakes are never published by this Profile projection.</p>
           </div>
-          <Link className="button button--quiet" href="/explore">
+          <Link className="button button--quiet" href="/tales">
             Explore Chronicles
           </Link>
         </section>

@@ -11,9 +11,9 @@
       "owner": "wayfarer",
       "shellMode": "standard",
       "primaryUserGoal": "Use current Personal Harbor surface at /account/claim",
-      "logicalParent": "/account",
-      "visibleEntryPoints": [],
-      "authentication": "ANONYMOUS_OR_PAGE_LEVEL_GUARD",
+      "logicalParent": "route-page-sign-in",
+      "visibleEntryPoints": ["edge-token-account-claim"],
+      "authentication": "BOUNDED_TOKEN_OR_CODE",
       "capabilities": [],
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
       "primaryAction": "ROUTE_SPECIFIC",
@@ -44,6 +44,13 @@
         "stateCompleteness": "Loading, populated, empty, no-results, recoverable error, permission, expiry, and dependency-unavailable states where applicable.",
         "responsive": "Desktop, mobile, and critical 200 percent zoom preserve information and controls.",
         "acceptanceOwner": "Project Homeport owner walkthrough after Sounding Line evidence."
+      },
+      "phase5Implementation": {
+        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "classification": "TOKENIZED_DEEP_LINK",
+        "parentRouteId": "route-page-sign-in",
+        "entryEdgeIds": ["edge-token-account-claim"],
+        "exitEdgeIds": ["edge-return-account-claim"]
       }
     },
     {
@@ -53,9 +60,9 @@
       "owner": "wayfarer",
       "shellMode": "standard",
       "primaryUserGoal": "Use current Personal Harbor surface at /account/merge",
-      "logicalParent": "/account",
-      "visibleEntryPoints": [],
-      "authentication": "ANONYMOUS_OR_PAGE_LEVEL_GUARD",
+      "logicalParent": "route-page-sign-in",
+      "visibleEntryPoints": ["edge-token-account-merge"],
+      "authentication": "BOUNDED_TOKEN_OR_CODE",
       "capabilities": [],
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
       "primaryAction": "ROUTE_SPECIFIC",
@@ -86,6 +93,13 @@
         "stateCompleteness": "Loading, populated, empty, no-results, recoverable error, permission, expiry, and dependency-unavailable states where applicable.",
         "responsive": "Desktop, mobile, and critical 200 percent zoom preserve information and controls.",
         "acceptanceOwner": "Project Homeport owner walkthrough after Sounding Line evidence."
+      },
+      "phase5Implementation": {
+        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "classification": "TOKENIZED_DEEP_LINK",
+        "parentRouteId": "route-page-sign-in",
+        "entryEdgeIds": ["edge-token-account-merge"],
+        "exitEdgeIds": ["edge-return-account-merge"]
       }
     },
     {
@@ -95,9 +109,9 @@
       "owner": "wayfarer",
       "shellMode": "standard",
       "primaryUserGoal": "Use current Personal Harbor surface at /account/roles",
-      "logicalParent": "/account",
-      "visibleEntryPoints": [],
-      "authentication": "ANONYMOUS_OR_PAGE_LEVEL_GUARD",
+      "logicalParent": "route-page-account",
+      "visibleEntryPoints": ["edge-account-workspaces"],
+      "authentication": "AUTHENTICATED_ACCOUNT_REQUIRED",
       "capabilities": [],
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
       "primaryAction": "ROUTE_SPECIFIC",
@@ -128,6 +142,13 @@
         "stateCompleteness": "Loading, populated, empty, no-results, recoverable error, permission, expiry, and dependency-unavailable states where applicable.",
         "responsive": "Desktop, mobile, and critical 200 percent zoom preserve information and controls.",
         "acceptanceOwner": "Project Homeport owner walkthrough after Sounding Line evidence."
+      },
+      "phase5Implementation": {
+        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "classification": "USER_NAVIGABLE",
+        "parentRouteId": "route-page-account",
+        "entryEdgeIds": ["edge-account-workspaces"],
+        "exitEdgeIds": ["edge-return-account-roles"]
       }
     },
     {
@@ -137,9 +158,9 @@
       "owner": "wayfarer",
       "shellMode": "WORKSPACE_STANDARD",
       "primaryUserGoal": "Use Security in the unified Personal Harbor",
-      "logicalParent": "/account",
-      "visibleEntryPoints": ["entry-phase3-security"],
-      "authentication": "ACCOUNT_SESSION_REQUIRED",
+      "logicalParent": "route-page-account",
+      "visibleEntryPoints": ["edge-account-security"],
+      "authentication": "AUTHENTICATED_ACCOUNT_REQUIRED",
       "capabilities": [],
       "primaryHeading": "Security",
       "primaryAction": "SUPPORTED_OWNER_MUTATION_OR_TRUTHFUL_UNAVAILABLE_STATE",
@@ -236,6 +257,13 @@
         "mutationIds": ["sign-out-everywhere"],
         "testContracts": ["homeport.security.sensitive-reauth", "homeport.sessions.signout-all"],
         "evidenceIds": ["HP-P3-EV-T-security"]
+      },
+      "phase5Implementation": {
+        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "classification": "USER_NAVIGABLE",
+        "parentRouteId": "route-page-account",
+        "entryEdgeIds": ["edge-account-security"],
+        "exitEdgeIds": ["edge-return-account-security"]
       }
     },
     {
@@ -245,10 +273,10 @@
       "owner": "one-voyage",
       "shellMode": "standard",
       "primaryUserGoal": "Use current Captain surface at /captain/invitations",
-      "logicalParent": "/captain",
-      "visibleEntryPoints": ["entry-captain-invitations-1"],
-      "authentication": "ANONYMOUS_OR_PAGE_LEVEL_GUARD",
-      "capabilities": [],
+      "logicalParent": "route-page-captain-library",
+      "visibleEntryPoints": [],
+      "authentication": "AUTHENTICATED_CAPABILITY_REQUIRED",
+      "capabilities": ["CAPTAIN"],
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
       "primaryAction": "ROUTE_SPECIFIC",
       "secondaryActions": [],
@@ -278,6 +306,13 @@
         "stateCompleteness": "Loading, populated, empty, no-results, recoverable error, permission, expiry, and dependency-unavailable states where applicable.",
         "responsive": "Desktop, mobile, and critical 200 percent zoom preserve information and controls.",
         "acceptanceOwner": "Project Homeport owner walkthrough after Sounding Line evidence."
+      },
+      "phase5Implementation": {
+        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "classification": "REDIRECT_ALIAS",
+        "parentRouteId": "route-page-captain-library",
+        "entryEdgeIds": [],
+        "exitEdgeIds": ["edge-compat-captain-invitations"]
       }
     },
     {
@@ -287,17 +322,17 @@
       "owner": "one-voyage",
       "shellMode": "WORKSPACE_STANDARD",
       "primaryUserGoal": "Use current Captain surface at /captain/library",
-      "logicalParent": "/captain",
+      "logicalParent": "route-page-root",
       "visibleEntryPoints": [
-        "entry-captain-library-1",
-        "entry-captain-library-2",
-        "entry-captain-library-3",
-        "entry-captain-library-4",
-        "entry-captain-library-5",
-        "entry-captain-library-6",
-        "entry-captain-library-7"
+        "edge-workspace-captain",
+        "edge-workspace-captain-invitations",
+        "edge-compat-captain",
+        "edge-compat-captain-invitations",
+        "edge-compat-quartermaster",
+        "edge-compat-quartermaster-workspace",
+        "edge-return-captain-sessions-sessionid"
       ],
-      "authentication": "CAPTAIN_OR_CREATOR_CAPABILITY",
+      "authentication": "AUTHENTICATED_CAPABILITY_REQUIRED",
       "capabilities": ["CAPTAIN"],
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
       "primaryAction": "ROUTE_SPECIFIC",
@@ -343,6 +378,27 @@
         "responsiveProof": "Desktop, 390x844 mobile, 200 percent layout equivalent, keyboard, and reduced motion",
         "evidenceIds": ["HP-P2-EV-I-captain-navigation"],
         "implementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc"
+      },
+      "phase5Implementation": {
+        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "classification": "USER_NAVIGABLE",
+        "parentRouteId": "route-page-root",
+        "entryEdgeIds": [
+          "edge-workspace-captain",
+          "edge-workspace-captain-invitations",
+          "edge-compat-captain",
+          "edge-compat-captain-invitations",
+          "edge-compat-quartermaster",
+          "edge-compat-quartermaster-workspace",
+          "edge-return-captain-sessions-sessionid"
+        ],
+        "exitEdgeIds": [
+          "edge-workspace-captain-invitations",
+          "edge-captain-session",
+          "edge-captain-tale",
+          "edge-captain-preview",
+          "edge-return-captain-library"
+        ]
       }
     },
     {
@@ -352,9 +408,9 @@
       "owner": "one-voyage",
       "shellMode": "standard",
       "primaryUserGoal": "Use current Captain surface at /captain",
-      "logicalParent": "/",
-      "visibleEntryPoints": ["entry-captain-1", "entry-captain-2", "entry-captain-3", "entry-captain-4"],
-      "authentication": "CAPTAIN_OR_CREATOR_CAPABILITY",
+      "logicalParent": "route-page-root",
+      "visibleEntryPoints": [],
+      "authentication": "AUTHENTICATED_CAPABILITY_REQUIRED",
       "capabilities": ["CAPTAIN"],
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
       "primaryAction": "ROUTE_SPECIFIC",
@@ -385,6 +441,13 @@
         "stateCompleteness": "Loading, populated, empty, no-results, recoverable error, permission, expiry, and dependency-unavailable states where applicable.",
         "responsive": "Desktop, mobile, and critical 200 percent zoom preserve information and controls.",
         "acceptanceOwner": "Project Homeport owner walkthrough after Sounding Line evidence."
+      },
+      "phase5Implementation": {
+        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "classification": "REDIRECT_ALIAS",
+        "parentRouteId": "route-page-root",
+        "entryEdgeIds": [],
+        "exitEdgeIds": ["edge-compat-captain"]
       }
     },
     {
@@ -394,9 +457,9 @@
       "owner": "one-voyage",
       "shellMode": "COMPACT",
       "primaryUserGoal": "Use current Captain surface at /captain/sessions/:sessionId",
-      "logicalParent": "/captain/sessions",
-      "visibleEntryPoints": [],
-      "authentication": "CAPTAIN_OR_CREATOR_CAPABILITY",
+      "logicalParent": "route-page-captain-library",
+      "visibleEntryPoints": ["edge-captain-session"],
+      "authentication": "AUTHENTICATED_CAPABILITY_REQUIRED",
       "capabilities": ["CAPTAIN"],
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
       "primaryAction": "ROUTE_SPECIFIC",
@@ -436,6 +499,13 @@
         "responsiveProof": "Desktop, 390x844 mobile, 200 percent layout equivalent, keyboard, and reduced motion",
         "evidenceIds": ["HP-P2-EV-N-compact-exit"],
         "implementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc"
+      },
+      "phase5Implementation": {
+        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "classification": "CONTEXTUAL_DYNAMIC",
+        "parentRouteId": "route-page-captain-library",
+        "entryEdgeIds": ["edge-captain-session"],
+        "exitEdgeIds": ["edge-return-captain-sessions-sessionid"]
       }
     },
     {
@@ -445,15 +515,10 @@
       "owner": "one-voyage",
       "shellMode": "authentication",
       "primaryUserGoal": "Use current Captain surface at /captain/sign-in",
-      "logicalParent": "/captain",
-      "visibleEntryPoints": [
-        "entry-captain-sign-in-1",
-        "entry-captain-sign-in-2",
-        "entry-captain-sign-in-3",
-        "entry-captain-sign-in-4"
-      ],
+      "logicalParent": "route-page-root",
+      "visibleEntryPoints": ["edge-gateway-captain-adapter"],
       "authentication": "ANONYMOUS_ALLOWED",
-      "capabilities": ["CAPTAIN"],
+      "capabilities": [],
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
       "primaryAction": "ROUTE_SPECIFIC",
       "secondaryActions": [],
@@ -489,6 +554,13 @@
         "identityAuthority": "HP-SES-001",
         "responsiveProof": "Desktop, mobile, keyboard, reduced-motion component coverage, and critical 200 percent zoom",
         "evidenceIds": []
+      },
+      "phase5Implementation": {
+        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "classification": "AUTH_COMPATIBILITY_ALIAS",
+        "parentRouteId": "route-page-root",
+        "entryEdgeIds": ["edge-gateway-captain-adapter"],
+        "exitEdgeIds": ["edge-compat-captain-sign-in"]
       }
     },
     {
@@ -498,9 +570,9 @@
       "owner": "one-voyage",
       "shellMode": "standard",
       "primaryUserGoal": "Use current Captain surface at /captain/tales/:taleId",
-      "logicalParent": "/captain/tales",
-      "visibleEntryPoints": [],
-      "authentication": "CAPTAIN_OR_CREATOR_CAPABILITY",
+      "logicalParent": "route-page-captain-library",
+      "visibleEntryPoints": ["edge-captain-tale"],
+      "authentication": "AUTHENTICATED_CAPABILITY_REQUIRED",
       "capabilities": ["CAPTAIN"],
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
       "primaryAction": "ROUTE_SPECIFIC",
@@ -531,6 +603,13 @@
         "stateCompleteness": "Loading, populated, empty, no-results, recoverable error, permission, expiry, and dependency-unavailable states where applicable.",
         "responsive": "Desktop, mobile, and critical 200 percent zoom preserve information and controls.",
         "acceptanceOwner": "Project Homeport owner walkthrough after Sounding Line evidence."
+      },
+      "phase5Implementation": {
+        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "classification": "CONTEXTUAL_DYNAMIC",
+        "parentRouteId": "route-page-captain-library",
+        "entryEdgeIds": ["edge-captain-tale"],
+        "exitEdgeIds": ["edge-return-captain-tales-taleid"]
       }
     },
     {
@@ -540,9 +619,9 @@
       "owner": "one-voyage",
       "shellMode": "standard",
       "primaryUserGoal": "Use current Captain surface at /captain/voyages/:playthroughId/player-preview",
-      "logicalParent": "/captain/voyages/:playthroughId",
-      "visibleEntryPoints": [],
-      "authentication": "CAPTAIN_OR_CREATOR_CAPABILITY",
+      "logicalParent": "route-page-captain-library",
+      "visibleEntryPoints": ["edge-captain-preview"],
+      "authentication": "AUTHENTICATED_CAPABILITY_REQUIRED",
       "capabilities": ["CAPTAIN"],
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
       "primaryAction": "ROUTE_SPECIFIC",
@@ -573,6 +652,13 @@
         "stateCompleteness": "Loading, populated, empty, no-results, recoverable error, permission, expiry, and dependency-unavailable states where applicable.",
         "responsive": "Desktop, mobile, and critical 200 percent zoom preserve information and controls.",
         "acceptanceOwner": "Project Homeport owner walkthrough after Sounding Line evidence."
+      },
+      "phase5Implementation": {
+        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "classification": "CONTEXTUAL_DYNAMIC",
+        "parentRouteId": "route-page-captain-library",
+        "entryEdgeIds": ["edge-captain-preview"],
+        "exitEdgeIds": ["edge-return-captain-voyages-playthroughid-player-preview"]
       }
     },
     {
@@ -582,22 +668,8 @@
       "owner": "harborlight",
       "shellMode": "standard",
       "primaryUserGoal": "Use current Community Harbor surface at /community/:slug",
-      "logicalParent": "/community",
-      "visibleEntryPoints": [
-        "entry-community-slug-1",
-        "entry-community-slug-2",
-        "entry-community-slug-3",
-        "entry-community-slug-4",
-        "entry-community-slug-5",
-        "entry-community-slug-6",
-        "entry-community-slug-7",
-        "entry-community-slug-8",
-        "entry-community-slug-9",
-        "entry-community-slug-10",
-        "entry-community-slug-11",
-        "entry-community-slug-12",
-        "entry-community-slug-13"
-      ],
+      "logicalParent": "route-page-community-chronicles",
+      "visibleEntryPoints": ["edge-dynamic-community-slug"],
       "authentication": "ANONYMOUS_ALLOWED",
       "capabilities": [],
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
@@ -785,6 +857,13 @@
           "HP-P4-EV-AM-keyboard-navigation"
         ],
         "routePatterns": ["/community/:slug"]
+      },
+      "phase5Implementation": {
+        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "classification": "CONTEXTUAL_DYNAMIC",
+        "parentRouteId": "route-page-community-chronicles",
+        "entryEdgeIds": ["edge-dynamic-community-slug"],
+        "exitEdgeIds": ["edge-return-community-slug"]
       }
     },
     {
@@ -794,8 +873,8 @@
       "owner": "harborlight",
       "shellMode": "standard",
       "primaryUserGoal": "Use current Community Harbor surface at /community/artifacts",
-      "logicalParent": "/community",
-      "visibleEntryPoints": ["entry-community-artifacts-1"],
+      "logicalParent": "route-page-community",
+      "visibleEntryPoints": ["edge-district-artifacts"],
       "authentication": "ANONYMOUS_ALLOWED",
       "capabilities": [],
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
@@ -948,6 +1027,13 @@
         ],
         "evidenceIds": ["HP-P4-EV-H-artifacts-district"],
         "routePatterns": ["/community/artifacts"]
+      },
+      "phase5Implementation": {
+        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "classification": "USER_NAVIGABLE",
+        "parentRouteId": "route-page-community",
+        "entryEdgeIds": ["edge-district-artifacts"],
+        "exitEdgeIds": ["edge-return-community-artifacts"]
       }
     },
     {
@@ -957,8 +1043,8 @@
       "owner": "harborlight",
       "shellMode": "standard",
       "primaryUserGoal": "Use current Community Harbor surface at /community/audio",
-      "logicalParent": "/community",
-      "visibleEntryPoints": [],
+      "logicalParent": "route-page-community",
+      "visibleEntryPoints": ["edge-district-audio-and-reveal-assets"],
       "authentication": "ANONYMOUS_ALLOWED",
       "capabilities": [],
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
@@ -1111,6 +1197,13 @@
         ],
         "evidenceIds": ["HP-P4-EV-K-audio-district", "HP-P4-EV-AM-audio-district-empty"],
         "routePatterns": ["/community/audio"]
+      },
+      "phase5Implementation": {
+        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "classification": "USER_NAVIGABLE",
+        "parentRouteId": "route-page-community",
+        "entryEdgeIds": ["edge-district-audio-and-reveal-assets"],
+        "exitEdgeIds": ["edge-return-community-audio"]
       }
     },
     {
@@ -1120,8 +1213,8 @@
       "owner": "harborlight",
       "shellMode": "standard",
       "primaryUserGoal": "Use current Community Harbor surface at /community/chronicles",
-      "logicalParent": "/community",
-      "visibleEntryPoints": ["entry-community-chronicles-1"],
+      "logicalParent": "route-page-community",
+      "visibleEntryPoints": ["edge-district-chronicles"],
       "authentication": "ANONYMOUS_ALLOWED",
       "capabilities": [],
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
@@ -1274,6 +1367,13 @@
         ],
         "evidenceIds": ["HP-P4-EV-G-chronicles-district"],
         "routePatterns": ["/community/chronicles"]
+      },
+      "phase5Implementation": {
+        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "classification": "USER_NAVIGABLE",
+        "parentRouteId": "route-page-community",
+        "entryEdgeIds": ["edge-district-chronicles"],
+        "exitEdgeIds": ["edge-dynamic-community-slug", "edge-return-community-chronicles"]
       }
     },
     {
@@ -1283,8 +1383,8 @@
       "owner": "harborlight",
       "shellMode": "standard",
       "primaryUserGoal": "Use current Community Harbor surface at /community/collections/:slug",
-      "logicalParent": "/community/collections",
-      "visibleEntryPoints": [],
+      "logicalParent": "route-page-community-collections",
+      "visibleEntryPoints": ["edge-dynamic-community-collections-slug"],
       "authentication": "ANONYMOUS_ALLOWED",
       "capabilities": [],
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
@@ -1437,6 +1537,13 @@
         ],
         "evidenceIds": ["HP-P4-EV-P-collection-detail"],
         "routePatterns": ["/community/collections/:slug"]
+      },
+      "phase5Implementation": {
+        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "classification": "CONTEXTUAL_DYNAMIC",
+        "parentRouteId": "route-page-community-collections",
+        "entryEdgeIds": ["edge-dynamic-community-collections-slug"],
+        "exitEdgeIds": ["edge-return-community-collections-slug"]
       }
     },
     {
@@ -1446,8 +1553,8 @@
       "owner": "harborlight",
       "shellMode": "standard",
       "primaryUserGoal": "Use current Community Harbor surface at /community/collections",
-      "logicalParent": "/community",
-      "visibleEntryPoints": ["entry-community-collections-1"],
+      "logicalParent": "route-page-community",
+      "visibleEntryPoints": ["edge-district-collections"],
       "authentication": "ANONYMOUS_ALLOWED",
       "capabilities": [],
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
@@ -1601,6 +1708,13 @@
         ],
         "evidenceIds": ["HP-P4-EV-O-collections-district"],
         "routePatterns": ["/community/collections"]
+      },
+      "phase5Implementation": {
+        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "classification": "USER_NAVIGABLE",
+        "parentRouteId": "route-page-community",
+        "entryEdgeIds": ["edge-district-collections"],
+        "exitEdgeIds": ["edge-dynamic-community-collections-slug", "edge-return-community-collections"]
       }
     },
     {
@@ -1610,8 +1724,8 @@
       "owner": "harborlight",
       "shellMode": "standard",
       "primaryUserGoal": "Use current Community Harbor surface at /community/creators/:handle",
-      "logicalParent": "/community/creators",
-      "visibleEntryPoints": [],
+      "logicalParent": "route-page-community-creators",
+      "visibleEntryPoints": ["edge-dynamic-community-creators-handle"],
       "authentication": "ANONYMOUS_ALLOWED",
       "capabilities": [],
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
@@ -1764,6 +1878,13 @@
         ],
         "evidenceIds": ["HP-P4-EV-M-creator-profile", "HP-P4-EV-N-creator-empty"],
         "routePatterns": ["/community/creators/:handle"]
+      },
+      "phase5Implementation": {
+        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "classification": "CONTEXTUAL_DYNAMIC",
+        "parentRouteId": "route-page-community-creators",
+        "entryEdgeIds": ["edge-dynamic-community-creators-handle"],
+        "exitEdgeIds": ["edge-return-community-creators-handle"]
       }
     },
     {
@@ -1773,8 +1894,8 @@
       "owner": "harborlight",
       "shellMode": "standard",
       "primaryUserGoal": "Use current Community Harbor surface at /community/creators",
-      "logicalParent": "/community",
-      "visibleEntryPoints": ["entry-community-creators-1"],
+      "logicalParent": "route-page-community",
+      "visibleEntryPoints": ["edge-district-creators"],
       "authentication": "ANONYMOUS_ALLOWED",
       "capabilities": [],
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
@@ -1928,6 +2049,13 @@
         ],
         "evidenceIds": ["HP-P4-EV-L-creators-district"],
         "routePatterns": ["/community/creators"]
+      },
+      "phase5Implementation": {
+        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "classification": "USER_NAVIGABLE",
+        "parentRouteId": "route-page-community",
+        "entryEdgeIds": ["edge-district-creators"],
+        "exitEdgeIds": ["edge-dynamic-community-creators-handle", "edge-return-community-creators"]
       }
     },
     {
@@ -1937,8 +2065,8 @@
       "owner": "harborlight",
       "shellMode": "standard",
       "primaryUserGoal": "Use current Community Harbor surface at /community/featured",
-      "logicalParent": "/community",
-      "visibleEntryPoints": ["entry-community-featured-1"],
+      "logicalParent": "route-page-community",
+      "visibleEntryPoints": ["edge-district-featured"],
       "authentication": "ANONYMOUS_ALLOWED",
       "capabilities": [],
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
@@ -2091,6 +2219,13 @@
         ],
         "evidenceIds": [],
         "routePatterns": ["/community/featured"]
+      },
+      "phase5Implementation": {
+        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "classification": "USER_NAVIGABLE",
+        "parentRouteId": "route-page-community",
+        "entryEdgeIds": ["edge-district-featured"],
+        "exitEdgeIds": ["edge-return-community-featured"]
       }
     },
     {
@@ -2100,8 +2235,8 @@
       "owner": "harborlight",
       "shellMode": "standard",
       "primaryUserGoal": "Use current Community Harbor surface at /community/guides/:slug",
-      "logicalParent": "/community/guides",
-      "visibleEntryPoints": [],
+      "logicalParent": "route-page-community-guides",
+      "visibleEntryPoints": ["edge-dynamic-community-guides-slug"],
       "authentication": "ANONYMOUS_ALLOWED",
       "capabilities": [],
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
@@ -2254,6 +2389,13 @@
         ],
         "evidenceIds": ["HP-P4-EV-R-guide-detail"],
         "routePatterns": ["/community/guides/:slug"]
+      },
+      "phase5Implementation": {
+        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "classification": "CONTEXTUAL_DYNAMIC",
+        "parentRouteId": "route-page-community-guides",
+        "entryEdgeIds": ["edge-dynamic-community-guides-slug"],
+        "exitEdgeIds": ["edge-return-community-guides-slug"]
       }
     },
     {
@@ -2263,8 +2405,8 @@
       "owner": "harborlight",
       "shellMode": "standard",
       "primaryUserGoal": "Use current Community Harbor surface at /community/guides",
-      "logicalParent": "/community",
-      "visibleEntryPoints": ["entry-community-guides-1", "entry-community-guides-2"],
+      "logicalParent": "route-page-community",
+      "visibleEntryPoints": ["edge-district-guides"],
       "authentication": "ANONYMOUS_ALLOWED",
       "capabilities": [],
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
@@ -2417,6 +2559,13 @@
         ],
         "evidenceIds": ["HP-P4-EV-Q-guides-district"],
         "routePatterns": ["/community/guides"]
+      },
+      "phase5Implementation": {
+        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "classification": "USER_NAVIGABLE",
+        "parentRouteId": "route-page-community",
+        "entryEdgeIds": ["edge-district-guides"],
+        "exitEdgeIds": ["edge-dynamic-community-guides-slug", "edge-return-community-guides"]
       }
     },
     {
@@ -2426,8 +2575,8 @@
       "owner": "harborlight",
       "shellMode": "standard",
       "primaryUserGoal": "Use current Community Harbor surface at /community/maps",
-      "logicalParent": "/community",
-      "visibleEntryPoints": [],
+      "logicalParent": "route-page-community",
+      "visibleEntryPoints": ["edge-district-maps-and-location-packs"],
       "authentication": "ANONYMOUS_ALLOWED",
       "capabilities": [],
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
@@ -2580,6 +2729,13 @@
         ],
         "evidenceIds": ["HP-P4-EV-J-maps-district"],
         "routePatterns": ["/community/maps"]
+      },
+      "phase5Implementation": {
+        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "classification": "USER_NAVIGABLE",
+        "parentRouteId": "route-page-community",
+        "entryEdgeIds": ["edge-district-maps-and-location-packs"],
+        "exitEdgeIds": ["edge-return-community-maps"]
       }
     },
     {
@@ -2589,10 +2745,10 @@
       "owner": "harborlight",
       "shellMode": "standard",
       "primaryUserGoal": "Use current Community Harbor surface at /community/moderation/:id",
-      "logicalParent": "/community/moderation",
-      "visibleEntryPoints": [],
-      "authentication": "ANONYMOUS_ALLOWED",
-      "capabilities": ["MODERATOR_OR_ADMINISTRATOR"],
+      "logicalParent": "route-page-community-moderation",
+      "visibleEntryPoints": ["edge-moderation-detail"],
+      "authentication": "AUTHENTICATED_CAPABILITY_REQUIRED",
+      "capabilities": ["MODERATOR"],
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
       "primaryAction": "ROUTE_SPECIFIC",
       "secondaryActions": [],
@@ -2625,6 +2781,13 @@
         "stateCompleteness": "Loading, populated, empty, no-results, recoverable error, permission, expiry, and dependency-unavailable states where applicable.",
         "responsive": "Desktop, mobile, and critical 200 percent zoom preserve information and controls.",
         "acceptanceOwner": "Project Homeport owner walkthrough after Sounding Line evidence."
+      },
+      "phase5Implementation": {
+        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "classification": "CONTEXTUAL_DYNAMIC",
+        "parentRouteId": "route-page-community-moderation",
+        "entryEdgeIds": ["edge-moderation-detail"],
+        "exitEdgeIds": ["edge-return-community-moderation-id"]
       }
     },
     {
@@ -2634,10 +2797,10 @@
       "owner": "harborlight",
       "shellMode": "PUBLIC_STANDARD",
       "primaryUserGoal": "Use current Community Harbor surface at /community/moderation",
-      "logicalParent": "/community",
-      "visibleEntryPoints": ["entry-community-moderation-1"],
-      "authentication": "ANONYMOUS_ALLOWED",
-      "capabilities": ["MODERATOR_OR_ADMINISTRATOR"],
+      "logicalParent": "route-page-community",
+      "visibleEntryPoints": ["edge-workspace-moderation"],
+      "authentication": "AUTHENTICATED_CAPABILITY_REQUIRED",
+      "capabilities": ["MODERATOR"],
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
       "primaryAction": "ROUTE_SPECIFIC",
       "secondaryActions": [],
@@ -2684,6 +2847,13 @@
         "responsiveProof": "Desktop, 390x844 mobile, 200 percent layout equivalent, keyboard, and reduced motion",
         "evidenceIds": ["HP-P2-EV-T-permission-return"],
         "implementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc"
+      },
+      "phase5Implementation": {
+        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "classification": "USER_NAVIGABLE",
+        "parentRouteId": "route-page-community",
+        "entryEdgeIds": ["edge-workspace-moderation"],
+        "exitEdgeIds": ["edge-moderation-detail", "edge-return-community-moderation"]
       }
     },
     {
@@ -2693,8 +2863,8 @@
       "owner": "harborlight",
       "shellMode": "PUBLIC_STANDARD",
       "primaryUserGoal": "Use current Community Harbor surface at /community",
-      "logicalParent": "/",
-      "visibleEntryPoints": ["entry-community-1", "entry-community-2", "entry-community-3", "entry-community-4"],
+      "logicalParent": "route-page-root",
+      "visibleEntryPoints": ["edge-global-community"],
       "authentication": "ANONYMOUS_ALLOWED",
       "capabilities": [],
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
@@ -2898,6 +3068,25 @@
           "HP-P4-EV-AI-reduced-motion"
         ],
         "routePatterns": ["/community"]
+      },
+      "phase5Implementation": {
+        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "classification": "USER_NAVIGABLE",
+        "parentRouteId": "route-page-root",
+        "entryEdgeIds": ["edge-global-community"],
+        "exitEdgeIds": [
+          "edge-district-featured",
+          "edge-district-chronicles",
+          "edge-district-artifacts",
+          "edge-district-templates",
+          "edge-district-maps-and-location-packs",
+          "edge-district-audio-and-reveal-assets",
+          "edge-district-creators",
+          "edge-district-collections",
+          "edge-district-guides",
+          "edge-district-voyage-logs",
+          "edge-return-community"
+        ]
       }
     },
     {
@@ -2907,8 +3096,8 @@
       "owner": "harborlight",
       "shellMode": "standard",
       "primaryUserGoal": "Use current Community Harbor surface at /community/templates",
-      "logicalParent": "/community",
-      "visibleEntryPoints": [],
+      "logicalParent": "route-page-community",
+      "visibleEntryPoints": ["edge-district-templates"],
       "authentication": "ANONYMOUS_ALLOWED",
       "capabilities": [],
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
@@ -3061,6 +3250,13 @@
         ],
         "evidenceIds": ["HP-P4-EV-I-templates-district"],
         "routePatterns": ["/community/templates"]
+      },
+      "phase5Implementation": {
+        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "classification": "USER_NAVIGABLE",
+        "parentRouteId": "route-page-community",
+        "entryEdgeIds": ["edge-district-templates"],
+        "exitEdgeIds": ["edge-return-community-templates"]
       }
     },
     {
@@ -3070,8 +3266,8 @@
       "owner": "harborlight",
       "shellMode": "standard",
       "primaryUserGoal": "Use current Community Harbor surface at /community/voyage-logs/:slug",
-      "logicalParent": "/community/voyage-logs",
-      "visibleEntryPoints": ["entry-community-voyage-logs-slug-1"],
+      "logicalParent": "route-page-community-voyage-logs",
+      "visibleEntryPoints": ["edge-dynamic-community-voyage-logs-slug"],
       "authentication": "ANONYMOUS_ALLOWED",
       "capabilities": [],
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
@@ -3224,6 +3420,13 @@
         ],
         "evidenceIds": [],
         "routePatterns": ["/community/voyage-logs/:slug"]
+      },
+      "phase5Implementation": {
+        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "classification": "CONTEXTUAL_DYNAMIC",
+        "parentRouteId": "route-page-community-voyage-logs",
+        "entryEdgeIds": ["edge-dynamic-community-voyage-logs-slug"],
+        "exitEdgeIds": ["edge-return-community-voyage-logs-slug"]
       }
     },
     {
@@ -3233,10 +3436,10 @@
       "owner": "harborlight",
       "shellMode": "standard",
       "primaryUserGoal": "Use current Community Harbor surface at /community/voyage-logs/consent",
-      "logicalParent": "/community/voyage-logs",
-      "visibleEntryPoints": [],
-      "authentication": "ANONYMOUS_ALLOWED",
-      "capabilities": [],
+      "logicalParent": "route-page-community-voyage-logs",
+      "visibleEntryPoints": ["edge-community-voyage-log-consent"],
+      "authentication": "AUTHENTICATED_ACCOUNT_REQUIRED",
+      "capabilities": ["PLAYER"],
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
       "primaryAction": "ROUTE_SPECIFIC",
       "secondaryActions": [],
@@ -3269,6 +3472,13 @@
         "stateCompleteness": "Loading, populated, empty, no-results, recoverable error, permission, expiry, and dependency-unavailable states where applicable.",
         "responsive": "Desktop, mobile, and critical 200 percent zoom preserve information and controls.",
         "acceptanceOwner": "Project Homeport owner walkthrough after Sounding Line evidence."
+      },
+      "phase5Implementation": {
+        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "classification": "USER_NAVIGABLE",
+        "parentRouteId": "route-page-community-voyage-logs",
+        "entryEdgeIds": ["edge-community-voyage-log-consent"],
+        "exitEdgeIds": ["edge-return-community-voyage-logs-consent"]
       }
     },
     {
@@ -3278,7 +3488,7 @@
       "owner": "harborlight",
       "shellMode": "standard",
       "primaryUserGoal": "Use current Community Harbor surface at /community/voyage-logs/media",
-      "logicalParent": "/community/voyage-logs",
+      "logicalParent": "route-page-community-voyage-logs-owner",
       "visibleEntryPoints": [],
       "authentication": "ANONYMOUS_ALLOWED",
       "capabilities": [],
@@ -3314,6 +3524,13 @@
         "stateCompleteness": "Loading, populated, empty, no-results, recoverable error, permission, expiry, and dependency-unavailable states where applicable.",
         "responsive": "Desktop, mobile, and critical 200 percent zoom preserve information and controls.",
         "acceptanceOwner": "Project Homeport owner walkthrough after Sounding Line evidence."
+      },
+      "phase5Implementation": {
+        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "classification": "REDIRECT_ALIAS",
+        "parentRouteId": "route-page-community-voyage-logs-owner",
+        "entryEdgeIds": [],
+        "exitEdgeIds": ["edge-compat-community-voyage-logs-media"]
       }
     },
     {
@@ -3323,10 +3540,10 @@
       "owner": "harborlight",
       "shellMode": "standard",
       "primaryUserGoal": "Use current Community Harbor surface at /community/voyage-logs/owner/:id",
-      "logicalParent": "/community/voyage-logs/owner",
-      "visibleEntryPoints": [],
-      "authentication": "ANONYMOUS_ALLOWED",
-      "capabilities": [],
+      "logicalParent": "route-page-community-voyage-logs-owner",
+      "visibleEntryPoints": ["edge-voyage-log-owner-detail"],
+      "authentication": "AUTHENTICATED_ACCOUNT_REQUIRED",
+      "capabilities": ["PLAYER"],
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
       "primaryAction": "ROUTE_SPECIFIC",
       "secondaryActions": [],
@@ -3359,6 +3576,13 @@
         "stateCompleteness": "Loading, populated, empty, no-results, recoverable error, permission, expiry, and dependency-unavailable states where applicable.",
         "responsive": "Desktop, mobile, and critical 200 percent zoom preserve information and controls.",
         "acceptanceOwner": "Project Homeport owner walkthrough after Sounding Line evidence."
+      },
+      "phase5Implementation": {
+        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "classification": "CONTEXTUAL_DYNAMIC",
+        "parentRouteId": "route-page-community-voyage-logs-owner",
+        "entryEdgeIds": ["edge-voyage-log-owner-detail"],
+        "exitEdgeIds": ["edge-return-community-voyage-logs-owner-id"]
       }
     },
     {
@@ -3368,10 +3592,10 @@
       "owner": "harborlight",
       "shellMode": "standard",
       "primaryUserGoal": "Use current Community Harbor surface at /community/voyage-logs/owner",
-      "logicalParent": "/community/voyage-logs",
-      "visibleEntryPoints": ["entry-community-voyage-logs-owner-1"],
-      "authentication": "ANONYMOUS_ALLOWED",
-      "capabilities": [],
+      "logicalParent": "route-page-community-voyage-logs",
+      "visibleEntryPoints": ["edge-community-voyage-log-owner", "edge-compat-community-voyage-logs-media"],
+      "authentication": "AUTHENTICATED_ACCOUNT_REQUIRED",
+      "capabilities": ["PLAYER"],
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
       "primaryAction": "ROUTE_SPECIFIC",
       "secondaryActions": [],
@@ -3403,6 +3627,13 @@
         "stateCompleteness": "Loading, populated, empty, no-results, recoverable error, permission, expiry, and dependency-unavailable states where applicable.",
         "responsive": "Desktop, mobile, and critical 200 percent zoom preserve information and controls.",
         "acceptanceOwner": "Project Homeport owner walkthrough after Sounding Line evidence."
+      },
+      "phase5Implementation": {
+        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "classification": "USER_NAVIGABLE",
+        "parentRouteId": "route-page-community-voyage-logs",
+        "entryEdgeIds": ["edge-community-voyage-log-owner", "edge-compat-community-voyage-logs-media"],
+        "exitEdgeIds": ["edge-voyage-log-owner-detail", "edge-return-community-voyage-logs-owner"]
       }
     },
     {
@@ -3412,14 +3643,8 @@
       "owner": "harborlight",
       "shellMode": "standard",
       "primaryUserGoal": "Use current Community Harbor surface at /community/voyage-logs",
-      "logicalParent": "/community",
-      "visibleEntryPoints": [
-        "entry-community-voyage-logs-1",
-        "entry-community-voyage-logs-2",
-        "entry-community-voyage-logs-3",
-        "entry-community-voyage-logs-4",
-        "entry-community-voyage-logs-5"
-      ],
+      "logicalParent": "route-page-community",
+      "visibleEntryPoints": ["edge-district-voyage-logs"],
       "authentication": "ANONYMOUS_ALLOWED",
       "capabilities": [],
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
@@ -3572,6 +3797,18 @@
         ],
         "evidenceIds": ["HP-P4-EV-S-voyage-logs"],
         "routePatterns": ["/community/voyage-logs"]
+      },
+      "phase5Implementation": {
+        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "classification": "USER_NAVIGABLE",
+        "parentRouteId": "route-page-community",
+        "entryEdgeIds": ["edge-district-voyage-logs"],
+        "exitEdgeIds": [
+          "edge-community-voyage-log-owner",
+          "edge-community-voyage-log-consent",
+          "edge-dynamic-community-voyage-logs-slug",
+          "edge-return-community-voyage-logs"
+        ]
       }
     },
     {
@@ -3581,9 +3818,9 @@
       "owner": "lanternwake",
       "shellMode": "standard",
       "primaryUserGoal": "Use current Development diagnostics surface at /dev/animations",
-      "logicalParent": "/dev",
-      "visibleEntryPoints": ["entry-dev-animations-1"],
-      "authentication": "ANONYMOUS_OR_PAGE_LEVEL_GUARD",
+      "logicalParent": "route-page-root",
+      "visibleEntryPoints": [],
+      "authentication": "ANONYMOUS_ALLOWED",
       "capabilities": [],
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
       "primaryAction": "ROUTE_SPECIFIC",
@@ -3614,6 +3851,13 @@
         "stateCompleteness": "Loading, populated, empty, no-results, recoverable error, permission, expiry, and dependency-unavailable states where applicable.",
         "responsive": "Desktop, mobile, and critical 200 percent zoom preserve information and controls.",
         "acceptanceOwner": "Project Homeport owner walkthrough after Sounding Line evidence."
+      },
+      "phase5Implementation": {
+        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "classification": "DEVELOPMENT_ONLY",
+        "parentRouteId": "route-page-root",
+        "entryEdgeIds": [],
+        "exitEdgeIds": ["edge-return-dev-animations"]
       }
     },
     {
@@ -3623,8 +3867,8 @@
       "owner": "wayfarer",
       "shellMode": "authentication",
       "primaryUserGoal": "Use current Account lifecycle surface at /forgot-password",
-      "logicalParent": "/",
-      "visibleEntryPoints": [],
+      "logicalParent": "route-page-sign-in",
+      "visibleEntryPoints": ["edge-sign-in-forgot"],
       "authentication": "ANONYMOUS_ALLOWED",
       "capabilities": [],
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
@@ -3662,6 +3906,13 @@
         "identityAuthority": "HP-SES-001",
         "responsiveProof": "Desktop, mobile, keyboard, reduced-motion component coverage, and critical 200 percent zoom",
         "evidenceIds": []
+      },
+      "phase5Implementation": {
+        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "classification": "USER_NAVIGABLE",
+        "parentRouteId": "route-page-sign-in",
+        "entryEdgeIds": ["edge-sign-in-forgot"],
+        "exitEdgeIds": ["edge-token-reset-password", "edge-return-forgot-password"]
       }
     },
     {
@@ -3673,14 +3924,67 @@
       "primaryUserGoal": "Use current Gateway and public shell surface at /",
       "logicalParent": null,
       "visibleEntryPoints": [
-        "entry-direct-arrival",
-        "entry-root-1",
-        "entry-root-2",
-        "entry-root-3",
-        "entry-root-4",
-        "entry-root-5",
-        "entry-root-6",
-        "entry-root-7"
+        "edge-return-account",
+        "edge-return-account-accessibility",
+        "edge-return-account-data",
+        "edge-return-account-linked-identities",
+        "edge-return-account-notifications",
+        "edge-return-account-personal-information",
+        "edge-return-account-preferences",
+        "edge-return-account-privacy",
+        "edge-return-account-profile",
+        "edge-return-account-roles",
+        "edge-return-account-security",
+        "edge-return-account-sessions",
+        "edge-return-captain-library",
+        "edge-return-captain-tales-taleid",
+        "edge-return-captain-voyages-playthroughid-player-preview",
+        "edge-return-community",
+        "edge-return-community-slug",
+        "edge-return-community-artifacts",
+        "edge-return-community-audio",
+        "edge-return-community-chronicles",
+        "edge-return-community-collections",
+        "edge-return-community-collections-slug",
+        "edge-return-community-creators",
+        "edge-return-community-creators-handle",
+        "edge-return-community-featured",
+        "edge-return-community-guides",
+        "edge-return-community-guides-slug",
+        "edge-return-community-maps",
+        "edge-return-community-moderation",
+        "edge-return-community-moderation-id",
+        "edge-return-community-templates",
+        "edge-return-community-voyage-logs",
+        "edge-return-community-voyage-logs-slug",
+        "edge-return-community-voyage-logs-consent",
+        "edge-return-community-voyage-logs-owner",
+        "edge-return-community-voyage-logs-owner-id",
+        "edge-return-dev-animations",
+        "edge-return-passport",
+        "edge-return-passport-artifacts",
+        "edge-return-passport-artifacts-[artifactId]",
+        "edge-return-passport-history",
+        "edge-return-passport-history-[recordId]",
+        "edge-return-passport-memories",
+        "edge-return-passport-saved",
+        "edge-return-play-taleslug",
+        "edge-return-play-taleslug-history",
+        "edge-return-player-library",
+        "edge-return-profile-handle",
+        "edge-return-sign-in",
+        "edge-return-studio-exchange",
+        "edge-return-studio-library",
+        "edge-return-studio-private-content",
+        "edge-return-studio-private-content-operations",
+        "edge-return-studio-tales-taleid",
+        "edge-return-studio-tales-taleid-artifacts",
+        "edge-return-studio-tales-taleid-assets",
+        "edge-return-studio-tales-taleid-locations",
+        "edge-return-studio-tales-taleid-settings",
+        "edge-return-studio-tales-taleid-versions",
+        "edge-return-studio-tales-new",
+        "edge-return-tales"
       ],
       "authentication": "ANONYMOUS_ALLOWED",
       "capabilities": [],
@@ -3761,6 +4065,96 @@
           "HP-P2-EV-S-reduced-motion"
         ],
         "implementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc"
+      },
+      "phase5Implementation": {
+        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "classification": "USER_NAVIGABLE",
+        "parentRouteId": null,
+        "entryEdgeIds": [
+          "edge-return-account",
+          "edge-return-account-accessibility",
+          "edge-return-account-data",
+          "edge-return-account-linked-identities",
+          "edge-return-account-notifications",
+          "edge-return-account-personal-information",
+          "edge-return-account-preferences",
+          "edge-return-account-privacy",
+          "edge-return-account-profile",
+          "edge-return-account-roles",
+          "edge-return-account-security",
+          "edge-return-account-sessions",
+          "edge-return-captain-library",
+          "edge-return-captain-tales-taleid",
+          "edge-return-captain-voyages-playthroughid-player-preview",
+          "edge-return-community",
+          "edge-return-community-slug",
+          "edge-return-community-artifacts",
+          "edge-return-community-audio",
+          "edge-return-community-chronicles",
+          "edge-return-community-collections",
+          "edge-return-community-collections-slug",
+          "edge-return-community-creators",
+          "edge-return-community-creators-handle",
+          "edge-return-community-featured",
+          "edge-return-community-guides",
+          "edge-return-community-guides-slug",
+          "edge-return-community-maps",
+          "edge-return-community-moderation",
+          "edge-return-community-moderation-id",
+          "edge-return-community-templates",
+          "edge-return-community-voyage-logs",
+          "edge-return-community-voyage-logs-slug",
+          "edge-return-community-voyage-logs-consent",
+          "edge-return-community-voyage-logs-owner",
+          "edge-return-community-voyage-logs-owner-id",
+          "edge-return-dev-animations",
+          "edge-return-passport",
+          "edge-return-passport-artifacts",
+          "edge-return-passport-artifacts-[artifactId]",
+          "edge-return-passport-history",
+          "edge-return-passport-history-[recordId]",
+          "edge-return-passport-memories",
+          "edge-return-passport-saved",
+          "edge-return-play-taleslug",
+          "edge-return-play-taleslug-history",
+          "edge-return-player-library",
+          "edge-return-profile-handle",
+          "edge-return-sign-in",
+          "edge-return-studio-exchange",
+          "edge-return-studio-library",
+          "edge-return-studio-private-content",
+          "edge-return-studio-private-content-operations",
+          "edge-return-studio-tales-taleid",
+          "edge-return-studio-tales-taleid-artifacts",
+          "edge-return-studio-tales-taleid-assets",
+          "edge-return-studio-tales-taleid-locations",
+          "edge-return-studio-tales-taleid-settings",
+          "edge-return-studio-tales-taleid-versions",
+          "edge-return-studio-tales-new",
+          "edge-return-tales"
+        ],
+        "exitEdgeIds": [
+          "edge-global-explore",
+          "edge-global-community",
+          "edge-account-create",
+          "edge-account-sign-in",
+          "edge-account-personal-harbor",
+          "edge-account-passport",
+          "edge-account-workspaces",
+          "edge-account-preferences",
+          "edge-account-privacy",
+          "edge-account-history",
+          "edge-account-artifacts",
+          "edge-account-security",
+          "edge-account-sessions",
+          "edge-workspace-player",
+          "edge-workspace-captain",
+          "edge-workspace-creator",
+          "edge-workspace-moderation",
+          "edge-gateway-player-adapter",
+          "edge-gateway-captain-adapter",
+          "edge-gateway-studio-adapter"
+        ]
       }
     },
     {
@@ -3770,10 +4164,10 @@
       "owner": "wayfarer",
       "shellMode": "WORKSPACE_STANDARD",
       "primaryUserGoal": "Use Passport Home in the unified Personal Harbor",
-      "logicalParent": "/account",
-      "visibleEntryPoints": ["entry-phase3-passport-home"],
-      "authentication": "ACCOUNT_SESSION_REQUIRED",
-      "capabilities": ["PLAYER"],
+      "logicalParent": "route-page-account",
+      "visibleEntryPoints": ["edge-account-passport"],
+      "authentication": "AUTHENTICATED_ACCOUNT_REQUIRED",
+      "capabilities": [],
       "primaryHeading": "Passport Home",
       "primaryAction": "ROUTE_SPECIFIC",
       "secondaryActions": [],
@@ -3878,6 +4272,13 @@
           "homeport.passport.session-regression"
         ],
         "evidenceIds": ["HP-P3-EV-L-passport-populated", "HP-P3-EV-M-passport-empty", "HP-P3-EV-AB-zoom-passport"]
+      },
+      "phase5Implementation": {
+        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "classification": "USER_NAVIGABLE",
+        "parentRouteId": "route-page-account",
+        "entryEdgeIds": ["edge-account-passport"],
+        "exitEdgeIds": ["edge-passport-memories", "edge-passport-saved", "edge-return-passport"]
       }
     },
     {
@@ -3887,9 +4288,9 @@
       "owner": "one-voyage",
       "shellMode": "standard",
       "primaryUserGoal": "Use current Voyage runtime surface at /play/:taleSlug/history",
-      "logicalParent": "/play/:taleSlug",
-      "visibleEntryPoints": [],
-      "authentication": "ANONYMOUS_OR_PAGE_LEVEL_GUARD",
+      "logicalParent": "route-page-play-taleslug",
+      "visibleEntryPoints": ["edge-play-history"],
+      "authentication": "ANONYMOUS_ALLOWED",
       "capabilities": [],
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
       "primaryAction": "ROUTE_SPECIFIC",
@@ -3920,6 +4321,13 @@
         "stateCompleteness": "Loading, populated, empty, no-results, recoverable error, permission, expiry, and dependency-unavailable states where applicable.",
         "responsive": "Desktop, mobile, and critical 200 percent zoom preserve information and controls.",
         "acceptanceOwner": "Project Homeport owner walkthrough after Sounding Line evidence."
+      },
+      "phase5Implementation": {
+        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "classification": "CONTEXTUAL_DYNAMIC",
+        "parentRouteId": "route-page-play-taleslug",
+        "entryEdgeIds": ["edge-play-history"],
+        "exitEdgeIds": ["edge-return-play-taleslug-history"]
       }
     },
     {
@@ -3929,9 +4337,9 @@
       "owner": "one-voyage",
       "shellMode": "standard",
       "primaryUserGoal": "Use current Voyage runtime surface at /play/:taleSlug",
-      "logicalParent": "/play",
-      "visibleEntryPoints": [],
-      "authentication": "ANONYMOUS_OR_PAGE_LEVEL_GUARD",
+      "logicalParent": "route-page-tales",
+      "visibleEntryPoints": ["edge-tales-chronicle", "edge-return-play-taleslug-session-sessionid"],
+      "authentication": "ANONYMOUS_ALLOWED",
       "capabilities": [],
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
       "primaryAction": "ROUTE_SPECIFIC",
@@ -3962,6 +4370,13 @@
         "stateCompleteness": "Loading, populated, empty, no-results, recoverable error, permission, expiry, and dependency-unavailable states where applicable.",
         "responsive": "Desktop, mobile, and critical 200 percent zoom preserve information and controls.",
         "acceptanceOwner": "Project Homeport owner walkthrough after Sounding Line evidence."
+      },
+      "phase5Implementation": {
+        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "classification": "CONTEXTUAL_DYNAMIC",
+        "parentRouteId": "route-page-tales",
+        "entryEdgeIds": ["edge-tales-chronicle", "edge-return-play-taleslug-session-sessionid"],
+        "exitEdgeIds": ["edge-play-history", "edge-play-session", "edge-return-play-taleslug"]
       }
     },
     {
@@ -3971,9 +4386,9 @@
       "owner": "one-voyage",
       "shellMode": "immersive-player",
       "primaryUserGoal": "Use current Voyage runtime surface at /play/:taleSlug/session/:sessionId",
-      "logicalParent": "/play/:taleSlug/session",
-      "visibleEntryPoints": [],
-      "authentication": "ANONYMOUS_OR_PAGE_LEVEL_GUARD",
+      "logicalParent": "route-page-play-taleslug",
+      "visibleEntryPoints": ["edge-play-session", "edge-compat-tale-campaignslug"],
+      "authentication": "ANONYMOUS_ALLOWED",
       "capabilities": [],
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
       "primaryAction": "ROUTE_SPECIFIC",
@@ -4004,6 +4419,13 @@
         "stateCompleteness": "Loading, populated, empty, no-results, recoverable error, permission, expiry, and dependency-unavailable states where applicable.",
         "responsive": "Desktop, mobile, and critical 200 percent zoom preserve information and controls.",
         "acceptanceOwner": "Project Homeport owner walkthrough after Sounding Line evidence."
+      },
+      "phase5Implementation": {
+        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "classification": "CONTEXTUAL_DYNAMIC",
+        "parentRouteId": "route-page-play-taleslug",
+        "entryEdgeIds": ["edge-play-session", "edge-compat-tale-campaignslug"],
+        "exitEdgeIds": ["edge-return-play-taleslug-session-sessionid"]
       }
     },
     {
@@ -4013,9 +4435,9 @@
       "owner": "one-voyage",
       "shellMode": "standard",
       "primaryUserGoal": "Use current Player surface at /player/invitation",
-      "logicalParent": "/player",
-      "visibleEntryPoints": [],
-      "authentication": "ANONYMOUS_OR_PAGE_LEVEL_GUARD",
+      "logicalParent": "route-page-player-sign-in",
+      "visibleEntryPoints": ["edge-token-player-invitation"],
+      "authentication": "BOUNDED_TOKEN_OR_CODE",
       "capabilities": ["PLAYER"],
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
       "primaryAction": "ROUTE_SPECIFIC",
@@ -4046,6 +4468,13 @@
         "stateCompleteness": "Loading, populated, empty, no-results, recoverable error, permission, expiry, and dependency-unavailable states where applicable.",
         "responsive": "Desktop, mobile, and critical 200 percent zoom preserve information and controls.",
         "acceptanceOwner": "Project Homeport owner walkthrough after Sounding Line evidence."
+      },
+      "phase5Implementation": {
+        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "classification": "TOKENIZED_DEEP_LINK",
+        "parentRouteId": "route-page-player-sign-in",
+        "entryEdgeIds": ["edge-token-player-invitation"],
+        "exitEdgeIds": ["edge-return-player-invitation"]
       }
     },
     {
@@ -4055,19 +4484,14 @@
       "owner": "one-voyage",
       "shellMode": "WORKSPACE_STANDARD",
       "primaryUserGoal": "Use current Player surface at /player/library",
-      "logicalParent": "/player",
+      "logicalParent": "route-page-root",
       "visibleEntryPoints": [
-        "entry-player-library-1",
-        "entry-player-library-2",
-        "entry-player-library-3",
-        "entry-player-library-4",
-        "entry-player-library-5",
-        "entry-player-library-6",
-        "entry-player-library-7",
-        "entry-player-library-8",
-        "entry-player-library-9"
+        "edge-workspace-player",
+        "edge-compat-player",
+        "edge-return-player-playthroughs-playthroughid",
+        "edge-return-player-playthroughs-playthroughid-journal"
       ],
-      "authentication": "PLAYER_IDENTITY",
+      "authentication": "AUTHENTICATED_PLAYER_REQUIRED",
       "capabilities": ["PLAYER"],
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
       "primaryAction": "ROUTE_SPECIFIC",
@@ -4144,6 +4568,18 @@
         "responsiveProof": "Desktop, 390x844 mobile, 200 percent layout equivalent, keyboard, and reduced motion",
         "evidenceIds": ["HP-P2-EV-H-player-navigation", "HP-P2-EV-M-workspace-switcher"],
         "implementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc"
+      },
+      "phase5Implementation": {
+        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "classification": "USER_NAVIGABLE",
+        "parentRouteId": "route-page-root",
+        "entryEdgeIds": [
+          "edge-workspace-player",
+          "edge-compat-player",
+          "edge-return-player-playthroughs-playthroughid",
+          "edge-return-player-playthroughs-playthroughid-journal"
+        ],
+        "exitEdgeIds": ["edge-player-voyage", "edge-player-journal", "edge-return-player-library"]
       }
     },
     {
@@ -4153,9 +4589,9 @@
       "owner": "one-voyage",
       "shellMode": "standard",
       "primaryUserGoal": "Use current Player surface at /player",
-      "logicalParent": "/",
-      "visibleEntryPoints": ["entry-player-1", "entry-player-2"],
-      "authentication": "PLAYER_IDENTITY",
+      "logicalParent": "route-page-root",
+      "visibleEntryPoints": [],
+      "authentication": "AUTHENTICATED_PLAYER_REQUIRED",
       "capabilities": ["PLAYER"],
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
       "primaryAction": "ROUTE_SPECIFIC",
@@ -4186,6 +4622,13 @@
         "stateCompleteness": "Loading, populated, empty, no-results, recoverable error, permission, expiry, and dependency-unavailable states where applicable.",
         "responsive": "Desktop, mobile, and critical 200 percent zoom preserve information and controls.",
         "acceptanceOwner": "Project Homeport owner walkthrough after Sounding Line evidence."
+      },
+      "phase5Implementation": {
+        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "classification": "REDIRECT_ALIAS",
+        "parentRouteId": "route-page-root",
+        "entryEdgeIds": [],
+        "exitEdgeIds": ["edge-compat-player"]
       }
     },
     {
@@ -4195,9 +4638,9 @@
       "owner": "one-voyage",
       "shellMode": "standard",
       "primaryUserGoal": "Use current Player surface at /player/playthroughs/:playthroughId/archive",
-      "logicalParent": "/player/playthroughs/:playthroughId",
+      "logicalParent": "route-page-player-playthroughs-playthroughid",
       "visibleEntryPoints": [],
-      "authentication": "PLAYER_IDENTITY",
+      "authentication": "AUTHENTICATED_PLAYER_REQUIRED",
       "capabilities": ["PLAYER"],
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
       "primaryAction": "ROUTE_SPECIFIC",
@@ -4228,6 +4671,13 @@
         "stateCompleteness": "Loading, populated, empty, no-results, recoverable error, permission, expiry, and dependency-unavailable states where applicable.",
         "responsive": "Desktop, mobile, and critical 200 percent zoom preserve information and controls.",
         "acceptanceOwner": "Project Homeport owner walkthrough after Sounding Line evidence."
+      },
+      "phase5Implementation": {
+        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "classification": "REDIRECT_ALIAS",
+        "parentRouteId": "route-page-player-playthroughs-playthroughid",
+        "entryEdgeIds": [],
+        "exitEdgeIds": ["edge-compat-player-playthroughs-playthroughid-archive"]
       }
     },
     {
@@ -4237,9 +4687,9 @@
       "owner": "one-voyage",
       "shellMode": "IMMERSIVE",
       "primaryUserGoal": "Use current Player surface at /player/playthroughs/:playthroughId/journal",
-      "logicalParent": "/player/playthroughs/:playthroughId",
-      "visibleEntryPoints": [],
-      "authentication": "PLAYER_IDENTITY",
+      "logicalParent": "route-page-player-library",
+      "visibleEntryPoints": ["edge-player-journal", "edge-compat-player-playthroughs-playthroughid-archive"],
+      "authentication": "AUTHENTICATED_PLAYER_REQUIRED",
       "capabilities": ["PLAYER"],
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
       "primaryAction": "ROUTE_SPECIFIC",
@@ -4279,6 +4729,13 @@
         "responsiveProof": "Desktop, 390x844 mobile, 200 percent layout equivalent, keyboard, and reduced motion",
         "evidenceIds": ["HP-P2-EV-O-immersive-exit"],
         "implementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc"
+      },
+      "phase5Implementation": {
+        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "classification": "CONTEXTUAL_DYNAMIC",
+        "parentRouteId": "route-page-player-library",
+        "entryEdgeIds": ["edge-player-journal", "edge-compat-player-playthroughs-playthroughid-archive"],
+        "exitEdgeIds": ["edge-return-player-playthroughs-playthroughid-journal"]
       }
     },
     {
@@ -4288,9 +4745,9 @@
       "owner": "one-voyage",
       "shellMode": "immersive-player",
       "primaryUserGoal": "Use current Player surface at /player/playthroughs/:playthroughId",
-      "logicalParent": "/player/playthroughs",
-      "visibleEntryPoints": [],
-      "authentication": "PLAYER_IDENTITY",
+      "logicalParent": "route-page-player-library",
+      "visibleEntryPoints": ["edge-player-voyage"],
+      "authentication": "AUTHENTICATED_PLAYER_REQUIRED",
       "capabilities": ["PLAYER"],
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
       "primaryAction": "ROUTE_SPECIFIC",
@@ -4327,6 +4784,13 @@
         "identityAuthority": "HP-SES-001",
         "responsiveProof": "Desktop, mobile, keyboard, reduced-motion component coverage, and critical 200 percent zoom",
         "evidenceIds": ["HP-P1-EV-N-invitation-handoff"]
+      },
+      "phase5Implementation": {
+        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "classification": "CONTEXTUAL_DYNAMIC",
+        "parentRouteId": "route-page-player-library",
+        "entryEdgeIds": ["edge-player-voyage"],
+        "exitEdgeIds": ["edge-return-player-playthroughs-playthroughid"]
       }
     },
     {
@@ -4336,20 +4800,10 @@
       "owner": "one-voyage",
       "shellMode": "authentication",
       "primaryUserGoal": "Use current Player surface at /player/sign-in",
-      "logicalParent": "/player",
-      "visibleEntryPoints": [
-        "entry-player-sign-in-1",
-        "entry-player-sign-in-2",
-        "entry-player-sign-in-3",
-        "entry-player-sign-in-4",
-        "entry-player-sign-in-5",
-        "entry-player-sign-in-6",
-        "entry-player-sign-in-7",
-        "entry-player-sign-in-8",
-        "entry-player-sign-in-9"
-      ],
+      "logicalParent": "route-page-root",
+      "visibleEntryPoints": ["edge-gateway-player-adapter", "edge-return-player-invitation"],
       "authentication": "ANONYMOUS_ALLOWED",
-      "capabilities": ["PLAYER"],
+      "capabilities": [],
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
       "primaryAction": "ROUTE_SPECIFIC",
       "secondaryActions": [],
@@ -4385,6 +4839,13 @@
         "identityAuthority": "HP-SES-001",
         "responsiveProof": "Desktop, mobile, keyboard, reduced-motion component coverage, and critical 200 percent zoom",
         "evidenceIds": []
+      },
+      "phase5Implementation": {
+        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "classification": "AUTH_COMPATIBILITY_ALIAS",
+        "parentRouteId": "route-page-root",
+        "entryEdgeIds": ["edge-gateway-player-adapter", "edge-return-player-invitation"],
+        "exitEdgeIds": ["edge-token-player-invitation", "edge-compat-player-sign-in"]
       }
     },
     {
@@ -4394,8 +4855,8 @@
       "owner": "wayfarer",
       "shellMode": "PUBLIC_STANDARD",
       "primaryUserGoal": "View the allowlisted public Profile projection",
-      "logicalParent": "/account/profile",
-      "visibleEntryPoints": ["entry-phase3-public-profile"],
+      "logicalParent": "route-page-tales",
+      "visibleEntryPoints": ["edge-profile-public"],
       "authentication": "ANONYMOUS_ALLOWED",
       "capabilities": [],
       "primaryHeading": "Public Profile display name",
@@ -4445,6 +4906,13 @@
         "dto": "PublicProfileDto",
         "testContracts": ["homeport.profile.public-projection", "homeport.profile.no-private-leak"],
         "evidenceIds": ["HP-P3-EV-D-public-profile-preview"]
+      },
+      "phase5Implementation": {
+        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "classification": "CONTEXTUAL_DYNAMIC",
+        "parentRouteId": "route-page-tales",
+        "entryEdgeIds": ["edge-profile-public"],
+        "exitEdgeIds": ["edge-return-profile-handle"]
       }
     },
     {
@@ -4454,9 +4922,9 @@
       "owner": "one-voyage",
       "shellMode": "compact",
       "primaryUserGoal": "Use current Captain surface at /quartermaster/:workspace",
-      "logicalParent": "/quartermaster",
+      "logicalParent": "route-page-captain-library",
       "visibleEntryPoints": [],
-      "authentication": "CAPTAIN_OR_CREATOR_CAPABILITY",
+      "authentication": "AUTHENTICATED_CAPABILITY_REQUIRED",
       "capabilities": ["CAPTAIN"],
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
       "primaryAction": "ROUTE_SPECIFIC",
@@ -4487,6 +4955,13 @@
         "stateCompleteness": "Loading, populated, empty, no-results, recoverable error, permission, expiry, and dependency-unavailable states where applicable.",
         "responsive": "Desktop, mobile, and critical 200 percent zoom preserve information and controls.",
         "acceptanceOwner": "Project Homeport owner walkthrough after Sounding Line evidence."
+      },
+      "phase5Implementation": {
+        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "classification": "AUTH_COMPATIBILITY_ALIAS",
+        "parentRouteId": "route-page-captain-library",
+        "entryEdgeIds": [],
+        "exitEdgeIds": ["edge-compat-quartermaster-workspace"]
       }
     },
     {
@@ -4496,16 +4971,10 @@
       "owner": "one-voyage",
       "shellMode": "compact",
       "primaryUserGoal": "Use current Captain surface at /quartermaster",
-      "logicalParent": "/",
-      "visibleEntryPoints": [
-        "entry-quartermaster-1",
-        "entry-quartermaster-2",
-        "entry-quartermaster-3",
-        "entry-quartermaster-4",
-        "entry-quartermaster-5"
-      ],
-      "authentication": "ANONYMOUS_OR_PAGE_LEVEL_GUARD",
-      "capabilities": [],
+      "logicalParent": "route-page-captain-library",
+      "visibleEntryPoints": [],
+      "authentication": "AUTHENTICATED_CAPABILITY_REQUIRED",
+      "capabilities": ["CAPTAIN"],
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
       "primaryAction": "ROUTE_SPECIFIC",
       "secondaryActions": [],
@@ -4535,6 +5004,13 @@
         "stateCompleteness": "Loading, populated, empty, no-results, recoverable error, permission, expiry, and dependency-unavailable states where applicable.",
         "responsive": "Desktop, mobile, and critical 200 percent zoom preserve information and controls.",
         "acceptanceOwner": "Project Homeport owner walkthrough after Sounding Line evidence."
+      },
+      "phase5Implementation": {
+        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "classification": "AUTH_COMPATIBILITY_ALIAS",
+        "parentRouteId": "route-page-captain-library",
+        "entryEdgeIds": [],
+        "exitEdgeIds": ["edge-compat-quartermaster"]
       }
     },
     {
@@ -4544,8 +5020,8 @@
       "owner": "wayfarer",
       "shellMode": "authentication",
       "primaryUserGoal": "Use current Account lifecycle surface at /register",
-      "logicalParent": "/",
-      "visibleEntryPoints": [],
+      "logicalParent": "route-page-sign-in",
+      "visibleEntryPoints": ["edge-account-create", "edge-sign-in-register"],
       "authentication": "ANONYMOUS_ALLOWED",
       "capabilities": [],
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
@@ -4583,6 +5059,13 @@
         "identityAuthority": "HP-SES-001",
         "responsiveProof": "Desktop, mobile, keyboard, reduced-motion component coverage, and critical 200 percent zoom",
         "evidenceIds": ["HP-P1-EV-B-registration-return"]
+      },
+      "phase5Implementation": {
+        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "classification": "USER_NAVIGABLE",
+        "parentRouteId": "route-page-sign-in",
+        "entryEdgeIds": ["edge-account-create", "edge-sign-in-register"],
+        "exitEdgeIds": ["edge-token-verify-email", "edge-return-register"]
       }
     },
     {
@@ -4592,9 +5075,9 @@
       "owner": "wayfarer",
       "shellMode": "authentication",
       "primaryUserGoal": "Use current Account lifecycle surface at /reset-password",
-      "logicalParent": "/",
-      "visibleEntryPoints": [],
-      "authentication": "ANONYMOUS_ALLOWED",
+      "logicalParent": "route-page-sign-in",
+      "visibleEntryPoints": ["edge-token-reset-password"],
+      "authentication": "BOUNDED_TOKEN_OR_CODE",
       "capabilities": [],
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
       "primaryAction": "ROUTE_SPECIFIC",
@@ -4631,6 +5114,13 @@
         "identityAuthority": "HP-SES-001",
         "responsiveProof": "Desktop, mobile, keyboard, reduced-motion component coverage, and critical 200 percent zoom",
         "evidenceIds": []
+      },
+      "phase5Implementation": {
+        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "classification": "TOKENIZED_DEEP_LINK",
+        "parentRouteId": "route-page-sign-in",
+        "entryEdgeIds": ["edge-token-reset-password"],
+        "exitEdgeIds": ["edge-return-reset-password"]
       }
     },
     {
@@ -4640,8 +5130,19 @@
       "owner": "wayfarer",
       "shellMode": "authentication",
       "primaryUserGoal": "Use current Account lifecycle surface at /sign-in",
-      "logicalParent": "/",
-      "visibleEntryPoints": ["entry-sign-in-1", "entry-sign-in-2"],
+      "logicalParent": "route-page-root",
+      "visibleEntryPoints": [
+        "edge-account-sign-in",
+        "edge-compat-player-sign-in",
+        "edge-compat-captain-sign-in",
+        "edge-compat-studio-sign-in",
+        "edge-return-account-claim",
+        "edge-return-account-merge",
+        "edge-return-forgot-password",
+        "edge-return-register",
+        "edge-return-reset-password",
+        "edge-return-verify-email"
+      ],
       "authentication": "ANONYMOUS_ALLOWED",
       "capabilities": [],
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
@@ -4684,6 +5185,30 @@
         "identityAuthority": "HP-SES-001",
         "responsiveProof": "Desktop, mobile, keyboard, reduced-motion component coverage, and critical 200 percent zoom",
         "evidenceIds": ["HP-P1-EV-A-sign-in-desktop", "HP-P1-EV-I-sign-out-complete", "HP-P1-EV-J-multitab-sign-out"]
+      },
+      "phase5Implementation": {
+        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "classification": "USER_NAVIGABLE",
+        "parentRouteId": "route-page-root",
+        "entryEdgeIds": [
+          "edge-account-sign-in",
+          "edge-compat-player-sign-in",
+          "edge-compat-captain-sign-in",
+          "edge-compat-studio-sign-in",
+          "edge-return-account-claim",
+          "edge-return-account-merge",
+          "edge-return-forgot-password",
+          "edge-return-register",
+          "edge-return-reset-password",
+          "edge-return-verify-email"
+        ],
+        "exitEdgeIds": [
+          "edge-sign-in-forgot",
+          "edge-sign-in-register",
+          "edge-token-account-claim",
+          "edge-token-account-merge",
+          "edge-return-sign-in"
+        ]
       }
     },
     {
@@ -4693,10 +5218,10 @@
       "owner": "one-voyage",
       "shellMode": "standard",
       "primaryUserGoal": "Use current Creator Studio surface at /studio/exchange",
-      "logicalParent": "/studio",
-      "visibleEntryPoints": ["entry-studio-exchange-1", "entry-studio-exchange-2"],
-      "authentication": "CAPTAIN_OR_CREATOR_CAPABILITY",
-      "capabilities": ["CREATE_TALES"],
+      "logicalParent": "route-page-studio-library",
+      "visibleEntryPoints": ["edge-workspace-exchange"],
+      "authentication": "AUTHENTICATED_CAPABILITY_REQUIRED",
+      "capabilities": ["CREATOR"],
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
       "primaryAction": "ROUTE_SPECIFIC",
       "secondaryActions": [],
@@ -4726,6 +5251,13 @@
         "stateCompleteness": "Loading, populated, empty, no-results, recoverable error, permission, expiry, and dependency-unavailable states where applicable.",
         "responsive": "Desktop, mobile, and critical 200 percent zoom preserve information and controls.",
         "acceptanceOwner": "Project Homeport owner walkthrough after Sounding Line evidence."
+      },
+      "phase5Implementation": {
+        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "classification": "USER_NAVIGABLE",
+        "parentRouteId": "route-page-studio-library",
+        "entryEdgeIds": ["edge-workspace-exchange"],
+        "exitEdgeIds": ["edge-return-studio-exchange"]
       }
     },
     {
@@ -4735,15 +5267,10 @@
       "owner": "one-voyage",
       "shellMode": "WORKSPACE_STANDARD",
       "primaryUserGoal": "Use current Creator Studio surface at /studio/library",
-      "logicalParent": "/studio",
-      "visibleEntryPoints": [
-        "entry-studio-library-1",
-        "entry-studio-library-2",
-        "entry-studio-library-3",
-        "entry-studio-library-4"
-      ],
-      "authentication": "CAPTAIN_OR_CREATOR_CAPABILITY",
-      "capabilities": ["CREATE_TALES"],
+      "logicalParent": "route-page-root",
+      "visibleEntryPoints": ["edge-workspace-creator", "edge-compat-studio"],
+      "authentication": "AUTHENTICATED_CAPABILITY_REQUIRED",
+      "capabilities": ["CREATOR"],
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
       "primaryAction": "ROUTE_SPECIFIC",
       "secondaryActions": [],
@@ -4788,6 +5315,19 @@
         "responsiveProof": "Desktop, 390x844 mobile, 200 percent layout equivalent, keyboard, and reduced motion",
         "evidenceIds": ["HP-P2-EV-J-creator-navigation"],
         "implementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc"
+      },
+      "phase5Implementation": {
+        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "classification": "USER_NAVIGABLE",
+        "parentRouteId": "route-page-root",
+        "entryEdgeIds": ["edge-workspace-creator", "edge-compat-studio"],
+        "exitEdgeIds": [
+          "edge-workspace-exchange",
+          "edge-workspace-private-chronicle",
+          "edge-studio-new",
+          "edge-studio-tale",
+          "edge-return-studio-library"
+        ]
       }
     },
     {
@@ -4797,18 +5337,10 @@
       "owner": "one-voyage",
       "shellMode": "standard",
       "primaryUserGoal": "Use current Creator Studio surface at /studio",
-      "logicalParent": "/",
-      "visibleEntryPoints": [
-        "entry-studio-1",
-        "entry-studio-2",
-        "entry-studio-3",
-        "entry-studio-4",
-        "entry-studio-5",
-        "entry-studio-6",
-        "entry-studio-7"
-      ],
-      "authentication": "CAPTAIN_OR_CREATOR_CAPABILITY",
-      "capabilities": ["CREATE_TALES"],
+      "logicalParent": "route-page-root",
+      "visibleEntryPoints": [],
+      "authentication": "AUTHENTICATED_CAPABILITY_REQUIRED",
+      "capabilities": ["CREATOR"],
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
       "primaryAction": "ROUTE_SPECIFIC",
       "secondaryActions": [],
@@ -4838,6 +5370,13 @@
         "stateCompleteness": "Loading, populated, empty, no-results, recoverable error, permission, expiry, and dependency-unavailable states where applicable.",
         "responsive": "Desktop, mobile, and critical 200 percent zoom preserve information and controls.",
         "acceptanceOwner": "Project Homeport owner walkthrough after Sounding Line evidence."
+      },
+      "phase5Implementation": {
+        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "classification": "REDIRECT_ALIAS",
+        "parentRouteId": "route-page-root",
+        "entryEdgeIds": [],
+        "exitEdgeIds": ["edge-compat-studio"]
       }
     },
     {
@@ -4847,10 +5386,10 @@
       "owner": "sealed-hold",
       "shellMode": "standard",
       "primaryUserGoal": "Use current Creator Studio surface at /studio/private-content/operations",
-      "logicalParent": "/studio/private-content",
-      "visibleEntryPoints": ["entry-studio-private-content-operations-1"],
-      "authentication": "CAPTAIN_OR_CREATOR_CAPABILITY",
-      "capabilities": ["ADMIN"],
+      "logicalParent": "route-page-studio-private-content",
+      "visibleEntryPoints": [],
+      "authentication": "AUTHENTICATED_CAPABILITY_REQUIRED",
+      "capabilities": ["ADMINISTRATOR"],
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
       "primaryAction": "ROUTE_SPECIFIC",
       "secondaryActions": [],
@@ -4880,6 +5419,13 @@
         "stateCompleteness": "Loading, populated, empty, no-results, recoverable error, permission, expiry, and dependency-unavailable states where applicable.",
         "responsive": "Desktop, mobile, and critical 200 percent zoom preserve information and controls.",
         "acceptanceOwner": "Project Homeport owner walkthrough after Sounding Line evidence."
+      },
+      "phase5Implementation": {
+        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "classification": "INTERNAL_DIAGNOSTIC",
+        "parentRouteId": "route-page-studio-private-content",
+        "entryEdgeIds": [],
+        "exitEdgeIds": ["edge-return-studio-private-content-operations"]
       }
     },
     {
@@ -4889,10 +5435,10 @@
       "owner": "sealed-hold",
       "shellMode": "standard",
       "primaryUserGoal": "Use current Creator Studio surface at /studio/private-content",
-      "logicalParent": "/studio",
-      "visibleEntryPoints": ["entry-studio-private-content-1", "entry-studio-private-content-2"],
-      "authentication": "CAPTAIN_OR_CREATOR_CAPABILITY",
-      "capabilities": ["CREATE_TALES"],
+      "logicalParent": "route-page-studio-library",
+      "visibleEntryPoints": ["edge-workspace-private-chronicle"],
+      "authentication": "AUTHENTICATED_CAPABILITY_REQUIRED",
+      "capabilities": ["CREATOR"],
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
       "primaryAction": "ROUTE_SPECIFIC",
       "secondaryActions": [],
@@ -4922,6 +5468,13 @@
         "stateCompleteness": "Loading, populated, empty, no-results, recoverable error, permission, expiry, and dependency-unavailable states where applicable.",
         "responsive": "Desktop, mobile, and critical 200 percent zoom preserve information and controls.",
         "acceptanceOwner": "Project Homeport owner walkthrough after Sounding Line evidence."
+      },
+      "phase5Implementation": {
+        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "classification": "USER_NAVIGABLE",
+        "parentRouteId": "route-page-studio-library",
+        "entryEdgeIds": ["edge-workspace-private-chronicle"],
+        "exitEdgeIds": ["edge-return-studio-private-content"]
       }
     },
     {
@@ -4931,10 +5484,10 @@
       "owner": "one-voyage",
       "shellMode": "authentication",
       "primaryUserGoal": "Use current Creator Studio surface at /studio/sign-in",
-      "logicalParent": "/studio",
-      "visibleEntryPoints": ["entry-studio-sign-in-1"],
+      "logicalParent": "route-page-root",
+      "visibleEntryPoints": ["edge-gateway-studio-adapter"],
       "authentication": "ANONYMOUS_ALLOWED",
-      "capabilities": ["CREATE_TALES"],
+      "capabilities": [],
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
       "primaryAction": "ROUTE_SPECIFIC",
       "secondaryActions": [],
@@ -4970,6 +5523,13 @@
         "identityAuthority": "HP-SES-001",
         "responsiveProof": "Desktop, mobile, keyboard, reduced-motion component coverage, and critical 200 percent zoom",
         "evidenceIds": []
+      },
+      "phase5Implementation": {
+        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "classification": "AUTH_COMPATIBILITY_ALIAS",
+        "parentRouteId": "route-page-root",
+        "entryEdgeIds": ["edge-gateway-studio-adapter"],
+        "exitEdgeIds": ["edge-compat-studio-sign-in"]
       }
     },
     {
@@ -4979,10 +5539,10 @@
       "owner": "one-voyage",
       "shellMode": "standard",
       "primaryUserGoal": "Use current Creator Studio surface at /studio/tales/:taleId/artifacts",
-      "logicalParent": "/studio/tales/:taleId",
-      "visibleEntryPoints": [],
-      "authentication": "ANONYMOUS_OR_PAGE_LEVEL_GUARD",
-      "capabilities": [],
+      "logicalParent": "route-page-studio-library",
+      "visibleEntryPoints": ["edge-studio-artifacts"],
+      "authentication": "AUTHENTICATED_CAPABILITY_REQUIRED",
+      "capabilities": ["CREATOR"],
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
       "primaryAction": "ROUTE_SPECIFIC",
       "secondaryActions": [],
@@ -5012,6 +5572,13 @@
         "stateCompleteness": "Loading, populated, empty, no-results, recoverable error, permission, expiry, and dependency-unavailable states where applicable.",
         "responsive": "Desktop, mobile, and critical 200 percent zoom preserve information and controls.",
         "acceptanceOwner": "Project Homeport owner walkthrough after Sounding Line evidence."
+      },
+      "phase5Implementation": {
+        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "classification": "CONTEXTUAL_DYNAMIC",
+        "parentRouteId": "route-page-studio-library",
+        "entryEdgeIds": ["edge-studio-artifacts"],
+        "exitEdgeIds": ["edge-return-studio-tales-taleid-artifacts"]
       }
     },
     {
@@ -5021,10 +5588,10 @@
       "owner": "one-voyage",
       "shellMode": "standard",
       "primaryUserGoal": "Use current Creator Studio surface at /studio/tales/:taleId/assets",
-      "logicalParent": "/studio/tales/:taleId",
-      "visibleEntryPoints": [],
-      "authentication": "ANONYMOUS_OR_PAGE_LEVEL_GUARD",
-      "capabilities": [],
+      "logicalParent": "route-page-studio-library",
+      "visibleEntryPoints": ["edge-studio-assets"],
+      "authentication": "AUTHENTICATED_CAPABILITY_REQUIRED",
+      "capabilities": ["CREATOR"],
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
       "primaryAction": "ROUTE_SPECIFIC",
       "secondaryActions": [],
@@ -5054,6 +5621,13 @@
         "stateCompleteness": "Loading, populated, empty, no-results, recoverable error, permission, expiry, and dependency-unavailable states where applicable.",
         "responsive": "Desktop, mobile, and critical 200 percent zoom preserve information and controls.",
         "acceptanceOwner": "Project Homeport owner walkthrough after Sounding Line evidence."
+      },
+      "phase5Implementation": {
+        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "classification": "CONTEXTUAL_DYNAMIC",
+        "parentRouteId": "route-page-studio-library",
+        "entryEdgeIds": ["edge-studio-assets"],
+        "exitEdgeIds": ["edge-return-studio-tales-taleid-assets"]
       }
     },
     {
@@ -5063,10 +5637,10 @@
       "owner": "one-voyage",
       "shellMode": "standard",
       "primaryUserGoal": "Use current Creator Studio surface at /studio/tales/:taleId/locations",
-      "logicalParent": "/studio/tales/:taleId",
-      "visibleEntryPoints": [],
-      "authentication": "ANONYMOUS_OR_PAGE_LEVEL_GUARD",
-      "capabilities": [],
+      "logicalParent": "route-page-studio-library",
+      "visibleEntryPoints": ["edge-studio-locations"],
+      "authentication": "AUTHENTICATED_CAPABILITY_REQUIRED",
+      "capabilities": ["CREATOR"],
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
       "primaryAction": "ROUTE_SPECIFIC",
       "secondaryActions": [],
@@ -5096,6 +5670,13 @@
         "stateCompleteness": "Loading, populated, empty, no-results, recoverable error, permission, expiry, and dependency-unavailable states where applicable.",
         "responsive": "Desktop, mobile, and critical 200 percent zoom preserve information and controls.",
         "acceptanceOwner": "Project Homeport owner walkthrough after Sounding Line evidence."
+      },
+      "phase5Implementation": {
+        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "classification": "CONTEXTUAL_DYNAMIC",
+        "parentRouteId": "route-page-studio-library",
+        "entryEdgeIds": ["edge-studio-locations"],
+        "exitEdgeIds": ["edge-return-studio-tales-taleid-locations"]
       }
     },
     {
@@ -5105,10 +5686,10 @@
       "owner": "one-voyage",
       "shellMode": "standard",
       "primaryUserGoal": "Use current Creator Studio surface at /studio/tales/:taleId",
-      "logicalParent": "/studio/tales",
-      "visibleEntryPoints": ["entry-studio-tales-taleid-1", "entry-studio-tales-taleid-2"],
-      "authentication": "CAPTAIN_OR_CREATOR_CAPABILITY",
-      "capabilities": ["CREATE_TALES"],
+      "logicalParent": "route-page-studio-library",
+      "visibleEntryPoints": ["edge-studio-tale"],
+      "authentication": "AUTHENTICATED_CAPABILITY_REQUIRED",
+      "capabilities": ["CREATOR"],
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
       "primaryAction": "ROUTE_SPECIFIC",
       "secondaryActions": [],
@@ -5138,6 +5719,20 @@
         "stateCompleteness": "Loading, populated, empty, no-results, recoverable error, permission, expiry, and dependency-unavailable states where applicable.",
         "responsive": "Desktop, mobile, and critical 200 percent zoom preserve information and controls.",
         "acceptanceOwner": "Project Homeport owner walkthrough after Sounding Line evidence."
+      },
+      "phase5Implementation": {
+        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "classification": "CONTEXTUAL_DYNAMIC",
+        "parentRouteId": "route-page-studio-library",
+        "entryEdgeIds": ["edge-studio-tale"],
+        "exitEdgeIds": [
+          "edge-studio-artifacts",
+          "edge-studio-assets",
+          "edge-studio-locations",
+          "edge-studio-settings",
+          "edge-studio-versions",
+          "edge-return-studio-tales-taleid"
+        ]
       }
     },
     {
@@ -5147,10 +5742,10 @@
       "owner": "one-voyage",
       "shellMode": "standard",
       "primaryUserGoal": "Use current Creator Studio surface at /studio/tales/:taleId/settings",
-      "logicalParent": "/studio/tales/:taleId",
-      "visibleEntryPoints": [],
-      "authentication": "ANONYMOUS_OR_PAGE_LEVEL_GUARD",
-      "capabilities": [],
+      "logicalParent": "route-page-studio-library",
+      "visibleEntryPoints": ["edge-studio-settings"],
+      "authentication": "AUTHENTICATED_CAPABILITY_REQUIRED",
+      "capabilities": ["CREATOR"],
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
       "primaryAction": "ROUTE_SPECIFIC",
       "secondaryActions": [],
@@ -5180,6 +5775,13 @@
         "stateCompleteness": "Loading, populated, empty, no-results, recoverable error, permission, expiry, and dependency-unavailable states where applicable.",
         "responsive": "Desktop, mobile, and critical 200 percent zoom preserve information and controls.",
         "acceptanceOwner": "Project Homeport owner walkthrough after Sounding Line evidence."
+      },
+      "phase5Implementation": {
+        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "classification": "CONTEXTUAL_DYNAMIC",
+        "parentRouteId": "route-page-studio-library",
+        "entryEdgeIds": ["edge-studio-settings"],
+        "exitEdgeIds": ["edge-return-studio-tales-taleid-settings"]
       }
     },
     {
@@ -5189,10 +5791,10 @@
       "owner": "one-voyage",
       "shellMode": "standard",
       "primaryUserGoal": "Use current Creator Studio surface at /studio/tales/:taleId/versions",
-      "logicalParent": "/studio/tales/:taleId",
-      "visibleEntryPoints": [],
-      "authentication": "ANONYMOUS_OR_PAGE_LEVEL_GUARD",
-      "capabilities": [],
+      "logicalParent": "route-page-studio-library",
+      "visibleEntryPoints": ["edge-studio-versions"],
+      "authentication": "AUTHENTICATED_CAPABILITY_REQUIRED",
+      "capabilities": ["CREATOR"],
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
       "primaryAction": "ROUTE_SPECIFIC",
       "secondaryActions": [],
@@ -5222,6 +5824,13 @@
         "stateCompleteness": "Loading, populated, empty, no-results, recoverable error, permission, expiry, and dependency-unavailable states where applicable.",
         "responsive": "Desktop, mobile, and critical 200 percent zoom preserve information and controls.",
         "acceptanceOwner": "Project Homeport owner walkthrough after Sounding Line evidence."
+      },
+      "phase5Implementation": {
+        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "classification": "CONTEXTUAL_DYNAMIC",
+        "parentRouteId": "route-page-studio-library",
+        "entryEdgeIds": ["edge-studio-versions"],
+        "exitEdgeIds": ["edge-return-studio-tales-taleid-versions"]
       }
     },
     {
@@ -5231,10 +5840,10 @@
       "owner": "one-voyage",
       "shellMode": "standard",
       "primaryUserGoal": "Use current Creator Studio surface at /studio/tales/new",
-      "logicalParent": "/studio/tales",
-      "visibleEntryPoints": ["entry-studio-tales-new-1", "entry-studio-tales-new-2"],
-      "authentication": "CAPTAIN_OR_CREATOR_CAPABILITY",
-      "capabilities": ["CREATE_TALES"],
+      "logicalParent": "route-page-studio-library",
+      "visibleEntryPoints": ["edge-studio-new"],
+      "authentication": "AUTHENTICATED_CAPABILITY_REQUIRED",
+      "capabilities": ["CREATOR"],
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
       "primaryAction": "ROUTE_SPECIFIC",
       "secondaryActions": [],
@@ -5264,6 +5873,13 @@
         "stateCompleteness": "Loading, populated, empty, no-results, recoverable error, permission, expiry, and dependency-unavailable states where applicable.",
         "responsive": "Desktop, mobile, and critical 200 percent zoom preserve information and controls.",
         "acceptanceOwner": "Project Homeport owner walkthrough after Sounding Line evidence."
+      },
+      "phase5Implementation": {
+        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "classification": "USER_NAVIGABLE",
+        "parentRouteId": "route-page-studio-library",
+        "entryEdgeIds": ["edge-studio-new"],
+        "exitEdgeIds": ["edge-return-studio-tales-new"]
       }
     },
     {
@@ -5273,9 +5889,9 @@
       "owner": "one-voyage",
       "shellMode": "standard",
       "primaryUserGoal": "Use current Voyage runtime surface at /tale/:campaignSlug",
-      "logicalParent": "/tale",
+      "logicalParent": "route-page-tales",
       "visibleEntryPoints": [],
-      "authentication": "ANONYMOUS_OR_PAGE_LEVEL_GUARD",
+      "authentication": "ANONYMOUS_ALLOWED",
       "capabilities": [],
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
       "primaryAction": "ROUTE_SPECIFIC",
@@ -5306,6 +5922,13 @@
         "stateCompleteness": "Loading, populated, empty, no-results, recoverable error, permission, expiry, and dependency-unavailable states where applicable.",
         "responsive": "Desktop, mobile, and critical 200 percent zoom preserve information and controls.",
         "acceptanceOwner": "Project Homeport owner walkthrough after Sounding Line evidence."
+      },
+      "phase5Implementation": {
+        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "classification": "REDIRECT_ALIAS",
+        "parentRouteId": "route-page-tales",
+        "entryEdgeIds": [],
+        "exitEdgeIds": ["edge-compat-tale-campaignslug"]
       }
     },
     {
@@ -5315,20 +5938,8 @@
       "owner": "one-voyage",
       "shellMode": "PUBLIC_STANDARD",
       "primaryUserGoal": "Use current Voyage runtime surface at /tales",
-      "logicalParent": "/",
-      "visibleEntryPoints": [
-        "entry-tales-1",
-        "entry-tales-2",
-        "entry-tales-3",
-        "entry-tales-4",
-        "entry-tales-5",
-        "entry-tales-6",
-        "entry-tales-7",
-        "entry-tales-8",
-        "entry-tales-9",
-        "entry-tales-10",
-        "entry-tales-11"
-      ],
+      "logicalParent": "route-page-root",
+      "visibleEntryPoints": ["edge-global-explore"],
       "authentication": "ANONYMOUS_ALLOWED",
       "capabilities": [],
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
@@ -5369,6 +5980,13 @@
         "responsiveProof": "Desktop, 390x844 mobile, 200 percent layout equivalent, keyboard, and reduced motion",
         "evidenceIds": ["HP-P2-EV-G-global-nav-public"],
         "implementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc"
+      },
+      "phase5Implementation": {
+        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "classification": "USER_NAVIGABLE",
+        "parentRouteId": "route-page-root",
+        "entryEdgeIds": ["edge-global-explore"],
+        "exitEdgeIds": ["edge-tales-chronicle", "edge-return-tales"]
       }
     },
     {
@@ -5378,9 +5996,9 @@
       "owner": "wayfarer",
       "shellMode": "authentication",
       "primaryUserGoal": "Use current Account lifecycle surface at /verify-email",
-      "logicalParent": "/",
-      "visibleEntryPoints": [],
-      "authentication": "ANONYMOUS_ALLOWED",
+      "logicalParent": "route-page-sign-in",
+      "visibleEntryPoints": ["edge-token-verify-email"],
+      "authentication": "BOUNDED_TOKEN_OR_CODE",
       "capabilities": [],
       "primaryHeading": "RUNTIME_COMPONENT_OWNED",
       "primaryAction": "ROUTE_SPECIFIC",
@@ -5417,6 +6035,13 @@
         "identityAuthority": "HP-SES-001",
         "responsiveProof": "Desktop, mobile, keyboard, reduced-motion component coverage, and critical 200 percent zoom",
         "evidenceIds": []
+      },
+      "phase5Implementation": {
+        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "classification": "TOKENIZED_DEEP_LINK",
+        "parentRouteId": "route-page-sign-in",
+        "entryEdgeIds": ["edge-token-verify-email"],
+        "exitEdgeIds": ["edge-return-verify-email"]
       }
     },
     {
@@ -5727,9 +6352,9 @@
       "owner": "project-homeport",
       "shellMode": "WORKSPACE_STANDARD",
       "primaryUserGoal": "Use Overview in the unified Personal Harbor",
-      "logicalParent": "/",
-      "visibleEntryPoints": ["entry-phase3-personal-harbor-overview"],
-      "authentication": "ACCOUNT_SESSION_REQUIRED",
+      "logicalParent": "route-page-root",
+      "visibleEntryPoints": ["edge-account-personal-harbor"],
+      "authentication": "AUTHENTICATED_ACCOUNT_REQUIRED",
       "capabilities": [],
       "primaryHeading": "Overview",
       "primaryAction": "ROUTE_SPECIFIC",
@@ -5813,6 +6438,21 @@
           "HP-P3-EV-W-mobile-section-nav",
           "HP-P3-EV-Z-dependency-unavailable"
         ]
+      },
+      "phase5Implementation": {
+        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "classification": "USER_NAVIGABLE",
+        "parentRouteId": "route-page-root",
+        "entryEdgeIds": ["edge-account-personal-harbor"],
+        "exitEdgeIds": [
+          "edge-account-profile",
+          "edge-account-personal-information",
+          "edge-account-accessibility",
+          "edge-account-notifications",
+          "edge-account-linked-identities",
+          "edge-account-data",
+          "edge-return-account"
+        ]
       }
     },
     {
@@ -5822,9 +6462,9 @@
       "owner": "wayfarer",
       "shellMode": "WORKSPACE_STANDARD",
       "primaryUserGoal": "Use Public Profile in the unified Personal Harbor",
-      "logicalParent": "/account",
-      "visibleEntryPoints": ["entry-phase3-public-profile-editor"],
-      "authentication": "ACCOUNT_SESSION_REQUIRED",
+      "logicalParent": "route-page-account",
+      "visibleEntryPoints": ["edge-account-profile"],
+      "authentication": "AUTHENTICATED_ACCOUNT_REQUIRED",
       "capabilities": [],
       "primaryHeading": "Public Profile",
       "primaryAction": "SUPPORTED_OWNER_MUTATION_OR_TRUTHFUL_UNAVAILABLE_STATE",
@@ -5926,6 +6566,13 @@
           "HP-P3-EV-Y-stale-conflict",
           "HP-P3-EV-AA-zoom-profile"
         ]
+      },
+      "phase5Implementation": {
+        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "classification": "USER_NAVIGABLE",
+        "parentRouteId": "route-page-account",
+        "entryEdgeIds": ["edge-account-profile"],
+        "exitEdgeIds": ["edge-profile-public", "edge-return-account-profile"]
       }
     },
     {
@@ -5935,9 +6582,9 @@
       "owner": "wayfarer",
       "shellMode": "WORKSPACE_STANDARD",
       "primaryUserGoal": "Use Personal Information in the unified Personal Harbor",
-      "logicalParent": "/account",
-      "visibleEntryPoints": ["entry-phase3-personal-information"],
-      "authentication": "ACCOUNT_SESSION_REQUIRED",
+      "logicalParent": "route-page-account",
+      "visibleEntryPoints": ["edge-account-personal-information"],
+      "authentication": "AUTHENTICATED_ACCOUNT_REQUIRED",
       "capabilities": [],
       "primaryHeading": "Personal Information",
       "primaryAction": "SUPPORTED_OWNER_MUTATION_OR_TRUTHFUL_UNAVAILABLE_STATE",
@@ -6018,6 +6665,13 @@
         "mutationIds": ["email-verification-resend"],
         "testContracts": ["homeport.personal-harbor.ia", "homeport.profile.no-private-leak"],
         "evidenceIds": ["HP-P3-EV-F-personal-information"]
+      },
+      "phase5Implementation": {
+        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "classification": "USER_NAVIGABLE",
+        "parentRouteId": "route-page-account",
+        "entryEdgeIds": ["edge-account-personal-information"],
+        "exitEdgeIds": ["edge-return-account-personal-information"]
       }
     },
     {
@@ -6027,9 +6681,9 @@
       "owner": "wayfarer",
       "shellMode": "WORKSPACE_STANDARD",
       "primaryUserGoal": "Use Preferences in the unified Personal Harbor",
-      "logicalParent": "/account",
-      "visibleEntryPoints": ["entry-phase3-preferences"],
-      "authentication": "ACCOUNT_SESSION_REQUIRED",
+      "logicalParent": "route-page-account",
+      "visibleEntryPoints": ["edge-account-preferences"],
+      "authentication": "AUTHENTICATED_ACCOUNT_REQUIRED",
       "capabilities": [],
       "primaryHeading": "Preferences",
       "primaryAction": "SUPPORTED_OWNER_MUTATION_OR_TRUTHFUL_UNAVAILABLE_STATE",
@@ -6118,6 +6772,13 @@
           "homeport.personal-harbor.stale-conflict"
         ],
         "evidenceIds": ["HP-P3-EV-G-preferences"]
+      },
+      "phase5Implementation": {
+        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "classification": "USER_NAVIGABLE",
+        "parentRouteId": "route-page-account",
+        "entryEdgeIds": ["edge-account-preferences"],
+        "exitEdgeIds": ["edge-return-account-preferences"]
       }
     },
     {
@@ -6127,9 +6788,9 @@
       "owner": "wayfarer",
       "shellMode": "WORKSPACE_STANDARD",
       "primaryUserGoal": "Use Accessibility in the unified Personal Harbor",
-      "logicalParent": "/account",
-      "visibleEntryPoints": ["entry-phase3-accessibility"],
-      "authentication": "ACCOUNT_SESSION_REQUIRED",
+      "logicalParent": "route-page-account",
+      "visibleEntryPoints": ["edge-account-accessibility"],
+      "authentication": "AUTHENTICATED_ACCOUNT_REQUIRED",
       "capabilities": [],
       "primaryHeading": "Accessibility",
       "primaryAction": "SUPPORTED_OWNER_MUTATION_OR_TRUTHFUL_UNAVAILABLE_STATE",
@@ -6214,6 +6875,13 @@
         "mutationIds": ["accessibility-save", "accessibility-reset"],
         "testContracts": ["homeport.accessibility.preference-consumption", "homeport.personal-harbor.unsaved-changes"],
         "evidenceIds": ["HP-P3-EV-H-accessibility", "HP-P3-EV-AC-reduced-motion"]
+      },
+      "phase5Implementation": {
+        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "classification": "USER_NAVIGABLE",
+        "parentRouteId": "route-page-account",
+        "entryEdgeIds": ["edge-account-accessibility"],
+        "exitEdgeIds": ["edge-return-account-accessibility"]
       }
     },
     {
@@ -6223,9 +6891,9 @@
       "owner": "wayfarer",
       "shellMode": "WORKSPACE_STANDARD",
       "primaryUserGoal": "Use Notifications in the unified Personal Harbor",
-      "logicalParent": "/account",
-      "visibleEntryPoints": ["entry-phase3-notifications"],
-      "authentication": "ACCOUNT_SESSION_REQUIRED",
+      "logicalParent": "route-page-account",
+      "visibleEntryPoints": ["edge-account-notifications"],
+      "authentication": "AUTHENTICATED_ACCOUNT_REQUIRED",
       "capabilities": [],
       "primaryHeading": "Notifications",
       "primaryAction": "SUPPORTED_OWNER_MUTATION_OR_TRUTHFUL_UNAVAILABLE_STATE",
@@ -6308,6 +6976,13 @@
         "mutationIds": ["notifications-save"],
         "testContracts": ["homeport.notifications.feedback", "homeport.personal-harbor.mutation-feedback"],
         "evidenceIds": ["HP-P3-EV-I-notifications"]
+      },
+      "phase5Implementation": {
+        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "classification": "USER_NAVIGABLE",
+        "parentRouteId": "route-page-account",
+        "entryEdgeIds": ["edge-account-notifications"],
+        "exitEdgeIds": ["edge-return-account-notifications"]
       }
     },
     {
@@ -6317,9 +6992,9 @@
       "owner": "wayfarer",
       "shellMode": "WORKSPACE_STANDARD",
       "primaryUserGoal": "Use Privacy & Safety in the unified Personal Harbor",
-      "logicalParent": "/account",
-      "visibleEntryPoints": ["entry-phase3-privacy-safety"],
-      "authentication": "ACCOUNT_SESSION_REQUIRED",
+      "logicalParent": "route-page-account",
+      "visibleEntryPoints": ["edge-account-privacy"],
+      "authentication": "AUTHENTICATED_ACCOUNT_REQUIRED",
       "capabilities": [],
       "primaryHeading": "Privacy & Safety",
       "primaryAction": "SUPPORTED_OWNER_MUTATION_OR_TRUTHFUL_UNAVAILABLE_STATE",
@@ -6407,6 +7082,13 @@
           "homeport.profile.no-private-leak"
         ],
         "evidenceIds": ["HP-P3-EV-J-privacy"]
+      },
+      "phase5Implementation": {
+        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "classification": "USER_NAVIGABLE",
+        "parentRouteId": "route-page-account",
+        "entryEdgeIds": ["edge-account-privacy"],
+        "exitEdgeIds": ["edge-return-account-privacy"]
       }
     },
     {
@@ -6416,9 +7098,9 @@
       "owner": "wayfarer",
       "shellMode": "WORKSPACE_STANDARD",
       "primaryUserGoal": "Use Linked Identities in the unified Personal Harbor",
-      "logicalParent": "/account",
-      "visibleEntryPoints": ["entry-phase3-linked-identities"],
-      "authentication": "ACCOUNT_SESSION_REQUIRED",
+      "logicalParent": "route-page-account",
+      "visibleEntryPoints": ["edge-account-linked-identities"],
+      "authentication": "AUTHENTICATED_ACCOUNT_REQUIRED",
       "capabilities": [],
       "primaryHeading": "Linked Identities",
       "primaryAction": "SUPPORTED_OWNER_MUTATION_OR_TRUTHFUL_UNAVAILABLE_STATE",
@@ -6499,6 +7181,13 @@
         "mutationIds": ["identity-link", "identity-update", "identity-unlink"],
         "testContracts": ["homeport.linked-identities.safe", "homeport.linked-identities.no-lockout"],
         "evidenceIds": ["HP-P3-EV-K-linked-identities"]
+      },
+      "phase5Implementation": {
+        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "classification": "USER_NAVIGABLE",
+        "parentRouteId": "route-page-account",
+        "entryEdgeIds": ["edge-account-linked-identities"],
+        "exitEdgeIds": ["edge-return-account-linked-identities"]
       }
     },
     {
@@ -6508,10 +7197,10 @@
       "owner": "wayfarer",
       "shellMode": "WORKSPACE_STANDARD",
       "primaryUserGoal": "Use History & Memories in the unified Personal Harbor",
-      "logicalParent": "/passport",
-      "visibleEntryPoints": ["entry-phase3-passport-history"],
-      "authentication": "ACCOUNT_SESSION_REQUIRED",
-      "capabilities": ["PLAYER"],
+      "logicalParent": "route-page-passport",
+      "visibleEntryPoints": ["edge-account-history"],
+      "authentication": "AUTHENTICATED_ACCOUNT_REQUIRED",
+      "capabilities": [],
       "primaryHeading": "History & Memories",
       "primaryAction": "ROUTE_SPECIFIC",
       "secondaryActions": [],
@@ -6588,6 +7277,13 @@
           "homeport.history.empty-state"
         ],
         "evidenceIds": ["HP-P3-EV-N-history-list"]
+      },
+      "phase5Implementation": {
+        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "classification": "USER_NAVIGABLE",
+        "parentRouteId": "route-page-passport",
+        "entryEdgeIds": ["edge-account-history"],
+        "exitEdgeIds": ["edge-passport-history-detail", "edge-return-passport-history"]
       }
     },
     {
@@ -6597,10 +7293,10 @@
       "owner": "wayfarer",
       "shellMode": "WORKSPACE_STANDARD",
       "primaryUserGoal": "Use Voyage Record in the unified Personal Harbor",
-      "logicalParent": "/passport/history",
-      "visibleEntryPoints": ["entry-phase3-passport-history-detail"],
-      "authentication": "ACCOUNT_SESSION_REQUIRED",
-      "capabilities": ["PLAYER"],
+      "logicalParent": "route-page-passport-history",
+      "visibleEntryPoints": ["edge-passport-history-detail"],
+      "authentication": "AUTHENTICATED_ACCOUNT_REQUIRED",
+      "capabilities": [],
       "primaryHeading": "Voyage Record",
       "primaryAction": "SUPPORTED_OWNER_MUTATION_OR_TRUTHFUL_UNAVAILABLE_STATE",
       "secondaryActions": [],
@@ -6686,6 +7382,13 @@
           "homeport.keepsake.consent"
         ],
         "evidenceIds": ["HP-P3-EV-O-history-detail", "HP-P3-EV-P-memory-keepsake"]
+      },
+      "phase5Implementation": {
+        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "classification": "CONTEXTUAL_DYNAMIC",
+        "parentRouteId": "route-page-passport-history",
+        "entryEdgeIds": ["edge-passport-history-detail"],
+        "exitEdgeIds": ["edge-return-passport-history-[recordId]"]
       }
     },
     {
@@ -6695,10 +7398,10 @@
       "owner": "wayfarer",
       "shellMode": "WORKSPACE_STANDARD",
       "primaryUserGoal": "Use Memories in the unified Personal Harbor",
-      "logicalParent": "/passport",
-      "visibleEntryPoints": ["entry-phase3-passport-memories"],
-      "authentication": "ACCOUNT_SESSION_REQUIRED",
-      "capabilities": ["PLAYER"],
+      "logicalParent": "route-page-passport",
+      "visibleEntryPoints": ["edge-passport-memories"],
+      "authentication": "AUTHENTICATED_ACCOUNT_REQUIRED",
+      "capabilities": [],
       "primaryHeading": "Memories",
       "primaryAction": "SUPPORTED_OWNER_MUTATION_OR_TRUTHFUL_UNAVAILABLE_STATE",
       "secondaryActions": [],
@@ -6778,6 +7481,13 @@
         "mutationIds": ["memory-delete"],
         "testContracts": ["homeport.memories.owner-authorized", "homeport.keepsake.consent"],
         "evidenceIds": []
+      },
+      "phase5Implementation": {
+        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "classification": "USER_NAVIGABLE",
+        "parentRouteId": "route-page-passport",
+        "entryEdgeIds": ["edge-passport-memories"],
+        "exitEdgeIds": ["edge-return-passport-memories"]
       }
     },
     {
@@ -6787,10 +7497,10 @@
       "owner": "wayfarer",
       "shellMode": "WORKSPACE_STANDARD",
       "primaryUserGoal": "Use Artifact Cabinet in the unified Personal Harbor",
-      "logicalParent": "/passport",
-      "visibleEntryPoints": ["entry-phase3-passport-artifacts"],
-      "authentication": "ACCOUNT_SESSION_REQUIRED",
-      "capabilities": ["PLAYER"],
+      "logicalParent": "route-page-passport",
+      "visibleEntryPoints": ["edge-account-artifacts"],
+      "authentication": "AUTHENTICATED_ACCOUNT_REQUIRED",
+      "capabilities": [],
       "primaryHeading": "Artifact Cabinet",
       "primaryAction": "SUPPORTED_OWNER_MUTATION_OR_TRUTHFUL_UNAVAILABLE_STATE",
       "secondaryActions": [],
@@ -6874,6 +7584,13 @@
           "homeport.artifacts.empty-state"
         ],
         "evidenceIds": ["HP-P3-EV-Q-artifact-cabinet", "HP-P3-EV-R-artifact-empty"]
+      },
+      "phase5Implementation": {
+        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "classification": "USER_NAVIGABLE",
+        "parentRouteId": "route-page-passport",
+        "entryEdgeIds": ["edge-account-artifacts"],
+        "exitEdgeIds": ["edge-passport-artifact-detail", "edge-return-passport-artifacts"]
       }
     },
     {
@@ -6883,10 +7600,10 @@
       "owner": "wayfarer",
       "shellMode": "WORKSPACE_STANDARD",
       "primaryUserGoal": "Use Artifact Detail in the unified Personal Harbor",
-      "logicalParent": "/passport/artifacts",
-      "visibleEntryPoints": ["entry-phase3-passport-artifact-detail"],
-      "authentication": "ACCOUNT_SESSION_REQUIRED",
-      "capabilities": ["PLAYER"],
+      "logicalParent": "route-page-passport-artifacts",
+      "visibleEntryPoints": ["edge-passport-artifact-detail"],
+      "authentication": "AUTHENTICATED_ACCOUNT_REQUIRED",
+      "capabilities": [],
       "primaryHeading": "Artifact Detail",
       "primaryAction": "SUPPORTED_OWNER_MUTATION_OR_TRUTHFUL_UNAVAILABLE_STATE",
       "secondaryActions": [],
@@ -6966,6 +7683,13 @@
         "mutationIds": ["artifact-personalize"],
         "testContracts": ["homeport.artifacts.owner-only", "homeport.artifacts.provenance"],
         "evidenceIds": []
+      },
+      "phase5Implementation": {
+        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "classification": "CONTEXTUAL_DYNAMIC",
+        "parentRouteId": "route-page-passport-artifacts",
+        "entryEdgeIds": ["edge-passport-artifact-detail"],
+        "exitEdgeIds": ["edge-return-passport-artifacts-[artifactId]"]
       }
     },
     {
@@ -6975,10 +7699,10 @@
       "owner": "harborlight",
       "shellMode": "WORKSPACE_STANDARD",
       "primaryUserGoal": "Use Saved Content in the unified Personal Harbor",
-      "logicalParent": "/passport",
-      "visibleEntryPoints": ["entry-phase3-passport-saved"],
-      "authentication": "ACCOUNT_SESSION_REQUIRED",
-      "capabilities": ["PLAYER"],
+      "logicalParent": "route-page-passport",
+      "visibleEntryPoints": ["edge-passport-saved"],
+      "authentication": "AUTHENTICATED_ACCOUNT_REQUIRED",
+      "capabilities": [],
       "primaryHeading": "Saved Content",
       "primaryAction": "SUPPORTED_OWNER_MUTATION_OR_TRUTHFUL_UNAVAILABLE_STATE",
       "secondaryActions": [],
@@ -7058,6 +7782,13 @@
         "mutationIds": ["saved-content-remove"],
         "testContracts": ["homeport.saved-content.owner-only", "homeport.saved-content.cross-surface"],
         "evidenceIds": ["HP-P3-EV-S-saved-content"]
+      },
+      "phase5Implementation": {
+        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "classification": "USER_NAVIGABLE",
+        "parentRouteId": "route-page-passport",
+        "entryEdgeIds": ["edge-passport-saved"],
+        "exitEdgeIds": ["edge-return-passport-saved"]
       }
     },
     {
@@ -7067,9 +7798,9 @@
       "owner": "wayfarer",
       "shellMode": "WORKSPACE_STANDARD",
       "primaryUserGoal": "Use Sessions & Devices in the unified Personal Harbor",
-      "logicalParent": "/account",
-      "visibleEntryPoints": ["entry-phase3-sessions-devices"],
-      "authentication": "ACCOUNT_SESSION_REQUIRED",
+      "logicalParent": "route-page-account",
+      "visibleEntryPoints": ["edge-account-sessions"],
+      "authentication": "AUTHENTICATED_ACCOUNT_REQUIRED",
       "capabilities": [],
       "primaryHeading": "Sessions & Devices",
       "primaryAction": "SUPPORTED_OWNER_MUTATION_OR_TRUTHFUL_UNAVAILABLE_STATE",
@@ -7150,6 +7881,13 @@
         "mutationIds": ["session-revoke", "sign-out-everywhere"],
         "testContracts": ["homeport.sessions.list-safe", "homeport.sessions.revoke", "homeport.sessions.signout-all"],
         "evidenceIds": ["HP-P3-EV-U-sessions"]
+      },
+      "phase5Implementation": {
+        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "classification": "USER_NAVIGABLE",
+        "parentRouteId": "route-page-account",
+        "entryEdgeIds": ["edge-account-sessions"],
+        "exitEdgeIds": ["edge-return-account-sessions"]
       }
     },
     {
@@ -7159,9 +7897,9 @@
       "owner": "wayfarer",
       "shellMode": "WORKSPACE_STANDARD",
       "primaryUserGoal": "Use Data & Account in the unified Personal Harbor",
-      "logicalParent": "/account",
-      "visibleEntryPoints": ["entry-phase3-data-account"],
-      "authentication": "ACCOUNT_SESSION_REQUIRED",
+      "logicalParent": "route-page-account",
+      "visibleEntryPoints": ["edge-account-data"],
+      "authentication": "AUTHENTICATED_ACCOUNT_REQUIRED",
       "capabilities": [],
       "primaryHeading": "Data & Account",
       "primaryAction": "ROUTE_SPECIFIC",
@@ -7235,6 +7973,13 @@
         "mutationIds": [],
         "testContracts": ["homeport.account-data.truthful-availability"],
         "evidenceIds": ["HP-P3-EV-V-data-account"]
+      },
+      "phase5Implementation": {
+        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "classification": "USER_NAVIGABLE",
+        "parentRouteId": "route-page-account",
+        "entryEdgeIds": ["edge-account-data"],
+        "exitEdgeIds": ["edge-return-account-data"]
       }
     }
   ],
@@ -7375,5 +8120,18 @@
       "HP-P4-EV-AK-public-projection",
       "HP-P4-EV-AL-full-community-loop"
     ]
+  },
+  "phase5Implementation": {
+    "phase": "PHASE_5_CLOSE_ROUTE_AND_INFORMATION_ARCHITECTURE_GAPS",
+    "startingSha": "54372224fc9bf4b4fb42797ca58a5a224ffdb92a",
+    "architectureFreezeSha": "bbe9659cc5077c834510c3e4db77aa362e45b6fd",
+    "implementationSourceSha": "IMPLEMENTATION_SOURCE_PENDING",
+    "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+    "updatedAt": "2026-08-03T18:00:00.000Z",
+    "routeNodeCount": 85,
+    "routeEdgeCount": 159,
+    "unexplainedOrdinaryOrphans": 0,
+    "noSchemaChange": true,
+    "phase6NotStarted": true
   }
 }

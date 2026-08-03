@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "status": "phase-4-homeport-community-source-classification",
+  "status": "phase-5-homeport-route-source-classification",
   "owners": [
     {
       "id": "platform-foundation",
@@ -100,7 +100,14 @@
         "src/community/**",
         "src/components/community/**",
         "src/app/community/**",
-        "src/app/api/community/**"
+        "src/app/api/community/**",
+        "src/navigation/**",
+        "src/components/tales/TaleStart.tsx",
+        "src/components/community/PublicCommunitySection.tsx",
+        "src/app/community/voyage-logs/media/page.tsx",
+        "src/app/profile/[handle]/page.tsx",
+        "src/app/studio/page.tsx",
+        "src/app/quartermaster/page.tsx"
       ],
       "testPaths": [
         "tests/homeport/**/*.test.*",
@@ -111,7 +118,9 @@
         "src/components/community/**/*.test.*",
         "src/app/api/community/**/*.test.*",
         "tests/homeport/phase4-*.test.mjs",
-        "tests/e2e/homeport-phase4.spec.ts"
+        "tests/e2e/homeport-phase4.spec.ts",
+        "tests/homeport/phase5-*.test.mjs",
+        "tests/e2e/homeport-phase5.spec.ts"
       ],
       "contractIds": [
         "homeport.route-inventory.complete",
@@ -209,7 +218,47 @@
         "homeport.community.phase1-regression",
         "homeport.community.phase2-regression",
         "homeport.community.phase3-regression",
-        "homeport.community.artifact-idempotency"
+        "homeport.community.artifact-idempotency",
+        "homeport.route.inventory-complete",
+        "homeport.route.source-parity",
+        "homeport.route.classification-exclusive",
+        "homeport.route.reachability-graph",
+        "homeport.route.user-navigable-entry",
+        "homeport.route.dynamic-source",
+        "homeport.route.dynamic-invalid-id",
+        "homeport.route.dynamic-private-denial",
+        "homeport.route.tokenized-safe",
+        "homeport.route.tokenized-not-navigation",
+        "homeport.route.compatibility-disposition",
+        "homeport.route.compatibility-no-competing-ui",
+        "homeport.route.redirect-no-loop",
+        "homeport.route.redirect-target-valid",
+        "homeport.route.redirect-query-safe",
+        "homeport.route.parent-complete",
+        "homeport.route.parent-cycle-free",
+        "homeport.route.no-dead-end",
+        "homeport.route.empty-onward",
+        "homeport.route.error-recovery",
+        "homeport.route.permission-recovery",
+        "homeport.route.desktop-mobile-parity",
+        "homeport.route.no-pointer-only-entry",
+        "homeport.route.keyboard-reachability",
+        "homeport.route.compact-exit",
+        "homeport.route.immersive-exit",
+        "homeport.route.deep-link-after-natural",
+        "homeport.route.no-direct-url-only",
+        "homeport.route.placeholder-target-rejected",
+        "homeport.route.deprecated-disposition",
+        "homeport.route.development-exclusion",
+        "homeport.route.active-label-consistency",
+        "homeport.route.graph-idempotency",
+        "homeport.route.inventory-drift",
+        "homeport.route.browser-receipt-complete",
+        "homeport.route.source-bound-evidence",
+        "homeport.route.phase1-regression",
+        "homeport.route.phase2-regression",
+        "homeport.route.phase3-regression",
+        "homeport.route.phase4-regression"
       ]
     },
     {

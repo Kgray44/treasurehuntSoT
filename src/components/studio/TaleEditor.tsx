@@ -1068,7 +1068,7 @@ export function TaleEditor({
       <main className="studio-auth-gate">
         <section>
           <h1>Creator sign-in required</h1>
-          <Link className="brass-button" href="/quartermaster">
+          <Link className="brass-button" href="/captain/library">
             Sign in
           </Link>
         </section>
@@ -1101,7 +1101,7 @@ export function TaleEditor({
         transition={{ duration: layoutMotion.durationSeconds, ease: platformMotionEasing("layout") }}
       >
         <div>
-          <Link href="/studio">← Studio</Link>
+          <Link href="/studio/library">← Studio</Link>
           <span className="draft-mark">Draft</span>
           <h1>{draft.tale.title}</h1>
         </div>

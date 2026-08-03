@@ -318,13 +318,15 @@ for (const record of evidence.records) {
     ],
     record.evidenceId,
   );
-  const expectedRecordSource = record.evidenceId.startsWith("HP-P4-EV-")
-    ? evidence.phase4Run?.sourceSha
-    : expectedSourceSha;
+  const expectedRecordSource = record.evidenceId.startsWith("HP-P5-EV-")
+    ? evidence.phase5Run?.sourceSha
+    : record.evidenceId.startsWith("HP-P4-EV-")
+      ? evidence.phase4Run?.sourceSha
+      : expectedSourceSha;
   assert.equal(record.sourceSha, expectedRecordSource, `${record.evidenceId} source SHA drifted`);
   assert.ok(screenIds.has(record.screenContract), `${record.evidenceId} references unknown screen contract`);
   assert.ok(journeyIds.has(record.journey), `${record.evidenceId} references unknown journey`);
-  const committedPhaseRecord = /^HP-P[1234]-EV-/u.test(record.evidenceId);
+  const committedPhaseRecord = /^HP-P[12345]-EV-/u.test(record.evidenceId);
   const screenshot = committedPhaseRecord
     ? path.join(root, record.committedScreenshotPath)
     : path.join(evidenceRoot, path.basename(record.screenshotPath));
@@ -565,8 +567,20 @@ for (const id of ["HP-NC-011", "HP-NC-012", "HP-NC-013", "HP-NC-026"]) {
   assert.equal(record?.current_status, "CLOSED_PHASE_4_BRANCH_VALIDATED", `${id} must carry Phase 4 branch closure`);
   assert.equal(record?.disposition, "CLOSED_PHASE_4_BRANCH_VALIDATED", `${id} has the wrong Phase 4 disposition`);
 }
+const phase5Reachability = nonconformities.find((candidate) => candidate.id === "HP-NC-014");
+const phase5Closed = routes.phase5Implementation?.state === "BRANCH_VALIDATED_NOT_MERGED";
+assert.equal(
+  phase5Reachability?.current_status,
+  phase5Closed ? "CLOSED_PHASE_5_BRANCH_VALIDATED" : "PHASE_5_IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+  "HP-NC-014 must reflect the current Phase 5 validation boundary",
+);
+assert.equal(
+  phase5Reachability?.disposition,
+  phase5Closed ? "CLOSED_PHASE_5_BRANCH_VALIDATED" : "PHASE_5_IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+  "HP-NC-014 has the wrong Phase 5 disposition",
+);
+assert.equal(phase5Reachability?.target_phase, "PHASE_5", "HP-NC-014 changed Phase 5 ownership");
 for (const [id, targetPhase] of [
-  ["HP-NC-014", "PHASE_5"],
   ["HP-NC-018", "PHASE_6"],
   ["HP-NC-019", "PHASE_7"],
 ]) {

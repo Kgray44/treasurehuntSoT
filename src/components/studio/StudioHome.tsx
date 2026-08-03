@@ -118,7 +118,7 @@ export function StudioHome({ authenticated }: { authenticated: boolean }) {
           <p className="eyebrow">{studioCopy.studioName.value}</p>
           <h1>Creator access is required.</h1>
           <p>Sign in with a creator account, then return to Voyagewright Studio.</p>
-          <Link className="brass-button" href="/quartermaster">
+          <Link className="brass-button" href="/captain/library">
             Sign in
           </Link>
         </section>

@@ -355,7 +355,13 @@ if (scope === "all") {
       ledger.find((row) => row.id === id)?.disposition === "CLOSED_PHASE_4_BRANCH_VALIDATED",
       `missing direct Phase 4 disposition: ${id}`,
     );
-  for (const id of ["HP-NC-014", "HP-NC-018", "HP-NC-019"])
+  check(
+    ["PHASE_5_IMPLEMENTED_PENDING_BROWSER_VALIDATION", "CLOSED_PHASE_5_BRANCH_VALIDATED"].includes(
+      ledger.find((row) => row.id === "HP-NC-014")?.disposition,
+    ),
+    "missing exact Phase 5 advancement: HP-NC-014",
+  );
+  for (const id of ["HP-NC-018", "HP-NC-019"])
     check(
       ledger.find((row) => row.id === id)?.disposition === "PARTIAL_PHASE_4_LATER_OWNER_RETAINED",
       `missing exact Phase 4 advancement: ${id}`,

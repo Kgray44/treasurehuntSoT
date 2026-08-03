@@ -122,7 +122,7 @@ export function CaptainSessionControl({ sessionId, authenticated }: { sessionId:
       <main className="captain-auth">
         <section>
           <h1>Captain access required</h1>
-          <Link href="/quartermaster">Sign in to Captain’s Console</Link>
+          <Link href="/captain/library">Sign in to Captain’s Console</Link>
         </section>
       </main>
     );

@@ -180,6 +180,21 @@ export async function PublicCommunitySection({ section }: { section: CommunitySe
             heading={`Search ${detail.title}`}
           />
         ) : null}
+        {section === "voyage-logs" && identity ? (
+          <section className="community-state" aria-labelledby="community-voyage-log-actions-title">
+            <p className="community-eyebrow">Your Voyage Logs</p>
+            <h2 id="community-voyage-log-actions-title">Prepare and review your sharing drafts</h2>
+            <p>Drafts, consent, and protected media remain private until every publication check passes.</p>
+            <div className="community-inline-actions">
+              <Link className="community-button community-button--primary" href="/community/voyage-logs/owner">
+                Your Voyage Log drafts
+              </Link>
+              <Link className="community-button" href="/community/voyage-logs/consent">
+                Publication consent
+              </Link>
+            </div>
+          </section>
+        ) : null}
       </CommunityPageFrame>
     </CommunitySceneCeremony>
   );

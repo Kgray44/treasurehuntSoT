@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "status": "phase-4-homeport-community-contracts-validated",
+  "status": "phase-5-homeport-route-reachability-registered",
   "contracts": [
     {
       "id": "invitation-acceptance",
@@ -791,6 +791,286 @@
       "name": "Community Harbor artifact Idempotency",
       "authority": "project-homeport",
       "owners": ["project-homeport", "harborlight"],
+      "critical": true
+    },
+    {
+      "id": "homeport.route.inventory-complete",
+      "name": "Homeport Route inventory Complete",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.route.source-parity",
+      "name": "Homeport Route source Parity",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.route.classification-exclusive",
+      "name": "Homeport Route classification Exclusive",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.route.reachability-graph",
+      "name": "Homeport Route reachability Graph",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.route.user-navigable-entry",
+      "name": "Homeport Route user Navigable Entry",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.route.dynamic-source",
+      "name": "Homeport Route dynamic Source",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.route.dynamic-invalid-id",
+      "name": "Homeport Route dynamic Invalid Id",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.route.dynamic-private-denial",
+      "name": "Homeport Route dynamic Private Denial",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.route.tokenized-safe",
+      "name": "Homeport Route tokenized Safe",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.route.tokenized-not-navigation",
+      "name": "Homeport Route tokenized Not Navigation",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.route.compatibility-disposition",
+      "name": "Homeport Route compatibility Disposition",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.route.compatibility-no-competing-ui",
+      "name": "Homeport Route compatibility No Competing Ui",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.route.redirect-no-loop",
+      "name": "Homeport Route redirect No Loop",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.route.redirect-target-valid",
+      "name": "Homeport Route redirect Target Valid",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.route.redirect-query-safe",
+      "name": "Homeport Route redirect Query Safe",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.route.parent-complete",
+      "name": "Homeport Route parent Complete",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.route.parent-cycle-free",
+      "name": "Homeport Route parent Cycle Free",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.route.no-dead-end",
+      "name": "Homeport Route no Dead End",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.route.empty-onward",
+      "name": "Homeport Route empty Onward",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.route.error-recovery",
+      "name": "Homeport Route error Recovery",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.route.permission-recovery",
+      "name": "Homeport Route permission Recovery",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.route.desktop-mobile-parity",
+      "name": "Homeport Route desktop Mobile Parity",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.route.no-pointer-only-entry",
+      "name": "Homeport Route no Pointer Only Entry",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.route.keyboard-reachability",
+      "name": "Homeport Route keyboard Reachability",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.route.compact-exit",
+      "name": "Homeport Route compact Exit",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.route.immersive-exit",
+      "name": "Homeport Route immersive Exit",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.route.deep-link-after-natural",
+      "name": "Homeport Route deep Link After Natural",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.route.no-direct-url-only",
+      "name": "Homeport Route no Direct Url Only",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.route.placeholder-target-rejected",
+      "name": "Homeport Route placeholder Target Rejected",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.route.deprecated-disposition",
+      "name": "Homeport Route deprecated Disposition",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.route.development-exclusion",
+      "name": "Homeport Route development Exclusion",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.route.active-label-consistency",
+      "name": "Homeport Route active Label Consistency",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.route.graph-idempotency",
+      "name": "Homeport Route graph Idempotency",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.route.inventory-drift",
+      "name": "Homeport Route inventory Drift",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.route.browser-receipt-complete",
+      "name": "Homeport Route browser Receipt Complete",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.route.source-bound-evidence",
+      "name": "Homeport Route source Bound Evidence",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.route.phase1-regression",
+      "name": "Homeport Route phase1 Regression",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.route.phase2-regression",
+      "name": "Homeport Route phase2 Regression",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.route.phase3-regression",
+      "name": "Homeport Route phase3 Regression",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.route.phase4-regression",
+      "name": "Homeport Route phase4 Regression",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
       "critical": true
     }
   ]

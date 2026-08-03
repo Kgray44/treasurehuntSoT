@@ -224,3 +224,25 @@ These branch-only results use the reserved synthetic fixture and production loca
 | HP-P4-JRN-AR | Full Community natural loop                       | PASSED | HP-P4-EV-AL-full-community-loop                                                            |
 
 <!-- PHASE4_IMPLEMENTED_END -->
+
+<!-- PHASE5_REACHABILITY_START -->
+## Phase 5 route-reachability amendment
+
+The source-driven Phase 5 graph records 85 page nodes and 159 typed transitions from 85 current page sources. Machine traversal reports zero unexplained ordinary orphans. Status: **IMPLEMENTED_PENDING_BROWSER_VALIDATION**. Exact implementation source: `IMPLEMENTATION_SOURCE_PENDING`. Browser, merge, deployment, owner acceptance, Phase 6, Phase 7, and product acceptance remain separate boundaries.
+
+- `HP-P5-JRN-A`: Anonymous global product — STRUCTURALLY_REACHABLE; BROWSER PENDING
+- `HP-P5-JRN-B`: Authentication and account lifecycle — STRUCTURALLY_REACHABLE; BROWSER PENDING
+- `HP-P5-JRN-C`: Player workspace — STRUCTURALLY_REACHABLE; BROWSER PENDING
+- `HP-P5-JRN-D`: Captain workspace — STRUCTURALLY_REACHABLE; BROWSER PENDING
+- `HP-P5-JRN-E`: Creator Studio — STRUCTURALLY_REACHABLE; BROWSER PENDING
+- `HP-P5-JRN-F`: Personal Harbor — STRUCTURALLY_REACHABLE; BROWSER PENDING
+- `HP-P5-JRN-G`: Community Harbor — STRUCTURALLY_REACHABLE; BROWSER PENDING
+- `HP-P5-JRN-H`: Dynamic public details — STRUCTURALLY_REACHABLE; BROWSER PENDING
+- `HP-P5-JRN-I`: Dynamic authenticated details — STRUCTURALLY_REACHABLE; BROWSER PENDING
+- `HP-P5-JRN-J`: Compatibility and redirects — STRUCTURALLY_REACHABLE; BROWSER PENDING
+- `HP-P5-JRN-K`: Tokenized routes — STRUCTURALLY_REACHABLE; BROWSER PENDING
+- `HP-P5-JRN-L`: Empty error and permission onward paths — STRUCTURALLY_REACHABLE; BROWSER PENDING
+- `HP-P5-JRN-M`: Desktop and mobile parity — STRUCTURALLY_REACHABLE; BROWSER PENDING
+- `HP-P5-JRN-N`: Keyboard-only reachability — STRUCTURALLY_REACHABLE; BROWSER PENDING
+- `HP-P5-JRN-O`: Full ordinary-route traversal — STRUCTURALLY_REACHABLE; BROWSER PENDING
+<!-- PHASE5_REACHABILITY_END -->
