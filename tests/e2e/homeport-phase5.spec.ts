@@ -902,12 +902,18 @@ test.describe.serial("Project Homeport Phase 5 route reachability acceptance", (
     }
     await mobile.close();
 
-    const zoomPage = await browser.newPage();
-    await zoomPage.goto("/");
-    await zoomPage.evaluate(() => {
-      document.documentElement.style.zoom = "2";
+    const zoomContext = await browser.newContext({
+      viewport: { width: 720, height: 500 },
+      deviceScaleFactor: 2,
     });
+    const zoomPage = await zoomContext.newPage();
+    await zoomPage.goto("/");
     await expect(zoomPage.getByRole("main")).toBeVisible();
+    await zoomPage.getByRole("button", { name: "Open navigation" }).click();
+    const zoomNavigation = zoomPage.getByRole("navigation", { name: "Global navigation" });
+    for (const destination of ["Home", "Explore Chronicles", "Community Harbor"])
+      await expect(zoomNavigation.getByRole("link", { name: destination })).toBeVisible();
+    await expect(zoomPage.getByRole("button", { name: "Account" })).toBeVisible();
     await captureLoose(
       zoomPage,
       "HP-P5-EV-Y-zoom",
@@ -917,7 +923,7 @@ test.describe.serial("Project Homeport Phase 5 route reachability acceptance", (
       "TWO_HUNDRED_PERCENT_ZOOM",
       "200%",
     );
-    await zoomPage.close();
+    await zoomContext.close();
 
     const keyboard = await browser.newPage();
     await keyboard.goto("/");
