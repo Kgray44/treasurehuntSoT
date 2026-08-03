@@ -318,10 +318,13 @@ for (const record of evidence.records) {
     ],
     record.evidenceId,
   );
-  assert.equal(record.sourceSha, expectedSourceSha, `${record.evidenceId} source SHA drifted`);
+  const expectedRecordSource = record.evidenceId.startsWith("HP-P4-EV-")
+    ? evidence.phase4Run?.sourceSha
+    : expectedSourceSha;
+  assert.equal(record.sourceSha, expectedRecordSource, `${record.evidenceId} source SHA drifted`);
   assert.ok(screenIds.has(record.screenContract), `${record.evidenceId} references unknown screen contract`);
   assert.ok(journeyIds.has(record.journey), `${record.evidenceId} references unknown journey`);
-  const committedPhaseRecord = /^HP-P[123]-EV-/u.test(record.evidenceId);
+  const committedPhaseRecord = /^HP-P[1234]-EV-/u.test(record.evidenceId);
   const screenshot = committedPhaseRecord
     ? path.join(root, record.committedScreenshotPath)
     : path.join(evidenceRoot, path.basename(record.screenshotPath));
@@ -557,16 +560,25 @@ assert.equal(
   "CLOSED_PHASE_3_VALIDATED",
   "HP-NC-008 has the wrong Phase 3 disposition",
 );
-const phase3Partial = nonconformities.find((candidate) => candidate.id === "HP-NC-014");
-assert.equal(
-  phase3Partial?.current_status,
-  "PARTIALLY_ADVANCED_PHASE_3",
-  "HP-NC-014 must retain its explicit later-phase owner boundary after Phase 3",
-);
-assert.equal(phase3Partial?.disposition, "PARTIAL_PHASE_3_LATER_OWNER_RETAINED");
-const phase2Partial = nonconformities.find((candidate) => candidate.id === "HP-NC-026");
-assert.equal(phase2Partial?.current_status, "PARTIALLY_ADVANCED_PHASE_2");
-assert.equal(phase2Partial?.disposition, "PARTIAL_PHASE_2_LATER_OWNER_RETAINED");
+for (const id of ["HP-NC-011", "HP-NC-012", "HP-NC-013", "HP-NC-026"]) {
+  const record = nonconformities.find((candidate) => candidate.id === id);
+  assert.equal(record?.current_status, "CLOSED_PHASE_4_BRANCH_VALIDATED", `${id} must carry Phase 4 branch closure`);
+  assert.equal(record?.disposition, "CLOSED_PHASE_4_BRANCH_VALIDATED", `${id} has the wrong Phase 4 disposition`);
+}
+for (const [id, targetPhase] of [
+  ["HP-NC-014", "PHASE_5"],
+  ["HP-NC-018", "PHASE_6"],
+  ["HP-NC-019", "PHASE_7"],
+]) {
+  const record = nonconformities.find((candidate) => candidate.id === id);
+  assert.equal(
+    record?.current_status,
+    "PARTIALLY_ADVANCED_PHASE_4",
+    `${id} must retain its later-phase owner boundary`,
+  );
+  assert.equal(record?.disposition, "PARTIAL_PHASE_4_LATER_OWNER_RETAINED", `${id} has the wrong Phase 4 disposition`);
+  assert.equal(record?.target_phase, targetPhase, `${id} changed later-phase ownership`);
+}
 
 for (const screen of screens.screens) {
   for (const screenshotId of screen.screenshotIds)

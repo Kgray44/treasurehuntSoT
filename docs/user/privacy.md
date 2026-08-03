@@ -3,7 +3,7 @@ title: Privacy and private material
 audience: user
 status: current
 canonical_for: privacy-guide
-last_reviewed: 2026-08-02
+last_reviewed: 2026-08-03
 ---
 
 # Privacy and private material
@@ -18,3 +18,11 @@ credentials, session secrets, private Chronicle records, and owner-only notes
 are not returned by the public Profile route. Linked Identities shows bounded
 connection summaries and supports protected unlinking without exposing tokens.
 This is local branch evidence, not deployment or live-provider proof.
+
+The Phase 4 Community projection is also server allowlisted. Public cards and
+details exclude account and session identifiers, email/provider data, object
+keys and storage paths, private Chronicle prose and answers, exact/private
+locations, unconsented participants or media, reports, sanctions, and
+quarantine reasons. Anonymous and unrelated accounts receive non-revealing
+not-found or unavailable states. Local fixture checks do not prove production
+providers, MySQL, deployment, or owner acceptance.

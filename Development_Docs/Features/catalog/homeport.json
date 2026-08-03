@@ -141,5 +141,62 @@
       "Community reconstruction remains Phase 4 and exhaustive route reachability remains Phase 5"
     ],
     "catalogVersion": 1
+  },
+  {
+    "id": "FT-B004",
+    "title": "Community Harbor Discovery Library",
+    "summary": "A content-first Community Harbor now presents deterministic public shelves, governed districts, typed safe cards, URL-backed discovery, public detail families, and canonical save/follow state.",
+    "status": "BRANCH_COMPLETE_NOT_MERGED",
+    "program": "Project Homeport Phase 4",
+    "surfaces": [
+      "/community",
+      "/community/featured",
+      "/community/chronicles",
+      "/community/artifacts",
+      "/community/templates",
+      "/community/maps",
+      "/community/audio",
+      "/community/creators",
+      "/community/collections",
+      "/community/guides",
+      "/community/voyage-logs"
+    ],
+    "subfeatures": [
+      "Content-first Community Harbor",
+      "Curated and deterministic public shelves",
+      "Governed district taxonomy",
+      "Public-safe typed cards",
+      "Search, sort, compact filters, and advanced filters",
+      "Creator Profiles and public collections",
+      "Chronicle, artifact, template, map, audio, Guide, and Voyage Log discovery according to supported contracts",
+      "Canonical save and follow state",
+      "Complete default, empty, no-result, unavailable, quarantined, and removed states",
+      "Desktop and mobile Community parity"
+    ],
+    "evidence": [
+      {
+        "kind": "commit",
+        "value": "06394221844c36921d95b1a199d72f18c88645ad"
+      },
+      {
+        "kind": "completion-record",
+        "value": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_4_Validation_Record.md"
+      },
+      {
+        "kind": "test",
+        "value": "tests/e2e/homeport-phase4.spec.ts"
+      }
+    ],
+    "branch": "codex/project-homeport-product-reality-recovery",
+    "commit": "06394221844c36921d95b1a199d72f18c88645ad",
+    "limitations": [
+      "Not available on main until separately reviewed and integrated",
+      "Not deployed; live-user validation and owner acceptance are not established",
+      "Unsupported provider or installation actions remain truthfully unavailable",
+      "Phase 5 exhaustive route reachability remains",
+      "Phase 6 repository-wide surface completion remains",
+      "Phase 7 integrated walkthrough remains"
+    ],
+    "catalogVersion": 1
   }
 ]

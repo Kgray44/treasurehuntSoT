@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "status": "phase-3-homeport-impact-map",
+  "status": "phase-4-homeport-community-impact-map",
   "pathMappings": [
     {
       "path": "Development_Docs/Governance/**",
@@ -82,7 +82,7 @@
     },
     {
       "path": "Development_Docs/Projects/Project_Homeport/**",
-      "suiteIds": ["unit.homeport", "static.core"],
+      "suiteIds": ["unit.homeport", "static.core", "component.homeport", "browser.homeport"],
       "contractIds": [
         "homeport.route-inventory.complete",
         "homeport.session-inventory.complete",
@@ -128,12 +128,63 @@
         "homeport.account-data.truthful-availability",
         "homeport.personal-harbor.phase1-regression",
         "homeport.personal-harbor.phase2-regression",
-        "homeport.personal-harbor.artifact-idempotency"
+        "homeport.personal-harbor.artifact-idempotency",
+        "homeport.community.harbor-home",
+        "homeport.community.content-first-default",
+        "homeport.community.default-not-no-results",
+        "homeport.community.district-registry",
+        "homeport.community.district-navigation",
+        "homeport.community.mobile-district-parity",
+        "homeport.community.public-projection",
+        "homeport.community.no-private-leak",
+        "homeport.community.lifecycle-eligibility",
+        "homeport.community.quarantine",
+        "homeport.community.card-base",
+        "homeport.community.card-destinations",
+        "homeport.community.card-fallback",
+        "homeport.community.card-accessibility",
+        "homeport.community.shelf-strategy",
+        "homeport.community.editorial-labeling",
+        "homeport.community.search",
+        "homeport.community.search-url-state",
+        "homeport.community.search-stale-request",
+        "homeport.community.compact-filters",
+        "homeport.community.advanced-filters",
+        "homeport.community.no-results",
+        "homeport.community.empty-state",
+        "homeport.community.dependency-unavailable",
+        "homeport.community.partial-media-failure",
+        "homeport.community.chronicles",
+        "homeport.community.artifacts",
+        "homeport.community.templates",
+        "homeport.community.maps",
+        "homeport.community.audio",
+        "homeport.community.creators",
+        "homeport.community.creator-profile",
+        "homeport.community.collections",
+        "homeport.community.guides",
+        "homeport.community.voyage-logs",
+        "homeport.community.saved-state",
+        "homeport.community.saved-cross-surface",
+        "homeport.community.follow-state",
+        "homeport.community.social-auth-return",
+        "homeport.community.detail",
+        "homeport.community.detail-parent",
+        "homeport.community.open-install-remix",
+        "homeport.community.mutation-feedback",
+        "homeport.community.restricted-account",
+        "homeport.community.keyboard",
+        "homeport.community.zoom",
+        "homeport.community.reduced-motion",
+        "homeport.community.phase1-regression",
+        "homeport.community.phase2-regression",
+        "homeport.community.phase3-regression",
+        "homeport.community.artifact-idempotency"
       ]
     },
     {
       "path": "scripts/homeport/**",
-      "suiteIds": ["unit.homeport", "static.core"],
+      "suiteIds": ["unit.homeport", "static.core", "component.homeport", "browser.homeport"],
       "contractIds": [
         "homeport.route-inventory.complete",
         "homeport.session-inventory.complete",
@@ -179,7 +230,58 @@
         "homeport.account-data.truthful-availability",
         "homeport.personal-harbor.phase1-regression",
         "homeport.personal-harbor.phase2-regression",
-        "homeport.personal-harbor.artifact-idempotency"
+        "homeport.personal-harbor.artifact-idempotency",
+        "homeport.community.harbor-home",
+        "homeport.community.content-first-default",
+        "homeport.community.default-not-no-results",
+        "homeport.community.district-registry",
+        "homeport.community.district-navigation",
+        "homeport.community.mobile-district-parity",
+        "homeport.community.public-projection",
+        "homeport.community.no-private-leak",
+        "homeport.community.lifecycle-eligibility",
+        "homeport.community.quarantine",
+        "homeport.community.card-base",
+        "homeport.community.card-destinations",
+        "homeport.community.card-fallback",
+        "homeport.community.card-accessibility",
+        "homeport.community.shelf-strategy",
+        "homeport.community.editorial-labeling",
+        "homeport.community.search",
+        "homeport.community.search-url-state",
+        "homeport.community.search-stale-request",
+        "homeport.community.compact-filters",
+        "homeport.community.advanced-filters",
+        "homeport.community.no-results",
+        "homeport.community.empty-state",
+        "homeport.community.dependency-unavailable",
+        "homeport.community.partial-media-failure",
+        "homeport.community.chronicles",
+        "homeport.community.artifacts",
+        "homeport.community.templates",
+        "homeport.community.maps",
+        "homeport.community.audio",
+        "homeport.community.creators",
+        "homeport.community.creator-profile",
+        "homeport.community.collections",
+        "homeport.community.guides",
+        "homeport.community.voyage-logs",
+        "homeport.community.saved-state",
+        "homeport.community.saved-cross-surface",
+        "homeport.community.follow-state",
+        "homeport.community.social-auth-return",
+        "homeport.community.detail",
+        "homeport.community.detail-parent",
+        "homeport.community.open-install-remix",
+        "homeport.community.mutation-feedback",
+        "homeport.community.restricted-account",
+        "homeport.community.keyboard",
+        "homeport.community.zoom",
+        "homeport.community.reduced-motion",
+        "homeport.community.phase1-regression",
+        "homeport.community.phase2-regression",
+        "homeport.community.phase3-regression",
+        "homeport.community.artifact-idempotency"
       ]
     },
     {
@@ -250,8 +352,68 @@
     },
     {
       "path": "src/community/**",
-      "suiteIds": ["unit.community", "component.community", "browser.community"],
-      "contractIds": ["community-public-projection"]
+      "suiteIds": [
+        "unit.community",
+        "component.community",
+        "browser.community",
+        "unit.homeport",
+        "component.homeport",
+        "browser.homeport"
+      ],
+      "contractIds": [
+        "community-public-projection",
+        "homeport.community.harbor-home",
+        "homeport.community.content-first-default",
+        "homeport.community.default-not-no-results",
+        "homeport.community.district-registry",
+        "homeport.community.district-navigation",
+        "homeport.community.mobile-district-parity",
+        "homeport.community.public-projection",
+        "homeport.community.no-private-leak",
+        "homeport.community.lifecycle-eligibility",
+        "homeport.community.quarantine",
+        "homeport.community.card-base",
+        "homeport.community.card-destinations",
+        "homeport.community.card-fallback",
+        "homeport.community.card-accessibility",
+        "homeport.community.shelf-strategy",
+        "homeport.community.editorial-labeling",
+        "homeport.community.search",
+        "homeport.community.search-url-state",
+        "homeport.community.search-stale-request",
+        "homeport.community.compact-filters",
+        "homeport.community.advanced-filters",
+        "homeport.community.no-results",
+        "homeport.community.empty-state",
+        "homeport.community.dependency-unavailable",
+        "homeport.community.partial-media-failure",
+        "homeport.community.chronicles",
+        "homeport.community.artifacts",
+        "homeport.community.templates",
+        "homeport.community.maps",
+        "homeport.community.audio",
+        "homeport.community.creators",
+        "homeport.community.creator-profile",
+        "homeport.community.collections",
+        "homeport.community.guides",
+        "homeport.community.voyage-logs",
+        "homeport.community.saved-state",
+        "homeport.community.saved-cross-surface",
+        "homeport.community.follow-state",
+        "homeport.community.social-auth-return",
+        "homeport.community.detail",
+        "homeport.community.detail-parent",
+        "homeport.community.open-install-remix",
+        "homeport.community.mutation-feedback",
+        "homeport.community.restricted-account",
+        "homeport.community.keyboard",
+        "homeport.community.zoom",
+        "homeport.community.reduced-motion",
+        "homeport.community.phase1-regression",
+        "homeport.community.phase2-regression",
+        "homeport.community.phase3-regression",
+        "homeport.community.artifact-idempotency"
+      ]
     },
     {
       "path": "src/wayfarer/**",
@@ -737,6 +899,291 @@
         "homeport.personal-harbor.phase2-regression",
         "homeport.personal-harbor.artifact-idempotency"
       ]
+    },
+    {
+      "path": "src/components/community/**",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"],
+      "contractIds": [
+        "homeport.community.harbor-home",
+        "homeport.community.content-first-default",
+        "homeport.community.default-not-no-results",
+        "homeport.community.district-registry",
+        "homeport.community.district-navigation",
+        "homeport.community.mobile-district-parity",
+        "homeport.community.public-projection",
+        "homeport.community.no-private-leak",
+        "homeport.community.lifecycle-eligibility",
+        "homeport.community.quarantine",
+        "homeport.community.card-base",
+        "homeport.community.card-destinations",
+        "homeport.community.card-fallback",
+        "homeport.community.card-accessibility",
+        "homeport.community.shelf-strategy",
+        "homeport.community.editorial-labeling",
+        "homeport.community.search",
+        "homeport.community.search-url-state",
+        "homeport.community.search-stale-request",
+        "homeport.community.compact-filters",
+        "homeport.community.advanced-filters",
+        "homeport.community.no-results",
+        "homeport.community.empty-state",
+        "homeport.community.dependency-unavailable",
+        "homeport.community.partial-media-failure",
+        "homeport.community.chronicles",
+        "homeport.community.artifacts",
+        "homeport.community.templates",
+        "homeport.community.maps",
+        "homeport.community.audio",
+        "homeport.community.creators",
+        "homeport.community.creator-profile",
+        "homeport.community.collections",
+        "homeport.community.guides",
+        "homeport.community.voyage-logs",
+        "homeport.community.saved-state",
+        "homeport.community.saved-cross-surface",
+        "homeport.community.follow-state",
+        "homeport.community.social-auth-return",
+        "homeport.community.detail",
+        "homeport.community.detail-parent",
+        "homeport.community.open-install-remix",
+        "homeport.community.mutation-feedback",
+        "homeport.community.restricted-account",
+        "homeport.community.keyboard",
+        "homeport.community.zoom",
+        "homeport.community.reduced-motion",
+        "homeport.community.phase1-regression",
+        "homeport.community.phase2-regression",
+        "homeport.community.phase3-regression",
+        "homeport.community.artifact-idempotency"
+      ]
+    },
+    {
+      "path": "src/app/community/**",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"],
+      "contractIds": [
+        "homeport.community.harbor-home",
+        "homeport.community.content-first-default",
+        "homeport.community.default-not-no-results",
+        "homeport.community.district-registry",
+        "homeport.community.district-navigation",
+        "homeport.community.mobile-district-parity",
+        "homeport.community.public-projection",
+        "homeport.community.no-private-leak",
+        "homeport.community.lifecycle-eligibility",
+        "homeport.community.quarantine",
+        "homeport.community.card-base",
+        "homeport.community.card-destinations",
+        "homeport.community.card-fallback",
+        "homeport.community.card-accessibility",
+        "homeport.community.shelf-strategy",
+        "homeport.community.editorial-labeling",
+        "homeport.community.search",
+        "homeport.community.search-url-state",
+        "homeport.community.search-stale-request",
+        "homeport.community.compact-filters",
+        "homeport.community.advanced-filters",
+        "homeport.community.no-results",
+        "homeport.community.empty-state",
+        "homeport.community.dependency-unavailable",
+        "homeport.community.partial-media-failure",
+        "homeport.community.chronicles",
+        "homeport.community.artifacts",
+        "homeport.community.templates",
+        "homeport.community.maps",
+        "homeport.community.audio",
+        "homeport.community.creators",
+        "homeport.community.creator-profile",
+        "homeport.community.collections",
+        "homeport.community.guides",
+        "homeport.community.voyage-logs",
+        "homeport.community.saved-state",
+        "homeport.community.saved-cross-surface",
+        "homeport.community.follow-state",
+        "homeport.community.social-auth-return",
+        "homeport.community.detail",
+        "homeport.community.detail-parent",
+        "homeport.community.open-install-remix",
+        "homeport.community.mutation-feedback",
+        "homeport.community.restricted-account",
+        "homeport.community.keyboard",
+        "homeport.community.zoom",
+        "homeport.community.reduced-motion",
+        "homeport.community.phase1-regression",
+        "homeport.community.phase2-regression",
+        "homeport.community.phase3-regression",
+        "homeport.community.artifact-idempotency"
+      ]
+    },
+    {
+      "path": "src/app/api/community/**",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"],
+      "contractIds": [
+        "homeport.community.harbor-home",
+        "homeport.community.content-first-default",
+        "homeport.community.default-not-no-results",
+        "homeport.community.district-registry",
+        "homeport.community.district-navigation",
+        "homeport.community.mobile-district-parity",
+        "homeport.community.public-projection",
+        "homeport.community.no-private-leak",
+        "homeport.community.lifecycle-eligibility",
+        "homeport.community.quarantine",
+        "homeport.community.card-base",
+        "homeport.community.card-destinations",
+        "homeport.community.card-fallback",
+        "homeport.community.card-accessibility",
+        "homeport.community.shelf-strategy",
+        "homeport.community.editorial-labeling",
+        "homeport.community.search",
+        "homeport.community.search-url-state",
+        "homeport.community.search-stale-request",
+        "homeport.community.compact-filters",
+        "homeport.community.advanced-filters",
+        "homeport.community.no-results",
+        "homeport.community.empty-state",
+        "homeport.community.dependency-unavailable",
+        "homeport.community.partial-media-failure",
+        "homeport.community.chronicles",
+        "homeport.community.artifacts",
+        "homeport.community.templates",
+        "homeport.community.maps",
+        "homeport.community.audio",
+        "homeport.community.creators",
+        "homeport.community.creator-profile",
+        "homeport.community.collections",
+        "homeport.community.guides",
+        "homeport.community.voyage-logs",
+        "homeport.community.saved-state",
+        "homeport.community.saved-cross-surface",
+        "homeport.community.follow-state",
+        "homeport.community.social-auth-return",
+        "homeport.community.detail",
+        "homeport.community.detail-parent",
+        "homeport.community.open-install-remix",
+        "homeport.community.mutation-feedback",
+        "homeport.community.restricted-account",
+        "homeport.community.keyboard",
+        "homeport.community.zoom",
+        "homeport.community.reduced-motion",
+        "homeport.community.phase1-regression",
+        "homeport.community.phase2-regression",
+        "homeport.community.phase3-regression",
+        "homeport.community.artifact-idempotency"
+      ]
+    },
+    {
+      "path": "tests/e2e/homeport-phase4.spec.ts",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"],
+      "contractIds": [
+        "homeport.community.harbor-home",
+        "homeport.community.content-first-default",
+        "homeport.community.default-not-no-results",
+        "homeport.community.district-registry",
+        "homeport.community.district-navigation",
+        "homeport.community.mobile-district-parity",
+        "homeport.community.public-projection",
+        "homeport.community.no-private-leak",
+        "homeport.community.lifecycle-eligibility",
+        "homeport.community.quarantine",
+        "homeport.community.card-base",
+        "homeport.community.card-destinations",
+        "homeport.community.card-fallback",
+        "homeport.community.card-accessibility",
+        "homeport.community.shelf-strategy",
+        "homeport.community.editorial-labeling",
+        "homeport.community.search",
+        "homeport.community.search-url-state",
+        "homeport.community.search-stale-request",
+        "homeport.community.compact-filters",
+        "homeport.community.advanced-filters",
+        "homeport.community.no-results",
+        "homeport.community.empty-state",
+        "homeport.community.dependency-unavailable",
+        "homeport.community.partial-media-failure",
+        "homeport.community.chronicles",
+        "homeport.community.artifacts",
+        "homeport.community.templates",
+        "homeport.community.maps",
+        "homeport.community.audio",
+        "homeport.community.creators",
+        "homeport.community.creator-profile",
+        "homeport.community.collections",
+        "homeport.community.guides",
+        "homeport.community.voyage-logs",
+        "homeport.community.saved-state",
+        "homeport.community.saved-cross-surface",
+        "homeport.community.follow-state",
+        "homeport.community.social-auth-return",
+        "homeport.community.detail",
+        "homeport.community.detail-parent",
+        "homeport.community.open-install-remix",
+        "homeport.community.mutation-feedback",
+        "homeport.community.restricted-account",
+        "homeport.community.keyboard",
+        "homeport.community.zoom",
+        "homeport.community.reduced-motion",
+        "homeport.community.phase1-regression",
+        "homeport.community.phase2-regression",
+        "homeport.community.phase3-regression",
+        "homeport.community.artifact-idempotency"
+      ]
+    },
+    {
+      "path": "playwright.homeport-phase4.config.ts",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"],
+      "contractIds": [
+        "homeport.community.harbor-home",
+        "homeport.community.content-first-default",
+        "homeport.community.default-not-no-results",
+        "homeport.community.district-registry",
+        "homeport.community.district-navigation",
+        "homeport.community.mobile-district-parity",
+        "homeport.community.public-projection",
+        "homeport.community.no-private-leak",
+        "homeport.community.lifecycle-eligibility",
+        "homeport.community.quarantine",
+        "homeport.community.card-base",
+        "homeport.community.card-destinations",
+        "homeport.community.card-fallback",
+        "homeport.community.card-accessibility",
+        "homeport.community.shelf-strategy",
+        "homeport.community.editorial-labeling",
+        "homeport.community.search",
+        "homeport.community.search-url-state",
+        "homeport.community.search-stale-request",
+        "homeport.community.compact-filters",
+        "homeport.community.advanced-filters",
+        "homeport.community.no-results",
+        "homeport.community.empty-state",
+        "homeport.community.dependency-unavailable",
+        "homeport.community.partial-media-failure",
+        "homeport.community.chronicles",
+        "homeport.community.artifacts",
+        "homeport.community.templates",
+        "homeport.community.maps",
+        "homeport.community.audio",
+        "homeport.community.creators",
+        "homeport.community.creator-profile",
+        "homeport.community.collections",
+        "homeport.community.guides",
+        "homeport.community.voyage-logs",
+        "homeport.community.saved-state",
+        "homeport.community.saved-cross-surface",
+        "homeport.community.follow-state",
+        "homeport.community.social-auth-return",
+        "homeport.community.detail",
+        "homeport.community.detail-parent",
+        "homeport.community.open-install-remix",
+        "homeport.community.mutation-feedback",
+        "homeport.community.restricted-account",
+        "homeport.community.keyboard",
+        "homeport.community.zoom",
+        "homeport.community.reduced-motion",
+        "homeport.community.phase1-regression",
+        "homeport.community.phase2-regression",
+        "homeport.community.phase3-regression",
+        "homeport.community.artifact-idempotency"
+      ]
     }
   ],
   "contractMappings": [
@@ -921,6 +1368,210 @@
     },
     {
       "contractId": "homeport.personal-harbor.artifact-idempotency",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.community.harbor-home",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.community.content-first-default",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.community.default-not-no-results",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.community.district-registry",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.community.district-navigation",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.community.mobile-district-parity",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.community.public-projection",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.community.no-private-leak",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.community.lifecycle-eligibility",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.community.quarantine",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.community.card-base",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.community.card-destinations",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.community.card-fallback",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.community.card-accessibility",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.community.shelf-strategy",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.community.editorial-labeling",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.community.search",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.community.search-url-state",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.community.search-stale-request",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.community.compact-filters",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.community.advanced-filters",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.community.no-results",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.community.empty-state",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.community.dependency-unavailable",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.community.partial-media-failure",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.community.chronicles",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.community.artifacts",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.community.templates",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.community.maps",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.community.audio",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.community.creators",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.community.creator-profile",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.community.collections",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.community.guides",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.community.voyage-logs",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.community.saved-state",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.community.saved-cross-surface",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.community.follow-state",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.community.social-auth-return",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.community.detail",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.community.detail-parent",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.community.open-install-remix",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.community.mutation-feedback",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.community.restricted-account",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.community.keyboard",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.community.zoom",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.community.reduced-motion",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.community.phase1-regression",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.community.phase2-regression",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.community.phase3-regression",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.community.artifact-idempotency",
       "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
     }
   ],

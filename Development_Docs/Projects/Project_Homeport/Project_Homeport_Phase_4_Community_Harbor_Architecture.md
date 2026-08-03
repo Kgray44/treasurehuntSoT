@@ -10,7 +10,9 @@ last_reviewed: 2026-08-03
 
 ## Status and source boundary
 
-This record freezes Phase 4 before broad implementation. It is Project Homeport Phase 4, not Project Harborlight Phase 4. Harborlight remains the authority for Community persistence, lifecycle, privacy, search semantics, social truth, and moderation. Homeport owns the coherent public product that presents accepted Harborlight truth.
+This record froze Phase 4 before broad implementation and now records the implemented branch boundary. It is Project Homeport Phase 4, not Project Harborlight Phase 4. Harborlight remains the authority for Community persistence, lifecycle, privacy, search semantics, social truth, and moderation. Homeport owns the coherent public product that presents accepted Harborlight truth.
+
+The architecture freeze is `e2c3e75ff43d52b2a7830e0a3d44be61a8d8dc7e`; the implemented product behavior is anchored at `06394221844c36921d95b1a199d72f18c88645ad`. This remains branch-complete work: it is not on `main`, deployed, or owner accepted.
 
 | Field                                | Frozen value                                                                   |
 | ------------------------------------ | ------------------------------------------------------------------------------ |

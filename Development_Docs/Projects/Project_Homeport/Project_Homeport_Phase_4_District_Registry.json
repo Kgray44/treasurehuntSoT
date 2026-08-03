@@ -2,7 +2,7 @@
   "schemaVersion": "1.0.0",
   "phase": "PROJECT_HOMEPORT_PHASE_4",
   "architectureStatus": "FROZEN",
-  "implementationStatus": "PLANNED",
+  "implementationStatus": "BRANCH_VALIDATED_NOT_MERGED",
   "sourceSha": "bb6dc6fab09e0cbf391511f4516999a5e3d03376",
   "publicDto": "HomeportCommunityCard",
   "statusVocabulary": [
@@ -60,7 +60,23 @@
       ],
       "privacyRule": "SERVER_ALLOWLISTED_PUBLIC_PROJECTION",
       "tests": ["homeport.community.harbor-home", "homeport.community.content-first-default"],
-      "evidence": []
+      "evidence": [
+        "HP-P4-EV-B-harbor-home-mobile",
+        "HP-P4-EV-AE-mobile-filter-drawer",
+        "HP-P4-EV-AK-mobile-authenticated",
+        "HP-P4-EV-AG-zoom-harbor",
+        "HP-P4-EV-AH-zoom-filters",
+        "HP-P4-EV-AI-reduced-motion",
+        "HP-P4-EV-A-harbor-home-desktop",
+        "HP-P4-EV-E-featured-shelf",
+        "HP-P4-EV-F-district-navigation",
+        "HP-P4-EV-T-chronicle-card",
+        "HP-P4-EV-AK-public-projection",
+        "HP-P4-EV-C-harbor-authenticated",
+        "HP-P4-EV-Z-saved-state",
+        "HP-P4-EV-AJ-restricted-state",
+        "HP-P4-EV-D-harbor-empty"
+      ]
     },
     {
       "id": "FEATURED",
@@ -116,7 +132,7 @@
       ],
       "privacyRule": "PUBLIC_LISTING_ELIGIBILITY",
       "tests": ["homeport.community.chronicles"],
-      "evidence": []
+      "evidence": ["HP-P4-EV-G-chronicles-district"]
     },
     {
       "id": "ARTIFACTS",
@@ -148,7 +164,7 @@
       ],
       "privacyRule": "PUBLIC_LISTING_AND_CLEAN_DERIVATIVE_ELIGIBILITY",
       "tests": ["homeport.community.artifacts"],
-      "evidence": []
+      "evidence": ["HP-P4-EV-H-artifacts-district"]
     },
     {
       "id": "TEMPLATES",
@@ -180,7 +196,7 @@
       ],
       "privacyRule": "PUBLIC_LISTING_ELIGIBILITY",
       "tests": ["homeport.community.templates"],
-      "evidence": []
+      "evidence": ["HP-P4-EV-I-templates-district"]
     },
     {
       "id": "MAPS_AND_LOCATION_PACKS",
@@ -212,7 +228,7 @@
       ],
       "privacyRule": "PUBLIC_LISTING_AND_NON_PRIVATE_LOCATION_ELIGIBILITY",
       "tests": ["homeport.community.maps"],
-      "evidence": []
+      "evidence": ["HP-P4-EV-J-maps-district"]
     },
     {
       "id": "AUDIO_AND_REVEAL_ASSETS",
@@ -244,7 +260,7 @@
       ],
       "privacyRule": "PUBLIC_LISTING_AND_CLEAN_DERIVATIVE_ELIGIBILITY",
       "tests": ["homeport.community.audio"],
-      "evidence": []
+      "evidence": ["HP-P4-EV-K-audio-district", "HP-P4-EV-AM-audio-district-empty"]
     },
     {
       "id": "CREATORS",
@@ -268,7 +284,7 @@
       "states": ["DEFAULT", "DISTRICT_EMPTY", "LOADING", "DEPENDENCY_UNAVAILABLE", "RESTRICTED_ACCOUNT"],
       "privacyRule": "PUBLIC_CREATOR_ALLOWLIST",
       "tests": ["homeport.community.creators", "homeport.community.creator-profile"],
-      "evidence": []
+      "evidence": ["HP-P4-EV-L-creators-district"]
     },
     {
       "id": "COLLECTIONS",
@@ -292,7 +308,7 @@
       "states": ["DEFAULT", "DISTRICT_EMPTY", "EMPTY_COLLECTION", "LOADING", "DEPENDENCY_UNAVAILABLE"],
       "privacyRule": "PUBLIC_COLLECTION_WITH_ELIGIBLE_ITEM_PROJECTIONS",
       "tests": ["homeport.community.collections"],
-      "evidence": []
+      "evidence": ["HP-P4-EV-O-collections-district"]
     },
     {
       "id": "GUIDES",
@@ -316,7 +332,7 @@
       "states": ["DEFAULT", "DISTRICT_EMPTY", "LOADING", "DEPENDENCY_UNAVAILABLE"],
       "privacyRule": "PUBLISHED_NON_DEPRECATED_GUIDE_ALLOWLIST",
       "tests": ["homeport.community.guides"],
-      "evidence": []
+      "evidence": ["HP-P4-EV-Q-guides-district"]
     },
     {
       "id": "SHIPWRIGHTS_WORKSHOP",
@@ -340,7 +356,7 @@
       "states": ["DEFAULT", "DISTRICT_EMPTY"],
       "privacyRule": "PUBLISHED_NON_DEPRECATED_GUIDE_ALLOWLIST",
       "tests": ["homeport.community.guides"],
-      "evidence": []
+      "evidence": ["HP-P4-EV-Q-guides-district"]
     },
     {
       "id": "VOYAGE_LOGS",
@@ -364,7 +380,49 @@
       "states": ["DEFAULT", "DISTRICT_EMPTY", "LOADING", "DEPENDENCY_UNAVAILABLE", "PARTIAL_MEDIA_FAILURE"],
       "privacyRule": "CONSENTED_SPOILER_SAFE_PUBLIC_PROJECTION",
       "tests": ["homeport.community.voyage-logs"],
-      "evidence": []
+      "evidence": ["HP-P4-EV-S-voyage-logs"]
     }
+  ],
+  "implementationAnchorSha": "06394221844c36921d95b1a199d72f18c88645ad",
+  "validationSourceSha": "977cb38a352eefd01110901eacc267bb903dac82",
+  "evidenceIds": [
+    "HP-P4-EV-A-harbor-home-desktop",
+    "HP-P4-EV-B-harbor-home-mobile",
+    "HP-P4-EV-C-harbor-authenticated",
+    "HP-P4-EV-D-harbor-empty",
+    "HP-P4-EV-E-featured-shelf",
+    "HP-P4-EV-F-district-navigation",
+    "HP-P4-EV-G-chronicles-district",
+    "HP-P4-EV-H-artifacts-district",
+    "HP-P4-EV-I-templates-district",
+    "HP-P4-EV-J-maps-district",
+    "HP-P4-EV-K-audio-district",
+    "HP-P4-EV-L-creators-district",
+    "HP-P4-EV-M-creator-profile",
+    "HP-P4-EV-N-creator-empty",
+    "HP-P4-EV-O-collections-district",
+    "HP-P4-EV-P-collection-detail",
+    "HP-P4-EV-Q-guides-district",
+    "HP-P4-EV-R-guide-detail",
+    "HP-P4-EV-S-voyage-logs",
+    "HP-P4-EV-T-chronicle-card",
+    "HP-P4-EV-U-listing-detail",
+    "HP-P4-EV-V-search-results",
+    "HP-P4-EV-W-no-results",
+    "HP-P4-EV-X-advanced-filters",
+    "HP-P4-EV-Y-active-filters",
+    "HP-P4-EV-Z-saved-state",
+    "HP-P4-EV-AA-image-fallback",
+    "HP-P4-EV-AB-quarantined-content",
+    "HP-P4-EV-AC-archived-removed",
+    "HP-P4-EV-AD-dependency-unavailable",
+    "HP-P4-EV-AE-mobile-filter-drawer",
+    "HP-P4-EV-AF-mobile-detail",
+    "HP-P4-EV-AG-zoom-harbor",
+    "HP-P4-EV-AH-zoom-filters",
+    "HP-P4-EV-AI-reduced-motion",
+    "HP-P4-EV-AJ-restricted-state",
+    "HP-P4-EV-AK-public-projection",
+    "HP-P4-EV-AL-full-community-loop"
   ]
 }

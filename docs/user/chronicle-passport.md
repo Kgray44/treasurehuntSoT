@@ -3,7 +3,7 @@ title: Chronicle Passport
 audience: user
 status: current
 canonical_for: chronicle-passport-guide
-last_reviewed: 2026-08-02
+last_reviewed: 2026-08-03
 ---
 
 # Chronicle Passport
@@ -34,3 +34,10 @@ On the Project Homeport Phase 3 branch, `/passport` and its History, Memories,
 Artifacts, and Saved sections are complete product routes. Desktop and mobile
 show the same Personal Harbor destinations. The evidence is synthetic and
 branch-local; this behavior is not on main, deployed, or owner accepted.
+
+On the Phase 4 branch, saving or unsaving eligible Community content preserves
+the Harborlight authoritative state and reconciles after refresh with Saved
+from Community. Ineligible, removed, archived, quarantined, or no-longer-public
+subjects do not become private copies in Passport. A failed mutation restores
+the prior state and allows retry. This remains branch-local synthetic evidence;
+it is not on `main`, deployed, or owner accepted.

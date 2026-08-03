@@ -3,7 +3,7 @@ title: Features and subfeatures
 audience: product
 status: current
 canonical_for: product-features
-last_reviewed: 2026-08-02
+last_reviewed: 2026-08-03
 ---
 
 # Features and subfeatures
@@ -37,8 +37,9 @@ main. Phase 2 adds one route-classified shell, visible Home/Explore/Community
 navigation, structured account orientation, capability-projected workspace
 switching, equivalent mobile destinations, and explicit compact/immersive
 exits. Its acceptance evidence is local and synthetic; it is not deployed or
-owner accepted. Personal Harbor reconstruction is complete in Phase 3 on the
-same branch; Community content reconstruction remains Phase 4, and exhaustive
+owner accepted. Personal Harbor reconstruction is complete in Phase 3 and
+Community content reconstruction is branch-complete in Phase 4 on the same
+branch; exhaustive
 route reachability remains Phase 5.
 
 ## Player experience
@@ -59,6 +60,14 @@ route reachability remains Phase 5.
 the Phase 3 community foundations: package, artifact, licensing, lineage,
 discovery, social, keepsake, and voyage-log controls. Externally hosted
 exchange proof is not claimed. [Guide](../user/community-harbor.md).
+
+Project Homeport Phase 4 adds a separate branch-complete Community Discovery
+Library: content-first public shelves, a governed district taxonomy, typed
+public-safe cards, search/sort/compact and advanced filters, Creator Profiles,
+collections, Guides, Voyage Logs, details, and save/follow state with complete
+default, empty, no-result, unavailable, quarantine, removed, desktop, and
+mobile contracts. It is not on `main`, deployed, or owner accepted. External
+providers remain truthfully unavailable where unsupported; Phases 5-7 remain.
 
 ## Private content, animation, and resilience
 

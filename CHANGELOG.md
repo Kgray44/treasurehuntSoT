@@ -1,9 +1,18 @@
+---
+title: Changelog
+audience: product-engineering
+status: current
+canonical_for: repository-changelog
+last_reviewed: 2026-08-03
+---
+
 # Changelog
 
 ## Unreleased
 
 ### Changed
 
+- Completed Project Homeport Phase 4 on the named branch: a content-first Community Harbor with governed public districts, typed safe cards, deterministic shelves, search/filter URL state, Creator/collection/Guide/Voyage Log details, deliberate lifecycle states, and save/follow reconciliation. This is not on main, deployed, or owner accepted; Phases 5-7 remain separate.
 - Completed Project Homeport Phase 3 on the named branch: a coherent Personal Harbor with separate public Profile and private Chronicle Passport, typed preferences and privacy controls, linked identities, private history and Memories, artifact custody, saved Community items, and separate Security and Sessions surfaces. This is not on main or deployed; Phase 4 remains separate.
 - Completed Project Homeport Phase 2 on the existing named branch: one governed global shell, typed route modes, visible Home/Explore/Community wayfinding, structured account orientation, capability-projected workspace switching, exact desktop/mobile functional parity, and explicit compact/immersive exits. This change is not on main, deployed, or owner accepted; Phases 3-5 remain separate.
 - Completed Project Homeport Phase 1 on its named branch: one ordinary account sign-in, one server current-user authority, explicit workspace capability decisions, multi-tab session invalidation, and bounded legacy-session rotation. This change is not yet on main.
@@ -12,6 +21,7 @@
 
 ### Validation
 
+- Added isolated A-AR Phase 4 Community journeys, checksum-bound desktop/mobile/zoom/reduced-motion evidence, public-projection and lifecycle checks, idempotent inventory publication, and registered Sounding Line contracts. These establish local branch evidence only.
 - Added isolated A-AE Phase 3 browser journeys, 29 human-reviewed checksum-bound screenshots, deterministic section/projection/mutation/parity contracts, and additive inventory closure. These establish local branch evidence only.
 - Added isolated A-U Phase 2 browser journeys, 20 visually inspected checksum-bound screenshots, deterministic shell/navigation/parity/exit contracts, and additive inventory closure. These establish local branch evidence only.
 - Added isolated A-Q Homeport browser journeys, checksum-bound after-state evidence, compatibility cutover records, and Sounding Line release contracts. These establish local branch evidence, not deployment or live-user proof.

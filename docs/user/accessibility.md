@@ -3,7 +3,7 @@ title: Accessibility
 audience: user
 status: current
 canonical_for: accessibility-guide
-last_reviewed: 2026-08-01
+last_reviewed: 2026-08-03
 ---
 
 # Accessibility
@@ -18,3 +18,11 @@ Account and drawer Escape behavior, focus restoration, body-scroll recovery,
 equivalent without horizontal overflow. Compact and immersive exits remain
 keyboard-visible. This is local Chromium evidence, not a complete assistive-
 technology or deployed-browser certification.
+
+Phase 4 adds semantic Community district navigation, labelled search and
+filters, native advanced-filter disclosure, keyboard-operable card
+destinations, visible focus, announced save/follow state, stable typed artwork
+fallbacks, 390x844 mobile parity, effective 200% layouts, and reduced-motion
+final states. Local Chromium and axe checks found no serious or critical issues
+in the governed journeys; this is not a complete assistive-technology or
+deployed cross-browser certification.

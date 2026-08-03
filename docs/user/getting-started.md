@@ -3,7 +3,7 @@ title: Getting started
 audience: user
 status: current
 canonical_for: getting-started
-last_reviewed: 2026-08-01
+last_reviewed: 2026-08-03
 ---
 
 # Getting started
@@ -24,7 +24,10 @@ Explore Chronicles or Community Harbor controls. Open Account to create or
 sign in to an account; after sign-in, the same disclosure lists your personal
 destinations and only the Player, Captain, or Creator workspaces granted to
 you. Mobile uses an Open navigation drawer with the same functional
-destinations. This branch behavior is not on main or deployed.
+destinations. Community Harbor now opens with public content and districts
+before search is required; you can browse anonymously, then sign in through the
+same Account flow if you choose Save or Follow. This branch behavior is not on
+main, deployed, or owner accepted.
 
 ## Accessibility and privacy
 

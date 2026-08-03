@@ -169,3 +169,58 @@ Project Homeport Phase 3 adds 31 governed Personal Harbor journeys and 29 human-
 | HP-P3-JRN-AE | Phase 1 and Phase 2 regression     | PASSED | HP-P3-EV-A-profile-overview-desktop, HP-P3-EV-L-passport-populated             |
 
 Phase 3 closes HP-NC-008, HP-NC-009, and HP-NC-028 after final governed validation, preserves the Phase 1 closure of HP-NC-007, and partially advances HP-NC-014, HP-NC-018, and HP-NC-019 without claiming later-phase closure. This is branch-local synthetic evidence, not merge, deployment, public proof, live-provider proof, or owner acceptance.
+
+<!-- PHASE4_IMPLEMENTED_BEGIN -->
+
+## Phase 4 Community Harbor implemented journeys
+
+These branch-only results use the reserved synthetic fixture and production local runtime. They do not establish merge, deployment, or owner acceptance.
+
+| Journey      | Contract                                          | Result | Evidence                                                                                   |
+| ------------ | ------------------------------------------------- | ------ | ------------------------------------------------------------------------------------------ |
+| HP-P4-JRN-A  | Gateway to Community Harbor                       | PASSED | HP-P4-EV-F-district-navigation                                                             |
+| HP-P4-JRN-B  | Anonymous default discovery                       | PASSED | HP-P4-EV-A-harbor-home-desktop; HP-P4-EV-E-featured-shelf; HP-P4-EV-T-chronicle-card       |
+| HP-P4-JRN-C  | Authenticated default discovery                   | PASSED | HP-P4-EV-C-harbor-authenticated                                                            |
+| HP-P4-JRN-D  | Community-wide empty state                        | PASSED | HP-P4-EV-D-harbor-empty                                                                    |
+| HP-P4-JRN-E  | Search and preserved return                       | PASSED | HP-P4-EV-V-search-results                                                                  |
+| HP-P4-JRN-F  | No-result query and recovery                      | PASSED | HP-P4-EV-W-no-results                                                                      |
+| HP-P4-JRN-G  | Compact filters and history                       | PASSED | HP-P4-EV-Y-active-filters                                                                  |
+| HP-P4-JRN-H  | Advanced filters and focus restoration            | PASSED | HP-P4-EV-X-advanced-filters                                                                |
+| HP-P4-JRN-I  | Deterministic sort and reload                     | PASSED | HP-P4-EV-Y-active-filters                                                                  |
+| HP-P4-JRN-J  | Chronicles district                               | PASSED | HP-P4-EV-T-chronicle-card; HP-P4-EV-G-chronicles-district                                  |
+| HP-P4-JRN-K  | Chronicle begin or open handoff                   | PASSED | HP-P4-EV-U-listing-detail                                                                  |
+| HP-P4-JRN-L  | Artifacts district and public provenance          | PASSED | HP-P4-EV-H-artifacts-district                                                              |
+| HP-P4-JRN-M  | Artifact media fallback                           | PASSED | No dedicated screenshot required                                                           |
+| HP-P4-JRN-N  | Templates district                                | PASSED | HP-P4-EV-I-templates-district                                                              |
+| HP-P4-JRN-O  | Maps and location packs                           | PASSED | HP-P4-EV-J-maps-district                                                                   |
+| HP-P4-JRN-P  | Audio and reveal assets                           | PASSED | HP-P4-EV-K-audio-district; HP-P4-EV-AM-audio-district-empty                                |
+| HP-P4-JRN-Q  | Creators district and Creator Profile             | PASSED | HP-P4-EV-L-creators-district; HP-P4-EV-M-creator-profile                                   |
+| HP-P4-JRN-R  | Creator with no public work                       | PASSED | HP-P4-EV-N-creator-empty                                                                   |
+| HP-P4-JRN-S  | Follow and unfollow Creator                       | PASSED | HP-P4-EV-M-creator-profile                                                                 |
+| HP-P4-JRN-T  | Anonymous social sign-in return                   | PASSED | No dedicated screenshot required                                                           |
+| HP-P4-JRN-U  | Self-follow denial                                | PASSED | No dedicated screenshot required                                                           |
+| HP-P4-JRN-V  | Public collections                                | PASSED | HP-P4-EV-O-collections-district; HP-P4-EV-P-collection-detail                              |
+| HP-P4-JRN-W  | Empty collection                                  | PASSED | No dedicated screenshot required                                                           |
+| HP-P4-JRN-X  | Private and unlisted collection non-leakage       | PASSED | No dedicated screenshot required                                                           |
+| HP-P4-JRN-Y  | Guides and Shipwright's Workshop                  | PASSED | HP-P4-EV-Q-guides-district; HP-P4-EV-R-guide-detail                                        |
+| HP-P4-JRN-Z  | Consent-safe Voyage Logs                          | PASSED | HP-P4-EV-S-voyage-logs                                                                     |
+| HP-P4-JRN-AA | Save content across Community and Personal Harbor | PASSED | HP-P4-EV-Z-saved-state                                                                     |
+| HP-P4-JRN-AB | Unsave cross-surface reconciliation               | PASSED | No dedicated screenshot required                                                           |
+| HP-P4-JRN-AC | Save failure and retry                            | PASSED | No dedicated screenshot required                                                           |
+| HP-P4-JRN-AD | Missing artwork fallback                          | PASSED | HP-P4-EV-AA-image-fallback                                                                 |
+| HP-P4-JRN-AE | Quarantined content non-leakage                   | PASSED | HP-P4-EV-AB-quarantined-content                                                            |
+| HP-P4-JRN-AF | Removed or archived content                       | PASSED | HP-P4-EV-AC-archived-removed                                                               |
+| HP-P4-JRN-AG | Search dependency unavailable and recovery        | PASSED | HP-P4-EV-AD-dependency-unavailable                                                         |
+| HP-P4-JRN-AH | Restricted Community account                      | PASSED | HP-P4-EV-AJ-restricted-state                                                               |
+| HP-P4-JRN-AI | Moderator visibility and public separation        | PASSED | HP-P4-EV-AK-public-projection                                                              |
+| HP-P4-JRN-AJ | Mobile Harbor                                     | PASSED | HP-P4-EV-B-harbor-home-mobile; HP-P4-EV-AE-mobile-filter-drawer; HP-P4-EV-AF-mobile-detail |
+| HP-P4-JRN-AK | Mobile authenticated Community                    | PASSED | HP-P4-EV-AK-mobile-authenticated                                                           |
+| HP-P4-JRN-AL | Keyboard-only discovery                           | PASSED | HP-P4-EV-AM-keyboard-navigation                                                            |
+| HP-P4-JRN-AM | Effective 200 percent zoom                        | PASSED | HP-P4-EV-AG-zoom-harbor; HP-P4-EV-AH-zoom-filters                                          |
+| HP-P4-JRN-AN | Reduced motion                                    | PASSED | HP-P4-EV-AI-reduced-motion                                                                 |
+| HP-P4-JRN-AO | Phase 1 canonical account regression              | PASSED | No dedicated screenshot required                                                           |
+| HP-P4-JRN-AP | Phase 2 shell and navigation regression           | PASSED | No dedicated screenshot required                                                           |
+| HP-P4-JRN-AQ | Phase 3 Personal Harbor regression                | PASSED | No dedicated screenshot required                                                           |
+| HP-P4-JRN-AR | Full Community natural loop                       | PASSED | HP-P4-EV-AL-full-community-loop                                                            |
+
+<!-- PHASE4_IMPLEMENTED_END -->

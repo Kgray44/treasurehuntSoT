@@ -3,7 +3,7 @@ title: Player guide
 audience: player
 status: current
 canonical_for: player-guide
-last_reviewed: 2026-08-02
+last_reviewed: 2026-08-03
 ---
 
 # Player guide
@@ -32,3 +32,10 @@ Voyages, Memories, artifacts, and saved Community items. Profile remains a
 separate public projection. Personal Harbor uses the same account session as
 the Player Library and gives every supported section a direct desktop and
 mobile route. This behavior is branch-local and not deployed.
+
+On the Phase 4 branch, Community cards and details use the same canonical
+account context. Saving an eligible public item reconciles with Personal Harbor
+Saved from Community, and the natural return path reaches Community Harbor and
+Home without a second sign-in. Unsupported Begin/Open actions remain labelled
+unavailable and do not mutate Voyage progression merely by opening a detail.
+The proof is local and synthetic, not deployment or owner acceptance.

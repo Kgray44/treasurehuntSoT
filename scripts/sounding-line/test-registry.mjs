@@ -119,6 +119,14 @@ function metadata(file, family, browser = null) {
     consumerPaths: [],
     dependencies: [],
     fixtureFamily: browser ? "isolated-browser-fixture" : "repository-fixtures",
+    fixture: browser
+      ? "task-owned isolated fixture declared by the selected browser project"
+      : "repository-owned deterministic fixtures",
+    databaseOwnership: browser
+      ? "task-owned copied or generated database; canonical database forbidden"
+      : "no browser database ownership",
+    browserOwnership: browser ? "task-owned Playwright context and state" : "not applicable",
+    portOwnership: browser ? "task-owned allowlisted local application port" : "not applicable",
     resources: browser
       ? ["application-port", "sqlite-clone", "browser-chromium", "trace-root"]
       : ["node-slot", "vitest-worker-pool"],
@@ -137,6 +145,9 @@ function metadata(file, family, browser = null) {
     expectedDurationMs: browser ? 120000 : 30000,
     hardBudgetMs: browser ? 600000 : 180000,
     retryPolicy: "NONE",
+    releaseRelevance: browser
+      ? "authoritative subsystem, mainline, and release evidence"
+      : "authoritative registered contract evidence",
     gates: browser
       ? ["subsystem", "mainline", "release-candidate"]
       : ["local-change", "subsystem", "mainline", "release-candidate"],
@@ -149,6 +160,10 @@ function metadata(file, family, browser = null) {
 async function discoverPlaywright() {
   const { stdout } = await execFileAsync(process.execPath, ["node_modules/@playwright/test/cli.js", "test", "--list"], {
     cwd: root,
+    env: {
+      ...process.env,
+      HOMEPORT_PHASE4_EVIDENCE_ROOT: path.join(root, "artifacts", "sounding-line", "registry-discovery"),
+    },
     maxBuffer: 8 * 1024 * 1024,
   });
   const cases = [];

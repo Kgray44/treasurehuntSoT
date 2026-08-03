@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "status": "phase-3-homeport-contracts-validated",
+  "status": "phase-4-homeport-community-contracts-validated",
   "contracts": [
     {
       "id": "invitation-acceptance",
@@ -434,6 +434,363 @@
       "name": "Personal Harbor Artifact Idempotency",
       "authority": "project-homeport",
       "owners": ["project-homeport", "wayfarer"],
+      "critical": true
+    },
+    {
+      "id": "homeport.community.harbor-home",
+      "name": "Community Harbor harbor Home",
+      "authority": "project-homeport",
+      "owners": ["project-homeport", "harborlight"],
+      "critical": true
+    },
+    {
+      "id": "homeport.community.content-first-default",
+      "name": "Community Harbor content First Default",
+      "authority": "project-homeport",
+      "owners": ["project-homeport", "harborlight"],
+      "critical": true
+    },
+    {
+      "id": "homeport.community.default-not-no-results",
+      "name": "Community Harbor default Not No Results",
+      "authority": "project-homeport",
+      "owners": ["project-homeport", "harborlight"],
+      "critical": true
+    },
+    {
+      "id": "homeport.community.district-registry",
+      "name": "Community Harbor district Registry",
+      "authority": "project-homeport",
+      "owners": ["project-homeport", "harborlight"],
+      "critical": true
+    },
+    {
+      "id": "homeport.community.district-navigation",
+      "name": "Community Harbor district Navigation",
+      "authority": "project-homeport",
+      "owners": ["project-homeport", "harborlight"],
+      "critical": true
+    },
+    {
+      "id": "homeport.community.mobile-district-parity",
+      "name": "Community Harbor mobile District Parity",
+      "authority": "project-homeport",
+      "owners": ["project-homeport", "harborlight"],
+      "critical": true
+    },
+    {
+      "id": "homeport.community.public-projection",
+      "name": "Community Harbor public Projection",
+      "authority": "project-homeport",
+      "owners": ["project-homeport", "harborlight"],
+      "critical": true
+    },
+    {
+      "id": "homeport.community.no-private-leak",
+      "name": "Community Harbor no Private Leak",
+      "authority": "project-homeport",
+      "owners": ["project-homeport", "harborlight"],
+      "critical": true
+    },
+    {
+      "id": "homeport.community.lifecycle-eligibility",
+      "name": "Community Harbor lifecycle Eligibility",
+      "authority": "project-homeport",
+      "owners": ["project-homeport", "harborlight"],
+      "critical": true
+    },
+    {
+      "id": "homeport.community.quarantine",
+      "name": "Community Harbor quarantine",
+      "authority": "project-homeport",
+      "owners": ["project-homeport", "harborlight"],
+      "critical": true
+    },
+    {
+      "id": "homeport.community.card-base",
+      "name": "Community Harbor card Base",
+      "authority": "project-homeport",
+      "owners": ["project-homeport", "harborlight"],
+      "critical": true
+    },
+    {
+      "id": "homeport.community.card-destinations",
+      "name": "Community Harbor card Destinations",
+      "authority": "project-homeport",
+      "owners": ["project-homeport", "harborlight"],
+      "critical": true
+    },
+    {
+      "id": "homeport.community.card-fallback",
+      "name": "Community Harbor card Fallback",
+      "authority": "project-homeport",
+      "owners": ["project-homeport", "harborlight"],
+      "critical": true
+    },
+    {
+      "id": "homeport.community.card-accessibility",
+      "name": "Community Harbor card Accessibility",
+      "authority": "project-homeport",
+      "owners": ["project-homeport", "harborlight"],
+      "critical": true
+    },
+    {
+      "id": "homeport.community.shelf-strategy",
+      "name": "Community Harbor shelf Strategy",
+      "authority": "project-homeport",
+      "owners": ["project-homeport", "harborlight"],
+      "critical": true
+    },
+    {
+      "id": "homeport.community.editorial-labeling",
+      "name": "Community Harbor editorial Labeling",
+      "authority": "project-homeport",
+      "owners": ["project-homeport", "harborlight"],
+      "critical": true
+    },
+    {
+      "id": "homeport.community.search",
+      "name": "Community Harbor search",
+      "authority": "project-homeport",
+      "owners": ["project-homeport", "harborlight"],
+      "critical": true
+    },
+    {
+      "id": "homeport.community.search-url-state",
+      "name": "Community Harbor search Url State",
+      "authority": "project-homeport",
+      "owners": ["project-homeport", "harborlight"],
+      "critical": true
+    },
+    {
+      "id": "homeport.community.search-stale-request",
+      "name": "Community Harbor search Stale Request",
+      "authority": "project-homeport",
+      "owners": ["project-homeport", "harborlight"],
+      "critical": true
+    },
+    {
+      "id": "homeport.community.compact-filters",
+      "name": "Community Harbor compact Filters",
+      "authority": "project-homeport",
+      "owners": ["project-homeport", "harborlight"],
+      "critical": true
+    },
+    {
+      "id": "homeport.community.advanced-filters",
+      "name": "Community Harbor advanced Filters",
+      "authority": "project-homeport",
+      "owners": ["project-homeport", "harborlight"],
+      "critical": true
+    },
+    {
+      "id": "homeport.community.no-results",
+      "name": "Community Harbor no Results",
+      "authority": "project-homeport",
+      "owners": ["project-homeport", "harborlight"],
+      "critical": true
+    },
+    {
+      "id": "homeport.community.empty-state",
+      "name": "Community Harbor empty State",
+      "authority": "project-homeport",
+      "owners": ["project-homeport", "harborlight"],
+      "critical": true
+    },
+    {
+      "id": "homeport.community.dependency-unavailable",
+      "name": "Community Harbor dependency Unavailable",
+      "authority": "project-homeport",
+      "owners": ["project-homeport", "harborlight"],
+      "critical": true
+    },
+    {
+      "id": "homeport.community.partial-media-failure",
+      "name": "Community Harbor partial Media Failure",
+      "authority": "project-homeport",
+      "owners": ["project-homeport", "harborlight"],
+      "critical": true
+    },
+    {
+      "id": "homeport.community.chronicles",
+      "name": "Community Harbor chronicles",
+      "authority": "project-homeport",
+      "owners": ["project-homeport", "harborlight"],
+      "critical": true
+    },
+    {
+      "id": "homeport.community.artifacts",
+      "name": "Community Harbor artifacts",
+      "authority": "project-homeport",
+      "owners": ["project-homeport", "harborlight"],
+      "critical": true
+    },
+    {
+      "id": "homeport.community.templates",
+      "name": "Community Harbor templates",
+      "authority": "project-homeport",
+      "owners": ["project-homeport", "harborlight"],
+      "critical": true
+    },
+    {
+      "id": "homeport.community.maps",
+      "name": "Community Harbor maps",
+      "authority": "project-homeport",
+      "owners": ["project-homeport", "harborlight"],
+      "critical": true
+    },
+    {
+      "id": "homeport.community.audio",
+      "name": "Community Harbor audio",
+      "authority": "project-homeport",
+      "owners": ["project-homeport", "harborlight"],
+      "critical": true
+    },
+    {
+      "id": "homeport.community.creators",
+      "name": "Community Harbor creators",
+      "authority": "project-homeport",
+      "owners": ["project-homeport", "harborlight"],
+      "critical": true
+    },
+    {
+      "id": "homeport.community.creator-profile",
+      "name": "Community Harbor creator Profile",
+      "authority": "project-homeport",
+      "owners": ["project-homeport", "harborlight"],
+      "critical": true
+    },
+    {
+      "id": "homeport.community.collections",
+      "name": "Community Harbor collections",
+      "authority": "project-homeport",
+      "owners": ["project-homeport", "harborlight"],
+      "critical": true
+    },
+    {
+      "id": "homeport.community.guides",
+      "name": "Community Harbor guides",
+      "authority": "project-homeport",
+      "owners": ["project-homeport", "harborlight"],
+      "critical": true
+    },
+    {
+      "id": "homeport.community.voyage-logs",
+      "name": "Community Harbor voyage Logs",
+      "authority": "project-homeport",
+      "owners": ["project-homeport", "harborlight"],
+      "critical": true
+    },
+    {
+      "id": "homeport.community.saved-state",
+      "name": "Community Harbor saved State",
+      "authority": "project-homeport",
+      "owners": ["project-homeport", "harborlight"],
+      "critical": true
+    },
+    {
+      "id": "homeport.community.saved-cross-surface",
+      "name": "Community Harbor saved Cross Surface",
+      "authority": "project-homeport",
+      "owners": ["project-homeport", "harborlight"],
+      "critical": true
+    },
+    {
+      "id": "homeport.community.follow-state",
+      "name": "Community Harbor follow State",
+      "authority": "project-homeport",
+      "owners": ["project-homeport", "harborlight"],
+      "critical": true
+    },
+    {
+      "id": "homeport.community.social-auth-return",
+      "name": "Community Harbor social Auth Return",
+      "authority": "project-homeport",
+      "owners": ["project-homeport", "harborlight"],
+      "critical": true
+    },
+    {
+      "id": "homeport.community.detail",
+      "name": "Community Harbor detail",
+      "authority": "project-homeport",
+      "owners": ["project-homeport", "harborlight"],
+      "critical": true
+    },
+    {
+      "id": "homeport.community.detail-parent",
+      "name": "Community Harbor detail Parent",
+      "authority": "project-homeport",
+      "owners": ["project-homeport", "harborlight"],
+      "critical": true
+    },
+    {
+      "id": "homeport.community.open-install-remix",
+      "name": "Community Harbor open Install Remix",
+      "authority": "project-homeport",
+      "owners": ["project-homeport", "harborlight"],
+      "critical": true
+    },
+    {
+      "id": "homeport.community.mutation-feedback",
+      "name": "Community Harbor mutation Feedback",
+      "authority": "project-homeport",
+      "owners": ["project-homeport", "harborlight"],
+      "critical": true
+    },
+    {
+      "id": "homeport.community.restricted-account",
+      "name": "Community Harbor restricted Account",
+      "authority": "project-homeport",
+      "owners": ["project-homeport", "harborlight"],
+      "critical": true
+    },
+    {
+      "id": "homeport.community.keyboard",
+      "name": "Community Harbor keyboard",
+      "authority": "project-homeport",
+      "owners": ["project-homeport", "harborlight"],
+      "critical": true
+    },
+    {
+      "id": "homeport.community.zoom",
+      "name": "Community Harbor zoom",
+      "authority": "project-homeport",
+      "owners": ["project-homeport", "harborlight"],
+      "critical": true
+    },
+    {
+      "id": "homeport.community.reduced-motion",
+      "name": "Community Harbor reduced Motion",
+      "authority": "project-homeport",
+      "owners": ["project-homeport", "harborlight"],
+      "critical": true
+    },
+    {
+      "id": "homeport.community.phase1-regression",
+      "name": "Community Harbor phase1 Regression",
+      "authority": "project-homeport",
+      "owners": ["project-homeport", "harborlight"],
+      "critical": true
+    },
+    {
+      "id": "homeport.community.phase2-regression",
+      "name": "Community Harbor phase2 Regression",
+      "authority": "project-homeport",
+      "owners": ["project-homeport", "harborlight"],
+      "critical": true
+    },
+    {
+      "id": "homeport.community.phase3-regression",
+      "name": "Community Harbor phase3 Regression",
+      "authority": "project-homeport",
+      "owners": ["project-homeport", "harborlight"],
+      "critical": true
+    },
+    {
+      "id": "homeport.community.artifact-idempotency",
+      "name": "Community Harbor artifact Idempotency",
+      "authority": "project-homeport",
+      "owners": ["project-homeport", "harborlight"],
       "critical": true
     }
   ]

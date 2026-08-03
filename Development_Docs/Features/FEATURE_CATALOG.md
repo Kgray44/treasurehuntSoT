@@ -1011,6 +1011,47 @@ A coherent Personal Harbor now separates public Profile projection from the priv
 
 ---
 
+## FT-B004 - Community Harbor Discovery Library
+
+**Status:** BRANCH COMPLETE NOT MERGED
+**Program or subsystem:** Project Homeport Phase 4
+
+A content-first Community Harbor now presents deterministic public shelves, governed districts, typed safe cards, URL-backed discovery, public detail families, and canonical save/follow state.
+
+### Important subfeatures
+
+- Content-first Community Harbor
+- Curated and deterministic public shelves
+- Governed district taxonomy
+- Public-safe typed cards
+- Search, sort, compact filters, and advanced filters
+- Creator Profiles and public collections
+- Chronicle, artifact, template, map, audio, Guide, and Voyage Log discovery according to supported contracts
+- Canonical save and follow state
+- Complete default, empty, no-result, unavailable, quarantined, and removed states
+- Desktop and mobile Community parity
+
+### Primary surfaces
+
+`/community`, `/community/featured`, `/community/chronicles`, `/community/artifacts`, `/community/templates`, `/community/maps`, `/community/audio`, `/community/creators`, `/community/collections`, `/community/guides`, `/community/voyage-logs`
+
+### Meaningful limitations
+
+- Not available on main until separately reviewed and integrated
+- Not deployed; live-user validation and owner acceptance are not established
+- Unsupported provider or installation actions remain truthfully unavailable
+- Phase 5 exhaustive route reachability remains
+- Phase 6 repository-wide surface completion remains
+- Phase 7 integrated walkthrough remains
+
+### Evidence
+
+- commit: `06394221844c36921d95b1a199d72f18c88645ad`
+- completion-record: `Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_4_Validation_Record.md`
+- test: `tests/e2e/homeport-phase4.spec.ts`
+
+---
+
 # Deliberately Excluded Until Complete
 
 - Harborlight Phase 4 is planned and is not cataloged as an implemented capability.

@@ -3,7 +3,7 @@ title: Creator guide
 audience: creator
 status: current
 canonical_for: creator-guide
-last_reviewed: 2026-08-01
+last_reviewed: 2026-08-03
 ---
 
 # Creator guide
@@ -20,3 +20,11 @@ Home, Explore Chronicles, and Community Harbor remain separate, and Account
 switches to other granted workspaces without a second sign-in. At narrower
 desktop and mobile widths the same destinations move into the governed drawer
 to avoid clipping. This branch behavior is not on main or deployed.
+
+On the Phase 4 branch, the public Creators district and Creator Profile expose
+only allowlisted identity, badges, published work, and public collections.
+Draft, private, unlisted, quarantined, removed, archived, blocked-owner, and
+moderation evidence remain excluded. A Creator with no public work receives a
+deliberate empty state. Eligible signed-in accounts can Follow; self-follow and
+restricted relations are denied clearly. This is branch-local synthetic proof,
+not hosted availability, deployment, provider proof, or owner acceptance.

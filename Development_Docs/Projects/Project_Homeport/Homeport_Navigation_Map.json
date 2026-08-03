@@ -3349,5 +3349,728 @@
       "sectionAuthority": "src/homeport/personal-harbor-navigation.ts",
       "result": "PASSED"
     }
+  ],
+  "phase4Implementation": {
+    "phase": "PHASE_4_REBUILD_COMMUNITY_HARBOR",
+    "project": "Project Homeport",
+    "architectureFreezeSha": "e2c3e75ff43d52b2a7830e0a3d44be61a8d8dc7e",
+    "implementationAnchorSha": "06394221844c36921d95b1a199d72f18c88645ad",
+    "evidenceSourceSha": "977cb38a352eefd01110901eacc267bb903dac82",
+    "state": "BRANCH_VALIDATED_NOT_MERGED",
+    "updatedAt": "2026-08-03T08:30:00.000Z",
+    "historicalPhase0Through3Preserved": true,
+    "noSchemaChange": true,
+    "phase5NotStarted": true,
+    "branchOnly": true,
+    "merged": false,
+    "deployed": false,
+    "ownerAcceptanceEstablished": false,
+    "testContracts": [
+      "homeport.community.harbor-home",
+      "homeport.community.content-first-default",
+      "homeport.community.default-not-no-results",
+      "homeport.community.district-registry",
+      "homeport.community.district-navigation",
+      "homeport.community.mobile-district-parity",
+      "homeport.community.public-projection",
+      "homeport.community.no-private-leak",
+      "homeport.community.lifecycle-eligibility",
+      "homeport.community.quarantine",
+      "homeport.community.card-base",
+      "homeport.community.card-destinations",
+      "homeport.community.card-fallback",
+      "homeport.community.card-accessibility",
+      "homeport.community.shelf-strategy",
+      "homeport.community.editorial-labeling",
+      "homeport.community.search",
+      "homeport.community.search-url-state",
+      "homeport.community.search-stale-request",
+      "homeport.community.compact-filters",
+      "homeport.community.advanced-filters",
+      "homeport.community.no-results",
+      "homeport.community.empty-state",
+      "homeport.community.dependency-unavailable",
+      "homeport.community.partial-media-failure",
+      "homeport.community.chronicles",
+      "homeport.community.artifacts",
+      "homeport.community.templates",
+      "homeport.community.maps",
+      "homeport.community.audio",
+      "homeport.community.creators",
+      "homeport.community.creator-profile",
+      "homeport.community.collections",
+      "homeport.community.guides",
+      "homeport.community.voyage-logs",
+      "homeport.community.saved-state",
+      "homeport.community.saved-cross-surface",
+      "homeport.community.follow-state",
+      "homeport.community.social-auth-return",
+      "homeport.community.detail",
+      "homeport.community.detail-parent",
+      "homeport.community.open-install-remix",
+      "homeport.community.mutation-feedback",
+      "homeport.community.restricted-account",
+      "homeport.community.keyboard",
+      "homeport.community.zoom",
+      "homeport.community.reduced-motion",
+      "homeport.community.phase1-regression",
+      "homeport.community.phase2-regression",
+      "homeport.community.phase3-regression",
+      "homeport.community.artifact-idempotency"
+    ],
+    "evidenceIds": [
+      "HP-P4-EV-A-harbor-home-desktop",
+      "HP-P4-EV-B-harbor-home-mobile",
+      "HP-P4-EV-C-harbor-authenticated",
+      "HP-P4-EV-D-harbor-empty",
+      "HP-P4-EV-E-featured-shelf",
+      "HP-P4-EV-F-district-navigation",
+      "HP-P4-EV-G-chronicles-district",
+      "HP-P4-EV-H-artifacts-district",
+      "HP-P4-EV-I-templates-district",
+      "HP-P4-EV-J-maps-district",
+      "HP-P4-EV-K-audio-district",
+      "HP-P4-EV-L-creators-district",
+      "HP-P4-EV-M-creator-profile",
+      "HP-P4-EV-N-creator-empty",
+      "HP-P4-EV-O-collections-district",
+      "HP-P4-EV-P-collection-detail",
+      "HP-P4-EV-Q-guides-district",
+      "HP-P4-EV-R-guide-detail",
+      "HP-P4-EV-S-voyage-logs",
+      "HP-P4-EV-T-chronicle-card",
+      "HP-P4-EV-U-listing-detail",
+      "HP-P4-EV-V-search-results",
+      "HP-P4-EV-W-no-results",
+      "HP-P4-EV-X-advanced-filters",
+      "HP-P4-EV-Y-active-filters",
+      "HP-P4-EV-Z-saved-state",
+      "HP-P4-EV-AA-image-fallback",
+      "HP-P4-EV-AB-quarantined-content",
+      "HP-P4-EV-AC-archived-removed",
+      "HP-P4-EV-AD-dependency-unavailable",
+      "HP-P4-EV-AE-mobile-filter-drawer",
+      "HP-P4-EV-AF-mobile-detail",
+      "HP-P4-EV-AG-zoom-harbor",
+      "HP-P4-EV-AH-zoom-filters",
+      "HP-P4-EV-AI-reduced-motion",
+      "HP-P4-EV-AJ-restricted-state",
+      "HP-P4-EV-AK-public-projection",
+      "HP-P4-EV-AL-full-community-loop"
+    ]
+  },
+  "phase4DistrictEdges": [
+    {
+      "districtId": "HARBOR_HOME",
+      "label": "Community Harbor",
+      "sourceRoute": "/community",
+      "destinationRoute": "/community",
+      "desktopAvailability": true,
+      "mobileAvailability": true,
+      "currentStatus": "PHASE_4_VALIDATED",
+      "evidenceIds": [
+        "HP-P4-EV-A-harbor-home-desktop",
+        "HP-P4-EV-E-featured-shelf",
+        "HP-P4-EV-F-district-navigation",
+        "HP-P4-EV-T-chronicle-card",
+        "HP-P4-EV-AK-public-projection",
+        "HP-P4-EV-C-harbor-authenticated",
+        "HP-P4-EV-Z-saved-state",
+        "HP-P4-EV-AJ-restricted-state",
+        "HP-P4-EV-D-harbor-empty",
+        "HP-P4-EV-B-harbor-home-mobile",
+        "HP-P4-EV-AE-mobile-filter-drawer",
+        "HP-P4-EV-AK-mobile-authenticated",
+        "HP-P4-EV-AG-zoom-harbor",
+        "HP-P4-EV-AH-zoom-filters",
+        "HP-P4-EV-AI-reduced-motion"
+      ]
+    },
+    {
+      "districtId": "FEATURED",
+      "label": "Featured",
+      "sourceRoute": "/community",
+      "destinationRoute": "/community/featured",
+      "desktopAvailability": true,
+      "mobileAvailability": true,
+      "currentStatus": "PHASE_4_VALIDATED",
+      "evidenceIds": []
+    },
+    {
+      "districtId": "CHRONICLES",
+      "label": "Chronicles",
+      "sourceRoute": "/community",
+      "destinationRoute": "/community/chronicles",
+      "desktopAvailability": true,
+      "mobileAvailability": true,
+      "currentStatus": "PHASE_4_VALIDATED",
+      "evidenceIds": ["HP-P4-EV-G-chronicles-district"]
+    },
+    {
+      "districtId": "ARTIFACTS",
+      "label": "Artifacts",
+      "sourceRoute": "/community",
+      "destinationRoute": "/community/artifacts",
+      "desktopAvailability": true,
+      "mobileAvailability": true,
+      "currentStatus": "PHASE_4_VALIDATED",
+      "evidenceIds": ["HP-P4-EV-H-artifacts-district"]
+    },
+    {
+      "districtId": "TEMPLATES",
+      "label": "Templates",
+      "sourceRoute": "/community",
+      "destinationRoute": "/community/templates",
+      "desktopAvailability": true,
+      "mobileAvailability": true,
+      "currentStatus": "PHASE_4_VALIDATED",
+      "evidenceIds": ["HP-P4-EV-I-templates-district"]
+    },
+    {
+      "districtId": "MAPS_AND_LOCATION_PACKS",
+      "label": "Maps",
+      "sourceRoute": "/community",
+      "destinationRoute": "/community/maps",
+      "desktopAvailability": true,
+      "mobileAvailability": true,
+      "currentStatus": "PHASE_4_VALIDATED",
+      "evidenceIds": ["HP-P4-EV-J-maps-district"]
+    },
+    {
+      "districtId": "AUDIO_AND_REVEAL_ASSETS",
+      "label": "Audio and reveals",
+      "sourceRoute": "/community",
+      "destinationRoute": "/community/audio",
+      "desktopAvailability": true,
+      "mobileAvailability": true,
+      "currentStatus": "PHASE_4_VALIDATED",
+      "evidenceIds": ["HP-P4-EV-K-audio-district", "HP-P4-EV-AM-audio-district-empty"]
+    },
+    {
+      "districtId": "CREATORS",
+      "label": "Creators",
+      "sourceRoute": "/community",
+      "destinationRoute": "/community/creators",
+      "desktopAvailability": true,
+      "mobileAvailability": true,
+      "currentStatus": "PHASE_4_VALIDATED",
+      "evidenceIds": ["HP-P4-EV-L-creators-district"]
+    },
+    {
+      "districtId": "COLLECTIONS",
+      "label": "Collections",
+      "sourceRoute": "/community",
+      "destinationRoute": "/community/collections",
+      "desktopAvailability": true,
+      "mobileAvailability": true,
+      "currentStatus": "PHASE_4_VALIDATED",
+      "evidenceIds": ["HP-P4-EV-O-collections-district"]
+    },
+    {
+      "districtId": "GUIDES",
+      "label": "Guides",
+      "sourceRoute": "/community",
+      "destinationRoute": "/community/guides",
+      "desktopAvailability": true,
+      "mobileAvailability": true,
+      "currentStatus": "PHASE_4_VALIDATED",
+      "evidenceIds": ["HP-P4-EV-Q-guides-district"]
+    },
+    {
+      "districtId": "VOYAGE_LOGS",
+      "label": "Voyage Logs",
+      "sourceRoute": "/community",
+      "destinationRoute": "/community/voyage-logs",
+      "desktopAvailability": true,
+      "mobileAvailability": true,
+      "currentStatus": "PHASE_4_VALIDATED",
+      "evidenceIds": ["HP-P4-EV-S-voyage-logs"]
+    }
+  ],
+  "phase4AcceptanceEdges": [
+    {
+      "journeyId": "HP-P4-JRN-A",
+      "routeTransitions": [
+        "Gateway or canonical account entry",
+        "Community Harbor",
+        "Gateway to Community Harbor",
+        "Safe parent or Home return"
+      ],
+      "accountAuthority": "HP-SES-001",
+      "result": "PASSED"
+    },
+    {
+      "journeyId": "HP-P4-JRN-B",
+      "routeTransitions": [
+        "Gateway or canonical account entry",
+        "Community Harbor",
+        "Anonymous default discovery",
+        "Safe parent or Home return"
+      ],
+      "accountAuthority": "HP-SES-001",
+      "result": "PASSED"
+    },
+    {
+      "journeyId": "HP-P4-JRN-C",
+      "routeTransitions": [
+        "Gateway or canonical account entry",
+        "Community Harbor",
+        "Authenticated default discovery",
+        "Safe parent or Home return"
+      ],
+      "accountAuthority": "HP-SES-001",
+      "result": "PASSED"
+    },
+    {
+      "journeyId": "HP-P4-JRN-D",
+      "routeTransitions": [
+        "Gateway or canonical account entry",
+        "Community Harbor",
+        "Community-wide empty state",
+        "Safe parent or Home return"
+      ],
+      "accountAuthority": "HP-SES-001",
+      "result": "PASSED"
+    },
+    {
+      "journeyId": "HP-P4-JRN-E",
+      "routeTransitions": [
+        "Gateway or canonical account entry",
+        "Community Harbor",
+        "Search and preserved return",
+        "Safe parent or Home return"
+      ],
+      "accountAuthority": "HP-SES-001",
+      "result": "PASSED"
+    },
+    {
+      "journeyId": "HP-P4-JRN-F",
+      "routeTransitions": [
+        "Gateway or canonical account entry",
+        "Community Harbor",
+        "No-result query and recovery",
+        "Safe parent or Home return"
+      ],
+      "accountAuthority": "HP-SES-001",
+      "result": "PASSED"
+    },
+    {
+      "journeyId": "HP-P4-JRN-G",
+      "routeTransitions": [
+        "Gateway or canonical account entry",
+        "Community Harbor",
+        "Compact filters and history",
+        "Safe parent or Home return"
+      ],
+      "accountAuthority": "HP-SES-001",
+      "result": "PASSED"
+    },
+    {
+      "journeyId": "HP-P4-JRN-H",
+      "routeTransitions": [
+        "Gateway or canonical account entry",
+        "Community Harbor",
+        "Advanced filters and focus restoration",
+        "Safe parent or Home return"
+      ],
+      "accountAuthority": "HP-SES-001",
+      "result": "PASSED"
+    },
+    {
+      "journeyId": "HP-P4-JRN-I",
+      "routeTransitions": [
+        "Gateway or canonical account entry",
+        "Community Harbor",
+        "Deterministic sort and reload",
+        "Safe parent or Home return"
+      ],
+      "accountAuthority": "HP-SES-001",
+      "result": "PASSED"
+    },
+    {
+      "journeyId": "HP-P4-JRN-J",
+      "routeTransitions": [
+        "Gateway or canonical account entry",
+        "Community Harbor",
+        "Chronicles district",
+        "Safe parent or Home return"
+      ],
+      "accountAuthority": "HP-SES-001",
+      "result": "PASSED"
+    },
+    {
+      "journeyId": "HP-P4-JRN-K",
+      "routeTransitions": [
+        "Gateway or canonical account entry",
+        "Community Harbor",
+        "Chronicle begin or open handoff",
+        "Safe parent or Home return"
+      ],
+      "accountAuthority": "HP-SES-001",
+      "result": "PASSED"
+    },
+    {
+      "journeyId": "HP-P4-JRN-L",
+      "routeTransitions": [
+        "Gateway or canonical account entry",
+        "Community Harbor",
+        "Artifacts district and public provenance",
+        "Safe parent or Home return"
+      ],
+      "accountAuthority": "HP-SES-001",
+      "result": "PASSED"
+    },
+    {
+      "journeyId": "HP-P4-JRN-M",
+      "routeTransitions": [
+        "Gateway or canonical account entry",
+        "Community Harbor",
+        "Artifact media fallback",
+        "Safe parent or Home return"
+      ],
+      "accountAuthority": "HP-SES-001",
+      "result": "PASSED"
+    },
+    {
+      "journeyId": "HP-P4-JRN-N",
+      "routeTransitions": [
+        "Gateway or canonical account entry",
+        "Community Harbor",
+        "Templates district",
+        "Safe parent or Home return"
+      ],
+      "accountAuthority": "HP-SES-001",
+      "result": "PASSED"
+    },
+    {
+      "journeyId": "HP-P4-JRN-O",
+      "routeTransitions": [
+        "Gateway or canonical account entry",
+        "Community Harbor",
+        "Maps and location packs",
+        "Safe parent or Home return"
+      ],
+      "accountAuthority": "HP-SES-001",
+      "result": "PASSED"
+    },
+    {
+      "journeyId": "HP-P4-JRN-P",
+      "routeTransitions": [
+        "Gateway or canonical account entry",
+        "Community Harbor",
+        "Audio and reveal assets",
+        "Safe parent or Home return"
+      ],
+      "accountAuthority": "HP-SES-001",
+      "result": "PASSED"
+    },
+    {
+      "journeyId": "HP-P4-JRN-Q",
+      "routeTransitions": [
+        "Gateway or canonical account entry",
+        "Community Harbor",
+        "Creators district and Creator Profile",
+        "Safe parent or Home return"
+      ],
+      "accountAuthority": "HP-SES-001",
+      "result": "PASSED"
+    },
+    {
+      "journeyId": "HP-P4-JRN-R",
+      "routeTransitions": [
+        "Gateway or canonical account entry",
+        "Community Harbor",
+        "Creator with no public work",
+        "Safe parent or Home return"
+      ],
+      "accountAuthority": "HP-SES-001",
+      "result": "PASSED"
+    },
+    {
+      "journeyId": "HP-P4-JRN-S",
+      "routeTransitions": [
+        "Gateway or canonical account entry",
+        "Community Harbor",
+        "Follow and unfollow Creator",
+        "Safe parent or Home return"
+      ],
+      "accountAuthority": "HP-SES-001",
+      "result": "PASSED"
+    },
+    {
+      "journeyId": "HP-P4-JRN-T",
+      "routeTransitions": [
+        "Gateway or canonical account entry",
+        "Community Harbor",
+        "Anonymous social sign-in return",
+        "Safe parent or Home return"
+      ],
+      "accountAuthority": "HP-SES-001",
+      "result": "PASSED"
+    },
+    {
+      "journeyId": "HP-P4-JRN-U",
+      "routeTransitions": [
+        "Gateway or canonical account entry",
+        "Community Harbor",
+        "Self-follow denial",
+        "Safe parent or Home return"
+      ],
+      "accountAuthority": "HP-SES-001",
+      "result": "PASSED"
+    },
+    {
+      "journeyId": "HP-P4-JRN-V",
+      "routeTransitions": [
+        "Gateway or canonical account entry",
+        "Community Harbor",
+        "Public collections",
+        "Safe parent or Home return"
+      ],
+      "accountAuthority": "HP-SES-001",
+      "result": "PASSED"
+    },
+    {
+      "journeyId": "HP-P4-JRN-W",
+      "routeTransitions": [
+        "Gateway or canonical account entry",
+        "Community Harbor",
+        "Empty collection",
+        "Safe parent or Home return"
+      ],
+      "accountAuthority": "HP-SES-001",
+      "result": "PASSED"
+    },
+    {
+      "journeyId": "HP-P4-JRN-X",
+      "routeTransitions": [
+        "Gateway or canonical account entry",
+        "Community Harbor",
+        "Private and unlisted collection non-leakage",
+        "Safe parent or Home return"
+      ],
+      "accountAuthority": "HP-SES-001",
+      "result": "PASSED"
+    },
+    {
+      "journeyId": "HP-P4-JRN-Y",
+      "routeTransitions": [
+        "Gateway or canonical account entry",
+        "Community Harbor",
+        "Guides and Shipwright's Workshop",
+        "Safe parent or Home return"
+      ],
+      "accountAuthority": "HP-SES-001",
+      "result": "PASSED"
+    },
+    {
+      "journeyId": "HP-P4-JRN-Z",
+      "routeTransitions": [
+        "Gateway or canonical account entry",
+        "Community Harbor",
+        "Consent-safe Voyage Logs",
+        "Safe parent or Home return"
+      ],
+      "accountAuthority": "HP-SES-001",
+      "result": "PASSED"
+    },
+    {
+      "journeyId": "HP-P4-JRN-AA",
+      "routeTransitions": [
+        "Gateway or canonical account entry",
+        "Community Harbor",
+        "Save content across Community and Personal Harbor",
+        "Safe parent or Home return"
+      ],
+      "accountAuthority": "HP-SES-001",
+      "result": "PASSED"
+    },
+    {
+      "journeyId": "HP-P4-JRN-AB",
+      "routeTransitions": [
+        "Gateway or canonical account entry",
+        "Community Harbor",
+        "Unsave cross-surface reconciliation",
+        "Safe parent or Home return"
+      ],
+      "accountAuthority": "HP-SES-001",
+      "result": "PASSED"
+    },
+    {
+      "journeyId": "HP-P4-JRN-AC",
+      "routeTransitions": [
+        "Gateway or canonical account entry",
+        "Community Harbor",
+        "Save failure and retry",
+        "Safe parent or Home return"
+      ],
+      "accountAuthority": "HP-SES-001",
+      "result": "PASSED"
+    },
+    {
+      "journeyId": "HP-P4-JRN-AD",
+      "routeTransitions": [
+        "Gateway or canonical account entry",
+        "Community Harbor",
+        "Missing artwork fallback",
+        "Safe parent or Home return"
+      ],
+      "accountAuthority": "HP-SES-001",
+      "result": "PASSED"
+    },
+    {
+      "journeyId": "HP-P4-JRN-AE",
+      "routeTransitions": [
+        "Gateway or canonical account entry",
+        "Community Harbor",
+        "Quarantined content non-leakage",
+        "Safe parent or Home return"
+      ],
+      "accountAuthority": "HP-SES-001",
+      "result": "PASSED"
+    },
+    {
+      "journeyId": "HP-P4-JRN-AF",
+      "routeTransitions": [
+        "Gateway or canonical account entry",
+        "Community Harbor",
+        "Removed or archived content",
+        "Safe parent or Home return"
+      ],
+      "accountAuthority": "HP-SES-001",
+      "result": "PASSED"
+    },
+    {
+      "journeyId": "HP-P4-JRN-AG",
+      "routeTransitions": [
+        "Gateway or canonical account entry",
+        "Community Harbor",
+        "Search dependency unavailable and recovery",
+        "Safe parent or Home return"
+      ],
+      "accountAuthority": "HP-SES-001",
+      "result": "PASSED"
+    },
+    {
+      "journeyId": "HP-P4-JRN-AH",
+      "routeTransitions": [
+        "Gateway or canonical account entry",
+        "Community Harbor",
+        "Restricted Community account",
+        "Safe parent or Home return"
+      ],
+      "accountAuthority": "HP-SES-001",
+      "result": "PASSED"
+    },
+    {
+      "journeyId": "HP-P4-JRN-AI",
+      "routeTransitions": [
+        "Gateway or canonical account entry",
+        "Community Harbor",
+        "Moderator visibility and public separation",
+        "Safe parent or Home return"
+      ],
+      "accountAuthority": "HP-SES-001",
+      "result": "PASSED"
+    },
+    {
+      "journeyId": "HP-P4-JRN-AJ",
+      "routeTransitions": [
+        "Gateway or canonical account entry",
+        "Community Harbor",
+        "Mobile Harbor",
+        "Safe parent or Home return"
+      ],
+      "accountAuthority": "HP-SES-001",
+      "result": "PASSED"
+    },
+    {
+      "journeyId": "HP-P4-JRN-AK",
+      "routeTransitions": [
+        "Gateway or canonical account entry",
+        "Community Harbor",
+        "Mobile authenticated Community",
+        "Safe parent or Home return"
+      ],
+      "accountAuthority": "HP-SES-001",
+      "result": "PASSED"
+    },
+    {
+      "journeyId": "HP-P4-JRN-AL",
+      "routeTransitions": [
+        "Gateway or canonical account entry",
+        "Community Harbor",
+        "Keyboard-only discovery",
+        "Safe parent or Home return"
+      ],
+      "accountAuthority": "HP-SES-001",
+      "result": "PASSED"
+    },
+    {
+      "journeyId": "HP-P4-JRN-AM",
+      "routeTransitions": [
+        "Gateway or canonical account entry",
+        "Community Harbor",
+        "Effective 200 percent zoom",
+        "Safe parent or Home return"
+      ],
+      "accountAuthority": "HP-SES-001",
+      "result": "PASSED"
+    },
+    {
+      "journeyId": "HP-P4-JRN-AN",
+      "routeTransitions": [
+        "Gateway or canonical account entry",
+        "Community Harbor",
+        "Reduced motion",
+        "Safe parent or Home return"
+      ],
+      "accountAuthority": "HP-SES-001",
+      "result": "PASSED"
+    },
+    {
+      "journeyId": "HP-P4-JRN-AO",
+      "routeTransitions": [
+        "Gateway or canonical account entry",
+        "Community Harbor",
+        "Phase 1 canonical account regression",
+        "Safe parent or Home return"
+      ],
+      "accountAuthority": "HP-SES-001",
+      "result": "PASSED"
+    },
+    {
+      "journeyId": "HP-P4-JRN-AP",
+      "routeTransitions": [
+        "Gateway or canonical account entry",
+        "Community Harbor",
+        "Phase 2 shell and navigation regression",
+        "Safe parent or Home return"
+      ],
+      "accountAuthority": "HP-SES-001",
+      "result": "PASSED"
+    },
+    {
+      "journeyId": "HP-P4-JRN-AQ",
+      "routeTransitions": [
+        "Gateway or canonical account entry",
+        "Community Harbor",
+        "Phase 3 Personal Harbor regression",
+        "Safe parent or Home return"
+      ],
+      "accountAuthority": "HP-SES-001",
+      "result": "PASSED"
+    },
+    {
+      "journeyId": "HP-P4-JRN-AR",
+      "routeTransitions": [
+        "Gateway or canonical account entry",
+        "Community Harbor",
+        "Full Community natural loop",
+        "Safe parent or Home return"
+      ],
+      "accountAuthority": "HP-SES-001",
+      "result": "PASSED"
+    }
   ]
 }
