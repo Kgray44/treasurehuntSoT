@@ -3,14 +3,18 @@ title: Documentation hub
 audience: user
 status: current
 canonical_for: documentation-navigation
-last_reviewed: 2026-07-27
+last_reviewed: 2026-08-02
 ---
 
 # Chronicles documentation
 
 ## Using Chronicles
 
-[Getting started](user/getting-started.md), [Player guide](user/player-guide.md), [Chronicle Passport](user/chronicle-passport.md), [accessibility](user/accessibility.md), [privacy](user/privacy.md), and [troubleshooting](user/troubleshooting.md).
+[Getting started](user/getting-started.md), [Player guide](user/player-guide.md),
+[Profile](user/profile.md), [Chronicle Passport](user/chronicle-passport.md),
+[account security](user/account-security.md),
+[accessibility](user/accessibility.md), [privacy](user/privacy.md), and
+[troubleshooting](user/troubleshooting.md).
 
 ## Creating and running Chronicles
 

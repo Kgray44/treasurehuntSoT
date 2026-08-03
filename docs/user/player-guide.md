@@ -3,7 +3,7 @@ title: Player guide
 audience: player
 status: current
 canonical_for: player-guide
-last_reviewed: 2026-08-01
+last_reviewed: 2026-08-02
 ---
 
 # Player guide
@@ -26,3 +26,9 @@ provides Profile, Chronicle Passport, Security & Sessions, and any other
 granted workspace without a second sign-in. Immersive Journal routes provide
 an explicit Exit to My Voyages control; using it navigates without issuing a
 progression command. This behavior is local branch evidence, not deployment.
+
+On the Phase 3 branch, Chronicle Passport is the private record of joined
+Voyages, Memories, artifacts, and saved Community items. Profile remains a
+separate public projection. Personal Harbor uses the same account session as
+the Player Library and gives every supported section a direct desktop and
+mobile route. This behavior is branch-local and not deployed.

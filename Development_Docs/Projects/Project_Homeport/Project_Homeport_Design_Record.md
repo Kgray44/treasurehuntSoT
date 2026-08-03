@@ -185,3 +185,26 @@ become explicit route compatibility adapters.
 
 No implementation, test result, evidence, nonconformity closure, merge,
 deployment, Phase 4 work, or release acceptance is established by this freeze.
+
+## Phase 3 implementation amendment
+
+**Tested source anchor:**
+`761adb7a693feabacc4e7d54d28d443ceda8a273`. The frozen 18-section Personal
+Harbor architecture is implemented on the existing Homeport branch without a
+schema or migration change. `/account` owns personal overview and settings;
+`/passport` owns the private record-led Chronicle Passport; `/profile/[handle]`
+is a separate server-enforced public projection.
+
+Desktop and mobile project the same section set. Profile edits, typed
+preferences, privacy, linked identities, history, Memories, Keepsakes,
+artifacts, saved content, session revocation, and account availability states
+use accepted server authorities with explicit pending, success, failure,
+conflict, and dependency outcomes. Unsupported export/deactivation/deletion and
+disabled provider operations are labelled rather than simulated.
+
+The isolated A-AE browser family passed 32 tests and produced 29 human-reviewed,
+checksum-bound synthetic PNGs. These are local branch facts, not merge,
+deployment, live-provider, owner-acceptance, or product-acceptance proof.
+HP-NC-008, HP-NC-009, and HP-NC-028 are eligible for direct Phase 3 closure;
+HP-NC-014, HP-NC-018, and HP-NC-019 retain explicit later-phase boundaries.
+Phase 4 has not started.

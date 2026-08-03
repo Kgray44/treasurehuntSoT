@@ -83,5 +83,63 @@
       "Exhaustive ordinary-route reachability remains Phase 5"
     ],
     "catalogVersion": 1
+  },
+  {
+    "id": "FT-B003",
+    "title": "Personal Harbor and Chronicle Passport",
+    "summary": "A coherent Personal Harbor now separates public Profile projection from the private Chronicle Passport while unifying preferences, privacy, connected identities, history, Memories, artifacts, saved content, security, and sessions.",
+    "status": "BRANCH_COMPLETE_NOT_MERGED",
+    "program": "Project Homeport Phase 3",
+    "surfaces": [
+      "/account",
+      "/account/profile",
+      "/account/preferences",
+      "/account/privacy",
+      "/account/linked-identities",
+      "/account/security",
+      "/account/sessions",
+      "/account/data",
+      "/passport",
+      "/passport/history",
+      "/passport/memories",
+      "/passport/artifacts",
+      "/passport/saved",
+      "/profile/[handle]"
+    ],
+    "subfeatures": [
+      "Persistent desktop and equivalent mobile Personal Harbor navigation",
+      "Server-enforced public Profile projection and optimistic owner editing",
+      "Typed experience, accessibility, notification, and privacy preferences",
+      "Safe linked-identity summaries and protected unlinking",
+      "Record-led Chronicle Passport with version-pinned history",
+      "Owner-authorized Memories, participant-consented Keepsakes, and artifact provenance",
+      "Eligible saved Community content with cross-surface reconciliation",
+      "Separate Security, Sessions and Devices, and Data and Account surfaces",
+      "Explicit unsaved, pending, success, failure, conflict, and dependency states"
+    ],
+    "evidence": [
+      {
+        "kind": "commit",
+        "value": "761adb7a693feabacc4e7d54d28d443ceda8a273"
+      },
+      {
+        "kind": "completion-record",
+        "value": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_3_Validation_Record.md"
+      },
+      {
+        "kind": "test",
+        "value": "tests/e2e/homeport-phase3.spec.ts"
+      }
+    ],
+    "branch": "codex/project-homeport-product-reality-recovery",
+    "commit": "761adb7a693feabacc4e7d54d28d443ceda8a273",
+    "limitations": [
+      "Not available on main until separately reviewed and integrated",
+      "Not deployed; live-user validation and owner acceptance are not established",
+      "Live provider connections and external malware scanning remain externally unvalidated",
+      "Export, deactivation, and account deletion remain truthfully unavailable where no accepted service exists",
+      "Community reconstruction remains Phase 4 and exhaustive route reachability remains Phase 5"
+    ],
+    "catalogVersion": 1
   }
 ]

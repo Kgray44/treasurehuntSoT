@@ -972,6 +972,45 @@ One route-classified product shell now provides global, workspace, account, and 
 
 ---
 
+## FT-B003 - Personal Harbor and Chronicle Passport
+
+**Status:** BRANCH COMPLETE NOT MERGED
+**Program or subsystem:** Project Homeport Phase 3
+
+A coherent Personal Harbor now separates public Profile projection from the private Chronicle Passport while unifying preferences, privacy, connected identities, history, Memories, artifacts, saved content, security, and sessions.
+
+### Important subfeatures
+
+- Persistent desktop and equivalent mobile Personal Harbor navigation
+- Server-enforced public Profile projection and optimistic owner editing
+- Typed experience, accessibility, notification, and privacy preferences
+- Safe linked-identity summaries and protected unlinking
+- Record-led Chronicle Passport with version-pinned history
+- Owner-authorized Memories, participant-consented Keepsakes, and artifact provenance
+- Eligible saved Community content with cross-surface reconciliation
+- Separate Security, Sessions and Devices, and Data and Account surfaces
+- Explicit unsaved, pending, success, failure, conflict, and dependency states
+
+### Primary surfaces
+
+`/account`, `/account/profile`, `/account/preferences`, `/account/privacy`, `/account/linked-identities`, `/account/security`, `/account/sessions`, `/account/data`, `/passport`, `/passport/history`, `/passport/memories`, `/passport/artifacts`, `/passport/saved`, `/profile/[handle]`
+
+### Meaningful limitations
+
+- Not available on main until separately reviewed and integrated
+- Not deployed; live-user validation and owner acceptance are not established
+- Live provider connections and external malware scanning remain externally unvalidated
+- Export, deactivation, and account deletion remain truthfully unavailable where no accepted service exists
+- Community reconstruction remains Phase 4 and exhaustive route reachability remains Phase 5
+
+### Evidence
+
+- commit: `761adb7a693feabacc4e7d54d28d443ceda8a273`
+- completion-record: `Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_3_Validation_Record.md`
+- test: `tests/e2e/homeport-phase3.spec.ts`
+
+---
+
 # Deliberately Excluded Until Complete
 
 - Harborlight Phase 4 is planned and is not cataloged as an implemented capability.

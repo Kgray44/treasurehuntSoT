@@ -2429,6 +2429,348 @@
       "currentStatus": "PHASE_2_VALIDATED",
       "evidenceId": "HP-P2-EV-M-workspace-switcher",
       "phase2ImplementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc"
+    },
+    {
+      "nodeId": "phase3-personal-harbor-overview",
+      "routeId": "phase3-navigation-personal-harbor-overview",
+      "label": "Overview",
+      "controlId": "HP-CTL-051",
+      "sourceScreen": "src/components/homeport/PersonalHarborLayout.tsx",
+      "destinationScreen": "/account",
+      "desktopAvailability": true,
+      "mobileAvailability": true,
+      "authentication": "AUTHENTICATED",
+      "capabilities": [],
+      "hiddenCondition": null,
+      "disabledCondition": null,
+      "redirectBehavior": "CANONICAL_ACCOUNT_SESSION_GUARD",
+      "currentStatus": "PHASE_3_VALIDATED",
+      "evidenceId": "HP-P3-EV-A-profile-overview-desktop",
+      "phase3ImplementationAnchorSha": "761adb7a693feabacc4e7d54d28d443ceda8a273"
+    },
+    {
+      "nodeId": "phase3-public-profile-editor",
+      "routeId": "phase3-navigation-public-profile-editor",
+      "label": "Public Profile",
+      "controlId": "HP-CTL-052",
+      "sourceScreen": "src/components/homeport/PersonalHarborLayout.tsx",
+      "destinationScreen": "/account/profile",
+      "desktopAvailability": true,
+      "mobileAvailability": true,
+      "authentication": "AUTHENTICATED",
+      "capabilities": [],
+      "hiddenCondition": null,
+      "disabledCondition": null,
+      "redirectBehavior": "CANONICAL_ACCOUNT_SESSION_GUARD",
+      "currentStatus": "PHASE_3_VALIDATED",
+      "evidenceId": "HP-P3-EV-C-profile-editor",
+      "phase3ImplementationAnchorSha": "761adb7a693feabacc4e7d54d28d443ceda8a273"
+    },
+    {
+      "nodeId": "phase3-personal-information",
+      "routeId": "phase3-navigation-personal-information",
+      "label": "Personal Information",
+      "controlId": "HP-CTL-053",
+      "sourceScreen": "src/components/homeport/PersonalHarborLayout.tsx",
+      "destinationScreen": "/account/personal-information",
+      "desktopAvailability": true,
+      "mobileAvailability": true,
+      "authentication": "AUTHENTICATED",
+      "capabilities": [],
+      "hiddenCondition": null,
+      "disabledCondition": null,
+      "redirectBehavior": "CANONICAL_ACCOUNT_SESSION_GUARD",
+      "currentStatus": "PHASE_3_VALIDATED",
+      "evidenceId": "HP-P3-EV-F-personal-information",
+      "phase3ImplementationAnchorSha": "761adb7a693feabacc4e7d54d28d443ceda8a273"
+    },
+    {
+      "nodeId": "phase3-preferences",
+      "routeId": "phase3-navigation-preferences",
+      "label": "Preferences",
+      "controlId": "HP-CTL-054",
+      "sourceScreen": "src/components/homeport/PersonalHarborLayout.tsx",
+      "destinationScreen": "/account/preferences",
+      "desktopAvailability": true,
+      "mobileAvailability": true,
+      "authentication": "AUTHENTICATED",
+      "capabilities": [],
+      "hiddenCondition": null,
+      "disabledCondition": null,
+      "redirectBehavior": "CANONICAL_ACCOUNT_SESSION_GUARD",
+      "currentStatus": "PHASE_3_VALIDATED",
+      "evidenceId": "HP-P3-EV-G-preferences",
+      "phase3ImplementationAnchorSha": "761adb7a693feabacc4e7d54d28d443ceda8a273"
+    },
+    {
+      "nodeId": "phase3-accessibility",
+      "routeId": "phase3-navigation-accessibility",
+      "label": "Accessibility",
+      "controlId": "HP-CTL-055",
+      "sourceScreen": "src/components/homeport/PersonalHarborLayout.tsx",
+      "destinationScreen": "/account/accessibility",
+      "desktopAvailability": true,
+      "mobileAvailability": true,
+      "authentication": "AUTHENTICATED",
+      "capabilities": [],
+      "hiddenCondition": null,
+      "disabledCondition": null,
+      "redirectBehavior": "CANONICAL_ACCOUNT_SESSION_GUARD",
+      "currentStatus": "PHASE_3_VALIDATED",
+      "evidenceId": "HP-P3-EV-H-accessibility",
+      "phase3ImplementationAnchorSha": "761adb7a693feabacc4e7d54d28d443ceda8a273"
+    },
+    {
+      "nodeId": "phase3-notifications",
+      "routeId": "phase3-navigation-notifications",
+      "label": "Notifications",
+      "controlId": "HP-CTL-056",
+      "sourceScreen": "src/components/homeport/PersonalHarborLayout.tsx",
+      "destinationScreen": "/account/notifications",
+      "desktopAvailability": true,
+      "mobileAvailability": true,
+      "authentication": "AUTHENTICATED",
+      "capabilities": [],
+      "hiddenCondition": null,
+      "disabledCondition": null,
+      "redirectBehavior": "CANONICAL_ACCOUNT_SESSION_GUARD",
+      "currentStatus": "PHASE_3_VALIDATED",
+      "evidenceId": "HP-P3-EV-I-notifications",
+      "phase3ImplementationAnchorSha": "761adb7a693feabacc4e7d54d28d443ceda8a273"
+    },
+    {
+      "nodeId": "phase3-privacy-safety",
+      "routeId": "phase3-navigation-privacy-safety",
+      "label": "Privacy & Safety",
+      "controlId": "HP-CTL-057",
+      "sourceScreen": "src/components/homeport/PersonalHarborLayout.tsx",
+      "destinationScreen": "/account/privacy",
+      "desktopAvailability": true,
+      "mobileAvailability": true,
+      "authentication": "AUTHENTICATED",
+      "capabilities": [],
+      "hiddenCondition": null,
+      "disabledCondition": null,
+      "redirectBehavior": "CANONICAL_ACCOUNT_SESSION_GUARD",
+      "currentStatus": "PHASE_3_VALIDATED",
+      "evidenceId": "HP-P3-EV-J-privacy",
+      "phase3ImplementationAnchorSha": "761adb7a693feabacc4e7d54d28d443ceda8a273"
+    },
+    {
+      "nodeId": "phase3-linked-identities",
+      "routeId": "phase3-navigation-linked-identities",
+      "label": "Linked Identities",
+      "controlId": "HP-CTL-058",
+      "sourceScreen": "src/components/homeport/PersonalHarborLayout.tsx",
+      "destinationScreen": "/account/linked-identities",
+      "desktopAvailability": true,
+      "mobileAvailability": true,
+      "authentication": "AUTHENTICATED",
+      "capabilities": [],
+      "hiddenCondition": null,
+      "disabledCondition": null,
+      "redirectBehavior": "CANONICAL_ACCOUNT_SESSION_GUARD",
+      "currentStatus": "PHASE_3_VALIDATED",
+      "evidenceId": "HP-P3-EV-K-linked-identities",
+      "phase3ImplementationAnchorSha": "761adb7a693feabacc4e7d54d28d443ceda8a273"
+    },
+    {
+      "nodeId": "phase3-passport-home",
+      "routeId": "phase3-navigation-passport-home",
+      "label": "Passport Home",
+      "controlId": "HP-CTL-059",
+      "sourceScreen": "src/components/homeport/PersonalHarborLayout.tsx",
+      "destinationScreen": "/passport",
+      "desktopAvailability": true,
+      "mobileAvailability": true,
+      "authentication": "AUTHENTICATED",
+      "capabilities": ["PLAYER"],
+      "hiddenCondition": null,
+      "disabledCondition": null,
+      "redirectBehavior": "CANONICAL_ACCOUNT_SESSION_GUARD",
+      "currentStatus": "PHASE_3_VALIDATED",
+      "evidenceId": "HP-P3-EV-L-passport-populated",
+      "phase3ImplementationAnchorSha": "761adb7a693feabacc4e7d54d28d443ceda8a273"
+    },
+    {
+      "nodeId": "phase3-passport-history",
+      "routeId": "phase3-navigation-passport-history",
+      "label": "History & Memories",
+      "controlId": "HP-CTL-060",
+      "sourceScreen": "src/components/homeport/PersonalHarborLayout.tsx",
+      "destinationScreen": "/passport/history",
+      "desktopAvailability": true,
+      "mobileAvailability": true,
+      "authentication": "AUTHENTICATED",
+      "capabilities": ["PLAYER"],
+      "hiddenCondition": null,
+      "disabledCondition": null,
+      "redirectBehavior": "CANONICAL_ACCOUNT_SESSION_GUARD",
+      "currentStatus": "PHASE_3_VALIDATED",
+      "evidenceId": "HP-P3-EV-N-history-list",
+      "phase3ImplementationAnchorSha": "761adb7a693feabacc4e7d54d28d443ceda8a273"
+    },
+    {
+      "nodeId": "phase3-passport-history-detail",
+      "routeId": "phase3-navigation-passport-history-detail",
+      "label": "Voyage Record",
+      "controlId": "HP-CTL-061",
+      "sourceScreen": "src/components/homeport/PersonalHarborLayout.tsx",
+      "destinationScreen": "/passport/history/[recordId]",
+      "desktopAvailability": true,
+      "mobileAvailability": true,
+      "authentication": "AUTHENTICATED",
+      "capabilities": ["PLAYER"],
+      "hiddenCondition": null,
+      "disabledCondition": null,
+      "redirectBehavior": "CANONICAL_ACCOUNT_SESSION_GUARD",
+      "currentStatus": "PHASE_3_VALIDATED",
+      "evidenceId": "HP-P3-EV-O-history-detail",
+      "phase3ImplementationAnchorSha": "761adb7a693feabacc4e7d54d28d443ceda8a273"
+    },
+    {
+      "nodeId": "phase3-passport-memories",
+      "routeId": "phase3-navigation-passport-memories",
+      "label": "Memories",
+      "controlId": "HP-CTL-062",
+      "sourceScreen": "src/components/homeport/PersonalHarborLayout.tsx",
+      "destinationScreen": "/passport/memories",
+      "desktopAvailability": true,
+      "mobileAvailability": true,
+      "authentication": "AUTHENTICATED",
+      "capabilities": ["PLAYER"],
+      "hiddenCondition": null,
+      "disabledCondition": null,
+      "redirectBehavior": "CANONICAL_ACCOUNT_SESSION_GUARD",
+      "currentStatus": "PHASE_3_VALIDATED",
+      "evidenceId": "HP-P3-EV-P-memory-keepsake",
+      "phase3ImplementationAnchorSha": "761adb7a693feabacc4e7d54d28d443ceda8a273"
+    },
+    {
+      "nodeId": "phase3-passport-artifacts",
+      "routeId": "phase3-navigation-passport-artifacts",
+      "label": "Artifact Cabinet",
+      "controlId": "HP-CTL-063",
+      "sourceScreen": "src/components/homeport/PersonalHarborLayout.tsx",
+      "destinationScreen": "/passport/artifacts",
+      "desktopAvailability": true,
+      "mobileAvailability": true,
+      "authentication": "AUTHENTICATED",
+      "capabilities": ["PLAYER"],
+      "hiddenCondition": null,
+      "disabledCondition": null,
+      "redirectBehavior": "CANONICAL_ACCOUNT_SESSION_GUARD",
+      "currentStatus": "PHASE_3_VALIDATED",
+      "evidenceId": "HP-P3-EV-Q-artifact-cabinet",
+      "phase3ImplementationAnchorSha": "761adb7a693feabacc4e7d54d28d443ceda8a273"
+    },
+    {
+      "nodeId": "phase3-passport-artifact-detail",
+      "routeId": "phase3-navigation-passport-artifact-detail",
+      "label": "Artifact Detail",
+      "controlId": "HP-CTL-064",
+      "sourceScreen": "src/components/homeport/PersonalHarborLayout.tsx",
+      "destinationScreen": "/passport/artifacts/[artifactId]",
+      "desktopAvailability": true,
+      "mobileAvailability": true,
+      "authentication": "AUTHENTICATED",
+      "capabilities": ["PLAYER"],
+      "hiddenCondition": null,
+      "disabledCondition": null,
+      "redirectBehavior": "CANONICAL_ACCOUNT_SESSION_GUARD",
+      "currentStatus": "PHASE_3_VALIDATED",
+      "evidenceId": "HP-P3-EV-Q-artifact-cabinet",
+      "phase3ImplementationAnchorSha": "761adb7a693feabacc4e7d54d28d443ceda8a273"
+    },
+    {
+      "nodeId": "phase3-passport-saved",
+      "routeId": "phase3-navigation-passport-saved",
+      "label": "Saved Content",
+      "controlId": "HP-CTL-065",
+      "sourceScreen": "src/components/homeport/PersonalHarborLayout.tsx",
+      "destinationScreen": "/passport/saved",
+      "desktopAvailability": true,
+      "mobileAvailability": true,
+      "authentication": "AUTHENTICATED",
+      "capabilities": ["PLAYER"],
+      "hiddenCondition": null,
+      "disabledCondition": null,
+      "redirectBehavior": "CANONICAL_ACCOUNT_SESSION_GUARD",
+      "currentStatus": "PHASE_3_VALIDATED",
+      "evidenceId": "HP-P3-EV-S-saved-content",
+      "phase3ImplementationAnchorSha": "761adb7a693feabacc4e7d54d28d443ceda8a273"
+    },
+    {
+      "nodeId": "phase3-security",
+      "routeId": "phase3-navigation-security",
+      "label": "Security",
+      "controlId": "HP-CTL-066",
+      "sourceScreen": "src/components/homeport/PersonalHarborLayout.tsx",
+      "destinationScreen": "/account/security",
+      "desktopAvailability": true,
+      "mobileAvailability": true,
+      "authentication": "AUTHENTICATED",
+      "capabilities": [],
+      "hiddenCondition": null,
+      "disabledCondition": null,
+      "redirectBehavior": "CANONICAL_ACCOUNT_SESSION_GUARD",
+      "currentStatus": "PHASE_3_VALIDATED",
+      "evidenceId": "HP-P3-EV-T-security",
+      "phase3ImplementationAnchorSha": "761adb7a693feabacc4e7d54d28d443ceda8a273"
+    },
+    {
+      "nodeId": "phase3-sessions-devices",
+      "routeId": "phase3-navigation-sessions-devices",
+      "label": "Sessions & Devices",
+      "controlId": "HP-CTL-067",
+      "sourceScreen": "src/components/homeport/PersonalHarborLayout.tsx",
+      "destinationScreen": "/account/sessions",
+      "desktopAvailability": true,
+      "mobileAvailability": true,
+      "authentication": "AUTHENTICATED",
+      "capabilities": [],
+      "hiddenCondition": null,
+      "disabledCondition": null,
+      "redirectBehavior": "CANONICAL_ACCOUNT_SESSION_GUARD",
+      "currentStatus": "PHASE_3_VALIDATED",
+      "evidenceId": "HP-P3-EV-U-sessions",
+      "phase3ImplementationAnchorSha": "761adb7a693feabacc4e7d54d28d443ceda8a273"
+    },
+    {
+      "nodeId": "phase3-data-account",
+      "routeId": "phase3-navigation-data-account",
+      "label": "Data & Account",
+      "controlId": "HP-CTL-068",
+      "sourceScreen": "src/components/homeport/PersonalHarborLayout.tsx",
+      "destinationScreen": "/account/data",
+      "desktopAvailability": true,
+      "mobileAvailability": true,
+      "authentication": "AUTHENTICATED",
+      "capabilities": [],
+      "hiddenCondition": null,
+      "disabledCondition": null,
+      "redirectBehavior": "CANONICAL_ACCOUNT_SESSION_GUARD",
+      "currentStatus": "PHASE_3_VALIDATED",
+      "evidenceId": "HP-P3-EV-V-data-account",
+      "phase3ImplementationAnchorSha": "761adb7a693feabacc4e7d54d28d443ceda8a273"
+    },
+    {
+      "nodeId": "phase3-public-profile",
+      "routeId": "phase3-navigation-public-profile",
+      "label": "View Public Profile",
+      "controlId": "HP-CTL-069",
+      "sourceScreen": "src/components/homeport/AccountSurfaces.tsx",
+      "destinationScreen": "/profile/:handle",
+      "desktopAvailability": true,
+      "mobileAvailability": true,
+      "authentication": "STATE_DEPENDENT",
+      "capabilities": [],
+      "hiddenCondition": "NO_HANDLE",
+      "disabledCondition": null,
+      "redirectBehavior": "PUBLIC_ALLOWLISTED_PROJECTION",
+      "currentStatus": "PHASE_3_VALIDATED",
+      "evidenceId": "HP-P3-EV-D-public-profile-preview",
+      "phase3ImplementationAnchorSha": "761adb7a693feabacc4e7d54d28d443ceda8a273"
     }
   ],
   "phase1Implementation": {
@@ -2739,6 +3081,272 @@
       "routeTransitions": ["Sign In", "Player", "Captain", "Creator", "Passport", "Sign Out"],
       "shellAuthority": "src/components/shell/ProductShell.tsx",
       "navigationAuthority": "src/navigation/registry.ts",
+      "result": "PASSED"
+    }
+  ],
+  "phase3Implementation": {
+    "phase": "PHASE_3_BUILD_THE_PERSONAL_HARBOR",
+    "project": "Project Homeport",
+    "startingSha": "9ba021c7a7efd50083cb7f0d2ef3c2d19e979843",
+    "implementationAnchorSha": "761adb7a693feabacc4e7d54d28d443ceda8a273",
+    "state": "VALIDATED",
+    "updatedAt": "2026-08-02T16:45:00.000Z",
+    "historicalPhase0Through2Preserved": true,
+    "noSchemaChange": true,
+    "phase4NotStarted": true
+  },
+  "phase3AcceptanceEdges": [
+    {
+      "journeyId": "HP-P3-JRN-A",
+      "routeTransitions": [
+        "Gateway or Personal Harbor parent",
+        "Account menu to Personal Harbor",
+        "Safe return or recovery"
+      ],
+      "shellAuthority": "src/components/shell/ProductShell.tsx",
+      "sectionAuthority": "src/homeport/personal-harbor-navigation.ts",
+      "result": "PASSED"
+    },
+    {
+      "journeyId": "HP-P3-JRN-B",
+      "routeTransitions": ["Gateway or Personal Harbor parent", "Profile overview", "Safe return or recovery"],
+      "shellAuthority": "src/components/shell/ProductShell.tsx",
+      "sectionAuthority": "src/homeport/personal-harbor-navigation.ts",
+      "result": "PASSED"
+    },
+    {
+      "journeyId": "HP-P3-JRN-C",
+      "routeTransitions": [
+        "Gateway or Personal Harbor parent",
+        "Public Profile editing and preview",
+        "Safe return or recovery"
+      ],
+      "shellAuthority": "src/components/shell/ProductShell.tsx",
+      "sectionAuthority": "src/homeport/personal-harbor-navigation.ts",
+      "result": "PASSED"
+    },
+    {
+      "journeyId": "HP-P3-JRN-D",
+      "routeTransitions": ["Gateway or Personal Harbor parent", "Profile media states", "Safe return or recovery"],
+      "shellAuthority": "src/components/shell/ProductShell.tsx",
+      "sectionAuthority": "src/homeport/personal-harbor-navigation.ts",
+      "result": "PASSED"
+    },
+    {
+      "journeyId": "HP-P3-JRN-E",
+      "routeTransitions": ["Gateway or Personal Harbor parent", "No-handle Profile", "Safe return or recovery"],
+      "shellAuthority": "src/components/shell/ProductShell.tsx",
+      "sectionAuthority": "src/homeport/personal-harbor-navigation.ts",
+      "result": "PASSED"
+    },
+    {
+      "journeyId": "HP-P3-JRN-F",
+      "routeTransitions": ["Gateway or Personal Harbor parent", "Personal information", "Safe return or recovery"],
+      "shellAuthority": "src/components/shell/ProductShell.tsx",
+      "sectionAuthority": "src/homeport/personal-harbor-navigation.ts",
+      "result": "PASSED"
+    },
+    {
+      "journeyId": "HP-P3-JRN-G",
+      "routeTransitions": ["Gateway or Personal Harbor parent", "Preferences", "Safe return or recovery"],
+      "shellAuthority": "src/components/shell/ProductShell.tsx",
+      "sectionAuthority": "src/homeport/personal-harbor-navigation.ts",
+      "result": "PASSED"
+    },
+    {
+      "journeyId": "HP-P3-JRN-H",
+      "routeTransitions": ["Gateway or Personal Harbor parent", "Accessibility", "Safe return or recovery"],
+      "shellAuthority": "src/components/shell/ProductShell.tsx",
+      "sectionAuthority": "src/homeport/personal-harbor-navigation.ts",
+      "result": "PASSED"
+    },
+    {
+      "journeyId": "HP-P3-JRN-I",
+      "routeTransitions": ["Gateway or Personal Harbor parent", "Notifications", "Safe return or recovery"],
+      "shellAuthority": "src/components/shell/ProductShell.tsx",
+      "sectionAuthority": "src/homeport/personal-harbor-navigation.ts",
+      "result": "PASSED"
+    },
+    {
+      "journeyId": "HP-P3-JRN-J",
+      "routeTransitions": [
+        "Gateway or Personal Harbor parent",
+        "Privacy and public projection",
+        "Safe return or recovery"
+      ],
+      "shellAuthority": "src/components/shell/ProductShell.tsx",
+      "sectionAuthority": "src/homeport/personal-harbor-navigation.ts",
+      "result": "PASSED"
+    },
+    {
+      "journeyId": "HP-P3-JRN-K",
+      "routeTransitions": ["Gateway or Personal Harbor parent", "Linked identities", "Safe return or recovery"],
+      "shellAuthority": "src/components/shell/ProductShell.tsx",
+      "sectionAuthority": "src/homeport/personal-harbor-navigation.ts",
+      "result": "PASSED"
+    },
+    {
+      "journeyId": "HP-P3-JRN-L",
+      "routeTransitions": [
+        "Gateway or Personal Harbor parent",
+        "Chronicle Passport populated",
+        "Safe return or recovery"
+      ],
+      "shellAuthority": "src/components/shell/ProductShell.tsx",
+      "sectionAuthority": "src/homeport/personal-harbor-navigation.ts",
+      "result": "PASSED"
+    },
+    {
+      "journeyId": "HP-P3-JRN-M",
+      "routeTransitions": ["Gateway or Personal Harbor parent", "Chronicle Passport empty", "Safe return or recovery"],
+      "shellAuthority": "src/components/shell/ProductShell.tsx",
+      "sectionAuthority": "src/homeport/personal-harbor-navigation.ts",
+      "result": "PASSED"
+    },
+    {
+      "journeyId": "HP-P3-JRN-N",
+      "routeTransitions": ["Gateway or Personal Harbor parent", "History list and detail", "Safe return or recovery"],
+      "shellAuthority": "src/components/shell/ProductShell.tsx",
+      "sectionAuthority": "src/homeport/personal-harbor-navigation.ts",
+      "result": "PASSED"
+    },
+    {
+      "journeyId": "HP-P3-JRN-O",
+      "routeTransitions": ["Gateway or Personal Harbor parent", "History privacy", "Safe return or recovery"],
+      "shellAuthority": "src/components/shell/ProductShell.tsx",
+      "sectionAuthority": "src/homeport/personal-harbor-navigation.ts",
+      "result": "PASSED"
+    },
+    {
+      "journeyId": "HP-P3-JRN-P",
+      "routeTransitions": [
+        "Gateway or Personal Harbor parent",
+        "Artifact Cabinet populated",
+        "Safe return or recovery"
+      ],
+      "shellAuthority": "src/components/shell/ProductShell.tsx",
+      "sectionAuthority": "src/homeport/personal-harbor-navigation.ts",
+      "result": "PASSED"
+    },
+    {
+      "journeyId": "HP-P3-JRN-Q",
+      "routeTransitions": ["Gateway or Personal Harbor parent", "Artifact Cabinet empty", "Safe return or recovery"],
+      "shellAuthority": "src/components/shell/ProductShell.tsx",
+      "sectionAuthority": "src/homeport/personal-harbor-navigation.ts",
+      "result": "PASSED"
+    },
+    {
+      "journeyId": "HP-P3-JRN-R",
+      "routeTransitions": ["Gateway or Personal Harbor parent", "Saved content", "Safe return or recovery"],
+      "shellAuthority": "src/components/shell/ProductShell.tsx",
+      "sectionAuthority": "src/homeport/personal-harbor-navigation.ts",
+      "result": "PASSED"
+    },
+    {
+      "journeyId": "HP-P3-JRN-S",
+      "routeTransitions": ["Gateway or Personal Harbor parent", "Security reauthentication", "Safe return or recovery"],
+      "shellAuthority": "src/components/shell/ProductShell.tsx",
+      "sectionAuthority": "src/homeport/personal-harbor-navigation.ts",
+      "result": "PASSED"
+    },
+    {
+      "journeyId": "HP-P3-JRN-T",
+      "routeTransitions": ["Gateway or Personal Harbor parent", "Sessions and devices", "Safe return or recovery"],
+      "shellAuthority": "src/components/shell/ProductShell.tsx",
+      "sectionAuthority": "src/homeport/personal-harbor-navigation.ts",
+      "result": "PASSED"
+    },
+    {
+      "journeyId": "HP-P3-JRN-U",
+      "routeTransitions": ["Gateway or Personal Harbor parent", "Sign Out Everywhere", "Safe return or recovery"],
+      "shellAuthority": "src/components/shell/ProductShell.tsx",
+      "sectionAuthority": "src/homeport/personal-harbor-navigation.ts",
+      "result": "PASSED"
+    },
+    {
+      "journeyId": "HP-P3-JRN-V",
+      "routeTransitions": [
+        "Gateway or Personal Harbor parent",
+        "Data and account management",
+        "Safe return or recovery"
+      ],
+      "shellAuthority": "src/components/shell/ProductShell.tsx",
+      "sectionAuthority": "src/homeport/personal-harbor-navigation.ts",
+      "result": "PASSED"
+    },
+    {
+      "journeyId": "HP-P3-JRN-W",
+      "routeTransitions": [
+        "Gateway or Personal Harbor parent",
+        "Desktop section navigation",
+        "Safe return or recovery"
+      ],
+      "shellAuthority": "src/components/shell/ProductShell.tsx",
+      "sectionAuthority": "src/homeport/personal-harbor-navigation.ts",
+      "result": "PASSED"
+    },
+    {
+      "journeyId": "HP-P3-JRN-X",
+      "routeTransitions": ["Gateway or Personal Harbor parent", "Mobile section navigation", "Safe return or recovery"],
+      "shellAuthority": "src/components/shell/ProductShell.tsx",
+      "sectionAuthority": "src/homeport/personal-harbor-navigation.ts",
+      "result": "PASSED"
+    },
+    {
+      "journeyId": "HP-P3-JRN-Y",
+      "routeTransitions": ["Gateway or Personal Harbor parent", "Unsaved changes", "Safe return or recovery"],
+      "shellAuthority": "src/components/shell/ProductShell.tsx",
+      "sectionAuthority": "src/homeport/personal-harbor-navigation.ts",
+      "result": "PASSED"
+    },
+    {
+      "journeyId": "HP-P3-JRN-Z",
+      "routeTransitions": ["Gateway or Personal Harbor parent", "Stale conflict", "Safe return or recovery"],
+      "shellAuthority": "src/components/shell/ProductShell.tsx",
+      "sectionAuthority": "src/homeport/personal-harbor-navigation.ts",
+      "result": "PASSED"
+    },
+    {
+      "journeyId": "HP-P3-JRN-AA",
+      "routeTransitions": ["Gateway or Personal Harbor parent", "Dependency unavailable", "Safe return or recovery"],
+      "shellAuthority": "src/components/shell/ProductShell.tsx",
+      "sectionAuthority": "src/homeport/personal-harbor-navigation.ts",
+      "result": "PASSED"
+    },
+    {
+      "journeyId": "HP-P3-JRN-AB",
+      "routeTransitions": ["Gateway or Personal Harbor parent", "200 percent zoom", "Safe return or recovery"],
+      "shellAuthority": "src/components/shell/ProductShell.tsx",
+      "sectionAuthority": "src/homeport/personal-harbor-navigation.ts",
+      "result": "PASSED"
+    },
+    {
+      "journeyId": "HP-P3-JRN-AC",
+      "routeTransitions": [
+        "Gateway or Personal Harbor parent",
+        "Keyboard-only Personal Harbor",
+        "Safe return or recovery"
+      ],
+      "shellAuthority": "src/components/shell/ProductShell.tsx",
+      "sectionAuthority": "src/homeport/personal-harbor-navigation.ts",
+      "result": "PASSED"
+    },
+    {
+      "journeyId": "HP-P3-JRN-AD",
+      "routeTransitions": ["Gateway or Personal Harbor parent", "Reduced motion", "Safe return or recovery"],
+      "shellAuthority": "src/components/shell/ProductShell.tsx",
+      "sectionAuthority": "src/homeport/personal-harbor-navigation.ts",
+      "result": "PASSED"
+    },
+    {
+      "journeyId": "HP-P3-JRN-AE",
+      "routeTransitions": [
+        "Gateway or Personal Harbor parent",
+        "Phase 1 and Phase 2 regression",
+        "Safe return or recovery"
+      ],
+      "shellAuthority": "src/components/shell/ProductShell.tsx",
+      "sectionAuthority": "src/homeport/personal-harbor-navigation.ts",
       "result": "PASSED"
     }
   ]

@@ -129,3 +129,43 @@ Phase 2 adds 21 isolated Chromium journeys and 20 visually inspected, checksum-b
 | HP-P2-JRN-U | Phase 1 regression continuity        | PASSED | Behavioral contract only                                                        |
 
 Directly closed after governed final validation: HP-NC-001, HP-NC-006, HP-NC-010, and HP-NC-016. Partially advanced without false closure: HP-NC-008, HP-NC-014, and HP-NC-026. This is local branch evidence, not deployment, owner acceptance, or product acceptance.
+
+## Phase 3 implemented-state addendum
+
+Project Homeport Phase 3 adds 31 governed Personal Harbor journeys and 29 human-reviewed, checksum-bound synthetic after-state images without replacing Phase 0 through Phase 2 history. The implementation anchor is 761adb7a693feabacc4e7d54d28d443ceda8a273.
+
+| Journey      | Contract                           | Result | Visual evidence                                                                |
+| ------------ | ---------------------------------- | ------ | ------------------------------------------------------------------------------ |
+| HP-P3-JRN-A  | Account menu to Personal Harbor    | PASSED | HP-P3-EV-A-profile-overview-desktop                                            |
+| HP-P3-JRN-B  | Profile overview                   | PASSED | HP-P3-EV-A-profile-overview-desktop, HP-P3-EV-B-profile-overview-mobile        |
+| HP-P3-JRN-C  | Public Profile editing and preview | PASSED | HP-P3-EV-C-profile-editor, HP-P3-EV-D-public-profile-preview                   |
+| HP-P3-JRN-D  | Profile media states               | PASSED | HP-P3-EV-E-profile-media                                                       |
+| HP-P3-JRN-E  | No-handle Profile                  | PASSED | Behavioral contract                                                            |
+| HP-P3-JRN-F  | Personal information               | PASSED | HP-P3-EV-F-personal-information                                                |
+| HP-P3-JRN-G  | Preferences                        | PASSED | HP-P3-EV-G-preferences                                                         |
+| HP-P3-JRN-H  | Accessibility                      | PASSED | HP-P3-EV-H-accessibility                                                       |
+| HP-P3-JRN-I  | Notifications                      | PASSED | HP-P3-EV-I-notifications                                                       |
+| HP-P3-JRN-J  | Privacy and public projection      | PASSED | HP-P3-EV-D-public-profile-preview, HP-P3-EV-J-privacy                          |
+| HP-P3-JRN-K  | Linked identities                  | PASSED | HP-P3-EV-K-linked-identities                                                   |
+| HP-P3-JRN-L  | Chronicle Passport populated       | PASSED | HP-P3-EV-L-passport-populated, HP-P3-EV-P-memory-keepsake                      |
+| HP-P3-JRN-M  | Chronicle Passport empty           | PASSED | HP-P3-EV-M-passport-empty                                                      |
+| HP-P3-JRN-N  | History list and detail            | PASSED | HP-P3-EV-N-history-list, HP-P3-EV-O-history-detail, HP-P3-EV-P-memory-keepsake |
+| HP-P3-JRN-O  | History privacy                    | PASSED | HP-P3-EV-O-history-detail                                                      |
+| HP-P3-JRN-P  | Artifact Cabinet populated         | PASSED | HP-P3-EV-Q-artifact-cabinet                                                    |
+| HP-P3-JRN-Q  | Artifact Cabinet empty             | PASSED | HP-P3-EV-R-artifact-empty                                                      |
+| HP-P3-JRN-R  | Saved content                      | PASSED | HP-P3-EV-S-saved-content                                                       |
+| HP-P3-JRN-S  | Security reauthentication          | PASSED | HP-P3-EV-T-security                                                            |
+| HP-P3-JRN-T  | Sessions and devices               | PASSED | HP-P3-EV-U-sessions                                                            |
+| HP-P3-JRN-U  | Sign Out Everywhere                | PASSED | HP-P3-EV-U-sessions                                                            |
+| HP-P3-JRN-V  | Data and account management        | PASSED | HP-P3-EV-V-data-account                                                        |
+| HP-P3-JRN-W  | Desktop section navigation         | PASSED | HP-P3-EV-A-profile-overview-desktop                                            |
+| HP-P3-JRN-X  | Mobile section navigation          | PASSED | HP-P3-EV-B-profile-overview-mobile, HP-P3-EV-W-mobile-section-nav              |
+| HP-P3-JRN-Y  | Unsaved changes                    | PASSED | HP-P3-EV-X-unsaved-warning                                                     |
+| HP-P3-JRN-Z  | Stale conflict                     | PASSED | HP-P3-EV-Y-stale-conflict                                                      |
+| HP-P3-JRN-AA | Dependency unavailable             | PASSED | HP-P3-EV-Z-dependency-unavailable                                              |
+| HP-P3-JRN-AB | 200 percent zoom                   | PASSED | HP-P3-EV-AA-zoom-profile, HP-P3-EV-AB-zoom-passport                            |
+| HP-P3-JRN-AC | Keyboard-only Personal Harbor      | PASSED | HP-P3-EV-W-mobile-section-nav, HP-P3-EV-X-unsaved-warning                      |
+| HP-P3-JRN-AD | Reduced motion                     | PASSED | HP-P3-EV-AC-reduced-motion                                                     |
+| HP-P3-JRN-AE | Phase 1 and Phase 2 regression     | PASSED | HP-P3-EV-A-profile-overview-desktop, HP-P3-EV-L-passport-populated             |
+
+Phase 3 closes HP-NC-008, HP-NC-009, and HP-NC-028 after final governed validation, preserves the Phase 1 closure of HP-NC-007, and partially advances HP-NC-014, HP-NC-018, and HP-NC-019 without claiming later-phase closure. This is branch-local synthetic evidence, not merge, deployment, public proof, live-provider proof, or owner acceptance.

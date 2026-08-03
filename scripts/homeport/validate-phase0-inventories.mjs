@@ -321,7 +321,7 @@ for (const record of evidence.records) {
   assert.equal(record.sourceSha, expectedSourceSha, `${record.evidenceId} source SHA drifted`);
   assert.ok(screenIds.has(record.screenContract), `${record.evidenceId} references unknown screen contract`);
   assert.ok(journeyIds.has(record.journey), `${record.evidenceId} references unknown journey`);
-  const committedPhaseRecord = /^HP-P[12]-EV-/u.test(record.evidenceId);
+  const committedPhaseRecord = /^HP-P[123]-EV-/u.test(record.evidenceId);
   const screenshot = committedPhaseRecord
     ? path.join(root, record.committedScreenshotPath)
     : path.join(evidenceRoot, path.basename(record.screenshotPath));
@@ -491,8 +491,14 @@ assert.equal(
 );
 assert.equal(
   routes.routes.filter((route) => route.kind === "page" && route.phase2Implementation).length,
+  69,
+  "The validated Phase 2 page coverage history drifted",
+);
+assert.equal(
+  routes.routes.filter((route) => route.kind === "page" && (route.phase2Implementation || route.phase3Implementation))
+    .length,
   routes.totals.pages,
-  "Every page must have one Phase 2 shell implementation record",
+  "Every current page must have a validated Phase 2 or additive Phase 3 implementation record",
 );
 
 const ncRequired = [
@@ -544,15 +550,23 @@ for (const id of ["HP-NC-001", "HP-NC-006", "HP-NC-010", "HP-NC-016"]) {
   assert.equal(record?.current_status, "CLOSED", `${id} must be closed by validated Phase 2 evidence`);
   assert.equal(record?.disposition, "CLOSED_PHASE_2_VALIDATED", `${id} has the wrong Phase 2 disposition`);
 }
-for (const id of ["HP-NC-008", "HP-NC-014", "HP-NC-026"]) {
-  const record = nonconformities.find((candidate) => candidate.id === id);
-  assert.equal(record?.current_status, "PARTIALLY_ADVANCED_PHASE_2", `${id} must remain a partial Phase 2 advance`);
-  assert.equal(
-    record?.disposition,
-    "PARTIAL_PHASE_2_LATER_OWNER_RETAINED",
-    `${id} lost its later-phase owner boundary`,
-  );
-}
+const phase3ClosedPhase2Partial = nonconformities.find((candidate) => candidate.id === "HP-NC-008");
+assert.equal(phase3ClosedPhase2Partial?.current_status, "CLOSED", "HP-NC-008 must be closed by Phase 3 evidence");
+assert.equal(
+  phase3ClosedPhase2Partial?.disposition,
+  "CLOSED_PHASE_3_VALIDATED",
+  "HP-NC-008 has the wrong Phase 3 disposition",
+);
+const phase3Partial = nonconformities.find((candidate) => candidate.id === "HP-NC-014");
+assert.equal(
+  phase3Partial?.current_status,
+  "PARTIALLY_ADVANCED_PHASE_3",
+  "HP-NC-014 must retain its explicit later-phase owner boundary after Phase 3",
+);
+assert.equal(phase3Partial?.disposition, "PARTIAL_PHASE_3_LATER_OWNER_RETAINED");
+const phase2Partial = nonconformities.find((candidate) => candidate.id === "HP-NC-026");
+assert.equal(phase2Partial?.current_status, "PARTIALLY_ADVANCED_PHASE_2");
+assert.equal(phase2Partial?.disposition, "PARTIAL_PHASE_2_LATER_OWNER_RETAINED");
 
 for (const screen of screens.screens) {
   for (const screenshotId of screen.screenshotIds)

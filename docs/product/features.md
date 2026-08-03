@@ -3,7 +3,7 @@ title: Features and subfeatures
 audience: product
 status: current
 canonical_for: product-features
-last_reviewed: 2026-08-01
+last_reviewed: 2026-08-02
 ---
 
 # Features and subfeatures
@@ -21,6 +21,14 @@ ordinary sign-in surface, explicit capability decisions, session invalidation
 across tabs, and bounded observe-and-rotate compatibility for historical
 Player and staff sessions.
 
+Project Homeport Phase 3 is also complete on that branch. It separates the
+public Profile from the private Chronicle Passport, adds server-enforced
+Profile/privacy projections, typed preferences, linked identities, private
+history and Memories, artifact provenance, saved Community items, and account
+security/session management. [Profile guide](../user/profile.md), [Passport
+guide](../user/chronicle-passport.md), and [account security
+guide](../user/account-security.md). The work is not yet on main or deployed.
+
 ## Global shell and wayfinding
 
 **Audience:** Players, Captains, Creators, and public visitors.
@@ -29,9 +37,9 @@ main. Phase 2 adds one route-classified shell, visible Home/Explore/Community
 navigation, structured account orientation, capability-projected workspace
 switching, equivalent mobile destinations, and explicit compact/immersive
 exits. Its acceptance evidence is local and synthetic; it is not deployed or
-owner accepted. Personal Harbor visual reconstruction remains Phase 3,
-Community content reconstruction Phase 4, and exhaustive route reachability
-Phase 5.
+owner accepted. Personal Harbor reconstruction is complete in Phase 3 on the
+same branch; Community content reconstruction remains Phase 4, and exhaustive
+route reachability remains Phase 5.
 
 ## Player experience
 

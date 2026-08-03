@@ -3,7 +3,7 @@ title: Feature status reference
 audience: reference
 status: current
 canonical_for: feature-status
-last_reviewed: 2026-08-01
+last_reviewed: 2026-08-02
 ---
 
 # Feature status
@@ -12,6 +12,7 @@ last_reviewed: 2026-08-01
 | --------------------------------------------------------------------- | ---------------------- | --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Unified identity and session authority                                | development-only       | release validated     | Project Homeport Phase 1 is complete on its named branch, not on main; evidence is local/synthetic and deployment is not claimed.                       |
 | Global shell and wayfinding                                           | development-only       | release validated     | Project Homeport Phase 2 is complete on the same named branch, not on main; local/synthetic evidence does not establish deployment or owner acceptance. |
+| Personal Harbor and Chronicle Passport                                | development-only       | release validated     | Project Homeport Phase 3 is complete on the named branch with local/synthetic governed evidence; it is not on main, deployed, or owner accepted.        |
 | Identity, Passport, history, and artifacts                            | available              | integration validated | Wayfarer Phases 3 and 4 are on main; live identity providers remain external validation pending.                                                        |
 | Player and Captain experience                                         | available              | integration validated | Libraries, invitations, journal, Story routes, and role-aware navigation are on main.                                                                   |
 | Creator Studio                                                        | available              | focused validated     | Authored material and immutable publishing are implemented; broad browser proof is governed separately.                                                 |

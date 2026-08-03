@@ -7,7 +7,7 @@ const root = process.cwd();
 const auditRoot = path.join(root, "Development_Docs", "Projects", "Project_Homeport");
 const evidenceRoot = path.join(auditRoot, "evidence", "phase3");
 const testingRoot = path.join(root, "testing");
-const implementationAnchorSha = "61913fee8b90ff03f763a9de665df934db13bf45";
+const implementationAnchorSha = "761adb7a693feabacc4e7d54d28d443ceda8a273";
 const startingSha = "9ba021c7a7efd50083cb7f0d2ef3c2d19e979843";
 const updatedAt = "2026-08-02T16:45:00.000Z";
 const final = process.argv.includes("--final");
@@ -243,10 +243,10 @@ const routeSources = {
   "/account/data": "src/app/account/data/page.tsx",
   "/passport": "src/app/passport/page.tsx",
   "/passport/history": "src/app/passport/history/page.tsx",
-  "/passport/history/:recordId": "src/app/passport/history/[recordId]/page.tsx",
+  "/passport/history/[recordId]": "src/app/passport/history/[recordId]/page.tsx",
   "/passport/memories": "src/app/passport/memories/page.tsx",
   "/passport/artifacts": "src/app/passport/artifacts/page.tsx",
-  "/passport/artifacts/:artifactId": "src/app/passport/artifacts/[artifactId]/page.tsx",
+  "/passport/artifacts/[artifactId]": "src/app/passport/artifacts/[artifactId]/page.tsx",
   "/passport/saved": "src/app/passport/saved/page.tsx",
   "/profile/:handle": "src/app/profile/[handle]/page.tsx",
 };
@@ -254,10 +254,11 @@ const routeIdFor = (route) => "route-page-" + (route.slice(1).replaceAll(":", ""
 const screenIdFor = (route) => "screen-page-" + (route.slice(1).replaceAll(":", "").replaceAll("/", "-") || "root");
 const patternForCapturedRoute = (route) => {
   if (/^\/profile\/[^/]+$/u.test(route)) return "/profile/:handle";
-  if (/^\/passport\/history\/[^/]+$/u.test(route)) return "/passport/history/:recordId";
-  if (/^\/passport\/artifacts\/[^/]+$/u.test(route)) return "/passport/artifacts/:artifactId";
+  if (/^\/passport\/history\/[^/]+$/u.test(route)) return "/passport/history/[recordId]";
+  if (/^\/passport\/artifacts\/[^/]+$/u.test(route)) return "/passport/artifacts/[artifactId]";
   return route;
 };
+const isDynamicRoutePattern = (route) => route.includes(":") || route.includes("[");
 const registryByRoute = new Map(sectionRegistry.sections.map((section) => [section.canonicalRoute, section]));
 const evidenceByRoute = new Map();
 for (const evidence of evidenceManifest.evidence) {
@@ -278,7 +279,7 @@ for (const section of sectionRegistry.sections) {
       routePattern,
       implementationSource: routeSources[routePattern],
       kind: "page",
-      classification: routePattern.includes(":") ? "CONTEXTUAL_DYNAMIC" : "USER_NAVIGABLE",
+      classification: isDynamicRoutePattern(routePattern) ? "CONTEXTUAL_DYNAMIC" : "USER_NAVIGABLE",
       ownerProject: section.owner,
       productArea: "Personal Harbor",
       shellMode: "WORKSPACE_STANDARD",
@@ -290,7 +291,7 @@ for (const section of sectionRegistry.sections) {
       capabilityRequirements: [],
       returnOrBackRoute: section.return,
       emptyStateAction: "ROUTE_SPECIFIC_DESIGNED_STATE",
-      dynamicSourceRouteOrContentSource: routePattern.includes(":") ? section.return : null,
+      dynamicSourceRouteOrContentSource: isDynamicRoutePattern(routePattern) ? section.return : null,
       compatibilityAliases: section.compatibilityRoutesOrAnchors,
       redirects: [],
       currentSupportedStates: [],
@@ -314,7 +315,7 @@ for (const section of sectionRegistry.sections) {
     ...route.currentVisibleEntries.filter((entry) => entry.entryId !== entryId),
     {
       entryId,
-      sourceRouteOrFile: routePattern.includes(":")
+      sourceRouteOrFile: isDynamicRoutePattern(routePattern)
         ? routeSources[routePattern]
         : "src/components/homeport/PersonalHarborLayout.tsx",
       controlLabel: section.label,
@@ -587,7 +588,7 @@ for (const evidence of evidenceManifest.evidence) {
   const section = registryByRoute.get(route);
   visual.records.push({
     evidenceId: evidence.evidenceId,
-    sourceSha: startingSha,
+    sourceSha: visual.sourceSha,
     implementationAnchorSha,
     branch: evidenceManifest.branch,
     route,

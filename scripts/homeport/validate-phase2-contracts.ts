@@ -31,9 +31,9 @@ type NavigationRecord = {
   action: string | null;
 };
 
-const routes = readJson<{ routes: Array<{ routeId: string; routePattern: string; kind: string }> }>(
-  "Homeport_Route_Inventory.json",
-).routes;
+const routes = readJson<{
+  routes: Array<{ routeId: string; routePattern: string; kind: string; phase2Implementation?: unknown }>;
+}>("Homeport_Route_Inventory.json").routes;
 const modes = readJson<{
   validModes: ShellMode[];
   pageCount: number;
@@ -45,8 +45,9 @@ const navigation = readJson<{ layers: string[]; activePolicies: string[]; record
 );
 
 const pageRoutes = routes.filter((route) => route.kind.toLowerCase() === "page");
-if (modes.pageCount !== pageRoutes.length || modes.records.length !== pageRoutes.length)
-  fail(`PAGE_COUNT_MISMATCH:${modes.records.length}:${pageRoutes.length}`);
+const phase2PageRoutes = pageRoutes.filter((route) => route.phase2Implementation);
+if (modes.pageCount !== phase2PageRoutes.length || modes.records.length !== phase2PageRoutes.length)
+  fail(`PHASE_2_PAGE_COUNT_MISMATCH:${modes.records.length}:${phase2PageRoutes.length}`);
 if (!modes.apiRoutesExcluded || modes.records.some((record) => record.routePattern.startsWith("/api")))
   fail("API_ROUTE_CLASSIFIED_AS_PAGE");
 const validModes = new Set<ShellMode>([
@@ -61,7 +62,7 @@ const validModes = new Set<ShellMode>([
 ]);
 if (new Set(modes.validModes).size !== validModes.size || modes.validModes.some((mode) => !validModes.has(mode)))
   fail("INVALID_MODE_VOCABULARY");
-for (const route of pageRoutes) {
+for (const route of phase2PageRoutes) {
   const records = modes.records.filter((record) => record.routeId === route.routeId);
   if (records.length !== 1) fail(`PAGE_MODE_CARDINALITY:${route.routeId}:${records.length}`);
   const record = records[0];
@@ -74,8 +75,8 @@ for (const route of pageRoutes) {
 
 const navigationIds = navigation.records.map((record) => record.itemId);
 if (new Set(navigationIds).size !== navigationIds.length) fail("DUPLICATE_NAVIGATION_ID");
-const runtimeIds = navigationRegistry.map((item) => item.id).sort();
-if (JSON.stringify([...navigationIds].sort()) !== JSON.stringify(runtimeIds)) fail("RUNTIME_NAVIGATION_ID_DRIFT");
+const runtimeIds = new Set<string>(navigationRegistry.map((item) => item.id));
+if (navigationIds.some((itemId) => !runtimeIds.has(itemId))) fail("PHASE_2_RUNTIME_NAVIGATION_ID_LOST");
 for (const layer of ["GLOBAL", "WORKSPACE", "ACCOUNT", "CONTEXTUAL"])
   if (!navigation.layers.includes(layer)) fail(`MISSING_LAYER:${layer}`);
 for (const policy of ["EXACT", "SECTION", "DYNAMIC_FAMILY", "ALIAS_OF", "NEVER_ACTIVE"])

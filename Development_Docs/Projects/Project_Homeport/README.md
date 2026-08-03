@@ -8,7 +8,12 @@ last_reviewed: 2026-08-02
 
 # Project Homeport
 
-Project Homeport is the governed product-reality recovery and convergence program. Phase 0 preserves the historical current-state census. Phase 1 implements identity and session convergence. Phase 2 restores one global shell and wayfinding authority. Phase 3 now has a frozen Personal Harbor architecture; implementation and acceptance remain unproven until its governed records are completed.
+Project Homeport is the governed product-reality recovery and convergence
+program. Phase 0 preserves the historical current-state census. Phase 1
+implements identity and session convergence. Phase 2 restores one global shell
+and wayfinding authority. Phase 3 builds and validates the Personal Harbor on
+the same branch. These are branch-local results, not `main`, deployment, owner
+acceptance, or product acceptance.
 
 ## Authority
 
@@ -45,10 +50,11 @@ Project Homeport is the governed product-reality recovery and convergence progra
 
 - [Personal Harbor Architecture](Project_Homeport_Phase_3_Personal_Harbor_Architecture.md)
 - [Test Plan](Project_Homeport_Phase_3_Test_Plan.md)
-- [Planned Evidence](evidence/phase3/README.md)
-
-Implementation, validation, and integration records are added only after those
-states exist; the architecture freeze is not acceptance evidence.
+- [Implementation Report](Project_Homeport_Phase_3_Implementation_Report.md)
+- [Validation Record](Project_Homeport_Phase_3_Validation_Record.md)
+- [Integration Manifest](Project_Homeport_Phase_3_Integration_Manifest.md)
+- [Curated Evidence](evidence/phase3/README.md)
+- [Human Visual Review](evidence/phase3/Project_Homeport_Phase_3_Visual_Review.md)
 
 ## Phase 3 machine-readable records
 
@@ -77,6 +83,14 @@ states exist; the architecture freeze is not acceptance evidence.
 - `Homeport_Visual_Baseline_Manifest.json`
 - `Homeport_Nonconformity_Ledger.csv`
 
-These records retain Phase 0 observations and add explicit Phase 1 and Phase 2 implemented-state fields, A-Q and A-U journey records, and checksum-bound after-state evidence. The Phase 1 compatibility authority remains `Project_Homeport_Phase_1_Compatibility_Cutover_Ledger.csv`.
+These records retain Phase 0 observations and add explicit Phase 1-3
+implemented-state fields, A-Q, A-U, and A-AE journey records, and
+checksum-bound after-state evidence. The Phase 1 compatibility authority
+remains `Project_Homeport_Phase_1_Compatibility_Cutover_Ledger.csv`.
 
-Run `npm run homeport:phase2:inventory`, `npm run homeport:contracts:check`, and `npm run homeport:validate` to apply and verify the additive inventory, contract determinism, cross-references, committed screenshots/checksums, direct Phase 2 closures, and later-owner boundaries. `PRODUCT_NONCONFORMITIES_PRESENT` remains expected because later-phase findings remain open; it is not a validator failure.
+Run `npm run homeport:phase3:inventory`,
+`npm run homeport:phase3:validate`, and `npm run homeport:validate` to apply and
+verify the additive Phase 3 inventory, deterministic contracts,
+cross-references, committed screenshots/checksums, direct closures, and
+later-owner boundaries. `PRODUCT_NONCONFORMITIES_PRESENT` remains expected
+because later-phase findings remain open; it is not a validator failure.
