@@ -129,18 +129,27 @@ export function CommunityCardGrid({
               <div className="community-card__heading">
                 <p className="community-card__type">{card.contentType}</p>
                 <h3>
-                  <Link href={card.destination}>{card.title}</Link>
+                  <Link href={card.destination} prefetch={false}>
+                    {card.title}
+                  </Link>
                 </h3>
                 {card.creator ? (
                   <p className="community-card__creator">
-                    By <Link href={card.creator.destination}>{card.creator.displayName}</Link>
+                    By{" "}
+                    <Link href={card.creator.destination} prefetch={false}>
+                      {card.creator.displayName}
+                    </Link>
                   </p>
                 ) : null}
               </div>
               {card.summary ? <p className="community-card__summary">{card.summary}</p> : null}
               <CardMetadata card={card} />
               <div className="community-card__actions">
-                <Link className="community-button community-button--primary" href={card.primaryAction.href}>
+                <Link
+                  className="community-button community-button--primary"
+                  href={card.primaryAction.href}
+                  prefetch={false}
+                >
                   {card.primaryAction.label}
                 </Link>
                 {card.socialSubject ? (
