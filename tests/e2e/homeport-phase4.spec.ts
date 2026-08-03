@@ -574,8 +574,11 @@ test.describe.serial("Project Homeport Phase 4 Community Harbor acceptance", () 
       .getByRole("link", { name: "Chronicles" })
       .click();
     await expect(page).toHaveURL(/\/community\/chronicles$/u);
-    await page.getByRole("link", { name: "The Lantern Coast" }).click();
-    await expect(page).toHaveURL(/\/community\/lantern-coast-chronicle$/u);
+    await followLink(
+      page,
+      page.getByRole("link", { name: "The Lantern Coast" }),
+      /\/community\/lantern-coast-chronicle$/u,
+    );
     await assertNoOverflow(page);
     await capture(page, "HP-P4-EV-AF-mobile-detail", {
       screen: "Mobile listing detail",
@@ -633,6 +636,29 @@ test.describe.serial("Project Homeport Phase 4 Community Harbor acceptance", () 
       motionMode: "REDUCED",
     });
 
+    const keyboardPage = await page.context().newPage();
+    await keyboardPage.goto("/");
+    await tabToTarget(keyboardPage, { href: "/community" });
+    await keyboardPage.keyboard.press("Enter");
+    await expect(keyboardPage).toHaveURL(/\/community$/u);
+    await settleCurrentRoute(keyboardPage);
+    await tabToTarget(keyboardPage, { ariaLabel: "Search public Community Harbor" });
+    await keyboardPage.keyboard.type("Lantern Coast");
+    await keyboardPage.keyboard.press("Enter");
+    await expect(keyboardPage).toHaveURL(/q=Lantern\+Coast/u);
+    await tabToTarget(keyboardPage, { href: "/community/lantern-coast-chronicle" });
+    await keyboardPage.keyboard.press("Enter");
+    await expect(keyboardPage).toHaveURL(/\/community\/lantern-coast-chronicle$/u);
+    await settleCurrentRoute(keyboardPage);
+    await capture(keyboardPage, "HP-P4-EV-AM-keyboard-navigation", {
+      screen: "Keyboard-only Community detail",
+      district: "CHRONICLES",
+      journey: "AL",
+      accountState: "ANONYMOUS",
+      contentState: "KEYBOARD_NAVIGATION_COMPLETE",
+    });
+    await keyboardPage.close();
+
     const fullLoop = await playerContext.newPage();
     await enterHarbor(fullLoop);
     await fullLoop
@@ -640,20 +666,45 @@ test.describe.serial("Project Homeport Phase 4 Community Harbor acceptance", () 
       .getByRole("link", { name: "Chronicles" })
       .click();
     await expect(fullLoop).toHaveURL(/\/community\/chronicles$/u);
-    await fullLoop.getByRole("link", { name: "The Lantern Coast" }).first().click();
-    await expect(fullLoop).toHaveURL(/\/community\/lantern-coast-chronicle$/u);
-    await fullLoop.getByRole("link", { name: "Captain Almanac" }).first().click();
-    await expect(fullLoop).toHaveURL(/\/community\/creators\/captain-almanac$/u);
-    await fullLoop.getByRole("link", { name: "Harbor Starter Charts" }).first().click();
-    await expect(fullLoop).toHaveURL(/\/community\/collections\/harbor-starters$/u);
-    await fullLoop.getByRole("link", { name: "The Lantern Coast" }).first().click();
-    await expect(fullLoop).toHaveURL(/\/community\/lantern-coast-chronicle$/u);
+    await followLink(
+      fullLoop,
+      fullLoop.getByRole("link", { name: "The Lantern Coast" }).first(),
+      /\/community\/lantern-coast-chronicle$/u,
+    );
+    await followLink(
+      fullLoop,
+      fullLoop.getByRole("link", { name: "Captain Almanac" }).first(),
+      /\/community\/creators\/captain-almanac$/u,
+    );
+    await followLink(
+      fullLoop,
+      fullLoop.getByRole("link", { name: "Harbor Starter Charts" }).first(),
+      /\/community\/collections\/harbor-starters$/u,
+    );
+    await followLink(
+      fullLoop,
+      fullLoop.getByRole("link", { name: "The Lantern Coast" }).first(),
+      /\/community\/lantern-coast-chronicle$/u,
+    );
     await expect(fullLoop.getByRole("button", { name: "Unsave" })).toBeVisible();
-    await fullLoop.goto("/passport/saved");
-    await fullLoop.getByRole("link", { name: "Open in Community" }).first().click();
-    await fullLoop.getByRole("link", { name: "Harbor Home" }).click();
-    await fullLoop.getByRole("link", { name: "Home", exact: true }).first().click();
-    await expect(fullLoop).toHaveURL(/\/$/u);
+    await fullLoop.getByRole("button", { name: "Mara Testwake", exact: true }).click();
+    const accountMenu = fullLoop.locator("#shell-account-disclosure");
+    await expect(accountMenu).toBeVisible();
+    await followLink(
+      fullLoop,
+      accountMenu.getByRole("link", { name: "Chronicle Passport", exact: true }),
+      /\/passport$/u,
+    );
+    await followLink(
+      fullLoop,
+      fullLoop
+        .getByRole("navigation", { name: "Personal Harbor sections" })
+        .getByRole("link", { name: "Saved", exact: true }),
+      /\/passport\/saved$/u,
+    );
+    await followLink(fullLoop, fullLoop.getByRole("link", { name: "Open in Community" }).first(), /\/community\/.+$/u);
+    await followLink(fullLoop, fullLoop.getByRole("link", { name: "Harbor Home" }), /\/community$/u);
+    await followLink(fullLoop, fullLoop.getByRole("link", { name: "Home", exact: true }).first(), /\/$/u);
     await capture(fullLoop, "HP-P4-EV-AL-full-community-loop", {
       screen: "Full Community loop returned Home",
       district: "GATEWAY",
@@ -674,7 +725,14 @@ async function signedInContext(browser: Browser, username: string) {
 
 async function enterHarbor(page: Page) {
   await page.goto("/");
-  await page.getByRole("link", { name: "Community Harbor" }).first().click();
+  const communityLink = page
+    .getByRole("navigation", { name: "Global navigation" })
+    .getByRole("link", { name: "Community Harbor", exact: true });
+  if (!(await communityLink.isVisible())) {
+    await page.getByRole("button", { name: "Open navigation" }).click();
+    await expect(communityLink).toBeVisible();
+  }
+  await communityLink.click();
   await expect(page).toHaveURL(/\/community$/u);
   await settleCurrentRoute(page);
   await expect(page.getByRole("heading", { name: "Find your next bearing" })).toBeVisible();
@@ -699,6 +757,19 @@ async function settleCurrentRoute(page: Page) {
   await expect(routeLayer).toHaveCount(1);
   await expect(routeLayer).toHaveCSS("opacity", "1");
   await expect(routeLayer).toHaveCSS("transform", "none");
+}
+
+async function tabToTarget(page: Page, target: { href?: string; ariaLabel?: string }) {
+  for (let index = 0; index < 240; index += 1) {
+    const active = await page.evaluate(() => ({
+      href: document.activeElement?.getAttribute("href") ?? undefined,
+      ariaLabel: document.activeElement?.getAttribute("aria-label") ?? undefined,
+    }));
+    if ((!target.href || active.href === target.href) && (!target.ariaLabel || active.ariaLabel === target.ariaLabel))
+      return;
+    await page.keyboard.press("Tab");
+  }
+  throw new Error(`Keyboard traversal did not reach ${JSON.stringify(target)}.`);
 }
 
 async function capture(
