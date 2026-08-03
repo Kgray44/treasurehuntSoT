@@ -192,6 +192,11 @@ describe("Quartermaster command presentation receipts", () => {
     vi.restoreAllMocks();
   });
 
+  it("returns directly to the canonical Captain library", async () => {
+    await renderReady(vi.fn().mockResolvedValue(jsonResponse(statusAt(0))));
+    expect(screen.getByRole("link", { name: "Voyage dashboard" })).toHaveAttribute("href", "/captain/library");
+  });
+
   it("preflights a boxed login host with every required cinematic target inside its geometry", () => {
     renderQuartermaster(false);
     const host = document.querySelector<HTMLElement>('[data-scene-host-boundary="access"]');

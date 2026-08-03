@@ -13,7 +13,7 @@ const evidenceRoot = path.resolve(
   process.env.HOMEPORT_PHASE5_EVIDENCE_ROOT ??
     path.join("Development_Docs", "Projects", "Project_Homeport", "evidence", "phase5"),
 );
-const fixtureVersion = "homeport-phase5-route-reachability-v1";
+const fixtureVersion = "homeport-phase5-route-reachability-v2";
 let fixtureChecksum = "UNAVAILABLE_OUTSIDE_PHASE5_RUNTIME";
 let secrets: Record<string, string> = {};
 const sourceSha = execFileSync("git", ["rev-parse", "HEAD"], { encoding: "utf8" }).trim();
@@ -724,12 +724,6 @@ test.describe.serial("Project Homeport Phase 5 route reachability acceptance", (
         profile: "full" as const,
       },
       {
-        routeId: "route-page-quartermaster-workspace",
-        source: "/quartermaster/control",
-        target: /\/captain\/library/u,
-        profile: "full" as const,
-      },
-      {
         routeId: "route-page-player-playthroughs-playthroughid-archive",
         source: "/player/playthroughs/hp5-session-active/archive",
         target: /\/player\/playthroughs\/hp5-session-active\/journal$/u,
@@ -779,13 +773,42 @@ test.describe.serial("Project Homeport Phase 5 route reachability acceptance", (
       await page.close();
     }
 
+    const quartermaster = await pageForProfile(browser, "full");
+    await quartermaster.goto("/quartermaster/voyage");
+    await expect(quartermaster).toHaveURL(/\/quartermaster\/voyage$/u);
+    await settleCurrentRoute(quartermaster);
+    await expect(quartermaster.locator("main")).toBeVisible();
+    const quartermasterExit = quartermaster.getByRole("link", { name: "Exit to Captain Voyages" });
+    await expect(quartermasterExit).toHaveAttribute("href", "/captain/library");
+    await quartermasterExit.click();
+    await expect(quartermaster).toHaveURL(/\/captain\/library$/u);
+    await settleCurrentRoute(quartermaster);
+    receipts.push(
+      routeReceipt({
+        routeId: "route-page-quartermaster-workspace",
+        routePattern: "/quartermaster/[workspace]",
+        observedPath: "/quartermaster/voyage",
+        classification: "CANONICAL_CONTEXT_ADAPTER",
+        profile: "full",
+        naturalPath: ["CANONICAL_TARGET_PROVED_FIRST", "/quartermaster/voyage"],
+        controls: ["Exit to Captain Voyages"],
+        returnResult: "DIRECT_CANONICAL_CAPTAIN_LIBRARY_EXIT",
+      }),
+    );
+    await quartermaster.close();
+
     const talePage = await browser.newPage();
-    await traverseFromGateway(talePage, ["/tales", "/play/hp4-lantern-coast"], "/play/hp4-lantern-coast");
-    await talePage.getByRole("button", { name: /Begin Voyage/u }).click();
-    await expect(talePage).toHaveURL(/\/play\/hp4-lantern-coast\/session\/[^/?#]+$/u);
-    const canonicalSession = new URL(talePage.url()).pathname;
     await talePage.goto("/tale/hp4-lantern-coast");
+    await expect(talePage.getByRole("heading", { name: "Confirm your invitation" })).toBeVisible();
+    await talePage.getByLabel("Invitation phrase").fill(secrets.legacyInvitation);
+    await talePage.getByRole("button", { name: "Confirm invitation" }).click();
+    const canonicalSession = "/play/hp4-lantern-coast/session/hp5-session-ready";
     await expect(talePage).toHaveURL(new RegExp(`${escapeRegExp(canonicalSession)}$`, "u"));
+    await settleCurrentRoute(talePage);
+    await expect(talePage.getByRole("link", { name: "Return to Chronicle Library" })).toHaveAttribute(
+      "href",
+      "/player/library",
+    );
     receipts.push(
       routeReceipt({
         routeId: "route-page-tale-campaignslug",
@@ -794,7 +817,7 @@ test.describe.serial("Project Homeport Phase 5 route reachability acceptance", (
         classification: "CANONICAL_CONTEXT_ADAPTER",
         profile: "anonymous",
         naturalPath: ["CANONICAL_SESSION_PROVED_FIRST", "/tale/hp4-lantern-coast"],
-        controls: ["Continue to canonical destination"],
+        controls: ["Invitation phrase", "Confirm invitation", "Return to Chronicle Library"],
         returnResult: "CANONICAL_TARGET_HAS_CONTEXTUAL_EXIT",
       }),
     );

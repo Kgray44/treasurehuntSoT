@@ -2,13 +2,14 @@ import { createHash, randomBytes } from "node:crypto";
 import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { PrismaClient } from "@prisma/client";
+import bcrypt from "bcryptjs";
 
 const db = new PrismaClient();
 const databaseUrl = process.env.DATABASE_URL ?? "";
 const taskRoot = path.resolve(process.env.HOMEPORT_PHASE5_TASK_ROOT ?? "");
 const databasePath = databaseUrl.startsWith("file:") ? path.resolve(databaseUrl.slice(5)) : "";
 const canonicalDatabase = path.resolve("C:/Users/kkids/Documents/Codex_TreasureHunt/prisma/dev.db");
-const fixtureVersion = "homeport-phase5-route-reachability-v1";
+const fixtureVersion = "homeport-phase5-route-reachability-v2";
 const createdAt = new Date("2026-08-03T18:00:00.000Z");
 const hashToken = (value) => createHash("sha256").update(value).digest("hex");
 const secret = () => randomBytes(36).toString("base64url");
@@ -347,7 +348,51 @@ async function seed() {
     invitationValid: secret(),
     invitationExpired: secret(),
     invitationRevoked: secret(),
+    legacyInvitation: secret(),
   };
+  const legacyCampaign = await db.campaign.upsert({
+    where: { slug: tale.slug },
+    update: {
+      title: tale.title,
+      status: "ACTIVE",
+      accessCodeHash: await bcrypt.hash(secrets.legacyInvitation, 4),
+    },
+    create: {
+      id: "hp5-legacy-campaign",
+      slug: tale.slug,
+      title: tale.title,
+      status: "ACTIVE",
+      accessCodeHash: await bcrypt.hash(secrets.legacyInvitation, 4),
+    },
+  });
+  await db.legacyEntityReference.deleteMany({
+    where: {
+      sourceDomain: "legacy-companion",
+      sourceModel: "Campaign",
+      sourceId: legacyCampaign.id,
+      migrationVersion: "project-one-voyage-v1",
+    },
+  });
+  const legacySourceChecksum = hashToken(
+    JSON.stringify({ campaignId: legacyCampaign.id, taleId: tale.id, versionId: version.id, sessionId: ready.id }),
+  );
+  await db.legacyEntityReference.createMany({
+    data: [
+      ["Chronicle", tale.id],
+      ["PublishedTaleVersion", version.id],
+      ["TaleSession", ready.id],
+    ].map(([canonicalModel, canonicalId]) => ({
+      sourceDomain: "legacy-companion",
+      sourceModel: "Campaign",
+      sourceId: legacyCampaign.id,
+      canonicalModel,
+      canonicalId,
+      migrationVersion: "project-one-voyage-v1",
+      sourceChecksum: legacySourceChecksum,
+      migratedAt: createdAt,
+      verifiedAt: createdAt,
+    })),
+  });
   await db.accountToken.deleteMany({ where: { id: { startsWith: "hp5-token-" } } });
   await db.accountToken.createMany({
     data: [
@@ -436,6 +481,7 @@ async function seed() {
       history: "hp5-history-route",
       artifact: "hp5-artifact-route",
       moderationCase: "hp5-moderation-case",
+      legacyCampaign: legacyCampaign.id,
     },
     accountStates: ["PLAYER", "CAPTAIN_CREATOR_PLAYER", "MODERATOR", "RESTRICTED"],
     secretKinds: Object.keys(secrets),

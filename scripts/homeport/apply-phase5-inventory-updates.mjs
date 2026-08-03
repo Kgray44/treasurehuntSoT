@@ -282,7 +282,7 @@ const compatibilitySourceFiles = {
   "/captain/invitations": ["src/app/captain/invitations/page.tsx", "tab=invitations"],
   "/studio": ["src/app/studio/page.tsx", "studio/library"],
   "/quartermaster": ["src/app/quartermaster/page.tsx", "captain/library"],
-  "/quartermaster/[workspace]": ["src/components/gm/Quartermaster.tsx", "/captain"],
+  "/quartermaster/[workspace]": ["src/components/gm/Quartermaster.tsx", "/captain/library"],
   "/tale/[campaignSlug]": ["src/app/tale/[campaignSlug]/page.tsx", "redirect("],
   "/player/playthroughs/[playthroughId]/archive": [
     "src/app/player/playthroughs/[playthroughId]/archive/page.tsx",
