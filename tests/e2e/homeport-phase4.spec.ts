@@ -370,10 +370,12 @@ test.describe.serial("Project Homeport Phase 4 Community Harbor acceptance", () 
     expect(projectionWire).not.toContain("fictional harbor district");
     expect(projectionWire).not.toContain("storageKey");
 
-    const privateCollection = await page.request.get("/community/collections/private-curator-notes");
-    expect(privateCollection.status()).toBe(404);
-    const quarantined = await page.goto("/community/quarantined-signal");
-    expect(quarantined?.status()).toBe(404);
+    await expectUnavailableWithoutLeakage(
+      page,
+      "/community/collections/private-curator-notes",
+      "Private Curator Notes",
+    );
+    await expectUnavailableWithoutLeakage(page, "/community/quarantined-signal", "Hidden fixture quarantined-signal");
     await capture(page, "HP-P4-EV-AB-quarantined-content", {
       screen: "Unavailable quarantined listing",
       district: "CHRONICLES",
@@ -381,8 +383,11 @@ test.describe.serial("Project Homeport Phase 4 Community Harbor acceptance", () 
       accountState: "ANONYMOUS",
       contentState: "NOT_FOUND_WITHOUT_LEAKAGE",
     });
-    const archived = await page.goto("/community/archived-superseded-chart");
-    expect(archived?.status()).toBe(404);
+    await expectUnavailableWithoutLeakage(
+      page,
+      "/community/archived-superseded-chart",
+      "Hidden fixture archived-superseded-chart",
+    );
     await capture(page, "HP-P4-EV-AC-archived-removed", {
       screen: "Unavailable archived listing",
       district: "CHRONICLES",
@@ -390,9 +395,13 @@ test.describe.serial("Project Homeport Phase 4 Community Harbor acceptance", () 
       accountState: "ANONYMOUS",
       contentState: "NOT_FOUND_WITHOUT_LEAKAGE",
     });
-    expect((await page.request.get("/community/removed-old-chart")).status()).toBe(404);
-    expect((await page.request.get("/community/sealed-drawer-private")).status()).toBe(404);
-    expect((await page.request.get("/community/unlisted-moon-chart")).status()).toBe(404);
+    await expectUnavailableWithoutLeakage(page, "/community/removed-old-chart", "Hidden fixture removed-old-chart");
+    await expectUnavailableWithoutLeakage(
+      page,
+      "/community/sealed-drawer-private",
+      "Hidden fixture sealed-drawer-private",
+    );
+    await expectUnavailableWithoutLeakage(page, "/community/unlisted-moon-chart", "Hidden fixture unlisted-moon-chart");
   });
 
   test("C, S-U, AA-AC, AH-AI, AO-AQ: authenticated, restricted, moderator, and cross-surface state", async () => {
@@ -703,6 +712,13 @@ async function assertNoOverflow(page: Page) {
   expect(
     await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth + 1),
   ).toBeTruthy();
+}
+
+async function expectUnavailableWithoutLeakage(page: Page, route: string, forbiddenTitle: string) {
+  await page.goto(route);
+  await expect(page).toHaveURL(new RegExp(`${route}$`, "u"));
+  await expect(page.locator("body")).not.toContainText(forbiddenTitle);
+  await expect(page.locator("body")).toContainText(/not found|could not be found|404/u);
 }
 
 async function snapshotPublicEligibility() {
