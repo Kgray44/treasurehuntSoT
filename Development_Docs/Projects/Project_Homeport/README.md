@@ -17,6 +17,10 @@ that branch; implementation and validation are separately evidenced. These
 are branch-local results, not `main`, deployment, owner acceptance, or product
 acceptance.
 
+Phase 5 route-reachability architecture is frozen on the same retained branch.
+Implementation, browser proof, and Sounding Line closure remain separate from
+the architecture checkpoint.
+
 ## Authority
 
 - [Project Homeport Governing Document](Project_Homeport_Governing_Document.md) — searchable normative transcription.
@@ -83,6 +87,17 @@ acceptance.
 - `Project_Homeport_Phase_4_District_State_Matrix.csv`
 - `Project_Homeport_Phase_4_Mutation_State_Matrix.csv`
 - `Project_Homeport_Phase_4_Desktop_Mobile_Parity_Matrix.csv`
+
+## Phase 5 architecture records
+
+- [Route Reachability Architecture](Project_Homeport_Phase_5_Route_Reachability_Architecture.md)
+- [Test Plan](Project_Homeport_Phase_5_Test_Plan.md)
+
+The Phase 5 node/edge graph, route matrices, implementation report, evidence,
+validation record, and integration manifest are created during the separately
+validated implementation checkpoint. Phase 5 remains branch-only and does not
+establish Phase 6, Phase 7, deployment, owner acceptance, or product
+acceptance.
 
 ## Phase 2 machine-readable records
 

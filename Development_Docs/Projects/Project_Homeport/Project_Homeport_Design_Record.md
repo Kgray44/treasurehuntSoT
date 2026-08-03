@@ -237,3 +237,33 @@ card DTO that excludes lifecycle and authorization fields.
 No implementation, test result, evidence, nonconformity closure, merge,
 deployment, Phase 5 work, owner acceptance, or product acceptance is
 established by this freeze.
+
+## Phase 5 architecture freeze amendment
+
+**Decision date:** 2026-08-03. **Source boundary:** completed Phase 4
+publication SHA `54372224fc9bf4b4fb42797ca58a5a224ffdb92a`; fetched
+`origin/main` and merge base
+`8d142227d712d27e363b15903dba9b0c99a04bc8`. The canonical development
+database starts at SHA-256
+`DF33983556CF2C6FF01DF6084AE6619EC5DF5C99B11241FA88B4A88F8E144EEB`.
+
+The architecture is frozen in [Project Homeport Phase 5 Route Reachability
+Architecture](Project_Homeport_Phase_5_Route_Reachability_Architecture.md) and
+its [test plan](Project_Homeport_Phase_5_Test_Plan.md). True North continues to
+own navigation mechanics; Homeport Phase 5 owns source-driven route census,
+exclusive route disposition, permission-aware node/edge reachability, dynamic
+source contracts, token/compatibility safety, parent/return architecture,
+desktop/mobile equivalence, natural gateway-first proof, and automated orphan
+enforcement.
+
+The current source boundary contains 85 page sources and 174 route-handler
+sources. All page sources are present in the existing inventory; seven current
+service sources are missing and require additive reconciliation. Existing
+direct-URL/orphan flags are inputs, not accepted current truth, because several
+predate the Phase 3 section and Phase 4 district/card source registries.
+
+No schema or migration change is justified. The freeze introduces no new
+identity, Community, Player, Captain, Studio, private-media, animation, or test
+authority. It does not establish implementation, browser proof, evidence,
+HP-NC-014 closure, Sounding Line release authority, merge, deployment, Phase 6,
+Phase 7, owner acceptance, or product acceptance.
