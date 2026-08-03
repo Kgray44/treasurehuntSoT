@@ -15,6 +15,7 @@ import "../styles/studio.css";
 import "../styles/chronicle.css";
 import "../styles/platform.css";
 import "../styles/personal-harbor.css";
+import "../styles/community.css";
 
 export const metadata: Metadata = {
   applicationName: canonicalTerms.product,

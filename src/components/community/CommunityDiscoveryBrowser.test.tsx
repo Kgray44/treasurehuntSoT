@@ -6,8 +6,36 @@ vi.mock("next/navigation", () => ({
   useRouter: () => ({ push }),
   useSearchParams: () => new URLSearchParams(window.location.search),
 }));
+vi.mock("@/components/auth/CurrentUserProvider", () => ({
+  useCurrentUser: () => ({ state: { status: "anonymous", authenticated: false } }),
+}));
 
 import { CommunityDiscoveryBrowser } from "./CommunityDiscoveryBrowser";
+
+const publicCard = {
+  id: "listing-1",
+  variant: "CHRONICLE" as const,
+  itemType: "CHRONICLE",
+  contentType: "Chronicle",
+  destination: "/community/public-chart",
+  artwork: {
+    kind: "GOVERNED_FALLBACK" as const,
+    state: "MISSING" as const,
+    motif: "CHRONICLE" as const,
+    label: "Chronicle artwork unavailable",
+  },
+  imageState: "FALLBACK" as const,
+  title: "Public chart",
+  summary: "Safe summary",
+  creator: {
+    id: "creator-1",
+    handle: "captain",
+    displayName: "Captain Rowan",
+    destination: "/community/creators/captain",
+  },
+  updatedAt: "2026-08-03T00:00:00.000Z",
+  primaryAction: { label: "View details", href: "/community/public-chart" },
+};
 
 describe("CommunityDiscoveryBrowser", () => {
   afterEach(() => {
@@ -17,69 +45,82 @@ describe("CommunityDiscoveryBrowser", () => {
     window.history.replaceState({}, "", "/community");
   });
 
-  it("loads persisted discovery results and writes q and sort to the URL", async () => {
-    const fetch = vi.fn().mockResolvedValue(
-      new Response(
-        JSON.stringify({
-          items: [
-            {
-              id: "listing-1",
-              itemType: "CHRONICLE",
-              title: "Public chart",
-              safeSummary: "Safe summary",
-              creatorHandle: "captain",
-            },
-          ],
-        }),
-        { status: 200 },
-      ),
-    );
+  it("keeps the default Harbor content-first and starts search through a human URL", () => {
+    const fetch = vi.fn();
     vi.stubGlobal("fetch", fetch);
     render(<CommunityDiscoveryBrowser />);
-    expect(screen.getByRole("status")).toHaveTextContent("Loading public");
-    expect(await screen.findByRole("heading", { name: "Public chart" })).toBeInTheDocument();
-    fireEvent.change(screen.getByLabelText("Search public Community Harbor"), { target: { value: "coast" } });
+
+    expect(fetch).not.toHaveBeenCalled();
+    expect(screen.getByText("The Harbor shelves above are ready to browse without a search.")).toBeInTheDocument();
+    fireEvent.change(screen.getByRole("searchbox", { name: "Search public Community Harbor" }), {
+      target: { value: "coast" },
+    });
     fireEvent.submit(screen.getByRole("search"));
     expect(push).toHaveBeenLastCalledWith("/community?q=coast", { scroll: false });
-    fireEvent.change(screen.getByLabelText("Sort results"), { target: { value: "NEWEST" } });
-    expect(push).toHaveBeenLastCalledWith("/community?sort=NEWEST", { scroll: false });
-    expect(fetch).toHaveBeenCalledWith("/api/community/discover?sort=FEATURED", expect.anything());
   });
 
-  it("provides clear and retry controls for empty and failed requests", async () => {
-    const fetch = vi
-      .fn()
-      .mockResolvedValueOnce(new Response(JSON.stringify({ items: [] }), { status: 200 }))
-      .mockResolvedValueOnce(new Response(JSON.stringify({ message: "Try again" }), { status: 503 }));
+  it("loads allowlisted cards for active criteria and preserves individual URL parameters", async () => {
+    window.history.replaceState({}, "", "/community?q=coast&sort=NEWEST&type=CHRONICLE");
+    const fetch = vi.fn().mockResolvedValue(new Response(JSON.stringify({ items: [publicCard] }), { status: 200 }));
     vi.stubGlobal("fetch", fetch);
     render(<CommunityDiscoveryBrowser />);
-    expect(await screen.findByText("No public charts matched this search")).toBeInTheDocument();
-    fireEvent.click(screen.getByRole("button", { name: "Clear search and filters" }));
-    expect(push).toHaveBeenCalledWith("/community?sort=FEATURED", { scroll: false });
+
+    expect(screen.getByRole("status")).toHaveTextContent("Charting public results");
+    expect(await screen.findByRole("heading", { name: "Public chart" })).toBeInTheDocument();
+    expect(screen.getByText("Captain Rowan")).toBeInTheDocument();
+    expect(fetch).toHaveBeenCalledWith(
+      "/api/community/discover?q=coast&sort=NEWEST&type=CHRONICLE",
+      expect.objectContaining({ cache: "no-store" }),
+    );
+
+    fireEvent.change(screen.getByLabelText("Duration"), { target: { value: "UNDER_60" } });
+    expect(push).toHaveBeenLastCalledWith("/community?q=coast&sort=NEWEST&type=CHRONICLE&duration=UNDER_60", {
+      scroll: false,
+    });
   });
 
-  it("serializes visible filters into the governed discovery request and URL", async () => {
+  it("distinguishes no matches from the default shelves and clears all discovery state", async () => {
+    window.history.replaceState({}, "", "/community?q=lost&type=MAP&free=1");
     const fetch = vi.fn().mockResolvedValue(new Response(JSON.stringify({ items: [] }), { status: 200 }));
     vi.stubGlobal("fetch", fetch);
     render(<CommunityDiscoveryBrowser />);
-    await screen.findByText("No public charts matched this search");
-    fireEvent.click(screen.getByLabelText("Chronicle"));
-    expect(push).toHaveBeenLastCalledWith("/community?filters=%7B%22itemTypes%22%3A%5B%22CHRONICLE%22%5D%7D", {
-      scroll: false,
-    });
-    fireEvent.click(screen.getByLabelText("Free content only"));
-    expect(push).toHaveBeenLastCalledWith("/community?filters=%7B%22freeOnly%22%3Atrue%7D", { scroll: false });
+
+    expect(await screen.findByRole("heading", { name: "No public charts match these criteria" })).toBeInTheDocument();
+    expect(
+      screen.queryByText("The Harbor shelves above are ready to browse without a search."),
+    ).not.toBeInTheDocument();
+    fireEvent.click(screen.getAllByRole("button", { name: "Clear search and filters" })[0]);
+    expect(push).toHaveBeenCalledWith("/community", { scroll: false });
   });
 
-  it("announces failures and retries without exposing an implementation detail", async () => {
+  it("announces a safe failure and retries the unchanged request", async () => {
+    window.history.replaceState({}, "", "/community?q=coast");
     const fetch = vi
       .fn()
-      .mockResolvedValueOnce(new Response(JSON.stringify({ message: "Try again" }), { status: 503 }))
+      .mockResolvedValueOnce(new Response(JSON.stringify({ message: "Please try again shortly." }), { status: 503 }))
       .mockResolvedValueOnce(new Response(JSON.stringify({ items: [] }), { status: 200 }));
     vi.stubGlobal("fetch", fetch);
     render(<CommunityDiscoveryBrowser />);
-    expect(await screen.findByRole("alert")).toHaveTextContent("Try again");
-    fireEvent.click(screen.getByRole("button", { name: "Retry discovery" }));
+
+    expect(await screen.findByRole("alert")).toHaveTextContent("Please try again shortly.");
+    fireEvent.click(screen.getByRole("button", { name: "Try again" }));
     await waitFor(() => expect(fetch).toHaveBeenCalledTimes(2));
+    expect(await screen.findByRole("heading", { name: "No public charts match these criteria" })).toBeInTheDocument();
+  });
+
+  it("writes advanced and repeated filters as readable parameters", () => {
+    window.history.replaceState({}, "", "/community?q=coast");
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue(new Response(JSON.stringify({ items: [] }), { status: 200 })));
+    render(<CommunityDiscoveryBrowser />);
+
+    fireEvent.click(screen.getByLabelText("Chronicles"));
+    expect(push).toHaveBeenLastCalledWith("/community?q=coast&type=CHRONICLE", { scroll: false });
+    fireEvent.click(screen.getByLabelText("Free content only"));
+    fireEvent.change(screen.getByLabelText("Theme"), { target: { value: "mystery" } });
+    fireEvent.click(screen.getByRole("button", { name: "Apply advanced filters" }));
+    expect(push).toHaveBeenLastCalledWith("/community?q=coast&theme=mystery&free=1", { scroll: false });
+    fireEvent.click(screen.getByRole("button", { name: "Reset advanced filters" }));
+    expect(push).toHaveBeenLastCalledWith("/community?q=coast", { scroll: false });
+    expect(screen.getByText(/Advanced filters/u, { selector: "summary" })).toHaveFocus();
   });
 });

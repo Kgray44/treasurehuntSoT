@@ -66,6 +66,8 @@
     "homeport:phase3:validate": "node scripts/homeport/validate-phase3-contracts.mjs",
     "homeport:phase2:e2e": "playwright test -c playwright.homeport-phase2.config.ts",
     "homeport:phase3:e2e": "playwright test -c playwright.homeport-phase3.config.ts",
+    "homeport:phase4:fixture": "node scripts/homeport/seed-phase4-fixture.mjs",
+    "homeport:phase4:e2e": "playwright test -c playwright.homeport-phase4.config.ts",
     "docs:index": "node scripts/generate-document-index.mjs",
     "docs:validate": "node scripts/validate-documentation.mjs",
     "test:docs": "node --test tests/validate-documentation.test.mjs",

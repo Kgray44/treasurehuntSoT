@@ -1,0 +1,69 @@
+{
+  "schemaVersion": "1.0.0",
+  "fixtureVersion": "homeport-phase4-synthetic-v1",
+  "classification": "SYNTHETIC_TEST_DATA",
+  "reservedEmailDomain": "example.test",
+  "accounts": [
+    { "id": "hp4-account-player", "role": "PLAYER", "state": "ACTIVE" },
+    { "id": "hp4-account-creator", "role": "PLAYER_CREATOR", "state": "ACTIVE" },
+    { "id": "hp4-account-empty-creator", "role": "PLAYER_CREATOR", "state": "ACTIVE" },
+    { "id": "hp4-account-moderator", "role": "MODERATOR", "state": "ACTIVE" },
+    { "id": "hp4-account-restricted", "role": "PLAYER", "state": "SUSPENDED" },
+    { "id": "hp4-account-blocked", "role": "PLAYER_CREATOR", "state": "ACTIVE" }
+  ],
+  "publicCreators": ["captain-almanac", "maker-lumen", "fog-bank-maker"],
+  "publicListings": [
+    "lantern-coast-chronicle",
+    "paper-stars-chronicle",
+    "clockwork-reef-chronicle",
+    "signal-flag-artifact",
+    "paper-compass-artifact",
+    "glass-beacon-artifact",
+    "quiet-watch-template",
+    "fictional-crescent-map-pack",
+    "harbor-bell-audio-pack",
+    "fog-bank-blocked-chronicle"
+  ],
+  "ineligibleListings": [
+    "sealed-drawer-private",
+    "unlisted-moon-chart",
+    "quarantined-signal",
+    "removed-old-chart",
+    "archived-superseded-chart"
+  ],
+  "collections": ["harbor-starters", "empty-chart-case", "private-curator-notes"],
+  "guides": ["reading-the-weathered-chart", "shipwrights-accessibility-check"],
+  "voyageLogs": ["fictional-lantern-voyage"],
+  "syntheticScenarios": [
+    "anonymous",
+    "authenticated",
+    "moderator",
+    "restricted",
+    "creator-with-no-work",
+    "featured",
+    "recently-launched",
+    "recently-updated",
+    "saved",
+    "followed",
+    "self-follow-denial",
+    "blocked",
+    "missing-artwork",
+    "failed-media",
+    "no-results",
+    "district-empty-variant",
+    "harbor-empty-variant",
+    "dependency-unavailable",
+    "save-failure",
+    "install-remix-unavailable"
+  ],
+  "privacyAssertions": [
+    "No copied Chronicle prose",
+    "No accepted answers",
+    "No real personal photographs",
+    "No real private locations",
+    "No exact coordinates",
+    "No real object keys"
+  ],
+  "reset": "Recreate the task-owned E2E database from the task-owned Phase 4 source copy, then run scripts/homeport/seed-phase4-fixture.mjs.",
+  "cleanup": "Remove only the task-owned Phase 4 E2E database, media roots, browser state, and raw Playwright output after validation. No database is committed."
+}

@@ -1,8 +1,9 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
-import Link from "next/link";
-import { FormEvent, useCallback, useEffect, useMemo, useState } from "react";
+import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
+import type { HomeportCommunityCard } from "@/community/homeport";
+import { CommunityCardGrid } from "./CommunityCardGrid";
 
 const sortOptions = [
   ["FEATURED", "Featured"],
@@ -14,69 +15,125 @@ const sortOptions = [
   ["MOST_COMPLETED", "Most completed"],
   ["MOST_SAVED", "Most saved"],
 ] as const;
-const itemTypeOptions = ["CHRONICLE", "ARTIFACT", "TEMPLATE", "MAP", "AUDIO"] as const;
-const difficultyOptions = ["EASY", "MODERATE", "CHALLENGING", "EXPERT"] as const;
+const itemTypeOptions = [
+  ["CHRONICLE", "Chronicles"],
+  ["ARTIFACT", "Artifacts"],
+  ["TEMPLATE", "Templates"],
+  ["MAP", "Maps"],
+  ["AUDIO", "Audio and reveals"],
+] as const;
+const difficultyOptions = [
+  ["EASY", "Easy"],
+  ["MODERATE", "Moderate"],
+  ["CHALLENGING", "Challenging"],
+  ["EXPERT", "Expert"],
+] as const;
+const environmentOptions = [
+  ["INDOOR", "Indoor"],
+  ["OUTDOOR", "Outdoor"],
+  ["MIXED", "Mixed"],
+] as const;
+const accessibilityOptions = [
+  ["CAPTIONS", "Captions"],
+  ["TRANSCRIPT", "Transcript"],
+  ["NON_3D_FALLBACK", "Non-3D fallback"],
+  ["REDUCED_MOTION", "Reduced motion"],
+  ["KEYBOARD_ONLY", "Keyboard only"],
+  ["SCREEN_READER_SUMMARY", "Screen-reader summary"],
+  ["NO_AUDIO_REQUIRED", "No audio required"],
+  ["NO_TRAVEL_REQUIRED", "No travel required"],
+] as const;
+const durationOptions = [
+  ["", "Any length"],
+  ["UNDER_60", "Under 1 hour"],
+  ["ONE_TO_TWO_HOURS", "1 to 2 hours"],
+  ["OVER_TWO_HOURS", "Over 2 hours"],
+] as const;
+const playerOptions = [
+  ["", "Any Crew size"],
+  ["SOLO", "Solo"],
+  ["TWO_TO_FOUR", "2 to 4 Players"],
+  ["FIVE_PLUS", "5 or more Players"],
+] as const;
+const discoveryKeys = [
+  "q",
+  "sort",
+  "type",
+  "duration",
+  "difficulty",
+  "players",
+  "theme",
+  "environment",
+  "accessibility",
+  "free",
+  "remixable",
+] as const;
 
-type DiscoveryFilters = {
-  itemTypes?: string[];
-  difficulties?: string[];
-  freeOnly?: boolean;
-  remixable?: boolean;
+type DiscoveryResponse = { items: HomeportCommunityCard[]; nextCursor?: string };
+type AdvancedDraft = {
+  difficulties: string[];
+  players: string;
+  theme: string;
+  environments: string[];
+  accessibility: string[];
+  free: boolean;
+  remixable: boolean;
 };
-
-type DiscoveryItem = {
-  id: string;
-  slug?: string;
-  itemType: string;
-  title: string;
-  safeSummary: string | null;
-  creatorHandle: string;
-  publishedAt: string | null;
-};
-type DiscoveryResponse = { items: DiscoveryItem[]; nextCursor?: string };
 type DiscoveryLoad =
-  | { requestKey: string; state: "ready" | "empty"; items: DiscoveryItem[]; error: "" }
-  | { requestKey: string; state: "error"; items: DiscoveryItem[]; error: string };
+  | { requestKey: string; state: "ready" | "empty"; items: HomeportCommunityCard[]; error: "" }
+  | { requestKey: string; state: "error"; items: []; error: string };
 
-export function CommunityDiscoveryBrowser() {
+export function CommunityDiscoveryBrowser({
+  basePath = "/community",
+  lockedType,
+  heading = "Search the Harbor",
+}: {
+  basePath?: string;
+  lockedType?: (typeof itemTypeOptions)[number][0];
+  heading?: string;
+}) {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const query = searchParams.get("q") ?? "";
-  const sortParameter = searchParams.get("sort");
-  const sort = isSort(sortParameter) ? sortParameter : "FEATURED";
-  const rawFilters = searchParams.get("filters");
-  const filters = useMemo(() => readFilters(rawFilters), [rawFilters]);
+  const rawParameters = searchParams.toString();
+  const current = useMemo(() => new URLSearchParams(rawParameters), [rawParameters]);
   const [retryKey, setRetryKey] = useState(0);
   const [load, setLoad] = useState<DiscoveryLoad | null>(null);
-  const requestKey = useMemo(
-    () => JSON.stringify({ query, sort, filters, retryKey }),
-    [filters, query, retryKey, sort],
-  );
-  const state = load?.requestKey === requestKey ? load.state : "loading";
+  const [advancedState, setAdvancedState] = useState<{ source: string; value: AdvancedDraft }>(() => ({
+    source: rawParameters,
+    value: advancedDraftFrom(current),
+  }));
+  const advancedDraft = advancedState.source === rawParameters ? advancedState.value : advancedDraftFrom(current);
+  const requestGeneration = useRef(0);
+  const advancedSummary = useRef<HTMLElement>(null);
+  const active = discoveryKeys.some((key) => current.has(key));
+  const apiParameters = useMemo(() => {
+    const value = new URLSearchParams();
+    for (const key of discoveryKeys) for (const entry of current.getAll(key)) value.append(key, entry);
+    if (lockedType) value.set("type", lockedType);
+    return value;
+  }, [current, lockedType]);
+  const requestKey = `${apiParameters.toString()}::${retryKey}`;
+  const state = !active ? "idle" : load?.requestKey === requestKey ? load.state : "loading";
   const items = load?.requestKey === requestKey ? load.items : [];
   const error = load?.requestKey === requestKey ? load.error : "";
 
   useEffect(() => {
+    if (!active) return;
     const controller = new AbortController();
-    const parameters = new URLSearchParams();
-    if (query) parameters.set("q", query);
-    parameters.set("sort", sort);
-    if (Object.keys(filters).length) parameters.set("filters", JSON.stringify(filters));
-    fetch(`/api/community/discover?${parameters.toString()}`, { signal: controller.signal })
+    const generation = ++requestGeneration.current;
+    fetch(`/api/community/discover?${apiParameters.toString()}`, { signal: controller.signal, cache: "no-store" })
       .then(async (response) => {
-        if (!response.ok) {
-          const body = (await response.json().catch(() => null)) as { message?: string } | null;
-          throw new Error(body?.message || "Community discovery is unavailable.");
-        }
-        return response.json() as Promise<DiscoveryResponse>;
+        const body = (await response.json().catch(() => null)) as (DiscoveryResponse & { message?: string }) | null;
+        if (!response.ok) throw new Error(body?.message || "Community discovery is unavailable.");
+        return body ?? { items: [] };
       })
       .then((result) => {
-        if (controller.signal.aborted) return;
+        if (controller.signal.aborted || generation !== requestGeneration.current) return;
         const safeItems = Array.isArray(result.items) ? result.items : [];
         setLoad({ requestKey, state: safeItems.length ? "ready" : "empty", items: safeItems, error: "" });
       })
       .catch((reason: unknown) => {
-        if (controller.signal.aborted) return;
+        if (controller.signal.aborted || generation !== requestGeneration.current) return;
         setLoad({
           requestKey,
           state: "error",
@@ -85,198 +142,387 @@ export function CommunityDiscoveryBrowser() {
         });
       });
     return () => controller.abort();
-  }, [filters, query, requestKey, sort]);
+  }, [active, apiParameters, requestKey]);
 
-  const updateUrl = useCallback(
-    (next: { q?: string; sort?: string; filters?: DiscoveryFilters; clear?: boolean }) => {
-      const parameters = new URLSearchParams(searchParams.toString());
-      if (next.clear) {
-        parameters.delete("q");
-        parameters.delete("filters");
-        parameters.delete("cursor");
-      }
-      if (next.q !== undefined) {
-        if (next.q.trim()) parameters.set("q", next.q.trim());
-        else parameters.delete("q");
-        parameters.delete("cursor");
-      }
-      if (next.sort !== undefined) {
-        parameters.set("sort", next.sort);
-        parameters.delete("cursor");
-      }
-      if (next.filters !== undefined) {
-        if (Object.keys(next.filters).length) parameters.set("filters", JSON.stringify(next.filters));
-        else parameters.delete("filters");
-        parameters.delete("cursor");
-      }
-      const suffix = parameters.toString();
-      // Filters and searches are user navigation. Preserve each committed
-      // state so the browser Back button restores the prior public result set.
-      router.push(suffix ? `/community?${suffix}` : "/community", { scroll: false });
-    },
-    [router, searchParams],
-  );
+  function navigate(parameters: URLSearchParams) {
+    parameters.delete("cursor");
+    const suffix = parameters.toString();
+    router.push(suffix ? `${basePath}?${suffix}` : basePath, { scroll: false });
+  }
+
+  function setSingle(name: string, value: string) {
+    const next = new URLSearchParams(current);
+    if (value) next.set(name, value);
+    else next.delete(name);
+    navigate(next);
+  }
+
+  function toggle(name: string, value: string) {
+    const next = new URLSearchParams(current);
+    const values = next.getAll(name);
+    next.delete(name);
+    for (const entry of values.filter((entry) => entry !== value)) next.append(name, entry);
+    if (!values.includes(value)) next.append(name, value);
+    navigate(next);
+  }
 
   function submitSearch(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const value = new FormData(event.currentTarget).get("q");
-    updateUrl({ q: typeof value === "string" ? value : "" });
+    setSingle("q", typeof value === "string" ? value.trim() : "");
   }
 
-  function toggleFilter(field: "itemTypes" | "difficulties", value: string) {
-    const current = filters[field] ?? [];
-    const values = current.includes(value) ? current.filter((candidate) => candidate !== value) : [...current, value];
-    updateUrl({ filters: { ...filters, [field]: values } });
+  function clear() {
+    const next = new URLSearchParams(current);
+    for (const key of [...discoveryKeys, "cursor"]) next.delete(key);
+    navigate(next);
   }
+
+  function toggleAdvanced(name: "difficulties" | "environments" | "accessibility", value: string) {
+    setAdvancedDraft((draft) => ({
+      ...draft,
+      [name]: draft[name].includes(value) ? draft[name].filter((entry) => entry !== value) : [...draft[name], value],
+    }));
+  }
+
+  function setAdvancedDraft(update: AdvancedDraft | ((draft: AdvancedDraft) => AdvancedDraft)) {
+    const value = typeof update === "function" ? update(advancedDraft) : update;
+    setAdvancedState({ source: rawParameters, value });
+  }
+
+  function applyAdvanced() {
+    const next = new URLSearchParams(current);
+    for (const key of ["difficulty", "players", "theme", "environment", "accessibility", "free", "remixable"])
+      next.delete(key);
+    for (const value of advancedDraft.difficulties) next.append("difficulty", value);
+    if (advancedDraft.players) next.set("players", advancedDraft.players);
+    if (advancedDraft.theme.trim()) next.set("theme", advancedDraft.theme.trim());
+    for (const value of advancedDraft.environments) next.append("environment", value);
+    for (const value of advancedDraft.accessibility) next.append("accessibility", value);
+    if (advancedDraft.free) next.set("free", "1");
+    if (advancedDraft.remixable) next.set("remixable", "1");
+    navigate(next);
+  }
+
+  function resetAdvanced() {
+    setAdvancedDraft(emptyAdvancedDraft());
+    const next = new URLSearchParams(current);
+    for (const key of ["difficulty", "players", "theme", "environment", "accessibility", "free", "remixable"])
+      next.delete(key);
+    navigate(next);
+    advancedSummary.current?.focus();
+  }
+
+  const chips = activeFilterChips(current, lockedType);
+  const advancedActive = ["difficulty", "players", "theme", "environment", "accessibility", "free", "remixable"].some(
+    (key) => current.has(key),
+  );
 
   return (
-    <section aria-labelledby="community-discovery-title">
-      <h2 id="community-discovery-title">Find a public chart</h2>
-      <form onSubmit={submitSearch} role="search">
-        <label htmlFor="community-search-query">Search public Community Harbor</label>
-        <input
-          id="community-search-query"
-          name="q"
-          type="search"
-          key={query}
-          defaultValue={query}
-          maxLength={160}
-          autoComplete="off"
-        />
-        <button type="submit">Search</button>
-        <label htmlFor="community-search-sort">Sort results</label>
-        <select
-          id="community-search-sort"
-          name="sort"
-          value={sort}
-          onChange={(event) => updateUrl({ sort: event.target.value })}
-        >
-          {sortOptions.map(([value, label]) => (
-            <option key={value} value={value}>
-              {label}
-            </option>
-          ))}
-        </select>
-        <button type="button" onClick={() => updateUrl({ clear: true, q: "", sort: "FEATURED" })}>
-          Clear search and filters
-        </button>
-        <fieldset>
-          <legend>Content type</legend>
-          {itemTypeOptions.map((itemType) => (
-            <label key={itemType}>
+    <section className="community-discovery" aria-labelledby="community-discovery-title">
+      <div className="community-section-heading">
+        <div>
+          <p className="community-eyebrow">Discovery chart</p>
+          <h2 id="community-discovery-title">{heading}</h2>
+          <p>Search public titles and summaries, then narrow only by metadata Creators have supplied.</p>
+        </div>
+      </div>
+      <form className="community-discovery__form" onSubmit={submitSearch} role="search">
+        <div className="community-discovery__compact">
+          <div className="community-search-field">
+            <label htmlFor="community-search-query">Search public Community Harbor</label>
+            <span className="community-search-field__input">
+              <input
+                id="community-search-query"
+                name="q"
+                type="search"
+                key={current.get("q") ?? ""}
+                defaultValue={current.get("q") ?? ""}
+                maxLength={160}
+                autoComplete="off"
+                placeholder="Title, theme, or Creator"
+              />
+              <button className="community-button community-button--primary" type="submit">
+                Search
+              </button>
+            </span>
+          </div>
+          <label>
+            <span>Sort</span>
+            <select
+              value={current.get("sort") ?? "FEATURED"}
+              onChange={(event) => setSingle("sort", event.target.value)}
+            >
+              {sortOptions.map(([value, label]) => (
+                <option key={value} value={value}>
+                  {label}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label>
+            <span>Duration</span>
+            <select
+              value={current.get("duration") ?? ""}
+              onChange={(event) => setSingle("duration", event.target.value)}
+            >
+              {durationOptions.map(([value, label]) => (
+                <option key={value || "any"} value={value}>
+                  {label}
+                </option>
+              ))}
+            </select>
+          </label>
+        </div>
+        {!lockedType ? (
+          <fieldset className="community-chip-fieldset">
+            <legend>Content type</legend>
+            <div>
+              {itemTypeOptions.map(([value, label]) => (
+                <label key={value} className="community-filter-chip">
+                  <input
+                    type="checkbox"
+                    checked={current.getAll("type").includes(value)}
+                    onChange={() => toggle("type", value)}
+                  />
+                  <span>{label}</span>
+                </label>
+              ))}
+            </div>
+          </fieldset>
+        ) : null}
+        <details className="community-advanced-filters" open={advancedActive || undefined}>
+          <summary ref={advancedSummary}>
+            Advanced filters <span>{advancedActive ? "Active" : "Optional"}</span>
+          </summary>
+          <div className="community-advanced-filters__grid">
+            <fieldset className="community-chip-fieldset">
+              <legend>Difficulty</legend>
+              <div>
+                {difficultyOptions.map(([value, label]) => (
+                  <label key={value} className="community-filter-chip">
+                    <input
+                      type="checkbox"
+                      checked={advancedDraft.difficulties.includes(value)}
+                      onChange={() => toggleAdvanced("difficulties", value)}
+                    />
+                    <span>{label}</span>
+                  </label>
+                ))}
+              </div>
+            </fieldset>
+            <label>
+              <span>Crew size</span>
+              <select
+                value={advancedDraft.players}
+                onChange={(event) => setAdvancedDraft((draft) => ({ ...draft, players: event.target.value }))}
+              >
+                {playerOptions.map(([value, label]) => (
+                  <option key={value || "any"} value={value}>
+                    {label}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label>
+              <span>Theme</span>
+              <input
+                type="text"
+                value={advancedDraft.theme}
+                maxLength={48}
+                placeholder="For example: mystery"
+                onChange={(event) => setAdvancedDraft((draft) => ({ ...draft, theme: event.target.value }))}
+              />
+            </label>
+            <fieldset className="community-chip-fieldset">
+              <legend>Environment</legend>
+              <div>
+                {environmentOptions.map(([value, label]) => (
+                  <label key={value} className="community-filter-chip">
+                    <input
+                      type="checkbox"
+                      checked={advancedDraft.environments.includes(value)}
+                      onChange={() => toggleAdvanced("environments", value)}
+                    />
+                    <span>{label}</span>
+                  </label>
+                ))}
+              </div>
+            </fieldset>
+            <fieldset className="community-chip-fieldset community-chip-fieldset--wide">
+              <legend>Accessibility</legend>
+              <div>
+                {accessibilityOptions.map(([value, label]) => (
+                  <label key={value} className="community-filter-chip">
+                    <input
+                      type="checkbox"
+                      checked={advancedDraft.accessibility.includes(value)}
+                      onChange={() => toggleAdvanced("accessibility", value)}
+                    />
+                    <span>{label}</span>
+                  </label>
+                ))}
+              </div>
+            </fieldset>
+            <label className="community-switch">
               <input
                 type="checkbox"
-                checked={filters.itemTypes?.includes(itemType) ?? false}
-                onChange={() => toggleFilter("itemTypes", itemType)}
+                checked={advancedDraft.free}
+                onChange={(event) => setAdvancedDraft((draft) => ({ ...draft, free: event.target.checked }))}
               />
-              {itemType
-                .toLocaleLowerCase()
-                .replace(/(^|_)([a-z])/g, (_, gap, letter) => `${gap} ${letter.toUpperCase()}`)
-                .trim()}
+              <span>Free content only</span>
             </label>
-          ))}
-        </fieldset>
-        <fieldset>
-          <legend>Difficulty</legend>
-          {difficultyOptions.map((difficulty) => (
-            <label key={difficulty}>
+            <label className="community-switch">
               <input
                 type="checkbox"
-                checked={filters.difficulties?.includes(difficulty) ?? false}
-                onChange={() => toggleFilter("difficulties", difficulty)}
+                checked={advancedDraft.remixable}
+                onChange={(event) => setAdvancedDraft((draft) => ({ ...draft, remixable: event.target.checked }))}
               />
-              {difficulty.toLocaleLowerCase().replace(/^./, (letter) => letter.toUpperCase())}
+              <span>Remixable content only</span>
             </label>
-          ))}
-        </fieldset>
-        <label>
-          <input
-            type="checkbox"
-            checked={filters.freeOnly ?? false}
-            onChange={(event) => updateUrl({ filters: { ...filters, freeOnly: event.target.checked || undefined } })}
-          />
-          Free content only
-        </label>
-        <label>
-          <input
-            type="checkbox"
-            checked={filters.remixable ?? false}
-            onChange={(event) => updateUrl({ filters: { ...filters, remixable: event.target.checked || undefined } })}
-          />
-          Remixable content only
-        </label>
+            <div className="community-advanced-filters__actions">
+              <button className="community-button community-button--primary" type="button" onClick={applyAdvanced}>
+                Apply advanced filters
+              </button>
+              <button className="community-button community-button--quiet" type="button" onClick={resetAdvanced}>
+                Reset advanced filters
+              </button>
+            </div>
+          </div>
+        </details>
       </form>
 
+      {chips.length ? (
+        <div className="community-active-filters" aria-label="Active search and filters">
+          <p>
+            <strong>{chips.length}</strong> active {chips.length === 1 ? "criterion" : "criteria"}
+          </p>
+          <ul>
+            {chips.map((chip) => (
+              <li key={`${chip.key}:${chip.value}`}>
+                <button
+                  type="button"
+                  onClick={() => (chip.repeatable ? toggle(chip.key, chip.value) : setSingle(chip.key, ""))}
+                >
+                  {chip.label} <span aria-hidden="true">×</span>
+                  <span className="sr-only">Remove filter</span>
+                </button>
+              </li>
+            ))}
+          </ul>
+          <button className="community-button community-button--quiet" type="button" onClick={clear}>
+            Clear search and filters
+          </button>
+        </div>
+      ) : null}
+
+      {state === "idle" ? (
+        <p className="community-discovery__idle">The Harbor shelves above are ready to browse without a search.</p>
+      ) : null}
       {state === "loading" ? (
-        <p role="status" aria-live="polite">
-          Loading public Community Harbor results.
-        </p>
+        <div className="community-state community-state--loading" role="status" aria-live="polite">
+          <span aria-hidden="true" />
+          <div>
+            <h3>Charting public results</h3>
+            <p>Your current Harbor criteria are being applied.</p>
+          </div>
+        </div>
       ) : null}
       {state === "error" ? (
-        <section role="alert" aria-live="assertive">
-          <h3>Community discovery is unavailable</h3>
-          <p>{error}</p>
-          <button type="button" onClick={() => setRetryKey((value) => value + 1)}>
-            Retry discovery
+        <section className="community-state community-state--error" role="alert" aria-live="assertive">
+          <p className="community-eyebrow">Discovery unavailable</p>
+          <h3>Community results could not be opened</h3>
+          <p>{error} Your search has not changed.</p>
+          <button
+            className="community-button community-button--primary"
+            type="button"
+            onClick={() => setRetryKey((value) => value + 1)}
+          >
+            Try again
           </button>
         </section>
       ) : null}
       {state === "empty" ? (
-        <section aria-live="polite">
-          <h3>No public charts matched this search</h3>
-          <p>Try a shorter search or use Clear search and filters above.</p>
+        <section className="community-state community-state--empty" aria-live="polite">
+          <p className="community-eyebrow">No matches</p>
+          <h3>No public charts match these criteria</h3>
+          <p>Clear one or more filters, or try a shorter search. Default Harbor shelves remain available above.</p>
+          <button className="community-button community-button--primary" type="button" onClick={clear}>
+            Clear search and filters
+          </button>
         </section>
       ) : null}
       {state === "ready" ? (
-        <>
-          <p aria-live="polite">
-            {items.length} public {items.length === 1 ? "result" : "results"}.
-          </p>
-          <ul aria-label="Public Community Harbor results">
-            {items.map((item) => (
-              <li key={item.id}>
-                <article>
-                  <p>{item.itemType}</p>
-                  <h3>
-                    {item.slug ? (
-                      <Link href={`/community/${encodeURIComponent(item.slug)}`}>{item.title}</Link>
-                    ) : (
-                      item.title
-                    )}
-                  </h3>
-                  {item.safeSummary ? <p>{item.safeSummary}</p> : null}
-                  <p>By {item.creatorHandle}</p>
-                </article>
-              </li>
-            ))}
-          </ul>
-        </>
+        <section className="community-results" aria-labelledby="community-results-title">
+          <div className="community-section-heading">
+            <div>
+              <p className="community-eyebrow">Public results</p>
+              <h3 id="community-results-title">
+                {items.length} {items.length === 1 ? "chart" : "charts"} found
+              </h3>
+            </div>
+          </div>
+          <CommunityCardGrid cards={items} label="Public Community Harbor results" />
+        </section>
       ) : null}
     </section>
   );
 }
 
-function isSort(value: string | null): value is (typeof sortOptions)[number][0] {
-  return sortOptions.some(([sort]) => sort === value);
+function activeFilterChips(parameters: URLSearchParams, lockedType?: string) {
+  const labelFor = (options: readonly (readonly [string, string])[], value: string) =>
+    options.find(([candidate]) => candidate === value)?.[1] ?? value;
+  const chips: Array<{ key: string; value: string; label: string; repeatable: boolean }> = [];
+  const query = parameters.get("q");
+  if (query) chips.push({ key: "q", value: query, label: `Search: ${query}`, repeatable: false });
+  if (parameters.has("sort"))
+    chips.push({
+      key: "sort",
+      value: parameters.get("sort") ?? "FEATURED",
+      label: `Sort: ${labelFor(sortOptions, parameters.get("sort") ?? "FEATURED")}`,
+      repeatable: false,
+    });
+  if (!lockedType)
+    for (const value of parameters.getAll("type"))
+      chips.push({ key: "type", value, label: labelFor(itemTypeOptions, value), repeatable: true });
+  const duration = parameters.get("duration");
+  if (duration)
+    chips.push({ key: "duration", value: duration, label: labelFor(durationOptions, duration), repeatable: false });
+  for (const value of parameters.getAll("difficulty"))
+    chips.push({ key: "difficulty", value, label: labelFor(difficultyOptions, value), repeatable: true });
+  const players = parameters.get("players");
+  if (players)
+    chips.push({ key: "players", value: players, label: labelFor(playerOptions, players), repeatable: false });
+  for (const value of parameters.getAll("environment"))
+    chips.push({ key: "environment", value, label: labelFor(environmentOptions, value), repeatable: true });
+  for (const value of parameters.getAll("accessibility"))
+    chips.push({ key: "accessibility", value, label: labelFor(accessibilityOptions, value), repeatable: true });
+  if (parameters.get("free") === "1") chips.push({ key: "free", value: "1", label: "Free only", repeatable: false });
+  if (parameters.get("remixable") === "1")
+    chips.push({ key: "remixable", value: "1", label: "Remixable only", repeatable: false });
+  return chips;
 }
 
-function readFilters(value: string | null): DiscoveryFilters {
-  if (!value || value.length > 2048) return {};
-  try {
-    const parsed: unknown = JSON.parse(value);
-    if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) return {};
-    const candidate = parsed as Record<string, unknown>;
-    const strings = (key: "itemTypes" | "difficulties") =>
-      Array.isArray(candidate[key])
-        ? candidate[key].filter((item): item is string => typeof item === "string").slice(0, 12)
-        : undefined;
-    return {
-      ...(strings("itemTypes")?.length ? { itemTypes: strings("itemTypes") } : {}),
-      ...(strings("difficulties")?.length ? { difficulties: strings("difficulties") } : {}),
-      ...(candidate.freeOnly === true ? { freeOnly: true } : {}),
-      ...(candidate.remixable === true ? { remixable: true } : {}),
-    };
-  } catch {
-    return {};
-  }
+function advancedDraftFrom(parameters: URLSearchParams): AdvancedDraft {
+  return {
+    difficulties: parameters.getAll("difficulty"),
+    players: parameters.get("players") ?? "",
+    theme: parameters.get("theme") ?? "",
+    environments: parameters.getAll("environment"),
+    accessibility: parameters.getAll("accessibility"),
+    free: parameters.get("free") === "1",
+    remixable: parameters.get("remixable") === "1",
+  };
+}
+
+function emptyAdvancedDraft(): AdvancedDraft {
+  return {
+    difficulties: [],
+    players: "",
+    theme: "",
+    environments: [],
+    accessibility: [],
+    free: false,
+    remixable: false,
+  };
 }

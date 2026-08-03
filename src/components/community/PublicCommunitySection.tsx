@@ -1,7 +1,18 @@
 import Link from "next/link";
-import { db } from "@/lib/db";
-import { listPublicListingsFoundation } from "@/community/services";
-import { readPublicVoyageLogs } from "@/community/voyage-log-public";
+import type { CommunityDistrictId } from "@/community/districts";
+import {
+  getHomeportHarborShelves,
+  listHomeportCollectionCards,
+  listHomeportCreatorCards,
+  listHomeportGuideCards,
+  listHomeportListingCards,
+  listHomeportVoyageLogCards,
+  type HomeportCommunityCard,
+} from "@/community/homeport";
+import { requireCanonicalAccountIdentity } from "@/platform/auth";
+import { CommunityCardGrid } from "./CommunityCardGrid";
+import { CommunityDiscoveryBrowser } from "./CommunityDiscoveryBrowser";
+import { CommunityPageFrame } from "./CommunityPageFrame";
 import { CommunitySceneCeremony } from "./CommunitySceneCeremony";
 
 export type CommunitySection =
@@ -16,22 +27,118 @@ export type CommunitySection =
   | "collections"
   | "guides";
 
-const copy: Record<CommunitySection, { title: string; description: string }> = {
-  featured: { title: "Featured Harbor Charts", description: "Editorially selected public work." },
-  chronicles: { title: "Chronicles", description: "Public experiences ready to discover." },
-  artifacts: { title: "Artifacts", description: "Useful public relics and visual craft." },
-  templates: { title: "Templates", description: "Reusable structures for new voyages." },
-  maps: { title: "Maps", description: "Public map and location resources." },
-  audio: { title: "Audio", description: "Public atmosphere and audio resources." },
-  creators: { title: "Creators", description: "Public Community Harbor creators." },
-  "voyage-logs": { title: "Voyage Logs", description: "Consented, spoiler-safe public memories." },
-  collections: { title: "Collections", description: "Curated public Harbor collections." },
-  guides: { title: "Shipwright's Workshop", description: "Public guides for craft and care." },
+const sections: Record<
+  CommunitySection,
+  {
+    districtId: CommunityDistrictId;
+    title: string;
+    description: string;
+    emptyTitle: string;
+    emptyDescription: string;
+    nearby: { label: string; href: string };
+    lockedType?: "CHRONICLE" | "ARTIFACT" | "TEMPLATE" | "MAP" | "AUDIO";
+  }
+> = {
+  featured: {
+    districtId: "FEATURED",
+    title: "Featured at the Harbor",
+    description:
+      "Editorially selected public work. Selection is explicit; ordinary popularity is never presented as endorsement.",
+    emptyTitle: "No featured selections are on the chart",
+    emptyDescription: "Public Community work may still be available in the other districts.",
+    nearby: { label: "Browse Chronicles", href: "/community/chronicles" },
+  },
+  chronicles: {
+    districtId: "CHRONICLES",
+    title: "Chronicles",
+    description:
+      "Published experiences with useful details for duration, Crew size, difficulty, accessibility, and remix terms.",
+    emptyTitle: "No public Chronicles yet",
+    emptyDescription: "A Creator must publish an eligible Chronicle before it appears in this district.",
+    nearby: { label: "Return to Harbor Home", href: "/community" },
+    lockedType: "CHRONICLE",
+  },
+  artifacts: {
+    districtId: "ARTIFACTS",
+    title: "Artifacts",
+    description:
+      "Public 2D, 3D, and collection resources. This district is separate from the private Artifact Cabinet.",
+    emptyTitle: "No public Artifacts yet",
+    emptyDescription: "Private and unverified Artifact material is never used to fill this district.",
+    nearby: { label: "Browse Templates", href: "/community/templates" },
+    lockedType: "ARTIFACT",
+  },
+  templates: {
+    districtId: "TEMPLATES",
+    title: "Templates",
+    description: "Reusable Chronicle and Passage structures with clear license and remix treatment where available.",
+    emptyTitle: "No public Templates yet",
+    emptyDescription:
+      "The district remains ready for eligible reusable structures without displaying sample cards as real content.",
+    nearby: { label: "Browse Guides", href: "/community/guides" },
+    lockedType: "TEMPLATE",
+  },
+  maps: {
+    districtId: "MAPS_AND_LOCATION_PACKS",
+    title: "Maps and location packs",
+    description:
+      "Fictional and public-safe map resources. Private locations and exact protected coordinates never appear here.",
+    emptyTitle: "No public maps yet",
+    emptyDescription: "No private location material is substituted for an empty public district.",
+    nearby: { label: "Browse Artifacts", href: "/community/artifacts" },
+    lockedType: "MAP",
+  },
+  audio: {
+    districtId: "AUDIO_AND_REVEAL_ASSETS",
+    title: "Audio and reveal assets",
+    description:
+      "Public atmosphere, invitation, completion, and reveal resources with truthful accessibility metadata.",
+    emptyTitle: "No public audio or reveal assets yet",
+    emptyDescription: "Unscanned or unavailable media is not presented as ready content.",
+    nearby: { label: "Browse Templates", href: "/community/templates" },
+    lockedType: "AUDIO",
+  },
+  creators: {
+    districtId: "CREATORS",
+    title: "Creators",
+    description:
+      "Public Community profiles and their eligible published work, without private account or provider data.",
+    emptyTitle: "No public Creators yet",
+    emptyDescription: "Only active, Community-visible Creator profiles belong in this directory.",
+    nearby: { label: "Browse Chronicles", href: "/community/chronicles" },
+  },
+  collections: {
+    districtId: "COLLECTIONS",
+    title: "Collections",
+    description: "Curated public charts whose items are independently checked before they appear.",
+    emptyTitle: "No public Collections yet",
+    emptyDescription: "Private and archived collections remain absent without revealing their existence.",
+    nearby: { label: "Browse Featured", href: "/community/featured" },
+  },
+  guides: {
+    districtId: "GUIDES",
+    title: "Guides and the Shipwright's Workshop",
+    description:
+      "Public, sanitized guidance for Chronicle craft and care. The Workshop is a Guide category, not a duplicate district.",
+    emptyTitle: "No public Guides yet",
+    emptyDescription: "Draft and deprecated guidance is never used to fill the public Workshop.",
+    nearby: { label: "Browse Templates", href: "/community/templates" },
+  },
+  "voyage-logs": {
+    districtId: "VOYAGE_LOGS",
+    title: "Voyage Logs",
+    description:
+      "Verified, consented, spoiler-safe public memories. Private participant and location details remain outside the projection.",
+    emptyTitle: "No consented public Voyage Logs yet",
+    emptyDescription: "A Voyage Log appears only after completion and every required sharing consent remains active.",
+    nearby: { label: "Browse Chronicles", href: "/community/chronicles" },
+  },
 };
 
 export async function PublicCommunitySection({ section }: { section: CommunitySection }) {
-  const items = await sectionItems(section);
-  const detail = copy[section];
+  const identity = await requireCanonicalAccountIdentity();
+  const detail = sections[section];
+  const cards = await sectionCards(section, identity?.accountId);
   const scene =
     section === "featured"
       ? "community-featured-reveal"
@@ -40,99 +147,56 @@ export async function PublicCommunitySection({ section }: { section: CommunitySe
         : ("community-harbor-arrival" as const);
   return (
     <CommunitySceneCeremony sceneName={scene}>
-      <main className="page-shell" aria-labelledby="community-section-title">
-        <p>
-          <Link href="/community">Back to Community Harbor</Link>
-        </p>
-        <p className="eyebrow">Community Harbor</p>
-        <h1 id="community-section-title">{detail.title}</h1>
-        <p>{detail.description}</p>
-        {items.length ? (
-          <ul aria-label={detail.title}>
-            {items.map((item) => (
-              <li key={item.href}>
-                <article>
-                  <h2>
-                    <Link href={item.href}>{item.title}</Link>
-                  </h2>
-                  {item.summary ? <p>{item.summary}</p> : null}
-                </article>
-              </li>
-            ))}
-          </ul>
+      <CommunityPageFrame districtId={detail.districtId} title={detail.title} description={detail.description}>
+        {cards.length ? (
+          <section className="community-district-results" aria-labelledby="community-district-results-title">
+            <div className="community-section-heading">
+              <div>
+                <p className="community-eyebrow">Public district</p>
+                <h2 id="community-district-results-title">
+                  {cards.length} {cards.length === 1 ? "entry" : "entries"} on this chart
+                </h2>
+              </div>
+            </div>
+            <CommunityCardGrid cards={cards} label={detail.title} />
+          </section>
         ) : (
-          <section aria-live="polite">
-            <h2>No public entries yet</h2>
-            <p>This district will fill as safe, persisted Community records are published.</p>
+          <section
+            className="community-state community-state--district-empty"
+            aria-labelledby="community-district-empty-title"
+          >
+            <p className="community-eyebrow">District ready</p>
+            <h2 id="community-district-empty-title">{detail.emptyTitle}</h2>
+            <p>{detail.emptyDescription}</p>
+            <Link className="community-button community-button--primary" href={detail.nearby.href}>
+              {detail.nearby.label}
+            </Link>
           </section>
         )}
-      </main>
+        {detail.lockedType ? (
+          <CommunityDiscoveryBrowser
+            basePath={`/community/${section}`}
+            lockedType={detail.lockedType}
+            heading={`Search ${detail.title}`}
+          />
+        ) : null}
+      </CommunityPageFrame>
     </CommunitySceneCeremony>
   );
 }
 
-async function sectionItems(
+async function sectionCards(
   section: CommunitySection,
-): Promise<Array<{ href: string; title: string; summary?: string | null }>> {
-  if (["featured", "chronicles", "artifacts", "templates", "maps", "audio"].includes(section)) {
-    const listings = await listPublicListingsFoundation();
-    const types: Record<string, string[] | undefined> = {
-      chronicles: ["CHRONICLE"],
-      artifacts: ["TWO_D_ARTIFACT", "THREE_D_ARTIFACT", "ARTIFACT_COLLECTION"],
-      templates: ["CHRONICLE_TEMPLATE", "STORY_BLOCK_PRESET"],
-      maps: ["MAP_PACK", "LOCATION_PACK"],
-      audio: ["AUDIO_PACK"],
-    };
-    return listings
-      .filter((listing) =>
-        section === "featured" ? true : !types[section] || types[section]?.includes(listing.itemType),
-      )
-      .slice(0, 24)
-      .map((listing) => ({
-        href: `/community/${encodeURIComponent(listing.slug)}`,
-        title: listing.title,
-        summary: listing.shortDescription,
-      }));
-  }
-  if (section === "creators")
-    return (
-      await db.communityProfile.findMany({
-        where: { visibility: "COMMUNITY", moderationStatus: "ACTIVE" },
-        orderBy: { lastPublishedAt: "desc" },
-        take: 24,
-      })
-    ).map((profile) => ({
-      href: `/community/creators/${encodeURIComponent(profile.handle)}`,
-      title: profile.displayName,
-      summary: profile.biography,
-    }));
-  if (section === "guides")
-    return (
-      await db.communityGuideContent.findMany({
-        where: { status: "PUBLISHED" },
-        orderBy: { publishedAt: "desc" },
-        take: 24,
-      })
-    ).map((guide) => ({
-      href: `/community/guides/${encodeURIComponent(guide.slug)}`,
-      title: guide.title,
-      summary: guide.safeSummary,
-    }));
-  if (section === "collections")
-    return (
-      await db.communityCollection.findMany({
-        where: { visibility: "COMMUNITY", archivedAt: null, deletedAt: null },
-        orderBy: { updatedAt: "desc" },
-        take: 24,
-      })
-    ).map((collection) => ({
-      href: `/community/collections/${encodeURIComponent(collection.slug)}`,
-      title: collection.title,
-      summary: collection.description,
-    }));
-  return (await readPublicVoyageLogs()).map((log) => ({
-    href: `/community/voyage-logs/${encodeURIComponent(log.slug)}`,
-    title: log.title,
-    summary: log.safeSummary,
-  }));
+  viewerAccountId?: string | null,
+): Promise<readonly HomeportCommunityCard[]> {
+  if (section === "featured") return (await getHomeportHarborShelves(viewerAccountId)).featured;
+  if (section === "chronicles") return listHomeportListingCards("CHRONICLE", { viewerAccountId });
+  if (section === "artifacts") return listHomeportListingCards("ARTIFACT", { viewerAccountId });
+  if (section === "templates") return listHomeportListingCards("TEMPLATE", { viewerAccountId });
+  if (section === "maps") return listHomeportListingCards("MAP_OR_LOCATION_PACK", { viewerAccountId });
+  if (section === "audio") return listHomeportListingCards("AUDIO_OR_REVEAL", { viewerAccountId });
+  if (section === "creators") return listHomeportCreatorCards(viewerAccountId);
+  if (section === "collections") return listHomeportCollectionCards(viewerAccountId);
+  if (section === "guides") return listHomeportGuideCards(viewerAccountId);
+  return listHomeportVoyageLogCards();
 }

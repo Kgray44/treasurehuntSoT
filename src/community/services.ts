@@ -278,7 +278,10 @@ export async function listPublicListingsFoundation() {
       publicationStatus: "PUBLISHED",
       visibility: { in: ["COMMUNITY", "FEATURED"] },
       moderationStatus: "ACTIVE",
+      archivedAt: null,
+      removedAt: null,
       locationClass: { not: "PRIVATE_REAL_WORLD" },
+      owner: { visibility: "COMMUNITY", moderationStatus: "ACTIVE", creatorStatus: { not: "SUSPENDED" } },
     },
     include: { owner: true },
     orderBy: { updatedAt: "desc" },
@@ -292,7 +295,10 @@ export async function getPublicListingBySlug(slug: string) {
       publicationStatus: "PUBLISHED",
       visibility: { in: ["COMMUNITY", "FEATURED"] },
       moderationStatus: "ACTIVE",
+      archivedAt: null,
+      removedAt: null,
       locationClass: { not: "PRIVATE_REAL_WORLD" },
+      owner: { visibility: "COMMUNITY", moderationStatus: "ACTIVE", creatorStatus: { not: "SUSPENDED" } },
     },
     include: { owner: true, currentRelease: true },
   });
@@ -418,7 +424,8 @@ export async function quarantineRelease(actor: CommunityActor, id: string) {
     return ownerReleaseProjection(updated);
   });
 }
-export async function restoreRelease(actor: CommunityActor, id: string) {
+export async function restoreRelease(actor: CommunityActor, _id: string) {
+  void _id;
   if (actor.role !== "MODERATOR" && actor.role !== "ADMIN")
     throw new CommunityError("COMMUNITY_ACCESS_DENIED", "Moderation capability is required.");
   // Phase 4 restoration has to bind a moderation action, a current clean scan

@@ -230,10 +230,14 @@ export type DiscoveryRecord = {
   primaryCategory: string | null;
   creatorId: string;
   creatorHandle: string;
+  creatorDisplayName: string;
+  creatorAccountId: string;
   visibility: string;
   publicationStatus: string;
   moderationStatus: string;
   locationClass: string;
+  archivedAt: Date | null;
+  removedAt: Date | null;
   publishedAt: Date | null;
   updatedAt: Date;
   metadata?: {
@@ -281,10 +285,12 @@ type DiscoveryListingRow = Readonly<{
   publicationStatus: string;
   moderationStatus: string;
   locationClass: string;
+  archivedAt: Date | null;
+  removedAt: Date | null;
   primaryCategory: string | null;
   publishedAt: Date | null;
   updatedAt: Date;
-  owner: Readonly<{ normalizedHandle: string }>;
+  owner: Readonly<{ normalizedHandle: string; displayName: string; accountId: string }>;
 }>;
 
 type DiscoveryMetadataRow = Readonly<{
@@ -312,13 +318,18 @@ type DiscoveryMetadataRow = Readonly<{
 
 /** This check is intentionally duplicated at search return time: documents are caches, never authorization. */
 export function isPublicDiscoveryEligible(
-  record: Pick<DiscoveryRecord, "visibility" | "publicationStatus" | "moderationStatus" | "locationClass">,
+  record: Pick<
+    DiscoveryRecord,
+    "visibility" | "publicationStatus" | "moderationStatus" | "locationClass" | "archivedAt" | "removedAt"
+  >,
 ) {
   return (
     record.publicationStatus === "PUBLISHED" &&
     (record.visibility === "COMMUNITY" || record.visibility === "FEATURED") &&
     record.moderationStatus === "ACTIVE" &&
-    record.locationClass !== "PRIVATE_REAL_WORLD"
+    record.locationClass !== "PRIVATE_REAL_WORLD" &&
+    record.archivedAt === null &&
+    record.removedAt === null
   );
 }
 
@@ -439,7 +450,14 @@ export const databaseCommunitySearchProvider: CommunitySearchProvider = {
         publicationStatus: "PUBLISHED",
         visibility: { in: ["COMMUNITY", "FEATURED"] },
         moderationStatus: "ACTIVE",
+        archivedAt: null,
+        removedAt: null,
         locationClass: { not: "PRIVATE_REAL_WORLD" },
+        owner: {
+          visibility: "COMMUNITY",
+          moderationStatus: "ACTIVE",
+          creatorStatus: { not: "SUSPENDED" },
+        },
       },
       include: { owner: true },
       take: maxCandidateRows,
@@ -588,10 +606,14 @@ function toDiscoveryRecord(
     primaryCategory: listing.primaryCategory,
     creatorId: listing.ownerProfileId,
     creatorHandle: listing.owner.normalizedHandle,
+    creatorDisplayName: listing.owner.displayName,
+    creatorAccountId: listing.owner.accountId,
     visibility: listing.visibility,
     publicationStatus: listing.publicationStatus,
     moderationStatus: listing.moderationStatus,
     locationClass: listing.locationClass,
+    archivedAt: listing.archivedAt,
+    removedAt: listing.removedAt,
     publishedAt: listing.publishedAt,
     updatedAt: listing.updatedAt,
     metadata,
@@ -637,7 +659,7 @@ function sortTuple(record: DiscoveryRecord, sort: CommunitySortMode): [string | 
   switch (sort) {
     case "FEATURED":
       return [
-        record.featured?.sortOrder ?? Number.MAX_SAFE_INTEGER,
+        record.featured ? -record.featured.sortOrder : Number.MIN_SAFE_INTEGER,
         record.featured?.startsAt?.getTime() ?? record.publishedAt?.getTime() ?? 0,
       ];
     case "NEWEST":
