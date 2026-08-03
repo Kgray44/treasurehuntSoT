@@ -220,7 +220,7 @@ test.describe.serial("Project Homeport Phase 4 Community Harbor acceptance", () 
     });
     await page.getByRole("searchbox", { name: "Search public Community Harbor" }).fill("dependency test");
     await page.getByRole("button", { name: "Search", exact: true }).click();
-    await expect(page.getByRole("alert")).toContainText("Synthetic discovery dependency");
+    await expect(page.getByRole("alert").filter({ hasText: "Synthetic discovery dependency" })).toBeVisible();
     await capture(page, "HP-P4-EV-AD-dependency-unavailable", {
       screen: "Dependency unavailable",
       district: "HARBOR_HOME",
@@ -427,7 +427,7 @@ test.describe.serial("Project Homeport Phase 4 Community Harbor acceptance", () 
       });
     });
     await page.getByRole("button", { name: "Save", exact: true }).click();
-    await expect(page.getByRole("alert")).toContainText("Synthetic save failure");
+    await expect(page.getByRole("alert").filter({ hasText: "Synthetic save failure" })).toBeVisible();
     await page.unroute("**/api/community/social/save");
     await page.getByRole("button", { name: "Save", exact: true }).click();
     await expect(page.getByRole("button", { name: "Unsave" })).toBeVisible();
@@ -435,7 +435,9 @@ test.describe.serial("Project Homeport Phase 4 Community Harbor acceptance", () 
     const creatorPage = await creatorContext.newPage();
     await creatorPage.goto("/community/creators/captain-almanac");
     await creatorPage.getByRole("button", { name: "Follow Creator" }).click();
-    await expect(creatorPage.getByRole("alert")).toContainText(/cannot follow|own Creator Profile/u);
+    await expect(
+      creatorPage.getByRole("alert").filter({ hasText: /cannot follow|own Creator Profile/u }),
+    ).toBeVisible();
     await creatorPage.close();
 
     const restrictedPage = await restrictedContext.newPage();
