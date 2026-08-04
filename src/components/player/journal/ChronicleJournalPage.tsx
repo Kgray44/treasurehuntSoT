@@ -1,8 +1,8 @@
 "use client";
 
-/* eslint-disable @next/next/no-img-element -- Version-bound journal media is authorized by the application route. */
 import type { PlayerJournalBlock } from "@/chronicle/journal-contract";
 import type { ChronicleJournalPage } from "@/chronicle/journal-page-model";
+import { ResilientAudio, ResilientImage, ResilientVideo } from "@/components/ui/ResilientImage";
 
 export type JournalAsset = {
   id: string;
@@ -111,11 +111,22 @@ function JournalBlock({
         <p className="eyebrow">Cinematic leaf · {stateLabel}</p>
         <h3>{heading}</h3>
         {video && (
-          <video controls preload="metadata" poster={asset(config.posterAssetId)?.url}>
-            <source src={video.url} />
-          </video>
+          <ResilientVideo
+            controls
+            preload="metadata"
+            poster={asset(config.posterAssetId)?.url}
+            src={video.url}
+            fallbackLabel={`${block.title} video unavailable`}
+          />
         )}
-        {audio && <audio controls preload="metadata" src={audio.url} />}
+        {audio && (
+          <ResilientAudio
+            controls
+            preload="metadata"
+            src={audio.url}
+            fallbackLabel={`${block.title} audio unavailable`}
+          />
+        )}
         {copy.map((line, index) => (
           <p className="journal-prose" key={index}>
             {line}
@@ -144,17 +155,24 @@ function JournalBlock({
               className="journal-transformation"
               style={{ "--journal-reveal-duration": `${Number(config.duration ?? 3000)}ms` } as React.CSSProperties}
             >
-              <img className="before" src={before.url} alt={`${before.displayName}, before reveal`} />
-              <img
+              <ResilientImage
+                className="before"
+                src={before.url}
+                alt={`${before.displayName}, before reveal`}
+                fallbackLabel={`${before.displayName} unavailable`}
+              />
+              <ResilientImage
                 className="after"
                 src={after.url}
                 alt={value(config, "altText") || after.description || after.displayName}
+                fallbackLabel={`${after.displayName} unavailable`}
               />
             </div>
           ) : image ? (
-            <img
+            <ResilientImage
               src={image.url}
               alt={value(config, "altText") || image.description || image.displayName}
+              fallbackLabel={`${image.displayName} unavailable`}
               style={{ objectPosition: `${Number(config.focalX ?? 50)}% ${Number(config.focalY ?? 50)}%` }}
             />
           ) : (

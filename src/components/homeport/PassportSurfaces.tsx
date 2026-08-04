@@ -3,8 +3,20 @@
 import Link from "next/link";
 import { useEffect, useState, type FormEvent } from "react";
 import { usePersonalHarbor } from "@/components/homeport/PersonalHarborLayout";
+import {
+  ErrorState as SharedErrorState,
+  LoadingState as SharedLoadingState,
+  MutationStatus,
+} from "@/components/ui/AsyncState";
+import { useActionDialog } from "@/components/ui/ActionDialog";
 
 type LoadState<T> = { status: "loading" } | { status: "error"; message: string } | { status: "ready"; value: T };
+function presentationLabel(value: string) {
+  return value
+    .replace(/([a-z])([A-Z])/gu, "$1 $2")
+    .replaceAll("_", " ")
+    .replace(/\b\w/gu, (letter) => letter.toUpperCase());
+}
 async function responseBody<T>(response: Response): Promise<T> {
   const body = (await response.json().catch(() => ({}))) as T & { error?: string };
   if (!response.ok) throw new Error(body.error || "This request could not be completed.");
@@ -33,34 +45,19 @@ function useResource<T>(url: string) {
   return { state, reload: () => setGeneration((value) => value + 1), setState };
 }
 function LoadingState({ label = "Opening your Chronicle Passport" }: { label?: string }) {
-  return (
-    <div className="harbor-state harbor-state--loading" role="status">
-      <span aria-hidden="true" />
-      {label}…
-    </div>
-  );
+  return <SharedLoadingState compact title={label} detail="Reading the latest private Chronicle record." />;
 }
 function ErrorState({ message, retry }: { message: string; retry: () => void }) {
   return (
-    <div className="harbor-state harbor-state--error" role="alert">
-      <h2>This section is unavailable</h2>
-      <p>{message}</p>
-      <button type="button" className="button" onClick={retry}>
-        Try again
-      </button>
-    </div>
+    <SharedErrorState
+      title="This section is unavailable"
+      detail={message}
+      action={{ label: "Try again", onClick: retry }}
+    />
   );
 }
 function MutationMessage({ message, error = false }: { message: string; error?: boolean }) {
-  return message ? (
-    <p
-      className={`harbor-mutation ${error ? "harbor-mutation--error" : "harbor-mutation--saved"}`}
-      role={error ? "alert" : "status"}
-      aria-live="polite"
-    >
-      {message}
-    </p>
-  ) : null;
+  return message ? <MutationStatus state={error ? "failure" : "success"}>{message}</MutationStatus> : null;
 }
 
 type PassportOverviewDto = {
@@ -161,8 +158,8 @@ export function HistoryExplorer() {
                       : "Completion time unavailable"}
                   </p>
                   <p>
-                    Version {item.chronicle.versionChecksum.slice(0, 12)}… · {item.memories.length} memories ·{" "}
-                    {item.artifactSummary.length} artifact records
+                    Version-pinned edition · {item.memories.length} memories · {item.artifactSummary.length} artifact
+                    records
                   </p>
                 </div>
                 <Link className="button" href={`/passport/history/${encodeURIComponent(item.id)}`}>
@@ -263,9 +260,7 @@ export function HistoryDetail({ recordId }: { recordId: string }) {
       <section className="passport-record-hero">
         <span className="harbor-badge">{value.lifecycleStatus}</span>
         <h2>{value.chronicle.title}</h2>
-        <p>
-          {value.outcome} · version {value.chronicle.versionChecksum}
-        </p>
+        <p>{value.outcome} · version-pinned Chronicle record</p>
         <dl className="harbor-definition-list">
           <div>
             <dt>Participant</dt>
@@ -417,6 +412,7 @@ type MemoryDto = {
   createdAt: string;
 };
 export function MemoriesExplorer() {
+  const { requestAction, dialog } = useActionDialog();
   const resource = useResource<{ items: MemoryDto[] }>("/api/passport/memories");
   const { csrfToken } = usePersonalHarbor();
   const [message, setMessage] = useState("");
@@ -424,7 +420,16 @@ export function MemoriesExplorer() {
   if (resource.state.status === "loading") return <LoadingState label="Reading Chronicle Memories" />;
   if (resource.state.status === "error") return <ErrorState message={resource.state.message} retry={resource.reload} />;
   const remove = async (item: MemoryDto) => {
-    if (!window.confirm(`Delete the private Memory “${item.title}”?`)) return;
+    if (
+      !(await requestAction({
+        title: `Delete “${item.title}”?`,
+        detail:
+          "This private Memory will be removed from your Chronicle record. The Voyage history itself will remain.",
+        confirmLabel: "Delete Memory",
+        destructive: true,
+      }))
+    )
+      return;
     try {
       await responseBody(
         await fetch(
@@ -441,39 +446,42 @@ export function MemoriesExplorer() {
     }
   };
   return (
-    <div className="harbor-stack">
-      {resource.state.value.items.length ? (
-        <ol className="memory-grid">
-          {resource.state.value.items.map((item) => (
-            <li key={item.id}>
-              <article className="harbor-panel">
-                <p className="personal-harbor__eyebrow">{item.chronicleTitle}</p>
-                <h2>{item.title}</h2>
-                {item.body && <p>{item.body}</p>}
-                <p className="harbor-field-hint">Private · {new Date(item.createdAt).toLocaleDateString()}</p>
-                <div className="personal-harbor__actions">
-                  <Link className="button" href={`/passport/history/${encodeURIComponent(item.recordId)}`}>
-                    Open record
-                  </Link>
-                  <button type="button" className="button button--danger" onClick={() => void remove(item)}>
-                    Delete
-                  </button>
-                </div>
-              </article>
-            </li>
-          ))}
-        </ol>
-      ) : (
-        <div className="harbor-empty harbor-empty--large">
-          <h2>No private Memories yet</h2>
-          <p>Open a Chronicle History record to write a private Memory. Nothing here is published to your Profile.</p>
-          <Link className="button" href="/passport/history">
-            Open Chronicle History
-          </Link>
-        </div>
-      )}
-      <MutationMessage message={message} error={error} />
-    </div>
+    <>
+      <div className="harbor-stack">
+        {resource.state.value.items.length ? (
+          <ol className="memory-grid">
+            {resource.state.value.items.map((item) => (
+              <li key={item.id}>
+                <article className="harbor-panel">
+                  <p className="personal-harbor__eyebrow">{item.chronicleTitle}</p>
+                  <h2>{item.title}</h2>
+                  {item.body && <p>{item.body}</p>}
+                  <p className="harbor-field-hint">Private · {new Date(item.createdAt).toLocaleDateString()}</p>
+                  <div className="personal-harbor__actions">
+                    <Link className="button" href={`/passport/history/${encodeURIComponent(item.recordId)}`}>
+                      Open record
+                    </Link>
+                    <button type="button" className="button button--danger" onClick={() => void remove(item)}>
+                      Delete
+                    </button>
+                  </div>
+                </article>
+              </li>
+            ))}
+          </ol>
+        ) : (
+          <div className="harbor-empty harbor-empty--large">
+            <h2>No private Memories yet</h2>
+            <p>Open a Chronicle History record to write a private Memory. Nothing here is published to your Profile.</p>
+            <Link className="button" href="/passport/history">
+              Open Chronicle History
+            </Link>
+          </div>
+        )}
+        <MutationMessage message={message} error={error} />
+      </div>
+      {dialog}
+    </>
   );
 }
 
@@ -533,7 +541,7 @@ export function ArtifactExplorer() {
                 <div className="artifact-card__mark" aria-hidden="true">
                   ✦
                 </div>
-                <span className="harbor-badge">{item.state}</span>
+                <span className="harbor-badge">{presentationLabel(item.state)}</span>
                 <h2>{item.name}</h2>
                 <p>{item.chronicle}</p>
                 <p>
@@ -627,10 +635,10 @@ export function ArtifactDetail({ artifactId }: { artifactId: string }) {
         <div className="artifact-card__mark" aria-hidden="true">
           ✦
         </div>
-        <span className="harbor-badge">{value.provenance.state}</span>
+        <span className="harbor-badge">{presentationLabel(value.provenance.state)}</span>
         <h2>{value.artifact.name}</h2>
         <p>
-          {value.artifact.type} · {value.artifact.representation}
+          {presentationLabel(value.artifact.type)} · {presentationLabel(value.artifact.representation)}
         </p>
         <p>{value.artifact.accessibleRepresentation}</p>
       </section>
@@ -643,19 +651,19 @@ export function ArtifactDetail({ artifactId }: { artifactId: string }) {
           </div>
           <div>
             <dt>Record status</dt>
-            <dd>{value.provenance.status}</dd>
+            <dd>{presentationLabel(value.provenance.status)}</dd>
           </div>
           <div>
             <dt>Recipient policy</dt>
-            <dd>{value.provenance.recipientPolicy}</dd>
+            <dd>{presentationLabel(value.provenance.recipientPolicy)}</dd>
           </div>
           <div>
-            <dt>Published version</dt>
-            <dd className="harbor-code-value">{value.provenance.publishedVersionChecksum}</dd>
+            <dt>Published Chronicle</dt>
+            <dd>Version identity verified against the immutable Voyage record.</dd>
           </div>
           <div>
-            <dt>Grant event</dt>
-            <dd className="harbor-code-value">{value.provenance.sourceGrantEventId}</dd>
+            <dt>Grant authority</dt>
+            <dd>Authoritative grant evidence is on file for this personal record.</dd>
           </div>
         </dl>
         {value.provenance.status === "UNRESOLVED" && (

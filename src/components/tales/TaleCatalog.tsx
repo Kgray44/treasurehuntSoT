@@ -1,9 +1,9 @@
 "use client";
 
-/* eslint-disable @next/next/no-img-element -- Published asset URLs are authorized version-bound media responses. */
 import Link from "next/link";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { EmptyState, ErrorState, LoadingState } from "@/components/ui/AsyncState";
+import { ResilientImage } from "@/components/ui/ResilientImage";
 import { platformCopy } from "@/language/platform-copy";
 
 type CatalogTale = {
@@ -162,7 +162,7 @@ export function TaleCatalog() {
         {filteredTales.map((tale) => (
           <article key={tale.id}>
             {tale.coverUrl ? (
-              <img src={tale.coverUrl} alt="" />
+              <ResilientImage src={tale.coverUrl} alt="" fallbackLabel={`${tale.title} cover unavailable`} />
             ) : (
               <div className="catalog-cover-fallback">
                 <i />✦

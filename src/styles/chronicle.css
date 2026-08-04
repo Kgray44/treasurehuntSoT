@@ -888,6 +888,41 @@
   color: #b4d2c8;
   background: #030d0f;
 }
+
+.captain-state-facts {
+  display: grid;
+  gap: 0.55rem;
+  margin: 0;
+}
+
+.captain-state-facts > div {
+  display: grid;
+  grid-template-columns: minmax(8rem, 0.45fr) minmax(0, 1fr);
+  gap: 0.8rem;
+  border-bottom: 1px solid rgba(201, 169, 95, 0.14);
+  padding: 0.55rem 0;
+}
+
+.captain-state-facts dt {
+  color: var(--text-muted);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.captain-state-facts dd {
+  min-width: 0;
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 520px) {
+  .captain-state-facts > div {
+    grid-template-columns: 1fr;
+    gap: 0.2rem;
+  }
+}
 .event-ledger ol {
   max-height: 380px;
   overflow: auto;

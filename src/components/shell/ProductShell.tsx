@@ -104,6 +104,7 @@ export function ProductShell({ children }: { children: React.ReactNode }) {
   const accountButtonRef = useRef<HTMLButtonElement>(null);
   const navigationDrawerRef = useRef<HTMLDivElement>(null);
   const accountDisclosureRef = useRef<HTMLDivElement>(null);
+  const mainContentRef = useRef<HTMLDivElement>(null);
   const previousPathnameRef = useRef(pathname);
   const accountHeadingPrefix = useId();
   const compact = route.shellMode === "COMPACT" || route.shellMode === "IMMERSIVE";
@@ -142,28 +143,57 @@ export function ProductShell({ children }: { children: React.ReactNode }) {
     if (previousPathnameRef.current === pathname) return;
     previousPathnameRef.current = pathname;
     closeAll();
+    const frame = window.requestAnimationFrame(() => {
+      const destinationHeading = mainContentRef.current?.querySelector<HTMLElement>("h1");
+      if (destinationHeading) {
+        destinationHeading.tabIndex = -1;
+        destinationHeading.focus();
+      } else mainContentRef.current?.focus();
+    });
+    return () => window.cancelAnimationFrame(frame);
   }, [closeAll, pathname]);
 
   useEffect(() => {
     if (!navigationOpen && !accountOpen) return;
     const previousOverflow = document.body.style.overflow;
+    const mainContent = mainContentRef.current;
     document.body.style.overflow = "hidden";
     document.body.dataset.shellOverlay = "open";
+    if (mainContent) mainContent.inert = true;
     return () => {
       document.body.style.overflow = previousOverflow;
       delete document.body.dataset.shellOverlay;
+      if (mainContent) mainContent.inert = false;
     };
   }, [accountOpen, navigationOpen]);
 
   useEffect(() => {
     if (!navigationOpen && !accountOpen) return;
-    const closeOnEscape = (event: KeyboardEvent) => {
-      if (event.key !== "Escape") return;
-      if (accountOpen) closeAccount(true);
-      else closeNavigation(true);
+    const handleOverlayKeyboard = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        if (accountOpen) closeAccount(true);
+        else closeNavigation(true);
+        return;
+      }
+      if (event.key !== "Tab") return;
+      const panel = accountOpen ? accountDisclosureRef.current : navigationDrawerRef.current;
+      if (!panel) return;
+      const controls = [...panel.querySelectorAll<HTMLElement>("a[href], button:not(:disabled), [tabindex]")].filter(
+        (control) => control.tabIndex >= 0 && !control.hasAttribute("hidden"),
+      );
+      if (!controls.length) return;
+      const first = controls[0];
+      const last = controls.at(-1);
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last?.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first?.focus();
+      }
     };
-    window.addEventListener("keydown", closeOnEscape);
-    return () => window.removeEventListener("keydown", closeOnEscape);
+    window.addEventListener("keydown", handleOverlayKeyboard);
+    return () => window.removeEventListener("keydown", handleOverlayKeyboard);
   }, [accountOpen, closeAccount, closeNavigation, navigationOpen]);
 
   useEffect(() => {
@@ -244,6 +274,9 @@ export function ProductShell({ children }: { children: React.ReactNode }) {
             id="product-navigation-drawer"
             className="product-navigation-drawer"
             data-open={navigationOpen ? "true" : "false"}
+            role={navigationOpen ? "dialog" : undefined}
+            aria-modal={navigationOpen || undefined}
+            aria-label={navigationOpen ? "Product navigation" : undefined}
           >
             <nav className="product-navigation global-navigation" aria-label="Global navigation">
               <NavigationLinks
@@ -305,6 +338,8 @@ export function ProductShell({ children }: { children: React.ReactNode }) {
               id="shell-account-disclosure"
               className="shell-account-disclosure"
               hidden={!accountOpen}
+              role={accountOpen ? "dialog" : undefined}
+              aria-modal={accountOpen || undefined}
               aria-label="Account navigation"
             >
               {currentUser.status === "authenticated" ? (
@@ -415,7 +450,7 @@ export function ProductShell({ children }: { children: React.ReactNode }) {
         </nav>
       ) : null}
 
-      <div className="product-shell-content" id="main-content" tabIndex={-1}>
+      <div ref={mainContentRef} className="product-shell-content" id="main-content" tabIndex={-1}>
         <RouteMotionBoundary pathname={pathname}>{children}</RouteMotionBoundary>
       </div>
 

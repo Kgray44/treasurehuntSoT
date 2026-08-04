@@ -56,7 +56,7 @@ export function ChronicleHistory() {
             <p>
               {item.lifecycleStatus} · outcome: {item.outcome}
             </p>
-            <p>Version checksum: {item.chronicle.versionChecksum}</p>
+            <p>Version-pinned Chronicle record</p>
             <p>
               Wall-clock: {item.timing.wallClock.seconds ?? "unavailable"} ({item.timing.wallClock.accuracy})
             </p>

@@ -1,7 +1,7 @@
 "use client";
 
-/* eslint-disable @next/next/no-img-element -- Version-bound media is served by the application's authorized asset endpoint. */
 import { useState } from "react";
+import { ResilientAudio, ResilientImage, ResilientVideo } from "@/components/ui/ResilientImage";
 import { errorCopy } from "@/language/error-copy";
 import { playerCopy } from "@/language/player-copy";
 import type { JsonObject } from "@/chronicle/types";
@@ -18,9 +18,10 @@ export function PublishedBlockView({ block, assets }: { block: PlayerBlock; asse
   if (block.blockType === "image")
     return (
       <article className={`runtime-block image-block mode-${value(config, "displayMode")}`}>
-        <img
+        <ResilientImage
           src={asset(config.assetId)}
           alt={value(config, "altText")}
+          fallbackLabel={`${block.title} illustration unavailable`}
           style={{ objectPosition: `${Number(config.focalX ?? 50)}% ${Number(config.focalY ?? 50)}%` }}
         />
         {Boolean(config.caption) && <p>{value(config, "caption")}</p>}
@@ -41,12 +42,20 @@ export function PublishedBlockView({ block, assets }: { block: PlayerBlock; asse
           } as React.CSSProperties
         }
       >
-        {before && <img className="before" src={before} alt="Before transformation" />}
+        {before && (
+          <ResilientImage
+            className="before"
+            src={before}
+            alt="Before transformation"
+            fallbackLabel="Before image unavailable"
+          />
+        )}
         {after && (
-          <img
+          <ResilientImage
             className="after"
             src={after}
             alt={value(config, "caption") || value(config, "messageText") || "Revealed image"}
+            fallbackLabel="Revealed image unavailable"
           />
         )}
         {Boolean(config.caption || config.messageText) && (
@@ -59,9 +68,13 @@ export function PublishedBlockView({ block, assets }: { block: PlayerBlock; asse
   if (block.blockType === "cinematic")
     return (
       <article className="runtime-block media-block">
-        <video controls autoPlay={Boolean(config.autoplay)} poster={asset(config.posterAssetId)}>
-          <source src={asset(config.videoAssetId)} />
-        </video>
+        <ResilientVideo
+          controls
+          autoPlay={Boolean(config.autoplay)}
+          poster={asset(config.posterAssetId)}
+          src={asset(config.videoAssetId)}
+          fallbackLabel={`${block.title} video unavailable`}
+        />
         <p>If playback does not begin automatically, use the player controls.</p>
       </article>
     );
@@ -69,7 +82,12 @@ export function PublishedBlockView({ block, assets }: { block: PlayerBlock; asse
     return (
       <article className="runtime-block media-block">
         <h2>{value(config, "title") || block.title}</h2>
-        <audio controls loop={Boolean(config.loop)} src={asset(config.audioAssetId)} />
+        <ResilientAudio
+          controls
+          loop={Boolean(config.loop)}
+          src={asset(config.audioAssetId)}
+          fallbackLabel={`${block.title} audio unavailable`}
+        />
         {Boolean(config.transcript) && (
           <details>
             <summary>Transcript</summary>
@@ -81,7 +99,13 @@ export function PublishedBlockView({ block, assets }: { block: PlayerBlock; asse
   if (block.blockType === "artifactReveal" || block.blockType === "collectionUpdate")
     return (
       <article className="runtime-block artifact-block">
-        {asset(config.revealArtworkId) && <img src={asset(config.revealArtworkId)} alt="" />}
+        {asset(config.revealArtworkId) && (
+          <ResilientImage
+            src={asset(config.revealArtworkId)}
+            alt=""
+            fallbackLabel={`${block.title} artwork unavailable`}
+          />
+        )}
         <span aria-hidden="true">✦</span>
         <p className="eyebrow">{playerCopy.artifactRecovered.value}</p>
         <h2>{value(config, "loreTitle") || value(config, "progressLabel") || block.title}</h2>
@@ -110,7 +134,9 @@ export function PublishedBlockView({ block, assets }: { block: PlayerBlock; asse
         <p className="eyebrow">Set a course</p>
         <h2>{value(config, "heading") || value(config, "playerTitle") || block.title}</h2>
         <p>{value(config, "directionText") || value(config, "playerDescription") || value(config, "prompt")}</p>
-        {asset(config.mapAssetId) && <img src={asset(config.mapAssetId)} alt="Voyage map" />}
+        {asset(config.mapAssetId) && (
+          <ResilientImage src={asset(config.mapAssetId)} alt="Voyage map" fallbackLabel="Voyage map unavailable" />
+        )}
       </article>
     );
   if (block.blockType === "taleComplete" || block.blockType === "chapterComplete")

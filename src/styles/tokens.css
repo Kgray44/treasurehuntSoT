@@ -279,6 +279,7 @@ svg {
   margin-block: 1.5rem;
 }
 
+.ui-state h1,
 .ui-state h2 {
   margin-bottom: 0.45rem;
   font-size: clamp(1.5rem, 3vw, 2.25rem);
@@ -317,6 +318,23 @@ svg {
 
 .ui-error-state .ui-state-symbol {
   color: var(--state-danger);
+}
+
+.ui-unavailable-state {
+  border-style: solid;
+  border-color: color-mix(in srgb, var(--state-warning) 42%, transparent);
+}
+
+.ui-unavailable-state .ui-state-symbol,
+.ui-permission-state .ui-state-symbol,
+.ui-token-state .ui-state-symbol {
+  color: var(--state-warning);
+}
+
+.ui-state small {
+  display: block;
+  margin-top: 0.65rem;
+  color: var(--text-muted);
 }
 
 .ui-spinner {
@@ -381,6 +399,178 @@ svg {
 
 .ui-status-banner.tone-danger > span {
   background: var(--state-danger);
+}
+
+.ui-mutation-status {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+  margin: 0.75rem 0;
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-medium);
+  padding: 0.8rem 1rem;
+  color: var(--text-secondary);
+  background: var(--surface-raised);
+}
+
+.ui-mutation-status > span {
+  width: 0.7rem;
+  height: 0.7rem;
+  flex: 0 0 auto;
+  margin-top: 0.35rem;
+  border-radius: 50%;
+  background: var(--state-info);
+}
+
+.ui-mutation-status.state-success > span {
+  background: var(--state-success);
+}
+
+.ui-mutation-status.state-failure > span,
+.ui-mutation-status.state-conflict > span {
+  background: var(--state-danger);
+}
+
+.ui-mutation-status.state-rate-limited > span {
+  background: var(--state-warning);
+}
+
+.ui-media-fallback {
+  display: grid;
+  width: 100%;
+  min-height: 9rem;
+  place-content: center;
+  justify-items: center;
+  gap: 0.35rem;
+  border: 1px dashed var(--border-default);
+  border-radius: inherit;
+  padding: 1rem;
+  color: var(--text-secondary);
+  background: radial-gradient(circle at 50% 18%, rgba(157, 216, 208, 0.12), transparent 38%), var(--surface-default);
+  text-align: center;
+}
+
+.ui-media-fallback > span {
+  color: var(--brass-100);
+  font-family: var(--font-display);
+  font-size: 2rem;
+}
+
+.ui-media-fallback small {
+  max-width: 24rem;
+  color: var(--text-muted);
+  line-height: 1.45;
+}
+
+[data-resilient-image="fallback"] {
+  display: grid;
+  overflow: hidden;
+}
+
+.ui-dialog-backdrop {
+  position: fixed;
+  z-index: var(--z-dialog);
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  background: rgba(0, 7, 9, 0.78);
+  backdrop-filter: blur(8px);
+}
+
+.ui-action-dialog {
+  overflow: auto;
+  width: min(42rem, 100%);
+  max-height: min(48rem, calc(100svh - 2rem));
+  border: 1px solid var(--border-emphasis);
+  border-radius: var(--radius-large);
+  padding: clamp(1.25rem, 4vw, 2rem);
+  color: var(--text-primary);
+  background: radial-gradient(circle at 100% 0, rgba(157, 216, 208, 0.12), transparent 38%), var(--surface-overlay);
+  box-shadow: var(--shadow-deep);
+}
+
+.ui-action-dialog h2 {
+  margin-bottom: 0.65rem;
+  font-size: clamp(1.65rem, 4vw, 2.4rem);
+}
+
+.ui-action-dialog > p:not(.eyebrow) {
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.ui-action-dialog__fields {
+  display: grid;
+  gap: 1rem;
+  margin-block: 1.25rem;
+}
+
+.ui-action-dialog__fields > label,
+.ui-action-dialog__fields fieldset {
+  display: grid;
+  gap: 0.45rem;
+  margin: 0;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-medium);
+  padding: 0.85rem;
+}
+
+.ui-action-dialog__fields input:not([type="checkbox"], [type="radio"]),
+.ui-action-dialog__fields textarea {
+  width: 100%;
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-small);
+  padding: 0.75rem;
+  color: var(--text-primary);
+  background: var(--surface-default);
+  font: inherit;
+}
+
+.ui-action-dialog__fields small,
+.ui-action-dialog__choices {
+  color: var(--text-muted);
+}
+
+.ui-action-dialog__choices {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.ui-action-dialog__choices label {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.ui-action-dialog__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.65rem;
+  margin-top: 1.25rem;
+}
+
+@media (max-width: 420px) {
+  .ui-action-dialog__actions {
+    flex-direction: column-reverse;
+  }
+
+  .ui-action-dialog__actions > * {
+    width: 100%;
+  }
+}
+
+@media (max-width: 420px) {
+  .ui-state {
+    width: 100%;
+    min-height: 220px;
+    margin-block: 1rem;
+    padding: 1.25rem;
+  }
+
+  .ui-state .brass-button {
+    width: 100%;
+  }
 }
 
 @keyframes ui-spin {

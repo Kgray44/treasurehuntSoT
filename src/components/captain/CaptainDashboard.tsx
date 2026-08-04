@@ -173,7 +173,7 @@ function SessionCard({ session, clock }: { session: Session; clock: number }) {
         </div>
         <div>
           <dt>Current Passage</dt>
-          <dd>{session.currentBlockId?.slice(0, 8) ?? "none"}</dd>
+          <dd>{session.currentBlockId ? "Passage selected" : "No Passage selected"}</dd>
         </div>
         <div>
           <dt>Verification</dt>

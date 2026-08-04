@@ -895,6 +895,61 @@
   display: block;
   color: #8ea49f;
 }
+
+.structured-list-field {
+  display: grid;
+  gap: 0.75rem;
+  margin: 0;
+  border: 1px solid rgba(201, 169, 95, 0.25);
+  border-radius: 12px;
+  padding: 0.85rem;
+  background: rgba(3, 14, 16, 0.42);
+}
+
+.structured-list-field legend {
+  padding-inline: 0.35rem;
+  color: var(--brass-100);
+  font-weight: 750;
+}
+
+.structured-list-field ol {
+  display: grid;
+  gap: 0.65rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.structured-list-field li {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: 0.55rem;
+  border-bottom: 1px solid rgba(201, 169, 95, 0.14);
+  padding-bottom: 0.65rem;
+}
+
+.structured-list-field li small {
+  grid-column: 1 / -1;
+}
+
+.structured-list-field > button,
+.structured-list-field li > button {
+  min-height: 40px;
+}
+
+.structured-list-field .field-help {
+  margin: 0;
+  color: #aabbb6;
+  font-size: 0.82rem;
+  line-height: 1.5;
+}
+
+@media (max-width: 520px) {
+  .structured-list-field li {
+    grid-template-columns: 1fr;
+  }
+}
 .check-field {
   display: flex !important;
   align-items: center;

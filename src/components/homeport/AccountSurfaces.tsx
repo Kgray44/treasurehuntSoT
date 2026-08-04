@@ -4,6 +4,13 @@ import Link from "next/link";
 import { useEffect, useState, type FormEvent } from "react";
 import { useCurrentUser } from "@/components/auth/CurrentUserProvider";
 import { usePersonalHarbor } from "@/components/homeport/PersonalHarborLayout";
+import {
+  ErrorState as SharedErrorState,
+  LoadingState as SharedLoadingState,
+  MutationStatus,
+} from "@/components/ui/AsyncState";
+import { ResilientImage } from "@/components/ui/ResilientImage";
+import { useActionDialog } from "@/components/ui/ActionDialog";
 
 type LoadState<T> = { status: "loading" } | { status: "error"; message: string } | { status: "ready"; value: T };
 
@@ -37,23 +44,16 @@ function useResource<T>(url: string) {
 }
 
 function LoadingState({ label = "Loading this section" }: { label?: string }) {
-  return (
-    <div className="harbor-state harbor-state--loading" role="status">
-      <span aria-hidden="true" />
-      {label}…
-    </div>
-  );
+  return <SharedLoadingState compact title={label} detail="Reading the latest account state from Voyagewright." />;
 }
 
 function ErrorState({ message, retry }: { message: string; retry: () => void }) {
   return (
-    <div className="harbor-state harbor-state--error" role="alert">
-      <h2>This section is unavailable</h2>
-      <p>{message}</p>
-      <button type="button" className="button" onClick={retry}>
-        Try again
-      </button>
-    </div>
+    <SharedErrorState
+      title="This section is unavailable"
+      detail={message}
+      action={{ label: "Try again", onClick: retry }}
+    />
   );
 }
 
@@ -64,13 +64,19 @@ function MutationMessage({
 }) {
   if (state.kind === "idle") return null;
   return (
-    <p
-      className={`harbor-mutation harbor-mutation--${state.kind}`}
-      role={state.kind === "error" || state.kind === "stale" ? "alert" : "status"}
-      aria-live="polite"
+    <MutationStatus
+      state={
+        state.kind === "saving"
+          ? "pending"
+          : state.kind === "saved"
+            ? "success"
+            : state.kind === "stale"
+              ? "conflict"
+              : "failure"
+      }
     >
       {state.message ?? (state.kind === "saving" ? "Saving…" : "Saved.")}
-    </p>
+    </MutationStatus>
   );
 }
 
@@ -167,6 +173,7 @@ type PublicPreview = {
 };
 
 export function ProfileEditor() {
+  const { requestAction, dialog } = useActionDialog();
   const resource = useResource<ProfileDto>("/api/passport/profile");
   const { setDirty, csrfToken } = usePersonalHarbor();
   const { invalidate } = useCurrentUser();
@@ -265,7 +272,15 @@ export function ProfileEditor() {
     }
   };
   const remove = async (media: NonNullable<ProfileDto["avatar"]>, label: string) => {
-    if (!window.confirm(`Remove this ${label}? The Profile will use its fallback immediately.`)) return;
+    if (
+      !(await requestAction({
+        title: `Remove this ${label}?`,
+        detail: "Your Profile will use its safe fallback immediately.",
+        confirmLabel: `Remove ${label}`,
+        destructive: true,
+      }))
+    )
+      return;
     setMutation({ kind: "saving", message: `Removing ${label}…` });
     try {
       await responseBody(
@@ -284,126 +299,154 @@ export function ProfileEditor() {
   };
 
   return (
-    <div className="harbor-profile-grid">
-      <form className="harbor-panel harbor-form" onSubmit={save}>
-        <div>
-          <p className="personal-harbor__eyebrow">Owner controls</p>
-          <h2>Edit public Profile</h2>
-          <p>Only the server-enforced public projection appears in the preview.</p>
-        </div>
-        <label>
-          Display name
-          <input
-            value={draft.displayName}
-            maxLength={80}
-            onChange={(event) => change("displayName", event.target.value)}
-            required
-          />
-        </label>
-        <label>
-          Handle<span className="harbor-field-hint">Lowercase letters, numbers, and internal hyphens.</span>
-          <input value={draft.handle ?? ""} maxLength={32} onChange={(event) => change("handle", event.target.value)} />
-        </label>
-        <label>
-          Biography
-          <textarea
-            value={draft.biography ?? ""}
-            maxLength={1000}
-            rows={7}
-            onChange={(event) => change("biography", event.target.value)}
-          />
-        </label>
-        <label>
-          Default visibility
-          <select value={draft.defaultVisibility} onChange={(event) => change("defaultVisibility", event.target.value)}>
-            <option value="ONLY_ME">Only me</option>
-            <option value="CREW_ONLY">Crew only</option>
-            <option value="REGISTERED_USERS">Registered members</option>
-            <option value="PUBLIC">Public</option>
-            <option value="UNLISTED">Unlisted</option>
-          </select>
-        </label>
-        <fieldset className="harbor-media-fields">
-          <legend>Profile imagery</legend>
-          <label>
-            Avatar image
-            <input
-              type="file"
-              accept="image/png,image/jpeg,image/webp"
-              onChange={(event) => void upload("AVATAR", event.target.files?.[0])}
-            />
-          </label>
-          {draft.avatar && (
-            <button type="button" className="button button--quiet" onClick={() => void remove(draft.avatar!, "avatar")}>
-              Remove avatar
-            </button>
-          )}
-          <label>
-            Banner image
-            <input
-              type="file"
-              accept="image/png,image/jpeg,image/webp"
-              onChange={(event) => void upload("BANNER", event.target.files?.[0])}
-            />
-          </label>
-          {draft.banner && (
-            <button type="button" className="button button--quiet" onClick={() => void remove(draft.banner!, "banner")}>
-              Remove banner
-            </button>
-          )}
-          <p className="harbor-field-hint">
-            PNG, JPEG, or WebP is normalized into bounded private Profile storage. No external malware-scanner result is
-            claimed by this flow.
-          </p>
-        </fieldset>
-        <MutationMessage state={mutation} />
-        {mutation.kind === "stale" && (
-          <button type="button" className="button" onClick={resource.reload}>
-            Reload saved Profile
-          </button>
-        )}
-        <button className="button button--primary" disabled={mutation.kind === "saving"}>
-          Save Profile
-        </button>
-      </form>
-      <aside className="harbor-panel harbor-preview" aria-labelledby="profile-preview-title">
-        <p className="personal-harbor__eyebrow">Public-view preview</p>
-        <h2 id="profile-preview-title">What another visitor can see</h2>
-        {!draft.handle ? (
-          <p className="harbor-empty">Choose a handle to create a public Profile destination.</p>
-        ) : preview?.status === "loading" ? (
-          <LoadingState label="Refreshing preview" />
-        ) : preview?.status === "error" ? (
-          <p role="alert">{preview.message}</p>
-        ) : preview?.status === "ready" && preview.value.private ? (
-          <p className="harbor-empty">Your Profile header is not public to an anonymous visitor.</p>
-        ) : preview?.status === "ready" ? (
-          <div className="public-profile-preview">
-            {preview.value.bannerUrl && (
-              <img src={preview.value.bannerUrl} alt="" className="public-profile-preview__banner" />
-            )}
-            {preview.value.avatarUrl ? (
-              <img src={preview.value.avatarUrl} alt="Profile avatar" className="public-profile-preview__avatar" />
-            ) : (
-              <div className="public-profile-preview__fallback" aria-hidden="true">
-                {draft.displayName.slice(0, 1).toUpperCase()}
-              </div>
-            )}
-            <h3>{preview.value.displayName}</h3>
-            <p>@{preview.value.handle}</p>
-            {preview.value.biography && <p>{preview.value.biography}</p>}
-            {(preview.value.providers?.length ?? 0) > 0 && (
-              <ul>
-                {preview.value.providers!.map((provider) => (
-                  <li key={provider.provider}>{provider.providerDisplayName || provider.provider}</li>
-                ))}
-              </ul>
-            )}
-            <Link href={`/profile/${encodeURIComponent(draft.handle!)}`}>Open my Profile</Link>
+    <>
+      <div className="harbor-profile-grid">
+        <form className="harbor-panel harbor-form" onSubmit={save}>
+          <div>
+            <p className="personal-harbor__eyebrow">Owner controls</p>
+            <h2>Edit public Profile</h2>
+            <p>Only the server-enforced public projection appears in the preview.</p>
           </div>
-        ) : null}
-      </aside>
-    </div>
+          <label>
+            Display name
+            <input
+              value={draft.displayName}
+              maxLength={80}
+              onChange={(event) => change("displayName", event.target.value)}
+              required
+            />
+          </label>
+          <label>
+            Handle<span className="harbor-field-hint">Lowercase letters, numbers, and internal hyphens.</span>
+            <input
+              value={draft.handle ?? ""}
+              maxLength={32}
+              onChange={(event) => change("handle", event.target.value)}
+            />
+          </label>
+          <label>
+            Biography
+            <textarea
+              value={draft.biography ?? ""}
+              maxLength={1000}
+              rows={7}
+              onChange={(event) => change("biography", event.target.value)}
+            />
+          </label>
+          <label>
+            Default visibility
+            <select
+              value={draft.defaultVisibility}
+              onChange={(event) => change("defaultVisibility", event.target.value)}
+            >
+              <option value="ONLY_ME">Only me</option>
+              <option value="CREW_ONLY">Crew only</option>
+              <option value="REGISTERED_USERS">Registered members</option>
+              <option value="PUBLIC">Public</option>
+              <option value="UNLISTED">Unlisted</option>
+            </select>
+          </label>
+          <fieldset className="harbor-media-fields">
+            <legend>Profile imagery</legend>
+            <label>
+              Avatar image
+              <input
+                type="file"
+                accept="image/png,image/jpeg,image/webp"
+                onChange={(event) => void upload("AVATAR", event.target.files?.[0])}
+              />
+            </label>
+            {draft.avatar && (
+              <button
+                type="button"
+                className="button button--quiet"
+                onClick={() => void remove(draft.avatar!, "avatar")}
+              >
+                Remove avatar
+              </button>
+            )}
+            <label>
+              Banner image
+              <input
+                type="file"
+                accept="image/png,image/jpeg,image/webp"
+                onChange={(event) => void upload("BANNER", event.target.files?.[0])}
+              />
+            </label>
+            {draft.banner && (
+              <button
+                type="button"
+                className="button button--quiet"
+                onClick={() => void remove(draft.banner!, "banner")}
+              >
+                Remove banner
+              </button>
+            )}
+            <p className="harbor-field-hint">
+              PNG, JPEG, or WebP is normalized into bounded private Profile storage. No external malware-scanner result
+              is claimed by this flow.
+            </p>
+          </fieldset>
+          <MutationMessage state={mutation} />
+          {mutation.kind === "stale" && (
+            <button type="button" className="button" onClick={resource.reload}>
+              Reload saved Profile
+            </button>
+          )}
+          <button className="button button--primary" disabled={mutation.kind === "saving"}>
+            Save Profile
+          </button>
+        </form>
+        <aside className="harbor-panel harbor-preview" aria-labelledby="profile-preview-title">
+          <p className="personal-harbor__eyebrow">Public-view preview</p>
+          <h2 id="profile-preview-title">What another visitor can see</h2>
+          {!draft.handle ? (
+            <p className="harbor-empty">Choose a handle to create a public Profile destination.</p>
+          ) : preview?.status === "loading" ? (
+            <LoadingState label="Refreshing preview" />
+          ) : preview?.status === "error" ? (
+            <p role="alert">{preview.message}</p>
+          ) : preview?.status === "ready" && preview.value.private ? (
+            <p className="harbor-empty">Your Profile header is not public to an anonymous visitor.</p>
+          ) : preview?.status === "ready" ? (
+            <div className="public-profile-preview">
+              {preview.value.bannerUrl && (
+                <ResilientImage
+                  src={preview.value.bannerUrl}
+                  alt=""
+                  className="public-profile-preview__banner"
+                  fallbackLabel="Profile banner unavailable"
+                />
+              )}
+              {preview.value.avatarUrl ? (
+                <ResilientImage
+                  src={preview.value.avatarUrl}
+                  alt="Profile avatar"
+                  className="public-profile-preview__avatar"
+                  fallbackLabel="Profile avatar unavailable"
+                />
+              ) : (
+                <div className="public-profile-preview__fallback" aria-hidden="true">
+                  {draft.displayName.slice(0, 1).toUpperCase()}
+                </div>
+              )}
+              <h3>{preview.value.displayName}</h3>
+              <p>@{preview.value.handle}</p>
+              {preview.value.biography && <p>{preview.value.biography}</p>}
+              {(preview.value.providers?.length ?? 0) > 0 && (
+                <ul>
+                  {preview.value.providers!.map((provider) => (
+                    <li key={provider.provider}>{provider.providerDisplayName || provider.provider}</li>
+                  ))}
+                </ul>
+              )}
+              <Link href={`/profile/${encodeURIComponent(draft.handle!)}`}>Open my Profile</Link>
+            </div>
+          ) : null}
+        </aside>
+      </div>
+      {dialog}
+    </>
   );
 }
 
@@ -861,6 +904,7 @@ type IdentityDto = {
 };
 type ProviderDto = { provider: string; name: string; available: boolean; link: boolean };
 export function LinkedIdentities() {
+  const { requestAction, dialog } = useActionDialog();
   const resource = useResource<{ identities: IdentityDto[]; adapters: ProviderDto[] }>("/api/passport/providers");
   const { csrfToken } = usePersonalHarbor();
   const [message, setMessage] = useState<{ kind: "idle" | "saving" | "saved" | "error" | "stale"; message?: string }>({
@@ -873,9 +917,12 @@ export function LinkedIdentities() {
   );
   const unlink = async (identity: IdentityDto) => {
     if (
-      !window.confirm(
-        `Unlink ${identity.displayName || identity.provider}? You will not be allowed to remove your last usable login method.`,
-      )
+      !(await requestAction({
+        title: `Unlink ${identity.displayName || identity.provider}?`,
+        detail: "Voyagewright will protect your last usable login method and reject an unsafe unlink.",
+        confirmLabel: "Unlink Identity",
+        destructive: true,
+      }))
     )
       return;
     setMessage({ kind: "saving", message: "Unlinking identity…" });
@@ -915,61 +962,65 @@ export function LinkedIdentities() {
     }
   };
   return (
-    <div className="harbor-stack">
-      <section className="harbor-panel">
-        <h2>Connected identities</h2>
-        <p>Provider subjects, access tokens, refresh tokens, and requested scopes are never returned to this page.</p>
-        {linked.length ? (
-          <ul className="harbor-list">
-            {linked.map((identity) => (
-              <li key={identity.id}>
-                <div>
-                  <strong>{identity.displayName || identity.provider}</strong>
-                  <span>
-                    {identity.provider.replaceAll("_", " ")} · linked {new Date(identity.linkedAt).toLocaleDateString()}
-                    {identity.useForLogin ? " · login enabled" : ""}
-                  </span>
-                </div>
-                <button type="button" className="button button--danger" onClick={() => void unlink(identity)}>
-                  Unlink
-                </button>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p className="harbor-empty">
-            No external identities are linked. Your account credential remains the login authority.
-          </p>
-        )}
-        <MutationMessage state={message} />
-      </section>
-      <section className="harbor-panel">
-        <h2>Available connections</h2>
-        {resource.state.value.adapters.length ? (
-          <ul className="harbor-list">
-            {resource.state.value.adapters.map((provider) => (
-              <li key={provider.provider}>
-                <div>
-                  <strong>{provider.name}</strong>
-                  <span>Configured and available in this environment</span>
-                </div>
-                <button type="button" className="button" onClick={() => void begin(provider)}>
-                  Connect
-                </button>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <div className="harbor-callout">
-            <strong>No external connection is configured.</strong>
-            <p>
-              Partner-gated, planned, disabled, and simulator adapters are intentionally absent from this ordinary
-              product surface.
+    <>
+      <div className="harbor-stack">
+        <section className="harbor-panel">
+          <h2>Connected identities</h2>
+          <p>Provider subjects, access tokens, refresh tokens, and requested scopes are never returned to this page.</p>
+          {linked.length ? (
+            <ul className="harbor-list">
+              {linked.map((identity) => (
+                <li key={identity.id}>
+                  <div>
+                    <strong>{identity.displayName || identity.provider}</strong>
+                    <span>
+                      {identity.provider.replaceAll("_", " ")} · linked{" "}
+                      {new Date(identity.linkedAt).toLocaleDateString()}
+                      {identity.useForLogin ? " · login enabled" : ""}
+                    </span>
+                  </div>
+                  <button type="button" className="button button--danger" onClick={() => void unlink(identity)}>
+                    Unlink
+                  </button>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p className="harbor-empty">
+              No external identities are linked. Your account credential remains the login authority.
             </p>
-          </div>
-        )}
-      </section>
-    </div>
+          )}
+          <MutationMessage state={message} />
+        </section>
+        <section className="harbor-panel">
+          <h2>Available connections</h2>
+          {resource.state.value.adapters.length ? (
+            <ul className="harbor-list">
+              {resource.state.value.adapters.map((provider) => (
+                <li key={provider.provider}>
+                  <div>
+                    <strong>{provider.name}</strong>
+                    <span>Configured and available in this environment</span>
+                  </div>
+                  <button type="button" className="button" onClick={() => void begin(provider)}>
+                    Connect
+                  </button>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <div className="harbor-callout">
+              <strong>No external connection is configured.</strong>
+              <p>
+                Partner-gated, planned, disabled, and simulator adapters are intentionally absent from this ordinary
+                product surface.
+              </p>
+            </div>
+          )}
+        </section>
+      </div>
+      {dialog}
+    </>
   );
 }
 
@@ -1006,6 +1057,7 @@ type SessionDto = {
   current: boolean;
 };
 export function SessionManager() {
+  const { requestAction, dialog } = useActionDialog();
   const resource = useResource<{ sessions: SessionDto[] }>("/api/auth/sessions");
   const { csrfToken } = usePersonalHarbor();
   const { invalidate } = useCurrentUser();
@@ -1015,7 +1067,17 @@ export function SessionManager() {
   if (resource.state.status === "loading") return <LoadingState />;
   if (resource.state.status === "error") return <ErrorState message={resource.state.message} retry={resource.reload} />;
   const revoke = async (session: SessionDto) => {
-    if (!window.confirm(`${session.current ? "Revoke this current session" : "Revoke this session"}?`)) return;
+    if (
+      !(await requestAction({
+        title: session.current ? "Revoke this current session?" : "Revoke this session?",
+        detail: session.current
+          ? "This device will return to sign-in. Voyage and Chronicle records will not change."
+          : "That device will need to sign in again. Voyage and Chronicle records will not change.",
+        confirmLabel: "Revoke Session",
+        destructive: true,
+      }))
+    )
+      return;
     setMessage({ kind: "saving", message: "Revoking session…" });
     try {
       await responseBody(
@@ -1032,7 +1094,16 @@ export function SessionManager() {
     }
   };
   const all = async () => {
-    if (!window.confirm("Sign out every signed-in session, including this device?")) return;
+    if (
+      !(await requestAction({
+        title: "Sign out every session?",
+        detail:
+          "Every accepted AccountSession, including this device, will be revoked. Tale Sessions and Voyage records remain unchanged.",
+        confirmLabel: "Sign Out Everywhere",
+        destructive: true,
+      }))
+    )
+      return;
     setMessage({ kind: "saving", message: "Signing out all sessions…" });
     try {
       await responseBody(
@@ -1066,32 +1137,35 @@ export function SessionManager() {
     </li>
   );
   return (
-    <div className="harbor-stack">
-      <section className="harbor-panel">
-        <h2>Current session</h2>
-        {current ? (
-          <ul className="harbor-list">{card(current)}</ul>
-        ) : (
-          <p className="harbor-empty">The current session is no longer signed in.</p>
-        )}
-      </section>
-      <section className="harbor-panel">
-        <h2>Other sessions</h2>
-        {others.length ? (
-          <ul className="harbor-list">{others.map(card)}</ul>
-        ) : (
-          <p className="harbor-empty">No other signed-in sessions.</p>
-        )}
-      </section>
-      <section className="harbor-panel harbor-danger-zone">
-        <h2>Sign out everywhere</h2>
-        <p>This revokes every accepted AccountSession. It does not alter Tale Session or Voyage business records.</p>
-        <button type="button" className="button button--danger" onClick={() => void all()}>
-          Sign out all sessions
-        </button>
-        <MutationMessage state={message} />
-      </section>
-    </div>
+    <>
+      <div className="harbor-stack">
+        <section className="harbor-panel">
+          <h2>Current session</h2>
+          {current ? (
+            <ul className="harbor-list">{card(current)}</ul>
+          ) : (
+            <p className="harbor-empty">The current session is no longer signed in.</p>
+          )}
+        </section>
+        <section className="harbor-panel">
+          <h2>Other sessions</h2>
+          {others.length ? (
+            <ul className="harbor-list">{others.map(card)}</ul>
+          ) : (
+            <p className="harbor-empty">No other signed-in sessions.</p>
+          )}
+        </section>
+        <section className="harbor-panel harbor-danger-zone">
+          <h2>Sign out everywhere</h2>
+          <p>This revokes every accepted AccountSession. It does not alter Tale Session or Voyage business records.</p>
+          <button type="button" className="button button--danger" onClick={() => void all()}>
+            Sign out all sessions
+          </button>
+          <MutationMessage state={message} />
+        </section>
+      </div>
+      {dialog}
+    </>
   );
 }
 

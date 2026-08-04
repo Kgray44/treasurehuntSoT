@@ -1,7 +1,5 @@
 "use client";
 
-/* eslint-disable @next/next/no-img-element -- Studio previews use authenticated, dynamically generated asset variants. */
-
 import Link from "next/link";
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import {
@@ -14,7 +12,6 @@ import {
   useDroppable,
   useSensor,
   useSensors,
-  type DragCancelEvent,
   type DragEndEvent,
   type DragStartEvent,
   type DraggableAttributes,
@@ -35,6 +32,8 @@ import type { SceneHostHandle } from "@/animation/hosts/scene-host-types";
 import { useMotionMode } from "@/animation/motion/useMotionMode";
 import { platformMotionEasing, resolvePlatformMotionToken } from "@/animation/platform/motion-tokens";
 import { PublishedBlockView } from "@/components/tales/PublishedBlockView";
+import { useActionDialog } from "@/components/ui/ActionDialog";
+import { ResilientImage } from "@/components/ui/ResilientImage";
 import { studioCopy } from "@/language/studio-copy";
 import type { InspectorField, JsonObject } from "@/chronicle/types";
 
@@ -209,6 +208,7 @@ export function TaleEditor({
   initialSection?: "story" | "settings" | "assets" | "locations" | "artifacts" | "versions";
   authenticated: boolean;
 }) {
+  const { requestAction, dialog } = useActionDialog();
   const { mode } = useMotionMode();
   const { director } = useAnimationDirector();
   const layoutMotion = resolvePlatformMotionToken("layout", mode);
@@ -636,7 +636,7 @@ export function TaleEditor({
     setActiveDragId(id);
     setDragAnnouncement(`Picked up ${id.startsWith("library:") ? "a new Passage" : "a Passage"}.`);
   }
-  function dndCancel(_event: DragCancelEvent) {
+  function dndCancel() {
     setActiveDragId(null);
     setDragAnnouncement("Move cancelled. The Passage order is unchanged.");
   }
@@ -680,7 +680,16 @@ export function TaleEditor({
 
   async function deleteSelectedAuthoritatively() {
     if (!selected || !draft) return;
-    if (!window.confirm(`Delete “${selected.block.title}”? The Passage will remain visible if saving fails.`)) return;
+    if (
+      !(await requestAction({
+        title: `Delete “${selected.block.title}”?`,
+        detail:
+          "The Passage will remain visible if authoritative saving fails. A successful deletion can be undone from the editor notice.",
+        confirmLabel: "Delete Passage",
+        destructive: true,
+      }))
+    )
+      return;
     const next = clone(draft);
     const chapter = next.chapters.find((item) => item.id === selected.chapter.id);
     const index = chapter?.blocks.findIndex((block) => block.id === selected.block.id) ?? -1;
@@ -736,14 +745,23 @@ export function TaleEditor({
   async function publish() {
     if (!draft || !data) return;
     if (dirty && !(await save(draft, false))) return;
-    const notes = window.prompt("Release notes for this immutable Version:", "Initial Chronicle release");
-    if (
-      notes === null ||
-      !window.confirm(
-        "Publish this saved Chronicle as a new immutable Version? New Voyages will use it. Existing Voyages will not change.",
-      )
-    )
-      return;
+    const publication = await requestAction({
+      title: "Publish a new immutable Version?",
+      detail:
+        "New Voyages will use this saved Version. Existing Voyages remain pinned to the Version they already use.",
+      confirmLabel: "Publish Version",
+      fields: [
+        {
+          id: "notes",
+          label: "Release notes",
+          initialValue: "Initial Chronicle release",
+          multiline: true,
+          maxLength: 1000,
+        },
+      ],
+    });
+    if (!publication) return;
+    const notes = publication.notes;
     setPublishState("publishing");
     publicationStatusHold.current = false;
     setPublishedVersion(null);
@@ -837,7 +855,12 @@ export function TaleEditor({
     if (!data) return;
     if (
       action === "archive" &&
-      !window.confirm("Archive this Chronicle? Published Versions and existing Voyages will not change.")
+      !(await requestAction({
+        title: "Archive this Chronicle?",
+        detail: "Published Versions and existing Voyages will not change.",
+        confirmLabel: "Archive Chronicle",
+        destructive: true,
+      }))
     )
       return;
     const response = await fetch(`/api/studio/tales/${taleId}`, {
@@ -854,11 +877,17 @@ export function TaleEditor({
     if (!data) return;
     if (
       (action === "restore" || action === "fork") &&
-      !window.confirm(
-        action === "restore"
-          ? `Copy version ${version.versionLabel} into a new editable draft? The immutable release and current draft history will remain intact.`
-          : `Create a new Chronicle from Version ${version.versionLabel}? Version history will be preserved.`,
-      )
+      !(await requestAction({
+        title:
+          action === "restore"
+            ? `Copy Version ${version.versionLabel} into a new draft?`
+            : `Create a Chronicle from Version ${version.versionLabel}?`,
+        detail:
+          action === "restore"
+            ? "The immutable release and current draft history will remain intact."
+            : "The source Chronicle and its Version history will be preserved.",
+        confirmLabel: action === "restore" ? "Create Draft Copy" : "Create Chronicle",
+      }))
     )
       return;
     const response = await fetch(`/api/studio/tales/${taleId}/versions/${version.id}`, {
@@ -894,11 +923,15 @@ export function TaleEditor({
     const response = await fetch(`/api/studio/assets/${asset.id}`, { cache: "no-store" });
     const body = (await response.json()) as { usages?: Array<{ label: string; field?: string }>; error?: string };
     if (!response.ok) return setError(body.error ?? "Asset usages could not be loaded.");
-    window.alert(
-      body.usages?.length
-        ? `${asset.displayName} is used by:\n${body.usages.map((item) => `• ${item.label}${item.field ? ` (${item.field})` : ""}`).join("\n")}`
-        : `${asset.displayName} is not referenced by the current Chronicle draft.`,
-    );
+    await requestAction({
+      title: `${asset.displayName} usages`,
+      detail: body.usages?.length
+        ? `Used by ${body.usages.map((item) => `${item.label}${item.field ? ` (${item.field})` : ""}`).join("; ")}.`
+        : "This asset is not referenced by the current Chronicle draft.",
+      confirmLabel: "Close",
+      cancelLabel: "Back",
+      eyebrow: "Asset library",
+    });
   }
 
   async function upload(files: FileList | null) {
@@ -962,7 +995,15 @@ export function TaleEditor({
   async function replaceAsset(asset: Asset, files: FileList | null) {
     const file = files?.[0];
     if (!file || !data) return;
-    if (!window.confirm(`Replace ${asset.displayName} while preserving its logical asset identity?`)) return;
+    if (
+      !(await requestAction({
+        title: `Replace ${asset.displayName}?`,
+        detail: "The new file will preserve this asset's logical identity and Chronicle references.",
+        confirmLabel: "Replace File",
+        destructive: true,
+      }))
+    )
+      return;
     const form = new FormData();
     form.append("file", file);
     const response = await fetch(`/api/studio/assets/${asset.id}`, {
@@ -977,31 +1018,61 @@ export function TaleEditor({
 
   async function editAsset(asset: Asset) {
     if (!data) return;
-    const displayName = window.prompt("Display name:", asset.displayName);
-    if (displayName === null) return;
-    const description = window.prompt("Description:", asset.description ?? "");
-    if (description === null) return;
-    const tags = window.prompt("Comma-separated tags:", asset.tags.join(", "));
-    if (tags === null) return;
-    const roles = window.prompt("Comma-separated roles:", asset.roles.join(", "));
-    if (roles === null) return;
-    const collectionIds = window.prompt(
-      `Collection IDs (comma-separated). Available: ${data.collections.map((item) => `${item.name}=${item.id}`).join("; ") || "none"}`,
-      asset.collectionItems.map((item) => item.collectionId).join(", "),
-    );
-    if (collectionIds === null) return;
+    const values = await requestAction({
+      title: `Edit ${asset.displayName}`,
+      detail: "Update the author-facing metadata and choose any Collections that should contain this asset.",
+      confirmLabel: "Save Metadata",
+      fields: [
+        { id: "displayName", label: "Display name", initialValue: asset.displayName, required: true, maxLength: 160 },
+        {
+          id: "description",
+          label: "Description",
+          initialValue: asset.description ?? "",
+          multiline: true,
+          maxLength: 1000,
+        },
+        {
+          id: "tags",
+          label: "Tags",
+          description: "Separate tags with commas.",
+          initialValue: asset.tags.join(", "),
+          maxLength: 500,
+        },
+        {
+          id: "roles",
+          label: "Roles",
+          description: "Separate roles with commas.",
+          initialValue: asset.roles.join(", "),
+          maxLength: 500,
+        },
+        {
+          id: "collectionIds",
+          label: "Collections",
+          description: data.collections.length
+            ? "Choose every Collection that should include this asset."
+            : "No Collections are available yet.",
+          initialValue: asset.collectionItems.map((item) => item.collectionId).join(","),
+          choices: data.collections.map((item) => ({ value: item.id, label: item.name })),
+          multiple: true,
+        },
+      ],
+    });
+    if (!values) return;
     const response = await fetch(`/api/studio/assets/${asset.id}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json", "x-csrf-token": data.csrfToken },
       body: JSON.stringify({
-        displayName,
-        description,
-        tags: tags.split(",").map((item) => item.trim()),
-        roles: roles
+        displayName: values.displayName,
+        description: values.description,
+        tags: values.tags
           .split(",")
           .map((item) => item.trim())
           .filter(Boolean),
-        collectionIds: collectionIds
+        roles: values.roles
+          .split(",")
+          .map((item) => item.trim())
+          .filter(Boolean),
+        collectionIds: values.collectionIds
           .split(",")
           .map((item) => item.trim())
           .filter(Boolean),
@@ -1027,32 +1098,92 @@ export function TaleEditor({
           : entity === "location"
             ? data.locations.find((item) => item.id === id)
             : data.artifacts.find((item) => item.id === id);
-      const name = window.prompt(`${action === "create" ? "Name the new" : "Rename"} ${entityLabel}:`, existing?.name);
-      if (!name) return;
-      values = { name };
-      if (entity === "collection") {
-        values.description = window.prompt("Collection description (optional):", existing?.description ?? "") ?? "";
-        values.collectionType =
-          window.prompt(
-            "Collection type (GENERAL, LOCATION_REFERENCE, NEGATIVE_REFERENCE, or ARTIFACT):",
-            existing?.collectionType ?? "GENERAL",
-          ) ?? "GENERAL";
-      }
-      if (entity === "location") {
-        values.region = window.prompt("Region (optional):", existing?.region ?? "") ?? "";
-        values.playerFacingDescription =
-          window.prompt("Player-facing description:", existing?.playerFacingDescription ?? "") ?? "";
-        values.captainNotes = window.prompt("Private Captain notes:", existing?.captainNotes ?? "") ?? "";
-        values.referenceCollectionId =
-          window.prompt("Reference collection ID (optional):", existing?.referenceCollectionId ?? "") ?? "";
-      }
-      if (entity === "artifact") {
-        values.ordinaryGameObjectLabel =
-          window.prompt("Ordinary in-game object (optional):", existing?.ordinaryGameObjectLabel ?? "") ?? "";
-        values.shortDescription = window.prompt("Short description:", existing?.shortDescription ?? "") ?? "";
-        values.loreDescription = window.prompt("Lore description:", existing?.loreDescription ?? "") ?? "";
-      }
-    } else if (!window.confirm(`Archive this ${entityLabel}?`)) return;
+      const commonFields = [
+        {
+          id: "name",
+          label: `${entityLabel[0].toUpperCase()}${entityLabel.slice(1)} name`,
+          initialValue: existing?.name ?? "",
+          required: true,
+          maxLength: 160,
+        },
+      ];
+      const entityFields =
+        entity === "collection"
+          ? [
+              { id: "description", label: "Description", initialValue: existing?.description ?? "", multiline: true },
+              {
+                id: "collectionType",
+                label: "Collection type",
+                initialValue: existing?.collectionType ?? "GENERAL",
+                choices: [
+                  { value: "GENERAL", label: "General" },
+                  { value: "LOCATION_REFERENCE", label: "Waypoint reference" },
+                  { value: "NEGATIVE_REFERENCE", label: "Negative reference" },
+                  { value: "ARTIFACT", label: "Artifact" },
+                ],
+              },
+            ]
+          : entity === "location"
+            ? [
+                { id: "region", label: "Region", initialValue: existing?.region ?? "" },
+                {
+                  id: "playerFacingDescription",
+                  label: "Player-facing description",
+                  initialValue: existing?.playerFacingDescription ?? "",
+                  multiline: true,
+                },
+                {
+                  id: "captainNotes",
+                  label: "Private Captain notes",
+                  initialValue: existing?.captainNotes ?? "",
+                  multiline: true,
+                },
+                {
+                  id: "referenceCollectionId",
+                  label: "Reference Collection",
+                  initialValue: existing?.referenceCollectionId ?? "",
+                  choices: [
+                    { value: "", label: "No reference Collection" },
+                    ...data.collections.map((item) => ({ value: item.id, label: item.name })),
+                  ],
+                },
+              ]
+            : [
+                {
+                  id: "ordinaryGameObjectLabel",
+                  label: "Ordinary in-game object",
+                  initialValue: existing?.ordinaryGameObjectLabel ?? "",
+                },
+                {
+                  id: "shortDescription",
+                  label: "Short description",
+                  initialValue: existing?.shortDescription ?? "",
+                  multiline: true,
+                },
+                {
+                  id: "loreDescription",
+                  label: "Lore description",
+                  initialValue: existing?.loreDescription ?? "",
+                  multiline: true,
+                },
+              ];
+      const result = await requestAction({
+        title: `${action === "create" ? "Create" : "Edit"} ${entityLabel}`,
+        detail: "Use named product fields. Internal record identifiers remain hidden from the ordinary editor.",
+        confirmLabel: action === "create" ? `Create ${entityLabel}` : `Save ${entityLabel}`,
+        fields: [...commonFields, ...entityFields],
+      });
+      if (!result) return;
+      values = result;
+    } else if (
+      !(await requestAction({
+        title: `Archive this ${entityLabel}?`,
+        detail: "Referenced records remain protected and will be reported instead of silently removed.",
+        confirmLabel: `Archive ${entityLabel}`,
+        destructive: true,
+      }))
+    )
+      return;
     const response = await fetch(`/api/studio/tales/${taleId}/library`, {
       method: "POST",
       headers: { "Content-Type": "application/json", "x-csrf-token": data.csrfToken },
@@ -1086,1236 +1217,1276 @@ export function TaleEditor({
     versions: "Versions",
   } as const;
   return (
-    <motion.main ref={root} className="tale-editor" layout={mode !== "reduced"} data-motion-mode={mode}>
-      <SceneHost
-        kind="platform-ceremony"
-        hostKey={`studio-publish:${taleId}`}
-        className={`studio-publish-cinematic-boundary state-${publishState}`}
-        aria-hidden="true"
-      >
-        <PublishHostBridge onReady={(host) => (publishHost.current = host)} />
-      </SceneHost>
-      <motion.header
-        className="editor-topbar"
-        layoutId={`studio-editor-shell-${taleId}`}
-        transition={{ duration: layoutMotion.durationSeconds, ease: platformMotionEasing("layout") }}
-      >
-        <div>
-          <Link href="/studio/library">← Studio</Link>
-          <span className="draft-mark">Draft</span>
-          <h1>{draft.tale.title}</h1>
-        </div>
-        <div className="editor-history">
-          <button disabled={!past.length} onClick={undo} aria-label="Undo last edit">
-            ↶ Undo
-          </button>
-          <button disabled={!future.length} onClick={redo} aria-label="Redo edit">
-            ↷ Redo
-          </button>
-        </div>
-        <p
-          className={`save-state ${saveState.includes("failed") || saveState.includes("Conflict") ? "error" : ""}`}
-          data-save-state={saveVisualState}
-          role="status"
-          aria-live="polite"
+    <>
+      <motion.main ref={root} className="tale-editor" layout={mode !== "reduced"} data-motion-mode={mode}>
+        <SceneHost
+          kind="platform-ceremony"
+          hostKey={`studio-publish:${taleId}`}
+          className={`studio-publish-cinematic-boundary state-${publishState}`}
+          aria-hidden="true"
         >
-          <AnimatePresence initial={false} mode="wait">
-            <motion.span
-              key={saveState}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: stateMotion.durationSeconds }}
-            >
-              {saveState}
-            </motion.span>
-          </AnimatePresence>
-        </p>
-        <AnimatePresence initial={false}>
-          {publishState === "published" && publishedVersion && (
-            <motion.span
-              key={publishedVersion}
-              className="publish-authority-seal"
-              data-authority-state="confirmed"
-              role="status"
-              initial={mode === "reduced" ? false : { opacity: 0, scale: 1.2, rotate: -8 }}
-              animate={{ opacity: 1, scale: 1, rotate: 0 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: resolvePlatformMotionToken("ceremony", mode).durationSeconds }}
-            >
-              <span aria-hidden="true">◆</span> Version {publishedVersion} published
-            </motion.span>
-          )}
-        </AnimatePresence>
-        <div className="editor-primary-actions">
-          <button disabled={!selected} onClick={() => setPreviewBlock(true)}>
-            Preview Passage
-          </button>
-          <button onClick={() => void preview()}>{studioCopy.previewVoyage.value}</button>
-          <button disabled={!selected} onClick={() => void preview(selected?.block.id)}>
-            Preview from here
-          </button>
-          <button onClick={() => void validate()}>{studioCopy.validateChronicle.value}</button>
-          <button
-            className="publish-button"
-            data-authority-state={publishState}
-            disabled={publishState === "publishing"}
-            aria-busy={publishState === "publishing"}
-            onClick={() => void publish()}
-          >
-            {publishState === "publishing" ? "Publishing..." : studioCopy.publishChronicle.value}
-          </button>
-          <div className="editor-more">
-            <button
-              type="button"
-              className="editor-more-trigger"
-              aria-expanded={moreOpen}
-              aria-controls="studio-more-actions"
-              onClick={() => setMoreOpen((open) => !open)}
-              onKeyDown={(event) => {
-                if (event.key === "Escape") setMoreOpen(false);
-              }}
-            >
-              More
-            </button>
-            {moreOpen ? (
-              <div id="studio-more-actions">
-                <Link href={`/studio/tales/${taleId}/settings`}>Chronicle settings</Link>
-                <Link href={`/studio/tales/${taleId}/versions`}>{studioCopy.versionHistory.value}</Link>
-                <button
-                  onClick={() => {
-                    setMoreOpen(false);
-                    void taleAction("duplicate");
-                  }}
-                >
-                  {studioCopy.duplicateChronicle.value}
-                </button>
-                <button
-                  className="danger"
-                  onClick={() => {
-                    setMoreOpen(false);
-                    void taleAction("archive");
-                  }}
-                >
-                  {studioCopy.archiveChronicle.value}
-                </button>
-              </div>
-            ) : null}
+          <PublishHostBridge onReady={(host) => (publishHost.current = host)} />
+        </SceneHost>
+        <motion.header
+          className="editor-topbar"
+          layoutId={`studio-editor-shell-${taleId}`}
+          transition={{ duration: layoutMotion.durationSeconds, ease: platformMotionEasing("layout") }}
+        >
+          <div>
+            <Link href="/studio/library">← Studio</Link>
+            <span className="draft-mark">Draft</span>
+            <h1>{draft.tale.title}</h1>
           </div>
-        </div>
-      </motion.header>
-      <nav className="editor-section-nav" aria-label="Chronicle authoring sections">
-        {nav.map((item) => (
-          <Link
-            key={item}
-            className={initialSection === item ? "active" : ""}
-            href={item === "story" ? `/studio/tales/${taleId}` : `/studio/tales/${taleId}/${item}`}
-          >
-            {initialSection === item && (
-              <motion.span className="studio-active-section" layoutId="studio-active-section" />
-            )}
-            <span>{navLabels[item]}</span>
-          </Link>
-        ))}
-      </nav>
-      {error && (
-        <div className="editor-error" role="alert">
-          <span>{error}</span>
-          <button onClick={() => setError("")}>Dismiss</button>
-        </div>
-      )}
-      <AnimatePresence initial={false}>
-        {deletedBlock && (
-          <motion.div
-            className="studio-undo-banner"
+          <div className="editor-history">
+            <button disabled={!past.length} onClick={undo} aria-label="Undo last edit">
+              ↶ Undo
+            </button>
+            <button disabled={!future.length} onClick={redo} aria-label="Redo edit">
+              ↷ Redo
+            </button>
+          </div>
+          <p
+            className={`save-state ${saveState.includes("failed") || saveState.includes("Conflict") ? "error" : ""}`}
+            data-save-state={saveVisualState}
             role="status"
-            initial={{ opacity: 0, y: mode === "reduced" ? 0 : -stateMotion.distancePx }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0 }}
+            aria-live="polite"
           >
-            <span>{deletedBlock.block.title} was deleted after the draft was saved.</span>
-            <button onClick={() => void restoreDeletedBlock()}>Undo deletion</button>
-          </motion.div>
-        )}
-        {validation && (
-          <motion.aside
-            className={`validation-panel ${validation.valid ? "valid" : "invalid"}`}
-            initial={{ opacity: 0, x: mode === "reduced" ? 0 : stateMotion.distancePx }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0 }}
-          >
-            <header>
-              <strong>
-                {validation.valid
-                  ? "Chronicle is ready to publish"
-                  : `${validation.errors.length} blocking issue${validation.errors.length === 1 ? "" : "s"}`}
-              </strong>
-              <button onClick={() => setValidation(null)}>Close</button>
-            </header>
-            {[...validation.errors, ...validation.warnings].map((issue, index) => (
-              <button
-                key={`${issue.message}-${index}`}
-                onClick={(event) => issue.blockId && focusBlock(issue.blockId, event.currentTarget)}
-              >
-                {issue.message}
-              </button>
-            ))}
-          </motion.aside>
-        )}
-      </AnimatePresence>
-      {initialSection === "story" && (
-        <DndContext
-          sensors={dndSensors}
-          collisionDetection={closestCenter}
-          onDragStart={dndStart}
-          onDragCancel={dndCancel}
-          onDragEnd={dndEnd}
-        >
-          <p className="sr-only" role="status" aria-live="assertive">
-            {dragAnnouncement}
-          </p>
-          <div className="editor-workbench">
-            <aside className="block-library">
-              <div>
-                <p className="eyebrow">Passage library</p>
-                <h2>Passages</h2>
-                <p>Build, navigate, and inspect the complete Chronicle flow.</p>
-              </div>
-              <div className="library-tabs" role="tablist" aria-label="Chronicle tools">
-                {(["blocks", "chapters", "outline"] as const).map((tab) => (
-                  <button
-                    key={tab}
-                    role="tab"
-                    aria-selected={libraryTab === tab}
-                    className={libraryTab === tab ? "active" : ""}
-                    onClick={() => setLibraryTab(tab)}
-                  >
-                    {tab === "blocks" ? "Passages" : tab === "chapters" ? "Chapters" : "Outline"}
-                  </button>
-                ))}
-              </div>
-              {libraryTab === "blocks" && (
-                <>
-                  <input
-                    className="block-search"
-                    type="search"
-                    value={blockSearch}
-                    onChange={(event) => setBlockSearch(event.target.value)}
-                    placeholder="Search Passages"
-                    aria-label="Search Passages"
-                  />
-                  {[...new Set(filteredRegistry.map((item) => item.category))].map((category) => (
-                    <details key={category} open>
-                      <summary>{category}</summary>
-                      {filteredRegistry
-                        .filter((item) => item.category === category)
-                        .map((item) => (
-                          <DraggableLibraryItem key={item.type} item={item} onAdd={() => addBlock(item.type, 0)} />
-                        ))}
-                    </details>
-                  ))}
-                </>
-              )}
-              {libraryTab === "chapters" && (
-                <nav className="chapter-navigator" aria-label="Chapter navigator">
-                  {draft.chapters.map((chapter, index) => (
-                    <button
-                      key={chapter.id}
-                      onClick={() =>
-                        document.getElementById(`chapter-${chapter.id}`)?.scrollIntoView({ behavior: "smooth" })
-                      }
-                    >
-                      <span>{String(index + 1).padStart(2, "0")}</span>
-                      <strong>{chapter.title}</strong>
-                      <small>{chapter.blocks.length} Passages</small>
-                    </button>
-                  ))}
-                </nav>
-              )}
-              {libraryTab === "outline" && (
-                <ol className="story-outline">
-                  {draft.chapters.flatMap((chapter) =>
-                    chapter.blocks.map((block, index) => (
-                      <li key={block.id}>
-                        <button onClick={(event) => openInspector(block.id, event.currentTarget)}>
-                          <span>{index + 1}</span>
-                          <strong>{block.title}</strong>
-                          <small>{block.blockType}</small>
-                        </button>
-                      </li>
-                    )),
-                  )}
-                </ol>
-              )}
-            </aside>
-            <section className="story-canvas" aria-label="Chronicle timeline">
-              <header>
-                <div>
-                  <p className="eyebrow">Chronicle flow</p>
-                  <h2>
-                    {draft.chapters.length} chapter{draft.chapters.length === 1 ? "" : "s"}
-                  </h2>
-                </div>
-                <button
-                  onClick={() =>
-                    change((next) =>
-                      next.chapters.push({
-                        id: crypto.randomUUID(),
-                        title: `Chapter ${next.chapters.length + 1}`,
-                        subtitle: "",
-                        description: "",
-                        coverAssetId: null,
-                        estimatedDuration: null,
-                        isOptional: false,
-                        metadata: {},
-                        blocks: [],
-                      }),
-                    )
-                  }
-                >
-                  + {studioCopy.addChapter.value}
-                </button>
-              </header>
-              {draft.chapters.map((chapter, chapterIndex) => (
-                <motion.article
-                  className="chapter-timeline"
-                  id={`chapter-${chapter.id}`}
-                  key={chapter.id}
-                  layout={mode !== "reduced"}
-                  transition={{ duration: layoutMotion.durationSeconds, ease: platformMotionEasing("layout") }}
-                >
-                  <header>
-                    <span>{String(chapterIndex + 1).padStart(2, "0")}</span>
-                    <input
-                      value={chapter.title}
-                      aria-label={`Chapter ${chapterIndex + 1} title`}
-                      onChange={(event) =>
-                        change((next) => {
-                          next.chapters[chapterIndex].title = event.target.value;
-                        })
-                      }
-                    />
-                    <div>
-                      <button
-                        onClick={() =>
-                          setCollapsedChapters((items) =>
-                            items.includes(chapter.id)
-                              ? items.filter((id) => id !== chapter.id)
-                              : [...items, chapter.id],
-                          )
-                        }
-                        aria-expanded={!collapsedChapters.includes(chapter.id)}
-                        aria-label={`${collapsedChapters.includes(chapter.id) ? "Expand" : "Collapse"} ${chapter.title}`}
-                      >
-                        {collapsedChapters.includes(chapter.id) ? "+" : "−"}
-                      </button>
-                      <button
-                        disabled={chapterIndex === 0}
-                        onClick={() =>
-                          change((next) => {
-                            const [item] = next.chapters.splice(chapterIndex, 1);
-                            next.chapters.splice(chapterIndex - 1, 0, item);
-                          })
-                        }
-                        aria-label="Move chapter up"
-                      >
-                        ↑
-                      </button>
-                      <button
-                        disabled={chapterIndex === draft.chapters.length - 1}
-                        onClick={() =>
-                          change((next) => {
-                            const [item] = next.chapters.splice(chapterIndex, 1);
-                            next.chapters.splice(chapterIndex + 1, 0, item);
-                          })
-                        }
-                        aria-label="Move chapter down"
-                      >
-                        ↓
-                      </button>
-                    </div>
-                  </header>
-                  {!collapsedChapters.includes(chapter.id) && (
-                    <SortableContext
-                      items={chapter.blocks.map((block) => block.id)}
-                      strategy={verticalListSortingStrategy}
-                    >
-                      <DropZone id={`drop:${chapterIndex}:0`} onDrop={(event) => drop(event, chapterIndex, 0)} />
-                      {!chapter.blocks.length && <div className="empty-chapter">Drop the first Passage here.</div>}
-                      {chapter.blocks.map((block, blockIndex) => {
-                        const definition = data.registry.find((item) => item.type === block.blockType);
-                        return (
-                          <SortableStoryBlock key={block.id} id={block.id}>
-                            {(attributes, listeners) => (
-                              <>
-                                <article
-                                  className={`timeline-block ${selectedId === block.id ? "selected" : ""}`}
-                                  data-block-id={block.id}
-                                  data-validation-error={
-                                    validation?.errors.some((issue) => issue.blockId === block.id) ? "true" : undefined
-                                  }
-                                  tabIndex={-1}
-                                  onClick={(event) => openInspector(block.id, event.currentTarget)}
-                                >
-                                  <button
-                                    className="drag-handle"
-                                    {...attributes}
-                                    {...listeners}
-                                    onClick={(event) => event.stopPropagation()}
-                                    aria-label={`Move ${block.title}. Press Space to pick up, arrow keys to move, and Space to drop.`}
-                                  >
-                                    ⠿
-                                  </button>
-                                  <span className="block-icon" aria-hidden="true">
-                                    {definition?.icon ?? "?"}
-                                  </span>
-                                  <div>
-                                    <small>{definition?.displayName ?? block.blockType}</small>
-                                    <strong>{block.title}</strong>
-                                    <p>
-                                      {String(
-                                        block.configuration.heading ??
-                                          block.configuration.prompt ??
-                                          block.configuration.caption ??
-                                          block.configuration.body ??
-                                          definition?.description ??
-                                          "",
-                                      ).slice(0, 130)}
-                                    </p>
-                                  </div>
-                                  <div className="block-move">
-                                    <button
-                                      disabled={blockIndex === 0}
-                                      onClick={(event) => {
-                                        event.stopPropagation();
-                                        moveBlock(block.id, chapterIndex, blockIndex - 1);
-                                      }}
-                                      aria-label="Move Passage up"
-                                    >
-                                      ↑
-                                    </button>
-                                    <button
-                                      disabled={
-                                        blockIndex === chapter.blocks.length - 1 &&
-                                        chapterIndex === draft.chapters.length - 1
-                                      }
-                                      onClick={(event) => {
-                                        event.stopPropagation();
-                                        if (blockIndex < chapter.blocks.length - 1)
-                                          moveBlock(block.id, chapterIndex, blockIndex + 2);
-                                        else
-                                          moveBlock(block.id, Math.min(chapterIndex + 1, draft.chapters.length - 1), 0);
-                                      }}
-                                      aria-label="Move Passage down"
-                                    >
-                                      ↓
-                                    </button>
-                                  </div>
-                                </article>
-                                <DropZone
-                                  id={`drop:${chapterIndex}:${blockIndex + 1}`}
-                                  onDrop={(event) => drop(event, chapterIndex, blockIndex + 1)}
-                                />
-                              </>
-                            )}
-                          </SortableStoryBlock>
-                        );
-                      })}
-                      <button className="chapter-add" onClick={() => addBlock("narrative", chapterIndex)}>
-                        + {studioCopy.addPassage.value}
-                      </button>
-                    </SortableContext>
-                  )}
-                </motion.article>
-              ))}
-            </section>
-            <motion.aside
-              className={`block-inspector ${selected ? "has-selection" : "empty"}`}
-              data-inspector-state={selected ? "open" : "closed"}
-              initial={false}
-              animate={{
-                opacity: selected ? 1 : 0.74,
-                x: selected && mode !== "reduced" ? [stateMotion.distancePx, 0] : 0,
-              }}
-              transition={{ duration: stateMotion.durationSeconds, ease: platformMotionEasing("state") }}
-            >
-              {selected && selectedDefinition ? (
-                <>
-                  <header>
-                    <button
-                      className="inspector-mobile-close"
-                      onClick={closeInspector}
-                      aria-label="Close Passage inspector"
-                    >
-                      ×
-                    </button>
-                    <p className="eyebrow">{selectedDefinition.displayName}</p>
-                    <input
-                      ref={inspectorTitle}
-                      value={selected.block.title}
-                      aria-label="Passage title"
-                      onChange={(event) =>
-                        updateSelected((block) => {
-                          block.title = event.target.value;
-                        })
-                      }
-                    />
-                  </header>
-                  <div className="inspector-fields">
-                    {selectedDefinition.fields.map((field) => (
-                      <Field
-                        key={field.key}
-                        field={field}
-                        value={selected.block.configuration[field.key]}
-                        assets={data.assets}
-                        locations={data.locations}
-                        artifacts={data.artifacts}
-                        onChange={(value) =>
-                          updateSelected((block) => {
-                            block.configuration[field.key] = value;
-                          })
-                        }
-                      />
-                    ))}
-                    {selected.block.blockType === "imageTransformation" && (
-                      <AlignmentEditor
-                        value={selected.block.configuration.alignment}
-                        assets={data.assets}
-                        beforeId={String(selected.block.configuration.beforeAssetId ?? "")}
-                        afterId={String(selected.block.configuration.afterAssetId ?? "")}
-                        onChange={(value) =>
-                          updateSelected((block) => {
-                            block.configuration.alignment = value;
-                          })
-                        }
-                      />
-                    )}
-                    <fieldset className="journal-presentation-fields">
-                      <legend>Player journal presentation</legend>
-                      <label>
-                        <span>Spread mode</span>
-                        <select
-                          value={String(selected.block.presentation.spreadMode ?? "")}
-                          onChange={(event) =>
-                            updateSelected((block) => {
-                              if (event.target.value) block.presentation.spreadMode = event.target.value;
-                              else delete block.presentation.spreadMode;
-                            })
-                          }
-                        >
-                          <option value="">Automatic for this Passage type</option>
-                          <option value="left">Left page</option>
-                          <option value="right">Right page</option>
-                          <option value="two-page">Two-page spread</option>
-                          <option value="overlay">Physical insert</option>
-                          <option value="cinematic">Cinematic expansion</option>
-                        </select>
-                      </label>
-                      <label>
-                        <span>Page-turn behavior</span>
-                        <select
-                          value={String(selected.block.presentation.pageTurnBehavior ?? "")}
-                          onChange={(event) =>
-                            updateSelected((block) => {
-                              if (event.target.value) block.presentation.pageTurnBehavior = event.target.value;
-                              else delete block.presentation.pageTurnBehavior;
-                            })
-                          }
-                        >
-                          <option value="">Manual by default</option>
-                          <option value="manual">Manual</option>
-                          <option value="automatic">Automatic</option>
-                          <option value="captain-triggered">Captain-triggered</option>
-                          <option value="locked">Locked</option>
-                        </select>
-                      </label>
-                      <label>
-                        <span>Paper style</span>
-                        <input
-                          value={String(selected.block.presentation.paperStyle ?? "")}
-                          placeholder="weathered"
-                          onChange={(event) =>
-                            updateSelected((block) => {
-                              block.presentation.paperStyle = event.target.value;
-                            })
-                          }
-                        />
-                      </label>
-                      <label>
-                        <span>Ink style</span>
-                        <input
-                          value={String(selected.block.presentation.inkStyle ?? "")}
-                          placeholder="midnight"
-                          onChange={(event) =>
-                            updateSelected((block) => {
-                              block.presentation.inkStyle = event.target.value;
-                            })
-                          }
-                        />
-                      </label>
-                    </fieldset>
-                    <label>
-                      <span>Private creator notes</span>
-                      <textarea
-                        rows={5}
-                        value={selected.block.creatorNotes ?? ""}
-                        onChange={(event) =>
-                          updateSelected((block) => {
-                            block.creatorNotes = event.target.value;
-                          })
-                        }
-                      />
-                    </label>
-                  </div>
-                  <div className="inspector-danger">
-                    <button
-                      onClick={() => {
-                        const id = selected.block.id;
-                        change((next) => {
-                          const chapter = next.chapters.find((item) => item.id === selected.chapter.id);
-                          if (chapter) {
-                            const source = chapter.blocks.find((item) => item.id === id);
-                            if (source)
-                              chapter.blocks.splice(chapter.blocks.indexOf(source) + 1, 0, {
-                                ...clone(source),
-                                id: crypto.randomUUID(),
-                                title: `${source.title} Copy`,
-                              });
-                          }
-                        });
-                      }}
-                    >
-                      Duplicate Passage
-                    </button>
-                    <button onClick={() => void deleteSelectedAuthoritatively()}>Delete Passage</button>
-                  </div>
-                </>
-              ) : (
-                <div className="inspector-empty">
-                  <span>☞</span>
-                  <h2>Select a Passage</h2>
-                  <p>Its content, presentation, verification, assets, and private notes will appear here.</p>
-                </div>
-              )}
-            </motion.aside>
-          </div>
-          <DragOverlay dropAnimation={mode === "reduced" ? null : undefined}>
-            {activeDragId && (
-              <div className="studio-drag-overlay" aria-hidden="true">
-                <span>Move</span>
-                <strong>{activeDragLabel ?? "Passage"}</strong>
-              </div>
-            )}
-          </DragOverlay>
-        </DndContext>
-      )}
-      {previewBlock && selected && (
-        <div className="block-preview-backdrop" role="presentation" onMouseDown={() => setPreviewBlock(false)}>
-          <section
-            className="block-preview-dialog"
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="block-preview-title"
-            onMouseDown={(event) => event.stopPropagation()}
-          >
-            <header>
-              <div>
-                <p className="eyebrow">Preview Voyage</p>
-                <h2 id="block-preview-title">{selected.block.title}</h2>
-              </div>
-              <button onClick={() => setPreviewBlock(false)} aria-label="Close Passage preview">
-                ×
-              </button>
-            </header>
-            <div className="block-preview-toolbar">
-              <div role="group" aria-label="Preview viewport">
-                <button
-                  className={previewViewport === "desktop" ? "active" : ""}
-                  onClick={() => setPreviewViewport("desktop")}
-                >
-                  Desktop
-                </button>
-                <button
-                  className={previewViewport === "mobile" ? "active" : ""}
-                  onClick={() => setPreviewViewport("mobile")}
-                >
-                  Mobile
-                </button>
-              </div>
-              <label>
-                <input
-                  type="checkbox"
-                  checked={previewReducedMotion}
-                  onChange={(event) => setPreviewReducedMotion(event.target.checked)}
-                />
-                Reduced motion
-              </label>
-              <button onClick={() => setPreviewReplay((value) => value + 1)}>Replay Passage</button>
-            </div>
-            <div
-              className={`block-preview-viewport ${previewViewport} ${previewReducedMotion ? "reduced-motion" : ""}`}
-            >
-              <PublishedBlockView
-                key={previewReplay}
-                block={selected.block}
-                assets={data.assets.map((asset) => ({
-                  id: asset.id,
-                  displayName: asset.displayName,
-                  url: `/api/media/${asset.id}?variant=PREVIEW&version=draft:${data.draft.id}`,
-                }))}
-              />
-            </div>
-            <aside className="block-preview-validation">
-              <strong>Validation</strong>
-              {validation ? (
-                [...validation.errors, ...validation.warnings].filter((issue) => issue.blockId === selected.block.id)
-                  .length ? (
-                  [...validation.errors, ...validation.warnings]
-                    .filter((issue) => issue.blockId === selected.block.id)
-                    .map((issue, index) => <p key={`${issue.message}-${index}`}>{issue.message}</p>)
-                ) : (
-                  <p>No issue was reported for this Passage in the last draft validation.</p>
-                )
-              ) : (
-                <p>Run Validate Chronicle to show schema and connection issues beside this preview.</p>
-              )}
-            </aside>
-          </section>
-        </div>
-      )}
-      {initialSection === "settings" && (
-        <section className="editor-single-panel settings-panel">
-          <header>
-            <p className="eyebrow">Chronicle identity</p>
-            <h2>Settings</h2>
-          </header>
-          <div className="settings-grid">
-            <label>
-              <span>Title</span>
-              <input
-                value={draft.tale.title}
-                onChange={(event) =>
-                  change((next) => {
-                    next.tale.title = event.target.value;
-                  })
-                }
-              />
-            </label>
-            <label>
-              <span>Address</span>
-              <input
-                value={draft.tale.slug}
-                onChange={(event) =>
-                  change((next) => {
-                    next.tale.slug = event.target.value.toLocaleLowerCase();
-                  })
-                }
-              />
-            </label>
-            <label>
-              <span>Subtitle</span>
-              <input
-                value={draft.tale.subtitle ?? ""}
-                onChange={(event) =>
-                  change((next) => {
-                    next.tale.subtitle = event.target.value;
-                  })
-                }
-              />
-            </label>
-            <label>
-              <span>Visibility</span>
-              <select
-                value={draft.tale.visibility}
-                onChange={(event) =>
-                  change((next) => {
-                    next.tale.visibility = event.target.value;
-                  })
-                }
-              >
-                <option value="PRIVATE">Private</option>
-                <option value="UNLISTED">Unlisted</option>
-                <option value="PUBLIC">Public</option>
-              </select>
-            </label>
-            <label className="wide">
-              <span>Short description</span>
-              <textarea
-                value={draft.tale.shortDescription ?? ""}
-                onChange={(event) =>
-                  change((next) => {
-                    next.tale.shortDescription = event.target.value;
-                  })
-                }
-              />
-            </label>
-            <label className="wide">
-              <span>Long description</span>
-              <textarea
-                rows={8}
-                value={draft.tale.longDescription ?? ""}
-                onChange={(event) =>
-                  change((next) => {
-                    next.tale.longDescription = event.target.value;
-                  })
-                }
-              />
-            </label>
-            <label>
-              <span>Estimated minutes</span>
-              <input
-                type="number"
-                value={draft.tale.estimatedDuration ?? ""}
-                onChange={(event) =>
-                  change((next) => {
-                    next.tale.estimatedDuration = event.target.value ? Number(event.target.value) : null;
-                  })
-                }
-              />
-            </label>
-            <label>
-              <span>Cover asset</span>
-              <select
-                value={draft.tale.coverAssetId ?? ""}
-                onChange={(event) =>
-                  change((next) => {
-                    next.tale.coverAssetId = event.target.value || null;
-                  })
-                }
-              >
-                <option value="">No cover</option>
-                {data.assets
-                  .filter((asset) => asset.mediaType === "IMAGE")
-                  .map((asset) => (
-                    <option key={asset.id} value={asset.id}>
-                      {asset.displayName}
-                    </option>
-                  ))}
-              </select>
-            </label>
-          </div>
-        </section>
-      )}
-      {initialSection === "assets" && (
-        <LibraryPanel
-          title="Asset Library"
-          eyebrow="Reusable media"
-          action={
-            <>
-              <button onClick={() => setAssetDrawer(true)}>Upload media</button>
-              <button onClick={() => void libraryAction("collection", "create")}>New collection</button>
-            </>
-          }
-        >
-          <div className="asset-search">
-            <input
-              value={assetSearch}
-              onChange={(event) => setAssetSearch(event.target.value)}
-              placeholder="Search names, tags, and roles"
-            />
-            <span>{filteredAssets.length} assets</span>
-          </div>
-          <div className="asset-filters" aria-label="Asset filters">
-            <select value={assetMedia} onChange={(event) => setAssetMedia(event.target.value)} aria-label="Media type">
-              <option value="ALL">All media</option>
-              {[...new Set(data.assets.map((asset) => asset.mediaType))].map((type) => (
-                <option key={type}>{type}</option>
-              ))}
-            </select>
-            <select value={assetContext} onChange={(event) => setAssetContext(event.target.value)} aria-label="Used by">
-              <option value="ALL">Any context</option>
-              <option value="TALE">Chronicle cover</option>
-              <option value="CHAPTER">Chapter / Passage</option>
-              <option value="LOCATION">Waypoint</option>
-              <option value="ARTIFACT">Artifact</option>
-            </select>
-            <select value={assetRole} onChange={(event) => setAssetRole(event.target.value)} aria-label="Asset role">
-              <option value="ALL">All roles</option>
-              {[...new Set(data.assets.flatMap((asset) => asset.roles))].sort().map((role) => (
-                <option key={role}>{role}</option>
-              ))}
-            </select>
-            <select value={assetTag} onChange={(event) => setAssetTag(event.target.value)} aria-label="Asset tag">
-              <option value="ALL">All tags</option>
-              {[...new Set(data.assets.flatMap((asset) => asset.tags))].sort().map((tag) => (
-                <option key={tag}>{tag}</option>
-              ))}
-            </select>
-            <select
-              value={assetCollection}
-              onChange={(event) => setAssetCollection(event.target.value)}
-              aria-label="Collection"
-            >
-              <option value="ALL">All collections</option>
-              {data.collections.map((collection) => (
-                <option key={collection.id} value={collection.id}>
-                  {collection.name}
-                </option>
-              ))}
-            </select>
-            <select value={assetUsage} onChange={(event) => setAssetUsage(event.target.value)} aria-label="Asset usage">
-              <option value="ALL">All usage</option>
-              <option value="RECENT">Recently added</option>
-              <option value="USED">Used</option>
-              <option value="UNUSED">Unused</option>
-            </select>
-          </div>
-          <div className="asset-grid">
-            {filteredAssets.slice(0, assetLimit).map((asset) => (
-              <article key={asset.id}>
-                {asset.mediaType === "IMAGE" ? (
-                  <img loading="lazy" src={`/api/media/${asset.id}?variant=THUMBNAIL`} alt="" />
-                ) : (
-                  <div className="asset-kind">{asset.mediaType}</div>
-                )}
-                <h3>{asset.displayName}</h3>
-                <p>{asset.width && asset.height ? `${asset.width} × ${asset.height}` : asset.mimeType}</p>
-                <div>
-                  {asset.roles.map((role) => (
-                    <span key={role}>{role}</span>
-                  ))}
-                  {asset.tags.map((tag) => (
-                    <span key={tag}>#{tag}</span>
-                  ))}
-                </div>
-                <div className="asset-card-actions">
-                  <button onClick={() => void editAsset(asset)}>Edit metadata</button>
-                  <button onClick={() => void showAssetUsages(asset)}>View usages</button>
-                  <a href={`/api/media/${asset.id}?variant=ORIGINAL&download=1`}>Download original</a>
-                  <label className="asset-replace">
-                    Replace file
-                    <input type="file" onChange={(event) => void replaceAsset(asset, event.target.files)} />
-                  </label>
-                </div>
-                <button
-                  onClick={async () => {
-                    if (!window.confirm(`Archive ${asset.displayName}? Referenced assets will be protected.`)) return;
-                    const response = await fetch(`/api/studio/assets/${asset.id}`, {
-                      method: "DELETE",
-                      headers: { "x-csrf-token": data.csrfToken },
-                    });
-                    const body = (await response.json()) as { usages?: Array<{ label: string }>; error?: string };
-                    if (!response.ok)
-                      setError(
-                        body.usages?.length
-                          ? `Still used by: ${body.usages.map((item) => item.label).join(", ")}`
-                          : (body.error ?? "Could not archive asset."),
-                      );
-                    else await load();
-                  }}
-                >
-                  Archive
-                </button>
-              </article>
-            ))}
-          </div>
-          {assetLimit < filteredAssets.length && (
-            <button className="asset-show-more" onClick={() => setAssetLimit((value) => value + 24)}>
-              Show 24 more assets
-            </button>
-          )}
-          <h3>Collections</h3>
-          <div className="record-list">
-            {data.collections.map((item) => (
-              <article key={item.id}>
-                <strong>{item.name}</strong>
-                <span>{item.collectionType}</span>
-                <button onClick={() => void libraryAction("collection", "update", item.id)}>Edit</button>
-                <button onClick={() => void libraryAction("collection", "archive", item.id)}>Delete</button>
-              </article>
-            ))}
-          </div>
-        </LibraryPanel>
-      )}
-      {initialSection === "locations" && (
-        <LibraryPanel
-          title="Waypoints"
-          eyebrow="Destinations and verification references"
-          action={<button onClick={() => void libraryAction("location", "create")}>Create Waypoint</button>}
-        >
-          <p className="panel-note">
-            Reference and negative-reference collections can be prepared now for the future vision helper. Recognition
-            is not active in Phase 1.
-          </p>
-          <div className="library-filters">
-            <input
-              type="search"
-              value={librarySearch}
-              onChange={(event) => setLibrarySearch(event.target.value)}
-              placeholder="Search Waypoints"
-            />
-            <select value={librarySort} onChange={(event) => setLibrarySort(event.target.value as "name" | "region")}>
-              <option value="name">Sort by name</option>
-              <option value="region">Sort by region</option>
-            </select>
-          </div>
-          <div className="record-grid">
-            {filteredLocations.map((item) => (
-              <article key={item.id}>
-                <p className="card-kicker">{item.region || "Uncharted region"}</p>
-                <h3>{item.name}</h3>
-                <p>{item.playerFacingDescription || "No player-facing description yet."}</p>
-                <small>
-                  {item.referenceCollectionId ? "Reference collection assigned" : "No verification references"}
-                </small>
-                <small>Used by {recordUsageCount(item.id)} Passages</small>
-                <button onClick={() => void libraryAction("location", "update", item.id)}>Edit Waypoint</button>
-                <button onClick={() => void libraryAction("location", "create", item.id)}>Duplicate</button>
-                <button onClick={() => void libraryAction("location", "archive", item.id)}>Archive</button>
-              </article>
-            ))}
-          </div>
-        </LibraryPanel>
-      )}
-      {initialSection === "artifacts" && (
-        <LibraryPanel
-          title="Artifacts"
-          eyebrow="Lore and collection rewards"
-          action={<button onClick={() => void libraryAction("artifact", "create")}>Create artifact</button>}
-        >
-          <div className="library-filters">
-            <input
-              type="search"
-              value={librarySearch}
-              onChange={(event) => setLibrarySearch(event.target.value)}
-              placeholder="Search artifacts"
-            />
-            <select value={librarySort} onChange={(event) => setLibrarySort(event.target.value as "name" | "region")}>
-              <option value="name">Sort by name</option>
-            </select>
-          </div>
-          <div className="record-grid">
-            {filteredArtifacts.map((item) => (
-              <article key={item.id}>
-                <p className="card-kicker">{item.ordinaryGameObjectLabel || "Artifact"}</p>
-                <h3>{item.name}</h3>
-                <p>{item.shortDescription || item.loreDescription || "No lore has been written."}</p>
-                <small>Used by {recordUsageCount(item.id)} Passages</small>
-                <button onClick={() => void libraryAction("artifact", "update", item.id)}>Edit</button>
-                <button onClick={() => void libraryAction("artifact", "create", item.id)}>Duplicate</button>
-                <button onClick={() => void libraryAction("artifact", "archive", item.id)}>Archive</button>
-              </article>
-            ))}
-          </div>
-        </LibraryPanel>
-      )}
-      {initialSection === "versions" && (
-        <LibraryPanel
-          title="Version history"
-          eyebrow="Immutable releases"
-          action={<button onClick={() => void publish()}>Publish current Chronicle draft</button>}
-        >
-          <div className="version-list">
-            {!data.versions.length && <p>No published Version exists yet.</p>}
-            {data.versions.map((version) => (
-              <motion.article
-                key={version.id}
-                layout={mode !== "reduced"}
-                data-version-lock="immutable"
-                transition={{ duration: layoutMotion.durationSeconds, ease: platformMotionEasing("layout") }}
-              >
-                <span className={version.isCurrent ? "current" : ""}>v{version.versionLabel}</span>
-                <div>
-                  <strong>{new Date(version.publishedAt).toLocaleString()}</strong>
-                  <p>{version.releaseNotes || "No release notes."}</p>
-                  <small className="immutable-version-lock" aria-label="Immutable published Version">
-                    <span aria-hidden="true">◆</span> Immutable release
-                  </small>
-                </div>
-                <small>
-                  {version.activeSessions} active Voyage{version.activeSessions === 1 ? "" : "s"}
-                </small>
-                <div className="version-actions">
-                  <button onClick={() => void versionAction(version, "preview")}>Preview release</button>
-                  <button onClick={() => void versionAction(version, "restore")}>Copy into new draft</button>
-                  <button onClick={() => void versionAction(version, "fork")}>Create new Chronicle</button>
-                  {!version.isCurrent && (
-                    <button onClick={() => void compareVersion(version)}>Compare to current</button>
-                  )}
-                </div>
-              </motion.article>
-            ))}
-          </div>
-          {versionComparison && (
-            <section className="version-comparison" aria-live="polite">
-              <header>
-                <div>
-                  <p className="eyebrow">Structured immutable diff</p>
-                  <h3>
-                    Version {versionComparison.left.label} to {versionComparison.right.label}
-                  </h3>
-                </div>
-                <button onClick={() => setVersionComparison(null)}>Close comparison</button>
-              </header>
-              <ul className="comparison-summary">
-                {Object.entries(versionComparison.summary).map(([type, count]) => (
-                  <li key={type}>
-                    <strong>{count}</strong>
-                    <span>{type}</span>
-                  </li>
-                ))}
-              </ul>
-              {versionComparison.compatibilityWarnings.length > 0 && (
-                <p className="platform-error">
-                  Compatibility warnings: {versionComparison.compatibilityWarnings.join(", ")}
-                </p>
-              )}
-              <ol>
-                {versionComparison.changes.map((change, index) => (
-                  <li key={`${change.path}-${index}`}>
-                    <b>{change.type}</b>
-                    <div>
-                      <code>{change.path}</code>
-                      {(change.before !== undefined || change.after !== undefined) && (
-                        <span className="comparison-values">
-                          <del>{change.before ?? "Not present"}</del>
-                          <span aria-hidden="true">→</span>
-                          <ins>{change.after ?? "Removed"}</ins>
-                        </span>
-                      )}
-                    </div>
-                  </li>
-                ))}
-              </ol>
-            </section>
-          )}
-        </LibraryPanel>
-      )}
-      {(assetDrawer || initialSection === "assets") && (
-        <aside className={`asset-drawer ${assetDrawer ? "open" : "page-open"}`} aria-label="Asset drawer">
-          <header>
-            <div>
-              <p className="eyebrow">Media hold</p>
-              <h2>Upload and reuse assets</h2>
-            </div>
-            <button onClick={() => setAssetDrawer(false)} aria-label="Close asset drawer">
-              ×
-            </button>
-          </header>
-          <label
-            className="upload-drop"
-            onDragOver={(event) => event.preventDefault()}
-            onDrop={(event) => {
-              event.preventDefault();
-              void upload(event.dataTransfer.files);
-            }}
-          >
-            <input
-              type="file"
-              multiple
-              accept="image/png,image/jpeg,image/webp,image/avif,video/mp4,video/webm,audio/mpeg,audio/ogg,audio/wav,application/pdf"
-              onChange={(event) => void upload(event.target.files)}
-            />
-            <strong>Drop files or choose from this device</strong>
-            <span>Originals are preserved; image thumbnails and player variants are generated.</span>
-          </label>
-          <AnimatePresence initial={false}>
-            {uploadEntries.length > 0 && (
-              <motion.ul
-                className="upload-progress-list"
-                aria-label="File upload progress"
+            <AnimatePresence initial={false} mode="wait">
+              <motion.span
+                key={saveState}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
+                transition={{ duration: stateMotion.durationSeconds }}
               >
-                {uploadEntries.map((entry) => (
-                  <motion.li key={entry.id} layout={mode !== "reduced"} data-upload-state={entry.state}>
-                    <span>
-                      <strong>{entry.name}</strong>
-                      <small>{entry.detail ?? entry.state}</small>
-                    </span>
-                    {entry.state === "uploading" ? (
-                      <progress aria-label={`${entry.name} uploading`} />
-                    ) : entry.state === "ready" ? (
-                      <progress aria-label={`${entry.name} ready`} max={1} value={1} />
-                    ) : (
-                      <span aria-hidden="true">{entry.state === "failed" ? "!" : "·"}</span>
-                    )}
-                  </motion.li>
-                ))}
-              </motion.ul>
+                {saveState}
+              </motion.span>
+            </AnimatePresence>
+          </p>
+          <AnimatePresence initial={false}>
+            {publishState === "published" && publishedVersion && (
+              <motion.span
+                key={publishedVersion}
+                className="publish-authority-seal"
+                data-authority-state="confirmed"
+                role="status"
+                initial={mode === "reduced" ? false : { opacity: 0, scale: 1.2, rotate: -8 }}
+                animate={{ opacity: 1, scale: 1, rotate: 0 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: resolvePlatformMotionToken("ceremony", mode).durationSeconds }}
+              >
+                <span aria-hidden="true">◆</span> Version {publishedVersion} published
+              </motion.span>
             )}
           </AnimatePresence>
-          <div className="drawer-filters">
-            <input
-              type="search"
-              value={assetSearch}
-              onChange={(event) => setAssetSearch(event.target.value)}
-              placeholder="Search media"
-            />
-            <select
-              value={assetUsage}
-              onChange={(event) => setAssetUsage(event.target.value)}
-              aria-label="Drawer usage filter"
+          <div className="editor-primary-actions">
+            <button disabled={!selected} onClick={() => setPreviewBlock(true)}>
+              Preview Passage
+            </button>
+            <button onClick={() => void preview()}>{studioCopy.previewVoyage.value}</button>
+            <button disabled={!selected} onClick={() => void preview(selected?.block.id)}>
+              Preview from here
+            </button>
+            <button onClick={() => void validate()}>{studioCopy.validateChronicle.value}</button>
+            <button
+              className="publish-button"
+              data-authority-state={publishState}
+              disabled={publishState === "publishing"}
+              aria-busy={publishState === "publishing"}
+              onClick={() => void publish()}
             >
-              <option value="ALL">All media</option>
-              <option value="RECENT">Recent</option>
-              <option value="UNUSED">Unused</option>
-            </select>
-            <select
-              value={assetCollection}
-              onChange={(event) => setAssetCollection(event.target.value)}
-              aria-label="Drawer collection filter"
-            >
-              <option value="ALL">All collections</option>
-              {data.collections.map((collection) => (
-                <option key={collection.id} value={collection.id}>
-                  {collection.name}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div className="drawer-assets">
-            {filteredAssets.slice(0, 24).map((asset) => (
+              {publishState === "publishing" ? "Publishing..." : studioCopy.publishChronicle.value}
+            </button>
+            <div className="editor-more">
               <button
-                key={asset.id}
-                className={placedAssetId === asset.id ? "asset-placed" : ""}
-                data-placement-state={placedAssetId === asset.id ? "placed" : "ready"}
-                draggable
-                onDragStart={(event) => {
-                  event.dataTransfer.effectAllowed = "copy";
-                  event.dataTransfer.setData(
-                    "application/x-chronicle-asset",
-                    JSON.stringify({ id: asset.id, mediaType: asset.mediaType }),
-                  );
+                type="button"
+                className="editor-more-trigger"
+                aria-expanded={moreOpen}
+                aria-controls="studio-more-actions"
+                onClick={() => setMoreOpen((open) => !open)}
+                onKeyDown={(event) => {
+                  if (event.key === "Escape") setMoreOpen(false);
                 }}
-                onClick={() => {
-                  const readyForPlacement = asset.variants.some((variant) => variant.processingState === "READY");
-                  if (selected && readyForPlacement) {
-                    updateSelected((block) => {
-                      const firstAssetField = selectedDefinition?.fields.find(
-                        (field) =>
-                          field.kind === "asset" &&
-                          (!field.mediaTypes?.length || field.mediaTypes.includes(asset.mediaType)),
-                      );
-                      if (firstAssetField) block.configuration[firstAssetField.key] = asset.id;
-                    });
-                    setPlacedAssetId(asset.id);
-                  }
-                }}
-                disabled={!asset.variants.some((variant) => variant.processingState === "READY")}
               >
-                <span>
-                  {asset.mediaType === "IMAGE" ? (
-                    <img loading="lazy" src={`/api/media/${asset.id}?variant=THUMBNAIL`} alt="" />
-                  ) : (
-                    asset.mediaType
-                  )}
-                </span>
-                <strong>{asset.displayName}</strong>
-                <small>
-                  {asset.variants.some((variant) => variant.processingState === "READY")
-                    ? placedAssetId === asset.id
-                      ? "Placed in selected field"
-                      : "Ready for placement"
-                    : "Processing"}
-                </small>
+                More
               </button>
-            ))}
+              {moreOpen ? (
+                <div id="studio-more-actions">
+                  <Link href={`/studio/tales/${taleId}/settings`}>Chronicle settings</Link>
+                  <Link href={`/studio/tales/${taleId}/versions`}>{studioCopy.versionHistory.value}</Link>
+                  <button
+                    onClick={() => {
+                      setMoreOpen(false);
+                      void taleAction("duplicate");
+                    }}
+                  >
+                    {studioCopy.duplicateChronicle.value}
+                  </button>
+                  <button
+                    className="danger"
+                    onClick={() => {
+                      setMoreOpen(false);
+                      void taleAction("archive");
+                    }}
+                  >
+                    {studioCopy.archiveChronicle.value}
+                  </button>
+                </div>
+              ) : null}
+            </div>
           </div>
-        </aside>
-      )}
-    </motion.main>
+        </motion.header>
+        <nav className="editor-section-nav" aria-label="Chronicle authoring sections">
+          {nav.map((item) => (
+            <Link
+              key={item}
+              className={initialSection === item ? "active" : ""}
+              href={item === "story" ? `/studio/tales/${taleId}` : `/studio/tales/${taleId}/${item}`}
+            >
+              {initialSection === item && (
+                <motion.span className="studio-active-section" layoutId="studio-active-section" />
+              )}
+              <span>{navLabels[item]}</span>
+            </Link>
+          ))}
+        </nav>
+        {error && (
+          <div className="editor-error" role="alert">
+            <span>{error}</span>
+            <button onClick={() => setError("")}>Dismiss</button>
+          </div>
+        )}
+        <AnimatePresence initial={false}>
+          {deletedBlock && (
+            <motion.div
+              className="studio-undo-banner"
+              role="status"
+              initial={{ opacity: 0, y: mode === "reduced" ? 0 : -stateMotion.distancePx }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0 }}
+            >
+              <span>{deletedBlock.block.title} was deleted after the draft was saved.</span>
+              <button onClick={() => void restoreDeletedBlock()}>Undo deletion</button>
+            </motion.div>
+          )}
+          {validation && (
+            <motion.aside
+              className={`validation-panel ${validation.valid ? "valid" : "invalid"}`}
+              initial={{ opacity: 0, x: mode === "reduced" ? 0 : stateMotion.distancePx }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0 }}
+            >
+              <header>
+                <strong>
+                  {validation.valid
+                    ? "Chronicle is ready to publish"
+                    : `${validation.errors.length} blocking issue${validation.errors.length === 1 ? "" : "s"}`}
+                </strong>
+                <button onClick={() => setValidation(null)}>Close</button>
+              </header>
+              {[...validation.errors, ...validation.warnings].map((issue, index) => (
+                <button
+                  key={`${issue.message}-${index}`}
+                  onClick={(event) => issue.blockId && focusBlock(issue.blockId, event.currentTarget)}
+                >
+                  {issue.message}
+                </button>
+              ))}
+            </motion.aside>
+          )}
+        </AnimatePresence>
+        {initialSection === "story" && (
+          <DndContext
+            sensors={dndSensors}
+            collisionDetection={closestCenter}
+            onDragStart={dndStart}
+            onDragCancel={dndCancel}
+            onDragEnd={dndEnd}
+          >
+            <p className="sr-only" role="status" aria-live="assertive">
+              {dragAnnouncement}
+            </p>
+            <div className="editor-workbench">
+              <aside className="block-library">
+                <div>
+                  <p className="eyebrow">Passage library</p>
+                  <h2>Passages</h2>
+                  <p>Build, navigate, and inspect the complete Chronicle flow.</p>
+                </div>
+                <div className="library-tabs" role="tablist" aria-label="Chronicle tools">
+                  {(["blocks", "chapters", "outline"] as const).map((tab) => (
+                    <button
+                      key={tab}
+                      role="tab"
+                      aria-selected={libraryTab === tab}
+                      className={libraryTab === tab ? "active" : ""}
+                      onClick={() => setLibraryTab(tab)}
+                    >
+                      {tab === "blocks" ? "Passages" : tab === "chapters" ? "Chapters" : "Outline"}
+                    </button>
+                  ))}
+                </div>
+                {libraryTab === "blocks" && (
+                  <>
+                    <input
+                      className="block-search"
+                      type="search"
+                      value={blockSearch}
+                      onChange={(event) => setBlockSearch(event.target.value)}
+                      placeholder="Search Passages"
+                      aria-label="Search Passages"
+                    />
+                    {[...new Set(filteredRegistry.map((item) => item.category))].map((category) => (
+                      <details key={category} open>
+                        <summary>{category}</summary>
+                        {filteredRegistry
+                          .filter((item) => item.category === category)
+                          .map((item) => (
+                            <DraggableLibraryItem key={item.type} item={item} onAdd={() => addBlock(item.type, 0)} />
+                          ))}
+                      </details>
+                    ))}
+                  </>
+                )}
+                {libraryTab === "chapters" && (
+                  <nav className="chapter-navigator" aria-label="Chapter navigator">
+                    {draft.chapters.map((chapter, index) => (
+                      <button
+                        key={chapter.id}
+                        onClick={() =>
+                          document.getElementById(`chapter-${chapter.id}`)?.scrollIntoView({ behavior: "smooth" })
+                        }
+                      >
+                        <span>{String(index + 1).padStart(2, "0")}</span>
+                        <strong>{chapter.title}</strong>
+                        <small>{chapter.blocks.length} Passages</small>
+                      </button>
+                    ))}
+                  </nav>
+                )}
+                {libraryTab === "outline" && (
+                  <ol className="story-outline">
+                    {draft.chapters.flatMap((chapter) =>
+                      chapter.blocks.map((block, index) => (
+                        <li key={block.id}>
+                          <button onClick={(event) => openInspector(block.id, event.currentTarget)}>
+                            <span>{index + 1}</span>
+                            <strong>{block.title}</strong>
+                            <small>{block.blockType}</small>
+                          </button>
+                        </li>
+                      )),
+                    )}
+                  </ol>
+                )}
+              </aside>
+              <section className="story-canvas" aria-label="Chronicle timeline">
+                <header>
+                  <div>
+                    <p className="eyebrow">Chronicle flow</p>
+                    <h2>
+                      {draft.chapters.length} chapter{draft.chapters.length === 1 ? "" : "s"}
+                    </h2>
+                  </div>
+                  <button
+                    onClick={() =>
+                      change((next) =>
+                        next.chapters.push({
+                          id: crypto.randomUUID(),
+                          title: `Chapter ${next.chapters.length + 1}`,
+                          subtitle: "",
+                          description: "",
+                          coverAssetId: null,
+                          estimatedDuration: null,
+                          isOptional: false,
+                          metadata: {},
+                          blocks: [],
+                        }),
+                      )
+                    }
+                  >
+                    + {studioCopy.addChapter.value}
+                  </button>
+                </header>
+                {draft.chapters.map((chapter, chapterIndex) => (
+                  <motion.article
+                    className="chapter-timeline"
+                    id={`chapter-${chapter.id}`}
+                    key={chapter.id}
+                    layout={mode !== "reduced"}
+                    transition={{ duration: layoutMotion.durationSeconds, ease: platformMotionEasing("layout") }}
+                  >
+                    <header>
+                      <span>{String(chapterIndex + 1).padStart(2, "0")}</span>
+                      <input
+                        value={chapter.title}
+                        aria-label={`Chapter ${chapterIndex + 1} title`}
+                        onChange={(event) =>
+                          change((next) => {
+                            next.chapters[chapterIndex].title = event.target.value;
+                          })
+                        }
+                      />
+                      <div>
+                        <button
+                          onClick={() =>
+                            setCollapsedChapters((items) =>
+                              items.includes(chapter.id)
+                                ? items.filter((id) => id !== chapter.id)
+                                : [...items, chapter.id],
+                            )
+                          }
+                          aria-expanded={!collapsedChapters.includes(chapter.id)}
+                          aria-label={`${collapsedChapters.includes(chapter.id) ? "Expand" : "Collapse"} ${chapter.title}`}
+                        >
+                          {collapsedChapters.includes(chapter.id) ? "+" : "−"}
+                        </button>
+                        <button
+                          disabled={chapterIndex === 0}
+                          onClick={() =>
+                            change((next) => {
+                              const [item] = next.chapters.splice(chapterIndex, 1);
+                              next.chapters.splice(chapterIndex - 1, 0, item);
+                            })
+                          }
+                          aria-label="Move chapter up"
+                        >
+                          ↑
+                        </button>
+                        <button
+                          disabled={chapterIndex === draft.chapters.length - 1}
+                          onClick={() =>
+                            change((next) => {
+                              const [item] = next.chapters.splice(chapterIndex, 1);
+                              next.chapters.splice(chapterIndex + 1, 0, item);
+                            })
+                          }
+                          aria-label="Move chapter down"
+                        >
+                          ↓
+                        </button>
+                      </div>
+                    </header>
+                    {!collapsedChapters.includes(chapter.id) && (
+                      <SortableContext
+                        items={chapter.blocks.map((block) => block.id)}
+                        strategy={verticalListSortingStrategy}
+                      >
+                        <DropZone id={`drop:${chapterIndex}:0`} onDrop={(event) => drop(event, chapterIndex, 0)} />
+                        {!chapter.blocks.length && <div className="empty-chapter">Drop the first Passage here.</div>}
+                        {chapter.blocks.map((block, blockIndex) => {
+                          const definition = data.registry.find((item) => item.type === block.blockType);
+                          return (
+                            <SortableStoryBlock key={block.id} id={block.id}>
+                              {(attributes, listeners) => (
+                                <>
+                                  <article
+                                    className={`timeline-block ${selectedId === block.id ? "selected" : ""}`}
+                                    data-block-id={block.id}
+                                    data-validation-error={
+                                      validation?.errors.some((issue) => issue.blockId === block.id)
+                                        ? "true"
+                                        : undefined
+                                    }
+                                    tabIndex={-1}
+                                    onClick={(event) => openInspector(block.id, event.currentTarget)}
+                                  >
+                                    <button
+                                      className="drag-handle"
+                                      {...attributes}
+                                      {...listeners}
+                                      onClick={(event) => event.stopPropagation()}
+                                      aria-label={`Move ${block.title}. Press Space to pick up, arrow keys to move, and Space to drop.`}
+                                    >
+                                      ⠿
+                                    </button>
+                                    <span className="block-icon" aria-hidden="true">
+                                      {definition?.icon ?? "?"}
+                                    </span>
+                                    <div>
+                                      <small>{definition?.displayName ?? block.blockType}</small>
+                                      <strong>{block.title}</strong>
+                                      <p>
+                                        {String(
+                                          block.configuration.heading ??
+                                            block.configuration.prompt ??
+                                            block.configuration.caption ??
+                                            block.configuration.body ??
+                                            definition?.description ??
+                                            "",
+                                        ).slice(0, 130)}
+                                      </p>
+                                    </div>
+                                    <div className="block-move">
+                                      <button
+                                        disabled={blockIndex === 0}
+                                        onClick={(event) => {
+                                          event.stopPropagation();
+                                          moveBlock(block.id, chapterIndex, blockIndex - 1);
+                                        }}
+                                        aria-label="Move Passage up"
+                                      >
+                                        ↑
+                                      </button>
+                                      <button
+                                        disabled={
+                                          blockIndex === chapter.blocks.length - 1 &&
+                                          chapterIndex === draft.chapters.length - 1
+                                        }
+                                        onClick={(event) => {
+                                          event.stopPropagation();
+                                          if (blockIndex < chapter.blocks.length - 1)
+                                            moveBlock(block.id, chapterIndex, blockIndex + 2);
+                                          else
+                                            moveBlock(
+                                              block.id,
+                                              Math.min(chapterIndex + 1, draft.chapters.length - 1),
+                                              0,
+                                            );
+                                        }}
+                                        aria-label="Move Passage down"
+                                      >
+                                        ↓
+                                      </button>
+                                    </div>
+                                  </article>
+                                  <DropZone
+                                    id={`drop:${chapterIndex}:${blockIndex + 1}`}
+                                    onDrop={(event) => drop(event, chapterIndex, blockIndex + 1)}
+                                  />
+                                </>
+                              )}
+                            </SortableStoryBlock>
+                          );
+                        })}
+                        <button className="chapter-add" onClick={() => addBlock("narrative", chapterIndex)}>
+                          + {studioCopy.addPassage.value}
+                        </button>
+                      </SortableContext>
+                    )}
+                  </motion.article>
+                ))}
+              </section>
+              <motion.aside
+                className={`block-inspector ${selected ? "has-selection" : "empty"}`}
+                data-inspector-state={selected ? "open" : "closed"}
+                initial={false}
+                animate={{
+                  opacity: selected ? 1 : 0.74,
+                  x: selected && mode !== "reduced" ? [stateMotion.distancePx, 0] : 0,
+                }}
+                transition={{ duration: stateMotion.durationSeconds, ease: platformMotionEasing("state") }}
+              >
+                {selected && selectedDefinition ? (
+                  <>
+                    <header>
+                      <button
+                        className="inspector-mobile-close"
+                        onClick={closeInspector}
+                        aria-label="Close Passage inspector"
+                      >
+                        ×
+                      </button>
+                      <p className="eyebrow">{selectedDefinition.displayName}</p>
+                      <input
+                        ref={inspectorTitle}
+                        value={selected.block.title}
+                        aria-label="Passage title"
+                        onChange={(event) =>
+                          updateSelected((block) => {
+                            block.title = event.target.value;
+                          })
+                        }
+                      />
+                    </header>
+                    <div className="inspector-fields">
+                      {selectedDefinition.fields.map((field) => (
+                        <Field
+                          key={field.key}
+                          field={field}
+                          value={selected.block.configuration[field.key]}
+                          assets={data.assets}
+                          locations={data.locations}
+                          artifacts={data.artifacts}
+                          onChange={(value) =>
+                            updateSelected((block) => {
+                              block.configuration[field.key] = value;
+                            })
+                          }
+                        />
+                      ))}
+                      {selected.block.blockType === "imageTransformation" && (
+                        <AlignmentEditor
+                          value={selected.block.configuration.alignment}
+                          assets={data.assets}
+                          beforeId={String(selected.block.configuration.beforeAssetId ?? "")}
+                          afterId={String(selected.block.configuration.afterAssetId ?? "")}
+                          onChange={(value) =>
+                            updateSelected((block) => {
+                              block.configuration.alignment = value;
+                            })
+                          }
+                        />
+                      )}
+                      <fieldset className="journal-presentation-fields">
+                        <legend>Player journal presentation</legend>
+                        <label>
+                          <span>Spread mode</span>
+                          <select
+                            value={String(selected.block.presentation.spreadMode ?? "")}
+                            onChange={(event) =>
+                              updateSelected((block) => {
+                                if (event.target.value) block.presentation.spreadMode = event.target.value;
+                                else delete block.presentation.spreadMode;
+                              })
+                            }
+                          >
+                            <option value="">Automatic for this Passage type</option>
+                            <option value="left">Left page</option>
+                            <option value="right">Right page</option>
+                            <option value="two-page">Two-page spread</option>
+                            <option value="overlay">Physical insert</option>
+                            <option value="cinematic">Cinematic expansion</option>
+                          </select>
+                        </label>
+                        <label>
+                          <span>Page-turn behavior</span>
+                          <select
+                            value={String(selected.block.presentation.pageTurnBehavior ?? "")}
+                            onChange={(event) =>
+                              updateSelected((block) => {
+                                if (event.target.value) block.presentation.pageTurnBehavior = event.target.value;
+                                else delete block.presentation.pageTurnBehavior;
+                              })
+                            }
+                          >
+                            <option value="">Manual by default</option>
+                            <option value="manual">Manual</option>
+                            <option value="automatic">Automatic</option>
+                            <option value="captain-triggered">Captain-triggered</option>
+                            <option value="locked">Locked</option>
+                          </select>
+                        </label>
+                        <label>
+                          <span>Paper style</span>
+                          <input
+                            value={String(selected.block.presentation.paperStyle ?? "")}
+                            placeholder="weathered"
+                            onChange={(event) =>
+                              updateSelected((block) => {
+                                block.presentation.paperStyle = event.target.value;
+                              })
+                            }
+                          />
+                        </label>
+                        <label>
+                          <span>Ink style</span>
+                          <input
+                            value={String(selected.block.presentation.inkStyle ?? "")}
+                            placeholder="midnight"
+                            onChange={(event) =>
+                              updateSelected((block) => {
+                                block.presentation.inkStyle = event.target.value;
+                              })
+                            }
+                          />
+                        </label>
+                      </fieldset>
+                      <label>
+                        <span>Private creator notes</span>
+                        <textarea
+                          rows={5}
+                          value={selected.block.creatorNotes ?? ""}
+                          onChange={(event) =>
+                            updateSelected((block) => {
+                              block.creatorNotes = event.target.value;
+                            })
+                          }
+                        />
+                      </label>
+                    </div>
+                    <div className="inspector-danger">
+                      <button
+                        onClick={() => {
+                          const id = selected.block.id;
+                          change((next) => {
+                            const chapter = next.chapters.find((item) => item.id === selected.chapter.id);
+                            if (chapter) {
+                              const source = chapter.blocks.find((item) => item.id === id);
+                              if (source)
+                                chapter.blocks.splice(chapter.blocks.indexOf(source) + 1, 0, {
+                                  ...clone(source),
+                                  id: crypto.randomUUID(),
+                                  title: `${source.title} Copy`,
+                                });
+                            }
+                          });
+                        }}
+                      >
+                        Duplicate Passage
+                      </button>
+                      <button onClick={() => void deleteSelectedAuthoritatively()}>Delete Passage</button>
+                    </div>
+                  </>
+                ) : (
+                  <div className="inspector-empty">
+                    <span>☞</span>
+                    <h2>Select a Passage</h2>
+                    <p>Its content, presentation, verification, assets, and private notes will appear here.</p>
+                  </div>
+                )}
+              </motion.aside>
+            </div>
+            <DragOverlay dropAnimation={mode === "reduced" ? null : undefined}>
+              {activeDragId && (
+                <div className="studio-drag-overlay" aria-hidden="true">
+                  <span>Move</span>
+                  <strong>{activeDragLabel ?? "Passage"}</strong>
+                </div>
+              )}
+            </DragOverlay>
+          </DndContext>
+        )}
+        {previewBlock && selected && (
+          <div className="block-preview-backdrop" role="presentation" onMouseDown={() => setPreviewBlock(false)}>
+            <section
+              className="block-preview-dialog"
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="block-preview-title"
+              onMouseDown={(event) => event.stopPropagation()}
+            >
+              <header>
+                <div>
+                  <p className="eyebrow">Preview Voyage</p>
+                  <h2 id="block-preview-title">{selected.block.title}</h2>
+                </div>
+                <button onClick={() => setPreviewBlock(false)} aria-label="Close Passage preview">
+                  ×
+                </button>
+              </header>
+              <div className="block-preview-toolbar">
+                <div role="group" aria-label="Preview viewport">
+                  <button
+                    className={previewViewport === "desktop" ? "active" : ""}
+                    onClick={() => setPreviewViewport("desktop")}
+                  >
+                    Desktop
+                  </button>
+                  <button
+                    className={previewViewport === "mobile" ? "active" : ""}
+                    onClick={() => setPreviewViewport("mobile")}
+                  >
+                    Mobile
+                  </button>
+                </div>
+                <label>
+                  <input
+                    type="checkbox"
+                    checked={previewReducedMotion}
+                    onChange={(event) => setPreviewReducedMotion(event.target.checked)}
+                  />
+                  Reduced motion
+                </label>
+                <button onClick={() => setPreviewReplay((value) => value + 1)}>Replay Passage</button>
+              </div>
+              <div
+                className={`block-preview-viewport ${previewViewport} ${previewReducedMotion ? "reduced-motion" : ""}`}
+              >
+                <PublishedBlockView
+                  key={previewReplay}
+                  block={selected.block}
+                  assets={data.assets.map((asset) => ({
+                    id: asset.id,
+                    displayName: asset.displayName,
+                    url: `/api/media/${asset.id}?variant=PREVIEW&version=draft:${data.draft.id}`,
+                  }))}
+                />
+              </div>
+              <aside className="block-preview-validation">
+                <strong>Validation</strong>
+                {validation ? (
+                  [...validation.errors, ...validation.warnings].filter((issue) => issue.blockId === selected.block.id)
+                    .length ? (
+                    [...validation.errors, ...validation.warnings]
+                      .filter((issue) => issue.blockId === selected.block.id)
+                      .map((issue, index) => <p key={`${issue.message}-${index}`}>{issue.message}</p>)
+                  ) : (
+                    <p>No issue was reported for this Passage in the last draft validation.</p>
+                  )
+                ) : (
+                  <p>Run Validate Chronicle to show schema and connection issues beside this preview.</p>
+                )}
+              </aside>
+            </section>
+          </div>
+        )}
+        {initialSection === "settings" && (
+          <section className="editor-single-panel settings-panel">
+            <header>
+              <p className="eyebrow">Chronicle identity</p>
+              <h2>Settings</h2>
+            </header>
+            <div className="settings-grid">
+              <label>
+                <span>Title</span>
+                <input
+                  value={draft.tale.title}
+                  onChange={(event) =>
+                    change((next) => {
+                      next.tale.title = event.target.value;
+                    })
+                  }
+                />
+              </label>
+              <label>
+                <span>Address</span>
+                <input
+                  value={draft.tale.slug}
+                  onChange={(event) =>
+                    change((next) => {
+                      next.tale.slug = event.target.value.toLocaleLowerCase();
+                    })
+                  }
+                />
+              </label>
+              <label>
+                <span>Subtitle</span>
+                <input
+                  value={draft.tale.subtitle ?? ""}
+                  onChange={(event) =>
+                    change((next) => {
+                      next.tale.subtitle = event.target.value;
+                    })
+                  }
+                />
+              </label>
+              <label>
+                <span>Visibility</span>
+                <select
+                  value={draft.tale.visibility}
+                  onChange={(event) =>
+                    change((next) => {
+                      next.tale.visibility = event.target.value;
+                    })
+                  }
+                >
+                  <option value="PRIVATE">Private</option>
+                  <option value="UNLISTED">Unlisted</option>
+                  <option value="PUBLIC">Public</option>
+                </select>
+              </label>
+              <label className="wide">
+                <span>Short description</span>
+                <textarea
+                  value={draft.tale.shortDescription ?? ""}
+                  onChange={(event) =>
+                    change((next) => {
+                      next.tale.shortDescription = event.target.value;
+                    })
+                  }
+                />
+              </label>
+              <label className="wide">
+                <span>Long description</span>
+                <textarea
+                  rows={8}
+                  value={draft.tale.longDescription ?? ""}
+                  onChange={(event) =>
+                    change((next) => {
+                      next.tale.longDescription = event.target.value;
+                    })
+                  }
+                />
+              </label>
+              <label>
+                <span>Estimated minutes</span>
+                <input
+                  type="number"
+                  value={draft.tale.estimatedDuration ?? ""}
+                  onChange={(event) =>
+                    change((next) => {
+                      next.tale.estimatedDuration = event.target.value ? Number(event.target.value) : null;
+                    })
+                  }
+                />
+              </label>
+              <label>
+                <span>Cover asset</span>
+                <select
+                  value={draft.tale.coverAssetId ?? ""}
+                  onChange={(event) =>
+                    change((next) => {
+                      next.tale.coverAssetId = event.target.value || null;
+                    })
+                  }
+                >
+                  <option value="">No cover</option>
+                  {data.assets
+                    .filter((asset) => asset.mediaType === "IMAGE")
+                    .map((asset) => (
+                      <option key={asset.id} value={asset.id}>
+                        {asset.displayName}
+                      </option>
+                    ))}
+                </select>
+              </label>
+            </div>
+          </section>
+        )}
+        {initialSection === "assets" && (
+          <LibraryPanel
+            title="Asset Library"
+            eyebrow="Reusable media"
+            action={
+              <>
+                <button onClick={() => setAssetDrawer(true)}>Upload media</button>
+                <button onClick={() => void libraryAction("collection", "create")}>New collection</button>
+              </>
+            }
+          >
+            <div className="asset-search">
+              <input
+                value={assetSearch}
+                onChange={(event) => setAssetSearch(event.target.value)}
+                placeholder="Search names, tags, and roles"
+              />
+              <span>{filteredAssets.length} assets</span>
+            </div>
+            <div className="asset-filters" aria-label="Asset filters">
+              <select
+                value={assetMedia}
+                onChange={(event) => setAssetMedia(event.target.value)}
+                aria-label="Media type"
+              >
+                <option value="ALL">All media</option>
+                {[...new Set(data.assets.map((asset) => asset.mediaType))].map((type) => (
+                  <option key={type}>{type}</option>
+                ))}
+              </select>
+              <select
+                value={assetContext}
+                onChange={(event) => setAssetContext(event.target.value)}
+                aria-label="Used by"
+              >
+                <option value="ALL">Any context</option>
+                <option value="TALE">Chronicle cover</option>
+                <option value="CHAPTER">Chapter / Passage</option>
+                <option value="LOCATION">Waypoint</option>
+                <option value="ARTIFACT">Artifact</option>
+              </select>
+              <select value={assetRole} onChange={(event) => setAssetRole(event.target.value)} aria-label="Asset role">
+                <option value="ALL">All roles</option>
+                {[...new Set(data.assets.flatMap((asset) => asset.roles))].sort().map((role) => (
+                  <option key={role}>{role}</option>
+                ))}
+              </select>
+              <select value={assetTag} onChange={(event) => setAssetTag(event.target.value)} aria-label="Asset tag">
+                <option value="ALL">All tags</option>
+                {[...new Set(data.assets.flatMap((asset) => asset.tags))].sort().map((tag) => (
+                  <option key={tag}>{tag}</option>
+                ))}
+              </select>
+              <select
+                value={assetCollection}
+                onChange={(event) => setAssetCollection(event.target.value)}
+                aria-label="Collection"
+              >
+                <option value="ALL">All collections</option>
+                {data.collections.map((collection) => (
+                  <option key={collection.id} value={collection.id}>
+                    {collection.name}
+                  </option>
+                ))}
+              </select>
+              <select
+                value={assetUsage}
+                onChange={(event) => setAssetUsage(event.target.value)}
+                aria-label="Asset usage"
+              >
+                <option value="ALL">All usage</option>
+                <option value="RECENT">Recently added</option>
+                <option value="USED">Used</option>
+                <option value="UNUSED">Unused</option>
+              </select>
+            </div>
+            <div className="asset-grid">
+              {filteredAssets.slice(0, assetLimit).map((asset) => (
+                <article key={asset.id}>
+                  {asset.mediaType === "IMAGE" ? (
+                    <ResilientImage
+                      loading="lazy"
+                      src={`/api/media/${asset.id}?variant=THUMBNAIL`}
+                      alt=""
+                      fallbackLabel={`${asset.displayName} thumbnail unavailable`}
+                    />
+                  ) : (
+                    <div className="asset-kind">{asset.mediaType}</div>
+                  )}
+                  <h3>{asset.displayName}</h3>
+                  <p>{asset.width && asset.height ? `${asset.width} × ${asset.height}` : asset.mimeType}</p>
+                  <div>
+                    {asset.roles.map((role) => (
+                      <span key={role}>{role}</span>
+                    ))}
+                    {asset.tags.map((tag) => (
+                      <span key={tag}>#{tag}</span>
+                    ))}
+                  </div>
+                  <div className="asset-card-actions">
+                    <button onClick={() => void editAsset(asset)}>Edit metadata</button>
+                    <button onClick={() => void showAssetUsages(asset)}>View usages</button>
+                    <a href={`/api/media/${asset.id}?variant=ORIGINAL&download=1`}>Download original</a>
+                    <label className="asset-replace">
+                      Replace file
+                      <input type="file" onChange={(event) => void replaceAsset(asset, event.target.files)} />
+                    </label>
+                  </div>
+                  <button
+                    onClick={async () => {
+                      if (
+                        !(await requestAction({
+                          title: `Archive ${asset.displayName}?`,
+                          detail:
+                            "Referenced assets remain protected and will be reported instead of silently removed.",
+                          confirmLabel: "Archive Asset",
+                          destructive: true,
+                        }))
+                      )
+                        return;
+                      const response = await fetch(`/api/studio/assets/${asset.id}`, {
+                        method: "DELETE",
+                        headers: { "x-csrf-token": data.csrfToken },
+                      });
+                      const body = (await response.json()) as { usages?: Array<{ label: string }>; error?: string };
+                      if (!response.ok)
+                        setError(
+                          body.usages?.length
+                            ? `Still used by: ${body.usages.map((item) => item.label).join(", ")}`
+                            : (body.error ?? "Could not archive asset."),
+                        );
+                      else await load();
+                    }}
+                  >
+                    Archive
+                  </button>
+                </article>
+              ))}
+            </div>
+            {assetLimit < filteredAssets.length && (
+              <button className="asset-show-more" onClick={() => setAssetLimit((value) => value + 24)}>
+                Show 24 more assets
+              </button>
+            )}
+            <h3>Collections</h3>
+            <div className="record-list">
+              {data.collections.map((item) => (
+                <article key={item.id}>
+                  <strong>{item.name}</strong>
+                  <span>{item.collectionType}</span>
+                  <button onClick={() => void libraryAction("collection", "update", item.id)}>Edit</button>
+                  <button onClick={() => void libraryAction("collection", "archive", item.id)}>Delete</button>
+                </article>
+              ))}
+            </div>
+          </LibraryPanel>
+        )}
+        {initialSection === "locations" && (
+          <LibraryPanel
+            title="Waypoints"
+            eyebrow="Destinations and verification references"
+            action={<button onClick={() => void libraryAction("location", "create")}>Create Waypoint</button>}
+          >
+            <p className="panel-note">
+              Reference and negative-reference collections can be prepared now for the future vision helper. Recognition
+              is not active in Phase 1.
+            </p>
+            <div className="library-filters">
+              <input
+                type="search"
+                value={librarySearch}
+                onChange={(event) => setLibrarySearch(event.target.value)}
+                placeholder="Search Waypoints"
+              />
+              <select value={librarySort} onChange={(event) => setLibrarySort(event.target.value as "name" | "region")}>
+                <option value="name">Sort by name</option>
+                <option value="region">Sort by region</option>
+              </select>
+            </div>
+            <div className="record-grid">
+              {filteredLocations.map((item) => (
+                <article key={item.id}>
+                  <p className="card-kicker">{item.region || "Uncharted region"}</p>
+                  <h3>{item.name}</h3>
+                  <p>{item.playerFacingDescription || "No player-facing description yet."}</p>
+                  <small>
+                    {item.referenceCollectionId ? "Reference collection assigned" : "No verification references"}
+                  </small>
+                  <small>Used by {recordUsageCount(item.id)} Passages</small>
+                  <button onClick={() => void libraryAction("location", "update", item.id)}>Edit Waypoint</button>
+                  <button onClick={() => void libraryAction("location", "create", item.id)}>Duplicate</button>
+                  <button onClick={() => void libraryAction("location", "archive", item.id)}>Archive</button>
+                </article>
+              ))}
+            </div>
+          </LibraryPanel>
+        )}
+        {initialSection === "artifacts" && (
+          <LibraryPanel
+            title="Artifacts"
+            eyebrow="Lore and collection rewards"
+            action={<button onClick={() => void libraryAction("artifact", "create")}>Create artifact</button>}
+          >
+            <div className="library-filters">
+              <input
+                type="search"
+                value={librarySearch}
+                onChange={(event) => setLibrarySearch(event.target.value)}
+                placeholder="Search artifacts"
+              />
+              <select value={librarySort} onChange={(event) => setLibrarySort(event.target.value as "name" | "region")}>
+                <option value="name">Sort by name</option>
+              </select>
+            </div>
+            <div className="record-grid">
+              {filteredArtifacts.map((item) => (
+                <article key={item.id}>
+                  <p className="card-kicker">{item.ordinaryGameObjectLabel || "Artifact"}</p>
+                  <h3>{item.name}</h3>
+                  <p>{item.shortDescription || item.loreDescription || "No lore has been written."}</p>
+                  <small>Used by {recordUsageCount(item.id)} Passages</small>
+                  <button onClick={() => void libraryAction("artifact", "update", item.id)}>Edit</button>
+                  <button onClick={() => void libraryAction("artifact", "create", item.id)}>Duplicate</button>
+                  <button onClick={() => void libraryAction("artifact", "archive", item.id)}>Archive</button>
+                </article>
+              ))}
+            </div>
+          </LibraryPanel>
+        )}
+        {initialSection === "versions" && (
+          <LibraryPanel
+            title="Version history"
+            eyebrow="Immutable releases"
+            action={<button onClick={() => void publish()}>Publish current Chronicle draft</button>}
+          >
+            <div className="version-list">
+              {!data.versions.length && <p>No published Version exists yet.</p>}
+              {data.versions.map((version) => (
+                <motion.article
+                  key={version.id}
+                  layout={mode !== "reduced"}
+                  data-version-lock="immutable"
+                  transition={{ duration: layoutMotion.durationSeconds, ease: platformMotionEasing("layout") }}
+                >
+                  <span className={version.isCurrent ? "current" : ""}>v{version.versionLabel}</span>
+                  <div>
+                    <strong>{new Date(version.publishedAt).toLocaleString()}</strong>
+                    <p>{version.releaseNotes || "No release notes."}</p>
+                    <small className="immutable-version-lock" aria-label="Immutable published Version">
+                      <span aria-hidden="true">◆</span> Immutable release
+                    </small>
+                  </div>
+                  <small>
+                    {version.activeSessions} active Voyage{version.activeSessions === 1 ? "" : "s"}
+                  </small>
+                  <div className="version-actions">
+                    <button onClick={() => void versionAction(version, "preview")}>Preview release</button>
+                    <button onClick={() => void versionAction(version, "restore")}>Copy into new draft</button>
+                    <button onClick={() => void versionAction(version, "fork")}>Create new Chronicle</button>
+                    {!version.isCurrent && (
+                      <button onClick={() => void compareVersion(version)}>Compare to current</button>
+                    )}
+                  </div>
+                </motion.article>
+              ))}
+            </div>
+            {versionComparison && (
+              <section className="version-comparison" aria-live="polite">
+                <header>
+                  <div>
+                    <p className="eyebrow">Structured immutable diff</p>
+                    <h3>
+                      Version {versionComparison.left.label} to {versionComparison.right.label}
+                    </h3>
+                  </div>
+                  <button onClick={() => setVersionComparison(null)}>Close comparison</button>
+                </header>
+                <ul className="comparison-summary">
+                  {Object.entries(versionComparison.summary).map(([type, count]) => (
+                    <li key={type}>
+                      <strong>{count}</strong>
+                      <span>{type}</span>
+                    </li>
+                  ))}
+                </ul>
+                {versionComparison.compatibilityWarnings.length > 0 && (
+                  <p className="platform-error">
+                    Compatibility warnings: {versionComparison.compatibilityWarnings.join(", ")}
+                  </p>
+                )}
+                <ol>
+                  {versionComparison.changes.map((change, index) => (
+                    <li key={`${change.path}-${index}`}>
+                      <b>{change.type}</b>
+                      <div>
+                        <code>{change.path}</code>
+                        {(change.before !== undefined || change.after !== undefined) && (
+                          <span className="comparison-values">
+                            <del>{change.before ?? "Not present"}</del>
+                            <span aria-hidden="true">→</span>
+                            <ins>{change.after ?? "Removed"}</ins>
+                          </span>
+                        )}
+                      </div>
+                    </li>
+                  ))}
+                </ol>
+              </section>
+            )}
+          </LibraryPanel>
+        )}
+        {(assetDrawer || initialSection === "assets") && (
+          <aside className={`asset-drawer ${assetDrawer ? "open" : "page-open"}`} aria-label="Asset drawer">
+            <header>
+              <div>
+                <p className="eyebrow">Media hold</p>
+                <h2>Upload and reuse assets</h2>
+              </div>
+              <button onClick={() => setAssetDrawer(false)} aria-label="Close asset drawer">
+                ×
+              </button>
+            </header>
+            <label
+              className="upload-drop"
+              onDragOver={(event) => event.preventDefault()}
+              onDrop={(event) => {
+                event.preventDefault();
+                void upload(event.dataTransfer.files);
+              }}
+            >
+              <input
+                type="file"
+                multiple
+                accept="image/png,image/jpeg,image/webp,image/avif,video/mp4,video/webm,audio/mpeg,audio/ogg,audio/wav,application/pdf"
+                onChange={(event) => void upload(event.target.files)}
+              />
+              <strong>Drop files or choose from this device</strong>
+              <span>Originals are preserved; image thumbnails and player variants are generated.</span>
+            </label>
+            <AnimatePresence initial={false}>
+              {uploadEntries.length > 0 && (
+                <motion.ul
+                  className="upload-progress-list"
+                  aria-label="File upload progress"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                >
+                  {uploadEntries.map((entry) => (
+                    <motion.li key={entry.id} layout={mode !== "reduced"} data-upload-state={entry.state}>
+                      <span>
+                        <strong>{entry.name}</strong>
+                        <small>{entry.detail ?? entry.state}</small>
+                      </span>
+                      {entry.state === "uploading" ? (
+                        <progress aria-label={`${entry.name} uploading`} />
+                      ) : entry.state === "ready" ? (
+                        <progress aria-label={`${entry.name} ready`} max={1} value={1} />
+                      ) : (
+                        <span aria-hidden="true">{entry.state === "failed" ? "!" : "·"}</span>
+                      )}
+                    </motion.li>
+                  ))}
+                </motion.ul>
+              )}
+            </AnimatePresence>
+            <div className="drawer-filters">
+              <input
+                type="search"
+                value={assetSearch}
+                onChange={(event) => setAssetSearch(event.target.value)}
+                placeholder="Search media"
+              />
+              <select
+                value={assetUsage}
+                onChange={(event) => setAssetUsage(event.target.value)}
+                aria-label="Drawer usage filter"
+              >
+                <option value="ALL">All media</option>
+                <option value="RECENT">Recent</option>
+                <option value="UNUSED">Unused</option>
+              </select>
+              <select
+                value={assetCollection}
+                onChange={(event) => setAssetCollection(event.target.value)}
+                aria-label="Drawer collection filter"
+              >
+                <option value="ALL">All collections</option>
+                {data.collections.map((collection) => (
+                  <option key={collection.id} value={collection.id}>
+                    {collection.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="drawer-assets">
+              {filteredAssets.slice(0, 24).map((asset) => (
+                <button
+                  key={asset.id}
+                  className={placedAssetId === asset.id ? "asset-placed" : ""}
+                  data-placement-state={placedAssetId === asset.id ? "placed" : "ready"}
+                  draggable
+                  onDragStart={(event) => {
+                    event.dataTransfer.effectAllowed = "copy";
+                    event.dataTransfer.setData(
+                      "application/x-chronicle-asset",
+                      JSON.stringify({ id: asset.id, mediaType: asset.mediaType }),
+                    );
+                  }}
+                  onClick={() => {
+                    const readyForPlacement = asset.variants.some((variant) => variant.processingState === "READY");
+                    if (selected && readyForPlacement) {
+                      updateSelected((block) => {
+                        const firstAssetField = selectedDefinition?.fields.find(
+                          (field) =>
+                            field.kind === "asset" &&
+                            (!field.mediaTypes?.length || field.mediaTypes.includes(asset.mediaType)),
+                        );
+                        if (firstAssetField) block.configuration[firstAssetField.key] = asset.id;
+                      });
+                      setPlacedAssetId(asset.id);
+                    }
+                  }}
+                  disabled={!asset.variants.some((variant) => variant.processingState === "READY")}
+                >
+                  <span>
+                    {asset.mediaType === "IMAGE" ? (
+                      <ResilientImage
+                        loading="lazy"
+                        src={`/api/media/${asset.id}?variant=THUMBNAIL`}
+                        alt=""
+                        fallbackLabel={`${asset.displayName} thumbnail unavailable`}
+                      />
+                    ) : (
+                      asset.mediaType
+                    )}
+                  </span>
+                  <strong>{asset.displayName}</strong>
+                  <small>
+                    {asset.variants.some((variant) => variant.processingState === "READY")
+                      ? placedAssetId === asset.id
+                        ? "Placed in selected field"
+                        : "Ready for placement"
+                      : "Processing"}
+                  </small>
+                </button>
+              ))}
+            </div>
+          </aside>
+        )}
+      </motion.main>
+      {dialog}
+    </>
   );
 }
 
@@ -2510,28 +2681,23 @@ function Field({
       </label>
     );
   }
+  if (field.kind === "json" && (field.key === "acceptedAnswers" || field.key === "hints"))
+    return (
+      <StringListField
+        label={label}
+        values={Array.isArray(value) ? value.filter((item): item is string => typeof item === "string") : []}
+        itemLabel={field.key === "acceptedAnswers" ? "Answer" : "Hint"}
+        onChange={onChange}
+      />
+    );
+  if (field.kind === "json" && field.key === "choices")
+    return <ChoiceListField label={label} value={value} onChange={onChange} />;
   if (field.kind === "json")
     return (
-      <label>
-        {label}
-        <textarea
-          rows={5}
-          defaultValue={JSON.stringify(
-            value ?? (["acceptedAnswers", "hints", "choices"].includes(field.key) ? [] : {}),
-            null,
-            2,
-          )}
-          onBlur={(event) => {
-            try {
-              onChange(JSON.parse(event.target.value));
-              event.target.setCustomValidity("");
-            } catch {
-              event.target.setCustomValidity("Enter valid JSON.");
-              event.target.reportValidity();
-            }
-          }}
-        />
-      </label>
+      <fieldset className="structured-list-field" disabled>
+        <legend>{label}</legend>
+        <p>This advanced field needs a governed structured editor before it can be changed here.</p>
+      </fieldset>
     );
   return (
     <label>
@@ -2539,6 +2705,109 @@ function Field({
       <input value={String(value ?? "")} onChange={(event) => onChange(event.target.value)} />
       {field.help && <small>{field.help}</small>}
     </label>
+  );
+}
+
+function StringListField({
+  label,
+  values,
+  itemLabel,
+  onChange,
+}: {
+  label: React.ReactNode;
+  values: string[];
+  itemLabel: string;
+  onChange: (value: unknown) => void;
+}) {
+  return (
+    <fieldset className="structured-list-field">
+      <legend>{label}</legend>
+      {values.length ? (
+        <ol>
+          {values.map((value, index) => (
+            <li key={`${itemLabel}-${index}`}>
+              <label>
+                {itemLabel} {index + 1}
+                <input
+                  value={value}
+                  onChange={(event) =>
+                    onChange(values.map((item, itemIndex) => (itemIndex === index ? event.target.value : item)))
+                  }
+                />
+              </label>
+              <button type="button" onClick={() => onChange(values.filter((_, itemIndex) => itemIndex !== index))}>
+                Remove {itemLabel.toLocaleLowerCase()}
+              </button>
+            </li>
+          ))}
+        </ol>
+      ) : (
+        <p>No {itemLabel.toLocaleLowerCase()}s have been added.</p>
+      )}
+      <button type="button" onClick={() => onChange([...values, ""])}>
+        Add {itemLabel.toLocaleLowerCase()}
+      </button>
+    </fieldset>
+  );
+}
+
+function ChoiceListField({
+  label,
+  value,
+  onChange,
+}: {
+  label: React.ReactNode;
+  value: unknown;
+  onChange: (value: unknown) => void;
+}) {
+  const choices = Array.isArray(value)
+    ? value.filter(
+        (item): item is Record<string, unknown> => Boolean(item) && typeof item === "object" && !Array.isArray(item),
+      )
+    : [];
+  return (
+    <fieldset className="structured-list-field">
+      <legend>{label}</legend>
+      <p className="field-help">Name each Crew choice here. Passage connections own its destination.</p>
+      <ol>
+        {choices.map((choice, index) => (
+          <li key={String(choice.id ?? `choice-${index}`)}>
+            <label>
+              Choice {index + 1}
+              <input
+                value={String(choice.label ?? "")}
+                onChange={(event) =>
+                  onChange(
+                    choices.map((item, itemIndex) =>
+                      itemIndex === index ? { ...item, label: event.target.value } : item,
+                    ),
+                  )
+                }
+              />
+            </label>
+            <small>{choice.targetBlockId ? "Connected to a Passage" : "Needs a Passage connection"}</small>
+            <button
+              type="button"
+              disabled={choices.length <= 2}
+              onClick={() => onChange(choices.filter((_, itemIndex) => itemIndex !== index))}
+            >
+              Remove choice
+            </button>
+          </li>
+        ))}
+      </ol>
+      <button
+        type="button"
+        onClick={() =>
+          onChange([
+            ...choices,
+            { id: `choice-${crypto.randomUUID()}`, label: `Choice ${choices.length + 1}`, targetBlockId: "" },
+          ])
+        }
+      >
+        Add choice
+      </button>
+    </fieldset>
   );
 }
 
@@ -2566,11 +2835,18 @@ function AlignmentEditor({
     <fieldset className="alignment-editor">
       <legend>Before / after alignment</legend>
       <div className="alignment-stage">
-        {before && <img src={`/api/media/${before.id}?variant=PREVIEW`} alt="Before alignment reference" />}
+        {before && (
+          <ResilientImage
+            src={`/api/media/${before.id}?variant=PREVIEW`}
+            alt="Before alignment reference"
+            fallbackLabel="Before reference unavailable"
+          />
+        )}
         {after && (
-          <img
+          <ResilientImage
             src={`/api/media/${after.id}?variant=PREVIEW`}
             alt="After alignment reference"
+            fallbackLabel="After reference unavailable"
             style={{
               opacity: Number(alignment.opacity ?? 50) / 100,
               transform: `translate(${Number(alignment.x ?? 0)}px, ${Number(alignment.y ?? 0)}px) scale(${Number(alignment.scale ?? 1)}) rotate(${Number(alignment.rotation ?? 0)}deg)`,

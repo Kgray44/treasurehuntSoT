@@ -1,6 +1,5 @@
 "use client";
 
-/* eslint-disable @next/next/no-img-element -- Images are served by the version- and membership-authorized media route. */
 import Link from "next/link";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, LayoutGroup, motion } from "motion/react";
@@ -9,6 +8,8 @@ import { consumeOneShot, platformOneShotKey } from "@/animation/platform/one-sho
 import { reconcileVersionedRows } from "@/animation/platform/polling-delta";
 import { platformMotionEasing, resolvePlatformMotionToken } from "@/animation/platform/motion-tokens";
 import { EmptyState, ErrorState, LoadingState, StatusBanner } from "@/components/ui/AsyncState";
+import { useActionDialog } from "@/components/ui/ActionDialog";
+import { ResilientImage } from "@/components/ui/ResilientImage";
 import { platformCopy } from "@/language/platform-copy";
 import { playerCopy } from "@/language/player-copy";
 
@@ -89,6 +90,7 @@ function semanticCardVersion(row: VersionedCard) {
 }
 
 export function PlayerLibrary() {
+  const { requestAction, dialog } = useActionDialog();
   const { mode } = useMotionMode();
   const token = resolvePlatformMotionToken("layout", mode);
   const requestSequence = useRef(0);
@@ -219,7 +221,17 @@ export function PlayerLibrary() {
 
   async function setPreference(card: PlayerLibraryCard, action: Exclude<PreferenceAction, "show">) {
     if (!library) return;
-    if (action === "hide" && !window.confirm(`Hide “${card.title}” from your library?`)) return;
+    if (
+      action === "hide" &&
+      !(await requestAction({
+        title: `Hide “${card.title}”?`,
+        detail:
+          "The Chronicle will leave your library, but you can restore it immediately from the confirmation banner.",
+        confirmLabel: "Hide Chronicle",
+        destructive: true,
+      }))
+    )
+      return;
     setBusyCard(card.id);
     setError("");
     setNotice("");
@@ -339,170 +351,173 @@ export function PlayerLibrary() {
     );
 
   return (
-    <motion.main
-      className="player-library"
-      data-motion-mode={mode}
-      initial={{ opacity: 0, y: token.distancePx }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: token.durationSeconds, ease: platformMotionEasing("layout") }}
-    >
-      <header className="platform-header">
-        <div>
-          <p className="eyebrow">{library.player.displayName}’s collection</p>
-          <h1>My Chronicle Library</h1>
-          <p>Invitations, active Voyages, and the exact Chronicle versions you experienced.</p>
-        </div>
-        <div className="library-truth" data-confirmed={confirmed}>
-          <i />
-          <span>{confirmed ? "Server confirmed" : "Reconnecting"}</span>
-          <time dateTime={library.serverTime}>{new Date(library.serverTime).toLocaleTimeString()}</time>
-        </div>
-      </header>
-      {error && <StatusBanner tone="danger">{error}</StatusBanner>}
-      {notice && (
-        <StatusBanner tone="success">
-          {notice}{" "}
-          {hiddenUndo && (
-            <button onClick={() => void undoHide()} disabled={busyCard === hiddenUndo.card.id}>
-              Undo hide
-            </button>
-          )}
-        </StatusBanner>
-      )}
-      {library.total > 0 && (
-        <section className="library-tools" aria-label="Search and filter Chronicles">
-          <label>
-            <span>Search</span>
-            <input
-              type="search"
-              value={query}
-              onChange={(event) => setQuery(event.target.value)}
-              placeholder="Title, Captain, voyage, or year"
-            />
-          </label>
-          <label>
-            <span>State</span>
-            <select value={filter} onChange={(event) => setFilter(event.target.value)}>
-              <option value="ALL">All states</option>
-              {groupLabels.map(([key, label]) => (
-                <option key={key} value={key}>
-                  {label}
-                </option>
-              ))}
-            </select>
-          </label>
-          <label>
-            <span>Sort</span>
-            <select value={sort} onChange={(event) => setSort(event.target.value)}>
-              <option value="RECENT">Recently active</option>
-              <option value="TITLE">Title</option>
-              <option value="COMPLETED">Completion date</option>
-            </select>
-          </label>
-          <div className="view-toggle" role="group" aria-label="Library view">
-            <button
-              className={view === "gallery" ? "active" : ""}
-              aria-pressed={view === "gallery"}
-              onClick={() => setView("gallery")}
-            >
-              Gallery
-            </button>
-            <button
-              className={view === "list" ? "active" : ""}
-              aria-pressed={view === "list"}
-              onClick={() => setView("list")}
-            >
-              List
-            </button>
+    <>
+      <motion.main
+        className="player-library"
+        data-motion-mode={mode}
+        initial={{ opacity: 0, y: token.distancePx }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: token.durationSeconds, ease: platformMotionEasing("layout") }}
+      >
+        <header className="platform-header">
+          <div>
+            <p className="eyebrow">{library.player.displayName}’s collection</p>
+            <h1>My Chronicle Library</h1>
+            <p>Invitations, active Voyages, and the exact Chronicle versions you experienced.</p>
           </div>
-          <p className="sr-only" role="status" aria-live="polite">
-            {resultCount} {resultCount === 1 ? "Chronicle result" : "Chronicle results"}
-          </p>
-        </section>
-      )}
-      {!library.total ? (
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-          <EmptyState
-            title={platformCopy.noChronicles.value}
-            detail="Accept a Captain's invitation, enter a short code, or explore published Chronicles to begin a Voyage."
-            action={{ label: "Join with an Invitation", href: "/player/sign-in#invitation-code" }}
-          />
-        </motion.div>
-      ) : !groups.length ? (
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-          <EmptyState
-            title="No Chronicles match these filters"
-            detail="Broaden your search or return to all Voyage states."
-            action={{
-              label: "Clear Filters",
-              onClick: () => {
-                setQuery("");
-                setFilter("ALL");
-              },
-            }}
-            symbol="⌕"
-          />
-        </motion.div>
-      ) : (
-        <LayoutGroup id="player-library">
-          {groups.map((group) => {
-            const isCollapsed = collapsed.has(group.key);
-            return (
-              <motion.section
-                layout="position"
-                className="library-group"
-                key={group.key}
-                aria-labelledby={`group-${group.key}`}
+          <div className="library-truth" data-confirmed={confirmed}>
+            <i />
+            <span>{confirmed ? "Server confirmed" : "Reconnecting"}</span>
+            <time dateTime={library.serverTime}>{new Date(library.serverTime).toLocaleTimeString()}</time>
+          </div>
+        </header>
+        {error && <StatusBanner tone="danger">{error}</StatusBanner>}
+        {notice && (
+          <StatusBanner tone="success">
+            {notice}{" "}
+            {hiddenUndo && (
+              <button onClick={() => void undoHide()} disabled={busyCard === hiddenUndo.card.id}>
+                Undo hide
+              </button>
+            )}
+          </StatusBanner>
+        )}
+        {library.total > 0 && (
+          <section className="library-tools" aria-label="Search and filter Chronicles">
+            <label>
+              <span>Search</span>
+              <input
+                type="search"
+                value={query}
+                onChange={(event) => setQuery(event.target.value)}
+                placeholder="Title, Captain, voyage, or year"
+              />
+            </label>
+            <label>
+              <span>State</span>
+              <select value={filter} onChange={(event) => setFilter(event.target.value)}>
+                <option value="ALL">All states</option>
+                {groupLabels.map(([key, label]) => (
+                  <option key={key} value={key}>
+                    {label}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label>
+              <span>Sort</span>
+              <select value={sort} onChange={(event) => setSort(event.target.value)}>
+                <option value="RECENT">Recently active</option>
+                <option value="TITLE">Title</option>
+                <option value="COMPLETED">Completion date</option>
+              </select>
+            </label>
+            <div className="view-toggle" role="group" aria-label="Library view">
+              <button
+                className={view === "gallery" ? "active" : ""}
+                aria-pressed={view === "gallery"}
+                onClick={() => setView("gallery")}
               >
-                <header>
-                  <div>
-                    <p className="eyebrow">
-                      {group.cards.length} {group.cards.length === 1 ? "record" : "records"}
-                    </p>
-                    <h2 id={`group-${group.key}`}>
-                      <button
-                        aria-expanded={!isCollapsed}
-                        onClick={(event) => toggleGroup(group.key, event.currentTarget)}
+                Gallery
+              </button>
+              <button
+                className={view === "list" ? "active" : ""}
+                aria-pressed={view === "list"}
+                onClick={() => setView("list")}
+              >
+                List
+              </button>
+            </div>
+            <p className="sr-only" role="status" aria-live="polite">
+              {resultCount} {resultCount === 1 ? "Chronicle result" : "Chronicle results"}
+            </p>
+          </section>
+        )}
+        {!library.total ? (
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+            <EmptyState
+              title={platformCopy.noChronicles.value}
+              detail="Accept a Captain's invitation, enter a short code, or explore published Chronicles to begin a Voyage."
+              action={{ label: "Join with an Invitation", href: "/player/sign-in#invitation-code" }}
+            />
+          </motion.div>
+        ) : !groups.length ? (
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+            <EmptyState
+              title="No Chronicles match these filters"
+              detail="Broaden your search or return to all Voyage states."
+              action={{
+                label: "Clear Filters",
+                onClick: () => {
+                  setQuery("");
+                  setFilter("ALL");
+                },
+              }}
+              symbol="⌕"
+            />
+          </motion.div>
+        ) : (
+          <LayoutGroup id="player-library">
+            {groups.map((group) => {
+              const isCollapsed = collapsed.has(group.key);
+              return (
+                <motion.section
+                  layout="position"
+                  className="library-group"
+                  key={group.key}
+                  aria-labelledby={`group-${group.key}`}
+                >
+                  <header>
+                    <div>
+                      <p className="eyebrow">
+                        {group.cards.length} {group.cards.length === 1 ? "record" : "records"}
+                      </p>
+                      <h2 id={`group-${group.key}`}>
+                        <button
+                          aria-expanded={!isCollapsed}
+                          onClick={(event) => toggleGroup(group.key, event.currentTarget)}
+                        >
+                          {group.label}
+                        </button>
+                      </h2>
+                      <p>{group.description}</p>
+                    </div>
+                  </header>
+                  <AnimatePresence initial={false}>
+                    {!isCollapsed && (
+                      <motion.div
+                        key={`${group.key}-cards`}
+                        className={`player-card-grid ${view}`}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
                       >
-                        {group.label}
-                      </button>
-                    </h2>
-                    <p>{group.description}</p>
-                  </div>
-                </header>
-                <AnimatePresence initial={false}>
-                  {!isCollapsed && (
-                    <motion.div
-                      key={`${group.key}-cards`}
-                      className={`player-card-grid ${view}`}
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      exit={{ opacity: 0 }}
-                    >
-                      <AnimatePresence mode="popLayout" initial={false}>
-                        {group.cards.map((card, index) => (
-                          <PlayerTaleCard
-                            card={card}
-                            key={card.id}
-                            busy={busyCard === card.id}
-                            changed={changedIds.has(card.id)}
-                            entering={enteringIds.has(card.id)}
-                            index={index}
-                            mode={mode}
-                            newInvitation={newInvitationIds.has(card.id)}
-                            onPreference={setPreference}
-                          />
-                        ))}
-                      </AnimatePresence>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </motion.section>
-            );
-          })}
-        </LayoutGroup>
-      )}
-    </motion.main>
+                        <AnimatePresence mode="popLayout" initial={false}>
+                          {group.cards.map((card, index) => (
+                            <PlayerTaleCard
+                              card={card}
+                              key={card.id}
+                              busy={busyCard === card.id}
+                              changed={changedIds.has(card.id)}
+                              entering={enteringIds.has(card.id)}
+                              index={index}
+                              mode={mode}
+                              newInvitation={newInvitationIds.has(card.id)}
+                              onPreference={setPreference}
+                            />
+                          ))}
+                        </AnimatePresence>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </motion.section>
+              );
+            })}
+          </LayoutGroup>
+        )}
+      </motion.main>
+      {dialog}
+    </>
   );
 }
 
@@ -544,7 +559,11 @@ function PlayerTaleCard({
       }}
     >
       <motion.div className="tale-cover" layoutId={`player-cover-${card.id}`}>
-        {card.coverUrl ? <img src={card.coverUrl} alt="" /> : <span aria-hidden="true">✦</span>}
+        {card.coverUrl ? (
+          <ResilientImage src={card.coverUrl} alt="" fallbackLabel={`${card.title} cover unavailable`} />
+        ) : (
+          <span aria-hidden="true">✦</span>
+        )}
         <b>{card.status.replaceAll("_", " ")}</b>
         {newInvitation && card.state === "INVITATIONS" && <span className="new-invitation-badge">New invitation</span>}
         {card.state === "AWAITING_CAPTAIN" && <span className="waiting-lantern" aria-hidden="true" />}

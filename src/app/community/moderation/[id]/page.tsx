@@ -84,8 +84,8 @@ export default async function CommunityModerationCasePage({ params }: { params: 
         <ul className="mt-3 space-y-2">
           {record.subjects.map((subject) => (
             <li key={`${subject.subjectType}-${subject.subjectId}`} className="rounded bg-slate-50 p-3">
-              <strong>{subject.subjectType}</strong>
-              <span className="ml-2 font-mono text-sm">{subject.subjectId}</span>
+              <strong>{subject.subjectType.replaceAll("_", " ").toLocaleLowerCase()}</strong>
+              <span className="ml-2 text-sm text-slate-700">Reported Community item</span>
               {subject.subjectChecksum && <span className="ml-2 text-sm text-slate-700">checksum verified</span>}
             </li>
           ))}
@@ -99,8 +99,8 @@ export default async function CommunityModerationCasePage({ params }: { params: 
           <ul className="mt-3 space-y-2">
             {record.evidence.map((item) => (
               <li key={item.id} className="border-l-2 border-sky-600 pl-3">
-                <strong>{item.kind}</strong>
-                <span className="ml-2 font-mono text-sm">{item.checksum.slice(0, 12)}…</span>
+                <strong>{item.kind.replaceAll("_", " ").toLocaleLowerCase()}</strong>
+                <span className="ml-2 text-sm text-slate-700">Evidence integrity verified</span>
                 <time className="ml-2 text-sm text-slate-700">{item.createdAt.toLocaleString("en-US")}</time>
               </li>
             ))}

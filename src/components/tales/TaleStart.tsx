@@ -1,10 +1,10 @@
 "use client";
 
-/* eslint-disable @next/next/no-img-element -- Published asset URLs are authorized version-bound media responses. */
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { ErrorState, LoadingState } from "@/components/ui/AsyncState";
+import { ResilientImage } from "@/components/ui/ResilientImage";
 import { errorCopy } from "@/language/error-copy";
 import { platformCopy } from "@/language/platform-copy";
 
@@ -65,7 +65,13 @@ export function TaleStart({ taleSlug }: { taleSlug: string }) {
     );
   return (
     <main className="tale-start">
-      {tale.coverUrl && <img className="tale-start-cover" src={tale.coverUrl} alt="" />}
+      <ResilientImage
+        className="tale-start-cover"
+        src={tale.coverUrl}
+        alt=""
+        fallbackLabel={`${tale.title} cover unavailable`}
+        fallbackDetail="A cover has not been published for this Chronicle. Its description and start controls remain available."
+      />
       <div className="tale-start-shade" />
       <section>
         <Link href="/tales">← Published Chronicles</Link>

@@ -7,6 +7,7 @@ import { useMotionMode } from "@/animation/motion/useMotionMode";
 import { reconcileVersionedRows } from "@/animation/platform/polling-delta";
 import { platformMotionEasing, resolvePlatformMotionToken } from "@/animation/platform/motion-tokens";
 import { EmptyState, ErrorState, LoadingState, StatusBanner } from "@/components/ui/AsyncState";
+import { useActionDialog } from "@/components/ui/ActionDialog";
 import { captainCopy } from "@/language/captain-copy";
 import { PlatformRelic } from "./PlatformRelic";
 
@@ -111,6 +112,7 @@ function invitationVersion(invitation: Invitation) {
 }
 
 export function CaptainLibrary() {
+  const { requestAction, dialog } = useActionDialog();
   const { mode } = useMotionMode();
   const layoutToken = resolvePlatformMotionToken("layout", mode);
   const libraryRef = useRef<Library | null>(null);
@@ -305,11 +307,13 @@ export function CaptainLibrary() {
 
   async function launch(voyage: Voyage) {
     if (!library) return;
-    setLaunchState({ id: voyage.id, phase: "confirming" });
     if (
-      !window.confirm(
-        `Begin “${voyage.voyageName}” for its ready Crew? The ready Crew will receive access to this Voyage.`,
-      )
+      !(await requestAction({
+        title: `Begin “${voyage.voyageName}”?`,
+        detail:
+          "Ready Crew will receive access to this Voyage. Existing invitations and progress remain governed by the Captain's ledger.",
+        confirmLabel: "Begin Voyage",
+      }))
     ) {
       setLaunchState(null);
       return;
@@ -347,11 +351,18 @@ export function CaptainLibrary() {
     if (!library) return;
     if (
       ["revoke", "replace"].includes(action) &&
-      !window.confirm(
-        action === "revoke"
-          ? `Revoke the invitation for ${invitation.recipientName}? The current link and short code will stop working immediately.`
-          : `Replace the invitation for ${invitation.recipientName}? The current link and short code will stop working immediately, and the Crew member will need the replacement invitation.`,
-      )
+      !(await requestAction({
+        title:
+          action === "revoke"
+            ? `Revoke ${invitation.recipientName}'s invitation?`
+            : `Replace ${invitation.recipientName}'s invitation?`,
+        detail:
+          action === "revoke"
+            ? "The current link and short code will stop working immediately."
+            : "The current link and short code will stop working immediately, and the Crew member will need the replacement invitation.",
+        confirmLabel: action === "revoke" ? "Revoke Invitation" : "Replace Invitation",
+        destructive: true,
+      }))
     )
       return;
     setInvitationTransitions((current) => ({ ...current, [invitation.id]: `${action}-pending` }));
@@ -432,297 +443,298 @@ export function CaptainLibrary() {
   ];
   const voyageCount = voyageGroups.reduce((total, [, voyages]) => total + voyages.length, 0);
   return (
-    <main className="captain-library" data-motion-mode={mode}>
-      <header className="platform-header">
-        <div>
-          <p className="eyebrow">Live Voyage control</p>
-          <h1>{captainCopy.consoleName.value}</h1>
-          <p>Begin live Voyages, invite Crew, and keep Chronicle authoring in Voyagewright Studio.</p>
-        </div>
-        <div>
+    <>
+      <main className="captain-library" data-motion-mode={mode}>
+        <header className="platform-header">
+          <div>
+            <p className="eyebrow">Live Voyage control</p>
+            <h1>{captainCopy.consoleName.value}</h1>
+            <p>Begin live Voyages, invite Crew, and keep Chronicle authoring in Voyagewright Studio.</p>
+          </div>
+          <div>
+            <button
+              className="brass-button"
+              onClick={(event) => {
+                setWizardRestoreTarget(event.currentTarget);
+                setWizard(true);
+                setWizardDirection(1);
+                setStep(0);
+              }}
+            >
+              Create a Voyage
+            </button>
+          </div>
+        </header>
+        <nav className="platform-tabs" aria-label="Captain's Console sections">
           <button
-            className="brass-button"
-            onClick={(event) => {
-              setWizardRestoreTarget(event.currentTarget);
-              setWizard(true);
-              setWizardDirection(1);
-              setStep(0);
-            }}
+            className={tab === "voyages" ? "active" : ""}
+            aria-pressed={tab === "voyages"}
+            onClick={() => setTab("voyages")}
           >
-            Create a Voyage
+            {tab === "voyages" && (
+              <motion.span className="platform-tab-plate" layoutId="captain-tab-plate" aria-hidden="true" />
+            )}
+            Voyages
           </button>
-        </div>
-      </header>
-      <nav className="platform-tabs" aria-label="Captain's Console sections">
-        <button
-          className={tab === "voyages" ? "active" : ""}
-          aria-pressed={tab === "voyages"}
-          onClick={() => setTab("voyages")}
-        >
-          {tab === "voyages" && (
-            <motion.span className="platform-tab-plate" layoutId="captain-tab-plate" aria-hidden="true" />
-          )}
-          Voyages
-        </button>
-        <button
-          className={tab === "invitations" ? "active" : ""}
-          aria-pressed={tab === "invitations"}
-          onClick={() => setTab("invitations")}
-        >
-          {tab === "invitations" && (
-            <motion.span className="platform-tab-plate" layoutId="captain-tab-plate" aria-hidden="true" />
-          )}
-          Invitations{" "}
-          <span>
-            {library.invitations.filter((item) => ["CREATED", "COPIED", "VIEWED"].includes(item.status)).length}
-          </span>
-        </button>
-        <button
-          className={tab === "published" ? "active" : ""}
-          aria-pressed={tab === "published"}
-          onClick={() => setTab("published")}
-        >
-          {tab === "published" && (
-            <motion.span className="platform-tab-plate" layoutId="captain-tab-plate" aria-hidden="true" />
-          )}
-          Published Chronicles
-        </button>
-      </nav>
-      {notice && <StatusBanner tone="success">{notice}</StatusBanner>}
-      {error && <StatusBanner tone="danger">{error}</StatusBanner>}
-      <AnimatePresence mode="wait" initial={false}>
-        <motion.div
-          key={tab}
-          className="captain-tab-panel"
-          initial={{ opacity: 0, y: mode === "reduced" ? 0 : 8 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: layoutToken.durationSeconds, ease: platformMotionEasing("layout") }}
-        >
-          {tab === "voyages" && (
-            <div className="captain-groups">
-              {!voyageCount && (
-                <EmptyState
-                  title="No voyages need your attention"
-                  detail="Choose a published Chronicle, add your Crew, and create secure invitations."
-                  action={{
-                    label: "Create a Voyage",
-                    onClick: () => {
-                      setWizardRestoreTarget(null);
-                      setWizard(true);
-                      setWizardDirection(1);
-                      setStep(0);
-                    },
-                  }}
-                />
-              )}
-              {voyageGroups.map(
-                ([label, voyages]) =>
-                  voyages.length > 0 && (
-                    <section key={label}>
-                      <header>
-                        <h2>{label}</h2>
-                        <span>{voyages.length}</span>
-                      </header>
-                      <LayoutGroup id="captain-voyages">
-                        <div className="captain-card-grid">
-                          {voyages.map((voyage) => (
-                            <VoyageCard
-                              key={voyage.id}
-                              voyage={voyage}
-                              busy={busy}
-                              changed={changedIds.has(voyage.id)}
-                              group={label}
-                              launchPhase={launchState?.id === voyage.id ? launchState.phase : null}
-                              mode={mode}
-                              launch={() => void launch(voyage)}
-                            />
-                          ))}
-                        </div>
-                      </LayoutGroup>
-                    </section>
-                  ),
-              )}
-            </div>
-          )}
-          {tab === "invitations" && (
-            <section className="invitation-dashboard">
-              <header>
-                <div>
-                  <p className="eyebrow">Tracked access records</p>
-                  <h2>Crew invitations</h2>
-                </div>
-              </header>
-              {!library.invitations.length ? (
-                <EmptyState
-                  title="No Crew invitations yet"
-                  detail="Invitations appear here after a Captain creates a Voyage for one or more Crew members."
-                  action={{
-                    label: "Create a Voyage",
-                    onClick: () => {
-                      setWizardRestoreTarget(null);
-                      setWizard(true);
-                      setWizardDirection(1);
-                      setStep(0);
-                    },
-                  }}
-                />
-              ) : (
-                <div className="invitation-table" role="table" aria-label="Crew invitations for Voyages">
-                  <AnimatePresence initial={false} mode="popLayout">
-                    {library.invitations.map((invitation) => (
-                      <motion.article
-                        layout
-                        key={invitation.id}
-                        role="row"
-                        data-invitation-transition={
-                          invitationTransitions[invitation.id] ?? invitation.status.toLocaleLowerCase()
-                        }
-                        data-row-changed={changedIds.has(invitation.id)}
-                        exit={{ opacity: 0, scale: mode === "reduced" ? 1 : 0.98 }}
-                      >
-                        <div role="cell">
-                          <strong>{invitation.recipientName}</strong>
-                          <span>
-                            {invitation.taleTitle} · {invitation.voyageName}
-                          </span>
-                        </div>
-                        <div role="cell">
-                          <b className={`status-pill status-${invitation.status.toLocaleLowerCase()}`}>
-                            {invitation.status}
-                          </b>
-                          <small>
-                            token {invitation.tokenPrefix}… · code {invitation.shortCodePrefix}…
-                          </small>
-                        </div>
-                        <div role="cell">
-                          <time>{new Date(invitation.expiresAt).toLocaleString()}</time>
-                          <small>
-                            {invitation.viewedAt
-                              ? `Viewed ${new Date(invitation.viewedAt).toLocaleString()}`
-                              : "Not viewed"}
-                          </small>
-                        </div>
-                        <div className="row-actions" role="cell">
-                          {["CREATED", "SENT", "COPIED", "VIEWED"].includes(invitation.status) && (
-                            <>
-                              <button disabled={busy} onClick={() => void invitationAction(invitation, "extend")}>
-                                Extend
-                              </button>
-                              <button disabled={busy} onClick={() => void invitationAction(invitation, "replace")}>
-                                Replace invitation
-                              </button>
-                              <button
-                                className="button-danger"
-                                disabled={busy}
-                                onClick={() => void invitationAction(invitation, "revoke")}
-                              >
-                                Revoke invitation
-                              </button>
-                            </>
-                          )}
-                        </div>
-                      </motion.article>
-                    ))}
-                  </AnimatePresence>
-                </div>
-              )}
-            </section>
-          )}
-          {tab === "published" && (
-            <section className="published-tale-grid">
-              {!library.publishedTales.length && (
-                <EmptyState
-                  title="No published Chronicles are ready"
-                  detail="A Creator must validate and publish a version before a Captain can create a Voyage from it."
-                  action={{ label: "Open Voyagewright Studio", href: "/studio/library" }}
-                />
-              )}
-              <AnimatePresence initial={false}>
-                {library.publishedTales.map((tale) => (
-                  <motion.article layout key={tale.id}>
-                    <p className="card-kicker">{tale.visibility.toLocaleLowerCase()}</p>
-                    <h2>{tale.title}</h2>
-                    <p>{tale.subtitle}</p>
-                    <ul>
-                      {tale.versions.map((version) => (
-                        <li key={version.id}>
-                          <span>Version {version.label}</span>
-                          <small>
-                            {version.activeRunCount} active Voyages ·{" "}
-                            {new Date(version.publishedAt).toLocaleDateString()}
-                          </small>
-                        </li>
-                      ))}
-                    </ul>
-                    <button
-                      onClick={(event) => {
-                        setWizardRestoreTarget(event.currentTarget);
-                        chooseTale(tale.id);
+          <button
+            className={tab === "invitations" ? "active" : ""}
+            aria-pressed={tab === "invitations"}
+            onClick={() => setTab("invitations")}
+          >
+            {tab === "invitations" && (
+              <motion.span className="platform-tab-plate" layoutId="captain-tab-plate" aria-hidden="true" />
+            )}
+            Invitations{" "}
+            <span>
+              {library.invitations.filter((item) => ["CREATED", "COPIED", "VIEWED"].includes(item.status)).length}
+            </span>
+          </button>
+          <button
+            className={tab === "published" ? "active" : ""}
+            aria-pressed={tab === "published"}
+            onClick={() => setTab("published")}
+          >
+            {tab === "published" && (
+              <motion.span className="platform-tab-plate" layoutId="captain-tab-plate" aria-hidden="true" />
+            )}
+            Published Chronicles
+          </button>
+        </nav>
+        {notice && <StatusBanner tone="success">{notice}</StatusBanner>}
+        {error && <StatusBanner tone="danger">{error}</StatusBanner>}
+        <AnimatePresence mode="wait" initial={false}>
+          <motion.div
+            key={tab}
+            className="captain-tab-panel"
+            initial={{ opacity: 0, y: mode === "reduced" ? 0 : 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: layoutToken.durationSeconds, ease: platformMotionEasing("layout") }}
+          >
+            {tab === "voyages" && (
+              <div className="captain-groups">
+                {!voyageCount && (
+                  <EmptyState
+                    title="No voyages need your attention"
+                    detail="Choose a published Chronicle, add your Crew, and create secure invitations."
+                    action={{
+                      label: "Create a Voyage",
+                      onClick: () => {
+                        setWizardRestoreTarget(null);
                         setWizard(true);
                         setWizardDirection(1);
-                        setStep(1);
-                      }}
-                    >
-                      Invite Crew
-                    </button>
-                    <Link href={`/captain/tales/${tale.id}`}>Open Chronicle</Link>
-                  </motion.article>
-                ))}
-              </AnimatePresence>
-            </section>
+                        setStep(0);
+                      },
+                    }}
+                  />
+                )}
+                {voyageGroups.map(
+                  ([label, voyages]) =>
+                    voyages.length > 0 && (
+                      <section key={label}>
+                        <header>
+                          <h2>{label}</h2>
+                          <span>{voyages.length}</span>
+                        </header>
+                        <LayoutGroup id="captain-voyages">
+                          <div className="captain-card-grid">
+                            {voyages.map((voyage) => (
+                              <VoyageCard
+                                key={voyage.id}
+                                voyage={voyage}
+                                busy={busy}
+                                changed={changedIds.has(voyage.id)}
+                                group={label}
+                                launchPhase={launchState?.id === voyage.id ? launchState.phase : null}
+                                mode={mode}
+                                launch={() => void launch(voyage)}
+                              />
+                            ))}
+                          </div>
+                        </LayoutGroup>
+                      </section>
+                    ),
+                )}
+              </div>
+            )}
+            {tab === "invitations" && (
+              <section className="invitation-dashboard">
+                <header>
+                  <div>
+                    <p className="eyebrow">Tracked access records</p>
+                    <h2>Crew invitations</h2>
+                  </div>
+                </header>
+                {!library.invitations.length ? (
+                  <EmptyState
+                    title="No Crew invitations yet"
+                    detail="Invitations appear here after a Captain creates a Voyage for one or more Crew members."
+                    action={{
+                      label: "Create a Voyage",
+                      onClick: () => {
+                        setWizardRestoreTarget(null);
+                        setWizard(true);
+                        setWizardDirection(1);
+                        setStep(0);
+                      },
+                    }}
+                  />
+                ) : (
+                  <div className="invitation-table" role="table" aria-label="Crew invitations for Voyages">
+                    <AnimatePresence initial={false} mode="popLayout">
+                      {library.invitations.map((invitation) => (
+                        <motion.article
+                          layout
+                          key={invitation.id}
+                          role="row"
+                          data-invitation-transition={
+                            invitationTransitions[invitation.id] ?? invitation.status.toLocaleLowerCase()
+                          }
+                          data-row-changed={changedIds.has(invitation.id)}
+                          exit={{ opacity: 0, scale: mode === "reduced" ? 1 : 0.98 }}
+                        >
+                          <div role="cell">
+                            <strong>{invitation.recipientName}</strong>
+                            <span>
+                              {invitation.taleTitle} · {invitation.voyageName}
+                            </span>
+                          </div>
+                          <div role="cell">
+                            <b className={`status-pill status-${invitation.status.toLocaleLowerCase()}`}>
+                              {invitation.status}
+                            </b>
+                            <small>Access details remain protected until the Captain deliberately shares them.</small>
+                          </div>
+                          <div role="cell">
+                            <time>{new Date(invitation.expiresAt).toLocaleString()}</time>
+                            <small>
+                              {invitation.viewedAt
+                                ? `Viewed ${new Date(invitation.viewedAt).toLocaleString()}`
+                                : "Not viewed"}
+                            </small>
+                          </div>
+                          <div className="row-actions" role="cell">
+                            {["CREATED", "SENT", "COPIED", "VIEWED"].includes(invitation.status) && (
+                              <>
+                                <button disabled={busy} onClick={() => void invitationAction(invitation, "extend")}>
+                                  Extend
+                                </button>
+                                <button disabled={busy} onClick={() => void invitationAction(invitation, "replace")}>
+                                  Replace invitation
+                                </button>
+                                <button
+                                  className="button-danger"
+                                  disabled={busy}
+                                  onClick={() => void invitationAction(invitation, "revoke")}
+                                >
+                                  Revoke invitation
+                                </button>
+                              </>
+                            )}
+                          </div>
+                        </motion.article>
+                      ))}
+                    </AnimatePresence>
+                  </div>
+                )}
+              </section>
+            )}
+            {tab === "published" && (
+              <section className="published-tale-grid">
+                {!library.publishedTales.length && (
+                  <EmptyState
+                    title="No published Chronicles are ready"
+                    detail="A Creator must validate and publish a version before a Captain can create a Voyage from it."
+                    action={{ label: "Open Voyagewright Studio", href: "/studio/library" }}
+                  />
+                )}
+                <AnimatePresence initial={false}>
+                  {library.publishedTales.map((tale) => (
+                    <motion.article layout key={tale.id}>
+                      <p className="card-kicker">{tale.visibility.toLocaleLowerCase()}</p>
+                      <h2>{tale.title}</h2>
+                      <p>{tale.subtitle}</p>
+                      <ul>
+                        {tale.versions.map((version) => (
+                          <li key={version.id}>
+                            <span>Version {version.label}</span>
+                            <small>
+                              {version.activeRunCount} active Voyages ·{" "}
+                              {new Date(version.publishedAt).toLocaleDateString()}
+                            </small>
+                          </li>
+                        ))}
+                      </ul>
+                      <button
+                        onClick={(event) => {
+                          setWizardRestoreTarget(event.currentTarget);
+                          chooseTale(tale.id);
+                          setWizard(true);
+                          setWizardDirection(1);
+                          setStep(1);
+                        }}
+                      >
+                        Invite Crew
+                      </button>
+                      <Link href={`/captain/tales/${tale.id}`}>Open Chronicle</Link>
+                    </motion.article>
+                  ))}
+                </AnimatePresence>
+              </section>
+            )}
+          </motion.div>
+        </AnimatePresence>
+        <AnimatePresence>
+          {created.length > 0 && !wizard && (
+            <InvitationSecrets invitations={created} csrf={library.csrfToken} mode={mode} />
           )}
-        </motion.div>
-      </AnimatePresence>
-      <AnimatePresence>
-        {created.length > 0 && !wizard && (
-          <InvitationSecrets invitations={created} csrf={library.csrfToken} mode={mode} />
-        )}
-      </AnimatePresence>
-      <AnimatePresence>
-        {wizard && (
-          <VoyageWizard
-            step={step}
-            direction={wizardDirection}
-            setStep={(nextStep) => {
-              setWizardDirection(nextStep >= step ? 1 : -1);
-              setStep(nextStep);
-            }}
-            close={() => setWizard(false)}
-            restoreTarget={wizardRestoreTarget}
-            library={library}
-            taleId={taleId}
-            chooseTale={chooseTale}
-            versionId={versionId}
-            setVersionId={setVersionId}
-            selectedTale={selectedTale}
-            selectedVersion={selectedVersion}
-            voyageName={voyageName}
-            setVoyageName={setVoyageName}
-            captainMode={captainMode}
-            setCaptainMode={setCaptainMode}
-            hints={hints}
-            setHints={setHints}
-            sideQuests={sideQuests}
-            setSideQuests={setSideQuests}
-            plannedStartAt={plannedStartAt}
-            setPlannedStartAt={setPlannedStartAt}
-            scheduleTimezone={scheduleTimezone}
-            setScheduleTimezone={setScheduleTimezone}
-            players={players}
-            setPlayers={setPlayers}
-            expiresInHours={expiresInHours}
-            setExpiresInHours={setExpiresInHours}
-            accountRequired={accountRequired}
-            setAccountRequired={setAccountRequired}
-            created={created}
-            busy={busy}
-            mode={mode}
-            createVoyage={() => void createVoyage()}
-          />
-        )}
-      </AnimatePresence>
-    </main>
+        </AnimatePresence>
+        <AnimatePresence>
+          {wizard && (
+            <VoyageWizard
+              step={step}
+              direction={wizardDirection}
+              setStep={(nextStep) => {
+                setWizardDirection(nextStep >= step ? 1 : -1);
+                setStep(nextStep);
+              }}
+              close={() => setWizard(false)}
+              restoreTarget={wizardRestoreTarget}
+              library={library}
+              taleId={taleId}
+              chooseTale={chooseTale}
+              versionId={versionId}
+              setVersionId={setVersionId}
+              selectedTale={selectedTale}
+              selectedVersion={selectedVersion}
+              voyageName={voyageName}
+              setVoyageName={setVoyageName}
+              captainMode={captainMode}
+              setCaptainMode={setCaptainMode}
+              hints={hints}
+              setHints={setHints}
+              sideQuests={sideQuests}
+              setSideQuests={setSideQuests}
+              plannedStartAt={plannedStartAt}
+              setPlannedStartAt={setPlannedStartAt}
+              scheduleTimezone={scheduleTimezone}
+              setScheduleTimezone={setScheduleTimezone}
+              players={players}
+              setPlayers={setPlayers}
+              expiresInHours={expiresInHours}
+              setExpiresInHours={setExpiresInHours}
+              accountRequired={accountRequired}
+              setAccountRequired={setAccountRequired}
+              created={created}
+              busy={busy}
+              mode={mode}
+              createVoyage={() => void createVoyage()}
+            />
+          )}
+        </AnimatePresence>
+      </main>
+      {dialog}
+    </>
   );
 }
 
@@ -949,7 +961,7 @@ function VoyageWizard(props: WizardProps) {
         if (previous?.isConnected) previous.focus();
       });
     };
-  }, []);
+  }, [props.restoreTarget]);
 
   return (
     <motion.div

@@ -40,13 +40,42 @@ type Case = {
   unlistedToken: string | null;
   items: Array<{ id: string; artifact: { id: string; artifactNameSnapshot: string }; position: number }>;
 };
+type ArtifactDetail = {
+  artifact: {
+    name: string;
+    type: string;
+    representation: string;
+    accessibleRepresentation: string;
+  };
+  provenance: {
+    chronicle: string;
+    recipientPolicy: string;
+    state: string;
+    custody: string;
+    status: string;
+    grantedAt: string | null;
+    witnessedAt: string | null;
+    discoveredAt: string | null;
+    revokedAt: string | null;
+    correctedAt: string | null;
+    correctionReason: string | null;
+  };
+  personalization: {
+    favorite: boolean;
+    privateNote: string | null;
+    visibility: string;
+    archived: boolean;
+  };
+  displayCases: Array<{ name: string; visibility: string; position: number }>;
+  assemblies: Array<{ name: string; status: string; role: string }>;
+};
 const visibility = ["ONLY_ME", "CREW_ONLY", "REGISTERED_USERS", "PUBLIC", "UNLISTED"];
 
 export function ArtifactCabinet() {
   const [cabinet, setCabinet] = useState<Cabinet | null>(null),
     [cases, setCases] = useState<Case[]>([]),
     [query, setQuery] = useState(""),
-    [detail, setDetail] = useState<Record<string, unknown> | null>(null),
+    [detail, setDetail] = useState<ArtifactDetail | null>(null),
     [csrf, setCsrf] = useState(""),
     [error, setError] = useState(""),
     [loading, setLoading] = useState(true);
@@ -114,7 +143,7 @@ export function ArtifactCabinet() {
   async function viewDetail(id: string) {
     const response = await fetch(`/api/passport/artifacts/${id}`, { cache: "no-store" });
     const body = await response.json();
-    if (response.ok) setDetail(body);
+    if (response.ok) setDetail(body as ArtifactDetail);
     else setError(body.error ?? "Unable to load artifact.");
   }
   async function createCase(event: FormEvent<HTMLFormElement>) {
@@ -205,8 +234,44 @@ export function ArtifactCabinet() {
       )}
       {detail ? (
         <aside aria-label="Artifact detail">
-          <h3>Artifact detail</h3>
-          <pre>{JSON.stringify(detail, null, 2)}</pre>
+          <p className="eyebrow">Owner-authorized record</p>
+          <h3>{detail.artifact.name}</h3>
+          <p>{detail.artifact.accessibleRepresentation}</p>
+          <dl>
+            <div>
+              <dt>Chronicle</dt>
+              <dd>{detail.provenance.chronicle}</dd>
+            </div>
+            <div>
+              <dt>Artifact type</dt>
+              <dd>{detail.artifact.type.replaceAll("_", " ").toLocaleLowerCase()}</dd>
+            </div>
+            <div>
+              <dt>Ownership</dt>
+              <dd>{detail.provenance.state.replaceAll("_", " ").toLocaleLowerCase()}</dd>
+            </div>
+            <div>
+              <dt>Record status</dt>
+              <dd>{detail.provenance.status.replaceAll("_", " ").toLocaleLowerCase()}</dd>
+            </div>
+            <div>
+              <dt>Visibility</dt>
+              <dd>{detail.personalization.visibility.replaceAll("_", " ").toLocaleLowerCase()}</dd>
+            </div>
+            <div>
+              <dt>Granted</dt>
+              <dd>
+                {detail.provenance.grantedAt
+                  ? new Date(detail.provenance.grantedAt).toLocaleString()
+                  : "Grant time unavailable"}
+              </dd>
+            </div>
+          </dl>
+          {detail.personalization.privateNote ? <p>{detail.personalization.privateNote}</p> : null}
+          {detail.displayCases.length ? (
+            <p>Displayed in {detail.displayCases.map((item) => item.name).join(", ")}.</p>
+          ) : null}
+          {detail.assemblies.length ? <p>Used in {detail.assemblies.map((item) => item.name).join(", ")}.</p> : null}
           <button type="button" onClick={() => setDetail(null)}>
             Close detail
           </button>

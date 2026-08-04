@@ -6,6 +6,7 @@ import { AnimatePresence, LayoutGroup, motion } from "motion/react";
 import { useMotionMode } from "@/animation/motion/useMotionMode";
 import { platformMotionEasing, resolvePlatformMotionToken } from "@/animation/platform/motion-tokens";
 import { EmptyState, ErrorState, LoadingState, StatusBanner } from "@/components/ui/AsyncState";
+import { useActionDialog } from "@/components/ui/ActionDialog";
 import { studioCopy } from "@/language/studio-copy";
 
 type TaleCard = {
@@ -24,6 +25,7 @@ type TaleCard = {
 };
 
 export function StudioHome({ authenticated }: { authenticated: boolean }) {
+  const { requestAction, dialog } = useActionDialog();
   const { mode } = useMotionMode();
   const layoutMotion = resolvePlatformMotionToken("layout", mode);
   const [tales, setTales] = useState<TaleCard[]>([]);
@@ -76,11 +78,15 @@ export function StudioHome({ authenticated }: { authenticated: boolean }) {
   async function act(tale: TaleCard, action: "duplicate" | "archive" | "restore") {
     if (
       (action === "archive" || action === "restore") &&
-      !window.confirm(
-        action === "archive"
-          ? `Archive “${tale.title}”? Published Versions and active Voyages will be preserved.`
-          : `Restore “${tale.title}” to the active Chronicle Library?`,
-      )
+      !(await requestAction({
+        title: action === "archive" ? `Archive “${tale.title}”?` : `Restore “${tale.title}”?`,
+        detail:
+          action === "archive"
+            ? "Published Versions and active Voyages will be preserved."
+            : "The Chronicle will return to the active Chronicle Library.",
+        confirmLabel: action === "archive" ? "Archive Chronicle" : "Restore Chronicle",
+        destructive: action === "archive",
+      }))
     )
       return;
     setBusy(tale.id);
@@ -126,162 +132,165 @@ export function StudioHome({ authenticated }: { authenticated: boolean }) {
     );
 
   return (
-    <main className="studio-home">
-      <header className="studio-home-header">
-        <div>
-          <p className="eyebrow">Chronicle authoring</p>
-          <h1>{studioCopy.studioName.value}</h1>
-          <p>Create, validate, and publish Chronicles from one place.</p>
-        </div>
-        <nav aria-label="Studio destinations">
-          <Link className="button-secondary" href="/studio/exchange">
-            Community Exchange
-          </Link>
-          <Link className="button-secondary" href="/studio/private-content">
-            Private Chronicle
-          </Link>
-          <Link className="brass-button" href="/studio/tales/new">
-            {studioCopy.createChronicle.value}
-          </Link>
-        </nav>
-      </header>
-      <AnimatePresence initial={false}>
-        {notice && (
-          <motion.div
-            key="studio-notice"
-            initial={mode === "reduced" ? false : { opacity: 0, y: layoutMotion.distancePx }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={mode === "reduced" ? { opacity: 0 } : { opacity: 0, y: -layoutMotion.distancePx }}
-            transition={{ duration: layoutMotion.durationSeconds, ease: platformMotionEasing("layout") }}
-          >
-            <StatusBanner tone="success">{notice}</StatusBanner>
-          </motion.div>
+    <>
+      <main className="studio-home">
+        <header className="studio-home-header">
+          <div>
+            <p className="eyebrow">Chronicle authoring</p>
+            <h1>{studioCopy.studioName.value}</h1>
+            <p>Create, validate, and publish Chronicles from one place.</p>
+          </div>
+          <nav aria-label="Studio destinations">
+            <Link className="button-secondary" href="/studio/exchange">
+              Community Exchange
+            </Link>
+            <Link className="button-secondary" href="/studio/private-content">
+              Private Chronicle
+            </Link>
+            <Link className="brass-button" href="/studio/tales/new">
+              {studioCopy.createChronicle.value}
+            </Link>
+          </nav>
+        </header>
+        <AnimatePresence initial={false}>
+          {notice && (
+            <motion.div
+              key="studio-notice"
+              initial={mode === "reduced" ? false : { opacity: 0, y: layoutMotion.distancePx }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={mode === "reduced" ? { opacity: 0 } : { opacity: 0, y: -layoutMotion.distancePx }}
+              transition={{ duration: layoutMotion.durationSeconds, ease: platformMotionEasing("layout") }}
+            >
+              <StatusBanner tone="success">{notice}</StatusBanner>
+            </motion.div>
+          )}
+          {error && tales.length > 0 && (
+            <motion.div key="studio-error" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+              <StatusBanner tone="danger">{error}</StatusBanner>
+            </motion.div>
+          )}
+        </AnimatePresence>
+        {!loading && tales.length > 0 && (
+          <section className="studio-toolbar" aria-label="Find Chronicles">
+            <label>
+              <span>Search</span>
+              <input
+                type="search"
+                value={query}
+                onChange={(event) => setQuery(event.target.value)}
+                placeholder="Title, subtitle, or description"
+              />
+            </label>
+            <label>
+              <span>Sort</span>
+              <select value={sort} onChange={(event) => setSort(event.target.value)}>
+                <option value="recent">Last saved</option>
+                <option value="title">Title</option>
+                <option value="status">Status</option>
+              </select>
+            </label>
+            <p aria-live="polite">
+              {visible.length} {visible.length === 1 ? "Chronicle" : "Chronicles"}
+            </p>
+          </section>
         )}
-        {error && tales.length > 0 && (
-          <motion.div key="studio-error" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-            <StatusBanner tone="danger">{error}</StatusBanner>
-          </motion.div>
-        )}
-      </AnimatePresence>
-      {!loading && tales.length > 0 && (
-        <section className="studio-toolbar" aria-label="Find Chronicles">
-          <label>
-            <span>Search</span>
-            <input
-              type="search"
-              value={query}
-              onChange={(event) => setQuery(event.target.value)}
-              placeholder="Title, subtitle, or description"
-            />
-          </label>
-          <label>
-            <span>Sort</span>
-            <select value={sort} onChange={(event) => setSort(event.target.value)}>
-              <option value="recent">Last saved</option>
-              <option value="title">Title</option>
-              <option value="status">Status</option>
-            </select>
-          </label>
-          <p aria-live="polite">
-            {visible.length} {visible.length === 1 ? "Chronicle" : "Chronicles"}
-          </p>
-        </section>
-      )}
-      {loading ? (
-        <LoadingState
-          title="Opening the Studio library"
-          detail="Loading Chronicle drafts, published versions, and validation status."
-        />
-      ) : error && !tales.length ? (
-        <ErrorState
-          title="The Studio library could not be opened"
-          detail={error}
-          action={{ label: "Try Again", onClick: () => void load() }}
-        />
-      ) : !tales.length ? (
-        <EmptyState
-          title="No Chronicles yet"
-          detail="Start with a title, premise, and first Chapter."
-          action={{ label: studioCopy.createChronicle.value, href: "/studio/tales/new" }}
-        />
-      ) : !visible.length ? (
-        <EmptyState
-          title="No Chronicles match this search"
-          detail="Clear the search to see every draft and published version."
-          action={{ label: "Clear search", onClick: () => setQuery("") }}
-          symbol="⌕"
-        />
-      ) : (
-        <LayoutGroup id="studio-library">
-          <motion.section className="tale-card-grid" aria-label="Chronicles" layout={mode !== "reduced"}>
-            <AnimatePresence initial={false} mode="popLayout">
-              {visible.map((tale) => (
-                <motion.article
-                  className={`tale-studio-card status-${tale.status.toLowerCase()}`}
-                  key={tale.id}
-                  layout={mode !== "reduced"}
-                  layoutId={`studio-tale-${tale.id}`}
-                  data-motion-state={busy === tale.id ? "pending" : "settled"}
-                  initial={mode === "reduced" ? false : { opacity: 0, y: layoutMotion.distancePx }}
-                  animate={{ opacity: busy === tale.id ? 0.62 : 1, y: 0 }}
-                  exit={mode === "reduced" ? { opacity: 0 } : { opacity: 0, scale: 1 - layoutMotion.scaleDelta }}
-                  transition={{ duration: layoutMotion.durationSeconds, ease: platformMotionEasing("layout") }}
-                >
-                  <div className="tale-card-stamp">{tale.status.replaceAll("_", " ")}</div>
-                  <p className="card-kicker">
-                    {tale.visibility.toLocaleLowerCase()} ·{" "}
-                    {tale.latestVersion ? `Version ${tale.latestVersion}` : "Not published"}
-                  </p>
-                  <h2>{tale.title}</h2>
-                  <p>{tale.subtitle ?? tale.shortDescription ?? "No description has been added yet."}</p>
-                  <dl>
-                    <div>
-                      <dt>Last saved</dt>
-                      <dd>{new Date(tale.savedAt).toLocaleString()}</dd>
-                    </div>
-                    <div>
-                      <dt>Validation</dt>
-                      <dd>{tale.validationState.toLocaleLowerCase()}</dd>
-                    </div>
-                    <div>
-                      <dt>Library</dt>
-                      <dd>{tale.assetCount} assets</dd>
-                    </div>
-                    <div>
-                      <dt>Voyages</dt>
-                      <dd>{tale.sessionCount}</dd>
-                    </div>
-                  </dl>
-                  <div className="tale-card-actions">
-                    <Link className="primary" href={`/studio/tales/${tale.id}`}>
-                      {studioCopy.editChronicle.value}
-                    </Link>
-                    {tale.latestVersion && (
-                      <Link href={`/play/${tale.slug}`} target="_blank">
-                        {studioCopy.previewVoyage.value}
+        {loading ? (
+          <LoadingState
+            title="Opening the Studio library"
+            detail="Loading Chronicle drafts, published versions, and validation status."
+          />
+        ) : error && !tales.length ? (
+          <ErrorState
+            title="The Studio library could not be opened"
+            detail={error}
+            action={{ label: "Try Again", onClick: () => void load() }}
+          />
+        ) : !tales.length ? (
+          <EmptyState
+            title="No Chronicles yet"
+            detail="Start with a title, premise, and first Chapter."
+            action={{ label: studioCopy.createChronicle.value, href: "/studio/tales/new" }}
+          />
+        ) : !visible.length ? (
+          <EmptyState
+            title="No Chronicles match this search"
+            detail="Clear the search to see every draft and published version."
+            action={{ label: "Clear search", onClick: () => setQuery("") }}
+            symbol="⌕"
+          />
+        ) : (
+          <LayoutGroup id="studio-library">
+            <motion.section className="tale-card-grid" aria-label="Chronicles" layout={mode !== "reduced"}>
+              <AnimatePresence initial={false} mode="popLayout">
+                {visible.map((tale) => (
+                  <motion.article
+                    className={`tale-studio-card status-${tale.status.toLowerCase()}`}
+                    key={tale.id}
+                    layout={mode !== "reduced"}
+                    layoutId={`studio-tale-${tale.id}`}
+                    data-motion-state={busy === tale.id ? "pending" : "settled"}
+                    initial={mode === "reduced" ? false : { opacity: 0, y: layoutMotion.distancePx }}
+                    animate={{ opacity: busy === tale.id ? 0.62 : 1, y: 0 }}
+                    exit={mode === "reduced" ? { opacity: 0 } : { opacity: 0, scale: 1 - layoutMotion.scaleDelta }}
+                    transition={{ duration: layoutMotion.durationSeconds, ease: platformMotionEasing("layout") }}
+                  >
+                    <div className="tale-card-stamp">{tale.status.replaceAll("_", " ")}</div>
+                    <p className="card-kicker">
+                      {tale.visibility.toLocaleLowerCase()} ·{" "}
+                      {tale.latestVersion ? `Version ${tale.latestVersion}` : "Not published"}
+                    </p>
+                    <h2>{tale.title}</h2>
+                    <p>{tale.subtitle ?? tale.shortDescription ?? "No description has been added yet."}</p>
+                    <dl>
+                      <div>
+                        <dt>Last saved</dt>
+                        <dd>{new Date(tale.savedAt).toLocaleString()}</dd>
+                      </div>
+                      <div>
+                        <dt>Validation</dt>
+                        <dd>{tale.validationState.toLocaleLowerCase()}</dd>
+                      </div>
+                      <div>
+                        <dt>Library</dt>
+                        <dd>{tale.assetCount} assets</dd>
+                      </div>
+                      <div>
+                        <dt>Voyages</dt>
+                        <dd>{tale.sessionCount}</dd>
+                      </div>
+                    </dl>
+                    <div className="tale-card-actions">
+                      <Link className="primary" href={`/studio/tales/${tale.id}`}>
+                        {studioCopy.editChronicle.value}
                       </Link>
-                    )}
-                    <button
-                      disabled={busy === tale.id}
-                      aria-busy={busy === tale.id}
-                      onClick={() => void act(tale, "duplicate")}
-                    >
-                      {busy === tale.id ? "Working…" : "Duplicate"}
-                    </button>
-                    <button
-                      className={tale.status === "ARCHIVED" ? "button-secondary" : "button-subtle"}
-                      disabled={busy === tale.id}
-                      onClick={() => void act(tale, tale.status === "ARCHIVED" ? "restore" : "archive")}
-                    >
-                      {tale.status === "ARCHIVED" ? "Restore" : "Archive"}
-                    </button>
-                  </div>
-                </motion.article>
-              ))}
-            </AnimatePresence>
-          </motion.section>
-        </LayoutGroup>
-      )}
-    </main>
+                      {tale.latestVersion && (
+                        <Link href={`/play/${tale.slug}`} target="_blank">
+                          {studioCopy.previewVoyage.value}
+                        </Link>
+                      )}
+                      <button
+                        disabled={busy === tale.id}
+                        aria-busy={busy === tale.id}
+                        onClick={() => void act(tale, "duplicate")}
+                      >
+                        {busy === tale.id ? "Working…" : "Duplicate"}
+                      </button>
+                      <button
+                        className={tale.status === "ARCHIVED" ? "button-secondary" : "button-subtle"}
+                        disabled={busy === tale.id}
+                        onClick={() => void act(tale, tale.status === "ARCHIVED" ? "restore" : "archive")}
+                      >
+                        {tale.status === "ARCHIVED" ? "Restore" : "Archive"}
+                      </button>
+                    </div>
+                  </motion.article>
+                ))}
+              </AnimatePresence>
+            </motion.section>
+          </LayoutGroup>
+        )}
+      </main>
+      {dialog}
+    </>
   );
 }

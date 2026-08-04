@@ -1,12 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { motion } from "motion/react";
 import { useOptionalMotionPolicyContext } from "@/animation/motion/MotionPolicyContext";
 import { platformMotionEasing, resolvePlatformMotionToken } from "@/animation/platform/motion-tokens";
 
-type StateAction =
+export type StateAction =
   | { label: string; href: string; onClick?: never }
   | { label: string; onClick: () => void; href?: never };
 
@@ -73,15 +73,18 @@ export function ErrorState({
   detail,
   action,
   terminal = false,
+  primaryHeading = false,
 }: {
   title: string;
   detail: string;
   action?: StateAction;
   terminal?: boolean;
+  primaryHeading?: boolean;
 }) {
   const mode = useAsyncStateMotionMode();
   const stateMotion = resolvePlatformMotionToken("state", mode);
   const heading = useRef<HTMLHeadingElement>(null);
+  const Heading = primaryHeading ? "h1" : "h2";
   useEffect(() => {
     if (!terminal) return;
     const frame = requestAnimationFrame(() => heading.current?.focus({ preventScroll: true }));
@@ -101,9 +104,9 @@ export function ErrorState({
       </span>
       <div>
         <p className="eyebrow">Unable to continue</p>
-        <h2 ref={heading} tabIndex={terminal ? -1 : undefined}>
+        <Heading ref={heading} tabIndex={terminal ? -1 : undefined}>
           {title}
-        </h2>
+        </Heading>
         <p>{detail}</p>
       </div>
       {action && <StateActionControl action={action} />}
@@ -116,18 +119,20 @@ export function EmptyState({
   detail,
   action,
   symbol = "✦",
+  state = "empty",
 }: {
   title: string;
   detail: string;
   action?: StateAction;
   symbol?: string;
+  state?: "empty" | "no-results" | "archived-or-removed";
 }) {
   const mode = useAsyncStateMotionMode();
   const stateMotion = resolvePlatformMotionToken("state", mode);
   return (
     <motion.section
       className="ui-state ui-empty-state"
-      data-async-state="idle"
+      data-async-state={state}
       initial={mode === "reduced" ? false : { opacity: 0, y: stateMotion.distancePx }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: stateMotion.durationSeconds, ease: platformMotionEasing("state") }}
@@ -141,6 +146,138 @@ export function EmptyState({
       </div>
       {action && <StateActionControl action={action} />}
     </motion.section>
+  );
+}
+
+export function NoResultsState({ title, detail, action }: { title: string; detail: string; action: StateAction }) {
+  return <EmptyState title={title} detail={detail} action={action} symbol="⌕" state="no-results" />;
+}
+
+export function UnavailableState({
+  title,
+  detail,
+  action,
+  reference,
+  primaryHeading = false,
+}: {
+  title: string;
+  detail: string;
+  action?: StateAction;
+  reference?: string;
+  primaryHeading?: boolean;
+}) {
+  const safeReference = reference?.replace(/[^a-zA-Z0-9_-]/gu, "").slice(0, 48);
+  const Heading = primaryHeading ? "h1" : "h2";
+  return (
+    <section className="ui-state ui-unavailable-state" data-async-state="dependency-unavailable" role="alert">
+      <span className="ui-state-symbol" aria-hidden="true">
+        ≋
+      </span>
+      <div>
+        <p className="eyebrow">Temporarily unavailable</p>
+        <Heading>{title}</Heading>
+        <p>{detail}</p>
+        {safeReference ? <small>Reference: {safeReference}</small> : null}
+      </div>
+      {action ? <StateActionControl action={action} /> : null}
+    </section>
+  );
+}
+
+export function PermissionState({
+  title,
+  detail,
+  action,
+  restriction = "permission-restricted",
+  primaryHeading = false,
+}: {
+  title: string;
+  detail: string;
+  action: StateAction;
+  restriction?: "permission-restricted" | "account-restricted";
+  primaryHeading?: boolean;
+}) {
+  const Heading = primaryHeading ? "h1" : "h2";
+  return (
+    <section className="ui-state ui-permission-state" data-async-state={restriction} role="alert">
+      <span className="ui-state-symbol" aria-hidden="true">
+        ◈
+      </span>
+      <div>
+        <p className="eyebrow">Access boundary</p>
+        <Heading>{title}</Heading>
+        <p>{detail}</p>
+      </div>
+      <StateActionControl action={action} />
+    </section>
+  );
+}
+
+export function TokenState({
+  state,
+  title,
+  detail,
+  action,
+  primaryHeading = false,
+}: {
+  state: "invalid" | "expired" | "consumed" | "revoked";
+  title: string;
+  detail: string;
+  action: StateAction;
+  primaryHeading?: boolean;
+}) {
+  const Heading = primaryHeading ? "h1" : "h2";
+  return (
+    <section className="ui-state ui-token-state" data-async-state={`token-${state}`} role="alert">
+      <span className="ui-state-symbol" aria-hidden="true">
+        ◇
+      </span>
+      <div>
+        <p className="eyebrow">Secure link</p>
+        <Heading>{title}</Heading>
+        <p>{detail}</p>
+      </div>
+      <StateActionControl action={action} />
+    </section>
+  );
+}
+
+export function MutationStatus({
+  state,
+  children,
+}: {
+  state: "pending" | "success" | "failure" | "conflict" | "rate-limited";
+  children: ReactNode;
+}) {
+  const assertive = state === "failure" || state === "conflict" || state === "rate-limited";
+  return (
+    <p
+      className={`ui-mutation-status state-${state}`}
+      data-mutation-state={state}
+      role={assertive ? "alert" : "status"}
+      aria-live={assertive ? "assertive" : "polite"}
+    >
+      <span aria-hidden="true" />
+      {children}
+    </p>
+  );
+}
+
+export function MediaFallback({
+  label,
+  detail,
+  state = "missing",
+}: {
+  label: string;
+  detail: string;
+  state?: "missing" | "pending" | "quarantined" | "failed" | "removed";
+}) {
+  return (
+    <span className="ui-media-fallback" data-media-state={state} role="img" aria-label={`${label}. ${detail}`}>
+      <span aria-hidden="true">◇</span>
+      <strong>{label}</strong>
+      <small>{detail}</small>
+    </span>
   );
 }
 
