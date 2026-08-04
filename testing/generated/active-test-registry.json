@@ -2726,7 +2726,7 @@
     {
       "id": "sl-test-b3e767b535f72a0da406",
       "title": "dispatches frozen, content-free semantic label events in exact occurrence order",
-      "line": 362,
+      "line": 365,
       "file": "src/animation/director/AnimationDirector.test.ts",
       "suiteId": "unit.animation",
       "owner": "lanternwake",
@@ -2766,7 +2766,7 @@
     {
       "id": "sl-test-1f791aed9e080c4c2e3c",
       "title": "suppresses semantic labels emitted after abort or a completed instance becomes stale",
-      "line": 419,
+      "line": 422,
       "file": "src/animation/director/AnimationDirector.test.ts",
       "suiteId": "unit.animation",
       "owner": "lanternwake",
@@ -2806,7 +2806,7 @@
     {
       "id": "sl-test-d639ffc3b324debafacb",
       "title": "keeps semantic label emission safe when no browser window exists",
-      "line": 446,
+      "line": 449,
       "file": "src/animation/director/AnimationDirector.test.ts",
       "suiteId": "unit.animation",
       "owner": "lanternwake",
@@ -2846,7 +2846,7 @@
     {
       "id": "sl-test-76fe1f86997caf07e984",
       "title": "requires explicit, agreeing production host identity before preflight",
-      "line": 460,
+      "line": 463,
       "file": "src/animation/director/AnimationDirector.test.ts",
       "suiteId": "unit.animation",
       "owner": "lanternwake",
@@ -2886,7 +2886,7 @@
     {
       "id": "sl-test-30d2e1d02a6ef3207493",
       "title": "does not treat timeline completion without the semantic completion checkpoint as presented",
-      "line": 486,
+      "line": 489,
       "file": "src/animation/director/AnimationDirector.test.ts",
       "suiteId": "unit.animation",
       "owner": "lanternwake",
@@ -2926,7 +2926,7 @@
     {
       "id": "sl-test-ce49884b88c208b3fb23",
       "title": "does not invent a final semantic state when the contract declares immediate reversion",
-      "line": 501,
+      "line": 504,
       "file": "src/animation/director/AnimationDirector.test.ts",
       "suiteId": "unit.animation",
       "owner": "lanternwake",
@@ -2966,7 +2966,7 @@
     {
       "id": "sl-test-eb7acc1bff384dde2fc3",
       "title": "fails missing targets before builders, operation, or timelines start",
-      "line": 513,
+      "line": 516,
       "file": "src/animation/director/AnimationDirector.test.ts",
       "suiteId": "unit.animation",
       "owner": "lanternwake",
@@ -3006,7 +3006,7 @@
     {
       "id": "sl-test-66d6ac87e7be1846e9b2",
       "title": "reports duplicate required targets with higher specificity than generic failure",
-      "line": 526,
+      "line": 529,
       "file": "src/animation/director/AnimationDirector.test.ts",
       "suiteId": "unit.animation",
       "owner": "lanternwake",
@@ -3046,7 +3046,7 @@
     {
       "id": "sl-test-b289556f5518f8e0b124",
       "title": "reports ownership rejection and releases no foreign claim",
-      "line": 536,
+      "line": 539,
       "file": "src/animation/director/AnimationDirector.test.ts",
       "suiteId": "unit.animation",
       "owner": "lanternwake",
@@ -3086,7 +3086,7 @@
     {
       "id": "sl-test-49e0d68a0dcf14d6f6a2",
       "title": "uses an approved fallback only after an explicit readable completion result",
-      "line": 548,
+      "line": 551,
       "file": "src/animation/director/AnimationDirector.test.ts",
       "suiteId": "unit.animation",
       "owner": "lanternwake",
@@ -3126,7 +3126,7 @@
     {
       "id": "sl-test-91a69826f1fc47c666ce",
       "title": "does not infer fallback success from contract metadata alone",
-      "line": 569,
+      "line": 572,
       "file": "src/animation/director/AnimationDirector.test.ts",
       "suiteId": "unit.animation",
       "owner": "lanternwake",
@@ -3166,7 +3166,7 @@
     {
       "id": "sl-test-b50982ce7e0a92f2553e",
       "title": "does not accept an incomplete fallback result as presentation",
-      "line": 581,
+      "line": 584,
       "file": "src/animation/director/AnimationDirector.test.ts",
       "suiteId": "unit.animation",
       "owner": "lanternwake",
@@ -3206,7 +3206,7 @@
     {
       "id": "sl-test-310b7c56fc0bfc2571bc",
       "title": "settles an already-aborted request without preflight side effects",
-      "line": 596,
+      "line": 599,
       "file": "src/animation/director/AnimationDirector.test.ts",
       "suiteId": "unit.animation",
       "owner": "lanternwake",
@@ -3246,7 +3246,7 @@
     {
       "id": "sl-test-cec1046451fe5deba17c",
       "title": "aborts during a timeline and releases runtime and target ownership",
-      "line": 611,
+      "line": 614,
       "file": "src/animation/director/AnimationDirector.test.ts",
       "suiteId": "unit.animation",
       "owner": "lanternwake",
@@ -3286,7 +3286,7 @@
     {
       "id": "sl-test-8a2fb2d342c42d6c7fa7",
       "title": "records director cancellation as interruption rather than abort",
-      "line": 628,
+      "line": 631,
       "file": "src/animation/director/AnimationDirector.test.ts",
       "suiteId": "unit.animation",
       "owner": "lanternwake",
@@ -3326,7 +3326,7 @@
     {
       "id": "sl-test-53b96e45e03bcdc6f2e8",
       "title": "times out a never-settling timeline at the contract boundary",
-      "line": 642,
+      "line": 645,
       "file": "src/animation/director/AnimationDirector.test.ts",
       "suiteId": "unit.animation",
       "owner": "lanternwake",
@@ -3366,7 +3366,7 @@
     {
       "id": "sl-test-2d030f7136d6bae93172",
       "title": "converts builder exceptions into runtime-failed receipts without starting operations",
-      "line": 654,
+      "line": 657,
       "file": "src/animation/director/AnimationDirector.test.ts",
       "suiteId": "unit.animation",
       "owner": "lanternwake",
@@ -3406,7 +3406,7 @@
     {
       "id": "sl-test-077f8857bc061c3342a7",
       "title": "converts synchronous timeline runtime failure into a receipt",
-      "line": 666,
+      "line": 669,
       "file": "src/animation/director/AnimationDirector.test.ts",
       "suiteId": "unit.animation",
       "owner": "lanternwake",
@@ -3446,7 +3446,7 @@
     {
       "id": "sl-test-acc1573b2f126324d512",
       "title": "runs the failure timeline and returns runtime-failed when the authoritative operation rejects",
-      "line": 677,
+      "line": 680,
       "file": "src/animation/director/AnimationDirector.test.ts",
       "suiteId": "unit.animation",
       "owner": "lanternwake",
@@ -3486,7 +3486,7 @@
     {
       "id": "sl-test-ee0d526829ab31ce10d2",
       "title": "records an allowed user skip and settles the declared readable state",
-      "line": 692,
+      "line": 695,
       "file": "src/animation/director/AnimationDirector.test.ts",
       "suiteId": "unit.animation",
       "owner": "lanternwake",
@@ -3526,7 +3526,7 @@
     {
       "id": "sl-test-2345d7a7ab3cd43b0e07",
       "title": "ignores user skip when the scene policy forbids it",
-      "line": 710,
+      "line": 713,
       "file": "src/animation/director/AnimationDirector.test.ts",
       "suiteId": "unit.animation",
       "owner": "lanternwake",
@@ -3566,7 +3566,7 @@
     {
       "id": "sl-test-76f82a57c81ad2fba385",
       "title": "skips deprecated scenes by policy outside development without preflight or operation",
-      "line": 727,
+      "line": 730,
       "file": "src/animation/director/AnimationDirector.test.ts",
       "suiteId": "unit.animation",
       "owner": "lanternwake",
@@ -3606,7 +3606,7 @@
     {
       "id": "sl-test-b86c24bdbf3c4bbcb0c4",
       "title": "reports cleanup errors without changing a successful presentation outcome",
-      "line": 744,
+      "line": 747,
       "file": "src/animation/director/AnimationDirector.test.ts",
       "suiteId": "unit.animation",
       "owner": "lanternwake",
@@ -3646,7 +3646,7 @@
     {
       "id": "sl-test-95cc6e6ebefdf0e7e2dc",
       "title": "cleans scene callbacks, GSAP context, targets, and metrics exactly once",
-      "line": 758,
+      "line": 761,
       "file": "src/animation/director/AnimationDirector.test.ts",
       "suiteId": "unit.animation",
       "owner": "lanternwake",
@@ -3686,7 +3686,7 @@
     {
       "id": "sl-test-02363b024442321832cd",
       "title": "holds a final pose until director teardown while reconcile policy reverts immediately",
-      "line": 772,
+      "line": 775,
       "file": "src/animation/director/AnimationDirector.test.ts",
       "suiteId": "unit.animation",
       "owner": "lanternwake",
@@ -3726,7 +3726,7 @@
     {
       "id": "sl-test-0a3e1daafb59b0dfe02d",
       "title": "passes an explicitly resolved motion policy into the scene context and receipt",
-      "line": 795,
+      "line": 798,
       "file": "src/animation/director/AnimationDirector.test.ts",
       "suiteId": "unit.animation",
       "owner": "lanternwake",
@@ -3766,7 +3766,7 @@
     {
       "id": "sl-test-be5cde09c59696cc7a27",
       "title": "uses a registered v2 host, immutable target resolution, atomic claims, and handoff-before-cleanup",
-      "line": 820,
+      "line": 823,
       "file": "src/animation/director/AnimationDirector.test.ts",
       "suiteId": "unit.animation",
       "owner": "lanternwake",
@@ -3806,7 +3806,7 @@
     {
       "id": "sl-test-633fe10067d434eeb532",
       "title": "excludes an ownership-conflicted optional v2 target without rejecting required playback",
-      "line": 908,
+      "line": 911,
       "file": "src/animation/director/AnimationDirector.test.ts",
       "suiteId": "unit.animation",
       "owner": "lanternwake",
@@ -3846,7 +3846,7 @@
     {
       "id": "sl-test-763590e0a500a961feff",
       "title": "resolves an identity-only v2 target without conflicting with its Motion lifecycle lease",
-      "line": 991,
+      "line": 994,
       "file": "src/animation/director/AnimationDirector.test.ts",
       "suiteId": "unit.animation",
       "owner": "lanternwake",
@@ -3886,7 +3886,7 @@
     {
       "id": "sl-test-3fefd79d9092944363dd",
       "title": "records and revokes the exact external handoff target only after semantic reconciliation",
-      "line": 1057,
+      "line": 1060,
       "file": "src/animation/director/AnimationDirector.test.ts",
       "suiteId": "unit.animation",
       "owner": "lanternwake",
@@ -3926,7 +3926,7 @@
     {
       "id": "sl-test-100e0d2f202e7e20183f",
       "title": "continues retained handoff cleanup after context revert throws",
-      "line": 1154,
+      "line": 1157,
       "file": "src/animation/director/AnimationDirector.test.ts",
       "suiteId": "unit.animation",
       "owner": "lanternwake",
@@ -3966,7 +3966,7 @@
     {
       "id": "sl-test-83b1e87b5fcf0b63c4ff",
       "title": "serializes queued presentations and returns a receipt for explicit conflicts",
-      "line": 1258,
+      "line": 1261,
       "file": "src/animation/director/AnimationDirector.test.ts",
       "suiteId": "unit.animation",
       "owner": "lanternwake",
@@ -4006,7 +4006,7 @@
     {
       "id": "sl-test-53a9129137cc77e04455",
       "title": "interrupts active lower-priority playback before a higher-priority scene runs",
-      "line": 1282,
+      "line": 1285,
       "file": "src/animation/director/AnimationDirector.test.ts",
       "suiteId": "unit.animation",
       "owner": "lanternwake",
@@ -4046,7 +4046,7 @@
     {
       "id": "sl-test-1b85969f9c70b1476fd1",
       "title": "interrupts and reconciles active spatial playback when resolved policy becomes reduced",
-      "line": 1312,
+      "line": 1315,
       "file": "src/animation/director/AnimationDirector.test.ts",
       "suiteId": "unit.animation",
       "owner": "lanternwake",
@@ -4086,7 +4086,7 @@
     {
       "id": "sl-test-e13d9a812368ea364558",
       "title": "records one structured telemetry event for each returned receipt",
-      "line": 1346,
+      "line": 1349,
       "file": "src/animation/director/AnimationDirector.test.ts",
       "suiteId": "unit.animation",
       "owner": "lanternwake",
@@ -4126,7 +4126,7 @@
     {
       "id": "sl-test-5cbcec53a1afa58c17b1",
       "title": "returns a terminal receipt for new work after director destruction",
-      "line": 1369,
+      "line": 1372,
       "file": "src/animation/director/AnimationDirector.test.ts",
       "suiteId": "unit.animation",
       "owner": "lanternwake",
@@ -20034,7 +20034,7 @@
     {
       "id": "sl-test-8e13eef705e18b27631c",
       "title": "represents every registered scene and derives every row label from its reachability contract",
-      "line": 173,
+      "line": 174,
       "file": "src/components/dev/AnimationShowcase.test.tsx",
       "suiteId": "component.player-shell",
       "owner": "platform-foundation",
@@ -20074,7 +20074,7 @@
     {
       "id": "sl-test-95cb3e4ea4eb04cb5b2e",
       "title": "summarizes only receipt target counts",
-      "line": 181,
+      "line": 182,
       "file": "src/components/dev/AnimationShowcase.test.tsx",
       "suiteId": "component.player-shell",
       "owner": "platform-foundation",
@@ -20114,7 +20114,7 @@
     {
       "id": "sl-test-aa98ef20e7cec3ecef6e",
       "title": "routes deprecated PageFlip rows to the real runtime without playing fake scenes",
-      "line": 186,
+      "line": 187,
       "file": "src/components/dev/AnimationShowcase.test.tsx",
       "suiteId": "component.player-shell",
       "owner": "platform-foundation",
@@ -20154,7 +20154,7 @@
     {
       "id": "sl-test-2d94a91a38eca8d9bf20",
       "title": "uses a provider-minted compatible host for executable scenes and renders a sanitized harness-only receipt",
-      "line": 207,
+      "line": 208,
       "file": "src/components/dev/AnimationShowcase.test.tsx",
       "suiteId": "component.player-shell",
       "owner": "platform-foundation",
@@ -20194,7 +20194,7 @@
     {
       "id": "sl-test-28af173d7411e7de1929",
       "title": "mints a fresh compatible host per execution and releases the previous host without target leakage",
-      "line": 250,
+      "line": 251,
       "file": "src/components/dev/AnimationShowcase.test.tsx",
       "suiteId": "component.player-shell",
       "owner": "platform-foundation",
@@ -20234,7 +20234,7 @@
     {
       "id": "sl-test-48cbf47505b4e5dacc8d",
       "title": "chooses an allowed host kind and exports exact fixture capabilities for an external-target production scene",
-      "line": 276,
+      "line": 277,
       "file": "src/components/dev/AnimationShowcase.test.tsx",
       "suiteId": "component.player-shell",
       "owner": "platform-foundation",
@@ -20274,7 +20274,7 @@
     {
       "id": "sl-test-d8ab8f458d6ccda25075",
       "title": "retains STOP while a trailer scene is active and cancels before advancing",
-      "line": 289,
+      "line": 290,
       "file": "src/components/dev/AnimationShowcase.test.tsx",
       "suiteId": "component.player-shell",
       "owner": "platform-foundation",
@@ -20314,7 +20314,7 @@
     {
       "id": "sl-test-205c5077af9c30cc9355",
       "title": "preserves duplicate and hidden target diagnostics in the real provider registry",
-      "line": 309,
+      "line": 310,
       "file": "src/components/dev/AnimationShowcase.test.tsx",
       "suiteId": "component.player-shell",
       "owner": "platform-foundation",
@@ -20354,7 +20354,7 @@
     {
       "id": "sl-test-22f274b794e4aab28e40",
       "title": "omits journal-open from direct trailer playback",
-      "line": 362,
+      "line": 363,
       "file": "src/components/dev/AnimationShowcase.test.tsx",
       "suiteId": "component.player-shell",
       "owner": "platform-foundation",

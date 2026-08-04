@@ -699,7 +699,7 @@ function receipt(
 
 async function openJournal() {
   fireEvent.click(screen.getByRole("button", { name: /Open the journal/ }));
-  await screen.findByRole("button", { name: "Replay introduction" });
+  await screen.findByRole("button", { name: "Replay introduction" }, { timeout: 5_000 });
 }
 
 function viewedPostCalls(fetchMock: ReturnType<typeof vi.fn>) {

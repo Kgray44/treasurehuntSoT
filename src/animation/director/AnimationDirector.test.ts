@@ -327,7 +327,10 @@ describe("AnimationDirector presentation receipts", () => {
     const { root } = fixture();
     root.dataset.sceneHostId = "access-host";
     root.dataset.sceneHostKind = "access";
-    harness.state.contract = contract({ expectedHostKind: "access" });
+    // This success-path assertion is not testing the deadline boundary. Give
+    // the jsdom target preflight enough wall-clock room when the governed
+    // family runs alongside the rest of the animation files.
+    harness.state.contract = contract({ expectedHostKind: "access", timeoutMs: 5_000 });
     const operation = vi.fn(async () => ({ event: { id: "event-1", sequence: 4 } }));
 
     const receipt = await director().play("player-access", {
