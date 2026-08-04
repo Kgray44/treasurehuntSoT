@@ -37,10 +37,23 @@ main. Phase 2 adds one route-classified shell, visible Home/Explore/Community
 navigation, structured account orientation, capability-projected workspace
 switching, equivalent mobile destinations, and explicit compact/immersive
 exits. Its acceptance evidence is local and synthetic; it is not deployed or
-owner accepted. Personal Harbor reconstruction is complete in Phase 3 and
-Community content reconstruction is branch-complete in Phase 4 on the same
-branch; exhaustive
-route reachability remains Phase 5.
+owner accepted. Personal Harbor reconstruction is complete in Phase 3,
+Community content reconstruction is branch-complete in Phase 4, and the
+governed route-reachability graph is branch-complete in Phase 5 on the same
+branch.
+
+## Governed route reachability graph
+
+**Audience:** Players, Captains, Creators, and public visitors.
+**Availability:** complete on the Project Homeport branch, not available on
+`main`. Phase 5 publishes an authoritative page census and permission-aware
+graph with visible ordinary entries, real dynamic source controls, deliberate
+tokenized and compatibility dispositions, stable parents/returns, dead-end
+recovery, desktop/mobile parity, and an automated orphan gate. Exact-source
+browser evidence begins at Home and reaches all ordinary destinations through
+visible controls. The evidence is local and synthetic; deployment, live-user
+behavior, owner acceptance, Phase 6 page-state completion, and Phase 7
+whole-product proof are not claimed.
 
 ## Player experience
 
@@ -67,7 +80,7 @@ public-safe cards, search/sort/compact and advanced filters, Creator Profiles,
 collections, Guides, Voyage Logs, details, and save/follow state with complete
 default, empty, no-result, unavailable, quarantine, removed, desktop, and
 mobile contracts. It is not on `main`, deployed, or owner accepted. External
-providers remain truthfully unavailable where unsupported; Phases 5-7 remain.
+providers remain truthfully unavailable where unsupported; Phases 6-7 remain.
 
 ## Private content, animation, and resilience
 

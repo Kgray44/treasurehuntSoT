@@ -79,6 +79,7 @@
     "homeport:phase5:test": "node --test tests/homeport/phase5-reachability.test.mjs",
     "homeport:phase5:fixture": "node scripts/homeport/seed-phase5-fixture.mjs",
     "homeport:phase5:e2e": "node scripts/homeport/run-phase5-e2e.mjs",
+    "homeport:phase5:visual-review": "node scripts/homeport/finalize-phase5-visual-review.mjs --accept",
     "homeport:phase2:e2e": "playwright test -c playwright.homeport-phase2.config.ts",
     "homeport:phase3:e2e": "playwright test -c playwright.homeport-phase3.config.ts",
     "homeport:phase4:fixture": "node scripts/homeport/seed-phase4-fixture.mjs",

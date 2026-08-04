@@ -25,7 +25,15 @@ details use `/community/[slug]`, `/creators/[handle]`,
 `/collections/[slug]`, `/guides/[slug]`, and `/voyage-logs/[slug]`.
 Shipwright's Workshop is a governed Guide-category view, not a second content
 store. Moderation and owner/consent routes remain capability or workflow
-surfaces, not ordinary public districts. Phase 5 exhaustive reachability is
-not claimed.
+surfaces, not ordinary public districts.
+
+Project Homeport Phase 5 classifies all 85 page routes as ordinary static,
+contextual dynamic, tokenized, compatibility, or development-only surfaces.
+The branch publishes parent/return metadata, genuine dynamic source controls,
+safe token states, compatibility targets, and equivalent desktop/mobile entry
+edges. Ordinary navigation never exposes token values or treats a private
+detail ID as discoverable. This graph is complete on the named branch only; it
+is not on `main`, deployed, or owner accepted, and Phase 6 still owns
+repository-wide page-state completion.
 
 For product intent see [features](../product/features.md); for implementation ownership see [architecture](../developer/architecture.md).

@@ -39,3 +39,10 @@ Saved from Community, and the natural return path reaches Community Harbor and
 Home without a second sign-in. Unsupported Begin/Open actions remain labelled
 unavailable and do not mutate Voyage progression merely by opening a detail.
 The proof is local and synthetic, not deployment or owner acceptance.
+
+On the Phase 5 branch, Player Library items are the source for Voyage,
+archive, Journal, and playthrough detail routes. Each detail has a visible
+return to My Voyages or its stable parent, including after direct entry, while
+invitation links remain excluded from ordinary navigation. Desktop, touch, and
+keyboard paths are branch-validated; Phase 6 page-state completion, deployment,
+and owner acceptance are not claimed.

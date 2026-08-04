@@ -4984,7 +4984,7 @@
       "evidenceIds": [],
       "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
       "sourceFile": "src/components/gm/Quartermaster.tsx",
-      "sourceNeedle": "/captain"
+      "sourceNeedle": "/captain/library"
     },
     {
       "edgeId": "edge-compat-studio",

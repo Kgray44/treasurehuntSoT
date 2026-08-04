@@ -26,5 +26,9 @@ Creators; anonymous controls return through the canonical sign-in. Missing
 media uses a labelled fallback. Private, unlisted, quarantined, removed, and
 archived material is not exposed as public discovery content. Installation or
 remix actions remain explicitly unavailable when no accepted provider exists.
-This branch is not on `main`, deployed, or owner accepted. Phase 5 exhaustive
-route reachability and Phase 6 repository-wide completion remain separate.
+Phase 5 now binds each public detail to its real Community card, Creator,
+collection, Guide, or Voyage Log source and preserves a stable return after
+natural or direct entry. Moderation, owner, and consent routes remain
+capability/context surfaces rather than public districts. Desktop, touch, and
+keyboard paths are equivalent. This branch is not on `main`, deployed, or
+owner accepted; Phase 6 repository-wide completion remains separate.

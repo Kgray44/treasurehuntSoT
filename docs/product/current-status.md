@@ -15,14 +15,17 @@ Player/Captain/Creator flows, Studio editing and publishing, invitations,
 libraries, journals, profile and Passport surfaces, protected content, and
 animation presentation.
 
-**Complete on a branch, not available on main:** Project Homeport Phases 1-4
+**Complete on a branch, not available on main:** Project Homeport Phases 1-5
 unify ordinary account/session authority, add the governed global shell and
 wayfinding, and build the Personal Harbor. The branch now contains an owned
 Profile, typed preferences and privacy controls, linked identities, the
 record-led Chronicle Passport, private history and Memories, artifact custody,
 saved Community items, separate Security and Sessions surfaces, and a
 content-first Community Harbor with governed districts, typed public cards,
-search/filter URL state, details, and save/follow reconciliation. Acceptance
+search/filter URL state, details, and save/follow reconciliation. Phase 5 adds
+the source-derived permission-aware reachability graph, visible ordinary entry
+paths, dynamic source contracts, token/compatibility safety, stable parents and
+returns, desktop/mobile parity, and an automated orphan gate. Acceptance
 evidence is local and synthetic; deployment, live-user behavior, owner
 acceptance, and product acceptance are not claimed.
 
@@ -38,9 +41,9 @@ tests do not establish live-provider proof.
 for the Phase 3-4 browser matrix. It is not a full matrix pass and does not
 change the external-validation boundary.
 
-**Planned or not validated:** Project Homeport Phase 5 exhaustive
-reachability and later
-acceptance work remain unimplemented claims, as do Harborlight Phase 4,
+**Planned or not validated:** Project Homeport Phases 6-7 repository-wide
+page-state completion and whole-product acceptance remain unimplemented claims,
+as do Harborlight Phase 4,
 Project Drydock, Project Landfall, and Project Watchglass. Project Sounding
 Line is the repository validation authority used for Homeport decisions; that
 use does not claim a new user-facing Sounding Line product. Historic records

@@ -28,3 +28,10 @@ moderation evidence remain excluded. A Creator with no public work receives a
 deliberate empty state. Eligible signed-in accounts can Follow; self-follow and
 restricted relations are denied clearly. This is branch-local synthetic proof,
 not hosted availability, deployment, provider proof, or owner acceptance.
+
+On the Phase 5 branch, the Studio Chronicle Library is the visible source for
+settings, artifacts, assets, locations, and version routes; Exchange and
+authorized private-content tools retain explicit parents and exits. Invalid or
+unauthorized details recover without exposing private material. Desktop and
+mobile reach the same functional destinations. This evidence is local and
+synthetic, not deployed or owner accepted.

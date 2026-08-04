@@ -1089,21 +1089,36 @@ for (const [controlId, label, route, destination, role, visibility, actionType, 
 writeCsv("Homeport_Control_Inventory.csv", controls.headers, controls.records);
 
 const journeyDefinitions = [
-  ["A", "Anonymous global product"],
-  ["B", "Authentication and account lifecycle"],
-  ["C", "Player workspace"],
-  ["D", "Captain workspace"],
-  ["E", "Creator Studio"],
-  ["F", "Personal Harbor"],
-  ["G", "Community Harbor"],
-  ["H", "Dynamic public details"],
-  ["I", "Dynamic authenticated details"],
-  ["J", "Compatibility and redirects"],
-  ["K", "Tokenized routes"],
-  ["L", "Empty error and permission onward paths"],
-  ["M", "Desktop and mobile parity"],
-  ["N", "Keyboard-only reachability"],
-  ["O", "Full ordinary-route traversal"],
+  ["A", "Gateway route-map summary"],
+  ["B", "Anonymous account entry"],
+  ["C", "Player route family"],
+  ["D", "Captain route family"],
+  ["E", "Creator route family"],
+  ["F", "Personal Harbor route family"],
+  ["G", "Community Harbor route family"],
+  ["H", "Dynamic source surface"],
+  ["I", "Dynamic detail and parent"],
+  ["J", "Direct-entry return"],
+  ["K", "Valid token handoff"],
+  ["L", "Invalid token recovery"],
+  ["M", "Expired, consumed, and revoked token recovery"],
+  ["N", "Redirect alias integrity"],
+  ["O", "Compatibility and deprecation disposition"],
+  ["P", "Ordinary empty-state onward action"],
+  ["Q", "Dynamic invalid-ID recovery"],
+  ["R", "Permission-aware recovery"],
+  ["S", "Compact-surface exit"],
+  ["T", "Immersive-surface exit"],
+  ["U", "Mobile global path"],
+  ["V", "Mobile dynamic detail and return"],
+  ["W", "Mobile Personal Harbor path"],
+  ["X", "Mobile Community path"],
+  ["Y", "Effective 200 percent zoom navigation"],
+  ["Z", "Keyboard-only route path"],
+  ["AA", "Zero unexplained ordinary orphans"],
+  ["AB", "Compatibility context-adapter target"],
+  ["AC", "Acyclic parent graph"],
+  ["AD", "Full ordinary-route traversal"],
 ];
 const journeys = readJson("Homeport_Journey_Catalog.json");
 if (!journeys.resultVocabulary.includes("STRUCTURALLY_REACHABLE"))
@@ -1148,7 +1163,7 @@ const auditPath = path.join(auditRoot, "Homeport_Journey_Audit.md");
 let audit = readFileSync(auditPath, "utf8");
 const startMarker = "<!-- PHASE5_REACHABILITY_START -->";
 const endMarker = "<!-- PHASE5_REACHABILITY_END -->";
-const phase5Audit = `${startMarker}\n## Phase 5 route-reachability amendment\n\nThe source-driven Phase 5 graph records ${nodes.length} page nodes and ${edges.length} typed transitions from ${pages.length} current page sources. Machine traversal reports zero unexplained ordinary orphans. Status: **${state}**. Exact implementation source: \`${implementationSourceSha}\`. Browser, merge, deployment, owner acceptance, Phase 6, Phase 7, and product acceptance remain separate boundaries.\n\n${journeyDefinitions.map(([suffix, name]) => `- \`HP-P5-JRN-${suffix}\`: ${name} — ${final ? "PASSED" : "STRUCTURALLY_REACHABLE; BROWSER PENDING"}`).join("\n")}\n${endMarker}`;
+const phase5Audit = `${startMarker}\n\n## Phase 5 route-reachability amendment\n\nThe source-driven Phase 5 graph records ${nodes.length} page nodes and ${edges.length} typed transitions from ${pages.length} current page sources. Machine traversal reports zero unexplained ordinary orphans. Status: **${state}**. Exact implementation source: \`${implementationSourceSha}\`. Browser, merge, deployment, owner acceptance, Phase 6, Phase 7, and product acceptance remain separate boundaries.\n\n${journeyDefinitions.map(([suffix, name]) => `- \`HP-P5-JRN-${suffix}\`: ${name} — ${final ? "PASSED" : "STRUCTURALLY_REACHABLE; BROWSER PENDING"}`).join("\n")}\n${endMarker}`;
 if (audit.includes(startMarker))
   audit = audit.replace(new RegExp(`${startMarker}[\\s\\S]*?${endMarker}`, "u"), phase5Audit);
 else audit = `${audit.trimEnd()}\n\n${phase5Audit}\n`;
@@ -1167,7 +1182,7 @@ const retainedNc14Evidence = (nc14.evidence_ids ?? "")
   .filter((item) => item && item !== "PENDING_EXACT_SOURCE_BROWSER" && !item.startsWith("HP-P5-EV-"))
   .join(";");
 nc14.evidence_ids = final
-  ? appendNote(retainedNc14Evidence, "HP-P5-EV-AA-no-orphan-gate;HP-P5-EV-AD-full-traversal-summary")
+  ? appendNote(retainedNc14Evidence, "HP-P5-EV-AA-zero-orphan;HP-P5-EV-AD-full-traversal-summary")
   : retainedNc14Evidence;
 nc14.disposition = final ? "CLOSED_PHASE_5_BRANCH_VALIDATED" : "PHASE_5_IMPLEMENTED_PENDING_BROWSER_VALIDATION";
 nc14.notes = appendNote(nc14.notes, "Phase 5 does not close Phase 6/7 findings or establish product acceptance.");

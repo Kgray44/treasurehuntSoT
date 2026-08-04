@@ -29,6 +29,14 @@ before search is required; you can browse anonymously, then sign in through the
 same Account flow if you choose Save or Follow. This branch behavior is not on
 main, deployed, or owner accepted.
 
+On the Phase 5 branch, begin at Home and follow visible controls instead of
+editing the address. Every ordinary destination has a governed path, dynamic
+details begin from a visible source item, compact and immersive views retain an
+Exit control, and mobile exposes the same functional destinations. Invitation,
+verification, and reset-password links remain tokenized deep links rather than
+menu items. This is local synthetic branch evidence, not deployment or owner
+acceptance.
+
 ## Accessibility and privacy
 
 Use your browser zoom and assistive technology preferences; see [accessibility](accessibility.md). Do not put private story material in public support requests; see [privacy](privacy.md).

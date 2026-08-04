@@ -1,0 +1,18 @@
+{
+  "routeId": "route-page-studio-sign-in",
+  "routePattern": "/studio/sign-in",
+  "observedPath": "/studio/sign-in",
+  "classification": "COMPATIBILITY_REDIRECT",
+  "accountFixture": "ANONYMOUS",
+  "naturalPath": ["CANONICAL_TARGET_PROVED_FIRST", "/studio/sign-in"],
+  "visibleControls": ["Continue to canonical destination"],
+  "naturalResult": "PASSED_VISIBLE_CONTROL_TRAVERSAL",
+  "directEntryResult": "PASSED_AFTER_NATURAL_PATH",
+  "returnResult": "CANONICAL_TARGET_HAS_REGISTERED_RETURN",
+  "desktopResult": "PASSED_CHROMIUM_DESKTOP",
+  "mobileResult": "REPRESENTATIVE_PARITY_PROVED_IN_HP_P5_EV_U_THROUGH_X",
+  "sourceSha": "b9f1552b78857c36a45f25eb5fdfb7a7e09f102a",
+  "branch": "codex/project-homeport-product-reality-recovery",
+  "timestamp": "2026-08-03T20:20:04.213Z",
+  "limitation": "Synthetic local branch evidence only; not merge, deploy, production, owner, or product acceptance proof."
+}

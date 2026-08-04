@@ -1052,6 +1052,47 @@ A content-first Community Harbor now presents deterministic public shelves, gove
 
 ---
 
+## FT-B005 - Governed Route Reachability Graph
+
+**Status:** BRANCH COMPLETE NOT MERGED
+**Program or subsystem:** Project Homeport Phase 5
+
+A source-derived, permission-aware product graph now gives every ordinary route a visible natural entry while governing dynamic sources, tokenized handoffs, compatibility routes, parent and return behavior, and desktop/mobile parity.
+
+### Important subfeatures
+
+- Source-parity census for every app page and service route
+- Exclusive classification for ordinary, contextual, tokenized, compatibility, development, and diagnostic routes
+- Permission-aware gateway-rooted shortest paths
+- Visible entry and direct-entry proof for every ordinary route
+- Dynamic source, invalid-ID, private-denial, parent, and return contracts
+- State-safe tokenized handoffs excluded from ordinary navigation
+- Explicit redirect and canonical context-adapter dispositions
+- Desktop/mobile destination and edge parity
+- Touch, keyboard, effective 200 percent zoom, compact, and immersive exit proof
+- Automated source-drift, cycle, dead-end, and ordinary-orphan enforcement
+
+### Primary surfaces
+
+`/`, `/tales`, `/community`, `/account`, `/passport`, `/player/library`, `/captain/library`, `/studio/library`, `/play/[taleSlug]/session/[sessionId]`, `/join/[token]`, `/tale/[campaignSlug]`
+
+### Meaningful limitations
+
+- Not available on main until separately reviewed and integrated
+- Not deployed; live-user validation and owner acceptance are not established
+- Evidence is local, synthetic, and uses a copied SQLite database
+- Compatibility retirement remains owner-reviewed and traffic-dependent
+- Phase 6 repository-wide surface and page-state completion remains
+- Phase 7 integrated whole-product walkthrough remains
+
+### Evidence
+
+- commit: `b9f1552b78857c36a45f25eb5fdfb7a7e09f102a`
+- completion-record: `Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_5_Validation_Record.md`
+- path: `Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_5_Route_Reachability_Graph.json`
+
+---
+
 # Deliberately Excluded Until Complete
 
 - Harborlight Phase 4 is planned and is not cataloged as an implemented capability.

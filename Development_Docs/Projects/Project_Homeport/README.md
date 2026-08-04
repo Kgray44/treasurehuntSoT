@@ -17,9 +17,11 @@ that branch; implementation and validation are separately evidenced. These
 are branch-local results, not `main`, deployment, owner acceptance, or product
 acceptance.
 
-Phase 5 route-reachability architecture is frozen on the same retained branch.
-Implementation, browser proof, and Sounding Line closure remain separate from
-the architecture checkpoint.
+Phase 5 route reachability is implemented and exact-source browser validated on
+the same retained branch. The graph closes ordinary-route entry, dynamic-source,
+tokenized, compatibility, parent/return, dead-end, and desktop/mobile contracts.
+This remains branch-local evidence; Phase 6, Phase 7, deployment, and owner or
+product acceptance remain separate.
 
 ## Authority
 
@@ -88,10 +90,15 @@ the architecture checkpoint.
 - `Project_Homeport_Phase_4_Mutation_State_Matrix.csv`
 - `Project_Homeport_Phase_4_Desktop_Mobile_Parity_Matrix.csv`
 
-## Phase 5 architecture records
+## Phase 5 records
 
 - [Route Reachability Architecture](Project_Homeport_Phase_5_Route_Reachability_Architecture.md)
 - [Test Plan](Project_Homeport_Phase_5_Test_Plan.md)
+- [Implementation Report](Project_Homeport_Phase_5_Implementation_Report.md)
+- [Validation Record](Project_Homeport_Phase_5_Validation_Record.md)
+- [Integration Manifest](Project_Homeport_Phase_5_Integration_Manifest.md)
+- [Evidence Index](evidence/phase5/README.md)
+- [Reachability Review](evidence/phase5/Project_Homeport_Phase_5_Reachability_Review.md)
 - `Project_Homeport_Phase_5_Route_Node_Registry.json`
 - `Project_Homeport_Phase_5_Route_Edge_Registry.json`
 - `Project_Homeport_Phase_5_Route_Reachability_Graph.json`
@@ -102,11 +109,10 @@ the architecture checkpoint.
 - `Project_Homeport_Phase_5_Desktop_Mobile_Reachability_Matrix.csv`
 - `Project_Homeport_Phase_5_Natural_Path_Matrix.csv`
 
-The source-derived node/edge graph and provisional route matrices are generated
-idempotently during implementation. The implementation report, evidence,
-validation record, and integration manifest remain reserved for the separately
-validated implementation checkpoint. Phase 5 remains branch-only and does not
-establish Phase 6, Phase 7, deployment, owner acceptance, or product acceptance.
+The source-derived node/edge graph and final route matrices are generated
+idempotently and bind to the exact browser-tested source. Phase 5 remains
+branch-only and does not establish Phase 6, Phase 7, deployment, owner
+acceptance, or product acceptance.
 
 ## Phase 2 machine-readable records
 
@@ -127,14 +133,14 @@ establish Phase 6, Phase 7, deployment, owner acceptance, or product acceptance.
 - `Homeport_Visual_Baseline_Manifest.json`
 - `Homeport_Nonconformity_Ledger.csv`
 
-These records retain Phase 0 observations and add explicit Phase 1-4
-implemented-state fields, A-Q, A-U, A-AE, and A-AR journey records, and
+These records retain Phase 0 observations and add explicit Phase 1-5
+implemented-state fields, A-Q, A-U, A-AE, A-AR, and A-AD journey records, and
 checksum-bound after-state evidence. The Phase 1 compatibility authority
 remains `Project_Homeport_Phase_1_Compatibility_Cutover_Ledger.csv`.
 
-Run `npm run homeport:phase4:inventory`,
-`npm run homeport:phase4:validate`, and `npm run homeport:validate` to apply and
-verify the additive Phase 4 inventory, deterministic contracts,
-cross-references, committed screenshots/checksums, direct closures, and
-later-owner boundaries. `PRODUCT_NONCONFORMITIES_PRESENT` remains expected
+Run `npm run homeport:phase5:inventory`,
+`npm run homeport:phase5:validate`, and `npm run homeport:validate` to apply and
+verify the additive Phase 5 graph, deterministic contracts, cross-references,
+accepted screenshot checksums, direct closures, and later-owner boundaries.
+`PRODUCT_NONCONFORMITIES_PRESENT` remains expected
 because later-phase findings remain open; it is not a validator failure.

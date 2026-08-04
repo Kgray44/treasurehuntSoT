@@ -41,3 +41,10 @@ from Community. Ineligible, removed, archived, quarantined, or no-longer-public
 subjects do not become private copies in Passport. A failed mutation restores
 the prior state and allows retry. This remains branch-local synthetic evidence;
 it is not on `main`, deployed, or owner accepted.
+
+On the Phase 5 branch, History and Artifact lists are the genuine sources for
+their detail routes, and every Passport section has a visible parent, return,
+and equivalent mobile entry. Empty and invalid-detail states provide a safe
+onward action instead of requiring browser Back. This remains local synthetic
+evidence; repository-wide Phase 6 states, deployment, and owner acceptance are
+not claimed.

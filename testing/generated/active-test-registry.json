@@ -7724,6 +7724,46 @@
       "currentStatus": "ACTIVE"
     },
     {
+      "id": "sl-test-53e71cad6ca45b299972",
+      "title": "replaces the previous route layer atomically when the pathname changes",
+      "line": 10,
+      "file": "src/animation/platform/RouteMotionBoundary.test.tsx",
+      "suiteId": "component.player-shell",
+      "owner": "lanternwake",
+      "tier": 2,
+      "risk": "MODERATE",
+      "contracts": ["authentication-authorization"],
+      "sourcePaths": ["src/animation/platform/RouteMotionBoundary.test.tsx"],
+      "consumerPaths": [],
+      "dependencies": [],
+      "fixtureFamily": "repository-fixtures",
+      "fixture": "repository-owned deterministic fixtures",
+      "databaseOwnership": "no browser database ownership",
+      "browserOwnership": "not applicable",
+      "portOwnership": "not applicable",
+      "resources": ["node-slot", "vitest-worker-pool"],
+      "parallelSafety": "READ_ONLY_PARALLEL",
+      "browserRequirements": ["NOT_APPLICABLE"],
+      "deviceRequirements": ["NOT_APPLICABLE"],
+      "viewportRequirements": ["NOT_APPLICABLE"],
+      "motionRequirements": ["NOT_APPLICABLE"],
+      "networkRequirements": ["NOT_APPLICABLE"],
+      "positiveCases": ["declared-source-case"],
+      "negativeCases": ["NOT_APPLICABLE"],
+      "accessibilityRelevance": "RELEVANT",
+      "privacyRelevance": "NOT_APPLICABLE",
+      "securityRelevance": "NOT_APPLICABLE",
+      "dataMutationClass": "READ_ONLY",
+      "expectedDurationMs": 30000,
+      "hardBudgetMs": 180000,
+      "retryPolicy": "NONE",
+      "releaseRelevance": "authoritative registered contract evidence",
+      "gates": ["local-change", "subsystem", "mainline", "release-candidate"],
+      "supersessionPolicy": "ACTIVE",
+      "historicalAliases": [],
+      "currentStatus": "ACTIVE"
+    },
+    {
       "id": "sl-test-4244896788c0e4abf2e9",
       "title": "moves from pending to slow and then holds authoritative success",
       "line": 8,
@@ -20352,9 +20392,49 @@
       "currentStatus": "ACTIVE"
     },
     {
+      "id": "sl-test-085c8381abf0274fe2ad",
+      "title": "returns directly to the canonical Captain library",
+      "line": 195,
+      "file": "src/components/gm/Quartermaster.test.tsx",
+      "suiteId": "component.captain",
+      "owner": "platform-foundation",
+      "tier": 2,
+      "risk": "MODERATE",
+      "contracts": ["authentication-authorization"],
+      "sourcePaths": ["src/components/gm/Quartermaster.test.tsx"],
+      "consumerPaths": [],
+      "dependencies": [],
+      "fixtureFamily": "repository-fixtures",
+      "fixture": "repository-owned deterministic fixtures",
+      "databaseOwnership": "no browser database ownership",
+      "browserOwnership": "not applicable",
+      "portOwnership": "not applicable",
+      "resources": ["node-slot", "vitest-worker-pool"],
+      "parallelSafety": "READ_ONLY_PARALLEL",
+      "browserRequirements": ["NOT_APPLICABLE"],
+      "deviceRequirements": ["NOT_APPLICABLE"],
+      "viewportRequirements": ["NOT_APPLICABLE"],
+      "motionRequirements": ["NOT_APPLICABLE"],
+      "networkRequirements": ["NOT_APPLICABLE"],
+      "positiveCases": ["declared-source-case"],
+      "negativeCases": ["NOT_APPLICABLE"],
+      "accessibilityRelevance": "RELEVANT",
+      "privacyRelevance": "NOT_APPLICABLE",
+      "securityRelevance": "NOT_APPLICABLE",
+      "dataMutationClass": "READ_ONLY",
+      "expectedDurationMs": 30000,
+      "hardBudgetMs": 180000,
+      "retryPolicy": "NONE",
+      "releaseRelevance": "authoritative registered contract evidence",
+      "gates": ["local-change", "subsystem", "mainline", "release-candidate"],
+      "supersessionPolicy": "ACTIVE",
+      "historicalAliases": [],
+      "currentStatus": "ACTIVE"
+    },
+    {
       "id": "sl-test-478c9b325add5b651639",
       "title": "preflights a boxed login host with every required cinematic target inside its geometry",
-      "line": 195,
+      "line": 200,
       "file": "src/components/gm/Quartermaster.test.tsx",
       "suiteId": "component.captain",
       "owner": "platform-foundation",
@@ -20394,7 +20474,7 @@
     {
       "id": "sl-test-7ba634ef23392ad49c7f",
       "title": "leaves the registered cabin door in the successful open pose",
-      "line": 249,
+      "line": 254,
       "file": "src/components/gm/Quartermaster.test.tsx",
       "suiteId": "component.captain",
       "owner": "platform-foundation",
@@ -20434,7 +20514,7 @@
     {
       "id": "sl-test-2616f0b9427f6b3a2637",
       "title": "uses the same explicit host identity and typed operation result for Quartermaster sign-in",
-      "line": 271,
+      "line": 276,
       "file": "src/components/gm/Quartermaster.test.tsx",
       "suiteId": "component.captain",
       "owner": "platform-foundation",
@@ -20474,7 +20554,7 @@
     {
       "id": "sl-test-3e6ad0ac8348075915f0",
       "title": "holds a successful login busy and single-flight until the chart-room handoff completes",
-      "line": 305,
+      "line": 310,
       "file": "src/components/gm/Quartermaster.test.tsx",
       "suiteId": "component.captain",
       "owner": "platform-foundation",
@@ -20514,7 +20594,7 @@
     {
       "id": "sl-test-574247746f8cc97ab448",
       "title": "restores a readable, focusable login after an authoritative rejection",
-      "line": 334,
+      "line": 339,
       "file": "src/components/gm/Quartermaster.test.tsx",
       "suiteId": "component.captain",
       "owner": "platform-foundation",
@@ -20554,7 +20634,7 @@
     {
       "id": "sl-test-d6f1ee78fae8078f8d9e",
       "title": "restores login focus when presentation fails before authentication starts",
-      "line": 354,
+      "line": 359,
       "file": "src/components/gm/Quartermaster.test.tsx",
       "suiteId": "component.captain",
       "owner": "platform-foundation",
@@ -20594,7 +20674,7 @@
     {
       "id": "sl-test-85297602505f1da6662d",
       "title": "restores login focus when authenticated handoff cannot open the chart room",
-      "line": 375,
+      "line": 380,
       "file": "src/components/gm/Quartermaster.test.tsx",
       "suiteId": "component.captain",
       "owner": "platform-foundation",
@@ -20634,7 +20714,7 @@
     {
       "id": "sl-test-73dc4abc55bc772d077d",
       "title": "traps confirmation focus, hides and inerts the background, and restores focus on Escape",
-      "line": 400,
+      "line": 405,
       "file": "src/components/gm/Quartermaster.test.tsx",
       "suiteId": "component.captain",
       "owner": "platform-foundation",
@@ -20674,7 +20754,7 @@
     {
       "id": "sl-test-07f80501ce61db2361d1",
       "title": "returns focus after Cancel removes the dialog",
-      "line": 443,
+      "line": 448,
       "file": "src/components/gm/Quartermaster.test.tsx",
       "suiteId": "component.captain",
       "owner": "platform-foundation",
@@ -20714,7 +20794,7 @@
     {
       "id": "sl-test-13140191fa41232d2615",
       "title": "uses the dialog itself as the busy focus and Tab fallback",
-      "line": 456,
+      "line": 461,
       "file": "src/components/gm/Quartermaster.test.tsx",
       "suiteId": "component.captain",
       "owner": "platform-foundation",
@@ -20754,7 +20834,7 @@
     {
       "id": "sl-test-ceed1fce139491b36f4c",
       "title": "cleans dialog listeners across repeated opens and restores each exact trigger",
-      "line": 485,
+      "line": 490,
       "file": "src/components/gm/Quartermaster.test.tsx",
       "suiteId": "component.captain",
       "owner": "platform-foundation",
@@ -20794,7 +20874,7 @@
     {
       "id": "sl-test-0a92b66cbef52bbc8d07",
       "title": "does not restore focus to a trigger that disconnected while the dialog was open",
-      "line": 506,
+      "line": 511,
       "file": "src/components/gm/Quartermaster.test.tsx",
       "suiteId": "component.captain",
       "owner": "platform-foundation",
@@ -20834,7 +20914,7 @@
     {
       "id": "sl-test-ce86290bd2825d705bdf",
       "title": "commits an authoritative operation result, then releases the final presentation after status refresh",
-      "line": 522,
+      "line": 527,
       "file": "src/components/gm/Quartermaster.test.tsx",
       "suiteId": "component.captain",
       "owner": "platform-foundation",
@@ -20874,7 +20954,7 @@
     {
       "id": "sl-test-9ee4b533a3c783130c92",
       "title": "reuses the exact confirmation idempotency key when a lost response is retried",
-      "line": 566,
+      "line": 571,
       "file": "src/components/gm/Quartermaster.test.tsx",
       "suiteId": "component.captain",
       "owner": "platform-foundation",
@@ -20914,7 +20994,7 @@
     {
       "id": "sl-test-eb21e3a55d46eed752f5",
       "title": "keeps a stale-sequence conflict uncommitted and reviewable in the confirmation dialog",
-      "line": 602,
+      "line": 607,
       "file": "src/components/gm/Quartermaster.test.tsx",
       "suiteId": "component.captain",
       "owner": "platform-foundation",
@@ -20954,7 +21034,7 @@
     {
       "id": "sl-test-1db253f958a7d11871a9",
       "title": "shows a committed post-commit publication failure without inventing Crew delivery or acknowledgment",
-      "line": 627,
+      "line": 632,
       "file": "src/components/gm/Quartermaster.test.tsx",
       "suiteId": "component.captain",
       "owner": "platform-foundation",
@@ -20994,7 +21074,7 @@
     {
       "id": "sl-test-29d543df1261e39328bd",
       "title": "describes non-publishing staging receipts without claiming process or Crew delivery",
-      "line": 651,
+      "line": 656,
       "file": "src/components/gm/Quartermaster.test.tsx",
       "suiteId": "component.captain",
       "owner": "platform-foundation",
@@ -21034,7 +21114,7 @@
     {
       "id": "sl-test-ca427c60514fc54a296c",
       "title": "submits a production artifact award through an isolated command host and explicit external slot",
-      "line": 674,
+      "line": 679,
       "file": "src/components/gm/Quartermaster.test.tsx",
       "suiteId": "component.captain",
       "owner": "platform-foundation",
@@ -21074,7 +21154,7 @@
     {
       "id": "sl-test-73bc738f3bddfbc548da",
       "title": "keeps an authoritative server failure distinct and ignores projected receipt fields",
-      "line": 726,
+      "line": 731,
       "file": "src/components/gm/Quartermaster.test.tsx",
       "suiteId": "component.captain",
       "owner": "platform-foundation",
@@ -21114,7 +21194,7 @@
     {
       "id": "sl-test-4ff47d59f3503e9c5068",
       "title": "reports presentation failure without rewriting a successful command result",
-      "line": 756,
+      "line": 761,
       "file": "src/components/gm/Quartermaster.test.tsx",
       "suiteId": "component.captain",
       "owner": "platform-foundation",
@@ -21154,7 +21234,7 @@
     {
       "id": "sl-test-ee418032330562c8a72f",
       "title": "runs a command once through a verified readable fallback when its animation targets are missing",
-      "line": 783,
+      "line": 788,
       "file": "src/components/gm/Quartermaster.test.tsx",
       "suiteId": "component.captain",
       "owner": "platform-foundation",
@@ -21194,7 +21274,7 @@
     {
       "id": "sl-test-87fb6a300bf234ce82e3",
       "title": "does not invent command success when presentation fails before the operation starts",
-      "line": 817,
+      "line": 822,
       "file": "src/components/gm/Quartermaster.test.tsx",
       "suiteId": "component.captain",
       "owner": "platform-foundation",
@@ -21234,7 +21314,7 @@
     {
       "id": "sl-test-2e7cec62bc69e7b6ab49",
       "title": "aborts an in-flight presentation when the Quartermaster unmounts",
-      "line": 838,
+      "line": 843,
       "file": "src/components/gm/Quartermaster.test.tsx",
       "suiteId": "component.captain",
       "owner": "platform-foundation",
@@ -21274,7 +21354,7 @@
     {
       "id": "sl-test-a50d4278721a088bab83",
       "title": "mints isolated command hosts with action-local targets and no semantic controls",
-      "line": 857,
+      "line": 862,
       "file": "src/components/gm/Quartermaster.test.tsx",
       "suiteId": "component.captain",
       "owner": "platform-foundation",
@@ -45220,9 +45300,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-35bc87a64bcc9715f42b",
+      "id": "sl-test-f9b4e360a4c9ddb18917",
       "title": "published Chronicle catalog is public while Studio remains protected",
-      "line": 29,
+      "line": 31,
       "file": "tests/e2e/access-gates.spec.ts",
       "project": "chromium",
       "suiteId": "browser.auth",
@@ -51723,9 +51803,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-eebe004f800244682472",
+      "id": "sl-test-bda5536210d6ead0163a",
       "title": "Project Homeport Phase 5 route reachability acceptance › K-M: tokenized handoffs distinguish valid, invalid, expired, consumed, and revoked states",
-      "line": 548,
+      "line": 556,
       "file": "tests/e2e/homeport-phase5.spec.ts",
       "project": "chromium",
       "suiteId": "browser.homeport",
@@ -51901,9 +51981,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-b02201bab0172d62e9e5",
+      "id": "sl-test-63bec0f124236300e4d3",
       "title": "Project Homeport Phase 5 route reachability acceptance › N, O, AB: all compatibility routes resolve after their canonical destinations were naturally proved",
-      "line": 666,
+      "line": 688,
       "file": "tests/e2e/homeport-phase5.spec.ts",
       "project": "chromium",
       "suiteId": "browser.homeport",
@@ -52079,9 +52159,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-10cee65b451c27637595",
+      "id": "sl-test-807bbf0543bf51f0c73f",
       "title": "Project Homeport Phase 5 route reachability acceptance › P: governed empty state keeps an onward action",
-      "line": 790,
+      "line": 835,
       "file": "tests/e2e/homeport-phase5.spec.ts",
       "project": "chromium",
       "suiteId": "browser.homeport",
@@ -52257,9 +52337,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-743edb899dc4ae813b85",
+      "id": "sl-test-bc8a807dc9e68b3ab32c",
       "title": "Project Homeport Phase 5 route reachability acceptance › U-Z: mobile, zoom, touch-equivalent, and keyboard paths preserve destinations",
-      "line": 838,
+      "line": 883,
       "file": "tests/e2e/homeport-phase5.spec.ts",
       "project": "chromium",
       "suiteId": "browser.homeport",
@@ -66211,9 +66291,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-5f2d4dc25f05f6dc2b55",
+      "id": "sl-test-206e9b52f1db33ba5c9e",
       "title": "published Chronicle catalog is public while Studio remains protected",
-      "line": 29,
+      "line": 31,
       "file": "tests/e2e/access-gates.spec.ts",
       "project": "sounding-line-access-sentinel",
       "suiteId": "browser.access-sentinel",
@@ -66908,9 +66988,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-b61a5d2c7823043b3521",
+      "id": "sl-test-94828513aa579da73cd1",
       "title": "published Chronicle catalog is public while Studio remains protected",
-      "line": 29,
+      "line": 31,
       "file": "tests/e2e/access-gates.spec.ts",
       "project": "webkit-mobile",
       "suiteId": "browser.auth",
@@ -73493,9 +73573,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-cf0575e108a4a65d3d8a",
+      "id": "sl-test-77b2a6b45a3f25243cd1",
       "title": "Project Homeport Phase 5 route reachability acceptance › K-M: tokenized handoffs distinguish valid, invalid, expired, consumed, and revoked states",
-      "line": 548,
+      "line": 556,
       "file": "tests/e2e/homeport-phase5.spec.ts",
       "project": "webkit-mobile",
       "suiteId": "browser.homeport",
@@ -73671,9 +73751,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-8d35c3ac8eac3b714078",
+      "id": "sl-test-14517df0d84edf369c05",
       "title": "Project Homeport Phase 5 route reachability acceptance › N, O, AB: all compatibility routes resolve after their canonical destinations were naturally proved",
-      "line": 666,
+      "line": 688,
       "file": "tests/e2e/homeport-phase5.spec.ts",
       "project": "webkit-mobile",
       "suiteId": "browser.homeport",
@@ -73849,9 +73929,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-0d46e8040d7d2a3936af",
+      "id": "sl-test-5dd1166913e44f6ea35d",
       "title": "Project Homeport Phase 5 route reachability acceptance › P: governed empty state keeps an onward action",
-      "line": 790,
+      "line": 835,
       "file": "tests/e2e/homeport-phase5.spec.ts",
       "project": "webkit-mobile",
       "suiteId": "browser.homeport",
@@ -74027,9 +74107,9 @@
       "currentStatus": "ACTIVE"
     },
     {
-      "id": "sl-test-7ed5058c99df81e8d7f5",
+      "id": "sl-test-43c2230362163ce7d376",
       "title": "Project Homeport Phase 5 route reachability acceptance › U-Z: mobile, zoom, touch-equivalent, and keyboard paths preserve destinations",
-      "line": 838,
+      "line": 883,
       "file": "tests/e2e/homeport-phase5.spec.ts",
       "project": "webkit-mobile",
       "suiteId": "browser.homeport",

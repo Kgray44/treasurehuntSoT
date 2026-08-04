@@ -26,3 +26,10 @@ Passport](chronicle-passport.md) and [privacy](privacy.md).
 
 This behavior is complete on the Project Homeport Phase 3 branch, not on main
 or deployed.
+
+Phase 5 connects the public `/profile/[handle]` detail only through visible,
+allowlisted Creator/Profile source controls and gives direct entry a stable
+return. Missing, private, or blocked profiles do not become navigable merely
+because a handle is known. The reachability proof is branch-local and
+synthetic; deployment, Phase 6 completion, and owner acceptance are not
+claimed.

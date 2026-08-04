@@ -19,10 +19,12 @@ test("Player sign-in remains public, accessible, and does not grant a Chronicle 
 
 test("Quartermaster bookmarks redirect to canonical Captain sign-in across supported browsers", async ({ page }) => {
   await page.goto("/quartermaster");
-  await expect(page).toHaveURL(/\/captain\/sign-in$/);
-  await expect(page.getByRole("heading", { name: "Open the Captain's Console" })).toBeVisible();
-  await expect(page.getByRole("link", { name: "Continue to account sign-in" })).toBeVisible();
-  await expect(page.getByLabel("Password", { exact: true })).toHaveCount(0);
+  await expect(page).toHaveURL(/\/sign-in\?returnTo=%2Fcaptain%2Flibrary$/);
+  await expect(page.getByRole("heading", { name: "Sign in" })).toBeVisible();
+  await expect(
+    page.getByText("Use one account across Player, Captain, Creator, Community, and Chronicle Passport."),
+  ).toBeVisible();
+  await expect(page.getByLabel("Password", { exact: true })).toBeVisible();
   expect((await page.request.get("/api/captain/library")).status()).toBe(401);
 });
 
@@ -31,6 +33,7 @@ test("published Chronicle catalog is public while Studio remains protected", asy
   await expect(page.getByRole("heading", { name: "Choose a Chronicle" })).toBeVisible();
   await expect(page.getByRole("article").first().getByRole("link", { name: "Preview Chronicle" })).toBeVisible();
   await page.goto("/studio");
-  await expect(page.getByRole("heading", { name: "Creator access is required." })).toBeVisible();
+  await expect(page).toHaveURL(/\/sign-in\?returnTo=%2Fstudio%2Flibrary$/);
+  await expect(page.getByRole("heading", { name: "Sign in" })).toBeVisible();
   expect((await page.request.get("/api/studio/tales")).status()).toBe(401);
 });

@@ -3,7 +3,7 @@ title: Captain guide
 audience: captain
 status: current
 canonical_for: captain-guide
-last_reviewed: 2026-08-01
+last_reviewed: 2026-08-03
 ---
 
 # Captain guide
@@ -26,3 +26,10 @@ from Captain-owned Voyages and Crew invitations. Account switches to Player or
 Creator Studio only when the signed-in account has those capabilities.
 Focused Captain session routes provide Exit to Captain Voyages instead of
 depending on browser history. This behavior is not on main or deployed.
+
+On the Phase 5 branch, Captain Library, invitation, Tale, Voyage preview, and
+session controls provide the governed sources for their detail routes. The
+historical Quartermaster surface links directly to the canonical Captain
+Library instead of competing with it. Permission denial and invalid identifiers
+retain safe recovery paths. This is branch-local synthetic proof, not a `main`
+merge, deployment, or owner acceptance.
