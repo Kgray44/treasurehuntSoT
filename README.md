@@ -26,14 +26,13 @@ fork provenance.
 
 The original companion and expanded Game Master Command Center remain integrated compatibility surfaces. A shared animation director coordinates the harbor, journal, chart, artifact, gateway, and finale experiences without allowing presentation timing to outrun server truth. All committed content remains fictional development seed material.
 
-On the retained Project Homeport branch, Phase 5 now binds the complete page
-surface to a permission-aware reachability graph. Ordinary destinations have
-visible gateway-rooted entry paths, dynamic details have real source surfaces,
-tokenized and compatibility routes are deliberately classified, and desktop
-and mobile expose equivalent functional destinations. This branch-local,
-synthetic evidence is not on `main`, deployed, live-provider validated, owner
-accepted, or product accepted; repository-wide page-state completion remains
-Phase 6 and whole-product journey proof remains Phase 7.
+On the retained Project Homeport branch, Phases 5-7 now bind the complete page
+surface to a permission-aware reachability graph, complete its critical/high
+states and responsive presentation, and prove A-through-O integrated journeys
+against one immutable synthetic fixture family. The final owner walkthrough
+package and owned local runtime are ready. Owner Decision remains
+`PENDING_OWNER_DECISION`; this branch-local evidence is not on `main`, deployed,
+live-provider validated, owner accepted, or product accepted.
 
 ## Stack
 

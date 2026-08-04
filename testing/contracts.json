@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "status": "phase-6-homeport-product-surfaces-validated",
+  "status": "phase-7-homeport-whole-voyage-ready-for-owner-walkthrough",
   "contracts": [
     {
       "id": "invitation-acceptance",
@@ -1454,6 +1454,342 @@
     {
       "id": "homeport.surface.artifact-idempotency",
       "name": "Project Homeport Surface Artifact Idempotency",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.phase7.fixture.integrated",
+      "name": "Project Homeport Phase7 Fixture Integrated",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.phase7.fixture.immutable-seed",
+      "name": "Project Homeport Phase7 Fixture Immutable Seed",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.phase7.fixture.clone-isolation",
+      "name": "Project Homeport Phase7 Fixture Clone Isolation",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.phase7.fixture.credential-boundary",
+      "name": "Project Homeport Phase7 Fixture Credential Boundary",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.phase7.fixture.reset",
+      "name": "Project Homeport Phase7 Fixture Reset",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.phase7.journey-a",
+      "name": "Project Homeport Phase7 Journey A",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.phase7.journey-b",
+      "name": "Project Homeport Phase7 Journey B",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.phase7.journey-c",
+      "name": "Project Homeport Phase7 Journey C",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.phase7.journey-d",
+      "name": "Project Homeport Phase7 Journey D",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.phase7.journey-e",
+      "name": "Project Homeport Phase7 Journey E",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.phase7.journey-f",
+      "name": "Project Homeport Phase7 Journey F",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.phase7.journey-g",
+      "name": "Project Homeport Phase7 Journey G",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.phase7.journey-h",
+      "name": "Project Homeport Phase7 Journey H",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.phase7.journey-i",
+      "name": "Project Homeport Phase7 Journey I",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.phase7.journey-j",
+      "name": "Project Homeport Phase7 Journey J",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.phase7.journey-k",
+      "name": "Project Homeport Phase7 Journey K",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.phase7.journey-l",
+      "name": "Project Homeport Phase7 Journey L",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.phase7.journey-m",
+      "name": "Project Homeport Phase7 Journey M",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.phase7.journey-n",
+      "name": "Project Homeport Phase7 Journey N",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.phase7.journey-o",
+      "name": "Project Homeport Phase7 Journey O",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.phase7.evidence-source-binding",
+      "name": "Project Homeport Phase7 Evidence Source Binding",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.phase7.evidence-complete",
+      "name": "Project Homeport Phase7 Evidence Complete",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.phase7.evidence-checksum",
+      "name": "Project Homeport Phase7 Evidence Checksum",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.phase7.evidence-human-visual-review",
+      "name": "Project Homeport Phase7 Evidence Human Visual Review",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.phase7.viewport.desktop",
+      "name": "Project Homeport Phase7 Viewport Desktop",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.phase7.viewport.mobile",
+      "name": "Project Homeport Phase7 Viewport Mobile",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.phase7.motion.reduced",
+      "name": "Project Homeport Phase7 Motion Reduced",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.phase7.accessibility.keyboard-focus",
+      "name": "Project Homeport Phase7 Accessibility Keyboard Focus",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.phase7.account.canonical-lifecycle",
+      "name": "Project Homeport Phase7 Account Canonical Lifecycle",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.phase7.account.cross-workspace-session",
+      "name": "Project Homeport Phase7 Account Cross Workspace Session",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.phase7.profile.persistence",
+      "name": "Project Homeport Phase7 Profile Persistence",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.phase7.passport.private-authorization",
+      "name": "Project Homeport Phase7 Passport Private Authorization",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.phase7.community.saved-reconciliation",
+      "name": "Project Homeport Phase7 Community Saved Reconciliation",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.phase7.recovery.tokens",
+      "name": "Project Homeport Phase7 Recovery Tokens",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.phase7.session.expiry",
+      "name": "Project Homeport Phase7 Session Expiry",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.phase7.permission.explicit",
+      "name": "Project Homeport Phase7 Permission Explicit",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.phase7.mobile.parity",
+      "name": "Project Homeport Phase7 Mobile Parity",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.phase7.multitab.invalidation",
+      "name": "Project Homeport Phase7 Multitab Invalidation",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.phase7.dependency.failure-recovery",
+      "name": "Project Homeport Phase7 Dependency Failure Recovery",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.phase7.rehearsal.final",
+      "name": "Project Homeport Phase7 Rehearsal Final",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.phase7.walkthrough.package",
+      "name": "Project Homeport Phase7 Walkthrough Package",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.phase7.walkthrough.runtime-health",
+      "name": "Project Homeport Phase7 Walkthrough Runtime Health",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.phase7.owner-decision.pending",
+      "name": "Project Homeport Phase7 Owner Decision Pending",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.phase7.control-plane.updated",
+      "name": "Project Homeport Phase7 Control Plane Updated",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.phase7.feature-catalog.ft-b007",
+      "name": "Project Homeport Phase7 Feature Catalog Ft B007",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.phase7.privacy.synthetic-only",
+      "name": "Project Homeport Phase7 Privacy Synthetic Only",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.phase7.database.canonical-invariant",
+      "name": "Project Homeport Phase7 Database Canonical Invariant",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.phase7.git.branch-parity",
+      "name": "Project Homeport Phase7 Git Branch Parity",
       "authority": "project-homeport",
       "owners": ["project-homeport"],
       "critical": true

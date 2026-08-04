@@ -15,7 +15,7 @@ Player/Captain/Creator flows, Studio editing and publishing, invitations,
 libraries, journals, profile and Passport surfaces, protected content, and
 animation presentation.
 
-**Complete on a branch, not available on main:** Project Homeport Phases 1-6
+**Complete on a branch, not available on main:** Project Homeport Phases 1-7
 unify ordinary account/session authority, add the governed global shell and
 wayfinding, and build the Personal Harbor. The branch now contains an owned
 Profile, typed preferences and privacy controls, linked identities, the
@@ -33,6 +33,13 @@ media-fallback and mutation patterns, and 126 checksum-bound visual records.
 Evidence is local and synthetic; deployment, live-user behavior, owner
 acceptance, and product acceptance are not claimed.
 
+Phase 7 adds one immutable integrated synthetic fixture, isolated journey and
+walkthrough clones, A-through-O visible-control production-browser proof, 16
+reviewed checksum-bound milestone frames, explicit recovery/permission/session/
+multi-tab/mobile behavior, and a safe final owner-walkthrough runtime package.
+It is ready for owner walkthrough. Owner Decision remains
+`PENDING_OWNER_DECISION`.
+
 **Development-only or compatibility-only:** development showcases, legacy routes, and package-exchange integrations are not a promise of a generally hosted service.
 
 **Focused and integration validated:** repository evidence covers the merged
@@ -45,9 +52,8 @@ tests do not establish live-provider proof.
 for the Phase 3-4 browser matrix. It is not a full matrix pass and does not
 change the external-validation boundary.
 
-**Planned or not validated:** Project Homeport Phase 7 integrated whole-product
-journeys, final walkthrough fixture, running owner package, and acceptance
-remain unimplemented claims, as do Harborlight Phase 4,
+**Planned or not validated:** Project Homeport owner acceptance remains pending,
+as do Harborlight Phase 4,
 Project Drydock, Project Landfall, and Project Watchglass. Project Sounding
 Line is the repository validation authority used for Homeport decisions; that
 use does not claim a new user-facing Sounding Line product. Historic records

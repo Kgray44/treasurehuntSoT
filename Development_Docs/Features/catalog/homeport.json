@@ -316,5 +316,70 @@
       "Phase 7 integrated whole-product journeys, final walkthrough fixture, running owner package, and acceptance remain separate"
     ],
     "catalogVersion": 1
+  },
+  {
+    "id": "FT-B007",
+    "title": "Integrated Whole-Product Voyage and Owner Walkthrough",
+    "summary": "One deterministic synthetic fixture and governed A-through-O journey system now prove account continuity, workspace traversal, Personal Harbor, Community, recovery, failure states, mobile parity, and a safe final owner-walkthrough runtime.",
+    "status": "BRANCH_COMPLETE_NOT_MERGED",
+    "program": "Project Homeport Phase 7",
+    "surfaces": [
+      "/",
+      "/register",
+      "/sign-in",
+      "/account",
+      "/account/preferences",
+      "/account/security",
+      "/account/sessions",
+      "/passport",
+      "/passport/history",
+      "/passport/memories",
+      "/passport/artifacts",
+      "/passport/saved",
+      "/community",
+      "/player/library",
+      "/captain/library",
+      "/studio/library"
+    ],
+    "subfeatures": [
+      "Immutable integrated synthetic seed with isolated automated and owner-walkthrough clones",
+      "External task-owned credential and token handoff with no committed secrets",
+      "A-through-O visible-control whole-product journey registry",
+      "Cross-workspace canonical account and session continuity",
+      "Profile, Passport, Community save, Player, Captain, and Creator integrated reconciliation",
+      "Password recovery, session expiry, permission, multi-tab invalidation, and dependency recovery",
+      "Desktop, mobile, keyboard focus, and reduced-motion journey proof",
+      "Checksum, source, fixture, viewport, route, and visual-review-bound evidence",
+      "Owned final production walkthrough runtime with safe prepare, status, reset, and stop controls",
+      "Independent owner decision boundary that remains pending until personal review"
+    ],
+    "evidence": [
+      {
+        "kind": "commit",
+        "value": "e6cf3cb18de4e8854b19e1d29c94f3b492eba441"
+      },
+      {
+        "kind": "completion-record",
+        "value": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_7_Validation_Record.md"
+      },
+      {
+        "kind": "path",
+        "value": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_7_Integrated_Journey_Registry.json"
+      },
+      {
+        "kind": "test",
+        "value": "tests/e2e/homeport-phase7.spec.ts"
+      }
+    ],
+    "branch": "codex/project-homeport-product-reality-recovery",
+    "commit": "e6cf3cb18de4e8854b19e1d29c94f3b492eba441",
+    "limitations": [
+      "Not available on main until separately reviewed and integrated",
+      "Evidence is local, synthetic, and uses task-owned SQLite clones",
+      "Live providers, production MySQL, deployment, and physical assistive-technology validation remain external",
+      "The owner decision remains PENDING_OWNER_DECISION",
+      "Walkthrough readiness is not owner acceptance or product acceptance"
+    ],
+    "catalogVersion": 1
   }
 ]

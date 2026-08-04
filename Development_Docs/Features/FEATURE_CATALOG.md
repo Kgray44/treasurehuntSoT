@@ -1134,6 +1134,47 @@ Every current human-facing screen is now source-inventoried with governed visual
 
 ---
 
+## FT-B007 - Integrated Whole-Product Voyage and Owner Walkthrough
+
+**Status:** BRANCH COMPLETE NOT MERGED
+**Program or subsystem:** Project Homeport Phase 7
+
+One deterministic synthetic fixture and governed A-through-O journey system now prove account continuity, workspace traversal, Personal Harbor, Community, recovery, failure states, mobile parity, and a safe final owner-walkthrough runtime.
+
+### Important subfeatures
+
+- Immutable integrated synthetic seed with isolated automated and owner-walkthrough clones
+- External task-owned credential and token handoff with no committed secrets
+- A-through-O visible-control whole-product journey registry
+- Cross-workspace canonical account and session continuity
+- Profile, Passport, Community save, Player, Captain, and Creator integrated reconciliation
+- Password recovery, session expiry, permission, multi-tab invalidation, and dependency recovery
+- Desktop, mobile, keyboard focus, and reduced-motion journey proof
+- Checksum, source, fixture, viewport, route, and visual-review-bound evidence
+- Owned final production walkthrough runtime with safe prepare, status, reset, and stop controls
+- Independent owner decision boundary that remains pending until personal review
+
+### Primary surfaces
+
+`/`, `/register`, `/sign-in`, `/account`, `/account/preferences`, `/account/security`, `/account/sessions`, `/passport`, `/passport/history`, `/passport/memories`, `/passport/artifacts`, `/passport/saved`, `/community`, `/player/library`, `/captain/library`, `/studio/library`
+
+### Meaningful limitations
+
+- Not available on main until separately reviewed and integrated
+- Evidence is local, synthetic, and uses task-owned SQLite clones
+- Live providers, production MySQL, deployment, and physical assistive-technology validation remain external
+- The owner decision remains PENDING_OWNER_DECISION
+- Walkthrough readiness is not owner acceptance or product acceptance
+
+### Evidence
+
+- commit: `e6cf3cb18de4e8854b19e1d29c94f3b492eba441`
+- completion-record: `Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_7_Validation_Record.md`
+- path: `Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_7_Integrated_Journey_Registry.json`
+- test: `tests/e2e/homeport-phase7.spec.ts`
+
+---
+
 # Deliberately Excluded Until Complete
 
 - Harborlight Phase 4 is planned and is not cataloged as an implemented capability.

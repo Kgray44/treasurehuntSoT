@@ -192,7 +192,8 @@
         "HP-EV-025",
         "HP-P3-EV-T-security",
         "HP-P6-EV-033-account-security-standard-desktop",
-        "HP-P6-EV-034-account-security-modern-mobile"
+        "HP-P6-EV-034-account-security-modern-mobile",
+        "HP-P7-EV-I-recovery-restored-account"
       ],
       "journeyIds": [
         "HP-JRN-008",
@@ -226,7 +227,8 @@
         "HP-P3-JRN-AB",
         "HP-P3-JRN-AC",
         "HP-P3-JRN-AD",
-        "HP-P3-JRN-AE"
+        "HP-P3-JRN-AE",
+        "HP-P7-JRN-I"
       ],
       "targetHomeportPhase": "PHASE_3_BUILD_THE_PERSONAL_HARBOR",
       "acceptanceContract": "homeport.security.sensitive-reauth;homeport.sessions.signout-all",
@@ -282,6 +284,11 @@
         "criticality": "HIGH",
         "finalMaturity": "VISUALLY_COMPLETE",
         "acceptanceRegistry": "Project_Homeport_Phase_6_Screen_Acceptance_Registry.json"
+      },
+      "phase7Implementation": {
+        "state": "READY_FOR_OWNER_WALKTHROUGH",
+        "sourceSha": "e6cf3cb18de4e8854b19e1d29c94f3b492eba441",
+        "evidenceIds": ["HP-P7-EV-I-recovery-restored-account"]
       }
     },
     {
@@ -517,9 +524,10 @@
         "HP-P6-EV-100-captain-sessions-sessionid-tablet-landscape",
         "HP-P6-EV-101-captain-sessions-sessionid-tablet-portrait",
         "HP-P6-EV-102-captain-sessions-sessionid-narrow-mobile",
-        "HP-P6-EV-117-captain-sessions-sessionid-effective-200-percent"
+        "HP-P6-EV-117-captain-sessions-sessionid-effective-200-percent",
+        "HP-P7-EV-D-captain-session"
       ],
-      "journeyIds": ["HP-P2-JRN-O"],
+      "journeyIds": ["HP-P2-JRN-O", "HP-P7-JRN-D"],
       "targetHomeportPhase": "PHASE_2_GLOBAL_SHELL_OR_PHASE_5_ROUTE_REACHABILITY",
       "acceptanceContract": "homeport.screen.captain-sessions-sessionid.current-contract",
       "status": "CURRENT_ORPHAN",
@@ -545,6 +553,11 @@
         "criticality": "CRITICAL",
         "finalMaturity": "VISUALLY_COMPLETE",
         "acceptanceRegistry": "Project_Homeport_Phase_6_Screen_Acceptance_Registry.json"
+      },
+      "phase7Implementation": {
+        "state": "READY_FOR_OWNER_WALKTHROUGH",
+        "sourceSha": "e6cf3cb18de4e8854b19e1d29c94f3b492eba441",
+        "evidenceIds": ["HP-P7-EV-D-captain-session"]
       }
     },
     {
@@ -753,7 +766,9 @@
         "HP-P4-EV-AC-archived-removed",
         "HP-P4-EV-AM-audio-district-empty",
         "HP-P6-EV-047-community-slug-standard-desktop",
-        "HP-P6-EV-048-community-slug-modern-mobile"
+        "HP-P6-EV-048-community-slug-modern-mobile",
+        "HP-P7-EV-F-community-saved",
+        "HP-P7-EV-O-whole-voyage-community"
       ],
       "journeyIds": [
         "HP-P4-JRN-A",
@@ -799,7 +814,9 @@
         "HP-P4-JRN-AO",
         "HP-P4-JRN-AP",
         "HP-P4-JRN-AQ",
-        "HP-P4-JRN-AR"
+        "HP-P4-JRN-AR",
+        "HP-P7-JRN-F",
+        "HP-P7-JRN-O"
       ],
       "targetHomeportPhase": "PHASE_4_COMMUNITY_HARBOR",
       "acceptanceContract": "homeport.screen.community-slug.current-contract",
@@ -906,6 +923,11 @@
         "criticality": "HIGH",
         "finalMaturity": "VISUALLY_COMPLETE",
         "acceptanceRegistry": "Project_Homeport_Phase_6_Screen_Acceptance_Registry.json"
+      },
+      "phase7Implementation": {
+        "state": "READY_FOR_OWNER_WALKTHROUGH",
+        "sourceSha": "e6cf3cb18de4e8854b19e1d29c94f3b492eba441",
+        "evidenceIds": ["HP-P7-EV-F-community-saved", "HP-P7-EV-O-whole-voyage-community"]
       }
     },
     {
@@ -2887,9 +2909,10 @@
         "HP-P1-EV-Q-zoom-permission",
         "HP-P2-EV-T-permission-return",
         "HP-P6-EV-051-community-moderation-standard-desktop",
-        "HP-P6-EV-052-community-moderation-modern-mobile"
+        "HP-P6-EV-052-community-moderation-modern-mobile",
+        "HP-P7-EV-K-permission-denied-authenticated"
       ],
-      "journeyIds": ["HP-JRN-012", "HP-P1-JRN-G", "HP-P1-JRN-Q", "HP-P2-JRN-Q"],
+      "journeyIds": ["HP-JRN-012", "HP-P1-JRN-G", "HP-P1-JRN-Q", "HP-P2-JRN-Q", "HP-P7-JRN-K"],
       "targetHomeportPhase": "PHASE_4_COMMUNITY_HARBOR",
       "acceptanceContract": "homeport.screen.community-moderation.current-contract",
       "status": "CURRENT_SURFACE",
@@ -2921,6 +2944,11 @@
         "criticality": "HIGH",
         "finalMaturity": "COMPLETE_WITH_TRUTHFUL_EXTERNAL_LIMITATION",
         "acceptanceRegistry": "Project_Homeport_Phase_6_Screen_Acceptance_Registry.json"
+      },
+      "phase7Implementation": {
+        "state": "READY_FOR_OWNER_WALKTHROUGH",
+        "sourceSha": "e6cf3cb18de4e8854b19e1d29c94f3b492eba441",
+        "evidenceIds": ["HP-P7-EV-K-permission-denied-authenticated"]
       }
     },
     {
@@ -2985,7 +3013,8 @@
         "HP-P6-EV-093-community-tablet-portrait",
         "HP-P6-EV-094-community-narrow-mobile",
         "HP-P6-EV-115-community-effective-200-percent",
-        "HP-P6-EV-125-community-no-results"
+        "HP-P6-EV-125-community-no-results",
+        "HP-P7-EV-N-dependency-unavailable"
       ],
       "journeyIds": [
         "HP-JRN-006",
@@ -3036,7 +3065,8 @@
         "HP-P4-JRN-AO",
         "HP-P4-JRN-AP",
         "HP-P4-JRN-AQ",
-        "HP-P4-JRN-AR"
+        "HP-P4-JRN-AR",
+        "HP-P7-JRN-N"
       ],
       "targetHomeportPhase": "PHASE_4_COMMUNITY_HARBOR",
       "acceptanceContract": "homeport.screen.community.current-contract",
@@ -3163,6 +3193,11 @@
         "criticality": "CRITICAL",
         "finalMaturity": "VISUALLY_COMPLETE",
         "acceptanceRegistry": "Project_Homeport_Phase_6_Screen_Acceptance_Registry.json"
+      },
+      "phase7Implementation": {
+        "state": "READY_FOR_OWNER_WALKTHROUGH",
+        "sourceSha": "e6cf3cb18de4e8854b19e1d29c94f3b492eba441",
+        "evidenceIds": ["HP-P7-EV-N-dependency-unavailable"]
       }
     },
     {
@@ -4106,7 +4141,8 @@
         "HP-P6-EV-061-root-tablet-portrait",
         "HP-P6-EV-062-root-narrow-mobile",
         "HP-P6-EV-107-root-effective-200-percent",
-        "HP-P6-EV-126-root-reduced-motion"
+        "HP-P6-EV-126-root-reduced-motion",
+        "HP-P7-EV-O-whole-voyage-anonymous-end"
       ],
       "journeyIds": [
         "HP-JRN-001",
@@ -4121,7 +4157,8 @@
         "HP-P2-JRN-J",
         "HP-P2-JRN-K",
         "HP-P2-JRN-S",
-        "HP-P2-JRN-T"
+        "HP-P2-JRN-T",
+        "HP-P7-JRN-O"
       ],
       "targetHomeportPhase": "PHASE_2_GLOBAL_SHELL_OR_PHASE_5_ROUTE_REACHABILITY",
       "acceptanceContract": "homeport.screen.root.current-contract",
@@ -4242,6 +4279,11 @@
         "criticality": "CRITICAL",
         "finalMaturity": "VISUALLY_COMPLETE",
         "acceptanceRegistry": "Project_Homeport_Phase_6_Screen_Acceptance_Registry.json"
+      },
+      "phase7Implementation": {
+        "state": "READY_FOR_OWNER_WALKTHROUGH",
+        "sourceSha": "e6cf3cb18de4e8854b19e1d29c94f3b492eba441",
+        "evidenceIds": ["HP-P7-EV-O-whole-voyage-anonymous-end"]
       }
     },
     {
@@ -4634,7 +4676,8 @@
         "HP-P6-EV-068-player-library-tablet-landscape",
         "HP-P6-EV-069-player-library-tablet-portrait",
         "HP-P6-EV-070-player-library-narrow-mobile",
-        "HP-P6-EV-109-player-library-effective-200-percent"
+        "HP-P6-EV-109-player-library-effective-200-percent",
+        "HP-P7-EV-L-mobile-workspace"
       ],
       "journeyIds": [
         "HP-JRN-003",
@@ -4649,7 +4692,8 @@
         "HP-P1-JRN-K",
         "HP-P1-JRN-P",
         "HP-P2-JRN-E",
-        "HP-P2-JRN-H"
+        "HP-P2-JRN-H",
+        "HP-P7-JRN-L"
       ],
       "targetHomeportPhase": "PHASE_2_GLOBAL_SHELL_OR_PHASE_5_ROUTE_REACHABILITY",
       "acceptanceContract": "homeport.screen.player-library.current-contract",
@@ -4692,6 +4736,11 @@
         "criticality": "CRITICAL",
         "finalMaturity": "VISUALLY_COMPLETE",
         "acceptanceRegistry": "Project_Homeport_Phase_6_Screen_Acceptance_Registry.json"
+      },
+      "phase7Implementation": {
+        "state": "READY_FOR_OWNER_WALKTHROUGH",
+        "sourceSha": "e6cf3cb18de4e8854b19e1d29c94f3b492eba441",
+        "evidenceIds": ["HP-P7-EV-L-mobile-workspace"]
       }
     },
     {
@@ -4891,9 +4940,10 @@
         "HP-P6-EV-096-player-playthroughs-playthroughid-tablet-landscape",
         "HP-P6-EV-097-player-playthroughs-playthroughid-tablet-portrait",
         "HP-P6-EV-098-player-playthroughs-playthroughid-narrow-mobile",
-        "HP-P6-EV-116-player-playthroughs-playthroughid-effective-200-percent"
+        "HP-P6-EV-116-player-playthroughs-playthroughid-effective-200-percent",
+        "HP-P7-EV-C-player-voyage"
       ],
-      "journeyIds": ["HP-P1-JRN-N"],
+      "journeyIds": ["HP-P1-JRN-N", "HP-P7-JRN-C"],
       "targetHomeportPhase": "PHASE_2_GLOBAL_SHELL_OR_PHASE_5_ROUTE_REACHABILITY",
       "acceptanceContract": "homeport.screen.player-playthroughs-playthroughid.current-contract",
       "status": "CURRENT_ORPHAN",
@@ -4916,6 +4966,11 @@
         "criticality": "CRITICAL",
         "finalMaturity": "VISUALLY_COMPLETE",
         "acceptanceRegistry": "Project_Homeport_Phase_6_Screen_Acceptance_Registry.json"
+      },
+      "phase7Implementation": {
+        "state": "READY_FOR_OWNER_WALKTHROUGH",
+        "sourceSha": "e6cf3cb18de4e8854b19e1d29c94f3b492eba441",
+        "evidenceIds": ["HP-P7-EV-C-player-voyage"]
       }
     },
     {
@@ -5317,9 +5372,20 @@
         "HP-P6-EV-064-sign-in-tablet-landscape",
         "HP-P6-EV-065-sign-in-tablet-portrait",
         "HP-P6-EV-066-sign-in-narrow-mobile",
-        "HP-P6-EV-108-sign-in-effective-200-percent"
+        "HP-P6-EV-108-sign-in-effective-200-percent",
+        "HP-P7-EV-J-session-expired",
+        "HP-P7-EV-M-multi-tab-invalidated"
       ],
-      "journeyIds": ["HP-JRN-002", "HP-JRN-011", "HP-JRN-012", "HP-P1-JRN-A", "HP-P1-JRN-I", "HP-P1-JRN-J"],
+      "journeyIds": [
+        "HP-JRN-002",
+        "HP-JRN-011",
+        "HP-JRN-012",
+        "HP-P1-JRN-A",
+        "HP-P1-JRN-I",
+        "HP-P1-JRN-J",
+        "HP-P7-JRN-J",
+        "HP-P7-JRN-M"
+      ],
       "targetHomeportPhase": "PHASE_1_IDENTITY_AND_SESSION",
       "acceptanceContract": "homeport.screen.sign-in.current-contract",
       "status": "CURRENT_SURFACE",
@@ -5359,6 +5425,11 @@
         "criticality": "CRITICAL",
         "finalMaturity": "VISUALLY_COMPLETE",
         "acceptanceRegistry": "Project_Homeport_Phase_6_Screen_Acceptance_Registry.json"
+      },
+      "phase7Implementation": {
+        "state": "READY_FOR_OWNER_WALKTHROUGH",
+        "sourceSha": "e6cf3cb18de4e8854b19e1d29c94f3b492eba441",
+        "evidenceIds": ["HP-P7-EV-J-session-expired", "HP-P7-EV-M-multi-tab-invalidated"]
       }
     },
     {
@@ -6033,8 +6104,8 @@
       "currentVisualMaturity": "VISUALLY_COMPLETE",
       "missingStates": [],
       "knownDefects": [],
-      "screenshotIds": [],
-      "journeyIds": [],
+      "screenshotIds": ["HP-P7-EV-E-creator-private-state"],
+      "journeyIds": ["HP-P7-JRN-E"],
       "targetHomeportPhase": "PHASE_2_GLOBAL_SHELL_OR_PHASE_5_ROUTE_REACHABILITY",
       "acceptanceContract": "homeport.screen.studio-tales-new.current-contract",
       "status": "CURRENT_SURFACE",
@@ -6051,6 +6122,11 @@
         "criticality": "STANDARD",
         "finalMaturity": "VISUALLY_COMPLETE",
         "acceptanceRegistry": "Project_Homeport_Phase_6_Screen_Acceptance_Registry.json"
+      },
+      "phase7Implementation": {
+        "state": "READY_FOR_OWNER_WALKTHROUGH",
+        "sourceSha": "e6cf3cb18de4e8854b19e1d29c94f3b492eba441",
+        "evidenceIds": ["HP-P7-EV-E-creator-private-state"]
       }
     },
     {
@@ -6551,7 +6627,9 @@
         "HP-P6-EV-080-account-tablet-landscape",
         "HP-P6-EV-081-account-tablet-portrait",
         "HP-P6-EV-082-account-narrow-mobile",
-        "HP-P6-EV-112-account-effective-200-percent"
+        "HP-P6-EV-112-account-effective-200-percent",
+        "HP-P7-EV-A-registered-profile",
+        "HP-P7-EV-B-cross-workspace-account"
       ],
       "journeyIds": [
         "HP-P3-JRN-A",
@@ -6584,7 +6662,9 @@
         "HP-P3-JRN-AB",
         "HP-P3-JRN-AC",
         "HP-P3-JRN-AD",
-        "HP-P3-JRN-AE"
+        "HP-P3-JRN-AE",
+        "HP-P7-JRN-A",
+        "HP-P7-JRN-B"
       ],
       "targetHomeportPhase": "PHASE_3_BUILD_THE_PERSONAL_HARBOR",
       "acceptanceContract": "homeport.personal-harbor.ia;homeport.profile.overview",
@@ -6638,6 +6718,11 @@
         "criticality": "CRITICAL",
         "finalMaturity": "VISUALLY_COMPLETE",
         "acceptanceRegistry": "Project_Homeport_Phase_6_Screen_Acceptance_Registry.json"
+      },
+      "phase7Implementation": {
+        "state": "READY_FOR_OWNER_WALKTHROUGH",
+        "sourceSha": "e6cf3cb18de4e8854b19e1d29c94f3b492eba441",
+        "evidenceIds": ["HP-P7-EV-A-registered-profile", "HP-P7-EV-B-cross-workspace-account"]
       }
     },
     {
@@ -6915,7 +7000,7 @@
       "currentVisualMaturity": "VISUALLY_COMPLETE",
       "missingStates": [],
       "knownDefects": [],
-      "screenshotIds": ["HP-P3-EV-G-preferences"],
+      "screenshotIds": ["HP-P3-EV-G-preferences", "HP-P7-EV-G-profile-preferences-saved"],
       "journeyIds": [
         "HP-P3-JRN-A",
         "HP-P3-JRN-B",
@@ -6947,7 +7032,8 @@
         "HP-P3-JRN-AB",
         "HP-P3-JRN-AC",
         "HP-P3-JRN-AD",
-        "HP-P3-JRN-AE"
+        "HP-P3-JRN-AE",
+        "HP-P7-JRN-G"
       ],
       "targetHomeportPhase": "PHASE_3_BUILD_THE_PERSONAL_HARBOR",
       "acceptanceContract": "homeport.preferences.typed;homeport.personal-harbor.unsaved-changes;homeport.personal-harbor.stale-conflict",
@@ -6992,6 +7078,11 @@
         "criticality": "STANDARD",
         "finalMaturity": "VISUALLY_COMPLETE",
         "acceptanceRegistry": "Project_Homeport_Phase_6_Screen_Acceptance_Registry.json"
+      },
+      "phase7Implementation": {
+        "state": "READY_FOR_OWNER_WALKTHROUGH",
+        "sourceSha": "e6cf3cb18de4e8854b19e1d29c94f3b492eba441",
+        "evidenceIds": ["HP-P7-EV-G-profile-preferences-saved"]
       }
     },
     {
@@ -8016,7 +8107,7 @@
       "currentVisualMaturity": "VISUALLY_COMPLETE",
       "missingStates": [],
       "knownDefects": [],
-      "screenshotIds": ["HP-P3-EV-S-saved-content"],
+      "screenshotIds": ["HP-P3-EV-S-saved-content", "HP-P7-EV-H-passport-artifacts-and-saved"],
       "journeyIds": [
         "HP-P3-JRN-A",
         "HP-P3-JRN-B",
@@ -8048,7 +8139,8 @@
         "HP-P3-JRN-AB",
         "HP-P3-JRN-AC",
         "HP-P3-JRN-AD",
-        "HP-P3-JRN-AE"
+        "HP-P3-JRN-AE",
+        "HP-P7-JRN-H"
       ],
       "targetHomeportPhase": "PHASE_3_BUILD_THE_PERSONAL_HARBOR",
       "acceptanceContract": "homeport.saved-content.owner-only;homeport.saved-content.cross-surface",
@@ -8089,6 +8181,11 @@
         "criticality": "STANDARD",
         "finalMaturity": "VISUALLY_COMPLETE",
         "acceptanceRegistry": "Project_Homeport_Phase_6_Screen_Acceptance_Registry.json"
+      },
+      "phase7Implementation": {
+        "state": "READY_FOR_OWNER_WALKTHROUGH",
+        "sourceSha": "e6cf3cb18de4e8854b19e1d29c94f3b492eba441",
+        "evidenceIds": ["HP-P7-EV-H-passport-artifacts-and-saved"]
       }
     },
     {
@@ -8458,5 +8555,16 @@
     "architectureFreezeSha": "07544240bc592b0798625824265fd48c5419f87a",
     "fixtureVersion": "homeport-phase6-v1",
     "screenRegistryDigest": "ccd25a61c8c62ca17b20e7ff33a83fa620f5409639d89f4874a42b998c3344ce"
+  },
+  "phase7Implementation": {
+    "state": "READY_FOR_OWNER_WALKTHROUGH",
+    "sourceSha": "e6cf3cb18de4e8854b19e1d29c94f3b492eba441",
+    "architectureFreezeSha": "7e85c2c9d67f7d4386d66e429dbc9f5b17b92be3",
+    "fixtureVersion": "homeport-phase7-integrated-v1",
+    "journeyCount": 15,
+    "evidenceCount": 16,
+    "ownerDecision": "PENDING_OWNER_DECISION",
+    "branch": "codex/project-homeport-product-reality-recovery",
+    "limitations": ["Not merged", "Not deployed", "No owner acceptance", "Local synthetic evidence only"]
   }
 }

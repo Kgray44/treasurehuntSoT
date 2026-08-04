@@ -6,7 +6,7 @@ Use [INDEX.md](INDEX.md) for categories and `document-index.json` for the machin
 
 ## Project Homeport
 
-[Project Homeport](Projects/Project_Homeport/README.md) governs product-reality recovery and convergence. Its Phase 0 audit establishes route, session, navigation, screen, control, journey, visual, and nonconformity truth without changing product behavior; Phases 1-5 now retain branch-local identity, shell, Personal Harbor, Community Harbor, and route-reachability records. The repository-wide governing standard is [Voyagewright Global Product Governance](Governance/Voyagewright_Global_Product_Governance_Standard.md).
+[Project Homeport](Projects/Project_Homeport/README.md) governs product-reality recovery and convergence. Its Phase 0 audit establishes route, session, navigation, screen, control, journey, visual, and nonconformity truth without changing product behavior; Phases 1-7 now retain branch-local identity, shell, Personal Harbor, Community Harbor, route-reachability, complete-surface, integrated whole-voyage, and owner-walkthrough records. The owner decision remains pending. The repository-wide governing standard is [Voyagewright Global Product Governance](Governance/Voyagewright_Global_Product_Governance_Standard.md).
 
 ## Engineering-record template
 

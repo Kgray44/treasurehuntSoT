@@ -215,9 +215,14 @@ export function validatePhase6Surfaces(root = moduleRoot) {
   const ledger = readCsv("Homeport_Nonconformity_Ledger.csv");
   const nc18 = ledger.find((record) => record.id === "HP-NC-018");
   if (nc18?.current_status !== "CLOSED_PHASE_6_BRANCH_VALIDATED") errors.push("HP_NC_018_NOT_CLOSED");
-  for (const id of ["HP-NC-015", "HP-NC-019", "HP-NC-020"])
-    if (/^CLOSED/u.test(ledger.find((record) => record.id === id)?.current_status ?? ""))
-      errors.push(`PHASE7_NONCONFORMITY_UNEXPECTEDLY_CLOSED:${id}`);
+  const phase7Expected = new Map([
+    ["HP-NC-015", "CLOSED_PHASE_7_WALKTHROUGH_READY"],
+    ["HP-NC-019", "CLOSED_PHASE_7_FIXTURE_VALIDATED"],
+    ["HP-NC-020", "WAITING_FOR_OWNER_DECISION"],
+  ]);
+  for (const [id, expected] of phase7Expected)
+    if (ledger.find((record) => record.id === id)?.current_status !== expected)
+      errors.push(`PHASE7_NONCONFORMITY_STATE_INVALID:${id}`);
   outcomes.add("PRODUCT_NONCONFORMITIES_REMAIN");
 
   if (errors.length) return { ok: false, errors: [...new Set(errors)], outcomes: [...outcomes] };

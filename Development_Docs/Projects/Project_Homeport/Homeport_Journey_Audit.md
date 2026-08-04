@@ -270,3 +270,11 @@ The source-driven Phase 5 graph records 85 page nodes and 159 typed transitions 
 The Phase 6 screen acceptance system records 92 human screen contracts across 85 current page sources. Critical and high screens use exact-source production-runtime desktop/mobile evidence; cross-product state, responsive, accessibility, motion, media, mutation, and raw-surface gates remain independently validated. Status: **BRANCH_VALIDATED_NOT_MERGED**. Exact implementation source: `e02ee0dae0469a2ba573beaf409c0b34e8668d09`. Phase 7 integrated journeys, owner walkthrough, merge, deployment, and acceptance remain separate boundaries.
 
 <!-- PHASE6_SURFACES_END -->
+
+<!-- PHASE7_WHOLE_VOYAGE_START -->
+
+## Phase 7 whole-voyage amendment
+
+Journeys A through O passed against exact product source `e6cf3cb18de4e8854b19e1d29c94f3b492eba441`, the immutable `homeport-phase7-integrated-v1` seed, and isolated per-journey database clones. Sixteen checksum-bound production-runtime captures received Codex visual review. HP-NC-015 is `CLOSED_PHASE_7_WALKTHROUGH_READY`; HP-NC-019 is `CLOSED_PHASE_7_FIXTURE_VALIDATED`; HP-NC-020 is `WAITING_FOR_OWNER_DECISION`. Status: **READY_FOR_OWNER_WALKTHROUGH**. Owner decision: **PENDING_OWNER_DECISION**. This is not merge, deployment, live-provider, or owner-acceptance proof.
+
+<!-- PHASE7_WHOLE_VOYAGE_END -->

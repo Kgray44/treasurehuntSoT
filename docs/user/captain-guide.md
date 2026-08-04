@@ -39,3 +39,8 @@ labels, structured confirmation dialogs, visible pending/failure feedback,
 keyboard focus restoration, and responsive tablet/mobile controls. Synthetic
 browser evidence does not establish live Voyage operations, deployment, or
 owner acceptance.
+
+Phase 7 proves a returning account can reach Captain Library and the seeded
+session through visible controls, then move to Profile, Player, Creator Studio,
+Passport, and sign-out without a second identity. This whole-voyage evidence
+is local and synthetic; the owner decision remains pending.

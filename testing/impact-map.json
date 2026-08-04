@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "status": "phase-6-homeport-product-surface-impact-map",
+  "status": "phase-7-homeport-whole-voyage-impact-map",
   "pathMappings": [
     {
       "path": "Development_Docs/Governance/**",
@@ -2398,6 +2398,384 @@
         "homeport.surface.phase5-regression",
         "homeport.surface.artifact-idempotency"
       ]
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_7_*",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"],
+      "contractIds": [
+        "homeport.phase7.fixture.integrated",
+        "homeport.phase7.fixture.immutable-seed",
+        "homeport.phase7.fixture.clone-isolation",
+        "homeport.phase7.fixture.credential-boundary",
+        "homeport.phase7.fixture.reset",
+        "homeport.phase7.journey-a",
+        "homeport.phase7.journey-b",
+        "homeport.phase7.journey-c",
+        "homeport.phase7.journey-d",
+        "homeport.phase7.journey-e",
+        "homeport.phase7.journey-f",
+        "homeport.phase7.journey-g",
+        "homeport.phase7.journey-h",
+        "homeport.phase7.journey-i",
+        "homeport.phase7.journey-j",
+        "homeport.phase7.journey-k",
+        "homeport.phase7.journey-l",
+        "homeport.phase7.journey-m",
+        "homeport.phase7.journey-n",
+        "homeport.phase7.journey-o",
+        "homeport.phase7.evidence-source-binding",
+        "homeport.phase7.evidence-complete",
+        "homeport.phase7.evidence-checksum",
+        "homeport.phase7.evidence-human-visual-review",
+        "homeport.phase7.viewport.desktop",
+        "homeport.phase7.viewport.mobile",
+        "homeport.phase7.motion.reduced",
+        "homeport.phase7.accessibility.keyboard-focus",
+        "homeport.phase7.account.canonical-lifecycle",
+        "homeport.phase7.account.cross-workspace-session",
+        "homeport.phase7.profile.persistence",
+        "homeport.phase7.passport.private-authorization",
+        "homeport.phase7.community.saved-reconciliation",
+        "homeport.phase7.recovery.tokens",
+        "homeport.phase7.session.expiry",
+        "homeport.phase7.permission.explicit",
+        "homeport.phase7.mobile.parity",
+        "homeport.phase7.multitab.invalidation",
+        "homeport.phase7.dependency.failure-recovery",
+        "homeport.phase7.rehearsal.final",
+        "homeport.phase7.walkthrough.package",
+        "homeport.phase7.walkthrough.runtime-health",
+        "homeport.phase7.owner-decision.pending",
+        "homeport.phase7.control-plane.updated",
+        "homeport.phase7.feature-catalog.ft-b007",
+        "homeport.phase7.privacy.synthetic-only",
+        "homeport.phase7.database.canonical-invariant",
+        "homeport.phase7.git.branch-parity"
+      ]
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7/**",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"],
+      "contractIds": [
+        "homeport.phase7.fixture.integrated",
+        "homeport.phase7.fixture.immutable-seed",
+        "homeport.phase7.fixture.clone-isolation",
+        "homeport.phase7.fixture.credential-boundary",
+        "homeport.phase7.fixture.reset",
+        "homeport.phase7.journey-a",
+        "homeport.phase7.journey-b",
+        "homeport.phase7.journey-c",
+        "homeport.phase7.journey-d",
+        "homeport.phase7.journey-e",
+        "homeport.phase7.journey-f",
+        "homeport.phase7.journey-g",
+        "homeport.phase7.journey-h",
+        "homeport.phase7.journey-i",
+        "homeport.phase7.journey-j",
+        "homeport.phase7.journey-k",
+        "homeport.phase7.journey-l",
+        "homeport.phase7.journey-m",
+        "homeport.phase7.journey-n",
+        "homeport.phase7.journey-o",
+        "homeport.phase7.evidence-source-binding",
+        "homeport.phase7.evidence-complete",
+        "homeport.phase7.evidence-checksum",
+        "homeport.phase7.evidence-human-visual-review",
+        "homeport.phase7.viewport.desktop",
+        "homeport.phase7.viewport.mobile",
+        "homeport.phase7.motion.reduced",
+        "homeport.phase7.accessibility.keyboard-focus",
+        "homeport.phase7.account.canonical-lifecycle",
+        "homeport.phase7.account.cross-workspace-session",
+        "homeport.phase7.profile.persistence",
+        "homeport.phase7.passport.private-authorization",
+        "homeport.phase7.community.saved-reconciliation",
+        "homeport.phase7.recovery.tokens",
+        "homeport.phase7.session.expiry",
+        "homeport.phase7.permission.explicit",
+        "homeport.phase7.mobile.parity",
+        "homeport.phase7.multitab.invalidation",
+        "homeport.phase7.dependency.failure-recovery",
+        "homeport.phase7.rehearsal.final",
+        "homeport.phase7.walkthrough.package",
+        "homeport.phase7.walkthrough.runtime-health",
+        "homeport.phase7.owner-decision.pending",
+        "homeport.phase7.control-plane.updated",
+        "homeport.phase7.feature-catalog.ft-b007",
+        "homeport.phase7.privacy.synthetic-only",
+        "homeport.phase7.database.canonical-invariant",
+        "homeport.phase7.git.branch-parity"
+      ]
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/walkthrough/phase7/**",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"],
+      "contractIds": [
+        "homeport.phase7.fixture.integrated",
+        "homeport.phase7.fixture.immutable-seed",
+        "homeport.phase7.fixture.clone-isolation",
+        "homeport.phase7.fixture.credential-boundary",
+        "homeport.phase7.fixture.reset",
+        "homeport.phase7.journey-a",
+        "homeport.phase7.journey-b",
+        "homeport.phase7.journey-c",
+        "homeport.phase7.journey-d",
+        "homeport.phase7.journey-e",
+        "homeport.phase7.journey-f",
+        "homeport.phase7.journey-g",
+        "homeport.phase7.journey-h",
+        "homeport.phase7.journey-i",
+        "homeport.phase7.journey-j",
+        "homeport.phase7.journey-k",
+        "homeport.phase7.journey-l",
+        "homeport.phase7.journey-m",
+        "homeport.phase7.journey-n",
+        "homeport.phase7.journey-o",
+        "homeport.phase7.evidence-source-binding",
+        "homeport.phase7.evidence-complete",
+        "homeport.phase7.evidence-checksum",
+        "homeport.phase7.evidence-human-visual-review",
+        "homeport.phase7.viewport.desktop",
+        "homeport.phase7.viewport.mobile",
+        "homeport.phase7.motion.reduced",
+        "homeport.phase7.accessibility.keyboard-focus",
+        "homeport.phase7.account.canonical-lifecycle",
+        "homeport.phase7.account.cross-workspace-session",
+        "homeport.phase7.profile.persistence",
+        "homeport.phase7.passport.private-authorization",
+        "homeport.phase7.community.saved-reconciliation",
+        "homeport.phase7.recovery.tokens",
+        "homeport.phase7.session.expiry",
+        "homeport.phase7.permission.explicit",
+        "homeport.phase7.mobile.parity",
+        "homeport.phase7.multitab.invalidation",
+        "homeport.phase7.dependency.failure-recovery",
+        "homeport.phase7.rehearsal.final",
+        "homeport.phase7.walkthrough.package",
+        "homeport.phase7.walkthrough.runtime-health",
+        "homeport.phase7.owner-decision.pending",
+        "homeport.phase7.control-plane.updated",
+        "homeport.phase7.feature-catalog.ft-b007",
+        "homeport.phase7.privacy.synthetic-only",
+        "homeport.phase7.database.canonical-invariant",
+        "homeport.phase7.git.branch-parity"
+      ]
+    },
+    {
+      "path": "scripts/homeport/*phase7*.mjs",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"],
+      "contractIds": [
+        "homeport.phase7.fixture.integrated",
+        "homeport.phase7.fixture.immutable-seed",
+        "homeport.phase7.fixture.clone-isolation",
+        "homeport.phase7.fixture.credential-boundary",
+        "homeport.phase7.fixture.reset",
+        "homeport.phase7.journey-a",
+        "homeport.phase7.journey-b",
+        "homeport.phase7.journey-c",
+        "homeport.phase7.journey-d",
+        "homeport.phase7.journey-e",
+        "homeport.phase7.journey-f",
+        "homeport.phase7.journey-g",
+        "homeport.phase7.journey-h",
+        "homeport.phase7.journey-i",
+        "homeport.phase7.journey-j",
+        "homeport.phase7.journey-k",
+        "homeport.phase7.journey-l",
+        "homeport.phase7.journey-m",
+        "homeport.phase7.journey-n",
+        "homeport.phase7.journey-o",
+        "homeport.phase7.evidence-source-binding",
+        "homeport.phase7.evidence-complete",
+        "homeport.phase7.evidence-checksum",
+        "homeport.phase7.evidence-human-visual-review",
+        "homeport.phase7.viewport.desktop",
+        "homeport.phase7.viewport.mobile",
+        "homeport.phase7.motion.reduced",
+        "homeport.phase7.accessibility.keyboard-focus",
+        "homeport.phase7.account.canonical-lifecycle",
+        "homeport.phase7.account.cross-workspace-session",
+        "homeport.phase7.profile.persistence",
+        "homeport.phase7.passport.private-authorization",
+        "homeport.phase7.community.saved-reconciliation",
+        "homeport.phase7.recovery.tokens",
+        "homeport.phase7.session.expiry",
+        "homeport.phase7.permission.explicit",
+        "homeport.phase7.mobile.parity",
+        "homeport.phase7.multitab.invalidation",
+        "homeport.phase7.dependency.failure-recovery",
+        "homeport.phase7.rehearsal.final",
+        "homeport.phase7.walkthrough.package",
+        "homeport.phase7.walkthrough.runtime-health",
+        "homeport.phase7.owner-decision.pending",
+        "homeport.phase7.control-plane.updated",
+        "homeport.phase7.feature-catalog.ft-b007",
+        "homeport.phase7.privacy.synthetic-only",
+        "homeport.phase7.database.canonical-invariant",
+        "homeport.phase7.git.branch-parity"
+      ]
+    },
+    {
+      "path": "tests/homeport/phase7-*.test.mjs",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"],
+      "contractIds": [
+        "homeport.phase7.fixture.integrated",
+        "homeport.phase7.fixture.immutable-seed",
+        "homeport.phase7.fixture.clone-isolation",
+        "homeport.phase7.fixture.credential-boundary",
+        "homeport.phase7.fixture.reset",
+        "homeport.phase7.journey-a",
+        "homeport.phase7.journey-b",
+        "homeport.phase7.journey-c",
+        "homeport.phase7.journey-d",
+        "homeport.phase7.journey-e",
+        "homeport.phase7.journey-f",
+        "homeport.phase7.journey-g",
+        "homeport.phase7.journey-h",
+        "homeport.phase7.journey-i",
+        "homeport.phase7.journey-j",
+        "homeport.phase7.journey-k",
+        "homeport.phase7.journey-l",
+        "homeport.phase7.journey-m",
+        "homeport.phase7.journey-n",
+        "homeport.phase7.journey-o",
+        "homeport.phase7.evidence-source-binding",
+        "homeport.phase7.evidence-complete",
+        "homeport.phase7.evidence-checksum",
+        "homeport.phase7.evidence-human-visual-review",
+        "homeport.phase7.viewport.desktop",
+        "homeport.phase7.viewport.mobile",
+        "homeport.phase7.motion.reduced",
+        "homeport.phase7.accessibility.keyboard-focus",
+        "homeport.phase7.account.canonical-lifecycle",
+        "homeport.phase7.account.cross-workspace-session",
+        "homeport.phase7.profile.persistence",
+        "homeport.phase7.passport.private-authorization",
+        "homeport.phase7.community.saved-reconciliation",
+        "homeport.phase7.recovery.tokens",
+        "homeport.phase7.session.expiry",
+        "homeport.phase7.permission.explicit",
+        "homeport.phase7.mobile.parity",
+        "homeport.phase7.multitab.invalidation",
+        "homeport.phase7.dependency.failure-recovery",
+        "homeport.phase7.rehearsal.final",
+        "homeport.phase7.walkthrough.package",
+        "homeport.phase7.walkthrough.runtime-health",
+        "homeport.phase7.owner-decision.pending",
+        "homeport.phase7.control-plane.updated",
+        "homeport.phase7.feature-catalog.ft-b007",
+        "homeport.phase7.privacy.synthetic-only",
+        "homeport.phase7.database.canonical-invariant",
+        "homeport.phase7.git.branch-parity"
+      ]
+    },
+    {
+      "path": "tests/e2e/homeport-phase7.spec.ts",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"],
+      "contractIds": [
+        "homeport.phase7.fixture.integrated",
+        "homeport.phase7.fixture.immutable-seed",
+        "homeport.phase7.fixture.clone-isolation",
+        "homeport.phase7.fixture.credential-boundary",
+        "homeport.phase7.fixture.reset",
+        "homeport.phase7.journey-a",
+        "homeport.phase7.journey-b",
+        "homeport.phase7.journey-c",
+        "homeport.phase7.journey-d",
+        "homeport.phase7.journey-e",
+        "homeport.phase7.journey-f",
+        "homeport.phase7.journey-g",
+        "homeport.phase7.journey-h",
+        "homeport.phase7.journey-i",
+        "homeport.phase7.journey-j",
+        "homeport.phase7.journey-k",
+        "homeport.phase7.journey-l",
+        "homeport.phase7.journey-m",
+        "homeport.phase7.journey-n",
+        "homeport.phase7.journey-o",
+        "homeport.phase7.evidence-source-binding",
+        "homeport.phase7.evidence-complete",
+        "homeport.phase7.evidence-checksum",
+        "homeport.phase7.evidence-human-visual-review",
+        "homeport.phase7.viewport.desktop",
+        "homeport.phase7.viewport.mobile",
+        "homeport.phase7.motion.reduced",
+        "homeport.phase7.accessibility.keyboard-focus",
+        "homeport.phase7.account.canonical-lifecycle",
+        "homeport.phase7.account.cross-workspace-session",
+        "homeport.phase7.profile.persistence",
+        "homeport.phase7.passport.private-authorization",
+        "homeport.phase7.community.saved-reconciliation",
+        "homeport.phase7.recovery.tokens",
+        "homeport.phase7.session.expiry",
+        "homeport.phase7.permission.explicit",
+        "homeport.phase7.mobile.parity",
+        "homeport.phase7.multitab.invalidation",
+        "homeport.phase7.dependency.failure-recovery",
+        "homeport.phase7.rehearsal.final",
+        "homeport.phase7.walkthrough.package",
+        "homeport.phase7.walkthrough.runtime-health",
+        "homeport.phase7.owner-decision.pending",
+        "homeport.phase7.control-plane.updated",
+        "homeport.phase7.feature-catalog.ft-b007",
+        "homeport.phase7.privacy.synthetic-only",
+        "homeport.phase7.database.canonical-invariant",
+        "homeport.phase7.git.branch-parity"
+      ]
+    },
+    {
+      "path": "playwright.homeport-phase7.config.ts",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"],
+      "contractIds": [
+        "homeport.phase7.fixture.integrated",
+        "homeport.phase7.fixture.immutable-seed",
+        "homeport.phase7.fixture.clone-isolation",
+        "homeport.phase7.fixture.credential-boundary",
+        "homeport.phase7.fixture.reset",
+        "homeport.phase7.journey-a",
+        "homeport.phase7.journey-b",
+        "homeport.phase7.journey-c",
+        "homeport.phase7.journey-d",
+        "homeport.phase7.journey-e",
+        "homeport.phase7.journey-f",
+        "homeport.phase7.journey-g",
+        "homeport.phase7.journey-h",
+        "homeport.phase7.journey-i",
+        "homeport.phase7.journey-j",
+        "homeport.phase7.journey-k",
+        "homeport.phase7.journey-l",
+        "homeport.phase7.journey-m",
+        "homeport.phase7.journey-n",
+        "homeport.phase7.journey-o",
+        "homeport.phase7.evidence-source-binding",
+        "homeport.phase7.evidence-complete",
+        "homeport.phase7.evidence-checksum",
+        "homeport.phase7.evidence-human-visual-review",
+        "homeport.phase7.viewport.desktop",
+        "homeport.phase7.viewport.mobile",
+        "homeport.phase7.motion.reduced",
+        "homeport.phase7.accessibility.keyboard-focus",
+        "homeport.phase7.account.canonical-lifecycle",
+        "homeport.phase7.account.cross-workspace-session",
+        "homeport.phase7.profile.persistence",
+        "homeport.phase7.passport.private-authorization",
+        "homeport.phase7.community.saved-reconciliation",
+        "homeport.phase7.recovery.tokens",
+        "homeport.phase7.session.expiry",
+        "homeport.phase7.permission.explicit",
+        "homeport.phase7.mobile.parity",
+        "homeport.phase7.multitab.invalidation",
+        "homeport.phase7.dependency.failure-recovery",
+        "homeport.phase7.rehearsal.final",
+        "homeport.phase7.walkthrough.package",
+        "homeport.phase7.walkthrough.runtime-health",
+        "homeport.phase7.owner-decision.pending",
+        "homeport.phase7.control-plane.updated",
+        "homeport.phase7.feature-catalog.ft-b007",
+        "homeport.phase7.privacy.synthetic-only",
+        "homeport.phase7.database.canonical-invariant",
+        "homeport.phase7.git.branch-parity"
+      ]
     }
   ],
   "contractMappings": [
@@ -3166,6 +3544,198 @@
     },
     {
       "contractId": "homeport.surface.artifact-idempotency",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.phase7.fixture.integrated",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.phase7.fixture.immutable-seed",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.phase7.fixture.clone-isolation",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.phase7.fixture.credential-boundary",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.phase7.fixture.reset",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.phase7.journey-a",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.phase7.journey-b",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.phase7.journey-c",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.phase7.journey-d",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.phase7.journey-e",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.phase7.journey-f",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.phase7.journey-g",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.phase7.journey-h",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.phase7.journey-i",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.phase7.journey-j",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.phase7.journey-k",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.phase7.journey-l",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.phase7.journey-m",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.phase7.journey-n",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.phase7.journey-o",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.phase7.evidence-source-binding",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.phase7.evidence-complete",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.phase7.evidence-checksum",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.phase7.evidence-human-visual-review",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.phase7.viewport.desktop",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.phase7.viewport.mobile",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.phase7.motion.reduced",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.phase7.accessibility.keyboard-focus",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.phase7.account.canonical-lifecycle",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.phase7.account.cross-workspace-session",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.phase7.profile.persistence",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.phase7.passport.private-authorization",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.phase7.community.saved-reconciliation",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.phase7.recovery.tokens",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.phase7.session.expiry",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.phase7.permission.explicit",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.phase7.mobile.parity",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.phase7.multitab.invalidation",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.phase7.dependency.failure-recovery",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.phase7.rehearsal.final",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.phase7.walkthrough.package",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.phase7.walkthrough.runtime-health",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.phase7.owner-decision.pending",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.phase7.control-plane.updated",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.phase7.feature-catalog.ft-b007",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.phase7.privacy.synthetic-only",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.phase7.database.canonical-invariant",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.phase7.git.branch-parity",
       "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
     }
   ],

@@ -567,6 +567,11 @@
           "homeport.route.phase3-regression",
           "homeport.route.phase4-regression"
         ]
+      },
+      "phase7Implementation": {
+        "state": "READY_FOR_OWNER_WALKTHROUGH",
+        "sourceSha": "e6cf3cb18de4e8854b19e1d29c94f3b492eba441",
+        "evidenceIds": ["HP-P7-EV-I-recovery-restored-account"]
       }
     },
     {
@@ -7557,6 +7562,11 @@
           "homeport.route.phase3-regression",
           "homeport.route.phase4-regression"
         ]
+      },
+      "phase7Implementation": {
+        "state": "READY_FOR_OWNER_WALKTHROUGH",
+        "sourceSha": "e6cf3cb18de4e8854b19e1d29c94f3b492eba441",
+        "evidenceIds": ["HP-P7-EV-D-captain-session"]
       }
     },
     {
@@ -8171,6 +8181,11 @@
           "homeport.route.phase3-regression",
           "homeport.route.phase4-regression"
         ]
+      },
+      "phase7Implementation": {
+        "state": "READY_FOR_OWNER_WALKTHROUGH",
+        "sourceSha": "e6cf3cb18de4e8854b19e1d29c94f3b492eba441",
+        "evidenceIds": ["HP-P7-EV-F-community-saved", "HP-P7-EV-O-whole-voyage-community"]
       }
     },
     {
@@ -11053,6 +11068,11 @@
           "homeport.route.phase3-regression",
           "homeport.route.phase4-regression"
         ]
+      },
+      "phase7Implementation": {
+        "state": "READY_FOR_OWNER_WALKTHROUGH",
+        "sourceSha": "e6cf3cb18de4e8854b19e1d29c94f3b492eba441",
+        "evidenceIds": ["HP-P7-EV-K-permission-denied-authenticated"]
       }
     },
     {
@@ -11345,6 +11365,11 @@
           "homeport.route.phase3-regression",
           "homeport.route.phase4-regression"
         ]
+      },
+      "phase7Implementation": {
+        "state": "READY_FOR_OWNER_WALKTHROUGH",
+        "sourceSha": "e6cf3cb18de4e8854b19e1d29c94f3b492eba441",
+        "evidenceIds": ["HP-P7-EV-N-dependency-unavailable"]
       }
     },
     {
@@ -13561,6 +13586,11 @@
           "homeport.route.phase3-regression",
           "homeport.route.phase4-regression"
         ]
+      },
+      "phase7Implementation": {
+        "state": "READY_FOR_OWNER_WALKTHROUGH",
+        "sourceSha": "e6cf3cb18de4e8854b19e1d29c94f3b492eba441",
+        "evidenceIds": ["HP-P7-EV-O-whole-voyage-anonymous-end"]
       }
     },
     {
@@ -14382,6 +14412,11 @@
           "homeport.route.phase3-regression",
           "homeport.route.phase4-regression"
         ]
+      },
+      "phase7Implementation": {
+        "state": "READY_FOR_OWNER_WALKTHROUGH",
+        "sourceSha": "e6cf3cb18de4e8854b19e1d29c94f3b492eba441",
+        "evidenceIds": ["HP-P7-EV-L-mobile-workspace"]
       }
     },
     {
@@ -14825,6 +14860,11 @@
           "homeport.route.phase3-regression",
           "homeport.route.phase4-regression"
         ]
+      },
+      "phase7Implementation": {
+        "state": "READY_FOR_OWNER_WALKTHROUGH",
+        "sourceSha": "e6cf3cb18de4e8854b19e1d29c94f3b492eba441",
+        "evidenceIds": ["HP-P7-EV-C-player-voyage"]
       }
     },
     {
@@ -15753,6 +15793,11 @@
           "homeport.route.phase3-regression",
           "homeport.route.phase4-regression"
         ]
+      },
+      "phase7Implementation": {
+        "state": "READY_FOR_OWNER_WALKTHROUGH",
+        "sourceSha": "e6cf3cb18de4e8854b19e1d29c94f3b492eba441",
+        "evidenceIds": ["HP-P7-EV-J-session-expired", "HP-P7-EV-M-multi-tab-invalidated"]
       }
     },
     {
@@ -17223,6 +17268,11 @@
           "homeport.route.phase3-regression",
           "homeport.route.phase4-regression"
         ]
+      },
+      "phase7Implementation": {
+        "state": "READY_FOR_OWNER_WALKTHROUGH",
+        "sourceSha": "e6cf3cb18de4e8854b19e1d29c94f3b492eba441",
+        "evidenceIds": ["HP-P7-EV-E-creator-private-state"]
       }
     },
     {
@@ -17723,6 +17773,11 @@
           "homeport.route.phase3-regression",
           "homeport.route.phase4-regression"
         ]
+      },
+      "phase7Implementation": {
+        "state": "READY_FOR_OWNER_WALKTHROUGH",
+        "sourceSha": "e6cf3cb18de4e8854b19e1d29c94f3b492eba441",
+        "evidenceIds": ["HP-P7-EV-A-registered-profile", "HP-P7-EV-B-cross-workspace-account"]
       }
     },
     {
@@ -18252,6 +18307,11 @@
           "homeport.route.phase3-regression",
           "homeport.route.phase4-regression"
         ]
+      },
+      "phase7Implementation": {
+        "state": "READY_FOR_OWNER_WALKTHROUGH",
+        "sourceSha": "e6cf3cb18de4e8854b19e1d29c94f3b492eba441",
+        "evidenceIds": ["HP-P7-EV-G-profile-preferences-saved"]
       }
     },
     {
@@ -19915,6 +19975,11 @@
           "homeport.route.phase3-regression",
           "homeport.route.phase4-regression"
         ]
+      },
+      "phase7Implementation": {
+        "state": "READY_FOR_OWNER_WALKTHROUGH",
+        "sourceSha": "e6cf3cb18de4e8854b19e1d29c94f3b492eba441",
+        "evidenceIds": ["HP-P7-EV-H-passport-artifacts-and-saved"]
       }
     },
     {
@@ -20652,13 +20717,7 @@
     "updatedAt": "2026-08-03T18:00:00.000Z",
     "census": {
       "sourceCount": 266,
-      "counts": {
-        "page": 85,
-        "route": 174,
-        "layout": 6,
-        "not-found": 0,
-        "error": 1
-      },
+      "counts": { "page": 85, "route": 174, "layout": 6, "not-found": 0, "error": 1 },
       "humanRouteCount": 85,
       "serviceRouteCount": 174
     },
@@ -20673,5 +20732,16 @@
     "fixtureVersion": "homeport-phase6-v1",
     "evidenceCount": 126,
     "limitations": ["Not merged", "Not deployed", "No owner acceptance", "Phase 7 integrated proof remains"]
+  },
+  "phase7Implementation": {
+    "state": "READY_FOR_OWNER_WALKTHROUGH",
+    "sourceSha": "e6cf3cb18de4e8854b19e1d29c94f3b492eba441",
+    "architectureFreezeSha": "7e85c2c9d67f7d4386d66e429dbc9f5b17b92be3",
+    "fixtureVersion": "homeport-phase7-integrated-v1",
+    "journeyCount": 15,
+    "evidenceCount": 16,
+    "ownerDecision": "PENDING_OWNER_DECISION",
+    "branch": "codex/project-homeport-product-reality-recovery",
+    "limitations": ["Not merged", "Not deployed", "No owner acceptance", "Local synthetic evidence only"]
   }
 }

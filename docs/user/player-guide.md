@@ -53,3 +53,9 @@ surface hierarchy across desktop, tablet, mobile, narrow mobile, and effective
 fallback states stay distinct, and the waiting-room launch presentation no
 longer obscures ordinary readiness content. This remains branch-local synthetic
 proof, not Phase 7 journey or owner-acceptance proof.
+
+Phase 7 proves the Player journey from Home through the one account sign-in,
+Player Library, seeded Voyage detail, Chronicle Passport, Community save, and
+sign-out/multi-tab invalidation on desktop and mobile. The final walkthrough
+uses synthetic task-owned data and is ready for owner review; it is not on
+`main`, deployed, or owner accepted.

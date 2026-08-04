@@ -12,6 +12,7 @@ last_reviewed: 2026-08-04
 
 ### Changed
 
+- Completed Project Homeport Phase 7 to the owner-walkthrough-ready boundary on the named branch: one immutable synthetic fixture and isolated clones now prove A-through-O account, workspace, Personal Harbor, Community, recovery, failure, mobile, and final-rehearsal journeys. Owner Decision remains pending; this is not on main or deployed.
 - Completed Project Homeport Phase 6 on the named branch: all 92 current human-facing screens are source-inventoried, every critical/high surface is visually complete, and shared page-state, dialog/focus, responsive, accessibility, motion, mutation, and media-fallback contracts are enforced. This is not on main, deployed, or owner accepted; Phase 7 remains separate.
 - Completed Project Homeport Phase 5 on the named branch: a source-derived permission-aware route graph now gives every ordinary destination a visible gateway-rooted path, governs dynamic, tokenized, and compatibility routes, eliminates unexplained dead ends, and reconciles desktop/mobile entries. This is not on main, deployed, or owner accepted; Phases 6-7 remain separate.
 - Completed Project Homeport Phase 4 on the named branch: a content-first Community Harbor with governed public districts, typed safe cards, deterministic shelves, search/filter URL state, Creator/collection/Guide/Voyage Log details, deliberate lifecycle states, and save/follow reconciliation. This is not on main, deployed, or owner accepted; Phases 5-7 remain separate.
@@ -23,6 +24,7 @@ last_reviewed: 2026-08-04
 
 ### Validation
 
+- Added the isolated Phase 7 A-O production-browser lane, 16 checksum/source/fixture-bound reviewed frames, failure/recovery and owner-runtime contracts, 48 registered Sounding Line contracts, and an idempotent control-plane publication. These establish local walkthrough readiness, not owner acceptance.
 - Added an isolated Phase 6 production-browser matrix, 126 checksum/source/fixture-bound screenshots, explicit alternate-state and reduced-motion evidence, 55 registered Sounding Line contracts, and byte-idempotent screen/state/responsive/accessibility artifact publication. These establish local synthetic branch evidence only.
 - Added isolated A-AD Phase 5 browser journeys, 87 route-level receipts, 29 visually accepted checksum-bound screenshots, idempotent graph publication, and registered orphan/cycle/parity/compatibility contracts. These establish local branch evidence only.
 - Added isolated A-AR Phase 4 Community journeys, checksum-bound desktop/mobile/zoom/reduced-motion evidence, public-projection and lifecycle checks, idempotent inventory publication, and registered Sounding Line contracts. These establish local branch evidence only.

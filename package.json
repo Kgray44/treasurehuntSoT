@@ -86,6 +86,8 @@
     "homeport:phase6:e2e": "node scripts/homeport/run-phase6-e2e.mjs",
     "homeport:phase6:visual-review": "node scripts/homeport/finalize-phase6-visual-review.mjs --accept",
     "homeport:phase6:sounding-line-policy": "node scripts/homeport/update-phase6-sounding-line-policy.mjs",
+    "homeport:phase7:sounding-line-policy": "node scripts/homeport/update-phase7-sounding-line-policy.mjs",
+    "homeport:phase7:control-plane": "node scripts/homeport/update-phase7-control-plane.mjs",
     "homeport:phase7:inventory": "node scripts/homeport/apply-phase7-whole-voyage-model.mjs",
     "homeport:phase7:fixture:prepare": "node scripts/homeport/prepare-phase7-fixture.mjs",
     "homeport:phase7:journeys": "node scripts/homeport/run-phase7-journeys.mjs",

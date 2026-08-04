@@ -68,6 +68,17 @@ accessibility, and reduced-motion evidence. The evidence is local and synthetic;
 Phase 7 integrated journeys, deployment, owner acceptance, and product
 acceptance are not claimed.
 
+## Integrated whole-product voyage and owner walkthrough
+
+**Audience:** Product owner, Players, Captains, Creators, and account owners.
+**Availability:** complete on the Project Homeport branch and ready for owner
+walkthrough; not available on `main`. Phase 7 supplies one immutable synthetic
+fixture, isolated A-through-O journey clones, account continuity across all
+workspaces, Profile/Passport/Community reconciliation, explicit recovery and
+failure states, mobile/keyboard/reduced-motion proof, reviewed exact-source
+evidence, and an owned final walkthrough runtime. Owner Decision is
+`PENDING_OWNER_DECISION`; readiness is not deployment or owner acceptance.
+
 ## Player experience
 
 **Audience:** Players. **Availability:** available on main. Invitations, a Player Library, waiting and access states, a Chronicle Journal, story progression, replay/history surfaces, Ship's Log, side-quest and finale presentation are implemented through the player routes. [Guide](../user/player-guide.md).

@@ -31,11 +31,13 @@ cover desktop, mobile, tablet, effective 200 percent, explicit states, and
 reduced motion. This is local synthetic branch evidence, not `main`, deployment,
 owner acceptance, product acceptance, or Phase 7 whole-product proof.
 
-Phase 7 whole-voyage architecture is frozen at the retained-branch start SHA.
-The freeze defines integrated journeys A through O, fixture and clone isolation,
-evidence binding, the walkthrough package/runtime, and the independent owner
-decision boundary. It is architecture authority only; it establishes no Phase
-7 implementation, test result, walkthrough readiness, or owner acceptance.
+Phase 7 whole-voyage implementation is complete and ready for owner walkthrough
+on the retained branch. Journeys A through O passed against one immutable
+synthetic fixture family and isolated clones; 16 checksum-bound production
+browser frames were reviewed and accepted. The final owner package, safe runtime
+controller, and external credential handoff are ready. Owner Decision remains
+`PENDING_OWNER_DECISION`; this is not `main`, deployment, owner acceptance, or
+product acceptance.
 
 ## Authority
 
@@ -152,12 +154,27 @@ The Phase 6 records are generated and validated against exact product source
 validated; Phase 7 retains integrated whole-product journeys, its final fixture,
 the running owner package, and the product-acceptance boundary.
 
-## Phase 7 architecture record
+## Phase 7 records
 
 - [Whole Voyage Architecture](Project_Homeport_Phase_7_Whole_Voyage_Architecture.md)
-
-Implementation, journey, fixture, evidence, validation, integration, and
-walkthrough records will be linked here only after they exist and validate.
+- [Test Plan](Project_Homeport_Phase_7_Test_Plan.md)
+- [Implementation Report](Project_Homeport_Phase_7_Implementation_Report.md)
+- [Validation Record](Project_Homeport_Phase_7_Validation_Record.md)
+- [Integration Manifest](Project_Homeport_Phase_7_Integration_Manifest.md)
+- [Maturity Record](Project_Homeport_Phase_7_Maturity_Record.md)
+- [Owner Decision Record](Project_Homeport_Phase_7_Owner_Decision_Record.md)
+- [Evidence Index](evidence/phase7/README.md)
+- [Visual Review](evidence/phase7/Project_Homeport_Phase_7_Visual_Review.md)
+- [Owner Walkthrough](walkthrough/phase7/START_HERE.md)
+- `Project_Homeport_Phase_7_Integrated_Fixture_Manifest.json`
+- `Project_Homeport_Phase_7_Integrated_Journey_Registry.json`
+- `Project_Homeport_Phase_7_Journey_State_Matrix.csv`
+- `Project_Homeport_Phase_7_Journey_Evidence_Matrix.csv`
+- `Project_Homeport_Phase_7_Failure_and_Recovery_Matrix.csv`
+- `Project_Homeport_Phase_7_Test_Account_Matrix.csv`
+- `Project_Homeport_Phase_7_Visual_Comparison_Matrix.csv`
+- `Project_Homeport_Phase_7_Walkthrough_Runtime_Contract.json`
+- `Project_Homeport_Phase_7_Walkthrough_Seed_Receipt.json`
 
 ## Phase 2 machine-readable records
 
@@ -178,15 +195,15 @@ walkthrough records will be linked here only after they exist and validate.
 - `Homeport_Visual_Baseline_Manifest.json`
 - `Homeport_Nonconformity_Ledger.csv`
 
-These records retain Phase 0 observations and add explicit Phase 1-6
+These records retain Phase 0 observations and add explicit Phase 1-7
 implemented-state fields, A-Q, A-U, A-AE, A-AR, and A-AD journey records, and
 checksum-bound after-state evidence. The Phase 1 compatibility authority
 remains `Project_Homeport_Phase_1_Compatibility_Cutover_Ledger.csv`.
 
-Run `npm run homeport:phase6:inventory`,
-`npm run homeport:phase6:validate`, and `npm run homeport:validate` to apply and
-verify the complete Phase 6 registry/matrix system, deterministic contracts,
-cross-references, accepted screenshot checksums, direct closures, and
-later-owner boundaries.
+Run `npm run homeport:phase7:control-plane`,
+`npm run homeport:phase7:validate`, and `npm run homeport:validate` to apply and
+verify the whole-voyage system, deterministic fixture/journey records,
+cross-references, accepted screenshot checksums, walkthrough-ready closures,
+and the still-pending owner decision boundary.
 `PRODUCT_NONCONFORMITIES_PRESENT` remains expected
-because later-phase findings remain open; it is not a validator failure.
+while HP-NC-020 waits for the owner decision; it is not a validator failure.

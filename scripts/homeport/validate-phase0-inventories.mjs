@@ -288,7 +288,9 @@ for (const journey of journeys.journeys) {
 }
 
 uniqueBy(evidence.records, "evidenceId", "evidence manifest");
-const evidenceIds = new Set(evidence.records.map((record) => record.evidenceId));
+const evidenceIds = new Set(
+  [...evidence.records, ...(evidence.phase7Run?.frames ?? [])].map((record) => record.evidenceId),
+);
 for (const record of evidence.records) {
   if (record.evidenceId.startsWith("HP-P6-EV-")) {
     requireKeys(
@@ -636,18 +638,36 @@ assert.equal(
   "HP-NC-018 has the wrong Phase 6 disposition",
 );
 assert.equal(phase6StateCompletion?.target_phase, "PHASE_6", "HP-NC-018 changed Phase 6 ownership");
+const phase7JourneyProof = nonconformities.find((candidate) => candidate.id === "HP-NC-015");
+assert.equal(
+  phase7JourneyProof?.current_status,
+  "CLOSED_PHASE_7_WALKTHROUGH_READY",
+  "HP-NC-015 must close at the Phase 7 walkthrough-ready boundary",
+);
+assert.equal(
+  phase7JourneyProof?.disposition,
+  "CLOSED_PHASE_7_WALKTHROUGH_READY",
+  "HP-NC-015 has the wrong Phase 7 disposition",
+);
 const phase7IntegratedProof = nonconformities.find((candidate) => candidate.id === "HP-NC-019");
 assert.equal(
   phase7IntegratedProof?.current_status,
-  "PARTIALLY_ADVANCED_PHASE_4",
-  "HP-NC-019 must retain its later-phase owner boundary",
+  "CLOSED_PHASE_7_FIXTURE_VALIDATED",
+  "HP-NC-019 must close at the validated Phase 7 fixture boundary",
 );
 assert.equal(
   phase7IntegratedProof?.disposition,
-  "PARTIAL_PHASE_4_LATER_OWNER_RETAINED",
-  "HP-NC-019 has the wrong Phase 4 disposition",
+  "CLOSED_PHASE_7_FIXTURE_VALIDATED",
+  "HP-NC-019 has the wrong Phase 7 disposition",
 );
 assert.equal(phase7IntegratedProof?.target_phase, "PHASE_7", "HP-NC-019 changed later-phase ownership");
+const phase7OwnerDecision = nonconformities.find((candidate) => candidate.id === "HP-NC-020");
+assert.equal(
+  phase7OwnerDecision?.current_status,
+  "WAITING_FOR_OWNER_DECISION",
+  "HP-NC-020 must remain at the owner-decision boundary",
+);
+assert.equal(phase7OwnerDecision?.disposition, "WAITING_FOR_OWNER_DECISION", "HP-NC-020 must not be automation-closed");
 
 for (const screen of screens.screens) {
   for (const screenshotId of screen.screenshotIds)

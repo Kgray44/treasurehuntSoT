@@ -2949,6 +2949,24 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7/Project_Homeport_Phase_7_Evidence_Metadata.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7/Project_Homeport_Phase_7_Visual_Review.md",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7/README.md",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Homeport/Homeport_Authentication_and_Session_Inventory.json",
       "record_type": "program-record",
       "status": "current",
@@ -3441,6 +3459,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_7_Implementation_Report.md",
+      "record_type": "program-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_7_Integrated_Fixture_Manifest.json",
       "record_type": "program-record",
       "status": "current",
@@ -3448,6 +3472,12 @@
     },
     {
       "path": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_7_Integrated_Journey_Registry.json",
+      "record_type": "program-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_7_Integration_Manifest.md",
       "record_type": "program-record",
       "status": "current",
       "canonical_for": null
@@ -3465,7 +3495,31 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_7_Maturity_Record.md",
+      "record_type": "program-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_7_Owner_Decision_Record.md",
+      "record_type": "program-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_7_Test_Account_Matrix.csv",
+      "record_type": "program-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_7_Test_Plan.md",
+      "record_type": "program-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_7_Validation_Record.md",
       "record_type": "program-record",
       "status": "current",
       "canonical_for": null
@@ -3483,6 +3537,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_7_Walkthrough_Seed_Receipt.json",
+      "record_type": "program-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_7_Whole_Voyage_Architecture.md",
       "record_type": "program-record",
       "status": "current",
@@ -3490,6 +3550,72 @@
     },
     {
       "path": "Development_Docs/Projects/Project_Homeport/README.md",
+      "record_type": "program-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/walkthrough/phase7/Journey_Checklist.md",
+      "record_type": "program-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/walkthrough/phase7/Known_Limitations.md",
+      "record_type": "program-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/walkthrough/phase7/Owner_Decision_Instructions.md",
+      "record_type": "program-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/walkthrough/phase7/Owner_Walkthrough_Checklist.md",
+      "record_type": "program-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/walkthrough/phase7/README.md",
+      "record_type": "program-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/walkthrough/phase7/Reset_Stop_and_Rollback.md",
+      "record_type": "program-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/walkthrough/phase7/Runtime_and_Health_Check.md",
+      "record_type": "program-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/walkthrough/phase7/Screenshot_Index.md",
+      "record_type": "program-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/walkthrough/phase7/START_HERE.md",
+      "record_type": "program-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/walkthrough/phase7/Test_Account_Matrix.md",
+      "record_type": "program-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/walkthrough/phase7/Visual_Comparison_Notes.md",
       "record_type": "program-record",
       "status": "current",
       "canonical_for": null
