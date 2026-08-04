@@ -293,7 +293,11 @@
 }
 
 .tale-editor {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
   min-height: 100vh;
+  overflow-x: clip;
 }
 .editor-topbar {
   position: sticky;
@@ -478,6 +482,8 @@
   top: 76px;
   display: flex;
   overflow-x: auto;
+  max-width: 100%;
+  overscroll-behavior-inline: contain;
   gap: 0.2rem;
   border-bottom: 1px solid rgba(201, 169, 95, 0.18);
   padding: 0.45rem 1rem;
@@ -1494,12 +1500,21 @@
   }
   .editor-section-nav {
     top: 0;
+    width: 100%;
+    padding-inline: 0.5rem;
+  }
+  .editor-section-nav a {
+    flex: 0 0 auto;
   }
   .timeline-block {
-    grid-template-columns: 34px 34px 1fr;
+    grid-template-columns: 34px 34px minmax(0, 1fr);
+    max-width: 100%;
+    min-width: 0;
   }
   .block-move {
     grid-column: 3;
+    min-width: 0;
+    flex-wrap: wrap;
   }
 }
 
