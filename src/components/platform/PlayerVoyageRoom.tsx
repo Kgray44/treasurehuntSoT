@@ -426,8 +426,10 @@ export function PlayerVoyageRoom({
           )}
           <div>
             <dt>Connection</dt>
-            <dd className={`connection-${connection}`} role="status" aria-live="polite">
-              {connectionCopy[connection]}
+            <dd className={`connection-${connection}`}>
+              <span role="status" aria-live="polite">
+                {connectionCopy[connection]}
+              </span>
             </dd>
           </div>
           <div>
