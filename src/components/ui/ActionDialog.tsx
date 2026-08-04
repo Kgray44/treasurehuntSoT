@@ -32,9 +32,11 @@ type DialogState = Readonly<{
 export function useActionDialog() {
   const [state, setState] = useState<DialogState | null>(null);
   const resolver = useRef<((value: Record<string, string> | null) => void) | null>(null);
+  const restoreTarget = useRef<HTMLElement | null>(null);
 
   const requestAction = useCallback((request: ActionDialogRequest) => {
     resolver.current?.(null);
+    restoreTarget.current = document.activeElement instanceof HTMLElement ? document.activeElement : null;
     return new Promise<Record<string, string> | null>((resolve) => {
       resolver.current = resolve;
       setState({
@@ -49,6 +51,11 @@ export function useActionDialog() {
     resolver.current = null;
     setState(null);
     resolve?.(value);
+    const target = restoreTarget.current;
+    restoreTarget.current = null;
+    requestAnimationFrame(() => {
+      if (target?.isConnected) target.focus();
+    });
   }, []);
 
   const dialog = state ? (
@@ -83,7 +90,12 @@ function ActionDialog({
 
   useEffect(() => {
     const previousOverflow = document.body.style.overflow;
+    const backgroundRegions = [...document.querySelectorAll<HTMLElement>("main")].map((element) => ({
+      element,
+      inert: element.inert,
+    }));
     document.body.style.overflow = "hidden";
+    for (const region of backgroundRegions) region.element.inert = true;
     const frame = requestAnimationFrame(() => {
       panel.current?.querySelector<HTMLElement>("input, textarea, select, button")?.focus();
     });
@@ -112,6 +124,7 @@ function ActionDialog({
       cancelAnimationFrame(frame);
       window.removeEventListener("keydown", keyboard);
       document.body.style.overflow = previousOverflow;
+      for (const region of backgroundRegions) region.element.inert = region.inert;
     };
   }, [onCancel]);
 
