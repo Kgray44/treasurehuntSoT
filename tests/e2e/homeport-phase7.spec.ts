@@ -369,7 +369,13 @@ async function globalDestination(page: Page, label: string) {
   const link = navigation.getByRole("link", { name: label, exact: true });
   if (!(await link.isVisible())) await page.getByRole("button", { name: "Open navigation" }).click();
   await expect(link).toBeVisible();
+  const destination = await link.getAttribute("href");
+  if (!destination) throw new Error(`Global destination ${label} does not declare an href`);
   await link.click();
+  await expect
+    .poll(() => new URL(page.url()).pathname, { message: `Global destination ${label} should finish navigation` })
+    .toBe(destination);
+  await page.waitForLoadState("networkidle");
   await expect(page.getByRole("main")).toBeVisible();
 }
 
