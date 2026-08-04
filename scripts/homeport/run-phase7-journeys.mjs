@@ -27,7 +27,7 @@ for (const journeyId of requested) {
   };
   run(
     path.join("node_modules", "@playwright", "test", "cli.js"),
-    ["test", "-c", "playwright.homeport-phase7.config.ts", "--grep", `^Journey ${journeyId}:`],
+    ["test", "-c", "playwright.homeport-phase7.config.ts", "--grep", `Journey ${journeyId}:`],
     env,
   );
 }

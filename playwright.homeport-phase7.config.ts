@@ -19,7 +19,7 @@ Object.assign(process.env, {
 export default defineConfig({
   testDir: "./tests/e2e",
   testMatch: /homeport-phase7\.spec\.ts/u,
-  timeout: 300_000,
+  timeout: 120_000,
   expect: { timeout: 30_000 },
   fullyParallel: false,
   workers: 1,

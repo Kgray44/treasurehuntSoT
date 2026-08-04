@@ -101,14 +101,18 @@ test(`Journey F: community discovery`, async ({ page }) => {
     .getByRole("navigation", { name: "Community Harbor districts" })
     .getByRole("link", { name: "Chronicles" })
     .click();
-  await page.getByRole("link", { name: "The Lantern Coast" }).first().click();
+  await page.getByRole("link", { name: "Clockwork Reef Almanac" }).first().click();
+  await expect(page).toHaveURL(/\/community\/clockwork-reef-chronicle$/u);
+  await expect(page.getByRole("heading", { name: "Clockwork Reef Almanac", level: 1 })).toBeVisible();
   await page.getByRole("button", { name: "Save", exact: true }).click();
   await expect(page.getByRole("button", { name: /Saved|Unsave/u }).first()).toBeVisible();
   await capture(page, "community-saved");
   await accountDestination(page, account, "Chronicle Passport");
+  await expect(page.getByRole("heading", { name: /Chronicle Passport/u }).first()).toBeVisible();
   const saved = page.getByRole("navigation", { name: "Personal Harbor sections" }).getByRole("link", { name: "Saved" });
-  if (await saved.isVisible()) await saved.click();
-  await expect(page.getByText("The Lantern Coast", { exact: true }).first()).toBeVisible();
+  await expect(saved).toBeVisible();
+  await saved.click();
+  await expect(page.getByText("Clockwork Reef Almanac", { exact: true }).first()).toBeVisible();
 });
 
 test(`Journey G: profile`, async ({ page }) => {
@@ -160,6 +164,16 @@ test(`Journey I: password recovery`, async ({ page }) => {
   await page.getByLabel("Email").fill(credentialHandoff.accounts.RECOVERY_ACCOUNT.email!);
   await page.getByRole("button", { name: /Send|Continue|Request/u }).click();
   await expect(page.getByText(/If an account|instructions|recovery/u).first()).toBeVisible();
+  await Promise.all([
+    db.accountToken.update({
+      where: { id: "hp7-token-reset-valid" },
+      data: { consumedAt: null, expiresAt: new Date(Date.now() + 60 * 60 * 1000) },
+    }),
+    db.accountToken.update({
+      where: { id: "hp7-token-reset-expired" },
+      data: { consumedAt: null, expiresAt: new Date(Date.now() - 60 * 60 * 1000) },
+    }),
+  ]);
   await page.goto(`/reset-password?token=${encodeURIComponent("malformed-phase7-token")}`);
   await submitReset(page, `${credentialHandoff.password}New`);
   await expect(page.getByText(/invalid|expired|used/u).first()).toBeVisible();
@@ -169,8 +183,12 @@ test(`Journey I: password recovery`, async ({ page }) => {
   await page.goto(`/reset-password?token=${encodeURIComponent(tokens.resetValid)}`);
   const newPassword = `${credentialHandoff.password}New`;
   await submitReset(page, newPassword);
-  await expect(page.getByText(/reset|updated|sign in/u).first()).toBeVisible();
+  const recoveryAccount = credentialHandoff.accounts.RECOVERY_ACCOUNT;
+  await expect(page.getByRole("button", { name: recoveryAccount.displayName, exact: true })).toBeVisible();
+  const authenticatedMenu = await accountMenu(page, recoveryAccount.displayName);
+  await authenticatedMenu.getByRole("button", { name: "Sign out" }).click();
   await signIn(page, "RECOVERY_ACCOUNT", newPassword);
+  await accountDestination(page, recoveryAccount, "Security & Sessions");
   await capture(page, "recovery-restored-account");
 });
 
@@ -235,6 +253,13 @@ test(`Journey M: sign-out and multi-tab`, async ({ context }) => {
 test(`Journey N: failure and recovery`, async ({ page }) => {
   await begin(page);
   await globalDestination(page, "Community Harbor");
+  await page.route("**/api/community/discover?**", async (route) => {
+    await route.fulfill({
+      status: 503,
+      contentType: "application/json",
+      body: JSON.stringify({ message: "Synthetic discovery dependency is temporarily unavailable." }),
+    });
+  });
   await page.getByRole("searchbox", { name: "Search public Community Harbor" }).fill("dependency test");
   await page.getByRole("button", { name: "Search", exact: true }).click();
   await expect(page.getByRole("alert").filter({ hasText: /Synthetic discovery dependency/u })).toBeVisible();
@@ -242,6 +267,7 @@ test(`Journey N: failure and recovery`, async ({ page }) => {
   const retry = page.getByRole("button", { name: "Try again" });
   await retry.focus();
   await expect(retry).toBeFocused();
+  await page.unroute("**/api/community/discover?**");
   await retry.click();
   await expect(page.getByRole("alert").filter({ hasText: /Synthetic discovery dependency/u })).toHaveCount(0);
 });
@@ -258,9 +284,11 @@ test(`Journey O: final whole-voyage rehearsal`, async ({ page }) => {
     .getByRole("navigation", { name: "Community Harbor districts" })
     .getByRole("link", { name: "Chronicles" })
     .click();
-  await page.getByRole("link", { name: "The Lantern Coast" }).first().click();
-  const save = page.getByRole("button", { name: "Save", exact: true });
-  if (await save.isVisible()) await save.click();
+  await page.getByRole("link", { name: "Clockwork Reef Almanac" }).first().click();
+  await expect(page).toHaveURL(/\/community\/clockwork-reef-chronicle$/u);
+  await expect(page.getByRole("heading", { name: "Clockwork Reef Almanac", level: 1 })).toBeVisible();
+  await page.getByRole("button", { name: "Save", exact: true }).click();
+  await expect(page.getByRole("button", { name: /Saved|Unsave/u }).first()).toBeVisible();
   await capture(page, "whole-voyage-community");
   await accountDestination(page, account, "Creator Studio");
   await accountDestination(page, account, "Captain");
@@ -269,11 +297,8 @@ test(`Journey O: final whole-voyage rehearsal`, async ({ page }) => {
   await menu.getByRole("button", { name: "Sign out" }).click();
   await page.goto("/account");
   await expect(page).toHaveURL(/\/sign-in/u);
-  await page
-    .getByRole("link", { name: /Home|Return/u })
-    .first()
-    .click();
-  await expect(page.getByRole("button", { name: "Account", exact: true })).toBeVisible();
+  await page.getByRole("link", { name: "Safe return", exact: true }).click();
+  await expect(page.getByRole("button", { name: /^(Account|Session ended)$/u })).toBeVisible();
   await capture(page, "whole-voyage-anonymous-end");
 });
 
@@ -302,7 +327,12 @@ async function fillSignIn(page: Page, account: Alias, password: string) {
 }
 
 async function accountMenu(page: Page, label: string) {
-  await page.getByRole("button", { name: label, exact: true }).click();
+  const button =
+    label === "Account"
+      ? page.getByRole("button", { name: /^(Account|Session ended)$/u })
+      : page.getByRole("button", { name: label, exact: true });
+  await expect(button).toBeVisible();
+  await button.click();
   const menu = page.locator("#shell-account-disclosure");
   await expect(menu).toBeVisible();
   return menu;

@@ -12,7 +12,8 @@ if (path.resolve(seed) === canonical || (await stat(seed)).size < 1) throw new E
 
 if (command === "journeys") {
   const receipts = [];
-  for (const journeyId of "ABCDEFGHIJKLMNO")
+  const requestedJourneys = (process.env.HOMEPORT_PHASE7_JOURNEYS ?? "ABCDEFGHIJKLMNO").replaceAll(/[^A-O]/gu, "");
+  for (const journeyId of requestedJourneys)
     receipts.push(
       await clone(seed, path.join(taskRoot, "automated-journey-databases", `journey-${journeyId}.db`), journeyId),
     );
