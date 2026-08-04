@@ -1,0 +1,357 @@
+{
+  "schemaVersion": "1.0.0",
+  "phase": 7,
+  "sourceSha": "e6cf3cb18de4e8854b19e1d29c94f3b492eba441",
+  "fixtureVersion": "homeport-phase7-integrated-v1",
+  "result": "PASSED",
+  "ownerDecision": "PENDING_OWNER_DECISION",
+  "runReceipt": {
+    "terminalStatus": "HOMEPORT_PHASE7_JOURNEYS_PASSED",
+    "journeys": [
+      "A",
+      "B",
+      "C",
+      "D",
+      "E",
+      "F",
+      "G",
+      "H",
+      "I",
+      "J",
+      "K",
+      "L",
+      "M",
+      "N",
+      "O"
+    ],
+    "logSha256": "0e32f629e602b779c712f30033d118684d5d7db4a45c3e79ab56b7a2f140268a",
+    "location": "EXTERNAL_TASK_OWNED_LOG"
+  },
+  "frames": [
+    {
+      "evidenceId": "HP-P7-EV-A-registered-profile",
+      "journeyId": "A",
+      "sourceSha": "e6cf3cb18de4e8854b19e1d29c94f3b492eba441",
+      "fixtureVersion": "homeport-phase7-integrated-v1",
+      "result": "PASSED",
+      "browser": "Chromium 141.0.7390.37",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "motionMode": "REDUCED",
+      "route": "/account",
+      "title": "Voyagewright | Stories made to be played",
+      "captureMode": "FULL_PAGE",
+      "screenshot": "screenshots/HP-P7-EV-A-registered-profile.png",
+      "screenshotSha256": "8aa1ec717998ae4f60fa99368cdf4c25528a2d408804f2ab3349921a10ae4fde",
+      "screenshotBytes": 690049,
+      "visualReview": "REVIEWED_ACCEPTED"
+    },
+    {
+      "evidenceId": "HP-P7-EV-B-cross-workspace-account",
+      "journeyId": "B",
+      "sourceSha": "e6cf3cb18de4e8854b19e1d29c94f3b492eba441",
+      "fixtureVersion": "homeport-phase7-integrated-v1",
+      "result": "PASSED",
+      "browser": "Chromium 141.0.7390.37",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "motionMode": "REDUCED",
+      "route": "/account",
+      "title": "Voyagewright | Stories made to be played",
+      "captureMode": "FULL_PAGE",
+      "screenshot": "screenshots/HP-P7-EV-B-cross-workspace-account.png",
+      "screenshotSha256": "1b3d5805356fbf78c1c8c90cb4968d58666f32471735849c0b16a1ae9ca61b93",
+      "screenshotBytes": 679320,
+      "visualReview": "REVIEWED_ACCEPTED"
+    },
+    {
+      "evidenceId": "HP-P7-EV-C-player-voyage",
+      "journeyId": "C",
+      "sourceSha": "e6cf3cb18de4e8854b19e1d29c94f3b492eba441",
+      "fixtureVersion": "homeport-phase7-integrated-v1",
+      "result": "PASSED",
+      "browser": "Chromium 141.0.7390.37",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "motionMode": "REDUCED",
+      "route": "/player/playthroughs/hp5-session-ready",
+      "title": "Voyagewright Player | Voyagewright",
+      "captureMode": "FULL_PAGE",
+      "screenshot": "screenshots/HP-P7-EV-C-player-voyage.png",
+      "screenshotSha256": "b24669aacfe86a7f6a6b1e6606aa20c6863a4d84d17003f0c19fcb342e79b1a8",
+      "screenshotBytes": 627601,
+      "visualReview": "REVIEWED_ACCEPTED"
+    },
+    {
+      "evidenceId": "HP-P7-EV-D-captain-session",
+      "journeyId": "D",
+      "sourceSha": "e6cf3cb18de4e8854b19e1d29c94f3b492eba441",
+      "fixtureVersion": "homeport-phase7-integrated-v1",
+      "result": "PASSED",
+      "browser": "Chromium 141.0.7390.37",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "motionMode": "REDUCED",
+      "route": "/captain/sessions/hp5-session-ready",
+      "title": "Captain's Console | Voyagewright | Voyagewright",
+      "captureMode": "FULL_PAGE",
+      "screenshot": "screenshots/HP-P7-EV-D-captain-session.png",
+      "screenshotSha256": "fb61de8742fac6cee11d6cd3efd2e5c64cfb44ebfe96283aefc26a7448e9a874",
+      "screenshotBytes": 365377,
+      "visualReview": "REVIEWED_ACCEPTED"
+    },
+    {
+      "evidenceId": "HP-P7-EV-E-creator-private-state",
+      "journeyId": "E",
+      "sourceSha": "e6cf3cb18de4e8854b19e1d29c94f3b492eba441",
+      "fixtureVersion": "homeport-phase7-integrated-v1",
+      "result": "PASSED",
+      "browser": "Chromium 141.0.7390.37",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "motionMode": "REDUCED",
+      "route": "/studio/tales/new",
+      "title": "Voyagewright Studio | Voyagewright",
+      "captureMode": "FULL_PAGE",
+      "screenshot": "screenshots/HP-P7-EV-E-creator-private-state.png",
+      "screenshotSha256": "d1cd5c67cf6df18b36eed48c983fa7f12a12033e4e5dd20126d8caf2fbc8db9b",
+      "screenshotBytes": 630126,
+      "visualReview": "REVIEWED_ACCEPTED"
+    },
+    {
+      "evidenceId": "HP-P7-EV-F-community-saved",
+      "journeyId": "F",
+      "sourceSha": "e6cf3cb18de4e8854b19e1d29c94f3b492eba441",
+      "fixtureVersion": "homeport-phase7-integrated-v1",
+      "result": "PASSED",
+      "browser": "Chromium 141.0.7390.37",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "motionMode": "REDUCED",
+      "route": "/community/clockwork-reef-chronicle",
+      "title": "Clockwork Reef Almanac | Voyagewright",
+      "captureMode": "FULL_PAGE",
+      "screenshot": "screenshots/HP-P7-EV-F-community-saved.png",
+      "screenshotSha256": "b93b7d00c18163948c8c78bf97743721485797717941fbc2bef54324e161e885",
+      "screenshotBytes": 645990,
+      "visualReview": "REVIEWED_ACCEPTED"
+    },
+    {
+      "evidenceId": "HP-P7-EV-G-profile-preferences-saved",
+      "journeyId": "G",
+      "sourceSha": "e6cf3cb18de4e8854b19e1d29c94f3b492eba441",
+      "fixtureVersion": "homeport-phase7-integrated-v1",
+      "result": "PASSED",
+      "browser": "Chromium 141.0.7390.37",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "motionMode": "REDUCED",
+      "route": "/account/preferences",
+      "title": "Voyagewright | Stories made to be played",
+      "captureMode": "FULL_PAGE",
+      "screenshot": "screenshots/HP-P7-EV-G-profile-preferences-saved.png",
+      "screenshotSha256": "726b20aa81ced694c0c8b74a8ad981e58b66f725a1ef6e95202f0dc140c7802c",
+      "screenshotBytes": 491725,
+      "visualReview": "REVIEWED_ACCEPTED"
+    },
+    {
+      "evidenceId": "HP-P7-EV-H-passport-artifacts-and-saved",
+      "journeyId": "H",
+      "sourceSha": "e6cf3cb18de4e8854b19e1d29c94f3b492eba441",
+      "fixtureVersion": "homeport-phase7-integrated-v1",
+      "result": "PASSED",
+      "browser": "Chromium 141.0.7390.37",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "motionMode": "REDUCED",
+      "route": "/passport/saved",
+      "title": "Voyagewright | Stories made to be played",
+      "captureMode": "FULL_PAGE",
+      "screenshot": "screenshots/HP-P7-EV-H-passport-artifacts-and-saved.png",
+      "screenshotSha256": "b529e1b5c294587ecf4f149568808f57197b5b15e48b64eb54e4dac6602104e5",
+      "screenshotBytes": 322380,
+      "visualReview": "REVIEWED_ACCEPTED"
+    },
+    {
+      "evidenceId": "HP-P7-EV-I-recovery-restored-account",
+      "journeyId": "I",
+      "sourceSha": "e6cf3cb18de4e8854b19e1d29c94f3b492eba441",
+      "fixtureVersion": "homeport-phase7-integrated-v1",
+      "result": "PASSED",
+      "browser": "Chromium 141.0.7390.37",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "motionMode": "REDUCED",
+      "route": "/account/security",
+      "title": "Voyagewright | Stories made to be played",
+      "captureMode": "FULL_PAGE",
+      "screenshot": "screenshots/HP-P7-EV-I-recovery-restored-account.png",
+      "screenshotSha256": "cec3584fce6b0b4ac267775020d4516c233d4d56e2c0b45f20f86dc1708b6ba4",
+      "screenshotBytes": 492963,
+      "visualReview": "REVIEWED_ACCEPTED"
+    },
+    {
+      "evidenceId": "HP-P7-EV-J-session-expired",
+      "journeyId": "J",
+      "sourceSha": "e6cf3cb18de4e8854b19e1d29c94f3b492eba441",
+      "fixtureVersion": "homeport-phase7-integrated-v1",
+      "result": "PASSED",
+      "browser": "Chromium 141.0.7390.37",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "motionMode": "REDUCED",
+      "route": "/sign-in",
+      "title": "Voyagewright | Stories made to be played",
+      "captureMode": "FULL_PAGE",
+      "screenshot": "screenshots/HP-P7-EV-J-session-expired.png",
+      "screenshotSha256": "7075e97781fef1a2bee48e0f825763d9f8d5e3224a11aab8030c9f25e9011b12",
+      "screenshotBytes": 366580,
+      "visualReview": "REVIEWED_ACCEPTED"
+    },
+    {
+      "evidenceId": "HP-P7-EV-K-permission-denied-authenticated",
+      "journeyId": "K",
+      "sourceSha": "e6cf3cb18de4e8854b19e1d29c94f3b492eba441",
+      "fixtureVersion": "homeport-phase7-integrated-v1",
+      "result": "PASSED",
+      "browser": "Chromium 141.0.7390.37",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "motionMode": "REDUCED",
+      "route": "/community/moderation",
+      "title": "Voyagewright | Stories made to be played",
+      "captureMode": "FULL_PAGE",
+      "screenshot": "screenshots/HP-P7-EV-K-permission-denied-authenticated.png",
+      "screenshotSha256": "b392ca511680f45bfed7ee6b6c2df266f408b31298e5c6ed9f51c81ab0b9d378",
+      "screenshotBytes": 297629,
+      "visualReview": "REVIEWED_ACCEPTED"
+    },
+    {
+      "evidenceId": "HP-P7-EV-L-mobile-workspace",
+      "journeyId": "L",
+      "sourceSha": "e6cf3cb18de4e8854b19e1d29c94f3b492eba441",
+      "fixtureVersion": "homeport-phase7-integrated-v1",
+      "result": "PASSED",
+      "browser": "Chromium 141.0.7390.37",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "motionMode": "REDUCED",
+      "route": "/player/library",
+      "title": "Voyagewright Player | Voyagewright",
+      "captureMode": "FULL_PAGE",
+      "screenshot": "screenshots/HP-P7-EV-L-mobile-workspace.png",
+      "screenshotSha256": "0f4c3bb5b9cdff58b3542d6122ad37b20e9bdb2bc53615b2ed7f53f22cb9e345",
+      "screenshotBytes": 438438,
+      "visualReview": "REVIEWED_ACCEPTED"
+    },
+    {
+      "evidenceId": "HP-P7-EV-M-multi-tab-invalidated",
+      "journeyId": "M",
+      "sourceSha": "e6cf3cb18de4e8854b19e1d29c94f3b492eba441",
+      "fixtureVersion": "homeport-phase7-integrated-v1",
+      "result": "PASSED",
+      "browser": "Chromium 141.0.7390.37",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "motionMode": "REDUCED",
+      "route": "/sign-in",
+      "title": "Voyagewright | Stories made to be played",
+      "captureMode": "FULL_PAGE",
+      "screenshot": "screenshots/HP-P7-EV-M-multi-tab-invalidated.png",
+      "screenshotSha256": "1ede35a71fd75a7001966a7e937522e193488bf6a32f675f896cd29ae4650f2f",
+      "screenshotBytes": 544845,
+      "visualReview": "REVIEWED_ACCEPTED"
+    },
+    {
+      "evidenceId": "HP-P7-EV-N-dependency-unavailable",
+      "journeyId": "N",
+      "sourceSha": "e6cf3cb18de4e8854b19e1d29c94f3b492eba441",
+      "fixtureVersion": "homeport-phase7-integrated-v1",
+      "result": "PASSED",
+      "browser": "Chromium 141.0.7390.37",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "motionMode": "REDUCED",
+      "route": "/community",
+      "title": "Community Harbor | Voyagewright",
+      "captureMode": "FULL_PAGE",
+      "screenshot": "screenshots/HP-P7-EV-N-dependency-unavailable.png",
+      "screenshotSha256": "e4a44c4c6a7489f632b07dcd0844ad134d3000d9f9e21ea19b0770ed074472b0",
+      "screenshotBytes": 2366093,
+      "visualReview": "REVIEWED_ACCEPTED"
+    },
+    {
+      "evidenceId": "HP-P7-EV-O-whole-voyage-anonymous-end",
+      "journeyId": "O",
+      "sourceSha": "e6cf3cb18de4e8854b19e1d29c94f3b492eba441",
+      "fixtureVersion": "homeport-phase7-integrated-v1",
+      "result": "PASSED",
+      "browser": "Chromium 141.0.7390.37",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "motionMode": "REDUCED",
+      "route": "/",
+      "title": "Voyagewright | Stories made to be played",
+      "captureMode": "FULL_PAGE",
+      "screenshot": "screenshots/HP-P7-EV-O-whole-voyage-anonymous-end.png",
+      "screenshotSha256": "f45cbea4f3c77caaf20e227443098299379cda1069d465954b71dcaaae91904c",
+      "screenshotBytes": 968455,
+      "visualReview": "REVIEWED_ACCEPTED"
+    },
+    {
+      "evidenceId": "HP-P7-EV-O-whole-voyage-community",
+      "journeyId": "O",
+      "sourceSha": "e6cf3cb18de4e8854b19e1d29c94f3b492eba441",
+      "fixtureVersion": "homeport-phase7-integrated-v1",
+      "result": "PASSED",
+      "browser": "Chromium 141.0.7390.37",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "motionMode": "REDUCED",
+      "route": "/community/clockwork-reef-chronicle",
+      "title": "Clockwork Reef Almanac | Voyagewright",
+      "captureMode": "FULL_PAGE",
+      "screenshot": "screenshots/HP-P7-EV-O-whole-voyage-community.png",
+      "screenshotSha256": "d2560caa011686bd5306314cb0146398fa0b047179dacdf7cb3efa5c766a2bc4",
+      "screenshotBytes": 645700,
+      "visualReview": "REVIEWED_ACCEPTED"
+    }
+  ],
+  "limitations": [
+    "Evidence is local production-build browser proof against synthetic task-owned database clones.",
+    "Full-page captures may reposition sticky navigation during browser stitching; route content and milestone controls remain inspectable.",
+    "Owner acceptance, merge, deployment, and live-provider behavior are not claimed."
+  ]
+}

@@ -89,6 +89,7 @@
     "homeport:phase7:inventory": "node scripts/homeport/apply-phase7-whole-voyage-model.mjs",
     "homeport:phase7:fixture:prepare": "node scripts/homeport/prepare-phase7-fixture.mjs",
     "homeport:phase7:journeys": "node scripts/homeport/run-phase7-journeys.mjs",
+    "homeport:phase7:evidence:finalize": "node scripts/homeport/finalize-phase7-evidence.mjs",
     "homeport:phase7:walkthrough:prepare": "node scripts/homeport/phase7-walkthrough-runtime.mjs prepare",
     "homeport:phase7:walkthrough:start": "node scripts/homeport/phase7-walkthrough-runtime.mjs start",
     "homeport:phase7:walkthrough:status": "node scripts/homeport/phase7-walkthrough-runtime.mjs status",

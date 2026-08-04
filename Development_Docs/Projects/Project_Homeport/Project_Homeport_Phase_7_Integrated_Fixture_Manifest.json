@@ -2,7 +2,7 @@
   "schemaVersion": "1.0.0",
   "fixtureVersion": "homeport-phase7-integrated-v1",
   "classification": "SYNTHETIC_TEST_DATA",
-  "sourceSha": "IMPLEMENTATION_SOURCE_PENDING",
+  "sourceSha": "e6cf3cb18de4e8854b19e1d29c94f3b492eba441",
   "aliases": [
     {
       "alias": "ANONYMOUS",
@@ -78,7 +78,11 @@
     "DEPENDENCY_FAILURE",
     "EMPTY_STATES"
   ],
-  "roots": ["IMMUTABLE_SEED", "AUTOMATED_JOURNEY_CLONES", "FINAL_WALKTHROUGH_CLONE"],
+  "roots": [
+    "IMMUTABLE_SEED",
+    "AUTOMATED_JOURNEY_CLONES",
+    "FINAL_WALKTHROUGH_CLONE"
+  ],
   "privacyAssertions": [
     "SYNTHETIC_NAMES_ONLY",
     "RESERVED_EMAIL_DOMAINS_ONLY",

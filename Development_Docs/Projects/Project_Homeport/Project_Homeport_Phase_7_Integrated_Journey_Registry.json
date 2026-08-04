@@ -1,7 +1,7 @@
 {
   "schemaVersion": "1.0.0",
   "fixtureVersion": "homeport-phase7-integrated-v1",
-  "sourceSha": "IMPLEMENTATION_SOURCE_PENDING",
+  "sourceSha": "e6cf3cb18de4e8854b19e1d29c94f3b492eba441",
   "journeys": [
     {
       "journeyId": "A",
@@ -11,13 +11,31 @@
       "fixtureClone": "journey-A.db",
       "startingAccountState": "REGISTRATION_CANDIDATE",
       "rootRoute": "/",
-      "requiredControls": ["Create Account", "Sign out"],
-      "routeMilestones": ["/register", "/account"],
-      "mutationMilestones": ["ACCOUNT_CREATED", "SESSION_REVOKED"],
-      "accountStateAssertions": ["REGISTRATION_CANDIDATE", "ANONYMOUS"],
-      "visualMilestones": ["HP-P7-EV-A-registered-profile"],
-      "keyboardMilestones": ["VISIBLE_CONTROL_FOCUS"],
-      "focusMilestones": ["ROUTE_MAIN_OR_DISCLOSURE_FOCUSED"],
+      "requiredControls": [
+        "Create Account",
+        "Sign out"
+      ],
+      "routeMilestones": [
+        "/register",
+        "/account"
+      ],
+      "mutationMilestones": [
+        "ACCOUNT_CREATED",
+        "SESSION_REVOKED"
+      ],
+      "accountStateAssertions": [
+        "REGISTRATION_CANDIDATE",
+        "ANONYMOUS"
+      ],
+      "visualMilestones": [
+        "HP-P7-EV-A-registered-profile"
+      ],
+      "keyboardMilestones": [
+        "VISIBLE_CONTROL_FOCUS"
+      ],
+      "focusMilestones": [
+        "ROUTE_MAIN_OR_DISCLOSURE_FOCUSED"
+      ],
       "viewport": {
         "width": 1440,
         "height": 900,
@@ -27,10 +45,15 @@
       "failureVariant": null,
       "expectedFinalState": "ANONYMOUS",
       "resetPolicy": "RECREATE_CLONE_FROM_IMMUTABLE_SEED",
-      "evidenceIds": ["HP-P7-EV-A-registered-profile"],
-      "testContractIds": ["homeport.phase7.journey-a", "homeport.phase7.evidence-source-binding"],
-      "sourceSha": "IMPLEMENTATION_SOURCE_PENDING",
-      "result": "PENDING_EXECUTION",
+      "evidenceIds": [
+        "HP-P7-EV-A-registered-profile"
+      ],
+      "testContractIds": [
+        "homeport.phase7.journey-a",
+        "homeport.phase7.evidence-source-binding"
+      ],
+      "sourceSha": "e6cf3cb18de4e8854b19e1d29c94f3b492eba441",
+      "result": "PASSED",
       "limitations": []
     },
     {
@@ -41,13 +64,35 @@
       "fixtureClone": "journey-B.db",
       "startingAccountState": "RETURNING_FULL_CAPABILITY",
       "rootRoute": "/",
-      "requiredControls": ["Sign In", "Player", "Captain", "Creator Studio"],
-      "routeMilestones": ["/sign-in", "/player/library", "/captain/library", "/studio/library", "/account"],
-      "mutationMilestones": ["SESSION_CREATED"],
-      "accountStateAssertions": ["RETURNING_FULL_CAPABILITY", "ANONYMOUS"],
-      "visualMilestones": ["HP-P7-EV-B-cross-workspace-account"],
-      "keyboardMilestones": ["VISIBLE_CONTROL_FOCUS"],
-      "focusMilestones": ["ROUTE_MAIN_OR_DISCLOSURE_FOCUSED"],
+      "requiredControls": [
+        "Sign In",
+        "Player",
+        "Captain",
+        "Creator Studio"
+      ],
+      "routeMilestones": [
+        "/sign-in",
+        "/player/library",
+        "/captain/library",
+        "/studio/library",
+        "/account"
+      ],
+      "mutationMilestones": [
+        "SESSION_CREATED"
+      ],
+      "accountStateAssertions": [
+        "RETURNING_FULL_CAPABILITY",
+        "ANONYMOUS"
+      ],
+      "visualMilestones": [
+        "HP-P7-EV-B-cross-workspace-account"
+      ],
+      "keyboardMilestones": [
+        "VISIBLE_CONTROL_FOCUS"
+      ],
+      "focusMilestones": [
+        "ROUTE_MAIN_OR_DISCLOSURE_FOCUSED"
+      ],
       "viewport": {
         "width": 1440,
         "height": 900,
@@ -57,10 +102,15 @@
       "failureVariant": null,
       "expectedFinalState": "ANONYMOUS",
       "resetPolicy": "RECREATE_CLONE_FROM_IMMUTABLE_SEED",
-      "evidenceIds": ["HP-P7-EV-B-cross-workspace-account"],
-      "testContractIds": ["homeport.phase7.journey-b", "homeport.phase7.evidence-source-binding"],
-      "sourceSha": "IMPLEMENTATION_SOURCE_PENDING",
-      "result": "PENDING_EXECUTION",
+      "evidenceIds": [
+        "HP-P7-EV-B-cross-workspace-account"
+      ],
+      "testContractIds": [
+        "homeport.phase7.journey-b",
+        "homeport.phase7.evidence-source-binding"
+      ],
+      "sourceSha": "e6cf3cb18de4e8854b19e1d29c94f3b492eba441",
+      "result": "PASSED",
       "limitations": []
     },
     {
@@ -71,13 +121,29 @@
       "fixtureClone": "journey-C.db",
       "startingAccountState": "RETURNING_FULL_CAPABILITY",
       "rootRoute": "/",
-      "requiredControls": ["Player", "Chronicle Passport"],
-      "routeMilestones": ["/player/library", "/player/playthroughs/[playthroughId]", "/passport"],
+      "requiredControls": [
+        "Player",
+        "Chronicle Passport"
+      ],
+      "routeMilestones": [
+        "/player/library",
+        "/player/playthroughs/[playthroughId]",
+        "/passport"
+      ],
       "mutationMilestones": [],
-      "accountStateAssertions": ["RETURNING_FULL_CAPABILITY", "AUTHENTICATED_FULL_CAPABILITY"],
-      "visualMilestones": ["HP-P7-EV-C-player-voyage"],
-      "keyboardMilestones": ["VISIBLE_CONTROL_FOCUS"],
-      "focusMilestones": ["ROUTE_MAIN_OR_DISCLOSURE_FOCUSED"],
+      "accountStateAssertions": [
+        "RETURNING_FULL_CAPABILITY",
+        "AUTHENTICATED_FULL_CAPABILITY"
+      ],
+      "visualMilestones": [
+        "HP-P7-EV-C-player-voyage"
+      ],
+      "keyboardMilestones": [
+        "VISIBLE_CONTROL_FOCUS"
+      ],
+      "focusMilestones": [
+        "ROUTE_MAIN_OR_DISCLOSURE_FOCUSED"
+      ],
       "viewport": {
         "width": 1440,
         "height": 900,
@@ -87,10 +153,15 @@
       "failureVariant": null,
       "expectedFinalState": "AUTHENTICATED_FULL_CAPABILITY",
       "resetPolicy": "RECREATE_CLONE_FROM_IMMUTABLE_SEED",
-      "evidenceIds": ["HP-P7-EV-C-player-voyage"],
-      "testContractIds": ["homeport.phase7.journey-c", "homeport.phase7.evidence-source-binding"],
-      "sourceSha": "IMPLEMENTATION_SOURCE_PENDING",
-      "result": "PENDING_EXECUTION",
+      "evidenceIds": [
+        "HP-P7-EV-C-player-voyage"
+      ],
+      "testContractIds": [
+        "homeport.phase7.journey-c",
+        "homeport.phase7.evidence-source-binding"
+      ],
+      "sourceSha": "e6cf3cb18de4e8854b19e1d29c94f3b492eba441",
+      "result": "PASSED",
       "limitations": []
     },
     {
@@ -101,13 +172,29 @@
       "fixtureClone": "journey-D.db",
       "startingAccountState": "RETURNING_FULL_CAPABILITY",
       "rootRoute": "/",
-      "requiredControls": ["Captain", "View My Profile"],
-      "routeMilestones": ["/captain/library", "/captain/sessions/[sessionId]", "/account"],
+      "requiredControls": [
+        "Captain",
+        "View My Profile"
+      ],
+      "routeMilestones": [
+        "/captain/library",
+        "/captain/sessions/[sessionId]",
+        "/account"
+      ],
       "mutationMilestones": [],
-      "accountStateAssertions": ["RETURNING_FULL_CAPABILITY", "AUTHENTICATED_FULL_CAPABILITY"],
-      "visualMilestones": ["HP-P7-EV-D-captain-session"],
-      "keyboardMilestones": ["VISIBLE_CONTROL_FOCUS"],
-      "focusMilestones": ["ROUTE_MAIN_OR_DISCLOSURE_FOCUSED"],
+      "accountStateAssertions": [
+        "RETURNING_FULL_CAPABILITY",
+        "AUTHENTICATED_FULL_CAPABILITY"
+      ],
+      "visualMilestones": [
+        "HP-P7-EV-D-captain-session"
+      ],
+      "keyboardMilestones": [
+        "VISIBLE_CONTROL_FOCUS"
+      ],
+      "focusMilestones": [
+        "ROUTE_MAIN_OR_DISCLOSURE_FOCUSED"
+      ],
       "viewport": {
         "width": 1440,
         "height": 900,
@@ -117,10 +204,15 @@
       "failureVariant": null,
       "expectedFinalState": "AUTHENTICATED_FULL_CAPABILITY",
       "resetPolicy": "RECREATE_CLONE_FROM_IMMUTABLE_SEED",
-      "evidenceIds": ["HP-P7-EV-D-captain-session"],
-      "testContractIds": ["homeport.phase7.journey-d", "homeport.phase7.evidence-source-binding"],
-      "sourceSha": "IMPLEMENTATION_SOURCE_PENDING",
-      "result": "PENDING_EXECUTION",
+      "evidenceIds": [
+        "HP-P7-EV-D-captain-session"
+      ],
+      "testContractIds": [
+        "homeport.phase7.journey-d",
+        "homeport.phase7.evidence-source-binding"
+      ],
+      "sourceSha": "e6cf3cb18de4e8854b19e1d29c94f3b492eba441",
+      "result": "PASSED",
       "limitations": []
     },
     {
@@ -131,13 +223,31 @@
       "fixtureClone": "journey-E.db",
       "startingAccountState": "RETURNING_FULL_CAPABILITY",
       "rootRoute": "/",
-      "requiredControls": ["Creator Studio", "Community Harbor"],
-      "routeMilestones": ["/studio/library", "/studio/tales/[taleId]", "/community"],
-      "mutationMilestones": ["DRAFT_STATE_OBSERVED"],
-      "accountStateAssertions": ["RETURNING_FULL_CAPABILITY", "AUTHENTICATED_FULL_CAPABILITY"],
-      "visualMilestones": ["HP-P7-EV-E-creator-private-state"],
-      "keyboardMilestones": ["VISIBLE_CONTROL_FOCUS"],
-      "focusMilestones": ["ROUTE_MAIN_OR_DISCLOSURE_FOCUSED"],
+      "requiredControls": [
+        "Creator Studio",
+        "Community Harbor"
+      ],
+      "routeMilestones": [
+        "/studio/library",
+        "/studio/tales/[taleId]",
+        "/community"
+      ],
+      "mutationMilestones": [
+        "DRAFT_STATE_OBSERVED"
+      ],
+      "accountStateAssertions": [
+        "RETURNING_FULL_CAPABILITY",
+        "AUTHENTICATED_FULL_CAPABILITY"
+      ],
+      "visualMilestones": [
+        "HP-P7-EV-E-creator-private-state"
+      ],
+      "keyboardMilestones": [
+        "VISIBLE_CONTROL_FOCUS"
+      ],
+      "focusMilestones": [
+        "ROUTE_MAIN_OR_DISCLOSURE_FOCUSED"
+      ],
       "viewport": {
         "width": 1440,
         "height": 900,
@@ -147,10 +257,15 @@
       "failureVariant": null,
       "expectedFinalState": "AUTHENTICATED_FULL_CAPABILITY",
       "resetPolicy": "RECREATE_CLONE_FROM_IMMUTABLE_SEED",
-      "evidenceIds": ["HP-P7-EV-E-creator-private-state"],
-      "testContractIds": ["homeport.phase7.journey-e", "homeport.phase7.evidence-source-binding"],
-      "sourceSha": "IMPLEMENTATION_SOURCE_PENDING",
-      "result": "PENDING_EXECUTION",
+      "evidenceIds": [
+        "HP-P7-EV-E-creator-private-state"
+      ],
+      "testContractIds": [
+        "homeport.phase7.journey-e",
+        "homeport.phase7.evidence-source-binding"
+      ],
+      "sourceSha": "e6cf3cb18de4e8854b19e1d29c94f3b492eba441",
+      "result": "PASSED",
       "limitations": []
     },
     {
@@ -161,13 +276,34 @@
       "fixtureClone": "journey-F.db",
       "startingAccountState": "PLAYER_ONLY",
       "rootRoute": "/",
-      "requiredControls": ["Community Harbor", "Chronicles", "Save", "Chronicle Passport"],
-      "routeMilestones": ["/community", "/community/chronicles", "/community/[slug]", "/passport/saved"],
-      "mutationMilestones": ["COMMUNITY_SAVE_CREATED"],
-      "accountStateAssertions": ["PLAYER_ONLY", "AUTHENTICATED_PLAYER"],
-      "visualMilestones": ["HP-P7-EV-F-community-saved"],
-      "keyboardMilestones": ["VISIBLE_CONTROL_FOCUS"],
-      "focusMilestones": ["ROUTE_MAIN_OR_DISCLOSURE_FOCUSED"],
+      "requiredControls": [
+        "Community Harbor",
+        "Chronicles",
+        "Save",
+        "Chronicle Passport"
+      ],
+      "routeMilestones": [
+        "/community",
+        "/community/chronicles",
+        "/community/[slug]",
+        "/passport/saved"
+      ],
+      "mutationMilestones": [
+        "COMMUNITY_SAVE_CREATED"
+      ],
+      "accountStateAssertions": [
+        "PLAYER_ONLY",
+        "AUTHENTICATED_PLAYER"
+      ],
+      "visualMilestones": [
+        "HP-P7-EV-F-community-saved"
+      ],
+      "keyboardMilestones": [
+        "VISIBLE_CONTROL_FOCUS"
+      ],
+      "focusMilestones": [
+        "ROUTE_MAIN_OR_DISCLOSURE_FOCUSED"
+      ],
       "viewport": {
         "width": 1440,
         "height": 900,
@@ -177,10 +313,15 @@
       "failureVariant": null,
       "expectedFinalState": "AUTHENTICATED_PLAYER",
       "resetPolicy": "RECREATE_CLONE_FROM_IMMUTABLE_SEED",
-      "evidenceIds": ["HP-P7-EV-F-community-saved"],
-      "testContractIds": ["homeport.phase7.journey-f", "homeport.phase7.evidence-source-binding"],
-      "sourceSha": "IMPLEMENTATION_SOURCE_PENDING",
-      "result": "PENDING_EXECUTION",
+      "evidenceIds": [
+        "HP-P7-EV-F-community-saved"
+      ],
+      "testContractIds": [
+        "homeport.phase7.journey-f",
+        "homeport.phase7.evidence-source-binding"
+      ],
+      "sourceSha": "e6cf3cb18de4e8854b19e1d29c94f3b492eba441",
+      "result": "PASSED",
       "limitations": []
     },
     {
@@ -191,13 +332,33 @@
       "fixtureClone": "journey-G.db",
       "startingAccountState": "RETURNING_FULL_CAPABILITY",
       "rootRoute": "/",
-      "requiredControls": ["View My Profile", "Preferences", "Save preferences"],
-      "routeMilestones": ["/account", "/account/preferences", "/account/security", "/account/sessions"],
-      "mutationMilestones": ["PREFERENCE_UPDATED"],
-      "accountStateAssertions": ["RETURNING_FULL_CAPABILITY", "AUTHENTICATED_FULL_CAPABILITY"],
-      "visualMilestones": ["HP-P7-EV-G-profile-preferences-saved"],
-      "keyboardMilestones": ["VISIBLE_CONTROL_FOCUS"],
-      "focusMilestones": ["ROUTE_MAIN_OR_DISCLOSURE_FOCUSED"],
+      "requiredControls": [
+        "View My Profile",
+        "Preferences",
+        "Save preferences"
+      ],
+      "routeMilestones": [
+        "/account",
+        "/account/preferences",
+        "/account/security",
+        "/account/sessions"
+      ],
+      "mutationMilestones": [
+        "PREFERENCE_UPDATED"
+      ],
+      "accountStateAssertions": [
+        "RETURNING_FULL_CAPABILITY",
+        "AUTHENTICATED_FULL_CAPABILITY"
+      ],
+      "visualMilestones": [
+        "HP-P7-EV-G-profile-preferences-saved"
+      ],
+      "keyboardMilestones": [
+        "VISIBLE_CONTROL_FOCUS"
+      ],
+      "focusMilestones": [
+        "ROUTE_MAIN_OR_DISCLOSURE_FOCUSED"
+      ],
       "viewport": {
         "width": 1440,
         "height": 900,
@@ -207,10 +368,15 @@
       "failureVariant": null,
       "expectedFinalState": "AUTHENTICATED_FULL_CAPABILITY",
       "resetPolicy": "RECREATE_CLONE_FROM_IMMUTABLE_SEED",
-      "evidenceIds": ["HP-P7-EV-G-profile-preferences-saved"],
-      "testContractIds": ["homeport.phase7.journey-g", "homeport.phase7.evidence-source-binding"],
-      "sourceSha": "IMPLEMENTATION_SOURCE_PENDING",
-      "result": "PENDING_EXECUTION",
+      "evidenceIds": [
+        "HP-P7-EV-G-profile-preferences-saved"
+      ],
+      "testContractIds": [
+        "homeport.phase7.journey-g",
+        "homeport.phase7.evidence-source-binding"
+      ],
+      "sourceSha": "e6cf3cb18de4e8854b19e1d29c94f3b492eba441",
+      "result": "PASSED",
       "limitations": []
     },
     {
@@ -221,7 +387,13 @@
       "fixtureClone": "journey-H.db",
       "startingAccountState": "RETURNING_FULL_CAPABILITY",
       "rootRoute": "/",
-      "requiredControls": ["Chronicle Passport", "History", "Memories", "Artifacts", "Saved"],
+      "requiredControls": [
+        "Chronicle Passport",
+        "History",
+        "Memories",
+        "Artifacts",
+        "Saved"
+      ],
       "routeMilestones": [
         "/passport",
         "/passport/history",
@@ -230,10 +402,19 @@
         "/passport/saved"
       ],
       "mutationMilestones": [],
-      "accountStateAssertions": ["RETURNING_FULL_CAPABILITY", "AUTHENTICATED_FULL_CAPABILITY"],
-      "visualMilestones": ["HP-P7-EV-H-passport-artifacts-and-saved"],
-      "keyboardMilestones": ["VISIBLE_CONTROL_FOCUS"],
-      "focusMilestones": ["ROUTE_MAIN_OR_DISCLOSURE_FOCUSED"],
+      "accountStateAssertions": [
+        "RETURNING_FULL_CAPABILITY",
+        "AUTHENTICATED_FULL_CAPABILITY"
+      ],
+      "visualMilestones": [
+        "HP-P7-EV-H-passport-artifacts-and-saved"
+      ],
+      "keyboardMilestones": [
+        "VISIBLE_CONTROL_FOCUS"
+      ],
+      "focusMilestones": [
+        "ROUTE_MAIN_OR_DISCLOSURE_FOCUSED"
+      ],
       "viewport": {
         "width": 1440,
         "height": 900,
@@ -243,10 +424,15 @@
       "failureVariant": null,
       "expectedFinalState": "AUTHENTICATED_FULL_CAPABILITY",
       "resetPolicy": "RECREATE_CLONE_FROM_IMMUTABLE_SEED",
-      "evidenceIds": ["HP-P7-EV-H-passport-artifacts-and-saved"],
-      "testContractIds": ["homeport.phase7.journey-h", "homeport.phase7.evidence-source-binding"],
-      "sourceSha": "IMPLEMENTATION_SOURCE_PENDING",
-      "result": "PENDING_EXECUTION",
+      "evidenceIds": [
+        "HP-P7-EV-H-passport-artifacts-and-saved"
+      ],
+      "testContractIds": [
+        "homeport.phase7.journey-h",
+        "homeport.phase7.evidence-source-binding"
+      ],
+      "sourceSha": "e6cf3cb18de4e8854b19e1d29c94f3b492eba441",
+      "result": "PASSED",
       "limitations": []
     },
     {
@@ -257,13 +443,33 @@
       "fixtureClone": "journey-I.db",
       "startingAccountState": "RECOVERY_ACCOUNT",
       "rootRoute": "/",
-      "requiredControls": ["Sign In", "Forgot Password", "Continue"],
-      "routeMilestones": ["/forgot-password", "/reset-password", "/account/sessions"],
-      "mutationMilestones": ["PASSWORD_RESET", "SESSION_CREATED"],
-      "accountStateAssertions": ["RECOVERY_ACCOUNT", "AUTHENTICATED_RECOVERY_ACCOUNT"],
-      "visualMilestones": ["HP-P7-EV-I-recovery-restored-account"],
-      "keyboardMilestones": ["VISIBLE_CONTROL_FOCUS"],
-      "focusMilestones": ["ROUTE_MAIN_OR_DISCLOSURE_FOCUSED"],
+      "requiredControls": [
+        "Sign In",
+        "Forgot Password",
+        "Continue"
+      ],
+      "routeMilestones": [
+        "/forgot-password",
+        "/reset-password",
+        "/account/sessions"
+      ],
+      "mutationMilestones": [
+        "PASSWORD_RESET",
+        "SESSION_CREATED"
+      ],
+      "accountStateAssertions": [
+        "RECOVERY_ACCOUNT",
+        "AUTHENTICATED_RECOVERY_ACCOUNT"
+      ],
+      "visualMilestones": [
+        "HP-P7-EV-I-recovery-restored-account"
+      ],
+      "keyboardMilestones": [
+        "VISIBLE_CONTROL_FOCUS"
+      ],
+      "focusMilestones": [
+        "ROUTE_MAIN_OR_DISCLOSURE_FOCUSED"
+      ],
       "viewport": {
         "width": 1440,
         "height": 900,
@@ -273,10 +479,15 @@
       "failureVariant": "MALFORMED_AND_EXPIRED_TOKEN",
       "expectedFinalState": "AUTHENTICATED_RECOVERY_ACCOUNT",
       "resetPolicy": "RECREATE_CLONE_FROM_IMMUTABLE_SEED",
-      "evidenceIds": ["HP-P7-EV-I-recovery-restored-account"],
-      "testContractIds": ["homeport.phase7.journey-i", "homeport.phase7.evidence-source-binding"],
-      "sourceSha": "IMPLEMENTATION_SOURCE_PENDING",
-      "result": "PENDING_EXECUTION",
+      "evidenceIds": [
+        "HP-P7-EV-I-recovery-restored-account"
+      ],
+      "testContractIds": [
+        "homeport.phase7.journey-i",
+        "homeport.phase7.evidence-source-binding"
+      ],
+      "sourceSha": "e6cf3cb18de4e8854b19e1d29c94f3b492eba441",
+      "result": "PASSED",
       "limitations": []
     },
     {
@@ -287,13 +498,30 @@
       "fixtureClone": "journey-J.db",
       "startingAccountState": "AUTHENTICATED_PRECONDITION_AFTER_ROOT_ENTRY",
       "rootRoute": "/",
-      "requiredControls": ["Sign In"],
-      "routeMilestones": ["/player/library", "/sign-in"],
-      "mutationMilestones": ["SESSION_EXPIRED", "SESSION_REPLACED"],
-      "accountStateAssertions": ["EXPIRED_SESSION_ACCOUNT", "AUTHENTICATED_PLAYER"],
-      "visualMilestones": ["HP-P7-EV-J-session-expired"],
-      "keyboardMilestones": ["VISIBLE_CONTROL_FOCUS"],
-      "focusMilestones": ["ROUTE_MAIN_OR_DISCLOSURE_FOCUSED"],
+      "requiredControls": [
+        "Sign In"
+      ],
+      "routeMilestones": [
+        "/player/library",
+        "/sign-in"
+      ],
+      "mutationMilestones": [
+        "SESSION_EXPIRED",
+        "SESSION_REPLACED"
+      ],
+      "accountStateAssertions": [
+        "EXPIRED_SESSION_ACCOUNT",
+        "AUTHENTICATED_PLAYER"
+      ],
+      "visualMilestones": [
+        "HP-P7-EV-J-session-expired"
+      ],
+      "keyboardMilestones": [
+        "VISIBLE_CONTROL_FOCUS"
+      ],
+      "focusMilestones": [
+        "ROUTE_MAIN_OR_DISCLOSURE_FOCUSED"
+      ],
       "viewport": {
         "width": 1440,
         "height": 900,
@@ -303,10 +531,15 @@
       "failureVariant": null,
       "expectedFinalState": "AUTHENTICATED_PLAYER",
       "resetPolicy": "RECREATE_CLONE_FROM_IMMUTABLE_SEED",
-      "evidenceIds": ["HP-P7-EV-J-session-expired"],
-      "testContractIds": ["homeport.phase7.journey-j", "homeport.phase7.evidence-source-binding"],
-      "sourceSha": "IMPLEMENTATION_SOURCE_PENDING",
-      "result": "PENDING_EXECUTION",
+      "evidenceIds": [
+        "HP-P7-EV-J-session-expired"
+      ],
+      "testContractIds": [
+        "homeport.phase7.journey-j",
+        "homeport.phase7.evidence-source-binding"
+      ],
+      "sourceSha": "e6cf3cb18de4e8854b19e1d29c94f3b492eba441",
+      "result": "PASSED",
       "limitations": []
     },
     {
@@ -317,13 +550,27 @@
       "fixtureClone": "journey-K.db",
       "startingAccountState": "AUTHENTICATED_PRECONDITION_AFTER_ROOT_ENTRY",
       "rootRoute": "/",
-      "requiredControls": ["Community Harbor"],
-      "routeMilestones": ["/community", "/community/moderation"],
+      "requiredControls": [
+        "Community Harbor"
+      ],
+      "routeMilestones": [
+        "/community",
+        "/community/moderation"
+      ],
       "mutationMilestones": [],
-      "accountStateAssertions": ["PLAYER_ONLY", "AUTHENTICATED_PLAYER"],
-      "visualMilestones": ["HP-P7-EV-K-permission-denied-authenticated"],
-      "keyboardMilestones": ["VISIBLE_CONTROL_FOCUS"],
-      "focusMilestones": ["ROUTE_MAIN_OR_DISCLOSURE_FOCUSED"],
+      "accountStateAssertions": [
+        "PLAYER_ONLY",
+        "AUTHENTICATED_PLAYER"
+      ],
+      "visualMilestones": [
+        "HP-P7-EV-K-permission-denied-authenticated"
+      ],
+      "keyboardMilestones": [
+        "VISIBLE_CONTROL_FOCUS"
+      ],
+      "focusMilestones": [
+        "ROUTE_MAIN_OR_DISCLOSURE_FOCUSED"
+      ],
       "viewport": {
         "width": 1440,
         "height": 900,
@@ -333,10 +580,15 @@
       "failureVariant": null,
       "expectedFinalState": "AUTHENTICATED_PLAYER",
       "resetPolicy": "RECREATE_CLONE_FROM_IMMUTABLE_SEED",
-      "evidenceIds": ["HP-P7-EV-K-permission-denied-authenticated"],
-      "testContractIds": ["homeport.phase7.journey-k", "homeport.phase7.evidence-source-binding"],
-      "sourceSha": "IMPLEMENTATION_SOURCE_PENDING",
-      "result": "PENDING_EXECUTION",
+      "evidenceIds": [
+        "HP-P7-EV-K-permission-denied-authenticated"
+      ],
+      "testContractIds": [
+        "homeport.phase7.journey-k",
+        "homeport.phase7.evidence-source-binding"
+      ],
+      "sourceSha": "e6cf3cb18de4e8854b19e1d29c94f3b492eba441",
+      "result": "PASSED",
       "limitations": []
     },
     {
@@ -347,13 +599,35 @@
       "fixtureClone": "journey-L.db",
       "startingAccountState": "RETURNING_FULL_CAPABILITY",
       "rootRoute": "/",
-      "requiredControls": ["Open navigation", "Community Harbor", "View My Profile", "Player", "Sign out"],
-      "routeMilestones": ["/", "/community", "/account", "/player/library"],
-      "mutationMilestones": ["SESSION_REVOKED"],
-      "accountStateAssertions": ["RETURNING_FULL_CAPABILITY", "ANONYMOUS"],
-      "visualMilestones": ["HP-P7-EV-L-mobile-workspace"],
-      "keyboardMilestones": ["MOBILE_NAVIGATION_FOCUS"],
-      "focusMilestones": ["ROUTE_MAIN_OR_DISCLOSURE_FOCUSED"],
+      "requiredControls": [
+        "Open navigation",
+        "Community Harbor",
+        "View My Profile",
+        "Player",
+        "Sign out"
+      ],
+      "routeMilestones": [
+        "/",
+        "/community",
+        "/account",
+        "/player/library"
+      ],
+      "mutationMilestones": [
+        "SESSION_REVOKED"
+      ],
+      "accountStateAssertions": [
+        "RETURNING_FULL_CAPABILITY",
+        "ANONYMOUS"
+      ],
+      "visualMilestones": [
+        "HP-P7-EV-L-mobile-workspace"
+      ],
+      "keyboardMilestones": [
+        "MOBILE_NAVIGATION_FOCUS"
+      ],
+      "focusMilestones": [
+        "ROUTE_MAIN_OR_DISCLOSURE_FOCUSED"
+      ],
       "viewport": {
         "width": 390,
         "height": 844,
@@ -363,10 +637,15 @@
       "failureVariant": null,
       "expectedFinalState": "ANONYMOUS",
       "resetPolicy": "RECREATE_CLONE_FROM_IMMUTABLE_SEED",
-      "evidenceIds": ["HP-P7-EV-L-mobile-workspace"],
-      "testContractIds": ["homeport.phase7.journey-l", "homeport.phase7.evidence-source-binding"],
-      "sourceSha": "IMPLEMENTATION_SOURCE_PENDING",
-      "result": "PENDING_EXECUTION",
+      "evidenceIds": [
+        "HP-P7-EV-L-mobile-workspace"
+      ],
+      "testContractIds": [
+        "homeport.phase7.journey-l",
+        "homeport.phase7.evidence-source-binding"
+      ],
+      "sourceSha": "e6cf3cb18de4e8854b19e1d29c94f3b492eba441",
+      "result": "PASSED",
       "limitations": []
     },
     {
@@ -377,13 +656,30 @@
       "fixtureClone": "journey-M.db",
       "startingAccountState": "RETURNING_FULL_CAPABILITY",
       "rootRoute": "/",
-      "requiredControls": ["Sign out"],
-      "routeMilestones": ["/", "/player/library"],
-      "mutationMilestones": ["SESSION_REVOKED", "SECOND_TAB_INVALIDATED"],
-      "accountStateAssertions": ["RETURNING_FULL_CAPABILITY", "ANONYMOUS"],
-      "visualMilestones": ["HP-P7-EV-M-multi-tab-invalidated"],
-      "keyboardMilestones": ["VISIBLE_CONTROL_FOCUS"],
-      "focusMilestones": ["ROUTE_MAIN_OR_DISCLOSURE_FOCUSED"],
+      "requiredControls": [
+        "Sign out"
+      ],
+      "routeMilestones": [
+        "/",
+        "/player/library"
+      ],
+      "mutationMilestones": [
+        "SESSION_REVOKED",
+        "SECOND_TAB_INVALIDATED"
+      ],
+      "accountStateAssertions": [
+        "RETURNING_FULL_CAPABILITY",
+        "ANONYMOUS"
+      ],
+      "visualMilestones": [
+        "HP-P7-EV-M-multi-tab-invalidated"
+      ],
+      "keyboardMilestones": [
+        "VISIBLE_CONTROL_FOCUS"
+      ],
+      "focusMilestones": [
+        "ROUTE_MAIN_OR_DISCLOSURE_FOCUSED"
+      ],
       "viewport": {
         "width": 1440,
         "height": 900,
@@ -393,10 +689,15 @@
       "failureVariant": null,
       "expectedFinalState": "ANONYMOUS",
       "resetPolicy": "RECREATE_CLONE_FROM_IMMUTABLE_SEED",
-      "evidenceIds": ["HP-P7-EV-M-multi-tab-invalidated"],
-      "testContractIds": ["homeport.phase7.journey-m", "homeport.phase7.evidence-source-binding"],
-      "sourceSha": "IMPLEMENTATION_SOURCE_PENDING",
-      "result": "PENDING_EXECUTION",
+      "evidenceIds": [
+        "HP-P7-EV-M-multi-tab-invalidated"
+      ],
+      "testContractIds": [
+        "homeport.phase7.journey-m",
+        "homeport.phase7.evidence-source-binding"
+      ],
+      "sourceSha": "e6cf3cb18de4e8854b19e1d29c94f3b492eba441",
+      "result": "PASSED",
       "limitations": []
     },
     {
@@ -407,13 +708,31 @@
       "fixtureClone": "journey-N.db",
       "startingAccountState": "ANONYMOUS",
       "rootRoute": "/",
-      "requiredControls": ["Community Harbor", "Search", "Try again"],
-      "routeMilestones": ["/community"],
-      "mutationMilestones": ["DEPENDENCY_FAILURE_ENABLED", "DEPENDENCY_RECOVERED"],
-      "accountStateAssertions": ["ANONYMOUS", "ANONYMOUS_STABLE"],
-      "visualMilestones": ["HP-P7-EV-N-dependency-unavailable"],
-      "keyboardMilestones": ["VISIBLE_CONTROL_FOCUS"],
-      "focusMilestones": ["RETRY_FOCUSED"],
+      "requiredControls": [
+        "Community Harbor",
+        "Search",
+        "Try again"
+      ],
+      "routeMilestones": [
+        "/community"
+      ],
+      "mutationMilestones": [
+        "DEPENDENCY_FAILURE_ENABLED",
+        "DEPENDENCY_RECOVERED"
+      ],
+      "accountStateAssertions": [
+        "ANONYMOUS",
+        "ANONYMOUS_STABLE"
+      ],
+      "visualMilestones": [
+        "HP-P7-EV-N-dependency-unavailable"
+      ],
+      "keyboardMilestones": [
+        "VISIBLE_CONTROL_FOCUS"
+      ],
+      "focusMilestones": [
+        "RETRY_FOCUSED"
+      ],
       "viewport": {
         "width": 1440,
         "height": 900,
@@ -423,10 +742,15 @@
       "failureVariant": "SYNTHETIC_COMMUNITY_DEPENDENCY_UNAVAILABLE",
       "expectedFinalState": "ANONYMOUS_STABLE",
       "resetPolicy": "RECREATE_CLONE_FROM_IMMUTABLE_SEED",
-      "evidenceIds": ["HP-P7-EV-N-dependency-unavailable"],
-      "testContractIds": ["homeport.phase7.journey-n", "homeport.phase7.evidence-source-binding"],
-      "sourceSha": "IMPLEMENTATION_SOURCE_PENDING",
-      "result": "PENDING_EXECUTION",
+      "evidenceIds": [
+        "HP-P7-EV-N-dependency-unavailable"
+      ],
+      "testContractIds": [
+        "homeport.phase7.journey-n",
+        "homeport.phase7.evidence-source-binding"
+      ],
+      "sourceSha": "e6cf3cb18de4e8854b19e1d29c94f3b492eba441",
+      "result": "PASSED",
       "limitations": []
     },
     {
@@ -460,11 +784,24 @@
         "/captain/library",
         "/account/sessions"
       ],
-      "mutationMilestones": ["COMMUNITY_SAVE_CREATED", "SESSION_REVOKED"],
-      "accountStateAssertions": ["RETURNING_FULL_CAPABILITY", "ANONYMOUS_STABLE"],
-      "visualMilestones": ["HP-P7-EV-O-whole-voyage-community", "HP-P7-EV-O-whole-voyage-anonymous-end"],
-      "keyboardMilestones": ["VISIBLE_CONTROL_FOCUS"],
-      "focusMilestones": ["ROUTE_MAIN_OR_DISCLOSURE_FOCUSED"],
+      "mutationMilestones": [
+        "COMMUNITY_SAVE_CREATED",
+        "SESSION_REVOKED"
+      ],
+      "accountStateAssertions": [
+        "RETURNING_FULL_CAPABILITY",
+        "ANONYMOUS_STABLE"
+      ],
+      "visualMilestones": [
+        "HP-P7-EV-O-whole-voyage-community",
+        "HP-P7-EV-O-whole-voyage-anonymous-end"
+      ],
+      "keyboardMilestones": [
+        "VISIBLE_CONTROL_FOCUS"
+      ],
+      "focusMilestones": [
+        "ROUTE_MAIN_OR_DISCLOSURE_FOCUSED"
+      ],
       "viewport": {
         "width": 1440,
         "height": 900,
@@ -474,10 +811,16 @@
       "failureVariant": null,
       "expectedFinalState": "ANONYMOUS_STABLE",
       "resetPolicy": "RECREATE_CLONE_FROM_IMMUTABLE_SEED",
-      "evidenceIds": ["HP-P7-EV-O-whole-voyage-community", "HP-P7-EV-O-whole-voyage-anonymous-end"],
-      "testContractIds": ["homeport.phase7.journey-o", "homeport.phase7.evidence-source-binding"],
-      "sourceSha": "IMPLEMENTATION_SOURCE_PENDING",
-      "result": "PENDING_EXECUTION",
+      "evidenceIds": [
+        "HP-P7-EV-O-whole-voyage-community",
+        "HP-P7-EV-O-whole-voyage-anonymous-end"
+      ],
+      "testContractIds": [
+        "homeport.phase7.journey-o",
+        "homeport.phase7.evidence-source-binding"
+      ],
+      "sourceSha": "e6cf3cb18de4e8854b19e1d29c94f3b492eba441",
+      "result": "PASSED",
       "limitations": []
     }
   ]
