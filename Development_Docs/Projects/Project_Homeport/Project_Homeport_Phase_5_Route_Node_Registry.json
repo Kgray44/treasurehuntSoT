@@ -4,8 +4,8 @@
   "phase": 5,
   "startingSha": "54372224fc9bf4b4fb42797ca58a5a224ffdb92a",
   "architectureFreezeSha": "bbe9659cc5077c834510c3e4db77aa362e45b6fd",
-  "implementationSourceSha": "IMPLEMENTATION_SOURCE_PENDING",
-  "implementationStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+  "implementationSourceSha": "b9f1552b78857c36a45f25eb5fdfb7a7e09f102a",
+  "implementationStatus": "BRANCH_VALIDATED_NOT_MERGED",
   "generatedAt": "2026-08-03T18:00:00.000Z",
   "classifications": [
     "USER_NAVIGABLE",
@@ -146,7 +146,22 @@
         "edge-gateway-captain-adapter",
         "edge-gateway-studio-adapter"
       ],
-      "evidenceIds": [],
+      "evidenceIds": [
+        "HP-EV-001",
+        "HP-EV-002",
+        "HP-EV-003",
+        "HP-P2-EV-A-gateway-anonymous-desktop",
+        "HP-P2-EV-B-gateway-authenticated-desktop",
+        "HP-P2-EV-C-gateway-anonymous-mobile",
+        "HP-P2-EV-D-gateway-authenticated-mobile",
+        "HP-P2-EV-E-account-menu-anonymous",
+        "HP-P2-EV-F-account-menu-authenticated",
+        "HP-P2-EV-L-mobile-drawer",
+        "HP-P2-EV-P-context-unavailable",
+        "HP-P2-EV-Q-zoom-gateway",
+        "HP-P2-EV-R-zoom-account-menu",
+        "HP-P2-EV-S-reduced-motion"
+      ],
       "testContractIds": [
         "homeport.route.inventory-complete",
         "homeport.route.source-parity",
@@ -232,7 +247,12 @@
         "edge-account-data",
         "edge-return-account"
       ],
-      "evidenceIds": [],
+      "evidenceIds": [
+        "HP-P3-EV-A-profile-overview-desktop",
+        "HP-P3-EV-B-profile-overview-mobile",
+        "HP-P3-EV-W-mobile-section-nav",
+        "HP-P3-EV-Z-dependency-unavailable"
+      ],
       "testContractIds": [
         "homeport.route.inventory-complete",
         "homeport.route.source-parity",
@@ -321,7 +341,7 @@
       "sourceCollectionIds": [],
       "entryEdgeIds": ["edge-account-accessibility"],
       "exitEdgeIds": ["edge-return-account-accessibility"],
-      "evidenceIds": [],
+      "evidenceIds": ["HP-P3-EV-H-accessibility", "HP-P3-EV-AC-reduced-motion"],
       "testContractIds": [
         "homeport.route.inventory-complete",
         "homeport.route.source-parity",
@@ -477,7 +497,7 @@
       "sourceCollectionIds": [],
       "entryEdgeIds": ["edge-account-data"],
       "exitEdgeIds": ["edge-return-account-data"],
-      "evidenceIds": [],
+      "evidenceIds": ["HP-P3-EV-V-data-account"],
       "testContractIds": [
         "homeport.route.inventory-complete",
         "homeport.route.source-parity",
@@ -562,7 +582,7 @@
       "sourceCollectionIds": [],
       "entryEdgeIds": ["edge-account-linked-identities"],
       "exitEdgeIds": ["edge-return-account-linked-identities"],
-      "evidenceIds": [],
+      "evidenceIds": ["HP-P3-EV-K-linked-identities"],
       "testContractIds": [
         "homeport.route.inventory-complete",
         "homeport.route.source-parity",
@@ -727,7 +747,7 @@
       "sourceCollectionIds": [],
       "entryEdgeIds": ["edge-account-notifications"],
       "exitEdgeIds": ["edge-return-account-notifications"],
-      "evidenceIds": [],
+      "evidenceIds": ["HP-P3-EV-I-notifications"],
       "testContractIds": [
         "homeport.route.inventory-complete",
         "homeport.route.source-parity",
@@ -812,7 +832,7 @@
       "sourceCollectionIds": [],
       "entryEdgeIds": ["edge-account-personal-information"],
       "exitEdgeIds": ["edge-return-account-personal-information"],
-      "evidenceIds": [],
+      "evidenceIds": ["HP-P3-EV-F-personal-information"],
       "testContractIds": [
         "homeport.route.inventory-complete",
         "homeport.route.source-parity",
@@ -901,7 +921,7 @@
       "sourceCollectionIds": [],
       "entryEdgeIds": ["edge-account-preferences"],
       "exitEdgeIds": ["edge-return-account-preferences"],
-      "evidenceIds": [],
+      "evidenceIds": ["HP-P3-EV-G-preferences"],
       "testContractIds": [
         "homeport.route.inventory-complete",
         "homeport.route.source-parity",
@@ -989,7 +1009,7 @@
       "sourceCollectionIds": [],
       "entryEdgeIds": ["edge-account-privacy"],
       "exitEdgeIds": ["edge-return-account-privacy"],
-      "evidenceIds": [],
+      "evidenceIds": ["HP-P3-EV-J-privacy"],
       "testContractIds": [
         "homeport.route.inventory-complete",
         "homeport.route.source-parity",
@@ -1078,7 +1098,13 @@
       "sourceCollectionIds": [],
       "entryEdgeIds": ["edge-account-profile"],
       "exitEdgeIds": ["edge-profile-public", "edge-return-account-profile"],
-      "evidenceIds": [],
+      "evidenceIds": [
+        "HP-P3-EV-C-profile-editor",
+        "HP-P3-EV-E-profile-media",
+        "HP-P3-EV-X-unsaved-warning",
+        "HP-P3-EV-Y-stale-conflict",
+        "HP-P3-EV-AA-zoom-profile"
+      ],
       "testContractIds": [
         "homeport.route.inventory-complete",
         "homeport.route.source-parity",
@@ -1241,7 +1267,7 @@
       "sourceCollectionIds": [],
       "entryEdgeIds": ["edge-account-security"],
       "exitEdgeIds": ["edge-return-account-security"],
-      "evidenceIds": [],
+      "evidenceIds": ["HP-EV-025", "HP-P3-EV-T-security"],
       "testContractIds": [
         "homeport.route.inventory-complete",
         "homeport.route.source-parity",
@@ -1326,7 +1352,7 @@
       "sourceCollectionIds": [],
       "entryEdgeIds": ["edge-account-sessions"],
       "exitEdgeIds": ["edge-return-account-sessions"],
-      "evidenceIds": [],
+      "evidenceIds": ["HP-P3-EV-U-sessions"],
       "testContractIds": [
         "homeport.route.inventory-complete",
         "homeport.route.source-parity",
@@ -1574,7 +1600,7 @@
         "edge-captain-preview",
         "edge-return-captain-library"
       ],
-      "evidenceIds": [],
+      "evidenceIds": ["HP-EV-011", "HP-P2-EV-I-captain-navigation"],
       "testContractIds": [
         "homeport.route.inventory-complete",
         "homeport.route.source-parity",
@@ -1652,7 +1678,7 @@
       "sourceCollectionIds": ["source-captain-library-voyages"],
       "entryEdgeIds": ["edge-captain-session"],
       "exitEdgeIds": ["edge-return-captain-sessions-sessionid"],
-      "evidenceIds": [],
+      "evidenceIds": ["HP-P2-EV-N-compact-exit"],
       "testContractIds": [
         "homeport.route.inventory-complete",
         "homeport.route.source-parity",
@@ -1986,7 +2012,28 @@
         "edge-district-voyage-logs",
         "edge-return-community"
       ],
-      "evidenceIds": [],
+      "evidenceIds": [
+        "HP-EV-018",
+        "HP-EV-019",
+        "HP-EV-020",
+        "HP-EV-024",
+        "HP-P2-EV-K-community-shell",
+        "HP-P4-EV-B-harbor-home-mobile",
+        "HP-P4-EV-AE-mobile-filter-drawer",
+        "HP-P4-EV-AK-mobile-authenticated",
+        "HP-P4-EV-AG-zoom-harbor",
+        "HP-P4-EV-AH-zoom-filters",
+        "HP-P4-EV-AI-reduced-motion",
+        "HP-P4-EV-A-harbor-home-desktop",
+        "HP-P4-EV-E-featured-shelf",
+        "HP-P4-EV-F-district-navigation",
+        "HP-P4-EV-T-chronicle-card",
+        "HP-P4-EV-AK-public-projection",
+        "HP-P4-EV-C-harbor-authenticated",
+        "HP-P4-EV-Z-saved-state",
+        "HP-P4-EV-AJ-restricted-state",
+        "HP-P4-EV-D-harbor-empty"
+      ],
       "testContractIds": [
         "homeport.route.inventory-complete",
         "homeport.route.source-parity",
@@ -2074,7 +2121,24 @@
       "sourceCollectionIds": ["source-community-listing-cards"],
       "entryEdgeIds": ["edge-dynamic-community-slug"],
       "exitEdgeIds": ["edge-return-community-slug"],
-      "evidenceIds": [],
+      "evidenceIds": [
+        "HP-P4-EV-AF-mobile-detail",
+        "HP-P4-EV-AM-keyboard-navigation",
+        "HP-P4-EV-U-listing-detail",
+        "HP-P4-EV-G-chronicles-district",
+        "HP-P4-EV-H-artifacts-district",
+        "HP-P4-EV-I-templates-district",
+        "HP-P4-EV-J-maps-district",
+        "HP-P4-EV-K-audio-district",
+        "HP-P4-EV-L-creators-district",
+        "HP-P4-EV-O-collections-district",
+        "HP-P4-EV-Q-guides-district",
+        "HP-P4-EV-S-voyage-logs",
+        "HP-P4-EV-AA-image-fallback",
+        "HP-P4-EV-AB-quarantined-content",
+        "HP-P4-EV-AC-archived-removed",
+        "HP-P4-EV-AM-audio-district-empty"
+      ],
       "testContractIds": [
         "homeport.route.inventory-complete",
         "homeport.route.source-parity",
@@ -2162,7 +2226,7 @@
       "sourceCollectionIds": [],
       "entryEdgeIds": ["edge-district-artifacts"],
       "exitEdgeIds": ["edge-return-community-artifacts"],
-      "evidenceIds": [],
+      "evidenceIds": ["HP-P4-EV-H-artifacts-district"],
       "testContractIds": [
         "homeport.route.inventory-complete",
         "homeport.route.source-parity",
@@ -2250,7 +2314,7 @@
       "sourceCollectionIds": [],
       "entryEdgeIds": ["edge-district-audio-and-reveal-assets"],
       "exitEdgeIds": ["edge-return-community-audio"],
-      "evidenceIds": [],
+      "evidenceIds": ["HP-P4-EV-K-audio-district", "HP-P4-EV-AM-audio-district-empty"],
       "testContractIds": [
         "homeport.route.inventory-complete",
         "homeport.route.source-parity",
@@ -2338,7 +2402,7 @@
       "sourceCollectionIds": [],
       "entryEdgeIds": ["edge-district-chronicles"],
       "exitEdgeIds": ["edge-dynamic-community-slug", "edge-return-community-chronicles"],
-      "evidenceIds": [],
+      "evidenceIds": ["HP-P4-EV-G-chronicles-district"],
       "testContractIds": [
         "homeport.route.inventory-complete",
         "homeport.route.source-parity",
@@ -2426,7 +2490,7 @@
       "sourceCollectionIds": [],
       "entryEdgeIds": ["edge-district-collections"],
       "exitEdgeIds": ["edge-dynamic-community-collections-slug", "edge-return-community-collections"],
-      "evidenceIds": [],
+      "evidenceIds": ["HP-EV-022", "HP-P4-EV-O-collections-district"],
       "testContractIds": [
         "homeport.route.inventory-complete",
         "homeport.route.source-parity",
@@ -2514,7 +2578,7 @@
       "sourceCollectionIds": ["source-community-collection-cards"],
       "entryEdgeIds": ["edge-dynamic-community-collections-slug"],
       "exitEdgeIds": ["edge-return-community-collections-slug"],
-      "evidenceIds": [],
+      "evidenceIds": ["HP-P4-EV-P-collection-detail"],
       "testContractIds": [
         "homeport.route.inventory-complete",
         "homeport.route.source-parity",
@@ -2602,7 +2666,7 @@
       "sourceCollectionIds": [],
       "entryEdgeIds": ["edge-district-creators"],
       "exitEdgeIds": ["edge-dynamic-community-creators-handle", "edge-return-community-creators"],
-      "evidenceIds": [],
+      "evidenceIds": ["HP-EV-023", "HP-P4-EV-L-creators-district"],
       "testContractIds": [
         "homeport.route.inventory-complete",
         "homeport.route.source-parity",
@@ -2690,7 +2754,7 @@
       "sourceCollectionIds": ["source-community-creator-cards"],
       "entryEdgeIds": ["edge-dynamic-community-creators-handle"],
       "exitEdgeIds": ["edge-return-community-creators-handle"],
-      "evidenceIds": [],
+      "evidenceIds": ["HP-P4-EV-M-creator-profile", "HP-P4-EV-N-creator-empty"],
       "testContractIds": [
         "homeport.route.inventory-complete",
         "homeport.route.source-parity",
@@ -2866,7 +2930,7 @@
       "sourceCollectionIds": [],
       "entryEdgeIds": ["edge-district-guides"],
       "exitEdgeIds": ["edge-dynamic-community-guides-slug", "edge-return-community-guides"],
-      "evidenceIds": [],
+      "evidenceIds": ["HP-P4-EV-Q-guides-district"],
       "testContractIds": [
         "homeport.route.inventory-complete",
         "homeport.route.source-parity",
@@ -2954,7 +3018,7 @@
       "sourceCollectionIds": ["source-community-guide-cards"],
       "entryEdgeIds": ["edge-dynamic-community-guides-slug"],
       "exitEdgeIds": ["edge-return-community-guides-slug"],
-      "evidenceIds": [],
+      "evidenceIds": ["HP-P4-EV-R-guide-detail"],
       "testContractIds": [
         "homeport.route.inventory-complete",
         "homeport.route.source-parity",
@@ -3042,7 +3106,7 @@
       "sourceCollectionIds": [],
       "entryEdgeIds": ["edge-district-maps-and-location-packs"],
       "exitEdgeIds": ["edge-return-community-maps"],
-      "evidenceIds": [],
+      "evidenceIds": ["HP-P4-EV-J-maps-district"],
       "testContractIds": [
         "homeport.route.inventory-complete",
         "homeport.route.source-parity",
@@ -3120,7 +3184,7 @@
       "sourceCollectionIds": [],
       "entryEdgeIds": ["edge-workspace-moderation"],
       "exitEdgeIds": ["edge-moderation-detail", "edge-return-community-moderation"],
-      "evidenceIds": [],
+      "evidenceIds": ["HP-P2-EV-T-permission-return"],
       "testContractIds": [
         "homeport.route.inventory-complete",
         "homeport.route.source-parity",
@@ -3286,7 +3350,7 @@
       "sourceCollectionIds": [],
       "entryEdgeIds": ["edge-district-templates"],
       "exitEdgeIds": ["edge-return-community-templates"],
-      "evidenceIds": [],
+      "evidenceIds": ["HP-P4-EV-I-templates-district"],
       "testContractIds": [
         "homeport.route.inventory-complete",
         "homeport.route.source-parity",
@@ -3379,7 +3443,7 @@
         "edge-dynamic-community-voyage-logs-slug",
         "edge-return-community-voyage-logs"
       ],
-      "evidenceIds": [],
+      "evidenceIds": ["HP-P4-EV-S-voyage-logs"],
       "testContractIds": [
         "homeport.route.inventory-complete",
         "homeport.route.source-parity",
@@ -4013,7 +4077,14 @@
       "sourceCollectionIds": [],
       "entryEdgeIds": ["edge-account-passport"],
       "exitEdgeIds": ["edge-passport-memories", "edge-passport-saved", "edge-return-passport"],
-      "evidenceIds": [],
+      "evidenceIds": [
+        "HP-EV-013",
+        "HP-EV-014",
+        "HP-EV-015",
+        "HP-P3-EV-L-passport-populated",
+        "HP-P3-EV-M-passport-empty",
+        "HP-P3-EV-AB-zoom-passport"
+      ],
       "testContractIds": [
         "homeport.route.inventory-complete",
         "homeport.route.source-parity",
@@ -4098,7 +4169,7 @@
       "sourceCollectionIds": [],
       "entryEdgeIds": ["edge-account-artifacts"],
       "exitEdgeIds": ["edge-passport-artifact-detail", "edge-return-passport-artifacts"],
-      "evidenceIds": [],
+      "evidenceIds": ["HP-P3-EV-Q-artifact-cabinet", "HP-P3-EV-R-artifact-empty"],
       "testContractIds": [
         "homeport.route.inventory-complete",
         "homeport.route.source-parity",
@@ -4261,7 +4332,7 @@
       "sourceCollectionIds": [],
       "entryEdgeIds": ["edge-account-history"],
       "exitEdgeIds": ["edge-passport-history-detail", "edge-return-passport-history"],
-      "evidenceIds": [],
+      "evidenceIds": ["HP-P3-EV-N-history-list"],
       "testContractIds": [
         "homeport.route.inventory-complete",
         "homeport.route.source-parity",
@@ -4347,7 +4418,7 @@
       "sourceCollectionIds": ["source-passport-history"],
       "entryEdgeIds": ["edge-passport-history-detail"],
       "exitEdgeIds": ["edge-return-passport-history-[recordId]"],
-      "evidenceIds": [],
+      "evidenceIds": ["HP-P3-EV-O-history-detail", "HP-P3-EV-P-memory-keepsake"],
       "testContractIds": [
         "homeport.route.inventory-complete",
         "homeport.route.source-parity",
@@ -4517,7 +4588,7 @@
       "sourceCollectionIds": [],
       "entryEdgeIds": ["edge-passport-saved"],
       "exitEdgeIds": ["edge-return-passport-saved"],
-      "evidenceIds": [],
+      "evidenceIds": ["HP-P3-EV-S-saved-content"],
       "testContractIds": [
         "homeport.route.inventory-complete",
         "homeport.route.source-parity",
@@ -4993,7 +5064,15 @@
         "edge-return-player-playthroughs-playthroughid-journal"
       ],
       "exitEdgeIds": ["edge-player-voyage", "edge-player-journal", "edge-return-player-library"],
-      "evidenceIds": [],
+      "evidenceIds": [
+        "HP-EV-005",
+        "HP-EV-006",
+        "HP-EV-009",
+        "HP-EV-010",
+        "HP-EV-029",
+        "HP-P2-EV-H-player-navigation",
+        "HP-P2-EV-M-workspace-switcher"
+      ],
       "testContractIds": [
         "homeport.route.inventory-complete",
         "homeport.route.source-parity",
@@ -5227,7 +5306,7 @@
       "sourceCollectionIds": ["source-player-library-journal"],
       "entryEdgeIds": ["edge-player-journal", "edge-compat-player-playthroughs-playthroughid-archive"],
       "exitEdgeIds": ["edge-return-player-playthroughs-playthroughid-journal"],
-      "evidenceIds": [],
+      "evidenceIds": ["HP-P2-EV-O-immersive-exit"],
       "testContractIds": [
         "homeport.route.inventory-complete",
         "homeport.route.source-parity",
@@ -5305,7 +5384,7 @@
       "sourceCollectionIds": [],
       "entryEdgeIds": ["edge-gateway-player-adapter", "edge-return-player-invitation"],
       "exitEdgeIds": ["edge-token-player-invitation", "edge-compat-player-sign-in"],
-      "evidenceIds": [],
+      "evidenceIds": ["HP-EV-007", "HP-EV-008", "HP-EV-026", "HP-EV-030", "HP-EV-031"],
       "testContractIds": [
         "homeport.route.inventory-complete",
         "homeport.route.source-parity",
@@ -5383,7 +5462,7 @@
       "sourceCollectionIds": ["source-personal-harbor-public-profile"],
       "entryEdgeIds": ["edge-profile-public"],
       "exitEdgeIds": ["edge-return-profile-handle"],
-      "evidenceIds": [],
+      "evidenceIds": ["HP-P3-EV-D-public-profile-preview"],
       "testContractIds": [
         "homeport.route.inventory-complete",
         "homeport.route.source-parity",
@@ -5617,7 +5696,7 @@
       "sourceCollectionIds": [],
       "entryEdgeIds": ["edge-account-create", "edge-sign-in-register"],
       "exitEdgeIds": ["edge-token-verify-email", "edge-return-register"],
-      "evidenceIds": [],
+      "evidenceIds": ["HP-EV-028"],
       "testContractIds": [
         "homeport.route.inventory-complete",
         "homeport.route.source-parity",
@@ -5790,7 +5869,7 @@
         "edge-token-account-merge",
         "edge-return-sign-in"
       ],
-      "evidenceIds": [],
+      "evidenceIds": ["HP-EV-027"],
       "testContractIds": [
         "homeport.route.inventory-complete",
         "homeport.route.source-parity",
@@ -6030,7 +6109,7 @@
         "edge-studio-tale",
         "edge-return-studio-library"
       ],
-      "evidenceIds": [],
+      "evidenceIds": ["HP-EV-012", "HP-P2-EV-J-creator-navigation"],
       "testContractIds": [
         "homeport.route.inventory-complete",
         "homeport.route.source-parity",
@@ -6973,7 +7052,7 @@
       "sourceCollectionIds": [],
       "entryEdgeIds": ["edge-global-explore"],
       "exitEdgeIds": ["edge-tales-chronicle", "edge-return-tales"],
-      "evidenceIds": [],
+      "evidenceIds": ["HP-EV-004", "HP-EV-032", "HP-P2-EV-G-global-nav-public"],
       "testContractIds": [
         "homeport.route.inventory-complete",
         "homeport.route.source-parity",

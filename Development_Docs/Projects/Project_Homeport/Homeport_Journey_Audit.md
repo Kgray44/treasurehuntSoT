@@ -229,36 +229,36 @@ These branch-only results use the reserved synthetic fixture and production loca
 
 ## Phase 5 route-reachability amendment
 
-The source-driven Phase 5 graph records 85 page nodes and 159 typed transitions from 85 current page sources. Machine traversal reports zero unexplained ordinary orphans. Status: **IMPLEMENTED_PENDING_BROWSER_VALIDATION**. Exact implementation source: `IMPLEMENTATION_SOURCE_PENDING`. Browser, merge, deployment, owner acceptance, Phase 6, Phase 7, and product acceptance remain separate boundaries.
+The source-driven Phase 5 graph records 85 page nodes and 159 typed transitions from 85 current page sources. Machine traversal reports zero unexplained ordinary orphans. Status: **BRANCH_VALIDATED_NOT_MERGED**. Exact implementation source: `b9f1552b78857c36a45f25eb5fdfb7a7e09f102a`. Browser, merge, deployment, owner acceptance, Phase 6, Phase 7, and product acceptance remain separate boundaries.
 
-- `HP-P5-JRN-A`: Gateway route-map summary — STRUCTURALLY_REACHABLE; BROWSER PENDING
-- `HP-P5-JRN-B`: Anonymous account entry — STRUCTURALLY_REACHABLE; BROWSER PENDING
-- `HP-P5-JRN-C`: Player route family — STRUCTURALLY_REACHABLE; BROWSER PENDING
-- `HP-P5-JRN-D`: Captain route family — STRUCTURALLY_REACHABLE; BROWSER PENDING
-- `HP-P5-JRN-E`: Creator route family — STRUCTURALLY_REACHABLE; BROWSER PENDING
-- `HP-P5-JRN-F`: Personal Harbor route family — STRUCTURALLY_REACHABLE; BROWSER PENDING
-- `HP-P5-JRN-G`: Community Harbor route family — STRUCTURALLY_REACHABLE; BROWSER PENDING
-- `HP-P5-JRN-H`: Dynamic source surface — STRUCTURALLY_REACHABLE; BROWSER PENDING
-- `HP-P5-JRN-I`: Dynamic detail and parent — STRUCTURALLY_REACHABLE; BROWSER PENDING
-- `HP-P5-JRN-J`: Direct-entry return — STRUCTURALLY_REACHABLE; BROWSER PENDING
-- `HP-P5-JRN-K`: Valid token handoff — STRUCTURALLY_REACHABLE; BROWSER PENDING
-- `HP-P5-JRN-L`: Invalid token recovery — STRUCTURALLY_REACHABLE; BROWSER PENDING
-- `HP-P5-JRN-M`: Expired, consumed, and revoked token recovery — STRUCTURALLY_REACHABLE; BROWSER PENDING
-- `HP-P5-JRN-N`: Redirect alias integrity — STRUCTURALLY_REACHABLE; BROWSER PENDING
-- `HP-P5-JRN-O`: Compatibility and deprecation disposition — STRUCTURALLY_REACHABLE; BROWSER PENDING
-- `HP-P5-JRN-P`: Ordinary empty-state onward action — STRUCTURALLY_REACHABLE; BROWSER PENDING
-- `HP-P5-JRN-Q`: Dynamic invalid-ID recovery — STRUCTURALLY_REACHABLE; BROWSER PENDING
-- `HP-P5-JRN-R`: Permission-aware recovery — STRUCTURALLY_REACHABLE; BROWSER PENDING
-- `HP-P5-JRN-S`: Compact-surface exit — STRUCTURALLY_REACHABLE; BROWSER PENDING
-- `HP-P5-JRN-T`: Immersive-surface exit — STRUCTURALLY_REACHABLE; BROWSER PENDING
-- `HP-P5-JRN-U`: Mobile global path — STRUCTURALLY_REACHABLE; BROWSER PENDING
-- `HP-P5-JRN-V`: Mobile dynamic detail and return — STRUCTURALLY_REACHABLE; BROWSER PENDING
-- `HP-P5-JRN-W`: Mobile Personal Harbor path — STRUCTURALLY_REACHABLE; BROWSER PENDING
-- `HP-P5-JRN-X`: Mobile Community path — STRUCTURALLY_REACHABLE; BROWSER PENDING
-- `HP-P5-JRN-Y`: Effective 200 percent zoom navigation — STRUCTURALLY_REACHABLE; BROWSER PENDING
-- `HP-P5-JRN-Z`: Keyboard-only route path — STRUCTURALLY_REACHABLE; BROWSER PENDING
-- `HP-P5-JRN-AA`: Zero unexplained ordinary orphans — STRUCTURALLY_REACHABLE; BROWSER PENDING
-- `HP-P5-JRN-AB`: Compatibility context-adapter target — STRUCTURALLY_REACHABLE; BROWSER PENDING
-- `HP-P5-JRN-AC`: Acyclic parent graph — STRUCTURALLY_REACHABLE; BROWSER PENDING
-- `HP-P5-JRN-AD`: Full ordinary-route traversal — STRUCTURALLY_REACHABLE; BROWSER PENDING
+- `HP-P5-JRN-A`: Gateway route-map summary — PASSED
+- `HP-P5-JRN-B`: Anonymous account entry — PASSED
+- `HP-P5-JRN-C`: Player route family — PASSED
+- `HP-P5-JRN-D`: Captain route family — PASSED
+- `HP-P5-JRN-E`: Creator route family — PASSED
+- `HP-P5-JRN-F`: Personal Harbor route family — PASSED
+- `HP-P5-JRN-G`: Community Harbor route family — PASSED
+- `HP-P5-JRN-H`: Dynamic source surface — PASSED
+- `HP-P5-JRN-I`: Dynamic detail and parent — PASSED
+- `HP-P5-JRN-J`: Direct-entry return — PASSED
+- `HP-P5-JRN-K`: Valid token handoff — PASSED
+- `HP-P5-JRN-L`: Invalid token recovery — PASSED
+- `HP-P5-JRN-M`: Expired, consumed, and revoked token recovery — PASSED
+- `HP-P5-JRN-N`: Redirect alias integrity — PASSED
+- `HP-P5-JRN-O`: Compatibility and deprecation disposition — PASSED
+- `HP-P5-JRN-P`: Ordinary empty-state onward action — PASSED
+- `HP-P5-JRN-Q`: Dynamic invalid-ID recovery — PASSED
+- `HP-P5-JRN-R`: Permission-aware recovery — PASSED
+- `HP-P5-JRN-S`: Compact-surface exit — PASSED
+- `HP-P5-JRN-T`: Immersive-surface exit — PASSED
+- `HP-P5-JRN-U`: Mobile global path — PASSED
+- `HP-P5-JRN-V`: Mobile dynamic detail and return — PASSED
+- `HP-P5-JRN-W`: Mobile Personal Harbor path — PASSED
+- `HP-P5-JRN-X`: Mobile Community path — PASSED
+- `HP-P5-JRN-Y`: Effective 200 percent zoom navigation — PASSED
+- `HP-P5-JRN-Z`: Keyboard-only route path — PASSED
+- `HP-P5-JRN-AA`: Zero unexplained ordinary orphans — PASSED
+- `HP-P5-JRN-AB`: Compatibility context-adapter target — PASSED
+- `HP-P5-JRN-AC`: Acyclic parent graph — PASSED
+- `HP-P5-JRN-AD`: Full ordinary-route traversal — PASSED
 <!-- PHASE5_REACHABILITY_END -->

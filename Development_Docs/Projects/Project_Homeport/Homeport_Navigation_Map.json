@@ -4077,8 +4077,8 @@
     "phase": "PHASE_5_CLOSE_ROUTE_AND_INFORMATION_ARCHITECTURE_GAPS",
     "startingSha": "54372224fc9bf4b4fb42797ca58a5a224ffdb92a",
     "architectureFreezeSha": "bbe9659cc5077c834510c3e4db77aa362e45b6fd",
-    "implementationSourceSha": "IMPLEMENTATION_SOURCE_PENDING",
-    "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+    "implementationSourceSha": "b9f1552b78857c36a45f25eb5fdfb7a7e09f102a",
+    "state": "BRANCH_VALIDATED_NOT_MERGED",
     "updatedAt": "2026-08-03T18:00:00.000Z",
     "routeNodeCount": 85,
     "routeEdgeCount": 159,
@@ -4112,7 +4112,7 @@
       "stableFallback": "/account",
       "browserJourneyIds": ["HP-P5-JRN-F"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/homeport/personal-harbor-navigation.ts",
       "sourceNeedle": "account/accessibility"
     },
@@ -4141,7 +4141,7 @@
       "stableFallback": "/passport",
       "browserJourneyIds": ["HP-P5-JRN-F"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
       "sourceNeedle": "account-artifacts"
     },
@@ -4170,7 +4170,7 @@
       "stableFallback": "/sign-in",
       "browserJourneyIds": ["HP-P5-JRN-B"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
       "sourceNeedle": "account-create"
     },
@@ -4199,7 +4199,7 @@
       "stableFallback": "/account",
       "browserJourneyIds": ["HP-P5-JRN-F"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/homeport/personal-harbor-navigation.ts",
       "sourceNeedle": "account/data"
     },
@@ -4228,7 +4228,7 @@
       "stableFallback": "/passport",
       "browserJourneyIds": ["HP-P5-JRN-F"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
       "sourceNeedle": "account-history"
     },
@@ -4257,7 +4257,7 @@
       "stableFallback": "/account",
       "browserJourneyIds": ["HP-P5-JRN-F"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/homeport/personal-harbor-navigation.ts",
       "sourceNeedle": "account/linked-identities"
     },
@@ -4286,7 +4286,7 @@
       "stableFallback": "/account",
       "browserJourneyIds": ["HP-P5-JRN-F"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/homeport/personal-harbor-navigation.ts",
       "sourceNeedle": "account/notifications"
     },
@@ -4315,7 +4315,7 @@
       "stableFallback": "/account",
       "browserJourneyIds": ["HP-P5-JRN-F"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
       "sourceNeedle": "account-passport"
     },
@@ -4344,7 +4344,7 @@
       "stableFallback": "/",
       "browserJourneyIds": ["HP-P5-JRN-F"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
       "sourceNeedle": "account-personal-harbor"
     },
@@ -4373,7 +4373,7 @@
       "stableFallback": "/account",
       "browserJourneyIds": ["HP-P5-JRN-F"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/homeport/personal-harbor-navigation.ts",
       "sourceNeedle": "account/personal-information"
     },
@@ -4402,7 +4402,7 @@
       "stableFallback": "/account",
       "browserJourneyIds": ["HP-P5-JRN-F"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
       "sourceNeedle": "account-preferences"
     },
@@ -4431,7 +4431,7 @@
       "stableFallback": "/account",
       "browserJourneyIds": ["HP-P5-JRN-F"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
       "sourceNeedle": "account-privacy"
     },
@@ -4460,7 +4460,7 @@
       "stableFallback": "/account",
       "browserJourneyIds": ["HP-P5-JRN-F"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/homeport/personal-harbor-navigation.ts",
       "sourceNeedle": "account/profile"
     },
@@ -4489,7 +4489,7 @@
       "stableFallback": "/account",
       "browserJourneyIds": ["HP-P5-JRN-F"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
       "sourceNeedle": "account-security-sessions"
     },
@@ -4518,7 +4518,7 @@
       "stableFallback": "/account",
       "browserJourneyIds": ["HP-P5-JRN-F"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
       "sourceNeedle": "account-sessions"
     },
@@ -4547,7 +4547,7 @@
       "stableFallback": "/",
       "browserJourneyIds": ["HP-P5-JRN-B"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
       "sourceNeedle": "account-sign-in"
     },
@@ -4576,7 +4576,7 @@
       "stableFallback": "/account",
       "browserJourneyIds": ["HP-P5-JRN-F"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
       "sourceNeedle": "account-all-workspaces"
     },
@@ -4605,7 +4605,7 @@
       "stableFallback": "/captain/library",
       "browserJourneyIds": ["HP-P5-JRN-D"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/components/platform/CaptainLibrary.tsx",
       "sourceNeedle": "player-preview"
     },
@@ -4634,7 +4634,7 @@
       "stableFallback": "/captain/library",
       "browserJourneyIds": ["HP-P5-JRN-D"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/components/platform/CaptainLibrary.tsx",
       "sourceNeedle": "captain/sessions/"
     },
@@ -4663,7 +4663,7 @@
       "stableFallback": "/captain/library",
       "browserJourneyIds": ["HP-P5-JRN-D"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/components/platform/CaptainLibrary.tsx",
       "sourceNeedle": "captain/tales/"
     },
@@ -4692,7 +4692,7 @@
       "stableFallback": "/community/voyage-logs",
       "browserJourneyIds": ["HP-P5-JRN-G"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/components/community/PublicCommunitySection.tsx",
       "sourceNeedle": "Publication consent"
     },
@@ -4721,7 +4721,7 @@
       "stableFallback": "/community/voyage-logs",
       "browserJourneyIds": ["HP-P5-JRN-G"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/components/community/PublicCommunitySection.tsx",
       "sourceNeedle": "Your Voyage Log drafts"
     },
@@ -4750,7 +4750,7 @@
       "stableFallback": "/",
       "browserJourneyIds": ["HP-P5-JRN-D"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/app/captain/page.tsx",
       "sourceNeedle": "captain/library"
     },
@@ -4779,7 +4779,7 @@
       "stableFallback": "/",
       "browserJourneyIds": ["HP-P5-JRN-D"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/app/captain/invitations/page.tsx",
       "sourceNeedle": "tab=invitations"
     },
@@ -4808,7 +4808,7 @@
       "stableFallback": "/",
       "browserJourneyIds": ["HP-P5-JRN-B"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/components/auth/RoleEntryAdapter.tsx",
       "sourceNeedle": "signInHref"
     },
@@ -4837,7 +4837,7 @@
       "stableFallback": "/community/voyage-logs",
       "browserJourneyIds": ["HP-P5-JRN-G"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/app/community/voyage-logs/media/page.tsx",
       "sourceNeedle": "voyage-logs/owner"
     },
@@ -4866,7 +4866,7 @@
       "stableFallback": "/",
       "browserJourneyIds": ["HP-P5-JRN-C"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/app/player/page.tsx",
       "sourceNeedle": "player/library"
     },
@@ -4895,7 +4895,7 @@
       "stableFallback": "/player/library",
       "browserJourneyIds": ["HP-P5-JRN-C"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/app/player/playthroughs/[playthroughId]/archive/page.tsx",
       "sourceNeedle": "/journal"
     },
@@ -4924,7 +4924,7 @@
       "stableFallback": "/",
       "browserJourneyIds": ["HP-P5-JRN-B"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/components/platform/PlayerSignIn.tsx",
       "sourceNeedle": "canonicalSignInHref"
     },
@@ -4953,7 +4953,7 @@
       "stableFallback": "/",
       "browserJourneyIds": ["HP-P5-JRN-D"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/app/quartermaster/page.tsx",
       "sourceNeedle": "captain/library"
     },
@@ -4982,7 +4982,7 @@
       "stableFallback": "/",
       "browserJourneyIds": ["HP-P5-JRN-D"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/components/gm/Quartermaster.tsx",
       "sourceNeedle": "/captain/library"
     },
@@ -5011,7 +5011,7 @@
       "stableFallback": "/",
       "browserJourneyIds": ["HP-P5-JRN-E"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/app/studio/page.tsx",
       "sourceNeedle": "studio/library"
     },
@@ -5040,7 +5040,7 @@
       "stableFallback": "/",
       "browserJourneyIds": ["HP-P5-JRN-B"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/components/auth/RoleEntryAdapter.tsx",
       "sourceNeedle": "signInHref"
     },
@@ -5069,7 +5069,7 @@
       "stableFallback": "/play/[taleSlug]",
       "browserJourneyIds": ["HP-P5-JRN-C"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/app/tale/[campaignSlug]/page.tsx",
       "sourceNeedle": "redirect("
     },
@@ -5098,7 +5098,7 @@
       "stableFallback": "/community",
       "browserJourneyIds": ["HP-P5-JRN-G"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_4_District_Registry.json",
       "sourceNeedle": "/community/artifacts"
     },
@@ -5127,7 +5127,7 @@
       "stableFallback": "/community",
       "browserJourneyIds": ["HP-P5-JRN-G"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_4_District_Registry.json",
       "sourceNeedle": "/community/audio"
     },
@@ -5156,7 +5156,7 @@
       "stableFallback": "/community",
       "browserJourneyIds": ["HP-P5-JRN-G"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_4_District_Registry.json",
       "sourceNeedle": "/community/chronicles"
     },
@@ -5185,7 +5185,7 @@
       "stableFallback": "/community",
       "browserJourneyIds": ["HP-P5-JRN-G"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_4_District_Registry.json",
       "sourceNeedle": "/community/collections"
     },
@@ -5214,7 +5214,7 @@
       "stableFallback": "/community",
       "browserJourneyIds": ["HP-P5-JRN-G"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_4_District_Registry.json",
       "sourceNeedle": "/community/creators"
     },
@@ -5243,7 +5243,7 @@
       "stableFallback": "/community",
       "browserJourneyIds": ["HP-P5-JRN-G"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_4_District_Registry.json",
       "sourceNeedle": "/community/featured"
     },
@@ -5272,7 +5272,7 @@
       "stableFallback": "/community",
       "browserJourneyIds": ["HP-P5-JRN-G"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_4_District_Registry.json",
       "sourceNeedle": "/community/guides"
     },
@@ -5301,7 +5301,7 @@
       "stableFallback": "/community",
       "browserJourneyIds": ["HP-P5-JRN-G"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_4_District_Registry.json",
       "sourceNeedle": "/community/maps"
     },
@@ -5330,7 +5330,7 @@
       "stableFallback": "/community",
       "browserJourneyIds": ["HP-P5-JRN-G"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_4_District_Registry.json",
       "sourceNeedle": "/community/templates"
     },
@@ -5359,7 +5359,7 @@
       "stableFallback": "/community",
       "browserJourneyIds": ["HP-P5-JRN-G"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_4_District_Registry.json",
       "sourceNeedle": "/community/voyage-logs"
     },
@@ -5388,7 +5388,7 @@
       "stableFallback": "/community/collections",
       "browserJourneyIds": ["HP-P5-JRN-G"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/components/community/CommunityCardGrid.tsx",
       "sourceNeedle": "card.destination"
     },
@@ -5417,7 +5417,7 @@
       "stableFallback": "/community/creators",
       "browserJourneyIds": ["HP-P5-JRN-G"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/components/community/CommunityCardGrid.tsx",
       "sourceNeedle": "card.destination"
     },
@@ -5446,7 +5446,7 @@
       "stableFallback": "/community/guides",
       "browserJourneyIds": ["HP-P5-JRN-G"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/components/community/CommunityCardGrid.tsx",
       "sourceNeedle": "card.destination"
     },
@@ -5475,7 +5475,7 @@
       "stableFallback": "/community/chronicles",
       "browserJourneyIds": ["HP-P5-JRN-G"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/components/community/CommunityCardGrid.tsx",
       "sourceNeedle": "card.destination"
     },
@@ -5504,7 +5504,7 @@
       "stableFallback": "/community/voyage-logs",
       "browserJourneyIds": ["HP-P5-JRN-G"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/components/community/CommunityCardGrid.tsx",
       "sourceNeedle": "card.destination"
     },
@@ -5533,7 +5533,7 @@
       "stableFallback": "/sign-in",
       "browserJourneyIds": ["HP-P5-JRN-D"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/components/landing/HarborLanding.tsx",
       "sourceNeedle": "captain/sign-in"
     },
@@ -5562,7 +5562,7 @@
       "stableFallback": "/sign-in",
       "browserJourneyIds": ["HP-P5-JRN-C"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/components/landing/HarborLanding.tsx",
       "sourceNeedle": "player/sign-in"
     },
@@ -5591,7 +5591,7 @@
       "stableFallback": "/sign-in",
       "browserJourneyIds": ["HP-P5-JRN-E"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/components/landing/HarborLanding.tsx",
       "sourceNeedle": "studio/sign-in"
     },
@@ -5620,7 +5620,7 @@
       "stableFallback": "/",
       "browserJourneyIds": ["HP-P5-JRN-G"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
       "sourceNeedle": "global-community-harbor"
     },
@@ -5649,7 +5649,7 @@
       "stableFallback": "/",
       "browserJourneyIds": ["HP-P5-JRN-C"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
       "sourceNeedle": "global-explore-chronicles"
     },
@@ -5678,7 +5678,7 @@
       "stableFallback": "/community/moderation",
       "browserJourneyIds": ["HP-P5-JRN-G"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/app/community/moderation/page.tsx",
       "sourceNeedle": "community/moderation/"
     },
@@ -5707,7 +5707,7 @@
       "stableFallback": "/passport/artifacts",
       "browserJourneyIds": ["HP-P5-JRN-F"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/components/homeport/PassportSurfaces.tsx",
       "sourceNeedle": "passport/artifacts/"
     },
@@ -5736,7 +5736,7 @@
       "stableFallback": "/passport/history",
       "browserJourneyIds": ["HP-P5-JRN-F"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/components/homeport/PassportSurfaces.tsx",
       "sourceNeedle": "passport/history/"
     },
@@ -5765,7 +5765,7 @@
       "stableFallback": "/passport",
       "browserJourneyIds": ["HP-P5-JRN-F"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/homeport/personal-harbor-navigation.ts",
       "sourceNeedle": "passport/memories"
     },
@@ -5794,7 +5794,7 @@
       "stableFallback": "/passport",
       "browserJourneyIds": ["HP-P5-JRN-F"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/homeport/personal-harbor-navigation.ts",
       "sourceNeedle": "passport/saved"
     },
@@ -5823,7 +5823,7 @@
       "stableFallback": "/play/[taleSlug]",
       "browserJourneyIds": ["HP-P5-JRN-C"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/components/tales/TaleStart.tsx",
       "sourceNeedle": "View this browser's Voyage History"
     },
@@ -5852,7 +5852,7 @@
       "stableFallback": "/play/[taleSlug]",
       "browserJourneyIds": ["HP-P5-JRN-C"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/components/tales/TaleStart.tsx",
       "sourceNeedle": "router.push"
     },
@@ -5881,7 +5881,7 @@
       "stableFallback": "/player/library",
       "browserJourneyIds": ["HP-P5-JRN-C"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/components/platform/PlayerLibrary.tsx",
       "sourceNeedle": "primaryHref"
     },
@@ -5910,7 +5910,7 @@
       "stableFallback": "/player/library",
       "browserJourneyIds": ["HP-P5-JRN-C"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/components/platform/PlayerLibrary.tsx",
       "sourceNeedle": "primaryHref"
     },
@@ -5939,7 +5939,7 @@
       "stableFallback": "/tales",
       "browserJourneyIds": ["HP-P5-JRN-F"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/components/homeport/AccountSurfaces.tsx",
       "sourceNeedle": "profile/"
     },
@@ -5968,7 +5968,7 @@
       "stableFallback": "/",
       "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
       "sourceNeedle": "global-home"
     },
@@ -5997,7 +5997,7 @@
       "stableFallback": "/",
       "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
       "sourceNeedle": "global-home"
     },
@@ -6026,7 +6026,7 @@
       "stableFallback": "/",
       "browserJourneyIds": ["HP-P5-JRN-B"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/components/shell/ProductShell.tsx",
       "sourceNeedle": "shell-safe-return"
     },
@@ -6055,7 +6055,7 @@
       "stableFallback": "/",
       "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
       "sourceNeedle": "global-home"
     },
@@ -6084,7 +6084,7 @@
       "stableFallback": "/",
       "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
       "sourceNeedle": "global-home"
     },
@@ -6113,7 +6113,7 @@
       "stableFallback": "/",
       "browserJourneyIds": ["HP-P5-JRN-B"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/components/shell/ProductShell.tsx",
       "sourceNeedle": "shell-safe-return"
     },
@@ -6142,7 +6142,7 @@
       "stableFallback": "/",
       "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
       "sourceNeedle": "global-home"
     },
@@ -6171,7 +6171,7 @@
       "stableFallback": "/",
       "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
       "sourceNeedle": "global-home"
     },
@@ -6200,7 +6200,7 @@
       "stableFallback": "/",
       "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
       "sourceNeedle": "global-home"
     },
@@ -6229,7 +6229,7 @@
       "stableFallback": "/",
       "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
       "sourceNeedle": "global-home"
     },
@@ -6258,7 +6258,7 @@
       "stableFallback": "/",
       "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
       "sourceNeedle": "global-home"
     },
@@ -6287,7 +6287,7 @@
       "stableFallback": "/",
       "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
       "sourceNeedle": "global-home"
     },
@@ -6316,7 +6316,7 @@
       "stableFallback": "/",
       "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
       "sourceNeedle": "global-home"
     },
@@ -6345,7 +6345,7 @@
       "stableFallback": "/",
       "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
       "sourceNeedle": "global-home"
     },
@@ -6374,7 +6374,7 @@
       "stableFallback": "/",
       "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
       "sourceNeedle": "global-home"
     },
@@ -6403,7 +6403,7 @@
       "stableFallback": "/",
       "browserJourneyIds": ["HP-P5-JRN-D"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/components/shell/ProductShell.tsx",
       "sourceNeedle": "shell-safe-return"
     },
@@ -6432,7 +6432,7 @@
       "stableFallback": "/",
       "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
       "sourceNeedle": "global-home"
     },
@@ -6461,7 +6461,7 @@
       "stableFallback": "/",
       "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
       "sourceNeedle": "global-home"
     },
@@ -6490,7 +6490,7 @@
       "stableFallback": "/",
       "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
       "sourceNeedle": "global-home"
     },
@@ -6519,7 +6519,7 @@
       "stableFallback": "/",
       "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
       "sourceNeedle": "global-home"
     },
@@ -6548,7 +6548,7 @@
       "stableFallback": "/",
       "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
       "sourceNeedle": "global-home"
     },
@@ -6577,7 +6577,7 @@
       "stableFallback": "/",
       "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
       "sourceNeedle": "global-home"
     },
@@ -6606,7 +6606,7 @@
       "stableFallback": "/",
       "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
       "sourceNeedle": "global-home"
     },
@@ -6635,7 +6635,7 @@
       "stableFallback": "/",
       "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
       "sourceNeedle": "global-home"
     },
@@ -6664,7 +6664,7 @@
       "stableFallback": "/",
       "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
       "sourceNeedle": "global-home"
     },
@@ -6693,7 +6693,7 @@
       "stableFallback": "/",
       "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
       "sourceNeedle": "global-home"
     },
@@ -6722,7 +6722,7 @@
       "stableFallback": "/",
       "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
       "sourceNeedle": "global-home"
     },
@@ -6751,7 +6751,7 @@
       "stableFallback": "/",
       "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
       "sourceNeedle": "global-home"
     },
@@ -6780,7 +6780,7 @@
       "stableFallback": "/",
       "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
       "sourceNeedle": "global-home"
     },
@@ -6809,7 +6809,7 @@
       "stableFallback": "/",
       "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
       "sourceNeedle": "global-home"
     },
@@ -6838,7 +6838,7 @@
       "stableFallback": "/",
       "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
       "sourceNeedle": "global-home"
     },
@@ -6867,7 +6867,7 @@
       "stableFallback": "/",
       "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
       "sourceNeedle": "global-home"
     },
@@ -6896,7 +6896,7 @@
       "stableFallback": "/",
       "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
       "sourceNeedle": "global-home"
     },
@@ -6925,7 +6925,7 @@
       "stableFallback": "/",
       "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
       "sourceNeedle": "global-home"
     },
@@ -6954,7 +6954,7 @@
       "stableFallback": "/",
       "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
       "sourceNeedle": "global-home"
     },
@@ -6983,7 +6983,7 @@
       "stableFallback": "/",
       "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
       "sourceNeedle": "global-home"
     },
@@ -7012,7 +7012,7 @@
       "stableFallback": "/",
       "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
       "sourceNeedle": "global-home"
     },
@@ -7041,7 +7041,7 @@
       "stableFallback": "/",
       "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
       "sourceNeedle": "global-home"
     },
@@ -7070,7 +7070,7 @@
       "stableFallback": "/",
       "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
       "sourceNeedle": "global-home"
     },
@@ -7099,7 +7099,7 @@
       "stableFallback": "/",
       "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/components/shell/ProductShell.tsx",
       "sourceNeedle": "shell-safe-return"
     },
@@ -7128,7 +7128,7 @@
       "stableFallback": "/",
       "browserJourneyIds": ["HP-P5-JRN-B"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/components/shell/ProductShell.tsx",
       "sourceNeedle": "shell-safe-return"
     },
@@ -7157,7 +7157,7 @@
       "stableFallback": "/",
       "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
       "sourceNeedle": "global-home"
     },
@@ -7186,7 +7186,7 @@
       "stableFallback": "/",
       "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
       "sourceNeedle": "global-home"
     },
@@ -7215,7 +7215,7 @@
       "stableFallback": "/",
       "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
       "sourceNeedle": "global-home"
     },
@@ -7244,7 +7244,7 @@
       "stableFallback": "/",
       "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
       "sourceNeedle": "global-home"
     },
@@ -7273,7 +7273,7 @@
       "stableFallback": "/",
       "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
       "sourceNeedle": "global-home"
     },
@@ -7302,7 +7302,7 @@
       "stableFallback": "/",
       "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
       "sourceNeedle": "global-home"
     },
@@ -7331,7 +7331,7 @@
       "stableFallback": "/",
       "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
       "sourceNeedle": "global-home"
     },
@@ -7360,7 +7360,7 @@
       "stableFallback": "/",
       "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
       "sourceNeedle": "global-home"
     },
@@ -7389,7 +7389,7 @@
       "stableFallback": "/",
       "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
       "sourceNeedle": "global-home"
     },
@@ -7418,7 +7418,7 @@
       "stableFallback": "/tales",
       "browserJourneyIds": ["HP-P5-JRN-C"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/components/shell/ProductShell.tsx",
       "sourceNeedle": "shell-safe-return"
     },
@@ -7447,7 +7447,7 @@
       "stableFallback": "/sign-in",
       "browserJourneyIds": ["HP-P5-JRN-C"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/components/shell/ProductShell.tsx",
       "sourceNeedle": "shell-safe-return"
     },
@@ -7476,7 +7476,7 @@
       "stableFallback": "/",
       "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
       "sourceNeedle": "global-home"
     },
@@ -7505,7 +7505,7 @@
       "stableFallback": "/",
       "browserJourneyIds": ["HP-P5-JRN-C"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/components/shell/ProductShell.tsx",
       "sourceNeedle": "shell-safe-return"
     },
@@ -7534,7 +7534,7 @@
       "stableFallback": "/",
       "browserJourneyIds": ["HP-P5-JRN-C"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/components/shell/ProductShell.tsx",
       "sourceNeedle": "shell-safe-return"
     },
@@ -7563,7 +7563,7 @@
       "stableFallback": "/",
       "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
       "sourceNeedle": "global-home"
     },
@@ -7592,7 +7592,7 @@
       "stableFallback": "/",
       "browserJourneyIds": ["HP-P5-JRN-B"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/components/shell/ProductShell.tsx",
       "sourceNeedle": "shell-safe-return"
     },
@@ -7621,7 +7621,7 @@
       "stableFallback": "/",
       "browserJourneyIds": ["HP-P5-JRN-B"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/components/shell/ProductShell.tsx",
       "sourceNeedle": "shell-safe-return"
     },
@@ -7650,7 +7650,7 @@
       "stableFallback": "/",
       "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/components/shell/ProductShell.tsx",
       "sourceNeedle": "shell-safe-return"
     },
@@ -7679,7 +7679,7 @@
       "stableFallback": "/",
       "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
       "sourceNeedle": "global-home"
     },
@@ -7708,7 +7708,7 @@
       "stableFallback": "/",
       "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
       "sourceNeedle": "global-home"
     },
@@ -7737,7 +7737,7 @@
       "stableFallback": "/",
       "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
       "sourceNeedle": "global-home"
     },
@@ -7766,7 +7766,7 @@
       "stableFallback": "/",
       "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
       "sourceNeedle": "global-home"
     },
@@ -7795,7 +7795,7 @@
       "stableFallback": "/",
       "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
       "sourceNeedle": "global-home"
     },
@@ -7824,7 +7824,7 @@
       "stableFallback": "/",
       "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
       "sourceNeedle": "global-home"
     },
@@ -7853,7 +7853,7 @@
       "stableFallback": "/",
       "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
       "sourceNeedle": "global-home"
     },
@@ -7882,7 +7882,7 @@
       "stableFallback": "/",
       "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
       "sourceNeedle": "global-home"
     },
@@ -7911,7 +7911,7 @@
       "stableFallback": "/",
       "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
       "sourceNeedle": "global-home"
     },
@@ -7940,7 +7940,7 @@
       "stableFallback": "/",
       "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
       "sourceNeedle": "global-home"
     },
@@ -7969,7 +7969,7 @@
       "stableFallback": "/",
       "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
       "sourceNeedle": "global-home"
     },
@@ -7998,7 +7998,7 @@
       "stableFallback": "/",
       "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
       "sourceNeedle": "global-home"
     },
@@ -8027,7 +8027,7 @@
       "stableFallback": "/",
       "browserJourneyIds": ["HP-P5-JRN-B"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/components/shell/ProductShell.tsx",
       "sourceNeedle": "shell-safe-return"
     },
@@ -8056,7 +8056,7 @@
       "stableFallback": "/sign-in",
       "browserJourneyIds": ["HP-P5-JRN-B"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/components/wayfarer/AccountFlow.tsx",
       "sourceNeedle": "forgot-password"
     },
@@ -8085,7 +8085,7 @@
       "stableFallback": "/sign-in",
       "browserJourneyIds": ["HP-P5-JRN-B"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/components/wayfarer/AccountFlow.tsx",
       "sourceNeedle": "register"
     },
@@ -8114,7 +8114,7 @@
       "stableFallback": "/studio/library",
       "browserJourneyIds": ["HP-P5-JRN-E"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/components/studio/TaleEditor.tsx",
       "sourceNeedle": "artifacts"
     },
@@ -8143,7 +8143,7 @@
       "stableFallback": "/studio/library",
       "browserJourneyIds": ["HP-P5-JRN-E"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/components/studio/TaleEditor.tsx",
       "sourceNeedle": "assets"
     },
@@ -8172,7 +8172,7 @@
       "stableFallback": "/studio/library",
       "browserJourneyIds": ["HP-P5-JRN-E"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/components/studio/TaleEditor.tsx",
       "sourceNeedle": "locations"
     },
@@ -8201,7 +8201,7 @@
       "stableFallback": "/studio/library",
       "browserJourneyIds": ["HP-P5-JRN-E"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/components/studio/StudioHome.tsx",
       "sourceNeedle": "studio/tales/new"
     },
@@ -8230,7 +8230,7 @@
       "stableFallback": "/studio/library",
       "browserJourneyIds": ["HP-P5-JRN-E"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/components/studio/TaleEditor.tsx",
       "sourceNeedle": "settings"
     },
@@ -8259,7 +8259,7 @@
       "stableFallback": "/studio/library",
       "browserJourneyIds": ["HP-P5-JRN-E"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/components/studio/StudioHome.tsx",
       "sourceNeedle": "studio/tales/"
     },
@@ -8288,7 +8288,7 @@
       "stableFallback": "/studio/library",
       "browserJourneyIds": ["HP-P5-JRN-E"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/components/studio/TaleEditor.tsx",
       "sourceNeedle": "versions"
     },
@@ -8317,7 +8317,7 @@
       "stableFallback": "/tales",
       "browserJourneyIds": ["HP-P5-JRN-C"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/components/tales/TaleCatalog.tsx",
       "sourceNeedle": "play/"
     },
@@ -8346,7 +8346,7 @@
       "stableFallback": "/sign-in",
       "browserJourneyIds": ["HP-P5-JRN-F"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/app/account/claim/page.tsx",
       "sourceNeedle": "mode=\"claim\""
     },
@@ -8375,7 +8375,7 @@
       "stableFallback": "/sign-in",
       "browserJourneyIds": ["HP-P5-JRN-F"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/app/account/merge/page.tsx",
       "sourceNeedle": "mode=\"merge\""
     },
@@ -8404,7 +8404,7 @@
       "stableFallback": "/player/sign-in",
       "browserJourneyIds": ["HP-P5-JRN-C"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/app/join/[token]/route.ts",
       "sourceNeedle": "player/invitation"
     },
@@ -8433,7 +8433,7 @@
       "stableFallback": "/sign-in",
       "browserJourneyIds": ["HP-P5-JRN-B"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/app/reset-password/page.tsx",
       "sourceNeedle": "mode=\"reset\""
     },
@@ -8462,7 +8462,7 @@
       "stableFallback": "/sign-in",
       "browserJourneyIds": ["HP-P5-JRN-B"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/app/verify-email/page.tsx",
       "sourceNeedle": "mode=\"verify\""
     },
@@ -8491,7 +8491,7 @@
       "stableFallback": "/community/voyage-logs/owner",
       "browserJourneyIds": ["HP-P5-JRN-G"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/components/community/VoyageLogOwnerList.tsx",
       "sourceNeedle": "Open editor"
     },
@@ -8520,7 +8520,7 @@
       "stableFallback": "/",
       "browserJourneyIds": ["HP-P5-JRN-D"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
       "sourceNeedle": "workspace-captain-voyages"
     },
@@ -8549,7 +8549,7 @@
       "stableFallback": "/",
       "browserJourneyIds": ["HP-P5-JRN-D"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
       "sourceNeedle": "workspace-captain-invitations"
     },
@@ -8578,7 +8578,7 @@
       "stableFallback": "/",
       "browserJourneyIds": ["HP-P5-JRN-E"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
       "sourceNeedle": "workspace-creator-library"
     },
@@ -8607,7 +8607,7 @@
       "stableFallback": "/studio/library",
       "browserJourneyIds": ["HP-P5-JRN-E"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
       "sourceNeedle": "workspace-creator-exchange"
     },
@@ -8636,7 +8636,7 @@
       "stableFallback": "/community",
       "browserJourneyIds": ["HP-P5-JRN-G"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
       "sourceNeedle": "account-workspace-moderator"
     },
@@ -8665,7 +8665,7 @@
       "stableFallback": "/",
       "browserJourneyIds": ["HP-P5-JRN-C"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
       "sourceNeedle": "workspace-player-home"
     },
@@ -8694,7 +8694,7 @@
       "stableFallback": "/studio/library",
       "browserJourneyIds": ["HP-P5-JRN-E"],
       "evidenceIds": [],
-      "currentStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+      "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
       "sourceNeedle": "workspace-creator-private-content"
     }

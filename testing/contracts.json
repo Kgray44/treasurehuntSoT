@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "status": "phase-5-homeport-route-reachability-registered",
+  "status": "phase-5-homeport-route-reachability-validated",
   "contracts": [
     {
       "id": "invitation-acceptance",

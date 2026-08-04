@@ -46,7 +46,7 @@
         "acceptanceOwner": "Project Homeport owner walkthrough after Sounding Line evidence."
       },
       "phase5Implementation": {
-        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "state": "BRANCH_VALIDATED_NOT_MERGED",
         "classification": "TOKENIZED_DEEP_LINK",
         "parentRouteId": "route-page-sign-in",
         "entryEdgeIds": ["edge-token-account-claim"],
@@ -95,7 +95,7 @@
         "acceptanceOwner": "Project Homeport owner walkthrough after Sounding Line evidence."
       },
       "phase5Implementation": {
-        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "state": "BRANCH_VALIDATED_NOT_MERGED",
         "classification": "TOKENIZED_DEEP_LINK",
         "parentRouteId": "route-page-sign-in",
         "entryEdgeIds": ["edge-token-account-merge"],
@@ -144,7 +144,7 @@
         "acceptanceOwner": "Project Homeport owner walkthrough after Sounding Line evidence."
       },
       "phase5Implementation": {
-        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "state": "BRANCH_VALIDATED_NOT_MERGED",
         "classification": "USER_NAVIGABLE",
         "parentRouteId": "route-page-account",
         "entryEdgeIds": ["edge-account-workspaces"],
@@ -259,7 +259,7 @@
         "evidenceIds": ["HP-P3-EV-T-security"]
       },
       "phase5Implementation": {
-        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "state": "BRANCH_VALIDATED_NOT_MERGED",
         "classification": "USER_NAVIGABLE",
         "parentRouteId": "route-page-account",
         "entryEdgeIds": ["edge-account-security"],
@@ -308,7 +308,7 @@
         "acceptanceOwner": "Project Homeport owner walkthrough after Sounding Line evidence."
       },
       "phase5Implementation": {
-        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "state": "BRANCH_VALIDATED_NOT_MERGED",
         "classification": "REDIRECT_ALIAS",
         "parentRouteId": "route-page-captain-library",
         "entryEdgeIds": [],
@@ -380,7 +380,7 @@
         "implementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc"
       },
       "phase5Implementation": {
-        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "state": "BRANCH_VALIDATED_NOT_MERGED",
         "classification": "USER_NAVIGABLE",
         "parentRouteId": "route-page-root",
         "entryEdgeIds": [
@@ -443,7 +443,7 @@
         "acceptanceOwner": "Project Homeport owner walkthrough after Sounding Line evidence."
       },
       "phase5Implementation": {
-        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "state": "BRANCH_VALIDATED_NOT_MERGED",
         "classification": "REDIRECT_ALIAS",
         "parentRouteId": "route-page-root",
         "entryEdgeIds": [],
@@ -501,7 +501,7 @@
         "implementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc"
       },
       "phase5Implementation": {
-        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "state": "BRANCH_VALIDATED_NOT_MERGED",
         "classification": "CONTEXTUAL_DYNAMIC",
         "parentRouteId": "route-page-captain-library",
         "entryEdgeIds": ["edge-captain-session"],
@@ -556,7 +556,7 @@
         "evidenceIds": []
       },
       "phase5Implementation": {
-        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "state": "BRANCH_VALIDATED_NOT_MERGED",
         "classification": "AUTH_COMPATIBILITY_ALIAS",
         "parentRouteId": "route-page-root",
         "entryEdgeIds": ["edge-gateway-captain-adapter"],
@@ -605,7 +605,7 @@
         "acceptanceOwner": "Project Homeport owner walkthrough after Sounding Line evidence."
       },
       "phase5Implementation": {
-        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "state": "BRANCH_VALIDATED_NOT_MERGED",
         "classification": "CONTEXTUAL_DYNAMIC",
         "parentRouteId": "route-page-captain-library",
         "entryEdgeIds": ["edge-captain-tale"],
@@ -654,7 +654,7 @@
         "acceptanceOwner": "Project Homeport owner walkthrough after Sounding Line evidence."
       },
       "phase5Implementation": {
-        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "state": "BRANCH_VALIDATED_NOT_MERGED",
         "classification": "CONTEXTUAL_DYNAMIC",
         "parentRouteId": "route-page-captain-library",
         "entryEdgeIds": ["edge-captain-preview"],
@@ -859,7 +859,7 @@
         "routePatterns": ["/community/:slug"]
       },
       "phase5Implementation": {
-        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "state": "BRANCH_VALIDATED_NOT_MERGED",
         "classification": "CONTEXTUAL_DYNAMIC",
         "parentRouteId": "route-page-community-chronicles",
         "entryEdgeIds": ["edge-dynamic-community-slug"],
@@ -1029,7 +1029,7 @@
         "routePatterns": ["/community/artifacts"]
       },
       "phase5Implementation": {
-        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "state": "BRANCH_VALIDATED_NOT_MERGED",
         "classification": "USER_NAVIGABLE",
         "parentRouteId": "route-page-community",
         "entryEdgeIds": ["edge-district-artifacts"],
@@ -1199,7 +1199,7 @@
         "routePatterns": ["/community/audio"]
       },
       "phase5Implementation": {
-        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "state": "BRANCH_VALIDATED_NOT_MERGED",
         "classification": "USER_NAVIGABLE",
         "parentRouteId": "route-page-community",
         "entryEdgeIds": ["edge-district-audio-and-reveal-assets"],
@@ -1369,7 +1369,7 @@
         "routePatterns": ["/community/chronicles"]
       },
       "phase5Implementation": {
-        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "state": "BRANCH_VALIDATED_NOT_MERGED",
         "classification": "USER_NAVIGABLE",
         "parentRouteId": "route-page-community",
         "entryEdgeIds": ["edge-district-chronicles"],
@@ -1539,7 +1539,7 @@
         "routePatterns": ["/community/collections/:slug"]
       },
       "phase5Implementation": {
-        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "state": "BRANCH_VALIDATED_NOT_MERGED",
         "classification": "CONTEXTUAL_DYNAMIC",
         "parentRouteId": "route-page-community-collections",
         "entryEdgeIds": ["edge-dynamic-community-collections-slug"],
@@ -1710,7 +1710,7 @@
         "routePatterns": ["/community/collections"]
       },
       "phase5Implementation": {
-        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "state": "BRANCH_VALIDATED_NOT_MERGED",
         "classification": "USER_NAVIGABLE",
         "parentRouteId": "route-page-community",
         "entryEdgeIds": ["edge-district-collections"],
@@ -1880,7 +1880,7 @@
         "routePatterns": ["/community/creators/:handle"]
       },
       "phase5Implementation": {
-        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "state": "BRANCH_VALIDATED_NOT_MERGED",
         "classification": "CONTEXTUAL_DYNAMIC",
         "parentRouteId": "route-page-community-creators",
         "entryEdgeIds": ["edge-dynamic-community-creators-handle"],
@@ -2051,7 +2051,7 @@
         "routePatterns": ["/community/creators"]
       },
       "phase5Implementation": {
-        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "state": "BRANCH_VALIDATED_NOT_MERGED",
         "classification": "USER_NAVIGABLE",
         "parentRouteId": "route-page-community",
         "entryEdgeIds": ["edge-district-creators"],
@@ -2221,7 +2221,7 @@
         "routePatterns": ["/community/featured"]
       },
       "phase5Implementation": {
-        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "state": "BRANCH_VALIDATED_NOT_MERGED",
         "classification": "USER_NAVIGABLE",
         "parentRouteId": "route-page-community",
         "entryEdgeIds": ["edge-district-featured"],
@@ -2391,7 +2391,7 @@
         "routePatterns": ["/community/guides/:slug"]
       },
       "phase5Implementation": {
-        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "state": "BRANCH_VALIDATED_NOT_MERGED",
         "classification": "CONTEXTUAL_DYNAMIC",
         "parentRouteId": "route-page-community-guides",
         "entryEdgeIds": ["edge-dynamic-community-guides-slug"],
@@ -2561,7 +2561,7 @@
         "routePatterns": ["/community/guides"]
       },
       "phase5Implementation": {
-        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "state": "BRANCH_VALIDATED_NOT_MERGED",
         "classification": "USER_NAVIGABLE",
         "parentRouteId": "route-page-community",
         "entryEdgeIds": ["edge-district-guides"],
@@ -2731,7 +2731,7 @@
         "routePatterns": ["/community/maps"]
       },
       "phase5Implementation": {
-        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "state": "BRANCH_VALIDATED_NOT_MERGED",
         "classification": "USER_NAVIGABLE",
         "parentRouteId": "route-page-community",
         "entryEdgeIds": ["edge-district-maps-and-location-packs"],
@@ -2783,7 +2783,7 @@
         "acceptanceOwner": "Project Homeport owner walkthrough after Sounding Line evidence."
       },
       "phase5Implementation": {
-        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "state": "BRANCH_VALIDATED_NOT_MERGED",
         "classification": "CONTEXTUAL_DYNAMIC",
         "parentRouteId": "route-page-community-moderation",
         "entryEdgeIds": ["edge-moderation-detail"],
@@ -2849,7 +2849,7 @@
         "implementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc"
       },
       "phase5Implementation": {
-        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "state": "BRANCH_VALIDATED_NOT_MERGED",
         "classification": "USER_NAVIGABLE",
         "parentRouteId": "route-page-community",
         "entryEdgeIds": ["edge-workspace-moderation"],
@@ -3070,7 +3070,7 @@
         "routePatterns": ["/community"]
       },
       "phase5Implementation": {
-        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "state": "BRANCH_VALIDATED_NOT_MERGED",
         "classification": "USER_NAVIGABLE",
         "parentRouteId": "route-page-root",
         "entryEdgeIds": ["edge-global-community"],
@@ -3252,7 +3252,7 @@
         "routePatterns": ["/community/templates"]
       },
       "phase5Implementation": {
-        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "state": "BRANCH_VALIDATED_NOT_MERGED",
         "classification": "USER_NAVIGABLE",
         "parentRouteId": "route-page-community",
         "entryEdgeIds": ["edge-district-templates"],
@@ -3422,7 +3422,7 @@
         "routePatterns": ["/community/voyage-logs/:slug"]
       },
       "phase5Implementation": {
-        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "state": "BRANCH_VALIDATED_NOT_MERGED",
         "classification": "CONTEXTUAL_DYNAMIC",
         "parentRouteId": "route-page-community-voyage-logs",
         "entryEdgeIds": ["edge-dynamic-community-voyage-logs-slug"],
@@ -3474,7 +3474,7 @@
         "acceptanceOwner": "Project Homeport owner walkthrough after Sounding Line evidence."
       },
       "phase5Implementation": {
-        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "state": "BRANCH_VALIDATED_NOT_MERGED",
         "classification": "USER_NAVIGABLE",
         "parentRouteId": "route-page-community-voyage-logs",
         "entryEdgeIds": ["edge-community-voyage-log-consent"],
@@ -3526,7 +3526,7 @@
         "acceptanceOwner": "Project Homeport owner walkthrough after Sounding Line evidence."
       },
       "phase5Implementation": {
-        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "state": "BRANCH_VALIDATED_NOT_MERGED",
         "classification": "REDIRECT_ALIAS",
         "parentRouteId": "route-page-community-voyage-logs-owner",
         "entryEdgeIds": [],
@@ -3578,7 +3578,7 @@
         "acceptanceOwner": "Project Homeport owner walkthrough after Sounding Line evidence."
       },
       "phase5Implementation": {
-        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "state": "BRANCH_VALIDATED_NOT_MERGED",
         "classification": "CONTEXTUAL_DYNAMIC",
         "parentRouteId": "route-page-community-voyage-logs-owner",
         "entryEdgeIds": ["edge-voyage-log-owner-detail"],
@@ -3629,7 +3629,7 @@
         "acceptanceOwner": "Project Homeport owner walkthrough after Sounding Line evidence."
       },
       "phase5Implementation": {
-        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "state": "BRANCH_VALIDATED_NOT_MERGED",
         "classification": "USER_NAVIGABLE",
         "parentRouteId": "route-page-community-voyage-logs",
         "entryEdgeIds": ["edge-community-voyage-log-owner", "edge-compat-community-voyage-logs-media"],
@@ -3799,7 +3799,7 @@
         "routePatterns": ["/community/voyage-logs"]
       },
       "phase5Implementation": {
-        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "state": "BRANCH_VALIDATED_NOT_MERGED",
         "classification": "USER_NAVIGABLE",
         "parentRouteId": "route-page-community",
         "entryEdgeIds": ["edge-district-voyage-logs"],
@@ -3853,7 +3853,7 @@
         "acceptanceOwner": "Project Homeport owner walkthrough after Sounding Line evidence."
       },
       "phase5Implementation": {
-        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "state": "BRANCH_VALIDATED_NOT_MERGED",
         "classification": "DEVELOPMENT_ONLY",
         "parentRouteId": "route-page-root",
         "entryEdgeIds": [],
@@ -3908,7 +3908,7 @@
         "evidenceIds": []
       },
       "phase5Implementation": {
-        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "state": "BRANCH_VALIDATED_NOT_MERGED",
         "classification": "USER_NAVIGABLE",
         "parentRouteId": "route-page-sign-in",
         "entryEdgeIds": ["edge-sign-in-forgot"],
@@ -4067,7 +4067,7 @@
         "implementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc"
       },
       "phase5Implementation": {
-        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "state": "BRANCH_VALIDATED_NOT_MERGED",
         "classification": "USER_NAVIGABLE",
         "parentRouteId": null,
         "entryEdgeIds": [
@@ -4274,7 +4274,7 @@
         "evidenceIds": ["HP-P3-EV-L-passport-populated", "HP-P3-EV-M-passport-empty", "HP-P3-EV-AB-zoom-passport"]
       },
       "phase5Implementation": {
-        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "state": "BRANCH_VALIDATED_NOT_MERGED",
         "classification": "USER_NAVIGABLE",
         "parentRouteId": "route-page-account",
         "entryEdgeIds": ["edge-account-passport"],
@@ -4323,7 +4323,7 @@
         "acceptanceOwner": "Project Homeport owner walkthrough after Sounding Line evidence."
       },
       "phase5Implementation": {
-        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "state": "BRANCH_VALIDATED_NOT_MERGED",
         "classification": "CONTEXTUAL_DYNAMIC",
         "parentRouteId": "route-page-play-taleslug",
         "entryEdgeIds": ["edge-play-history"],
@@ -4372,7 +4372,7 @@
         "acceptanceOwner": "Project Homeport owner walkthrough after Sounding Line evidence."
       },
       "phase5Implementation": {
-        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "state": "BRANCH_VALIDATED_NOT_MERGED",
         "classification": "CONTEXTUAL_DYNAMIC",
         "parentRouteId": "route-page-tales",
         "entryEdgeIds": ["edge-tales-chronicle", "edge-return-play-taleslug-session-sessionid"],
@@ -4421,7 +4421,7 @@
         "acceptanceOwner": "Project Homeport owner walkthrough after Sounding Line evidence."
       },
       "phase5Implementation": {
-        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "state": "BRANCH_VALIDATED_NOT_MERGED",
         "classification": "CONTEXTUAL_DYNAMIC",
         "parentRouteId": "route-page-play-taleslug",
         "entryEdgeIds": ["edge-play-session", "edge-compat-tale-campaignslug"],
@@ -4470,7 +4470,7 @@
         "acceptanceOwner": "Project Homeport owner walkthrough after Sounding Line evidence."
       },
       "phase5Implementation": {
-        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "state": "BRANCH_VALIDATED_NOT_MERGED",
         "classification": "TOKENIZED_DEEP_LINK",
         "parentRouteId": "route-page-player-sign-in",
         "entryEdgeIds": ["edge-token-player-invitation"],
@@ -4570,7 +4570,7 @@
         "implementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc"
       },
       "phase5Implementation": {
-        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "state": "BRANCH_VALIDATED_NOT_MERGED",
         "classification": "USER_NAVIGABLE",
         "parentRouteId": "route-page-root",
         "entryEdgeIds": [
@@ -4624,7 +4624,7 @@
         "acceptanceOwner": "Project Homeport owner walkthrough after Sounding Line evidence."
       },
       "phase5Implementation": {
-        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "state": "BRANCH_VALIDATED_NOT_MERGED",
         "classification": "REDIRECT_ALIAS",
         "parentRouteId": "route-page-root",
         "entryEdgeIds": [],
@@ -4673,7 +4673,7 @@
         "acceptanceOwner": "Project Homeport owner walkthrough after Sounding Line evidence."
       },
       "phase5Implementation": {
-        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "state": "BRANCH_VALIDATED_NOT_MERGED",
         "classification": "REDIRECT_ALIAS",
         "parentRouteId": "route-page-player-playthroughs-playthroughid",
         "entryEdgeIds": [],
@@ -4731,7 +4731,7 @@
         "implementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc"
       },
       "phase5Implementation": {
-        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "state": "BRANCH_VALIDATED_NOT_MERGED",
         "classification": "CONTEXTUAL_DYNAMIC",
         "parentRouteId": "route-page-player-library",
         "entryEdgeIds": ["edge-player-journal", "edge-compat-player-playthroughs-playthroughid-archive"],
@@ -4786,7 +4786,7 @@
         "evidenceIds": ["HP-P1-EV-N-invitation-handoff"]
       },
       "phase5Implementation": {
-        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "state": "BRANCH_VALIDATED_NOT_MERGED",
         "classification": "CONTEXTUAL_DYNAMIC",
         "parentRouteId": "route-page-player-library",
         "entryEdgeIds": ["edge-player-voyage"],
@@ -4841,7 +4841,7 @@
         "evidenceIds": []
       },
       "phase5Implementation": {
-        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "state": "BRANCH_VALIDATED_NOT_MERGED",
         "classification": "AUTH_COMPATIBILITY_ALIAS",
         "parentRouteId": "route-page-root",
         "entryEdgeIds": ["edge-gateway-player-adapter", "edge-return-player-invitation"],
@@ -4908,7 +4908,7 @@
         "evidenceIds": ["HP-P3-EV-D-public-profile-preview"]
       },
       "phase5Implementation": {
-        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "state": "BRANCH_VALIDATED_NOT_MERGED",
         "classification": "CONTEXTUAL_DYNAMIC",
         "parentRouteId": "route-page-tales",
         "entryEdgeIds": ["edge-profile-public"],
@@ -4957,7 +4957,7 @@
         "acceptanceOwner": "Project Homeport owner walkthrough after Sounding Line evidence."
       },
       "phase5Implementation": {
-        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "state": "BRANCH_VALIDATED_NOT_MERGED",
         "classification": "AUTH_COMPATIBILITY_ALIAS",
         "parentRouteId": "route-page-captain-library",
         "entryEdgeIds": [],
@@ -5006,7 +5006,7 @@
         "acceptanceOwner": "Project Homeport owner walkthrough after Sounding Line evidence."
       },
       "phase5Implementation": {
-        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "state": "BRANCH_VALIDATED_NOT_MERGED",
         "classification": "AUTH_COMPATIBILITY_ALIAS",
         "parentRouteId": "route-page-captain-library",
         "entryEdgeIds": [],
@@ -5061,7 +5061,7 @@
         "evidenceIds": ["HP-P1-EV-B-registration-return"]
       },
       "phase5Implementation": {
-        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "state": "BRANCH_VALIDATED_NOT_MERGED",
         "classification": "USER_NAVIGABLE",
         "parentRouteId": "route-page-sign-in",
         "entryEdgeIds": ["edge-account-create", "edge-sign-in-register"],
@@ -5116,7 +5116,7 @@
         "evidenceIds": []
       },
       "phase5Implementation": {
-        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "state": "BRANCH_VALIDATED_NOT_MERGED",
         "classification": "TOKENIZED_DEEP_LINK",
         "parentRouteId": "route-page-sign-in",
         "entryEdgeIds": ["edge-token-reset-password"],
@@ -5187,7 +5187,7 @@
         "evidenceIds": ["HP-P1-EV-A-sign-in-desktop", "HP-P1-EV-I-sign-out-complete", "HP-P1-EV-J-multitab-sign-out"]
       },
       "phase5Implementation": {
-        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "state": "BRANCH_VALIDATED_NOT_MERGED",
         "classification": "USER_NAVIGABLE",
         "parentRouteId": "route-page-root",
         "entryEdgeIds": [
@@ -5253,7 +5253,7 @@
         "acceptanceOwner": "Project Homeport owner walkthrough after Sounding Line evidence."
       },
       "phase5Implementation": {
-        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "state": "BRANCH_VALIDATED_NOT_MERGED",
         "classification": "USER_NAVIGABLE",
         "parentRouteId": "route-page-studio-library",
         "entryEdgeIds": ["edge-workspace-exchange"],
@@ -5317,7 +5317,7 @@
         "implementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc"
       },
       "phase5Implementation": {
-        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "state": "BRANCH_VALIDATED_NOT_MERGED",
         "classification": "USER_NAVIGABLE",
         "parentRouteId": "route-page-root",
         "entryEdgeIds": ["edge-workspace-creator", "edge-compat-studio"],
@@ -5372,7 +5372,7 @@
         "acceptanceOwner": "Project Homeport owner walkthrough after Sounding Line evidence."
       },
       "phase5Implementation": {
-        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "state": "BRANCH_VALIDATED_NOT_MERGED",
         "classification": "REDIRECT_ALIAS",
         "parentRouteId": "route-page-root",
         "entryEdgeIds": [],
@@ -5421,7 +5421,7 @@
         "acceptanceOwner": "Project Homeport owner walkthrough after Sounding Line evidence."
       },
       "phase5Implementation": {
-        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "state": "BRANCH_VALIDATED_NOT_MERGED",
         "classification": "INTERNAL_DIAGNOSTIC",
         "parentRouteId": "route-page-studio-private-content",
         "entryEdgeIds": [],
@@ -5470,7 +5470,7 @@
         "acceptanceOwner": "Project Homeport owner walkthrough after Sounding Line evidence."
       },
       "phase5Implementation": {
-        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "state": "BRANCH_VALIDATED_NOT_MERGED",
         "classification": "USER_NAVIGABLE",
         "parentRouteId": "route-page-studio-library",
         "entryEdgeIds": ["edge-workspace-private-chronicle"],
@@ -5525,7 +5525,7 @@
         "evidenceIds": []
       },
       "phase5Implementation": {
-        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "state": "BRANCH_VALIDATED_NOT_MERGED",
         "classification": "AUTH_COMPATIBILITY_ALIAS",
         "parentRouteId": "route-page-root",
         "entryEdgeIds": ["edge-gateway-studio-adapter"],
@@ -5574,7 +5574,7 @@
         "acceptanceOwner": "Project Homeport owner walkthrough after Sounding Line evidence."
       },
       "phase5Implementation": {
-        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "state": "BRANCH_VALIDATED_NOT_MERGED",
         "classification": "CONTEXTUAL_DYNAMIC",
         "parentRouteId": "route-page-studio-library",
         "entryEdgeIds": ["edge-studio-artifacts"],
@@ -5623,7 +5623,7 @@
         "acceptanceOwner": "Project Homeport owner walkthrough after Sounding Line evidence."
       },
       "phase5Implementation": {
-        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "state": "BRANCH_VALIDATED_NOT_MERGED",
         "classification": "CONTEXTUAL_DYNAMIC",
         "parentRouteId": "route-page-studio-library",
         "entryEdgeIds": ["edge-studio-assets"],
@@ -5672,7 +5672,7 @@
         "acceptanceOwner": "Project Homeport owner walkthrough after Sounding Line evidence."
       },
       "phase5Implementation": {
-        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "state": "BRANCH_VALIDATED_NOT_MERGED",
         "classification": "CONTEXTUAL_DYNAMIC",
         "parentRouteId": "route-page-studio-library",
         "entryEdgeIds": ["edge-studio-locations"],
@@ -5721,7 +5721,7 @@
         "acceptanceOwner": "Project Homeport owner walkthrough after Sounding Line evidence."
       },
       "phase5Implementation": {
-        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "state": "BRANCH_VALIDATED_NOT_MERGED",
         "classification": "CONTEXTUAL_DYNAMIC",
         "parentRouteId": "route-page-studio-library",
         "entryEdgeIds": ["edge-studio-tale"],
@@ -5777,7 +5777,7 @@
         "acceptanceOwner": "Project Homeport owner walkthrough after Sounding Line evidence."
       },
       "phase5Implementation": {
-        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "state": "BRANCH_VALIDATED_NOT_MERGED",
         "classification": "CONTEXTUAL_DYNAMIC",
         "parentRouteId": "route-page-studio-library",
         "entryEdgeIds": ["edge-studio-settings"],
@@ -5826,7 +5826,7 @@
         "acceptanceOwner": "Project Homeport owner walkthrough after Sounding Line evidence."
       },
       "phase5Implementation": {
-        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "state": "BRANCH_VALIDATED_NOT_MERGED",
         "classification": "CONTEXTUAL_DYNAMIC",
         "parentRouteId": "route-page-studio-library",
         "entryEdgeIds": ["edge-studio-versions"],
@@ -5875,7 +5875,7 @@
         "acceptanceOwner": "Project Homeport owner walkthrough after Sounding Line evidence."
       },
       "phase5Implementation": {
-        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "state": "BRANCH_VALIDATED_NOT_MERGED",
         "classification": "USER_NAVIGABLE",
         "parentRouteId": "route-page-studio-library",
         "entryEdgeIds": ["edge-studio-new"],
@@ -5924,7 +5924,7 @@
         "acceptanceOwner": "Project Homeport owner walkthrough after Sounding Line evidence."
       },
       "phase5Implementation": {
-        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "state": "BRANCH_VALIDATED_NOT_MERGED",
         "classification": "REDIRECT_ALIAS",
         "parentRouteId": "route-page-tales",
         "entryEdgeIds": [],
@@ -5982,7 +5982,7 @@
         "implementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc"
       },
       "phase5Implementation": {
-        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "state": "BRANCH_VALIDATED_NOT_MERGED",
         "classification": "USER_NAVIGABLE",
         "parentRouteId": "route-page-root",
         "entryEdgeIds": ["edge-global-explore"],
@@ -6037,7 +6037,7 @@
         "evidenceIds": []
       },
       "phase5Implementation": {
-        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "state": "BRANCH_VALIDATED_NOT_MERGED",
         "classification": "TOKENIZED_DEEP_LINK",
         "parentRouteId": "route-page-sign-in",
         "entryEdgeIds": ["edge-token-verify-email"],
@@ -6440,7 +6440,7 @@
         ]
       },
       "phase5Implementation": {
-        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "state": "BRANCH_VALIDATED_NOT_MERGED",
         "classification": "USER_NAVIGABLE",
         "parentRouteId": "route-page-root",
         "entryEdgeIds": ["edge-account-personal-harbor"],
@@ -6568,7 +6568,7 @@
         ]
       },
       "phase5Implementation": {
-        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "state": "BRANCH_VALIDATED_NOT_MERGED",
         "classification": "USER_NAVIGABLE",
         "parentRouteId": "route-page-account",
         "entryEdgeIds": ["edge-account-profile"],
@@ -6667,7 +6667,7 @@
         "evidenceIds": ["HP-P3-EV-F-personal-information"]
       },
       "phase5Implementation": {
-        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "state": "BRANCH_VALIDATED_NOT_MERGED",
         "classification": "USER_NAVIGABLE",
         "parentRouteId": "route-page-account",
         "entryEdgeIds": ["edge-account-personal-information"],
@@ -6774,7 +6774,7 @@
         "evidenceIds": ["HP-P3-EV-G-preferences"]
       },
       "phase5Implementation": {
-        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "state": "BRANCH_VALIDATED_NOT_MERGED",
         "classification": "USER_NAVIGABLE",
         "parentRouteId": "route-page-account",
         "entryEdgeIds": ["edge-account-preferences"],
@@ -6877,7 +6877,7 @@
         "evidenceIds": ["HP-P3-EV-H-accessibility", "HP-P3-EV-AC-reduced-motion"]
       },
       "phase5Implementation": {
-        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "state": "BRANCH_VALIDATED_NOT_MERGED",
         "classification": "USER_NAVIGABLE",
         "parentRouteId": "route-page-account",
         "entryEdgeIds": ["edge-account-accessibility"],
@@ -6978,7 +6978,7 @@
         "evidenceIds": ["HP-P3-EV-I-notifications"]
       },
       "phase5Implementation": {
-        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "state": "BRANCH_VALIDATED_NOT_MERGED",
         "classification": "USER_NAVIGABLE",
         "parentRouteId": "route-page-account",
         "entryEdgeIds": ["edge-account-notifications"],
@@ -7084,7 +7084,7 @@
         "evidenceIds": ["HP-P3-EV-J-privacy"]
       },
       "phase5Implementation": {
-        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "state": "BRANCH_VALIDATED_NOT_MERGED",
         "classification": "USER_NAVIGABLE",
         "parentRouteId": "route-page-account",
         "entryEdgeIds": ["edge-account-privacy"],
@@ -7183,7 +7183,7 @@
         "evidenceIds": ["HP-P3-EV-K-linked-identities"]
       },
       "phase5Implementation": {
-        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "state": "BRANCH_VALIDATED_NOT_MERGED",
         "classification": "USER_NAVIGABLE",
         "parentRouteId": "route-page-account",
         "entryEdgeIds": ["edge-account-linked-identities"],
@@ -7279,7 +7279,7 @@
         "evidenceIds": ["HP-P3-EV-N-history-list"]
       },
       "phase5Implementation": {
-        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "state": "BRANCH_VALIDATED_NOT_MERGED",
         "classification": "USER_NAVIGABLE",
         "parentRouteId": "route-page-passport",
         "entryEdgeIds": ["edge-account-history"],
@@ -7384,7 +7384,7 @@
         "evidenceIds": ["HP-P3-EV-O-history-detail", "HP-P3-EV-P-memory-keepsake"]
       },
       "phase5Implementation": {
-        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "state": "BRANCH_VALIDATED_NOT_MERGED",
         "classification": "CONTEXTUAL_DYNAMIC",
         "parentRouteId": "route-page-passport-history",
         "entryEdgeIds": ["edge-passport-history-detail"],
@@ -7483,7 +7483,7 @@
         "evidenceIds": []
       },
       "phase5Implementation": {
-        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "state": "BRANCH_VALIDATED_NOT_MERGED",
         "classification": "USER_NAVIGABLE",
         "parentRouteId": "route-page-passport",
         "entryEdgeIds": ["edge-passport-memories"],
@@ -7586,7 +7586,7 @@
         "evidenceIds": ["HP-P3-EV-Q-artifact-cabinet", "HP-P3-EV-R-artifact-empty"]
       },
       "phase5Implementation": {
-        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "state": "BRANCH_VALIDATED_NOT_MERGED",
         "classification": "USER_NAVIGABLE",
         "parentRouteId": "route-page-passport",
         "entryEdgeIds": ["edge-account-artifacts"],
@@ -7685,7 +7685,7 @@
         "evidenceIds": []
       },
       "phase5Implementation": {
-        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "state": "BRANCH_VALIDATED_NOT_MERGED",
         "classification": "CONTEXTUAL_DYNAMIC",
         "parentRouteId": "route-page-passport-artifacts",
         "entryEdgeIds": ["edge-passport-artifact-detail"],
@@ -7784,7 +7784,7 @@
         "evidenceIds": ["HP-P3-EV-S-saved-content"]
       },
       "phase5Implementation": {
-        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "state": "BRANCH_VALIDATED_NOT_MERGED",
         "classification": "USER_NAVIGABLE",
         "parentRouteId": "route-page-passport",
         "entryEdgeIds": ["edge-passport-saved"],
@@ -7883,7 +7883,7 @@
         "evidenceIds": ["HP-P3-EV-U-sessions"]
       },
       "phase5Implementation": {
-        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "state": "BRANCH_VALIDATED_NOT_MERGED",
         "classification": "USER_NAVIGABLE",
         "parentRouteId": "route-page-account",
         "entryEdgeIds": ["edge-account-sessions"],
@@ -7975,7 +7975,7 @@
         "evidenceIds": ["HP-P3-EV-V-data-account"]
       },
       "phase5Implementation": {
-        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "state": "BRANCH_VALIDATED_NOT_MERGED",
         "classification": "USER_NAVIGABLE",
         "parentRouteId": "route-page-account",
         "entryEdgeIds": ["edge-account-data"],
@@ -8125,8 +8125,8 @@
     "phase": "PHASE_5_CLOSE_ROUTE_AND_INFORMATION_ARCHITECTURE_GAPS",
     "startingSha": "54372224fc9bf4b4fb42797ca58a5a224ffdb92a",
     "architectureFreezeSha": "bbe9659cc5077c834510c3e4db77aa362e45b6fd",
-    "implementationSourceSha": "IMPLEMENTATION_SOURCE_PENDING",
-    "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+    "implementationSourceSha": "b9f1552b78857c36a45f25eb5fdfb7a7e09f102a",
+    "state": "BRANCH_VALIDATED_NOT_MERGED",
     "updatedAt": "2026-08-03T18:00:00.000Z",
     "routeNodeCount": 85,
     "routeEdgeCount": 159,
