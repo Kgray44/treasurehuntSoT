@@ -32,30 +32,30 @@ export function AccessDecisionState({
             ? "This account session is no longer valid. Sign in again to continue."
             : "Sign in to continue.";
     return (
-      <section className="platform-auth platform-state" data-access-state={decision.status}>
+      <main className="platform-auth platform-state" data-access-state={decision.status}>
         <ErrorState
           primaryHeading
           title="Sign in required"
           detail={detail}
           action={{ label: "Sign in", href: signIn }}
         />
-      </section>
+      </main>
     );
   }
   if (decision.status === "permission-denied")
     return (
-      <section className="platform-auth platform-state" data-access-state="permission-denied">
+      <main className="platform-auth platform-state" data-access-state="permission-denied">
         <PermissionState
           primaryHeading
           title="Permission required"
           detail={`Your account is signed in, but it does not have ${labels[decision.capability]} permission.`}
           action={{ label: "Choose another workspace", href: "/" }}
         />
-      </section>
+      </main>
     );
   if (decision.status === "account-restricted")
     return (
-      <section className="platform-auth platform-state" data-access-state="account-restricted">
+      <main className="platform-auth platform-state" data-access-state="account-restricted">
         <PermissionState
           primaryHeading
           restriction="account-restricted"
@@ -63,10 +63,10 @@ export function AccessDecisionState({
           detail="This account cannot open the requested workspace. Use account recovery or contact support."
           action={{ label: "Account recovery", href: "/forgot-password" }}
         />
-      </section>
+      </main>
     );
   return (
-    <section className="platform-auth platform-state" data-access-state="unavailable">
+    <main className="platform-auth platform-state" data-access-state="unavailable">
       <UnavailableState
         primaryHeading
         title="Account service unavailable"
@@ -74,6 +74,6 @@ export function AccessDecisionState({
         reference={decision.correlationId}
         action={{ label: "Retry", href: "" }}
       />
-    </section>
+    </main>
   );
 }
