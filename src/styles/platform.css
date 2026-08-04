@@ -964,7 +964,12 @@ dl dd {
   opacity: 0;
 }
 
+.waiting-launch-boundary[data-launch-state="waiting"] .platform-relic {
+  visibility: hidden;
+}
+
 .waiting-launch-boundary[data-launch-state="launch-ready"] .platform-relic {
+  visibility: visible;
   opacity: 0.96;
 }
 
