@@ -19314,7 +19314,7 @@
     {
       "id": "sl-test-22ee2759a79d99b58c65",
       "title": "loads relationship state once for the visible card batch",
-      "line": 67,
+      "line": 71,
       "file": "src/components/community/CommunityCardGrid.test.tsx",
       "suiteId": "component.community",
       "owner": "harborlight",
@@ -22428,7 +22428,7 @@
     {
       "id": "sl-test-28e0e850cf63bd8556b4",
       "title": "keeps card identity stable across gallery/list layout and announces immediate search results",
-      "line": 87,
+      "line": 89,
       "file": "src/components/platform/PlayerLibrary.test.tsx",
       "suiteId": "component.auth",
       "owner": "platform-foundation",
@@ -22468,7 +22468,7 @@
     {
       "id": "sl-test-63c382fbb283758567a6",
       "title": "moves a card to the pinned position only after the preference response succeeds",
-      "line": 111,
+      "line": 113,
       "file": "src/components/platform/PlayerLibrary.test.tsx",
       "suiteId": "component.auth",
       "owner": "platform-foundation",
@@ -22508,7 +22508,7 @@
     {
       "id": "sl-test-d3a4ef921fc732603725",
       "title": "removes hidden history only after authority and provides a separate undo mutation",
-      "line": 147,
+      "line": 149,
       "file": "src/components/platform/PlayerLibrary.test.tsx",
       "suiteId": "component.auth",
       "owner": "platform-foundation",
