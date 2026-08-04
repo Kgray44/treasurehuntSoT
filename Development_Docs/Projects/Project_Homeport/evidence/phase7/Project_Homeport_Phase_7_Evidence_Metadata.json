@@ -7,23 +7,7 @@
   "ownerDecision": "PENDING_OWNER_DECISION",
   "runReceipt": {
     "terminalStatus": "HOMEPORT_PHASE7_JOURNEYS_PASSED",
-    "journeys": [
-      "A",
-      "B",
-      "C",
-      "D",
-      "E",
-      "F",
-      "G",
-      "H",
-      "I",
-      "J",
-      "K",
-      "L",
-      "M",
-      "N",
-      "O"
-    ],
+    "journeys": ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O"],
     "logSha256": "0e32f629e602b779c712f30033d118684d5d7db4a45c3e79ab56b7a2f140268a",
     "location": "EXTERNAL_TASK_OWNED_LOG"
   },

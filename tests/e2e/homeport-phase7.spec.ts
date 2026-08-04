@@ -202,8 +202,7 @@ test(`Journey I: password recovery`, async ({ page }) => {
   await settledLinkNavigation(page, page.getByRole("link", { name: "Forgot Password" }), /\/forgot-password/u);
   await page.getByLabel("Email").fill(credentialHandoff.accounts.RECOVERY_ACCOUNT.email!);
   const recoveryResponse = page.waitForResponse(
-    (response) =>
-      response.url().endsWith("/api/auth/password-reset/request") && response.request().method() === "POST",
+    (response) => response.url().endsWith("/api/auth/password-reset/request") && response.request().method() === "POST",
   );
   await page.getByRole("button", { name: /Send|Continue|Request/u }).click();
   expect((await recoveryResponse).ok()).toBe(true);
@@ -418,7 +417,9 @@ async function settledDeclaredLinkNavigation(page: Page, link: Locator, label: s
   if (!destination) throw new Error(`${label} does not declare an href`);
   const pathname = new URL(destination, page.url()).pathname;
   await link.click();
-  await expect.poll(() => new URL(page.url()).pathname, { message: `${label} should finish navigation` }).toBe(pathname);
+  await expect
+    .poll(() => new URL(page.url()).pathname, { message: `${label} should finish navigation` })
+    .toBe(pathname);
   await page.waitForLoadState("networkidle");
   await expect(page.getByRole("main")).toBeVisible();
 }

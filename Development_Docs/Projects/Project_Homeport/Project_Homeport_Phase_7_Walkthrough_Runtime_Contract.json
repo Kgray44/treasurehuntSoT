@@ -14,11 +14,6 @@
     "reset": "npm run homeport:phase7:walkthrough:reset",
     "stop": "npm run homeport:phase7:walkthrough:stop"
   },
-  "safety": [
-    "REJECT_CANONICAL_DATABASE",
-    "VERIFY_PORT_OWNER",
-    "STOP_OWNED_PID_ONLY",
-    "BOUNDED_NON_SECRET_STATUS"
-  ],
+  "safety": ["REJECT_CANONICAL_DATABASE", "VERIFY_PORT_OWNER", "STOP_OWNED_PID_ONLY", "BOUNDED_NON_SECRET_STATUS"],
   "retention": "ONE_FINAL_WALKTHROUGH_RUNTIME_AFTER_SUCCESS"
 }

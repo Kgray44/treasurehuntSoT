@@ -29,7 +29,8 @@ const reportNames = (await import("node:fs/promises")).readdir(reportRoot);
 const reports = [];
 for (const name of (await reportNames).filter((entry) => entry.endsWith(".json")).sort()) {
   const report = JSON.parse(await readFile(path.join(reportRoot, name), "utf8"));
-  if (report.sourceSha !== sourceSha) throw new Error(`${report.evidenceId} is bound to ${report.sourceSha}, not ${sourceSha}.`);
+  if (report.sourceSha !== sourceSha)
+    throw new Error(`${report.evidenceId} is bound to ${report.sourceSha}, not ${sourceSha}.`);
   if (report.fixtureVersion !== fixtureVersion) throw new Error(`${report.evidenceId} has the wrong fixture version.`);
   const screenshot = await readFile(report.screenshotPath);
   const screenshotSha256 = digest(screenshot);
@@ -54,7 +55,10 @@ for (const name of (await reportNames).filter((entry) => entry.endsWith(".json")
     visualReview: "REVIEWED_ACCEPTED",
   });
 }
-if (reports.length !== 16 || [...new Set(reports.map((entry) => entry.journeyId))].sort().join("") !== "ABCDEFGHIJKLMNO") {
+if (
+  reports.length !== 16 ||
+  [...new Set(reports.map((entry) => entry.journeyId))].sort().join("") !== "ABCDEFGHIJKLMNO"
+) {
   throw new Error("Expected 16 reviewed evidence frames spanning journeys A through O.");
 }
 
