@@ -159,11 +159,16 @@ test(`Journey H: chronicle passport`, async ({ page }) => {
 test(`Journey I: password recovery`, async ({ page }) => {
   await begin(page);
   const menu = await accountMenu(page, "Account");
-  await menu.getByRole("link", { name: "Sign In", exact: true }).click();
-  await page.getByRole("link", { name: "Forgot Password" }).click();
+  await settledLinkNavigation(page, menu.getByRole("link", { name: "Sign In", exact: true }), /\/sign-in/u);
+  await settledLinkNavigation(page, page.getByRole("link", { name: "Forgot Password" }), /\/forgot-password/u);
   await page.getByLabel("Email").fill(credentialHandoff.accounts.RECOVERY_ACCOUNT.email!);
+  const recoveryResponse = page.waitForResponse(
+    (response) =>
+      response.url().endsWith("/api/auth/password-reset/request") && response.request().method() === "POST",
+  );
   await page.getByRole("button", { name: /Send|Continue|Request/u }).click();
-  await expect(page.getByText(/If an account|instructions|recovery/u).first()).toBeVisible();
+  expect((await recoveryResponse).ok()).toBe(true);
+  await expect(page.getByText("If that email can reset an account, we sent a recovery link.")).toBeVisible();
   await Promise.all([
     db.accountToken.update({
       where: { id: "hp7-token-reset-valid" },
@@ -374,7 +379,15 @@ async function clickFirstRoute(page: Page, prefix: string) {
   await link.click();
 }
 
+async function settledLinkNavigation(page: Page, link: ReturnType<Page["getByRole"]>, destination: RegExp) {
+  await expect(link).toBeVisible();
+  await link.click();
+  await expect(page).toHaveURL(destination);
+  await page.waitForLoadState("networkidle");
+}
+
 async function submitReset(page: Page, password: string) {
+  await page.waitForLoadState("networkidle");
   await page.getByLabel("Password", { exact: true }).fill(password);
   await page.getByLabel("Confirm password", { exact: true }).fill(password);
   await page.getByRole("button", { name: "Continue" }).click();
