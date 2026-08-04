@@ -3,7 +3,7 @@ title: Project Homeport Repository Index
 audience: product-engineering
 status: current
 canonical_for: project-homeport-repository-index
-last_reviewed: 2026-08-03
+last_reviewed: 2026-08-04
 ---
 
 # Project Homeport
@@ -22,6 +22,13 @@ the same retained branch. The graph closes ordinary-route entry, dynamic-source,
 tokenized, compatibility, parent/return, dead-end, and desktop/mobile contracts.
 This remains branch-local evidence; Phase 6, Phase 7, deployment, and owner or
 product acceptance remain separate.
+
+Phase 6 product-surface architecture is frozen on the same retained branch.
+The freeze records the current source census, acceptance vocabulary,
+component-family and state ownership, responsive/accessibility/motion/media
+contracts, isolated fixture and evidence policy, validator/updater boundaries,
+and Phase 7 handoff. It is an architecture checkpoint only; implementation and
+acceptance remain separate.
 
 ## Authority
 
@@ -113,6 +120,14 @@ The source-derived node/edge graph and final route matrices are generated
 idempotently and bind to the exact browser-tested source. Phase 5 remains
 branch-only and does not establish Phase 6, Phase 7, deployment, owner
 acceptance, or product acceptance.
+
+## Phase 6 records
+
+- [Product Surface Completion Architecture](Project_Homeport_Phase_6_Product_Surface_Completion_Architecture.md)
+
+The Phase 6 architecture is frozen before broad product edits. Later Phase 6
+registries, matrices, implementation, evidence, validation, and integration
+records will be added here only when their corresponding work exists.
 
 ## Phase 2 machine-readable records
 

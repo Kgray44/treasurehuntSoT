@@ -3,7 +3,7 @@ title: Project Homeport Design Record
 audience: product-engineering
 status: current
 canonical_for: project-homeport-design-record
-last_reviewed: 2026-08-02
+last_reviewed: 2026-08-04
 ---
 
 # Project Homeport design record
@@ -267,3 +267,29 @@ identity, Community, Player, Captain, Studio, private-media, animation, or test
 authority. It does not establish implementation, browser proof, evidence,
 HP-NC-014 closure, Sounding Line release authority, merge, deployment, Phase 6,
 Phase 7, owner acceptance, or product acceptance.
+
+## Phase 6 architecture freeze amendment
+
+**Decision date:** 2026-08-04. **Source boundary:** Phase 6 preparation SHA
+`54a8470e2274fcbd37f18487c09b0d198f09265d`; fetched `origin/main` and merge
+base `8d142227d712d27e363b15903dba9b0c99a04bc8`. The canonical development
+database starts at SHA-256
+`54647911F63C6A55E5C6B6C95E5EC0A2977B4580A42DE073C8C503A3D8C7A412`.
+
+The architecture is frozen in [Project Homeport Phase 6 Product Surface
+Completion Architecture](Project_Homeport_Phase_6_Product_Surface_Completion_Architecture.md).
+The current source-derived census contains 85 page sources, 174 route-handler
+sources, six layouts, one error boundary, one loading boundary, and no
+route-owned not-found boundary. Phase 6 owns screen acceptance, complete-state
+contracts, component-family normalization, responsive/zoom completion,
+accessibility and focus, mutation feedback, media fallback, source-bound visual
+evidence, human review, and HP-NC-018 disposition. Specialist projects retain
+identity, navigation, domain, privacy, media, motion, language, and verification
+authority.
+
+The existing schema remains sufficient, so Phase 6 introduces no migration or
+persisted visual-state tables. Final evidence will use a production runtime,
+task-owned copied SQLite database, storage roots, port, browser profile, and
+capture directory. No implementation, evidence acceptance, test result,
+nonconformity closure, merge, deployment, owner acceptance, product acceptance,
+or Phase 7 work is established by this freeze.
