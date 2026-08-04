@@ -332,9 +332,21 @@ async function accountMenu(page: Page, label: string) {
       ? page.getByRole("button", { name: /^(Account|Session ended)$/u })
       : page.getByRole("button", { name: label, exact: true });
   await expect(button).toBeVisible();
-  await button.click();
   const menu = page.locator("#shell-account-disclosure");
-  await expect(menu).toBeVisible();
+  await expect
+    .poll(
+      async () => {
+        if ((await button.getAttribute("aria-expanded")) !== "true") {
+          await button.click();
+        }
+        return menu.isVisible();
+      },
+      {
+        message: `Account disclosure should open for ${label}`,
+        timeout: 30_000,
+      },
+    )
+    .toBe(true);
   return menu;
 }
 
@@ -343,6 +355,7 @@ async function accountDestination(page: Page, account: Alias, label: string) {
   const link = menu.getByRole("link", { name: label, exact: true });
   await expect(link).toBeVisible();
   await link.click();
+  await page.waitForLoadState("networkidle");
   await expect(page.getByRole("main")).toBeVisible();
 }
 
