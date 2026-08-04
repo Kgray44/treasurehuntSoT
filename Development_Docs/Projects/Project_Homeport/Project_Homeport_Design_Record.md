@@ -316,3 +316,28 @@ HP-NC-018 is `CLOSED_PHASE_6_BRANCH_VALIDATED`. HP-NC-015, HP-NC-019, and
 HP-NC-020 remain Phase 7 work. This branch validation does not establish
 integration on `main`, deployment, live-provider behavior, physical
 assistive-technology proof, owner acceptance, or Phase 7 whole-product proof.
+
+## Phase 7 architecture freeze amendment
+
+**Decision date:** 2026-08-04. **Source boundary:** retained-branch Phase 7
+start SHA `08b134a757c766a40bd47bbf6fec4d92284fd8a4`; fetched tracking SHA is
+identical, and fetched `origin/main`/merge base remains
+`8d142227d712d27e363b15903dba9b0c99a04bc8`. The canonical development
+database starts at SHA-256
+`54647911F63C6A55E5C6B6C95E5EC0A2977B4580A42DE073C8C503A3D8C7A412`.
+
+The architecture is frozen in [Project Homeport Phase 7 Whole Voyage
+Architecture](Project_Homeport_Phase_7_Whole_Voyage_Architecture.md). Phase 7
+owns integrated journeys A through O, deterministic synthetic fixture family
+`homeport-phase7-integrated-v1`, per-journey isolation, the fresh final
+walkthrough clone, exact-source evidence, the reproducible walkthrough package,
+and the intentionally retained local walkthrough runtime. It does not replace
+specialist authority or introduce a database migration.
+
+Automated success is only `PROJECT HOMEPORT PHASE 7 READY FOR OWNER
+WALKTHROUGH`. The independent owner record remains
+`PENDING_OWNER_DECISION`; neither local synthetic evidence nor Sounding Line
+release authority constitutes owner acceptance, `main` integration,
+deployment, live-provider proof, or product acceptance. No journey result,
+fixture result, evidence, nonconformity disposition, or runtime readiness is
+established by this freeze.

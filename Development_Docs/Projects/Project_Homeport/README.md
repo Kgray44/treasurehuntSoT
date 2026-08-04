@@ -31,6 +31,12 @@ cover desktop, mobile, tablet, effective 200 percent, explicit states, and
 reduced motion. This is local synthetic branch evidence, not `main`, deployment,
 owner acceptance, product acceptance, or Phase 7 whole-product proof.
 
+Phase 7 whole-voyage architecture is frozen at the retained-branch start SHA.
+The freeze defines integrated journeys A through O, fixture and clone isolation,
+evidence binding, the walkthrough package/runtime, and the independent owner
+decision boundary. It is architecture authority only; it establishes no Phase
+7 implementation, test result, walkthrough readiness, or owner acceptance.
+
 ## Authority
 
 - [Project Homeport Governing Document](Project_Homeport_Governing_Document.md) — searchable normative transcription.
@@ -145,6 +151,13 @@ The Phase 6 records are generated and validated against exact product source
 `e02ee0dae0469a2ba573beaf409c0b34e8668d09`. HP-NC-018 closes as branch
 validated; Phase 7 retains integrated whole-product journeys, its final fixture,
 the running owner package, and the product-acceptance boundary.
+
+## Phase 7 architecture record
+
+- [Whole Voyage Architecture](Project_Homeport_Phase_7_Whole_Voyage_Architecture.md)
+
+Implementation, journey, fixture, evidence, validation, integration, and
+walkthrough records will be linked here only after they exist and validate.
 
 ## Phase 2 machine-readable records
 
