@@ -1,5 +1,6 @@
 import { createHash } from "node:crypto";
-import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { readFileSync } from "node:fs";
+import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { expect, test, type Page } from "@playwright/test";
 import { PrismaClient } from "@prisma/client";
@@ -10,9 +11,9 @@ const journeyId = required("HOMEPORT_PHASE7_JOURNEY_ID");
 const sourceSha = process.env.HOMEPORT_PHASE7_SOURCE_SHA ?? "IMPLEMENTATION_SOURCE_PENDING";
 const databasePath = path.resolve(required("HOMEPORT_PHASE7_DATABASE_PATH"));
 const credentialHandoff = JSON.parse(
-  await readFile(path.join(taskRoot, "credentials", "walkthrough-credentials.private.json"), "utf8"),
+  readFileSync(path.join(taskRoot, "credentials", "walkthrough-credentials.private.json"), "utf8"),
 ) as { password: string; accounts: Record<string, Alias> };
-const tokens = JSON.parse(await readFile(path.join(taskRoot, "tokens", "phase7-tokens.private.json"), "utf8")) as {
+const tokens = JSON.parse(readFileSync(path.join(taskRoot, "tokens", "phase7-tokens.private.json"), "utf8")) as {
   resetValid: string;
   resetExpired: string;
   verifyValid: string;
