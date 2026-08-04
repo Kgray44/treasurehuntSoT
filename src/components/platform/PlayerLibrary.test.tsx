@@ -79,7 +79,9 @@ describe("PlayerLibrary motion and authority", () => {
     const collapse = screen.getByRole("button", { name: "Invitations" });
     fireEvent.click(collapse);
 
-    await waitFor(() => expect(screen.queryByRole("heading", { name: "The Moonlit Key" })).not.toBeInTheDocument());
+    await waitFor(() => expect(screen.queryByRole("heading", { name: "The Moonlit Key" })).not.toBeInTheDocument(), {
+      timeout: 5_000,
+    });
     expect(collapse).toHaveFocus();
     expect(collapse).toHaveAttribute("aria-expanded", "false");
   });

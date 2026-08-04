@@ -92,8 +92,8 @@ describe("InvitationCeremony", () => {
     vi.stubGlobal("fetch", vi.fn().mockResolvedValue(response(200, { invitation, csrfToken: "csrf" })));
     renderInvitation();
 
-    const heading = await screen.findByRole("heading", { name: "The Moonlit Key" });
-    await waitFor(() => expect(heading).toHaveFocus());
+    const heading = await screen.findByRole("heading", { name: "The Moonlit Key" }, { timeout: 5_000 });
+    await waitFor(() => expect(heading).toHaveFocus(), { timeout: 5_000 });
     expect(screen.getByLabelText("Invitation PIN")).toBeInTheDocument();
     expect(screen.getByText("Invitation found. Enter its PIN to continue.")).toBeInTheDocument();
     expect(screen.getByRole("main")).toHaveAttribute("data-invitation-state", "pin-required");

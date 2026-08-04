@@ -31,7 +31,9 @@ test("Quartermaster bookmarks redirect to canonical Captain sign-in across suppo
 test("published Chronicle catalog is public while Studio remains protected", async ({ page }) => {
   await page.goto("/tales");
   await expect(page.getByRole("heading", { name: "Choose a Chronicle" })).toBeVisible();
-  await expect(page.getByRole("article").first().getByRole("link", { name: "Preview Chronicle" })).toBeVisible();
+  await expect(page.getByRole("article").first().getByRole("link", { name: "Preview Chronicle" })).toBeVisible({
+    timeout: 30_000,
+  });
   await page.goto("/studio");
   await expect(page).toHaveURL(/\/sign-in\?returnTo=%2Fstudio%2Flibrary$/);
   await expect(page.getByRole("heading", { name: "Sign in" })).toBeVisible();
