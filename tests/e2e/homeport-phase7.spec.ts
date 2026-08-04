@@ -2,7 +2,7 @@ import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
 import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
-import { expect, test, type Page } from "@playwright/test";
+import { expect, test, type Locator, type Page } from "@playwright/test";
 import { PrismaClient } from "@prisma/client";
 
 type Alias = { accountId: string | null; username: string | null; email: string | null; displayName: string };
@@ -53,6 +53,7 @@ test(`Journey B: returning account`, async ({ page }) => {
   const account = await signIn(page, "RETURNING_FULL_CAPABILITY");
   for (const destination of ["Player", "Captain", "Creator Studio", "View My Profile"])
     await accountDestination(page, account, destination);
+  await expect(page.getByText("At a glance", { exact: true })).toBeVisible();
   await capture(page, "cross-workspace-account");
   const menu = await accountMenu(page, account.displayName);
   await menu.getByRole("button", { name: "Sign out" }).click();
@@ -65,7 +66,7 @@ test(`Journey C: player`, async ({ page }) => {
   await accountDestination(page, account, "Player");
   await expect(page.getByRole("heading", { name: "My Chronicle Library" })).toBeVisible();
   await clickFirstRoute(page, "/player/playthroughs/");
-  await expect(page.getByRole("main")).toBeVisible();
+  await expect(page.getByRole("heading", { name: "The Lantern Coast", level: 1 })).toBeVisible();
   await capture(page, "player-voyage");
   await accountDestination(page, account, "Chronicle Passport");
   await expect(page.getByRole("heading", { name: /Chronicle Passport/u }).first()).toBeVisible();
@@ -76,7 +77,7 @@ test(`Journey D: captain`, async ({ page }) => {
   await accountDestination(page, account, "Captain");
   await expect(page.getByRole("heading", { name: /Captain/u }).first()).toBeVisible();
   await clickFirstRoute(page, "/captain/sessions/");
-  await expect(page.getByRole("main")).toBeVisible();
+  await expect(page.getByRole("heading", { name: "The Lantern Coast", level: 1 })).toBeVisible();
   await capture(page, "captain-session");
   await accountDestination(page, account, "View My Profile");
 });
@@ -146,14 +147,52 @@ test(`Journey H: chronicle passport`, async ({ page }) => {
   await accountDestination(page, account, "Chronicle Passport");
   await expect(page.getByRole("heading", { name: /Chronicle Passport/u }).first()).toBeVisible();
   const navigation = page.getByRole("navigation", { name: "Personal Harbor sections" });
-  for (const name of ["History", "Memories", "Artifacts", "Saved"]) {
-    const link = navigation.getByRole("link", { name, exact: true });
-    if (await link.isVisible()) {
-      await link.click();
-      await expect(page.getByRole("main")).toBeVisible();
-    }
-  }
+  await settledDeclaredLinkNavigation(
+    page,
+    navigation.getByRole("link", { name: "History", exact: true }),
+    "Chronicle Passport History",
+  );
+  await expect(page.getByLabel("Search your history")).toBeVisible();
+  await settledDeclaredLinkNavigation(page, page.getByRole("link", { name: "Open record" }).first(), "History record");
+  await expect(page.getByRole("heading", { name: "Private Keepsake" })).toBeVisible();
+  await settledDeclaredLinkNavigation(
+    page,
+    page.getByRole("link", { name: /Chronicle History/u }).first(),
+    "Chronicle History return",
+  );
+  await settledDeclaredLinkNavigation(
+    page,
+    navigation.getByRole("link", { name: "Memories", exact: true }),
+    "Chronicle Passport Memories",
+  );
+  await expect(page.getByRole("heading", { name: "Memories", level: 1 })).toBeVisible();
+  await settledDeclaredLinkNavigation(
+    page,
+    navigation.getByRole("link", { name: "Artifacts", exact: true }),
+    "Chronicle Passport Artifacts",
+  );
+  await expect(page.getByLabel("Search artifacts")).toBeVisible();
+  await settledDeclaredLinkNavigation(
+    page,
+    page.getByRole("link", { name: "View provenance" }).first(),
+    "Artifact provenance",
+  );
+  await expect(page.getByRole("heading", { name: "Provenance", exact: true })).toBeVisible();
+  await settledDeclaredLinkNavigation(
+    page,
+    page.getByRole("link", { name: /Artifact Cabinet/u }).first(),
+    "Artifact Cabinet return",
+  );
+  await settledDeclaredLinkNavigation(
+    page,
+    navigation.getByRole("link", { name: "Saved", exact: true }),
+    "Chronicle Passport Saved",
+  );
+  await expect(page.getByRole("heading", { name: "Saved from Community", level: 1 })).toBeVisible();
+  await expect(page.getByText(/No eligible saved items|Eligibility is checked/u).first()).toBeVisible();
   await capture(page, "passport-artifacts-and-saved");
+  await accountDestination(page, account, "View My Profile");
+  await expect(page.getByText("At a glance", { exact: true })).toBeVisible();
 });
 
 test(`Journey I: password recovery`, async ({ page }) => {
@@ -358,31 +397,30 @@ async function accountMenu(page: Page, label: string) {
 async function accountDestination(page: Page, account: Alias, label: string) {
   const menu = await accountMenu(page, account.displayName);
   const link = menu.getByRole("link", { name: label, exact: true });
-  await expect(link).toBeVisible();
-  await link.click();
-  await page.waitForLoadState("networkidle");
-  await expect(page.getByRole("main")).toBeVisible();
+  await settledDeclaredLinkNavigation(page, link, `Account destination ${label}`);
 }
 
 async function globalDestination(page: Page, label: string) {
   const navigation = page.getByRole("navigation", { name: "Global navigation" });
   const link = navigation.getByRole("link", { name: label, exact: true });
   if (!(await link.isVisible())) await page.getByRole("button", { name: "Open navigation" }).click();
-  await expect(link).toBeVisible();
-  const destination = await link.getAttribute("href");
-  if (!destination) throw new Error(`Global destination ${label} does not declare an href`);
-  await link.click();
-  await expect
-    .poll(() => new URL(page.url()).pathname, { message: `Global destination ${label} should finish navigation` })
-    .toBe(destination);
-  await page.waitForLoadState("networkidle");
-  await expect(page.getByRole("main")).toBeVisible();
+  await settledDeclaredLinkNavigation(page, link, `Global destination ${label}`);
 }
 
 async function clickFirstRoute(page: Page, prefix: string) {
   const link = page.locator(`main a[href^='${prefix}']`).first();
+  await settledDeclaredLinkNavigation(page, link, `First route with prefix ${prefix}`);
+}
+
+async function settledDeclaredLinkNavigation(page: Page, link: Locator, label: string) {
   await expect(link).toBeVisible();
+  const destination = await link.getAttribute("href");
+  if (!destination) throw new Error(`${label} does not declare an href`);
+  const pathname = new URL(destination, page.url()).pathname;
   await link.click();
+  await expect.poll(() => new URL(page.url()).pathname, { message: `${label} should finish navigation` }).toBe(pathname);
+  await page.waitForLoadState("networkidle");
+  await expect(page.getByRole("main")).toBeVisible();
 }
 
 async function settledLinkNavigation(page: Page, link: ReturnType<Page["getByRole"]>, destination: RegExp) {
