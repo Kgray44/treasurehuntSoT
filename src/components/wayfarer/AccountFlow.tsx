@@ -134,7 +134,7 @@ export function AccountFlow({ mode, query }: Props) {
 
   if (mode === "security")
     return (
-      <section className="platform-auth account-flow-page">
+      <main className="platform-auth account-flow-page">
         <div className="auth-ledger">
           <p className="eyebrow">Voyagewright account</p>
           <h1>Account security</h1>
@@ -160,7 +160,7 @@ export function AccountFlow({ mode, query }: Props) {
             {busy ? "Signing out…" : "Sign out all devices"}
           </button>
         </div>
-      </section>
+      </main>
     );
 
   const fields =
@@ -176,7 +176,7 @@ export function AccountFlow({ mode, query }: Props) {
               ? ["password", "confirmPassword"]
               : [];
   return (
-    <section className="platform-auth account-flow-page">
+    <main className="platform-auth account-flow-page">
       <div className="auth-ledger">
         <p className="eyebrow">One Voyagewright account</p>
         <h1>
@@ -275,6 +275,6 @@ export function AccountFlow({ mode, query }: Props) {
           {error || message}
         </p>
       </div>
-    </section>
+    </main>
   );
 }
