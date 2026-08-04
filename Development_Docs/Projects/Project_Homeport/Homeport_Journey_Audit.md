@@ -262,3 +262,11 @@ The source-driven Phase 5 graph records 85 page nodes and 159 typed transitions 
 - `HP-P5-JRN-AC`: Acyclic parent graph — PASSED
 - `HP-P5-JRN-AD`: Full ordinary-route traversal — PASSED
 <!-- PHASE5_REACHABILITY_END -->
+
+<!-- PHASE6_SURFACES_START -->
+
+## Phase 6 complete-product-surface amendment
+
+The Phase 6 screen acceptance system records 92 human screen contracts across 85 current page sources. Critical and high screens use exact-source production-runtime desktop/mobile evidence; cross-product state, responsive, accessibility, motion, media, mutation, and raw-surface gates remain independently validated. Status: **BRANCH_VALIDATED_NOT_MERGED**. Exact implementation source: `e02ee0dae0469a2ba573beaf409c0b34e8668d09`. Phase 7 integrated journeys, owner walkthrough, merge, deployment, and acceptance remain separate boundaries.
+
+<!-- PHASE6_SURFACES_END -->

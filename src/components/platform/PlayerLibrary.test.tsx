@@ -149,10 +149,6 @@ describe("PlayerLibrary motion and authority", () => {
   it("removes hidden history only after authority and provides a separate undo mutation", async () => {
     const completed = card("done", "Finished Voyage", "COMPLETED", { completionDate: "2026-07-18T12:00:00.000Z" });
     vi.stubGlobal(
-      "confirm",
-      vi.fn(() => true),
-    );
-    vi.stubGlobal(
       "fetch",
       vi
         .fn()
@@ -164,6 +160,11 @@ describe("PlayerLibrary motion and authority", () => {
     await screen.findByRole("heading", { name: "Finished Voyage" });
 
     fireEvent.click(screen.getByRole("button", { name: "Hide from library" }));
+    fireEvent.click(
+      within(screen.getByRole("dialog", { name: /Hide “Finished Voyage”/ })).getByRole("button", {
+        name: "Hide Chronicle",
+      }),
+    );
     await waitFor(() => expect(screen.queryByRole("heading", { name: "Finished Voyage" })).not.toBeInTheDocument());
     fireEvent.click(screen.getByRole("button", { name: "Undo hide" }));
 

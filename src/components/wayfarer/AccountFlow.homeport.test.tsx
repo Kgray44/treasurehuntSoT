@@ -41,6 +41,7 @@ describe("Homeport account lifecycle", () => {
 
   it("homeport.signin.lifecycle-links exposes account creation and recovery", () => {
     render(<AccountFlow mode="sign-in" />);
+    expect(screen.getByRole("main")).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "Create Account" })).toHaveAttribute("href", "/register");
     expect(screen.getByRole("link", { name: "Forgot Password" })).toHaveAttribute("href", "/forgot-password");
   });

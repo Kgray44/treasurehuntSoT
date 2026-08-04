@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "status": "phase-5-homeport-route-reachability-validated",
+  "status": "phase-6-homeport-product-surfaces-validated",
   "contracts": [
     {
       "id": "invitation-acceptance",
@@ -1069,6 +1069,391 @@
     {
       "id": "homeport.route.phase4-regression",
       "name": "Homeport Route phase4 Regression",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.surface.catalog-complete",
+      "name": "Project Homeport Surface Catalog Complete",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.surface.source-parity",
+      "name": "Project Homeport Surface Source Parity",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.surface.criticality",
+      "name": "Project Homeport Surface Criticality",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.surface.visual-maturity",
+      "name": "Project Homeport Surface Visual Maturity",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.surface.critical-desktop-evidence",
+      "name": "Project Homeport Surface Critical Desktop Evidence",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.surface.critical-mobile-evidence",
+      "name": "Project Homeport Surface Critical Mobile Evidence",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.surface.zoom-evidence",
+      "name": "Project Homeport Surface Zoom Evidence",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.surface.human-visual-review",
+      "name": "Project Homeport Surface Human Visual Review",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.surface.source-bound-evidence",
+      "name": "Project Homeport Surface Source Bound Evidence",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.surface.raw-implementation-prohibited",
+      "name": "Project Homeport Surface Raw Implementation Prohibited",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.surface.component-family-consistency",
+      "name": "Project Homeport Surface Component Family Consistency",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.state.applicability",
+      "name": "Project Homeport State Applicability",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.state.loading-truthful",
+      "name": "Project Homeport State Loading Truthful",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.state.empty-truthful",
+      "name": "Project Homeport State Empty Truthful",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.state.no-results-truthful",
+      "name": "Project Homeport State No Results Truthful",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.state.error-recovery",
+      "name": "Project Homeport State Error Recovery",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.state.dependency-unavailable",
+      "name": "Project Homeport State Dependency Unavailable",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.state.offline-degraded",
+      "name": "Project Homeport State Offline Degraded",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.state.permission-explicit",
+      "name": "Project Homeport State Permission Explicit",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.state.session-expired",
+      "name": "Project Homeport State Session Expired",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.state.account-restricted",
+      "name": "Project Homeport State Account Restricted",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.state.mutation-pending",
+      "name": "Project Homeport State Mutation Pending",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.state.mutation-success",
+      "name": "Project Homeport State Mutation Success",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.state.mutation-failure",
+      "name": "Project Homeport State Mutation Failure",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.state.stale-conflict",
+      "name": "Project Homeport State Stale Conflict",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.state.archived-removed",
+      "name": "Project Homeport State Archived Removed",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.state.tokenized",
+      "name": "Project Homeport State Tokenized",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.responsive.desktop",
+      "name": "Project Homeport Responsive Desktop",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.responsive.tablet",
+      "name": "Project Homeport Responsive Tablet",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.responsive.mobile",
+      "name": "Project Homeport Responsive Mobile",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.responsive.narrow-mobile",
+      "name": "Project Homeport Responsive Narrow Mobile",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.responsive.zoom",
+      "name": "Project Homeport Responsive Zoom",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.responsive.no-horizontal-overflow",
+      "name": "Project Homeport Responsive No Horizontal Overflow",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.accessibility.semantic",
+      "name": "Project Homeport Accessibility Semantic",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.accessibility.keyboard",
+      "name": "Project Homeport Accessibility Keyboard",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.accessibility.touch",
+      "name": "Project Homeport Accessibility Touch",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.accessibility.focus",
+      "name": "Project Homeport Accessibility Focus",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.accessibility.live-region",
+      "name": "Project Homeport Accessibility Live Region",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.accessibility.automated-scan",
+      "name": "Project Homeport Accessibility Automated Scan",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.motion.authority",
+      "name": "Project Homeport Motion Authority",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.motion.reduced-motion",
+      "name": "Project Homeport Motion Reduced Motion",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.motion.route-lifecycle",
+      "name": "Project Homeport Motion Route Lifecycle",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.motion.no-false-success",
+      "name": "Project Homeport Motion No False Success",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.media.fallback",
+      "name": "Project Homeport Media Fallback",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.media.scan-state",
+      "name": "Project Homeport Media Scan State",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.media.no-object-key",
+      "name": "Project Homeport Media No Object Key",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.mutation.feedback",
+      "name": "Project Homeport Mutation Feedback",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.mutation.no-duplicate",
+      "name": "Project Homeport Mutation No Duplicate",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.mutation.authoritative-result",
+      "name": "Project Homeport Mutation Authoritative Result",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.surface.phase1-regression",
+      "name": "Project Homeport Surface Phase1 Regression",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.surface.phase2-regression",
+      "name": "Project Homeport Surface Phase2 Regression",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.surface.phase3-regression",
+      "name": "Project Homeport Surface Phase3 Regression",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.surface.phase4-regression",
+      "name": "Project Homeport Surface Phase4 Regression",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.surface.phase5-regression",
+      "name": "Project Homeport Surface Phase5 Regression",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.surface.artifact-idempotency",
+      "name": "Project Homeport Surface Artifact Idempotency",
       "authority": "project-homeport",
       "owners": ["project-homeport"],
       "critical": true
