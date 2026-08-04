@@ -19314,7 +19314,7 @@
     {
       "id": "sl-test-22ee2759a79d99b58c65",
       "title": "loads relationship state once for the visible card batch",
-      "line": 71,
+      "line": 67,
       "file": "src/components/community/CommunityCardGrid.test.tsx",
       "suiteId": "component.community",
       "owner": "harborlight",

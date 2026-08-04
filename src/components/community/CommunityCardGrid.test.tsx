@@ -48,25 +48,21 @@ describe("CommunityCardGrid", () => {
     vi.unstubAllGlobals();
   });
 
-  it(
-    "renders all governed variants with labelled fallback art and valid destinations",
-    () => {
-      render(<CommunityCardGrid cards={variants.map((variant) => card(variant))} label="Variant contract" />);
-      const grid = screen.getByLabelText("Variant contract");
-      expect(grid.querySelectorAll("article")).toHaveLength(9);
-      expect(grid.querySelectorAll("[data-card-variant]")).toHaveLength(9);
-      expect(grid.querySelectorAll('[role="img"]')).toHaveLength(9);
-      expect(grid.querySelector("a a, a button, button a, button button")).toBeNull();
-      for (const variant of variants) {
-        expect(screen.getByRole("img", { name: `${variant} artwork unavailable` })).toBeInTheDocument();
-        expect(screen.getByRole("link", { name: `${variant} title` })).toHaveAttribute(
-          "href",
-          `/community/${variant.toLocaleLowerCase()}`,
-        );
-      }
-    },
-    15_000,
-  );
+  it("renders all governed variants with labelled fallback art and valid destinations", () => {
+    render(<CommunityCardGrid cards={variants.map((variant) => card(variant))} label="Variant contract" />);
+    const grid = screen.getByLabelText("Variant contract");
+    expect(grid.querySelectorAll("article")).toHaveLength(9);
+    expect(grid.querySelectorAll("[data-card-variant]")).toHaveLength(9);
+    expect(grid.querySelectorAll('[role="img"]')).toHaveLength(9);
+    expect(grid.querySelector("a a, a button, button a, button button")).toBeNull();
+    for (const variant of variants) {
+      expect(screen.getByRole("img", { name: `${variant} artwork unavailable` })).toBeInTheDocument();
+      expect(screen.getByRole("link", { name: `${variant} title` })).toHaveAttribute(
+        "href",
+        `/community/${variant.toLocaleLowerCase()}`,
+      );
+    }
+  }, 15_000);
 
   it("loads relationship state once for the visible card batch", async () => {
     const fetch = vi.fn().mockResolvedValue(new Response(JSON.stringify({ states: [] }), { status: 200 }));
