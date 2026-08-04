@@ -41,73 +41,53 @@ export default async function CommunityModerationPage() {
     collectCommunityProviderHealth().catch(() => []),
   ]);
   return (
-    <main className="mx-auto max-w-6xl space-y-8 px-4 py-8" aria-labelledby="moderation-heading">
-      <header className="space-y-2">
-        <p className="text-sm font-semibold tracking-wide text-sky-700">Community Harbor operations</p>
-        <h1 id="moderation-heading" className="text-3xl font-bold">
-          Moderation queue
-        </h1>
-        <p className="max-w-3xl text-slate-700">
+    <main className="community-harbor community-moderation" aria-labelledby="moderation-heading">
+      <header className="community-moderation__header">
+        <p className="community-eyebrow">Community Harbor operations</p>
+        <h1 id="moderation-heading">Moderation queue</h1>
+        <p>
           Case data is private operational information. Actions require a protected, CSRF-bound API request and an
           expected revision; this queue never exposes reporter identity or private evidence.
         </p>
       </header>
-      <section aria-label="Operational summary" className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <article className="rounded border border-slate-300 bg-white p-4">
-          <h2 className="font-semibold">Actionable cases</h2>
-          <p className="mt-1 text-2xl" aria-label={`${queueDepth} actionable cases`}>
-            {queueDepth}
-          </p>
+      <section aria-label="Operational summary" className="community-moderation__summary">
+        <article>
+          <h2>Actionable cases</h2>
+          <p aria-label={`${queueDepth} actionable cases`}>{queueDepth}</p>
         </article>
-        <article className="rounded border border-slate-300 bg-white p-4">
-          <h2 className="font-semibold">Dead-letter events</h2>
-          <p className="mt-1 text-2xl" aria-label={`${deadLetters} terminal worker failures`}>
-            {deadLetters}
-          </p>
+        <article>
+          <h2>Dead-letter events</h2>
+          <p aria-label={`${deadLetters} terminal worker failures`}>{deadLetters}</p>
         </article>
-        <article className="rounded border border-slate-300 bg-white p-4">
-          <h2 className="font-semibold">Providers requiring attention</h2>
-          <p
-            className="mt-1 text-2xl"
-            aria-label={`${providerHealth.filter((item) => !item.ready).length} providers requiring attention`}
-          >
+        <article>
+          <h2>Providers requiring attention</h2>
+          <p aria-label={`${providerHealth.filter((item) => !item.ready).length} providers requiring attention`}>
             {providerHealth.filter((item) => !item.ready).length}
           </p>
         </article>
-        <article className="rounded border border-slate-300 bg-white p-4">
-          <h2 className="font-semibold">Alert delivery</h2>
-          <p className="mt-1 text-sm">
-            {providerHealth.find((item) => item.kind === "ALERTING")?.safeCode ?? "ALERTING_NOT_CONFIGURED"}
-          </p>
+        <article>
+          <h2>Alert delivery</h2>
+          <p>{humanize(providerHealth.find((item) => item.kind === "ALERTING")?.safeCode ?? "NOT_CONFIGURED")}</p>
         </article>
       </section>
-      <section className="rounded border border-slate-300 bg-white p-4" aria-labelledby="provider-heading">
-        <h2 id="provider-heading" className="text-xl font-semibold">
-          Provider health
-        </h2>
-        <ul className="mt-3 grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
+      <section className="community-moderation__panel" aria-labelledby="provider-heading">
+        <h2 id="provider-heading">Provider health</h2>
+        <ul className="community-moderation__provider-grid">
           {providerHealth.map((item) => (
-            <li key={item.kind} className="rounded bg-slate-50 p-3">
-              <strong>{item.kind}</strong>
-              <p className="text-sm">
-                {item.state} / {item.safeCode}
+            <li key={item.kind}>
+              <strong>{humanize(item.kind)}</strong>
+              <p>
+                {humanize(item.state)} · {humanize(item.safeCode)}
               </p>
             </li>
           ))}
-          {!providerHealth.length && (
-            <li className="text-slate-700">Provider health is unavailable; no provider details are disclosed.</li>
-          )}
+          {!providerHealth.length && <li>Provider health is unavailable; no provider details are disclosed.</li>}
         </ul>
       </section>
-      <section
-        aria-labelledby="case-table-heading"
-        className="overflow-x-auto rounded border border-slate-300 bg-white"
-      >
-        <h2 id="case-table-heading" className="px-4 py-3 text-xl font-semibold">
-          Cases
-        </h2>
-        <table className="w-full min-w-[42rem] border-collapse text-left">
-          <thead className="border-y border-slate-200 bg-slate-50 text-sm">
+      <section aria-labelledby="case-table-heading" className="community-moderation__table-frame">
+        <h2 id="case-table-heading">Cases</h2>
+        <table className="community-moderation__table">
+          <thead>
             <tr>
               <th scope="col" className="p-3">
                 Case
@@ -128,25 +108,21 @@ export default async function CommunityModerationPage() {
           </thead>
           <tbody>
             {cases.map((item) => (
-              <tr key={item.id} className="border-b border-slate-100">
-                <td className="p-3">
-                  <Link className="underline underline-offset-2" href={`/community/moderation/${item.id}`}>
-                    {item.caseKey}
-                  </Link>
+              <tr key={item.id}>
+                <td>
+                  <Link href={`/community/moderation/${item.id}`}>{item.caseKey}</Link>
                 </td>
-                <td className="p-3">{item.status}</td>
-                <td className="p-3">
-                  {item.priority} / {item.severity}
+                <td>{humanize(item.status)}</td>
+                <td>
+                  {humanize(item.priority)} / {humanize(item.severity)}
                 </td>
-                <td className="p-3">{item.primaryReasonCode}</td>
-                <td className="p-3">{item.openedAt.toLocaleDateString("en-US")}</td>
+                <td>{humanize(item.primaryReasonCode)}</td>
+                <td>{item.openedAt.toLocaleDateString("en-US")}</td>
               </tr>
             ))}
             {!cases.length && (
               <tr>
-                <td className="p-4 text-slate-700" colSpan={5}>
-                  No cases currently require moderation.
-                </td>
+                <td colSpan={5}>No cases currently require moderation.</td>
               </tr>
             )}
           </tbody>
@@ -154,4 +130,9 @@ export default async function CommunityModerationPage() {
       </section>
     </main>
   );
+}
+
+function humanize(value: string) {
+  const normalized = value.replaceAll("_", " ").trim().toLocaleLowerCase();
+  return normalized ? normalized[0].toLocaleUpperCase() + normalized.slice(1) : "Unavailable";
 }

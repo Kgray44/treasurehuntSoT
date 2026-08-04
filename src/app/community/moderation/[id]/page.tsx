@@ -47,20 +47,18 @@ export default async function CommunityModerationCasePage({ params }: { params: 
   });
   if (!record) notFound();
   return (
-    <main className="mx-auto max-w-6xl space-y-6 px-4 py-8" aria-labelledby="case-heading">
-      <Link href="/community/moderation" className="inline-flex underline underline-offset-2">
+    <main className="community-harbor community-moderation community-moderation--detail" aria-labelledby="case-heading">
+      <Link href="/community/moderation" className="community-moderation__back">
         Back to moderation queue
       </Link>
-      <header className="space-y-2">
-        <p className="text-sm font-semibold tracking-wide text-sky-700">Private moderator workspace</p>
-        <h1 id="case-heading" className="text-3xl font-bold">
-          Case {record.caseKey}
-        </h1>
-        <p className="text-slate-700">
-          {record.status} · revision {record.revision} · {record.priority} priority
+      <header className="community-moderation__header">
+        <p className="community-eyebrow">Private moderator workspace</p>
+        <h1 id="case-heading">Case {record.caseKey}</h1>
+        <p>
+          {humanize(record.status)} · {humanize(record.priority)} priority
         </p>
       </header>
-      <section className="grid gap-4 lg:grid-cols-3" aria-label="Case status">
+      <section className="community-moderation__summary" aria-label="Case status">
         <article className="rounded border border-slate-300 bg-white p-4">
           <h2 className="font-semibold">Assignment</h2>
           <p className="mt-2">{record.assignments[0]?.moderatorAccountId ? "Assigned" : "Unassigned"}</p>
@@ -77,7 +75,7 @@ export default async function CommunityModerationCasePage({ params }: { params: 
           <p className="text-sm text-slate-700">Appeal ownership and reviewer conflicts are enforced server-side.</p>
         </article>
       </section>
-      <section className="rounded border border-slate-300 bg-white p-4" aria-labelledby="subjects-heading">
+      <section className="community-moderation__panel" aria-labelledby="subjects-heading">
         <h2 id="subjects-heading" className="text-xl font-semibold">
           Safe subject preview
         </h2>
@@ -91,7 +89,7 @@ export default async function CommunityModerationCasePage({ params }: { params: 
           ))}
         </ul>
       </section>
-      <section className="grid gap-6 lg:grid-cols-2">
+      <section className="community-moderation__split">
         <article className="rounded border border-slate-300 bg-white p-4" aria-labelledby="evidence-heading">
           <h2 id="evidence-heading" className="text-xl font-semibold">
             Evidence timeline
@@ -114,7 +112,7 @@ export default async function CommunityModerationCasePage({ params }: { params: 
           <ul className="mt-3 space-y-2">
             {record.actions.map((action) => (
               <li key={action.id} className="rounded bg-slate-50 p-3">
-                <strong>{action.actionType}</strong> · {action.state}
+                <strong>{humanize(action.actionType)}</strong> · {humanize(action.state)}
                 {action.restorationEligible && <span className="ml-2 text-sm">restoration checklist required</span>}
               </li>
             ))}
@@ -126,21 +124,21 @@ export default async function CommunityModerationCasePage({ params }: { params: 
           </ul>
         </article>
       </section>
-      <section className="rounded border border-slate-300 bg-white p-4" aria-labelledby="timeline-heading">
+      <section className="community-moderation__panel" aria-labelledby="timeline-heading">
         <h2 id="timeline-heading" className="text-xl font-semibold">
           Case timeline
         </h2>
         <ol className="mt-3 space-y-2">
           {record.events.map((event) => (
             <li key={event.id} className="border-l-2 border-slate-300 pl-3">
-              <strong>{event.eventType}</strong>
+              <strong>{humanize(event.eventType)}</strong>
               {event.fromStatus || event.toStatus ? (
                 <span className="ml-2">
-                  {event.fromStatus ?? ""} → {event.toStatus ?? ""}
+                  {humanize(event.fromStatus ?? "")} → {humanize(event.toStatus ?? "")}
                 </span>
               ) : null}
               <span className="ml-2 text-sm text-slate-700">
-                {event.reasonCode} · {event.createdAt.toLocaleString("en-US")}
+                {humanize(event.reasonCode)} · {event.createdAt.toLocaleString("en-US")}
               </span>
             </li>
           ))}
@@ -152,4 +150,9 @@ export default async function CommunityModerationCasePage({ params }: { params: 
       </p>
     </main>
   );
+}
+
+function humanize(value: string) {
+  const normalized = value.replaceAll("_", " ").trim().toLocaleLowerCase();
+  return normalized ? normalized[0].toLocaleUpperCase() + normalized.slice(1) : "Unavailable";
 }
