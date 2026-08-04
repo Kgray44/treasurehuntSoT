@@ -3,7 +3,7 @@ title: Features and subfeatures
 audience: product
 status: current
 canonical_for: product-features
-last_reviewed: 2026-08-03
+last_reviewed: 2026-08-04
 ---
 
 # Features and subfeatures
@@ -52,8 +52,21 @@ tokenized and compatibility dispositions, stable parents/returns, dead-end
 recovery, desktop/mobile parity, and an automated orphan gate. Exact-source
 browser evidence begins at Home and reaches all ordinary destinations through
 visible controls. The evidence is local and synthetic; deployment, live-user
-behavior, owner acceptance, Phase 6 page-state completion, and Phase 7
-whole-product proof are not claimed.
+behavior, owner acceptance, and Phase 7 whole-product proof are not claimed.
+
+## Complete product surfaces and states
+
+**Audience:** Players, Captains, Creators, public visitors, and account owners.
+**Availability:** complete on the Project Homeport branch, not available on
+`main`. Phase 6 publishes a source-parity registry for every current
+human-facing screen, completes all critical/high visual surfaces, normalizes
+shared dialogs, state panels and media fallbacks, and governs loading, empty,
+no-results, recovery, dependency, permission, session, mutation, conflict,
+removed, media, and token states. Critical screens have desktop, mobile,
+tablet, narrow-mobile, effective-200-percent, focus, keyboard/touch,
+accessibility, and reduced-motion evidence. The evidence is local and synthetic;
+Phase 7 integrated journeys, deployment, owner acceptance, and product
+acceptance are not claimed.
 
 ## Player experience
 
@@ -80,7 +93,7 @@ public-safe cards, search/sort/compact and advanced filters, Creator Profiles,
 collections, Guides, Voyage Logs, details, and save/follow state with complete
 default, empty, no-result, unavailable, quarantine, removed, desktop, and
 mobile contracts. It is not on `main`, deployed, or owner accepted. External
-providers remain truthfully unavailable where unsupported; Phases 6-7 remain.
+providers remain truthfully unavailable where unsupported; Phase 7 remains.
 
 ## Private content, animation, and resilience
 

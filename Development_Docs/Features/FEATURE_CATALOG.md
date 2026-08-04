@@ -1093,6 +1093,47 @@ A source-derived, permission-aware product graph now gives every ordinary route 
 
 ---
 
+## FT-B006 - Complete Product Surfaces and States
+
+**Status:** BRANCH COMPLETE NOT MERGED
+**Program or subsystem:** Project Homeport Phase 6
+
+Every current human-facing screen is now source-inventoried with governed visual maturity, page-state, responsive, accessibility, motion, media-fallback, mutation-feedback, and source-bound visual-evidence contracts.
+
+### Important subfeatures
+
+- Source-parity acceptance registry for 92 current human-facing screens
+- Normalized component-family governance across product areas
+- Typed loading, populated, empty, no-result, recovery, dependency, permission, session, mutation, conflict, removed, media, and token states
+- Critical-screen desktop, mobile, tablet, narrow-mobile, and effective-200-percent completion
+- Keyboard, touch, focus, dialog, landmark, live-region, and automated accessibility contracts
+- Reduced-motion and no-false-success motion authority
+- Named media and scan-state fallbacks without raw object-key disclosure
+- Visible mutation pending, success, failure, conflict, and authoritative-result feedback
+- Checksum, source, fixture, viewport, and review-bound visual evidence
+- Idempotent Phase 6 inventory, evidence, and Sounding Line policy publication
+
+### Primary surfaces
+
+`/`, `/sign-in`, `/player/library`, `/captain/library`, `/studio/library`, `/account`, `/account/profile`, `/passport`, `/community`, `/player/playthroughs/[playthroughId]`, `/captain/sessions/[sessionId]`, `/studio/tales/[taleId]`
+
+### Meaningful limitations
+
+- Not available on main until separately reviewed and integrated
+- Evidence is local, synthetic, and uses a copied SQLite database
+- Live storage, malware scanning, moderation providers, production MySQL, and deployment remain externally unvalidated
+- Codex visual review is not owner acceptance or physical assistive-technology validation
+- Phase 7 integrated whole-product journeys, final walkthrough fixture, running owner package, and acceptance remain separate
+
+### Evidence
+
+- commit: `e02ee0dae0469a2ba573beaf409c0b34e8668d09`
+- completion-record: `Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_6_Validation_Record.md`
+- path: `Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_6_Screen_Acceptance_Registry.json`
+- test: `tests/e2e/homeport-phase6.spec.ts`
+
+---
+
 # Deliberately Excluded Until Complete
 
 - Harborlight Phase 4 is planned and is not cataloged as an implemented capability.

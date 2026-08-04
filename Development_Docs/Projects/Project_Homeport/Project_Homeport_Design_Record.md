@@ -293,3 +293,26 @@ task-owned copied SQLite database, storage roots, port, browser profile, and
 capture directory. No implementation, evidence acceptance, test result,
 nonconformity closure, merge, deployment, owner acceptance, product acceptance,
 or Phase 7 work is established by this freeze.
+
+## Phase 6 branch-validation amendment
+
+**Decision date:** 2026-08-04. **Exact tested product source:**
+`e02ee0dae0469a2ba573beaf409c0b34e8668d09`. **Evidence/test publication:**
+`6037807`. The source-derived registry now records 92 human-facing screens from
+85 page sources with no omissions: 12 critical, 14 high, 41 standard, 24
+contextual, and one development-only. Final classifications are 88
+`VISUALLY_COMPLETE`, three `COMPLETE_WITH_TRUTHFUL_EXTERNAL_LIMITATION`, and
+one `DEVELOPMENT_ONLY`.
+
+The accepted implementation introduces no new domain or persistence authority.
+It normalizes shared dialog, state, access-decision, media-fallback, focus,
+responsive, and mutation presentation while preserving ProductShell and each
+specialist project's semantics. The complete state contract contains 1,053
+applicable pairs; responsive authority contains 208 critical/high cases; 126
+checksum/source/fixture-bound captures cover desktop, mobile, tablet, narrow
+mobile, effective 200 percent, alternate state, and reduced motion.
+
+HP-NC-018 is `CLOSED_PHASE_6_BRANCH_VALIDATED`. HP-NC-015, HP-NC-019, and
+HP-NC-020 remain Phase 7 work. This branch validation does not establish
+integration on `main`, deployment, live-provider behavior, physical
+assistive-technology proof, owner acceptance, or Phase 7 whole-product proof.

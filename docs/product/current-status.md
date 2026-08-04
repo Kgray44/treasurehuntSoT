@@ -3,7 +3,7 @@ title: Current status
 audience: product
 status: current
 canonical_for: product-current-status
-last_reviewed: 2026-08-03
+last_reviewed: 2026-08-04
 ---
 
 # Current status
@@ -15,7 +15,7 @@ Player/Captain/Creator flows, Studio editing and publishing, invitations,
 libraries, journals, profile and Passport surfaces, protected content, and
 animation presentation.
 
-**Complete on a branch, not available on main:** Project Homeport Phases 1-5
+**Complete on a branch, not available on main:** Project Homeport Phases 1-6
 unify ordinary account/session authority, add the governed global shell and
 wayfinding, and build the Personal Harbor. The branch now contains an owned
 Profile, typed preferences and privacy controls, linked identities, the
@@ -25,8 +25,12 @@ content-first Community Harbor with governed districts, typed public cards,
 search/filter URL state, details, and save/follow reconciliation. Phase 5 adds
 the source-derived permission-aware reachability graph, visible ordinary entry
 paths, dynamic source contracts, token/compatibility safety, stable parents and
-returns, desktop/mobile parity, and an automated orphan gate. Acceptance
-evidence is local and synthetic; deployment, live-user behavior, owner
+returns, desktop/mobile parity, and an automated orphan gate. Phase 6 adds a
+source-parity registry for 92 human-facing screens, complete critical/high
+visual maturity, 1,053 applicable state contracts, desktop, mobile, tablet,
+narrow-mobile and effective-200-percent behavior, shared focus, dialog,
+media-fallback and mutation patterns, and 126 checksum-bound visual records.
+Evidence is local and synthetic; deployment, live-user behavior, owner
 acceptance, and product acceptance are not claimed.
 
 **Development-only or compatibility-only:** development showcases, legacy routes, and package-exchange integrations are not a promise of a generally hosted service.
@@ -41,9 +45,9 @@ tests do not establish live-provider proof.
 for the Phase 3-4 browser matrix. It is not a full matrix pass and does not
 change the external-validation boundary.
 
-**Planned or not validated:** Project Homeport Phases 6-7 repository-wide
-page-state completion and whole-product acceptance remain unimplemented claims,
-as do Harborlight Phase 4,
+**Planned or not validated:** Project Homeport Phase 7 integrated whole-product
+journeys, final walkthrough fixture, running owner package, and acceptance
+remain unimplemented claims, as do Harborlight Phase 4,
 Project Drydock, Project Landfall, and Project Watchglass. Project Sounding
 Line is the repository validation authority used for Homeport decisions; that
 use does not claim a new user-facing Sounding Line product. Historic records

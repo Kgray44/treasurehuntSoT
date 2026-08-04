@@ -3,7 +3,7 @@ title: Player guide
 audience: player
 status: current
 canonical_for: player-guide
-last_reviewed: 2026-08-03
+last_reviewed: 2026-08-04
 ---
 
 # Player guide
@@ -46,3 +46,10 @@ return to My Voyages or its stable parent, including after direct entry, while
 invitation links remain excluded from ordinary navigation. Desktop, touch, and
 keyboard paths are branch-validated; Phase 6 page-state completion, deployment,
 and owner acceptance are not claimed.
+
+Phase 6 completes the Player Library, waiting room, invitation, and Journal
+surface hierarchy across desktop, tablet, mobile, narrow mobile, and effective
+200 percent. Loading, reconnecting, restriction, token, mutation, and media
+fallback states stay distinct, and the waiting-room launch presentation no
+longer obscures ordinary readiness content. This remains branch-local synthetic
+proof, not Phase 7 journey or owner-acceptance proof.

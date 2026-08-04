@@ -3,7 +3,7 @@ title: Profile
 audience: user
 status: current
 canonical_for: profile-guide
-last_reviewed: 2026-08-02
+last_reviewed: 2026-08-04
 ---
 
 # Profile
@@ -33,3 +33,9 @@ return. Missing, private, or blocked profiles do not become navigable merely
 because a handle is known. The reachability proof is branch-local and
 synthetic; deployment, Phase 6 completion, and owner acceptance are not
 claimed.
+
+Phase 6 completes Profile hierarchy, form descriptions, media fallbacks,
+mutation pending/success/failure feedback, stale-conflict treatment, keyboard
+focus, mobile/tablet reflow, and effective 200 percent. Public projection and
+private owner controls remain separate; the branch evidence does not establish
+deployment or owner acceptance.

@@ -3,7 +3,7 @@ title: Community Harbor
 audience: creator
 status: current
 canonical_for: community-harbor-guide
-last_reviewed: 2026-08-03
+last_reviewed: 2026-08-04
 ---
 
 # Community Harbor
@@ -31,4 +31,10 @@ collection, Guide, or Voyage Log source and preserves a stable return after
 natural or direct entry. Moderation, owner, and consent routes remain
 capability/context surfaces rather than public districts. Desktop, touch, and
 keyboard paths are equivalent. This branch is not on `main`, deployed, or
-owner accepted; Phase 6 repository-wide completion remains separate.
+owner accepted.
+
+Phase 6 completes Community shelves, search/no-results, public details,
+collections, Creator cards, moderation presentation, media fallbacks, and
+restriction/mutation states across desktop, tablet, mobile, narrow mobile, and
+effective 200 percent. Live moderation providers and real evidence are excluded
+from the synthetic branch proof.

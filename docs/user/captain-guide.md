@@ -3,7 +3,7 @@ title: Captain guide
 audience: captain
 status: current
 canonical_for: captain-guide
-last_reviewed: 2026-08-03
+last_reviewed: 2026-08-04
 ---
 
 # Captain guide
@@ -33,3 +33,9 @@ historical Quartermaster surface links directly to the canonical Captain
 Library instead of competing with it. Permission denial and invalid identifiers
 retain safe recovery paths. This is branch-local synthetic proof, not a `main`
 merge, deployment, or owner acceptance.
+
+Phase 6 completes Captain Library and session presentation with human status
+labels, structured confirmation dialogs, visible pending/failure feedback,
+keyboard focus restoration, and responsive tablet/mobile controls. Synthetic
+browser evidence does not establish live Voyage operations, deployment, or
+owner acceptance.

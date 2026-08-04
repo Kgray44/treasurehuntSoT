@@ -36,13 +36,7 @@
     "/tales",
     "/community"
   ],
-  "missingGatewayEntries": [
-    "Account",
-    "Create Account",
-    "Community Harbor",
-    "Profile",
-    "Chronicle Passport"
-  ],
+  "missingGatewayEntries": ["Account", "Create Account", "Community Harbor", "Profile", "Chronicle Passport"],
   "edges": [
     {
       "nodeId": "nav-1",
@@ -2077,9 +2071,7 @@
       "desktopAvailability": true,
       "mobileAvailability": true,
       "authentication": "STATE_DEPENDENT",
-      "capabilities": [
-        "player"
-      ],
+      "capabilities": ["player"],
       "hiddenCondition": null,
       "disabledCondition": null,
       "redirectBehavior": "DESTINATION_GUARD",
@@ -2097,9 +2089,7 @@
       "desktopAvailability": true,
       "mobileAvailability": true,
       "authentication": "STATE_DEPENDENT",
-      "capabilities": [
-        "captain"
-      ],
+      "capabilities": ["captain"],
       "hiddenCondition": null,
       "disabledCondition": null,
       "redirectBehavior": "DESTINATION_GUARD",
@@ -2117,9 +2107,7 @@
       "desktopAvailability": true,
       "mobileAvailability": true,
       "authentication": "STATE_DEPENDENT",
-      "capabilities": [
-        "captain"
-      ],
+      "capabilities": ["captain"],
       "hiddenCondition": null,
       "disabledCondition": null,
       "redirectBehavior": "DESTINATION_GUARD",
@@ -2137,9 +2125,7 @@
       "desktopAvailability": true,
       "mobileAvailability": true,
       "authentication": "STATE_DEPENDENT",
-      "capabilities": [
-        "creator"
-      ],
+      "capabilities": ["creator"],
       "hiddenCondition": null,
       "disabledCondition": null,
       "redirectBehavior": "DESTINATION_GUARD",
@@ -2157,9 +2143,7 @@
       "desktopAvailability": true,
       "mobileAvailability": true,
       "authentication": "STATE_DEPENDENT",
-      "capabilities": [
-        "creator"
-      ],
+      "capabilities": ["creator"],
       "hiddenCondition": null,
       "disabledCondition": null,
       "redirectBehavior": "DESTINATION_GUARD",
@@ -2177,9 +2161,7 @@
       "desktopAvailability": true,
       "mobileAvailability": true,
       "authentication": "STATE_DEPENDENT",
-      "capabilities": [
-        "creator"
-      ],
+      "capabilities": ["creator"],
       "hiddenCondition": null,
       "disabledCondition": null,
       "redirectBehavior": "DESTINATION_GUARD",
@@ -2359,9 +2341,7 @@
       "desktopAvailability": true,
       "mobileAvailability": true,
       "authentication": "AUTHENTICATED",
-      "capabilities": [
-        "player"
-      ],
+      "capabilities": ["player"],
       "hiddenCondition": null,
       "disabledCondition": null,
       "redirectBehavior": "DESTINATION_GUARD",
@@ -2379,9 +2359,7 @@
       "desktopAvailability": true,
       "mobileAvailability": true,
       "authentication": "AUTHENTICATED",
-      "capabilities": [
-        "captain"
-      ],
+      "capabilities": ["captain"],
       "hiddenCondition": null,
       "disabledCondition": null,
       "redirectBehavior": "DESTINATION_GUARD",
@@ -2399,9 +2377,7 @@
       "desktopAvailability": true,
       "mobileAvailability": true,
       "authentication": "AUTHENTICATED",
-      "capabilities": [
-        "creator"
-      ],
+      "capabilities": ["creator"],
       "hiddenCondition": null,
       "disabledCondition": null,
       "redirectBehavior": "DESTINATION_GUARD",
@@ -2419,9 +2395,7 @@
       "desktopAvailability": true,
       "mobileAvailability": true,
       "authentication": "AUTHENTICATED",
-      "capabilities": [
-        "moderator"
-      ],
+      "capabilities": ["moderator"],
       "hiddenCondition": null,
       "disabledCondition": null,
       "redirectBehavior": "DESTINATION_GUARD",
@@ -2511,9 +2485,7 @@
       "desktopAvailability": true,
       "mobileAvailability": true,
       "authentication": "STATE_DEPENDENT",
-      "capabilities": [
-        "captain"
-      ],
+      "capabilities": ["captain"],
       "hiddenCondition": null,
       "disabledCondition": null,
       "redirectBehavior": "DESTINATION_GUARD",
@@ -2531,9 +2503,7 @@
       "desktopAvailability": true,
       "mobileAvailability": true,
       "authentication": "STATE_DEPENDENT",
-      "capabilities": [
-        "player"
-      ],
+      "capabilities": ["player"],
       "hiddenCondition": null,
       "disabledCondition": null,
       "redirectBehavior": "DESTINATION_GUARD",
@@ -2767,9 +2737,7 @@
       "desktopAvailability": true,
       "mobileAvailability": true,
       "authentication": "AUTHENTICATED",
-      "capabilities": [
-        "PLAYER"
-      ],
+      "capabilities": ["PLAYER"],
       "hiddenCondition": null,
       "disabledCondition": null,
       "redirectBehavior": "CANONICAL_ACCOUNT_SESSION_GUARD",
@@ -2787,9 +2755,7 @@
       "desktopAvailability": true,
       "mobileAvailability": true,
       "authentication": "AUTHENTICATED",
-      "capabilities": [
-        "PLAYER"
-      ],
+      "capabilities": ["PLAYER"],
       "hiddenCondition": null,
       "disabledCondition": null,
       "redirectBehavior": "CANONICAL_ACCOUNT_SESSION_GUARD",
@@ -2807,9 +2773,7 @@
       "desktopAvailability": true,
       "mobileAvailability": true,
       "authentication": "AUTHENTICATED",
-      "capabilities": [
-        "PLAYER"
-      ],
+      "capabilities": ["PLAYER"],
       "hiddenCondition": null,
       "disabledCondition": null,
       "redirectBehavior": "CANONICAL_ACCOUNT_SESSION_GUARD",
@@ -2827,9 +2791,7 @@
       "desktopAvailability": true,
       "mobileAvailability": true,
       "authentication": "AUTHENTICATED",
-      "capabilities": [
-        "PLAYER"
-      ],
+      "capabilities": ["PLAYER"],
       "hiddenCondition": null,
       "disabledCondition": null,
       "redirectBehavior": "CANONICAL_ACCOUNT_SESSION_GUARD",
@@ -2847,9 +2809,7 @@
       "desktopAvailability": true,
       "mobileAvailability": true,
       "authentication": "AUTHENTICATED",
-      "capabilities": [
-        "PLAYER"
-      ],
+      "capabilities": ["PLAYER"],
       "hiddenCondition": null,
       "disabledCondition": null,
       "redirectBehavior": "CANONICAL_ACCOUNT_SESSION_GUARD",
@@ -2867,9 +2827,7 @@
       "desktopAvailability": true,
       "mobileAvailability": true,
       "authentication": "AUTHENTICATED",
-      "capabilities": [
-        "PLAYER"
-      ],
+      "capabilities": ["PLAYER"],
       "hiddenCondition": null,
       "disabledCondition": null,
       "redirectBehavior": "CANONICAL_ACCOUNT_SESSION_GUARD",
@@ -2887,9 +2845,7 @@
       "desktopAvailability": true,
       "mobileAvailability": true,
       "authentication": "AUTHENTICATED",
-      "capabilities": [
-        "PLAYER"
-      ],
+      "capabilities": ["PLAYER"],
       "hiddenCondition": null,
       "disabledCondition": null,
       "redirectBehavior": "CANONICAL_ACCOUNT_SESSION_GUARD",
@@ -2981,182 +2937,103 @@
   "phase1AcceptanceEdges": [
     {
       "journeyId": "HP-P1-JRN-A",
-      "routeTransitions": [
-        "/",
-        "/player/sign-in",
-        "/sign-in",
-        "/player/library"
-      ],
+      "routeTransitions": ["/", "/player/sign-in", "/sign-in", "/player/library"],
       "accountAuthority": "HP-SES-001",
       "result": "PASSED"
     },
     {
       "journeyId": "HP-P1-JRN-B",
-      "routeTransitions": [
-        "/",
-        "/player/sign-in",
-        "/sign-in",
-        "/register",
-        "/player/library"
-      ],
+      "routeTransitions": ["/", "/player/sign-in", "/sign-in", "/register", "/player/library"],
       "accountAuthority": "HP-SES-001",
       "result": "PASSED"
     },
     {
       "journeyId": "HP-P1-JRN-C",
-      "routeTransitions": [
-        "/",
-        "/sign-in",
-        "/player/library",
-        "/passport",
-        "reload"
-      ],
+      "routeTransitions": ["/", "/sign-in", "/player/library", "/passport", "reload"],
       "accountAuthority": "HP-SES-001",
       "result": "PASSED"
     },
     {
       "journeyId": "HP-P1-JRN-D",
-      "routeTransitions": [
-        "/",
-        "/sign-in",
-        "/player/library",
-        "/captain/library"
-      ],
+      "routeTransitions": ["/", "/sign-in", "/player/library", "/captain/library"],
       "accountAuthority": "HP-SES-001",
       "result": "PASSED"
     },
     {
       "journeyId": "HP-P1-JRN-E",
-      "routeTransitions": [
-        "/",
-        "/sign-in",
-        "/player/library",
-        "/studio/library"
-      ],
+      "routeTransitions": ["/", "/sign-in", "/player/library", "/studio/library"],
       "accountAuthority": "HP-SES-001",
       "result": "PASSED"
     },
     {
       "journeyId": "HP-P1-JRN-F",
-      "routeTransitions": [
-        "/player/library",
-        "/captain/library",
-        "/studio/library",
-        "/passport",
-        "/player/library"
-      ],
+      "routeTransitions": ["/player/library", "/captain/library", "/studio/library", "/passport", "/player/library"],
       "accountAuthority": "HP-SES-001",
       "result": "PASSED"
     },
     {
       "journeyId": "HP-P1-JRN-G",
-      "routeTransitions": [
-        "/",
-        "/sign-in",
-        "/community/moderation"
-      ],
+      "routeTransitions": ["/", "/sign-in", "/community/moderation"],
       "accountAuthority": "HP-SES-001",
       "result": "PASSED"
     },
     {
       "journeyId": "HP-P1-JRN-H",
-      "routeTransitions": [
-        "/player/library",
-        "/sign-in?reason=expired",
-        "/player/library"
-      ],
+      "routeTransitions": ["/player/library", "/sign-in?reason=expired", "/player/library"],
       "accountAuthority": "HP-SES-001",
       "result": "PASSED"
     },
     {
       "journeyId": "HP-P1-JRN-I",
-      "routeTransitions": [
-        "/player/library",
-        "/",
-        "protected route denied"
-      ],
+      "routeTransitions": ["/player/library", "/", "protected route denied"],
       "accountAuthority": "HP-SES-001",
       "result": "PASSED"
     },
     {
       "journeyId": "HP-P1-JRN-J",
-      "routeTransitions": [
-        "two tabs",
-        "sign out",
-        "second tab refetch",
-        "protected route denied"
-      ],
+      "routeTransitions": ["two tabs", "sign out", "second tab refetch", "protected route denied"],
       "accountAuthority": "HP-SES-001",
       "result": "PASSED"
     },
     {
       "journeyId": "HP-P1-JRN-K",
-      "routeTransitions": [
-        "/captain/library denied",
-        "/player/library allowed"
-      ],
+      "routeTransitions": ["/captain/library denied", "/player/library allowed"],
       "accountAuthority": "HP-SES-001",
       "result": "PASSED"
     },
     {
       "journeyId": "HP-P1-JRN-L",
-      "routeTransitions": [
-        "chronicle_player",
-        "/tales",
-        "wayfarer_account"
-      ],
+      "routeTransitions": ["chronicle_player", "/tales", "wayfarer_account"],
       "accountAuthority": "HP-SES-001",
       "result": "PASSED"
     },
     {
       "journeyId": "HP-P1-JRN-M",
-      "routeTransitions": [
-        "forever_gm",
-        "/tales",
-        "/captain/library",
-        "wayfarer_account"
-      ],
+      "routeTransitions": ["forever_gm", "/tales", "/captain/library", "wayfarer_account"],
       "accountAuthority": "HP-SES-001",
       "result": "PASSED"
     },
     {
       "journeyId": "HP-P1-JRN-N",
-      "routeTransitions": [
-        "synthetic invitation",
-        "accept",
-        "canonical Player waiting room"
-      ],
+      "routeTransitions": ["synthetic invitation", "accept", "canonical Player waiting room"],
       "accountAuthority": "HP-SES-001",
       "result": "PASSED"
     },
     {
       "journeyId": "HP-P1-JRN-O",
-      "routeTransitions": [
-        "external returnTo",
-        "sign-in",
-        "/passport"
-      ],
+      "routeTransitions": ["external returnTo", "sign-in", "/passport"],
       "accountAuthority": "HP-SES-001",
       "result": "PASSED"
     },
     {
       "journeyId": "HP-P1-JRN-P",
-      "routeTransitions": [
-        "mobile /",
-        "sign-in",
-        "/player/library",
-        "sign-out"
-      ],
+      "routeTransitions": ["mobile /", "sign-in", "/player/library", "sign-out"],
       "accountAuthority": "HP-SES-001",
       "result": "PASSED"
     },
     {
       "journeyId": "HP-P1-JRN-Q",
-      "routeTransitions": [
-        "sign-in expiry",
-        "registration",
-        "moderation permission"
-      ],
+      "routeTransitions": ["sign-in expiry", "registration", "moderation permission"],
       "accountAuthority": "HP-SES-001",
       "result": "PASSED"
     }
@@ -3174,46 +3051,28 @@
   "phase2AcceptanceEdges": [
     {
       "journeyId": "HP-P2-JRN-A",
-      "routeTransitions": [
-        "/",
-        "open Account",
-        "Create Account and Sign In visible",
-        "keyboard close and reopen"
-      ],
+      "routeTransitions": ["/", "open Account", "Create Account and Sign In visible", "keyboard close and reopen"],
       "shellAuthority": "src/components/shell/ProductShell.tsx",
       "navigationAuthority": "src/navigation/registry.ts",
       "result": "PASSED"
     },
     {
       "journeyId": "HP-P2-JRN-B",
-      "routeTransitions": [
-        "/",
-        "/sign-in",
-        "/",
-        "authenticated identity and granted workspaces"
-      ],
+      "routeTransitions": ["/", "/sign-in", "/", "authenticated identity and granted workspaces"],
       "shellAuthority": "src/components/shell/ProductShell.tsx",
       "navigationAuthority": "src/navigation/registry.ts",
       "result": "PASSED"
     },
     {
       "journeyId": "HP-P2-JRN-C",
-      "routeTransitions": [
-        "/",
-        "/community",
-        "/"
-      ],
+      "routeTransitions": ["/", "/community", "/"],
       "shellAuthority": "src/components/shell/ProductShell.tsx",
       "navigationAuthority": "src/navigation/registry.ts",
       "result": "PASSED"
     },
     {
       "journeyId": "HP-P2-JRN-D",
-      "routeTransitions": [
-        "/",
-        "/tales",
-        "/"
-      ],
+      "routeTransitions": ["/", "/tales", "/"],
       "shellAuthority": "src/components/shell/ProductShell.tsx",
       "navigationAuthority": "src/navigation/registry.ts",
       "result": "PASSED"
@@ -3235,64 +3094,35 @@
     },
     {
       "journeyId": "HP-P2-JRN-F",
-      "routeTransitions": [
-        "/",
-        "/captain/library",
-        "/community",
-        "/passport",
-        "/player/library",
-        "/captain/library"
-      ],
+      "routeTransitions": ["/", "/captain/library", "/community", "/passport", "/player/library", "/captain/library"],
       "shellAuthority": "src/components/shell/ProductShell.tsx",
       "navigationAuthority": "src/navigation/registry.ts",
       "result": "PASSED"
     },
     {
       "journeyId": "HP-P2-JRN-G",
-      "routeTransitions": [
-        "/",
-        "/studio/library",
-        "/community",
-        "/account/security",
-        "/studio/library"
-      ],
+      "routeTransitions": ["/", "/studio/library", "/community", "/account/security", "/studio/library"],
       "shellAuthority": "src/components/shell/ProductShell.tsx",
       "navigationAuthority": "src/navigation/registry.ts",
       "result": "PASSED"
     },
     {
       "journeyId": "HP-P2-JRN-H",
-      "routeTransitions": [
-        "/player/library",
-        "/captain/library",
-        "/studio/library",
-        "/player/library"
-      ],
+      "routeTransitions": ["/player/library", "/captain/library", "/studio/library", "/player/library"],
       "shellAuthority": "src/components/shell/ProductShell.tsx",
       "navigationAuthority": "src/navigation/registry.ts",
       "result": "PASSED"
     },
     {
       "journeyId": "HP-P2-JRN-I",
-      "routeTransitions": [
-        "identity",
-        "personal harbor",
-        "workspaces",
-        "account actions",
-        "all personal destinations"
-      ],
+      "routeTransitions": ["identity", "personal harbor", "workspaces", "account actions", "all personal destinations"],
       "shellAuthority": "src/components/shell/ProductShell.tsx",
       "navigationAuthority": "src/navigation/registry.ts",
       "result": "PASSED"
     },
     {
       "journeyId": "HP-P2-JRN-J",
-      "routeTransitions": [
-        "390x844 /",
-        "mobile global drawer",
-        "Community and Explore",
-        "anonymous account menu"
-      ],
+      "routeTransitions": ["390x844 /", "mobile global drawer", "Community and Explore", "anonymous account menu"],
       "shellAuthority": "src/components/shell/ProductShell.tsx",
       "navigationAuthority": "src/navigation/registry.ts",
       "result": "PASSED"
@@ -3354,11 +3184,7 @@
     },
     {
       "journeyId": "HP-P2-JRN-O",
-      "routeTransitions": [
-        "/captain/sessions/:sessionId",
-        "Exit to Captain Voyages",
-        "/captain/library"
-      ],
+      "routeTransitions": ["/captain/sessions/:sessionId", "Exit to Captain Voyages", "/captain/library"],
       "shellAuthority": "src/components/shell/ProductShell.tsx",
       "navigationAuthority": "src/navigation/registry.ts",
       "result": "PASSED"
@@ -3377,65 +3203,35 @@
     },
     {
       "journeyId": "HP-P2-JRN-Q",
-      "routeTransitions": [
-        "/community/moderation",
-        "explicit permission state",
-        "authenticated account retained",
-        "/"
-      ],
+      "routeTransitions": ["/community/moderation", "explicit permission state", "authenticated account retained", "/"],
       "shellAuthority": "src/components/shell/ProductShell.tsx",
       "navigationAuthority": "src/navigation/registry.ts",
       "result": "PASSED"
     },
     {
       "journeyId": "HP-P2-JRN-R",
-      "routeTransitions": [
-        "/",
-        "task-owned 503",
-        "unavailable account state",
-        "retry",
-        "anonymous state restored"
-      ],
+      "routeTransitions": ["/", "task-owned 503", "unavailable account state", "retry", "anonymous state restored"],
       "shellAuthority": "src/components/shell/ProductShell.tsx",
       "navigationAuthority": "src/navigation/registry.ts",
       "result": "PASSED"
     },
     {
       "journeyId": "HP-P2-JRN-S",
-      "routeTransitions": [
-        "640 CSS pixels",
-        "gateway",
-        "account menu",
-        "Community",
-        "compact exit",
-        "no overflow"
-      ],
+      "routeTransitions": ["640 CSS pixels", "gateway", "account menu", "Community", "compact exit", "no overflow"],
       "shellAuthority": "src/components/shell/ProductShell.tsx",
       "navigationAuthority": "src/navigation/registry.ts",
       "result": "PASSED"
     },
     {
       "journeyId": "HP-P2-JRN-T",
-      "routeTransitions": [
-        "reduced motion",
-        "gateway",
-        "disclosures",
-        "immersive exit"
-      ],
+      "routeTransitions": ["reduced motion", "gateway", "disclosures", "immersive exit"],
       "shellAuthority": "src/components/shell/ProductShell.tsx",
       "navigationAuthority": "src/navigation/registry.ts",
       "result": "PASSED"
     },
     {
       "journeyId": "HP-P2-JRN-U",
-      "routeTransitions": [
-        "Sign In",
-        "Player",
-        "Captain",
-        "Creator",
-        "Passport",
-        "Sign Out"
-      ],
+      "routeTransitions": ["Sign In", "Player", "Captain", "Creator", "Passport", "Sign Out"],
       "shellAuthority": "src/components/shell/ProductShell.tsx",
       "navigationAuthority": "src/navigation/registry.ts",
       "result": "PASSED"
@@ -3466,11 +3262,7 @@
     },
     {
       "journeyId": "HP-P3-JRN-B",
-      "routeTransitions": [
-        "Gateway or Personal Harbor parent",
-        "Profile overview",
-        "Safe return or recovery"
-      ],
+      "routeTransitions": ["Gateway or Personal Harbor parent", "Profile overview", "Safe return or recovery"],
       "shellAuthority": "src/components/shell/ProductShell.tsx",
       "sectionAuthority": "src/homeport/personal-harbor-navigation.ts",
       "result": "PASSED"
@@ -3488,66 +3280,42 @@
     },
     {
       "journeyId": "HP-P3-JRN-D",
-      "routeTransitions": [
-        "Gateway or Personal Harbor parent",
-        "Profile media states",
-        "Safe return or recovery"
-      ],
+      "routeTransitions": ["Gateway or Personal Harbor parent", "Profile media states", "Safe return or recovery"],
       "shellAuthority": "src/components/shell/ProductShell.tsx",
       "sectionAuthority": "src/homeport/personal-harbor-navigation.ts",
       "result": "PASSED"
     },
     {
       "journeyId": "HP-P3-JRN-E",
-      "routeTransitions": [
-        "Gateway or Personal Harbor parent",
-        "No-handle Profile",
-        "Safe return or recovery"
-      ],
+      "routeTransitions": ["Gateway or Personal Harbor parent", "No-handle Profile", "Safe return or recovery"],
       "shellAuthority": "src/components/shell/ProductShell.tsx",
       "sectionAuthority": "src/homeport/personal-harbor-navigation.ts",
       "result": "PASSED"
     },
     {
       "journeyId": "HP-P3-JRN-F",
-      "routeTransitions": [
-        "Gateway or Personal Harbor parent",
-        "Personal information",
-        "Safe return or recovery"
-      ],
+      "routeTransitions": ["Gateway or Personal Harbor parent", "Personal information", "Safe return or recovery"],
       "shellAuthority": "src/components/shell/ProductShell.tsx",
       "sectionAuthority": "src/homeport/personal-harbor-navigation.ts",
       "result": "PASSED"
     },
     {
       "journeyId": "HP-P3-JRN-G",
-      "routeTransitions": [
-        "Gateway or Personal Harbor parent",
-        "Preferences",
-        "Safe return or recovery"
-      ],
+      "routeTransitions": ["Gateway or Personal Harbor parent", "Preferences", "Safe return or recovery"],
       "shellAuthority": "src/components/shell/ProductShell.tsx",
       "sectionAuthority": "src/homeport/personal-harbor-navigation.ts",
       "result": "PASSED"
     },
     {
       "journeyId": "HP-P3-JRN-H",
-      "routeTransitions": [
-        "Gateway or Personal Harbor parent",
-        "Accessibility",
-        "Safe return or recovery"
-      ],
+      "routeTransitions": ["Gateway or Personal Harbor parent", "Accessibility", "Safe return or recovery"],
       "shellAuthority": "src/components/shell/ProductShell.tsx",
       "sectionAuthority": "src/homeport/personal-harbor-navigation.ts",
       "result": "PASSED"
     },
     {
       "journeyId": "HP-P3-JRN-I",
-      "routeTransitions": [
-        "Gateway or Personal Harbor parent",
-        "Notifications",
-        "Safe return or recovery"
-      ],
+      "routeTransitions": ["Gateway or Personal Harbor parent", "Notifications", "Safe return or recovery"],
       "shellAuthority": "src/components/shell/ProductShell.tsx",
       "sectionAuthority": "src/homeport/personal-harbor-navigation.ts",
       "result": "PASSED"
@@ -3565,11 +3333,7 @@
     },
     {
       "journeyId": "HP-P3-JRN-K",
-      "routeTransitions": [
-        "Gateway or Personal Harbor parent",
-        "Linked identities",
-        "Safe return or recovery"
-      ],
+      "routeTransitions": ["Gateway or Personal Harbor parent", "Linked identities", "Safe return or recovery"],
       "shellAuthority": "src/components/shell/ProductShell.tsx",
       "sectionAuthority": "src/homeport/personal-harbor-navigation.ts",
       "result": "PASSED"
@@ -3587,33 +3351,21 @@
     },
     {
       "journeyId": "HP-P3-JRN-M",
-      "routeTransitions": [
-        "Gateway or Personal Harbor parent",
-        "Chronicle Passport empty",
-        "Safe return or recovery"
-      ],
+      "routeTransitions": ["Gateway or Personal Harbor parent", "Chronicle Passport empty", "Safe return or recovery"],
       "shellAuthority": "src/components/shell/ProductShell.tsx",
       "sectionAuthority": "src/homeport/personal-harbor-navigation.ts",
       "result": "PASSED"
     },
     {
       "journeyId": "HP-P3-JRN-N",
-      "routeTransitions": [
-        "Gateway or Personal Harbor parent",
-        "History list and detail",
-        "Safe return or recovery"
-      ],
+      "routeTransitions": ["Gateway or Personal Harbor parent", "History list and detail", "Safe return or recovery"],
       "shellAuthority": "src/components/shell/ProductShell.tsx",
       "sectionAuthority": "src/homeport/personal-harbor-navigation.ts",
       "result": "PASSED"
     },
     {
       "journeyId": "HP-P3-JRN-O",
-      "routeTransitions": [
-        "Gateway or Personal Harbor parent",
-        "History privacy",
-        "Safe return or recovery"
-      ],
+      "routeTransitions": ["Gateway or Personal Harbor parent", "History privacy", "Safe return or recovery"],
       "shellAuthority": "src/components/shell/ProductShell.tsx",
       "sectionAuthority": "src/homeport/personal-harbor-navigation.ts",
       "result": "PASSED"
@@ -3631,55 +3383,35 @@
     },
     {
       "journeyId": "HP-P3-JRN-Q",
-      "routeTransitions": [
-        "Gateway or Personal Harbor parent",
-        "Artifact Cabinet empty",
-        "Safe return or recovery"
-      ],
+      "routeTransitions": ["Gateway or Personal Harbor parent", "Artifact Cabinet empty", "Safe return or recovery"],
       "shellAuthority": "src/components/shell/ProductShell.tsx",
       "sectionAuthority": "src/homeport/personal-harbor-navigation.ts",
       "result": "PASSED"
     },
     {
       "journeyId": "HP-P3-JRN-R",
-      "routeTransitions": [
-        "Gateway or Personal Harbor parent",
-        "Saved content",
-        "Safe return or recovery"
-      ],
+      "routeTransitions": ["Gateway or Personal Harbor parent", "Saved content", "Safe return or recovery"],
       "shellAuthority": "src/components/shell/ProductShell.tsx",
       "sectionAuthority": "src/homeport/personal-harbor-navigation.ts",
       "result": "PASSED"
     },
     {
       "journeyId": "HP-P3-JRN-S",
-      "routeTransitions": [
-        "Gateway or Personal Harbor parent",
-        "Security reauthentication",
-        "Safe return or recovery"
-      ],
+      "routeTransitions": ["Gateway or Personal Harbor parent", "Security reauthentication", "Safe return or recovery"],
       "shellAuthority": "src/components/shell/ProductShell.tsx",
       "sectionAuthority": "src/homeport/personal-harbor-navigation.ts",
       "result": "PASSED"
     },
     {
       "journeyId": "HP-P3-JRN-T",
-      "routeTransitions": [
-        "Gateway or Personal Harbor parent",
-        "Sessions and devices",
-        "Safe return or recovery"
-      ],
+      "routeTransitions": ["Gateway or Personal Harbor parent", "Sessions and devices", "Safe return or recovery"],
       "shellAuthority": "src/components/shell/ProductShell.tsx",
       "sectionAuthority": "src/homeport/personal-harbor-navigation.ts",
       "result": "PASSED"
     },
     {
       "journeyId": "HP-P3-JRN-U",
-      "routeTransitions": [
-        "Gateway or Personal Harbor parent",
-        "Sign Out Everywhere",
-        "Safe return or recovery"
-      ],
+      "routeTransitions": ["Gateway or Personal Harbor parent", "Sign Out Everywhere", "Safe return or recovery"],
       "shellAuthority": "src/components/shell/ProductShell.tsx",
       "sectionAuthority": "src/homeport/personal-harbor-navigation.ts",
       "result": "PASSED"
@@ -3708,55 +3440,35 @@
     },
     {
       "journeyId": "HP-P3-JRN-X",
-      "routeTransitions": [
-        "Gateway or Personal Harbor parent",
-        "Mobile section navigation",
-        "Safe return or recovery"
-      ],
+      "routeTransitions": ["Gateway or Personal Harbor parent", "Mobile section navigation", "Safe return or recovery"],
       "shellAuthority": "src/components/shell/ProductShell.tsx",
       "sectionAuthority": "src/homeport/personal-harbor-navigation.ts",
       "result": "PASSED"
     },
     {
       "journeyId": "HP-P3-JRN-Y",
-      "routeTransitions": [
-        "Gateway or Personal Harbor parent",
-        "Unsaved changes",
-        "Safe return or recovery"
-      ],
+      "routeTransitions": ["Gateway or Personal Harbor parent", "Unsaved changes", "Safe return or recovery"],
       "shellAuthority": "src/components/shell/ProductShell.tsx",
       "sectionAuthority": "src/homeport/personal-harbor-navigation.ts",
       "result": "PASSED"
     },
     {
       "journeyId": "HP-P3-JRN-Z",
-      "routeTransitions": [
-        "Gateway or Personal Harbor parent",
-        "Stale conflict",
-        "Safe return or recovery"
-      ],
+      "routeTransitions": ["Gateway or Personal Harbor parent", "Stale conflict", "Safe return or recovery"],
       "shellAuthority": "src/components/shell/ProductShell.tsx",
       "sectionAuthority": "src/homeport/personal-harbor-navigation.ts",
       "result": "PASSED"
     },
     {
       "journeyId": "HP-P3-JRN-AA",
-      "routeTransitions": [
-        "Gateway or Personal Harbor parent",
-        "Dependency unavailable",
-        "Safe return or recovery"
-      ],
+      "routeTransitions": ["Gateway or Personal Harbor parent", "Dependency unavailable", "Safe return or recovery"],
       "shellAuthority": "src/components/shell/ProductShell.tsx",
       "sectionAuthority": "src/homeport/personal-harbor-navigation.ts",
       "result": "PASSED"
     },
     {
       "journeyId": "HP-P3-JRN-AB",
-      "routeTransitions": [
-        "Gateway or Personal Harbor parent",
-        "200 percent zoom",
-        "Safe return or recovery"
-      ],
+      "routeTransitions": ["Gateway or Personal Harbor parent", "200 percent zoom", "Safe return or recovery"],
       "shellAuthority": "src/components/shell/ProductShell.tsx",
       "sectionAuthority": "src/homeport/personal-harbor-navigation.ts",
       "result": "PASSED"
@@ -3774,11 +3486,7 @@
     },
     {
       "journeyId": "HP-P3-JRN-AD",
-      "routeTransitions": [
-        "Gateway or Personal Harbor parent",
-        "Reduced motion",
-        "Safe return or recovery"
-      ],
+      "routeTransitions": ["Gateway or Personal Harbor parent", "Reduced motion", "Safe return or recovery"],
       "shellAuthority": "src/components/shell/ProductShell.tsx",
       "sectionAuthority": "src/homeport/personal-harbor-navigation.ts",
       "result": "PASSED"
@@ -3949,9 +3657,7 @@
       "desktopAvailability": true,
       "mobileAvailability": true,
       "currentStatus": "PHASE_4_VALIDATED",
-      "evidenceIds": [
-        "HP-P4-EV-G-chronicles-district"
-      ]
+      "evidenceIds": ["HP-P4-EV-G-chronicles-district"]
     },
     {
       "districtId": "ARTIFACTS",
@@ -3961,9 +3667,7 @@
       "desktopAvailability": true,
       "mobileAvailability": true,
       "currentStatus": "PHASE_4_VALIDATED",
-      "evidenceIds": [
-        "HP-P4-EV-H-artifacts-district"
-      ]
+      "evidenceIds": ["HP-P4-EV-H-artifacts-district"]
     },
     {
       "districtId": "TEMPLATES",
@@ -3973,9 +3677,7 @@
       "desktopAvailability": true,
       "mobileAvailability": true,
       "currentStatus": "PHASE_4_VALIDATED",
-      "evidenceIds": [
-        "HP-P4-EV-I-templates-district"
-      ]
+      "evidenceIds": ["HP-P4-EV-I-templates-district"]
     },
     {
       "districtId": "MAPS_AND_LOCATION_PACKS",
@@ -3985,9 +3687,7 @@
       "desktopAvailability": true,
       "mobileAvailability": true,
       "currentStatus": "PHASE_4_VALIDATED",
-      "evidenceIds": [
-        "HP-P4-EV-J-maps-district"
-      ]
+      "evidenceIds": ["HP-P4-EV-J-maps-district"]
     },
     {
       "districtId": "AUDIO_AND_REVEAL_ASSETS",
@@ -3997,10 +3697,7 @@
       "desktopAvailability": true,
       "mobileAvailability": true,
       "currentStatus": "PHASE_4_VALIDATED",
-      "evidenceIds": [
-        "HP-P4-EV-K-audio-district",
-        "HP-P4-EV-AM-audio-district-empty"
-      ]
+      "evidenceIds": ["HP-P4-EV-K-audio-district", "HP-P4-EV-AM-audio-district-empty"]
     },
     {
       "districtId": "CREATORS",
@@ -4010,9 +3707,7 @@
       "desktopAvailability": true,
       "mobileAvailability": true,
       "currentStatus": "PHASE_4_VALIDATED",
-      "evidenceIds": [
-        "HP-P4-EV-L-creators-district"
-      ]
+      "evidenceIds": ["HP-P4-EV-L-creators-district"]
     },
     {
       "districtId": "COLLECTIONS",
@@ -4022,9 +3717,7 @@
       "desktopAvailability": true,
       "mobileAvailability": true,
       "currentStatus": "PHASE_4_VALIDATED",
-      "evidenceIds": [
-        "HP-P4-EV-O-collections-district"
-      ]
+      "evidenceIds": ["HP-P4-EV-O-collections-district"]
     },
     {
       "districtId": "GUIDES",
@@ -4034,9 +3727,7 @@
       "desktopAvailability": true,
       "mobileAvailability": true,
       "currentStatus": "PHASE_4_VALIDATED",
-      "evidenceIds": [
-        "HP-P4-EV-Q-guides-district"
-      ]
+      "evidenceIds": ["HP-P4-EV-Q-guides-district"]
     },
     {
       "districtId": "VOYAGE_LOGS",
@@ -4046,9 +3737,7 @@
       "desktopAvailability": true,
       "mobileAvailability": true,
       "currentStatus": "PHASE_4_VALIDATED",
-      "evidenceIds": [
-        "HP-P4-EV-S-voyage-logs"
-      ]
+      "evidenceIds": ["HP-P4-EV-S-voyage-logs"]
     }
   ],
   "phase4AcceptanceEdges": [
@@ -4574,9 +4263,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/",
       "stableFallback": "/account",
-      "browserJourneyIds": [
-        "HP-P5-JRN-F"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-F"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/homeport/personal-harbor-navigation.ts",
@@ -4605,9 +4292,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/",
       "stableFallback": "/passport",
-      "browserJourneyIds": [
-        "HP-P5-JRN-F"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-F"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
@@ -4636,9 +4321,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/",
       "stableFallback": "/sign-in",
-      "browserJourneyIds": [
-        "HP-P5-JRN-B"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-B"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
@@ -4667,9 +4350,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/",
       "stableFallback": "/account",
-      "browserJourneyIds": [
-        "HP-P5-JRN-F"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-F"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/homeport/personal-harbor-navigation.ts",
@@ -4698,9 +4379,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/",
       "stableFallback": "/passport",
-      "browserJourneyIds": [
-        "HP-P5-JRN-F"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-F"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
@@ -4729,9 +4408,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/",
       "stableFallback": "/account",
-      "browserJourneyIds": [
-        "HP-P5-JRN-F"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-F"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/homeport/personal-harbor-navigation.ts",
@@ -4760,9 +4437,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/",
       "stableFallback": "/account",
-      "browserJourneyIds": [
-        "HP-P5-JRN-F"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-F"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/homeport/personal-harbor-navigation.ts",
@@ -4791,9 +4466,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/",
       "stableFallback": "/account",
-      "browserJourneyIds": [
-        "HP-P5-JRN-F"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-F"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
@@ -4822,9 +4495,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/",
       "stableFallback": "/",
-      "browserJourneyIds": [
-        "HP-P5-JRN-F"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-F"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
@@ -4853,9 +4524,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/",
       "stableFallback": "/account",
-      "browserJourneyIds": [
-        "HP-P5-JRN-F"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-F"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/homeport/personal-harbor-navigation.ts",
@@ -4884,9 +4553,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/",
       "stableFallback": "/account",
-      "browserJourneyIds": [
-        "HP-P5-JRN-F"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-F"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
@@ -4915,9 +4582,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/",
       "stableFallback": "/account",
-      "browserJourneyIds": [
-        "HP-P5-JRN-F"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-F"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
@@ -4946,9 +4611,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/",
       "stableFallback": "/account",
-      "browserJourneyIds": [
-        "HP-P5-JRN-F"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-F"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/homeport/personal-harbor-navigation.ts",
@@ -4977,9 +4640,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/",
       "stableFallback": "/account",
-      "browserJourneyIds": [
-        "HP-P5-JRN-F"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-F"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
@@ -5008,9 +4669,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/",
       "stableFallback": "/account",
-      "browserJourneyIds": [
-        "HP-P5-JRN-F"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-F"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
@@ -5039,9 +4698,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/",
       "stableFallback": "/",
-      "browserJourneyIds": [
-        "HP-P5-JRN-B"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-B"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
@@ -5070,9 +4727,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/",
       "stableFallback": "/account",
-      "browserJourneyIds": [
-        "HP-P5-JRN-F"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-F"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
@@ -5092,9 +4747,7 @@
       "keyboard": true,
       "touch": true,
       "authenticationState": "AUTHENTICATED",
-      "requiredCapabilities": [
-        "CAPTAIN"
-      ],
+      "requiredCapabilities": ["CAPTAIN"],
       "sourceDataFamily": "source-captain-library-preview",
       "dynamicParameterSource": "playthroughId",
       "queryContract": "NONE_OR_SOURCE_GOVERNED",
@@ -5103,9 +4756,7 @@
       "forbiddenWhen": "REQUIRED_CAPABILITY_ABSENT",
       "safeReturn": "/",
       "stableFallback": "/captain/library",
-      "browserJourneyIds": [
-        "HP-P5-JRN-D"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-D"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/components/platform/CaptainLibrary.tsx",
@@ -5125,9 +4776,7 @@
       "keyboard": true,
       "touch": true,
       "authenticationState": "AUTHENTICATED",
-      "requiredCapabilities": [
-        "CAPTAIN"
-      ],
+      "requiredCapabilities": ["CAPTAIN"],
       "sourceDataFamily": "source-captain-library-voyages",
       "dynamicParameterSource": "sessionId",
       "queryContract": "NONE_OR_SOURCE_GOVERNED",
@@ -5136,9 +4785,7 @@
       "forbiddenWhen": "REQUIRED_CAPABILITY_ABSENT",
       "safeReturn": "/",
       "stableFallback": "/captain/library",
-      "browserJourneyIds": [
-        "HP-P5-JRN-D"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-D"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/components/platform/CaptainLibrary.tsx",
@@ -5158,9 +4805,7 @@
       "keyboard": true,
       "touch": true,
       "authenticationState": "AUTHENTICATED",
-      "requiredCapabilities": [
-        "CAPTAIN"
-      ],
+      "requiredCapabilities": ["CAPTAIN"],
       "sourceDataFamily": "source-captain-library-chronicles",
       "dynamicParameterSource": "taleId",
       "queryContract": "NONE_OR_SOURCE_GOVERNED",
@@ -5169,9 +4814,7 @@
       "forbiddenWhen": "REQUIRED_CAPABILITY_ABSENT",
       "safeReturn": "/",
       "stableFallback": "/captain/library",
-      "browserJourneyIds": [
-        "HP-P5-JRN-D"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-D"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/components/platform/CaptainLibrary.tsx",
@@ -5191,9 +4834,7 @@
       "keyboard": true,
       "touch": true,
       "authenticationState": "AUTHENTICATED",
-      "requiredCapabilities": [
-        "PLAYER"
-      ],
+      "requiredCapabilities": ["PLAYER"],
       "sourceDataFamily": null,
       "dynamicParameterSource": null,
       "queryContract": "NONE_OR_SOURCE_GOVERNED",
@@ -5202,9 +4843,7 @@
       "forbiddenWhen": "REQUIRED_CAPABILITY_ABSENT",
       "safeReturn": "/community",
       "stableFallback": "/community/voyage-logs",
-      "browserJourneyIds": [
-        "HP-P5-JRN-G"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-G"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/components/community/PublicCommunitySection.tsx",
@@ -5224,9 +4863,7 @@
       "keyboard": true,
       "touch": true,
       "authenticationState": "AUTHENTICATED",
-      "requiredCapabilities": [
-        "PLAYER"
-      ],
+      "requiredCapabilities": ["PLAYER"],
       "sourceDataFamily": null,
       "dynamicParameterSource": null,
       "queryContract": "NONE_OR_SOURCE_GOVERNED",
@@ -5235,9 +4872,7 @@
       "forbiddenWhen": "REQUIRED_CAPABILITY_ABSENT",
       "safeReturn": "/community",
       "stableFallback": "/community/voyage-logs",
-      "browserJourneyIds": [
-        "HP-P5-JRN-G"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-G"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/components/community/PublicCommunitySection.tsx",
@@ -5266,9 +4901,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/captain/library",
       "stableFallback": "/",
-      "browserJourneyIds": [
-        "HP-P5-JRN-D"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-D"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/app/captain/page.tsx",
@@ -5297,9 +4930,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/captain/library",
       "stableFallback": "/",
-      "browserJourneyIds": [
-        "HP-P5-JRN-D"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-D"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/app/captain/invitations/page.tsx",
@@ -5328,9 +4959,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/sign-in",
       "stableFallback": "/",
-      "browserJourneyIds": [
-        "HP-P5-JRN-B"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-B"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/components/auth/RoleEntryAdapter.tsx",
@@ -5359,9 +4988,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/community/voyage-logs/owner",
       "stableFallback": "/community/voyage-logs",
-      "browserJourneyIds": [
-        "HP-P5-JRN-G"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-G"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/app/community/voyage-logs/media/page.tsx",
@@ -5390,9 +5017,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/player/library",
       "stableFallback": "/",
-      "browserJourneyIds": [
-        "HP-P5-JRN-C"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-C"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/app/player/page.tsx",
@@ -5421,9 +5046,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/player/playthroughs/[playthroughId]/journal",
       "stableFallback": "/player/library",
-      "browserJourneyIds": [
-        "HP-P5-JRN-C"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-C"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/app/player/playthroughs/[playthroughId]/archive/page.tsx",
@@ -5452,9 +5075,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/sign-in",
       "stableFallback": "/",
-      "browserJourneyIds": [
-        "HP-P5-JRN-B"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-B"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/components/platform/PlayerSignIn.tsx",
@@ -5483,9 +5104,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/captain/library",
       "stableFallback": "/",
-      "browserJourneyIds": [
-        "HP-P5-JRN-D"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-D"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/app/quartermaster/page.tsx",
@@ -5514,9 +5133,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/captain/library",
       "stableFallback": "/",
-      "browserJourneyIds": [
-        "HP-P5-JRN-D"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-D"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/components/gm/Quartermaster.tsx",
@@ -5545,9 +5162,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/studio/library",
       "stableFallback": "/",
-      "browserJourneyIds": [
-        "HP-P5-JRN-E"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-E"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/app/studio/page.tsx",
@@ -5576,9 +5191,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/sign-in",
       "stableFallback": "/",
-      "browserJourneyIds": [
-        "HP-P5-JRN-B"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-B"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/components/auth/RoleEntryAdapter.tsx",
@@ -5607,9 +5220,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/play/[taleSlug]/session/[sessionId]",
       "stableFallback": "/play/[taleSlug]",
-      "browserJourneyIds": [
-        "HP-P5-JRN-C"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-C"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/app/tale/[campaignSlug]/page.tsx",
@@ -5638,9 +5249,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/",
       "stableFallback": "/community",
-      "browserJourneyIds": [
-        "HP-P5-JRN-G"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-G"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_4_District_Registry.json",
@@ -5669,9 +5278,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/",
       "stableFallback": "/community",
-      "browserJourneyIds": [
-        "HP-P5-JRN-G"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-G"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_4_District_Registry.json",
@@ -5700,9 +5307,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/",
       "stableFallback": "/community",
-      "browserJourneyIds": [
-        "HP-P5-JRN-G"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-G"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_4_District_Registry.json",
@@ -5731,9 +5336,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/",
       "stableFallback": "/community",
-      "browserJourneyIds": [
-        "HP-P5-JRN-G"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-G"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_4_District_Registry.json",
@@ -5762,9 +5365,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/",
       "stableFallback": "/community",
-      "browserJourneyIds": [
-        "HP-P5-JRN-G"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-G"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_4_District_Registry.json",
@@ -5793,9 +5394,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/",
       "stableFallback": "/community",
-      "browserJourneyIds": [
-        "HP-P5-JRN-G"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-G"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_4_District_Registry.json",
@@ -5824,9 +5423,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/",
       "stableFallback": "/community",
-      "browserJourneyIds": [
-        "HP-P5-JRN-G"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-G"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_4_District_Registry.json",
@@ -5855,9 +5452,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/",
       "stableFallback": "/community",
-      "browserJourneyIds": [
-        "HP-P5-JRN-G"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-G"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_4_District_Registry.json",
@@ -5886,9 +5481,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/",
       "stableFallback": "/community",
-      "browserJourneyIds": [
-        "HP-P5-JRN-G"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-G"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_4_District_Registry.json",
@@ -5917,9 +5510,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/",
       "stableFallback": "/community",
-      "browserJourneyIds": [
-        "HP-P5-JRN-G"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-G"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_4_District_Registry.json",
@@ -5948,9 +5539,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/community",
       "stableFallback": "/community/collections",
-      "browserJourneyIds": [
-        "HP-P5-JRN-G"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-G"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/components/community/CommunityCardGrid.tsx",
@@ -5979,9 +5568,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/community",
       "stableFallback": "/community/creators",
-      "browserJourneyIds": [
-        "HP-P5-JRN-G"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-G"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/components/community/CommunityCardGrid.tsx",
@@ -6010,9 +5597,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/community",
       "stableFallback": "/community/guides",
-      "browserJourneyIds": [
-        "HP-P5-JRN-G"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-G"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/components/community/CommunityCardGrid.tsx",
@@ -6041,9 +5626,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/community",
       "stableFallback": "/community/chronicles",
-      "browserJourneyIds": [
-        "HP-P5-JRN-G"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-G"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/components/community/CommunityCardGrid.tsx",
@@ -6072,9 +5655,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/community",
       "stableFallback": "/community/voyage-logs",
-      "browserJourneyIds": [
-        "HP-P5-JRN-G"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-G"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/components/community/CommunityCardGrid.tsx",
@@ -6103,9 +5684,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/",
       "stableFallback": "/sign-in",
-      "browserJourneyIds": [
-        "HP-P5-JRN-D"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-D"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/components/landing/HarborLanding.tsx",
@@ -6134,9 +5713,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/",
       "stableFallback": "/sign-in",
-      "browserJourneyIds": [
-        "HP-P5-JRN-C"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-C"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/components/landing/HarborLanding.tsx",
@@ -6165,9 +5742,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/",
       "stableFallback": "/sign-in",
-      "browserJourneyIds": [
-        "HP-P5-JRN-E"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-E"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/components/landing/HarborLanding.tsx",
@@ -6196,9 +5771,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/",
       "stableFallback": "/",
-      "browserJourneyIds": [
-        "HP-P5-JRN-G"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-G"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
@@ -6227,9 +5800,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/",
       "stableFallback": "/",
-      "browserJourneyIds": [
-        "HP-P5-JRN-C"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-C"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
@@ -6249,9 +5820,7 @@
       "keyboard": true,
       "touch": true,
       "authenticationState": "AUTHENTICATED",
-      "requiredCapabilities": [
-        "MODERATOR"
-      ],
+      "requiredCapabilities": ["MODERATOR"],
       "sourceDataFamily": "source-community-moderation-queue",
       "dynamicParameterSource": "id",
       "queryContract": "NONE_OR_SOURCE_GOVERNED",
@@ -6260,9 +5829,7 @@
       "forbiddenWhen": "REQUIRED_CAPABILITY_ABSENT",
       "safeReturn": "/community",
       "stableFallback": "/community/moderation",
-      "browserJourneyIds": [
-        "HP-P5-JRN-G"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-G"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/app/community/moderation/page.tsx",
@@ -6291,9 +5858,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/passport",
       "stableFallback": "/passport/artifacts",
-      "browserJourneyIds": [
-        "HP-P5-JRN-F"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-F"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/components/homeport/PassportSurfaces.tsx",
@@ -6322,9 +5887,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/passport",
       "stableFallback": "/passport/history",
-      "browserJourneyIds": [
-        "HP-P5-JRN-F"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-F"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/components/homeport/PassportSurfaces.tsx",
@@ -6353,9 +5916,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/account",
       "stableFallback": "/passport",
-      "browserJourneyIds": [
-        "HP-P5-JRN-F"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-F"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/homeport/personal-harbor-navigation.ts",
@@ -6384,9 +5945,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/account",
       "stableFallback": "/passport",
-      "browserJourneyIds": [
-        "HP-P5-JRN-F"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-F"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/homeport/personal-harbor-navigation.ts",
@@ -6415,9 +5974,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/tales",
       "stableFallback": "/play/[taleSlug]",
-      "browserJourneyIds": [
-        "HP-P5-JRN-C"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-C"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/components/tales/TaleStart.tsx",
@@ -6446,9 +6003,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/tales",
       "stableFallback": "/play/[taleSlug]",
-      "browserJourneyIds": [
-        "HP-P5-JRN-C"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-C"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/components/tales/TaleStart.tsx",
@@ -6468,9 +6023,7 @@
       "keyboard": true,
       "touch": true,
       "authenticationState": "AUTHENTICATED",
-      "requiredCapabilities": [
-        "PLAYER"
-      ],
+      "requiredCapabilities": ["PLAYER"],
       "sourceDataFamily": "source-player-library-journal",
       "dynamicParameterSource": "playthroughId",
       "queryContract": "NONE_OR_SOURCE_GOVERNED",
@@ -6479,9 +6032,7 @@
       "forbiddenWhen": "REQUIRED_CAPABILITY_ABSENT",
       "safeReturn": "/",
       "stableFallback": "/player/library",
-      "browserJourneyIds": [
-        "HP-P5-JRN-C"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-C"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/components/platform/PlayerLibrary.tsx",
@@ -6501,9 +6052,7 @@
       "keyboard": true,
       "touch": true,
       "authenticationState": "AUTHENTICATED",
-      "requiredCapabilities": [
-        "PLAYER"
-      ],
+      "requiredCapabilities": ["PLAYER"],
       "sourceDataFamily": "source-player-library",
       "dynamicParameterSource": "playthroughId",
       "queryContract": "NONE_OR_SOURCE_GOVERNED",
@@ -6512,9 +6061,7 @@
       "forbiddenWhen": "REQUIRED_CAPABILITY_ABSENT",
       "safeReturn": "/",
       "stableFallback": "/player/library",
-      "browserJourneyIds": [
-        "HP-P5-JRN-C"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-C"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/components/platform/PlayerLibrary.tsx",
@@ -6543,9 +6090,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/account",
       "stableFallback": "/tales",
-      "browserJourneyIds": [
-        "HP-P5-JRN-F"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-F"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/components/homeport/AccountSurfaces.tsx",
@@ -6574,9 +6119,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/",
       "stableFallback": "/",
-      "browserJourneyIds": [
-        "HP-P5-JRN-A"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
@@ -6605,9 +6148,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/account",
       "stableFallback": "/",
-      "browserJourneyIds": [
-        "HP-P5-JRN-A"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
@@ -6636,9 +6177,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/sign-in",
       "stableFallback": "/",
-      "browserJourneyIds": [
-        "HP-P5-JRN-B"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-B"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/components/shell/ProductShell.tsx",
@@ -6667,9 +6206,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/account",
       "stableFallback": "/",
-      "browserJourneyIds": [
-        "HP-P5-JRN-A"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
@@ -6698,9 +6235,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/account",
       "stableFallback": "/",
-      "browserJourneyIds": [
-        "HP-P5-JRN-A"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
@@ -6729,9 +6264,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/sign-in",
       "stableFallback": "/",
-      "browserJourneyIds": [
-        "HP-P5-JRN-B"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-B"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/components/shell/ProductShell.tsx",
@@ -6760,9 +6293,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/account",
       "stableFallback": "/",
-      "browserJourneyIds": [
-        "HP-P5-JRN-A"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
@@ -6791,9 +6322,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/account",
       "stableFallback": "/",
-      "browserJourneyIds": [
-        "HP-P5-JRN-A"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
@@ -6822,9 +6351,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/account",
       "stableFallback": "/",
-      "browserJourneyIds": [
-        "HP-P5-JRN-A"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
@@ -6853,9 +6380,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/account",
       "stableFallback": "/",
-      "browserJourneyIds": [
-        "HP-P5-JRN-A"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
@@ -6884,9 +6409,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/account",
       "stableFallback": "/",
-      "browserJourneyIds": [
-        "HP-P5-JRN-A"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
@@ -6915,9 +6438,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/account",
       "stableFallback": "/",
-      "browserJourneyIds": [
-        "HP-P5-JRN-A"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
@@ -6946,9 +6467,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/account",
       "stableFallback": "/",
-      "browserJourneyIds": [
-        "HP-P5-JRN-A"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
@@ -6977,9 +6496,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/account",
       "stableFallback": "/",
-      "browserJourneyIds": [
-        "HP-P5-JRN-A"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
@@ -7008,9 +6525,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/",
       "stableFallback": "/",
-      "browserJourneyIds": [
-        "HP-P5-JRN-A"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
@@ -7039,9 +6554,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/captain/library",
       "stableFallback": "/",
-      "browserJourneyIds": [
-        "HP-P5-JRN-D"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-D"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/components/shell/ProductShell.tsx",
@@ -7070,9 +6583,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/captain/library",
       "stableFallback": "/",
-      "browserJourneyIds": [
-        "HP-P5-JRN-A"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
@@ -7101,9 +6612,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/captain/library",
       "stableFallback": "/",
-      "browserJourneyIds": [
-        "HP-P5-JRN-A"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
@@ -7132,9 +6641,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/",
       "stableFallback": "/",
-      "browserJourneyIds": [
-        "HP-P5-JRN-A"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
@@ -7163,9 +6670,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/community",
       "stableFallback": "/",
-      "browserJourneyIds": [
-        "HP-P5-JRN-A"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
@@ -7194,9 +6699,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/community",
       "stableFallback": "/",
-      "browserJourneyIds": [
-        "HP-P5-JRN-A"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
@@ -7225,9 +6728,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/community",
       "stableFallback": "/",
-      "browserJourneyIds": [
-        "HP-P5-JRN-A"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
@@ -7256,9 +6757,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/community",
       "stableFallback": "/",
-      "browserJourneyIds": [
-        "HP-P5-JRN-A"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
@@ -7287,9 +6786,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/community/collections",
       "stableFallback": "/",
-      "browserJourneyIds": [
-        "HP-P5-JRN-A"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
@@ -7318,9 +6815,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/community",
       "stableFallback": "/",
-      "browserJourneyIds": [
-        "HP-P5-JRN-A"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
@@ -7349,9 +6844,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/community/creators",
       "stableFallback": "/",
-      "browserJourneyIds": [
-        "HP-P5-JRN-A"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
@@ -7380,9 +6873,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/community",
       "stableFallback": "/",
-      "browserJourneyIds": [
-        "HP-P5-JRN-A"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
@@ -7411,9 +6902,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/community",
       "stableFallback": "/",
-      "browserJourneyIds": [
-        "HP-P5-JRN-A"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
@@ -7442,9 +6931,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/community/guides",
       "stableFallback": "/",
-      "browserJourneyIds": [
-        "HP-P5-JRN-A"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
@@ -7473,9 +6960,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/community",
       "stableFallback": "/",
-      "browserJourneyIds": [
-        "HP-P5-JRN-A"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
@@ -7504,9 +6989,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/community",
       "stableFallback": "/",
-      "browserJourneyIds": [
-        "HP-P5-JRN-A"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
@@ -7535,9 +7018,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/community/moderation",
       "stableFallback": "/",
-      "browserJourneyIds": [
-        "HP-P5-JRN-A"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
@@ -7566,9 +7047,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/community/chronicles",
       "stableFallback": "/",
-      "browserJourneyIds": [
-        "HP-P5-JRN-A"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
@@ -7597,9 +7076,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/community",
       "stableFallback": "/",
-      "browserJourneyIds": [
-        "HP-P5-JRN-A"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
@@ -7628,9 +7105,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/community",
       "stableFallback": "/",
-      "browserJourneyIds": [
-        "HP-P5-JRN-A"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
@@ -7659,9 +7134,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/community/voyage-logs",
       "stableFallback": "/",
-      "browserJourneyIds": [
-        "HP-P5-JRN-A"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
@@ -7690,9 +7163,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/community/voyage-logs",
       "stableFallback": "/",
-      "browserJourneyIds": [
-        "HP-P5-JRN-A"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
@@ -7721,9 +7192,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/community/voyage-logs/owner",
       "stableFallback": "/",
-      "browserJourneyIds": [
-        "HP-P5-JRN-A"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
@@ -7752,9 +7221,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/community/voyage-logs",
       "stableFallback": "/",
-      "browserJourneyIds": [
-        "HP-P5-JRN-A"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
@@ -7783,9 +7250,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/",
       "stableFallback": "/",
-      "browserJourneyIds": [
-        "HP-P5-JRN-A"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/components/shell/ProductShell.tsx",
@@ -7814,9 +7279,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/sign-in",
       "stableFallback": "/",
-      "browserJourneyIds": [
-        "HP-P5-JRN-B"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-B"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/components/shell/ProductShell.tsx",
@@ -7845,9 +7308,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/account",
       "stableFallback": "/",
-      "browserJourneyIds": [
-        "HP-P5-JRN-A"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
@@ -7876,9 +7337,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/passport",
       "stableFallback": "/",
-      "browserJourneyIds": [
-        "HP-P5-JRN-A"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
@@ -7907,9 +7366,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/passport/artifacts",
       "stableFallback": "/",
-      "browserJourneyIds": [
-        "HP-P5-JRN-A"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
@@ -7938,9 +7395,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/passport",
       "stableFallback": "/",
-      "browserJourneyIds": [
-        "HP-P5-JRN-A"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
@@ -7969,9 +7424,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/passport/history",
       "stableFallback": "/",
-      "browserJourneyIds": [
-        "HP-P5-JRN-A"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
@@ -8000,9 +7453,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/passport",
       "stableFallback": "/",
-      "browserJourneyIds": [
-        "HP-P5-JRN-A"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
@@ -8031,9 +7482,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/passport",
       "stableFallback": "/",
-      "browserJourneyIds": [
-        "HP-P5-JRN-A"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
@@ -8062,9 +7511,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/tales",
       "stableFallback": "/",
-      "browserJourneyIds": [
-        "HP-P5-JRN-A"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
@@ -8093,9 +7540,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/play/[taleSlug]",
       "stableFallback": "/",
-      "browserJourneyIds": [
-        "HP-P5-JRN-A"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
@@ -8124,9 +7569,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/play/[taleSlug]",
       "stableFallback": "/tales",
-      "browserJourneyIds": [
-        "HP-P5-JRN-C"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-C"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/components/shell/ProductShell.tsx",
@@ -8155,9 +7598,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/player/sign-in",
       "stableFallback": "/sign-in",
-      "browserJourneyIds": [
-        "HP-P5-JRN-C"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-C"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/components/shell/ProductShell.tsx",
@@ -8186,9 +7627,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/",
       "stableFallback": "/",
-      "browserJourneyIds": [
-        "HP-P5-JRN-A"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
@@ -8217,9 +7656,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/player/library",
       "stableFallback": "/",
-      "browserJourneyIds": [
-        "HP-P5-JRN-C"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-C"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/components/shell/ProductShell.tsx",
@@ -8248,9 +7685,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/player/library",
       "stableFallback": "/",
-      "browserJourneyIds": [
-        "HP-P5-JRN-C"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-C"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/components/shell/ProductShell.tsx",
@@ -8279,9 +7714,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/tales",
       "stableFallback": "/",
-      "browserJourneyIds": [
-        "HP-P5-JRN-A"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
@@ -8310,9 +7743,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/sign-in",
       "stableFallback": "/",
-      "browserJourneyIds": [
-        "HP-P5-JRN-B"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-B"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/components/shell/ProductShell.tsx",
@@ -8341,9 +7772,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/sign-in",
       "stableFallback": "/",
-      "browserJourneyIds": [
-        "HP-P5-JRN-B"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-B"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/components/shell/ProductShell.tsx",
@@ -8372,9 +7801,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/",
       "stableFallback": "/",
-      "browserJourneyIds": [
-        "HP-P5-JRN-A"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/components/shell/ProductShell.tsx",
@@ -8403,9 +7830,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/studio/library",
       "stableFallback": "/",
-      "browserJourneyIds": [
-        "HP-P5-JRN-A"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
@@ -8434,9 +7859,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/",
       "stableFallback": "/",
-      "browserJourneyIds": [
-        "HP-P5-JRN-A"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
@@ -8465,9 +7888,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/studio/library",
       "stableFallback": "/",
-      "browserJourneyIds": [
-        "HP-P5-JRN-A"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
@@ -8496,9 +7917,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/studio/private-content",
       "stableFallback": "/",
-      "browserJourneyIds": [
-        "HP-P5-JRN-A"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
@@ -8527,9 +7946,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/studio/library",
       "stableFallback": "/",
-      "browserJourneyIds": [
-        "HP-P5-JRN-A"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
@@ -8558,9 +7975,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/studio/library",
       "stableFallback": "/",
-      "browserJourneyIds": [
-        "HP-P5-JRN-A"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
@@ -8589,9 +8004,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/studio/library",
       "stableFallback": "/",
-      "browserJourneyIds": [
-        "HP-P5-JRN-A"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
@@ -8620,9 +8033,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/studio/library",
       "stableFallback": "/",
-      "browserJourneyIds": [
-        "HP-P5-JRN-A"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
@@ -8651,9 +8062,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/studio/library",
       "stableFallback": "/",
-      "browserJourneyIds": [
-        "HP-P5-JRN-A"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
@@ -8682,9 +8091,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/studio/library",
       "stableFallback": "/",
-      "browserJourneyIds": [
-        "HP-P5-JRN-A"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
@@ -8713,9 +8120,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/studio/library",
       "stableFallback": "/",
-      "browserJourneyIds": [
-        "HP-P5-JRN-A"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
@@ -8744,9 +8149,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/",
       "stableFallback": "/",
-      "browserJourneyIds": [
-        "HP-P5-JRN-A"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-A"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
@@ -8775,9 +8178,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/sign-in",
       "stableFallback": "/",
-      "browserJourneyIds": [
-        "HP-P5-JRN-B"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-B"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/components/shell/ProductShell.tsx",
@@ -8806,9 +8207,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/",
       "stableFallback": "/sign-in",
-      "browserJourneyIds": [
-        "HP-P5-JRN-B"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-B"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/components/wayfarer/AccountFlow.tsx",
@@ -8837,9 +8236,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/",
       "stableFallback": "/sign-in",
-      "browserJourneyIds": [
-        "HP-P5-JRN-B"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-B"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/components/wayfarer/AccountFlow.tsx",
@@ -8859,9 +8256,7 @@
       "keyboard": true,
       "touch": true,
       "authenticationState": "AUTHENTICATED",
-      "requiredCapabilities": [
-        "CREATOR"
-      ],
+      "requiredCapabilities": ["CREATOR"],
       "sourceDataFamily": "source-studio-chronicle-sections",
       "dynamicParameterSource": "taleId",
       "queryContract": "NONE_OR_SOURCE_GOVERNED",
@@ -8870,9 +8265,7 @@
       "forbiddenWhen": "REQUIRED_CAPABILITY_ABSENT",
       "safeReturn": "/studio/library",
       "stableFallback": "/studio/library",
-      "browserJourneyIds": [
-        "HP-P5-JRN-E"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-E"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/components/studio/TaleEditor.tsx",
@@ -8892,9 +8285,7 @@
       "keyboard": true,
       "touch": true,
       "authenticationState": "AUTHENTICATED",
-      "requiredCapabilities": [
-        "CREATOR"
-      ],
+      "requiredCapabilities": ["CREATOR"],
       "sourceDataFamily": "source-studio-chronicle-sections",
       "dynamicParameterSource": "taleId",
       "queryContract": "NONE_OR_SOURCE_GOVERNED",
@@ -8903,9 +8294,7 @@
       "forbiddenWhen": "REQUIRED_CAPABILITY_ABSENT",
       "safeReturn": "/studio/library",
       "stableFallback": "/studio/library",
-      "browserJourneyIds": [
-        "HP-P5-JRN-E"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-E"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/components/studio/TaleEditor.tsx",
@@ -8925,9 +8314,7 @@
       "keyboard": true,
       "touch": true,
       "authenticationState": "AUTHENTICATED",
-      "requiredCapabilities": [
-        "CREATOR"
-      ],
+      "requiredCapabilities": ["CREATOR"],
       "sourceDataFamily": "source-studio-chronicle-sections",
       "dynamicParameterSource": "taleId",
       "queryContract": "NONE_OR_SOURCE_GOVERNED",
@@ -8936,9 +8323,7 @@
       "forbiddenWhen": "REQUIRED_CAPABILITY_ABSENT",
       "safeReturn": "/studio/library",
       "stableFallback": "/studio/library",
-      "browserJourneyIds": [
-        "HP-P5-JRN-E"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-E"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/components/studio/TaleEditor.tsx",
@@ -8958,9 +8343,7 @@
       "keyboard": true,
       "touch": true,
       "authenticationState": "AUTHENTICATED",
-      "requiredCapabilities": [
-        "CREATOR"
-      ],
+      "requiredCapabilities": ["CREATOR"],
       "sourceDataFamily": null,
       "dynamicParameterSource": null,
       "queryContract": "NONE_OR_SOURCE_GOVERNED",
@@ -8969,9 +8352,7 @@
       "forbiddenWhen": "REQUIRED_CAPABILITY_ABSENT",
       "safeReturn": "/",
       "stableFallback": "/studio/library",
-      "browserJourneyIds": [
-        "HP-P5-JRN-E"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-E"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/components/studio/StudioHome.tsx",
@@ -8991,9 +8372,7 @@
       "keyboard": true,
       "touch": true,
       "authenticationState": "AUTHENTICATED",
-      "requiredCapabilities": [
-        "CREATOR"
-      ],
+      "requiredCapabilities": ["CREATOR"],
       "sourceDataFamily": "source-studio-chronicle-sections",
       "dynamicParameterSource": "taleId",
       "queryContract": "NONE_OR_SOURCE_GOVERNED",
@@ -9002,9 +8381,7 @@
       "forbiddenWhen": "REQUIRED_CAPABILITY_ABSENT",
       "safeReturn": "/studio/library",
       "stableFallback": "/studio/library",
-      "browserJourneyIds": [
-        "HP-P5-JRN-E"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-E"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/components/studio/TaleEditor.tsx",
@@ -9024,9 +8401,7 @@
       "keyboard": true,
       "touch": true,
       "authenticationState": "AUTHENTICATED",
-      "requiredCapabilities": [
-        "CREATOR"
-      ],
+      "requiredCapabilities": ["CREATOR"],
       "sourceDataFamily": "source-studio-library",
       "dynamicParameterSource": "taleId",
       "queryContract": "NONE_OR_SOURCE_GOVERNED",
@@ -9035,9 +8410,7 @@
       "forbiddenWhen": "REQUIRED_CAPABILITY_ABSENT",
       "safeReturn": "/",
       "stableFallback": "/studio/library",
-      "browserJourneyIds": [
-        "HP-P5-JRN-E"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-E"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/components/studio/StudioHome.tsx",
@@ -9057,9 +8430,7 @@
       "keyboard": true,
       "touch": true,
       "authenticationState": "AUTHENTICATED",
-      "requiredCapabilities": [
-        "CREATOR"
-      ],
+      "requiredCapabilities": ["CREATOR"],
       "sourceDataFamily": "source-studio-chronicle-sections",
       "dynamicParameterSource": "taleId",
       "queryContract": "NONE_OR_SOURCE_GOVERNED",
@@ -9068,9 +8439,7 @@
       "forbiddenWhen": "REQUIRED_CAPABILITY_ABSENT",
       "safeReturn": "/studio/library",
       "stableFallback": "/studio/library",
-      "browserJourneyIds": [
-        "HP-P5-JRN-E"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-E"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/components/studio/TaleEditor.tsx",
@@ -9099,9 +8468,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/",
       "stableFallback": "/tales",
-      "browserJourneyIds": [
-        "HP-P5-JRN-C"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-C"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/components/tales/TaleCatalog.tsx",
@@ -9130,9 +8497,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/",
       "stableFallback": "/sign-in",
-      "browserJourneyIds": [
-        "HP-P5-JRN-F"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-F"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/app/account/claim/page.tsx",
@@ -9161,9 +8526,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/",
       "stableFallback": "/sign-in",
-      "browserJourneyIds": [
-        "HP-P5-JRN-F"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-F"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/app/account/merge/page.tsx",
@@ -9192,9 +8555,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/sign-in",
       "stableFallback": "/player/sign-in",
-      "browserJourneyIds": [
-        "HP-P5-JRN-C"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-C"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/app/join/[token]/route.ts",
@@ -9223,9 +8584,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/sign-in",
       "stableFallback": "/sign-in",
-      "browserJourneyIds": [
-        "HP-P5-JRN-B"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-B"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/app/reset-password/page.tsx",
@@ -9254,9 +8613,7 @@
       "forbiddenWhen": "SOURCE_CONTROL_HIDDEN",
       "safeReturn": "/sign-in",
       "stableFallback": "/sign-in",
-      "browserJourneyIds": [
-        "HP-P5-JRN-B"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-B"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/app/verify-email/page.tsx",
@@ -9276,9 +8633,7 @@
       "keyboard": true,
       "touch": true,
       "authenticationState": "AUTHENTICATED",
-      "requiredCapabilities": [
-        "PLAYER"
-      ],
+      "requiredCapabilities": ["PLAYER"],
       "sourceDataFamily": "source-voyage-log-owner-list",
       "dynamicParameterSource": "id",
       "queryContract": "NONE_OR_SOURCE_GOVERNED",
@@ -9287,9 +8642,7 @@
       "forbiddenWhen": "REQUIRED_CAPABILITY_ABSENT",
       "safeReturn": "/community/voyage-logs",
       "stableFallback": "/community/voyage-logs/owner",
-      "browserJourneyIds": [
-        "HP-P5-JRN-G"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-G"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/components/community/VoyageLogOwnerList.tsx",
@@ -9309,9 +8662,7 @@
       "keyboard": true,
       "touch": true,
       "authenticationState": "AUTHENTICATED",
-      "requiredCapabilities": [
-        "CAPTAIN"
-      ],
+      "requiredCapabilities": ["CAPTAIN"],
       "sourceDataFamily": null,
       "dynamicParameterSource": null,
       "queryContract": "NONE_OR_SOURCE_GOVERNED",
@@ -9320,9 +8671,7 @@
       "forbiddenWhen": "REQUIRED_CAPABILITY_ABSENT",
       "safeReturn": "/",
       "stableFallback": "/",
-      "browserJourneyIds": [
-        "HP-P5-JRN-D"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-D"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
@@ -9342,9 +8691,7 @@
       "keyboard": true,
       "touch": true,
       "authenticationState": "AUTHENTICATED",
-      "requiredCapabilities": [
-        "CAPTAIN"
-      ],
+      "requiredCapabilities": ["CAPTAIN"],
       "sourceDataFamily": null,
       "dynamicParameterSource": null,
       "queryContract": "tab=invitations",
@@ -9353,9 +8700,7 @@
       "forbiddenWhen": "REQUIRED_CAPABILITY_ABSENT",
       "safeReturn": "/",
       "stableFallback": "/",
-      "browserJourneyIds": [
-        "HP-P5-JRN-D"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-D"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
@@ -9375,9 +8720,7 @@
       "keyboard": true,
       "touch": true,
       "authenticationState": "AUTHENTICATED",
-      "requiredCapabilities": [
-        "CREATOR"
-      ],
+      "requiredCapabilities": ["CREATOR"],
       "sourceDataFamily": null,
       "dynamicParameterSource": null,
       "queryContract": "NONE_OR_SOURCE_GOVERNED",
@@ -9386,9 +8729,7 @@
       "forbiddenWhen": "REQUIRED_CAPABILITY_ABSENT",
       "safeReturn": "/",
       "stableFallback": "/",
-      "browserJourneyIds": [
-        "HP-P5-JRN-E"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-E"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
@@ -9408,9 +8749,7 @@
       "keyboard": true,
       "touch": true,
       "authenticationState": "AUTHENTICATED",
-      "requiredCapabilities": [
-        "CREATOR"
-      ],
+      "requiredCapabilities": ["CREATOR"],
       "sourceDataFamily": null,
       "dynamicParameterSource": null,
       "queryContract": "NONE_OR_SOURCE_GOVERNED",
@@ -9419,9 +8758,7 @@
       "forbiddenWhen": "REQUIRED_CAPABILITY_ABSENT",
       "safeReturn": "/",
       "stableFallback": "/studio/library",
-      "browserJourneyIds": [
-        "HP-P5-JRN-E"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-E"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
@@ -9441,9 +8778,7 @@
       "keyboard": true,
       "touch": true,
       "authenticationState": "AUTHENTICATED",
-      "requiredCapabilities": [
-        "MODERATOR"
-      ],
+      "requiredCapabilities": ["MODERATOR"],
       "sourceDataFamily": null,
       "dynamicParameterSource": null,
       "queryContract": "NONE_OR_SOURCE_GOVERNED",
@@ -9452,9 +8787,7 @@
       "forbiddenWhen": "REQUIRED_CAPABILITY_ABSENT",
       "safeReturn": "/",
       "stableFallback": "/community",
-      "browserJourneyIds": [
-        "HP-P5-JRN-G"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-G"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
@@ -9474,9 +8807,7 @@
       "keyboard": true,
       "touch": true,
       "authenticationState": "AUTHENTICATED",
-      "requiredCapabilities": [
-        "PLAYER"
-      ],
+      "requiredCapabilities": ["PLAYER"],
       "sourceDataFamily": null,
       "dynamicParameterSource": null,
       "queryContract": "NONE_OR_SOURCE_GOVERNED",
@@ -9485,9 +8816,7 @@
       "forbiddenWhen": "REQUIRED_CAPABILITY_ABSENT",
       "safeReturn": "/",
       "stableFallback": "/",
-      "browserJourneyIds": [
-        "HP-P5-JRN-C"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-C"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
@@ -9507,9 +8836,7 @@
       "keyboard": true,
       "touch": true,
       "authenticationState": "AUTHENTICATED",
-      "requiredCapabilities": [
-        "CREATOR"
-      ],
+      "requiredCapabilities": ["CREATOR"],
       "sourceDataFamily": null,
       "dynamicParameterSource": null,
       "queryContract": "NONE_OR_SOURCE_GOVERNED",
@@ -9518,9 +8845,7 @@
       "forbiddenWhen": "REQUIRED_CAPABILITY_ABSENT",
       "safeReturn": "/",
       "stableFallback": "/studio/library",
-      "browserJourneyIds": [
-        "HP-P5-JRN-E"
-      ],
+      "browserJourneyIds": ["HP-P5-JRN-E"],
       "evidenceIds": [],
       "currentStatus": "BRANCH_VALIDATED_NOT_MERGED",
       "sourceFile": "src/navigation/registry.ts",
@@ -9533,11 +8858,6 @@
     "architectureFreezeSha": "07544240bc592b0798625824265fd48c5419f87a",
     "fixtureVersion": "homeport-phase6-v1",
     "evidenceCount": 126,
-    "limitations": [
-      "Not merged",
-      "Not deployed",
-      "No owner acceptance",
-      "Phase 7 integrated proof remains"
-    ]
+    "limitations": ["Not merged", "Not deployed", "No owner acceptance", "Phase 7 integrated proof remains"]
   }
 }

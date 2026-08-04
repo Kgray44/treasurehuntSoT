@@ -361,11 +361,16 @@ if (scope === "all") {
     ),
     "missing exact Phase 5 advancement: HP-NC-014",
   );
-  for (const id of ["HP-NC-018", "HP-NC-019"])
-    check(
-      ledger.find((row) => row.id === id)?.disposition === "PARTIAL_PHASE_4_LATER_OWNER_RETAINED",
-      `missing exact Phase 4 advancement: ${id}`,
-    );
+  check(
+    ["PARTIAL_PHASE_4_LATER_OWNER_RETAINED", "CLOSED_PHASE_6_BRANCH_VALIDATED"].includes(
+      ledger.find((row) => row.id === "HP-NC-018")?.disposition,
+    ),
+    "missing exact Phase 4 or later Phase 6 advancement: HP-NC-018",
+  );
+  check(
+    ledger.find((row) => row.id === "HP-NC-019")?.disposition === "PARTIAL_PHASE_4_LATER_OWNER_RETAINED",
+    "missing exact Phase 4 advancement: HP-NC-019",
+  );
 }
 
 if (errors.length) {

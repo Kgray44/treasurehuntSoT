@@ -3,7 +3,7 @@ title: Accessibility
 audience: user
 status: current
 canonical_for: accessibility-guide
-last_reviewed: 2026-08-03
+last_reviewed: 2026-08-04
 ---
 
 # Accessibility
@@ -26,3 +26,11 @@ fallbacks, 390x844 mobile parity, effective 200% layouts, and reduced-motion
 final states. Local Chromium and axe checks found no serious or critical issues
 in the governed journeys; this is not a complete assistive-technology or
 deployed cross-browser certification.
+
+Phase 6 extends those contracts across all current critical/high product
+surfaces: named landmarks and headings, route-entry focus, dialog focus trap and
+restoration, keyboard/touch activation, live mutation/status regions, no
+accidental horizontal document overflow, narrow-mobile reflow, effective 200
+percent, and stable reduced-motion end states. Forty-nine committed captures
+have zero serious or critical axe findings. This is not physical
+assistive-technology or full deployed cross-browser certification.

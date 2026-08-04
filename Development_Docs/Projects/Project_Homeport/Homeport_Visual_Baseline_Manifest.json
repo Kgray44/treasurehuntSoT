@@ -8850,12 +8850,7 @@
     "architectureFreezeSha": "07544240bc592b0798625824265fd48c5419f87a",
     "fixtureVersion": "homeport-phase6-v1",
     "evidenceCount": 126,
-    "limitations": [
-      "Not merged",
-      "Not deployed",
-      "No owner acceptance",
-      "Phase 7 integrated proof remains"
-    ]
+    "limitations": ["Not merged", "Not deployed", "No owner acceptance", "Phase 7 integrated proof remains"]
   },
   "phase6Run": {
     "schemaVersion": "1.0.0",

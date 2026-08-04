@@ -3,7 +3,7 @@ title: Account security and connected identities
 audience: user
 status: current
 canonical_for: account-security-guide
-last_reviewed: 2026-08-03
+last_reviewed: 2026-08-04
 ---
 
 # Account security and connected identities
@@ -32,3 +32,9 @@ tokenized deep links with valid, invalid, expired, consumed, or revoked recovery
 states; they never appear in ordinary navigation and committed evidence contains
 no token material. This is branch-local synthetic proof, not live-provider or
 deployment evidence.
+
+Phase 6 presents anonymous, session-expired, revoked/invalid, account-restricted,
+permission-restricted, dependency-unavailable, and token lifecycle decisions as
+distinct accessible states. Security and Sessions mutations show pending,
+success, failure, and safe recovery without displaying raw session identifiers.
+Live identity-provider behavior remains outside this proof.

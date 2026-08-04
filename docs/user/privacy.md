@@ -3,7 +3,7 @@ title: Privacy and private material
 audience: user
 status: current
 canonical_for: privacy-guide
-last_reviewed: 2026-08-03
+last_reviewed: 2026-08-04
 ---
 
 # Privacy and private material
@@ -26,3 +26,9 @@ locations, unconsented participants or media, reports, sanctions, and
 quarantine reasons. Anonymous and unrelated accounts receive non-revealing
 not-found or unavailable states. Local fixture checks do not prove production
 providers, MySQL, deployment, or owner acceptance.
+
+Phase 6 removes raw identifiers, checksums, enum-like implementation labels,
+object-key presentation, and unsafe media failure from ordinary screens. Public
+screens continue to use allowlisted projections, while restriction and
+dependency states remain explicit without revealing private facts. Committed
+evidence contains reserved synthetic content only.

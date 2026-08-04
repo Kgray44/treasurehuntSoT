@@ -23,12 +23,13 @@ tokenized, compatibility, parent/return, dead-end, and desktop/mobile contracts.
 This remains branch-local evidence; Phase 6, Phase 7, deployment, and owner or
 product acceptance remain separate.
 
-Phase 6 product-surface architecture is frozen on the same retained branch.
-The freeze records the current source census, acceptance vocabulary,
-component-family and state ownership, responsive/accessibility/motion/media
-contracts, isolated fixture and evidence policy, validator/updater boundaries,
-and Phase 7 handoff. It is an architecture checkpoint only; implementation and
-acceptance remain separate.
+Phase 6 product surfaces and page states are implemented and exact-source
+browser validated on the same retained branch. The source-derived registry
+contains 92 human-facing records from 85 page sources with no omission; all
+critical/high screens are visually complete, and 126 checksum-bound captures
+cover desktop, mobile, tablet, effective 200 percent, explicit states, and
+reduced motion. This is local synthetic branch evidence, not `main`, deployment,
+owner acceptance, product acceptance, or Phase 7 whole-product proof.
 
 ## Authority
 
@@ -124,10 +125,26 @@ acceptance, or product acceptance.
 ## Phase 6 records
 
 - [Product Surface Completion Architecture](Project_Homeport_Phase_6_Product_Surface_Completion_Architecture.md)
+- [Test Plan](Project_Homeport_Phase_6_Test_Plan.md)
+- [Implementation Report](Project_Homeport_Phase_6_Implementation_Report.md)
+- [Validation Record](Project_Homeport_Phase_6_Validation_Record.md)
+- [Integration Manifest](Project_Homeport_Phase_6_Integration_Manifest.md)
+- [Evidence Index](evidence/phase6/README.md)
+- [Visual Review](evidence/phase6/Project_Homeport_Phase_6_Visual_Review.md)
+- `Project_Homeport_Phase_6_Screen_Acceptance_Registry.json`
+- `Project_Homeport_Phase_6_Component_Family_Registry.json`
+- `Project_Homeport_Phase_6_Page_State_Matrix.csv`
+- `Project_Homeport_Phase_6_Responsive_Matrix.csv`
+- `Project_Homeport_Phase_6_Accessibility_Matrix.csv`
+- `Project_Homeport_Phase_6_Motion_and_Reduced_Motion_Matrix.csv`
+- `Project_Homeport_Phase_6_Media_and_Fallback_Matrix.csv`
+- `Project_Homeport_Phase_6_Mutation_Feedback_Matrix.csv`
+- `Project_Homeport_Phase_6_Visual_Evidence_Matrix.csv`
 
-The Phase 6 architecture is frozen before broad product edits. Later Phase 6
-registries, matrices, implementation, evidence, validation, and integration
-records will be added here only when their corresponding work exists.
+The Phase 6 records are generated and validated against exact product source
+`e02ee0dae0469a2ba573beaf409c0b34e8668d09`. HP-NC-018 closes as branch
+validated; Phase 7 retains integrated whole-product journeys, its final fixture,
+the running owner package, and the product-acceptance boundary.
 
 ## Phase 2 machine-readable records
 
@@ -148,14 +165,15 @@ records will be added here only when their corresponding work exists.
 - `Homeport_Visual_Baseline_Manifest.json`
 - `Homeport_Nonconformity_Ledger.csv`
 
-These records retain Phase 0 observations and add explicit Phase 1-5
+These records retain Phase 0 observations and add explicit Phase 1-6
 implemented-state fields, A-Q, A-U, A-AE, A-AR, and A-AD journey records, and
 checksum-bound after-state evidence. The Phase 1 compatibility authority
 remains `Project_Homeport_Phase_1_Compatibility_Cutover_Ledger.csv`.
 
-Run `npm run homeport:phase5:inventory`,
-`npm run homeport:phase5:validate`, and `npm run homeport:validate` to apply and
-verify the additive Phase 5 graph, deterministic contracts, cross-references,
-accepted screenshot checksums, direct closures, and later-owner boundaries.
+Run `npm run homeport:phase6:inventory`,
+`npm run homeport:phase6:validate`, and `npm run homeport:validate` to apply and
+verify the complete Phase 6 registry/matrix system, deterministic contracts,
+cross-references, accepted screenshot checksums, direct closures, and
+later-owner boundaries.
 `PRODUCT_NONCONFORMITIES_PRESENT` remains expected
 because later-phase findings remain open; it is not a validator failure.

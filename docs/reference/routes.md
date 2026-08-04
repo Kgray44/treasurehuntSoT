@@ -3,7 +3,7 @@ title: Route reference
 audience: reference
 status: current
 canonical_for: route-reference
-last_reviewed: 2026-08-03
+last_reviewed: 2026-08-04
 ---
 
 # Route reference
@@ -33,7 +33,12 @@ The branch publishes parent/return metadata, genuine dynamic source controls,
 safe token states, compatibility targets, and equivalent desktop/mobile entry
 edges. Ordinary navigation never exposes token values or treats a private
 detail ID as discoverable. This graph is complete on the named branch only; it
-is not on `main`, deployed, or owner accepted, and Phase 6 still owns
-repository-wide page-state completion.
+is not on `main`, deployed, or owner accepted.
+
+Phase 6 re-censused the same current source at 85 page routes and 174 API/route
+handlers, with no omitted page source. It adds screen/state/responsive evidence
+without changing route ownership or creating a second navigation authority.
+The result is exact-source branch validation, not Phase 7 integrated journey or
+deployment proof.
 
 For product intent see [features](../product/features.md); for implementation ownership see [architecture](../developer/architecture.md).

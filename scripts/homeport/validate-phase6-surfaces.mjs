@@ -7,7 +7,6 @@ import { criticality, implementationSourceSha, stateVocabulary, viewports } from
 
 const moduleRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
 const auditRoot = path.join(moduleRoot, "Development_Docs", "Projects", "Project_Homeport");
-const evidenceRoot = path.join(auditRoot, "evidence", "phase6");
 const allowedMaturity = new Set([
   "VISUALLY_COMPLETE",
   "COMPLETE_WITH_TRUTHFUL_EXTERNAL_LIMITATION",
@@ -91,7 +90,6 @@ export function validatePhase6Surfaces(root = moduleRoot) {
   const nodes = readJson("Project_Homeport_Phase_5_Route_Node_Registry.json").nodes;
   const sources = discoverAppRouteSources(root).filter((source) => source.kind === "page");
   const nodeByRoute = new Map(nodes.map((node) => [node.routeId, node]));
-  const screenById = new Map(registry.screens.map((screen) => [screen.screenId, screen]));
   const visualByScreen = new Map();
   for (const row of visualRows) {
     const records = visualByScreen.get(row.screen_id) ?? [];

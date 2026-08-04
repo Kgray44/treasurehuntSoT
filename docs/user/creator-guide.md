@@ -3,7 +3,7 @@ title: Creator guide
 audience: creator
 status: current
 canonical_for: creator-guide
-last_reviewed: 2026-08-03
+last_reviewed: 2026-08-04
 ---
 
 # Creator guide
@@ -35,3 +35,9 @@ authorized private-content tools retain explicit parents and exits. Invalid or
 unauthorized details recover without exposing private material. Desktop and
 mobile reach the same functional destinations. This evidence is local and
 synthetic, not deployed or owner accepted.
+
+Phase 6 completes Studio Library and editor composition through narrow mobile
+and effective 200 percent, replaces browser-native prompts with governed
+dialogs, contains internal workbench scrolling, and gives failed media or
+external private-content dependencies explicit fallbacks. Live provider and
+malware-scanner behavior remains externally unvalidated.

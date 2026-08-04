@@ -3,7 +3,7 @@ title: Chronicle Passport
 audience: user
 status: current
 canonical_for: chronicle-passport-guide
-last_reviewed: 2026-08-03
+last_reviewed: 2026-08-04
 ---
 
 # Chronicle Passport
@@ -48,3 +48,9 @@ and equivalent mobile entry. Empty and invalid-detail states provide a safe
 onward action instead of requiring browser Back. This remains local synthetic
 evidence; repository-wide Phase 6 states, deployment, and owner acceptance are
 not claimed.
+
+Phase 6 completes Chronicle Passport overview, History, record, Artifact
+Cabinet, provenance, Memories, and Saved surfaces with deliberate populated,
+empty, error, dependency, removed, permission, mutation, and media-fallback
+states. Desktop, tablet, mobile, narrow-mobile, and effective-200-percent
+compositions are branch validated with synthetic records only.

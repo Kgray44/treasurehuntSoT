@@ -3,7 +3,7 @@ title: Getting started
 audience: user
 status: current
 canonical_for: getting-started
-last_reviewed: 2026-08-03
+last_reviewed: 2026-08-04
 ---
 
 # Getting started
@@ -40,3 +40,10 @@ acceptance.
 ## Accessibility and privacy
 
 Use your browser zoom and assistive technology preferences; see [accessibility](accessibility.md). Do not put private story material in public support requests; see [privacy](privacy.md).
+
+## Phase 6 branch state
+
+The Project Homeport branch now applies deliberate loading, empty, error,
+permission, mutation, media-fallback, responsive, focus, and reduced-motion
+behavior across the current product surfaces. This is local synthetic evidence;
+the changes are not on `main`, deployed, or owner accepted.

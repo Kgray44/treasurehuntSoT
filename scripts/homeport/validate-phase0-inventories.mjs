@@ -290,6 +290,49 @@ for (const journey of journeys.journeys) {
 uniqueBy(evidence.records, "evidenceId", "evidence manifest");
 const evidenceIds = new Set(evidence.records.map((record) => record.evidenceId));
 for (const record of evidence.records) {
+  if (record.evidenceId.startsWith("HP-P6-EV-")) {
+    requireKeys(
+      record,
+      [
+        "evidenceId",
+        "screenId",
+        "route",
+        "productArea",
+        "state",
+        "criticality",
+        "fixtureVersion",
+        "fixtureChecksum",
+        "accountState",
+        "viewportFamily",
+        "viewport",
+        "zoom",
+        "motionMode",
+        "sourceSha",
+        "branch",
+        "browser",
+        "capturePath",
+        "sha256",
+        "visualReviewClassification",
+        "accessibilityResult",
+        "semanticResult",
+        "overflowResult",
+        "defectsFound",
+        "correctionCommit",
+        "limitation",
+      ],
+      record.evidenceId,
+    );
+    assert.equal(record.sourceSha, evidence.phase6Run?.sourceSha, `${record.evidenceId} source SHA drifted`);
+    assert.ok(screenIds.has(record.screenId), `${record.evidenceId} references unknown screen contract`);
+    const committedScreenshot = path.join(root, record.capturePath);
+    assert.ok(existsSync(committedScreenshot), `${record.evidenceId} committed screenshot is missing`);
+    assert.equal(
+      sha256(committedScreenshot),
+      record.sha256,
+      `${record.evidenceId} committed screenshot checksum drifted`,
+    );
+    continue;
+  }
   requireKeys(
     record,
     [
@@ -580,19 +623,31 @@ assert.equal(
   "HP-NC-014 has the wrong Phase 5 disposition",
 );
 assert.equal(phase5Reachability?.target_phase, "PHASE_5", "HP-NC-014 changed Phase 5 ownership");
-for (const [id, targetPhase] of [
-  ["HP-NC-018", "PHASE_6"],
-  ["HP-NC-019", "PHASE_7"],
-]) {
-  const record = nonconformities.find((candidate) => candidate.id === id);
-  assert.equal(
-    record?.current_status,
-    "PARTIALLY_ADVANCED_PHASE_4",
-    `${id} must retain its later-phase owner boundary`,
-  );
-  assert.equal(record?.disposition, "PARTIAL_PHASE_4_LATER_OWNER_RETAINED", `${id} has the wrong Phase 4 disposition`);
-  assert.equal(record?.target_phase, targetPhase, `${id} changed later-phase ownership`);
-}
+const phase6StateCompletion = nonconformities.find((candidate) => candidate.id === "HP-NC-018");
+const phase6Closed = screens.phase6Implementation?.state === "BRANCH_VALIDATED_NOT_MERGED";
+assert.equal(
+  phase6StateCompletion?.current_status,
+  phase6Closed ? "CLOSED_PHASE_6_BRANCH_VALIDATED" : "PHASE_6_IMPLEMENTED_PENDING_FINAL_EVIDENCE",
+  "HP-NC-018 must reflect the current Phase 6 validation boundary",
+);
+assert.equal(
+  phase6StateCompletion?.disposition,
+  phase6Closed ? "CLOSED_PHASE_6_BRANCH_VALIDATED" : "PHASE_6_IMPLEMENTED_PENDING_VALIDATION",
+  "HP-NC-018 has the wrong Phase 6 disposition",
+);
+assert.equal(phase6StateCompletion?.target_phase, "PHASE_6", "HP-NC-018 changed Phase 6 ownership");
+const phase7IntegratedProof = nonconformities.find((candidate) => candidate.id === "HP-NC-019");
+assert.equal(
+  phase7IntegratedProof?.current_status,
+  "PARTIALLY_ADVANCED_PHASE_4",
+  "HP-NC-019 must retain its later-phase owner boundary",
+);
+assert.equal(
+  phase7IntegratedProof?.disposition,
+  "PARTIAL_PHASE_4_LATER_OWNER_RETAINED",
+  "HP-NC-019 has the wrong Phase 4 disposition",
+);
+assert.equal(phase7IntegratedProof?.target_phase, "PHASE_7", "HP-NC-019 changed later-phase ownership");
 
 for (const screen of screens.screens) {
   for (const screenshotId of screen.screenshotIds)

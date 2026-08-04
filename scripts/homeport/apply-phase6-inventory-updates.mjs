@@ -15,7 +15,6 @@ import {
   mediaFamilies,
   mutationDefinitions,
   screenId,
-  stateVocabulary,
   viewports,
 } from "./phase6-surface-model.mjs";
 
@@ -577,6 +576,7 @@ function updateLegacyArtifacts() {
   const byId = new Map(screenRecords.map((screen) => [screen.screenId, screen]));
   for (const file of ["Homeport_Screen_Catalog.json", "Homeport_Screen_Contract_Catalog.json"]) {
     const catalog = readJson(file);
+    if (file === "Homeport_Screen_Catalog.json") catalog.maturityVocabulary = screenRegistry.maturityVocabulary;
     for (const screen of catalog.screens) {
       const current = byId.get(screen.screenId);
       if (!current) continue;
