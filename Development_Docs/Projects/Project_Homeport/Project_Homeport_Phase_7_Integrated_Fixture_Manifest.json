@@ -1,0 +1,93 @@
+{
+  "schemaVersion": "1.0.0",
+  "fixtureVersion": "homeport-phase7-integrated-v1",
+  "classification": "SYNTHETIC_TEST_DATA",
+  "sourceSha": "IMPLEMENTATION_SOURCE_PENDING",
+  "aliases": [
+    {
+      "alias": "ANONYMOUS",
+      "credentialLocation": "EXTERNAL_TASK_OWNED_HANDOFF"
+    },
+    {
+      "alias": "REGISTRATION_CANDIDATE",
+      "credentialLocation": "EXTERNAL_TASK_OWNED_HANDOFF"
+    },
+    {
+      "alias": "RETURNING_FULL_CAPABILITY",
+      "credentialLocation": "EXTERNAL_TASK_OWNED_HANDOFF"
+    },
+    {
+      "alias": "PLAYER_ONLY",
+      "credentialLocation": "EXTERNAL_TASK_OWNED_HANDOFF"
+    },
+    {
+      "alias": "CAPTAIN_ONLY",
+      "credentialLocation": "EXTERNAL_TASK_OWNED_HANDOFF"
+    },
+    {
+      "alias": "CREATOR_ONLY",
+      "credentialLocation": "EXTERNAL_TASK_OWNED_HANDOFF"
+    },
+    {
+      "alias": "MODERATOR",
+      "credentialLocation": "EXTERNAL_TASK_OWNED_HANDOFF"
+    },
+    {
+      "alias": "RESTRICTED_ACCOUNT",
+      "credentialLocation": "EXTERNAL_TASK_OWNED_HANDOFF"
+    },
+    {
+      "alias": "EXPIRED_SESSION_ACCOUNT",
+      "credentialLocation": "EXTERNAL_TASK_OWNED_HANDOFF"
+    },
+    {
+      "alias": "RECOVERY_ACCOUNT",
+      "credentialLocation": "EXTERNAL_TASK_OWNED_HANDOFF"
+    },
+    {
+      "alias": "EMPTY_NEW_ACCOUNT",
+      "credentialLocation": "EXTERNAL_TASK_OWNED_HANDOFF"
+    }
+  ],
+  "requiredData": [
+    "PUBLIC_CHRONICLES",
+    "PLAYABLE_CHRONICLE",
+    "PLAYER_PLAYTHROUGH",
+    "CAPTAIN_SESSION",
+    "CAPTAIN_INVITATIONS",
+    "CREATOR_STUDIO_CHRONICLE_AND_VERSION",
+    "PUBLIC_CREATOR_PROFILE",
+    "PROFILE_WITH_MEDIA",
+    "PROFILE_WITHOUT_MEDIA",
+    "PERSONAL_HARBOR_PREFERENCES_AND_PRIVACY",
+    "HISTORY",
+    "MEMORY",
+    "ARTIFACT",
+    "SAVED_COMMUNITY_CONTENT",
+    "COMMUNITY_DISTRICTS",
+    "COLLECTION",
+    "GUIDE",
+    "VOYAGE_LOG",
+    "CURRENT_AND_OTHER_SESSIONS",
+    "RESTRICTED_CAPABILITY",
+    "PERMISSION_DENIAL",
+    "EXPIRED_SESSION",
+    "PASSWORD_RESET_TOKEN",
+    "VERIFICATION_TOKEN",
+    "INVITATION_TOKEN",
+    "DEPENDENCY_FAILURE",
+    "EMPTY_STATES"
+  ],
+  "roots": ["IMMUTABLE_SEED", "AUTOMATED_JOURNEY_CLONES", "FINAL_WALKTHROUGH_CLONE"],
+  "privacyAssertions": [
+    "SYNTHETIC_NAMES_ONLY",
+    "RESERVED_EMAIL_DOMAINS_ONLY",
+    "SYNTHETIC_MEDIA_ONLY",
+    "FICTIONAL_LOCATIONS_ONLY",
+    "NO_PRIVATE_CHRONICLE_PROSE",
+    "NO_ACCEPTED_REAL_ANSWERS",
+    "NO_OBJECT_KEYS",
+    "NO_COMMITTED_SECRETS"
+  ],
+  "resetPolicy": "Recreate a task-owned clone from the immutable accepted seed."
+}
