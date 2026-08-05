@@ -469,6 +469,25 @@ async function seed() {
       createdAt,
     },
   });
+  await db.playthroughMembership.upsert({
+    where: {
+      playthroughId_playerProfileId: {
+        playthroughId: completedSession.id,
+        playerProfileId: aliases.REVIEW_EMPTY.profileId,
+      },
+    },
+    update: { status: "COMPLETED_MEMBER", joinedAt: createdAt, completedAt: completedSession.completedAt ?? createdAt },
+    create: {
+      id: "hp7c-membership-review-empty",
+      playthroughId: completedSession.id,
+      playerProfileId: aliases.REVIEW_EMPTY.profileId,
+      role: "PLAYER",
+      status: "COMPLETED_MEMBER",
+      joinedAt: createdAt,
+      completedAt: completedSession.completedAt ?? createdAt,
+      createdAt,
+    },
+  });
   await db.communityReview.upsert({
     where: {
       listingId_authorAccountId: {

@@ -342,7 +342,7 @@ test("Journey M: Save count", async ({ page }) => {
 });
 
 test("Journey N: Rating aggregation", async ({ page }) => {
-  await signIn(page, "REVIEW_ELIGIBLE");
+  await signIn(page, "REVIEW_EMPTY");
   const listing = await reviewListing();
   const initial = await eligibleReviewSummary(listing.id);
   await page.goto(`/community/${encodeURIComponent(listing.slug)}`);
@@ -397,7 +397,7 @@ test("Journey Q: Expanded Chronicle preview", async ({ page }) => {
 });
 
 test("Journey P: Completed Chronicle review later", async ({ page }) => {
-  await signIn(page, "REVIEW_ELIGIBLE");
+  await signIn(page, "REVIEW_EMPTY");
   await page.goto("/passport/history");
   await expect(page.getByRole("link", { name: "Review Chronicle" })).toBeVisible();
   await capture(page, "HP-OWCR2-EV-W-PASSPORT-REVIEW-ENTRY");
