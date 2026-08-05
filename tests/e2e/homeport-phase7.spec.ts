@@ -310,8 +310,9 @@ test(`Journey N: failure and recovery`, async ({ page }) => {
       body: JSON.stringify({ message: "Synthetic discovery dependency is temporarily unavailable." }),
     });
   });
-  await page.getByRole("searchbox", { name: "Search public Community Harbor" }).fill("dependency test");
-  await page.getByRole("button", { name: "Search", exact: true }).click();
+  const search = page.getByRole("searchbox", { name: "Search public Community Harbor" });
+  await search.fill("dependency test");
+  await search.press("Enter");
   await expect(page.getByRole("alert").filter({ hasText: /Synthetic discovery dependency/u })).toBeVisible();
   await capture(page, "dependency-unavailable");
   const retry = page.getByRole("button", { name: "Try again" });
@@ -410,7 +411,7 @@ async function accountDestination(page: Page, account: Alias, label: string) {
     await link.click();
     await expect(page).toHaveURL(/\/profile\//u);
     await page.waitForLoadState("networkidle");
-    await expect(page.getByRole("main")).toBeVisible();
+    await expectSingleMain(page);
     return;
   }
   await settledDeclaredLinkNavigation(page, link, `Account destination ${label}`);
@@ -455,7 +456,13 @@ async function settledDeclaredLinkNavigation(page: Page, link: Locator, label: s
     .poll(() => new URL(page.url()).pathname, { message: `${label} should finish navigation` })
     .toBe(pathname);
   await page.waitForLoadState("networkidle");
-  await expect(page.getByRole("main")).toBeVisible();
+  await expectSingleMain(page);
+}
+
+async function expectSingleMain(page: Page) {
+  const main = page.getByRole("main");
+  await expect(main).toHaveCount(1);
+  await expect(main).toBeVisible();
 }
 
 async function settledLinkNavigation(page: Page, link: ReturnType<Page["getByRole"]>, destination: RegExp) {
