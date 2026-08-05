@@ -414,6 +414,59 @@
   color: var(--brass-100);
   font-weight: 750;
 }
+.harbor-media-upload {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.8rem;
+  align-items: center;
+  border: 1px solid var(--border-subtle);
+  border-radius: 0.75rem;
+  padding: 0.85rem;
+  background: rgb(3 16 19 / 54%);
+}
+.harbor-media-upload:focus-within {
+  border-color: var(--brass-200);
+  outline: 3px solid color-mix(in srgb, var(--brass-200) 42%, transparent);
+  outline-offset: 2px;
+}
+.harbor-media-upload__title {
+  display: block;
+  margin-bottom: 0.22rem;
+  color: var(--text-primary);
+  font-size: 0.9rem;
+  font-weight: 760;
+}
+.harbor-media-upload__trigger {
+  display: inline-flex !important;
+  min-height: 2.75rem;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--brass-200);
+  border-radius: 999px;
+  padding: 0.65rem 0.9rem;
+  color: #071517 !important;
+  background: linear-gradient(135deg, var(--brass-100), var(--brass-300));
+  font-size: 0.78rem !important;
+  font-weight: 820 !important;
+  line-height: 1.1;
+  text-align: center;
+  cursor: pointer;
+}
+.harbor-media-upload__trigger:hover {
+  filter: brightness(1.07);
+}
+.harbor-form input.harbor-file-input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  padding: 0;
+  border: 0;
+  white-space: nowrap;
+}
 .harbor-readonly-field {
   border: 1px solid var(--border-subtle);
   border-radius: 0.7rem;
@@ -1165,6 +1218,12 @@
   .personal-harbor__return {
     align-self: stretch;
     text-align: center;
+  }
+  .harbor-media-upload {
+    grid-template-columns: 1fr;
+  }
+  .harbor-media-upload__trigger {
+    width: 100%;
   }
   .harbor-identity-card,
   .harbor-stat-grid,

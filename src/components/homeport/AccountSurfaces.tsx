@@ -347,14 +347,27 @@ export function ProfileEditor() {
           </label>
           <fieldset className="harbor-media-fields">
             <legend>Profile imagery</legend>
-            <label>
-              Avatar image
+            <div className="harbor-media-upload">
+              <div>
+                <span className="harbor-media-upload__title" id="profile-avatar-label">
+                  Avatar image
+                </span>
+                <span className="harbor-field-hint">
+                  {draft.avatar ? "A stored avatar is ready. Choose a file to replace it." : "No avatar is stored yet."}
+                </span>
+              </div>
               <input
+                id="profile-avatar-file"
+                className="harbor-file-input"
                 type="file"
                 accept="image/png,image/jpeg,image/webp"
+                aria-labelledby="profile-avatar-label"
                 onChange={(event) => void upload("AVATAR", event.target.files?.[0])}
               />
-            </label>
+              <label className="harbor-media-upload__trigger" htmlFor="profile-avatar-file">
+                Choose avatar image
+              </label>
+            </div>
             {draft.avatar && (
               <button
                 type="button"
@@ -364,14 +377,27 @@ export function ProfileEditor() {
                 Remove avatar
               </button>
             )}
-            <label>
-              Banner image
+            <div className="harbor-media-upload">
+              <div>
+                <span className="harbor-media-upload__title" id="profile-banner-label">
+                  Banner image
+                </span>
+                <span className="harbor-field-hint">
+                  {draft.banner ? "A stored banner is ready. Choose a file to replace it." : "No banner is stored yet."}
+                </span>
+              </div>
               <input
+                id="profile-banner-file"
+                className="harbor-file-input"
                 type="file"
                 accept="image/png,image/jpeg,image/webp"
+                aria-labelledby="profile-banner-label"
                 onChange={(event) => void upload("BANNER", event.target.files?.[0])}
               />
-            </label>
+              <label className="harbor-media-upload__trigger" htmlFor="profile-banner-file">
+                Choose banner image
+              </label>
+            </div>
             {draft.banner && (
               <button
                 type="button"

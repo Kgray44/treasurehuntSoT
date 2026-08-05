@@ -129,6 +129,10 @@ test("Journey E: View My Profile", async ({ page }) => {
   await expect(page.getByRole("heading", { name: "Public Profile", exact: true })).toBeVisible();
   await expect(page.getByLabel("Display name")).toHaveCount(0);
   await expect(page.getByRole("link", { name: "Personal Information" }).first()).toBeVisible();
+  await expect(page.getByText("Choose avatar image", { exact: true })).toBeVisible();
+  await expect(page.getByText("Choose banner image", { exact: true })).toBeVisible();
+  await expect(page.getByLabel("Avatar image", { exact: true })).toHaveCSS("position", "absolute");
+  await expect(page.getByLabel("Banner image", { exact: true })).toHaveCSS("position", "absolute");
   await capture(page, "HP-OWCR1-EV-P-PUBLIC-PROFILE-EDITOR");
   await page.goto("/account/profile/view");
   await expect(page).toHaveURL(/\/profile\/hp7c-full-capability$/u);
@@ -289,9 +293,11 @@ test("Journey M: Personal Harbor corrections", async ({ page }) => {
   ])
     await expect(navigation.getByRole("link", { name: label, exact: true })).toBeVisible();
   await expect(page.getByRole("navigation", { name: "Contextual navigation" })).toHaveCount(0);
-  await expect(navigation.getByRole("button", { name: "Sign out" })).toBeVisible();
+  const signOut = navigation.getByRole("button", { name: "Sign out" });
+  await expect(signOut).toBeVisible();
   await capture(page, "HP-OWCR1-EV-N-PERSONAL-HARBOR-NAV");
-  await capture(page, "HP-OWCR1-EV-O-SIGN-OUT-ENTRY");
+  await signOut.scrollIntoViewIfNeeded();
+  await capture(page, "HP-OWCR1-EV-O-SIGN-OUT-ENTRY", { fullPage: false, scrollToTop: false });
 });
 
 test("Journey N: Preference effects", async ({ context, page }) => {
@@ -342,6 +348,7 @@ test("Journey O: Fast and slow loading", async ({ page }) => {
     }).observe(document.documentElement, { childList: true, subtree: true });
   });
   await globalDestination(page, "Community Harbor");
+  await expect(page.getByRole("searchbox", { name: "Search public Community Harbor" })).toBeVisible();
   expect(await page.evaluate(() => (window as unknown as { homeportLoadingSeen: boolean }).homeportLoadingSeen)).toBe(
     false,
   );
@@ -638,13 +645,40 @@ function readOutbox(): Delivery[] {
     .map((line) => JSON.parse(line) as Delivery);
 }
 
-async function capture(page: Page, evidenceId: string) {
+async function capture(page: Page, evidenceId: string, options: { fullPage?: boolean; scrollToTop?: boolean } = {}) {
   const screenshotRoot = path.join(taskRoot, "screenshots", `correction-${journeyId}`);
   const reportRoot = path.join(taskRoot, "reports", "owner-correction-journeys");
   await mkdir(screenshotRoot, { recursive: true });
   await mkdir(reportRoot, { recursive: true });
   const screenshotPath = path.join(screenshotRoot, `${evidenceId}.png`);
-  const image = await page.screenshot({ path: screenshotPath, fullPage: true });
+  const intentionalMotion = ["HP-OWCR1-EV-Y-HOME-FIRST-PAINT", "HP-OWCR1-EV-Z-HOME-AMBIENT-MOTION"].includes(
+    evidenceId,
+  );
+  await page.evaluate((scrollToTop) => {
+    if (document.activeElement instanceof HTMLElement) document.activeElement.blur();
+    if (scrollToTop) window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+  }, options.scrollToTop !== false);
+  if (!intentionalMotion) {
+    await expect
+      .poll(() =>
+        page.locator(".product-route-layer").evaluateAll((layers) =>
+          layers.map((layer) => {
+            const style = getComputedStyle(layer);
+            return { opacity: style.opacity, visibility: style.visibility };
+          }),
+        ),
+      )
+      .toEqual([{ opacity: "1", visibility: "visible" }]);
+    await page.waitForTimeout(120);
+  }
+  const image = await page.screenshot({
+    path: screenshotPath,
+    fullPage: options.fullPage !== false,
+    animations: intentionalMotion ? "allow" : "disabled",
+    caret: "hide",
+    style:
+      ".product-shell-header { position: relative !important; top: auto !important; } .skip-link { display: none !important; }",
+  });
   await writeFile(
     path.join(reportRoot, `${evidenceId}.json`),
     `${JSON.stringify(
@@ -659,6 +693,10 @@ async function capture(page: Page, evidenceId: string) {
         browser: "Playwright Chromium",
         viewport: page.viewportSize(),
         motionMode: journeyId === "S" ? "FULL_THEN_REDUCED" : "REDUCED",
+        captureNormalization: intentionalMotion
+          ? "Sticky shell header rendered in normal document flow; full motion preserved."
+          : "Sticky shell header rendered in normal document flow; animations and caret disabled after route settlement.",
+        captureExtent: options.fullPage === false ? "VIEWPORT" : "FULL_PAGE",
         route: new URL(page.url()).pathname,
         title: await page.title(),
       },
