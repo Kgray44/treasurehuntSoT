@@ -91,6 +91,7 @@ async function generate() {
 
   await rm(outputRoot, { recursive: true, force: true });
   await createStructure();
+  await clearCaptureSessions(handoff);
   const browser = await chromium.launch({ headless: true });
   const browserVersion = browser.version();
   const records = [];
@@ -170,6 +171,7 @@ async function generate() {
         await captureRoute(page, route, output, options, accountAlias);
       }
     } finally {
+      await signOut(auth.page);
       await Promise.all([auth.context.close(), anonymous.context.close()]);
     }
   }
@@ -321,6 +323,7 @@ async function generate() {
       });
       await auth.page.unroute("**/api/community/discover?**");
     } finally {
+      await Promise.all([signOut(auth.page), signOut(restricted.page)]);
       await Promise.all([auth.context.close(), anonymous.context.close(), restricted.context.close()]);
     }
 
@@ -483,6 +486,17 @@ async function representativeValues() {
   }
 }
 
+async function clearCaptureSessions(handoff) {
+  const accountIds = [handoff.accounts.SERA?.accountId, handoff.accounts.RESTRICTED_ACCOUNT?.accountId].filter(Boolean);
+  if (accountIds.length !== 2) throw new Error("HOMEPORT_EXPERIENCE_CAPTURE_ACCOUNT_IDS_MISSING");
+  const db = new PrismaClient({ datasources: { db: { url: `file:${databasePath.replaceAll("\\", "/")}` } } });
+  try {
+    await db.accountSession.deleteMany({ where: { accountId: { in: accountIds } } });
+  } finally {
+    await db.$disconnect();
+  }
+}
+
 function resolveRoute(pattern, values) {
   let route = pattern;
   const replacements = {
@@ -547,6 +561,14 @@ async function signIn(page, handoff, alias) {
   await page.getByLabel("Password").fill(handoff.password);
   await page.getByRole("button", { name: "Continue" }).click();
   await page.getByRole("button", { name: account.displayName, exact: true }).waitFor();
+}
+
+async function signOut(page) {
+  await page
+    .evaluate(async () => {
+      await fetch("/api/auth/sign-out", { method: "POST" });
+    })
+    .catch(() => undefined);
 }
 
 async function setTheme(page, theme) {
