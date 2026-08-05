@@ -34,12 +34,12 @@ export default defineConfig({
     ["html", { outputFolder: path.join(taskRoot, "reports", `playwright-round2-${journeyId}`), open: "never" }],
   ],
   use: {
-    ...(journeyId === "U" ? devices["iPhone 13"] : devices["Desktop Chrome"]),
-    viewport: journeyId === "U" ? { width: 390, height: 844 } : { width: 1440, height: 900 },
+    ...(journeyId === "V" ? devices["iPhone 13"] : devices["Desktop Chrome"]),
+    viewport: journeyId === "V" ? { width: 390, height: 844 } : { width: 1440, height: 900 },
     baseURL,
     trace: "retain-on-failure",
     screenshot: "only-on-failure",
-    video: ["A", "B", "C", "D", "V"].includes(journeyId) ? "on" : "retain-on-failure",
+    video: ["C", "D", "E", "V"].includes(journeyId) ? "on" : "retain-on-failure",
   },
   projects: [{ name: `homeport-phase7-owner-correction-round2-${journeyId}`, use: { browserName: "chromium" } }],
   webServer: {

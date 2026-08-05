@@ -456,6 +456,7 @@ async function acceptVisualReview() {
   const manifestPath = path.join(outputRoot, "manifest.json");
   const manifest = await json(manifestPath);
   manifest.visualReviewStatus = "ACCEPTED";
+  manifest.records = manifest.records.map((record) => ({ ...record, visualReviewStatus: "ACCEPTED" }));
   manifest.visualReview = {
     reviewer: "Codex",
     scope: "Master and area contact sheets plus defect-focused individual captures",

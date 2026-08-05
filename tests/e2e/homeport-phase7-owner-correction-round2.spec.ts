@@ -1,16 +1,18 @@
 import { createHash } from "node:crypto";
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync, rmSync } from "node:fs";
 import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { expect, test, type Locator, type Page } from "@playwright/test";
 import { PrismaClient } from "@prisma/client";
 
 type Alias = { accountId: string; email: string; displayName: string };
+type Delivery = { purpose: string; email: string; token?: string; accountId: string; detail?: string };
 
 const taskRoot = path.resolve(required("HOMEPORT_PHASE7_TASK_ROOT"));
 const journeyId = required("HOMEPORT_PHASE7_CORRECTION_JOURNEY_ID");
 const sourceSha = process.env.HOMEPORT_PHASE7_CORRECTION_SOURCE_SHA ?? "IMPLEMENTATION_SOURCE_PENDING";
 const databasePath = path.resolve(required("HOMEPORT_PHASE7_CORRECTION_DATABASE_PATH"));
+const outboxPath = path.join(taskRoot, "synthetic-outbox", `round2-journey-${journeyId}.jsonl`);
 const handoff = JSON.parse(
   readFileSync(
     path.join(taskRoot, "credentials", "owner-correction-round2-walkthrough-credentials.private.json"),
@@ -20,14 +22,16 @@ const handoff = JSON.parse(
 const db = new PrismaClient();
 
 test.beforeEach(async ({ page }) => {
-  await page.emulateMedia({ reducedMotion: journeyId === "V" ? "reduce" : "no-preference" });
+  rmSync(outboxPath, { force: true });
+  await page.emulateMedia({ reducedMotion: "no-preference" });
 });
 test.afterAll(async () => db.$disconnect());
 
-test("Journey A: role cards retain structural geometry", async ({ page }) => {
+test("Journey C: Role-card first paint and hover", async ({ page }) => {
   await begin(page);
   const cards = page.locator(".role-object-card");
   await expect(cards).toHaveCount(3);
+  await capture(page, "HP-OWCR2-EV-A-ROLE-CARDS-FIRST-PAINT");
   for (let index = 0; index < 3; index += 1) {
     const card = cards.nth(index);
     const object = card.locator(".role-object");
@@ -42,10 +46,12 @@ test("Journey A: role cards retain structural geometry", async ({ page }) => {
     expect(Math.abs(after!.width - before!.width)).toBeLessThanOrEqual(0.5);
     expect(Math.abs(after!.height - before!.height)).toBeLessThanOrEqual(0.5);
   }
+  await cards.nth(2).getByRole("link").focus();
+  await expect(cards.nth(2).getByRole("link")).toBeFocused();
   await capture(page, "HP-OWCR2-EV-B-ROLE-CARDS-HOVER");
 });
 
-test("Journey B: account menu has perceptible governed opening motion", async ({ page }) => {
+test("Journey D: Account-menu motion", async ({ page }) => {
   const account = await signIn(page, "SERA");
   const button = page.getByRole("button", { name: account.displayName, exact: true });
   await button.click();
@@ -65,9 +71,19 @@ test("Journey B: account menu has perceptible governed opening motion", async ({
   expect(new Set(frames.map((frame) => `${frame.opacity}:${frame.transform}`)).size).toBeGreaterThan(1);
   expect(frames.at(-1)?.opacity).toBe("1");
   await capture(page, "HP-OWCR2-EV-C-ACCOUNT-MENU-OPENING", false);
+  await page.keyboard.press("Escape");
+  await expect(menu).toHaveCount(0);
+  await button.click();
+  await settledLink(page, page.locator("#shell-account-disclosure").getByRole("link", { name: "All Workspaces" }));
+  await expect(page.getByRole("heading", { name: "All Workspaces" })).toBeVisible();
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.goto("/");
+  const reducedButton = page.getByRole("button", { name: account.displayName, exact: true });
+  await reducedButton.click();
+  await expect(page.locator("#shell-account-disclosure")).toHaveCSS("animation-name", "none");
 });
 
-test("Journey C: lantern uses the suspension point and balanced arc", async ({ page }) => {
+test("Journey E: Home ambient motion", async ({ page }) => {
   await begin(page);
   const lantern = page.locator(".hanging-lantern");
   await expect(lantern).toBeVisible();
@@ -80,10 +96,6 @@ test("Journey C: lantern uses the suspension point and balanced arc", async ({ p
   expect(Math.min(...samples)).toBeLessThan(-0.5);
   expect(Math.max(...samples)).toBeGreaterThan(0.5);
   await capture(page, "HP-OWCR2-EV-D-LANTERN-NEUTRAL", false);
-});
-
-test("Journey D: restrained stars and lifecycle-managed fog are perceptible", async ({ page }) => {
-  await begin(page);
   const star = page.locator(".star-field i").first();
   const fog = page.locator(".distant-clouds");
   const firstOpacity = Number(await star.evaluate((node) => getComputedStyle(node).opacity));
@@ -93,9 +105,18 @@ test("Journey D: restrained stars and lifecycle-managed fog are perceptible", as
   await expect(star).toHaveCSS("animation-name", "harbor-star-twinkle");
   await expect(fog).toHaveCSS("animation-name", "harbor-fog-drift");
   await capture(page, "HP-OWCR2-EV-G-STAR-TWINKLE", false);
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.reload();
+  await expect(page.locator(".star-field i").first()).toHaveCSS("animation-name", "none");
+  await expect(page.locator(".distant-clouds")).toHaveCSS("animation-name", "none");
+  const reducedLantern = page.locator(".hanging-lantern");
+  const reducedFirst = await reducedLantern.getAttribute("style");
+  await page.waitForTimeout(600);
+  expect(await reducedLantern.getAttribute("style")).toBe(reducedFirst);
+  await capture(page, "HP-OWCR2-EV-AB-REDUCED-MOTION", false);
 });
 
-test("Journey E: Dark restores the Chronicle explainer surface", async ({ page }) => {
+test("Journey F: Dark theme restoration", async ({ page }) => {
   await begin(page);
   await page.evaluate(() => (document.documentElement.dataset.voyageTheme = "dark"));
   const explainer = page.locator(".gateway-explainer");
@@ -103,9 +124,13 @@ test("Journey E: Dark restores the Chronicle explainer surface", async ({ page }
   const luminance = await backgroundLuminance(explainer, "--surface-default");
   expect(luminance).toBeLessThan(0.2);
   await capture(page, "HP-OWCR2-EV-I-DARK-WHAT-IS-A-CHRONICLE");
+  await page.goto("/community");
+  expect(await backgroundLuminance(page.locator(".community-harbor"), "--background-primary")).toBeLessThan(0.2);
+  await page.goto("/account");
+  await expect(page.getByText(/Sign in/u).first()).toBeVisible();
 });
 
-test("Journey F: explicit Light persists across ordinary gateway navigation", async ({ page }) => {
+test("Journey G: Light Mode", async ({ context, page }) => {
   const account = await signIn(page, "SERA");
   await accountDestination(page, account, "Preferences");
   await page.getByRole("combobox", { name: "Theme", exact: true }).selectOption("LIGHT");
@@ -114,48 +139,86 @@ test("Journey F: explicit Light persists across ordinary gateway navigation", as
   await page.goto("/");
   await expect(page.locator("html")).toHaveAttribute("data-voyage-theme", "light");
   await capture(page, "HP-OWCR2-EV-J-LIGHT-GATEWAY");
-});
-
-test("Journey G: Light covers Community without mixed dark panels", async ({ page }) => {
-  await signIn(page, "SERA");
-  await setTheme(page, "LIGHT");
+  await page.goto("/tales");
+  await expect(page.locator("html")).toHaveAttribute("data-voyage-theme", "light");
+  await page.goto(await reviewListingUrl());
+  await expect(page.getByRole("heading", { name: "Chronicle preview" })).toBeVisible();
   await page.goto("/community");
   await expect(page.locator("html")).toHaveAttribute("data-voyage-theme", "light");
   await expect(page.getByRole("searchbox", { name: "Search public Community Harbor" })).toBeVisible();
   expect(await backgroundLuminance(page.locator(".community-harbor"), "--background-primary")).toBeGreaterThan(0.65);
   await capture(page, "HP-OWCR2-EV-K-LIGHT-COMMUNITY");
-});
-
-test("Journey H: Light covers Personal Harbor with readable secondary text", async ({ page }) => {
-  const account = await signIn(page, "SERA");
-  await setTheme(page, "LIGHT");
   await accountDestination(page, account, "Personal Harbor");
   const secondary = page.locator(".personal-harbor__hero p:not(.personal-harbor__eyebrow)").first();
   expect(await contrastRatio(secondary)).toBeGreaterThanOrEqual(4.5);
   await capture(page, "HP-OWCR2-EV-L-LIGHT-PERSONAL-HARBOR");
+  await page.goto("/passport");
+  await expect(page.locator("html")).toHaveAttribute("data-voyage-theme", "light");
+  await accountDestination(page, account, "All Workspaces");
+  await expect(page.locator("html")).toHaveAttribute("data-voyage-theme", "light");
+  await page.reload();
+  await expect(page.locator("html")).toHaveAttribute("data-voyage-theme", "light");
+  const second = await context.newPage();
+  await second.goto("/");
+  await expect(second.locator("html")).toHaveAttribute("data-voyage-theme", "light");
+  await second.close();
 });
 
-test("Journey I: Sera enters Player Captain and Creator from the actual fixture", async ({ page }) => {
+test("Journey A: Sera workspace truth", async ({ page }) => {
   const account = await signIn(page, "SERA");
   await accountDestination(page, account, "All Workspaces");
   for (const workspace of ["Player", "Captain", "Creator"]) {
-    await expect(page.getByRole("link", { name: `Enter ${workspace}` })).toBeVisible();
+    await settledLink(page, page.getByRole("link", { name: `Enter ${workspace}` }));
+    await expect(page.getByText(/Permission required|Access denied/u)).toHaveCount(0);
+    await accountDestination(page, account, "All Workspaces");
   }
   await expect(page.getByText("Captain and Creator transitions are paused")).toHaveCount(0);
+  expect(
+    await db.playthroughMembership.count({
+      where: { player: { accountId: account.accountId }, status: { in: ["ACCEPTED", "READY", "ACTIVE_MEMBER"] } },
+    }),
+  ).toBe(0);
   await capture(page, "HP-OWCR2-EV-M-SERA-WORKSPACES");
 });
 
-test("Journey J: fast Community success has no loading or error flash", async ({ page }) => {
+test("Journey B: Active Chronicle lock regression", async ({ context, page }) => {
+  const account = await signIn(page, "ACTIVE_CHRONICLE_PLAYER");
+  await accountDestination(page, account, "All Workspaces");
+  await expect(page.getByRole("heading", { name: "Captain and Creator transitions are paused" })).toBeVisible();
+  await expect(page.getByRole("link", { name: "Enter Captain" })).toHaveCount(0);
+  await expect(page.getByRole("link", { name: "Enter Creator" })).toHaveCount(0);
+  const second = await context.newPage();
+  await second.goto("/account/roles");
+  await expect(second.getByRole("heading", { name: "Captain and Creator transitions are paused" })).toBeVisible();
+  await page.getByLabel(/Type LEAVE ACTIVE CHRONICLES/u).fill("LEAVE ACTIVE CHRONICLES");
+  await page.getByRole("button", { name: "Safely leave active Chronicles" }).click();
+  await expect(page.getByRole("link", { name: "Enter Captain" })).toBeVisible();
+  await expect(page.getByRole("link", { name: "Enter Creator" })).toBeVisible();
+  await second.reload();
+  await expect(second.getByRole("link", { name: "Enter Captain" })).toBeVisible();
+  await second.close();
+});
+
+test("Journey H: Community district fast success", async ({ page }) => {
   await begin(page);
-  await page.goto("/community/chronicles");
-  await expect(page.getByRole("heading", { name: "Chronicles", exact: true })).toBeVisible();
-  await expect(page.locator(".ui-loading-state")).toHaveCount(0);
-  await expect(page.locator(".community-state--error")).toHaveCount(0);
-  await expect(page.getByText("Community results could not be opened")).toHaveCount(0);
+  await page.goto("/community");
+  const districtLabels = await page
+    .getByRole("navigation", { name: "Community Harbor districts" })
+    .getByRole("link")
+    .allTextContents();
+  for (const label of districtLabels) {
+    await settledLink(
+      page,
+      page.getByRole("navigation", { name: "Community Harbor districts" }).getByRole("link", { name: label }),
+    );
+    await expect(page.locator(".ui-loading-state")).toHaveCount(0);
+    await expect(page.locator(".community-state--error")).toHaveCount(0);
+    await expect(page.getByText("Current Area", { exact: true })).toHaveCount(0);
+  }
   await capture(page, "HP-OWCR2-EV-N-COMMUNITY-FAST-READY");
 });
 
-test("Journey K: unresolved Community request reveals loading only after 500 ms", async ({ page }) => {
+test("Journey I: Community district slow success", async ({ page }) => {
   await begin(page);
   await page.goto("/community/chronicles");
   let release!: () => void;
@@ -181,7 +244,7 @@ test("Journey K: unresolved Community request reveals loading only after 500 ms"
   await expect(page.locator(".ui-loading-state")).toHaveCount(0);
 });
 
-test("Journey L: real Community failure alone shows error and retry recovers", async ({ page }) => {
+test("Journey J: Community real failure", async ({ page }) => {
   await begin(page);
   await page.goto("/community/chronicles");
   let failed = false;
@@ -205,17 +268,22 @@ test("Journey L: real Community failure alone shows error and retry recovers", a
   await page.getByRole("button", { name: "Try again" }).click();
   await expect(page.locator(".community-state--error")).toHaveCount(0);
   await expect(page.getByRole("heading", { name: "No public charts match these criteria" })).toBeVisible();
+  expect(await page.evaluate(() => document.activeElement?.tagName)).not.toBe("BODY");
 });
 
-test("Journey M: one existing public Profile satisfies review identity", async ({ page }) => {
+test("Journey K: Public Profile identity for review", async ({ page }) => {
   await signIn(page, "REVIEW_ELIGIBLE");
   await page.goto(await reviewListingUrl());
   await expect(page.getByRole("form", { name: "Write a review" })).toBeVisible();
   await expect(page.getByText(/Community Profile/u)).toHaveCount(0);
   await capture(page, "HP-OWCR2-EV-Q-PUBLIC-PROFILE-REVIEW");
+  await page.getByLabel(/Rating/u).selectOption("5");
+  await page.getByLabel("Preview-safe review").fill("Public Profile identity accepted for this Round 2 review.");
+  await page.getByRole("button", { name: "Save review" }).click();
+  await expect(page.getByText("Your review was saved.")).toBeVisible();
 });
 
-test("Journey N: missing public identity links to setup and returns to composer", async ({ page }) => {
+test("Journey L: Missing public Profile setup", async ({ page }) => {
   const account = handoff.accounts.REVIEW_ELIGIBLE;
   await db.communityProfile.deleteMany({ where: { accountId: account.accountId } });
   await db.playerProfile.update({
@@ -235,9 +303,13 @@ test("Journey N: missing public identity links to setup and returns to composer"
     new RegExp(`${escapeRegex(new URL(detail, "http://local").pathname)}#community-review-composer$`, "u"),
   );
   await expect(page.getByRole("form", { name: "Write a review" })).toBeVisible();
+  await page.getByLabel(/Rating/u).selectOption("4");
+  await page.getByLabel("Preview-safe review").fill("Profile setup returned to the intended Chronicle context.");
+  await page.getByRole("button", { name: "Save review" }).click();
+  await expect(page.getByText("Your review was saved.")).toBeVisible();
 });
 
-test("Journey O: save and unsave update the visible authoritative count once", async ({ page }) => {
+test("Journey M: Save count", async ({ page }) => {
   await signIn(page, "SERA");
   await page.goto("/community");
   const listing = await reviewListing();
@@ -254,22 +326,40 @@ test("Journey O: save and unsave update the visible authoritative count once", a
     .poll(() => db.communitySave.count({ where: { subjectType: "LISTING", subjectId: listing.id, kind: "SAVE" } }))
     .toBe(before + 1);
   await capture(page, "HP-OWCR2-EV-S-SAVE-COUNT");
-  await card.getByRole("button", { name: "Saved", exact: true }).click();
-  await expect(card.getByRole("button", { name: "Save", exact: true })).toBeVisible();
+  await page.reload();
+  const reloadedCard = page
+    .locator(".community-card")
+    .filter({ has: page.getByRole("heading", { name: listing.title }) })
+    .first();
+  await expect(reloadedCard.getByText(`${before + 1} saves`, { exact: false })).toBeVisible();
+  await reloadedCard.getByRole("button", { name: "Saved", exact: true }).click();
+  await expect(reloadedCard.getByRole("button", { name: "Save", exact: true })).toBeVisible();
   await expect
     .poll(() => db.communitySave.count({ where: { subjectType: "LISTING", subjectId: listing.id, kind: "SAVE" } }))
     .toBe(before);
 });
 
-test("Journey P: rating summary derives average and count from eligible reviews", async ({ page }) => {
-  await begin(page);
-  await page.goto(await reviewListingUrl());
-  await expect(page.getByText("4.0 from 1 review", { exact: false }).first()).toBeVisible();
-  await expect(page.getByText("12 saves", { exact: false })).toHaveCount(0);
+test("Journey N: Rating aggregation", async ({ page }) => {
+  await signIn(page, "REVIEW_EMPTY");
+  const listing = await reviewListing();
+  const initial = await eligibleReviewSummary(listing.id);
+  await page.goto(`/community/${encodeURIComponent(listing.slug)}`);
+  await page.getByLabel(/Rating/u).selectOption("5");
+  await page.getByLabel("Preview-safe review").fill("Round 2 aggregate create evidence.");
+  await page.getByRole("button", { name: "Save review" }).click();
+  await expect.poll(async () => (await eligibleReviewSummary(listing.id)).count).toBe(initial.count + 1);
+  await page.getByRole("button", { name: "Edit my review" }).click();
+  await page.getByRole("heading", { name: "Edit your review" }).locator("..").getByLabel(/Rating/u).selectOption("2");
+  await page.getByRole("button", { name: "Save changes" }).click();
+  await expect(page.getByText("Your review changes were saved.")).toBeVisible();
+  expect((await eligibleReviewSummary(listing.id)).average).not.toBe(initial.average);
   await capture(page, "HP-OWCR2-EV-T-RATING-SUMMARY");
+  await page.getByRole("button", { name: "Delete my review" }).click();
+  await page.getByRole("button", { name: "Confirm delete" }).click();
+  await expect.poll(async () => (await eligibleReviewSummary(listing.id)).count).toBe(initial.count);
 });
 
-test("Journey Q: exact completion is server-derived and client forgery is denied", async ({ page }) => {
+test("Journey O: Ineligible Chronicle review", async ({ page }) => {
   await signIn(page, "SERA");
   const listing = await reviewListing();
   await page.goto(`/community/${encodeURIComponent(listing.slug)}`);
@@ -288,8 +378,10 @@ test("Journey Q: exact completion is server-derived and client forgery is denied
   await capture(page, "HP-OWCR2-EV-U-COMPLETION-VERIFIED-REVIEW");
 });
 
-test("Journey R: Chronicle preview exposes practical facts and separates Start", async ({ page }) => {
+test("Journey Q: Expanded Chronicle preview", async ({ page }) => {
   await begin(page);
+  await page.goto("/tales");
+  await expect(page.getByRole("link", { name: "Preview Chronicle" }).first()).toBeVisible();
   await page.goto(await reviewListingUrl());
   await expect(page.getByRole("heading", { name: "Chronicle preview" })).toBeVisible();
   await expect(page.getByRole("heading", { name: "Practical requirements" })).toBeVisible();
@@ -298,14 +390,19 @@ test("Journey R: Chronicle preview exposes practical facts and separates Start",
   await capture(page, "HP-OWCR2-EV-V-CHRONICLE-PREVIEW-EXPANDED");
 });
 
-test("Journey S: Passport history offers optional later review entry", async ({ page }) => {
-  await signIn(page, "REVIEW_ELIGIBLE");
+test("Journey P: Completed Chronicle review later", async ({ page }) => {
+  await signIn(page, "REVIEW_EMPTY");
   await page.goto("/passport/history");
   await expect(page.getByRole("link", { name: "Review Chronicle" })).toBeVisible();
   await capture(page, "HP-OWCR2-EV-W-PASSPORT-REVIEW-ENTRY");
+  await settledLink(page, page.getByRole("link", { name: "Review Chronicle" }).first());
+  await page.getByLabel(/Rating/u).selectOption("5");
+  await page.getByLabel("Preview-safe review").fill("A verified-completion review submitted from Passport history.");
+  await page.getByRole("button", { name: "Save review" }).click();
+  await expect(page.getByText("A verified-completion review submitted from Passport history.")).toBeVisible();
 });
 
-test("Journey T: semantic body and metadata remain distinct and readable at zoom", async ({ page }) => {
+test("Journey S: Text contrast", async ({ page }) => {
   const account = await signIn(page, "SERA");
   await setTheme(page, "LIGHT");
   await accountDestination(page, account, "Personal Harbor");
@@ -327,39 +424,118 @@ test("Journey T: semantic body and metadata remain distinct and readable at zoom
     await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth),
   ).toBeLessThanOrEqual(1);
   await capture(page, "HP-OWCR2-EV-X-PERSONAL-HARBOR-CONTRAST");
+  await setTheme(page, "DARK");
+  for (const route of ["/account", "/account/profile", "/community", "/passport"]) {
+    await page.goto(route);
+    const body = page.locator("main:visible").last().locator("p").first();
+    if (await body.isVisible()) expect(await contrastRatio(body)).toBeGreaterThanOrEqual(4.5);
+  }
 });
 
-test("Journey U: critical Community and Profile setup fit mobile", async ({ page }) => {
-  await signIn(page, "SERA");
+test("Journey R: Synthetic email walkthrough", async ({ page }) => {
+  await begin(page);
+  const menu = await accountMenu(page, "Account");
+  await settledLink(page, menu.getByRole("link", { name: "Create Account", exact: true }));
+  const email = `round2-registered-${Date.now()}@owner-correction.example.test`;
+  await page.getByLabel("Display name").fill("Round 2 Email Walkthrough");
+  await page.getByLabel("Email").fill(email);
+  await page.getByLabel("Password", { exact: true }).fill(handoff.password);
+  await page.getByLabel("Confirm password").fill(handoff.password);
+  await page.getByRole("button", { name: "Continue" }).click();
+  const verification = await waitForDelivery("VERIFY_EMAIL", email);
+  await page.goto(`/verify-email?token=${encodeURIComponent(verification.token!)}`);
+  await page.getByRole("button", { name: "Continue" }).click();
+  await page.goto("/account/personal-information");
+  await expect(page.getByText(email, { exact: true })).toBeVisible();
+  const text = await page.getByRole("main").last().innerText();
+  expect(text).not.toMatch(/synthetic outbox|email simulator|test delivery|provider simulator/iu);
+  await page.goto("/forgot-password");
+  await page.getByLabel("Email").fill(email);
+  await page.getByRole("button", { name: "Continue" }).click();
+  const recovery = await waitForDelivery("PASSWORD_RESET", email);
+  await page.goto(`/reset-password?token=${encodeURIComponent(recovery.token!)}`);
+  await page.getByLabel("Password", { exact: true }).fill(`${handoff.password}R`);
+  await page.getByLabel("Confirm password").fill(`${handoff.password}R`);
+  await page.getByRole("button", { name: "Continue" }).click();
+  await expect(page.getByRole("button", { name: "Round 2 Email Walkthrough" })).toBeVisible();
+});
+
+test("Journey T: Experience Images generation", async ({ page }) => {
+  const manifestPath = path.join(path.resolve(process.cwd()), "Experience_Images", "manifest.json");
+  const indexPath = path.join(path.resolve(process.cwd()), "Experience_Images", "index.html");
+  expect(existsSync(manifestPath)).toBe(true);
+  expect(existsSync(indexPath)).toBe(true);
+  const manifest = JSON.parse(readFileSync(manifestPath, "utf8")) as {
+    sourceSha: string;
+    records: Array<{ screenshotPath: string; sha256: string; visualReviewStatus: string }>;
+    routeCensus: { humanFacingRoutes: number; capturedHumanFacingRoutes: number };
+    visualReviewStatus: string;
+  };
+  expect(manifest.sourceSha).toMatch(/^[0-9a-f]{40}$/u);
+  expect(manifest.records).toHaveLength(227);
+  expect(manifest.routeCensus.humanFacingRoutes).toBe(88);
+  expect(manifest.routeCensus.capturedHumanFacingRoutes).toBe(88);
+  for (const record of manifest.records) {
+    const imagePath = path.join(path.resolve(process.cwd()), "Experience_Images", record.screenshotPath);
+    expect(existsSync(imagePath)).toBe(true);
+    expect(createHash("sha256").update(readFileSync(imagePath)).digest("hex")).toBe(record.sha256);
+    expect(record.visualReviewStatus).toBe("ACCEPTED");
+  }
+  expect(manifest.visualReviewStatus).toBe("ACCEPTED");
+  for (const contactSheet of ["Master_Desktop.png", "Master_Mobile.png", "Master_Light_Mode.png", "Master_Dark_Mode.png"])
+    expect(existsSync(path.join(path.resolve(process.cwd()), "Experience_Images", "Contact_Sheets", contactSheet))).toBe(true);
+  await begin(page);
+});
+
+test("Journey U: Round 2 full regression", async ({ page }) => {
+  const account = await signIn(page, "SERA");
+  await setTheme(page, "LIGHT");
+  await accountDestination(page, account, "All Workspaces");
+  await page.goto("/tales");
+  await expect(page.getByRole("link", { name: "Preview Chronicle" }).first()).toBeVisible();
+  await page.goto(await reviewListingUrl());
+  await expect(page.getByRole("heading", { name: "Chronicle preview" })).toBeVisible();
+  await page.goto("/community");
+  await expect(page.getByRole("searchbox", { name: "Search public Community Harbor" })).toBeVisible();
+  await page.goto("/account");
+  await expect(page.getByRole("heading", { name: "Overview" })).toBeVisible();
+  await page.goto("/passport/history");
+  await expect(page.getByRole("heading", { name: "Chronicle History" })).toBeVisible();
+  const disclosure = await accountMenu(page, account.displayName);
+  await disclosure.getByRole("button", { name: "Sign Out" }).click();
+  await expect(page.getByRole("button", { name: "Account" })).toBeVisible();
+  await capture(page, "HP-OWCR2-EV-AE-FULL-ROUND2-REGRESSION");
+});
+
+test("Journey V: Mobile correction sweep", async ({ page }) => {
+  const account = await signIn(page, "SERA");
+  await setTheme(page, "LIGHT");
+  await accountDestination(page, account, "All Workspaces");
   await page.goto("/community");
   await capture(page, "HP-OWCR2-EV-Z-MOBILE-COMMUNITY");
   await page.goto("/account/profile");
   await capture(page, "HP-OWCR2-EV-AA-MOBILE-PROFILE-SETUP");
+  await page.goto("/account");
   expect(
     await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth),
   ).toBeLessThanOrEqual(1);
+  const disclosure = await accountMenu(page, account.displayName);
+  await disclosure.getByRole("button", { name: "Sign Out" }).click();
+  await expect(page.getByRole("button", { name: "Account" })).toBeVisible();
 });
 
-test("Journey V: reduced motion produces a coherent static ambient composition", async ({ page }) => {
+test("Journey W: Original regression", async ({ page }) => {
+  const receiptPath = path.join(taskRoot, "reports", "owner-correction-round2-journeys", "journey-W-regressions.json");
+  expect(existsSync(receiptPath)).toBe(true);
+  const receipt = JSON.parse(readFileSync(receiptPath, "utf8")) as {
+    sourceSha: string;
+    correctionRound1: string;
+    originalPhase7: string;
+  };
+  expect(receipt.sourceSha).toBe(sourceSha);
+  expect(receipt.correctionRound1).toBe("PASSED_A_U");
+  expect(receipt.originalPhase7).toBe("PASSED_A_O");
   await begin(page);
-  const star = page.locator(".star-field i").first();
-  const fog = page.locator(".distant-clouds");
-  await expect(star).toHaveCSS("animation-name", "none");
-  await expect(fog).toHaveCSS("animation-name", "none");
-  const lantern = page.locator(".hanging-lantern");
-  const first = await lantern.getAttribute("style");
-  await page.waitForTimeout(600);
-  expect(await lantern.getAttribute("style")).toBe(first);
-  await capture(page, "HP-OWCR2-EV-AB-REDUCED-MOTION", false);
-});
-
-test("Journey W: ordinary product UI exposes no synthetic email simulator", async ({ page }) => {
-  const account = await signIn(page, "SERA");
-  await accountDestination(page, account, "Personal Information");
-  const text = await page.getByRole("main").last().innerText();
-  expect(text).not.toMatch(/synthetic outbox|email simulator|test delivery|provider simulator/iu);
-  await expect(page.getByText(account.email, { exact: true }).first()).toBeVisible();
-  await capture(page, "HP-OWCR2-EV-AE-FULL-ROUND2-REGRESSION");
 });
 
 async function begin(page: Page) {
@@ -440,6 +616,37 @@ async function reviewListing() {
 
 async function reviewListingUrl() {
   return `/community/${encodeURIComponent((await reviewListing()).slug)}`;
+}
+
+async function eligibleReviewSummary(listingId: string) {
+  const reviews = await db.communityReview.findMany({
+    where: { listingId, status: "ACTIVE", deletedAt: null, verifiedCompletion: true },
+    select: { rating: true },
+  });
+  return {
+    count: reviews.length,
+    average: reviews.length === 0 ? 0 : reviews.reduce((sum, review) => sum + review.rating, 0) / reviews.length,
+  };
+}
+
+async function waitForDelivery(purpose: string, email: string) {
+  let delivery: Delivery | undefined;
+  await expect
+    .poll(
+      () => {
+        if (!existsSync(outboxPath)) return null;
+        delivery = readFileSync(outboxPath, "utf8")
+          .trim()
+          .split("\n")
+          .filter(Boolean)
+          .map((line) => JSON.parse(line) as Delivery)
+          .find((row) => row.purpose === purpose && row.email === email.toLowerCase());
+        return delivery?.token ?? delivery?.detail ?? null;
+      },
+      { timeout: 20_000, message: `${purpose} delivery for ${email}` },
+    )
+    .not.toBeNull();
+  return delivery!;
 }
 
 async function rotation(locator: Locator) {

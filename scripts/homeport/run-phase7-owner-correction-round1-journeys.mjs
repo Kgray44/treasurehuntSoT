@@ -24,7 +24,7 @@ run("scripts/homeport/phase7-owner-correction-round1-database-clone.mjs", ["jour
   HOMEPORT_PHASE7_CORRECTION_JOURNEYS: requested,
 });
 for (const journeyId of requested) {
-  const databasePath = path.join(taskRoot, "owner-correction-journey-databases", `journey-${journeyId}.db`);
+  const databasePath = path.join(taskRoot, "browser-databases", `round1-journey-${journeyId}.db`);
   const env = {
     ...process.env,
     HOMEPORT_PHASE7_CORRECTION_JOURNEY_ID: journeyId,
