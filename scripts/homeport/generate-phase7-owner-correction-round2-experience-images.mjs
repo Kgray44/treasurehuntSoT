@@ -448,8 +448,11 @@ async function representativeValues() {
           orderBy: { id: "asc" },
         }),
         db.communityCollection.findFirst({ where: { visibility: { in: ["COMMUNITY", "FEATURED"] } }, orderBy: { id: "asc" } }),
-        db.communityProfile.findFirst({ where: { visibility: "PUBLIC", handle: { not: null } }, orderBy: { id: "asc" } }),
-        db.communityGuideContent.findFirst({ where: { publicationStatus: "PUBLISHED" }, orderBy: { id: "asc" } }),
+        db.communityProfile.findFirst({
+          where: { visibility: { in: ["COMMUNITY", "FEATURED"] }, moderationStatus: "ACTIVE" },
+          orderBy: { id: "asc" },
+        }),
+        db.communityGuideContent.findFirst({ where: { status: "PUBLISHED" }, orderBy: { id: "asc" } }),
         db.communityVoyageLog.findFirst({ where: { visibility: { in: ["COMMUNITY", "FEATURED"] } }, orderBy: { id: "asc" } }),
         db.communityModerationCase.findFirst({ orderBy: { id: "asc" } }),
         db.playerArtifactRecord.findFirst({ orderBy: { id: "asc" } }),
