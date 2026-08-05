@@ -61,6 +61,7 @@ test(`Journey B: returning account`, async ({ page }) => {
   await capture(page, "cross-workspace-account");
   const menu = await accountMenu(page, account.displayName);
   await menu.getByRole("button", { name: "Sign out" }).click();
+  await expect(page.getByRole("button", { name: /^(Account|Session ended)$/u })).toBeVisible();
   await page.goto("/player/library");
   await expect(page).toHaveURL(/\/sign-in/u);
 });
