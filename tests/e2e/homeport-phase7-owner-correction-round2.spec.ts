@@ -101,10 +101,12 @@ test("Journey E: Home ambient motion", async ({ page }) => {
   await captureAtRotation(page, lantern, "HP-OWCR2-EV-F-LANTERN-RIGHT", (value) => value > 0.5);
   const star = page.locator(".star-field i").first();
   const fog = page.locator(".distant-clouds");
-  const firstOpacity = Number(await star.evaluate((node) => getComputedStyle(node).opacity));
-  await page.waitForTimeout(900);
-  const secondOpacity = Number(await star.evaluate((node) => getComputedStyle(node).opacity));
-  expect(Math.abs(firstOpacity - secondOpacity)).toBeGreaterThan(0.015);
+  const starOpacity: number[] = [];
+  for (let index = 0; index < 16; index += 1) {
+    starOpacity.push(Number(await star.evaluate((node) => getComputedStyle(node).opacity)));
+    await page.waitForTimeout(250);
+  }
+  expect(Math.max(...starOpacity) - Math.min(...starOpacity)).toBeGreaterThan(0.015);
   await expect(star).toHaveCSS("animation-name", "harbor-star-twinkle");
   await expect(fog).toHaveCSS("animation-name", "harbor-fog-drift");
   await capture(page, "HP-OWCR2-EV-G-STAR-TWINKLE", false);
@@ -112,7 +114,7 @@ test("Journey E: Home ambient motion", async ({ page }) => {
   await writeMotionReceipt("HP-OWCR2-EV-D-LANTERN-NEUTRAL", {
     transformOrigin: await lantern.evaluate((node) => getComputedStyle(node).transformOrigin),
     rotations: samples,
-    starOpacity: [firstOpacity, secondOpacity],
+    starOpacity,
     fogAnimationName: await fog.evaluate((node) => getComputedStyle(node).animationName),
   });
   await page.emulateMedia({ reducedMotion: "reduce" });
@@ -307,10 +309,16 @@ test("Journey L: Missing public Profile setup", async ({ page }) => {
   await page.goto(detail);
   await expect(page.getByRole("link", { name: "Set up public Profile" })).toBeVisible();
   await capture(page, "HP-OWCR2-EV-R-PUBLIC-PROFILE-SETUP");
-  await page.getByRole("link", { name: "Set up public Profile" }).click();
-  await page.getByRole("textbox", { name: /Handle/u }).last().fill("review-eligible-return");
-  await page.getByLabel("Default visibility").last().selectOption("PUBLIC");
-  await page.getByRole("button", { name: "Save Profile" }).last().click();
+  await settledLink(page, page.getByRole("link", { name: "Set up public Profile" }));
+  const profileForm = page.locator("main:visible").last().locator("form.harbor-form");
+  const handle = profileForm.getByRole("textbox", { name: /^Handle/u });
+  const visibility = profileForm.getByLabel("Default visibility");
+  await expect(handle).toBeVisible();
+  await handle.fill("review-eligible-return");
+  await visibility.selectOption("PUBLIC");
+  await expect(handle).toHaveValue("review-eligible-return");
+  await expect(visibility).toHaveValue("PUBLIC");
+  await profileForm.getByRole("button", { name: "Save Profile" }).click();
   await expect(page).toHaveURL(
     new RegExp(`${escapeRegex(new URL(detail, "http://local").pathname)}#community-review-composer$`, "u"),
   );
@@ -412,9 +420,13 @@ test("Journey P: Completed Chronicle review later", async ({ page }) => {
   await expect(page.getByRole("link", { name: "Review Chronicle" })).toBeVisible();
   await capture(page, "HP-OWCR2-EV-W-PASSPORT-REVIEW-ENTRY");
   await settledLink(page, page.getByRole("link", { name: "Review Chronicle" }).first());
-  await page.getByRole("combobox", { name: /Rating/u }).selectOption("5");
-  await page.getByLabel("Preview-safe review").fill("A verified-completion review submitted from Passport history.");
-  await page.getByRole("button", { name: "Save review" }).click();
+  const reviewForm = page.getByRole("form", { name: "Write a review" }).filter({ visible: true }).last();
+  await expect(reviewForm).toBeVisible();
+  await reviewForm.getByRole("combobox", { name: /Rating/u }).selectOption("5");
+  await reviewForm
+    .getByLabel("Preview-safe review")
+    .fill("A verified-completion review submitted from Passport history.");
+  await reviewForm.getByRole("button", { name: "Save review" }).click();
   await expect(page.getByText("A verified-completion review submitted from Passport history.")).toBeVisible();
 });
 
