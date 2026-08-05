@@ -12,9 +12,9 @@ last_reviewed: 2026-08-05
 
 | Family                        | Exact source                               | Result                                 |
 | ----------------------------- | ------------------------------------------ | -------------------------------------- |
-| Correction journeys A-U       | `61ea9ec546622b2bce2036d249fca408922786d2` | 21/21 PASSED                           |
-| Original Phase 7 journeys A-O | `61ea9ec546622b2bce2036d249fca408922786d2` | 15/15 PASSED                           |
-| Required visual frames        | `61ea9ec546622b2bce2036d249fca408922786d2` | 31/31 checksum-bound; Codex `ACCEPTED` |
+| Correction journeys A-U       | `e1829c3cffa87e561d15342da2e6e9b073fd7165` | 21/21 PASSED                           |
+| Original Phase 7 journeys A-O | `e1829c3cffa87e561d15342da2e6e9b073fd7165` | 15/15 PASSED                           |
+| Required visual frames        | `e1829c3cffa87e561d15342da2e6e9b073fd7165` | 31/31 checksum-bound; Codex `ACCEPTED` |
 
 The correction fixture is `homeport-phase7-owner-correction-round1-v1`, checksum `51bccf9632055dd969c1f6c5522406faf4ade276b8c47d00e592eda6c0ba137a`, immutable seed SHA-256 `600017c41400540a3a6e4acc92a4bb462f23363babdf0db373ab3aa625b0ff65`, schema SHA-256 `e845f0b0daea4c8ef79b53726bd0f5a8430f28e797b9f5bbc558dcf921f189f1`, with 49 migrations. The original Phase 7 token handoff remained byte-identical while the correction fixture was prepared.
 

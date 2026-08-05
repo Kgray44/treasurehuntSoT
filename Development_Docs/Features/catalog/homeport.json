@@ -375,7 +375,7 @@
     "evidence": [
       {
         "kind": "commit",
-        "value": "61ea9ec546622b2bce2036d249fca408922786d2"
+        "value": "e1829c3cffa87e561d15342da2e6e9b073fd7165"
       },
       {
         "kind": "completion-record",
@@ -399,7 +399,7 @@
       }
     ],
     "branch": "codex/project-homeport-product-reality-recovery",
-    "commit": "61ea9ec546622b2bce2036d249fca408922786d2",
+    "commit": "e1829c3cffa87e561d15342da2e6e9b073fd7165",
     "limitations": [
       "Not available on main until separately reviewed and integrated",
       "Evidence is local, synthetic, and uses task-owned SQLite clones",

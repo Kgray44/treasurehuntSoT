@@ -1,7 +1,7 @@
 {
   "evidenceId": "HP-OWCR1-EV-AD-MOBILE-PERSONAL-HARBOR",
   "journeyId": "HP-OWCR1-JRN-U",
-  "sourceSha": "61ea9ec546622b2bce2036d249fca408922786d2",
+  "sourceSha": "e1829c3cffa87e561d15342da2e6e9b073fd7165",
   "fixtureVersion": "homeport-phase7-owner-correction-round1-v1",
   "result": "PASSED",
   "visualReview": "ACCEPTED",
@@ -16,7 +16,7 @@
   "captureMode": "FULL_PAGE",
   "normalization": "Sticky shell header rendered in normal document flow; animations and caret disabled after route settlement.",
   "screenshot": "screenshots/HP-OWCR1-EV-AD-MOBILE-PERSONAL-HARBOR.png",
-  "screenshotSha256": "2d0b755b70ffaad8dcc3ee6a685ff33b1a260196e579c4dd7a782389bf34daf8",
-  "screenshotBytes": 3197422,
+  "screenshotSha256": "eaa467627f93a1ac2e29b84ccfc805d78df5163340f9746256b02e325606df6c",
+  "screenshotBytes": 3198160,
   "limitation": "Local production-build Chromium proof against a synthetic task-owned SQLite clone; not owner acceptance, live-provider proof, merge, or deployment."
 }

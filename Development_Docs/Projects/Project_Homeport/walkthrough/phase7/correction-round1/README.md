@@ -14,7 +14,7 @@ Owner Walkthrough Round 1 Decision: `OWNER_RETURNED_FOR_CORRECTION`.
 
 Owner Re-Review Decision: `PENDING_OWNER_DECISION`.
 
-Exact tested source is `61ea9ec546622b2bce2036d249fca408922786d2`; the fixture is `homeport-phase7-owner-correction-round1-v1`. Correction journeys A-U and original Phase 7 A-O passed against that source, with 31 checksum-bound screenshots accepted by Codex. Use the external task-owned credential handoff printed by the runtime controller; credentials and tokens are never committed.
+Exact tested source is `e1829c3cffa87e561d15342da2e6e9b073fd7165`; the fixture is `homeport-phase7-owner-correction-round1-v1`. Correction journeys A-U and original Phase 7 A-O passed against that source, with 31 checksum-bound screenshots accepted by Codex. Use the external task-owned credential handoff printed by the runtime controller; credentials and tokens are never committed.
 
 Commands: `npm run homeport:phase7:correction:walkthrough:prepare`, `start`, `status`, `reset`, and `stop`. The final runtime uses port 3735 and a fresh owner re-review clone.
 

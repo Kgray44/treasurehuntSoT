@@ -1,7 +1,7 @@
 {
   "evidenceId": "HP-OWCR1-EV-I-EMAIL-CHANGE",
   "journeyId": "HP-OWCR1-JRN-H",
-  "sourceSha": "61ea9ec546622b2bce2036d249fca408922786d2",
+  "sourceSha": "e1829c3cffa87e561d15342da2e6e9b073fd7165",
   "fixtureVersion": "homeport-phase7-owner-correction-round1-v1",
   "result": "PASSED",
   "visualReview": "ACCEPTED",
@@ -16,7 +16,7 @@
   "captureMode": "FULL_PAGE",
   "normalization": "Sticky shell header rendered in normal document flow; animations and caret disabled after route settlement.",
   "screenshot": "screenshots/HP-OWCR1-EV-I-EMAIL-CHANGE.png",
-  "screenshotSha256": "141c6210ce6187883e168d7371a616954117791b233586fa8a888b1d525e9517",
-  "screenshotBytes": 570195,
+  "screenshotSha256": "3fb6debbf285909007688625ea99a1db8ea00d0019b8bf9723a0cd40d6482378",
+  "screenshotBytes": 570171,
   "limitation": "Local production-build Chromium proof against a synthetic task-owned SQLite clone; not owner acceptance, live-provider proof, merge, or deployment."
 }

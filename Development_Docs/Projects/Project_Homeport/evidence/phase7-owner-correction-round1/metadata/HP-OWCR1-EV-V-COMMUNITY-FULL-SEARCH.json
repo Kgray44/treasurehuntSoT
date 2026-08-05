@@ -1,7 +1,7 @@
 {
   "evidenceId": "HP-OWCR1-EV-V-COMMUNITY-FULL-SEARCH",
   "journeyId": "HP-OWCR1-JRN-P",
-  "sourceSha": "61ea9ec546622b2bce2036d249fca408922786d2",
+  "sourceSha": "e1829c3cffa87e561d15342da2e6e9b073fd7165",
   "fixtureVersion": "homeport-phase7-owner-correction-round1-v1",
   "result": "PASSED",
   "visualReview": "ACCEPTED",
@@ -16,7 +16,7 @@
   "captureMode": "FULL_PAGE",
   "normalization": "Sticky shell header rendered in normal document flow; animations and caret disabled after route settlement.",
   "screenshot": "screenshots/HP-OWCR1-EV-V-COMMUNITY-FULL-SEARCH.png",
-  "screenshotSha256": "3c5df74e3842a502ab8769a3f191561947ff55a99f3f0f366724d995b54c0962",
-  "screenshotBytes": 2025167,
+  "screenshotSha256": "68983b8ba71f539739f6ad4ddcc4fec4d5ffc6ce674d9653862c3fec2334943e",
+  "screenshotBytes": 2025082,
   "limitation": "Local production-build Chromium proof against a synthetic task-owned SQLite clone; not owner acceptance, live-provider proof, merge, or deployment."
 }

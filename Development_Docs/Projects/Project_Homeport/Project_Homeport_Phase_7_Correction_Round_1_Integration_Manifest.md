@@ -12,7 +12,7 @@ last_reviewed: 2026-08-05
 | --------------------------- | ------------------------------------------------- |
 | Branch                      | `codex/project-homeport-product-reality-recovery` |
 | Architecture                | `ed8f1ef5316f11340276bebe6c70715159321ef6`        |
-| Exact tested implementation | `61ea9ec546622b2bce2036d249fca408922786d2`        |
+| Exact tested implementation | `e1829c3cffa87e561d15342da2e6e9b073fd7165`        |
 | Fixture                     | `homeport-phase7-owner-correction-round1-v1`      |
 | Browser journeys            | Correction A-U 21/21; original A-O 15/15          |
 | Evidence                    | 31 checksum-bound captures; Codex `ACCEPTED`      |

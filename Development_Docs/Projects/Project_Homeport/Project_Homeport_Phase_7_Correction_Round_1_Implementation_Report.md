@@ -16,7 +16,7 @@ All 44 owner findings are implemented and traced to exact source, tests, and evi
 
 - Correction baseline: `9d1cb60af3fe93085b6b13630759cdbf5552c97e`
 - Architecture: `ed8f1ef5316f11340276bebe6c70715159321ef6`
-- Exact evidence source: `61ea9ec546622b2bce2036d249fca408922786d2`
+- Exact evidence source: `e1829c3cffa87e561d15342da2e6e9b073fd7165`
 - Branch: `codex/project-homeport-product-reality-recovery`
 - Publication: pending the final governance commit
 

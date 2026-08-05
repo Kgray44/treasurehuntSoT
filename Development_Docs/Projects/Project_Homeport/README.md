@@ -229,7 +229,7 @@ while HP-NC-020 waits for the owner decision; it is not a validator failure.
 
 ## Phase 7 correction Round 1 re-review state
 
-All 44 returned owner findings are locally implemented and source-bound validated at `61ea9ec546622b2bce2036d249fca408922786d2`. Correction journeys A-U passed 21/21, the original Phase 7 A-O regression passed 15/15, and 31 required captures received Codex visual classification `ACCEPTED`. Owner Walkthrough Round 1 remains `OWNER_RETURNED_FOR_CORRECTION`; owner re-review remains `PENDING_OWNER_DECISION`. The branch is not merged or deployed, and live provider/email/production-MySQL/physical-AT proof remains external.
+All 44 returned owner findings are locally implemented and source-bound validated at `e1829c3cffa87e561d15342da2e6e9b073fd7165`. Correction journeys A-U passed 21/21, the original Phase 7 A-O regression passed 15/15, and 31 required captures received Codex visual classification `ACCEPTED`. Owner Walkthrough Round 1 remains `OWNER_RETURNED_FOR_CORRECTION`; owner re-review remains `PENDING_OWNER_DECISION`. The branch is not merged or deployed, and live provider/email/production-MySQL/physical-AT proof remains external.
 
 - [Correction implementation report](Project_Homeport_Phase_7_Correction_Round_1_Implementation_Report.md)
 - [Correction validation record](Project_Homeport_Phase_7_Correction_Round_1_Validation_Record.md)

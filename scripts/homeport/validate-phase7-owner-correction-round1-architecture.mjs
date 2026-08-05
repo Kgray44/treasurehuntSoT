@@ -162,11 +162,21 @@ if (!ownerDecision.includes("OWNER_RETURNED_FOR_CORRECTION") || !ownerDecision.i
 }
 
 const manifest = JSON.parse(read("evidence/phase7-owner-correction-round1/manifest.json"));
+const sourceReceipt = JSON.parse(read("evidence/phase7-owner-correction-round1/source-bound-test-receipt.json"));
 if (
   manifest.state !== "CORRECTION_VALIDATED_PENDING_OWNER_REREVIEW" ||
-  manifest.sourceSha !== "61ea9ec546622b2bce2036d249fca408922786d2" ||
+  !/^[0-9a-f]{40}$/u.test(manifest.sourceSha) ||
+  manifest.sourceSha !== sourceReceipt.sourceSha ||
+  sourceReceipt.originalPhase7?.result !== "PASSED" ||
+  sourceReceipt.originalPhase7?.count !== 15 ||
+  sourceReceipt.correctionRound1?.result !== "PASSED" ||
+  sourceReceipt.correctionRound1?.count !== 21 ||
+  sourceReceipt.evidenceCount !== 31 ||
   manifest.captures.length !== 31 ||
-  manifest.captures.some((capture) => capture.visualReview !== "ACCEPTED" || capture.result !== "PASSED")
+  manifest.captures.some(
+    (capture) =>
+      capture.sourceSha !== manifest.sourceSha || capture.visualReview !== "ACCEPTED" || capture.result !== "PASSED",
+  )
 ) {
   fail("correction evidence manifest is not complete, source-bound, and Codex accepted");
 }

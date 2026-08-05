@@ -1,7 +1,7 @@
 {
   "evidenceId": "HP-OWCR1-EV-G-ACCOUNT-CLAIMED",
   "journeyId": "HP-OWCR1-JRN-F",
-  "sourceSha": "61ea9ec546622b2bce2036d249fca408922786d2",
+  "sourceSha": "e1829c3cffa87e561d15342da2e6e9b073fd7165",
   "fixtureVersion": "homeport-phase7-owner-correction-round1-v1",
   "result": "PASSED",
   "visualReview": "ACCEPTED",
@@ -16,7 +16,7 @@
   "captureMode": "FULL_PAGE",
   "normalization": "Sticky shell header rendered in normal document flow; animations and caret disabled after route settlement.",
   "screenshot": "screenshots/HP-OWCR1-EV-G-ACCOUNT-CLAIMED.png",
-  "screenshotSha256": "a1af4d42bed214988d3924d5ba434d32599d0ccfb9c1dcebceb9d417c0a9f2a9",
-  "screenshotBytes": 557092,
+  "screenshotSha256": "bf7ca75f8e20fa1cdf6566fd76dfb319e7472b3fb6cd8fd20e8fcf90bb9ee5ef",
+  "screenshotBytes": 557076,
   "limitation": "Local production-build Chromium proof against a synthetic task-owned SQLite clone; not owner acceptance, live-provider proof, merge, or deployment."
 }

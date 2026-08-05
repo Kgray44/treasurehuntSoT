@@ -7,7 +7,6 @@ import { spawnSync } from "node:child_process";
 const root = path.resolve(process.cwd());
 const taskRoot = path.resolve(required("HOMEPORT_PHASE7_TASK_ROOT"));
 const sourceSha = required("HOMEPORT_PHASE7_CORRECTION_SOURCE_SHA");
-const expectedSourceSha = "61ea9ec546622b2bce2036d249fca408922786d2";
 const fixtureVersion = "homeport-phase7-owner-correction-round1-v1";
 const branch = "codex/project-homeport-product-reality-recovery";
 const projectRoot = path.join(root, "Development_Docs", "Projects", "Project_Homeport");
@@ -56,8 +55,21 @@ const correctionJourneyNames = Object.fromEntries(
   ].map((name, index) => [String.fromCharCode(65 + index), name]),
 );
 
-if (!/^[0-9a-f]{40}$/u.test(sourceSha) || sourceSha !== expectedSourceSha) {
-  throw new Error(`Expected correction evidence source ${expectedSourceSha}, received ${sourceSha}.`);
+const resolvedSource = spawnSync("git", ["rev-parse", "--verify", `${sourceSha}^{commit}`], {
+  cwd: root,
+  encoding: "utf8",
+});
+const sourceIsAncestor = spawnSync("git", ["merge-base", "--is-ancestor", sourceSha, "HEAD"], {
+  cwd: root,
+  encoding: "utf8",
+});
+if (
+  !/^[0-9a-f]{40}$/u.test(sourceSha) ||
+  resolvedSource.status !== 0 ||
+  resolvedSource.stdout.trim() !== sourceSha ||
+  sourceIsAncestor.status !== 0
+) {
+  throw new Error(`Correction evidence source must be an exact commit reachable from HEAD: ${sourceSha}.`);
 }
 if (!isInside(taskRoot, path.resolve(process.env.LOCALAPPDATA ?? "", "ProjectHomeport"))) {
   throw new Error("HOMEPORT_PHASE7_TASK_ROOT must remain inside the task-owned ProjectHomeport root.");
