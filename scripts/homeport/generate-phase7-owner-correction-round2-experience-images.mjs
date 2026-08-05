@@ -582,7 +582,10 @@ async function signIn(page, handoff, alias) {
   await page.getByLabel("Email or legacy Player name").fill(account.email);
   await page.getByLabel("Password").fill(handoff.password);
   await page.getByRole("button", { name: "Continue" }).click();
-  await page.getByRole("button", { name: account.displayName, exact: true }).waitFor();
+  await page.waitForURL((url) => url.pathname !== "/sign-in");
+  const context = await page.evaluate(async () => fetch("/api/auth/context", { cache: "no-store" }).then((response) => response.json()));
+  if (["anonymous", "loading", "unavailable"].includes(context.status))
+    throw new Error(`HOMEPORT_EXPERIENCE_SIGN_IN_FAILED:${alias}:${context.status}`);
 }
 
 async function signOut(page) {
