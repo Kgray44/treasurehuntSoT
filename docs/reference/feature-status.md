@@ -3,7 +3,7 @@ title: Feature status reference
 audience: reference
 status: current
 canonical_for: feature-status
-last_reviewed: 2026-08-04
+last_reviewed: 2026-08-05
 ---
 
 # Feature status
@@ -26,3 +26,7 @@ last_reviewed: 2026-08-04
 | Ledgerlight and Feature Catalog                       | available              | focused validated     | Documentation governance, index, fragments, and generated catalog are repository systems.                                                                                         |
 | Compatibility routes                                  | compatibility-only     | not validated         | Transitional, not preferred for new work.                                                                                                                                         |
 | Drydock, Landfall, and Watchglass                     | planned                | not validated         | The remaining planned projects have no current product availability claim.                                                                                                        |
+
+## Phase 7 correction Round 1 status
+
+The owner returned walkthrough Round 1 for correction. The corrected capability has completed local automated validation and is awaiting owner re-review; it is not yet included in a published release. Live email delivery and Discord, Steam, and Microsoft/Xbox connections still depend on separately configured services. Automated accessibility coverage does not replace testing with physical assistive technology.

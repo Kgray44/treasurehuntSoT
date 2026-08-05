@@ -348,90 +348,91 @@ export function ProductShell({ children }: { children: React.ReactNode }) {
                   exit={mode === "reduced" ? { opacity: 0 } : { opacity: 0, y: -5, scale: 0.99 }}
                   transition={{ duration: mode === "reduced" ? 0.01 : 0.17, ease: platformMotionEasing("micro") }}
                 >
-              {currentUser.status === "authenticated" ? (
-                <div className="account-identity-summary">
-                  <span className="shell-avatar" aria-hidden="true">
-                    {currentUser.user.initials}
-                  </span>
-                  <p>
-                    <b>{currentUser.user.displayName}</b>
-                    {currentUser.user.handle ? (
-                      <small>@{currentUser.user.handle}</small>
-                    ) : (
-                      <small>Private profile</small>
-                    )}
-                  </p>
-                </div>
-              ) : null}
-
-              {currentUser.status === "loading" ? (
-                <div className="account-state-panel" role="status">
-                  <b>Checking your account…</b>
-                  <p>Navigation will appear after the server confirms the current account.</p>
-                </div>
-              ) : currentUser.status === "unavailable" ? (
-                <div className="account-state-panel" role="alert">
-                  <b>Account context is unavailable</b>
-                  <p>No identity or workspace permission was assumed.</p>
-                  <button type="button" onClick={() => void refreshCurrentUser()}>
-                    Retry account check
-                  </button>
-                </div>
-              ) : currentUser.status === "restricted" ? (
-                <div className="account-state-panel" role="alert">
-                  <b>Account access is restricted</b>
-                  <p>Workspace navigation is unavailable. Use the account recovery guidance for this status.</p>
-                </div>
-              ) : (
-                <>
-                  {currentUser.status === "expired" ||
-                  currentUser.status === "revoked" ||
-                  currentUser.status === "invalid" ? (
-                    <p className="account-session-ended" role="status">
-                      Your previous session ended. Sign in again to continue safely.
-                    </p>
+                  {currentUser.status === "authenticated" ? (
+                    <div className="account-identity-summary">
+                      <span className="shell-avatar" aria-hidden="true">
+                        {currentUser.user.initials}
+                      </span>
+                      <p>
+                        <b>{currentUser.user.displayName}</b>
+                        {currentUser.user.handle ? (
+                          <small>@{currentUser.user.handle}</small>
+                        ) : (
+                          <small>Private profile</small>
+                        )}
+                      </p>
+                    </div>
                   ) : null}
-                  {accountGroups.map(({ group, items }) => {
-                    if (!items.length) return null;
-                    const headingId = `${accountHeadingPrefix}-${group}`;
-                    return (
-                      <section
-                        key={group}
-                        className={`account-group account-group-${group}`}
-                        aria-labelledby={headingId}
-                      >
-                        <h2 id={headingId}>{accountGroupLabels[group]}</h2>
-                        <nav aria-label={accountGroupLabels[group]}>
-                          {items.map((item) => {
-                            if (item.action === "sign-out")
-                              return (
-                                <div key={item.id} className="account-sign-out" data-navigation-id={item.id}>
-                                  <SignOutButton />
-                                </div>
-                              );
-                            if (!item.href) return null;
-                            const current = activeAccountId === item.id;
-                            const currentWorkspace =
-                              item.accountGroup === "workspace" && item.id === `account-workspace-${route.workspace}`;
-                            return (
-                              <Link
-                                key={item.id}
-                                href={item.href}
-                                data-navigation-id={item.id}
-                                aria-current={current ? "page" : undefined}
-                                onClick={closeAll}
-                              >
-                                <span>{item.label}</span>
-                                {currentWorkspace ? <small>Current</small> : null}
-                              </Link>
-                            );
-                          })}
-                        </nav>
-                      </section>
-                    );
-                  })}
-                </>
-              )}
+
+                  {currentUser.status === "loading" ? (
+                    <div className="account-state-panel" role="status">
+                      <b>Checking your account…</b>
+                      <p>Navigation will appear after the server confirms the current account.</p>
+                    </div>
+                  ) : currentUser.status === "unavailable" ? (
+                    <div className="account-state-panel" role="alert">
+                      <b>Account context is unavailable</b>
+                      <p>No identity or workspace permission was assumed.</p>
+                      <button type="button" onClick={() => void refreshCurrentUser()}>
+                        Retry account check
+                      </button>
+                    </div>
+                  ) : currentUser.status === "restricted" ? (
+                    <div className="account-state-panel" role="alert">
+                      <b>Account access is restricted</b>
+                      <p>Workspace navigation is unavailable. Use the account recovery guidance for this status.</p>
+                    </div>
+                  ) : (
+                    <>
+                      {currentUser.status === "expired" ||
+                      currentUser.status === "revoked" ||
+                      currentUser.status === "invalid" ? (
+                        <p className="account-session-ended" role="status">
+                          Your previous session ended. Sign in again to continue safely.
+                        </p>
+                      ) : null}
+                      {accountGroups.map(({ group, items }) => {
+                        if (!items.length) return null;
+                        const headingId = `${accountHeadingPrefix}-${group}`;
+                        return (
+                          <section
+                            key={group}
+                            className={`account-group account-group-${group}`}
+                            aria-labelledby={headingId}
+                          >
+                            <h2 id={headingId}>{accountGroupLabels[group]}</h2>
+                            <nav aria-label={accountGroupLabels[group]}>
+                              {items.map((item) => {
+                                if (item.action === "sign-out")
+                                  return (
+                                    <div key={item.id} className="account-sign-out" data-navigation-id={item.id}>
+                                      <SignOutButton />
+                                    </div>
+                                  );
+                                if (!item.href) return null;
+                                const current = activeAccountId === item.id;
+                                const currentWorkspace =
+                                  item.accountGroup === "workspace" &&
+                                  item.id === `account-workspace-${route.workspace}`;
+                                return (
+                                  <Link
+                                    key={item.id}
+                                    href={item.href}
+                                    data-navigation-id={item.id}
+                                    aria-current={current ? "page" : undefined}
+                                    onClick={closeAll}
+                                  >
+                                    <span>{item.label}</span>
+                                    {currentWorkspace ? <small>Current</small> : null}
+                                  </Link>
+                                );
+                              })}
+                            </nav>
+                          </section>
+                        );
+                      })}
+                    </>
+                  )}
                 </motion.div>
               ) : null}
             </AnimatePresence>

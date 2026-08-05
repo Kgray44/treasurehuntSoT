@@ -673,9 +673,9 @@ export function PreferenceEditor({ mode }: { mode: "preferences" | "accessibilit
   );
   useEffect(() => {
     // Editable preference drafts intentionally hydrate from the authoritative async DTO.
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     if (resource.state.status === "ready") {
       savedPreferences.current = resource.state.value.preferences;
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setDraft(resource.state.value);
     }
   }, [resource.state]);

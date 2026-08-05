@@ -40,10 +40,15 @@ if (final && evidenceManifest.sourceSha !== sourceSha)
   throw new Error(`PHASE6_EVIDENCE_SOURCE_STALE:${evidenceManifest.sourceSha}`);
 const evidenceByScreen = new Map();
 for (const record of evidenceManifest.records ?? []) {
+  if (record.screenId === "screen-page-passport-history-[recordId]")
+    record.screenId = "screen-page-passport-history-recordId";
+  if (record.screenId === "screen-page-passport-artifacts-[artifactId]")
+    record.screenId = "screen-page-passport-artifacts-artifactId";
   const current = evidenceByScreen.get(record.screenId) ?? [];
   current.push(record);
   evidenceByScreen.set(record.screenId, current);
 }
+writeJson("manifest.json", evidenceManifest, evidenceRoot);
 
 function parseCsv(text) {
   const rows = [];
@@ -94,7 +99,7 @@ function writeCsv(name, headers, records, directory = auditRoot) {
 const nodes = readJson("Project_Homeport_Phase_5_Route_Node_Registry.json").nodes;
 const nodeByRoute = new Map(nodes.map((node) => [node.routeId, node]));
 const existingScreens = readJson("Homeport_Screen_Catalog.json").screens;
-const virtualScreens = existingScreens.filter((screen) => !screen.routeIds.some((routeId) => nodeByRoute.has(routeId)));
+const virtualScreens = existingScreens.filter((screen) => screen.routeIds.length === 0);
 const sources = discoverAppRouteSources(root);
 const census = censusSummary(sources);
 const pageSources = sources.filter((source) => source.kind === "page");
@@ -425,7 +430,8 @@ process.stdout.write(
 
 function makeScreen(node, legacy = {}) {
   const id = screenId(node);
-  const evidence = evidenceByScreen.get(id) ?? [];
+  const legacyDynamicId = `screen-page-${node.pathPattern.slice(1).replaceAll("/", "-") || "root"}`;
+  const evidence = evidenceByScreen.get(id) ?? evidenceByScreen.get(legacyDynamicId) ?? [];
   const tier = criticality(node);
   return {
     screenId: id,
@@ -577,6 +583,17 @@ function updateLegacyArtifacts() {
   for (const file of ["Homeport_Screen_Catalog.json", "Homeport_Screen_Contract_Catalog.json"]) {
     const catalog = readJson(file);
     if (file === "Homeport_Screen_Catalog.json") catalog.maturityVocabulary = screenRegistry.maturityVocabulary;
+    catalog.screens = screenRecords.map((current) => {
+      const existing = catalog.screens.find(
+        (screen) =>
+          screen.screenId === current.screenId ||
+          current.routeIds.some((routeId) => (screen.routeIds ?? []).includes(routeId)),
+      );
+      if (!existing) throw new Error(`PHASE6_LEGACY_SCREEN_RECORD_MISSING:${current.screenId}`);
+      existing.screenId = current.screenId;
+      existing.routeIds = [...current.routeIds];
+      return existing;
+    });
     for (const screen of catalog.screens) {
       const current = byId.get(screen.screenId);
       if (!current) continue;

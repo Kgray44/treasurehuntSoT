@@ -524,7 +524,10 @@ routes.phase2Implementation = phase2Envelope;
 for (const route of routes.routes) {
   if (route.kind.toLowerCase() !== "page") continue;
   const shell = shellByRoute.get(route.routeId);
-  if (!shell) throw new Error(`MISSING_PHASE2_SHELL_RECORD:${route.routeId}`);
+  // Routes introduced by later governed phases are outside the frozen Phase 2
+  // shell registry. Preserve their source-derived inventory entry; the owning
+  // later-phase updater supplies the current shell and reachability contract.
+  if (!shell) continue;
   const linked = evidenceByRoute.get(route.routePattern) ?? { evidence: [], journeys: [] };
   route.shellMode = shell.mode;
   route.currentJourneys = unique([...route.currentJourneys, ...linked.journeys]);

@@ -1,0 +1,22 @@
+{
+  "evidenceId": "HP-OWCR1-EV-V-COMMUNITY-FULL-SEARCH",
+  "journeyId": "HP-OWCR1-JRN-P",
+  "sourceSha": "61ea9ec546622b2bce2036d249fca408922786d2",
+  "fixtureVersion": "homeport-phase7-owner-correction-round1-v1",
+  "result": "PASSED",
+  "visualReview": "ACCEPTED",
+  "reviewer": "Codex",
+  "ownerReview": "PENDING_OWNER_DECISION",
+  "browser": "Playwright Chromium",
+  "viewport": { "width": 1440, "height": 900 },
+  "zoom": "100_PERCENT_UNLESS_EVIDENCE_ID_STATES_MOBILE_OR_ZOOM",
+  "motionMode": "REDUCED",
+  "route": "/community",
+  "title": "Community Harbor | Voyagewright",
+  "captureMode": "FULL_PAGE",
+  "normalization": "Sticky shell header rendered in normal document flow; animations and caret disabled after route settlement.",
+  "screenshot": "screenshots/HP-OWCR1-EV-V-COMMUNITY-FULL-SEARCH.png",
+  "screenshotSha256": "3c5df74e3842a502ab8769a3f191561947ff55a99f3f0f366724d995b54c0962",
+  "screenshotBytes": 2025167,
+  "limitation": "Local production-build Chromium proof against a synthetic task-owned SQLite clone; not owner acceptance, live-provider proof, merge, or deployment."
+}

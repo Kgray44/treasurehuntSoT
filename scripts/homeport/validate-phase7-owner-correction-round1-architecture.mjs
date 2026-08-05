@@ -72,6 +72,9 @@ const requiredDocuments = [
   "Project_Homeport_Community_Search_and_Review_Correction_Contract.md",
   "Project_Homeport_Loading_Transition_and_Motion_Contract.md",
   "Project_Homeport_Phase_7_Correction_Round_1_Test_Plan.md",
+  "Project_Homeport_Phase_7_Correction_Round_1_Implementation_Report.md",
+  "Project_Homeport_Phase_7_Correction_Round_1_Validation_Record.md",
+  "Project_Homeport_Phase_7_Correction_Round_1_Integration_Manifest.md",
   "evidence/phase7-owner-correction-round1/README.md",
   "evidence/phase7-owner-correction-round1/Project_Homeport_Phase_7_Correction_Round_1_Visual_Review.md",
   "walkthrough/phase7/correction-round1/README.md",
@@ -79,7 +82,7 @@ const requiredDocuments = [
 
 for (const document of requiredDocuments) {
   const content = read(document);
-  if (!content.startsWith("---\n") || !content.includes("\nlast_reviewed: 2026-08-04\n---\n")) {
+  if (!content.startsWith("---\n") || !/\nlast_reviewed: 2026-08-0[45]\n---\n/u.test(content)) {
     fail(`${document} lacks current document frontmatter`);
   }
 }
@@ -88,6 +91,9 @@ const owner = parseCsv(read("Project_Homeport_Phase_7_Owner_Feedback_Round_1_Led
 assertSequential(owner, "finding_id", "HP-OWCR1-", 44);
 if (owner.some((row) => !row.owner_wording || !row.architecture_contract || !row.planned_test_contracts)) {
   fail("owner ledger contains an untraced finding");
+}
+if (owner.some((row) => row.current_status !== "CORRECTED_PENDING_OWNER_REREVIEW")) {
+  fail("an owner finding is not corrected and pending owner re-review");
 }
 if (
   owner
@@ -102,6 +108,9 @@ const acceptance = parseCsv(read("Project_Homeport_Phase_7_Correction_Round_1_Ac
 assertSequential(acceptance, "finding_id", "HP-OWCR1-", 44);
 if (acceptance.some((row) => !row.acceptance_criterion || !row.required_tests || !row.required_evidence)) {
   fail("acceptance matrix contains an incomplete contract");
+}
+if (acceptance.some((row) => row.final_status !== "PASSED" || row.planned_source_locations.includes("PENDING"))) {
+  fail("acceptance matrix is not bound to final source and passed evidence");
 }
 
 const preferences = parseCsv(read("Project_Homeport_Preference_Effect_Matrix.csv"));
@@ -125,12 +134,18 @@ const preferenceFields = [
 if (preferences.some((row) => preferenceFields.some((field) => !row[field]))) {
   fail("preference matrix contains an incomplete effect contract");
 }
+if (preferences.slice(0, 4).some((row) => row.final_status !== "EFFECTIVE_VERIFIED")) {
+  fail("the four visible preferences are not verified effective");
+}
+if (preferences.slice(4).some((row) => row.final_status !== "REMOVED_FROM_ORDINARY_UI_LEGACY_STORAGE_PRESERVED")) {
+  fail("removed preferences are not recorded with their legacy-storage boundary");
+}
 
 const ncRows = parseCsv(read("Homeport_Nonconformity_Ledger.csv"));
 const correctionNc = ncRows.filter((row) => /^HP-NC-0(?:29|[3-6][0-9]|7[01])$/.test(row.id));
 if (correctionNc.length !== 43) fail(`expected 43 correction HP-NC rows, received ${correctionNc.length}`);
-if (correctionNc.some((row) => row.current_status !== "OPEN_OWNER_CORRECTION_ROUND_1")) {
-  fail("a correction HP-NC row has an invalid architecture-stage status");
+if (correctionNc.some((row) => row.current_status !== "CORRECTED_PENDING_OWNER_REREVIEW")) {
+  fail("a correction HP-NC row is not corrected pending owner re-review");
 }
 
 const architecture = read("Project_Homeport_Phase_7_Owner_Walkthrough_Correction_Round_1_Architecture.md");
@@ -147,8 +162,13 @@ if (!ownerDecision.includes("OWNER_RETURNED_FOR_CORRECTION") || !ownerDecision.i
 }
 
 const manifest = JSON.parse(read("evidence/phase7-owner-correction-round1/manifest.json"));
-if (manifest.state !== "PLANNED_ARCHITECTURE_FROZEN" || manifest.captures.length !== 0) {
-  fail("architecture evidence manifest must remain planned with no accepted captures");
+if (
+  manifest.state !== "CORRECTION_VALIDATED_PENDING_OWNER_REREVIEW" ||
+  manifest.sourceSha !== "61ea9ec546622b2bce2036d249fca408922786d2" ||
+  manifest.captures.length !== 31 ||
+  manifest.captures.some((capture) => capture.visualReview !== "ACCEPTED" || capture.result !== "PASSED")
+) {
+  fail("correction evidence manifest is not complete, source-bound, and Codex accepted");
 }
 
-console.log("HOMEPORT_PHASE7_OWNER_CORRECTION_ROUND1_ARCHITECTURE_VALID");
+console.log("HOMEPORT_PHASE7_OWNER_CORRECTION_ROUND1_VALID");

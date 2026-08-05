@@ -250,7 +250,12 @@ const routeSources = {
   "/passport/saved": "src/app/passport/saved/page.tsx",
   "/profile/:handle": "src/app/profile/[handle]/page.tsx",
 };
-const routeIdFor = (route) => "route-page-" + (route.slice(1).replaceAll(":", "").replaceAll("/", "-") || "root");
+const routeIdFor = (route) =>
+  "route-page-" +
+  (route
+    .slice(1)
+    .replaceAll(/[:\[\]]/gu, "")
+    .replaceAll("/", "-") || "root");
 const screenIdFor = (route) => "screen-page-" + (route.slice(1).replaceAll(":", "").replaceAll("/", "-") || "root");
 const patternForCapturedRoute = (route) => {
   if (/^\/profile\/[^/]+$/u.test(route)) return "/profile/:handle";
@@ -267,10 +272,17 @@ for (const evidence of evidenceManifest.evidence) {
 }
 
 const routes = readJson("Homeport_Route_Inventory.json");
+routes.routes = routes.routes.filter(
+  (route, index, records) =>
+    records.findIndex((candidate) => candidate.implementationSource === route.implementationSource) === index,
+);
 routes.phase3Implementation = phase3Envelope;
 for (const section of sectionRegistry.sections) {
   const routePattern = section.canonicalRoute;
-  let route = routes.routes.find((candidate) => candidate.routePattern === routePattern);
+  let route = routes.routes.find(
+    (candidate) =>
+      candidate.routePattern === routePattern || candidate.implementationSource === routeSources[routePattern],
+  );
   const routeId = route?.routeId ?? routeIdFor(routePattern);
   const entryId = "entry-phase3-" + section.sectionId;
   if (!route) {
@@ -306,6 +318,8 @@ for (const section of sectionRegistry.sections) {
     };
     routes.routes.push(route);
   }
+  route.routePattern = routePattern;
+  route.routeId = routeIdFor(routePattern);
   route.implementationSource = routeSources[routePattern] ?? route.implementationSource;
   route.logicalParent = section.return;
   route.returnOrBackRoute = section.return;
@@ -359,8 +373,15 @@ for (const section of sectionRegistry.sections) {
     evidenceIds: evidenceByRoute.get(routePattern) ?? [],
   };
 }
-const publicRoute = routes.routes.find((candidate) => candidate.routePattern === "/profile/:handle");
+const publicRoute = routes.routes.find(
+  (candidate) =>
+    candidate.routePattern === "/profile/:handle" ||
+    candidate.routePattern === "/profile/[handle]" ||
+    candidate.implementationSource === "src/app/profile/[handle]/page.tsx",
+);
 if (!publicRoute) throw new Error("PHASE3_PUBLIC_PROFILE_ROUTE_MISSING");
+publicRoute.routePattern = "/profile/:handle";
+publicRoute.routeId = routeIdFor(publicRoute.routePattern);
 publicRoute.logicalParent = "/account/profile";
 publicRoute.returnOrBackRoute = "/account/profile";
 publicRoute.currentVisibleEntries = [

@@ -48,10 +48,7 @@ export function TaleStart({ taleSlug }: { taleSlug: string }) {
   useEffect(() => {
     queueMicrotask(() => void load());
   }, [load]);
-  useEffect(() => {
-    if (currentUser.status !== "authenticated" || labelTouched) return;
-    setLabel(currentUser.user.displayName);
-  }, [currentUser, labelTouched]);
+  const effectiveLabel = currentUser.status === "authenticated" && !labelTouched ? currentUser.user.displayName : label;
   if (error && !tale)
     return (
       <main className="tale-start error">
@@ -119,7 +116,7 @@ export function TaleStart({ taleSlug }: { taleSlug: string }) {
                   "Content-Type": "application/json",
                   ...(currentUser.status === "authenticated" ? { "x-csrf-token": currentUser.csrfToken } : {}),
                 },
-                body: JSON.stringify({ ownerLabel: label, aliasEdited: editingAlias }),
+                body: JSON.stringify({ ownerLabel: effectiveLabel, aliasEdited: editingAlias }),
               });
               const body = (await response.json()) as { url?: string; error?: string };
               if (!response.ok || !body.url) {
@@ -135,9 +132,11 @@ export function TaleStart({ taleSlug }: { taleSlug: string }) {
           }}
         >
           <label>
-            <span>{currentUser.status === "authenticated" ? "Player name for this Chronicle" : "Guest player name"}</span>
+            <span>
+              {currentUser.status === "authenticated" ? "Player name for this Chronicle" : "Guest player name"}
+            </span>
             <input
-              value={label}
+              value={effectiveLabel}
               readOnly={currentUser.status === "authenticated" && !editingAlias}
               onChange={(event) => {
                 setLabel(event.target.value);

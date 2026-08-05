@@ -3,7 +3,7 @@ title: Documentation hub
 audience: user
 status: current
 canonical_for: documentation-navigation
-last_reviewed: 2026-08-02
+last_reviewed: 2026-08-05
 ---
 
 # Chronicles documentation
@@ -33,3 +33,12 @@ last_reviewed: 2026-08-02
 [Overview](product/overview.md), [features](product/features.md), [current status](product/current-status.md), [roadmap](product/roadmap.md), [terminology](product/terminology.md), and [reference material](reference/commands.md), [environment variables](reference/environment-variables.md), [routes](reference/routes.md), and [feature status](reference/feature-status.md).
 
 The [engineering-record archive](../Development_Docs/README.md) preserves implementation history and evidence; it is not ordinary usage documentation.
+
+## Phase 7 correction Round 1 guides
+
+- [Chronicle preview and start](user/chronicle-preview-and-start.md)
+- [Personal Harbor](user/personal-harbor.md)
+- [Linked identities](user/linked-identities.md)
+- [Account export](user/account-export.md)
+- [Account deactivation](user/account-deactivation.md)
+- [Account deletion](user/account-deletion.md)

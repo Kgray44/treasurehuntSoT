@@ -1,7 +1,7 @@
 {
   "schemaVersion": "1.0.0",
   "fixtureVersion": "homeport-phase7-integrated-v1",
-  "sourceSha": "e6cf3cb18de4e8854b19e1d29c94f3b492eba441",
+  "sourceSha": "61ea9ec546622b2bce2036d249fca408922786d2",
   "productionRuntime": true,
   "host": "127.0.0.1",
   "preferredPort": 3717,

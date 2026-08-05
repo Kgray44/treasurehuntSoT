@@ -3,7 +3,7 @@ title: Creator guide
 audience: creator
 status: current
 canonical_for: creator-guide
-last_reviewed: 2026-08-04
+last_reviewed: 2026-08-05
 ---
 
 # Creator guide
@@ -46,3 +46,7 @@ Phase 7 proves the Creator voyage from Home through the canonical account,
 Studio Library, private draft state, Community Harbor, Profile, Passport, and
 final sign-out while retaining public/private boundaries. The final package is
 ready for owner walkthrough but is not merged, deployed, or owner accepted.
+
+## Phase 7 correction Round 1 status
+
+The owner returned walkthrough Round 1 for correction. The corrected capability has completed local automated validation and is awaiting owner re-review; it is not yet included in a published release. Live email delivery and Discord, Steam, and Microsoft/Xbox connections still depend on separately configured services. Automated accessibility coverage does not replace testing with physical assistive technology.

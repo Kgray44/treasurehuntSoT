@@ -3,7 +3,7 @@ title: Captain guide
 audience: captain
 status: current
 canonical_for: captain-guide
-last_reviewed: 2026-08-04
+last_reviewed: 2026-08-05
 ---
 
 # Captain guide
@@ -44,3 +44,7 @@ Phase 7 proves a returning account can reach Captain Library and the seeded
 session through visible controls, then move to Profile, Player, Creator Studio,
 Passport, and sign-out without a second identity. This whole-voyage evidence
 is local and synthetic; the owner decision remains pending.
+
+## Phase 7 correction Round 1 status
+
+The owner returned walkthrough Round 1 for correction. The corrected capability has completed local automated validation and is awaiting owner re-review; it is not yet included in a published release. Live email delivery and Discord, Steam, and Microsoft/Xbox connections still depend on separately configured services. Automated accessibility coverage does not replace testing with physical assistive technology.

@@ -28,8 +28,10 @@ export const knownPagePatterns = [
   "/",
   "/account",
   "/account/accessibility",
+  "/account/cancel-deletion",
   "/account/claim",
   "/account/data",
+  "/account/email-change",
   "/account/linked-identities",
   "/account/merge",
   "/account/notifications",
@@ -37,6 +39,8 @@ export const knownPagePatterns = [
   "/account/preferences",
   "/account/privacy",
   "/account/profile",
+  "/account/profile/view",
+  "/account/reactivate",
   "/account/roles",
   "/account/security",
   "/account/sessions",
@@ -47,6 +51,7 @@ export const knownPagePatterns = [
   "/captain/sign-in",
   "/captain/tales/[taleId]",
   "/captain/voyages/[playthroughId]/player-preview",
+  "/chronicles/[taleSlug]",
   "/community",
   "/community/[slug]",
   "/community/artifacts",
@@ -116,6 +121,7 @@ const contextualRoutes = new Set([
   "/captain/sessions/[sessionId]",
   "/captain/tales/[taleId]",
   "/captain/voyages/[playthroughId]/player-preview",
+  "/chronicles/[taleSlug]",
   "/community/[slug]",
   "/community/collections/[slug]",
   "/community/creators/[handle]",
@@ -140,8 +146,11 @@ const contextualRoutes = new Set([
 ]);
 
 const tokenizedRoutes = new Set([
+  "/account/cancel-deletion",
   "/account/claim",
+  "/account/email-change",
   "/account/merge",
+  "/account/reactivate",
   "/player/invitation",
   "/reset-password",
   "/verify-email",
@@ -183,7 +192,11 @@ const parentOverrides = {
   "/": null,
   "/account": "/",
   "/account/claim": "/sign-in",
+  "/account/cancel-deletion": "/sign-in",
+  "/account/email-change": "/account/personal-information",
   "/account/merge": "/sign-in",
+  "/account/profile/view": "/account/profile",
+  "/account/reactivate": "/sign-in",
   "/captain": "/",
   "/captain/invitations": "/captain/library",
   "/captain/library": "/",
@@ -191,6 +204,7 @@ const parentOverrides = {
   "/captain/sign-in": "/",
   "/captain/tales/[taleId]": "/captain/library",
   "/captain/voyages/[playthroughId]/player-preview": "/captain/library",
+  "/chronicles/[taleSlug]": "/tales",
   "/community": "/",
   "/community/[slug]": "/community/chronicles",
   "/community/collections/[slug]": "/community/collections",
@@ -294,7 +308,12 @@ function navigationOwnerFor(pathPattern) {
   if (pathPattern.startsWith("/captain") || pathPattern.startsWith("/quartermaster"))
     return "CAPTAIN_WORKSPACE_OR_CONTEXT";
   if (pathPattern.startsWith("/studio")) return "CREATOR_WORKSPACE_OR_CONTEXT";
-  if (pathPattern.startsWith("/play") || pathPattern.startsWith("/tale") || pathPattern === "/tales")
+  if (
+    pathPattern.startsWith("/play") ||
+    pathPattern.startsWith("/tale") ||
+    pathPattern.startsWith("/chronicles") ||
+    pathPattern === "/tales"
+  )
     return "CHRONICLE_DISCOVERY_OR_CONTEXT";
   return "GLOBAL_OR_ACCOUNT_LIFECYCLE";
 }
@@ -303,6 +322,7 @@ const dynamicSourceIds = {
   "/captain/sessions/[sessionId]": ["source-captain-library-voyages"],
   "/captain/tales/[taleId]": ["source-captain-library-chronicles"],
   "/captain/voyages/[playthroughId]/player-preview": ["source-captain-library-preview"],
+  "/chronicles/[taleSlug]": ["source-chronicle-preview"],
   "/community/[slug]": ["source-community-listing-cards"],
   "/community/collections/[slug]": ["source-community-collection-cards"],
   "/community/creators/[handle]": ["source-community-creator-cards"],
@@ -565,6 +585,18 @@ export const dynamicSources = [
     "PLAYER",
     "PRIVATE",
     "synthetic-player-voyage",
+  ],
+  [
+    "source-chronicle-preview",
+    "/chronicles/[taleSlug]",
+    "/tales",
+    "src/components/tales/TaleCatalog.tsx",
+    "/api/tales",
+    "Preview Chronicle",
+    "Preview Chronicle",
+    "ALL",
+    "PUBLIC",
+    "synthetic-chronicle-preview",
   ],
   [
     "source-player-library-journal",
@@ -990,6 +1022,30 @@ export const entryBindings = [
     [],
   ],
   [
+    "edge-tales-chronicle-preview",
+    "LIST_DETAIL",
+    "/tales",
+    "/chronicles/[taleSlug]",
+    "chronicle-preview",
+    "Preview Chronicle",
+    "src/components/tales/TaleCatalog.tsx",
+    "Preview Chronicle",
+    "ALL",
+    [],
+  ],
+  [
+    "edge-account-public-profile-view",
+    "ACCOUNT_NAV",
+    "/account",
+    "/account/profile/view",
+    "account-public-profile-view",
+    "View My Profile",
+    "src/navigation/registry.ts",
+    "account/profile/view",
+    "AUTHENTICATED",
+    [],
+  ],
+  [
     "edge-account-profile",
     "SECTION_NAV",
     "/account",
@@ -1376,6 +1432,14 @@ export const entryBindings = [
 );
 
 export const tokenizedRouteDefinitions = [
+  ["/account/cancel-deletion", "deletion-cancellation email link", "bounded by account lifecycle request", "/sign-in"],
+  [
+    "/account/email-change",
+    "email-change confirmation link",
+    "bounded by one-time account token",
+    "/account/personal-information",
+  ],
+  ["/account/reactivate", "account-reactivation email link", "bounded by account lifecycle request", "/sign-in"],
   ["/reset-password", "password-reset email link", "bounded by Wayfarer reset record", "/sign-in"],
   ["/verify-email", "email-verification link", "bounded by Wayfarer verification record", "/sign-in"],
   [

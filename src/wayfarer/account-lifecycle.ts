@@ -260,9 +260,9 @@ export async function listAccountExports(accountId: string) {
     data: { state: "EXPIRED", payload: null },
   });
   return Promise.all(
-    (
-      await db.accountDataExport.findMany({ where: { accountId }, orderBy: { requestedAt: "desc" }, take: 10 })
-    ).map(exportSummary),
+    (await db.accountDataExport.findMany({ where: { accountId }, orderBy: { requestedAt: "desc" }, take: 10 })).map(
+      exportSummary,
+    ),
   );
 }
 
@@ -279,11 +279,7 @@ export async function downloadAccountExport(accountId: string, exportId: string)
   return { payload: record.payload, checksum: record.checksum };
 }
 
-async function leaveActivePlayerMemberships(
-  tx: Prisma.TransactionClient,
-  profileId: string | undefined,
-  now: Date,
-) {
+async function leaveActivePlayerMemberships(tx: Prisma.TransactionClient, profileId: string | undefined, now: Date) {
   if (!profileId) return 0;
   const result = await tx.playthroughMembership.updateMany({
     where: {
@@ -358,8 +354,7 @@ export async function scheduleAccountDeletion(accountId: string, password: strin
       where: { id: accountId },
       data: { status: "DELETION_SCHEDULED", suspendedAt: now },
     });
-    if (profile)
-      await tx.playerProfile.update({ where: { id: profile.id }, data: { status: "DELETION_SCHEDULED" } });
+    if (profile) await tx.playerProfile.update({ where: { id: profile.id }, data: { status: "DELETION_SCHEDULED" } });
     const lifecycle = await tx.accountLifecycleRequest.create({
       data: {
         accountId,
@@ -513,7 +508,10 @@ export async function processDueAccountDeletions(now = new Date()) {
         data: { state: "EXPIRED", payload: null, expiresAt: now },
       });
       if (profile) {
-        await tx.profileMedia.updateMany({ where: { profileId: profile.id, removedAt: null }, data: { removedAt: now } });
+        await tx.profileMedia.updateMany({
+          where: { profileId: profile.id, removedAt: null },
+          data: { removedAt: now },
+        });
         await tx.profilePrivacyRule.updateMany({
           where: { playerProfileId: profile.id },
           data: { visibility: "ONLY_ME" },

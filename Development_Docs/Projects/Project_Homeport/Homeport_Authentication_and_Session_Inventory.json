@@ -448,8 +448,8 @@
   "phase1Implementation": {
     "phase": "PHASE_1_UNITE_IDENTITY_AND_SESSION_AUTHORITY",
     "implementationBaseSha": "bda5217a67d8ce2b56a02163371c137d9ed07275",
-    "implementationDigest": "5d00714b83b258f21cbcd848befe307933fd35056f9c767c9d5116be6e07df7a",
-    "state": "VALIDATED",
+    "implementationDigest": "edd7f04b6c3de019b1250ded3defab45c4e2a633e89e5fdb0e2e1e8182b2b218",
+    "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION",
     "updatedAt": "2026-08-01T19:00:00.000Z",
     "historicalPhase0Preserved": true
   }

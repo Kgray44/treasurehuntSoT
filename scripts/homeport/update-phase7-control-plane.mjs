@@ -5,7 +5,7 @@ import { format } from "prettier";
 
 const root = process.cwd();
 const projectRoot = path.join(root, "Development_Docs", "Projects", "Project_Homeport");
-const sourceSha = "e6cf3cb18de4e8854b19e1d29c94f3b492eba441";
+const sourceSha = process.env.HOMEPORT_PHASE7_SOURCE_SHA ?? "e6cf3cb18de4e8854b19e1d29c94f3b492eba441";
 const architectureFreezeSha = "7e85c2c9d67f7d4386d66e429dbc9f5b17b92be3";
 const fixtureVersion = "homeport-phase7-integrated-v1";
 const ownerDecision = "PENDING_OWNER_DECISION";

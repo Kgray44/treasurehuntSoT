@@ -3,7 +3,7 @@ title: Changelog
 audience: product-engineering
 status: current
 canonical_for: repository-changelog
-last_reviewed: 2026-08-04
+last_reviewed: 2026-08-05
 ---
 
 # Changelog
@@ -45,3 +45,7 @@ last_reviewed: 2026-08-04
 - Private-content validation and access-control safeguards are documented separately from the public reporting policy.
 
 Historical implementation detail and validation evidence live in [Development_Docs/](Development_Docs/README.md).
+
+## Phase 7 correction Round 1 status
+
+The owner returned walkthrough Round 1 for correction. The corrected capability has completed local automated validation and is awaiting owner re-review; it is not yet included in a published release. Live email delivery and Discord, Steam, and Microsoft/Xbox connections still depend on separately configured services. Automated accessibility coverage does not replace testing with physical assistive technology.

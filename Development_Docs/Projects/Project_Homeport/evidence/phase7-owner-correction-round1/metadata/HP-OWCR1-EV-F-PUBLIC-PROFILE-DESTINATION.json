@@ -1,0 +1,22 @@
+{
+  "evidenceId": "HP-OWCR1-EV-F-PUBLIC-PROFILE-DESTINATION",
+  "journeyId": "HP-OWCR1-JRN-E",
+  "sourceSha": "61ea9ec546622b2bce2036d249fca408922786d2",
+  "fixtureVersion": "homeport-phase7-owner-correction-round1-v1",
+  "result": "PASSED",
+  "visualReview": "ACCEPTED",
+  "reviewer": "Codex",
+  "ownerReview": "PENDING_OWNER_DECISION",
+  "browser": "Playwright Chromium",
+  "viewport": { "width": 1440, "height": 900 },
+  "zoom": "100_PERCENT_UNLESS_EVIDENCE_ID_STATES_MOBILE_OR_ZOOM",
+  "motionMode": "REDUCED",
+  "route": "/profile/hp7c-full-capability",
+  "title": "Voyagewright | Stories made to be played",
+  "captureMode": "FULL_PAGE",
+  "normalization": "Sticky shell header rendered in normal document flow; animations and caret disabled after route settlement.",
+  "screenshot": "screenshots/HP-OWCR1-EV-F-PUBLIC-PROFILE-DESTINATION.png",
+  "screenshotSha256": "ab9f1f2be16ac8bc9b08f57c54b9cd4b684b841a1022271b29ffb4dc702b4ba9",
+  "screenshotBytes": 668905,
+  "limitation": "Local production-build Chromium proof against a synthetic task-owned SQLite clone; not owner acceptance, live-provider proof, merge, or deployment."
+}

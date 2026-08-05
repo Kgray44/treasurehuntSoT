@@ -320,7 +320,7 @@
   {
     "id": "FT-B007",
     "title": "Integrated Whole-Product Voyage and Owner Walkthrough",
-    "summary": "One deterministic synthetic fixture and governed A-through-O journey system now prove account continuity, workspace traversal, Personal Harbor, Community, recovery, failure states, mobile parity, and a safe final owner-walkthrough runtime.",
+    "summary": "One deterministic synthetic fixture family and governed journey system now prove the integrated whole-product voyage plus owner-returned Correction Round 1: Chronicle preview and aliasing, unified workspace capabilities, identity and email lifecycles, linked providers, account data rights, Personal Harbor, effective preferences, loading and motion, Community search and reviews, mobile parity, and a safe owner re-review runtime.",
     "status": "BRANCH_COMPLETE_NOT_MERGED",
     "program": "Project Homeport Phase 7",
     "surfaces": [
@@ -328,6 +328,11 @@
       "/register",
       "/sign-in",
       "/account",
+      "/account/roles",
+      "/account/personal-information",
+      "/account/linked-identities",
+      "/account/data",
+      "/account/email-change",
       "/account/preferences",
       "/account/security",
       "/account/sessions",
@@ -337,6 +342,9 @@
       "/passport/artifacts",
       "/passport/saved",
       "/community",
+      "/community/[slug]",
+      "/chronicles/[taleSlug]",
+      "/verify-email",
       "/player/library",
       "/captain/library",
       "/studio/library"
@@ -351,12 +359,23 @@
       "Desktop, mobile, keyboard focus, and reduced-motion journey proof",
       "Checksum, source, fixture, viewport, route, and visual-review-bound evidence",
       "Owned final production walkthrough runtime with safe prepare, status, reset, and stop controls",
-      "Independent owner decision boundary that remains pending until personal review"
+      "Independent owner decision boundary that remains pending until personal review",
+      "Public-safe Chronicle preview separated from the explicit Start Chronicle mutation boundary",
+      "Chronicle-scoped participation aliases with signed-in display-name defaults and anonymous guest continuity",
+      "One claimed account with Player, Captain, and Creator capability setup plus a server-owned active-Chronicle lock",
+      "Claiming, primary email verification and change, recovery, and human-readable account state",
+      "Secure Discord, Steam, and Microsoft/Xbox provider adapters with truthful unavailable configuration states",
+      "Versioned export plus reauthenticated deactivation, reactivation, deletion, cancellation, and due processing",
+      "Personal Harbor hierarchy with one Display Name authority, public Profile destination, Data and Account, and Sign Out",
+      "Four visible effective preferences with legacy values preserved for ten removed inert controls",
+      "Delayed loading, interruption-safe route and menu transitions, visible home ambience, first-paint stability, and reduced-motion completion",
+      "Compact and expanded URL-backed Community search plus coherent responsive review creation and editing",
+      "Correction Round 1 journeys A through U and original Phase 7 A through O rerun against the same exact source"
     ],
     "evidence": [
       {
         "kind": "commit",
-        "value": "e6cf3cb18de4e8854b19e1d29c94f3b492eba441"
+        "value": "61ea9ec546622b2bce2036d249fca408922786d2"
       },
       {
         "kind": "completion-record",
@@ -369,16 +388,27 @@
       {
         "kind": "test",
         "value": "tests/e2e/homeport-phase7.spec.ts"
+      },
+      {
+        "kind": "completion-record",
+        "value": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_7_Correction_Round_1_Validation_Record.md"
+      },
+      {
+        "kind": "test",
+        "value": "tests/e2e/homeport-phase7-owner-correction-round1.spec.ts"
       }
     ],
     "branch": "codex/project-homeport-product-reality-recovery",
-    "commit": "e6cf3cb18de4e8854b19e1d29c94f3b492eba441",
+    "commit": "61ea9ec546622b2bce2036d249fca408922786d2",
     "limitations": [
       "Not available on main until separately reviewed and integrated",
       "Evidence is local, synthetic, and uses task-owned SQLite clones",
       "Live providers, production MySQL, deployment, and physical assistive-technology validation remain external",
-      "The owner decision remains PENDING_OWNER_DECISION",
-      "Walkthrough readiness is not owner acceptance or product acceptance"
+      "Owner Walkthrough Round 1 remains OWNER_RETURNED_FOR_CORRECTION and owner re-review remains PENDING_OWNER_DECISION",
+      "Correction proof is local, synthetic, branch-only, and uses task-owned SQLite clones; it is not merged or deployed",
+      "Live Discord, Steam, Microsoft/Xbox, and email delivery configuration remain external to the synthetic adapter and outbox proof",
+      "Production MySQL integration and physical assistive-technology validation remain external",
+      "Re-review readiness is not owner acceptance or product acceptance"
     ],
     "catalogVersion": 1
   }

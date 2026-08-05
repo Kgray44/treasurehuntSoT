@@ -3,7 +3,7 @@ title: Project Homeport Phase 7 Owner Decision Record
 audience: product-owner
 status: current
 canonical_for: project-homeport-phase-7-owner-decision-record
-last_reviewed: 2026-08-04
+last_reviewed: 2026-08-05
 ---
 
 # Project Homeport Phase 7 owner decision record
@@ -29,3 +29,9 @@ and external credential handoff remain historical records and must not be rewrit
 The permitted re-review outcomes remain `OWNER_ACCEPTED`, `OWNER_ACCEPTED_WITH_EXPLICIT_LIMITATIONS`, or
 `OWNER_REJECTED_WITH_ACTIONABLE_FINDINGS`. Automation, a healthy runtime, raw test output, or Sounding Line
 `RELEASE_GO` cannot change the re-review decision.
+
+## Correction Round 1 implementation and validation
+
+**Date:** 2026-08-05. **Exact source-bound implementation:** `61ea9ec546622b2bce2036d249fca408922786d2`. **Architecture:** `ed8f1ef5316f11340276bebe6c70715159321ef6`.
+
+All 44 owner findings are corrected and traced; browser journeys A-U passed 21/21 and original Phase 7 journeys A-O passed 15/15 against the exact correction source. Thirty-one checksum-bound screenshots received Codex visual classification `ACCEPTED`. The preserved owner decision remains `OWNER_RETURNED_FOR_CORRECTION`; the re-review decision remains `PENDING_OWNER_DECISION`. Automated proof, Codex review, or Sounding Line may authorize publication but cannot record owner acceptance. The result is local and synthetic, not merged or deployed, and live provider/email boundaries remain external.

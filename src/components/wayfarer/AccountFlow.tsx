@@ -6,16 +6,7 @@ import { FormEvent, useEffect, useState } from "react";
 import { useCurrentUser } from "@/components/auth/CurrentUserProvider";
 import { authorizedReturnTo, safeReturnTo } from "@/homeport/return-to";
 
-type Mode =
-  | "register"
-  | "sign-in"
-  | "forgot"
-  | "reset"
-  | "verify"
-  | "email-change"
-  | "claim"
-  | "merge"
-  | "security";
+type Mode = "register" | "sign-in" | "forgot" | "reset" | "verify" | "email-change" | "claim" | "merge" | "security";
 type Props = {
   mode: Mode;
   query?: { returnTo?: string; return?: string; reason?: string; token?: string };
@@ -204,11 +195,11 @@ export function AccountFlow({ mode, query }: Props) {
                   ? "Verify email"
                   : mode === "email-change"
                     ? "Confirm email change"
-                  : mode === "claim"
-                    ? "Claim your guest voyage"
-                    : mode === "merge"
-                      ? "Use an existing account"
-                      : "Create your account"}
+                    : mode === "claim"
+                      ? "Claim your guest voyage"
+                      : mode === "merge"
+                        ? "Use an existing account"
+                        : "Create your account"}
         </h1>
         <p className="account-flow-intro">
           {mode === "sign-in"

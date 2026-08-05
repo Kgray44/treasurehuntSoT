@@ -1036,7 +1036,7 @@
     },
     {
       "evidenceId": "HP-P6-EV-039-passport-history-record-d--standard-desktop",
-      "screenId": "screen-page-passport-history-[recordId]",
+      "screenId": "screen-page-passport-history-recordId",
       "route": "/passport/history/[recordId]",
       "productArea": "Chronicle Passport",
       "state": "READY_POPULATED",
@@ -1063,7 +1063,7 @@
     },
     {
       "evidenceId": "HP-P6-EV-040-passport-history-record-d--modern-mobile",
-      "screenId": "screen-page-passport-history-[recordId]",
+      "screenId": "screen-page-passport-history-recordId",
       "route": "/passport/history/[recordId]",
       "productArea": "Chronicle Passport",
       "state": "READY_POPULATED",
@@ -1144,7 +1144,7 @@
     },
     {
       "evidenceId": "HP-P6-EV-043-passport-artifacts-artifact-d--standard-desktop",
-      "screenId": "screen-page-passport-artifacts-[artifactId]",
+      "screenId": "screen-page-passport-artifacts-artifactId",
       "route": "/passport/artifacts/[artifactId]",
       "productArea": "Chronicle Passport",
       "state": "READY_POPULATED",
@@ -1171,7 +1171,7 @@
     },
     {
       "evidenceId": "HP-P6-EV-044-passport-artifacts-artifact-d--modern-mobile",
-      "screenId": "screen-page-passport-artifacts-[artifactId]",
+      "screenId": "screen-page-passport-artifacts-artifactId",
       "route": "/passport/artifacts/[artifactId]",
       "productArea": "Chronicle Passport",
       "state": "READY_POPULATED",

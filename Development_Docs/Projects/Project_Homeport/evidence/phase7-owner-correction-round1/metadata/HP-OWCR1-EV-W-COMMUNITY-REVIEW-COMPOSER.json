@@ -1,0 +1,22 @@
+{
+  "evidenceId": "HP-OWCR1-EV-W-COMMUNITY-REVIEW-COMPOSER",
+  "journeyId": "HP-OWCR1-JRN-Q",
+  "sourceSha": "61ea9ec546622b2bce2036d249fca408922786d2",
+  "fixtureVersion": "homeport-phase7-owner-correction-round1-v1",
+  "result": "PASSED",
+  "visualReview": "ACCEPTED",
+  "reviewer": "Codex",
+  "ownerReview": "PENDING_OWNER_DECISION",
+  "browser": "Playwright Chromium",
+  "viewport": { "width": 1440, "height": 900 },
+  "zoom": "100_PERCENT_UNLESS_EVIDENCE_ID_STATES_MOBILE_OR_ZOOM",
+  "motionMode": "REDUCED",
+  "route": "/community/clockwork-reef-chronicle",
+  "title": "Clockwork Reef Almanac | Voyagewright",
+  "captureMode": "FULL_PAGE",
+  "normalization": "Sticky shell header rendered in normal document flow; animations and caret disabled after route settlement.",
+  "screenshot": "screenshots/HP-OWCR1-EV-W-COMMUNITY-REVIEW-COMPOSER.png",
+  "screenshotSha256": "1b931d23e958e1a703765442a8380650595111bb6eaa8f9939cbeb5f7f9d5208",
+  "screenshotBytes": 778897,
+  "limitation": "Local production-build Chromium proof against a synthetic task-owned SQLite clone; not owner acceptance, live-provider proof, merge, or deployment."
+}

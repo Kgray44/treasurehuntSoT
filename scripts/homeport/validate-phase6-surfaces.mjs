@@ -90,11 +90,15 @@ export function validatePhase6Surfaces(root = moduleRoot) {
   const nodes = readJson("Project_Homeport_Phase_5_Route_Node_Registry.json").nodes;
   const sources = discoverAppRouteSources(root).filter((source) => source.kind === "page");
   const nodeByRoute = new Map(nodes.map((node) => [node.routeId, node]));
+  const screenByEvidence = new Map(
+    registry.screens.flatMap((screen) => screen.evidenceIds.map((evidenceId) => [evidenceId, screen.screenId])),
+  );
   const visualByScreen = new Map();
   for (const row of visualRows) {
-    const records = visualByScreen.get(row.screen_id) ?? [];
+    const screenId = screenByEvidence.get(row.evidence_id) ?? row.screen_id;
+    const records = visualByScreen.get(screenId) ?? [];
     records.push(row);
-    visualByScreen.set(row.screen_id, records);
+    visualByScreen.set(screenId, records);
   }
 
   if (registry.sourceSha !== implementationSourceSha) errors.push("SCREEN_REGISTRY_SOURCE_SHA_STALE");

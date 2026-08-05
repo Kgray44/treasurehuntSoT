@@ -160,7 +160,8 @@ export function accountDataAvailability() {
         label: "Delete account",
         status: "REQUIRES_REAUTHENTICATION",
         href: "/account/data",
-        reason: "Delayed deletion, cancellation, retention, and tombstone contracts are available after reauthentication.",
+        reason:
+          "Delayed deletion, cancellation, retention, and tombstone contracts are available after reauthentication.",
       },
     ],
   } as const;

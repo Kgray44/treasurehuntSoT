@@ -3,7 +3,7 @@ title: Getting started
 audience: user
 status: current
 canonical_for: getting-started
-last_reviewed: 2026-08-04
+last_reviewed: 2026-08-05
 ---
 
 # Getting started
@@ -47,3 +47,7 @@ The Project Homeport branch now applies deliberate loading, empty, error,
 permission, mutation, media-fallback, responsive, focus, and reduced-motion
 behavior across the current product surfaces. This is local synthetic evidence;
 the changes are not on `main`, deployed, or owner accepted.
+
+## Phase 7 correction Round 1 status
+
+The owner returned walkthrough Round 1 for correction. The corrected capability has completed local automated validation and is awaiting owner re-review; it is not yet included in a published release. Live email delivery and Discord, Steam, and Microsoft/Xbox connections still depend on separately configured services. Automated accessibility coverage does not replace testing with physical assistive technology.

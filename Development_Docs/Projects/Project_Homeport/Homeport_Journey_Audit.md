@@ -3,7 +3,7 @@ title: Project Homeport Phase 0 Natural-Journey Audit
 audience: product-engineering
 status: current
 canonical_for: project-homeport-phase-0-natural-journey-audit
-last_reviewed: 2026-08-01
+last_reviewed: 2026-08-05
 ---
 
 # Project Homeport Phase 0 natural-journey audit
@@ -229,45 +229,45 @@ These branch-only results use the reserved synthetic fixture and production loca
 
 ## Phase 5 route-reachability amendment
 
-The source-driven Phase 5 graph records 85 page nodes and 159 typed transitions from 85 current page sources. Machine traversal reports zero unexplained ordinary orphans. Status: **BRANCH_VALIDATED_NOT_MERGED**. Exact implementation source: `b9f1552b78857c36a45f25eb5fdfb7a7e09f102a`. Browser, merge, deployment, owner acceptance, Phase 6, Phase 7, and product acceptance remain separate boundaries.
+The source-driven Phase 5 graph records 90 page nodes and 169 typed transitions from 90 current page sources. Machine traversal reports zero unexplained ordinary orphans. Status: **IMPLEMENTED_PENDING_BROWSER_VALIDATION**. Exact implementation source: `IMPLEMENTATION_SOURCE_PENDING`. Browser, merge, deployment, owner acceptance, Phase 6, Phase 7, and product acceptance remain separate boundaries.
 
-- `HP-P5-JRN-A`: Gateway route-map summary — PASSED
-- `HP-P5-JRN-B`: Anonymous account entry — PASSED
-- `HP-P5-JRN-C`: Player route family — PASSED
-- `HP-P5-JRN-D`: Captain route family — PASSED
-- `HP-P5-JRN-E`: Creator route family — PASSED
-- `HP-P5-JRN-F`: Personal Harbor route family — PASSED
-- `HP-P5-JRN-G`: Community Harbor route family — PASSED
-- `HP-P5-JRN-H`: Dynamic source surface — PASSED
-- `HP-P5-JRN-I`: Dynamic detail and parent — PASSED
-- `HP-P5-JRN-J`: Direct-entry return — PASSED
-- `HP-P5-JRN-K`: Valid token handoff — PASSED
-- `HP-P5-JRN-L`: Invalid token recovery — PASSED
-- `HP-P5-JRN-M`: Expired, consumed, and revoked token recovery — PASSED
-- `HP-P5-JRN-N`: Redirect alias integrity — PASSED
-- `HP-P5-JRN-O`: Compatibility and deprecation disposition — PASSED
-- `HP-P5-JRN-P`: Ordinary empty-state onward action — PASSED
-- `HP-P5-JRN-Q`: Dynamic invalid-ID recovery — PASSED
-- `HP-P5-JRN-R`: Permission-aware recovery — PASSED
-- `HP-P5-JRN-S`: Compact-surface exit — PASSED
-- `HP-P5-JRN-T`: Immersive-surface exit — PASSED
-- `HP-P5-JRN-U`: Mobile global path — PASSED
-- `HP-P5-JRN-V`: Mobile dynamic detail and return — PASSED
-- `HP-P5-JRN-W`: Mobile Personal Harbor path — PASSED
-- `HP-P5-JRN-X`: Mobile Community path — PASSED
-- `HP-P5-JRN-Y`: Effective 200 percent zoom navigation — PASSED
-- `HP-P5-JRN-Z`: Keyboard-only route path — PASSED
-- `HP-P5-JRN-AA`: Zero unexplained ordinary orphans — PASSED
-- `HP-P5-JRN-AB`: Compatibility context-adapter target — PASSED
-- `HP-P5-JRN-AC`: Acyclic parent graph — PASSED
-- `HP-P5-JRN-AD`: Full ordinary-route traversal — PASSED
+- `HP-P5-JRN-A`: Gateway route-map summary — STRUCTURALLY_REACHABLE; BROWSER PENDING
+- `HP-P5-JRN-B`: Anonymous account entry — STRUCTURALLY_REACHABLE; BROWSER PENDING
+- `HP-P5-JRN-C`: Player route family — STRUCTURALLY_REACHABLE; BROWSER PENDING
+- `HP-P5-JRN-D`: Captain route family — STRUCTURALLY_REACHABLE; BROWSER PENDING
+- `HP-P5-JRN-E`: Creator route family — STRUCTURALLY_REACHABLE; BROWSER PENDING
+- `HP-P5-JRN-F`: Personal Harbor route family — STRUCTURALLY_REACHABLE; BROWSER PENDING
+- `HP-P5-JRN-G`: Community Harbor route family — STRUCTURALLY_REACHABLE; BROWSER PENDING
+- `HP-P5-JRN-H`: Dynamic source surface — STRUCTURALLY_REACHABLE; BROWSER PENDING
+- `HP-P5-JRN-I`: Dynamic detail and parent — STRUCTURALLY_REACHABLE; BROWSER PENDING
+- `HP-P5-JRN-J`: Direct-entry return — STRUCTURALLY_REACHABLE; BROWSER PENDING
+- `HP-P5-JRN-K`: Valid token handoff — STRUCTURALLY_REACHABLE; BROWSER PENDING
+- `HP-P5-JRN-L`: Invalid token recovery — STRUCTURALLY_REACHABLE; BROWSER PENDING
+- `HP-P5-JRN-M`: Expired, consumed, and revoked token recovery — STRUCTURALLY_REACHABLE; BROWSER PENDING
+- `HP-P5-JRN-N`: Redirect alias integrity — STRUCTURALLY_REACHABLE; BROWSER PENDING
+- `HP-P5-JRN-O`: Compatibility and deprecation disposition — STRUCTURALLY_REACHABLE; BROWSER PENDING
+- `HP-P5-JRN-P`: Ordinary empty-state onward action — STRUCTURALLY_REACHABLE; BROWSER PENDING
+- `HP-P5-JRN-Q`: Dynamic invalid-ID recovery — STRUCTURALLY_REACHABLE; BROWSER PENDING
+- `HP-P5-JRN-R`: Permission-aware recovery — STRUCTURALLY_REACHABLE; BROWSER PENDING
+- `HP-P5-JRN-S`: Compact-surface exit — STRUCTURALLY_REACHABLE; BROWSER PENDING
+- `HP-P5-JRN-T`: Immersive-surface exit — STRUCTURALLY_REACHABLE; BROWSER PENDING
+- `HP-P5-JRN-U`: Mobile global path — STRUCTURALLY_REACHABLE; BROWSER PENDING
+- `HP-P5-JRN-V`: Mobile dynamic detail and return — STRUCTURALLY_REACHABLE; BROWSER PENDING
+- `HP-P5-JRN-W`: Mobile Personal Harbor path — STRUCTURALLY_REACHABLE; BROWSER PENDING
+- `HP-P5-JRN-X`: Mobile Community path — STRUCTURALLY_REACHABLE; BROWSER PENDING
+- `HP-P5-JRN-Y`: Effective 200 percent zoom navigation — STRUCTURALLY_REACHABLE; BROWSER PENDING
+- `HP-P5-JRN-Z`: Keyboard-only route path — STRUCTURALLY_REACHABLE; BROWSER PENDING
+- `HP-P5-JRN-AA`: Zero unexplained ordinary orphans — STRUCTURALLY_REACHABLE; BROWSER PENDING
+- `HP-P5-JRN-AB`: Compatibility context-adapter target — STRUCTURALLY_REACHABLE; BROWSER PENDING
+- `HP-P5-JRN-AC`: Acyclic parent graph — STRUCTURALLY_REACHABLE; BROWSER PENDING
+- `HP-P5-JRN-AD`: Full ordinary-route traversal — STRUCTURALLY_REACHABLE; BROWSER PENDING
 <!-- PHASE5_REACHABILITY_END -->
 
 <!-- PHASE6_SURFACES_START -->
 
 ## Phase 6 complete-product-surface amendment
 
-The Phase 6 screen acceptance system records 92 human screen contracts across 85 current page sources. Critical and high screens use exact-source production-runtime desktop/mobile evidence; cross-product state, responsive, accessibility, motion, media, mutation, and raw-surface gates remain independently validated. Status: **BRANCH_VALIDATED_NOT_MERGED**. Exact implementation source: `e02ee0dae0469a2ba573beaf409c0b34e8668d09`. Phase 7 integrated journeys, owner walkthrough, merge, deployment, and acceptance remain separate boundaries.
+The Phase 6 screen acceptance system records 97 human screen contracts across 90 current page sources. Critical and high screens use exact-source production-runtime desktop/mobile evidence; cross-product state, responsive, accessibility, motion, media, mutation, and raw-surface gates remain independently validated. Status: **BRANCH_VALIDATED_NOT_MERGED**. Exact implementation source: `e02ee0dae0469a2ba573beaf409c0b34e8668d09`. Phase 7 integrated journeys, owner walkthrough, merge, deployment, and acceptance remain separate boundaries.
 
 <!-- PHASE6_SURFACES_END -->
 
@@ -275,6 +275,10 @@ The Phase 6 screen acceptance system records 92 human screen contracts across 85
 
 ## Phase 7 whole-voyage amendment
 
-Journeys A through O passed against exact product source `e6cf3cb18de4e8854b19e1d29c94f3b492eba441`, the immutable `homeport-phase7-integrated-v1` seed, and isolated per-journey database clones. Sixteen checksum-bound production-runtime captures received Codex visual review. HP-NC-015 is `CLOSED_PHASE_7_WALKTHROUGH_READY`; HP-NC-019 is `CLOSED_PHASE_7_FIXTURE_VALIDATED`; HP-NC-020 is `WAITING_FOR_OWNER_DECISION`. Status: **READY_FOR_OWNER_WALKTHROUGH**. Owner decision: **PENDING_OWNER_DECISION**. This is not merge, deployment, live-provider, or owner-acceptance proof.
+Journeys A through O passed against exact product source `61ea9ec546622b2bce2036d249fca408922786d2`, the immutable `homeport-phase7-integrated-v1` seed, and isolated per-journey database clones. Sixteen checksum-bound production-runtime captures received Codex visual review. HP-NC-015 is `CLOSED_PHASE_7_WALKTHROUGH_READY`; HP-NC-019 is `CLOSED_PHASE_7_FIXTURE_VALIDATED`; HP-NC-020 is `WAITING_FOR_OWNER_DECISION`. Status: **READY_FOR_OWNER_WALKTHROUGH**. Owner decision: **PENDING_OWNER_DECISION**. This is not merge, deployment, live-provider, or owner-acceptance proof.
 
 <!-- PHASE7_WHOLE_VOYAGE_END -->
+
+## Phase 7 owner correction Round 1 addendum
+
+Correction journeys `HP-OWCR1-JRN-A` through `HP-OWCR1-JRN-U` passed against `61ea9ec546622b2bce2036d249fca408922786d2` using visible controls, an isolated production runtime, and per-journey synthetic SQLite clones. The original Phase 7 A-O suite also passed against the same corrected source. The machine-readable records live in `Homeport_Journey_Catalog.json`; 31 captures live under `evidence/phase7-owner-correction-round1`. This establishes local corrected traversal, not owner acceptance, mainline integration, or deployment.

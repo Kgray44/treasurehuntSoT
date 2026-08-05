@@ -162,7 +162,16 @@ for (const source of [...pages, ...handlers]) {
 const pageInventory = pages.map((source) => {
   const route = existingBySource.get(source.sourceFile);
   if (!route) throw new Error(`PHASE5_PAGE_INVENTORY_MISSING:${source.sourceFile}`);
-  return { source, route, policy: nodePolicy(source.pathPattern, route) };
+  const policy = nodePolicy(source.pathPattern, route);
+  if (!shellModes.includes(route.shellMode)) {
+    route.shellMode =
+      policy.classification === "TOKENIZED_DEEP_LINK"
+        ? "TOKENIZED"
+        : source.pathPattern === "/chronicles/[taleSlug]" || source.pathPattern === "/account/profile/view"
+          ? "PUBLIC_STANDARD"
+          : "WORKSPACE_STANDARD";
+  }
+  return { source, route, policy };
 });
 const routeByPath = new Map(pageInventory.map((item) => [item.source.pathPattern, item.route]));
 if (routeByPath.size !== pages.length) throw new Error("PHASE5_DUPLICATE_PAGE_PATTERN");
@@ -249,6 +258,13 @@ for (const source of dynamicSources) {
 }
 
 const tokenSourceMap = {
+  "/account/cancel-deletion": ["/sign-in", "src/app/account/cancel-deletion/page.tsx", 'mode="cancel-deletion"'],
+  "/account/email-change": [
+    "/account/personal-information",
+    "src/app/account/email-change/page.tsx",
+    'mode="email-change"',
+  ],
+  "/account/reactivate": ["/sign-in", "src/app/account/reactivate/page.tsx", 'mode="reactivate"'],
   "/reset-password": ["/forgot-password", "src/app/reset-password/page.tsx", 'mode="reset"'],
   "/verify-email": ["/register", "src/app/verify-email/page.tsx", 'mode="verify"'],
   "/player/invitation": ["/player/sign-in", "src/app/join/[token]/route.ts", "player/invitation"],

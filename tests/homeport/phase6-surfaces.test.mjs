@@ -34,7 +34,7 @@ test("Phase 6 screen census discovers every page and records boundaries without 
     .split(/\r?\n/u)
     .filter(Boolean);
   assert.equal(current.census.pageRoutes, pages.length);
-  assert.equal(current.census.pageRoutes, 85);
+  assert.equal(current.census.pageRoutes, 90);
   assert.equal(current.census.loadingBoundaries, loading.length);
   assert.equal(current.census.errorBoundaries, errors.length);
   assert.equal(current.census.omittedPages, 0);
@@ -47,7 +47,7 @@ test("Phase 6 screen census discovers every page and records boundaries without 
 test("screen acceptance registry has valid identity, ownership, source, criticality, maturity, and contracts", () => {
   const current = registry();
   assert.equal(current.sourceSha, implementationSourceSha);
-  assert.equal(current.screens.length, 92);
+  assert.equal(current.screens.length, 97);
   assert.equal(new Set(current.screens.map((screen) => screen.screenId)).size, current.screens.length);
   for (const screen of current.screens) {
     if (screen.screenId.startsWith("screen-state-")) assert.equal(screen.routeIds.length, 0);

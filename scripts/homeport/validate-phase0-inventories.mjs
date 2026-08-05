@@ -292,6 +292,41 @@ const evidenceIds = new Set(
   [...evidence.records, ...(evidence.phase7Run?.frames ?? [])].map((record) => record.evidenceId),
 );
 for (const record of evidence.records) {
+  if (record.evidenceId.startsWith("HP-OWCR1-EV-")) {
+    requireKeys(
+      record,
+      [
+        "evidenceId",
+        "journeyId",
+        "sourceSha",
+        "fixtureVersion",
+        "result",
+        "visualReview",
+        "reviewer",
+        "ownerReview",
+        "browser",
+        "viewport",
+        "motionMode",
+        "route",
+        "screenshot",
+        "screenshotSha256",
+        "limitation",
+      ],
+      record.evidenceId,
+    );
+    assert.equal(
+      record.sourceSha,
+      evidence.phase7OwnerCorrectionRound1?.sourceSha,
+      `${record.evidenceId} correction source SHA drifted`,
+    );
+    assert.ok(journeyIds.has(record.journeyId), `${record.evidenceId} references unknown correction journey`);
+    const screenshot = path.join(auditRoot, "evidence", "phase7-owner-correction-round1", record.screenshot);
+    assert.ok(existsSync(screenshot), `${record.evidenceId} correction screenshot is missing`);
+    assert.equal(sha256(screenshot), record.screenshotSha256, `${record.evidenceId} correction screenshot drifted`);
+    assert.equal(record.result, "PASSED", `${record.evidenceId} correction result is not passed`);
+    assert.equal(record.visualReview, "ACCEPTED", `${record.evidenceId} visual review is not accepted`);
+    continue;
+  }
   if (record.evidenceId.startsWith("HP-P6-EV-")) {
     requireKeys(
       record,
@@ -545,10 +580,16 @@ assert.equal(
   "The validated Phase 2 page coverage history drifted",
 );
 assert.equal(
-  routes.routes.filter((route) => route.kind === "page" && (route.phase2Implementation || route.phase3Implementation))
-    .length,
+  routes.routes.filter(
+    (route) =>
+      route.kind === "page" &&
+      (route.phase2Implementation ||
+        route.phase3Implementation ||
+        route.phase4Implementation ||
+        route.phase5Implementation),
+  ).length,
   routes.totals.pages,
-  "Every current page must have a validated Phase 2 or additive Phase 3 implementation record",
+  "Every current page must have a validated additive implementation record",
 );
 
 const ncRequired = [

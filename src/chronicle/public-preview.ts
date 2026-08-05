@@ -24,7 +24,10 @@ export async function chroniclePreviewHrefByVersion(versionIds: string[]) {
   return new Map(
     releases
       .filter((release) => release.sourcePublishedTaleVersionId && release.listing.currentReleaseId === release.id)
-      .map((release) => [release.sourcePublishedTaleVersionId!, `/community/${encodeURIComponent(release.listing.slug)}`]),
+      .map((release) => [
+        release.sourcePublishedTaleVersionId!,
+        `/community/${encodeURIComponent(release.listing.slug)}`,
+      ]),
   );
 }
 

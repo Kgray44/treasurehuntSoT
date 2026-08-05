@@ -4,9 +4,7 @@ import { accountApiError } from "@/wayfarer/account-api-error";
 import { scheduleAccountDeletion } from "@/wayfarer/account-lifecycle";
 import { clearProductIdentityCookies, requireWayfarerAccount } from "@/wayfarer/http";
 
-const schema = z
-  .object({ password: z.string().min(1).max(256), confirmation: z.literal("DELETE ACCOUNT") })
-  .strict();
+const schema = z.object({ password: z.string().min(1).max(256), confirmation: z.literal("DELETE ACCOUNT") }).strict();
 
 export async function POST(request: Request) {
   const session = await requireWayfarerAccount(request);

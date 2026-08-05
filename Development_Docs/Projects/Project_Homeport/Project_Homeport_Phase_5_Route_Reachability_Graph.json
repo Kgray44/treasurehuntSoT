@@ -2,8 +2,8 @@
   "schemaVersion": 1,
   "project": "Project Homeport",
   "phase": 5,
-  "implementationSourceSha": "b9f1552b78857c36a45f25eb5fdfb7a7e09f102a",
-  "implementationStatus": "BRANCH_VALIDATED_NOT_MERGED",
+  "implementationSourceSha": "IMPLEMENTATION_SOURCE_PENDING",
+  "implementationStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
   "generatedAt": "2026-08-03T18:00:00.000Z",
   "rootRouteId": "route-page-root",
   "profiles": [
@@ -13,6 +13,7 @@
       "capabilities": [],
       "reachableRouteIds": [
         "route-page-captain-sign-in",
+        "route-page-chronicles-taleslug",
         "route-page-community",
         "route-page-community-artifacts",
         "route-page-community-audio",
@@ -45,6 +46,11 @@
           "targetRouteId": "route-page-captain-sign-in",
           "routeIds": ["route-page-root", "route-page-captain-sign-in"],
           "edgeIds": ["edge-gateway-captain-adapter"]
+        },
+        {
+          "targetRouteId": "route-page-chronicles-taleslug",
+          "routeIds": ["route-page-root", "route-page-tales", "route-page-chronicles-taleslug"],
+          "edgeIds": ["edge-global-explore", "edge-tales-chronicle-preview"]
         },
         {
           "targetRouteId": "route-page-community",
@@ -223,10 +229,12 @@
         "route-page-account-preferences",
         "route-page-account-privacy",
         "route-page-account-profile",
+        "route-page-account-profile-view",
         "route-page-account-roles",
         "route-page-account-security",
         "route-page-account-sessions",
         "route-page-captain-sign-in",
+        "route-page-chronicles-taleslug",
         "route-page-community",
         "route-page-community-artifacts",
         "route-page-community-audio",
@@ -248,9 +256,9 @@
         "route-page-community-voyage-logs-slug",
         "route-page-passport",
         "route-page-passport-artifacts",
-        "route-page-passport-artifacts-[artifactId]",
+        "route-page-passport-artifacts-artifactId",
         "route-page-passport-history",
-        "route-page-passport-history-[recordId]",
+        "route-page-passport-history-recordId",
         "route-page-passport-memories",
         "route-page-passport-saved",
         "route-page-play-taleslug",
@@ -313,6 +321,11 @@
           "edgeIds": ["edge-account-personal-harbor", "edge-account-profile"]
         },
         {
+          "targetRouteId": "route-page-account-profile-view",
+          "routeIds": ["route-page-root", "route-page-account", "route-page-account-profile-view"],
+          "edgeIds": ["edge-account-personal-harbor", "edge-account-public-profile-view"]
+        },
+        {
           "targetRouteId": "route-page-account-roles",
           "routeIds": ["route-page-root", "route-page-account-roles"],
           "edgeIds": ["edge-account-workspaces"]
@@ -331,6 +344,11 @@
           "targetRouteId": "route-page-captain-sign-in",
           "routeIds": ["route-page-root", "route-page-captain-sign-in"],
           "edgeIds": ["edge-gateway-captain-adapter"]
+        },
+        {
+          "targetRouteId": "route-page-chronicles-taleslug",
+          "routeIds": ["route-page-root", "route-page-tales", "route-page-chronicles-taleslug"],
+          "edgeIds": ["edge-global-explore", "edge-tales-chronicle-preview"]
         },
         {
           "targetRouteId": "route-page-community",
@@ -484,12 +502,8 @@
           "edgeIds": ["edge-account-artifacts"]
         },
         {
-          "targetRouteId": "route-page-passport-artifacts-[artifactId]",
-          "routeIds": [
-            "route-page-root",
-            "route-page-passport-artifacts",
-            "route-page-passport-artifacts-[artifactId]"
-          ],
+          "targetRouteId": "route-page-passport-artifacts-artifactId",
+          "routeIds": ["route-page-root", "route-page-passport-artifacts", "route-page-passport-artifacts-artifactId"],
           "edgeIds": ["edge-account-artifacts", "edge-passport-artifact-detail"]
         },
         {
@@ -498,8 +512,8 @@
           "edgeIds": ["edge-account-history"]
         },
         {
-          "targetRouteId": "route-page-passport-history-[recordId]",
-          "routeIds": ["route-page-root", "route-page-passport-history", "route-page-passport-history-[recordId]"],
+          "targetRouteId": "route-page-passport-history-recordId",
+          "routeIds": ["route-page-root", "route-page-passport-history", "route-page-passport-history-recordId"],
           "edgeIds": ["edge-account-history", "edge-passport-history-detail"]
         },
         {
@@ -603,6 +617,7 @@
         "route-page-account-preferences",
         "route-page-account-privacy",
         "route-page-account-profile",
+        "route-page-account-profile-view",
         "route-page-account-roles",
         "route-page-account-security",
         "route-page-account-sessions",
@@ -611,6 +626,7 @@
         "route-page-captain-sign-in",
         "route-page-captain-tales-taleid",
         "route-page-captain-voyages-playthroughid-player-preview",
+        "route-page-chronicles-taleslug",
         "route-page-community",
         "route-page-community-artifacts",
         "route-page-community-audio",
@@ -629,9 +645,9 @@
         "route-page-community-voyage-logs-slug",
         "route-page-passport",
         "route-page-passport-artifacts",
-        "route-page-passport-artifacts-[artifactId]",
+        "route-page-passport-artifacts-artifactId",
         "route-page-passport-history",
-        "route-page-passport-history-[recordId]",
+        "route-page-passport-history-recordId",
         "route-page-passport-memories",
         "route-page-passport-saved",
         "route-page-play-taleslug",
@@ -691,6 +707,11 @@
           "edgeIds": ["edge-account-personal-harbor", "edge-account-profile"]
         },
         {
+          "targetRouteId": "route-page-account-profile-view",
+          "routeIds": ["route-page-root", "route-page-account", "route-page-account-profile-view"],
+          "edgeIds": ["edge-account-personal-harbor", "edge-account-public-profile-view"]
+        },
+        {
           "targetRouteId": "route-page-account-roles",
           "routeIds": ["route-page-root", "route-page-account-roles"],
           "edgeIds": ["edge-account-workspaces"]
@@ -733,6 +754,11 @@
             "route-page-captain-voyages-playthroughid-player-preview"
           ],
           "edgeIds": ["edge-workspace-captain", "edge-captain-preview"]
+        },
+        {
+          "targetRouteId": "route-page-chronicles-taleslug",
+          "routeIds": ["route-page-root", "route-page-tales", "route-page-chronicles-taleslug"],
+          "edgeIds": ["edge-global-explore", "edge-tales-chronicle-preview"]
         },
         {
           "targetRouteId": "route-page-community",
@@ -850,12 +876,8 @@
           "edgeIds": ["edge-account-artifacts"]
         },
         {
-          "targetRouteId": "route-page-passport-artifacts-[artifactId]",
-          "routeIds": [
-            "route-page-root",
-            "route-page-passport-artifacts",
-            "route-page-passport-artifacts-[artifactId]"
-          ],
+          "targetRouteId": "route-page-passport-artifacts-artifactId",
+          "routeIds": ["route-page-root", "route-page-passport-artifacts", "route-page-passport-artifacts-artifactId"],
           "edgeIds": ["edge-account-artifacts", "edge-passport-artifact-detail"]
         },
         {
@@ -864,8 +886,8 @@
           "edgeIds": ["edge-account-history"]
         },
         {
-          "targetRouteId": "route-page-passport-history-[recordId]",
-          "routeIds": ["route-page-root", "route-page-passport-history", "route-page-passport-history-[recordId]"],
+          "targetRouteId": "route-page-passport-history-recordId",
+          "routeIds": ["route-page-root", "route-page-passport-history", "route-page-passport-history-recordId"],
           "edgeIds": ["edge-account-history", "edge-passport-history-detail"]
         },
         {
@@ -950,10 +972,12 @@
         "route-page-account-preferences",
         "route-page-account-privacy",
         "route-page-account-profile",
+        "route-page-account-profile-view",
         "route-page-account-roles",
         "route-page-account-security",
         "route-page-account-sessions",
         "route-page-captain-sign-in",
+        "route-page-chronicles-taleslug",
         "route-page-community",
         "route-page-community-artifacts",
         "route-page-community-audio",
@@ -972,9 +996,9 @@
         "route-page-community-voyage-logs-slug",
         "route-page-passport",
         "route-page-passport-artifacts",
-        "route-page-passport-artifacts-[artifactId]",
+        "route-page-passport-artifacts-artifactId",
         "route-page-passport-history",
-        "route-page-passport-history-[recordId]",
+        "route-page-passport-history-recordId",
         "route-page-passport-memories",
         "route-page-passport-saved",
         "route-page-play-taleslug",
@@ -1044,6 +1068,11 @@
           "edgeIds": ["edge-account-personal-harbor", "edge-account-profile"]
         },
         {
+          "targetRouteId": "route-page-account-profile-view",
+          "routeIds": ["route-page-root", "route-page-account", "route-page-account-profile-view"],
+          "edgeIds": ["edge-account-personal-harbor", "edge-account-public-profile-view"]
+        },
+        {
           "targetRouteId": "route-page-account-roles",
           "routeIds": ["route-page-root", "route-page-account-roles"],
           "edgeIds": ["edge-account-workspaces"]
@@ -1062,6 +1091,11 @@
           "targetRouteId": "route-page-captain-sign-in",
           "routeIds": ["route-page-root", "route-page-captain-sign-in"],
           "edgeIds": ["edge-gateway-captain-adapter"]
+        },
+        {
+          "targetRouteId": "route-page-chronicles-taleslug",
+          "routeIds": ["route-page-root", "route-page-tales", "route-page-chronicles-taleslug"],
+          "edgeIds": ["edge-global-explore", "edge-tales-chronicle-preview"]
         },
         {
           "targetRouteId": "route-page-community",
@@ -1179,12 +1213,8 @@
           "edgeIds": ["edge-account-artifacts"]
         },
         {
-          "targetRouteId": "route-page-passport-artifacts-[artifactId]",
-          "routeIds": [
-            "route-page-root",
-            "route-page-passport-artifacts",
-            "route-page-passport-artifacts-[artifactId]"
-          ],
+          "targetRouteId": "route-page-passport-artifacts-artifactId",
+          "routeIds": ["route-page-root", "route-page-passport-artifacts", "route-page-passport-artifacts-artifactId"],
           "edgeIds": ["edge-account-artifacts", "edge-passport-artifact-detail"]
         },
         {
@@ -1193,8 +1223,8 @@
           "edgeIds": ["edge-account-history"]
         },
         {
-          "targetRouteId": "route-page-passport-history-[recordId]",
-          "routeIds": ["route-page-root", "route-page-passport-history", "route-page-passport-history-[recordId]"],
+          "targetRouteId": "route-page-passport-history-recordId",
+          "routeIds": ["route-page-root", "route-page-passport-history", "route-page-passport-history-recordId"],
           "edgeIds": ["edge-account-history", "edge-passport-history-detail"]
         },
         {
@@ -1354,6 +1384,7 @@
         "route-page-account-preferences",
         "route-page-account-privacy",
         "route-page-account-profile",
+        "route-page-account-profile-view",
         "route-page-account-roles",
         "route-page-account-security",
         "route-page-account-sessions",
@@ -1362,6 +1393,7 @@
         "route-page-captain-sign-in",
         "route-page-captain-tales-taleid",
         "route-page-captain-voyages-playthroughid-player-preview",
+        "route-page-chronicles-taleslug",
         "route-page-community",
         "route-page-community-artifacts",
         "route-page-community-audio",
@@ -1383,9 +1415,9 @@
         "route-page-community-voyage-logs-slug",
         "route-page-passport",
         "route-page-passport-artifacts",
-        "route-page-passport-artifacts-[artifactId]",
+        "route-page-passport-artifacts-artifactId",
         "route-page-passport-history",
-        "route-page-passport-history-[recordId]",
+        "route-page-passport-history-recordId",
         "route-page-passport-memories",
         "route-page-passport-saved",
         "route-page-play-taleslug",
@@ -1458,6 +1490,11 @@
           "edgeIds": ["edge-account-personal-harbor", "edge-account-profile"]
         },
         {
+          "targetRouteId": "route-page-account-profile-view",
+          "routeIds": ["route-page-root", "route-page-account", "route-page-account-profile-view"],
+          "edgeIds": ["edge-account-personal-harbor", "edge-account-public-profile-view"]
+        },
+        {
           "targetRouteId": "route-page-account-roles",
           "routeIds": ["route-page-root", "route-page-account-roles"],
           "edgeIds": ["edge-account-workspaces"]
@@ -1500,6 +1537,11 @@
             "route-page-captain-voyages-playthroughid-player-preview"
           ],
           "edgeIds": ["edge-workspace-captain", "edge-captain-preview"]
+        },
+        {
+          "targetRouteId": "route-page-chronicles-taleslug",
+          "routeIds": ["route-page-root", "route-page-tales", "route-page-chronicles-taleslug"],
+          "edgeIds": ["edge-global-explore", "edge-tales-chronicle-preview"]
         },
         {
           "targetRouteId": "route-page-community",
@@ -1653,12 +1695,8 @@
           "edgeIds": ["edge-account-artifacts"]
         },
         {
-          "targetRouteId": "route-page-passport-artifacts-[artifactId]",
-          "routeIds": [
-            "route-page-root",
-            "route-page-passport-artifacts",
-            "route-page-passport-artifacts-[artifactId]"
-          ],
+          "targetRouteId": "route-page-passport-artifacts-artifactId",
+          "routeIds": ["route-page-root", "route-page-passport-artifacts", "route-page-passport-artifacts-artifactId"],
           "edgeIds": ["edge-account-artifacts", "edge-passport-artifact-detail"]
         },
         {
@@ -1667,8 +1705,8 @@
           "edgeIds": ["edge-account-history"]
         },
         {
-          "targetRouteId": "route-page-passport-history-[recordId]",
-          "routeIds": ["route-page-root", "route-page-passport-history", "route-page-passport-history-[recordId]"],
+          "targetRouteId": "route-page-passport-history-recordId",
+          "routeIds": ["route-page-root", "route-page-passport-history", "route-page-passport-history-recordId"],
           "edgeIds": ["edge-account-history", "edge-passport-history-detail"]
         },
         {
@@ -1847,10 +1885,12 @@
         "route-page-account-preferences",
         "route-page-account-privacy",
         "route-page-account-profile",
+        "route-page-account-profile-view",
         "route-page-account-roles",
         "route-page-account-security",
         "route-page-account-sessions",
         "route-page-captain-sign-in",
+        "route-page-chronicles-taleslug",
         "route-page-community",
         "route-page-community-artifacts",
         "route-page-community-audio",
@@ -1874,9 +1914,9 @@
         "route-page-community-voyage-logs-slug",
         "route-page-passport",
         "route-page-passport-artifacts",
-        "route-page-passport-artifacts-[artifactId]",
+        "route-page-passport-artifacts-artifactId",
         "route-page-passport-history",
-        "route-page-passport-history-[recordId]",
+        "route-page-passport-history-recordId",
         "route-page-passport-memories",
         "route-page-passport-saved",
         "route-page-play-taleslug",
@@ -1939,6 +1979,11 @@
           "edgeIds": ["edge-account-personal-harbor", "edge-account-profile"]
         },
         {
+          "targetRouteId": "route-page-account-profile-view",
+          "routeIds": ["route-page-root", "route-page-account", "route-page-account-profile-view"],
+          "edgeIds": ["edge-account-personal-harbor", "edge-account-public-profile-view"]
+        },
+        {
           "targetRouteId": "route-page-account-roles",
           "routeIds": ["route-page-root", "route-page-account-roles"],
           "edgeIds": ["edge-account-workspaces"]
@@ -1957,6 +2002,11 @@
           "targetRouteId": "route-page-captain-sign-in",
           "routeIds": ["route-page-root", "route-page-captain-sign-in"],
           "edgeIds": ["edge-gateway-captain-adapter"]
+        },
+        {
+          "targetRouteId": "route-page-chronicles-taleslug",
+          "routeIds": ["route-page-root", "route-page-tales", "route-page-chronicles-taleslug"],
+          "edgeIds": ["edge-global-explore", "edge-tales-chronicle-preview"]
         },
         {
           "targetRouteId": "route-page-community",
@@ -2120,12 +2170,8 @@
           "edgeIds": ["edge-account-artifacts"]
         },
         {
-          "targetRouteId": "route-page-passport-artifacts-[artifactId]",
-          "routeIds": [
-            "route-page-root",
-            "route-page-passport-artifacts",
-            "route-page-passport-artifacts-[artifactId]"
-          ],
+          "targetRouteId": "route-page-passport-artifacts-artifactId",
+          "routeIds": ["route-page-root", "route-page-passport-artifacts", "route-page-passport-artifacts-artifactId"],
           "edgeIds": ["edge-account-artifacts", "edge-passport-artifact-detail"]
         },
         {
@@ -2134,8 +2180,8 @@
           "edgeIds": ["edge-account-history"]
         },
         {
-          "targetRouteId": "route-page-passport-history-[recordId]",
-          "routeIds": ["route-page-root", "route-page-passport-history", "route-page-passport-history-[recordId]"],
+          "targetRouteId": "route-page-passport-history-recordId",
+          "routeIds": ["route-page-root", "route-page-passport-history", "route-page-passport-history-recordId"],
           "edgeIds": ["edge-account-history", "edge-passport-history-detail"]
         },
         {
@@ -2231,6 +2277,7 @@
       "capabilities": [],
       "reachableRouteIds": [
         "route-page-captain-sign-in",
+        "route-page-chronicles-taleslug",
         "route-page-community",
         "route-page-community-artifacts",
         "route-page-community-audio",
@@ -2261,6 +2308,11 @@
           "targetRouteId": "route-page-captain-sign-in",
           "routeIds": ["route-page-root", "route-page-captain-sign-in"],
           "edgeIds": ["edge-gateway-captain-adapter"]
+        },
+        {
+          "targetRouteId": "route-page-chronicles-taleslug",
+          "routeIds": ["route-page-root", "route-page-tales", "route-page-chronicles-taleslug"],
+          "edgeIds": ["edge-global-explore", "edge-tales-chronicle-preview"]
         },
         {
           "targetRouteId": "route-page-community",
@@ -2416,21 +2468,21 @@
       ]
     }
   ],
-  "nodeRegistryDigest": "87cde58d486d41e801defe7cbfe75a4b51832d955d2e735f1397b886a2e35fe9",
-  "edgeRegistryDigest": "cc36d3c3cfc275ed755c73989a80271f29615123e55242fdd16ebd747dae8441",
+  "nodeRegistryDigest": "ab2848503c5d770a9c810d4ecfcc7bde7539cfd76d5438a500739c35895b9f49",
+  "edgeRegistryDigest": "c0df3ad7fa8c3cfd12a85d8879b09b422c2e4cd62ba3d0b74442b3d77078ba79",
   "summary": {
-    "discoveredPageSources": 85,
-    "discoveredServiceSources": 174,
-    "nodeCount": 85,
-    "edgeCount": 159,
-    "ordinaryRouteCount": 42,
-    "contextualRouteCount": 24,
-    "tokenizedRouteCount": 5,
+    "discoveredPageSources": 90,
+    "discoveredServiceSources": 183,
+    "nodeCount": 90,
+    "edgeCount": 169,
+    "ordinaryRouteCount": 43,
+    "contextualRouteCount": 25,
+    "tokenizedRouteCount": 8,
     "compatibilityRouteCount": 12,
     "internalDiagnosticCount": 1,
     "developmentOnlyCount": 1,
     "unexplainedOrdinaryOrphans": 0,
-    "browserEvidenceComplete": true
+    "browserEvidenceComplete": false
   },
   "outcomes": [
     "ROUTE_INVENTORY_SCHEMA_VALID",

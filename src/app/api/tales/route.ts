@@ -12,7 +12,9 @@ export async function GET() {
     orderBy: [{ featured: "desc" }, { sortOrder: "asc" }, { updatedAt: "desc" }],
     include: { versions: { where: { isCurrent: true }, take: 1 } },
   });
-  const previewHrefs = await chroniclePreviewHrefByVersion(tales.flatMap((tale) => tale.versions.map((version) => version.id)));
+  const previewHrefs = await chroniclePreviewHrefByVersion(
+    tales.flatMap((tale) => tale.versions.map((version) => version.id)),
+  );
   return NextResponse.json({
     tales: tales
       .filter((tale) => tale.versions.length)
@@ -31,8 +33,7 @@ export async function GET() {
         playerCountMax: tale.playerCountMax,
         version: tale.versions[0].versionLabel,
         versionId: tale.versions[0].id,
-        previewHref:
-          previewHrefs.get(tale.versions[0].id) ?? `/chronicles/${encodeURIComponent(tale.slug)}`,
+        previewHref: previewHrefs.get(tale.versions[0].id) ?? `/chronicles/${encodeURIComponent(tale.slug)}`,
         playerState:
           currentSession?.taleId === tale.id
             ? currentSession.status === "COMPLETED"

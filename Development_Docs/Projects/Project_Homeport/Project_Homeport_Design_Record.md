@@ -3,7 +3,7 @@ title: Project Homeport Design Record
 audience: product-engineering
 status: current
 canonical_for: project-homeport-design-record
-last_reviewed: 2026-08-04
+last_reviewed: 2026-08-05
 ---
 
 # Project Homeport design record
@@ -369,3 +369,7 @@ returned decision remain historical. No product implementation, schema gap,
 migration, test result, screenshot acceptance, Sounding Line decision,
 publication, re-review readiness, deployment, or owner acceptance is established
 by this amendment.
+
+## Phase 7 correction Round 1 implementation amendment
+
+The frozen 30-decision architecture was implemented at exact evidence source `61ea9ec546622b2bce2036d249fca408922786d2`. Additive identity/lifecycle schema, one-account capability policy, Chronicle preview/alias boundaries, Personal Harbor authority, four effective preferences, delayed loading, governed route/menu/home motion, Community search/reviews, and isolated evidence now form one correction package. Existing specialist authorities remain intact. The result is correction-validated pending owner re-review; it is not mainline, deployed, or owner accepted.

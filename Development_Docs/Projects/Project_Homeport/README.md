@@ -3,7 +3,7 @@ title: Project Homeport Repository Index
 audience: product-engineering
 status: current
 canonical_for: project-homeport-repository-index
-last_reviewed: 2026-08-04
+last_reviewed: 2026-08-05
 ---
 
 # Project Homeport
@@ -226,3 +226,13 @@ cross-references, accepted screenshot checksums, walkthrough-ready closures,
 and the still-pending owner decision boundary.
 `PRODUCT_NONCONFORMITIES_PRESENT` remains expected
 while HP-NC-020 waits for the owner decision; it is not a validator failure.
+
+## Phase 7 correction Round 1 re-review state
+
+All 44 returned owner findings are locally implemented and source-bound validated at `61ea9ec546622b2bce2036d249fca408922786d2`. Correction journeys A-U passed 21/21, the original Phase 7 A-O regression passed 15/15, and 31 required captures received Codex visual classification `ACCEPTED`. Owner Walkthrough Round 1 remains `OWNER_RETURNED_FOR_CORRECTION`; owner re-review remains `PENDING_OWNER_DECISION`. The branch is not merged or deployed, and live provider/email/production-MySQL/physical-AT proof remains external.
+
+- [Correction implementation report](Project_Homeport_Phase_7_Correction_Round_1_Implementation_Report.md)
+- [Correction validation record](Project_Homeport_Phase_7_Correction_Round_1_Validation_Record.md)
+- [Correction integration manifest](Project_Homeport_Phase_7_Correction_Round_1_Integration_Manifest.md)
+- [Owner re-review package](walkthrough/phase7/correction-round1/README.md)
+- [Correction evidence](evidence/phase7-owner-correction-round1/README.md)
