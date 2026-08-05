@@ -36,6 +36,7 @@ const childEnv = {
   HOMEPORT_PHASE5_TASK_ROOT: taskRoot,
   HOMEPORT_PHASE7_TASK_ROOT: taskRoot,
   HOMEPORT_PHASE7_SYNTHETIC_PASSWORD: syntheticPassword,
+  HOMEPORT_PHASE7_TOKEN_PATH: path.join(taskRoot, "tokens", "owner-correction-phase7-base-tokens.private.json"),
   HOMEPORT_SYNTHETIC_OUTBOX_PATH: outboxPath,
 };
 run("node_modules/prisma/build/index.js", ["migrate", "deploy", "--schema", "prisma/schema.sqlite.prisma"], childEnv);

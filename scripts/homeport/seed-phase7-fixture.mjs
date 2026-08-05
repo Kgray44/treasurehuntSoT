@@ -11,10 +11,14 @@ const taskRoot = path.resolve(process.env.HOMEPORT_PHASE7_TASK_ROOT ?? "");
 const databasePath = databaseUrl.startsWith("file:") ? path.resolve(databaseUrl.slice(5)) : "";
 const canonicalDatabase = path.resolve("C:/Users/kkids/Documents/Codex_TreasureHunt/prisma/dev.db");
 const syntheticPassword = process.env.HOMEPORT_PHASE7_SYNTHETIC_PASSWORD ?? "";
+const tokenPath = path.resolve(
+  process.env.HOMEPORT_PHASE7_TOKEN_PATH ?? path.join(taskRoot, "tokens", "phase7-tokens.private.json"),
+);
 const createdAt = new Date("2026-08-04T12:00:00.000Z");
 
 if (!databasePath || !taskRoot || !databasePath.startsWith(taskRoot + path.sep) || databasePath === canonicalDatabase)
   throw new Error(`HOMEPORT_PHASE7_FIXTURE_REFUSES_UNOWNED_DATABASE:${databasePath}`);
+if (!tokenPath.startsWith(`${taskRoot}${path.sep}`)) throw new Error(`HOMEPORT_PHASE7_TOKEN_PATH_REFUSED:${tokenPath}`);
 if (syntheticPassword.length < 24) throw new Error("HOMEPORT_PHASE7_SYNTHETIC_PASSWORD_REQUIRED");
 
 const passwordHash = await bcrypt.hash(syntheticPassword, 10);
@@ -246,13 +250,13 @@ async function seed() {
   const fixtureChecksum = createHash("sha256").update(JSON.stringify(fixtureIdentity)).digest("hex");
   const externalRoot = path.join(taskRoot, "credentials");
   await mkdir(externalRoot, { recursive: true });
-  await mkdir(path.join(taskRoot, "tokens"), { recursive: true });
+  await mkdir(path.dirname(tokenPath), { recursive: true });
   await writeFile(
     path.join(externalRoot, "account-aliases.private.json"),
     `${JSON.stringify({ fixtureVersion, aliases }, null, 2)}\n`,
     { encoding: "utf8", mode: 0o600 },
   );
-  await writeFile(path.join(taskRoot, "tokens", "phase7-tokens.private.json"), `${JSON.stringify(recoveryTokens)}\n`, {
+  await writeFile(tokenPath, `${JSON.stringify(recoveryTokens)}\n`, {
     encoding: "utf8",
     mode: 0o600,
   });
