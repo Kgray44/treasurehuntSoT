@@ -25,7 +25,11 @@ for (const journeyId of requested) {
     HOMEPORT_PHASE7_PORT: port,
     DATABASE_URL: `file:${databasePath.replaceAll("\\", "/")}`,
   };
-  run(path.join("node_modules", "prisma", "build", "index.js"), ["migrate", "deploy", "--schema", "prisma/schema.sqlite.prisma"], env);
+  run(
+    path.join("node_modules", "prisma", "build", "index.js"),
+    ["migrate", "deploy", "--schema", "prisma/schema.sqlite.prisma"],
+    env,
+  );
   run(
     path.join("node_modules", "@playwright", "test", "cli.js"),
     ["test", "-c", "playwright.homeport-phase7.config.ts", "--grep", `Journey ${journeyId}:`],

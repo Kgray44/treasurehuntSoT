@@ -182,7 +182,13 @@ test("Journey A: Sera workspace truth", async ({ page }) => {
   const account = await signIn(page, "SERA");
   await accountDestination(page, account, "All Workspaces");
   for (const workspace of ["Player", "Captain", "Creator"]) {
-    await settledLink(page, page.getByRole("link", { name: `Enter ${workspace}` }).filter({ visible: true }).first());
+    await settledLink(
+      page,
+      page
+        .getByRole("link", { name: `Enter ${workspace}` })
+        .filter({ visible: true })
+        .first(),
+    );
     await expect(page.getByText(/Permission required|Access denied/u)).toHaveCount(0);
     await accountDestination(page, account, "All Workspaces");
   }
@@ -512,8 +518,15 @@ test("Journey T: Experience Images generation", async ({ page }) => {
     expect(record.visualReviewStatus).toBe("ACCEPTED");
   }
   expect(manifest.visualReviewStatus).toBe("ACCEPTED");
-  for (const contactSheet of ["Master_Desktop.png", "Master_Mobile.png", "Master_Light_Mode.png", "Master_Dark_Mode.png"])
-    expect(existsSync(path.join(path.resolve(process.cwd()), "Experience_Images", "Contact_Sheets", contactSheet))).toBe(true);
+  for (const contactSheet of [
+    "Master_Desktop.png",
+    "Master_Mobile.png",
+    "Master_Light_Mode.png",
+    "Master_Dark_Mode.png",
+  ])
+    expect(
+      existsSync(path.join(path.resolve(process.cwd()), "Experience_Images", "Contact_Sheets", contactSheet)),
+    ).toBe(true);
   await begin(page);
 });
 

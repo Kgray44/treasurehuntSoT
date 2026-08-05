@@ -37,7 +37,14 @@ for (const journeyId of requested) {
     run("scripts/homeport/run-phase7-owner-correction-round1-journeys.mjs", [], {
       ...process.env,
       HOMEPORT_PHASE7_TASK_ROOT: round1TaskRoot,
-      HOMEPORT_PHASE7_CORRECTION_JOURNEYS: "ABCDEFGHIJKLMNOPQRSTU",
+      HOMEPORT_PHASE7_CORRECTION_JOURNEYS: "O",
+      HOMEPORT_PHASE7_CORRECTION_PORT: "3753",
+      HOMEPORT_PHASE7_CORRECTION_SOURCE_SHA: sourceSha,
+    });
+    run("scripts/homeport/run-phase7-owner-correction-round1-journeys.mjs", [], {
+      ...process.env,
+      HOMEPORT_PHASE7_TASK_ROOT: round1TaskRoot,
+      HOMEPORT_PHASE7_CORRECTION_JOURNEYS: "ABCDEFGHIJKLMNPQRSTU",
       HOMEPORT_PHASE7_CORRECTION_PORT: "3753",
       HOMEPORT_PHASE7_CORRECTION_SOURCE_SHA: sourceSha,
     });
@@ -48,12 +55,22 @@ for (const journeyId of requested) {
       HOMEPORT_PHASE7_PORT: "3754",
       HOMEPORT_PHASE7_SOURCE_SHA: sourceSha,
     });
-    const receiptPath = path.join(taskRoot, "reports", "owner-correction-round2-journeys", "journey-W-regressions.json");
+    const receiptPath = path.join(
+      taskRoot,
+      "reports",
+      "owner-correction-round2-journeys",
+      "journey-W-regressions.json",
+    );
     mkdirSync(path.dirname(receiptPath), { recursive: true });
     writeFileSync(
       receiptPath,
       `${JSON.stringify(
-        { sourceSha, correctionRound1: "PASSED_A_U", originalPhase7: "PASSED_A_O", completedAt: new Date().toISOString() },
+        {
+          sourceSha,
+          correctionRound1: "PASSED_A_U",
+          originalPhase7: "PASSED_A_O",
+          completedAt: new Date().toISOString(),
+        },
         null,
         2,
       )}\n`,
