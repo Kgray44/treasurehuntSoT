@@ -7,11 +7,14 @@ const port = Number.parseInt(process.env.HOMEPORT_PHASE7_PORT ?? "3718", 10);
 const databasePath = path.resolve(required("HOMEPORT_PHASE7_DATABASE_PATH"));
 const baseURL = `http://127.0.0.1:${port}`;
 const databaseUrl = `file:${databasePath.replaceAll("\\", "/")}`;
+const outboxPath = path.join(taskRoot, "synthetic-outbox", `phase7-journey-${journeyId}.jsonl`);
 
 Object.assign(process.env, {
   DATABASE_URL: databaseUrl,
   PLAYWRIGHT_BASE_URL: baseURL,
   HOMEPORT_PHASE7_TASK_ROOT: taskRoot,
+  HOMEPORT_SYNTHETIC_EMAIL_ADAPTER: "TASK_OWNED_TEST",
+  HOMEPORT_SYNTHETIC_OUTBOX_PATH: outboxPath,
   PROFILE_MEDIA_ROOT: path.join(taskRoot, "synthetic-media", "profile", journeyId),
   PRIVATE_CONTENT_ROOT: path.join(taskRoot, "synthetic-media", "private", journeyId),
 });
@@ -46,6 +49,8 @@ export default defineConfig({
     env: {
       DATABASE_URL: databaseUrl,
       HOMEPORT_PHASE7_TASK_ROOT: taskRoot,
+      HOMEPORT_SYNTHETIC_EMAIL_ADAPTER: "TASK_OWNED_TEST",
+      HOMEPORT_SYNTHETIC_OUTBOX_PATH: outboxPath,
       PROFILE_MEDIA_ROOT: path.join(taskRoot, "synthetic-media", "profile", journeyId),
       PRIVATE_CONTENT_ROOT: path.join(taskRoot, "synthetic-media", "private", journeyId),
     },

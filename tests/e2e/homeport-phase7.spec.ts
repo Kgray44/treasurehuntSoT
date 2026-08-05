@@ -1,15 +1,17 @@
 import { createHash } from "node:crypto";
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync, rmSync } from "node:fs";
 import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { expect, test, type Locator, type Page } from "@playwright/test";
 import { PrismaClient } from "@prisma/client";
 
 type Alias = { accountId: string | null; username: string | null; email: string | null; displayName: string };
+type Delivery = { purpose: string; email: string; token?: string; accountId: string; detail?: string };
 const taskRoot = path.resolve(required("HOMEPORT_PHASE7_TASK_ROOT"));
 const journeyId = required("HOMEPORT_PHASE7_JOURNEY_ID");
 const sourceSha = process.env.HOMEPORT_PHASE7_SOURCE_SHA ?? "IMPLEMENTATION_SOURCE_PENDING";
 const databasePath = path.resolve(required("HOMEPORT_PHASE7_DATABASE_PATH"));
+const outboxPath = path.join(taskRoot, "synthetic-outbox", `phase7-journey-${journeyId}.jsonl`);
 const credentialHandoff = JSON.parse(
   readFileSync(path.join(taskRoot, "credentials", "walkthrough-credentials.private.json"), "utf8"),
 ) as { password: string; accounts: Record<string, Alias> };
@@ -20,7 +22,10 @@ const tokens = JSON.parse(readFileSync(path.join(taskRoot, "tokens", "phase7-tok
 };
 const db = new PrismaClient();
 
-test.beforeEach(async ({ page }) => page.emulateMedia({ reducedMotion: "reduce" }));
+test.beforeEach(async ({ page }) => {
+  rmSync(outboxPath, { force: true });
+  await page.emulateMedia({ reducedMotion: "reduce" });
+});
 test.afterAll(async () => db.$disconnect());
 
 test(`Journey A: account creation`, async ({ page }) => {
@@ -37,6 +42,9 @@ test(`Journey A: account creation`, async ({ page }) => {
   await expect(page.getByText(/match|same/u).first()).toBeVisible();
   await page.getByLabel("Confirm password").fill(credentialHandoff.password);
   await page.getByLabel("Confirm password").press("Enter");
+  const delivery = await waitForDelivery("VERIFY_EMAIL", "registration-candidate@phase7.example.test");
+  await page.goto(`/verify-email?token=${encodeURIComponent(delivery.token!)}`);
+  await page.getByRole("button", { name: "Continue" }).click();
   await expect(page.getByRole("button", { name: "Phase 7 Registration Candidate" })).toBeVisible();
   const signedIn = await accountMenu(page, "Phase 7 Registration Candidate");
   await signedIn.getByRole("link", { name: "View My Profile" }).click();
@@ -494,6 +502,26 @@ async function keyboardMilestone(page: Page) {
   await page.keyboard.press("Tab");
   const focusedTag = await page.evaluate(() => document.activeElement?.tagName ?? "");
   expect(focusedTag).not.toBe("BODY");
+}
+
+async function waitForDelivery(purpose: string, email: string) {
+  let delivery: Delivery | undefined;
+  await expect
+    .poll(
+      () => {
+        if (!existsSync(outboxPath)) return null;
+        delivery = readFileSync(outboxPath, "utf8")
+          .trim()
+          .split("\n")
+          .filter(Boolean)
+          .map((line) => JSON.parse(line) as Delivery)
+          .find((row) => row.purpose === purpose && row.email === email.toLowerCase());
+        return delivery?.token ?? null;
+      },
+      { timeout: 20_000, message: `${purpose} delivery for ${email}` },
+    )
+    .not.toBeNull();
+  return delivery!;
 }
 
 async function capture(page: Page, suffix: string) {
