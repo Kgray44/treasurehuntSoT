@@ -97,6 +97,7 @@ async function generate() {
   const records = [];
   try {
     const authStorageState = await authenticatedStorageState(browser, handoff, "SERA");
+    const restrictedStorageState = await authenticatedStorageState(browser, handoff, "RETURNING_FULL_CAPABILITY");
     await captureGroup(browser, concreteRoutes, records, {
       root: "Desktop",
       theme: "SYSTEM",
@@ -125,7 +126,8 @@ async function generate() {
         });
     await captureRepresentativeStates(browser, records, {
       authStorageState,
-      handoff,
+      restrictedStorageState,
+      restrictedAccountId: handoff.accounts.RETURNING_FULL_CAPABILITY.accountId,
     });
   } finally {
     await browser.close();
@@ -218,7 +220,10 @@ async function generate() {
     };
     const auth = await newCaptureContext(browserInstance, { ...options, storageState: storageStates.authStorageState });
     const anonymous = await newCaptureContext(browserInstance, options);
-    const restricted = await newCaptureContext(browserInstance, options);
+    const restricted = await newCaptureContext(browserInstance, {
+      ...options,
+      storageState: storageStates.restrictedStorageState,
+    });
     try {
       await setTheme(auth.page, "DARK");
 
@@ -238,15 +243,16 @@ async function generate() {
         productArea: "Permission_and_Restrictions",
         accountAlias: "SERA",
       });
-      await attemptRestrictedSignIn(restricted.page, storageStates.handoff);
-      await screenshotState(restricted.page, output, options, {
+      await setCaptureAccountStatus(storageStates.restrictedAccountId, "RESTRICTED");
+      await stateCapture(restricted.page, output, options, {
         id: "restricted-account",
-        route: "/sign-in",
-        routePattern: "/sign-in",
+        route: "/account",
+        routePattern: "/account",
         state: "RESTRICTED",
         productArea: "Permission_and_Restrictions",
-        accountAlias: "RESTRICTED_ACCOUNT",
+        accountAlias: "RETURNING_FULL_CAPABILITY",
       });
+      await setCaptureAccountStatus(storageStates.restrictedAccountId, "ACTIVE");
       await stateCapture(auth.page, output, options, {
         id: "archived-community-item",
         route: "/community/archived-superseded-chart",
@@ -327,7 +333,8 @@ async function generate() {
       });
       await auth.page.unroute("**/api/community/discover?**");
     } finally {
-      await signOut(auth.page);
+      await setCaptureAccountStatus(storageStates.restrictedAccountId, "ACTIVE");
+      await Promise.all([signOut(auth.page), signOut(restricted.page)]);
       await Promise.all([auth.context.close(), anonymous.context.close(), restricted.context.close()]);
     }
 
@@ -491,11 +498,14 @@ async function representativeValues() {
 }
 
 async function clearCaptureSessions(handoff) {
-  const accountIds = [handoff.accounts.SERA?.accountId, handoff.accounts.RESTRICTED_ACCOUNT?.accountId].filter(Boolean);
+  const accountIds = [handoff.accounts.SERA?.accountId, handoff.accounts.RETURNING_FULL_CAPABILITY?.accountId].filter(
+    Boolean,
+  );
   if (accountIds.length !== 2) throw new Error("HOMEPORT_EXPERIENCE_CAPTURE_ACCOUNT_IDS_MISSING");
   const db = new PrismaClient({ datasources: { db: { url: `file:${databasePath.replaceAll("\\", "/")}` } } });
   try {
     await db.accountSession.deleteMany({ where: { accountId: { in: accountIds } } });
+    await db.loginAttempt.deleteMany();
   } finally {
     await db.$disconnect();
   }
@@ -590,14 +600,13 @@ async function signIn(page, handoff, alias) {
     throw new Error(`HOMEPORT_EXPERIENCE_SIGN_IN_FAILED:${alias}:${context.status}`);
 }
 
-async function attemptRestrictedSignIn(page, handoff) {
-  const account = handoff.accounts.RESTRICTED_ACCOUNT;
-  if (!account) throw new Error("HOMEPORT_EXPERIENCE_RESTRICTED_ALIAS_MISSING");
-  await settledGoto(page, "/sign-in");
-  await page.getByLabel("Email or legacy Player name").fill(account.email);
-  await page.getByLabel("Password").fill(handoff.password);
-  await page.getByRole("button", { name: "Continue" }).click();
-  await page.getByText(/credentials were not accepted|restricted|unavailable|cannot sign in/iu).waitFor();
+async function setCaptureAccountStatus(accountId, status) {
+  const db = new PrismaClient({ datasources: { db: { url: `file:${databasePath.replaceAll("\\", "/")}` } } });
+  try {
+    await db.userAccount.update({ where: { id: accountId }, data: { status } });
+  } finally {
+    await db.$disconnect();
+  }
 }
 
 async function signOut(page) {
