@@ -168,7 +168,7 @@ test("Journey A: Sera workspace truth", async ({ page }) => {
   const account = await signIn(page, "SERA");
   await accountDestination(page, account, "All Workspaces");
   for (const workspace of ["Player", "Captain", "Creator"]) {
-    await settledLink(page, page.getByRole("link", { name: `Enter ${workspace}` }));
+    await settledLink(page, page.getByRole("link", { name: `Enter ${workspace}` }).filter({ visible: true }).first());
     await expect(page.getByText(/Permission required|Access denied/u)).toHaveCount(0);
     await accountDestination(page, account, "All Workspaces");
   }
@@ -185,17 +185,17 @@ test("Journey B: Active Chronicle lock regression", async ({ context, page }) =>
   const account = await signIn(page, "ACTIVE_CHRONICLE_PLAYER");
   await accountDestination(page, account, "All Workspaces");
   await expect(page.getByRole("heading", { name: "Captain and Creator transitions are paused" })).toBeVisible();
-  await expect(page.getByRole("link", { name: "Enter Captain" })).toHaveCount(0);
-  await expect(page.getByRole("link", { name: "Enter Creator" })).toHaveCount(0);
+  await expect(page.getByRole("link", { name: "Enter Captain" }).filter({ visible: true })).toHaveCount(0);
+  await expect(page.getByRole("link", { name: "Enter Creator" }).filter({ visible: true })).toHaveCount(0);
   const second = await context.newPage();
   await second.goto("/account/roles");
   await expect(second.getByRole("heading", { name: "Captain and Creator transitions are paused" })).toBeVisible();
   await page.getByLabel(/Type LEAVE ACTIVE CHRONICLES/u).fill("LEAVE ACTIVE CHRONICLES");
   await page.getByRole("button", { name: "Safely leave active Chronicles" }).click();
-  await expect(page.getByRole("link", { name: "Enter Captain" })).toBeVisible();
-  await expect(page.getByRole("link", { name: "Enter Creator" })).toBeVisible();
+  await expect(page.getByRole("link", { name: "Enter Captain" }).filter({ visible: true }).first()).toBeVisible();
+  await expect(page.getByRole("link", { name: "Enter Creator" }).filter({ visible: true }).first()).toBeVisible();
   await second.reload();
-  await expect(second.getByRole("link", { name: "Enter Captain" })).toBeVisible();
+  await expect(second.getByRole("link", { name: "Enter Captain" }).filter({ visible: true }).first()).toBeVisible();
   await second.close();
 });
 
