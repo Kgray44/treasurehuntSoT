@@ -24,8 +24,13 @@
   --surface-hover: rgba(121, 210, 195, 0.08);
   --surface-paper: var(--parchment-100);
   --text-primary: #f4eddc;
+  --text-heading: #fff6e5;
+  --text-body: #e4e9e2;
   --text-secondary: #c1d0ca;
+  --text-inactive: #b5c5c0;
+  --text-metadata: #a4b7b1;
   --text-muted: #91a7a1;
+  --text-disabled: #748984;
   --text-ink: var(--parchment-ink);
   --text-on-accent: #151108;
   --border-subtle: rgba(201, 169, 95, 0.2);
@@ -92,8 +97,13 @@ html[data-voyage-theme="light"] {
   --surface-overlay: #fffaf0;
   --surface-hover: rgb(25 79 77 / 9%);
   --text-primary: #172f30;
+  --text-heading: #102a2b;
+  --text-body: #203f40;
   --text-secondary: #315252;
+  --text-inactive: #3d5d5b;
+  --text-metadata: #486664;
   --text-muted: #526c69;
+  --text-disabled: #718481;
   --border-subtle: rgb(66 73 50 / 20%);
   --border-default: rgb(79 68 39 / 34%);
   --border-emphasis: rgb(76 57 19 / 58%);
@@ -112,8 +122,13 @@ html[data-voyage-contrast="high"] {
   --surface-overlay: #000;
   --surface-hover: rgb(255 255 255 / 14%);
   --text-primary: #fff;
+  --text-heading: #fff;
+  --text-body: #fff;
   --text-secondary: #fff;
+  --text-inactive: #f2f2f2;
+  --text-metadata: #ededed;
   --text-muted: #e6e6e6;
+  --text-disabled: #d7d7d7;
   --border-subtle: rgb(255 255 255 / 55%);
   --border-default: #fff;
   --border-emphasis: #fff;
@@ -129,8 +144,8 @@ body {
   min-width: 0;
   color: var(--text-primary);
   background:
-    radial-gradient(circle at 50% -20%, rgba(54, 126, 125, 0.22), transparent 44%),
-    linear-gradient(165deg, var(--ocean-900), var(--ocean-950));
+    radial-gradient(circle at 50% -20%, color-mix(in srgb, var(--accent-primary) 16%, transparent), transparent 44%),
+    linear-gradient(165deg, var(--background-secondary), var(--background-primary));
   font-family: var(--font-interface);
 }
 
@@ -175,6 +190,18 @@ button {
     transform var(--motion-fast) var(--ease-out);
 }
 
+html[data-voyage-theme="light"] button {
+  border-color: var(--border-default);
+  color: var(--text-primary);
+  background: color-mix(in srgb, var(--surface-raised) 88%, white);
+}
+
+html[data-voyage-theme="light"] button:hover:not(:disabled) {
+  border-color: var(--border-emphasis);
+  color: var(--text-heading);
+  background: var(--surface-raised);
+}
+
 button:hover:not(:disabled) {
   border-color: var(--brass-300);
   background: rgba(24, 62, 63, 0.92);
@@ -215,9 +242,17 @@ blockquote {
 h1,
 h2,
 h3 {
+  color: var(--text-heading);
   font-family: var(--font-display);
   font-weight: 500;
   text-wrap: balance;
+}
+
+p,
+li,
+dd,
+label {
+  color: var(--text-body);
 }
 
 img,

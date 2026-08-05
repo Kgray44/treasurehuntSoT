@@ -4,6 +4,7 @@ import { z } from "zod";
 import { db } from "@/lib/db";
 
 import { CommunityError, communityItemTypes, stableJson } from "./domain";
+import { authoritativeListingEngagement } from "./engagement-aggregates";
 
 export const communitySortModes = [
   "FEATURED",
@@ -465,25 +466,14 @@ export const databaseCommunitySearchProvider: CommunitySearchProvider = {
     const ids = listings.map((listing) => listing.id);
     const [metadataRows, aggregateRows, documentRows, featureRows] = await Promise.all([
       db.communityListingDiscoveryMetadata.findMany({ where: { listingId: { in: ids } } }),
-      db.communityListingAggregate.findMany({ where: { listingId: { in: ids } } }),
+      authoritativeListingEngagement(ids),
       db.communitySearchDocument.findMany({ where: { listingId: { in: ids } } }),
       db.communityEditorialFeature.findMany({
         where: { subjectType: "COMMUNITY_LISTING", subjectId: { in: ids }, active: true },
       }),
     ]);
     const metadata = new Map(metadataRows.map((row) => [row.listingId, toMetadata(row)]));
-    const aggregates = new Map(
-      aggregateRows.map((row) => [
-        row.listingId,
-        {
-          installCount: row.installCount,
-          saveCount: row.saveCount,
-          completionCount: row.completionCount,
-          reviewCount: row.reviewCount,
-          averageRating: row.averageRating,
-        },
-      ]),
-    );
+    const aggregates = aggregateRows;
     const documents = new Map(documentRows.map((row) => [row.listingId, row]));
     const feature = new Map(
       featureRows.map((row) => [row.subjectId, { sortOrder: row.sortOrder, startsAt: row.startsAt }]),

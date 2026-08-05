@@ -7,39 +7,49 @@ import path from "node:path";
 const command = process.argv[2] ?? "status";
 const repositoryRoot = path.resolve(process.cwd());
 const taskRoot = path.resolve(required("HOMEPORT_PHASE7_TASK_ROOT"));
-const correctionRound1 = process.env.HOMEPORT_PHASE7_CORRECTION_RUNTIME === "1";
+const correctionRound =
+  process.env.HOMEPORT_PHASE7_CORRECTION_ROUND ?? (process.env.HOMEPORT_PHASE7_CORRECTION_RUNTIME === "1" ? "1" : null);
+const correctionRuntime = Boolean(correctionRound);
 const port = Number.parseInt(
-  correctionRound1
-    ? (process.env.HOMEPORT_PHASE7_CORRECTION_WALKTHROUGH_PORT ?? "3735")
+  correctionRuntime
+    ? (process.env.HOMEPORT_PHASE7_CORRECTION_WALKTHROUGH_PORT ?? (correctionRound === "2" ? "3756" : "3735"))
     : (process.env.HOMEPORT_PHASE7_WALKTHROUGH_PORT ?? "3717"),
   10,
 );
 const statePath = path.join(
   taskRoot,
   "leases",
-  correctionRound1 ? "owner-correction-rereview-runtime.json" : "walkthrough-runtime.json",
+  correctionRuntime ? `owner-correction-round${correctionRound}-rereview-runtime.json` : "walkthrough-runtime.json",
 );
-const databasePath = correctionRound1
-  ? path.join(taskRoot, "owner-rereview-database", "homeport-phase7-owner-correction-round1-rereview.db")
+const databasePath = correctionRuntime
+  ? path.join(
+      taskRoot,
+      "owner-rereview-database",
+      `homeport-phase7-owner-correction-round${correctionRound}-rereview.db`,
+    )
   : path.join(taskRoot, "final-walkthrough-database", "homeport-phase7-walkthrough.db");
 const canonicalDatabase = path.resolve("C:/Users/kkids/Documents/Codex_TreasureHunt/prisma/dev.db");
 const logPath = path.join(
   taskRoot,
   "logs",
-  correctionRound1 ? "owner-correction-rereview-server.log" : "walkthrough-server.log",
+  correctionRuntime ? `owner-correction-round${correctionRound}-rereview-server.log` : "walkthrough-server.log",
 );
 const errorLogPath = path.join(
   taskRoot,
   "logs",
-  correctionRound1 ? "owner-correction-rereview-server-error.log" : "walkthrough-server-error.log",
+  correctionRuntime
+    ? `owner-correction-round${correctionRound}-rereview-server-error.log`
+    : "walkthrough-server-error.log",
 );
 const credentialHandoffPath = path.join(
   taskRoot,
   "credentials",
-  correctionRound1 ? "owner-correction-walkthrough-credentials.private.json" : "walkthrough-credentials.private.json",
+  correctionRuntime
+    ? `owner-correction-round${correctionRound}-walkthrough-credentials.private.json`
+    : "walkthrough-credentials.private.json",
 );
-const fixtureVersion = correctionRound1
-  ? "homeport-phase7-owner-correction-round1-v1"
+const fixtureVersion = correctionRuntime
+  ? `homeport-phase7-owner-correction-round${correctionRound}-v1`
   : "homeport-phase7-integrated-v1";
 const baseUrl = `http://127.0.0.1:${port}`;
 
@@ -50,13 +60,15 @@ if (databasePath === canonicalDatabase || !databasePath.startsWith(taskRoot + pa
 
 if (command === "prepare") {
   runOwned(
-    correctionRound1
-      ? "scripts/homeport/phase7-owner-correction-round1-database-clone.mjs"
+    correctionRuntime
+      ? correctionRound === "2"
+        ? "scripts/homeport/phase7-owner-correction-round2-database-clone.mjs"
+        : "scripts/homeport/phase7-owner-correction-round1-database-clone.mjs"
       : "scripts/homeport/phase7-database-clone.mjs",
     ["walkthrough"],
   );
   process.stdout.write(
-    `${JSON.stringify({ status: correctionRound1 ? "HOMEPORT_PHASE7_CORRECTION_REREVIEW_PREPARED" : "HOMEPORT_PHASE7_WALKTHROUGH_PREPARED", databasePath, fixtureVersion })}\n`,
+    `${JSON.stringify({ status: correctionRuntime ? `HOMEPORT_PHASE7_CORRECTION_ROUND${correctionRound}_REREVIEW_PREPARED` : "HOMEPORT_PHASE7_WALKTHROUGH_PREPARED", databasePath, fixtureVersion })}\n`,
   );
 } else if (command === "start") {
   await start();
@@ -65,8 +77,10 @@ if (command === "prepare") {
 } else if (command === "reset") {
   await stop(false);
   runOwned(
-    correctionRound1
-      ? "scripts/homeport/phase7-owner-correction-round1-database-clone.mjs"
+    correctionRuntime
+      ? correctionRound === "2"
+        ? "scripts/homeport/phase7-owner-correction-round2-database-clone.mjs"
+        : "scripts/homeport/phase7-owner-correction-round1-database-clone.mjs"
       : "scripts/homeport/phase7-database-clone.mjs",
     ["walkthrough"],
   );
@@ -82,6 +96,8 @@ async function start() {
     throw new Error("HOMEPORT_PHASE7_PRODUCTION_BUILD_MISSING");
   if (!existsSync(databasePath) || (await stat(databasePath)).size < 1)
     throw new Error("HOMEPORT_PHASE7_WALKTHROUGH_DATABASE_MISSING");
+  if (correctionRound === "2")
+    runOwned("scripts/homeport/validate-phase7-owner-correction-round2-fixture.mjs", [databasePath]);
   const existing = await status();
   if (existing.processAlive || existing.portOwnerPid) throw new Error(`HOMEPORT_PHASE7_PORT_OR_PROCESS_BUSY:${port}`);
   await mkdir(path.dirname(statePath), { recursive: true });
@@ -132,7 +148,7 @@ async function start() {
     const health = await fetchHealth();
     if (health.ok) {
       process.stdout.write(
-        `${JSON.stringify({ status: correctionRound1 ? "HOMEPORT_PHASE7_CORRECTION_REREVIEW_RUNNING" : "HOMEPORT_PHASE7_WALKTHROUGH_RUNNING", ...state, health }, null, 2)}\n`,
+        `${JSON.stringify({ status: correctionRuntime ? `HOMEPORT_PHASE7_CORRECTION_ROUND${correctionRound}_REREVIEW_RUNNING` : "HOMEPORT_PHASE7_WALKTHROUGH_RUNNING", ...state, health }, null, 2)}\n`,
       );
       return;
     }
@@ -150,11 +166,11 @@ async function status() {
   return {
     status:
       processAlive && portOwnerPid === pid && health.ok
-        ? correctionRound1
-          ? "HOMEPORT_PHASE7_CORRECTION_REREVIEW_HEALTHY"
+        ? correctionRuntime
+          ? `HOMEPORT_PHASE7_CORRECTION_ROUND${correctionRound}_REREVIEW_HEALTHY`
           : "HOMEPORT_PHASE7_WALKTHROUGH_HEALTHY"
-        : correctionRound1
-          ? "HOMEPORT_PHASE7_CORRECTION_REREVIEW_STOPPED"
+        : correctionRuntime
+          ? `HOMEPORT_PHASE7_CORRECTION_ROUND${correctionRound}_REREVIEW_STOPPED`
           : "HOMEPORT_PHASE7_WALKTHROUGH_STOPPED",
     pid,
     port,
@@ -175,7 +191,7 @@ async function stop(report) {
   if (!state?.pid) {
     if (report)
       process.stdout.write(
-        `${JSON.stringify({ status: correctionRound1 ? "HOMEPORT_PHASE7_CORRECTION_REREVIEW_ALREADY_STOPPED" : "HOMEPORT_PHASE7_WALKTHROUGH_ALREADY_STOPPED", port })}\n`,
+        `${JSON.stringify({ status: correctionRuntime ? `HOMEPORT_PHASE7_CORRECTION_ROUND${correctionRound}_REREVIEW_ALREADY_STOPPED` : "HOMEPORT_PHASE7_WALKTHROUGH_ALREADY_STOPPED", port })}\n`,
       );
     return;
   }
@@ -192,7 +208,7 @@ async function stop(report) {
   await rm(statePath, { force: true });
   if (report)
     process.stdout.write(
-      `${JSON.stringify({ status: correctionRound1 ? "HOMEPORT_PHASE7_CORRECTION_REREVIEW_STOPPED" : "HOMEPORT_PHASE7_WALKTHROUGH_STOPPED", pid: state.pid, port })}\n`,
+      `${JSON.stringify({ status: correctionRuntime ? `HOMEPORT_PHASE7_CORRECTION_ROUND${correctionRound}_REREVIEW_STOPPED` : "HOMEPORT_PHASE7_WALKTHROUGH_STOPPED", pid: state.pid, port })}\n`,
     );
 }
 

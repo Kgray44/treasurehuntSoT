@@ -173,7 +173,7 @@ type PublicPreview = {
   providers?: Array<{ provider: string; providerDisplayName?: string | null }>;
 };
 
-export function ProfileEditor() {
+export function ProfileEditor({ returnTo }: { returnTo?: string } = {}) {
   const { requestAction, dialog } = useActionDialog();
   const resource = useResource<ProfileDto>("/api/passport/profile");
   const { setDirty, csrfToken } = usePersonalHarbor();
@@ -241,6 +241,7 @@ export function ProfileEditor() {
       setMutation({ kind: "saved", message: "Profile saved and public preview refreshed." });
       await invalidate();
       await loadPreview(value);
+      if (returnTo && value.handle && value.defaultVisibility === "PUBLIC") window.location.assign(returnTo);
     } catch (cause) {
       const message = cause instanceof Error ? cause.message : "Profile could not be saved.";
       setMutation({ kind: message.includes("another window") ? "stale" : "error", message });

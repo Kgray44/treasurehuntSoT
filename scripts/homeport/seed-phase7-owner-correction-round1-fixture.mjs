@@ -5,7 +5,12 @@ import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcryptjs";
 
 const db = new PrismaClient();
-const fixtureVersion = "homeport-phase7-owner-correction-round1-v1";
+const correctionRound = process.env.HOMEPORT_PHASE7_CORRECTION_ROUND ?? "1";
+const fixtureVersion =
+  process.env.HOMEPORT_PHASE7_CORRECTION_FIXTURE_VERSION ??
+  `homeport-phase7-owner-correction-round${correctionRound}-v1`;
+const ownerAlias = process.env.HOMEPORT_PHASE7_OWNER_ALIAS ?? "FULL_CAPABILITY";
+const ownerDisplayName = process.env.HOMEPORT_PHASE7_OWNER_DISPLAY_NAME ?? "Admiral Correction Test";
 const databaseUrl = process.env.DATABASE_URL ?? "";
 const taskRoot = path.resolve(required("HOMEPORT_PHASE7_TASK_ROOT"));
 const databasePath = databaseUrl.startsWith("file:") ? path.resolve(databaseUrl.slice(5)) : "";
@@ -136,13 +141,15 @@ async function accountFixture({
 }
 
 async function seed() {
+  const ownerAccount = await accountFixture({
+    key: "full-capability",
+    displayName: ownerDisplayName,
+    roles: ["PLAYER", "CAPTAIN", "CREATOR"],
+    community: true,
+  });
   const aliases = {
-    FULL_CAPABILITY: await accountFixture({
-      key: "full-capability",
-      displayName: "Admiral Correction Test",
-      roles: ["PLAYER", "CAPTAIN", "CREATOR"],
-      community: true,
-    }),
+    FULL_CAPABILITY: ownerAccount,
+    ...(ownerAlias === "FULL_CAPABILITY" ? {} : { [ownerAlias]: ownerAccount }),
     ACTIVE_CHRONICLE_PLAYER: await accountFixture({
       key: "active-player",
       displayName: "Active Chronicle Test",
@@ -187,6 +194,12 @@ async function seed() {
     REVIEW_EMPTY: await accountFixture({
       key: "review-empty",
       displayName: "Review Empty Test",
+      roles: ["PLAYER"],
+      community: true,
+    }),
+    REVIEW_ELIGIBLE: await accountFixture({
+      key: "review-eligible",
+      displayName: "Verified Completion Review Test",
       roles: ["PLAYER"],
       community: true,
     }),
@@ -380,30 +393,110 @@ async function seed() {
       owner: { visibility: "COMMUNITY", moderationStatus: "ACTIVE", creatorStatus: { not: "SUSPENDED" } },
     },
     orderBy: { id: "asc" },
+    include: {
+      currentRelease: {
+        select: { sourcePublishedTaleVersionId: true, sourcePublishedTaleVersion: { select: { taleId: true } } },
+      },
+    },
   });
   if (!listing) throw new Error("HOMEPORT_PHASE7_CORRECTION_REVIEW_LISTING_REQUIRED");
+  let reviewSourceVersionId = listing.currentRelease?.sourcePublishedTaleVersionId ?? null;
+  let reviewSourceTaleId = listing.currentRelease?.sourcePublishedTaleVersion?.taleId ?? null;
+  if (!reviewSourceVersionId || !reviewSourceTaleId) {
+    const sourceVersion = await db.publishedTaleVersion.findFirst({
+      where: { isCurrent: true, tale: { status: "PUBLISHED", visibility: "PUBLIC" } },
+      select: { id: true, taleId: true },
+      orderBy: [{ publishedAt: "desc" }, { id: "asc" }],
+    });
+    if (!sourceVersion || !listing.currentReleaseId)
+      throw new Error("HOMEPORT_PHASE7_CORRECTION_REVIEW_SOURCE_VERSION_REQUIRED");
+    await db.communityRelease.update({
+      where: { id: listing.currentReleaseId },
+      data: { sourcePublishedTaleVersionId: sourceVersion.id },
+    });
+    reviewSourceVersionId = sourceVersion.id;
+    reviewSourceTaleId = sourceVersion.taleId;
+  }
+  let completedSession = reviewSourceVersionId
+    ? await db.taleSession.findFirst({
+        where: {
+          status: "COMPLETED",
+          previewMode: false,
+          publishedVersionId: reviewSourceVersionId,
+        },
+        orderBy: { id: "asc" },
+      })
+    : null;
+  if (!completedSession && reviewSourceVersionId && reviewSourceTaleId) {
+    completedSession = await db.taleSession.upsert({
+      where: { id: "hp7c-session-review-completed" },
+      update: {
+        status: "COMPLETED",
+        previewMode: false,
+        publishedVersionId: reviewSourceVersionId,
+        completedAt: createdAt,
+      },
+      create: {
+        id: "hp7c-session-review-completed",
+        taleId: reviewSourceTaleId,
+        publishedVersionId: reviewSourceVersionId,
+        ownerLabel: "Synthetic verified completion review",
+        accessTokenHash: sha256Text("hp7c-session-review-completed-access"),
+        status: "COMPLETED",
+        previewMode: false,
+        startedAt: new Date(createdAt.getTime() - 2 * 60 * 60 * 1000),
+        completedAt: createdAt,
+      },
+    });
+  }
+  if (!completedSession) throw new Error("HOMEPORT_PHASE7_CORRECTION_COMPLETED_REVIEW_SESSION_REQUIRED");
+  await db.playthroughMembership.upsert({
+    where: {
+      playthroughId_playerProfileId: {
+        playthroughId: completedSession.id,
+        playerProfileId: aliases.REVIEW_ELIGIBLE.profileId,
+      },
+    },
+    update: { status: "COMPLETED_MEMBER", joinedAt: createdAt, completedAt: completedSession.completedAt ?? createdAt },
+    create: {
+      id: "hp7c-membership-review-eligible",
+      playthroughId: completedSession.id,
+      playerProfileId: aliases.REVIEW_ELIGIBLE.profileId,
+      role: "PLAYER",
+      status: "COMPLETED_MEMBER",
+      joinedAt: createdAt,
+      completedAt: completedSession.completedAt ?? createdAt,
+      createdAt,
+    },
+  });
   await db.communityReview.upsert({
     where: {
       listingId_authorAccountId: {
         listingId: listing.id,
-        authorAccountId: aliases.ACTIVE_CHRONICLE_PLAYER.accountId,
+        authorAccountId: aliases.REVIEW_ELIGIBLE.accountId,
       },
     },
     update: {
       rating: 4,
       spoilerFreeBody: "A synthetic review with clear pacing and accessible clues.",
       status: "ACTIVE",
+      reviewedReleaseId: listing.currentReleaseId,
+      verifiedCompletion: true,
+      completionSessionId: completedSession.id,
     },
     create: {
       id: "hp7c-review-active-player",
       listingId: listing.id,
-      authorAccountId: aliases.ACTIVE_CHRONICLE_PLAYER.accountId,
-      authorDisplayName: aliases.ACTIVE_CHRONICLE_PLAYER.displayName,
-      authorHandle: aliases.ACTIVE_CHRONICLE_PLAYER.handle,
+      authorAccountId: aliases.REVIEW_ELIGIBLE.accountId,
+      authorDisplayName: aliases.REVIEW_ELIGIBLE.displayName,
+      authorHandle: aliases.REVIEW_ELIGIBLE.handle,
       rating: 4,
       spoilerFreeBody: "A synthetic review with clear pacing and accessible clues.",
       spoilerLevel: "NONE",
       status: "ACTIVE",
+      reviewedReleaseId: listing.currentReleaseId,
+      verifiedCompletion: true,
+      completionSessionId: completedSession.id,
       createdAt,
     },
   });
@@ -483,7 +576,7 @@ async function seed() {
   };
   const fixtureChecksum = sha256Text(JSON.stringify(fixtureIdentity));
   process.stdout.write(
-    `${JSON.stringify({ status: "HOMEPORT_PHASE7_OWNER_CORRECTION_ROUND1_FIXTURE_READY", databasePath, ...fixtureIdentity, fixtureChecksum })}\n`,
+    `${JSON.stringify({ status: `HOMEPORT_PHASE7_OWNER_CORRECTION_ROUND${correctionRound}_FIXTURE_READY`, databasePath, ...fixtureIdentity, fixtureChecksum })}\n`,
   );
 }
 

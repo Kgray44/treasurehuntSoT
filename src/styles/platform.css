@@ -12,6 +12,22 @@
     linear-gradient(145deg, #031013, #071e21 50%, #020a0c);
 }
 
+html[data-voyage-theme="light"]
+  :where(
+    .platform-auth,
+    .player-library,
+    .captain-library,
+    .invitation-page,
+    .waiting-room,
+    .voyage-archive,
+    .player-safe-preview
+  ) {
+  color: var(--text-primary);
+  background:
+    radial-gradient(circle at 78% 8%, rgb(48 112 104 / 13%), transparent 28%),
+    linear-gradient(145deg, #fff9eb, #eadbbd 50%, #f5ead4);
+}
+
 .platform-relic {
   position: relative;
   width: 7rem;

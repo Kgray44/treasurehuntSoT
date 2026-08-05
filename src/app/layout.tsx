@@ -4,6 +4,7 @@ import { CurrentUserProvider } from "@/components/auth/CurrentUserProvider";
 import { PreferenceRuntimeBridge } from "@/components/homeport/PreferenceRuntimeBridge";
 import { ProductShell } from "@/components/shell/ProductShell";
 import { canonicalTerms } from "@/language/canonical-terms";
+import { themeBootstrapScript } from "@/homeport/theme-bootstrap";
 import "./globals.css";
 import "../styles/tokens.css";
 import "../styles/shell.css";
@@ -28,7 +29,10 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" data-scroll-behavior="smooth">
+    <html lang="en" data-scroll-behavior="smooth" suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeBootstrapScript }} />
+      </head>
       <body>
         <AnimationProvider>
           <CurrentUserProvider>

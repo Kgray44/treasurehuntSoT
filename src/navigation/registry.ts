@@ -446,20 +446,6 @@ const accountItems = [
 
 const contextualItems = [
   {
-    id: "context-community-parent",
-    layer: "CONTEXTUAL",
-    label: "Back to Community Harbor",
-    href: "/community",
-    owner: "harborlight",
-    shellModes: ["PUBLIC_STANDARD"],
-    desktop: "contextual",
-    mobile: "contextual",
-    activeMatch: { type: "NEVER_ACTIVE" },
-    contextPatterns: ["/community/*"],
-    order: 10,
-    currentStatus: "contextual",
-  },
-  {
     id: "context-chronicles-parent",
     layer: "CONTEXTUAL",
     label: "Back to Explore Chronicles",

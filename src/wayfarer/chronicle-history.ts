@@ -371,6 +371,25 @@ const recordInclude = {
   memories: { where: { deletedAt: null }, orderBy: { createdAt: "desc" as const } },
   participantSnapshots: { orderBy: { createdAt: "asc" as const } },
   keepsake: { include: { consents: { where: { state: "GRANTED" }, select: { participantId: true, scope: true } } } },
+  publishedVersion: {
+    select: {
+      communityReleases: {
+        where: { moderationStatus: "ACTIVE", deprecatedAt: null },
+        select: {
+          id: true,
+          listing: {
+            select: {
+              slug: true,
+              currentReleaseId: true,
+              publicationStatus: true,
+              moderationStatus: true,
+              visibility: true,
+            },
+          },
+        },
+      },
+    },
+  },
 };
 
 export async function listChronicleHistory(
@@ -499,6 +518,18 @@ type OwnerRecord = {
     tombstoneState: string;
   }>;
   keepsake: { status: string; generatedAt: Date; consents: unknown[] } | null;
+  publishedVersion: {
+    communityReleases: Array<{
+      id: string;
+      listing: {
+        slug: string;
+        currentReleaseId: string | null;
+        publicationStatus: string;
+        moderationStatus: string;
+        visibility: string;
+      };
+    }>;
+  };
 };
 
 function parseStored<T>(schema: z.ZodType<T>, value: string, field: string): T {
@@ -510,6 +541,13 @@ function parseStored<T>(schema: z.ZodType<T>, value: string, field: string): T {
 }
 
 function ownerRecordProjection(record: OwnerRecord) {
+  const reviewListing = record.publishedVersion.communityReleases.find(
+    (release) =>
+      release.listing.currentReleaseId === release.id &&
+      release.listing.publicationStatus === "PUBLISHED" &&
+      release.listing.moderationStatus === "ACTIVE" &&
+      ["COMMUNITY", "FEATURED"].includes(release.listing.visibility),
+  )?.listing;
   return {
     id: record.id,
     chronicle: {
@@ -526,6 +564,14 @@ function ownerRecordProjection(record: OwnerRecord) {
     lifecycleStatus: record.lifecycleStatus,
     outcome: record.outcome,
     timestamps: { startedAt: record.startedAt, joinedAt: record.joinedAt, completedAt: record.completedAt },
+    ...(record.completedAt && reviewListing
+      ? {
+          review: {
+            href: `/community/${encodeURIComponent(reviewListing.slug)}#community-review-composer`,
+            state: "AVAILABLE_AFTER_VERIFIED_COMPLETION" as const,
+          },
+        }
+      : {}),
     timing: {
       definitionVersion: record.metricDefinitionVersion,
       wallClock: { seconds: record.wallClockSeconds, accuracy: record.wallClockAccuracy },

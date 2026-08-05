@@ -6,6 +6,7 @@ import { AnimatePresence, motion } from "motion/react";
 import { useMotionMode } from "@/animation/motion/useMotionMode";
 import type { HomeportCommunityCard } from "@/community/homeport";
 import { CommunityCardGrid } from "./CommunityCardGrid";
+import { LoadingState } from "@/components/ui/AsyncState";
 
 const sortOptions = [
   ["FEATURED", "Featured"],
@@ -475,13 +476,11 @@ export function CommunityDiscoveryBrowser({
         <p className="community-discovery__idle">The Harbor shelves below are ready to browse without a search.</p>
       ) : null}
       {state === "loading" ? (
-        <div className="community-state community-state--loading" role="status" aria-live="polite">
-          <span aria-hidden="true" />
-          <div>
-            <h3>Charting public results</h3>
-            <p>Your current Harbor criteria are being applied.</p>
-          </div>
-        </div>
+        <LoadingState
+          title="Charting public results"
+          detail="Your current Harbor criteria are being applied."
+          compact
+        />
       ) : null}
       {state === "error" ? (
         <section className="community-state community-state--error" role="alert" aria-live="assertive">

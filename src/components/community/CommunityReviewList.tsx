@@ -1,6 +1,7 @@
 "use client";
 
 import { FormEvent, useCallback, useEffect, useState } from "react";
+import Link from "next/link";
 
 type Review = {
   id: string;
@@ -15,6 +16,12 @@ type Review = {
   helpfulCount: number;
   creatorResponse: { body: string | null; hasSpoiler: boolean; creator: { displayName: string } | null } | null;
   canEdit: boolean;
+};
+type ReviewAccess = {
+  state: "SIGN_IN_REQUIRED" | "PROFILE_SETUP_REQUIRED" | "COMPLETION_REQUIRED" | "ELIGIBLE";
+  eligible: boolean;
+  actionHref?: string;
+  message: string;
 };
 
 export function CommunityReviewList({ listingId }: { listingId: string }) {
@@ -38,6 +45,7 @@ export function CommunityReviewList({ listingId }: { listingId: string }) {
   const [reportTarget, setReportTarget] = useState<string | null>(null);
   const [reportReason, setReportReason] = useState("Safety or policy concern");
   const [reportDetail, setReportDetail] = useState("");
+  const [reviewAccess, setReviewAccess] = useState<ReviewAccess | null>(null);
 
   const refresh = useCallback(
     async (controller?: AbortController) => {
@@ -46,9 +54,10 @@ export function CommunityReviewList({ listingId }: { listingId: string }) {
         fetch("/api/player/session", { cache: "no-store" }),
       ]);
       if (!reviewResponse.ok) throw new Error("Reviews are unavailable.");
-      const value = (await reviewResponse.json()) as { reviews: Review[] };
+      const value = (await reviewResponse.json()) as { reviews: Review[]; reviewAccess?: ReviewAccess };
       if (!controller?.signal.aborted) {
         setReviews(value.reviews);
+        setReviewAccess(value.reviewAccess ?? null);
         setState("ready");
         if (sessionResponse.ok) setCsrf(((await sessionResponse.json()) as { csrfToken?: string }).csrfToken ?? "");
       }
@@ -216,6 +225,7 @@ export function CommunityReviewList({ listingId }: { listingId: string }) {
     return right.createdAt.localeCompare(left.createdAt);
   });
   const ownReview = reviews.find((review) => review.canEdit);
+  const canCompose = reviewAccess?.eligible ?? Boolean(csrf);
 
   return (
     <section className="community-reviews" aria-labelledby="community-reviews-title">
@@ -277,84 +287,103 @@ export function CommunityReviewList({ listingId }: { listingId: string }) {
       <p className="community-review-message" aria-live="polite">
         {message}
       </p>
-      <form
-        className="community-review-composer"
-        onSubmit={(event) => void submitReview(event)}
-        aria-label="Write a review"
-      >
-        <div>
-          <h3>Write or update your review</h3>
-          <p>
-            Ratings require an eligible installation or completed Chronicle. Spoiler text stays behind an explicit
-            reveal.
-          </p>
-        </div>
-        <label>
-          Rating{" "}
-          <select name="rating" defaultValue="5" disabled={!csrf}>
-            <option value="5">5</option>
-            <option value="4">4</option>
-            <option value="3">3</option>
-            <option value="2">2</option>
-            <option value="1">1</option>
-          </select>
-        </label>
-        <label>
-          Preview-safe review
-          <textarea
-            name="spoilerFreeBody"
-            minLength={10}
-            maxLength={5000}
-            value={reviewBody}
-            onChange={(event) => setReviewBody(event.target.value)}
-            disabled={!csrf}
-          />
-          <small>{reviewBody.length} / 5,000 characters; enter at least 10 characters when adding a body.</small>
-        </label>
-        <label className="community-review-spoiler-toggle">
-          <input
-            type="checkbox"
-            checked={spoilerEnabled}
-            onChange={(event) => setSpoilerEnabled(event.target.checked)}
-            disabled={!csrf}
-          />
-          Include spoiler details behind an explicit reveal
-        </label>
-        {spoilerEnabled ? (
+      {canCompose ? (
+        <form
+          id="community-review-composer"
+          className="community-review-composer"
+          onSubmit={(event) => void submitReview(event)}
+          aria-label="Write a review"
+        >
+          <div>
+            <h3>Write or update your review</h3>
+            <p>
+              Ratings and reviews require a verified completion of this exact Chronicle release. Spoiler text stays
+              behind an explicit reveal.
+            </p>
+          </div>
           <label>
-            Spoiler details
-            <textarea
-              name="spoilerBody"
-              maxLength={5000}
-              value={spoilerBody}
-              onChange={(event) => setSpoilerBody(event.target.value)}
-              disabled={!csrf}
-            />
-            <small>{spoilerBody.length} / 5,000 characters</small>
+            Rating{" "}
+            <select name="rating" defaultValue="5" disabled={!csrf || !canCompose}>
+              <option value="5">5</option>
+              <option value="4">4</option>
+              <option value="3">3</option>
+              <option value="2">2</option>
+              <option value="1">1</option>
+            </select>
           </label>
-        ) : null}
-        <div className="community-review-composer__actions">
-          <button
-            className="community-button community-button--primary"
-            type="submit"
-            disabled={!csrf || busy === "composer"}
-          >
-            {busy === "composer" ? "Saving…" : "Save review"}
-          </button>
-          <button
-            className="community-button community-button--quiet"
-            type="button"
-            disabled={!reviewBody && !spoilerBody}
-            onClick={() => {
-              setReviewBody("");
-              setSpoilerEnabled(false);
-              setSpoilerBody("");
-            }}
-          >
-            Cancel draft
-          </button>
-        </div>
-      </form>
+          <label>
+            Preview-safe review
+            <textarea
+              name="spoilerFreeBody"
+              minLength={10}
+              maxLength={5000}
+              value={reviewBody}
+              onChange={(event) => setReviewBody(event.target.value)}
+              disabled={!csrf || !canCompose}
+            />
+            <small>{reviewBody.length} / 5,000 characters; enter at least 10 characters when adding a body.</small>
+          </label>
+          <label className="community-review-spoiler-toggle">
+            <input
+              type="checkbox"
+              checked={spoilerEnabled}
+              onChange={(event) => setSpoilerEnabled(event.target.checked)}
+              disabled={!csrf || !canCompose}
+            />
+            Include spoiler details behind an explicit reveal
+          </label>
+          {spoilerEnabled ? (
+            <label>
+              Spoiler details
+              <textarea
+                name="spoilerBody"
+                maxLength={5000}
+                value={spoilerBody}
+                onChange={(event) => setSpoilerBody(event.target.value)}
+                disabled={!csrf || !canCompose}
+              />
+              <small>{spoilerBody.length} / 5,000 characters</small>
+            </label>
+          ) : null}
+          <div className="community-review-composer__actions">
+            <button
+              className="community-button community-button--primary"
+              type="submit"
+              disabled={!csrf || busy === "composer"}
+            >
+              {busy === "composer" ? "Saving…" : "Save review"}
+            </button>
+            <button
+              className="community-button community-button--quiet"
+              type="button"
+              disabled={!reviewBody && !spoilerBody}
+              onClick={() => {
+                setReviewBody("");
+                setSpoilerEnabled(false);
+                setSpoilerBody("");
+              }}
+            >
+              Cancel draft
+            </button>
+          </div>
+        </form>
+      ) : reviewAccess ? (
+        <aside id="community-review-composer" className="community-review-composer" aria-label="Review eligibility">
+          <div>
+            <h3>Review this Chronicle</h3>
+            <p>{reviewAccess.message}</p>
+          </div>
+          {reviewAccess.actionHref ? (
+            <Link className="community-button community-button--primary" href={reviewAccess.actionHref}>
+              {reviewAccess.state === "PROFILE_SETUP_REQUIRED"
+                ? "Set up public Profile"
+                : reviewAccess.state === "SIGN_IN_REQUIRED"
+                  ? "Sign in"
+                  : "View Chronicle details"}
+            </Link>
+          ) : null}
+        </aside>
+      ) : null}
       {state === "loading" ? <p role="status">Loading public reviews.</p> : null}
       {state === "error" ? <p role="alert">Reviews are temporarily unavailable.</p> : null}
       {state === "ready" && !reviews.length ? <p>No public reviews yet.</p> : null}

@@ -1,15 +1,15 @@
 .product-shell {
   --shell-accent: var(--gold, #d8b36a);
   --shell-accent-soft: color-mix(in srgb, var(--shell-accent) 22%, transparent);
-  --shell-ink: #f7edd8;
-  --shell-muted: #c7baa2;
-  --shell-panel: color-mix(in srgb, #101820 94%, transparent);
+  --shell-ink: var(--text-primary);
+  --shell-muted: var(--text-inactive);
+  --shell-panel: color-mix(in srgb, var(--surface-overlay) 94%, transparent);
   --shell-border: color-mix(in srgb, var(--shell-accent) 38%, transparent);
   --shell-header-height: 4.75rem;
   --shell-footer-height: 4.5rem;
   min-height: 100svh;
   color: var(--shell-ink);
-  background: #081116;
+  background: var(--background-primary);
 }
 
 .product-shell.workspace-player {
@@ -63,7 +63,11 @@
   padding: 0.65rem clamp(1rem, 3vw, 2.5rem);
   border-bottom: 1px solid var(--shell-border);
   background:
-    linear-gradient(100deg, color-mix(in srgb, #09131a 98%, transparent), color-mix(in srgb, #14212a 93%, transparent)),
+    linear-gradient(
+      100deg,
+      color-mix(in srgb, var(--surface-default) 98%, transparent),
+      color-mix(in srgb, var(--surface-raised) 93%, transparent)
+    ),
     radial-gradient(circle at 40% 0%, var(--shell-accent-soft), transparent 45%);
   box-shadow: 0 0.75rem 2.5rem rgb(0 0 0 / 26%);
   backdrop-filter: blur(18px) saturate(120%);
@@ -229,7 +233,7 @@
   border: 1px solid var(--shell-border);
   border-radius: 999px;
   color: var(--shell-ink);
-  background: color-mix(in srgb, #0c171e 88%, transparent);
+  background: color-mix(in srgb, var(--surface-raised) 88%, transparent);
   box-shadow: inset 0 1px rgb(255 255 255 / 6%);
   cursor: pointer;
 }
@@ -237,7 +241,7 @@
 .shell-profile-trigger:hover,
 .shell-profile-trigger[aria-expanded="true"] {
   border-color: color-mix(in srgb, var(--shell-accent) 68%, transparent);
-  background: color-mix(in srgb, var(--shell-accent) 13%, #0c171e);
+  background: color-mix(in srgb, var(--shell-accent) 13%, var(--surface-raised));
 }
 
 .shell-avatar {
@@ -283,7 +287,11 @@
   border: 1px solid var(--shell-border);
   border-radius: 1rem;
   background:
-    linear-gradient(155deg, color-mix(in srgb, #15232b 98%, transparent), color-mix(in srgb, #091219 98%, transparent)),
+    linear-gradient(
+      155deg,
+      color-mix(in srgb, var(--surface-raised) 98%, transparent),
+      color-mix(in srgb, var(--surface-overlay) 98%, transparent)
+    ),
     radial-gradient(circle at top right, var(--shell-accent-soft), transparent 42%);
   box-shadow: 0 1.5rem 4rem rgb(0 0 0 / 56%);
 }
@@ -463,7 +471,7 @@
   gap: 1rem;
   padding: 0.35rem clamp(1rem, 3vw, 2.5rem);
   border-bottom: 1px solid color-mix(in srgb, var(--shell-border) 72%, transparent);
-  background: color-mix(in srgb, #0b151b 96%, transparent);
+  background: color-mix(in srgb, var(--surface-overlay) 96%, transparent);
 }
 
 .shell-contextual-navigation > span {

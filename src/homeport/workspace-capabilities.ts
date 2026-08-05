@@ -2,6 +2,7 @@ import { randomUUID } from "node:crypto";
 import { db } from "@/lib/db";
 
 export type SelfServiceWorkspace = "CAPTAIN" | "CREATOR";
+export type OrdinaryWorkspaceRole = "PLAYER" | "CAPTAIN" | "CREATOR";
 
 export class WorkspaceCapabilityError extends Error {
   constructor(
@@ -13,6 +14,94 @@ export class WorkspaceCapabilityError extends Error {
 }
 
 const activeMembershipStates = ["ACCEPTED", "READY", "ACTIVE_MEMBER"];
+const ordinaryWorkspaceRoles = ["PLAYER", "CAPTAIN", "CREATOR"] as const;
+
+export type CapabilityReconciliationAccount = Readonly<{
+  accountId: string;
+  status: "READY" | "SKIPPED_RESTRICTED" | "SKIPPED_NOT_CLAIMED";
+  missingRoles: readonly OrdinaryWorkspaceRole[];
+  playerProfile: "PRESENT" | "CREATE_REQUIRED";
+  changed: boolean;
+}>;
+
+export async function reconcileClaimedAccountCapabilities(options: {
+  accountId?: string;
+  commit?: boolean;
+}): Promise<Readonly<{ mode: "DRY_RUN" | "COMMIT"; accounts: readonly CapabilityReconciliationAccount[] }>> {
+  const accounts = await db.userAccount.findMany({
+    where: options.accountId ? { id: options.accountId } : undefined,
+    select: {
+      id: true,
+      status: true,
+      claimedAt: true,
+      lockedAt: true,
+      suspendedAt: true,
+      profile: { select: { id: true } },
+      roles: { where: { revokedAt: null }, select: { role: true } },
+    },
+    orderBy: { id: "asc" },
+  });
+  if (options.accountId && accounts.length !== 1)
+    throw new WorkspaceCapabilityError("The requested account does not exist.", "FORBIDDEN");
+  const plan: CapabilityReconciliationAccount[] = accounts.map((account) => {
+    const active = account.status === "ACTIVE" && !account.lockedAt && !account.suspendedAt;
+    const claimed = Boolean(account.claimedAt);
+    const roles = new Set(account.roles.map((assignment) => assignment.role));
+    const missingRoles = ordinaryWorkspaceRoles.filter((role) => !roles.has(role));
+    return {
+      accountId: account.id,
+      status: !active ? "SKIPPED_RESTRICTED" : !claimed ? "SKIPPED_NOT_CLAIMED" : "READY",
+      missingRoles,
+      playerProfile: account.profile ? "PRESENT" : "CREATE_REQUIRED",
+      changed: active && claimed && (missingRoles.length > 0 || !account.profile),
+    };
+  });
+  if (!options.commit) return { mode: "DRY_RUN", accounts: plan };
+  for (const account of plan) {
+    if (account.status !== "READY") continue;
+    await db.$transaction(async (tx) => {
+      if (account.playerProfile === "CREATE_REQUIRED") {
+        await tx.playerProfile.create({
+          data: {
+            id: `homeport-player-${account.accountId}`,
+            accountId: account.accountId,
+            displayName: "Voyagewright member",
+            status: "ACTIVE",
+            claimedAt: new Date(),
+          },
+        });
+      }
+      for (const role of account.missingRoles) {
+        const existing = await tx.accountRoleAssignment.findFirst({
+          where: { accountId: account.accountId, role, scopeType: "GLOBAL", scopeId: null, revokedAt: null },
+          select: { id: true },
+        });
+        if (!existing)
+          await tx.accountRoleAssignment.create({
+            data: {
+              id: `homeport-ordinary-${account.accountId}-${role.toLocaleLowerCase()}`,
+              accountId: account.accountId,
+              role,
+              scopeType: "GLOBAL",
+            },
+          });
+      }
+      await tx.securityEvent.create({
+        data: {
+          accountId: account.accountId,
+          eventType: "WORKSPACE_CAPABILITIES_RECONCILED",
+          correlationId: randomUUID(),
+          metadata: JSON.stringify({
+            mode: "COMMIT",
+            createdPlayerProfile: account.playerProfile === "CREATE_REQUIRED",
+            addedRoles: account.missingRoles,
+          }),
+        },
+      });
+    });
+  }
+  return { mode: "COMMIT", accounts: plan };
+}
 
 export async function hasActivePlayerWorkspaceLock(accountId: string) {
   return (

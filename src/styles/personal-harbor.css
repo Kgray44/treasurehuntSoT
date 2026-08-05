@@ -11,6 +11,45 @@
   font-size: calc(1rem * var(--personal-text-scale, 1));
 }
 
+html[data-voyage-theme="light"] .personal-harbor {
+  --harbor-paper: #173333;
+  --harbor-paper-soft: #315553;
+  --harbor-ink: #173333;
+  --harbor-green: #dce9df;
+  --harbor-teal: #c8ddd4;
+  --harbor-brass: #76551c;
+  color: var(--text-primary);
+}
+
+html[data-voyage-theme="light"] .personal-harbor__hero {
+  color: var(--text-primary);
+  background:
+    radial-gradient(circle at 80% -15%, rgb(63 125 112 / 18%), transparent 42%),
+    linear-gradient(125deg, #fff9eb 0%, #ebddc0 58%, #f5ead5 100%);
+}
+
+html[data-voyage-theme="light"] :where(.personal-harbor__rail, .harbor-panel, .harbor-preview, .harbor-empty) {
+  border-color: var(--border-default);
+  color: var(--text-primary);
+  background: color-mix(in srgb, var(--surface-default) 96%, transparent);
+  box-shadow: var(--shadow-card);
+}
+
+html[data-voyage-theme="light"]
+  :where(.personal-harbor__nav-group a, .harbor-field-hint, .harbor-readonly-field, .harbor-panel p) {
+  color: var(--text-secondary);
+}
+
+html[data-voyage-theme="light"] :where(.personal-harbor__nav-group a[aria-current="page"], .harbor-panel h2) {
+  color: var(--text-heading);
+}
+
+html[data-voyage-theme="light"] :where(.harbor-form input, .harbor-form select, .harbor-form textarea) {
+  border-color: var(--border-default);
+  color: var(--text-primary);
+  background: var(--surface-overlay);
+}
+
 .personal-harbor__hero {
   position: relative;
   display: flex;

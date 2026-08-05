@@ -277,11 +277,9 @@ describe("Homeport Phase 2 navigation authority", () => {
   });
 
   it("homeport.navigation.contextual-parent provides stable Community, personal, compact, immersive, and development exits", () => {
-    expect(
-      projection("/community/guides/example", "PUBLIC_STANDARD", "community", anonymous).contextualItems.map(
-        (item) => item.href,
-      ),
-    ).toEqual(["/community"]);
+    expect(projection("/community/guides/example", "PUBLIC_STANDARD", "community", anonymous).contextualItems).toEqual(
+      [],
+    );
     expect(
       projection("/profile/mara", "PUBLIC_STANDARD", "account", authenticated()).contextualItems.map(
         (item) => item.href,

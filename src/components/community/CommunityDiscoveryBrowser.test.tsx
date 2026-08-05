@@ -68,7 +68,7 @@ describe("CommunityDiscoveryBrowser", () => {
     vi.stubGlobal("fetch", fetch);
     render(<CommunityDiscoveryBrowser />);
 
-    expect(screen.getByRole("status")).toHaveTextContent("Charting public results");
+    expect(screen.getByRole("status")).toHaveAttribute("data-async-state", "pending-delay");
     expect(await screen.findByRole("heading", { name: "Public chart" })).toBeInTheDocument();
     expect(screen.getByText("Captain Rowan")).toBeInTheDocument();
     expect(fetch).toHaveBeenCalledWith(

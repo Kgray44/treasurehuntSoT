@@ -35,6 +35,7 @@ export function CommunityCardGrid({
   const [relationships, setRelationships] = useState<Record<string, RelationshipState>>({});
   const [relationshipError, setRelationshipError] = useState("");
   const [mutations, setMutations] = useState<Record<string, MutationState>>({});
+  const [saveDeltas, setSaveDeltas] = useState<Record<string, number>>({});
 
   useEffect(() => {
     if (!subjects.length) return;
@@ -95,6 +96,8 @@ export function CommunityCardGrid({
         ...current,
         [key]: { mode: "success", message: actionMessage(action, "success") },
       }));
+      if (subject.subjectType === "LISTING" && (action === "save" || action === "unsave"))
+        setSaveDeltas((current) => ({ ...current, [key]: (current[key] ?? 0) + (action === "save" ? 1 : -1) }));
       window.dispatchEvent(new CustomEvent("voyagewright-community-state-changed", { detail: { ...subject, action } }));
     } catch (cause) {
       setMutations((current) => ({
@@ -143,7 +146,10 @@ export function CommunityCardGrid({
                 ) : null}
               </div>
               {card.summary ? <p className="community-card__summary">{card.summary}</p> : null}
-              <CardMetadata card={card} />
+              <CardMetadata
+                card={card}
+                saveDelta={card.socialSubject ? (saveDeltas[relationshipKey(card.socialSubject)] ?? 0) : 0}
+              />
               <div className="community-card__actions">
                 <Link
                   className="community-button community-button--primary"
@@ -197,7 +203,7 @@ export function CommunityCardGrid({
   );
 }
 
-function CardMetadata({ card }: { card: HomeportCommunityCard }) {
+function CardMetadata({ card, saveDelta = 0 }: { card: HomeportCommunityCard; saveDelta?: number }) {
   const facts = [
     card.difficulty ? { label: "Difficulty", value: card.difficulty } : null,
     card.duration ? { label: "Duration", value: card.duration } : null,
@@ -229,11 +235,12 @@ function CardMetadata({ card }: { card: HomeportCommunityCard }) {
           ))}
         </ul>
       ) : null}
-      {card.engagement && (card.engagement.rating !== undefined || card.engagement.saveCount) ? (
+      {card.engagement ? (
         <p className="community-card__engagement">
-          {card.engagement.rating !== undefined ? `${card.engagement.rating.toFixed(1)} rating` : null}
-          {card.engagement.rating !== undefined && card.engagement.saveCount ? " · " : null}
-          {card.engagement.saveCount ? `${card.engagement.saveCount} saved` : null}
+          {card.engagement.reviewCount
+            ? `${card.engagement.rating?.toFixed(1) ?? "—"} rating · ${card.engagement.reviewCount} ${card.engagement.reviewCount === 1 ? "review" : "reviews"}`
+            : "Not yet rated"}
+          {` · ${Math.max(0, (card.engagement.saveCount ?? 0) + saveDelta)} saves`}
         </p>
       ) : null}
     </>

@@ -109,6 +109,7 @@ type HistoryItem = {
   timestamps: { completedAt: string | null };
   memories: Array<unknown>;
   artifactSummary: Array<unknown>;
+  review?: { href: string; state: "AVAILABLE_AFTER_VERIFIED_COMPLETION" };
 };
 type HistoryDto = {
   items: HistoryItem[];
@@ -162,9 +163,16 @@ export function HistoryExplorer() {
                     records
                   </p>
                 </div>
-                <Link className="button" href={`/passport/history/${encodeURIComponent(item.id)}`}>
-                  Open record
-                </Link>
+                <div className="personal-harbor__actions">
+                  <Link className="button" href={`/passport/history/${encodeURIComponent(item.id)}`}>
+                    Open record
+                  </Link>
+                  {item.review ? (
+                    <Link className="button button--quiet" href={item.review.href}>
+                      Review Chronicle
+                    </Link>
+                  ) : null}
+                </div>
               </article>
             </li>
           ))}
@@ -273,6 +281,11 @@ export function HistoryDetail({ recordId }: { recordId: string }) {
             <dd>{value.completedChapters.length}</dd>
           </div>
         </dl>
+        {value.review ? (
+          <Link className="button button--primary" href={value.review.href}>
+            Write or update public review
+          </Link>
+        ) : null}
       </section>
       <section className="harbor-panel">
         <h2>Version-pinned record</h2>

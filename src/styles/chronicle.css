@@ -10,6 +10,22 @@
     radial-gradient(circle at 50% -10%, rgba(69, 133, 128, 0.28), transparent 42%),
     linear-gradient(155deg, #07191c, #020a0c 78%);
 }
+
+html[data-voyage-theme="light"]
+  :where(
+    .tale-catalog,
+    .tale-start,
+    .player-runtime,
+    .tale-history,
+    .captain-dashboard,
+    .captain-session,
+    .captain-auth
+  ) {
+  color: var(--text-primary);
+  background:
+    radial-gradient(circle at 50% -10%, rgb(69 133 128 / 15%), transparent 42%),
+    linear-gradient(155deg, var(--background-primary), var(--background-secondary) 78%);
+}
 .tale-catalog {
   padding: clamp(1rem, 4vw, 4rem);
 }

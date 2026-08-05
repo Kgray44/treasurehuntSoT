@@ -9,6 +9,7 @@ export type RuntimePreferences = {
 
 export const preferenceRuntimeEvent = "voyagewright-preferences-changed";
 export const preferenceRuntimeChannel = "voyagewright-preferences";
+export const preferenceThemeBootstrapKey = "voyagewright-theme-bootstrap-v1";
 
 export const defaultRuntimePreferences: RuntimePreferences = {
   experience: { motion: "SYSTEM", textScale: 1, theme: "SYSTEM", contrast: "SYSTEM" },
@@ -53,6 +54,15 @@ export function applyRuntimePreferences(preferences: RuntimePreferences) {
   root.dataset.motionPreference = preferences.experience.motion.toLowerCase();
   root.style.setProperty("--account-text-scale", String(textScale));
   try {
+    localStorage.setItem(
+      preferenceThemeBootstrapKey,
+      JSON.stringify({
+        theme: preferences.experience.theme,
+        contrast: preferences.experience.contrast,
+        textScale,
+        motion: preferences.experience.motion,
+      }),
+    );
     localStorage.setItem("forever-motion", productMotion);
   } catch {
     // Runtime preferences still apply when storage is unavailable or blocked.

@@ -19,6 +19,87 @@
     linear-gradient(180deg, #081719, var(--community-night) 38rem);
 }
 
+html[data-voyage-theme="light"] .community-harbor {
+  --community-night: #f7eedb;
+  --community-deep: #eadbbd;
+  --community-teal: #d0e1d7;
+  --community-teal-bright: #22665f;
+  --community-sea-glass: #315b56;
+  --community-brass: #76551c;
+  --community-paper: #173333;
+  --community-ink: #173333;
+  --community-muted: #3d5c59;
+  --community-border: color-mix(in srgb, #4f603d 35%, transparent);
+  color: var(--text-primary);
+  background:
+    radial-gradient(circle at 15% 0%, rgb(81 136 119 / 18%), transparent 29rem),
+    radial-gradient(circle at 90% 18%, rgb(132 91 27 / 9%), transparent 30rem),
+    linear-gradient(180deg, #fff9eb, var(--community-night) 38rem);
+}
+
+html[data-voyage-theme="light"] :where(.community-hero__privacy, .community-return) {
+  color: var(--text-primary);
+  background: color-mix(in srgb, var(--surface-overlay) 94%, transparent);
+}
+
+html[data-voyage-theme="light"]
+  :where(
+    .community-card,
+    .community-detail,
+    .community-creator-profile,
+    .community-guide-detail,
+    .community-voyage-log-detail,
+    .community-review-card,
+    .community-review-composer,
+    .community-review-tools,
+    .community-review-summary,
+    .community-advanced-filters,
+    .community-discovery__form,
+    .community-state,
+    .community-moderation__panel
+  ) {
+  border-color: var(--border-default);
+  color: var(--text-primary);
+  background: color-mix(in srgb, var(--surface-default) 96%, transparent);
+  box-shadow: var(--shadow-card);
+}
+
+html[data-voyage-theme="light"]
+  :where(
+    .community-card__summary,
+    .community-card__creator,
+    .community-card__engagement,
+    .community-detail__lead,
+    .community-review-message,
+    .community-review-tools p,
+    .community-section-heading p,
+    .community-hero__copy > p:last-child
+  ) {
+  color: var(--text-secondary);
+}
+
+html[data-voyage-theme="light"]
+  :where(
+    .community-search-field__input,
+    .community-discovery select,
+    .community-discovery input,
+    .community-discovery textarea,
+    .community-review-composer select,
+    .community-review-composer textarea,
+    .community-review-editor select,
+    .community-review-editor textarea,
+    .community-review-report textarea
+  ) {
+  border-color: var(--border-default);
+  color: var(--text-primary);
+  background: var(--surface-overlay);
+}
+
+html[data-voyage-theme="light"] :where(.community-button--quiet, .community-filter-chip, .community-card__badges li) {
+  color: var(--text-primary);
+  background: var(--surface-raised);
+}
+
 .community-hero {
   position: relative;
   display: grid;

@@ -5,13 +5,27 @@ import path from "node:path";
 
 const repositoryRoot = path.resolve(process.cwd());
 const taskRoot = path.resolve(required("HOMEPORT_PHASE7_TASK_ROOT"));
+const correctionRound = process.env.HOMEPORT_PHASE7_CORRECTION_ROUND ?? "1";
+const fixtureVersion =
+  process.env.HOMEPORT_PHASE7_CORRECTION_FIXTURE_VERSION ??
+  `homeport-phase7-owner-correction-round${correctionRound}-v1`;
+const port = process.env.HOMEPORT_PHASE7_CORRECTION_WALKTHROUGH_PORT ?? (correctionRound === "2" ? "3756" : "3735");
 const canonicalDatabase = path.resolve("C:/Users/kkids/Documents/Codex_TreasureHunt/prisma/dev.db");
 const requestedSource = path.resolve(process.env.HOMEPORT_PHASE7_SOURCE_DATABASE ?? canonicalDatabase);
-const sourceCopy = path.join(taskRoot, "immutable-fixture-seed", "owner-correction-canonical-source-copy.db");
-const seedDatabase = path.join(taskRoot, "immutable-fixture-seed", "homeport-phase7-owner-correction-round1-v1.db");
-const credentialPath = path.join(taskRoot, "credentials", "owner-correction-walkthrough-credentials.private.json");
-const outboxPath = path.join(taskRoot, "synthetic-outbox", "owner-correction-email.jsonl");
-const receiptPath = path.join(taskRoot, "reports", "owner-correction-fixture-prepare-receipt.json");
+const seedDirectory = path.join(taskRoot, correctionRound === "2" ? "immutable-seed" : "immutable-fixture-seed");
+const sourceCopy = path.join(seedDirectory, `owner-correction-round${correctionRound}-source-copy.db`);
+const seedDatabase = path.join(seedDirectory, `${fixtureVersion}.db`);
+const credentialPath = path.join(
+  taskRoot,
+  "credentials",
+  `owner-correction-round${correctionRound}-walkthrough-credentials.private.json`,
+);
+const outboxPath = path.join(taskRoot, "synthetic-outbox", `owner-correction-round${correctionRound}-email.jsonl`);
+const receiptPath = path.join(
+  taskRoot,
+  "reports",
+  `owner-correction-round${correctionRound}-fixture-prepare-receipt.json`,
+);
 
 if (!taskRoot.startsWith(`${path.resolve("C:/Users/kkids/AppData/Local/ProjectHomeport")}${path.sep}`))
   throw new Error(`HOMEPORT_PHASE7_CORRECTION_TASK_ROOT_REFUSED:${taskRoot}`);
@@ -36,6 +50,10 @@ const childEnv = {
   HOMEPORT_PHASE5_TASK_ROOT: taskRoot,
   HOMEPORT_PHASE7_TASK_ROOT: taskRoot,
   HOMEPORT_PHASE7_SYNTHETIC_PASSWORD: syntheticPassword,
+  HOMEPORT_PHASE7_CORRECTION_ROUND: correctionRound,
+  HOMEPORT_PHASE7_CORRECTION_FIXTURE_VERSION: fixtureVersion,
+  HOMEPORT_PHASE7_OWNER_ALIAS: process.env.HOMEPORT_PHASE7_OWNER_ALIAS ?? "FULL_CAPABILITY",
+  HOMEPORT_PHASE7_OWNER_DISPLAY_NAME: process.env.HOMEPORT_PHASE7_OWNER_DISPLAY_NAME ?? "Admiral Correction Test",
   HOMEPORT_PHASE7_TOKEN_PATH: path.join(taskRoot, "tokens", "owner-correction-phase7-base-tokens.private.json"),
   HOMEPORT_SYNTHETIC_OUTBOX_PATH: outboxPath,
 };
@@ -44,6 +62,15 @@ const phase4 = runJson("scripts/homeport/seed-phase4-fixture.mjs", childEnv);
 const phase5 = runJson("scripts/homeport/seed-phase5-fixture.mjs", childEnv);
 const phase7 = runJson("scripts/homeport/seed-phase7-fixture.mjs", childEnv);
 const correction = runJson("scripts/homeport/seed-phase7-owner-correction-round1-fixture.mjs", childEnv);
+if (correctionRound === "2") {
+  const owner = correction.aliases.SERA;
+  if (!owner?.accountId) throw new Error("HOMEPORT_PHASE7_CORRECTION_ROUND2_SERA_ALIAS_REQUIRED");
+  run(
+    "node_modules/tsx/dist/cli.mjs",
+    ["scripts/homeport/reconcile-claimed-account-capabilities.ts", "--commit", `--account-id=${owner.accountId}`],
+    childEnv,
+  );
+}
 
 const privateAliases = JSON.parse(
   await readFile(path.join(taskRoot, "credentials", "account-aliases.private.json"), "utf8"),
@@ -54,14 +81,23 @@ await writeFile(
     {
       classification: "LOCAL_SYNTHETIC_CREDENTIAL_HANDOFF",
       fixtureVersion: correction.fixtureVersion,
-      liveUrl: "http://127.0.0.1:3735",
+      liveUrl: `http://127.0.0.1:${port}`,
       password: syntheticPassword,
       accounts: privateAliases.aliases,
       correctionTokenMaterial: path.join(taskRoot, "tokens", "owner-correction-tokens.private.json"),
       syntheticOutboxPath: outboxPath,
-      statusCommand: "npm run homeport:phase7:correction:walkthrough:status",
-      resetCommand: "npm run homeport:phase7:correction:walkthrough:reset",
-      stopCommand: "npm run homeport:phase7:correction:walkthrough:stop",
+      statusCommand:
+        correctionRound === "2"
+          ? "npm run homeport:phase7:correction:round2:walkthrough:status"
+          : "npm run homeport:phase7:correction:walkthrough:status",
+      resetCommand:
+        correctionRound === "2"
+          ? "npm run homeport:phase7:correction:round2:walkthrough:reset"
+          : "npm run homeport:phase7:correction:walkthrough:reset",
+      stopCommand:
+        correctionRound === "2"
+          ? "npm run homeport:phase7:correction:round2:walkthrough:stop"
+          : "npm run homeport:phase7:correction:walkthrough:stop",
     },
     null,
     2,
@@ -74,7 +110,7 @@ const schemaBytes = await readFile(path.join(repositoryRoot, "prisma", "schema.s
 const databaseHash = await sha256(seedDatabase);
 const sourceHash = await sha256(requestedSource);
 const receipt = {
-  status: "HOMEPORT_PHASE7_OWNER_CORRECTION_ROUND1_IMMUTABLE_SEED_READY",
+  status: `HOMEPORT_PHASE7_OWNER_CORRECTION_ROUND${correctionRound}_IMMUTABLE_SEED_READY`,
   fixtureVersion: correction.fixtureVersion,
   fixtureChecksum: correction.fixtureChecksum,
   schemaHash: createHash("sha256").update(schemaBytes).digest("hex"),

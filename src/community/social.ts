@@ -5,6 +5,8 @@ import { consumeRateLimit } from "@/lib/rate-limit";
 import { CommunityError } from "./domain";
 import type { CommunityActor } from "./services";
 import { attachReportToModerationCase, moderationPublicReceipt } from "./moderation";
+import { reconcileListingEngagement } from "./engagement-aggregates";
+import { resolvePublicProfileProjection } from "./public-profile";
 
 /**
  * The Phase 3 schema deliberately stores Community links as scalar records.
@@ -151,10 +153,9 @@ function isReportSubjectType(value: string): value is (typeof REPORT_SUBJECT_TYP
 }
 
 async function activeProfile(tx: SocialTransaction, actor: CommunityActor): Promise<Profile> {
-  const profile = await tx.communityProfile.findUnique({ where: { accountId: actor.accountId } });
-  if (!profile) fail("COMMUNITY_PROFILE_REQUIRED", "Create a Community Profile first.");
+  const profile = await resolvePublicProfileProjection(tx, actor.accountId);
   if (profile.moderationStatus !== "ACTIVE" || profile.creatorStatus === "SUSPENDED")
-    fail("COMMUNITY_ACCESS_DENIED", "This Community Profile is not active.");
+    fail("COMMUNITY_ACCESS_DENIED", "This public Profile is not active in Community Harbor.");
   return profile;
 }
 async function activeAccount(tx: SocialTransaction, accountId: string) {
@@ -391,7 +392,7 @@ export async function saveSubject(
     await activeAccount(tx, actor.accountId);
     const subject = await resolveSubject(tx, input.subjectType, requiredId(input.subjectId, "Subject"));
     await assertNotBlocked(tx, actor.accountId, subject.ownerAccountId);
-    return createUnique(
+    const outcome = await createUnique(
       tx,
       tx.communitySave,
       {
@@ -404,6 +405,8 @@ export async function saveSubject(
       },
       { accountId: actor.accountId, subjectType: input.subjectType, subjectId: input.subjectId, kind },
     );
+    if (input.subjectType === "LISTING" && kind === "SAVE") await reconcileListingEngagement(input.subjectId, tx);
+    return outcome;
   });
 }
 export const favoriteSubject = (actor: CommunityActor, subjectType: SocialSubjectType, subjectId: string) =>
@@ -414,16 +417,18 @@ export async function unsaveSubject(
 ): Promise<IdempotentOutcome> {
   socialRate(actor, "unsave", 60);
   const kind = input.kind ?? "SAVE";
-  return socialDb.$transaction(async (tx) =>
-    removeUnique(tx, tx.communitySave, {
+  return socialDb.$transaction(async (tx) => {
+    const outcome = await removeUnique(tx, tx.communitySave, {
       accountId_subjectType_subjectId_kind: {
         accountId: actor.accountId,
         subjectType: input.subjectType,
         subjectId: input.subjectId,
         kind,
       },
-    }),
-  );
+    });
+    if (input.subjectType === "LISTING" && kind === "SAVE") await reconcileListingEngagement(input.subjectId, tx);
+    return outcome;
+  });
 }
 export async function activeSaveCount(
   subjectType: SocialSubjectType,
@@ -779,6 +784,95 @@ async function reviewEligibility(
     completionSessionId: completion?.playthroughId ?? null,
   };
 }
+export type CommunityReviewAccess =
+  | { state: "SIGN_IN_REQUIRED"; eligible: false; actionHref: string; message: string }
+  | { state: "PROFILE_SETUP_REQUIRED"; eligible: false; actionHref: string; message: string }
+  | { state: "COMPLETION_REQUIRED"; eligible: false; actionHref: string; message: string }
+  | { state: "ELIGIBLE"; eligible: true; reviewedReleaseId: string; message: string };
+
+export async function reviewAccessForActor(listingId: string, accountId?: string): Promise<CommunityReviewAccess> {
+  const listing = await socialDb.communityListing.findFirst({
+    where: {
+      id: listingId,
+      publicationStatus: "PUBLISHED",
+      moderationStatus: "ACTIVE",
+      visibility: { in: ["COMMUNITY", "FEATURED"] },
+    },
+    select: {
+      id: true,
+      slug: true,
+      currentReleaseId: true,
+      currentRelease: { select: { sourcePublishedTaleVersionId: true } },
+      owner: { select: { accountId: true } },
+    },
+  });
+  const detailHref = listing
+    ? `/community/${encodeURIComponent(listing.slug)}#community-review-composer`
+    : "/community";
+  if (!accountId)
+    return {
+      state: "SIGN_IN_REQUIRED",
+      eligible: false,
+      actionHref: `/sign-in?returnTo=${encodeURIComponent(detailHref)}`,
+      message: "Sign in after completing this Chronicle to publish a review.",
+    };
+  if (!listing || !listing.currentReleaseId || !listing.currentRelease?.sourcePublishedTaleVersionId)
+    return {
+      state: "COMPLETION_REQUIRED",
+      eligible: false,
+      actionHref: detailHref,
+      message: "Reviews open after a verified completion of the current Chronicle release.",
+    };
+  const profile = await socialDb.playerProfile.findUnique({
+    where: { accountId },
+    select: { id: true, handle: true, normalizedHandle: true, defaultVisibility: true, status: true },
+  });
+  if (
+    !profile ||
+    profile.status !== "ACTIVE" ||
+    !profile.handle ||
+    !profile.normalizedHandle ||
+    profile.defaultVisibility !== "PUBLIC"
+  )
+    return {
+      state: "PROFILE_SETUP_REQUIRED",
+      eligible: false,
+      actionHref: `/account/profile?returnTo=${encodeURIComponent(detailHref)}`,
+      message: "Set up your public Profile to publish your verified-completion review.",
+    };
+  if (listing.owner.accountId === accountId)
+    return {
+      state: "COMPLETION_REQUIRED",
+      eligible: false,
+      actionHref: detailHref,
+      message: "Creators cannot review their own Chronicle.",
+    };
+  const completion = await socialDb.playthroughMembership.findFirst({
+    where: {
+      playerProfileId: profile.id,
+      completedAt: { not: null },
+      playthrough: {
+        status: "COMPLETED",
+        publishedVersionId: listing.currentRelease.sourcePublishedTaleVersionId,
+        previewMode: false,
+      },
+    },
+    select: { playthroughId: true },
+  });
+  if (!completion)
+    return {
+      state: "COMPLETION_REQUIRED",
+      eligible: false,
+      actionHref: detailHref,
+      message: "Complete this exact Chronicle release before publishing a rating or review.",
+    };
+  return {
+    state: "ELIGIBLE",
+    eligible: true,
+    reviewedReleaseId: listing.currentReleaseId,
+    message: "Verified completion confirmed. You can publish one review for this Chronicle.",
+  };
+}
 export async function createOrUpdateReview(
   actor: CommunityActor,
   input: {
@@ -809,6 +903,11 @@ export async function createOrUpdateReview(
     await assertNotBlocked(tx, actor.accountId, listing.owner.accountId);
     const { dimensions, ...reviewData } = validateReviewInput(input, listing.itemType);
     const eligibility = await reviewEligibility(tx, actor, listing, input.reviewedReleaseId);
+    if (!eligibility.reviewedReleaseId || !eligibility.verifiedCompletion)
+      fail(
+        "COMMUNITY_REVIEW_COMPLETION_REQUIRED",
+        "Complete this exact Chronicle release before publishing a rating or review.",
+      );
     const existing = await tx.communityReview.findUnique({
       where: { listingId_authorAccountId: { listingId: listing.id, authorAccountId: actor.accountId } },
     });
@@ -842,6 +941,7 @@ export async function createOrUpdateReview(
       await tx.communityReviewDimension.createMany({
         data: dimensions.map(([dimension, score]) => ({ reviewId: review.id, dimension, score })),
       });
+    await reconcileListingEngagement(listing.id, tx);
     return {
       state: existing ? ("UPDATED" as const) : ("CREATED" as const),
       value: publicReviewProjection(review, dimensions),
@@ -856,6 +956,7 @@ export async function deleteReview(actor: CommunityActor, reviewId: string): Pro
       fail("COMMUNITY_ACCESS_DENIED", "You cannot delete this review.");
     if (review.deletedAt) return { state: "ABSENT" as const };
     await tx.communityReview.update({ where: { id: review.id }, data: { status: "REMOVED", deletedAt: new Date() } });
+    await reconcileListingEngagement(review.listingId, tx);
     return { state: "REMOVED" as const };
   });
 }
@@ -956,7 +1057,7 @@ export async function listPublicReviews(listingId: string, viewerAccountId?: str
   });
   if (!listing) return [];
   const reviews = await socialDb.communityReview.findMany({
-    where: { listingId, status: "ACTIVE", deletedAt: null },
+    where: { listingId, status: "ACTIVE", deletedAt: null, verifiedCompletion: true },
     orderBy: [{ createdAt: "desc" }, { id: "desc" }],
     take: 100,
   });

@@ -10,6 +10,7 @@ import {
 } from "./discovery";
 import { communityItemTypes, type CommunityItemType } from "./domain";
 import { readPublicVoyageLogs } from "./voyage-log-public";
+import { authoritativeListingEngagement } from "./engagement-aggregates";
 
 export const homeportCardVariants = [
   "CHRONICLE",
@@ -88,6 +89,17 @@ export type HomeportListingDetail = Readonly<{
   longDescription?: string;
   tags: readonly string[];
   warnings: readonly string[];
+  requirements?: {
+    environment: string;
+    travel: string;
+    physicalProps: string;
+    printing: string;
+    setup: string | null;
+    visionWaypointRequired: boolean;
+    helperAppRequired: boolean;
+    offlineSupport: boolean;
+    mobileSupport: boolean;
+  };
   release?: {
     semanticVersion: string;
     license: string;
@@ -476,7 +488,7 @@ export async function getHomeportListingDetail(slug: string, viewerAccountId?: s
   if (!listing || (await isBlocked(viewerAccountId, listing.owner.accountId))) return null;
   const [metadata, aggregate] = await Promise.all([
     db.communityListingDiscoveryMetadata.findUnique({ where: { listingId: listing.id } }),
-    db.communityListingAggregate.findUnique({ where: { listingId: listing.id } }),
+    authoritativeListingEngagement([listing.id]).then((rows) => rows.get(listing.id) ?? null),
   ]);
   const record: DiscoveryRecord = {
     id: listing.id,
@@ -577,6 +589,21 @@ export async function getHomeportListingDetail(slug: string, viewerAccountId?: s
     ...(listing.longDescription ? { longDescription: listing.longDescription } : {}),
     tags: parseStringArray(listing.tags),
     warnings: parseStringArray(listing.contentWarnings),
+    ...(metadata
+      ? {
+          requirements: {
+            environment: metadata.environment,
+            travel: metadata.travelRequirement,
+            physicalProps: metadata.physicalPropRequirement,
+            printing: metadata.printingRequirement,
+            setup: metadata.setupComplexity,
+            visionWaypointRequired: metadata.visionWaypointRequired,
+            helperAppRequired: metadata.helperAppRequired,
+            offlineSupport: metadata.offlineSupport,
+            mobileSupport: metadata.mobileSupport,
+          },
+        }
+      : {}),
     ...(release ? { release } : {}),
     useAction,
   } satisfies HomeportListingDetail;
@@ -620,8 +647,8 @@ export function homeportCardFromDiscovery(record: DiscoveryRecord): HomeportComm
       ? {
           engagement: {
             ...(record.aggregate.averageRating !== null ? { rating: record.aggregate.averageRating } : {}),
-            ...(record.aggregate.reviewCount ? { reviewCount: record.aggregate.reviewCount } : {}),
-            ...(record.aggregate.saveCount ? { saveCount: record.aggregate.saveCount } : {}),
+            reviewCount: record.aggregate.reviewCount,
+            saveCount: record.aggregate.saveCount,
             ...(record.aggregate.installCount ? { installCount: record.aggregate.installCount } : {}),
           },
         }

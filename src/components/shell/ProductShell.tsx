@@ -343,10 +343,11 @@ export function ProductShell({ children }: { children: React.ReactNode }) {
                   role="dialog"
                   aria-modal="true"
                   aria-label="Account navigation"
-                  initial={mode === "reduced" ? false : { opacity: 0, y: -8, scale: 0.985 }}
+                  data-account-menu-motion={mode === "reduced" ? "reduced" : "visible"}
+                  initial={mode === "reduced" ? false : { opacity: 0, y: -9, scale: 0.975 }}
                   animate={{ opacity: 1, y: 0, scale: 1 }}
-                  exit={mode === "reduced" ? { opacity: 0 } : { opacity: 0, y: -5, scale: 0.99 }}
-                  transition={{ duration: mode === "reduced" ? 0.01 : 0.17, ease: platformMotionEasing("micro") }}
+                  exit={mode === "reduced" ? { opacity: 0 } : { opacity: 0, y: -7, scale: 0.98 }}
+                  transition={{ duration: mode === "reduced" ? 0.01 : 0.19, ease: platformMotionEasing("micro") }}
                 >
                   {currentUser.status === "authenticated" ? (
                     <div className="account-identity-summary">

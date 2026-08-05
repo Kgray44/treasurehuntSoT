@@ -56,12 +56,23 @@ export default async function CommunityListingPage({ params }: Props) {
         </div>
         <div className="community-detail__body">
           <p className="community-eyebrow">Public listing</p>
-          <h2>About this {detail.card.contentType.toLocaleLowerCase()}</h2>
+          <h2>
+            {detail.card.variant === "CHRONICLE"
+              ? "Chronicle preview"
+              : `About this ${detail.card.contentType.toLocaleLowerCase()}`}
+          </h2>
+          {detail.card.variant === "CHRONICLE" ? (
+            <p className="community-availability">
+              Preview shows public, preview-safe details only. Start Chronicle begins the published experience; it is a
+              separate action.
+            </p>
+          ) : null}
           {detail.longDescription ? <p className="community-detail__lead">{detail.longDescription}</p> : null}
           <p>
             Created by <Link href={detail.card.creator.destination}>{detail.card.creator.displayName}</Link>
           </p>
           <DetailFacts detail={detail} />
+          {detail.requirements ? <PracticalRequirements requirements={detail.requirements} /> : null}
           {detail.tags.length ? (
             <ul className="community-detail__tags" aria-label="Themes and tags">
               {detail.tags.map((tag) => (
@@ -116,6 +127,13 @@ function DetailFacts({ detail }: { detail: NonNullable<Awaited<ReturnType<typeof
     detail.release?.minimumPlatformVersion
       ? ["Minimum Voyagewright version", detail.release.minimumPlatformVersion]
       : null,
+    detail.card.engagement?.reviewCount
+      ? [
+          "Rating",
+          `${detail.card.engagement.rating?.toFixed(1) ?? "—"} from ${detail.card.engagement.reviewCount} ${detail.card.engagement.reviewCount === 1 ? "review" : "reviews"}`,
+        ]
+      : ["Rating", "Not yet rated"],
+    ["Saves", String(detail.card.engagement?.saveCount ?? 0)],
   ].filter((fact): fact is [string, string] => Boolean(fact));
   return facts.length ? (
     <dl className="community-detail__facts">
@@ -127,6 +145,45 @@ function DetailFacts({ detail }: { detail: NonNullable<Awaited<ReturnType<typeof
       ))}
     </dl>
   ) : null;
+}
+
+function PracticalRequirements({
+  requirements,
+}: {
+  requirements: NonNullable<NonNullable<Awaited<ReturnType<typeof getHomeportListingDetail>>>["requirements"]>;
+}) {
+  const facts = [
+    ["Environment", humanizeRequirement(requirements.environment)],
+    ["Travel", humanizeRequirement(requirements.travel)],
+    ["Physical props", humanizeRequirement(requirements.physicalProps)],
+    ["Printing", humanizeRequirement(requirements.printing)],
+    ...(requirements.setup ? [["Setup", humanizeRequirement(requirements.setup)]] : []),
+    ["Vision Waypoint", requirements.visionWaypointRequired ? "Required" : "Not required"],
+    ["Helper app", requirements.helperAppRequired ? "Required" : "Not required"],
+    ["Offline support", requirements.offlineSupport ? "Available" : "Not declared"],
+    ["Mobile support", requirements.mobileSupport ? "Available" : "Not declared"],
+  ];
+  return (
+    <section aria-labelledby="community-requirements-title">
+      <h3 id="community-requirements-title">Practical requirements</h3>
+      <dl className="community-detail__facts">
+        {facts.map(([label, value]) => (
+          <div key={label}>
+            <dt>{label}</dt>
+            <dd>{value}</dd>
+          </div>
+        ))}
+      </dl>
+    </section>
+  );
+}
+
+function humanizeRequirement(value: string) {
+  return value
+    .toLocaleLowerCase()
+    .split("_")
+    .map((part) => `${part.slice(0, 1).toLocaleUpperCase()}${part.slice(1)}`)
+    .join(" ");
 }
 
 function districtForVariant(variant: string): CommunityDistrictId {
