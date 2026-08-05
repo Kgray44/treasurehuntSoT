@@ -21,4 +21,6 @@ through the external task-owned handoff and are intentionally absent from Git.
 - [Reset, stop, and rollback](Reset_Stop_and_Rollback.md)
 - [Owner decision instructions](Owner_Decision_Instructions.md)
 
-Current state: `READY_FOR_OWNER_WALKTHROUGH`. Owner Decision: `PENDING_OWNER_DECISION`.
+Round 1 is preserved as returned: `OWNER_RETURNED_FOR_CORRECTION`. The original runtime and package are historical and
+must not be reused as correction proof. Correction Round 1 is tracked in the additive [owner re-review
+package](correction-round1/README.md). Owner Re-Review Decision: `PENDING_OWNER_DECISION`.

@@ -31,13 +31,13 @@ cover desktop, mobile, tablet, effective 200 percent, explicit states, and
 reduced motion. This is local synthetic branch evidence, not `main`, deployment,
 owner acceptance, product acceptance, or Phase 7 whole-product proof.
 
-Phase 7 whole-voyage implementation is complete and ready for owner walkthrough
-on the retained branch. Journeys A through O passed against one immutable
-synthetic fixture family and isolated clones; 16 checksum-bound production
-browser frames were reviewed and accepted. The final owner package, safe runtime
-controller, and external credential handoff are ready. Owner Decision remains
-`PENDING_OWNER_DECISION`; this is not `main`, deployment, owner acceptance, or
-product acceptance.
+Phase 7 whole-voyage automation reached the owner walkthrough on the retained
+branch. The owner completed Round 1 and returned 44 correction findings:
+`OWNER_RETURNED_FOR_CORRECTION`. Correction Round 1 is now architecture-frozen
+and implementation is pending. The independent re-review decision remains
+`PENDING_OWNER_DECISION`; neither the historical automated evidence nor the
+correction architecture establishes re-review readiness, `main`, deployment,
+owner acceptance, or product acceptance.
 
 ## Authority
 
@@ -175,6 +175,25 @@ the running owner package, and the product-acceptance boundary.
 - `Project_Homeport_Phase_7_Visual_Comparison_Matrix.csv`
 - `Project_Homeport_Phase_7_Walkthrough_Runtime_Contract.json`
 - `Project_Homeport_Phase_7_Walkthrough_Seed_Receipt.json`
+
+## Phase 7 owner-walkthrough correction Round 1 records
+
+- [Correction Architecture](Project_Homeport_Phase_7_Owner_Walkthrough_Correction_Round_1_Architecture.md)
+- [Owner Feedback Ledger](Project_Homeport_Phase_7_Owner_Feedback_Round_1_Ledger.csv)
+- [Acceptance Matrix](Project_Homeport_Phase_7_Correction_Round_1_Acceptance_Matrix.csv)
+- [Chronicle Preview and Player Alias Contract](Project_Homeport_Chronicle_Preview_and_Player_Alias_Contract.md)
+- [Workspace Capability and Active Chronicle Policy](Project_Homeport_Workspace_Capability_and_Active_Chronicle_Policy.md)
+- [Account Identity, Email, and Claiming Architecture](Project_Homeport_Account_Identity_Email_and_Claiming_Architecture.md)
+- [Linked Identity Provider Contract](Project_Homeport_Linked_Identity_Provider_Contract.md)
+- [Account Data Export Contract](Project_Homeport_Account_Data_Export_Contract.md)
+- [Account Deactivation and Deletion Contract](Project_Homeport_Account_Deactivation_and_Deletion_Contract.md)
+- [Personal Harbor Correction Contract](Project_Homeport_Personal_Harbor_Correction_Contract.md)
+- [Preference Effect Matrix](Project_Homeport_Preference_Effect_Matrix.csv)
+- [Community Search and Review Correction Contract](Project_Homeport_Community_Search_and_Review_Correction_Contract.md)
+- [Loading, Transition, and Motion Contract](Project_Homeport_Loading_Transition_and_Motion_Contract.md)
+- [Correction Test Plan](Project_Homeport_Phase_7_Correction_Round_1_Test_Plan.md)
+- [Correction Evidence Index](evidence/phase7-owner-correction-round1/README.md)
+- [Correction Owner Re-Review Package](walkthrough/phase7/correction-round1/README.md)
 
 ## Phase 2 machine-readable records
 

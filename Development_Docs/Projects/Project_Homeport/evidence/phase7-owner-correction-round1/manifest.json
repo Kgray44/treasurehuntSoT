@@ -1,0 +1,10 @@
+{
+  "schemaVersion": "1.0.0",
+  "phase": "PHASE_7_OWNER_WALKTHROUGH_CORRECTION_ROUND_1",
+  "state": "PLANNED_ARCHITECTURE_FROZEN",
+  "sourceSha": "9d1cb60af3fe93085b6b13630759cdbf5552c97e",
+  "fixtureVersion": "homeport-phase7-owner-correction-round1-v1",
+  "captures": [],
+  "requiredEvidencePrefix": "HP-OWCR1-EV-",
+  "ownerReviewBoundary": "PENDING_OWNER_DECISION"
+}

@@ -341,3 +341,31 @@ release authority constitutes owner acceptance, `main` integration,
 deployment, live-provider proof, or product acceptance. No journey result,
 fixture result, evidence, nonconformity disposition, or runtime readiness is
 established by this freeze.
+
+## Phase 7 owner-walkthrough correction Round 1 architecture amendment
+
+**Decision date:** 2026-08-04. **Correction baseline:**
+`9d1cb60af3fe93085b6b13630759cdbf5552c97e`. **Owner result:**
+`OWNER_RETURNED_FOR_CORRECTION`. **Re-review result:**
+`PENDING_OWNER_DECISION`.
+
+The correction architecture is frozen in [Project Homeport Phase 7 Owner
+Walkthrough Correction Round 1
+Architecture](Project_Homeport_Phase_7_Owner_Walkthrough_Correction_Round_1_Architecture.md).
+It establishes stable traceability for 44 verbatim owner findings, specialist
+ownership, preview/start and display-name/alias boundaries, one-account
+workspace capabilities with a server-owned active-Chronicle lock, secure email
+and claiming, linked-provider adapters, account data rights, Personal Harbor
+information architecture, preference consumers, delayed loading, governed
+transition and ambient motion, Community search/reviews, accessibility,
+responsive behavior, fixture isolation, conditional schema authorization,
+Sounding Line scope, the additive owner package, exact final language, and
+rollback.
+
+The correction uses a new task-owned root, immutable seed, purpose-specific
+database clones, ports 3731 through 3735, and a new browser profile. The prior
+walkthrough task root, mutated database, evidence, credential handoff, and
+returned decision remain historical. No product implementation, schema gap,
+migration, test result, screenshot acceptance, Sounding Line decision,
+publication, re-review readiness, deployment, or owner acceptance is established
+by this amendment.
