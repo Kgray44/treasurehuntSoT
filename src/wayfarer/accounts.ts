@@ -8,7 +8,13 @@ const sessionAgeMs = 1000 * 60 * 60 * 24 * 30;
 const verificationAgeMs = 1000 * 60 * 60 * 24;
 const resetAgeMs = 1000 * 60 * 30;
 
-type Delivery = { purpose: "VERIFY_EMAIL" | "PASSWORD_RESET"; email: string; token: string; accountId: string };
+type Delivery = {
+  purpose: "VERIFY_EMAIL" | "PASSWORD_RESET" | "EMAIL_CHANGE" | "EMAIL_CHANGE_NOTICE";
+  email: string;
+  token?: string;
+  accountId: string;
+  detail?: string;
+};
 const developmentOutbox: Delivery[] = [];
 
 export class AccountError extends Error {
@@ -67,12 +73,25 @@ export function takeDevelopmentDelivery(purpose: Delivery["purpose"], email: str
   return index < 0 ? null : developmentOutbox.splice(index, 1)[0];
 }
 
-async function issueToken(accountId: string, purpose: Delivery["purpose"], email: string, expiresInMs: number) {
+async function issueToken(
+  accountId: string,
+  purpose: Exclude<Delivery["purpose"], "EMAIL_CHANGE_NOTICE">,
+  email: string,
+  expiresInMs: number,
+  pendingEmail?: { normalized: string; display: string },
+) {
   const token = makeToken(32);
   await db.$transaction([
     db.accountToken.updateMany({ where: { accountId, purpose, consumedAt: null }, data: { consumedAt: new Date() } }),
     db.accountToken.create({
-      data: { accountId, purpose, tokenHash: hashToken(token), expiresAt: new Date(Date.now() + expiresInMs) },
+      data: {
+        accountId,
+        purpose,
+        tokenHash: hashToken(token),
+        expiresAt: new Date(Date.now() + expiresInMs),
+        pendingNormalizedEmail: pendingEmail?.normalized,
+        pendingDisplayEmail: pendingEmail?.display,
+      },
     }),
   ]);
   queueDelivery({ purpose, email, token, accountId });
@@ -221,6 +240,86 @@ export async function requestPasswordReset(email: string) {
     await issueToken(recipient.accountId, "PASSWORD_RESET", normalized, resetAgeMs);
     await recordSecurityEvent(recipient.accountId, "PASSWORD_RESET_REQUESTED");
   }
+}
+
+export async function requestEmailChange(accountId: string, password: string, requestedEmail: string) {
+  const normalized = normalizeEmail(requestedEmail);
+  if (!/^\S+@\S+\.\S+$/.test(normalized) || normalized.length > 254)
+    throw new AccountError("Enter a valid new email address.");
+  const account = await db.userAccount.findUnique({
+    where: { id: accountId },
+    include: { credential: true, emails: { where: { isPrimary: true }, take: 1 } },
+  });
+  const current = account?.emails[0];
+  if (!account?.credential || account.status !== "ACTIVE" || !current || current.verificationState !== "VERIFIED")
+    throw new AccountError("Email change is unavailable until this account and its primary email are active.");
+  if (!(await compare(password, account.credential.passwordHash)))
+    throw new AccountError("Reauthentication failed. Check your password and try again.");
+  if (current.normalizedEmail === normalized) throw new AccountError("Choose an email address different from the current one.");
+  const collision = await db.accountEmail.findUnique({ where: { normalizedEmail: normalized }, select: { id: true } });
+  if (collision) throw new AccountError("That email address cannot be used.", "CONFLICT");
+  await issueToken(accountId, "EMAIL_CHANGE", normalized, verificationAgeMs, {
+    normalized,
+    display: requestedEmail.trim(),
+  });
+  await recordSecurityEvent(accountId, "EMAIL_CHANGE_REQUESTED", { currentEmailId: current.id });
+}
+
+export async function confirmEmailChange(rawToken: string) {
+  const token = await db.accountToken.findFirst({
+    where: {
+      purpose: "EMAIL_CHANGE",
+      tokenHash: hashToken(rawToken),
+      consumedAt: null,
+      expiresAt: { gt: new Date() },
+      pendingNormalizedEmail: { not: null },
+      pendingDisplayEmail: { not: null },
+    },
+    include: { account: { include: { emails: { where: { isPrimary: true }, take: 1 } } } },
+  });
+  const nextNormalized = token?.pendingNormalizedEmail;
+  const nextDisplay = token?.pendingDisplayEmail;
+  const current = token?.account.emails[0];
+  if (!token || !nextNormalized || !nextDisplay || !current)
+    throw new AccountError("That email-change link is invalid or expired.");
+  const collision = await db.accountEmail.findUnique({ where: { normalizedEmail: nextNormalized } });
+  if (collision && collision.id !== current.id) throw new AccountError("That email address cannot be used.", "CONFLICT");
+  const now = new Date();
+  await db.$transaction(async (tx) => {
+    await tx.accountToken.update({ where: { id: token.id }, data: { consumedAt: now } });
+    await tx.accountToken.updateMany({
+      where: { accountId: token.accountId, purpose: "EMAIL_CHANGE", consumedAt: null },
+      data: { consumedAt: now },
+    });
+    await tx.accountEmail.update({
+      where: { id: current.id },
+      data: {
+        normalizedEmail: nextNormalized,
+        displayEmail: nextDisplay,
+        verificationState: "VERIFIED",
+        verifiedAt: now,
+      },
+    });
+    await tx.accountSession.updateMany({
+      where: { accountId: token.accountId, revokedAt: null },
+      data: { revokedAt: now },
+    });
+    await tx.securityEvent.create({
+      data: {
+        accountId: token.accountId,
+        eventType: "EMAIL_CHANGED",
+        correlationId: randomUUID(),
+        metadata: JSON.stringify({ emailId: current.id }),
+      },
+    });
+  });
+  queueDelivery({
+    purpose: "EMAIL_CHANGE_NOTICE",
+    email: current.normalizedEmail,
+    accountId: token.accountId,
+    detail: "The primary email address was changed. Use account recovery if this was not you.",
+  });
+  return { displayEmail: nextDisplay };
 }
 
 export async function claimGuestAccount(input: { accountId: string; email: string; password: string }) {

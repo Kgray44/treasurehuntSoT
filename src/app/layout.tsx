@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { AnimationProvider } from "@/animation/director/AnimationProvider";
 import { CurrentUserProvider } from "@/components/auth/CurrentUserProvider";
+import { PreferenceRuntimeBridge } from "@/components/homeport/PreferenceRuntimeBridge";
 import { ProductShell } from "@/components/shell/ProductShell";
 import { canonicalTerms } from "@/language/canonical-terms";
 import "./globals.css";
@@ -31,6 +32,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       <body>
         <AnimationProvider>
           <CurrentUserProvider>
+            <PreferenceRuntimeBridge />
             <ProductShell>{children}</ProductShell>
           </CurrentUserProvider>
         </AnimationProvider>

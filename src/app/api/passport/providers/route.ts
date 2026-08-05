@@ -16,13 +16,17 @@ const providerUpdateSchema = z
     useForLogin: z.boolean().optional(),
   })
   .strict();
-const providerDeleteSchema = z.object({ id: z.string().min(1).max(191) }).strict();
+const providerDeleteSchema = z
+  .object({ id: z.string().min(1).max(191), password: z.string().min(1).max(256) })
+  .strict();
 
 const ordinaryAdapter = (adapter: ReturnType<typeof listProviderAdapters>[number]) => ({
   provider: adapter.provider,
   name: adapter.name,
   available: adapter.available,
   link: adapter.link,
+  status: adapter.status,
+  externalApproval: adapter.externalApproval,
 });
 
 export async function GET() {
@@ -30,7 +34,7 @@ export async function GET() {
   if (!session) return NextResponse.json({ error: "Sign in again to continue." }, { status: 401 });
   return NextResponse.json({
     adapters: listProviderAdapters()
-      .filter((adapter) => adapter.available && adapter.link && !adapter.provider.endsWith("_SIMULATOR"))
+      .filter((adapter) => ["DISCORD", "STEAM", "MICROSOFT_ACCOUNT"].includes(adapter.provider))
       .map(ordinaryAdapter),
     identities: await safeLinkedIdentities(session.accountId),
   });
@@ -50,7 +54,7 @@ export async function DELETE(request: Request) {
   if (!session) return NextResponse.json({ error: "A valid signed-in session is required." }, { status: 403 });
   try {
     const body = providerDeleteSchema.parse(await request.json());
-    await unlinkExternalIdentity(session.accountId, body.id);
+    await unlinkExternalIdentity(session.accountId, body.id, body.password);
     return NextResponse.json({ ok: true });
   } catch (cause) {
     return profileApiError(cause);

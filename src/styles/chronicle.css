@@ -368,6 +368,29 @@
   background: #061416;
 }
 
+.chronicle-alias-control {
+  display: grid;
+  gap: 0.65rem;
+  padding: 0.85rem;
+  border: 1px solid var(--border-subtle);
+  border-radius: 0.8rem;
+  background: rgb(5 22 24 / 68%);
+}
+
+.chronicle-alias-control p,
+.chronicle-alias-note {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 0.84rem;
+  line-height: 1.5;
+}
+
+.tale-start form input[readonly] {
+  color: var(--text-secondary);
+  background: color-mix(in srgb, var(--surface-default) 76%, transparent);
+  cursor: default;
+}
+
 .player-runtime {
   display: grid;
   grid-template-rows: auto 1fr auto;

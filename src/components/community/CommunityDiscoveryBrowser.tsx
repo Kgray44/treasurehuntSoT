@@ -2,6 +2,8 @@
 
 import { useRouter, useSearchParams } from "next/navigation";
 import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
+import { AnimatePresence, motion } from "motion/react";
+import { useMotionMode } from "@/animation/motion/useMotionMode";
 import type { HomeportCommunityCard } from "@/community/homeport";
 import { CommunityCardGrid } from "./CommunityCardGrid";
 
@@ -87,11 +89,14 @@ export function CommunityDiscoveryBrowser({
   basePath = "/community",
   lockedType,
   heading = "Search the Harbor",
+  compactLanding = false,
 }: {
   basePath?: string;
   lockedType?: (typeof itemTypeOptions)[number][0];
   heading?: string;
+  compactLanding?: boolean;
 }) {
+  const { mode } = useMotionMode();
   const router = useRouter();
   const searchParams = useSearchParams();
   const rawParameters = searchParams.toString();
@@ -108,6 +113,8 @@ export function CommunityDiscoveryBrowser({
   const requestGeneration = useRef(0);
   const advancedSummary = useRef<HTMLElement>(null);
   const active = discoveryKeys.some((key) => current.has(key));
+  const [fullSearchOpen, setFullSearchOpen] = useState(active || !compactLanding);
+  const fullSearchPanel = useRef<HTMLDivElement>(null);
   const apiParameters = useMemo(() => {
     const value = new URLSearchParams();
     for (const key of discoveryKeys) for (const entry of current.getAll(key)) value.append(key, entry);
@@ -219,8 +226,19 @@ export function CommunityDiscoveryBrowser({
     (key) => current.has(key),
   );
 
+  useEffect(() => {
+    if (!fullSearchOpen || !compactLanding) return;
+    const frame = requestAnimationFrame(() =>
+      fullSearchPanel.current?.querySelector<HTMLElement>("select, input")?.focus(),
+    );
+    return () => cancelAnimationFrame(frame);
+  }, [compactLanding, fullSearchOpen]);
+
   return (
-    <section className="community-discovery" aria-labelledby="community-discovery-title">
+    <section
+      className={`community-discovery ${compactLanding ? "community-discovery--landing" : ""}`}
+      aria-labelledby="community-discovery-title"
+    >
       <div className="community-section-heading">
         <div>
           <p className="community-eyebrow">Discovery chart</p>
@@ -243,154 +261,190 @@ export function CommunityDiscoveryBrowser({
                 placeholder="Title, theme, or Creator"
                 onChange={(event) => setQueryState({ source: rawParameters, value: event.target.value })}
               />
-              <button className="community-button community-button--primary" type="submit">
-                Search
+              <button
+                className="community-button community-button--primary community-search-submit"
+                type="submit"
+                aria-label="Search Community Harbor"
+              >
+                <span aria-hidden="true">⌕</span>
+                <span className="sr-only">Search Community Harbor</span>
               </button>
             </span>
           </div>
-          <label>
-            <span>Sort</span>
-            <select
-              value={current.get("sort") ?? "FEATURED"}
-              onChange={(event) => setSingle("sort", event.target.value)}
+          {compactLanding ? (
+            <button
+              className="community-button community-button--quiet community-full-search-toggle"
+              type="button"
+              aria-expanded={fullSearchOpen}
+              aria-controls="community-full-search"
+              onClick={() => setFullSearchOpen((open) => !open)}
             >
-              {sortOptions.map(([value, label]) => (
-                <option key={value} value={value}>
-                  {label}
-                </option>
-              ))}
-            </select>
-          </label>
-          <label>
-            <span>Duration</span>
-            <select
-              value={current.get("duration") ?? ""}
-              onChange={(event) => setSingle("duration", event.target.value)}
-            >
-              {durationOptions.map(([value, label]) => (
-                <option key={value || "any"} value={value}>
-                  {label}
-                </option>
-              ))}
-            </select>
-          </label>
+              {fullSearchOpen ? "Close Full Search" : "Full Search"}
+            </button>
+          ) : null}
         </div>
-        {!lockedType ? (
-          <fieldset className="community-chip-fieldset">
-            <legend>Content type</legend>
-            <div>
-              {itemTypeOptions.map(([value, label]) => (
-                <label key={value} className="community-filter-chip">
-                  <input
-                    type="checkbox"
-                    checked={current.getAll("type").includes(value)}
-                    onChange={() => toggle("type", value)}
-                  />
-                  <span>{label}</span>
+        <AnimatePresence initial={false}>
+          {fullSearchOpen ? (
+            <motion.div
+              ref={fullSearchPanel}
+              id="community-full-search"
+              className="community-discovery__full"
+              initial={compactLanding && mode !== "reduced" ? { opacity: 0, height: 0 } : false}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={mode === "reduced" ? { opacity: 0 } : { opacity: 0, height: 0 }}
+              transition={{ duration: mode === "reduced" ? 0.01 : 0.2 }}
+            >
+              <div className="community-discovery__quick-filters">
+                <label>
+                  <span>Sort</span>
+                  <select
+                    value={current.get("sort") ?? "FEATURED"}
+                    onChange={(event) => setSingle("sort", event.target.value)}
+                  >
+                    {sortOptions.map(([value, label]) => (
+                      <option key={value} value={value}>
+                        {label}
+                      </option>
+                    ))}
+                  </select>
                 </label>
-              ))}
-            </div>
-          </fieldset>
-        ) : null}
-        <details className="community-advanced-filters" open={advancedActive || undefined}>
-          <summary ref={advancedSummary}>
-            Advanced filters <span>{advancedActive ? "Active" : "Optional"}</span>
-          </summary>
-          <div className="community-advanced-filters__grid">
-            <fieldset className="community-chip-fieldset">
-              <legend>Difficulty</legend>
-              <div>
-                {difficultyOptions.map(([value, label]) => (
-                  <label key={value} className="community-filter-chip">
+                <label>
+                  <span>Duration</span>
+                  <select
+                    value={current.get("duration") ?? ""}
+                    onChange={(event) => setSingle("duration", event.target.value)}
+                  >
+                    {durationOptions.map(([value, label]) => (
+                      <option key={value || "any"} value={value}>
+                        {label}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+              </div>
+              {!lockedType ? (
+                <fieldset className="community-chip-fieldset">
+                  <legend>Content type</legend>
+                  <div>
+                    {itemTypeOptions.map(([value, label]) => (
+                      <label key={value} className="community-filter-chip">
+                        <input
+                          type="checkbox"
+                          checked={current.getAll("type").includes(value)}
+                          onChange={() => toggle("type", value)}
+                        />
+                        <span>{label}</span>
+                      </label>
+                    ))}
+                  </div>
+                </fieldset>
+              ) : null}
+              <details className="community-advanced-filters" open={advancedActive || undefined}>
+                <summary ref={advancedSummary}>
+                  Advanced filters <span>{advancedActive ? "Active" : "Optional"}</span>
+                </summary>
+                <div className="community-advanced-filters__grid">
+                  <fieldset className="community-chip-fieldset">
+                    <legend>Difficulty</legend>
+                    <div>
+                      {difficultyOptions.map(([value, label]) => (
+                        <label key={value} className="community-filter-chip">
+                          <input
+                            type="checkbox"
+                            checked={advancedDraft.difficulties.includes(value)}
+                            onChange={() => toggleAdvanced("difficulties", value)}
+                          />
+                          <span>{label}</span>
+                        </label>
+                      ))}
+                    </div>
+                  </fieldset>
+                  <label>
+                    <span>Crew size</span>
+                    <select
+                      value={advancedDraft.players}
+                      onChange={(event) => setAdvancedDraft((draft) => ({ ...draft, players: event.target.value }))}
+                    >
+                      {playerOptions.map(([value, label]) => (
+                        <option key={value || "any"} value={value}>
+                          {label}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                  <label>
+                    <span>Theme</span>
+                    <input
+                      type="text"
+                      value={advancedDraft.theme}
+                      maxLength={48}
+                      placeholder="For example: mystery"
+                      onChange={(event) => setAdvancedDraft((draft) => ({ ...draft, theme: event.target.value }))}
+                    />
+                  </label>
+                  <fieldset className="community-chip-fieldset">
+                    <legend>Environment</legend>
+                    <div>
+                      {environmentOptions.map(([value, label]) => (
+                        <label key={value} className="community-filter-chip">
+                          <input
+                            type="checkbox"
+                            checked={advancedDraft.environments.includes(value)}
+                            onChange={() => toggleAdvanced("environments", value)}
+                          />
+                          <span>{label}</span>
+                        </label>
+                      ))}
+                    </div>
+                  </fieldset>
+                  <fieldset className="community-chip-fieldset community-chip-fieldset--wide">
+                    <legend>Accessibility</legend>
+                    <div>
+                      {accessibilityOptions.map(([value, label]) => (
+                        <label key={value} className="community-filter-chip">
+                          <input
+                            type="checkbox"
+                            checked={advancedDraft.accessibility.includes(value)}
+                            onChange={() => toggleAdvanced("accessibility", value)}
+                          />
+                          <span>{label}</span>
+                        </label>
+                      ))}
+                    </div>
+                  </fieldset>
+                  <label className="community-switch">
                     <input
                       type="checkbox"
-                      checked={advancedDraft.difficulties.includes(value)}
-                      onChange={() => toggleAdvanced("difficulties", value)}
+                      checked={advancedDraft.free}
+                      onChange={(event) => setAdvancedDraft((draft) => ({ ...draft, free: event.target.checked }))}
                     />
-                    <span>{label}</span>
+                    <span>Free content only</span>
                   </label>
-                ))}
-              </div>
-            </fieldset>
-            <label>
-              <span>Crew size</span>
-              <select
-                value={advancedDraft.players}
-                onChange={(event) => setAdvancedDraft((draft) => ({ ...draft, players: event.target.value }))}
-              >
-                {playerOptions.map(([value, label]) => (
-                  <option key={value || "any"} value={value}>
-                    {label}
-                  </option>
-                ))}
-              </select>
-            </label>
-            <label>
-              <span>Theme</span>
-              <input
-                type="text"
-                value={advancedDraft.theme}
-                maxLength={48}
-                placeholder="For example: mystery"
-                onChange={(event) => setAdvancedDraft((draft) => ({ ...draft, theme: event.target.value }))}
-              />
-            </label>
-            <fieldset className="community-chip-fieldset">
-              <legend>Environment</legend>
-              <div>
-                {environmentOptions.map(([value, label]) => (
-                  <label key={value} className="community-filter-chip">
+                  <label className="community-switch">
                     <input
                       type="checkbox"
-                      checked={advancedDraft.environments.includes(value)}
-                      onChange={() => toggleAdvanced("environments", value)}
+                      checked={advancedDraft.remixable}
+                      onChange={(event) => setAdvancedDraft((draft) => ({ ...draft, remixable: event.target.checked }))}
                     />
-                    <span>{label}</span>
+                    <span>Remixable content only</span>
                   </label>
-                ))}
-              </div>
-            </fieldset>
-            <fieldset className="community-chip-fieldset community-chip-fieldset--wide">
-              <legend>Accessibility</legend>
-              <div>
-                {accessibilityOptions.map(([value, label]) => (
-                  <label key={value} className="community-filter-chip">
-                    <input
-                      type="checkbox"
-                      checked={advancedDraft.accessibility.includes(value)}
-                      onChange={() => toggleAdvanced("accessibility", value)}
-                    />
-                    <span>{label}</span>
-                  </label>
-                ))}
-              </div>
-            </fieldset>
-            <label className="community-switch">
-              <input
-                type="checkbox"
-                checked={advancedDraft.free}
-                onChange={(event) => setAdvancedDraft((draft) => ({ ...draft, free: event.target.checked }))}
-              />
-              <span>Free content only</span>
-            </label>
-            <label className="community-switch">
-              <input
-                type="checkbox"
-                checked={advancedDraft.remixable}
-                onChange={(event) => setAdvancedDraft((draft) => ({ ...draft, remixable: event.target.checked }))}
-              />
-              <span>Remixable content only</span>
-            </label>
-            <div className="community-advanced-filters__actions">
-              <button className="community-button community-button--primary" type="button" onClick={applyAdvanced}>
-                Apply advanced filters
-              </button>
-              <button className="community-button community-button--quiet" type="button" onClick={resetAdvanced}>
-                Reset advanced filters
-              </button>
-            </div>
-          </div>
-        </details>
+                  <div className="community-advanced-filters__actions">
+                    <button
+                      className="community-button community-button--primary"
+                      type="button"
+                      onClick={applyAdvanced}
+                    >
+                      Apply advanced filters
+                    </button>
+                    <button className="community-button community-button--quiet" type="button" onClick={resetAdvanced}>
+                      Reset advanced filters
+                    </button>
+                  </div>
+                </div>
+              </details>
+            </motion.div>
+          ) : null}
+        </AnimatePresence>
       </form>
 
       {chips.length ? (
@@ -418,7 +472,7 @@ export function CommunityDiscoveryBrowser({
       ) : null}
 
       {state === "idle" ? (
-        <p className="community-discovery__idle">The Harbor shelves above are ready to browse without a search.</p>
+        <p className="community-discovery__idle">The Harbor shelves below are ready to browse without a search.</p>
       ) : null}
       {state === "loading" ? (
         <div className="community-state community-state--loading" role="status" aria-live="polite">

@@ -8,6 +8,7 @@ import { MotionPolicyContext, useMotionPolicyContext } from "../motion/MotionPol
 import { AnimationAuthorityContext } from "../hosts/SceneHostContext";
 import { SceneHostRegistry } from "../hosts/scene-host-registry";
 import { AnimationDirector } from "./AnimationDirector";
+import { preferenceRuntimeEvent } from "@/homeport/preference-runtime";
 
 export const AnimationDirectorContext = createContext<AnimationDirector | null>(null);
 
@@ -63,6 +64,15 @@ export function AnimationProvider({ children }: { children: React.ReactNode }) {
       cancelled = true;
       query.removeEventListener("change", updateSystemPreference);
     };
+  }, []);
+
+  useEffect(() => {
+    const updateAccountMotion = (event: Event) => {
+      const requested = (event as CustomEvent<{ productMotion?: MotionMode }>).detail?.productMotion;
+      if (requested && isMotionMode(requested)) setProductMode(requested);
+    };
+    window.addEventListener(preferenceRuntimeEvent, updateAccountMotion);
+    return () => window.removeEventListener(preferenceRuntimeEvent, updateAccountMotion);
   }, []);
 
   useEffect(() => {

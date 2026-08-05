@@ -12,6 +12,7 @@ import {
   type HomeportCapability,
   type HomeportWorkspace,
 } from "./current-user";
+import { hasActivePlayerWorkspaceLock } from "./workspace-capabilities";
 
 const activeAccountStatuses = new Set(["ACTIVE", "PENDING_VERIFICATION", "GUEST_UNCLAIMED"]);
 const hashToken = (value: string) => createHash("sha256").update(value).digest("hex");
@@ -36,7 +37,7 @@ function findAccountSession(token: string) {
   });
 }
 
-function classifySession(session: SessionWithAccount): CurrentUserContext {
+async function classifySession(session: SessionWithAccount): Promise<CurrentUserContext> {
   const base = { contextVersion: CURRENT_USER_CONTEXT_VERSION, authenticated: false as const };
   if (session.revokedAt) return { ...base, status: "revoked" };
   if (session.expiresAt.getTime() <= Date.now()) return { ...base, status: "expired" };
@@ -49,8 +50,10 @@ function classifySession(session: SessionWithAccount): CurrentUserContext {
   const roles = new Set(activeRoles.map((assignment) => assignment.role));
   const isAdministrator = roles.has("ADMINISTRATOR");
   const canUsePlayer = session.account.profile?.status === "ACTIVE";
-  const canUseCaptain = roles.has("CAPTAIN") || isAdministrator;
-  const canUseCreator = roles.has("CREATOR") || roles.has("PUBLISHER") || isAdministrator;
+  const activePlayerWorkspaceLock = canUsePlayer ? await hasActivePlayerWorkspaceLock(session.accountId) : false;
+  const canUseCaptain = !activePlayerWorkspaceLock && (roles.has("CAPTAIN") || isAdministrator);
+  const canUseCreator =
+    !activePlayerWorkspaceLock && (roles.has("CREATOR") || roles.has("PUBLISHER") || isAdministrator);
   const canModerate = roles.has("MODERATOR") || isAdministrator;
   const workspaces: HomeportWorkspace[] = ["public", "account", "community"];
   if (canUsePlayer) workspaces.push("player");
@@ -78,6 +81,7 @@ function classifySession(session: SessionWithAccount): CurrentUserContext {
           ])
           .sort((left, right) => JSON.stringify(left).localeCompare(JSON.stringify(right))),
         session: [session.id, session.expiresAt, session.revokedAt],
+        activePlayerWorkspaceLock,
       }),
     )
     .digest("hex")
@@ -138,7 +142,7 @@ export async function resolveCurrentUser(options: { rotateCompatibility?: boolea
     if (canonical) {
       const session = await findAccountSession(canonical);
       return session
-        ? classifySession(session)
+        ? await classifySession(session)
         : { contextVersion: CURRENT_USER_CONTEXT_VERSION, status: "invalid", authenticated: false };
     }
 
@@ -161,7 +165,7 @@ export async function resolveCurrentUser(options: { rotateCompatibility?: boolea
       if (legacyStaff) jar.delete("forever_gm");
       if (legacyPlayer) jar.delete("chronicle_player");
     }
-    return classifySession(rotated.session);
+    return await classifySession(rotated.session);
   } catch {
     return {
       contextVersion: CURRENT_USER_CONTEXT_VERSION,

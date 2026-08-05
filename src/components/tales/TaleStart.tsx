@@ -7,6 +7,7 @@ import { ErrorState, LoadingState } from "@/components/ui/AsyncState";
 import { ResilientImage } from "@/components/ui/ResilientImage";
 import { errorCopy } from "@/language/error-copy";
 import { platformCopy } from "@/language/platform-copy";
+import { useCurrentUser } from "@/components/auth/CurrentUserProvider";
 
 type Tale = {
   slug: string;
@@ -24,8 +25,11 @@ type Tale = {
 
 export function TaleStart({ taleSlug }: { taleSlug: string }) {
   const router = useRouter();
+  const { state: currentUser } = useCurrentUser();
   const [tale, setTale] = useState<Tale | null>(null);
   const [label, setLabel] = useState("");
+  const [labelTouched, setLabelTouched] = useState(false);
+  const [editingAlias, setEditingAlias] = useState(false);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
 
@@ -44,6 +48,10 @@ export function TaleStart({ taleSlug }: { taleSlug: string }) {
   useEffect(() => {
     queueMicrotask(() => void load());
   }, [load]);
+  useEffect(() => {
+    if (currentUser.status !== "authenticated" || labelTouched) return;
+    setLabel(currentUser.user.displayName);
+  }, [currentUser, labelTouched]);
   if (error && !tale)
     return (
       <main className="tale-start error">
@@ -107,8 +115,11 @@ export function TaleStart({ taleSlug }: { taleSlug: string }) {
             try {
               const response = await fetch(`/api/tales/${taleSlug}/start`, {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ ownerLabel: label }),
+                headers: {
+                  "Content-Type": "application/json",
+                  ...(currentUser.status === "authenticated" ? { "x-csrf-token": currentUser.csrfToken } : {}),
+                },
+                body: JSON.stringify({ ownerLabel: label, aliasEdited: editingAlias }),
               });
               const body = (await response.json()) as { url?: string; error?: string };
               if (!response.ok || !body.url) {
@@ -124,14 +135,40 @@ export function TaleStart({ taleSlug }: { taleSlug: string }) {
           }}
         >
           <label>
-            <span>Crew or player name</span>
+            <span>{currentUser.status === "authenticated" ? "Player name for this Chronicle" : "Guest player name"}</span>
             <input
               value={label}
-              onChange={(event) => setLabel(event.target.value)}
+              readOnly={currentUser.status === "authenticated" && !editingAlias}
+              onChange={(event) => {
+                setLabel(event.target.value);
+                setLabelTouched(true);
+              }}
               placeholder="Guest crew"
-              maxLength={120}
+              maxLength={80}
             />
           </label>
+          {currentUser.status === "authenticated" ? (
+            <div className="chronicle-alias-control">
+              <p>
+                Your account display name is used by default. A Chronicle-specific name changes only this participation.
+              </p>
+              <button
+                type="button"
+                className="button button--quiet"
+                onClick={() => {
+                  setEditingAlias((value) => !value);
+                  if (editingAlias) {
+                    setLabel(currentUser.user.displayName);
+                    setLabelTouched(false);
+                  }
+                }}
+              >
+                {editingAlias ? "Use account display name" : "Edit for this Chronicle"}
+              </button>
+            </div>
+          ) : (
+            <p className="chronicle-alias-note">Guests may choose an editable name for this Voyage.</p>
+          )}
           <button className="brass-button" disabled={busy} aria-busy={busy}>
             {busy ? "Preparing your Voyage…" : platformCopy.beginVoyage.value}
           </button>

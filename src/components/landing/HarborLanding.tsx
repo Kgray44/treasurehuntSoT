@@ -233,8 +233,9 @@ function HarborGatewayContent({ motionMode }: { motionMode: ReturnType<typeof us
     () => {
       if (mode === "reduced") return;
       gsap.to("[data-ambient='lantern']", {
-        rotate: mode === "full" ? 1.5 : 0.6,
-        duration: 2.8,
+        rotate: mode === "full" ? 3.25 : 1.2,
+        y: mode === "full" ? 3 : 1,
+        duration: mode === "full" ? 2.65 : 3.2,
         repeat: -1,
         yoyo: true,
         ease: "sine.inOut",
@@ -276,7 +277,10 @@ function HarborGatewayContent({ motionMode }: { motionMode: ReturnType<typeof us
     let keyboardModality = false;
     const coarsePointer = window.matchMedia?.("(pointer: coarse)").matches ?? false;
     const updateAmbient = () => {
-      host.dataset.ambientState = mode === "reduced" || document.hidden || !inView ? "paused" : "active";
+      const paused = mode === "reduced" || document.hidden || !inView;
+      host.dataset.ambientState = paused ? "paused" : "active";
+      const lantern = host.querySelector<HTMLElement>("[data-ambient='lantern']");
+      if (lantern) gsap.getTweensOf(lantern).forEach((tween) => (paused ? tween.pause() : tween.resume()));
     };
     const onVisibility = () => updateAmbient();
     const onKeyDown = (event: KeyboardEvent) => {
@@ -491,7 +495,6 @@ function HarborGatewayContent({ motionMode }: { motionMode: ReturnType<typeof us
                 <motion.div
                   className={`role-object ${role.object}`}
                   data-role-object={role.id}
-                  layoutId={`role-object-${role.id}`}
                   aria-hidden="true"
                   {...roleObjectIntent(role.id, mode)}
                 >

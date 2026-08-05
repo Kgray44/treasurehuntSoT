@@ -68,6 +68,7 @@
   --z-dialog: 90;
   --z-skip-link: 200;
   --player-text-scale: 1;
+  --account-text-scale: 1;
   --texture-opacity: 1;
 }
 
@@ -79,6 +80,47 @@ html {
   color-scheme: dark;
   background: var(--ocean-950);
   scroll-behavior: smooth;
+  font-size: calc(100% * var(--account-text-scale));
+}
+
+html[data-voyage-theme="light"] {
+  color-scheme: light;
+  --background-primary: #f4ead4;
+  --background-secondary: #e8d8b7;
+  --surface-default: #fff9eb;
+  --surface-raised: #f3e6c9;
+  --surface-overlay: #fffaf0;
+  --surface-hover: rgb(25 79 77 / 9%);
+  --text-primary: #172f30;
+  --text-secondary: #315252;
+  --text-muted: #526c69;
+  --border-subtle: rgb(66 73 50 / 20%);
+  --border-default: rgb(79 68 39 / 34%);
+  --border-emphasis: rgb(76 57 19 / 58%);
+  --accent-primary: #73531d;
+  --accent-hover: #4d3610;
+  --focus-color: #096b72;
+  --focus-ring: 0 0 0 3px #fff9eb, 0 0 0 6px #096b72;
+}
+
+html[data-voyage-theme="high-contrast"],
+html[data-voyage-contrast="high"] {
+  --background-primary: #000;
+  --background-secondary: #050505;
+  --surface-default: #000;
+  --surface-raised: #111;
+  --surface-overlay: #000;
+  --surface-hover: rgb(255 255 255 / 14%);
+  --text-primary: #fff;
+  --text-secondary: #fff;
+  --text-muted: #e6e6e6;
+  --border-subtle: rgb(255 255 255 / 55%);
+  --border-default: #fff;
+  --border-emphasis: #fff;
+  --accent-primary: #ffdf70;
+  --accent-hover: #fff2ad;
+  --focus-color: #63f5ff;
+  --focus-ring: 0 0 0 3px #000, 0 0 0 7px #63f5ff;
 }
 
 body {
@@ -97,7 +139,7 @@ button,
 input,
 select,
 textarea {
-  font-size: 16px;
+  font-size: 1rem;
 }
 
 button,

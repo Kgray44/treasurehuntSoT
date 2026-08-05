@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useId, useLayoutEffect, useRef, useState } from "react";
-import { motion } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 import { useMotionMode } from "@/animation/motion/useMotionMode";
 import { platformMotionEasing, resolvePlatformMotionToken } from "@/animation/platform/motion-tokens";
 import { RouteMotionBoundary } from "@/animation/platform/RouteMotionBoundary";
@@ -94,6 +94,7 @@ const accountGroupLabels: Readonly<Record<AccountGroup, string>> = {
 };
 
 export function ProductShell({ children }: { children: React.ReactNode }) {
+  const { mode } = useMotionMode();
   const pathname = usePathname();
   const route = classifyRoute(pathname);
   const workspace = workspaceRegistry[route.workspace];
@@ -333,15 +334,20 @@ export function ProductShell({ children }: { children: React.ReactNode }) {
                 ▾
               </span>
             </button>
-            <div
-              ref={accountDisclosureRef}
-              id="shell-account-disclosure"
-              className="shell-account-disclosure"
-              hidden={!accountOpen}
-              role={accountOpen ? "dialog" : undefined}
-              aria-modal={accountOpen || undefined}
-              aria-label="Account navigation"
-            >
+            <AnimatePresence initial={false}>
+              {accountOpen ? (
+                <motion.div
+                  ref={accountDisclosureRef}
+                  id="shell-account-disclosure"
+                  className="shell-account-disclosure"
+                  role="dialog"
+                  aria-modal="true"
+                  aria-label="Account navigation"
+                  initial={mode === "reduced" ? false : { opacity: 0, y: -8, scale: 0.985 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={mode === "reduced" ? { opacity: 0 } : { opacity: 0, y: -5, scale: 0.99 }}
+                  transition={{ duration: mode === "reduced" ? 0.01 : 0.17, ease: platformMotionEasing("micro") }}
+                >
               {currentUser.status === "authenticated" ? (
                 <div className="account-identity-summary">
                   <span className="shell-avatar" aria-hidden="true">
@@ -426,7 +432,9 @@ export function ProductShell({ children }: { children: React.ReactNode }) {
                   })}
                 </>
               )}
-            </div>
+                </motion.div>
+              ) : null}
+            </AnimatePresence>
           </div>
         ) : null}
 

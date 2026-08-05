@@ -555,9 +555,9 @@ export async function getHomeportListingDetail(slug: string, viewerAccountId?: s
     listing.itemType === "CHRONICLE" && tale?.status === "PUBLISHED" && tale.visibility === "PUBLIC"
       ? {
           kind: "LINK" as const,
-          label: "Preview Chronicle",
+          label: "Start Chronicle",
           href: `/play/${encodeURIComponent(tale.slug)}`,
-          detail: "Review the published Chronicle before beginning a Voyage.",
+          detail: "Begin preparation using the published Chronicle version shown in this preview.",
         }
       : {
           kind: "UNAVAILABLE" as const,

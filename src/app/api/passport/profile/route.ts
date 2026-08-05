@@ -6,7 +6,6 @@ import { profileApiError } from "@/wayfarer/http-errors";
 
 const updateProfileSchema = z
   .object({
-    displayName: z.string().max(80).optional(),
     handle: z.string().max(32).nullable().optional(),
     biography: z.string().max(1_000).nullable().optional(),
     defaultVisibility: z.enum(visibilityValues).optional(),

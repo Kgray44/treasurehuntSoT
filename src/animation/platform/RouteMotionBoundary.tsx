@@ -1,6 +1,6 @@
 "use client";
 
-import { LayoutGroup, motion } from "motion/react";
+import { AnimatePresence, LayoutGroup, motion } from "motion/react";
 import { useEffect, useMemo, useRef } from "react";
 import { useMotionMode } from "../motion/useMotionMode";
 import { platformMotionEasing, resolvePlatformMotionToken } from "./motion-tokens";
@@ -48,16 +48,19 @@ export function RouteMotionBoundary({ pathname, children }: { pathname: string; 
 
   return (
     <LayoutGroup id="lanternwake-route-layout">
-      <motion.div
-        key={pathname}
-        className="product-route-layer"
-        data-route-layer={pathname}
-        initial={{ opacity: mode === "reduced" ? 1 : 0, y: routeToken.distancePx }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: routeToken.durationSeconds, ease: platformMotionEasing("route") }}
-      >
-        {children}
-      </motion.div>
+      <AnimatePresence initial={false} mode="sync">
+        <motion.div
+          key={pathname}
+          className="product-route-layer"
+          data-route-layer={pathname}
+          initial={mode === "reduced" ? false : { opacity: 0, y: routeToken.distancePx }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={mode === "reduced" ? { opacity: 1 } : { opacity: 0, y: -Math.max(2, routeToken.distancePx / 2) }}
+          transition={{ duration: routeToken.durationSeconds, ease: platformMotionEasing("route") }}
+        >
+          {children}
+        </motion.div>
+      </AnimatePresence>
     </LayoutGroup>
   );
 }

@@ -6,7 +6,16 @@ import { FormEvent, useEffect, useState } from "react";
 import { useCurrentUser } from "@/components/auth/CurrentUserProvider";
 import { authorizedReturnTo, safeReturnTo } from "@/homeport/return-to";
 
-type Mode = "register" | "sign-in" | "forgot" | "reset" | "verify" | "claim" | "merge" | "security";
+type Mode =
+  | "register"
+  | "sign-in"
+  | "forgot"
+  | "reset"
+  | "verify"
+  | "email-change"
+  | "claim"
+  | "merge"
+  | "security";
 type Props = {
   mode: Mode;
   query?: { returnTo?: string; return?: string; reason?: string; token?: string };
@@ -18,6 +27,7 @@ const endpoints: Record<Exclude<Mode, "security">, string> = {
   forgot: "/api/auth/password-reset/request",
   reset: "/api/auth/password-reset/confirm",
   verify: "/api/auth/email/verify",
+  "email-change": "/api/account/email/change/confirm",
   claim: "/api/auth/guest/claim",
   merge: "/api/auth/guest/merge",
 };
@@ -75,6 +85,10 @@ export function AccountFlow({ mode, query }: Props) {
       } else if (mode === "verify") {
         await invalidate();
         setMessage("Your email is verified. Continue to your account.");
+      } else if (mode === "email-change") {
+        sessionStorage.removeItem("wayfarer-csrf");
+        await invalidate();
+        setMessage("Your primary email was changed and existing sessions were ended. Sign in with the new address.");
       } else {
         setMessage(mode === "forgot" ? body?.message : "Your account request was completed.");
       }
@@ -188,6 +202,8 @@ export function AccountFlow({ mode, query }: Props) {
                 ? "Reset password"
                 : mode === "verify"
                   ? "Verify email"
+                  : mode === "email-change"
+                    ? "Confirm email change"
                   : mode === "claim"
                     ? "Claim your guest voyage"
                     : mode === "merge"
@@ -249,7 +265,9 @@ export function AccountFlow({ mode, query }: Props) {
               />
             </label>
           ))}
-          {(mode === "reset" || mode === "verify") && <input name="token" type="hidden" value={queryToken} />}
+          {(mode === "reset" || mode === "verify" || mode === "email-change") && (
+            <input name="token" type="hidden" value={queryToken} />
+          )}
           {mode === "merge" && <p>Confirming preserves your guest voyage history in this account.</p>}
           <button className="brass-button" disabled={busy || currentUser.status === "loading"}>
             {busy ? "Working…" : "Continue"}
@@ -269,6 +287,11 @@ export function AccountFlow({ mode, query }: Props) {
             href={`/sign-in${returnTo ? `?returnTo=${encodeURIComponent(returnTo)}` : ""}`}
           >
             Already have an account? Sign in
+          </Link>
+        ) : null}
+        {mode === "email-change" && message ? (
+          <Link className="account-flow-nav" href="/sign-in">
+            Sign in with the new email
           </Link>
         ) : null}
         <p id="account-status" className={error ? "platform-error" : "account-flow-status"} aria-live="polite">

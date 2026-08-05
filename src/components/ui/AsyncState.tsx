@@ -39,17 +39,29 @@ export function LoadingState({
 }) {
   const mode = useAsyncStateMotionMode();
   const stateMotion = resolvePlatformMotionToken("state", mode);
+  const [visible, setVisible] = useState(false);
   const [slow, setSlow] = useState(false);
   useEffect(() => {
-    const timer = window.setTimeout(() => setSlow(true), 900);
-    return () => window.clearTimeout(timer);
+    const visibleTimer = window.setTimeout(() => setVisible(true), 500);
+    const slowTimer = window.setTimeout(() => setSlow(true), 1_400);
+    return () => {
+      window.clearTimeout(visibleTimer);
+      window.clearTimeout(slowTimer);
+    };
   }, []);
+  if (!visible)
+    return (
+      <span className="sr-only" role="status" aria-live="polite" aria-busy="true" data-async-state="pending-delay">
+        {title}
+      </span>
+    );
   return (
     <motion.section
       className={`ui-state ui-loading-state ${compact ? "compact" : ""}`}
       data-async-state={slow ? "slow" : "pending"}
       role="status"
       aria-live="polite"
+      aria-busy="true"
       initial={mode === "reduced" ? false : { opacity: 0, y: stateMotion.distancePx }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: stateMotion.durationSeconds, ease: platformMotionEasing("state") }}

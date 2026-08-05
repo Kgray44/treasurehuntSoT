@@ -109,12 +109,17 @@
 .personal-harbor__nav-group h2 {
   margin: 0 0 0.28rem;
   padding: 0 0.65rem;
-  color: var(--text-muted);
+  color: color-mix(in srgb, var(--harbor-brass) 82%, var(--text-secondary));
   font-family: var(--font-interface);
-  font-size: 0.68rem;
+  font-size: 0.72rem;
   font-weight: 850;
   letter-spacing: 0.1em;
   text-transform: uppercase;
+}
+
+.personal-harbor__nav-group + .personal-harbor__nav-group {
+  padding-top: 0.75rem;
+  border-top: 1px solid color-mix(in srgb, var(--border-subtle) 70%, transparent);
 }
 .personal-harbor__nav-group ul {
   display: grid;
@@ -131,6 +136,25 @@
   color: var(--text-secondary);
   font-size: 0.9rem;
   text-decoration: none;
+}
+
+.personal-harbor__sign-out {
+  margin-top: 0.4rem;
+  padding-top: 0.85rem;
+  border-top: 1px solid rgb(219 122 111 / 18%);
+}
+
+.personal-harbor__sign-out button {
+  width: 100%;
+  border-color: rgb(219 122 111 / 22%);
+  color: rgb(255 199 193 / 78%);
+  background: rgb(101 35 33 / 14%);
+}
+
+.personal-harbor__sign-out small {
+  display: block;
+  padding: 0.45rem;
+  color: var(--state-danger);
 }
 .personal-harbor__nav-group a:hover {
   color: var(--text-primary);
@@ -323,6 +347,38 @@
 .harbor-form textarea {
   resize: vertical;
   line-height: 1.55;
+}
+
+.harbor-form--inline {
+  grid-template-columns: minmax(12rem, 1fr) auto;
+  align-items: end;
+}
+
+.harbor-reauth {
+  display: grid;
+  gap: 0.8rem;
+  margin-top: 1rem;
+  padding: 1rem;
+  border: 1px solid rgb(219 122 111 / 34%);
+  border-radius: 0.8rem;
+  background: rgb(86 28 26 / 18%);
+}
+
+.harbor-reauth label {
+  display: grid;
+  gap: 0.4rem;
+  color: var(--text-secondary);
+  font-size: 0.84rem;
+  font-weight: 700;
+}
+
+.harbor-reauth input {
+  width: 100%;
+  border: 1px solid var(--border-default);
+  border-radius: 0.65rem;
+  padding: 0.78rem 0.85rem;
+  color: var(--text-primary);
+  background: rgb(3 16 19 / 84%);
 }
 .harbor-form input[type="range"] {
   width: 100%;
@@ -757,6 +813,119 @@
 .harbor-danger-zone {
   border-color: rgb(219 122 111 / 38%);
 }
+
+.harbor-danger-zone--final {
+  border-color: rgb(219 122 111 / 68%);
+  background: linear-gradient(145deg, rgb(62 25 25 / 94%), rgb(23 16 18 / 98%));
+}
+
+.harbor-export-list code {
+  max-width: min(100%, 34rem);
+  overflow-wrap: anywhere;
+  color: var(--text-muted);
+  font-size: 0.68rem;
+}
+
+.workspace-capability-page {
+  display: grid;
+  width: min(100% - 2rem, 76rem);
+  gap: 1.25rem;
+  margin: 0 auto;
+  padding: clamp(1.25rem, 4vw, 3rem) 0 clamp(3rem, 7vw, 6rem);
+}
+
+.workspace-capability-hero,
+.workspace-transition-lock,
+.workspace-capability-grid article {
+  border: 1px solid var(--border-default);
+  border-radius: 1.1rem;
+  padding: clamp(1.2rem, 3vw, 2rem);
+  background: linear-gradient(145deg, rgb(11 37 40 / 96%), rgb(6 24 27 / 98%));
+  box-shadow: var(--shadow-card);
+}
+
+.workspace-capability-hero h1 {
+  margin-bottom: 0.5rem;
+  font-size: clamp(2.2rem, 6vw, 4.5rem);
+}
+
+.workspace-capability-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.workspace-capability-grid article {
+  display: grid;
+  align-content: start;
+  gap: 0.75rem;
+}
+
+.workspace-capability-grid article[data-workspace-state="active"] {
+  border-color: rgb(113 201 163 / 58%);
+}
+
+.workspace-capability-grid article[data-workspace-state="blocked"] {
+  border-color: rgb(224 184 96 / 55%);
+}
+
+.workspace-capability-state {
+  width: fit-content;
+  border: 1px solid var(--border-default);
+  border-radius: 999px;
+  padding: 0.22rem 0.5rem;
+  color: var(--brass-100);
+  font-size: 0.66rem;
+  font-weight: 850;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.workspace-transition-lock {
+  display: grid;
+  gap: 0.9rem;
+  border-color: rgb(224 184 96 / 54%);
+}
+
+.workspace-transition-lock ul {
+  display: grid;
+  gap: 0.65rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.workspace-transition-lock li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.8rem;
+  border: 1px solid var(--border-subtle);
+  border-radius: 0.75rem;
+}
+
+.workspace-transition-lock li > div,
+.workspace-transition-lock label {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.workspace-transition-lock input {
+  width: min(100%, 32rem);
+  padding: 0.75rem;
+  border: 1px solid var(--border-default);
+  border-radius: 0.65rem;
+  color: var(--text-primary);
+  background: var(--surface-default);
+}
+
+.workspace-capability-note,
+.workspace-capability-boundary,
+.workspace-transition-lock span {
+  color: var(--text-muted);
+  font-size: 0.82rem;
+}
 .harbor-definition-list {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -960,6 +1129,9 @@
   .harbor-card-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
+  .workspace-capability-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media (max-width: 42rem) {
@@ -984,6 +1156,13 @@
   .artifact-grid,
   .harbor-definition-list {
     grid-template-columns: 1fr;
+  }
+  .harbor-form--inline {
+    grid-template-columns: 1fr;
+  }
+  .workspace-transition-lock li {
+    align-items: stretch;
+    flex-direction: column;
   }
   .harbor-list li,
   .harbor-availability-list li,

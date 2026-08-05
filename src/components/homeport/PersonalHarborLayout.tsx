@@ -13,6 +13,7 @@ import {
   type ReactNode,
 } from "react";
 import { personalHarborNavigation, type PersonalHarborSectionId } from "@/homeport/personal-harbor-navigation";
+import { SignOutButton } from "@/components/auth/SignOutButton";
 
 type DraftState = {
   dirty: boolean;
@@ -69,6 +70,9 @@ function HarborNavigation({
           </ul>
         </section>
       ))}
+      <div className="personal-harbor__sign-out">
+        <SignOutButton />
+      </div>
     </nav>
   );
 }

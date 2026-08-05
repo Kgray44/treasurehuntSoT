@@ -1,6 +1,7 @@
 import { db } from "@/lib/db";
 import { publicListingProjection, publicReleaseProjection } from "@/community/services";
 import { personalHarborNavigation } from "@/homeport/personal-harbor-navigation";
+import { humanAccountState } from "@/wayfarer/account-lifecycle";
 
 export { personalHarborNavigation, personalHarborSectionIds } from "@/homeport/personal-harbor-navigation";
 export type { PersonalHarborSectionId } from "@/homeport/personal-harbor-navigation";
@@ -25,14 +26,17 @@ export async function personalInformation(accountId: string) {
   const email = account.emails[0] ?? null;
   return {
     accountId: account.id,
-    accountStatus: account.status,
+    accountStatus: humanAccountState(account.status, email?.verificationState === "VERIFIED"),
     displayName: account.profile?.displayName ?? "Voyagewright account",
     primaryEmail: email?.displayEmail ?? null,
     emailVerificationState: email?.verificationState ?? "UNAVAILABLE",
     emailVerifiedAt: email?.verifiedAt?.toISOString() ?? null,
     emailChange: {
-      status: "NOT_CURRENTLY_SUPPORTED" as const,
-      reason: "No accepted verified email-change service exists.",
+      status: email?.verificationState === "VERIFIED" ? ("AVAILABLE" as const) : ("VERIFICATION_REQUIRED" as const),
+      reason:
+        email?.verificationState === "VERIFIED"
+          ? "Changing email requires the current password and verification at the new address."
+          : "Verify the current primary email before requesting a change.",
     },
     createdAt: account.createdAt.toISOString(),
     revision: (account.profile?.updatedAt ?? account.updatedAt).toISOString(),
@@ -140,23 +144,23 @@ export function accountDataAvailability() {
       {
         id: "export",
         label: "Export account data",
-        status: "NOT_CURRENTLY_SUPPORTED",
-        href: null,
-        reason: "No accepted export scope, packaging, or retention service exists.",
+        status: "REQUIRES_REAUTHENTICATION",
+        href: "/account/data",
+        reason: "A bounded private JSON export is available after password reauthentication.",
       },
       {
         id: "deactivate",
         label: "Deactivate account",
-        status: "NOT_CURRENTLY_SUPPORTED",
-        href: null,
-        reason: "No accepted account-deactivation lifecycle exists.",
+        status: "REQUIRES_REAUTHENTICATION",
+        href: "/account/data",
+        reason: "A reversible deactivation lifecycle is available after typed confirmation and reauthentication.",
       },
       {
         id: "delete",
         label: "Delete account",
-        status: "NOT_CURRENTLY_SUPPORTED",
-        href: null,
-        reason: "No accepted deletion, retention, tombstone, or reauthentication contract exists.",
+        status: "REQUIRES_REAUTHENTICATION",
+        href: "/account/data",
+        reason: "Delayed deletion, cancellation, retention, and tombstone contracts are available after reauthentication.",
       },
     ],
   } as const;

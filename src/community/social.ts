@@ -886,6 +886,7 @@ export function publicReviewProjection(
     spoilerFreeBody: review.deletedAt || review.status !== "ACTIVE" ? null : review.spoilerFreeBody,
     hasSpoiler: Boolean(!review.deletedAt && review.status === "ACTIVE" && review.spoilerBody),
     spoilerLevel: review.spoilerLevel,
+    createdAt: review.createdAt,
     verifiedInstallation: review.verifiedInstallation,
     verifiedCompletion: review.verifiedCompletion,
     editedAt: review.editedAt,
@@ -943,7 +944,7 @@ export async function helpfulVoteCount(reviewId: string) {
   return socialDb.communityReviewHelpfulVote.count({ where: { reviewId } });
 }
 
-export async function listPublicReviews(listingId: string) {
+export async function listPublicReviews(listingId: string, viewerAccountId?: string | null) {
   const listing = await socialDb.communityListing.findFirst({
     where: {
       id: listingId,
@@ -968,6 +969,7 @@ export async function listPublicReviews(listingId: string) {
   return Promise.all(
     reviews.map(async (review) => ({
       ...publicReviewProjection(review),
+      canEdit: Boolean(viewerAccountId && review.authorAccountId === viewerAccountId),
       helpfulCount: await helpfulVoteCount(review.id),
       creatorResponse: responseByReviewId.has(review.id)
         ? publicCreatorResponseProjection(responseByReviewId.get(review.id)!)

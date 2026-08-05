@@ -17,6 +17,7 @@ type CatalogTale = {
   playerCountMin: number;
   playerCountMax: number;
   version: string;
+  previewHref: string;
   playerState: "NEW" | "IN_PROGRESS" | "COMPLETED";
   sessionId: string | null;
 };
@@ -197,7 +198,7 @@ export function TaleCatalog() {
                 href={
                   tale.playerState === "IN_PROGRESS" && tale.sessionId
                     ? `/play/${tale.slug}/session/${tale.sessionId}`
-                    : `/play/${tale.slug}`
+                    : tale.previewHref
                 }
               >
                 {tale.playerState === "IN_PROGRESS"

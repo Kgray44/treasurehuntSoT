@@ -2,6 +2,7 @@ import { createHash, randomBytes, timingSafeEqual } from "node:crypto";
 import { cookies, headers } from "next/headers";
 import { db } from "@/lib/db";
 import { createAccountSession, currentAccount, recordSecurityEvent, revokeAccountSession } from "@/wayfarer/accounts";
+import { hasActivePlayerWorkspaceLock } from "@/homeport/workspace-capabilities";
 
 const PLAYER_COOKIE = "forever_player";
 const GM_COOKIE = "forever_gm";
@@ -126,9 +127,19 @@ export function gmCan(user: { role: string; capabilities: string }, capability: 
   return roleCapabilities[user.role]?.includes(capability) || explicit.includes(capability);
 }
 
+export function gmCapabilityAllowedWithinWorkspaceLock(
+  user: { role: string; capabilities: string },
+  capability: GmCapability,
+  activePlayerWorkspaceLock: boolean,
+) {
+  return !(activePlayerWorkspaceLock && capability !== "ADMIN") && gmCan(user, capability);
+}
+
 export async function requireGmCapability(capability: GmCapability) {
   const session = await requireGm();
-  return session && gmCan(session.user, capability) ? session : null;
+  if (!session) return null;
+  const activePlayerWorkspaceLock = await hasActivePlayerWorkspaceLock(session.accountId);
+  return gmCapabilityAllowedWithinWorkspaceLock(session.user, capability, activePlayerWorkspaceLock) ? session : null;
 }
 
 export async function verifyCsrf(session: { csrfToken: string }) {

@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState, type FormEvent } from "react";
+import { useEffect, useRef, useState, type FormEvent } from "react";
 import { useCurrentUser } from "@/components/auth/CurrentUserProvider";
 import { usePersonalHarbor } from "@/components/homeport/PersonalHarborLayout";
 import {
@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/AsyncState";
 import { ResilientImage } from "@/components/ui/ResilientImage";
 import { useActionDialog } from "@/components/ui/ActionDialog";
+import { applyRuntimePreferences, publishRuntimePreferences } from "@/homeport/preference-runtime";
 
 type LoadState<T> = { status: "loading" } | { status: "error"; message: string } | { status: "ready"; value: T };
 
@@ -211,7 +212,7 @@ export function ProfileEditor() {
   if (resource.state.status === "error") return <ErrorState message={resource.state.message} retry={resource.reload} />;
   if (resource.state.status === "loading" || !draft) return <LoadingState label="Loading your Profile" />;
 
-  const change = <K extends keyof Pick<ProfileDto, "displayName" | "handle" | "biography" | "defaultVisibility">>(
+  const change = <K extends keyof Pick<ProfileDto, "handle" | "biography" | "defaultVisibility">>(
     key: K,
     value: ProfileDto[K],
   ) => {
@@ -227,7 +228,6 @@ export function ProfileEditor() {
         method: "PATCH",
         headers: { "content-type": "application/json", "x-csrf-token": csrfToken },
         body: JSON.stringify({
-          displayName: draft.displayName,
           handle: draft.handle || null,
           biography: draft.biography || null,
           defaultVisibility: draft.defaultVisibility,
@@ -307,15 +307,14 @@ export function ProfileEditor() {
             <h2>Edit public Profile</h2>
             <p>Only the server-enforced public projection appears in the preview.</p>
           </div>
-          <label>
-            Display name
-            <input
-              value={draft.displayName}
-              maxLength={80}
-              onChange={(event) => change("displayName", event.target.value)}
-              required
-            />
-          </label>
+          <div className="harbor-readonly-field">
+            <span>Display name</span>
+            <strong>{draft.displayName}</strong>
+            <small>
+              This account-wide identity is managed in{" "}
+              <Link href="/account/personal-information">Personal Information</Link>.
+            </small>
+          </div>
           <label>
             Handle<span className="harbor-field-hint">Lowercase letters, numbers, and internal hyphens.</span>
             <input
@@ -463,40 +462,70 @@ type PersonalInfoDto = {
 
 export function PersonalInformation() {
   const info = useResource<PersonalInfoDto>("/api/account/personal-information");
-  const profile = useResource<ProfileDto>("/api/passport/profile");
   const { setDirty, csrfToken } = usePersonalHarbor();
   const [name, setName] = useState("");
+  const [nameDirty, setNameDirty] = useState(false);
+  const [emailDirty, setEmailDirty] = useState(false);
+  const [nextEmail, setNextEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [mutation, setMutation] = useState<{ kind: "idle" | "saving" | "saved" | "error" | "stale"; message?: string }>(
     { kind: "idle" },
   );
+  const [emailMutation, setEmailMutation] = useState<{
+    kind: "idle" | "saving" | "saved" | "error" | "stale";
+    message?: string;
+  }>({ kind: "idle" });
   useEffect(() => {
-    // Editable personal information intentionally hydrates after both server resources resolve.
+    // Editable personal information intentionally hydrates after the server resource resolves.
     // eslint-disable-next-line react-hooks/set-state-in-effect
     if (info.state.status === "ready") setName(info.state.value.displayName);
   }, [info.state]);
-  useEffect(() => () => setDirty(false), [setDirty]);
-  if (info.state.status === "loading" || profile.state.status === "loading") return <LoadingState />;
+  useEffect(() => {
+    setDirty(nameDirty || emailDirty);
+    return () => setDirty(false);
+  }, [emailDirty, nameDirty, setDirty]);
+  if (info.state.status === "loading") return <LoadingState />;
   if (info.state.status === "error") return <ErrorState message={info.state.message} retry={info.reload} />;
-  if (profile.state.status === "error") return <ErrorState message={profile.state.message} retry={profile.reload} />;
-  const savedProfile = profile.state.value;
+  const currentRevision = info.state.value.revision;
   const save = async (event: FormEvent) => {
     event.preventDefault();
     setMutation({ kind: "saving" });
     try {
-      const value = await responseBody<ProfileDto>(
-        await fetch("/api/passport/profile", {
+      const value = await responseBody<PersonalInfoDto>(
+        await fetch("/api/account/personal-information", {
           method: "PATCH",
           headers: { "content-type": "application/json", "x-csrf-token": csrfToken },
-          body: JSON.stringify({ displayName: name, expectedRevision: savedProfile.revision }),
+          body: JSON.stringify({ displayName: name, expectedRevision: currentRevision }),
         }),
       );
-      profile.setState({ status: "ready", value });
-      setDirty(false);
+      info.setState({ status: "ready", value });
+      setNameDirty(false);
       setMutation({ kind: "saved", message: "Personal information saved." });
-      info.reload();
     } catch (cause) {
       const message = cause instanceof Error ? cause.message : "Could not save.";
       setMutation({ kind: message.includes("another window") ? "stale" : "error", message });
+    }
+  };
+  const requestEmail = async (event: FormEvent) => {
+    event.preventDefault();
+    setEmailMutation({ kind: "saving", message: "Preparing a verified email change…" });
+    try {
+      const result = await responseBody<{ ok: true; message: string }>(
+        await fetch("/api/account/email/change/request", {
+          method: "POST",
+          headers: { "content-type": "application/json", "x-csrf-token": csrfToken },
+          body: JSON.stringify({ email: nextEmail, password }),
+        }),
+      );
+      setNextEmail("");
+      setPassword("");
+      setEmailDirty(false);
+      setEmailMutation({ kind: "saved", message: result.message });
+    } catch (cause) {
+      setEmailMutation({
+        kind: "error",
+        message: cause instanceof Error ? cause.message : "The email change could not be prepared.",
+      });
     }
   };
   const value = info.state.value;
@@ -512,7 +541,7 @@ export function PersonalInformation() {
             required
             onChange={(event) => {
               setName(event.target.value);
-              setDirty(true);
+              setNameDirty(true);
               setMutation({ kind: "idle" });
             }}
           />
@@ -522,13 +551,51 @@ export function PersonalInformation() {
           <strong>{value.primaryEmail ?? "No primary email is available"}</strong>
           <small>{value.emailVerificationState === "VERIFIED" ? "Verified" : value.emailVerificationState}</small>
         </div>
-        <div className="harbor-callout">
-          <strong>Email changes are not currently supported.</strong>
-          <p>{value.emailChange.reason}</p>
-        </div>
         <MutationMessage state={mutation} />
         <button className="button button--primary" disabled={mutation.kind === "saving"}>
           Save display name
+        </button>
+      </form>
+      <form className="harbor-panel harbor-form" onSubmit={requestEmail}>
+        <div>
+          <p className="personal-harbor__eyebrow">Verified account change</p>
+          <h2>Change primary email</h2>
+          <p>
+            Re-enter your password, then verify the new address. Existing sessions are revoked after confirmation, and
+            the previous address receives a security notice.
+          </p>
+        </div>
+        <label>
+          New email address
+          <input
+            type="email"
+            autoComplete="email"
+            value={nextEmail}
+            required
+            onChange={(event) => {
+              setNextEmail(event.target.value);
+              setEmailDirty(true);
+              setEmailMutation({ kind: "idle" });
+            }}
+          />
+        </label>
+        <label>
+          Current password
+          <input
+            type="password"
+            autoComplete="current-password"
+            value={password}
+            required
+            onChange={(event) => {
+              setPassword(event.target.value);
+              setEmailDirty(true);
+              setEmailMutation({ kind: "idle" });
+            }}
+          />
+        </label>
+        <MutationMessage state={emailMutation} />
+        <button className="button button--primary" disabled={emailMutation.kind === "saving"}>
+          Send verification link
         </button>
       </form>
       <section className="harbor-panel">
@@ -571,24 +638,48 @@ type PreferencesDto = { preferences: Preferences; revision: string };
 
 export function PreferenceEditor({ mode }: { mode: "preferences" | "accessibility" | "notifications" }) {
   const resource = useResource<PreferencesDto>("/api/passport/preferences");
+  const { state: currentUser } = useCurrentUser();
   const { setDirty, csrfToken } = usePersonalHarbor();
   const [draft, setDraft] = useState<PreferencesDto | null>(null);
+  const savedPreferences = useRef<Preferences | null>(null);
   const [mutation, setMutation] = useState<{ kind: "idle" | "saving" | "saved" | "error" | "stale"; message?: string }>(
     { kind: "idle" },
   );
   useEffect(() => {
     // Editable preference drafts intentionally hydrate from the authoritative async DTO.
     // eslint-disable-next-line react-hooks/set-state-in-effect
-    if (resource.state.status === "ready") setDraft(resource.state.value);
+    if (resource.state.status === "ready") {
+      savedPreferences.current = resource.state.value.preferences;
+      setDraft(resource.state.value);
+    }
   }, [resource.state]);
   useEffect(() => () => setDirty(false), [setDirty]);
   useEffect(() => {
-    if (!draft) return;
-    document.documentElement.dataset.motionPreference = draft.preferences.experience.motion.toLowerCase();
-    document.documentElement.style.setProperty("--personal-text-scale", String(draft.preferences.experience.textScale));
+    if (draft) applyRuntimePreferences(draft.preferences);
   }, [draft]);
+  useEffect(
+    () => () => {
+      if (savedPreferences.current) applyRuntimePreferences(savedPreferences.current);
+    },
+    [],
+  );
   if (resource.state.status === "error") return <ErrorState message={resource.state.message} retry={resource.reload} />;
   if (resource.state.status === "loading" || !draft) return <LoadingState />;
+  if (mode === "notifications")
+    return (
+      <section className="harbor-panel">
+        <p className="personal-harbor__eyebrow">Delivery truth</p>
+        <h2>Notifications</h2>
+        <div className="harbor-callout">
+          <strong>There are no configurable notification channels yet.</strong>
+          <p>
+            Voyagewright will add controls here only when an in-product inbox or verified external delivery adapter is
+            available and enforced end to end. Stored legacy intents are preserved privately but are not presented as
+            working controls.
+          </p>
+        </div>
+      </section>
+    );
   const update = (next: Preferences) => {
     setDraft({ ...draft, preferences: next });
     setDirty(true);
@@ -596,8 +687,6 @@ export function PreferenceEditor({ mode }: { mode: "preferences" | "accessibilit
   };
   const exp = (patch: Partial<Preferences["experience"]>) =>
     update({ ...draft.preferences, experience: { ...draft.preferences.experience, ...patch } });
-  const notice = (patch: Partial<Preferences["notifications"]>) =>
-    update({ ...draft.preferences, notifications: { ...draft.preferences.notifications, ...patch } });
   const save = async (event: FormEvent) => {
     event.preventDefault();
     setMutation({ kind: "saving" });
@@ -610,192 +699,77 @@ export function PreferenceEditor({ mode }: { mode: "preferences" | "accessibilit
         }),
       );
       setDraft(value);
+      savedPreferences.current = value.preferences;
       resource.setState({ status: "ready", value });
       setDirty(false);
+      if (currentUser.status === "authenticated")
+        publishRuntimePreferences(currentUser.user.accountId, value.preferences);
       setMutation({ kind: "saved", message: "Preferences saved and applied." });
     } catch (cause) {
       const message = cause instanceof Error ? cause.message : "Preferences could not be saved.";
       setMutation({ kind: message.includes("another window") ? "stale" : "error", message });
     }
   };
-  const title =
-    mode === "accessibility"
-      ? "Accessibility preferences"
-      : mode === "notifications"
-        ? "Notification preferences"
-        : "Experience preferences";
+  const title = mode === "accessibility" ? "Accessibility preferences" : "Experience preferences";
   return (
     <form className="harbor-panel harbor-form" onSubmit={save}>
       <h2>{title}</h2>
-      {mode !== "notifications" && (
-        <>
-          <label>
-            Theme
-            <select
-              value={draft.preferences.experience.theme}
-              onChange={(event) => exp({ theme: event.target.value as Preferences["experience"]["theme"] })}
-            >
-              <option value="SYSTEM">Follow system</option>
-              <option value="LIGHT">Light</option>
-              <option value="DARK">Dark</option>
-              <option value="HIGH_CONTRAST">High contrast</option>
-            </select>
-          </label>
-          <label>
-            Motion
-            <select
-              value={draft.preferences.experience.motion}
-              onChange={(event) => exp({ motion: event.target.value as Preferences["experience"]["motion"] })}
-            >
-              <option value="SYSTEM">Follow system</option>
-              <option value="FULL">Full</option>
-              <option value="GENTLE">Gentle</option>
-              <option value="REDUCED">Reduced</option>
-            </select>
-          </label>
-          <label>
-            Text scale <output>{Math.round(draft.preferences.experience.textScale * 100)}%</output>
-            <input
-              type="range"
-              min="0.8"
-              max="2"
-              step="0.1"
-              value={draft.preferences.experience.textScale}
-              onChange={(event) => exp({ textScale: Number(event.target.value) })}
-            />
-          </label>
-          <label>
-            Contrast
-            <select
-              value={draft.preferences.experience.contrast}
-              onChange={(event) => exp({ contrast: event.target.value as Preferences["experience"]["contrast"] })}
-            >
-              <option value="SYSTEM">Follow system</option>
-              <option value="STANDARD">Standard</option>
-              <option value="HIGH">High</option>
-            </select>
-          </label>
-          <label className="harbor-checkbox">
-            <input
-              type="checkbox"
-              checked={draft.preferences.experience.autoplay}
-              onChange={(event) => exp({ autoplay: event.target.checked })}
-            />
-            Allow media autoplay
-          </label>
-          <label className="harbor-checkbox">
-            <input
-              type="checkbox"
-              checked={draft.preferences.experience.lowBandwidthMedia}
-              onChange={(event) => exp({ lowBandwidthMedia: event.target.checked })}
-            />
-            Prefer low-bandwidth media
-          </label>
-        </>
-      )}
+      <>
+        <label>
+          Theme
+          <select
+            value={draft.preferences.experience.theme}
+            onChange={(event) => exp({ theme: event.target.value as Preferences["experience"]["theme"] })}
+          >
+            <option value="SYSTEM">Follow system</option>
+            <option value="LIGHT">Light</option>
+            <option value="DARK">Dark</option>
+            <option value="HIGH_CONTRAST">High contrast</option>
+          </select>
+        </label>
+        <label>
+          Motion
+          <select
+            value={draft.preferences.experience.motion}
+            onChange={(event) => exp({ motion: event.target.value as Preferences["experience"]["motion"] })}
+          >
+            <option value="SYSTEM">Follow system</option>
+            <option value="FULL">Full</option>
+            <option value="GENTLE">Gentle</option>
+            <option value="REDUCED">Reduced</option>
+          </select>
+        </label>
+        <label>
+          Text scale <output>{Math.round(draft.preferences.experience.textScale * 100)}%</output>
+          <input
+            type="range"
+            min="0.8"
+            max="2"
+            step="0.1"
+            value={draft.preferences.experience.textScale}
+            onChange={(event) => exp({ textScale: Number(event.target.value) })}
+          />
+        </label>
+        <label>
+          Contrast
+          <select
+            value={draft.preferences.experience.contrast}
+            onChange={(event) => exp({ contrast: event.target.value as Preferences["experience"]["contrast"] })}
+          >
+            <option value="SYSTEM">Follow system</option>
+            <option value="STANDARD">Standard</option>
+            <option value="HIGH">High</option>
+          </select>
+        </label>
+      </>
       {mode === "accessibility" && (
-        <>
-          <label className="harbor-checkbox">
-            <input
-              type="checkbox"
-              checked={draft.preferences.experience.captions}
-              onChange={(event) => exp({ captions: event.target.checked })}
-            />
-            Prefer captions
-          </label>
-          <label className="harbor-checkbox">
-            <input
-              type="checkbox"
-              checked={draft.preferences.experience.transcripts}
-              onChange={(event) => exp({ transcripts: event.target.checked })}
-            />
-            Prefer transcripts
-          </label>
-          <label className="harbor-checkbox">
-            <input
-              type="checkbox"
-              checked={draft.preferences.experience.audioDescription}
-              onChange={(event) => exp({ audioDescription: event.target.checked })}
-            />
-            Prefer audio descriptions
-          </label>
-          <div className="harbor-callout">
-            <strong>Browser and operating-system accessibility settings remain authoritative.</strong>
-            <p>
-              Reduced motion and forced colors override a conflicting account preference. Reduced mode renders the
-              semantic final state immediately.
-            </p>
-          </div>
-        </>
-      )}
-      {mode === "preferences" && (
-        <>
-          <label className="harbor-checkbox">
-            <input
-              type="checkbox"
-              checked={draft.preferences.discovery.searchable}
-              onChange={(event) =>
-                update({
-                  ...draft.preferences,
-                  discovery: { ...draft.preferences.discovery, searchable: event.target.checked },
-                })
-              }
-            />
-            Allow Profile discovery
-          </label>
-          <label>
-            Invitation policy
-            <select
-              value={draft.preferences.social.invitationPolicy}
-              onChange={(event) =>
-                update({
-                  ...draft.preferences,
-                  social: {
-                    ...draft.preferences.social,
-                    invitationPolicy: event.target.value as Preferences["social"]["invitationPolicy"],
-                  },
-                })
-              }
-            >
-              <option value="ONLY_ME">Only me</option>
-              <option value="CREW_ONLY">Crew only</option>
-              <option value="REGISTERED_USERS">Registered members</option>
-              <option value="PUBLIC">Public</option>
-            </select>
-          </label>
-        </>
-      )}
-      {mode === "notifications" && (
-        <>
+        <div className="harbor-callout">
+          <strong>Browser and operating-system accessibility settings remain authoritative.</strong>
           <p>
-            These preferences control accepted in-product and email intent. They do not claim an external delivery
-            provider is configured.
+            Reduced motion and forced colors override a conflicting account preference. Reduced mode renders the
+            semantic final state immediately.
           </p>
-          <label className="harbor-checkbox">
-            <input
-              type="checkbox"
-              checked={draft.preferences.notifications.product}
-              onChange={(event) => notice({ product: event.target.checked })}
-            />
-            In-product updates
-          </label>
-          <label className="harbor-checkbox">
-            <input
-              type="checkbox"
-              checked={draft.preferences.notifications.email}
-              onChange={(event) => notice({ email: event.target.checked })}
-            />
-            Email updates when delivery is available
-          </label>
-          <label className="harbor-checkbox">
-            <input
-              type="checkbox"
-              checked={draft.preferences.notifications.invitations}
-              onChange={(event) => notice({ invitations: event.target.checked })}
-            />
-            Voyage invitation updates
-          </label>
-        </>
+        </div>
       )}
       <MutationMessage state={mutation} />
       {mutation.kind === "stale" && (
@@ -804,7 +778,7 @@ export function PreferenceEditor({ mode }: { mode: "preferences" | "accessibilit
         </button>
       )}
       <button className="button button--primary" disabled={mutation.kind === "saving"}>
-        Save {mode === "notifications" ? "notifications" : "preferences"}
+        Save preferences
       </button>
     </form>
   );
@@ -902,11 +876,19 @@ type IdentityDto = {
   lastVerifiedAt: string | null;
   revokedAt: string | null;
 };
-type ProviderDto = { provider: string; name: string; available: boolean; link: boolean };
+type ProviderDto = {
+  provider: string;
+  name: string;
+  available: boolean;
+  link: boolean;
+  status: string;
+  externalApproval: string;
+};
 export function LinkedIdentities() {
-  const { requestAction, dialog } = useActionDialog();
   const resource = useResource<{ identities: IdentityDto[]; adapters: ProviderDto[] }>("/api/passport/providers");
   const { csrfToken } = usePersonalHarbor();
+  const [unlinkTarget, setUnlinkTarget] = useState<IdentityDto | null>(null);
+  const [unlinkPassword, setUnlinkPassword] = useState("");
   const [message, setMessage] = useState<{ kind: "idle" | "saving" | "saved" | "error" | "stale"; message?: string }>({
     kind: "idle",
   });
@@ -915,26 +897,21 @@ export function LinkedIdentities() {
   const linked = resource.state.value.identities.filter(
     (identity) => identity.status === "LINKED" && !identity.revokedAt,
   );
-  const unlink = async (identity: IdentityDto) => {
-    if (
-      !(await requestAction({
-        title: `Unlink ${identity.displayName || identity.provider}?`,
-        detail: "Voyagewright will protect your last usable login method and reject an unsafe unlink.",
-        confirmLabel: "Unlink Identity",
-        destructive: true,
-      }))
-    )
-      return;
+  const unlink = async (event: FormEvent) => {
+    event.preventDefault();
+    if (!unlinkTarget) return;
     setMessage({ kind: "saving", message: "Unlinking identity…" });
     try {
       await responseBody(
         await fetch("/api/passport/providers", {
           method: "DELETE",
           headers: { "content-type": "application/json", "x-csrf-token": csrfToken },
-          body: JSON.stringify({ id: identity.id }),
+          body: JSON.stringify({ id: unlinkTarget.id, password: unlinkPassword }),
         }),
       );
       setMessage({ kind: "saved", message: "Identity unlinked." });
+      setUnlinkTarget(null);
+      setUnlinkPassword("");
       resource.reload();
     } catch (cause) {
       setMessage({
@@ -979,8 +956,8 @@ export function LinkedIdentities() {
                       {identity.useForLogin ? " · login enabled" : ""}
                     </span>
                   </div>
-                  <button type="button" className="button button--danger" onClick={() => void unlink(identity)}>
-                    Unlink
+                  <button type="button" className="button button--danger" onClick={() => setUnlinkTarget(identity)}>
+                    Unlink…
                   </button>
                 </li>
               ))}
@@ -989,6 +966,40 @@ export function LinkedIdentities() {
             <p className="harbor-empty">
               No external identities are linked. Your account credential remains the login authority.
             </p>
+          )}
+          {unlinkTarget && (
+            <form className="harbor-reauth" onSubmit={unlink}>
+              <h3>Confirm identity unlink</h3>
+              <p>
+                Re-enter your password to unlink {unlinkTarget.displayName || unlinkTarget.provider}. Voyagewright will
+                reject the change if it would remove your last usable login method.
+              </p>
+              <label>
+                Current password
+                <input
+                  type="password"
+                  autoComplete="current-password"
+                  value={unlinkPassword}
+                  onChange={(event) => setUnlinkPassword(event.target.value)}
+                  required
+                />
+              </label>
+              <div className="personal-harbor__actions">
+                <button className="button button--danger" disabled={message.kind === "saving"}>
+                  Unlink identity
+                </button>
+                <button
+                  type="button"
+                  className="button button--quiet"
+                  onClick={() => {
+                    setUnlinkTarget(null);
+                    setUnlinkPassword("");
+                  }}
+                >
+                  Cancel
+                </button>
+              </div>
+            </form>
           )}
           <MutationMessage state={message} />
         </section>
@@ -1000,26 +1011,26 @@ export function LinkedIdentities() {
                 <li key={provider.provider}>
                   <div>
                     <strong>{provider.name}</strong>
-                    <span>Configured and available in this environment</span>
+                    <span>
+                      {provider.available && provider.link
+                        ? "Configured and available in this environment"
+                        : `Unavailable here — requires ${provider.externalApproval}.`}
+                    </span>
                   </div>
-                  <button type="button" className="button" onClick={() => void begin(provider)}>
-                    Connect
+                  <button
+                    type="button"
+                    className="button"
+                    onClick={() => void begin(provider)}
+                    disabled={!provider.available || !provider.link}
+                  >
+                    {provider.available && provider.link ? "Connect" : "Unavailable"}
                   </button>
                 </li>
               ))}
             </ul>
-          ) : (
-            <div className="harbor-callout">
-              <strong>No external connection is configured.</strong>
-              <p>
-                Partner-gated, planned, disabled, and simulator adapters are intentionally absent from this ordinary
-                product surface.
-              </p>
-            </div>
-          )}
+          ) : null}
         </section>
       </div>
-      {dialog}
     </>
   );
 }
@@ -1169,44 +1180,297 @@ export function SessionManager() {
   );
 }
 
+type AccountExportDto = {
+  id: string;
+  state: string;
+  schemaVersion: number;
+  checksum: string | null;
+  requestedAt: string;
+  readyAt: string | null;
+  expiresAt: string | null;
+  downloadedAt: string | null;
+  failureSummary: string | null;
+  downloadHref: string | null;
+};
 type DataDto = {
-  operations: Array<{
+  policy: { exportTtlHours: number; reactivationWindowDays: number; deletionDelayDays: number };
+  exports: AccountExportDto[];
+  lifecycle: Array<{
     id: string;
-    label: string;
-    status: "AVAILABLE" | "PROVIDER_DEPENDENT" | "NOT_CURRENTLY_SUPPORTED" | "REQUIRES_REAUTHENTICATION";
-    href: string | null;
-    reason: string;
+    kind: string;
+    state: string;
+    requestedAt: string;
+    scheduledFor: string | null;
+    cancellableUntil: string | null;
+    canceledAt: string | null;
+    completedAt: string | null;
   }>;
 };
 export function DataAccount() {
-  const { state, reload } = useResource<DataDto>("/api/account/data");
-  if (state.status === "loading") return <LoadingState />;
-  if (state.status === "error") return <ErrorState message={state.message} retry={reload} />;
+  const resource = useResource<DataDto>("/api/account/data");
+  const { csrfToken } = usePersonalHarbor();
+  const { invalidate } = useCurrentUser();
+  const [exportPassword, setExportPassword] = useState("");
+  const [deactivatePassword, setDeactivatePassword] = useState("");
+  const [deactivateConfirmation, setDeactivateConfirmation] = useState("");
+  const [deletePassword, setDeletePassword] = useState("");
+  const [deleteConfirmation, setDeleteConfirmation] = useState("");
+  const [mutation, setMutation] = useState<{ kind: "idle" | "saving" | "saved" | "error" | "stale"; message?: string }>(
+    { kind: "idle" },
+  );
+  if (resource.state.status === "loading") return <LoadingState />;
+  if (resource.state.status === "error") return <ErrorState message={resource.state.message} retry={resource.reload} />;
+  const run = async (url: string, body: Record<string, string>, recoveryPath?: string) => {
+    setMutation({ kind: "saving", message: "Applying the verified account request…" });
+    try {
+      await responseBody(
+        await fetch(url, {
+          method: "POST",
+          headers: { "content-type": "application/json", "x-csrf-token": csrfToken },
+          body: JSON.stringify(body),
+        }),
+      );
+      if (recoveryPath) {
+        sessionStorage.removeItem("wayfarer-csrf");
+        await invalidate();
+        window.location.assign(recoveryPath);
+        return;
+      }
+      setExportPassword("");
+      setMutation({ kind: "saved", message: "Your export is ready for a limited time." });
+      resource.reload();
+    } catch (cause) {
+      setMutation({
+        kind: "error",
+        message: cause instanceof Error ? cause.message : "The account request could not be completed.",
+      });
+    }
+  };
+  const value = resource.state.value;
   return (
-    <section className="harbor-panel">
-      <h2>Data & account operations</h2>
-      <p>
-        Availability is stated from accepted services. An unavailable operation is not represented by a decorative
-        button.
-      </p>
-      <ul className="harbor-availability-list">
-        {state.value.operations.map((operation) => (
-          <li key={operation.id}>
-            <div>
-              <span className={`harbor-badge harbor-badge--${operation.status.toLowerCase()}`}>
-                {operation.status.replaceAll("_", " ")}
-              </span>
-              <h3>{operation.label}</h3>
-              <p>{operation.reason}</p>
-            </div>
-            {operation.href && (
-              <Link className="button" href={operation.href}>
-                Open
-              </Link>
-            )}
-          </li>
-        ))}
-      </ul>
-    </section>
+    <div className="harbor-stack">
+      <section className="harbor-panel">
+        <p className="personal-harbor__eyebrow">Portable account record</p>
+        <h2>Export my data</h2>
+        <p>
+          A private JSON export is built from your current account, Profile, roles, linked-identity labels, Community
+          activity, and saved records. Provider tokens and credential hashes are excluded. Downloads expire after{" "}
+          {value.policy.exportTtlHours} hours.
+        </p>
+        <form
+          className="harbor-form harbor-form--inline"
+          onSubmit={(event) => {
+            event.preventDefault();
+            void run("/api/account/data/export", { password: exportPassword });
+          }}
+        >
+          <label>
+            Current password
+            <input
+              type="password"
+              autoComplete="current-password"
+              value={exportPassword}
+              onChange={(event) => setExportPassword(event.target.value)}
+              required
+            />
+          </label>
+          <button className="button button--primary" disabled={mutation.kind === "saving"}>
+            Create export
+          </button>
+        </form>
+        {value.exports.length ? (
+          <ul className="harbor-list harbor-export-list">
+            {value.exports.map((item) => (
+              <li key={item.id}>
+                <div>
+                  <strong>{item.state.replaceAll("_", " ")}</strong>
+                  <span>Requested {new Date(item.requestedAt).toLocaleString()}</span>
+                  {item.expiresAt ? <span>Expires {new Date(item.expiresAt).toLocaleString()}</span> : null}
+                  {item.checksum ? <code title="SHA-256 checksum">{item.checksum}</code> : null}
+                </div>
+                {item.downloadHref ? (
+                  <a className="button" href={item.downloadHref} download>
+                    Download JSON
+                  </a>
+                ) : null}
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p className="harbor-empty">No data exports have been requested.</p>
+        )}
+      </section>
+
+      <section className="harbor-panel harbor-danger-zone">
+        <p className="personal-harbor__eyebrow">Reversible account pause</p>
+        <h2>Deactivate account</h2>
+        <p>
+          Deactivation signs out every device and leaves active Player memberships. Chronicle authorship, Voyage
+          history, Community records, and security audit history remain intact. You can reactivate for{" "}
+          {value.policy.reactivationWindowDays} days.
+        </p>
+        <form
+          className="harbor-form"
+          onSubmit={(event) => {
+            event.preventDefault();
+            void run(
+              "/api/account/data/deactivate",
+              { password: deactivatePassword, confirmation: deactivateConfirmation },
+              "/account/reactivate?state=deactivated",
+            );
+          }}
+        >
+          <label>
+            Current password
+            <input
+              type="password"
+              autoComplete="current-password"
+              value={deactivatePassword}
+              onChange={(event) => setDeactivatePassword(event.target.value)}
+              required
+            />
+          </label>
+          <label>
+            Type DEACTIVATE
+            <input
+              value={deactivateConfirmation}
+              onChange={(event) => setDeactivateConfirmation(event.target.value)}
+              pattern="DEACTIVATE"
+              required
+            />
+          </label>
+          <button className="button button--danger" disabled={mutation.kind === "saving"}>
+            Deactivate account
+          </button>
+        </form>
+      </section>
+
+      <section className="harbor-panel harbor-danger-zone harbor-danger-zone--final">
+        <p className="personal-harbor__eyebrow">Delayed destructive request</p>
+        <h2>Delete account</h2>
+        <p>
+          Deletion is scheduled {value.policy.deletionDelayDays} days from confirmation. Every device is signed out and
+          active Player memberships are left immediately. You can cancel before the deadline. At execution, direct
+          account identifiers and Profile presentation are anonymized; minimum integrity, safety, and audit records are
+          retained as tombstoned history. Create and download a private export above first if you want a personal copy.
+        </p>
+        <form
+          className="harbor-form"
+          onSubmit={(event) => {
+            event.preventDefault();
+            void run(
+              "/api/account/data/delete",
+              { password: deletePassword, confirmation: deleteConfirmation },
+              "/account/cancel-deletion?state=scheduled",
+            );
+          }}
+        >
+          <label>
+            Current password
+            <input
+              type="password"
+              autoComplete="current-password"
+              value={deletePassword}
+              onChange={(event) => setDeletePassword(event.target.value)}
+              required
+            />
+          </label>
+          <label>
+            Type DELETE ACCOUNT
+            <input
+              value={deleteConfirmation}
+              onChange={(event) => setDeleteConfirmation(event.target.value)}
+              pattern="DELETE ACCOUNT"
+              required
+            />
+          </label>
+          <button className="button button--danger" disabled={mutation.kind === "saving"}>
+            Schedule account deletion
+          </button>
+        </form>
+      </section>
+      <MutationMessage state={mutation} />
+    </div>
+  );
+}
+
+export function AccountLifecycleRecovery({ mode }: { mode: "reactivate" | "cancel-deletion" }) {
+  const { invalidate } = useCurrentUser();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmation, setConfirmation] = useState("");
+  const [mutation, setMutation] = useState<{ kind: "idle" | "saving" | "saved" | "error" | "stale"; message?: string }>(
+    { kind: "idle" },
+  );
+  const submit = async (event: FormEvent) => {
+    event.preventDefault();
+    setMutation({ kind: "saving", message: mode === "reactivate" ? "Reactivating account…" : "Canceling deletion…" });
+    try {
+      const result = await responseBody<{ ok: true; next: string }>(
+        await fetch(`/api/auth/account/${mode}`, {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({ email, password, ...(mode === "cancel-deletion" ? { confirmation } : {}) }),
+        }),
+      );
+      await invalidate();
+      window.location.assign(result.next);
+    } catch (cause) {
+      setMutation({
+        kind: "error",
+        message: cause instanceof Error ? cause.message : "The recovery request could not be completed.",
+      });
+    }
+  };
+  return (
+    <main className="platform-auth account-flow-page">
+      <div className="auth-ledger">
+        <p className="eyebrow">Voyagewright account recovery</p>
+        <h1>{mode === "reactivate" ? "Reactivate your account" : "Cancel account deletion"}</h1>
+        <p>
+          {mode === "reactivate"
+            ? "Use the verified primary email and password during the recovery window. Your retained account history and workspaces become available again."
+            : "Use the verified primary email and password before the scheduled deletion deadline to restore the account."}
+        </p>
+        <form onSubmit={submit}>
+          <label>
+            <span>Primary email</span>
+            <input
+              type="email"
+              autoComplete="email"
+              value={email}
+              onChange={(event) => setEmail(event.target.value)}
+              required
+            />
+          </label>
+          <label>
+            <span>Password</span>
+            <input
+              type="password"
+              autoComplete="current-password"
+              value={password}
+              onChange={(event) => setPassword(event.target.value)}
+              required
+            />
+          </label>
+          {mode === "cancel-deletion" ? (
+            <label>
+              <span>Type CANCEL DELETION</span>
+              <input
+                value={confirmation}
+                onChange={(event) => setConfirmation(event.target.value)}
+                pattern="CANCEL DELETION"
+                required
+              />
+            </label>
+          ) : null}
+          <button className="brass-button" disabled={mutation.kind === "saving"}>
+            {mode === "reactivate" ? "Reactivate account" : "Cancel deletion"}
+          </button>
+        </form>
+        <MutationMessage state={mutation} />
+        <Link href="/sign-in">Return to sign in</Link>
+      </div>
+    </main>
   );
 }

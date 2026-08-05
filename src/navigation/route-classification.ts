@@ -29,6 +29,18 @@ export const routeShellDefinitions: readonly RouteShellDefinition[] = [
     reason: "Bounded account-merge handoff.",
     exitTarget: "/passport",
   },
+  ...["/account/email-change", "/account/reactivate", "/account/cancel-deletion"].map(
+    (pattern, index) =>
+      ({
+        id: `token-account-recovery-${index + 1}`,
+        pattern,
+        workspace: "account",
+        shellMode: "TOKENIZED",
+        owner: "wayfarer",
+        reason: "Bounded verified account lifecycle recovery handoff.",
+        exitTarget: "/sign-in",
+      }) satisfies RouteShellDefinition,
+  ),
   {
     id: "account-root",
     pattern: "/account",

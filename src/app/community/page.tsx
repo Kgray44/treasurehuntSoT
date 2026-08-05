@@ -21,6 +21,8 @@ export default async function CommunityHarborPage() {
       title="Find your next bearing"
       description="Explore useful Chronicles and shared craft from the Voyagewright Community. Begin with what is already on the shelves; search only when you need a narrower chart."
     >
+      <CommunityDiscoveryBrowser compactLanding />
+
       {shelves.totalEligible ? (
         <div className="community-shelves">
           {shelves.featured.length ? (
@@ -92,8 +94,6 @@ export default async function CommunityHarborPage() {
             ))}
         </div>
       </section>
-
-      <CommunityDiscoveryBrowser />
     </CommunityPageFrame>
   );
 }

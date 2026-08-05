@@ -1,9 +1,11 @@
 import { NextResponse } from "next/server";
-import { accountDataAvailability } from "@/homeport/personal-harbor";
 import { requireWayfarerAccount } from "@/wayfarer/http";
+import { accountDataOverview } from "@/wayfarer/account-lifecycle";
 
 export async function GET() {
   const session = await requireWayfarerAccount();
   if (!session) return NextResponse.json({ error: "Sign in again to continue." }, { status: 401 });
-  return NextResponse.json(accountDataAvailability(), { headers: { "Cache-Control": "private, no-store" } });
+  return NextResponse.json(await accountDataOverview(session.accountId), {
+    headers: { "Cache-Control": "private, no-store" },
+  });
 }

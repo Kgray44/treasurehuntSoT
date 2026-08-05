@@ -445,7 +445,16 @@ const emit = (sessionId: string, event: { id: string; eventType: string; sequenc
     createdAt: event.createdAt.toISOString(),
   });
 
-export async function startTaleSession(slug: string, ownerLabel?: string) {
+export async function startTaleSession(
+  slug: string,
+  input: {
+    ownerLabel?: string;
+    aliasEdited?: boolean;
+    accountId?: string;
+    profileId?: string;
+    canonicalDisplayName?: string;
+  } = {},
+) {
   const tale = await db.chronicle.findFirst({
     where: {
       slug,
@@ -462,19 +471,22 @@ export async function startTaleSession(slug: string, ownerLabel?: string) {
   if (!first) throw new Error("This published Chronicle has no playable first Passage.");
   const token = randomBytes(32).toString("base64url");
   const key = randomUUID();
+  const signedIn = Boolean(input.accountId && input.profileId && input.canonicalDisplayName);
+  const alias = (input.ownerLabel?.trim() || input.canonicalDisplayName || "Guest Player").slice(0, 80);
+  if (signedIn && !input.aliasEdited && alias !== input.canonicalDisplayName)
+    throw new Error("Use Edit for this Chronicle before choosing a Chronicle-specific Player name.");
   const created = await db.$transaction(async (tx) => {
-    const player = await tx.playerProfile.create({
-      data: {
-        displayName: ownerLabel?.trim() || "Guest Player",
-        preferences: JSON.stringify({ compatibilitySessionCookie: true }),
-      },
-    });
+    const player = signedIn
+      ? await tx.playerProfile.findUniqueOrThrow({ where: { id: input.profileId! } })
+      : await tx.playerProfile.create({
+          data: { displayName: alias, preferences: JSON.stringify({ compatibilitySessionCookie: true }) },
+        });
     const session = await tx.taleSession.create({
       data: {
         taleId: tale.id,
         publishedVersionId: version.id,
-        ownerLabel: ownerLabel?.trim() || "Guest crew",
-        voyageName: ownerLabel?.trim() ? `${ownerLabel.trim()}'s voyage` : "Guest voyage",
+        ownerLabel: alias,
+        voyageName: `${alias}'s voyage`,
         accessTokenHash: digest(token),
         launchedAt: new Date(),
         currentChapterId: chapterByBlock(snapshot, first.id)?.id,
@@ -486,6 +498,8 @@ export async function startTaleSession(slug: string, ownerLabel?: string) {
         playthroughId: session.id,
         playerProfileId: player.id,
         status: "ACTIVE_MEMBER",
+        participationAlias: alias,
+        participationAliasEditedAt: signedIn && input.aliasEdited ? new Date() : null,
         joinedAt: session.startedAt,
       },
     });
@@ -500,12 +514,13 @@ export async function startTaleSession(slug: string, ownerLabel?: string) {
     const event = await enterBlock(tx, session, snapshot, first, "player", null, key);
     await tx.platformAuditEvent.create({
       data: {
-        actorType: "ANONYMOUS",
+        actorType: signedIn ? "ACCOUNT" : "ANONYMOUS",
+        actorAccountId: input.accountId,
         action: "COMPATIBILITY_PLAYTHROUGH_STARTED",
         resourceType: "PLAYTHROUGH",
         resourceId: session.id,
         correlationId: key,
-        metadata: JSON.stringify({ taleId: tale.id, versionId: version.id }),
+        metadata: JSON.stringify({ taleId: tale.id, versionId: version.id, aliasEdited: Boolean(input.aliasEdited) }),
       },
     });
     return { session, event };

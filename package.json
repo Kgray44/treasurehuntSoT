@@ -100,6 +100,7 @@
     "homeport:phase7:validate": "node scripts/homeport/validate-phase7-whole-voyage.mjs",
     "homeport:phase7:test": "node --test tests/homeport/phase7-whole-voyage.test.mjs",
     "homeport:phase7:correction:validate:architecture": "node scripts/homeport/validate-phase7-owner-correction-round1-architecture.mjs",
+    "homeport:account-lifecycle:process": "tsx scripts/homeport/process-account-lifecycle.ts",
     "homeport:phase2:e2e": "playwright test -c playwright.homeport-phase2.config.ts",
     "homeport:phase3:e2e": "playwright test -c playwright.homeport-phase3.config.ts",
     "homeport:phase4:fixture": "node scripts/homeport/seed-phase4-fixture.mjs",

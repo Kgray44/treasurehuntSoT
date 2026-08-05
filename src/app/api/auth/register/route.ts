@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { AccountError, registerAccount } from "@/wayfarer/accounts";
 import { safeReturnTo } from "@/homeport/return-to";
+import { consumeRateLimit, rateLimitHeaders } from "@/lib/rate-limit";
+import { hashToken } from "@/lib/security";
 import { setWayfarerCookie } from "@/wayfarer/http";
 
 const schema = z.object({
@@ -15,6 +17,15 @@ export async function POST(request: Request) {
   const parsed = schema.safeParse(await request.json().catch(() => null));
   if (!parsed.success)
     return NextResponse.json({ error: "Enter an email, password, and display name." }, { status: 400 });
+  const rate = consumeRateLimit(
+    `wayfarer-register:${hashToken(`${request.headers.get("x-forwarded-for") ?? "local"}:${parsed.data.email.toLowerCase()}`)}`,
+    { limit: 5, windowMs: 60 * 60_000 },
+  );
+  if (!rate.allowed)
+    return NextResponse.json(
+      { error: "Wait before trying to create this account again." },
+      { status: 429, headers: rateLimitHeaders(rate) },
+    );
   try {
     const { returnTo, ...accountInput } = parsed.data;
     const result = await registerAccount({
