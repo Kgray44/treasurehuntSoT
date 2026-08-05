@@ -105,11 +105,16 @@ test(`Journey F: community discovery`, async ({ page }) => {
   const account = await signIn(page, "PLAYER_ONLY");
   await globalDestination(page, "Community Harbor");
   await expect(page.getByRole("heading", { name: "Featured at the Harbor" })).toBeVisible();
-  await page
-    .getByRole("navigation", { name: "Community Harbor districts" })
-    .getByRole("link", { name: "Chronicles" })
-    .click();
-  await page.getByRole("link", { name: "Clockwork Reef Almanac" }).first().click();
+  await settledDeclaredLinkNavigation(
+    page,
+    page.getByRole("navigation", { name: "Community Harbor districts" }).getByRole("link", { name: "Chronicles" }),
+    "Community Chronicle district",
+  );
+  await settledDeclaredLinkNavigation(
+    page,
+    page.getByRole("link", { name: "Clockwork Reef Almanac" }).first(),
+    "Community Chronicle detail",
+  );
   await expect(page).toHaveURL(/\/community\/clockwork-reef-chronicle$/u);
   await expect(page.getByRole("heading", { name: "Clockwork Reef Almanac", level: 1 })).toBeVisible();
   await page.getByRole("button", { name: "Save", exact: true }).click();
@@ -332,11 +337,16 @@ test(`Journey O: final whole-voyage rehearsal`, async ({ page }) => {
   await accountDestination(page, account, "Player");
   await accountDestination(page, account, "Chronicle Passport");
   await globalDestination(page, "Community Harbor");
-  await page
-    .getByRole("navigation", { name: "Community Harbor districts" })
-    .getByRole("link", { name: "Chronicles" })
-    .click();
-  await page.getByRole("link", { name: "Clockwork Reef Almanac" }).first().click();
+  await settledDeclaredLinkNavigation(
+    page,
+    page.getByRole("navigation", { name: "Community Harbor districts" }).getByRole("link", { name: "Chronicles" }),
+    "Community Chronicle district",
+  );
+  await settledDeclaredLinkNavigation(
+    page,
+    page.getByRole("link", { name: "Clockwork Reef Almanac" }).first(),
+    "Community Chronicle detail",
+  );
   await expect(page).toHaveURL(/\/community\/clockwork-reef-chronicle$/u);
   await expect(page.getByRole("heading", { name: "Clockwork Reef Almanac", level: 1 })).toBeVisible();
   await page.getByRole("button", { name: "Save", exact: true }).click();

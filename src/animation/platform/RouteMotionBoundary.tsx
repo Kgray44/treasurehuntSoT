@@ -38,7 +38,7 @@ export function RouteMotionBoundary({ pathname, children }: { pathname: string; 
     };
   }, [pathname]);
 
-  if (pathname === "/") {
+  if (pathname === "/" || mode === "reduced") {
     return (
       <div className="product-route-layer" data-route-layer={pathname}>
         {children}
@@ -53,9 +53,9 @@ export function RouteMotionBoundary({ pathname, children }: { pathname: string; 
           key={pathname}
           className="product-route-layer"
           data-route-layer={pathname}
-          initial={mode === "reduced" ? false : { opacity: 0, y: routeToken.distancePx }}
+          initial={{ opacity: 0, y: routeToken.distancePx }}
           animate={{ opacity: 1, y: 0 }}
-          exit={mode === "reduced" ? { opacity: 1 } : { opacity: 0, y: -Math.max(2, routeToken.distancePx / 2) }}
+          exit={{ opacity: 0, y: -Math.max(2, routeToken.distancePx / 2) }}
           transition={{ duration: routeToken.durationSeconds, ease: platformMotionEasing("route") }}
         >
           {children}
