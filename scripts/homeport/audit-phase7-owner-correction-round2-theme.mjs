@@ -44,6 +44,14 @@ for (const file of themedStyles) {
 }
 if (missingLightCoverage.length)
   throw new Error(`HOMEPORT_ROUND2_LIGHT_COVERAGE_MISSING:${missingLightCoverage.join(",")}`);
+const platformSource = await read("src/styles/platform.css");
+if (
+  !/\.auth-ledger button:not\(\.brass-button\)[\s\S]*?color:\s*#fff6e5;[\s\S]*?background:\s*#174747;/u.test(
+    platformSource,
+  )
+) {
+  throw new Error("HOMEPORT_ROUND2_PARCHMENT_BUTTON_CONTRAST_UNGOVERNED");
+}
 
 const contrastChecks = [
   ["dark heading", "#fff6e5", "#07191c", 4.5],
@@ -58,6 +66,7 @@ const contrastChecks = [
   ["light inactive", "#3d5d5b", "#fff9eb", 4.5],
   ["light metadata", "#486664", "#fff9eb", 4.5],
   ["light disabled", "#718481", "#fff9eb", 3],
+  ["parchment-panel button", "#fff6e5", "#174747", 4.5],
 ];
 const results = contrastChecks.map(([name, foreground, background, minimum]) => {
   const ratio = contrast(String(foreground), String(background));

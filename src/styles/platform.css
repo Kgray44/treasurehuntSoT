@@ -354,10 +354,12 @@ html[data-motion-level="reduced"] .platform-relic *,
   }
 }
 
-.auth-ledger button:not(.brass-button),
+.auth-ledger button:not(.brass-button):not([role="tab"]),
 .invitation-sheet button:not(.brass-button),
 .waiting-room > section button:not(.brass-button) {
-  color: var(--parchment-50);
+  border-color: #315f5b;
+  color: #fff6e5;
+  background: #174747;
 }
 
 .auth-ledger label,
