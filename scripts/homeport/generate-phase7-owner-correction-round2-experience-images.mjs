@@ -97,7 +97,6 @@ async function generate() {
   const records = [];
   try {
     const authStorageState = await authenticatedStorageState(browser, handoff, "SERA");
-    const restrictedStorageState = await authenticatedStorageState(browser, handoff, "RESTRICTED_ACCOUNT");
     await captureGroup(browser, concreteRoutes, records, {
       root: "Desktop",
       theme: "SYSTEM",
@@ -126,7 +125,7 @@ async function generate() {
         });
     await captureRepresentativeStates(browser, records, {
       authStorageState,
-      restrictedStorageState,
+      handoff,
     });
   } finally {
     await browser.close();
@@ -219,10 +218,7 @@ async function generate() {
     };
     const auth = await newCaptureContext(browserInstance, { ...options, storageState: storageStates.authStorageState });
     const anonymous = await newCaptureContext(browserInstance, options);
-    const restricted = await newCaptureContext(browserInstance, {
-      ...options,
-      storageState: storageStates.restrictedStorageState,
-    });
+    const restricted = await newCaptureContext(browserInstance, options);
     try {
       await setTheme(auth.page, "DARK");
 
@@ -242,10 +238,11 @@ async function generate() {
         productArea: "Permission_and_Restrictions",
         accountAlias: "SERA",
       });
-      await stateCapture(restricted.page, output, options, {
+      await attemptRestrictedSignIn(restricted.page, storageStates.handoff);
+      await screenshotState(restricted.page, output, options, {
         id: "restricted-account",
-        route: "/account",
-        routePattern: "/account",
+        route: "/sign-in",
+        routePattern: "/sign-in",
         state: "RESTRICTED",
         productArea: "Permission_and_Restrictions",
         accountAlias: "RESTRICTED_ACCOUNT",
@@ -330,7 +327,7 @@ async function generate() {
       });
       await auth.page.unroute("**/api/community/discover?**");
     } finally {
-      await Promise.all([signOut(auth.page), signOut(restricted.page)]);
+      await signOut(auth.page);
       await Promise.all([auth.context.close(), anonymous.context.close(), restricted.context.close()]);
     }
 
@@ -591,6 +588,16 @@ async function signIn(page, handoff, alias) {
   }
   if (["anonymous", "loading", "unavailable"].includes(context.status))
     throw new Error(`HOMEPORT_EXPERIENCE_SIGN_IN_FAILED:${alias}:${context.status}`);
+}
+
+async function attemptRestrictedSignIn(page, handoff) {
+  const account = handoff.accounts.RESTRICTED_ACCOUNT;
+  if (!account) throw new Error("HOMEPORT_EXPERIENCE_RESTRICTED_ALIAS_MISSING");
+  await settledGoto(page, "/sign-in");
+  await page.getByLabel("Email or legacy Player name").fill(account.email);
+  await page.getByLabel("Password").fill(handoff.password);
+  await page.getByRole("button", { name: "Continue" }).click();
+  await page.getByRole("alert").filter({ hasText: /restricted|unavailable|cannot sign in/iu }).waitFor();
 }
 
 async function signOut(page) {
