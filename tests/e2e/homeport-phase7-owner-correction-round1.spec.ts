@@ -417,6 +417,7 @@ test("Journey Q: Community reviews", async ({ page }) => {
       archivedAt: null,
       removedAt: null,
       currentReleaseId: { not: null },
+      currentRelease: { sourcePublishedTaleVersionId: { not: null } },
       id: { notIn: reviewedListingIds },
       owner: { visibility: "COMMUNITY", moderationStatus: "ACTIVE", creatorStatus: { not: "SUSPENDED" } },
     },
