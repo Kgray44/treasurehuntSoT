@@ -423,10 +423,42 @@ test("Journey Q: Community reviews", async ({ page }) => {
     orderBy: { id: "asc" },
   });
   expect(listing).toBeTruthy();
+  const reviewProfile = await db.playerProfile.findUnique({ where: { accountId: account.accountId! } });
+  const reviewRelease = await db.communityRelease.findUnique({
+    where: { id: listing!.currentReleaseId! },
+    select: { sourcePublishedTaleVersionId: true },
+  });
+  const completedSession = await db.taleSession.findFirst({
+    where: {
+      status: "COMPLETED",
+      previewMode: false,
+      publishedVersionId: reviewRelease!.sourcePublishedTaleVersionId!,
+      completedAt: { not: null },
+    },
+  });
+  expect(reviewProfile).toBeTruthy();
+  expect(completedSession).toBeTruthy();
+  await db.playthroughMembership.upsert({
+    where: {
+      playthroughId_playerProfileId: {
+        playthroughId: completedSession!.id,
+        playerProfileId: reviewProfile!.id,
+      },
+    },
+    update: { status: "COMPLETED_MEMBER", completedAt: completedSession!.completedAt },
+    create: {
+      playthroughId: completedSession!.id,
+      playerProfileId: reviewProfile!.id,
+      role: "PLAYER",
+      status: "COMPLETED_MEMBER",
+      joinedAt: completedSession!.startedAt,
+      completedAt: completedSession!.completedAt,
+    },
+  });
   await page.goto(`/community/${listing!.slug}`);
   await expect(page.getByRole("heading", { name: "Community reviews" })).toBeVisible();
   await capture(page, "HP-OWCR1-EV-W-COMMUNITY-REVIEW-COMPOSER");
-  await page.getByLabel(/Rating/u).selectOption("4");
+  await page.getByRole("combobox", { name: /Rating/u }).selectOption("4");
   await page.getByLabel("Preview-safe review").fill("A responsive synthetic review for the correction journey.");
   await page.getByLabel(/Include spoiler details/u).check();
   await page
