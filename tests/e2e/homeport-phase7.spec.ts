@@ -45,9 +45,9 @@ test(`Journey A: account creation`, async ({ page }) => {
   const delivery = await waitForDelivery("VERIFY_EMAIL", "registration-candidate@phase7.example.test");
   await page.goto(`/verify-email?token=${encodeURIComponent(delivery.token!)}`);
   await page.getByRole("button", { name: "Continue" }).click();
+  await expect(page.getByText("Your email is verified. Continue to your account.")).toBeVisible();
+  await page.goto("/account/profile");
   await expect(page.getByRole("button", { name: "Phase 7 Registration Candidate" })).toBeVisible();
-  const signedIn = await accountMenu(page, "Phase 7 Registration Candidate");
-  await signedIn.getByRole("link", { name: "View My Profile" }).click();
   await expect(page.getByRole("heading", { name: "Public Profile", exact: true })).toBeVisible();
   await expect(page.getByText("Choose a handle to create a public Profile destination.")).toBeVisible();
   await capture(page, "registered-profile");
