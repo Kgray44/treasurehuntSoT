@@ -96,30 +96,38 @@ async function generate() {
   const browserVersion = browser.version();
   const records = [];
   try {
-    await captureGroup(browser, handoff, concreteRoutes, records, {
+    const authStorageState = await authenticatedStorageState(browser, handoff, "SERA");
+    const restrictedStorageState = await authenticatedStorageState(browser, handoff, "RESTRICTED_ACCOUNT");
+    await captureGroup(browser, concreteRoutes, records, {
       root: "Desktop",
       theme: "SYSTEM",
       viewportName: "desktop-1440x900",
       viewport: { width: 1440, height: 900 },
       colorScheme: "dark",
+      authStorageState,
     });
-    await captureGroup(browser, handoff, criticalRoutes, records, {
+    await captureGroup(browser, criticalRoutes, records, {
       root: "Mobile",
       theme: "SYSTEM",
       viewportName: "mobile-390x844",
       viewport: { width: 390, height: 844 },
       colorScheme: "dark",
+      authStorageState,
     });
     for (const theme of ["DARK", "LIGHT"])
       for (const mobile of [false, true])
-        await captureGroup(browser, handoff, criticalRoutes, records, {
+        await captureGroup(browser, criticalRoutes, records, {
           root: `${theme === "DARK" ? "Dark_Mode" : "Light_Mode"}/${mobile ? "Mobile" : "Desktop"}`,
           theme,
           viewportName: mobile ? "mobile-390x844" : "desktop-1440x900",
           viewport: mobile ? { width: 390, height: 844 } : { width: 1440, height: 900 },
           colorScheme: theme === "DARK" ? "dark" : "light",
+          authStorageState,
         });
-    await captureRepresentativeStates(browser, handoff, representatives, records);
+    await captureRepresentativeStates(browser, records, {
+      authStorageState,
+      restrictedStorageState,
+    });
   } finally {
     await browser.close();
   }
@@ -159,11 +167,10 @@ async function generate() {
     })}\n`,
   );
 
-  async function captureGroup(browserInstance, credentials, groupRoutes, output, options) {
-    const auth = await newCaptureContext(browserInstance, options);
+  async function captureGroup(browserInstance, groupRoutes, output, options) {
+    const auth = await newCaptureContext(browserInstance, { ...options, storageState: options.authStorageState });
     const anonymous = await newCaptureContext(browserInstance, options);
     try {
-      await signIn(auth.page, credentials, "SERA");
       await setTheme(auth.page, options.theme);
       for (const route of groupRoutes) {
         const page = needsAnonymous(route) ? anonymous.page : auth.page;
@@ -171,7 +178,6 @@ async function generate() {
         await captureRoute(page, route, output, options, accountAlias);
       }
     } finally {
-      await signOut(auth.page);
       await Promise.all([auth.context.close(), anonymous.context.close()]);
     }
   }
@@ -203,7 +209,7 @@ async function generate() {
     );
   }
 
-  async function captureRepresentativeStates(browserInstance, credentials, values, output) {
+  async function captureRepresentativeStates(browserInstance, output, storageStates) {
     const options = {
       root: "Desktop",
       theme: "DARK",
@@ -211,13 +217,14 @@ async function generate() {
       viewport: { width: 1440, height: 900 },
       colorScheme: "dark",
     };
-    const auth = await newCaptureContext(browserInstance, options);
+    const auth = await newCaptureContext(browserInstance, { ...options, storageState: storageStates.authStorageState });
     const anonymous = await newCaptureContext(browserInstance, options);
-    const restricted = await newCaptureContext(browserInstance, options);
+    const restricted = await newCaptureContext(browserInstance, {
+      ...options,
+      storageState: storageStates.restrictedStorageState,
+    });
     try {
-      await signIn(auth.page, credentials, "SERA");
       await setTheme(auth.page, "DARK");
-      await signIn(restricted.page, credentials, "RESTRICTED_ACCOUNT");
 
       await stateCapture(auth.page, output, options, {
         id: "community-empty",
@@ -537,6 +544,7 @@ async function newCaptureContext(browser, options) {
     colorScheme: options.colorScheme,
     reducedMotion: "reduce",
     locale: "en-US",
+    storageState: options.storageState,
   });
   await context.addInitScript(
     ({ theme }) => {
@@ -551,6 +559,20 @@ async function newCaptureContext(browser, options) {
   const page = await context.newPage();
   page.setDefaultTimeout(15_000);
   return { context, page };
+}
+
+async function authenticatedStorageState(browser, handoff, alias) {
+  const capture = await newCaptureContext(browser, {
+    theme: "SYSTEM",
+    viewport: { width: 1440, height: 900 },
+    colorScheme: "dark",
+  });
+  try {
+    await signIn(capture.page, handoff, alias);
+    return await capture.context.storageState();
+  } finally {
+    await capture.context.close();
+  }
 }
 
 async function signIn(page, handoff, alias) {
