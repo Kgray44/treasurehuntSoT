@@ -157,16 +157,19 @@ test("Journey J: fast Community success has no loading or error flash", async ({
 
 test("Journey K: unresolved Community request reveals loading only after 500 ms", async ({ page }) => {
   await begin(page);
+  await page.goto("/community/chronicles");
   let release!: () => void;
   let intercepted!: () => void;
   const gate = new Promise<void>((resolve) => (release = resolve));
   const requestIntercepted = new Promise<void>((resolve) => (intercepted = resolve));
-  await page.route("**/community**", async (route) => {
+  await page.route("**/api/community/discover?**", async (route) => {
     intercepted();
     await gate;
     await route.continue();
   });
-  const navigation = page.getByRole("link", { name: "Community Harbor", exact: true }).click();
+  const search = page.getByRole("searchbox", { name: "Search public Community Harbor" });
+  await search.fill("coast");
+  const navigation = search.press("Enter");
   await requestIntercepted;
   await page.waitForTimeout(450);
   await expect(page.locator(".ui-loading-state")).toHaveCount(0);
