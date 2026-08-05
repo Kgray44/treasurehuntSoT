@@ -279,7 +279,7 @@ test("Journey K: Public Profile identity for review", async ({ page }) => {
   await expect(page.getByRole("form", { name: "Write a review" })).toBeVisible();
   await expect(page.getByText(/Community Profile/u)).toHaveCount(0);
   await capture(page, "HP-OWCR2-EV-Q-PUBLIC-PROFILE-REVIEW");
-  await page.getByLabel(/Rating/u).selectOption("5");
+  await page.getByRole("combobox", { name: /Rating/u }).selectOption("5");
   await page.getByLabel("Preview-safe review").fill("Public Profile identity accepted for this Round 2 review.");
   await page.getByRole("button", { name: "Save review" }).click();
   await expect(page.getByText("Your review was saved.")).toBeVisible();
@@ -305,7 +305,7 @@ test("Journey L: Missing public Profile setup", async ({ page }) => {
     new RegExp(`${escapeRegex(new URL(detail, "http://local").pathname)}#community-review-composer$`, "u"),
   );
   await expect(page.getByRole("form", { name: "Write a review" })).toBeVisible();
-  await page.getByLabel(/Rating/u).selectOption("4");
+  await page.getByRole("combobox", { name: /Rating/u }).selectOption("4");
   await page.getByLabel("Preview-safe review").fill("Profile setup returned to the intended Chronicle context.");
   await page.getByRole("button", { name: "Save review" }).click();
   await expect(page.getByText("Your review was saved.")).toBeVisible();
@@ -346,12 +346,16 @@ test("Journey N: Rating aggregation", async ({ page }) => {
   const listing = await reviewListing();
   const initial = await eligibleReviewSummary(listing.id);
   await page.goto(`/community/${encodeURIComponent(listing.slug)}`);
-  await page.getByLabel(/Rating/u).selectOption("5");
+  await page.getByRole("combobox", { name: /Rating/u }).selectOption("5");
   await page.getByLabel("Preview-safe review").fill("Round 2 aggregate create evidence.");
   await page.getByRole("button", { name: "Save review" }).click();
   await expect.poll(async () => (await eligibleReviewSummary(listing.id)).count).toBe(initial.count + 1);
   await page.getByRole("button", { name: "Edit my review" }).click();
-  await page.getByRole("heading", { name: "Edit your review" }).locator("..").getByLabel(/Rating/u).selectOption("2");
+  await page
+    .getByRole("heading", { name: "Edit your review" })
+    .locator("..")
+    .getByRole("combobox", { name: /Rating/u })
+    .selectOption("2");
   await page.getByRole("button", { name: "Save changes" }).click();
   await expect(page.getByText("Your review changes were saved.")).toBeVisible();
   expect((await eligibleReviewSummary(listing.id)).average).not.toBe(initial.average);
@@ -398,7 +402,7 @@ test("Journey P: Completed Chronicle review later", async ({ page }) => {
   await expect(page.getByRole("link", { name: "Review Chronicle" })).toBeVisible();
   await capture(page, "HP-OWCR2-EV-W-PASSPORT-REVIEW-ENTRY");
   await settledLink(page, page.getByRole("link", { name: "Review Chronicle" }).first());
-  await page.getByLabel(/Rating/u).selectOption("5");
+  await page.getByRole("combobox", { name: /Rating/u }).selectOption("5");
   await page.getByLabel("Preview-safe review").fill("A verified-completion review submitted from Passport history.");
   await page.getByRole("button", { name: "Save review" }).click();
   await expect(page.getByText("A verified-completion review submitted from Passport history.")).toBeVisible();
