@@ -281,20 +281,22 @@ export async function materializeChronicleHistory(playerProfileId: string) {
       projectionReason: null,
       lastDerivedAt: new Date(),
     };
-    const record = existing
-      ? await db.playerChronicleRecord.update({ where: { id: existing.id }, data })
-      : await db.playerChronicleRecord.create({
-          data: {
-            ...data,
-            playerProfileId,
-            sourcePlaythroughId: membership.playthroughId,
-            chronicleTitleSnapshot: snapshot.tale.title,
-            chronicleCoverSnapshot: snapshot.tale.coverAssetId ?? membership.playthrough.tale.coverAssetId,
-            creatorAttributionSnapshot: membership.playthrough.tale.creatorId,
-            playerNameSnapshot: membership.player.displayName,
-            playerAvatarSnapshot: membership.player.avatarMedia?.storageKey ?? null,
-          },
-        });
+    const record = await db.playerChronicleRecord.upsert({
+      where: {
+        playerProfileId_sourcePlaythroughId: { playerProfileId, sourcePlaythroughId: membership.playthroughId },
+      },
+      update: data,
+      create: {
+        ...data,
+        playerProfileId,
+        sourcePlaythroughId: membership.playthroughId,
+        chronicleTitleSnapshot: snapshot.tale.title,
+        chronicleCoverSnapshot: snapshot.tale.coverAssetId ?? membership.playthrough.tale.coverAssetId,
+        creatorAttributionSnapshot: membership.playthrough.tale.creatorId,
+        playerNameSnapshot: membership.player.displayName,
+        playerAvatarSnapshot: membership.player.avatarMedia?.storageKey ?? null,
+      },
+    });
     await Promise.all(
       membership.playthrough.memberships.map((participant) =>
         db.playerChronicleParticipantSnapshot.upsert({

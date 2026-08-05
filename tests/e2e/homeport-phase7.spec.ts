@@ -40,7 +40,8 @@ test(`Journey A: account creation`, async ({ page }) => {
   await expect(page.getByRole("button", { name: "Phase 7 Registration Candidate" })).toBeVisible();
   const signedIn = await accountMenu(page, "Phase 7 Registration Candidate");
   await signedIn.getByRole("link", { name: "View My Profile" }).click();
-  await expect(page.getByRole("heading", { name: "Overview", exact: true })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Public Profile", exact: true })).toBeVisible();
+  await expect(page.getByText("Choose a handle to create a public Profile destination.")).toBeVisible();
   await capture(page, "registered-profile");
   const profileMenu = await accountMenu(page, "Phase 7 Registration Candidate");
   await profileMenu.getByRole("button", { name: "Sign out" }).click();
@@ -51,9 +52,12 @@ test(`Journey A: account creation`, async ({ page }) => {
 
 test(`Journey B: returning account`, async ({ page }) => {
   const account = await signIn(page, "RETURNING_FULL_CAPABILITY");
-  for (const destination of ["Player", "Captain", "Creator Studio", "View My Profile"])
-    await accountDestination(page, account, destination);
-  await expect(page.getByText("At a glance", { exact: true })).toBeVisible();
+  await accountDestination(page, account, "All Workspaces");
+  await expect(page.getByRole("heading", { name: "All Workspaces" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Captain and Creator transitions are paused" })).toBeVisible();
+  await accountDestination(page, account, "View My Profile");
+  await expect(page.getByRole("heading", { name: account.displayName })).toBeVisible();
+  await expect(page.getByText("Owner preview", { exact: true })).toBeVisible();
   await capture(page, "cross-workspace-account");
   const menu = await accountMenu(page, account.displayName);
   await menu.getByRole("button", { name: "Sign out" }).click();
@@ -74,7 +78,8 @@ test(`Journey C: player`, async ({ page }) => {
 
 test(`Journey D: captain`, async ({ page }) => {
   const account = await signIn(page, "RETURNING_FULL_CAPABILITY");
-  await accountDestination(page, account, "Captain");
+  await leaveActiveChronicles(page, account);
+  await enterWorkspaceFromOverview(page, "Captain");
   await expect(page.getByRole("heading", { name: /Captain/u }).first()).toBeVisible();
   await clickFirstRoute(page, "/captain/sessions/");
   await expect(page.getByRole("heading", { name: "The Lantern Coast", level: 1 })).toBeVisible();
@@ -84,7 +89,8 @@ test(`Journey D: captain`, async ({ page }) => {
 
 test(`Journey E: creator`, async ({ page }) => {
   const account = await signIn(page, "RETURNING_FULL_CAPABILITY");
-  await accountDestination(page, account, "Creator Studio");
+  await leaveActiveChronicles(page, account);
+  await enterWorkspaceFromOverview(page, "Creator");
   await expect(page.getByRole("heading", { name: "Voyagewright Studio" })).toBeVisible();
   const chronicle = page.locator("main a[href^='/studio/tales/']").first();
   if (await chronicle.isVisible()) await chronicle.click();
@@ -118,7 +124,7 @@ test(`Journey F: community discovery`, async ({ page }) => {
 
 test(`Journey G: profile`, async ({ page }) => {
   const account = await signIn(page, "RETURNING_FULL_CAPABILITY");
-  await accountDestination(page, account, "View My Profile");
+  await accountDestination(page, account, "Personal Harbor");
   const sections = page.getByRole("navigation", { name: "Personal Harbor sections" });
   for (const name of [
     "Public Profile",
@@ -131,10 +137,10 @@ test(`Journey G: profile`, async ({ page }) => {
     "Security",
     "Sessions",
   ]) {
-    const link = sections.getByRole("link", { name, exact: true });
+    const link = sections.getByRole("link", { name, exact: true }).first();
     if (await link.isVisible()) await link.click();
   }
-  await sections.getByRole("link", { name: "Preferences", exact: true }).click();
+  await sections.getByRole("link", { name: "Preferences", exact: true }).first().click();
   const theme = page.getByLabel("Theme");
   await theme.selectOption("DARK");
   await page.getByRole("button", { name: "Save preferences" }).click();
@@ -192,7 +198,8 @@ test(`Journey H: chronicle passport`, async ({ page }) => {
   await expect(page.getByText(/No eligible saved items|Eligibility is checked/u).first()).toBeVisible();
   await capture(page, "passport-artifacts-and-saved");
   await accountDestination(page, account, "View My Profile");
-  await expect(page.getByText("At a glance", { exact: true })).toBeVisible();
+  await expect(page.getByRole("heading", { name: account.displayName })).toBeVisible();
+  await expect(page.getByText("Owner preview", { exact: true })).toBeVisible();
 });
 
 test(`Journey I: password recovery`, async ({ page }) => {
@@ -333,8 +340,10 @@ test(`Journey O: final whole-voyage rehearsal`, async ({ page }) => {
   await page.getByRole("button", { name: "Save", exact: true }).click();
   await expect(page.getByRole("button", { name: /Saved|Unsave/u }).first()).toBeVisible();
   await capture(page, "whole-voyage-community");
-  await accountDestination(page, account, "Creator Studio");
-  await accountDestination(page, account, "Captain");
+  await leaveActiveChronicles(page, account);
+  await enterWorkspaceFromOverview(page, "Creator");
+  await accountDestination(page, account, "All Workspaces");
+  await enterWorkspaceFromOverview(page, "Captain");
   await accountDestination(page, account, "Security & Sessions");
   const menu = await accountMenu(page, account.displayName);
   await menu.getByRole("button", { name: "Sign out" }).click();
@@ -396,7 +405,32 @@ async function accountMenu(page: Page, label: string) {
 async function accountDestination(page: Page, account: Alias, label: string) {
   const menu = await accountMenu(page, account.displayName);
   const link = menu.getByRole("link", { name: label, exact: true });
+  if (label === "View My Profile") {
+    await expect(link).toBeVisible();
+    await link.click();
+    await expect(page).toHaveURL(/\/profile\//u);
+    await page.waitForLoadState("networkidle");
+    await expect(page.getByRole("main")).toBeVisible();
+    return;
+  }
   await settledDeclaredLinkNavigation(page, link, `Account destination ${label}`);
+}
+
+async function leaveActiveChronicles(page: Page, account: Alias) {
+  await accountDestination(page, account, "All Workspaces");
+  await expect(page.getByRole("heading", { name: "Captain and Creator transitions are paused" })).toBeVisible();
+  await page.getByLabel(/Type LEAVE ACTIVE CHRONICLES/u).fill("LEAVE ACTIVE CHRONICLES");
+  await page.getByRole("button", { name: "Safely leave active Chronicles" }).click();
+  await expect(page.getByRole("link", { name: "Enter Captain" })).toBeVisible();
+  await expect(page.getByRole("link", { name: "Enter Creator" })).toBeVisible();
+}
+
+async function enterWorkspaceFromOverview(page: Page, workspace: "Captain" | "Creator") {
+  await settledDeclaredLinkNavigation(
+    page,
+    page.getByRole("link", { name: `Enter ${workspace}`, exact: true }),
+    `Enter ${workspace} workspace`,
+  );
 }
 
 async function globalDestination(page: Page, label: string) {
