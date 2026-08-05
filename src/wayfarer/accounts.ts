@@ -1,5 +1,7 @@
 import { compare, hash } from "bcryptjs";
 import { randomUUID } from "node:crypto";
+import { appendFileSync, mkdirSync } from "node:fs";
+import { dirname, resolve, sep } from "node:path";
 import { db } from "@/lib/db";
 import { hashToken, makeToken } from "@/lib/security";
 
@@ -62,9 +64,25 @@ export async function recordSecurityEvent(
 }
 
 function queueDelivery(delivery: Delivery) {
-  // This is intentionally memory-only: production delivery receives the raw token
-  // over the transactional-email boundary and no persistent table stores it.
+  // Production delivery receives raw one-time material only through its configured
+  // adapter. Local governed runs may opt into a task-owned synthetic outbox so a
+  // separate browser process can inspect delivery without putting raw tokens in DB.
+  const taskOwnedAdapter = process.env.HOMEPORT_SYNTHETIC_EMAIL_ADAPTER === "TASK_OWNED_TEST";
+  if (process.env.NODE_ENV === "production" && !taskOwnedAdapter) return;
   if (process.env.NODE_ENV !== "production") developmentOutbox.push(delivery);
+  const requestedPath = process.env.HOMEPORT_SYNTHETIC_OUTBOX_PATH;
+  if (!taskOwnedAdapter || !requestedPath) return;
+  const requestedRoot = process.env.HOMEPORT_PHASE7_TASK_ROOT;
+  if (!requestedRoot) throw new AccountError("Synthetic email delivery is not configured safely.", "UNAVAILABLE");
+  const taskRoot = resolve(requestedRoot);
+  const outboxPath = resolve(requestedPath);
+  if (!outboxPath.startsWith(`${taskRoot}${sep}`))
+    throw new AccountError("Synthetic email delivery is not configured safely.", "UNAVAILABLE");
+  mkdirSync(dirname(outboxPath), { recursive: true });
+  appendFileSync(outboxPath, `${JSON.stringify({ ...delivery, queuedAt: new Date().toISOString() })}\n`, {
+    encoding: "utf8",
+    mode: 0o600,
+  });
 }
 
 export function takeDevelopmentDelivery(purpose: Delivery["purpose"], email: string) {
@@ -255,7 +273,8 @@ export async function requestEmailChange(accountId: string, password: string, re
     throw new AccountError("Email change is unavailable until this account and its primary email are active.");
   if (!(await compare(password, account.credential.passwordHash)))
     throw new AccountError("Reauthentication failed. Check your password and try again.");
-  if (current.normalizedEmail === normalized) throw new AccountError("Choose an email address different from the current one.");
+  if (current.normalizedEmail === normalized)
+    throw new AccountError("Choose an email address different from the current one.");
   const collision = await db.accountEmail.findUnique({ where: { normalizedEmail: normalized }, select: { id: true } });
   if (collision) throw new AccountError("That email address cannot be used.", "CONFLICT");
   await issueToken(accountId, "EMAIL_CHANGE", normalized, verificationAgeMs, {
@@ -283,7 +302,8 @@ export async function confirmEmailChange(rawToken: string) {
   if (!token || !nextNormalized || !nextDisplay || !current)
     throw new AccountError("That email-change link is invalid or expired.");
   const collision = await db.accountEmail.findUnique({ where: { normalizedEmail: nextNormalized } });
-  if (collision && collision.id !== current.id) throw new AccountError("That email address cannot be used.", "CONFLICT");
+  if (collision && collision.id !== current.id)
+    throw new AccountError("That email address cannot be used.", "CONFLICT");
   const now = new Date();
   await db.$transaction(async (tx) => {
     await tx.accountToken.update({ where: { id: token.id }, data: { consumedAt: now } });

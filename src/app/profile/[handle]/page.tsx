@@ -63,6 +63,18 @@ export default async function PublicProfilePage({ params }: { params: Promise<{ 
         </div>
       </header>
 
+      {profile.owner ? (
+        <aside className="public-profile__owner-tools" aria-label="Profile owner preview">
+          <div>
+            <p className="public-profile__eyebrow">Owner preview</p>
+            <strong>This is the public Profile other people can see under your current privacy rules.</strong>
+          </div>
+          <Link className="button button--primary" href="/account/profile">
+            Edit Profile
+          </Link>
+        </aside>
+      ) : null}
+
       <div className="public-profile__grid">
         <section className="public-profile__card public-profile__about">
           <p className="public-profile__eyebrow">About this Wayfinder</p>

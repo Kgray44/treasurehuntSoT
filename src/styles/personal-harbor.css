@@ -670,6 +670,26 @@
   grid-template-columns: minmax(0, 1.35fr) minmax(16rem, 0.65fr);
   gap: 1rem;
 }
+
+.public-profile__owner-tools {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  margin: var(--space-5) auto 0;
+  padding: var(--space-4);
+  max-width: 76rem;
+  border: 1px solid color-mix(in srgb, var(--color-brass) 42%, transparent);
+  border-radius: var(--radius-lg);
+  background: color-mix(in srgb, var(--surface-raised) 92%, var(--color-brass));
+}
+
+@media (max-width: 40rem) {
+  .public-profile__owner-tools {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
 .public-profile__card {
   min-width: 0;
   border: 1px solid var(--border-default);

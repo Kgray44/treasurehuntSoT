@@ -807,7 +807,7 @@ export async function createOrUpdateReview(
     });
     if (coCreator) fail("COMMUNITY_SELF_REVIEW", "Creators cannot review work they co-created.");
     await assertNotBlocked(tx, actor.accountId, listing.owner.accountId);
-    const data = validateReviewInput(input, listing.itemType);
+    const { dimensions, ...reviewData } = validateReviewInput(input, listing.itemType);
     const eligibility = await reviewEligibility(tx, actor, listing, input.reviewedReleaseId);
     const existing = await tx.communityReview.findUnique({
       where: { listingId_authorAccountId: { listingId: listing.id, authorAccountId: actor.accountId } },
@@ -816,8 +816,8 @@ export async function createOrUpdateReview(
       ? await tx.communityReview.update({
           where: { id: existing.id },
           data: {
-            ...data,
-            spoilerLevel: data.spoilerBody ? "SPOILER" : "NONE",
+            ...reviewData,
+            spoilerLevel: reviewData.spoilerBody ? "SPOILER" : "NONE",
             ...eligibility,
             authorDisplayName: profile.displayName,
             authorHandle: profile.handle,
@@ -832,19 +832,19 @@ export async function createOrUpdateReview(
             authorAccountId: actor.accountId,
             authorDisplayName: profile.displayName,
             authorHandle: profile.handle,
-            ...data,
-            spoilerLevel: data.spoilerBody ? "SPOILER" : "NONE",
+            ...reviewData,
+            spoilerLevel: reviewData.spoilerBody ? "SPOILER" : "NONE",
             ...eligibility,
           },
         });
     await tx.communityReviewDimension.deleteMany({ where: { reviewId: review.id } });
-    if (data.dimensions.length)
+    if (dimensions.length)
       await tx.communityReviewDimension.createMany({
-        data: data.dimensions.map(([dimension, score]) => ({ reviewId: review.id, dimension, score })),
+        data: dimensions.map(([dimension, score]) => ({ reviewId: review.id, dimension, score })),
       });
     return {
       state: existing ? ("UPDATED" as const) : ("CREATED" as const),
-      value: publicReviewProjection(review, data.dimensions),
+      value: publicReviewProjection(review, dimensions),
     };
   });
 }

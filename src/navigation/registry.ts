@@ -344,7 +344,7 @@ const accountItems = [
   {
     id: "account-all-workspaces",
     layer: "ACCOUNT",
-    label: "All workspaces",
+    label: "All Workspaces",
     href: "/account/roles",
     owner: "one-voyage",
     requiresAuthentication: true,

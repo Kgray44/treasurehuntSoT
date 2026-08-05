@@ -8,7 +8,11 @@ export async function GET(_request: Request, context: { params: Promise<{ id: st
   if (!session) return NextResponse.json({ error: "Sign in again to download this export." }, { status: 401 });
   try {
     const id = (await context.params).id;
-    if (!/^[A-Za-z0-9_-]{1,191}$/.test(id)) throw new Error("Invalid export identifier.");
+    if (!/^[A-Za-z0-9_-]{1,191}$/.test(id))
+      return NextResponse.json(
+        { code: "WAYFARER_INVALID", error: "The export identifier is invalid." },
+        { status: 400 },
+      );
     const exportFile = await downloadAccountExport(session.accountId, id);
     return new NextResponse(exportFile.payload, {
       headers: {

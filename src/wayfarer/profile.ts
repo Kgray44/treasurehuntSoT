@@ -418,6 +418,7 @@ export async function publicProfileProjection(handle: string, viewer: ViewerCont
     bannerUrl: media(profile.bannerMedia),
     providers,
     private: false,
+    owner: viewer.accountId === profile.accountId,
     redirectedFrom,
   };
 }
