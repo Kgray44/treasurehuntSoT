@@ -112,6 +112,8 @@ export function CommunityDiscoveryBrowser({
   }));
   const advancedDraft = advancedState.source === rawParameters ? advancedState.value : advancedDraftFrom(current);
   const requestGeneration = useRef(0);
+  const retryFocusPending = useRef(false);
+  const outcome = useRef<HTMLElement>(null);
   const advancedSummary = useRef<HTMLElement>(null);
   const active = discoveryKeys.some((key) => current.has(key));
   const [fullSearchOpen, setFullSearchOpen] = useState(active || !compactLanding);
@@ -153,6 +155,13 @@ export function CommunityDiscoveryBrowser({
       });
     return () => controller.abort();
   }, [active, apiParameters, requestKey]);
+
+  useEffect(() => {
+    if (!retryFocusPending.current || !["ready", "empty", "error"].includes(state)) return;
+    retryFocusPending.current = false;
+    const frame = requestAnimationFrame(() => outcome.current?.focus());
+    return () => cancelAnimationFrame(frame);
+  }, [state]);
 
   function navigate(parameters: URLSearchParams) {
     parameters.delete("cursor");
@@ -483,21 +492,30 @@ export function CommunityDiscoveryBrowser({
         />
       ) : null}
       {state === "error" ? (
-        <section className="community-state community-state--error" role="alert" aria-live="assertive">
+        <section
+          ref={outcome}
+          className="community-state community-state--error"
+          role="alert"
+          aria-live="assertive"
+          tabIndex={-1}
+        >
           <p className="community-eyebrow">Discovery unavailable</p>
           <h3>Community results could not be opened</h3>
           <p>{error} Your search has not changed.</p>
           <button
             className="community-button community-button--primary"
             type="button"
-            onClick={() => setRetryKey((value) => value + 1)}
+            onClick={() => {
+              retryFocusPending.current = true;
+              setRetryKey((value) => value + 1);
+            }}
           >
             Try again
           </button>
         </section>
       ) : null}
       {state === "empty" ? (
-        <section className="community-state community-state--empty" aria-live="polite">
+        <section ref={outcome} className="community-state community-state--empty" aria-live="polite" tabIndex={-1}>
           <p className="community-eyebrow">No matches</p>
           <h3>No public charts match these criteria</h3>
           <p>Clear one or more filters, or try a shorter search. Default Harbor shelves remain available above.</p>
@@ -507,7 +525,7 @@ export function CommunityDiscoveryBrowser({
         </section>
       ) : null}
       {state === "ready" ? (
-        <section className="community-results" aria-labelledby="community-results-title">
+        <section ref={outcome} className="community-results" aria-labelledby="community-results-title" tabIndex={-1}>
           <div className="community-section-heading">
             <div>
               <p className="community-eyebrow">Public results</p>

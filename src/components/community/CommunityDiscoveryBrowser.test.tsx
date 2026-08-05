@@ -108,7 +108,9 @@ describe("CommunityDiscoveryBrowser", () => {
     expect(await screen.findByRole("alert")).toHaveTextContent("Please try again shortly.");
     fireEvent.click(screen.getByRole("button", { name: "Try again" }));
     await waitFor(() => expect(fetch).toHaveBeenCalledTimes(2));
-    expect(await screen.findByRole("heading", { name: "No public charts match these criteria" })).toBeInTheDocument();
+    const heading = await screen.findByRole("heading", { name: "No public charts match these criteria" });
+    expect(heading).toBeInTheDocument();
+    await waitFor(() => expect(heading.closest("section")).toHaveFocus());
   });
 
   it("writes advanced and repeated filters as readable parameters", () => {
