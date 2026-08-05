@@ -33,11 +33,13 @@ owner acceptance, product acceptance, or Phase 7 whole-product proof.
 
 Phase 7 whole-voyage automation reached the owner walkthrough on the retained
 branch. The owner completed Round 1 and returned 44 correction findings:
-`OWNER_RETURNED_FOR_CORRECTION`. Correction Round 1 is now architecture-frozen
-and implementation is pending. The independent re-review decision remains
-`PENDING_OWNER_DECISION`; neither the historical automated evidence nor the
-correction architecture establishes re-review readiness, `main`, deployment,
-owner acceptance, or product acceptance.
+`OWNER_RETURNED_FOR_CORRECTION`. Correction Round 1 was implemented and locally
+validated, then the owner's re-review rejected it with 85 actionable findings:
+`OWNER_REJECTED_WITH_ACTIONABLE_FINDINGS`. Correction Round 2 is architecture
+frozen and implementation is pending. Its independent owner decision remains
+`PENDING_OWNER_DECISION`; neither historical automation nor the Round 2 freeze
+establishes re-review readiness, `main`, deployment, owner acceptance, or
+product acceptance.
 
 ## Authority
 
@@ -236,3 +238,19 @@ All 44 returned owner findings are locally implemented and source-bound validate
 - [Correction integration manifest](Project_Homeport_Phase_7_Correction_Round_1_Integration_Manifest.md)
 - [Owner re-review package](walkthrough/phase7/correction-round1/README.md)
 - [Correction evidence](evidence/phase7-owner-correction-round1/README.md)
+
+<!-- HOMEPORT_OWNER_CORRECTION_ROUND2:START -->
+
+## Phase 7 owner correction Round 2
+
+The owner re-review after Correction Round 1 was `OWNER_REJECTED_WITH_ACTIONABLE_FINDINGS`. Round 2 is architecture-frozen against 85 findings; implementation and current evidence remain pending, and the owner Round 2 decision is `PENDING_OWNER_DECISION`.
+
+- [Round 2 architecture](Project_Homeport_Phase_7_Owner_Walkthrough_Correction_Round_2_Architecture.md)
+- [Owner feedback Round 2 ledger](Project_Homeport_Phase_7_Owner_Feedback_Round_2_Ledger.csv)
+- [Round 2 acceptance matrix](Project_Homeport_Phase_7_Correction_Round_2_Acceptance_Matrix.csv)
+- [Round 2 test plan](Project_Homeport_Phase_7_Correction_Round_2_Test_Plan.md)
+- [Round 2 evidence index](evidence/phase7-owner-correction-round2/README.md)
+
+This remains branch-local correction work: not merged, not deployed, not owner accepted, and not live-provider proof.
+
+<!-- HOMEPORT_OWNER_CORRECTION_ROUND2:END -->

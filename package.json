@@ -100,6 +100,8 @@
     "homeport:phase7:validate": "node scripts/homeport/validate-phase7-whole-voyage.mjs",
     "homeport:phase7:test": "node --test tests/homeport/phase7-whole-voyage.test.mjs",
     "homeport:phase7:correction:validate:architecture": "node scripts/homeport/validate-phase7-owner-correction-round1-architecture.mjs",
+    "homeport:phase7:correction:round2:apply:architecture": "node scripts/homeport/apply-phase7-owner-correction-round2-architecture.mjs",
+    "homeport:phase7:correction:round2:validate:architecture": "node scripts/homeport/validate-phase7-owner-correction-round2-architecture.mjs",
     "homeport:phase7:correction:fixture:prepare": "node scripts/homeport/prepare-phase7-owner-correction-round1-fixture.mjs",
     "homeport:phase7:correction:migrations": "node scripts/homeport/rehearse-phase7-owner-correction-round1-migrations.mjs",
     "homeport:phase7:correction:fixture:clone": "node scripts/homeport/phase7-owner-correction-round1-database-clone.mjs journeys",

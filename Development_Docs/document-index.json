@@ -3159,6 +3159,24 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/manifest.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/Project_Homeport_Phase_7_Correction_Round_2_Visual_Review.md",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/README.md",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7/Project_Homeport_Phase_7_Evidence_Metadata.json",
       "record_type": "validation-evidence",
       "status": "current",
@@ -3255,7 +3273,31 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Chronicle_Completion_Review_Contract.md",
+      "record_type": "program-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Chronicle_Preview_and_Player_Alias_Contract.md",
+      "record_type": "program-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Chronicle_Preview_Expansion_Contract.md",
+      "record_type": "program-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Community_Loading_State_Contract.md",
+      "record_type": "program-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Community_Rating_and_Save_Aggregation_Contract.md",
       "record_type": "program-record",
       "status": "current",
       "canonical_for": null
@@ -3273,6 +3315,18 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Experience_Images_Contract.md",
+      "record_type": "program-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Global_Theme_and_Visual_Token_Contract.md",
+      "record_type": "program-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Governing_Document.md",
       "record_type": "program-record",
       "status": "current",
@@ -3280,6 +3334,12 @@
     },
     {
       "path": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Governing_Document.pdf",
+      "record_type": "program-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Home_Ambient_and_Role_Card_Motion_Contract.md",
       "record_type": "program-record",
       "status": "current",
       "canonical_for": null
@@ -3747,6 +3807,36 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_7_Correction_Round_2_Acceptance_Matrix.csv",
+      "record_type": "program-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_7_Correction_Round_2_Implementation_Report.md",
+      "record_type": "program-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_7_Correction_Round_2_Integration_Manifest.md",
+      "record_type": "program-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_7_Correction_Round_2_Test_Plan.md",
+      "record_type": "program-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_7_Correction_Round_2_Validation_Record.md",
+      "record_type": "program-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_7_Failure_and_Recovery_Matrix.csv",
       "record_type": "program-record",
       "status": "current",
@@ -3807,7 +3897,19 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_7_Owner_Feedback_Round_2_Ledger.csv",
+      "record_type": "program-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_7_Owner_Walkthrough_Correction_Round_1_Architecture.md",
+      "record_type": "program-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_7_Owner_Walkthrough_Correction_Round_2_Architecture.md",
       "record_type": "program-record",
       "status": "current",
       "canonical_for": null
@@ -3856,6 +3958,18 @@
     },
     {
       "path": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Preference_Effect_Matrix.csv",
+      "record_type": "program-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Public_Profile_and_Community_Identity_Contract.md",
+      "record_type": "program-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Runtime_Fixture_Parity_Contract.md",
       "record_type": "program-record",
       "status": "current",
       "canonical_for": null

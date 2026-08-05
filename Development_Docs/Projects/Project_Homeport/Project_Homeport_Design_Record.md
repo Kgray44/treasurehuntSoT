@@ -373,3 +373,15 @@ by this amendment.
 ## Phase 7 correction Round 1 implementation amendment
 
 The frozen 30-decision architecture was implemented at exact evidence source `e1829c3cffa87e561d15342da2e6e9b073fd7165`. Additive identity/lifecycle schema, one-account capability policy, Chronicle preview/alias boundaries, Personal Harbor authority, four effective preferences, delayed loading, governed route/menu/home motion, Community search/reviews, and isolated evidence now form one correction package. Existing specialist authorities remain intact. The result is correction-validated pending owner re-review; it is not mainline, deployed, or owner accepted.
+
+<!-- HOMEPORT_OWNER_CORRECTION_ROUND2_ARCHITECTURE:START -->
+
+## Phase 7 owner-walkthrough correction Round 2 architecture amendment
+
+**Decision date:** 2026-08-05. **Round 2 start:** `004f366a350fe946e0b672839bdb559bbaf6e930`. **Owner re-review after Correction Round 1:** `OWNER_REJECTED_WITH_ACTIONABLE_FINDINGS`. **Round 2 owner decision:** `PENDING_OWNER_DECISION`.
+
+The frozen [Round 2 architecture](Project_Homeport_Phase_7_Owner_Walkthrough_Correction_Round_2_Architecture.md) preserves all Phase 1–7 and Correction Round 1 authorities while defining 35 decisions for runtime fixture parity, claimed-account reconciliation, Sera preflight, motion geometry, complete Dark/Light/System themes, semantic contrast tokens, Community request truth, one public Profile identity, authoritative save/rating aggregates, completion-verified reviews, expanded preview, synthetic email truth, Experience Images, Sounding Line, schema authorization, exact source, owner package, status language, and rollback.
+
+The architecture assigns 85 verbatim findings to `HP-OWCR2-001`–`085` and new nonconformities `HP-NC-072`–`156`. It establishes no implementation, migration, test result, screenshot acceptance, Sounding Line decision, publication, re-review readiness, merge, deployment, or owner acceptance.
+
+<!-- HOMEPORT_OWNER_CORRECTION_ROUND2_ARCHITECTURE:END -->
