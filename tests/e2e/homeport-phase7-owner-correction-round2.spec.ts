@@ -70,6 +70,7 @@ test("Journey D: Account-menu motion", async ({ page }) => {
   await expect(menu).toHaveAttribute("data-account-menu-motion", "visible");
   expect(new Set(frames.map((frame) => `${frame.opacity}:${frame.transform}`)).size).toBeGreaterThan(1);
   expect(frames.at(-1)?.opacity).toBe("1");
+  await writeMotionReceipt("HP-OWCR2-EV-C-ACCOUNT-MENU-OPENING", { frames });
   await capture(page, "HP-OWCR2-EV-C-ACCOUNT-MENU-OPENING", false);
   await page.keyboard.press("Escape");
   await expect(menu).toHaveCount(0);
@@ -96,6 +97,8 @@ test("Journey E: Home ambient motion", async ({ page }) => {
   expect(Math.min(...samples)).toBeLessThan(-0.5);
   expect(Math.max(...samples)).toBeGreaterThan(0.5);
   await capture(page, "HP-OWCR2-EV-D-LANTERN-NEUTRAL", false);
+  await captureAtRotation(page, lantern, "HP-OWCR2-EV-E-LANTERN-LEFT", (value) => value < -0.5);
+  await captureAtRotation(page, lantern, "HP-OWCR2-EV-F-LANTERN-RIGHT", (value) => value > 0.5);
   const star = page.locator(".star-field i").first();
   const fog = page.locator(".distant-clouds");
   const firstOpacity = Number(await star.evaluate((node) => getComputedStyle(node).opacity));
@@ -105,6 +108,13 @@ test("Journey E: Home ambient motion", async ({ page }) => {
   await expect(star).toHaveCSS("animation-name", "harbor-star-twinkle");
   await expect(fog).toHaveCSS("animation-name", "harbor-fog-drift");
   await capture(page, "HP-OWCR2-EV-G-STAR-TWINKLE", false);
+  await capture(page, "HP-OWCR2-EV-H-FOG-DRIFT", false);
+  await writeMotionReceipt("HP-OWCR2-EV-D-LANTERN-NEUTRAL", {
+    transformOrigin: await lantern.evaluate((node) => getComputedStyle(node).transformOrigin),
+    rotations: samples,
+    starOpacity: [firstOpacity, secondOpacity],
+    fogAnimationName: await fog.evaluate((node) => getComputedStyle(node).animationName),
+  });
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.reload();
   await expect(page.locator(".star-field i").first()).toHaveCSS("animation-name", "none");
@@ -436,6 +446,8 @@ test("Journey S: Text contrast", async ({ page }) => {
     const body = page.locator("main:visible").last().locator("p").first();
     if (await body.isVisible()) expect(await contrastRatio(body)).toBeGreaterThanOrEqual(4.5);
   }
+  await page.goto("/community");
+  await capture(page, "HP-OWCR2-EV-Y-COMMUNITY-CONTRAST");
 });
 
 test("Journey R: Synthetic email walkthrough", async ({ page }) => {
@@ -718,6 +730,45 @@ function luminance(color: string) {
     return channel <= 0.04045 ? channel / 12.92 : ((channel + 0.055) / 1.055) ** 2.4;
   });
   return 0.2126 * linear[0] + 0.7152 * linear[1] + 0.0722 * linear[2];
+}
+
+async function captureAtRotation(
+  page: Page,
+  lantern: Locator,
+  evidenceId: string,
+  matches: (rotation: number) => boolean,
+) {
+  for (let attempt = 0; attempt < 80; attempt += 1) {
+    const value = await rotation(lantern);
+    if (matches(value)) {
+      await capture(page, evidenceId, false);
+      return value;
+    }
+    await page.waitForTimeout(50);
+  }
+  throw new Error(`${evidenceId} rotation threshold was not observed.`);
+}
+
+async function writeMotionReceipt(evidenceId: string, measurements: Record<string, unknown>) {
+  const reportRoot = path.join(taskRoot, "reports", "owner-correction-round2-journeys");
+  await mkdir(reportRoot, { recursive: true });
+  await writeFile(
+    path.join(reportRoot, `${evidenceId}-motion.json`),
+    `${JSON.stringify(
+      {
+        evidenceId,
+        journeyId,
+        sourceSha,
+        fixtureVersion: "homeport-phase7-owner-correction-round2-v1",
+        databasePath,
+        measurementKind: "COMPUTED_FRAME_SEQUENCE",
+        measurements,
+      },
+      null,
+      2,
+    )}\n`,
+    "utf8",
+  );
 }
 
 async function capture(page: Page, evidenceId: string, fullPage = true) {
