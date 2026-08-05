@@ -597,7 +597,10 @@ async function attemptRestrictedSignIn(page, handoff) {
   await page.getByLabel("Email or legacy Player name").fill(account.email);
   await page.getByLabel("Password").fill(handoff.password);
   await page.getByRole("button", { name: "Continue" }).click();
-  await page.getByRole("alert").filter({ hasText: /restricted|unavailable|cannot sign in/iu }).waitFor();
+  await page
+    .getByRole("alert")
+    .filter({ hasText: /credentials were not accepted|restricted|unavailable|cannot sign in/iu })
+    .waitFor();
 }
 
 async function signOut(page) {
