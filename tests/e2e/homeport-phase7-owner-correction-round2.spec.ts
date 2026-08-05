@@ -423,9 +423,9 @@ test("Journey P: Completed Chronicle review later", async ({ page }) => {
   const reviewForm = page.getByRole("form", { name: "Write a review" }).filter({ visible: true }).last();
   await expect(reviewForm).toBeVisible();
   await reviewForm.getByRole("combobox", { name: /Rating/u }).selectOption("5");
-  await reviewForm
-    .getByLabel("Preview-safe review")
-    .fill("A verified-completion review submitted from Passport history.");
+  const reviewBody = reviewForm.getByLabel("Preview-safe review");
+  await reviewBody.fill("A verified-completion review submitted from Passport history.");
+  await expect(reviewBody).toHaveValue("A verified-completion review submitted from Passport history.");
   await reviewForm.getByRole("button", { name: "Save review" }).click();
   await expect(page.getByText("A verified-completion review submitted from Passport history.")).toBeVisible();
 });

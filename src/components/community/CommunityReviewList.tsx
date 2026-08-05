@@ -86,6 +86,8 @@ export function CommunityReviewList({ listingId }: { listingId: string }) {
     }
     const form = event.currentTarget;
     const fields = new FormData(form);
+    const submittedReviewBody = String(fields.get("spoilerFreeBody") ?? "");
+    const submittedSpoilerBody = String(fields.get("spoilerBody") ?? "");
     setBusy("composer");
     const response = await fetch("/api/community/reviews", {
       method: "POST",
@@ -93,8 +95,8 @@ export function CommunityReviewList({ listingId }: { listingId: string }) {
       body: JSON.stringify({
         listingId,
         rating: Number(fields.get("rating")),
-        spoilerFreeBody: reviewBody || null,
-        spoilerBody: spoilerEnabled && spoilerBody ? spoilerBody : null,
+        spoilerFreeBody: submittedReviewBody || null,
+        spoilerBody: spoilerEnabled && submittedSpoilerBody ? submittedSpoilerBody : null,
       }),
     });
     const responseValue = (await response.json().catch(() => null)) as { error?: string } | null;

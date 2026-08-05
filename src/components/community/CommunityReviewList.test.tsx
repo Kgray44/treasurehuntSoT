@@ -104,6 +104,37 @@ describe("CommunityReviewList", () => {
     expect(await screen.findByText("Your review is published and can be edited below.")).toBeInTheDocument();
   });
 
+  it("serializes the submitted form value when an immediate submit precedes a React state render", async () => {
+    const fetch = vi.fn(async (input: RequestInfo | URL, options?: RequestInit) => {
+      const url = String(input);
+      if (url === "/api/player/session")
+        return new Response(JSON.stringify({ csrfToken: "csrf-token" }), { status: 200 });
+      if (url.startsWith("/api/community/reviews?") && (!options?.method || options.method === "GET"))
+        return new Response(JSON.stringify({ reviews: [] }), { status: 200 });
+      if (url === "/api/community/reviews" && options?.method === "POST")
+        return new Response(JSON.stringify({ ok: true }), { status: 201 });
+      throw new Error(`Unexpected request ${url}`);
+    });
+    vi.stubGlobal("fetch", fetch);
+    render(<CommunityReviewList listingId="listing_1" />);
+
+    expect(await screen.findByText("No public reviews yet.")).toBeInTheDocument();
+    const textarea = screen.getByLabelText(/^Preview-safe review/u) as HTMLTextAreaElement;
+    textarea.value = "The submitted DOM value must not be dropped.";
+    fireEvent.submit(screen.getByRole("form", { name: "Write a review" }));
+
+    await waitFor(() => expect(screen.getByText("Your review was saved.")).toBeInTheDocument());
+    const mutation = fetch.mock.calls.find(
+      ([url, options]) => String(url) === "/api/community/reviews" && options?.method === "POST",
+    );
+    expect(JSON.parse(String(mutation?.[1]?.body))).toEqual({
+      listingId: "listing_1",
+      rating: 5,
+      spoilerFreeBody: "The submitted DOM value must not be dropped.",
+      spoilerBody: null,
+    });
+  });
+
   it("edits and deletes only the current account review with explicit mutation states", async () => {
     let reviews: unknown[] = [
       {
