@@ -50,6 +50,40 @@ html[data-voyage-theme="light"] :where(.harbor-form input, .harbor-form select, 
   background: var(--surface-overlay);
 }
 
+html[data-voyage-theme="light"] .harbor-identity-card {
+  border-color: var(--border-default);
+  color: var(--text-primary);
+  background: linear-gradient(130deg, var(--surface-overlay), var(--surface-elevated));
+}
+
+html[data-voyage-theme="light"] .harbor-identity-card p,
+html[data-voyage-theme="light"] .harbor-completion span,
+html[data-voyage-theme="light"] .harbor-stat span {
+  color: var(--text-secondary);
+}
+
+html[data-voyage-theme="light"] .harbor-identity-card h2,
+html[data-voyage-theme="light"] .harbor-completion strong,
+html[data-voyage-theme="light"] .harbor-stat strong,
+html[data-voyage-theme="light"] .harbor-link-card strong {
+  color: var(--text-heading);
+}
+
+html[data-voyage-theme="light"] .harbor-stat,
+html[data-voyage-theme="light"] .harbor-link-card {
+  border-color: var(--border-default);
+  color: var(--text-primary);
+  background: var(--surface-elevated);
+}
+
+html[data-voyage-theme="light"] .harbor-link-card > span:first-child {
+  color: var(--text-muted);
+}
+
+html[data-voyage-theme="light"] .harbor-link-card > span:last-child {
+  color: var(--accent-strong);
+}
+
 .personal-harbor__hero {
   position: relative;
   display: flex;

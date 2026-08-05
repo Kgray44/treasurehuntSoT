@@ -64,6 +64,7 @@ assertSafeInputs();
 
 if (command === "generate") await generate();
 else if (command === "validate") await validate();
+else if (command === "accept-visual-review") await acceptVisualReview();
 else throw new Error(`HOMEPORT_EXPERIENCE_IMAGES_COMMAND_UNKNOWN:${command}`);
 
 async function generate() {
@@ -435,7 +436,7 @@ async function validate() {
     }
   const searchable = `${JSON.stringify(manifest)}\n${await readFile(path.join(outputRoot, "index.html"), "utf8")}`;
   for (const forbidden of ["password", "csrfToken", "sessionCookie", "resetToken", "providerSecret"])
-    if (new RegExp(`\\"${forbidden}\\"\\s*:`, "iu").test(searchable)) errors.push(`private-marker:${forbidden}`);
+    if (new RegExp(`"${forbidden}"\\s*:`, "iu").test(searchable)) errors.push(`private-marker:${forbidden}`);
   if (errors.length) throw new Error(`HOMEPORT_EXPERIENCE_IMAGES_INVALID\n${errors.join("\n")}`);
   process.stdout.write(
     `${JSON.stringify({
@@ -447,6 +448,29 @@ async function validate() {
       checksumFailures: 0,
       criticalCoverageFailures: 0,
       privacyFindings: 0,
+    })}\n`,
+  );
+}
+
+async function acceptVisualReview() {
+  const manifestPath = path.join(outputRoot, "manifest.json");
+  const manifest = await json(manifestPath);
+  manifest.visualReviewStatus = "ACCEPTED";
+  manifest.visualReview = {
+    reviewer: "Codex",
+    scope: "Master and area contact sheets plus defect-focused individual captures",
+    boundary: "Codex visual evidence review; not owner acceptance",
+    acceptedAt: new Date().toISOString(),
+  };
+  await writeFile(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`, "utf8");
+  await writeFile(path.join(outputRoot, "index.html"), buildIndex(manifest), "utf8");
+  await writeFile(path.join(outputRoot, "README.md"), buildReadme(manifest), "utf8");
+  process.stdout.write(
+    `${JSON.stringify({
+      status: "HOMEPORT_EXPERIENCE_IMAGES_VISUAL_REVIEW_ACCEPTED",
+      sourceSha: manifest.sourceSha,
+      records: manifest.records.length,
+      boundary: manifest.visualReview.boundary,
     })}\n`,
   );
 }
