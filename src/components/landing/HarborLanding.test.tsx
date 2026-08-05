@@ -7,6 +7,7 @@ import type {
   PresentationReceipt,
   SceneTargetResolutionReceipt,
 } from "@/animation/core/animation-types";
+import { gsap } from "@/animation/core/gsap-client";
 import { sceneContracts } from "@/animation/director/scene-registry";
 import { AnimationAuthorityContext } from "@/animation/hosts/SceneHostContext";
 import { SceneHostRegistry } from "@/animation/hosts/scene-host-registry";
@@ -18,6 +19,7 @@ const mocks = vi.hoisted(() => ({
   skip: vi.fn(),
   cancel: vi.fn(),
   cycle: vi.fn(),
+  motionMode: "reduced" as "full" | "limited" | "reduced",
 }));
 
 vi.mock("@gsap/react", () => ({ useGSAP: () => undefined }));
@@ -55,7 +57,7 @@ vi.mock("@/animation/director/useAnimationDirector", () => ({
   }),
 }));
 vi.mock("@/animation/motion/useMotionMode", () => ({
-  useMotionMode: () => ({ mode: "reduced", cycle: mocks.cycle }),
+  useMotionMode: () => ({ mode: mocks.motionMode, cycle: mocks.cycle }),
 }));
 vi.mock("@/components/animation/LottieEffect", () => ({
   LottieEffect: ({ label }: { label: string }) => <div data-testid={`lottie-${label}`} />,
@@ -184,6 +186,7 @@ beforeEach(() => {
   mocks.play.mockReset();
   mocks.skip.mockReset();
   mocks.cancel.mockReset();
+  mocks.motionMode = "reduced";
   installResolvingDirector();
 });
 
@@ -276,6 +279,54 @@ describe("HarborLanding gateway SceneHost", () => {
     expect(
       Array.from(document.querySelectorAll<HTMLElement>("[data-role-object]")).every((object) => object.tabIndex < 0),
     ).toBe(true);
+  });
+
+  it("pauses full ambient motion while hidden or offscreen and releases observers and listeners on unmount", async () => {
+    mocks.motionMode = "full";
+    const pause = vi.fn();
+    const resume = vi.fn();
+    vi.spyOn(gsap, "getTweensOf").mockReturnValue([{ pause, resume }] as never);
+    const hidden = vi.spyOn(document, "hidden", "get").mockReturnValue(false);
+    const intersectionCallbacks: IntersectionObserverCallback[] = [];
+    const disconnect = vi.fn();
+    class TestIntersectionObserver {
+      constructor(callback: IntersectionObserverCallback) {
+        intersectionCallbacks.push(callback);
+      }
+      observe = vi.fn();
+      unobserve = vi.fn();
+      disconnect = disconnect;
+      takeRecords = vi.fn().mockReturnValue([]);
+      root = null;
+      rootMargin = "0px";
+      thresholds = [0];
+    }
+    vi.stubGlobal("IntersectionObserver", TestIntersectionObserver);
+
+    const { view } = renderWithRegistry(<HarborLanding />);
+    await waitFor(() =>
+      expect(document.querySelector(".harbor-landing")).toHaveAttribute("data-ambient-state", "active"),
+    );
+    expect(resume).toHaveBeenCalled();
+
+    hidden.mockReturnValue(true);
+    document.dispatchEvent(new Event("visibilitychange"));
+    expect(document.querySelector(".harbor-landing")).toHaveAttribute("data-ambient-state", "paused");
+    expect(pause).toHaveBeenCalled();
+
+    hidden.mockReturnValue(false);
+    document.dispatchEvent(new Event("visibilitychange"));
+    expect(document.querySelector(".harbor-landing")).toHaveAttribute("data-ambient-state", "active");
+    expect(resume).toHaveBeenCalledTimes(2);
+
+    intersectionCallbacks[0]?.([{ isIntersecting: false } as IntersectionObserverEntry], {} as IntersectionObserver);
+    expect(document.querySelector(".harbor-landing")).toHaveAttribute("data-ambient-state", "paused");
+
+    const callsBeforeUnmount = pause.mock.calls.length + resume.mock.calls.length;
+    view.unmount();
+    expect(disconnect).toHaveBeenCalledOnce();
+    document.dispatchEvent(new Event("visibilitychange"));
+    expect(pause.mock.calls.length + resume.mock.calls.length).toBe(callsBeforeUnmount);
   });
 
   it("softens sibling roles only after a role handoff is selected", async () => {

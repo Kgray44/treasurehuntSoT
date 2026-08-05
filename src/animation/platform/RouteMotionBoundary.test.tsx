@@ -1,4 +1,4 @@
-import { render } from "@testing-library/react";
+import { render, waitFor } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import { RouteMotionBoundary } from "./RouteMotionBoundary";
 
@@ -7,7 +7,7 @@ vi.mock("../motion/useMotionMode", () => ({
 }));
 
 describe("RouteMotionBoundary", () => {
-  it("replaces the previous route layer atomically when the pathname changes", () => {
+  it("settles to one destination layer and removes the exited route after the governed transition", async () => {
     const view = render(
       <RouteMotionBoundary pathname="/studio/library">
         <main>Chronicle Library</main>
@@ -20,10 +20,10 @@ describe("RouteMotionBoundary", () => {
       </RouteMotionBoundary>,
     );
 
-    expect(view.container.querySelectorAll(".product-route-layer")).toHaveLength(1);
-    expect(view.container.querySelector('[data-route-layer="/studio/library"]')).toBeNull();
     expect(view.container.querySelector('[data-route-layer="/studio/tales/example"]')).toHaveTextContent(
       "Chronicle Editor",
     );
+    await waitFor(() => expect(view.container.querySelectorAll(".product-route-layer")).toHaveLength(1));
+    expect(view.container.querySelector('[data-route-layer="/studio/library"]')).toBeNull();
   });
 });

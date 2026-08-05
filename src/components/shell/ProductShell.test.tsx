@@ -111,7 +111,10 @@ describe("ProductShell", () => {
     expect(within(disclosure).getByRole("heading", { name: "Personal Harbor" })).toBeInTheDocument();
     expect(within(disclosure).getByRole("heading", { name: "Workspaces" })).toBeInTheDocument();
     expect(within(disclosure).getByRole("heading", { name: "Account actions" })).toBeInTheDocument();
-    expect(within(disclosure).getByRole("link", { name: "View My Profile" })).toHaveAttribute("href", "/account");
+    expect(within(disclosure).getByRole("link", { name: "View My Profile" })).toHaveAttribute(
+      "href",
+      "/account/profile/view",
+    );
     expect(within(disclosure).getByRole("link", { name: "Chronicle Passport" })).toHaveAttribute("href", "/passport");
     expect(within(disclosure).getByRole("link", { name: "Preferences" })).toHaveAttribute(
       "href",

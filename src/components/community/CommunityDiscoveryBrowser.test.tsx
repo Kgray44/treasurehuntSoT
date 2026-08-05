@@ -9,6 +9,9 @@ vi.mock("next/navigation", () => ({
 vi.mock("@/components/auth/CurrentUserProvider", () => ({
   useCurrentUser: () => ({ state: { status: "anonymous", authenticated: false } }),
 }));
+vi.mock("@/animation/motion/useMotionMode", () => ({
+  useMotionMode: () => ({ mode: "reduced" }),
+}));
 
 import { CommunityDiscoveryBrowser } from "./CommunityDiscoveryBrowser";
 
@@ -51,7 +54,7 @@ describe("CommunityDiscoveryBrowser", () => {
     render(<CommunityDiscoveryBrowser />);
 
     expect(fetch).not.toHaveBeenCalled();
-    expect(screen.getByText("The Harbor shelves above are ready to browse without a search.")).toBeInTheDocument();
+    expect(screen.getByText("The Harbor shelves below are ready to browse without a search.")).toBeInTheDocument();
     fireEvent.change(screen.getByRole("searchbox", { name: "Search public Community Harbor" }), {
       target: { value: "coast" },
     });
@@ -87,7 +90,7 @@ describe("CommunityDiscoveryBrowser", () => {
 
     expect(await screen.findByRole("heading", { name: "No public charts match these criteria" })).toBeInTheDocument();
     expect(
-      screen.queryByText("The Harbor shelves above are ready to browse without a search."),
+      screen.queryByText("The Harbor shelves below are ready to browse without a search."),
     ).not.toBeInTheDocument();
     fireEvent.click(screen.getAllByRole("button", { name: "Clear search and filters" })[0]);
     expect(push).toHaveBeenCalledWith("/community", { scroll: false });

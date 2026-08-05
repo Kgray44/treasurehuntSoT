@@ -203,7 +203,9 @@ describe("Homeport Phase 2 navigation authority", () => {
       "player",
       authenticated({ canUsePlayer: true }),
     );
-    expect(withHandle.accountItems.find((item) => item.id === "account-view-profile")?.href).toBe("/account");
+    expect(withHandle.accountItems.find((item) => item.id === "account-view-profile")?.href).toBe(
+      "/account/profile/view",
+    );
 
     const withoutHandle = projection(
       "/player/library",
@@ -211,7 +213,9 @@ describe("Homeport Phase 2 navigation authority", () => {
       "player",
       authenticated({ canUsePlayer: true }, null),
     );
-    expect(withoutHandle.accountItems.find((item) => item.id === "account-view-profile")?.href).toBe("/account");
+    expect(withoutHandle.accountItems.find((item) => item.id === "account-view-profile")?.href).toBe(
+      "/account/profile/view",
+    );
     expect(JSON.stringify(withoutHandle.accountItems)).not.toContain("email");
   });
 
@@ -283,6 +287,21 @@ describe("Homeport Phase 2 navigation authority", () => {
         (item) => item.href,
       ),
     ).toEqual(["/account"]);
+    for (const ordinaryPersonalRoute of [
+      "/account",
+      "/account/personal-information",
+      "/account/preferences",
+      "/account/privacy",
+      "/account/security",
+      "/account/data",
+      "/passport",
+      "/passport/history",
+      "/passport/artifacts",
+    ]) {
+      expect(projection(ordinaryPersonalRoute, "PUBLIC_STANDARD", "account", authenticated()).contextualItems).toEqual(
+        [],
+      );
+    }
     expect(
       projection(
         "/captain/sessions/session-1",

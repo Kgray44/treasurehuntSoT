@@ -9,6 +9,7 @@ const mocks = vi.hoisted(() => ({
   findLegacyStaff: vi.fn(),
   createSession: vi.fn(),
   recordSecurityEvent: vi.fn(),
+  activePlayerWorkspaceLock: vi.fn(),
 }));
 
 vi.mock("server-only", () => ({}));
@@ -36,6 +37,9 @@ vi.mock("@/wayfarer/accounts", () => ({
 vi.mock("@/wayfarer/http", () => ({
   WAYFARER_COOKIE: "wayfarer_account",
   wayfarerCookieOptions: { httpOnly: true, sameSite: "lax", path: "/" },
+}));
+vi.mock("@/homeport/workspace-capabilities", () => ({
+  hasActivePlayerWorkspaceLock: mocks.activePlayerWorkspaceLock,
 }));
 
 import { decideCapability } from "./current-user";
@@ -71,6 +75,7 @@ describe("Project Homeport current-user authority", () => {
     mocks.findLegacyStaff.mockReset();
     mocks.createSession.mockReset();
     mocks.recordSecurityEvent.mockReset().mockResolvedValue({});
+    mocks.activePlayerWorkspaceLock.mockReset().mockResolvedValue(false);
   });
 
   it("homeport.auth.single-product resolves the one canonical AccountSession cookie", async () => {
@@ -149,6 +154,24 @@ describe("Project Homeport current-user authority", () => {
     const context = await resolveCurrentUser();
     expect(context.status === "authenticated" && decideCapability(context, "captain").status).toBe("allowed");
     expect(context.status === "authenticated" && decideCapability(context, "creator").status).toBe("permission-denied");
+  });
+
+  it("homeport.workspace.same-chronicle-lock denies Captain and Creator context while Player participation is active", async () => {
+    mocks.activePlayerWorkspaceLock.mockResolvedValue(true);
+    mocks.findSession.mockResolvedValue(
+      session({
+        account: {
+          ...session().account,
+          roles: [{ role: "CAPTAIN" }, { role: "CREATOR" }],
+        },
+      }),
+    );
+    const context = await resolveCurrentUser();
+    expect(context).toMatchObject({
+      status: "authenticated",
+      capabilities: { canUsePlayer: true, canUseCaptain: false, canUseCreator: false },
+    });
+    expect(context.status === "authenticated" && decideCapability(context, "captain").status).toBe("permission-denied");
   });
 
   it("homeport.permission.explicit preserves authenticated permission denial", async () => {

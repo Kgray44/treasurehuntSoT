@@ -14,6 +14,7 @@ const tales = [
     playerCountMin: 2,
     playerCountMax: 4,
     version: "1.0",
+    previewHref: "/community/lantern-test",
     playerState: "IN_PROGRESS",
     sessionId: "session-1",
   },
@@ -28,6 +29,7 @@ const tales = [
     playerCountMin: 1,
     playerCountMax: 6,
     version: "2.0",
+    previewHref: "/chronicles/harbor-homecoming",
     playerState: "NEW",
     sessionId: null,
   },
@@ -62,6 +64,10 @@ describe("TaleCatalog", () => {
     expect(screen.getByRole("link", { name: "Continue Voyage" })).toHaveAttribute(
       "href",
       "/play/lantern-test/session/session-1",
+    );
+    expect(screen.getByRole("link", { name: "Preview Chronicle" })).toHaveAttribute(
+      "href",
+      "/chronicles/harbor-homecoming",
     );
   });
 

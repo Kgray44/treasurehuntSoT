@@ -8,6 +8,9 @@ vi.mock("next/navigation", () => ({
   usePathname: () => "/account/profile",
   useRouter: () => ({ push, replace }),
 }));
+vi.mock("@/components/auth/SignOutButton", () => ({
+  SignOutButton: () => <button type="button">Sign out</button>,
+}));
 
 function DraftProbe() {
   const { setDirty } = usePersonalHarbor();
@@ -45,6 +48,7 @@ describe("PersonalHarborLayout", () => {
     expect(screen.getAllByRole("link", { name: "Preferences" })).toHaveLength(2);
     expect(screen.getAllByRole("link", { name: "Saved" })).toHaveLength(2);
     expect(screen.getAllByRole("link", { name: "Sessions & Devices" })).toHaveLength(2);
+    expect(screen.getAllByRole("button", { name: "Sign out" })).toHaveLength(2);
   });
 
   it("homeport.personal-harbor.unsaved-changes keeps or discards an in-progress draft explicitly", () => {

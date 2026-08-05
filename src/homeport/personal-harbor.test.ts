@@ -13,13 +13,13 @@ describe("Homeport Phase 3 Personal Harbor contracts", () => {
     expect(items.every(([, , href]) => href.startsWith("/") && !href.includes("#"))).toBe(true);
   });
 
-  it("homeport.account-data.truthful-availability never gives unsupported operations a decorative destination", () => {
+  it("homeport.account-data.truthful-availability points lifecycle operations to the verified account surface", () => {
     const operations = accountDataAvailability().operations;
-    expect(operations.filter((operation) => operation.status === "NOT_CURRENTLY_SUPPORTED")).toEqual(
+    expect(operations.filter((operation) => operation.status === "REQUIRES_REAUTHENTICATION")).toEqual(
       expect.arrayContaining([
-        expect.objectContaining({ id: "export", href: null }),
-        expect.objectContaining({ id: "deactivate", href: null }),
-        expect.objectContaining({ id: "delete", href: null }),
+        expect.objectContaining({ id: "export", href: "/account/data" }),
+        expect.objectContaining({ id: "deactivate", href: "/account/data" }),
+        expect.objectContaining({ id: "delete", href: "/account/data" }),
       ]),
     );
     expect(
