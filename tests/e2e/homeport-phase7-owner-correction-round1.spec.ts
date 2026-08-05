@@ -51,6 +51,7 @@ test("Journey A: Chronicle preview", async ({ page }) => {
   await page.getByRole("button", { name: "Edit for this Chronicle" }).click();
   await expect(playerName).not.toHaveAttribute("readonly", "");
   await playerName.fill("Lantern Alias Test");
+  expect((await playerName.boundingBox())?.width).toBeGreaterThanOrEqual(160);
   await capture(page, "HP-OWCR1-EV-C-CHRONICLE-ALIAS-EDIT");
   await page.getByRole("button", { name: "Begin Voyage" }).click();
   await expect(page).toHaveURL(/\/play\/[^/]+\/session\/[^/]+$/u);

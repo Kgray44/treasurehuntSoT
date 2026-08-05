@@ -338,19 +338,20 @@
   margin: 0.2rem 0 1rem;
 }
 .tale-start form {
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(11rem, 0.8fr) minmax(17rem, 1.2fr) auto;
   align-items: end;
   gap: 0.8rem;
   margin-top: 1.5rem;
 }
 
 .tale-start form .platform-error {
-  flex-basis: 100%;
+  grid-column: 1 / -1;
   margin: 0.25rem 0 0;
   color: #ffd9d4;
 }
 .tale-start form label {
-  flex: 1;
+  min-width: 0;
 }
 .tale-start form label span {
   display: block;
@@ -370,6 +371,7 @@
 
 .chronicle-alias-control {
   display: grid;
+  min-width: 0;
   gap: 0.65rem;
   padding: 0.85rem;
   border: 1px solid var(--border-subtle);
@@ -999,6 +1001,9 @@
   .captain-session > header {
     align-items: stretch;
     flex-direction: column;
+  }
+  .tale-start form {
+    grid-template-columns: 1fr;
   }
   .runtime-actions form {
     align-items: stretch;
