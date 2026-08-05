@@ -293,7 +293,7 @@ test("Journey R: Chronicle preview exposes practical facts and separates Start",
   await page.goto(await reviewListingUrl());
   await expect(page.getByRole("heading", { name: "Chronicle preview" })).toBeVisible();
   await expect(page.getByRole("heading", { name: "Practical requirements" })).toBeVisible();
-  await expect(page.getByText(/Preview shows public, preview-safe details only/u)).toBeVisible();
+  await expect(page.getByText(/Preview shows public, preview-safe details only/u).first()).toBeVisible();
   await expect(page.getByRole("link", { name: "Start Chronicle" })).toBeVisible();
   await capture(page, "HP-OWCR2-EV-V-CHRONICLE-PREVIEW-EXPANDED");
 });
