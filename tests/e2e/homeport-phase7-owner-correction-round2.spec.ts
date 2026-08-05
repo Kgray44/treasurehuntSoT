@@ -117,8 +117,9 @@ test("Journey E: Home ambient motion", async ({ page }) => {
 });
 
 test("Journey F: Dark theme restoration", async ({ page }) => {
-  await begin(page);
-  await page.evaluate(() => (document.documentElement.dataset.voyageTheme = "dark"));
+  const account = await signIn(page, "SERA");
+  await setTheme(page, "DARK");
+  await page.goto("/");
   const explainer = page.locator(".gateway-explainer");
   await expect(explainer.getByRole("heading", { name: "What is a Chronicle?" })).toBeVisible();
   const luminance = await backgroundLuminance(explainer, "--surface-default");
@@ -127,7 +128,8 @@ test("Journey F: Dark theme restoration", async ({ page }) => {
   await page.goto("/community");
   expect(await backgroundLuminance(page.locator(".community-harbor"), "--background-primary")).toBeLessThan(0.2);
   await page.goto("/account");
-  await expect(page.getByText(/Sign in/u).first()).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Overview" })).toBeVisible();
+  await expect(page.getByRole("button", { name: account.displayName })).toBeVisible();
 });
 
 test("Journey G: Light Mode", async ({ context, page }) => {
