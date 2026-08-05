@@ -428,31 +428,48 @@ test("Journey Q: Community reviews", async ({ page }) => {
     where: { id: listing!.currentReleaseId! },
     select: { sourcePublishedTaleVersionId: true },
   });
-  const completedSession = await db.taleSession.findFirst({
-    where: {
-      status: "COMPLETED",
-      previewMode: false,
-      publishedVersionId: reviewRelease!.sourcePublishedTaleVersionId!,
-      completedAt: { not: null },
-    },
+  const publishedVersion = await db.publishedTaleVersion.findUnique({
+    where: { id: reviewRelease!.sourcePublishedTaleVersionId! },
+    select: { taleId: true },
   });
   expect(reviewProfile).toBeTruthy();
-  expect(completedSession).toBeTruthy();
+  expect(publishedVersion).toBeTruthy();
+  const completedAt = new Date();
+  const completedSession = await db.taleSession.upsert({
+    where: { id: "hp7c-regression-review-empty-session" },
+    update: {
+      taleId: publishedVersion!.taleId,
+      publishedVersionId: reviewRelease!.sourcePublishedTaleVersionId!,
+      status: "COMPLETED",
+      previewMode: false,
+      completedAt,
+    },
+    create: {
+      id: "hp7c-regression-review-empty-session",
+      taleId: publishedVersion!.taleId,
+      publishedVersionId: reviewRelease!.sourcePublishedTaleVersionId!,
+      ownerLabel: "Round 1 review regression completion",
+      accessTokenHash: createHash("sha256").update("hp7c-regression-review-empty-session").digest("hex"),
+      status: "COMPLETED",
+      previewMode: false,
+      completedAt,
+    },
+  });
   await db.playthroughMembership.upsert({
     where: {
       playthroughId_playerProfileId: {
-        playthroughId: completedSession!.id,
+        playthroughId: completedSession.id,
         playerProfileId: reviewProfile!.id,
       },
     },
-    update: { status: "COMPLETED_MEMBER", completedAt: completedSession!.completedAt },
+    update: { status: "COMPLETED_MEMBER", completedAt: completedSession.completedAt },
     create: {
-      playthroughId: completedSession!.id,
+      playthroughId: completedSession.id,
       playerProfileId: reviewProfile!.id,
       role: "PLAYER",
       status: "COMPLETED_MEMBER",
-      joinedAt: completedSession!.startedAt,
-      completedAt: completedSession!.completedAt,
+      joinedAt: completedSession.startedAt,
+      completedAt: completedSession.completedAt,
     },
   });
   await page.goto(`/community/${listing!.slug}`);
