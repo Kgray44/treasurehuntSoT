@@ -76,7 +76,19 @@ for (const route of phase2PageRoutes) {
 const navigationIds = navigation.records.map((record) => record.itemId);
 if (new Set(navigationIds).size !== navigationIds.length) fail("DUPLICATE_NAVIGATION_ID");
 const runtimeIds = new Set<string>(navigationRegistry.map((item) => item.id));
-if (navigationIds.some((itemId) => !runtimeIds.has(itemId))) fail("PHASE_2_RUNTIME_NAVIGATION_ID_LOST");
+for (const record of navigation.records.filter((item) => !runtimeIds.has(item.itemId))) {
+  const hasGovernedGlobalEquivalent =
+    record.itemId === "context-community-parent" &&
+    navigationRegistry.some(
+      (item) =>
+        item.id === "global-community-harbor" &&
+        item.href === record.destination &&
+        item.desktop === "primary" &&
+        item.mobile === "drawer" &&
+        item.currentStatus === "active",
+    );
+  if (!hasGovernedGlobalEquivalent) fail(`PHASE_2_RUNTIME_NAVIGATION_ID_LOST:${record.itemId}`);
+}
 for (const layer of ["GLOBAL", "WORKSPACE", "ACCOUNT", "CONTEXTUAL"])
   if (!navigation.layers.includes(layer)) fail(`MISSING_LAYER:${layer}`);
 for (const policy of ["EXACT", "SECTION", "DYNAMIC_FAMILY", "ALIAS_OF", "NEVER_ACTIVE"])

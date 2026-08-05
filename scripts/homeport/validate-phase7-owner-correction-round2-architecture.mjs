@@ -80,6 +80,11 @@ for (const file of required) {
 
 const owner = parseCsv(read("Project_Homeport_Phase_7_Owner_Feedback_Round_2_Ledger.csv"));
 if (owner.length !== 85) fail(`expected 85 owner rows, received ${owner.length}`);
+const manifest = JSON.parse(read("evidence/phase7-owner-correction-round2/manifest.json"));
+const finalized = manifest.state === "CORRECTION_ROUND_2_VALIDATED_PENDING_OWNER_REREVIEW";
+const expectedFindingStatus = finalized
+  ? "CORRECTED_PENDING_OWNER_REREVIEW"
+  : "ARCHITECTURE_FROZEN_IMPLEMENTATION_PENDING";
 owner.forEach((row, offset) => {
   const expectedId = `HP-OWCR2-${String(offset + 1).padStart(3, "0")}`;
   const expectedNc = `HP-NC-${String(offset + 72).padStart(3, "0")}`;
@@ -88,8 +93,7 @@ owner.forEach((row, offset) => {
   if (row.correction_nonconformity !== expectedNc) fail(`${expectedId} expected ${expectedNc}`);
   if (!row.architecture_contract || !row.planned_test_contracts || !row.planned_evidence_ids)
     fail(`${expectedId} is untraced`);
-  if (row.current_status !== "ARCHITECTURE_FROZEN_IMPLEMENTATION_PENDING")
-    fail(`${expectedId} has false architecture status`);
+  if (row.current_status !== expectedFindingStatus) fail(`${expectedId} has an incoherent lifecycle status`);
 });
 
 const acceptance = parseCsv(read("Project_Homeport_Phase_7_Correction_Round_2_Acceptance_Matrix.csv"));
@@ -98,8 +102,14 @@ acceptance.forEach((row, offset) => {
   const suffix = String(offset + 1).padStart(3, "0");
   if (row.finding_id !== `HP-OWCR2-${suffix}` || row.acceptance_id !== `HP-OWCR2-AC-${suffix}`)
     fail(`acceptance row ${suffix} is not sequential`);
-  if (!row.acceptance_criterion || !row.required_tests || !row.required_evidence || row.final_status !== "PLANNED")
-    fail(`acceptance row ${suffix} is incomplete or falsely final`);
+  const expectedAcceptanceStatus = finalized ? "PASSED" : "PLANNED";
+  if (
+    !row.acceptance_criterion ||
+    !row.required_tests ||
+    !row.required_evidence ||
+    row.final_status !== expectedAcceptanceStatus
+  )
+    fail(`acceptance row ${suffix} is incomplete or has an incoherent lifecycle status`);
 });
 
 const nonconformities = parseCsv(read("Homeport_Nonconformity_Ledger.csv"));
@@ -110,8 +120,7 @@ if (round2Nc.length !== 85) fail(`expected HP-NC-072 through HP-NC-156, received
 round2Nc.forEach((row, offset) => {
   if (row.id !== `HP-NC-${String(offset + 72).padStart(3, "0")}`)
     fail(`nonconformity row ${offset + 1} is not sequential`);
-  if (row.current_status !== "ARCHITECTURE_FROZEN_IMPLEMENTATION_PENDING")
-    fail(`${row.id} has false architecture status`);
+  if (row.current_status !== expectedFindingStatus) fail(`${row.id} has an incoherent lifecycle status`);
 });
 
 const architecture = read("Project_Homeport_Phase_7_Owner_Walkthrough_Correction_Round_2_Architecture.md");
@@ -138,8 +147,17 @@ for (const state of [
   if (!decision.includes(state)) fail(`owner decision history missing ${state}`);
 }
 
-const manifest = JSON.parse(read("evidence/phase7-owner-correction-round2/manifest.json"));
-if (
+if (finalized) {
+  const capturedEvidenceIds = [...new Set(manifest.captures.map((capture) => capture.evidenceId))];
+  const missingEvidenceIds = evidenceIds.filter((evidenceId) => !capturedEvidenceIds.includes(evidenceId));
+  if (
+    !/^[0-9a-f]{40}$/u.test(manifest.sourceSha ?? "") ||
+    manifest.captures.length !== manifest.evidenceCount ||
+    missingEvidenceIds.length > 0
+  ) {
+    fail(`finalized evidence is incomplete; missing ${missingEvidenceIds.join(", ") || "none"}`);
+  }
+} else if (
   manifest.state !== "ARCHITECTURE_FROZEN_IMPLEMENTATION_PENDING" ||
   manifest.sourceSha !== null ||
   manifest.captures.length !== 0 ||

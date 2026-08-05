@@ -640,7 +640,7 @@
       "label": "Back to Community Harbor",
       "layer": "CONTEXTUAL",
       "destination": "/community",
-      "description": null,
+      "description": "Superseded by the always-visible global-community-harbor projection with the same destination and desktop/mobile reachability.",
       "owner": "harborlight",
       "requiredCapabilities": [],
       "requiresAuthentication": false,
@@ -655,7 +655,7 @@
       "contextualPatterns": ["/community/*"],
       "action": null,
       "order": 10,
-      "currentStatus": "contextual",
+      "currentStatus": "superseded-by-global-equivalent",
       "testContracts": [
         "homeport.navigation.one-authority",
         "homeport.navigation.desktop-mobile-set-equality",

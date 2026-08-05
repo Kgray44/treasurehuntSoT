@@ -1,0 +1,22 @@
+{
+  "evidenceId": "HP-OWCR2-EV-B-ROLE-CARDS-HOVER",
+  "journeyId": "HP-OWCR2-JRN-C",
+  "sourceSha": "f3eef8dc65dd39a40f8e4140aa058de0381a94af",
+  "fixtureVersion": "homeport-phase7-owner-correction-round2-v1",
+  "result": "PASSED",
+  "visualReview": "ACCEPTED",
+  "reviewer": "Codex",
+  "ownerReview": "PENDING_OWNER_DECISION",
+  "browser": "Playwright Chromium",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "route": "/",
+  "title": "Voyagewright | Stories made to be played",
+  "screenshot": "screenshots/HP-OWCR2-EV-B-ROLE-CARDS-HOVER.png",
+  "screenshotSha256": "326cfe8ab0d1017995635b5a02adf9e25b19cb070a91a693a561bfb5031eaedf",
+  "screenshotBytes": 753128,
+  "timestamp": "2026-08-05T20:01:15.653Z",
+  "limitation": "Local production-build Chromium proof against a synthetic task-owned SQLite clone; not owner acceptance, live-provider proof, merge, or deployment."
+}

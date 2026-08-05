@@ -19,7 +19,10 @@
       "fixtureVersion": "homeport-phase0-synthetic-v1",
       "fixtureChecksum": "f3580be9bda0e747b1b0b9a4013f00ea4517847f5405eddd32d2efb0894c1135",
       "browser": "Codex In-app Browser / Chromium 150.0.0.0",
-      "viewport": { "width": 1440, "height": 900 },
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
       "zoom": 100,
       "motionMode": "FULL_EXCEPT_STATE_SPECIFIC",
       "appearanceState": "CURRENT_TRUTH",
@@ -43,7 +46,10 @@
       "fixtureVersion": "homeport-phase0-synthetic-v1",
       "fixtureChecksum": "f3580be9bda0e747b1b0b9a4013f00ea4517847f5405eddd32d2efb0894c1135",
       "browser": "Codex In-app Browser / Chromium 150.0.0.0",
-      "viewport": { "width": 390, "height": 844 },
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
       "zoom": 100,
       "motionMode": "FULL_EXCEPT_STATE_SPECIFIC",
       "appearanceState": "CURRENT_TRUTH",
@@ -67,7 +73,10 @@
       "fixtureVersion": "homeport-phase0-synthetic-v1",
       "fixtureChecksum": "f3580be9bda0e747b1b0b9a4013f00ea4517847f5405eddd32d2efb0894c1135",
       "browser": "Codex In-app Browser / Chromium 150.0.0.0",
-      "viewport": { "width": 1440, "height": 900 },
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
       "zoom": 100,
       "motionMode": "FULL_EXCEPT_STATE_SPECIFIC",
       "appearanceState": "CURRENT_TRUTH",
@@ -91,7 +100,10 @@
       "fixtureVersion": "homeport-phase0-synthetic-v1",
       "fixtureChecksum": "f3580be9bda0e747b1b0b9a4013f00ea4517847f5405eddd32d2efb0894c1135",
       "browser": "Codex In-app Browser / Chromium 150.0.0.0",
-      "viewport": { "width": 1440, "height": 900 },
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
       "zoom": 100,
       "motionMode": "FULL_EXCEPT_STATE_SPECIFIC",
       "appearanceState": "CURRENT_TRUTH",
@@ -115,7 +127,10 @@
       "fixtureVersion": "homeport-phase0-synthetic-v1",
       "fixtureChecksum": "f3580be9bda0e747b1b0b9a4013f00ea4517847f5405eddd32d2efb0894c1135",
       "browser": "Codex In-app Browser / Chromium 150.0.0.0",
-      "viewport": { "width": 1440, "height": 900 },
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
       "zoom": 100,
       "motionMode": "FULL_EXCEPT_STATE_SPECIFIC",
       "appearanceState": "CURRENT_TRUTH",
@@ -139,7 +154,10 @@
       "fixtureVersion": "homeport-phase0-synthetic-v1",
       "fixtureChecksum": "f3580be9bda0e747b1b0b9a4013f00ea4517847f5405eddd32d2efb0894c1135",
       "browser": "Codex In-app Browser / Chromium 150.0.0.0",
-      "viewport": { "width": 390, "height": 844 },
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
       "zoom": 100,
       "motionMode": "FULL_EXCEPT_STATE_SPECIFIC",
       "appearanceState": "CURRENT_TRUTH",
@@ -163,7 +181,10 @@
       "fixtureVersion": "homeport-phase0-synthetic-v1",
       "fixtureChecksum": "f3580be9bda0e747b1b0b9a4013f00ea4517847f5405eddd32d2efb0894c1135",
       "browser": "Codex In-app Browser / Chromium 150.0.0.0",
-      "viewport": { "width": 1440, "height": 900 },
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
       "zoom": 100,
       "motionMode": "FULL_EXCEPT_STATE_SPECIFIC",
       "appearanceState": "CURRENT_TRUTH",
@@ -187,7 +208,10 @@
       "fixtureVersion": "homeport-phase0-synthetic-v1",
       "fixtureChecksum": "f3580be9bda0e747b1b0b9a4013f00ea4517847f5405eddd32d2efb0894c1135",
       "browser": "Codex In-app Browser / Chromium 150.0.0.0",
-      "viewport": { "width": 390, "height": 844 },
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
       "zoom": 100,
       "motionMode": "FULL_EXCEPT_STATE_SPECIFIC",
       "appearanceState": "CURRENT_TRUTH",
@@ -211,7 +235,10 @@
       "fixtureVersion": "homeport-phase0-synthetic-v1",
       "fixtureChecksum": "f3580be9bda0e747b1b0b9a4013f00ea4517847f5405eddd32d2efb0894c1135",
       "browser": "Codex In-app Browser / Chromium 150.0.0.0",
-      "viewport": { "width": 1440, "height": 900 },
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
       "zoom": 100,
       "motionMode": "FULL_EXCEPT_STATE_SPECIFIC",
       "appearanceState": "CURRENT_TRUTH",
@@ -235,7 +262,10 @@
       "fixtureVersion": "homeport-phase0-synthetic-v1",
       "fixtureChecksum": "f3580be9bda0e747b1b0b9a4013f00ea4517847f5405eddd32d2efb0894c1135",
       "browser": "Codex In-app Browser / Chromium 150.0.0.0",
-      "viewport": { "width": 390, "height": 844 },
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
       "zoom": 100,
       "motionMode": "FULL_EXCEPT_STATE_SPECIFIC",
       "appearanceState": "CURRENT_TRUTH",
@@ -259,7 +289,10 @@
       "fixtureVersion": "homeport-phase0-synthetic-v1",
       "fixtureChecksum": "f3580be9bda0e747b1b0b9a4013f00ea4517847f5405eddd32d2efb0894c1135",
       "browser": "Codex In-app Browser / Chromium 150.0.0.0",
-      "viewport": { "width": 1440, "height": 900 },
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
       "zoom": 100,
       "motionMode": "FULL_EXCEPT_STATE_SPECIFIC",
       "appearanceState": "CURRENT_TRUTH",
@@ -283,7 +316,10 @@
       "fixtureVersion": "homeport-phase0-synthetic-v1",
       "fixtureChecksum": "f3580be9bda0e747b1b0b9a4013f00ea4517847f5405eddd32d2efb0894c1135",
       "browser": "Codex In-app Browser / Chromium 150.0.0.0",
-      "viewport": { "width": 1440, "height": 900 },
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
       "zoom": 100,
       "motionMode": "FULL_EXCEPT_STATE_SPECIFIC",
       "appearanceState": "CURRENT_TRUTH",
@@ -307,7 +343,10 @@
       "fixtureVersion": "homeport-phase0-synthetic-v1",
       "fixtureChecksum": "f3580be9bda0e747b1b0b9a4013f00ea4517847f5405eddd32d2efb0894c1135",
       "browser": "Codex In-app Browser / Chromium 150.0.0.0",
-      "viewport": { "width": 1440, "height": 900 },
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
       "zoom": 100,
       "motionMode": "FULL_EXCEPT_STATE_SPECIFIC",
       "appearanceState": "CURRENT_TRUTH",
@@ -331,7 +370,10 @@
       "fixtureVersion": "homeport-phase0-synthetic-v1",
       "fixtureChecksum": "f3580be9bda0e747b1b0b9a4013f00ea4517847f5405eddd32d2efb0894c1135",
       "browser": "Codex In-app Browser / Chromium 150.0.0.0",
-      "viewport": { "width": 390, "height": 844 },
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
       "zoom": 100,
       "motionMode": "FULL_EXCEPT_STATE_SPECIFIC",
       "appearanceState": "CURRENT_TRUTH",
@@ -355,7 +397,10 @@
       "fixtureVersion": "homeport-phase0-synthetic-v1",
       "fixtureChecksum": "f3580be9bda0e747b1b0b9a4013f00ea4517847f5405eddd32d2efb0894c1135",
       "browser": "Codex In-app Browser / Chromium 150.0.0.0",
-      "viewport": { "width": 1440, "height": 900 },
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
       "zoom": 200,
       "motionMode": "FULL_EXCEPT_STATE_SPECIFIC",
       "appearanceState": "CURRENT_TRUTH_EQUIVALENT_ZOOM",
@@ -379,7 +424,10 @@
       "fixtureVersion": "homeport-phase0-synthetic-v1",
       "fixtureChecksum": "f3580be9bda0e747b1b0b9a4013f00ea4517847f5405eddd32d2efb0894c1135",
       "browser": "Codex In-app Browser / Chromium 150.0.0.0",
-      "viewport": { "width": 1440, "height": 900 },
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
       "zoom": 100,
       "motionMode": "FULL_EXCEPT_STATE_SPECIFIC",
       "appearanceState": "DIRECT_URL_ONLY",
@@ -403,7 +451,10 @@
       "fixtureVersion": "homeport-phase0-synthetic-v1",
       "fixtureChecksum": "f3580be9bda0e747b1b0b9a4013f00ea4517847f5405eddd32d2efb0894c1135",
       "browser": "Codex In-app Browser / Chromium 150.0.0.0",
-      "viewport": { "width": 1440, "height": 900 },
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
       "zoom": 200,
       "motionMode": "FULL_EXCEPT_STATE_SPECIFIC",
       "appearanceState": "DIRECT_URL_ONLY_EQUIVALENT_ZOOM",
@@ -427,7 +478,10 @@
       "fixtureVersion": "homeport-phase0-synthetic-v1",
       "fixtureChecksum": "f3580be9bda0e747b1b0b9a4013f00ea4517847f5405eddd32d2efb0894c1135",
       "browser": "Codex In-app Browser / Chromium 150.0.0.0",
-      "viewport": { "width": 1440, "height": 900 },
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
       "zoom": 100,
       "motionMode": "FULL_EXCEPT_STATE_SPECIFIC",
       "appearanceState": "DIRECT_URL_ONLY",
@@ -451,7 +505,10 @@
       "fixtureVersion": "homeport-phase0-synthetic-v1",
       "fixtureChecksum": "f3580be9bda0e747b1b0b9a4013f00ea4517847f5405eddd32d2efb0894c1135",
       "browser": "Codex In-app Browser / Chromium 150.0.0.0",
-      "viewport": { "width": 390, "height": 844 },
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
       "zoom": 100,
       "motionMode": "FULL_EXCEPT_STATE_SPECIFIC",
       "appearanceState": "DIRECT_URL_ONLY",
@@ -475,7 +532,10 @@
       "fixtureVersion": "homeport-phase0-synthetic-v1",
       "fixtureChecksum": "f3580be9bda0e747b1b0b9a4013f00ea4517847f5405eddd32d2efb0894c1135",
       "browser": "Codex In-app Browser / Chromium 150.0.0.0",
-      "viewport": { "width": 1440, "height": 900 },
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
       "zoom": 200,
       "motionMode": "FULL_EXCEPT_STATE_SPECIFIC",
       "appearanceState": "DIRECT_URL_ONLY_EQUIVALENT_ZOOM",
@@ -499,7 +559,10 @@
       "fixtureVersion": "homeport-phase0-synthetic-v1",
       "fixtureChecksum": "f3580be9bda0e747b1b0b9a4013f00ea4517847f5405eddd32d2efb0894c1135",
       "browser": "Codex In-app Browser / Chromium 150.0.0.0",
-      "viewport": { "width": 1440, "height": 900 },
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
       "zoom": 100,
       "motionMode": "FULL_EXCEPT_STATE_SPECIFIC",
       "appearanceState": "CURRENT_TRUTH",
@@ -523,7 +586,10 @@
       "fixtureVersion": "homeport-phase0-synthetic-v1",
       "fixtureChecksum": "f3580be9bda0e747b1b0b9a4013f00ea4517847f5405eddd32d2efb0894c1135",
       "browser": "Codex In-app Browser / Chromium 150.0.0.0",
-      "viewport": { "width": 1440, "height": 900 },
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
       "zoom": 100,
       "motionMode": "FULL_EXCEPT_STATE_SPECIFIC",
       "appearanceState": "DIRECT_URL_EMPTY_STATE",
@@ -547,7 +613,10 @@
       "fixtureVersion": "homeport-phase0-synthetic-v1",
       "fixtureChecksum": "f3580be9bda0e747b1b0b9a4013f00ea4517847f5405eddd32d2efb0894c1135",
       "browser": "Codex In-app Browser / Chromium 150.0.0.0",
-      "viewport": { "width": 1440, "height": 900 },
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
       "zoom": 100,
       "motionMode": "FULL_EXCEPT_STATE_SPECIFIC",
       "appearanceState": "DIRECT_URL_POPULATED_STATE",
@@ -571,7 +640,10 @@
       "fixtureVersion": "homeport-phase0-synthetic-v1",
       "fixtureChecksum": "f3580be9bda0e747b1b0b9a4013f00ea4517847f5405eddd32d2efb0894c1135",
       "browser": "Codex In-app Browser / Chromium 150.0.0.0",
-      "viewport": { "width": 1280, "height": 720 },
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
       "zoom": 100,
       "motionMode": "FULL_EXCEPT_STATE_SPECIFIC",
       "appearanceState": "NO_RESULTS_STATE",
@@ -595,7 +667,10 @@
       "fixtureVersion": "homeport-phase0-synthetic-v1",
       "fixtureChecksum": "f3580be9bda0e747b1b0b9a4013f00ea4517847f5405eddd32d2efb0894c1135",
       "browser": "Codex In-app Browser / Chromium 150.0.0.0",
-      "viewport": { "width": 1440, "height": 900 },
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
       "zoom": 100,
       "motionMode": "FULL_EXCEPT_STATE_SPECIFIC",
       "appearanceState": "CURRENT_TRUTH",
@@ -619,7 +694,10 @@
       "fixtureVersion": "homeport-phase0-synthetic-v1",
       "fixtureChecksum": "f3580be9bda0e747b1b0b9a4013f00ea4517847f5405eddd32d2efb0894c1135",
       "browser": "Codex In-app Browser / Chromium 150.0.0.0",
-      "viewport": { "width": 1440, "height": 900 },
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
       "zoom": 100,
       "motionMode": "FULL_EXCEPT_STATE_SPECIFIC",
       "appearanceState": "CURRENT_TRUTH",
@@ -643,7 +721,10 @@
       "fixtureVersion": "homeport-phase0-synthetic-v1",
       "fixtureChecksum": "f3580be9bda0e747b1b0b9a4013f00ea4517847f5405eddd32d2efb0894c1135",
       "browser": "Codex In-app Browser / Chromium 150.0.0.0",
-      "viewport": { "width": 1440, "height": 900 },
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
       "zoom": 100,
       "motionMode": "FULL_EXCEPT_STATE_SPECIFIC",
       "appearanceState": "CURRENT_TRUTH",
@@ -667,7 +748,10 @@
       "fixtureVersion": "homeport-phase0-synthetic-v1",
       "fixtureChecksum": "f3580be9bda0e747b1b0b9a4013f00ea4517847f5405eddd32d2efb0894c1135",
       "browser": "Codex In-app Browser / Chromium 150.0.0.0",
-      "viewport": { "width": 1440, "height": 900 },
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
       "zoom": 100,
       "motionMode": "FULL_EXCEPT_STATE_SPECIFIC",
       "appearanceState": "DIRECT_URL_ONLY",
@@ -691,7 +775,10 @@
       "fixtureVersion": "homeport-phase0-synthetic-v1",
       "fixtureChecksum": "f3580be9bda0e747b1b0b9a4013f00ea4517847f5405eddd32d2efb0894c1135",
       "browser": "Codex In-app Browser / Chromium 150.0.0.0",
-      "viewport": { "width": 1440, "height": 900 },
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
       "zoom": 100,
       "motionMode": "FULL_EXCEPT_STATE_SPECIFIC",
       "appearanceState": "BEFORE_MUTATION",
@@ -715,7 +802,10 @@
       "fixtureVersion": "homeport-phase0-synthetic-v1",
       "fixtureChecksum": "f3580be9bda0e747b1b0b9a4013f00ea4517847f5405eddd32d2efb0894c1135",
       "browser": "Codex In-app Browser / Chromium 150.0.0.0",
-      "viewport": { "width": 1440, "height": 900 },
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
       "zoom": 100,
       "motionMode": "FULL_EXCEPT_STATE_SPECIFIC",
       "appearanceState": "AFTER_MUTATION",
@@ -739,7 +829,10 @@
       "fixtureVersion": "homeport-phase0-synthetic-v1",
       "fixtureChecksum": "f3580be9bda0e747b1b0b9a4013f00ea4517847f5405eddd32d2efb0894c1135",
       "browser": "Codex In-app Browser / Chromium 150.0.0.0",
-      "viewport": { "width": 390, "height": 844 },
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
       "zoom": 100,
       "motionMode": "FULL_EXCEPT_STATE_SPECIFIC",
       "appearanceState": "AFTER_MUTATION",
@@ -763,7 +856,10 @@
       "fixtureVersion": "homeport-phase0-synthetic-v1",
       "fixtureChecksum": "f3580be9bda0e747b1b0b9a4013f00ea4517847f5405eddd32d2efb0894c1135",
       "browser": "Codex In-app Browser / Chromium 150.0.0.0",
-      "viewport": { "width": 1440, "height": 900 },
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
       "zoom": 200,
       "motionMode": "FULL_EXCEPT_STATE_SPECIFIC",
       "appearanceState": "CURRENT_TRUTH_EQUIVALENT_ZOOM",
@@ -7173,7 +7269,10 @@
       "reviewer": "Codex",
       "ownerReview": "PENDING_OWNER_DECISION",
       "browser": "Playwright Chromium",
-      "viewport": { "width": 1440, "height": 900 },
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
       "zoom": "100_PERCENT_UNLESS_EVIDENCE_ID_STATES_MOBILE_OR_ZOOM",
       "motionMode": "REDUCED",
       "route": "/chronicles/development-studio-voyage",
@@ -7195,7 +7294,10 @@
       "reviewer": "Codex",
       "ownerReview": "PENDING_OWNER_DECISION",
       "browser": "Playwright Chromium",
-      "viewport": { "width": 1440, "height": 900 },
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
       "zoom": "100_PERCENT_UNLESS_EVIDENCE_ID_STATES_MOBILE_OR_ZOOM",
       "motionMode": "FULL_THEN_REDUCED",
       "route": "/",
@@ -7217,7 +7319,10 @@
       "reviewer": "Codex",
       "ownerReview": "PENDING_OWNER_DECISION",
       "browser": "Playwright Chromium",
-      "viewport": { "width": 390, "height": 844 },
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
       "zoom": "100_PERCENT_UNLESS_EVIDENCE_ID_STATES_MOBILE_OR_ZOOM",
       "motionMode": "REDUCED",
       "route": "/account/roles",
@@ -7239,7 +7344,10 @@
       "reviewer": "Codex",
       "ownerReview": "PENDING_OWNER_DECISION",
       "browser": "Playwright Chromium",
-      "viewport": { "width": 390, "height": 844 },
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
       "zoom": "100_PERCENT_UNLESS_EVIDENCE_ID_STATES_MOBILE_OR_ZOOM",
       "motionMode": "REDUCED",
       "route": "/community",
@@ -7261,7 +7369,10 @@
       "reviewer": "Codex",
       "ownerReview": "PENDING_OWNER_DECISION",
       "browser": "Playwright Chromium",
-      "viewport": { "width": 390, "height": 844 },
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
       "zoom": "100_PERCENT_UNLESS_EVIDENCE_ID_STATES_MOBILE_OR_ZOOM",
       "motionMode": "REDUCED",
       "route": "/account",
@@ -7283,7 +7394,10 @@
       "reviewer": "Codex",
       "ownerReview": "PENDING_OWNER_DECISION",
       "browser": "Playwright Chromium",
-      "viewport": { "width": 1440, "height": 900 },
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
       "zoom": "100_PERCENT_UNLESS_EVIDENCE_ID_STATES_MOBILE_OR_ZOOM",
       "motionMode": "REDUCED",
       "route": "/account",
@@ -7305,7 +7419,10 @@
       "reviewer": "Codex",
       "ownerReview": "PENDING_OWNER_DECISION",
       "browser": "Playwright Chromium",
-      "viewport": { "width": 1440, "height": 900 },
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
       "zoom": "100_PERCENT_UNLESS_EVIDENCE_ID_STATES_MOBILE_OR_ZOOM",
       "motionMode": "REDUCED",
       "route": "/play/development-studio-voyage",
@@ -7327,7 +7444,10 @@
       "reviewer": "Codex",
       "ownerReview": "PENDING_OWNER_DECISION",
       "browser": "Playwright Chromium",
-      "viewport": { "width": 1440, "height": 900 },
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
       "zoom": "100_PERCENT_UNLESS_EVIDENCE_ID_STATES_MOBILE_OR_ZOOM",
       "motionMode": "REDUCED",
       "route": "/play/development-studio-voyage",
@@ -7349,7 +7469,10 @@
       "reviewer": "Codex",
       "ownerReview": "PENDING_OWNER_DECISION",
       "browser": "Playwright Chromium",
-      "viewport": { "width": 1440, "height": 900 },
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
       "zoom": "100_PERCENT_UNLESS_EVIDENCE_ID_STATES_MOBILE_OR_ZOOM",
       "motionMode": "REDUCED",
       "route": "/account/roles",
@@ -7371,7 +7494,10 @@
       "reviewer": "Codex",
       "ownerReview": "PENDING_OWNER_DECISION",
       "browser": "Playwright Chromium",
-      "viewport": { "width": 1440, "height": 900 },
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
       "zoom": "100_PERCENT_UNLESS_EVIDENCE_ID_STATES_MOBILE_OR_ZOOM",
       "motionMode": "REDUCED",
       "route": "/account/roles",
@@ -7393,7 +7519,10 @@
       "reviewer": "Codex",
       "ownerReview": "PENDING_OWNER_DECISION",
       "browser": "Playwright Chromium",
-      "viewport": { "width": 1440, "height": 900 },
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
       "zoom": "100_PERCENT_UNLESS_EVIDENCE_ID_STATES_MOBILE_OR_ZOOM",
       "motionMode": "REDUCED",
       "route": "/profile/hp7c-full-capability",
@@ -7415,7 +7544,10 @@
       "reviewer": "Codex",
       "ownerReview": "PENDING_OWNER_DECISION",
       "browser": "Playwright Chromium",
-      "viewport": { "width": 1440, "height": 900 },
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
       "zoom": "100_PERCENT_UNLESS_EVIDENCE_ID_STATES_MOBILE_OR_ZOOM",
       "motionMode": "REDUCED",
       "route": "/verify-email",
@@ -7437,7 +7569,10 @@
       "reviewer": "Codex",
       "ownerReview": "PENDING_OWNER_DECISION",
       "browser": "Playwright Chromium",
-      "viewport": { "width": 1440, "height": 900 },
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
       "zoom": "100_PERCENT_UNLESS_EVIDENCE_ID_STATES_MOBILE_OR_ZOOM",
       "motionMode": "REDUCED",
       "route": "/account/personal-information",
@@ -7459,7 +7594,10 @@
       "reviewer": "Codex",
       "ownerReview": "PENDING_OWNER_DECISION",
       "browser": "Playwright Chromium",
-      "viewport": { "width": 1440, "height": 900 },
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
       "zoom": "100_PERCENT_UNLESS_EVIDENCE_ID_STATES_MOBILE_OR_ZOOM",
       "motionMode": "REDUCED",
       "route": "/account/email-change",
@@ -7481,7 +7619,10 @@
       "reviewer": "Codex",
       "ownerReview": "PENDING_OWNER_DECISION",
       "browser": "Playwright Chromium",
-      "viewport": { "width": 1440, "height": 900 },
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
       "zoom": "100_PERCENT_UNLESS_EVIDENCE_ID_STATES_MOBILE_OR_ZOOM",
       "motionMode": "REDUCED",
       "route": "/account/linked-identities",
@@ -7503,7 +7644,10 @@
       "reviewer": "Codex",
       "ownerReview": "PENDING_OWNER_DECISION",
       "browser": "Playwright Chromium",
-      "viewport": { "width": 1440, "height": 900 },
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
       "zoom": "100_PERCENT_UNLESS_EVIDENCE_ID_STATES_MOBILE_OR_ZOOM",
       "motionMode": "REDUCED",
       "route": "/account/data",
@@ -7525,7 +7669,10 @@
       "reviewer": "Codex",
       "ownerReview": "PENDING_OWNER_DECISION",
       "browser": "Playwright Chromium",
-      "viewport": { "width": 1440, "height": 900 },
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
       "zoom": "100_PERCENT_UNLESS_EVIDENCE_ID_STATES_MOBILE_OR_ZOOM",
       "motionMode": "REDUCED",
       "route": "/account/data",
@@ -7547,7 +7694,10 @@
       "reviewer": "Codex",
       "ownerReview": "PENDING_OWNER_DECISION",
       "browser": "Playwright Chromium",
-      "viewport": { "width": 1440, "height": 900 },
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
       "zoom": "100_PERCENT_UNLESS_EVIDENCE_ID_STATES_MOBILE_OR_ZOOM",
       "motionMode": "REDUCED",
       "route": "/account/data",
@@ -7569,7 +7719,10 @@
       "reviewer": "Codex",
       "ownerReview": "PENDING_OWNER_DECISION",
       "browser": "Playwright Chromium",
-      "viewport": { "width": 1440, "height": 900 },
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
       "zoom": "100_PERCENT_UNLESS_EVIDENCE_ID_STATES_MOBILE_OR_ZOOM",
       "motionMode": "REDUCED",
       "route": "/account",
@@ -7591,7 +7744,10 @@
       "reviewer": "Codex",
       "ownerReview": "PENDING_OWNER_DECISION",
       "browser": "Playwright Chromium",
-      "viewport": { "width": 1440, "height": 900 },
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
       "zoom": "100_PERCENT_UNLESS_EVIDENCE_ID_STATES_MOBILE_OR_ZOOM",
       "motionMode": "REDUCED",
       "route": "/account",
@@ -7613,7 +7769,10 @@
       "reviewer": "Codex",
       "ownerReview": "PENDING_OWNER_DECISION",
       "browser": "Playwright Chromium",
-      "viewport": { "width": 1440, "height": 900 },
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
       "zoom": "100_PERCENT_UNLESS_EVIDENCE_ID_STATES_MOBILE_OR_ZOOM",
       "motionMode": "REDUCED",
       "route": "/account/profile",
@@ -7635,7 +7794,10 @@
       "reviewer": "Codex",
       "ownerReview": "PENDING_OWNER_DECISION",
       "browser": "Playwright Chromium",
-      "viewport": { "width": 1440, "height": 900 },
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
       "zoom": "100_PERCENT_UNLESS_EVIDENCE_ID_STATES_MOBILE_OR_ZOOM",
       "motionMode": "REDUCED",
       "route": "/community",
@@ -7657,7 +7819,10 @@
       "reviewer": "Codex",
       "ownerReview": "PENDING_OWNER_DECISION",
       "browser": "Playwright Chromium",
-      "viewport": { "width": 1440, "height": 900 },
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
       "zoom": "100_PERCENT_UNLESS_EVIDENCE_ID_STATES_MOBILE_OR_ZOOM",
       "motionMode": "REDUCED",
       "route": "/tales",
@@ -7679,7 +7844,10 @@
       "reviewer": "Codex",
       "ownerReview": "PENDING_OWNER_DECISION",
       "browser": "Playwright Chromium",
-      "viewport": { "width": 1440, "height": 900 },
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
       "zoom": "100_PERCENT_UNLESS_EVIDENCE_ID_STATES_MOBILE_OR_ZOOM",
       "motionMode": "REDUCED",
       "route": "/account/roles",
@@ -7701,7 +7869,10 @@
       "reviewer": "Codex",
       "ownerReview": "PENDING_OWNER_DECISION",
       "browser": "Playwright Chromium",
-      "viewport": { "width": 1440, "height": 900 },
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
       "zoom": "100_PERCENT_UNLESS_EVIDENCE_ID_STATES_MOBILE_OR_ZOOM",
       "motionMode": "REDUCED",
       "route": "/",
@@ -7723,7 +7894,10 @@
       "reviewer": "Codex",
       "ownerReview": "PENDING_OWNER_DECISION",
       "browser": "Playwright Chromium",
-      "viewport": { "width": 1440, "height": 900 },
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
       "zoom": "100_PERCENT_UNLESS_EVIDENCE_ID_STATES_MOBILE_OR_ZOOM",
       "motionMode": "REDUCED",
       "route": "/community",
@@ -7745,7 +7919,10 @@
       "reviewer": "Codex",
       "ownerReview": "PENDING_OWNER_DECISION",
       "browser": "Playwright Chromium",
-      "viewport": { "width": 1440, "height": 900 },
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
       "zoom": "100_PERCENT_UNLESS_EVIDENCE_ID_STATES_MOBILE_OR_ZOOM",
       "motionMode": "REDUCED",
       "route": "/community",
@@ -7767,7 +7944,10 @@
       "reviewer": "Codex",
       "ownerReview": "PENDING_OWNER_DECISION",
       "browser": "Playwright Chromium",
-      "viewport": { "width": 1440, "height": 900 },
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
       "zoom": "100_PERCENT_UNLESS_EVIDENCE_ID_STATES_MOBILE_OR_ZOOM",
       "motionMode": "REDUCED",
       "route": "/community/clockwork-reef-chronicle",
@@ -7789,7 +7969,10 @@
       "reviewer": "Codex",
       "ownerReview": "PENDING_OWNER_DECISION",
       "browser": "Playwright Chromium",
-      "viewport": { "width": 1440, "height": 900 },
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
       "zoom": "100_PERCENT_UNLESS_EVIDENCE_ID_STATES_MOBILE_OR_ZOOM",
       "motionMode": "REDUCED",
       "route": "/community/clockwork-reef-chronicle",
@@ -7811,7 +7994,10 @@
       "reviewer": "Codex",
       "ownerReview": "PENDING_OWNER_DECISION",
       "browser": "Playwright Chromium",
-      "viewport": { "width": 1440, "height": 900 },
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
       "zoom": "100_PERCENT_UNLESS_EVIDENCE_ID_STATES_MOBILE_OR_ZOOM",
       "motionMode": "FULL_THEN_REDUCED",
       "route": "/",
@@ -7833,7 +8019,10 @@
       "reviewer": "Codex",
       "ownerReview": "PENDING_OWNER_DECISION",
       "browser": "Playwright Chromium",
-      "viewport": { "width": 1440, "height": 900 },
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
       "zoom": "100_PERCENT_UNLESS_EVIDENCE_ID_STATES_MOBILE_OR_ZOOM",
       "motionMode": "FULL_THEN_REDUCED",
       "route": "/",
@@ -7844,6 +8033,789 @@
       "screenshotSha256": "a4b04d5d1a06016a2e25e7eed6ebaad4cf83e3d0a9cc683514f28145eb237d8f",
       "screenshotBytes": 566580,
       "limitation": "Local production-build Chromium proof against a synthetic task-owned SQLite clone; not owner acceptance, live-provider proof, merge, or deployment."
+    },
+    {
+      "evidenceId": "HP-OWCR2-EV-A-ROLE-CARDS-FIRST-PAINT",
+      "sourceSha": "f3eef8dc65dd39a40f8e4140aa058de0381a94af",
+      "branch": "codex/project-homeport-product-reality-recovery",
+      "route": "/",
+      "screenContract": "screen-page-root",
+      "journey": "HP-OWCR2-JRN-C",
+      "accountFixture": "ROUND2_GOVERNED_SYNTHETIC",
+      "fixtureVersion": "homeport-phase7-owner-correction-round2-v1",
+      "fixtureChecksum": "0de61b524d435ba73a8f1318c336abe2591cc32978fb931739d69610fb60c8ce",
+      "browser": "Playwright Chromium",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "zoom": 100,
+      "motionMode": "FULL",
+      "appearanceState": "GOVERNED_TEST_STATE",
+      "dataState": "SYNTHETIC",
+      "screenshotPath": "run://phase7-owner-correction-round2/HP-OWCR2-JRN-C/HP-OWCR2-EV-A-ROLE-CARDS-FIRST-PAINT.png",
+      "committedScreenshotPath": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/screenshots/HP-OWCR2-EV-A-ROLE-CARDS-FIRST-PAINT.png",
+      "sha256": "b149923367aa062d759a583b76685d1f3409d9f5dbfe9982d84424788f17cadc",
+      "observedResult": "PASSED",
+      "knownDeviation": null,
+      "timestamp": "2026-08-05T20:01:13.568Z",
+      "reviewerClassification": "ACCEPTED_PENDING_OWNER_REREVIEW"
+    },
+    {
+      "evidenceId": "HP-OWCR2-EV-AA-MOBILE-PROFILE-SETUP",
+      "sourceSha": "f3eef8dc65dd39a40f8e4140aa058de0381a94af",
+      "branch": "codex/project-homeport-product-reality-recovery",
+      "route": "/account/profile",
+      "screenContract": "screen-page-account-profile",
+      "journey": "HP-OWCR2-JRN-V",
+      "accountFixture": "ROUND2_GOVERNED_SYNTHETIC",
+      "fixtureVersion": "homeport-phase7-owner-correction-round2-v1",
+      "fixtureChecksum": "0de61b524d435ba73a8f1318c336abe2591cc32978fb931739d69610fb60c8ce",
+      "browser": "Playwright Chromium",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "zoom": 100,
+      "motionMode": "FULL",
+      "appearanceState": "GOVERNED_TEST_STATE",
+      "dataState": "SYNTHETIC",
+      "screenshotPath": "run://phase7-owner-correction-round2/HP-OWCR2-JRN-V/HP-OWCR2-EV-AA-MOBILE-PROFILE-SETUP.png",
+      "committedScreenshotPath": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/screenshots/HP-OWCR2-EV-AA-MOBILE-PROFILE-SETUP.png",
+      "sha256": "12b57b1d8c7660e558cfa1b5998bbaf8fcd051216d4abde638ffa68a6daededd",
+      "observedResult": "PASSED",
+      "knownDeviation": null,
+      "timestamp": "2026-08-05T20:08:08.783Z",
+      "reviewerClassification": "ACCEPTED_PENDING_OWNER_REREVIEW"
+    },
+    {
+      "evidenceId": "HP-OWCR2-EV-AB-REDUCED-MOTION",
+      "sourceSha": "f3eef8dc65dd39a40f8e4140aa058de0381a94af",
+      "branch": "codex/project-homeport-product-reality-recovery",
+      "route": "/",
+      "screenContract": "screen-page-root",
+      "journey": "HP-OWCR2-JRN-E",
+      "accountFixture": "ROUND2_GOVERNED_SYNTHETIC",
+      "fixtureVersion": "homeport-phase7-owner-correction-round2-v1",
+      "fixtureChecksum": "0de61b524d435ba73a8f1318c336abe2591cc32978fb931739d69610fb60c8ce",
+      "browser": "Playwright Chromium",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "zoom": 100,
+      "motionMode": "REDUCED",
+      "appearanceState": "GOVERNED_TEST_STATE",
+      "dataState": "SYNTHETIC",
+      "screenshotPath": "run://phase7-owner-correction-round2/HP-OWCR2-JRN-E/HP-OWCR2-EV-AB-REDUCED-MOTION.png",
+      "committedScreenshotPath": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/screenshots/HP-OWCR2-EV-AB-REDUCED-MOTION.png",
+      "sha256": "215af39725a761e75cafedfb17aaef20ad92dfe0f363d5b0eb34a8b7eee20593",
+      "observedResult": "PASSED",
+      "knownDeviation": null,
+      "timestamp": "2026-08-05T20:01:40.514Z",
+      "reviewerClassification": "ACCEPTED_PENDING_OWNER_REREVIEW"
+    },
+    {
+      "evidenceId": "HP-OWCR2-EV-AE-FULL-ROUND2-REGRESSION",
+      "sourceSha": "f3eef8dc65dd39a40f8e4140aa058de0381a94af",
+      "branch": "codex/project-homeport-product-reality-recovery",
+      "route": "/",
+      "screenContract": "screen-page-root",
+      "journey": "HP-OWCR2-JRN-U",
+      "accountFixture": "ROUND2_GOVERNED_SYNTHETIC",
+      "fixtureVersion": "homeport-phase7-owner-correction-round2-v1",
+      "fixtureChecksum": "0de61b524d435ba73a8f1318c336abe2591cc32978fb931739d69610fb60c8ce",
+      "browser": "Playwright Chromium",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "zoom": 100,
+      "motionMode": "FULL",
+      "appearanceState": "GOVERNED_TEST_STATE",
+      "dataState": "SYNTHETIC",
+      "screenshotPath": "run://phase7-owner-correction-round2/HP-OWCR2-JRN-U/HP-OWCR2-EV-AE-FULL-ROUND2-REGRESSION.png",
+      "committedScreenshotPath": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/screenshots/HP-OWCR2-EV-AE-FULL-ROUND2-REGRESSION.png",
+      "sha256": "e76c5d348436151fb95f87acfbd2396d5b4797670a9980f1e839ae48889dcf95",
+      "observedResult": "PASSED",
+      "knownDeviation": null,
+      "timestamp": "2026-08-05T20:08:00.633Z",
+      "reviewerClassification": "ACCEPTED_PENDING_OWNER_REREVIEW"
+    },
+    {
+      "evidenceId": "HP-OWCR2-EV-B-ROLE-CARDS-HOVER",
+      "sourceSha": "f3eef8dc65dd39a40f8e4140aa058de0381a94af",
+      "branch": "codex/project-homeport-product-reality-recovery",
+      "route": "/",
+      "screenContract": "screen-page-root",
+      "journey": "HP-OWCR2-JRN-C",
+      "accountFixture": "ROUND2_GOVERNED_SYNTHETIC",
+      "fixtureVersion": "homeport-phase7-owner-correction-round2-v1",
+      "fixtureChecksum": "0de61b524d435ba73a8f1318c336abe2591cc32978fb931739d69610fb60c8ce",
+      "browser": "Playwright Chromium",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "zoom": 100,
+      "motionMode": "FULL",
+      "appearanceState": "GOVERNED_TEST_STATE",
+      "dataState": "SYNTHETIC",
+      "screenshotPath": "run://phase7-owner-correction-round2/HP-OWCR2-JRN-C/HP-OWCR2-EV-B-ROLE-CARDS-HOVER.png",
+      "committedScreenshotPath": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/screenshots/HP-OWCR2-EV-B-ROLE-CARDS-HOVER.png",
+      "sha256": "326cfe8ab0d1017995635b5a02adf9e25b19cb070a91a693a561bfb5031eaedf",
+      "observedResult": "PASSED",
+      "knownDeviation": null,
+      "timestamp": "2026-08-05T20:01:15.653Z",
+      "reviewerClassification": "ACCEPTED_PENDING_OWNER_REREVIEW"
+    },
+    {
+      "evidenceId": "HP-OWCR2-EV-C-ACCOUNT-MENU-OPENING",
+      "sourceSha": "f3eef8dc65dd39a40f8e4140aa058de0381a94af",
+      "branch": "codex/project-homeport-product-reality-recovery",
+      "route": "/",
+      "screenContract": "screen-page-root",
+      "journey": "HP-OWCR2-JRN-D",
+      "accountFixture": "ROUND2_GOVERNED_SYNTHETIC",
+      "fixtureVersion": "homeport-phase7-owner-correction-round2-v1",
+      "fixtureChecksum": "0de61b524d435ba73a8f1318c336abe2591cc32978fb931739d69610fb60c8ce",
+      "browser": "Playwright Chromium",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "zoom": 100,
+      "motionMode": "FULL",
+      "appearanceState": "GOVERNED_TEST_STATE",
+      "dataState": "SYNTHETIC",
+      "screenshotPath": "run://phase7-owner-correction-round2/HP-OWCR2-JRN-D/HP-OWCR2-EV-C-ACCOUNT-MENU-OPENING.png",
+      "committedScreenshotPath": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/screenshots/HP-OWCR2-EV-C-ACCOUNT-MENU-OPENING.png",
+      "sha256": "103c1a7f4dcf6b325277e68a2a8a6cd03327057d792e4c2a7fab5c47be858e9a",
+      "observedResult": "PASSED",
+      "knownDeviation": null,
+      "timestamp": "2026-08-05T20:01:21.365Z",
+      "reviewerClassification": "ACCEPTED_PENDING_OWNER_REREVIEW"
+    },
+    {
+      "evidenceId": "HP-OWCR2-EV-D-LANTERN-NEUTRAL",
+      "sourceSha": "f3eef8dc65dd39a40f8e4140aa058de0381a94af",
+      "branch": "codex/project-homeport-product-reality-recovery",
+      "route": "/",
+      "screenContract": "screen-page-root",
+      "journey": "HP-OWCR2-JRN-E",
+      "accountFixture": "ROUND2_GOVERNED_SYNTHETIC",
+      "fixtureVersion": "homeport-phase7-owner-correction-round2-v1",
+      "fixtureChecksum": "0de61b524d435ba73a8f1318c336abe2591cc32978fb931739d69610fb60c8ce",
+      "browser": "Playwright Chromium",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "zoom": 100,
+      "motionMode": "FULL",
+      "appearanceState": "GOVERNED_TEST_STATE",
+      "dataState": "SYNTHETIC",
+      "screenshotPath": "run://phase7-owner-correction-round2/HP-OWCR2-JRN-E/HP-OWCR2-EV-D-LANTERN-NEUTRAL.png",
+      "committedScreenshotPath": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/screenshots/HP-OWCR2-EV-D-LANTERN-NEUTRAL.png",
+      "sha256": "601bcde9dfa93fd79ee1330a5a602406856d34e0466cc2680dd08053b88f7109",
+      "observedResult": "PASSED",
+      "knownDeviation": null,
+      "timestamp": "2026-08-05T20:01:29.643Z",
+      "reviewerClassification": "ACCEPTED_PENDING_OWNER_REREVIEW"
+    },
+    {
+      "evidenceId": "HP-OWCR2-EV-E-LANTERN-LEFT",
+      "sourceSha": "f3eef8dc65dd39a40f8e4140aa058de0381a94af",
+      "branch": "codex/project-homeport-product-reality-recovery",
+      "route": "/",
+      "screenContract": "screen-page-root",
+      "journey": "HP-OWCR2-JRN-E",
+      "accountFixture": "ROUND2_GOVERNED_SYNTHETIC",
+      "fixtureVersion": "homeport-phase7-owner-correction-round2-v1",
+      "fixtureChecksum": "0de61b524d435ba73a8f1318c336abe2591cc32978fb931739d69610fb60c8ce",
+      "browser": "Playwright Chromium",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "zoom": 100,
+      "motionMode": "FULL",
+      "appearanceState": "GOVERNED_TEST_STATE",
+      "dataState": "SYNTHETIC",
+      "screenshotPath": "run://phase7-owner-correction-round2/HP-OWCR2-JRN-E/HP-OWCR2-EV-E-LANTERN-LEFT.png",
+      "committedScreenshotPath": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/screenshots/HP-OWCR2-EV-E-LANTERN-LEFT.png",
+      "sha256": "3f86d1ec7a94906a407f3105fb259232cdc235749307d9293b6aeb59d5dd812d",
+      "observedResult": "PASSED",
+      "knownDeviation": null,
+      "timestamp": "2026-08-05T20:01:31.282Z",
+      "reviewerClassification": "ACCEPTED_PENDING_OWNER_REREVIEW"
+    },
+    {
+      "evidenceId": "HP-OWCR2-EV-F-LANTERN-RIGHT",
+      "sourceSha": "f3eef8dc65dd39a40f8e4140aa058de0381a94af",
+      "branch": "codex/project-homeport-product-reality-recovery",
+      "route": "/",
+      "screenContract": "screen-page-root",
+      "journey": "HP-OWCR2-JRN-E",
+      "accountFixture": "ROUND2_GOVERNED_SYNTHETIC",
+      "fixtureVersion": "homeport-phase7-owner-correction-round2-v1",
+      "fixtureChecksum": "0de61b524d435ba73a8f1318c336abe2591cc32978fb931739d69610fb60c8ce",
+      "browser": "Playwright Chromium",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "zoom": 100,
+      "motionMode": "FULL",
+      "appearanceState": "GOVERNED_TEST_STATE",
+      "dataState": "SYNTHETIC",
+      "screenshotPath": "run://phase7-owner-correction-round2/HP-OWCR2-JRN-E/HP-OWCR2-EV-F-LANTERN-RIGHT.png",
+      "committedScreenshotPath": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/screenshots/HP-OWCR2-EV-F-LANTERN-RIGHT.png",
+      "sha256": "a8cdfe852918ddca5f5c3e4a3dd07dbd2a1716ab747b209c526ea9d394278d42",
+      "observedResult": "PASSED",
+      "knownDeviation": null,
+      "timestamp": "2026-08-05T20:01:33.852Z",
+      "reviewerClassification": "ACCEPTED_PENDING_OWNER_REREVIEW"
+    },
+    {
+      "evidenceId": "HP-OWCR2-EV-G-STAR-TWINKLE",
+      "sourceSha": "f3eef8dc65dd39a40f8e4140aa058de0381a94af",
+      "branch": "codex/project-homeport-product-reality-recovery",
+      "route": "/",
+      "screenContract": "screen-page-root",
+      "journey": "HP-OWCR2-JRN-E",
+      "accountFixture": "ROUND2_GOVERNED_SYNTHETIC",
+      "fixtureVersion": "homeport-phase7-owner-correction-round2-v1",
+      "fixtureChecksum": "0de61b524d435ba73a8f1318c336abe2591cc32978fb931739d69610fb60c8ce",
+      "browser": "Playwright Chromium",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "zoom": 100,
+      "motionMode": "FULL",
+      "appearanceState": "GOVERNED_TEST_STATE",
+      "dataState": "SYNTHETIC",
+      "screenshotPath": "run://phase7-owner-correction-round2/HP-OWCR2-JRN-E/HP-OWCR2-EV-G-STAR-TWINKLE.png",
+      "committedScreenshotPath": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/screenshots/HP-OWCR2-EV-G-STAR-TWINKLE.png",
+      "sha256": "9ef3a11d122caf7467c846336cc20425e3278d45c974e3327b450929364f455a",
+      "observedResult": "PASSED",
+      "knownDeviation": null,
+      "timestamp": "2026-08-05T20:01:38.750Z",
+      "reviewerClassification": "ACCEPTED_PENDING_OWNER_REREVIEW"
+    },
+    {
+      "evidenceId": "HP-OWCR2-EV-H-FOG-DRIFT",
+      "sourceSha": "f3eef8dc65dd39a40f8e4140aa058de0381a94af",
+      "branch": "codex/project-homeport-product-reality-recovery",
+      "route": "/",
+      "screenContract": "screen-page-root",
+      "journey": "HP-OWCR2-JRN-E",
+      "accountFixture": "ROUND2_GOVERNED_SYNTHETIC",
+      "fixtureVersion": "homeport-phase7-owner-correction-round2-v1",
+      "fixtureChecksum": "0de61b524d435ba73a8f1318c336abe2591cc32978fb931739d69610fb60c8ce",
+      "browser": "Playwright Chromium",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "zoom": 100,
+      "motionMode": "FULL",
+      "appearanceState": "GOVERNED_TEST_STATE",
+      "dataState": "SYNTHETIC",
+      "screenshotPath": "run://phase7-owner-correction-round2/HP-OWCR2-JRN-E/HP-OWCR2-EV-H-FOG-DRIFT.png",
+      "committedScreenshotPath": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/screenshots/HP-OWCR2-EV-H-FOG-DRIFT.png",
+      "sha256": "1613def31c2f049c37dc44e09ae2d39d45b1613848870c6f316af095ca9e9584",
+      "observedResult": "PASSED",
+      "knownDeviation": null,
+      "timestamp": "2026-08-05T20:01:39.139Z",
+      "reviewerClassification": "ACCEPTED_PENDING_OWNER_REREVIEW"
+    },
+    {
+      "evidenceId": "HP-OWCR2-EV-I-DARK-WHAT-IS-A-CHRONICLE",
+      "sourceSha": "f3eef8dc65dd39a40f8e4140aa058de0381a94af",
+      "branch": "codex/project-homeport-product-reality-recovery",
+      "route": "/",
+      "screenContract": "screen-page-root",
+      "journey": "HP-OWCR2-JRN-F",
+      "accountFixture": "ROUND2_GOVERNED_SYNTHETIC",
+      "fixtureVersion": "homeport-phase7-owner-correction-round2-v1",
+      "fixtureChecksum": "0de61b524d435ba73a8f1318c336abe2591cc32978fb931739d69610fb60c8ce",
+      "browser": "Playwright Chromium",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "zoom": 100,
+      "motionMode": "FULL",
+      "appearanceState": "DARK",
+      "dataState": "SYNTHETIC",
+      "screenshotPath": "run://phase7-owner-correction-round2/HP-OWCR2-JRN-F/HP-OWCR2-EV-I-DARK-WHAT-IS-A-CHRONICLE.png",
+      "committedScreenshotPath": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/screenshots/HP-OWCR2-EV-I-DARK-WHAT-IS-A-CHRONICLE.png",
+      "sha256": "e66020af68f2bd04c3d717b822ab25a548a59243a191284d60a9b63bbd6587b3",
+      "observedResult": "PASSED",
+      "knownDeviation": null,
+      "timestamp": "2026-08-05T20:01:46.738Z",
+      "reviewerClassification": "ACCEPTED_PENDING_OWNER_REREVIEW"
+    },
+    {
+      "evidenceId": "HP-OWCR2-EV-J-LIGHT-GATEWAY",
+      "sourceSha": "f3eef8dc65dd39a40f8e4140aa058de0381a94af",
+      "branch": "codex/project-homeport-product-reality-recovery",
+      "route": "/",
+      "screenContract": "screen-page-root",
+      "journey": "HP-OWCR2-JRN-G",
+      "accountFixture": "ROUND2_GOVERNED_SYNTHETIC",
+      "fixtureVersion": "homeport-phase7-owner-correction-round2-v1",
+      "fixtureChecksum": "0de61b524d435ba73a8f1318c336abe2591cc32978fb931739d69610fb60c8ce",
+      "browser": "Playwright Chromium",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "zoom": 100,
+      "motionMode": "FULL",
+      "appearanceState": "LIGHT",
+      "dataState": "SYNTHETIC",
+      "screenshotPath": "run://phase7-owner-correction-round2/HP-OWCR2-JRN-G/HP-OWCR2-EV-J-LIGHT-GATEWAY.png",
+      "committedScreenshotPath": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/screenshots/HP-OWCR2-EV-J-LIGHT-GATEWAY.png",
+      "sha256": "2fb2ddbe20aae70127e427ef2947529b2852c150f79fc0199e3c18c0456e6c75",
+      "observedResult": "PASSED",
+      "knownDeviation": null,
+      "timestamp": "2026-08-05T20:01:53.509Z",
+      "reviewerClassification": "ACCEPTED_PENDING_OWNER_REREVIEW"
+    },
+    {
+      "evidenceId": "HP-OWCR2-EV-K-LIGHT-COMMUNITY",
+      "sourceSha": "f3eef8dc65dd39a40f8e4140aa058de0381a94af",
+      "branch": "codex/project-homeport-product-reality-recovery",
+      "route": "/community",
+      "screenContract": "screen-page-community",
+      "journey": "HP-OWCR2-JRN-G",
+      "accountFixture": "ROUND2_GOVERNED_SYNTHETIC",
+      "fixtureVersion": "homeport-phase7-owner-correction-round2-v1",
+      "fixtureChecksum": "0de61b524d435ba73a8f1318c336abe2591cc32978fb931739d69610fb60c8ce",
+      "browser": "Playwright Chromium",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "zoom": 100,
+      "motionMode": "FULL",
+      "appearanceState": "LIGHT",
+      "dataState": "SYNTHETIC",
+      "screenshotPath": "run://phase7-owner-correction-round2/HP-OWCR2-JRN-G/HP-OWCR2-EV-K-LIGHT-COMMUNITY.png",
+      "committedScreenshotPath": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/screenshots/HP-OWCR2-EV-K-LIGHT-COMMUNITY.png",
+      "sha256": "67b858f91554e62f9da8551ad2e4cbe622113165e4d06643a7ea3d6d2492ee39",
+      "observedResult": "PASSED",
+      "knownDeviation": null,
+      "timestamp": "2026-08-05T20:01:55.445Z",
+      "reviewerClassification": "ACCEPTED_PENDING_OWNER_REREVIEW"
+    },
+    {
+      "evidenceId": "HP-OWCR2-EV-L-LIGHT-PERSONAL-HARBOR",
+      "sourceSha": "f3eef8dc65dd39a40f8e4140aa058de0381a94af",
+      "branch": "codex/project-homeport-product-reality-recovery",
+      "route": "/account",
+      "screenContract": "screen-page-account",
+      "journey": "HP-OWCR2-JRN-G",
+      "accountFixture": "ROUND2_GOVERNED_SYNTHETIC",
+      "fixtureVersion": "homeport-phase7-owner-correction-round2-v1",
+      "fixtureChecksum": "0de61b524d435ba73a8f1318c336abe2591cc32978fb931739d69610fb60c8ce",
+      "browser": "Playwright Chromium",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "zoom": 100,
+      "motionMode": "FULL",
+      "appearanceState": "LIGHT",
+      "dataState": "SYNTHETIC",
+      "screenshotPath": "run://phase7-owner-correction-round2/HP-OWCR2-JRN-G/HP-OWCR2-EV-L-LIGHT-PERSONAL-HARBOR.png",
+      "committedScreenshotPath": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/screenshots/HP-OWCR2-EV-L-LIGHT-PERSONAL-HARBOR.png",
+      "sha256": "5f802a6e01bfc304b7cd28aa823f91f1fbc54eb82382922bcc8ec847812c46b4",
+      "observedResult": "PASSED",
+      "knownDeviation": null,
+      "timestamp": "2026-08-05T20:01:56.591Z",
+      "reviewerClassification": "ACCEPTED_PENDING_OWNER_REREVIEW"
+    },
+    {
+      "evidenceId": "HP-OWCR2-EV-M-SERA-WORKSPACES",
+      "sourceSha": "f3eef8dc65dd39a40f8e4140aa058de0381a94af",
+      "branch": "codex/project-homeport-product-reality-recovery",
+      "route": "/account/roles",
+      "screenContract": "screen-page-account-roles",
+      "journey": "HP-OWCR2-JRN-A",
+      "accountFixture": "ROUND2_GOVERNED_SYNTHETIC",
+      "fixtureVersion": "homeport-phase7-owner-correction-round2-v1",
+      "fixtureChecksum": "0de61b524d435ba73a8f1318c336abe2591cc32978fb931739d69610fb60c8ce",
+      "browser": "Playwright Chromium",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "zoom": 100,
+      "motionMode": "FULL",
+      "appearanceState": "GOVERNED_TEST_STATE",
+      "dataState": "SYNTHETIC",
+      "screenshotPath": "run://phase7-owner-correction-round2/HP-OWCR2-JRN-A/HP-OWCR2-EV-M-SERA-WORKSPACES.png",
+      "committedScreenshotPath": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/screenshots/HP-OWCR2-EV-M-SERA-WORKSPACES.png",
+      "sha256": "a00fa71e15036279733d60816d747fd4e411b0f77dbbf61a65415c7fa8913eef",
+      "observedResult": "PASSED",
+      "knownDeviation": null,
+      "timestamp": "2026-08-05T20:01:02.908Z",
+      "reviewerClassification": "ACCEPTED_PENDING_OWNER_REREVIEW"
+    },
+    {
+      "evidenceId": "HP-OWCR2-EV-N-COMMUNITY-FAST-READY",
+      "sourceSha": "f3eef8dc65dd39a40f8e4140aa058de0381a94af",
+      "branch": "codex/project-homeport-product-reality-recovery",
+      "route": "/community",
+      "screenContract": "screen-page-community",
+      "journey": "HP-OWCR2-JRN-H",
+      "accountFixture": "ROUND2_GOVERNED_SYNTHETIC",
+      "fixtureVersion": "homeport-phase7-owner-correction-round2-v1",
+      "fixtureChecksum": "0de61b524d435ba73a8f1318c336abe2591cc32978fb931739d69610fb60c8ce",
+      "browser": "Playwright Chromium",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "zoom": 100,
+      "motionMode": "FULL",
+      "appearanceState": "GOVERNED_TEST_STATE",
+      "dataState": "SYNTHETIC",
+      "screenshotPath": "run://phase7-owner-correction-round2/HP-OWCR2-JRN-H/HP-OWCR2-EV-N-COMMUNITY-FAST-READY.png",
+      "committedScreenshotPath": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/screenshots/HP-OWCR2-EV-N-COMMUNITY-FAST-READY.png",
+      "sha256": "d24f5cad9f8210a9e909dcad45aa81f62ae94c4805d4b907eb61c870dcd561a3",
+      "observedResult": "PASSED",
+      "knownDeviation": null,
+      "timestamp": "2026-08-05T20:06:22.393Z",
+      "reviewerClassification": "ACCEPTED_PENDING_OWNER_REREVIEW"
+    },
+    {
+      "evidenceId": "HP-OWCR2-EV-O-COMMUNITY-DELAYED-LOADING",
+      "sourceSha": "f3eef8dc65dd39a40f8e4140aa058de0381a94af",
+      "branch": "codex/project-homeport-product-reality-recovery",
+      "route": "/community/chronicles",
+      "screenContract": "screen-page-community-slug",
+      "journey": "HP-OWCR2-JRN-I",
+      "accountFixture": "ROUND2_GOVERNED_SYNTHETIC",
+      "fixtureVersion": "homeport-phase7-owner-correction-round2-v1",
+      "fixtureChecksum": "0de61b524d435ba73a8f1318c336abe2591cc32978fb931739d69610fb60c8ce",
+      "browser": "Playwright Chromium",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "zoom": 100,
+      "motionMode": "FULL",
+      "appearanceState": "GOVERNED_TEST_STATE",
+      "dataState": "SYNTHETIC",
+      "screenshotPath": "run://phase7-owner-correction-round2/HP-OWCR2-JRN-I/HP-OWCR2-EV-O-COMMUNITY-DELAYED-LOADING.png",
+      "committedScreenshotPath": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/screenshots/HP-OWCR2-EV-O-COMMUNITY-DELAYED-LOADING.png",
+      "sha256": "84b6d7ec03ee7018c2f66defea54c7493cea2d2812f5c07e939336afa33369da",
+      "observedResult": "PASSED",
+      "knownDeviation": null,
+      "timestamp": "2026-08-05T20:06:35.062Z",
+      "reviewerClassification": "ACCEPTED_PENDING_OWNER_REREVIEW"
+    },
+    {
+      "evidenceId": "HP-OWCR2-EV-P-COMMUNITY-REAL-ERROR",
+      "sourceSha": "f3eef8dc65dd39a40f8e4140aa058de0381a94af",
+      "branch": "codex/project-homeport-product-reality-recovery",
+      "route": "/community/chronicles",
+      "screenContract": "screen-page-community-slug",
+      "journey": "HP-OWCR2-JRN-J",
+      "accountFixture": "ROUND2_GOVERNED_SYNTHETIC",
+      "fixtureVersion": "homeport-phase7-owner-correction-round2-v1",
+      "fixtureChecksum": "0de61b524d435ba73a8f1318c336abe2591cc32978fb931739d69610fb60c8ce",
+      "browser": "Playwright Chromium",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "zoom": 100,
+      "motionMode": "FULL",
+      "appearanceState": "GOVERNED_TEST_STATE",
+      "dataState": "SYNTHETIC",
+      "screenshotPath": "run://phase7-owner-correction-round2/HP-OWCR2-JRN-J/HP-OWCR2-EV-P-COMMUNITY-REAL-ERROR.png",
+      "committedScreenshotPath": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/screenshots/HP-OWCR2-EV-P-COMMUNITY-REAL-ERROR.png",
+      "sha256": "5dc4e945a69433715e98fc654da361d1fc0dc531216ab36854e524773b8685bf",
+      "observedResult": "PASSED",
+      "knownDeviation": null,
+      "timestamp": "2026-08-05T20:06:40.071Z",
+      "reviewerClassification": "ACCEPTED_PENDING_OWNER_REREVIEW"
+    },
+    {
+      "evidenceId": "HP-OWCR2-EV-Q-PUBLIC-PROFILE-REVIEW",
+      "sourceSha": "f3eef8dc65dd39a40f8e4140aa058de0381a94af",
+      "branch": "codex/project-homeport-product-reality-recovery",
+      "route": "/community/fog-bank-blocked-chronicle",
+      "screenContract": "screen-page-community-slug",
+      "journey": "HP-OWCR2-JRN-K",
+      "accountFixture": "ROUND2_GOVERNED_SYNTHETIC",
+      "fixtureVersion": "homeport-phase7-owner-correction-round2-v1",
+      "fixtureChecksum": "0de61b524d435ba73a8f1318c336abe2591cc32978fb931739d69610fb60c8ce",
+      "browser": "Playwright Chromium",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "zoom": 100,
+      "motionMode": "FULL",
+      "appearanceState": "GOVERNED_TEST_STATE",
+      "dataState": "SYNTHETIC",
+      "screenshotPath": "run://phase7-owner-correction-round2/HP-OWCR2-JRN-K/HP-OWCR2-EV-Q-PUBLIC-PROFILE-REVIEW.png",
+      "committedScreenshotPath": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/screenshots/HP-OWCR2-EV-Q-PUBLIC-PROFILE-REVIEW.png",
+      "sha256": "ed482cd3ed7f96889e29b7e853573da8ba568c78ef0eae072ee8aef41780dbb4",
+      "observedResult": "PASSED",
+      "knownDeviation": null,
+      "timestamp": "2026-08-05T20:06:46.760Z",
+      "reviewerClassification": "ACCEPTED_PENDING_OWNER_REREVIEW"
+    },
+    {
+      "evidenceId": "HP-OWCR2-EV-R-PUBLIC-PROFILE-SETUP",
+      "sourceSha": "f3eef8dc65dd39a40f8e4140aa058de0381a94af",
+      "branch": "codex/project-homeport-product-reality-recovery",
+      "route": "/community/fog-bank-blocked-chronicle",
+      "screenContract": "screen-page-community-slug",
+      "journey": "HP-OWCR2-JRN-L",
+      "accountFixture": "ROUND2_GOVERNED_SYNTHETIC",
+      "fixtureVersion": "homeport-phase7-owner-correction-round2-v1",
+      "fixtureChecksum": "0de61b524d435ba73a8f1318c336abe2591cc32978fb931739d69610fb60c8ce",
+      "browser": "Playwright Chromium",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "zoom": 100,
+      "motionMode": "FULL",
+      "appearanceState": "GOVERNED_TEST_STATE",
+      "dataState": "SYNTHETIC",
+      "screenshotPath": "run://phase7-owner-correction-round2/HP-OWCR2-JRN-L/HP-OWCR2-EV-R-PUBLIC-PROFILE-SETUP.png",
+      "committedScreenshotPath": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/screenshots/HP-OWCR2-EV-R-PUBLIC-PROFILE-SETUP.png",
+      "sha256": "7411bcf73e7704213cd04c85e83039f728472a0af6ff8ce230e755c11d4252ff",
+      "observedResult": "PASSED",
+      "knownDeviation": null,
+      "timestamp": "2026-08-05T20:06:53.909Z",
+      "reviewerClassification": "ACCEPTED_PENDING_OWNER_REREVIEW"
+    },
+    {
+      "evidenceId": "HP-OWCR2-EV-S-SAVE-COUNT",
+      "sourceSha": "f3eef8dc65dd39a40f8e4140aa058de0381a94af",
+      "branch": "codex/project-homeport-product-reality-recovery",
+      "route": "/community",
+      "screenContract": "screen-page-community",
+      "journey": "HP-OWCR2-JRN-M",
+      "accountFixture": "ROUND2_GOVERNED_SYNTHETIC",
+      "fixtureVersion": "homeport-phase7-owner-correction-round2-v1",
+      "fixtureChecksum": "0de61b524d435ba73a8f1318c336abe2591cc32978fb931739d69610fb60c8ce",
+      "browser": "Playwright Chromium",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "zoom": 100,
+      "motionMode": "FULL",
+      "appearanceState": "GOVERNED_TEST_STATE",
+      "dataState": "SYNTHETIC",
+      "screenshotPath": "run://phase7-owner-correction-round2/HP-OWCR2-JRN-M/HP-OWCR2-EV-S-SAVE-COUNT.png",
+      "committedScreenshotPath": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/screenshots/HP-OWCR2-EV-S-SAVE-COUNT.png",
+      "sha256": "bad7238a01d45dd589b85e12aef998fa003033cb590a02ca20e402ed8e86c1e2",
+      "observedResult": "PASSED",
+      "knownDeviation": null,
+      "timestamp": "2026-08-05T20:07:03.012Z",
+      "reviewerClassification": "ACCEPTED_PENDING_OWNER_REREVIEW"
+    },
+    {
+      "evidenceId": "HP-OWCR2-EV-T-RATING-SUMMARY",
+      "sourceSha": "f3eef8dc65dd39a40f8e4140aa058de0381a94af",
+      "branch": "codex/project-homeport-product-reality-recovery",
+      "route": "/community/fog-bank-blocked-chronicle",
+      "screenContract": "screen-page-community-slug",
+      "journey": "HP-OWCR2-JRN-N",
+      "accountFixture": "ROUND2_GOVERNED_SYNTHETIC",
+      "fixtureVersion": "homeport-phase7-owner-correction-round2-v1",
+      "fixtureChecksum": "0de61b524d435ba73a8f1318c336abe2591cc32978fb931739d69610fb60c8ce",
+      "browser": "Playwright Chromium",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "zoom": 100,
+      "motionMode": "FULL",
+      "appearanceState": "GOVERNED_TEST_STATE",
+      "dataState": "SYNTHETIC",
+      "screenshotPath": "run://phase7-owner-correction-round2/HP-OWCR2-JRN-N/HP-OWCR2-EV-T-RATING-SUMMARY.png",
+      "committedScreenshotPath": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/screenshots/HP-OWCR2-EV-T-RATING-SUMMARY.png",
+      "sha256": "34c000200cb16cc6e73e65b15dffa4f4853f2e3f6488f474b5d16c8dc6720a31",
+      "observedResult": "PASSED",
+      "knownDeviation": null,
+      "timestamp": "2026-08-05T20:07:11.395Z",
+      "reviewerClassification": "ACCEPTED_PENDING_OWNER_REREVIEW"
+    },
+    {
+      "evidenceId": "HP-OWCR2-EV-U-COMPLETION-VERIFIED-REVIEW",
+      "sourceSha": "f3eef8dc65dd39a40f8e4140aa058de0381a94af",
+      "branch": "codex/project-homeport-product-reality-recovery",
+      "route": "/community/fog-bank-blocked-chronicle",
+      "screenContract": "screen-page-community-slug",
+      "journey": "HP-OWCR2-JRN-O",
+      "accountFixture": "ROUND2_GOVERNED_SYNTHETIC",
+      "fixtureVersion": "homeport-phase7-owner-correction-round2-v1",
+      "fixtureChecksum": "0de61b524d435ba73a8f1318c336abe2591cc32978fb931739d69610fb60c8ce",
+      "browser": "Playwright Chromium",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "zoom": 100,
+      "motionMode": "FULL",
+      "appearanceState": "GOVERNED_TEST_STATE",
+      "dataState": "SYNTHETIC",
+      "screenshotPath": "run://phase7-owner-correction-round2/HP-OWCR2-JRN-O/HP-OWCR2-EV-U-COMPLETION-VERIFIED-REVIEW.png",
+      "committedScreenshotPath": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/screenshots/HP-OWCR2-EV-U-COMPLETION-VERIFIED-REVIEW.png",
+      "sha256": "a47ad35f1f2714167f17e3d5e86af1a67a0df963e42d285a6f7f81f8f7d8f866",
+      "observedResult": "PASSED",
+      "knownDeviation": null,
+      "timestamp": "2026-08-05T20:07:17.327Z",
+      "reviewerClassification": "ACCEPTED_PENDING_OWNER_REREVIEW"
+    },
+    {
+      "evidenceId": "HP-OWCR2-EV-V-CHRONICLE-PREVIEW-EXPANDED",
+      "sourceSha": "f3eef8dc65dd39a40f8e4140aa058de0381a94af",
+      "branch": "codex/project-homeport-product-reality-recovery",
+      "route": "/community/fog-bank-blocked-chronicle",
+      "screenContract": "screen-page-community-slug",
+      "journey": "HP-OWCR2-JRN-Q",
+      "accountFixture": "ROUND2_GOVERNED_SYNTHETIC",
+      "fixtureVersion": "homeport-phase7-owner-correction-round2-v1",
+      "fixtureChecksum": "0de61b524d435ba73a8f1318c336abe2591cc32978fb931739d69610fb60c8ce",
+      "browser": "Playwright Chromium",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "zoom": 100,
+      "motionMode": "FULL",
+      "appearanceState": "GOVERNED_TEST_STATE",
+      "dataState": "SYNTHETIC",
+      "screenshotPath": "run://phase7-owner-correction-round2/HP-OWCR2-JRN-Q/HP-OWCR2-EV-V-CHRONICLE-PREVIEW-EXPANDED.png",
+      "committedScreenshotPath": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/screenshots/HP-OWCR2-EV-V-CHRONICLE-PREVIEW-EXPANDED.png",
+      "sha256": "0bdef2846bc1825d9a7bd8ceaaba00791c6928016c4ed3cd4aab7617ef8fe7cf",
+      "observedResult": "PASSED",
+      "knownDeviation": null,
+      "timestamp": "2026-08-05T20:07:30.655Z",
+      "reviewerClassification": "ACCEPTED_PENDING_OWNER_REREVIEW"
+    },
+    {
+      "evidenceId": "HP-OWCR2-EV-W-PASSPORT-REVIEW-ENTRY",
+      "sourceSha": "f3eef8dc65dd39a40f8e4140aa058de0381a94af",
+      "branch": "codex/project-homeport-product-reality-recovery",
+      "route": "/passport/history",
+      "screenContract": "screen-page-passport-history",
+      "journey": "HP-OWCR2-JRN-P",
+      "accountFixture": "ROUND2_GOVERNED_SYNTHETIC",
+      "fixtureVersion": "homeport-phase7-owner-correction-round2-v1",
+      "fixtureChecksum": "0de61b524d435ba73a8f1318c336abe2591cc32978fb931739d69610fb60c8ce",
+      "browser": "Playwright Chromium",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "zoom": 100,
+      "motionMode": "FULL",
+      "appearanceState": "GOVERNED_TEST_STATE",
+      "dataState": "SYNTHETIC",
+      "screenshotPath": "run://phase7-owner-correction-round2/HP-OWCR2-JRN-P/HP-OWCR2-EV-W-PASSPORT-REVIEW-ENTRY.png",
+      "committedScreenshotPath": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/screenshots/HP-OWCR2-EV-W-PASSPORT-REVIEW-ENTRY.png",
+      "sha256": "80866c765d36c7c4a664730438e1dc890d784c1d58dea2256983b7a0237cce61",
+      "observedResult": "PASSED",
+      "knownDeviation": null,
+      "timestamp": "2026-08-05T20:07:23.132Z",
+      "reviewerClassification": "ACCEPTED_PENDING_OWNER_REREVIEW"
+    },
+    {
+      "evidenceId": "HP-OWCR2-EV-X-PERSONAL-HARBOR-CONTRAST",
+      "sourceSha": "f3eef8dc65dd39a40f8e4140aa058de0381a94af",
+      "branch": "codex/project-homeport-product-reality-recovery",
+      "route": "/account",
+      "screenContract": "screen-page-account",
+      "journey": "HP-OWCR2-JRN-S",
+      "accountFixture": "ROUND2_GOVERNED_SYNTHETIC",
+      "fixtureVersion": "homeport-phase7-owner-correction-round2-v1",
+      "fixtureChecksum": "0de61b524d435ba73a8f1318c336abe2591cc32978fb931739d69610fb60c8ce",
+      "browser": "Playwright Chromium",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "zoom": 100,
+      "motionMode": "FULL",
+      "appearanceState": "GOVERNED_TEST_STATE",
+      "dataState": "SYNTHETIC",
+      "screenshotPath": "run://phase7-owner-correction-round2/HP-OWCR2-JRN-S/HP-OWCR2-EV-X-PERSONAL-HARBOR-CONTRAST.png",
+      "committedScreenshotPath": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/screenshots/HP-OWCR2-EV-X-PERSONAL-HARBOR-CONTRAST.png",
+      "sha256": "2d4c23015449e0ca40421534b82248493f3d5e316665bc668dd5d052e36a1995",
+      "observedResult": "PASSED",
+      "knownDeviation": null,
+      "timestamp": "2026-08-05T20:07:44.911Z",
+      "reviewerClassification": "ACCEPTED_PENDING_OWNER_REREVIEW"
+    },
+    {
+      "evidenceId": "HP-OWCR2-EV-Y-COMMUNITY-CONTRAST",
+      "sourceSha": "f3eef8dc65dd39a40f8e4140aa058de0381a94af",
+      "branch": "codex/project-homeport-product-reality-recovery",
+      "route": "/community",
+      "screenContract": "screen-page-community",
+      "journey": "HP-OWCR2-JRN-S",
+      "accountFixture": "ROUND2_GOVERNED_SYNTHETIC",
+      "fixtureVersion": "homeport-phase7-owner-correction-round2-v1",
+      "fixtureChecksum": "0de61b524d435ba73a8f1318c336abe2591cc32978fb931739d69610fb60c8ce",
+      "browser": "Playwright Chromium",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "zoom": 100,
+      "motionMode": "FULL",
+      "appearanceState": "GOVERNED_TEST_STATE",
+      "dataState": "SYNTHETIC",
+      "screenshotPath": "run://phase7-owner-correction-round2/HP-OWCR2-JRN-S/HP-OWCR2-EV-Y-COMMUNITY-CONTRAST.png",
+      "committedScreenshotPath": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/screenshots/HP-OWCR2-EV-Y-COMMUNITY-CONTRAST.png",
+      "sha256": "190b932690a57884b6e3d41dc710640b4d755d3424d5d4408b77023e36f6e065",
+      "observedResult": "PASSED",
+      "knownDeviation": null,
+      "timestamp": "2026-08-05T20:07:48.132Z",
+      "reviewerClassification": "ACCEPTED_PENDING_OWNER_REREVIEW"
+    },
+    {
+      "evidenceId": "HP-OWCR2-EV-Z-MOBILE-COMMUNITY",
+      "sourceSha": "f3eef8dc65dd39a40f8e4140aa058de0381a94af",
+      "branch": "codex/project-homeport-product-reality-recovery",
+      "route": "/community",
+      "screenContract": "screen-page-community",
+      "journey": "HP-OWCR2-JRN-V",
+      "accountFixture": "ROUND2_GOVERNED_SYNTHETIC",
+      "fixtureVersion": "homeport-phase7-owner-correction-round2-v1",
+      "fixtureChecksum": "0de61b524d435ba73a8f1318c336abe2591cc32978fb931739d69610fb60c8ce",
+      "browser": "Playwright Chromium",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "zoom": 100,
+      "motionMode": "FULL",
+      "appearanceState": "GOVERNED_TEST_STATE",
+      "dataState": "SYNTHETIC",
+      "screenshotPath": "run://phase7-owner-correction-round2/HP-OWCR2-JRN-V/HP-OWCR2-EV-Z-MOBILE-COMMUNITY.png",
+      "committedScreenshotPath": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/screenshots/HP-OWCR2-EV-Z-MOBILE-COMMUNITY.png",
+      "sha256": "0d5b192dcc1e2426850372d6d233a0437059f4ba26003e02133a131d161e6c46",
+      "observedResult": "PASSED",
+      "knownDeviation": null,
+      "timestamp": "2026-08-05T20:08:08.085Z",
+      "reviewerClassification": "ACCEPTED_PENDING_OWNER_REREVIEW"
     }
   ],
   "phase1Implementation": {
@@ -11485,7 +12457,10 @@
         "fixtureVersion": "homeport-phase7-integrated-v1",
         "result": "PASSED",
         "browser": "Chromium 141.0.7390.37",
-        "viewport": { "width": 1440, "height": 900 },
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
         "motionMode": "REDUCED",
         "route": "/account/profile",
         "title": "Voyagewright | Stories made to be played",
@@ -11502,7 +12477,10 @@
         "fixtureVersion": "homeport-phase7-integrated-v1",
         "result": "PASSED",
         "browser": "Chromium 141.0.7390.37",
-        "viewport": { "width": 1440, "height": 900 },
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
         "motionMode": "REDUCED",
         "route": "/profile/hp4-creator",
         "title": "Voyagewright | Stories made to be played",
@@ -11519,7 +12497,10 @@
         "fixtureVersion": "homeport-phase7-integrated-v1",
         "result": "PASSED",
         "browser": "Chromium 141.0.7390.37",
-        "viewport": { "width": 1440, "height": 900 },
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
         "motionMode": "REDUCED",
         "route": "/player/playthroughs/hp5-session-ready",
         "title": "Voyagewright Player | Voyagewright",
@@ -11536,7 +12517,10 @@
         "fixtureVersion": "homeport-phase7-integrated-v1",
         "result": "PASSED",
         "browser": "Chromium 141.0.7390.37",
-        "viewport": { "width": 1440, "height": 900 },
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
         "motionMode": "REDUCED",
         "route": "/captain/sessions/hp5-session-ready",
         "title": "Captain's Console | Voyagewright | Voyagewright",
@@ -11553,7 +12537,10 @@
         "fixtureVersion": "homeport-phase7-integrated-v1",
         "result": "PASSED",
         "browser": "Chromium 141.0.7390.37",
-        "viewport": { "width": 1440, "height": 900 },
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
         "motionMode": "REDUCED",
         "route": "/studio/tales/new",
         "title": "Voyagewright Studio | Voyagewright",
@@ -11570,7 +12557,10 @@
         "fixtureVersion": "homeport-phase7-integrated-v1",
         "result": "PASSED",
         "browser": "Chromium 141.0.7390.37",
-        "viewport": { "width": 1440, "height": 900 },
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
         "motionMode": "REDUCED",
         "route": "/community/clockwork-reef-chronicle",
         "title": "Clockwork Reef Almanac | Voyagewright",
@@ -11587,7 +12577,10 @@
         "fixtureVersion": "homeport-phase7-integrated-v1",
         "result": "PASSED",
         "browser": "Chromium 141.0.7390.37",
-        "viewport": { "width": 1440, "height": 900 },
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
         "motionMode": "REDUCED",
         "route": "/account/preferences",
         "title": "Voyagewright | Stories made to be played",
@@ -11604,7 +12597,10 @@
         "fixtureVersion": "homeport-phase7-integrated-v1",
         "result": "PASSED",
         "browser": "Chromium 141.0.7390.37",
-        "viewport": { "width": 1440, "height": 900 },
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
         "motionMode": "REDUCED",
         "route": "/passport/saved",
         "title": "Voyagewright | Stories made to be played",
@@ -11621,7 +12617,10 @@
         "fixtureVersion": "homeport-phase7-integrated-v1",
         "result": "PASSED",
         "browser": "Chromium 141.0.7390.37",
-        "viewport": { "width": 1440, "height": 900 },
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
         "motionMode": "REDUCED",
         "route": "/account/security",
         "title": "Voyagewright | Stories made to be played",
@@ -11638,7 +12637,10 @@
         "fixtureVersion": "homeport-phase7-integrated-v1",
         "result": "PASSED",
         "browser": "Chromium 141.0.7390.37",
-        "viewport": { "width": 1440, "height": 900 },
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
         "motionMode": "REDUCED",
         "route": "/sign-in",
         "title": "Voyagewright | Stories made to be played",
@@ -11655,7 +12657,10 @@
         "fixtureVersion": "homeport-phase7-integrated-v1",
         "result": "PASSED",
         "browser": "Chromium 141.0.7390.37",
-        "viewport": { "width": 1440, "height": 900 },
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
         "motionMode": "REDUCED",
         "route": "/community/moderation",
         "title": "Voyagewright | Stories made to be played",
@@ -11672,7 +12677,10 @@
         "fixtureVersion": "homeport-phase7-integrated-v1",
         "result": "PASSED",
         "browser": "Chromium 141.0.7390.37",
-        "viewport": { "width": 390, "height": 844 },
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
         "motionMode": "REDUCED",
         "route": "/player/library",
         "title": "Voyagewright Player | Voyagewright",
@@ -11689,7 +12697,10 @@
         "fixtureVersion": "homeport-phase7-integrated-v1",
         "result": "PASSED",
         "browser": "Chromium 141.0.7390.37",
-        "viewport": { "width": 1440, "height": 900 },
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
         "motionMode": "REDUCED",
         "route": "/sign-in",
         "title": "Voyagewright | Stories made to be played",
@@ -11706,7 +12717,10 @@
         "fixtureVersion": "homeport-phase7-integrated-v1",
         "result": "PASSED",
         "browser": "Chromium 141.0.7390.37",
-        "viewport": { "width": 1440, "height": 900 },
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
         "motionMode": "REDUCED",
         "route": "/community",
         "title": "Community Harbor | Voyagewright",
@@ -11723,7 +12737,10 @@
         "fixtureVersion": "homeport-phase7-integrated-v1",
         "result": "PASSED",
         "browser": "Chromium 141.0.7390.37",
-        "viewport": { "width": 1440, "height": 900 },
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
         "motionMode": "REDUCED",
         "route": "/",
         "title": "Voyagewright | Stories made to be played",
@@ -11740,7 +12757,10 @@
         "fixtureVersion": "homeport-phase7-integrated-v1",
         "result": "PASSED",
         "browser": "Chromium 141.0.7390.37",
-        "viewport": { "width": 1440, "height": 900 },
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
         "motionMode": "REDUCED",
         "route": "/community/clockwork-reef-chronicle",
         "title": "Clockwork Reef Almanac | Voyagewright",
@@ -11779,6 +12799,30 @@
     "evidenceCount": 31,
     "ownerWalkthroughRound1Decision": "OWNER_RETURNED_FOR_CORRECTION",
     "ownerReReviewDecision": "PENDING_OWNER_DECISION",
+    "branch": "codex/project-homeport-product-reality-recovery",
+    "limitations": [
+      "Not merged",
+      "Not deployed",
+      "No owner acceptance",
+      "Local synthetic evidence only",
+      "Live providers and email delivery remain external"
+    ]
+  },
+  "phase7OwnerCorrectionRound2": {
+    "state": "CORRECTION_ROUND_2_VALIDATED_PENDING_OWNER_REREVIEW",
+    "sourceSha": "f3eef8dc65dd39a40f8e4140aa058de0381a94af",
+    "experienceImagesSourceSha": "8284f6d2ce0b41a7eb995e13ccfe2a27c9b5845d",
+    "architectureSha": "2dd4908",
+    "fixtureVersion": "homeport-phase7-owner-correction-round2-v1",
+    "fixtureChecksum": "0de61b524d435ba73a8f1318c336abe2591cc32978fb931739d69610fb60c8ce",
+    "round2JourneyCount": 23,
+    "retainedRound1JourneyCount": 21,
+    "retainedOriginalPhase7JourneyCount": 15,
+    "evidenceCount": 31,
+    "experienceImageCount": 227,
+    "ownerWalkthroughRound1Decision": "OWNER_RETURNED_FOR_CORRECTION",
+    "ownerReReviewAfterCorrectionRound1": "OWNER_REJECTED_WITH_ACTIONABLE_FINDINGS",
+    "ownerReReviewRound2": "PENDING_OWNER_DECISION",
     "branch": "codex/project-homeport-product-reality-recovery",
     "limitations": [
       "Not merged",

@@ -3159,7 +3159,211 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/experience-images-manifest.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/manifest.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/metadata/HP-OWCR2-EV-A-ROLE-CARDS-FIRST-PAINT.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/metadata/HP-OWCR2-EV-AA-MOBILE-PROFILE-SETUP.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/metadata/HP-OWCR2-EV-AB-REDUCED-MOTION.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/metadata/HP-OWCR2-EV-AC-EXPERIENCE-IMAGES-INDEX.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/metadata/HP-OWCR2-EV-AD-EXPERIENCE-IMAGES-CONTACT-SHEET.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/metadata/HP-OWCR2-EV-AE-FULL-ROUND2-REGRESSION.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/metadata/HP-OWCR2-EV-B-ROLE-CARDS-HOVER.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/metadata/HP-OWCR2-EV-C-ACCOUNT-MENU-OPENING-motion.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/metadata/HP-OWCR2-EV-C-ACCOUNT-MENU-OPENING.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/metadata/HP-OWCR2-EV-D-LANTERN-NEUTRAL-motion.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/metadata/HP-OWCR2-EV-D-LANTERN-NEUTRAL.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/metadata/HP-OWCR2-EV-E-LANTERN-LEFT.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/metadata/HP-OWCR2-EV-F-LANTERN-RIGHT.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/metadata/HP-OWCR2-EV-G-STAR-TWINKLE.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/metadata/HP-OWCR2-EV-H-FOG-DRIFT.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/metadata/HP-OWCR2-EV-I-DARK-WHAT-IS-A-CHRONICLE.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/metadata/HP-OWCR2-EV-J-LIGHT-GATEWAY.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/metadata/HP-OWCR2-EV-K-LIGHT-COMMUNITY.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/metadata/HP-OWCR2-EV-L-LIGHT-PERSONAL-HARBOR.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/metadata/HP-OWCR2-EV-M-SERA-WORKSPACES.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/metadata/HP-OWCR2-EV-N-COMMUNITY-FAST-READY.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/metadata/HP-OWCR2-EV-O-COMMUNITY-DELAYED-LOADING.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/metadata/HP-OWCR2-EV-P-COMMUNITY-REAL-ERROR.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/metadata/HP-OWCR2-EV-Q-PUBLIC-PROFILE-REVIEW.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/metadata/HP-OWCR2-EV-R-PUBLIC-PROFILE-SETUP.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/metadata/HP-OWCR2-EV-S-SAVE-COUNT.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/metadata/HP-OWCR2-EV-T-RATING-SUMMARY.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/metadata/HP-OWCR2-EV-U-COMPLETION-VERIFIED-REVIEW.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/metadata/HP-OWCR2-EV-V-CHRONICLE-PREVIEW-EXPANDED.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/metadata/HP-OWCR2-EV-W-PASSPORT-REVIEW-ENTRY.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/metadata/HP-OWCR2-EV-X-PERSONAL-HARBOR-CONTRAST.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/metadata/HP-OWCR2-EV-Y-COMMUNITY-CONTRAST.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/metadata/HP-OWCR2-EV-Z-MOBILE-COMMUNITY.json",
       "record_type": "validation-evidence",
       "status": "current",
       "canonical_for": null
@@ -3172,6 +3376,12 @@
     },
     {
       "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/README.md",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/source-bound-test-receipt.json",
       "record_type": "validation-evidence",
       "status": "current",
       "canonical_for": null
@@ -3988,6 +4198,12 @@
     },
     {
       "path": "Development_Docs/Projects/Project_Homeport/walkthrough/phase7/correction-round1/README.md",
+      "record_type": "program-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/walkthrough/phase7/correction-round2/README.md",
       "record_type": "program-record",
       "status": "current",
       "canonical_for": null

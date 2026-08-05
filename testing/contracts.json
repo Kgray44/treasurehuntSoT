@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "status": "phase-7-owner-correction-round-1-pending-owner-rereview",
+  "status": "phase-7-owner-correction-round-2-pending-owner-rereview",
   "contracts": [
     {
       "id": "invitation-acceptance",
@@ -2093,6 +2093,300 @@
       "name": "Personal Harbor Artifact Idempotency",
       "authority": "project-homeport",
       "owners": ["project-homeport", "wayfarer"],
+      "critical": true
+    },
+    {
+      "id": "homeport.owner-correction.round2.feedback-ledger",
+      "name": "Project Homeport Owner Correction Round2 Feedback Ledger",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.owner-correction.round2.runtime-fixture-parity",
+      "name": "Project Homeport Owner Correction Round2 Runtime Fixture Parity",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.owner-correction.round2.sera-capabilities",
+      "name": "Project Homeport Owner Correction Round2 Sera Capabilities",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.owner-correction.round2.role-card-position",
+      "name": "Project Homeport Owner Correction Round2 Role Card Position",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.owner-correction.round2.account-menu-motion",
+      "name": "Project Homeport Owner Correction Round2 Account Menu Motion",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.owner-correction.round2.lantern-pivot",
+      "name": "Project Homeport Owner Correction Round2 Lantern Pivot",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.owner-correction.round2.lantern-symmetry",
+      "name": "Project Homeport Owner Correction Round2 Lantern Symmetry",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.owner-correction.round2.star-twinkle-visible",
+      "name": "Project Homeport Owner Correction Round2 Star Twinkle Visible",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.owner-correction.round2.fog-motion",
+      "name": "Project Homeport Owner Correction Round2 Fog Motion",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.owner-correction.round2.dark-theme-restored",
+      "name": "Project Homeport Owner Correction Round2 Dark Theme Restored",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.owner-correction.round2.light-theme-complete",
+      "name": "Project Homeport Owner Correction Round2 Light Theme Complete",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.owner-correction.round2.system-theme",
+      "name": "Project Homeport Owner Correction Round2 System Theme",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.owner-correction.round2.theme-no-flash",
+      "name": "Project Homeport Owner Correction Round2 Theme No Flash",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.owner-correction.round2.theme-cross-tab",
+      "name": "Project Homeport Owner Correction Round2 Theme Cross Tab",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.owner-correction.round2.text-contrast",
+      "name": "Project Homeport Owner Correction Round2 Text Contrast",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.owner-correction.round2.no-empty-current-area",
+      "name": "Project Homeport Owner Correction Round2 No Empty Current Area",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.owner-correction.round2.community-loading-fast",
+      "name": "Project Homeport Owner Correction Round2 Community Loading Fast",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.owner-correction.round2.community-loading-delayed",
+      "name": "Project Homeport Owner Correction Round2 Community Loading Delayed",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.owner-correction.round2.community-error-real",
+      "name": "Project Homeport Owner Correction Round2 Community Error Real",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.owner-correction.round2.community-retry",
+      "name": "Project Homeport Owner Correction Round2 Community Retry",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.owner-correction.round2.public-profile-community-identity",
+      "name": "Project Homeport Owner Correction Round2 Public Profile Community Identity",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.owner-correction.round2.review-profile-setup-return",
+      "name": "Project Homeport Owner Correction Round2 Review Profile Setup Return",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.owner-correction.round2.save-aggregate",
+      "name": "Project Homeport Owner Correction Round2 Save Aggregate",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.owner-correction.round2.rating-aggregate",
+      "name": "Project Homeport Owner Correction Round2 Rating Aggregate",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.owner-correction.round2.review-completion-eligibility",
+      "name": "Project Homeport Owner Correction Round2 Review Completion Eligibility",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.owner-correction.round2.review-passport-entry",
+      "name": "Project Homeport Owner Correction Round2 Review Passport Entry",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.owner-correction.round2.chronicle-preview-expanded",
+      "name": "Project Homeport Owner Correction Round2 Chronicle Preview Expanded",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.owner-correction.round2.synthetic-email-truth",
+      "name": "Project Homeport Owner Correction Round2 Synthetic Email Truth",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.owner-correction.round2.experience-images-complete",
+      "name": "Project Homeport Owner Correction Round2 Experience Images Complete",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.owner-correction.round2.experience-images-source-bound",
+      "name": "Project Homeport Owner Correction Round2 Experience Images Source Bound",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.owner-correction.round2.experience-images-private-safe",
+      "name": "Project Homeport Owner Correction Round2 Experience Images Private Safe",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.owner-correction.round2.mobile",
+      "name": "Project Homeport Owner Correction Round2 Mobile",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.owner-correction.round2.accessibility",
+      "name": "Project Homeport Owner Correction Round2 Accessibility",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.owner-correction.round2.phase1-regression",
+      "name": "Project Homeport Owner Correction Round2 Phase1 Regression",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.owner-correction.round2.phase2-regression",
+      "name": "Project Homeport Owner Correction Round2 Phase2 Regression",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.owner-correction.round2.phase3-regression",
+      "name": "Project Homeport Owner Correction Round2 Phase3 Regression",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.owner-correction.round2.phase4-regression",
+      "name": "Project Homeport Owner Correction Round2 Phase4 Regression",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.owner-correction.round2.phase5-regression",
+      "name": "Project Homeport Owner Correction Round2 Phase5 Regression",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.owner-correction.round2.phase6-regression",
+      "name": "Project Homeport Owner Correction Round2 Phase6 Regression",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.owner-correction.round2.phase7-regression",
+      "name": "Project Homeport Owner Correction Round2 Phase7 Regression",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.owner-correction.round2.round1-regression",
+      "name": "Project Homeport Owner Correction Round2 Round1 Regression",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.owner-correction.round2.artifact-idempotency",
+      "name": "Project Homeport Owner Correction Round2 Artifact Idempotency",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
       "critical": true
     }
   ]

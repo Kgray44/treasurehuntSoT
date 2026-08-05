@@ -1,0 +1,22 @@
+{
+  "evidenceId": "HP-OWCR2-EV-Y-COMMUNITY-CONTRAST",
+  "journeyId": "HP-OWCR2-JRN-S",
+  "sourceSha": "f3eef8dc65dd39a40f8e4140aa058de0381a94af",
+  "fixtureVersion": "homeport-phase7-owner-correction-round2-v1",
+  "result": "PASSED",
+  "visualReview": "ACCEPTED",
+  "reviewer": "Codex",
+  "ownerReview": "PENDING_OWNER_DECISION",
+  "browser": "Playwright Chromium",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "route": "/community",
+  "title": "Community Harbor | Voyagewright",
+  "screenshot": "screenshots/HP-OWCR2-EV-Y-COMMUNITY-CONTRAST.png",
+  "screenshotSha256": "190b932690a57884b6e3d41dc710640b4d755d3424d5d4408b77023e36f6e065",
+  "screenshotBytes": 1931479,
+  "timestamp": "2026-08-05T20:07:48.132Z",
+  "limitation": "Local production-build Chromium proof against a synthetic task-owned SQLite clone; not owner acceptance, live-provider proof, merge, or deployment."
+}

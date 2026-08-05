@@ -8849,5 +8849,29 @@
       "Local synthetic evidence only",
       "Live providers and email delivery remain external"
     ]
+  },
+  "phase7OwnerCorrectionRound2": {
+    "state": "CORRECTION_ROUND_2_VALIDATED_PENDING_OWNER_REREVIEW",
+    "sourceSha": "f3eef8dc65dd39a40f8e4140aa058de0381a94af",
+    "experienceImagesSourceSha": "8284f6d2ce0b41a7eb995e13ccfe2a27c9b5845d",
+    "architectureSha": "2dd4908",
+    "fixtureVersion": "homeport-phase7-owner-correction-round2-v1",
+    "fixtureChecksum": "0de61b524d435ba73a8f1318c336abe2591cc32978fb931739d69610fb60c8ce",
+    "round2JourneyCount": 23,
+    "retainedRound1JourneyCount": 21,
+    "retainedOriginalPhase7JourneyCount": 15,
+    "evidenceCount": 31,
+    "experienceImageCount": 227,
+    "ownerWalkthroughRound1Decision": "OWNER_RETURNED_FOR_CORRECTION",
+    "ownerReReviewAfterCorrectionRound1": "OWNER_REJECTED_WITH_ACTIONABLE_FINDINGS",
+    "ownerReReviewRound2": "PENDING_OWNER_DECISION",
+    "branch": "codex/project-homeport-product-reality-recovery",
+    "limitations": [
+      "Not merged",
+      "Not deployed",
+      "No owner acceptance",
+      "Local synthetic evidence only",
+      "Live providers and email delivery remain external"
+    ]
   }
 }

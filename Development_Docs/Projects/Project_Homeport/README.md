@@ -254,3 +254,14 @@ The owner re-review after Correction Round 1 was `OWNER_REJECTED_WITH_ACTIONABLE
 This remains branch-local correction work: not merged, not deployed, not owner accepted, and not live-provider proof.
 
 <!-- HOMEPORT_OWNER_CORRECTION_ROUND2:END -->
+
+## Phase 7 correction Round 2 re-review state
+
+All 85 Round 2 findings are locally implemented and exact-source validated at `f3eef8dc65dd39a40f8e4140aa058de0381a94af`. Round 2 A-W passed 23/23, retained Round 1 A-U passed 21/21, original Phase 7 A-O passed 15/15, and the complete Experience Images package received Codex visual classification `ACCEPTED`. Owner Re-Review Round 2 remains `PENDING_OWNER_DECISION`.
+
+- [Implementation report](Project_Homeport_Phase_7_Correction_Round_2_Implementation_Report.md)
+- [Validation record](Project_Homeport_Phase_7_Correction_Round_2_Validation_Record.md)
+- [Integration manifest](Project_Homeport_Phase_7_Correction_Round_2_Integration_Manifest.md)
+- [Owner re-review package](walkthrough/phase7/correction-round2/README.md)
+- [Evidence](evidence/phase7-owner-correction-round2/README.md)
+- [Experience Images](../../../Experience_Images/README.md)

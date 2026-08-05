@@ -1,0 +1,22 @@
+{
+  "evidenceId": "HP-OWCR2-EV-Q-PUBLIC-PROFILE-REVIEW",
+  "journeyId": "HP-OWCR2-JRN-K",
+  "sourceSha": "f3eef8dc65dd39a40f8e4140aa058de0381a94af",
+  "fixtureVersion": "homeport-phase7-owner-correction-round2-v1",
+  "result": "PASSED",
+  "visualReview": "ACCEPTED",
+  "reviewer": "Codex",
+  "ownerReview": "PENDING_OWNER_DECISION",
+  "browser": "Playwright Chromium",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "route": "/community/fog-bank-blocked-chronicle",
+  "title": "Fog Bank Blocked Chronicle | Voyagewright",
+  "screenshot": "screenshots/HP-OWCR2-EV-Q-PUBLIC-PROFILE-REVIEW.png",
+  "screenshotSha256": "ed482cd3ed7f96889e29b7e853573da8ba568c78ef0eae072ee8aef41780dbb4",
+  "screenshotBytes": 647723,
+  "timestamp": "2026-08-05T20:06:46.760Z",
+  "limitation": "Local production-build Chromium proof against a synthetic task-owned SQLite clone; not owner acceptance, live-provider proof, merge, or deployment."
+}

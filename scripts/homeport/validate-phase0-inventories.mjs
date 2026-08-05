@@ -288,8 +288,14 @@ for (const journey of journeys.journeys) {
 }
 
 uniqueBy(evidence.records, "evidenceId", "evidence manifest");
+const round2EvidencePath = path.join(auditRoot, "evidence", "phase7-owner-correction-round2", "manifest.json");
+const round2Evidence = existsSync(round2EvidencePath)
+  ? JSON.parse(readFileSync(round2EvidencePath, "utf8"))
+  : { captures: [] };
 const evidenceIds = new Set(
-  [...evidence.records, ...(evidence.phase7Run?.frames ?? [])].map((record) => record.evidenceId),
+  [...evidence.records, ...(evidence.phase7Run?.frames ?? []), ...(round2Evidence.captures ?? [])].map(
+    (record) => record.evidenceId,
+  ),
 );
 for (const record of evidence.records) {
   if (record.evidenceId.startsWith("HP-OWCR1-EV-")) {
@@ -402,11 +408,13 @@ for (const record of evidence.records) {
     ? evidence.phase5Run?.sourceSha
     : record.evidenceId.startsWith("HP-P4-EV-")
       ? evidence.phase4Run?.sourceSha
-      : expectedSourceSha;
+      : record.evidenceId.startsWith("HP-OWCR2-EV-")
+        ? evidence.phase7OwnerCorrectionRound2?.sourceSha
+        : expectedSourceSha;
   assert.equal(record.sourceSha, expectedRecordSource, `${record.evidenceId} source SHA drifted`);
   assert.ok(screenIds.has(record.screenContract), `${record.evidenceId} references unknown screen contract`);
   assert.ok(journeyIds.has(record.journey), `${record.evidenceId} references unknown journey`);
-  const committedPhaseRecord = /^HP-P[12345]-EV-/u.test(record.evidenceId);
+  const committedPhaseRecord = /^(?:HP-P[12345]-EV-|HP-OWCR2-EV-)/u.test(record.evidenceId);
   const screenshot = committedPhaseRecord
     ? path.join(root, record.committedScreenshotPath)
     : path.join(evidenceRoot, path.basename(record.screenshotPath));

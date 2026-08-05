@@ -44,3 +44,9 @@ output, or Sounding Line `RELEASE_GO` cannot change the Round 2 re-review decisi
 **Date:** 2026-08-05. **Exact source-bound implementation:** `e1829c3cffa87e561d15342da2e6e9b073fd7165`. **Architecture:** `ed8f1ef5316f11340276bebe6c70715159321ef6`.
 
 All 44 owner findings are corrected and traced; browser journeys A-U passed 21/21 and original Phase 7 journeys A-O passed 15/15 against the exact correction source. Thirty-one checksum-bound screenshots received Codex visual classification `ACCEPTED`. The preserved owner decision remains `OWNER_RETURNED_FOR_CORRECTION`; the re-review decision remains `PENDING_OWNER_DECISION`. Automated proof, Codex review, or Sounding Line may authorize publication but cannot record owner acceptance. The result is local and synthetic, not merged or deployed, and live provider/email boundaries remain external.
+
+## Correction Round 2 implementation and validation
+
+**Date:** 2026-08-05. **Exact browser source:** `f3eef8dc65dd39a40f8e4140aa058de0381a94af`. **Experience Images source:** `8284f6d2ce0b41a7eb995e13ccfe2a27c9b5845d`.
+
+All 85 Round 2 findings are corrected and traced. Round 2 A-W, retained Round 1 A-U, and original Phase 7 A-O passed on isolated synthetic clones; 31 governed evidence records and 227 Experience Images received Codex `ACCEPTED` visual classification. Owner Walkthrough Round 1 remains `OWNER_RETURNED_FOR_CORRECTION`; re-review after Correction Round 1 remains `OWNER_REJECTED_WITH_ACTIONABLE_FINDINGS`; Owner Re-Review Round 2 remains `PENDING_OWNER_DECISION`. Automation cannot record owner acceptance.

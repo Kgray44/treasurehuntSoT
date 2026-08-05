@@ -1,0 +1,22 @@
+{
+  "evidenceId": "HP-OWCR2-EV-G-STAR-TWINKLE",
+  "journeyId": "HP-OWCR2-JRN-E",
+  "sourceSha": "f3eef8dc65dd39a40f8e4140aa058de0381a94af",
+  "fixtureVersion": "homeport-phase7-owner-correction-round2-v1",
+  "result": "PASSED",
+  "visualReview": "ACCEPTED",
+  "reviewer": "Codex",
+  "ownerReview": "PENDING_OWNER_DECISION",
+  "browser": "Playwright Chromium",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "route": "/",
+  "title": "Voyagewright | Stories made to be played",
+  "screenshot": "screenshots/HP-OWCR2-EV-G-STAR-TWINKLE.png",
+  "screenshotSha256": "9ef3a11d122caf7467c846336cc20425e3278d45c974e3327b450929364f455a",
+  "screenshotBytes": 677285,
+  "timestamp": "2026-08-05T20:01:38.750Z",
+  "limitation": "Local production-build Chromium proof against a synthetic task-owned SQLite clone; not owner acceptance, live-provider proof, merge, or deployment."
+}

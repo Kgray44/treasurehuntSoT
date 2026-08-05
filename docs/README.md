@@ -42,3 +42,12 @@ The [engineering-record archive](../Development_Docs/README.md) preserves implem
 - [Account export](user/account-export.md)
 - [Account deactivation](user/account-deactivation.md)
 - [Account deletion](user/account-deletion.md)
+
+## Phase 7 correction Round 2 guides
+
+- [Themes and appearance](user/themes-and-appearance.md)
+- [Account and workspaces](user/account-workspaces.md)
+- [Community reviews and saves](user/community-reviews-and-saves.md)
+- [Chronicle preview and start](user/chronicle-preview-and-start.md)
+- [Synthetic email owner walkthrough](user/synthetic-email-owner-walkthrough.md)
+- [Owner re-review package](../Development_Docs/Projects/Project_Homeport/walkthrough/phase7/correction-round2/README.md)

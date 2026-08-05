@@ -1,0 +1,23 @@
+{
+  "schemaVersion": "1.0.0",
+  "sourceSha": "f3eef8dc65dd39a40f8e4140aa058de0381a94af",
+  "fixtureVersion": "homeport-phase7-owner-correction-round2-v1",
+  "round2": {
+    "result": "PASSED",
+    "count": 23,
+    "journeys": "A-W"
+  },
+  "correctionRound1": {
+    "result": "PASSED",
+    "count": 21,
+    "journeys": "A-U"
+  },
+  "originalPhase7": {
+    "result": "PASSED",
+    "count": 15,
+    "journeys": "A-O"
+  },
+  "captureCount": 31,
+  "experienceImageCount": 227,
+  "truthBoundary": "LOCAL_SYNTHETIC_PRODUCTION_BUILD_BROWSER_PROOF"
+}

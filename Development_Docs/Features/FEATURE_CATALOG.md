@@ -1139,7 +1139,7 @@ Every current human-facing screen is now source-inventoried with governed visual
 **Status:** BRANCH COMPLETE NOT MERGED
 **Program or subsystem:** Project Homeport Phase 7
 
-One deterministic synthetic fixture family and governed journey system now prove the integrated whole-product voyage plus owner-returned Correction Round 1: Chronicle preview and aliasing, unified workspace capabilities, identity and email lifecycles, linked providers, account data rights, Personal Harbor, effective preferences, loading and motion, Community search and reviews, mobile parity, and a safe owner re-review runtime.
+One governed synthetic voyage now proves the integrated Homeport product plus Owner Correction Rounds 1 and 2, including stable motion, coherent global themes, truthful Sera capability/profile state, authoritative Community saves/reviews, completion-gated review-later, expanded previews, synthetic email boundaries, and a complete Experience Images inventory.
 
 ### Important subfeatures
 
@@ -1164,6 +1164,13 @@ One deterministic synthetic fixture family and governed journey system now prove
 - Delayed loading, interruption-safe route and menu transitions, visible home ambience, first-paint stability, and reduced-motion completion
 - Compact and expanded URL-backed Community search plus coherent responsive review creation and editing
 - Correction Round 1 journeys A through U and original Phase 7 A through O rerun against the same exact source
+- Correction Round 2 journeys A through W with retained Round 1 A-U and original Phase 7 A-O regressions
+- Structurally stable role-card hover, animated account menu, balanced lantern swing, visible star and fog ambience, and reduced-motion completion
+- Global Dark, Light, and System themes with pre-hydration selection and cross-product token coherence
+- Sera fixture truth with Player, Captain, and Creator capability cards plus one public Profile identity
+- Authoritative Community save counts, rating summaries, in-place reviews, completion eligibility, and Passport review-later entry
+- Browseable Experience Images package with 227 checksummed desktop, mobile, theme, and major-state captures across 88 human-facing routes
+- Task-owned synthetic email outbox with explicit non-claim of live delivery
 
 ### Primary surfaces
 
@@ -1172,13 +1179,11 @@ One deterministic synthetic fixture family and governed journey system now prove
 ### Meaningful limitations
 
 - Not available on main until separately reviewed and integrated
-- Evidence is local, synthetic, and uses task-owned SQLite clones
-- Live providers, production MySQL, deployment, and physical assistive-technology validation remain external
-- Owner Walkthrough Round 1 remains OWNER_RETURNED_FOR_CORRECTION and owner re-review remains PENDING_OWNER_DECISION
-- Correction proof is local, synthetic, branch-only, and uses task-owned SQLite clones; it is not merged or deployed
-- Live Discord, Steam, Microsoft/Xbox, and email delivery configuration remain external to the synthetic adapter and outbox proof
-- Production MySQL integration and physical assistive-technology validation remain external
-- Re-review readiness is not owner acceptance or product acceptance
+- Evidence is local, synthetic, branch-only, and uses task-owned SQLite clones
+- Live Discord, Steam, Microsoft/Xbox, and email delivery remain external
+- Production MySQL execution, deployment, and physical assistive-technology validation remain external
+- Owner Walkthrough Round 1 is OWNER_RETURNED_FOR_CORRECTION; re-review after Round 1 is OWNER_REJECTED_WITH_ACTIONABLE_FINDINGS; Round 2 is PENDING_OWNER_DECISION
+- Readiness for owner re-review is not owner acceptance or product acceptance
 
 ### Evidence
 
@@ -1188,6 +1193,9 @@ One deterministic synthetic fixture family and governed journey system now prove
 - test: `tests/e2e/homeport-phase7.spec.ts`
 - completion-record: `Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_7_Correction_Round_1_Validation_Record.md`
 - test: `tests/e2e/homeport-phase7-owner-correction-round1.spec.ts`
+- completion-record: `Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_7_Correction_Round_2_Validation_Record.md`
+- test: `tests/e2e/homeport-phase7-owner-correction-round2.spec.ts`
+- path: `Experience_Images/manifest.json`
 
 ---
 

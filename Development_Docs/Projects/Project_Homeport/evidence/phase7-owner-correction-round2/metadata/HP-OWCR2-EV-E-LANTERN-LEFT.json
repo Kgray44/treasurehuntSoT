@@ -1,0 +1,22 @@
+{
+  "evidenceId": "HP-OWCR2-EV-E-LANTERN-LEFT",
+  "journeyId": "HP-OWCR2-JRN-E",
+  "sourceSha": "f3eef8dc65dd39a40f8e4140aa058de0381a94af",
+  "fixtureVersion": "homeport-phase7-owner-correction-round2-v1",
+  "result": "PASSED",
+  "visualReview": "ACCEPTED",
+  "reviewer": "Codex",
+  "ownerReview": "PENDING_OWNER_DECISION",
+  "browser": "Playwright Chromium",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "route": "/",
+  "title": "Voyagewright | Stories made to be played",
+  "screenshot": "screenshots/HP-OWCR2-EV-E-LANTERN-LEFT.png",
+  "screenshotSha256": "3f86d1ec7a94906a407f3105fb259232cdc235749307d9293b6aeb59d5dd812d",
+  "screenshotBytes": 703528,
+  "timestamp": "2026-08-05T20:01:31.282Z",
+  "limitation": "Local production-build Chromium proof against a synthetic task-owned SQLite clone; not owner acceptance, live-provider proof, merge, or deployment."
+}

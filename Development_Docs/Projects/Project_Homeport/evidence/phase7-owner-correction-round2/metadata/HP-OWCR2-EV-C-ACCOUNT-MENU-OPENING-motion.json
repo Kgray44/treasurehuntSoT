@@ -1,0 +1,32 @@
+{
+  "evidenceId": "HP-OWCR2-EV-C-ACCOUNT-MENU-OPENING",
+  "journeyId": "HP-OWCR2-JRN-D",
+  "sourceSha": "f3eef8dc65dd39a40f8e4140aa058de0381a94af",
+  "fixtureVersion": "homeport-phase7-owner-correction-round2-v1",
+  "measurementKind": "COMPUTED_FRAME_SEQUENCE",
+  "measurements": {
+    "frames": [
+      {
+        "opacity": "0.558817",
+        "transform": "matrix(0.992556, 0, 0, 0.992556, 0, -2.67978)"
+      },
+      {
+        "opacity": "0.968887",
+        "transform": "matrix(0.999402, 0, 0, 0.999402, 0, -0.215339)"
+      },
+      {
+        "opacity": "0.997243",
+        "transform": "matrix(0.999974, 0, 0, 0.999974, 0, -0.00944565)"
+      },
+      {
+        "opacity": "1",
+        "transform": "none"
+      },
+      {
+        "opacity": "1",
+        "transform": "none"
+      }
+    ]
+  },
+  "result": "PASSED"
+}

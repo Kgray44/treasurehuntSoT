@@ -26,11 +26,7 @@ const taskRoot = path.resolve(required("HOMEPORT_PHASE7_TASK_ROOT"));
 const sourceSha = required("HOMEPORT_EXPERIENCE_IMAGES_SOURCE_SHA").toLowerCase();
 const baseUrl = required("HOMEPORT_EXPERIENCE_IMAGES_BASE_URL").replace(/\/$/u, "");
 const databasePath = path.resolve(required("HOMEPORT_EXPERIENCE_IMAGES_DATABASE_PATH"));
-const handoffPath = path.join(
-  taskRoot,
-  "credentials",
-  "owner-correction-round2-walkthrough-credentials.private.json",
-);
+const handoffPath = path.join(taskRoot, "credentials", "owner-correction-round2-walkthrough-credentials.private.json");
 const fixture = "homeport-phase7-owner-correction-round2-v1";
 const command = process.argv[2] ?? "generate";
 const canonicalDatabase = path.resolve("C:/Users/kkids/Documents/Codex_TreasureHunt/prisma/dev.db");
@@ -69,7 +65,8 @@ else throw new Error(`HOMEPORT_EXPERIENCE_IMAGES_COMMAND_UNKNOWN:${command}`);
 
 async function generate() {
   const currentSha = git("rev-parse", "HEAD").toLowerCase();
-  if (currentSha !== sourceSha) throw new Error(`HOMEPORT_EXPERIENCE_IMAGES_SOURCE_MISMATCH:${currentSha}:${sourceSha}`);
+  if (currentSha !== sourceSha)
+    throw new Error(`HOMEPORT_EXPERIENCE_IMAGES_SOURCE_MISMATCH:${currentSha}:${sourceSha}`);
   const [routeInventory, screenCatalog, handoff] = await Promise.all([
     json(routeInventoryPath),
     json(screenCatalogPath),
@@ -144,7 +141,9 @@ async function generate() {
     browser: `Chromium ${browserVersion}`,
     routeCensus: {
       humanFacingRoutes: concreteRoutes.length,
-      capturedHumanFacingRoutes: new Set(records.filter((record) => record.coverageKind === "ROUTE").map((record) => record.routePattern)).size,
+      capturedHumanFacingRoutes: new Set(
+        records.filter((record) => record.coverageKind === "ROUTE").map((record) => record.routePattern),
+      ).size,
       excludedDevelopmentOrDiagnosticRoutes: routeInventory.routes
         .filter((entry) => entry.kind === "page" && !allowedClassifications.has(entry.classification))
         .map((entry) => entry.routePattern),
@@ -318,7 +317,11 @@ async function generate() {
 
       await settledGoto(auth.page, "/community/chronicles");
       await auth.page.route("**/api/community/discover?**", async (route) =>
-        route.fulfill({ status: 503, contentType: "application/json", body: JSON.stringify({ message: "Unavailable" }) }),
+        route.fulfill({
+          status: 503,
+          contentType: "application/json",
+          body: JSON.stringify({ message: "Unavailable" }),
+        }),
       );
       const errorSearch = auth.page.getByRole("searchbox", { name: "Search public Community Harbor" });
       await errorSearch.fill("dependency-test");
@@ -383,7 +386,8 @@ async function validate() {
   const capturedPatterns = new Set(
     manifest.records.filter((record) => record.coverageKind === "ROUTE").map((record) => record.routePattern),
   );
-  for (const route of expectedRoutes) if (!capturedPatterns.has(route.routePattern)) errors.push(`missing-route:${route.routePattern}`);
+  for (const route of expectedRoutes)
+    if (!capturedPatterns.has(route.routePattern)) errors.push(`missing-route:${route.routePattern}`);
   for (const record of manifest.records) {
     if (record.route.startsWith("/api")) errors.push(`api-route:${record.imageId}`);
     if (record.sourceSha !== sourceSha) errors.push(`record-source:${record.imageId}`);
@@ -407,7 +411,9 @@ async function validate() {
         if (!records.some((record) => record.theme === theme && record.viewport.startsWith(viewport)))
           errors.push(`critical-coverage:${routePattern}:${theme}:${viewport}`);
   }
-  const states = new Set(manifest.records.filter((record) => record.coverageKind === "STATE").map((record) => record.state));
+  const states = new Set(
+    manifest.records.filter((record) => record.coverageKind === "STATE").map((record) => record.state),
+  );
   for (const state of [
     "LOADING",
     "EMPTY",
@@ -430,7 +436,8 @@ async function validate() {
     "Contact_Sheets/Master_Dark_Mode.png",
   ])
     try {
-      if ((await stat(path.join(outputRoot, ...relative.split("/")))).size < 1) errors.push(`empty-artifact:${relative}`);
+      if ((await stat(path.join(outputRoot, ...relative.split("/")))).size < 1)
+        errors.push(`empty-artifact:${relative}`);
     } catch {
       errors.push(`missing-artifact:${relative}`);
     }
@@ -483,16 +490,26 @@ async function representativeValues() {
       await Promise.all([
         db.chronicle.findFirst({ where: { status: "PUBLISHED" }, orderBy: { id: "asc" } }),
         db.communityListing.findFirst({
-          where: { publicationStatus: "PUBLISHED", moderationStatus: "ACTIVE", visibility: { in: ["COMMUNITY", "FEATURED"] } },
+          where: {
+            publicationStatus: "PUBLISHED",
+            moderationStatus: "ACTIVE",
+            visibility: { in: ["COMMUNITY", "FEATURED"] },
+          },
           orderBy: { id: "asc" },
         }),
-        db.communityCollection.findFirst({ where: { visibility: { in: ["COMMUNITY", "FEATURED"] } }, orderBy: { id: "asc" } }),
+        db.communityCollection.findFirst({
+          where: { visibility: { in: ["COMMUNITY", "FEATURED"] } },
+          orderBy: { id: "asc" },
+        }),
         db.communityProfile.findFirst({
           where: { visibility: { in: ["COMMUNITY", "FEATURED"] }, moderationStatus: "ACTIVE" },
           orderBy: { id: "asc" },
         }),
         db.communityGuideContent.findFirst({ where: { status: "PUBLISHED" }, orderBy: { id: "asc" } }),
-        db.communityVoyageLog.findFirst({ where: { visibility: { in: ["COMMUNITY", "FEATURED"] } }, orderBy: { id: "asc" } }),
+        db.communityVoyageLog.findFirst({
+          where: { visibility: { in: ["COMMUNITY", "FEATURED"] } },
+          orderBy: { id: "asc" },
+        }),
         db.communityModerationCase.findFirst({ orderBy: { id: "asc" } }),
         db.playerArtifactRecord.findFirst({ orderBy: { id: "asc" } }),
         db.playerChronicleRecord.findFirst({ orderBy: { id: "asc" } }),
@@ -515,7 +532,8 @@ async function representativeValues() {
       playthroughId: session?.id,
       playerTaleSlug: session?.tale?.slug ?? chronicle?.slug,
     };
-    for (const [key, value] of Object.entries(values)) if (!value) throw new Error(`HOMEPORT_EXPERIENCE_REPRESENTATIVE_MISSING:${key}`);
+    for (const [key, value] of Object.entries(values))
+      if (!value) throw new Error(`HOMEPORT_EXPERIENCE_REPRESENTATIVE_MISSING:${key}`);
     return values;
   } finally {
     await db.$disconnect();
@@ -550,7 +568,8 @@ function resolveRoute(pattern, values) {
     "[workspace]": "dashboard",
     "[token]": "owner-review-invalid-token",
   };
-  for (const [placeholder, value] of Object.entries(replacements)) route = route.replaceAll(placeholder, encodeURIComponent(value));
+  for (const [placeholder, value] of Object.entries(replacements))
+    route = route.replaceAll(placeholder, encodeURIComponent(value));
   if (route.includes("[slug]")) {
     const value = route.startsWith("/community/collections/")
       ? values.collectionSlug
@@ -690,10 +709,12 @@ function areaForRoute(route) {
 }
 
 function limitationFor(route) {
-  if (route.classification === "TOKENIZED_DEEP_LINK") return "Deterministic invalid-token state; no usable secret is captured.";
+  if (route.classification === "TOKENIZED_DEEP_LINK")
+    return "Deterministic invalid-token state; no usable secret is captured.";
   if (route.classification === "REDIRECT_ALIAS" || route.classification === "AUTH_COMPATIBILITY_ALIAS")
     return "Compatibility entry may settle on its canonical destination.";
-  if (route.classification === "CONTEXTUAL_DYNAMIC") return "One representative eligible synthetic fixture record is captured.";
+  if (route.classification === "CONTEXTUAL_DYNAMIC")
+    return "One representative eligible synthetic fixture record is captured.";
   return "Synthetic owner-review fixture; not deployment or live-provider proof.";
 }
 
@@ -719,13 +740,15 @@ async function manifestRecord(page, absolutePath, relativePath, record) {
     visualReviewStatus: "PENDING_HUMAN_VISUAL_REVIEW",
     coverageKind: record.coverageKind,
     criticality: record.criticality,
-    privacyBasis: "Synthetic fixture aliases only; credentials, cookies, tokens, private prose, and object keys are excluded.",
+    privacyBasis:
+      "Synthetic fixture aliases only; credentials, cookies, tokens, private prose, and object keys are excluded.",
   };
 }
 
 async function createStructure() {
   for (const root of ["Desktop", "Mobile"])
-    for (const directory of requiredDirectories) await mkdir(path.join(outputRoot, root, directory), { recursive: true });
+    for (const directory of requiredDirectories)
+      await mkdir(path.join(outputRoot, root, directory), { recursive: true });
   for (const theme of ["Light_Mode", "Dark_Mode"])
     for (const viewport of ["Desktop", "Mobile"])
       for (const directory of requiredDirectories)
@@ -734,8 +757,12 @@ async function createStructure() {
 }
 
 async function createContactSheets(records) {
-  const baseDesktop = records.filter((record) => record.coverageKind === "ROUTE" && record.theme === "SYSTEM" && record.viewport.startsWith("desktop"));
-  const baseMobile = records.filter((record) => record.coverageKind === "ROUTE" && record.theme === "SYSTEM" && record.viewport.startsWith("mobile"));
+  const baseDesktop = records.filter(
+    (record) => record.coverageKind === "ROUTE" && record.theme === "SYSTEM" && record.viewport.startsWith("desktop"),
+  );
+  const baseMobile = records.filter(
+    (record) => record.coverageKind === "ROUTE" && record.theme === "SYSTEM" && record.viewport.startsWith("mobile"),
+  );
   const light = records.filter((record) => record.theme === "LIGHT");
   const dark = records.filter((record) => record.theme === "DARK");
   await contactSheet(baseDesktop, "Master_Desktop.png");
@@ -743,7 +770,10 @@ async function createContactSheets(records) {
   await contactSheet(light, "Master_Light_Mode.png");
   await contactSheet(dark, "Master_Dark_Mode.png");
   for (const area of [...new Set(baseDesktop.map((record) => record.productArea))].sort())
-    await contactSheet(baseDesktop.filter((record) => record.productArea === area), `${area}.png`);
+    await contactSheet(
+      baseDesktop.filter((record) => record.productArea === area),
+      `${area}.png`,
+    );
 }
 
 async function contactSheet(records, fileName) {
@@ -784,7 +814,8 @@ function buildReadme(manifest) {
 function buildIndex(manifest) {
   const rows = manifest.records
     .map(
-      (record) => `<article data-area="${escapeHtml(record.productArea)}" data-theme="${record.theme}" data-viewport="${record.viewport}" data-state="${record.state}"><a href="${encodeURI(record.screenshotPath)}"><img loading="lazy" src="${encodeURI(record.screenshotPath)}" alt="${escapeHtml(record.screenId)} at ${escapeHtml(record.routePattern)}"></a><h2>${escapeHtml(record.screenId)}</h2><p><code>${escapeHtml(record.routePattern)}</code></p><p>${record.theme} · ${record.viewport} · ${record.state}</p></article>`,
+      (record) =>
+        `<article data-area="${escapeHtml(record.productArea)}" data-theme="${record.theme}" data-viewport="${record.viewport}" data-state="${record.state}"><a href="${encodeURI(record.screenshotPath)}"><img loading="lazy" src="${encodeURI(record.screenshotPath)}" alt="${escapeHtml(record.screenId)} at ${escapeHtml(record.routePattern)}"></a><h2>${escapeHtml(record.screenId)}</h2><p><code>${escapeHtml(record.routePattern)}</code></p><p>${record.theme} · ${record.viewport} · ${record.state}</p></article>`,
     )
     .join("\n");
   const areas = [...new Set(manifest.records.map((record) => record.productArea))]
@@ -799,7 +830,9 @@ async function json(file) {
 }
 
 async function sha256(file) {
-  return createHash("sha256").update(await readFile(file)).digest("hex");
+  return createHash("sha256")
+    .update(await readFile(file))
+    .digest("hex");
 }
 
 function git(...args) {

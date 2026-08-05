@@ -282,3 +282,7 @@ Journeys A through O passed against exact product source `61ea9ec546622b2bce2036
 ## Phase 7 owner correction Round 1 addendum
 
 Correction journeys `HP-OWCR1-JRN-A` through `HP-OWCR1-JRN-U` passed against `e1829c3cffa87e561d15342da2e6e9b073fd7165` using visible controls, an isolated production runtime, and per-journey synthetic SQLite clones. The original Phase 7 A-O suite also passed against the same corrected source. The machine-readable records live in `Homeport_Journey_Catalog.json`; 31 captures live under `evidence/phase7-owner-correction-round1`. This establishes local corrected traversal, not owner acceptance, mainline integration, or deployment.
+
+## Phase 7 owner correction Round 2 addendum
+
+Journeys `HP-OWCR2-JRN-A` through `HP-OWCR2-JRN-W` passed against `f3eef8dc65dd39a40f8e4140aa058de0381a94af` using visible controls and isolated production-browser runtimes. Journey W also passed retained Correction Round 1 A-U and original Phase 7 A-O against that exact source. This establishes local corrected traversal, not owner acceptance, mainline integration, or deployment.

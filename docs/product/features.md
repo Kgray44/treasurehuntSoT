@@ -3,7 +3,7 @@ title: Features and subfeatures
 audience: product
 status: current
 canonical_for: product-features
-last_reviewed: 2026-08-04
+last_reviewed: 2026-08-05
 ---
 
 # Features and subfeatures
@@ -115,3 +115,7 @@ provider validation is environment-dependent. Private packages,
 storage/scanning boundaries, recovery operations, presentation assets,
 accessibility checks, and test tooling are documented in [private
 content](../administrator/private-content.md), [animation](../developer/animation/README.md), and [testing](../developer/testing.md).
+
+## Phase 7 correction Round 2 status
+
+Correction Round 2 is locally exact-source validated and ready for owner re-review. Dark, Light, and System themes; truthful account/Profile/workspace state; authoritative Community saves and completion-verified reviews; expanded previews; delayed loading; motion; synthetic email boundaries; and Experience Images are included. Round 2 remains `PENDING_OWNER_DECISION`; this branch is not merged or deployed, and live providers remain external.
