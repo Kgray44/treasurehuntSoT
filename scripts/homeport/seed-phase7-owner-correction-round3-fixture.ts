@@ -14,7 +14,8 @@ import {
 import { defaultPreferences } from "../../src/wayfarer/profile";
 import { removeProfileMedia, saveProfileMedia } from "../../src/wayfarer/profile-media";
 
-const fixtureVersion = "homeport-phase7-owner-correction-round3-v1";
+const fixtureVersion =
+  process.env.HOMEPORT_PHASE7_CORRECTION_FIXTURE_VERSION ?? "homeport-phase7-owner-correction-round3-v1";
 const taskRoot = path.resolve(required("HOMEPORT_PHASE7_TASK_ROOT"));
 const databaseUrl = required("DATABASE_URL");
 const databasePath = databaseUrl.startsWith("file:") ? path.resolve(databaseUrl.slice(5)) : "";

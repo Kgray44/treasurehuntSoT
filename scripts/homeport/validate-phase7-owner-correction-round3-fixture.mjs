@@ -100,7 +100,9 @@ try {
   });
   const mediaRows = [completeMedia.profile?.avatarMedia, completeMedia.profile?.bannerMedia].filter(Boolean);
   const checks = {
-    fixtureVersion: fixtureReceipt.fixtureVersion === "homeport-phase7-owner-correction-round3-v1",
+    fixtureVersion:
+      fixtureReceipt.fixtureVersion ===
+      (process.env.HOMEPORT_PHASE7_CORRECTION_FIXTURE_VERSION ?? "homeport-phase7-owner-correction-round3-v1"),
     requiredAliasCount: requiredAliases.length === 8,
     kgCreatedAndVerifiedThroughOrdinaryBoundary: ordinaryChecks(kg),
     kgOnlyNonPrivilegedPlayerRole: JSON.stringify(kgRoles) === JSON.stringify(["PLAYER"]),

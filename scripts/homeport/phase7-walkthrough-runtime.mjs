@@ -49,7 +49,8 @@ const credentialHandoffPath = path.join(
     : "walkthrough-credentials.private.json",
 );
 const fixtureVersion = correctionRuntime
-  ? `homeport-phase7-owner-correction-round${correctionRound}-v1`
+  ? (process.env.HOMEPORT_PHASE7_CORRECTION_FIXTURE_VERSION ??
+    `homeport-phase7-owner-correction-round${correctionRound}-v1`)
   : "homeport-phase7-integrated-v1";
 const baseUrl = `http://127.0.0.1:${port}`;
 
@@ -92,12 +93,14 @@ if (command === "prepare") {
 }
 
 async function start() {
-  if (!existsSync(path.join(repositoryRoot, ".next", "BUILD_ID")))
-    throw new Error("HOMEPORT_PHASE7_PRODUCTION_BUILD_MISSING");
+  const buildDirectory = path.resolve(repositoryRoot, process.env.NEXT_DIST_DIR ?? ".next");
+  if (!existsSync(path.join(buildDirectory, "BUILD_ID"))) throw new Error("HOMEPORT_PHASE7_PRODUCTION_BUILD_MISSING");
   if (!existsSync(databasePath) || (await stat(databasePath)).size < 1)
     throw new Error("HOMEPORT_PHASE7_WALKTHROUGH_DATABASE_MISSING");
   if (correctionRound === "2")
     runOwned("scripts/homeport/validate-phase7-owner-correction-round2-fixture.mjs", [databasePath]);
+  if (correctionRound === "3")
+    runOwned("scripts/homeport/validate-phase7-owner-correction-round3-fixture.mjs", [databasePath]);
   const existing = await status();
   if (existing.processAlive || existing.portOwnerPid) throw new Error(`HOMEPORT_PHASE7_PORT_OR_PROCESS_BUSY:${port}`);
   await mkdir(path.dirname(statePath), { recursive: true });
