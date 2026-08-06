@@ -389,3 +389,15 @@ The architecture assigns 85 verbatim findings to `HP-OWCR2-001`–`085` and new 
 ## Phase 7 correction Round 2 implementation amendment
 
 The frozen 35-decision Round 2 architecture is implemented at exact browser source `f3eef8dc65dd39a40f8e4140aa058de0381a94af`. Stable motion, semantic theme authority, fixture/runtime parity, public Profile review identity, authoritative Community social state, completion-verified reviews, expanded previews, synthetic email truth, and Experience Images now form one governed correction package. Existing specialist authorities remain intact. The result is validated pending owner re-review, not merged, deployed, or owner accepted.
+
+<!-- HOMEPORT_OWNER_CORRECTION_ROUND3_ARCHITECTURE:START -->
+
+## Phase 7 owner-walkthrough correction Round 3 architecture amendment
+
+**Decision date:** 2026-08-05. **Round 3 start:** `8e3900a734674cb58800878aaeaf91a0e9f2285e`. **Owner re-review after Correction Round 2:** `OWNER_REJECTED_WITH_ACTIONABLE_FINDINGS`. **Round 3 owner decision:** `PENDING_OWNER_DECISION`.
+
+The frozen [Round 3 architecture](Project_Homeport_Phase_7_Owner_Walkthrough_Correction_Round_3_Architecture.md) preserves prior Phase 1-7 authority and defines 42 decisions for Profile crop media, identity propagation, six-digit verification, provider-neutral Postmark delivery, Dark defaults, ordinary workspace entry versus resource authority, active-Chronicle truth, direct route crossfade, production account-menu motion, fixtures, migrations, exact-source evidence, Sounding Line, owner runtime, status language, and rollback.
+
+The architecture assigns 54 owner findings to `HP-OWCR3-001`-`054` and new nonconformities `HP-NC-157`-`210`. It establishes no implementation, live inbox delivery, migration/test result, visual acceptance, Sounding Line decision, publication, owner readiness, merge, PR, deployment, or owner acceptance.
+
+<!-- HOMEPORT_OWNER_CORRECTION_ROUND3_ARCHITECTURE:END -->

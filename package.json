@@ -102,6 +102,8 @@
     "homeport:phase7:correction:validate:architecture": "node scripts/homeport/validate-phase7-owner-correction-round1-architecture.mjs",
     "homeport:phase7:correction:round2:apply:architecture": "node scripts/homeport/apply-phase7-owner-correction-round2-architecture.mjs",
     "homeport:phase7:correction:round2:validate:architecture": "node scripts/homeport/validate-phase7-owner-correction-round2-architecture.mjs",
+    "homeport:phase7:correction:round3:apply:architecture": "node scripts/homeport/apply-phase7-owner-correction-round3-architecture.mjs",
+    "homeport:phase7:correction:round3:validate:architecture": "node scripts/homeport/validate-phase7-owner-correction-round3-architecture.mjs",
     "homeport:phase7:correction:round2:theme:audit": "node scripts/homeport/audit-phase7-owner-correction-round2-theme.mjs",
     "homeport:phase7:correction:round2:capabilities:dry-run": "tsx scripts/homeport/reconcile-claimed-account-capabilities.ts",
     "homeport:phase7:correction:round2:capabilities:commit": "tsx scripts/homeport/reconcile-claimed-account-capabilities.ts --commit",

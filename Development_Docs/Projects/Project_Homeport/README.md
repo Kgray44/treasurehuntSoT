@@ -265,3 +265,19 @@ All 85 Round 2 findings are locally implemented and exact-source validated at `f
 - [Owner re-review package](walkthrough/phase7/correction-round2/README.md)
 - [Evidence](evidence/phase7-owner-correction-round2/README.md)
 - [Experience Images](../../../Experience_Images/README.md)
+
+<!-- HOMEPORT_OWNER_CORRECTION_ROUND3:START -->
+
+## Phase 7 owner correction Round 3
+
+The owner re-review after Correction Round 2 was `OWNER_REJECTED_WITH_ACTIONABLE_FINDINGS`. Round 3 is architecture-frozen against 54 findings; implementation and current evidence remain pending, Postmark is `POSTMARK_BLOCKED_EXTERNAL_CONFIGURATION`, and the owner Round 3 decision is `PENDING_OWNER_DECISION`.
+
+- [Round 3 architecture](Project_Homeport_Phase_7_Owner_Walkthrough_Correction_Round_3_Architecture.md)
+- [Round 3 owner ledger](Project_Homeport_Phase_7_Owner_Feedback_Round_3_Ledger.csv)
+- [Round 3 acceptance matrix](Project_Homeport_Phase_7_Correction_Round_3_Acceptance_Matrix.csv)
+- [Round 3 test plan](Project_Homeport_Phase_7_Correction_Round_3_Test_Plan.md)
+- [Round 3 evidence index](evidence/phase7-owner-correction-round3/README.md)
+
+This remains branch-local Phase 7 correction work: not merged, not deployed, not owner accepted, and not live-provider proof.
+
+<!-- HOMEPORT_OWNER_CORRECTION_ROUND3:END -->

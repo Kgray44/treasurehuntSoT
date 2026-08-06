@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_at": "2026-08-05",
+  "generated_at": "2026-08-06",
   "records": [
     {
       "path": "Development_Docs/Architecture_Decisions/0001-use-nextjs-app-router.md",
@@ -3387,6 +3387,24 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round3/manifest.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round3/Project_Homeport_Phase_7_Correction_Round_3_Visual_Review.md",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round3/README.md",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7/Project_Homeport_Phase_7_Evidence_Metadata.json",
       "record_type": "validation-evidence",
       "status": "current",
@@ -3483,6 +3501,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Account_Menu_Motion_Contract.md",
+      "record_type": "program-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Chronicle_Completion_Review_Contract.md",
       "record_type": "program-record",
       "status": "current",
@@ -3514,6 +3538,12 @@
     },
     {
       "path": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Community_Search_and_Review_Correction_Contract.md",
+      "record_type": "program-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Dark_Default_and_Light_Deferral_Contract.md",
       "record_type": "program-record",
       "status": "current",
       "canonical_for": null
@@ -4047,6 +4077,36 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_7_Correction_Round_3_Acceptance_Matrix.csv",
+      "record_type": "program-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_7_Correction_Round_3_Implementation_Report.md",
+      "record_type": "program-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_7_Correction_Round_3_Integration_Manifest.md",
+      "record_type": "program-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_7_Correction_Round_3_Test_Plan.md",
+      "record_type": "program-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_7_Correction_Round_3_Validation_Record.md",
+      "record_type": "program-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_7_Failure_and_Recovery_Matrix.csv",
       "record_type": "program-record",
       "status": "current",
@@ -4113,6 +4173,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_7_Owner_Feedback_Round_3_Ledger.csv",
+      "record_type": "program-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_7_Owner_Walkthrough_Correction_Round_1_Architecture.md",
       "record_type": "program-record",
       "status": "current",
@@ -4120,6 +4186,12 @@
     },
     {
       "path": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_7_Owner_Walkthrough_Correction_Round_2_Architecture.md",
+      "record_type": "program-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_7_Owner_Walkthrough_Correction_Round_3_Architecture.md",
       "record_type": "program-record",
       "status": "current",
       "canonical_for": null
@@ -4167,13 +4239,43 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Postmark_Transactional_Email_Contract.md",
+      "record_type": "program-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Preference_Effect_Matrix.csv",
       "record_type": "program-record",
       "status": "current",
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Profile_Identity_Presentation_Contract.md",
+      "record_type": "program-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Profile_Imagery_and_Crop_Contract.md",
+      "record_type": "program-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Public_Profile_and_Community_Identity_Contract.md",
+      "record_type": "program-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Registration_Email_Code_Verification_Contract.md",
+      "record_type": "program-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Route_Crossfade_Transition_Contract.md",
       "record_type": "program-record",
       "status": "current",
       "canonical_for": null
@@ -4186,6 +4288,12 @@
     },
     {
       "path": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Workspace_Capability_and_Active_Chronicle_Policy.md",
+      "record_type": "program-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Workspace_Entry_and_Resource_Authority_Contract.md",
       "record_type": "program-record",
       "status": "current",
       "canonical_for": null
