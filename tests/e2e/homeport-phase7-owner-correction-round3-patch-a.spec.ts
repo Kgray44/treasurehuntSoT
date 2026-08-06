@@ -17,6 +17,7 @@ type TemporalLayer = {
   visibility: string;
   visible: boolean;
   text: string;
+  animationDurationsMs: number[];
 };
 type TemporalFrame = {
   tMs: number;
@@ -40,6 +41,7 @@ type TemporalReceipt = {
   loadingAppearances: number;
   loadingDisappearances: number;
   transitionDurationMs: number | null;
+  observedReadyToSettledMs: number | null;
   oldRouteReturnedAfterSettlement: boolean;
   frames: TemporalFrame[];
 };
@@ -586,19 +588,13 @@ async function sampleNavigation(
   expect(destinationReadyMs, `ready destination ${targetPath}`).not.toBeNull();
   expect(destinationSettledMs, `settled destination ${targetPath}`).not.toBeNull();
   const loadingFrames = frames.filter((frame) => frame.loadingVisible);
+  const animationDurations = frames.flatMap((frame) => frame.layers.flatMap((layer) => layer.animationDurationsMs));
   let loadingAppearances = 0;
   let loadingDisappearances = 0;
   for (let index = 1; index < frames.length; index += 1) {
     if (!frames[index - 1].loadingVisible && frames[index].loadingVisible) loadingAppearances += 1;
     if (frames[index - 1].loadingVisible && !frames[index].loadingVisible) loadingDisappearances += 1;
   }
-  const oldVisibleAfterReady = frames.filter(
-    (frame) =>
-      destinationReadyMs !== null &&
-      frame.tMs >= destinationReadyMs &&
-      frame.layers.some((layer) => layer.path !== targetPath && layer.visible),
-  );
-  const lastOldVisible = oldVisibleAfterReady.at(-1)?.tMs ?? null;
   return {
     sourcePath: initial.urlPath,
     targetPath,
@@ -610,7 +606,8 @@ async function sampleNavigation(
     lastLoadingMs: loadingFrames.at(-1)?.tMs ?? null,
     loadingAppearances,
     loadingDisappearances,
-    transitionDurationMs: lastOldVisible === null ? 0 : lastOldVisible - destinationReadyMs!,
+    transitionDurationMs: animationDurations.length ? Math.max(...animationDurations) : null,
+    observedReadyToSettledMs: destinationSettledMs! - destinationReadyMs!,
     oldRouteReturnedAfterSettlement: frames
       .filter((frame) => frame.tMs >= destinationSettledMs!)
       .some((frame) => frame.layers.some((layer) => layer.path !== targetPath && layer.visible)),
@@ -661,6 +658,10 @@ async function temporalFrame(page: Page, tMs: number): Promise<TemporalFrame> {
         visibility: style.visibility,
         visible: opacity > 0.02 && style.visibility !== "hidden" && box.width > 0 && box.height > 0 && Boolean(text),
         text,
+        animationDurationsMs: layer
+          .getAnimations()
+          .map((animation) => Number(animation.effect?.getTiming().duration))
+          .filter(Number.isFinite),
       };
     });
     const loadingVisible = [...document.querySelectorAll<HTMLElement>(".ui-loading-state")].some((loading) => {
