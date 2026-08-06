@@ -220,11 +220,27 @@ html[data-motion-level="reduced"] .platform-relic *,
   line-height: 0.96;
 }
 
+.auth-ledger h1,
+.auth-ledger h2,
+.auth-ledger h3 {
+  color: var(--parchment-ink);
+}
+
+.auth-ledger .eyebrow {
+  color: #6b471c;
+}
+
 .auth-ledger > p,
 .invitation-sheet > p,
 .waiting-room > section > p {
   max-width: 700px;
   line-height: 1.65;
+}
+
+.auth-ledger > p,
+.auth-ledger .account-verification-help > p,
+.auth-ledger .account-flow-status {
+  color: #3a3c33;
 }
 
 .auth-columns {
