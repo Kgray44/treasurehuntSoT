@@ -68,6 +68,13 @@ test("Journey D: Account-menu motion", async ({ page }) => {
   }
   await expect(menu).toBeVisible();
   await expect(menu).toHaveAttribute("data-account-menu-motion", "visible");
+  await expect.poll(() => menu.evaluate((node) => getComputedStyle(node).opacity), { timeout: 2_000 }).toBe("1");
+  frames.push(
+    await menu.evaluate((node) => {
+      const style = getComputedStyle(node);
+      return { opacity: style.opacity, transform: style.transform };
+    }),
+  );
   expect(new Set(frames.map((frame) => `${frame.opacity}:${frame.transform}`)).size).toBeGreaterThan(1);
   expect(frames.at(-1)?.opacity).toBe("1");
   await writeMotionReceipt("HP-OWCR2-EV-C-ACCOUNT-MENU-OPENING", { frames });
