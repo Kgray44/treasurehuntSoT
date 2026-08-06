@@ -22,6 +22,15 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", ".next/dev/types/**/*.ts", "**/*.mts"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    ".next/dev/types/**/*.ts",
+    "**/*.mts",
+    ".sealed-build-phase7-owner-correction-round3-patch-a/types/**/*.ts",
+    ".sealed-build-phase7-owner-correction-round3-patch-a/dev/types/**/*.ts"
+  ],
   "exclude": ["node_modules", ".sealed-build*/**"]
 }

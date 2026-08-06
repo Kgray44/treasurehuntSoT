@@ -41,6 +41,7 @@ describe("RouteMotionBoundary", () => {
     );
 
     expect(view.container.querySelector('[data-route-role="outgoing"]')).toHaveTextContent("Chronicle Library");
+    expect(view.container.querySelector('[data-route-role="outgoing"]')).toHaveStyle({ opacity: "1" });
     expect(view.container.querySelector('[data-route-role="outgoing"]')).toHaveAttribute(
       "data-route-interactive",
       "false",
