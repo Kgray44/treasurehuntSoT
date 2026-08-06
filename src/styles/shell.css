@@ -538,10 +538,23 @@
 }
 
 .product-route-layer {
+  display: grid;
   grid-area: 1 / 1;
   width: 100%;
   min-height: inherit;
   outline: 0;
+}
+
+.product-route-transition {
+  display: grid;
+  grid-area: 1 / 1;
+  min-height: inherit;
+}
+
+.product-route-content,
+.route-preparation-fallback {
+  grid-area: 1 / 1;
+  min-height: inherit;
 }
 
 .product-shell-content:focus {
@@ -549,6 +562,7 @@
 }
 
 .product-shell-content > .product-route-layer > main,
+.product-shell-content > .product-route-transition .product-route-content > main,
 .product-shell-content > main {
   min-height: inherit;
 }

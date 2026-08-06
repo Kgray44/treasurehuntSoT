@@ -3,6 +3,10 @@ import { resolveMotionPolicy } from "../core/quality";
 import { platformMotionTokens, resolvePlatformMotionToken } from "./motion-tokens";
 
 describe("platform motion tokens", () => {
+  it("freezes the Patch A ordinary route crossfade at 280 ms and 4 px", () => {
+    expect(resolvePlatformMotionToken("route", "full")).toMatchObject({ durationMs: 280, distancePx: 4 });
+  });
+
   it.each([
     ["M1 full", "full", false, "full"],
     ["M2 gentle", "gentle", false, "gentle"],

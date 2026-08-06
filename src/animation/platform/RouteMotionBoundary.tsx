@@ -1,12 +1,28 @@
 "use client";
 
-/* eslint-disable react-hooks/refs -- The boundary intentionally retains the last committed visual route across concurrent pathname renders. */
-/* eslint-disable react-hooks/set-state-in-effect -- Layout synchronization owns the governed pending/loading transition state. */
+/* eslint-disable react-hooks/refs -- The route authority intentionally owns generation state and the last safe visual snapshot across renders. */
 
-import { AnimatePresence, LayoutGroup, motion, useIsPresent } from "motion/react";
-import { useEffect, useLayoutEffect, useMemo, useReducer, useRef, useState } from "react";
+import { LayoutGroup, motion } from "motion/react";
+import { useEffect, useLayoutEffect, useMemo, useReducer, useRef } from "react";
 import { useMotionMode } from "../motion/useMotionMode";
 import { platformMotionEasing, resolvePlatformMotionToken } from "./motion-tokens";
+
+const pendingSelector = '[data-async-state="pending-delay"], .ui-loading-state';
+const loadingThresholdMs = 500;
+
+type Navigation = {
+  generation: number;
+  pathname: string;
+  children: React.ReactNode;
+  startedAt: number;
+  phase: "preparing" | "loading" | "ready";
+  loadingShown: boolean;
+  outgoing: { pathname: string; html: string } | null;
+  loadingTimer: number | null;
+  settlementTimer: number | null;
+  observer: MutationObserver | null;
+  readinessFrame: number | null;
+};
 
 function isTypingTarget(element: Element | null) {
   if (!(element instanceof HTMLElement) || !element.isConnected) return false;
@@ -16,8 +32,13 @@ function isTypingTarget(element: Element | null) {
   );
 }
 
-function lastRouteLayer(pathname: string) {
-  return [...document.querySelectorAll<HTMLElement>(`[data-route-layer="${CSS.escape(pathname)}"]`)].at(-1) ?? null;
+function routeLayer(pathname: string, generation?: number) {
+  const generationSelector = generation === undefined ? "" : `[data-route-generation="${generation}"]`;
+  return (
+    [...document.querySelectorAll<HTMLElement>(`[data-route-layer="${CSS.escape(pathname)}"]${generationSelector}`)].at(
+      -1,
+    ) ?? null
+  );
 }
 
 function routeSnapshotHtml(route: HTMLElement) {
@@ -38,10 +59,14 @@ function routeSnapshotHtml(route: HTMLElement) {
   return snapshot.innerHTML;
 }
 
+function contentIsPending(content: HTMLElement) {
+  return Boolean(content.querySelector(pendingSelector));
+}
+
 function RoutePreparationFallback({ pathname }: { pathname: string }) {
   const community = pathname.startsWith("/community");
   return (
-    <main className="community-route-loading" aria-busy="true" aria-live="polite">
+    <main className="community-route-loading route-preparation-fallback" aria-busy="true" aria-live="polite">
       <section className="ui-state ui-loading-state" data-async-state="pending" role="status" aria-busy="true">
         <span className="ui-spinner" aria-hidden="true" />
         <div>
@@ -60,147 +85,224 @@ function RoutePreparationFallback({ pathname }: { pathname: string }) {
 
 function RouteLayer({
   pathname,
+  generation,
   duration,
-  forcedInactive = false,
+  distance,
+  outgoing = false,
   snapshotHtml,
+  showLoading = false,
   children,
 }: {
   pathname: string;
+  generation: number;
   duration: number;
-  forcedInactive?: boolean;
+  distance: number;
+  outgoing?: boolean;
   snapshotHtml?: string;
-  children: React.ReactNode;
+  showLoading?: boolean;
+  children?: React.ReactNode;
 }) {
-  const isPresent = useIsPresent();
   const layerRef = useRef<HTMLDivElement>(null);
+  const inactive = outgoing;
   useEffect(() => {
     const layer = layerRef.current;
     if (!layer) return;
-    const inactive = forcedInactive || !isPresent;
     layer.inert = inactive;
-    if (!inactive) layer.removeAttribute("aria-hidden");
-    else layer.setAttribute("aria-hidden", "true");
-  }, [forcedInactive, isPresent]);
+    if (inactive) layer.setAttribute("aria-hidden", "true");
+    else layer.removeAttribute("aria-hidden");
+  }, [inactive]);
   return (
     <motion.div
       ref={layerRef}
       className="product-route-layer"
       data-route-layer={pathname}
+      data-route-generation={generation}
       data-route-crossfade="direct"
-      data-route-interactive={!forcedInactive && isPresent ? "true" : "false"}
-      initial={{ opacity: 0.08 }}
-      animate={{ opacity: 1, pointerEvents: "auto" }}
+      data-route-role={outgoing ? "outgoing" : "incoming"}
+      data-route-interactive={!inactive ? "true" : "false"}
+      initial={outgoing ? false : { opacity: 0, y: distance }}
+      animate={outgoing ? { opacity: 0, pointerEvents: "none" } : { opacity: 1, y: 0, pointerEvents: "auto" }}
       exit={{ opacity: 0, pointerEvents: "none" }}
       transition={{ duration, ease: platformMotionEasing("route") }}
       {...(snapshotHtml === undefined ? {} : { dangerouslySetInnerHTML: { __html: snapshotHtml } })}
     >
-      {snapshotHtml === undefined ? children : undefined}
+      {snapshotHtml === undefined ? (
+        <>
+          <div className="product-route-content" data-route-content="true">
+            {children}
+          </div>
+          {showLoading ? <RoutePreparationFallback pathname={pathname} /> : null}
+        </>
+      ) : undefined}
     </motion.div>
   );
 }
 
+function cancelNavigationWork(navigation: Navigation | null) {
+  if (!navigation) return;
+  if (navigation.loadingTimer !== null) window.clearTimeout(navigation.loadingTimer);
+  if (navigation.settlementTimer !== null) window.clearTimeout(navigation.settlementTimer);
+  if (navigation.readinessFrame !== null) cancelAnimationFrame(navigation.readinessFrame);
+  navigation.observer?.disconnect();
+  navigation.loadingTimer = null;
+  navigation.settlementTimer = null;
+  navigation.readinessFrame = null;
+  navigation.observer = null;
+}
+
 export function RouteMotionBoundary({ pathname, children }: { pathname: string; children: React.ReactNode }) {
   const { mode } = useMotionMode();
-  const focusPath = useRef(pathname);
-  const committedRoute = useRef({ pathname, children });
-  const stableSnapshot = useRef({ pathname, html: "" });
-  const pendingNavigation = useRef<{ pathname: string; startedAt: number; timer: number | null } | null>(null);
-  const boundaryLoadingTimer = useRef<number | null>(null);
-  const [boundaryLoadingPath, setBoundaryLoadingPath] = useState<string | null>(null);
-  const [revision, forceRender] = useReducer((value) => value + 1, 0);
+  const [, forceRender] = useReducer((value) => value + 1, 0);
   const routeToken = useMemo(() => resolvePlatformMotionToken("route", mode), [mode]);
-  const routeChanged = committedRoute.current.pathname !== pathname;
+  const generation = useRef(0);
+  const renderedPath = useRef(pathname);
+  const settledRoute = useRef({ pathname, children });
+  const stableSnapshot = useRef({ pathname, html: "" });
+  const navigation = useRef<Navigation | null>(null);
+  const focusPath = useRef(pathname);
+
+  if (mode === "reduced") {
+    if (renderedPath.current !== pathname) generation.current += 1;
+    cancelNavigationWork(navigation.current);
+    navigation.current = null;
+    renderedPath.current = pathname;
+    settledRoute.current = { pathname, children };
+  } else if (renderedPath.current !== pathname) {
+    const previousNavigation = navigation.current;
+    cancelNavigationWork(previousNavigation);
+    const outgoing = previousNavigation
+      ? null
+      : {
+          pathname: settledRoute.current.pathname,
+          html: stableSnapshot.current.pathname === settledRoute.current.pathname ? stableSnapshot.current.html : "",
+        };
+    generation.current += 1;
+    navigation.current = {
+      generation: generation.current,
+      pathname,
+      children,
+      startedAt: -1,
+      phase: "preparing",
+      loadingShown: false,
+      outgoing,
+      loadingTimer: null,
+      settlementTimer: null,
+      observer: null,
+      readinessFrame: null,
+    };
+    renderedPath.current = pathname;
+  } else if (navigation.current?.pathname === pathname) {
+    navigation.current.children = children;
+  } else {
+    settledRoute.current = { pathname, children };
+  }
 
   useLayoutEffect(() => {
-    if (routeChanged) return;
-    const route = lastRouteLayer(pathname);
-    if (!route) return;
+    const active = navigation.current;
+    if (mode === "reduced" || !active || active.pathname !== pathname) return;
+    if (active.startedAt < 0) active.startedAt = performance.now();
+    const activeGeneration = active.generation;
+    const incoming = routeLayer(pathname, activeGeneration);
+    const content = incoming?.querySelector<HTMLElement>("[data-route-content]");
+    if (!content) return;
+
+    const isCurrent = () =>
+      navigation.current?.generation === activeGeneration && navigation.current.pathname === pathname;
+    const settle = () => {
+      if (!isCurrent()) return;
+      const current = navigation.current!;
+      cancelNavigationWork(current);
+      navigation.current = null;
+      forceRender();
+    };
+    const markReady = () => {
+      if (!isCurrent()) return;
+      const current = navigation.current!;
+      if (current.phase === "ready") return;
+      if (current.loadingTimer !== null) window.clearTimeout(current.loadingTimer);
+      current.loadingTimer = null;
+      current.observer?.disconnect();
+      current.observer = null;
+      current.phase = "ready";
+      settledRoute.current = { pathname, children: current.children };
+      const elapsed = performance.now() - current.startedAt;
+      const remaining = Math.max(0, routeToken.durationMs - elapsed);
+      current.settlementTimer = window.setTimeout(settle, remaining);
+      forceRender();
+    };
+    const evaluateReadiness = () => {
+      if (!isCurrent()) return;
+      const currentContent = routeLayer(pathname, activeGeneration)?.querySelector<HTMLElement>("[data-route-content]");
+      if (currentContent && !contentIsPending(currentContent)) markReady();
+    };
+
+    if (!contentIsPending(content)) {
+      markReady();
+      return;
+    }
+
+    active.observer?.disconnect();
+    active.observer = new MutationObserver(() => {
+      if (!isCurrent()) return;
+      if (navigation.current!.readinessFrame === null)
+        navigation.current!.readinessFrame = requestAnimationFrame(() => {
+          if (!isCurrent()) return;
+          navigation.current!.readinessFrame = null;
+          evaluateReadiness();
+        });
+    });
+    active.observer.observe(content, { attributes: true, characterData: true, childList: true, subtree: true });
+    if (active.loadingTimer === null) {
+      const remaining = Math.max(0, loadingThresholdMs - (performance.now() - active.startedAt));
+      active.loadingTimer = window.setTimeout(() => {
+        if (!isCurrent()) return;
+        const currentContent = routeLayer(pathname, activeGeneration)?.querySelector<HTMLElement>(
+          "[data-route-content]",
+        );
+        if (!currentContent || !contentIsPending(currentContent)) {
+          markReady();
+          return;
+        }
+        const current = navigation.current!;
+        current.loadingTimer = null;
+        current.phase = "loading";
+        current.loadingShown = true;
+        forceRender();
+      }, remaining);
+    }
+    return () => {
+      if (!isCurrent()) return;
+      active.observer?.disconnect();
+      active.observer = null;
+    };
+  }, [children, mode, pathname, routeToken.durationMs]);
+
+  useLayoutEffect(() => {
+    if (mode === "reduced" || navigation.current) return;
+    const currentLayer = routeLayer(pathname);
+    const content = currentLayer?.querySelector<HTMLElement>("[data-route-content]") ?? currentLayer;
+    if (!content || !content.textContent?.trim() || contentIsPending(content)) return;
     let frame = 0;
     const capture = () => {
       frame = 0;
-      if (!route.textContent?.trim() || route.querySelector('[data-async-state="pending-delay"], .ui-loading-state'))
-        return;
-      stableSnapshot.current = { pathname, html: routeSnapshotHtml(route) };
+      if (!content.isConnected || contentIsPending(content)) return;
+      stableSnapshot.current = { pathname, html: routeSnapshotHtml(content) };
     };
     capture();
     const observer = new MutationObserver(() => {
       if (!frame) frame = requestAnimationFrame(capture);
     });
-    observer.observe(route, { attributes: true, characterData: true, childList: true, subtree: true });
+    observer.observe(content, { attributes: true, characterData: true, childList: true, subtree: true });
     return () => {
       observer.disconnect();
       if (frame) cancelAnimationFrame(frame);
     };
-  }, [pathname, routeChanged]);
-
-  useLayoutEffect(() => {
-    if (!routeChanged) {
-      if (boundaryLoadingTimer.current != null) window.clearTimeout(boundaryLoadingTimer.current);
-      boundaryLoadingTimer.current = null;
-      if (boundaryLoadingPath !== null) setBoundaryLoadingPath(null);
-      committedRoute.current = { pathname, children };
-      return;
-    }
-    if (pendingNavigation.current?.pathname !== pathname) {
-      if (pendingNavigation.current?.timer != null) window.clearTimeout(pendingNavigation.current.timer);
-      pendingNavigation.current = { pathname, startedAt: performance.now(), timer: null };
-    }
-    const pending = pendingNavigation.current;
-    const incoming = lastRouteLayer(pathname);
-    const outgoing = lastRouteLayer(committedRoute.current.pathname);
-    const destinationNotPrepared =
-      children === committedRoute.current.children ||
-      Boolean(incoming && outgoing && incoming.textContent === outgoing.textContent);
-    const hasNativeLoading = Boolean(incoming?.querySelector('[data-async-state="pending-delay"], .ui-loading-state'));
-    const isDelayedDestination = mode !== "reduced" && (destinationNotPrepared || hasNativeLoading);
-    if (isDelayedDestination) {
-      if (hasNativeLoading && boundaryLoadingTimer.current != null) {
-        window.clearTimeout(boundaryLoadingTimer.current);
-        boundaryLoadingTimer.current = null;
-      } else if (destinationNotPrepared && !hasNativeLoading && boundaryLoadingTimer.current === null) {
-        boundaryLoadingTimer.current = window.setTimeout(
-          () => {
-            boundaryLoadingTimer.current = null;
-            setBoundaryLoadingPath(pathname);
-          },
-          Math.max(0, 500 - (performance.now() - (pending?.startedAt ?? performance.now()))),
-        );
-      }
-      if (pending && pending.timer === null) {
-        const remaining = Math.max(0, 700 - (performance.now() - pending.startedAt));
-        pending.timer = window.setTimeout(() => {
-          committedRoute.current = { pathname, children };
-          pendingNavigation.current = null;
-          forceRender();
-        }, remaining);
-      }
-      return;
-    }
-    if (pending && performance.now() - pending.startedAt < 16) {
-      if (pending.timer === null) {
-        pending.timer = window.setTimeout(
-          () => {
-            if (pendingNavigation.current) pendingNavigation.current.timer = null;
-            forceRender();
-          },
-          Math.max(0, 16 - (performance.now() - pending.startedAt)),
-        );
-      }
-      return;
-    }
-    if (pendingNavigation.current?.timer != null) window.clearTimeout(pendingNavigation.current.timer);
-    if (boundaryLoadingTimer.current != null) window.clearTimeout(boundaryLoadingTimer.current);
-    boundaryLoadingTimer.current = null;
-    if (boundaryLoadingPath !== null) setBoundaryLoadingPath(null);
-    pendingNavigation.current = null;
-    committedRoute.current = { pathname, children };
-    forceRender();
-  }, [boundaryLoadingPath, children, mode, pathname, revision, routeChanged]);
+  }, [children, mode, pathname]);
 
   useEffect(
     () => () => {
-      if (pendingNavigation.current?.timer != null) window.clearTimeout(pendingNavigation.current.timer);
-      if (boundaryLoadingTimer.current != null) window.clearTimeout(boundaryLoadingTimer.current);
+      cancelNavigationWork(navigation.current);
+      navigation.current = null;
     },
     [],
   );
@@ -208,73 +310,90 @@ export function RouteMotionBoundary({ pathname, children }: { pathname: string; 
   useEffect(() => {
     if (focusPath.current === pathname) return;
     focusPath.current = pathname;
+    const ownedGeneration = generation.current;
+    let cancelled = false;
     let timer = 0;
     let frame = 0;
     let attempts = 0;
     const focusWhenSettled = () => {
-      if (isTypingTarget(document.activeElement)) return;
-      const route = lastRouteLayer(pathname);
-      const routeIsInactive =
-        route?.getAttribute("data-route-interactive") === "false" ||
-        route?.getAttribute("aria-hidden") === "true" ||
-        route?.inert === true;
+      if (cancelled || ownedGeneration !== generation.current || isTypingTarget(document.activeElement)) return;
+      const active = navigation.current;
+      const layer = routeLayer(pathname);
+      const content = layer?.querySelector<HTMLElement>("[data-route-content]") ?? layer;
       const unsettled =
-        !route ||
-        routeIsInactive ||
-        pendingNavigation.current?.pathname === pathname ||
-        Boolean(route.querySelector('[data-async-state="pending-delay"], .ui-loading-state'));
-      if (unsettled && attempts < 30) {
+        !layer ||
+        !content ||
+        layer.getAttribute("data-route-interactive") === "false" ||
+        layer.getAttribute("aria-hidden") === "true" ||
+        layer.inert ||
+        Boolean(active && active.pathname === pathname) ||
+        contentIsPending(content);
+      if (unsettled && attempts < 40) {
         attempts += 1;
-        timer = window.setTimeout(focusWhenSettled, 50);
+        timer = window.setTimeout(focusWhenSettled, 25);
         return;
       }
-      if (!route || unsettled) return;
+      if (unsettled || !content) return;
       frame = requestAnimationFrame(() => {
-        const destination = route.querySelector<HTMLElement>("[data-route-focus], h1") ?? route;
-        if (!destination || isTypingTarget(document.activeElement)) return;
+        if (cancelled || ownedGeneration !== generation.current || isTypingTarget(document.activeElement)) return;
+        const destination = content.querySelector<HTMLElement>("[data-route-focus], h1") ?? content;
         if (!destination.hasAttribute("tabindex")) destination.setAttribute("tabindex", "-1");
         destination.focus({ preventScroll: true });
       });
     };
-    timer = window.setTimeout(focusWhenSettled, routeToken.durationSeconds * 1_000 + 24);
+    timer = window.setTimeout(focusWhenSettled, routeToken.durationMs + 24);
     return () => {
+      cancelled = true;
       window.clearTimeout(timer);
       cancelAnimationFrame(frame);
     };
-  }, [pathname, routeToken.durationSeconds]);
+  }, [mode, pathname, routeToken.durationMs]);
 
   if (mode === "reduced") {
     return (
-      <div className="product-route-layer" data-route-layer={pathname}>
+      <div
+        className="product-route-layer"
+        data-route-layer={pathname}
+        data-route-generation={generation.current}
+        data-route-state="settled"
+      >
         {children}
       </div>
     );
   }
 
+  const active = navigation.current;
+  const incomingGeneration = active?.generation ?? generation.current;
   return (
     <LayoutGroup id="lanternwake-route-layout">
-      <AnimatePresence initial={false} mode="sync">
-        {routeChanged ? (
+      <div
+        className="product-route-transition"
+        data-route-active-generation={incomingGeneration}
+        data-route-state={active?.phase ?? "settled"}
+        data-route-loading-shown={active?.loadingShown ? "true" : "false"}
+      >
+        {active?.outgoing ? (
           <RouteLayer
-            key={committedRoute.current.pathname}
-            pathname={committedRoute.current.pathname}
+            key={`outgoing-${active.generation}-${active.outgoing.pathname}`}
+            pathname={active.outgoing.pathname}
+            generation={active.generation}
             duration={routeToken.durationSeconds}
-            forcedInactive
-            snapshotHtml={
-              stableSnapshot.current.pathname === committedRoute.current.pathname ? stableSnapshot.current.html : ""
-            }
-          >
-            {committedRoute.current.children}
-          </RouteLayer>
+            distance={0}
+            outgoing
+            snapshotHtml={active.outgoing.html}
+          />
         ) : null}
-        <RouteLayer key={pathname} pathname={pathname} duration={routeToken.durationSeconds}>
-          {routeChanged && boundaryLoadingPath === pathname ? (
-            <RoutePreparationFallback pathname={pathname} />
-          ) : (
-            children
-          )}
+        <RouteLayer
+          key={`incoming-${incomingGeneration}-${pathname}`}
+          pathname={pathname}
+          generation={incomingGeneration}
+          duration={routeToken.durationSeconds}
+          distance={routeToken.distancePx}
+          showLoading={active?.phase === "loading"}
+        >
+          {children}
         </RouteLayer>
-      </AnimatePresence>
+      </div>
     </LayoutGroup>
   );
 }
