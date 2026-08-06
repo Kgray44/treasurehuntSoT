@@ -4,7 +4,7 @@ import { requireWayfarerVerification } from "@/wayfarer/http";
 export default async function Page({
   searchParams,
 }: {
-  searchParams: Promise<{ returnTo?: string; return?: string; token?: string }>;
+  searchParams: Promise<{ returnTo?: string; return?: string; token?: string; delivery?: string; action?: string }>;
 }) {
   const session = await requireWayfarerVerification();
   const email = session?.account.emails[0]?.displayEmail ?? "";

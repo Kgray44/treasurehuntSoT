@@ -1049,40 +1049,41 @@ model ArtifactGrantReceipt {
 }
 
 model PlayerProfile {
-  id                 String                   @id @default(cuid())
-  accountId          String?                  @unique
-  username           String?                  @unique
-  passwordHash       String?
-  displayName        String
-  handle             String?
-  normalizedHandle   String?                  @unique
-  biography          String?
-  avatarMediaId      String?                  @unique
-  bannerMediaId      String?                  @unique
-  defaultVisibility  String                   @default("REGISTERED_USERS")
-  status             String                   @default("ACTIVE")
-  preferences        String                   @default("{}")
-  claimedAt          DateTime?
-  createdAt          DateTime                 @default(now())
-  updatedAt          DateTime                 @updatedAt
-  lastSeenAt         DateTime?
-  sessions           PlayerIdentitySession[]
-  memberships        PlaythroughMembership[]
-  invitations        Invitation[]
-  handleHistory      ProfileHandleHistory[]
-  media              ProfileMedia[]           @relation("ProfileMediaOwner")
-  avatarMedia        ProfileMedia?            @relation("ProfileAvatar", fields: [avatarMediaId], references: [id], onDelete: SetNull)
-  bannerMedia        ProfileMedia?            @relation("ProfileBanner", fields: [bannerMediaId], references: [id], onDelete: SetNull)
-  preferenceSet      ProfilePreferenceSet?
-  privacyRules       ProfilePrivacyRule[]
-  chronicleRecords   PlayerChronicleRecord[]
-  chronicleMemories  ChronicleMemory[]
-  keepsakeConsents   VoyageKeepsakeConsent[]
-  artifactRecords    PlayerArtifactRecord[]
-  artifactCases      ArtifactDisplayCase[]
-  artifactAssemblies PlayerArtifactAssembly[]
-  achievements       PlayerAchievement[]
-  account            UserAccount?             @relation(fields: [accountId], references: [id], onDelete: SetNull)
+  id                    String                   @id @default(cuid())
+  accountId             String?                  @unique
+  username              String?                  @unique
+  passwordHash          String?
+  displayName           String
+  normalizedDisplayName String?                  @unique
+  handle                String?
+  normalizedHandle      String?                  @unique
+  biography             String?
+  avatarMediaId         String?                  @unique
+  bannerMediaId         String?                  @unique
+  defaultVisibility     String                   @default("REGISTERED_USERS")
+  status                String                   @default("ACTIVE")
+  preferences           String                   @default("{}")
+  claimedAt             DateTime?
+  createdAt             DateTime                 @default(now())
+  updatedAt             DateTime                 @updatedAt
+  lastSeenAt            DateTime?
+  sessions              PlayerIdentitySession[]
+  memberships           PlaythroughMembership[]
+  invitations           Invitation[]
+  handleHistory         ProfileHandleHistory[]
+  media                 ProfileMedia[]           @relation("ProfileMediaOwner")
+  avatarMedia           ProfileMedia?            @relation("ProfileAvatar", fields: [avatarMediaId], references: [id], onDelete: SetNull)
+  bannerMedia           ProfileMedia?            @relation("ProfileBanner", fields: [bannerMediaId], references: [id], onDelete: SetNull)
+  preferenceSet         ProfilePreferenceSet?
+  privacyRules          ProfilePrivacyRule[]
+  chronicleRecords      PlayerChronicleRecord[]
+  chronicleMemories     ChronicleMemory[]
+  keepsakeConsents      VoyageKeepsakeConsent[]
+  artifactRecords       PlayerArtifactRecord[]
+  artifactCases         ArtifactDisplayCase[]
+  artifactAssemblies    PlayerArtifactAssembly[]
+  achievements          PlayerAchievement[]
+  account               UserAccount?             @relation(fields: [accountId], references: [id], onDelete: SetNull)
 
   @@index([status, displayName])
   @@index([normalizedHandle, status])

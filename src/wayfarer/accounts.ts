@@ -14,6 +14,7 @@ import {
   emailVerificationPolicy,
   verificationCodeMatches,
 } from "@/wayfarer/verification-policy";
+import { assessPassword } from "@/wayfarer/password-policy";
 
 const bcryptRounds = 12;
 const sessionAgeMs = 1000 * 60 * 60 * 24 * 30;
@@ -26,6 +27,8 @@ export class AccountError extends Error {
   constructor(
     message: string,
     readonly code: "INVALID" | "CONFLICT" | "UNAVAILABLE" = "INVALID",
+    readonly kind?: "DISPLAY_NAME_CONFLICT" | "EMAIL_CONFLICT" | "DELIVERY_FAILED" | "PASSWORD_INVALID",
+    readonly field?: "displayName" | "email" | "password" | "confirmPassword",
   ) {
     super(message);
   }
@@ -44,16 +47,34 @@ export async function canonicalAccountForLegacyActor(actorId?: string | null) {
   return account?.id ?? null;
 }
 
-export function assertPasswordPolicy(password: string) {
-  if (password.length < 12 || password.length > 256 || !/\S/.test(password))
-    throw new AccountError("Choose a password with at least 12 characters.");
+export function assertPasswordPolicy(password: string, identity: { email?: string; displayName?: string } = {}) {
+  const assessment = assessPassword(password, identity);
+  if (!assessment.acceptable) throw new AccountError(assessment.message, "INVALID", "PASSWORD_INVALID", "password");
+  return assessment;
 }
 
 function safeDisplayName(displayName: string) {
-  const value = displayName.trim();
+  const value = displayName.normalize("NFKC").trim().replace(/\s+/gu, " ");
   if (value.length < 1 || value.length > 80 || value.includes("@"))
     throw new AccountError("Choose a visible display name without an email address.");
   return value;
+}
+
+export function normalizeDisplayName(displayName: string) {
+  return safeDisplayName(displayName).toLocaleLowerCase("en-US");
+}
+
+function emailConflict() {
+  return new AccountError(
+    "An account already uses this email address. Sign in instead.",
+    "CONFLICT",
+    "EMAIL_CONFLICT",
+    "email",
+  );
+}
+
+function displayNameConflict() {
+  return new AccountError("That display name is already in use.", "CONFLICT", "DISPLAY_NAME_CONFLICT", "displayName");
 }
 
 export async function recordSecurityEvent(
@@ -140,20 +161,61 @@ export async function ensureGuestAccountForProfile(profileId: string) {
 export async function registerAccount(input: {
   email: string;
   password: string;
+  confirmPassword?: string;
   displayName: string;
   deviceLabel?: string;
 }) {
   assertTransactionalEmailAvailable();
   const email = normalizeEmail(input.email);
   if (!/^\S+@\S+\.\S+$/.test(email) || email.length > 254) throw new AccountError("Enter a valid email address.");
-  assertPasswordPolicy(input.password);
   const displayName = safeDisplayName(input.displayName);
+  const normalizedDisplayName = normalizeDisplayName(displayName);
+  if (input.confirmPassword !== undefined && input.password !== input.confirmPassword)
+    throw new AccountError("Passwords do not match.", "INVALID", undefined, "confirmPassword");
+  assertPasswordPolicy(input.password, { email, displayName });
+
+  const [existingEmail, existingNormalizedDisplay, legacyProfiles] = await Promise.all([
+    db.accountEmail.findUnique({ where: { normalizedEmail: email }, select: { id: true } }),
+    db.playerProfile.findUnique({ where: { normalizedDisplayName }, select: { id: true } }),
+    db.playerProfile.findMany({
+      where: { normalizedDisplayName: null },
+      select: { displayName: true },
+    }),
+  ]);
+  if (existingEmail) throw emailConflict();
+  if (
+    existingNormalizedDisplay ||
+    legacyProfiles.some((profile) => normalizeDisplayName(profile.displayName) === normalizedDisplayName)
+  )
+    throw displayNameConflict();
+
   const passwordHash = await hash(input.password, bcryptRounds);
+  const verificationCode = createEmailVerificationCode();
+  const sessionToken = makeToken(32);
+  const csrfToken = makeToken(24);
+  const expiresAt = new Date(Date.now() + sessionAgeMs);
   try {
-    const account = await db.$transaction(async (tx) => {
-      const created = await tx.userAccount.create({ data: { status: "PENDING_VERIFICATION", claimedAt: new Date() } });
+    const registered = await db.$transaction(async (tx) => {
+      const emailOwner = await tx.accountEmail.findUnique({ where: { normalizedEmail: email }, select: { id: true } });
+      if (emailOwner) throw emailConflict();
+      const displayOwner = await tx.playerProfile.findUnique({
+        where: { normalizedDisplayName },
+        select: { id: true },
+      });
+      if (displayOwner) throw displayNameConflict();
+      const unresolvedProfiles = await tx.playerProfile.findMany({
+        where: { normalizedDisplayName: null },
+        select: { displayName: true },
+      });
+      if (unresolvedProfiles.some((profile) => normalizeDisplayName(profile.displayName) === normalizedDisplayName))
+        throw displayNameConflict();
+
+      const now = new Date();
+      const created = await tx.userAccount.create({
+        data: { status: "PENDING_VERIFICATION", claimedAt: now, lastSeenAt: now },
+      });
       const profile = await tx.playerProfile.create({
-        data: { accountId: created.id, displayName, status: "ACTIVE", claimedAt: new Date() },
+        data: { accountId: created.id, displayName, normalizedDisplayName, status: "ACTIVE", claimedAt: now },
       });
       await tx.accountEmail.create({
         data: { accountId: created.id, normalizedEmail: email, displayEmail: input.email.trim() },
@@ -163,13 +225,58 @@ export async function registerAccount(input: {
       await tx.securityEvent.create({
         data: { accountId: created.id, eventType: "ACCOUNT_REGISTERED", correlationId: randomUUID(), metadata: "{}" },
       });
-      return { ...created, profile };
+      const accountToken = await tx.accountToken.create({
+        data: {
+          accountId: created.id,
+          purpose: "VERIFY_EMAIL",
+          tokenHash: emailVerificationCodeHash(created.id, email, verificationCode),
+          expiresAt: new Date(Date.now() + emailVerificationPolicy.expiresMs),
+          maxAttempts: emailVerificationPolicy.maxAttempts,
+        },
+      });
+      const session = await tx.accountSession.create({
+        data: {
+          accountId: created.id,
+          tokenHash: hashToken(sessionToken),
+          csrfToken,
+          expiresAt,
+          deviceLabel: input.deviceLabel?.slice(0, 80),
+          sessionType: "VERIFICATION",
+        },
+      });
+      return { account: { ...created, profile }, accountToken, session };
     });
-    await issueToken(account.id, "VERIFY_EMAIL", email, emailVerificationPolicy.expiresMs);
-    return { account, session: await createAccountSession(account.id, input.deviceLabel, "VERIFICATION") };
+    let deliveryState: "SUBMITTED" | "FAILED" = "SUBMITTED";
+    try {
+      await sendTransactionalEmail({
+        purpose: "VERIFY_EMAIL",
+        email,
+        token: verificationCode,
+        accountId: registered.account.id,
+        accountTokenId: registered.accountToken.id,
+        displayName,
+      });
+    } catch {
+      deliveryState = "FAILED";
+      await recordSecurityEvent(registered.account.id, "ACCOUNT_VERIFICATION_DELIVERY_FAILED").catch(() => undefined);
+    }
+    return {
+      account: registered.account,
+      session: {
+        id: registered.session.id,
+        token: sessionToken,
+        csrfToken,
+        expiresAt,
+      },
+      deliveryState,
+    };
   } catch (cause) {
-    if (typeof cause === "object" && cause && "code" in cause && (cause as { code?: string }).code === "P2002")
-      throw new AccountError("An account already uses that email address.", "CONFLICT");
+    if (cause instanceof AccountError) throw cause;
+    if (typeof cause === "object" && cause && "code" in cause && (cause as { code?: string }).code === "P2002") {
+      const target = JSON.stringify((cause as { meta?: unknown }).meta ?? "");
+      if (target.includes("normalizedDisplayName")) throw displayNameConflict();
+      if (target.includes("normalizedEmail")) throw emailConflict();
+    }
     throw cause;
   }
 }
@@ -193,11 +300,7 @@ export async function authenticateAccount(login: string, password: string, devic
   if (!account?.credential || !account.profile || !["ACTIVE", "PENDING_VERIFICATION"].includes(account.status))
     return null;
   if (!(await compare(password, account.credential.passwordHash))) return null;
-  const session = await createAccountSession(
-    account.id,
-    deviceLabel,
-    account.status === "PENDING_VERIFICATION" ? "VERIFICATION" : "ORDINARY",
-  );
+  const session = await createAccountSession(account.id, deviceLabel, "ORDINARY");
   await recordSecurityEvent(account.id, "ACCOUNT_SIGNED_IN");
   return { account, session };
 }
@@ -281,6 +384,18 @@ export async function resendVerification(accountId: string) {
     throw new AccountError("Verification resend is temporarily rate limited.");
   await issueToken(accountId, "VERIFY_EMAIL", email.normalizedEmail, emailVerificationPolicy.expiresMs);
   await recordSecurityEvent(accountId, "EMAIL_VERIFICATION_RESENT");
+}
+
+export async function repairPendingVerificationChallenge(accountId: string) {
+  const account = await db.userAccount.findUnique({
+    where: { id: accountId },
+    include: { emails: { where: { isPrimary: true }, take: 1 } },
+  });
+  const email = account?.emails[0];
+  if (!account || account.status !== "PENDING_VERIFICATION" || !email || email.verificationState === "VERIFIED")
+    throw new AccountError("Only a complete unverified account can receive a repaired challenge.", "INVALID");
+  await issueToken(account.id, "VERIFY_EMAIL", email.normalizedEmail, emailVerificationPolicy.expiresMs);
+  await recordSecurityEvent(account.id, "ACCOUNT_VERIFICATION_CHALLENGE_REPAIRED");
 }
 
 export function maskEmailAddress(email: string) {

@@ -102,6 +102,8 @@ export function ProductShell({ children }: { children: React.ReactNode }) {
   const { state: currentUser, refresh: refreshCurrentUser } = useCurrentUser();
   const [navigationOpen, setNavigationOpen] = useState(false);
   const [accountOpen, setAccountOpen] = useState(false);
+  const [verificationNotice, setVerificationNotice] = useState("");
+  const [verificationBusy, setVerificationBusy] = useState(false);
   const navigationButtonRef = useRef<HTMLButtonElement>(null);
   const accountButtonRef = useRef<HTMLButtonElement>(null);
   const navigationDrawerRef = useRef<HTMLDivElement>(null);
@@ -248,6 +250,24 @@ export function ProductShell({ children }: { children: React.ReactNode }) {
     group,
     items: projection.accountItems.filter((item) => item.accountGroup === group),
   }));
+
+  async function resendVerification() {
+    if (currentUser.status !== "authenticated") return;
+    setVerificationBusy(true);
+    setVerificationNotice("");
+    try {
+      const response = await fetch("/api/auth/email/verification/resend", {
+        method: "POST",
+        headers: { "x-csrf-token": currentUser.csrfToken },
+      });
+      const body = (await response.json().catch(() => null)) as { error?: string } | null;
+      setVerificationNotice(
+        response.ok ? "A new verification code was sent." : (body?.error ?? "A new code could not be sent."),
+      );
+    } finally {
+      setVerificationBusy(false);
+    }
+  }
 
   return (
     <div
@@ -501,6 +521,22 @@ export function ProductShell({ children }: { children: React.ReactNode }) {
           <span>{compact ? workspace.label : "Current area"}</span>
           <NavigationLinks items={projection.contextualItems} motionKey="contextual" onNavigate={closeAll} />
         </nav>
+      ) : null}
+
+      {currentUser.status === "authenticated" && currentUser.emailVerification.status === "unverified" ? (
+        <aside className="shell-verification-notice" aria-label="Email verification">
+          <div>
+            <b>Verify your email when you are ready.</b>
+            <p>Your account and ordinary navigation remain available. Verified-email actions stay protected.</p>
+            {verificationNotice ? <p role="status">{verificationNotice}</p> : null}
+          </div>
+          <div className="shell-verification-actions">
+            <button type="button" disabled={verificationBusy} onClick={() => void resendVerification()}>
+              {verificationBusy ? "Sending…" : "Resend verification"}
+            </button>
+            <Link href="/verify-email?action=change">Change email</Link>
+          </div>
+        </aside>
       ) : null}
 
       <div ref={mainContentRef} className="product-shell-content" id="main-content" tabIndex={-1}>

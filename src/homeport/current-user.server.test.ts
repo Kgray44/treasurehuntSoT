@@ -100,6 +100,39 @@ describe("Project Homeport current-user authority", () => {
     expect(mocks.findLegacyStaff).not.toHaveBeenCalled();
   });
 
+  it("homeport.owner-correction.round3.patch-a.pending ordinary sign-in is authenticated with an unverified notice", async () => {
+    mocks.findSession.mockResolvedValue(
+      session({
+        account: {
+          ...session().account,
+          status: "PENDING_VERIFICATION",
+          ordinaryWorkspaceEntryAt: null,
+          emails: [{ verificationState: "PENDING", verifiedAt: null }],
+        },
+      }),
+    );
+    expect(await resolveCurrentUser()).toMatchObject({
+      status: "authenticated",
+      authenticated: true,
+      emailVerification: { status: "unverified" },
+      capabilities: { canUsePlayer: true, canUseCaptain: true, canUseCreator: true },
+    });
+  });
+
+  it("homeport.owner-correction.round3.patch-a.registration verification session stays bounded before sign-in", async () => {
+    mocks.findSession.mockResolvedValue(
+      session({
+        sessionType: "VERIFICATION",
+        account: {
+          ...session().account,
+          status: "PENDING_VERIFICATION",
+          emails: [{ verificationState: "PENDING", verifiedAt: null }],
+        },
+      }),
+    );
+    expect(await resolveCurrentUser()).toMatchObject({ status: "anonymous", authenticated: false });
+  });
+
   it("homeport.session.convergence projects Player and staff workspaces from one context", async () => {
     mocks.findSession.mockResolvedValue(
       session({

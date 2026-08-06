@@ -316,6 +316,47 @@ html[data-motion-level="reduced"] .platform-relic *,
   max-width: 620px;
 }
 
+.account-password-strength {
+  display: grid;
+  gap: 0.25rem;
+  margin-top: 0.4rem;
+}
+
+.account-flow-field {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.account-flow-field > label {
+  color: #6b471c;
+  font-size: 0.72rem;
+  font-weight: 850;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+.account-password-strength [role="meter"] {
+  display: block;
+  width: min(100%, 26rem);
+  height: 0.45rem;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgb(70 47 27 / 16%);
+}
+
+.account-password-strength [role="meter"] i {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: #8c6b2e;
+  transition: width 120ms ease-out;
+}
+
+.account-confirmation-match {
+  color: #315d35;
+  font-weight: 750;
+}
+
 .account-flow-notice {
   border-left: 4px solid #8c6b2e;
   padding: 0.75rem 1rem;

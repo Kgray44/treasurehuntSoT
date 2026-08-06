@@ -504,6 +504,35 @@
   align-items: start;
 }
 
+.shell-verification-notice {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.8rem clamp(1rem, 4vw, 3rem);
+  border-bottom: 1px solid color-mix(in srgb, var(--shell-accent) 45%, transparent);
+  color: var(--shell-ink);
+  background: color-mix(in srgb, var(--surface-overlay) 92%, #f5cf78 8%);
+}
+
+.shell-verification-notice p {
+  margin: 0.15rem 0 0;
+}
+
+.shell-verification-actions {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+@media (max-width: 680px) {
+  .shell-verification-notice {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+
 .shell-mode-GATEWAY_STANDARD .product-shell-content {
   min-height: 100svh;
 }

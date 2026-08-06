@@ -23,7 +23,7 @@ export async function requireWayfarerAccount(request?: Request) {
 export async function requireWayfarerVerification(request?: Request) {
   const token = (await cookies()).get(WAYFARER_COOKIE)?.value;
   if (!token) return null;
-  const session = await currentAccount(token, ["VERIFICATION"]);
+  const session = await currentAccount(token, ["VERIFICATION", "ORDINARY"]);
   if (
     !session ||
     session.account.status !== "PENDING_VERIFICATION" ||

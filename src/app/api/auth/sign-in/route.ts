@@ -35,13 +35,11 @@ export async function POST(request: Request) {
   await setWayfarerRoleCookie(result.session.token, roles);
   return NextResponse.json({
     ok: true,
-    verificationRequired: result.account.status === "PENDING_VERIFICATION",
+    verificationRequired: false,
+    emailVerification: result.account.status === "PENDING_VERIFICATION" ? "UNVERIFIED" : "VERIFIED",
     csrfToken: result.session.csrfToken,
     player: { id: result.account.profile.id, displayName: result.account.profile.displayName },
     roles,
-    next:
-      result.account.status === "PENDING_VERIFICATION"
-        ? `/verify-email${safeReturnTo(parsed.data.returnTo, "") ? `?returnTo=${encodeURIComponent(safeReturnTo(parsed.data.returnTo, ""))}` : ""}`
-        : safeReturnTo(parsed.data.returnTo, "/passport"),
+    next: safeReturnTo(parsed.data.returnTo, "/"),
   });
 }

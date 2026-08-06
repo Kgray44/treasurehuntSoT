@@ -14,6 +14,7 @@ const playerContext: AuthenticatedCurrentUser = {
     canModerate: false,
     isAdministrator: false,
   },
+  emailVerification: { status: "verified" },
   workspaces: ["public", "account", "community", "player"],
   session: { id: "session-1", expiresAt: new Date(Date.now() + 60_000).toISOString() },
   csrfToken: "csrf",

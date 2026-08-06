@@ -5,11 +5,20 @@ import { useRouter } from "next/navigation";
 import { FormEvent, useEffect, useRef, useState } from "react";
 import { useCurrentUser } from "@/components/auth/CurrentUserProvider";
 import { authorizedReturnTo, safeReturnTo } from "@/homeport/return-to";
+import { assessPassword } from "@/wayfarer/password-policy";
 
 type Mode = "register" | "sign-in" | "forgot" | "reset" | "verify" | "email-change" | "claim" | "merge" | "security";
 type Props = {
   mode: Mode;
-  query?: { returnTo?: string; return?: string; reason?: string; token?: string };
+  query?: {
+    returnTo?: string;
+    return?: string;
+    reason?: string;
+    token?: string;
+    email?: string;
+    delivery?: string;
+    action?: string;
+  };
   initialCsrf?: string;
   maskedEmail?: string;
 };
@@ -36,23 +45,46 @@ export function AccountFlow({ mode, query, initialCsrf = "", maskedEmail }: Prop
   );
   const [resendCooldown, setResendCooldown] = useState(0);
   const [verificationDestination, setVerificationDestination] = useState(maskedEmail ?? "your email address");
-  const [changingVerificationEmail, setChangingVerificationEmail] = useState(false);
+  const [changingVerificationEmail, setChangingVerificationEmail] = useState(query?.action === "change");
   const [replacementEmail, setReplacementEmail] = useState("");
   const [sessions, setSessions] = useState<Array<{ id: string; deviceLabel?: string; current: boolean }>>([]);
-  const [values, setValues] = useState<Record<string, string>>({});
+  const [values, setValues] = useState<Record<string, string>>(() => {
+    const initialValues: Record<string, string> = {};
+    if (mode === "sign-in" && query?.email) initialValues.login = query.email;
+    return initialValues;
+  });
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
+  const [confirmationTouched, setConfirmationTouched] = useState(false);
+  const inputRefs = useRef<Record<string, HTMLInputElement | null>>({});
   const verificationCodeRef = useRef<HTMLInputElement>(null);
   const returnTo = safeReturnTo(query?.returnTo ?? query?.return, "");
   const reason = query?.reason ?? "";
   const queryToken = query?.token ?? "";
+  const passwordAssessment = assessPassword(values.password ?? "", {
+    email: values.email,
+    displayName: values.displayName,
+  });
+  const passwordStrengthValue = { TOO_WEAK: 0, WEAK: 1, GOOD: 2, STRONG: 3 }[passwordAssessment.level];
+  const confirmationMatches = (values.confirmPassword ?? "") === (values.password ?? "");
 
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setBusy(true);
     setError("");
     setMessage("");
+    setFieldErrors({});
     const data = Object.fromEntries(new FormData(event.currentTarget));
     if ((mode === "register" || mode === "reset") && data.password !== data.confirmPassword) {
       setError("Passwords do not match.");
+      setFieldErrors({ confirmPassword: "Passwords do not match." });
+      window.requestAnimationFrame(() => inputRefs.current.confirmPassword?.focus());
+      setBusy(false);
+      return;
+    }
+    if (mode === "register" && !passwordAssessment.acceptable) {
+      setError(passwordAssessment.message);
+      setFieldErrors({ password: passwordAssessment.message });
+      window.requestAnimationFrame(() => inputRefs.current.password?.focus());
       setBusy(false);
       return;
     }
@@ -67,13 +99,34 @@ export function AccountFlow({ mode, query, initialCsrf = "", maskedEmail }: Prop
         }),
       });
       const body = await response.json().catch(() => null);
-      if (!response.ok) throw new Error(body?.error ?? "Please try again.");
+      if (!response.ok) {
+        if (mode === "register" && body?.conflict === "EMAIL_CONFLICT") {
+          const handoff = new URLSearchParams({
+            email: body?.handoff?.email ?? String(data.email ?? ""),
+            reason: "account-exists",
+          });
+          if (returnTo) handoff.set("returnTo", returnTo);
+          router.replace(`/sign-in?${handoff.toString()}`);
+          router.refresh();
+          return;
+        }
+        if (body?.field && typeof body.error === "string") {
+          setFieldErrors({ [body.field]: body.error });
+          window.requestAnimationFrame(() => inputRefs.current[body.field]?.focus());
+          return;
+        }
+        throw new Error(body?.error ?? "Please try again.");
+      }
       if (body?.csrfToken) {
         setCsrf(body.csrfToken);
         sessionStorage.setItem("wayfarer-csrf", body.csrfToken);
       }
       if (body?.verificationRequired) {
-        setMessage("Account created. Opening secure email verification.");
+        setMessage(
+          body?.registrationState === "ACCOUNT_CREATED_DELIVERY_FAILED"
+            ? "Your account was created, but we could not send the verification email."
+            : "Account created. Opening secure email verification.",
+        );
         router.replace(body.next ?? "/verify-email");
         router.refresh();
       } else if (["register", "sign-in", "reset", "claim", "merge"].includes(mode)) {
@@ -287,12 +340,23 @@ export function AccountFlow({ mode, query, initialCsrf = "", maskedEmail }: Prop
         </p>
         {mode === "sign-in" && reason ? (
           <p className="account-flow-notice" role="status">
-            {reason === "expired"
-              ? "Your session expired. Sign in again; no Voyage progress has changed."
-              : reason === "revoked" || reason === "invalid"
-                ? "That session ended. Sign in again to continue."
-                : "Sign in to continue."}
+            {reason === "account-exists"
+              ? "An account already uses this email address. Sign in instead."
+              : reason === "expired"
+                ? "Your session expired. Sign in again; no Voyage progress has changed."
+                : reason === "revoked" || reason === "invalid"
+                  ? "That session ended. Sign in again to continue."
+                  : "Sign in to continue."}
           </p>
+        ) : null}
+        {mode === "verify" && query?.delivery === "failed" ? (
+          <div className="account-flow-notice" role="alert">
+            <b>Your account was created, but we could not send the verification email.</b>
+            <p>
+              Retry delivery below, change the email address, or <Link href="/sign-in">sign in instead</Link>. If
+              delivery keeps failing, contact account support and say that registration completed before delivery.
+            </p>
+          </div>
         ) : null}
         {mode === "sign-in" && currentUser.status === "authenticated" ? (
           <p className="account-flow-notice">
@@ -301,47 +365,105 @@ export function AccountFlow({ mode, query, initialCsrf = "", maskedEmail }: Prop
           </p>
         ) : null}
         <form onSubmit={submit} aria-describedby="account-status">
-          {fields.map((field) => (
-            <label key={field}>
-              <span>
-                {field === "displayName"
-                  ? "Display name"
-                  : field === "login"
-                    ? "Email or legacy Player name"
-                    : field === "confirmPassword"
-                      ? "Confirm password"
-                      : field[0].toUpperCase() + field.slice(1)}
-              </span>
-              <input
-                ref={field === "code" ? verificationCodeRef : undefined}
-                name={field}
-                value={values[field] ?? ""}
-                onChange={(event) => setValues((current) => ({ ...current, [field]: event.target.value }))}
-                type={field.toLowerCase().includes("password") ? "password" : field === "email" ? "email" : "text"}
-                inputMode={field === "code" ? "numeric" : undefined}
-                pattern={field === "code" ? "[0-9]{6}" : undefined}
-                maxLength={field === "code" ? 6 : undefined}
-                className={field === "code" ? "account-verification-code" : undefined}
-                aria-invalid={field === "code" && error ? true : undefined}
-                aria-errormessage={field === "code" && error ? "account-status" : undefined}
-                autoComplete={
-                  field === "code"
-                    ? "one-time-code"
-                    : field === "email"
-                      ? "email"
-                      : field === "login"
-                        ? "username"
-                        : field.toLowerCase().includes("password")
-                          ? mode === "sign-in" || mode === "merge"
-                            ? "current-password"
-                            : "new-password"
-                          : "nickname"
-                }
-                disabled={currentUser.status === "loading"}
-                required
-              />
-            </label>
-          ))}
+          {fields.map((field) => {
+            const fieldError = fieldErrors[field];
+            const describedBy =
+              field === "password" && mode === "register"
+                ? `password-strength${fieldError ? ` ${field}-error` : ""}`
+                : field === "confirmPassword" && confirmationTouched
+                  ? `password-confirmation${fieldError ? ` ${field}-error` : ""}`
+                  : fieldError
+                    ? `${field}-error`
+                    : undefined;
+            const inputId = `account-${field}`;
+            return (
+              <div className="account-flow-field" key={field}>
+                <label htmlFor={inputId}>
+                  {field === "displayName"
+                    ? "Display name"
+                    : field === "login"
+                      ? "Email or legacy Player name"
+                      : field === "confirmPassword"
+                        ? "Confirm password"
+                        : field[0].toUpperCase() + field.slice(1)}
+                </label>
+                <input
+                  id={inputId}
+                  ref={(node) => {
+                    inputRefs.current[field] = node;
+                    if (field === "code") verificationCodeRef.current = node;
+                  }}
+                  name={field}
+                  value={values[field] ?? ""}
+                  onChange={(event) => {
+                    setValues((current) => ({ ...current, [field]: event.target.value }));
+                    setFieldErrors((current) => {
+                      if (!current[field]) return current;
+                      const next = { ...current };
+                      delete next[field];
+                      return next;
+                    });
+                    if (field === "confirmPassword") setConfirmationTouched(true);
+                  }}
+                  type={field.toLowerCase().includes("password") ? "password" : field === "email" ? "email" : "text"}
+                  inputMode={field === "code" ? "numeric" : undefined}
+                  pattern={field === "code" ? "[0-9]{6}" : undefined}
+                  maxLength={field === "code" ? 6 : undefined}
+                  className={field === "code" ? "account-verification-code" : undefined}
+                  aria-invalid={fieldError || (field === "code" && error) ? true : undefined}
+                  aria-errormessage={
+                    fieldError ? `${field}-error` : field === "code" && error ? "account-status" : undefined
+                  }
+                  aria-describedby={describedBy}
+                  autoComplete={
+                    field === "code"
+                      ? "one-time-code"
+                      : field === "email"
+                        ? "email"
+                        : field === "login"
+                          ? "username"
+                          : field.toLowerCase().includes("password")
+                            ? mode === "sign-in" || mode === "merge"
+                              ? "current-password"
+                              : "new-password"
+                            : "nickname"
+                  }
+                  disabled={currentUser.status === "loading"}
+                  required
+                />
+                {field === "password" && mode === "register" ? (
+                  <span id="password-strength" className="account-password-strength">
+                    <span
+                      role="meter"
+                      aria-label="Password strength"
+                      aria-valuemin={0}
+                      aria-valuemax={3}
+                      aria-valuenow={passwordStrengthValue}
+                      aria-valuetext={passwordAssessment.label}
+                    >
+                      <i style={{ width: `${((passwordStrengthValue + 1) / 4) * 100}%` }} />
+                    </span>
+                    <b>Strength: {passwordAssessment.label}</b>
+                    <small>{passwordAssessment.message}</small>
+                  </span>
+                ) : null}
+                {field === "confirmPassword" && confirmationTouched ? (
+                  <span
+                    id="password-confirmation"
+                    className={confirmationMatches ? "account-confirmation-match" : "platform-error"}
+                    role="status"
+                  >
+                    {confirmationMatches ? "Passwords match." : "Passwords do not match."}
+                  </span>
+                ) : null}
+                {fieldError ? (
+                  <span id={`${field}-error`} className="platform-error">
+                    {fieldError}
+                  </span>
+                ) : null}
+              </div>
+            );
+          })}
           {(mode === "reset" || mode === "email-change") && <input name="token" type="hidden" value={queryToken} />}
           {mode === "merge" && <p>Confirming preserves your guest voyage history in this account.</p>}
           <button className="brass-button" disabled={busy || currentUser.status === "loading"}>

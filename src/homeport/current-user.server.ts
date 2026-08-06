@@ -62,11 +62,12 @@ async function classifySession(session: SessionWithAccount): Promise<CurrentUser
   const activeRoles = session.account.roles.filter((assignment) => !assignment.revokedAt);
   const roles = new Set(activeRoles.map((assignment) => assignment.role));
   const isAdministrator = roles.has("ADMINISTRATOR");
+  const primaryEmail = session.account.emails[0];
+  const emailVerified = primaryEmail?.verificationState === "VERIFIED";
   const ordinaryEntry =
-    session.account.status === "ACTIVE" &&
+    ["ACTIVE", "PENDING_VERIFICATION"].includes(session.account.status) &&
     Boolean(session.account.claimedAt) &&
-    Boolean(session.account.ordinaryWorkspaceEntryAt) &&
-    session.account.emails[0]?.verificationState === "VERIFIED";
+    Boolean(session.account.ordinaryWorkspaceEntryAt || session.account.status === "PENDING_VERIFICATION");
   const canUsePlayer = ordinaryEntry && session.account.profile?.status === "ACTIVE";
   const activePlayerWorkspaceLock = canUsePlayer ? await hasActivePlayerWorkspaceLock(session.accountId) : false;
   const canUseCaptain = !activePlayerWorkspaceLock && (ordinaryEntry || isAdministrator);
@@ -135,6 +136,10 @@ async function classifySession(session: SessionWithAccount): Promise<CurrentUser
         : {}),
     },
     capabilities: { canUsePlayer, canUseCaptain, canUseCreator, canModerate, isAdministrator },
+    emailVerification: {
+      status: emailVerified ? "verified" : "unverified",
+      ...(primaryEmail?.verifiedAt ? { verifiedAt: primaryEmail.verifiedAt.toISOString() } : {}),
+    },
     workspaces,
     session: { id: session.id, expiresAt: session.expiresAt.toISOString() },
     csrfToken: session.csrfToken,

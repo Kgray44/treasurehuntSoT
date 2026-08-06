@@ -29,6 +29,10 @@ export type AuthenticatedCurrentUser = CurrentUserBase &
       avatarUrl?: string;
     };
     capabilities: CurrentUserCapabilities;
+    emailVerification: {
+      status: "verified" | "unverified";
+      verifiedAt?: string;
+    };
     workspaces: readonly HomeportWorkspace[];
     session: { id: string; expiresAt: string };
     csrfToken: string;
@@ -115,6 +119,8 @@ export function isCurrentUserContext(value: unknown): value is CurrentUserContex
         authenticated.user &&
         typeof authenticated.user.displayName === "string" &&
         authenticated.capabilities &&
+        authenticated.emailVerification &&
+        ["verified", "unverified"].includes(authenticated.emailVerification.status ?? "") &&
         authenticated.session &&
         typeof authenticated.csrfToken === "string" &&
         typeof authenticated.revision === "string",

@@ -119,6 +119,12 @@ function taskOwnedOutboxPath() {
 }
 
 function deliverSynthetic(request: DeliveryRequest) {
+  if (
+    taskOwnedSyntheticConfigured() &&
+    process.env.HOMEPORT_SYNTHETIC_EMAIL_FAILURE === "VERIFY_EMAIL" &&
+    request.purpose === "VERIFY_EMAIL"
+  )
+    throw new TransactionalEmailError("Synthetic verification delivery failed as requested.", "DELIVERY_FAILED");
   const delivery: DevelopmentDelivery = {
     purpose: request.purpose,
     email: request.email,

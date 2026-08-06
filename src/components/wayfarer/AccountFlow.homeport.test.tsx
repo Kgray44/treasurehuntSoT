@@ -33,6 +33,83 @@ describe("Homeport account lifecycle", () => {
     expect(screen.getByRole("link", { name: /Already have an account/i })).toHaveAttribute("href", "/sign-in");
   });
 
+  it("homeport.owner-correction.round3.patch-a.password-feedback is live, accessible, and quiet before confirmation typing", () => {
+    render(<AccountFlow mode="register" />);
+    expect(screen.queryByText("Passwords do not match.")).not.toBeInTheDocument();
+    expect(screen.getByRole("meter", { name: "Password strength" })).toHaveAttribute("aria-valuetext", "Too weak");
+    fireEvent.change(screen.getByLabelText("Password"), { target: { value: "harbor-quiet-42-wind" } });
+    expect(screen.getByRole("meter", { name: "Password strength" })).toHaveAttribute("aria-valuetext", "Good");
+    fireEvent.change(screen.getByLabelText("Confirm password"), { target: { value: "harbor-quiet" } });
+    expect(screen.getByText("Passwords do not match.")).toBeVisible();
+    fireEvent.change(screen.getByLabelText("Confirm password"), { target: { value: "harbor-quiet-42-wind" } });
+    expect(screen.getByText("Passwords match.")).toBeVisible();
+  });
+
+  it("homeport.owner-correction.round3.patch-a.display-conflict stays in registration with values and focus preserved", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue({
+        ok: false,
+        json: async () => ({
+          error: "That display name is already in use.",
+          conflict: "DISPLAY_NAME_CONFLICT",
+          field: "displayName",
+        }),
+      }),
+    );
+    render(<AccountFlow mode="register" />);
+    fireEvent.change(screen.getByLabelText("Display name"), { target: { value: "Mara Tide" } });
+    fireEvent.change(screen.getByLabelText("Email"), { target: { value: "new@example.test" } });
+    fireEvent.change(screen.getByLabelText("Password"), { target: { value: "harbor-quiet-42-wind" } });
+    fireEvent.change(screen.getByLabelText("Confirm password"), { target: { value: "harbor-quiet-42-wind" } });
+    fireEvent.click(screen.getByRole("button", { name: "Continue" }));
+    await waitFor(() => expect(screen.getByLabelText("Display name")).toHaveFocus());
+    expect(screen.getByText("That display name is already in use.")).toBeVisible();
+    expect(screen.getByLabelText("Email")).toHaveValue("new@example.test");
+    expect(navigation.replace).not.toHaveBeenCalled();
+  });
+
+  it("homeport.owner-correction.round3.patch-a.email-conflict hands off to prefilled sign-in", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue({
+        ok: false,
+        json: async () => ({
+          error: "An account already uses this email address. Sign in instead.",
+          conflict: "EMAIL_CONFLICT",
+          field: "email",
+          handoff: { email: "returning@example.test" },
+        }),
+      }),
+    );
+    render(<AccountFlow mode="register" query={{ returnTo: "/player/library" }} />);
+    fireEvent.change(screen.getByLabelText("Display name"), { target: { value: "Returning Sailor" } });
+    fireEvent.change(screen.getByLabelText("Email"), { target: { value: "returning@example.test" } });
+    fireEvent.change(screen.getByLabelText("Password"), { target: { value: "harbor-quiet-42-wind" } });
+    fireEvent.change(screen.getByLabelText("Confirm password"), { target: { value: "harbor-quiet-42-wind" } });
+    fireEvent.click(screen.getByRole("button", { name: "Continue" }));
+    await waitFor(() =>
+      expect(navigation.replace).toHaveBeenCalledWith(
+        "/sign-in?email=returning%40example.test&reason=account-exists&returnTo=%2Fplayer%2Flibrary",
+      ),
+    );
+  });
+
+  it("homeport.owner-correction.round3.patch-a.sign-in-prefill keeps recovery adjacent", () => {
+    render(<AccountFlow mode="sign-in" query={{ email: "returning@example.test", reason: "account-exists" }} />);
+    expect(screen.getByLabelText("Email or legacy Player name")).toHaveValue("returning@example.test");
+    expect(screen.getByText("An account already uses this email address. Sign in instead.")).toBeVisible();
+    expect(screen.getByRole("link", { name: "Forgot Password" })).toBeVisible();
+  });
+
+  it("homeport.owner-correction.round3.patch-a.delivery-failure exposes recovery without denying account creation", () => {
+    render(<AccountFlow mode="verify" query={{ delivery: "failed" }} initialCsrf="csrf" />);
+    expect(screen.getByText("Your account was created, but we could not send the verification email.")).toBeVisible();
+    expect(screen.getByRole("button", { name: "Resend code" })).toBeVisible();
+    expect(screen.getByRole("button", { name: "Change email" })).toBeVisible();
+    expect(screen.getByRole("link", { name: "sign in instead" })).toHaveAttribute("href", "/sign-in");
+  });
+
   it("homeport.owner-correction.round3.registration-verification-screen establishes only the bounded verification flow", async () => {
     vi.stubGlobal(
       "fetch",

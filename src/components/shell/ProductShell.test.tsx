@@ -28,6 +28,7 @@ function setAuthenticated() {
       canModerate: true,
       isAdministrator: false,
     },
+    emailVerification: { status: "verified" },
     csrfToken: "csrf",
   };
 }
@@ -79,6 +80,32 @@ describe("ProductShell", () => {
     fireEvent.keyDown(window, { key: "Escape" });
     await waitFor(() => expect(trigger).toHaveFocus());
     expect(trigger).toHaveAttribute("aria-expanded", "false");
+  });
+
+  it("homeport.owner-correction.round3.patch-a.unverified-session keeps ordinary shell access with nonblocking actions", async () => {
+    setAuthenticated();
+    currentUser.state.emailVerification = { status: "unverified" };
+    const fetchMock = vi.fn().mockResolvedValue({ ok: true, json: async () => ({ ok: true }) });
+    vi.stubGlobal("fetch", fetchMock);
+    render(
+      <ProductShell>
+        <main>Ordinary destination</main>
+      </ProductShell>,
+    );
+    const notice = screen.getByRole("complementary", { name: "Email verification" });
+    expect(
+      within(notice).getByText("Your account and ordinary navigation remain available.", { exact: false }),
+    ).toBeVisible();
+    fireEvent.click(within(notice).getByRole("button", { name: "Resend verification" }));
+    await waitFor(() => expect(within(notice).getByText("A new verification code was sent.")).toBeVisible());
+    expect(fetchMock).toHaveBeenCalledWith("/api/auth/email/verification/resend", {
+      method: "POST",
+      headers: { "x-csrf-token": "csrf" },
+    });
+    expect(within(notice).getByRole("link", { name: "Change email" })).toHaveAttribute(
+      "href",
+      "/verify-email?action=change",
+    );
   });
 
   it("homeport.shell.account-menu closes on an outside pointer interaction at desktop width", async () => {
