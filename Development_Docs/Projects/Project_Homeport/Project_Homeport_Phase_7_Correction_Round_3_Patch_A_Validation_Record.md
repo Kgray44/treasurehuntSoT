@@ -26,6 +26,18 @@ conflicts, concurrent conflict, transaction rollback, zero orphan state,
 provider failure, delivery retry, repeated submission, and ordinary unverified
 sign-in. Reconciliation passed DRY_RUN, COMMIT, and VERIFY on a task-owned copy.
 
+## Sounding Line focused contract registration
+
+All 20 exact Patch A contract IDs named by the governing brief are registered
+in the contract catalog, the three governed Homeport suites, the impact map,
+and the active case registry. Policy validation passes with 411 contracts, zero
+referential-integrity errors, and policy digest
+`dd9d3969cb9232ec289558e3e407e75f9b6e3c632c6e34ecc3199525ed59aded`.
+Under the existing Homeport family policy, each focused contract has 394 active
+case bindings; the exact behavior claims continue to rely on the focused
+source-bound families and browser journeys above rather than that aggregate
+binding count alone.
+
 ## Visual and temporal evidence
 
 All 13 required visual checkpoints were captured from isolated synthetic
@@ -51,5 +63,9 @@ a background-only frame.
 All mutation-bearing work used task-owned databases. The canonical database was
 not a migration, reconciliation, fixture, or browser target. Postmark remains
 `POSTMARK_BLOCKED_EXTERNAL_CONFIGURATION`; synthetic evidence is not live inbox
-proof. Publication gates, Sounding Line decisions, remote parity, final
-canonical hash, and retained runtime health are separate closure facts.
+proof. A current host audit found none of the provider selector, server token,
+verified From identity, Message Stream, five template aliases, or webhook Basic
+credentials configured. `.env.example` now documents the exact server-only
+handoff without supplying or committing secrets. Publication gates, Sounding
+Line decisions, remote parity, final canonical hash, and retained runtime health
+are separate closure facts.

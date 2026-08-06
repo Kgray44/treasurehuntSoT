@@ -17,6 +17,29 @@ runtime-only secrets and must not enter evidence.
 
 ## Focused contracts
 
+Sounding Line registers the exact Patch A contract IDs:
+
+- `homeport.auth.identifier.username`
+- `homeport.auth.identifier.email`
+- `homeport.auth.unverified-signin`
+- `homeport.auth.registration.atomic`
+- `homeport.auth.registration.username-conflict`
+- `homeport.auth.registration.email-handoff`
+- `homeport.auth.password-strength`
+- `homeport.auth.password-confirmation`
+- `homeport.auth.registration-verification`
+- `homeport.auth.postmark-delivery`
+- `homeport.auth.partial-account-repair`
+- `homeport.transition.navigation-generation`
+- `homeport.transition.delayed-loading-cancel`
+- `homeport.transition.no-late-spinner`
+- `homeport.transition.no-route-resurrection`
+- `homeport.transition.direct-crossfade`
+- `homeport.transition.auth-routes`
+- `homeport.transition.interruption`
+- `homeport.transition.back-forward`
+- `homeport.transition.reduced-motion`
+
 - Registration: new account; display-name, email, and combined conflicts;
   invalid/common/similar/mismatched passwords; provider failure; retry;
   repeated submission; transaction rollback; zero orphan email; exact row-count

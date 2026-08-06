@@ -5446,6 +5446,86 @@
     {
       "contractId": "homeport.owner-correction.round3.artifact-idempotency",
       "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.auth.identifier.username",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.auth.identifier.email",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.auth.unverified-signin",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.auth.registration.atomic",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.auth.registration.username-conflict",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.auth.registration.email-handoff",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.auth.password-strength",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.auth.password-confirmation",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.auth.registration-verification",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.auth.postmark-delivery",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.auth.partial-account-repair",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.transition.navigation-generation",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.transition.delayed-loading-cancel",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.transition.no-late-spinner",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.transition.no-route-resurrection",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.transition.direct-crossfade",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.transition.auth-routes",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.transition.interruption",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.transition.back-forward",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.transition.reduced-motion",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
     }
   ],
   "impactClasses": [

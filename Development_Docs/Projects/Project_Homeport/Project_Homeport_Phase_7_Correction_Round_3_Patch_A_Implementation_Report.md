@@ -48,6 +48,24 @@ classification remains `POSTMARK_BLOCKED_EXTERNAL_CONFIGURATION`. Task-owned
 synthetic delivery and code completion are proven; live provider acceptance and
 inbox delivery are not.
 
+The remaining owner actions are external only:
+
+1. Create or open the Voyagewright Postmark server and add the sending domain.
+2. Add Postmark's DKIM TXT record and custom Return-Path CNAME in Cloudflare;
+   keep the Return-Path CNAME DNS-only, then wait for both to verify.
+3. Create the five implementation template aliases and confirm the
+   transactional Message Stream ID.
+4. Place the server token, verified From identity, stream, aliases, and unique
+   webhook Basic credentials into the protected staging/runtime environment
+   using the server-only names documented in `.env.example`.
+5. Provide an owner-controlled inbox for one real registration send, then
+   confirm Postmark acceptance, inbox receipt, and six-digit verification in
+   the application.
+
+Official setup references: [sending through the API](https://postmarkapp.com/developer/user-guide/send-email-with-api),
+[templates](https://postmarkapp.com/developer/api/templates-api), and
+[Cloudflare DKIM/Return-Path records](https://postmarkapp.com/support/article/adding-dkim-and-return-path-records-to-cloudflare).
+
 ## Boundary
 
 This is local, synthetic, branch-only Patch A proof. It does not rewrite prior

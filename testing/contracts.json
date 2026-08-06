@@ -2738,6 +2738,146 @@
       "authority": "project-homeport",
       "owners": ["project-homeport"],
       "critical": true
+    },
+    {
+      "id": "homeport.auth.identifier.username",
+      "name": "Project Homeport Username Identifier Sign-In",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.auth.identifier.email",
+      "name": "Project Homeport Email Identifier Sign-In",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.auth.unverified-signin",
+      "name": "Project Homeport Unverified Account Ordinary Sign-In",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.auth.registration.atomic",
+      "name": "Project Homeport Atomic Registration",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.auth.registration.username-conflict",
+      "name": "Project Homeport Registration Username Conflict",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.auth.registration.email-handoff",
+      "name": "Project Homeport Registration Existing Email Handoff",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.auth.password-strength",
+      "name": "Project Homeport Password Strength Feedback",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.auth.password-confirmation",
+      "name": "Project Homeport Password Confirmation Feedback",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.auth.registration-verification",
+      "name": "Project Homeport Registration Email Verification",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.auth.postmark-delivery",
+      "name": "Project Homeport Postmark Transactional Delivery",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.auth.partial-account-repair",
+      "name": "Project Homeport Partial Account Reconciliation",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.transition.navigation-generation",
+      "name": "Project Homeport Navigation Generation Ownership",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.transition.delayed-loading-cancel",
+      "name": "Project Homeport Delayed Loading Cancellation",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.transition.no-late-spinner",
+      "name": "Project Homeport No Late Loading Spinner",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.transition.no-route-resurrection",
+      "name": "Project Homeport No Route Resurrection",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.transition.direct-crossfade",
+      "name": "Project Homeport Direct Route Crossfade",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.transition.auth-routes",
+      "name": "Project Homeport Auth Route Transition Lifecycle",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.transition.interruption",
+      "name": "Project Homeport Interrupted Navigation Final Route",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.transition.back-forward",
+      "name": "Project Homeport Back and Forward Transition Lifecycle",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
+    },
+    {
+      "id": "homeport.transition.reduced-motion",
+      "name": "Project Homeport Reduced Motion Transition Semantics",
+      "authority": "project-homeport",
+      "owners": ["project-homeport"],
+      "critical": true
     }
   ]
 }
