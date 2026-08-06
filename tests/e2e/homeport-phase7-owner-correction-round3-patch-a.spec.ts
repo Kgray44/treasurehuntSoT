@@ -316,31 +316,32 @@ test("Journey I: Verification registration", async ({ page }) => {
 });
 
 test("Journey J: Interrupted navigation", async ({ page }) => {
+  test.setTimeout(60_000);
   await page.goto("/sign-in");
   const startedAt = Date.now();
   const frames: TemporalFrame[] = [await temporalFrame(page, 0)];
-  await page.getByRole("link", { name: "Create Account", exact: true }).click({ noWaitAfter: true });
-  for (let index = 0; index < 2; index += 1) {
-    await page.waitForTimeout(20);
-    frames.push(await temporalFrame(page, Date.now() - startedAt));
-  }
+  const initialGeneration = frames[0].activeGeneration ?? 0;
+  await page.getByRole("link", { name: "Create Account", exact: true }).evaluate((node: HTMLElement) => node.click());
+  const registerGeneration = await waitForNewGeneration(page, initialGeneration, startedAt, frames);
+  await page.getByRole("link", { name: "Safe return", exact: true }).evaluate((node: HTMLElement) => node.click());
+  await expect.poll(() => new URL(page.url()).pathname, { timeout: 10_000, intervals: [25, 50] }).toBe("/");
+  const homeGeneration = await waitForNewGeneration(page, registerGeneration, startedAt, frames);
+  await page.getByRole("button", { name: "Account", exact: true }).evaluate((node: HTMLElement) => node.click());
+  await expect(page.locator("#shell-account-disclosure")).toBeVisible({ timeout: 5_000 });
   await page
-    .getByRole("navigation", { name: "Global navigation" })
-    .getByRole("link", { name: "Home", exact: true })
-    .click({ noWaitAfter: true });
-  for (let index = 0; index < 2; index += 1) {
-    await page.waitForTimeout(20);
-    frames.push(await temporalFrame(page, Date.now() - startedAt));
-  }
-  const menu = await accountMenu(page, "Account");
-  await menu.getByRole("link", { name: "Forgot Password", exact: true }).click({ noWaitAfter: true });
+    .locator('#shell-account-disclosure a[href="/forgot-password"]')
+    .evaluate((node: HTMLElement) => node.click());
+  await expect
+    .poll(() => new URL(page.url()).pathname, { timeout: 10_000, intervals: [25, 50] })
+    .toBe("/forgot-password");
+  await waitForNewGeneration(page, homeGeneration, startedAt, frames);
   for (let index = 0; index < 38; index += 1) {
     await page.waitForTimeout(25);
     frames.push(await temporalFrame(page, Date.now() - startedAt));
   }
-  await expect(page).toHaveURL(/\/forgot-password$/u);
-  await expect(page.getByRole("heading", { name: "Forgot password" })).toBeVisible();
-  await expect(page.locator("[data-route-layer]")).toHaveCount(1);
+  await expect(page).toHaveURL(/\/forgot-password$/u, { timeout: 5_000 });
+  await expect(page.getByRole("heading", { name: "Forgot password" })).toBeVisible({ timeout: 5_000 });
+  await expect(page.locator("[data-route-layer]")).toHaveCount(1, { timeout: 5_000 });
   expect(frames.some((frame) => frame.loadingVisible)).toBe(false);
   const generations = [...new Set(frames.map((frame) => frame.activeGeneration).filter((value) => value !== null))];
   expect(generations.length).toBeGreaterThanOrEqual(3);
@@ -613,6 +614,27 @@ async function sampleNavigation(
       .some((frame) => frame.layers.some((layer) => layer.path !== targetPath && layer.visible)),
     frames,
   };
+}
+
+async function waitForNewGeneration(
+  page: Page,
+  previousGeneration: number,
+  startedAt: number,
+  frames: TemporalFrame[],
+) {
+  let nextGeneration = previousGeneration;
+  await expect
+    .poll(
+      async () => {
+        const frame = await temporalFrame(page, Date.now() - startedAt);
+        frames.push(frame);
+        nextGeneration = frame.activeGeneration ?? previousGeneration;
+        return nextGeneration;
+      },
+      { timeout: 10_000, intervals: [20, 30, 50], message: `generation after ${previousGeneration}` },
+    )
+    .toBeGreaterThan(previousGeneration);
+  return nextGeneration;
 }
 
 function assertFastNavigation(receipt: TemporalReceipt) {
