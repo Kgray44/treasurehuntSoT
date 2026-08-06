@@ -74,6 +74,10 @@ test("Journey A: Avatar selection and crop", async ({ page }) => {
   await expect(page.getByText(/Image normalized and stored/u)).toBeVisible();
   await expect(page.getByLabel("Current avatar preview").locator("img")).toBeVisible();
 
+  await page.getByLabel("Handle").fill("review-empty-test");
+  await page.getByRole("button", { name: "Save Profile" }).click();
+  await expect(page.getByText("Profile saved and public preview refreshed.")).toBeVisible();
+
   await accountDestination(page, account, "Overview");
   await expect(page.locator(".harbor-identity-hero__avatar img")).toBeVisible();
   const trigger = page.getByRole("button", { name: account.displayName, exact: true });
