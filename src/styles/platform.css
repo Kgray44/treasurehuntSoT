@@ -428,6 +428,10 @@ html[data-motion-level="reduced"] .platform-relic *,
   text-transform: uppercase;
 }
 
+.auth-ledger label span {
+  color: #6b471c;
+}
+
 .auth-ledger input,
 .invitation-sheet input,
 .wizard-form input,
