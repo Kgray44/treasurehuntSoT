@@ -3,7 +3,7 @@ title: Project Homeport Design Record
 audience: product-engineering
 status: current
 canonical_for: project-homeport-design-record
-last_reviewed: 2026-08-05
+last_reviewed: 2026-08-06
 ---
 
 # Project Homeport design record
@@ -405,3 +405,26 @@ The architecture assigns 54 owner findings to `HP-OWCR3-001`-`054` and new nonco
 ## Phase 7 correction Round 3 implementation amendment
 
 The frozen 42-decision Round 3 architecture is implemented at exact browser source `581e5d3c5d4560bd101362e835c4eb0ed5a85e3f`. It retains canonical AccountSession, specialist resource authority, prior owner/history records, and the 500 ms loading contract while adding Profile imagery/crop, identity propagation, six-digit verification, provider-neutral Postmark delivery, Dark defaults, ordinary workspace entry, active-Chronicle truth, direct route crossfades, visible account-menu motion, isolated fixtures, and exact-source evidence. Delivery, Bounce, and SpamComplaint webhooks use configured HTTP Basic protection and idempotent MessageID event handling; no unsupported Postmark HMAC claim is made. The result is validated pending owner re-review, not merged, deployed, or owner accepted.
+
+<!-- HOMEPORT_OWNER_CORRECTION_ROUND3_PATCH_A:START -->
+
+## Phase 7 Correction Round 3 Patch A architecture amendment
+
+**Decision date:** 2026-08-06. **Published baseline:**
+`58f88e6ec1447d19b07213003c3499c4b4c0c884`. **Owner decision:**
+`PENDING_OWNER_DECISION`.
+
+The focused [Patch A architecture](Project_Homeport_Phase_7_Correction_Round_3_Patch_A_Architecture.md)
+adds 22 stable owner findings without rewriting the prior Round 3 ledger. It
+freezes atomic account-plus-verification creation, typed display-name and email
+conflicts, truthful post-commit delivery failure, ordinary unverified sign-in,
+non-blocking verification status, password strength/match guidance, safe
+partial-account reconciliation, and one generation-owned route transition with
+280 ms crossfade and permanent cancellation of post-readiness loading.
+
+The current host remains `POSTMARK_BLOCKED_EXTERNAL_CONFIGURATION`. This
+amendment establishes no implementation, migration result, test pass, temporal
+evidence, Sounding Line decision, publication, owner-runtime readiness, merge,
+pull request, deployment, or owner acceptance.
+
+<!-- HOMEPORT_OWNER_CORRECTION_ROUND3_PATCH_A:END -->

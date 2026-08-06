@@ -3,7 +3,7 @@ title: Project Homeport Repository Index
 audience: product-engineering
 status: current
 canonical_for: project-homeport-repository-index
-last_reviewed: 2026-08-05
+last_reviewed: 2026-08-06
 ---
 
 # Project Homeport
@@ -292,3 +292,15 @@ All 54 Round 3 findings are locally implemented and exact-source validated at `5
 - [Owner re-review package](walkthrough/phase7/correction-round3/README.md)
 - [Evidence](evidence/phase7-owner-correction-round3/README.md)
 - [Experience Images](../../../Experience_Images/README.md)
+
+## Phase 7 Correction Round 3 Patch A
+
+The owner identified a focused blocking regression after the Round 3
+publication: account registration/sign-in and route transitions prevent further
+inspection. Patch A preserves all earlier history and remains inside Correction
+Round 3. Its 22 findings and frozen architecture do not establish an
+implementation or change the `PENDING_OWNER_DECISION` boundary.
+
+- [Patch A architecture](Project_Homeport_Phase_7_Correction_Round_3_Patch_A_Architecture.md)
+- [Patch A findings ledger](Project_Homeport_Phase_7_Correction_Round_3_Patch_A_Findings.csv)
+- [Patch A test plan](Project_Homeport_Phase_7_Correction_Round_3_Patch_A_Test_Plan.md)
