@@ -138,7 +138,9 @@ test("Journey F: Dark theme restoration", async ({ page }) => {
   expect(luminance).toBeLessThan(0.2);
   await capture(page, "HP-OWCR2-EV-I-DARK-WHAT-IS-A-CHRONICLE");
   await page.goto("/community");
-  expect(await backgroundLuminance(page.locator(".community-harbor"), "--background-primary")).toBeLessThan(0.2);
+  expect(await backgroundLuminance(page.locator(".community-harbor:visible"), "--background-primary")).toBeLessThan(
+    0.2,
+  );
   await page.goto("/account");
   await expect(page.getByRole("heading", { name: "Overview" })).toBeVisible();
   await expect(page.getByRole("button", { name: account.displayName })).toBeVisible();
@@ -160,7 +162,9 @@ test("Journey G: Light Mode", async ({ context, page }) => {
   await page.goto("/community");
   await expect(page.locator("html")).toHaveAttribute("data-voyage-theme", "light");
   await expect(page.getByRole("searchbox", { name: "Search public Community Harbor" })).toBeVisible();
-  expect(await backgroundLuminance(page.locator(".community-harbor"), "--background-primary")).toBeGreaterThan(0.65);
+  expect(await backgroundLuminance(page.locator(".community-harbor:visible"), "--background-primary")).toBeGreaterThan(
+    0.65,
+  );
   await capture(page, "HP-OWCR2-EV-K-LIGHT-COMMUNITY");
   await accountDestination(page, account, "Personal Harbor");
   const secondary = page.locator(".personal-harbor__hero p:not(.personal-harbor__eyebrow)").first();
@@ -479,7 +483,7 @@ test("Journey R: Synthetic email walkthrough", async ({ page }) => {
   await page.getByLabel("Confirm password").fill(handoff.password);
   await page.getByRole("button", { name: "Continue" }).click();
   const verification = await waitForDelivery("VERIFY_EMAIL", email);
-  await page.getByLabel("Code").fill(verification.token!);
+  await page.locator("main:visible").last().getByLabel("Code").fill(verification.token!);
   await page.getByRole("button", { name: "Continue" }).click();
   await expect(page.getByRole("button", { name: "Round 2 Email Walkthrough", exact: true })).toBeVisible();
   await page.goto("/account/personal-information");
