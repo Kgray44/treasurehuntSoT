@@ -46,21 +46,35 @@ import { decideCapability } from "./current-user";
 import { resolveCurrentUser } from "./current-user.server";
 
 function session(overrides: Record<string, unknown> = {}) {
+  const baseAccount = {
+    id: "account-1",
+    status: "ACTIVE",
+    claimedAt: new Date("2026-08-04T00:00:00.000Z"),
+    ordinaryWorkspaceEntryAt: new Date("2026-08-04T00:00:00.000Z"),
+    updatedAt: new Date("2026-08-04T00:00:00.000Z"),
+    lockedAt: null,
+    suspendedAt: null,
+    emails: [{ verificationState: "VERIFIED", verifiedAt: new Date("2026-08-04T00:00:00.000Z") }],
+    profile: {
+      id: "profile-1",
+      displayName: "Mara Tide",
+      handle: "mara",
+      status: "ACTIVE",
+      updatedAt: new Date("2026-08-04T00:00:00.000Z"),
+      avatarMedia: null,
+    },
+    roles: [],
+  };
+  const accountOverride = (overrides.account ?? {}) as Record<string, unknown>;
   return {
     id: "session-1",
     accountId: "account-1",
     csrfToken: "csrf-safe-client-value",
     expiresAt: new Date(Date.now() + 60_000),
     revokedAt: null,
-    account: {
-      id: "account-1",
-      status: "ACTIVE",
-      lockedAt: null,
-      suspendedAt: null,
-      profile: { id: "profile-1", displayName: "Mara Tide", handle: "mara", status: "ACTIVE" },
-      roles: [],
-    },
+    sessionType: "ORDINARY",
     ...overrides,
+    account: { ...baseAccount, ...accountOverride },
   };
 }
 
@@ -149,11 +163,11 @@ describe("Project Homeport current-user authority", () => {
     );
   });
 
-  it("homeport.capability.staff-agreement derives staff permission from active role assignments", async () => {
+  it("homeport.owner-correction.round3.workspace-entry derives both ordinary workspaces without redundant roles", async () => {
     mocks.findSession.mockResolvedValue(session({ account: { ...session().account, roles: [{ role: "CAPTAIN" }] } }));
     const context = await resolveCurrentUser();
     expect(context.status === "authenticated" && decideCapability(context, "captain").status).toBe("allowed");
-    expect(context.status === "authenticated" && decideCapability(context, "creator").status).toBe("permission-denied");
+    expect(context.status === "authenticated" && decideCapability(context, "creator").status).toBe("allowed");
   });
 
   it("homeport.workspace.same-chronicle-lock denies Captain and Creator context while Player participation is active", async () => {

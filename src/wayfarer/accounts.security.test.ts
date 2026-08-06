@@ -10,6 +10,7 @@ const mocks = vi.hoisted(() => ({
   tokenUpdateMany: vi.fn(),
   tokenCreate: vi.fn(),
   tokenUpdate: vi.fn(),
+  tokenCount: vi.fn(),
   emailFindUnique: vi.fn(),
   emailFindFirst: vi.fn(),
   emailUpdate: vi.fn(),
@@ -20,12 +21,15 @@ const mocks = vi.hoisted(() => ({
   credentialUpsert: vi.fn(),
   securityCreate: vi.fn(),
   sessionCreate: vi.fn(),
+  deliveryCreate: vi.fn(),
+  deliveryUpdate: vi.fn(),
 }));
 
 vi.mock("bcryptjs", () => ({ compare: mocks.compare, hash: mocks.hashPassword }));
 vi.mock("@/lib/security", () => ({
   hashToken: (value: string) => `hashed:${value}`,
   makeToken: (bytes: number) => `raw-${bytes}-byte-secret-token`,
+  safeEqual: (left: string, right: string) => left === right,
 }));
 vi.mock("@/lib/db", () => {
   const db = {
@@ -34,6 +38,7 @@ vi.mock("@/lib/db", () => {
       updateMany: mocks.tokenUpdateMany,
       create: mocks.tokenCreate,
       update: mocks.tokenUpdate,
+      count: mocks.tokenCount,
     },
     accountEmail: {
       findUnique: mocks.emailFindUnique,
@@ -45,6 +50,7 @@ vi.mock("@/lib/db", () => {
     accountSession: { create: mocks.sessionCreate, updateMany: mocks.sessionUpdate },
     accountCredential: { upsert: mocks.credentialUpsert },
     securityEvent: { create: mocks.securityCreate },
+    transactionalEmailDelivery: { create: mocks.deliveryCreate, update: mocks.deliveryUpdate },
     $transaction: vi.fn(async (value: unknown) => {
       if (Array.isArray(value)) return Promise.all(value);
       return (value as (transaction: unknown) => unknown)(db);
@@ -55,6 +61,7 @@ vi.mock("@/lib/db", () => {
 
 import {
   confirmEmailChange,
+  changePendingVerificationEmail,
   requestEmailChange,
   requestPasswordReset,
   resetPassword,
@@ -72,6 +79,7 @@ describe("Project Homeport email identity security", () => {
     mocks.tokenUpdateMany.mockResolvedValue({ count: 0 });
     mocks.tokenCreate.mockResolvedValue({ id: "token-1" });
     mocks.tokenUpdate.mockResolvedValue({ id: "token-1" });
+    mocks.tokenCount.mockResolvedValue(0);
     mocks.emailUpdate.mockResolvedValue({ id: "email-1" });
     mocks.emailUpdateMany.mockResolvedValue({ count: 1 });
     mocks.userUpdate.mockResolvedValue({ id: "account-1" });
@@ -79,6 +87,8 @@ describe("Project Homeport email identity security", () => {
     mocks.credentialUpsert.mockResolvedValue({ id: "credential-1" });
     mocks.securityCreate.mockResolvedValue({ id: "event-1" });
     mocks.sessionCreate.mockResolvedValue({ id: "session-new" });
+    mocks.deliveryCreate.mockResolvedValue({ id: "delivery-1" });
+    mocks.deliveryUpdate.mockResolvedValue({ id: "delivery-1", status: "SUBMITTED" });
     delete process.env.HOMEPORT_PHASE7_TASK_ROOT;
     delete process.env.HOMEPORT_SYNTHETIC_OUTBOX_PATH;
     delete process.env.HOMEPORT_SYNTHETIC_EMAIL_ADAPTER;
@@ -149,28 +159,84 @@ describe("Project Homeport email identity security", () => {
     ]);
 
     process.env.HOMEPORT_SYNTHETIC_OUTBOX_PATH = join(taskRoot, "..", "escaped-email.jsonl");
-    await expect(requestPasswordReset("Owner@Example.test")).rejects.toMatchObject({ code: "UNAVAILABLE" });
+    await expect(requestPasswordReset("Owner@Example.test")).rejects.toMatchObject({ code: "INVALID_CONFIGURATION" });
   });
 
   it("homeport.owner-correction.round1.token-expiry-and-consumption constrains verification lookup and consumes the accepted challenge", async () => {
-    mocks.tokenFind.mockResolvedValue({ id: "token-1", accountId: "account-1", account: { emails: [] } });
-    await verifyAccountEmail("presented-verification-token");
+    mocks.tokenFind.mockResolvedValue({
+      id: "token-1",
+      accountId: "account-1",
+      tokenHash: "hashed:account-1:owner@example.test:VERIFY_EMAIL:123456",
+      attemptCount: 0,
+      maxAttempts: 5,
+      expiresAt: new Date(Date.now() + 60_000),
+      account: { emails: [{ isPrimary: true, normalizedEmail: "owner@example.test" }] },
+    });
+    await verifyAccountEmail("account-1", "123456");
     expect(mocks.tokenFind).toHaveBeenCalledWith({
       where: {
+        accountId: "account-1",
         purpose: "VERIFY_EMAIL",
-        tokenHash: "hashed:presented-verification-token",
         consumedAt: null,
-        expiresAt: { gt: expect.any(Date) },
       },
       include: { account: { include: { emails: true } } },
+      orderBy: { createdAt: "desc" },
     });
     expect(mocks.tokenUpdate).toHaveBeenCalledWith({
       where: { id: "token-1" },
-      data: { consumedAt: expect.any(Date) },
+      data: { consumedAt: expect.any(Date), lastAttemptAt: expect.any(Date) },
     });
     expect(mocks.securityCreate).toHaveBeenCalledWith({
       data: expect.objectContaining({ accountId: "account-1", eventType: "EMAIL_VERIFIED" }),
     });
+  });
+
+  it("homeport.owner-correction.round3.verification-code-security counts an incorrect attempt without activating the account", async () => {
+    mocks.tokenFind.mockResolvedValue({
+      id: "token-1",
+      accountId: "account-1",
+      tokenHash: "hashed:account-1:owner@example.test:VERIFY_EMAIL:654321",
+      attemptCount: 1,
+      maxAttempts: 5,
+      expiresAt: new Date(Date.now() + 60_000),
+      account: { emails: [{ isPrimary: true, normalizedEmail: "owner@example.test" }] },
+    });
+    await expect(verifyAccountEmail("account-1", "123456")).rejects.toThrow("incorrect");
+    expect(mocks.tokenUpdate).toHaveBeenCalledWith({
+      where: { id: "token-1" },
+      data: { attemptCount: { increment: 1 }, lastAttemptAt: expect.any(Date) },
+    });
+    expect(mocks.userUpdate).not.toHaveBeenCalled();
+    expect(mocks.securityCreate).not.toHaveBeenCalled();
+  });
+
+  it("homeport.owner-correction.round3.change-registration-email replaces the reserved address and challenge", async () => {
+    mocks.userFind.mockResolvedValue({
+      id: "account-1",
+      status: "PENDING_VERIFICATION",
+      emails: [{ id: "email-1", normalizedEmail: "old@example.test" }],
+    });
+    mocks.emailFindUnique.mockResolvedValue(null);
+    await expect(changePendingVerificationEmail("account-1", "Next@Example.test")).resolves.toEqual({
+      maskedEmail: "N•••@Example.test",
+    });
+    expect(mocks.emailUpdate).toHaveBeenCalledWith({
+      where: { id: "email-1" },
+      data: {
+        normalizedEmail: "next@example.test",
+        displayEmail: "Next@Example.test",
+        verificationState: "UNVERIFIED",
+        verifiedAt: null,
+      },
+    });
+    expect(mocks.tokenCreate).toHaveBeenCalledWith({
+      data: expect.objectContaining({
+        accountId: "account-1",
+        purpose: "VERIFY_EMAIL",
+        tokenHash: expect.stringMatching(/^hashed:account-1:next@example\.test:VERIFY_EMAIL:\d{6}$/u),
+      }),
+    });
+    expect(takeDevelopmentDelivery("VERIFY_EMAIL", "next@example.test")?.token).toMatch(/^\d{6}$/u);
   });
 
   it("homeport.owner-correction.round1.email-change requires reauthentication and normalized uniqueness", async () => {

@@ -26,6 +26,7 @@ export type AuthenticatedCurrentUser = CurrentUserBase &
       displayName: string;
       initials: string;
       handle?: string;
+      avatarUrl?: string;
     };
     capabilities: CurrentUserCapabilities;
     workspaces: readonly HomeportWorkspace[];

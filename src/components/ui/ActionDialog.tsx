@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useId, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 
 export type ActionDialogField = Readonly<{
   id: string;
@@ -58,16 +59,20 @@ export function useActionDialog() {
     });
   }, []);
 
-  const dialog = state ? (
-    <ActionDialog
-      state={state}
-      onChange={(id, value) =>
-        setState((current) => (current ? { ...current, values: { ...current.values, [id]: value } } : current))
-      }
-      onCancel={() => finish(null)}
-      onConfirm={() => finish({ ...state.values })}
-    />
-  ) : null;
+  const dialog =
+    state && typeof document !== "undefined"
+      ? createPortal(
+          <ActionDialog
+            state={state}
+            onChange={(id, value) =>
+              setState((current) => (current ? { ...current, values: { ...current.values, [id]: value } } : current))
+            }
+            onCancel={() => finish(null)}
+            onConfirm={() => finish({ ...state.values })}
+          />,
+          document.body,
+        )
+      : null;
 
   return { requestAction, dialog };
 }

@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { AccountError, registerAccount } from "@/wayfarer/accounts";
+import { AccountError, maskEmailAddress, registerAccount } from "@/wayfarer/accounts";
 import { safeReturnTo } from "@/homeport/return-to";
 import { consumeRateLimit, rateLimitHeaders } from "@/lib/rate-limit";
 import { hashToken } from "@/lib/security";
@@ -36,15 +36,23 @@ export async function POST(request: Request) {
     return NextResponse.json(
       {
         ok: true,
+        verificationRequired: true,
         csrfToken: result.session.csrfToken,
         player: { id: result.account.profile.id, displayName: result.account.profile.displayName },
-        next: safeReturnTo(returnTo, "/passport"),
+        maskedEmail: maskEmailAddress(accountInput.email),
+        next: `/verify-email${safeReturnTo(returnTo, "") ? `?returnTo=${encodeURIComponent(safeReturnTo(returnTo, ""))}` : ""}`,
       },
       { status: 201 },
     );
   } catch (cause) {
     const error =
       cause instanceof AccountError ? cause : new AccountError("Account registration is unavailable.", "UNAVAILABLE");
-    return NextResponse.json({ error: error.message }, { status: error.code === "CONFLICT" ? 409 : 400 });
+    return NextResponse.json(
+      {
+        error: error.message,
+        ...(error.code === "UNAVAILABLE" ? { registrationState: "PROVIDER_UNAVAILABLE" } : {}),
+      },
+      { status: error.code === "CONFLICT" ? 409 : error.code === "UNAVAILABLE" ? 503 : 400 },
+    );
   }
 }

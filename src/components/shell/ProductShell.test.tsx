@@ -39,6 +39,7 @@ describe("ProductShell", () => {
     currentUser.state = { status: "anonymous", authenticated: false };
     currentUser.refresh.mockReset();
     document.body.style.overflow = "";
+    document.body.style.zoom = "";
     delete document.body.dataset.shellOverlay;
     vi.unstubAllGlobals();
   });
@@ -142,6 +143,23 @@ describe("ProductShell", () => {
     expect(within(disclosure).getByRole("link", { name: "Moderation" })).toBeInTheDocument();
     expect(within(disclosure).getByRole("button", { name: "Sign out" })).toBeInTheDocument();
     expect(disclosure.textContent).not.toMatch(/@.*\.com|email/i);
+  });
+
+  it("homeport.shell.account-menu remains viewport-bounded under effective 200 percent zoom", async () => {
+    navigation.pathname = "/player/library";
+    setAuthenticated();
+    document.body.style.zoom = "2";
+    vi.stubGlobal("innerHeight", 900);
+    render(
+      <ProductShell>
+        <main>Player library</main>
+      </ProductShell>,
+    );
+
+    fireEvent.click(screen.getByRole("button", { name: "Mara Tide" }));
+    const disclosure = screen.getByLabelText("Account navigation");
+    await waitFor(() => expect(disclosure.style.maxHeight).toBe("442px"));
+    expect(disclosure).toHaveClass("shell-account-disclosure");
   });
 
   it("homeport.shell.account-loading reserves truthful account geometry without anonymous actions", () => {

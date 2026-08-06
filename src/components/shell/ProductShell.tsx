@@ -9,6 +9,7 @@ import { platformMotionEasing, resolvePlatformMotionToken } from "@/animation/pl
 import { RouteMotionBoundary } from "@/animation/platform/RouteMotionBoundary";
 import { SignOutButton } from "@/components/auth/SignOutButton";
 import { useCurrentUser } from "@/components/auth/CurrentUserProvider";
+import { ResilientImage } from "@/components/ui/ResilientImage";
 import { canonicalTerms } from "@/language/canonical-terms";
 import {
   classifyRoute,
@@ -106,7 +107,6 @@ export function ProductShell({ children }: { children: React.ReactNode }) {
   const navigationDrawerRef = useRef<HTMLDivElement>(null);
   const accountDisclosureRef = useRef<HTMLDivElement>(null);
   const mainContentRef = useRef<HTMLDivElement>(null);
-  const previousPathnameRef = useRef(pathname);
   const accountHeadingPrefix = useId();
   const compact = route.shellMode === "COMPACT" || route.shellMode === "IMMERSIVE";
   const ordinaryNavigation = ["GATEWAY_STANDARD", "PUBLIC_STANDARD", "WORKSPACE_STANDARD"].includes(route.shellMode);
@@ -140,18 +140,10 @@ export function ProductShell({ children }: { children: React.ReactNode }) {
     if (restoreFocus) queueMicrotask(() => accountButtonRef.current?.focus());
   }, []);
 
-  useLayoutEffect(() => {
-    if (previousPathnameRef.current === pathname) return;
-    previousPathnameRef.current = pathname;
+  useEffect(() => {
+    // A browser history or non-link route change must close any modal shell navigation before focus handoff.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     closeAll();
-    const frame = window.requestAnimationFrame(() => {
-      const destinationHeading = mainContentRef.current?.querySelector<HTMLElement>("h1");
-      if (destinationHeading) {
-        destinationHeading.tabIndex = -1;
-        destinationHeading.focus();
-      } else mainContentRef.current?.focus();
-    });
-    return () => window.cancelAnimationFrame(frame);
   }, [closeAll, pathname]);
 
   useEffect(() => {
@@ -226,6 +218,25 @@ export function ProductShell({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     if (accountOpen)
       queueMicrotask(() => accountDisclosureRef.current?.querySelector<HTMLElement>("a, button")?.focus());
+  }, [accountOpen]);
+
+  useLayoutEffect(() => {
+    if (!accountOpen) return;
+    const panel = accountDisclosureRef.current;
+    if (!panel) return;
+    const fitPanelToViewport = () => {
+      const viewportHeight = window.visualViewport?.height ?? window.innerHeight;
+      const bodyZoom = Number.parseFloat(document.body.style.zoom || getComputedStyle(document.body).zoom) || 1;
+      const availableRenderedHeight = Math.max(160, viewportHeight - panel.getBoundingClientRect().top - 16);
+      panel.style.maxHeight = `${availableRenderedHeight / bodyZoom}px`;
+    };
+    fitPanelToViewport();
+    window.addEventListener("resize", fitPanelToViewport);
+    window.visualViewport?.addEventListener("resize", fitPanelToViewport);
+    return () => {
+      window.removeEventListener("resize", fitPanelToViewport);
+      window.visualViewport?.removeEventListener("resize", fitPanelToViewport);
+    };
   }, [accountOpen]);
 
   const profileLabel =
@@ -327,7 +338,16 @@ export function ProductShell({ children }: { children: React.ReactNode }) {
               }}
             >
               <span className="shell-avatar" aria-hidden="true">
-                {profileInitials}
+                {currentUser.status === "authenticated" && currentUser.user.avatarUrl ? (
+                  <ResilientImage
+                    src={currentUser.user.avatarUrl}
+                    alt=""
+                    fallbackLabel="Profile avatar unavailable"
+                    fallback={profileInitials}
+                  />
+                ) : (
+                  profileInitials
+                )}
               </span>
               <span className="shell-profile-name">{profileLabel}</span>
               <span className="shell-profile-caret" aria-hidden="true">
@@ -344,15 +364,38 @@ export function ProductShell({ children }: { children: React.ReactNode }) {
                   aria-modal="true"
                   aria-label="Account navigation"
                   data-account-menu-motion={mode === "reduced" ? "reduced" : "visible"}
-                  initial={mode === "reduced" ? false : { opacity: 0, y: -9, scale: 0.975 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                  exit={mode === "reduced" ? { opacity: 0 } : { opacity: 0, y: -7, scale: 0.98 }}
-                  transition={{ duration: mode === "reduced" ? 0.01 : 0.19, ease: platformMotionEasing("micro") }}
+                  style={{ transformOrigin: "top right" }}
+                  initial={
+                    mode === "reduced" ? false : { opacity: 0, y: -18, scale: 0.94, rotateX: -7, filter: "blur(3px)" }
+                  }
+                  animate={{ opacity: 1, y: 0, scale: 1, rotateX: 0, filter: "blur(0px)" }}
+                  exit={
+                    mode === "reduced"
+                      ? { opacity: 0 }
+                      : {
+                          opacity: 0,
+                          y: -14,
+                          scale: 0.95,
+                          rotateX: -5,
+                          filter: "blur(2px)",
+                          transition: { duration: 0.17, ease: platformMotionEasing("micro") },
+                        }
+                  }
+                  transition={{ duration: mode === "reduced" ? 0.01 : 0.24, ease: platformMotionEasing("micro") }}
                 >
                   {currentUser.status === "authenticated" ? (
                     <div className="account-identity-summary">
                       <span className="shell-avatar" aria-hidden="true">
-                        {currentUser.user.initials}
+                        {currentUser.user.avatarUrl ? (
+                          <ResilientImage
+                            src={currentUser.user.avatarUrl}
+                            alt=""
+                            fallbackLabel="Profile avatar unavailable"
+                            fallback={currentUser.user.initials}
+                          />
+                        ) : (
+                          currentUser.user.initials
+                        )}
                       </span>
                       <p>
                         <b>{currentUser.user.displayName}</b>

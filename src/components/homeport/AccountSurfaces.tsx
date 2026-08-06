@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import { useCurrentUser } from "@/components/auth/CurrentUserProvider";
 import { usePersonalHarbor } from "@/components/homeport/PersonalHarborLayout";
+import { CroppedProfileImage, ProfileCropEditor, type CropValue } from "@/components/homeport/ProfileCropEditor";
 import {
   ErrorState as SharedErrorState,
   LoadingState as SharedLoadingState,
@@ -85,8 +86,13 @@ type OverviewDto = {
   profile: {
     displayName: string;
     handle: string | null;
-    completion: { completed: number; total: number; percent: number };
+    biography: string | null;
+    defaultVisibility: string;
+    avatarUrl: string | null;
+    bannerUrl: string | null;
+    setupPrompt: { title: string; detail: string; href: string } | null;
   };
+  workspaces: Array<{ id: string; label: string; state: string }>;
   counts: Record<"linkedIdentities" | "activeSessions" | "history" | "memories" | "artifacts" | "saved", number>;
   destinations: Array<{ sectionId: string; label: string; href: string; group: string }>;
 };
@@ -95,27 +101,70 @@ export function AccountOverview() {
   const { state, reload } = useResource<OverviewDto>("/api/account/overview");
   if (state.status === "loading") return <LoadingState label="Preparing your Personal Harbor" />;
   if (state.status === "error") return <ErrorState message={state.message} retry={reload} />;
-  const { profile, counts, destinations } = state.value;
+  const { profile, counts, destinations, workspaces } = state.value;
   return (
     <div className="harbor-stack">
-      <section className="harbor-identity-card">
-        <div>
-          <p className="personal-harbor__eyebrow">Welcome back</p>
-          <h2>{profile.displayName}</h2>
-          <p>
-            {profile.handle ? `@${profile.handle}` : "Choose a public handle when you are ready to share your Profile."}
-          </p>
+      <section className="harbor-identity-hero" aria-labelledby="profile-overview-identity">
+        <div className="harbor-identity-hero__banner">
+          {profile.bannerUrl ? (
+            <ResilientImage src={profile.bannerUrl} alt="" fallbackLabel="Profile banner unavailable" />
+          ) : (
+            <span aria-hidden="true" />
+          )}
         </div>
-        <div className="harbor-completion" aria-label={`Profile ${profile.completion.percent}% complete`}>
-          <strong>{profile.completion.percent}%</strong>
-          <span>
-            {profile.completion.completed} of {profile.completion.total} profile details ready
-          </span>
-          <progress max={profile.completion.total} value={profile.completion.completed}>
-            {profile.completion.percent}%
-          </progress>
+        <div className="harbor-identity-hero__body">
+          <div className="harbor-identity-hero__avatar">
+            {profile.avatarUrl ? (
+              <ResilientImage src={profile.avatarUrl} alt="" fallbackLabel="Profile avatar unavailable" />
+            ) : (
+              <b aria-hidden="true">{profile.displayName.slice(0, 1).toUpperCase()}</b>
+            )}
+          </div>
+          <div className="harbor-identity-hero__copy">
+            <p className="personal-harbor__eyebrow">Profile Overview</p>
+            <h2 id="profile-overview-identity">{profile.displayName}</h2>
+            <p className="harbor-identity-hero__handle">
+              {profile.handle ? `@${profile.handle}` : "Private handle not configured"}
+            </p>
+            {profile.biography ? <p>{profile.biography}</p> : null}
+            <p className="harbor-field-hint">Default visibility: {profile.defaultVisibility.replaceAll("_", " ")}</p>
+          </div>
+          <ul className="harbor-identity-hero__workspaces" aria-label="Workspace entry">
+            {workspaces.map((workspace) => (
+              <li key={workspace.id} data-state={workspace.state}>
+                {workspace.label}
+              </li>
+            ))}
+          </ul>
+          <nav className="harbor-identity-hero__actions" aria-label="Profile actions">
+            <Link className="button button--primary" href="/account/profile">
+              Edit Public Profile
+            </Link>
+            {profile.handle ? (
+              <Link className="button" href={`/profile/${encodeURIComponent(profile.handle)}`}>
+                View Public Profile
+              </Link>
+            ) : null}
+            <Link className="button" href="/account/personal-information">
+              Personal Information
+            </Link>
+            <Link className="button" href="/passport">
+              Chronicle Passport
+            </Link>
+          </nav>
         </div>
       </section>
+      {profile.setupPrompt ? (
+        <aside className="harbor-setup-prompt">
+          <div>
+            <strong>{profile.setupPrompt.title}</strong>
+            <p>{profile.setupPrompt.detail}</p>
+          </div>
+          <Link className="button button--quiet" href={profile.setupPrompt.href}>
+            Set handle
+          </Link>
+        </aside>
+      ) : null}
       <section aria-labelledby="harbor-at-a-glance">
         <h2 id="harbor-at-a-glance">At a glance</h2>
         <div className="harbor-stat-grid">
@@ -159,8 +208,20 @@ type ProfileDto = {
   biography: string | null;
   defaultVisibility: string;
   revision: string;
-  avatar: { id: string; url: string; altText: string | null; processingState: "READY" } | null;
-  banner: { id: string; url: string; altText: string | null; processingState: "READY" } | null;
+  avatar: {
+    id: string;
+    url: string;
+    altText: string | null;
+    processingState: "READY";
+    crop: CropValue;
+  } | null;
+  banner: {
+    id: string;
+    url: string;
+    altText: string | null;
+    processingState: "READY";
+    crop: CropValue;
+  } | null;
 };
 
 type PublicPreview = {
@@ -180,6 +241,16 @@ export function ProfileEditor({ returnTo }: { returnTo?: string } = {}) {
   const { invalidate } = useCurrentUser();
   const [draft, setDraft] = useState<ProfileDto | null>(null);
   const [preview, setPreview] = useState<LoadState<PublicPreview> | null>(null);
+  const [selection, setSelection] = useState<{
+    kind: "AVATAR" | "BANNER";
+    file: File;
+    previewUrl: string;
+    crop: CropValue;
+    expectedMediaId: string | null;
+    confirmed: boolean;
+  } | null>(null);
+  const avatarInputRef = useRef<HTMLInputElement>(null);
+  const bannerInputRef = useRef<HTMLInputElement>(null);
   const [mutation, setMutation] = useState<{ kind: "idle" | "saving" | "saved" | "error" | "stale"; message?: string }>(
     { kind: "idle" },
   );
@@ -190,6 +261,12 @@ export function ProfileEditor({ returnTo }: { returnTo?: string } = {}) {
     if (resource.state.status === "ready") setDraft(resource.state.value);
   }, [resource.state]);
   useEffect(() => () => setDirty(false), [setDirty]);
+  useEffect(() => {
+    const url = selection?.previewUrl;
+    return () => {
+      if (url) URL.revokeObjectURL(url);
+    };
+  }, [selection?.previewUrl]);
 
   const loadPreview = async (profile: ProfileDto) => {
     if (!profile.handle) return setPreview(null);
@@ -247,8 +324,51 @@ export function ProfileEditor({ returnTo }: { returnTo?: string } = {}) {
       setMutation({ kind: message.includes("another window") ? "stale" : "error", message });
     }
   };
-  const upload = async (kind: "AVATAR" | "BANNER", file: File | undefined) => {
+  const chooseFile = (kind: "AVATAR" | "BANNER", file: File | undefined) => {
     if (!file) return;
+    if (!["image/png", "image/jpeg", "image/webp"].includes(file.type) || file.size > 8_000_000) {
+      setMutation({ kind: "error", message: "Choose a PNG, JPEG, or WebP image no larger than 8 MB." });
+      return;
+    }
+    setMutation({ kind: "idle" });
+    setSelection({
+      kind,
+      file,
+      previewUrl: URL.createObjectURL(file),
+      crop: { centerX: 0.5, centerY: 0.5, scale: 1, rotation: 0 },
+      expectedMediaId: kind === "AVATAR" ? (draft.avatar?.id ?? null) : (draft.banner?.id ?? null),
+      confirmed: false,
+    });
+  };
+  const adjustExisting = async (kind: "AVATAR" | "BANNER", media: NonNullable<ProfileDto["avatar"]>) => {
+    setMutation({ kind: "saving", message: "Loading the private original for crop adjustment…" });
+    try {
+      const response = await fetch(`/api/passport/media/original?id=${encodeURIComponent(media.id)}`, {
+        cache: "no-store",
+      });
+      if (!response.ok) throw new Error("The private original could not be loaded.");
+      const blob = await response.blob();
+      const extension = blob.type === "image/png" ? "png" : blob.type === "image/webp" ? "webp" : "jpg";
+      const file = new File([blob], `profile-${kind.toLocaleLowerCase("en-US")}.${extension}`, { type: blob.type });
+      setSelection({
+        kind,
+        file,
+        previewUrl: URL.createObjectURL(blob),
+        crop: media.crop,
+        expectedMediaId: media.id,
+        confirmed: false,
+      });
+      setMutation({ kind: "idle" });
+    } catch (cause) {
+      setMutation({
+        kind: "error",
+        message: cause instanceof Error ? cause.message : "The saved crop could not be adjusted.",
+      });
+    }
+  };
+  const upload = async () => {
+    if (!selection) return;
+    const { kind, file, crop, expectedMediaId } = selection;
     setMutation({ kind: "saving", message: `Processing ${kind === "AVATAR" ? "avatar" : "banner"}…` });
     const dataUrl = await new Promise<string>((resolve, reject) => {
       const reader = new FileReader();
@@ -261,11 +381,18 @@ export function ProfileEditor({ returnTo }: { returnTo?: string } = {}) {
         await fetch("/api/passport/media", {
           method: "POST",
           headers: { "content-type": "application/json", "x-csrf-token": csrfToken },
-          body: JSON.stringify({ kind, dataUrl, altText: kind === "AVATAR" ? "Profile avatar" : "Profile banner" }),
+          body: JSON.stringify({
+            kind,
+            dataUrl,
+            crop,
+            expectedMediaId,
+            altText: kind === "AVATAR" ? "Profile avatar" : "Profile banner",
+          }),
         }),
       );
       setDirty(false);
       setMutation({ kind: "saved", message: "Image normalized and stored. The public projection has been refreshed." });
+      setSelection(null);
       await invalidate();
       resource.reload();
     } catch (cause) {
@@ -281,7 +408,7 @@ export function ProfileEditor({ returnTo }: { returnTo?: string } = {}) {
         destructive: true,
       }))
     )
-      return;
+      return false;
     setMutation({ kind: "saving", message: `Removing ${label}…` });
     try {
       await responseBody(
@@ -294,8 +421,10 @@ export function ProfileEditor({ returnTo }: { returnTo?: string } = {}) {
       setMutation({ kind: "saved", message: `${label[0].toUpperCase()}${label.slice(1)} removed.` });
       await invalidate();
       resource.reload();
+      return true;
     } catch (cause) {
       setMutation({ kind: "error", message: cause instanceof Error ? cause.message : "Image removal failed." });
+      return false;
     }
   };
 
@@ -357,26 +486,74 @@ export function ProfileEditor({ returnTo }: { returnTo?: string } = {}) {
                   {draft.avatar ? "A stored avatar is ready. Choose a file to replace it." : "No avatar is stored yet."}
                 </span>
               </div>
+              <div
+                className="harbor-media-inline-preview harbor-media-inline-preview--avatar"
+                aria-label="Current avatar preview"
+              >
+                {selection?.kind === "AVATAR" ? (
+                  <CroppedProfileImage
+                    kind="AVATAR"
+                    previewUrl={selection.previewUrl}
+                    crop={selection.crop}
+                    alt="Pending avatar crop preview"
+                  />
+                ) : draft.avatar ? (
+                  <ResilientImage src={draft.avatar.url} alt="" fallbackLabel="Avatar unavailable" />
+                ) : (
+                  <b aria-hidden="true">{draft.displayName.slice(0, 1).toUpperCase()}</b>
+                )}
+              </div>
               <input
+                ref={avatarInputRef}
                 id="profile-avatar-file"
                 className="harbor-file-input"
                 type="file"
                 accept="image/png,image/jpeg,image/webp"
                 aria-labelledby="profile-avatar-label"
-                onChange={(event) => void upload("AVATAR", event.target.files?.[0])}
+                onClick={(event) => {
+                  event.currentTarget.value = "";
+                }}
+                onChange={(event) => chooseFile("AVATAR", event.target.files?.[0])}
               />
               <label className="harbor-media-upload__trigger" htmlFor="profile-avatar-file">
                 Choose avatar image
               </label>
+              <small>{selection?.kind === "AVATAR" ? "PENDING_LOCAL" : draft.avatar ? "READY" : "No avatar"}</small>
             </div>
+            {selection?.kind === "AVATAR" && selection.confirmed ? (
+              <div className="harbor-media-field-actions" aria-label="Pending avatar actions">
+                <button
+                  type="button"
+                  className="button button--quiet"
+                  onClick={() => setSelection((current) => (current ? { ...current, confirmed: false } : current))}
+                >
+                  Adjust pending crop
+                </button>
+                <button type="button" className="button button--primary" onClick={() => void upload()}>
+                  Save avatar image
+                </button>
+                <button type="button" className="button button--quiet" onClick={() => setSelection(null)}>
+                  Discard selection
+                </button>
+              </div>
+            ) : null}
             {draft.avatar && (
-              <button
-                type="button"
-                className="button button--quiet"
-                onClick={() => void remove(draft.avatar!, "avatar")}
-              >
-                Remove avatar
-              </button>
+              <div className="harbor-media-field-actions">
+                <button
+                  type="button"
+                  className="button button--quiet"
+                  onClick={() => void adjustExisting("AVATAR", draft.avatar!)}
+                >
+                  Adjust avatar crop
+                </button>
+                <button
+                  type="button"
+                  className="button button--quiet"
+                  onClick={() => void remove(draft.avatar!, "avatar")}
+                >
+                  Remove avatar
+                </button>
+              </div>
             )}
             <div className="harbor-media-upload">
               <div>
@@ -387,26 +564,74 @@ export function ProfileEditor({ returnTo }: { returnTo?: string } = {}) {
                   {draft.banner ? "A stored banner is ready. Choose a file to replace it." : "No banner is stored yet."}
                 </span>
               </div>
+              <div
+                className="harbor-media-inline-preview harbor-media-inline-preview--banner"
+                aria-label="Current banner preview"
+              >
+                {selection?.kind === "BANNER" ? (
+                  <CroppedProfileImage
+                    kind="BANNER"
+                    previewUrl={selection.previewUrl}
+                    crop={selection.crop}
+                    alt="Pending banner crop preview"
+                  />
+                ) : draft.banner ? (
+                  <ResilientImage src={draft.banner.url} alt="" fallbackLabel="Banner unavailable" />
+                ) : (
+                  <b aria-hidden="true">Dark banner fallback</b>
+                )}
+              </div>
               <input
+                ref={bannerInputRef}
                 id="profile-banner-file"
                 className="harbor-file-input"
                 type="file"
                 accept="image/png,image/jpeg,image/webp"
                 aria-labelledby="profile-banner-label"
-                onChange={(event) => void upload("BANNER", event.target.files?.[0])}
+                onClick={(event) => {
+                  event.currentTarget.value = "";
+                }}
+                onChange={(event) => chooseFile("BANNER", event.target.files?.[0])}
               />
               <label className="harbor-media-upload__trigger" htmlFor="profile-banner-file">
                 Choose banner image
               </label>
+              <small>{selection?.kind === "BANNER" ? "PENDING_LOCAL" : draft.banner ? "READY" : "No banner"}</small>
             </div>
+            {selection?.kind === "BANNER" && selection.confirmed ? (
+              <div className="harbor-media-field-actions" aria-label="Pending banner actions">
+                <button
+                  type="button"
+                  className="button button--quiet"
+                  onClick={() => setSelection((current) => (current ? { ...current, confirmed: false } : current))}
+                >
+                  Adjust pending crop
+                </button>
+                <button type="button" className="button button--primary" onClick={() => void upload()}>
+                  Save banner image
+                </button>
+                <button type="button" className="button button--quiet" onClick={() => setSelection(null)}>
+                  Discard selection
+                </button>
+              </div>
+            ) : null}
             {draft.banner && (
-              <button
-                type="button"
-                className="button button--quiet"
-                onClick={() => void remove(draft.banner!, "banner")}
-              >
-                Remove banner
-              </button>
+              <div className="harbor-media-field-actions">
+                <button
+                  type="button"
+                  className="button button--quiet"
+                  onClick={() => void adjustExisting("BANNER", draft.banner!)}
+                >
+                  Adjust banner crop
+                </button>
+                <button
+                  type="button"
+                  className="button button--quiet"
+                  onClick={() => void remove(draft.banner!, "banner")}
+                >
+                  Remove banner
+                </button>
+              </div>
             )}
             <p className="harbor-field-hint">
               PNG, JPEG, or WebP is normalized into bounded private Profile storage. No external malware-scanner result
@@ -471,6 +696,35 @@ export function ProfileEditor({ returnTo }: { returnTo?: string } = {}) {
           ) : null}
         </aside>
       </div>
+      {selection && !selection.confirmed ? (
+        <ProfileCropEditor
+          kind={selection.kind}
+          previewUrl={selection.previewUrl}
+          value={selection.crop}
+          hasExisting={Boolean(selection.kind === "AVATAR" ? draft.avatar : draft.banner)}
+          busy={mutation.kind === "saving"}
+          onChange={(crop) => setSelection((current) => (current ? { ...current, crop } : current))}
+          onSave={() => {
+            setSelection((current) => (current ? { ...current, confirmed: true } : current));
+            setMutation({ kind: "idle" });
+          }}
+          onReplace={() => {
+            const input = selection.kind === "AVATAR" ? avatarInputRef.current : bannerInputRef.current;
+            if (input) {
+              input.value = "";
+              input.click();
+            }
+          }}
+          onCancel={() => setSelection(null)}
+          onRemove={() => {
+            const media = selection.kind === "AVATAR" ? draft.avatar : draft.banner;
+            if (media)
+              void remove(media, selection.kind.toLocaleLowerCase("en-US")).then(
+                (removed) => removed && setSelection(null),
+              );
+          }}
+        />
+      ) : null}
       {dialog}
     </>
   );

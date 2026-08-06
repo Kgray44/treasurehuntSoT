@@ -25,6 +25,7 @@ const mocks = vi.hoisted(() => ({
   preferenceUpdate: vi.fn(),
   communityUpdate: vi.fn(),
   emailDelete: vi.fn(),
+  emailFindFirst: vi.fn(),
   credentialDelete: vi.fn(),
   securityCreate: vi.fn(),
 }));
@@ -55,7 +56,7 @@ vi.mock("@/lib/db", () => {
     profilePrivacyRule: { updateMany: mocks.privacyUpdate },
     profilePreferenceSet: { updateMany: mocks.preferenceUpdate },
     communityProfile: { updateMany: mocks.communityUpdate },
-    accountEmail: { deleteMany: mocks.emailDelete, findUnique: vi.fn() },
+    accountEmail: { deleteMany: mocks.emailDelete, findUnique: vi.fn(), findFirst: mocks.emailFindFirst },
     accountCredential: { deleteMany: mocks.credentialDelete },
     securityEvent: { create: mocks.securityCreate },
     $transaction: vi.fn(async (callback: (transaction: unknown) => unknown) => callback(db)),
@@ -89,6 +90,7 @@ describe("Project Homeport account data and lifecycle authority", () => {
     mocks.lifecycleCreate.mockImplementation(async ({ data }) => ({ id: "lifecycle-1", ...data }));
     mocks.identityFind.mockResolvedValue([]);
     mocks.securityCreate.mockResolvedValue({ id: "security-event-1" });
+    mocks.emailFindFirst.mockResolvedValue(null);
   });
 
   it("homeport.owner-correction.round1.human-account-state never renders raw internal claim enums", () => {

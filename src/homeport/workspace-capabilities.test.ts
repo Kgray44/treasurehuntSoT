@@ -2,6 +2,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const mocks = vi.hoisted(() => ({
   account: vi.fn(),
+  accountUpdate: vi.fn(),
   profile: vi.fn(),
   membershipCount: vi.fn(),
   role: vi.fn(),
@@ -9,11 +10,13 @@ const mocks = vi.hoisted(() => ({
   membershipFind: vi.fn(),
   membershipUpdate: vi.fn(),
   securityCreate: vi.fn(),
+  captainVoyageCount: vi.fn(),
+  creatorChronicleCount: vi.fn(),
 }));
 
 vi.mock("@/lib/db", () => {
   const db = {
-    userAccount: { findUnique: mocks.account },
+    userAccount: { findUnique: mocks.account, update: mocks.accountUpdate },
     playerProfile: { findUnique: mocks.profile },
     playthroughMembership: {
       count: mocks.membershipCount,
@@ -22,6 +25,8 @@ vi.mock("@/lib/db", () => {
     },
     accountRoleAssignment: { findFirst: mocks.role, create: mocks.roleCreate },
     securityEvent: { create: mocks.securityCreate },
+    taleSession: { count: mocks.captainVoyageCount },
+    chronicle: { count: mocks.creatorChronicleCount },
     $transaction: vi.fn(async (callback: (transaction: unknown) => unknown) => callback(db)),
   };
   return { db };
@@ -39,8 +44,12 @@ describe("Project Homeport workspace transition authority", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     mocks.account.mockResolvedValue({
+      id: "account-1",
+      legacyGameMasterId: null,
       status: "ACTIVE",
       claimedAt: new Date("2026-08-04T00:00:00.000Z"),
+      ordinaryWorkspaceEntryAt: new Date("2026-08-04T00:00:00.000Z"),
+      emails: [{ verificationState: "VERIFIED" }],
       profile: { status: "ACTIVE" },
       roles: [
         { role: "CAPTAIN", grantedAt: new Date() },
@@ -54,6 +63,9 @@ describe("Project Homeport workspace transition authority", () => {
     mocks.membershipFind.mockResolvedValue([]);
     mocks.membershipUpdate.mockResolvedValue({ count: 0 });
     mocks.securityCreate.mockResolvedValue({ id: "event-1" });
+    mocks.accountUpdate.mockResolvedValue({ id: "account-1" });
+    mocks.captainVoyageCount.mockResolvedValue(0);
+    mocks.creatorChronicleCount.mockResolvedValue(0);
   });
 
   it("homeport.owner-correction.round1.same-chronicle-denial detects an authoritative active Player lock", async () => {
@@ -101,6 +113,8 @@ describe("Project Homeport workspace transition authority", () => {
     mocks.account.mockResolvedValue({
       status: "ACTIVE",
       claimedAt: new Date(),
+      ordinaryWorkspaceEntryAt: null,
+      emails: [{ verificationState: "VERIFIED" }],
       profile: { status: "ACTIVE" },
       roles: [],
     });
@@ -125,13 +139,23 @@ describe("Project Homeport workspace transition authority", () => {
   });
 
   it("homeport.owner-correction.round1.workspace-self-initialize grants one idempotent account role when clear", async () => {
+    mocks.account.mockResolvedValue({
+      status: "ACTIVE",
+      claimedAt: new Date(),
+      ordinaryWorkspaceEntryAt: null,
+      emails: [{ verificationState: "VERIFIED" }],
+      profile: { status: "ACTIVE" },
+      roles: [],
+    });
     await expect(activateWorkspaceCapability("account-1", "CREATOR")).resolves.toEqual({
       state: "ACTIVATED",
       role: "CREATOR",
     });
-    expect(mocks.roleCreate).toHaveBeenCalledWith({
-      data: { accountId: "account-1", role: "CREATOR", scopeType: "GLOBAL" },
+    expect(mocks.accountUpdate).toHaveBeenCalledWith({
+      where: { id: "account-1" },
+      data: { ordinaryWorkspaceEntryAt: expect.any(Date) },
     });
+    expect(mocks.roleCreate).not.toHaveBeenCalled();
     expect(mocks.securityCreate).toHaveBeenCalledWith({
       data: expect.objectContaining({ accountId: "account-1", eventType: "WORKSPACE_CAPABILITY_ACTIVATED" }),
     });

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useEffect, useRef, useState } from "react";
 import { useCurrentUser } from "@/components/auth/CurrentUserProvider";
 import { authorizedReturnTo, safeReturnTo } from "@/homeport/return-to";
 
@@ -10,6 +10,8 @@ type Mode = "register" | "sign-in" | "forgot" | "reset" | "verify" | "email-chan
 type Props = {
   mode: Mode;
   query?: { returnTo?: string; return?: string; reason?: string; token?: string };
+  initialCsrf?: string;
+  maskedEmail?: string;
 };
 
 const endpoints: Record<Exclude<Mode, "security">, string> = {
@@ -23,17 +25,22 @@ const endpoints: Record<Exclude<Mode, "security">, string> = {
   merge: "/api/auth/guest/merge",
 };
 
-export function AccountFlow({ mode, query }: Props) {
+export function AccountFlow({ mode, query, initialCsrf = "", maskedEmail }: Props) {
   const router = useRouter();
   const { state: currentUser, invalidate } = useCurrentUser();
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
-  const [csrf, setCsrf] = useState(() =>
-    typeof window === "undefined" ? "" : (sessionStorage.getItem("wayfarer-csrf") ?? ""),
+  const [csrf, setCsrf] = useState(
+    () => initialCsrf || (typeof window === "undefined" ? "" : (sessionStorage.getItem("wayfarer-csrf") ?? "")),
   );
+  const [resendCooldown, setResendCooldown] = useState(0);
+  const [verificationDestination, setVerificationDestination] = useState(maskedEmail ?? "your email address");
+  const [changingVerificationEmail, setChangingVerificationEmail] = useState(false);
+  const [replacementEmail, setReplacementEmail] = useState("");
   const [sessions, setSessions] = useState<Array<{ id: string; deviceLabel?: string; current: boolean }>>([]);
   const [values, setValues] = useState<Record<string, string>>({});
+  const verificationCodeRef = useRef<HTMLInputElement>(null);
   const returnTo = safeReturnTo(query?.returnTo ?? query?.return, "");
   const reason = query?.reason ?? "";
   const queryToken = query?.token ?? "";
@@ -65,7 +72,11 @@ export function AccountFlow({ mode, query }: Props) {
         setCsrf(body.csrfToken);
         sessionStorage.setItem("wayfarer-csrf", body.csrfToken);
       }
-      if (["register", "sign-in", "reset", "claim", "merge"].includes(mode)) {
+      if (body?.verificationRequired) {
+        setMessage("Account created. Opening secure email verification.");
+        router.replace(body.next ?? "/verify-email");
+        router.refresh();
+      } else if (["register", "sign-in", "reset", "claim", "merge"].includes(mode)) {
         const nextContext = await invalidate();
         if (nextContext.status !== "authenticated")
           throw new Error("Your account changed, but the new session could not be verified.");
@@ -74,8 +85,12 @@ export function AccountFlow({ mode, query }: Props) {
         router.replace(next);
         router.refresh();
       } else if (mode === "verify") {
-        await invalidate();
-        setMessage("Your email is verified. Continue to your account.");
+        const nextContext = await invalidate();
+        if (nextContext.status !== "authenticated")
+          throw new Error("Email was verified, but the new account session could not be confirmed.");
+        setMessage("Your email is verified. Opening your account.");
+        router.replace(authorizedReturnTo(body?.next ?? returnTo, nextContext, "/passport"));
+        router.refresh();
       } else if (mode === "email-change") {
         sessionStorage.removeItem("wayfarer-csrf");
         await invalidate();
@@ -85,6 +100,7 @@ export function AccountFlow({ mode, query }: Props) {
       }
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : "Please try again.");
+      if (mode === "verify") window.requestAnimationFrame(() => verificationCodeRef.current?.focus());
     } finally {
       setBusy(false);
     }
@@ -103,6 +119,63 @@ export function AccountFlow({ mode, query }: Props) {
       })
       .catch(() => setError("Unable to load signed-in devices."));
   }, [mode]);
+
+  useEffect(() => {
+    if (resendCooldown <= 0) return;
+    const timer = window.setInterval(() => setResendCooldown((value) => Math.max(0, value - 1)), 1_000);
+    return () => window.clearInterval(timer);
+  }, [resendCooldown]);
+
+  async function resendCode() {
+    setBusy(true);
+    setError("");
+    setMessage("");
+    try {
+      const response = await fetch("/api/auth/email/verification/resend", {
+        method: "POST",
+        headers: { "x-csrf-token": csrf },
+      });
+      const body = (await response.json().catch(() => null)) as { cooldownSeconds?: number; error?: string } | null;
+      if (!response.ok) throw new Error(body?.error ?? "A new code could not be sent.");
+      setResendCooldown(body?.cooldownSeconds ?? 60);
+      setMessage("A new six-digit code was sent. Earlier codes no longer work.");
+      verificationCodeRef.current?.focus();
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : "A new code could not be sent.");
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function changeVerificationEmail() {
+    setBusy(true);
+    setError("");
+    setMessage("");
+    try {
+      const response = await fetch("/api/auth/email/verification/change", {
+        method: "POST",
+        headers: { "content-type": "application/json", "x-csrf-token": csrf },
+        body: JSON.stringify({ email: replacementEmail }),
+      });
+      const body = (await response.json().catch(() => null)) as {
+        maskedEmail?: string;
+        cooldownSeconds?: number;
+        error?: string;
+      } | null;
+      if (!response.ok) throw new Error(body?.error ?? "The registration email could not be changed.");
+      setVerificationDestination(body?.maskedEmail ?? "your updated email address");
+      setResendCooldown(body?.cooldownSeconds ?? 60);
+      setChangingVerificationEmail(false);
+      setReplacementEmail("");
+      setValues((current) => ({ ...current, code: "" }));
+      setMessage("Email updated. Enter the newest code sent to the new address.");
+      window.requestAnimationFrame(() => verificationCodeRef.current?.focus());
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : "The registration email could not be changed.");
+    } finally {
+      setBusy(false);
+    }
+  }
 
   async function revoke(url: string, method = "POST", currentSession = false) {
     const response = await fetch(url, { method, headers: { "x-csrf-token": csrf } });
@@ -179,7 +252,9 @@ export function AccountFlow({ mode, query }: Props) {
             ? ["email", "password"]
             : mode === "reset"
               ? ["password", "confirmPassword"]
-              : [];
+              : mode === "verify"
+                ? ["code"]
+                : [];
   return (
     <main className="platform-auth account-flow-page">
       <div className="auth-ledger">
@@ -206,7 +281,9 @@ export function AccountFlow({ mode, query }: Props) {
             ? "Use one account across Player, Captain, Creator, Community, and Chronicle Passport."
             : mode === "register"
               ? "Create one identity for every Voyagewright workspace."
-              : "Complete this account step securely, then continue where you intended."}
+              : mode === "verify"
+                ? `Enter the six-digit code sent to ${verificationDestination}. Codes expire after ten minutes.`
+                : "Complete this account step securely, then continue where you intended."}
         </p>
         {mode === "sign-in" && reason ? (
           <p className="account-flow-notice" role="status">
@@ -236,29 +313,36 @@ export function AccountFlow({ mode, query }: Props) {
                       : field[0].toUpperCase() + field.slice(1)}
               </span>
               <input
+                ref={field === "code" ? verificationCodeRef : undefined}
                 name={field}
                 value={values[field] ?? ""}
                 onChange={(event) => setValues((current) => ({ ...current, [field]: event.target.value }))}
                 type={field.toLowerCase().includes("password") ? "password" : field === "email" ? "email" : "text"}
+                inputMode={field === "code" ? "numeric" : undefined}
+                pattern={field === "code" ? "[0-9]{6}" : undefined}
+                maxLength={field === "code" ? 6 : undefined}
+                className={field === "code" ? "account-verification-code" : undefined}
+                aria-invalid={field === "code" && error ? true : undefined}
+                aria-errormessage={field === "code" && error ? "account-status" : undefined}
                 autoComplete={
-                  field === "email"
-                    ? "email"
-                    : field === "login"
-                      ? "username"
-                      : field.toLowerCase().includes("password")
-                        ? mode === "sign-in" || mode === "merge"
-                          ? "current-password"
-                          : "new-password"
-                        : "nickname"
+                  field === "code"
+                    ? "one-time-code"
+                    : field === "email"
+                      ? "email"
+                      : field === "login"
+                        ? "username"
+                        : field.toLowerCase().includes("password")
+                          ? mode === "sign-in" || mode === "merge"
+                            ? "current-password"
+                            : "new-password"
+                          : "nickname"
                 }
                 disabled={currentUser.status === "loading"}
                 required
               />
             </label>
           ))}
-          {(mode === "reset" || mode === "verify" || mode === "email-change") && (
-            <input name="token" type="hidden" value={queryToken} />
-          )}
+          {(mode === "reset" || mode === "email-change") && <input name="token" type="hidden" value={queryToken} />}
           {mode === "merge" && <p>Confirming preserves your guest voyage history in this account.</p>}
           <button className="brass-button" disabled={busy || currentUser.status === "loading"}>
             {busy ? "Working…" : "Continue"}
@@ -284,6 +368,49 @@ export function AccountFlow({ mode, query }: Props) {
           <Link className="account-flow-nav" href="/sign-in">
             Sign in with the new email
           </Link>
+        ) : null}
+        {mode === "verify" ? (
+          <div className="account-verification-help">
+            <button
+              type="button"
+              className="button button--quiet"
+              disabled={busy || resendCooldown > 0}
+              onClick={() => void resendCode()}
+            >
+              {resendCooldown > 0 ? `Resend available in ${resendCooldown}s` : "Resend code"}
+            </button>
+            <button
+              type="button"
+              className="button button--quiet"
+              disabled={busy}
+              onClick={() => setChangingVerificationEmail((value) => !value)}
+            >
+              {changingVerificationEmail ? "Keep current email" : "Change email"}
+            </button>
+            {changingVerificationEmail ? (
+              <div className="account-verification-email-change">
+                <label>
+                  <span>New registration email</span>
+                  <input
+                    type="email"
+                    autoComplete="email"
+                    value={replacementEmail}
+                    onChange={(event) => setReplacementEmail(event.target.value)}
+                    disabled={busy}
+                  />
+                </label>
+                <button
+                  type="button"
+                  className="button"
+                  disabled={busy || replacementEmail.trim().length < 3}
+                  onClick={() => void changeVerificationEmail()}
+                >
+                  Send code to new email
+                </button>
+              </div>
+            ) : null}
+            <p>Use the newest code only. If delivery fails, retry after the cooldown or contact account support.</p>
+          </div>
         ) : null}
         <p id="account-status" className={error ? "platform-error" : "account-flow-status"} aria-live="polite">
           {error || message}

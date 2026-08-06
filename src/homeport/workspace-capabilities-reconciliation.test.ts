@@ -4,8 +4,7 @@ const mocks = vi.hoisted(() => ({
   accounts: vi.fn(),
   transaction: vi.fn(),
   profileCreate: vi.fn(),
-  roleFind: vi.fn(),
-  roleCreate: vi.fn(),
+  accountUpdate: vi.fn(),
   eventCreate: vi.fn(),
 }));
 
@@ -23,11 +22,10 @@ beforeEach(() => {
   mocks.transaction.mockImplementation((run) =>
     run({
       playerProfile: { create: mocks.profileCreate },
-      accountRoleAssignment: { findFirst: mocks.roleFind, create: mocks.roleCreate },
+      userAccount: { update: mocks.accountUpdate },
       securityEvent: { create: mocks.eventCreate },
     }),
   );
-  mocks.roleFind.mockResolvedValue(null);
 });
 
 describe("claimed-account workspace capability reconciliation", () => {
@@ -39,22 +37,43 @@ describe("claimed-account workspace capability reconciliation", () => {
         claimedAt: new Date(),
         lockedAt: null,
         suspendedAt: null,
+        ordinaryWorkspaceEntryAt: null,
+        emails: [{ verificationState: "VERIFIED" }],
         profile: { id: "profile-1" },
-        roles: [{ role: "PLAYER" }, { role: "MODERATOR" }],
       },
     ]);
     await expect(reconcileClaimedAccountCapabilities({ accountId: "account-1" })).resolves.toEqual({
       mode: "DRY_RUN",
+      verified: false,
       accounts: [
         {
           accountId: "account-1",
           status: "READY",
-          missingRoles: ["CAPTAIN", "CREATOR"],
+          ordinaryEntry: "CREATE_REQUIRED",
           playerProfile: "PRESENT",
           changed: true,
         },
       ],
     });
+    expect(mocks.transaction).not.toHaveBeenCalled();
+  });
+
+  it("provides an explicit VERIFY mode that fails its result while an eligible account still has a gap", async () => {
+    mocks.accounts.mockResolvedValue([
+      {
+        id: "account-1",
+        status: "ACTIVE",
+        claimedAt: new Date(),
+        lockedAt: null,
+        suspendedAt: null,
+        ordinaryWorkspaceEntryAt: null,
+        emails: [{ verificationState: "VERIFIED" }],
+        profile: { id: "profile-1" },
+      },
+    ]);
+    await expect(
+      reconcileClaimedAccountCapabilities({ accountId: "account-1", mode: "VERIFY" }),
+    ).resolves.toMatchObject({ mode: "VERIFY", verified: false });
     expect(mocks.transaction).not.toHaveBeenCalled();
   });
 
@@ -66,13 +85,16 @@ describe("claimed-account workspace capability reconciliation", () => {
         claimedAt: new Date(),
         lockedAt: null,
         suspendedAt: null,
+        ordinaryWorkspaceEntryAt: null,
+        emails: [{ verificationState: "VERIFIED" }],
         profile: { id: "profile-1" },
-        roles: [{ role: "PLAYER" }, { role: "ADMINISTRATOR" }],
       },
     ]);
     await reconcileClaimedAccountCapabilities({ accountId: "account-1", commit: true });
-    expect(mocks.roleCreate.mock.calls.map(([input]) => input.data.role)).toEqual(["CAPTAIN", "CREATOR"]);
-    expect(mocks.roleCreate.mock.calls.flatMap(([input]) => Object.values(input.data))).not.toContain("ADMINISTRATOR");
+    expect(mocks.accountUpdate).toHaveBeenCalledWith({
+      where: { id: "account-1" },
+      data: { ordinaryWorkspaceEntryAt: expect.any(Date) },
+    });
     expect(mocks.eventCreate).toHaveBeenCalledWith(
       expect.objectContaining({ data: expect.objectContaining({ eventType: "WORKSPACE_CAPABILITIES_RECONCILED" }) }),
     );
@@ -80,15 +102,25 @@ describe("claimed-account workspace capability reconciliation", () => {
 
   it("skips unclaimed and restricted accounts without escalating them", async () => {
     mocks.accounts.mockResolvedValue([
-      { id: "guest", status: "ACTIVE", claimedAt: null, lockedAt: null, suspendedAt: null, profile: null, roles: [] },
+      {
+        id: "guest",
+        status: "ACTIVE",
+        claimedAt: null,
+        lockedAt: null,
+        suspendedAt: null,
+        ordinaryWorkspaceEntryAt: null,
+        emails: [{ verificationState: "VERIFIED" }],
+        profile: null,
+      },
       {
         id: "restricted",
         status: "ACTIVE",
         claimedAt: new Date(),
         lockedAt: new Date(),
         suspendedAt: null,
+        ordinaryWorkspaceEntryAt: null,
+        emails: [{ verificationState: "VERIFIED" }],
         profile: null,
-        roles: [],
       },
     ]);
     const result = await reconcileClaimedAccountCapabilities({ commit: true });

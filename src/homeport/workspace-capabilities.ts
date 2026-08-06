@@ -3,6 +3,7 @@ import { db } from "@/lib/db";
 
 export type SelfServiceWorkspace = "CAPTAIN" | "CREATOR";
 export type OrdinaryWorkspaceRole = "PLAYER" | "CAPTAIN" | "CREATOR";
+export type CapabilityReconciliationMode = "DRY_RUN" | "COMMIT" | "VERIFY";
 
 export class WorkspaceCapabilityError extends Error {
   constructor(
@@ -14,12 +15,11 @@ export class WorkspaceCapabilityError extends Error {
 }
 
 const activeMembershipStates = ["ACCEPTED", "READY", "ACTIVE_MEMBER"];
-const ordinaryWorkspaceRoles = ["PLAYER", "CAPTAIN", "CREATOR"] as const;
 
 export type CapabilityReconciliationAccount = Readonly<{
   accountId: string;
-  status: "READY" | "SKIPPED_RESTRICTED" | "SKIPPED_NOT_CLAIMED";
-  missingRoles: readonly OrdinaryWorkspaceRole[];
+  status: "READY" | "SKIPPED_RESTRICTED" | "SKIPPED_NOT_CLAIMED" | "SKIPPED_NOT_VERIFIED";
+  ordinaryEntry: "PRESENT" | "CREATE_REQUIRED";
   playerProfile: "PRESENT" | "CREATE_REQUIRED";
   changed: boolean;
 }>;
@@ -27,7 +27,15 @@ export type CapabilityReconciliationAccount = Readonly<{
 export async function reconcileClaimedAccountCapabilities(options: {
   accountId?: string;
   commit?: boolean;
-}): Promise<Readonly<{ mode: "DRY_RUN" | "COMMIT"; accounts: readonly CapabilityReconciliationAccount[] }>> {
+  mode?: CapabilityReconciliationMode;
+}): Promise<
+  Readonly<{
+    mode: CapabilityReconciliationMode;
+    verified: boolean;
+    accounts: readonly CapabilityReconciliationAccount[];
+  }>
+> {
+  const mode = options.mode ?? (options.commit ? "COMMIT" : "DRY_RUN");
   const accounts = await db.userAccount.findMany({
     where: options.accountId ? { id: options.accountId } : undefined,
     select: {
@@ -36,8 +44,9 @@ export async function reconcileClaimedAccountCapabilities(options: {
       claimedAt: true,
       lockedAt: true,
       suspendedAt: true,
+      ordinaryWorkspaceEntryAt: true,
+      emails: { where: { isPrimary: true }, select: { verificationState: true }, take: 1 },
       profile: { select: { id: true } },
-      roles: { where: { revokedAt: null }, select: { role: true } },
     },
     orderBy: { id: "asc" },
   });
@@ -46,19 +55,25 @@ export async function reconcileClaimedAccountCapabilities(options: {
   const plan: CapabilityReconciliationAccount[] = accounts.map((account) => {
     const active = account.status === "ACTIVE" && !account.lockedAt && !account.suspendedAt;
     const claimed = Boolean(account.claimedAt);
-    const roles = new Set(account.roles.map((assignment) => assignment.role));
-    const missingRoles = ordinaryWorkspaceRoles.filter((role) => !roles.has(role));
+    const verified = account.emails[0]?.verificationState === "VERIFIED";
     return {
       accountId: account.id,
-      status: !active ? "SKIPPED_RESTRICTED" : !claimed ? "SKIPPED_NOT_CLAIMED" : "READY",
-      missingRoles,
+      status: !active
+        ? "SKIPPED_RESTRICTED"
+        : !claimed
+          ? "SKIPPED_NOT_CLAIMED"
+          : !verified
+            ? "SKIPPED_NOT_VERIFIED"
+            : "READY",
+      ordinaryEntry: account.ordinaryWorkspaceEntryAt ? "PRESENT" : "CREATE_REQUIRED",
       playerProfile: account.profile ? "PRESENT" : "CREATE_REQUIRED",
-      changed: active && claimed && (missingRoles.length > 0 || !account.profile),
+      changed: active && claimed && verified && (!account.ordinaryWorkspaceEntryAt || !account.profile),
     };
   });
-  if (!options.commit) return { mode: "DRY_RUN", accounts: plan };
+  const verified = plan.every((account) => account.status !== "READY" || !account.changed);
+  if (mode !== "COMMIT") return { mode, verified, accounts: plan };
   for (const account of plan) {
-    if (account.status !== "READY") continue;
+    if (account.status !== "READY" || !account.changed) continue;
     await db.$transaction(async (tx) => {
       if (account.playerProfile === "CREATE_REQUIRED") {
         await tx.playerProfile.create({
@@ -71,21 +86,11 @@ export async function reconcileClaimedAccountCapabilities(options: {
           },
         });
       }
-      for (const role of account.missingRoles) {
-        const existing = await tx.accountRoleAssignment.findFirst({
-          where: { accountId: account.accountId, role, scopeType: "GLOBAL", scopeId: null, revokedAt: null },
-          select: { id: true },
+      if (account.ordinaryEntry === "CREATE_REQUIRED")
+        await tx.userAccount.update({
+          where: { id: account.accountId },
+          data: { ordinaryWorkspaceEntryAt: new Date() },
         });
-        if (!existing)
-          await tx.accountRoleAssignment.create({
-            data: {
-              id: `homeport-ordinary-${account.accountId}-${role.toLocaleLowerCase()}`,
-              accountId: account.accountId,
-              role,
-              scopeType: "GLOBAL",
-            },
-          });
-      }
       await tx.securityEvent.create({
         data: {
           accountId: account.accountId,
@@ -94,13 +99,14 @@ export async function reconcileClaimedAccountCapabilities(options: {
           metadata: JSON.stringify({
             mode: "COMMIT",
             createdPlayerProfile: account.playerProfile === "CREATE_REQUIRED",
-            addedRoles: account.missingRoles,
+            createdOrdinaryWorkspaceEntry: account.ordinaryEntry === "CREATE_REQUIRED",
+            privilegedOrResourceRolesGranted: [],
           }),
         },
       });
     });
   }
-  return { mode: "COMMIT", accounts: plan };
+  return { mode, verified: true, accounts: plan };
 }
 
 export async function hasActivePlayerWorkspaceLock(accountId: string) {
@@ -150,22 +156,48 @@ export async function workspaceCapabilityOverview(accountId: string) {
     db.userAccount.findUnique({
       where: { id: accountId },
       select: {
+        id: true,
+        legacyGameMasterId: true,
         status: true,
         claimedAt: true,
+        ordinaryWorkspaceEntryAt: true,
         profile: { select: { status: true } },
+        emails: { where: { isPrimary: true }, select: { verificationState: true }, take: 1 },
         roles: { where: { revokedAt: null }, select: { role: true, grantedAt: true } },
       },
     }),
     activePlayerChronicles(accountId),
   ]);
   if (!account) throw new WorkspaceCapabilityError("Account context is unavailable.", "FORBIDDEN");
+  const [captainVoyageCount, creatorChronicleCount] = await Promise.all([
+    db.taleSession.count({
+      where: {
+        previewMode: false,
+        OR: [
+          { captainAccountId: account.id },
+          ...(account.legacyGameMasterId ? [{ captainId: account.legacyGameMasterId }] : []),
+        ],
+      },
+    }),
+    db.chronicle.count({
+      where: {
+        archivedAt: null,
+        OR: [
+          { creatorAccountId: account.id },
+          ...(account.legacyGameMasterId ? [{ creatorId: account.legacyGameMasterId }] : []),
+        ],
+      },
+    }),
+  ]);
   const roles = new Set(account.roles.map((role) => role.role));
   const administrator = roles.has("ADMINISTRATOR");
-  const canSelfInitialize = account.status === "ACTIVE" && Boolean(account.claimedAt);
+  const verified = account.emails[0]?.verificationState === "VERIFIED";
+  const eligible = account.status === "ACTIVE" && Boolean(account.claimedAt) && verified;
+  const canEnterOrdinaryWorkspaces = eligible && Boolean(account.ordinaryWorkspaceEntryAt);
   const locked = activeChronicles.length > 0;
   return {
-    accountState: account.status === "ACTIVE" ? "Active account" : "Account setup or verification required",
-    canSelfInitialize,
+    accountState: canEnterOrdinaryWorkspaces ? "Active verified account" : "Account setup or verification required",
+    canSelfInitialize: eligible,
     activeChronicles,
     transitionLock: locked
       ? {
@@ -178,37 +210,28 @@ export async function workspaceCapabilityOverview(accountId: string) {
       {
         id: "PLAYER" as const,
         label: "Player",
-        state: account.profile?.status === "ACTIVE" ? ("ACTIVE" as const) : ("UNAVAILABLE" as const),
-        href: account.profile?.status === "ACTIVE" ? "/player/library" : null,
-        detail: "Join and play Chronicles with your canonical Profile.",
+        state:
+          canEnterOrdinaryWorkspaces && account.profile?.status === "ACTIVE"
+            ? ("ACTIVE" as const)
+            : ("UNAVAILABLE" as const),
+        href: canEnterOrdinaryWorkspaces && account.profile?.status === "ACTIVE" ? "/player/library" : null,
+        detail: "Join and play Chronicles.",
       },
       {
         id: "CAPTAIN" as const,
         label: "Captain",
-        state:
-          roles.has("CAPTAIN") || administrator
-            ? locked
-              ? "BLOCKED"
-              : "ACTIVE"
-            : canSelfInitialize
-              ? "AVAILABLE"
-              : "UNAVAILABLE",
-        href: (roles.has("CAPTAIN") || administrator) && !locked ? "/captain/library" : null,
-        detail: "Prepare and guide authorized Voyages without becoming a separate account.",
+        state: canEnterOrdinaryWorkspaces || administrator ? (locked ? "BLOCKED" : "ACTIVE") : "UNAVAILABLE",
+        href: (canEnterOrdinaryWorkspaces || administrator) && !locked ? "/captain/library" : null,
+        detail: "Prepare or guide Voyages assigned to you.",
+        emptyHint: captainVoyageCount === 0 ? "No Captain Voyages yet." : null,
       },
       {
         id: "CREATOR" as const,
         label: "Creator",
-        state:
-          roles.has("CREATOR") || roles.has("PUBLISHER") || administrator
-            ? locked
-              ? "BLOCKED"
-              : "ACTIVE"
-            : canSelfInitialize
-              ? "AVAILABLE"
-              : "UNAVAILABLE",
-        href: (roles.has("CREATOR") || roles.has("PUBLISHER") || administrator) && !locked ? "/studio/library" : null,
-        detail: "Create and publish Chronicles through the same AccountSession.",
+        state: canEnterOrdinaryWorkspaces || administrator ? (locked ? "BLOCKED" : "ACTIVE") : "UNAVAILABLE",
+        href: (canEnterOrdinaryWorkspaces || administrator) && !locked ? "/studio/library" : null,
+        detail: "Create and publish your own Chronicles.",
+        emptyHint: creatorChronicleCount === 0 ? "Create your first Chronicle." : null,
       },
     ],
   };
@@ -226,18 +249,16 @@ export async function activateWorkspaceCapability(accountId: string, target: Sel
       "Active Player participation blocks Captain and Creator transitions until you safely leave those Chronicles.",
       "CONFLICT",
     );
-  const existing = await db.accountRoleAssignment.findFirst({
-    where: { accountId, role: target, scopeType: "GLOBAL", scopeId: null, revokedAt: null },
-  });
+  const existing = overview.workspaces.find((workspace) => workspace.id === target && workspace.state === "ACTIVE");
   if (existing) return { state: "ALREADY_ACTIVE" as const, role: target };
   await db.$transaction(async (tx) => {
-    await tx.accountRoleAssignment.create({ data: { accountId, role: target, scopeType: "GLOBAL" } });
+    await tx.userAccount.update({ where: { id: accountId }, data: { ordinaryWorkspaceEntryAt: new Date() } });
     await tx.securityEvent.create({
       data: {
         accountId,
         eventType: "WORKSPACE_CAPABILITY_ACTIVATED",
         correlationId: randomUUID(),
-        metadata: JSON.stringify({ role: target }),
+        metadata: JSON.stringify({ workspace: target, resourceAuthorityGranted: false }),
       },
     });
   });

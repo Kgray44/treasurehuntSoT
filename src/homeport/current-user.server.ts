@@ -33,7 +33,19 @@ function initials(displayName: string) {
 function findAccountSession(token: string) {
   return db.accountSession.findUnique({
     where: { tokenHash: hashToken(token) },
-    include: { account: { include: { profile: true, roles: true } } },
+    include: {
+      account: {
+        include: {
+          profile: {
+            include: {
+              avatarMedia: { select: { id: true, processingState: true, scanState: true, removedAt: true } },
+            },
+          },
+          emails: { where: { isPrimary: true }, select: { verificationState: true, verifiedAt: true }, take: 1 },
+          roles: true,
+        },
+      },
+    },
   });
 }
 
@@ -45,15 +57,20 @@ async function classifySession(session: SessionWithAccount): Promise<CurrentUser
   if (session.account.suspendedAt) return { ...base, status: "restricted", reason: "suspended" };
   if (!activeAccountStatuses.has(session.account.status))
     return { ...base, status: "restricted", reason: "account-status" };
+  if (session.sessionType === "VERIFICATION") return { ...base, status: "anonymous" };
 
   const activeRoles = session.account.roles.filter((assignment) => !assignment.revokedAt);
   const roles = new Set(activeRoles.map((assignment) => assignment.role));
   const isAdministrator = roles.has("ADMINISTRATOR");
-  const canUsePlayer = session.account.profile?.status === "ACTIVE";
+  const ordinaryEntry =
+    session.account.status === "ACTIVE" &&
+    Boolean(session.account.claimedAt) &&
+    Boolean(session.account.ordinaryWorkspaceEntryAt) &&
+    session.account.emails[0]?.verificationState === "VERIFIED";
+  const canUsePlayer = ordinaryEntry && session.account.profile?.status === "ACTIVE";
   const activePlayerWorkspaceLock = canUsePlayer ? await hasActivePlayerWorkspaceLock(session.accountId) : false;
-  const canUseCaptain = !activePlayerWorkspaceLock && (roles.has("CAPTAIN") || isAdministrator);
-  const canUseCreator =
-    !activePlayerWorkspaceLock && (roles.has("CREATOR") || roles.has("PUBLISHER") || isAdministrator);
+  const canUseCaptain = !activePlayerWorkspaceLock && (ordinaryEntry || isAdministrator);
+  const canUseCreator = !activePlayerWorkspaceLock && (ordinaryEntry || isAdministrator);
   const canModerate = roles.has("MODERATOR") || isAdministrator;
   const workspaces: HomeportWorkspace[] = ["public", "account", "community"];
   if (canUsePlayer) workspaces.push("player");
@@ -69,8 +86,23 @@ async function classifySession(session: SessionWithAccount): Promise<CurrentUser
           session.account.updatedAt,
           session.account.lockedAt,
           session.account.suspendedAt,
+          session.account.ordinaryWorkspaceEntryAt,
+          session.account.emails[0]?.verificationState,
+          session.account.emails[0]?.verifiedAt,
         ],
-        profile: profile ? [profile.id, profile.status, profile.updatedAt, profile.displayName, profile.handle] : null,
+        profile: profile
+          ? [
+              profile.id,
+              profile.status,
+              profile.updatedAt,
+              profile.displayName,
+              profile.handle,
+              profile.avatarMedia?.id,
+              profile.avatarMedia?.processingState,
+              profile.avatarMedia?.scanState,
+              profile.avatarMedia?.removedAt,
+            ]
+          : null,
         roles: session.account.roles
           .map((assignment) => [
             assignment.role,
@@ -96,6 +128,11 @@ async function classifySession(session: SessionWithAccount): Promise<CurrentUser
       displayName,
       initials: initials(displayName),
       ...(profile?.handle ? { handle: profile.handle.slice(0, 32) } : {}),
+      ...(profile?.avatarMedia?.processingState === "READY" &&
+      profile.avatarMedia.scanState === "LOCAL_VALIDATED" &&
+      !profile.avatarMedia.removedAt
+        ? { avatarUrl: `/api/profile-media/${profile.avatarMedia.id}` }
+        : {}),
     },
     capabilities: { canUsePlayer, canUseCaptain, canUseCreator, canModerate, isAdministrator },
     workspaces,

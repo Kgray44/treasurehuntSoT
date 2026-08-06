@@ -257,6 +257,14 @@
   font-size: 0.72rem;
   font-weight: 900;
   letter-spacing: 0.02em;
+  overflow: hidden;
+}
+
+.shell-avatar img,
+.shell-avatar .resilient-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .shell-profile-name {
@@ -491,7 +499,9 @@
 }
 
 .product-shell-content {
+  display: grid;
   min-height: calc(100svh - var(--shell-header-height) - var(--shell-footer-height));
+  align-items: start;
 }
 
 .shell-mode-GATEWAY_STANDARD .product-shell-content {
@@ -499,6 +509,8 @@
 }
 
 .product-route-layer {
+  grid-area: 1 / 1;
+  width: 100%;
   min-height: inherit;
   outline: 0;
 }

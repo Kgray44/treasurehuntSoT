@@ -20,6 +20,19 @@ export async function requireWayfarerAccount(request?: Request) {
   return session;
 }
 
+export async function requireWayfarerVerification(request?: Request) {
+  const token = (await cookies()).get(WAYFARER_COOKIE)?.value;
+  if (!token) return null;
+  const session = await currentAccount(token, ["VERIFICATION"]);
+  if (
+    !session ||
+    session.account.status !== "PENDING_VERIFICATION" ||
+    (request && !safeEqual(session.csrfToken, request.headers.get("x-csrf-token") ?? ""))
+  )
+    return null;
+  return session;
+}
+
 export async function setWayfarerCookie(token: string) {
   const jar = await cookies();
   jar.set(WAYFARER_COOKIE, token, wayfarerCookieOptions);

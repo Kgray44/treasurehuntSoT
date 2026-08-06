@@ -61,7 +61,7 @@ export const defaultPreferences: PreferenceV1 = {
   experience: {
     motion: "SYSTEM",
     textScale: 1,
-    theme: "SYSTEM",
+    theme: "DARK",
     captions: false,
     transcripts: false,
     audioDescription: false,
@@ -328,7 +328,7 @@ export async function ownerProfile(accountId: string) {
 export async function ownerProfileDto(accountId: string) {
   const profile = await ownerProfile(accountId);
   const media = (value: typeof profile.avatarMedia) =>
-    value && !value.removedAt
+    value && !value.removedAt && value.processingState === "READY" && value.scanState === "LOCAL_VALIDATED"
       ? {
           id: value.id,
           kind: value.kind,
@@ -336,6 +336,12 @@ export async function ownerProfileDto(accountId: string) {
           altText: value.altText,
           width: value.width,
           height: value.height,
+          crop: {
+            centerX: value.cropCenterX,
+            centerY: value.cropCenterY,
+            scale: value.cropScale,
+            rotation: value.rotation as 0 | 90 | 180 | 270,
+          },
           processingState: "READY" as const,
         }
       : null;
@@ -389,7 +395,7 @@ export async function publicProfileProjection(handle: string, viewer: ViewerCont
     !profile.handle ||
     profile.status !== "ACTIVE" ||
     !profile.account ||
-    !["ACTIVE", "PENDING_VERIFICATION"].includes(profile.account.status)
+    profile.account.status !== "ACTIVE"
   )
     return null;
   const rules = new Map(profile.privacyRules.map((rule) => [rule.section, rule.visibility]));
@@ -409,7 +415,9 @@ export async function publicProfileProjection(handle: string, viewer: ViewerCont
       })
     : [];
   const media = (media: typeof profile.avatarMedia) =>
-    media && !media.removedAt ? `/api/profile-media/${media.id}` : null;
+    media && !media.removedAt && media.processingState === "READY" && media.scanState === "LOCAL_VALIDATED"
+      ? `/api/profile-media/${media.id}`
+      : null;
   return {
     handle: profile.handle,
     displayName: profile.displayName,

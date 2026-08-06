@@ -44,6 +44,7 @@ describe("ActionDialog", () => {
 
     const dialog = screen.getByRole("dialog", { name: "Archive Chronicle?" });
     expect(dialog).toHaveAttribute("aria-modal", "true");
+    expect(dialog.closest(".ui-dialog-backdrop")?.parentElement).toBe(document.body);
     expect(document.querySelector("main")).toHaveProperty("inert", true);
     const confirm = within(dialog).getByRole("button", { name: "Archive Chronicle" });
     expect(confirm).toBeDisabled();

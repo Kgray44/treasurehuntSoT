@@ -10,7 +10,7 @@ const fixtureVersion =
   `homeport-phase7-owner-correction-round${correctionRound}-v1`;
 const seed = path.join(
   taskRoot,
-  correctionRound === "2" ? "immutable-seed" : "immutable-fixture-seed",
+  ["2", "3"].includes(correctionRound) ? "immutable-seed" : "immutable-fixture-seed",
   `${fixtureVersion}.db`,
 );
 const canonical = path.resolve("C:/Users/kkids/Documents/Codex_TreasureHunt/prisma/dev.db");
@@ -23,8 +23,12 @@ if (command === "journeys") {
   const receipts = [];
   const requestedJourneys = (
     process.env.HOMEPORT_PHASE7_CORRECTION_JOURNEYS ??
-    (correctionRound === "2" ? "ABCDEFGHIJKLMNOPQRSTUVW" : "ABCDEFGHIJKLMNOPQRSTU")
-  ).replaceAll(correctionRound === "2" ? /[^A-W]/gu : /[^A-U]/gu, "");
+    (correctionRound === "2"
+      ? "ABCDEFGHIJKLMNOPQRSTUVW"
+      : correctionRound === "3"
+        ? "ABCDEFGHIJKLMNOPQRSTUV"
+        : "ABCDEFGHIJKLMNOPQRSTU")
+  ).replaceAll(correctionRound === "2" ? /[^A-W]/gu : correctionRound === "3" ? /[^A-V]/gu : /[^A-U]/gu, "");
   for (const journeyId of requestedJourneys)
     receipts.push(
       await clone(

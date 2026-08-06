@@ -1,5 +1,5 @@
 import { TaleEditor } from "@/components/studio/TaleEditor";
-import { requireGmCapability } from "@/lib/security";
+import { requireOwnedStudioTale } from "@/chronicle/studio-authorization";
 export async function TaleEditorSection({
   taleId,
   section,
@@ -11,7 +11,7 @@ export async function TaleEditorSection({
     <TaleEditor
       taleId={taleId}
       initialSection={section}
-      authenticated={Boolean(await requireGmCapability("CREATE_TALES"))}
+      authenticated={Boolean(await requireOwnedStudioTale(taleId))}
     />
   );
 }

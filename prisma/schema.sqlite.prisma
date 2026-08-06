@@ -84,42 +84,45 @@ model GameMasterUser {
 }
 
 model UserAccount {
-  id                  String                    @id @default(cuid())
-  status              String                    @default("PENDING_VERIFICATION")
-  legacyGameMasterId  String?                   @unique
-  claimedAt           DateTime?
-  lastSeenAt          DateTime?
-  lockedAt            DateTime?
-  suspendedAt         DateTime?
-  mergedIntoAccountId String?
-  createdAt           DateTime                  @default(now())
-  updatedAt           DateTime                  @updatedAt
-  profile             PlayerProfile?
-  legacyGameMaster    GameMasterUser?           @relation("LegacyGameMasterAccount", fields: [legacyGameMasterId], references: [id], onDelete: SetNull)
-  emails              AccountEmail[]
-  credential          AccountCredential?
-  tokens              AccountToken[]
-  sessions            AccountSession[]
-  roles               AccountRoleAssignment[]
-  securityEvents      SecurityEvent[]
-  migrationRecords    WayfarerMigrationRecord[]
-  createdChronicles   Chronicle[]               @relation("ChronicleCreatorAccount")
-  authoredDrafts      TaleDraft[]               @relation("TaleDraftAuthorAccount")
-  publishedVersions   PublishedTaleVersion[]    @relation("PublishedVersionAuthorAccount")
-  createdAssets       TaleAsset[]               @relation("TaleAssetAuthorAccount")
-  captainedSessions   TaleSession[]             @relation("TaleSessionCaptainAccount")
-  createdInvitations  Invitation[]              @relation("InvitationCreatorAccount")
-  invitationEvents    InvitationEvent[]         @relation("InvitationEventActorAccount")
-  revealActions       RevealState[]             @relation("RevealActorAccount")
-  auditActions        PlatformAuditEvent[]      @relation("PlatformAuditActorAccount")
-  privateImports      PrivateContentImport[]    @relation("PrivateImportOwnerAccount")
-  privateAssetRefs    PrivateAssetReference[]   @relation("PrivateAssetOwnerAccount")
-  privateOperations   PrivateContentOperation[] @relation("PrivateOperationOwnerAccount")
-  communityProfile    CommunityProfile?
-  externalIdentities  ExternalIdentity[]
-  providerAttempts    ProviderLinkAttempt[]
-  dataExports         AccountDataExport[]
-  lifecycleRequests   AccountLifecycleRequest[]
+  id                       String                       @id @default(cuid())
+  status                   String                       @default("PENDING_VERIFICATION")
+  legacyGameMasterId       String?                      @unique
+  claimedAt                DateTime?
+  lastSeenAt               DateTime?
+  lockedAt                 DateTime?
+  suspendedAt              DateTime?
+  ordinaryWorkspaceEntryAt DateTime?
+  mergedIntoAccountId      String?
+  createdAt                DateTime                     @default(now())
+  updatedAt                DateTime                     @updatedAt
+  profile                  PlayerProfile?
+  legacyGameMaster         GameMasterUser?              @relation("LegacyGameMasterAccount", fields: [legacyGameMasterId], references: [id], onDelete: SetNull)
+  emails                   AccountEmail[]
+  credential               AccountCredential?
+  tokens                   AccountToken[]
+  sessions                 AccountSession[]
+  roles                    AccountRoleAssignment[]
+  securityEvents           SecurityEvent[]
+  migrationRecords         WayfarerMigrationRecord[]
+  createdChronicles        Chronicle[]                  @relation("ChronicleCreatorAccount")
+  authoredDrafts           TaleDraft[]                  @relation("TaleDraftAuthorAccount")
+  publishedVersions        PublishedTaleVersion[]       @relation("PublishedVersionAuthorAccount")
+  createdAssets            TaleAsset[]                  @relation("TaleAssetAuthorAccount")
+  captainedSessions        TaleSession[]                @relation("TaleSessionCaptainAccount")
+  createdInvitations       Invitation[]                 @relation("InvitationCreatorAccount")
+  invitationEvents         InvitationEvent[]            @relation("InvitationEventActorAccount")
+  revealActions            RevealState[]                @relation("RevealActorAccount")
+  auditActions             PlatformAuditEvent[]         @relation("PlatformAuditActorAccount")
+  privateImports           PrivateContentImport[]       @relation("PrivateImportOwnerAccount")
+  privateAssetRefs         PrivateAssetReference[]      @relation("PrivateAssetOwnerAccount")
+  privateOperations        PrivateContentOperation[]    @relation("PrivateOperationOwnerAccount")
+  communityProfile         CommunityProfile?
+  externalIdentities       ExternalIdentity[]
+  providerAttempts         ProviderLinkAttempt[]
+  dataExports              AccountDataExport[]
+  lifecycleRequests        AccountLifecycleRequest[]
+  profileMedia             ProfileMedia[]
+  transactionalDeliveries  TransactionalEmailDelivery[]
 
   @@index([status, lastSeenAt])
 }
@@ -151,16 +154,20 @@ model AccountCredential {
 }
 
 model AccountToken {
-  id                     String      @id @default(cuid())
+  id                     String                      @id @default(cuid())
   accountId              String
   purpose                String
-  tokenHash              String      @unique
+  tokenHash              String                      @unique
   expiresAt              DateTime
   consumedAt             DateTime?
+  attemptCount           Int                         @default(0)
+  maxAttempts            Int                         @default(5)
+  lastAttemptAt          DateTime?
   pendingNormalizedEmail String?
   pendingDisplayEmail    String?
-  createdAt              DateTime    @default(now())
-  account                UserAccount @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  createdAt              DateTime                    @default(now())
+  account                UserAccount                 @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  delivery               TransactionalEmailDelivery?
 
   @@index([accountId, purpose, expiresAt])
 }
@@ -171,6 +178,7 @@ model AccountSession {
   tokenHash   String      @unique
   csrfToken   String
   deviceLabel String?
+  sessionType String      @default("ORDINARY")
   expiresAt   DateTime
   lastSeenAt  DateTime    @default(now())
   revokedAt   DateTime?
@@ -178,6 +186,39 @@ model AccountSession {
   account     UserAccount @relation(fields: [accountId], references: [id], onDelete: Cascade)
 
   @@index([accountId, expiresAt])
+}
+
+model TransactionalEmailDelivery {
+  id                String        @id @default(cuid())
+  accountId         String
+  accountTokenId    String?       @unique
+  purpose           String
+  provider          String
+  recipientHash     String
+  providerMessageId String?       @unique
+  status            String        @default("PENDING")
+  submittedAt       DateTime?
+  deliveredAt       DateTime?
+  bouncedAt         DateTime?
+  failureCode       String?
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+  account           UserAccount   @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  accountToken      AccountToken? @relation(fields: [accountTokenId], references: [id], onDelete: SetNull)
+
+  @@index([accountId, purpose, createdAt])
+  @@index([status, createdAt])
+}
+
+model TransactionalEmailEvent {
+  id                String   @id @default(cuid())
+  providerEventKey  String   @unique
+  providerMessageId String
+  recordType        String
+  payloadChecksum   String
+  receivedAt        DateTime @default(now())
+
+  @@index([providerMessageId, recordType])
 }
 
 model AccountRoleAssignment {
@@ -1060,22 +1101,43 @@ model ProfileHandleHistory {
 }
 
 model ProfileMedia {
-  id         String         @id @default(cuid())
-  profileId  String
-  kind       String
-  storageKey String         @unique
-  mimeType   String
-  byteLength Int
-  width      Int?
-  height     Int?
-  altText    String?
-  createdAt  DateTime       @default(now())
-  removedAt  DateTime?
-  profile    PlayerProfile  @relation("ProfileMediaOwner", fields: [profileId], references: [id], onDelete: Cascade)
-  avatarFor  PlayerProfile? @relation("ProfileAvatar")
-  bannerFor  PlayerProfile? @relation("ProfileBanner")
+  id                 String         @id @default(cuid())
+  profileId          String
+  ownerAccountId     String?
+  kind               String
+  storageKey         String         @unique
+  originalStorageKey String?        @unique
+  mimeType           String
+  originalMimeType   String?
+  byteLength         Int
+  originalByteLength Int?
+  width              Int?
+  height             Int?
+  originalWidth      Int?
+  originalHeight     Int?
+  checksum           String?
+  cropCenterX        Float          @default(0.5)
+  cropCenterY        Float          @default(0.5)
+  cropScale          Float          @default(1)
+  cropAspect         Float          @default(1)
+  sourceOrientation  Int            @default(1)
+  rotation           Int            @default(0)
+  processingState    String         @default("READY")
+  scanState          String         @default("LOCAL_VALIDATED")
+  replacesMediaId    String?
+  altText            String?
+  createdAt          DateTime       @default(now())
+  updatedAt          DateTime       @updatedAt
+  removedAt          DateTime?
+  profile            PlayerProfile  @relation("ProfileMediaOwner", fields: [profileId], references: [id], onDelete: Cascade)
+  account            UserAccount?   @relation(fields: [ownerAccountId], references: [id], onDelete: SetNull)
+  replaces           ProfileMedia?  @relation("ProfileMediaReplacement", fields: [replacesMediaId], references: [id], onDelete: SetNull)
+  replacements       ProfileMedia[] @relation("ProfileMediaReplacement")
+  avatarFor          PlayerProfile? @relation("ProfileAvatar")
+  bannerFor          PlayerProfile? @relation("ProfileBanner")
 
   @@index([profileId, kind, removedAt])
+  @@index([ownerAccountId, processingState, scanState])
 }
 
 model ExternalIdentity {

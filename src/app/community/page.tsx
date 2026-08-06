@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { headers } from "next/headers";
 import { CommunityCardGrid } from "@/components/community/CommunityCardGrid";
 import { CommunityDiscoveryBrowser } from "@/components/community/CommunityDiscoveryBrowser";
 import { CommunityPageFrame } from "@/components/community/CommunityPageFrame";
@@ -13,6 +14,12 @@ export const metadata = {
 export const dynamic = "force-dynamic";
 
 export default async function CommunityHarborPage() {
+  const requestHeaders = await headers();
+  if (
+    process.env.HOMEPORT_PHASE7_VALIDATION_DELAY_HOOK === "1" &&
+    requestHeaders.get("x-homeport-validation-delay-ms") === "700"
+  )
+    await new Promise((resolve) => setTimeout(resolve, 700));
   const identity = await requireCanonicalAccountIdentity();
   const shelves = await getHomeportHarborShelves(identity?.accountId);
   return (

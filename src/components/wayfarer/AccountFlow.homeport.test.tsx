@@ -1,6 +1,5 @@
 import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { CURRENT_USER_CONTEXT_VERSION, type AuthenticatedCurrentUser } from "@/homeport/current-user";
 import { AccountFlow } from "./AccountFlow";
 
 const navigation = vi.hoisted(() => ({ replace: vi.fn(), refresh: vi.fn() }));
@@ -11,24 +10,6 @@ const currentUser = vi.hoisted(() => ({
 
 vi.mock("next/navigation", () => ({ useRouter: () => navigation }));
 vi.mock("@/components/auth/CurrentUserProvider", () => ({ useCurrentUser: () => currentUser }));
-
-const authenticated: AuthenticatedCurrentUser = {
-  contextVersion: CURRENT_USER_CONTEXT_VERSION,
-  status: "authenticated",
-  authenticated: true,
-  user: { accountId: "account-1", profileId: "profile-1", displayName: "Mara", initials: "M" },
-  capabilities: {
-    canUsePlayer: true,
-    canUseCaptain: false,
-    canUseCreator: false,
-    canModerate: false,
-    isAdministrator: false,
-  },
-  workspaces: ["public", "account", "community", "player"],
-  session: { id: "session-1", expiresAt: "2030-01-01T00:00:00.000Z" },
-  csrfToken: "csrf",
-  revision: "revision-1",
-};
 
 describe("Homeport account lifecycle", () => {
   afterEach(() => {
@@ -52,13 +33,18 @@ describe("Homeport account lifecycle", () => {
     expect(screen.getByRole("link", { name: /Already have an account/i })).toHaveAttribute("href", "/sign-in");
   });
 
-  it("homeport.registration.success-destination refreshes server context before the intended destination", async () => {
-    currentUser.invalidate.mockResolvedValue(authenticated);
+  it("homeport.owner-correction.round3.registration-verification-screen establishes only the bounded verification flow", async () => {
     vi.stubGlobal(
       "fetch",
-      vi
-        .fn()
-        .mockResolvedValue({ ok: true, json: async () => ({ ok: true, csrfToken: "csrf", next: "/player/library" }) }),
+      vi.fn().mockResolvedValue({
+        ok: true,
+        json: async () => ({
+          ok: true,
+          verificationRequired: true,
+          csrfToken: "verification-csrf",
+          next: "/verify-email?returnTo=%2Fplayer%2Flibrary",
+        }),
+      }),
     );
     render(<AccountFlow mode="register" />);
     fireEvent.change(screen.getByLabelText("Display name"), { target: { value: "Mara" } });
@@ -66,10 +52,29 @@ describe("Homeport account lifecycle", () => {
     fireEvent.change(screen.getByLabelText("Password"), { target: { value: "safe-development-password" } });
     fireEvent.change(screen.getByLabelText("Confirm password"), { target: { value: "safe-development-password" } });
     fireEvent.click(screen.getByRole("button", { name: "Continue" }));
-    await waitFor(() => expect(currentUser.invalidate).toHaveBeenCalledOnce());
-    expect(navigation.replace).toHaveBeenCalledWith("/player/library");
-    expect(currentUser.invalidate.mock.invocationCallOrder[0]).toBeLessThan(
-      navigation.replace.mock.invocationCallOrder[0],
-    );
+    await waitFor(() => expect(navigation.replace).toHaveBeenCalledWith("/verify-email?returnTo=%2Fplayer%2Flibrary"));
+    expect(currentUser.invalidate).not.toHaveBeenCalled();
+    expect(sessionStorage.getItem("wayfarer-csrf")).toBe("verification-csrf");
+  });
+
+  it("homeport.owner-correction.round3.change-registration-email replaces the destination and prior challenge", async () => {
+    const fetchMock = vi.fn().mockResolvedValue({
+      ok: true,
+      json: async () => ({ ok: true, maskedEmail: "n••••••@example.test", cooldownSeconds: 60 }),
+    });
+    vi.stubGlobal("fetch", fetchMock);
+    render(<AccountFlow mode="verify" initialCsrf="verification-csrf" maskedEmail="o•••••@example.test" />);
+    expect(screen.getByText(/o•••••@example\.test/iu)).toBeVisible();
+    expect(screen.getByLabelText("Code")).toHaveAttribute("inputmode", "numeric");
+    fireEvent.click(screen.getByRole("button", { name: "Change email" }));
+    fireEvent.change(screen.getByLabelText("New registration email"), { target: { value: "next@example.test" } });
+    fireEvent.click(screen.getByRole("button", { name: "Send code to new email" }));
+    await waitFor(() => expect(screen.getByText(/n••••••@example\.test/iu)).toBeVisible());
+    expect(fetchMock).toHaveBeenCalledWith("/api/auth/email/verification/change", {
+      method: "POST",
+      headers: { "content-type": "application/json", "x-csrf-token": "verification-csrf" },
+      body: JSON.stringify({ email: "next@example.test" }),
+    });
+    expect(screen.getByRole("button", { name: "Resend available in 60s" })).toBeDisabled();
   });
 });

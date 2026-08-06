@@ -1,23 +1,26 @@
 import { compare, hash } from "bcryptjs";
 import { randomUUID } from "node:crypto";
-import { appendFileSync, mkdirSync } from "node:fs";
-import { dirname, resolve, sep } from "node:path";
 import { db } from "@/lib/db";
 import { hashToken, makeToken } from "@/lib/security";
+import {
+  assertTransactionalEmailAvailable,
+  sendTransactionalEmail,
+  takeDevelopmentDelivery,
+  type TransactionalEmailPurpose,
+} from "@/wayfarer/transactional-email";
+import {
+  createEmailVerificationCode,
+  emailVerificationCodeHash,
+  emailVerificationPolicy,
+  verificationCodeMatches,
+} from "@/wayfarer/verification-policy";
 
 const bcryptRounds = 12;
 const sessionAgeMs = 1000 * 60 * 60 * 24 * 30;
-const verificationAgeMs = 1000 * 60 * 60 * 24;
+const actionTokenAgeMs = 1000 * 60 * 60 * 24;
 const resetAgeMs = 1000 * 60 * 30;
 
-type Delivery = {
-  purpose: "VERIFY_EMAIL" | "PASSWORD_RESET" | "EMAIL_CHANGE" | "EMAIL_CHANGE_NOTICE";
-  email: string;
-  token?: string;
-  accountId: string;
-  detail?: string;
-};
-const developmentOutbox: Delivery[] = [];
+export { takeDevelopmentDelivery };
 
 export class AccountError extends Error {
   constructor(
@@ -63,65 +66,51 @@ export async function recordSecurityEvent(
   });
 }
 
-function queueDelivery(delivery: Delivery) {
-  // Production delivery receives raw one-time material only through its configured
-  // adapter. Local governed runs may opt into a task-owned synthetic outbox so a
-  // separate browser process can inspect delivery without putting raw tokens in DB.
-  const taskOwnedAdapter = process.env.HOMEPORT_SYNTHETIC_EMAIL_ADAPTER === "TASK_OWNED_TEST";
-  if (process.env.NODE_ENV === "production" && !taskOwnedAdapter) return;
-  if (process.env.NODE_ENV !== "production") developmentOutbox.push(delivery);
-  const requestedPath = process.env.HOMEPORT_SYNTHETIC_OUTBOX_PATH;
-  if (!taskOwnedAdapter || !requestedPath) return;
-  const requestedRoot = process.env.HOMEPORT_PHASE7_TASK_ROOT;
-  if (!requestedRoot) throw new AccountError("Synthetic email delivery is not configured safely.", "UNAVAILABLE");
-  const taskRoot = resolve(requestedRoot);
-  const outboxPath = resolve(requestedPath);
-  if (!outboxPath.startsWith(`${taskRoot}${sep}`))
-    throw new AccountError("Synthetic email delivery is not configured safely.", "UNAVAILABLE");
-  mkdirSync(dirname(outboxPath), { recursive: true });
-  appendFileSync(outboxPath, `${JSON.stringify({ ...delivery, queuedAt: new Date().toISOString() })}\n`, {
-    encoding: "utf8",
-    mode: 0o600,
-  });
-}
-
-export function takeDevelopmentDelivery(purpose: Delivery["purpose"], email: string) {
-  const normalized = normalizeEmail(email);
-  const index = developmentOutbox.findIndex((item) => item.purpose === purpose && item.email === normalized);
-  return index < 0 ? null : developmentOutbox.splice(index, 1)[0];
-}
-
 async function issueToken(
   accountId: string,
-  purpose: Exclude<Delivery["purpose"], "EMAIL_CHANGE_NOTICE">,
+  purpose: Extract<TransactionalEmailPurpose, "VERIFY_EMAIL" | "PASSWORD_RESET" | "EMAIL_CHANGE">,
   email: string,
   expiresInMs: number,
   pendingEmail?: { normalized: string; display: string },
 ) {
-  const token = makeToken(32);
-  await db.$transaction([
+  assertTransactionalEmailAvailable();
+  const token = purpose === "VERIFY_EMAIL" ? createEmailVerificationCode() : makeToken(32);
+  const tokenHash = purpose === "VERIFY_EMAIL" ? emailVerificationCodeHash(accountId, email, token) : hashToken(token);
+  const [, created] = await db.$transaction([
     db.accountToken.updateMany({ where: { accountId, purpose, consumedAt: null }, data: { consumedAt: new Date() } }),
     db.accountToken.create({
       data: {
         accountId,
         purpose,
-        tokenHash: hashToken(token),
+        tokenHash,
         expiresAt: new Date(Date.now() + expiresInMs),
+        maxAttempts: purpose === "VERIFY_EMAIL" ? emailVerificationPolicy.maxAttempts : 5,
         pendingNormalizedEmail: pendingEmail?.normalized,
         pendingDisplayEmail: pendingEmail?.display,
       },
     }),
   ]);
-  queueDelivery({ purpose, email, token, accountId });
+  await sendTransactionalEmail({ purpose, email, token, accountId, accountTokenId: created.id });
   return token;
 }
 
-export async function createAccountSession(accountId: string, deviceLabel?: string) {
+export async function createAccountSession(
+  accountId: string,
+  deviceLabel?: string,
+  sessionType: "ORDINARY" | "VERIFICATION" = "ORDINARY",
+) {
   const token = makeToken(32);
   const csrfToken = makeToken(24);
   const expiresAt = new Date(Date.now() + sessionAgeMs);
   const session = await db.accountSession.create({
-    data: { accountId, tokenHash: hashToken(token), csrfToken, expiresAt, deviceLabel: deviceLabel?.slice(0, 80) },
+    data: {
+      accountId,
+      tokenHash: hashToken(token),
+      csrfToken,
+      expiresAt,
+      deviceLabel: deviceLabel?.slice(0, 80),
+      sessionType,
+    },
   });
   await db.userAccount.update({ where: { id: accountId }, data: { lastSeenAt: new Date() } });
   return { id: session.id, token, csrfToken, expiresAt };
@@ -154,6 +143,7 @@ export async function registerAccount(input: {
   displayName: string;
   deviceLabel?: string;
 }) {
+  assertTransactionalEmailAvailable();
   const email = normalizeEmail(input.email);
   if (!/^\S+@\S+\.\S+$/.test(email) || email.length > 254) throw new AccountError("Enter a valid email address.");
   assertPasswordPolicy(input.password);
@@ -175,8 +165,8 @@ export async function registerAccount(input: {
       });
       return { ...created, profile };
     });
-    await issueToken(account.id, "VERIFY_EMAIL", email, verificationAgeMs);
-    return { account, session: await createAccountSession(account.id, input.deviceLabel) };
+    await issueToken(account.id, "VERIFY_EMAIL", email, emailVerificationPolicy.expiresMs);
+    return { account, session: await createAccountSession(account.id, input.deviceLabel, "VERIFICATION") };
   } catch (cause) {
     if (typeof cause === "object" && cause && "code" in cause && (cause as { code?: string }).code === "P2002")
       throw new AccountError("An account already uses that email address.", "CONFLICT");
@@ -203,15 +193,20 @@ export async function authenticateAccount(login: string, password: string, devic
   if (!account?.credential || !account.profile || !["ACTIVE", "PENDING_VERIFICATION"].includes(account.status))
     return null;
   if (!(await compare(password, account.credential.passwordHash))) return null;
-  const session = await createAccountSession(account.id, deviceLabel);
+  const session = await createAccountSession(
+    account.id,
+    deviceLabel,
+    account.status === "PENDING_VERIFICATION" ? "VERIFICATION" : "ORDINARY",
+  );
   await recordSecurityEvent(account.id, "ACCOUNT_SIGNED_IN");
   return { account, session };
 }
 
-export async function currentAccount(token: string) {
+export async function currentAccount(token: string, sessionTypes: readonly string[] = ["ORDINARY"]) {
   return db.accountSession.findFirst({
     where: {
       tokenHash: hashToken(token),
+      sessionType: { in: [...sessionTypes] },
       revokedAt: null,
       expiresAt: { gt: new Date() },
       account: {
@@ -220,23 +215,51 @@ export async function currentAccount(token: string) {
         suspendedAt: null,
       },
     },
-    include: { account: { include: { profile: true, roles: { where: { revokedAt: null } } } } },
+    include: {
+      account: {
+        include: {
+          profile: true,
+          emails: { where: { isPrimary: true }, take: 1 },
+          roles: { where: { revokedAt: null } },
+        },
+      },
+    },
   });
 }
 
-export async function verifyAccountEmail(rawToken: string) {
+export async function verifyAccountEmail(accountId: string, rawCode: string) {
   const token = await db.accountToken.findFirst({
-    where: { purpose: "VERIFY_EMAIL", tokenHash: hashToken(rawToken), consumedAt: null, expiresAt: { gt: new Date() } },
+    where: { accountId, purpose: "VERIFY_EMAIL", consumedAt: null },
     include: { account: { include: { emails: true } } },
+    orderBy: { createdAt: "desc" },
   });
-  if (!token) throw new AccountError("That verification link is invalid or expired.");
+  if (!token) throw new AccountError("That verification code is invalid or has been replaced.");
+  if (token.expiresAt.getTime() <= Date.now()) throw new AccountError("That verification code has expired.");
+  if (token.attemptCount >= token.maxAttempts)
+    throw new AccountError("Too many incorrect attempts. Request a new verification code.");
+  const primaryEmail = token.account.emails.find((email) => email.isPrimary)?.normalizedEmail;
+  if (!primaryEmail || !verificationCodeMatches(accountId, primaryEmail, rawCode, token.tokenHash)) {
+    await db.accountToken.update({
+      where: { id: token.id },
+      data: { attemptCount: { increment: 1 }, lastAttemptAt: new Date() },
+    });
+    throw new AccountError(
+      token.attemptCount + 1 >= token.maxAttempts
+        ? "Too many incorrect attempts. Request a new verification code."
+        : "That verification code is incorrect.",
+    );
+  }
+  const now = new Date();
   await db.$transaction([
-    db.accountToken.update({ where: { id: token.id }, data: { consumedAt: new Date() } }),
+    db.accountToken.update({ where: { id: token.id }, data: { consumedAt: now, lastAttemptAt: now } }),
     db.accountEmail.updateMany({
       where: { accountId: token.accountId, isPrimary: true },
-      data: { verificationState: "VERIFIED", verifiedAt: new Date() },
+      data: { verificationState: "VERIFIED", verifiedAt: now },
     }),
-    db.userAccount.update({ where: { id: token.accountId }, data: { status: "ACTIVE", claimedAt: new Date() } }),
+    db.userAccount.update({
+      where: { id: token.accountId },
+      data: { status: "ACTIVE", claimedAt: now, ordinaryWorkspaceEntryAt: now },
+    }),
   ]);
   await recordSecurityEvent(token.accountId, "EMAIL_VERIFIED");
 }
@@ -244,8 +267,64 @@ export async function verifyAccountEmail(rawToken: string) {
 export async function resendVerification(accountId: string) {
   const email = await db.accountEmail.findFirst({ where: { accountId, isPrimary: true } });
   if (!email || email.verificationState === "VERIFIED") return;
-  await issueToken(accountId, "VERIFY_EMAIL", email.normalizedEmail, verificationAgeMs);
+  const latest = await db.accountToken.findFirst({
+    where: { accountId, purpose: "VERIFY_EMAIL" },
+    select: { createdAt: true },
+    orderBy: { createdAt: "desc" },
+  });
+  if (latest && Date.now() - latest.createdAt.getTime() < emailVerificationPolicy.resendCooldownMs)
+    throw new AccountError("Wait 60 seconds before requesting another verification code.");
+  const recentCount = await db.accountToken.count({
+    where: { accountId, purpose: "VERIFY_EMAIL", createdAt: { gt: new Date(Date.now() - 60 * 60_000) } },
+  });
+  if (recentCount >= emailVerificationPolicy.maxResendsPerHour)
+    throw new AccountError("Verification resend is temporarily rate limited.");
+  await issueToken(accountId, "VERIFY_EMAIL", email.normalizedEmail, emailVerificationPolicy.expiresMs);
   await recordSecurityEvent(accountId, "EMAIL_VERIFICATION_RESENT");
+}
+
+export function maskEmailAddress(email: string) {
+  return email.replace(
+    /^(.)(.*)(@.*)$/u,
+    (_match, first: string, middle: string, domain: string) =>
+      `${first}${"•".repeat(Math.min(6, Math.max(2, middle.length)))}${domain}`,
+  );
+}
+
+export async function changePendingVerificationEmail(accountId: string, requestedEmail: string) {
+  assertTransactionalEmailAvailable();
+  const normalized = normalizeEmail(requestedEmail);
+  if (!/^\S+@\S+\.\S+$/u.test(normalized) || normalized.length > 254)
+    throw new AccountError("Enter a valid email address.");
+  const account = await db.userAccount.findUnique({
+    where: { id: accountId },
+    include: { emails: { where: { isPrimary: true }, take: 1 } },
+  });
+  const current = account?.emails[0];
+  if (!account || account.status !== "PENDING_VERIFICATION" || !current)
+    throw new AccountError("The registration email can only be changed before verification.");
+  if (current.normalizedEmail === normalized)
+    throw new AccountError("Enter a different email address, or resend the current code.");
+  const collision = await db.accountEmail.findUnique({ where: { normalizedEmail: normalized }, select: { id: true } });
+  if (collision) throw new AccountError("That email address cannot be used.", "CONFLICT");
+  try {
+    await db.accountEmail.update({
+      where: { id: current.id },
+      data: {
+        normalizedEmail: normalized,
+        displayEmail: requestedEmail.trim(),
+        verificationState: "UNVERIFIED",
+        verifiedAt: null,
+      },
+    });
+  } catch (cause) {
+    if (typeof cause === "object" && cause && "code" in cause && (cause as { code?: string }).code === "P2002")
+      throw new AccountError("That email address cannot be used.", "CONFLICT");
+    throw cause;
+  }
+  await issueToken(accountId, "VERIFY_EMAIL", normalized, emailVerificationPolicy.expiresMs);
+  await recordSecurityEvent(accountId, "PENDING_VERIFICATION_EMAIL_CHANGED", { emailId: current.id });
+  return { maskedEmail: maskEmailAddress(requestedEmail.trim()) };
 }
 
 export async function requestPasswordReset(email: string) {
@@ -277,7 +356,7 @@ export async function requestEmailChange(accountId: string, password: string, re
     throw new AccountError("Choose an email address different from the current one.");
   const collision = await db.accountEmail.findUnique({ where: { normalizedEmail: normalized }, select: { id: true } });
   if (collision) throw new AccountError("That email address cannot be used.", "CONFLICT");
-  await issueToken(accountId, "EMAIL_CHANGE", normalized, verificationAgeMs, {
+  await issueToken(accountId, "EMAIL_CHANGE", normalized, actionTokenAgeMs, {
     normalized,
     display: requestedEmail.trim(),
   });
@@ -333,7 +412,7 @@ export async function confirmEmailChange(rawToken: string) {
       },
     });
   });
-  queueDelivery({
+  await sendTransactionalEmail({
     purpose: "EMAIL_CHANGE_NOTICE",
     email: current.normalizedEmail,
     accountId: token.accountId,
@@ -343,6 +422,7 @@ export async function confirmEmailChange(rawToken: string) {
 }
 
 export async function claimGuestAccount(input: { accountId: string; email: string; password: string }) {
+  assertTransactionalEmailAvailable();
   const email = normalizeEmail(input.email);
   if (!/^\S+@\S+\.\S+$/.test(email) || email.length > 254) throw new AccountError("Enter a valid email address.");
   assertPasswordPolicy(input.password);
@@ -370,7 +450,7 @@ export async function claimGuestAccount(input: { accountId: string; email: strin
       throw new AccountError("An account already uses that email address.", "CONFLICT");
     throw cause;
   }
-  await issueToken(account.id, "VERIFY_EMAIL", email, verificationAgeMs);
+  await issueToken(account.id, "VERIFY_EMAIL", email, emailVerificationPolicy.expiresMs);
 }
 
 export async function mergeGuestIntoAccount(guestAccountId: string, targetAccountId: string) {
@@ -474,6 +554,16 @@ export async function resetPassword(rawToken: string, password: string) {
       },
     });
   });
+  const primary = await db.accountEmail.findFirst({
+    where: { accountId: token.accountId, isPrimary: true, verificationState: "VERIFIED" },
+  });
+  if (primary)
+    await sendTransactionalEmail({
+      purpose: "PASSWORD_CHANGED_NOTICE",
+      email: primary.normalizedEmail,
+      accountId: token.accountId,
+      detail: "The account password was changed. Use account recovery if this was not you.",
+    });
   return createAccountSession(token.accountId, "Password reset");
 }
 

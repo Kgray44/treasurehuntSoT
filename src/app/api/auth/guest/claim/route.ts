@@ -10,18 +10,28 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Guest claim details are invalid." }, { status: 400 });
   try {
     await claimGuestAccount({ accountId: session.accountId, ...parsed.data });
-    const replacement = await createAccountSession(session.accountId, request.headers.get("user-agent") ?? undefined);
+    const replacement = await createAccountSession(
+      session.accountId,
+      request.headers.get("user-agent") ?? undefined,
+      "VERIFICATION",
+    );
     await revokeAccountSession(session.accountId, session.id);
     await setWayfarerCookie(replacement.token);
     return NextResponse.json({
       ok: true,
       verificationRequired: true,
       csrfToken: replacement.csrfToken,
-      next: "/passport",
+      next: "/verify-email",
     });
   } catch (cause) {
     const error =
       cause instanceof AccountError ? cause : new AccountError("Guest claim is unavailable.", "UNAVAILABLE");
-    return NextResponse.json({ error: error.message }, { status: error.code === "CONFLICT" ? 409 : 400 });
+    return NextResponse.json(
+      {
+        error: error.message,
+        ...(error.code === "UNAVAILABLE" ? { registrationState: "PROVIDER_UNAVAILABLE" } : {}),
+      },
+      { status: error.code === "CONFLICT" ? 409 : error.code === "UNAVAILABLE" ? 503 : 400 },
+    );
   }
 }

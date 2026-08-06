@@ -2,13 +2,20 @@
 
 /* eslint-disable @next/next/no-img-element -- This boundary preserves arbitrary authorized media URLs and provides a truthful fallback. */
 
-import { useState, type AudioHTMLAttributes, type ImgHTMLAttributes, type VideoHTMLAttributes } from "react";
+import {
+  useState,
+  type AudioHTMLAttributes,
+  type ImgHTMLAttributes,
+  type ReactNode,
+  type VideoHTMLAttributes,
+} from "react";
 import { MediaFallback } from "./AsyncState";
 
 type ResilientImageProps = Omit<ImgHTMLAttributes<HTMLImageElement>, "src"> & {
   src: string | null | undefined;
   fallbackLabel: string;
   fallbackDetail?: string;
+  fallback?: ReactNode;
 };
 
 export function ResilientImage({
@@ -16,16 +23,24 @@ export function ResilientImage({
   alt,
   fallbackLabel,
   fallbackDetail = "Artwork is unavailable. The rest of this content remains usable.",
+  fallback,
   className,
   ...props
 }: ResilientImageProps) {
   const [failedSource, setFailedSource] = useState<string | null>(null);
-  if (!src || failedSource === src)
+  if (!src || failedSource === src) {
+    if (fallback !== undefined)
+      return (
+        <span className={className} data-resilient-image="fallback">
+          {fallback}
+        </span>
+      );
     return (
       <span className={className} data-resilient-image="fallback">
         <MediaFallback label={fallbackLabel} detail={fallbackDetail} />
       </span>
     );
+  }
   return (
     <img
       {...props}

@@ -3,6 +3,7 @@ import { createHash, randomUUID } from "node:crypto";
 import type { Prisma } from "@prisma/client";
 import { db } from "@/lib/db";
 import { createAccountSession, normalizeEmail } from "@/wayfarer/accounts";
+import { sendTransactionalEmail, type TransactionalEmailPurpose } from "@/wayfarer/transactional-email";
 
 export const ACCOUNT_REACTIVATION_WINDOW_DAYS = 30;
 export const ACCOUNT_DELETION_DELAY_DAYS = 30;
@@ -11,6 +12,32 @@ export const ACCOUNT_EXPORT_TTL_HOURS = 48;
 const addDays = (date: Date, days: number) => new Date(date.getTime() + days * 24 * 60 * 60 * 1_000);
 const addHours = (date: Date, hours: number) => new Date(date.getTime() + hours * 60 * 60 * 1_000);
 const digest = (value: string) => createHash("sha256").update(value).digest("hex");
+
+async function attemptLifecycleNotice(accountId: string, purpose: TransactionalEmailPurpose, detail: string) {
+  const email = await db.accountEmail.findFirst({
+    where: { accountId, isPrimary: true, verificationState: "VERIFIED" },
+    select: { normalizedEmail: true },
+  });
+  if (!email) return;
+  try {
+    await sendTransactionalEmail({ purpose, email: email.normalizedEmail, accountId, detail });
+  } catch (cause) {
+    await db.securityEvent.create({
+      data: {
+        accountId,
+        eventType: "TRANSACTIONAL_EMAIL_DELIVERY_FAILED",
+        correlationId: randomUUID(),
+        metadata: JSON.stringify({
+          purpose,
+          failureCode:
+            typeof cause === "object" && cause && "code" in cause
+              ? String((cause as { code?: unknown }).code).slice(0, 64)
+              : "PROVIDER_FAILURE",
+        }),
+      },
+    });
+  }
+}
 
 export class AccountLifecycleError extends Error {
   constructor(
@@ -325,6 +352,11 @@ export async function deactivateAccount(accountId: string, password: string, con
     });
     return lifecycle;
   });
+  await attemptLifecycleNotice(
+    accountId,
+    "ACCOUNT_DEACTIVATED_NOTICE",
+    `The account was deactivated. Reactivation remains available for ${ACCOUNT_REACTIVATION_WINDOW_DAYS} days.`,
+  );
   return { id: request.id, state: request.state, reactivationDeadline: reactivationDeadline.toISOString() };
 }
 
@@ -375,6 +407,11 @@ export async function scheduleAccountDeletion(accountId: string, password: strin
     });
     return lifecycle;
   });
+  await attemptLifecycleNotice(
+    accountId,
+    "ACCOUNT_DELETION_SCHEDULED",
+    `Account deletion was scheduled for ${scheduledFor.toISOString()}. It may be cancelled before that time.`,
+  );
   return {
     id: request.id,
     state: request.state,
@@ -424,6 +461,11 @@ export async function reactivateAccount(email: string, password: string) {
       },
     });
   });
+  await attemptLifecycleNotice(
+    account.id,
+    "ACCOUNT_REACTIVATED_NOTICE",
+    "The account was reactivated. Review account security if this was unexpected.",
+  );
   return { accountId: account.id, session: await createAccountSession(account.id, "Account reactivation") };
 }
 
@@ -463,6 +505,11 @@ export async function cancelScheduledDeletion(email: string, password: string, c
       },
     });
   });
+  await attemptLifecycleNotice(
+    account.id,
+    "ACCOUNT_DELETION_CANCELLED",
+    "Scheduled account deletion was cancelled. The account remains active.",
+  );
   return { accountId: account.id, session: await createAccountSession(account.id, "Deletion cancellation") };
 }
 

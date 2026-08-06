@@ -1,6 +1,6 @@
 import { createHash } from "node:crypto";
 import { execFileSync } from "node:child_process";
-import { mkdir, readFile, rm, stat, writeFile } from "node:fs/promises";
+import { copyFile, mkdir, readFile, readdir, rm, stat, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { chromium } from "playwright";
 import { PrismaClient } from "@prisma/client";
@@ -26,8 +26,17 @@ const taskRoot = path.resolve(required("HOMEPORT_PHASE7_TASK_ROOT"));
 const sourceSha = required("HOMEPORT_EXPERIENCE_IMAGES_SOURCE_SHA").toLowerCase();
 const baseUrl = required("HOMEPORT_EXPERIENCE_IMAGES_BASE_URL").replace(/\/$/u, "");
 const databasePath = path.resolve(required("HOMEPORT_EXPERIENCE_IMAGES_DATABASE_PATH"));
-const handoffPath = path.join(taskRoot, "credentials", "owner-correction-round2-walkthrough-credentials.private.json");
-const fixture = "homeport-phase7-owner-correction-round2-v1";
+const round3 = process.env.HOMEPORT_PHASE7_EXPERIENCE_IMAGES_VARIANT === "round3";
+const handoffPath = path.join(
+  taskRoot,
+  "credentials",
+  round3
+    ? "owner-correction-round3-walkthrough-credentials.private.json"
+    : "owner-correction-round2-walkthrough-credentials.private.json",
+);
+const fixture = round3 ? "homeport-phase7-owner-correction-round3-v1" : "homeport-phase7-owner-correction-round2-v1";
+const correctionLabel = round3 ? "Round 3" : "Round 2";
+const statusLabel = round3 ? "ROUND3" : "ROUND2";
 const command = process.argv[2] ?? "generate";
 const canonicalDatabase = path.resolve("C:/Users/kkids/Documents/Codex_TreasureHunt/prisma/dev.db");
 const allowedClassifications = new Set([
@@ -127,6 +136,7 @@ async function generate() {
       restrictedStorageState,
       restrictedAccountId: handoff.accounts.RETURNING_FULL_CAPABILITY.accountId,
     });
+    if (round3) await includeRound3JourneyEvidence(records, browserVersion);
   } finally {
     await browser.close();
   }
@@ -134,7 +144,7 @@ async function generate() {
   const manifest = {
     schemaVersion: "1.0.0",
     project: "Project Homeport",
-    artifact: "Phase 7 Owner Walkthrough Correction Round 2 Experience Images",
+    artifact: `Phase 7 Owner Walkthrough Correction ${correctionLabel} Experience Images`,
     fixture,
     sourceSha,
     generatedAt: new Date().toISOString(),
@@ -157,7 +167,7 @@ async function generate() {
   await validate();
   process.stdout.write(
     `${JSON.stringify({
-      status: "HOMEPORT_PHASE7_OWNER_CORRECTION_ROUND2_EXPERIENCE_IMAGES_GENERATED",
+      status: `HOMEPORT_PHASE7_OWNER_CORRECTION_${statusLabel}_EXPERIENCE_IMAGES_GENERATED`,
       sourceSha,
       totalCaptures: records.length,
       humanFacingRoutes: concreteRoutes.length,
@@ -373,6 +383,71 @@ async function generate() {
   }
 }
 
+async function includeRound3JourneyEvidence(records, browserVersion) {
+  const journeyReportRoot = path.join(taskRoot, "reports", "owner-correction-round3-journeys");
+  const outputDirectory = path.join(outputRoot, "Round3", "Affected_States");
+  await mkdir(outputDirectory, { recursive: true });
+  const entries = (await readdir(journeyReportRoot))
+    .filter((name) => /^HP-OWCR3-EV-[A-Z]+(?:-[A-Z0-9]+)+\.json$/u.test(name))
+    .sort();
+  if (entries.length < 30) throw new Error(`HOMEPORT_ROUND3_EXPERIENCE_EVIDENCE_INCOMPLETE:${entries.length}:30`);
+  for (const name of entries) {
+    const metadata = await json(path.join(journeyReportRoot, name));
+    if (metadata.sourceSha !== sourceSha)
+      throw new Error(`HOMEPORT_ROUND3_EXPERIENCE_SOURCE_MISMATCH:${metadata.evidenceId}:${metadata.sourceSha}`);
+    const fileName = `${metadata.evidenceId}.png`;
+    const absolutePath = path.join(outputDirectory, fileName);
+    await copyFile(metadata.screenshotPath, absolutePath);
+    const width = metadata.viewport?.width ?? 1440;
+    const height = metadata.viewport?.height ?? 900;
+    const relativePath = path.posix.join("Round3", "Affected_States", fileName);
+    records.push({
+      imageId: `HP-XI-${String(records.length + 1).padStart(4, "0")}`,
+      screenId: metadata.evidenceId,
+      route: metadata.route,
+      routePattern: metadata.route,
+      pageTitle: metadata.title || "Voyagewright",
+      productArea: "Round3_Affected_States",
+      accountAlias: round3EvidenceAlias(metadata.evidenceId),
+      fixture,
+      state: round3EvidenceState(metadata.evidenceId),
+      theme: String(metadata.theme ?? "dark").toLocaleUpperCase("en-US"),
+      viewport: `${width <= 500 ? "mobile" : "desktop"}-${width}x${height}`,
+      browserVersion: `Chromium ${browserVersion}`,
+      sourceSha,
+      capturedAt: metadata.timestamp ?? new Date().toISOString(),
+      screenshotPath: relativePath,
+      sha256: await sha256(absolutePath),
+      limitation:
+        "Exact-source synthetic Round 3 owner-review state. Live Postmark delivery, deployment, and owner acceptance are not represented.",
+      visualReviewStatus: "PENDING_HUMAN_VISUAL_REVIEW",
+      coverageKind: "STATE",
+      criticality: "HIGH",
+      privacyBasis:
+        "Synthetic fixture aliases only; credentials, cookies, tokens, private prose, and object keys are excluded.",
+    });
+  }
+}
+
+function round3EvidenceAlias(evidenceId) {
+  if (/EV-(J|K|L|M|X|Z)-/u.test(evidenceId)) return "ANONYMOUS_OR_NEW_SYNTHETIC";
+  if (/EV-(N|O|P|AA)-/u.test(evidenceId)) return "KGTESTING_NEW";
+  if (/EV-Q-/u.test(evidenceId)) return "ACTIVE_PLAYER_LOCKED";
+  if (/EV-(A|B|C|I|Y|AB)-/u.test(evidenceId)) return "NO_PROFILE_MEDIA";
+  return "PROFILE_MEDIA_COMPLETE";
+}
+
+function round3EvidenceState(evidenceId) {
+  if (/CROP/u.test(evidenceId)) return "CROP";
+  if (/VERIFICATION-INVALID/u.test(evidenceId)) return "INVALID_CODE";
+  if (/VERIFICATION/u.test(evidenceId)) return "VERIFICATION";
+  if (/LOCK/u.test(evidenceId)) return "ACTIVE_LOCK";
+  if (/EMPTY/u.test(evidenceId)) return "EMPTY";
+  if (/CROSSFADE/u.test(evidenceId)) return "ROUTE_MOTION";
+  if (/ACCOUNT-MENU/u.test(evidenceId)) return "ACCOUNT_MENU_MOTION";
+  return "READY";
+}
+
 async function validate() {
   const [manifest, routeInventory] = await Promise.all([
     json(path.join(outputRoot, "manifest.json")),
@@ -434,6 +509,7 @@ async function validate() {
     "Contact_Sheets/Master_Mobile.png",
     "Contact_Sheets/Master_Light_Mode.png",
     "Contact_Sheets/Master_Dark_Mode.png",
+    ...(round3 ? ["Contact_Sheets/Round3_Affected_States.png"] : []),
   ])
     try {
       if ((await stat(path.join(outputRoot, ...relative.split("/")))).size < 1)
@@ -447,7 +523,7 @@ async function validate() {
   if (errors.length) throw new Error(`HOMEPORT_EXPERIENCE_IMAGES_INVALID\n${errors.join("\n")}`);
   process.stdout.write(
     `${JSON.stringify({
-      status: "HOMEPORT_PHASE7_OWNER_CORRECTION_ROUND2_EXPERIENCE_IMAGES_VALID",
+      status: `HOMEPORT_PHASE7_OWNER_CORRECTION_${statusLabel}_EXPERIENCE_IMAGES_VALID`,
       sourceSha,
       totalCaptures: manifest.records.length,
       humanFacingRoutes: expectedRoutes.length,
@@ -473,6 +549,7 @@ async function acceptVisualReview() {
   await writeFile(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`, "utf8");
   await writeFile(path.join(outputRoot, "index.html"), buildIndex(manifest), "utf8");
   await writeFile(path.join(outputRoot, "README.md"), buildReadme(manifest), "utf8");
+  if (round3) await acceptRound3JourneyVisualReview();
   process.stdout.write(
     `${JSON.stringify({
       status: "HOMEPORT_EXPERIENCE_IMAGES_VISUAL_REVIEW_ACCEPTED",
@@ -481,6 +558,21 @@ async function acceptVisualReview() {
       boundary: manifest.visualReview.boundary,
     })}\n`,
   );
+}
+
+async function acceptRound3JourneyVisualReview() {
+  const reportRoot = path.join(taskRoot, "reports", "owner-correction-round3-journeys");
+  const names = (await readdir(reportRoot)).filter((name) => /^HP-OWCR3-EV-.*\.json$/u.test(name));
+  const reviewedAt = new Date().toISOString();
+  for (const name of names) {
+    const reportPath = path.join(reportRoot, name);
+    const metadata = await json(reportPath);
+    if (!metadata.screenshotPath) continue;
+    metadata.reviewClassification = "ACCEPTED";
+    metadata.reviewedAt = reviewedAt;
+    metadata.reviewBoundary = "Codex human visual review; not owner acceptance.";
+    await writeFile(reportPath, `${JSON.stringify(metadata, null, 2)}\n`, "utf8");
+  }
 }
 
 async function representativeValues() {
@@ -769,6 +861,11 @@ async function createContactSheets(records) {
   await contactSheet(baseMobile, "Master_Mobile.png");
   await contactSheet(light, "Master_Light_Mode.png");
   await contactSheet(dark, "Master_Dark_Mode.png");
+  if (round3)
+    await contactSheet(
+      records.filter((record) => record.productArea === "Round3_Affected_States"),
+      "Round3_Affected_States.png",
+    );
   for (const area of [...new Set(baseDesktop.map((record) => record.productArea))].sort())
     await contactSheet(
       baseDesktop.filter((record) => record.productArea === area),

@@ -12,7 +12,7 @@ export const preferenceRuntimeChannel = "voyagewright-preferences";
 export const preferenceThemeBootstrapKey = "voyagewright-theme-bootstrap-v1";
 
 export const defaultRuntimePreferences: RuntimePreferences = {
-  experience: { motion: "SYSTEM", textScale: 1, theme: "SYSTEM", contrast: "SYSTEM" },
+  experience: { motion: "SYSTEM", textScale: 1, theme: "DARK", contrast: "SYSTEM" },
 };
 
 function matches(query: string) {

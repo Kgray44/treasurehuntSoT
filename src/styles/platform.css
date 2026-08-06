@@ -315,6 +315,38 @@ html[data-motion-level="reduced"] .platform-relic *,
   margin-top: 1rem;
 }
 
+.account-verification-code {
+  max-width: 18rem;
+  font-variant-numeric: tabular-nums;
+  font-size: clamp(1.5rem, 8vw, 2.35rem);
+  font-weight: 850;
+  letter-spacing: 0.32em;
+  text-align: center;
+}
+
+.account-verification-help {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.7rem;
+  max-width: 520px;
+  margin-top: 1rem;
+}
+
+.account-verification-help > p,
+.account-verification-email-change {
+  flex-basis: 100%;
+}
+
+.account-verification-email-change {
+  display: grid;
+  gap: 0.7rem;
+  padding: 0.9rem;
+  border: 1px solid rgb(70 47 27 / 24%);
+  border-radius: 0.75rem;
+  background: rgb(255 250 232 / 42%);
+}
+
 .account-session-list {
   display: grid;
   gap: 0.7rem;

@@ -1,6 +1,7 @@
 import { db } from "@/lib/db";
 import { publicListingProjection, publicReleaseProjection } from "@/community/services";
 import { personalHarborNavigation } from "@/homeport/personal-harbor-navigation";
+import { workspaceCapabilityOverview } from "@/homeport/workspace-capabilities";
 import { humanAccountState } from "@/wayfarer/account-lifecycle";
 
 export { personalHarborNavigation, personalHarborSectionIds } from "@/homeport/personal-harbor-navigation";
@@ -44,10 +45,17 @@ export async function personalInformation(accountId: string) {
 }
 
 export async function personalHarborOverview(accountId: string, profileId: string) {
-  const [profile, identities, sessions, history, memories, artifacts, saves] = await Promise.all([
+  const [profile, identities, sessions, history, memories, artifacts, saves, capabilities] = await Promise.all([
     db.playerProfile.findUnique({
       where: { id: profileId },
-      select: { displayName: true, handle: true, biography: true, avatarMediaId: true, bannerMediaId: true },
+      select: {
+        displayName: true,
+        handle: true,
+        biography: true,
+        defaultVisibility: true,
+        avatarMedia: { select: { id: true, processingState: true, scanState: true, removedAt: true } },
+        bannerMedia: { select: { id: true, processingState: true, scanState: true, removedAt: true } },
+      },
     }),
     db.externalIdentity.count({ where: { accountId, status: "LINKED", revokedAt: null } }),
     db.accountSession.count({ where: { accountId, revokedAt: null, expiresAt: { gt: new Date() } } }),
@@ -55,20 +63,35 @@ export async function personalHarborOverview(accountId: string, profileId: strin
     db.chronicleMemory.count({ where: { playerProfileId: profileId, deletedAt: null } }),
     db.playerArtifactRecord.count({ where: { playerProfileId: profileId } }),
     listSavedContent(accountId),
+    workspaceCapabilityOverview(accountId),
   ]);
-  const completed = [
-    profile?.displayName,
-    profile?.handle,
-    profile?.biography,
-    profile?.avatarMediaId,
-    profile?.bannerMediaId,
-  ].filter(Boolean).length;
+  const readyMedia = (
+    media: { id: string; processingState: string; scanState: string; removedAt: Date | null } | null,
+  ) =>
+    media && media.processingState === "READY" && media.scanState === "LOCAL_VALIDATED" && !media.removedAt
+      ? `/api/profile-media/${media.id}`
+      : null;
   return {
     profile: {
       displayName: profile?.displayName ?? "Voyagewright account",
       handle: profile?.handle ?? null,
-      completion: { completed, total: 5, percent: completed * 20 },
+      biography: profile?.biography ?? null,
+      defaultVisibility: profile?.defaultVisibility ?? "ONLY_ME",
+      avatarUrl: readyMedia(profile?.avatarMedia ?? null),
+      bannerUrl: readyMedia(profile?.bannerMedia ?? null),
+      setupPrompt: profile?.handle
+        ? null
+        : {
+            title: "Finish your public Profile",
+            detail: "Choose a handle so other people can find and credit you.",
+            href: "/account/profile",
+          },
     },
+    workspaces: capabilities.workspaces.map((workspace) => ({
+      id: workspace.id,
+      label: workspace.label,
+      state: workspace.state,
+    })),
     counts: {
       linkedIdentities: identities,
       activeSessions: sessions,

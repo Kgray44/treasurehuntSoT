@@ -1,6 +1,6 @@
 export const themeBootstrapScript = String.raw`(() => {
   const root = document.documentElement;
-  const safe = { theme: "SYSTEM", contrast: "SYSTEM", textScale: 1, motion: "SYSTEM" };
+  const safe = { theme: "DARK", contrast: "SYSTEM", textScale: 1, motion: "SYSTEM" };
   try {
     const stored = JSON.parse(localStorage.getItem("voyagewright-theme-bootstrap-v1") || "null");
     if (stored && ["SYSTEM", "LIGHT", "DARK", "HIGH_CONTRAST"].includes(stored.theme)) safe.theme = stored.theme;

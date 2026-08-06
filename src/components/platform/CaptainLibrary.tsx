@@ -452,17 +452,23 @@ export function CaptainLibrary() {
             <p>Begin live Voyages, invite Crew, and keep Chronicle authoring in Voyagewright Studio.</p>
           </div>
           <div>
-            <button
-              className="brass-button"
-              onClick={(event) => {
-                setWizardRestoreTarget(event.currentTarget);
-                setWizard(true);
-                setWizardDirection(1);
-                setStep(0);
-              }}
-            >
-              Create a Voyage
-            </button>
+            {library.publishedTales.length ? (
+              <button
+                className="brass-button"
+                onClick={(event) => {
+                  setWizardRestoreTarget(event.currentTarget);
+                  setWizard(true);
+                  setWizardDirection(1);
+                  setStep(0);
+                }}
+              >
+                Create a Voyage
+              </button>
+            ) : (
+              <Link className="brass-button" href="/studio/library">
+                Prepare a Chronicle
+              </Link>
+            )}
           </div>
         </header>
         <nav className="platform-tabs" aria-label="Captain's Console sections">
@@ -515,17 +521,25 @@ export function CaptainLibrary() {
               <div className="captain-groups">
                 {!voyageCount && (
                   <EmptyState
-                    title="No voyages need your attention"
-                    detail="Choose a published Chronicle, add your Crew, and create secure invitations."
-                    action={{
-                      label: "Create a Voyage",
-                      onClick: () => {
-                        setWizardRestoreTarget(null);
-                        setWizard(true);
-                        setWizardDirection(1);
-                        setStep(0);
-                      },
-                    }}
+                    title="No Captain Voyages yet"
+                    detail={
+                      library.publishedTales.length
+                        ? "Choose a published Chronicle, add your Crew, and create secure invitations."
+                        : "This Captain workspace is ready. Create or publish your own Chronicle, or wait for a public Chronicle to become available."
+                    }
+                    action={
+                      library.publishedTales.length
+                        ? {
+                            label: "Create a Voyage",
+                            onClick: () => {
+                              setWizardRestoreTarget(null);
+                              setWizard(true);
+                              setWizardDirection(1);
+                              setStep(0);
+                            },
+                          }
+                        : { label: "Open Creator Studio", href: "/studio/library" }
+                    }
                   />
                 )}
                 {voyageGroups.map(
@@ -569,15 +583,19 @@ export function CaptainLibrary() {
                   <EmptyState
                     title="No Crew invitations yet"
                     detail="Invitations appear here after a Captain creates a Voyage for one or more Crew members."
-                    action={{
-                      label: "Create a Voyage",
-                      onClick: () => {
-                        setWizardRestoreTarget(null);
-                        setWizard(true);
-                        setWizardDirection(1);
-                        setStep(0);
-                      },
-                    }}
+                    action={
+                      library.publishedTales.length
+                        ? {
+                            label: "Create a Voyage",
+                            onClick: () => {
+                              setWizardRestoreTarget(null);
+                              setWizard(true);
+                              setWizardDirection(1);
+                              setStep(0);
+                            },
+                          }
+                        : { label: "Open Creator Studio", href: "/studio/library" }
+                    }
                   />
                 ) : (
                   <div className="invitation-table" role="table" aria-label="Crew invitations for Voyages">

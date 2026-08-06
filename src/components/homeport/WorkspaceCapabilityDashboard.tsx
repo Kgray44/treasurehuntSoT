@@ -24,6 +24,7 @@ type Overview = {
     state: "ACTIVE" | "AVAILABLE" | "BLOCKED" | "UNAVAILABLE";
     href: string | null;
     detail: string;
+    emptyHint?: string | null;
   }>;
 };
 
@@ -142,9 +143,12 @@ export function WorkspaceCapabilityDashboard() {
       <section className="workspace-capability-grid" aria-label="Account workspace capabilities">
         {overview.workspaces.map((workspace) => (
           <article key={workspace.id} data-workspace-state={workspace.state.toLocaleLowerCase()}>
-            <span className="workspace-capability-state">{workspace.state.toLocaleLowerCase()}</span>
+            <span className="workspace-capability-state">
+              {workspace.state === "ACTIVE" ? "Available" : workspace.state.toLocaleLowerCase()}
+            </span>
             <h2>{workspace.label}</h2>
             <p>{workspace.detail}</p>
+            {workspace.emptyHint ? <p className="workspace-capability-note">{workspace.emptyHint}</p> : null}
             {workspace.href ? (
               <Link className="button button--primary" href={workspace.href}>
                 Enter {workspace.label}
