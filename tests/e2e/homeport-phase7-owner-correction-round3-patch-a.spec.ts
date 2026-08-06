@@ -235,9 +235,13 @@ test("Journey F: Provider failure after creation", async ({ page }) => {
   await fillRegistration(page, `Patch A Provider Failure ${journeyId}`, email);
   await page.getByRole("button", { name: "Continue" }).click();
   await expect(page).toHaveURL(/\/verify-email\?.*delivery=failed/u);
+  const deliveryFailure = page.getByRole("alert");
   await expect(
-    page.getByText("Your account was created, but we could not send the verification email.", { exact: true }),
+    deliveryFailure.getByText("Your account was created, but we could not send the verification email.", {
+      exact: true,
+    }),
   ).toBeVisible();
+  await expect(deliveryFailure.locator("p")).toHaveCSS("color", "rgb(58, 60, 51)");
   await expect(page.getByText("Account registration unavailable.", { exact: true })).toHaveCount(0);
   const created = await db.accountEmail.findUniqueOrThrow({
     where: { normalizedEmail: email },
@@ -291,6 +295,13 @@ test("Journey H: Existing unverified account sign-in", async ({ page }) => {
   await expect(notice.getByText("Verify your email when you are ready.")).toBeVisible();
   await expect(notice.getByRole("button", { name: "Resend verification" })).toBeVisible();
   await expect(notice.getByRole("link", { name: "Change email" })).toBeVisible();
+  const [headerBox, noticeBox] = await Promise.all([
+    page.locator(".product-shell-header").boundingBox(),
+    notice.boundingBox(),
+  ]);
+  expect(headerBox).not.toBeNull();
+  expect(noticeBox).not.toBeNull();
+  expect(noticeBox!.y).toBeGreaterThanOrEqual(headerBox!.y + headerBox!.height - 1);
   await capture(page, "HP-AUTH-PATCH-EV-I-UNVERIFIED-SIGNED-IN", "PENDING_VERIFICATION");
   const menu = await accountMenu(page, account.displayName);
   await menu.getByRole("link", { name: "Personal Harbor", exact: true }).click();

@@ -368,6 +368,10 @@ html[data-motion-level="reduced"] .platform-relic *,
   color: #5f431b;
 }
 
+.account-flow-notice p {
+  color: #3a3c33;
+}
+
 .account-flow-nav,
 .account-flow-status,
 .account-flow-actions {
