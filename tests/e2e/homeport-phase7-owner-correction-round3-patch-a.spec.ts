@@ -593,11 +593,7 @@ async function sampleNavigation(
       ((destination?.interactive && !destination.contentHidden) || destinationIsSettled)
     )
       destinationReadyMs = elapsed;
-    if (
-      destinationSettledMs === null &&
-      destinationIsSettled
-    )
-      destinationSettledMs = elapsed;
+    if (destinationSettledMs === null && destinationIsSettled) destinationSettledMs = elapsed;
     if (
       navigationStartedMs !== null &&
       destinationSettledMs !== null &&

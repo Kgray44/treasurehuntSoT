@@ -4323,7 +4323,25 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_7_Correction_Round_3_Patch_A_Implementation_Report.md",
+      "record_type": "program-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_7_Correction_Round_3_Patch_A_Integration_Manifest.md",
+      "record_type": "program-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_7_Correction_Round_3_Patch_A_Test_Plan.md",
+      "record_type": "program-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_7_Correction_Round_3_Patch_A_Validation_Record.md",
       "record_type": "program-record",
       "status": "current",
       "canonical_for": null

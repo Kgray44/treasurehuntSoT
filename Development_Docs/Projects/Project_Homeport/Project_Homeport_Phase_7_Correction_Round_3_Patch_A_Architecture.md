@@ -61,6 +61,14 @@ arms a 500 ms fallback, replaces the ready incoming page with loading, and uses 
 700 ms forced settlement. This creates both the delayed spinner and the
 destination-to-old-page-to-destination flash.
 
+Implementation tracing also exposed one second route defect through the
+retained Round 3 slow-transition journey. When an initially settled page still
+contained a Next.js pending marker, snapshot capture returned before installing
+its readiness observer. A later DOM-only readiness change therefore left no
+settled outgoing snapshot and allowed a background-only frame. The corrected
+boundary always installs generation-owned readiness observation, even when the
+first capture is pending.
+
 ## Frozen account decisions
 
 1. Input normalization and password/display-name/email validation occur before
@@ -135,3 +143,20 @@ Sounding Line subsystem and mainline `RELEASE_GO`, canonical-database invariance
 exact branch parity, and one fresh healthy owner-review runtime. Postmark remains
 external unless a real provider submission and approved inbox receipt are both
 proven.
+
+## Implemented Patch A disposition
+
+Exact product source `29ae357cc4df369bf33ce2dce6477618eefcbfaa` implements
+the frozen decisions. Registration now commits the pending account, Profile,
+primary email, credential, baseline Player capability, verification challenge,
+verification session, and audit event atomically. Delivery occurs after commit
+and has a truthful retryable failure state. Returning credentials establish the
+ordinary account session regardless of primary-email verification; verification
+remains a non-blocking follow-up for ordinary navigation.
+
+The route boundary now uses one monotonically increasing generation for timers,
+snapshots, readiness, loading, settlement, focus, and cleanup. The ordinary
+crossfade is 280 ms with a 4 px incoming settle; the loading threshold remains
+500 ms. Readiness cancels loading permanently for its generation, stale
+generations cannot write state, and initially pending settled pages retain
+readiness observation so there is no background-only gap.

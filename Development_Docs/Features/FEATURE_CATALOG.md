@@ -1139,7 +1139,7 @@ Every current human-facing screen is now source-inventoried with governed visual
 **Status:** BRANCH COMPLETE NOT MERGED
 **Program or subsystem:** Project Homeport Phase 7
 
-Project Homeport now includes the integrated Whole Voyage plus Owner Correction Rounds 1-3: governed Profile imagery and crop editing, identity propagation, six-digit verification, a Postmark production adapter with deterministic synthetic testing, ordinary Player/Captain/Creator entry separated from resource authority, direct route crossfades, visible account-menu motion, and Dark defaults.
+Project Homeport now includes the integrated Whole Voyage plus Owner Correction Rounds 1-3 and focused Patch A: governed Profile imagery and crop editing, identity propagation, atomic pending registration, six-digit registration verification, ordinary unverified sign-in, a Postmark production adapter with deterministic synthetic testing, workspace entry separated from resource authority, generation-owned route crossfades, visible account-menu motion, and Dark defaults.
 
 ### Important subfeatures
 
@@ -1181,6 +1181,11 @@ Project Homeport now includes the integrated Whole Voyage plus Owner Correction 
 - Perceptible production account-menu opening and closing motion
 - Dark anonymous and new-account defaults with broad Light visual completion deferred
 - Correction Round 3 journeys A-V with retained Round 2 A-W, Round 1 A-U, and original Phase 7 A-O regressions
+- Focused Patch A atomic pending registration with explicit display-name and email conflict recovery
+- Accessible password strength and confirmation status with server-authoritative policy
+- Ordinary verified or unverified account sign-in without an email-code challenge and with non-blocking verification follow-up
+- Generation-owned 280 ms route crossfades with a 500 ms loading threshold, stale-generation invalidation, and background-only-frame prevention
+- Patch A journeys A-N with selected Round 3 critical and original Phase 7 account/session regressions
 
 ### Primary surfaces
 
@@ -1190,7 +1195,7 @@ Project Homeport now includes the integrated Whole Voyage plus Owner Correction 
 
 - Not available on main until separately reviewed and integrated
 - Not deployed; no pull request was created by the governed Round 3 task
-- Owner Re-Review Round 3 remains PENDING_OWNER_DECISION
+- Owner Re-Review Round 3 remains PENDING_OWNER_DECISION; focused Patch A readiness is not owner acceptance
 - Broad Light Mode visual completion remains deferred
 - Postmark live delivery is POSTMARK_BLOCKED_EXTERNAL_CONFIGURATION; synthetic proof is not live inbox proof
 - Production MySQL execution, external-provider configuration, and physical assistive-technology validation remain external
@@ -1208,6 +1213,8 @@ Project Homeport now includes the integrated Whole Voyage plus Owner Correction 
 - test: `tests/e2e/homeport-phase7-owner-correction-round2.spec.ts`
 - completion-record: `Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_7_Correction_Round_3_Validation_Record.md`
 - test: `tests/e2e/homeport-phase7-owner-correction-round3.spec.ts`
+- completion-record: `Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_7_Correction_Round_3_Patch_A_Validation_Record.md`
+- test: `tests/e2e/homeport-phase7-owner-correction-round3-patch-a.spec.ts`
 - path: `Experience_Images/manifest.json`
 
 ---

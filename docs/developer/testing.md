@@ -3,7 +3,7 @@ title: Testing
 audience: developer
 status: current
 canonical_for: testing-guide
-last_reviewed: 2026-08-05
+last_reviewed: 2026-08-06
 ---
 
 # Testing
@@ -26,3 +26,11 @@ Correction Round 2 is locally exact-source validated and ready for owner re-revi
 ## Phase 7 correction Round 3 status
 
 Correction Round 3 is locally exact-source validated and ready for owner re-review. It adds governed Profile imagery/cropping and identity propagation, six-digit verification, a Postmark production adapter with task-owned synthetic isolation, ordinary Player/Captain/Creator entry separated from resource authority, direct route crossfades, visible account-menu motion, and Dark defaults. Owner Re-Review Round 3 remains `PENDING_OWNER_DECISION`; the branch is not merged or deployed. Postmark is `POSTMARK_BLOCKED_EXTERNAL_CONFIGURATION`, broad Light Mode visual completion is deferred, and production MySQL plus physical assistive-technology validation remain external.
+
+## Phase 7 correction Round 3 Patch A
+
+Use the Patch A task root, fixture, isolated databases, synthetic outbox, and
+sealed production build for registration or transition validation. Temporal
+route evidence must sample generation, layers, opacity, loading, focus, and
+background-only state; screenshots alone cannot prove the absence of a delayed
+flash. Never run the reconciliation command against canonical `prisma/dev.db`.

@@ -3,7 +3,7 @@ title: Feature status reference
 audience: reference
 status: current
 canonical_for: feature-status
-last_reviewed: 2026-08-05
+last_reviewed: 2026-08-06
 ---
 
 # Feature status
@@ -17,6 +17,7 @@ last_reviewed: 2026-08-05
 | Governed route reachability graph                     | development-only       | branch validated      | Project Homeport Phase 5 is complete on the named branch with local/synthetic evidence; it is not on main, deployed, or owner accepted.                                           |
 | Complete product surfaces and states                  | development-only       | branch validated      | Project Homeport Phase 6 completes current critical/high screens and state/responsive/accessibility evidence on the named branch; it is not on main, deployed, or owner accepted. |
 | Integrated whole-product voyage and owner walkthrough | development-only       | walkthrough ready     | Project Homeport Phase 7 A-O journeys and final synthetic fixture are branch validated; owner decision remains pending and no merge or deployment is claimed.                     |
+| Account access and route-transition stabilization     | development-only       | branch validated      | Correction Round 3 Patch A restores atomic registration, ordinary unverified sign-in, and generation-owned route transitions; Postmark and owner acceptance remain external.      |
 | Identity, Passport, history, and artifacts            | available              | integration validated | Wayfarer Phases 3 and 4 are on main; live identity providers remain external validation pending.                                                                                  |
 | Player and Captain experience                         | available              | integration validated | Libraries, invitations, journal, Story routes, and role-aware navigation are on main.                                                                                             |
 | Creator Studio                                        | available              | focused validated     | Authored material and immutable publishing are implemented; broad browser proof is governed separately.                                                                           |
@@ -38,3 +39,9 @@ Correction Round 2 is locally exact-source validated and ready for owner re-revi
 ## Phase 7 correction Round 3 status
 
 Correction Round 3 is locally exact-source validated and ready for owner re-review. It adds governed Profile imagery/cropping and identity propagation, six-digit verification, a Postmark production adapter with task-owned synthetic isolation, ordinary Player/Captain/Creator entry separated from resource authority, direct route crossfades, visible account-menu motion, and Dark defaults. Owner Re-Review Round 3 remains `PENDING_OWNER_DECISION`; the branch is not merged or deployed. Postmark is `POSTMARK_BLOCKED_EXTERNAL_CONFIGURATION`, broad Light Mode visual completion is deferred, and production MySQL plus physical assistive-technology validation remain external.
+
+## Phase 7 correction Round 3 Patch A status
+
+Patch A is branch validated and ready for focused owner review. It is not on
+`main` or deployed, live Postmark delivery is not proven, and Round 3 remains
+`PENDING_OWNER_DECISION`.

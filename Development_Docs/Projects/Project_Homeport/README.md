@@ -304,3 +304,16 @@ implementation or change the `PENDING_OWNER_DECISION` boundary.
 - [Patch A architecture](Project_Homeport_Phase_7_Correction_Round_3_Patch_A_Architecture.md)
 - [Patch A findings ledger](Project_Homeport_Phase_7_Correction_Round_3_Patch_A_Findings.csv)
 - [Patch A test plan](Project_Homeport_Phase_7_Correction_Round_3_Patch_A_Test_Plan.md)
+- [Patch A implementation report](Project_Homeport_Phase_7_Correction_Round_3_Patch_A_Implementation_Report.md)
+- [Patch A validation record](Project_Homeport_Phase_7_Correction_Round_3_Patch_A_Validation_Record.md)
+- [Patch A integration manifest](Project_Homeport_Phase_7_Correction_Round_3_Patch_A_Integration_Manifest.md)
+
+Patch A is locally implemented and exact-product-source validated at
+`29ae357cc4df369bf33ce2dce6477618eefcbfaa`. Patch A A-N passed 14/14,
+the selected retained Round 3 critical set passed 10/10, and the original
+Phase 7 account/session set passed 9/9. Registration is atomic and truthful,
+ordinary sign-in no longer requires an email code, and route transitions use a
+generation-owned 280 ms crossfade with a 500 ms loading threshold. Postmark
+remains `POSTMARK_BLOCKED_EXTERNAL_CONFIGURATION`; Round 3 remains
+`PENDING_OWNER_DECISION`, and no merge, deployment, or broader owner acceptance
+is claimed.

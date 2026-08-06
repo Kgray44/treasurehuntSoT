@@ -3,7 +3,7 @@ title: Features and subfeatures
 audience: product
 status: current
 canonical_for: product-features
-last_reviewed: 2026-08-05
+last_reviewed: 2026-08-06
 ---
 
 # Features and subfeatures
@@ -123,3 +123,14 @@ Correction Round 2 is locally exact-source validated and ready for owner re-revi
 ## Phase 7 correction Round 3 status
 
 Correction Round 3 is locally exact-source validated and ready for owner re-review. It adds governed Profile imagery/cropping and identity propagation, six-digit verification, a Postmark production adapter with task-owned synthetic isolation, ordinary Player/Captain/Creator entry separated from resource authority, direct route crossfades, visible account-menu motion, and Dark defaults. Owner Re-Review Round 3 remains `PENDING_OWNER_DECISION`; the branch is not merged or deployed. Postmark is `POSTMARK_BLOCKED_EXTERNAL_CONFIGURATION`, broad Light Mode visual completion is deferred, and production MySQL plus physical assistive-technology validation remain external.
+
+## Phase 7 correction Round 3 Patch A
+
+**Audience:** Account owners and the product owner. **Availability:** complete
+on the Project Homeport branch, not available on `main`. Patch A adds atomic
+pending registration, explicit duplicate display-name and email recovery,
+accessible password strength and confirmation status, ordinary unverified
+account sign-in without a code challenge, and generation-owned 280 ms route
+crossfades with a 500 ms delayed-loading threshold. Synthetic email is proven;
+live Postmark delivery remains externally blocked. Round 3 owner acceptance is
+not claimed.

@@ -3,7 +3,7 @@ title: Current status
 audience: product
 status: current
 canonical_for: product-current-status
-last_reviewed: 2026-08-05
+last_reviewed: 2026-08-06
 ---
 
 # Current status
@@ -70,3 +70,14 @@ Correction Round 2 is locally exact-source validated and ready for owner re-revi
 ## Phase 7 correction Round 3 status
 
 Correction Round 3 is locally exact-source validated and ready for owner re-review. It adds governed Profile imagery/cropping and identity propagation, six-digit verification, a Postmark production adapter with task-owned synthetic isolation, ordinary Player/Captain/Creator entry separated from resource authority, direct route crossfades, visible account-menu motion, and Dark defaults. Owner Re-Review Round 3 remains `PENDING_OWNER_DECISION`; the branch is not merged or deployed. Postmark is `POSTMARK_BLOCKED_EXTERNAL_CONFIGURATION`, broad Light Mode visual completion is deferred, and production MySQL plus physical assistive-technology validation remain external.
+
+## Phase 7 correction Round 3 Patch A status
+
+Patch A is locally validated on the retained branch and restores the account
+and navigation paths needed for continued owner review. New registration is
+atomic, duplicate display-name and email outcomes are explicit, ordinary
+sign-in does not require a six-digit email code, unverified status is
+non-blocking, and generation-owned route transitions prevent delayed loading or
+old-page return after readiness. Postmark remains
+`POSTMARK_BLOCKED_EXTERNAL_CONFIGURATION`; this is not on `main`, deployed, or
+owner accepted.

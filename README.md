@@ -34,6 +34,13 @@ package and owned local runtime are ready. Owner Decision remains
 `PENDING_OWNER_DECISION`; this branch-local evidence is not on `main`, deployed,
 live-provider validated, owner accepted, or product accepted.
 
+Correction Round 3 Patch A stabilizes the branch-local registration, ordinary
+sign-in, and page-switching paths that blocked continued owner review. Pending
+registration is atomic, duplicate fields have truthful recovery, unverified
+accounts can sign in without an email code, and generation-owned 280 ms route
+crossfades suppress stale pages and delayed loading after readiness. Postmark
+remains `POSTMARK_BLOCKED_EXTERNAL_CONFIGURATION`.
+
 ## Stack
 
 - Next.js 16 App Router, React 19, strict TypeScript

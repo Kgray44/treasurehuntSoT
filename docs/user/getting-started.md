@@ -3,7 +3,7 @@ title: Getting started
 audience: user
 status: current
 canonical_for: getting-started
-last_reviewed: 2026-08-05
+last_reviewed: 2026-08-06
 ---
 
 # Getting started
@@ -59,3 +59,13 @@ Correction Round 2 is locally exact-source validated and ready for owner re-revi
 ## Phase 7 correction Round 3 status
 
 Correction Round 3 is locally exact-source validated and ready for owner re-review. It adds governed Profile imagery/cropping and identity propagation, six-digit verification, a Postmark production adapter with task-owned synthetic isolation, ordinary Player/Captain/Creator entry separated from resource authority, direct route crossfades, visible account-menu motion, and Dark defaults. Owner Re-Review Round 3 remains `PENDING_OWNER_DECISION`; the branch is not merged or deployed. Postmark is `POSTMARK_BLOCKED_EXTERNAL_CONFIGURATION`, broad Light Mode visual completion is deferred, and production MySQL plus physical assistive-technology validation remain external.
+
+## Phase 7 correction Round 3 Patch A
+
+On the retained branch, registration asks for display name, email, password,
+and password confirmation with visible strength and match status. A duplicate
+display name stays on Sign Up with an inline correction; an existing email
+moves safely to Sign In. Returning accounts sign in with identifier and
+password only. If the email is unverified, a non-blocking notice provides
+resend and change-email actions without blocking ordinary Home, Personal
+Harbor, Player, Captain, or Creator navigation.

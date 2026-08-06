@@ -58,3 +58,22 @@ Line subsystem/mainline authority. Final publication proof separately checks
 staged privacy, canonical database hash, clean worktree, local/tracking/
 advertised parity, and the retained owner runtime. Raw test output is diagnostic;
 only final Sounding Line `RELEASE_GO` is authority.
+
+## Focused execution record
+
+Exact product source `29ae357cc4df369bf33ce2dce6477618eefcbfaa` passed Patch
+A journeys A-N 14/14 on one sealed production build. The retained Round 3
+critical subset F, G, H, I, K, N, O, P, S, and U passed 10/10 after the current
+Patch A migration was applied to fresh disposable clones. Original Phase 7
+account/session journeys A, B, G, H, I, J, L, M, and N passed 9/9 after current
+migrations and capability reconciliation were applied to fresh disposable
+clones.
+
+The focused Vitest set passed 103/103, the account-notice component set passed
+22/22, and the final route-boundary set passed 15/15. The registration
+validator passed atomicity, concurrent conflict, provider-failure, retry, and
+ordinary unverified-sign-in cases. DRY_RUN, COMMIT, and VERIFY reconciliation
+completed on a task-owned database with two governed repairs and zero remaining
+actionable inconsistencies. All 13 required visual checkpoints received Codex
+inspection; all five temporal receipts record a passing sampled-state sequence.
+Postmark remains `POSTMARK_BLOCKED_EXTERNAL_CONFIGURATION`.
