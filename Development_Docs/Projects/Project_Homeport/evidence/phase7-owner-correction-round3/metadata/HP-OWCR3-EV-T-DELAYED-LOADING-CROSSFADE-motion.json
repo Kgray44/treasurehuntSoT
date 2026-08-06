@@ -1,0 +1,37 @@
+{
+  "evidenceId": "HP-OWCR3-EV-T-DELAYED-LOADING-CROSSFADE",
+  "journeyId": "HP-OWCR3-JRN-P",
+  "sourceSha": "581e5d3c5d4560bd101362e835c4eb0ed5a85e3f",
+  "fixtureVersion": "homeport-phase7-owner-correction-round3-v1",
+  "measurementKind": "COMPUTED_FRAME_SEQUENCE",
+  "measurements": {
+    "governedDelayMs": 700,
+    "outgoingSample": {
+      "routeCount": 2,
+      "interactive": ["false", "true"],
+      "hidden": ["true", "false"],
+      "opacities": ["1", "1"],
+      "paths": ["/tales", "/community"]
+    },
+    "loadingSample": [
+      {
+        "path": "/tales",
+        "text": "Published ChroniclesChoose a ChronicleReview the Chronicle, duration, and Crew size before you begin or continue a Voyage.SearchProgressAny progressNot startedI",
+        "asyncStates": []
+      },
+      {
+        "path": "/community",
+        "text": "Opening Community Harbor",
+        "asyncStates": ["pending-delay"]
+      }
+    ],
+    "sample": {
+      "routeCount": 2,
+      "interactive": ["false", "true"],
+      "hidden": ["true", "false"],
+      "opacities": ["1", "1"],
+      "paths": ["/tales", "/community"]
+    }
+  },
+  "result": "PASSED"
+}

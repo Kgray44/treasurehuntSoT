@@ -1,0 +1,22 @@
+{
+  "evidenceId": "HP-OWCR3-EV-R-PERSONAL-HARBOR-CROSSFADE",
+  "journeyId": "HP-OWCR3-JRN-N",
+  "sourceSha": "581e5d3c5d4560bd101362e835c4eb0ed5a85e3f",
+  "fixtureVersion": "homeport-phase7-owner-correction-round3-v1",
+  "result": "PASSED",
+  "visualReview": "ACCEPTED",
+  "reviewer": "Codex",
+  "ownerReview": "PENDING_OWNER_DECISION",
+  "browser": "Playwright Chromium 141.0.7390.37",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "route": "/account/sessions",
+  "title": "Voyagewright | Stories made to be played",
+  "screenshot": "screenshots/HP-OWCR3-EV-R-PERSONAL-HARBOR-CROSSFADE.png",
+  "screenshotSha256": "882ab4fc4b93d3058add37a53c6389f759fd5c84b42ed5bc7eb95691fd1ab7a0",
+  "screenshotBytes": 450357,
+  "timestamp": "2026-08-06T14:50:52.607Z",
+  "limitation": "Local production-build Chromium proof against a synthetic task-owned SQLite clone; not owner acceptance, live-provider proof, merge, or deployment."
+}

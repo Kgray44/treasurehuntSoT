@@ -78,7 +78,9 @@
       "phase1Implementation": {
         "authority": "HP-SES-001",
         "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION"
-      }
+      },
+      "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
+      "phase7OwnerCorrectionRound3Evidence": ["HP-OWCR3-EV-S-CROSS-PRODUCT-CROSSFADE"]
     },
     {
       "nodeId": "nav-3",
@@ -99,7 +101,9 @@
       "phase1Implementation": {
         "authority": "HP-SES-001",
         "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION"
-      }
+      },
+      "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
+      "phase7OwnerCorrectionRound3Evidence": ["HP-OWCR3-EV-O-CAPTAIN-EMPTY"]
     },
     {
       "nodeId": "nav-4",
@@ -120,7 +124,9 @@
       "phase1Implementation": {
         "authority": "HP-SES-001",
         "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION"
-      }
+      },
+      "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
+      "phase7OwnerCorrectionRound3Evidence": ["HP-OWCR3-EV-P-CREATOR-EMPTY"]
     },
     {
       "nodeId": "nav-5",
@@ -141,7 +147,9 @@
       "phase1Implementation": {
         "authority": "HP-SES-001",
         "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION"
-      }
+      },
+      "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
+      "phase7OwnerCorrectionRound3Evidence": ["HP-OWCR3-EV-O-CAPTAIN-EMPTY"]
     },
     {
       "nodeId": "nav-6",
@@ -183,7 +191,9 @@
       "phase1Implementation": {
         "authority": "HP-SES-001",
         "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION"
-      }
+      },
+      "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
+      "phase7OwnerCorrectionRound3Evidence": ["HP-OWCR3-EV-O-CAPTAIN-EMPTY"]
     },
     {
       "nodeId": "nav-8",
@@ -221,7 +231,15 @@
       "disabledCondition": null,
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
-      "evidenceId": "HP-EV-001"
+      "evidenceId": "HP-EV-001",
+      "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
+      "phase7OwnerCorrectionRound3Evidence": [
+        "HP-OWCR3-EV-AC-REDUCED-MOTION",
+        "HP-OWCR3-EV-AD-FULL-ROUND3-REGRESSION",
+        "HP-OWCR3-EV-U-ACCOUNT-MENU-OPENING",
+        "HP-OWCR3-EV-V-ACCOUNT-MENU-OPEN",
+        "HP-OWCR3-EV-X-DARK-FIRST-PAINT"
+      ]
     },
     {
       "nodeId": "nav-10",
@@ -272,7 +290,9 @@
       "disabledCondition": null,
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
-      "evidenceId": "HP-EV-018"
+      "evidenceId": "HP-EV-018",
+      "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
+      "phase7OwnerCorrectionRound3Evidence": ["HP-OWCR3-EV-T-DELAYED-LOADING-CROSSFADE"]
     },
     {
       "nodeId": "nav-13",
@@ -323,7 +343,9 @@
       "disabledCondition": null,
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
-      "evidenceId": "HP-EV-018"
+      "evidenceId": "HP-EV-018",
+      "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
+      "phase7OwnerCorrectionRound3Evidence": ["HP-OWCR3-EV-T-DELAYED-LOADING-CROSSFADE"]
     },
     {
       "nodeId": "nav-16",
@@ -374,7 +396,9 @@
       "disabledCondition": null,
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
-      "evidenceId": "HP-EV-018"
+      "evidenceId": "HP-EV-018",
+      "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
+      "phase7OwnerCorrectionRound3Evidence": ["HP-OWCR3-EV-T-DELAYED-LOADING-CROSSFADE"]
     },
     {
       "nodeId": "nav-19",
@@ -548,7 +572,9 @@
       "disabledCondition": null,
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
-      "evidenceId": "HP-EV-018"
+      "evidenceId": "HP-EV-018",
+      "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
+      "phase7OwnerCorrectionRound3Evidence": ["HP-OWCR3-EV-T-DELAYED-LOADING-CROSSFADE"]
     },
     {
       "nodeId": "nav-29",
@@ -582,7 +608,9 @@
       "disabledCondition": null,
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
-      "evidenceId": "HP-EV-018"
+      "evidenceId": "HP-EV-018",
+      "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
+      "phase7OwnerCorrectionRound3Evidence": ["HP-OWCR3-EV-T-DELAYED-LOADING-CROSSFADE"]
     },
     {
       "nodeId": "nav-31",
@@ -709,7 +737,17 @@
       "disabledCondition": null,
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
-      "evidenceId": null
+      "evidenceId": null,
+      "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
+      "phase7OwnerCorrectionRound3Evidence": [
+        "HP-OWCR3-EV-A-AVATAR-SELECTED",
+        "HP-OWCR3-EV-AB-ZOOM-CROP-EDITOR",
+        "HP-OWCR3-EV-B-AVATAR-CROP",
+        "HP-OWCR3-EV-C-AVATAR-INLINE-PREVIEW",
+        "HP-OWCR3-EV-D-BANNER-CROP",
+        "HP-OWCR3-EV-E-BANNER-INLINE-PREVIEW",
+        "HP-OWCR3-EV-Y-MOBILE-AVATAR-CROP"
+      ]
     },
     {
       "nodeId": "nav-38",
@@ -747,7 +785,9 @@
       "phase1Implementation": {
         "authority": "HP-SES-001",
         "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION"
-      }
+      },
+      "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
+      "phase7OwnerCorrectionRound3Evidence": ["HP-OWCR3-EV-O-CAPTAIN-EMPTY"]
     },
     {
       "nodeId": "nav-40",
@@ -768,7 +808,9 @@
       "phase1Implementation": {
         "authority": "HP-SES-001",
         "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION"
-      }
+      },
+      "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
+      "phase7OwnerCorrectionRound3Evidence": ["HP-OWCR3-EV-P-CREATOR-EMPTY"]
     },
     {
       "nodeId": "nav-41",
@@ -802,7 +844,15 @@
       "disabledCondition": null,
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
-      "evidenceId": "HP-EV-001"
+      "evidenceId": "HP-EV-001",
+      "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
+      "phase7OwnerCorrectionRound3Evidence": [
+        "HP-OWCR3-EV-AC-REDUCED-MOTION",
+        "HP-OWCR3-EV-AD-FULL-ROUND3-REGRESSION",
+        "HP-OWCR3-EV-U-ACCOUNT-MENU-OPENING",
+        "HP-OWCR3-EV-V-ACCOUNT-MENU-OPEN",
+        "HP-OWCR3-EV-X-DARK-FIRST-PAINT"
+      ]
     },
     {
       "nodeId": "nav-43",
@@ -844,7 +894,9 @@
       "phase1Implementation": {
         "authority": "HP-SES-001",
         "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION"
-      }
+      },
+      "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
+      "phase7OwnerCorrectionRound3Evidence": ["HP-OWCR3-EV-J-REGISTRATION"]
     },
     {
       "nodeId": "nav-45",
@@ -882,7 +934,15 @@
       "disabledCondition": null,
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
-      "evidenceId": "HP-EV-001"
+      "evidenceId": "HP-EV-001",
+      "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
+      "phase7OwnerCorrectionRound3Evidence": [
+        "HP-OWCR3-EV-AC-REDUCED-MOTION",
+        "HP-OWCR3-EV-AD-FULL-ROUND3-REGRESSION",
+        "HP-OWCR3-EV-U-ACCOUNT-MENU-OPENING",
+        "HP-OWCR3-EV-V-ACCOUNT-MENU-OPEN",
+        "HP-OWCR3-EV-X-DARK-FIRST-PAINT"
+      ]
     },
     {
       "nodeId": "nav-47",
@@ -903,7 +963,9 @@
       "phase1Implementation": {
         "authority": "HP-SES-001",
         "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION"
-      }
+      },
+      "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
+      "phase7OwnerCorrectionRound3Evidence": ["HP-OWCR3-EV-O-CAPTAIN-EMPTY"]
     },
     {
       "nodeId": "nav-48",
@@ -920,7 +982,15 @@
       "disabledCondition": null,
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
-      "evidenceId": "HP-EV-001"
+      "evidenceId": "HP-EV-001",
+      "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
+      "phase7OwnerCorrectionRound3Evidence": [
+        "HP-OWCR3-EV-AC-REDUCED-MOTION",
+        "HP-OWCR3-EV-AD-FULL-ROUND3-REGRESSION",
+        "HP-OWCR3-EV-U-ACCOUNT-MENU-OPENING",
+        "HP-OWCR3-EV-V-ACCOUNT-MENU-OPEN",
+        "HP-OWCR3-EV-X-DARK-FIRST-PAINT"
+      ]
     },
     {
       "nodeId": "nav-49",
@@ -941,7 +1011,9 @@
       "phase1Implementation": {
         "authority": "HP-SES-001",
         "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION"
-      }
+      },
+      "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
+      "phase7OwnerCorrectionRound3Evidence": ["HP-OWCR3-EV-P-CREATOR-EMPTY"]
     },
     {
       "nodeId": "nav-50",
@@ -979,7 +1051,9 @@
       "phase1Implementation": {
         "authority": "HP-SES-001",
         "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION"
-      }
+      },
+      "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
+      "phase7OwnerCorrectionRound3Evidence": ["HP-OWCR3-EV-O-CAPTAIN-EMPTY"]
     },
     {
       "nodeId": "nav-52",
@@ -1030,7 +1104,9 @@
       "disabledCondition": null,
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
-      "evidenceId": "HP-EV-018"
+      "evidenceId": "HP-EV-018",
+      "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
+      "phase7OwnerCorrectionRound3Evidence": ["HP-OWCR3-EV-T-DELAYED-LOADING-CROSSFADE"]
     },
     {
       "nodeId": "nav-55",
@@ -1098,7 +1174,9 @@
       "disabledCondition": null,
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
-      "evidenceId": "HP-EV-018"
+      "evidenceId": "HP-EV-018",
+      "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
+      "phase7OwnerCorrectionRound3Evidence": ["HP-OWCR3-EV-T-DELAYED-LOADING-CROSSFADE"]
     },
     {
       "nodeId": "nav-59",
@@ -1268,7 +1346,15 @@
       "disabledCondition": null,
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
-      "evidenceId": "HP-EV-001"
+      "evidenceId": "HP-EV-001",
+      "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
+      "phase7OwnerCorrectionRound3Evidence": [
+        "HP-OWCR3-EV-AC-REDUCED-MOTION",
+        "HP-OWCR3-EV-AD-FULL-ROUND3-REGRESSION",
+        "HP-OWCR3-EV-U-ACCOUNT-MENU-OPENING",
+        "HP-OWCR3-EV-V-ACCOUNT-MENU-OPEN",
+        "HP-OWCR3-EV-X-DARK-FIRST-PAINT"
+      ]
     },
     {
       "nodeId": "nav-69",
@@ -1306,7 +1392,9 @@
       "phase1Implementation": {
         "authority": "HP-SES-001",
         "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION"
-      }
+      },
+      "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
+      "phase7OwnerCorrectionRound3Evidence": ["HP-OWCR3-EV-P-CREATOR-EMPTY"]
     },
     {
       "nodeId": "nav-71",
@@ -1327,7 +1415,9 @@
       "phase1Implementation": {
         "authority": "HP-SES-001",
         "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION"
-      }
+      },
+      "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
+      "phase7OwnerCorrectionRound3Evidence": ["HP-OWCR3-EV-O-CAPTAIN-EMPTY"]
     },
     {
       "nodeId": "nav-72",
@@ -1382,7 +1472,9 @@
       "disabledCondition": null,
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
-      "evidenceId": null
+      "evidenceId": null,
+      "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
+      "phase7OwnerCorrectionRound3Evidence": ["HP-OWCR3-EV-R-PERSONAL-HARBOR-CROSSFADE"]
     },
     {
       "nodeId": "nav-75",
@@ -1420,7 +1512,17 @@
       "disabledCondition": null,
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
-      "evidenceId": null
+      "evidenceId": null,
+      "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
+      "phase7OwnerCorrectionRound3Evidence": [
+        "HP-OWCR3-EV-A-AVATAR-SELECTED",
+        "HP-OWCR3-EV-AB-ZOOM-CROP-EDITOR",
+        "HP-OWCR3-EV-B-AVATAR-CROP",
+        "HP-OWCR3-EV-C-AVATAR-INLINE-PREVIEW",
+        "HP-OWCR3-EV-D-BANNER-CROP",
+        "HP-OWCR3-EV-E-BANNER-INLINE-PREVIEW",
+        "HP-OWCR3-EV-Y-MOBILE-AVATAR-CROP"
+      ]
     },
     {
       "nodeId": "nav-77",
@@ -1500,7 +1602,9 @@
       "disabledCondition": null,
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
-      "evidenceId": "HP-EV-018"
+      "evidenceId": "HP-EV-018",
+      "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
+      "phase7OwnerCorrectionRound3Evidence": ["HP-OWCR3-EV-T-DELAYED-LOADING-CROSSFADE"]
     },
     {
       "nodeId": "nav-81",
@@ -1517,7 +1621,15 @@
       "disabledCondition": null,
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
-      "evidenceId": "HP-EV-001"
+      "evidenceId": "HP-EV-001",
+      "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
+      "phase7OwnerCorrectionRound3Evidence": [
+        "HP-OWCR3-EV-AC-REDUCED-MOTION",
+        "HP-OWCR3-EV-AD-FULL-ROUND3-REGRESSION",
+        "HP-OWCR3-EV-U-ACCOUNT-MENU-OPENING",
+        "HP-OWCR3-EV-V-ACCOUNT-MENU-OPEN",
+        "HP-OWCR3-EV-X-DARK-FIRST-PAINT"
+      ]
     },
     {
       "nodeId": "nav-82",
@@ -1538,7 +1650,9 @@
       "phase1Implementation": {
         "authority": "HP-SES-001",
         "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION"
-      }
+      },
+      "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
+      "phase7OwnerCorrectionRound3Evidence": ["HP-OWCR3-EV-S-CROSS-PRODUCT-CROSSFADE"]
     },
     {
       "nodeId": "nav-83",
@@ -1559,7 +1673,9 @@
       "phase1Implementation": {
         "authority": "HP-SES-001",
         "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION"
-      }
+      },
+      "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
+      "phase7OwnerCorrectionRound3Evidence": ["HP-OWCR3-EV-O-CAPTAIN-EMPTY"]
     },
     {
       "nodeId": "nav-84",
@@ -1702,7 +1818,9 @@
       "phase1Implementation": {
         "authority": "HP-SES-001",
         "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION"
-      }
+      },
+      "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
+      "phase7OwnerCorrectionRound3Evidence": ["HP-OWCR3-EV-P-CREATOR-EMPTY"]
     },
     {
       "nodeId": "nav-91",
@@ -1786,7 +1904,9 @@
       "phase1Implementation": {
         "authority": "HP-SES-001",
         "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION"
-      }
+      },
+      "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
+      "phase7OwnerCorrectionRound3Evidence": ["HP-OWCR3-EV-O-CAPTAIN-EMPTY"]
     },
     {
       "nodeId": "nav-95",
@@ -1807,7 +1927,9 @@
       "phase1Implementation": {
         "authority": "HP-SES-001",
         "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION"
-      }
+      },
+      "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
+      "phase7OwnerCorrectionRound3Evidence": ["HP-OWCR3-EV-J-REGISTRATION"]
     },
     {
       "nodeId": "nav-96",
@@ -1849,7 +1971,9 @@
       "phase1Implementation": {
         "authority": "HP-SES-001",
         "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION"
-      }
+      },
+      "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
+      "phase7OwnerCorrectionRound3Evidence": ["HP-OWCR3-EV-S-CROSS-PRODUCT-CROSSFADE"]
     },
     {
       "nodeId": "nav-98",
@@ -1870,7 +1994,9 @@
       "phase1Implementation": {
         "authority": "HP-SES-001",
         "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION"
-      }
+      },
+      "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
+      "phase7OwnerCorrectionRound3Evidence": ["HP-OWCR3-EV-S-CROSS-PRODUCT-CROSSFADE"]
     },
     {
       "nodeId": "nav-99",
@@ -1891,7 +2017,9 @@
       "phase1Implementation": {
         "authority": "HP-SES-001",
         "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION"
-      }
+      },
+      "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
+      "phase7OwnerCorrectionRound3Evidence": ["HP-OWCR3-EV-S-CROSS-PRODUCT-CROSSFADE"]
     },
     {
       "nodeId": "nav-100",
@@ -1912,7 +2040,9 @@
       "phase1Implementation": {
         "authority": "HP-SES-001",
         "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION"
-      }
+      },
+      "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
+      "phase7OwnerCorrectionRound3Evidence": ["HP-OWCR3-EV-S-CROSS-PRODUCT-CROSSFADE"]
     },
     {
       "nodeId": "nav-101",
@@ -1933,7 +2063,9 @@
       "phase1Implementation": {
         "authority": "HP-SES-001",
         "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION"
-      }
+      },
+      "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
+      "phase7OwnerCorrectionRound3Evidence": ["HP-OWCR3-EV-S-CROSS-PRODUCT-CROSSFADE"]
     },
     {
       "nodeId": "nav-102",
@@ -1954,7 +2086,9 @@
       "phase1Implementation": {
         "authority": "HP-SES-001",
         "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION"
-      }
+      },
+      "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
+      "phase7OwnerCorrectionRound3Evidence": ["HP-OWCR3-EV-S-CROSS-PRODUCT-CROSSFADE"]
     },
     {
       "nodeId": "nav-103",
@@ -1971,7 +2105,15 @@
       "disabledCondition": null,
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
-      "evidenceId": "HP-EV-001"
+      "evidenceId": "HP-EV-001",
+      "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
+      "phase7OwnerCorrectionRound3Evidence": [
+        "HP-OWCR3-EV-AC-REDUCED-MOTION",
+        "HP-OWCR3-EV-AD-FULL-ROUND3-REGRESSION",
+        "HP-OWCR3-EV-U-ACCOUNT-MENU-OPENING",
+        "HP-OWCR3-EV-V-ACCOUNT-MENU-OPEN",
+        "HP-OWCR3-EV-X-DARK-FIRST-PAINT"
+      ]
     },
     {
       "nodeId": "nav-104",
@@ -1988,7 +2130,15 @@
       "disabledCondition": null,
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
-      "evidenceId": "HP-EV-001"
+      "evidenceId": "HP-EV-001",
+      "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
+      "phase7OwnerCorrectionRound3Evidence": [
+        "HP-OWCR3-EV-AC-REDUCED-MOTION",
+        "HP-OWCR3-EV-AD-FULL-ROUND3-REGRESSION",
+        "HP-OWCR3-EV-U-ACCOUNT-MENU-OPENING",
+        "HP-OWCR3-EV-V-ACCOUNT-MENU-OPEN",
+        "HP-OWCR3-EV-X-DARK-FIRST-PAINT"
+      ]
     },
     {
       "nodeId": "nav-105",
@@ -2009,7 +2159,9 @@
       "phase1Implementation": {
         "authority": "HP-SES-001",
         "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION"
-      }
+      },
+      "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
+      "phase7OwnerCorrectionRound3Evidence": ["HP-OWCR3-EV-O-CAPTAIN-EMPTY"]
     },
     {
       "nodeId": "nav-106",
@@ -2030,7 +2182,9 @@
       "phase1Implementation": {
         "authority": "HP-SES-001",
         "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION"
-      }
+      },
+      "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
+      "phase7OwnerCorrectionRound3Evidence": ["HP-OWCR3-EV-P-CREATOR-EMPTY"]
     },
     {
       "nodeId": "nav-107",
@@ -2051,7 +2205,9 @@
       "phase1Implementation": {
         "authority": "HP-SES-001",
         "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION"
-      }
+      },
+      "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
+      "phase7OwnerCorrectionRound3Evidence": ["HP-OWCR3-EV-P-CREATOR-EMPTY"]
     },
     {
       "nodeId": "nav-108",
@@ -2072,7 +2228,9 @@
       "phase1Implementation": {
         "authority": "HP-SES-001",
         "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION"
-      }
+      },
+      "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
+      "phase7OwnerCorrectionRound3Evidence": ["HP-OWCR3-EV-O-CAPTAIN-EMPTY"]
     },
     {
       "nodeId": "nav-109",
@@ -2161,7 +2319,9 @@
       "phase1Implementation": {
         "authority": "HP-SES-001",
         "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION"
-      }
+      },
+      "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
+      "phase7OwnerCorrectionRound3Evidence": ["HP-OWCR3-EV-O-CAPTAIN-EMPTY"]
     },
     {
       "nodeId": "nav-114",
@@ -2182,7 +2342,9 @@
       "phase1Implementation": {
         "authority": "HP-SES-001",
         "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION"
-      }
+      },
+      "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
+      "phase7OwnerCorrectionRound3Evidence": ["HP-OWCR3-EV-P-CREATOR-EMPTY"]
     },
     {
       "nodeId": "nav-115",
@@ -2199,7 +2361,15 @@
       "disabledCondition": null,
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
-      "evidenceId": "HP-EV-001"
+      "evidenceId": "HP-EV-001",
+      "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
+      "phase7OwnerCorrectionRound3Evidence": [
+        "HP-OWCR3-EV-AC-REDUCED-MOTION",
+        "HP-OWCR3-EV-AD-FULL-ROUND3-REGRESSION",
+        "HP-OWCR3-EV-U-ACCOUNT-MENU-OPENING",
+        "HP-OWCR3-EV-V-ACCOUNT-MENU-OPEN",
+        "HP-OWCR3-EV-X-DARK-FIRST-PAINT"
+      ]
     },
     {
       "nodeId": "nav-116",
@@ -2254,7 +2424,15 @@
       "disabledCondition": null,
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
-      "evidenceId": "HP-EV-001"
+      "evidenceId": "HP-EV-001",
+      "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
+      "phase7OwnerCorrectionRound3Evidence": [
+        "HP-OWCR3-EV-AC-REDUCED-MOTION",
+        "HP-OWCR3-EV-AD-FULL-ROUND3-REGRESSION",
+        "HP-OWCR3-EV-U-ACCOUNT-MENU-OPENING",
+        "HP-OWCR3-EV-V-ACCOUNT-MENU-OPEN",
+        "HP-OWCR3-EV-X-DARK-FIRST-PAINT"
+      ]
     },
     {
       "nodeId": "nav-119",
@@ -2271,7 +2449,15 @@
       "disabledCondition": null,
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
-      "evidenceId": "HP-EV-001"
+      "evidenceId": "HP-EV-001",
+      "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
+      "phase7OwnerCorrectionRound3Evidence": [
+        "HP-OWCR3-EV-AC-REDUCED-MOTION",
+        "HP-OWCR3-EV-AD-FULL-ROUND3-REGRESSION",
+        "HP-OWCR3-EV-U-ACCOUNT-MENU-OPENING",
+        "HP-OWCR3-EV-V-ACCOUNT-MENU-OPEN",
+        "HP-OWCR3-EV-X-DARK-FIRST-PAINT"
+      ]
     },
     {
       "nodeId": "nav-120",
@@ -2482,7 +2668,9 @@
       "disabledCondition": null,
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
-      "evidenceId": null
+      "evidenceId": null,
+      "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
+      "phase7OwnerCorrectionRound3Evidence": ["HP-OWCR3-EV-R-PERSONAL-HARBOR-CROSSFADE"]
     },
     {
       "nodeId": "nav-131",
@@ -2567,7 +2755,15 @@
       "disabledCondition": null,
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
-      "evidenceId": "HP-EV-001"
+      "evidenceId": "HP-EV-001",
+      "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
+      "phase7OwnerCorrectionRound3Evidence": [
+        "HP-OWCR3-EV-AC-REDUCED-MOTION",
+        "HP-OWCR3-EV-AD-FULL-ROUND3-REGRESSION",
+        "HP-OWCR3-EV-U-ACCOUNT-MENU-OPENING",
+        "HP-OWCR3-EV-V-ACCOUNT-MENU-OPEN",
+        "HP-OWCR3-EV-X-DARK-FIRST-PAINT"
+      ]
     },
     {
       "nodeId": "nav-136",
@@ -2601,7 +2797,9 @@
       "disabledCondition": null,
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
-      "evidenceId": "HP-EV-018"
+      "evidenceId": "HP-EV-018",
+      "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
+      "phase7OwnerCorrectionRound3Evidence": ["HP-OWCR3-EV-T-DELAYED-LOADING-CROSSFADE"]
     },
     {
       "nodeId": "nav-138",
@@ -2622,7 +2820,9 @@
       "phase1Implementation": {
         "authority": "HP-SES-001",
         "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION"
-      }
+      },
+      "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
+      "phase7OwnerCorrectionRound3Evidence": ["HP-OWCR3-EV-S-CROSS-PRODUCT-CROSSFADE"]
     },
     {
       "nodeId": "nav-139",
@@ -2643,7 +2843,9 @@
       "phase1Implementation": {
         "authority": "HP-SES-001",
         "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION"
-      }
+      },
+      "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
+      "phase7OwnerCorrectionRound3Evidence": ["HP-OWCR3-EV-O-CAPTAIN-EMPTY"]
     },
     {
       "nodeId": "nav-140",
@@ -2664,7 +2866,9 @@
       "phase1Implementation": {
         "authority": "HP-SES-001",
         "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION"
-      }
+      },
+      "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
+      "phase7OwnerCorrectionRound3Evidence": ["HP-OWCR3-EV-O-CAPTAIN-EMPTY"]
     },
     {
       "nodeId": "nav-141",
@@ -2685,7 +2889,9 @@
       "phase1Implementation": {
         "authority": "HP-SES-001",
         "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION"
-      }
+      },
+      "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
+      "phase7OwnerCorrectionRound3Evidence": ["HP-OWCR3-EV-P-CREATOR-EMPTY"]
     },
     {
       "nodeId": "nav-142",
@@ -2740,7 +2946,9 @@
       "phase1Implementation": {
         "authority": "HP-SES-001",
         "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION"
-      }
+      },
+      "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
+      "phase7OwnerCorrectionRound3Evidence": ["HP-OWCR3-EV-J-REGISTRATION"]
     },
     {
       "nodeId": "nav-145",
@@ -2757,7 +2965,14 @@
       "disabledCondition": null,
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
-      "evidenceId": null
+      "evidenceId": null,
+      "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
+      "phase7OwnerCorrectionRound3Evidence": [
+        "HP-OWCR3-EV-F-PROFILE-OVERVIEW-IDENTITY",
+        "HP-OWCR3-EV-G-ACCOUNT-TRIGGER-AVATAR",
+        "HP-OWCR3-EV-H-ACCOUNT-MENU-AVATAR",
+        "HP-OWCR3-EV-I-PROFILE-HANDLE-PROMPT"
+      ]
     },
     {
       "nodeId": "nav-146",
@@ -2795,7 +3010,9 @@
       "phase1Implementation": {
         "authority": "HP-SES-001",
         "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION"
-      }
+      },
+      "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
+      "phase7OwnerCorrectionRound3Evidence": ["HP-OWCR3-EV-M-VERIFICATION-SUCCESS"]
     },
     {
       "nodeId": "nav-148",
@@ -2909,7 +3126,9 @@
       "disabledCondition": null,
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
-      "evidenceId": null
+      "evidenceId": null,
+      "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
+      "phase7OwnerCorrectionRound3Evidence": ["HP-OWCR3-EV-R-PERSONAL-HARBOR-CROSSFADE"]
     },
     {
       "nodeId": "nav-154",
@@ -2930,7 +3149,13 @@
       "phase1Implementation": {
         "authority": "HP-SES-001",
         "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION"
-      }
+      },
+      "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
+      "phase7OwnerCorrectionRound3Evidence": [
+        "HP-OWCR3-EV-AA-MOBILE-WORKSPACES",
+        "HP-OWCR3-EV-N-KGTESTING-WORKSPACES",
+        "HP-OWCR3-EV-Q-ACTIVE-CHRONICLE-LOCK"
+      ]
     },
     {
       "nodeId": "nav-155",
@@ -2951,7 +3176,9 @@
       "phase1Implementation": {
         "authority": "HP-SES-001",
         "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION"
-      }
+      },
+      "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
+      "phase7OwnerCorrectionRound3Evidence": ["HP-OWCR3-EV-S-CROSS-PRODUCT-CROSSFADE"]
     },
     {
       "nodeId": "nav-156",
@@ -2972,7 +3199,9 @@
       "phase1Implementation": {
         "authority": "HP-SES-001",
         "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION"
-      }
+      },
+      "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
+      "phase7OwnerCorrectionRound3Evidence": ["HP-OWCR3-EV-O-CAPTAIN-EMPTY"]
     },
     {
       "nodeId": "nav-157",
@@ -2993,7 +3222,9 @@
       "phase1Implementation": {
         "authority": "HP-SES-001",
         "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION"
-      }
+      },
+      "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
+      "phase7OwnerCorrectionRound3Evidence": ["HP-OWCR3-EV-P-CREATOR-EMPTY"]
     },
     {
       "nodeId": "nav-158",
@@ -3031,7 +3262,9 @@
       "disabledCondition": null,
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
-      "evidenceId": "HP-EV-018"
+      "evidenceId": "HP-EV-018",
+      "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
+      "phase7OwnerCorrectionRound3Evidence": ["HP-OWCR3-EV-T-DELAYED-LOADING-CROSSFADE"]
     },
     {
       "nodeId": "nav-160",
@@ -3065,7 +3298,14 @@
       "disabledCondition": null,
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
-      "evidenceId": null
+      "evidenceId": null,
+      "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
+      "phase7OwnerCorrectionRound3Evidence": [
+        "HP-OWCR3-EV-F-PROFILE-OVERVIEW-IDENTITY",
+        "HP-OWCR3-EV-G-ACCOUNT-TRIGGER-AVATAR",
+        "HP-OWCR3-EV-H-ACCOUNT-MENU-AVATAR",
+        "HP-OWCR3-EV-I-PROFILE-HANDLE-PROMPT"
+      ]
     },
     {
       "nodeId": "nav-162",
@@ -3086,7 +3326,9 @@
       "phase1Implementation": {
         "authority": "HP-SES-001",
         "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION"
-      }
+      },
+      "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
+      "phase7OwnerCorrectionRound3Evidence": ["HP-OWCR3-EV-O-CAPTAIN-EMPTY"]
     },
     {
       "nodeId": "nav-163",
@@ -3107,7 +3349,9 @@
       "phase1Implementation": {
         "authority": "HP-SES-001",
         "state": "IMPLEMENTED_PENDING_FINAL_VALIDATION"
-      }
+      },
+      "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
+      "phase7OwnerCorrectionRound3Evidence": ["HP-OWCR3-EV-S-CROSS-PRODUCT-CROSSFADE"]
     },
     {
       "nodeId": "nav-164",
@@ -3124,7 +3368,15 @@
       "disabledCondition": null,
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "STATIC_LITERAL_ENTRY",
-      "evidenceId": "HP-EV-001"
+      "evidenceId": "HP-EV-001",
+      "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
+      "phase7OwnerCorrectionRound3Evidence": [
+        "HP-OWCR3-EV-AC-REDUCED-MOTION",
+        "HP-OWCR3-EV-AD-FULL-ROUND3-REGRESSION",
+        "HP-OWCR3-EV-U-ACCOUNT-MENU-OPENING",
+        "HP-OWCR3-EV-V-ACCOUNT-MENU-OPEN",
+        "HP-OWCR3-EV-X-DARK-FIRST-PAINT"
+      ]
     },
     {
       "nodeId": "nav-165",
@@ -3193,7 +3445,15 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "PHASE_2_VALIDATED",
       "evidenceId": "HP-P2-EV-G-global-nav-public",
-      "phase2ImplementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc"
+      "phase2ImplementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc",
+      "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
+      "phase7OwnerCorrectionRound3Evidence": [
+        "HP-OWCR3-EV-AC-REDUCED-MOTION",
+        "HP-OWCR3-EV-AD-FULL-ROUND3-REGRESSION",
+        "HP-OWCR3-EV-U-ACCOUNT-MENU-OPENING",
+        "HP-OWCR3-EV-V-ACCOUNT-MENU-OPEN",
+        "HP-OWCR3-EV-X-DARK-FIRST-PAINT"
+      ]
     },
     {
       "nodeId": "phase2-global-explore-chronicles",
@@ -3229,7 +3489,9 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "PHASE_2_VALIDATED",
       "evidenceId": "HP-P2-EV-G-global-nav-public",
-      "phase2ImplementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc"
+      "phase2ImplementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc",
+      "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
+      "phase7OwnerCorrectionRound3Evidence": ["HP-OWCR3-EV-T-DELAYED-LOADING-CROSSFADE"]
     },
     {
       "nodeId": "phase2-workspace-player-home",
@@ -3247,7 +3509,9 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "PHASE_2_VALIDATED",
       "evidenceId": "HP-P2-EV-M-workspace-switcher",
-      "phase2ImplementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc"
+      "phase2ImplementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc",
+      "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
+      "phase7OwnerCorrectionRound3Evidence": ["HP-OWCR3-EV-S-CROSS-PRODUCT-CROSSFADE"]
     },
     {
       "nodeId": "phase2-workspace-captain-voyages",
@@ -3265,7 +3529,9 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "PHASE_2_VALIDATED",
       "evidenceId": "HP-P2-EV-M-workspace-switcher",
-      "phase2ImplementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc"
+      "phase2ImplementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc",
+      "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
+      "phase7OwnerCorrectionRound3Evidence": ["HP-OWCR3-EV-O-CAPTAIN-EMPTY"]
     },
     {
       "nodeId": "phase2-workspace-captain-invitations",
@@ -3301,7 +3567,9 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "PHASE_2_VALIDATED",
       "evidenceId": "HP-P2-EV-M-workspace-switcher",
-      "phase2ImplementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc"
+      "phase2ImplementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc",
+      "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
+      "phase7OwnerCorrectionRound3Evidence": ["HP-OWCR3-EV-P-CREATOR-EMPTY"]
     },
     {
       "nodeId": "phase2-workspace-creator-exchange",
@@ -3355,7 +3623,9 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "PHASE_2_VALIDATED",
       "evidenceId": "HP-P2-EV-F-account-menu-authenticated",
-      "phase2ImplementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc"
+      "phase2ImplementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc",
+      "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
+      "phase7OwnerCorrectionRound3Evidence": ["HP-OWCR3-EV-J-REGISTRATION"]
     },
     {
       "nodeId": "phase2-account-sign-in",
@@ -3409,7 +3679,9 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "PHASE_2_VALIDATED",
       "evidenceId": "HP-P2-EV-F-account-menu-authenticated",
-      "phase2ImplementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc"
+      "phase2ImplementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc",
+      "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
+      "phase7OwnerCorrectionRound3Evidence": ["HP-OWCR3-EV-M-VERIFICATION-SUCCESS"]
     },
     {
       "nodeId": "phase2-account-preferences",
@@ -3517,7 +3789,9 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "PHASE_2_VALIDATED",
       "evidenceId": "HP-P2-EV-F-account-menu-authenticated",
-      "phase2ImplementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc"
+      "phase2ImplementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc",
+      "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
+      "phase7OwnerCorrectionRound3Evidence": ["HP-OWCR3-EV-S-CROSS-PRODUCT-CROSSFADE"]
     },
     {
       "nodeId": "phase2-account-workspace-captain",
@@ -3535,7 +3809,9 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "PHASE_2_VALIDATED",
       "evidenceId": "HP-P2-EV-F-account-menu-authenticated",
-      "phase2ImplementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc"
+      "phase2ImplementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc",
+      "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
+      "phase7OwnerCorrectionRound3Evidence": ["HP-OWCR3-EV-O-CAPTAIN-EMPTY"]
     },
     {
       "nodeId": "phase2-account-workspace-creator",
@@ -3553,7 +3829,9 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "PHASE_2_VALIDATED",
       "evidenceId": "HP-P2-EV-F-account-menu-authenticated",
-      "phase2ImplementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc"
+      "phase2ImplementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc",
+      "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
+      "phase7OwnerCorrectionRound3Evidence": ["HP-OWCR3-EV-P-CREATOR-EMPTY"]
     },
     {
       "nodeId": "phase2-account-workspace-moderator",
@@ -3607,7 +3885,9 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "PHASE_2_VALIDATED",
       "evidenceId": "HP-P2-EV-N-compact-exit",
-      "phase2ImplementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc"
+      "phase2ImplementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc",
+      "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
+      "phase7OwnerCorrectionRound3Evidence": ["HP-OWCR3-EV-T-DELAYED-LOADING-CROSSFADE"]
     },
     {
       "nodeId": "phase2-context-chronicles-parent",
@@ -3643,7 +3923,9 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "PHASE_2_VALIDATED",
       "evidenceId": "HP-P2-EV-N-compact-exit",
-      "phase2ImplementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc"
+      "phase2ImplementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc",
+      "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
+      "phase7OwnerCorrectionRound3Evidence": ["HP-OWCR3-EV-M-VERIFICATION-SUCCESS"]
     },
     {
       "nodeId": "phase2-context-captain-exit",
@@ -3661,7 +3943,9 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "PHASE_2_VALIDATED",
       "evidenceId": "HP-P2-EV-N-compact-exit",
-      "phase2ImplementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc"
+      "phase2ImplementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc",
+      "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
+      "phase7OwnerCorrectionRound3Evidence": ["HP-OWCR3-EV-O-CAPTAIN-EMPTY"]
     },
     {
       "nodeId": "phase2-context-player-exit",
@@ -3679,7 +3963,9 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "PHASE_2_VALIDATED",
       "evidenceId": "HP-P2-EV-N-compact-exit",
-      "phase2ImplementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc"
+      "phase2ImplementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc",
+      "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
+      "phase7OwnerCorrectionRound3Evidence": ["HP-OWCR3-EV-S-CROSS-PRODUCT-CROSSFADE"]
     },
     {
       "nodeId": "phase2-context-development-exit",
@@ -3697,7 +3983,15 @@
       "redirectBehavior": "DESTINATION_GUARD",
       "currentStatus": "PHASE_2_VALIDATED",
       "evidenceId": "HP-P2-EV-N-compact-exit",
-      "phase2ImplementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc"
+      "phase2ImplementationAnchorSha": "ce9fd8e70f0e906416cf41cd508ec5f2063570cc",
+      "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
+      "phase7OwnerCorrectionRound3Evidence": [
+        "HP-OWCR3-EV-AC-REDUCED-MOTION",
+        "HP-OWCR3-EV-AD-FULL-ROUND3-REGRESSION",
+        "HP-OWCR3-EV-U-ACCOUNT-MENU-OPENING",
+        "HP-OWCR3-EV-V-ACCOUNT-MENU-OPEN",
+        "HP-OWCR3-EV-X-DARK-FIRST-PAINT"
+      ]
     },
     {
       "nodeId": "phase2-alias-player-root",
@@ -3769,7 +4063,14 @@
       "redirectBehavior": "CANONICAL_ACCOUNT_SESSION_GUARD",
       "currentStatus": "PHASE_3_VALIDATED",
       "evidenceId": "HP-P3-EV-A-profile-overview-desktop",
-      "phase3ImplementationAnchorSha": "761adb7a693feabacc4e7d54d28d443ceda8a273"
+      "phase3ImplementationAnchorSha": "761adb7a693feabacc4e7d54d28d443ceda8a273",
+      "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
+      "phase7OwnerCorrectionRound3Evidence": [
+        "HP-OWCR3-EV-F-PROFILE-OVERVIEW-IDENTITY",
+        "HP-OWCR3-EV-G-ACCOUNT-TRIGGER-AVATAR",
+        "HP-OWCR3-EV-H-ACCOUNT-MENU-AVATAR",
+        "HP-OWCR3-EV-I-PROFILE-HANDLE-PROMPT"
+      ]
     },
     {
       "nodeId": "phase3-public-profile-editor",
@@ -3787,7 +4088,17 @@
       "redirectBehavior": "CANONICAL_ACCOUNT_SESSION_GUARD",
       "currentStatus": "PHASE_3_VALIDATED",
       "evidenceId": "HP-P3-EV-C-profile-editor",
-      "phase3ImplementationAnchorSha": "761adb7a693feabacc4e7d54d28d443ceda8a273"
+      "phase3ImplementationAnchorSha": "761adb7a693feabacc4e7d54d28d443ceda8a273",
+      "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
+      "phase7OwnerCorrectionRound3Evidence": [
+        "HP-OWCR3-EV-A-AVATAR-SELECTED",
+        "HP-OWCR3-EV-AB-ZOOM-CROP-EDITOR",
+        "HP-OWCR3-EV-B-AVATAR-CROP",
+        "HP-OWCR3-EV-C-AVATAR-INLINE-PREVIEW",
+        "HP-OWCR3-EV-D-BANNER-CROP",
+        "HP-OWCR3-EV-E-BANNER-INLINE-PREVIEW",
+        "HP-OWCR3-EV-Y-MOBILE-AVATAR-CROP"
+      ]
     },
     {
       "nodeId": "phase3-personal-information",
@@ -3913,7 +4224,9 @@
       "redirectBehavior": "CANONICAL_ACCOUNT_SESSION_GUARD",
       "currentStatus": "PHASE_3_VALIDATED",
       "evidenceId": "HP-P3-EV-L-passport-populated",
-      "phase3ImplementationAnchorSha": "761adb7a693feabacc4e7d54d28d443ceda8a273"
+      "phase3ImplementationAnchorSha": "761adb7a693feabacc4e7d54d28d443ceda8a273",
+      "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
+      "phase7OwnerCorrectionRound3Evidence": ["HP-OWCR3-EV-M-VERIFICATION-SUCCESS"]
     },
     {
       "nodeId": "phase3-passport-history",
@@ -4057,7 +4370,9 @@
       "redirectBehavior": "CANONICAL_ACCOUNT_SESSION_GUARD",
       "currentStatus": "PHASE_3_VALIDATED",
       "evidenceId": "HP-P3-EV-U-sessions",
-      "phase3ImplementationAnchorSha": "761adb7a693feabacc4e7d54d28d443ceda8a273"
+      "phase3ImplementationAnchorSha": "761adb7a693feabacc4e7d54d28d443ceda8a273",
+      "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
+      "phase7OwnerCorrectionRound3Evidence": ["HP-OWCR3-EV-R-PERSONAL-HARBOR-CROSSFADE"]
     },
     {
       "nodeId": "phase3-data-account",
@@ -10342,6 +10657,34 @@
       "No owner acceptance",
       "Local synthetic evidence only",
       "Live providers and email delivery remain external"
+    ]
+  },
+  "phase7OwnerCorrectionRound3": {
+    "state": "CORRECTION_ROUND_3_VALIDATED_PENDING_OWNER_REREVIEW",
+    "sourceSha": "581e5d3c5d4560bd101362e835c4eb0ed5a85e3f",
+    "experienceImagesSourceSha": "581e5d3c5d4560bd101362e835c4eb0ed5a85e3f",
+    "architectureSha": "88d3b0a",
+    "fixtureVersion": "homeport-phase7-owner-correction-round3-v1",
+    "fixtureChecksum": "c2a727ea57eaa26a0c0f9cfdf481960e20644bbc19d94621b9581c2d6629ba53",
+    "round3JourneyCount": 22,
+    "retainedRound2JourneyCount": 23,
+    "retainedRound1JourneyCount": 21,
+    "retainedOriginalPhase7JourneyCount": 15,
+    "evidenceCount": 30,
+    "experienceImageCount": 256,
+    "ownerWalkthroughRound1Decision": "OWNER_RETURNED_FOR_CORRECTION",
+    "ownerReReviewAfterCorrectionRound1": "OWNER_REJECTED_WITH_ACTIONABLE_FINDINGS",
+    "ownerReReviewAfterCorrectionRound2": "OWNER_REJECTED_WITH_ACTIONABLE_FINDINGS",
+    "ownerReReviewRound3": "PENDING_OWNER_DECISION",
+    "transactionalEmail": "POSTMARK_BLOCKED_EXTERNAL_CONFIGURATION",
+    "branch": "codex/project-homeport-product-reality-recovery",
+    "limitations": [
+      "Not merged",
+      "Not deployed",
+      "No owner acceptance",
+      "Local synthetic evidence only",
+      "Postmark live delivery is blocked by external configuration",
+      "Production MySQL and physical assistive-technology validation remain external"
     ]
   }
 }

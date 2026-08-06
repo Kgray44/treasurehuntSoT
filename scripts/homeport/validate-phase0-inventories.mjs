@@ -292,10 +292,18 @@ const round2EvidencePath = path.join(auditRoot, "evidence", "phase7-owner-correc
 const round2Evidence = existsSync(round2EvidencePath)
   ? JSON.parse(readFileSync(round2EvidencePath, "utf8"))
   : { captures: [] };
+const round3EvidencePath = path.join(auditRoot, "evidence", "phase7-owner-correction-round3", "manifest.json");
+const round3Evidence = existsSync(round3EvidencePath)
+  ? JSON.parse(readFileSync(round3EvidencePath, "utf8"))
+  : { captures: [], motionReceipts: [] };
 const evidenceIds = new Set(
-  [...evidence.records, ...(evidence.phase7Run?.frames ?? []), ...(round2Evidence.captures ?? [])].map(
-    (record) => record.evidenceId,
-  ),
+  [
+    ...evidence.records,
+    ...(evidence.phase7Run?.frames ?? []),
+    ...(round2Evidence.captures ?? []),
+    ...(round3Evidence.captures ?? []),
+    ...(round3Evidence.motionReceipts ?? []),
+  ].map((record) => record.evidenceId),
 );
 for (const record of evidence.records) {
   if (record.evidenceId.startsWith("HP-OWCR1-EV-")) {
@@ -410,11 +418,13 @@ for (const record of evidence.records) {
       ? evidence.phase4Run?.sourceSha
       : record.evidenceId.startsWith("HP-OWCR2-EV-")
         ? evidence.phase7OwnerCorrectionRound2?.sourceSha
-        : expectedSourceSha;
+        : record.evidenceId.startsWith("HP-OWCR3-EV-")
+          ? evidence.phase7OwnerCorrectionRound3?.sourceSha
+          : expectedSourceSha;
   assert.equal(record.sourceSha, expectedRecordSource, `${record.evidenceId} source SHA drifted`);
   assert.ok(screenIds.has(record.screenContract), `${record.evidenceId} references unknown screen contract`);
   assert.ok(journeyIds.has(record.journey), `${record.evidenceId} references unknown journey`);
-  const committedPhaseRecord = /^(?:HP-P[12345]-EV-|HP-OWCR2-EV-)/u.test(record.evidenceId);
+  const committedPhaseRecord = /^(?:HP-P[12345]-EV-|HP-OWCR[23]-EV-)/u.test(record.evidenceId);
   const screenshot = committedPhaseRecord
     ? path.join(root, record.committedScreenshotPath)
     : path.join(evidenceRoot, path.basename(record.screenshotPath));

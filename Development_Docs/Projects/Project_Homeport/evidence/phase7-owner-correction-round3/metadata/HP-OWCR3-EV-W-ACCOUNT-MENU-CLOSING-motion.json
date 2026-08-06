@@ -1,0 +1,37 @@
+{
+  "evidenceId": "HP-OWCR3-EV-W-ACCOUNT-MENU-CLOSING",
+  "journeyId": "HP-OWCR3-JRN-Q",
+  "sourceSha": "581e5d3c5d4560bd101362e835c4eb0ed5a85e3f",
+  "fixtureVersion": "homeport-phase7-owner-correction-round3-v1",
+  "measurementKind": "COMPUTED_FRAME_SEQUENCE",
+  "measurements": {
+    "closing": [
+      {
+        "opacity": "1",
+        "transform": "none",
+        "filter": "blur(0px)"
+      },
+      {
+        "opacity": "1",
+        "transform": "matrix3d(0.985769, 0, 0, 0, 0, 0.985465, -0.0248345, 0, 0, 0.024481, 0.999692, 0, 0, -3.98456, 0, 1)",
+        "filter": "blur(0px)"
+      },
+      {
+        "opacity": "0.191391",
+        "transform": "matrix3d(0.9575, 0, 0, 0, 0, 0.954867, -0.0741082, 0, 0, 0.0709586, 0.99725, 0, 0, -11.9, 0, 1)",
+        "filter": "blur(1.61722px)"
+      },
+      {
+        "opacity": "0.108029",
+        "transform": "matrix3d(0.953322, 0, 0, 0, 0, 0.95016, -0.0813789, 0, 0, 0.0775803, 0.996683, 0, 0, -13.0699, 0, 1)",
+        "filter": "blur(1.78394px)"
+      },
+      {
+        "opacity": "0.0333973",
+        "transform": "matrix3d(0.951438, 0, 0, 0, 0, 0.948022, -0.0846555, 0, 0, 0.0805445, 0.99641, 0, 0, -13.5974, 0, 1)",
+        "filter": "blur(1.93321px)"
+      }
+    ]
+  },
+  "result": "PASSED"
+}

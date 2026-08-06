@@ -1,11 +1,13 @@
 ---
-title: Project Homeport Phase 7 Owner Correction Round 3 Evidence Index
+title: Project Homeport Phase 7 Correction Round 3 Evidence Index
 audience: product-engineering
 status: current
-canonical_for: project-homeport-phase-7-owner-correction-round-3-evidence-index
+canonical_for: project-homeport-phase-7-correction-round-3-evidence-index
 last_reviewed: 2026-08-05
 ---
 
-# Phase 7 owner correction Round 3 evidence
+# Project Homeport Phase 7 Correction Round 3 Evidence Index
 
-This directory is architecture-scaffolded for exact-source evidence `HP-OWCR3-EV-A` through `HP-OWCR3-EV-AD`. Captures do not yet exist. Motion and crop interaction need temporal/geometry evidence. Synthetic delivery never proves real inbox delivery, and Codex review never constitutes owner acceptance.
+This directory contains 29 checksum-verified browser screenshots and five computed temporal receipts covering exact evidence IDs `HP-OWCR3-EV-A` through `HP-OWCR3-EV-AD` (30 unique IDs). The Experience Images manifest, browseable index, and Round 3 affected-state contact sheet are supplemental exact-source visual inventory artifacts. Evidence is bound to `581e5d3c5d4560bd101362e835c4eb0ed5a85e3f`; the 256-image inventory is bound to `581e5d3c5d4560bd101362e835c4eb0ed5a85e3f`.
+
+Codex visual review is `ACCEPTED`; Owner Re-Review Round 3 remains `PENDING_OWNER_DECISION`. This is local synthetic proof, not merge, deployment, live Postmark proof, or owner acceptance.

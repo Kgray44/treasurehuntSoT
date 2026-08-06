@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "status": "phase-7-owner-correction-round-2-impact-map",
+  "status": "phase-7-owner-correction-round-3-impact-map",
   "pathMappings": [
     {
       "path": "Development_Docs/Governance/**",
@@ -3357,7 +3357,57 @@
         "homeport.owner-correction.round2.phase6-regression",
         "homeport.owner-correction.round2.phase7-regression",
         "homeport.owner-correction.round2.round1-regression",
-        "homeport.owner-correction.round2.artifact-idempotency"
+        "homeport.owner-correction.round2.artifact-idempotency",
+        "homeport.owner-correction.round3.feedback-ledger",
+        "homeport.owner-correction.round3.profile-image-selection",
+        "homeport.owner-correction.round3.avatar-crop",
+        "homeport.owner-correction.round3.banner-crop",
+        "homeport.owner-correction.round3.crop-keyboard",
+        "homeport.owner-correction.round3.crop-touch",
+        "homeport.owner-correction.round3.media-validation",
+        "homeport.owner-correction.round3.media-atomic-replacement",
+        "homeport.owner-correction.round3.profile-image-propagation",
+        "homeport.owner-correction.round3.account-trigger-avatar",
+        "homeport.owner-correction.round3.profile-overview-identity",
+        "homeport.owner-correction.round3.profile-prompt-not-score",
+        "homeport.owner-correction.round3.registration-verification-screen",
+        "homeport.owner-correction.round3.verification-code-security",
+        "homeport.owner-correction.round3.verification-resend",
+        "homeport.owner-correction.round3.email-provider-contract",
+        "homeport.owner-correction.round3.postmark-adapter",
+        "homeport.owner-correction.round3.postmark-webhooks",
+        "homeport.owner-correction.round3.synthetic-email",
+        "homeport.owner-correction.round3.email-live-evidence",
+        "homeport.owner-correction.round3.dark-default",
+        "homeport.owner-correction.round3.no-theme-flash",
+        "homeport.owner-correction.round3.light-deferred",
+        "homeport.owner-correction.round3.workspace-entry",
+        "homeport.owner-correction.round3.new-account-capabilities",
+        "homeport.owner-correction.round3.existing-account-reconciliation",
+        "homeport.owner-correction.round3.resource-authority-separated",
+        "homeport.owner-correction.round3.active-chronicle-lock",
+        "homeport.owner-correction.round3.no-false-chronicle-lock",
+        "homeport.owner-correction.round3.captain-empty",
+        "homeport.owner-correction.round3.creator-empty",
+        "homeport.owner-correction.round3.route-crossfade",
+        "homeport.owner-correction.round3.no-background-blink",
+        "homeport.owner-correction.round3.route-layer-interaction",
+        "homeport.owner-correction.round3.loading-threshold",
+        "homeport.owner-correction.round3.account-menu-visible-motion",
+        "homeport.owner-correction.round3.account-menu-focus",
+        "homeport.owner-correction.round3.mobile",
+        "homeport.owner-correction.round3.zoom",
+        "homeport.owner-correction.round3.accessibility",
+        "homeport.owner-correction.round3.phase1-regression",
+        "homeport.owner-correction.round3.phase2-regression",
+        "homeport.owner-correction.round3.phase3-regression",
+        "homeport.owner-correction.round3.phase4-regression",
+        "homeport.owner-correction.round3.phase5-regression",
+        "homeport.owner-correction.round3.phase6-regression",
+        "homeport.owner-correction.round3.phase7-regression",
+        "homeport.owner-correction.round3.round1-regression",
+        "homeport.owner-correction.round3.round2-regression",
+        "homeport.owner-correction.round3.artifact-idempotency"
       ]
     },
     {
@@ -3502,6 +3552,398 @@
         "homeport.owner-correction.round2.phase7-regression",
         "homeport.owner-correction.round2.round1-regression",
         "homeport.owner-correction.round2.artifact-idempotency"
+      ]
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_7_Correction_Round_3_*",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"],
+      "contractIds": [
+        "homeport.owner-correction.round3.feedback-ledger",
+        "homeport.owner-correction.round3.profile-image-selection",
+        "homeport.owner-correction.round3.avatar-crop",
+        "homeport.owner-correction.round3.banner-crop",
+        "homeport.owner-correction.round3.crop-keyboard",
+        "homeport.owner-correction.round3.crop-touch",
+        "homeport.owner-correction.round3.media-validation",
+        "homeport.owner-correction.round3.media-atomic-replacement",
+        "homeport.owner-correction.round3.profile-image-propagation",
+        "homeport.owner-correction.round3.account-trigger-avatar",
+        "homeport.owner-correction.round3.profile-overview-identity",
+        "homeport.owner-correction.round3.profile-prompt-not-score",
+        "homeport.owner-correction.round3.registration-verification-screen",
+        "homeport.owner-correction.round3.verification-code-security",
+        "homeport.owner-correction.round3.verification-resend",
+        "homeport.owner-correction.round3.email-provider-contract",
+        "homeport.owner-correction.round3.postmark-adapter",
+        "homeport.owner-correction.round3.postmark-webhooks",
+        "homeport.owner-correction.round3.synthetic-email",
+        "homeport.owner-correction.round3.email-live-evidence",
+        "homeport.owner-correction.round3.dark-default",
+        "homeport.owner-correction.round3.no-theme-flash",
+        "homeport.owner-correction.round3.light-deferred",
+        "homeport.owner-correction.round3.workspace-entry",
+        "homeport.owner-correction.round3.new-account-capabilities",
+        "homeport.owner-correction.round3.existing-account-reconciliation",
+        "homeport.owner-correction.round3.resource-authority-separated",
+        "homeport.owner-correction.round3.active-chronicle-lock",
+        "homeport.owner-correction.round3.no-false-chronicle-lock",
+        "homeport.owner-correction.round3.captain-empty",
+        "homeport.owner-correction.round3.creator-empty",
+        "homeport.owner-correction.round3.route-crossfade",
+        "homeport.owner-correction.round3.no-background-blink",
+        "homeport.owner-correction.round3.route-layer-interaction",
+        "homeport.owner-correction.round3.loading-threshold",
+        "homeport.owner-correction.round3.account-menu-visible-motion",
+        "homeport.owner-correction.round3.account-menu-focus",
+        "homeport.owner-correction.round3.mobile",
+        "homeport.owner-correction.round3.zoom",
+        "homeport.owner-correction.round3.accessibility",
+        "homeport.owner-correction.round3.phase1-regression",
+        "homeport.owner-correction.round3.phase2-regression",
+        "homeport.owner-correction.round3.phase3-regression",
+        "homeport.owner-correction.round3.phase4-regression",
+        "homeport.owner-correction.round3.phase5-regression",
+        "homeport.owner-correction.round3.phase6-regression",
+        "homeport.owner-correction.round3.phase7-regression",
+        "homeport.owner-correction.round3.round1-regression",
+        "homeport.owner-correction.round3.round2-regression",
+        "homeport.owner-correction.round3.artifact-idempotency"
+      ]
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_7_Owner_Feedback_Round_3_*",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"],
+      "contractIds": [
+        "homeport.owner-correction.round3.feedback-ledger",
+        "homeport.owner-correction.round3.profile-image-selection",
+        "homeport.owner-correction.round3.avatar-crop",
+        "homeport.owner-correction.round3.banner-crop",
+        "homeport.owner-correction.round3.crop-keyboard",
+        "homeport.owner-correction.round3.crop-touch",
+        "homeport.owner-correction.round3.media-validation",
+        "homeport.owner-correction.round3.media-atomic-replacement",
+        "homeport.owner-correction.round3.profile-image-propagation",
+        "homeport.owner-correction.round3.account-trigger-avatar",
+        "homeport.owner-correction.round3.profile-overview-identity",
+        "homeport.owner-correction.round3.profile-prompt-not-score",
+        "homeport.owner-correction.round3.registration-verification-screen",
+        "homeport.owner-correction.round3.verification-code-security",
+        "homeport.owner-correction.round3.verification-resend",
+        "homeport.owner-correction.round3.email-provider-contract",
+        "homeport.owner-correction.round3.postmark-adapter",
+        "homeport.owner-correction.round3.postmark-webhooks",
+        "homeport.owner-correction.round3.synthetic-email",
+        "homeport.owner-correction.round3.email-live-evidence",
+        "homeport.owner-correction.round3.dark-default",
+        "homeport.owner-correction.round3.no-theme-flash",
+        "homeport.owner-correction.round3.light-deferred",
+        "homeport.owner-correction.round3.workspace-entry",
+        "homeport.owner-correction.round3.new-account-capabilities",
+        "homeport.owner-correction.round3.existing-account-reconciliation",
+        "homeport.owner-correction.round3.resource-authority-separated",
+        "homeport.owner-correction.round3.active-chronicle-lock",
+        "homeport.owner-correction.round3.no-false-chronicle-lock",
+        "homeport.owner-correction.round3.captain-empty",
+        "homeport.owner-correction.round3.creator-empty",
+        "homeport.owner-correction.round3.route-crossfade",
+        "homeport.owner-correction.round3.no-background-blink",
+        "homeport.owner-correction.round3.route-layer-interaction",
+        "homeport.owner-correction.round3.loading-threshold",
+        "homeport.owner-correction.round3.account-menu-visible-motion",
+        "homeport.owner-correction.round3.account-menu-focus",
+        "homeport.owner-correction.round3.mobile",
+        "homeport.owner-correction.round3.zoom",
+        "homeport.owner-correction.round3.accessibility",
+        "homeport.owner-correction.round3.phase1-regression",
+        "homeport.owner-correction.round3.phase2-regression",
+        "homeport.owner-correction.round3.phase3-regression",
+        "homeport.owner-correction.round3.phase4-regression",
+        "homeport.owner-correction.round3.phase5-regression",
+        "homeport.owner-correction.round3.phase6-regression",
+        "homeport.owner-correction.round3.phase7-regression",
+        "homeport.owner-correction.round3.round1-regression",
+        "homeport.owner-correction.round3.round2-regression",
+        "homeport.owner-correction.round3.artifact-idempotency"
+      ]
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round3/**",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"],
+      "contractIds": [
+        "homeport.owner-correction.round3.feedback-ledger",
+        "homeport.owner-correction.round3.profile-image-selection",
+        "homeport.owner-correction.round3.avatar-crop",
+        "homeport.owner-correction.round3.banner-crop",
+        "homeport.owner-correction.round3.crop-keyboard",
+        "homeport.owner-correction.round3.crop-touch",
+        "homeport.owner-correction.round3.media-validation",
+        "homeport.owner-correction.round3.media-atomic-replacement",
+        "homeport.owner-correction.round3.profile-image-propagation",
+        "homeport.owner-correction.round3.account-trigger-avatar",
+        "homeport.owner-correction.round3.profile-overview-identity",
+        "homeport.owner-correction.round3.profile-prompt-not-score",
+        "homeport.owner-correction.round3.registration-verification-screen",
+        "homeport.owner-correction.round3.verification-code-security",
+        "homeport.owner-correction.round3.verification-resend",
+        "homeport.owner-correction.round3.email-provider-contract",
+        "homeport.owner-correction.round3.postmark-adapter",
+        "homeport.owner-correction.round3.postmark-webhooks",
+        "homeport.owner-correction.round3.synthetic-email",
+        "homeport.owner-correction.round3.email-live-evidence",
+        "homeport.owner-correction.round3.dark-default",
+        "homeport.owner-correction.round3.no-theme-flash",
+        "homeport.owner-correction.round3.light-deferred",
+        "homeport.owner-correction.round3.workspace-entry",
+        "homeport.owner-correction.round3.new-account-capabilities",
+        "homeport.owner-correction.round3.existing-account-reconciliation",
+        "homeport.owner-correction.round3.resource-authority-separated",
+        "homeport.owner-correction.round3.active-chronicle-lock",
+        "homeport.owner-correction.round3.no-false-chronicle-lock",
+        "homeport.owner-correction.round3.captain-empty",
+        "homeport.owner-correction.round3.creator-empty",
+        "homeport.owner-correction.round3.route-crossfade",
+        "homeport.owner-correction.round3.no-background-blink",
+        "homeport.owner-correction.round3.route-layer-interaction",
+        "homeport.owner-correction.round3.loading-threshold",
+        "homeport.owner-correction.round3.account-menu-visible-motion",
+        "homeport.owner-correction.round3.account-menu-focus",
+        "homeport.owner-correction.round3.mobile",
+        "homeport.owner-correction.round3.zoom",
+        "homeport.owner-correction.round3.accessibility",
+        "homeport.owner-correction.round3.phase1-regression",
+        "homeport.owner-correction.round3.phase2-regression",
+        "homeport.owner-correction.round3.phase3-regression",
+        "homeport.owner-correction.round3.phase4-regression",
+        "homeport.owner-correction.round3.phase5-regression",
+        "homeport.owner-correction.round3.phase6-regression",
+        "homeport.owner-correction.round3.phase7-regression",
+        "homeport.owner-correction.round3.round1-regression",
+        "homeport.owner-correction.round3.round2-regression",
+        "homeport.owner-correction.round3.artifact-idempotency"
+      ]
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/walkthrough/phase7/correction-round3/**",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"],
+      "contractIds": [
+        "homeport.owner-correction.round3.feedback-ledger",
+        "homeport.owner-correction.round3.profile-image-selection",
+        "homeport.owner-correction.round3.avatar-crop",
+        "homeport.owner-correction.round3.banner-crop",
+        "homeport.owner-correction.round3.crop-keyboard",
+        "homeport.owner-correction.round3.crop-touch",
+        "homeport.owner-correction.round3.media-validation",
+        "homeport.owner-correction.round3.media-atomic-replacement",
+        "homeport.owner-correction.round3.profile-image-propagation",
+        "homeport.owner-correction.round3.account-trigger-avatar",
+        "homeport.owner-correction.round3.profile-overview-identity",
+        "homeport.owner-correction.round3.profile-prompt-not-score",
+        "homeport.owner-correction.round3.registration-verification-screen",
+        "homeport.owner-correction.round3.verification-code-security",
+        "homeport.owner-correction.round3.verification-resend",
+        "homeport.owner-correction.round3.email-provider-contract",
+        "homeport.owner-correction.round3.postmark-adapter",
+        "homeport.owner-correction.round3.postmark-webhooks",
+        "homeport.owner-correction.round3.synthetic-email",
+        "homeport.owner-correction.round3.email-live-evidence",
+        "homeport.owner-correction.round3.dark-default",
+        "homeport.owner-correction.round3.no-theme-flash",
+        "homeport.owner-correction.round3.light-deferred",
+        "homeport.owner-correction.round3.workspace-entry",
+        "homeport.owner-correction.round3.new-account-capabilities",
+        "homeport.owner-correction.round3.existing-account-reconciliation",
+        "homeport.owner-correction.round3.resource-authority-separated",
+        "homeport.owner-correction.round3.active-chronicle-lock",
+        "homeport.owner-correction.round3.no-false-chronicle-lock",
+        "homeport.owner-correction.round3.captain-empty",
+        "homeport.owner-correction.round3.creator-empty",
+        "homeport.owner-correction.round3.route-crossfade",
+        "homeport.owner-correction.round3.no-background-blink",
+        "homeport.owner-correction.round3.route-layer-interaction",
+        "homeport.owner-correction.round3.loading-threshold",
+        "homeport.owner-correction.round3.account-menu-visible-motion",
+        "homeport.owner-correction.round3.account-menu-focus",
+        "homeport.owner-correction.round3.mobile",
+        "homeport.owner-correction.round3.zoom",
+        "homeport.owner-correction.round3.accessibility",
+        "homeport.owner-correction.round3.phase1-regression",
+        "homeport.owner-correction.round3.phase2-regression",
+        "homeport.owner-correction.round3.phase3-regression",
+        "homeport.owner-correction.round3.phase4-regression",
+        "homeport.owner-correction.round3.phase5-regression",
+        "homeport.owner-correction.round3.phase6-regression",
+        "homeport.owner-correction.round3.phase7-regression",
+        "homeport.owner-correction.round3.round1-regression",
+        "homeport.owner-correction.round3.round2-regression",
+        "homeport.owner-correction.round3.artifact-idempotency"
+      ]
+    },
+    {
+      "path": "scripts/homeport/*phase7-owner-correction-round3*.mjs",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"],
+      "contractIds": [
+        "homeport.owner-correction.round3.feedback-ledger",
+        "homeport.owner-correction.round3.profile-image-selection",
+        "homeport.owner-correction.round3.avatar-crop",
+        "homeport.owner-correction.round3.banner-crop",
+        "homeport.owner-correction.round3.crop-keyboard",
+        "homeport.owner-correction.round3.crop-touch",
+        "homeport.owner-correction.round3.media-validation",
+        "homeport.owner-correction.round3.media-atomic-replacement",
+        "homeport.owner-correction.round3.profile-image-propagation",
+        "homeport.owner-correction.round3.account-trigger-avatar",
+        "homeport.owner-correction.round3.profile-overview-identity",
+        "homeport.owner-correction.round3.profile-prompt-not-score",
+        "homeport.owner-correction.round3.registration-verification-screen",
+        "homeport.owner-correction.round3.verification-code-security",
+        "homeport.owner-correction.round3.verification-resend",
+        "homeport.owner-correction.round3.email-provider-contract",
+        "homeport.owner-correction.round3.postmark-adapter",
+        "homeport.owner-correction.round3.postmark-webhooks",
+        "homeport.owner-correction.round3.synthetic-email",
+        "homeport.owner-correction.round3.email-live-evidence",
+        "homeport.owner-correction.round3.dark-default",
+        "homeport.owner-correction.round3.no-theme-flash",
+        "homeport.owner-correction.round3.light-deferred",
+        "homeport.owner-correction.round3.workspace-entry",
+        "homeport.owner-correction.round3.new-account-capabilities",
+        "homeport.owner-correction.round3.existing-account-reconciliation",
+        "homeport.owner-correction.round3.resource-authority-separated",
+        "homeport.owner-correction.round3.active-chronicle-lock",
+        "homeport.owner-correction.round3.no-false-chronicle-lock",
+        "homeport.owner-correction.round3.captain-empty",
+        "homeport.owner-correction.round3.creator-empty",
+        "homeport.owner-correction.round3.route-crossfade",
+        "homeport.owner-correction.round3.no-background-blink",
+        "homeport.owner-correction.round3.route-layer-interaction",
+        "homeport.owner-correction.round3.loading-threshold",
+        "homeport.owner-correction.round3.account-menu-visible-motion",
+        "homeport.owner-correction.round3.account-menu-focus",
+        "homeport.owner-correction.round3.mobile",
+        "homeport.owner-correction.round3.zoom",
+        "homeport.owner-correction.round3.accessibility",
+        "homeport.owner-correction.round3.phase1-regression",
+        "homeport.owner-correction.round3.phase2-regression",
+        "homeport.owner-correction.round3.phase3-regression",
+        "homeport.owner-correction.round3.phase4-regression",
+        "homeport.owner-correction.round3.phase5-regression",
+        "homeport.owner-correction.round3.phase6-regression",
+        "homeport.owner-correction.round3.phase7-regression",
+        "homeport.owner-correction.round3.round1-regression",
+        "homeport.owner-correction.round3.round2-regression",
+        "homeport.owner-correction.round3.artifact-idempotency"
+      ]
+    },
+    {
+      "path": "tests/e2e/homeport-phase7-owner-correction-round3.spec.ts",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"],
+      "contractIds": [
+        "homeport.owner-correction.round3.feedback-ledger",
+        "homeport.owner-correction.round3.profile-image-selection",
+        "homeport.owner-correction.round3.avatar-crop",
+        "homeport.owner-correction.round3.banner-crop",
+        "homeport.owner-correction.round3.crop-keyboard",
+        "homeport.owner-correction.round3.crop-touch",
+        "homeport.owner-correction.round3.media-validation",
+        "homeport.owner-correction.round3.media-atomic-replacement",
+        "homeport.owner-correction.round3.profile-image-propagation",
+        "homeport.owner-correction.round3.account-trigger-avatar",
+        "homeport.owner-correction.round3.profile-overview-identity",
+        "homeport.owner-correction.round3.profile-prompt-not-score",
+        "homeport.owner-correction.round3.registration-verification-screen",
+        "homeport.owner-correction.round3.verification-code-security",
+        "homeport.owner-correction.round3.verification-resend",
+        "homeport.owner-correction.round3.email-provider-contract",
+        "homeport.owner-correction.round3.postmark-adapter",
+        "homeport.owner-correction.round3.postmark-webhooks",
+        "homeport.owner-correction.round3.synthetic-email",
+        "homeport.owner-correction.round3.email-live-evidence",
+        "homeport.owner-correction.round3.dark-default",
+        "homeport.owner-correction.round3.no-theme-flash",
+        "homeport.owner-correction.round3.light-deferred",
+        "homeport.owner-correction.round3.workspace-entry",
+        "homeport.owner-correction.round3.new-account-capabilities",
+        "homeport.owner-correction.round3.existing-account-reconciliation",
+        "homeport.owner-correction.round3.resource-authority-separated",
+        "homeport.owner-correction.round3.active-chronicle-lock",
+        "homeport.owner-correction.round3.no-false-chronicle-lock",
+        "homeport.owner-correction.round3.captain-empty",
+        "homeport.owner-correction.round3.creator-empty",
+        "homeport.owner-correction.round3.route-crossfade",
+        "homeport.owner-correction.round3.no-background-blink",
+        "homeport.owner-correction.round3.route-layer-interaction",
+        "homeport.owner-correction.round3.loading-threshold",
+        "homeport.owner-correction.round3.account-menu-visible-motion",
+        "homeport.owner-correction.round3.account-menu-focus",
+        "homeport.owner-correction.round3.mobile",
+        "homeport.owner-correction.round3.zoom",
+        "homeport.owner-correction.round3.accessibility",
+        "homeport.owner-correction.round3.phase1-regression",
+        "homeport.owner-correction.round3.phase2-regression",
+        "homeport.owner-correction.round3.phase3-regression",
+        "homeport.owner-correction.round3.phase4-regression",
+        "homeport.owner-correction.round3.phase5-regression",
+        "homeport.owner-correction.round3.phase6-regression",
+        "homeport.owner-correction.round3.phase7-regression",
+        "homeport.owner-correction.round3.round1-regression",
+        "homeport.owner-correction.round3.round2-regression",
+        "homeport.owner-correction.round3.artifact-idempotency"
+      ]
+    },
+    {
+      "path": "playwright.homeport-phase7-owner-correction-round3.config.ts",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"],
+      "contractIds": [
+        "homeport.owner-correction.round3.feedback-ledger",
+        "homeport.owner-correction.round3.profile-image-selection",
+        "homeport.owner-correction.round3.avatar-crop",
+        "homeport.owner-correction.round3.banner-crop",
+        "homeport.owner-correction.round3.crop-keyboard",
+        "homeport.owner-correction.round3.crop-touch",
+        "homeport.owner-correction.round3.media-validation",
+        "homeport.owner-correction.round3.media-atomic-replacement",
+        "homeport.owner-correction.round3.profile-image-propagation",
+        "homeport.owner-correction.round3.account-trigger-avatar",
+        "homeport.owner-correction.round3.profile-overview-identity",
+        "homeport.owner-correction.round3.profile-prompt-not-score",
+        "homeport.owner-correction.round3.registration-verification-screen",
+        "homeport.owner-correction.round3.verification-code-security",
+        "homeport.owner-correction.round3.verification-resend",
+        "homeport.owner-correction.round3.email-provider-contract",
+        "homeport.owner-correction.round3.postmark-adapter",
+        "homeport.owner-correction.round3.postmark-webhooks",
+        "homeport.owner-correction.round3.synthetic-email",
+        "homeport.owner-correction.round3.email-live-evidence",
+        "homeport.owner-correction.round3.dark-default",
+        "homeport.owner-correction.round3.no-theme-flash",
+        "homeport.owner-correction.round3.light-deferred",
+        "homeport.owner-correction.round3.workspace-entry",
+        "homeport.owner-correction.round3.new-account-capabilities",
+        "homeport.owner-correction.round3.existing-account-reconciliation",
+        "homeport.owner-correction.round3.resource-authority-separated",
+        "homeport.owner-correction.round3.active-chronicle-lock",
+        "homeport.owner-correction.round3.no-false-chronicle-lock",
+        "homeport.owner-correction.round3.captain-empty",
+        "homeport.owner-correction.round3.creator-empty",
+        "homeport.owner-correction.round3.route-crossfade",
+        "homeport.owner-correction.round3.no-background-blink",
+        "homeport.owner-correction.round3.route-layer-interaction",
+        "homeport.owner-correction.round3.loading-threshold",
+        "homeport.owner-correction.round3.account-menu-visible-motion",
+        "homeport.owner-correction.round3.account-menu-focus",
+        "homeport.owner-correction.round3.mobile",
+        "homeport.owner-correction.round3.zoom",
+        "homeport.owner-correction.round3.accessibility",
+        "homeport.owner-correction.round3.phase1-regression",
+        "homeport.owner-correction.round3.phase2-regression",
+        "homeport.owner-correction.round3.phase3-regression",
+        "homeport.owner-correction.round3.phase4-regression",
+        "homeport.owner-correction.round3.phase5-regression",
+        "homeport.owner-correction.round3.phase6-regression",
+        "homeport.owner-correction.round3.phase7-regression",
+        "homeport.owner-correction.round3.round1-regression",
+        "homeport.owner-correction.round3.round2-regression",
+        "homeport.owner-correction.round3.artifact-idempotency"
       ]
     }
   ],
@@ -4803,6 +5245,206 @@
     },
     {
       "contractId": "homeport.owner-correction.round2.artifact-idempotency",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.owner-correction.round3.feedback-ledger",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.owner-correction.round3.profile-image-selection",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.owner-correction.round3.avatar-crop",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.owner-correction.round3.banner-crop",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.owner-correction.round3.crop-keyboard",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.owner-correction.round3.crop-touch",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.owner-correction.round3.media-validation",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.owner-correction.round3.media-atomic-replacement",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.owner-correction.round3.profile-image-propagation",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.owner-correction.round3.account-trigger-avatar",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.owner-correction.round3.profile-overview-identity",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.owner-correction.round3.profile-prompt-not-score",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.owner-correction.round3.registration-verification-screen",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.owner-correction.round3.verification-code-security",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.owner-correction.round3.verification-resend",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.owner-correction.round3.email-provider-contract",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.owner-correction.round3.postmark-adapter",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.owner-correction.round3.postmark-webhooks",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.owner-correction.round3.synthetic-email",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.owner-correction.round3.email-live-evidence",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.owner-correction.round3.dark-default",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.owner-correction.round3.no-theme-flash",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.owner-correction.round3.light-deferred",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.owner-correction.round3.workspace-entry",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.owner-correction.round3.new-account-capabilities",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.owner-correction.round3.existing-account-reconciliation",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.owner-correction.round3.resource-authority-separated",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.owner-correction.round3.active-chronicle-lock",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.owner-correction.round3.no-false-chronicle-lock",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.owner-correction.round3.captain-empty",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.owner-correction.round3.creator-empty",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.owner-correction.round3.route-crossfade",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.owner-correction.round3.no-background-blink",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.owner-correction.round3.route-layer-interaction",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.owner-correction.round3.loading-threshold",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.owner-correction.round3.account-menu-visible-motion",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.owner-correction.round3.account-menu-focus",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.owner-correction.round3.mobile",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.owner-correction.round3.zoom",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.owner-correction.round3.accessibility",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.owner-correction.round3.phase1-regression",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.owner-correction.round3.phase2-regression",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.owner-correction.round3.phase3-regression",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.owner-correction.round3.phase4-regression",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.owner-correction.round3.phase5-regression",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.owner-correction.round3.phase6-regression",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.owner-correction.round3.phase7-regression",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.owner-correction.round3.round1-regression",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.owner-correction.round3.round2-regression",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.owner-correction.round3.artifact-idempotency",
       "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
     }
   ],

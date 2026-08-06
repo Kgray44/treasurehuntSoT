@@ -4,6 +4,7 @@ import { copyFile, mkdir, readFile, readdir, rm, stat, writeFile } from "node:fs
 import path from "node:path";
 import { chromium } from "playwright";
 import { PrismaClient } from "@prisma/client";
+import { format, resolveConfig } from "prettier";
 import sharp from "sharp";
 
 const repositoryRoot = path.resolve(process.cwd());
@@ -161,7 +162,7 @@ async function generate() {
     records,
   };
   await writeFile(path.join(outputRoot, "manifest.json"), `${JSON.stringify(manifest, null, 2)}\n`, "utf8");
-  await writeFile(path.join(outputRoot, "index.html"), buildIndex(manifest), "utf8");
+  await writeFormattedIndex(manifest);
   await writeFile(path.join(outputRoot, "README.md"), buildReadme(manifest), "utf8");
   await createContactSheets(records);
   await validate();
@@ -551,7 +552,7 @@ async function acceptVisualReview() {
     acceptedAt: new Date().toISOString(),
   };
   await writeFile(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`, "utf8");
-  await writeFile(path.join(outputRoot, "index.html"), buildIndex(manifest), "utf8");
+  await writeFormattedIndex(manifest);
   await writeFile(path.join(outputRoot, "README.md"), buildReadme(manifest), "utf8");
   if (round3) await acceptRound3JourneyVisualReview();
   process.stdout.write(
@@ -910,6 +911,12 @@ async function contactSheet(records, fileName) {
 
 function buildReadme(manifest) {
   return `# Project Homeport Experience Images\n\nThis owner-review library is source-bound to \`${manifest.sourceSha}\` and fixture \`${manifest.fixture}\`. It contains ${manifest.records.length} synthetic captures covering ${manifest.routeCensus.humanFacingRoutes} current human-facing route patterns plus representative loading, empty, error, permission, restricted, archived, token, and destructive-warning states.\n\nOpen [index.html](index.html) directly in a browser. Contact sheets are under [Contact_Sheets](Contact_Sheets). Codex visual review is not owner acceptance. Live email delivery, live external providers, deployment, merge, and production data are not represented.\n`;
+}
+
+async function writeFormattedIndex(manifest) {
+  const indexPath = path.join(outputRoot, "index.html");
+  const prettierConfig = (await resolveConfig(indexPath)) ?? {};
+  await writeFile(indexPath, await format(buildIndex(manifest), { ...prettierConfig, parser: "html" }), "utf8");
 }
 
 function buildIndex(manifest) {

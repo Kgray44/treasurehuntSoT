@@ -1,0 +1,22 @@
+{
+  "evidenceId": "HP-OWCR3-EV-T-DELAYED-LOADING-CROSSFADE",
+  "journeyId": "HP-OWCR3-JRN-P",
+  "sourceSha": "581e5d3c5d4560bd101362e835c4eb0ed5a85e3f",
+  "fixtureVersion": "homeport-phase7-owner-correction-round3-v1",
+  "result": "PASSED",
+  "visualReview": "ACCEPTED",
+  "reviewer": "Codex",
+  "ownerReview": "PENDING_OWNER_DECISION",
+  "browser": "Playwright Chromium 141.0.7390.37",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "route": "/community",
+  "title": "Community Harbor | Voyagewright",
+  "screenshot": "screenshots/HP-OWCR3-EV-T-DELAYED-LOADING-CROSSFADE.png",
+  "screenshotSha256": "3f70567e0a501442a36daf28bf743737e0dbb1d76410343615111c04d63f8f15",
+  "screenshotBytes": 306836,
+  "timestamp": "2026-08-06T14:51:09.952Z",
+  "limitation": "Local production-build Chromium proof against a synthetic task-owned SQLite clone; not owner acceptance, live-provider proof, merge, or deployment."
+}

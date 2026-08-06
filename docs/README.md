@@ -51,3 +51,14 @@ The [engineering-record archive](../Development_Docs/README.md) preserves implem
 - [Chronicle preview and start](user/chronicle-preview-and-start.md)
 - [Synthetic email owner walkthrough](user/synthetic-email-owner-walkthrough.md)
 - [Owner re-review package](../Development_Docs/Projects/Project_Homeport/walkthrough/phase7/correction-round2/README.md)
+
+## Phase 7 correction Round 3 guides
+
+- [Email verification](user/email-verification.md)
+- [Password recovery](user/password-recovery.md)
+- [Profile imagery](user/profile-imagery.md)
+- [Themes and appearance](user/themes-and-appearance.md)
+- [Account and workspaces](user/account-workspaces.md)
+- [Local email testing](developer/local-email-testing.md)
+- [Postmark configuration](administrator/postmark-configuration.md)
+- [Owner re-review package](../Development_Docs/Projects/Project_Homeport/walkthrough/phase7/correction-round3/README.md)

@@ -69,3 +69,9 @@ resource authority, direct page crossfades, and perceptible account-menu motion.
 pending Round 2 decision without changing the historical Round 1 decisions or automated validation records. Round 3
 remains `PENDING_OWNER_DECISION`; no architecture, implementation, automated proof, Codex visual review, Sounding Line
 decision, healthy runtime, or provider receipt may record owner acceptance.
+
+## Correction Round 3 implementation and validation
+
+**Date:** 2026-08-05. **Exact browser source:** `581e5d3c5d4560bd101362e835c4eb0ed5a85e3f`. **Experience Images source:** `581e5d3c5d4560bd101362e835c4eb0ed5a85e3f`.
+
+All 54 Round 3 findings are corrected and traced. Round 3 A-V, retained Round 2 A-W, Round 1 A-U, and original Phase 7 A-O passed on isolated synthetic clones; all 30 governed evidence IDs and 256 Experience Images received Codex `ACCEPTED` visual classification. Owner Walkthrough Round 1 remains `OWNER_RETURNED_FOR_CORRECTION`; re-reviews after Rounds 1 and 2 remain `OWNER_REJECTED_WITH_ACTIONABLE_FINDINGS`; Owner Re-Review Round 3 remains `PENDING_OWNER_DECISION`. Automation cannot record owner acceptance.

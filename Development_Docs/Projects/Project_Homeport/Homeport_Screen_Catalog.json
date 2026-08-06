@@ -8873,5 +8873,33 @@
       "Local synthetic evidence only",
       "Live providers and email delivery remain external"
     ]
+  },
+  "phase7OwnerCorrectionRound3": {
+    "state": "CORRECTION_ROUND_3_VALIDATED_PENDING_OWNER_REREVIEW",
+    "sourceSha": "581e5d3c5d4560bd101362e835c4eb0ed5a85e3f",
+    "experienceImagesSourceSha": "581e5d3c5d4560bd101362e835c4eb0ed5a85e3f",
+    "architectureSha": "88d3b0a",
+    "fixtureVersion": "homeport-phase7-owner-correction-round3-v1",
+    "fixtureChecksum": "c2a727ea57eaa26a0c0f9cfdf481960e20644bbc19d94621b9581c2d6629ba53",
+    "round3JourneyCount": 22,
+    "retainedRound2JourneyCount": 23,
+    "retainedRound1JourneyCount": 21,
+    "retainedOriginalPhase7JourneyCount": 15,
+    "evidenceCount": 30,
+    "experienceImageCount": 256,
+    "ownerWalkthroughRound1Decision": "OWNER_RETURNED_FOR_CORRECTION",
+    "ownerReReviewAfterCorrectionRound1": "OWNER_REJECTED_WITH_ACTIONABLE_FINDINGS",
+    "ownerReReviewAfterCorrectionRound2": "OWNER_REJECTED_WITH_ACTIONABLE_FINDINGS",
+    "ownerReReviewRound3": "PENDING_OWNER_DECISION",
+    "transactionalEmail": "POSTMARK_BLOCKED_EXTERNAL_CONFIGURATION",
+    "branch": "codex/project-homeport-product-reality-recovery",
+    "limitations": [
+      "Not merged",
+      "Not deployed",
+      "No owner acceptance",
+      "Local synthetic evidence only",
+      "Postmark live delivery is blocked by external configuration",
+      "Production MySQL and physical assistive-technology validation remain external"
+    ]
   }
 }

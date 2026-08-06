@@ -281,3 +281,14 @@ The owner re-review after Correction Round 2 was `OWNER_REJECTED_WITH_ACTIONABLE
 This remains branch-local Phase 7 correction work: not merged, not deployed, not owner accepted, and not live-provider proof.
 
 <!-- HOMEPORT_OWNER_CORRECTION_ROUND3:END -->
+
+## Phase 7 correction Round 3 re-review state
+
+All 54 Round 3 findings are locally implemented and exact-source validated at `581e5d3c5d4560bd101362e835c4eb0ed5a85e3f`. Round 3 A-V passed 22/22, retained Round 2 A-W passed 23/23, Round 1 A-U passed 21/21, original Phase 7 A-O passed 15/15, and the complete Experience Images package received Codex visual classification `ACCEPTED`. Postmark remains `POSTMARK_BLOCKED_EXTERNAL_CONFIGURATION`; Owner Re-Review Round 3 remains `PENDING_OWNER_DECISION`.
+
+- [Implementation report](Project_Homeport_Phase_7_Correction_Round_3_Implementation_Report.md)
+- [Validation record](Project_Homeport_Phase_7_Correction_Round_3_Validation_Record.md)
+- [Integration manifest](Project_Homeport_Phase_7_Correction_Round_3_Integration_Manifest.md)
+- [Owner re-review package](walkthrough/phase7/correction-round3/README.md)
+- [Evidence](evidence/phase7-owner-correction-round3/README.md)
+- [Experience Images](../../../Experience_Images/README.md)

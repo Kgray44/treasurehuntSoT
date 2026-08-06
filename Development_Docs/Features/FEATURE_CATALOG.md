@@ -1139,7 +1139,7 @@ Every current human-facing screen is now source-inventoried with governed visual
 **Status:** BRANCH COMPLETE NOT MERGED
 **Program or subsystem:** Project Homeport Phase 7
 
-One governed synthetic voyage now proves the integrated Homeport product plus Owner Correction Rounds 1 and 2, including stable motion, coherent global themes, truthful Sera capability/profile state, authoritative Community saves/reviews, completion-gated review-later, expanded previews, synthetic email boundaries, and a complete Experience Images inventory.
+Project Homeport now includes the integrated Whole Voyage plus Owner Correction Rounds 1-3: governed Profile imagery and crop editing, identity propagation, six-digit verification, a Postmark production adapter with deterministic synthetic testing, ordinary Player/Captain/Creator entry separated from resource authority, direct route crossfades, visible account-menu motion, and Dark defaults.
 
 ### Important subfeatures
 
@@ -1171,6 +1171,16 @@ One governed synthetic voyage now proves the integrated Homeport product plus Ow
 - Authoritative Community save counts, rating summaries, in-place reviews, completion eligibility, and Passport review-later entry
 - Browseable Experience Images package with 227 checksummed desktop, mobile, theme, and major-state captures across 88 human-facing routes
 - Task-owned synthetic email outbox with explicit non-claim of live delivery
+- Interactive avatar and banner selection, preview, crop, replacement, removal, and normalized derivative lifecycle
+- Profile avatar and banner propagation across Personal Harbor, account controls, and safe public identity projections
+- Six-digit email-code registration with hashed expiry, attempts, resend replacement, and atomic account activation
+- Provider-neutral transactional email with Postmark production and task-owned synthetic adapters
+- Ordinary-account Player, Captain, and Creator entry separated from resource-specific authorization
+- Active-Chronicle transition safety with authoritative true-lock and false-lock behavior
+- Direct page crossfades with stable shell, 500 ms loading integration, focus handoff, and reduced motion
+- Perceptible production account-menu opening and closing motion
+- Dark anonymous and new-account defaults with broad Light visual completion deferred
+- Correction Round 3 journeys A-V with retained Round 2 A-W, Round 1 A-U, and original Phase 7 A-O regressions
 
 ### Primary surfaces
 
@@ -1179,10 +1189,11 @@ One governed synthetic voyage now proves the integrated Homeport product plus Ow
 ### Meaningful limitations
 
 - Not available on main until separately reviewed and integrated
-- Evidence is local, synthetic, branch-only, and uses task-owned SQLite clones
-- Live Discord, Steam, Microsoft/Xbox, and email delivery remain external
-- Production MySQL execution, deployment, and physical assistive-technology validation remain external
-- Owner Walkthrough Round 1 is OWNER_RETURNED_FOR_CORRECTION; re-review after Round 1 is OWNER_REJECTED_WITH_ACTIONABLE_FINDINGS; Round 2 is PENDING_OWNER_DECISION
+- Not deployed; no pull request was created by the governed Round 3 task
+- Owner Re-Review Round 3 remains PENDING_OWNER_DECISION
+- Broad Light Mode visual completion remains deferred
+- Postmark live delivery is POSTMARK_BLOCKED_EXTERNAL_CONFIGURATION; synthetic proof is not live inbox proof
+- Production MySQL execution, external-provider configuration, and physical assistive-technology validation remain external
 - Readiness for owner re-review is not owner acceptance or product acceptance
 
 ### Evidence
@@ -1195,6 +1206,8 @@ One governed synthetic voyage now proves the integrated Homeport product plus Ow
 - test: `tests/e2e/homeport-phase7-owner-correction-round1.spec.ts`
 - completion-record: `Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_7_Correction_Round_2_Validation_Record.md`
 - test: `tests/e2e/homeport-phase7-owner-correction-round2.spec.ts`
+- completion-record: `Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_7_Correction_Round_3_Validation_Record.md`
+- test: `tests/e2e/homeport-phase7-owner-correction-round3.spec.ts`
 - path: `Experience_Images/manifest.json`
 
 ---

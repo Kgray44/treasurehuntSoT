@@ -401,3 +401,7 @@ The frozen [Round 3 architecture](Project_Homeport_Phase_7_Owner_Walkthrough_Cor
 The architecture assigns 54 owner findings to `HP-OWCR3-001`-`054` and new nonconformities `HP-NC-157`-`210`. It establishes no implementation, live inbox delivery, migration/test result, visual acceptance, Sounding Line decision, publication, owner readiness, merge, PR, deployment, or owner acceptance.
 
 <!-- HOMEPORT_OWNER_CORRECTION_ROUND3_ARCHITECTURE:END -->
+
+## Phase 7 correction Round 3 implementation amendment
+
+The frozen 42-decision Round 3 architecture is implemented at exact browser source `581e5d3c5d4560bd101362e835c4eb0ed5a85e3f`. It retains canonical AccountSession, specialist resource authority, prior owner/history records, and the 500 ms loading contract while adding Profile imagery/crop, identity propagation, six-digit verification, provider-neutral Postmark delivery, Dark defaults, ordinary workspace entry, active-Chronicle truth, direct route crossfades, visible account-menu motion, isolated fixtures, and exact-source evidence. Delivery, Bounce, and SpamComplaint webhooks use configured HTTP Basic protection and idempotent MessageID event handling; no unsupported Postmark HMAC claim is made. The result is validated pending owner re-review, not merged, deployed, or owner accepted.

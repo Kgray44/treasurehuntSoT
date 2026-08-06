@@ -266,7 +266,7 @@ export function findingArea(index) {
   if (index <= 12)
     return [
       "Profile imagery",
-      "high",
+      "HIGH",
       "wayfarer-profile-media",
       "Project_Homeport_Profile_Imagery_and_Crop_Contract.md",
       "profile-media;crop-editor;identity-projection",
@@ -275,7 +275,7 @@ export function findingArea(index) {
   if (index <= 17)
     return [
       "Profile Overview",
-      "high",
+      "HIGH",
       "personal-harbor",
       "Project_Homeport_Profile_Identity_Presentation_Contract.md",
       "profile-overview;profile-identity",
@@ -284,7 +284,7 @@ export function findingArea(index) {
   if (index <= 25)
     return [
       "Transactional email",
-      index >= 20 && index <= 23 ? "critical" : "high",
+      index >= 20 && index <= 23 ? "CRITICAL" : "HIGH",
       "wayfarer-account-security",
       index >= 22
         ? "Project_Homeport_Postmark_Transactional_Email_Contract.md"
@@ -295,7 +295,7 @@ export function findingArea(index) {
   if (index <= 31)
     return [
       "Theme",
-      "high",
+      "HIGH",
       "product-shell-theme",
       "Project_Homeport_Dark_Default_and_Light_Deferral_Contract.md",
       "theme-bootstrap;theme-default",
@@ -304,7 +304,7 @@ export function findingArea(index) {
   if (index <= 43)
     return [
       "Workspace access",
-      "critical",
+      "CRITICAL",
       "homeport-workspace-authority",
       "Project_Homeport_Workspace_Entry_and_Resource_Authority_Contract.md",
       "workspace-entry;resource-authority;reconciliation;active-lock",
@@ -313,7 +313,7 @@ export function findingArea(index) {
   if (index <= 50)
     return [
       "Route transition",
-      "high",
+      "HIGH",
       "platform-motion",
       "Project_Homeport_Route_Crossfade_Transition_Contract.md",
       "route-crossfade;loading-threshold;focus-scroll",
@@ -321,7 +321,7 @@ export function findingArea(index) {
     ];
   return [
     "Account dropdown",
-    "high",
+    "HIGH",
     "product-shell",
     "Project_Homeport_Account_Menu_Motion_Contract.md",
     "account-menu-motion;frame-evidence",

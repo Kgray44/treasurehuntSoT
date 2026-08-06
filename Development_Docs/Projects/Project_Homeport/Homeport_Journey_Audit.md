@@ -286,3 +286,7 @@ Correction journeys `HP-OWCR1-JRN-A` through `HP-OWCR1-JRN-U` passed against `e1
 ## Phase 7 owner correction Round 2 addendum
 
 Journeys `HP-OWCR2-JRN-A` through `HP-OWCR2-JRN-W` passed against `f3eef8dc65dd39a40f8e4140aa058de0381a94af` using visible controls and isolated production-browser runtimes. Journey W also passed retained Correction Round 1 A-U and original Phase 7 A-O against that exact source. This establishes local corrected traversal, not owner acceptance, mainline integration, or deployment.
+
+## Phase 7 owner correction Round 3 addendum
+
+Journeys `HP-OWCR3-JRN-A` through `HP-OWCR3-JRN-V` passed against `581e5d3c5d4560bd101362e835c4eb0ed5a85e3f` using visible controls and isolated production-browser runtimes. Journey V also passed retained Correction Round 2 A-W, Correction Round 1 A-U, and original Phase 7 A-O against that exact source. This establishes local corrected traversal, not owner acceptance, mainline integration, or deployment.

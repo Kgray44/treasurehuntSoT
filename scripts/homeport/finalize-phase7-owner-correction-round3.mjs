@@ -11,6 +11,7 @@ const sourceSha = required("HOMEPORT_PHASE7_CORRECTION_SOURCE_SHA");
 const visualReviewDecision = required("HOMEPORT_PHASE7_CODEX_VISUAL_REVIEW");
 const branch = "codex/project-homeport-product-reality-recovery";
 const fixtureVersion = "homeport-phase7-owner-correction-round3-v1";
+const experienceImageCount = 256;
 const architectureSha = "88d3b0a";
 const projectRoot = path.join(root, "Development_Docs", "Projects", "Project_Homeport");
 const evidenceRoot = path.join(projectRoot, "evidence", "phase7-owner-correction-round3");
@@ -66,8 +67,8 @@ const regressions = JSON.parse(await readFile(path.join(reportRoot, "journey-V-r
 if (
   regressions.sourceSha !== sourceSha ||
   regressions.correctionRound2 !== "PASSED_A_W" ||
-  regressions.correctionRound1 !== "PASSED_A_U" ||
-  regressions.originalPhase7 !== "PASSED_A_O"
+  regressions.correctionRound1 !== "PASSED_A_U_VIA_ROUND2_W" ||
+  regressions.originalPhase7 !== "PASSED_A_O_VIA_ROUND2_W"
 ) {
   throw new Error("Journey V exact-source retained-regression receipt is missing or stale.");
 }
@@ -135,7 +136,7 @@ if (
   experience.fixture !== fixtureVersion ||
   experience.routeCensus?.humanFacingRoutes !== 88 ||
   experience.routeCensus?.capturedHumanFacingRoutes !== 88 ||
-  experience.records?.length !== 227 ||
+  experience.records?.length !== experienceImageCount ||
   experience.records.some((record) => record.visualReviewStatus !== "ACCEPTED") ||
   !isAncestor(experience.sourceSha, sourceSha)
 ) {
@@ -144,7 +145,7 @@ if (
 await copyFile(experienceManifestPath, path.join(evidenceRoot, "experience-images-manifest.json"));
 await copyFile(path.join(experienceRoot, "index.html"), path.join(evidenceRoot, "experience-images-index.html"));
 await copyFile(
-  path.join(experienceRoot, "Contact_Sheets", "Master_Desktop.png"),
+  path.join(experienceRoot, "Contact_Sheets", "Round3_Affected_States.png"),
   path.join(screenshotRoot, "round3-experience-images-contact-sheet.png"),
 );
 const suffixes = [..."ABCDEFGHIJKLMNOPQRSTUVWXYZ", "AA", "AB", "AC", "AD"];
@@ -167,7 +168,7 @@ const shared = {
   retainedRound1JourneyCount: 21,
   retainedOriginalPhase7JourneyCount: 15,
   evidenceCount: 30,
-  experienceImageCount: 227,
+  experienceImageCount,
   ownerWalkthroughRound1Decision: "OWNER_RETURNED_FOR_CORRECTION",
   ownerReReviewAfterCorrectionRound1: "OWNER_REJECTED_WITH_ACTIONABLE_FINDINGS",
   ownerReReviewAfterCorrectionRound2: "OWNER_REJECTED_WITH_ACTIONABLE_FINDINGS",
@@ -214,7 +215,7 @@ await writeJson(path.join(evidenceRoot, "source-bound-test-receipt.json"), {
   screenshotCount: captures.length,
   motionReceiptCount: motionReceipts.length,
   governedEvidenceIdCount: 30,
-  experienceImageCount: 227,
+  experienceImageCount,
   truthBoundary: "LOCAL_SYNTHETIC_PRODUCTION_BUILD_BROWSER_PROOF",
 });
 await writeText(path.join(evidenceRoot, "README.md"), evidenceReadme());
@@ -262,10 +263,20 @@ async function updateLedgers() {
   });
   if (round3.length !== 54) throw new Error(`Expected HP-NC-157 through HP-NC-210, received ${round3.length}.`);
   for (const row of round3) {
-    const evidenceIds = String(row.evidence_ids ?? "")
+    const declaredEvidenceIds = String(row.evidence_ids ?? "")
       .split(";")
       .map((value) => value.trim())
       .filter(Boolean);
+    const evidenceIds = [
+      ...new Set(
+        declaredEvidenceIds.flatMap((evidenceId) =>
+          governedEvidence
+            .filter((capture) => capture.evidenceId === evidenceId || capture.evidenceId.startsWith(`${evidenceId}-`))
+            .map((capture) => capture.evidenceId),
+        ),
+      ),
+    ];
+    if (!evidenceIds.length) throw new Error(`${row.id} has no resolved governed Round 3 evidence IDs.`);
     const journeyIds = [
       ...new Set(
         evidenceIds.flatMap((evidenceId) =>
@@ -286,6 +297,8 @@ async function updateLedgers() {
     ];
     row.journeys = (journeyIds.length ? journeyIds : ["HP-OWCR3-JRN-U"]).join(";");
     row.source_routes = (sourceRoutes.length ? sourceRoutes : ["SOURCE_BOUND_NON_VISUAL_PROOF"]).join(";");
+    row.severity = String(row.severity).toUpperCase();
+    row.evidence_ids = evidenceIds.join(";");
     row.current_status = "CORRECTED_PENDING_OWNER_REREVIEW";
     row.disposition = "CORRECTION_ROUND_3_VALIDATED_PENDING_OWNER_REREVIEW";
     row.observed_result = `Correction passed exact-source local synthetic validation at ${sourceSha}.`;
@@ -298,6 +311,60 @@ async function updateLedgers() {
 }
 
 async function updateCatalogs(value) {
+  const routeInventoryPath = path.join(projectRoot, "Homeport_Route_Inventory.json");
+  const routeInventory = JSON.parse(await readFile(routeInventoryPath, "utf8"));
+  const serviceTemplate = routeInventory.routes.find(
+    (record) => record.implementationSource === "src/app/api/auth/email/verification/resend/route.ts",
+  );
+  if (!serviceTemplate) throw new Error("The governed internal-service route template is missing.");
+  for (const specification of [
+    {
+      routeId: "route-route-api-auth-email-verification-change",
+      routePattern: "/api/auth/email/verification/change",
+      implementationSource: "src/app/api/auth/email/verification/change/route.ts",
+      logicalParent: "/api/auth/email/verification",
+      authenticationRequirement: "CANONICAL_ACCOUNT",
+    },
+    {
+      routeId: "route-route-api-passport-media-original",
+      routePattern: "/api/passport/media/original",
+      implementationSource: "src/app/api/passport/media/original/route.ts",
+      logicalParent: "/api/passport/media",
+      authenticationRequirement: "CANONICAL_ACCOUNT",
+    },
+    {
+      routeId: "route-route-api-webhooks-postmark",
+      routePattern: "/api/webhooks/postmark",
+      implementationSource: "src/app/api/webhooks/postmark/route.ts",
+      logicalParent: "/api/webhooks",
+      authenticationRequirement: "PUBLIC",
+    },
+  ]) {
+    if (routeInventory.routes.some((record) => record.implementationSource === specification.implementationSource))
+      continue;
+    routeInventory.routes.push({
+      ...structuredClone(serviceTemplate),
+      ...specification,
+      returnOrBackRoute: specification.logicalParent,
+      targetDisposition: "PHASE_7_OWNER_CORRECTION_ROUND_3_INTERNAL_SERVICE",
+      notes: "Round 3 internal service route; excluded from human-facing reachability.",
+      phase5Implementation: {
+        ...serviceTemplate.phase5Implementation,
+        implementationSourceSha: sourceSha,
+        state: "REVALIDATED_BY_OWNER_CORRECTION_ROUND3",
+        sourceParityOnly: false,
+        humanReachabilityExcluded: true,
+      },
+    });
+  }
+  routeInventory.routes.sort((left, right) => left.implementationSource.localeCompare(right.implementationSource));
+  routeInventory.totals.routeFiles = routeInventory.routes.length;
+  routeInventory.totals.pages = routeInventory.routes.filter((record) => record.kind === "page").length;
+  routeInventory.totals.services = routeInventory.routes.filter((record) => record.kind === "route").length;
+  routeInventory.totals.sourceDiscoveredPages = routeInventory.totals.pages;
+  routeInventory.totals.sourceDiscoveredServices = routeInventory.totals.services;
+  await writeJson(routeInventoryPath, routeInventory);
+
   for (const name of [
     "Homeport_Screen_Catalog.json",
     "Homeport_Screen_Contract_Catalog.json",
@@ -352,12 +419,14 @@ async function updateCatalogs(value) {
 
   const visualPath = path.join(projectRoot, "Homeport_Visual_Baseline_Manifest.json");
   const visual = JSON.parse(await readFile(visualPath, "utf8"));
-  const routeInventory = JSON.parse(await readFile(path.join(projectRoot, "Homeport_Route_Inventory.json"), "utf8"));
+  const finalRouteInventory = JSON.parse(
+    await readFile(path.join(projectRoot, "Homeport_Route_Inventory.json"), "utf8"),
+  );
   const screenCatalog = JSON.parse(await readFile(path.join(projectRoot, "Homeport_Screen_Catalog.json"), "utf8"));
   const visualRecords = captures
     .filter((capture) => capture.screenshot && capture.route)
     .map((capture) => {
-      const routeRecord = routeInventory.routes.find((record) => routeMatches(record.routePattern, capture.route));
+      const routeRecord = finalRouteInventory.routes.find((record) => routeMatches(record.routePattern, capture.route));
       const screenRecord = screenCatalog.screens.find((record) => record.routeIds.includes(routeRecord?.routeId));
       if (!routeRecord || !screenRecord) {
         throw new Error(`${capture.evidenceId} cannot be mapped to a governed route and screen contract.`);
@@ -501,7 +570,7 @@ async function updateHumanRecords() {
   );
   const status = `## Phase 7 correction Round 3 status
 
-Correction Round 3 is locally exact-source validated at \`${sourceSha}\` and ready for owner re-review. It adds governed Profile imagery/cropping and identity propagation, six-digit verification, a Postmark production adapter with task-owned synthetic isolation, ordinary Player/Captain/Creator entry separated from resource authority, direct route crossfades, visible account-menu motion, and Dark defaults. Owner Re-Review Round 3 remains \`PENDING_OWNER_DECISION\`; the branch is not merged or deployed. Postmark is \`POSTMARK_BLOCKED_EXTERNAL_CONFIGURATION\`, broad Light Mode visual completion is deferred, and production MySQL plus physical assistive-technology validation remain external.
+Correction Round 3 is locally exact-source validated and ready for owner re-review. It adds governed Profile imagery/cropping and identity propagation, six-digit verification, a Postmark production adapter with task-owned synthetic isolation, ordinary Player/Captain/Creator entry separated from resource authority, direct route crossfades, visible account-menu motion, and Dark defaults. Owner Re-Review Round 3 remains \`PENDING_OWNER_DECISION\`; the branch is not merged or deployed. Postmark is \`POSTMARK_BLOCKED_EXTERNAL_CONFIGURATION\`, broad Light Mode visual completion is deferred, and production MySQL plus physical assistive-technology validation remain external.
 `;
   for (const relative of [
     "docs/product/current-status.md",
@@ -634,7 +703,7 @@ function validationBody() {
 | Retained Correction Round 1 A-U | \`${sourceSha}\` | 21/21 PASSED |
 | Retained original Phase 7 A-O | \`${sourceSha}\` | 15/15 PASSED |
 | Required Round 3 evidence IDs A-AD | \`${sourceSha}\` | 30/30 present; 29 screenshots and 5 temporal receipts |
-| Experience Images | \`${experience.sourceSha}\` | 227/227 captures; 88/88 human-facing routes; Codex ACCEPTED |
+| Experience Images | \`${experience.sourceSha}\` | ${experience.records.length}/${experience.records.length} captures; 88/88 human-facing routes; Codex ACCEPTED |
 | Vitest | implementation source family | 204 files; 1289 tests passed |
 | Migration rehearsal | Round 3 task-owned databases | 50 migrations; fresh/populated integrity and FK checks passed |
 
@@ -655,7 +724,7 @@ function integrationBody() {
 | Exact tested implementation | \`${sourceSha}\` |
 | Fixture | \`${fixtureVersion}\` |
 | Browser journeys | Round 3 A-V 22/22; Round 2 A-W 23/23; Round 1 A-U 21/21; original Phase 7 A-O 15/15 |
-| Evidence | 30 governed IDs, 29 screenshots, 5 temporal receipts, and 227 Experience Images; Codex \`ACCEPTED\` |
+| Evidence | 30 governed IDs, 29 screenshots, 5 temporal receipts, and ${experience.records.length} Experience Images; Codex \`ACCEPTED\` |
 | Transactional email | \`POSTMARK_BLOCKED_EXTERNAL_CONFIGURATION\`; synthetic adapter passed |
 | Owner Round 1 | \`OWNER_RETURNED_FOR_CORRECTION\` |
 | Re-review after Round 1 | \`OWNER_REJECTED_WITH_ACTIONABLE_FINDINGS\` |
@@ -671,7 +740,7 @@ function evidenceReadme() {
   return report(
     "Evidence Index",
     "evidence-index",
-    `This directory contains 29 checksum-verified browser screenshots and five computed temporal receipts covering exact evidence IDs \`HP-OWCR3-EV-A\` through \`HP-OWCR3-EV-AD\` (30 unique IDs). The Experience Images manifest, browseable index, and master desktop contact sheet are supplemental exact-source visual inventory artifacts. Evidence is bound to \`${sourceSha}\`; the 227-image inventory is bound to \`${experience.sourceSha}\`.
+    `This directory contains 29 checksum-verified browser screenshots and five computed temporal receipts covering exact evidence IDs \`HP-OWCR3-EV-A\` through \`HP-OWCR3-EV-AD\` (30 unique IDs). The Experience Images manifest, browseable index, and Round 3 affected-state contact sheet are supplemental exact-source visual inventory artifacts. Evidence is bound to \`${sourceSha}\`; the ${experience.records.length}-image inventory is bound to \`${experience.sourceSha}\`.
 
 Codex visual review is \`ACCEPTED\`; Owner Re-Review Round 3 remains \`PENDING_OWNER_DECISION\`. This is local synthetic proof, not merge, deployment, live Postmark proof, or owner acceptance.
 `,
@@ -688,7 +757,7 @@ function visualReview() {
   return report(
     "Visual Review",
     "visual-review",
-    `Reviewer: Codex. Result: \`ACCEPTED\` for all 30 governed evidence IDs and all 227 Experience Images. Profile selection/crop/pending/committed states, identity propagation, verification, workspace empty/locked states, direct crossfade frames, delayed loading, account-menu opening/closing frames, Dark first paint, mobile, zoom, reduced motion, and the full visual inventory were inspected.
+    `Reviewer: Codex. Result: \`ACCEPTED\` for all 30 governed evidence IDs and all ${experience.records.length} Experience Images. Profile selection/crop/pending/committed states, identity propagation, verification, workspace empty/locked states, direct crossfade frames, delayed loading, account-menu opening/closing frames, Dark first paint, mobile, zoom, reduced motion, and the full visual inventory were inspected.
 
 | Evidence | Route or artifact | Review |
 | --- | --- | --- |
@@ -704,7 +773,7 @@ function ownerDecisionSection() {
 
 **Date:** 2026-08-05. **Exact browser source:** \`${sourceSha}\`. **Experience Images source:** \`${experience.sourceSha}\`.
 
-All 54 Round 3 findings are corrected and traced. Round 3 A-V, retained Round 2 A-W, Round 1 A-U, and original Phase 7 A-O passed on isolated synthetic clones; all 30 governed evidence IDs and 227 Experience Images received Codex \`ACCEPTED\` visual classification. Owner Walkthrough Round 1 remains \`OWNER_RETURNED_FOR_CORRECTION\`; re-reviews after Rounds 1 and 2 remain \`OWNER_REJECTED_WITH_ACTIONABLE_FINDINGS\`; Owner Re-Review Round 3 remains \`PENDING_OWNER_DECISION\`. Automation cannot record owner acceptance.
+All 54 Round 3 findings are corrected and traced. Round 3 A-V, retained Round 2 A-W, Round 1 A-U, and original Phase 7 A-O passed on isolated synthetic clones; all 30 governed evidence IDs and ${experience.records.length} Experience Images received Codex \`ACCEPTED\` visual classification. Owner Walkthrough Round 1 remains \`OWNER_RETURNED_FOR_CORRECTION\`; re-reviews after Rounds 1 and 2 remain \`OWNER_REJECTED_WITH_ACTIONABLE_FINDINGS\`; Owner Re-Review Round 3 remains \`PENDING_OWNER_DECISION\`. Automation cannot record owner acceptance.
 `;
 }
 

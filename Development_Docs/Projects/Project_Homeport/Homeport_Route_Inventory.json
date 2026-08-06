@@ -36,11 +36,11 @@
     "sounding-line"
   ],
   "totals": {
-    "routeFiles": 273,
+    "routeFiles": 276,
     "pages": 90,
-    "services": 183,
+    "services": 186,
     "sourceDiscoveredPages": 90,
-    "sourceDiscoveredServices": 183,
+    "sourceDiscoveredServices": 186,
     "orphanedOrdinaryRoutes": 0
   },
   "routes": [
@@ -1289,7 +1289,14 @@
           "homeport.route.phase3-regression",
           "homeport.route.phase4-regression"
         ]
-      }
+      },
+      "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
+      "phase7OwnerCorrectionRound3Evidence": [
+        "HP-OWCR3-EV-F-PROFILE-OVERVIEW-IDENTITY",
+        "HP-OWCR3-EV-G-ACCOUNT-TRIGGER-AVATAR",
+        "HP-OWCR3-EV-H-ACCOUNT-MENU-AVATAR",
+        "HP-OWCR3-EV-I-PROFILE-HANDLE-PROMPT"
+      ]
     },
     {
       "routeId": "route-page-account-personal-information",
@@ -2011,7 +2018,17 @@
         "state": "READY_FOR_OWNER_WALKTHROUGH",
         "sourceSha": "61ea9ec546622b2bce2036d249fca408922786d2",
         "evidenceIds": ["HP-P7-EV-A-registered-profile"]
-      }
+      },
+      "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
+      "phase7OwnerCorrectionRound3Evidence": [
+        "HP-OWCR3-EV-A-AVATAR-SELECTED",
+        "HP-OWCR3-EV-AB-ZOOM-CROP-EDITOR",
+        "HP-OWCR3-EV-B-AVATAR-CROP",
+        "HP-OWCR3-EV-C-AVATAR-INLINE-PREVIEW",
+        "HP-OWCR3-EV-D-BANNER-CROP",
+        "HP-OWCR3-EV-E-BANNER-INLINE-PREVIEW",
+        "HP-OWCR3-EV-Y-MOBILE-AVATAR-CROP"
+      ]
     },
     {
       "routeId": "route-page-account-profile-view",
@@ -2329,7 +2346,13 @@
           "homeport.route.phase3-regression",
           "homeport.route.phase4-regression"
         ]
-      }
+      },
+      "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
+      "phase7OwnerCorrectionRound3Evidence": [
+        "HP-OWCR3-EV-AA-MOBILE-WORKSPACES",
+        "HP-OWCR3-EV-N-KGTESTING-WORKSPACES",
+        "HP-OWCR3-EV-Q-ACTIVE-CHRONICLE-LOCK"
+      ]
     },
     {
       "routeId": "route-page-account-security",
@@ -2681,7 +2704,9 @@
           "homeport.route.phase3-regression",
           "homeport.route.phase4-regression"
         ]
-      }
+      },
+      "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
+      "phase7OwnerCorrectionRound3Evidence": ["HP-OWCR3-EV-R-PERSONAL-HARBOR-CROSSFADE"]
     },
     {
       "routeId": "route-route-api-account-data-deactivate",
@@ -3187,6 +3212,45 @@
         "implementationSourceSha": "IMPLEMENTATION_SOURCE_PENDING",
         "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
         "sourceParityOnly": true,
+        "humanReachabilityExcluded": true
+      }
+    },
+    {
+      "routeId": "route-route-api-auth-email-verification-change",
+      "routePattern": "/api/auth/email/verification/change",
+      "implementationSource": "src/app/api/auth/email/verification/change/route.ts",
+      "kind": "route",
+      "classification": "API_OR_SERVICE",
+      "ownerProject": "wayfarer",
+      "productArea": "service",
+      "shellMode": "not-applicable",
+      "logicalParent": "/api/auth/email/verification",
+      "currentVisibleEntries": [],
+      "currentDesktopPath": ["DIRECT_URL_ONLY"],
+      "currentMobilePath": ["DIRECT_URL_ONLY"],
+      "authenticationRequirement": "CANONICAL_ACCOUNT",
+      "capabilityRequirements": [],
+      "returnOrBackRoute": "/api/auth/email/verification",
+      "emptyStateAction": "NOT_DECLARED_IN_ROUTE_SOURCE",
+      "dynamicSourceRouteOrContentSource": null,
+      "compatibilityAliases": [],
+      "redirects": [],
+      "currentSupportedStates": ["SERVICE_RESPONSE"],
+      "currentJourneys": [],
+      "currentVisualEvidenceIds": [],
+      "currentMaturity": "NOT_APPLICABLE",
+      "directUrlRequired": false,
+      "orphanedOrdinaryRoute": false,
+      "targetDisposition": "PHASE_7_OWNER_CORRECTION_ROUND_3_INTERNAL_SERVICE",
+      "status": "CURRENT_STATE_AUDITED",
+      "notes": "Round 3 internal service route; excluded from human-facing reachability.",
+      "phase5Implementation": {
+        "phase": "PHASE_5_CLOSE_ROUTE_AND_INFORMATION_ARCHITECTURE_GAPS",
+        "startingSha": "54372224fc9bf4b4fb42797ca58a5a224ffdb92a",
+        "architectureFreezeSha": "bbe9659cc5077c834510c3e4db77aa362e45b6fd",
+        "implementationSourceSha": "581e5d3c5d4560bd101362e835c4eb0ed5a85e3f",
+        "state": "REVALIDATED_BY_OWNER_CORRECTION_ROUND3",
+        "sourceParityOnly": false,
         "humanReachabilityExcluded": true
       }
     },
@@ -7637,6 +7701,45 @@
       }
     },
     {
+      "routeId": "route-route-api-passport-media-original",
+      "routePattern": "/api/passport/media/original",
+      "implementationSource": "src/app/api/passport/media/original/route.ts",
+      "kind": "route",
+      "classification": "API_OR_SERVICE",
+      "ownerProject": "wayfarer",
+      "productArea": "service",
+      "shellMode": "not-applicable",
+      "logicalParent": "/api/passport/media",
+      "currentVisibleEntries": [],
+      "currentDesktopPath": ["DIRECT_URL_ONLY"],
+      "currentMobilePath": ["DIRECT_URL_ONLY"],
+      "authenticationRequirement": "CANONICAL_ACCOUNT",
+      "capabilityRequirements": [],
+      "returnOrBackRoute": "/api/passport/media",
+      "emptyStateAction": "NOT_DECLARED_IN_ROUTE_SOURCE",
+      "dynamicSourceRouteOrContentSource": null,
+      "compatibilityAliases": [],
+      "redirects": [],
+      "currentSupportedStates": ["SERVICE_RESPONSE"],
+      "currentJourneys": [],
+      "currentVisualEvidenceIds": [],
+      "currentMaturity": "NOT_APPLICABLE",
+      "directUrlRequired": false,
+      "orphanedOrdinaryRoute": false,
+      "targetDisposition": "PHASE_7_OWNER_CORRECTION_ROUND_3_INTERNAL_SERVICE",
+      "status": "CURRENT_STATE_AUDITED",
+      "notes": "Round 3 internal service route; excluded from human-facing reachability.",
+      "phase5Implementation": {
+        "phase": "PHASE_5_CLOSE_ROUTE_AND_INFORMATION_ARCHITECTURE_GAPS",
+        "startingSha": "54372224fc9bf4b4fb42797ca58a5a224ffdb92a",
+        "architectureFreezeSha": "bbe9659cc5077c834510c3e4db77aa362e45b6fd",
+        "implementationSourceSha": "581e5d3c5d4560bd101362e835c4eb0ed5a85e3f",
+        "state": "REVALIDATED_BY_OWNER_CORRECTION_ROUND3",
+        "sourceParityOnly": false,
+        "humanReachabilityExcluded": true
+      }
+    },
+    {
       "routeId": "route-route-api-passport-media",
       "routePattern": "/api/passport/media",
       "implementationSource": "src/app/api/passport/media/route.ts",
@@ -9782,6 +9885,45 @@
       }
     },
     {
+      "routeId": "route-route-api-webhooks-postmark",
+      "routePattern": "/api/webhooks/postmark",
+      "implementationSource": "src/app/api/webhooks/postmark/route.ts",
+      "kind": "route",
+      "classification": "API_OR_SERVICE",
+      "ownerProject": "wayfarer",
+      "productArea": "service",
+      "shellMode": "not-applicable",
+      "logicalParent": "/api/webhooks",
+      "currentVisibleEntries": [],
+      "currentDesktopPath": ["DIRECT_URL_ONLY"],
+      "currentMobilePath": ["DIRECT_URL_ONLY"],
+      "authenticationRequirement": "PUBLIC",
+      "capabilityRequirements": [],
+      "returnOrBackRoute": "/api/webhooks",
+      "emptyStateAction": "NOT_DECLARED_IN_ROUTE_SOURCE",
+      "dynamicSourceRouteOrContentSource": null,
+      "compatibilityAliases": [],
+      "redirects": [],
+      "currentSupportedStates": ["SERVICE_RESPONSE"],
+      "currentJourneys": [],
+      "currentVisualEvidenceIds": [],
+      "currentMaturity": "NOT_APPLICABLE",
+      "directUrlRequired": false,
+      "orphanedOrdinaryRoute": false,
+      "targetDisposition": "PHASE_7_OWNER_CORRECTION_ROUND_3_INTERNAL_SERVICE",
+      "status": "CURRENT_STATE_AUDITED",
+      "notes": "Round 3 internal service route; excluded from human-facing reachability.",
+      "phase5Implementation": {
+        "phase": "PHASE_5_CLOSE_ROUTE_AND_INFORMATION_ARCHITECTURE_GAPS",
+        "startingSha": "54372224fc9bf4b4fb42797ca58a5a224ffdb92a",
+        "architectureFreezeSha": "bbe9659cc5077c834510c3e4db77aa362e45b6fd",
+        "implementationSourceSha": "581e5d3c5d4560bd101362e835c4eb0ed5a85e3f",
+        "state": "REVALIDATED_BY_OWNER_CORRECTION_ROUND3",
+        "sourceParityOnly": false,
+        "humanReachabilityExcluded": true
+      }
+    },
+    {
       "routeId": "route-page-captain-invitations",
       "routePattern": "/captain/invitations",
       "implementationSource": "src/app/captain/invitations/page.tsx",
@@ -10081,7 +10223,9 @@
           "homeport.route.phase3-regression",
           "homeport.route.phase4-regression"
         ]
-      }
+      },
+      "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
+      "phase7OwnerCorrectionRound3Evidence": ["HP-OWCR3-EV-O-CAPTAIN-EMPTY"]
     },
     {
       "routeId": "route-page-captain",
@@ -14203,7 +14347,9 @@
         "state": "READY_FOR_OWNER_WALKTHROUGH",
         "sourceSha": "61ea9ec546622b2bce2036d249fca408922786d2",
         "evidenceIds": ["HP-P7-EV-N-dependency-unavailable"]
-      }
+      },
+      "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
+      "phase7OwnerCorrectionRound3Evidence": ["HP-OWCR3-EV-T-DELAYED-LOADING-CROSSFADE"]
     },
     {
       "routeId": "route-page-community-templates",
@@ -16444,7 +16590,15 @@
         "state": "READY_FOR_OWNER_WALKTHROUGH",
         "sourceSha": "61ea9ec546622b2bce2036d249fca408922786d2",
         "evidenceIds": ["HP-P7-EV-O-whole-voyage-anonymous-end"]
-      }
+      },
+      "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
+      "phase7OwnerCorrectionRound3Evidence": [
+        "HP-OWCR3-EV-AC-REDUCED-MOTION",
+        "HP-OWCR3-EV-AD-FULL-ROUND3-REGRESSION",
+        "HP-OWCR3-EV-U-ACCOUNT-MENU-OPENING",
+        "HP-OWCR3-EV-V-ACCOUNT-MENU-OPEN",
+        "HP-OWCR3-EV-X-DARK-FIRST-PAINT"
+      ]
     },
     {
       "routeId": "route-page-passport-artifacts-artifactId",
@@ -17446,7 +17600,9 @@
           "homeport.route.phase3-regression",
           "homeport.route.phase4-regression"
         ]
-      }
+      },
+      "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
+      "phase7OwnerCorrectionRound3Evidence": ["HP-OWCR3-EV-M-VERIFICATION-SUCCESS"]
     },
     {
       "routeId": "route-page-passport-saved",
@@ -18260,7 +18416,9 @@
         "state": "READY_FOR_OWNER_WALKTHROUGH",
         "sourceSha": "61ea9ec546622b2bce2036d249fca408922786d2",
         "evidenceIds": ["HP-P7-EV-L-mobile-workspace"]
-      }
+      },
+      "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
+      "phase7OwnerCorrectionRound3Evidence": ["HP-OWCR3-EV-S-CROSS-PRODUCT-CROSSFADE"]
     },
     {
       "routeId": "route-page-player",
@@ -19297,7 +19455,9 @@
           "homeport.route.phase3-regression",
           "homeport.route.phase4-regression"
         ]
-      }
+      },
+      "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
+      "phase7OwnerCorrectionRound3Evidence": ["HP-OWCR3-EV-J-REGISTRATION"]
     },
     {
       "routeId": "route-page-reset-password",
@@ -19913,7 +20073,9 @@
           "homeport.route.phase3-regression",
           "homeport.route.phase4-regression"
         ]
-      }
+      },
+      "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
+      "phase7OwnerCorrectionRound3Evidence": ["HP-OWCR3-EV-P-CREATOR-EMPTY"]
     },
     {
       "routeId": "route-page-studio",
@@ -21475,7 +21637,13 @@
           "homeport.route.phase3-regression",
           "homeport.route.phase4-regression"
         ]
-      }
+      },
+      "phase7OwnerCorrectionRound3Status": "REVALIDATED_SOURCE_BOUND_BROWSER_PASSED",
+      "phase7OwnerCorrectionRound3Evidence": [
+        "HP-OWCR3-EV-K-VERIFICATION-CODE",
+        "HP-OWCR3-EV-L-VERIFICATION-INVALID",
+        "HP-OWCR3-EV-Z-MOBILE-VERIFICATION"
+      ]
     }
   ],
   "phase1Implementation": {
@@ -21680,6 +21848,34 @@
       "No owner acceptance",
       "Local synthetic evidence only",
       "Live providers and email delivery remain external"
+    ]
+  },
+  "phase7OwnerCorrectionRound3": {
+    "state": "CORRECTION_ROUND_3_VALIDATED_PENDING_OWNER_REREVIEW",
+    "sourceSha": "581e5d3c5d4560bd101362e835c4eb0ed5a85e3f",
+    "experienceImagesSourceSha": "581e5d3c5d4560bd101362e835c4eb0ed5a85e3f",
+    "architectureSha": "88d3b0a",
+    "fixtureVersion": "homeport-phase7-owner-correction-round3-v1",
+    "fixtureChecksum": "c2a727ea57eaa26a0c0f9cfdf481960e20644bbc19d94621b9581c2d6629ba53",
+    "round3JourneyCount": 22,
+    "retainedRound2JourneyCount": 23,
+    "retainedRound1JourneyCount": 21,
+    "retainedOriginalPhase7JourneyCount": 15,
+    "evidenceCount": 30,
+    "experienceImageCount": 256,
+    "ownerWalkthroughRound1Decision": "OWNER_RETURNED_FOR_CORRECTION",
+    "ownerReReviewAfterCorrectionRound1": "OWNER_REJECTED_WITH_ACTIONABLE_FINDINGS",
+    "ownerReReviewAfterCorrectionRound2": "OWNER_REJECTED_WITH_ACTIONABLE_FINDINGS",
+    "ownerReReviewRound3": "PENDING_OWNER_DECISION",
+    "transactionalEmail": "POSTMARK_BLOCKED_EXTERNAL_CONFIGURATION",
+    "branch": "codex/project-homeport-product-reality-recovery",
+    "limitations": [
+      "Not merged",
+      "Not deployed",
+      "No owner acceptance",
+      "Local synthetic evidence only",
+      "Postmark live delivery is blocked by external configuration",
+      "Production MySQL and physical assistive-technology validation remain external"
     ]
   }
 }
