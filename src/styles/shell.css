@@ -515,6 +515,10 @@
   background: color-mix(in srgb, var(--surface-overlay) 92%, #f5cf78 8%);
 }
 
+.shell-mode-GATEWAY_STANDARD .shell-verification-notice {
+  margin-top: var(--shell-header-height);
+}
+
 .shell-verification-notice p {
   margin: 0.15rem 0 0;
 }

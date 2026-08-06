@@ -360,7 +360,12 @@ html[data-motion-level="reduced"] .platform-relic *,
 .account-flow-notice {
   border-left: 4px solid #8c6b2e;
   padding: 0.75rem 1rem;
+  color: #3a3c33;
   background: rgba(255, 250, 232, 0.42);
+}
+
+.account-flow-notice a {
+  color: #5f431b;
 }
 
 .account-flow-nav,
