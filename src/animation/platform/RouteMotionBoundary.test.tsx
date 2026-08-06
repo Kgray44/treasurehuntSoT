@@ -218,6 +218,22 @@ describe("RouteMotionBoundary", () => {
     expect(view.container.querySelector('[data-route-role="outgoing"]')).toHaveStyle({ opacity: "1" });
   });
 
+  it("captures an initially pending route when its content becomes ready without a React rerender", async () => {
+    vi.useFakeTimers();
+    const view = render(<RouteMotionBoundary pathname="/tales">{pending("Preparing Chronicles")}</RouteMotionBoundary>);
+    const content = view.container.querySelector<HTMLElement>('[data-route-layer="/tales"] [data-route-content]');
+
+    await act(async () => {
+      content!.innerHTML = "<main><h1>Choose a Chronicle</h1></main>";
+      await Promise.resolve();
+      vi.advanceTimersByTime(16);
+    });
+    view.rerender(<RouteMotionBoundary pathname="/community">{pending("Preparing Community")}</RouteMotionBoundary>);
+
+    expect(view.container.querySelector('[data-route-role="outgoing"]')).toHaveTextContent("Choose a Chronicle");
+    expect(view.container.querySelector('[data-route-role="outgoing"]')).toHaveStyle({ opacity: "1" });
+  });
+
   it("renders a real terminal failure as the settled destination instead of loading", () => {
     vi.useFakeTimers();
     const view = render(<RouteMotionBoundary pathname="/account">{ready("Account")}</RouteMotionBoundary>);

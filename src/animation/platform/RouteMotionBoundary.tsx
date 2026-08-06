@@ -307,7 +307,7 @@ export function RouteMotionBoundary({ pathname, children }: { pathname: string; 
     if (mode === "reduced" || navigation.current) return;
     const currentLayer = routeLayer(pathname);
     const content = currentLayer?.querySelector<HTMLElement>("[data-route-content]") ?? currentLayer;
-    if (!content || !content.textContent?.trim() || contentIsPending(content)) return;
+    if (!content || !content.textContent?.trim()) return;
     let frame = 0;
     const capture = () => {
       frame = 0;
