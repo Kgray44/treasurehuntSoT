@@ -479,8 +479,9 @@ test("Journey R: Synthetic email walkthrough", async ({ page }) => {
   await page.getByLabel("Confirm password").fill(handoff.password);
   await page.getByRole("button", { name: "Continue" }).click();
   const verification = await waitForDelivery("VERIFY_EMAIL", email);
-  await page.goto(`/verify-email?token=${encodeURIComponent(verification.token!)}`);
+  await page.getByLabel("Code").fill(verification.token!);
   await page.getByRole("button", { name: "Continue" }).click();
+  await expect(page.getByRole("button", { name: "Round 2 Email Walkthrough", exact: true })).toBeVisible();
   await page.goto("/account/personal-information");
   await expect(page.getByText(email, { exact: true })).toBeVisible();
   const text = await page.getByRole("main").last().innerText();

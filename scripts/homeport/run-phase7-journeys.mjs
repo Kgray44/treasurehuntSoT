@@ -31,6 +31,11 @@ for (const journeyId of requested) {
     env,
   );
   run(
+    path.join("node_modules", "tsx", "dist", "cli.mjs"),
+    ["scripts/homeport/reconcile-claimed-account-capabilities.ts", "--commit"],
+    env,
+  );
+  run(
     path.join("node_modules", "@playwright", "test", "cli.js"),
     ["test", "-c", "playwright.homeport-phase7.config.ts", "--grep", `Journey ${journeyId}:`],
     env,

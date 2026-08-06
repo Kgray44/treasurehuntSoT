@@ -150,11 +150,11 @@ test("Journey F: Claim account", async ({ context, page }) => {
   await page.getByLabel("Email").fill(email);
   await page.getByLabel("Password").fill(credentialHandoff.password);
   await page.getByRole("button", { name: "Continue" }).click();
-  await expect(page).toHaveURL(/\/passport/u);
   const delivery = await waitForDelivery("VERIFY_EMAIL", email);
-  await page.goto(`/verify-email?token=${encodeURIComponent(delivery.token!)}`);
+  await page.getByLabel("Code").fill(delivery.token!);
   await page.getByRole("button", { name: "Continue" }).click();
-  await expect(page.getByText(/verified|active/u).first()).toBeVisible();
+  await expect(page.getByRole("button", { name: guest.displayName, exact: true })).toBeVisible();
+  await expect(page).toHaveURL(/\/passport/u);
   const account = await db.userAccount.findUnique({ where: { id: guest.accountId! } });
   expect(account?.status).toBe("ACTIVE");
   await capture(page, "HP-OWCR1-EV-G-ACCOUNT-CLAIMED");
@@ -171,8 +171,9 @@ test("Journey G: Email registration and verification", async ({ page }) => {
   await page.getByLabel("Confirm password").fill(credentialHandoff.password);
   await page.getByRole("button", { name: "Continue" }).click();
   const delivery = await waitForDelivery("VERIFY_EMAIL", email);
-  await page.goto(`/verify-email?token=${encodeURIComponent(delivery.token!)}`);
+  await page.getByLabel("Code").fill(delivery.token!);
   await page.getByRole("button", { name: "Continue" }).click();
+  await expect(page.getByRole("button", { name: "Verified Registration Test", exact: true })).toBeVisible();
   await page.goto("/account/personal-information");
   await expect(page.getByText(email, { exact: true })).toBeVisible();
   await expect(page.getByText("Verified", { exact: true })).toBeVisible();

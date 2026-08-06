@@ -43,9 +43,9 @@ test(`Journey A: account creation`, async ({ page }) => {
   await page.getByLabel("Confirm password").fill(credentialHandoff.password);
   await page.getByLabel("Confirm password").press("Enter");
   const delivery = await waitForDelivery("VERIFY_EMAIL", "registration-candidate@phase7.example.test");
-  await page.goto(`/verify-email?token=${encodeURIComponent(delivery.token!)}`);
+  await page.getByLabel("Code").fill(delivery.token!);
   await page.getByRole("button", { name: "Continue" }).click();
-  await expect(page.getByText("Your email is verified. Continue to your account.")).toBeVisible();
+  await expect(page.getByRole("button", { name: "Phase 7 Registration Candidate", exact: true })).toBeVisible();
   await page.goto("/account/profile");
   await expect(page.getByRole("button", { name: "Phase 7 Registration Candidate" })).toBeVisible();
   await expect(page.getByRole("heading", { name: "Public Profile", exact: true })).toBeVisible();
