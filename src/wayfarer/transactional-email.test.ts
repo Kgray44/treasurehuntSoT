@@ -1,4 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { mkdtempSync, rmSync } from "node:fs";
+import { tmpdir } from "node:os";
+import path from "node:path";
 
 const mocks = vi.hoisted(() => ({
   send: vi.fn(),
@@ -42,6 +45,8 @@ const configuration = {
   POSTMARK_TEMPLATE_ALIAS_ACCOUNT_LIFECYCLE: "account-lifecycle-v1",
 } as const;
 
+let syntheticRoot: string | null = null;
+
 describe("Project Homeport Postmark transactional adapter", () => {
   beforeEach(() => {
     vi.clearAllMocks();
@@ -60,7 +65,11 @@ describe("Project Homeport Postmark transactional adapter", () => {
     });
   });
 
-  afterEach(() => vi.unstubAllEnvs());
+  afterEach(() => {
+    vi.unstubAllEnvs();
+    if (syntheticRoot) rmSync(syntheticRoot, { force: true, recursive: true });
+    syntheticRoot = null;
+  });
 
   it("homeport.owner-correction.round3.postmark-adapter sends the governed template model and persists the accepted MessageID", async () => {
     await expect(
@@ -127,6 +136,30 @@ describe("Project Homeport Postmark transactional adapter", () => {
       data: { status: "FAILED", failureCode: "ETIMEDOUT" },
     });
     expect(JSON.stringify(mocks.deliveryUpdate.mock.calls)).not.toContain("raw-reset-secret");
+  });
+
+  it("homeport.owner-correction.round3.patch-a fails one task-owned verification delivery and lets retry succeed", async () => {
+    syntheticRoot = mkdtempSync(path.join(tmpdir(), "homeport-patch-a-email-"));
+    vi.stubEnv("HOMEPORT_SYNTHETIC_EMAIL_ADAPTER", "TASK_OWNED_TEST");
+    vi.stubEnv("HOMEPORT_PHASE7_TASK_ROOT", syntheticRoot);
+    vi.stubEnv("HOMEPORT_SYNTHETIC_OUTBOX_PATH", path.join(syntheticRoot, "outbox", "delivery.jsonl"));
+    vi.stubEnv("HOMEPORT_SYNTHETIC_EMAIL_FAILURE", "VERIFY_EMAIL_ONCE");
+    const request = {
+      purpose: "VERIFY_EMAIL" as const,
+      email: "retry@example.test",
+      accountId: "account-retry",
+      accountTokenId: "challenge-retry",
+      token: "654321",
+    };
+
+    await expect(sendTransactionalEmail(request)).rejects.toMatchObject({ code: "DELIVERY_FAILED" });
+    await expect(sendTransactionalEmail(request)).resolves.toMatchObject({ status: "SUBMITTED" });
+    expect(mocks.deliveryCreate).toHaveBeenCalledTimes(2);
+    expect(mocks.deliveryUpdate).toHaveBeenNthCalledWith(1, {
+      where: { id: "delivery-1" },
+      data: { status: "FAILED", failureCode: "DELIVERY_FAILED" },
+    });
+    expect(JSON.stringify(mocks.deliveryUpdate.mock.calls)).not.toContain("654321");
   });
 
   it("homeport.owner-correction.round3.postmark-webhooks atomically correlates delivery and treats duplicate events idempotently", async () => {

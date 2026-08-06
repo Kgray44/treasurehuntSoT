@@ -89,6 +89,9 @@ function RouteLayer({
   duration,
   distance,
   outgoing = false,
+  holdOutgoing = false,
+  hideContent = false,
+  revealLayer = true,
   snapshotHtml,
   showLoading = false,
   children,
@@ -98,6 +101,9 @@ function RouteLayer({
   duration: number;
   distance: number;
   outgoing?: boolean;
+  holdOutgoing?: boolean;
+  hideContent?: boolean;
+  revealLayer?: boolean;
   snapshotHtml?: string;
   showLoading?: boolean;
   children?: React.ReactNode;
@@ -119,16 +125,29 @@ function RouteLayer({
       data-route-generation={generation}
       data-route-crossfade="direct"
       data-route-role={outgoing ? "outgoing" : "incoming"}
-      data-route-interactive={!inactive ? "true" : "false"}
+      data-route-interactive={!outgoing && !hideContent ? "true" : "false"}
       initial={outgoing ? false : { opacity: 0, y: distance }}
-      animate={outgoing ? { opacity: 0, pointerEvents: "none" } : { opacity: 1, y: 0, pointerEvents: "auto" }}
+      animate={
+        outgoing
+          ? { opacity: holdOutgoing ? 1 : 0, pointerEvents: "none" }
+          : {
+              opacity: revealLayer ? 1 : 0,
+              y: revealLayer ? 0 : distance,
+              pointerEvents: hideContent ? "none" : "auto",
+            }
+      }
       exit={{ opacity: 0, pointerEvents: "none" }}
       transition={{ duration, ease: platformMotionEasing("route") }}
       {...(snapshotHtml === undefined ? {} : { dangerouslySetInnerHTML: { __html: snapshotHtml } })}
     >
       {snapshotHtml === undefined ? (
         <>
-          <div className="product-route-content" data-route-content="true">
+          <div
+            className="product-route-content"
+            data-route-content="true"
+            data-route-content-hidden={hideContent ? "true" : "false"}
+            aria-hidden={hideContent ? "true" : undefined}
+          >
             {children}
           </div>
           {showLoading ? <RoutePreparationFallback pathname={pathname} /> : null}
@@ -170,12 +189,18 @@ export function RouteMotionBoundary({ pathname, children }: { pathname: string; 
   } else if (renderedPath.current !== pathname) {
     const previousNavigation = navigation.current;
     cancelNavigationWork(previousNavigation);
-    const outgoing = previousNavigation
-      ? null
-      : {
-          pathname: settledRoute.current.pathname,
-          html: stableSnapshot.current.pathname === settledRoute.current.pathname ? stableSnapshot.current.html : "",
-        };
+    const previousIncoming = previousNavigation
+      ? routeLayer(previousNavigation.pathname, previousNavigation.generation)?.querySelector<HTMLElement>(
+          "[data-route-content]",
+        )
+      : null;
+    const outgoing =
+      previousIncoming && !contentIsPending(previousIncoming) && previousIncoming.textContent?.trim()
+        ? { pathname: previousNavigation!.pathname, html: routeSnapshotHtml(previousIncoming) }
+        : (previousNavigation?.outgoing ?? {
+            pathname: settledRoute.current.pathname,
+            html: stableSnapshot.current.pathname === settledRoute.current.pathname ? stableSnapshot.current.html : "",
+          });
     generation.current += 1;
     navigation.current = {
       generation: generation.current,
@@ -225,9 +250,7 @@ export function RouteMotionBoundary({ pathname, children }: { pathname: string; 
       current.observer = null;
       current.phase = "ready";
       settledRoute.current = { pathname, children: current.children };
-      const elapsed = performance.now() - current.startedAt;
-      const remaining = Math.max(0, routeToken.durationMs - elapsed);
-      current.settlementTimer = window.setTimeout(settle, remaining);
+      current.settlementTimer = window.setTimeout(settle, routeToken.durationMs);
       forceRender();
     };
     const evaluateReadiness = () => {
@@ -364,6 +387,7 @@ export function RouteMotionBoundary({ pathname, children }: { pathname: string; 
 
   const active = navigation.current;
   const incomingGeneration = active?.generation ?? generation.current;
+  const incomingPending = Boolean(active && active.phase !== "ready");
   return (
     <LayoutGroup id="lanternwake-route-layout">
       <div
@@ -380,6 +404,7 @@ export function RouteMotionBoundary({ pathname, children }: { pathname: string; 
             duration={routeToken.durationSeconds}
             distance={0}
             outgoing
+            holdOutgoing={active.phase === "preparing"}
             snapshotHtml={active.outgoing.html}
           />
         ) : null}
@@ -389,6 +414,8 @@ export function RouteMotionBoundary({ pathname, children }: { pathname: string; 
           generation={incomingGeneration}
           duration={routeToken.durationSeconds}
           distance={routeToken.distancePx}
+          hideContent={incomingPending}
+          revealLayer={!active || active.phase !== "preparing"}
           showLoading={active?.phase === "loading"}
         >
           {children}

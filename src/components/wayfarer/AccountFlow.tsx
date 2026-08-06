@@ -479,11 +479,21 @@ export function AccountFlow({ mode, query, initialCsrf = "", maskedEmail }: Prop
           </nav>
         ) : null}
         {mode === "register" ? (
+          <nav className="account-flow-nav" aria-label="Registration help">
+            <Link href={`/sign-in${returnTo ? `?returnTo=${encodeURIComponent(returnTo)}` : ""}`}>
+              Already have an account? Sign in
+            </Link>{" "}
+            <Link href={`/forgot-password${returnTo ? `?returnTo=${encodeURIComponent(returnTo)}` : ""}`}>
+              Forgot Password
+            </Link>
+          </nav>
+        ) : null}
+        {mode === "forgot" ? (
           <Link
             className="account-flow-nav"
             href={`/sign-in${returnTo ? `?returnTo=${encodeURIComponent(returnTo)}` : ""}`}
           >
-            Already have an account? Sign in
+            Return to Sign In
           </Link>
         ) : null}
         {mode === "email-change" && message ? (
@@ -499,7 +509,11 @@ export function AccountFlow({ mode, query, initialCsrf = "", maskedEmail }: Prop
               disabled={busy || resendCooldown > 0}
               onClick={() => void resendCode()}
             >
-              {resendCooldown > 0 ? `Resend available in ${resendCooldown}s` : "Resend code"}
+              {resendCooldown > 0
+                ? `Resend available in ${resendCooldown}s`
+                : query?.delivery === "failed"
+                  ? "Retry sending"
+                  : "Resend code"}
             </button>
             <button
               type="button"

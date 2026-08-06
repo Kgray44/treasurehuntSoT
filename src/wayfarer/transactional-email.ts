@@ -1,5 +1,5 @@
 import { createHash, randomUUID } from "node:crypto";
-import { appendFileSync, mkdirSync } from "node:fs";
+import { appendFileSync, existsSync, mkdirSync, writeFileSync } from "node:fs";
 import { dirname, resolve, sep } from "node:path";
 import { ServerClient } from "postmark";
 import { db } from "@/lib/db";
@@ -119,12 +119,21 @@ function taskOwnedOutboxPath() {
 }
 
 function deliverSynthetic(request: DeliveryRequest) {
+  const requestedFailure = process.env.HOMEPORT_SYNTHETIC_EMAIL_FAILURE;
+  if (taskOwnedSyntheticConfigured() && requestedFailure === "VERIFY_EMAIL" && request.purpose === "VERIFY_EMAIL")
+    throw new TransactionalEmailError("Synthetic verification delivery failed as requested.", "DELIVERY_FAILED");
   if (
     taskOwnedSyntheticConfigured() &&
-    process.env.HOMEPORT_SYNTHETIC_EMAIL_FAILURE === "VERIFY_EMAIL" &&
+    requestedFailure === "VERIFY_EMAIL_ONCE" &&
     request.purpose === "VERIFY_EMAIL"
-  )
-    throw new TransactionalEmailError("Synthetic verification delivery failed as requested.", "DELIVERY_FAILED");
+  ) {
+    const markerPath = `${taskOwnedOutboxPath()}.verify-email-failed-once`;
+    if (!existsSync(markerPath)) {
+      mkdirSync(dirname(markerPath), { recursive: true });
+      writeFileSync(markerPath, `${new Date().toISOString()}\n`, { encoding: "utf8", mode: 0o600 });
+      throw new TransactionalEmailError("Synthetic verification delivery failed once as requested.", "DELIVERY_FAILED");
+    }
+  }
   const delivery: DevelopmentDelivery = {
     purpose: request.purpose,
     email: request.email,

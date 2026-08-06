@@ -143,7 +143,11 @@ describe("Homeport Phase 2 navigation authority", () => {
       ["global-explore-chronicles", "Explore Chronicles"],
       ["global-community-harbor", "Community Harbor"],
     ]);
-    expect(result.accountItems.map((item) => item.id)).toEqual(["account-create", "account-sign-in"]);
+    expect(result.accountItems.map((item) => item.id)).toEqual([
+      "account-create",
+      "account-sign-in",
+      "account-forgot-password",
+    ]);
     expect(result.activeGlobalItem?.id).toBe("global-home");
     expect(result.workspaceItems).toEqual([]);
   });

@@ -372,10 +372,21 @@ export async function resendVerification(accountId: string) {
   if (!email || email.verificationState === "VERIFIED") return;
   const latest = await db.accountToken.findFirst({
     where: { accountId, purpose: "VERIFY_EMAIL" },
-    select: { createdAt: true },
+    select: { id: true, createdAt: true },
     orderBy: { createdAt: "desc" },
   });
-  if (latest && Date.now() - latest.createdAt.getTime() < emailVerificationPolicy.resendCooldownMs)
+  const retryableDeliveryFailure = latest
+    ? await db.transactionalEmailDelivery.findFirst({
+        where: { accountId, accountTokenId: latest.id, purpose: "VERIFY_EMAIL", status: "FAILED" },
+        select: { id: true },
+        orderBy: { createdAt: "desc" },
+      })
+    : null;
+  if (
+    latest &&
+    !retryableDeliveryFailure &&
+    Date.now() - latest.createdAt.getTime() < emailVerificationPolicy.resendCooldownMs
+  )
     throw new AccountError("Wait 60 seconds before requesting another verification code.");
   const recentCount = await db.accountToken.count({
     where: { accountId, purpose: "VERIFY_EMAIL", createdAt: { gt: new Date(Date.now() - 60 * 60_000) } },

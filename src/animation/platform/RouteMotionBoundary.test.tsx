@@ -83,9 +83,21 @@ describe("RouteMotionBoundary", () => {
     vi.useFakeTimers();
     const view = render(<RouteMotionBoundary pathname="/sign-in">{ready("Sign in")}</RouteMotionBoundary>);
     view.rerender(<RouteMotionBoundary pathname="/register">{pending("Preparing Sign Up")}</RouteMotionBoundary>);
+    expect(view.container.querySelector('[data-route-layer="/register"] [data-route-content]')).toHaveAttribute(
+      "data-route-content-hidden",
+      "true",
+    );
+    expect(view.container.querySelector('[data-route-role="outgoing"]')).toHaveStyle({ opacity: "1" });
     act(() => vi.advanceTimersByTime(200));
     view.rerender(<RouteMotionBoundary pathname="/register">{ready("Create your account")}</RouteMotionBoundary>);
-    act(() => vi.advanceTimersByTime(600));
+    expect(view.container.querySelector('[data-route-layer="/register"] [data-route-content]')).toHaveAttribute(
+      "data-route-content-hidden",
+      "false",
+    );
+    act(() => vi.advanceTimersByTime(279));
+    expect(view.container.querySelector('[data-route-layer="/sign-in"]')).toBeInTheDocument();
+    act(() => vi.advanceTimersByTime(1));
+    act(() => vi.advanceTimersByTime(320));
 
     expect(view.container).not.toHaveTextContent("Opening the next page");
     expect(view.container.querySelector('[data-route-state="settled"]')).toBeInTheDocument();
@@ -111,6 +123,10 @@ describe("RouteMotionBoundary", () => {
     act(() => vi.advanceTimersByTime(500));
     expect(view.container.querySelector('[data-route-state="loading"]')).toHaveTextContent("Opening Community Harbor");
     expect(view.container.querySelector('[data-route-loading-shown="true"]')).toBeInTheDocument();
+    expect(view.container.querySelector('[data-route-layer="/community"] [data-route-content]')).toHaveAttribute(
+      "data-route-content-hidden",
+      "true",
+    );
 
     act(() => vi.advanceTimersByTime(1));
     view.rerender(<RouteMotionBoundary pathname="/community">{ready("Community Harbor")}</RouteMotionBoundary>);

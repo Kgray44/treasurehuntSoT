@@ -31,6 +31,12 @@ describe("Homeport account lifecycle", () => {
     render(<AccountFlow mode="register" />);
     expect(screen.getByRole("heading", { name: "Create your account" })).toBeInTheDocument();
     expect(screen.getByRole("link", { name: /Already have an account/i })).toHaveAttribute("href", "/sign-in");
+    expect(screen.getByRole("link", { name: "Forgot Password" })).toHaveAttribute("href", "/forgot-password");
+  });
+
+  it("homeport.owner-correction.round3.patch-a recovery returns to ordinary sign-in", () => {
+    render(<AccountFlow mode="forgot" />);
+    expect(screen.getByRole("link", { name: "Return to Sign In" })).toHaveAttribute("href", "/sign-in");
   });
 
   it("homeport.owner-correction.round3.patch-a.password-feedback is live, accessible, and quiet before confirmation typing", () => {
@@ -105,7 +111,7 @@ describe("Homeport account lifecycle", () => {
   it("homeport.owner-correction.round3.patch-a.delivery-failure exposes recovery without denying account creation", () => {
     render(<AccountFlow mode="verify" query={{ delivery: "failed" }} initialCsrf="csrf" />);
     expect(screen.getByText("Your account was created, but we could not send the verification email.")).toBeVisible();
-    expect(screen.getByRole("button", { name: "Resend code" })).toBeVisible();
+    expect(screen.getByRole("button", { name: "Retry sending" })).toBeVisible();
     expect(screen.getByRole("button", { name: "Change email" })).toBeVisible();
     expect(screen.getByRole("link", { name: "sign in instead" })).toHaveAttribute("href", "/sign-in");
   });

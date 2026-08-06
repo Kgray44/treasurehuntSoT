@@ -557,6 +557,11 @@
   min-height: inherit;
 }
 
+.product-route-content[data-route-content-hidden="true"] {
+  visibility: hidden;
+  pointer-events: none;
+}
+
 .product-shell-content:focus {
   outline: 0;
 }
