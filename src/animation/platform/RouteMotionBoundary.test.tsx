@@ -29,6 +29,29 @@ describe("RouteMotionBoundary", () => {
     expect(view.container.querySelector('[data-route-layer="/studio/library"]')).toBeNull();
   });
 
+  it("keeps retained form visuals from duplicating live labels and ids", () => {
+    const view = render(
+      <RouteMotionBoundary pathname="/register">
+        <main>
+          <label htmlFor="display-name">Display name</label>
+          <input id="display-name" />
+        </main>
+      </RouteMotionBoundary>,
+    );
+
+    view.rerender(
+      <RouteMotionBoundary pathname="/verify-email">
+        <main>
+          <label htmlFor="code">Code</label>
+          <input id="code" />
+        </main>
+      </RouteMotionBoundary>,
+    );
+
+    expect(view.getAllByLabelText("Code")).toHaveLength(1);
+    expect(view.container.querySelector('[data-route-interactive="false"] [id]')).toBeNull();
+  });
+
   it("renders one immediate destination layer when reduced motion is requested", () => {
     motionState.mode = "reduced";
     const view = render(

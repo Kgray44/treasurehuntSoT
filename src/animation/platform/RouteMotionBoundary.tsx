@@ -20,6 +20,24 @@ function lastRouteLayer(pathname: string) {
   return [...document.querySelectorAll<HTMLElement>(`[data-route-layer="${CSS.escape(pathname)}"]`)].at(-1) ?? null;
 }
 
+function routeSnapshotHtml(route: HTMLElement) {
+  const snapshot = route.cloneNode(true) as HTMLElement;
+  snapshot.querySelectorAll("[id]").forEach((element) => element.removeAttribute("id"));
+  snapshot.querySelectorAll("[aria-controls], [aria-describedby], [aria-labelledby], [for]").forEach((element) => {
+    element.removeAttribute("aria-controls");
+    element.removeAttribute("aria-describedby");
+    element.removeAttribute("aria-labelledby");
+    element.removeAttribute("for");
+  });
+  snapshot.querySelectorAll("label").forEach((label) => {
+    const visualLabel = document.createElement("div");
+    for (const attribute of label.attributes) visualLabel.setAttribute(attribute.name, attribute.value);
+    visualLabel.innerHTML = label.innerHTML;
+    label.replaceWith(visualLabel);
+  });
+  return snapshot.innerHTML;
+}
+
 function RoutePreparationFallback({ pathname }: { pathname: string }) {
   const community = pathname.startsWith("/community");
   return (
@@ -102,7 +120,7 @@ export function RouteMotionBoundary({ pathname, children }: { pathname: string; 
       frame = 0;
       if (!route.textContent?.trim() || route.querySelector('[data-async-state="pending-delay"], .ui-loading-state'))
         return;
-      stableSnapshot.current = { pathname, html: route.innerHTML };
+      stableSnapshot.current = { pathname, html: routeSnapshotHtml(route) };
     };
     capture();
     const observer = new MutationObserver(() => {
@@ -243,9 +261,7 @@ export function RouteMotionBoundary({ pathname, children }: { pathname: string; 
             duration={routeToken.durationSeconds}
             forcedInactive
             snapshotHtml={
-              stableSnapshot.current.pathname === committedRoute.current.pathname
-                ? stableSnapshot.current.html
-                : undefined
+              stableSnapshot.current.pathname === committedRoute.current.pathname ? stableSnapshot.current.html : ""
             }
           >
             {committedRoute.current.children}
