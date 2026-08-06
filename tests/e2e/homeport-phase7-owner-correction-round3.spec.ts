@@ -628,7 +628,13 @@ async function signInPending(page: Page, account: Alias) {
   await page.getByLabel("Email or legacy Player name").fill(account.email);
   await page.getByLabel("Password").fill(handoff.password);
   await page.getByRole("button", { name: "Continue" }).click();
+  await expect(page.getByRole("button", { name: account.displayName, exact: true })).toBeVisible();
+  const notice = page.getByRole("complementary", { name: "Email verification" });
+  await expect(notice).toContainText("ordinary navigation remain available");
+  await notice.getByRole("link", { name: "Change email" }).click();
   await expect(page.getByRole("heading", { name: "Verify email" })).toBeVisible();
+  const keepCurrentEmail = page.getByRole("button", { name: "Keep current email" });
+  if (await keepCurrentEmail.isVisible()) await keepCurrentEmail.click();
   await expect(page.locator('[data-route-interactive="false"]')).toHaveCount(0);
 }
 
