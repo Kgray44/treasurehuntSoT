@@ -31,6 +31,12 @@ describe("RouteMotionBoundary", () => {
     vi.useRealTimers();
   });
 
+  it("mounts the generation-zero route visibly before motion policy hydration", () => {
+    const view = render(<RouteMotionBoundary pathname="/sign-in">{ready("Sign in")}</RouteMotionBoundary>);
+
+    expect(view.container.querySelector('[data-route-layer="/sign-in"]')).toHaveStyle({ opacity: "1" });
+  });
+
   it("settles to one destination layer after the exact 280 ms route token", () => {
     vi.useFakeTimers();
     const view = render(

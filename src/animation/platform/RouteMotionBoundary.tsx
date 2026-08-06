@@ -126,7 +126,7 @@ function RouteLayer({
       data-route-crossfade="direct"
       data-route-role={outgoing ? "outgoing" : "incoming"}
       data-route-interactive={!outgoing && !hideContent ? "true" : "false"}
-      initial={outgoing ? { opacity: 1 } : { opacity: 0, y: distance }}
+      initial={outgoing ? { opacity: 1 } : generation === 0 ? false : { opacity: 0, y: distance }}
       animate={
         outgoing
           ? { opacity: holdOutgoing ? 1 : 0, pointerEvents: "none" }

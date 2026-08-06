@@ -421,6 +421,7 @@ test("Journey L: Mobile", async ({ page }) => {
 test("Journey M: Reduced motion", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto("/sign-in");
+  await expect(page.locator('[data-route-layer="/sign-in"]')).toHaveCSS("opacity", "1");
   const signUp = await sampleNavigation(
     page,
     () => page.getByRole("link", { name: "Create Account", exact: true }).click({ noWaitAfter: true }),
@@ -438,8 +439,12 @@ test("Journey M: Reduced motion", async ({ page }) => {
     expect(receipt.frames.every((frame) => frame.layers.length === 1)).toBe(true);
     expect(receipt.oldRouteReturnedAfterSettlement).toBe(false);
   }
+  const translucentFrames = [...signUp.frames, ...forgot.frames].filter((frame) =>
+    frame.layers.some((layer) => layer.opacity < 0.99),
+  );
   expect(
     [...signUp.frames, ...forgot.frames].every((frame) => frame.layers.every((layer) => layer.opacity >= 0.99)),
+    JSON.stringify(translucentFrames, null, 2),
   ).toBe(true);
 });
 
@@ -567,14 +572,19 @@ async function sampleNavigation(
     )
       navigationStartedMs = elapsed;
     const destination = frame.layers.find((layer) => layer.path === targetPath);
-    if (destinationReadyMs === null && destination?.interactive && !destination.contentHidden)
-      destinationReadyMs = elapsed;
-    if (
-      destinationSettledMs === null &&
+    const destinationIsSettled =
       frame.urlPath === targetPath &&
       frame.state === "settled" &&
       frame.layers.length === 1 &&
-      destination?.visible
+      Boolean(destination?.visible);
+    if (
+      destinationReadyMs === null &&
+      ((destination?.interactive && !destination.contentHidden) || destinationIsSettled)
+    )
+      destinationReadyMs = elapsed;
+    if (
+      destinationSettledMs === null &&
+      destinationIsSettled
     )
       destinationSettledMs = elapsed;
     if (
