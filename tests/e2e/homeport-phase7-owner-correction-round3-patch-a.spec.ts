@@ -140,7 +140,14 @@ test("Journey B: Slow auth-page navigation", async ({ page }) => {
   expect(receipt.destinationReadyMs).not.toBeNull();
   expect(receipt.lastLoadingMs!).toBeLessThan(receipt.destinationSettledMs!);
   expect(receipt.oldRouteReturnedAfterSettlement).toBe(false);
-  expect(receipt.frames.some((frame) => frame.backgroundOnly)).toBe(false);
+  expect(
+    receipt.frames.some((frame) => frame.backgroundOnly),
+    JSON.stringify(
+      receipt.frames.filter((frame) => frame.backgroundOnly),
+      null,
+      2,
+    ),
+  ).toBe(false);
   const beforeThreshold = receipt.frames.filter(
     (frame) => frame.tMs - receipt.navigationStartedMs! >= 300 && frame.tMs - receipt.navigationStartedMs! < 480,
   );
@@ -617,7 +624,14 @@ function assertFastNavigation(receipt: TemporalReceipt) {
   expect(receipt.destinationReadyMs! - receipt.navigationStartedMs!).toBeLessThan(500);
   expect(receipt.firstLoadingMs).toBeNull();
   expect(receipt.loadingAppearances).toBe(0);
-  expect(receipt.frames.some((frame) => frame.backgroundOnly)).toBe(false);
+  expect(
+    receipt.frames.some((frame) => frame.backgroundOnly),
+    JSON.stringify(
+      receipt.frames.filter((frame) => frame.backgroundOnly),
+      null,
+      2,
+    ),
+  ).toBe(false);
   expect(receipt.oldRouteReturnedAfterSettlement).toBe(false);
   if (receipt.transitionDurationMs) {
     expect(receipt.transitionDurationMs).toBeGreaterThanOrEqual(200);

@@ -199,6 +199,19 @@ describe("RouteMotionBoundary", () => {
     expect(view.container.querySelector('[data-route-layer="/register"]')).toBeNull();
   });
 
+  it("captures the newly settled destination for the next outgoing visual", () => {
+    vi.useFakeTimers();
+    const view = render(<RouteMotionBoundary pathname="/sign-in">{ready("Sign in")}</RouteMotionBoundary>);
+    view.rerender(<RouteMotionBoundary pathname="/register">{ready("Create account")}</RouteMotionBoundary>);
+    act(() => vi.advanceTimersByTime(280));
+    view.rerender(
+      <RouteMotionBoundary pathname="/forgot-password">{pending("Preparing recovery")}</RouteMotionBoundary>,
+    );
+
+    expect(view.container.querySelector('[data-route-role="outgoing"]')).toHaveTextContent("Create account");
+    expect(view.container.querySelector('[data-route-role="outgoing"]')).toHaveStyle({ opacity: "1" });
+  });
+
   it("renders a real terminal failure as the settled destination instead of loading", () => {
     vi.useFakeTimers();
     const view = render(<RouteMotionBoundary pathname="/account">{ready("Account")}</RouteMotionBoundary>);

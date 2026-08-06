@@ -171,7 +171,7 @@ function cancelNavigationWork(navigation: Navigation | null) {
 
 export function RouteMotionBoundary({ pathname, children }: { pathname: string; children: React.ReactNode }) {
   const { mode } = useMotionMode();
-  const [, forceRender] = useReducer((value) => value + 1, 0);
+  const [renderVersion, forceRender] = useReducer((value) => value + 1, 0);
   const routeToken = useMemo(() => resolvePlatformMotionToken("route", mode), [mode]);
   const generation = useRef(0);
   const renderedPath = useRef(pathname);
@@ -235,6 +235,9 @@ export function RouteMotionBoundary({ pathname, children }: { pathname: string; 
       navigation.current?.generation === activeGeneration && navigation.current.pathname === pathname;
     const settle = () => {
       if (!isCurrent()) return;
+      const settledContent = routeLayer(pathname, activeGeneration)?.querySelector<HTMLElement>("[data-route-content]");
+      if (settledContent?.textContent?.trim() && !contentIsPending(settledContent))
+        stableSnapshot.current = { pathname, html: routeSnapshotHtml(settledContent) };
       const current = navigation.current!;
       cancelNavigationWork(current);
       navigation.current = null;
@@ -320,7 +323,7 @@ export function RouteMotionBoundary({ pathname, children }: { pathname: string; 
       observer.disconnect();
       if (frame) cancelAnimationFrame(frame);
     };
-  }, [children, mode, pathname]);
+  }, [children, mode, pathname, renderVersion]);
 
   useEffect(
     () => () => {
