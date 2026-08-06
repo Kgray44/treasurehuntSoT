@@ -390,7 +390,11 @@ async function includeRound3JourneyEvidence(records, browserVersion) {
   const entries = (await readdir(journeyReportRoot))
     .filter((name) => /^HP-OWCR3-EV-[A-Z]+(?:-[A-Z0-9]+)+\.json$/u.test(name))
     .sort();
-  if (entries.length < 30) throw new Error(`HOMEPORT_ROUND3_EXPERIENCE_EVIDENCE_INCOMPLETE:${entries.length}:30`);
+  const motionOnlyEvidence = await json(path.join(journeyReportRoot, "HP-OWCR3-EV-W-ACCOUNT-MENU-CLOSING-motion.json"));
+  if (entries.length !== 29 || motionOnlyEvidence.sourceSha !== sourceSha)
+    throw new Error(
+      `HOMEPORT_ROUND3_EXPERIENCE_EVIDENCE_INCOMPLETE:${entries.length}:29:${motionOnlyEvidence.sourceSha}`,
+    );
   for (const name of entries) {
     const metadata = await json(path.join(journeyReportRoot, name));
     if (metadata.sourceSha !== sourceSha)
