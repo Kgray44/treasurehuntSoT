@@ -520,7 +520,8 @@ test("Journey T: Experience Images generation", async ({ page }) => {
     visualReviewStatus: string;
   };
   expect(manifest.sourceSha).toMatch(/^[0-9a-f]{40}$/u);
-  expect(manifest.records).toHaveLength(227);
+  const inheritedRound2Records = manifest.records.filter((record) => !/^Round\d+\//u.test(record.screenshotPath));
+  expect(inheritedRound2Records).toHaveLength(227);
   expect(manifest.routeCensus.humanFacingRoutes).toBe(88);
   expect(manifest.routeCensus.capturedHumanFacingRoutes).toBe(88);
   for (const record of manifest.records) {
