@@ -21826,7 +21826,7 @@
     {
       "id": "sl-test-f49ae16cde192aa3e8d8",
       "title": "homeport.context.failure-state replaces authenticated UI when refresh fails",
-      "line": 64,
+      "line": 65,
       "file": "src/components/auth/CurrentUserProvider.test.tsx",
       "suiteId": "component.player-shell",
       "owner": "platform-foundation",
@@ -21866,7 +21866,7 @@
     {
       "id": "sl-test-7df8cc04e7b1026444f2",
       "title": "homeport.signout.multitab broadcasts only a versioned invalidation event",
-      "line": 79,
+      "line": 80,
       "file": "src/components/auth/CurrentUserProvider.test.tsx",
       "suiteId": "component.player-shell",
       "owner": "platform-foundation",
@@ -21906,7 +21906,7 @@
     {
       "id": "sl-test-3140bd45e4176a8dcb07",
       "title": "homeport.current-user.no-stale-overwrite ignores an older request that finishes last",
-      "line": 94,
+      "line": 95,
       "file": "src/components/auth/CurrentUserProvider.test.tsx",
       "suiteId": "component.player-shell",
       "owner": "platform-foundation",
@@ -21946,7 +21946,7 @@
     {
       "id": "sl-test-c67df0b641df66e1988a",
       "title": "homeport.context.failure-state rejects malformed server projections",
-      "line": 124,
+      "line": 125,
       "file": "src/components/auth/CurrentUserProvider.test.tsx",
       "suiteId": "component.player-shell",
       "owner": "platform-foundation",

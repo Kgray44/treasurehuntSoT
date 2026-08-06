@@ -14,6 +14,7 @@ const authenticated = {
     canModerate: false,
     isAdministrator: false,
   },
+  emailVerification: { status: "verified" },
   workspaces: ["public", "account", "community", "player"],
   session: { id: "session-1", expiresAt: "2030-01-01T00:00:00.000Z" },
   csrfToken: "csrf-client-value",
