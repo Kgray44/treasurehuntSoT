@@ -5,7 +5,7 @@ import { describe, expect, it } from "vitest";
 import { featureCatalogEntrySchema, type FeatureCatalogEntry } from "./catalog-schema";
 import { renderFeatureCatalog } from "./build-feature-catalog";
 import { loadFeatureCatalog, sortedEntries } from "./load-feature-catalog";
-import { validateFeatureCatalog } from "./validate-feature-catalog";
+import { branchEvidenceResolves, validateFeatureCatalog } from "./validate-feature-catalog";
 
 const entry = (overrides: Partial<FeatureCatalogEntry> = {}): FeatureCatalogEntry => ({
   id: "FT-900",
@@ -68,6 +68,23 @@ describe("Feature Catalog", () => {
     expect(() =>
       featureCatalogEntrySchema.parse(entry({ status: "MAINLINE", branch: "codex/example", commit: "abcdef0" })),
     ).toThrow(/only branch-complete/);
+  });
+
+  it("accepts detached GitHub PR branch evidence only when the recorded commit is in HEAD", () => {
+    const originalActions = process.env.GITHUB_ACTIONS;
+    const originalHeadRef = process.env.GITHUB_HEAD_REF;
+    const head = process.env.GITHUB_SHA ?? "HEAD";
+    try {
+      process.env.GITHUB_ACTIONS = "true";
+      process.env.GITHUB_HEAD_REF = "codex/detached-ci-proof";
+      expect(branchEvidenceResolves("codex/detached-ci-proof", head)).toBe(true);
+      expect(branchEvidenceResolves("codex/different-branch", head)).toBe(false);
+    } finally {
+      if (originalActions === undefined) delete process.env.GITHUB_ACTIONS;
+      else process.env.GITHUB_ACTIONS = originalActions;
+      if (originalHeadRef === undefined) delete process.env.GITHUB_HEAD_REF;
+      else process.env.GITHUB_HEAD_REF = originalHeadRef;
+    }
   });
 
   it("rejects planned language and keeps output deterministic", () => {
