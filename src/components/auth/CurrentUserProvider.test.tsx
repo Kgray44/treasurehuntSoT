@@ -54,6 +54,7 @@ describe("CurrentUserProvider", () => {
     channels.length = 0;
     vi.stubGlobal("BroadcastChannel", TestChannel);
     sessionStorage.clear();
+    document.documentElement.dataset.homeportHydration = "pending";
   });
 
   afterEach(() => {
@@ -86,7 +87,8 @@ describe("CurrentUserProvider", () => {
           response({ contextVersion: "homeport.current-user.v1", status: "anonymous", authenticated: false }),
         ),
     );
-    render(
+    expect(document.documentElement).toHaveAttribute("data-homeport-hydration", "pending");
+    const view = render(
       <CurrentUserProvider>
         <Probe />
       </CurrentUserProvider>,
@@ -95,6 +97,8 @@ describe("CurrentUserProvider", () => {
     expect(await screen.findByText("anonymous")).toBeInTheDocument();
     expect(document.documentElement).toHaveAttribute("data-homeport-current-user-state", "anonymous");
     expect(document.documentElement.outerHTML).not.toMatch(/account-1|csrf-client-value|session-1/u);
+    view.unmount();
+    expect(document.documentElement).toHaveAttribute("data-homeport-hydration", "pending");
   });
 
   it("homeport.signout.multitab broadcasts only a versioned invalidation event", async () => {

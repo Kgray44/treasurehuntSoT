@@ -107,7 +107,7 @@ export function CurrentUserProvider({ children }: { children: React.ReactNode })
       document.removeEventListener("visibilitychange", visible);
       channel.current?.close();
       channel.current = null;
-      if (process.env.NODE_ENV !== "production") delete document.documentElement.dataset.homeportHydration;
+      if (process.env.NODE_ENV !== "production") document.documentElement.dataset.homeportHydration = "pending";
     };
   }, [refresh]);
 
