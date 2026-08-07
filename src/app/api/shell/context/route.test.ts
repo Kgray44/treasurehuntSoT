@@ -1,17 +1,20 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
+import { CURRENT_USER_CONTEXT_VERSION } from "@/homeport/current-user";
 import { GET } from "./route";
 
-const requireWayfarerAccount = vi.hoisted(() => vi.fn());
-vi.mock("@/wayfarer/http", () => ({ requireWayfarerAccount }));
+const resolveCurrentUser = vi.hoisted(() => vi.fn());
+vi.mock("@/homeport/current-user.server", () => ({ resolveCurrentUser }));
 
-describe("GET /api/shell/context", () => {
-  beforeEach(() => requireWayfarerAccount.mockReset());
+describe("GET /api/shell/context compatibility projection", () => {
+  beforeEach(() => resolveCurrentUser.mockReset());
 
-  it("returns the anonymous projection without a profile", async () => {
-    requireWayfarerAccount.mockResolvedValue(null);
-    const response = await GET();
-    expect(response.status).toBe(200);
-    expect(await response.json()).toEqual({
+  it("returns the anonymous projection without canonical authentication", async () => {
+    resolveCurrentUser.mockResolvedValue({
+      contextVersion: CURRENT_USER_CONTEXT_VERSION,
+      status: "anonymous",
+      authenticated: false,
+    });
+    expect(await (await GET()).json()).toEqual({
       authenticated: false,
       canUsePlayer: false,
       canUseCaptain: false,
@@ -21,15 +24,22 @@ describe("GET /api/shell/context", () => {
     });
   });
 
-  it("returns bounded presentation and capability booleans without sensitive session fields", async () => {
-    requireWayfarerAccount.mockResolvedValue({
-      id: "session-should-not-leak",
-      csrfToken: "csrf-should-not-leak",
-      accountId: "account-should-not-leak",
-      account: {
-        roles: [{ role: "PLAYER" }, { role: "CAPTAIN" }, { role: "CREATOR" }],
-        profile: { displayName: "Mara Tide", handle: "mara" },
+  it("returns the bounded legacy shell shape from canonical context", async () => {
+    resolveCurrentUser.mockResolvedValue({
+      contextVersion: CURRENT_USER_CONTEXT_VERSION,
+      status: "authenticated",
+      authenticated: true,
+      user: { accountId: "hidden", profileId: "hidden", displayName: "Mara Tide", initials: "MT", handle: "mara" },
+      capabilities: {
+        canUsePlayer: true,
+        canUseCaptain: true,
+        canUseCreator: true,
+        canModerate: false,
+        isAdministrator: false,
       },
+      workspaces: ["public", "account", "player", "captain", "creator"],
+      session: { id: "hidden", expiresAt: "2030-01-01T00:00:00.000Z" },
+      csrfToken: "hidden",
     });
     const body = await (await GET()).json();
     expect(body).toEqual({

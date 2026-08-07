@@ -1,0 +1,13 @@
+districtId,defaultState,emptyState,noResultState,loadingState,errorState,dependencyUnavailable,partialMediaFailure,primaryRecovery
+HARBOR_HOME,Deterministic content-first shelves,Harbor-wide empty state,Search criteria and zero results,Shelf skeleton and discovery status,Recoverable discovery alert,Safe unavailable panel,Typed artwork fallback,Clear criteria or Explore Chronicles
+FEATURED,Editorially labelled cards,No current featured selections,Not applicable,District skeleton,Recoverable district alert,Safe unavailable panel,Typed artwork fallback,Browse Chronicles
+CHRONICLES,Chronicle card grid,No public Chronicles yet,Chronicle filters matched none,District skeleton,Recoverable district alert,Safe unavailable panel,Typed artwork fallback,Clear filters or return Home
+ARTIFACTS,Artifact card grid,No public Artifacts yet,Artifact filters matched none,District skeleton,Recoverable district alert,Safe unavailable panel,Typed 2D/3D fallback,Browse Templates
+TEMPLATES,Template card grid,No public Templates yet,Template filters matched none,District skeleton,Recoverable district alert,Safe unavailable panel,Typed artwork fallback,Browse Guides
+MAPS_AND_LOCATION_PACKS,Map/location card grid,No public maps yet,Map filters matched none,District skeleton,Recoverable district alert,Safe unavailable panel,Map fallback without coordinates,Browse Artifacts
+AUDIO_AND_REVEAL_ASSETS,Audio/reveal card grid,No public audio or reveals yet,Audio filters matched none,District skeleton,Recoverable district alert,Safe unavailable panel,Audio/reveal fallback,Browse Templates
+CREATORS,Creator card grid,No public Creators yet,Not applicable,District skeleton,Recoverable district alert,Safe unavailable panel,Creator monogram fallback,Browse Chronicles
+COLLECTIONS,Collection card grid,No public Collections yet,Not applicable,District skeleton,Recoverable district alert,Safe unavailable panel,Collection fallback,Browse Featured
+GUIDES,Guide card grid,No public Guides yet,Not applicable,District skeleton,Recoverable district alert,Safe unavailable panel,Guide fallback,Browse Templates
+VOYAGE_LOGS,Voyage Log card grid,No consented public Voyage Logs yet,Not applicable,District skeleton,Recoverable district alert,Safe unavailable panel,Voyage Log fallback,Browse Chronicles
+SHIPWRIGHTS_WORKSHOP,Guide category within parent,No Workshop Guides yet,Not applicable,Parent loading state,Parent recoverable alert,Parent unavailable panel,Guide fallback,Browse all Guides

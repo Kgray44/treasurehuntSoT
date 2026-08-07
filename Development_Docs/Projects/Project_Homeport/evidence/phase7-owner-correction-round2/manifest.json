@@ -1,0 +1,810 @@
+{
+  "schema": "homeport.phase7.owner-correction-round2.evidence-manifest.v1",
+  "state": "CORRECTION_ROUND_2_VALIDATED_PENDING_OWNER_REREVIEW",
+  "sourceSha": "f3eef8dc65dd39a40f8e4140aa058de0381a94af",
+  "experienceImagesSourceSha": "8284f6d2ce0b41a7eb995e13ccfe2a27c9b5845d",
+  "architectureSha": "2dd4908",
+  "fixtureVersion": "homeport-phase7-owner-correction-round2-v1",
+  "fixtureChecksum": "0de61b524d435ba73a8f1318c336abe2591cc32978fb931739d69610fb60c8ce",
+  "round2JourneyCount": 23,
+  "retainedRound1JourneyCount": 21,
+  "retainedOriginalPhase7JourneyCount": 15,
+  "evidenceCount": 31,
+  "experienceImageCount": 227,
+  "ownerWalkthroughRound1Decision": "OWNER_RETURNED_FOR_CORRECTION",
+  "ownerReReviewAfterCorrectionRound1": "OWNER_REJECTED_WITH_ACTIONABLE_FINDINGS",
+  "ownerReReviewRound2": "PENDING_OWNER_DECISION",
+  "branch": "codex/project-homeport-product-reality-recovery",
+  "limitations": [
+    "Not merged",
+    "Not deployed",
+    "No owner acceptance",
+    "Local synthetic evidence only",
+    "Live providers and email delivery remain external"
+  ],
+  "fixture": {
+    "version": "homeport-phase7-owner-correction-round2-v1",
+    "checksum": "0de61b524d435ba73a8f1318c336abe2591cc32978fb931739d69610fb60c8ce",
+    "databaseHash": "96ee7c182bf53d1d9d04746fa9776d6485c475ca1b9a339f5047cbc8abe91caf",
+    "sourceHash": "54647911f63c6a55e5c6b6c95e5ec0a2977b4580a42de073c8c503a3d8c7a412",
+    "classification": "SYNTHETIC_RESERVED_DATA_ONLY"
+  },
+  "browserReceipts": {
+    "round2": {
+      "status": "PASSED",
+      "journeys": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E",
+        "F",
+        "G",
+        "H",
+        "I",
+        "J",
+        "K",
+        "L",
+        "M",
+        "N",
+        "O",
+        "P",
+        "Q",
+        "R",
+        "S",
+        "T",
+        "U",
+        "V",
+        "W"
+      ]
+    },
+    "correctionRound1": {
+      "status": "PASSED_A_U",
+      "journeys": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E",
+        "F",
+        "G",
+        "H",
+        "I",
+        "J",
+        "K",
+        "L",
+        "M",
+        "N",
+        "O",
+        "P",
+        "Q",
+        "R",
+        "S",
+        "T",
+        "U"
+      ]
+    },
+    "originalPhase7": {
+      "status": "PASSED_A_O",
+      "journeys": ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O"]
+    }
+  },
+  "motionReceipts": [
+    {
+      "evidenceId": "HP-OWCR2-EV-C-ACCOUNT-MENU-OPENING",
+      "journeyId": "HP-OWCR2-JRN-D",
+      "sourceSha": "f3eef8dc65dd39a40f8e4140aa058de0381a94af",
+      "fixtureVersion": "homeport-phase7-owner-correction-round2-v1",
+      "measurementKind": "COMPUTED_FRAME_SEQUENCE",
+      "measurements": {
+        "frames": [
+          {
+            "opacity": "0.558817",
+            "transform": "matrix(0.992556, 0, 0, 0.992556, 0, -2.67978)"
+          },
+          {
+            "opacity": "0.968887",
+            "transform": "matrix(0.999402, 0, 0, 0.999402, 0, -0.215339)"
+          },
+          {
+            "opacity": "0.997243",
+            "transform": "matrix(0.999974, 0, 0, 0.999974, 0, -0.00944565)"
+          },
+          {
+            "opacity": "1",
+            "transform": "none"
+          },
+          {
+            "opacity": "1",
+            "transform": "none"
+          }
+        ]
+      },
+      "result": "PASSED"
+    },
+    {
+      "evidenceId": "HP-OWCR2-EV-D-LANTERN-NEUTRAL",
+      "journeyId": "HP-OWCR2-JRN-E",
+      "sourceSha": "f3eef8dc65dd39a40f8e4140aa058de0381a94af",
+      "fixtureVersion": "homeport-phase7-owner-correction-round2-v1",
+      "measurementKind": "COMPUTED_FRAME_SEQUENCE",
+      "measurements": {
+        "transformOrigin": "47px 0px",
+        "rotations": [
+          -3.1643993287232264, -2.8790002687723346, -2.444200555793592, -1.8664029421028718, -1.16050209312432,
+          -0.32310009386328303, 0.4416999569996618, 1.16050209312432, 1.8284006681671652, 2.4593970003829706,
+          2.905297685574743, 3.179500858658173
+        ],
+        "starOpacity": [
+          0.353888, 0.342642, 0.340298, 0.346868, 0.363722, 0.389454, 0.422479, 0.466536, 0.518613, 0.576645, 0.634028,
+          0.698212, 0.754993, 0.799735, 0.84263, 0.874475
+        ],
+        "fogAnimationName": "harbor-fog-drift"
+      },
+      "result": "PASSED"
+    }
+  ],
+  "captures": [
+    {
+      "evidenceId": "HP-OWCR2-EV-A-ROLE-CARDS-FIRST-PAINT",
+      "journeyId": "HP-OWCR2-JRN-C",
+      "sourceSha": "f3eef8dc65dd39a40f8e4140aa058de0381a94af",
+      "fixtureVersion": "homeport-phase7-owner-correction-round2-v1",
+      "result": "PASSED",
+      "visualReview": "ACCEPTED",
+      "reviewer": "Codex",
+      "ownerReview": "PENDING_OWNER_DECISION",
+      "browser": "Playwright Chromium",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "route": "/",
+      "title": "Voyagewright | Stories made to be played",
+      "screenshot": "screenshots/HP-OWCR2-EV-A-ROLE-CARDS-FIRST-PAINT.png",
+      "screenshotSha256": "b149923367aa062d759a583b76685d1f3409d9f5dbfe9982d84424788f17cadc",
+      "screenshotBytes": 599230,
+      "timestamp": "2026-08-05T20:01:13.568Z",
+      "limitation": "Local production-build Chromium proof against a synthetic task-owned SQLite clone; not owner acceptance, live-provider proof, merge, or deployment."
+    },
+    {
+      "evidenceId": "HP-OWCR2-EV-AA-MOBILE-PROFILE-SETUP",
+      "journeyId": "HP-OWCR2-JRN-V",
+      "sourceSha": "f3eef8dc65dd39a40f8e4140aa058de0381a94af",
+      "fixtureVersion": "homeport-phase7-owner-correction-round2-v1",
+      "result": "PASSED",
+      "visualReview": "ACCEPTED",
+      "reviewer": "Codex",
+      "ownerReview": "PENDING_OWNER_DECISION",
+      "browser": "Playwright Chromium",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "route": "/account/profile",
+      "title": "Voyagewright | Stories made to be played",
+      "screenshot": "screenshots/HP-OWCR2-EV-AA-MOBILE-PROFILE-SETUP.png",
+      "screenshotSha256": "12b57b1d8c7660e558cfa1b5998bbaf8fcd051216d4abde638ffa68a6daededd",
+      "screenshotBytes": 824554,
+      "timestamp": "2026-08-05T20:08:08.783Z",
+      "limitation": "Local production-build Chromium proof against a synthetic task-owned SQLite clone; not owner acceptance, live-provider proof, merge, or deployment."
+    },
+    {
+      "evidenceId": "HP-OWCR2-EV-AB-REDUCED-MOTION",
+      "journeyId": "HP-OWCR2-JRN-E",
+      "sourceSha": "f3eef8dc65dd39a40f8e4140aa058de0381a94af",
+      "fixtureVersion": "homeport-phase7-owner-correction-round2-v1",
+      "result": "PASSED",
+      "visualReview": "ACCEPTED",
+      "reviewer": "Codex",
+      "ownerReview": "PENDING_OWNER_DECISION",
+      "browser": "Playwright Chromium",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "route": "/",
+      "title": "Voyagewright | Stories made to be played",
+      "screenshot": "screenshots/HP-OWCR2-EV-AB-REDUCED-MOTION.png",
+      "screenshotSha256": "215af39725a761e75cafedfb17aaef20ad92dfe0f363d5b0eb34a8b7eee20593",
+      "screenshotBytes": 700015,
+      "timestamp": "2026-08-05T20:01:40.514Z",
+      "limitation": "Local production-build Chromium proof against a synthetic task-owned SQLite clone; not owner acceptance, live-provider proof, merge, or deployment."
+    },
+    {
+      "evidenceId": "HP-OWCR2-EV-AE-FULL-ROUND2-REGRESSION",
+      "journeyId": "HP-OWCR2-JRN-U",
+      "sourceSha": "f3eef8dc65dd39a40f8e4140aa058de0381a94af",
+      "fixtureVersion": "homeport-phase7-owner-correction-round2-v1",
+      "result": "PASSED",
+      "visualReview": "ACCEPTED",
+      "reviewer": "Codex",
+      "ownerReview": "PENDING_OWNER_DECISION",
+      "browser": "Playwright Chromium",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "route": "/",
+      "title": "Voyagewright | Stories made to be played",
+      "screenshot": "screenshots/HP-OWCR2-EV-AE-FULL-ROUND2-REGRESSION.png",
+      "screenshotSha256": "e76c5d348436151fb95f87acfbd2396d5b4797670a9980f1e839ae48889dcf95",
+      "screenshotBytes": 749485,
+      "timestamp": "2026-08-05T20:08:00.633Z",
+      "limitation": "Local production-build Chromium proof against a synthetic task-owned SQLite clone; not owner acceptance, live-provider proof, merge, or deployment."
+    },
+    {
+      "evidenceId": "HP-OWCR2-EV-B-ROLE-CARDS-HOVER",
+      "journeyId": "HP-OWCR2-JRN-C",
+      "sourceSha": "f3eef8dc65dd39a40f8e4140aa058de0381a94af",
+      "fixtureVersion": "homeport-phase7-owner-correction-round2-v1",
+      "result": "PASSED",
+      "visualReview": "ACCEPTED",
+      "reviewer": "Codex",
+      "ownerReview": "PENDING_OWNER_DECISION",
+      "browser": "Playwright Chromium",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "route": "/",
+      "title": "Voyagewright | Stories made to be played",
+      "screenshot": "screenshots/HP-OWCR2-EV-B-ROLE-CARDS-HOVER.png",
+      "screenshotSha256": "326cfe8ab0d1017995635b5a02adf9e25b19cb070a91a693a561bfb5031eaedf",
+      "screenshotBytes": 753128,
+      "timestamp": "2026-08-05T20:01:15.653Z",
+      "limitation": "Local production-build Chromium proof against a synthetic task-owned SQLite clone; not owner acceptance, live-provider proof, merge, or deployment."
+    },
+    {
+      "evidenceId": "HP-OWCR2-EV-C-ACCOUNT-MENU-OPENING",
+      "journeyId": "HP-OWCR2-JRN-D",
+      "sourceSha": "f3eef8dc65dd39a40f8e4140aa058de0381a94af",
+      "fixtureVersion": "homeport-phase7-owner-correction-round2-v1",
+      "result": "PASSED",
+      "visualReview": "ACCEPTED",
+      "reviewer": "Codex",
+      "ownerReview": "PENDING_OWNER_DECISION",
+      "browser": "Playwright Chromium",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "route": "/",
+      "title": "Voyagewright | Stories made to be played",
+      "screenshot": "screenshots/HP-OWCR2-EV-C-ACCOUNT-MENU-OPENING.png",
+      "screenshotSha256": "103c1a7f4dcf6b325277e68a2a8a6cd03327057d792e4c2a7fab5c47be858e9a",
+      "screenshotBytes": 527752,
+      "timestamp": "2026-08-05T20:01:21.365Z",
+      "limitation": "Local production-build Chromium proof against a synthetic task-owned SQLite clone; not owner acceptance, live-provider proof, merge, or deployment."
+    },
+    {
+      "evidenceId": "HP-OWCR2-EV-D-LANTERN-NEUTRAL",
+      "journeyId": "HP-OWCR2-JRN-E",
+      "sourceSha": "f3eef8dc65dd39a40f8e4140aa058de0381a94af",
+      "fixtureVersion": "homeport-phase7-owner-correction-round2-v1",
+      "result": "PASSED",
+      "visualReview": "ACCEPTED",
+      "reviewer": "Codex",
+      "ownerReview": "PENDING_OWNER_DECISION",
+      "browser": "Playwright Chromium",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "route": "/",
+      "title": "Voyagewright | Stories made to be played",
+      "screenshot": "screenshots/HP-OWCR2-EV-D-LANTERN-NEUTRAL.png",
+      "screenshotSha256": "601bcde9dfa93fd79ee1330a5a602406856d34e0466cc2680dd08053b88f7109",
+      "screenshotBytes": 433094,
+      "timestamp": "2026-08-05T20:01:29.643Z",
+      "limitation": "Local production-build Chromium proof against a synthetic task-owned SQLite clone; not owner acceptance, live-provider proof, merge, or deployment."
+    },
+    {
+      "evidenceId": "HP-OWCR2-EV-E-LANTERN-LEFT",
+      "journeyId": "HP-OWCR2-JRN-E",
+      "sourceSha": "f3eef8dc65dd39a40f8e4140aa058de0381a94af",
+      "fixtureVersion": "homeport-phase7-owner-correction-round2-v1",
+      "result": "PASSED",
+      "visualReview": "ACCEPTED",
+      "reviewer": "Codex",
+      "ownerReview": "PENDING_OWNER_DECISION",
+      "browser": "Playwright Chromium",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "route": "/",
+      "title": "Voyagewright | Stories made to be played",
+      "screenshot": "screenshots/HP-OWCR2-EV-E-LANTERN-LEFT.png",
+      "screenshotSha256": "3f86d1ec7a94906a407f3105fb259232cdc235749307d9293b6aeb59d5dd812d",
+      "screenshotBytes": 703528,
+      "timestamp": "2026-08-05T20:01:31.282Z",
+      "limitation": "Local production-build Chromium proof against a synthetic task-owned SQLite clone; not owner acceptance, live-provider proof, merge, or deployment."
+    },
+    {
+      "evidenceId": "HP-OWCR2-EV-F-LANTERN-RIGHT",
+      "journeyId": "HP-OWCR2-JRN-E",
+      "sourceSha": "f3eef8dc65dd39a40f8e4140aa058de0381a94af",
+      "fixtureVersion": "homeport-phase7-owner-correction-round2-v1",
+      "result": "PASSED",
+      "visualReview": "ACCEPTED",
+      "reviewer": "Codex",
+      "ownerReview": "PENDING_OWNER_DECISION",
+      "browser": "Playwright Chromium",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "route": "/",
+      "title": "Voyagewright | Stories made to be played",
+      "screenshot": "screenshots/HP-OWCR2-EV-F-LANTERN-RIGHT.png",
+      "screenshotSha256": "a8cdfe852918ddca5f5c3e4a3dd07dbd2a1716ab747b209c526ea9d394278d42",
+      "screenshotBytes": 670143,
+      "timestamp": "2026-08-05T20:01:33.852Z",
+      "limitation": "Local production-build Chromium proof against a synthetic task-owned SQLite clone; not owner acceptance, live-provider proof, merge, or deployment."
+    },
+    {
+      "evidenceId": "HP-OWCR2-EV-G-STAR-TWINKLE",
+      "journeyId": "HP-OWCR2-JRN-E",
+      "sourceSha": "f3eef8dc65dd39a40f8e4140aa058de0381a94af",
+      "fixtureVersion": "homeport-phase7-owner-correction-round2-v1",
+      "result": "PASSED",
+      "visualReview": "ACCEPTED",
+      "reviewer": "Codex",
+      "ownerReview": "PENDING_OWNER_DECISION",
+      "browser": "Playwright Chromium",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "route": "/",
+      "title": "Voyagewright | Stories made to be played",
+      "screenshot": "screenshots/HP-OWCR2-EV-G-STAR-TWINKLE.png",
+      "screenshotSha256": "9ef3a11d122caf7467c846336cc20425e3278d45c974e3327b450929364f455a",
+      "screenshotBytes": 677285,
+      "timestamp": "2026-08-05T20:01:38.750Z",
+      "limitation": "Local production-build Chromium proof against a synthetic task-owned SQLite clone; not owner acceptance, live-provider proof, merge, or deployment."
+    },
+    {
+      "evidenceId": "HP-OWCR2-EV-H-FOG-DRIFT",
+      "journeyId": "HP-OWCR2-JRN-E",
+      "sourceSha": "f3eef8dc65dd39a40f8e4140aa058de0381a94af",
+      "fixtureVersion": "homeport-phase7-owner-correction-round2-v1",
+      "result": "PASSED",
+      "visualReview": "ACCEPTED",
+      "reviewer": "Codex",
+      "ownerReview": "PENDING_OWNER_DECISION",
+      "browser": "Playwright Chromium",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "route": "/",
+      "title": "Voyagewright | Stories made to be played",
+      "screenshot": "screenshots/HP-OWCR2-EV-H-FOG-DRIFT.png",
+      "screenshotSha256": "1613def31c2f049c37dc44e09ae2d39d45b1613848870c6f316af095ca9e9584",
+      "screenshotBytes": 678645,
+      "timestamp": "2026-08-05T20:01:39.139Z",
+      "limitation": "Local production-build Chromium proof against a synthetic task-owned SQLite clone; not owner acceptance, live-provider proof, merge, or deployment."
+    },
+    {
+      "evidenceId": "HP-OWCR2-EV-I-DARK-WHAT-IS-A-CHRONICLE",
+      "journeyId": "HP-OWCR2-JRN-F",
+      "sourceSha": "f3eef8dc65dd39a40f8e4140aa058de0381a94af",
+      "fixtureVersion": "homeport-phase7-owner-correction-round2-v1",
+      "result": "PASSED",
+      "visualReview": "ACCEPTED",
+      "reviewer": "Codex",
+      "ownerReview": "PENDING_OWNER_DECISION",
+      "browser": "Playwright Chromium",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "route": "/",
+      "title": "Voyagewright | Stories made to be played",
+      "screenshot": "screenshots/HP-OWCR2-EV-I-DARK-WHAT-IS-A-CHRONICLE.png",
+      "screenshotSha256": "e66020af68f2bd04c3d717b822ab25a548a59243a191284d60a9b63bbd6587b3",
+      "screenshotBytes": 790868,
+      "timestamp": "2026-08-05T20:01:46.738Z",
+      "limitation": "Local production-build Chromium proof against a synthetic task-owned SQLite clone; not owner acceptance, live-provider proof, merge, or deployment."
+    },
+    {
+      "evidenceId": "HP-OWCR2-EV-J-LIGHT-GATEWAY",
+      "journeyId": "HP-OWCR2-JRN-G",
+      "sourceSha": "f3eef8dc65dd39a40f8e4140aa058de0381a94af",
+      "fixtureVersion": "homeport-phase7-owner-correction-round2-v1",
+      "result": "PASSED",
+      "visualReview": "ACCEPTED",
+      "reviewer": "Codex",
+      "ownerReview": "PENDING_OWNER_DECISION",
+      "browser": "Playwright Chromium",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "route": "/",
+      "title": "Voyagewright | Stories made to be played",
+      "screenshot": "screenshots/HP-OWCR2-EV-J-LIGHT-GATEWAY.png",
+      "screenshotSha256": "2fb2ddbe20aae70127e427ef2947529b2852c150f79fc0199e3c18c0456e6c75",
+      "screenshotBytes": 748912,
+      "timestamp": "2026-08-05T20:01:53.509Z",
+      "limitation": "Local production-build Chromium proof against a synthetic task-owned SQLite clone; not owner acceptance, live-provider proof, merge, or deployment."
+    },
+    {
+      "evidenceId": "HP-OWCR2-EV-K-LIGHT-COMMUNITY",
+      "journeyId": "HP-OWCR2-JRN-G",
+      "sourceSha": "f3eef8dc65dd39a40f8e4140aa058de0381a94af",
+      "fixtureVersion": "homeport-phase7-owner-correction-round2-v1",
+      "result": "PASSED",
+      "visualReview": "ACCEPTED",
+      "reviewer": "Codex",
+      "ownerReview": "PENDING_OWNER_DECISION",
+      "browser": "Playwright Chromium",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "route": "/community",
+      "title": "Community Harbor | Voyagewright",
+      "screenshot": "screenshots/HP-OWCR2-EV-K-LIGHT-COMMUNITY.png",
+      "screenshotSha256": "67b858f91554e62f9da8551ad2e4cbe622113165e4d06643a7ea3d6d2492ee39",
+      "screenshotBytes": 1603533,
+      "timestamp": "2026-08-05T20:01:55.445Z",
+      "limitation": "Local production-build Chromium proof against a synthetic task-owned SQLite clone; not owner acceptance, live-provider proof, merge, or deployment."
+    },
+    {
+      "evidenceId": "HP-OWCR2-EV-L-LIGHT-PERSONAL-HARBOR",
+      "journeyId": "HP-OWCR2-JRN-G",
+      "sourceSha": "f3eef8dc65dd39a40f8e4140aa058de0381a94af",
+      "fixtureVersion": "homeport-phase7-owner-correction-round2-v1",
+      "result": "PASSED",
+      "visualReview": "ACCEPTED",
+      "reviewer": "Codex",
+      "ownerReview": "PENDING_OWNER_DECISION",
+      "browser": "Playwright Chromium",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "route": "/account",
+      "title": "Voyagewright | Stories made to be played",
+      "screenshot": "screenshots/HP-OWCR2-EV-L-LIGHT-PERSONAL-HARBOR.png",
+      "screenshotSha256": "5f802a6e01bfc304b7cd28aa823f91f1fbc54eb82382922bcc8ec847812c46b4",
+      "screenshotBytes": 444215,
+      "timestamp": "2026-08-05T20:01:56.591Z",
+      "limitation": "Local production-build Chromium proof against a synthetic task-owned SQLite clone; not owner acceptance, live-provider proof, merge, or deployment."
+    },
+    {
+      "evidenceId": "HP-OWCR2-EV-M-SERA-WORKSPACES",
+      "journeyId": "HP-OWCR2-JRN-A",
+      "sourceSha": "f3eef8dc65dd39a40f8e4140aa058de0381a94af",
+      "fixtureVersion": "homeport-phase7-owner-correction-round2-v1",
+      "result": "PASSED",
+      "visualReview": "ACCEPTED",
+      "reviewer": "Codex",
+      "ownerReview": "PENDING_OWNER_DECISION",
+      "browser": "Playwright Chromium",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "route": "/account/roles",
+      "title": "Voyagewright | Stories made to be played",
+      "screenshot": "screenshots/HP-OWCR2-EV-M-SERA-WORKSPACES.png",
+      "screenshotSha256": "a00fa71e15036279733d60816d747fd4e411b0f77dbbf61a65415c7fa8913eef",
+      "screenshotBytes": 314051,
+      "timestamp": "2026-08-05T20:01:02.908Z",
+      "limitation": "Local production-build Chromium proof against a synthetic task-owned SQLite clone; not owner acceptance, live-provider proof, merge, or deployment."
+    },
+    {
+      "evidenceId": "HP-OWCR2-EV-N-COMMUNITY-FAST-READY",
+      "journeyId": "HP-OWCR2-JRN-H",
+      "sourceSha": "f3eef8dc65dd39a40f8e4140aa058de0381a94af",
+      "fixtureVersion": "homeport-phase7-owner-correction-round2-v1",
+      "result": "PASSED",
+      "visualReview": "ACCEPTED",
+      "reviewer": "Codex",
+      "ownerReview": "PENDING_OWNER_DECISION",
+      "browser": "Playwright Chromium",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "route": "/community",
+      "title": "Community Harbor | Voyagewright",
+      "screenshot": "screenshots/HP-OWCR2-EV-N-COMMUNITY-FAST-READY.png",
+      "screenshotSha256": "d24f5cad9f8210a9e909dcad45aa81f62ae94c4805d4b907eb61c870dcd561a3",
+      "screenshotBytes": 1609013,
+      "timestamp": "2026-08-05T20:06:22.393Z",
+      "limitation": "Local production-build Chromium proof against a synthetic task-owned SQLite clone; not owner acceptance, live-provider proof, merge, or deployment."
+    },
+    {
+      "evidenceId": "HP-OWCR2-EV-O-COMMUNITY-DELAYED-LOADING",
+      "journeyId": "HP-OWCR2-JRN-I",
+      "sourceSha": "f3eef8dc65dd39a40f8e4140aa058de0381a94af",
+      "fixtureVersion": "homeport-phase7-owner-correction-round2-v1",
+      "result": "PASSED",
+      "visualReview": "ACCEPTED",
+      "reviewer": "Codex",
+      "ownerReview": "PENDING_OWNER_DECISION",
+      "browser": "Playwright Chromium",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "route": "/community/chronicles",
+      "title": "Voyagewright | Stories made to be played",
+      "screenshot": "screenshots/HP-OWCR2-EV-O-COMMUNITY-DELAYED-LOADING.png",
+      "screenshotSha256": "84b6d7ec03ee7018c2f66defea54c7493cea2d2812f5c07e939336afa33369da",
+      "screenshotBytes": 1018864,
+      "timestamp": "2026-08-05T20:06:35.062Z",
+      "limitation": "Local production-build Chromium proof against a synthetic task-owned SQLite clone; not owner acceptance, live-provider proof, merge, or deployment."
+    },
+    {
+      "evidenceId": "HP-OWCR2-EV-P-COMMUNITY-REAL-ERROR",
+      "journeyId": "HP-OWCR2-JRN-J",
+      "sourceSha": "f3eef8dc65dd39a40f8e4140aa058de0381a94af",
+      "fixtureVersion": "homeport-phase7-owner-correction-round2-v1",
+      "result": "PASSED",
+      "visualReview": "ACCEPTED",
+      "reviewer": "Codex",
+      "ownerReview": "PENDING_OWNER_DECISION",
+      "browser": "Playwright Chromium",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "route": "/community/chronicles",
+      "title": "Voyagewright | Stories made to be played",
+      "screenshot": "screenshots/HP-OWCR2-EV-P-COMMUNITY-REAL-ERROR.png",
+      "screenshotSha256": "5dc4e945a69433715e98fc654da361d1fc0dc531216ab36854e524773b8685bf",
+      "screenshotBytes": 912320,
+      "timestamp": "2026-08-05T20:06:40.071Z",
+      "limitation": "Local production-build Chromium proof against a synthetic task-owned SQLite clone; not owner acceptance, live-provider proof, merge, or deployment."
+    },
+    {
+      "evidenceId": "HP-OWCR2-EV-Q-PUBLIC-PROFILE-REVIEW",
+      "journeyId": "HP-OWCR2-JRN-K",
+      "sourceSha": "f3eef8dc65dd39a40f8e4140aa058de0381a94af",
+      "fixtureVersion": "homeport-phase7-owner-correction-round2-v1",
+      "result": "PASSED",
+      "visualReview": "ACCEPTED",
+      "reviewer": "Codex",
+      "ownerReview": "PENDING_OWNER_DECISION",
+      "browser": "Playwright Chromium",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "route": "/community/fog-bank-blocked-chronicle",
+      "title": "Fog Bank Blocked Chronicle | Voyagewright",
+      "screenshot": "screenshots/HP-OWCR2-EV-Q-PUBLIC-PROFILE-REVIEW.png",
+      "screenshotSha256": "ed482cd3ed7f96889e29b7e853573da8ba568c78ef0eae072ee8aef41780dbb4",
+      "screenshotBytes": 647723,
+      "timestamp": "2026-08-05T20:06:46.760Z",
+      "limitation": "Local production-build Chromium proof against a synthetic task-owned SQLite clone; not owner acceptance, live-provider proof, merge, or deployment."
+    },
+    {
+      "evidenceId": "HP-OWCR2-EV-R-PUBLIC-PROFILE-SETUP",
+      "journeyId": "HP-OWCR2-JRN-L",
+      "sourceSha": "f3eef8dc65dd39a40f8e4140aa058de0381a94af",
+      "fixtureVersion": "homeport-phase7-owner-correction-round2-v1",
+      "result": "PASSED",
+      "visualReview": "ACCEPTED",
+      "reviewer": "Codex",
+      "ownerReview": "PENDING_OWNER_DECISION",
+      "browser": "Playwright Chromium",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "route": "/community/fog-bank-blocked-chronicle",
+      "title": "Fog Bank Blocked Chronicle | Voyagewright",
+      "screenshot": "screenshots/HP-OWCR2-EV-R-PUBLIC-PROFILE-SETUP.png",
+      "screenshotSha256": "7411bcf73e7704213cd04c85e83039f728472a0af6ff8ce230e755c11d4252ff",
+      "screenshotBytes": 661094,
+      "timestamp": "2026-08-05T20:06:53.909Z",
+      "limitation": "Local production-build Chromium proof against a synthetic task-owned SQLite clone; not owner acceptance, live-provider proof, merge, or deployment."
+    },
+    {
+      "evidenceId": "HP-OWCR2-EV-S-SAVE-COUNT",
+      "journeyId": "HP-OWCR2-JRN-M",
+      "sourceSha": "f3eef8dc65dd39a40f8e4140aa058de0381a94af",
+      "fixtureVersion": "homeport-phase7-owner-correction-round2-v1",
+      "result": "PASSED",
+      "visualReview": "ACCEPTED",
+      "reviewer": "Codex",
+      "ownerReview": "PENDING_OWNER_DECISION",
+      "browser": "Playwright Chromium",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "route": "/community",
+      "title": "Community Harbor | Voyagewright",
+      "screenshot": "screenshots/HP-OWCR2-EV-S-SAVE-COUNT.png",
+      "screenshotSha256": "bad7238a01d45dd589b85e12aef998fa003033cb590a02ca20e402ed8e86c1e2",
+      "screenshotBytes": 1664466,
+      "timestamp": "2026-08-05T20:07:03.012Z",
+      "limitation": "Local production-build Chromium proof against a synthetic task-owned SQLite clone; not owner acceptance, live-provider proof, merge, or deployment."
+    },
+    {
+      "evidenceId": "HP-OWCR2-EV-T-RATING-SUMMARY",
+      "journeyId": "HP-OWCR2-JRN-N",
+      "sourceSha": "f3eef8dc65dd39a40f8e4140aa058de0381a94af",
+      "fixtureVersion": "homeport-phase7-owner-correction-round2-v1",
+      "result": "PASSED",
+      "visualReview": "ACCEPTED",
+      "reviewer": "Codex",
+      "ownerReview": "PENDING_OWNER_DECISION",
+      "browser": "Playwright Chromium",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "route": "/community/fog-bank-blocked-chronicle",
+      "title": "Fog Bank Blocked Chronicle | Voyagewright",
+      "screenshot": "screenshots/HP-OWCR2-EV-T-RATING-SUMMARY.png",
+      "screenshotSha256": "34c000200cb16cc6e73e65b15dffa4f4853f2e3f6488f474b5d16c8dc6720a31",
+      "screenshotBytes": 685957,
+      "timestamp": "2026-08-05T20:07:11.395Z",
+      "limitation": "Local production-build Chromium proof against a synthetic task-owned SQLite clone; not owner acceptance, live-provider proof, merge, or deployment."
+    },
+    {
+      "evidenceId": "HP-OWCR2-EV-U-COMPLETION-VERIFIED-REVIEW",
+      "journeyId": "HP-OWCR2-JRN-O",
+      "sourceSha": "f3eef8dc65dd39a40f8e4140aa058de0381a94af",
+      "fixtureVersion": "homeport-phase7-owner-correction-round2-v1",
+      "result": "PASSED",
+      "visualReview": "ACCEPTED",
+      "reviewer": "Codex",
+      "ownerReview": "PENDING_OWNER_DECISION",
+      "browser": "Playwright Chromium",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "route": "/community/fog-bank-blocked-chronicle",
+      "title": "Fog Bank Blocked Chronicle | Voyagewright",
+      "screenshot": "screenshots/HP-OWCR2-EV-U-COMPLETION-VERIFIED-REVIEW.png",
+      "screenshotSha256": "a47ad35f1f2714167f17e3d5e86af1a67a0df963e42d285a6f7f81f8f7d8f866",
+      "screenshotBytes": 663828,
+      "timestamp": "2026-08-05T20:07:17.327Z",
+      "limitation": "Local production-build Chromium proof against a synthetic task-owned SQLite clone; not owner acceptance, live-provider proof, merge, or deployment."
+    },
+    {
+      "evidenceId": "HP-OWCR2-EV-V-CHRONICLE-PREVIEW-EXPANDED",
+      "journeyId": "HP-OWCR2-JRN-Q",
+      "sourceSha": "f3eef8dc65dd39a40f8e4140aa058de0381a94af",
+      "fixtureVersion": "homeport-phase7-owner-correction-round2-v1",
+      "result": "PASSED",
+      "visualReview": "ACCEPTED",
+      "reviewer": "Codex",
+      "ownerReview": "PENDING_OWNER_DECISION",
+      "browser": "Playwright Chromium",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "route": "/community/fog-bank-blocked-chronicle",
+      "title": "Fog Bank Blocked Chronicle | Voyagewright",
+      "screenshot": "screenshots/HP-OWCR2-EV-V-CHRONICLE-PREVIEW-EXPANDED.png",
+      "screenshotSha256": "0bdef2846bc1825d9a7bd8ceaaba00791c6928016c4ed3cd4aab7617ef8fe7cf",
+      "screenshotBytes": 749239,
+      "timestamp": "2026-08-05T20:07:30.655Z",
+      "limitation": "Local production-build Chromium proof against a synthetic task-owned SQLite clone; not owner acceptance, live-provider proof, merge, or deployment."
+    },
+    {
+      "evidenceId": "HP-OWCR2-EV-W-PASSPORT-REVIEW-ENTRY",
+      "journeyId": "HP-OWCR2-JRN-P",
+      "sourceSha": "f3eef8dc65dd39a40f8e4140aa058de0381a94af",
+      "fixtureVersion": "homeport-phase7-owner-correction-round2-v1",
+      "result": "PASSED",
+      "visualReview": "ACCEPTED",
+      "reviewer": "Codex",
+      "ownerReview": "PENDING_OWNER_DECISION",
+      "browser": "Playwright Chromium",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "route": "/passport/history",
+      "title": "Voyagewright | Stories made to be played",
+      "screenshot": "screenshots/HP-OWCR2-EV-W-PASSPORT-REVIEW-ENTRY.png",
+      "screenshotSha256": "80866c765d36c7c4a664730438e1dc890d784c1d58dea2256983b7a0237cce61",
+      "screenshotBytes": 354351,
+      "timestamp": "2026-08-05T20:07:23.132Z",
+      "limitation": "Local production-build Chromium proof against a synthetic task-owned SQLite clone; not owner acceptance, live-provider proof, merge, or deployment."
+    },
+    {
+      "evidenceId": "HP-OWCR2-EV-X-PERSONAL-HARBOR-CONTRAST",
+      "journeyId": "HP-OWCR2-JRN-S",
+      "sourceSha": "f3eef8dc65dd39a40f8e4140aa058de0381a94af",
+      "fixtureVersion": "homeport-phase7-owner-correction-round2-v1",
+      "result": "PASSED",
+      "visualReview": "ACCEPTED",
+      "reviewer": "Codex",
+      "ownerReview": "PENDING_OWNER_DECISION",
+      "browser": "Playwright Chromium",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "route": "/account",
+      "title": "Voyagewright | Stories made to be played",
+      "screenshot": "screenshots/HP-OWCR2-EV-X-PERSONAL-HARBOR-CONTRAST.png",
+      "screenshotSha256": "2d4c23015449e0ca40421534b82248493f3d5e316665bc668dd5d052e36a1995",
+      "screenshotBytes": 955342,
+      "timestamp": "2026-08-05T20:07:44.911Z",
+      "limitation": "Local production-build Chromium proof against a synthetic task-owned SQLite clone; not owner acceptance, live-provider proof, merge, or deployment."
+    },
+    {
+      "evidenceId": "HP-OWCR2-EV-Y-COMMUNITY-CONTRAST",
+      "journeyId": "HP-OWCR2-JRN-S",
+      "sourceSha": "f3eef8dc65dd39a40f8e4140aa058de0381a94af",
+      "fixtureVersion": "homeport-phase7-owner-correction-round2-v1",
+      "result": "PASSED",
+      "visualReview": "ACCEPTED",
+      "reviewer": "Codex",
+      "ownerReview": "PENDING_OWNER_DECISION",
+      "browser": "Playwright Chromium",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "route": "/community",
+      "title": "Community Harbor | Voyagewright",
+      "screenshot": "screenshots/HP-OWCR2-EV-Y-COMMUNITY-CONTRAST.png",
+      "screenshotSha256": "190b932690a57884b6e3d41dc710640b4d755d3424d5d4408b77023e36f6e065",
+      "screenshotBytes": 1931479,
+      "timestamp": "2026-08-05T20:07:48.132Z",
+      "limitation": "Local production-build Chromium proof against a synthetic task-owned SQLite clone; not owner acceptance, live-provider proof, merge, or deployment."
+    },
+    {
+      "evidenceId": "HP-OWCR2-EV-Z-MOBILE-COMMUNITY",
+      "journeyId": "HP-OWCR2-JRN-V",
+      "sourceSha": "f3eef8dc65dd39a40f8e4140aa058de0381a94af",
+      "fixtureVersion": "homeport-phase7-owner-correction-round2-v1",
+      "result": "PASSED",
+      "visualReview": "ACCEPTED",
+      "reviewer": "Codex",
+      "ownerReview": "PENDING_OWNER_DECISION",
+      "browser": "Playwright Chromium",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "route": "/community",
+      "title": "Community Harbor | Voyagewright",
+      "screenshot": "screenshots/HP-OWCR2-EV-Z-MOBILE-COMMUNITY.png",
+      "screenshotSha256": "0d5b192dcc1e2426850372d6d233a0437059f4ba26003e02133a131d161e6c46",
+      "screenshotBytes": 987787,
+      "timestamp": "2026-08-05T20:08:08.085Z",
+      "limitation": "Local production-build Chromium proof against a synthetic task-owned SQLite clone; not owner acceptance, live-provider proof, merge, or deployment."
+    },
+    {
+      "evidenceId": "HP-OWCR2-EV-AC-EXPERIENCE-IMAGES-INDEX",
+      "journeyId": "HP-OWCR2-JRN-T",
+      "sourceSha": "8284f6d2ce0b41a7eb995e13ccfe2a27c9b5845d",
+      "fixtureVersion": "homeport-phase7-owner-correction-round2-v1",
+      "result": "PASSED",
+      "visualReview": "ACCEPTED",
+      "artifact": "experience-images-index.html",
+      "recordCount": 227,
+      "humanFacingRouteCount": 88,
+      "limitation": "Exact application/fixture image snapshot is ancestral to the tested publication source."
+    },
+    {
+      "evidenceId": "HP-OWCR2-EV-AD-EXPERIENCE-IMAGES-CONTACT-SHEET",
+      "journeyId": "HP-OWCR2-JRN-T",
+      "sourceSha": "8284f6d2ce0b41a7eb995e13ccfe2a27c9b5845d",
+      "fixtureVersion": "homeport-phase7-owner-correction-round2-v1",
+      "result": "PASSED",
+      "visualReview": "ACCEPTED",
+      "screenshot": "screenshots/HP-OWCR2-EV-AD-EXPERIENCE-IMAGES-CONTACT-SHEET.png",
+      "screenshotSha256": "a00833879091d9ecbb152edc80b0cbe395ae08f104670feec90922e2229acbc9",
+      "limitation": "Contact sheet is an index aid; individual checksummed images remain authoritative."
+    }
+  ]
+}

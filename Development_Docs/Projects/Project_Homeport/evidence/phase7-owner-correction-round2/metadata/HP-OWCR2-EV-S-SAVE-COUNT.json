@@ -1,0 +1,22 @@
+{
+  "evidenceId": "HP-OWCR2-EV-S-SAVE-COUNT",
+  "journeyId": "HP-OWCR2-JRN-M",
+  "sourceSha": "f3eef8dc65dd39a40f8e4140aa058de0381a94af",
+  "fixtureVersion": "homeport-phase7-owner-correction-round2-v1",
+  "result": "PASSED",
+  "visualReview": "ACCEPTED",
+  "reviewer": "Codex",
+  "ownerReview": "PENDING_OWNER_DECISION",
+  "browser": "Playwright Chromium",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "route": "/community",
+  "title": "Community Harbor | Voyagewright",
+  "screenshot": "screenshots/HP-OWCR2-EV-S-SAVE-COUNT.png",
+  "screenshotSha256": "bad7238a01d45dd589b85e12aef998fa003033cb590a02ca20e402ed8e86c1e2",
+  "screenshotBytes": 1664466,
+  "timestamp": "2026-08-05T20:07:03.012Z",
+  "limitation": "Local production-build Chromium proof against a synthetic task-owned SQLite clone; not owner acceptance, live-provider proof, merge, or deployment."
+}

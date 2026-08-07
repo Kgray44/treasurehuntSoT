@@ -357,9 +357,16 @@ export async function updatePlayerJournalReadingState(
   return next;
 }
 
-export async function listCaptainLibrary(captainId: string) {
+export async function listCaptainLibrary(captainId: string | null, captainAccountId?: string) {
   const sessions = await db.taleSession.findMany({
-    where: { previewMode: false, OR: [{ captainId }, { captainId: null }] },
+    where: {
+      previewMode: false,
+      OR: [
+        ...(captainId ? [{ captainId }] : []),
+        ...(captainAccountId ? [{ captainAccountId }] : []),
+        ...(!captainId && !captainAccountId ? [{ id: "__no_authorized_voyages__" }] : []),
+      ],
+    },
     orderBy: { updatedAt: "desc" },
     include: {
       tale: true,
@@ -376,12 +383,16 @@ export async function listCaptainLibrary(captainId: string) {
     },
   });
   const tales = await db.chronicle.findMany({
-    where: { archivedAt: null, latestPublishedVersionId: { not: null } },
+    where: {
+      archivedAt: null,
+      latestPublishedVersionId: { not: null },
+      OR: [...(captainAccountId ? [{ creatorAccountId: captainAccountId }] : []), { visibility: "PUBLIC" }],
+    },
     orderBy: { title: "asc" },
     include: { versions: { orderBy: { versionNumber: "desc" }, include: { _count: { select: { sessions: true } } } } },
   });
   const playerProfiles = await db.playerProfile.findMany({
-    where: { status: "ACTIVE" },
+    where: { status: "ACTIVE", defaultVisibility: "PUBLIC", handle: { not: null } },
     orderBy: { displayName: "asc" },
     take: 200,
     select: { id: true, displayName: true, username: true },

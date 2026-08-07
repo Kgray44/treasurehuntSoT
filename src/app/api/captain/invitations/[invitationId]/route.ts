@@ -1,8 +1,9 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { requireGmCapability, verifyCsrf } from "@/lib/security";
+import { requireCaptainWorkspace } from "@/chronicle/captain-authorization";
 import { manageInvitation } from "@/platform/invitations";
 import { apiError } from "@/chronicle/api";
+import { verifyWayfarerCsrf } from "@/wayfarer/http";
 
 const schema = z.object({
   action: z.enum(["copied", "extend", "revoke", "replace"]),
@@ -15,10 +16,10 @@ const schema = z.object({
 });
 
 export async function POST(request: Request, context: { params: Promise<{ invitationId: string }> }) {
-  const session = await requireGmCapability("CAPTAIN");
+  const session = await requireCaptainWorkspace();
   if (!session)
-    return NextResponse.json({ error: "Sign in to Captain's Console to manage Crew invitations." }, { status: 401 });
-  if (!(await verifyCsrf(session)))
+    return NextResponse.json({ error: "Your account cannot manage Captain invitations right now." }, { status: 403 });
+  if (!verifyWayfarerCsrf(session, request))
     return NextResponse.json(
       { error: "Your Captain session expired. Sign in again; invitation access has not changed." },
       { status: 403 },
@@ -33,7 +34,7 @@ export async function POST(request: Request, context: { params: Promise<{ invita
     return NextResponse.json(
       await manageInvitation(
         (await context.params).invitationId,
-        session.userId,
+        session.accountId,
         parsed.data.action,
         new URL(request.url).origin,
         parsed.data.extendHours,

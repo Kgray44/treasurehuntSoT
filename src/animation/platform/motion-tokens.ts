@@ -49,8 +49,8 @@ export const platformMotionTokens = {
     easing: "cubic-bezier(0.22, 1, 0.36, 1)",
   },
   route: {
-    durationMs: { full: 460, gentle: 280, reduced: 0 },
-    distancePx: { full: 22, gentle: 8, reduced: 0 },
+    durationMs: { full: 280, gentle: 220, reduced: 0 },
+    distancePx: { full: 4, gentle: 2, reduced: 0 },
     scaleDelta: { full: 0.008, gentle: 0.003, reduced: 0 },
     easing: "cubic-bezier(0.16, 1, 0.3, 1)",
   },

@@ -1295,8 +1295,8 @@ export function Quartermaster({ authenticated }: { authenticated: boolean }) {
           <h1>Captain’s Console</h1>
         </div>
         <div className="gm-header-tools">
-          <a href="/studio">Voyagewright Studio</a>
-          <a href="/captain">Voyage dashboard</a>
+          <a href="/studio/library">Voyagewright Studio</a>
+          <a href="/captain/library">Voyage dashboard</a>
           <button onClick={cycle} aria-label={`Motion setting: ${mode}. Change motion setting`}>
             {mode} motion
           </button>

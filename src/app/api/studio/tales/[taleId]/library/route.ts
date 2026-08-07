@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { db } from "@/lib/db";
-import { requireGmCapability, verifyCsrf } from "@/lib/security";
 import { apiError } from "@/chronicle/api";
+import { requireOwnedStudioTale } from "@/chronicle/studio-authorization";
 import { slugify } from "@/chronicle/studio-service";
 
 const schema = z.object({
@@ -13,15 +13,10 @@ const schema = z.object({
 });
 
 export async function POST(request: Request, context: { params: Promise<{ taleId: string }> }) {
-  const session = await requireGmCapability("CREATE_TALES");
-  if (!session) return NextResponse.json({ error: "Sign in with a creator account to continue." }, { status: 401 });
-  if (!(await verifyCsrf(session)))
-    return NextResponse.json(
-      { error: "Your creator session has expired. Reload the page and try again." },
-      { status: 403 },
-    );
+  const { taleId } = await context.params;
+  if (!(await requireOwnedStudioTale(taleId, request)))
+    return NextResponse.json({ error: "This Chronicle is not available to this Creator account." }, { status: 404 });
   try {
-    const { taleId } = await context.params;
     const input = schema.parse(await request.json());
     if (input.entity === "collection") {
       if (input.action === "create")
@@ -36,6 +31,8 @@ export async function POST(request: Request, context: { params: Promise<{ taleId
           }),
         );
       if (!input.id) throw new Error("Choose a collection to update.");
+      if (!(await db.taleAssetCollection.findFirst({ where: { id: input.id, taleId }, select: { id: true } })))
+        throw new Error("That collection is not part of this Chronicle.");
       if (input.action === "archive")
         return NextResponse.json(await db.taleAssetCollection.delete({ where: { id: input.id } }));
       return NextResponse.json(
@@ -68,6 +65,8 @@ export async function POST(request: Request, context: { params: Promise<{ taleId
         );
       }
       if (!input.id) throw new Error("Choose a Waypoint to update.");
+      if (!(await db.taleLocation.findFirst({ where: { id: input.id, taleId }, select: { id: true } })))
+        throw new Error("That Waypoint is not part of this Chronicle.");
       if (input.action === "archive")
         return NextResponse.json(
           await db.taleLocation.update({ where: { id: input.id }, data: { archivedAt: new Date() } }),
@@ -111,6 +110,8 @@ export async function POST(request: Request, context: { params: Promise<{ taleId
         }),
       );
     if (!input.id) throw new Error("Choose an Artifact to update.");
+    if (!(await db.taleArtifact.findFirst({ where: { id: input.id, taleId }, select: { id: true } })))
+      throw new Error("That Artifact is not part of this Chronicle.");
     if (input.action === "archive")
       return NextResponse.json(
         await db.taleArtifact.update({ where: { id: input.id }, data: { archivedAt: new Date() } }),

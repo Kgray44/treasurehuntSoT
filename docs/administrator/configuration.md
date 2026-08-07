@@ -3,7 +3,7 @@ title: Configuration
 audience: administrator
 status: current
 canonical_for: administrator-configuration
-last_reviewed: 2026-07-27
+last_reviewed: 2026-08-07
 ---
 
 # Configuration
@@ -11,3 +11,16 @@ last_reviewed: 2026-07-27
 Configure database connectivity, application origin, authentication, and any optional provider integrations through environment variables. Keep values in a deployment secret store; do not add them to documentation, source, screenshots, or issue reports.
 
 Before enabling a provider, confirm its storage, scanning, and recovery behavior in a non-production environment. See [environment variables](../reference/environment-variables.md), [private content](private-content.md), and [security architecture](../developer/security-architecture.md).
+
+For a non-loopback Next.js development hostname, configure only exact names in
+`HOMEPORT_ALLOWED_DEV_ORIGINS`; never use wildcards, schemes, ports, or paths.
+Set `HOMEPORT_PUBLIC_APP_ORIGIN` to the exact public HTTP(S) origin so account
+links do not inherit a loopback address. Origin diagnostics are disabled unless
+`HOMEPORT_ORIGIN_DIAGNOSTICS=1` and are unavailable in production.
+
+## Phase 7 correction Round 3 status
+
+Correction Round 3 uses Resend as the selected real transactional-email
+provider and retains a task-owned synthetic adapter for isolated validation.
+Follow the [Resend configuration guide](resend-configuration.md). Owner Re-Review
+Round 3 remains `PENDING_OWNER_DECISION`; the branch is not merged or deployed.

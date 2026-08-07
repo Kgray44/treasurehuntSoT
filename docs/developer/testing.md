@@ -3,7 +3,7 @@ title: Testing
 audience: developer
 status: current
 canonical_for: testing-guide
-last_reviewed: 2026-07-29
+last_reviewed: 2026-08-07
 ---
 
 # Testing
@@ -18,3 +18,28 @@ external provider check is not a passing production proof. The
 `P34-BME-20260729` risk acceptance is a blocked browser-matrix exception, not
 a complete matrix pass; retain that distinction in validation evidence. Record
 environment limitations in engineering evidence, not in current user guides.
+
+## Phase 7 correction Round 2 status
+
+Correction Round 2 is locally exact-source validated and ready for owner re-review. Dark, Light, and System themes; truthful account/Profile/workspace state; authoritative Community saves and completion-verified reviews; expanded previews; delayed loading; motion; synthetic email boundaries; and Experience Images are included. Round 2 remains `PENDING_OWNER_DECISION`; this branch is not merged or deployed, and live providers remain external.
+
+## Phase 7 correction Round 3 status
+
+Correction Round 3 retains task-owned synthetic email for automated isolation and
+selects Resend for explicit live-provider acceptance. Synthetic proof must never
+be reported as Resend or inbox proof. Owner Re-Review Round 3 remains
+`PENDING_OWNER_DECISION`.
+
+## Phase 7 correction Round 3 Patch A
+
+Use the Patch A task root, fixture, isolated databases, synthetic outbox, and
+sealed production build for registration or transition validation. Temporal
+route evidence must sample generation, layers, opacity, loading, focus, and
+background-only state; screenshots alone cannot prove the absence of a delayed
+flash. Never run the reconciliation command against canonical `prisma/dev.db`.
+
+For host-origin regressions, run `npm run homeport:origin:test`. It must pass on
+both direct loopback and an exact reverse-proxy hostname and verify hydration,
+current-user bootstrap, click behavior, keyboard focus/typing, route navigation,
+settled overlays, and sanitized forwarding metadata. This automated lane does
+not replace protected-staging desktop or physical-phone acceptance.

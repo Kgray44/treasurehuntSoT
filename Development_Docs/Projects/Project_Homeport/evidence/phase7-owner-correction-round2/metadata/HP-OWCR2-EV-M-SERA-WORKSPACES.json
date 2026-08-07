@@ -1,0 +1,22 @@
+{
+  "evidenceId": "HP-OWCR2-EV-M-SERA-WORKSPACES",
+  "journeyId": "HP-OWCR2-JRN-A",
+  "sourceSha": "f3eef8dc65dd39a40f8e4140aa058de0381a94af",
+  "fixtureVersion": "homeport-phase7-owner-correction-round2-v1",
+  "result": "PASSED",
+  "visualReview": "ACCEPTED",
+  "reviewer": "Codex",
+  "ownerReview": "PENDING_OWNER_DECISION",
+  "browser": "Playwright Chromium",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "route": "/account/roles",
+  "title": "Voyagewright | Stories made to be played",
+  "screenshot": "screenshots/HP-OWCR2-EV-M-SERA-WORKSPACES.png",
+  "screenshotSha256": "a00fa71e15036279733d60816d747fd4e411b0f77dbbf61a65415c7fa8913eef",
+  "screenshotBytes": 314051,
+  "timestamp": "2026-08-05T20:01:02.908Z",
+  "limitation": "Local production-build Chromium proof against a synthetic task-owned SQLite clone; not owner acceptance, live-provider proof, merge, or deployment."
+}

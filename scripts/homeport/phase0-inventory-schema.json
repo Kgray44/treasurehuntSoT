@@ -1,0 +1,145 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://voyagewright.local/schemas/homeport-phase0-inventories.json",
+  "title": "Project Homeport Phase 0 inventory bundle",
+  "description": "Shared structural requirements for the machine-readable Phase 0 route, session, navigation, screen, journey, and evidence inventories. Cross-file relationships and CSV records are enforced by validate-phase0-inventories.mjs.",
+  "type": "object",
+  "$defs": {
+    "identifier": {
+      "type": "string",
+      "minLength": 1
+    },
+    "sourceSha": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{40}$"
+    },
+    "inventoryEnvelope": {
+      "type": "object",
+      "required": ["schemaVersion", "sourceSha", "generatedAt"],
+      "properties": {
+        "schemaVersion": { "const": "1.0.0" },
+        "sourceSha": { "$ref": "#/$defs/sourceSha" },
+        "generatedAt": { "type": "string", "format": "date-time" }
+      }
+    },
+    "route": {
+      "type": "object",
+      "required": [
+        "routeId",
+        "routePattern",
+        "implementationSource",
+        "kind",
+        "classification",
+        "ownerProject",
+        "logicalParent",
+        "shellMode",
+        "currentDesktopPath",
+        "currentMobilePath",
+        "authenticationRequirement",
+        "currentMaturity",
+        "targetDisposition",
+        "status"
+      ]
+    },
+    "sessionAuthority": {
+      "type": "object",
+      "required": [
+        "authorityId",
+        "authorityClassification",
+        "sourceModel",
+        "cookieOrStorageKey",
+        "createdBy",
+        "readBy",
+        "refreshedBy",
+        "revokedBy",
+        "deletedBy",
+        "lifetime",
+        "cookieAttributes",
+        "csrfRelationship",
+        "accountStatusChecks",
+        "capabilitySource",
+        "clientProjection",
+        "expiryBehavior",
+        "multiTabBehavior",
+        "failureBehavior",
+        "currentWrites",
+        "currentReads",
+        "targetDisposition",
+        "migrationRisk",
+        "retirementCriteria",
+        "evidence"
+      ]
+    },
+    "screen": {
+      "type": "object",
+      "required": [
+        "screenId",
+        "routeIds",
+        "productArea",
+        "owner",
+        "shellMode",
+        "primaryUserGoal",
+        "logicalParent",
+        "visibleEntryPoints",
+        "authentication",
+        "capabilities",
+        "applicableStates",
+        "currentVisualMaturity",
+        "screenshotIds",
+        "journeyIds",
+        "targetHomeportPhase",
+        "acceptanceContract",
+        "status"
+      ]
+    },
+    "journey": {
+      "type": "object",
+      "required": [
+        "journeyId",
+        "name",
+        "sourceSha",
+        "fixtureIdentity",
+        "browser",
+        "viewport",
+        "steps",
+        "controlsUsed",
+        "routeTransitions",
+        "sessionAuthoritiesObservedWithoutValues",
+        "expectedCurrentBehavior",
+        "observedBehavior",
+        "screenshots",
+        "result",
+        "rootBlocker",
+        "relatedNonconformityIds",
+        "targetPhase",
+        "futureAcceptanceTest"
+      ]
+    },
+    "evidence": {
+      "type": "object",
+      "required": [
+        "evidenceId",
+        "sourceSha",
+        "branch",
+        "route",
+        "screenContract",
+        "journey",
+        "accountFixture",
+        "fixtureVersion",
+        "fixtureChecksum",
+        "browser",
+        "viewport",
+        "zoom",
+        "motionMode",
+        "appearanceState",
+        "dataState",
+        "screenshotPath",
+        "committedScreenshotPath",
+        "sha256",
+        "observedResult",
+        "timestamp",
+        "reviewerClassification"
+      ]
+    }
+  }
+}

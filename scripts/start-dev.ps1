@@ -8,6 +8,10 @@ $playerUrl = "http://127.0.0.1:$Port/tale/development-forever-treasure"
 $gmUrl = "http://127.0.0.1:$Port/quartermaster"
 $bindAddress = if ($Lan) { "0.0.0.0" } else { "127.0.0.1" }
 $lanAddress = if ($Lan) { Get-NetIPAddress -AddressFamily IPv4 -ErrorAction SilentlyContinue | Where-Object { $_.IPAddress -notlike "127.*" -and $_.IPAddress -notlike "169.254.*" } | Sort-Object InterfaceMetric | Select-Object -First 1 -ExpandProperty IPAddress } else { $null }
+if ($lanAddress) {
+    $configuredDevOrigins = if ($env:HOMEPORT_ALLOWED_DEV_ORIGINS) { @($env:HOMEPORT_ALLOWED_DEV_ORIGINS -split ",") } else { @() }
+    $env:HOMEPORT_ALLOWED_DEV_ORIGINS = (@($configuredDevOrigins) + @($lanAddress) | ForEach-Object { $_.Trim() } | Where-Object { $_ } | Select-Object -Unique) -join ","
+}
 
 if (Test-Path $statePath) {
     $state = Get-Content -Raw $statePath | ConvertFrom-Json

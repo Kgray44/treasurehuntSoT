@@ -1,0 +1,18 @@
+{
+  "routeId": "route-page-player-invitation-valid",
+  "routePattern": "/player/invitation",
+  "observedPath": "/player/invitation",
+  "classification": "TOKENIZED_DEEP_LINK",
+  "accountFixture": "ANONYMOUS",
+  "naturalPath": ["BOUNDED_INVITATION_HANDOFF", "/player/invitation"],
+  "visibleControls": ["Continue secure handoff"],
+  "naturalResult": "PASSED_VISIBLE_CONTROL_TRAVERSAL",
+  "directEntryResult": "PASSED_AFTER_NATURAL_PATH",
+  "returnResult": "SAFE_RETURN_PRESENT_OR_TERMINAL_GUIDANCE",
+  "desktopResult": "PASSED_CHROMIUM_DESKTOP",
+  "mobileResult": "REPRESENTATIVE_PARITY_PROVED_IN_HP_P5_EV_U_THROUGH_X",
+  "sourceSha": "b9f1552b78857c36a45f25eb5fdfb7a7e09f102a",
+  "branch": "codex/project-homeport-product-reality-recovery",
+  "timestamp": "2026-08-03T20:20:01.806Z",
+  "limitation": "Synthetic local branch evidence only; not merge, deploy, production, owner, or product acceptance proof."
+}

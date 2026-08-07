@@ -1,8 +1,8 @@
 import { StudioExchangeConsole } from "@/components/community/StudioExchangeConsole";
-import { requireGmCapability } from "@/lib/security";
+import { resolveCapability } from "@/homeport/current-user.server";
 
 export const dynamic = "force-dynamic";
 
 export default async function StudioExchangePage() {
-  return <StudioExchangeConsole authenticated={Boolean(await requireGmCapability("CREATE_TALES"))} />;
+  return <StudioExchangeConsole authenticated={(await resolveCapability("creator")).status === "allowed"} />;
 }

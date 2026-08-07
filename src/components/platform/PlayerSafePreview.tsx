@@ -48,9 +48,7 @@ export function PlayerSafePreview({ playthroughId }: { playthroughId: string }) 
       </header>
       <section>
         <div className="preview-watermark">PREVIEW · NO LIVE MUTATIONS</div>
-        <p className="card-kicker">
-          {preview.session.status.toLocaleLowerCase()} · edition {preview.session.versionId.slice(0, 12)}
-        </p>
+        <p className="card-kicker">{preview.session.status.toLocaleLowerCase()} · version-pinned Player projection</p>
         <h2>{preview.chapter?.title ?? "The voyage has not launched"}</h2>
         <h3>{preview.block?.title ?? "The journal remains closed"}</h3>
         <p>

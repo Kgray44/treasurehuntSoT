@@ -1,0 +1,19 @@
+{
+  "schemaVersion": "1.0.0",
+  "fixtureVersion": "homeport-phase7-integrated-v1",
+  "sourceSha": "61ea9ec546622b2bce2036d249fca408922786d2",
+  "productionRuntime": true,
+  "host": "127.0.0.1",
+  "preferredPort": 3717,
+  "databaseClass": "FINAL_WALKTHROUGH_CLONE",
+  "credentialClass": "EXTERNAL_TASK_OWNED_HANDOFF",
+  "commands": {
+    "prepare": "npm run homeport:phase7:walkthrough:prepare",
+    "start": "npm run homeport:phase7:walkthrough:start",
+    "status": "npm run homeport:phase7:walkthrough:status",
+    "reset": "npm run homeport:phase7:walkthrough:reset",
+    "stop": "npm run homeport:phase7:walkthrough:stop"
+  },
+  "safety": ["REJECT_CANONICAL_DATABASE", "VERIFY_PORT_OWNER", "STOP_OWNED_PID_ONLY", "BOUNDED_NON_SECRET_STATUS"],
+  "retention": "ONE_FINAL_WALKTHROUGH_RUNTIME_AFTER_SUCCESS"
+}

@@ -1,0 +1,13 @@
+action,route,acceptedAuthority,confirmation,reauthentication,availability,lockoutOrSafetyRule
+unlink identity,/account/linked-identities,Wayfarer provider service,required,"not invented; existing authenticated session only",available only when adapter reports canUnlink,"block removal of last usable login method"
+revoke other session,/account/sessions,AccountSession,required,"not invented; existing authenticated session only",available,"session id must belong to current account; no token disclosure"
+revoke current session,/account/sessions,AccountSession,required,"not invented; canonical invalidation after success",available,"current-user state becomes anonymous only after response"
+sign out all sessions,/account/sessions,AccountSession,required,"not invented; canonical invalidation after success",available,"single server authority; no client-only success"
+remove profile media,/account/profile,Wayfarer profile media,required,"not required by accepted service",available,"remove only owned active media; fallback immediately"
+delete memory,/passport/memories,Wayfarer Chronicle,required,"not required by accepted service",available,"owner authorization; preserve protected media rules"
+grant keepsake consent,/passport/memories,Wayfarer keepsake consent,required,"not required by accepted service",provider-dependent,"explicit scoped consent; no implied ownership transfer"
+password reset,/account/security,Wayfarer credential lifecycle,"existing reset flow confirmation rules","tokenized recovery owns proof",available via canonical reset lifecycle,"never display or accept current password in Personal Harbor"
+change email,/account/personal-information,none,not rendered,"would require accepted proof and verification lifecycle",not currently supported,"do not create decorative mutation"
+export account data,/account/data,none,not rendered,"requires accepted export and reauth contract",not currently supported,"do not claim generation, coverage, or retention"
+deactivate account,/account/data,none,not rendered,"requires accepted lifecycle and reauth contract",not currently supported,"do not simulate state change"
+delete account,/account/data,none,not rendered,"requires accepted deletion, retention, and reauth contract",not currently supported,"no destructive control until owner contract exists"

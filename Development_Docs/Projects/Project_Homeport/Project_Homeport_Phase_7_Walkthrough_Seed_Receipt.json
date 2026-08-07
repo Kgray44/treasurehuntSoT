@@ -1,0 +1,53 @@
+{
+  "schemaVersion": "1.0.0",
+  "fixtureVersion": "homeport-phase7-integrated-v1",
+  "classification": "SYNTHETIC_TEST_DATA",
+  "sourceSha": "e1829c3cffa87e561d15342da2e6e9b073fd7165",
+  "fixtureChecksum": "a67f1746b49866c5695b78149a82b2f077cac933582445e833a5302071e67ece",
+  "schemaHash": "e845f0b0daea4c8ef79b53726bd0f5a8430f28e797b9f5bbc558dcf921f189f1",
+  "migrationCount": 49,
+  "canonicalSourceHash": "54647911f63c6a55e5c6b6c95e5ec0a2977b4580a42de073c8c503a3d8c7a412",
+  "immutableSeedHash": "7b0e969036d072b495cfcd8c608dc5b7e158f2c55610800fdfee653f323660ae",
+  "contentCounts": {
+    "accounts": 13,
+    "profiles": 12,
+    "roles": 20,
+    "tales": 2,
+    "sessions": 2,
+    "communityListings": 15,
+    "communityProfiles": 3,
+    "historyRecords": 1,
+    "artifacts": 1
+  },
+  "stateVariants": [
+    "ANONYMOUS",
+    "AUTHENTICATED",
+    "EMPTY",
+    "RESTRICTED",
+    "EXPIRED_SESSION",
+    "RECOVERY",
+    "PERMISSION_DENIED",
+    "DEPENDENCY_UNAVAILABLE"
+  ],
+  "accountAliases": [
+    "ANONYMOUS",
+    "REGISTRATION_CANDIDATE",
+    "RETURNING_FULL_CAPABILITY",
+    "PLAYER_ONLY",
+    "MODERATOR",
+    "RESTRICTED_ACCOUNT",
+    "CAPTAIN_ONLY",
+    "CREATOR_ONLY",
+    "EXPIRED_SESSION_ACCOUNT",
+    "RECOVERY_ACCOUNT",
+    "EMPTY_NEW_ACCOUNT"
+  ],
+  "inheritedFixtureChecksums": {
+    "phase4": "6818975d1d09d26278d6e8aa0b338eaa5a0b96c333abd3279fc8c8941e779d86",
+    "phase5": "e8584009df521dfbcf90b5fd7132a3164882e6987b8e77ac164ee40ff3566583"
+  },
+  "credentialLocation": "EXTERNAL_TASK_OWNED_HANDOFF",
+  "resetPolicy": "RECREATE_CLONE_FROM_IMMUTABLE_SEED",
+  "privacyScan": "SYNTHETIC_RESERVED_DATA_ONLY",
+  "result": "ACCEPTED"
+}

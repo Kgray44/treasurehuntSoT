@@ -1,0 +1,152 @@
+{
+  "evidenceId": "HP-OWCR3-EV-R-PERSONAL-HARBOR-CROSSFADE",
+  "journeyId": "HP-OWCR3-JRN-N",
+  "sourceSha": "581e5d3c5d4560bd101362e835c4eb0ed5a85e3f",
+  "fixtureVersion": "homeport-phase7-owner-correction-round3-v1",
+  "measurementKind": "COMPUTED_FRAME_SEQUENCE",
+  "measurements": {
+    "samples": [
+      {
+        "routeCount": 2,
+        "interactive": ["false", "true"],
+        "hidden": ["true", "false"],
+        "opacities": ["1", "0.08"],
+        "paths": ["/account", "/account/personal-information"]
+      },
+      {
+        "routeCount": 2,
+        "interactive": ["false", "true"],
+        "hidden": ["true", "false"],
+        "opacities": ["1", "0.827525"],
+        "paths": ["/account", "/account/personal-information"]
+      },
+      {
+        "routeCount": 2,
+        "interactive": ["false", "true"],
+        "hidden": ["true", "false"],
+        "opacities": ["1", "0.969158"],
+        "paths": ["/account", "/account/personal-information"]
+      },
+      {
+        "routeCount": 2,
+        "interactive": ["false", "true"],
+        "hidden": ["true", "false"],
+        "opacities": ["1", "0.996714"],
+        "paths": ["/account", "/account/personal-information"]
+      },
+      {
+        "routeCount": 2,
+        "interactive": ["false", "true"],
+        "hidden": ["true", "false"],
+        "opacities": ["1", "0.99999"],
+        "paths": ["/account", "/account/personal-information"]
+      },
+      {
+        "routeCount": 1,
+        "interactive": ["true"],
+        "hidden": ["false"],
+        "opacities": ["1"],
+        "paths": ["/account/personal-information"]
+      },
+      {
+        "routeCount": 2,
+        "interactive": ["false", "true"],
+        "hidden": ["true", "false"],
+        "opacities": ["1", "0.544234"],
+        "paths": ["/account/personal-information", "/account/preferences"]
+      },
+      {
+        "routeCount": 2,
+        "interactive": ["false", "true"],
+        "hidden": ["true", "false"],
+        "opacities": ["1", "0.915423"],
+        "paths": ["/account/personal-information", "/account/preferences"]
+      },
+      {
+        "routeCount": 2,
+        "interactive": ["false", "true"],
+        "hidden": ["true", "false"],
+        "opacities": ["1", "0.974037"],
+        "paths": ["/account/personal-information", "/account/preferences"]
+      },
+      {
+        "routeCount": 2,
+        "interactive": ["false", "true"],
+        "hidden": ["true", "false"],
+        "opacities": ["1", "0.9975"],
+        "paths": ["/account/personal-information", "/account/preferences"]
+      },
+      {
+        "routeCount": 1,
+        "interactive": ["true"],
+        "hidden": ["false"],
+        "opacities": ["1"],
+        "paths": ["/account/preferences"]
+      },
+      {
+        "routeCount": 2,
+        "interactive": ["false", "true"],
+        "hidden": ["true", "false"],
+        "opacities": ["1", "0.726066"],
+        "paths": ["/account/preferences", "/account/profile"]
+      },
+      {
+        "routeCount": 2,
+        "interactive": ["false", "true"],
+        "hidden": ["true", "false"],
+        "opacities": ["1", "0.949375"],
+        "paths": ["/account/preferences", "/account/profile"]
+      },
+      {
+        "routeCount": 2,
+        "interactive": ["false", "true"],
+        "hidden": ["true", "false"],
+        "opacities": ["1", "0.993239"],
+        "paths": ["/account/preferences", "/account/profile"]
+      },
+      {
+        "routeCount": 2,
+        "interactive": ["false", "true"],
+        "hidden": ["true", "false"],
+        "opacities": ["1", "0.999845"],
+        "paths": ["/account/preferences", "/account/profile"]
+      },
+      {
+        "routeCount": 1,
+        "interactive": ["true"],
+        "hidden": ["false"],
+        "opacities": ["1"],
+        "paths": ["/account/profile"]
+      },
+      {
+        "routeCount": 2,
+        "interactive": ["false", "true"],
+        "hidden": ["true", "false"],
+        "opacities": ["1", "0.449101"],
+        "paths": ["/account/profile", "/account/sessions"]
+      },
+      {
+        "routeCount": 2,
+        "interactive": ["false", "true"],
+        "hidden": ["true", "false"],
+        "opacities": ["1", "0.897794"],
+        "paths": ["/account/profile", "/account/sessions"]
+      },
+      {
+        "routeCount": 2,
+        "interactive": ["false", "true"],
+        "hidden": ["true", "false"],
+        "opacities": ["1", "0.983125"],
+        "paths": ["/account/profile", "/account/sessions"]
+      },
+      {
+        "routeCount": 2,
+        "interactive": ["false", "true"],
+        "hidden": ["true", "false"],
+        "opacities": ["1", "0.998812"],
+        "paths": ["/account/profile", "/account/sessions"]
+      }
+    ]
+  },
+  "result": "PASSED"
+}

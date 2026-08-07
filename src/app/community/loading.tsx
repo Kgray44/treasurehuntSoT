@@ -1,9 +1,12 @@
+import { LoadingState } from "@/components/ui/AsyncState";
+
 export default function CommunityLoading() {
   return (
-    <main className="page-shell" aria-busy="true" aria-live="polite">
-      <p className="eyebrow">Community Harbor</p>
-      <h1>Loading the Harbor</h1>
-      <p>Gathering safe public Community records.</p>
+    <main className="community-harbor community-route-loading" aria-busy="true" aria-live="polite">
+      <LoadingState
+        title="Opening Community Harbor"
+        detail="Gathering safe public Community records. Nothing private is used to fill this view."
+      />
     </main>
   );
 }

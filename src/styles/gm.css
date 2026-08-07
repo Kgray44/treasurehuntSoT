@@ -12,6 +12,13 @@
   perspective: 1800px;
 }
 
+html[data-voyage-theme="light"] .quartermaster-login {
+  color: var(--text-primary);
+  background:
+    radial-gradient(circle at 70% 32%, rgb(141 94 29 / 12%), transparent 25%),
+    linear-gradient(120deg, #fff9eb, #eadbbd 45%, #f5ead4);
+}
+
 .quartermaster-login-cinematic-boundary {
   position: absolute;
   z-index: 0;

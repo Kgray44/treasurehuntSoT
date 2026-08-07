@@ -1,0 +1,30 @@
+---
+title: Account and workspaces
+audience: product-users
+status: current
+canonical_for: account-and-workspaces
+last_reviewed: 2026-08-05
+---
+
+# Account and workspaces
+
+One claimed account and one canonical `AccountSession` provide ordinary Player,
+Captain, and Creator workspace entry. Role-specific sign-in is not required.
+Captain Voyages and Creator Chronicles still enforce their own owner or scoped
+collaborator rules; successful workspace entry does not grant access to another
+account's private resources. All Workspaces shows this server-authoritative
+state. Public Profile identity remains separate from private Personal Harbor and
+Chronicle Passport data.
+
+## Phase 7 correction Round 2 status
+
+Correction Round 2 is locally exact-source validated and ready for owner re-review. Dark, Light, and System themes; truthful account/Profile/workspace state; authoritative Community saves and completion-verified reviews; expanded previews; delayed loading; motion; synthetic email boundaries; and Experience Images are included. Round 2 remains `PENDING_OWNER_DECISION`; this branch is not merged or deployed, and live providers remain external.
+
+## Phase 7 correction Round 3 status
+
+Correction Round 3 includes governed Profile imagery/cropping and identity
+propagation, six-digit verification, a Resend production adapter with task-owned
+synthetic isolation, canonical Player/Captain/Creator entry separated from
+resource authority, direct route crossfades, visible account-menu motion, and
+Dark defaults. Owner Re-Review Round 3 remains `PENDING_OWNER_DECISION`; the
+branch is not merged or deployed.

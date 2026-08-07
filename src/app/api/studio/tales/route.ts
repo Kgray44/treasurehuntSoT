@@ -1,24 +1,19 @@
 import { NextResponse } from "next/server";
-import { requireGmCapability, verifyCsrf } from "@/lib/security";
 import { apiError } from "@/chronicle/api";
+import { requireStudioWorkspace } from "@/chronicle/studio-authorization";
 import { createStudioTale, listStudioTales } from "@/chronicle/studio-service";
 
 export async function GET() {
-  const session = await requireGmCapability("CREATE_TALES");
+  const session = await requireStudioWorkspace();
   if (!session) return NextResponse.json({ error: "Sign in with a creator account to continue." }, { status: 401 });
-  return NextResponse.json({ csrfToken: session.csrfToken, tales: await listStudioTales() });
+  return NextResponse.json({ csrfToken: session.csrfToken, tales: await listStudioTales(session.accountId) });
 }
 
 export async function POST(request: Request) {
-  const session = await requireGmCapability("CREATE_TALES");
+  const session = await requireStudioWorkspace(request);
   if (!session) return NextResponse.json({ error: "Sign in with a creator account to continue." }, { status: 401 });
-  if (!(await verifyCsrf(session)))
-    return NextResponse.json(
-      { error: "Your creator session has expired. Reload the page and try again." },
-      { status: 403 },
-    );
   try {
-    return NextResponse.json(await createStudioTale({ ...(await request.json()), creatorId: session.userId }), {
+    return NextResponse.json(await createStudioTale({ ...(await request.json()), creatorId: session.accountId }), {
       status: 201,
     });
   } catch (cause) {

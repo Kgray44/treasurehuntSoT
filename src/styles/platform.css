@@ -12,6 +12,22 @@
     linear-gradient(145deg, #031013, #071e21 50%, #020a0c);
 }
 
+html[data-voyage-theme="light"]
+  :where(
+    .platform-auth,
+    .player-library,
+    .captain-library,
+    .invitation-page,
+    .waiting-room,
+    .voyage-archive,
+    .player-safe-preview
+  ) {
+  color: var(--text-primary);
+  background:
+    radial-gradient(circle at 78% 8%, rgb(48 112 104 / 13%), transparent 28%),
+    linear-gradient(145deg, #fff9eb, #eadbbd 50%, #f5ead4);
+}
+
 .platform-relic {
   position: relative;
   width: 7rem;
@@ -204,11 +220,27 @@ html[data-motion-level="reduced"] .platform-relic *,
   line-height: 0.96;
 }
 
+.auth-ledger h1,
+.auth-ledger h2,
+.auth-ledger h3 {
+  color: var(--parchment-ink);
+}
+
+.auth-ledger .eyebrow {
+  color: #6b471c;
+}
+
 .auth-ledger > p,
 .invitation-sheet > p,
 .waiting-room > section > p {
   max-width: 700px;
   line-height: 1.65;
+}
+
+.auth-ledger > p,
+.auth-ledger .account-verification-help > p,
+.auth-ledger .account-flow-status {
+  color: #3a3c33;
 }
 
 .auth-columns {
@@ -269,10 +301,163 @@ html[data-motion-level="reduced"] .platform-relic *,
   margin-top: 1.5rem;
 }
 
-.auth-ledger button:not(.brass-button),
+.account-flow-page,
+.platform-state {
+  min-height: min(720px, calc(100vh - 9rem));
+}
+
+.account-flow-page .auth-ledger,
+.platform-state .auth-ledger {
+  max-width: 760px;
+}
+
+.account-flow-intro,
+.account-flow-notice {
+  max-width: 620px;
+}
+
+.account-password-strength {
+  display: grid;
+  gap: 0.25rem;
+  margin-top: 0.4rem;
+}
+
+.account-flow-field {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.account-flow-field > label {
+  color: #6b471c;
+  font-size: 0.72rem;
+  font-weight: 850;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+.account-password-strength [role="meter"] {
+  display: block;
+  width: min(100%, 26rem);
+  height: 0.45rem;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgb(70 47 27 / 16%);
+}
+
+.account-password-strength [role="meter"] i {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: #8c6b2e;
+  transition: width 120ms ease-out;
+}
+
+.account-confirmation-match {
+  color: #315d35;
+  font-weight: 750;
+}
+
+.account-flow-notice {
+  border-left: 4px solid #8c6b2e;
+  padding: 0.75rem 1rem;
+  color: #3a3c33;
+  background: rgba(255, 250, 232, 0.42);
+}
+
+.account-flow-notice a {
+  color: #5f431b;
+}
+
+.account-flow-notice p {
+  color: #3a3c33;
+}
+
+.account-flow-nav,
+.account-flow-status,
+.account-flow-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem 1rem;
+  margin-top: 1rem;
+}
+
+.account-verification-code {
+  max-width: 18rem;
+  font-variant-numeric: tabular-nums;
+  font-size: clamp(1.5rem, 8vw, 2.35rem);
+  font-weight: 850;
+  letter-spacing: 0.32em;
+  text-align: center;
+}
+
+.account-verification-help {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.7rem;
+  max-width: 520px;
+  margin-top: 1rem;
+}
+
+.account-verification-help > p,
+.account-verification-email-change {
+  flex-basis: 100%;
+}
+
+.account-verification-email-change {
+  display: grid;
+  gap: 0.7rem;
+  padding: 0.9rem;
+  border: 1px solid rgb(70 47 27 / 24%);
+  border-radius: 0.75rem;
+  background: rgb(255 250 232 / 42%);
+}
+
+.account-session-list {
+  display: grid;
+  gap: 0.7rem;
+  max-width: 620px;
+  padding: 0;
+  list-style: none;
+}
+
+.account-session-list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  border: 1px solid rgba(70, 47, 27, 0.24);
+  border-radius: 12px;
+  padding: 0.8rem;
+  background: rgba(255, 250, 232, 0.4);
+}
+
+@media (max-width: 560px) {
+  .account-flow-page,
+  .platform-state {
+    min-height: auto;
+    padding: 1rem;
+  }
+
+  .account-flow-page .auth-ledger,
+  .platform-state .auth-ledger {
+    border-radius: 16px;
+    padding: 1.2rem;
+  }
+
+  .account-session-list li,
+  .account-flow-actions {
+    align-items: stretch;
+    flex-direction: column;
+  }
+}
+
+.auth-ledger button:not(.brass-button):not([role="tab"]),
 .invitation-sheet button:not(.brass-button),
 .waiting-room > section button:not(.brass-button) {
-  color: var(--parchment-50);
+  border-color: #315f5b;
+  color: #fff6e5;
+  background: #174747;
 }
 
 .auth-ledger label,
@@ -291,6 +476,10 @@ html[data-motion-level="reduced"] .platform-relic *,
   font-weight: 850;
   letter-spacing: 0.09em;
   text-transform: uppercase;
+}
+
+.auth-ledger label span {
+  color: #6b471c;
 }
 
 .auth-ledger input,
@@ -895,7 +1084,12 @@ dl dd {
   opacity: 0;
 }
 
+.waiting-launch-boundary[data-launch-state="waiting"] .platform-relic {
+  visibility: hidden;
+}
+
 .waiting-launch-boundary[data-launch-state="launch-ready"] .platform-relic {
+  visibility: visible;
   opacity: 0.96;
 }
 

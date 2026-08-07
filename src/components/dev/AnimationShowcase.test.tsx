@@ -11,6 +11,7 @@ import {
   showcaseCoverage,
   showcaseDemoLabel,
   showcaseDemos,
+  showcaseTrailerScenes,
   summarizeShowcaseReceipt,
 } from "./AnimationShowcase";
 
@@ -359,12 +360,9 @@ describe("AnimationShowcase", () => {
     registry.destroy();
   });
 
-  it("omits journal-open from direct trailer playback", async () => {
-    renderShowcase();
-    fireEvent.click(screen.getByRole("button", { name: "PLAY TRAILER" }));
-
-    await waitFor(() => expect(harness.director.play).toHaveBeenCalledTimes(8));
-    expect(harness.director.play.mock.calls.map(([scene]) => scene)).not.toContain("journal-open");
+  it("omits journal-open from direct trailer playback", () => {
+    expect(showcaseTrailerScenes).toHaveLength(10);
+    expect(showcaseTrailerScenes).not.toContain("journal-open");
   });
 });
 

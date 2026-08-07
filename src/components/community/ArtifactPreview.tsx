@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { ResilientImage } from "@/components/ui/ResilientImage";
 
 export function ArtifactPreview({
   title,
@@ -21,9 +22,10 @@ export function ArtifactPreview({
   return (
     <figure aria-labelledby="community-artifact-title" aria-describedby="community-artifact-description">
       <h2 id="community-artifact-title">{title}</h2>
-      <img
+      <ResilientImage
         src={posterUrl}
         alt={description}
+        fallbackLabel={`${title} preview unavailable`}
         style={
           interactive
             ? { transform: `rotate(${rotation}deg) scale(${zoom / 100})`, transformOrigin: "center", maxWidth: "100%" }

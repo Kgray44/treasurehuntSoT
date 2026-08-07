@@ -1,37 +1,55 @@
-import type { NavigationItem } from "./types";
+import type { NavigationItem, ProjectedNavigationItem } from "./types";
 
 export function pathnameForHref(href: string) {
-  return href.split("#", 1)[0] ?? href;
+  return href.split(/[?#]/u, 1)[0] ?? href;
 }
 
 export function routePatternMatches(pathname: string, pattern: string) {
+  if (pattern === "*") return true;
   const escaped = pattern
     .split("/")
     .map((segment) => {
       if (!segment) return "";
-      if (segment === ":id" || segment.startsWith(":")) return "[^/]+";
+      if (segment.startsWith(":")) return "[^/]+";
       if (segment === "*") return ".*";
-      return segment.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+      return segment.replace(/[.*+?^${}()|[\]\\]/gu, "\\$&");
     })
     .join("/");
-  return new RegExp(`^${escaped}$`).test(pathname);
+  return new RegExp(`^${escaped}$`, "u").test(pathname);
 }
 
-export function navigationItemMatches(pathname: string, item: NavigationItem) {
-  const href = pathnameForHref(item.href);
-  const candidates = [href, ...(item.aliases ?? [])];
-  return candidates.some((candidate) => {
-    if (item.match.type === "exact") return pathname === candidate;
-    if (item.match.type === "prefix") return pathname === candidate || pathname.startsWith(`${candidate}/`);
-    return routePatternMatches(pathname, item.match.pattern);
-  });
+export function navigationItemMatches(pathname: string, item: Pick<ProjectedNavigationItem, "href" | "activeMatch">) {
+  switch (item.activeMatch.type) {
+    case "EXACT":
+      return item.href !== null && pathname === pathnameForHref(item.href);
+    case "SECTION": {
+      if (item.href === null) return false;
+      const candidate = pathnameForHref(item.href);
+      return pathname === candidate || pathname.startsWith(`${candidate}/`);
+    }
+    case "DYNAMIC_FAMILY":
+      return routePatternMatches(pathname, item.activeMatch.pattern);
+    case "ALIAS_OF":
+      return routePatternMatches(pathname, item.activeMatch.pattern);
+    case "NEVER_ACTIVE":
+      return false;
+  }
 }
 
-export function activeNavigationItem(pathname: string, items: readonly NavigationItem[]) {
+export function activeNavigationItem(pathname: string, items: readonly ProjectedNavigationItem[]) {
   const matches = items.filter((item) => navigationItemMatches(pathname, item));
-  if (matches.length < 2) return matches[0] ?? null;
   return (
-    [...matches].sort((left, right) => pathnameForHref(right.href).length - pathnameForHref(left.href).length)[0] ??
-    null
+    [...matches].sort((left, right) => {
+      const leftLength = left.href ? pathnameForHref(left.href).length : 0;
+      const rightLength = right.href ? pathnameForHref(right.href).length : 0;
+      return rightLength - leftLength || left.order - right.order;
+    })[0] ?? null
   );
+}
+
+export function resolveAliasTarget(pathname: string, registry: readonly NavigationItem[]) {
+  const alias = registry.find(
+    (item) => item.activeMatch.type === "ALIAS_OF" && routePatternMatches(pathname, item.activeMatch.pattern),
+  );
+  return alias?.activeMatch.type === "ALIAS_OF" ? alias.activeMatch.canonicalItemId : null;
 }

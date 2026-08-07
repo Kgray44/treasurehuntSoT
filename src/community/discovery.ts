@@ -4,6 +4,7 @@ import { z } from "zod";
 import { db } from "@/lib/db";
 
 import { CommunityError, communityItemTypes, stableJson } from "./domain";
+import { authoritativeListingEngagement } from "./engagement-aggregates";
 
 export const communitySortModes = [
   "FEATURED",
@@ -230,10 +231,14 @@ export type DiscoveryRecord = {
   primaryCategory: string | null;
   creatorId: string;
   creatorHandle: string;
+  creatorDisplayName: string;
+  creatorAccountId: string;
   visibility: string;
   publicationStatus: string;
   moderationStatus: string;
   locationClass: string;
+  archivedAt: Date | null;
+  removedAt: Date | null;
   publishedAt: Date | null;
   updatedAt: Date;
   metadata?: {
@@ -281,10 +286,12 @@ type DiscoveryListingRow = Readonly<{
   publicationStatus: string;
   moderationStatus: string;
   locationClass: string;
+  archivedAt: Date | null;
+  removedAt: Date | null;
   primaryCategory: string | null;
   publishedAt: Date | null;
   updatedAt: Date;
-  owner: Readonly<{ normalizedHandle: string }>;
+  owner: Readonly<{ normalizedHandle: string; displayName: string; accountId: string }>;
 }>;
 
 type DiscoveryMetadataRow = Readonly<{
@@ -312,13 +319,18 @@ type DiscoveryMetadataRow = Readonly<{
 
 /** This check is intentionally duplicated at search return time: documents are caches, never authorization. */
 export function isPublicDiscoveryEligible(
-  record: Pick<DiscoveryRecord, "visibility" | "publicationStatus" | "moderationStatus" | "locationClass">,
+  record: Pick<
+    DiscoveryRecord,
+    "visibility" | "publicationStatus" | "moderationStatus" | "locationClass" | "archivedAt" | "removedAt"
+  >,
 ) {
   return (
     record.publicationStatus === "PUBLISHED" &&
     (record.visibility === "COMMUNITY" || record.visibility === "FEATURED") &&
     record.moderationStatus === "ACTIVE" &&
-    record.locationClass !== "PRIVATE_REAL_WORLD"
+    record.locationClass !== "PRIVATE_REAL_WORLD" &&
+    record.archivedAt === null &&
+    record.removedAt === null
   );
 }
 
@@ -439,7 +451,14 @@ export const databaseCommunitySearchProvider: CommunitySearchProvider = {
         publicationStatus: "PUBLISHED",
         visibility: { in: ["COMMUNITY", "FEATURED"] },
         moderationStatus: "ACTIVE",
+        archivedAt: null,
+        removedAt: null,
         locationClass: { not: "PRIVATE_REAL_WORLD" },
+        owner: {
+          visibility: "COMMUNITY",
+          moderationStatus: "ACTIVE",
+          creatorStatus: { not: "SUSPENDED" },
+        },
       },
       include: { owner: true },
       take: maxCandidateRows,
@@ -447,25 +466,14 @@ export const databaseCommunitySearchProvider: CommunitySearchProvider = {
     const ids = listings.map((listing) => listing.id);
     const [metadataRows, aggregateRows, documentRows, featureRows] = await Promise.all([
       db.communityListingDiscoveryMetadata.findMany({ where: { listingId: { in: ids } } }),
-      db.communityListingAggregate.findMany({ where: { listingId: { in: ids } } }),
+      authoritativeListingEngagement(ids),
       db.communitySearchDocument.findMany({ where: { listingId: { in: ids } } }),
       db.communityEditorialFeature.findMany({
         where: { subjectType: "COMMUNITY_LISTING", subjectId: { in: ids }, active: true },
       }),
     ]);
     const metadata = new Map(metadataRows.map((row) => [row.listingId, toMetadata(row)]));
-    const aggregates = new Map(
-      aggregateRows.map((row) => [
-        row.listingId,
-        {
-          installCount: row.installCount,
-          saveCount: row.saveCount,
-          completionCount: row.completionCount,
-          reviewCount: row.reviewCount,
-          averageRating: row.averageRating,
-        },
-      ]),
-    );
+    const aggregates = aggregateRows;
     const documents = new Map(documentRows.map((row) => [row.listingId, row]));
     const feature = new Map(
       featureRows.map((row) => [row.subjectId, { sortOrder: row.sortOrder, startsAt: row.startsAt }]),
@@ -588,10 +596,14 @@ function toDiscoveryRecord(
     primaryCategory: listing.primaryCategory,
     creatorId: listing.ownerProfileId,
     creatorHandle: listing.owner.normalizedHandle,
+    creatorDisplayName: listing.owner.displayName,
+    creatorAccountId: listing.owner.accountId,
     visibility: listing.visibility,
     publicationStatus: listing.publicationStatus,
     moderationStatus: listing.moderationStatus,
     locationClass: listing.locationClass,
+    archivedAt: listing.archivedAt,
+    removedAt: listing.removedAt,
     publishedAt: listing.publishedAt,
     updatedAt: listing.updatedAt,
     metadata,
@@ -637,7 +649,7 @@ function sortTuple(record: DiscoveryRecord, sort: CommunitySortMode): [string | 
   switch (sort) {
     case "FEATURED":
       return [
-        record.featured?.sortOrder ?? Number.MAX_SAFE_INTEGER,
+        record.featured ? -record.featured.sortOrder : Number.MIN_SAFE_INTEGER,
         record.featured?.startsAt?.getTime() ?? record.publishedAt?.getTime() ?? 0,
       ];
     case "NEWEST":

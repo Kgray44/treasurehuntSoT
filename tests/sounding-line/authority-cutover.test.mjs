@@ -56,6 +56,7 @@ test("planner is deterministic and rejects archived P34 suites", async () => {
   assert.equal(sentinelCases.length, 3);
   assert.ok(sentinelCases.every((entry) => entry.project === "sounding-line-access-sentinel"));
   assert.equal(registry.cases.filter((entry) => entry.suiteId === "browser.auth").length, 8);
+  assert.equal(registry.cases.filter((entry) => entry.suiteId === "browser.navigation").length, 2);
 });
 
 test("only the finalizer produces an accepted decision from source-bound clean receipts", () => {

@@ -1,0 +1,22 @@
+{
+  "evidenceId": "HP-OWCR2-EV-O-COMMUNITY-DELAYED-LOADING",
+  "journeyId": "HP-OWCR2-JRN-I",
+  "sourceSha": "f3eef8dc65dd39a40f8e4140aa058de0381a94af",
+  "fixtureVersion": "homeport-phase7-owner-correction-round2-v1",
+  "result": "PASSED",
+  "visualReview": "ACCEPTED",
+  "reviewer": "Codex",
+  "ownerReview": "PENDING_OWNER_DECISION",
+  "browser": "Playwright Chromium",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "route": "/community/chronicles",
+  "title": "Voyagewright | Stories made to be played",
+  "screenshot": "screenshots/HP-OWCR2-EV-O-COMMUNITY-DELAYED-LOADING.png",
+  "screenshotSha256": "84b6d7ec03ee7018c2f66defea54c7493cea2d2812f5c07e939336afa33369da",
+  "screenshotBytes": 1018864,
+  "timestamp": "2026-08-05T20:06:35.062Z",
+  "limitation": "Local production-build Chromium proof against a synthetic task-owned SQLite clone; not owner acceptance, live-provider proof, merge, or deployment."
+}

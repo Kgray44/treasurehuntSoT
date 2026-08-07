@@ -1192,11 +1192,7 @@ function ChronicleJournalSessionIdentity({ sessionId, identitySession = false }:
             act={act}
           />
         )}
-        {historical && (
-          <span className="historical-lock">
-            Read-only · edition checksum {state.session.versionChecksum?.slice(0, 12) ?? "unavailable"}
-          </span>
-        )}
+        {historical && <span className="historical-lock">Read-only · version-pinned Voyage record</span>}
         {error && (
           <p className="runtime-error" role="alert">
             {error}

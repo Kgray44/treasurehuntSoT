@@ -1,8 +1,9 @@
 import { NextResponse } from "next/server";
 
 import { communityApiError } from "@/community/api";
-import { createOrUpdateReview, listPublicReviews } from "@/community/social";
+import { createOrUpdateReview, listPublicReviews, reviewAccessForActor } from "@/community/social";
 import { executeSocialMutation } from "@/app/api/community/social/contract";
+import { requireCanonicalAccountIdentity } from "@/platform/auth";
 
 import { listingQuerySchema, reviewInputSchema } from "./contract";
 
@@ -14,7 +15,12 @@ export async function GET(request: Request) {
       { status: 400 },
     );
   try {
-    return NextResponse.json({ reviews: await listPublicReviews(parsed.data.listingId) });
+    const identity = await requireCanonicalAccountIdentity();
+    const [reviews, reviewAccess] = await Promise.all([
+      listPublicReviews(parsed.data.listingId, identity?.accountId),
+      reviewAccessForActor(parsed.data.listingId, identity?.accountId),
+    ]);
+    return NextResponse.json({ reviews, reviewAccess });
   } catch (cause) {
     return communityApiError(cause);
   }

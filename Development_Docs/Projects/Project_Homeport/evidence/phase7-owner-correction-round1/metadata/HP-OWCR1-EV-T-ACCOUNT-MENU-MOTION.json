@@ -1,0 +1,22 @@
+{
+  "evidenceId": "HP-OWCR1-EV-T-ACCOUNT-MENU-MOTION",
+  "journeyId": "HP-OWCR1-JRN-R",
+  "sourceSha": "e1829c3cffa87e561d15342da2e6e9b073fd7165",
+  "fixtureVersion": "homeport-phase7-owner-correction-round1-v1",
+  "result": "PASSED",
+  "visualReview": "ACCEPTED",
+  "reviewer": "Codex",
+  "ownerReview": "PENDING_OWNER_DECISION",
+  "browser": "Playwright Chromium",
+  "viewport": { "width": 1440, "height": 900 },
+  "zoom": "100_PERCENT_UNLESS_EVIDENCE_ID_STATES_MOBILE_OR_ZOOM",
+  "motionMode": "REDUCED",
+  "route": "/",
+  "title": "Voyagewright | Stories made to be played",
+  "captureMode": "FULL_PAGE",
+  "normalization": "Sticky shell header rendered in normal document flow; animations and caret disabled after route settlement.",
+  "screenshot": "screenshots/HP-OWCR1-EV-T-ACCOUNT-MENU-MOTION.png",
+  "screenshotSha256": "9f3aa303253e1680212b936bbf47263856e241fa7087616dc3b4330da8b65f5c",
+  "screenshotBytes": 941163,
+  "limitation": "Local production-build Chromium proof against a synthetic task-owned SQLite clone; not owner acceptance, live-provider proof, merge, or deployment."
+}

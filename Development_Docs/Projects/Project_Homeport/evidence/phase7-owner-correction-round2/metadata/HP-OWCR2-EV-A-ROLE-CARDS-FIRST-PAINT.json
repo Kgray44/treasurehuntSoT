@@ -1,0 +1,22 @@
+{
+  "evidenceId": "HP-OWCR2-EV-A-ROLE-CARDS-FIRST-PAINT",
+  "journeyId": "HP-OWCR2-JRN-C",
+  "sourceSha": "f3eef8dc65dd39a40f8e4140aa058de0381a94af",
+  "fixtureVersion": "homeport-phase7-owner-correction-round2-v1",
+  "result": "PASSED",
+  "visualReview": "ACCEPTED",
+  "reviewer": "Codex",
+  "ownerReview": "PENDING_OWNER_DECISION",
+  "browser": "Playwright Chromium",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "route": "/",
+  "title": "Voyagewright | Stories made to be played",
+  "screenshot": "screenshots/HP-OWCR2-EV-A-ROLE-CARDS-FIRST-PAINT.png",
+  "screenshotSha256": "b149923367aa062d759a583b76685d1f3409d9f5dbfe9982d84424788f17cadc",
+  "screenshotBytes": 599230,
+  "timestamp": "2026-08-05T20:01:13.568Z",
+  "limitation": "Local production-build Chromium proof against a synthetic task-owned SQLite clone; not owner acceptance, live-provider proof, merge, or deployment."
+}

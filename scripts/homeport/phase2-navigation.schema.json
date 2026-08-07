@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://voyagewright.local/schemas/homeport-phase2-navigation.schema.json",
+  "title": "Project Homeport Phase 2 navigation projection contract",
+  "type": "object",
+  "required": ["schemaVersion", "layers", "activePolicies", "capabilitySource", "viewportRule", "records"],
+  "properties": {
+    "schemaVersion": { "const": "2.0.0" },
+    "layers": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "enum": ["GLOBAL", "WORKSPACE", "ACCOUNT", "CONTEXTUAL"] }
+    },
+    "activePolicies": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "enum": ["EXACT", "SECTION", "DYNAMIC_FAMILY", "ALIAS_OF", "NEVER_ACTIVE"] }
+    },
+    "records": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "itemId",
+          "label",
+          "layer",
+          "destination",
+          "owner",
+          "requiredCapabilities",
+          "shellModes",
+          "desktopPlacement",
+          "mobilePlacement",
+          "activePolicy",
+          "order",
+          "currentStatus",
+          "testContracts"
+        ]
+      }
+    }
+  }
+}

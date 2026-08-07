@@ -91,10 +91,6 @@ describe("CaptainLibrary motion and authority", () => {
   it("shows an authoritative readiness gauge and holds launch pending until the server responds", async () => {
     const launch = deferred<Response>();
     vi.stubGlobal(
-      "confirm",
-      vi.fn(() => true),
-    );
-    vi.stubGlobal(
       "fetch",
       vi
         .fn()
@@ -118,8 +114,13 @@ describe("CaptainLibrary motion and authority", () => {
     expect(await screen.findByLabelText("100% of Crew ready")).toBeInTheDocument();
 
     fireEvent.click(screen.getByRole("button", { name: "Begin Voyage" }));
+    fireEvent.click(
+      within(screen.getByRole("dialog", { name: /Begin “Lanternwake”/ })).getByRole("button", {
+        name: "Begin Voyage",
+      }),
+    );
 
-    expect(screen.getByRole("button", { name: "Beginning..." })).toBeDisabled();
+    expect(await screen.findByRole("button", { name: "Beginning..." })).toBeDisabled();
     expect(screen.getByText("Recording this Voyage launch with the Captain’s Console.")).toBeInTheDocument();
     expect(screen.queryByText(/now live/)).not.toBeInTheDocument();
     launch.resolve(response(200, { ok: true }));
@@ -129,10 +130,6 @@ describe("CaptainLibrary motion and authority", () => {
 
   it("settles a replaced row before revealing server-created replacement credentials", async () => {
     const replacement = deferred<Response>();
-    vi.stubGlobal(
-      "confirm",
-      vi.fn(() => true),
-    );
     vi.stubGlobal(
       "fetch",
       vi
@@ -148,7 +145,12 @@ describe("CaptainLibrary motion and authority", () => {
     expect(within(row).getAllByRole("cell")).toHaveLength(4);
 
     fireEvent.click(within(row).getByRole("button", { name: "Replace invitation" }));
-    expect(row).toHaveAttribute("data-invitation-transition", "replace-pending");
+    fireEvent.click(
+      within(screen.getByRole("dialog", { name: /Replace Kato's invitation/ })).getByRole("button", {
+        name: "Replace Invitation",
+      }),
+    );
+    await waitFor(() => expect(row).toHaveAttribute("data-invitation-transition", "replace-pending"));
     expect(screen.queryByAltText(/QR code/)).not.toBeInTheDocument();
     replacement.resolve(
       response(200, {

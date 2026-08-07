@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { requireGmCapability, verifyCsrf } from "@/lib/security";
+import { requireStudioWorkspace } from "@/chronicle/studio-authorization";
 import { PrivateContentError } from "@/private-content/core";
 import { initiatePrivateUpload } from "@/private-content/uploads";
 
@@ -19,9 +19,8 @@ function failure(error: unknown) {
 }
 
 export async function POST(request: Request) {
-  const session = await requireGmCapability("CREATE_TALES");
-  if (!session || !(await verifyCsrf(session)))
-    return NextResponse.json({ error: "Creator authorization is required." }, { status: 403 });
+  const session = await requireStudioWorkspace(request);
+  if (!session) return NextResponse.json({ error: "Creator authorization is required." }, { status: 403 });
   try {
     const body = (await request.json()) as {
       idempotencyKey?: string;
@@ -33,7 +32,7 @@ export async function POST(request: Request) {
     if (typeof idempotencyKey !== "string") throw new Error("invalid");
     return NextResponse.json(
       await initiatePrivateUpload({
-        actorId: session.userId,
+        actorId: session.accountId,
         idempotencyKey,
         expectedBytes: body.expectedBytes,
         expectedSha256: body.expectedSha256,

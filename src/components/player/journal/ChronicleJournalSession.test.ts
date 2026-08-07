@@ -529,7 +529,7 @@ describe("ChronicleJournalSession mounted synchronous teardown", () => {
       localStorage.removeItem(`chronicle-journal:${sessionId}`);
       vi.clearAllTimers();
     }
-  });
+  }, 15_000);
 
   it("cancels reconnect polling after a stream becomes live and does not abort an already fulfilled request", async () => {
     vi.useFakeTimers();

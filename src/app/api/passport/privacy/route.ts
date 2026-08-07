@@ -1,13 +1,21 @@
 import { NextResponse } from "next/server";
+import { z } from "zod";
 import { requireWayfarerAccount } from "@/wayfarer/http";
-import { ownerProfile, setPrivacyRules } from "@/wayfarer/profile";
+import { privacyRulesForProfile, setPrivacyRules } from "@/wayfarer/profile";
 import { profileApiError } from "@/wayfarer/http-errors";
+
+const privacyInputSchema = z
+  .object({
+    rules: z.record(z.string(), z.string()),
+    expectedRevision: z.string().optional(),
+  })
+  .strict();
 
 export async function GET() {
   const session = await requireWayfarerAccount();
   if (!session?.account.profile) return NextResponse.json({ error: "Sign in again to continue." }, { status: 401 });
   try {
-    return NextResponse.json((await ownerProfile(session.accountId)).privacyRules);
+    return NextResponse.json(await privacyRulesForProfile(session.account.profile.id));
   } catch (cause) {
     return profileApiError(cause);
   }
@@ -17,8 +25,8 @@ export async function PUT(request: Request) {
   if (!session?.account.profile)
     return NextResponse.json({ error: "A valid signed-in session is required." }, { status: 403 });
   try {
-    await setPrivacyRules(session.account.profile.id, (await request.json()).rules ?? {});
-    return NextResponse.json((await ownerProfile(session.accountId)).privacyRules);
+    const body = privacyInputSchema.parse(await request.json());
+    return NextResponse.json(await setPrivacyRules(session.account.profile.id, body.rules, body.expectedRevision));
   } catch (cause) {
     return profileApiError(cause);
   }

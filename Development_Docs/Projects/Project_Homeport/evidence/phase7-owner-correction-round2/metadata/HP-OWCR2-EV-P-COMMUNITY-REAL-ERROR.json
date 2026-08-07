@@ -1,0 +1,22 @@
+{
+  "evidenceId": "HP-OWCR2-EV-P-COMMUNITY-REAL-ERROR",
+  "journeyId": "HP-OWCR2-JRN-J",
+  "sourceSha": "f3eef8dc65dd39a40f8e4140aa058de0381a94af",
+  "fixtureVersion": "homeport-phase7-owner-correction-round2-v1",
+  "result": "PASSED",
+  "visualReview": "ACCEPTED",
+  "reviewer": "Codex",
+  "ownerReview": "PENDING_OWNER_DECISION",
+  "browser": "Playwright Chromium",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "route": "/community/chronicles",
+  "title": "Voyagewright | Stories made to be played",
+  "screenshot": "screenshots/HP-OWCR2-EV-P-COMMUNITY-REAL-ERROR.png",
+  "screenshotSha256": "5dc4e945a69433715e98fc654da361d1fc0dc531216ab36854e524773b8685bf",
+  "screenshotBytes": 912320,
+  "timestamp": "2026-08-05T20:06:40.071Z",
+  "limitation": "Local production-build Chromium proof against a synthetic task-owned SQLite clone; not owner acceptance, live-provider proof, merge, or deployment."
+}

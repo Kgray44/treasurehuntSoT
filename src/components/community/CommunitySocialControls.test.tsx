@@ -76,4 +76,14 @@ describe("CommunitySocialControls", () => {
     fireEvent.click(screen.getByRole("button", { name: "Retry Community controls" }));
     expect(await screen.findByRole("button", { name: "Follow Creator" })).toBeInTheDocument();
   });
+
+  it("routes anonymous social intent through canonical sign-in with a safe return", async () => {
+    window.history.replaceState({}, "", "/community/creators/captain-almanac");
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue(new Response(JSON.stringify({}), { status: 401 })));
+    render(<CommunitySocialControls creatorProfileId="creator_1" subjectType="CREATOR" subjectId="creator_1" />);
+    expect(await screen.findByRole("link", { name: "Sign in to follow or save" })).toHaveAttribute(
+      "href",
+      "/sign-in?returnTo=%2Fcommunity%2Fcreators%2Fcaptain-almanac",
+    );
+  });
 });

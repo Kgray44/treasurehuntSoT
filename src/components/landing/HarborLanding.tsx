@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { useCallback, useEffect, useId, useMemo, useRef, useState, type CSSProperties } from "react";
 import { useGSAP } from "@gsap/react";
-import { motion } from "motion/react";
 import { lottieAssets } from "@/animation/assets/lottie-contracts";
 import type { AnimationSceneName, PresentationReceipt } from "@/animation/core/animation-types";
 import { gsap } from "@/animation/core/gsap-client";
@@ -11,7 +10,6 @@ import { useAnimationDirector } from "@/animation/director/useAnimationDirector"
 import { SceneHost, useSceneTargetRegistration } from "@/animation/hosts/SceneHost";
 import { useOptionalSceneHost } from "@/animation/hosts/SceneHostContext";
 import { useMotionMode } from "@/animation/motion/useMotionMode";
-import { pressable } from "@/animation/motion/variants";
 import { consumeOneShot, platformOneShotKey } from "@/animation/platform/one-shot";
 import { LottieEffect } from "@/components/animation/LottieEffect";
 import { AnimationTestButton } from "@/components/dev/AnimationTestButton";
@@ -155,13 +153,6 @@ function deterministicStarStyle(index: number): CSSProperties {
   } as CSSProperties;
 }
 
-function roleObjectIntent(role: (typeof roles)[number]["id"], mode: ReturnType<typeof useMotionMode>["mode"]) {
-  if (mode === "reduced") return {};
-  if (role === "captain") return { whileHover: { rotate: 2.5 } };
-  if (role === "creator") return { whileHover: { y: -2, rotate: -1 } };
-  return { whileHover: { scale: 1.012 } };
-}
-
 export function HarborLanding() {
   const motionMode = useMotionMode();
   return (
@@ -232,14 +223,19 @@ function HarborGatewayContent({ motionMode }: { motionMode: ReturnType<typeof us
   useGSAP(
     () => {
       if (mode === "reduced") return;
-      gsap.to("[data-ambient='lantern']", {
-        rotate: mode === "full" ? 1.5 : 0.6,
-        duration: 2.8,
-        repeat: -1,
-        yoyo: true,
-        ease: "sine.inOut",
-        transformOrigin: "50% 0%",
-      });
+      const arc = mode === "full" ? 3.25 : 1.2;
+      gsap.fromTo(
+        "[data-ambient='lantern']",
+        { rotate: -arc },
+        {
+          rotate: arc,
+          duration: mode === "full" ? 2.65 : 3.2,
+          repeat: -1,
+          yoyo: true,
+          ease: "sine.inOut",
+          transformOrigin: "47px 0px",
+        },
+      );
     },
     { scope: root, dependencies: [mode], revertOnUpdate: true },
   );
@@ -276,7 +272,10 @@ function HarborGatewayContent({ motionMode }: { motionMode: ReturnType<typeof us
     let keyboardModality = false;
     const coarsePointer = window.matchMedia?.("(pointer: coarse)").matches ?? false;
     const updateAmbient = () => {
-      host.dataset.ambientState = mode === "reduced" || document.hidden || !inView ? "paused" : "active";
+      const paused = mode === "reduced" || document.hidden || !inView;
+      host.dataset.ambientState = paused ? "paused" : "active";
+      const lantern = host.querySelector<HTMLElement>("[data-ambient='lantern']");
+      if (lantern) gsap.getTweensOf(lantern).forEach((tween) => (paused ? tween.pause() : tween.resume()));
     };
     const onVisibility = () => updateAmbient();
     const onKeyDown = (event: KeyboardEvent) => {
@@ -481,24 +480,17 @@ function HarborGatewayContent({ motionMode }: { motionMode: ReturnType<typeof us
             const current = status?.[role.id];
             const descriptionId = `${gatewayTitleId}-${role.id}`;
             return (
-              <motion.article
+              <article
                 key={role.id}
                 className={`role-object-card role-${role.id}`}
                 data-role-selected={selectedRole === role.id ? "true" : undefined}
                 data-role-softened={selectedRole && selectedRole !== role.id ? "true" : undefined}
-                {...pressable(mode)}
               >
-                <motion.div
-                  className={`role-object ${role.object}`}
-                  data-role-object={role.id}
-                  layoutId={`role-object-${role.id}`}
-                  aria-hidden="true"
-                  {...roleObjectIntent(role.id, mode)}
-                >
+                <div className={`role-object ${role.object}`} data-role-object={role.id} aria-hidden="true">
                   <i />
                   <b />
                   <span />
-                </motion.div>
+                </div>
                 <p
                   className={`card-kicker ${rememberedBadges.has(role.id) ? "remembered-badge-entering" : ""}`}
                   data-session-state={status ? (current?.authenticated ? "remembered" : "guest") : "loading"}
@@ -527,7 +519,7 @@ function HarborGatewayContent({ motionMode }: { motionMode: ReturnType<typeof us
                 <span id={descriptionId} className="sr-only">
                   {role.copy}
                 </span>
-              </motion.article>
+              </article>
             );
           })}
         </div>

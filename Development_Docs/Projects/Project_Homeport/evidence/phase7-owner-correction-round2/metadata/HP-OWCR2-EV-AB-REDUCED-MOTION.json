@@ -1,0 +1,22 @@
+{
+  "evidenceId": "HP-OWCR2-EV-AB-REDUCED-MOTION",
+  "journeyId": "HP-OWCR2-JRN-E",
+  "sourceSha": "f3eef8dc65dd39a40f8e4140aa058de0381a94af",
+  "fixtureVersion": "homeport-phase7-owner-correction-round2-v1",
+  "result": "PASSED",
+  "visualReview": "ACCEPTED",
+  "reviewer": "Codex",
+  "ownerReview": "PENDING_OWNER_DECISION",
+  "browser": "Playwright Chromium",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "route": "/",
+  "title": "Voyagewright | Stories made to be played",
+  "screenshot": "screenshots/HP-OWCR2-EV-AB-REDUCED-MOTION.png",
+  "screenshotSha256": "215af39725a761e75cafedfb17aaef20ad92dfe0f363d5b0eb34a8b7eee20593",
+  "screenshotBytes": 700015,
+  "timestamp": "2026-08-05T20:01:40.514Z",
+  "limitation": "Local production-build Chromium proof against a synthetic task-owned SQLite clone; not owner acceptance, live-provider proof, merge, or deployment."
+}

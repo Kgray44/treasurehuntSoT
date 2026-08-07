@@ -1,5 +1,9 @@
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test, type Page } from "@playwright/test";
+import { randomUUID } from "node:crypto";
+import { hash } from "bcryptjs";
+import { db } from "../../src/lib/db";
+import { registerAccount } from "../../src/wayfarer/accounts";
 
 type BrowserFetchInit = Readonly<{
   method?: "GET" | "POST";
@@ -50,6 +54,22 @@ test.skip(
 
 test("canonical Chronicle invitation journey keeps Player and Captain boundaries intact", async ({ browser }) => {
   test.setTimeout(180_000);
+  const suffix = randomUUID().slice(0, 8);
+  const captainEmail = `homeport-acceptance-captain-${suffix}@example.invalid`;
+  const captainPassword = "Homeport-acceptance-passphrase-2026";
+  const captainAccount = await registerAccount({
+    email: captainEmail,
+    password: captainPassword,
+    displayName: `Homeport Acceptance Captain ${suffix}`,
+  });
+  const gameMaster = await db.gameMasterUser.create({
+    data: { username: `homeport-acceptance-${suffix}`, passwordHash: await hash(captainPassword, 4) },
+  });
+  await db.userAccount.update({
+    where: { id: captainAccount.account.id },
+    data: { status: "ACTIVE", legacyGameMasterId: gameMaster.id },
+  });
+  await db.accountRoleAssignment.create({ data: { accountId: captainAccount.account.id, role: "CAPTAIN" } });
   const captainContext = await browser.newContext();
   const playerContext = await browser.newContext();
   const captainPage = await captainContext.newPage();
@@ -62,10 +82,11 @@ test("canonical Chronicle invitation journey keeps Player and Captain boundaries
     expect(playerAxe.violations.filter((item) => ["serious", "critical"].includes(item.impact ?? ""))).toEqual([]);
 
     await captainPage.goto("/captain/sign-in");
-    await expect(captainPage.getByRole("heading", { name: "Enter Captain's Console" })).toBeVisible();
-    await captainPage.getByLabel("Username").fill(process.env.GM_USERNAME ?? "kato");
-    await captainPage.getByLabel("Password").fill(process.env.GM_PASSWORD ?? "development-captain-only");
-    await captainPage.getByRole("button", { name: "Enter Captain's Console" }).click();
+    await expect(captainPage.getByRole("heading", { name: "Open the Captain's Console" })).toBeVisible();
+    await captainPage.getByRole("link", { name: "Continue to account sign-in" }).click();
+    await captainPage.getByLabel("Email or legacy Player name").fill(captainEmail);
+    await captainPage.getByLabel("Password").fill(captainPassword);
+    await captainPage.getByLabel("Password").press("Enter");
     await expect(captainPage).toHaveURL(/\/captain\/library(?:\?.*)?$/u);
     await expect(captainPage.getByRole("heading", { name: "Captain's Console", exact: true })).toBeVisible();
 

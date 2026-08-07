@@ -2,14 +2,13 @@ import { describe, expect, it, vi } from "vitest";
 
 const mocks = vi.hoisted(() => ({
   session: vi.fn(),
-  csrf: vi.fn(),
   list: vi.fn(),
   register: vi.fn(),
   request: vi.fn(),
   update: vi.fn(),
   withdraw: vi.fn(),
 }));
-vi.mock("@/lib/security", () => ({ requireGmCapability: mocks.session, verifyCsrf: mocks.csrf }));
+vi.mock("@/chronicle/studio-authorization", () => ({ requireStudioWorkspace: mocks.session }));
 vi.mock("@/private-content/media/service", () => ({
   listOwnerProtectedMedia: mocks.list,
   registerProtectedMedia: mocks.register,
@@ -29,8 +28,7 @@ describe("protected media owner route", () => {
   });
 
   it("requires CSRF and sends a server-derived owner to a derivative request", async () => {
-    mocks.session.mockResolvedValue({ userId: "creator-id", accountId: "account-id", csrfToken: "csrf" });
-    mocks.csrf.mockResolvedValueOnce(false);
+    mocks.session.mockResolvedValueOnce(null);
     const request = () =>
       new Request("http://localhost/media", {
         method: "POST",
@@ -45,7 +43,7 @@ describe("protected media owner route", () => {
         }),
       });
     expect((await POST(request())).status).toBe(403);
-    mocks.csrf.mockResolvedValueOnce(true);
+    mocks.session.mockResolvedValueOnce({ accountId: "account-id" });
     mocks.request.mockResolvedValueOnce({ operationId: "op", state: "QUEUED", reused: false });
     expect((await POST(request())).status).toBe(202);
     expect(mocks.request).toHaveBeenCalledWith(

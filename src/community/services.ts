@@ -11,6 +11,7 @@ import {
   sanitizeChronicleMetadata,
 } from "./domain";
 import { updateProfile } from "@/wayfarer/profile";
+import { resolvePublicProfileProjection } from "./public-profile";
 
 export type CommunityActor = {
   accountId: string;
@@ -66,13 +67,12 @@ async function outbox(
 }
 
 export async function resolveProfileForActor(actor: CommunityActor) {
-  return db.communityProfile.findUnique({ where: { accountId: actor.accountId } });
+  return resolvePublicProfileProjection(db, actor.accountId);
 }
 async function ownProfile(actor: CommunityActor) {
   const profile = await resolveProfileForActor(actor);
-  if (!profile) throw new CommunityError("COMMUNITY_PROFILE_REQUIRED", "Create a Community Profile first.");
   if (profile.moderationStatus !== "ACTIVE" || profile.creatorStatus === "SUSPENDED")
-    throw new CommunityError("COMMUNITY_ACCESS_DENIED", "This Community Profile is suspended.");
+    throw new CommunityError("COMMUNITY_ACCESS_DENIED", "This public Profile is suspended in Community Harbor.");
   return profile;
 }
 
@@ -87,30 +87,21 @@ export async function createProfile(
   },
 ) {
   rate(actor, "community-profile-create", 5);
-  const handle = normalizeHandle(input.handle);
-  if (!input.displayName.trim() || input.displayName.length > 120)
-    throw new CommunityError(
-      "COMMUNITY_INVALID_PROFILE",
-      "Display name is required and must be 120 characters or fewer.",
-    );
-  return db.$transaction(async (tx) => {
-    const existing = await tx.communityProfile.findUnique({ where: { accountId: actor.accountId } });
-    if (existing) throw new CommunityError("COMMUNITY_PROFILE_EXISTS", "A Community Profile already exists.");
-    const profile = await tx.communityProfile.create({
-      data: {
-        accountId: actor.accountId,
-        normalizedHandle: handle,
-        handle,
-        displayName: input.displayName.trim(),
-        biography: input.biography?.trim() || null,
-        visibility: input.visibility ?? "COMMUNITY",
-        supportedLanguages: JSON.stringify(input.supportedLanguages ?? []),
-      },
-    });
-    await outbox(tx, "COMMUNITY_PROFILE_CREATED", "COMMUNITY_PROFILE", profile.id, { handle: profile.handle });
-    await audit(tx, actor, "COMMUNITY_PROFILE_CREATED", "COMMUNITY_PROFILE", profile.id, { handle: profile.handle });
-    return ownerProfileProjection(profile);
+  await updateProfile(actor.accountId, {
+    handle: input.handle,
+    displayName: input.displayName,
+    biography: input.biography,
+    defaultVisibility: input.visibility === "PRIVATE" ? "ONLY_ME" : "PUBLIC",
   });
+  const profile = await resolveProfileForActor(actor);
+  if (input.supportedLanguages?.length)
+    return ownerProfileProjection(
+      await db.communityProfile.update({
+        where: { id: profile.id },
+        data: { supportedLanguages: JSON.stringify(input.supportedLanguages) },
+      }),
+    );
+  return ownerProfileProjection(profile);
 }
 
 export async function getOwnProfile(actor: CommunityActor) {
@@ -278,7 +269,10 @@ export async function listPublicListingsFoundation() {
       publicationStatus: "PUBLISHED",
       visibility: { in: ["COMMUNITY", "FEATURED"] },
       moderationStatus: "ACTIVE",
+      archivedAt: null,
+      removedAt: null,
       locationClass: { not: "PRIVATE_REAL_WORLD" },
+      owner: { visibility: "COMMUNITY", moderationStatus: "ACTIVE", creatorStatus: { not: "SUSPENDED" } },
     },
     include: { owner: true },
     orderBy: { updatedAt: "desc" },
@@ -292,7 +286,10 @@ export async function getPublicListingBySlug(slug: string) {
       publicationStatus: "PUBLISHED",
       visibility: { in: ["COMMUNITY", "FEATURED"] },
       moderationStatus: "ACTIVE",
+      archivedAt: null,
+      removedAt: null,
       locationClass: { not: "PRIVATE_REAL_WORLD" },
+      owner: { visibility: "COMMUNITY", moderationStatus: "ACTIVE", creatorStatus: { not: "SUSPENDED" } },
     },
     include: { owner: true, currentRelease: true },
   });
@@ -418,7 +415,8 @@ export async function quarantineRelease(actor: CommunityActor, id: string) {
     return ownerReleaseProjection(updated);
   });
 }
-export async function restoreRelease(actor: CommunityActor, id: string) {
+export async function restoreRelease(actor: CommunityActor, _id: string) {
+  void _id;
   if (actor.role !== "MODERATOR" && actor.role !== "ADMIN")
     throw new CommunityError("COMMUNITY_ACCESS_DENIED", "Moderation capability is required.");
   // Phase 4 restoration has to bind a moderation action, a current clean scan

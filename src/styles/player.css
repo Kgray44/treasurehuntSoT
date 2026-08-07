@@ -9,6 +9,17 @@
   font-size: calc(1rem * var(--player-text-scale));
 }
 
+html[data-voyage-theme="light"] .voyage-shell {
+  color: var(--text-primary);
+  background: linear-gradient(180deg, #f5ead4 0 48%, #e8d8b7 100%);
+}
+
+html[data-voyage-theme="light"] .ocean-depth {
+  background:
+    radial-gradient(circle at 65% 15%, rgb(65 124 116 / 16%), transparent 24%),
+    radial-gradient(ellipse at 50% 120%, rgb(105 150 139 / 20%), transparent 58%), linear-gradient(#fff9eb, #e8d8b7);
+}
+
 .voyage-shell::after {
   content: "";
   position: fixed;

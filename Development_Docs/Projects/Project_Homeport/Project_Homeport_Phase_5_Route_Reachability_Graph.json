@@ -1,0 +1,2499 @@
+{
+  "schemaVersion": 1,
+  "project": "Project Homeport",
+  "phase": 5,
+  "implementationSourceSha": "IMPLEMENTATION_SOURCE_PENDING",
+  "implementationStatus": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+  "generatedAt": "2026-08-03T18:00:00.000Z",
+  "rootRouteId": "route-page-root",
+  "profiles": [
+    {
+      "id": "ANONYMOUS_GATEWAY",
+      "authentication": "ANONYMOUS",
+      "capabilities": [],
+      "reachableRouteIds": [
+        "route-page-captain-sign-in",
+        "route-page-chronicles-taleslug",
+        "route-page-community",
+        "route-page-community-artifacts",
+        "route-page-community-audio",
+        "route-page-community-chronicles",
+        "route-page-community-collections",
+        "route-page-community-collections-slug",
+        "route-page-community-creators",
+        "route-page-community-creators-handle",
+        "route-page-community-featured",
+        "route-page-community-guides",
+        "route-page-community-guides-slug",
+        "route-page-community-maps",
+        "route-page-community-slug",
+        "route-page-community-templates",
+        "route-page-community-voyage-logs",
+        "route-page-community-voyage-logs-slug",
+        "route-page-forgot-password",
+        "route-page-play-taleslug",
+        "route-page-play-taleslug-history",
+        "route-page-play-taleslug-session-sessionid",
+        "route-page-player-sign-in",
+        "route-page-register",
+        "route-page-root",
+        "route-page-sign-in",
+        "route-page-studio-sign-in",
+        "route-page-tales"
+      ],
+      "shortestPaths": [
+        {
+          "targetRouteId": "route-page-captain-sign-in",
+          "routeIds": ["route-page-root", "route-page-captain-sign-in"],
+          "edgeIds": ["edge-gateway-captain-adapter"]
+        },
+        {
+          "targetRouteId": "route-page-chronicles-taleslug",
+          "routeIds": ["route-page-root", "route-page-tales", "route-page-chronicles-taleslug"],
+          "edgeIds": ["edge-global-explore", "edge-tales-chronicle-preview"]
+        },
+        {
+          "targetRouteId": "route-page-community",
+          "routeIds": ["route-page-root", "route-page-community"],
+          "edgeIds": ["edge-global-community"]
+        },
+        {
+          "targetRouteId": "route-page-community-artifacts",
+          "routeIds": ["route-page-root", "route-page-community", "route-page-community-artifacts"],
+          "edgeIds": ["edge-global-community", "edge-district-artifacts"]
+        },
+        {
+          "targetRouteId": "route-page-community-audio",
+          "routeIds": ["route-page-root", "route-page-community", "route-page-community-audio"],
+          "edgeIds": ["edge-global-community", "edge-district-audio-and-reveal-assets"]
+        },
+        {
+          "targetRouteId": "route-page-community-chronicles",
+          "routeIds": ["route-page-root", "route-page-community", "route-page-community-chronicles"],
+          "edgeIds": ["edge-global-community", "edge-district-chronicles"]
+        },
+        {
+          "targetRouteId": "route-page-community-collections",
+          "routeIds": ["route-page-root", "route-page-community", "route-page-community-collections"],
+          "edgeIds": ["edge-global-community", "edge-district-collections"]
+        },
+        {
+          "targetRouteId": "route-page-community-collections-slug",
+          "routeIds": [
+            "route-page-root",
+            "route-page-community",
+            "route-page-community-collections",
+            "route-page-community-collections-slug"
+          ],
+          "edgeIds": ["edge-global-community", "edge-district-collections", "edge-dynamic-community-collections-slug"]
+        },
+        {
+          "targetRouteId": "route-page-community-creators",
+          "routeIds": ["route-page-root", "route-page-community", "route-page-community-creators"],
+          "edgeIds": ["edge-global-community", "edge-district-creators"]
+        },
+        {
+          "targetRouteId": "route-page-community-creators-handle",
+          "routeIds": [
+            "route-page-root",
+            "route-page-community",
+            "route-page-community-creators",
+            "route-page-community-creators-handle"
+          ],
+          "edgeIds": ["edge-global-community", "edge-district-creators", "edge-dynamic-community-creators-handle"]
+        },
+        {
+          "targetRouteId": "route-page-community-featured",
+          "routeIds": ["route-page-root", "route-page-community", "route-page-community-featured"],
+          "edgeIds": ["edge-global-community", "edge-district-featured"]
+        },
+        {
+          "targetRouteId": "route-page-community-guides",
+          "routeIds": ["route-page-root", "route-page-community", "route-page-community-guides"],
+          "edgeIds": ["edge-global-community", "edge-district-guides"]
+        },
+        {
+          "targetRouteId": "route-page-community-guides-slug",
+          "routeIds": [
+            "route-page-root",
+            "route-page-community",
+            "route-page-community-guides",
+            "route-page-community-guides-slug"
+          ],
+          "edgeIds": ["edge-global-community", "edge-district-guides", "edge-dynamic-community-guides-slug"]
+        },
+        {
+          "targetRouteId": "route-page-community-maps",
+          "routeIds": ["route-page-root", "route-page-community", "route-page-community-maps"],
+          "edgeIds": ["edge-global-community", "edge-district-maps-and-location-packs"]
+        },
+        {
+          "targetRouteId": "route-page-community-slug",
+          "routeIds": [
+            "route-page-root",
+            "route-page-community",
+            "route-page-community-chronicles",
+            "route-page-community-slug"
+          ],
+          "edgeIds": ["edge-global-community", "edge-district-chronicles", "edge-dynamic-community-slug"]
+        },
+        {
+          "targetRouteId": "route-page-community-templates",
+          "routeIds": ["route-page-root", "route-page-community", "route-page-community-templates"],
+          "edgeIds": ["edge-global-community", "edge-district-templates"]
+        },
+        {
+          "targetRouteId": "route-page-community-voyage-logs",
+          "routeIds": ["route-page-root", "route-page-community", "route-page-community-voyage-logs"],
+          "edgeIds": ["edge-global-community", "edge-district-voyage-logs"]
+        },
+        {
+          "targetRouteId": "route-page-community-voyage-logs-slug",
+          "routeIds": [
+            "route-page-root",
+            "route-page-community",
+            "route-page-community-voyage-logs",
+            "route-page-community-voyage-logs-slug"
+          ],
+          "edgeIds": ["edge-global-community", "edge-district-voyage-logs", "edge-dynamic-community-voyage-logs-slug"]
+        },
+        {
+          "targetRouteId": "route-page-forgot-password",
+          "routeIds": ["route-page-root", "route-page-sign-in", "route-page-forgot-password"],
+          "edgeIds": ["edge-account-sign-in", "edge-sign-in-forgot"]
+        },
+        {
+          "targetRouteId": "route-page-play-taleslug",
+          "routeIds": ["route-page-root", "route-page-tales", "route-page-play-taleslug"],
+          "edgeIds": ["edge-global-explore", "edge-tales-chronicle"]
+        },
+        {
+          "targetRouteId": "route-page-play-taleslug-history",
+          "routeIds": [
+            "route-page-root",
+            "route-page-tales",
+            "route-page-play-taleslug",
+            "route-page-play-taleslug-history"
+          ],
+          "edgeIds": ["edge-global-explore", "edge-tales-chronicle", "edge-play-history"]
+        },
+        {
+          "targetRouteId": "route-page-play-taleslug-session-sessionid",
+          "routeIds": [
+            "route-page-root",
+            "route-page-tales",
+            "route-page-play-taleslug",
+            "route-page-play-taleslug-session-sessionid"
+          ],
+          "edgeIds": ["edge-global-explore", "edge-tales-chronicle", "edge-play-session"]
+        },
+        {
+          "targetRouteId": "route-page-player-sign-in",
+          "routeIds": ["route-page-root", "route-page-player-sign-in"],
+          "edgeIds": ["edge-gateway-player-adapter"]
+        },
+        {
+          "targetRouteId": "route-page-register",
+          "routeIds": ["route-page-root", "route-page-register"],
+          "edgeIds": ["edge-account-create"]
+        },
+        { "targetRouteId": "route-page-root", "routeIds": ["route-page-root"], "edgeIds": [] },
+        {
+          "targetRouteId": "route-page-sign-in",
+          "routeIds": ["route-page-root", "route-page-sign-in"],
+          "edgeIds": ["edge-account-sign-in"]
+        },
+        {
+          "targetRouteId": "route-page-studio-sign-in",
+          "routeIds": ["route-page-root", "route-page-studio-sign-in"],
+          "edgeIds": ["edge-gateway-studio-adapter"]
+        },
+        {
+          "targetRouteId": "route-page-tales",
+          "routeIds": ["route-page-root", "route-page-tales"],
+          "edgeIds": ["edge-global-explore"]
+        }
+      ]
+    },
+    {
+      "id": "AUTHENTICATED_PLAYER_GATEWAY",
+      "authentication": "AUTHENTICATED",
+      "capabilities": ["PLAYER"],
+      "reachableRouteIds": [
+        "route-page-account",
+        "route-page-account-accessibility",
+        "route-page-account-data",
+        "route-page-account-linked-identities",
+        "route-page-account-notifications",
+        "route-page-account-personal-information",
+        "route-page-account-preferences",
+        "route-page-account-privacy",
+        "route-page-account-profile",
+        "route-page-account-profile-view",
+        "route-page-account-roles",
+        "route-page-account-security",
+        "route-page-account-sessions",
+        "route-page-captain-sign-in",
+        "route-page-chronicles-taleslug",
+        "route-page-community",
+        "route-page-community-artifacts",
+        "route-page-community-audio",
+        "route-page-community-chronicles",
+        "route-page-community-collections",
+        "route-page-community-collections-slug",
+        "route-page-community-creators",
+        "route-page-community-creators-handle",
+        "route-page-community-featured",
+        "route-page-community-guides",
+        "route-page-community-guides-slug",
+        "route-page-community-maps",
+        "route-page-community-slug",
+        "route-page-community-templates",
+        "route-page-community-voyage-logs",
+        "route-page-community-voyage-logs-consent",
+        "route-page-community-voyage-logs-owner",
+        "route-page-community-voyage-logs-owner-id",
+        "route-page-community-voyage-logs-slug",
+        "route-page-passport",
+        "route-page-passport-artifacts",
+        "route-page-passport-artifacts-artifactId",
+        "route-page-passport-history",
+        "route-page-passport-history-recordId",
+        "route-page-passport-memories",
+        "route-page-passport-saved",
+        "route-page-play-taleslug",
+        "route-page-play-taleslug-history",
+        "route-page-play-taleslug-session-sessionid",
+        "route-page-player-library",
+        "route-page-player-playthroughs-playthroughid",
+        "route-page-player-playthroughs-playthroughid-journal",
+        "route-page-player-sign-in",
+        "route-page-profile-handle",
+        "route-page-root",
+        "route-page-sign-in",
+        "route-page-studio-sign-in",
+        "route-page-tales"
+      ],
+      "shortestPaths": [
+        {
+          "targetRouteId": "route-page-account",
+          "routeIds": ["route-page-root", "route-page-account"],
+          "edgeIds": ["edge-account-personal-harbor"]
+        },
+        {
+          "targetRouteId": "route-page-account-accessibility",
+          "routeIds": ["route-page-root", "route-page-account", "route-page-account-accessibility"],
+          "edgeIds": ["edge-account-personal-harbor", "edge-account-accessibility"]
+        },
+        {
+          "targetRouteId": "route-page-account-data",
+          "routeIds": ["route-page-root", "route-page-account", "route-page-account-data"],
+          "edgeIds": ["edge-account-personal-harbor", "edge-account-data"]
+        },
+        {
+          "targetRouteId": "route-page-account-linked-identities",
+          "routeIds": ["route-page-root", "route-page-account", "route-page-account-linked-identities"],
+          "edgeIds": ["edge-account-personal-harbor", "edge-account-linked-identities"]
+        },
+        {
+          "targetRouteId": "route-page-account-notifications",
+          "routeIds": ["route-page-root", "route-page-account", "route-page-account-notifications"],
+          "edgeIds": ["edge-account-personal-harbor", "edge-account-notifications"]
+        },
+        {
+          "targetRouteId": "route-page-account-personal-information",
+          "routeIds": ["route-page-root", "route-page-account", "route-page-account-personal-information"],
+          "edgeIds": ["edge-account-personal-harbor", "edge-account-personal-information"]
+        },
+        {
+          "targetRouteId": "route-page-account-preferences",
+          "routeIds": ["route-page-root", "route-page-account-preferences"],
+          "edgeIds": ["edge-account-preferences"]
+        },
+        {
+          "targetRouteId": "route-page-account-privacy",
+          "routeIds": ["route-page-root", "route-page-account-privacy"],
+          "edgeIds": ["edge-account-privacy"]
+        },
+        {
+          "targetRouteId": "route-page-account-profile",
+          "routeIds": ["route-page-root", "route-page-account", "route-page-account-profile"],
+          "edgeIds": ["edge-account-personal-harbor", "edge-account-profile"]
+        },
+        {
+          "targetRouteId": "route-page-account-profile-view",
+          "routeIds": ["route-page-root", "route-page-account", "route-page-account-profile-view"],
+          "edgeIds": ["edge-account-personal-harbor", "edge-account-public-profile-view"]
+        },
+        {
+          "targetRouteId": "route-page-account-roles",
+          "routeIds": ["route-page-root", "route-page-account-roles"],
+          "edgeIds": ["edge-account-workspaces"]
+        },
+        {
+          "targetRouteId": "route-page-account-security",
+          "routeIds": ["route-page-root", "route-page-account-security"],
+          "edgeIds": ["edge-account-security"]
+        },
+        {
+          "targetRouteId": "route-page-account-sessions",
+          "routeIds": ["route-page-root", "route-page-account-sessions"],
+          "edgeIds": ["edge-account-sessions"]
+        },
+        {
+          "targetRouteId": "route-page-captain-sign-in",
+          "routeIds": ["route-page-root", "route-page-captain-sign-in"],
+          "edgeIds": ["edge-gateway-captain-adapter"]
+        },
+        {
+          "targetRouteId": "route-page-chronicles-taleslug",
+          "routeIds": ["route-page-root", "route-page-tales", "route-page-chronicles-taleslug"],
+          "edgeIds": ["edge-global-explore", "edge-tales-chronicle-preview"]
+        },
+        {
+          "targetRouteId": "route-page-community",
+          "routeIds": ["route-page-root", "route-page-community"],
+          "edgeIds": ["edge-global-community"]
+        },
+        {
+          "targetRouteId": "route-page-community-artifacts",
+          "routeIds": ["route-page-root", "route-page-community", "route-page-community-artifacts"],
+          "edgeIds": ["edge-global-community", "edge-district-artifacts"]
+        },
+        {
+          "targetRouteId": "route-page-community-audio",
+          "routeIds": ["route-page-root", "route-page-community", "route-page-community-audio"],
+          "edgeIds": ["edge-global-community", "edge-district-audio-and-reveal-assets"]
+        },
+        {
+          "targetRouteId": "route-page-community-chronicles",
+          "routeIds": ["route-page-root", "route-page-community", "route-page-community-chronicles"],
+          "edgeIds": ["edge-global-community", "edge-district-chronicles"]
+        },
+        {
+          "targetRouteId": "route-page-community-collections",
+          "routeIds": ["route-page-root", "route-page-community", "route-page-community-collections"],
+          "edgeIds": ["edge-global-community", "edge-district-collections"]
+        },
+        {
+          "targetRouteId": "route-page-community-collections-slug",
+          "routeIds": [
+            "route-page-root",
+            "route-page-community",
+            "route-page-community-collections",
+            "route-page-community-collections-slug"
+          ],
+          "edgeIds": ["edge-global-community", "edge-district-collections", "edge-dynamic-community-collections-slug"]
+        },
+        {
+          "targetRouteId": "route-page-community-creators",
+          "routeIds": ["route-page-root", "route-page-community", "route-page-community-creators"],
+          "edgeIds": ["edge-global-community", "edge-district-creators"]
+        },
+        {
+          "targetRouteId": "route-page-community-creators-handle",
+          "routeIds": [
+            "route-page-root",
+            "route-page-community",
+            "route-page-community-creators",
+            "route-page-community-creators-handle"
+          ],
+          "edgeIds": ["edge-global-community", "edge-district-creators", "edge-dynamic-community-creators-handle"]
+        },
+        {
+          "targetRouteId": "route-page-community-featured",
+          "routeIds": ["route-page-root", "route-page-community", "route-page-community-featured"],
+          "edgeIds": ["edge-global-community", "edge-district-featured"]
+        },
+        {
+          "targetRouteId": "route-page-community-guides",
+          "routeIds": ["route-page-root", "route-page-community", "route-page-community-guides"],
+          "edgeIds": ["edge-global-community", "edge-district-guides"]
+        },
+        {
+          "targetRouteId": "route-page-community-guides-slug",
+          "routeIds": [
+            "route-page-root",
+            "route-page-community",
+            "route-page-community-guides",
+            "route-page-community-guides-slug"
+          ],
+          "edgeIds": ["edge-global-community", "edge-district-guides", "edge-dynamic-community-guides-slug"]
+        },
+        {
+          "targetRouteId": "route-page-community-maps",
+          "routeIds": ["route-page-root", "route-page-community", "route-page-community-maps"],
+          "edgeIds": ["edge-global-community", "edge-district-maps-and-location-packs"]
+        },
+        {
+          "targetRouteId": "route-page-community-slug",
+          "routeIds": [
+            "route-page-root",
+            "route-page-community",
+            "route-page-community-chronicles",
+            "route-page-community-slug"
+          ],
+          "edgeIds": ["edge-global-community", "edge-district-chronicles", "edge-dynamic-community-slug"]
+        },
+        {
+          "targetRouteId": "route-page-community-templates",
+          "routeIds": ["route-page-root", "route-page-community", "route-page-community-templates"],
+          "edgeIds": ["edge-global-community", "edge-district-templates"]
+        },
+        {
+          "targetRouteId": "route-page-community-voyage-logs",
+          "routeIds": ["route-page-root", "route-page-community", "route-page-community-voyage-logs"],
+          "edgeIds": ["edge-global-community", "edge-district-voyage-logs"]
+        },
+        {
+          "targetRouteId": "route-page-community-voyage-logs-consent",
+          "routeIds": [
+            "route-page-root",
+            "route-page-community",
+            "route-page-community-voyage-logs",
+            "route-page-community-voyage-logs-consent"
+          ],
+          "edgeIds": ["edge-global-community", "edge-district-voyage-logs", "edge-community-voyage-log-consent"]
+        },
+        {
+          "targetRouteId": "route-page-community-voyage-logs-owner",
+          "routeIds": [
+            "route-page-root",
+            "route-page-community",
+            "route-page-community-voyage-logs",
+            "route-page-community-voyage-logs-owner"
+          ],
+          "edgeIds": ["edge-global-community", "edge-district-voyage-logs", "edge-community-voyage-log-owner"]
+        },
+        {
+          "targetRouteId": "route-page-community-voyage-logs-owner-id",
+          "routeIds": [
+            "route-page-root",
+            "route-page-community",
+            "route-page-community-voyage-logs",
+            "route-page-community-voyage-logs-owner",
+            "route-page-community-voyage-logs-owner-id"
+          ],
+          "edgeIds": [
+            "edge-global-community",
+            "edge-district-voyage-logs",
+            "edge-community-voyage-log-owner",
+            "edge-voyage-log-owner-detail"
+          ]
+        },
+        {
+          "targetRouteId": "route-page-community-voyage-logs-slug",
+          "routeIds": [
+            "route-page-root",
+            "route-page-community",
+            "route-page-community-voyage-logs",
+            "route-page-community-voyage-logs-slug"
+          ],
+          "edgeIds": ["edge-global-community", "edge-district-voyage-logs", "edge-dynamic-community-voyage-logs-slug"]
+        },
+        {
+          "targetRouteId": "route-page-passport",
+          "routeIds": ["route-page-root", "route-page-passport"],
+          "edgeIds": ["edge-account-passport"]
+        },
+        {
+          "targetRouteId": "route-page-passport-artifacts",
+          "routeIds": ["route-page-root", "route-page-passport-artifacts"],
+          "edgeIds": ["edge-account-artifacts"]
+        },
+        {
+          "targetRouteId": "route-page-passport-artifacts-artifactId",
+          "routeIds": ["route-page-root", "route-page-passport-artifacts", "route-page-passport-artifacts-artifactId"],
+          "edgeIds": ["edge-account-artifacts", "edge-passport-artifact-detail"]
+        },
+        {
+          "targetRouteId": "route-page-passport-history",
+          "routeIds": ["route-page-root", "route-page-passport-history"],
+          "edgeIds": ["edge-account-history"]
+        },
+        {
+          "targetRouteId": "route-page-passport-history-recordId",
+          "routeIds": ["route-page-root", "route-page-passport-history", "route-page-passport-history-recordId"],
+          "edgeIds": ["edge-account-history", "edge-passport-history-detail"]
+        },
+        {
+          "targetRouteId": "route-page-passport-memories",
+          "routeIds": ["route-page-root", "route-page-passport", "route-page-passport-memories"],
+          "edgeIds": ["edge-account-passport", "edge-passport-memories"]
+        },
+        {
+          "targetRouteId": "route-page-passport-saved",
+          "routeIds": ["route-page-root", "route-page-passport", "route-page-passport-saved"],
+          "edgeIds": ["edge-account-passport", "edge-passport-saved"]
+        },
+        {
+          "targetRouteId": "route-page-play-taleslug",
+          "routeIds": ["route-page-root", "route-page-tales", "route-page-play-taleslug"],
+          "edgeIds": ["edge-global-explore", "edge-tales-chronicle"]
+        },
+        {
+          "targetRouteId": "route-page-play-taleslug-history",
+          "routeIds": [
+            "route-page-root",
+            "route-page-tales",
+            "route-page-play-taleslug",
+            "route-page-play-taleslug-history"
+          ],
+          "edgeIds": ["edge-global-explore", "edge-tales-chronicle", "edge-play-history"]
+        },
+        {
+          "targetRouteId": "route-page-play-taleslug-session-sessionid",
+          "routeIds": [
+            "route-page-root",
+            "route-page-tales",
+            "route-page-play-taleslug",
+            "route-page-play-taleslug-session-sessionid"
+          ],
+          "edgeIds": ["edge-global-explore", "edge-tales-chronicle", "edge-play-session"]
+        },
+        {
+          "targetRouteId": "route-page-player-library",
+          "routeIds": ["route-page-root", "route-page-player-library"],
+          "edgeIds": ["edge-workspace-player"]
+        },
+        {
+          "targetRouteId": "route-page-player-playthroughs-playthroughid",
+          "routeIds": ["route-page-root", "route-page-player-library", "route-page-player-playthroughs-playthroughid"],
+          "edgeIds": ["edge-workspace-player", "edge-player-voyage"]
+        },
+        {
+          "targetRouteId": "route-page-player-playthroughs-playthroughid-journal",
+          "routeIds": [
+            "route-page-root",
+            "route-page-player-library",
+            "route-page-player-playthroughs-playthroughid-journal"
+          ],
+          "edgeIds": ["edge-workspace-player", "edge-player-journal"]
+        },
+        {
+          "targetRouteId": "route-page-player-sign-in",
+          "routeIds": ["route-page-root", "route-page-player-sign-in"],
+          "edgeIds": ["edge-gateway-player-adapter"]
+        },
+        {
+          "targetRouteId": "route-page-profile-handle",
+          "routeIds": [
+            "route-page-root",
+            "route-page-account",
+            "route-page-account-profile",
+            "route-page-profile-handle"
+          ],
+          "edgeIds": ["edge-account-personal-harbor", "edge-account-profile", "edge-profile-public"]
+        },
+        { "targetRouteId": "route-page-root", "routeIds": ["route-page-root"], "edgeIds": [] },
+        {
+          "targetRouteId": "route-page-sign-in",
+          "routeIds": ["route-page-root", "route-page-player-sign-in", "route-page-sign-in"],
+          "edgeIds": ["edge-gateway-player-adapter", "edge-compat-player-sign-in"]
+        },
+        {
+          "targetRouteId": "route-page-studio-sign-in",
+          "routeIds": ["route-page-root", "route-page-studio-sign-in"],
+          "edgeIds": ["edge-gateway-studio-adapter"]
+        },
+        {
+          "targetRouteId": "route-page-tales",
+          "routeIds": ["route-page-root", "route-page-tales"],
+          "edgeIds": ["edge-global-explore"]
+        }
+      ]
+    },
+    {
+      "id": "AUTHENTICATED_CAPTAIN_GATEWAY",
+      "authentication": "AUTHENTICATED",
+      "capabilities": ["CAPTAIN"],
+      "reachableRouteIds": [
+        "route-page-account",
+        "route-page-account-accessibility",
+        "route-page-account-data",
+        "route-page-account-linked-identities",
+        "route-page-account-notifications",
+        "route-page-account-personal-information",
+        "route-page-account-preferences",
+        "route-page-account-privacy",
+        "route-page-account-profile",
+        "route-page-account-profile-view",
+        "route-page-account-roles",
+        "route-page-account-security",
+        "route-page-account-sessions",
+        "route-page-captain-library",
+        "route-page-captain-sessions-sessionid",
+        "route-page-captain-sign-in",
+        "route-page-captain-tales-taleid",
+        "route-page-captain-voyages-playthroughid-player-preview",
+        "route-page-chronicles-taleslug",
+        "route-page-community",
+        "route-page-community-artifacts",
+        "route-page-community-audio",
+        "route-page-community-chronicles",
+        "route-page-community-collections",
+        "route-page-community-collections-slug",
+        "route-page-community-creators",
+        "route-page-community-creators-handle",
+        "route-page-community-featured",
+        "route-page-community-guides",
+        "route-page-community-guides-slug",
+        "route-page-community-maps",
+        "route-page-community-slug",
+        "route-page-community-templates",
+        "route-page-community-voyage-logs",
+        "route-page-community-voyage-logs-slug",
+        "route-page-passport",
+        "route-page-passport-artifacts",
+        "route-page-passport-artifacts-artifactId",
+        "route-page-passport-history",
+        "route-page-passport-history-recordId",
+        "route-page-passport-memories",
+        "route-page-passport-saved",
+        "route-page-play-taleslug",
+        "route-page-play-taleslug-history",
+        "route-page-play-taleslug-session-sessionid",
+        "route-page-player-sign-in",
+        "route-page-profile-handle",
+        "route-page-root",
+        "route-page-sign-in",
+        "route-page-studio-sign-in",
+        "route-page-tales"
+      ],
+      "shortestPaths": [
+        {
+          "targetRouteId": "route-page-account",
+          "routeIds": ["route-page-root", "route-page-account"],
+          "edgeIds": ["edge-account-personal-harbor"]
+        },
+        {
+          "targetRouteId": "route-page-account-accessibility",
+          "routeIds": ["route-page-root", "route-page-account", "route-page-account-accessibility"],
+          "edgeIds": ["edge-account-personal-harbor", "edge-account-accessibility"]
+        },
+        {
+          "targetRouteId": "route-page-account-data",
+          "routeIds": ["route-page-root", "route-page-account", "route-page-account-data"],
+          "edgeIds": ["edge-account-personal-harbor", "edge-account-data"]
+        },
+        {
+          "targetRouteId": "route-page-account-linked-identities",
+          "routeIds": ["route-page-root", "route-page-account", "route-page-account-linked-identities"],
+          "edgeIds": ["edge-account-personal-harbor", "edge-account-linked-identities"]
+        },
+        {
+          "targetRouteId": "route-page-account-notifications",
+          "routeIds": ["route-page-root", "route-page-account", "route-page-account-notifications"],
+          "edgeIds": ["edge-account-personal-harbor", "edge-account-notifications"]
+        },
+        {
+          "targetRouteId": "route-page-account-personal-information",
+          "routeIds": ["route-page-root", "route-page-account", "route-page-account-personal-information"],
+          "edgeIds": ["edge-account-personal-harbor", "edge-account-personal-information"]
+        },
+        {
+          "targetRouteId": "route-page-account-preferences",
+          "routeIds": ["route-page-root", "route-page-account-preferences"],
+          "edgeIds": ["edge-account-preferences"]
+        },
+        {
+          "targetRouteId": "route-page-account-privacy",
+          "routeIds": ["route-page-root", "route-page-account-privacy"],
+          "edgeIds": ["edge-account-privacy"]
+        },
+        {
+          "targetRouteId": "route-page-account-profile",
+          "routeIds": ["route-page-root", "route-page-account", "route-page-account-profile"],
+          "edgeIds": ["edge-account-personal-harbor", "edge-account-profile"]
+        },
+        {
+          "targetRouteId": "route-page-account-profile-view",
+          "routeIds": ["route-page-root", "route-page-account", "route-page-account-profile-view"],
+          "edgeIds": ["edge-account-personal-harbor", "edge-account-public-profile-view"]
+        },
+        {
+          "targetRouteId": "route-page-account-roles",
+          "routeIds": ["route-page-root", "route-page-account-roles"],
+          "edgeIds": ["edge-account-workspaces"]
+        },
+        {
+          "targetRouteId": "route-page-account-security",
+          "routeIds": ["route-page-root", "route-page-account-security"],
+          "edgeIds": ["edge-account-security"]
+        },
+        {
+          "targetRouteId": "route-page-account-sessions",
+          "routeIds": ["route-page-root", "route-page-account-sessions"],
+          "edgeIds": ["edge-account-sessions"]
+        },
+        {
+          "targetRouteId": "route-page-captain-library",
+          "routeIds": ["route-page-root", "route-page-captain-library"],
+          "edgeIds": ["edge-workspace-captain"]
+        },
+        {
+          "targetRouteId": "route-page-captain-sessions-sessionid",
+          "routeIds": ["route-page-root", "route-page-captain-library", "route-page-captain-sessions-sessionid"],
+          "edgeIds": ["edge-workspace-captain", "edge-captain-session"]
+        },
+        {
+          "targetRouteId": "route-page-captain-sign-in",
+          "routeIds": ["route-page-root", "route-page-captain-sign-in"],
+          "edgeIds": ["edge-gateway-captain-adapter"]
+        },
+        {
+          "targetRouteId": "route-page-captain-tales-taleid",
+          "routeIds": ["route-page-root", "route-page-captain-library", "route-page-captain-tales-taleid"],
+          "edgeIds": ["edge-workspace-captain", "edge-captain-tale"]
+        },
+        {
+          "targetRouteId": "route-page-captain-voyages-playthroughid-player-preview",
+          "routeIds": [
+            "route-page-root",
+            "route-page-captain-library",
+            "route-page-captain-voyages-playthroughid-player-preview"
+          ],
+          "edgeIds": ["edge-workspace-captain", "edge-captain-preview"]
+        },
+        {
+          "targetRouteId": "route-page-chronicles-taleslug",
+          "routeIds": ["route-page-root", "route-page-tales", "route-page-chronicles-taleslug"],
+          "edgeIds": ["edge-global-explore", "edge-tales-chronicle-preview"]
+        },
+        {
+          "targetRouteId": "route-page-community",
+          "routeIds": ["route-page-root", "route-page-community"],
+          "edgeIds": ["edge-global-community"]
+        },
+        {
+          "targetRouteId": "route-page-community-artifacts",
+          "routeIds": ["route-page-root", "route-page-community", "route-page-community-artifacts"],
+          "edgeIds": ["edge-global-community", "edge-district-artifacts"]
+        },
+        {
+          "targetRouteId": "route-page-community-audio",
+          "routeIds": ["route-page-root", "route-page-community", "route-page-community-audio"],
+          "edgeIds": ["edge-global-community", "edge-district-audio-and-reveal-assets"]
+        },
+        {
+          "targetRouteId": "route-page-community-chronicles",
+          "routeIds": ["route-page-root", "route-page-community", "route-page-community-chronicles"],
+          "edgeIds": ["edge-global-community", "edge-district-chronicles"]
+        },
+        {
+          "targetRouteId": "route-page-community-collections",
+          "routeIds": ["route-page-root", "route-page-community", "route-page-community-collections"],
+          "edgeIds": ["edge-global-community", "edge-district-collections"]
+        },
+        {
+          "targetRouteId": "route-page-community-collections-slug",
+          "routeIds": [
+            "route-page-root",
+            "route-page-community",
+            "route-page-community-collections",
+            "route-page-community-collections-slug"
+          ],
+          "edgeIds": ["edge-global-community", "edge-district-collections", "edge-dynamic-community-collections-slug"]
+        },
+        {
+          "targetRouteId": "route-page-community-creators",
+          "routeIds": ["route-page-root", "route-page-community", "route-page-community-creators"],
+          "edgeIds": ["edge-global-community", "edge-district-creators"]
+        },
+        {
+          "targetRouteId": "route-page-community-creators-handle",
+          "routeIds": [
+            "route-page-root",
+            "route-page-community",
+            "route-page-community-creators",
+            "route-page-community-creators-handle"
+          ],
+          "edgeIds": ["edge-global-community", "edge-district-creators", "edge-dynamic-community-creators-handle"]
+        },
+        {
+          "targetRouteId": "route-page-community-featured",
+          "routeIds": ["route-page-root", "route-page-community", "route-page-community-featured"],
+          "edgeIds": ["edge-global-community", "edge-district-featured"]
+        },
+        {
+          "targetRouteId": "route-page-community-guides",
+          "routeIds": ["route-page-root", "route-page-community", "route-page-community-guides"],
+          "edgeIds": ["edge-global-community", "edge-district-guides"]
+        },
+        {
+          "targetRouteId": "route-page-community-guides-slug",
+          "routeIds": [
+            "route-page-root",
+            "route-page-community",
+            "route-page-community-guides",
+            "route-page-community-guides-slug"
+          ],
+          "edgeIds": ["edge-global-community", "edge-district-guides", "edge-dynamic-community-guides-slug"]
+        },
+        {
+          "targetRouteId": "route-page-community-maps",
+          "routeIds": ["route-page-root", "route-page-community", "route-page-community-maps"],
+          "edgeIds": ["edge-global-community", "edge-district-maps-and-location-packs"]
+        },
+        {
+          "targetRouteId": "route-page-community-slug",
+          "routeIds": [
+            "route-page-root",
+            "route-page-community",
+            "route-page-community-chronicles",
+            "route-page-community-slug"
+          ],
+          "edgeIds": ["edge-global-community", "edge-district-chronicles", "edge-dynamic-community-slug"]
+        },
+        {
+          "targetRouteId": "route-page-community-templates",
+          "routeIds": ["route-page-root", "route-page-community", "route-page-community-templates"],
+          "edgeIds": ["edge-global-community", "edge-district-templates"]
+        },
+        {
+          "targetRouteId": "route-page-community-voyage-logs",
+          "routeIds": ["route-page-root", "route-page-community", "route-page-community-voyage-logs"],
+          "edgeIds": ["edge-global-community", "edge-district-voyage-logs"]
+        },
+        {
+          "targetRouteId": "route-page-community-voyage-logs-slug",
+          "routeIds": [
+            "route-page-root",
+            "route-page-community",
+            "route-page-community-voyage-logs",
+            "route-page-community-voyage-logs-slug"
+          ],
+          "edgeIds": ["edge-global-community", "edge-district-voyage-logs", "edge-dynamic-community-voyage-logs-slug"]
+        },
+        {
+          "targetRouteId": "route-page-passport",
+          "routeIds": ["route-page-root", "route-page-passport"],
+          "edgeIds": ["edge-account-passport"]
+        },
+        {
+          "targetRouteId": "route-page-passport-artifacts",
+          "routeIds": ["route-page-root", "route-page-passport-artifacts"],
+          "edgeIds": ["edge-account-artifacts"]
+        },
+        {
+          "targetRouteId": "route-page-passport-artifacts-artifactId",
+          "routeIds": ["route-page-root", "route-page-passport-artifacts", "route-page-passport-artifacts-artifactId"],
+          "edgeIds": ["edge-account-artifacts", "edge-passport-artifact-detail"]
+        },
+        {
+          "targetRouteId": "route-page-passport-history",
+          "routeIds": ["route-page-root", "route-page-passport-history"],
+          "edgeIds": ["edge-account-history"]
+        },
+        {
+          "targetRouteId": "route-page-passport-history-recordId",
+          "routeIds": ["route-page-root", "route-page-passport-history", "route-page-passport-history-recordId"],
+          "edgeIds": ["edge-account-history", "edge-passport-history-detail"]
+        },
+        {
+          "targetRouteId": "route-page-passport-memories",
+          "routeIds": ["route-page-root", "route-page-passport", "route-page-passport-memories"],
+          "edgeIds": ["edge-account-passport", "edge-passport-memories"]
+        },
+        {
+          "targetRouteId": "route-page-passport-saved",
+          "routeIds": ["route-page-root", "route-page-passport", "route-page-passport-saved"],
+          "edgeIds": ["edge-account-passport", "edge-passport-saved"]
+        },
+        {
+          "targetRouteId": "route-page-play-taleslug",
+          "routeIds": ["route-page-root", "route-page-tales", "route-page-play-taleslug"],
+          "edgeIds": ["edge-global-explore", "edge-tales-chronicle"]
+        },
+        {
+          "targetRouteId": "route-page-play-taleslug-history",
+          "routeIds": [
+            "route-page-root",
+            "route-page-tales",
+            "route-page-play-taleslug",
+            "route-page-play-taleslug-history"
+          ],
+          "edgeIds": ["edge-global-explore", "edge-tales-chronicle", "edge-play-history"]
+        },
+        {
+          "targetRouteId": "route-page-play-taleslug-session-sessionid",
+          "routeIds": [
+            "route-page-root",
+            "route-page-tales",
+            "route-page-play-taleslug",
+            "route-page-play-taleslug-session-sessionid"
+          ],
+          "edgeIds": ["edge-global-explore", "edge-tales-chronicle", "edge-play-session"]
+        },
+        {
+          "targetRouteId": "route-page-player-sign-in",
+          "routeIds": ["route-page-root", "route-page-player-sign-in"],
+          "edgeIds": ["edge-gateway-player-adapter"]
+        },
+        {
+          "targetRouteId": "route-page-profile-handle",
+          "routeIds": [
+            "route-page-root",
+            "route-page-account",
+            "route-page-account-profile",
+            "route-page-profile-handle"
+          ],
+          "edgeIds": ["edge-account-personal-harbor", "edge-account-profile", "edge-profile-public"]
+        },
+        { "targetRouteId": "route-page-root", "routeIds": ["route-page-root"], "edgeIds": [] },
+        {
+          "targetRouteId": "route-page-sign-in",
+          "routeIds": ["route-page-root", "route-page-player-sign-in", "route-page-sign-in"],
+          "edgeIds": ["edge-gateway-player-adapter", "edge-compat-player-sign-in"]
+        },
+        {
+          "targetRouteId": "route-page-studio-sign-in",
+          "routeIds": ["route-page-root", "route-page-studio-sign-in"],
+          "edgeIds": ["edge-gateway-studio-adapter"]
+        },
+        {
+          "targetRouteId": "route-page-tales",
+          "routeIds": ["route-page-root", "route-page-tales"],
+          "edgeIds": ["edge-global-explore"]
+        }
+      ]
+    },
+    {
+      "id": "AUTHENTICATED_CREATOR_GATEWAY",
+      "authentication": "AUTHENTICATED",
+      "capabilities": ["CREATOR"],
+      "reachableRouteIds": [
+        "route-page-account",
+        "route-page-account-accessibility",
+        "route-page-account-data",
+        "route-page-account-linked-identities",
+        "route-page-account-notifications",
+        "route-page-account-personal-information",
+        "route-page-account-preferences",
+        "route-page-account-privacy",
+        "route-page-account-profile",
+        "route-page-account-profile-view",
+        "route-page-account-roles",
+        "route-page-account-security",
+        "route-page-account-sessions",
+        "route-page-captain-sign-in",
+        "route-page-chronicles-taleslug",
+        "route-page-community",
+        "route-page-community-artifacts",
+        "route-page-community-audio",
+        "route-page-community-chronicles",
+        "route-page-community-collections",
+        "route-page-community-collections-slug",
+        "route-page-community-creators",
+        "route-page-community-creators-handle",
+        "route-page-community-featured",
+        "route-page-community-guides",
+        "route-page-community-guides-slug",
+        "route-page-community-maps",
+        "route-page-community-slug",
+        "route-page-community-templates",
+        "route-page-community-voyage-logs",
+        "route-page-community-voyage-logs-slug",
+        "route-page-passport",
+        "route-page-passport-artifacts",
+        "route-page-passport-artifacts-artifactId",
+        "route-page-passport-history",
+        "route-page-passport-history-recordId",
+        "route-page-passport-memories",
+        "route-page-passport-saved",
+        "route-page-play-taleslug",
+        "route-page-play-taleslug-history",
+        "route-page-play-taleslug-session-sessionid",
+        "route-page-player-sign-in",
+        "route-page-profile-handle",
+        "route-page-root",
+        "route-page-sign-in",
+        "route-page-studio-exchange",
+        "route-page-studio-library",
+        "route-page-studio-private-content",
+        "route-page-studio-sign-in",
+        "route-page-studio-tales-new",
+        "route-page-studio-tales-taleid",
+        "route-page-studio-tales-taleid-artifacts",
+        "route-page-studio-tales-taleid-assets",
+        "route-page-studio-tales-taleid-locations",
+        "route-page-studio-tales-taleid-settings",
+        "route-page-studio-tales-taleid-versions",
+        "route-page-tales"
+      ],
+      "shortestPaths": [
+        {
+          "targetRouteId": "route-page-account",
+          "routeIds": ["route-page-root", "route-page-account"],
+          "edgeIds": ["edge-account-personal-harbor"]
+        },
+        {
+          "targetRouteId": "route-page-account-accessibility",
+          "routeIds": ["route-page-root", "route-page-account", "route-page-account-accessibility"],
+          "edgeIds": ["edge-account-personal-harbor", "edge-account-accessibility"]
+        },
+        {
+          "targetRouteId": "route-page-account-data",
+          "routeIds": ["route-page-root", "route-page-account", "route-page-account-data"],
+          "edgeIds": ["edge-account-personal-harbor", "edge-account-data"]
+        },
+        {
+          "targetRouteId": "route-page-account-linked-identities",
+          "routeIds": ["route-page-root", "route-page-account", "route-page-account-linked-identities"],
+          "edgeIds": ["edge-account-personal-harbor", "edge-account-linked-identities"]
+        },
+        {
+          "targetRouteId": "route-page-account-notifications",
+          "routeIds": ["route-page-root", "route-page-account", "route-page-account-notifications"],
+          "edgeIds": ["edge-account-personal-harbor", "edge-account-notifications"]
+        },
+        {
+          "targetRouteId": "route-page-account-personal-information",
+          "routeIds": ["route-page-root", "route-page-account", "route-page-account-personal-information"],
+          "edgeIds": ["edge-account-personal-harbor", "edge-account-personal-information"]
+        },
+        {
+          "targetRouteId": "route-page-account-preferences",
+          "routeIds": ["route-page-root", "route-page-account-preferences"],
+          "edgeIds": ["edge-account-preferences"]
+        },
+        {
+          "targetRouteId": "route-page-account-privacy",
+          "routeIds": ["route-page-root", "route-page-account-privacy"],
+          "edgeIds": ["edge-account-privacy"]
+        },
+        {
+          "targetRouteId": "route-page-account-profile",
+          "routeIds": ["route-page-root", "route-page-account", "route-page-account-profile"],
+          "edgeIds": ["edge-account-personal-harbor", "edge-account-profile"]
+        },
+        {
+          "targetRouteId": "route-page-account-profile-view",
+          "routeIds": ["route-page-root", "route-page-account", "route-page-account-profile-view"],
+          "edgeIds": ["edge-account-personal-harbor", "edge-account-public-profile-view"]
+        },
+        {
+          "targetRouteId": "route-page-account-roles",
+          "routeIds": ["route-page-root", "route-page-account-roles"],
+          "edgeIds": ["edge-account-workspaces"]
+        },
+        {
+          "targetRouteId": "route-page-account-security",
+          "routeIds": ["route-page-root", "route-page-account-security"],
+          "edgeIds": ["edge-account-security"]
+        },
+        {
+          "targetRouteId": "route-page-account-sessions",
+          "routeIds": ["route-page-root", "route-page-account-sessions"],
+          "edgeIds": ["edge-account-sessions"]
+        },
+        {
+          "targetRouteId": "route-page-captain-sign-in",
+          "routeIds": ["route-page-root", "route-page-captain-sign-in"],
+          "edgeIds": ["edge-gateway-captain-adapter"]
+        },
+        {
+          "targetRouteId": "route-page-chronicles-taleslug",
+          "routeIds": ["route-page-root", "route-page-tales", "route-page-chronicles-taleslug"],
+          "edgeIds": ["edge-global-explore", "edge-tales-chronicle-preview"]
+        },
+        {
+          "targetRouteId": "route-page-community",
+          "routeIds": ["route-page-root", "route-page-community"],
+          "edgeIds": ["edge-global-community"]
+        },
+        {
+          "targetRouteId": "route-page-community-artifacts",
+          "routeIds": ["route-page-root", "route-page-community", "route-page-community-artifacts"],
+          "edgeIds": ["edge-global-community", "edge-district-artifacts"]
+        },
+        {
+          "targetRouteId": "route-page-community-audio",
+          "routeIds": ["route-page-root", "route-page-community", "route-page-community-audio"],
+          "edgeIds": ["edge-global-community", "edge-district-audio-and-reveal-assets"]
+        },
+        {
+          "targetRouteId": "route-page-community-chronicles",
+          "routeIds": ["route-page-root", "route-page-community", "route-page-community-chronicles"],
+          "edgeIds": ["edge-global-community", "edge-district-chronicles"]
+        },
+        {
+          "targetRouteId": "route-page-community-collections",
+          "routeIds": ["route-page-root", "route-page-community", "route-page-community-collections"],
+          "edgeIds": ["edge-global-community", "edge-district-collections"]
+        },
+        {
+          "targetRouteId": "route-page-community-collections-slug",
+          "routeIds": [
+            "route-page-root",
+            "route-page-community",
+            "route-page-community-collections",
+            "route-page-community-collections-slug"
+          ],
+          "edgeIds": ["edge-global-community", "edge-district-collections", "edge-dynamic-community-collections-slug"]
+        },
+        {
+          "targetRouteId": "route-page-community-creators",
+          "routeIds": ["route-page-root", "route-page-community", "route-page-community-creators"],
+          "edgeIds": ["edge-global-community", "edge-district-creators"]
+        },
+        {
+          "targetRouteId": "route-page-community-creators-handle",
+          "routeIds": [
+            "route-page-root",
+            "route-page-community",
+            "route-page-community-creators",
+            "route-page-community-creators-handle"
+          ],
+          "edgeIds": ["edge-global-community", "edge-district-creators", "edge-dynamic-community-creators-handle"]
+        },
+        {
+          "targetRouteId": "route-page-community-featured",
+          "routeIds": ["route-page-root", "route-page-community", "route-page-community-featured"],
+          "edgeIds": ["edge-global-community", "edge-district-featured"]
+        },
+        {
+          "targetRouteId": "route-page-community-guides",
+          "routeIds": ["route-page-root", "route-page-community", "route-page-community-guides"],
+          "edgeIds": ["edge-global-community", "edge-district-guides"]
+        },
+        {
+          "targetRouteId": "route-page-community-guides-slug",
+          "routeIds": [
+            "route-page-root",
+            "route-page-community",
+            "route-page-community-guides",
+            "route-page-community-guides-slug"
+          ],
+          "edgeIds": ["edge-global-community", "edge-district-guides", "edge-dynamic-community-guides-slug"]
+        },
+        {
+          "targetRouteId": "route-page-community-maps",
+          "routeIds": ["route-page-root", "route-page-community", "route-page-community-maps"],
+          "edgeIds": ["edge-global-community", "edge-district-maps-and-location-packs"]
+        },
+        {
+          "targetRouteId": "route-page-community-slug",
+          "routeIds": [
+            "route-page-root",
+            "route-page-community",
+            "route-page-community-chronicles",
+            "route-page-community-slug"
+          ],
+          "edgeIds": ["edge-global-community", "edge-district-chronicles", "edge-dynamic-community-slug"]
+        },
+        {
+          "targetRouteId": "route-page-community-templates",
+          "routeIds": ["route-page-root", "route-page-community", "route-page-community-templates"],
+          "edgeIds": ["edge-global-community", "edge-district-templates"]
+        },
+        {
+          "targetRouteId": "route-page-community-voyage-logs",
+          "routeIds": ["route-page-root", "route-page-community", "route-page-community-voyage-logs"],
+          "edgeIds": ["edge-global-community", "edge-district-voyage-logs"]
+        },
+        {
+          "targetRouteId": "route-page-community-voyage-logs-slug",
+          "routeIds": [
+            "route-page-root",
+            "route-page-community",
+            "route-page-community-voyage-logs",
+            "route-page-community-voyage-logs-slug"
+          ],
+          "edgeIds": ["edge-global-community", "edge-district-voyage-logs", "edge-dynamic-community-voyage-logs-slug"]
+        },
+        {
+          "targetRouteId": "route-page-passport",
+          "routeIds": ["route-page-root", "route-page-passport"],
+          "edgeIds": ["edge-account-passport"]
+        },
+        {
+          "targetRouteId": "route-page-passport-artifacts",
+          "routeIds": ["route-page-root", "route-page-passport-artifacts"],
+          "edgeIds": ["edge-account-artifacts"]
+        },
+        {
+          "targetRouteId": "route-page-passport-artifacts-artifactId",
+          "routeIds": ["route-page-root", "route-page-passport-artifacts", "route-page-passport-artifacts-artifactId"],
+          "edgeIds": ["edge-account-artifacts", "edge-passport-artifact-detail"]
+        },
+        {
+          "targetRouteId": "route-page-passport-history",
+          "routeIds": ["route-page-root", "route-page-passport-history"],
+          "edgeIds": ["edge-account-history"]
+        },
+        {
+          "targetRouteId": "route-page-passport-history-recordId",
+          "routeIds": ["route-page-root", "route-page-passport-history", "route-page-passport-history-recordId"],
+          "edgeIds": ["edge-account-history", "edge-passport-history-detail"]
+        },
+        {
+          "targetRouteId": "route-page-passport-memories",
+          "routeIds": ["route-page-root", "route-page-passport", "route-page-passport-memories"],
+          "edgeIds": ["edge-account-passport", "edge-passport-memories"]
+        },
+        {
+          "targetRouteId": "route-page-passport-saved",
+          "routeIds": ["route-page-root", "route-page-passport", "route-page-passport-saved"],
+          "edgeIds": ["edge-account-passport", "edge-passport-saved"]
+        },
+        {
+          "targetRouteId": "route-page-play-taleslug",
+          "routeIds": ["route-page-root", "route-page-tales", "route-page-play-taleslug"],
+          "edgeIds": ["edge-global-explore", "edge-tales-chronicle"]
+        },
+        {
+          "targetRouteId": "route-page-play-taleslug-history",
+          "routeIds": [
+            "route-page-root",
+            "route-page-tales",
+            "route-page-play-taleslug",
+            "route-page-play-taleslug-history"
+          ],
+          "edgeIds": ["edge-global-explore", "edge-tales-chronicle", "edge-play-history"]
+        },
+        {
+          "targetRouteId": "route-page-play-taleslug-session-sessionid",
+          "routeIds": [
+            "route-page-root",
+            "route-page-tales",
+            "route-page-play-taleslug",
+            "route-page-play-taleslug-session-sessionid"
+          ],
+          "edgeIds": ["edge-global-explore", "edge-tales-chronicle", "edge-play-session"]
+        },
+        {
+          "targetRouteId": "route-page-player-sign-in",
+          "routeIds": ["route-page-root", "route-page-player-sign-in"],
+          "edgeIds": ["edge-gateway-player-adapter"]
+        },
+        {
+          "targetRouteId": "route-page-profile-handle",
+          "routeIds": [
+            "route-page-root",
+            "route-page-account",
+            "route-page-account-profile",
+            "route-page-profile-handle"
+          ],
+          "edgeIds": ["edge-account-personal-harbor", "edge-account-profile", "edge-profile-public"]
+        },
+        { "targetRouteId": "route-page-root", "routeIds": ["route-page-root"], "edgeIds": [] },
+        {
+          "targetRouteId": "route-page-sign-in",
+          "routeIds": ["route-page-root", "route-page-player-sign-in", "route-page-sign-in"],
+          "edgeIds": ["edge-gateway-player-adapter", "edge-compat-player-sign-in"]
+        },
+        {
+          "targetRouteId": "route-page-studio-exchange",
+          "routeIds": ["route-page-root", "route-page-studio-library", "route-page-studio-exchange"],
+          "edgeIds": ["edge-workspace-creator", "edge-workspace-exchange"]
+        },
+        {
+          "targetRouteId": "route-page-studio-library",
+          "routeIds": ["route-page-root", "route-page-studio-library"],
+          "edgeIds": ["edge-workspace-creator"]
+        },
+        {
+          "targetRouteId": "route-page-studio-private-content",
+          "routeIds": ["route-page-root", "route-page-studio-library", "route-page-studio-private-content"],
+          "edgeIds": ["edge-workspace-creator", "edge-workspace-private-chronicle"]
+        },
+        {
+          "targetRouteId": "route-page-studio-sign-in",
+          "routeIds": ["route-page-root", "route-page-studio-sign-in"],
+          "edgeIds": ["edge-gateway-studio-adapter"]
+        },
+        {
+          "targetRouteId": "route-page-studio-tales-new",
+          "routeIds": ["route-page-root", "route-page-studio-library", "route-page-studio-tales-new"],
+          "edgeIds": ["edge-workspace-creator", "edge-studio-new"]
+        },
+        {
+          "targetRouteId": "route-page-studio-tales-taleid",
+          "routeIds": ["route-page-root", "route-page-studio-library", "route-page-studio-tales-taleid"],
+          "edgeIds": ["edge-workspace-creator", "edge-studio-tale"]
+        },
+        {
+          "targetRouteId": "route-page-studio-tales-taleid-artifacts",
+          "routeIds": [
+            "route-page-root",
+            "route-page-studio-library",
+            "route-page-studio-tales-taleid",
+            "route-page-studio-tales-taleid-artifacts"
+          ],
+          "edgeIds": ["edge-workspace-creator", "edge-studio-tale", "edge-studio-artifacts"]
+        },
+        {
+          "targetRouteId": "route-page-studio-tales-taleid-assets",
+          "routeIds": [
+            "route-page-root",
+            "route-page-studio-library",
+            "route-page-studio-tales-taleid",
+            "route-page-studio-tales-taleid-assets"
+          ],
+          "edgeIds": ["edge-workspace-creator", "edge-studio-tale", "edge-studio-assets"]
+        },
+        {
+          "targetRouteId": "route-page-studio-tales-taleid-locations",
+          "routeIds": [
+            "route-page-root",
+            "route-page-studio-library",
+            "route-page-studio-tales-taleid",
+            "route-page-studio-tales-taleid-locations"
+          ],
+          "edgeIds": ["edge-workspace-creator", "edge-studio-tale", "edge-studio-locations"]
+        },
+        {
+          "targetRouteId": "route-page-studio-tales-taleid-settings",
+          "routeIds": [
+            "route-page-root",
+            "route-page-studio-library",
+            "route-page-studio-tales-taleid",
+            "route-page-studio-tales-taleid-settings"
+          ],
+          "edgeIds": ["edge-workspace-creator", "edge-studio-tale", "edge-studio-settings"]
+        },
+        {
+          "targetRouteId": "route-page-studio-tales-taleid-versions",
+          "routeIds": [
+            "route-page-root",
+            "route-page-studio-library",
+            "route-page-studio-tales-taleid",
+            "route-page-studio-tales-taleid-versions"
+          ],
+          "edgeIds": ["edge-workspace-creator", "edge-studio-tale", "edge-studio-versions"]
+        },
+        {
+          "targetRouteId": "route-page-tales",
+          "routeIds": ["route-page-root", "route-page-tales"],
+          "edgeIds": ["edge-global-explore"]
+        }
+      ]
+    },
+    {
+      "id": "AUTHENTICATED_FULL_CAPABILITY_GATEWAY",
+      "authentication": "AUTHENTICATED",
+      "capabilities": ["PLAYER", "CAPTAIN", "CREATOR"],
+      "reachableRouteIds": [
+        "route-page-account",
+        "route-page-account-accessibility",
+        "route-page-account-data",
+        "route-page-account-linked-identities",
+        "route-page-account-notifications",
+        "route-page-account-personal-information",
+        "route-page-account-preferences",
+        "route-page-account-privacy",
+        "route-page-account-profile",
+        "route-page-account-profile-view",
+        "route-page-account-roles",
+        "route-page-account-security",
+        "route-page-account-sessions",
+        "route-page-captain-library",
+        "route-page-captain-sessions-sessionid",
+        "route-page-captain-sign-in",
+        "route-page-captain-tales-taleid",
+        "route-page-captain-voyages-playthroughid-player-preview",
+        "route-page-chronicles-taleslug",
+        "route-page-community",
+        "route-page-community-artifacts",
+        "route-page-community-audio",
+        "route-page-community-chronicles",
+        "route-page-community-collections",
+        "route-page-community-collections-slug",
+        "route-page-community-creators",
+        "route-page-community-creators-handle",
+        "route-page-community-featured",
+        "route-page-community-guides",
+        "route-page-community-guides-slug",
+        "route-page-community-maps",
+        "route-page-community-slug",
+        "route-page-community-templates",
+        "route-page-community-voyage-logs",
+        "route-page-community-voyage-logs-consent",
+        "route-page-community-voyage-logs-owner",
+        "route-page-community-voyage-logs-owner-id",
+        "route-page-community-voyage-logs-slug",
+        "route-page-passport",
+        "route-page-passport-artifacts",
+        "route-page-passport-artifacts-artifactId",
+        "route-page-passport-history",
+        "route-page-passport-history-recordId",
+        "route-page-passport-memories",
+        "route-page-passport-saved",
+        "route-page-play-taleslug",
+        "route-page-play-taleslug-history",
+        "route-page-play-taleslug-session-sessionid",
+        "route-page-player-library",
+        "route-page-player-playthroughs-playthroughid",
+        "route-page-player-playthroughs-playthroughid-journal",
+        "route-page-player-sign-in",
+        "route-page-profile-handle",
+        "route-page-root",
+        "route-page-sign-in",
+        "route-page-studio-exchange",
+        "route-page-studio-library",
+        "route-page-studio-private-content",
+        "route-page-studio-sign-in",
+        "route-page-studio-tales-new",
+        "route-page-studio-tales-taleid",
+        "route-page-studio-tales-taleid-artifacts",
+        "route-page-studio-tales-taleid-assets",
+        "route-page-studio-tales-taleid-locations",
+        "route-page-studio-tales-taleid-settings",
+        "route-page-studio-tales-taleid-versions",
+        "route-page-tales"
+      ],
+      "shortestPaths": [
+        {
+          "targetRouteId": "route-page-account",
+          "routeIds": ["route-page-root", "route-page-account"],
+          "edgeIds": ["edge-account-personal-harbor"]
+        },
+        {
+          "targetRouteId": "route-page-account-accessibility",
+          "routeIds": ["route-page-root", "route-page-account", "route-page-account-accessibility"],
+          "edgeIds": ["edge-account-personal-harbor", "edge-account-accessibility"]
+        },
+        {
+          "targetRouteId": "route-page-account-data",
+          "routeIds": ["route-page-root", "route-page-account", "route-page-account-data"],
+          "edgeIds": ["edge-account-personal-harbor", "edge-account-data"]
+        },
+        {
+          "targetRouteId": "route-page-account-linked-identities",
+          "routeIds": ["route-page-root", "route-page-account", "route-page-account-linked-identities"],
+          "edgeIds": ["edge-account-personal-harbor", "edge-account-linked-identities"]
+        },
+        {
+          "targetRouteId": "route-page-account-notifications",
+          "routeIds": ["route-page-root", "route-page-account", "route-page-account-notifications"],
+          "edgeIds": ["edge-account-personal-harbor", "edge-account-notifications"]
+        },
+        {
+          "targetRouteId": "route-page-account-personal-information",
+          "routeIds": ["route-page-root", "route-page-account", "route-page-account-personal-information"],
+          "edgeIds": ["edge-account-personal-harbor", "edge-account-personal-information"]
+        },
+        {
+          "targetRouteId": "route-page-account-preferences",
+          "routeIds": ["route-page-root", "route-page-account-preferences"],
+          "edgeIds": ["edge-account-preferences"]
+        },
+        {
+          "targetRouteId": "route-page-account-privacy",
+          "routeIds": ["route-page-root", "route-page-account-privacy"],
+          "edgeIds": ["edge-account-privacy"]
+        },
+        {
+          "targetRouteId": "route-page-account-profile",
+          "routeIds": ["route-page-root", "route-page-account", "route-page-account-profile"],
+          "edgeIds": ["edge-account-personal-harbor", "edge-account-profile"]
+        },
+        {
+          "targetRouteId": "route-page-account-profile-view",
+          "routeIds": ["route-page-root", "route-page-account", "route-page-account-profile-view"],
+          "edgeIds": ["edge-account-personal-harbor", "edge-account-public-profile-view"]
+        },
+        {
+          "targetRouteId": "route-page-account-roles",
+          "routeIds": ["route-page-root", "route-page-account-roles"],
+          "edgeIds": ["edge-account-workspaces"]
+        },
+        {
+          "targetRouteId": "route-page-account-security",
+          "routeIds": ["route-page-root", "route-page-account-security"],
+          "edgeIds": ["edge-account-security"]
+        },
+        {
+          "targetRouteId": "route-page-account-sessions",
+          "routeIds": ["route-page-root", "route-page-account-sessions"],
+          "edgeIds": ["edge-account-sessions"]
+        },
+        {
+          "targetRouteId": "route-page-captain-library",
+          "routeIds": ["route-page-root", "route-page-captain-library"],
+          "edgeIds": ["edge-workspace-captain"]
+        },
+        {
+          "targetRouteId": "route-page-captain-sessions-sessionid",
+          "routeIds": ["route-page-root", "route-page-captain-library", "route-page-captain-sessions-sessionid"],
+          "edgeIds": ["edge-workspace-captain", "edge-captain-session"]
+        },
+        {
+          "targetRouteId": "route-page-captain-sign-in",
+          "routeIds": ["route-page-root", "route-page-captain-sign-in"],
+          "edgeIds": ["edge-gateway-captain-adapter"]
+        },
+        {
+          "targetRouteId": "route-page-captain-tales-taleid",
+          "routeIds": ["route-page-root", "route-page-captain-library", "route-page-captain-tales-taleid"],
+          "edgeIds": ["edge-workspace-captain", "edge-captain-tale"]
+        },
+        {
+          "targetRouteId": "route-page-captain-voyages-playthroughid-player-preview",
+          "routeIds": [
+            "route-page-root",
+            "route-page-captain-library",
+            "route-page-captain-voyages-playthroughid-player-preview"
+          ],
+          "edgeIds": ["edge-workspace-captain", "edge-captain-preview"]
+        },
+        {
+          "targetRouteId": "route-page-chronicles-taleslug",
+          "routeIds": ["route-page-root", "route-page-tales", "route-page-chronicles-taleslug"],
+          "edgeIds": ["edge-global-explore", "edge-tales-chronicle-preview"]
+        },
+        {
+          "targetRouteId": "route-page-community",
+          "routeIds": ["route-page-root", "route-page-community"],
+          "edgeIds": ["edge-global-community"]
+        },
+        {
+          "targetRouteId": "route-page-community-artifacts",
+          "routeIds": ["route-page-root", "route-page-community", "route-page-community-artifacts"],
+          "edgeIds": ["edge-global-community", "edge-district-artifacts"]
+        },
+        {
+          "targetRouteId": "route-page-community-audio",
+          "routeIds": ["route-page-root", "route-page-community", "route-page-community-audio"],
+          "edgeIds": ["edge-global-community", "edge-district-audio-and-reveal-assets"]
+        },
+        {
+          "targetRouteId": "route-page-community-chronicles",
+          "routeIds": ["route-page-root", "route-page-community", "route-page-community-chronicles"],
+          "edgeIds": ["edge-global-community", "edge-district-chronicles"]
+        },
+        {
+          "targetRouteId": "route-page-community-collections",
+          "routeIds": ["route-page-root", "route-page-community", "route-page-community-collections"],
+          "edgeIds": ["edge-global-community", "edge-district-collections"]
+        },
+        {
+          "targetRouteId": "route-page-community-collections-slug",
+          "routeIds": [
+            "route-page-root",
+            "route-page-community",
+            "route-page-community-collections",
+            "route-page-community-collections-slug"
+          ],
+          "edgeIds": ["edge-global-community", "edge-district-collections", "edge-dynamic-community-collections-slug"]
+        },
+        {
+          "targetRouteId": "route-page-community-creators",
+          "routeIds": ["route-page-root", "route-page-community", "route-page-community-creators"],
+          "edgeIds": ["edge-global-community", "edge-district-creators"]
+        },
+        {
+          "targetRouteId": "route-page-community-creators-handle",
+          "routeIds": [
+            "route-page-root",
+            "route-page-community",
+            "route-page-community-creators",
+            "route-page-community-creators-handle"
+          ],
+          "edgeIds": ["edge-global-community", "edge-district-creators", "edge-dynamic-community-creators-handle"]
+        },
+        {
+          "targetRouteId": "route-page-community-featured",
+          "routeIds": ["route-page-root", "route-page-community", "route-page-community-featured"],
+          "edgeIds": ["edge-global-community", "edge-district-featured"]
+        },
+        {
+          "targetRouteId": "route-page-community-guides",
+          "routeIds": ["route-page-root", "route-page-community", "route-page-community-guides"],
+          "edgeIds": ["edge-global-community", "edge-district-guides"]
+        },
+        {
+          "targetRouteId": "route-page-community-guides-slug",
+          "routeIds": [
+            "route-page-root",
+            "route-page-community",
+            "route-page-community-guides",
+            "route-page-community-guides-slug"
+          ],
+          "edgeIds": ["edge-global-community", "edge-district-guides", "edge-dynamic-community-guides-slug"]
+        },
+        {
+          "targetRouteId": "route-page-community-maps",
+          "routeIds": ["route-page-root", "route-page-community", "route-page-community-maps"],
+          "edgeIds": ["edge-global-community", "edge-district-maps-and-location-packs"]
+        },
+        {
+          "targetRouteId": "route-page-community-slug",
+          "routeIds": [
+            "route-page-root",
+            "route-page-community",
+            "route-page-community-chronicles",
+            "route-page-community-slug"
+          ],
+          "edgeIds": ["edge-global-community", "edge-district-chronicles", "edge-dynamic-community-slug"]
+        },
+        {
+          "targetRouteId": "route-page-community-templates",
+          "routeIds": ["route-page-root", "route-page-community", "route-page-community-templates"],
+          "edgeIds": ["edge-global-community", "edge-district-templates"]
+        },
+        {
+          "targetRouteId": "route-page-community-voyage-logs",
+          "routeIds": ["route-page-root", "route-page-community", "route-page-community-voyage-logs"],
+          "edgeIds": ["edge-global-community", "edge-district-voyage-logs"]
+        },
+        {
+          "targetRouteId": "route-page-community-voyage-logs-consent",
+          "routeIds": [
+            "route-page-root",
+            "route-page-community",
+            "route-page-community-voyage-logs",
+            "route-page-community-voyage-logs-consent"
+          ],
+          "edgeIds": ["edge-global-community", "edge-district-voyage-logs", "edge-community-voyage-log-consent"]
+        },
+        {
+          "targetRouteId": "route-page-community-voyage-logs-owner",
+          "routeIds": [
+            "route-page-root",
+            "route-page-community",
+            "route-page-community-voyage-logs",
+            "route-page-community-voyage-logs-owner"
+          ],
+          "edgeIds": ["edge-global-community", "edge-district-voyage-logs", "edge-community-voyage-log-owner"]
+        },
+        {
+          "targetRouteId": "route-page-community-voyage-logs-owner-id",
+          "routeIds": [
+            "route-page-root",
+            "route-page-community",
+            "route-page-community-voyage-logs",
+            "route-page-community-voyage-logs-owner",
+            "route-page-community-voyage-logs-owner-id"
+          ],
+          "edgeIds": [
+            "edge-global-community",
+            "edge-district-voyage-logs",
+            "edge-community-voyage-log-owner",
+            "edge-voyage-log-owner-detail"
+          ]
+        },
+        {
+          "targetRouteId": "route-page-community-voyage-logs-slug",
+          "routeIds": [
+            "route-page-root",
+            "route-page-community",
+            "route-page-community-voyage-logs",
+            "route-page-community-voyage-logs-slug"
+          ],
+          "edgeIds": ["edge-global-community", "edge-district-voyage-logs", "edge-dynamic-community-voyage-logs-slug"]
+        },
+        {
+          "targetRouteId": "route-page-passport",
+          "routeIds": ["route-page-root", "route-page-passport"],
+          "edgeIds": ["edge-account-passport"]
+        },
+        {
+          "targetRouteId": "route-page-passport-artifacts",
+          "routeIds": ["route-page-root", "route-page-passport-artifacts"],
+          "edgeIds": ["edge-account-artifacts"]
+        },
+        {
+          "targetRouteId": "route-page-passport-artifacts-artifactId",
+          "routeIds": ["route-page-root", "route-page-passport-artifacts", "route-page-passport-artifacts-artifactId"],
+          "edgeIds": ["edge-account-artifacts", "edge-passport-artifact-detail"]
+        },
+        {
+          "targetRouteId": "route-page-passport-history",
+          "routeIds": ["route-page-root", "route-page-passport-history"],
+          "edgeIds": ["edge-account-history"]
+        },
+        {
+          "targetRouteId": "route-page-passport-history-recordId",
+          "routeIds": ["route-page-root", "route-page-passport-history", "route-page-passport-history-recordId"],
+          "edgeIds": ["edge-account-history", "edge-passport-history-detail"]
+        },
+        {
+          "targetRouteId": "route-page-passport-memories",
+          "routeIds": ["route-page-root", "route-page-passport", "route-page-passport-memories"],
+          "edgeIds": ["edge-account-passport", "edge-passport-memories"]
+        },
+        {
+          "targetRouteId": "route-page-passport-saved",
+          "routeIds": ["route-page-root", "route-page-passport", "route-page-passport-saved"],
+          "edgeIds": ["edge-account-passport", "edge-passport-saved"]
+        },
+        {
+          "targetRouteId": "route-page-play-taleslug",
+          "routeIds": ["route-page-root", "route-page-tales", "route-page-play-taleslug"],
+          "edgeIds": ["edge-global-explore", "edge-tales-chronicle"]
+        },
+        {
+          "targetRouteId": "route-page-play-taleslug-history",
+          "routeIds": [
+            "route-page-root",
+            "route-page-tales",
+            "route-page-play-taleslug",
+            "route-page-play-taleslug-history"
+          ],
+          "edgeIds": ["edge-global-explore", "edge-tales-chronicle", "edge-play-history"]
+        },
+        {
+          "targetRouteId": "route-page-play-taleslug-session-sessionid",
+          "routeIds": [
+            "route-page-root",
+            "route-page-tales",
+            "route-page-play-taleslug",
+            "route-page-play-taleslug-session-sessionid"
+          ],
+          "edgeIds": ["edge-global-explore", "edge-tales-chronicle", "edge-play-session"]
+        },
+        {
+          "targetRouteId": "route-page-player-library",
+          "routeIds": ["route-page-root", "route-page-player-library"],
+          "edgeIds": ["edge-workspace-player"]
+        },
+        {
+          "targetRouteId": "route-page-player-playthroughs-playthroughid",
+          "routeIds": ["route-page-root", "route-page-player-library", "route-page-player-playthroughs-playthroughid"],
+          "edgeIds": ["edge-workspace-player", "edge-player-voyage"]
+        },
+        {
+          "targetRouteId": "route-page-player-playthroughs-playthroughid-journal",
+          "routeIds": [
+            "route-page-root",
+            "route-page-player-library",
+            "route-page-player-playthroughs-playthroughid-journal"
+          ],
+          "edgeIds": ["edge-workspace-player", "edge-player-journal"]
+        },
+        {
+          "targetRouteId": "route-page-player-sign-in",
+          "routeIds": ["route-page-root", "route-page-player-sign-in"],
+          "edgeIds": ["edge-gateway-player-adapter"]
+        },
+        {
+          "targetRouteId": "route-page-profile-handle",
+          "routeIds": [
+            "route-page-root",
+            "route-page-account",
+            "route-page-account-profile",
+            "route-page-profile-handle"
+          ],
+          "edgeIds": ["edge-account-personal-harbor", "edge-account-profile", "edge-profile-public"]
+        },
+        { "targetRouteId": "route-page-root", "routeIds": ["route-page-root"], "edgeIds": [] },
+        {
+          "targetRouteId": "route-page-sign-in",
+          "routeIds": ["route-page-root", "route-page-player-sign-in", "route-page-sign-in"],
+          "edgeIds": ["edge-gateway-player-adapter", "edge-compat-player-sign-in"]
+        },
+        {
+          "targetRouteId": "route-page-studio-exchange",
+          "routeIds": ["route-page-root", "route-page-studio-library", "route-page-studio-exchange"],
+          "edgeIds": ["edge-workspace-creator", "edge-workspace-exchange"]
+        },
+        {
+          "targetRouteId": "route-page-studio-library",
+          "routeIds": ["route-page-root", "route-page-studio-library"],
+          "edgeIds": ["edge-workspace-creator"]
+        },
+        {
+          "targetRouteId": "route-page-studio-private-content",
+          "routeIds": ["route-page-root", "route-page-studio-library", "route-page-studio-private-content"],
+          "edgeIds": ["edge-workspace-creator", "edge-workspace-private-chronicle"]
+        },
+        {
+          "targetRouteId": "route-page-studio-sign-in",
+          "routeIds": ["route-page-root", "route-page-studio-sign-in"],
+          "edgeIds": ["edge-gateway-studio-adapter"]
+        },
+        {
+          "targetRouteId": "route-page-studio-tales-new",
+          "routeIds": ["route-page-root", "route-page-studio-library", "route-page-studio-tales-new"],
+          "edgeIds": ["edge-workspace-creator", "edge-studio-new"]
+        },
+        {
+          "targetRouteId": "route-page-studio-tales-taleid",
+          "routeIds": ["route-page-root", "route-page-studio-library", "route-page-studio-tales-taleid"],
+          "edgeIds": ["edge-workspace-creator", "edge-studio-tale"]
+        },
+        {
+          "targetRouteId": "route-page-studio-tales-taleid-artifacts",
+          "routeIds": [
+            "route-page-root",
+            "route-page-studio-library",
+            "route-page-studio-tales-taleid",
+            "route-page-studio-tales-taleid-artifacts"
+          ],
+          "edgeIds": ["edge-workspace-creator", "edge-studio-tale", "edge-studio-artifacts"]
+        },
+        {
+          "targetRouteId": "route-page-studio-tales-taleid-assets",
+          "routeIds": [
+            "route-page-root",
+            "route-page-studio-library",
+            "route-page-studio-tales-taleid",
+            "route-page-studio-tales-taleid-assets"
+          ],
+          "edgeIds": ["edge-workspace-creator", "edge-studio-tale", "edge-studio-assets"]
+        },
+        {
+          "targetRouteId": "route-page-studio-tales-taleid-locations",
+          "routeIds": [
+            "route-page-root",
+            "route-page-studio-library",
+            "route-page-studio-tales-taleid",
+            "route-page-studio-tales-taleid-locations"
+          ],
+          "edgeIds": ["edge-workspace-creator", "edge-studio-tale", "edge-studio-locations"]
+        },
+        {
+          "targetRouteId": "route-page-studio-tales-taleid-settings",
+          "routeIds": [
+            "route-page-root",
+            "route-page-studio-library",
+            "route-page-studio-tales-taleid",
+            "route-page-studio-tales-taleid-settings"
+          ],
+          "edgeIds": ["edge-workspace-creator", "edge-studio-tale", "edge-studio-settings"]
+        },
+        {
+          "targetRouteId": "route-page-studio-tales-taleid-versions",
+          "routeIds": [
+            "route-page-root",
+            "route-page-studio-library",
+            "route-page-studio-tales-taleid",
+            "route-page-studio-tales-taleid-versions"
+          ],
+          "edgeIds": ["edge-workspace-creator", "edge-studio-tale", "edge-studio-versions"]
+        },
+        {
+          "targetRouteId": "route-page-tales",
+          "routeIds": ["route-page-root", "route-page-tales"],
+          "edgeIds": ["edge-global-explore"]
+        }
+      ]
+    },
+    {
+      "id": "AUTHENTICATED_MODERATOR_GATEWAY",
+      "authentication": "AUTHENTICATED",
+      "capabilities": ["PLAYER", "MODERATOR"],
+      "reachableRouteIds": [
+        "route-page-account",
+        "route-page-account-accessibility",
+        "route-page-account-data",
+        "route-page-account-linked-identities",
+        "route-page-account-notifications",
+        "route-page-account-personal-information",
+        "route-page-account-preferences",
+        "route-page-account-privacy",
+        "route-page-account-profile",
+        "route-page-account-profile-view",
+        "route-page-account-roles",
+        "route-page-account-security",
+        "route-page-account-sessions",
+        "route-page-captain-sign-in",
+        "route-page-chronicles-taleslug",
+        "route-page-community",
+        "route-page-community-artifacts",
+        "route-page-community-audio",
+        "route-page-community-chronicles",
+        "route-page-community-collections",
+        "route-page-community-collections-slug",
+        "route-page-community-creators",
+        "route-page-community-creators-handle",
+        "route-page-community-featured",
+        "route-page-community-guides",
+        "route-page-community-guides-slug",
+        "route-page-community-maps",
+        "route-page-community-moderation",
+        "route-page-community-moderation-id",
+        "route-page-community-slug",
+        "route-page-community-templates",
+        "route-page-community-voyage-logs",
+        "route-page-community-voyage-logs-consent",
+        "route-page-community-voyage-logs-owner",
+        "route-page-community-voyage-logs-owner-id",
+        "route-page-community-voyage-logs-slug",
+        "route-page-passport",
+        "route-page-passport-artifacts",
+        "route-page-passport-artifacts-artifactId",
+        "route-page-passport-history",
+        "route-page-passport-history-recordId",
+        "route-page-passport-memories",
+        "route-page-passport-saved",
+        "route-page-play-taleslug",
+        "route-page-play-taleslug-history",
+        "route-page-play-taleslug-session-sessionid",
+        "route-page-player-library",
+        "route-page-player-playthroughs-playthroughid",
+        "route-page-player-playthroughs-playthroughid-journal",
+        "route-page-player-sign-in",
+        "route-page-profile-handle",
+        "route-page-root",
+        "route-page-sign-in",
+        "route-page-studio-sign-in",
+        "route-page-tales"
+      ],
+      "shortestPaths": [
+        {
+          "targetRouteId": "route-page-account",
+          "routeIds": ["route-page-root", "route-page-account"],
+          "edgeIds": ["edge-account-personal-harbor"]
+        },
+        {
+          "targetRouteId": "route-page-account-accessibility",
+          "routeIds": ["route-page-root", "route-page-account", "route-page-account-accessibility"],
+          "edgeIds": ["edge-account-personal-harbor", "edge-account-accessibility"]
+        },
+        {
+          "targetRouteId": "route-page-account-data",
+          "routeIds": ["route-page-root", "route-page-account", "route-page-account-data"],
+          "edgeIds": ["edge-account-personal-harbor", "edge-account-data"]
+        },
+        {
+          "targetRouteId": "route-page-account-linked-identities",
+          "routeIds": ["route-page-root", "route-page-account", "route-page-account-linked-identities"],
+          "edgeIds": ["edge-account-personal-harbor", "edge-account-linked-identities"]
+        },
+        {
+          "targetRouteId": "route-page-account-notifications",
+          "routeIds": ["route-page-root", "route-page-account", "route-page-account-notifications"],
+          "edgeIds": ["edge-account-personal-harbor", "edge-account-notifications"]
+        },
+        {
+          "targetRouteId": "route-page-account-personal-information",
+          "routeIds": ["route-page-root", "route-page-account", "route-page-account-personal-information"],
+          "edgeIds": ["edge-account-personal-harbor", "edge-account-personal-information"]
+        },
+        {
+          "targetRouteId": "route-page-account-preferences",
+          "routeIds": ["route-page-root", "route-page-account-preferences"],
+          "edgeIds": ["edge-account-preferences"]
+        },
+        {
+          "targetRouteId": "route-page-account-privacy",
+          "routeIds": ["route-page-root", "route-page-account-privacy"],
+          "edgeIds": ["edge-account-privacy"]
+        },
+        {
+          "targetRouteId": "route-page-account-profile",
+          "routeIds": ["route-page-root", "route-page-account", "route-page-account-profile"],
+          "edgeIds": ["edge-account-personal-harbor", "edge-account-profile"]
+        },
+        {
+          "targetRouteId": "route-page-account-profile-view",
+          "routeIds": ["route-page-root", "route-page-account", "route-page-account-profile-view"],
+          "edgeIds": ["edge-account-personal-harbor", "edge-account-public-profile-view"]
+        },
+        {
+          "targetRouteId": "route-page-account-roles",
+          "routeIds": ["route-page-root", "route-page-account-roles"],
+          "edgeIds": ["edge-account-workspaces"]
+        },
+        {
+          "targetRouteId": "route-page-account-security",
+          "routeIds": ["route-page-root", "route-page-account-security"],
+          "edgeIds": ["edge-account-security"]
+        },
+        {
+          "targetRouteId": "route-page-account-sessions",
+          "routeIds": ["route-page-root", "route-page-account-sessions"],
+          "edgeIds": ["edge-account-sessions"]
+        },
+        {
+          "targetRouteId": "route-page-captain-sign-in",
+          "routeIds": ["route-page-root", "route-page-captain-sign-in"],
+          "edgeIds": ["edge-gateway-captain-adapter"]
+        },
+        {
+          "targetRouteId": "route-page-chronicles-taleslug",
+          "routeIds": ["route-page-root", "route-page-tales", "route-page-chronicles-taleslug"],
+          "edgeIds": ["edge-global-explore", "edge-tales-chronicle-preview"]
+        },
+        {
+          "targetRouteId": "route-page-community",
+          "routeIds": ["route-page-root", "route-page-community"],
+          "edgeIds": ["edge-global-community"]
+        },
+        {
+          "targetRouteId": "route-page-community-artifacts",
+          "routeIds": ["route-page-root", "route-page-community", "route-page-community-artifacts"],
+          "edgeIds": ["edge-global-community", "edge-district-artifacts"]
+        },
+        {
+          "targetRouteId": "route-page-community-audio",
+          "routeIds": ["route-page-root", "route-page-community", "route-page-community-audio"],
+          "edgeIds": ["edge-global-community", "edge-district-audio-and-reveal-assets"]
+        },
+        {
+          "targetRouteId": "route-page-community-chronicles",
+          "routeIds": ["route-page-root", "route-page-community", "route-page-community-chronicles"],
+          "edgeIds": ["edge-global-community", "edge-district-chronicles"]
+        },
+        {
+          "targetRouteId": "route-page-community-collections",
+          "routeIds": ["route-page-root", "route-page-community", "route-page-community-collections"],
+          "edgeIds": ["edge-global-community", "edge-district-collections"]
+        },
+        {
+          "targetRouteId": "route-page-community-collections-slug",
+          "routeIds": [
+            "route-page-root",
+            "route-page-community",
+            "route-page-community-collections",
+            "route-page-community-collections-slug"
+          ],
+          "edgeIds": ["edge-global-community", "edge-district-collections", "edge-dynamic-community-collections-slug"]
+        },
+        {
+          "targetRouteId": "route-page-community-creators",
+          "routeIds": ["route-page-root", "route-page-community", "route-page-community-creators"],
+          "edgeIds": ["edge-global-community", "edge-district-creators"]
+        },
+        {
+          "targetRouteId": "route-page-community-creators-handle",
+          "routeIds": [
+            "route-page-root",
+            "route-page-community",
+            "route-page-community-creators",
+            "route-page-community-creators-handle"
+          ],
+          "edgeIds": ["edge-global-community", "edge-district-creators", "edge-dynamic-community-creators-handle"]
+        },
+        {
+          "targetRouteId": "route-page-community-featured",
+          "routeIds": ["route-page-root", "route-page-community", "route-page-community-featured"],
+          "edgeIds": ["edge-global-community", "edge-district-featured"]
+        },
+        {
+          "targetRouteId": "route-page-community-guides",
+          "routeIds": ["route-page-root", "route-page-community", "route-page-community-guides"],
+          "edgeIds": ["edge-global-community", "edge-district-guides"]
+        },
+        {
+          "targetRouteId": "route-page-community-guides-slug",
+          "routeIds": [
+            "route-page-root",
+            "route-page-community",
+            "route-page-community-guides",
+            "route-page-community-guides-slug"
+          ],
+          "edgeIds": ["edge-global-community", "edge-district-guides", "edge-dynamic-community-guides-slug"]
+        },
+        {
+          "targetRouteId": "route-page-community-maps",
+          "routeIds": ["route-page-root", "route-page-community", "route-page-community-maps"],
+          "edgeIds": ["edge-global-community", "edge-district-maps-and-location-packs"]
+        },
+        {
+          "targetRouteId": "route-page-community-moderation",
+          "routeIds": ["route-page-root", "route-page-community-moderation"],
+          "edgeIds": ["edge-workspace-moderation"]
+        },
+        {
+          "targetRouteId": "route-page-community-moderation-id",
+          "routeIds": ["route-page-root", "route-page-community-moderation", "route-page-community-moderation-id"],
+          "edgeIds": ["edge-workspace-moderation", "edge-moderation-detail"]
+        },
+        {
+          "targetRouteId": "route-page-community-slug",
+          "routeIds": [
+            "route-page-root",
+            "route-page-community",
+            "route-page-community-chronicles",
+            "route-page-community-slug"
+          ],
+          "edgeIds": ["edge-global-community", "edge-district-chronicles", "edge-dynamic-community-slug"]
+        },
+        {
+          "targetRouteId": "route-page-community-templates",
+          "routeIds": ["route-page-root", "route-page-community", "route-page-community-templates"],
+          "edgeIds": ["edge-global-community", "edge-district-templates"]
+        },
+        {
+          "targetRouteId": "route-page-community-voyage-logs",
+          "routeIds": ["route-page-root", "route-page-community", "route-page-community-voyage-logs"],
+          "edgeIds": ["edge-global-community", "edge-district-voyage-logs"]
+        },
+        {
+          "targetRouteId": "route-page-community-voyage-logs-consent",
+          "routeIds": [
+            "route-page-root",
+            "route-page-community",
+            "route-page-community-voyage-logs",
+            "route-page-community-voyage-logs-consent"
+          ],
+          "edgeIds": ["edge-global-community", "edge-district-voyage-logs", "edge-community-voyage-log-consent"]
+        },
+        {
+          "targetRouteId": "route-page-community-voyage-logs-owner",
+          "routeIds": [
+            "route-page-root",
+            "route-page-community",
+            "route-page-community-voyage-logs",
+            "route-page-community-voyage-logs-owner"
+          ],
+          "edgeIds": ["edge-global-community", "edge-district-voyage-logs", "edge-community-voyage-log-owner"]
+        },
+        {
+          "targetRouteId": "route-page-community-voyage-logs-owner-id",
+          "routeIds": [
+            "route-page-root",
+            "route-page-community",
+            "route-page-community-voyage-logs",
+            "route-page-community-voyage-logs-owner",
+            "route-page-community-voyage-logs-owner-id"
+          ],
+          "edgeIds": [
+            "edge-global-community",
+            "edge-district-voyage-logs",
+            "edge-community-voyage-log-owner",
+            "edge-voyage-log-owner-detail"
+          ]
+        },
+        {
+          "targetRouteId": "route-page-community-voyage-logs-slug",
+          "routeIds": [
+            "route-page-root",
+            "route-page-community",
+            "route-page-community-voyage-logs",
+            "route-page-community-voyage-logs-slug"
+          ],
+          "edgeIds": ["edge-global-community", "edge-district-voyage-logs", "edge-dynamic-community-voyage-logs-slug"]
+        },
+        {
+          "targetRouteId": "route-page-passport",
+          "routeIds": ["route-page-root", "route-page-passport"],
+          "edgeIds": ["edge-account-passport"]
+        },
+        {
+          "targetRouteId": "route-page-passport-artifacts",
+          "routeIds": ["route-page-root", "route-page-passport-artifacts"],
+          "edgeIds": ["edge-account-artifacts"]
+        },
+        {
+          "targetRouteId": "route-page-passport-artifacts-artifactId",
+          "routeIds": ["route-page-root", "route-page-passport-artifacts", "route-page-passport-artifacts-artifactId"],
+          "edgeIds": ["edge-account-artifacts", "edge-passport-artifact-detail"]
+        },
+        {
+          "targetRouteId": "route-page-passport-history",
+          "routeIds": ["route-page-root", "route-page-passport-history"],
+          "edgeIds": ["edge-account-history"]
+        },
+        {
+          "targetRouteId": "route-page-passport-history-recordId",
+          "routeIds": ["route-page-root", "route-page-passport-history", "route-page-passport-history-recordId"],
+          "edgeIds": ["edge-account-history", "edge-passport-history-detail"]
+        },
+        {
+          "targetRouteId": "route-page-passport-memories",
+          "routeIds": ["route-page-root", "route-page-passport", "route-page-passport-memories"],
+          "edgeIds": ["edge-account-passport", "edge-passport-memories"]
+        },
+        {
+          "targetRouteId": "route-page-passport-saved",
+          "routeIds": ["route-page-root", "route-page-passport", "route-page-passport-saved"],
+          "edgeIds": ["edge-account-passport", "edge-passport-saved"]
+        },
+        {
+          "targetRouteId": "route-page-play-taleslug",
+          "routeIds": ["route-page-root", "route-page-tales", "route-page-play-taleslug"],
+          "edgeIds": ["edge-global-explore", "edge-tales-chronicle"]
+        },
+        {
+          "targetRouteId": "route-page-play-taleslug-history",
+          "routeIds": [
+            "route-page-root",
+            "route-page-tales",
+            "route-page-play-taleslug",
+            "route-page-play-taleslug-history"
+          ],
+          "edgeIds": ["edge-global-explore", "edge-tales-chronicle", "edge-play-history"]
+        },
+        {
+          "targetRouteId": "route-page-play-taleslug-session-sessionid",
+          "routeIds": [
+            "route-page-root",
+            "route-page-tales",
+            "route-page-play-taleslug",
+            "route-page-play-taleslug-session-sessionid"
+          ],
+          "edgeIds": ["edge-global-explore", "edge-tales-chronicle", "edge-play-session"]
+        },
+        {
+          "targetRouteId": "route-page-player-library",
+          "routeIds": ["route-page-root", "route-page-player-library"],
+          "edgeIds": ["edge-workspace-player"]
+        },
+        {
+          "targetRouteId": "route-page-player-playthroughs-playthroughid",
+          "routeIds": ["route-page-root", "route-page-player-library", "route-page-player-playthroughs-playthroughid"],
+          "edgeIds": ["edge-workspace-player", "edge-player-voyage"]
+        },
+        {
+          "targetRouteId": "route-page-player-playthroughs-playthroughid-journal",
+          "routeIds": [
+            "route-page-root",
+            "route-page-player-library",
+            "route-page-player-playthroughs-playthroughid-journal"
+          ],
+          "edgeIds": ["edge-workspace-player", "edge-player-journal"]
+        },
+        {
+          "targetRouteId": "route-page-player-sign-in",
+          "routeIds": ["route-page-root", "route-page-player-sign-in"],
+          "edgeIds": ["edge-gateway-player-adapter"]
+        },
+        {
+          "targetRouteId": "route-page-profile-handle",
+          "routeIds": [
+            "route-page-root",
+            "route-page-account",
+            "route-page-account-profile",
+            "route-page-profile-handle"
+          ],
+          "edgeIds": ["edge-account-personal-harbor", "edge-account-profile", "edge-profile-public"]
+        },
+        { "targetRouteId": "route-page-root", "routeIds": ["route-page-root"], "edgeIds": [] },
+        {
+          "targetRouteId": "route-page-sign-in",
+          "routeIds": ["route-page-root", "route-page-player-sign-in", "route-page-sign-in"],
+          "edgeIds": ["edge-gateway-player-adapter", "edge-compat-player-sign-in"]
+        },
+        {
+          "targetRouteId": "route-page-studio-sign-in",
+          "routeIds": ["route-page-root", "route-page-studio-sign-in"],
+          "edgeIds": ["edge-gateway-studio-adapter"]
+        },
+        {
+          "targetRouteId": "route-page-tales",
+          "routeIds": ["route-page-root", "route-page-tales"],
+          "edgeIds": ["edge-global-explore"]
+        }
+      ]
+    },
+    {
+      "id": "RESTRICTED_ACCOUNT_GATEWAY",
+      "authentication": "RESTRICTED",
+      "capabilities": [],
+      "reachableRouteIds": [
+        "route-page-captain-sign-in",
+        "route-page-chronicles-taleslug",
+        "route-page-community",
+        "route-page-community-artifacts",
+        "route-page-community-audio",
+        "route-page-community-chronicles",
+        "route-page-community-collections",
+        "route-page-community-collections-slug",
+        "route-page-community-creators",
+        "route-page-community-creators-handle",
+        "route-page-community-featured",
+        "route-page-community-guides",
+        "route-page-community-guides-slug",
+        "route-page-community-maps",
+        "route-page-community-slug",
+        "route-page-community-templates",
+        "route-page-community-voyage-logs",
+        "route-page-community-voyage-logs-slug",
+        "route-page-play-taleslug",
+        "route-page-play-taleslug-history",
+        "route-page-play-taleslug-session-sessionid",
+        "route-page-player-sign-in",
+        "route-page-root",
+        "route-page-sign-in",
+        "route-page-studio-sign-in",
+        "route-page-tales"
+      ],
+      "shortestPaths": [
+        {
+          "targetRouteId": "route-page-captain-sign-in",
+          "routeIds": ["route-page-root", "route-page-captain-sign-in"],
+          "edgeIds": ["edge-gateway-captain-adapter"]
+        },
+        {
+          "targetRouteId": "route-page-chronicles-taleslug",
+          "routeIds": ["route-page-root", "route-page-tales", "route-page-chronicles-taleslug"],
+          "edgeIds": ["edge-global-explore", "edge-tales-chronicle-preview"]
+        },
+        {
+          "targetRouteId": "route-page-community",
+          "routeIds": ["route-page-root", "route-page-community"],
+          "edgeIds": ["edge-global-community"]
+        },
+        {
+          "targetRouteId": "route-page-community-artifacts",
+          "routeIds": ["route-page-root", "route-page-community", "route-page-community-artifacts"],
+          "edgeIds": ["edge-global-community", "edge-district-artifacts"]
+        },
+        {
+          "targetRouteId": "route-page-community-audio",
+          "routeIds": ["route-page-root", "route-page-community", "route-page-community-audio"],
+          "edgeIds": ["edge-global-community", "edge-district-audio-and-reveal-assets"]
+        },
+        {
+          "targetRouteId": "route-page-community-chronicles",
+          "routeIds": ["route-page-root", "route-page-community", "route-page-community-chronicles"],
+          "edgeIds": ["edge-global-community", "edge-district-chronicles"]
+        },
+        {
+          "targetRouteId": "route-page-community-collections",
+          "routeIds": ["route-page-root", "route-page-community", "route-page-community-collections"],
+          "edgeIds": ["edge-global-community", "edge-district-collections"]
+        },
+        {
+          "targetRouteId": "route-page-community-collections-slug",
+          "routeIds": [
+            "route-page-root",
+            "route-page-community",
+            "route-page-community-collections",
+            "route-page-community-collections-slug"
+          ],
+          "edgeIds": ["edge-global-community", "edge-district-collections", "edge-dynamic-community-collections-slug"]
+        },
+        {
+          "targetRouteId": "route-page-community-creators",
+          "routeIds": ["route-page-root", "route-page-community", "route-page-community-creators"],
+          "edgeIds": ["edge-global-community", "edge-district-creators"]
+        },
+        {
+          "targetRouteId": "route-page-community-creators-handle",
+          "routeIds": [
+            "route-page-root",
+            "route-page-community",
+            "route-page-community-creators",
+            "route-page-community-creators-handle"
+          ],
+          "edgeIds": ["edge-global-community", "edge-district-creators", "edge-dynamic-community-creators-handle"]
+        },
+        {
+          "targetRouteId": "route-page-community-featured",
+          "routeIds": ["route-page-root", "route-page-community", "route-page-community-featured"],
+          "edgeIds": ["edge-global-community", "edge-district-featured"]
+        },
+        {
+          "targetRouteId": "route-page-community-guides",
+          "routeIds": ["route-page-root", "route-page-community", "route-page-community-guides"],
+          "edgeIds": ["edge-global-community", "edge-district-guides"]
+        },
+        {
+          "targetRouteId": "route-page-community-guides-slug",
+          "routeIds": [
+            "route-page-root",
+            "route-page-community",
+            "route-page-community-guides",
+            "route-page-community-guides-slug"
+          ],
+          "edgeIds": ["edge-global-community", "edge-district-guides", "edge-dynamic-community-guides-slug"]
+        },
+        {
+          "targetRouteId": "route-page-community-maps",
+          "routeIds": ["route-page-root", "route-page-community", "route-page-community-maps"],
+          "edgeIds": ["edge-global-community", "edge-district-maps-and-location-packs"]
+        },
+        {
+          "targetRouteId": "route-page-community-slug",
+          "routeIds": [
+            "route-page-root",
+            "route-page-community",
+            "route-page-community-chronicles",
+            "route-page-community-slug"
+          ],
+          "edgeIds": ["edge-global-community", "edge-district-chronicles", "edge-dynamic-community-slug"]
+        },
+        {
+          "targetRouteId": "route-page-community-templates",
+          "routeIds": ["route-page-root", "route-page-community", "route-page-community-templates"],
+          "edgeIds": ["edge-global-community", "edge-district-templates"]
+        },
+        {
+          "targetRouteId": "route-page-community-voyage-logs",
+          "routeIds": ["route-page-root", "route-page-community", "route-page-community-voyage-logs"],
+          "edgeIds": ["edge-global-community", "edge-district-voyage-logs"]
+        },
+        {
+          "targetRouteId": "route-page-community-voyage-logs-slug",
+          "routeIds": [
+            "route-page-root",
+            "route-page-community",
+            "route-page-community-voyage-logs",
+            "route-page-community-voyage-logs-slug"
+          ],
+          "edgeIds": ["edge-global-community", "edge-district-voyage-logs", "edge-dynamic-community-voyage-logs-slug"]
+        },
+        {
+          "targetRouteId": "route-page-play-taleslug",
+          "routeIds": ["route-page-root", "route-page-tales", "route-page-play-taleslug"],
+          "edgeIds": ["edge-global-explore", "edge-tales-chronicle"]
+        },
+        {
+          "targetRouteId": "route-page-play-taleslug-history",
+          "routeIds": [
+            "route-page-root",
+            "route-page-tales",
+            "route-page-play-taleslug",
+            "route-page-play-taleslug-history"
+          ],
+          "edgeIds": ["edge-global-explore", "edge-tales-chronicle", "edge-play-history"]
+        },
+        {
+          "targetRouteId": "route-page-play-taleslug-session-sessionid",
+          "routeIds": [
+            "route-page-root",
+            "route-page-tales",
+            "route-page-play-taleslug",
+            "route-page-play-taleslug-session-sessionid"
+          ],
+          "edgeIds": ["edge-global-explore", "edge-tales-chronicle", "edge-play-session"]
+        },
+        {
+          "targetRouteId": "route-page-player-sign-in",
+          "routeIds": ["route-page-root", "route-page-player-sign-in"],
+          "edgeIds": ["edge-gateway-player-adapter"]
+        },
+        { "targetRouteId": "route-page-root", "routeIds": ["route-page-root"], "edgeIds": [] },
+        {
+          "targetRouteId": "route-page-sign-in",
+          "routeIds": ["route-page-root", "route-page-player-sign-in", "route-page-sign-in"],
+          "edgeIds": ["edge-gateway-player-adapter", "edge-compat-player-sign-in"]
+        },
+        {
+          "targetRouteId": "route-page-studio-sign-in",
+          "routeIds": ["route-page-root", "route-page-studio-sign-in"],
+          "edgeIds": ["edge-gateway-studio-adapter"]
+        },
+        {
+          "targetRouteId": "route-page-tales",
+          "routeIds": ["route-page-root", "route-page-tales"],
+          "edgeIds": ["edge-global-explore"]
+        }
+      ]
+    }
+  ],
+  "nodeRegistryDigest": "ab2848503c5d770a9c810d4ecfcc7bde7539cfd76d5438a500739c35895b9f49",
+  "edgeRegistryDigest": "c0df3ad7fa8c3cfd12a85d8879b09b422c2e4cd62ba3d0b74442b3d77078ba79",
+  "summary": {
+    "discoveredPageSources": 90,
+    "discoveredServiceSources": 186,
+    "nodeCount": 90,
+    "edgeCount": 169,
+    "ordinaryRouteCount": 43,
+    "contextualRouteCount": 25,
+    "tokenizedRouteCount": 8,
+    "compatibilityRouteCount": 12,
+    "internalDiagnosticCount": 1,
+    "developmentOnlyCount": 1,
+    "unexplainedOrdinaryOrphans": 0,
+    "browserEvidenceComplete": false
+  },
+  "outcomes": [
+    "ROUTE_INVENTORY_SCHEMA_VALID",
+    "ROUTE_SOURCE_PARITY_VALID",
+    "ROUTE_GRAPH_VALID",
+    "ORDINARY_REACHABILITY_COMPLETE",
+    "DYNAMIC_SOURCE_COMPLETE",
+    "TOKENIZED_ROUTES_CONFORMING",
+    "COMPATIBILITY_ROUTES_CONFORMING",
+    "DEAD_END_GATE_CLEAR",
+    "DESKTOP_MOBILE_REACHABILITY_PARITY",
+    "PRODUCT_NONCONFORMITIES_REMAIN"
+  ]
+}

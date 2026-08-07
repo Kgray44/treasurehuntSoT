@@ -109,14 +109,6 @@ describe("Voyagewright Studio editor motion and authority", () => {
       }),
     );
     Object.defineProperty(Element.prototype, "scrollIntoView", { configurable: true, value: vi.fn() });
-    vi.stubGlobal(
-      "confirm",
-      vi.fn(() => true),
-    );
-    vi.stubGlobal(
-      "prompt",
-      vi.fn(() => "Release notes"),
-    );
     vi.stubGlobal("open", vi.fn());
   });
 
@@ -205,6 +197,7 @@ describe("Voyagewright Studio editor motion and authority", () => {
     const card = (await screen.findByText("Opening Scene")).closest<HTMLElement>("article")!;
     fireEvent.click(card);
     fireEvent.click(await screen.findByRole("button", { name: "Delete Passage" }));
+    fireEvent.click(within(screen.getByRole("dialog")).getByRole("button", { name: "Delete Passage" }));
     expect(screen.getByText("Opening Scene")).toBeInTheDocument();
 
     await act(async () => resolveDelete(response(200, { autosaveVersion: 4, savedAt: "2026-07-19T12:01:00.000Z" })));
@@ -230,6 +223,7 @@ describe("Voyagewright Studio editor motion and authority", () => {
     render(<TaleEditor taleId="tale-1" authenticated />);
     await screen.findByRole("heading", { name: "A Test Chronicle" });
     fireEvent.click(screen.getByRole("button", { name: "Publish Chronicle" }));
+    fireEvent.click(within(screen.getByRole("dialog")).getByRole("button", { name: "Publish Version" }));
     expect(screen.queryByText(/Version 4 published/)).not.toBeInTheDocument();
 
     await act(async () => resolvePublish(response(201, { versionLabel: "4" })));
@@ -255,6 +249,7 @@ describe("Voyagewright Studio editor motion and authority", () => {
     render(<TaleEditor taleId="tale-1" authenticated />);
     await screen.findByRole("heading", { name: "A Test Chronicle" });
     fireEvent.click(screen.getByRole("button", { name: "Publish Chronicle" }));
+    fireEvent.click(within(screen.getByRole("dialog")).getByRole("button", { name: "Publish Version" }));
 
     expect(await screen.findByText(/Version 4 published/)).toHaveAttribute("data-authority-state", "confirmed");
     expect(screen.queryByText("Publishing failed")).not.toBeInTheDocument();
@@ -286,6 +281,7 @@ describe("Voyagewright Studio editor motion and authority", () => {
       fireEvent.click(screen.getByRole("button", { name: "Publish Chronicle" }));
       await act(async () => resolveSave(response(200, { autosaveVersion: 4, savedAt: "2026-07-19T12:02:00.000Z" })));
       vi.useRealTimers();
+      fireEvent.click(within(await screen.findByRole("dialog")).getByRole("button", { name: "Publish Version" }));
 
       expect(await screen.findByText(/Version 5 published/)).toHaveAttribute("data-authority-state", "confirmed");
     } finally {

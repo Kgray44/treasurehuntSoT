@@ -1,0 +1,22 @@
+{
+  "evidenceId": "HP-OWCR2-EV-L-LIGHT-PERSONAL-HARBOR",
+  "journeyId": "HP-OWCR2-JRN-G",
+  "sourceSha": "f3eef8dc65dd39a40f8e4140aa058de0381a94af",
+  "fixtureVersion": "homeport-phase7-owner-correction-round2-v1",
+  "result": "PASSED",
+  "visualReview": "ACCEPTED",
+  "reviewer": "Codex",
+  "ownerReview": "PENDING_OWNER_DECISION",
+  "browser": "Playwright Chromium",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "route": "/account",
+  "title": "Voyagewright | Stories made to be played",
+  "screenshot": "screenshots/HP-OWCR2-EV-L-LIGHT-PERSONAL-HARBOR.png",
+  "screenshotSha256": "5f802a6e01bfc304b7cd28aa823f91f1fbc54eb82382922bcc8ec847812c46b4",
+  "screenshotBytes": 444215,
+  "timestamp": "2026-08-05T20:01:56.591Z",
+  "limitation": "Local production-build Chromium proof against a synthetic task-owned SQLite clone; not owner acceptance, live-provider proof, merge, or deployment."
+}

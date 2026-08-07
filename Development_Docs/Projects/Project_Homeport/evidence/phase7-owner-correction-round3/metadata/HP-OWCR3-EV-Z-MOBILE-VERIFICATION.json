@@ -1,0 +1,22 @@
+{
+  "evidenceId": "HP-OWCR3-EV-Z-MOBILE-VERIFICATION",
+  "journeyId": "HP-OWCR3-JRN-S",
+  "sourceSha": "581e5d3c5d4560bd101362e835c4eb0ed5a85e3f",
+  "fixtureVersion": "homeport-phase7-owner-correction-round3-v1",
+  "result": "PASSED",
+  "visualReview": "ACCEPTED",
+  "reviewer": "Codex",
+  "ownerReview": "PENDING_OWNER_DECISION",
+  "browser": "Playwright Chromium 141.0.7390.37",
+  "viewport": {
+    "width": 390,
+    "height": 844
+  },
+  "route": "/verify-email",
+  "title": "Voyagewright | Stories made to be played",
+  "screenshot": "screenshots/HP-OWCR3-EV-Z-MOBILE-VERIFICATION.png",
+  "screenshotSha256": "e67fdd279ddf6c40a9ccff45fe027bdffeb6a4c49438562afb03bb786f3ec56d",
+  "screenshotBytes": 1122343,
+  "timestamp": "2026-08-06T14:51:37.037Z",
+  "limitation": "Local production-build Chromium proof against a synthetic task-owned SQLite clone; not owner acceptance, live-provider proof, merge, or deployment."
+}

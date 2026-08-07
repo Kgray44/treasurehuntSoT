@@ -1,0 +1,22 @@
+{
+  "evidenceId": "HP-OWCR2-EV-AE-FULL-ROUND2-REGRESSION",
+  "journeyId": "HP-OWCR2-JRN-U",
+  "sourceSha": "f3eef8dc65dd39a40f8e4140aa058de0381a94af",
+  "fixtureVersion": "homeport-phase7-owner-correction-round2-v1",
+  "result": "PASSED",
+  "visualReview": "ACCEPTED",
+  "reviewer": "Codex",
+  "ownerReview": "PENDING_OWNER_DECISION",
+  "browser": "Playwright Chromium",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "route": "/",
+  "title": "Voyagewright | Stories made to be played",
+  "screenshot": "screenshots/HP-OWCR2-EV-AE-FULL-ROUND2-REGRESSION.png",
+  "screenshotSha256": "e76c5d348436151fb95f87acfbd2396d5b4797670a9980f1e839ae48889dcf95",
+  "screenshotBytes": 749485,
+  "timestamp": "2026-08-05T20:08:00.633Z",
+  "limitation": "Local production-build Chromium proof against a synthetic task-owned SQLite clone; not owner acceptance, live-provider proof, merge, or deployment."
+}
