@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 
 type SubjectType = "LISTING" | "CREATOR" | "GUIDE" | "VOYAGE_LOG" | "COLLECTION";
@@ -21,6 +22,8 @@ export function CommunitySocialControls({
   const [blocked, setBlocked] = useState(false);
   const [mode, setMode] = useState<Mode>("hydrating");
   const [message, setMessage] = useState("");
+  const returnTo =
+    typeof window === "undefined" ? "/community" : `${window.location.pathname}${window.location.search}`;
 
   const hydrate = useCallback(async () => {
     setMode("hydrating");
@@ -119,7 +122,8 @@ export function CommunitySocialControls({
   if (mode === "signed-out") {
     return (
       <section aria-label="Community Harbor controls">
-        <p role="status">Sign in to use Community Harbor controls.</p>
+        <p role="status">Sign in to follow Creators, save public work, or add a favorite.</p>
+        <Link href={`/sign-in?returnTo=${encodeURIComponent(returnTo)}`}>Sign in to follow or save</Link>
       </section>
     );
   }

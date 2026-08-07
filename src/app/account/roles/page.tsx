@@ -1,14 +1,23 @@
-import Link from "next/link";
-export default function Page() {
-  return (
-    <main>
-      <h1>Your Wayfarer roles</h1>
-      <p>One account carries every role you have been granted.</p>
-      <nav aria-label="Role destinations">
-        <Link href="/player">Player voyages</Link>
-        <Link href="/captain">Captain voyages</Link>
-        <Link href="/studio">Creator Studio</Link>
-      </nav>
-    </main>
-  );
+import { redirect } from "next/navigation";
+import { AccessDecisionState } from "@/components/auth/AccessDecisionState";
+import { WorkspaceCapabilityDashboard } from "@/components/homeport/WorkspaceCapabilityDashboard";
+import { decideCapability } from "@/homeport/current-user";
+import { resolveCurrentUser } from "@/homeport/current-user.server";
+import { signInHref } from "@/homeport/return-to";
+
+export const dynamic = "force-dynamic";
+export default async function AccountRolesPage() {
+  const context = await resolveCurrentUser();
+  if (context.status !== "authenticated") {
+    const decision = decideCapability(context, "player");
+    if (
+      decision.status === "auth-required" ||
+      decision.status === "expired" ||
+      decision.status === "revoked" ||
+      decision.status === "invalid"
+    )
+      redirect(signInHref("/account/roles", decision.status));
+    return <AccessDecisionState decision={decision} />;
+  }
+  return <WorkspaceCapabilityDashboard />;
 }

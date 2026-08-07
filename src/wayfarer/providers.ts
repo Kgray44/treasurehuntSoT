@@ -1,3 +1,4 @@
+import { compare } from "bcryptjs";
 import { createCipheriv, createDecipheriv, createHash, createPublicKey, randomBytes, verify } from "node:crypto";
 import { db } from "@/lib/db";
 import { ProfileError, type Visibility, visibilityValues } from "@/wayfarer/profile";
@@ -26,7 +27,7 @@ const hash = (value: string) => createHash("sha256").update(value).digest("hex")
 const randomUrlToken = () => randomBytes(32).toString("base64url");
 
 function redirectPath(value: string | undefined) {
-  return value && value.startsWith("/") && !value.startsWith("//") ? value : "/passport/providers";
+  return value && value.startsWith("/") && !value.startsWith("//") ? value : "/account/linked-identities";
 }
 
 function encryptionKey() {
@@ -731,35 +732,44 @@ export async function updateExternalIdentity(
   });
 }
 
-export async function unlinkExternalIdentity(accountId: string, identityId: string) {
+export async function unlinkExternalIdentity(accountId: string, identityId: string, password: string) {
   const identities = await db.externalIdentity.findMany({ where: { accountId, status: "LINKED", revokedAt: null } });
   const target = identities.find((item) => item.id === identityId);
   if (!target) throw new ProfileError("Linked identity not found.", "NOT_FOUND");
   const account = await db.userAccount.findUnique({
     where: { id: accountId },
     select: {
-      credential: { select: { id: true } },
+      credential: { select: { id: true, passwordHash: true } },
       emails: { where: { verificationState: "VERIFIED" }, select: { id: true } },
     },
   });
   const otherLogin = identities.some((item) => item.id !== identityId && item.useForLogin);
   if (target.useForLogin && !otherLogin && !account?.credential && !account?.emails.length)
     throw new ProfileError("Add another login or recovery method before unlinking this identity.", "FORBIDDEN");
+  if (!account?.credential || !(await compare(password, account.credential.passwordHash)))
+    throw new ProfileError("Reauthentication failed. Check your password and try again.", "FORBIDDEN");
   await db.externalIdentity.update({
     where: { id: identityId },
     data: { status: "REVOKED", revokedAt: new Date(), encryptedToken: null, useForLogin: false, visibility: "ONLY_ME" },
   });
+  await db.securityEvent.create({
+    data: {
+      accountId,
+      eventType: "EXTERNAL_IDENTITY_UNLINKED",
+      correlationId: randomBytes(16).toString("hex"),
+      metadata: JSON.stringify({ identityId, provider: target.provider }),
+    },
+  });
 }
 
 export async function safeLinkedIdentities(accountId: string) {
-  return db.externalIdentity.findMany({
+  const identities = await db.externalIdentity.findMany({
     where: { accountId },
     select: {
       id: true,
       provider: true,
       providerDisplayName: true,
       avatarReference: true,
-      allowedScopes: true,
       useForLogin: true,
       visibility: true,
       status: true,
@@ -769,4 +779,16 @@ export async function safeLinkedIdentities(accountId: string) {
     },
     orderBy: { linkedAt: "desc" },
   });
+  return identities.map((identity) => ({
+    id: identity.id,
+    provider: identity.provider,
+    displayName: identity.providerDisplayName,
+    avatarUrl: identity.avatarReference,
+    useForLogin: identity.useForLogin,
+    visibility: identity.visibility,
+    status: identity.status,
+    linkedAt: identity.linkedAt.toISOString(),
+    lastVerifiedAt: identity.lastVerifiedAt?.toISOString() ?? null,
+    revokedAt: identity.revokedAt?.toISOString() ?? null,
+  }));
 }

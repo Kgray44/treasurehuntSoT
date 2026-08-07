@@ -6,6 +6,13 @@
     repeating-linear-gradient(90deg, #24170f 0 8%, #311f14 8.5% 16%);
 }
 
+html[data-voyage-theme="light"] .animation-showcase {
+  color: var(--text-primary);
+  background:
+    linear-gradient(rgb(255 249 235 / 88%), rgb(232 216 183 / 94%)),
+    repeating-linear-gradient(90deg, #e7d5b1 0 8%, #d8c39a 8.5% 16%);
+}
+
 .showcase-header {
   display: flex;
   max-width: 1900px;

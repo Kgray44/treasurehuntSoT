@@ -50,19 +50,23 @@ const keepsakePayloadSchema = z
   })
   .strict();
 
-const memorySchema = z.object({
-  title: z.string().trim().min(1).max(120),
-  body: z.string().trim().max(4000).optional(),
-  referenceType: z.enum(["CHAPTER", "CLUE", "MOMENT", "ARTIFACT"]).optional(),
-  referenceId: z.string().trim().min(1).max(191).optional(),
-});
-const reflectionSchema = z.object({
-  favoriteChapterId: z.string().trim().max(191).nullable().optional(),
-  favoriteClueReference: z.string().trim().max(191).nullable().optional(),
-  favoriteMomentReference: z.string().trim().max(191).nullable().optional(),
-  favoriteArtifactReference: z.string().trim().max(191).nullable().optional(),
-  privateNote: z.string().trim().max(4000).nullable().optional(),
-});
+const memorySchema = z
+  .object({
+    title: z.string().trim().min(1).max(120),
+    body: z.string().trim().max(4000).optional(),
+    referenceType: z.enum(["CHAPTER", "CLUE", "MOMENT", "ARTIFACT"]).optional(),
+    referenceId: z.string().trim().min(1).max(191).optional(),
+  })
+  .strict();
+const reflectionSchema = z
+  .object({
+    favoriteChapterId: z.string().trim().max(191).nullable().optional(),
+    favoriteClueReference: z.string().trim().max(191).nullable().optional(),
+    favoriteMomentReference: z.string().trim().max(191).nullable().optional(),
+    favoriteArtifactReference: z.string().trim().max(191).nullable().optional(),
+    privateNote: z.string().trim().max(4000).nullable().optional(),
+  })
+  .strict();
 
 function sha(value: unknown) {
   return createHash("sha256").update(JSON.stringify(value)).digest("hex");
@@ -277,20 +281,22 @@ export async function materializeChronicleHistory(playerProfileId: string) {
       projectionReason: null,
       lastDerivedAt: new Date(),
     };
-    const record = existing
-      ? await db.playerChronicleRecord.update({ where: { id: existing.id }, data })
-      : await db.playerChronicleRecord.create({
-          data: {
-            ...data,
-            playerProfileId,
-            sourcePlaythroughId: membership.playthroughId,
-            chronicleTitleSnapshot: snapshot.tale.title,
-            chronicleCoverSnapshot: snapshot.tale.coverAssetId ?? membership.playthrough.tale.coverAssetId,
-            creatorAttributionSnapshot: membership.playthrough.tale.creatorId,
-            playerNameSnapshot: membership.player.displayName,
-            playerAvatarSnapshot: membership.player.avatarMedia?.storageKey ?? null,
-          },
-        });
+    const record = await db.playerChronicleRecord.upsert({
+      where: {
+        playerProfileId_sourcePlaythroughId: { playerProfileId, sourcePlaythroughId: membership.playthroughId },
+      },
+      update: data,
+      create: {
+        ...data,
+        playerProfileId,
+        sourcePlaythroughId: membership.playthroughId,
+        chronicleTitleSnapshot: snapshot.tale.title,
+        chronicleCoverSnapshot: snapshot.tale.coverAssetId ?? membership.playthrough.tale.coverAssetId,
+        creatorAttributionSnapshot: membership.playthrough.tale.creatorId,
+        playerNameSnapshot: membership.player.displayName,
+        playerAvatarSnapshot: membership.player.avatarMedia?.storageKey ?? null,
+      },
+    });
     await Promise.all(
       membership.playthrough.memberships.map((participant) =>
         db.playerChronicleParticipantSnapshot.upsert({
@@ -365,6 +371,25 @@ const recordInclude = {
   memories: { where: { deletedAt: null }, orderBy: { createdAt: "desc" as const } },
   participantSnapshots: { orderBy: { createdAt: "asc" as const } },
   keepsake: { include: { consents: { where: { state: "GRANTED" }, select: { participantId: true, scope: true } } } },
+  publishedVersion: {
+    select: {
+      communityReleases: {
+        where: { moderationStatus: "ACTIVE", deprecatedAt: null },
+        select: {
+          id: true,
+          listing: {
+            select: {
+              slug: true,
+              currentReleaseId: true,
+              publicationStatus: true,
+              moderationStatus: true,
+              visibility: true,
+            },
+          },
+        },
+      },
+    },
+  },
 };
 
 export async function listChronicleHistory(
@@ -493,6 +518,18 @@ type OwnerRecord = {
     tombstoneState: string;
   }>;
   keepsake: { status: string; generatedAt: Date; consents: unknown[] } | null;
+  publishedVersion: {
+    communityReleases: Array<{
+      id: string;
+      listing: {
+        slug: string;
+        currentReleaseId: string | null;
+        publicationStatus: string;
+        moderationStatus: string;
+        visibility: string;
+      };
+    }>;
+  };
 };
 
 function parseStored<T>(schema: z.ZodType<T>, value: string, field: string): T {
@@ -504,6 +541,13 @@ function parseStored<T>(schema: z.ZodType<T>, value: string, field: string): T {
 }
 
 function ownerRecordProjection(record: OwnerRecord) {
+  const reviewListing = record.publishedVersion.communityReleases.find(
+    (release) =>
+      release.listing.currentReleaseId === release.id &&
+      release.listing.publicationStatus === "PUBLISHED" &&
+      release.listing.moderationStatus === "ACTIVE" &&
+      ["COMMUNITY", "FEATURED"].includes(release.listing.visibility),
+  )?.listing;
   return {
     id: record.id,
     chronicle: {
@@ -520,6 +564,14 @@ function ownerRecordProjection(record: OwnerRecord) {
     lifecycleStatus: record.lifecycleStatus,
     outcome: record.outcome,
     timestamps: { startedAt: record.startedAt, joinedAt: record.joinedAt, completedAt: record.completedAt },
+    ...(record.completedAt && reviewListing
+      ? {
+          review: {
+            href: `/community/${encodeURIComponent(reviewListing.slug)}#community-review-composer`,
+            state: "AVAILABLE_AFTER_VERIFIED_COMPLETION" as const,
+          },
+        }
+      : {}),
     timing: {
       definitionVersion: record.metricDefinitionVersion,
       wallClock: { seconds: record.wallClockSeconds, accuracy: record.wallClockAccuracy },

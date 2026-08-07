@@ -24,15 +24,17 @@ export const artifactPersonalizationSchema = z
     archive: z.boolean().optional(),
   })
   .strict();
-const listSchema = z.object({
-  search: z.string().trim().max(120).optional(),
-  state: z.string().trim().max(40).optional(),
-  status: z.enum(["ACTIVE", "REVOKED", "CORRECTED", "UNRESOLVED"]).optional(),
-  favorite: z.boolean().optional(),
-  sort: z.enum(["RECENT", "NAME", "STATE"]).default("RECENT"),
-  cursor: z.string().min(1).max(191).optional(),
-  limit: z.number().int().min(1).max(50).default(24),
-});
+const listSchema = z
+  .object({
+    search: z.string().trim().max(120).optional(),
+    state: z.string().trim().max(40).optional(),
+    status: z.enum(["ACTIVE", "REVOKED", "CORRECTED", "UNRESOLVED"]).optional(),
+    favorite: z.boolean().optional(),
+    sort: z.enum(["RECENT", "NAME", "STATE"]).default("RECENT"),
+    cursor: z.string().min(1).max(191).optional(),
+    limit: z.number().int().min(1).max(50).default(24),
+  })
+  .strict();
 const displayCaseSchema = z
   .object({
     name: z.string().trim().min(1).max(100),

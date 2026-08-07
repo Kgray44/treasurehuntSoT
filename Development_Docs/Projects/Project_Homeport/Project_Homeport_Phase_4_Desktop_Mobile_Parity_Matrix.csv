@@ -1,0 +1,20 @@
+functionalId,desktopSurface,mobileSurface,routeOrAction,parityRule
+community-home,Global shell and district navigator,Global drawer and district navigator,/community,Same destination and active state
+community-featured,District navigator,District navigator,/community/featured,Same visible active district ID
+community-chronicles,District navigator,District navigator,/community/chronicles,Same visible active district ID
+community-artifacts,District navigator,District navigator,/community/artifacts,Same visible active district ID
+community-templates,District navigator,District navigator,/community/templates,Same visible active district ID
+community-maps,District navigator,District navigator,/community/maps,Same visible active district ID
+community-audio,District navigator,District navigator,/community/audio,Same visible active district ID
+community-creators,District navigator,District navigator,/community/creators,Same visible active district ID
+community-collections,District navigator,District navigator,/community/collections,Same visible active district ID
+community-guides,District navigator,District navigator,/community/guides,Same visible active district ID
+community-voyage-logs,District navigator,District navigator,/community/voyage-logs,Same visible active district ID
+community-search,Compact discovery bar,Stacked compact discovery bar,/community?q=,Same query and result contract
+community-sort,Compact discovery bar,Stacked compact discovery bar,sort URL parameter,Same sort values
+community-content-type,Compact chip group,Compact wrapping chip group,type URL parameters,Same supported values
+community-duration,Compact select,Compact select,duration URL parameter,Same supported values
+community-advanced-filters,Inline disclosure panel,Viewport-contained disclosure panel,advanced URL parameters,Same supported values and summary
+community-card,Responsive grid,Single-column responsive grid,Typed destination,Same metadata priority and actions
+community-card-save,Card secondary action,Card secondary action,Harborlight save mutation,Same pending success failure and aria-pressed state
+community-detail-return,Breadcrumb and district link,Breadcrumb and district link,Source district route,Same return destination

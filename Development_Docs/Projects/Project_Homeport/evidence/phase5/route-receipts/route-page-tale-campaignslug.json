@@ -1,0 +1,18 @@
+{
+  "routeId": "route-page-tale-campaignslug",
+  "routePattern": "/tale/[campaignSlug]",
+  "observedPath": "/play/hp4-lantern-coast/session/hp5-session-ready",
+  "classification": "CANONICAL_CONTEXT_ADAPTER",
+  "accountFixture": "ANONYMOUS",
+  "naturalPath": ["CANONICAL_SESSION_PROVED_FIRST", "/tale/hp4-lantern-coast"],
+  "visibleControls": ["Invitation phrase", "Confirm invitation", "Return to Chronicle Library"],
+  "naturalResult": "PASSED_VISIBLE_CONTROL_TRAVERSAL",
+  "directEntryResult": "PASSED_AFTER_NATURAL_PATH",
+  "returnResult": "CANONICAL_TARGET_HAS_CONTEXTUAL_EXIT",
+  "desktopResult": "PASSED_CHROMIUM_DESKTOP",
+  "mobileResult": "REPRESENTATIVE_PARITY_PROVED_IN_HP_P5_EV_U_THROUGH_X",
+  "sourceSha": "b9f1552b78857c36a45f25eb5fdfb7a7e09f102a",
+  "branch": "codex/project-homeport-product-reality-recovery",
+  "timestamp": "2026-08-03T20:20:14.529Z",
+  "limitation": "Synthetic local branch evidence only; not merge, deploy, production, owner, or product acceptance proof."
+}

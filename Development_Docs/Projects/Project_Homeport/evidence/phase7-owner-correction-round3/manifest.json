@@ -1,0 +1,1260 @@
+{
+  "schema": "homeport.phase7.owner-correction-round3.evidence-manifest.v1",
+  "state": "CORRECTION_ROUND_3_VALIDATED_PENDING_OWNER_REREVIEW",
+  "sourceSha": "581e5d3c5d4560bd101362e835c4eb0ed5a85e3f",
+  "experienceImagesSourceSha": "581e5d3c5d4560bd101362e835c4eb0ed5a85e3f",
+  "architectureSha": "88d3b0a",
+  "fixtureVersion": "homeport-phase7-owner-correction-round3-v1",
+  "fixtureChecksum": "c2a727ea57eaa26a0c0f9cfdf481960e20644bbc19d94621b9581c2d6629ba53",
+  "round3JourneyCount": 22,
+  "retainedRound2JourneyCount": 23,
+  "retainedRound1JourneyCount": 21,
+  "retainedOriginalPhase7JourneyCount": 15,
+  "evidenceCount": 30,
+  "experienceImageCount": 256,
+  "ownerWalkthroughRound1Decision": "OWNER_RETURNED_FOR_CORRECTION",
+  "ownerReReviewAfterCorrectionRound1": "OWNER_REJECTED_WITH_ACTIONABLE_FINDINGS",
+  "ownerReReviewAfterCorrectionRound2": "OWNER_REJECTED_WITH_ACTIONABLE_FINDINGS",
+  "ownerReReviewRound3": "PENDING_OWNER_DECISION",
+  "transactionalEmail": "RESEND_SELECTED_REAL_PROVIDER",
+  "branch": "codex/project-homeport-product-reality-recovery",
+  "limitations": [
+    "Not merged",
+    "Not deployed",
+    "No owner acceptance",
+    "Local synthetic evidence only",
+    "Postmark live delivery is blocked by external configuration",
+    "Production MySQL and physical assistive-technology validation remain external"
+  ],
+  "fixture": {
+    "version": "homeport-phase7-owner-correction-round3-v1",
+    "checksum": "c2a727ea57eaa26a0c0f9cfdf481960e20644bbc19d94621b9581c2d6629ba53",
+    "databaseHash": "d3d947436bdd0f9de01749ca301b9d5f717c35d3574b257d0aecd5ebcb07350b",
+    "sourceHash": "54647911f63c6a55e5c6b6c95e5ec0a2977b4580a42de073c8c503a3d8c7a412",
+    "classification": "SYNTHETIC_RESERVED_DATA_ONLY"
+  },
+  "browserReceipts": {
+    "round3": {
+      "status": "PASSED",
+      "journeys": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E",
+        "F",
+        "G",
+        "H",
+        "I",
+        "J",
+        "K",
+        "L",
+        "M",
+        "N",
+        "O",
+        "P",
+        "Q",
+        "R",
+        "S",
+        "T",
+        "U",
+        "V"
+      ]
+    },
+    "correctionRound2": {
+      "status": "PASSED_A_W",
+      "journeys": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E",
+        "F",
+        "G",
+        "H",
+        "I",
+        "J",
+        "K",
+        "L",
+        "M",
+        "N",
+        "O",
+        "P",
+        "Q",
+        "R",
+        "S",
+        "T",
+        "U",
+        "V",
+        "W"
+      ]
+    },
+    "correctionRound1": {
+      "status": "PASSED_A_U_VIA_ROUND2_W",
+      "journeys": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E",
+        "F",
+        "G",
+        "H",
+        "I",
+        "J",
+        "K",
+        "L",
+        "M",
+        "N",
+        "O",
+        "P",
+        "Q",
+        "R",
+        "S",
+        "T",
+        "U"
+      ]
+    },
+    "originalPhase7": {
+      "status": "PASSED_A_O_VIA_ROUND2_W",
+      "journeys": ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O"]
+    }
+  },
+  "motionReceipts": [
+    {
+      "evidenceId": "HP-OWCR3-EV-R-PERSONAL-HARBOR-CROSSFADE",
+      "journeyId": "HP-OWCR3-JRN-N",
+      "sourceSha": "581e5d3c5d4560bd101362e835c4eb0ed5a85e3f",
+      "fixtureVersion": "homeport-phase7-owner-correction-round3-v1",
+      "measurementKind": "COMPUTED_FRAME_SEQUENCE",
+      "measurements": {
+        "samples": [
+          {
+            "routeCount": 2,
+            "interactive": ["false", "true"],
+            "hidden": ["true", "false"],
+            "opacities": ["1", "0.08"],
+            "paths": ["/account", "/account/personal-information"]
+          },
+          {
+            "routeCount": 2,
+            "interactive": ["false", "true"],
+            "hidden": ["true", "false"],
+            "opacities": ["1", "0.827525"],
+            "paths": ["/account", "/account/personal-information"]
+          },
+          {
+            "routeCount": 2,
+            "interactive": ["false", "true"],
+            "hidden": ["true", "false"],
+            "opacities": ["1", "0.969158"],
+            "paths": ["/account", "/account/personal-information"]
+          },
+          {
+            "routeCount": 2,
+            "interactive": ["false", "true"],
+            "hidden": ["true", "false"],
+            "opacities": ["1", "0.996714"],
+            "paths": ["/account", "/account/personal-information"]
+          },
+          {
+            "routeCount": 2,
+            "interactive": ["false", "true"],
+            "hidden": ["true", "false"],
+            "opacities": ["1", "0.99999"],
+            "paths": ["/account", "/account/personal-information"]
+          },
+          {
+            "routeCount": 1,
+            "interactive": ["true"],
+            "hidden": ["false"],
+            "opacities": ["1"],
+            "paths": ["/account/personal-information"]
+          },
+          {
+            "routeCount": 2,
+            "interactive": ["false", "true"],
+            "hidden": ["true", "false"],
+            "opacities": ["1", "0.544234"],
+            "paths": ["/account/personal-information", "/account/preferences"]
+          },
+          {
+            "routeCount": 2,
+            "interactive": ["false", "true"],
+            "hidden": ["true", "false"],
+            "opacities": ["1", "0.915423"],
+            "paths": ["/account/personal-information", "/account/preferences"]
+          },
+          {
+            "routeCount": 2,
+            "interactive": ["false", "true"],
+            "hidden": ["true", "false"],
+            "opacities": ["1", "0.974037"],
+            "paths": ["/account/personal-information", "/account/preferences"]
+          },
+          {
+            "routeCount": 2,
+            "interactive": ["false", "true"],
+            "hidden": ["true", "false"],
+            "opacities": ["1", "0.9975"],
+            "paths": ["/account/personal-information", "/account/preferences"]
+          },
+          {
+            "routeCount": 1,
+            "interactive": ["true"],
+            "hidden": ["false"],
+            "opacities": ["1"],
+            "paths": ["/account/preferences"]
+          },
+          {
+            "routeCount": 2,
+            "interactive": ["false", "true"],
+            "hidden": ["true", "false"],
+            "opacities": ["1", "0.726066"],
+            "paths": ["/account/preferences", "/account/profile"]
+          },
+          {
+            "routeCount": 2,
+            "interactive": ["false", "true"],
+            "hidden": ["true", "false"],
+            "opacities": ["1", "0.949375"],
+            "paths": ["/account/preferences", "/account/profile"]
+          },
+          {
+            "routeCount": 2,
+            "interactive": ["false", "true"],
+            "hidden": ["true", "false"],
+            "opacities": ["1", "0.993239"],
+            "paths": ["/account/preferences", "/account/profile"]
+          },
+          {
+            "routeCount": 2,
+            "interactive": ["false", "true"],
+            "hidden": ["true", "false"],
+            "opacities": ["1", "0.999845"],
+            "paths": ["/account/preferences", "/account/profile"]
+          },
+          {
+            "routeCount": 1,
+            "interactive": ["true"],
+            "hidden": ["false"],
+            "opacities": ["1"],
+            "paths": ["/account/profile"]
+          },
+          {
+            "routeCount": 2,
+            "interactive": ["false", "true"],
+            "hidden": ["true", "false"],
+            "opacities": ["1", "0.449101"],
+            "paths": ["/account/profile", "/account/sessions"]
+          },
+          {
+            "routeCount": 2,
+            "interactive": ["false", "true"],
+            "hidden": ["true", "false"],
+            "opacities": ["1", "0.897794"],
+            "paths": ["/account/profile", "/account/sessions"]
+          },
+          {
+            "routeCount": 2,
+            "interactive": ["false", "true"],
+            "hidden": ["true", "false"],
+            "opacities": ["1", "0.983125"],
+            "paths": ["/account/profile", "/account/sessions"]
+          },
+          {
+            "routeCount": 2,
+            "interactive": ["false", "true"],
+            "hidden": ["true", "false"],
+            "opacities": ["1", "0.998812"],
+            "paths": ["/account/profile", "/account/sessions"]
+          }
+        ]
+      },
+      "result": "PASSED"
+    },
+    {
+      "evidenceId": "HP-OWCR3-EV-S-CROSS-PRODUCT-CROSSFADE",
+      "journeyId": "HP-OWCR3-JRN-O",
+      "sourceSha": "581e5d3c5d4560bd101362e835c4eb0ed5a85e3f",
+      "fixtureVersion": "homeport-phase7-owner-correction-round3-v1",
+      "measurementKind": "COMPUTED_FRAME_SEQUENCE",
+      "measurements": {
+        "frames": [
+          {
+            "routeCount": 2,
+            "interactive": ["false", "true"],
+            "hidden": ["true", "false"],
+            "opacities": ["1", "0.481536"],
+            "paths": ["/", "/community"]
+          },
+          {
+            "routeCount": 2,
+            "interactive": ["false", "true"],
+            "hidden": ["true", "false"],
+            "opacities": ["1", "0.903782"],
+            "paths": ["/", "/community"]
+          },
+          {
+            "routeCount": 2,
+            "interactive": ["false", "true"],
+            "hidden": ["true", "false"],
+            "opacities": ["1", "0.984321"],
+            "paths": ["/", "/community"]
+          },
+          {
+            "routeCount": 2,
+            "interactive": ["false", "true"],
+            "hidden": ["true", "false"],
+            "opacities": ["1", "0.998964"],
+            "paths": ["/", "/community"]
+          },
+          {
+            "routeCount": 2,
+            "interactive": ["false", "true"],
+            "hidden": ["true", "false"],
+            "opacities": ["1", "0.999992"],
+            "paths": ["/", "/community"]
+          },
+          {
+            "routeCount": 2,
+            "interactive": ["false", "true"],
+            "hidden": ["true", "false"],
+            "opacities": ["1", "1"],
+            "paths": ["/", "/community"]
+          },
+          {
+            "routeCount": 1,
+            "interactive": ["true"],
+            "hidden": ["false"],
+            "opacities": ["1"],
+            "paths": ["/community"]
+          },
+          {
+            "routeCount": 2,
+            "interactive": ["false", "true"],
+            "hidden": ["true", "false"],
+            "opacities": ["1", "0.687697"],
+            "paths": ["/community", "/community/featured"]
+          },
+          {
+            "routeCount": 2,
+            "interactive": ["false", "true"],
+            "hidden": ["true", "false"],
+            "opacities": ["1", "0.942223"],
+            "paths": ["/community", "/community/featured"]
+          },
+          {
+            "routeCount": 2,
+            "interactive": ["false", "true"],
+            "hidden": ["true", "false"],
+            "opacities": ["1", "0.991833"],
+            "paths": ["/community", "/community/featured"]
+          },
+          {
+            "routeCount": 2,
+            "interactive": ["false", "true"],
+            "hidden": ["true", "false"],
+            "opacities": ["1", "0.999986"],
+            "paths": ["/community", "/community/featured"]
+          },
+          {
+            "routeCount": 2,
+            "interactive": ["false", "true"],
+            "hidden": ["true", "false"],
+            "opacities": ["1", "1"],
+            "paths": ["/community", "/community/featured"]
+          },
+          {
+            "routeCount": 1,
+            "interactive": ["true"],
+            "hidden": ["false"],
+            "opacities": ["1"],
+            "paths": ["/community/featured"]
+          },
+          {
+            "routeCount": 2,
+            "interactive": ["false", "true"],
+            "hidden": ["true", "false"],
+            "opacities": ["1", "0.139057"],
+            "paths": ["/community/featured", "/account"]
+          },
+          {
+            "routeCount": 2,
+            "interactive": ["false", "true"],
+            "hidden": ["true", "false"],
+            "opacities": ["1", "0.907272"],
+            "paths": ["/community/featured", "/account"]
+          },
+          {
+            "routeCount": 2,
+            "interactive": ["false", "true"],
+            "hidden": ["true", "false"],
+            "opacities": ["1", "0.985016"],
+            "paths": ["/community/featured", "/account"]
+          },
+          {
+            "routeCount": 2,
+            "interactive": ["false", "true"],
+            "hidden": ["true", "false"],
+            "opacities": ["1", "0.999821"],
+            "paths": ["/community/featured", "/account"]
+          },
+          {
+            "routeCount": 2,
+            "interactive": ["false", "true"],
+            "hidden": ["true", "false"],
+            "opacities": ["1", "1"],
+            "paths": ["/community/featured", "/account"]
+          },
+          {
+            "routeCount": 1,
+            "interactive": ["true"],
+            "hidden": ["false"],
+            "opacities": ["1"],
+            "paths": ["/account"]
+          },
+          {
+            "routeCount": 2,
+            "interactive": ["false", "true"],
+            "hidden": ["true", "false"],
+            "opacities": ["1", "0.334223"],
+            "paths": ["/account", "/account/roles"]
+          },
+          {
+            "routeCount": 2,
+            "interactive": ["false", "true"],
+            "hidden": ["true", "false"],
+            "opacities": ["1", "0.875922"],
+            "paths": ["/account", "/account/roles"]
+          },
+          {
+            "routeCount": 2,
+            "interactive": ["false", "true"],
+            "hidden": ["true", "false"],
+            "opacities": ["1", "0.960348"],
+            "paths": ["/account", "/account/roles"]
+          },
+          {
+            "routeCount": 2,
+            "interactive": ["false", "true"],
+            "hidden": ["true", "false"],
+            "opacities": ["1", "0.998209"],
+            "paths": ["/account", "/account/roles"]
+          },
+          {
+            "routeCount": 2,
+            "interactive": ["false", "true"],
+            "hidden": ["true", "false"],
+            "opacities": ["1", "1"],
+            "paths": ["/account", "/account/roles"]
+          },
+          {
+            "routeCount": 1,
+            "interactive": ["true"],
+            "hidden": ["false"],
+            "opacities": ["1"],
+            "paths": ["/account/roles"]
+          },
+          {
+            "routeCount": 2,
+            "interactive": ["false", "true"],
+            "hidden": ["true", "false"],
+            "opacities": ["1", "0.481536"],
+            "paths": ["/account/roles", "/player/library"]
+          },
+          {
+            "routeCount": 2,
+            "interactive": ["false", "true"],
+            "hidden": ["true", "false"],
+            "opacities": ["1", "0.904104"],
+            "paths": ["/account/roles", "/player/library"]
+          },
+          {
+            "routeCount": 2,
+            "interactive": ["false", "true"],
+            "hidden": ["true", "false"],
+            "opacities": ["1", "0.984321"],
+            "paths": ["/account/roles", "/player/library"]
+          },
+          {
+            "routeCount": 2,
+            "interactive": ["false", "true"],
+            "hidden": ["true", "false"],
+            "opacities": ["1", "0.998972"],
+            "paths": ["/account/roles", "/player/library"]
+          },
+          {
+            "routeCount": 2,
+            "interactive": ["false", "true"],
+            "hidden": ["true", "false"],
+            "opacities": ["1", "1"],
+            "paths": ["/account/roles", "/player/library"]
+          }
+        ]
+      },
+      "result": "PASSED"
+    },
+    {
+      "evidenceId": "HP-OWCR3-EV-T-DELAYED-LOADING-CROSSFADE",
+      "journeyId": "HP-OWCR3-JRN-P",
+      "sourceSha": "581e5d3c5d4560bd101362e835c4eb0ed5a85e3f",
+      "fixtureVersion": "homeport-phase7-owner-correction-round3-v1",
+      "measurementKind": "COMPUTED_FRAME_SEQUENCE",
+      "measurements": {
+        "governedDelayMs": 700,
+        "outgoingSample": {
+          "routeCount": 2,
+          "interactive": ["false", "true"],
+          "hidden": ["true", "false"],
+          "opacities": ["1", "1"],
+          "paths": ["/tales", "/community"]
+        },
+        "loadingSample": [
+          {
+            "path": "/tales",
+            "text": "Published ChroniclesChoose a ChronicleReview the Chronicle, duration, and Crew size before you begin or continue a Voyage.SearchProgressAny progressNot startedI",
+            "asyncStates": []
+          },
+          {
+            "path": "/community",
+            "text": "Opening Community Harbor",
+            "asyncStates": ["pending-delay"]
+          }
+        ],
+        "sample": {
+          "routeCount": 2,
+          "interactive": ["false", "true"],
+          "hidden": ["true", "false"],
+          "opacities": ["1", "1"],
+          "paths": ["/tales", "/community"]
+        }
+      },
+      "result": "PASSED"
+    },
+    {
+      "evidenceId": "HP-OWCR3-EV-U-ACCOUNT-MENU-OPENING",
+      "journeyId": "HP-OWCR3-JRN-Q",
+      "sourceSha": "581e5d3c5d4560bd101362e835c4eb0ed5a85e3f",
+      "fixtureVersion": "homeport-phase7-owner-correction-round3-v1",
+      "measurementKind": "COMPUTED_FRAME_SEQUENCE",
+      "measurements": {
+        "opening": [
+          {
+            "opacity": "0.00333445",
+            "transform": "matrix3d(0.961973, 0, 0, 0, 0, 0.959091, -0.0773529, 0, 0, 0.0744115, 0.997004, 0, 0, -11.408, 0, 1)",
+            "filter": "blur(2.99px)"
+          },
+          {
+            "opacity": "0.803955",
+            "transform": "matrix3d(0.991286, 0, 0, 0, 0, 0.99113, -0.0177419, 0, 0, 0.0175873, 0.999843, 0, 0, -2.61408, 0, 1)",
+            "filter": "blur(0.588134px)"
+          },
+          {
+            "opacity": "0.96184",
+            "transform": "matrix3d(0.998021, 0, 0, 0, 0, 0.998013, -0.00402878, 0, 0, 0.00402081, 0.999992, 0, 0, -0.59357, 0, 1)",
+            "filter": "blur(0.114479px)"
+          },
+          {
+            "opacity": "0.992243",
+            "transform": "matrix3d(0.999602, 0, 0, 0, 0, 0.999601, -0.00081133, 0, 0, 0.000811007, 1, 0, 0, -0.119535, 0, 1)",
+            "filter": "blur(0.0232719px)"
+          },
+          {
+            "opacity": "0.998911",
+            "transform": "matrix3d(0.999991, 0, 0, 0, 0, 0.999991, -1.86554e-05, 0, 0, 1.86552e-05, 1, 0, 0, -0.00274853, 0, 1)",
+            "filter": "blur(0.00326598px)"
+          },
+          {
+            "opacity": "1",
+            "transform": "none",
+            "filter": "blur(0px)"
+          },
+          {
+            "opacity": "1",
+            "transform": "none",
+            "filter": "blur(0px)"
+          }
+        ]
+      },
+      "result": "PASSED"
+    },
+    {
+      "evidenceId": "HP-OWCR3-EV-W-ACCOUNT-MENU-CLOSING",
+      "journeyId": "HP-OWCR3-JRN-Q",
+      "sourceSha": "581e5d3c5d4560bd101362e835c4eb0ed5a85e3f",
+      "fixtureVersion": "homeport-phase7-owner-correction-round3-v1",
+      "measurementKind": "COMPUTED_FRAME_SEQUENCE",
+      "measurements": {
+        "closing": [
+          {
+            "opacity": "1",
+            "transform": "none",
+            "filter": "blur(0px)"
+          },
+          {
+            "opacity": "1",
+            "transform": "matrix3d(0.985769, 0, 0, 0, 0, 0.985465, -0.0248345, 0, 0, 0.024481, 0.999692, 0, 0, -3.98456, 0, 1)",
+            "filter": "blur(0px)"
+          },
+          {
+            "opacity": "0.191391",
+            "transform": "matrix3d(0.9575, 0, 0, 0, 0, 0.954867, -0.0741082, 0, 0, 0.0709586, 0.99725, 0, 0, -11.9, 0, 1)",
+            "filter": "blur(1.61722px)"
+          },
+          {
+            "opacity": "0.108029",
+            "transform": "matrix3d(0.953322, 0, 0, 0, 0, 0.95016, -0.0813789, 0, 0, 0.0775803, 0.996683, 0, 0, -13.0699, 0, 1)",
+            "filter": "blur(1.78394px)"
+          },
+          {
+            "opacity": "0.0333973",
+            "transform": "matrix3d(0.951438, 0, 0, 0, 0, 0.948022, -0.0846555, 0, 0, 0.0805445, 0.99641, 0, 0, -13.5974, 0, 1)",
+            "filter": "blur(1.93321px)"
+          }
+        ]
+      },
+      "result": "PASSED"
+    }
+  ],
+  "captures": [
+    {
+      "evidenceId": "HP-OWCR3-EV-A-AVATAR-SELECTED",
+      "journeyId": "HP-OWCR3-JRN-A",
+      "sourceSha": "581e5d3c5d4560bd101362e835c4eb0ed5a85e3f",
+      "fixtureVersion": "homeport-phase7-owner-correction-round3-v1",
+      "result": "PASSED",
+      "visualReview": "ACCEPTED",
+      "reviewer": "Codex",
+      "ownerReview": "PENDING_OWNER_DECISION",
+      "browser": "Playwright Chromium 141.0.7390.37",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "route": "/account/profile",
+      "title": "Voyagewright | Stories made to be played",
+      "screenshot": "screenshots/HP-OWCR3-EV-A-AVATAR-SELECTED.png",
+      "screenshotSha256": "6ae49eca3155015b93c90594d6e20d1eb419a47f87fd8d4e0a1def8edeb185d9",
+      "screenshotBytes": 272744,
+      "timestamp": "2026-08-06T14:49:00.435Z",
+      "limitation": "Local production-build Chromium proof against a synthetic task-owned SQLite clone; not owner acceptance, live-provider proof, merge, or deployment."
+    },
+    {
+      "evidenceId": "HP-OWCR3-EV-AA-MOBILE-WORKSPACES",
+      "journeyId": "HP-OWCR3-JRN-S",
+      "sourceSha": "581e5d3c5d4560bd101362e835c4eb0ed5a85e3f",
+      "fixtureVersion": "homeport-phase7-owner-correction-round3-v1",
+      "result": "PASSED",
+      "visualReview": "ACCEPTED",
+      "reviewer": "Codex",
+      "ownerReview": "PENDING_OWNER_DECISION",
+      "browser": "Playwright Chromium 141.0.7390.37",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "route": "/account/roles",
+      "title": "Voyagewright | Stories made to be played",
+      "screenshot": "screenshots/HP-OWCR3-EV-AA-MOBILE-WORKSPACES.png",
+      "screenshotSha256": "85b98344d25c051ce9d227946ba8559962a45831040150e118eb0fec15b73a7c",
+      "screenshotBytes": 1110034,
+      "timestamp": "2026-08-06T14:51:38.991Z",
+      "limitation": "Local production-build Chromium proof against a synthetic task-owned SQLite clone; not owner acceptance, live-provider proof, merge, or deployment."
+    },
+    {
+      "evidenceId": "HP-OWCR3-EV-AB-ZOOM-CROP-EDITOR",
+      "journeyId": "HP-OWCR3-JRN-T",
+      "sourceSha": "581e5d3c5d4560bd101362e835c4eb0ed5a85e3f",
+      "fixtureVersion": "homeport-phase7-owner-correction-round3-v1",
+      "result": "PASSED",
+      "visualReview": "ACCEPTED",
+      "reviewer": "Codex",
+      "ownerReview": "PENDING_OWNER_DECISION",
+      "browser": "Playwright Chromium 141.0.7390.37",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "route": "/account/profile",
+      "title": "Voyagewright | Stories made to be played",
+      "screenshot": "screenshots/HP-OWCR3-EV-AB-ZOOM-CROP-EDITOR.png",
+      "screenshotSha256": "fb87d2d4d77b6ca2a34f7cf271cc0c17ffeb747897baac5404770b562a6d3333",
+      "screenshotBytes": 657863,
+      "timestamp": "2026-08-06T14:51:47.141Z",
+      "limitation": "Local production-build Chromium proof against a synthetic task-owned SQLite clone; not owner acceptance, live-provider proof, merge, or deployment."
+    },
+    {
+      "evidenceId": "HP-OWCR3-EV-AC-REDUCED-MOTION",
+      "journeyId": "HP-OWCR3-JRN-Q",
+      "sourceSha": "581e5d3c5d4560bd101362e835c4eb0ed5a85e3f",
+      "fixtureVersion": "homeport-phase7-owner-correction-round3-v1",
+      "result": "PASSED",
+      "visualReview": "ACCEPTED",
+      "reviewer": "Codex",
+      "ownerReview": "PENDING_OWNER_DECISION",
+      "browser": "Playwright Chromium 141.0.7390.37",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "route": "/",
+      "title": "Voyagewright | Stories made to be played",
+      "screenshot": "screenshots/HP-OWCR3-EV-AC-REDUCED-MOTION.png",
+      "screenshotSha256": "a7737b8c1af4941a222cfff396b4ab1e63e7628be58c76cabdcd0ee5bfbbc214",
+      "screenshotBytes": 631509,
+      "timestamp": "2026-08-06T14:51:17.081Z",
+      "limitation": "Local production-build Chromium proof against a synthetic task-owned SQLite clone; not owner acceptance, live-provider proof, merge, or deployment."
+    },
+    {
+      "evidenceId": "HP-OWCR3-EV-AD-FULL-ROUND3-REGRESSION",
+      "journeyId": "HP-OWCR3-JRN-U",
+      "sourceSha": "581e5d3c5d4560bd101362e835c4eb0ed5a85e3f",
+      "fixtureVersion": "homeport-phase7-owner-correction-round3-v1",
+      "result": "PASSED",
+      "visualReview": "ACCEPTED",
+      "reviewer": "Codex",
+      "ownerReview": "PENDING_OWNER_DECISION",
+      "browser": "Playwright Chromium 141.0.7390.37",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "route": "/",
+      "title": "Voyagewright | Stories made to be played",
+      "screenshot": "screenshots/HP-OWCR3-EV-AD-FULL-ROUND3-REGRESSION.png",
+      "screenshotSha256": "4ecb1d3c5eaf6dd4ae4f676a55a09023c77ff15770aebc14f7b742e165b7808d",
+      "screenshotBytes": 791608,
+      "timestamp": "2026-08-06T14:52:09.519Z",
+      "limitation": "Local production-build Chromium proof against a synthetic task-owned SQLite clone; not owner acceptance, live-provider proof, merge, or deployment."
+    },
+    {
+      "evidenceId": "HP-OWCR3-EV-B-AVATAR-CROP",
+      "journeyId": "HP-OWCR3-JRN-A",
+      "sourceSha": "581e5d3c5d4560bd101362e835c4eb0ed5a85e3f",
+      "fixtureVersion": "homeport-phase7-owner-correction-round3-v1",
+      "result": "PASSED",
+      "visualReview": "ACCEPTED",
+      "reviewer": "Codex",
+      "ownerReview": "PENDING_OWNER_DECISION",
+      "browser": "Playwright Chromium 141.0.7390.37",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "route": "/account/profile",
+      "title": "Voyagewright | Stories made to be played",
+      "screenshot": "screenshots/HP-OWCR3-EV-B-AVATAR-CROP.png",
+      "screenshotSha256": "48f35d5c508db01f1ad3eb567b774878ddb8e1352d104d5a5d608f10a9a882f1",
+      "screenshotBytes": 271001,
+      "timestamp": "2026-08-06T14:49:00.786Z",
+      "limitation": "Local production-build Chromium proof against a synthetic task-owned SQLite clone; not owner acceptance, live-provider proof, merge, or deployment."
+    },
+    {
+      "evidenceId": "HP-OWCR3-EV-C-AVATAR-INLINE-PREVIEW",
+      "journeyId": "HP-OWCR3-JRN-A",
+      "sourceSha": "581e5d3c5d4560bd101362e835c4eb0ed5a85e3f",
+      "fixtureVersion": "homeport-phase7-owner-correction-round3-v1",
+      "result": "PASSED",
+      "visualReview": "ACCEPTED",
+      "reviewer": "Codex",
+      "ownerReview": "PENDING_OWNER_DECISION",
+      "browser": "Playwright Chromium 141.0.7390.37",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "route": "/account/profile",
+      "title": "Voyagewright | Stories made to be played",
+      "screenshot": "screenshots/HP-OWCR3-EV-C-AVATAR-INLINE-PREVIEW.png",
+      "screenshotSha256": "27f1102195b5e94c8f1436ca486196283ba5dfdcd34d883be50e7c704ec2f080",
+      "screenshotBytes": 604404,
+      "timestamp": "2026-08-06T14:49:01.074Z",
+      "limitation": "Local production-build Chromium proof against a synthetic task-owned SQLite clone; not owner acceptance, live-provider proof, merge, or deployment."
+    },
+    {
+      "evidenceId": "HP-OWCR3-EV-D-BANNER-CROP",
+      "journeyId": "HP-OWCR3-JRN-B",
+      "sourceSha": "581e5d3c5d4560bd101362e835c4eb0ed5a85e3f",
+      "fixtureVersion": "homeport-phase7-owner-correction-round3-v1",
+      "result": "PASSED",
+      "visualReview": "ACCEPTED",
+      "reviewer": "Codex",
+      "ownerReview": "PENDING_OWNER_DECISION",
+      "browser": "Playwright Chromium 141.0.7390.37",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "route": "/account/profile",
+      "title": "Voyagewright | Stories made to be played",
+      "screenshot": "screenshots/HP-OWCR3-EV-D-BANNER-CROP.png",
+      "screenshotSha256": "8b7f3b392835fe4644c852c1044b35b9b753367df6b02913419573e7943c8d6c",
+      "screenshotBytes": 325520,
+      "timestamp": "2026-08-06T14:49:12.853Z",
+      "limitation": "Local production-build Chromium proof against a synthetic task-owned SQLite clone; not owner acceptance, live-provider proof, merge, or deployment."
+    },
+    {
+      "evidenceId": "HP-OWCR3-EV-E-BANNER-INLINE-PREVIEW",
+      "journeyId": "HP-OWCR3-JRN-B",
+      "sourceSha": "581e5d3c5d4560bd101362e835c4eb0ed5a85e3f",
+      "fixtureVersion": "homeport-phase7-owner-correction-round3-v1",
+      "result": "PASSED",
+      "visualReview": "ACCEPTED",
+      "reviewer": "Codex",
+      "ownerReview": "PENDING_OWNER_DECISION",
+      "browser": "Playwright Chromium 141.0.7390.37",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "route": "/account/profile",
+      "title": "Voyagewright | Stories made to be played",
+      "screenshot": "screenshots/HP-OWCR3-EV-E-BANNER-INLINE-PREVIEW.png",
+      "screenshotSha256": "ed70955d1f4e5b51d5f5887e46c7ab143d30d170a4ef9ea067f6babda0b9ae19",
+      "screenshotBytes": 654648,
+      "timestamp": "2026-08-06T14:49:13.172Z",
+      "limitation": "Local production-build Chromium proof against a synthetic task-owned SQLite clone; not owner acceptance, live-provider proof, merge, or deployment."
+    },
+    {
+      "evidenceId": "HP-OWCR3-EV-F-PROFILE-OVERVIEW-IDENTITY",
+      "journeyId": "HP-OWCR3-JRN-E",
+      "sourceSha": "581e5d3c5d4560bd101362e835c4eb0ed5a85e3f",
+      "fixtureVersion": "homeport-phase7-owner-correction-round3-v1",
+      "result": "PASSED",
+      "visualReview": "ACCEPTED",
+      "reviewer": "Codex",
+      "ownerReview": "PENDING_OWNER_DECISION",
+      "browser": "Playwright Chromium 141.0.7390.37",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "route": "/account",
+      "title": "Voyagewright | Stories made to be played",
+      "screenshot": "screenshots/HP-OWCR3-EV-F-PROFILE-OVERVIEW-IDENTITY.png",
+      "screenshotSha256": "00812cbce335bebb24e1245ee83f18dbefbc3c3e6fba81c85da4aeccd1ea121f",
+      "screenshotBytes": 547343,
+      "timestamp": "2026-08-06T14:49:39.402Z",
+      "limitation": "Local production-build Chromium proof against a synthetic task-owned SQLite clone; not owner acceptance, live-provider proof, merge, or deployment."
+    },
+    {
+      "evidenceId": "HP-OWCR3-EV-G-ACCOUNT-TRIGGER-AVATAR",
+      "journeyId": "HP-OWCR3-JRN-A",
+      "sourceSha": "581e5d3c5d4560bd101362e835c4eb0ed5a85e3f",
+      "fixtureVersion": "homeport-phase7-owner-correction-round3-v1",
+      "result": "PASSED",
+      "visualReview": "ACCEPTED",
+      "reviewer": "Codex",
+      "ownerReview": "PENDING_OWNER_DECISION",
+      "browser": "Playwright Chromium 141.0.7390.37",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "route": "/account",
+      "title": "Voyagewright | Stories made to be played",
+      "screenshot": "screenshots/HP-OWCR3-EV-G-ACCOUNT-TRIGGER-AVATAR.png",
+      "screenshotSha256": "74f4a9f5c6ceed0d1a539d072a8856798b61780e2a798aa0bc172183b1ed378b",
+      "screenshotBytes": 774979,
+      "timestamp": "2026-08-06T14:49:03.334Z",
+      "limitation": "Local production-build Chromium proof against a synthetic task-owned SQLite clone; not owner acceptance, live-provider proof, merge, or deployment."
+    },
+    {
+      "evidenceId": "HP-OWCR3-EV-H-ACCOUNT-MENU-AVATAR",
+      "journeyId": "HP-OWCR3-JRN-A",
+      "sourceSha": "581e5d3c5d4560bd101362e835c4eb0ed5a85e3f",
+      "fixtureVersion": "homeport-phase7-owner-correction-round3-v1",
+      "result": "PASSED",
+      "visualReview": "ACCEPTED",
+      "reviewer": "Codex",
+      "ownerReview": "PENDING_OWNER_DECISION",
+      "browser": "Playwright Chromium 141.0.7390.37",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "route": "/account",
+      "title": "Voyagewright | Stories made to be played",
+      "screenshot": "screenshots/HP-OWCR3-EV-H-ACCOUNT-MENU-AVATAR.png",
+      "screenshotSha256": "4ca6281edc84ec7aedd15d73210a6f71806edcf4aeacd463d429b95652b84b92",
+      "screenshotBytes": 735905,
+      "timestamp": "2026-08-06T14:49:03.714Z",
+      "limitation": "Local production-build Chromium proof against a synthetic task-owned SQLite clone; not owner acceptance, live-provider proof, merge, or deployment."
+    },
+    {
+      "evidenceId": "HP-OWCR3-EV-I-PROFILE-HANDLE-PROMPT",
+      "journeyId": "HP-OWCR3-JRN-E",
+      "sourceSha": "581e5d3c5d4560bd101362e835c4eb0ed5a85e3f",
+      "fixtureVersion": "homeport-phase7-owner-correction-round3-v1",
+      "result": "PASSED",
+      "visualReview": "ACCEPTED",
+      "reviewer": "Codex",
+      "ownerReview": "PENDING_OWNER_DECISION",
+      "browser": "Playwright Chromium 141.0.7390.37",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "route": "/account",
+      "title": "Voyagewright | Stories made to be played",
+      "screenshot": "screenshots/HP-OWCR3-EV-I-PROFILE-HANDLE-PROMPT.png",
+      "screenshotSha256": "3194a7ad5f2dd576aeb1f098c0fd5d4b199a071e40196af415ac43d4636fc017",
+      "screenshotBytes": 720473,
+      "timestamp": "2026-08-06T14:49:43.452Z",
+      "limitation": "Local production-build Chromium proof against a synthetic task-owned SQLite clone; not owner acceptance, live-provider proof, merge, or deployment."
+    },
+    {
+      "evidenceId": "HP-OWCR3-EV-J-REGISTRATION",
+      "journeyId": "HP-OWCR3-JRN-F",
+      "sourceSha": "581e5d3c5d4560bd101362e835c4eb0ed5a85e3f",
+      "fixtureVersion": "homeport-phase7-owner-correction-round3-v1",
+      "result": "PASSED",
+      "visualReview": "ACCEPTED",
+      "reviewer": "Codex",
+      "ownerReview": "PENDING_OWNER_DECISION",
+      "browser": "Playwright Chromium 141.0.7390.37",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "route": "/register",
+      "title": "Voyagewright | Stories made to be played",
+      "screenshot": "screenshots/HP-OWCR3-EV-J-REGISTRATION.png",
+      "screenshotSha256": "98db4e4b205940e15a27cb0178d7c7419cd90efea1cb138a997afdb0311df565",
+      "screenshotBytes": 622340,
+      "timestamp": "2026-08-06T14:49:49.376Z",
+      "limitation": "Local production-build Chromium proof against a synthetic task-owned SQLite clone; not owner acceptance, live-provider proof, merge, or deployment."
+    },
+    {
+      "evidenceId": "HP-OWCR3-EV-K-VERIFICATION-CODE",
+      "journeyId": "HP-OWCR3-JRN-F",
+      "sourceSha": "581e5d3c5d4560bd101362e835c4eb0ed5a85e3f",
+      "fixtureVersion": "homeport-phase7-owner-correction-round3-v1",
+      "result": "PASSED",
+      "visualReview": "ACCEPTED",
+      "reviewer": "Codex",
+      "ownerReview": "PENDING_OWNER_DECISION",
+      "browser": "Playwright Chromium 141.0.7390.37",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "route": "/verify-email",
+      "title": "Voyagewright | Stories made to be played",
+      "screenshot": "screenshots/HP-OWCR3-EV-K-VERIFICATION-CODE.png",
+      "screenshotSha256": "ea68738885069cc1d50baf075b3f5962fcccbeab119a7d76fea35b5039f9bbc4",
+      "screenshotBytes": 555750,
+      "timestamp": "2026-08-06T14:49:50.463Z",
+      "limitation": "Local production-build Chromium proof against a synthetic task-owned SQLite clone; not owner acceptance, live-provider proof, merge, or deployment."
+    },
+    {
+      "evidenceId": "HP-OWCR3-EV-L-VERIFICATION-INVALID",
+      "journeyId": "HP-OWCR3-JRN-F",
+      "sourceSha": "581e5d3c5d4560bd101362e835c4eb0ed5a85e3f",
+      "fixtureVersion": "homeport-phase7-owner-correction-round3-v1",
+      "result": "PASSED",
+      "visualReview": "ACCEPTED",
+      "reviewer": "Codex",
+      "ownerReview": "PENDING_OWNER_DECISION",
+      "browser": "Playwright Chromium 141.0.7390.37",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "route": "/verify-email",
+      "title": "Voyagewright | Stories made to be played",
+      "screenshot": "screenshots/HP-OWCR3-EV-L-VERIFICATION-INVALID.png",
+      "screenshotSha256": "73a1c86272c439f7ade7f50b87b0c2a98f89298d2ac9a26a156541466e278a20",
+      "screenshotBytes": 608808,
+      "timestamp": "2026-08-06T14:49:50.855Z",
+      "limitation": "Local production-build Chromium proof against a synthetic task-owned SQLite clone; not owner acceptance, live-provider proof, merge, or deployment."
+    },
+    {
+      "evidenceId": "HP-OWCR3-EV-M-VERIFICATION-SUCCESS",
+      "journeyId": "HP-OWCR3-JRN-F",
+      "sourceSha": "581e5d3c5d4560bd101362e835c4eb0ed5a85e3f",
+      "fixtureVersion": "homeport-phase7-owner-correction-round3-v1",
+      "result": "PASSED",
+      "visualReview": "ACCEPTED",
+      "reviewer": "Codex",
+      "ownerReview": "PENDING_OWNER_DECISION",
+      "browser": "Playwright Chromium 141.0.7390.37",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "route": "/passport",
+      "title": "Voyagewright | Stories made to be played",
+      "screenshot": "screenshots/HP-OWCR3-EV-M-VERIFICATION-SUCCESS.png",
+      "screenshotSha256": "e6deb7e54a9c4cdbc01e5ac464a16256ba829f0751954fe4308d524beff6b5cf",
+      "screenshotBytes": 834619,
+      "timestamp": "2026-08-06T14:49:51.331Z",
+      "limitation": "Local production-build Chromium proof against a synthetic task-owned SQLite clone; not owner acceptance, live-provider proof, merge, or deployment."
+    },
+    {
+      "evidenceId": "HP-OWCR3-EV-N-KGTESTING-WORKSPACES",
+      "journeyId": "HP-OWCR3-JRN-J",
+      "sourceSha": "581e5d3c5d4560bd101362e835c4eb0ed5a85e3f",
+      "fixtureVersion": "homeport-phase7-owner-correction-round3-v1",
+      "result": "PASSED",
+      "visualReview": "ACCEPTED",
+      "reviewer": "Codex",
+      "ownerReview": "PENDING_OWNER_DECISION",
+      "browser": "Playwright Chromium 141.0.7390.37",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "route": "/account/roles",
+      "title": "Voyagewright | Stories made to be played",
+      "screenshot": "screenshots/HP-OWCR3-EV-N-KGTESTING-WORKSPACES.png",
+      "screenshotSha256": "207d9090c2f248ef36c5ca5f5307472997d84cdc52f3de8a3684855ee3ce958f",
+      "screenshotBytes": 267109,
+      "timestamp": "2026-08-06T14:50:15.881Z",
+      "limitation": "Local production-build Chromium proof against a synthetic task-owned SQLite clone; not owner acceptance, live-provider proof, merge, or deployment."
+    },
+    {
+      "evidenceId": "HP-OWCR3-EV-O-CAPTAIN-EMPTY",
+      "journeyId": "HP-OWCR3-JRN-J",
+      "sourceSha": "581e5d3c5d4560bd101362e835c4eb0ed5a85e3f",
+      "fixtureVersion": "homeport-phase7-owner-correction-round3-v1",
+      "result": "PASSED",
+      "visualReview": "ACCEPTED",
+      "reviewer": "Codex",
+      "ownerReview": "PENDING_OWNER_DECISION",
+      "browser": "Playwright Chromium 141.0.7390.37",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "route": "/captain/library",
+      "title": "Captain's Console | Voyagewright | Voyagewright",
+      "screenshot": "screenshots/HP-OWCR3-EV-O-CAPTAIN-EMPTY.png",
+      "screenshotSha256": "5e51e1394c928a59e717d385d4014d5ac5df713b8f9b8e23210042dafe88f8d0",
+      "screenshotBytes": 464919,
+      "timestamp": "2026-08-06T14:50:17.093Z",
+      "limitation": "Local production-build Chromium proof against a synthetic task-owned SQLite clone; not owner acceptance, live-provider proof, merge, or deployment."
+    },
+    {
+      "evidenceId": "HP-OWCR3-EV-P-CREATOR-EMPTY",
+      "journeyId": "HP-OWCR3-JRN-J",
+      "sourceSha": "581e5d3c5d4560bd101362e835c4eb0ed5a85e3f",
+      "fixtureVersion": "homeport-phase7-owner-correction-round3-v1",
+      "result": "PASSED",
+      "visualReview": "ACCEPTED",
+      "reviewer": "Codex",
+      "ownerReview": "PENDING_OWNER_DECISION",
+      "browser": "Playwright Chromium 141.0.7390.37",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "route": "/studio/library",
+      "title": "Voyagewright Studio | Voyagewright",
+      "screenshot": "screenshots/HP-OWCR3-EV-P-CREATOR-EMPTY.png",
+      "screenshotSha256": "80b01d7bac781bc0457d8052f24691760d4873b3d4350bf27b38f587a083e7c8",
+      "screenshotBytes": 284014,
+      "timestamp": "2026-08-06T14:50:19.587Z",
+      "limitation": "Local production-build Chromium proof against a synthetic task-owned SQLite clone; not owner acceptance, live-provider proof, merge, or deployment."
+    },
+    {
+      "evidenceId": "HP-OWCR3-EV-Q-ACTIVE-CHRONICLE-LOCK",
+      "journeyId": "HP-OWCR3-JRN-L",
+      "sourceSha": "581e5d3c5d4560bd101362e835c4eb0ed5a85e3f",
+      "fixtureVersion": "homeport-phase7-owner-correction-round3-v1",
+      "result": "PASSED",
+      "visualReview": "ACCEPTED",
+      "reviewer": "Codex",
+      "ownerReview": "PENDING_OWNER_DECISION",
+      "browser": "Playwright Chromium 141.0.7390.37",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "route": "/account/roles",
+      "title": "Voyagewright | Stories made to be played",
+      "screenshot": "screenshots/HP-OWCR3-EV-Q-ACTIVE-CHRONICLE-LOCK.png",
+      "screenshotSha256": "7016d1ebff9ec67f0db7eddbf5a6038613973f4e2039b90ddbc8eaa5a0e99e8c",
+      "screenshotBytes": 420198,
+      "timestamp": "2026-08-06T14:50:34.396Z",
+      "limitation": "Local production-build Chromium proof against a synthetic task-owned SQLite clone; not owner acceptance, live-provider proof, merge, or deployment."
+    },
+    {
+      "evidenceId": "HP-OWCR3-EV-R-PERSONAL-HARBOR-CROSSFADE",
+      "journeyId": "HP-OWCR3-JRN-N",
+      "sourceSha": "581e5d3c5d4560bd101362e835c4eb0ed5a85e3f",
+      "fixtureVersion": "homeport-phase7-owner-correction-round3-v1",
+      "result": "PASSED",
+      "visualReview": "ACCEPTED",
+      "reviewer": "Codex",
+      "ownerReview": "PENDING_OWNER_DECISION",
+      "browser": "Playwright Chromium 141.0.7390.37",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "route": "/account/sessions",
+      "title": "Voyagewright | Stories made to be played",
+      "screenshot": "screenshots/HP-OWCR3-EV-R-PERSONAL-HARBOR-CROSSFADE.png",
+      "screenshotSha256": "882ab4fc4b93d3058add37a53c6389f759fd5c84b42ed5bc7eb95691fd1ab7a0",
+      "screenshotBytes": 450357,
+      "timestamp": "2026-08-06T14:50:52.607Z",
+      "limitation": "Local production-build Chromium proof against a synthetic task-owned SQLite clone; not owner acceptance, live-provider proof, merge, or deployment."
+    },
+    {
+      "evidenceId": "HP-OWCR3-EV-S-CROSS-PRODUCT-CROSSFADE",
+      "journeyId": "HP-OWCR3-JRN-O",
+      "sourceSha": "581e5d3c5d4560bd101362e835c4eb0ed5a85e3f",
+      "fixtureVersion": "homeport-phase7-owner-correction-round3-v1",
+      "result": "PASSED",
+      "visualReview": "ACCEPTED",
+      "reviewer": "Codex",
+      "ownerReview": "PENDING_OWNER_DECISION",
+      "browser": "Playwright Chromium 141.0.7390.37",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "route": "/player/library",
+      "title": "Voyagewright Player | Voyagewright",
+      "screenshot": "screenshots/HP-OWCR3-EV-S-CROSS-PRODUCT-CROSSFADE.png",
+      "screenshotSha256": "4a1ee533fb70a70b104addc0bb67c901ecf72631b44308067b3d1de4b69367f8",
+      "screenshotBytes": 437146,
+      "timestamp": "2026-08-06T14:51:05.844Z",
+      "limitation": "Local production-build Chromium proof against a synthetic task-owned SQLite clone; not owner acceptance, live-provider proof, merge, or deployment."
+    },
+    {
+      "evidenceId": "HP-OWCR3-EV-T-DELAYED-LOADING-CROSSFADE",
+      "journeyId": "HP-OWCR3-JRN-P",
+      "sourceSha": "581e5d3c5d4560bd101362e835c4eb0ed5a85e3f",
+      "fixtureVersion": "homeport-phase7-owner-correction-round3-v1",
+      "result": "PASSED",
+      "visualReview": "ACCEPTED",
+      "reviewer": "Codex",
+      "ownerReview": "PENDING_OWNER_DECISION",
+      "browser": "Playwright Chromium 141.0.7390.37",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "route": "/community",
+      "title": "Community Harbor | Voyagewright",
+      "screenshot": "screenshots/HP-OWCR3-EV-T-DELAYED-LOADING-CROSSFADE.png",
+      "screenshotSha256": "3f70567e0a501442a36daf28bf743737e0dbb1d76410343615111c04d63f8f15",
+      "screenshotBytes": 306836,
+      "timestamp": "2026-08-06T14:51:09.952Z",
+      "limitation": "Local production-build Chromium proof against a synthetic task-owned SQLite clone; not owner acceptance, live-provider proof, merge, or deployment."
+    },
+    {
+      "evidenceId": "HP-OWCR3-EV-U-ACCOUNT-MENU-OPENING",
+      "journeyId": "HP-OWCR3-JRN-Q",
+      "sourceSha": "581e5d3c5d4560bd101362e835c4eb0ed5a85e3f",
+      "fixtureVersion": "homeport-phase7-owner-correction-round3-v1",
+      "result": "PASSED",
+      "visualReview": "ACCEPTED",
+      "reviewer": "Codex",
+      "ownerReview": "PENDING_OWNER_DECISION",
+      "browser": "Playwright Chromium 141.0.7390.37",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "route": "/",
+      "title": "Voyagewright | Stories made to be played",
+      "screenshot": "screenshots/HP-OWCR3-EV-U-ACCOUNT-MENU-OPENING.png",
+      "screenshotSha256": "37a64e185697bdcc00eb30c3c447119dcd20ff051d28f43553779fbb6523da85",
+      "screenshotBytes": 534120,
+      "timestamp": "2026-08-06T14:51:15.979Z",
+      "limitation": "Local production-build Chromium proof against a synthetic task-owned SQLite clone; not owner acceptance, live-provider proof, merge, or deployment."
+    },
+    {
+      "evidenceId": "HP-OWCR3-EV-V-ACCOUNT-MENU-OPEN",
+      "journeyId": "HP-OWCR3-JRN-Q",
+      "sourceSha": "581e5d3c5d4560bd101362e835c4eb0ed5a85e3f",
+      "fixtureVersion": "homeport-phase7-owner-correction-round3-v1",
+      "result": "PASSED",
+      "visualReview": "ACCEPTED",
+      "reviewer": "Codex",
+      "ownerReview": "PENDING_OWNER_DECISION",
+      "browser": "Playwright Chromium 141.0.7390.37",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "route": "/",
+      "title": "Voyagewright | Stories made to be played",
+      "screenshot": "screenshots/HP-OWCR3-EV-V-ACCOUNT-MENU-OPEN.png",
+      "screenshotSha256": "f4722c2a91af020e0273b4d3237b6b043123ad7f14d781a1a45397e3776da5bd",
+      "screenshotBytes": 537495,
+      "timestamp": "2026-08-06T14:51:16.195Z",
+      "limitation": "Local production-build Chromium proof against a synthetic task-owned SQLite clone; not owner acceptance, live-provider proof, merge, or deployment."
+    },
+    {
+      "evidenceId": "HP-OWCR3-EV-X-DARK-FIRST-PAINT",
+      "journeyId": "HP-OWCR3-JRN-R",
+      "sourceSha": "581e5d3c5d4560bd101362e835c4eb0ed5a85e3f",
+      "fixtureVersion": "homeport-phase7-owner-correction-round3-v1",
+      "result": "PASSED",
+      "visualReview": "ACCEPTED",
+      "reviewer": "Codex",
+      "ownerReview": "PENDING_OWNER_DECISION",
+      "browser": "Playwright Chromium 141.0.7390.37",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "route": "/",
+      "title": "Voyagewright | Stories made to be played",
+      "screenshot": "screenshots/HP-OWCR3-EV-X-DARK-FIRST-PAINT.png",
+      "screenshotSha256": "fd6a481ed48b0d444a6a437522130239e7b4e3a5c0b210eedde17eec99e88805",
+      "screenshotBytes": 595905,
+      "timestamp": "2026-08-06T14:51:20.907Z",
+      "limitation": "Local production-build Chromium proof against a synthetic task-owned SQLite clone; not owner acceptance, live-provider proof, merge, or deployment."
+    },
+    {
+      "evidenceId": "HP-OWCR3-EV-Y-MOBILE-AVATAR-CROP",
+      "journeyId": "HP-OWCR3-JRN-S",
+      "sourceSha": "581e5d3c5d4560bd101362e835c4eb0ed5a85e3f",
+      "fixtureVersion": "homeport-phase7-owner-correction-round3-v1",
+      "result": "PASSED",
+      "visualReview": "ACCEPTED",
+      "reviewer": "Codex",
+      "ownerReview": "PENDING_OWNER_DECISION",
+      "browser": "Playwright Chromium 141.0.7390.37",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "route": "/account/profile",
+      "title": "Voyagewright | Stories made to be played",
+      "screenshot": "screenshots/HP-OWCR3-EV-Y-MOBILE-AVATAR-CROP.png",
+      "screenshotSha256": "c8699fa9a05be761253747f26485930cfb90af25c11078cc71442b1fdc2be75c",
+      "screenshotBytes": 1284261,
+      "timestamp": "2026-08-06T14:51:33.413Z",
+      "limitation": "Local production-build Chromium proof against a synthetic task-owned SQLite clone; not owner acceptance, live-provider proof, merge, or deployment."
+    },
+    {
+      "evidenceId": "HP-OWCR3-EV-Z-MOBILE-VERIFICATION",
+      "journeyId": "HP-OWCR3-JRN-S",
+      "sourceSha": "581e5d3c5d4560bd101362e835c4eb0ed5a85e3f",
+      "fixtureVersion": "homeport-phase7-owner-correction-round3-v1",
+      "result": "PASSED",
+      "visualReview": "ACCEPTED",
+      "reviewer": "Codex",
+      "ownerReview": "PENDING_OWNER_DECISION",
+      "browser": "Playwright Chromium 141.0.7390.37",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "route": "/verify-email",
+      "title": "Voyagewright | Stories made to be played",
+      "screenshot": "screenshots/HP-OWCR3-EV-Z-MOBILE-VERIFICATION.png",
+      "screenshotSha256": "e67fdd279ddf6c40a9ccff45fe027bdffeb6a4c49438562afb03bb786f3ec56d",
+      "screenshotBytes": 1122343,
+      "timestamp": "2026-08-06T14:51:37.037Z",
+      "limitation": "Local production-build Chromium proof against a synthetic task-owned SQLite clone; not owner acceptance, live-provider proof, merge, or deployment."
+    }
+  ]
+}

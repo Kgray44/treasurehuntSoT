@@ -343,7 +343,7 @@ export function summarizeShowcaseReceipt(receipt: PresentationReceipt<unknown>) 
   };
 }
 
-const trailer: AnimationSceneName[] = [
+export const showcaseTrailerScenes: readonly AnimationSceneName[] = [
   "first-arrival",
   "player-access",
   "chapter-release",
@@ -556,7 +556,7 @@ export function AnimationShowcase() {
     const originalSpeed = snapshot.speed;
     director.setSpeed(mode === "full" ? 0.5 : mode === "gentle" ? 0.8 : 2);
     try {
-      for (const scene of trailer) {
+      for (const scene of showcaseTrailerScenes) {
         if (trailerCancelled.current || !root.current) break;
         setTrailerCard(scene.replaceAll("-", " "));
         const demo = showcaseDemos.find(

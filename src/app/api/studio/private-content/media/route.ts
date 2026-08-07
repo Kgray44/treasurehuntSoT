@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { requireGmCapability, verifyCsrf } from "@/lib/security";
+import { requireStudioWorkspace } from "@/chronicle/studio-authorization";
 import {
   ProtectedMediaError,
   protectedMediaAudiences,
@@ -34,10 +34,10 @@ function responseError(error: unknown) {
 }
 
 export async function GET() {
-  const session = await requireGmCapability("CREATE_TALES");
+  const session = await requireStudioWorkspace();
   if (!session) return NextResponse.json({ error: "Creator authorization is required." }, { status: 403 });
   try {
-    const ownerAccountId = "accountId" in session ? session.accountId : session.userId;
+    const ownerAccountId = session.accountId;
     return NextResponse.json(
       { media: await listOwnerProtectedMedia(ownerAccountId) },
       { headers: { "Cache-Control": "private, no-store" } },
@@ -48,9 +48,8 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
-  const session = await requireGmCapability("CREATE_TALES");
-  if (!session || !(await verifyCsrf(session)))
-    return NextResponse.json({ error: "Creator authorization is required." }, { status: 403 });
+  const session = await requireStudioWorkspace(request);
+  if (!session) return NextResponse.json({ error: "Creator authorization is required." }, { status: 403 });
   try {
     const body = (await request.json()) as {
       action?: string;
@@ -67,7 +66,7 @@ export async function POST(request: Request) {
       derivativeId?: string;
       reason?: string;
     };
-    const ownerAccountId = "accountId" in session ? session.accountId : session.userId;
+    const ownerAccountId = session.accountId;
     if (body.action === "request-derivative") {
       if (
         !body.mediaId ||

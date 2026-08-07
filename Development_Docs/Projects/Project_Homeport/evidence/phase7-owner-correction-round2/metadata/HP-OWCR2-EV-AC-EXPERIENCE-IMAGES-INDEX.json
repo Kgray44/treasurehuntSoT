@@ -1,0 +1,12 @@
+{
+  "evidenceId": "HP-OWCR2-EV-AC-EXPERIENCE-IMAGES-INDEX",
+  "journeyId": "HP-OWCR2-JRN-T",
+  "sourceSha": "8284f6d2ce0b41a7eb995e13ccfe2a27c9b5845d",
+  "fixtureVersion": "homeport-phase7-owner-correction-round2-v1",
+  "result": "PASSED",
+  "visualReview": "ACCEPTED",
+  "artifact": "experience-images-index.html",
+  "recordCount": 227,
+  "humanFacingRouteCount": 88,
+  "limitation": "Exact application/fixture image snapshot is ancestral to the tested publication source."
+}

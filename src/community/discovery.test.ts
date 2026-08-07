@@ -20,10 +20,14 @@ const publicRecord = {
   primaryCategory: "adventure",
   creatorId: "creator-a",
   creatorHandle: "captain-a",
+  creatorDisplayName: "Captain A",
+  creatorAccountId: "account-a",
   visibility: "COMMUNITY",
   publicationStatus: "PUBLISHED",
   moderationStatus: "ACTIVE",
   locationClass: "FICTIONAL",
+  archivedAt: null,
+  removedAt: null,
   publishedAt: new Date("2026-07-01T00:00:00.000Z"),
   updatedAt: new Date("2026-07-02T00:00:00.000Z"),
   metadata: {
@@ -96,10 +100,16 @@ describe("Community discovery core", () => {
   it("fails closed for every non-public discovery state and excludes it from facets", () => {
     const hidden = { ...publicRecord, id: "hidden", visibility: "UNLISTED" };
     const quarantined = { ...publicRecord, id: "quarantined", moderationStatus: "QUARANTINED" };
+    const archived = { ...publicRecord, id: "archived", archivedAt: new Date("2026-07-03T00:00:00.000Z") };
+    const removed = { ...publicRecord, id: "removed", removedAt: new Date("2026-07-03T00:00:00.000Z") };
     expect(isPublicDiscoveryEligible(publicRecord)).toBe(true);
     expect(isPublicDiscoveryEligible(hidden)).toBe(false);
     expect(isPublicDiscoveryEligible(quarantined)).toBe(false);
-    expect(communityFacetCounts([publicRecord, hidden, quarantined]).itemTypes).toEqual({ CHRONICLE: 1 });
+    expect(isPublicDiscoveryEligible(archived)).toBe(false);
+    expect(isPublicDiscoveryEligible(removed)).toBe(false);
+    expect(communityFacetCounts([publicRecord, hidden, quarantined, archived, removed]).itemTypes).toEqual({
+      CHRONICLE: 1,
+    });
   });
 
   it("enforces range and independent technology filters against public metadata", () => {

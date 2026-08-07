@@ -1,76 +1,63 @@
 import { NextResponse } from "next/server";
-import { requireGmCapability, verifyCsrf } from "@/lib/security";
 import { apiError } from "@/chronicle/api";
 import { archiveAsset, assetUsages, ingestAsset, updateAsset } from "@/chronicle/assets";
-import { db } from "@/lib/db";
 import { consumeRateLimit, rateLimitHeaders } from "@/lib/rate-limit";
+import { requireOwnedStudioAsset } from "@/chronicle/studio-authorization";
 
 export async function GET(_: Request, context: { params: Promise<{ assetId: string }> }) {
-  if (!(await requireGmCapability("MANAGE_ASSETS")))
-    return NextResponse.json(
-      { error: "You do not have permission to manage assets in this Chronicle." },
-      { status: 403 },
-    );
+  const { assetId } = await context.params;
+  const authorization = await requireOwnedStudioAsset(assetId);
+  if (!authorization)
+    return NextResponse.json({ error: "This asset is not available to this Creator account." }, { status: 404 });
   try {
-    const asset = await db.taleAsset.findUniqueOrThrow({ where: { id: (await context.params).assetId } });
-    return NextResponse.json({ usages: await assetUsages(asset.taleId, asset.id) });
+    return NextResponse.json({ usages: await assetUsages(authorization.asset.taleId, authorization.asset.id) });
   } catch (cause) {
     return apiError(cause);
   }
 }
 
-async function authorized() {
-  const session = await requireGmCapability("MANAGE_ASSETS");
-  return session && (await verifyCsrf(session)) ? session : null;
-}
-
 export async function PATCH(request: Request, context: { params: Promise<{ assetId: string }> }) {
-  const session = await authorized();
-  if (!session)
-    return NextResponse.json(
-      { error: "You do not have permission to manage assets in this Chronicle, or your creator session has expired." },
-      { status: 403 },
-    );
+  const { assetId } = await context.params;
+  if (!(await requireOwnedStudioAsset(assetId, request)))
+    return NextResponse.json({ error: "This asset is not available to this Creator account." }, { status: 404 });
   try {
-    return NextResponse.json(await updateAsset((await context.params).assetId, await request.json()));
+    return NextResponse.json(await updateAsset(assetId, await request.json()));
   } catch (cause) {
     return apiError(cause);
   }
 }
 
 export async function PUT(request: Request, context: { params: Promise<{ assetId: string }> }) {
-  const session = await authorized();
-  if (!session)
-    return NextResponse.json(
-      { error: "You do not have permission to manage assets in this Chronicle, or your creator session has expired." },
-      { status: 403 },
-    );
+  const { assetId } = await context.params;
+  const authorization = await requireOwnedStudioAsset(assetId, request);
+  if (!authorization)
+    return NextResponse.json({ error: "This asset is not available to this Creator account." }, { status: 404 });
   try {
-    const rate = consumeRateLimit(`tale-upload:${session.userId}`, { limit: 30, windowMs: 15 * 60_000 });
+    const rate = consumeRateLimit(`tale-upload:${authorization.session.accountId}`, {
+      limit: 30,
+      windowMs: 15 * 60_000,
+    });
     if (!rate.allowed)
       return NextResponse.json(
         { error: "The upload limit was reached. Wait before replacing more media." },
         { status: 429, headers: rateLimitHeaders(rate) },
       );
-    const { assetId } = await context.params;
-    const asset = await db.taleAsset.findUniqueOrThrow({ where: { id: assetId } });
     const file = (await request.formData()).get("file");
     if (!(file instanceof File)) throw new Error("Choose a replacement file.");
-    return NextResponse.json(await ingestAsset(asset.taleId, file, session.userId, assetId));
+    return NextResponse.json(
+      await ingestAsset(authorization.asset.taleId, file, authorization.session.accountId, assetId),
+    );
   } catch (cause) {
     return apiError(cause);
   }
 }
 
-export async function DELETE(_: Request, context: { params: Promise<{ assetId: string }> }) {
-  const session = await authorized();
-  if (!session)
-    return NextResponse.json(
-      { error: "You do not have permission to manage assets in this Chronicle, or your creator session has expired." },
-      { status: 403 },
-    );
+export async function DELETE(request: Request, context: { params: Promise<{ assetId: string }> }) {
+  const { assetId } = await context.params;
+  if (!(await requireOwnedStudioAsset(assetId, request)))
+    return NextResponse.json({ error: "This asset is not available to this Creator account." }, { status: 404 });
   try {
-    const result = await archiveAsset((await context.params).assetId);
+    const result = await archiveAsset(assetId);
     return NextResponse.json(result, { status: result.archived ? 200 : 409 });
   } catch (cause) {
     return apiError(cause);

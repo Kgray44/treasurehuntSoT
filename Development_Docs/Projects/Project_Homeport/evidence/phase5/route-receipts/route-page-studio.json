@@ -1,0 +1,18 @@
+{
+  "routeId": "route-page-studio",
+  "routePattern": "/studio",
+  "observedPath": "/studio/library",
+  "classification": "COMPATIBILITY_REDIRECT",
+  "accountFixture": "AUTHENTICATED_CAPTAIN_CREATOR_PLAYER",
+  "naturalPath": ["CANONICAL_TARGET_PROVED_FIRST", "/studio"],
+  "visibleControls": ["Continue to canonical destination"],
+  "naturalResult": "PASSED_VISIBLE_CONTROL_TRAVERSAL",
+  "directEntryResult": "PASSED_AFTER_NATURAL_PATH",
+  "returnResult": "CANONICAL_TARGET_HAS_REGISTERED_RETURN",
+  "desktopResult": "PASSED_CHROMIUM_DESKTOP",
+  "mobileResult": "REPRESENTATIVE_PARITY_PROVED_IN_HP_P5_EV_U_THROUGH_X",
+  "sourceSha": "b9f1552b78857c36a45f25eb5fdfb7a7e09f102a",
+  "branch": "codex/project-homeport-product-reality-recovery",
+  "timestamp": "2026-08-03T20:20:06.664Z",
+  "limitation": "Synthetic local branch evidence only; not merge, deploy, production, owner, or product acceptance proof."
+}

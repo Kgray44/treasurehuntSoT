@@ -1,0 +1,222 @@
+{
+  "evidenceId": "HP-OWCR3-EV-S-CROSS-PRODUCT-CROSSFADE",
+  "journeyId": "HP-OWCR3-JRN-O",
+  "sourceSha": "581e5d3c5d4560bd101362e835c4eb0ed5a85e3f",
+  "fixtureVersion": "homeport-phase7-owner-correction-round3-v1",
+  "measurementKind": "COMPUTED_FRAME_SEQUENCE",
+  "measurements": {
+    "frames": [
+      {
+        "routeCount": 2,
+        "interactive": ["false", "true"],
+        "hidden": ["true", "false"],
+        "opacities": ["1", "0.481536"],
+        "paths": ["/", "/community"]
+      },
+      {
+        "routeCount": 2,
+        "interactive": ["false", "true"],
+        "hidden": ["true", "false"],
+        "opacities": ["1", "0.903782"],
+        "paths": ["/", "/community"]
+      },
+      {
+        "routeCount": 2,
+        "interactive": ["false", "true"],
+        "hidden": ["true", "false"],
+        "opacities": ["1", "0.984321"],
+        "paths": ["/", "/community"]
+      },
+      {
+        "routeCount": 2,
+        "interactive": ["false", "true"],
+        "hidden": ["true", "false"],
+        "opacities": ["1", "0.998964"],
+        "paths": ["/", "/community"]
+      },
+      {
+        "routeCount": 2,
+        "interactive": ["false", "true"],
+        "hidden": ["true", "false"],
+        "opacities": ["1", "0.999992"],
+        "paths": ["/", "/community"]
+      },
+      {
+        "routeCount": 2,
+        "interactive": ["false", "true"],
+        "hidden": ["true", "false"],
+        "opacities": ["1", "1"],
+        "paths": ["/", "/community"]
+      },
+      {
+        "routeCount": 1,
+        "interactive": ["true"],
+        "hidden": ["false"],
+        "opacities": ["1"],
+        "paths": ["/community"]
+      },
+      {
+        "routeCount": 2,
+        "interactive": ["false", "true"],
+        "hidden": ["true", "false"],
+        "opacities": ["1", "0.687697"],
+        "paths": ["/community", "/community/featured"]
+      },
+      {
+        "routeCount": 2,
+        "interactive": ["false", "true"],
+        "hidden": ["true", "false"],
+        "opacities": ["1", "0.942223"],
+        "paths": ["/community", "/community/featured"]
+      },
+      {
+        "routeCount": 2,
+        "interactive": ["false", "true"],
+        "hidden": ["true", "false"],
+        "opacities": ["1", "0.991833"],
+        "paths": ["/community", "/community/featured"]
+      },
+      {
+        "routeCount": 2,
+        "interactive": ["false", "true"],
+        "hidden": ["true", "false"],
+        "opacities": ["1", "0.999986"],
+        "paths": ["/community", "/community/featured"]
+      },
+      {
+        "routeCount": 2,
+        "interactive": ["false", "true"],
+        "hidden": ["true", "false"],
+        "opacities": ["1", "1"],
+        "paths": ["/community", "/community/featured"]
+      },
+      {
+        "routeCount": 1,
+        "interactive": ["true"],
+        "hidden": ["false"],
+        "opacities": ["1"],
+        "paths": ["/community/featured"]
+      },
+      {
+        "routeCount": 2,
+        "interactive": ["false", "true"],
+        "hidden": ["true", "false"],
+        "opacities": ["1", "0.139057"],
+        "paths": ["/community/featured", "/account"]
+      },
+      {
+        "routeCount": 2,
+        "interactive": ["false", "true"],
+        "hidden": ["true", "false"],
+        "opacities": ["1", "0.907272"],
+        "paths": ["/community/featured", "/account"]
+      },
+      {
+        "routeCount": 2,
+        "interactive": ["false", "true"],
+        "hidden": ["true", "false"],
+        "opacities": ["1", "0.985016"],
+        "paths": ["/community/featured", "/account"]
+      },
+      {
+        "routeCount": 2,
+        "interactive": ["false", "true"],
+        "hidden": ["true", "false"],
+        "opacities": ["1", "0.999821"],
+        "paths": ["/community/featured", "/account"]
+      },
+      {
+        "routeCount": 2,
+        "interactive": ["false", "true"],
+        "hidden": ["true", "false"],
+        "opacities": ["1", "1"],
+        "paths": ["/community/featured", "/account"]
+      },
+      {
+        "routeCount": 1,
+        "interactive": ["true"],
+        "hidden": ["false"],
+        "opacities": ["1"],
+        "paths": ["/account"]
+      },
+      {
+        "routeCount": 2,
+        "interactive": ["false", "true"],
+        "hidden": ["true", "false"],
+        "opacities": ["1", "0.334223"],
+        "paths": ["/account", "/account/roles"]
+      },
+      {
+        "routeCount": 2,
+        "interactive": ["false", "true"],
+        "hidden": ["true", "false"],
+        "opacities": ["1", "0.875922"],
+        "paths": ["/account", "/account/roles"]
+      },
+      {
+        "routeCount": 2,
+        "interactive": ["false", "true"],
+        "hidden": ["true", "false"],
+        "opacities": ["1", "0.960348"],
+        "paths": ["/account", "/account/roles"]
+      },
+      {
+        "routeCount": 2,
+        "interactive": ["false", "true"],
+        "hidden": ["true", "false"],
+        "opacities": ["1", "0.998209"],
+        "paths": ["/account", "/account/roles"]
+      },
+      {
+        "routeCount": 2,
+        "interactive": ["false", "true"],
+        "hidden": ["true", "false"],
+        "opacities": ["1", "1"],
+        "paths": ["/account", "/account/roles"]
+      },
+      {
+        "routeCount": 1,
+        "interactive": ["true"],
+        "hidden": ["false"],
+        "opacities": ["1"],
+        "paths": ["/account/roles"]
+      },
+      {
+        "routeCount": 2,
+        "interactive": ["false", "true"],
+        "hidden": ["true", "false"],
+        "opacities": ["1", "0.481536"],
+        "paths": ["/account/roles", "/player/library"]
+      },
+      {
+        "routeCount": 2,
+        "interactive": ["false", "true"],
+        "hidden": ["true", "false"],
+        "opacities": ["1", "0.904104"],
+        "paths": ["/account/roles", "/player/library"]
+      },
+      {
+        "routeCount": 2,
+        "interactive": ["false", "true"],
+        "hidden": ["true", "false"],
+        "opacities": ["1", "0.984321"],
+        "paths": ["/account/roles", "/player/library"]
+      },
+      {
+        "routeCount": 2,
+        "interactive": ["false", "true"],
+        "hidden": ["true", "false"],
+        "opacities": ["1", "0.998972"],
+        "paths": ["/account/roles", "/player/library"]
+      },
+      {
+        "routeCount": 2,
+        "interactive": ["false", "true"],
+        "hidden": ["true", "false"],
+        "opacities": ["1", "1"],
+        "paths": ["/account/roles", "/player/library"]
+      }
+    ]
+  },
+  "result": "PASSED"
+}

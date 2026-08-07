@@ -1,0 +1,22 @@
+{
+  "evidenceId": "HP-OWCR2-EV-C-ACCOUNT-MENU-OPENING",
+  "journeyId": "HP-OWCR2-JRN-D",
+  "sourceSha": "f3eef8dc65dd39a40f8e4140aa058de0381a94af",
+  "fixtureVersion": "homeport-phase7-owner-correction-round2-v1",
+  "result": "PASSED",
+  "visualReview": "ACCEPTED",
+  "reviewer": "Codex",
+  "ownerReview": "PENDING_OWNER_DECISION",
+  "browser": "Playwright Chromium",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "route": "/",
+  "title": "Voyagewright | Stories made to be played",
+  "screenshot": "screenshots/HP-OWCR2-EV-C-ACCOUNT-MENU-OPENING.png",
+  "screenshotSha256": "103c1a7f4dcf6b325277e68a2a8a6cd03327057d792e4c2a7fab5c47be858e9a",
+  "screenshotBytes": 527752,
+  "timestamp": "2026-08-05T20:01:21.365Z",
+  "limitation": "Local production-build Chromium proof against a synthetic task-owned SQLite clone; not owner acceptance, live-provider proof, merge, or deployment."
+}

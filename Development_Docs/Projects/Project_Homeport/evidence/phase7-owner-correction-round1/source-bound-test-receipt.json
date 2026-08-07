@@ -1,0 +1,9 @@
+{
+  "schemaVersion": "1.0.0",
+  "sourceSha": "e1829c3cffa87e561d15342da2e6e9b073fd7165",
+  "fixtureVersion": "homeport-phase7-owner-correction-round1-v1",
+  "originalPhase7": { "result": "PASSED", "count": 15, "journeys": "A-O" },
+  "correctionRound1": { "result": "PASSED", "count": 21, "journeys": "A-U" },
+  "evidenceCount": 31,
+  "truthBoundary": "LOCAL_SYNTHETIC_PRODUCTION_BUILD_BROWSER_PROOF"
+}

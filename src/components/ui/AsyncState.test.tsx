@@ -12,18 +12,33 @@ describe("shared asynchronous state motion", () => {
     vi.useRealTimers();
   });
 
-  it("moves from pending to a bounded slow state without changing the skeleton shape", () => {
+  it("suppresses the visual loading surface before 500 ms, then moves to a bounded slow state", () => {
     vi.useFakeTimers();
     const view = render(<LoadingState title="Opening the chart" detail="Loading authoritative state." />);
+    expect(screen.getByRole("status")).toHaveAttribute("data-async-state", "pending-delay");
+    expect(view.container.querySelector(".ui-loading-state")).not.toBeInTheDocument();
+
+    act(() => vi.advanceTimersByTime(499));
+    expect(view.container.querySelector(".ui-loading-state")).not.toBeInTheDocument();
+
+    act(() => vi.advanceTimersByTime(1));
     const state = screen.getByRole("status");
     const skeletonCount = view.container.querySelectorAll(".ui-skeleton-lines i").length;
     expect(state).toHaveAttribute("data-async-state", "pending");
 
-    act(() => vi.advanceTimersByTime(901));
+    act(() => vi.advanceTimersByTime(900));
 
     expect(state).toHaveAttribute("data-async-state", "slow");
     expect(state).toHaveTextContent("This is taking longer than expected.");
     expect(view.container.querySelectorAll(".ui-skeleton-lines i")).toHaveLength(skeletonCount);
+  });
+
+  it("cancels both delayed loading timers when work settles before the threshold", () => {
+    vi.useFakeTimers();
+    const view = render(<LoadingState title="Opening the chart" />);
+    view.unmount();
+    act(() => vi.runAllTimers());
+    expect(view.container.querySelector("[role='status']")).not.toBeInTheDocument();
   });
 
   it("distinguishes terminal errors and focuses their heading", async () => {

@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
 import { AnimationProvider } from "@/animation/director/AnimationProvider";
+import { CurrentUserProvider } from "@/components/auth/CurrentUserProvider";
+import { PreferenceRuntimeBridge } from "@/components/homeport/PreferenceRuntimeBridge";
 import { ProductShell } from "@/components/shell/ProductShell";
 import { canonicalTerms } from "@/language/canonical-terms";
+import { themeBootstrapScript } from "@/homeport/theme-bootstrap";
 import "./globals.css";
 import "../styles/tokens.css";
 import "../styles/shell.css";
@@ -13,6 +16,8 @@ import "../styles/showcase.css";
 import "../styles/studio.css";
 import "../styles/chronicle.css";
 import "../styles/platform.css";
+import "../styles/personal-harbor.css";
+import "../styles/community.css";
 
 export const metadata: Metadata = {
   applicationName: canonicalTerms.product,
@@ -24,10 +29,22 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" data-scroll-behavior="smooth">
+    <html
+      lang="en"
+      data-scroll-behavior="smooth"
+      data-voyage-theme="dark"
+      data-homeport-hydration={process.env.NODE_ENV !== "production" ? "pending" : undefined}
+      suppressHydrationWarning
+    >
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeBootstrapScript }} />
+      </head>
       <body>
         <AnimationProvider>
-          <ProductShell>{children}</ProductShell>
+          <CurrentUserProvider>
+            <PreferenceRuntimeBridge />
+            <ProductShell>{children}</ProductShell>
+          </CurrentUserProvider>
         </AnimationProvider>
       </body>
     </html>

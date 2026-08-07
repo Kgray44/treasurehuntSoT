@@ -1,15 +1,26 @@
 import { NextResponse } from "next/server";
-import { requireGmCapability, verifyCsrf } from "@/lib/security";
+import { requireStudioWorkspace } from "@/chronicle/studio-authorization";
+import { db } from "@/lib/db";
 import { PrivateContentError } from "@/private-content/core";
 import { exportPrivateImport } from "@/private-content/service";
 
 export async function POST(request: Request) {
-  const session = await requireGmCapability("CREATE_TALES");
-  if (!session || !(await verifyCsrf(session)))
-    return NextResponse.json({ error: "Creator authorization is required." }, { status: 403 });
+  const session = await requireStudioWorkspace(request);
+  if (!session) return NextResponse.json({ error: "Creator authorization is required." }, { status: 403 });
   try {
     const body = (await request.json()) as { importId?: string; passphrase?: string };
     if (!body.importId || typeof body.passphrase !== "string") throw new Error("invalid");
+    const owned = await db.privateContentImport.findFirst({
+      where: {
+        id: body.importId,
+        OR: [
+          { ownerAccountId: session.accountId },
+          ...(session.account.legacyGameMasterId ? [{ ownerActorId: session.account.legacyGameMasterId }] : []),
+        ],
+      },
+      select: { id: true },
+    });
+    if (!owned) return NextResponse.json({ error: "Private import not found." }, { status: 404 });
     const receipt = await exportPrivateImport(body.importId, body.passphrase);
     return NextResponse.json(
       { ...receipt, packageBytes: receipt.packageBytes.toString("base64") },

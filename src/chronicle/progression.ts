@@ -21,10 +21,22 @@ import { projectPlayerBlock } from "@/chronicle/journal-contract";
 import { resolveArtifactGrantReceipt } from "@/chronicle/artifact-grant";
 import { isPlayerPresentationEventType, toClientEvent } from "@/domain/visibility";
 import type { ClientProgressEvent } from "@/domain/story";
+import {
+  captainAuthorityClauses,
+  hasCaptainAuthority,
+  type CanonicalCaptainActor,
+} from "@/chronicle/captain-authorization";
 
 const digest = (value: string) => createHash("sha256").update(value).digest("hex");
 const futureProviders = new Set(["visionLocation", "visionObject", "externalWebhook"]);
 const MAX_CANONICAL_PLAYER_PRESENTATION_HISTORY = 100;
+
+async function resolveCaptainActor(actorId: string): Promise<CanonicalCaptainActor> {
+  const accountId = await canonicalAccountForLegacyActor(actorId);
+  if (!accountId) throw new Error("Captain account authority is unavailable.");
+  const account = await db.userAccount.findUnique({ where: { id: accountId }, select: { legacyGameMasterId: true } });
+  return { accountId, legacyGameMasterId: account?.legacyGameMasterId ?? null };
+}
 
 type CanonicalPresentationEvent = Readonly<{
   id: string;
@@ -445,7 +457,16 @@ const emit = (sessionId: string, event: { id: string; eventType: string; sequenc
     createdAt: event.createdAt.toISOString(),
   });
 
-export async function startTaleSession(slug: string, ownerLabel?: string) {
+export async function startTaleSession(
+  slug: string,
+  input: {
+    ownerLabel?: string;
+    aliasEdited?: boolean;
+    accountId?: string;
+    profileId?: string;
+    canonicalDisplayName?: string;
+  } = {},
+) {
   const tale = await db.chronicle.findFirst({
     where: {
       slug,
@@ -462,19 +483,22 @@ export async function startTaleSession(slug: string, ownerLabel?: string) {
   if (!first) throw new Error("This published Chronicle has no playable first Passage.");
   const token = randomBytes(32).toString("base64url");
   const key = randomUUID();
+  const signedIn = Boolean(input.accountId && input.profileId && input.canonicalDisplayName);
+  const alias = (input.ownerLabel?.trim() || input.canonicalDisplayName || "Guest Player").slice(0, 80);
+  if (signedIn && !input.aliasEdited && alias !== input.canonicalDisplayName)
+    throw new Error("Use Edit for this Chronicle before choosing a Chronicle-specific Player name.");
   const created = await db.$transaction(async (tx) => {
-    const player = await tx.playerProfile.create({
-      data: {
-        displayName: ownerLabel?.trim() || "Guest Player",
-        preferences: JSON.stringify({ compatibilitySessionCookie: true }),
-      },
-    });
+    const player = signedIn
+      ? await tx.playerProfile.findUniqueOrThrow({ where: { id: input.profileId! } })
+      : await tx.playerProfile.create({
+          data: { displayName: alias, preferences: JSON.stringify({ compatibilitySessionCookie: true }) },
+        });
     const session = await tx.taleSession.create({
       data: {
         taleId: tale.id,
         publishedVersionId: version.id,
-        ownerLabel: ownerLabel?.trim() || "Guest crew",
-        voyageName: ownerLabel?.trim() ? `${ownerLabel.trim()}'s voyage` : "Guest voyage",
+        ownerLabel: alias,
+        voyageName: `${alias}'s voyage`,
         accessTokenHash: digest(token),
         launchedAt: new Date(),
         currentChapterId: chapterByBlock(snapshot, first.id)?.id,
@@ -486,6 +510,8 @@ export async function startTaleSession(slug: string, ownerLabel?: string) {
         playthroughId: session.id,
         playerProfileId: player.id,
         status: "ACTIVE_MEMBER",
+        participationAlias: alias,
+        participationAliasEditedAt: signedIn && input.aliasEdited ? new Date() : null,
         joinedAt: session.startedAt,
       },
     });
@@ -500,12 +526,13 @@ export async function startTaleSession(slug: string, ownerLabel?: string) {
     const event = await enterBlock(tx, session, snapshot, first, "player", null, key);
     await tx.platformAuditEvent.create({
       data: {
-        actorType: "ANONYMOUS",
+        actorType: signedIn ? "ACCOUNT" : "ANONYMOUS",
+        actorAccountId: input.accountId,
         action: "COMPATIBILITY_PLAYTHROUGH_STARTED",
         resourceType: "PLAYTHROUGH",
         resourceId: session.id,
         correlationId: key,
-        metadata: JSON.stringify({ taleId: tale.id, versionId: version.id }),
+        metadata: JSON.stringify({ taleId: tale.id, versionId: version.id, aliasEdited: Boolean(input.aliasEdited) }),
       },
     });
     return { session, event };
@@ -519,14 +546,14 @@ export async function startTaleSession(slug: string, ownerLabel?: string) {
 }
 
 export async function launchTalePlaythrough(sessionId: string, actorId: string, expectedVersion?: number) {
-  const captainAccountId = await canonicalAccountForLegacyActor(actorId);
+  const actor = await resolveCaptainActor(actorId);
+  const captainAccountId = actor.accountId;
   const session = await db.taleSession.findUniqueOrThrow({
     where: { id: sessionId },
     include: { version: true, memberships: true, invitations: true },
   });
   if (session.previewMode || !session.version) throw new Error("Only a published real voyage can be launched.");
-  if (session.captainId && session.captainId !== actorId)
-    throw new Error("This voyage is assigned to another Captain.");
+  if (!hasCaptainAuthority(session, actor)) throw new Error("This voyage is assigned to another Captain.");
   if (!["READY", "SCHEDULED"].includes(session.status))
     throw new Error(`This voyage is ${session.status.toLocaleLowerCase()} and is not ready to launch.`);
   if (!session.memberships.some((membership) => membership.status === "READY"))
@@ -1081,6 +1108,7 @@ export async function captainSessionAction(
     idempotencyKey: string;
   },
 ) {
+  const actor = await resolveCaptainActor(actorId);
   const session = await db.taleSession.findUniqueOrThrow({
     where: { id: sessionId },
     include: {
@@ -1089,8 +1117,7 @@ export async function captainSessionAction(
       events: { where: { eventType: "blockEntered" }, orderBy: { sequence: "desc" }, take: 2 },
     },
   });
-  if (session.captainId && session.captainId !== actorId)
-    throw new Error("This voyage is assigned to another Captain.");
+  if (!hasCaptainAuthority(session, actor)) throw new Error("This voyage is assigned to another Captain.");
   const snapshot = snapshotOf(session);
   const request = session.verificationRequests[0];
   if (["approve", "reject", "override"].includes(input.action)) {
@@ -1167,8 +1194,9 @@ export async function captainSessionAction(
   return { accepted: true };
 }
 
-export async function listCaptainSessions() {
+export async function listCaptainSessions(actor: CanonicalCaptainActor) {
   const sessions = await db.taleSession.findMany({
+    where: { previewMode: false, OR: captainAuthorityClauses(actor) },
     orderBy: { updatedAt: "desc" },
     take: 100,
     include: { tale: true, version: true, verificationRequests: { where: { status: "PENDING" }, take: 1 } },
@@ -1194,8 +1222,10 @@ export async function listCaptainSessions() {
   }));
 }
 
-export async function createHelperPairing(sessionId: string, deviceId: string) {
+export async function createHelperPairing(sessionId: string, deviceId: string, actorId: string) {
+  const actor = await resolveCaptainActor(actorId);
   const session = await db.taleSession.findUniqueOrThrow({ where: { id: sessionId } });
+  if (!hasCaptainAuthority(session, actor)) throw new Error("This Voyage is not assigned to your account.");
   if (!session.publishedVersionId || session.previewMode || !["ACTIVE", "PAUSED"].includes(session.status))
     throw new Error("Helper devices can only pair with an active published tale session.");
   const token = randomBytes(32).toString("base64url");
@@ -1252,13 +1282,18 @@ export async function getHelperScope(token: string) {
 }
 
 export async function revokeHelperPairing(pairingId: string, actorId: string) {
-  const pairing = await db.taleHelperPairing.findUniqueOrThrow({ where: { id: pairingId } });
+  const actor = await resolveCaptainActor(actorId);
+  const pairing = await db.taleHelperPairing.findUniqueOrThrow({
+    where: { id: pairingId },
+    include: { session: true },
+  });
+  if (!hasCaptainAuthority(pairing.session, actor)) throw new Error("This Voyage is not assigned to your account.");
   const revokedAt = new Date();
   const updated = await db.taleHelperPairing.update({
     where: { id: pairingId },
     data: { status: "REVOKED", revokedAt },
   });
-  const session = await db.taleSession.findUniqueOrThrow({ where: { id: pairing.sessionId } });
+  const session = pairing.session;
   const event = await db.$transaction((tx) =>
     appendEvent(tx, session, {
       eventType: "helperPairingRevoked",

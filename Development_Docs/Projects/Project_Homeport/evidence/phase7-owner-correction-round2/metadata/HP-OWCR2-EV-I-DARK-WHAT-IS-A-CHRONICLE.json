@@ -1,0 +1,22 @@
+{
+  "evidenceId": "HP-OWCR2-EV-I-DARK-WHAT-IS-A-CHRONICLE",
+  "journeyId": "HP-OWCR2-JRN-F",
+  "sourceSha": "f3eef8dc65dd39a40f8e4140aa058de0381a94af",
+  "fixtureVersion": "homeport-phase7-owner-correction-round2-v1",
+  "result": "PASSED",
+  "visualReview": "ACCEPTED",
+  "reviewer": "Codex",
+  "ownerReview": "PENDING_OWNER_DECISION",
+  "browser": "Playwright Chromium",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "route": "/",
+  "title": "Voyagewright | Stories made to be played",
+  "screenshot": "screenshots/HP-OWCR2-EV-I-DARK-WHAT-IS-A-CHRONICLE.png",
+  "screenshotSha256": "e66020af68f2bd04c3d717b822ab25a548a59243a191284d60a9b63bbd6587b3",
+  "screenshotBytes": 790868,
+  "timestamp": "2026-08-05T20:01:46.738Z",
+  "limitation": "Local production-build Chromium proof against a synthetic task-owned SQLite clone; not owner acceptance, live-provider proof, merge, or deployment."
+}

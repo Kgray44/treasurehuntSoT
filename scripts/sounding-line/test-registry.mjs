@@ -3,16 +3,21 @@ import { createHash } from "node:crypto";
 import { execFile } from "node:child_process";
 import { promises as fs } from "node:fs";
 import path from "node:path";
+import { format, resolveConfig } from "prettier";
 import ts from "typescript";
 import { promisify } from "node:util";
 
 const root = process.cwd();
 const ignored = new Set(["node_modules", ".git", ".next", "coverage", "artifacts"]);
+const homeportContracts = JSON.parse(await fs.readFile(path.join(root, "testing", "contracts.json"), "utf8"))
+  .contracts.map((contract) => contract.id)
+  .filter((contractId) => contractId.startsWith("homeport."));
 const hash = (text) => createHash("sha256").update(text).digest("hex").slice(0, 20);
 const execFileAsync = promisify(execFile);
 const normal = (value) => value.replaceAll("\\", "/");
 
 function ownerFor(file) {
+  if (file.includes("homeport")) return "project-homeport";
   if (file.includes("private-content")) return "sealed-hold";
   if (file.includes("community")) return "harborlight";
   if (file.includes("wayfarer") || file.includes("passport")) return "wayfarer";
@@ -23,6 +28,8 @@ function ownerFor(file) {
 }
 
 function unitFamily(file) {
+  if (file.startsWith("src/homeport/") || file.startsWith("scripts/homeport/") || file.startsWith("tests/homeport/"))
+    return "unit.homeport";
   if (file.startsWith("scripts/sounding-line/") || file.startsWith("tests/sounding-line/")) return "unit.sounding-line";
   if (file.startsWith("scripts/features/") || file.includes("feature-catalog")) return "unit.feature-catalog";
   if (file.includes("private-content")) return "unit.private-content";
@@ -39,6 +46,7 @@ function unitFamily(file) {
 }
 
 function componentFamily(file) {
+  if (file.includes("components/homeport")) return "component.homeport";
   if (file.includes("components/animation")) return "component.animation";
   if (file.includes("components/community")) return "component.community";
   if (file.includes("components/studio/Private")) return "component.private-operations";
@@ -61,6 +69,7 @@ function browserFamily(project, file, title) {
   // inherit a fixture-free ownership contract they do not satisfy.
   if (file.endsWith("access-gates.spec.ts") && project === "sounding-line-access-sentinel")
     return "browser.access-sentinel";
+  if (value.includes("homeport") || project.includes("homeport")) return "browser.homeport";
   if (file.endsWith("chronicle-platform.spec.ts") || file.endsWith("acceptance.spec.ts"))
     return "browser.player-library";
   if (value.includes("access-gates") || value.includes("authentication") || value.includes("sign-in"))
@@ -85,6 +94,7 @@ function browserFamily(project, file, title) {
 }
 
 function contractFor(file, family) {
+  if (file.includes("homeport") || family === "unit.homeport") return homeportContracts;
   if (file.includes("private-content")) return ["sealed-hold-private-delivery", "public-privacy-projection"];
   if (file.includes("community")) return ["community-public-projection"];
   if (file.includes("wayfarer") || file.includes("passport")) return ["wayfarer-history-projection"];
@@ -97,7 +107,7 @@ function contractFor(file, family) {
 }
 
 function metadata(file, family, browser = null) {
-  const privateOrCommunity = /private-content|community|wayfarer|passport|invitation|session/u.test(file);
+  const privateOrCommunity = /homeport|private-content|community|wayfarer|passport|invitation|session/u.test(file);
   const high = privateOrCommunity || Boolean(browser);
   const ui = Boolean(browser) || file.endsWith(".tsx");
   return {
@@ -109,6 +119,14 @@ function metadata(file, family, browser = null) {
     consumerPaths: [],
     dependencies: [],
     fixtureFamily: browser ? "isolated-browser-fixture" : "repository-fixtures",
+    fixture: browser
+      ? "task-owned isolated fixture declared by the selected browser project"
+      : "repository-owned deterministic fixtures",
+    databaseOwnership: browser
+      ? "task-owned copied or generated database; canonical database forbidden"
+      : "no browser database ownership",
+    browserOwnership: browser ? "task-owned Playwright context and state" : "not applicable",
+    portOwnership: browser ? "task-owned allowlisted local application port" : "not applicable",
     resources: browser
       ? ["application-port", "sqlite-clone", "browser-chromium", "trace-root"]
       : ["node-slot", "vitest-worker-pool"],
@@ -127,6 +145,9 @@ function metadata(file, family, browser = null) {
     expectedDurationMs: browser ? 120000 : 30000,
     hardBudgetMs: browser ? 600000 : 180000,
     retryPolicy: "NONE",
+    releaseRelevance: browser
+      ? "authoritative subsystem, mainline, and release evidence"
+      : "authoritative registered contract evidence",
     gates: browser
       ? ["subsystem", "mainline", "release-candidate"]
       : ["local-change", "subsystem", "mainline", "release-candidate"],
@@ -139,6 +160,10 @@ function metadata(file, family, browser = null) {
 async function discoverPlaywright() {
   const { stdout } = await execFileAsync(process.execPath, ["node_modules/@playwright/test/cli.js", "test", "--list"], {
     cwd: root,
+    env: {
+      ...process.env,
+      HOMEPORT_PHASE4_EVIDENCE_ROOT: path.join(root, "artifacts", "sounding-line", "registry-discovery"),
+    },
     maxBuffer: 8 * 1024 * 1024,
   });
   const cases = [];
@@ -240,9 +265,14 @@ for (const entry of cases) {
   ids.add(entry.id);
 }
 await fs.mkdir(path.join(root, "testing", "generated"), { recursive: true });
+const registryPath = path.join(root, "testing", "generated", "active-test-registry.json");
+const prettierConfig = (await resolveConfig(registryPath)) ?? {};
 await fs.writeFile(
-  path.join(root, "testing", "generated", "active-test-registry.json"),
-  `${JSON.stringify({ version: 2, schemaVersion: "2.0.0", generated: true, cases }, null, 2)}\n`,
+  registryPath,
+  await format(JSON.stringify({ version: 2, schemaVersion: "2.0.0", generated: true, cases }), {
+    ...prettierConfig,
+    parser: "json",
+  }),
 );
 console.log(
   `Generated ${cases.length} governed test-case definitions across ${new Set(cases.map((entry) => entry.suiteId)).size} owned families.`,

@@ -4,7 +4,7 @@
   min-height: 100svh;
   isolation: isolate;
   overflow: hidden;
-  background: #02090c;
+  background: var(--background-primary);
 }
 
 .harbor-sky,
@@ -38,6 +38,7 @@
 
 .star-field i {
   opacity: var(--star-min-opacity, 0.45);
+  filter: brightness(0.9) drop-shadow(0 0 2px #dffaf4);
   animation: harbor-star-twinkle var(--star-duration, 6s) var(--star-delay, 0s) ease-in-out infinite alternate;
 }
 
@@ -47,6 +48,7 @@
   }
   to {
     opacity: 0.92;
+    filter: brightness(1.45) drop-shadow(0 0 6px #f4fff8);
   }
 }
 
@@ -121,6 +123,18 @@
     radial-gradient(ellipse at 15% 70%, rgba(72, 95, 99, 0.38), transparent 42%),
     radial-gradient(ellipse at 72% 50%, rgba(86, 113, 115, 0.32), transparent 38%);
   filter: blur(18px);
+  animation: harbor-fog-drift 24s ease-in-out infinite alternate;
+}
+
+@keyframes harbor-fog-drift {
+  from {
+    translate: -1.5% 0;
+    opacity: 0.72;
+  }
+  to {
+    translate: 1.5% 0.4%;
+    opacity: 0.9;
+  }
 }
 
 .harbor-horizon {
@@ -422,7 +436,7 @@
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-medium);
   padding: clamp(1.2rem, 3vw, 2rem);
-  background: rgba(2, 13, 16, 0.52);
+  background: color-mix(in srgb, var(--surface-overlay) 82%, transparent);
 }
 
 .gateway-trust-panel ul {
@@ -452,12 +466,24 @@
   min-height: 360px;
   align-content: end;
   overflow: hidden;
-  border: 1px solid rgba(201, 169, 95, 0.38);
+  border: 1px solid var(--border-default);
   border-radius: 22px;
   padding: 1.25rem;
-  background: linear-gradient(160deg, rgba(20, 52, 54, 0.88), rgba(3, 15, 18, 0.95));
+  background: linear-gradient(
+    160deg,
+    color-mix(in srgb, var(--surface-raised) 92%, transparent),
+    var(--surface-default)
+  );
   box-shadow: 0 22px 55px rgba(0, 0, 0, 0.34);
   isolation: isolate;
+}
+
+.role-object-card:hover,
+.role-object-card:focus-within {
+  border-color: var(--border-emphasis);
+  box-shadow:
+    0 22px 55px rgba(0, 0, 0, 0.34),
+    0 0 26px color-mix(in srgb, var(--accent-primary) 16%, transparent);
 }
 
 .role-object-card[data-role-softened="true"] {
@@ -482,14 +508,14 @@
 
 .role-object-card h2 {
   margin: 0.15rem 0 0.4rem;
-  color: var(--parchment-50);
+  color: var(--text-heading);
   font-size: clamp(1.7rem, 3vw, 2.6rem);
 }
 
 .role-object-card > p:not(.card-kicker) {
   min-height: 4.4em;
   margin: 0 0 0.5rem;
-  color: #c8d5cf;
+  color: var(--text-body);
   line-height: 1.5;
 }
 
@@ -667,6 +693,7 @@
 
 .harbor-landing[data-ambient-state="paused"] .star-field i,
 .harbor-landing[data-ambient-state="paused"] .moon-glow > i,
+.harbor-landing[data-ambient-state="paused"] .distant-clouds,
 .harbor-landing[data-ambient-state="paused"] [data-ambient] {
   animation-play-state: paused !important;
 }
@@ -674,10 +701,28 @@
 html[data-motion-level="reduced"] .star-field i,
 html[data-motion-level="reduced"] .moon-glow > i,
 html[data-motion-level="reduced"] .remembered-badge-entering,
+html[data-motion-level="reduced"] .distant-clouds,
 .harbor-landing[data-motion-mode="reduced"] .star-field i,
 .harbor-landing[data-motion-mode="reduced"] .moon-glow > i,
-.harbor-landing[data-motion-mode="reduced"] .remembered-badge-entering {
+.harbor-landing[data-motion-mode="reduced"] .remembered-badge-entering,
+.harbor-landing[data-motion-mode="reduced"] .distant-clouds {
   animation: none;
+}
+
+html[data-voyage-theme="light"] .harbor-sky {
+  background:
+    linear-gradient(to bottom, rgb(215 235 232 / 88%), rgb(190 215 211 / 72%)),
+    radial-gradient(circle at 68% 22%, rgb(111 166 163 / 30%), transparent 28%);
+}
+
+html[data-voyage-theme="light"] .harbor-content h1,
+html[data-voyage-theme="light"] .harbor-content > p:not(.eyebrow) {
+  color: var(--text-heading);
+  text-shadow: 0 2px 16px rgb(255 255 255 / 72%);
+}
+
+html[data-voyage-theme="light"] .harbor-horizon {
+  background: linear-gradient(to bottom, transparent 40%, rgb(105 166 163 / 34%) 48%, rgb(42 102 104 / 66%) 82%);
 }
 
 html[data-motion-level="reduced"] .distant-ship,

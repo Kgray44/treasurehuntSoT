@@ -1,0 +1,21 @@
+{
+  "evidenceId": "HP-OWCR2-EV-D-LANTERN-NEUTRAL",
+  "journeyId": "HP-OWCR2-JRN-E",
+  "sourceSha": "f3eef8dc65dd39a40f8e4140aa058de0381a94af",
+  "fixtureVersion": "homeport-phase7-owner-correction-round2-v1",
+  "measurementKind": "COMPUTED_FRAME_SEQUENCE",
+  "measurements": {
+    "transformOrigin": "47px 0px",
+    "rotations": [
+      -3.1643993287232264, -2.8790002687723346, -2.444200555793592, -1.8664029421028718, -1.16050209312432,
+      -0.32310009386328303, 0.4416999569996618, 1.16050209312432, 1.8284006681671652, 2.4593970003829706,
+      2.905297685574743, 3.179500858658173
+    ],
+    "starOpacity": [
+      0.353888, 0.342642, 0.340298, 0.346868, 0.363722, 0.389454, 0.422479, 0.466536, 0.518613, 0.576645, 0.634028,
+      0.698212, 0.754993, 0.799735, 0.84263, 0.874475
+    ],
+    "fogAnimationName": "harbor-fog-drift"
+  },
+  "result": "PASSED"
+}

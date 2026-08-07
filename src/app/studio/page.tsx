@@ -1,6 +1,6 @@
-import { StudioHome } from "@/components/studio/StudioHome";
-import { requireGmCapability } from "@/lib/security";
+import { redirect } from "next/navigation";
+
 export const dynamic = "force-dynamic";
-export default async function StudioPage() {
-  return <StudioHome authenticated={Boolean(await requireGmCapability("CREATE_TALES"))} />;
+export default function StudioPage() {
+  redirect("/studio/library");
 }

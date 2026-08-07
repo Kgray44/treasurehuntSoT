@@ -80,8 +80,9 @@ function publicAsset(asset: Awaited<ReturnType<typeof db.taleAsset.findFirstOrTh
   return asset;
 }
 
-export async function listStudioTales() {
+export async function listStudioTales(accountId: string) {
   const tales = await db.chronicle.findMany({
+    where: { OR: [{ creatorAccountId: accountId }, { creatorId: accountId }] },
     orderBy: [{ archivedAt: "asc" }, { updatedAt: "desc" }],
     include: {
       drafts: { orderBy: { revisionNumber: "desc" }, take: 1 },

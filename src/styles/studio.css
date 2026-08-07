@@ -15,6 +15,19 @@
     auto;
 }
 
+html[data-voyage-theme="light"] :where(.studio-home, .tale-editor, .new-tale-page, .studio-auth-gate, .studio-loading) {
+  color: var(--text-primary);
+  background:
+    linear-gradient(rgb(98 80 41 / 5%) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(98 80 41 / 5%) 1px, transparent 1px),
+    radial-gradient(circle at 15% 0, rgb(57 122 121 / 16%), transparent 42%), var(--background-primary);
+  background-size:
+    34px 34px,
+    34px 34px,
+    auto,
+    auto;
+}
+
 .studio-home {
   padding: clamp(1.2rem, 3vw, 3.5rem);
 }
@@ -293,7 +306,11 @@
 }
 
 .tale-editor {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
   min-height: 100vh;
+  overflow-x: clip;
 }
 .editor-topbar {
   position: sticky;
@@ -478,6 +495,8 @@
   top: 76px;
   display: flex;
   overflow-x: auto;
+  max-width: 100%;
+  overscroll-behavior-inline: contain;
   gap: 0.2rem;
   border-bottom: 1px solid rgba(201, 169, 95, 0.18);
   padding: 0.45rem 1rem;
@@ -894,6 +913,61 @@
 .inspector-fields small {
   display: block;
   color: #8ea49f;
+}
+
+.structured-list-field {
+  display: grid;
+  gap: 0.75rem;
+  margin: 0;
+  border: 1px solid rgba(201, 169, 95, 0.25);
+  border-radius: 12px;
+  padding: 0.85rem;
+  background: rgba(3, 14, 16, 0.42);
+}
+
+.structured-list-field legend {
+  padding-inline: 0.35rem;
+  color: var(--brass-100);
+  font-weight: 750;
+}
+
+.structured-list-field ol {
+  display: grid;
+  gap: 0.65rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.structured-list-field li {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: 0.55rem;
+  border-bottom: 1px solid rgba(201, 169, 95, 0.14);
+  padding-bottom: 0.65rem;
+}
+
+.structured-list-field li small {
+  grid-column: 1 / -1;
+}
+
+.structured-list-field > button,
+.structured-list-field li > button {
+  min-height: 40px;
+}
+
+.structured-list-field .field-help {
+  margin: 0;
+  color: #aabbb6;
+  font-size: 0.82rem;
+  line-height: 1.5;
+}
+
+@media (max-width: 520px) {
+  .structured-list-field li {
+    grid-template-columns: 1fr;
+  }
 }
 .check-field {
   display: flex !important;
@@ -1439,12 +1513,21 @@
   }
   .editor-section-nav {
     top: 0;
+    width: 100%;
+    padding-inline: 0.5rem;
+  }
+  .editor-section-nav a {
+    flex: 0 0 auto;
   }
   .timeline-block {
-    grid-template-columns: 34px 34px 1fr;
+    grid-template-columns: 34px 34px minmax(0, 1fr);
+    max-width: 100%;
+    min-width: 0;
   }
   .block-move {
     grid-column: 3;
+    min-width: 0;
+    flex-wrap: wrap;
   }
 }
 

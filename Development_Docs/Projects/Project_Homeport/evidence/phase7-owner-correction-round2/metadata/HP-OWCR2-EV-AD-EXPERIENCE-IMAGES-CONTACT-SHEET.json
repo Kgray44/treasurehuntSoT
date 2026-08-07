@@ -1,0 +1,11 @@
+{
+  "evidenceId": "HP-OWCR2-EV-AD-EXPERIENCE-IMAGES-CONTACT-SHEET",
+  "journeyId": "HP-OWCR2-JRN-T",
+  "sourceSha": "8284f6d2ce0b41a7eb995e13ccfe2a27c9b5845d",
+  "fixtureVersion": "homeport-phase7-owner-correction-round2-v1",
+  "result": "PASSED",
+  "visualReview": "ACCEPTED",
+  "screenshot": "screenshots/HP-OWCR2-EV-AD-EXPERIENCE-IMAGES-CONTACT-SHEET.png",
+  "screenshotSha256": "a00833879091d9ecbb152edc80b0cbe395ae08f104670feec90922e2229acbc9",
+  "limitation": "Contact sheet is an index aid; individual checksummed images remain authoritative."
+}

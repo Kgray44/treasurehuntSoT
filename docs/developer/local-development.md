@@ -3,7 +3,7 @@ title: Local development
 audience: developer
 status: current
 canonical_for: local-development
-last_reviewed: 2026-07-29
+last_reviewed: 2026-08-07
 ---
 
 # Local development
@@ -15,3 +15,11 @@ Use `npm run lint`, `npm run typecheck`, `npm test`, `npm run docs:index`,
 features:validate` during development. Command details are in [reference
 commands](../reference/commands.md). Never use a shared or production database
 for local tests.
+
+For LAN or protected-tunnel development, use exact hostnames.
+`scripts/start-dev.ps1 -Lan` adds the machine's current LAN IPv4 address to the
+process allowlist; add other governed names through
+`HOMEPORT_ALLOWED_DEV_ORIGINS`. Run `npm run homeport:origin:test` for direct and
+reverse-proxy hydration, interaction, keyboard, navigation, and origin-metadata
+regression. The harness creates and migrates a task-owned SQLite database and
+never targets canonical state.

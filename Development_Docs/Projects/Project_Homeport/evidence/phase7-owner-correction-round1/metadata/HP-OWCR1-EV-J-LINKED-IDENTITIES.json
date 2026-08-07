@@ -1,0 +1,22 @@
+{
+  "evidenceId": "HP-OWCR1-EV-J-LINKED-IDENTITIES",
+  "journeyId": "HP-OWCR1-JRN-I",
+  "sourceSha": "e1829c3cffa87e561d15342da2e6e9b073fd7165",
+  "fixtureVersion": "homeport-phase7-owner-correction-round1-v1",
+  "result": "PASSED",
+  "visualReview": "ACCEPTED",
+  "reviewer": "Codex",
+  "ownerReview": "PENDING_OWNER_DECISION",
+  "browser": "Playwright Chromium",
+  "viewport": { "width": 1440, "height": 900 },
+  "zoom": "100_PERCENT_UNLESS_EVIDENCE_ID_STATES_MOBILE_OR_ZOOM",
+  "motionMode": "REDUCED",
+  "route": "/account/linked-identities",
+  "title": "Voyagewright | Stories made to be played",
+  "captureMode": "FULL_PAGE",
+  "normalization": "Sticky shell header rendered in normal document flow; animations and caret disabled after route settlement.",
+  "screenshot": "screenshots/HP-OWCR1-EV-J-LINKED-IDENTITIES.png",
+  "screenshotSha256": "4b2107a7c7a143a1fb88d7e38c4c77963c9e128840c3637bb7f80ab2a3e22cd8",
+  "screenshotBytes": 545457,
+  "limitation": "Local production-build Chromium proof against a synthetic task-owned SQLite clone; not owner acceptance, live-provider proof, merge, or deployment."
+}

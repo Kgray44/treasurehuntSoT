@@ -27,6 +27,8 @@ import {
 } from "@/animation/platform/useAuthoritativeAsyncState";
 import { PlatformRelic } from "./PlatformRelic";
 import { RiveStatefulObject, type RiveSignal } from "@/components/animation/RiveStatefulObject";
+import { useCurrentUser } from "@/components/auth/CurrentUserProvider";
+import { useActionDialog } from "@/components/ui/ActionDialog";
 
 type Invitation = {
   id: string;
@@ -245,7 +247,9 @@ function TerminalInvitationState({
 }
 
 export function InvitationCeremony({ onRouteHandoff }: { onRouteHandoff?: InvitationRouteHandoff } = {}) {
+  const { requestAction, dialog } = useActionDialog();
   const router = useRouter();
+  const { invalidate: invalidateCurrentUser } = useCurrentUser();
   const search = useSearchParams();
   const root = useRef<HTMLElement>(null);
   const ceremonyHost = useRef<SceneHostHandle | null>(null);
@@ -354,7 +358,16 @@ export function InvitationCeremony({ onRouteHandoff }: { onRouteHandoff?: Invita
 
   async function act(action: "accept" | "decline") {
     if (!invitation || !root.current) return;
-    if (action === "decline" && !window.confirm("Decline this invitation? The Captain will see your response.")) return;
+    if (
+      action === "decline" &&
+      !(await requestAction({
+        title: "Decline this invitation?",
+        detail: "The Captain will see your response, and this invitation will no longer open the Voyage.",
+        confirmLabel: "Decline Invitation",
+        destructive: true,
+      }))
+    )
+      return;
     const run = asyncState.begin();
     if (!run) return;
     const pendingStage = action === "decline" ? "declining" : invitation.requiresPin ? "pin-validating" : "accepting";
@@ -392,6 +405,7 @@ export function InvitationCeremony({ onRouteHandoff }: { onRouteHandoff?: Invita
           operationCode = body.code;
           throw new Error("invitation-operation-rejected");
         }
+        if (action === "accept") await invalidateCurrentUser();
         const result = { ok: true as const, playthroughId: body.playthroughId };
         if (action === "accept" && result.playthroughId) {
           // A valid canonical membership must not leave a Player stranded if an
@@ -522,171 +536,174 @@ export function InvitationCeremony({ onRouteHandoff }: { onRouteHandoff?: Invita
   const relicState =
     stage === "accepted" ? "open" : stage === "pin-validating" || stage === "accepting" ? "accepting" : "valid";
   return (
-    <main ref={root} className="invitation-page" data-invitation-state={stage} data-motion-mode={mode}>
-      <SceneHost
-        kind="access"
-        hostKey={`invitation-ceremony:${invitation.id}`}
-        className="invitation-cinematic-boundary"
-        aria-hidden="true"
-        style={{ pointerEvents: "none" }}
-      >
-        <CeremonyHostBridge mode={mode} onReady={(host) => (ceremonyHost.current = host)} />
-      </SceneHost>
-      <motion.section
-        className="invitation-sheet"
-        aria-labelledby="invitation-state-title"
-        aria-busy={asyncState.busy}
-        initial={{
-          opacity: 0,
-          rotateX: mode === "reduced" ? 0 : -8,
-          clipPath: mode === "reduced" ? "inset(0)" : "inset(0 0 42% 0 round 18px)",
-        }}
-        animate={{ opacity: 1, rotateX: 0, clipPath: "inset(0 0 0% 0 round 18px)" }}
-        transition={{ duration: stateToken.durationSeconds, ease: platformMotionEasing("state") }}
-      >
-        <div className="invitation-seal" aria-hidden="true">
-          {riveAssets.invitationSeal.availability === "runtime-ready" ? (
-            <RiveStatefulObject
-              asset={riveAssets.invitationSeal}
-              mode={mode}
-              label={`Invitation seal, ${stage}`}
-              signals={sealSignals}
-              reducedMotion={{
-                stablePose: riveAssets.invitationSeal.reducedPose,
-                allowedSemanticSignals: riveAssets.invitationSeal.reducedSemanticSignals,
-              }}
-            />
-          ) : (
-            <PlatformRelic kind="invitation-seal" state={relicState} mode={mode} />
-          )}
-        </div>
-        <div
-          className="invitation-cover-frame"
-          data-cover-state={coverVisible && tale?.coverUrl ? "image" : "fallback"}
+    <>
+      <main ref={root} className="invitation-page" data-invitation-state={stage} data-motion-mode={mode}>
+        <SceneHost
+          kind="access"
+          hostKey={`invitation-ceremony:${invitation.id}`}
+          className="invitation-cinematic-boundary"
+          aria-hidden="true"
+          style={{ pointerEvents: "none" }}
         >
-          {coverVisible && tale?.coverUrl ? (
-            <motion.img
-              className="invitation-cover"
-              src={tale.coverUrl}
-              alt=""
-              onError={() => setCoverVisible(false)}
-              initial={{ clipPath: mode === "reduced" ? "inset(0)" : "inset(0 100% 0 0)" }}
-              animate={{ clipPath: "inset(0 0% 0 0)" }}
-              transition={{ duration: stateToken.durationSeconds, ease: platformMotionEasing("state") }}
-            />
-          ) : (
-            <span aria-hidden="true">Charted voyage</span>
-          )}
-        </div>
-        <p className="eyebrow">
-          A Captain’s invitation for <span className="invitation-handwritten-name">{invitation.recipientName}</span>
-        </p>
-        <h1 id="invitation-state-title" tabIndex={-1}>
-          {tale?.title ?? "A Chronicle awaits"}
-        </h1>
-        <h2>{invitation.playthrough.voyageName}</h2>
-        <p>{tale?.shortDescription ?? "Your voyage is ready to join."}</p>
-        <dl>
-          <div>
-            <dt>Edition</dt>
-            <dd>{invitation.playthrough.versionLabel ?? "Published edition"}</dd>
+          <CeremonyHostBridge mode={mode} onReady={(host) => (ceremonyHost.current = host)} />
+        </SceneHost>
+        <motion.section
+          className="invitation-sheet"
+          aria-labelledby="invitation-state-title"
+          aria-busy={asyncState.busy}
+          initial={{
+            opacity: 0,
+            rotateX: mode === "reduced" ? 0 : -8,
+            clipPath: mode === "reduced" ? "inset(0)" : "inset(0 0 42% 0 round 18px)",
+          }}
+          animate={{ opacity: 1, rotateX: 0, clipPath: "inset(0 0 0% 0 round 18px)" }}
+          transition={{ duration: stateToken.durationSeconds, ease: platformMotionEasing("state") }}
+        >
+          <div className="invitation-seal" aria-hidden="true">
+            {riveAssets.invitationSeal.availability === "runtime-ready" ? (
+              <RiveStatefulObject
+                asset={riveAssets.invitationSeal}
+                mode={mode}
+                label={`Invitation seal, ${stage}`}
+                signals={sealSignals}
+                reducedMotion={{
+                  stablePose: riveAssets.invitationSeal.reducedPose,
+                  allowedSemanticSignals: riveAssets.invitationSeal.reducedSemanticSignals,
+                }}
+              />
+            ) : (
+              <PlatformRelic kind="invitation-seal" state={relicState} mode={mode} />
+            )}
           </div>
-          <div>
-            <dt>Invitation expires</dt>
-            <dd>{new Date(invitation.expiresAt).toLocaleString()}</dd>
+          <div
+            className="invitation-cover-frame"
+            data-cover-state={coverVisible && tale?.coverUrl ? "image" : "fallback"}
+          >
+            {coverVisible && tale?.coverUrl ? (
+              <motion.img
+                className="invitation-cover"
+                src={tale.coverUrl}
+                alt=""
+                onError={() => setCoverVisible(false)}
+                initial={{ clipPath: mode === "reduced" ? "inset(0)" : "inset(0 100% 0 0)" }}
+                animate={{ clipPath: "inset(0 0% 0 0)" }}
+                transition={{ duration: stateToken.durationSeconds, ease: platformMotionEasing("state") }}
+              />
+            ) : (
+              <span aria-hidden="true">Charted voyage</span>
+            )}
           </div>
-          {invitation.playthrough.plannedStartAt && (
+          <p className="eyebrow">
+            A Captain’s invitation for <span className="invitation-handwritten-name">{invitation.recipientName}</span>
+          </p>
+          <h1 id="invitation-state-title" tabIndex={-1}>
+            {tale?.title ?? "A Chronicle awaits"}
+          </h1>
+          <h2>{invitation.playthrough.voyageName}</h2>
+          <p>{tale?.shortDescription ?? "Your voyage is ready to join."}</p>
+          <dl>
             <div>
-              <dt>Planned start</dt>
-              <dd>
-                {new Date(invitation.playthrough.plannedStartAt).toLocaleString()}{" "}
-                {invitation.playthrough.scheduleTimezone}
-              </dd>
+              <dt>Edition</dt>
+              <dd>{invitation.playthrough.versionLabel ?? "Published edition"}</dd>
             </div>
-          )}
-        </dl>
-        <label>
-          <span>Your display name</span>
-          <input
-            value={displayName}
-            onChange={(event) => setDisplayName(event.target.value)}
-            required
-            disabled={asyncState.busy}
-          />
-        </label>
-        {invitation.requiresPin && (
+            <div>
+              <dt>Invitation expires</dt>
+              <dd>{new Date(invitation.expiresAt).toLocaleString()}</dd>
+            </div>
+            {invitation.playthrough.plannedStartAt && (
+              <div>
+                <dt>Planned start</dt>
+                <dd>
+                  {new Date(invitation.playthrough.plannedStartAt).toLocaleString()}{" "}
+                  {invitation.playthrough.scheduleTimezone}
+                </dd>
+              </div>
+            )}
+          </dl>
           <label>
-            <span>Invitation PIN</span>
+            <span>Your display name</span>
             <input
-              aria-label="Invitation PIN"
-              type="password"
-              inputMode="numeric"
-              autoComplete="one-time-code"
-              value={pin}
-              onChange={(event) => setPin(event.target.value.replace(/\D/g, ""))}
+              value={displayName}
+              onChange={(event) => setDisplayName(event.target.value)}
               required
               disabled={asyncState.busy}
-              aria-describedby="invitation-pin-progress"
             />
-            <span id="invitation-pin-progress" className="pin-progress" aria-live="polite">
-              {Array.from({ length: 4 }, (_, index) => (
-                <i key={index} data-filled={index < pin.length} aria-hidden="true" />
-              ))}
-              <b className="sr-only">{Math.min(pin.length, 4)} PIN digits entered</b>
-            </span>
           </label>
+          {invitation.requiresPin && (
+            <label>
+              <span>Invitation PIN</span>
+              <input
+                aria-label="Invitation PIN"
+                type="password"
+                inputMode="numeric"
+                autoComplete="one-time-code"
+                value={pin}
+                onChange={(event) => setPin(event.target.value.replace(/\D/g, ""))}
+                required
+                disabled={asyncState.busy}
+                aria-describedby="invitation-pin-progress"
+              />
+              <span id="invitation-pin-progress" className="pin-progress" aria-live="polite">
+                {Array.from({ length: 4 }, (_, index) => (
+                  <i key={index} data-filled={index < pin.length} aria-hidden="true" />
+                ))}
+                <b className="sr-only">{Math.min(pin.length, 4)} PIN digits entered</b>
+              </span>
+            </label>
+          )}
+          {visibleError && (
+            <p className="platform-error" role="alert">
+              {visibleError}
+            </p>
+          )}
+          <AnimatePresence mode="wait">
+            <motion.p
+              key={stage}
+              className="platform-status invitation-live-state"
+              role="status"
+              aria-live="polite"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+            >
+              {stage === "accepted" ? "Invitation accepted. The seal is open." : announcement}
+            </motion.p>
+          </AnimatePresence>
+          <div className="invitation-actions">
+            <button
+              type="button"
+              className="brass-button"
+              disabled={asyncState.busy || stage === "accepted" || !displayName || (invitation.requiresPin && !pin)}
+              aria-busy={asyncState.busy}
+              onClick={() => void act("accept")}
+            >
+              {stage === "pin-validating"
+                ? "Validating PIN…"
+                : stage === "accepting"
+                  ? "Joining voyage…"
+                  : stage === "accepted"
+                    ? "Invitation accepted"
+                    : "Accept and Join Voyage"}
+            </button>
+            <button
+              type="button"
+              className="button-subtle"
+              disabled={asyncState.busy}
+              onClick={() => void act("decline")}
+            >
+              Decline Invitation
+            </button>
+          </div>
+        </motion.section>
+        {stage === "accepted" && (
+          <span
+            className="invitation-route-hold"
+            style={{ "--hold-ms": `${ceremonyToken.durationMs}ms` } as CSSProperties}
+            aria-hidden="true"
+          />
         )}
-        {visibleError && (
-          <p className="platform-error" role="alert">
-            {visibleError}
-          </p>
-        )}
-        <AnimatePresence mode="wait">
-          <motion.p
-            key={stage}
-            className="platform-status invitation-live-state"
-            role="status"
-            aria-live="polite"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-          >
-            {stage === "accepted" ? "Invitation accepted. The seal is open." : announcement}
-          </motion.p>
-        </AnimatePresence>
-        <div className="invitation-actions">
-          <button
-            type="button"
-            className="brass-button"
-            disabled={asyncState.busy || stage === "accepted" || !displayName || (invitation.requiresPin && !pin)}
-            aria-busy={asyncState.busy}
-            onClick={() => void act("accept")}
-          >
-            {stage === "pin-validating"
-              ? "Validating PIN…"
-              : stage === "accepting"
-                ? "Joining voyage…"
-                : stage === "accepted"
-                  ? "Invitation accepted"
-                  : "Accept and Join Voyage"}
-          </button>
-          <button
-            type="button"
-            className="button-subtle"
-            disabled={asyncState.busy}
-            onClick={() => void act("decline")}
-          >
-            Decline Invitation
-          </button>
-        </div>
-      </motion.section>
-      {stage === "accepted" && (
-        <span
-          className="invitation-route-hold"
-          style={{ "--hold-ms": `${ceremonyToken.durationMs}ms` } as CSSProperties}
-          aria-hidden="true"
-        />
-      )}
-    </main>
+      </main>
+      {dialog}
+    </>
   );
 }

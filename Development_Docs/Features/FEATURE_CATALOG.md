@@ -5,7 +5,7 @@ This generated catalog records completed, meaningful platform capabilities. It i
 ## Audited repository and commit
 
 Repository: `Kgray44/treasurehuntSoT`
-Audited source commit: `941ec891b89a9c1364d0890f02edcb1e79efa0e8`
+Audited source commit: `8d142227d712d27e363b15903dba9b0c99a04bc8`
 
 ## Status vocabulary
 
@@ -898,6 +898,327 @@ A nonauthoritative, provider-neutral local verification control plane provides s
 
 ---
 
+## FT-B001 - Unified Identity and Session Authority
+
+**Status:** MAINLINE
+**Program or subsystem:** Project Homeport Phase 1
+
+One server-resolved account session now drives current-user state, ordinary Player, Captain, and Creator workspace entry, resource-scoped authorization, lifecycle invalidation, and bounded legacy-session rotation across product surfaces.
+
+### Important subfeatures
+
+- Canonical AccountSession current-user projection
+- One ordinary account sign-in lifecycle
+- Explicit workspace capability decisions
+- Canonical Captain and Creator authorization with per-resource ownership and scoped collaboration
+- Cross-tab and focus session invalidation
+- Safe intended-return authorization
+- Bounded legacy Player and staff session rotation
+
+### Primary surfaces
+
+`/sign-in`, `/register`, `/api/auth/context`, `/player/sign-in`, `/captain/sign-in`, `/studio/sign-in`, `/passport`
+
+### Meaningful limitations
+
+- Not available on main until separately reviewed and integrated
+- Legacy global-session readers remain observe-and-rotate compatibility paths
+- Deployment, live-user validation, and owner acceptance are not established
+- Gateway navigation, account-menu reconstruction, and Passport visual reconstruction remain later phases
+
+### Evidence
+
+- commit: `43c0fdc701de1425e651acb06924051fbd3a4a34`
+- completion-record: `Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_1_Validation_Record.md`
+- path: `Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_1_Compatibility_Cutover_Ledger.csv`
+
+---
+
+## FT-B002 - Global Shell and Wayfinding
+
+**Status:** MAINLINE
+**Program or subsystem:** Project Homeport Phase 2
+
+One route-classified product shell now provides global, workspace, account, and contextual wayfinding with equivalent desktop/mobile destinations and safe focused-surface exits.
+
+### Important subfeatures
+
+- Eight-mode exclusive page-shell classification
+- One four-layer navigation registry and projection
+- Structured anonymous and authenticated account orientation
+- Capability-projected workspace switching without second sign-in
+- Equivalent desktop and mobile functional destinations
+- Governed compact and immersive workspace exits
+- Global Community Harbor and Explore Chronicles reachability
+
+### Primary surfaces
+
+`/`, `/tales`, `/community`, `/player/library`, `/captain/library`, `/studio/library`, `/passport`
+
+### Meaningful limitations
+
+- Not available on main until separately reviewed and integrated
+- Not deployed; live-user validation and owner acceptance are not established
+- Personal Harbor information architecture and visual reconstruction remain Phase 3
+- Community content and district reconstruction remain Phase 4
+- Exhaustive ordinary-route reachability remains Phase 5
+
+### Evidence
+
+- commit: `ce9fd8e70f0e906416cf41cd508ec5f2063570cc`
+- completion-record: `Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_2_Validation_Record.md`
+- test: `tests/e2e/homeport-phase2.spec.ts`
+
+---
+
+## FT-B003 - Personal Harbor and Chronicle Passport
+
+**Status:** MAINLINE
+**Program or subsystem:** Project Homeport Phase 3
+
+A coherent Personal Harbor now separates public Profile projection from the private Chronicle Passport while unifying preferences, privacy, connected identities, history, Memories, artifacts, saved content, security, and sessions.
+
+### Important subfeatures
+
+- Persistent desktop and equivalent mobile Personal Harbor navigation
+- Server-enforced public Profile projection and optimistic owner editing
+- Typed experience, accessibility, notification, and privacy preferences
+- Safe linked-identity summaries and protected unlinking
+- Record-led Chronicle Passport with version-pinned history
+- Owner-authorized Memories, participant-consented Keepsakes, and artifact provenance
+- Eligible saved Community content with cross-surface reconciliation
+- Separate Security, Sessions and Devices, and Data and Account surfaces
+- Explicit unsaved, pending, success, failure, conflict, and dependency states
+
+### Primary surfaces
+
+`/account`, `/account/profile`, `/account/preferences`, `/account/privacy`, `/account/linked-identities`, `/account/security`, `/account/sessions`, `/account/data`, `/passport`, `/passport/history`, `/passport/memories`, `/passport/artifacts`, `/passport/saved`, `/profile/[handle]`
+
+### Meaningful limitations
+
+- Not available on main until separately reviewed and integrated
+- Not deployed; live-user validation and owner acceptance are not established
+- Live provider connections and external malware scanning remain externally unvalidated
+- Export, deactivation, and account deletion remain truthfully unavailable where no accepted service exists
+- Community reconstruction remains Phase 4 and exhaustive route reachability remains Phase 5
+
+### Evidence
+
+- commit: `761adb7a693feabacc4e7d54d28d443ceda8a273`
+- completion-record: `Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_3_Validation_Record.md`
+- test: `tests/e2e/homeport-phase3.spec.ts`
+
+---
+
+## FT-B004 - Community Harbor Discovery Library
+
+**Status:** MAINLINE
+**Program or subsystem:** Project Homeport Phase 4
+
+A content-first Community Harbor now presents deterministic public shelves, governed districts, typed safe cards, URL-backed discovery, public detail families, and canonical save/follow state.
+
+### Important subfeatures
+
+- Content-first Community Harbor
+- Curated and deterministic public shelves
+- Governed district taxonomy
+- Public-safe typed cards
+- Search, sort, compact filters, and advanced filters
+- Creator Profiles and public collections
+- Chronicle, artifact, template, map, audio, Guide, and Voyage Log discovery according to supported contracts
+- Canonical save and follow state
+- Complete default, empty, no-result, unavailable, quarantined, and removed states
+- Desktop and mobile Community parity
+
+### Primary surfaces
+
+`/community`, `/community/featured`, `/community/chronicles`, `/community/artifacts`, `/community/templates`, `/community/maps`, `/community/audio`, `/community/creators`, `/community/collections`, `/community/guides`, `/community/voyage-logs`
+
+### Meaningful limitations
+
+- Not available on main until separately reviewed and integrated
+- Not deployed; live-user validation and owner acceptance are not established
+- Unsupported provider or installation actions remain truthfully unavailable
+- Phase 5 exhaustive route reachability remains
+- Phase 6 repository-wide surface completion remains
+- Phase 7 integrated walkthrough remains
+
+### Evidence
+
+- commit: `06394221844c36921d95b1a199d72f18c88645ad`
+- completion-record: `Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_4_Validation_Record.md`
+- test: `tests/e2e/homeport-phase4.spec.ts`
+
+---
+
+## FT-B005 - Governed Route Reachability Graph
+
+**Status:** MAINLINE
+**Program or subsystem:** Project Homeport Phase 5
+
+A source-derived, permission-aware product graph now gives every ordinary route a visible natural entry while governing dynamic sources, tokenized handoffs, compatibility routes, parent and return behavior, and desktop/mobile parity.
+
+### Important subfeatures
+
+- Source-parity census for every app page and service route
+- Exclusive classification for ordinary, contextual, tokenized, compatibility, development, and diagnostic routes
+- Permission-aware gateway-rooted shortest paths
+- Visible entry and direct-entry proof for every ordinary route
+- Dynamic source, invalid-ID, private-denial, parent, and return contracts
+- State-safe tokenized handoffs excluded from ordinary navigation
+- Explicit redirect and canonical context-adapter dispositions
+- Desktop/mobile destination and edge parity
+- Touch, keyboard, effective 200 percent zoom, compact, and immersive exit proof
+- Automated source-drift, cycle, dead-end, and ordinary-orphan enforcement
+
+### Primary surfaces
+
+`/`, `/tales`, `/community`, `/account`, `/passport`, `/player/library`, `/captain/library`, `/studio/library`, `/play/[taleSlug]/session/[sessionId]`, `/join/[token]`, `/tale/[campaignSlug]`
+
+### Meaningful limitations
+
+- Not available on main until separately reviewed and integrated
+- Not deployed; live-user validation and owner acceptance are not established
+- Evidence is local, synthetic, and uses a copied SQLite database
+- Compatibility retirement remains owner-reviewed and traffic-dependent
+- Phase 6 repository-wide surface and page-state completion remains
+- Phase 7 integrated whole-product walkthrough remains
+
+### Evidence
+
+- commit: `b9f1552b78857c36a45f25eb5fdfb7a7e09f102a`
+- completion-record: `Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_5_Validation_Record.md`
+- path: `Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_5_Route_Reachability_Graph.json`
+
+---
+
+## FT-B006 - Complete Product Surfaces and States
+
+**Status:** MAINLINE
+**Program or subsystem:** Project Homeport Phase 6
+
+Every current human-facing screen is now source-inventoried with governed visual maturity, page-state, responsive, accessibility, motion, media-fallback, mutation-feedback, and source-bound visual-evidence contracts.
+
+### Important subfeatures
+
+- Source-parity acceptance registry for 92 current human-facing screens
+- Normalized component-family governance across product areas
+- Typed loading, populated, empty, no-result, recovery, dependency, permission, session, mutation, conflict, removed, media, and token states
+- Critical-screen desktop, mobile, tablet, narrow-mobile, and effective-200-percent completion
+- Keyboard, touch, focus, dialog, landmark, live-region, and automated accessibility contracts
+- Reduced-motion and no-false-success motion authority
+- Named media and scan-state fallbacks without raw object-key disclosure
+- Visible mutation pending, success, failure, conflict, and authoritative-result feedback
+- Checksum, source, fixture, viewport, and review-bound visual evidence
+- Idempotent Phase 6 inventory, evidence, and Sounding Line policy publication
+
+### Primary surfaces
+
+`/`, `/sign-in`, `/player/library`, `/captain/library`, `/studio/library`, `/account`, `/account/profile`, `/passport`, `/community`, `/player/playthroughs/[playthroughId]`, `/captain/sessions/[sessionId]`, `/studio/tales/[taleId]`
+
+### Meaningful limitations
+
+- Not available on main until separately reviewed and integrated
+- Evidence is local, synthetic, and uses a copied SQLite database
+- Live storage, malware scanning, moderation providers, production MySQL, and deployment remain externally unvalidated
+- Codex visual review is not owner acceptance or physical assistive-technology validation
+- Phase 7 integrated whole-product journeys, final walkthrough fixture, running owner package, and acceptance remain separate
+
+### Evidence
+
+- commit: `e02ee0dae0469a2ba573beaf409c0b34e8668d09`
+- completion-record: `Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_6_Validation_Record.md`
+- path: `Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_6_Screen_Acceptance_Registry.json`
+- test: `tests/e2e/homeport-phase6.spec.ts`
+
+---
+
+## FT-B007 - Integrated Whole-Product Voyage and Owner Walkthrough
+
+**Status:** MAINLINE
+**Program or subsystem:** Project Homeport Phase 7
+
+Project Homeport now includes the integrated Whole Voyage plus Owner Correction Rounds 1-3 and focused Patch A: governed Profile imagery and crop editing, identity propagation, atomic pending registration, six-digit registration verification, ordinary unverified sign-in, Resend production delivery with deterministic synthetic testing, one canonical Player, Captain, and Creator session separated from resource authority, generation-owned route crossfades, visible account-menu motion, and Dark defaults.
+
+### Important subfeatures
+
+- Immutable integrated synthetic seed with isolated automated and owner-walkthrough clones
+- External task-owned credential and token handoff with no committed secrets
+- A-through-O visible-control whole-product journey registry
+- Cross-workspace canonical account and session continuity
+- Profile, Passport, Community save, Player, Captain, and Creator integrated reconciliation
+- Password recovery, session expiry, permission, multi-tab invalidation, and dependency recovery
+- Desktop, mobile, keyboard focus, and reduced-motion journey proof
+- Checksum, source, fixture, viewport, route, and visual-review-bound evidence
+- Owned final production walkthrough runtime with safe prepare, status, reset, and stop controls
+- Independent owner decision boundary that remains pending until personal review
+- Public-safe Chronicle preview separated from the explicit Start Chronicle mutation boundary
+- Chronicle-scoped participation aliases with signed-in display-name defaults and anonymous guest continuity
+- One claimed account with Player, Captain, and Creator capability setup plus a server-owned active-Chronicle lock
+- Claiming, primary email verification and change, recovery, and human-readable account state
+- Secure Discord, Steam, and Microsoft/Xbox provider adapters with truthful unavailable configuration states
+- Versioned export plus reauthenticated deactivation, reactivation, deletion, cancellation, and due processing
+- Personal Harbor hierarchy with one Display Name authority, public Profile destination, Data and Account, and Sign Out
+- Four visible effective preferences with legacy values preserved for ten removed inert controls
+- Delayed loading, interruption-safe route and menu transitions, visible home ambience, first-paint stability, and reduced-motion completion
+- Compact and expanded URL-backed Community search plus coherent responsive review creation and editing
+- Correction Round 1 journeys A through U and original Phase 7 A through O rerun against the same exact source
+- Correction Round 2 journeys A through W with retained Round 1 A-U and original Phase 7 A-O regressions
+- Structurally stable role-card hover, animated account menu, balanced lantern swing, visible star and fog ambience, and reduced-motion completion
+- Global Dark, Light, and System themes with pre-hydration selection and cross-product token coherence
+- Sera fixture truth with Player, Captain, and Creator capability cards plus one public Profile identity
+- Authoritative Community save counts, rating summaries, in-place reviews, completion eligibility, and Passport review-later entry
+- Browseable Experience Images package with 227 checksummed desktop, mobile, theme, and major-state captures across 88 human-facing routes
+- Task-owned synthetic email outbox with explicit non-claim of live delivery
+- Interactive avatar and banner selection, preview, crop, replacement, removal, and normalized derivative lifecycle
+- Profile avatar and banner propagation across Personal Harbor, account controls, and safe public identity projections
+- Six-digit email-code registration with hashed expiry, attempts, resend replacement, and atomic account activation
+- Provider-neutral transactional email with Resend production, task-owned synthetic, and dormant Postmark compatibility adapters
+- Live-validated disposable Resend registration verification with provider acceptance, owner-controlled inbox receipt, code consumption, and active verified account state
+- One ordinary AccountSession for Player, Captain, and Creator entry separated from Voyage, Chronicle, asset, invitation, helper, and collaboration authorization
+- Active-Chronicle transition safety with authoritative true-lock and false-lock behavior
+- Direct page crossfades with stable shell, 500 ms loading integration, focus handoff, and reduced motion
+- Perceptible production account-menu opening and closing motion
+- Dark anonymous and new-account defaults with broad Light visual completion deferred
+- Correction Round 3 journeys A-V with retained Round 2 A-W, Round 1 A-U, and original Phase 7 A-O regressions
+- Focused Patch A atomic pending registration with explicit display-name and email conflict recovery
+- Accessible password strength and confirmation status with server-authoritative policy
+- Ordinary verified or unverified account sign-in without an email-code challenge and with non-blocking verification follow-up
+- Generation-owned 280 ms route crossfades with a 500 ms loading threshold, stale-generation invalidation, and background-only-frame prevention
+- Patch A journeys A-N with selected Round 3 critical and original Phase 7 account/session regressions
+
+### Primary surfaces
+
+`/`, `/register`, `/sign-in`, `/account`, `/account/roles`, `/account/personal-information`, `/account/linked-identities`, `/account/data`, `/account/email-change`, `/account/preferences`, `/account/security`, `/account/sessions`, `/passport`, `/passport/history`, `/passport/memories`, `/passport/artifacts`, `/passport/saved`, `/community`, `/community/[slug]`, `/chronicles/[taleSlug]`, `/verify-email`, `/player/library`, `/captain/library`, `/studio/library`
+
+### Meaningful limitations
+
+- Not available on main until separately reviewed and integrated
+- Not deployed; no pull request was created by the governed Round 3 task
+- Owner Re-Review Round 3 remains PENDING_OWNER_DECISION; focused Patch A readiness is not owner acceptance
+- Broad Light Mode visual completion remains deferred
+- Resend webhook deployment remains deferred and is not inferred from provider submission or inbox proof
+- Production MySQL execution, non-email external-provider configuration, and physical assistive-technology validation remain external
+- Readiness for owner re-review is not owner acceptance or product acceptance
+
+### Evidence
+
+- commit: `e1829c3cffa87e561d15342da2e6e9b073fd7165`
+- completion-record: `Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_7_Validation_Record.md`
+- path: `Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_7_Integrated_Journey_Registry.json`
+- test: `tests/e2e/homeport-phase7.spec.ts`
+- completion-record: `Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_7_Correction_Round_1_Validation_Record.md`
+- test: `tests/e2e/homeport-phase7-owner-correction-round1.spec.ts`
+- completion-record: `Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_7_Correction_Round_2_Validation_Record.md`
+- test: `tests/e2e/homeport-phase7-owner-correction-round2.spec.ts`
+- completion-record: `Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_7_Correction_Round_3_Validation_Record.md`
+- test: `tests/e2e/homeport-phase7-owner-correction-round3.spec.ts`
+- completion-record: `Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_7_Correction_Round_3_Patch_A_Validation_Record.md`
+- test: `tests/e2e/homeport-phase7-owner-correction-round3-patch-a.spec.ts`
+- path: `Experience_Images/manifest.json`
+
+---
+
 # Completed Branch Features Not Yet Available on Main
 
 # Deliberately Excluded Until Complete
@@ -913,4 +1234,4 @@ A nonauthoritative, provider-neutral local verification control plane provides s
 
 Update the owning machine-readable fragment only when completed work changes a major capability, important subfeature, availability, or meaningful limitation. Regenerate this file with `npm run features:sync`; never hand-edit it. Validate before closeout with `npm run features:validate`.
 
-Generation source commit: `941ec891b89a9c1364d0890f02edcb1e79efa0e8`
+Generation source commit: `8d142227d712d27e363b15903dba9b0c99a04bc8`

@@ -142,8 +142,8 @@ export const blockRegistry = {
       text("riddleTitle", "Riddle title", true),
       area("riddleText", "Riddle", true),
       asset("illustrationAssetId", "Illustration", ["IMAGE"]),
-      { key: "acceptedAnswers", label: "Accepted answers (JSON array)", kind: "json", required: true },
-      { key: "hints", label: "Hints (JSON array)", kind: "json" },
+      { key: "acceptedAnswers", label: "Accepted answers", kind: "json", required: true },
+      { key: "hints", label: "Hints", kind: "json" },
       area("wrongAnswerFeedback", "Wrong-answer feedback"),
       completion(),
     ],
@@ -560,7 +560,7 @@ export const blockRegistry = {
     },
     fields: [
       area("prompt", "Prompt", true),
-      { key: "choices", label: "Choices (JSON)", kind: "json", required: true },
+      { key: "choices", label: "Choices", kind: "json", required: true },
       { key: "reversible", label: "Choice can be reversed", kind: "boolean" },
       completion(),
     ],
@@ -583,11 +583,11 @@ export const blockRegistry = {
     },
     fields: [
       area("prompt", "Prompt", true),
-      { key: "acceptedAnswers", label: "Accepted answers (JSON array)", kind: "json", required: true },
+      { key: "acceptedAnswers", label: "Accepted answers", kind: "json", required: true },
       { key: "caseSensitive", label: "Case-sensitive", kind: "boolean" },
       { key: "normalizeWhitespace", label: "Normalize whitespace", kind: "boolean" },
       area("feedback", "Rejected feedback"),
-      { key: "hints", label: "Hints (JSON array)", kind: "json" },
+      { key: "hints", label: "Hints", kind: "json" },
     ],
   }),
   captainApproval: define({

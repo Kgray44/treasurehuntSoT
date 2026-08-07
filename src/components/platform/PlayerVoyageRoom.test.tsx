@@ -124,6 +124,7 @@ describe("PlayerVoyageRoom", () => {
     await screen.findByRole("heading", { name: "The Moonlit Key" });
     FakeEventSource.current?.onopen?.();
     await waitFor(() => expect(screen.getByRole("main")).toHaveAttribute("data-connection-state", "live"));
+    expect(screen.getByRole("status").closest("dd")).not.toBeNull();
 
     FakeEventSource.current?.onerror?.();
     await waitFor(() => expect(screen.getByRole("main")).toHaveAttribute("data-connection-state", "polling"));

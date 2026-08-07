@@ -335,6 +335,26 @@ if ([System.StringComparer]::OrdinalIgnoreCase.Equals($canonicalDatabase, $isola
 # fingerprinted again during finalization.
 Remove-Item -LiteralPath $seedDatabase -Force
 Copy-Item -LiteralPath $canonicalDatabase -Destination $seedDatabase -ErrorAction Stop
+# The canonical baseline is intentionally immutable and can predate migrations
+# introduced by the source under evaluation. Bring only the task-owned seed copy
+# forward before the nonce-bound browser clone is prepared.
+$priorDatabaseUrl = $env:DATABASE_URL
+try {
+    $env:DATABASE_URL = "file:" + $seedDatabase.Replace('\', '/')
+    Invoke-ForeverNode -WorkingDirectory $runtimeRoot -Arguments @(
+        "node_modules/prisma/build/index.js",
+        "migrate",
+        "deploy",
+        "--schema",
+        "prisma/schema.sqlite.prisma"
+    )
+} finally {
+    if ($null -eq $priorDatabaseUrl) {
+        Remove-Item Env:DATABASE_URL -ErrorAction SilentlyContinue
+    } else {
+        $env:DATABASE_URL = $priorDatabaseUrl
+    }
+}
 
 function Invoke-ValidationStep {
     param([Parameter(Mandatory)][string]$Name, [Parameter(Mandatory)][string[]]$Arguments)

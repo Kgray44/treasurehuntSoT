@@ -1,10 +1,16 @@
 import { NextResponse } from "next/server";
-import { requireGmCapability } from "@/lib/security";
+import { requireStudioWorkspace } from "@/chronicle/studio-authorization";
 import { db } from "@/lib/db";
 export async function GET() {
-  const session = await requireGmCapability("CREATE_TALES");
+  const session = await requireStudioWorkspace();
   if (!session) return NextResponse.json({ error: "Creator authorization is required." }, { status: 403 });
   const imports = await db.privateContentImport.findMany({
+    where: {
+      OR: [
+        { ownerAccountId: session.accountId },
+        ...(session.account.legacyGameMasterId ? [{ ownerActorId: session.account.legacyGameMasterId }] : []),
+      ],
+    },
     select: {
       id: true,
       packageId: true,

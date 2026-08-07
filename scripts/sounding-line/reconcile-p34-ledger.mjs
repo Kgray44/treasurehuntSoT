@@ -1,6 +1,7 @@
 /* Reconcile retained P34 identities against the current governed registry without executing P34. */
 import { readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
+import { format, resolveConfig } from "prettier";
 
 const root = process.cwd();
 const read = async (file) => JSON.parse(await readFile(path.join(root, file), "utf8"));
@@ -65,10 +66,9 @@ const rows = ledger.rows.map((historical) => {
   };
 });
 const output = { ...ledger, version: 2, semanticMigration: true, rows };
-await writeFile(
-  path.join(root, "testing/generated/p34-retirement-ledger.json"),
-  `${JSON.stringify(output, null, 2)}\n`,
-);
+const ledgerPath = path.join(root, "testing/generated/p34-retirement-ledger.json");
+const prettierConfig = (await resolveConfig(ledgerPath)) ?? {};
+await writeFile(ledgerPath, await format(JSON.stringify(output), { ...prettierConfig, parser: "json" }));
 const header = [
   "historical_case_id",
   "source_file",

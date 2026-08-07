@@ -13,6 +13,10 @@ const wayfarerPhase2Spec = /wayfarer-phase2\.spec\.ts/u;
 const harborlightPhase3Spec = /harborlight-phase3\.spec\.ts/u;
 const harborlightPhase4Spec = /harborlight-phase4\.spec\.ts/u;
 const soundingLineAccessSentinelSpec = /access-gates\.spec\.ts/u;
+const homeportPhase1Spec = /homeport-phase1\.spec\.ts/u;
+const homeportPhase2Spec = /homeport-phase2\.spec\.ts/u;
+const homeportPhase4Spec = /homeport-phase4\.spec\.ts/u;
+const homeportPhase7WalkthroughSpecs = /homeport-phase7.*\.spec\.ts/u;
 const phase3MutationSpecs =
   /phase3-(?:player-event-matrix|player-motion|replay-resilience|lifecycle(?:-extended)?|performance)\.spec\.ts/u;
 const phase3MutationSpecGuard = [
@@ -73,8 +77,31 @@ export default defineConfig({
         harborlightPhase2Spec,
         harborlightPhase3Spec,
         harborlightPhase4Spec,
+        homeportPhase1Spec,
+        homeportPhase2Spec,
+        homeportPhase4Spec,
+        homeportPhase7WalkthroughSpecs,
       ],
       use: { ...devices["Desktop Chrome"] },
+    },
+    {
+      name: "homeport-phase1",
+      testMatch: homeportPhase1Spec,
+      use: { ...devices["Desktop Chrome"] },
+    },
+    {
+      // Discovery lives in the shared registry, while execution is allowed
+      // only through the dedicated config or Sounding Line's isolated clone.
+      name: "homeport-phase2",
+      testMatch: homeportPhase2Spec,
+      use: { ...devices["Desktop Chrome"], viewport: { width: 1440, height: 900 } },
+    },
+    {
+      // Phase 4 execution is authoritative only through its dedicated copied
+      // database, fixture, media roots, port, and evidence configuration.
+      name: "homeport-phase4",
+      testMatch: homeportPhase4Spec,
+      use: { ...devices["Desktop Chrome"], viewport: { width: 1440, height: 1000 } },
     },
     {
       // This is the narrow Sounding Line browser sentinel.  It deliberately
@@ -133,6 +160,10 @@ export default defineConfig({
         wayfarerPhase2Spec,
         harborlightPhase2Spec,
         harborlightPhase3Spec,
+        homeportPhase1Spec,
+        homeportPhase2Spec,
+        homeportPhase4Spec,
+        homeportPhase7WalkthroughSpecs,
       ],
       use: { ...devices["iPhone 14"] },
     },

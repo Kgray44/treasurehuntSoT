@@ -6,7 +6,7 @@ export async function GET() {
   const identity = await requireCanonicalAccountIdentity();
   if (!identity)
     return NextResponse.json(
-      { code: "COMMUNITY_ACCESS_DENIED", error: "Sign in to view your Community Profile." },
+      { code: "COMMUNITY_ACCESS_DENIED", error: "Sign in to view your public Profile." },
       { status: 401 },
     );
   try {

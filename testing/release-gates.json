@@ -4,7 +4,7 @@
   "gates": [
     {
       "id": "local-change",
-      "requiredSuites": ["static.core", "unit.sounding-line"],
+      "requiredSuites": ["static.core", "unit.homeport", "unit.sounding-line"],
       "conditionalSuites": [
         "unit.auth",
         "unit.one-voyage",
@@ -46,7 +46,7 @@
     },
     {
       "id": "subsystem",
-      "requiredSuites": ["static.core"],
+      "requiredSuites": ["static.core", "unit.homeport"],
       "conditionalSuites": [
         "unit.auth",
         "unit.one-voyage",
@@ -57,6 +57,7 @@
         "unit.animation",
         "unit.true-north",
         "unit.feature-catalog",
+        "unit.homeport",
         "unit.sounding-line",
         "unit.platform-foundation",
         "component.auth",
@@ -112,6 +113,7 @@
         "unit.animation",
         "unit.true-north",
         "unit.feature-catalog",
+        "unit.homeport",
         "unit.sounding-line",
         "unit.platform-foundation",
         "component.auth",

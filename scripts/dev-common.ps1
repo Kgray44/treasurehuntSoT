@@ -49,7 +49,7 @@ SESSION_SECRET="$secret"
 GM_USERNAME="kato"
 GM_PASSWORD="development-captain-only"
 PLAYER_ACCESS_CODE="development-moonwake"
-NEXT_PUBLIC_APP_URL="http://127.0.0.1:3000"
+HOMEPORT_PUBLIC_APP_ORIGIN="http://127.0.0.1:3000"
 LOG_LEVEL="info"
 "@ | Set-Content -LiteralPath $environmentPath -Encoding UTF8
         Write-Host "Created ignored local development configuration at $environmentPath" -ForegroundColor DarkGray

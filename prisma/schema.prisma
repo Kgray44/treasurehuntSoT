@@ -84,40 +84,45 @@ model GameMasterUser {
 }
 
 model UserAccount {
-  id                  String                    @id @default(cuid())
-  status              String                    @default("PENDING_VERIFICATION")
-  legacyGameMasterId  String?                   @unique
-  claimedAt           DateTime?
-  lastSeenAt          DateTime?
-  lockedAt            DateTime?
-  suspendedAt         DateTime?
-  mergedIntoAccountId String?
-  createdAt           DateTime                  @default(now())
-  updatedAt           DateTime                  @updatedAt
-  profile             PlayerProfile?
-  legacyGameMaster    GameMasterUser?           @relation("LegacyGameMasterAccount", fields: [legacyGameMasterId], references: [id], onDelete: SetNull)
-  emails              AccountEmail[]
-  credential          AccountCredential?
-  tokens              AccountToken[]
-  sessions            AccountSession[]
-  roles               AccountRoleAssignment[]
-  securityEvents      SecurityEvent[]
-  migrationRecords    WayfarerMigrationRecord[]
-  createdChronicles   Chronicle[]               @relation("ChronicleCreatorAccount")
-  authoredDrafts      TaleDraft[]               @relation("TaleDraftAuthorAccount")
-  publishedVersions   PublishedTaleVersion[]    @relation("PublishedVersionAuthorAccount")
-  createdAssets       TaleAsset[]               @relation("TaleAssetAuthorAccount")
-  captainedSessions   TaleSession[]             @relation("TaleSessionCaptainAccount")
-  createdInvitations  Invitation[]              @relation("InvitationCreatorAccount")
-  invitationEvents    InvitationEvent[]         @relation("InvitationEventActorAccount")
-  revealActions       RevealState[]             @relation("RevealActorAccount")
-  auditActions        PlatformAuditEvent[]      @relation("PlatformAuditActorAccount")
-  privateImports      PrivateContentImport[]    @relation("PrivateImportOwnerAccount")
-  privateAssetRefs    PrivateAssetReference[]   @relation("PrivateAssetOwnerAccount")
-  privateOperations   PrivateContentOperation[] @relation("PrivateOperationOwnerAccount")
-  communityProfile    CommunityProfile?
-  externalIdentities  ExternalIdentity[]
-  providerAttempts    ProviderLinkAttempt[]
+  id                       String                       @id @default(cuid())
+  status                   String                       @default("PENDING_VERIFICATION")
+  legacyGameMasterId       String?                      @unique
+  claimedAt                DateTime?
+  lastSeenAt               DateTime?
+  lockedAt                 DateTime?
+  suspendedAt              DateTime?
+  ordinaryWorkspaceEntryAt DateTime?
+  mergedIntoAccountId      String?
+  createdAt                DateTime                     @default(now())
+  updatedAt                DateTime                     @updatedAt
+  profile                  PlayerProfile?
+  legacyGameMaster         GameMasterUser?              @relation("LegacyGameMasterAccount", fields: [legacyGameMasterId], references: [id], onDelete: SetNull)
+  emails                   AccountEmail[]
+  credential               AccountCredential?
+  tokens                   AccountToken[]
+  sessions                 AccountSession[]
+  roles                    AccountRoleAssignment[]
+  securityEvents           SecurityEvent[]
+  migrationRecords         WayfarerMigrationRecord[]
+  createdChronicles        Chronicle[]                  @relation("ChronicleCreatorAccount")
+  authoredDrafts           TaleDraft[]                  @relation("TaleDraftAuthorAccount")
+  publishedVersions        PublishedTaleVersion[]       @relation("PublishedVersionAuthorAccount")
+  createdAssets            TaleAsset[]                  @relation("TaleAssetAuthorAccount")
+  captainedSessions        TaleSession[]                @relation("TaleSessionCaptainAccount")
+  createdInvitations       Invitation[]                 @relation("InvitationCreatorAccount")
+  invitationEvents         InvitationEvent[]            @relation("InvitationEventActorAccount")
+  revealActions            RevealState[]                @relation("RevealActorAccount")
+  auditActions             PlatformAuditEvent[]         @relation("PlatformAuditActorAccount")
+  privateImports           PrivateContentImport[]       @relation("PrivateImportOwnerAccount")
+  privateAssetRefs         PrivateAssetReference[]      @relation("PrivateAssetOwnerAccount")
+  privateOperations        PrivateContentOperation[]    @relation("PrivateOperationOwnerAccount")
+  communityProfile         CommunityProfile?
+  externalIdentities       ExternalIdentity[]
+  providerAttempts         ProviderLinkAttempt[]
+  dataExports              AccountDataExport[]
+  lifecycleRequests        AccountLifecycleRequest[]
+  profileMedia             ProfileMedia[]
+  transactionalDeliveries  TransactionalEmailDelivery[]
 
   @@index([status, lastSeenAt])
 }
@@ -149,14 +154,20 @@ model AccountCredential {
 }
 
 model AccountToken {
-  id         String      @id @default(cuid())
-  accountId  String
-  purpose    String
-  tokenHash  String      @unique
-  expiresAt  DateTime
-  consumedAt DateTime?
-  createdAt  DateTime    @default(now())
-  account    UserAccount @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  id                     String                      @id @default(cuid())
+  accountId              String
+  purpose                String
+  tokenHash              String                      @unique
+  expiresAt              DateTime
+  consumedAt             DateTime?
+  attemptCount           Int                         @default(0)
+  maxAttempts            Int                         @default(5)
+  lastAttemptAt          DateTime?
+  pendingNormalizedEmail String?                     @db.VarChar(254)
+  pendingDisplayEmail    String?                     @db.VarChar(254)
+  createdAt              DateTime                    @default(now())
+  account                UserAccount                 @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  delivery               TransactionalEmailDelivery?
 
   @@index([accountId, purpose, expiresAt])
 }
@@ -167,6 +178,7 @@ model AccountSession {
   tokenHash   String      @unique
   csrfToken   String
   deviceLabel String?
+  sessionType String      @default("ORDINARY") @db.VarChar(32)
   expiresAt   DateTime
   lastSeenAt  DateTime    @default(now())
   revokedAt   DateTime?
@@ -174,6 +186,39 @@ model AccountSession {
   account     UserAccount @relation(fields: [accountId], references: [id], onDelete: Cascade)
 
   @@index([accountId, expiresAt])
+}
+
+model TransactionalEmailDelivery {
+  id                String        @id @default(cuid())
+  accountId         String
+  accountTokenId    String?       @unique
+  purpose           String        @db.VarChar(64)
+  provider          String        @db.VarChar(32)
+  recipientHash     String        @db.Char(64)
+  providerMessageId String?       @unique @db.VarChar(191)
+  status            String        @default("PENDING") @db.VarChar(32)
+  submittedAt       DateTime?
+  deliveredAt       DateTime?
+  bouncedAt         DateTime?
+  failureCode       String?       @db.VarChar(64)
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+  account           UserAccount   @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  accountToken      AccountToken? @relation(fields: [accountTokenId], references: [id], onDelete: SetNull)
+
+  @@index([accountId, purpose, createdAt])
+  @@index([status, createdAt])
+}
+
+model TransactionalEmailEvent {
+  id                String   @id @default(cuid())
+  providerEventKey  String   @unique @db.VarChar(255)
+  providerMessageId String   @db.VarChar(191)
+  recordType        String   @db.VarChar(32)
+  payloadChecksum   String   @db.Char(64)
+  receivedAt        DateTime @default(now())
+
+  @@index([providerMessageId, recordType])
 }
 
 model AccountRoleAssignment {
@@ -1001,40 +1046,41 @@ model ArtifactGrantReceipt {
 }
 
 model PlayerProfile {
-  id                 String                   @id @default(cuid())
-  accountId          String?                  @unique
-  username           String?                  @unique
-  passwordHash       String?
-  displayName        String
-  handle             String?                  @db.VarChar(64)
-  normalizedHandle   String?                  @unique @db.VarChar(64)
-  biography          String?                  @db.Text
-  avatarMediaId      String?                  @unique @db.VarChar(191)
-  bannerMediaId      String?                  @unique @db.VarChar(191)
-  defaultVisibility  String                   @default("REGISTERED_USERS") @db.VarChar(32)
-  status             String                   @default("ACTIVE")
-  preferences        String                   @default("{}") @db.LongText
-  claimedAt          DateTime?
-  createdAt          DateTime                 @default(now())
-  updatedAt          DateTime                 @updatedAt
-  lastSeenAt         DateTime?
-  sessions           PlayerIdentitySession[]
-  memberships        PlaythroughMembership[]
-  invitations        Invitation[]
-  handleHistory      ProfileHandleHistory[]
-  media              ProfileMedia[]           @relation("ProfileMediaOwner")
-  avatarMedia        ProfileMedia?            @relation("ProfileAvatar", fields: [avatarMediaId], references: [id], onDelete: SetNull)
-  bannerMedia        ProfileMedia?            @relation("ProfileBanner", fields: [bannerMediaId], references: [id], onDelete: SetNull)
-  preferenceSet      ProfilePreferenceSet?
-  privacyRules       ProfilePrivacyRule[]
-  chronicleRecords   PlayerChronicleRecord[]
-  chronicleMemories  ChronicleMemory[]
-  keepsakeConsents   VoyageKeepsakeConsent[]
-  artifactRecords    PlayerArtifactRecord[]
-  artifactCases      ArtifactDisplayCase[]
-  artifactAssemblies PlayerArtifactAssembly[]
-  achievements       PlayerAchievement[]
-  account            UserAccount?             @relation(fields: [accountId], references: [id], onDelete: SetNull)
+  id                    String                   @id @default(cuid())
+  accountId             String?                  @unique
+  username              String?                  @unique
+  passwordHash          String?
+  displayName           String
+  normalizedDisplayName String?                  @unique @db.VarChar(80)
+  handle                String?                  @db.VarChar(64)
+  normalizedHandle      String?                  @unique @db.VarChar(64)
+  biography             String?                  @db.Text
+  avatarMediaId         String?                  @unique @db.VarChar(191)
+  bannerMediaId         String?                  @unique @db.VarChar(191)
+  defaultVisibility     String                   @default("REGISTERED_USERS") @db.VarChar(32)
+  status                String                   @default("ACTIVE")
+  preferences           String                   @default("{}") @db.LongText
+  claimedAt             DateTime?
+  createdAt             DateTime                 @default(now())
+  updatedAt             DateTime                 @updatedAt
+  lastSeenAt            DateTime?
+  sessions              PlayerIdentitySession[]
+  memberships           PlaythroughMembership[]
+  invitations           Invitation[]
+  handleHistory         ProfileHandleHistory[]
+  media                 ProfileMedia[]           @relation("ProfileMediaOwner")
+  avatarMedia           ProfileMedia?            @relation("ProfileAvatar", fields: [avatarMediaId], references: [id], onDelete: SetNull)
+  bannerMedia           ProfileMedia?            @relation("ProfileBanner", fields: [bannerMediaId], references: [id], onDelete: SetNull)
+  preferenceSet         ProfilePreferenceSet?
+  privacyRules          ProfilePrivacyRule[]
+  chronicleRecords      PlayerChronicleRecord[]
+  chronicleMemories     ChronicleMemory[]
+  keepsakeConsents      VoyageKeepsakeConsent[]
+  artifactRecords       PlayerArtifactRecord[]
+  artifactCases         ArtifactDisplayCase[]
+  artifactAssemblies    PlayerArtifactAssembly[]
+  achievements          PlayerAchievement[]
+  account               UserAccount?             @relation(fields: [accountId], references: [id], onDelete: SetNull)
 
   @@index([status, displayName])
   @@index([normalizedHandle, status])
@@ -1053,22 +1099,43 @@ model ProfileHandleHistory {
 }
 
 model ProfileMedia {
-  id         String         @id @default(cuid())
-  profileId  String
-  kind       String         @db.VarChar(16)
-  storageKey String         @unique @db.VarChar(255)
-  mimeType   String         @db.VarChar(191)
-  byteLength Int
-  width      Int?
-  height     Int?
-  altText    String?        @db.VarChar(240)
-  createdAt  DateTime       @default(now())
-  removedAt  DateTime?
-  profile    PlayerProfile  @relation("ProfileMediaOwner", fields: [profileId], references: [id], onDelete: Cascade)
-  avatarFor  PlayerProfile? @relation("ProfileAvatar")
-  bannerFor  PlayerProfile? @relation("ProfileBanner")
+  id                 String         @id @default(cuid())
+  profileId          String
+  ownerAccountId     String?
+  kind               String         @db.VarChar(16)
+  storageKey         String         @unique @db.VarChar(255)
+  originalStorageKey String?        @unique @db.VarChar(255)
+  mimeType           String         @db.VarChar(191)
+  originalMimeType   String?        @db.VarChar(191)
+  byteLength         Int
+  originalByteLength Int?
+  width              Int?
+  height             Int?
+  originalWidth      Int?
+  originalHeight     Int?
+  checksum           String?        @db.Char(64)
+  cropCenterX        Float          @default(0.5)
+  cropCenterY        Float          @default(0.5)
+  cropScale          Float          @default(1)
+  cropAspect         Float          @default(1)
+  sourceOrientation  Int            @default(1)
+  rotation           Int            @default(0)
+  processingState    String         @default("READY") @db.VarChar(32)
+  scanState          String         @default("LOCAL_VALIDATED") @db.VarChar(32)
+  replacesMediaId    String?
+  altText            String?        @db.VarChar(240)
+  createdAt          DateTime       @default(now())
+  updatedAt          DateTime       @updatedAt
+  removedAt          DateTime?
+  profile            PlayerProfile  @relation("ProfileMediaOwner", fields: [profileId], references: [id], onDelete: Cascade)
+  account            UserAccount?   @relation(fields: [ownerAccountId], references: [id], onDelete: SetNull)
+  replaces           ProfileMedia?  @relation("ProfileMediaReplacement", fields: [replacesMediaId], references: [id], onDelete: SetNull)
+  replacements       ProfileMedia[] @relation("ProfileMediaReplacement")
+  avatarFor          PlayerProfile? @relation("ProfileAvatar")
+  bannerFor          PlayerProfile? @relation("ProfileBanner")
 
   @@index([profileId, kind, removedAt])
+  @@index([ownerAccountId, processingState, scanState])
 }
 
 model ExternalIdentity {
@@ -1163,24 +1230,65 @@ model PlatformRoleAssignment {
 }
 
 model PlaythroughMembership {
-  id              String        @id @default(cuid())
-  playthroughId   String
-  playerProfileId String
-  role            String        @default("PLAYER")
-  status          String        @default("INVITED")
-  crewRole        String?
-  joinedAt        DateTime?
-  removedAt       DateTime?
-  completedAt     DateTime?
-  pinnedAt        DateTime?
-  hiddenAt        DateTime?
-  createdAt       DateTime      @default(now())
-  updatedAt       DateTime      @updatedAt
-  playthrough     TaleSession   @relation(fields: [playthroughId], references: [id], onDelete: Cascade)
-  player          PlayerProfile @relation(fields: [playerProfileId], references: [id], onDelete: Cascade)
+  id                         String        @id @default(cuid())
+  playthroughId              String
+  playerProfileId            String
+  role                       String        @default("PLAYER")
+  status                     String        @default("INVITED")
+  crewRole                   String?
+  participationAlias         String?       @db.VarChar(80)
+  participationAliasEditedAt DateTime?
+  joinedAt                   DateTime?
+  removedAt                  DateTime?
+  completedAt                DateTime?
+  pinnedAt                   DateTime?
+  hiddenAt                   DateTime?
+  createdAt                  DateTime      @default(now())
+  updatedAt                  DateTime      @updatedAt
+  playthrough                TaleSession   @relation(fields: [playthroughId], references: [id], onDelete: Cascade)
+  player                     PlayerProfile @relation(fields: [playerProfileId], references: [id], onDelete: Cascade)
 
   @@unique([playthroughId, playerProfileId])
   @@index([playerProfileId, status, updatedAt])
+}
+
+model AccountDataExport {
+  id             String      @id @default(cuid())
+  accountId      String
+  state          String      @default("REQUESTED") @db.VarChar(32)
+  schemaVersion  Int         @default(1)
+  manifest       String      @default("{}") @db.LongText
+  payload        String?     @db.LongText
+  checksum       String?     @db.Char(64)
+  requestedAt    DateTime    @default(now())
+  buildingAt     DateTime?
+  readyAt        DateTime?
+  failedAt       DateTime?
+  expiresAt      DateTime?
+  downloadedAt   DateTime?
+  failureSummary String?     @db.VarChar(500)
+  account        UserAccount @relation(fields: [accountId], references: [id], onDelete: Cascade)
+
+  @@index([accountId, requestedAt])
+  @@index([state, expiresAt])
+}
+
+model AccountLifecycleRequest {
+  id               String      @id @default(cuid())
+  accountId        String
+  kind             String      @db.VarChar(32)
+  state            String      @default("REQUESTED") @db.VarChar(32)
+  schemaVersion    Int         @default(1)
+  requestedAt      DateTime    @default(now())
+  scheduledFor     DateTime?
+  cancellableUntil DateTime?
+  canceledAt       DateTime?
+  completedAt      DateTime?
+  reason           String?     @db.VarChar(500)
+  account          UserAccount @relation(fields: [accountId], references: [id], onDelete: Cascade)
+
+  @@index([accountId, kind, state])
+  @@index([kind, state, scheduledFor])
 }
 
 // A Wayfarer-owned, materialized historical projection. Source identifiers are

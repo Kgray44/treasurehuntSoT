@@ -40,9 +40,9 @@ export function NewTaleForm({ authenticated }: { authenticated: boolean }) {
     return (
       <main className="studio-auth-gate">
         <section>
-          <h1>Creator sign-in required</h1>
-          <Link className="brass-button" href="/quartermaster">
-            Sign in
+          <h1>Account sign-in required</h1>
+          <Link className="brass-button" href="/sign-in?returnTo=%2Fstudio%2Ftales%2Fnew">
+            Continue to account sign-in
           </Link>
         </section>
       </main>
@@ -140,7 +140,7 @@ export function NewTaleForm({ authenticated }: { authenticated: boolean }) {
           router.push(`/studio/tales/${body.id}`);
         }}
       >
-        <Link href="/studio">← Back to Studio</Link>
+        <Link href="/studio/library">← Back to Studio</Link>
         <p className="eyebrow">Chronicle authoring</p>
         <h1>{studioCopy.createChronicle.value}</h1>
         <p>Start with a title, premise, and first Chapter. Every field remains editable.</p>
@@ -249,7 +249,7 @@ export function NewTaleForm({ authenticated }: { authenticated: boolean }) {
           </p>
         )}
         <div className="form-actions">
-          <Link href="/studio">Cancel</Link>
+          <Link href="/studio/library">Cancel</Link>
           <button className="brass-button" disabled={busy}>
             {busy ? "Opening Chronicle..." : "Create and open Chronicle"}
           </button>

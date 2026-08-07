@@ -1,30 +1,25 @@
 import { NextResponse } from "next/server";
-import { requireGmCapability, verifyCsrf } from "@/lib/security";
 import { apiError } from "@/chronicle/api";
+import { requireOwnedStudioTale } from "@/chronicle/studio-authorization";
 import { startPublishedPreviewSession } from "@/chronicle/progression";
 import { setTaleSessionCookie } from "@/chronicle/session-cookie";
 import { forkPublishedVersion, restorePublishedVersionToDraft } from "@/chronicle/studio-service";
 
-async function authorize() {
-  const session = await requireGmCapability("CREATE_TALES");
-  return session && (await verifyCsrf(session)) ? session : null;
-}
-
 export async function POST(request: Request, context: { params: Promise<{ taleId: string; versionId: string }> }) {
-  const session = await authorize();
-  if (!session)
-    return NextResponse.json(
-      { error: "Your creator session has expired. Sign in again to continue." },
-      { status: 403 },
-    );
+  const { taleId, versionId } = await context.params;
+  const authorization = await requireOwnedStudioTale(taleId, request);
+  if (!authorization)
+    return NextResponse.json({ error: "This Chronicle is not available to this Creator account." }, { status: 404 });
   try {
     const { action } = (await request.json()) as { action: "preview" | "restore" | "fork" };
-    const { taleId, versionId } = await context.params;
     if (action === "restore")
-      return NextResponse.json(await restorePublishedVersionToDraft(taleId, versionId, session.userId));
-    if (action === "fork") return NextResponse.json(await forkPublishedVersion(taleId, versionId, session.userId));
+      return NextResponse.json(
+        await restorePublishedVersionToDraft(taleId, versionId, authorization.session.accountId),
+      );
+    if (action === "fork")
+      return NextResponse.json(await forkPublishedVersion(taleId, versionId, authorization.session.accountId));
     if (action === "preview") {
-      const preview = await startPublishedPreviewSession(taleId, versionId, session.userId);
+      const preview = await startPublishedPreviewSession(taleId, versionId, authorization.session.accountId);
       await setTaleSessionCookie(preview.sessionId, preview.token);
       return NextResponse.json({
         ...preview,

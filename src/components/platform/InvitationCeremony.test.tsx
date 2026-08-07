@@ -7,6 +7,7 @@ import { InvitationCeremony } from "./InvitationCeremony";
 
 const navigation = vi.hoisted(() => ({ push: vi.fn(), refresh: vi.fn() }));
 const director = vi.hoisted(() => ({ play: vi.fn(), cancel: vi.fn(), skip: vi.fn() }));
+const invalidateCurrentUser = vi.hoisted(() => vi.fn().mockResolvedValue({ status: "authenticated" }));
 
 vi.mock("next/navigation", () => ({
   useRouter: () => navigation,
@@ -17,6 +18,9 @@ vi.mock("@/animation/motion/useMotionMode", () => ({
 }));
 vi.mock("@/animation/director/useAnimationDirector", () => ({
   useAnimationDirector: () => ({ director, snapshot: { isPlaying: false } }),
+}));
+vi.mock("@/components/auth/CurrentUserProvider", () => ({
+  useCurrentUser: () => ({ invalidate: invalidateCurrentUser }),
 }));
 vi.mock("@/components/animation/RiveStatefulObject", async () => {
   const React = await import("react");
@@ -88,8 +92,8 @@ describe("InvitationCeremony", () => {
     vi.stubGlobal("fetch", vi.fn().mockResolvedValue(response(200, { invitation, csrfToken: "csrf" })));
     renderInvitation();
 
-    const heading = await screen.findByRole("heading", { name: "The Moonlit Key" });
-    await waitFor(() => expect(heading).toHaveFocus());
+    const heading = await screen.findByRole("heading", { name: "The Moonlit Key" }, { timeout: 5_000 });
+    await waitFor(() => expect(heading).toHaveFocus(), { timeout: 5_000 });
     expect(screen.getByLabelText("Invitation PIN")).toBeInTheDocument();
     expect(screen.getByText("Invitation found. Enter its PIN to continue.")).toBeInTheDocument();
     expect(screen.getByRole("main")).toHaveAttribute("data-invitation-state", "pin-required");

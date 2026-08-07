@@ -500,11 +500,19 @@ export async function manageInvitation(
   baseUrl: string,
   extendHours = 168,
 ) {
+  const actorAccountId = await canonicalAccountForLegacyActor(actorId);
   const invitation = await db.invitation.findUnique({
     where: { id: invitationId },
     include: { playthrough: { include: { tale: true } } },
   });
-  if (!invitation || invitation.playthrough.captainId !== actorId) throw new Error("Invitation not found.");
+  if (
+    !invitation ||
+    !actorAccountId ||
+    (invitation.playthrough.captainAccountId
+      ? invitation.playthrough.captainAccountId !== actorAccountId
+      : ![actorId, actorAccountId].includes(invitation.playthrough.captainId ?? ""))
+  )
+    throw new Error("This invitation is not assigned to your account.");
   const correlationId = randomUUID();
   if (action === "copied") {
     if (!activeInvitationStates.includes(invitation.status))
@@ -512,12 +520,20 @@ export async function manageInvitation(
     await db.$transaction([
       db.invitation.update({ where: { id: invitation.id }, data: { status: "COPIED" } }),
       db.invitationEvent.create({
-        data: { invitationId, eventType: "COPIED", actorType: "CAPTAIN", actorId, metadata: "{}" },
+        data: {
+          invitationId,
+          eventType: "COPIED",
+          actorType: "CAPTAIN",
+          actorId,
+          actorAccountId,
+          metadata: "{}",
+        },
       }),
       db.platformAuditEvent.create({
         data: {
           actorType: "CAPTAIN",
           actorId,
+          actorAccountId,
           action: "INVITATION_COPIED",
           resourceType: "INVITATION",
           resourceId: invitation.id,
@@ -535,12 +551,20 @@ export async function manageInvitation(
     await db.$transaction([
       db.invitation.update({ where: { id: invitation.id }, data: { expiresAt } }),
       db.invitationEvent.create({
-        data: { invitationId, eventType: "EXPIRATION_EXTENDED", actorType: "CAPTAIN", actorId, metadata: "{}" },
+        data: {
+          invitationId,
+          eventType: "EXPIRATION_EXTENDED",
+          actorType: "CAPTAIN",
+          actorId,
+          actorAccountId,
+          metadata: "{}",
+        },
       }),
       db.platformAuditEvent.create({
         data: {
           actorType: "CAPTAIN",
           actorId,
+          actorAccountId,
           action: "INVITATION_EXTENDED",
           resourceType: "INVITATION",
           resourceId: invitation.id,
@@ -561,12 +585,20 @@ export async function manageInvitation(
         data: { status: "REMOVED", removedAt: new Date() },
       }),
       db.invitationEvent.create({
-        data: { invitationId, eventType: "REVOKED", actorType: "CAPTAIN", actorId, metadata: "{}" },
+        data: {
+          invitationId,
+          eventType: "REVOKED",
+          actorType: "CAPTAIN",
+          actorId,
+          actorAccountId,
+          metadata: "{}",
+        },
       }),
       db.platformAuditEvent.create({
         data: {
           actorType: "CAPTAIN",
           actorId,
+          actorAccountId,
           action: "INVITATION_REVOKED",
           resourceType: "INVITATION",
           resourceId: invitation.id,
@@ -598,6 +630,7 @@ export async function manageInvitation(
         maxRedemptions: invitation.maxRedemptions,
         replacesInvitationId: invitation.id,
         createdBy: actorId,
+        creatorAccountId: actorAccountId,
       },
     });
     await tx.invitationEvent.createMany({
@@ -607,6 +640,7 @@ export async function manageInvitation(
           eventType: "REPLACED",
           actorType: "CAPTAIN",
           actorId,
+          actorAccountId,
           metadata: JSON.stringify({ replacementId: created.id }),
         },
         {
@@ -614,6 +648,7 @@ export async function manageInvitation(
           eventType: "CREATED",
           actorType: "CAPTAIN",
           actorId,
+          actorAccountId,
           metadata: JSON.stringify({ replacesId: invitation.id }),
         },
       ],
@@ -622,6 +657,7 @@ export async function manageInvitation(
       data: {
         actorType: "CAPTAIN",
         actorId,
+        actorAccountId,
         action: "INVITATION_REPLACED",
         resourceType: "INVITATION",
         resourceId: invitation.id,
