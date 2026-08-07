@@ -295,8 +295,6 @@ async function verifyOrigin(browserInstance, label, baseUrl, expectedHost) {
       await page.keyboard.type(field.value);
       assert.equal(await locator.inputValue(), field.value);
     }
-    const displayName = page.getByLabel("Display name", { exact: true });
-
     const diagnostic = await page.evaluate(async () => {
       const response = await fetch("/api/dev/origin-diagnostics", { cache: "no-store" });
       return { status: response.status, body: await response.json() };
