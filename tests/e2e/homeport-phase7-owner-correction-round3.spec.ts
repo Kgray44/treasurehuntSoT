@@ -261,7 +261,7 @@ test("Journey H: Change registration email", async ({ page }) => {
 });
 
 test("Journey I: Synthetic verification preserves the live-provider boundary", async ({ page }) => {
-  expect(fixtureReceipt.email.providerStatus).toBe("SYNTHETIC_EMAIL_ONLY");
+  expect(process.env.HOMEPORT_SYNTHETIC_EMAIL_ADAPTER).toBe("TASK_OWNED_TEST");
   const email = uniqueEmail("round3-synthetic-equivalent");
   await openRegistration(page);
   await register(page, "Synthetic Provider Equivalent", email);
