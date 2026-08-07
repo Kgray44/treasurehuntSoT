@@ -270,7 +270,11 @@ All 85 Round 2 findings are locally implemented and exact-source validated at `f
 
 ## Phase 7 owner correction Round 3
 
-The owner re-review after Correction Round 2 was `OWNER_REJECTED_WITH_ACTIONABLE_FINDINGS`. Round 3 is architecture-frozen against 54 findings; implementation and current evidence remain pending, Postmark is `POSTMARK_BLOCKED_EXTERNAL_CONFIGURATION`, and the owner Round 3 decision is `PENDING_OWNER_DECISION`.
+The owner re-review after Correction Round 2 was
+`OWNER_REJECTED_WITH_ACTIONABLE_FINDINGS`. Round 3 is architecture-frozen
+against 54 findings, with critical addenda selecting Resend and canonical
+AccountSession authorization for ordinary Captain and Creator flows. The owner
+Round 3 decision remains `PENDING_OWNER_DECISION`.
 
 - [Round 3 architecture](Project_Homeport_Phase_7_Owner_Walkthrough_Correction_Round_3_Architecture.md)
 - [Round 3 owner ledger](Project_Homeport_Phase_7_Owner_Feedback_Round_3_Ledger.csv)
@@ -284,7 +288,11 @@ This remains branch-local Phase 7 correction work: not merged, not deployed, not
 
 ## Phase 7 correction Round 3 re-review state
 
-All 54 Round 3 findings are locally implemented and exact-source validated at `581e5d3c5d4560bd101362e835c4eb0ed5a85e3f`. Round 3 A-V passed 22/22, retained Round 2 A-W passed 23/23, Round 1 A-U passed 21/21, original Phase 7 A-O passed 15/15, and the complete Experience Images package received Codex visual classification `ACCEPTED`. Postmark remains `POSTMARK_BLOCKED_EXTERNAL_CONFIGURATION`; Owner Re-Review Round 3 remains `PENDING_OWNER_DECISION`.
+All 54 original Round 3 findings were locally implemented and exact-source
+validated at `581e5d3c5d4560bd101362e835c4eb0ed5a85e3f`. The current Patch A addenda
+replace Postmark with Resend and converge ordinary Captain/Creator authentication
+on AccountSession without changing the pending owner decision. Owner Re-Review
+Round 3 remains `PENDING_OWNER_DECISION`.
 
 - [Implementation report](Project_Homeport_Phase_7_Correction_Round_3_Implementation_Report.md)
 - [Validation record](Project_Homeport_Phase_7_Correction_Round_3_Validation_Record.md)
@@ -309,11 +317,14 @@ implementation or change the `PENDING_OWNER_DECISION` boundary.
 - [Patch A integration manifest](Project_Homeport_Phase_7_Correction_Round_3_Patch_A_Integration_Manifest.md)
 
 Patch A is locally implemented and exact-product-source validated at
-`29ae357cc4df369bf33ce2dce6477618eefcbfaa`. Patch A A-N passed 14/14,
+`0edae8a4509656f98d68aa248f6ee7fb087436eb`. Patch A A-N passed 14/14,
 the selected retained Round 3 critical set passed 10/10, and the original
 Phase 7 account/session set passed 9/9. Registration is atomic and truthful,
 ordinary sign-in no longer requires an email code, and route transitions use a
-generation-owned 280 ms crossfade with a 500 ms loading threshold. Postmark
-remains `POSTMARK_BLOCKED_EXTERNAL_CONFIGURATION`; Round 3 remains
-`PENDING_OWNER_DECISION`, and no merge, deployment, or broader owner acceptance
-is claimed.
+generation-owned 280 ms crossfade with a 500 ms loading threshold. The critical
+addenda select Resend and require one canonical account session across Player,
+Captain, and Creator while retaining resource-specific authorization. Round 3
+also has live disposable registration-verification proof: provider acceptance,
+owner-controlled inbox receipt, code consumption, and `ACTIVE`/`VERIFIED`
+database state. It remains `PENDING_OWNER_DECISION`, and no merge, deployment,
+or broader owner acceptance is claimed.

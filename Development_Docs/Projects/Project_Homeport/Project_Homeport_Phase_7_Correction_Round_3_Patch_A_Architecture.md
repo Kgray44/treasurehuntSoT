@@ -32,7 +32,7 @@ review; automation cannot establish broader owner acceptance.
 | Task root                       | `C:\Users\kkids\AppData\Local\ProjectHomeport\phase7-owner-correction-round3-patch-a-019fd7fa-ac8d-7960-9bc9-81eb6f625e9d` |
 | Fixture family                  | `homeport-phase7-owner-correction-round3-patch-a-v1`                                                                       |
 | Task-owned port family          | `3781`-`3792`                                                                                                              |
-| Email provider start state      | `POSTMARK_BLOCKED_EXTERNAL_CONFIGURATION`                                                                                  |
+| Email provider selected state   | Resend selected; synthetic test adapter retained; Postmark compatibility dormant                                           |
 
 All mutation-bearing tests use purpose-specific databases under the task root.
 The canonical database and prior-round owner databases are forbidden mutation
@@ -140,13 +140,29 @@ source identity; a static screenshot alone cannot prove absence of a flash.
 Closure additionally requires prior Round 3 critical journeys, original Phase 7
 authentication/account journeys, Phase 5 route gate, Phase 6 surface/state gate,
 Sounding Line subsystem and mainline `RELEASE_GO`, canonical-database invariance,
-exact branch parity, and one fresh healthy owner-review runtime. Postmark remains
-external unless a real provider submission and approved inbox receipt are both
-proven.
+exact branch parity, and one fresh healthy owner-review runtime. Live Resend
+email may be claimed only after provider submission, approved inbox receipt, and
+successful application consumption of the received code are all proven.
+
+## Critical Captain and Creator authentication addendum
+
+1. `AccountSession` is the only ordinary authentication lifecycle for Player,
+   Captain, and Creator workspaces.
+2. Workspace availability and resource authorization are separate. Any active,
+   verified ordinary account may enter Captain and Creator; access to a specific
+   Voyage, session, invitation, helper pairing, Chronicle, asset, import, or
+   export remains owner/scoped-collaborator/admin controlled.
+3. New resources record canonical account ownership. Existing canonical and
+   migrated legacy owner fields remain compatible during convergence.
+4. Ordinary routes never prompt for GameMaster, Captain, or Creator credentials.
+   `/api/gm/**` remains a compatibility surface only, and the private operations
+   console remains explicitly privileged admin-only.
+5. Cross-workspace navigation preserves one account ID, one canonical session,
+   and one CSRF lifecycle; it does not mint legacy role cookies.
 
 ## Implemented Patch A disposition
 
-Exact product source `29ae357cc4df369bf33ce2dce6477618eefcbfaa` implements
+Exact product source `0edae8a4509656f98d68aa248f6ee7fb087436eb` implements
 the frozen decisions. Registration now commits the pending account, Profile,
 primary email, credential, baseline Player capability, verification challenge,
 verification session, and audit event atomically. Delivery occurs after commit

@@ -17,7 +17,7 @@ last_reviewed: 2026-08-05
 | Fixture                     | `homeport-phase7-owner-correction-round3-v1`                                                      |
 | Browser journeys            | Round 3 A-V 22/22; Round 2 A-W 23/23; Round 1 A-U 21/21; original Phase 7 A-O 15/15               |
 | Evidence                    | 30 governed IDs, 29 screenshots, 5 temporal receipts, and 256 Experience Images; Codex `ACCEPTED` |
-| Transactional email         | `POSTMARK_BLOCKED_EXTERNAL_CONFIGURATION`; synthetic adapter passed                               |
+| Transactional email         | Resend selected; synthetic adapter passed; Postmark compatibility dormant                         |
 | Owner Round 1               | `OWNER_RETURNED_FOR_CORRECTION`                                                                   |
 | Re-review after Round 1     | `OWNER_REJECTED_WITH_ACTIONABLE_FINDINGS`                                                         |
 | Re-review after Round 2     | `OWNER_REJECTED_WITH_ACTIONABLE_FINDINGS`                                                         |

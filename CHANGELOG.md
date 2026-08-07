@@ -12,7 +12,16 @@ last_reviewed: 2026-08-06
 
 ### Changed
 
-- Stabilized Project Homeport Correction Round 3 account access and route transitions on the named branch: pending registration is atomic, duplicate display names and emails have explicit recovery, ordinary unverified sign-in no longer requires a code, and generation-owned 280 ms crossfades prevent stale loading and old-page resurrection. This is local synthetic evidence, not deployment or owner acceptance.
+- Stabilized Project Homeport Correction Round 3 account access and route
+  transitions on the named branch: pending registration is atomic, ordinary
+  unverified sign-in no longer requires a code, one canonical AccountSession
+  provides Player/Captain/Creator workspace entry while Voyage and Chronicle
+  authorization remains resource-scoped, and generation-owned 280 ms crossfades
+  prevent stale loading and old-page resurrection. Resend is now the selected
+  real transactional-email provider; the synthetic outbox and dormant Postmark
+  compatibility adapter remain. Disposable live acceptance proved provider
+  submission, owner-controlled inbox receipt, code consumption, and
+  `ACTIVE`/`VERIFIED` account state. This is not deployment or owner acceptance.
 
 - Completed Project Homeport Phase 7 to the owner-walkthrough-ready boundary on the named branch: one immutable synthetic fixture and isolated clones now prove A-through-O account, workspace, Personal Harbor, Community, recovery, failure, mobile, and final-rehearsal journeys. Owner Decision remains pending; this is not on main or deployed.
 - Completed Project Homeport Phase 6 on the named branch: all 92 current human-facing screens are source-inventoried, every critical/high surface is visually complete, and shared page-state, dialog/focus, responsive, accessibility, motion, mutation, and media-fallback contracts are enforced. This is not on main, deployed, or owner accepted; Phase 7 remains separate.
@@ -58,13 +67,18 @@ Correction Round 2 is locally exact-source validated and ready for owner re-revi
 
 ## Phase 7 correction Round 3 status
 
-Correction Round 3 is locally exact-source validated and ready for owner re-review. It adds governed Profile imagery/cropping and identity propagation, six-digit verification, a Postmark production adapter with task-owned synthetic isolation, ordinary Player/Captain/Creator entry separated from resource authority, direct route crossfades, visible account-menu motion, and Dark defaults. Owner Re-Review Round 3 remains `PENDING_OWNER_DECISION`; the branch is not merged or deployed. Postmark is `POSTMARK_BLOCKED_EXTERNAL_CONFIGURATION`, broad Light Mode visual completion is deferred, and production MySQL plus physical assistive-technology validation remain external.
+Correction Round 3 includes governed Profile imagery/cropping and identity
+propagation, six-digit verification, Resend plus task-owned synthetic delivery,
+ordinary workspace entry separated from resource authority, direct route
+crossfades, visible account-menu motion, and Dark defaults. Owner Re-Review Round
+3 remains `PENDING_OWNER_DECISION`; the branch is not merged or deployed.
 
 ## Phase 7 correction Round 3 Patch A status
 
 Focused Patch A is locally exact-product-source validated and ready for owner
 review. Patch A A-N passed 14/14, selected retained Round 3 critical journeys
 passed 10/10, and original Phase 7 account/session journeys passed 9/9. The
-branch is not merged or deployed; Postmark remains
-`POSTMARK_BLOCKED_EXTERNAL_CONFIGURATION`, and Round 3 remains
-`PENDING_OWNER_DECISION`.
+branch is not merged or deployed. Resend supersedes Postmark as the selected real
+provider, and its disposable registration-verification path passed live provider
+submission, inbox receipt, code consumption, and account activation. Round 3
+remains `PENDING_OWNER_DECISION`.

@@ -8817,7 +8817,7 @@
     "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
     "architectureFreezeSha": "07544240bc592b0798625824265fd48c5419f87a",
     "fixtureVersion": "homeport-phase6-v1",
-    "screenRegistryDigest": "dda7fd86ee65e07fedef0dbf8ef0dc2a37f28543df83c55e761c7e8bc9a59ca1"
+    "screenRegistryDigest": "3d728f63036d420fd7a31f17680aecfef73317f5d5a3a6370079a44e6618f37d"
   },
   "phase7Implementation": {
     "state": "READY_FOR_OWNER_WALKTHROUGH",

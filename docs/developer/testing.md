@@ -25,7 +25,10 @@ Correction Round 2 is locally exact-source validated and ready for owner re-revi
 
 ## Phase 7 correction Round 3 status
 
-Correction Round 3 is locally exact-source validated and ready for owner re-review. It adds governed Profile imagery/cropping and identity propagation, six-digit verification, a Postmark production adapter with task-owned synthetic isolation, ordinary Player/Captain/Creator entry separated from resource authority, direct route crossfades, visible account-menu motion, and Dark defaults. Owner Re-Review Round 3 remains `PENDING_OWNER_DECISION`; the branch is not merged or deployed. Postmark is `POSTMARK_BLOCKED_EXTERNAL_CONFIGURATION`, broad Light Mode visual completion is deferred, and production MySQL plus physical assistive-technology validation remain external.
+Correction Round 3 retains task-owned synthetic email for automated isolation and
+selects Resend for explicit live-provider acceptance. Synthetic proof must never
+be reported as Resend or inbox proof. Owner Re-Review Round 3 remains
+`PENDING_OWNER_DECISION`.
 
 ## Phase 7 correction Round 3 Patch A
 

@@ -28,7 +28,7 @@ Sounding Line registers the exact Patch A contract IDs:
 - `homeport.auth.password-strength`
 - `homeport.auth.password-confirmation`
 - `homeport.auth.registration-verification`
-- `homeport.auth.postmark-delivery`
+- `homeport.auth.resend-delivery`
 - `homeport.auth.partial-account-repair`
 - `homeport.transition.navigation-generation`
 - `homeport.transition.delayed-loading-cancel`
@@ -56,6 +56,16 @@ Sounding Line registers the exact Patch A contract IDs:
 - Component/API: typed field errors, email handoff, pending-delivery truth,
   verification actions, loading lifecycle, CSRF, rate limits, transparent
   enumeration policy, and sanitized provider errors.
+- Canonical authorization source gate: every ordinary Captain and Creator page
+  and API must avoid `requireGm*`, `/api/gm/login`, and role-specific sign-in
+  redirects. Remaining legacy references must be classified compatibility,
+  migration, removed-flow, or privileged-admin only.
+- Resource authorization: own Voyage/Chronicle create, list, edit, launch,
+  invitation, helper, asset, import, and export actions pass; cross-account
+  resource reads/mutations fail without converting to a role sign-in prompt.
+- Resend: selected-provider configuration, official SDK payload, idempotency,
+  sanitized failure, provider receipt persistence, and real registration/code
+  consumption in a disposable database. Webhook live acceptance is deferred.
 
 ## Browser journeys and evidence
 
@@ -84,7 +94,7 @@ only final Sounding Line `RELEASE_GO` is authority.
 
 ## Focused execution record
 
-Exact product source `29ae357cc4df369bf33ce2dce6477618eefcbfaa` passed Patch
+Exact product source `0edae8a4509656f98d68aa248f6ee7fb087436eb` passed Patch
 A journeys A-N 14/14 on one sealed production build. The retained Round 3
 critical subset F, G, H, I, K, N, O, P, S, and U passed 10/10 after the current
 Patch A migration was applied to fresh disposable clones. Original Phase 7
@@ -99,4 +109,6 @@ ordinary unverified-sign-in cases. DRY_RUN, COMMIT, and VERIFY reconciliation
 completed on a task-owned database with two governed repairs and zero remaining
 actionable inconsistencies. All 13 required visual checkpoints received Codex
 inspection; all five temporal receipts record a passing sampled-state sequence.
-Postmark remains `POSTMARK_BLOCKED_EXTERNAL_CONFIGURATION`.
+The focused record separately states provider acceptance, owner-controlled inbox
+receipt, application code consumption, and direct `ACTIVE`/`VERIFIED`
+disposable-database state. None is inferred from synthetic tests.

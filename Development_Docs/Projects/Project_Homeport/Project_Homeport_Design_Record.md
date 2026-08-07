@@ -396,7 +396,7 @@ The frozen 35-decision Round 2 architecture is implemented at exact browser sour
 
 **Decision date:** 2026-08-05. **Round 3 start:** `8e3900a734674cb58800878aaeaf91a0e9f2285e`. **Owner re-review after Correction Round 2:** `OWNER_REJECTED_WITH_ACTIONABLE_FINDINGS`. **Round 3 owner decision:** `PENDING_OWNER_DECISION`.
 
-The frozen [Round 3 architecture](Project_Homeport_Phase_7_Owner_Walkthrough_Correction_Round_3_Architecture.md) preserves prior Phase 1-7 authority and defines 42 decisions for Profile crop media, identity propagation, six-digit verification, provider-neutral Postmark delivery, Dark defaults, ordinary workspace entry versus resource authority, active-Chronicle truth, direct route crossfade, production account-menu motion, fixtures, migrations, exact-source evidence, Sounding Line, owner runtime, status language, and rollback.
+The frozen [Round 3 architecture](Project_Homeport_Phase_7_Owner_Walkthrough_Correction_Round_3_Architecture.md) preserves prior Phase 1-7 authority and defines 42 decisions for Profile crop media, identity propagation, six-digit verification, provider-neutral Resend delivery with dormant Postmark compatibility, Dark defaults, ordinary workspace entry versus resource authority, active-Chronicle truth, direct route crossfade, production account-menu motion, fixtures, migrations, exact-source evidence, Sounding Line, owner runtime, status language, and rollback.
 
 The architecture assigns 54 owner findings to `HP-OWCR3-001`-`054` and new nonconformities `HP-NC-157`-`210`. It establishes no implementation, live inbox delivery, migration/test result, visual acceptance, Sounding Line decision, publication, owner readiness, merge, PR, deployment, or owner acceptance.
 
@@ -404,7 +404,7 @@ The architecture assigns 54 owner findings to `HP-OWCR3-001`-`054` and new nonco
 
 ## Phase 7 correction Round 3 implementation amendment
 
-The frozen 42-decision Round 3 architecture is implemented at exact browser source `581e5d3c5d4560bd101362e835c4eb0ed5a85e3f`. It retains canonical AccountSession, specialist resource authority, prior owner/history records, and the 500 ms loading contract while adding Profile imagery/crop, identity propagation, six-digit verification, provider-neutral Postmark delivery, Dark defaults, ordinary workspace entry, active-Chronicle truth, direct route crossfades, visible account-menu motion, isolated fixtures, and exact-source evidence. Delivery, Bounce, and SpamComplaint webhooks use configured HTTP Basic protection and idempotent MessageID event handling; no unsupported Postmark HMAC claim is made. The result is validated pending owner re-review, not merged, deployed, or owner accepted.
+The frozen 42-decision Round 3 architecture is implemented at exact browser source `581e5d3c5d4560bd101362e835c4eb0ed5a85e3f`. It retains canonical AccountSession, specialist resource authority, prior owner/history records, and the 500 ms loading contract while adding Profile imagery/crop, identity propagation, six-digit verification, provider-neutral Resend delivery with dormant Postmark compatibility, Dark defaults, ordinary workspace entry, active-Chronicle truth, direct route crossfades, visible account-menu motion, isolated fixtures, and exact-source evidence. Resend webhook implementation and deployment are deferred. The result is validated pending owner re-review, not merged, deployed, or owner accepted.
 
 <!-- HOMEPORT_OWNER_CORRECTION_ROUND3_PATCH_A:START -->
 
@@ -422,9 +422,10 @@ non-blocking verification status, password strength/match guidance, safe
 partial-account reconciliation, and one generation-owned route transition with
 280 ms crossfade and permanent cancellation of post-readiness loading.
 
-The current host remains `POSTMARK_BLOCKED_EXTERNAL_CONFIGURATION`. This
-amendment establishes no implementation, migration result, test pass, temporal
-evidence, Sounding Line decision, publication, owner-runtime readiness, merge,
-pull request, deployment, or owner acceptance.
+Critical addenda now select Resend and require canonical AccountSession
+authorization for ordinary Captain and Creator paths. Postmark is dormant
+compatibility and no longer blocks Patch A. This amendment does not itself
+establish test pass, publication, owner-runtime readiness, merge, pull request,
+deployment, or owner acceptance.
 
 <!-- HOMEPORT_OWNER_CORRECTION_ROUND3_PATCH_A:END -->

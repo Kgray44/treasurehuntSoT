@@ -25,4 +25,10 @@ The fixture is `homeport-phase7-owner-correction-round3-v1`, checksum `c2a727ea5
 
 ## External and publication boundary
 
-Postmark is `POSTMARK_BLOCKED_EXTERNAL_CONFIGURATION`. Codex visual review is not owner acceptance. Round 3 remains `PENDING_OWNER_DECISION`. Repository-wide validators, Sounding Line decisions, exact-publication reruns, remote parity, canonical-database invariance, and runtime health are additive closure facts recorded outside this source-bound artifact generator.
+Resend is the selected real provider; synthetic proof remains separately
+classified, Postmark is dormant compatibility, and live webhook deployment is
+deferred. Codex visual review is not owner acceptance. Round 3 remains
+`PENDING_OWNER_DECISION`. Repository-wide validators, Sounding Line decisions,
+exact-publication reruns, remote parity, canonical-database invariance, and
+runtime health are additive closure facts recorded outside this source-bound
+artifact generator.

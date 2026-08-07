@@ -18,8 +18,10 @@ Owner Re-Review after Correction Round 2: `OWNER_REJECTED_WITH_ACTIONABLE_FINDIN
 
 Owner Re-Review Round 3: `PENDING_OWNER_DECISION`.
 
-Exact browser source is `581e5d3c5d4560bd101362e835c4eb0ed5a85e3f`; fixture is `homeport-phase7-owner-correction-round3-v1`. Use the external task-owned credential handoff printed by the runtime controller; credentials and verification codes are never committed. Transactional email is `POSTMARK_BLOCKED_EXTERNAL_CONFIGURATION`; the owner runtime uses its task-owned synthetic inbox and does not prove live delivery.
+Exact browser source is `581e5d3c5d4560bd101362e835c4eb0ed5a85e3f`; fixture is `homeport-phase7-owner-correction-round3-v1`. Use the external task-owned credential handoff printed by the runtime controller; credentials and verification codes are never committed. This original runtime uses its task-owned synthetic inbox. The later Patch A addendum selects Resend and preserves this synthetic proof as a separate classification.
 
 Commands: `npm run homeport:phase7:correction:round3:walkthrough:prepare`, `start`, `status`, `reset`, and `stop`. The final owner runtime uses port 3768 and a fresh owner re-review clone. Browse the visual inventory at `Experience_Images/index.html`.
 
-This package is not owner acceptance, a PR, a main merge, or deployment. Broad Light Mode visual completion, real Postmark delivery, production MySQL, and physical assistive-technology validation remain external.
+This package is not owner acceptance, a PR, a main merge, or deployment. Broad
+Light Mode visual completion, production MySQL, and physical
+assistive-technology validation remain external.

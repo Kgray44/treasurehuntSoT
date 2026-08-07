@@ -2472,7 +2472,7 @@
   "edgeRegistryDigest": "c0df3ad7fa8c3cfd12a85d8879b09b422c2e4cd62ba3d0b74442b3d77078ba79",
   "summary": {
     "discoveredPageSources": 90,
-    "discoveredServiceSources": 183,
+    "discoveredServiceSources": 186,
     "nodeCount": 90,
     "edgeCount": 169,
     "ordinaryRouteCount": 43,

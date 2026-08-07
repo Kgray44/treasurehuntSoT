@@ -12,4 +12,4 @@ Personal Harbor supports an avatar and banner. Selection stays local until you p
 
 Confirmed originals remain private; only server-normalized, locally validated derivatives appear on identity surfaces. The avatar propagates to the account trigger, menu, and authorized public Profile projection. The banner leads the Personal Harbor overview.
 
-These instructions describe the Round 3 branch. They do not claim mainline availability, deployment, live Postmark delivery, owner acceptance, broad Light Mode completion, production MySQL proof, or physical assistive-technology validation.
+These instructions describe the Round 3 branch. They do not claim deployment or owner acceptance.

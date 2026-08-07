@@ -14,4 +14,8 @@ Private-content handling separates access, storage, scanning, derivatives, grant
 
 ## Phase 7 correction Round 3 status
 
-Correction Round 3 is locally exact-source validated and ready for owner re-review. It adds governed Profile imagery/cropping and identity propagation, six-digit verification, a Postmark production adapter with task-owned synthetic isolation, ordinary Player/Captain/Creator entry separated from resource authority, direct route crossfades, visible account-menu motion, and Dark defaults. Owner Re-Review Round 3 remains `PENDING_OWNER_DECISION`; the branch is not merged or deployed. Postmark is `POSTMARK_BLOCKED_EXTERNAL_CONFIGURATION`, broad Light Mode visual completion is deferred, and production MySQL plus physical assistive-technology validation remain external.
+Correction Round 3 uses one canonical AccountSession for ordinary Player,
+Captain, and Creator entry while enforcing owner/scoped-collaborator rules on
+private resources. Resend is the selected real email provider; its key remains
+server-only, and synthetic delivery remains task-owned test infrastructure.
+Owner Re-Review Round 3 remains `PENDING_OWNER_DECISION`.

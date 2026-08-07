@@ -16,7 +16,7 @@ Use fixture `homeport-phase7-owner-correction-round3-v1`, a new immutable seed, 
 
 - All 54 ledger rows, 42 architecture decisions, contract docs, screen/control/journey/catalog updates, and traceability.
 - Profile crop geometry, client preview cleanup, bytes/MIME/decode/pixel/animation validation, private original and derivative lifecycle, replacement atomicity, ownership/visibility IDOR, mobile/touch/keyboard/zoom.
-- Registration six-digit challenge state, hash/expiry/attempt/resend/replay/concurrency/rate limits, pending-to-active activation, provider-neutral delivery, synthetic isolation, Postmark response/error and authenticated idempotent webhook handling.
+- Registration six-digit challenge state, hash/expiry/attempt/resend/replay/concurrency/rate limits, pending-to-active activation, provider-neutral delivery, synthetic isolation, Resend response/error handling, and an optional signed idempotent webhook boundary.
 - Dark anonymous/new-account/fixture first paint and stored-choice preservation without broad Light redesign.
 - Workspace entry versus resource authority, new-account provisioning, existing-account reconciliation, useful Captain/Creator empty states, real active-lock and false-lock cases.
 - Direct overlapping crossfade, no background-only frame, stable ProductShell, 499/500/501 ms loading integration, focus/scroll/back-forward/interruption, and reduced motion.
@@ -24,7 +24,7 @@ Use fixture `homeport-phase7-owner-correction-round3-v1`, a new immutable seed, 
 
 ## Journey and evidence gates
 
-Run new Round 3 journeys A-V, retained Round 2 A-W, Round 1 A-U, and original Phase 7 A-O against the exact new source. Capture all evidence IDs A-AD. Crop and motion evidence requires frame sequences or bounded video plus computed geometry/styles; a static screenshot cannot prove temporal behavior. Real email evidence is optional only when approved Postmark configuration exists and must never be inferred from synthetic output.
+Run new Round 3 journeys A-V, retained Round 2 A-W, Round 1 A-U, and original Phase 7 A-O against the exact new source. Capture all evidence IDs A-AD. Crop and motion evidence requires frame sequences or bounded video plus computed geometry/styles; a static screenshot cannot prove temporal behavior. Real Resend evidence requires provider acceptance, real inbox receipt, and successful code consumption and must never be inferred from synthetic output.
 
 ## Aggregate and publication gates
 

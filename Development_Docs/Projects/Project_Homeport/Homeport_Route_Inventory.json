@@ -3248,9 +3248,9 @@
         "phase": "PHASE_5_CLOSE_ROUTE_AND_INFORMATION_ARCHITECTURE_GAPS",
         "startingSha": "54372224fc9bf4b4fb42797ca58a5a224ffdb92a",
         "architectureFreezeSha": "bbe9659cc5077c834510c3e4db77aa362e45b6fd",
-        "implementationSourceSha": "581e5d3c5d4560bd101362e835c4eb0ed5a85e3f",
-        "state": "REVALIDATED_BY_OWNER_CORRECTION_ROUND3",
-        "sourceParityOnly": false,
+        "implementationSourceSha": "IMPLEMENTATION_SOURCE_PENDING",
+        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "sourceParityOnly": true,
         "humanReachabilityExcluded": true
       }
     },
@@ -7733,9 +7733,9 @@
         "phase": "PHASE_5_CLOSE_ROUTE_AND_INFORMATION_ARCHITECTURE_GAPS",
         "startingSha": "54372224fc9bf4b4fb42797ca58a5a224ffdb92a",
         "architectureFreezeSha": "bbe9659cc5077c834510c3e4db77aa362e45b6fd",
-        "implementationSourceSha": "581e5d3c5d4560bd101362e835c4eb0ed5a85e3f",
-        "state": "REVALIDATED_BY_OWNER_CORRECTION_ROUND3",
-        "sourceParityOnly": false,
+        "implementationSourceSha": "IMPLEMENTATION_SOURCE_PENDING",
+        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "sourceParityOnly": true,
         "humanReachabilityExcluded": true
       }
     },
@@ -9917,9 +9917,9 @@
         "phase": "PHASE_5_CLOSE_ROUTE_AND_INFORMATION_ARCHITECTURE_GAPS",
         "startingSha": "54372224fc9bf4b4fb42797ca58a5a224ffdb92a",
         "architectureFreezeSha": "bbe9659cc5077c834510c3e4db77aa362e45b6fd",
-        "implementationSourceSha": "581e5d3c5d4560bd101362e835c4eb0ed5a85e3f",
-        "state": "REVALIDATED_BY_OWNER_CORRECTION_ROUND3",
-        "sourceParityOnly": false,
+        "implementationSourceSha": "IMPLEMENTATION_SOURCE_PENDING",
+        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "sourceParityOnly": true,
         "humanReachabilityExcluded": true
       }
     },
@@ -21792,16 +21792,16 @@
     "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
     "updatedAt": "2026-08-03T18:00:00.000Z",
     "census": {
-      "sourceCount": 280,
+      "sourceCount": 283,
       "counts": {
         "page": 90,
-        "route": 183,
+        "route": 186,
         "layout": 6,
         "not-found": 0,
         "error": 1
       },
       "humanRouteCount": 90,
-      "serviceRouteCount": 183
+      "serviceRouteCount": 186
     },
     "sourceParity": true,
     "noSchemaChange": true,

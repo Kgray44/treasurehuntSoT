@@ -12,10 +12,19 @@ Use `.env.example` as the canonical variable-name reference. Values for database
 
 See [configuration](../administrator/configuration.md) and [security architecture](../developer/security-architecture.md).
 
+The selected real transactional-email provider uses server-only
+`HOMEPORT_TRANSACTIONAL_EMAIL_PROVIDER=RESEND`, `RESEND_API_KEY`,
+`RESEND_FROM_ADDRESS`, and `RESEND_FROM_NAME`. Put real values in ignored
+`.env.local` or the deployment secret store, never in `.env.example` or a
+`NEXT_PUBLIC_` variable. Webhook work is deferred and has no configuration
+requirement in this patch.
+
 ## Phase 7 correction Round 2 status
 
 Correction Round 2 is locally exact-source validated and ready for owner re-review. Dark, Light, and System themes; truthful account/Profile/workspace state; authoritative Community saves and completion-verified reviews; expanded previews; delayed loading; motion; synthetic email boundaries; and Experience Images are included. Round 2 remains `PENDING_OWNER_DECISION`; this branch is not merged or deployed, and live providers remain external.
 
 ## Phase 7 correction Round 3 status
 
-Correction Round 3 is locally exact-source validated and ready for owner re-review. It adds governed Profile imagery/cropping and identity propagation, six-digit verification, a Postmark production adapter with task-owned synthetic isolation, ordinary Player/Captain/Creator entry separated from resource authority, direct route crossfades, visible account-menu motion, and Dark defaults. Owner Re-Review Round 3 remains `PENDING_OWNER_DECISION`; the branch is not merged or deployed. Postmark is `POSTMARK_BLOCKED_EXTERNAL_CONFIGURATION`, broad Light Mode visual completion is deferred, and production MySQL plus physical assistive-technology validation remain external.
+Correction Round 3 includes Resend as the selected real email provider and a
+task-owned synthetic adapter for isolated validation. Owner Re-Review Round 3
+remains `PENDING_OWNER_DECISION`; the branch is not merged or deployed.

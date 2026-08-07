@@ -905,13 +905,14 @@ A nonauthoritative, provider-neutral local verification control plane provides s
 **Status:** BRANCH COMPLETE NOT MERGED
 **Program or subsystem:** Project Homeport Phase 1
 
-One server-resolved account session now drives current-user state, workspace capability, lifecycle invalidation, and bounded legacy-session rotation across product surfaces.
+One server-resolved account session now drives current-user state, ordinary Player, Captain, and Creator workspace entry, resource-scoped authorization, lifecycle invalidation, and bounded legacy-session rotation across product surfaces.
 
 ### Important subfeatures
 
 - Canonical AccountSession current-user projection
 - One ordinary account sign-in lifecycle
 - Explicit workspace capability decisions
+- Canonical Captain and Creator authorization with per-resource ownership and scoped collaboration
 - Cross-tab and focus session invalidation
 - Safe intended-return authorization
 - Bounded legacy Player and staff session rotation
@@ -1139,7 +1140,7 @@ Every current human-facing screen is now source-inventoried with governed visual
 **Status:** BRANCH COMPLETE NOT MERGED
 **Program or subsystem:** Project Homeport Phase 7
 
-Project Homeport now includes the integrated Whole Voyage plus Owner Correction Rounds 1-3 and focused Patch A: governed Profile imagery and crop editing, identity propagation, atomic pending registration, six-digit registration verification, ordinary unverified sign-in, a Postmark production adapter with deterministic synthetic testing, workspace entry separated from resource authority, generation-owned route crossfades, visible account-menu motion, and Dark defaults.
+Project Homeport now includes the integrated Whole Voyage plus Owner Correction Rounds 1-3 and focused Patch A: governed Profile imagery and crop editing, identity propagation, atomic pending registration, six-digit registration verification, ordinary unverified sign-in, Resend production delivery with deterministic synthetic testing, one canonical Player, Captain, and Creator session separated from resource authority, generation-owned route crossfades, visible account-menu motion, and Dark defaults.
 
 ### Important subfeatures
 
@@ -1174,8 +1175,9 @@ Project Homeport now includes the integrated Whole Voyage plus Owner Correction 
 - Interactive avatar and banner selection, preview, crop, replacement, removal, and normalized derivative lifecycle
 - Profile avatar and banner propagation across Personal Harbor, account controls, and safe public identity projections
 - Six-digit email-code registration with hashed expiry, attempts, resend replacement, and atomic account activation
-- Provider-neutral transactional email with Postmark production and task-owned synthetic adapters
-- Ordinary-account Player, Captain, and Creator entry separated from resource-specific authorization
+- Provider-neutral transactional email with Resend production, task-owned synthetic, and dormant Postmark compatibility adapters
+- Live-validated disposable Resend registration verification with provider acceptance, owner-controlled inbox receipt, code consumption, and active verified account state
+- One ordinary AccountSession for Player, Captain, and Creator entry separated from Voyage, Chronicle, asset, invitation, helper, and collaboration authorization
 - Active-Chronicle transition safety with authoritative true-lock and false-lock behavior
 - Direct page crossfades with stable shell, 500 ms loading integration, focus handoff, and reduced motion
 - Perceptible production account-menu opening and closing motion
@@ -1197,8 +1199,8 @@ Project Homeport now includes the integrated Whole Voyage plus Owner Correction 
 - Not deployed; no pull request was created by the governed Round 3 task
 - Owner Re-Review Round 3 remains PENDING_OWNER_DECISION; focused Patch A readiness is not owner acceptance
 - Broad Light Mode visual completion remains deferred
-- Postmark live delivery is POSTMARK_BLOCKED_EXTERNAL_CONFIGURATION; synthetic proof is not live inbox proof
-- Production MySQL execution, external-provider configuration, and physical assistive-technology validation remain external
+- Resend webhook deployment remains deferred and is not inferred from provider submission or inbox proof
+- Production MySQL execution, non-email external-provider configuration, and physical assistive-technology validation remain external
 - Readiness for owner re-review is not owner acceptance or product acceptance
 
 ### Evidence

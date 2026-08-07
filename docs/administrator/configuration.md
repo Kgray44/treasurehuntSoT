@@ -14,4 +14,7 @@ Before enabling a provider, confirm its storage, scanning, and recovery behavior
 
 ## Phase 7 correction Round 3 status
 
-Correction Round 3 is locally exact-source validated and ready for owner re-review. It adds governed Profile imagery/cropping and identity propagation, six-digit verification, a Postmark production adapter with task-owned synthetic isolation, ordinary Player/Captain/Creator entry separated from resource authority, direct route crossfades, visible account-menu motion, and Dark defaults. Owner Re-Review Round 3 remains `PENDING_OWNER_DECISION`; the branch is not merged or deployed. Postmark is `POSTMARK_BLOCKED_EXTERNAL_CONFIGURATION`, broad Light Mode visual completion is deferred, and production MySQL plus physical assistive-technology validation remain external.
+Correction Round 3 uses Resend as the selected real transactional-email
+provider and retains a task-owned synthetic adapter for isolated validation.
+Follow the [Resend configuration guide](resend-configuration.md). Owner Re-Review
+Round 3 remains `PENDING_OWNER_DECISION`; the branch is not merged or deployed.

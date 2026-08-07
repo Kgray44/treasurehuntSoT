@@ -15,8 +15,8 @@
   ],
   "census": {
     "pageRoutes": 90,
-    "sourceFiles": 280,
-    "routeHandlers": 183,
+    "sourceFiles": 283,
+    "routeHandlers": 186,
     "loadingBoundaries": 1,
     "errorBoundaries": 1,
     "humanScreens": 97,

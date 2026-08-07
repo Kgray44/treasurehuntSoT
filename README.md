@@ -32,14 +32,18 @@ states and responsive presentation, and prove A-through-O integrated journeys
 against one immutable synthetic fixture family. The final owner walkthrough
 package and owned local runtime are ready. Owner Decision remains
 `PENDING_OWNER_DECISION`; this branch-local evidence is not on `main`, deployed,
-live-provider validated, owner accepted, or product accepted.
+owner accepted, or product accepted. Live-provider validation is limited to the
+disposable Resend registration-verification path described below.
 
 Correction Round 3 Patch A stabilizes the branch-local registration, ordinary
 sign-in, and page-switching paths that blocked continued owner review. Pending
 registration is atomic, duplicate fields have truthful recovery, unverified
 accounts can sign in without an email code, and generation-owned 280 ms route
 crossfades suppress stale pages and delayed loading after readiness. Postmark
-remains `POSTMARK_BLOCKED_EXTERNAL_CONFIGURATION`.
+is dormant compatibility; Resend is the selected real provider. Live
+registration verification passed on a disposable database: Resend accepted the
+message, the owner received the code, the application consumed it, the account
+became `ACTIVE`, and its primary email became `VERIFIED`.
 
 ## Stack
 

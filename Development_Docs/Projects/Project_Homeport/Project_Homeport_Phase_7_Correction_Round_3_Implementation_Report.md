@@ -10,7 +10,7 @@ last_reviewed: 2026-08-05
 
 ## Result
 
-All 54 Round 3 findings are implemented and traced to HP-NC-157 through HP-NC-210, exact source, tests, and evidence. The correction provides local avatar/banner preview and crop, normalized private-original/public-derivative media handling, identity imagery propagation, an identity-led Profile Overview, six-digit email verification, a provider-neutral Postmark/synthetic delivery boundary, Dark defaults, ordinary workspace entry separated from resource authority, true active-Chronicle safety, direct route crossfades, and perceptible account-menu motion.
+All 54 Round 3 findings are implemented and traced to HP-NC-157 through HP-NC-210, exact source, tests, and evidence. The correction provides local avatar/banner preview and crop, normalized private-original/public-derivative media handling, identity imagery propagation, an identity-led Profile Overview, six-digit email verification, a provider-neutral Resend/synthetic delivery boundary with dormant Postmark compatibility, Dark defaults, ordinary workspace entry separated from resource authority, true active-Chronicle safety, direct route crossfades, and perceptible account-menu motion.
 
 ## Source identity
 
@@ -23,7 +23,11 @@ All 54 Round 3 findings are implemented and traced to HP-NC-157 through HP-NC-21
 
 ## Transactional email boundary
 
-The Postmark adapter, template aliases, delivery receipts, authenticated/idempotent Delivery/Bounce/SpamComplaint webhook handling, and deterministic synthetic adapter are implemented. No approved token, sender, templates, webhook, or test inbox was available, so the exact live classification is `POSTMARK_BLOCKED_EXTERNAL_CONFIGURATION`. Synthetic acceptance is not live provider or inbox proof.
+The Resend adapter, typed inline messages, delivery receipts, optional signed
+webhook boundary, and deterministic synthetic adapter are implemented. The
+Postmark adapter remains dormant compatibility. Synthetic acceptance is not
+Resend provider or inbox proof; live status is recorded only from the dedicated
+disposable-database acceptance journey.
 
 ## Boundary
 

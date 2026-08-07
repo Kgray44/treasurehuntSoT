@@ -8,7 +8,13 @@ last_reviewed: 2026-08-05
 
 # Account and workspaces
 
-One claimed account may hold Player, Captain, and Creator capabilities. All Workspaces shows the server-authoritative capability state, while a server-owned active-Chronicle membership can safely lock incompatible changes. Public Profile identity is separate from private Personal Harbor and Chronicle Passport data.
+One claimed account and one canonical `AccountSession` provide ordinary Player,
+Captain, and Creator workspace entry. Role-specific sign-in is not required.
+Captain Voyages and Creator Chronicles still enforce their own owner or scoped
+collaborator rules; successful workspace entry does not grant access to another
+account's private resources. All Workspaces shows this server-authoritative
+state. Public Profile identity remains separate from private Personal Harbor and
+Chronicle Passport data.
 
 ## Phase 7 correction Round 2 status
 
@@ -16,4 +22,9 @@ Correction Round 2 is locally exact-source validated and ready for owner re-revi
 
 ## Phase 7 correction Round 3 status
 
-Correction Round 3 is locally exact-source validated and ready for owner re-review. It adds governed Profile imagery/cropping and identity propagation, six-digit verification, a Postmark production adapter with task-owned synthetic isolation, ordinary Player/Captain/Creator entry separated from resource authority, direct route crossfades, visible account-menu motion, and Dark defaults. Owner Re-Review Round 3 remains `PENDING_OWNER_DECISION`; the branch is not merged or deployed. Postmark is `POSTMARK_BLOCKED_EXTERNAL_CONFIGURATION`, broad Light Mode visual completion is deferred, and production MySQL plus physical assistive-technology validation remain external.
+Correction Round 3 includes governed Profile imagery/cropping and identity
+propagation, six-digit verification, a Resend production adapter with task-owned
+synthetic isolation, canonical Player/Captain/Creator entry separated from
+resource authority, direct route crossfades, visible account-menu motion, and
+Dark defaults. Owner Re-Review Round 3 remains `PENDING_OWNER_DECISION`; the
+branch is not merged or deployed.

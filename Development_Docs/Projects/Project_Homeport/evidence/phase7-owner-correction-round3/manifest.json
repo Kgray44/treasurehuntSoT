@@ -16,7 +16,7 @@
   "ownerReReviewAfterCorrectionRound1": "OWNER_REJECTED_WITH_ACTIONABLE_FINDINGS",
   "ownerReReviewAfterCorrectionRound2": "OWNER_REJECTED_WITH_ACTIONABLE_FINDINGS",
   "ownerReReviewRound3": "PENDING_OWNER_DECISION",
-  "transactionalEmail": "POSTMARK_BLOCKED_EXTERNAL_CONFIGURATION",
+  "transactionalEmail": "RESEND_SELECTED_REAL_PROVIDER",
   "branch": "codex/project-homeport-product-reality-recovery",
   "limitations": [
     "Not merged",

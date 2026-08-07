@@ -60,5 +60,6 @@ The [engineering-record archive](../Development_Docs/README.md) preserves implem
 - [Themes and appearance](user/themes-and-appearance.md)
 - [Account and workspaces](user/account-workspaces.md)
 - [Local email testing](developer/local-email-testing.md)
-- [Postmark configuration](administrator/postmark-configuration.md)
+- [Resend configuration](administrator/resend-configuration.md)
+- [Postmark compatibility configuration](administrator/postmark-configuration.md)
 - [Owner re-review package](../Development_Docs/Projects/Project_Homeport/walkthrough/phase7/correction-round3/README.md)
