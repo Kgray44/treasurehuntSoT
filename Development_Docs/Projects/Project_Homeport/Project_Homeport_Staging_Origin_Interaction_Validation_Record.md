@@ -18,7 +18,10 @@ and reverse-proxy host regression and authenticated staging desktop journeys
 pass. Physical-phone acceptance remains an explicit owner action; this record
 does not convert desktop, synthetic, or automated evidence into phone proof.
 
-Exact implementation source: `PUBLICATION_PENDING`.
+Exact implementation source: `4ee88a0a07dcb249a7c281bf484c8982b41afee2`.
+
+Exact automated authority source, including the governed runtime-adapter
+disposition: `e4c5120217cf63b46d800757dbfbd01b266fe703`.
 
 ## First divergence and root cause
 
@@ -66,6 +69,9 @@ introduced.
 | ------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------- |
 | Focused origin/bootstrap/email tests | 36/36 passed                                                                                                                                                                              | Local focused source proof                                    |
 | Dual-host Chromium regression        | Direct and exact reverse-proxy host passed hydration, bootstrap 200, click, keyboard focus/typing, `/tales` navigation, and settled overlay checks                                        | Task-owned SQLite and local proxy; not staging or phone proof |
+| Normal Homeport validation gate      | Phase 0-7 validation plus the dual-host origin regression passed                                                                                                                          | Local automated source proof; not phone proof                 |
+| Sounding Line subsystem authority    | `RELEASE_GO`; 2/2 receipts passed and clean at exact source `e4c5120`                                                                                                                     | Governed subsystem authority                                  |
+| Sounding Line mainline authority     | `RELEASE_GO`; 28/28 receipts passed and clean; zero missing, duplicate, unknown, or invalid receipts at exact source `e4c5120`                                                            | Governed mainline authority                                   |
 | Staging anonymous desktop            | HMR 101; account context 200; Home menu, Explore Chronicles, Sign In, Register, and Forgot Password interacted; hydration completed                                                       | Logged-in Cloudflare Access desktop session                   |
 | Staging authenticated desktop        | Synthetic owner reached Chronicle Passport, Personal Harbor, and All Workspaces; settled routes had authenticated state, zero `inert`, and no visible dialog                              | Task-owned Patch A fixture; no real account content           |
 | Staging proxy metadata               | Host and forwarded host were `staging.absoluterelativesystems.com`; forwarded/effective protocol was `https`; diagnostic key set contained no cookie, credential, or forwarding-IP fields | Sanitized runtime diagnostic                                  |
@@ -86,12 +92,13 @@ Runtime control commands are:
 
 ## Data and security boundary
 
-The canonical retained-worktree database began with SHA-256
+The canonical retained-worktree database began and completed automated
+validation with SHA-256
 `12dd7fdc725673207cdc6aeef0ca1d958f1d7b0bb58e578135e42080c31e8898`.
 Fixture preparation copied it into the task root, then all seeding and browser
-mutations targeted the disposable clone. Final hash parity is a publication
-gate. No Access token, cookie value, provider credential, or real private
-content belongs in this record.
+mutations targeted the disposable clone. The pre/post hashes match. No Access
+token, cookie value, provider credential, or real private content belongs in
+this record.
 
 Because raw diagnostic tooling exposed the active Access session headers during
 investigation, the owner should expire that Access session after acceptance.
