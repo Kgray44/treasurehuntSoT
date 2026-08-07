@@ -1166,18 +1166,22 @@ type ProviderDto = {
   externalApproval: string;
 };
 export function LinkedIdentities() {
-  const resource = useResource<{ identities: IdentityDto[]; adapters: ProviderDto[] }>("/api/passport/providers");
+  const resource = useResource<{
+    identities: IdentityDto[];
+    adapters: ProviderDto[];
+    unlinkReauthentication: { method: "PASSWORD" | "RECENT_SESSION"; recent: boolean };
+  }>("/api/passport/providers");
   const { csrfToken } = usePersonalHarbor();
   const [unlinkTarget, setUnlinkTarget] = useState<IdentityDto | null>(null);
+  const [connectTarget, setConnectTarget] = useState<ProviderDto | null>(null);
   const [unlinkPassword, setUnlinkPassword] = useState("");
   const [message, setMessage] = useState<{ kind: "idle" | "saving" | "saved" | "error" | "stale"; message?: string }>({
     kind: "idle",
   });
   if (resource.state.status === "loading") return <LoadingState />;
   if (resource.state.status === "error") return <ErrorState message={resource.state.message} retry={resource.reload} />;
-  const linked = resource.state.value.identities.filter(
-    (identity) => identity.status === "LINKED" && !identity.revokedAt,
-  );
+  const providerResource = resource.state.value;
+  const linked = providerResource.identities.filter((identity) => identity.status === "LINKED" && !identity.revokedAt);
   const unlink = async (event: FormEvent) => {
     event.preventDefault();
     if (!unlinkTarget) return;
@@ -1187,7 +1191,10 @@ export function LinkedIdentities() {
         await fetch("/api/passport/providers", {
           method: "DELETE",
           headers: { "content-type": "application/json", "x-csrf-token": csrfToken },
-          body: JSON.stringify({ id: unlinkTarget.id, password: unlinkPassword }),
+          body: JSON.stringify({
+            id: unlinkTarget.id,
+            ...(providerResource.unlinkReauthentication.method === "PASSWORD" ? { password: unlinkPassword } : {}),
+          }),
         }),
       );
       setMessage({ kind: "saved", message: "Identity unlinked." });
@@ -1252,21 +1259,34 @@ export function LinkedIdentities() {
             <form className="harbor-reauth" onSubmit={unlink}>
               <h3>Confirm identity unlink</h3>
               <p>
-                Re-enter your password to unlink {unlinkTarget.displayName || unlinkTarget.provider}. Voyagewright will
-                reject the change if it would remove your last usable login method.
+                {providerResource.unlinkReauthentication.method === "PASSWORD"
+                  ? `Re-enter your password to unlink ${unlinkTarget.displayName || unlinkTarget.provider}.`
+                  : providerResource.unlinkReauthentication.recent
+                    ? `Your recent provider sign-in will reauthenticate this unlink of ${unlinkTarget.displayName || unlinkTarget.provider}.`
+                    : "Sign out and sign in again with a connected provider before unlinking an identity."}{" "}
+                Voyagewright will reject the change if it would remove your last usable login method.
               </p>
-              <label>
-                Current password
-                <input
-                  type="password"
-                  autoComplete="current-password"
-                  value={unlinkPassword}
-                  onChange={(event) => setUnlinkPassword(event.target.value)}
-                  required
-                />
-              </label>
+              {providerResource.unlinkReauthentication.method === "PASSWORD" ? (
+                <label>
+                  Current password
+                  <input
+                    type="password"
+                    autoComplete="current-password"
+                    value={unlinkPassword}
+                    onChange={(event) => setUnlinkPassword(event.target.value)}
+                    required
+                  />
+                </label>
+              ) : null}
               <div className="personal-harbor__actions">
-                <button className="button button--danger" disabled={message.kind === "saving"}>
+                <button
+                  className="button button--danger"
+                  disabled={
+                    message.kind === "saving" ||
+                    (providerResource.unlinkReauthentication.method === "RECENT_SESSION" &&
+                      !providerResource.unlinkReauthentication.recent)
+                  }
+                >
                   Unlink identity
                 </button>
                 <button
@@ -1286,9 +1306,9 @@ export function LinkedIdentities() {
         </section>
         <section className="harbor-panel">
           <h2>Available connections</h2>
-          {resource.state.value.adapters.length ? (
+          {providerResource.adapters.length ? (
             <ul className="harbor-list">
-              {resource.state.value.adapters.map((provider) => (
+              {providerResource.adapters.map((provider) => (
                 <li key={provider.provider}>
                   <div>
                     <strong>{provider.name}</strong>
@@ -1301,7 +1321,7 @@ export function LinkedIdentities() {
                   <button
                     type="button"
                     className="button"
-                    onClick={() => void begin(provider)}
+                    onClick={() => setConnectTarget(provider)}
                     disabled={!provider.available || !provider.link}
                   >
                     {provider.available && provider.link ? "Connect" : "Unavailable"}
@@ -1309,6 +1329,28 @@ export function LinkedIdentities() {
                 </li>
               ))}
             </ul>
+          ) : null}
+          {connectTarget ? (
+            <section className="harbor-reauth" aria-labelledby="provider-connect-confirmation">
+              <h3 id="provider-connect-confirmation">Connect {connectTarget.name}?</h3>
+              <p>
+                Continue only if you intend to add this {connectTarget.name} identity as a sign-in method for the
+                current Voyagewright account. An identity already owned by another account will be refused.
+              </p>
+              <div className="personal-harbor__actions">
+                <button
+                  type="button"
+                  className="button button--primary"
+                  disabled={message.kind === "saving"}
+                  onClick={() => void begin(connectTarget)}
+                >
+                  Continue to {connectTarget.name}
+                </button>
+                <button type="button" className="button button--quiet" onClick={() => setConnectTarget(null)}>
+                  Cancel
+                </button>
+              </div>
+            </section>
           ) : null}
         </section>
       </div>

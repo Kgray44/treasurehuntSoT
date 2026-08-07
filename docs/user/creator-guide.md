@@ -3,7 +3,7 @@ title: Creator guide
 audience: creator
 status: current
 canonical_for: creator-guide
-last_reviewed: 2026-08-05
+last_reviewed: 2026-08-07
 ---
 
 # Creator guide
@@ -19,14 +19,14 @@ Chronicle Library, Exchange, and authorized private-content tools. Global
 Home, Explore Chronicles, and Community Harbor remain separate, and Account
 switches to other granted workspaces without a second sign-in. At narrower
 desktop and mobile widths the same destinations move into the governed drawer
-to avoid clipping. This branch behavior is not on main or deployed.
+to avoid clipping. This behavior is on main and not deployed.
 
 On the Phase 4 branch, the public Creators district and Creator Profile expose
 only allowlisted identity, badges, published work, and public collections.
 Draft, private, unlisted, quarantined, removed, archived, blocked-owner, and
 moderation evidence remain excluded. A Creator with no public work receives a
 deliberate empty state. Eligible signed-in accounts can Follow; self-follow and
-restricted relations are denied clearly. This is branch-local synthetic proof,
+restricted relations are denied clearly. This is retained local synthetic proof,
 not hosted availability, deployment, provider proof, or owner acceptance.
 
 On the Phase 5 branch, the Studio Chronicle Library is the visible source for
@@ -45,7 +45,7 @@ malware-scanner behavior remains externally unvalidated.
 Phase 7 proves the Creator voyage from Home through the canonical account,
 Studio Library, private draft state, Community Harbor, Profile, Passport, and
 final sign-out while retaining public/private boundaries. The final package is
-ready for owner walkthrough but is not merged, deployed, or owner accepted.
+ready for owner walkthrough; the source is on main but not deployed or owner accepted.
 
 ## Phase 7 correction Round 1 status
 
@@ -53,8 +53,8 @@ The owner returned walkthrough Round 1 for correction. The corrected capability 
 
 ## Phase 7 correction Round 2 status
 
-Correction Round 2 is locally exact-source validated and ready for owner re-review. Dark, Light, and System themes; truthful account/Profile/workspace state; authoritative Community saves and completion-verified reviews; expanded previews; delayed loading; motion; synthetic email boundaries; and Experience Images are included. Round 2 remains `PENDING_OWNER_DECISION`; this branch is not merged or deployed, and live providers remain external.
+Correction Round 2 is locally exact-source validated and ready for owner re-review. Dark, Light, and System themes; truthful account/Profile/workspace state; authoritative Community saves and completion-verified reviews; expanded previews; delayed loading; motion; synthetic email boundaries; and Experience Images are included. Round 2 remains `PENDING_OWNER_DECISION`; the source is on main but not deployed, and live providers remain external.
 
 ## Phase 7 correction Round 3 status
 
-Correction Round 3 includes governed Profile imagery, six-digit verification, Resend plus task-owned synthetic email, canonical workspace entry separated from resource authority, route crossfades, account-menu motion, and Dark defaults. Owner Re-Review Round 3 remains `PENDING_OWNER_DECISION`; the branch is not merged or deployed.
+Correction Round 3 includes governed Profile imagery, six-digit verification, Resend plus task-owned synthetic email, canonical workspace entry separated from resource authority, route crossfades, account-menu motion, and Dark defaults. Owner Re-Review Round 3 remains `PENDING_OWNER_DECISION`; the source is on main but not deployed.

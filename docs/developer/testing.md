@@ -19,9 +19,16 @@ external provider check is not a passing production proof. The
 a complete matrix pass; retain that distinction in validation evidence. Record
 environment limitations in engineering evidence, not in current user guides.
 
+Run `npm run test:oauth` for the isolated Google and GitHub desktop/mobile
+browser lane. It creates a task-owned temporary SQLite database, enables the
+non-production simulator, and exercises canonical account creation, returning
+sign-in, sessions, logout, password compatibility, email collision, explicit
+linking, cancellation, and invalid-state handling. It is synthetic protocol and
+product integration evidence, not a live provider authorization.
+
 ## Phase 7 correction Round 2 status
 
-Correction Round 2 is locally exact-source validated and ready for owner re-review. Dark, Light, and System themes; truthful account/Profile/workspace state; authoritative Community saves and completion-verified reviews; expanded previews; delayed loading; motion; synthetic email boundaries; and Experience Images are included. Round 2 remains `PENDING_OWNER_DECISION`; this branch is not merged or deployed, and live providers remain external.
+Correction Round 2 is locally exact-source validated and ready for owner re-review. Dark, Light, and System themes; truthful account/Profile/workspace state; authoritative Community saves and completion-verified reviews; expanded previews; delayed loading; motion; synthetic email boundaries; and Experience Images are included. Round 2 remains `PENDING_OWNER_DECISION`; the source is on main but not deployed, and live providers remain external.
 
 ## Phase 7 correction Round 3 status
 

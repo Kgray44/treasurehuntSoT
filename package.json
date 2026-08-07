@@ -52,6 +52,7 @@
     "test:compatibility": "node scripts/sounding-line/cli.mjs compatibility compare build.production",
     "language:validate": "tsx scripts/validate-user-facing-language.ts",
     "test:e2e": "playwright test",
+    "test:oauth": "playwright test --config=playwright.oauth.config.ts",
     "assets:validate": "tsx scripts/validate-animation-assets.ts",
     "features:sync": "tsx scripts/features/build-feature-catalog.ts",
     "features:validate": "tsx scripts/features/validate-feature-catalog.ts",

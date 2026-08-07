@@ -3,6 +3,7 @@ import { z } from "zod";
 import { requireWayfarerAccount } from "@/wayfarer/http";
 import {
   listProviderAdapters,
+  providerUnlinkReauthentication,
   safeLinkedIdentities,
   unlinkExternalIdentity,
   updateExternalIdentity,
@@ -17,7 +18,7 @@ const providerUpdateSchema = z
   })
   .strict();
 const providerDeleteSchema = z
-  .object({ id: z.string().min(1).max(191), password: z.string().min(1).max(256) })
+  .object({ id: z.string().min(1).max(191), password: z.string().max(256).optional() })
   .strict();
 
 const ordinaryAdapter = (adapter: ReturnType<typeof listProviderAdapters>[number]) => ({
@@ -34,9 +35,10 @@ export async function GET() {
   if (!session) return NextResponse.json({ error: "Sign in again to continue." }, { status: 401 });
   return NextResponse.json({
     adapters: listProviderAdapters()
-      .filter((adapter) => ["DISCORD", "STEAM", "MICROSOFT_ACCOUNT"].includes(adapter.provider))
+      .filter((adapter) => ["GOOGLE", "GITHUB", "DISCORD", "STEAM", "MICROSOFT_ACCOUNT"].includes(adapter.provider))
       .map(ordinaryAdapter),
     identities: await safeLinkedIdentities(session.accountId),
+    unlinkReauthentication: await providerUnlinkReauthentication(session.accountId, session.id),
   });
 }
 export async function PATCH(request: Request) {
@@ -54,7 +56,7 @@ export async function DELETE(request: Request) {
   if (!session) return NextResponse.json({ error: "A valid signed-in session is required." }, { status: 403 });
   try {
     const body = providerDeleteSchema.parse(await request.json());
-    await unlinkExternalIdentity(session.accountId, body.id, body.password);
+    await unlinkExternalIdentity(session.accountId, body.id, body.password, session.id);
     return NextResponse.json({ ok: true });
   } catch (cause) {
     return profileApiError(cause);

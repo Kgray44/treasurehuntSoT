@@ -3,7 +3,7 @@ title: Player guide
 audience: player
 status: current
 canonical_for: player-guide
-last_reviewed: 2026-08-05
+last_reviewed: 2026-08-07
 ---
 
 # Player guide
@@ -31,7 +31,7 @@ On the Phase 3 branch, Chronicle Passport is the private record of joined
 Voyages, Memories, artifacts, and saved Community items. Profile remains a
 separate public projection. Personal Harbor uses the same account session as
 the Player Library and gives every supported section a direct desktop and
-mobile route. This behavior is branch-local and not deployed.
+mobile route. This behavior is on main and not deployed.
 
 On the Phase 4 branch, Community cards and details use the same canonical
 account context. Saving an eligible public item reconciles with Personal Harbor
@@ -51,8 +51,8 @@ Phase 6 completes the Player Library, waiting room, invitation, and Journal
 surface hierarchy across desktop, tablet, mobile, narrow mobile, and effective
 200 percent. Loading, reconnecting, restriction, token, mutation, and media
 fallback states stay distinct, and the waiting-room launch presentation no
-longer obscures ordinary readiness content. This remains branch-local synthetic
-proof, not Phase 7 journey or owner-acceptance proof.
+longer obscures ordinary readiness content. This remains local synthetic proof,
+not owner-acceptance proof.
 
 Phase 7 proves the Player journey from Home through the one account sign-in,
 Player Library, seeded Voyage detail, Chronicle Passport, Community save, and
@@ -66,4 +66,4 @@ The owner returned walkthrough Round 1 for correction. The corrected capability 
 
 ## Phase 7 correction Round 2 status
 
-Correction Round 2 is locally exact-source validated and ready for owner re-review. Dark, Light, and System themes; truthful account/Profile/workspace state; authoritative Community saves and completion-verified reviews; expanded previews; delayed loading; motion; synthetic email boundaries; and Experience Images are included. Round 2 remains `PENDING_OWNER_DECISION`; this branch is not merged or deployed, and live providers remain external.
+Correction Round 2 is locally exact-source validated and ready for owner re-review. Dark, Light, and System themes; truthful account/Profile/workspace state; authoritative Community saves and completion-verified reviews; expanded previews; delayed loading; motion; synthetic email boundaries; and Experience Images are included. Round 2 remains `PENDING_OWNER_DECISION`; the source is on main but not deployed, and live providers remain external.

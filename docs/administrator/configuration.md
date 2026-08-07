@@ -18,9 +18,14 @@ Set `HOMEPORT_PUBLIC_APP_ORIGIN` to the exact public HTTP(S) origin so account
 links do not inherit a loopback address. Origin diagnostics are disabled unless
 `HOMEPORT_ORIGIN_DIAGNOSTICS=1` and are unavailable in production.
 
+Google and GitHub application OAuth require separate server-only credentials
+and exact callbacks. Follow the [OAuth configuration guide](oauth-configuration.md);
+never place client secrets in `.env.example`, a `NEXT_PUBLIC_` variable, or a
+committed environment file.
+
 ## Phase 7 correction Round 3 status
 
 Correction Round 3 uses Resend as the selected real transactional-email
 provider and retains a task-owned synthetic adapter for isolated validation.
 Follow the [Resend configuration guide](resend-configuration.md). Owner Re-Review
-Round 3 remains `PENDING_OWNER_DECISION`; the branch is not merged or deployed.
+Round 3 remains `PENDING_OWNER_DECISION`; the source is on main but not deployed.

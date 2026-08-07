@@ -18,6 +18,7 @@ type Props = {
     email?: string;
     delivery?: string;
     action?: string;
+    provider?: string;
   };
   initialCsrf?: string;
   maskedEmail?: string;
@@ -48,6 +49,12 @@ export function AccountFlow({ mode, query, initialCsrf = "", maskedEmail }: Prop
   const [changingVerificationEmail, setChangingVerificationEmail] = useState(query?.action === "change");
   const [replacementEmail, setReplacementEmail] = useState("");
   const [sessions, setSessions] = useState<Array<{ id: string; deviceLabel?: string; current: boolean }>>([]);
+  const [oauthProviders, setOauthProviders] = useState<
+    Array<{ provider: "GOOGLE" | "GITHUB"; name: string; available: boolean; status: string }>
+  >([
+    { provider: "GOOGLE", name: "Google", available: false, status: "CHECKING" },
+    { provider: "GITHUB", name: "GitHub", available: false, status: "CHECKING" },
+  ]);
   const [values, setValues] = useState<Record<string, string>>(() => {
     const initialValues: Record<string, string> = {};
     if (mode === "sign-in" && query?.email) initialValues.login = query.email;
@@ -158,6 +165,20 @@ export function AccountFlow({ mode, query, initialCsrf = "", maskedEmail }: Prop
       setBusy(false);
     }
   }
+
+  useEffect(() => {
+    if (mode !== "register" && mode !== "sign-in") return;
+    let active = true;
+    fetch("/api/auth/providers", { cache: "no-store" })
+      .then((response) => (response.ok ? response.json() : Promise.reject(new Error("provider inventory unavailable"))))
+      .then((body: { providers?: typeof oauthProviders }) => {
+        if (active && body.providers) setOauthProviders(body.providers);
+      })
+      .catch(() => undefined);
+    return () => {
+      active = false;
+    };
+  }, [mode]);
 
   useEffect(() => {
     if (mode !== "security") return;
@@ -342,11 +363,25 @@ export function AccountFlow({ mode, query, initialCsrf = "", maskedEmail }: Prop
           <p className="account-flow-notice" role="status">
             {reason === "account-exists"
               ? "An account already uses this email address. Sign in instead."
-              : reason === "expired"
-                ? "Your session expired. Sign in again; no Voyage progress has changed."
-                : reason === "revoked" || reason === "invalid"
-                  ? "That session ended. Sign in again to continue."
-                  : "Sign in to continue."}
+              : reason === "oauth-email-collision"
+                ? "That provider email already belongs to a Voyagewright account. Sign in to that account, then connect the provider in Settings."
+                : reason === "oauth-cancelled"
+                  ? "Provider sign-in was cancelled. Your Voyagewright account was not changed."
+                  : reason === "oauth-unavailable"
+                    ? "That provider is not configured in this environment. Use another available sign-in method."
+                    : reason === "oauth-account-restricted"
+                      ? "That account cannot use provider sign-in in its current state. Use account recovery or contact support."
+                      : reason === "oauth-identity-conflict"
+                        ? "That provider identity is already connected to a different Voyagewright account."
+                        : reason === "oauth-email-required"
+                          ? "The provider did not supply a verified email address, so Voyagewright could not create an account."
+                          : reason === "oauth-invalid"
+                            ? "That provider response was invalid, expired, or already used. Start again."
+                            : reason === "expired"
+                              ? "Your session expired. Sign in again; no Voyage progress has changed."
+                              : reason === "revoked" || reason === "invalid"
+                                ? "That session ended. Sign in again to continue."
+                                : "Sign in to continue."}
           </p>
         ) : null}
         {mode === "verify" && query?.delivery === "failed" ? (
@@ -470,6 +505,40 @@ export function AccountFlow({ mode, query, initialCsrf = "", maskedEmail }: Prop
             {busy ? "Working…" : "Continue"}
           </button>
         </form>
+        {mode === "sign-in" || mode === "register" ? (
+          <section className="account-oauth" aria-labelledby="account-oauth-heading">
+            <span className="account-oauth__divider" aria-hidden="true">
+              or use a trusted provider
+            </span>
+            <h2 id="account-oauth-heading">
+              {mode === "register" ? "Create with a trusted provider" : "Continue with a trusted provider"}
+            </h2>
+            <p>
+              Voyagewright requests only identity, profile, and verified email information. Provider access tokens are
+              discarded after verification.
+            </p>
+            <div className="account-oauth__choices">
+              {oauthProviders.map((provider) => {
+                const params = new URLSearchParams();
+                if (returnTo) params.set("returnTo", returnTo);
+                const href = `/api/auth/providers/${provider.provider.toLowerCase()}/start${params.size ? `?${params}` : ""}`;
+                return provider.available ? (
+                  <a
+                    className={`account-oauth__button account-oauth__button--${provider.provider.toLowerCase()}`}
+                    href={href}
+                    key={provider.provider}
+                  >
+                    {mode === "register" ? `Create account with ${provider.name}` : `Continue with ${provider.name}`}
+                  </a>
+                ) : (
+                  <button className="account-oauth__button" disabled key={provider.provider} type="button">
+                    {provider.status === "CHECKING" ? `Checking ${provider.name}…` : `${provider.name} unavailable`}
+                  </button>
+                );
+              })}
+            </div>
+          </section>
+        ) : null}
         {mode === "sign-in" ? (
           <nav className="account-flow-nav" aria-label="Account help">
             <Link href={`/register${returnTo ? `?returnTo=${encodeURIComponent(returnTo)}` : ""}`}>Create Account</Link>{" "}

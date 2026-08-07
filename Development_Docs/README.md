@@ -6,7 +6,13 @@ Use [INDEX.md](INDEX.md) for categories and `document-index.json` for the machin
 
 ## Project Homeport
 
-[Project Homeport](Projects/Project_Homeport/README.md) governs product-reality recovery and convergence. Its Phase 0 audit establishes route, session, navigation, screen, control, journey, visual, and nonconformity truth without changing product behavior; Phases 1-7 now retain branch-local identity, shell, Personal Harbor, Community Harbor, route-reachability, complete-surface, integrated whole-voyage, and owner-walkthrough records. The owner decision remains pending. The repository-wide governing standard is [Voyagewright Global Product Governance](Governance/Voyagewright_Global_Product_Governance_Standard.md).
+[Project Homeport](Projects/Project_Homeport/README.md) governs product-reality recovery and convergence. Its Phase 0 audit establishes route, session, navigation, screen, control, journey, visual, and nonconformity truth without changing product behavior; Phases 1-7 now retain mainline identity, shell, Personal Harbor, Community Harbor, route-reachability, complete-surface, integrated whole-voyage, and owner-walkthrough records. The owner decision remains pending. The repository-wide governing standard is [Voyagewright Global Product Governance](Governance/Voyagewright_Global_Product_Governance_Standard.md).
+
+Project Homeport is now integrated on main through protected PR #9; see the
+[mainline integration record](Projects/Project_Homeport/Project_Homeport_Mainline_Integration_Record.md).
+Google and GitHub application authentication remains on its separate review
+branch with synthetic product integration complete and live-provider proof
+explicitly pending; see the [OAuth validation record](Validation/Voyagewright_Google_GitHub_OAuth_Validation_Record.md).
 
 ## Engineering-record template
 

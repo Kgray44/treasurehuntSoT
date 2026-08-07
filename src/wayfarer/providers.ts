@@ -1,6 +1,7 @@
 import { compare } from "bcryptjs";
 import { createCipheriv, createDecipheriv, createHash, createPublicKey, randomBytes, verify } from "node:crypto";
 import { db } from "@/lib/db";
+import { oauthProviderConfiguration } from "@/wayfarer/oauth";
 import { ProfileError, type Visibility, visibilityValues } from "@/wayfarer/profile";
 
 export const providerNames = [
@@ -11,6 +12,7 @@ export const providerNames = [
   "EPIC_GAMES",
   "TWITCH",
   "GOOGLE",
+  "GITHUB",
   "APPLE",
   "EA_ACCOUNT",
   "PLAYSTATION_NETWORK",
@@ -173,20 +175,39 @@ export function listProviderAdapters() {
       provider: "GOOGLE",
       name: "Google",
       identityClass: "account",
-      protocol: "OpenID Connect",
-      status: "PLANNED",
-      available: false,
-      login: false,
-      link: false,
-      publicProfile: false,
-      avatar: false,
+      protocol: "OAuth 2.0 / OpenID Connect",
+      status: "IMPLEMENTED_CONFIGURATION_REQUIRED",
+      available: oauthProviderConfiguration("GOOGLE").available,
+      login: true,
+      link: true,
+      publicProfile: true,
+      avatar: true,
       invitationDelivery: false,
       presence: false,
       friendDiscovery: false,
       tokenRefresh: false,
-      unlink: false,
-      productionAvailability: "planned",
+      unlink: true,
+      productionAvailability: "configuration-required",
       externalApproval: "Google OAuth client",
+    },
+    {
+      provider: "GITHUB",
+      name: "GitHub",
+      identityClass: "account",
+      protocol: "OAuth 2.0",
+      status: "IMPLEMENTED_CONFIGURATION_REQUIRED",
+      available: oauthProviderConfiguration("GITHUB").available,
+      login: true,
+      link: true,
+      publicProfile: true,
+      avatar: true,
+      invitationDelivery: false,
+      presence: false,
+      friendDiscovery: false,
+      tokenRefresh: false,
+      unlink: true,
+      productionAvailability: "configuration-required",
+      externalApproval: "GitHub OAuth App",
     },
     {
       provider: "APPLE",
@@ -469,7 +490,7 @@ type ProviderIdentity = {
 };
 type ProviderAttempt = {
   id: string;
-  accountId: string;
+  accountId: string | null;
   provider: string;
   stateHash: string;
   pkceVerifier: string;
@@ -614,12 +635,14 @@ function providerAttemptWhere(input: { accountId: string; provider: string; stat
 
 async function persistLinkedIdentity(input: { attempt: ProviderAttempt; identity: ProviderIdentity }) {
   const { attempt, identity } = input;
+  if (!attempt.accountId) throw new ProfileError("Provider link state is not bound to an account.", "FORBIDDEN");
+  const accountId = attempt.accountId;
   try {
     const linked = await db.$transaction(async (tx) => {
       const existing = await tx.externalIdentity.findUnique({
         where: { provider_providerAccountId: { provider: attempt.provider, providerAccountId: identity.accountId } },
       });
-      if (existing && existing.accountId !== attempt.accountId)
+      if (existing && existing.accountId !== accountId)
         throw new ProfileError("That provider identity is already linked to another account.", "CONFLICT");
       const data = {
         providerDisplayName: identity.displayName,
@@ -635,7 +658,7 @@ async function persistLinkedIdentity(input: { attempt: ProviderAttempt; identity
         ? await tx.externalIdentity.update({ where: { id: existing.id }, data })
         : await tx.externalIdentity.create({
             data: {
-              accountId: attempt.accountId,
+              accountId,
               provider: attempt.provider,
               providerAccountId: identity.accountId,
               ...data,
@@ -732,7 +755,27 @@ export async function updateExternalIdentity(
   });
 }
 
-export async function unlinkExternalIdentity(accountId: string, identityId: string, password: string) {
+const recentAuthenticationAgeMs = 10 * 60_000;
+
+export async function providerUnlinkReauthentication(accountId: string, sessionId: string) {
+  const [credential, recentSession] = await Promise.all([
+    db.accountCredential.findUnique({ where: { accountId }, select: { id: true } }),
+    db.accountSession.findFirst({
+      where: {
+        id: sessionId,
+        accountId,
+        sessionType: "ORDINARY",
+        revokedAt: null,
+        expiresAt: { gt: new Date() },
+        createdAt: { gt: new Date(Date.now() - recentAuthenticationAgeMs) },
+      },
+      select: { id: true },
+    }),
+  ]);
+  return { method: credential ? ("PASSWORD" as const) : ("RECENT_SESSION" as const), recent: Boolean(recentSession) };
+}
+
+export async function unlinkExternalIdentity(accountId: string, identityId: string, password = "", sessionId?: string) {
   const identities = await db.externalIdentity.findMany({ where: { accountId, status: "LINKED", revokedAt: null } });
   const target = identities.find((item) => item.id === identityId);
   if (!target) throw new ProfileError("Linked identity not found.", "NOT_FOUND");
@@ -740,14 +783,34 @@ export async function unlinkExternalIdentity(accountId: string, identityId: stri
     where: { id: accountId },
     select: {
       credential: { select: { id: true, passwordHash: true } },
-      emails: { where: { verificationState: "VERIFIED" }, select: { id: true } },
     },
   });
   const otherLogin = identities.some((item) => item.id !== identityId && item.useForLogin);
-  if (target.useForLogin && !otherLogin && !account?.credential && !account?.emails.length)
+  if (target.useForLogin && !otherLogin && !account?.credential)
     throw new ProfileError("Add another login or recovery method before unlinking this identity.", "FORBIDDEN");
-  if (!account?.credential || !(await compare(password, account.credential.passwordHash)))
-    throw new ProfileError("Reauthentication failed. Check your password and try again.", "FORBIDDEN");
+  if (account?.credential) {
+    if (!(await compare(password, account.credential.passwordHash)))
+      throw new ProfileError("Reauthentication failed. Check your password and try again.", "FORBIDDEN");
+  } else {
+    const recent = sessionId
+      ? await db.accountSession.findFirst({
+          where: {
+            id: sessionId,
+            accountId,
+            sessionType: "ORDINARY",
+            revokedAt: null,
+            expiresAt: { gt: new Date() },
+            createdAt: { gt: new Date(Date.now() - recentAuthenticationAgeMs) },
+          },
+          select: { id: true },
+        })
+      : null;
+    if (!recent)
+      throw new ProfileError(
+        "Sign out and sign in again with a connected provider before unlinking this identity.",
+        "FORBIDDEN",
+      );
+  }
   await db.externalIdentity.update({
     where: { id: identityId },
     data: { status: "REVOKED", revokedAt: new Date(), encryptedToken: null, useForLogin: false, visibility: "ONLY_ME" },

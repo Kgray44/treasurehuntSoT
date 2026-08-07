@@ -316,6 +316,91 @@ html[data-motion-level="reduced"] .platform-relic *,
   max-width: 620px;
 }
 
+.account-oauth {
+  display: grid;
+  gap: 0.75rem;
+  max-width: 520px;
+  margin-top: 1.5rem;
+  border: 1px solid rgba(70, 47, 27, 0.24);
+  border-radius: 16px;
+  padding: 1.2rem;
+  background: rgba(255, 250, 232, 0.4);
+}
+
+.account-oauth h2,
+.account-oauth p {
+  margin: 0;
+}
+
+.account-oauth h2 {
+  font-size: 1.15rem;
+}
+
+.account-oauth p {
+  color: #3a3c33;
+  line-height: 1.55;
+}
+
+.account-oauth__choices {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.65rem;
+}
+
+.account-oauth__button {
+  display: inline-flex;
+  min-height: 46px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #315f5b;
+  border-radius: 10px;
+  padding: 0.7rem 0.9rem;
+  color: #fff6e5;
+  background: #174747;
+  font-weight: 800;
+  text-align: center;
+  text-decoration: none;
+}
+
+.account-oauth__button--google {
+  border-color: #b7a882;
+  color: #342817;
+  background: #fffdf5;
+}
+
+.account-oauth__button--github {
+  border-color: #1f2328;
+  color: #fff;
+  background: #24292f;
+}
+
+.account-oauth__button:focus-visible {
+  outline: 3px solid #9b6d21;
+  outline-offset: 3px;
+}
+
+.account-oauth__button:disabled {
+  cursor: not-allowed;
+  opacity: 0.62;
+}
+
+.account-oauth__divider {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  color: #5f513c;
+  font-size: 0.78rem;
+  font-weight: 750;
+}
+
+.account-oauth__divider::before,
+.account-oauth__divider::after {
+  height: 1px;
+  flex: 1;
+  background: rgba(70, 47, 27, 0.24);
+  content: "";
+}
+
 .account-password-strength {
   display: grid;
   gap: 0.25rem;
@@ -449,6 +534,10 @@ html[data-motion-level="reduced"] .platform-relic *,
   .account-flow-actions {
     align-items: stretch;
     flex-direction: column;
+  }
+
+  .account-oauth__choices {
+    grid-template-columns: 1fr;
   }
 }
 

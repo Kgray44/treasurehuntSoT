@@ -6,8 +6,9 @@ The private **Chronicle Passport** is available at `/passport`; a safe public
 **Profile** is resolved by optional canonical handle at `/profile/[handle]`.
 Wayfarer also provides private Chronicle history and an Artifact Cabinet;
 identity, consent, providers, typed preferences, and privacy remain
-Wayfarer-owned. Discord OAuth requires deployment configuration; the local
-Discord simulator is test-only and is never external-provider proof.
+Wayfarer-owned. Google and GitHub application OAuth is complete on its review
+branch and requires server-only provider configuration. Its local simulator is
+test-only and is never live-provider proof.
 
 Production-oriented foundation and fully automated local demo for a private nautical-fantasy date-night Chronicle. All committed story material is generic development seed content; no final surprise content belongs in this public repository.
 
@@ -26,16 +27,22 @@ fork provenance.
 
 The original companion and expanded Game Master Command Center remain integrated compatibility surfaces. A shared animation director coordinates the harbor, journal, chart, artifact, gateway, and finale experiences without allowing presentation timing to outrun server truth. All committed content remains fictional development seed material.
 
-On the retained Project Homeport branch, Phases 5-7 now bind the complete page
+Project Homeport Phases 1-7 are now on main and bind the complete page
 surface to a permission-aware reachability graph, complete its critical/high
 states and responsive presentation, and prove A-through-O integrated journeys
 against one immutable synthetic fixture family. The final owner walkthrough
-package and owned local runtime are ready. Owner Decision remains
-`PENDING_OWNER_DECISION`; this branch-local evidence is not on `main`, deployed,
-owner accepted, or product accepted. Live-provider validation is limited to the
+package and owned local runtime remain available. Owner Decision remains
+`PENDING_OWNER_DECISION`; mainline integration is not deployment, owner
+acceptance, or product acceptance. Live-provider validation is limited to the
 disposable Resend registration-verification path described below.
 
-Correction Round 3 Patch A stabilizes the branch-local registration, ordinary
+The unreleased OAuth branch adds Google and GitHub sign-up, sign-in, and
+explicit linking through the same canonical Homeport account and session
+lifecycle. Isolated automated validation is complete; live provider completion
+is still external because the supplied staging callbacks target a runtime that
+does not contain this branch.
+
+Correction Round 3 Patch A stabilizes the mainline registration, ordinary
 sign-in, and page-switching paths that blocked continued owner review. Pending
 registration is atomic, duplicate fields have truthful recovery, unverified
 accounts can sign in without an email code, and generation-owned 280 ms route

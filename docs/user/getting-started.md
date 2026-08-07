@@ -3,7 +3,7 @@ title: Getting started
 audience: user
 status: current
 canonical_for: getting-started
-last_reviewed: 2026-08-06
+last_reviewed: 2026-08-07
 ---
 
 # Getting started
@@ -46,7 +46,7 @@ Use your browser zoom and assistive technology preferences; see [accessibility](
 The Project Homeport branch now applies deliberate loading, empty, error,
 permission, mutation, media-fallback, responsive, focus, and reduced-motion
 behavior across the current product surfaces. This is local synthetic evidence;
-the changes are not on `main`, deployed, or owner accepted.
+the source is on main but not deployed or owner accepted.
 
 ## Phase 7 correction Round 1 status
 
@@ -54,11 +54,11 @@ The owner returned walkthrough Round 1 for correction. The corrected capability 
 
 ## Phase 7 correction Round 2 status
 
-Correction Round 2 is locally exact-source validated and ready for owner re-review. Dark, Light, and System themes; truthful account/Profile/workspace state; authoritative Community saves and completion-verified reviews; expanded previews; delayed loading; motion; synthetic email boundaries; and Experience Images are included. Round 2 remains `PENDING_OWNER_DECISION`; this branch is not merged or deployed, and live providers remain external.
+Correction Round 2 is locally exact-source validated and ready for owner re-review. Dark, Light, and System themes; truthful account/Profile/workspace state; authoritative Community saves and completion-verified reviews; expanded previews; delayed loading; motion; synthetic email boundaries; and Experience Images are included. Round 2 remains `PENDING_OWNER_DECISION`; the source is on main but not deployed, and live providers remain external.
 
 ## Phase 7 correction Round 3 status
 
-Correction Round 3 includes governed Profile imagery, six-digit verification, Resend plus task-owned synthetic email, canonical workspace entry separated from resource authority, route crossfades, account-menu motion, and Dark defaults. Owner Re-Review Round 3 remains `PENDING_OWNER_DECISION`; the branch is not merged or deployed.
+Correction Round 3 includes governed Profile imagery, six-digit verification, Resend plus task-owned synthetic email, canonical workspace entry separated from resource authority, route crossfades, account-menu motion, and Dark defaults. Owner Re-Review Round 3 remains `PENDING_OWNER_DECISION`; the source is on main but not deployed.
 
 ## Phase 7 correction Round 3 Patch A
 

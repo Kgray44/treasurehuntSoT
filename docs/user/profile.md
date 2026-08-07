@@ -3,7 +3,7 @@ title: Profile
 audience: user
 status: current
 canonical_for: profile-guide
-last_reviewed: 2026-08-05
+last_reviewed: 2026-08-07
 ---
 
 # Profile
@@ -24,15 +24,13 @@ Profile is not Chronicle Passport. Passport is your private Voyage record;
 Profile is a deliberately shareable projection. See [Chronicle
 Passport](chronicle-passport.md) and [privacy](privacy.md).
 
-This behavior is complete on the Project Homeport Phase 3 branch, not on main
-or deployed.
+This Project Homeport Phase 3 behavior is available on main, not deployed.
 
 Phase 5 connects the public `/profile/[handle]` detail only through visible,
 allowlisted Creator/Profile source controls and gives direct entry a stable
 return. Missing, private, or blocked profiles do not become navigable merely
-because a handle is known. The reachability proof is branch-local and
-synthetic; deployment, Phase 6 completion, and owner acceptance are not
-claimed.
+because a handle is known. The retained reachability proof is local and
+synthetic; deployment and owner acceptance are not claimed.
 
 Phase 6 completes Profile hierarchy, form descriptions, media fallbacks,
 mutation pending/success/failure feedback, stale-conflict treatment, keyboard
@@ -46,8 +44,8 @@ The owner returned walkthrough Round 1 for correction. The corrected capability 
 
 ## Phase 7 correction Round 2 status
 
-Correction Round 2 is locally exact-source validated and ready for owner re-review. Dark, Light, and System themes; truthful account/Profile/workspace state; authoritative Community saves and completion-verified reviews; expanded previews; delayed loading; motion; synthetic email boundaries; and Experience Images are included. Round 2 remains `PENDING_OWNER_DECISION`; this branch is not merged or deployed, and live providers remain external.
+Correction Round 2 is locally exact-source validated and ready for owner re-review. Dark, Light, and System themes; truthful account/Profile/workspace state; authoritative Community saves and completion-verified reviews; expanded previews; delayed loading; motion; synthetic email boundaries; and Experience Images are included. Round 2 remains `PENDING_OWNER_DECISION`; the source is on main but not deployed, and live providers remain external.
 
 ## Phase 7 correction Round 3 status
 
-Correction Round 3 includes governed Profile imagery, six-digit verification, Resend plus task-owned synthetic email, canonical workspace entry separated from resource authority, route crossfades, account-menu motion, and Dark defaults. Owner Re-Review Round 3 remains `PENDING_OWNER_DECISION`; the branch is not merged or deployed.
+Correction Round 3 includes governed Profile imagery, six-digit verification, Resend plus task-owned synthetic email, canonical workspace entry separated from resource authority, route crossfades, account-menu motion, and Dark defaults. Owner Re-Review Round 3 remains `PENDING_OWNER_DECISION`; the source is on main but not deployed.

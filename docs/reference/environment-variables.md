@@ -26,12 +26,21 @@ The selected real transactional-email provider uses server-only
 `NEXT_PUBLIC_` variable. Webhook work is deferred and has no configuration
 requirement in this patch.
 
+Google and GitHub OAuth use only server-side variables:
+`VOYAGEWRIGHT_GOOGLE_CLIENT_ID`, `VOYAGEWRIGHT_GOOGLE_CLIENT_SECRET`,
+`VOYAGEWRIGHT_GOOGLE_REDIRECT_URI`, `VOYAGEWRIGHT_GITHUB_CLIENT_ID`,
+`VOYAGEWRIGHT_GITHUB_CLIENT_SECRET`, and
+`VOYAGEWRIGHT_GITHUB_REDIRECT_URI`. The configured redirect must exactly match
+the callback registered with its provider. `VOYAGEWRIGHT_OAUTH_TEST_MODE=1`
+enables the deterministic provider simulator only outside production. See the
+[OAuth configuration guide](../administrator/oauth-configuration.md).
+
 ## Phase 7 correction Round 2 status
 
-Correction Round 2 is locally exact-source validated and ready for owner re-review. Dark, Light, and System themes; truthful account/Profile/workspace state; authoritative Community saves and completion-verified reviews; expanded previews; delayed loading; motion; synthetic email boundaries; and Experience Images are included. Round 2 remains `PENDING_OWNER_DECISION`; this branch is not merged or deployed, and live providers remain external.
+Correction Round 2 is locally exact-source validated and ready for owner re-review. Dark, Light, and System themes; truthful account/Profile/workspace state; authoritative Community saves and completion-verified reviews; expanded previews; delayed loading; motion; synthetic email boundaries; and Experience Images are included. Round 2 remains `PENDING_OWNER_DECISION`; the source is on main but not deployed, and live providers remain external.
 
 ## Phase 7 correction Round 3 status
 
 Correction Round 3 includes Resend as the selected real email provider and a
 task-owned synthetic adapter for isolated validation. Owner Re-Review Round 3
-remains `PENDING_OWNER_DECISION`; the branch is not merged or deployed.
+remains `PENDING_OWNER_DECISION`; the source is on main but not deployed.

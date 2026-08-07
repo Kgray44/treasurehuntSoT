@@ -3,12 +3,29 @@ title: Linked identities
 audience: product-users
 status: current
 canonical_for: linked-identities
-last_reviewed: 2026-08-05
+last_reviewed: 2026-08-07
 ---
 
 # Linked identities
 
-Discord, Steam, and Microsoft/Xbox use one bounded provider-adapter lifecycle. Safe summaries never expose tokens. Unconfigured providers report that configuration is unavailable; local proof uses synthetic adapters only.
+Google and GitHub use the same canonical account, session, and linked-identity
+lifecycle as password authentication. You can create an account with either
+provider, return through the same provider, or sign in first and explicitly
+connect a provider from **Linked Identities**. Safe summaries never expose
+provider account IDs or tokens, and provider access tokens are discarded after
+identity verification.
+
+Voyagewright never merges accounts merely because a provider returns an email
+already used by a password account. Sign in with the existing method and then
+connect the provider deliberately. Unlinking cannot remove the last usable
+sign-in method. A provider-only account may use a recent provider-authenticated
+session for the unlink reauthentication boundary; a password account must
+confirm its password.
+
+Google and GitHub are complete on the OAuth review branch, not yet on main or deployed.
+Local automated proof uses an explicit non-production simulator and is not a
+live-provider claim. Discord, Steam, and Microsoft/Xbox remain compatibility
+provider adapters with truthful configuration-required states.
 
 ## Phase 7 correction Round 1 status
 
