@@ -3,7 +3,7 @@ title: Configuration
 audience: administrator
 status: current
 canonical_for: administrator-configuration
-last_reviewed: 2026-08-05
+last_reviewed: 2026-08-07
 ---
 
 # Configuration
@@ -11,6 +11,12 @@ last_reviewed: 2026-08-05
 Configure database connectivity, application origin, authentication, and any optional provider integrations through environment variables. Keep values in a deployment secret store; do not add them to documentation, source, screenshots, or issue reports.
 
 Before enabling a provider, confirm its storage, scanning, and recovery behavior in a non-production environment. See [environment variables](../reference/environment-variables.md), [private content](private-content.md), and [security architecture](../developer/security-architecture.md).
+
+For a non-loopback Next.js development hostname, configure only exact names in
+`HOMEPORT_ALLOWED_DEV_ORIGINS`; never use wildcards, schemes, ports, or paths.
+Set `HOMEPORT_PUBLIC_APP_ORIGIN` to the exact public HTTP(S) origin so account
+links do not inherit a loopback address. Origin diagnostics are disabled unless
+`HOMEPORT_ORIGIN_DIAGNOSTICS=1` and are unavailable in production.
 
 ## Phase 7 correction Round 3 status
 

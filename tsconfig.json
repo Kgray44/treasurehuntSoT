@@ -30,7 +30,9 @@
     ".next/dev/types/**/*.ts",
     "**/*.mts",
     ".sealed-build-phase7-owner-correction-round3-patch-a/types/**/*.ts",
-    ".sealed-build-phase7-owner-correction-round3-patch-a/dev/types/**/*.ts"
+    ".sealed-build-phase7-owner-correction-round3-patch-a/dev/types/**/*.ts",
+    ".next-homeport-origin-regression/types/**/*.ts",
+    ".next-homeport-origin-regression/dev/types/**/*.ts"
   ],
   "exclude": ["node_modules", ".sealed-build*/**"]
 }

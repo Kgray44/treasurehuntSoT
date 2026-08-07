@@ -3,7 +3,7 @@ title: Project Homeport Repository Index
 audience: product-engineering
 status: current
 canonical_for: project-homeport-repository-index
-last_reviewed: 2026-08-06
+last_reviewed: 2026-08-07
 ---
 
 # Project Homeport
@@ -32,13 +32,12 @@ reduced motion. This is local synthetic branch evidence, not `main`, deployment,
 owner acceptance, product acceptance, or Phase 7 whole-product proof.
 
 Phase 7 whole-voyage automation reached the owner walkthrough on the retained
-branch. The owner completed Round 1 and returned 44 correction findings:
-`OWNER_RETURNED_FOR_CORRECTION`. Correction Round 1 was implemented and locally
-validated, then the owner's re-review rejected it with 85 actionable findings:
-`OWNER_REJECTED_WITH_ACTIONABLE_FINDINGS`. Correction Round 2 is architecture
-frozen and implementation is pending. Its independent owner decision remains
-`PENDING_OWNER_DECISION`; neither historical automation nor the Round 2 freeze
-establishes re-review readiness, `main`, deployment, owner acceptance, or
+branch and preserved each owner correction decision. Correction Round 3 and its
+focused Patch A are implemented and published on the named branch; the staging
+origin interaction correction is desktop-validated and awaits mandatory
+physical-phone acceptance. The independent owner decision remains
+`PENDING_OWNER_DECISION`; automated readiness, staging desktop proof, and prior
+live-provider proof do not establish `main`, deployment, owner acceptance, or
 product acceptance.
 
 ## Authority
@@ -328,3 +327,12 @@ also has live disposable registration-verification proof: provider acceptance,
 owner-controlled inbox receipt, code consumption, and `ACTIVE`/`VERIFIED`
 database state. It remains `PENDING_OWNER_DECISION`, and no merge, deployment,
 or broader owner acceptance is claimed.
+
+## Staging origin interaction validation
+
+- [Staging Origin Interaction Validation Record](Project_Homeport_Staging_Origin_Interaction_Validation_Record.md)
+
+The exact-host correction restores staging hydration and ordinary interaction
+without broad origin trust. Direct and reverse-proxy automation plus anonymous
+and synthetic-authenticated staging desktop journeys pass. Physical-phone
+acceptance remains pending and cannot be inferred from those results.

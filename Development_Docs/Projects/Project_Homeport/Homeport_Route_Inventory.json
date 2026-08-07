@@ -36,11 +36,11 @@
     "sounding-line"
   ],
   "totals": {
-    "routeFiles": 276,
+    "routeFiles": 277,
     "pages": 90,
-    "services": 186,
+    "services": 187,
     "sourceDiscoveredPages": 90,
-    "sourceDiscoveredServices": 186,
+    "sourceDiscoveredServices": 187,
     "orphanedOrdinaryRoutes": 0
   },
   "routes": [
@@ -6481,6 +6481,45 @@
       "targetDisposition": "PHASE_2_GLOBAL_SHELL_OR_PHASE_5_ROUTE_REACHABILITY",
       "status": "CURRENT_STATE_AUDITED",
       "notes": "Static source census at the Phase 0 base.",
+      "phase5Implementation": {
+        "phase": "PHASE_5_CLOSE_ROUTE_AND_INFORMATION_ARCHITECTURE_GAPS",
+        "startingSha": "54372224fc9bf4b4fb42797ca58a5a224ffdb92a",
+        "architectureFreezeSha": "bbe9659cc5077c834510c3e4db77aa362e45b6fd",
+        "implementationSourceSha": "IMPLEMENTATION_SOURCE_PENDING",
+        "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
+        "sourceParityOnly": true,
+        "humanReachabilityExcluded": true
+      }
+    },
+    {
+      "routeId": "route-route-api-dev-origin-diagnostics",
+      "routePattern": "/api/dev/origin-diagnostics",
+      "implementationSource": "src/app/api/dev/origin-diagnostics/route.ts",
+      "kind": "route",
+      "classification": "API_OR_SERVICE",
+      "ownerProject": "project-homeport",
+      "productArea": "Development origin diagnostics",
+      "shellMode": "not-applicable",
+      "logicalParent": "/api/dev",
+      "currentVisibleEntries": [],
+      "currentDesktopPath": ["DIRECT_URL_ONLY"],
+      "currentMobilePath": ["DIRECT_URL_ONLY"],
+      "authenticationRequirement": "NON_PRODUCTION_EXPLICIT_ENABLEMENT",
+      "capabilityRequirements": [],
+      "returnOrBackRoute": null,
+      "emptyStateAction": "NOT_FOUND_WHEN_DISABLED",
+      "dynamicSourceRouteOrContentSource": null,
+      "compatibilityAliases": [],
+      "redirects": [],
+      "currentSupportedStates": ["SANITIZED_ORIGIN_METADATA", "NOT_FOUND"],
+      "currentJourneys": [],
+      "currentVisualEvidenceIds": [],
+      "currentMaturity": "INTERNAL_ONLY",
+      "directUrlRequired": false,
+      "orphanedOrdinaryRoute": false,
+      "targetDisposition": "STAGING_ORIGIN_DIAGNOSTIC_ONLY",
+      "status": "CURRENT_STATE_AUDITED",
+      "notes": "Non-production and explicit-enablement guarded; reports only sanitized host and protocol coherence metadata.",
       "phase5Implementation": {
         "phase": "PHASE_5_CLOSE_ROUTE_AND_INFORMATION_ARCHITECTURE_GAPS",
         "startingSha": "54372224fc9bf4b4fb42797ca58a5a224ffdb92a",
@@ -21792,16 +21831,16 @@
     "state": "IMPLEMENTED_PENDING_BROWSER_VALIDATION",
     "updatedAt": "2026-08-03T18:00:00.000Z",
     "census": {
-      "sourceCount": 283,
+      "sourceCount": 284,
       "counts": {
         "page": 90,
-        "route": 186,
+        "route": 187,
         "layout": 6,
         "not-found": 0,
         "error": 1
       },
       "humanRouteCount": 90,
-      "serviceRouteCount": 186
+      "serviceRouteCount": 187
     },
     "sourceParity": true,
     "noSchemaChange": true,

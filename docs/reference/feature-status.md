@@ -3,7 +3,7 @@ title: Feature status reference
 audience: reference
 status: current
 canonical_for: feature-status
-last_reviewed: 2026-08-06
+last_reviewed: 2026-08-07
 ---
 
 # Feature status
@@ -18,6 +18,7 @@ last_reviewed: 2026-08-06
 | Complete product surfaces and states                  | development-only       | branch validated      | Project Homeport Phase 6 completes current critical/high screens and state/responsive/accessibility evidence on the named branch; it is not on main, deployed, or owner accepted.                                                                               |
 | Integrated whole-product voyage and owner walkthrough | development-only       | walkthrough ready     | Project Homeport Phase 7 A-O journeys and final synthetic fixture are branch validated; owner decision remains pending and no merge or deployment is claimed.                                                                                                   |
 | Account access and route-transition stabilization     | development-only       | branch validated      | Patch A restores atomic registration, canonical Player/Captain/Creator session entry with resource-scoped authorization, live-validated disposable Resend registration verification, and generation-owned route transitions; owner acceptance remains external. |
+| Staging origin interaction reliability                | development-only       | desktop validated     | Exact development-origin governance restores protected staging hydration and interactions; direct/reverse-proxy automation and staging desktop journeys pass, while mandatory physical-phone acceptance remains pending.                                        |
 | Identity, Passport, history, and artifacts            | available              | integration validated | Wayfarer Phases 3 and 4 are on main; live identity providers remain external validation pending.                                                                                                                                                                |
 | Player and Captain experience                         | available              | integration validated | Libraries, invitations, journal, Story routes, and role-aware navigation are on main.                                                                                                                                                                           |
 | Creator Studio                                        | available              | focused validated     | Authored material and immutable publishing are implemented; broad browser proof is governed separately.                                                                                                                                                         |
@@ -46,5 +47,8 @@ crossfades, visible account-menu motion, and Dark defaults. Owner Re-Review Roun
 
 ## Phase 7 correction Round 3 Patch A status
 
-Patch A remains on its named branch and under focused validation. It is not on
-`main` or deployed, and Round 3 remains `PENDING_OWNER_DECISION`.
+Patch A is published on its named branch and locally exact-source validated. A
+later protected-staging origin correction passes anonymous and
+synthetic-authenticated desktop journeys but still requires the owner's
+physical-phone run. It is not on `main` or deployed, and Round 3 remains
+`PENDING_OWNER_DECISION`.

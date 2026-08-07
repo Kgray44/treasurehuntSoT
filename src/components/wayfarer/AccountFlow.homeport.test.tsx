@@ -27,6 +27,14 @@ describe("Homeport account lifecycle", () => {
     expect(screen.getByRole("link", { name: "Forgot Password" })).toHaveAttribute("href", "/forgot-password");
   });
 
+  it("keeps anonymous sign-in controls interactive while account context is still loading", () => {
+    currentUser.state = { status: "loading", authenticated: false };
+    render(<AccountFlow mode="sign-in" />);
+    expect(screen.getByLabelText("Email or legacy Player name")).toBeEnabled();
+    expect(screen.getByLabelText("Password")).toBeEnabled();
+    expect(screen.getByRole("button", { name: "Continue" })).toBeEnabled();
+  });
+
   it("homeport.registration.reachable keeps canonical sign-in adjacent to registration", () => {
     render(<AccountFlow mode="register" />);
     expect(screen.getByRole("heading", { name: "Create your account" })).toBeInTheDocument();

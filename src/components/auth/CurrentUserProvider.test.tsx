@@ -77,6 +77,26 @@ describe("CurrentUserProvider", () => {
     expect(sessionStorage.getItem("wayfarer-csrf")).toBeNull();
   });
 
+  it("publishes non-production hydration and bootstrap state without identity data", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi
+        .fn()
+        .mockResolvedValue(
+          response({ contextVersion: "homeport.current-user.v1", status: "anonymous", authenticated: false }),
+        ),
+    );
+    render(
+      <CurrentUserProvider>
+        <Probe />
+      </CurrentUserProvider>,
+    );
+    expect(document.documentElement).toHaveAttribute("data-homeport-hydration", "complete");
+    expect(await screen.findByText("anonymous")).toBeInTheDocument();
+    expect(document.documentElement).toHaveAttribute("data-homeport-current-user-state", "anonymous");
+    expect(document.documentElement.outerHTML).not.toMatch(/account-1|csrf-client-value|session-1/u);
+  });
+
   it("homeport.signout.multitab broadcasts only a versioned invalidation event", async () => {
     vi.stubGlobal("fetch", vi.fn().mockResolvedValue(response(authenticated)));
     render(

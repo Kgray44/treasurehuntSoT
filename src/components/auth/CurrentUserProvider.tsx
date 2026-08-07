@@ -10,6 +10,7 @@ import {
 
 const channelName = "voyagewright-current-user";
 const invalidationMessage = { type: "current-user-invalidated", version: 1 } as const;
+const currentUserRequestTimeoutMs = 8_000;
 
 type CurrentUserValue = {
   state: CurrentUserClientState;
@@ -47,8 +48,14 @@ export function CurrentUserProvider({ children }: { children: React.ReactNode })
 
   const refresh = useCallback(async () => {
     const generation = ++requestGeneration.current;
+    const controller = new AbortController();
+    const timeout = window.setTimeout(() => controller.abort(), currentUserRequestTimeoutMs);
     try {
-      const response = await fetch("/api/auth/context", { cache: "no-store", credentials: "same-origin" });
+      const response = await fetch("/api/auth/context", {
+        cache: "no-store",
+        credentials: "same-origin",
+        signal: controller.signal,
+      });
       const body: unknown = await response.json().catch(() => null);
       const next = isCurrentUserContext(body) ? body : unavailableContext();
       if (generation === requestGeneration.current) {
@@ -66,6 +73,8 @@ export function CurrentUserProvider({ children }: { children: React.ReactNode })
         lastRefreshAt.current = Date.now();
       }
       return next;
+    } finally {
+      window.clearTimeout(timeout);
     }
   }, []);
 
@@ -75,6 +84,7 @@ export function CurrentUserProvider({ children }: { children: React.ReactNode })
   }, [refresh]);
 
   useEffect(() => {
+    if (process.env.NODE_ENV !== "production") document.documentElement.dataset.homeportHydration = "complete";
     const initialRefresh = window.setTimeout(() => void refresh(), 0);
     const refetchOnFocus = () => {
       if (Date.now() - lastRefreshAt.current >= 1_000) void refresh();
@@ -97,8 +107,17 @@ export function CurrentUserProvider({ children }: { children: React.ReactNode })
       document.removeEventListener("visibilitychange", visible);
       channel.current?.close();
       channel.current = null;
+      if (process.env.NODE_ENV !== "production") delete document.documentElement.dataset.homeportHydration;
     };
   }, [refresh]);
+
+  useEffect(() => {
+    if (process.env.NODE_ENV === "production") return;
+    document.documentElement.dataset.homeportCurrentUserState = state.status;
+    return () => {
+      delete document.documentElement.dataset.homeportCurrentUserState;
+    };
+  }, [state.status]);
 
   return (
     <CurrentUserReactContext.Provider value={{ state, refresh, invalidate }}>

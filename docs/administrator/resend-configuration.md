@@ -3,7 +3,7 @@ title: Resend transactional email configuration
 audience: product-engineering
 status: current
 canonical_for: resend-transactional-email-configuration
-last_reviewed: 2026-08-06
+last_reviewed: 2026-08-07
 ---
 
 # Resend transactional email configuration
@@ -20,7 +20,8 @@ place; Postmark is retained only as a dormant compatibility adapter.
 3. In the ignored server file
    `C:\Users\kkids\Documents\Codex_TreasureHunt-homeport\.env.local`, set
    `HOMEPORT_TRANSACTIONAL_EMAIL_PROVIDER=RESEND`, `RESEND_API_KEY`,
-   `RESEND_FROM_ADDRESS`, and `RESEND_FROM_NAME`.
+   `RESEND_FROM_ADDRESS`, `RESEND_FROM_NAME`, and the exact server-only
+   `HOMEPORT_PUBLIC_APP_ORIGIN`.
 4. Prove a real registration send in a disposable database, Resend API
    acceptance, receipt in an owner-controlled inbox, and successful application
    consumption of the six-digit code before claiming live verification works.

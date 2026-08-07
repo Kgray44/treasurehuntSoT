@@ -3,7 +3,7 @@ title: Current status
 audience: product
 status: current
 canonical_for: product-current-status
-last_reviewed: 2026-08-06
+last_reviewed: 2026-08-07
 ---
 
 # Current status
@@ -90,3 +90,10 @@ provider. Its disposable registration-verification path passed live provider
 submission, owner-controlled inbox receipt, application code consumption, and
 `ACTIVE`/`VERIFIED` database state. This is not on `main`, deployed, or owner
 accepted.
+
+The protected staging hostname now passes anonymous and synthetic-authenticated
+desktop interaction after an exact development-origin correction: hydration,
+account bootstrap, menus, route transitions, Sign In/Register/Forgot Password
+inputs, Chronicle Passport, Personal Harbor, and workspace navigation were
+observed. A physical-phone run is still mandatory, so staging desktop evidence
+does not establish owner acceptance or deployment.

@@ -3,7 +3,7 @@ title: Testing
 audience: developer
 status: current
 canonical_for: testing-guide
-last_reviewed: 2026-08-06
+last_reviewed: 2026-08-07
 ---
 
 # Testing
@@ -37,3 +37,9 @@ sealed production build for registration or transition validation. Temporal
 route evidence must sample generation, layers, opacity, loading, focus, and
 background-only state; screenshots alone cannot prove the absence of a delayed
 flash. Never run the reconciliation command against canonical `prisma/dev.db`.
+
+For host-origin regressions, run `npm run homeport:origin:test`. It must pass on
+both direct loopback and an exact reverse-proxy hostname and verify hydration,
+current-user bootstrap, click behavior, keyboard focus/typing, route navigation,
+settled overlays, and sanitized forwarding metadata. This automated lane does
+not replace protected-staging desktop or physical-phone acceptance.

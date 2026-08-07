@@ -3,7 +3,7 @@ title: Changelog
 audience: product-engineering
 status: current
 canonical_for: repository-changelog
-last_reviewed: 2026-08-06
+last_reviewed: 2026-08-07
 ---
 
 # Changelog
@@ -11,6 +11,13 @@ last_reviewed: 2026-08-06
 ## Unreleased
 
 ### Changed
+
+- Restored Project Homeport interaction through the protected staging origin
+  with exact development-host governance, bounded current-user bootstrap,
+  operable authentication inputs during bootstrap, a server-only public account
+  link origin, sanitized opt-in diagnostics, and an owned synthetic staging
+  runtime. Direct/reverse-proxy automation and staging desktop journeys pass;
+  physical-phone and owner acceptance remain pending.
 
 - Stabilized Project Homeport Correction Round 3 account access and route
   transitions on the named branch: pending registration is atomic, ordinary
@@ -34,6 +41,12 @@ last_reviewed: 2026-08-06
 - Reconciled current-main documentation, Ledgerlight records, and the generated Feature Catalog after the Phase 3-4, Wayfarer, Sealed Hold, Harborlight, and True North convergence.
 
 ### Validation
+
+- Added a dual-host Chromium regression for hydration, account bootstrap,
+  pointer interaction, keyboard focus/typing, navigation, settled overlays,
+  loopback-request leakage, and proxy metadata. Added protected-staging
+  anonymous and synthetic-authenticated desktop evidence without claiming
+  physical-phone proof.
 
 - Added the isolated Phase 7 A-O production-browser lane, 16 checksum/source/fixture-bound reviewed frames, failure/recovery and owner-runtime contracts, 48 registered Sounding Line contracts, and an idempotent control-plane publication. These establish local walkthrough readiness, not owner acceptance.
 - Added an isolated Phase 6 production-browser matrix, 126 checksum/source/fixture-bound screenshots, explicit alternate-state and reduced-motion evidence, 55 registered Sounding Line contracts, and byte-idempotent screen/state/responsive/accessibility artifact publication. These establish local synthetic branch evidence only.

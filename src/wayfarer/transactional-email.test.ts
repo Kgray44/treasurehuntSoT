@@ -57,7 +57,8 @@ const resendConfiguration = {
   RESEND_API_KEY: "resend-key-for-test",
   RESEND_FROM_ADDRESS: "account@example.test",
   RESEND_FROM_NAME: "Voyagewright",
-  NEXT_PUBLIC_APP_URL: "https://voyagewright.example.test",
+  HOMEPORT_PUBLIC_APP_ORIGIN: "https://voyagewright.example.test",
+  NEXT_PUBLIC_APP_URL: "http://127.0.0.1:3000",
 } as const;
 
 let syntheticRoot: string | null = null;
@@ -218,6 +219,20 @@ describe("Project Homeport transactional email providers", () => {
       "https://voyagewright.example.test/reset-password?token=raw-reset-secret",
     );
     expect(JSON.stringify(mocks.deliveryUpdate.mock.calls)).not.toContain("raw-reset-secret");
+  });
+
+  it("rejects a public application URL that is not an exact origin", async () => {
+    for (const [key, value] of Object.entries(resendConfiguration)) vi.stubEnv(key, value);
+    vi.stubEnv("HOMEPORT_PUBLIC_APP_ORIGIN", "https://voyagewright.example.test/unexpected-path");
+    await expect(
+      sendTransactionalEmail({
+        purpose: "PASSWORD_RESET",
+        email: "owner@example.test",
+        accountId: "account-1",
+        token: "raw-reset-secret",
+      }),
+    ).rejects.toMatchObject({ code: "INVALID_CONFIGURATION" });
+    expect(mocks.resendSend).not.toHaveBeenCalled();
   });
 
   it("records a sanitized provider failure without automatic duplicate sends", async () => {

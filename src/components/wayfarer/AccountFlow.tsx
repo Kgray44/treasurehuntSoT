@@ -428,7 +428,7 @@ export function AccountFlow({ mode, query, initialCsrf = "", maskedEmail }: Prop
                               : "new-password"
                             : "nickname"
                   }
-                  disabled={currentUser.status === "loading"}
+                  disabled={busy}
                   required
                 />
                 {field === "password" && mode === "register" ? (
@@ -466,7 +466,7 @@ export function AccountFlow({ mode, query, initialCsrf = "", maskedEmail }: Prop
           })}
           {(mode === "reset" || mode === "email-change") && <input name="token" type="hidden" value={queryToken} />}
           {mode === "merge" && <p>Confirming preserves your guest voyage history in this account.</p>}
-          <button className="brass-button" disabled={busy || currentUser.status === "loading"}>
+          <button className="brass-button" disabled={busy}>
             {busy ? "Working…" : "Continue"}
           </button>
         </form>

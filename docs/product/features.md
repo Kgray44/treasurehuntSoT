@@ -3,7 +3,7 @@ title: Features and subfeatures
 audience: product
 status: current
 canonical_for: product-features
-last_reviewed: 2026-08-06
+last_reviewed: 2026-08-07
 ---
 
 # Features and subfeatures
@@ -140,3 +140,13 @@ canonical account through Captain and Creator while preserving private resource
 ownership. Resend is the selected real provider, and disposable live acceptance
 proved registration delivery, inbox receipt, code consumption, and account
 activation. Round 3 owner acceptance is not claimed.
+
+## Staging origin interaction reliability
+
+**Audience:** Product owner and developers. **Availability:** corrected on the
+Project Homeport branch and desktop-validated through the protected staging
+hostname; not available on `main`. Exact development-origin governance restores
+hydration, account bootstrap, menus, navigation, and native authentication
+inputs through staging and LAN hosts without wildcard trust. Anonymous and
+synthetic-authenticated staging desktop journeys pass. Physical-phone
+acceptance and the broader Round 3 owner decision remain pending.
