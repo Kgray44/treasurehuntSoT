@@ -26,6 +26,14 @@ run("scripts/homeport/phase7-owner-correction-round3-database-clone.mjs", ["jour
   ...process.env,
   HOMEPORT_PHASE7_CORRECTION_JOURNEYS: requested,
 });
+for (const journeyId of requested) {
+  const databasePath = path.join(taskRoot, "browser-databases", `round3-journey-${journeyId}.db`);
+  run(
+    path.join("node_modules", "prisma", "build", "index.js"),
+    ["migrate", "deploy", "--schema", "prisma/schema.sqlite.prisma"],
+    { ...process.env, DATABASE_URL: `file:${databasePath.replaceAll("\\", "/")}` },
+  );
+}
 const buildDatabasePath = path.join(taskRoot, "browser-databases", `round3-journey-${requested[0]}.db`);
 const reuseBuild =
   process.env.HOMEPORT_PHASE7_CORRECTION_REUSE_BUILD === "1" &&
