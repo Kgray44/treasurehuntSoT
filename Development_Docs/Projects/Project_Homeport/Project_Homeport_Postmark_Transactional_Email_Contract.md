@@ -1,16 +1,21 @@
 ---
-title: Project Homeport Postmark Transactional Email Contract
+title: Project Homeport Postmark Transactional Email Compatibility Contract
 audience: product-engineering
-status: current
+status: historical
 canonical_for: project-homeport-postmark-transactional-email-contract
-last_reviewed: 2026-08-05
+last_reviewed: 2026-08-06
 ---
 
-# Project Homeport Postmark Transactional Email Contract
+# Project Homeport Postmark Transactional Email Compatibility Contract
+
+This contract is retained for the dormant Postmark adapter. It is superseded for
+new real-provider work by the
+[Resend contract](Project_Homeport_Resend_Transactional_Email_Contract.md).
 
 ## Scope
 
-Provider-neutral transactional delivery with a Postmark production adapter and task-owned synthetic adapter.
+Compatibility behavior for the retained Postmark adapter. Postmark is not the
+selected real provider and does not block Patch A.
 
 ## Required behavior
 

@@ -286,8 +286,14 @@ test("Journey G: Password guidance", async ({ page }) => {
 
 test("Journey H: Existing unverified account sign-in", async ({ page }) => {
   const account = handoff.accounts.PENDING_VERIFICATION;
+  const legacyPlayerName = `pending-${journeyId.toLocaleLowerCase("en-US")}`;
+  await db.playerProfile.update({
+    where: { accountId: account.accountId },
+    data: { username: legacyPlayerName },
+  });
   await page.goto("/sign-in");
-  await fillSignIn(page, account);
+  await page.getByLabel("Email or legacy Player name").fill(legacyPlayerName.toLocaleUpperCase("en-US"));
+  await page.getByLabel("Password").fill(handoff.password);
   await page.getByRole("button", { name: "Continue" }).click();
   await expect(page).toHaveURL(/\/$/u);
   await expect(page.getByRole("heading", { name: "Verify email" })).toHaveCount(0);
@@ -302,8 +308,21 @@ test("Journey H: Existing unverified account sign-in", async ({ page }) => {
   expect(headerBox).not.toBeNull();
   expect(noticeBox).not.toBeNull();
   expect(noticeBox!.y).toBeGreaterThanOrEqual(headerBox!.y + headerBox!.height - 1);
-  await capture(page, "HP-AUTH-PATCH-EV-I-UNVERIFIED-SIGNED-IN", "PENDING_VERIFICATION");
-  const menu = await accountMenu(page, account.displayName);
+  await capture(page, "HP-AUTH-PATCH-EV-I-UNVERIFIED-USERNAME-SIGNED-IN", "PENDING_VERIFICATION");
+
+  let menu = await accountMenu(page, account.displayName);
+  await menu.getByRole("button", { name: "Sign Out" }).click();
+  await expect(page.getByRole("button", { name: "Account", exact: true })).toBeVisible();
+  await page.goto("/sign-in");
+  await page.getByLabel("Email or legacy Player name").fill(account.email.toLocaleUpperCase("en-US"));
+  await page.getByLabel("Password").fill(handoff.password);
+  await page.getByRole("button", { name: "Continue" }).click();
+  await expect(page).toHaveURL(/\/$/u);
+  await expect(page.getByRole("heading", { name: "Verify email" })).toHaveCount(0);
+  await expect(page.getByRole("complementary", { name: "Email verification" })).toBeVisible();
+  await capture(page, "HP-AUTH-PATCH-EV-I-UNVERIFIED-EMAIL-SIGNED-IN", "PENDING_VERIFICATION");
+
+  menu = await accountMenu(page, account.displayName);
   await menu.getByRole("link", { name: "Personal Harbor", exact: true }).click();
   await expect(page).toHaveURL(/\/account$/u);
   await expect(page.getByRole("heading", { name: account.displayName })).toBeVisible();
@@ -323,7 +342,7 @@ test("Journey I: Verification registration", async ({ page }) => {
   await expect(page.getByRole("button", { name: displayName, exact: true })).toBeVisible();
   await expect(page.getByRole("heading", { name: "Verify email" })).toHaveCount(0);
   await capture(page, "HP-AUTH-PATCH-EV-K-AUTHENTICATED-HOME", "NEW_VERIFIED_SYNTHETIC");
-  expect(fixtureReceipt.email.providerStatus).toBe("POSTMARK_BLOCKED_EXTERNAL_CONFIGURATION");
+  expect(process.env.HOMEPORT_SYNTHETIC_EMAIL_ADAPTER).toBe("TASK_OWNED_TEST");
 });
 
 test("Journey J: Interrupted navigation", async ({ page }) => {
@@ -462,6 +481,14 @@ test("Journey M: Reduced motion", async ({ page }) => {
 test("Journey N: Owner blocking regression", async ({ page }) => {
   const account = handoff.accounts.SERA_OWNER;
   await signIn(page, account);
+  const initialContext = await currentUserContext(page);
+  expect(initialContext).toMatchObject({
+    status: "authenticated",
+    user: { accountId: "hp7c-account-full-capability" },
+    capabilities: { canUsePlayer: true, canUseCaptain: true, canUseCreator: true },
+  });
+  const accountId = initialContext.user.accountId;
+  const sessionId = initialContext.session.id;
   let menu = await accountMenu(page, account.displayName);
   await menu.getByRole("link", { name: "Personal Harbor", exact: true }).click();
   await expect(page).toHaveURL(/\/account$/u);
@@ -477,21 +504,93 @@ test("Journey N: Owner blocking regression", async ({ page }) => {
   }
   await capture(page, "HP-AUTH-PATCH-EV-M-OWNER-ACCESS-RESTORED", "SERA_OWNER");
 
-  for (const [workspace, destination] of [
-    ["Player", "/player/library"],
-    ["Captain", "/captain/library"],
-    ["Creator", "/studio/library"],
-  ] as const) {
-    await page.getByRole("link", { name: `Enter ${workspace}` }).click();
-    await expect(page).toHaveURL(new RegExp(`${escapeRegex(destination)}$`, "u"));
-    await expect(page.locator("main:visible").last()).toBeVisible();
-    await expect(page.getByText(/Permission required|Sign in to continue/u)).toHaveCount(0);
-    if (workspace !== "Creator") {
-      menu = await accountMenu(page, account.displayName);
-      await menu.getByRole("link", { name: "All Workspaces", exact: true }).click();
-      await expect(page.getByRole("heading", { name: "All Workspaces" })).toBeVisible();
-    }
+  await page.getByRole("link", { name: "Enter Player" }).click();
+  await expect(page).toHaveURL(/\/player\/library$/u);
+  await expect(page.getByText(/Permission required|Sign in to continue/u)).toHaveCount(0);
+
+  menu = await accountMenu(page, account.displayName);
+  await menu.getByRole("link", { name: "All Workspaces", exact: true }).click();
+  await page.getByRole("link", { name: "Enter Captain" }).click();
+  await expect(page).toHaveURL(/\/captain\/library$/u);
+  await expect(page.getByRole("heading", { name: "Captain's Console" })).toBeVisible();
+  await expect(page.getByText(/sign in as Captain|Captain sign-in required/u)).toHaveCount(0);
+  await expect(page.getByRole("heading", { name: "No Captain Voyages yet" })).toBeVisible();
+  await page.getByRole("button", { name: "Invitations", exact: false }).click();
+  await expect(page.getByRole("heading", { name: "No Crew invitations yet" })).toBeVisible();
+
+  await page.getByRole("button", { name: "Create a Voyage" }).first().click();
+  await expect(page.getByRole("dialog", { name: "Select Chronicle" })).toBeVisible();
+  const wizard = page.locator(".voyage-wizard");
+  await wizard.locator(".wizard-choice-grid > button").first().click();
+  await wizard.getByRole("button", { name: "Continue to Configure Voyage" }).click();
+  await wizard.getByLabel("Voyage name").fill(`Canonical Captain ${journeyId}`);
+  await wizard.getByRole("button", { name: "Continue to Add Crew" }).click();
+  await wizard.getByLabel("Crew member name").fill(`Canonical Crew ${journeyId}`);
+  await wizard.getByRole("button", { name: "Continue to Invitation access" }).click();
+  await wizard.getByRole("button", { name: "Continue to Delivery" }).click();
+  await wizard.getByRole("button", { name: "Continue to Review" }).click();
+  await wizard.getByRole("button", { name: "Create Voyage and invitations" }).click();
+  await expect(wizard.getByRole("heading", { name: `Canonical Crew ${journeyId}` })).toBeVisible();
+  await wizard.getByRole("button", { name: "Done" }).click();
+  await page.getByRole("button", { name: "Invitations", exact: false }).click();
+  await expect(page.getByRole("table", { name: "Crew invitations for Voyages" })).toBeVisible();
+  await page.getByRole("button", { name: "Extend" }).first().click();
+  await expect(page.getByText(/invitation .* was extended/u)).toBeVisible();
+
+  const ownedVoyage = await db.taleSession.findFirstOrThrow({
+    where: { captainAccountId: accountId, voyageName: `Canonical Captain ${journeyId}` },
+    select: { id: true, captainAccountId: true },
+  });
+  expect(ownedVoyage.captainAccountId).toBe(accountId);
+  const foreignVoyage = await db.taleSession.findFirst({
+    where: { previewMode: false, captainAccountId: { not: null }, NOT: { captainAccountId: accountId } },
+    select: { id: true },
+  });
+  if (foreignVoyage) {
+    const status = await page.evaluate(
+      async (id) => (await fetch(`/api/captain/sessions/${id}`)).status,
+      foreignVoyage.id,
+    );
+    expect(status).toBe(403);
   }
+
+  menu = await accountMenu(page, account.displayName);
+  await menu.getByRole("link", { name: "All Workspaces", exact: true }).click();
+  await page.getByRole("link", { name: "Enter Creator" }).click();
+  await expect(page).toHaveURL(/\/studio\/library$/u);
+  await expect(page.getByText(/sign in as Creator|Creator sign-in required/u)).toHaveCount(0);
+  await expect(page.getByRole("heading", { name: "No Chronicles yet" })).toBeVisible();
+  await page.getByRole("link", { name: "Create Chronicle" }).first().click();
+  await expect(page).toHaveURL(/\/studio\/tales\/new$/u);
+  const chronicleTitle = `Canonical Creator ${journeyId}`;
+  await page.getByLabel("Title", { exact: true }).fill(chronicleTitle);
+  await page.getByRole("button", { name: "Create and open Chronicle" }).click();
+  await expect(page).toHaveURL(/\/studio\/tales\/[a-z0-9-]+$/u);
+  await expect(page.getByText(chronicleTitle, { exact: true }).first()).toBeVisible();
+  const ownedChronicle = await db.chronicle.findFirstOrThrow({
+    where: { title: chronicleTitle },
+    select: { id: true, creatorAccountId: true },
+  });
+  expect(ownedChronicle.creatorAccountId).toBe(accountId);
+  const foreignChronicle = await db.chronicle.findFirstOrThrow({
+    where: { NOT: { id: ownedChronicle.id }, creatorAccountId: { not: accountId } },
+    select: { id: true },
+  });
+  expect(await page.evaluate(async (id) => (await fetch(`/api/studio/tales/${id}`)).status, foreignChronicle.id)).toBe(
+    404,
+  );
+
+  menu = await accountMenu(page, account.displayName);
+  await menu.getByRole("link", { name: "All Workspaces", exact: true }).click();
+  await page.getByRole("link", { name: "Enter Captain" }).click();
+  await expect(page.getByText(`Canonical Captain ${journeyId}`, { exact: true })).toBeVisible();
+  const finalContext = await currentUserContext(page);
+  expect(finalContext.user.accountId).toBe(accountId);
+  expect(finalContext.session.id).toBe(sessionId);
+  expect(finalContext.capabilities).toMatchObject({ canUsePlayer: true, canUseCaptain: true, canUseCreator: true });
+  const cookies = await page.context().cookies();
+  expect(cookies.filter((cookie) => cookie.name === "wayfarer_account")).toHaveLength(1);
+  expect(cookies.some((cookie) => ["forever_gm", "chronicle_player"].includes(cookie.name))).toBe(false);
 });
 
 async function begin(page: Page) {
@@ -527,6 +626,19 @@ async function signIn(page: Page, account: Alias) {
   await fillSignIn(page, account);
   await page.getByRole("button", { name: "Continue" }).click();
   await expect(page.getByRole("button", { name: account.displayName, exact: true })).toBeVisible();
+}
+
+async function currentUserContext(page: Page) {
+  return page.evaluate(async () => {
+    const response = await fetch("/api/auth/context", { cache: "no-store" });
+    if (!response.ok) throw new Error(`Account context failed with ${response.status}.`);
+    return response.json();
+  }) as Promise<{
+    status: string;
+    user: { accountId: string };
+    session: { id: string };
+    capabilities: { canUsePlayer: boolean; canUseCaptain: boolean; canUseCreator: boolean };
+  }>;
 }
 
 async function paste(locator: Locator, value: string) {
@@ -797,10 +909,6 @@ async function capture(page: Page, evidenceId: string, accountAlias: string) {
 
 function uniqueEmail(prefix: string) {
   return `${prefix}-${journeyId.toLocaleLowerCase("en-US")}@example.test`;
-}
-
-function escapeRegex(value: string) {
-  return value.replace(/[.*+?^${}()|[\]\\]/gu, "\\$&");
 }
 
 function required(name: string) {

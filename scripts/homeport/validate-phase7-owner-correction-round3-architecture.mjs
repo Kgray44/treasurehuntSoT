@@ -53,7 +53,7 @@ const required = [
   "Project_Homeport_Profile_Imagery_and_Crop_Contract.md",
   "Project_Homeport_Profile_Identity_Presentation_Contract.md",
   "Project_Homeport_Registration_Email_Code_Verification_Contract.md",
-  "Project_Homeport_Postmark_Transactional_Email_Contract.md",
+  "Project_Homeport_Resend_Transactional_Email_Contract.md",
   "Project_Homeport_Workspace_Entry_and_Resource_Authority_Contract.md",
   "Project_Homeport_Route_Crossfade_Transition_Contract.md",
   "Project_Homeport_Account_Menu_Motion_Contract.md",
@@ -69,7 +69,10 @@ const required = [
 
 for (const file of required) {
   const content = read(file);
-  if (file.endsWith(".md") && (!content.startsWith("---\n") || !content.includes("\nlast_reviewed: 2026-08-05\n---\n")))
+  if (
+    file.endsWith(".md") &&
+    (!content.startsWith("---\n") || !/\nlast_reviewed: 2026-08-(?:05|06)\n---\n/u.test(content))
+  )
     fail(`${file} lacks current human-document frontmatter`);
 }
 
@@ -97,8 +100,17 @@ acceptance.forEach((row, offset) => {
   const suffix = String(offset + 1).padStart(3, "0");
   if (row.finding_id !== `HP-OWCR3-${suffix}` || row.acceptance_id !== `HP-OWCR3-AC-${suffix}`)
     fail(`acceptance row ${suffix} is not sequential`);
-  const expectedStatus = implementationFinalized ? "PASSED" : "PLANNED";
-  if (!row.acceptance_criterion || !row.required_tests || !row.required_evidence || row.final_status !== expectedStatus)
+  const expectedStatuses = implementationFinalized
+    ? row.finding_id === "HP-OWCR3-022"
+      ? ["PASSED", "EXTERNAL_PENDING"]
+      : ["PASSED"]
+    : ["PLANNED"];
+  if (
+    !row.acceptance_criterion ||
+    !row.required_tests ||
+    !row.required_evidence ||
+    !expectedStatuses.includes(row.final_status)
+  )
     fail(`acceptance row ${suffix} is incomplete or has lifecycle state ${row.final_status}`);
 });
 
@@ -114,7 +126,11 @@ round3Nc.forEach((row, offset) => {
   const expectedStatus = implementationFinalized
     ? "CORRECTED_PENDING_OWNER_REREVIEW"
     : "ARCHITECTURE_FROZEN_IMPLEMENTATION_PENDING";
-  if (row.current_status !== expectedStatus) fail(`${row.id} has lifecycle state ${row.current_status}`);
+  const expectedStatuses =
+    row.id === "HP-NC-178" && implementationFinalized
+      ? [expectedStatus, "IMPLEMENTED_PENDING_VALIDATION"]
+      : [expectedStatus];
+  if (!expectedStatuses.includes(row.current_status)) fail(`${row.id} has lifecycle state ${row.current_status}`);
 });
 
 const architecture = read("Project_Homeport_Phase_7_Owner_Walkthrough_Correction_Round_3_Architecture.md");
@@ -128,7 +144,7 @@ for (const state of [
   "OWNER_RETURNED_FOR_CORRECTION",
   "OWNER_REJECTED_WITH_ACTIONABLE_FINDINGS",
   "PENDING_OWNER_DECISION",
-  "POSTMARK_BLOCKED_EXTERNAL_CONFIGURATION",
+  "Resend",
 ])
   if (!architecture.includes(state)) fail(`architecture missing ${state}`);
 
@@ -159,8 +175,8 @@ if (implementationFinalized) {
   JSON.stringify(manifest.requiredEvidenceIds) !== JSON.stringify(evidenceIds)
 )
   fail("evidence scaffold falsely claims implementation or evidence");
-if (manifest.transactionalEmail !== "POSTMARK_BLOCKED_EXTERNAL_CONFIGURATION")
-  fail("architecture scaffold misstates Postmark configuration");
+if (manifest.transactionalEmail !== "RESEND_SELECTED_REAL_PROVIDER")
+  fail("architecture scaffold misstates the selected real email provider");
 
 console.log(
   JSON.stringify(

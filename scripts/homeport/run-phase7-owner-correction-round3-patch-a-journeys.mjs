@@ -7,7 +7,8 @@ const taskRoot = path.resolve(required("HOMEPORT_PHASE7_TASK_ROOT"));
 const requested = (process.env.HOMEPORT_PHASE7_PATCH_A_JOURNEYS ?? "ABCDEFGHIJKLMN").replaceAll(/[^A-N]/gu, "");
 const port = process.env.HOMEPORT_PHASE7_PATCH_A_PORT ?? "3781";
 const sourceSha = output("git", ["rev-parse", "HEAD"]);
-const distDir = ".sealed-build-phase7-owner-correction-round3-patch-a";
+const distDir = process.env.NEXT_DIST_DIR ?? ".sealed-build-phase7-owner-correction-round3-patch-a";
+const isolateFromWalkthrough = process.env.HOMEPORT_PHASE7_PATCH_A_SKIP_WALKTHROUGH_CLONE === "1";
 const fixtureVersion = "homeport-phase7-owner-correction-round3-patch-a-v1";
 const canonical = path.resolve("C:/Users/kkids/Documents/Codex_TreasureHunt/prisma/dev.db");
 
@@ -19,7 +20,8 @@ run("scripts/homeport/phase7-owner-correction-round3-patch-a-database-clone.mjs"
   ...process.env,
   HOMEPORT_PHASE7_CORRECTION_JOURNEYS: requested,
 });
-run("scripts/homeport/phase7-owner-correction-round3-patch-a-database-clone.mjs", ["walkthrough"], process.env);
+if (!isolateFromWalkthrough)
+  run("scripts/homeport/phase7-owner-correction-round3-patch-a-database-clone.mjs", ["walkthrough"], process.env);
 
 const buildDatabasePath = path.join(taskRoot, "browser-databases", `round3-journey-${requested[0]}.db`);
 if (path.resolve(buildDatabasePath) === canonical || !existsSync(buildDatabasePath))
@@ -40,7 +42,7 @@ if (!reuseBuild)
 
 for (const journeyId of requested) {
   const databasePath =
-    journeyId === "N"
+    journeyId === "N" && !isolateFromWalkthrough
       ? path.join(taskRoot, "owner-rereview-database", "homeport-phase7-owner-correction-round3-rereview.db")
       : path.join(taskRoot, "browser-databases", `round3-journey-${journeyId}.db`);
   if (path.resolve(databasePath) === canonical || !existsSync(databasePath))

@@ -220,7 +220,7 @@ This is Phase 7 correction work, not Phase 8. Independent owner history is prese
 - Owner Re-Review after Round 2: \`OWNER_REJECTED_WITH_ACTIONABLE_FINDINGS\`
 - Owner Re-Review Round 3: \`PENDING_OWNER_DECISION\`
 
-The highest automated status is \`PROJECT HOMEPORT PHASE 7 OWNER WALKTHROUGH CORRECTION ROUND 3 READY FOR OWNER RE-REVIEW\`. Automation, Codex visual review, Postmark receipts, Sounding Line, publication, or a healthy runtime cannot choose the owner decision.
+The highest automated status is \`PROJECT HOMEPORT PHASE 7 OWNER WALKTHROUGH CORRECTION ROUND 3 READY FOR OWNER RE-REVIEW\`. Automation, Codex visual review, Resend receipts, Sounding Line, publication, or a healthy runtime cannot choose the owner decision.
 
 ## Frozen source and isolation boundary
 
@@ -235,7 +235,7 @@ The highest automated status is \`PROJECT HOMEPORT PHASE 7 OWNER WALKTHROUGH COR
 | Round 3 task root | \`C:\\Users\\kkids\\AppData\\Local\\ProjectHomeport\\phase7-owner-correction-round3-019fd522-78ff-7e41-a3f4-98695fac9bde\` |
 | Task-owned ports | \`3761\`-\`3768\` |
 | Required fixture | \`${round3Fixture}\` |
-| Postmark start classification | \`POSTMARK_BLOCKED_EXTERNAL_CONFIGURATION\` |
+| Selected real email provider | Resend; synthetic adapter retained; Postmark compatibility dormant |
 
 The preserved Round 2 owner database, media, credential handoff, evidence, and runtime root are historical records and forbidden as mutation seeds. The governed Round 2 process was stopped without deleting its root. Every mutation-bearing validation uses a purpose-specific Round 3 clone. The canonical database is forbidden.
 
@@ -257,7 +257,7 @@ The existing ProfileMedia, AccountToken, AccountEmail, delivery, preference, rol
 
 ## Provider truth boundary
 
-The current host has no approved Postmark server token, verified sender, Message Stream, template aliases, or webhook credentials. Local implementation and synthetic proof therefore continue under \`POSTMARK_BLOCKED_EXTERNAL_CONFIGURATION\`. Postmark can become configured only through approved external secrets and verified provider state; only a real inbox receipt plus correlated MessageID evidence may establish \`POSTMARK_LIVE_DELIVERY_VERIFIED\`.
+Resend is the selected real provider and its credentials remain only in ignored server-local configuration. Synthetic proof remains separate. Provider acceptance alone is not inbox proof; live email verification requires a real message to arrive and its six-digit code to activate the disposable account. Resend webhook implementation and deployment are deferred.
 
 ## Architecture exit condition
 
@@ -323,23 +323,23 @@ const contracts = [
     ],
   ],
   [
-    "Project_Homeport_Postmark_Transactional_Email_Contract.md",
-    "Project Homeport Postmark Transactional Email Contract",
-    "project-homeport-postmark-transactional-email-contract",
-    "Provider-neutral transactional delivery with a Postmark production adapter and task-owned synthetic adapter.",
+    "Project_Homeport_Resend_Transactional_Email_Contract.md",
+    "Project Homeport Resend Transactional Email Contract",
+    "project-homeport-resend-transactional-email-contract",
+    "Provider-neutral transactional delivery with Resend as the selected real provider and a task-owned synthetic adapter.",
     [
       "One delivery port serves verification, password reset, email change, email-change notice, and security notice; production never silently discards a required delivery.",
-      "Postmark configuration requires server token, verified sender/name, transactional Message Stream, and approved template aliases. Typed template models exclude secrets from metadata and logs.",
-      "Successful submissions persist provider MessageID and secret-safe status for correlation. Provider failures are classified without exposing token, sender internals, recipient, code, reset token, or body.",
-      "Delivery and bounce webhooks use HTTPS in live environments, configured HTTP Basic authentication, strict payload validation, MessageID idempotency, and retry-safe processing. Postmark does not provide an HMAC webhook signature contract, so no fabricated signature check is claimed.",
+      "Resend configuration requires a server-only API key, verified sending domain/address, and sender name. Typed text and HTML models exclude secrets from metadata and logs.",
+      "Successful submissions persist the provider email ID and secret-safe status for correlation. Provider failures are classified without exposing token, sender internals, recipient, code, reset token, or body.",
+      "Resend webhook implementation and deployment are explicitly deferred. The dormant Postmark webhook endpoint is compatibility-only and does not establish Resend event processing.",
       "The synthetic adapter writes only inside HOMEPORT_PHASE7_TASK_ROOT and proves application behavior, not external delivery. Live proof requires provider submission, real inbox receipt, and correlated evidence.",
-      "Implementation follows current official Postmark documentation for [API sending](https://postmarkapp.com/developer/user-guide/send-email-with-api), [template sending](https://postmarkapp.com/developer/api/templates-api), [webhook behavior](https://postmarkapp.com/developer/webhooks/webhooks-overview), and [verified sender signatures](https://postmarkapp.com/developer/user-guide/managing-your-account/managing-sender-signatures).",
+      "Implementation follows current official Resend documentation for [sending email](https://resend.com/docs/api-reference/emails/send-email), [API keys](https://resend.com/docs/dashboard/api-keys/introduction), and [domains](https://resend.com/docs/dashboard/domains/introduction).",
     ],
     [
       "adapter contract tests",
       "synthetic outbox isolation/privacy",
-      "Postmark mocked response/error tests",
-      "webhook authentication/idempotency",
+      "Resend mocked response/error tests",
+      "Postmark compatibility regression tests; Resend webhooks deferred",
       "optional configured real-inbox verification",
     ],
   ],
@@ -445,7 +445,7 @@ Use fixture \`${round3Fixture}\`, a new immutable seed, purpose-specific browser
 
 - All 54 ledger rows, 42 architecture decisions, contract docs, screen/control/journey/catalog updates, and traceability.
 - Profile crop geometry, client preview cleanup, bytes/MIME/decode/pixel/animation validation, private original and derivative lifecycle, replacement atomicity, ownership/visibility IDOR, mobile/touch/keyboard/zoom.
-- Registration six-digit challenge state, hash/expiry/attempt/resend/replay/concurrency/rate limits, pending-to-active activation, provider-neutral delivery, synthetic isolation, Postmark response/error and authenticated idempotent webhook handling.
+- Registration six-digit challenge state, hash/expiry/attempt/resend/replay/concurrency/rate limits, pending-to-active activation, provider-neutral delivery, synthetic isolation, Resend response/error handling, and retained Postmark compatibility.
 - Dark anonymous/new-account/fixture first paint and stored-choice preservation without broad Light redesign.
 - Workspace entry versus resource authority, new-account provisioning, existing-account reconciliation, useful Captain/Creator empty states, real active-lock and false-lock cases.
 - Direct overlapping crossfade, no background-only frame, stable ProductShell, 499/500/501 ms loading integration, focus/scroll/back-forward/interruption, and reduced motion.
@@ -453,7 +453,7 @@ Use fixture \`${round3Fixture}\`, a new immutable seed, purpose-specific browser
 
 ## Journey and evidence gates
 
-Run new Round 3 journeys A-V, retained Round 2 A-W, Round 1 A-U, and original Phase 7 A-O against the exact new source. Capture all evidence IDs A-AD. Crop and motion evidence requires frame sequences or bounded video plus computed geometry/styles; a static screenshot cannot prove temporal behavior. Real email evidence is optional only when approved Postmark configuration exists and must never be inferred from synthetic output.
+Run new Round 3 journeys A-V, retained Round 2 A-W, Round 1 A-U, and original Phase 7 A-O against the exact new source. Capture all evidence IDs A-AD. Crop and motion evidence requires frame sequences or bounded video plus computed geometry/styles; a static screenshot cannot prove temporal behavior. Real email evidence requires configured Resend, provider acceptance, owner-confirmed inbox receipt, and successful code consumption; it must never be inferred from synthetic output.
 
 ## Aggregate and publication gates
 
@@ -517,7 +517,7 @@ write(
       baselineSha: round3Baseline,
       sourceSha: null,
       fixtureVersion: round3Fixture,
-      transactionalEmail: "POSTMARK_BLOCKED_EXTERNAL_CONFIGURATION",
+      transactionalEmail: "RESEND_SELECTED_REAL_PROVIDER",
       requiredEvidenceIds: evidenceIds,
       captures: [],
       ownerDecision: "PENDING_OWNER_DECISION",
@@ -536,7 +536,7 @@ upsert(
 
 **Decision date:** 2026-08-05. **Round 3 start:** \`${round3Baseline}\`. **Owner re-review after Correction Round 2:** \`OWNER_REJECTED_WITH_ACTIONABLE_FINDINGS\`. **Round 3 owner decision:** \`PENDING_OWNER_DECISION\`.
 
-The frozen [Round 3 architecture](Project_Homeport_Phase_7_Owner_Walkthrough_Correction_Round_3_Architecture.md) preserves prior Phase 1-7 authority and defines 42 decisions for Profile crop media, identity propagation, six-digit verification, provider-neutral Postmark delivery, Dark defaults, ordinary workspace entry versus resource authority, active-Chronicle truth, direct route crossfade, production account-menu motion, fixtures, migrations, exact-source evidence, Sounding Line, owner runtime, status language, and rollback.
+The frozen [Round 3 architecture](Project_Homeport_Phase_7_Owner_Walkthrough_Correction_Round_3_Architecture.md) preserves prior Phase 1-7 authority and defines 42 decisions for Profile crop media, identity propagation, six-digit verification, provider-neutral Resend delivery with dormant Postmark compatibility, Dark defaults, ordinary workspace entry versus resource authority, active-Chronicle truth, direct route crossfade, production account-menu motion, fixtures, migrations, exact-source evidence, Sounding Line, owner runtime, status language, and rollback.
 
 The architecture assigns 54 owner findings to \`HP-OWCR3-001\`-\`054\` and new nonconformities \`HP-NC-157\`-\`210\`. It establishes no implementation, live inbox delivery, migration/test result, visual acceptance, Sounding Line decision, publication, owner readiness, merge, PR, deployment, or owner acceptance.`,
 );
@@ -546,7 +546,7 @@ upsert(
   "HOMEPORT_OWNER_CORRECTION_ROUND3",
   `## Phase 7 owner correction Round 3
 
-The owner re-review after Correction Round 2 was \`OWNER_REJECTED_WITH_ACTIONABLE_FINDINGS\`. Round 3 is architecture-frozen against 54 findings; implementation and current evidence remain pending, Postmark is \`POSTMARK_BLOCKED_EXTERNAL_CONFIGURATION\`, and the owner Round 3 decision is \`PENDING_OWNER_DECISION\`.
+The owner re-review after Correction Round 2 was \`OWNER_REJECTED_WITH_ACTIONABLE_FINDINGS\`. Round 3 is architecture-frozen against 54 findings; implementation and current evidence remain pending, Resend is the selected real provider, synthetic proof remains separate, and the owner Round 3 decision is \`PENDING_OWNER_DECISION\`.
 
 - [Round 3 architecture](Project_Homeport_Phase_7_Owner_Walkthrough_Correction_Round_3_Architecture.md)
 - [Round 3 owner ledger](Project_Homeport_Phase_7_Owner_Feedback_Round_3_Ledger.csv)

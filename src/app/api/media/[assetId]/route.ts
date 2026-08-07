@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
-import { requireGmCapability } from "@/lib/security";
 import { resolveAssetVariant } from "@/chronicle/assets";
+import { requireOwnedStudioAsset } from "@/chronicle/studio-authorization";
 import { db } from "@/lib/db";
 import { authorizeTaleSessionPlayer, pendingInvitationMatches } from "@/platform/auth";
 import { playerSafeAssetIds } from "@/platform/libraries";
@@ -12,7 +12,7 @@ export async function GET(request: Request, context: { params: Promise<{ assetId
     const version = url.searchParams.get("version") ?? undefined;
     const assetId = (await context.params).assetId;
     const download = url.searchParams.get("download") === "1";
-    const creator = await requireGmCapability(download ? "MANAGE_ASSETS" : "CREATE_TALES");
+    const creator = await requireOwnedStudioAsset(assetId);
     if (!version || version.startsWith("draft:")) {
       if (!creator) return NextResponse.json({ error: "Asset not found." }, { status: 404 });
     } else if (!creator) {

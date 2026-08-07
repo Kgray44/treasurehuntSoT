@@ -1,9 +1,12 @@
 import { redirect } from "next/navigation";
 import { PlayerSafePreview } from "@/components/platform/PlayerSafePreview";
-import { requireGmCapability } from "@/lib/security";
+import { resolveCapability } from "@/homeport/current-user.server";
+import { signInHref } from "@/homeport/return-to";
 
 export const dynamic = "force-dynamic";
 export default async function Page({ params }: { params: Promise<{ playthroughId: string }> }) {
-  if (!(await requireGmCapability("CAPTAIN"))) redirect("/captain/sign-in");
-  return <PlayerSafePreview playthroughId={(await params).playthroughId} />;
+  const { playthroughId } = await params;
+  if ((await resolveCapability("captain")).status !== "allowed")
+    redirect(signInHref(`/captain/voyages/${playthroughId}/player-preview`));
+  return <PlayerSafePreview playthroughId={playthroughId} />;
 }

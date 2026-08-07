@@ -2,6 +2,7 @@ import { createHash, randomUUID } from "node:crypto";
 import { appendFileSync, existsSync, mkdirSync, writeFileSync } from "node:fs";
 import { dirname, resolve, sep } from "node:path";
 import { ServerClient } from "postmark";
+import { Resend } from "resend";
 import { db } from "@/lib/db";
 import { hashToken } from "@/lib/security";
 
@@ -29,7 +30,7 @@ export type DevelopmentDelivery = Readonly<{
   queuedAt?: string;
 }>;
 
-type DeliveryRequest = Readonly<{
+export type DeliveryRequest = Readonly<{
   purpose: TransactionalEmailPurpose;
   email: string;
   accountId: string;
@@ -40,11 +41,23 @@ type DeliveryRequest = Readonly<{
 }>;
 
 type ProviderStatus = Readonly<{
-  providerId: "SYNTHETIC_OUTBOX" | "POSTMARK";
+  providerId: "SYNTHETIC_OUTBOX" | "RESEND" | "POSTMARK";
   available: boolean;
-  classification: "SYNTHETIC_EMAIL_ONLY" | "POSTMARK_CONFIGURED" | "POSTMARK_BLOCKED_EXTERNAL_CONFIGURATION";
+  classification:
+    | "SYNTHETIC_EMAIL_ONLY"
+    | "RESEND_CONFIGURED"
+    | "RESEND_BLOCKED_EXTERNAL_CONFIGURATION"
+    | "POSTMARK_CONFIGURED"
+    | "POSTMARK_BLOCKED_EXTERNAL_CONFIGURATION";
   missing: readonly string[];
 }>;
+
+type DeliveryResult = Readonly<{ providerMessageId: string; submittedAt: Date }>;
+
+export interface TransactionalEmailProvider {
+  readonly providerId: ProviderStatus["providerId"];
+  deliver(request: DeliveryRequest, idempotencyKey: string): Promise<DeliveryResult> | DeliveryResult;
+}
 
 const developmentOutbox: DevelopmentDelivery[] = [];
 
@@ -69,7 +82,9 @@ const postmarkConfigurationKeys = [
   "POSTMARK_TEMPLATE_ALIAS_ACCOUNT_LIFECYCLE",
 ] as const;
 
-function configuredValue(key: (typeof postmarkConfigurationKeys)[number]) {
+const resendConfigurationKeys = ["RESEND_API_KEY", "RESEND_FROM_ADDRESS", "RESEND_FROM_NAME"] as const;
+
+function configuredValue(key: string) {
   const value = process.env[key]?.trim();
   return value && !/^(?:replace|example|changeme|todo|placeholder)/iu.test(value) ? value : null;
 }
@@ -79,25 +94,38 @@ function taskOwnedSyntheticConfigured() {
 }
 
 export function transactionalEmailProviderStatus(): ProviderStatus {
-  const forcePostmark = process.env.HOMEPORT_TRANSACTIONAL_EMAIL_PROVIDER === "POSTMARK";
-  if (taskOwnedSyntheticConfigured() || (process.env.NODE_ENV !== "production" && !forcePostmark))
+  const requestedProvider = process.env.HOMEPORT_TRANSACTIONAL_EMAIL_PROVIDER?.trim().toUpperCase();
+  const forcePostmark = requestedProvider === "POSTMARK";
+  const forceResend = requestedProvider === "RESEND";
+  if (taskOwnedSyntheticConfigured() || (process.env.NODE_ENV !== "production" && !forcePostmark && !forceResend))
     return { providerId: "SYNTHETIC_OUTBOX", available: true, classification: "SYNTHETIC_EMAIL_ONLY", missing: [] };
-  const missing = postmarkConfigurationKeys.filter((key) => !configuredValue(key));
+  if (forcePostmark) {
+    const missing = postmarkConfigurationKeys.filter((key) => !configuredValue(key));
+    return missing.length
+      ? {
+          providerId: "POSTMARK",
+          available: false,
+          classification: "POSTMARK_BLOCKED_EXTERNAL_CONFIGURATION",
+          missing,
+        }
+      : { providerId: "POSTMARK", available: true, classification: "POSTMARK_CONFIGURED", missing: [] };
+  }
+  const missing = resendConfigurationKeys.filter((key) => !configuredValue(key));
   return missing.length
     ? {
-        providerId: "POSTMARK",
+        providerId: "RESEND",
         available: false,
-        classification: "POSTMARK_BLOCKED_EXTERNAL_CONFIGURATION",
+        classification: "RESEND_BLOCKED_EXTERNAL_CONFIGURATION",
         missing,
       }
-    : { providerId: "POSTMARK", available: true, classification: "POSTMARK_CONFIGURED", missing: [] };
+    : { providerId: "RESEND", available: true, classification: "RESEND_CONFIGURED", missing: [] };
 }
 
 export function assertTransactionalEmailAvailable() {
   const status = transactionalEmailProviderStatus();
   if (!status.available)
     throw new TransactionalEmailError(
-      "Transactional email is unavailable until the approved Postmark configuration is complete.",
+      `Transactional email is unavailable until the approved ${status.providerId} configuration is complete.`,
       "UNAVAILABLE",
     );
   return status;
@@ -118,37 +146,44 @@ function taskOwnedOutboxPath() {
   return outboxPath;
 }
 
-function deliverSynthetic(request: DeliveryRequest) {
-  const requestedFailure = process.env.HOMEPORT_SYNTHETIC_EMAIL_FAILURE;
-  if (taskOwnedSyntheticConfigured() && requestedFailure === "VERIFY_EMAIL" && request.purpose === "VERIFY_EMAIL")
-    throw new TransactionalEmailError("Synthetic verification delivery failed as requested.", "DELIVERY_FAILED");
-  if (
-    taskOwnedSyntheticConfigured() &&
-    requestedFailure === "VERIFY_EMAIL_ONCE" &&
-    request.purpose === "VERIFY_EMAIL"
-  ) {
-    const markerPath = `${taskOwnedOutboxPath()}.verify-email-failed-once`;
-    if (!existsSync(markerPath)) {
-      mkdirSync(dirname(markerPath), { recursive: true });
-      writeFileSync(markerPath, `${new Date().toISOString()}\n`, { encoding: "utf8", mode: 0o600 });
-      throw new TransactionalEmailError("Synthetic verification delivery failed once as requested.", "DELIVERY_FAILED");
+export class SyntheticOutboxTransactionalEmailProvider implements TransactionalEmailProvider {
+  readonly providerId = "SYNTHETIC_OUTBOX" as const;
+
+  deliver(request: DeliveryRequest) {
+    const requestedFailure = process.env.HOMEPORT_SYNTHETIC_EMAIL_FAILURE;
+    if (taskOwnedSyntheticConfigured() && requestedFailure === "VERIFY_EMAIL" && request.purpose === "VERIFY_EMAIL")
+      throw new TransactionalEmailError("Synthetic verification delivery failed as requested.", "DELIVERY_FAILED");
+    if (
+      taskOwnedSyntheticConfigured() &&
+      requestedFailure === "VERIFY_EMAIL_ONCE" &&
+      request.purpose === "VERIFY_EMAIL"
+    ) {
+      const markerPath = `${taskOwnedOutboxPath()}.verify-email-failed-once`;
+      if (!existsSync(markerPath)) {
+        mkdirSync(dirname(markerPath), { recursive: true });
+        writeFileSync(markerPath, `${new Date().toISOString()}\n`, { encoding: "utf8", mode: 0o600 });
+        throw new TransactionalEmailError(
+          "Synthetic verification delivery failed once as requested.",
+          "DELIVERY_FAILED",
+        );
+      }
     }
+    const delivery: DevelopmentDelivery = {
+      purpose: request.purpose,
+      email: request.email,
+      token: request.token,
+      accountId: request.accountId,
+      detail: request.detail,
+      queuedAt: new Date().toISOString(),
+    };
+    if (process.env.NODE_ENV !== "production") developmentOutbox.push(delivery);
+    if (taskOwnedSyntheticConfigured()) {
+      const outboxPath = taskOwnedOutboxPath();
+      mkdirSync(dirname(outboxPath), { recursive: true });
+      appendFileSync(outboxPath, `${JSON.stringify(delivery)}\n`, { encoding: "utf8", mode: 0o600 });
+    }
+    return { providerMessageId: `synthetic-${randomUUID()}`, submittedAt: new Date() };
   }
-  const delivery: DevelopmentDelivery = {
-    purpose: request.purpose,
-    email: request.email,
-    token: request.token,
-    accountId: request.accountId,
-    detail: request.detail,
-    queuedAt: new Date().toISOString(),
-  };
-  if (process.env.NODE_ENV !== "production") developmentOutbox.push(delivery);
-  if (taskOwnedSyntheticConfigured()) {
-    const outboxPath = taskOwnedOutboxPath();
-    mkdirSync(dirname(outboxPath), { recursive: true });
-    appendFileSync(outboxPath, `${JSON.stringify(delivery)}\n`, { encoding: "utf8", mode: 0o600 });
-  }
-  return { providerMessageId: `synthetic-${randomUUID()}`, submittedAt: new Date() };
 }
 
 function templateAlias(purpose: TransactionalEmailPurpose) {
@@ -159,38 +194,128 @@ function templateAlias(purpose: TransactionalEmailPurpose) {
   return configuredValue("POSTMARK_TEMPLATE_ALIAS_SECURITY_NOTICE");
 }
 
-async function deliverPostmark(request: DeliveryRequest) {
-  const token = configuredValue("POSTMARK_SERVER_TOKEN");
-  const fromAddress = configuredValue("POSTMARK_FROM_ADDRESS");
-  const fromName = configuredValue("POSTMARK_FROM_NAME");
-  const messageStream = configuredValue("POSTMARK_TRANSACTIONAL_MESSAGE_STREAM");
-  const alias = templateAlias(request.purpose);
-  if (!token || !fromAddress || !fromName || !messageStream || !alias)
-    throw new TransactionalEmailError("Postmark configuration is incomplete.", "INVALID_CONFIGURATION");
-  const client = new ServerClient(token);
-  const result = await client.sendEmailWithTemplate({
-    From: `${fromName} <${fromAddress}>`,
-    To: request.email,
-    TemplateAlias: alias,
-    TemplateModel: {
-      display_name: request.displayName ?? "Voyagewright member",
-      purpose: request.purpose,
-      verification_code: request.purpose === "VERIFY_EMAIL" ? request.token : undefined,
-      action_token: request.purpose !== "VERIFY_EMAIL" ? request.token : undefined,
-      detail: request.detail,
-      expires_minutes: request.purpose === "VERIFY_EMAIL" ? 10 : undefined,
-    },
-    MessageStream: messageStream,
-    Tag: request.purpose.toLocaleLowerCase("en-US"),
-    Metadata: { account_ref: hashToken(request.accountId).slice(0, 20), purpose: request.purpose },
+export class PostmarkTransactionalEmailProvider implements TransactionalEmailProvider {
+  readonly providerId = "POSTMARK" as const;
+
+  async deliver(request: DeliveryRequest) {
+    const token = configuredValue("POSTMARK_SERVER_TOKEN");
+    const fromAddress = configuredValue("POSTMARK_FROM_ADDRESS");
+    const fromName = configuredValue("POSTMARK_FROM_NAME");
+    const messageStream = configuredValue("POSTMARK_TRANSACTIONAL_MESSAGE_STREAM");
+    const alias = templateAlias(request.purpose);
+    if (!token || !fromAddress || !fromName || !messageStream || !alias)
+      throw new TransactionalEmailError("Postmark configuration is incomplete.", "INVALID_CONFIGURATION");
+    const client = new ServerClient(token);
+    const result = await client.sendEmailWithTemplate({
+      From: `${fromName} <${fromAddress}>`,
+      To: request.email,
+      TemplateAlias: alias,
+      TemplateModel: {
+        display_name: request.displayName ?? "Voyagewright member",
+        purpose: request.purpose,
+        verification_code: request.purpose === "VERIFY_EMAIL" ? request.token : undefined,
+        action_token: request.purpose !== "VERIFY_EMAIL" ? request.token : undefined,
+        detail: request.detail,
+        expires_minutes: request.purpose === "VERIFY_EMAIL" ? 10 : undefined,
+      },
+      MessageStream: messageStream,
+      Tag: request.purpose.toLocaleLowerCase("en-US"),
+      Metadata: { account_ref: hashToken(request.accountId).slice(0, 20), purpose: request.purpose },
+    });
+    if (result.ErrorCode !== 0 || !result.MessageID)
+      throw new TransactionalEmailError("Postmark rejected the transactional message.", "DELIVERY_FAILED");
+    const submittedAt = new Date(result.SubmittedAt);
+    return {
+      providerMessageId: result.MessageID,
+      submittedAt: Number.isNaN(submittedAt.getTime()) ? new Date() : submittedAt,
+    };
+  }
+}
+
+function escapeHtml(value: string) {
+  return value.replace(/[&<>"']/gu, (character) => {
+    if (character === "&") return "&amp;";
+    if (character === "<") return "&lt;";
+    if (character === ">") return "&gt;";
+    if (character === '"') return "&quot;";
+    return "&#39;";
   });
-  if (result.ErrorCode !== 0 || !result.MessageID)
-    throw new TransactionalEmailError("Postmark rejected the transactional message.", "DELIVERY_FAILED");
-  const submittedAt = new Date(result.SubmittedAt);
-  return {
-    providerMessageId: result.MessageID,
-    submittedAt: Number.isNaN(submittedAt.getTime()) ? new Date() : submittedAt,
+}
+
+function actionUrl(purpose: "PASSWORD_RESET" | "EMAIL_CHANGE", token: string) {
+  const configured = process.env.NEXT_PUBLIC_APP_URL?.trim() || "http://localhost:3000";
+  const base = new URL(configured);
+  const path = purpose === "PASSWORD_RESET" ? "/reset-password" : "/account/email-change";
+  const url = new URL(path, base);
+  url.searchParams.set("token", token);
+  return url.toString();
+}
+
+function resendMessage(request: DeliveryRequest) {
+  const displayName = request.displayName?.trim() || "Voyagewright member";
+  const greeting = `Hello ${displayName},`;
+  const subjects: Record<TransactionalEmailPurpose, string> = {
+    VERIFY_EMAIL: "Your Voyagewright verification code",
+    PASSWORD_RESET: "Reset your Voyagewright password",
+    EMAIL_CHANGE: "Confirm your Voyagewright email change",
+    EMAIL_CHANGE_NOTICE: "Your Voyagewright email address changed",
+    PASSWORD_CHANGED_NOTICE: "Your Voyagewright password changed",
+    ACCOUNT_DEACTIVATED_NOTICE: "Your Voyagewright account was deactivated",
+    ACCOUNT_REACTIVATED_NOTICE: "Your Voyagewright account was reactivated",
+    ACCOUNT_DELETION_SCHEDULED: "Voyagewright account deletion scheduled",
+    ACCOUNT_DELETION_CANCELLED: "Voyagewright account deletion cancelled",
+    IMPORTANT_SECURITY_NOTICE: "Important Voyagewright security notice",
   };
+  let instruction = request.detail?.trim() || "Review this account notice.";
+  if (request.purpose === "VERIFY_EMAIL") {
+    if (!request.token)
+      throw new TransactionalEmailError("Verification delivery has no code.", "INVALID_CONFIGURATION");
+    instruction = `Enter this six-digit code to verify your email: ${request.token}. It expires in 10 minutes.`;
+  } else if (request.purpose === "PASSWORD_RESET" || request.purpose === "EMAIL_CHANGE") {
+    if (!request.token)
+      throw new TransactionalEmailError("Account action delivery has no token.", "INVALID_CONFIGURATION");
+    const url = actionUrl(request.purpose, request.token);
+    instruction = `${request.purpose === "PASSWORD_RESET" ? "Reset your password" : "Confirm your email change"}: ${url}`;
+  }
+  const text = `${greeting}\n\n${instruction}\n\nIf you did not request this, secure your Voyagewright account.\n\nVoyagewright`;
+  const htmlInstruction = escapeHtml(instruction).replace(/(https?:\/\/[^\s<]+)/gu, '<a href="$1">$1</a>');
+  const html = `<p>${escapeHtml(greeting)}</p><p>${htmlInstruction}</p><p>If you did not request this, secure your Voyagewright account.</p><p>Voyagewright</p>`;
+  return { subject: subjects[request.purpose], text, html };
+}
+
+export class ResendTransactionalEmailProvider implements TransactionalEmailProvider {
+  readonly providerId = "RESEND" as const;
+
+  async deliver(request: DeliveryRequest, idempotencyKey: string) {
+    const apiKey = configuredValue("RESEND_API_KEY");
+    const fromAddress = configuredValue("RESEND_FROM_ADDRESS");
+    const fromName = configuredValue("RESEND_FROM_NAME");
+    if (!apiKey || !fromAddress || !fromName)
+      throw new TransactionalEmailError("Resend configuration is incomplete.", "INVALID_CONFIGURATION");
+    const client = new Resend(apiKey);
+    const message = resendMessage(request);
+    const result = await client.emails.send(
+      {
+        from: `${fromName} <${fromAddress}>`,
+        to: request.email,
+        ...message,
+        tags: [
+          { name: "purpose", value: request.purpose.toLowerCase() },
+          { name: "account_ref", value: hashToken(request.accountId).slice(0, 20) },
+        ],
+      },
+      { idempotencyKey },
+    );
+    if (result.error || !result.data?.id)
+      throw new TransactionalEmailError("Resend rejected the transactional message.", "DELIVERY_FAILED");
+    return { providerMessageId: result.data.id, submittedAt: new Date() };
+  }
+}
+
+function providerFor(status: ProviderStatus): TransactionalEmailProvider {
+  if (status.providerId === "RESEND") return new ResendTransactionalEmailProvider();
+  if (status.providerId === "POSTMARK") return new PostmarkTransactionalEmailProvider();
+  return new SyntheticOutboxTransactionalEmailProvider();
 }
 
 function failureCode(cause: unknown) {
@@ -213,7 +338,7 @@ export async function sendTransactionalEmail(request: DeliveryRequest) {
     },
   });
   try {
-    const result = status.providerId === "POSTMARK" ? await deliverPostmark(request) : deliverSynthetic(request);
+    const result = await providerFor(status).deliver(request, receipt.id);
     return await db.transactionalEmailDelivery.update({
       where: { id: receipt.id },
       data: {

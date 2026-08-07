@@ -1,12 +1,16 @@
 ---
-title: Postmark transactional email configuration
+title: Postmark transactional email compatibility configuration
 audience: product-engineering
 status: current
 canonical_for: postmark-transactional-email-configuration
-last_reviewed: 2026-08-05
+last_reviewed: 2026-08-06
 ---
 
-# Postmark transactional email configuration
+# Postmark transactional email compatibility configuration
+
+Postmark is no longer the selected real provider. This page is retained only
+for the dormant compatibility adapter; new staging and production setup must use
+[Resend](resend-configuration.md).
 
 ## Required setup
 
@@ -19,6 +23,7 @@ last_reviewed: 2026-08-05
 
 No `NEXT_PUBLIC_` variable may contain provider configuration. Rotate any exposed credential immediately.
 
-Current Round 3 status is `POSTMARK_BLOCKED_EXTERNAL_CONFIGURATION`; no live provider submission or inbox receipt is claimed.
+Postmark configuration no longer blocks Correction Round 3 or Patch A. No new
+Postmark acceptance claim is required.
 
-These instructions describe the Round 3 branch. They do not claim mainline availability, deployment, live Postmark delivery, owner acceptance, broad Light Mode completion, production MySQL proof, or physical assistive-technology validation.
+These compatibility instructions do not make Postmark the selected provider.

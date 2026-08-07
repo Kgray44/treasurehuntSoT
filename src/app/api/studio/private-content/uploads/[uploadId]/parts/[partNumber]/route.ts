@@ -1,13 +1,12 @@
 import { NextResponse } from "next/server";
-import { requireGmCapability, verifyCsrf } from "@/lib/security";
+import { requireStudioWorkspace } from "@/chronicle/studio-authorization";
 import { PrivateContentError } from "@/private-content/core";
 import { nodeReadableFromRequest, privateUploadLimits, receivePrivateUploadPart } from "@/private-content/uploads";
 
 export const runtime = "nodejs";
 export async function PUT(request: Request, { params }: { params: Promise<{ uploadId: string; partNumber: string }> }) {
-  const session = await requireGmCapability("CREATE_TALES");
-  if (!session || !(await verifyCsrf(session)))
-    return NextResponse.json({ error: "Creator authorization is required." }, { status: 403 });
+  const session = await requireStudioWorkspace(request);
+  if (!session) return NextResponse.json({ error: "Creator authorization is required." }, { status: 403 });
   try {
     const length = request.headers.get("content-length");
     if (length && (!/^\d+$/.test(length) || Number(length) > privateUploadLimits.maxPartBytes))
@@ -19,7 +18,7 @@ export async function PUT(request: Request, { params }: { params: Promise<{ uplo
     const value = await params;
     return NextResponse.json(
       await receivePrivateUploadPart({
-        actorId: session.userId,
+        actorId: session.accountId,
         uploadId: value.uploadId,
         partNumber: Number(value.partNumber),
         expectedSha256: digest,

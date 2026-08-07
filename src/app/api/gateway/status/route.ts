@@ -24,19 +24,33 @@ export async function GET() {
           select: { legacyGameMasterId: true },
         })
       : null;
-  const staffActorId = staffActor?.legacyGameMasterId ?? (authenticated ? context.user.accountId : "");
+  const accountId = authenticated ? context.user.accountId : "";
   const [waitingPlayers, recentDraft] = await Promise.all([
     captain
       ? db.playthroughMembership.count({
           where: {
             status: "READY",
-            playthrough: { previewMode: false, OR: [{ captainId: staffActorId }, { captainId: null }] },
+            playthrough: {
+              previewMode: false,
+              OR: [
+                { captainAccountId: accountId },
+                { captainId: accountId },
+                ...(staffActor?.legacyGameMasterId ? [{ captainId: staffActor.legacyGameMasterId }] : []),
+              ],
+            },
           },
         })
       : 0,
     creator
       ? db.chronicle.findFirst({
-          where: { creatorId: staffActorId, archivedAt: null },
+          where: {
+            archivedAt: null,
+            OR: [
+              { creatorAccountId: accountId },
+              { creatorId: accountId },
+              ...(staffActor?.legacyGameMasterId ? [{ creatorId: staffActor.legacyGameMasterId }] : []),
+            ],
+          },
           orderBy: { updatedAt: "desc" },
           select: { id: true, title: true },
         })

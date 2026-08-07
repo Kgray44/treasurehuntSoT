@@ -1132,8 +1132,7 @@
         "homeport.owner-correction.round3.verification-code-security",
         "homeport.owner-correction.round3.verification-resend",
         "homeport.owner-correction.round3.email-provider-contract",
-        "homeport.owner-correction.round3.postmark-adapter",
-        "homeport.owner-correction.round3.postmark-webhooks",
+        "homeport.owner-correction.round3.resend-adapter",
         "homeport.owner-correction.round3.synthetic-email",
         "homeport.owner-correction.round3.email-live-evidence",
         "homeport.owner-correction.round3.dark-default",
@@ -1175,7 +1174,7 @@
         "homeport.auth.password-strength",
         "homeport.auth.password-confirmation",
         "homeport.auth.registration-verification",
-        "homeport.auth.postmark-delivery",
+        "homeport.auth.resend-delivery",
         "homeport.auth.partial-account-repair",
         "homeport.transition.navigation-generation",
         "homeport.transition.delayed-loading-cancel",
@@ -1185,7 +1184,8 @@
         "homeport.transition.auth-routes",
         "homeport.transition.interruption",
         "homeport.transition.back-forward",
-        "homeport.transition.reduced-motion"
+        "homeport.transition.reduced-motion",
+        "homeport.owner-correction.round3.postmark-webhooks"
       ],
       "affectedPaths": [
         "Development_Docs/Projects/Project_Homeport/**",
@@ -1641,8 +1641,7 @@
         "homeport.owner-correction.round3.verification-code-security",
         "homeport.owner-correction.round3.verification-resend",
         "homeport.owner-correction.round3.email-provider-contract",
-        "homeport.owner-correction.round3.postmark-adapter",
-        "homeport.owner-correction.round3.postmark-webhooks",
+        "homeport.owner-correction.round3.resend-adapter",
         "homeport.owner-correction.round3.synthetic-email",
         "homeport.owner-correction.round3.email-live-evidence",
         "homeport.owner-correction.round3.dark-default",
@@ -1684,7 +1683,7 @@
         "homeport.auth.password-strength",
         "homeport.auth.password-confirmation",
         "homeport.auth.registration-verification",
-        "homeport.auth.postmark-delivery",
+        "homeport.auth.resend-delivery",
         "homeport.auth.partial-account-repair",
         "homeport.transition.navigation-generation",
         "homeport.transition.delayed-loading-cancel",
@@ -1694,7 +1693,8 @@
         "homeport.transition.auth-routes",
         "homeport.transition.interruption",
         "homeport.transition.back-forward",
-        "homeport.transition.reduced-motion"
+        "homeport.transition.reduced-motion",
+        "homeport.owner-correction.round3.postmark-webhooks"
       ],
       "affectedPaths": [
         "src/components/homeport/**",
@@ -2129,8 +2129,7 @@
         "homeport.owner-correction.round3.verification-code-security",
         "homeport.owner-correction.round3.verification-resend",
         "homeport.owner-correction.round3.email-provider-contract",
-        "homeport.owner-correction.round3.postmark-adapter",
-        "homeport.owner-correction.round3.postmark-webhooks",
+        "homeport.owner-correction.round3.resend-adapter",
         "homeport.owner-correction.round3.synthetic-email",
         "homeport.owner-correction.round3.email-live-evidence",
         "homeport.owner-correction.round3.dark-default",
@@ -2172,7 +2171,7 @@
         "homeport.auth.password-strength",
         "homeport.auth.password-confirmation",
         "homeport.auth.registration-verification",
-        "homeport.auth.postmark-delivery",
+        "homeport.auth.resend-delivery",
         "homeport.auth.partial-account-repair",
         "homeport.transition.navigation-generation",
         "homeport.transition.delayed-loading-cancel",
@@ -2182,7 +2181,8 @@
         "homeport.transition.auth-routes",
         "homeport.transition.interruption",
         "homeport.transition.back-forward",
-        "homeport.transition.reduced-motion"
+        "homeport.transition.reduced-motion",
+        "homeport.owner-correction.round3.postmark-webhooks"
       ],
       "affectedPaths": [
         "tests/e2e/homeport-*.spec.ts",

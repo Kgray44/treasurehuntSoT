@@ -129,6 +129,7 @@
     "homeport:phase7:correction:round3:patch-a:fixture:prepare": "node scripts/homeport/prepare-phase7-owner-correction-round3-patch-a-fixture.mjs",
     "homeport:phase7:correction:round3:patch-a:fixture:validate": "node scripts/homeport/validate-phase7-owner-correction-round3-fixture.mjs",
     "homeport:phase7:correction:round3:patch-a:journeys": "node scripts/homeport/run-phase7-owner-correction-round3-patch-a-journeys.mjs",
+    "homeport:phase7:correction:round3:patch-a:canonical-auth:validate": "node scripts/homeport/validate-canonical-workspace-authorization.mjs",
     "homeport:phase7:correction:round3:patch-a:walkthrough:prepare": "node scripts/homeport/phase7-owner-correction-round3-patch-a-walkthrough-runtime.mjs prepare",
     "homeport:phase7:correction:round3:patch-a:walkthrough:start": "node scripts/homeport/phase7-owner-correction-round3-patch-a-walkthrough-runtime.mjs start",
     "homeport:phase7:correction:round3:patch-a:walkthrough:status": "node scripts/homeport/phase7-owner-correction-round3-patch-a-walkthrough-runtime.mjs status",
@@ -236,6 +237,7 @@
     "qrcode": "1.5.4",
     "react": "19.2.4",
     "react-dom": "19.2.4",
+    "resend": "6.18.1",
     "sharp": "0.34.5",
     "zod": "4.1.12"
   },

@@ -3374,8 +3374,7 @@
         "homeport.owner-correction.round3.verification-code-security",
         "homeport.owner-correction.round3.verification-resend",
         "homeport.owner-correction.round3.email-provider-contract",
-        "homeport.owner-correction.round3.postmark-adapter",
-        "homeport.owner-correction.round3.postmark-webhooks",
+        "homeport.owner-correction.round3.resend-adapter",
         "homeport.owner-correction.round3.synthetic-email",
         "homeport.owner-correction.round3.email-live-evidence",
         "homeport.owner-correction.round3.dark-default",
@@ -3407,7 +3406,8 @@
         "homeport.owner-correction.round3.phase7-regression",
         "homeport.owner-correction.round3.round1-regression",
         "homeport.owner-correction.round3.round2-regression",
-        "homeport.owner-correction.round3.artifact-idempotency"
+        "homeport.owner-correction.round3.artifact-idempotency",
+        "homeport.owner-correction.round3.postmark-webhooks"
       ]
     },
     {
@@ -3574,8 +3574,7 @@
         "homeport.owner-correction.round3.verification-code-security",
         "homeport.owner-correction.round3.verification-resend",
         "homeport.owner-correction.round3.email-provider-contract",
-        "homeport.owner-correction.round3.postmark-adapter",
-        "homeport.owner-correction.round3.postmark-webhooks",
+        "homeport.owner-correction.round3.resend-adapter",
         "homeport.owner-correction.round3.synthetic-email",
         "homeport.owner-correction.round3.email-live-evidence",
         "homeport.owner-correction.round3.dark-default",
@@ -3607,7 +3606,8 @@
         "homeport.owner-correction.round3.phase7-regression",
         "homeport.owner-correction.round3.round1-regression",
         "homeport.owner-correction.round3.round2-regression",
-        "homeport.owner-correction.round3.artifact-idempotency"
+        "homeport.owner-correction.round3.artifact-idempotency",
+        "homeport.owner-correction.round3.postmark-webhooks"
       ]
     },
     {
@@ -3630,8 +3630,7 @@
         "homeport.owner-correction.round3.verification-code-security",
         "homeport.owner-correction.round3.verification-resend",
         "homeport.owner-correction.round3.email-provider-contract",
-        "homeport.owner-correction.round3.postmark-adapter",
-        "homeport.owner-correction.round3.postmark-webhooks",
+        "homeport.owner-correction.round3.resend-adapter",
         "homeport.owner-correction.round3.synthetic-email",
         "homeport.owner-correction.round3.email-live-evidence",
         "homeport.owner-correction.round3.dark-default",
@@ -3663,7 +3662,8 @@
         "homeport.owner-correction.round3.phase7-regression",
         "homeport.owner-correction.round3.round1-regression",
         "homeport.owner-correction.round3.round2-regression",
-        "homeport.owner-correction.round3.artifact-idempotency"
+        "homeport.owner-correction.round3.artifact-idempotency",
+        "homeport.owner-correction.round3.postmark-webhooks"
       ]
     },
     {
@@ -3686,8 +3686,7 @@
         "homeport.owner-correction.round3.verification-code-security",
         "homeport.owner-correction.round3.verification-resend",
         "homeport.owner-correction.round3.email-provider-contract",
-        "homeport.owner-correction.round3.postmark-adapter",
-        "homeport.owner-correction.round3.postmark-webhooks",
+        "homeport.owner-correction.round3.resend-adapter",
         "homeport.owner-correction.round3.synthetic-email",
         "homeport.owner-correction.round3.email-live-evidence",
         "homeport.owner-correction.round3.dark-default",
@@ -3719,7 +3718,8 @@
         "homeport.owner-correction.round3.phase7-regression",
         "homeport.owner-correction.round3.round1-regression",
         "homeport.owner-correction.round3.round2-regression",
-        "homeport.owner-correction.round3.artifact-idempotency"
+        "homeport.owner-correction.round3.artifact-idempotency",
+        "homeport.owner-correction.round3.postmark-webhooks"
       ]
     },
     {
@@ -3742,8 +3742,7 @@
         "homeport.owner-correction.round3.verification-code-security",
         "homeport.owner-correction.round3.verification-resend",
         "homeport.owner-correction.round3.email-provider-contract",
-        "homeport.owner-correction.round3.postmark-adapter",
-        "homeport.owner-correction.round3.postmark-webhooks",
+        "homeport.owner-correction.round3.resend-adapter",
         "homeport.owner-correction.round3.synthetic-email",
         "homeport.owner-correction.round3.email-live-evidence",
         "homeport.owner-correction.round3.dark-default",
@@ -3775,7 +3774,8 @@
         "homeport.owner-correction.round3.phase7-regression",
         "homeport.owner-correction.round3.round1-regression",
         "homeport.owner-correction.round3.round2-regression",
-        "homeport.owner-correction.round3.artifact-idempotency"
+        "homeport.owner-correction.round3.artifact-idempotency",
+        "homeport.owner-correction.round3.postmark-webhooks"
       ]
     },
     {
@@ -3798,8 +3798,7 @@
         "homeport.owner-correction.round3.verification-code-security",
         "homeport.owner-correction.round3.verification-resend",
         "homeport.owner-correction.round3.email-provider-contract",
-        "homeport.owner-correction.round3.postmark-adapter",
-        "homeport.owner-correction.round3.postmark-webhooks",
+        "homeport.owner-correction.round3.resend-adapter",
         "homeport.owner-correction.round3.synthetic-email",
         "homeport.owner-correction.round3.email-live-evidence",
         "homeport.owner-correction.round3.dark-default",
@@ -3831,7 +3830,8 @@
         "homeport.owner-correction.round3.phase7-regression",
         "homeport.owner-correction.round3.round1-regression",
         "homeport.owner-correction.round3.round2-regression",
-        "homeport.owner-correction.round3.artifact-idempotency"
+        "homeport.owner-correction.round3.artifact-idempotency",
+        "homeport.owner-correction.round3.postmark-webhooks"
       ]
     },
     {
@@ -3854,8 +3854,7 @@
         "homeport.owner-correction.round3.verification-code-security",
         "homeport.owner-correction.round3.verification-resend",
         "homeport.owner-correction.round3.email-provider-contract",
-        "homeport.owner-correction.round3.postmark-adapter",
-        "homeport.owner-correction.round3.postmark-webhooks",
+        "homeport.owner-correction.round3.resend-adapter",
         "homeport.owner-correction.round3.synthetic-email",
         "homeport.owner-correction.round3.email-live-evidence",
         "homeport.owner-correction.round3.dark-default",
@@ -3887,7 +3886,8 @@
         "homeport.owner-correction.round3.phase7-regression",
         "homeport.owner-correction.round3.round1-regression",
         "homeport.owner-correction.round3.round2-regression",
-        "homeport.owner-correction.round3.artifact-idempotency"
+        "homeport.owner-correction.round3.artifact-idempotency",
+        "homeport.owner-correction.round3.postmark-webhooks"
       ]
     },
     {
@@ -3910,8 +3910,7 @@
         "homeport.owner-correction.round3.verification-code-security",
         "homeport.owner-correction.round3.verification-resend",
         "homeport.owner-correction.round3.email-provider-contract",
-        "homeport.owner-correction.round3.postmark-adapter",
-        "homeport.owner-correction.round3.postmark-webhooks",
+        "homeport.owner-correction.round3.resend-adapter",
         "homeport.owner-correction.round3.synthetic-email",
         "homeport.owner-correction.round3.email-live-evidence",
         "homeport.owner-correction.round3.dark-default",
@@ -3943,7 +3942,8 @@
         "homeport.owner-correction.round3.phase7-regression",
         "homeport.owner-correction.round3.round1-regression",
         "homeport.owner-correction.round3.round2-regression",
-        "homeport.owner-correction.round3.artifact-idempotency"
+        "homeport.owner-correction.round3.artifact-idempotency",
+        "homeport.owner-correction.round3.postmark-webhooks"
       ]
     }
   ],
@@ -5312,11 +5312,7 @@
       "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
     },
     {
-      "contractId": "homeport.owner-correction.round3.postmark-adapter",
-      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
-    },
-    {
-      "contractId": "homeport.owner-correction.round3.postmark-webhooks",
+      "contractId": "homeport.owner-correction.round3.resend-adapter",
       "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
     },
     {
@@ -5484,7 +5480,7 @@
       "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
     },
     {
-      "contractId": "homeport.auth.postmark-delivery",
+      "contractId": "homeport.auth.resend-delivery",
       "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
     },
     {
@@ -5525,6 +5521,10 @@
     },
     {
       "contractId": "homeport.transition.reduced-motion",
+      "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
+    },
+    {
+      "contractId": "homeport.owner-correction.round3.postmark-webhooks",
       "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"]
     }
   ],

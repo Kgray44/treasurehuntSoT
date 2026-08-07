@@ -164,7 +164,7 @@ try {
     databaseHash,
     accountAliases: requiredAliases,
     checks,
-    providerStatus: "POSTMARK_BLOCKED_EXTERNAL_CONFIGURATION",
+    providerStatus: fixtureReceipt.email.providerStatus,
     privateFieldsExcluded: ["email", "password", "verification-code", "session-token", "csrf-token"],
   };
   await writeFile(receiptPath, `${JSON.stringify(receipt, null, 2)}\n`, "utf8");

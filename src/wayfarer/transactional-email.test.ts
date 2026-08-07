@@ -5,6 +5,7 @@ import path from "node:path";
 
 const mocks = vi.hoisted(() => ({
   send: vi.fn(),
+  resendSend: vi.fn(),
   deliveryCreate: vi.fn(),
   deliveryUpdate: vi.fn(),
   deliveryUpdateMany: vi.fn(),
@@ -14,6 +15,12 @@ const mocks = vi.hoisted(() => ({
 vi.mock("postmark", () => ({
   ServerClient: class MockServerClient {
     sendEmailWithTemplate = mocks.send;
+  },
+}));
+
+vi.mock("resend", () => ({
+  Resend: class MockResend {
+    emails = { send: mocks.resendSend };
   },
 }));
 
@@ -45,9 +52,17 @@ const configuration = {
   POSTMARK_TEMPLATE_ALIAS_ACCOUNT_LIFECYCLE: "account-lifecycle-v1",
 } as const;
 
+const resendConfiguration = {
+  HOMEPORT_TRANSACTIONAL_EMAIL_PROVIDER: "RESEND",
+  RESEND_API_KEY: "resend-key-for-test",
+  RESEND_FROM_ADDRESS: "account@example.test",
+  RESEND_FROM_NAME: "Voyagewright",
+  NEXT_PUBLIC_APP_URL: "https://voyagewright.example.test",
+} as const;
+
 let syntheticRoot: string | null = null;
 
-describe("Project Homeport Postmark transactional adapter", () => {
+describe("Project Homeport transactional email providers", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     vi.stubEnv("NODE_ENV", "production");
@@ -63,6 +78,11 @@ describe("Project Homeport Postmark transactional adapter", () => {
       SubmittedAt: "2026-08-05T23:30:00.000Z",
       To: "owner@example.test",
     });
+    mocks.resendSend.mockResolvedValue({
+      data: { id: "49a3999c-0ce1-4ea6-ab68-afcd6dc2e794" },
+      error: null,
+      headers: null,
+    });
   });
 
   afterEach(() => {
@@ -71,7 +91,7 @@ describe("Project Homeport Postmark transactional adapter", () => {
     syntheticRoot = null;
   });
 
-  it("homeport.owner-correction.round3.postmark-adapter sends the governed template model and persists the accepted MessageID", async () => {
+  it("keeps the Postmark compatibility adapter functional without selecting it for production", async () => {
     await expect(
       sendTransactionalEmail({
         purpose: "VERIFY_EMAIL",
@@ -109,6 +129,15 @@ describe("Project Homeport Postmark transactional adapter", () => {
     });
   });
 
+  it("normalizes an explicitly selected compatibility provider name", () => {
+    vi.stubEnv("HOMEPORT_TRANSACTIONAL_EMAIL_PROVIDER", "postmark");
+    expect(transactionalEmailProviderStatus()).toMatchObject({
+      providerId: "POSTMARK",
+      available: true,
+      classification: "POSTMARK_CONFIGURED",
+    });
+  });
+
   it("homeport.owner-correction.round3.email-provider-contract fails closed when production configuration is missing", () => {
     vi.stubEnv("POSTMARK_SERVER_TOKEN", "");
     const status = transactionalEmailProviderStatus();
@@ -118,6 +147,77 @@ describe("Project Homeport Postmark transactional adapter", () => {
       classification: "POSTMARK_BLOCKED_EXTERNAL_CONFIGURATION",
     });
     expect(status.missing).toContain("POSTMARK_SERVER_TOKEN");
+  });
+
+  it("homeport.owner-correction.round3.resend-adapter and homeport.auth.resend-delivery select Resend without persisting the code", async () => {
+    for (const [key, value] of Object.entries(resendConfiguration)) vi.stubEnv(key, value);
+    await expect(
+      sendTransactionalEmail({
+        purpose: "VERIFY_EMAIL",
+        email: "owner@example.test",
+        accountId: "account-1",
+        accountTokenId: "challenge-1",
+        displayName: "Owner",
+        token: "123456",
+      }),
+    ).resolves.toMatchObject({ status: "SUBMITTED" });
+    expect(mocks.resendSend).toHaveBeenCalledWith(
+      expect.objectContaining({
+        from: "Voyagewright <account@example.test>",
+        to: "owner@example.test",
+        subject: "Your Voyagewright verification code",
+        html: expect.stringContaining("123456"),
+        text: expect.stringContaining("123456"),
+      }),
+      { idempotencyKey: "delivery-1" },
+    );
+    expect(mocks.deliveryCreate).toHaveBeenCalledWith({
+      data: expect.objectContaining({ provider: "RESEND", status: "PENDING" }),
+    });
+    expect(JSON.stringify(mocks.deliveryCreate.mock.calls)).not.toContain("123456");
+    expect(mocks.deliveryUpdate).toHaveBeenCalledWith({
+      where: { id: "delivery-1" },
+      data: expect.objectContaining({
+        providerMessageId: "49a3999c-0ce1-4ea6-ab68-afcd6dc2e794",
+        status: "SUBMITTED",
+      }),
+    });
+  });
+
+  it("makes Resend the fail-closed production default and reports its exact missing keys", () => {
+    vi.stubEnv("HOMEPORT_TRANSACTIONAL_EMAIL_PROVIDER", "");
+    vi.stubEnv("RESEND_API_KEY", "");
+    vi.stubEnv("RESEND_FROM_ADDRESS", "");
+    vi.stubEnv("RESEND_FROM_NAME", "");
+    const status = transactionalEmailProviderStatus();
+    expect(status).toMatchObject({
+      providerId: "RESEND",
+      available: false,
+      classification: "RESEND_BLOCKED_EXTERNAL_CONFIGURATION",
+    });
+    expect(status.missing).toEqual(["RESEND_API_KEY", "RESEND_FROM_ADDRESS", "RESEND_FROM_NAME"]);
+  });
+
+  it("renders reset links from the configured public origin and fails once without automatic duplicate sends", async () => {
+    for (const [key, value] of Object.entries(resendConfiguration)) vi.stubEnv(key, value);
+    mocks.resendSend.mockResolvedValueOnce({
+      data: null,
+      error: { name: "validation_error", message: "refused secret detail", statusCode: 422 },
+      headers: null,
+    });
+    await expect(
+      sendTransactionalEmail({
+        purpose: "PASSWORD_RESET",
+        email: "owner@example.test",
+        accountId: "account-1",
+        token: "raw-reset-secret",
+      }),
+    ).rejects.toMatchObject({ code: "DELIVERY_FAILED" });
+    expect(mocks.resendSend).toHaveBeenCalledTimes(1);
+    expect(mocks.resendSend.mock.calls[0][0].text).toContain(
+      "https://voyagewright.example.test/reset-password?token=raw-reset-secret",
+    );
+    expect(JSON.stringify(mocks.deliveryUpdate.mock.calls)).not.toContain("raw-reset-secret");
   });
 
   it("records a sanitized provider failure without automatic duplicate sends", async () => {
@@ -162,7 +262,7 @@ describe("Project Homeport Postmark transactional adapter", () => {
     expect(JSON.stringify(mocks.deliveryUpdate.mock.calls)).not.toContain("654321");
   });
 
-  it("homeport.owner-correction.round3.postmark-webhooks atomically correlates delivery and treats duplicate events idempotently", async () => {
+  it("keeps the dormant Postmark webhook compatibility boundary idempotent", async () => {
     const input = {
       recordType: "Delivery" as const,
       messageId: "84e6fbb6-dd83-4a9f-9982-73a9f1938746",

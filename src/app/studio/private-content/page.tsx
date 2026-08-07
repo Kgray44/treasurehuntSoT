@@ -1,6 +1,6 @@
 import { PrivateContentConsole } from "@/components/studio/PrivateContentConsole";
-import { requireGmCapability } from "@/lib/security";
+import { resolveCapability } from "@/homeport/current-user.server";
 export const dynamic = "force-dynamic";
 export default async function PrivateContentPage() {
-  return <PrivateContentConsole authenticated={Boolean(await requireGmCapability("CREATE_TALES"))} />;
+  return <PrivateContentConsole authenticated={(await resolveCapability("creator")).status === "allowed"} />;
 }

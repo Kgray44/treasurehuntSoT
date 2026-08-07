@@ -1198,9 +1198,9 @@ export function TaleEditor({
     return (
       <main className="studio-auth-gate">
         <section>
-          <h1>Creator sign-in required</h1>
-          <Link className="brass-button" href="/captain/library">
-            Sign in
+          <h1>Account authorization required</h1>
+          <Link className="brass-button" href={`/sign-in?returnTo=${encodeURIComponent(`/studio/tales/${taleId}`)}`}>
+            Continue to account sign-in
           </Link>
         </section>
       </main>

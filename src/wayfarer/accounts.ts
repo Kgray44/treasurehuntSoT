@@ -282,14 +282,16 @@ export async function registerAccount(input: {
 }
 
 export async function findActiveAccountByLogin(login: string) {
-  const normalized = normalizeEmail(login);
-  const emailAccount = await db.accountEmail.findUnique({
-    where: { normalizedEmail: normalized },
-    include: { account: { include: { credential: true, profile: true, roles: { where: { revokedAt: null } } } } },
-  });
-  if (emailAccount) return emailAccount.account;
-  const legacyProfile = await db.playerProfile.findFirst({
-    where: { username: login.trim().toLocaleLowerCase("en-US") },
+  const normalizedIdentifier = login.trim().toLocaleLowerCase("en-US");
+  if (/^\S+@\S+\.\S+$/u.test(normalizedIdentifier)) {
+    const emailAccount = await db.accountEmail.findUnique({
+      where: { normalizedEmail: normalizedIdentifier },
+      include: { account: { include: { credential: true, profile: true, roles: { where: { revokedAt: null } } } } },
+    });
+    return emailAccount?.account ?? null;
+  }
+  const legacyProfile = await db.playerProfile.findUnique({
+    where: { username: normalizedIdentifier },
     include: { account: { include: { credential: true, profile: true, roles: { where: { revokedAt: null } } } } },
   });
   return legacyProfile?.account ?? null;

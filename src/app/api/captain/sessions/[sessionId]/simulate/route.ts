@@ -1,20 +1,21 @@
 import { randomUUID } from "node:crypto";
 import { NextResponse } from "next/server";
-import { requireGmCapability, verifyCsrf } from "@/lib/security";
+import { requireCaptainSession } from "@/chronicle/captain-authorization";
 import { apiError } from "@/chronicle/api";
 import { getTaleSessionState, submitVerification } from "@/chronicle/progression";
+import { verifyWayfarerCsrf } from "@/wayfarer/http";
 
 export async function POST(request: Request, context: { params: Promise<{ sessionId: string }> }) {
-  const session = await requireGmCapability("CAPTAIN");
-  if (!session || process.env.NODE_ENV === "production")
+  const { sessionId } = await context.params;
+  const authorization = await requireCaptainSession(sessionId);
+  if (!authorization || process.env.NODE_ENV === "production")
     return NextResponse.json({ error: "The development verification simulator is unavailable." }, { status: 403 });
-  if (!(await verifyCsrf(session)))
+  if (!verifyWayfarerCsrf(authorization.session, request))
     return NextResponse.json(
       { error: "Your Captain session expired. Sign in again; no Voyage progress has changed." },
       { status: 403 },
     );
   try {
-    const { sessionId } = await context.params;
     const body = (await request.json()) as {
       result: "match" | "notMatch" | "uncertain";
       confidence?: number;
@@ -41,11 +42,17 @@ export async function POST(request: Request, context: { params: Promise<{ sessio
       confidence: body.confidence ?? 0.95,
       evidence: { simulated: true, scenario: body.scenario ?? "valid" },
     };
-    const result = await submitVerification(submission, { sourceType: "simulator", sourceId: session.userId });
+    const result = await submitVerification(submission, {
+      sourceType: "simulator",
+      sourceId: authorization.session.accountId,
+    });
     if (body.scenario === "duplicate")
       return NextResponse.json({
         first: result,
-        duplicate: await submitVerification(submission, { sourceType: "simulator", sourceId: session.userId }),
+        duplicate: await submitVerification(submission, {
+          sourceType: "simulator",
+          sourceId: authorization.session.accountId,
+        }),
       });
     return NextResponse.json(result);
   } catch (cause) {

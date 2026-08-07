@@ -260,15 +260,15 @@ test("Journey H: Change registration email", async ({ page }) => {
   expect(primary.verificationState).toBe("VERIFIED");
 });
 
-test("Journey I: Postmark live delivery or explicit external blocker", async ({ page }) => {
-  expect(fixtureReceipt.email.providerStatus).toBe("POSTMARK_BLOCKED_EXTERNAL_CONFIGURATION");
-  const email = uniqueEmail("round3-postmark-equivalent");
+test("Journey I: Synthetic verification preserves the live-provider boundary", async ({ page }) => {
+  expect(fixtureReceipt.email.providerStatus).toBe("SYNTHETIC_EMAIL_ONLY");
+  const email = uniqueEmail("round3-synthetic-equivalent");
   await openRegistration(page);
-  await register(page, "Postmark Synthetic Equivalent", email);
+  await register(page, "Synthetic Provider Equivalent", email);
   const delivery = await waitForDelivery("VERIFY_EMAIL", email);
   expect(delivery.token).toMatch(/^\d{6}$/u);
   await verifyCode(page, delivery.token!);
-  await expect(page.getByRole("button", { name: "Postmark Synthetic Equivalent", exact: true })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Synthetic Provider Equivalent", exact: true })).toBeVisible();
   const account = await db.accountEmail.findFirstOrThrow({
     where: { normalizedEmail: email },
     select: { accountId: true },

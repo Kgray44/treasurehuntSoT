@@ -15,7 +15,7 @@ export const ownerCorrectionRound3ContractIds = [
   "homeport.owner-correction.round3.verification-code-security",
   "homeport.owner-correction.round3.verification-resend",
   "homeport.owner-correction.round3.email-provider-contract",
-  "homeport.owner-correction.round3.postmark-adapter",
+  "homeport.owner-correction.round3.resend-adapter",
   "homeport.owner-correction.round3.postmark-webhooks",
   "homeport.owner-correction.round3.synthetic-email",
   "homeport.owner-correction.round3.email-live-evidence",

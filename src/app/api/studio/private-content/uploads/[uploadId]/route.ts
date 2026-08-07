@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { requireGmCapability, verifyCsrf } from "@/lib/security";
+import { requireStudioWorkspace } from "@/chronicle/studio-authorization";
 import { PrivateContentError } from "@/private-content/core";
 import {
   cancelPrivateUpload,
@@ -8,10 +8,6 @@ import {
   resumePrivateUpload,
 } from "@/private-content/uploads";
 
-async function creator() {
-  const session = await requireGmCapability("CREATE_TALES");
-  return session && (await verifyCsrf(session)) ? session : null;
-}
 function failure(error: unknown) {
   const known = error instanceof PrivateContentError;
   return NextResponse.json(
@@ -27,23 +23,23 @@ function failure(error: unknown) {
   );
 }
 export async function GET(_request: Request, { params }: { params: Promise<{ uploadId: string }> }) {
-  const session = await creator();
+  const session = await requireStudioWorkspace();
   if (!session) return NextResponse.json({ error: "Creator authorization is required." }, { status: 403 });
   try {
     return NextResponse.json(
-      await privateUploadStatus({ actorId: session.userId, uploadId: (await params).uploadId }),
+      await privateUploadStatus({ actorId: session.accountId, uploadId: (await params).uploadId }),
       { headers: { "Cache-Control": "private, no-store" } },
     );
   } catch (error) {
     return failure(error);
   }
 }
-export async function DELETE(_request: Request, { params }: { params: Promise<{ uploadId: string }> }) {
-  const session = await creator();
+export async function DELETE(request: Request, { params }: { params: Promise<{ uploadId: string }> }) {
+  const session = await requireStudioWorkspace(request);
   if (!session) return NextResponse.json({ error: "Creator authorization is required." }, { status: 403 });
   try {
     return NextResponse.json(
-      await cancelPrivateUpload({ actorId: session.userId, uploadId: (await params).uploadId }),
+      await cancelPrivateUpload({ actorId: session.accountId, uploadId: (await params).uploadId }),
       { headers: { "Cache-Control": "private, no-store" } },
     );
   } catch (error) {
@@ -51,11 +47,11 @@ export async function DELETE(_request: Request, { params }: { params: Promise<{ 
   }
 }
 export async function PATCH(request: Request, { params }: { params: Promise<{ uploadId: string }> }) {
-  const session = await creator();
+  const session = await requireStudioWorkspace(request);
   if (!session) return NextResponse.json({ error: "Creator authorization is required." }, { status: 403 });
   try {
     const body = (await request.json()) as { action?: string };
-    const input = { actorId: session.userId, uploadId: (await params).uploadId };
+    const input = { actorId: session.accountId, uploadId: (await params).uploadId };
     if (body.action === "pause")
       return NextResponse.json(await pausePrivateUpload(input), { headers: { "Cache-Control": "private, no-store" } });
     if (body.action === "resume")

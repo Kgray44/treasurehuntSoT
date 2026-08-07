@@ -80,6 +80,38 @@ async function main() {
   assert.equal(created.tokens.filter((token) => token.purpose === "VERIFY_EMAIL").length, 1);
   assert.equal(created.tokens[0]?.delivery?.status, "SUBMITTED");
   assert.equal(created.sessions.filter((session) => session.sessionType === "VERIFICATION").length, 1);
+  await db.playerProfile.update({
+    where: { id: created.profile!.id },
+    data: { username: "patch-alpha-legacy" },
+  });
+
+  const emailSignIn = await authenticateAccount(
+    "  PATCH-A-FRESH@EXAMPLE.TEST  ",
+    password,
+    "Patch A normalized email sign-in",
+  );
+  assert.equal(emailSignIn?.account.id, created.id);
+  const usernameSignIn = await authenticateAccount(
+    "  PaTcH-AlPhA-LeGaCy  ",
+    password,
+    "Patch A normalized legacy Player name sign-in",
+  );
+  assert.equal(usernameSignIn?.account.id, created.id);
+  const [emailOrdinarySession, usernameOrdinarySession] = await Promise.all([
+    db.accountSession.findUniqueOrThrow({ where: { id: emailSignIn!.session.id } }),
+    db.accountSession.findUniqueOrThrow({ where: { id: usernameSignIn!.session.id } }),
+  ]);
+  assert.equal(emailOrdinarySession.sessionType, "ORDINARY");
+  assert.equal(usernameOrdinarySession.sessionType, "ORDINARY");
+  assert.equal(await authenticateAccount("missing-player-name", password), null);
+  assert.equal(await authenticateAccount("missing-email@example.test", password), null);
+  assert.equal(await authenticateAccount("patch-a-fresh@example.test", `${password}-wrong`), null);
+
+  const ambiguousProfile = await db.playerProfile.create({
+    data: { displayName: "Patch Alpha Namespace Sentinel", username: "namespace-sentinel@example.test" },
+  });
+  assert.equal(await authenticateAccount("namespace-sentinel@example.test", password), null);
+  await db.playerProfile.delete({ where: { id: ambiguousProfile.id } });
 
   const beforeDisplayConflict = await rowCounts();
   const displayConflict = await capturedError(() =>
@@ -199,6 +231,14 @@ async function main() {
     baseline,
     results: {
       completeRegistration: true,
+      identifierSignIn: {
+        normalizedEmail: emailOrdinarySession.sessionType,
+        normalizedLegacyPlayerName: usernameOrdinarySession.sessionType,
+        wrongPlayerName: "REJECTED",
+        wrongEmail: "REJECTED",
+        wrongPassword: "REJECTED",
+        emailNamespaceDoesNotFallThrough: true,
+      },
       displayConflictZeroRows: true,
       emailConflictZeroRows: true,
       confirmationMismatchZeroRows: true,

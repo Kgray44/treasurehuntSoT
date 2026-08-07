@@ -20,6 +20,10 @@ export async function requireWayfarerAccount(request?: Request) {
   return session;
 }
 
+export function verifyWayfarerCsrf(session: { csrfToken: string }, request: Request) {
+  return safeEqual(session.csrfToken, request.headers.get("x-csrf-token") ?? "");
+}
+
 export async function requireWayfarerVerification(request?: Request) {
   const token = (await cookies()).get(WAYFARER_COOKIE)?.value;
   if (!token) return null;

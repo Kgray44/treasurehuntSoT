@@ -30,7 +30,7 @@ const journeyNames = {
   F: "New registration to code verification",
   G: "Resend and code replacement",
   H: "Change registration email",
-  I: "Postmark live delivery or explicit external blocker",
+  I: "Synthetic verification preserves the live-provider boundary",
   J: "KGTesting workspace provisioning",
   K: "Existing-account reconciliation",
   L: "Active Chronicle lock",
@@ -173,14 +173,14 @@ const shared = {
   ownerReReviewAfterCorrectionRound1: "OWNER_REJECTED_WITH_ACTIONABLE_FINDINGS",
   ownerReReviewAfterCorrectionRound2: "OWNER_REJECTED_WITH_ACTIONABLE_FINDINGS",
   ownerReReviewRound3: "PENDING_OWNER_DECISION",
-  transactionalEmail: "POSTMARK_BLOCKED_EXTERNAL_CONFIGURATION",
+  transactionalEmail: "RESEND_SELECTED_REAL_PROVIDER",
   branch,
   limitations: [
     "Not merged",
     "Not deployed",
     "No owner acceptance",
     "Local synthetic evidence only",
-    "Postmark live delivery is blocked by external configuration",
+    "Round 3 journey evidence uses the task-owned synthetic adapter; live Resend evidence is recorded separately",
     "Production MySQL and physical assistive-technology validation remain external",
   ],
 };
@@ -486,7 +486,7 @@ async function updateFeatureCatalog() {
   const feature = catalog.find((entry) => entry.id === "FT-B007");
   if (!feature) throw new Error("FT-B007 is missing from the Homeport feature fragment.");
   feature.summary =
-    "Project Homeport now includes the integrated Whole Voyage plus Owner Correction Rounds 1-3: governed Profile imagery and crop editing, identity propagation, six-digit verification, a Postmark production adapter with deterministic synthetic testing, ordinary Player/Captain/Creator entry separated from resource authority, direct route crossfades, visible account-menu motion, and Dark defaults.";
+    "Project Homeport now includes the integrated Whole Voyage plus Owner Correction Rounds 1-3: governed Profile imagery and crop editing, identity propagation, six-digit verification, a Resend real-provider adapter with deterministic synthetic testing and dormant Postmark compatibility, ordinary Player/Captain/Creator entry separated from resource authority, direct route crossfades, visible account-menu motion, and Dark defaults.";
   feature.status = "BRANCH_COMPLETE_NOT_MERGED";
   feature.subfeatures = [
     ...new Set([
@@ -494,7 +494,7 @@ async function updateFeatureCatalog() {
       "Interactive avatar and banner selection, preview, crop, replacement, removal, and normalized derivative lifecycle",
       "Profile avatar and banner propagation across Personal Harbor, account controls, and safe public identity projections",
       "Six-digit email-code registration with hashed expiry, attempts, resend replacement, and atomic account activation",
-      "Provider-neutral transactional email with Postmark production and task-owned synthetic adapters",
+      "Provider-neutral transactional email with Resend selected for real delivery, task-owned synthetic testing, and dormant Postmark compatibility",
       "Ordinary-account Player, Captain, and Creator entry separated from resource-specific authorization",
       "Active-Chronicle transition safety with authoritative true-lock and false-lock behavior",
       "Direct page crossfades with stable shell, 500 ms loading integration, focus handoff, and reduced motion",
@@ -524,8 +524,8 @@ async function updateFeatureCatalog() {
     "Not deployed; no pull request was created by the governed Round 3 task",
     "Owner Re-Review Round 3 remains PENDING_OWNER_DECISION",
     "Broad Light Mode visual completion remains deferred",
-    "Postmark live delivery is POSTMARK_BLOCKED_EXTERNAL_CONFIGURATION; synthetic proof is not live inbox proof",
-    "Production MySQL execution, external-provider configuration, and physical assistive-technology validation remain external",
+    "Round 3 journey evidence is synthetic; live Resend acceptance, inbox receipt, and code-consumption evidence is recorded separately by Patch A",
+    "Production MySQL execution and physical assistive-technology validation remain external",
     "Readiness for owner re-review is not owner acceptance or product acceptance",
   ];
   await writeJson(target, catalog);
@@ -570,7 +570,7 @@ async function updateHumanRecords() {
   );
   const status = `## Phase 7 correction Round 3 status
 
-Correction Round 3 is locally exact-source validated and ready for owner re-review. It adds governed Profile imagery/cropping and identity propagation, six-digit verification, a Postmark production adapter with task-owned synthetic isolation, ordinary Player/Captain/Creator entry separated from resource authority, direct route crossfades, visible account-menu motion, and Dark defaults. Owner Re-Review Round 3 remains \`PENDING_OWNER_DECISION\`; the branch is not merged or deployed. Postmark is \`POSTMARK_BLOCKED_EXTERNAL_CONFIGURATION\`, broad Light Mode visual completion is deferred, and production MySQL plus physical assistive-technology validation remain external.
+Correction Round 3 is locally exact-source validated and ready for owner re-review. It adds governed Profile imagery/cropping and identity propagation, six-digit verification, provider-neutral delivery with Resend selected for real email and task-owned synthetic isolation, ordinary Player/Captain/Creator entry separated from resource authority, direct route crossfades, visible account-menu motion, and Dark defaults. Owner Re-Review Round 3 remains \`PENDING_OWNER_DECISION\`; the branch is not merged or deployed. Round 3 browser evidence is synthetic, broad Light Mode visual completion is deferred, and production MySQL plus physical assistive-technology validation remain external. Live Resend evidence, when completed, is recorded in the Patch A validation record.
 `;
   for (const relative of [
     "docs/product/current-status.md",
@@ -599,14 +599,14 @@ Correction Round 3 is locally exact-source validated and ready for owner re-revi
     await replaceOrAppend(path.join(root, relative), "## Phase 7 correction Round 3 status", status);
 
   const userGuideBoundary =
-    "These instructions describe the Round 3 branch. They do not claim mainline availability, deployment, live Postmark delivery, owner acceptance, broad Light Mode completion, production MySQL proof, or physical assistive-technology validation.";
+    "These instructions describe the Round 3 branch. They do not independently establish Patch A live Resend verification, mainline availability, deployment, owner acceptance, broad Light Mode completion, production MySQL proof, or physical assistive-technology validation.";
   await writeText(
     path.join(root, "docs", "user", "email-verification.md"),
     `${guideFrontmatter("Email verification", "email-verification")}# Email verification
 
 After registration, Voyagewright asks for the six-digit code sent to the submitted address. The code expires, can be used once, and is replaced when a new code is sent. A short cooldown protects resend. Incorrect, expired, unavailable, and successful states remain distinct; change the address from the verification screen if it was entered incorrectly.
 
-Round 3 local walkthroughs use a task-owned synthetic inbox. Real delivery requires configured Postmark sender and templates.
+Round 3 local walkthroughs use a task-owned synthetic inbox. Real delivery uses the server-only Resend configuration and remains subject to provider acceptance, inbox receipt, and successful code consumption.
 
 ${userGuideBoundary}
 `,
@@ -637,27 +637,20 @@ ${userGuideBoundary}
 
 Set \`HOMEPORT_TRANSACTIONAL_EMAIL_PROVIDER=SYNTHETIC_OUTBOX\`, \`HOMEPORT_SYNTHETIC_EMAIL_ADAPTER=TASK_OWNED_TEST\`, \`HOMEPORT_PHASE7_TASK_ROOT\`, and a task-owned \`HOMEPORT_SYNTHETIC_OUTBOX_PATH\`. Never point the adapter at a shared or canonical directory. Read codes only from the task-owned private handoff/outbox used by the walkthrough harness; do not expose them in product UI, logs, committed evidence, URLs, analytics, or provider metadata.
 
-Synthetic acceptance proves application lifecycle behavior only. It is not Postmark submission or inbox delivery. Switch back by removing the synthetic override and configuring the server-only Postmark variables described in the provider guide.
+Synthetic acceptance proves application lifecycle behavior only. It is not Resend submission or inbox delivery. Switch back by removing the synthetic override and configuring the server-only Resend variables described in the provider guide.
 
 ${userGuideBoundary}
 `,
   );
   await writeText(
     path.join(root, "docs", "administrator", "postmark-configuration.md"),
-    `${frontmatter("Postmark transactional email configuration", "postmark-transactional-email-configuration")}# Postmark transactional email configuration
+    `${frontmatter("Postmark transactional email compatibility", "postmark-transactional-email-configuration")}# Postmark transactional email compatibility
 
-## Required setup
+Postmark is not the selected real provider. Its adapter and authenticated webhook endpoint remain dormant compatibility behavior so existing integrations are not removed unsafely. New real-provider configuration uses [Resend](resend-configuration.md).
 
-1. Create or select a Postmark Server and approve the sender signature/domain for the From address.
-2. Create transactional templates for verification, password reset, email change, security notice, and account lifecycle; record their aliases.
-3. Set server-only \`HOMEPORT_TRANSACTIONAL_EMAIL_PROVIDER=POSTMARK\`, \`POSTMARK_SERVER_TOKEN\`, \`POSTMARK_FROM_ADDRESS\`, \`POSTMARK_FROM_NAME\`, \`POSTMARK_TRANSACTIONAL_MESSAGE_STREAM\`, \`POSTMARK_TEMPLATE_ALIAS_VERIFY_EMAIL\`, \`POSTMARK_TEMPLATE_ALIAS_PASSWORD_RESET\`, \`POSTMARK_TEMPLATE_ALIAS_EMAIL_CHANGE\`, \`POSTMARK_TEMPLATE_ALIAS_SECURITY_NOTICE\`, and \`POSTMARK_TEMPLATE_ALIAS_ACCOUNT_LIFECYCLE\`.
-4. Configure Delivery, Bounce, and SpamComplaint webhooks to \`/api/webhooks/postmark\` over HTTPS. Protect the endpoint with unique \`POSTMARK_WEBHOOK_USERNAME\` and \`POSTMARK_WEBHOOK_PASSWORD\` HTTP Basic credentials. Postmark does not provide an HMAC signature contract for these webhooks.
-5. Use an approved staging/test inbox. Register, receive the real code, verify the account, correlate the provider MessageID and sanitized delivery event, and retain no token or message body.
-6. During provider outage, fail closed with a delivery-unavailable state. Use the synthetic adapter only in an explicitly task-owned local/test runtime; never silently substitute it in production.
+Do not configure Postmark merely to satisfy Patch A, and do not infer Resend webhook support from the retained Postmark endpoint. Resend webhooks are explicitly deferred.
 
 No \`NEXT_PUBLIC_\` variable may contain provider configuration. Rotate any exposed credential immediately.
-
-Current Round 3 status is \`POSTMARK_BLOCKED_EXTERNAL_CONFIGURATION\`; no live provider submission or inbox receipt is claimed.
 
 ${userGuideBoundary}
 `,
@@ -665,14 +658,14 @@ ${userGuideBoundary}
   await replaceOrAppend(
     path.join(root, "docs", "README.md"),
     "## Phase 7 correction Round 3 guides",
-    "## Phase 7 correction Round 3 guides\n\n- [Email verification](user/email-verification.md)\n- [Password recovery](user/password-recovery.md)\n- [Profile imagery](user/profile-imagery.md)\n- [Themes and appearance](user/themes-and-appearance.md)\n- [Account and workspaces](user/account-workspaces.md)\n- [Local email testing](developer/local-email-testing.md)\n- [Postmark configuration](administrator/postmark-configuration.md)\n- [Owner re-review package](../Development_Docs/Projects/Project_Homeport/walkthrough/phase7/correction-round3/README.md)\n",
+    "## Phase 7 correction Round 3 guides\n\n- [Email verification](user/email-verification.md)\n- [Password recovery](user/password-recovery.md)\n- [Profile imagery](user/profile-imagery.md)\n- [Themes and appearance](user/themes-and-appearance.md)\n- [Account and workspaces](user/account-workspaces.md)\n- [Local email testing](developer/local-email-testing.md)\n- [Resend configuration](administrator/resend-configuration.md)\n- [Postmark compatibility](administrator/postmark-configuration.md)\n- [Owner re-review package](../Development_Docs/Projects/Project_Homeport/walkthrough/phase7/correction-round3/README.md)\n",
   );
 }
 
 function implementationBody() {
   return `## Result
 
-All 54 Round 3 findings are implemented and traced to HP-NC-157 through HP-NC-210, exact source, tests, and evidence. The correction provides local avatar/banner preview and crop, normalized private-original/public-derivative media handling, identity imagery propagation, an identity-led Profile Overview, six-digit email verification, a provider-neutral Postmark/synthetic delivery boundary, Dark defaults, ordinary workspace entry separated from resource authority, true active-Chronicle safety, direct route crossfades, and perceptible account-menu motion.
+All 54 Round 3 findings are implemented and traced to HP-NC-157 through HP-NC-210, exact source, tests, and evidence. The correction provides local avatar/banner preview and crop, normalized private-original/public-derivative media handling, identity imagery propagation, an identity-led Profile Overview, six-digit email verification, a provider-neutral Resend/synthetic delivery boundary with dormant Postmark compatibility, Dark defaults, ordinary workspace entry separated from resource authority, true active-Chronicle safety, direct route crossfades, and perceptible account-menu motion.
 
 ## Source identity
 
@@ -685,7 +678,7 @@ All 54 Round 3 findings are implemented and traced to HP-NC-157 through HP-NC-21
 
 ## Transactional email boundary
 
-The Postmark adapter, template aliases, delivery receipts, authenticated/idempotent Delivery/Bounce/SpamComplaint webhook handling, and deterministic synthetic adapter are implemented. No approved token, sender, templates, webhook, or test inbox was available, so the exact live classification is \`POSTMARK_BLOCKED_EXTERNAL_CONFIGURATION\`. Synthetic acceptance is not live provider or inbox proof.
+The Resend adapter, typed HTML/text messages, delivery receipts, and deterministic synthetic adapter are implemented. The Postmark adapter and its webhook endpoint remain dormant compatibility behavior; Resend webhooks are deferred. Round 3 synthetic acceptance is not live provider, inbox, or application code-consumption proof; Patch A records those live facts separately.
 
 ## Boundary
 
@@ -711,7 +704,7 @@ The fixture is \`${fixtureVersion}\`, checksum \`${fixture.fixtureChecksum}\`, d
 
 ## External and publication boundary
 
-Postmark is \`POSTMARK_BLOCKED_EXTERNAL_CONFIGURATION\`. Codex visual review is not owner acceptance. Round 3 remains \`PENDING_OWNER_DECISION\`. Repository-wide validators, Sounding Line decisions, exact-publication reruns, remote parity, canonical-database invariance, and runtime health are additive closure facts recorded outside this source-bound artifact generator.
+Resend is the selected real provider; this Round 3 generator records synthetic browser evidence only. Codex visual review is not owner acceptance. Round 3 remains \`PENDING_OWNER_DECISION\`. Patch A live email evidence, repository-wide validators, Sounding Line decisions, exact-publication reruns, remote parity, canonical-database invariance, and runtime health are additive closure facts recorded outside this source-bound artifact generator.
 `;
 }
 
@@ -725,7 +718,7 @@ function integrationBody() {
 | Fixture | \`${fixtureVersion}\` |
 | Browser journeys | Round 3 A-V 22/22; Round 2 A-W 23/23; Round 1 A-U 21/21; original Phase 7 A-O 15/15 |
 | Evidence | 30 governed IDs, 29 screenshots, 5 temporal receipts, and ${experience.records.length} Experience Images; Codex \`ACCEPTED\` |
-| Transactional email | \`POSTMARK_BLOCKED_EXTERNAL_CONFIGURATION\`; synthetic adapter passed |
+| Transactional email | Resend selected; Round 3 synthetic adapter passed; Patch A records live evidence separately |
 | Owner Round 1 | \`OWNER_RETURNED_FOR_CORRECTION\` |
 | Re-review after Round 1 | \`OWNER_REJECTED_WITH_ACTIONABLE_FINDINGS\` |
 | Re-review after Round 2 | \`OWNER_REJECTED_WITH_ACTIONABLE_FINDINGS\` |
@@ -742,7 +735,7 @@ function evidenceReadme() {
     "evidence-index",
     `This directory contains 29 checksum-verified browser screenshots and five computed temporal receipts covering exact evidence IDs \`HP-OWCR3-EV-A\` through \`HP-OWCR3-EV-AD\` (30 unique IDs). The Experience Images manifest, browseable index, and Round 3 affected-state contact sheet are supplemental exact-source visual inventory artifacts. Evidence is bound to \`${sourceSha}\`; the ${experience.records.length}-image inventory is bound to \`${experience.sourceSha}\`.
 
-Codex visual review is \`ACCEPTED\`; Owner Re-Review Round 3 remains \`PENDING_OWNER_DECISION\`. This is local synthetic proof, not merge, deployment, live Postmark proof, or owner acceptance.
+Codex visual review is \`ACCEPTED\`; Owner Re-Review Round 3 remains \`PENDING_OWNER_DECISION\`. This is local synthetic proof, not merge, deployment, live Resend proof, or owner acceptance.
 `,
   );
 }
@@ -780,7 +773,7 @@ All 54 Round 3 findings are corrected and traced. Round 3 A-V, retained Round 2 
 function designSection() {
   return `## Phase 7 correction Round 3 implementation amendment
 
-The frozen 42-decision Round 3 architecture is implemented at exact browser source \`${sourceSha}\`. It retains canonical AccountSession, specialist resource authority, prior owner/history records, and the 500 ms loading contract while adding Profile imagery/crop, identity propagation, six-digit verification, provider-neutral Postmark delivery, Dark defaults, ordinary workspace entry, active-Chronicle truth, direct route crossfades, visible account-menu motion, isolated fixtures, and exact-source evidence. Delivery, Bounce, and SpamComplaint webhooks use configured HTTP Basic protection and idempotent MessageID event handling; no unsupported Postmark HMAC claim is made. The result is validated pending owner re-review, not merged, deployed, or owner accepted.
+The frozen 42-decision Round 3 architecture is implemented at exact browser source \`${sourceSha}\`. It retains canonical AccountSession, specialist resource authority, prior owner/history records, and the 500 ms loading contract while adding Profile imagery/crop, identity propagation, six-digit verification, provider-neutral Resend delivery with dormant Postmark compatibility, Dark defaults, ordinary workspace entry, active-Chronicle truth, direct route crossfades, visible account-menu motion, isolated fixtures, and exact-source evidence. Resend webhook implementation and deployment are deferred. The result is validated pending owner re-review, not merged, deployed, or owner accepted.
 `;
 }
 
@@ -794,7 +787,7 @@ Journeys \`HP-OWCR3-JRN-A\` through \`HP-OWCR3-JRN-V\` passed against \`${source
 function indexSection() {
   return `## Phase 7 correction Round 3 re-review state
 
-All 54 Round 3 findings are locally implemented and exact-source validated at \`${sourceSha}\`. Round 3 A-V passed 22/22, retained Round 2 A-W passed 23/23, Round 1 A-U passed 21/21, original Phase 7 A-O passed 15/15, and the complete Experience Images package received Codex visual classification \`ACCEPTED\`. Postmark remains \`POSTMARK_BLOCKED_EXTERNAL_CONFIGURATION\`; Owner Re-Review Round 3 remains \`PENDING_OWNER_DECISION\`.
+All 54 Round 3 findings are locally implemented and exact-source validated at \`${sourceSha}\`. Round 3 A-V passed 22/22, retained Round 2 A-W passed 23/23, Round 1 A-U passed 21/21, original Phase 7 A-O passed 15/15, and the complete Experience Images package received Codex visual classification \`ACCEPTED\`. Resend is the selected real provider and Patch A owns live evidence; Owner Re-Review Round 3 remains \`PENDING_OWNER_DECISION\`.
 
 - [Implementation report](Project_Homeport_Phase_7_Correction_Round_3_Implementation_Report.md)
 - [Validation record](Project_Homeport_Phase_7_Correction_Round_3_Validation_Record.md)
@@ -819,11 +812,11 @@ Owner Re-Review after Correction Round 2: \`OWNER_REJECTED_WITH_ACTIONABLE_FINDI
 
 Owner Re-Review Round 3: \`PENDING_OWNER_DECISION\`.
 
-Exact browser source is \`${sourceSha}\`; fixture is \`${fixtureVersion}\`. Use the external task-owned credential handoff printed by the runtime controller; credentials and verification codes are never committed. Transactional email is \`POSTMARK_BLOCKED_EXTERNAL_CONFIGURATION\`; the owner runtime uses its task-owned synthetic inbox and does not prove live delivery.
+Exact browser source is \`${sourceSha}\`; fixture is \`${fixtureVersion}\`. Use the external task-owned credential handoff printed by the runtime controller; credentials and verification codes are never committed. The owner runtime uses its task-owned synthetic inbox and does not prove live Resend delivery; Patch A records live evidence separately.
 
 Commands: \`npm run homeport:phase7:correction:round3:walkthrough:prepare\`, \`start\`, \`status\`, \`reset\`, and \`stop\`. The final owner runtime uses port 3768 and a fresh owner re-review clone. Browse the visual inventory at \`Experience_Images/index.html\`.
 
-This package is not owner acceptance, a PR, a main merge, or deployment. Broad Light Mode visual completion, real Postmark delivery, production MySQL, and physical assistive-technology validation remain external.
+This package is not owner acceptance, a PR, a main merge, or deployment. Broad Light Mode visual completion, production MySQL, and physical assistive-technology validation remain external.
 `,
   );
 }

@@ -48,6 +48,21 @@ describe("homeport.owner-correction.round3.resource-authority-separated", () => 
     await expect(requireOwnedStudioAsset("asset-1")).resolves.toBeNull();
   });
 
+  it("permits an explicitly Chronicle-scoped Creator collaborator without granting global ownership", async () => {
+    mocks.account.mockResolvedValue({
+      accountId: "account-1",
+      account: {
+        legacyGameMasterId: null,
+        roles: [{ role: "CREATOR", scopeType: "CHRONICLE", scopeId: "tale-1" }],
+      },
+    });
+    await expect(requireOwnedStudioTale("tale-1")).resolves.toBeTruthy();
+    expect(mocks.tale).toHaveBeenCalledWith({
+      where: { id: "tale-1" },
+      select: { id: true, creatorId: true, creatorAccountId: true },
+    });
+  });
+
   it("denies resource lookup when the active-Chronicle policy blocks Creator workspace entry", async () => {
     mocks.overview.mockResolvedValue({ workspaces: [{ id: "CREATOR", state: "BLOCKED" }] });
     await expect(requireOwnedStudioTale("tale-1")).resolves.toBeNull();

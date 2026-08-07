@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { requireGmCapability, verifyCsrf } from "@/lib/security";
+import { requireStudioWorkspace } from "@/chronicle/studio-authorization";
 import { inspectPrivatePackage } from "@/private-content/service";
 import { PrivateContentError } from "@/private-content/core";
 import { inspectCompletedPrivateUploadV2 } from "@/private-content/uploads";
@@ -18,15 +18,14 @@ function failure(error: unknown) {
   );
 }
 export async function POST(request: Request) {
-  const session = await requireGmCapability("CREATE_TALES");
-  if (!session || !(await verifyCsrf(session)))
-    return NextResponse.json({ error: "Creator authorization is required." }, { status: 403 });
+  const session = await requireStudioWorkspace(request);
+  if (!session) return NextResponse.json({ error: "Creator authorization is required." }, { status: 403 });
   try {
     const body = (await request.json()) as { packageBase64?: string; uploadId?: string; passphrase?: string };
     if (body.uploadId && typeof body.passphrase === "string")
       return NextResponse.json(
         await inspectCompletedPrivateUploadV2({
-          actorId: session.userId,
+          actorId: session.accountId,
           uploadId: body.uploadId,
           passphrase: body.passphrase,
           stagingRoot: process.env.PRIVATE_CONTENT_STAGING_ROOT ?? "",

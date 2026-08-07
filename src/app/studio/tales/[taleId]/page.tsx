@@ -1,7 +1,6 @@
-import { TaleEditor } from "@/components/studio/TaleEditor";
-import { requireOwnedStudioTale } from "@/chronicle/studio-authorization";
+import { TaleEditorSection } from "@/components/studio/TaleEditorSection";
 export const dynamic = "force-dynamic";
 export default async function EditorPage({ params }: { params: Promise<{ taleId: string }> }) {
   const { taleId } = await params;
-  return <TaleEditor taleId={taleId} authenticated={Boolean(await requireOwnedStudioTale(taleId))} />;
+  return <TaleEditorSection taleId={taleId} />;
 }

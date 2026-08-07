@@ -2502,8 +2502,8 @@
       "critical": true
     },
     {
-      "id": "homeport.owner-correction.round3.postmark-adapter",
-      "name": "Project Homeport Owner Correction Round3 Postmark Adapter",
+      "id": "homeport.owner-correction.round3.resend-adapter",
+      "name": "Project Homeport Owner Correction Round3 Resend Adapter",
       "authority": "project-homeport",
       "owners": ["project-homeport"],
       "critical": true
@@ -2803,8 +2803,8 @@
       "critical": true
     },
     {
-      "id": "homeport.auth.postmark-delivery",
-      "name": "Project Homeport Postmark Transactional Delivery",
+      "id": "homeport.auth.resend-delivery",
+      "name": "Project Homeport Resend Transactional Delivery",
       "authority": "project-homeport",
       "owners": ["project-homeport"],
       "critical": true

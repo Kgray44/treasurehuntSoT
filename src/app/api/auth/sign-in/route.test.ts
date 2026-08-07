@@ -44,4 +44,23 @@ describe("ordinary sign-in API", () => {
     });
     expect(mocks.setCookie).toHaveBeenCalledWith("ordinary-token", ["PLAYER"]);
   });
+
+  it.each([
+    ["unknown legacy Player name", "missing-player", "lantern-harbor-42-compass"],
+    ["unknown email", "missing@example.test", "lantern-harbor-42-compass"],
+    ["wrong password", "mara@example.test", "incorrect-password"],
+  ])("returns the same non-enumerating response for %s", async (_scenario, login, password) => {
+    mocks.authenticate.mockResolvedValueOnce(null);
+    const response = await POST(
+      new Request("http://localhost/api/auth/sign-in", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ login, password }),
+      }),
+    );
+
+    expect(response.status).toBe(401);
+    await expect(response.json()).resolves.toEqual({ error: "Those credentials were not accepted." });
+    expect(mocks.setCookie).not.toHaveBeenCalled();
+  });
 });

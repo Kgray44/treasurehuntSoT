@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { requireGmCapability, verifyCsrf } from "@/lib/security";
+import { requireStudioWorkspace } from "@/chronicle/studio-authorization";
 import {
   ProtectedMediaError,
   protectedMediaAudiences,
@@ -34,7 +34,7 @@ function responseError(error: unknown) {
 }
 
 export async function GET() {
-  const session = await requireGmCapability("CREATE_TALES");
+  const session = await requireStudioWorkspace();
   if (!session) return NextResponse.json({ error: "Creator authorization is required." }, { status: 403 });
   try {
     const ownerAccountId = session.accountId;
@@ -48,9 +48,8 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
-  const session = await requireGmCapability("CREATE_TALES");
-  if (!session || !(await verifyCsrf(session)))
-    return NextResponse.json({ error: "Creator authorization is required." }, { status: 403 });
+  const session = await requireStudioWorkspace(request);
+  if (!session) return NextResponse.json({ error: "Creator authorization is required." }, { status: 403 });
   try {
     const body = (await request.json()) as {
       action?: string;

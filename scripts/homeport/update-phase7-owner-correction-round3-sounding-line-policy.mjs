@@ -1,4 +1,4 @@
-import { readFileSync, writeFileSync } from "node:fs";
+import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import { format } from "prettier";
 import { ownerCorrectionRound3ContractIds } from "./phase7-owner-correction-round3-sounding-line-model.mjs";
@@ -6,6 +6,10 @@ import { ownerCorrectionRound3ContractIds } from "./phase7-owner-correction-roun
 const root = process.cwd();
 const testingRoot = path.join(root, "testing");
 const suiteIds = ["unit.homeport", "component.homeport", "browser.homeport"];
+const retiredContractIds = new Set([
+  "homeport.owner-correction.round3.postmark-adapter",
+  "homeport.owner-correction.round3.resend-webhooks",
+]);
 const correctionPaths = [
   "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_7_Correction_Round_3_*",
   "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_7_Owner_Feedback_Round_3_*",
@@ -50,6 +54,7 @@ async function writeJson(name, value) {
 
 const contracts = readJson("contracts.json");
 contracts.status = "phase-7-owner-correction-round-3-pending-owner-rereview";
+contracts.contracts = contracts.contracts.filter((contract) => !retiredContractIds.has(contract.id));
 const existingContracts = new Set(contracts.contracts.map((contract) => contract.id));
 for (const id of ownerCorrectionRound3ContractIds)
   if (!existingContracts.has(id))
@@ -76,11 +81,18 @@ for (const id of suiteIds) {
   suite.contracts = unique([...suite.contracts, ...ownerCorrectionRound3ContractIds]);
   suite.affectedPaths = unique([...suite.affectedPaths, ...affectedPaths]);
   suite.currentImplementationState = "phase-7-owner-correction-round-3-source-bound";
+  suite.contracts = suite.contracts.filter((contractId) => !retiredContractIds.has(contractId));
 }
 await writeJson("suites.json", suites);
 
 const impactMap = readJson("impact-map.json");
 impactMap.status = "phase-7-owner-correction-round-3-impact-map";
+for (const mapping of impactMap.pathMappings)
+  if (mapping.contractIds)
+    mapping.contractIds = mapping.contractIds.filter((contractId) => !retiredContractIds.has(contractId));
+impactMap.contractMappings = impactMap.contractMappings.filter(
+  (mapping) => !retiredContractIds.has(mapping.contractId),
+);
 for (const pathPattern of correctionPaths) {
   const mapping = impactMap.pathMappings.find((candidate) => candidate.path === pathPattern);
   if (mapping) {
@@ -100,6 +112,18 @@ for (const contractId of ownerCorrectionRound3ContractIds) {
   else impactMap.contractMappings.push({ contractId, suiteIds: [...suiteIds] });
 }
 await writeJson("impact-map.json", impactMap);
+
+const generatedRegistryPath = path.join(testingRoot, "generated", "active-test-registry.json");
+if (existsSync(generatedRegistryPath)) {
+  const generatedRegistry = JSON.parse(readFileSync(generatedRegistryPath, "utf8"));
+  for (const testCase of generatedRegistry.cases ?? [])
+    testCase.contracts = (testCase.contracts ?? []).filter((contractId) => !retiredContractIds.has(contractId));
+  writeFileSync(
+    generatedRegistryPath,
+    await format(JSON.stringify(generatedRegistry), { parser: "json", printWidth: 120 }),
+    "utf8",
+  );
+}
 
 process.stdout.write(
   `${JSON.stringify({ status: "HOMEPORT_PHASE7_OWNER_CORRECTION_ROUND3_SOUNDING_LINE_POLICY_UPDATED", contracts: ownerCorrectionRound3ContractIds.length, suites: suiteIds.length, pathMappings: correctionPaths.length })}\n`,

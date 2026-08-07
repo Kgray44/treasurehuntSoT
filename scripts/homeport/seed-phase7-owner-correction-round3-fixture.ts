@@ -376,7 +376,7 @@ async function main() {
       fixtureFiles: media.fixtureFiles,
     },
     email: {
-      providerStatus: "POSTMARK_BLOCKED_EXTERNAL_CONFIGURATION",
+      providerStatus: "SYNTHETIC_EMAIL_ONLY",
       syntheticOutboxPath: outboxPath,
       privateCodePath: tokenPath,
     },

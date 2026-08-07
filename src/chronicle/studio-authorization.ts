@@ -14,11 +14,17 @@ export async function requireOwnedStudioTale(taleId: string, request?: Request) 
   const session = await requireStudioWorkspace(request);
   if (!session) return null;
   const administrator = session.account.roles.some((assignment) => assignment.role === "ADMINISTRATOR");
+  const collaborator = session.account.roles.some(
+    (assignment) =>
+      assignment.role === "CREATOR" &&
+      ["CHRONICLE", "TALE"].includes(assignment.scopeType) &&
+      assignment.scopeId === taleId,
+  );
   const legacyCreatorId = session.account.legacyGameMasterId;
   const tale = await db.chronicle.findFirst({
     where: {
       id: taleId,
-      ...(administrator
+      ...(administrator || collaborator
         ? {}
         : {
             OR: [

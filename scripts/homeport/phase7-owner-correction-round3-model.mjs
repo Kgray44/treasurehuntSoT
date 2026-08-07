@@ -24,7 +24,7 @@ export const round3Findings = [
   "A verification code must be sent to the entered email address.",
   "The person must enter the code before becoming a fully verified ordinary account.",
   "The email system must work with real inbox delivery.",
-  "Postmark is the selected staging/production transactional-email provider.",
+  "Resend is the selected staging/production transactional-email provider; Postmark is compatibility-only.",
   "The synthetic outbox remains for automated/local test isolation.",
   "Verification, password recovery, email change, and security notices must use the same governed provider architecture.",
   "The application should default to Dark Mode.",
@@ -128,20 +128,20 @@ export const round3Decisions = [
     "Codes are six random digits, stored only as hashes, expire, have bounded attempts and resend rotation, are single-use, are never logged or committed, and verification is account/email/challenge scoped.",
   ],
   [
-    "Postmark provider contract",
-    "A provider-neutral transactional-email port selects Postmark only when complete validated configuration exists; unconfigured production fails closed and cannot silently discard delivery.",
+    "Resend provider contract",
+    "A provider-neutral transactional-email port selects Resend for real delivery; unconfigured production fails closed and cannot silently substitute synthetic delivery.",
   ],
   [
-    "Postmark templates",
-    "Verified aliases and typed models cover verification code, password reset, email change, change notice, and security notice through a transactional Message Stream.",
+    "Resend message rendering",
+    "Typed HTML and text models cover verification code, password reset, email change, change notice, lifecycle, and security notices without provider template identifiers.",
   ],
   [
-    "Postmark delivery receipt handling",
-    "Provider MessageID, submission time, purpose, account, recipient hash, status, and failure classification are persisted without codes, tokens, secrets, or message bodies.",
+    "Resend delivery receipt handling",
+    "Provider email ID, submission time, purpose, account, recipient hash, status, and failure classification are persisted without codes, tokens, secrets, or message bodies.",
   ],
   [
-    "Postmark webhook policy",
-    "Delivery and bounce events use a dedicated authenticated endpoint, validate structure, correlate MessageID, process idempotently, suppress unsafe disclosure, and acknowledge governed retries.",
+    "Webhook compatibility boundary",
+    "The dormant Postmark compatibility endpoint remains intact; Resend webhook implementation and deployment are explicitly deferred and are not required by this patch.",
   ],
   [
     "Synthetic-provider behavior",
@@ -149,7 +149,7 @@ export const round3Decisions = [
   ],
   [
     "Live-provider evidence boundary",
-    "Only a configured Postmark send plus real inbox receipt and correlated provider evidence may establish live delivery; absence is classified POSTMARK_BLOCKED_EXTERNAL_CONFIGURATION.",
+    "Only a configured Resend send plus provider acceptance, real inbox receipt, and successful application consumption of the received code may establish live email verification.",
   ],
   [
     "Dark default policy",
@@ -217,7 +217,7 @@ export const round3Decisions = [
   ],
   [
     "Owner re-review runtime",
-    "One healthy task-owned production runtime uses the final owner clone, Round 3 fixture, Dark default, isolated media/outbox, and truthful Postmark classification; prior evidence remains preserved.",
+    "One healthy task-owned production runtime uses the final owner clone, Round 3 fixture, Dark default, isolated media/outbox, and truthful Resend/synthetic classification; prior evidence remains preserved.",
   ],
   [
     "Final status language",
@@ -287,9 +287,9 @@ export function findingArea(index) {
       index >= 20 && index <= 23 ? "CRITICAL" : "HIGH",
       "wayfarer-account-security",
       index >= 22
-        ? "Project_Homeport_Postmark_Transactional_Email_Contract.md"
+        ? "Project_Homeport_Resend_Transactional_Email_Contract.md"
         : "Project_Homeport_Registration_Email_Code_Verification_Contract.md",
-      "email-code;transactional-email;postmark-adapter",
+      "email-code;transactional-email;resend-adapter",
       "HP-OWCR3-EV-J;HP-OWCR3-EV-K;HP-OWCR3-EV-L;HP-OWCR3-EV-M",
     ];
   if (index <= 31)
