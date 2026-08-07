@@ -16,6 +16,7 @@ const soundingLineAccessSentinelSpec = /access-gates\.spec\.ts/u;
 const homeportPhase1Spec = /homeport-phase1\.spec\.ts/u;
 const homeportPhase2Spec = /homeport-phase2\.spec\.ts/u;
 const homeportPhase4Spec = /homeport-phase4\.spec\.ts/u;
+const homeportPhase7WalkthroughSpecs = /homeport-phase7.*\.spec\.ts/u;
 const phase3MutationSpecs =
   /phase3-(?:player-event-matrix|player-motion|replay-resilience|lifecycle(?:-extended)?|performance)\.spec\.ts/u;
 const phase3MutationSpecGuard = [
@@ -79,6 +80,7 @@ export default defineConfig({
         homeportPhase1Spec,
         homeportPhase2Spec,
         homeportPhase4Spec,
+        homeportPhase7WalkthroughSpecs,
       ],
       use: { ...devices["Desktop Chrome"] },
     },
@@ -161,6 +163,7 @@ export default defineConfig({
         homeportPhase1Spec,
         homeportPhase2Spec,
         homeportPhase4Spec,
+        homeportPhase7WalkthroughSpecs,
       ],
       use: { ...devices["iPhone 14"] },
     },
