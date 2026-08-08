@@ -5,7 +5,7 @@ This generated catalog records completed, meaningful platform capabilities. It i
 ## Audited repository and commit
 
 Repository: `Kgray44/treasurehuntSoT`
-Audited source commit: `b4fa3b4b3f50e3f22f82adace3b287b9cadace8a`
+Audited source commit: `430dfe55d052d294aef5a44fe618ee75f47111dd`
 
 ## Status vocabulary
 
@@ -1231,6 +1231,7 @@ Voyagewright adds first-class Google and GitHub sign-up, sign-in, and explicit a
 - Verified provider email activation without a duplicate email-verification challenge
 - Password authentication compatibility and last-login-method unlink protection
 - Provider token discard and public-safe linked-identity projection
+- Trusted public-origin post-callback redirects with internal-host and Host-header rejection
 - Desktop and mobile synthetic browser lifecycle validation
 
 ### Primary surfaces
@@ -1247,6 +1248,8 @@ Voyagewright adds first-class Google and GitHub sign-up, sign-in, and explicit a
 
 - path: `src/wayfarer/oauth.ts`
 - test: `src/wayfarer/oauth.exchange.test.ts`
+- test: `src/app/api/auth/providers/[provider]/callback/route.test.ts`
+- test: `src/homeport/public-app-origin.test.ts`
 - test: `tests/oauth/voyagewright-oauth.spec.ts`
 - completion-record: `Development_Docs/Validation/Voyagewright_Google_GitHub_OAuth_Validation_Record.md`
 - commit: `b4fa3b4b3f50e3f22f82adace3b287b9cadace8a`
@@ -1268,4 +1271,4 @@ Voyagewright adds first-class Google and GitHub sign-up, sign-in, and explicit a
 
 Update the owning machine-readable fragment only when completed work changes a major capability, important subfeature, availability, or meaningful limitation. Regenerate this file with `npm run features:sync`; never hand-edit it. Validate before closeout with `npm run features:validate`.
 
-Generation source commit: `b4fa3b4b3f50e3f22f82adace3b287b9cadace8a`
+Generation source commit: `430dfe55d052d294aef5a44fe618ee75f47111dd`

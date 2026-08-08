@@ -13,11 +13,15 @@ Use `.env.example` as the canonical variable-name reference. Values for database
 See [configuration](../administrator/configuration.md) and [security architecture](../developer/security-architecture.md).
 
 `HOMEPORT_PUBLIC_APP_ORIGIN` is the server-only exact HTTP(S) origin used for
-transactional account links. `HOMEPORT_ALLOWED_DEV_ORIGINS` is a comma-separated
-list of exact development hostnames; `scripts/start-dev.ps1 -Lan` adds the
-current LAN IPv4 address only for that process. `HOMEPORT_ORIGIN_DIAGNOSTICS=1`
-enables sanitized host/protocol diagnostics in non-production only. Do not use
-wildcards or put secrets in these values.
+transactional account links and Voyagewright-owned OAuth browser redirects. It
+is independent of each provider's exact callback registration and is never
+derived from `Host` or forwarded-host headers. Production rejects bind,
+loopback, private-network, and internal hostnames. `HOMEPORT_ALLOWED_DEV_ORIGINS`
+is a comma-separated list of exact development hostnames;
+`scripts/start-dev.ps1 -Lan` adds the current LAN IPv4 address only for that
+process. `HOMEPORT_ORIGIN_DIAGNOSTICS=1` enables sanitized host/protocol
+diagnostics in non-production only. Do not use wildcards or put secrets in these
+values.
 
 The selected real transactional-email provider uses server-only
 `HOMEPORT_TRANSACTIONAL_EMAIL_PROVIDER=RESEND`, `RESEND_API_KEY`,

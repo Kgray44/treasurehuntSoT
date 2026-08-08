@@ -91,7 +91,8 @@ function writeCsv(name, headers, records) {
 
 function sourceOwner(source) {
   if (/^\/api\/(?:account|passport)/u.test(source.pathPattern)) return "project-homeport";
-  if (source.pathPattern === "/api/auth/context") return "wayfarer";
+  if (source.pathPattern === "/api/auth/context" || source.pathPattern.startsWith("/api/auth/providers"))
+    return "wayfarer";
   if (source.pathPattern.startsWith("/api/community")) return "harborlight";
   if (source.pathPattern.startsWith("/api/studio/private-content")) return "sealed-hold";
   return "one-voyage";
@@ -99,7 +100,8 @@ function sourceOwner(source) {
 
 function sourceProductArea(source) {
   if (/^\/api\/(?:account|passport)/u.test(source.pathPattern)) return "Personal Harbor";
-  if (source.pathPattern === "/api/auth/context") return "Identity and session";
+  if (source.pathPattern === "/api/auth/context" || source.pathPattern.startsWith("/api/auth/providers"))
+    return "Identity and session";
   if (source.pathPattern.startsWith("/api/community")) return "Community Harbor";
   if (source.pathPattern.startsWith("/api/studio")) return "Creator Studio";
   if (source.pathPattern.startsWith("/api/captain")) return "Captain";

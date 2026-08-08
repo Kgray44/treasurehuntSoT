@@ -3,6 +3,7 @@ import { appendFileSync, existsSync, mkdirSync, writeFileSync } from "node:fs";
 import { dirname, resolve, sep } from "node:path";
 import { ServerClient } from "postmark";
 import { Resend } from "resend";
+import { PublicAppOriginError, publicAppUrl } from "@/homeport/public-app-origin";
 import { db } from "@/lib/db";
 import { hashToken } from "@/lib/security";
 
@@ -243,30 +244,14 @@ function escapeHtml(value: string) {
 }
 
 function actionUrl(purpose: "PASSWORD_RESET" | "EMAIL_CHANGE", token: string) {
-  const configured =
-    process.env.HOMEPORT_PUBLIC_APP_ORIGIN?.trim() ||
-    process.env.NEXT_PUBLIC_APP_URL?.trim() ||
-    "http://localhost:3000";
-  let base: URL;
+  const path = purpose === "PASSWORD_RESET" ? "/reset-password" : "/account/email-change";
+  let url: URL;
   try {
-    base = new URL(configured);
-  } catch {
+    url = publicAppUrl(path);
+  } catch (cause) {
+    if (!(cause instanceof PublicAppOriginError)) throw cause;
     throw new TransactionalEmailError("The public application origin is invalid.", "INVALID_CONFIGURATION");
   }
-  if (
-    !["http:", "https:"].includes(base.protocol) ||
-    base.username ||
-    base.password ||
-    base.pathname !== "/" ||
-    base.search ||
-    base.hash
-  )
-    throw new TransactionalEmailError(
-      "The public application origin must be an exact HTTP or HTTPS origin.",
-      "INVALID_CONFIGURATION",
-    );
-  const path = purpose === "PASSWORD_RESET" ? "/reset-password" : "/account/email-change";
-  const url = new URL(path, base);
   url.searchParams.set("token", token);
   return url.toString();
 }

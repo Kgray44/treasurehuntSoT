@@ -79,11 +79,14 @@
       "Verified provider email activation without a duplicate email-verification challenge",
       "Password authentication compatibility and last-login-method unlink protection",
       "Provider token discard and public-safe linked-identity projection",
+      "Trusted public-origin post-callback redirects with internal-host and Host-header rejection",
       "Desktop and mobile synthetic browser lifecycle validation"
     ],
     "evidence": [
       { "kind": "path", "value": "src/wayfarer/oauth.ts" },
       { "kind": "test", "value": "src/wayfarer/oauth.exchange.test.ts" },
+      { "kind": "test", "value": "src/app/api/auth/providers/[provider]/callback/route.test.ts" },
+      { "kind": "test", "value": "src/homeport/public-app-origin.test.ts" },
       { "kind": "test", "value": "tests/oauth/voyagewright-oauth.spec.ts" },
       {
         "kind": "completion-record",

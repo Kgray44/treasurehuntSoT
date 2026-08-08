@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { canonicalPublicAppOrigin, PublicAppOriginError } from "@/homeport/public-app-origin";
 import { requireWayfarerAccount, setWayfarerCookie } from "@/wayfarer/http";
 import {
   cancelOAuthAuthorization,
@@ -23,6 +24,13 @@ export async function GET(request: Request, context: { params: Promise<{ provide
   const provider = rawProvider.toUpperCase();
   if (!isOAuthProvider(provider)) return NextResponse.json({ error: "Unknown OAuth provider." }, { status: 404 });
   const typedProvider = provider as OAuthProviderName;
+  let publicOrigin: URL;
+  try {
+    publicOrigin = canonicalPublicAppOrigin();
+  } catch (cause) {
+    if (!(cause instanceof PublicAppOriginError)) throw cause;
+    return NextResponse.json({ error: "OAuth redirect configuration is unavailable." }, { status: 503 });
+  }
   const url = new URL(request.url);
   const state = url.searchParams.get("state") ?? "";
   const code = url.searchParams.get("code") ?? "";
@@ -42,7 +50,7 @@ export async function GET(request: Request, context: { params: Promise<{ provide
       currentAccountId: session?.accountId,
       deviceLabel: request.headers.get("user-agent") ?? undefined,
     });
-    const destination = new URL(result.redirectPath, request.url);
+    const destination = new URL(result.redirectPath, publicOrigin);
     if (result.kind === "LINKED") {
       destination.searchParams.set("linked", typedProvider.toLowerCase());
     } else {
@@ -52,7 +60,7 @@ export async function GET(request: Request, context: { params: Promise<{ provide
     return NextResponse.redirect(destination, { status: 302 });
   } catch (cause) {
     const reason = failureReason(cause instanceof OAuthError ? cause.code : undefined);
-    const destination = new URL(session ? "/account/linked-identities" : "/sign-in", request.url);
+    const destination = new URL(session ? "/account/linked-identities" : "/sign-in", publicOrigin);
     destination.searchParams.set(session ? "providerError" : "reason", reason);
     destination.searchParams.set("provider", typedProvider.toLowerCase());
     return NextResponse.redirect(destination, { status: 302 });

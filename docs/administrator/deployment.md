@@ -23,6 +23,11 @@ For protected reverse-proxy staging, verify the browser-facing document,
 JavaScript, account-context request, and interactive controls—not only an HTTP 200. Confirm the effective forwarded host/protocol match the public origin and
 that `HOMEPORT_PUBLIC_APP_ORIGIN` is exact. A localhost-only pass is not staging
 or mobile proof. Keep identity-aware proxy access enabled throughout acceptance.
+For Google and GitHub, verify the registered provider callbacks separately from
+the final Voyagewright `Location`: callbacks remain provider-specific paths,
+while every application-owned success or failure destination must begin with the
+configured public origin and must not contain a bind, loopback, container, or
+private proxy host.
 
 If verification fails, stop rollout and use the approved rollback or recovery path. See [backup and recovery](backup-and-recovery.md) and [upgrading](upgrading.md).
 
