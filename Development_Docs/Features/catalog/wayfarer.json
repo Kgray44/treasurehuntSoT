@@ -95,8 +95,8 @@
     "limitations": [
       "Not available on main until the OAuth branch is separately reviewed and integrated",
       "Not deployed and no production configuration was changed",
-      "Automated provider lifecycle evidence is synthetic and does not establish a live Google or GitHub authorization",
-      "The supplied staging callbacks target a retained staging runtime that does not contain this OAuth branch, so live external-provider completion remains blocked pending an exact compatible runtime callback"
+      "Repeatable automated provider lifecycle evidence is synthetic; the owner reports both real providers working in development, with Google persistence independently confirmed from redacted task-database aggregates and GitHub persistence remaining owner-observed",
+      "The supplied staging callbacks target a retained staging runtime that does not contain this OAuth branch, so direct staging-hosted callback execution still requires an exact compatible runtime"
     ],
     "catalogVersion": 1
   }

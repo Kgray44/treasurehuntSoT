@@ -34,7 +34,10 @@ on the OAuth review branch, not yet on main or deployed. Both
 providers use the canonical Homeport account/session lifecycle, verified-email
 rules, immutable provider identifiers, collision-safe deliberate linking, and
 token-discard behavior. Isolated browser validation is synthetic; live-provider
-authorization remains external. [Linked identities](../user/linked-identities.md).
+authorization was additionally owner-observed for both providers in development,
+with the real Google identity/account/session persistence boundary independently
+confirmed from redacted task-owned database aggregates. The branch is not
+deployed. [Linked identities](../user/linked-identities.md).
 
 ## Global shell and wayfinding
 

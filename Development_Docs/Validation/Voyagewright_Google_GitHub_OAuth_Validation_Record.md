@@ -6,16 +6,16 @@ status: current
 
 # Voyagewright Google and GitHub OAuth Validation Record
 
-| Field          | Value                                           |
-| -------------- | ----------------------------------------------- |
-| Program        | Voyagewright OAuth                              |
-| Record type    | Implementation and validation                   |
-| Date           | 2026-08-07                                      |
-| Base           | `320c25c3e49be58b36be43254be75548b32655a6`      |
-| Branch         | `codex/voyagewright-google-github-auth`         |
-| Environment    | Task-owned SQLite and isolated development host |
-| Secret policy  | No credential values retained in evidence       |
-| External state | Live provider completion blocked                |
+| Field          | Value                                                 |
+| -------------- | ----------------------------------------------------- |
+| Program        | Voyagewright OAuth                                    |
+| Record type    | Implementation and validation                         |
+| Date           | 2026-08-07                                            |
+| Base           | `320c25c3e49be58b36be43254be75548b32655a6`            |
+| Branch         | `codex/voyagewright-google-github-auth`               |
+| Environment    | Task-owned SQLite and isolated development host       |
+| Secret policy  | No credential values retained in evidence             |
+| External state | Owner reports both live; Google persistence confirmed |
 
 ## Scope and architecture
 
@@ -56,6 +56,25 @@ race boundary.
   database before every browser run. Production-schema validation and repository
   gates remain part of final branch validation.
 
+## Development provider observation
+
+The owner reports that both real Google and real GitHub sign-in worked from a
+separate development browser. That is owner-observed live-provider evidence;
+Codex did not observe or record either provider consent screen and retained no
+authorization response or personal provider value.
+
+A subsequent redacted inspection of the task-owned SQLite database independently
+confirmed the Google callback boundary. It contained one non-synthetic Google
+identity connected to one active canonical account, one verified primary email,
+and one active ordinary session. The identity was enabled for login and provider
+verified, and it retained no provider access token. The same inspection found no
+duplicate provider-subject row. It did not find a non-synthetic numeric GitHub
+identity, so GitHub callback persistence remains owner-observed rather than
+independently database-confirmed. Synthetic provider lifecycle coverage remains
+the repeatable authority for first/returning identity behavior, collision
+handling, linking, session persistence, cancellation, logout, and password
+compatibility.
+
 ## External boundary
 
 The supplied credentials are stored only in ignored `.env.local`. Their
@@ -64,12 +83,10 @@ configured callback values point to
 and
 `https://staging.absoluterelativesystems.com/api/auth/providers/github/callback`.
 The retained staging runtime intentionally remains on accepted Homeport source
-and does not contain this OAuth branch. Completing an authorization would
-therefore return to a runtime without these callbacks and cannot validate this
-implementation.
+and does not contain this OAuth branch. It therefore cannot execute these
+callback routes directly. The owner's development-browser result does not alter
+that retained runtime or claim a staging deployment.
 
-No production configuration or deployment was changed. Live completion needs
-either an OAuth-capable runtime at those exact staging callbacks or separate
-development provider applications registered to the exact callback of an
-isolated local OAuth runtime. This record does not infer which provider-console
-values currently exist.
+No production configuration or deployment was changed. A directly hosted
+staging lifecycle still needs an OAuth-capable runtime at those exact staging
+callbacks. This record does not infer or disclose provider-console values.

@@ -38,9 +38,11 @@ disposable Resend registration-verification path described below.
 
 The unreleased OAuth branch adds Google and GitHub sign-up, sign-in, and
 explicit linking through the same canonical Homeport account and session
-lifecycle. Isolated automated validation is complete; live provider completion
-is still external because the supplied staging callbacks target a runtime that
-does not contain this branch.
+lifecycle. Isolated automated validation is complete. The owner reports that
+both real providers work in a development browser, and a redacted inspection
+independently confirmed the real Google identity/account/session persistence
+boundary. The retained staging runtime still does not contain this branch, and
+no deployment or production configuration change is claimed.
 
 Correction Round 3 Patch A stabilizes the mainline registration, ordinary
 sign-in, and page-switching paths that blocked continued owner review. Pending

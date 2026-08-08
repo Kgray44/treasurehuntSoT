@@ -22,8 +22,10 @@ OAuth add sign-up, sign-in, returning identity reuse, explicit account linking,
 verified provider-email handling, duplicate-account prevention, token discard,
 and provider-aware unlink protection through the canonical Homeport account and
 session architecture. Desktop and mobile product integration evidence is local
-and synthetic. The branch is not deployed, and live provider authorization has
-not completed.
+and synthetic. The owner reports both real providers working in a development
+browser; redacted task-database inspection independently confirmed Google
+identity/account/session persistence, while GitHub callback persistence remains
+owner-observed. The branch is not deployed.
 
 Phase 7 adds one immutable integrated synthetic fixture, isolated journey and
 walkthrough clones, A-through-O visible-control production-browser proof, 16
@@ -44,8 +46,8 @@ tests do not establish live-provider proof.
 for the Phase 3-4 browser matrix. It is not a full matrix pass and does not
 change the external-validation boundary.
 
-**Planned or not validated:** Project Homeport owner acceptance and live Google
-and GitHub OAuth remain pending, as do Harborlight Phase 4,
+**Planned or not validated:** Project Homeport owner acceptance and direct
+staging-hosted Google and GitHub OAuth remain pending, as do Harborlight Phase 4,
 Project Drydock, Project Landfall, and Project Watchglass. Project Sounding
 Line is the repository validation authority used for Homeport decisions; that
 use does not claim a new user-facing Sounding Line product. Historic records
