@@ -5,7 +5,7 @@ This generated catalog records completed, meaningful platform capabilities. It i
 ## Audited repository and commit
 
 Repository: `Kgray44/treasurehuntSoT`
-Audited source commit: `8d142227d712d27e363b15903dba9b0c99a04bc8`
+Audited source commit: `320c25c3e49be58b36be43254be75548b32655a6`
 
 ## Status vocabulary
 
@@ -921,10 +921,10 @@ One server-resolved account session now drives current-user state, ordinary Play
 
 ### Meaningful limitations
 
-- Not available on main until separately reviewed and integrated
+- Available on main through protected PR #9; deployment and owner acceptance remain separate
 - Legacy global-session readers remain observe-and-rotate compatibility paths
 - Deployment, live-user validation, and owner acceptance are not established
-- Gateway navigation, account-menu reconstruction, and Passport visual reconstruction remain later phases
+- Owner Re-Review Round 3 remains PENDING_OWNER_DECISION
 
 ### Evidence
 
@@ -957,11 +957,9 @@ One route-classified product shell now provides global, workspace, account, and 
 
 ### Meaningful limitations
 
-- Not available on main until separately reviewed and integrated
+- Available on main through protected PR #9; deployment and owner acceptance remain separate
 - Not deployed; live-user validation and owner acceptance are not established
-- Personal Harbor information architecture and visual reconstruction remain Phase 3
-- Community content and district reconstruction remain Phase 4
-- Exhaustive ordinary-route reachability remains Phase 5
+- Owner Re-Review Round 3 remains PENDING_OWNER_DECISION
 
 ### Evidence
 
@@ -996,11 +994,11 @@ A coherent Personal Harbor now separates public Profile projection from the priv
 
 ### Meaningful limitations
 
-- Not available on main until separately reviewed and integrated
+- Available on main through protected PR #9; deployment and owner acceptance remain separate
 - Not deployed; live-user validation and owner acceptance are not established
 - Live provider connections and external malware scanning remain externally unvalidated
 - Export, deactivation, and account deletion remain truthfully unavailable where no accepted service exists
-- Community reconstruction remains Phase 4 and exhaustive route reachability remains Phase 5
+- Owner Re-Review Round 3 remains PENDING_OWNER_DECISION
 
 ### Evidence
 
@@ -1036,12 +1034,10 @@ A content-first Community Harbor now presents deterministic public shelves, gove
 
 ### Meaningful limitations
 
-- Not available on main until separately reviewed and integrated
+- Available on main through protected PR #9; deployment and owner acceptance remain separate
 - Not deployed; live-user validation and owner acceptance are not established
 - Unsupported provider or installation actions remain truthfully unavailable
-- Phase 5 exhaustive route reachability remains
-- Phase 6 repository-wide surface completion remains
-- Phase 7 integrated walkthrough remains
+- Owner Re-Review Round 3 remains PENDING_OWNER_DECISION
 
 ### Evidence
 
@@ -1077,12 +1073,11 @@ A source-derived, permission-aware product graph now gives every ordinary route 
 
 ### Meaningful limitations
 
-- Not available on main until separately reviewed and integrated
+- Available on main through protected PR #9; deployment and owner acceptance remain separate
 - Not deployed; live-user validation and owner acceptance are not established
 - Evidence is local, synthetic, and uses a copied SQLite database
 - Compatibility retirement remains owner-reviewed and traffic-dependent
-- Phase 6 repository-wide surface and page-state completion remains
-- Phase 7 integrated whole-product walkthrough remains
+- Owner Re-Review Round 3 remains PENDING_OWNER_DECISION
 
 ### Evidence
 
@@ -1118,11 +1113,11 @@ Every current human-facing screen is now source-inventoried with governed visual
 
 ### Meaningful limitations
 
-- Not available on main until separately reviewed and integrated
+- Available on main through protected PR #9; deployment and owner acceptance remain separate
 - Evidence is local, synthetic, and uses a copied SQLite database
 - Live storage, malware scanning, moderation providers, production MySQL, and deployment remain externally unvalidated
 - Codex visual review is not owner acceptance or physical assistive-technology validation
-- Phase 7 integrated whole-product journeys, final walkthrough fixture, running owner package, and acceptance remain separate
+- Owner Re-Review Round 3 remains PENDING_OWNER_DECISION
 
 ### Evidence
 
@@ -1193,8 +1188,7 @@ Project Homeport now includes the integrated Whole Voyage plus Owner Correction 
 
 ### Meaningful limitations
 
-- Not available on main until separately reviewed and integrated
-- Not deployed; no pull request was created by the governed Round 3 task
+- Available on main through protected PR #9; deployment remains separate
 - Owner Re-Review Round 3 remains PENDING_OWNER_DECISION; focused Patch A readiness is not owner acceptance
 - Broad Light Mode visual completion remains deferred
 - Resend webhook deployment remains deferred and is not inferred from provider submission or inbox proof
@@ -1216,10 +1210,50 @@ Project Homeport now includes the integrated Whole Voyage plus Owner Correction 
 - completion-record: `Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_7_Correction_Round_3_Patch_A_Validation_Record.md`
 - test: `tests/e2e/homeport-phase7-owner-correction-round3-patch-a.spec.ts`
 - path: `Experience_Images/manifest.json`
+- commit: `320c25c3e49be58b36be43254be75548b32655a6`
 
 ---
 
 # Completed Branch Features Not Yet Available on Main
+
+## FT-B008 - Google and GitHub Account Authentication
+
+**Status:** BRANCH COMPLETE NOT MERGED
+**Program or subsystem:** Voyagewright OAuth
+
+Voyagewright adds first-class Google and GitHub sign-up, sign-in, and explicit account linking to the canonical Homeport account, verified-email, external-identity, session, and security-event lifecycle.
+
+### Important subfeatures
+
+- Server-side OAuth authorization-code exchange with one-time state and S256 PKCE
+- Google OpenID Connect signature, issuer, audience, authorized-party, nonce, time, subject, and verified-email validation
+- GitHub immutable numeric identity plus primary or fallback verified-email validation
+- Canonical AccountSession creation and returning-provider identity reuse
+- Explicit signed-in account linking with no automatic email-based merge
+- Verified provider email activation without a duplicate email-verification challenge
+- Password authentication compatibility and last-login-method unlink protection
+- Provider token discard and public-safe linked-identity projection
+- Desktop and mobile synthetic browser lifecycle validation
+
+### Primary surfaces
+
+`/register`, `/sign-in`, `/account/linked-identities`
+
+### Meaningful limitations
+
+- Not available on main until the OAuth branch is separately reviewed and integrated
+- Not deployed and no production configuration was changed
+- Repeatable automated provider lifecycle evidence is synthetic; the owner reports both real providers working in development, with Google persistence independently confirmed from redacted task-database aggregates and GitHub persistence remaining owner-observed
+- The supplied staging callbacks target a retained staging runtime that does not contain this OAuth branch, so direct staging-hosted callback execution still requires an exact compatible runtime
+
+### Evidence
+
+- path: `src/wayfarer/oauth.ts`
+- test: `src/wayfarer/oauth.exchange.test.ts`
+- test: `tests/oauth/voyagewright-oauth.spec.ts`
+- completion-record: `Development_Docs/Validation/Voyagewright_Google_GitHub_OAuth_Validation_Record.md`
+
+---
 
 # Deliberately Excluded Until Complete
 
@@ -1234,4 +1268,4 @@ Project Homeport now includes the integrated Whole Voyage plus Owner Correction 
 
 Update the owning machine-readable fragment only when completed work changes a major capability, important subfeature, availability, or meaningful limitation. Regenerate this file with `npm run features:sync`; never hand-edit it. Validate before closeout with `npm run features:validate`.
 
-Generation source commit: `8d142227d712d27e363b15903dba9b0c99a04bc8`
+Generation source commit: `320c25c3e49be58b36be43254be75548b32655a6`

@@ -11,34 +11,38 @@ last_reviewed: 2026-08-07
 Project Homeport is the governed product-reality recovery and convergence
 program. Phase 0 preserves the historical current-state census. Phase 1
 implements identity and session convergence. Phase 2 restores one global shell
-and wayfinding authority. Phase 3 builds and validates the Personal Harbor on
-the same branch. Phase 4 rebuilds and branch-validates Community Harbor on
-that branch; implementation and validation are separately evidenced. These
-are branch-local results, not `main`, deployment, owner acceptance, or product
-acceptance.
+and wayfinding authority. Phase 3 builds and validates the Personal Harbor.
+Phase 4 rebuilds and validates Community Harbor; implementation and validation
+are separately evidenced. Phases 1-7 and focused Patch A are now on main through
+protected PR #9. Mainline integration is not deployment, owner acceptance, or
+product acceptance.
 
-Phase 5 route reachability is implemented and exact-source browser validated on
-the same retained branch. The graph closes ordinary-route entry, dynamic-source,
+Phase 5 route reachability is implemented on main and exact-source browser
+validated. The graph closes ordinary-route entry, dynamic-source,
 tokenized, compatibility, parent/return, dead-end, and desktop/mobile contracts.
-This remains branch-local evidence; Phase 6, Phase 7, deployment, and owner or
+Its retained evidence remains local and synthetic; deployment and owner or
 product acceptance remain separate.
 
-Phase 6 product surfaces and page states are implemented and exact-source
-browser validated on the same retained branch. The source-derived registry
+Phase 6 product surfaces and page states are implemented on main and
+exact-source browser validated. The source-derived registry
 contains 92 human-facing records from 85 page sources with no omission; all
 critical/high screens are visually complete, and 126 checksum-bound captures
 cover desktop, mobile, tablet, effective 200 percent, explicit states, and
-reduced motion. This is local synthetic branch evidence, not `main`, deployment,
-owner acceptance, product acceptance, or Phase 7 whole-product proof.
+reduced motion. This is local synthetic evidence, not deployment, owner
+acceptance, or product acceptance.
 
 Phase 7 whole-voyage automation reached the owner walkthrough on the retained
-branch and preserved each owner correction decision. Correction Round 3 and its
-focused Patch A are implemented and published on the named branch; the staging
+source and preserved each owner correction decision. Correction Round 3 and its
+focused Patch A are implemented on main; the staging
 origin interaction correction is desktop-validated and awaits mandatory
 physical-phone acceptance. The independent owner decision remains
 `PENDING_OWNER_DECISION`; automated readiness, staging desktop proof, and prior
-live-provider proof do not establish `main`, deployment, owner acceptance, or
-product acceptance.
+live-provider proof do not establish deployment, owner acceptance, or product
+acceptance. See the [mainline integration record](Project_Homeport_Mainline_Integration_Record.md).
+
+Later sections preserve the historical branch-local status at the time each
+phase or correction record closed; the integration record is authoritative for
+current source availability.
 
 ## Authority
 

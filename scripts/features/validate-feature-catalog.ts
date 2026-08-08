@@ -19,6 +19,35 @@ function gitRefExists(ref: string): boolean {
   }
 }
 
+function gitRefIsAncestor(ancestor: string, descendant: string): boolean {
+  try {
+    execFileSync("git", ["merge-base", "--is-ancestor", ancestor, descendant], {
+      cwd: repositoryRoot,
+      stdio: "ignore",
+    });
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+export function branchEvidenceResolves(branch: string, commit?: string): boolean {
+  if (gitRefExists(`refs/heads/${branch}`) || gitRefExists(`refs/remotes/origin/${branch}`)) return true;
+  if (!commit) return false;
+
+  // actions/checkout intentionally leaves pull-request jobs on a detached
+  // merge ref and, with its default focused fetch, does not materialize the
+  // contributor branch as refs/heads/* or refs/remotes/origin/*. GitHub's
+  // trusted PR context plus an implementation commit contained by the checked
+  // out source is the equivalent branch-evidence proof in that environment.
+  return (
+    process.env.GITHUB_ACTIONS === "true" &&
+    process.env.GITHUB_HEAD_REF?.trim() === branch &&
+    gitRefExists(commit) &&
+    gitRefIsAncestor(commit, "HEAD")
+  );
+}
+
 function auditedCommitForCatalog(output: string): string {
   try {
     const mergeBase = execFileSync("git", ["merge-base", "HEAD", "origin/main"], {
@@ -102,7 +131,7 @@ function validateEntry(entry: FeatureCatalogEntry, errors: string[]): void {
   if (entry.status === "BRANCH_COMPLETE_NOT_MERGED") {
     if (entry.commit && !gitRefExists(entry.commit))
       errors.push(`${entry.id}: commit does not resolve: ${entry.commit}`);
-    if (entry.branch && !gitRefExists(`refs/heads/${entry.branch}`))
+    if (entry.branch && !branchEvidenceResolves(entry.branch, entry.commit))
       errors.push(`${entry.id}: branch does not resolve: ${entry.branch}`);
   }
 }

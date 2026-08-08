@@ -1161,19 +1161,21 @@ model ExternalIdentity {
 }
 
 model ProviderLinkAttempt {
-  id           String      @id @default(cuid())
-  accountId    String
-  provider     String      @db.VarChar(64)
-  stateHash    String      @unique @db.Char(64)
-  pkceVerifier String      @db.VarChar(191)
-  nonceHash    String      @db.Char(64)
-  redirectPath String      @default("/passport/providers") @db.VarChar(255)
+  id           String       @id @default(cuid())
+  accountId    String?
+  provider     String       @db.VarChar(64)
+  intent       String       @default("LINK") @db.VarChar(32)
+  stateHash    String       @unique @db.Char(64)
+  pkceVerifier String       @db.VarChar(191)
+  nonceHash    String       @db.Char(64)
+  redirectPath String       @default("/passport/providers") @db.VarChar(255)
   expiresAt    DateTime
   consumedAt   DateTime?
-  createdAt    DateTime    @default(now())
-  account      UserAccount @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  createdAt    DateTime     @default(now())
+  account      UserAccount? @relation(fields: [accountId], references: [id], onDelete: Cascade)
 
   @@index([accountId, provider, expiresAt])
+  @@index([intent, provider, expiresAt])
 }
 
 model ProfilePreferenceSet {

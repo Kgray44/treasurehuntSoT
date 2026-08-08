@@ -62,5 +62,42 @@
       }
     ],
     "catalogVersion": 1
+  },
+  {
+    "id": "FT-B008",
+    "title": "Google and GitHub Account Authentication",
+    "summary": "Voyagewright adds first-class Google and GitHub sign-up, sign-in, and explicit account linking to the canonical Homeport account, verified-email, external-identity, session, and security-event lifecycle.",
+    "status": "BRANCH_COMPLETE_NOT_MERGED",
+    "branch": "codex/voyagewright-google-github-auth",
+    "commit": "c1a60f4a9d1565fc1a06f8c99566307a275660b4",
+    "program": "Voyagewright OAuth",
+    "surfaces": ["/register", "/sign-in", "/account/linked-identities"],
+    "subfeatures": [
+      "Server-side OAuth authorization-code exchange with one-time state and S256 PKCE",
+      "Google OpenID Connect signature, issuer, audience, authorized-party, nonce, time, subject, and verified-email validation",
+      "GitHub immutable numeric identity plus primary or fallback verified-email validation",
+      "Canonical AccountSession creation and returning-provider identity reuse",
+      "Explicit signed-in account linking with no automatic email-based merge",
+      "Verified provider email activation without a duplicate email-verification challenge",
+      "Password authentication compatibility and last-login-method unlink protection",
+      "Provider token discard and public-safe linked-identity projection",
+      "Desktop and mobile synthetic browser lifecycle validation"
+    ],
+    "evidence": [
+      { "kind": "path", "value": "src/wayfarer/oauth.ts" },
+      { "kind": "test", "value": "src/wayfarer/oauth.exchange.test.ts" },
+      { "kind": "test", "value": "tests/oauth/voyagewright-oauth.spec.ts" },
+      {
+        "kind": "completion-record",
+        "value": "Development_Docs/Validation/Voyagewright_Google_GitHub_OAuth_Validation_Record.md"
+      }
+    ],
+    "limitations": [
+      "Not available on main until the OAuth branch is separately reviewed and integrated",
+      "Not deployed and no production configuration was changed",
+      "Repeatable automated provider lifecycle evidence is synthetic; the owner reports both real providers working in development, with Google persistence independently confirmed from redacted task-database aggregates and GitHub persistence remaining owner-observed",
+      "The supplied staging callbacks target a retained staging runtime that does not contain this OAuth branch, so direct staging-hosted callback execution still requires an exact compatible runtime"
+    ],
+    "catalogVersion": 1
   }
 ]

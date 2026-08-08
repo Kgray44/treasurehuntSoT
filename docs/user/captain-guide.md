@@ -3,7 +3,7 @@ title: Captain guide
 audience: captain
 status: current
 canonical_for: captain-guide
-last_reviewed: 2026-08-05
+last_reviewed: 2026-08-07
 ---
 
 # Captain guide
@@ -25,14 +25,14 @@ On the Phase 2 branch, the Captain shell separates global Community Harbor
 from Captain-owned Voyages and Crew invitations. Account switches to Player or
 Creator Studio only when the signed-in account has those capabilities.
 Focused Captain session routes provide Exit to Captain Voyages instead of
-depending on browser history. This behavior is not on main or deployed.
+depending on browser history. This behavior is on main and not deployed.
 
 On the Phase 5 branch, Captain Library, invitation, Tale, Voyage preview, and
 session controls provide the governed sources for their detail routes. The
 historical Quartermaster surface links directly to the canonical Captain
 Library instead of competing with it. Permission denial and invalid identifiers
-retain safe recovery paths. This is branch-local synthetic proof, not a `main`
-merge, deployment, or owner acceptance.
+retain safe recovery paths. This is retained local synthetic proof, not
+deployment or owner acceptance.
 
 Phase 6 completes Captain Library and session presentation with human status
 labels, structured confirmation dialogs, visible pending/failure feedback,
@@ -51,8 +51,8 @@ The owner returned walkthrough Round 1 for correction. The corrected capability 
 
 ## Phase 7 correction Round 2 status
 
-Correction Round 2 is locally exact-source validated and ready for owner re-review. Dark, Light, and System themes; truthful account/Profile/workspace state; authoritative Community saves and completion-verified reviews; expanded previews; delayed loading; motion; synthetic email boundaries; and Experience Images are included. Round 2 remains `PENDING_OWNER_DECISION`; this branch is not merged or deployed, and live providers remain external.
+Correction Round 2 is locally exact-source validated and ready for owner re-review. Dark, Light, and System themes; truthful account/Profile/workspace state; authoritative Community saves and completion-verified reviews; expanded previews; delayed loading; motion; synthetic email boundaries; and Experience Images are included. Round 2 remains `PENDING_OWNER_DECISION`; the source is on main but not deployed, and live providers remain external.
 
 ## Phase 7 correction Round 3 status
 
-Correction Round 3 includes governed Profile imagery, six-digit verification, Resend plus task-owned synthetic email, canonical workspace entry separated from resource authority, route crossfades, account-menu motion, and Dark defaults. Owner Re-Review Round 3 remains `PENDING_OWNER_DECISION`; the branch is not merged or deployed.
+Correction Round 3 includes governed Profile imagery, six-digit verification, Resend plus task-owned synthetic email, canonical workspace entry separated from resource authority, route crossfades, account-menu motion, and Dark defaults. Owner Re-Review Round 3 remains `PENDING_OWNER_DECISION`; the source is on main but not deployed.

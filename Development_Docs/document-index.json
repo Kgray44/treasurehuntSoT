@@ -3813,6 +3813,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Mainline_Integration_Record.md",
+      "record_type": "program-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Homeport/Project_Homeport_Personal_Harbor_Correction_Contract.md",
       "record_type": "program-record",
       "status": "current",
@@ -4828,6 +4834,12 @@
     },
     {
       "path": "Development_Docs/Validation/Phase_1_Cross_Project_Validation_Record.md",
+      "record_type": "validation-evidence",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Validation/Voyagewright_Google_GitHub_OAuth_Validation_Record.md",
       "record_type": "validation-evidence",
       "status": "preserved",
       "canonical_for": null

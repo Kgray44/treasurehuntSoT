@@ -15,38 +15,46 @@ Account flows, role gateways, profile handles, preferences, privacy controls,
 Chronicle Passport, private history, and personal artifact custody provide an
 owned identity surface. [Guide](../user/chronicle-passport.md).
 
-Project Homeport Phase 1 is complete on its governed development branch but is
-not yet on main. That branch adds one canonical current-user contract, one
+Project Homeport Phase 1 is available on main. It adds one canonical current-user contract, one
 ordinary sign-in surface, explicit capability decisions, session invalidation
 across tabs, and bounded observe-and-rotate compatibility for historical
 Player and staff sessions.
 
-Project Homeport Phase 3 is also complete on that branch. It separates the
+Project Homeport Phase 3 is also available on main. It separates the
 public Profile from the private Chronicle Passport, adds server-enforced
 Profile/privacy projections, typed preferences, linked identities, private
 history and Memories, artifact provenance, saved Community items, and account
 security/session management. [Profile guide](../user/profile.md), [Passport
 guide](../user/chronicle-passport.md), and [account security
-guide](../user/account-security.md). The work is not yet on main or deployed.
+guide](../user/account-security.md). Mainline availability is not deployment or
+owner acceptance.
+
+Google and GitHub sign-up, sign-in, and explicit account linking are complete
+on the OAuth review branch, not yet on main or deployed. Both
+providers use the canonical Homeport account/session lifecycle, verified-email
+rules, immutable provider identifiers, collision-safe deliberate linking, and
+token-discard behavior. Isolated browser validation is synthetic; live-provider
+authorization was additionally owner-observed for both providers in development,
+with the real Google identity/account/session persistence boundary independently
+confirmed from redacted task-owned database aggregates. The branch is not
+deployed. [Linked identities](../user/linked-identities.md).
 
 ## Global shell and wayfinding
 
 **Audience:** Players, Captains, Creators, and public visitors.
-**Availability:** complete on the Project Homeport branch, not available on
-main. Phase 2 adds one route-classified shell, visible Home/Explore/Community
+**Availability:** available on main. Phase 2 adds one route-classified shell,
+visible Home/Explore/Community
 navigation, structured account orientation, capability-projected workspace
 switching, equivalent mobile destinations, and explicit compact/immersive
-exits. Its acceptance evidence is local and synthetic; it is not deployed or
-owner accepted. Personal Harbor reconstruction is complete in Phase 3,
-Community content reconstruction is branch-complete in Phase 4, and the
-governed route-reachability graph is branch-complete in Phase 5 on the same
-branch.
+exits. Its acceptance evidence is local and synthetic; it is not deployment or
+owner acceptance. Personal Harbor reconstruction is complete in Phase 3,
+Community content reconstruction is complete in Phase 4, and the governed
+route-reachability graph is complete in Phase 5 on main.
 
 ## Governed route reachability graph
 
 **Audience:** Players, Captains, Creators, and public visitors.
-**Availability:** complete on the Project Homeport branch, not available on
-`main`. Phase 5 publishes an authoritative page census and permission-aware
+**Availability:** available on main. Phase 5 publishes an authoritative page census and permission-aware
 graph with visible ordinary entries, real dynamic source controls, deliberate
 tokenized and compatibility dispositions, stable parents/returns, dead-end
 recovery, desktop/mobile parity, and an automated orphan gate. Exact-source
@@ -57,8 +65,7 @@ behavior, owner acceptance, and Phase 7 whole-product proof are not claimed.
 ## Complete product surfaces and states
 
 **Audience:** Players, Captains, Creators, public visitors, and account owners.
-**Availability:** complete on the Project Homeport branch, not available on
-`main`. Phase 6 publishes a source-parity registry for every current
+**Availability:** available on main. Phase 6 publishes a source-parity registry for every current
 human-facing screen, completes all critical/high visual surfaces, normalizes
 shared dialogs, state panels and media fallbacks, and governs loading, empty,
 no-results, recovery, dependency, permission, session, mutation, conflict,
@@ -71,8 +78,8 @@ acceptance are not claimed.
 ## Integrated whole-product voyage and owner walkthrough
 
 **Audience:** Product owner, Players, Captains, Creators, and account owners.
-**Availability:** complete on the Project Homeport branch and ready for owner
-walkthrough; not available on `main`. Phase 7 supplies one immutable synthetic
+**Availability:** available on main and ready for the separate owner walkthrough
+decision. Phase 7 supplies one immutable synthetic
 fixture, isolated A-through-O journey clones, account continuity across all
 workspaces, Profile/Passport/Community reconciliation, explicit recovery and
 failure states, mobile/keyboard/reduced-motion proof, reviewed exact-source
@@ -98,13 +105,13 @@ the Phase 3 community foundations: package, artifact, licensing, lineage,
 discovery, social, keepsake, and voyage-log controls. Externally hosted
 exchange proof is not claimed. [Guide](../user/community-harbor.md).
 
-Project Homeport Phase 4 adds a separate branch-complete Community Discovery
+Project Homeport Phase 4 adds the mainline Community Discovery
 Library: content-first public shelves, a governed district taxonomy, typed
 public-safe cards, search/sort/compact and advanced filters, Creator Profiles,
 collections, Guides, Voyage Logs, details, and save/follow state with complete
 default, empty, no-result, unavailable, quarantine, removed, desktop, and
-mobile contracts. It is not on `main`, deployed, or owner accepted. External
-providers remain truthfully unavailable where unsupported; Phase 7 remains.
+mobile contracts. It is not deployed or owner accepted. External providers
+remain truthfully unavailable where unsupported.
 
 ## Private content, animation, and resilience
 
@@ -118,20 +125,20 @@ content](../administrator/private-content.md), [animation](../developer/animatio
 
 ## Phase 7 correction Round 2 status
 
-Correction Round 2 is locally exact-source validated and ready for owner re-review. Dark, Light, and System themes; truthful account/Profile/workspace state; authoritative Community saves and completion-verified reviews; expanded previews; delayed loading; motion; synthetic email boundaries; and Experience Images are included. Round 2 remains `PENDING_OWNER_DECISION`; this branch is not merged or deployed, and live providers remain external.
+Correction Round 2 is locally exact-source validated and ready for owner re-review. Dark, Light, and System themes; truthful account/Profile/workspace state; authoritative Community saves and completion-verified reviews; expanded previews; delayed loading; motion; synthetic email boundaries; and Experience Images are included. Round 2 remains `PENDING_OWNER_DECISION`; the source is on main but not deployed, and live providers remain external.
 
 ## Phase 7 correction Round 3 status
 
 Correction Round 3 includes governed Profile imagery, six-digit verification,
 Resend plus task-owned synthetic delivery, canonical workspace entry separated
 from resource authority, route crossfades, account-menu motion, and Dark
-defaults. Owner Re-Review Round 3 remains `PENDING_OWNER_DECISION`; the branch is
-not merged or deployed.
+defaults. Owner Re-Review Round 3 remains `PENDING_OWNER_DECISION`; the source is
+on main but not deployed.
 
 ## Phase 7 correction Round 3 Patch A
 
-**Audience:** Account owners and the product owner. **Availability:** complete
-on the Project Homeport branch, not available on `main`. Patch A adds atomic
+**Audience:** Account owners and the product owner. **Availability:** available
+on main, not deployed. Patch A adds atomic
 pending registration, explicit duplicate display-name and email recovery,
 accessible password strength and confirmation status, ordinary unverified
 account sign-in without a code challenge, and generation-owned 280 ms route
