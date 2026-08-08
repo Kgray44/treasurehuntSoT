@@ -6,8 +6,8 @@ The private **Chronicle Passport** is available at `/passport`; a safe public
 **Profile** is resolved by optional canonical handle at `/profile/[handle]`.
 Wayfarer also provides private Chronicle history and an Artifact Cabinet;
 identity, consent, providers, typed preferences, and privacy remain
-Wayfarer-owned. Google and GitHub application OAuth is complete on its review
-branch and requires server-only provider configuration. Its local simulator is
+Wayfarer-owned. Google and GitHub application OAuth is available on main and
+requires server-only provider configuration. Its local simulator is
 test-only and is never live-provider proof.
 
 Production-oriented foundation and fully automated local demo for a private nautical-fantasy date-night Chronicle. All committed story material is generic development seed content; no final surprise content belongs in this public repository.
@@ -33,16 +33,17 @@ states and responsive presentation, and prove A-through-O integrated journeys
 against one immutable synthetic fixture family. The final owner walkthrough
 package and owned local runtime remain available. Owner Decision remains
 `PENDING_OWNER_DECISION`; mainline integration is not deployment, owner
-acceptance, or product acceptance. Live-provider validation is limited to the
-disposable Resend registration-verification path described below.
+acceptance, or product acceptance. Live-provider evidence includes the
+disposable Resend registration-verification path and the owner-observed OAuth
+development checks described below; neither is production deployment proof.
 
-The unreleased OAuth branch adds Google and GitHub sign-up, sign-in, and
-explicit linking through the same canonical Homeport account and session
-lifecycle. Isolated automated validation is complete. The owner reports that
+Mainline Google and GitHub OAuth adds sign-up, sign-in, and explicit linking
+through the same canonical Homeport account and session lifecycle. Isolated
+automated validation is complete. The owner reports that
 both real providers work in a development browser, and a redacted inspection
 independently confirmed the real Google identity/account/session persistence
-boundary. The retained staging runtime still does not contain this branch, and
-no deployment or production configuration change is claimed.
+boundary. Protected PR #10 integrated the source without deploying it or
+changing production configuration.
 
 Correction Round 3 Patch A stabilizes the mainline registration, ordinary
 sign-in, and page-switching paths that blocked continued owner review. Pending

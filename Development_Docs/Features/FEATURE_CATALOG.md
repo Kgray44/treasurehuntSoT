@@ -5,7 +5,7 @@ This generated catalog records completed, meaningful platform capabilities. It i
 ## Audited repository and commit
 
 Repository: `Kgray44/treasurehuntSoT`
-Audited source commit: `320c25c3e49be58b36be43254be75548b32655a6`
+Audited source commit: `b4fa3b4b3f50e3f22f82adace3b287b9cadace8a`
 
 ## Status vocabulary
 
@@ -1214,11 +1214,9 @@ Project Homeport now includes the integrated Whole Voyage plus Owner Correction 
 
 ---
 
-# Completed Branch Features Not Yet Available on Main
-
 ## FT-B008 - Google and GitHub Account Authentication
 
-**Status:** BRANCH COMPLETE NOT MERGED
+**Status:** MAINLINE
 **Program or subsystem:** Voyagewright OAuth
 
 Voyagewright adds first-class Google and GitHub sign-up, sign-in, and explicit account linking to the canonical Homeport account, verified-email, external-identity, session, and security-event lifecycle.
@@ -1241,10 +1239,9 @@ Voyagewright adds first-class Google and GitHub sign-up, sign-in, and explicit a
 
 ### Meaningful limitations
 
-- Not available on main until the OAuth branch is separately reviewed and integrated
 - Not deployed and no production configuration was changed
 - Repeatable automated provider lifecycle evidence is synthetic; the owner reports both real providers working in development, with Google persistence independently confirmed from redacted task-database aggregates and GitHub persistence remaining owner-observed
-- The supplied staging callbacks target a retained staging runtime that does not contain this OAuth branch, so direct staging-hosted callback execution still requires an exact compatible runtime
+- Live callback execution still requires an OAuth-capable runtime plus correctly registered provider credentials at the exact configured redirect URIs
 
 ### Evidence
 
@@ -1252,8 +1249,11 @@ Voyagewright adds first-class Google and GitHub sign-up, sign-in, and explicit a
 - test: `src/wayfarer/oauth.exchange.test.ts`
 - test: `tests/oauth/voyagewright-oauth.spec.ts`
 - completion-record: `Development_Docs/Validation/Voyagewright_Google_GitHub_OAuth_Validation_Record.md`
+- commit: `b4fa3b4b3f50e3f22f82adace3b287b9cadace8a`
 
 ---
+
+# Completed Branch Features Not Yet Available on Main
 
 # Deliberately Excluded Until Complete
 
@@ -1268,4 +1268,4 @@ Voyagewright adds first-class Google and GitHub sign-up, sign-in, and explicit a
 
 Update the owning machine-readable fragment only when completed work changes a major capability, important subfeature, availability, or meaningful limitation. Regenerate this file with `npm run features:sync`; never hand-edit it. Validate before closeout with `npm run features:validate`.
 
-Generation source commit: `320c25c3e49be58b36be43254be75548b32655a6`
+Generation source commit: `b4fa3b4b3f50e3f22f82adace3b287b9cadace8a`

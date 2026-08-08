@@ -12,15 +12,17 @@ last_reviewed: 2026-08-07
 
 ### Changed
 
-- Added branch-complete Google and GitHub application OAuth through the
-  canonical Homeport account/session system: first and returning sign-in,
+- Integrated Google and GitHub application OAuth on main through protected PR
+  #10. It uses the canonical Homeport account/session system for first and
+  returning sign-in,
   verified provider email, explicit linking, collision-safe no-auto-merge,
   last-login-method unlink protection, one-time state/nonce/PKCE, provider token
   discard, and desktop/mobile isolated browser coverage. The owner reports both
   real providers working in development; redacted task-database inspection
   independently confirmed Google identity/account/session persistence while
-  GitHub persistence remains owner-observed. This is not deployed, and the
-  supplied staging callbacks still return to a runtime without the OAuth branch.
+  GitHub persistence remains owner-observed. This is not deployed, and hosted
+  callbacks still require an OAuth-capable runtime plus correctly registered
+  provider applications.
 
 - Integrated Project Homeport Phases 1-7 and Correction Round 3 Patch A into
   main through protected PR #9 while preserving source history and the final

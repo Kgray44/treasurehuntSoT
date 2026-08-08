@@ -17,15 +17,16 @@ libraries, journals, profile and Passport surfaces, protected content, and
 animation presentation. Homeport reached main through protected PR #9; this is
 source integration, not deployment or owner acceptance.
 
-**Complete on a branch, not available on main:** Google and GitHub application
-OAuth add sign-up, sign-in, returning identity reuse, explicit account linking,
+**Available on main, not deployed:** Google and GitHub application OAuth adds
+sign-up, sign-in, returning identity reuse, explicit account linking,
 verified provider-email handling, duplicate-account prevention, token discard,
 and provider-aware unlink protection through the canonical Homeport account and
 session architecture. Desktop and mobile product integration evidence is local
 and synthetic. The owner reports both real providers working in a development
 browser; redacted task-database inspection independently confirmed Google
 identity/account/session persistence, while GitHub callback persistence remains
-owner-observed. The branch is not deployed.
+owner-observed. Protected PR #10 integrated the source; no production
+configuration or deployment changed.
 
 Phase 7 adds one immutable integrated synthetic fixture, isolated journey and
 walkthrough clones, A-through-O visible-control production-browser proof, 16
