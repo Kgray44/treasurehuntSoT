@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { canonicalPublicAppOrigin, PublicAppOriginError } from "@/homeport/public-app-origin";
 import { consumeRateLimit, rateLimitHeaders } from "@/lib/rate-limit";
 import { hashToken } from "@/lib/security";
 import { beginOAuthAuthorization, isOAuthProvider, oauthTestMode, type OAuthProviderName } from "@/wayfarer/oauth";
@@ -16,6 +17,13 @@ export async function GET(request: Request, context: { params: Promise<{ provide
       { error: "Wait before starting another provider sign-in." },
       { status: 429, headers: rateLimitHeaders(rate) },
     );
+  let publicOrigin: URL;
+  try {
+    publicOrigin = canonicalPublicAppOrigin();
+  } catch (cause) {
+    if (!(cause instanceof PublicAppOriginError)) throw cause;
+    return NextResponse.json({ error: "OAuth redirect configuration is unavailable." }, { status: 503 });
+  }
   const url = new URL(request.url);
   try {
     const simulation = oauthTestMode()
@@ -32,9 +40,9 @@ export async function GET(request: Request, context: { params: Promise<{ provide
       redirectPath: url.searchParams.get("returnTo") ?? undefined,
       simulation,
     });
-    return NextResponse.redirect(new URL(result.authorizationUrl, request.url), { status: 302 });
+    return NextResponse.redirect(new URL(result.authorizationUrl, publicOrigin), { status: 302 });
   } catch {
-    const destination = new URL("/sign-in", request.url);
+    const destination = new URL("/sign-in", publicOrigin);
     destination.searchParams.set("reason", "oauth-unavailable");
     destination.searchParams.set("provider", provider.toLowerCase());
     return NextResponse.redirect(destination, { status: 302 });

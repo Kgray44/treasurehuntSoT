@@ -25,6 +25,7 @@ secret store:
 - `VOYAGEWRIGHT_GITHUB_CLIENT_ID`
 - `VOYAGEWRIGHT_GITHUB_CLIENT_SECRET`
 - `VOYAGEWRIGHT_GITHUB_REDIRECT_URI`
+- `HOMEPORT_PUBLIC_APP_ORIGIN`
 
 Do not use `NEXT_PUBLIC_`, commit values, or paste values into logs, screenshots,
 issues, documentation, or test evidence. `.env.example` documents names only.
@@ -41,6 +42,21 @@ running at the protected staging origin:
 
 The scheme, hostname, path, and trailing-slash choice must match exactly between
 the provider application and the corresponding redirect variable.
+
+Provider callback registration and the browser destination after Voyagewright
+finishes the callback are separate settings. The provider redirect variables
+above remain the exact callback URLs. `HOMEPORT_PUBLIC_APP_ORIGIN` is the trusted
+server-side origin used for Voyagewright-owned success, cancellation, collision,
+invalid-state, linking, and unavailable-provider redirects after the provider
+returns. Set it to this exact value for staging:
+
+`https://staging.absoluterelativesystems.com`
+
+Voyagewright does not derive these browser redirects from `Host`,
+`X-Forwarded-Host`, or the internal request URL. Production rejects bind,
+loopback, private-network, and internal hostnames rather than exposing them in a
+`Location` response. Local development may use an explicitly configured local
+browser origin; `0.0.0.0` is a bind address and is never a browser origin.
 
 For a true local live-provider test, create or select provider application
 credentials whose registered callback exactly matches the local runtime, for

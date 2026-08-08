@@ -93,3 +93,24 @@ No production configuration or deployment was changed. A hosted lifecycle
 still needs an OAuth-capable runtime and correctly registered provider
 applications at those exact callbacks. This record does not infer or disclose
 provider-console values.
+
+## Trusted public redirect-origin correction
+
+The OAuth application redirect boundary now uses the existing server-only
+`HOMEPORT_PUBLIC_APP_ORIGIN` concept for every Voyagewright-owned browser
+destination. The internal request URL is retained only to parse callback query
+parameters. Neither `Host` nor forwarded-host headers select the destination.
+Production configuration fails closed for bind, loopback, private-network,
+single-label container, and reserved internal hostnames. Safe relative return
+paths remain governed by the existing `safeReturnTo` contract.
+
+Focused regression coverage sends both Google and GitHub callback routes an
+internal request URL at `http://0.0.0.0:3000` plus hostile proxy-host headers
+while configuring
+`https://staging.absoluterelativesystems.com` as the public origin. It proves
+that sign-in success (including `signedInWith`), cancellation, invalid or
+expired state, account linking, linking failure, provider unavailability, email
+collision, identity collision, and other callback failures emit only the public
+origin. Separate provider tests continue to assert the exact Google and GitHub
+registered callback values and token-exchange `redirect_uri` values. Live
+staging acceptance remains a post-publication deployment check.

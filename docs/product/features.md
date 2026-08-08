@@ -36,7 +36,10 @@ rules, immutable provider identifiers, collision-safe deliberate linking, and
 token-discard behavior. Isolated browser validation is synthetic; live-provider
 authorization was additionally owner-observed for both providers in development,
 with the real Google identity/account/session persistence boundary independently
-confirmed from redacted task-owned database aggregates. [Linked
+confirmed from redacted task-owned database aggregates. Application-owned
+post-callback redirects use the configured public browser origin and reject
+internal production origins without trusting proxy host headers; hosted staging
+acceptance remains separate. [Linked
 identities](../user/linked-identities.md).
 
 ## Global shell and wayfinding

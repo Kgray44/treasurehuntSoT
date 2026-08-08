@@ -15,7 +15,10 @@ Before enabling a provider, confirm its storage, scanning, and recovery behavior
 For a non-loopback Next.js development hostname, configure only exact names in
 `HOMEPORT_ALLOWED_DEV_ORIGINS`; never use wildcards, schemes, ports, or paths.
 Set `HOMEPORT_PUBLIC_APP_ORIGIN` to the exact public HTTP(S) origin so account
-links do not inherit a loopback address. Origin diagnostics are disabled unless
+links and OAuth post-callback redirects do not inherit a bind, loopback, or
+reverse-proxy address. Browser destinations do not trust arbitrary `Host` or
+forwarded-host headers; production fails closed for bind, loopback,
+private-network, and internal hostnames. Origin diagnostics are disabled unless
 `HOMEPORT_ORIGIN_DIAGNOSTICS=1` and are unavailable in production.
 
 Google and GitHub application OAuth require separate server-only credentials

@@ -12,6 +12,13 @@ last_reviewed: 2026-08-07
 
 ### Changed
 
+- Anchored every Voyagewright-owned OAuth success and failure redirect to the
+  exact configured `HOMEPORT_PUBLIC_APP_ORIGIN` rather than the internal request
+  URL. Google and GitHub success, cancellation, invalid/expired state, email and
+  identity collisions, account linking, linking failure, and provider-unavailable
+  paths now reject bind, loopback, private-network, internal-host, and
+  Host-header injection leaks while preserving the exact provider callback URIs.
+
 - Integrated Google and GitHub application OAuth on main through protected PR
   #10. It uses the canonical Homeport account/session system for first and
   returning sign-in,
