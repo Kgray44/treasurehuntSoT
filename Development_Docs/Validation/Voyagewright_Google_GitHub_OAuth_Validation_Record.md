@@ -1,38 +1,92 @@
 ---
-title: Voyagewright Google and GitHub OAuth Validation Record
+title: Voyagewright Google and GitHub OAuth Validation and Completion Record
 audience: engineering
 status: current
 ---
 
-# Voyagewright Google and GitHub OAuth Validation Record
+# Voyagewright Google and GitHub OAuth Validation and Completion Record
 
-| Field          | Value                                                 |
-| -------------- | ----------------------------------------------------- |
-| Program        | Voyagewright OAuth                                    |
-| Record type    | Implementation and validation                         |
-| Date           | 2026-08-07                                            |
-| Base           | `320c25c3e49be58b36be43254be75548b32655a6`            |
-| Branch         | `codex/voyagewright-google-github-auth`               |
-| Integration    | PR #10 / `b4fa3b4b3f50e3f22f82adace3b287b9cadace8a`   |
-| Environment    | Task-owned SQLite and isolated development host       |
-| Secret policy  | No credential values retained in evidence             |
-| External state | Owner reports both live; Google persistence confirmed |
+| Field                     | Value                                                               |
+| ------------------------- | ------------------------------------------------------------------- |
+| Program                   | Voyagewright OAuth                                                  |
+| Record type               | Implementation, validation, and completion receipt                  |
+| Closure date              | 2026-08-08                                                          |
+| Final capability status   | **COMPLETE / ACCEPTED / MAINLINE**                                  |
+| Original integration      | PR #10 / `b4fa3b4b3f50e3f22f82adace3b287b9cadace8a`                 |
+| Public-origin correction  | PR #12 / `7675a9e3c02cb1bad18812c65010e9310d9b977c`                 |
+| Accepted mainline/runtime | `f7bb10064f831a06e350a298ca8b380274d5f931`                          |
+| Environment               | Protected staging with a task-owned isolated OAuth database         |
+| Staging origin            | `https://staging.absoluterelativesystems.com`                       |
+| Owner live acceptance     | Google PASS; GitHub PASS                                            |
+| Acceptance classification | Owner-observed real-provider success                                |
+| Automated acceptance      | PASS                                                                |
+| Sounding Line             | PASS for implementation/public-origin publication                   |
+| Secret policy             | No credentials, tokens, codes, email addresses, or account IDs kept |
+| Production deployment     | Outside this staging capability closure                             |
+
+## Final acceptance decision
+
+Voyagewright Google and GitHub OAuth is complete, mainline, and accepted on the
+protected staging experience. The implementation, canonical account and session
+integration, deterministic protocol and security coverage, trusted public-origin
+correction, protected-main publication, and owner-observed real-provider
+acceptance have all passed. No OAuth implementation or staging-acceptance blocker
+remains.
+
+The owner explicitly reports successful real Google and real GitHub sign-in and
+sign-up through the protected staging experience on 2026-08-08. Both providers
+returned through the exact staging callbacks, completed authentication in
+Voyagewright, and returned to a working application destination without exposing
+`0.0.0.0`, `localhost`, `127.0.0.1`, or another internal origin.
+
+This is `OWNER_OBSERVED_LIVE_PROVIDER_ACCEPTANCE = PASS`. It is not classified as
+Codex-automated live-provider acceptance. Codex did not enter owner credentials,
+observe or record secret provider interactions, retain authorization responses,
+or independently reconstruct the owner's live evidence.
+
+## Capability acceptance matrix
+
+| Capability                                   | Result | Authority                                                                |
+| -------------------------------------------- | ------ | ------------------------------------------------------------------------ |
+| Google implemented and configured            | PASS   | Mainline source, exact staging callback, and runtime configuration       |
+| Google automated validation                  | PASS   | Focused protocol/security tests and deterministic lifecycle browser lane |
+| Google real staging sign-in/sign-up          | PASS   | Owner-observed real-provider acceptance                                  |
+| GitHub implemented and configured            | PASS   | Mainline source, exact staging callback, and runtime configuration       |
+| GitHub automated validation                  | PASS   | Focused protocol/security tests and deterministic lifecycle browser lane |
+| GitHub real staging sign-in/sign-up          | PASS   | Owner-observed real-provider acceptance                                  |
+| Canonical account integration                | PASS   | Automated repository validation                                          |
+| Canonical `AccountSession` integration       | PASS   | Automated repository validation                                          |
+| First-time provider account creation         | PASS   | Automated validation and owner-observed staging sign-up                  |
+| Returning provider sign-in                   | PASS   | Automated validation and owner-observed staging sign-in                  |
+| Explicit account linking and linking failure | PASS   | Automated repository validation                                          |
+| Email and identity collision safety          | PASS   | Automated repository validation                                          |
+| No automatic email-based account merging     | PASS   | Automated repository validation                                          |
+| Last-login-method unlink protection          | PASS   | Automated repository validation                                          |
+| One-time state and CSRF binding              | PASS   | Automated protocol/security validation                                   |
+| S256 PKCE                                    | PASS   | Automated protocol/security validation                                   |
+| Google OIDC nonce and token validation       | PASS   | Automated protocol/security validation                                   |
+| Safe return handling                         | PASS   | Automated route and lifecycle validation                                 |
+| Trusted public-origin redirect handling      | PASS   | Automated regression tests and staging boundary acceptance               |
+| Internal-origin leak                         | NONE   | Regression protected; none owner-observed in either real provider flow   |
+| Provider-token discard                       | PASS   | Automated persistence validation                                         |
+| Email/password regression compatibility      | PASS   | Automated repository and browser validation                              |
+| Protected staging                            | PASS   | Automated boundary checks plus owner-observed real-provider acceptance   |
 
 ## Scope and architecture
 
-Google and GitHub now enter the existing `UserAccount`, `PlayerProfile`,
+Google and GitHub enter the existing `UserAccount`, `PlayerProfile`,
 `AccountEmail`, `AccountRoleAssignment`, `ExternalIdentity`, `AccountSession`,
 and `SecurityEvent` architecture. There is no separate account table, session
 cookie, or provider-token store. Sign-in attempts are one-time, ten-minute,
 provider- and intent-bound records with hashed state and nonce plus an S256 PKCE
 verifier. Linking is additionally bound to the authenticated account.
 
-Google validates the authorization-code response through provider token
-exchange and RS256/JWKS verification, accepted issuer, exact audience and
-authorized party when required, expiry/issued time, nonce, immutable `sub`, and
-verified email. GitHub exchanges with PKCE, resolves `/user` on every sign-in,
-uses the immutable numeric user ID, and selects a primary verified or fallback
-verified email from `/user/emails`. Provider access tokens are not persisted.
+Google validates the authorization-code response through provider token exchange
+and RS256/JWKS verification, accepted issuer, exact audience and authorized party
+when required, expiry/issued time, nonce, immutable `sub`, and verified email.
+GitHub exchanges with PKCE, resolves `/user` on every sign-in, uses the immutable
+numeric user ID, and selects a primary verified or fallback verified email from
+`/user/emails`. Provider access tokens are not persisted.
 
 A first provider identity creates one active canonical account with a verified
 email and Player role. A returning immutable identity creates a new ordinary
@@ -41,76 +95,80 @@ email collision fails closed and requires password or previously linked-provider
 sign-in followed by explicit connection. Database uniqueness remains the final
 race boundary.
 
-## Validation
+## Automated and Codex-verified evidence
 
 - Focused Vitest covers provider availability, exact callbacks, scopes,
   state/nonce/PKCE persistence, unsafe returns, Google signed-token verification
   and authorized-party rejection, GitHub immutable ID and verified email,
-  provider lifecycle compatibility, and unlink security.
-- Isolated Playwright covers Google and GitHub independently: first and
-  returning sign-in, account and identity rows, verified email, session
-  persistence across reload and tabs, logout, redirects, password registration
-  and unverified sign-in, email collision without duplicate creation, explicit
-  linking, linked-provider sign-in, cancellation, invalid state, keyboard,
-  reduced motion, and mobile layout.
-- SQLite migration deployment is executed against a newly created task-owned
-  database before every browser run. Production-schema validation and repository
-  gates remain part of final branch validation.
+  provider lifecycle compatibility, public-origin selection, hostile internal
+  request origins, Host-header injection resistance, and unlink security.
+- Isolated Playwright covers Google and GitHub independently: first and returning
+  sign-in, account and identity rows, verified email, session persistence across
+  reload and tabs, logout, redirects, password registration and unverified
+  sign-in, email collision without duplicate creation, explicit linking,
+  linked-provider sign-in, cancellation, invalid state, keyboard, reduced
+  motion, and mobile layout.
+- Staging boundary checks covered provider authorization starts, exact callback
+  registration, cancellation and failure returns, configured public-origin
+  behavior, and absence of internal origins from browser-visible `Location`
+  values. These checks did not require or claim owner credentials.
+- Sounding Line selected and passed the implementation/publication gates, and
+  the protected-main checks passed before the public-origin correction merged.
 
-## Development provider observation
+The repeatable lifecycle browser lane intentionally uses the non-production
+deterministic provider adapter. It establishes application behavior and security
+contracts but is not relabeled as real-provider authorization.
 
-The owner reports that both real Google and real GitHub sign-in worked from a
-separate development browser. That is owner-observed live-provider evidence;
-Codex did not observe or record either provider consent screen and retained no
-authorization response or personal provider value.
+## Owner-observed live-provider evidence
 
-A subsequent redacted inspection of the task-owned SQLite database independently
-confirmed the Google callback boundary. It contained one non-synthetic Google
-identity connected to one active canonical account, one verified primary email,
-and one active ordinary session. The identity was enabled for login and provider
-verified, and it retained no provider access token. The same inspection found no
-duplicate provider-subject row. It did not find a non-synthetic numeric GitHub
-identity, so GitHub callback persistence remains owner-observed rather than
-independently database-confirmed. Synthetic provider lifecycle coverage remains
-the repeatable authority for first/returning identity behavior, collision
-handling, linking, session persistence, cancellation, logout, and password
-compatibility.
+The owner personally completed both real provider flows through
+`https://staging.absoluterelativesystems.com` after the public-origin correction
+was merged and the exact accepted mainline runtime was started:
 
-## External boundary
+- Google OAuth sign-in/sign-up: **PASS**
+- GitHub OAuth sign-in/sign-up: **PASS**
+- successful return through each staging callback: **PASS**
+- successful Voyagewright authentication and final application return: **PASS**
+- internal-origin redirect observed: **NO**
 
-The supplied credentials are stored only in ignored `.env.local`. Their
-configured callback values point to
-`https://staging.absoluterelativesystems.com/api/auth/providers/google/callback`
-and
-`https://staging.absoluterelativesystems.com/api/auth/providers/github/callback`.
-Protected PR #10 integrated the OAuth source on main. The task-owned
-development runtime was then moved to port 3000 on the exact merged tree and
-proved both real-provider authorization starts with the configured callbacks,
-one-time state, and S256 PKCE. This local runtime does not claim a staging or
-production deployment.
+The live owner acceptance did not use the synthetic test adapter. No screenshot,
+authorization code, token, credential, personal email, provider subject, or
+account identifier is manufactured or retained by this record.
 
-No production configuration or deployment was changed. A hosted lifecycle
-still needs an OAuth-capable runtime and correctly registered provider
-applications at those exact callbacks. This record does not infer or disclose
-provider-console values.
+## Exact callbacks and trusted public origin
 
-## Trusted public redirect-origin correction
+The registered provider callbacks remain separate from Voyagewright's
+post-callback browser destination and were not changed by the public-origin fix:
 
-The OAuth application redirect boundary now uses the existing server-only
-`HOMEPORT_PUBLIC_APP_ORIGIN` concept for every Voyagewright-owned browser
-destination. The internal request URL is retained only to parse callback query
-parameters. Neither `Host` nor forwarded-host headers select the destination.
-Production configuration fails closed for bind, loopback, private-network,
-single-label container, and reserved internal hostnames. Safe relative return
-paths remain governed by the existing `safeReturnTo` contract.
+- Google:
+  `https://staging.absoluterelativesystems.com/api/auth/providers/google/callback`
+- GitHub:
+  `https://staging.absoluterelativesystems.com/api/auth/providers/github/callback`
+
+Every Voyagewright-owned success, cancellation, collision, invalid/expired-state,
+linking, linking-failure, and provider-unavailable destination uses the trusted
+server-side `HOMEPORT_PUBLIC_APP_ORIGIN`. The staging value is
+`https://staging.absoluterelativesystems.com`. Neither `Host` nor forwarded-host
+headers select the browser destination. Production configuration fails closed
+for bind, loopback, private-network, single-label container, and reserved
+internal hostnames. Safe relative return paths remain governed by the existing
+`safeReturnTo` contract.
 
 Focused regression coverage sends both Google and GitHub callback routes an
 internal request URL at `http://0.0.0.0:3000` plus hostile proxy-host headers
-while configuring
-`https://staging.absoluterelativesystems.com` as the public origin. It proves
-that sign-in success (including `signedInWith`), cancellation, invalid or
-expired state, account linking, linking failure, provider unavailability, email
+while configuring the staging public origin. It proves that sign-in success
+(including provider-specific `signedInWith`), cancellation, invalid or expired
+state, account linking, linking failure, provider unavailability, email
 collision, identity collision, and other callback failures emit only the public
-origin. Separate provider tests continue to assert the exact Google and GitHub
-registered callback values and token-exchange `redirect_uri` values. Live
-staging acceptance remains a post-publication deployment check.
+origin. Separate provider tests assert the exact callback and token-exchange
+`redirect_uri` values.
+
+## Closure boundary
+
+This record closes Voyagewright Google and GitHub OAuth implementation,
+mainline integration, protected-staging operation, automated validation, and
+owner acceptance. Production provider configuration and production deployment
+remain separately governed operational work and are not implied by staging
+acceptance.
+
+**FINAL CAPABILITY STATUS: COMPLETE.**

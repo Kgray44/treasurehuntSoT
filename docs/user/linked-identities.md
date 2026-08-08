@@ -3,7 +3,7 @@ title: Linked identities
 audience: product-users
 status: current
 canonical_for: linked-identities
-last_reviewed: 2026-08-07
+last_reviewed: 2026-08-08
 ---
 
 # Linked identities
@@ -22,13 +22,13 @@ sign-in method. A provider-only account may use a recent provider-authenticated
 session for the unlink reauthentication boundary; a password account must
 confirm its password.
 
-Google and GitHub are available on main through protected PR #10, but are not
-deployed. The owner reports both providers working in development; redacted
-database inspection independently confirmed Google persistence while GitHub
-persistence remains owner-observed. Local automated proof uses an explicit
-non-production simulator and is not by itself a live-provider claim. Discord,
-Steam, and Microsoft/Xbox remain compatibility provider adapters with truthful
-configuration-required states.
+Google and GitHub are available on main and owner-accepted through the protected
+staging experience. The owner completed real sign-in/sign-up with both providers
+and returned successfully to Voyagewright without an internal-origin redirect.
+Repeatable automated proof uses an explicit non-production adapter and remains
+classified separately from that owner-observed live acceptance. Production
+deployment is not implied. Discord, Steam, and Microsoft/Xbox remain
+compatibility provider adapters with truthful configuration-required states.
 
 ## Phase 7 correction Round 1 status
 

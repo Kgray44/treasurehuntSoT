@@ -3,7 +3,7 @@ title: Changelog
 audience: product-engineering
 status: current
 canonical_for: repository-changelog
-last_reviewed: 2026-08-07
+last_reviewed: 2026-08-08
 ---
 
 # Changelog
@@ -18,18 +18,22 @@ last_reviewed: 2026-08-07
   identity collisions, account linking, linking failure, and provider-unavailable
   paths now reject bind, loopback, private-network, internal-host, and
   Host-header injection leaks while preserving the exact provider callback URIs.
+  After protected publication, the owner completed real Google and GitHub
+  sign-in/sign-up through staging, returned successfully to Voyagewright, and
+  observed no internal-origin redirect. Voyagewright Google and GitHub OAuth is
+  accepted complete on protected staging; production deployment remains separate.
 
 - Integrated Google and GitHub application OAuth on main through protected PR
   #10. It uses the canonical Homeport account/session system for first and
   returning sign-in,
   verified provider email, explicit linking, collision-safe no-auto-merge,
   last-login-method unlink protection, one-time state/nonce/PKCE, provider token
-  discard, and desktop/mobile isolated browser coverage. The owner reports both
-  real providers working in development; redacted task-database inspection
-  independently confirmed Google identity/account/session persistence while
-  GitHub persistence remains owner-observed. This is not deployed, and hosted
-  callbacks still require an OAuth-capable runtime plus correctly registered
-  provider applications.
+  discard, and desktop/mobile isolated browser coverage. Deterministic automated
+  lifecycle/security acceptance passed, and owner-observed real Google and
+  GitHub staging acceptance now passes separately. Protected PR #12 integrated
+  trusted public-origin browser redirects, while exact provider callbacks remain
+  unchanged. Production callbacks still require a separately governed
+  OAuth-capable runtime and correctly registered provider applications.
 
 - Integrated Project Homeport Phases 1-7 and Correction Round 3 Patch A into
   main through protected PR #9 while preserving source history and the final

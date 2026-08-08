@@ -3,7 +3,7 @@ title: Google and GitHub OAuth configuration
 audience: administrator
 status: current
 canonical_for: oauth-provider-configuration
-last_reviewed: 2026-08-07
+last_reviewed: 2026-08-08
 ---
 
 # Google and GitHub OAuth configuration
@@ -32,8 +32,7 @@ issues, documentation, or test evidence. `.env.example` documents names only.
 
 ## Exact staging callbacks
 
-Register and configure these exact values when the OAuth-capable branch is
-running at the protected staging origin:
+The protected staging runtime uses these exact registered callback values:
 
 - Google:
   `https://staging.absoluterelativesystems.com/api/auth/providers/google/callback`
@@ -42,6 +41,10 @@ running at the protected staging origin:
 
 The scheme, hostname, path, and trailing-slash choice must match exactly between
 the provider application and the corresponding redirect variable.
+
+The owner accepted real Google and GitHub authentication through these callbacks
+on protected staging. That acceptance does not authorize changing either
+callback and does not imply production provider configuration or deployment.
 
 Provider callback registration and the browser destination after Voyagewright
 finishes the callback are separate settings. The provider redirect variables
