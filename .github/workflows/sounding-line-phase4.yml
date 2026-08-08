@@ -50,6 +50,11 @@ jobs:
       contents: read
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          # Feature Catalog branch-complete evidence must resolve both main and
+          # the PR branch; the default one-commit PR merge checkout exposes
+          # neither remote ref nor enough ancestry to prove their relationship.
+          fetch-depth: 0
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
           node-version-file: .nvmrc
