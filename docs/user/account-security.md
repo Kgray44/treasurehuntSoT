@@ -3,7 +3,7 @@ title: Account security and connected identities
 audience: user
 status: current
 canonical_for: account-security-guide
-last_reviewed: 2026-08-07
+last_reviewed: 2026-08-08
 ---
 
 # Account security and connected identities
@@ -23,11 +23,11 @@ not pretend a disabled or simulator adapter is a live provider.
 deactivation, or deletion operations. An unavailable operation is labelled;
 there is no decorative destructive button.
 
-These surfaces are available on main through Project Homeport. Google and
-GitHub OAuth are also on main through protected PR #10, but are not deployed.
-The owner reports both real providers working in development; redacted database
-inspection independently confirmed Google persistence while GitHub persistence
-remains owner-observed.
+These surfaces are available on main through Project Homeport. Google and GitHub
+OAuth are also on main and owner-accepted through the protected staging
+experience. The owner completed real sign-in/sign-up with both providers and
+returned successfully to Voyagewright without an internal-origin redirect.
+Production provider configuration and deployment remain separately governed.
 
 Phase 5 gives each account section a visible desktop/mobile entry and a stable
 return to Personal Harbor. Password-reset and verification URLs remain

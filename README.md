@@ -34,16 +34,18 @@ against one immutable synthetic fixture family. The final owner walkthrough
 package and owned local runtime remain available. Owner Decision remains
 `PENDING_OWNER_DECISION`; mainline integration is not deployment, owner
 acceptance, or product acceptance. Live-provider evidence includes the
-disposable Resend registration-verification path and the owner-observed OAuth
-development checks described below; neither is production deployment proof.
+disposable Resend registration-verification path and owner-observed real Google
+and GitHub staging acceptance described below; neither is production deployment
+proof.
 
 Mainline Google and GitHub OAuth adds sign-up, sign-in, and explicit linking
 through the same canonical Homeport account and session lifecycle. Isolated
-automated validation is complete. The owner reports that
-both real providers work in a development browser, and a redacted inspection
-independently confirmed the real Google identity/account/session persistence
-boundary. Protected PR #10 integrated the source without deploying it or
-changing production configuration.
+automated validation is complete. The owner successfully accepted both real
+providers end to end through the protected staging experience after the trusted
+public-origin correction, with no internal-origin redirect. Protected PR #10
+integrated the provider lifecycle and protected PR #12 integrated the redirect
+correction. Production provider configuration and deployment remain separately
+governed.
 
 Correction Round 3 Patch A stabilizes the mainline registration, ordinary
 sign-in, and page-switching paths that blocked continued owner review. Pending
@@ -150,9 +152,10 @@ Full setup, validation stages, output locations, clean-clone instructions, and t
 
 Wayfarer Phases 3 and 4, Sealed Hold Phases 3 and 4, Harborlight Phase 3, True
 North, Ledgerlight, and the Feature Catalog are consolidated on main. Focused
-and integration evidence is retained in `Development_Docs`; live provider
-authorization, production MySQL, deployment, and hosted storage/scanning proof
-remain external validation.
+and integration evidence is retained in `Development_Docs`; Google and GitHub
+now have owner-observed real-provider staging acceptance. Production MySQL,
+production deployment, other external providers, and hosted storage/scanning
+proof remain separately governed external validation.
 
 ## Repository workflow
 

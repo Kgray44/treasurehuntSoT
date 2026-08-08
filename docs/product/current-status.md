@@ -3,7 +3,7 @@ title: Current status
 audience: product
 status: current
 canonical_for: product-current-status
-last_reviewed: 2026-08-07
+last_reviewed: 2026-08-08
 ---
 
 # Current status
@@ -17,21 +17,19 @@ libraries, journals, profile and Passport surfaces, protected content, and
 animation presentation. Homeport reached main through protected PR #9; this is
 source integration, not deployment or owner acceptance.
 
-**Available on main, not deployed:** Google and GitHub application OAuth adds
+**Available on main and accepted on protected staging, not production deployed:**
+Google and GitHub application OAuth adds
 sign-up, sign-in, returning identity reuse, explicit account linking,
 verified provider-email handling, duplicate-account prevention, token discard,
 and provider-aware unlink protection through the canonical Homeport account and
-session architecture. Desktop and mobile product integration evidence is local
-and synthetic. The owner reports both real providers working in a development
-browser; redacted task-database inspection independently confirmed Google
-identity/account/session persistence, while GitHub callback persistence remains
-owner-observed. Protected PR #10 integrated the source; no production
-configuration or deployment changed. OAuth application redirects now use the
-explicit trusted public origin rather than the internal request origin across
-success, cancellation, invalid/expired state, collisions, linking, and provider
-failure. Production rejects bind, loopback, private-network, and internal
-origins. Live staging acceptance of the corrected mainline runtime remains a
-separate deployment check.
+session architecture. Deterministic desktop/mobile lifecycle and protocol
+security validation passed. The owner then successfully completed real Google
+and real GitHub sign-in/sign-up through the protected staging experience and
+confirmed successful Voyagewright return with no bind, loopback, or internal
+origin redirect. Protected PR #10 integrated the provider lifecycle, protected
+PR #12 corrected every application-owned post-callback redirect to use the
+trusted public origin, and protected PR #13 finalized mainline catalog
+provenance. No production provider configuration or deployment is claimed.
 
 Phase 7 adds one immutable integrated synthetic fixture, isolated journey and
 walkthrough clones, A-through-O visible-control production-browser proof, 16
@@ -43,18 +41,19 @@ It is ready for owner walkthrough. Owner Decision remains
 **Development-only or compatibility-only:** development showcases, legacy routes, and package-exchange integrations are not a promise of a generally hosted service.
 
 **Focused and integration validated:** repository evidence covers the merged
-systems' focused and integration scopes. **External validation pending:** live
-third-party storage, scanning, provider, production MySQL, and deployment
-behavior require appropriately configured environments; local adapters and
-tests do not establish live-provider proof.
+systems' focused and integration scopes. Google and GitHub additionally have
+owner-observed real-provider staging acceptance. **External validation pending:**
+other live third-party providers, storage, scanning, production MySQL, and
+production deployment behavior require appropriately configured environments;
+local adapters and tests do not establish those external boundaries.
 
 **Browser matrix exception:** `P34-BME-20260729` is an explicit risk acceptance
 for the Phase 3-4 browser matrix. It is not a full matrix pass and does not
 change the external-validation boundary.
 
-**Planned or not validated:** Project Homeport owner acceptance and corrected
-staging-hosted Google and GitHub OAuth acceptance remain pending, as do Harborlight Phase 4,
-Project Drydock, Project Landfall, and Project Watchglass. Project Sounding
+**Planned or not validated:** Project Homeport owner acceptance, Harborlight
+Phase 4, Project Drydock, Project Landfall, and Project Watchglass remain
+pending. Project Sounding
 Line is the repository validation authority used for Homeport decisions; that
 use does not claim a new user-facing Sounding Line product. Historic records
 are evidence, not a release promise.

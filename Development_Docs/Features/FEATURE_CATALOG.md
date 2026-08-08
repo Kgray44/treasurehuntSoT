@@ -5,7 +5,7 @@ This generated catalog records completed, meaningful platform capabilities. It i
 ## Audited repository and commit
 
 Repository: `Kgray44/treasurehuntSoT`
-Audited source commit: `7754cbb444679daa93fcce4ffe74feea802abf02`
+Audited source commit: `f7bb10064f831a06e350a298ca8b380274d5f931`
 
 ## Status vocabulary
 
@@ -1232,7 +1232,8 @@ Voyagewright adds first-class Google and GitHub sign-up, sign-in, and explicit a
 - Password authentication compatibility and last-login-method unlink protection
 - Provider token discard and public-safe linked-identity projection
 - Trusted public-origin post-callback redirects with internal-host and Host-header rejection
-- Desktop and mobile synthetic browser lifecycle validation
+- Desktop and mobile deterministic browser lifecycle validation
+- Owner-accepted real Google and GitHub sign-in and sign-up through protected staging
 
 ### Primary surfaces
 
@@ -1240,9 +1241,9 @@ Voyagewright adds first-class Google and GitHub sign-up, sign-in, and explicit a
 
 ### Meaningful limitations
 
-- Not deployed and no production configuration was changed
-- Repeatable automated provider lifecycle evidence is synthetic; the owner reports both real providers working in development, with Google persistence independently confirmed from redacted task-database aggregates and GitHub persistence remaining owner-observed
-- Live callback execution still requires an OAuth-capable runtime plus correctly registered provider credentials at the exact configured redirect URIs
+- Protected staging is accepted; production provider configuration and production deployment remain separately governed and are not claimed
+- Repeatable automated provider lifecycle evidence uses a deterministic non-production adapter; real Google and GitHub staging success is separately classified as owner-observed acceptance
+- Live callback execution requires an OAuth-capable runtime plus correctly registered provider credentials at the exact configured redirect URIs
 
 ### Evidence
 
@@ -1253,6 +1254,7 @@ Voyagewright adds first-class Google and GitHub sign-up, sign-in, and explicit a
 - test: `tests/oauth/voyagewright-oauth.spec.ts`
 - completion-record: `Development_Docs/Validation/Voyagewright_Google_GitHub_OAuth_Validation_Record.md`
 - commit: `b4fa3b4b3f50e3f22f82adace3b287b9cadace8a`
+- commit: `7675a9e3c02cb1bad18812c65010e9310d9b977c`
 
 ---
 
@@ -1271,4 +1273,4 @@ Voyagewright adds first-class Google and GitHub sign-up, sign-in, and explicit a
 
 Update the owning machine-readable fragment only when completed work changes a major capability, important subfeature, availability, or meaningful limitation. Regenerate this file with `npm run features:sync`; never hand-edit it. Validate before closeout with `npm run features:validate`.
 
-Generation source commit: `7754cbb444679daa93fcce4ffe74feea802abf02`
+Generation source commit: `f7bb10064f831a06e350a298ca8b380274d5f931`

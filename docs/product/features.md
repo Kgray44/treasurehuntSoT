@@ -3,7 +3,7 @@ title: Features and subfeatures
 audience: product
 status: current
 canonical_for: product-features
-last_reviewed: 2026-08-07
+last_reviewed: 2026-08-08
 ---
 
 # Features and subfeatures
@@ -30,16 +30,15 @@ guide](../user/account-security.md). Mainline availability is not deployment or
 owner acceptance.
 
 Google and GitHub sign-up, sign-in, and explicit account linking are complete
-on main through protected PR #10, but are not deployed. Both providers use the
-canonical Homeport account/session lifecycle, verified-email
-rules, immutable provider identifiers, collision-safe deliberate linking, and
-token-discard behavior. Isolated browser validation is synthetic; live-provider
-authorization was additionally owner-observed for both providers in development,
-with the real Google identity/account/session persistence boundary independently
-confirmed from redacted task-owned database aggregates. Application-owned
-post-callback redirects use the configured public browser origin and reject
-internal production origins without trusting proxy host headers; hosted staging
-acceptance remains separate. [Linked
+on main and accepted through protected staging. Both providers use the canonical
+Homeport account/session lifecycle, verified-email rules, immutable provider
+identifiers, collision-safe deliberate linking, and token-discard behavior.
+Deterministic browser validation covers the repeatable lifecycle and security
+contracts; the owner separately completed real Google and GitHub sign-in/sign-up
+through staging. Application-owned post-callback redirects use the configured
+public browser origin and reject internal production origins without trusting
+proxy host headers. Production provider configuration and deployment remain
+separately governed. [Linked
 identities](../user/linked-identities.md).
 
 ## Global shell and wayfinding
