@@ -10,11 +10,11 @@ Use [INDEX.md](INDEX.md) for categories and `document-index.json` for the machin
 
 Project Homeport is now integrated on main through protected PR #9; see the
 [mainline integration record](Projects/Project_Homeport/Project_Homeport_Mainline_Integration_Record.md).
-Google and GitHub application authentication remains on its separate review
-branch with complete isolated product integration. The owner reports both real
-providers working in development; redacted task-database inspection independently
-confirmed the Google identity/account/session boundary while GitHub persistence
-remains owner-observed. See the [OAuth validation record](Validation/Voyagewright_Google_GitHub_OAuth_Validation_Record.md).
+Google and GitHub application authentication is integrated on main through
+protected PR #10. The owner reports both real providers working in development;
+redacted task-database inspection independently confirmed the Google
+identity/account/session boundary while GitHub persistence remains
+owner-observed. See the [OAuth validation record](Validation/Voyagewright_Google_GitHub_OAuth_Validation_Record.md).
 
 ## Engineering-record template
 

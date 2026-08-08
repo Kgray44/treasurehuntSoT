@@ -40,8 +40,8 @@ handlers, with no omitted page source. It adds screen/state/responsive evidence
 without changing route ownership or creating a second navigation authority.
 The result is exact-source validation retained on main, not deployment proof.
 
-The Google and GitHub OAuth review branch adds public provider discovery and
-start routes plus the exact callbacks
+Mainline Google and GitHub OAuth adds public provider discovery and start routes
+plus the exact callbacks
 `/api/auth/providers/google/callback` and
 `/api/auth/providers/github/callback`. The matching provider segment also owns
 an authorization start. A simulator route exists only in explicit

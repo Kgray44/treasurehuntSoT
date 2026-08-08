@@ -13,6 +13,7 @@ status: current
 | Date           | 2026-08-07                                            |
 | Base           | `320c25c3e49be58b36be43254be75548b32655a6`            |
 | Branch         | `codex/voyagewright-google-github-auth`               |
+| Integration    | PR #10 / `b4fa3b4b3f50e3f22f82adace3b287b9cadace8a`   |
 | Environment    | Task-owned SQLite and isolated development host       |
 | Secret policy  | No credential values retained in evidence             |
 | External state | Owner reports both live; Google persistence confirmed |
@@ -82,11 +83,13 @@ configured callback values point to
 `https://staging.absoluterelativesystems.com/api/auth/providers/google/callback`
 and
 `https://staging.absoluterelativesystems.com/api/auth/providers/github/callback`.
-The retained staging runtime intentionally remains on accepted Homeport source
-and does not contain this OAuth branch. It therefore cannot execute these
-callback routes directly. The owner's development-browser result does not alter
-that retained runtime or claim a staging deployment.
+Protected PR #10 integrated the OAuth source on main. The task-owned
+development runtime was then moved to port 3000 on the exact merged tree and
+proved both real-provider authorization starts with the configured callbacks,
+one-time state, and S256 PKCE. This local runtime does not claim a staging or
+production deployment.
 
-No production configuration or deployment was changed. A directly hosted
-staging lifecycle still needs an OAuth-capable runtime at those exact staging
-callbacks. This record does not infer or disclose provider-console values.
+No production configuration or deployment was changed. A hosted lifecycle
+still needs an OAuth-capable runtime and correctly registered provider
+applications at those exact callbacks. This record does not infer or disclose
+provider-console values.

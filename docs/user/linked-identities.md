@@ -22,10 +22,13 @@ sign-in method. A provider-only account may use a recent provider-authenticated
 session for the unlink reauthentication boundary; a password account must
 confirm its password.
 
-Google and GitHub are complete on the OAuth review branch, not yet on main or deployed.
-Local automated proof uses an explicit non-production simulator and is not a
-live-provider claim. Discord, Steam, and Microsoft/Xbox remain compatibility
-provider adapters with truthful configuration-required states.
+Google and GitHub are available on main through protected PR #10, but are not
+deployed. The owner reports both providers working in development; redacted
+database inspection independently confirmed Google persistence while GitHub
+persistence remains owner-observed. Local automated proof uses an explicit
+non-production simulator and is not by itself a live-provider claim. Discord,
+Steam, and Microsoft/Xbox remain compatibility provider adapters with truthful
+configuration-required states.
 
 ## Phase 7 correction Round 1 status
 

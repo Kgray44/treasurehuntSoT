@@ -30,14 +30,14 @@ guide](../user/account-security.md). Mainline availability is not deployment or
 owner acceptance.
 
 Google and GitHub sign-up, sign-in, and explicit account linking are complete
-on the OAuth review branch, not yet on main or deployed. Both
-providers use the canonical Homeport account/session lifecycle, verified-email
+on main through protected PR #10, but are not deployed. Both providers use the
+canonical Homeport account/session lifecycle, verified-email
 rules, immutable provider identifiers, collision-safe deliberate linking, and
 token-discard behavior. Isolated browser validation is synthetic; live-provider
 authorization was additionally owner-observed for both providers in development,
 with the real Google identity/account/session persistence boundary independently
-confirmed from redacted task-owned database aggregates. The branch is not
-deployed. [Linked identities](../user/linked-identities.md).
+confirmed from redacted task-owned database aggregates. [Linked
+identities](../user/linked-identities.md).
 
 ## Global shell and wayfinding
 

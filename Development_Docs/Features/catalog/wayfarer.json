@@ -67,9 +67,7 @@
     "id": "FT-B008",
     "title": "Google and GitHub Account Authentication",
     "summary": "Voyagewright adds first-class Google and GitHub sign-up, sign-in, and explicit account linking to the canonical Homeport account, verified-email, external-identity, session, and security-event lifecycle.",
-    "status": "BRANCH_COMPLETE_NOT_MERGED",
-    "branch": "codex/voyagewright-google-github-auth",
-    "commit": "c1a60f4a9d1565fc1a06f8c99566307a275660b4",
+    "status": "MAINLINE",
     "program": "Voyagewright OAuth",
     "surfaces": ["/register", "/sign-in", "/account/linked-identities"],
     "subfeatures": [
@@ -90,13 +88,13 @@
       {
         "kind": "completion-record",
         "value": "Development_Docs/Validation/Voyagewright_Google_GitHub_OAuth_Validation_Record.md"
-      }
+      },
+      { "kind": "commit", "value": "b4fa3b4b3f50e3f22f82adace3b287b9cadace8a" }
     ],
     "limitations": [
-      "Not available on main until the OAuth branch is separately reviewed and integrated",
       "Not deployed and no production configuration was changed",
       "Repeatable automated provider lifecycle evidence is synthetic; the owner reports both real providers working in development, with Google persistence independently confirmed from redacted task-database aggregates and GitHub persistence remaining owner-observed",
-      "The supplied staging callbacks target a retained staging runtime that does not contain this OAuth branch, so direct staging-hosted callback execution still requires an exact compatible runtime"
+      "Live callback execution still requires an OAuth-capable runtime plus correctly registered provider credentials at the exact configured redirect URIs"
     ],
     "catalogVersion": 1
   }

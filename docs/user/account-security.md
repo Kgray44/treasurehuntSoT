@@ -24,8 +24,10 @@ deactivation, or deletion operations. An unavailable operation is labelled;
 there is no decorative destructive button.
 
 These surfaces are available on main through Project Homeport. Google and
-GitHub OAuth are complete on a separate review branch, not deployed. Live
-Google and GitHub behavior remains externally unvalidated.
+GitHub OAuth are also on main through protected PR #10, but are not deployed.
+The owner reports both real providers working in development; redacted database
+inspection independently confirmed Google persistence while GitHub persistence
+remains owner-observed.
 
 Phase 5 gives each account section a visible desktop/mobile entry and a stable
 return to Personal Harbor. Password-reset and verification URLs remain
