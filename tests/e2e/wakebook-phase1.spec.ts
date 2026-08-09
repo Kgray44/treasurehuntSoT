@@ -282,7 +282,9 @@ test("Wakebook Phase 1 is private, bounded, historically stable, and normally re
   expect(firstBody.pageCount).toBe(24);
   expect(firstBody.groups[0]).toMatchObject({ year: 2026, totalCount: 502 });
   expect(firstBody.invitations).toEqual(
-    expect.arrayContaining([expect.objectContaining({ lifecycle: { humanLabel: "Invitation declined" } })]),
+    expect.arrayContaining([
+      expect.objectContaining({ lifecycle: expect.objectContaining({ humanLabel: "Invitation declined" }) }),
+    ]),
   );
 
   const allIds = new Set(firstBody.groups.flatMap((group) => group.items.map((item) => item.id)));
