@@ -7,6 +7,7 @@ type Account = { context: import("@playwright/test").BrowserContext; profileId: 
 
 const unique = `wakebook-p1-${randomUUID().slice(0, 12)}`;
 const privateMemory = "TOP-SECRET-WAKEBOOK-MEMORY";
+const syntheticPassword = "T!de-9Rope-4Quartz-7Beacon";
 
 async function register(browser: import("@playwright/test").Browser, label: string): Promise<Account> {
   const context = await browser.newContext();
@@ -14,8 +15,8 @@ async function register(browser: import("@playwright/test").Browser, label: stri
     data: {
       displayName: `Synthetic ${label}`,
       email: `${unique}-${label.toLowerCase()}@example.test`,
-      password: "A synthetic test password 42!",
-      confirmPassword: "A synthetic test password 42!",
+      password: syntheticPassword,
+      confirmPassword: syntheticPassword,
     },
   });
   expect(response.status(), await response.text()).toBe(201);
