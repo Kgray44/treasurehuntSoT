@@ -3,7 +3,7 @@ title: Current status
 audience: product
 status: current
 canonical_for: product-current-status
-last_reviewed: 2026-08-08
+last_reviewed: 2026-08-09
 ---
 
 # Current status
@@ -38,6 +38,16 @@ multi-tab/mobile behavior, and a safe final owner-walkthrough runtime package.
 It is ready for owner walkthrough. Owner Decision remains
 `PENDING_OWNER_DECISION`.
 
+**Ready for owner walkthrough on a named development branch, not on main:**
+Project Admiralty Phase 1 provides canonical role/capability authorization,
+explicit administrator bootstrap, recent privileged assurance, a limited
+non-navigable `/admin` shell, user-consented scoped Support Access, sanitized
+administrative audit evidence, and a 92-entry capability-floor registry. The
+exact-current-main local implementation, additive SQLite/MySQL migration
+rehearsals, focused tests, production build, and isolated browser journeys pass.
+The owner decision remains `PENDING_OWNER_DECISION`; no deployment, production
+database execution, or Phase 2 capability is claimed.
+
 **Development-only or compatibility-only:** development showcases, legacy routes, and package-exchange integrations are not a promise of a generally hosted service.
 
 **Focused and integration validated:** repository evidence covers the merged
@@ -52,8 +62,8 @@ for the Phase 3-4 browser matrix. It is not a full matrix pass and does not
 change the external-validation boundary.
 
 **Planned or not validated:** Project Homeport owner acceptance, Harborlight
-Phase 4, Project Drydock, Project Landfall, and Project Watchglass remain
-pending. Project Sounding
+Phase 4, Project Admiralty Phase 2 and later phases, Project Drydock, Project
+Landfall, and Project Watchglass remain pending. Project Sounding
 Line is the repository validation authority used for Homeport decisions; that
 use does not claim a new user-facing Sounding Line product. Historic records
 are evidence, not a release promise.

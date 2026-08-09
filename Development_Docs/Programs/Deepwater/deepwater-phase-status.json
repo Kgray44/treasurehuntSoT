@@ -13,6 +13,7 @@
   "mainlineState": "ACCEPTED",
   "metrics": {
     "capabilitiesByCanonicalOwner": {
+      "Admiralty": 1,
       "Breakwater": 1,
       "Drydock": 3,
       "Harborlight": 5,
@@ -34,7 +35,7 @@
     },
     "capabilitiesByExpectedTerminalRung": {
       "JOURNEY_PROVEN": 38,
-      "OWNER_ACCEPTED": 2,
+      "OWNER_ACCEPTED": 3,
       "PROJECTION": 4,
       "SERVICE": 9
     },
@@ -42,35 +43,35 @@
       "BACKEND_ONLY": 3,
       "DEPRECATED": 1,
       "INTERNAL_BY_DESIGN": 7,
-      "PARTIALLY_REALIZED": 40,
+      "PARTIALLY_REALIZED": 41,
       "SECURITY_RESTRICTED": 2
     },
-    "featureCatalogMappedCount": 41,
+    "featureCatalogMappedCount": 42,
     "openFindingsBySeverity": {
       "HIGH": 1,
-      "LOW": 6,
+      "LOW": 7,
       "MEDIUM": 15
     },
     "ownershipAmbiguousCount": 0,
     "ratios": {
       "featureCatalogMappingCoverage": 1,
-      "initialRealizationCoverage": 0.1698,
-      "naturalJourneyEvidenceCoverage": 0.575,
+      "initialRealizationCoverage": 0.1667,
+      "naturalJourneyEvidenceCoverage": 0.561,
       "ownerMappedCoverage": 1
     },
     "secondaryFlags": {
-      "DOCUMENTATION_MISMATCH": 17,
+      "DOCUMENTATION_MISMATCH": 18,
       "EXTERNAL_PROVIDER_PENDING": 7,
       "JOURNEY_UNPROVEN": 40,
       "LEGACY_DEPENDENT": 1,
-      "UNVERIFIED": 53
+      "UNVERIFIED": 54
     },
-    "totalMeaningfulCapabilities": 53,
+    "totalMeaningfulCapabilities": 54,
     "uncatalogedMeaningfulCapabilityCount": 12,
-    "userFacingLackingAccessibilityEvidence": 40,
-    "userFacingLackingDiscoverabilityEvidence": 40,
-    "userFacingLackingJourneyEvidence": 17,
-    "userFacingLackingStateCompletenessEvidence": 31
+    "userFacingLackingAccessibilityEvidence": 41,
+    "userFacingLackingDiscoverabilityEvidence": 41,
+    "userFacingLackingJourneyEvidence": 18,
+    "userFacingLackingStateCompletenessEvidence": 32
   },
   "phase": "Phase 1 - Sound the Depths",
   "productSourceImpact": "NONE",

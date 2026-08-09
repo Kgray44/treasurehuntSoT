@@ -29,6 +29,17 @@ also passed. See the [OAuth validation and completion record](Validation/Voyagew
 
 [Project Deepwater](Programs/Deepwater/README.md) governs product capability-realization and systems-audit truth. Phase 1, Sound the Depths, establishes the deterministic capability ledger, schema, ownership map, initial findings, Feature Catalog reconciliation, Phase 2 trace queue, and validation control plane without changing product behavior or schema. Its classifications and maturity rungs are evidence-bound: source existence, local or synthetic validation, staging access, external-provider proof, deployment, and owner acceptance remain distinct.
 
+## Project Admiralty
+
+[Project Admiralty](Projects/Project_Admiralty/README.md) governs canonical
+platform-administration and operations authority. Phase 1, Raise the Colors,
+establishes role/capability policy, explicit administrator bootstrap,
+session-bound recent assurance, user-approved scoped Support Access, sanitized
+canonical audit evidence, an independently authorized limited admin shell, dual
+additive migrations, and a living capability-floor registry. The branch is
+ready for the required owner walkthrough; it is not on main, deployed, or owner
+accepted, and Phase 2 remains dormant.
+
 ## Engineering-record template
 
 Include title, program, phase, record type, status, authority, date, base, scope, decisions, evidence, limitations, supersession, and related records. Do not rewrite historic PDFs solely to fit this template.

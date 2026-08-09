@@ -34,6 +34,7 @@ mutation is independently authorized on the server.
 - [Integration manifest](Project_Admiralty_Phase_1_Integration_Manifest.md)
 - [Validation record](Project_Admiralty_Phase_1_Validation_Record.md)
 - [Completion receipt](Project_Admiralty_Phase_1_Completion_Receipt.md)
+- [Owner walkthrough](walkthrough/phase1/README.md)
 
 ## Machine-readable controls
 

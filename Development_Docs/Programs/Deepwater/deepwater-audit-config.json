@@ -315,6 +315,16 @@
       "classification": "PARTIALLY_REALIZED",
       "secondaryFlags": ["UNVERIFIED", "EXTERNAL_PROVIDER_PENDING"],
       "rationale": "Protected-staging real-provider acceptance is bounded evidence; production provider configuration and production deployment remain separately governed."
+    },
+    "FT-B009": {
+      "capabilityId": "DW-CAP-PLATFORM-ADMINISTRATION-SUPPORT-ACCESS",
+      "ownerProject": "Admiralty",
+      "contributingProjects": ["Wayfarer", "Security", "Homeport", "One Voyage"],
+      "expectedTerminalRung": "OWNER_ACCEPTED",
+      "currentHighestRung": "JOURNEY_PROVEN",
+      "classification": "PARTIALLY_REALIZED",
+      "secondaryFlags": ["UNVERIFIED"],
+      "rationale": "Exact-current-main local and synthetic automation proves the Phase 1 journeys, but the governing owner walkthrough remains pending and no deployment or production MySQL execution is claimed."
     }
   },
   "uncatalogedCapabilities": [

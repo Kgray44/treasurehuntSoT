@@ -3,7 +3,7 @@ title: Architecture
 audience: developer
 status: current
 canonical_for: system-architecture
-last_reviewed: 2026-07-29
+last_reviewed: 2026-08-09
 ---
 
 # Architecture
@@ -15,6 +15,14 @@ UI state as authorization. True North provides the persistent role-aware
 navigation shell; Wayfarer owns personal history, consent, artifacts, and
 achievements; Harborlight owns community exchange and Phase 3 social/discovery
 projections. Publishing creates immutable versions for stable play.
+
+`src/admiralty` owns platform-administration capability resolution,
+session-bound privileged assurance, scoped Support Access, safe administrative
+projections, and administrative audit composition. It consumes canonical
+identity, session, credential, role, Chronicle, Community, and private-content
+authorities without replacing them. `/admin` is a privileged direct-entry
+surface; `/account/support-access` remains an ordinary account-owner consent
+surface.
 
 Private-content workflows retain separate authorization, scanning, storage,
 recovery, protected-media, grant, derivative, and withdrawal concerns. Local

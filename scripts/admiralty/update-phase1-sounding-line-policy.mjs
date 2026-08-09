@@ -152,6 +152,14 @@ for (const mapping of [
 for (const contractId of contractIds)
   upsertBy(impact.contractMappings, "contractId", { contractId, suiteIds: allSuites });
 await save("impact-map.json", impact);
+
+const releaseGates = await json("release-gates.json");
+for (const gate of releaseGates.gates) {
+  if (gate.id === "local-change") gate.conditionalSuites = unique([...(gate.conditionalSuites ?? []), ...allSuites]);
+  if (["subsystem", "mainline", "release-candidate"].includes(gate.id))
+    gate.requiredSuites = unique([...(gate.requiredSuites ?? []), ...allSuites]);
+}
+await save("release-gates.json", releaseGates);
 process.stdout.write(
   `${JSON.stringify({ status: "ADMIRALTY_PHASE1_SOUNDING_LINE_POLICY_UPDATED", contracts: contractIds.length, suites: 3 })}\n`,
 );
@@ -186,6 +194,9 @@ function upsertBy(values, key, next) {
   const index = values.findIndex((value) => value[key] === next[key]);
   if (index >= 0) values[index] = next;
   else values.push(next);
+}
+function unique(values) {
+  return [...new Set(values)];
 }
 async function json(name) {
   return JSON.parse(await readFile(path.join(testingRoot, name), "utf8"));

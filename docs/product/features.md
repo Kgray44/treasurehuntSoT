@@ -3,7 +3,7 @@ title: Features and subfeatures
 audience: product
 status: current
 canonical_for: product-features
-last_reviewed: 2026-08-08
+last_reviewed: 2026-08-09
 ---
 
 # Features and subfeatures
@@ -76,6 +76,20 @@ tablet, narrow-mobile, effective-200-percent, focus, keyboard/touch,
 accessibility, and reduced-motion evidence. The evidence is local and synthetic;
 Phase 7 integrated journeys, deployment, owner acceptance, and product
 acceptance are not claimed.
+
+## Platform administration and consented support
+
+**Audience:** Administrators, support operators, security operators, and account
+owners. **Availability:** ready for owner walkthrough on the Project Admiralty
+Phase 1 development branch; not on main. Phase 1 adds server-resolved roles and
+capabilities, explicit administrator bootstrap, short-lived session-bound
+privileged assurance, a deliberately limited `/admin` shell, canonical
+sanitized audit evidence, a living capability registry, and user-approved
+scoped Support Access. The admin shell is absent from ordinary navigation;
+affected account owners can review, deny, approve, and revoke support requests
+through [Support Access](../user/support-access.md). Automated local and
+synthetic evidence is complete, while owner acceptance, deployment, production
+MySQL, and Phase 2 remain separate.
 
 ## Integrated whole-product voyage and owner walkthrough
 

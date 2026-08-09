@@ -1,5 +1,5 @@
 {
-  "catalogEntryCount": 41,
+  "catalogEntryCount": 42,
   "entries": [
     {
       "capabilityId": "DW-CAP-UNIFIED-CHRONICLE-PLATFORM",
@@ -503,9 +503,19 @@
       "mismatchFindingIds": [],
       "observedClassification": "PARTIALLY_REALIZED",
       "observedHighestRung": "JOURNEY_PROVEN"
+    },
+    {
+      "capabilityId": "DW-CAP-PLATFORM-ADMINISTRATION-SUPPORT-ACCESS",
+      "declaredStatus": "BRANCH_COMPLETE_NOT_MERGED",
+      "declaredSurfaces": ["/account/support-access", "/admin", "/api/account/support", "/api/admin"],
+      "documentationMismatch": true,
+      "featureCatalogId": "FT-B009",
+      "mismatchFindingIds": ["DW-FIND-CATALOG-SURFACE-FT-B009"],
+      "observedClassification": "PARTIALLY_REALIZED",
+      "observedHighestRung": "JOURNEY_PROVEN"
     }
   ],
-  "mappedEntryCount": 41,
+  "mappedEntryCount": 42,
   "schemaVersion": "1.0.0",
   "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
 }

@@ -5,7 +5,7 @@ This generated catalog records completed, meaningful platform capabilities. It i
 ## Audited repository and commit
 
 Repository: `Kgray44/treasurehuntSoT`
-Audited source commit: `d3b04e54fbf537869fe3969d6ae19e8b23942986`
+Audited source commit: `273fb5255ad222812530422e902db04c0ddd1961`
 
 ## Status vocabulary
 
@@ -1260,6 +1260,48 @@ Voyagewright adds first-class Google and GitHub sign-up, sign-in, and explicit a
 
 # Completed Branch Features Not Yet Available on Main
 
+## FT-B009 - Governed Platform Administration and Consented Support Access
+
+**Status:** BRANCH COMPLETE NOT MERGED
+**Program or subsystem:** Project Admiralty
+
+Canonical account roles, recent privileged assurance, scoped user consent, sanitized audit evidence, and a limited administration shell establish least-privileged platform operations without creating a second identity authority.
+
+### Important subfeatures
+
+- Server-side role and capability resolution
+- Explicit dry-run-first administrator bootstrap
+- Session-bound recent privileged assurance
+- User-approved target, operator, scope, and time-bounded Support Access
+- Sanitized canonical administrative audit evidence
+- Living 92-entry capability-floor registry
+- Non-revealing unauthorized admin route behavior
+- Additive SQLite and MySQL migration parity
+- Task-owned synthetic browser and owner-walkthrough runtimes
+
+### Primary surfaces
+
+`/admin`, `/account/support-access`, `/api/admin`, `/api/account/support`
+
+### Meaningful limitations
+
+- Ready for the required owner walkthrough; owner decision remains pending
+- Named branch only; not on main, published, or deployed
+- Production MySQL execution, live-provider behavior, and physical assistive-technology validation remain external
+- Phase 2 and all later operational command-center capabilities remain dormant
+- Automated local and synthetic readiness is not owner or product acceptance
+
+### Evidence
+
+- commit: `49c2f59d6d75791edbdba84f22f5ec1595d2d129`
+- path: `src/admiralty/authorization.ts`
+- path: `src/admiralty/support-access.ts`
+- path: `Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_1_Capability_Registry.json`
+- test: `tests/e2e/admiralty-phase1.spec.ts`
+- completion-record: `Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_1_Completion_Receipt.md`
+
+---
+
 # Deliberately Excluded Until Complete
 
 - Harborlight Phase 4 is planned and is not cataloged as an implemented capability.
@@ -1273,4 +1315,4 @@ Voyagewright adds first-class Google and GitHub sign-up, sign-in, and explicit a
 
 Update the owning machine-readable fragment only when completed work changes a major capability, important subfeature, availability, or meaningful limitation. Regenerate this file with `npm run features:sync`; never hand-edit it. Validate before closeout with `npm run features:validate`.
 
-Generation source commit: `d3b04e54fbf537869fe3969d6ae19e8b23942986`
+Generation source commit: `273fb5255ad222812530422e902db04c0ddd1961`

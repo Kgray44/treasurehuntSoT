@@ -16,22 +16,22 @@ Phase 1 establishes the governed inventory foundation. It does not claim complet
 
 | Measure                                     | Count |
 | ------------------------------------------- | ----: |
-| Meaningful capabilities                     |    53 |
-| Feature Catalog mapped                      |    41 |
+| Meaningful capabilities                     |    54 |
+| Feature Catalog mapped                      |    42 |
 | Uncataloged meaningful                      |    12 |
 | Ownership ambiguous                         |     0 |
-| Initial findings                            |    22 |
-| Phase 2 queue                               |    44 |
-| Catalog entries with route-surface mismatch |    17 |
+| Initial findings                            |    23 |
+| Phase 2 queue                               |    45 |
+| Catalog entries with route-surface mismatch |    18 |
 
-The seed catalog contains 41 accepted entries. The uncataloged survey adds account lifecycle, transactional email, private-provider operations, backup/restore, repair, community operations, bounded compatibility observation, and public-origin trust capabilities that have named consumers or operational purpose.
+The seed catalog contains 42 accepted entries. The uncataloged survey adds account lifecycle, transactional email, private-provider operations, backup/restore, repair, community operations, bounded compatibility observation, and public-origin trust capabilities that have named consumers or operational purpose.
 
 ## Realization observations
 
 - BACKEND_ONLY: 3
 - DEPRECATED: 1
 - INTERNAL_BY_DESIGN: 7
-- PARTIALLY_REALIZED: 40
+- PARTIALLY_REALIZED: 41
 - SECURITY_RESTRICTED: 2
 
 The classifications are deliberately conservative. A catalog status, source path, route, or historic completion receipt is not sufficient to reach `FULLY_REALIZED`. Current Homeport route, screen, and journey records are consumed as bounded evidence, while capability-specific state, accessibility, journey, external-provider, deployment, and owner boundaries remain explicit.
@@ -57,7 +57,7 @@ The classifications are deliberately conservative. A catalog status, source path
 
 ## Catalog reconciliation
 
-17 catalog capabilities advertise at least one surface that does not exactly match the accepted Homeport route inventory. Most are legacy naming or composite-surface issues and are recorded as `DW-DOC`/`DW-NAV` findings rather than product-source fixes. Deepwater does not hand-edit the generated Feature Catalog or overwrite subsystem metadata.
+18 catalog capabilities advertise at least one surface that does not exactly match the accepted Homeport route inventory. Most are legacy naming or composite-surface issues and are recorded as `DW-DOC`/`DW-NAV` findings rather than product-source fixes. Deepwater does not hand-edit the generated Feature Catalog or overwrite subsystem metadata.
 
 ## Truth boundaries
 

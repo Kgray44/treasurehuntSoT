@@ -41,12 +41,15 @@
         "browser.accessibility",
         "browser.responsive",
         "browser.animation-lifecycle",
-        "browser.cross-project"
+        "browser.cross-project",
+        "unit.admiralty",
+        "component.admiralty",
+        "browser.admiralty"
       ]
     },
     {
       "id": "subsystem",
-      "requiredSuites": ["static.core", "unit.homeport"],
+      "requiredSuites": ["static.core", "unit.homeport", "unit.admiralty", "component.admiralty", "browser.admiralty"],
       "conditionalSuites": [
         "unit.auth",
         "unit.one-voyage",
@@ -87,7 +90,10 @@
         "browser.accessibility",
         "browser.responsive",
         "browser.animation-lifecycle",
-        "browser.cross-project"
+        "browser.cross-project",
+        "unit.admiralty",
+        "component.admiralty",
+        "browser.admiralty"
       ]
     },
     {
@@ -132,7 +138,10 @@
         "database.sqlite",
         "browser.access-sentinel",
         "retirement.matrix-proof",
-        "build.production"
+        "build.production",
+        "unit.admiralty",
+        "component.admiralty",
+        "browser.admiralty"
       ],
       "conditionalSuites": [
         "migration.mysql",
@@ -196,7 +205,10 @@
         "browser.animation-lifecycle",
         "browser.cross-project",
         "retirement.matrix-proof",
-        "build.production"
+        "build.production",
+        "unit.admiralty",
+        "component.admiralty",
+        "browser.admiralty"
       ],
       "conditionalSuites": ["migration.mysql"]
     },
