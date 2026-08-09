@@ -10,11 +10,14 @@ last_reviewed: 2026-08-09
 
 ## Current decision
 
-**AUTOMATED_PHASE_1_READY_FOR_OWNER_WALKTHROUGH.** The exact tested product
-source is `49c2f59d6d75791edbdba84f22f5ec1595d2d129`, which contains current
-`origin/main` at `273fb5255ad222812530422e902db04c0ddd1961`. Automated local and
-synthetic evidence cannot self-accept the new administrator and account-owner
-consent surfaces. Owner decision remains `PENDING_OWNER_DECISION`.
+**AUTOMATED_PHASE_1_READY_FOR_OWNER_WALKTHROUGH.** The exact tested application
+source is `49c2f59d6d75791edbdba84f22f5ec1595d2d129`. Reconciliation merge
+`5dde8e179dffb9e4db23b0759953e7117447ef53` contains current `origin/main` at
+`5b266251bd5a42efe90988e45daf55bca8e566f1`; the later mainline material is
+documentation-governance-only and does not change the tested application.
+Automated local and synthetic evidence cannot self-accept the new administrator
+and account-owner consent surfaces. Owner decision remains
+`PENDING_OWNER_DECISION`.
 
 ## Focused and compatibility evidence
 
@@ -64,7 +67,7 @@ cookie, raw database, or private product material is committed.
 | Deepwater audit and validation      | Passed; owner-acceptance terminal rung remains visibly unmet                                                                                        | Cross-program capability truth                                              |
 | Sounding Line subsystem authority   | `RELEASE_GO`: 5/5 suites, plan `e52a5c1e9e0dbc3356cc53bcb58c552648a98b5d1963718be86f2ccfa86b1213`, all cleanup `CLEAN`                              | Admiralty unit/component/browser plus shared static/Homeport authority      |
 | Sounding Line mainline authority    | `RELEASE_GO`: 32/32 suites and 1,229 registered cases, plan `bb2f8ecfdfa6a4272097a7f7e8651d491a2a8b82e94c21863340efa9599f06e8`, all cleanup `CLEAN` | Authoritative repository-local decision; not deployment or owner acceptance |
-| Git reconciliation                  | Exact tested product source contains current `origin/main`                                                                                          | No push, pull request, or mainline merge                                    |
+| Git reconciliation                  | Current merge anchor contains `origin/main`; exact tested application source is unchanged                                                           | No push, pull request, or mainline merge                                    |
 
 The first mainline attempt failed before suite execution because the owned
 worktree intentionally lacked the ignored `prisma/dev.db` baseline required by
