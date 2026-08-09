@@ -51,7 +51,8 @@
         "browser.cross-project",
         "unit.admiralty",
         "component.admiralty",
-        "browser.admiralty"
+        "browser.admiralty",
+        "service.admiralty"
       ]
     },
     {
@@ -63,7 +64,8 @@
         "unit.tideglass",
         "unit.admiralty",
         "component.admiralty",
-        "browser.admiralty"
+        "browser.admiralty",
+        "service.admiralty"
       ],
       "conditionalSuites": [
         "unit.auth",
@@ -159,7 +161,8 @@
         "build.production",
         "unit.admiralty",
         "component.admiralty",
-        "browser.admiralty"
+        "browser.admiralty",
+        "service.admiralty"
       ],
       "conditionalSuites": [
         "migration.mysql",
@@ -228,7 +231,8 @@
         "build.production",
         "unit.admiralty",
         "component.admiralty",
-        "browser.admiralty"
+        "browser.admiralty",
+        "service.admiralty"
       ],
       "conditionalSuites": ["migration.mysql"]
     },

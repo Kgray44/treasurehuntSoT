@@ -1,10 +1,22 @@
 import registry from "../../Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_1_Capability_Registry.json";
+import phase2Activation from "../../Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_2_Capability_Activation_Registry.json";
 import { isAdmiraltyCapability } from "./capabilities";
 
 export type AdmiraltyRegistryEntry = (typeof registry.entries)[number];
 
 export function admiraltyCapabilityRegistry() {
-  return registry.entries as readonly AdmiraltyRegistryEntry[];
+  const activations = new Map(phase2Activation.activations.map((activation) => [activation.id, activation]));
+  return registry.entries.map((entry) => {
+    const activation = activations.get(entry.id);
+    return activation
+      ? {
+          ...entry,
+          lifecycleState: "IMPLEMENTED",
+          uiMapping: activation.uiMapping,
+          notes: `${entry.notes} Phase 2 read projection activated.`,
+        }
+      : entry;
+  }) as readonly AdmiraltyRegistryEntry[];
 }
 
 export function admiraltyRegistrySummary() {
@@ -19,6 +31,8 @@ export function admiraltyRegistrySummary() {
     total: entries.length,
     implemented: entries.filter((entry) => entry.lifecycleState === "IMPLEMENTED").length,
     dormant: entries.filter((entry) => entry.lifecycleState === "DORMANT").length,
+    phase1Implemented: phase2Activation.baseImplemented,
+    phase2Implemented: phase2Activation.newlyImplemented,
     byCategory,
   };
 }

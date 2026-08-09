@@ -7,6 +7,7 @@ const labels = {
   creator: "Creator",
   moderator: "Moderator",
   administrator: "Administrator",
+  admiralty: "Admiralty",
 };
 
 export function AccessDecisionState({

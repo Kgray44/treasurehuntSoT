@@ -14,9 +14,17 @@ capability resolver, explicit administrator bootstrap, session-bound privileged
 assurance, user-approved Support Access, canonical audit evidence, the living
 capability registry, and a deliberately limited secure `/admin` shell.
 
-The Phase 1 shell is intentionally absent from ordinary product navigation.
-That routing choice is not an authorization control: every projection and
-mutation is independently authorized on the server.
+Phase 2, **Open the Chartroom**, is active on its task-owned branch. It expands
+that accepted authority into a read-only command center, cross-domain search,
+provider and configuration visibility, rich account/support inspection, and
+correlation-led investigation. Phase 2 adds no broad domain mutation and does
+not authorize Phase 3.
+
+The Phase 2 shell is naturally reachable from the account workspace menu only
+for identities holding an active Admiralty role. Ordinary accounts receive no
+entry. That visibility choice is not an authorization control: every route,
+projection, and inherited Support Access mutation is independently authorized
+on the server.
 
 ## Authority
 
@@ -37,6 +45,20 @@ mutation is independently authorized on the server.
 - [Owner decision record](Project_Admiralty_Phase_1_Owner_Decision_Record.md)
 - [Owner walkthrough](walkthrough/phase1/README.md)
 
+## Active Phase 2 records
+
+- [Design record](Project_Admiralty_Phase_2_Design_Record.md)
+- [Mainline safety contract](Project_Admiralty_Phase_2_Mainline_Safety_Contract.md)
+- [Data projection catalog](Project_Admiralty_Phase_2_Data_Projection_Catalog.md)
+- [Search and investigation architecture](Project_Admiralty_Phase_2_Search_and_Investigation_Architecture.md)
+- [Provider status architecture](Project_Admiralty_Phase_2_Provider_Status_Architecture.md)
+- [Privacy matrix](Project_Admiralty_Phase_2_Privacy_Matrix.md)
+- [Test plan](Project_Admiralty_Phase_2_Test_Plan.md)
+- [Validation record](Project_Admiralty_Phase_2_Validation_Record.md)
+- [Integration manifest](Project_Admiralty_Phase_2_Integration_Manifest.md)
+- [Completion receipt](Project_Admiralty_Phase_2_Completion_Receipt.md)
+- [Owner walkthrough](walkthrough/phase2/README.md)
+
 ## Machine-readable controls
 
 - `Project_Admiralty_Phase_1_Active_Phase_Registration.json`
@@ -44,8 +66,15 @@ mutation is independently authorized on the server.
 - `Project_Admiralty_Phase_1_Role_Capability_Registry.json`
 - `Project_Admiralty_Phase_1_Support_Scope_Registry.json`
 - `Project_Admiralty_Phase_1_Capability_Registry.json`
+- `Project_Admiralty_Phase_2_Active_Phase_Registration.json`
+- `Project_Admiralty_Phase_2_Role_Capability_Registry.json`
+- `Project_Admiralty_Phase_2_Capability_Activation_Registry.json`
+- `Project_Admiralty_Phase_2_Data_Projection_Catalog.json`
+- `Project_Admiralty_Phase_2_Information_Architecture_Registry.json`
+- `Project_Admiralty_Phase_2_Deepwater_Disposition_Register.json`
 
 The Phase 1 owner decision is `ACCEPTED`; the accepted source is integrated on
-canonical main with verified local/remote parity. This is not a deployment,
-production MySQL proof, or authorization to begin the Phase 2 operational
-command center.
+canonical main with verified local/remote parity. Phase 2 is separately
+authorized and remains branch-only with `PENDING_OWNER_DECISION`. Phase 1
+acceptance is not deployment or acceptance of Phase 2, and Phase 2 does not
+authorize Phase 3.

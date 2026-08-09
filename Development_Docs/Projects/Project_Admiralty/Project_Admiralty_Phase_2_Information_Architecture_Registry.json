@@ -1,0 +1,48 @@
+{
+  "schemaVersion": "1.0.0",
+  "phase": "PROJECT ADMIRALTY PHASE 2 — OPEN THE CHARTROOM",
+  "shellEntry": "authorized account workspace menu",
+  "unauthorizedBehavior": "NON_REVEALING_NOT_FOUND_BEFORE_PROJECTION",
+  "routes": [
+    { "path": "/admin", "label": "Overview", "capability": "PLATFORM_OBSERVE", "kind": "PRIMARY" },
+    { "path": "/admin/people", "label": "People", "capability": "ACCOUNT_OBSERVE", "kind": "PRIMARY" },
+    {
+      "path": "/admin/people/[accountId]",
+      "label": "Account dossier",
+      "capability": "ACCOUNT_OBSERVE",
+      "kind": "CONTEXTUAL"
+    },
+    { "path": "/admin/chronicles", "label": "Chronicles", "capability": "CHRONICLE_OBSERVE", "kind": "PRIMARY" },
+    {
+      "path": "/admin/chronicles/[chronicleId]",
+      "label": "Chronicle detail",
+      "capability": "CHRONICLE_OBSERVE",
+      "kind": "CONTEXTUAL"
+    },
+    { "path": "/admin/voyages", "label": "Voyages", "capability": "VOYAGE_OBSERVE", "kind": "PRIMARY" },
+    {
+      "path": "/admin/voyages/[voyageId]",
+      "label": "Voyage detail",
+      "capability": "VOYAGE_OBSERVE",
+      "kind": "CONTEXTUAL"
+    },
+    { "path": "/admin/community", "label": "Community", "capability": "COMMUNITY_OBSERVE", "kind": "PRIMARY" },
+    {
+      "path": "/admin/community/[listingId]",
+      "label": "Community listing detail",
+      "capability": "COMMUNITY_OBSERVE",
+      "kind": "CONTEXTUAL"
+    },
+    { "path": "/admin/operations", "label": "Operations", "capability": "JOBS_OBSERVE", "kind": "PRIMARY" },
+    { "path": "/admin/providers", "label": "Providers", "capability": "CONTENT_OBSERVE", "kind": "PRIMARY" },
+    { "path": "/admin/configuration", "label": "Configuration", "capability": "CONFIG_OBSERVE", "kind": "PRIMARY" },
+    { "path": "/admin/releases", "label": "Releases", "capability": "RELEASE_OBSERVE", "kind": "PRIMARY" },
+    { "path": "/admin/audit", "label": "Audit", "capability": "AUDIT_OBSERVE", "kind": "PRIMARY" },
+    {
+      "path": "/admin/investigate",
+      "label": "Investigate",
+      "capability": "PLATFORM_OBSERVE",
+      "kind": "PRIMARY_FILTERED_BY_DOMAIN_AUTHORITY"
+    }
+  ]
+}

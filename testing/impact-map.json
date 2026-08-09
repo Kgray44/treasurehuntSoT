@@ -617,57 +617,8 @@
     },
     {
       "path": "src/navigation/**",
-      "suiteIds": [
-        "unit.true-north",
-        "component.navigation",
-        "browser.navigation",
-        "unit.homeport",
-        "component.homeport",
-        "browser.homeport"
-      ],
-      "contractIds": [
-        "authentication-authorization",
-        "homeport.route.inventory-complete",
-        "homeport.route.source-parity",
-        "homeport.route.classification-exclusive",
-        "homeport.route.reachability-graph",
-        "homeport.route.user-navigable-entry",
-        "homeport.route.dynamic-source",
-        "homeport.route.dynamic-invalid-id",
-        "homeport.route.dynamic-private-denial",
-        "homeport.route.tokenized-safe",
-        "homeport.route.tokenized-not-navigation",
-        "homeport.route.compatibility-disposition",
-        "homeport.route.compatibility-no-competing-ui",
-        "homeport.route.redirect-no-loop",
-        "homeport.route.redirect-target-valid",
-        "homeport.route.redirect-query-safe",
-        "homeport.route.parent-complete",
-        "homeport.route.parent-cycle-free",
-        "homeport.route.no-dead-end",
-        "homeport.route.empty-onward",
-        "homeport.route.error-recovery",
-        "homeport.route.permission-recovery",
-        "homeport.route.desktop-mobile-parity",
-        "homeport.route.no-pointer-only-entry",
-        "homeport.route.keyboard-reachability",
-        "homeport.route.compact-exit",
-        "homeport.route.immersive-exit",
-        "homeport.route.deep-link-after-natural",
-        "homeport.route.no-direct-url-only",
-        "homeport.route.placeholder-target-rejected",
-        "homeport.route.deprecated-disposition",
-        "homeport.route.development-exclusion",
-        "homeport.route.active-label-consistency",
-        "homeport.route.graph-idempotency",
-        "homeport.route.inventory-drift",
-        "homeport.route.browser-receipt-complete",
-        "homeport.route.source-bound-evidence",
-        "homeport.route.phase1-regression",
-        "homeport.route.phase2-regression",
-        "homeport.route.phase3-regression",
-        "homeport.route.phase4-regression"
-      ]
+      "suiteIds": ["unit.admiralty", "browser.admiralty"],
+      "contractIds": ["admiralty.phase2.authorization-partition"]
     },
     {
       "path": "prisma/**",
@@ -4048,7 +3999,7 @@
     },
     {
       "path": "src/admiralty/**",
-      "suiteIds": ["unit.admiralty", "component.admiralty", "browser.admiralty"],
+      "suiteIds": ["unit.admiralty", "service.admiralty", "component.admiralty", "browser.admiralty"],
       "contractIds": [
         "admiralty.phase1.identity",
         "admiralty.phase1.authorization",
@@ -4057,51 +4008,83 @@
         "admiralty.phase1.audit",
         "admiralty.phase1.registry",
         "admiralty.phase1.migration",
-        "admiralty.phase1.responsive-consent"
+        "admiralty.phase1.responsive-consent",
+        "admiralty.phase2.authorization-partition",
+        "admiralty.phase2.read-projection-redaction",
+        "admiralty.phase2.account-dossier-support",
+        "admiralty.phase2.chronicle-voyage-inspection",
+        "admiralty.phase2.community-operations-providers",
+        "admiralty.phase2.audit-investigation",
+        "admiralty.phase2.registry-activation",
+        "admiralty.phase2.responsive-accessibility"
       ]
     },
     {
       "path": "src/components/admiralty/**",
       "suiteIds": ["component.admiralty", "browser.admiralty"],
       "contractIds": [
-        "admiralty.phase1.authorization",
+        "admiralty.phase2.authorization-partition",
+        "admiralty.phase2.account-dossier-support",
+        "admiralty.phase2.audit-investigation",
+        "admiralty.phase2.responsive-accessibility",
         "admiralty.phase1.assurance",
-        "admiralty.phase1.support-access",
-        "admiralty.phase1.responsive-consent"
+        "admiralty.phase1.support-access"
       ]
     },
     {
       "path": "src/app/admin/**",
       "suiteIds": ["component.admiralty", "browser.admiralty"],
       "contractIds": [
+        "admiralty.phase2.authorization-partition",
+        "admiralty.phase2.read-projection-redaction",
+        "admiralty.phase2.account-dossier-support",
+        "admiralty.phase2.chronicle-voyage-inspection",
+        "admiralty.phase2.community-operations-providers",
+        "admiralty.phase2.audit-investigation",
+        "admiralty.phase2.registry-activation",
+        "admiralty.phase2.responsive-accessibility",
         "admiralty.phase1.identity",
         "admiralty.phase1.authorization",
         "admiralty.phase1.assurance",
         "admiralty.phase1.support-access",
         "admiralty.phase1.audit",
+        "admiralty.phase1.registry",
         "admiralty.phase1.responsive-consent"
       ]
     },
     {
       "path": "src/app/api/admin/**",
-      "suiteIds": ["unit.admiralty", "component.admiralty", "browser.admiralty"],
+      "suiteIds": ["unit.admiralty", "service.admiralty", "component.admiralty", "browser.admiralty"],
       "contractIds": [
+        "admiralty.phase2.authorization-partition",
+        "admiralty.phase2.read-projection-redaction",
+        "admiralty.phase2.account-dossier-support",
+        "admiralty.phase2.chronicle-voyage-inspection",
+        "admiralty.phase2.community-operations-providers",
+        "admiralty.phase2.audit-investigation",
+        "admiralty.phase2.registry-activation",
+        "admiralty.phase2.responsive-accessibility",
         "admiralty.phase1.identity",
         "admiralty.phase1.authorization",
         "admiralty.phase1.assurance",
         "admiralty.phase1.support-access",
         "admiralty.phase1.audit",
+        "admiralty.phase1.registry",
         "admiralty.phase1.responsive-consent"
       ]
     },
     {
       "path": "src/app/api/account/support/**",
-      "suiteIds": ["unit.admiralty", "component.admiralty", "browser.admiralty"],
-      "contractIds": ["admiralty.phase1.support-access", "admiralty.phase1.audit"]
+      "suiteIds": ["unit.admiralty", "service.admiralty", "component.admiralty", "browser.admiralty"],
+      "contractIds": [
+        "admiralty.phase1.support-access",
+        "admiralty.phase1.audit",
+        "admiralty.phase2.account-dossier-support"
+      ]
     },
     {
       "path": "scripts/admiralty/**",
-      "suiteIds": ["unit.admiralty", "component.admiralty", "browser.admiralty"],
+      "suiteIds": ["unit.admiralty", "service.admiralty", "component.admiralty", "browser.admiralty"],
       "contractIds": [
         "admiralty.phase1.identity",
         "admiralty.phase1.authorization",
@@ -4110,7 +4093,15 @@
         "admiralty.phase1.audit",
         "admiralty.phase1.registry",
         "admiralty.phase1.migration",
-        "admiralty.phase1.responsive-consent"
+        "admiralty.phase1.responsive-consent",
+        "admiralty.phase2.authorization-partition",
+        "admiralty.phase2.read-projection-redaction",
+        "admiralty.phase2.account-dossier-support",
+        "admiralty.phase2.chronicle-voyage-inspection",
+        "admiralty.phase2.community-operations-providers",
+        "admiralty.phase2.audit-investigation",
+        "admiralty.phase2.registry-activation",
+        "admiralty.phase2.responsive-accessibility"
       ]
     },
     {
@@ -4146,6 +4137,79 @@
       "path": "prisma/mysql-migrations/0052_admiralty_phase1_foundation/**",
       "suiteIds": ["unit.admiralty"],
       "contractIds": ["admiralty.phase1.migration"]
+    },
+    {
+      "path": "src/admiralty/ports/**",
+      "suiteIds": ["service.admiralty", "browser.admiralty"],
+      "contractIds": [
+        "admiralty.phase2.read-projection-redaction",
+        "admiralty.phase2.account-dossier-support",
+        "admiralty.phase2.chronicle-voyage-inspection",
+        "admiralty.phase2.community-operations-providers",
+        "admiralty.phase2.audit-investigation",
+        "admiralty.phase1.support-access",
+        "admiralty.phase1.audit"
+      ]
+    },
+    {
+      "path": "src/admiralty/read-models*",
+      "suiteIds": ["service.admiralty", "browser.admiralty"],
+      "contractIds": [
+        "admiralty.phase2.read-projection-redaction",
+        "admiralty.phase2.account-dossier-support",
+        "admiralty.phase2.chronicle-voyage-inspection",
+        "admiralty.phase2.community-operations-providers",
+        "admiralty.phase2.audit-investigation",
+        "admiralty.phase1.support-access",
+        "admiralty.phase1.audit"
+      ]
+    },
+    {
+      "path": "src/homeport/current-user*",
+      "suiteIds": ["unit.admiralty", "browser.admiralty"],
+      "contractIds": ["admiralty.phase2.authorization-partition"]
+    },
+    {
+      "path": "tests/e2e/admiralty-phase2.spec.ts",
+      "suiteIds": ["browser.admiralty"],
+      "contractIds": [
+        "admiralty.phase2.authorization-partition",
+        "admiralty.phase2.read-projection-redaction",
+        "admiralty.phase2.account-dossier-support",
+        "admiralty.phase2.chronicle-voyage-inspection",
+        "admiralty.phase2.community-operations-providers",
+        "admiralty.phase2.audit-investigation",
+        "admiralty.phase2.registry-activation",
+        "admiralty.phase2.responsive-accessibility",
+        "admiralty.phase1.identity",
+        "admiralty.phase1.authorization",
+        "admiralty.phase1.assurance",
+        "admiralty.phase1.support-access",
+        "admiralty.phase1.audit",
+        "admiralty.phase1.registry",
+        "admiralty.phase1.responsive-consent"
+      ]
+    },
+    {
+      "path": "playwright.admiralty-phase2.config.ts",
+      "suiteIds": ["browser.admiralty"],
+      "contractIds": [
+        "admiralty.phase2.authorization-partition",
+        "admiralty.phase2.read-projection-redaction",
+        "admiralty.phase2.account-dossier-support",
+        "admiralty.phase2.chronicle-voyage-inspection",
+        "admiralty.phase2.community-operations-providers",
+        "admiralty.phase2.audit-investigation",
+        "admiralty.phase2.registry-activation",
+        "admiralty.phase2.responsive-accessibility",
+        "admiralty.phase1.identity",
+        "admiralty.phase1.authorization",
+        "admiralty.phase1.assurance",
+        "admiralty.phase1.support-access",
+        "admiralty.phase1.audit",
+        "admiralty.phase1.registry",
+        "admiralty.phase1.responsive-consent"
+      ]
     }
   ],
   "contractMappings": [
@@ -5737,35 +5801,67 @@
     },
     {
       "contractId": "admiralty.phase1.identity",
-      "suiteIds": ["unit.admiralty", "component.admiralty", "browser.admiralty"]
+      "suiteIds": ["unit.admiralty", "service.admiralty", "component.admiralty", "browser.admiralty"]
     },
     {
       "contractId": "admiralty.phase1.authorization",
-      "suiteIds": ["unit.admiralty", "component.admiralty", "browser.admiralty"]
+      "suiteIds": ["unit.admiralty", "service.admiralty", "component.admiralty", "browser.admiralty"]
     },
     {
       "contractId": "admiralty.phase1.assurance",
-      "suiteIds": ["unit.admiralty", "component.admiralty", "browser.admiralty"]
+      "suiteIds": ["unit.admiralty", "service.admiralty", "component.admiralty", "browser.admiralty"]
     },
     {
       "contractId": "admiralty.phase1.support-access",
-      "suiteIds": ["unit.admiralty", "component.admiralty", "browser.admiralty"]
+      "suiteIds": ["unit.admiralty", "service.admiralty", "component.admiralty", "browser.admiralty"]
     },
     {
       "contractId": "admiralty.phase1.audit",
-      "suiteIds": ["unit.admiralty", "component.admiralty", "browser.admiralty"]
+      "suiteIds": ["unit.admiralty", "service.admiralty", "component.admiralty", "browser.admiralty"]
     },
     {
       "contractId": "admiralty.phase1.registry",
-      "suiteIds": ["unit.admiralty", "component.admiralty", "browser.admiralty"]
+      "suiteIds": ["unit.admiralty", "service.admiralty", "component.admiralty", "browser.admiralty"]
     },
     {
       "contractId": "admiralty.phase1.migration",
-      "suiteIds": ["unit.admiralty", "component.admiralty", "browser.admiralty"]
+      "suiteIds": ["unit.admiralty", "service.admiralty", "component.admiralty", "browser.admiralty"]
     },
     {
       "contractId": "admiralty.phase1.responsive-consent",
-      "suiteIds": ["unit.admiralty", "component.admiralty", "browser.admiralty"]
+      "suiteIds": ["unit.admiralty", "service.admiralty", "component.admiralty", "browser.admiralty"]
+    },
+    {
+      "contractId": "admiralty.phase2.authorization-partition",
+      "suiteIds": ["unit.admiralty", "service.admiralty", "component.admiralty", "browser.admiralty"]
+    },
+    {
+      "contractId": "admiralty.phase2.read-projection-redaction",
+      "suiteIds": ["unit.admiralty", "service.admiralty", "component.admiralty", "browser.admiralty"]
+    },
+    {
+      "contractId": "admiralty.phase2.account-dossier-support",
+      "suiteIds": ["unit.admiralty", "service.admiralty", "component.admiralty", "browser.admiralty"]
+    },
+    {
+      "contractId": "admiralty.phase2.chronicle-voyage-inspection",
+      "suiteIds": ["unit.admiralty", "service.admiralty", "component.admiralty", "browser.admiralty"]
+    },
+    {
+      "contractId": "admiralty.phase2.community-operations-providers",
+      "suiteIds": ["unit.admiralty", "service.admiralty", "component.admiralty", "browser.admiralty"]
+    },
+    {
+      "contractId": "admiralty.phase2.audit-investigation",
+      "suiteIds": ["unit.admiralty", "service.admiralty", "component.admiralty", "browser.admiralty"]
+    },
+    {
+      "contractId": "admiralty.phase2.registry-activation",
+      "suiteIds": ["unit.admiralty", "service.admiralty", "component.admiralty", "browser.admiralty"]
+    },
+    {
+      "contractId": "admiralty.phase2.responsive-accessibility",
+      "suiteIds": ["unit.admiralty", "service.admiralty", "component.admiralty", "browser.admiralty"]
     }
   ],
   "impactClasses": [

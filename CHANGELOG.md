@@ -12,6 +12,15 @@ last_reviewed: 2026-08-09
 
 ### Changed
 
+- Expanded Project Admiralty on its Phase 2 review branch into a read-only
+  15-route Chartroom with authorized account-menu entry, role-filtered
+  navigation, bounded People/Chronicle/Voyage/Community search and detail,
+  operations/provider/configuration/release visibility, Audit Explorer,
+  correlation-led investigation, and dossier-anchored Phase 1 Support Access.
+  The slice adds no schema or broad mutation and remains pending reconciled
+  exact-source authority, owner walkthrough, mainline integration, and
+  deployment.
+
 - Integrated the owner-accepted Project Admiralty Phase 1 source on canonical
   main with exact-source Sounding Line authority and remote parity:
   canonical role/capability authorization, explicit

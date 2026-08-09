@@ -40,15 +40,17 @@ handlers, with no omitted page source. It adds screen/state/responsive evidence
 without changing route ownership or creating a second navigation authority.
 The result is exact-source validation retained on main, not deployment proof.
 
-Project Admiralty Phase 1 adds `/admin` as a privileged direct-entry route. It
-is deliberately absent from ordinary navigation and returns a non-revealing
-not-found result for unauthorized sessions before administrative projection.
-Every administrative API independently enforces current canonical session,
-role/capability, assurance, target, and scope policy. The ordinary
-`/account/support-access` route exists so affected account owners can review,
-approve, deny, and revoke requests; it exposes no administrator projection.
-These routes are ready for owner walkthrough on the named branch and are not on
-main or deployed.
+Project Admiralty Phase 1 adds `/admin` as a privileged route and
+`/account/support-access` as the ordinary account-owner consent surface. Phase
+2 expands the named branch to `/admin/people`, `/admin/chronicles`,
+`/admin/voyages`, `/admin/community`, `/admin/operations`, `/admin/providers`,
+`/admin/configuration`, `/admin/releases`, `/admin/audit`, and
+`/admin/investigate`, with contextual People, Chronicle, Voyage, and Community
+detail routes. Authorized roles receive an account-menu entry and filtered
+Admiralty navigation; ordinary accounts receive neither. Every route still
+returns a non-revealing not-found result before privileged projection when its
+server-side capability check fails. Phase 2 is branch-only, not deployed, and
+pending exact-source authority and owner walkthrough.
 
 Mainline Google and GitHub OAuth adds public provider discovery and start routes
 plus the exact callbacks

@@ -2338,7 +2338,7 @@
     },
     {
       "id": "unit.admiralty",
-      "name": "Admiralty Phase 1 unit and policy cases",
+      "name": "Admiralty unit and policy cases",
       "tier": 1,
       "owner": "project-admiralty",
       "command": "registry-selected Vitest files",
@@ -2349,23 +2349,19 @@
       "resources": ["node-slot", "vitest-worker-pool"],
       "dependencies": [],
       "contracts": [
-        "admiralty.phase1.identity",
+        "admiralty.phase2.authorization-partition",
+        "admiralty.phase2.registry-activation",
         "admiralty.phase1.authorization",
-        "admiralty.phase1.assurance",
-        "admiralty.phase1.support-access",
-        "admiralty.phase1.audit",
-        "admiralty.phase1.registry",
-        "admiralty.phase1.migration",
-        "admiralty.phase1.responsive-consent"
+        "admiralty.phase1.registry"
       ],
-      "affectedPaths": ["src/admiralty/**", "scripts/admiralty/**"],
+      "affectedPaths": ["src/admiralty/**", "src/navigation/**", "scripts/admiralty/**"],
       "releaseGates": ["local-change", "subsystem", "mainline", "release-candidate"],
-      "currentImplementationState": "phase-1-accepted-mainline",
+      "currentImplementationState": "phase-2-ready-for-owner-walkthrough-branch",
       "adapter": "vitest-family"
     },
     {
       "id": "component.admiralty",
-      "name": "Admiralty Phase 1 component cases",
+      "name": "Admiralty Chartroom component cases",
       "tier": 2,
       "owner": "project-admiralty",
       "command": "registry-selected Vitest files",
@@ -2376,40 +2372,77 @@
       "resources": ["node-slot", "vitest-worker-pool"],
       "dependencies": ["unit.admiralty"],
       "contracts": [
-        "admiralty.phase1.authorization",
+        "admiralty.phase2.authorization-partition",
+        "admiralty.phase2.account-dossier-support",
+        "admiralty.phase2.audit-investigation",
+        "admiralty.phase2.responsive-accessibility",
         "admiralty.phase1.assurance",
-        "admiralty.phase1.support-access",
-        "admiralty.phase1.responsive-consent"
+        "admiralty.phase1.support-access"
       ],
       "affectedPaths": ["src/components/admiralty/**", "src/app/admin/**"],
       "releaseGates": ["local-change", "subsystem", "mainline", "release-candidate"],
-      "currentImplementationState": "phase-1-accepted-mainline",
+      "currentImplementationState": "phase-2-ready-for-owner-walkthrough-branch",
       "adapter": "vitest-family"
     },
     {
       "id": "browser.admiralty",
-      "name": "Admiralty Phase 1 isolated browser journeys",
+      "name": "Admiralty Phase 2 isolated browser journeys",
       "tier": 4,
       "owner": "project-admiralty",
       "command": "npm run admiralty:journeys",
       "estimatedDuration": "measured-budget",
-      "expectedDurationMs": 240000,
-      "hardBudgetMs": 600000,
+      "expectedDurationMs": 300000,
+      "hardBudgetMs": 900000,
       "parallelSafe": false,
       "resources": ["application-port", "sqlite-clone", "browser-chromium", "trace-root", "production-build-directory"],
-      "dependencies": ["unit.admiralty", "component.admiralty"],
+      "dependencies": ["unit.admiralty", "service.admiralty", "component.admiralty"],
       "contracts": [
+        "admiralty.phase2.authorization-partition",
+        "admiralty.phase2.read-projection-redaction",
+        "admiralty.phase2.account-dossier-support",
+        "admiralty.phase2.chronicle-voyage-inspection",
+        "admiralty.phase2.community-operations-providers",
+        "admiralty.phase2.audit-investigation",
+        "admiralty.phase2.registry-activation",
+        "admiralty.phase2.responsive-accessibility",
         "admiralty.phase1.identity",
         "admiralty.phase1.authorization",
         "admiralty.phase1.assurance",
         "admiralty.phase1.support-access",
         "admiralty.phase1.audit",
+        "admiralty.phase1.registry",
         "admiralty.phase1.responsive-consent"
       ],
-      "affectedPaths": ["tests/e2e/admiralty-phase1.spec.ts", "playwright.admiralty-phase1.config.ts"],
+      "affectedPaths": ["tests/e2e/admiralty-phase2.spec.ts", "playwright.admiralty-phase2.config.ts"],
       "releaseGates": ["local-change", "subsystem", "mainline", "release-candidate"],
-      "currentImplementationState": "phase-1-accepted-mainline",
-      "adapter": "admiralty-phase1-browser"
+      "currentImplementationState": "phase-2-ready-for-owner-walkthrough-branch",
+      "adapter": "admiralty-phase2-browser"
+    },
+    {
+      "id": "service.admiralty",
+      "name": "Admiralty typed read-port and projection cases",
+      "tier": 2,
+      "owner": "project-admiralty",
+      "command": "registry-selected Vitest files",
+      "estimatedDuration": "measured-budget",
+      "expectedDurationMs": 60000,
+      "hardBudgetMs": 180000,
+      "parallelSafe": true,
+      "resources": ["node-slot", "vitest-worker-pool"],
+      "dependencies": ["unit.admiralty"],
+      "contracts": [
+        "admiralty.phase2.read-projection-redaction",
+        "admiralty.phase2.account-dossier-support",
+        "admiralty.phase2.chronicle-voyage-inspection",
+        "admiralty.phase2.community-operations-providers",
+        "admiralty.phase2.audit-investigation",
+        "admiralty.phase1.support-access",
+        "admiralty.phase1.audit"
+      ],
+      "affectedPaths": ["src/admiralty/ports/**", "src/admiralty/read-models*", "src/admiralty/investigation.ts"],
+      "releaseGates": ["local-change", "subsystem", "mainline", "release-candidate"],
+      "currentImplementationState": "phase-2-ready-for-owner-walkthrough-branch",
+      "adapter": "vitest-family"
     }
   ]
 }

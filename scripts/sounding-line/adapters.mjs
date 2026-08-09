@@ -132,6 +132,11 @@ export const adapters = Object.freeze({
     resources: ["application-port", "sqlite-clone", "browser-chromium", "trace-root", "production-build-directory"],
     mode: "CERTIFIED",
   },
+  "admiralty-phase2-browser": {
+    command: [node, "scripts/admiralty/run-phase2-journeys.mjs"],
+    resources: ["application-port", "sqlite-clone", "browser-chromium", "trace-root", "production-build-directory"],
+    mode: "CERTIFIED",
+  },
 });
 
 export function resolveAdapter(id, argumentsList = []) {
