@@ -29,6 +29,18 @@ also passed. See the [OAuth validation and completion record](Validation/Voyagew
 
 [Project Deepwater](Programs/Deepwater/README.md) governs product capability-realization and systems-audit truth. Phase 1, Sound the Depths, establishes the deterministic capability ledger, schema, ownership map, initial findings, Feature Catalog reconciliation, Phase 2 trace queue, and validation control plane without changing product behavior or schema. Its classifications and maturity rungs are evidence-bound: source existence, local or synthetic validation, staging access, external-provider proof, deployment, and owner acceptance remain distinct.
 
+## Current project-governance wave
+
+The following owner-authored governing documents are current repository authority. The [Continuous Development and Mainline Integration Standard](Governing/Voyagewright_Continuous_Development_and_Mainline_Integration_Standard_v1.0.pdf) governs their concurrent implementation and protected-mainline reconciliation.
+
+- [Project Admiralty](Projects/Project%20Admiralty/Project_Admiralty_Platform_Administration_and_Operations_Governing_Document_v1.2.pdf)
+- [Project Deepwater](Projects/Project%20Deepwater/Project_Deepwater_Product_Capability_Realization_and_Systems_Audit_Program_Governing_Document.pdf)
+- [Project Drydock](Projects/Project%20Drydock/Project_Drydock_Governing_Document.pdf)
+- [Project Helm](Projects/Project%20Helm/Project_Helm_Captain_Operations_and_Participating_Captain_System_Governing_Document_v1.0.pdf)
+- [Project Shipwright](Projects/Project%20Shipwright/Project_Shipwright_Creator_Studio_Authoring_Experience_Governing_Document.pdf)
+- [Project Tideglass](Projects/Project%20Tideglass/Project_Tideglass_Chronicle_Edition_Intelligence_Governing_Document.pdf)
+- [Project Wakebook](Projects/Project%20Wakebook/Project_Wakebook_Governing_Document.pdf)
+
 ## Engineering-record template
 
 Include title, program, phase, record type, status, authority, date, base, scope, decisions, evidence, limitations, supersession, and related records. Do not rewrite historic PDFs solely to fit this template.
