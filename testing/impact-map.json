@@ -42,6 +42,26 @@
       "suiteIds": ["unit.deepwater", "static.core"],
       "contractIds": ["deepwater.capability-realization-integrity"]
     },
+    {
+      "path": "Development_Docs/Projects/Project Drydock/**",
+      "suiteIds": ["unit.drydock", "static.core"],
+      "contractIds": ["drydock-authoring-contracts"]
+    },
+    {
+      "path": "src/drydock/**",
+      "suiteIds": ["unit.drydock", "static.core"],
+      "contractIds": ["drydock-authoring-contracts"]
+    },
+    {
+      "path": "scripts/drydock/**",
+      "suiteIds": ["unit.drydock", "static.core"],
+      "contractIds": ["drydock-authoring-contracts"]
+    },
+    {
+      "path": "tests/fixtures/drydock/**",
+      "suiteIds": ["unit.drydock", "static.core"],
+      "contractIds": ["drydock-authoring-contracts"]
+    },
     { "path": "Development_Docs/document-index.json", "suiteIds": ["static.core"], "contractIds": [] },
     {
       "path": "Development_Docs/Project_Ledgerlight_Documentation_Migration_Matrix.csv",
@@ -91,8 +111,17 @@
     },
     {
       "path": "package.json",
-      "suiteIds": ["unit.deepwater", "unit.homeport", "unit.sounding-line", "unit.tideglass", "static.core"],
+      "suiteIds": [
+        "unit.drydock",
+        "unit.deepwater",
+        "unit.homeport",
+        "unit.sounding-line",
+        "unit.tideglass",
+        "static.core"
+      ],
       "contractIds": [
+        "drydock-authoring-contracts",
+        "drydock-progression",
         "deepwater.capability-realization-integrity",
         "tideglass-exact-edition-pair",
         "tideglass-safe-projection",
@@ -570,8 +599,16 @@
     },
     {
       "path": "src/chronicle/**",
-      "suiteIds": ["unit.one-voyage", "unit.tideglass", "component.player-shell", "browser.invitations"],
+      "suiteIds": [
+        "unit.drydock",
+        "unit.one-voyage",
+        "unit.tideglass",
+        "component.player-shell",
+        "browser.invitations"
+      ],
       "contractIds": [
+        "drydock-authoring-contracts",
+        "drydock-progression",
         "invitation-acceptance",
         "tideglass-exact-edition-pair",
         "tideglass-semantic-determinism",

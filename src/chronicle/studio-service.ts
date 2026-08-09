@@ -1,10 +1,11 @@
 import { z } from "zod";
 import { db } from "@/lib/db";
-import { getBlockDefinition, serializeBlockRegistry } from "@/chronicle/block-registry";
+import { getBlockDefinition } from "@/chronicle/block-registry";
 import { journalPresentationSchema } from "@/chronicle/journal-contract";
 import type { JsonObject, PublishedTaleSnapshot, StudioDraftInput } from "@/chronicle/types";
 import { parseJsonObject } from "@/chronicle/types";
 import { canonicalAccountForLegacyActor } from "@/wayfarer/accounts";
+import { studioRegistryFromDrydock } from "@/drydock/contracts/registry";
 
 export const slugSchema = z
   .string()
@@ -275,7 +276,7 @@ export async function getStudioTale(taleId: string) {
       isCurrent: version.isCurrent,
       activeSessions: version._count.sessions,
     })),
-    registry: serializeBlockRegistry(),
+    registry: studioRegistryFromDrydock(),
   };
 }
 
