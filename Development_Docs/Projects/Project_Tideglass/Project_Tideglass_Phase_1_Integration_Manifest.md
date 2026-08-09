@@ -17,15 +17,16 @@ last_reviewed: 2026-08-09
 | Original upstream      | `origin/main`                                                                          |
 | Reconciled main        | `762258e31d7509aac8a7a46e7828ae0e92b84a84`                                             |
 | Implementation commits | `35b1418931bcef3babe12e981571207314bc6120`, `1366095b3ae637675c5dd9a97406bff0439fadf9` |
-| Candidate branch tip   | recorded by the protected publication procedure                                        |
-| Integrated main        | not integrated                                                                         |
+| Candidate branch tip   | `83ef66ff70a3bbeb85b90f6a99aeb8cfb0da8bf9`                                             |
+| Protected integration  | pull request #17                                                                       |
+| Integrated main        | `40d822cd936c9abbfce064fd7799e6a2f8c9785e`                                             |
 
 ## Owned change surface
 
 - Additive Tideglass source, safe diagnostic CLI, and synthetic tests.
 - Sounding Line owner, suite, four contracts, path/contract impact mapping, gates, and generated case registry.
 - Phase 1 design, test, validation, integration, and completion records plus navigation.
-- Branch-complete Feature Catalog entry `FT-B009`, bound to the corrected implementation commit `1366095b3ae637675c5dd9a97406bff0439fadf9`.
+- Mainline Feature Catalog entry `FT-B009`, backed by the integrated corrected implementation.
 
 ## Explicitly unchanged
 
@@ -42,8 +43,10 @@ Immediately before final acceptance, fetch and compare the original base with cu
 
 The branch first merged accepted Deepwater Phase 1 through `273fb5255ad222812530422e902db04c0ddd1961`, then the project-governance wave through `5b266251bd5a42efe90988e45daf55bca8e566f1`. A completion audit independently identified deterministic-identity, matching, unsupported-data, and redaction defects in Tideglass; those were corrected under `1366095b3ae637675c5dd9a97406bff0439fadf9`, formatted under `7db576d00d89b65edb9a1a0225df130fff8fcbe5`, and received exact local mainline `RELEASE_GO`.
 
-The mandatory post-gate fetch then found accepted Deepwater Phase 2 at `762258e31d7509aac8a7a46e7828ae0e92b84a84`. That interval changed Deepwater records/tooling plus shared Sounding Line policy, registry, documentation indexes, and the generated Feature Catalog. It did not overlap Tideglass product source, schemas, migrations, publication, authorization, or runtime behavior. The accepted Deepwater state was preserved; shared generated artifacts were rebuilt from the merged inputs. Because the base changed after the earlier gate, its `RELEASE_GO` is historical and the exact reconciled candidate requires a new source-bound decision.
+The mandatory post-gate fetch then found accepted Deepwater Phase 2 at `762258e31d7509aac8a7a46e7828ae0e92b84a84`. That interval changed Deepwater records/tooling plus shared Sounding Line policy, registry, documentation indexes, and the generated Feature Catalog. It did not overlap Tideglass product source, schemas, migrations, publication, authorization, or runtime behavior. The accepted Deepwater state was preserved; shared generated artifacts were rebuilt from the merged inputs. The exact reconciled candidate `83ef66ff70a3bbeb85b90f6a99aeb8cfb0da8bf9` then received source-bound local `RELEASE_GO` and passed the protected hosted decision before integration.
 
-## Available integration path
+## Completed integration path
 
-The phase must pass the source-bound Sounding Line candidate gate and then use the protected branch/pull-request procedure. If merge authority or another external gate is unavailable, the correct stop state is `TIDEGLASS PHASE 1 MAINLINE CANDIDATE` with exact candidate and main SHAs. Branch proof is not mainline proof; post-merge validation and remote parity remain required before an integrated claim.
+Pull request #17 integrated candidate `83ef66ff70a3bbeb85b90f6a99aeb8cfb0da8bf9` as the second parent of merge `40d822cd936c9abbfce064fd7799e6a2f8c9785e`. All 32 hosted check runs and the governed hosted Mainline Decision passed. The hosted workflow wrapper nevertheless reported `failure` with no failed or non-success check run or job; that wrapper anomaly is recorded without converting it into either a failed governed decision or a green wrapper claim.
+
+The actual integrated SHA then received local mainline `RELEASE_GO` across 30 source-bound receipts. All receipts passed with cleanup `CLEAN`; no mandatory suite was missing, duplicated, unknown, or invalid. Remote `origin/main` matched the integrated SHA exactly when the post-merge record closed. No Tideglass Phase 2 work is included or authorized.
