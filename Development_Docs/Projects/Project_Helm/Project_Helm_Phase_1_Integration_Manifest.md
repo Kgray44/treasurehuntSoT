@@ -17,10 +17,10 @@ is a pre-integration record and does not claim mainline acceptance.
 | Field                  | Value                                                                |
 | ---------------------- | -------------------------------------------------------------------- |
 | Original base SHA      | `f1c2f22dd935322c1a71eb80c51592f243dc196d`                           |
-| Current `origin/main`  | `0ded9be4af04feb1785fd9e56abbacdd39f54b3d`                           |
+| Current `origin/main`  | `fe5e18eb6312c2571616a8faf2dfe1c8583cbd9f`                           |
 | Branch                 | `codex/project-helm-phase1-take-the-helm`                            |
 | Owned worktree         | `C:\Users\kkids\Documents\treasurehuntSoT-helm-phase1-take-the-helm` |
-| Candidate commit       | `7c296cf0b2e12e78a6c41244ba8f06b15759474d` reconciled checkpoint     |
+| Candidate commit       | `c92bce2272a5ad6c34923c2eaefbee6fc22de37a` reconciled checkpoint     |
 | Protected integration  | Pending                                                              |
 | Final reconciled main  | Pending                                                              |
 | Current mainline state | `RECONCILED_VALIDATION_IN_PROGRESS`                                  |
@@ -56,6 +56,8 @@ is a pre-integration record and does not claim mainline acceptance.
 | `bbf5e0d`                                  | Integration commit                              | Protected merge of Tideglass Phase 1 finalization through pull request 23.                                                                                                                                           |
 | `d65ac87`                                  | Adjacent catalog correction                     | Reconciles One Voyage route surfaces in its machine-readable Feature Catalog fragment. No Helm product source changed.                                                                                               |
 | `0ded9be`                                  | Integration commit                              | Protected merge of the One Voyage catalog correction through pull request 25.                                                                                                                                        |
+| `648d106`                                  | Adjacent product, security, and schema work     | Adds Admiralty Phase 1 role/capability authority, assurance, Support Access, audit, admin surfaces, and additive migrations. No Helm-owned product behavior changed.                                                 |
+| `663886a` through `fe5e18e`                | Adjacent reconciliation and integration         | Reconciles Admiralty with accepted concurrent work, records owner acceptance and automated gates, refreshes shared governance outputs, and publishes the accepted implementation to canonical main.                  |
 
 The governance bootstrap introduces the supplied Project Helm and continuous
 development PDFs as tracked governing authorities. Their Git blob identities
@@ -70,7 +72,7 @@ match the authorities reviewed for this phase.
 | `package.json`                                   | Direct shared-governance overlap | Preserve Deepwater and Tideglass commands and the existing repository scripts; Helm adds no package command.                                                                                                          |
 | Documentation validation and index generator     | Adjacent                         | Accept current-main generator behavior, then regenerate the documentation index and migration matrix with Helm records present.                                                                                       |
 | Feature Catalog and documentation index outputs  | Generated overlap                | Preserve machine-readable fragment ownership, run the generators, and never choose either generated side manually.                                                                                                    |
-| Prisma schemas and migrations                    | None                             | No schema merge, migration, backfill, or database rewrite.                                                                                                                                                            |
+| Prisma schemas and migrations                    | Adjacent upstream change         | Accept Admiralty's additive dual-provider migrations unchanged. Helm adds no schema, migration, backfill, or database rewrite.                                                                                        |
 
 ## Evidence invalidation and retention
 

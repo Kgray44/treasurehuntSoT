@@ -73307,9 +73307,49 @@
       "currentStatus": "ACTIVE"
     },
     {
+      "id": "sl-test-022bab4e2bc5329a7968",
+      "title": "Phase 2 rejects an accepted queue item omitted from trace policy",
+      "line": 250,
+      "file": "tests/deepwater/deepwater-control-plane.test.mjs",
+      "suiteId": "unit.deepwater",
+      "owner": "project-deepwater",
+      "tier": 1,
+      "risk": "HIGH",
+      "contracts": ["deepwater.capability-realization-integrity"],
+      "sourcePaths": ["tests/deepwater/deepwater-control-plane.test.mjs"],
+      "consumerPaths": [],
+      "dependencies": [],
+      "fixtureFamily": "repository-fixtures",
+      "fixture": "repository-owned deterministic fixtures",
+      "databaseOwnership": "no browser database ownership",
+      "browserOwnership": "not applicable",
+      "portOwnership": "not applicable",
+      "resources": ["node-slot", "vitest-worker-pool"],
+      "parallelSafety": "READ_ONLY_PARALLEL",
+      "browserRequirements": ["NOT_APPLICABLE"],
+      "deviceRequirements": ["NOT_APPLICABLE"],
+      "viewportRequirements": ["NOT_APPLICABLE"],
+      "motionRequirements": ["NOT_APPLICABLE"],
+      "networkRequirements": ["NOT_APPLICABLE"],
+      "positiveCases": ["declared-source-case"],
+      "negativeCases": ["declared-negative-contract"],
+      "accessibilityRelevance": "NOT_APPLICABLE",
+      "privacyRelevance": "RELEVANT",
+      "securityRelevance": "RELEVANT",
+      "dataMutationClass": "READ_ONLY",
+      "expectedDurationMs": 30000,
+      "hardBudgetMs": 180000,
+      "retryPolicy": "NONE",
+      "releaseRelevance": "authoritative registered contract evidence",
+      "gates": ["local-change", "subsystem", "mainline", "release-candidate"],
+      "supersessionPolicy": "ACTIVE",
+      "historicalAliases": [],
+      "currentStatus": "ACTIVE"
+    },
+    {
       "id": "sl-test-d39087fa5546f1d1de97",
       "title": "Phase 2 rejects an unexplained UNKNOWN layer",
-      "line": 245,
+      "line": 261,
       "file": "tests/deepwater/deepwater-control-plane.test.mjs",
       "suiteId": "unit.deepwater",
       "owner": "project-deepwater",
@@ -73349,7 +73389,7 @@
     {
       "id": "sl-test-098f2d4b7b921d13cedc",
       "title": "Phase 2 rejects a PARTIAL layer without a linked finding",
-      "line": 253,
+      "line": 269,
       "file": "tests/deepwater/deepwater-control-plane.test.mjs",
       "suiteId": "unit.deepwater",
       "owner": "project-deepwater",
@@ -73389,7 +73429,7 @@
     {
       "id": "sl-test-82496808480c142a1f2e",
       "title": "Phase 2 rejects an ABSENT layer without a linked finding",
-      "line": 262,
+      "line": 278,
       "file": "tests/deepwater/deepwater-control-plane.test.mjs",
       "suiteId": "unit.deepwater",
       "owner": "project-deepwater",
@@ -73429,7 +73469,7 @@
     {
       "id": "sl-test-81f4e6a181661219b749",
       "title": "Phase 2 rejects user-facing navigation without a conclusion",
-      "line": 271,
+      "line": 287,
       "file": "tests/deepwater/deepwater-control-plane.test.mjs",
       "suiteId": "unit.deepwater",
       "owner": "project-deepwater",
@@ -73469,7 +73509,7 @@
     {
       "id": "sl-test-3ec3963d312329ce731e",
       "title": "Phase 2 rejects missing state evaluation",
-      "line": 280,
+      "line": 296,
       "file": "tests/deepwater/deepwater-control-plane.test.mjs",
       "suiteId": "unit.deepwater",
       "owner": "project-deepwater",
@@ -73509,7 +73549,7 @@
     {
       "id": "sl-test-81089becdcc42e37b39c",
       "title": "Phase 2 rejects unevaluated restricted authorization",
-      "line": 286,
+      "line": 302,
       "file": "tests/deepwater/deepwater-control-plane.test.mjs",
       "suiteId": "unit.deepwater",
       "owner": "project-deepwater",
@@ -73549,7 +73589,7 @@
     {
       "id": "sl-test-9e54ca8b0bea71457bf3",
       "title": "Phase 2 rejects unevaluated audience projection",
-      "line": 295,
+      "line": 311,
       "file": "tests/deepwater/deepwater-control-plane.test.mjs",
       "suiteId": "unit.deepwater",
       "owner": "project-deepwater",
@@ -73589,7 +73629,7 @@
     {
       "id": "sl-test-188bfab22204a759aea6",
       "title": "Phase 2 rejects an incomplete capability without a first loss point",
-      "line": 301,
+      "line": 317,
       "file": "tests/deepwater/deepwater-control-plane.test.mjs",
       "suiteId": "unit.deepwater",
       "owner": "project-deepwater",
@@ -73629,7 +73669,7 @@
     {
       "id": "sl-test-a3659d1ecc88f1d7cc08",
       "title": "Phase 2 rejects an incomplete capability without a root cause",
-      "line": 310,
+      "line": 326,
       "file": "tests/deepwater/deepwater-control-plane.test.mjs",
       "suiteId": "unit.deepwater",
       "owner": "project-deepwater",
@@ -73669,7 +73709,7 @@
     {
       "id": "sl-test-125aa3651d90a69259d4",
       "title": "Phase 2 rejects a remediation packet with an unknown capability",
-      "line": 319,
+      "line": 335,
       "file": "tests/deepwater/deepwater-control-plane.test.mjs",
       "suiteId": "unit.deepwater",
       "owner": "project-deepwater",
@@ -73709,7 +73749,7 @@
     {
       "id": "sl-test-601e97f20ca7713db63e",
       "title": "Phase 2 rejects a remediation packet with an unknown finding",
-      "line": 325,
+      "line": 341,
       "file": "tests/deepwater/deepwater-control-plane.test.mjs",
       "suiteId": "unit.deepwater",
       "owner": "project-deepwater",
@@ -73749,7 +73789,7 @@
     {
       "id": "sl-test-bcbbabdf6b9bc25b1066",
       "title": "Phase 2 rejects packet ownership divergence without rationale",
-      "line": 331,
+      "line": 347,
       "file": "tests/deepwater/deepwater-control-plane.test.mjs",
       "suiteId": "unit.deepwater",
       "owner": "project-deepwater",
@@ -73789,7 +73829,7 @@
     {
       "id": "sl-test-2fbf94e5381ff007967f",
       "title": "Phase 2 rejects inconsistent PROJECTION root cause",
-      "line": 340,
+      "line": 356,
       "file": "tests/deepwater/deepwater-control-plane.test.mjs",
       "suiteId": "unit.deepwater",
       "owner": "project-deepwater",
@@ -73829,7 +73869,7 @@
     {
       "id": "sl-test-87d30ac6e057760204ce",
       "title": "Phase 2 rejects silently dropped queue work",
-      "line": 349,
+      "line": 365,
       "file": "tests/deepwater/deepwater-control-plane.test.mjs",
       "suiteId": "unit.deepwater",
       "owner": "project-deepwater",
@@ -73869,7 +73909,7 @@
     {
       "id": "sl-test-a25b260f551d008f7a72",
       "title": "Phase 2 privacy validation rejects credential-like trace output",
-      "line": 355,
+      "line": 371,
       "file": "tests/deepwater/deepwater-control-plane.test.mjs",
       "suiteId": "unit.deepwater",
       "owner": "project-deepwater",
@@ -73909,7 +73949,7 @@
     {
       "id": "sl-test-7fd73ce6707ff35fa82a",
       "title": "Phase 2 semantic output is deterministic",
-      "line": 361,
+      "line": 377,
       "file": "tests/deepwater/deepwater-control-plane.test.mjs",
       "suiteId": "unit.deepwater",
       "owner": "project-deepwater",
@@ -73949,7 +73989,7 @@
     {
       "id": "sl-test-f704757414c52a954339",
       "title": "Phase 3 reviews all 54 current accepted capabilities and accepts the generated utilization model",
-      "line": 369,
+      "line": 385,
       "file": "tests/deepwater/deepwater-control-plane.test.mjs",
       "suiteId": "unit.deepwater",
       "owner": "project-deepwater",
@@ -73989,7 +74029,7 @@
     {
       "id": "sl-test-4ae1741e195ef4857f97",
       "title": "Phase 3 rejects an orphan backend operation",
-      "line": 376,
+      "line": 402,
       "file": "tests/deepwater/deepwater-control-plane.test.mjs",
       "suiteId": "unit.deepwater",
       "owner": "project-deepwater",
@@ -74029,7 +74069,7 @@
     {
       "id": "sl-test-7a2fc04b531e8d6df360",
       "title": "Phase 3 rejects an unused safe DTO field marked required",
-      "line": 385,
+      "line": 411,
       "file": "tests/deepwater/deepwater-control-plane.test.mjs",
       "suiteId": "unit.deepwater",
       "owner": "project-deepwater",
@@ -74069,7 +74109,7 @@
     {
       "id": "sl-test-ead052fbdd516e82fc73",
       "title": "Phase 3 rejects a fake frontend-only mutation",
-      "line": 392,
+      "line": 418,
       "file": "tests/deepwater/deepwater-control-plane.test.mjs",
       "suiteId": "unit.deepwater",
       "owner": "project-deepwater",
@@ -74109,7 +74149,7 @@
     {
       "id": "sl-test-69097061575c51c3ab00",
       "title": "Phase 3 rejects a UI-only success state",
-      "line": 403,
+      "line": 429,
       "file": "tests/deepwater/deepwater-control-plane.test.mjs",
       "suiteId": "unit.deepwater",
       "owner": "project-deepwater",
@@ -74149,7 +74189,7 @@
     {
       "id": "sl-test-90ad4815b0a0346ff898",
       "title": "Phase 3 rejects a missing recovery state",
-      "line": 411,
+      "line": 437,
       "file": "tests/deepwater/deepwater-control-plane.test.mjs",
       "suiteId": "unit.deepwater",
       "owner": "project-deepwater",
@@ -74189,7 +74229,7 @@
     {
       "id": "sl-test-d566d077489353084a7f",
       "title": "Phase 3 rejects unconsumed retry capability",
-      "line": 422,
+      "line": 448,
       "file": "tests/deepwater/deepwater-control-plane.test.mjs",
       "suiteId": "unit.deepwater",
       "owner": "project-deepwater",
@@ -74229,7 +74269,7 @@
     {
       "id": "sl-test-2fc1aaaedceeafab1473",
       "title": "Phase 3 rejects unconsumed operator health marked internal without justification",
-      "line": 440,
+      "line": 466,
       "file": "tests/deepwater/deepwater-control-plane.test.mjs",
       "suiteId": "unit.deepwater",
       "owner": "project-deepwater",
@@ -74269,7 +74309,7 @@
     {
       "id": "sl-test-210c71025e388a0127d6",
       "title": "Phase 3 rejects raw-secret projection evidence",
-      "line": 450,
+      "line": 476,
       "file": "tests/deepwater/deepwater-control-plane.test.mjs",
       "suiteId": "unit.deepwater",
       "owner": "project-deepwater",
@@ -74309,7 +74349,7 @@
     {
       "id": "sl-test-59ef257867daa969277f",
       "title": "Phase 3 rejects a machine capability with no worker",
-      "line": 458,
+      "line": 484,
       "file": "tests/deepwater/deepwater-control-plane.test.mjs",
       "suiteId": "unit.deepwater",
       "owner": "project-deepwater",
@@ -74349,7 +74389,7 @@
     {
       "id": "sl-test-7c0e351dadee23ab27ad",
       "title": "Phase 3 rejects duplicate client business logic without a finding",
-      "line": 467,
+      "line": 493,
       "file": "tests/deepwater/deepwater-control-plane.test.mjs",
       "suiteId": "unit.deepwater",
       "owner": "project-deepwater",
@@ -74389,7 +74429,7 @@
     {
       "id": "sl-test-3b63915cf487cfbfeadb",
       "title": "Phase 3 rejects FULLY_UTILIZED with a missing expected operation",
-      "line": 476,
+      "line": 502,
       "file": "tests/deepwater/deepwater-control-plane.test.mjs",
       "suiteId": "unit.deepwater",
       "owner": "project-deepwater",
@@ -74429,7 +74469,7 @@
     {
       "id": "sl-test-1dfcbf550992f0dc4102",
       "title": "Phase 3 rejects INTENTIONALLY_PARTIAL without rationale",
-      "line": 485,
+      "line": 511,
       "file": "tests/deepwater/deepwater-control-plane.test.mjs",
       "suiteId": "unit.deepwater",
       "owner": "project-deepwater",
