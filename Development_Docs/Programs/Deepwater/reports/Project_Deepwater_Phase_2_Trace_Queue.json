@@ -1,0 +1,800 @@
+{
+  "priorityPolicy": "Security/privacy/authorization, severity, broken/frontend-only/backend-only/hidden/partial class, then stable queue ID",
+  "project": "Project Deepwater",
+  "queue": [
+    {
+      "activeProjectConsiderations": "Audit accepted main only; coordinate with Project Homeport Phase 7 owner re-review before remediation.",
+      "canonicalOwner": "Homeport",
+      "capabilityId": "DW-CAP-INTEGRATED-WHOLE-PRODUCT-VOYAGE",
+      "confidence": "HIGH",
+      "currentClassification": "PARTIALLY_REALIZED",
+      "evidenceAvailable": [
+        "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_7_Owner_Decision_Record.md"
+      ],
+      "missingEvidence": [
+        "Owner decision record updated by the owner to an allowed accepted outcome and bound to the reviewed running source."
+      ],
+      "queueId": "DW-P2-HOMEPORT-OWNER-DECISION-PENDING",
+      "reasonSelected": "HIGH DW-CAP finding: Accepted main contains the automated and correction control plane, while the authoritative owner record remains PENDING_OWNER_DECISION.",
+      "severity": "HIGH",
+      "suspectedLossLayer": "OWNER_ACCEPTANCE"
+    },
+    {
+      "activeProjectConsiderations": "Audit accepted main only; coordinate with Admiralty before remediation.",
+      "canonicalOwner": "Harborlight",
+      "capabilityId": "DW-CAP-COMMUNITY-OPERATIONS-HEALTH",
+      "confidence": "MEDIUM",
+      "currentClassification": "BACKEND_ONLY",
+      "evidenceAvailable": [
+        "scripts/community/ops-status.ts",
+        "scripts/community/providers-check.ts",
+        "scripts/community/reconcile.ts"
+      ],
+      "missingEvidence": [
+        "Privileged projection, failure-state coverage, privacy proof, and operator journey evidence."
+      ],
+      "queueId": "DW-P2-COMMUNITY-OPERATIONS-HEALTH-PROJECTION",
+      "reasonSelected": "MEDIUM DW-PROJ+DW-UI finding: CLI operational commands exist, but Phase 1 found no governed Admiralty health surface in accepted main.",
+      "severity": "MEDIUM",
+      "suspectedLossLayer": "PROJECTION"
+    },
+    {
+      "activeProjectConsiderations": "Audit accepted main only; coordinate with Admiralty before remediation.",
+      "canonicalOwner": "Sealed Hold",
+      "capabilityId": "DW-CAP-PRIVATE-PROVIDER-HEALTH",
+      "confidence": "MEDIUM",
+      "currentClassification": "BACKEND_ONLY",
+      "evidenceAvailable": [
+        "prisma/schema.sqlite.prisma",
+        "scripts/private-content/cli.ts",
+        "src/private-content/providers.ts"
+      ],
+      "missingEvidence": [
+        "Privileged projection, redaction proof, unavailable/degraded states, and operator journey evidence."
+      ],
+      "queueId": "DW-P2-PRIVATE-PROVIDER-HEALTH-PROJECTION",
+      "reasonSelected": "MEDIUM DW-PROJ+DW-UI finding: Provider health models and CLI checks exist, but Phase 1 found no governed Admiralty projection in accepted main.",
+      "severity": "MEDIUM",
+      "suspectedLossLayer": "PROJECTION"
+    },
+    {
+      "activeProjectConsiderations": "Audit accepted main only; coordinate with Admiralty before remediation.",
+      "canonicalOwner": "Wayfarer",
+      "capabilityId": "DW-CAP-TRANSACTIONAL-EMAIL-DELIVERY",
+      "confidence": "MEDIUM",
+      "currentClassification": "BACKEND_ONLY",
+      "evidenceAvailable": ["prisma/schema.sqlite.prisma", "src/wayfarer/transactional-email.ts"],
+      "missingEvidence": ["Privileged projection and negative privacy proof plus operator journey evidence."],
+      "queueId": "DW-P2-TRANSACTIONAL-EMAIL-HEALTH-PROJECTION",
+      "reasonSelected": "MEDIUM DW-PROJ+DW-UI finding: Delivery services and lifecycle records exist, but Phase 1 found no governed Admiralty health surface in accepted main.",
+      "severity": "MEDIUM",
+      "suspectedLossLayer": "PROJECTION"
+    },
+    {
+      "activeProjectConsiderations": "Audit accepted main only; coordinate with Drydock and Ledgerlight catalog reconciliation before remediation.",
+      "canonicalOwner": "Drydock",
+      "capabilityId": "DW-CAP-STORY-BLOCK-SYSTEM",
+      "confidence": "HIGH",
+      "currentClassification": "PARTIALLY_REALIZED",
+      "evidenceAvailable": ["FT-009", "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json"],
+      "missingEvidence": [
+        "Owning Feature Catalog fragment reconciled to current route identity or annotated with a governed compatibility explanation; feature sync and validation pass."
+      ],
+      "queueId": "DW-P2-CATALOG-SURFACE-FT-009",
+      "reasonSelected": "MEDIUM DW-DOC+DW-NAV finding: Catalog surface(s) /studio/chronicles/[id] do not exactly match the accepted Homeport route inventory.",
+      "severity": "MEDIUM",
+      "suspectedLossLayer": "FEATURE_CATALOG_TO_ROUTE_INVENTORY"
+    },
+    {
+      "activeProjectConsiderations": "Audit accepted main only; coordinate with One Voyage and Ledgerlight catalog reconciliation before remediation.",
+      "canonicalOwner": "One Voyage",
+      "capabilityId": "DW-CAP-IMMUTABLE-PUBLISHING-EDITIONS-FORKS",
+      "confidence": "HIGH",
+      "currentClassification": "PARTIALLY_REALIZED",
+      "evidenceAvailable": ["FT-010", "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json"],
+      "missingEvidence": [
+        "Owning Feature Catalog fragment reconciled to current route identity or annotated with a governed compatibility explanation; feature sync and validation pass."
+      ],
+      "queueId": "DW-P2-CATALOG-SURFACE-FT-010",
+      "reasonSelected": "MEDIUM DW-DOC+DW-NAV finding: Catalog surface(s) /studio/chronicles/[id]/versions do not exactly match the accepted Homeport route inventory.",
+      "severity": "MEDIUM",
+      "suspectedLossLayer": "FEATURE_CATALOG_TO_ROUTE_INVENTORY"
+    },
+    {
+      "activeProjectConsiderations": "Audit accepted main only; coordinate with Shipwright and Ledgerlight catalog reconciliation before remediation.",
+      "canonicalOwner": "Shipwright",
+      "capabilityId": "DW-CAP-ASSET-LIBRARY-MEDIA-PIPELINE",
+      "confidence": "HIGH",
+      "currentClassification": "PARTIALLY_REALIZED",
+      "evidenceAvailable": ["FT-011", "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json"],
+      "missingEvidence": [
+        "Owning Feature Catalog fragment reconciled to current route identity or annotated with a governed compatibility explanation; feature sync and validation pass."
+      ],
+      "queueId": "DW-P2-CATALOG-SURFACE-FT-011",
+      "reasonSelected": "MEDIUM DW-DOC+DW-NAV finding: Catalog surface(s) /studio/assets do not exactly match the accepted Homeport route inventory.",
+      "severity": "MEDIUM",
+      "suspectedLossLayer": "FEATURE_CATALOG_TO_ROUTE_INVENTORY"
+    },
+    {
+      "activeProjectConsiderations": "Audit accepted main only; coordinate with Drydock and Ledgerlight catalog reconciliation before remediation.",
+      "canonicalOwner": "Drydock",
+      "capabilityId": "DW-CAP-WAYPOINT-REFERENCE-LIBRARY",
+      "confidence": "HIGH",
+      "currentClassification": "PARTIALLY_REALIZED",
+      "evidenceAvailable": ["FT-012", "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json"],
+      "missingEvidence": [
+        "Owning Feature Catalog fragment reconciled to current route identity or annotated with a governed compatibility explanation; feature sync and validation pass."
+      ],
+      "queueId": "DW-P2-CATALOG-SURFACE-FT-012",
+      "reasonSelected": "MEDIUM DW-DOC+DW-NAV finding: Catalog surface(s) /studio/waypoints do not exactly match the accepted Homeport route inventory.",
+      "severity": "MEDIUM",
+      "suspectedLossLayer": "FEATURE_CATALOG_TO_ROUTE_INVENTORY"
+    },
+    {
+      "activeProjectConsiderations": "Audit accepted main only; coordinate with Drydock and Ledgerlight catalog reconciliation before remediation.",
+      "canonicalOwner": "Drydock",
+      "capabilityId": "DW-CAP-CHRONICLE-ARTIFACT-DEFINITIONS",
+      "confidence": "HIGH",
+      "currentClassification": "PARTIALLY_REALIZED",
+      "evidenceAvailable": ["FT-013", "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json"],
+      "missingEvidence": [
+        "Owning Feature Catalog fragment reconciled to current route identity or annotated with a governed compatibility explanation; feature sync and validation pass."
+      ],
+      "queueId": "DW-P2-CATALOG-SURFACE-FT-013",
+      "reasonSelected": "MEDIUM DW-DOC+DW-NAV finding: Catalog surface(s) /studio/artifacts do not exactly match the accepted Homeport route inventory.",
+      "severity": "MEDIUM",
+      "suspectedLossLayer": "FEATURE_CATALOG_TO_ROUTE_INVENTORY"
+    },
+    {
+      "activeProjectConsiderations": "Audit accepted main only; coordinate with Wakebook and Ledgerlight catalog reconciliation before remediation.",
+      "canonicalOwner": "Wakebook",
+      "capabilityId": "DW-CAP-PLAYER-JOURNAL",
+      "confidence": "HIGH",
+      "currentClassification": "PARTIALLY_REALIZED",
+      "evidenceAvailable": ["FT-015", "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json"],
+      "missingEvidence": [
+        "Owning Feature Catalog fragment reconciled to current route identity or annotated with a governed compatibility explanation; feature sync and validation pass."
+      ],
+      "queueId": "DW-P2-CATALOG-SURFACE-FT-015",
+      "reasonSelected": "MEDIUM DW-DOC+DW-NAV finding: Catalog surface(s) /player/voyages/[id] do not exactly match the accepted Homeport route inventory.",
+      "severity": "MEDIUM",
+      "suspectedLossLayer": "FEATURE_CATALOG_TO_ROUTE_INVENTORY"
+    },
+    {
+      "activeProjectConsiderations": "Audit accepted main only; coordinate with Landfall and Ledgerlight catalog reconciliation before remediation.",
+      "canonicalOwner": "Landfall",
+      "capabilityId": "DW-CAP-VOYAGE-CHART",
+      "confidence": "HIGH",
+      "currentClassification": "PARTIALLY_REALIZED",
+      "evidenceAvailable": ["FT-016", "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json"],
+      "missingEvidence": [
+        "Owning Feature Catalog fragment reconciled to current route identity or annotated with a governed compatibility explanation; feature sync and validation pass."
+      ],
+      "queueId": "DW-P2-CATALOG-SURFACE-FT-016",
+      "reasonSelected": "MEDIUM DW-DOC+DW-NAV finding: Catalog surface(s) /player/voyages/[id]/chart do not exactly match the accepted Homeport route inventory.",
+      "severity": "MEDIUM",
+      "suspectedLossLayer": "FEATURE_CATALOG_TO_ROUTE_INVENTORY"
+    },
+    {
+      "activeProjectConsiderations": "Audit accepted main only; coordinate with One Voyage and Ledgerlight catalog reconciliation before remediation.",
+      "canonicalOwner": "One Voyage",
+      "capabilityId": "DW-CAP-ARTIFACT-REVEAL",
+      "confidence": "HIGH",
+      "currentClassification": "PARTIALLY_REALIZED",
+      "evidenceAvailable": ["FT-017", "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json"],
+      "missingEvidence": [
+        "Owning Feature Catalog fragment reconciled to current route identity or annotated with a governed compatibility explanation; feature sync and validation pass."
+      ],
+      "queueId": "DW-P2-CATALOG-SURFACE-FT-017",
+      "reasonSelected": "MEDIUM DW-DOC+DW-NAV finding: Catalog surface(s) /player/voyages/[id]/treasure do not exactly match the accepted Homeport route inventory.",
+      "severity": "MEDIUM",
+      "suspectedLossLayer": "FEATURE_CATALOG_TO_ROUTE_INVENTORY"
+    },
+    {
+      "activeProjectConsiderations": "Audit accepted main only; coordinate with One Voyage and Ledgerlight catalog reconciliation before remediation.",
+      "canonicalOwner": "One Voyage",
+      "capabilityId": "DW-CAP-SIDE-QUEST-LEDGER",
+      "confidence": "HIGH",
+      "currentClassification": "PARTIALLY_REALIZED",
+      "evidenceAvailable": ["FT-018", "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json"],
+      "missingEvidence": [
+        "Owning Feature Catalog fragment reconciled to current route identity or annotated with a governed compatibility explanation; feature sync and validation pass."
+      ],
+      "queueId": "DW-P2-CATALOG-SURFACE-FT-018",
+      "reasonSelected": "MEDIUM DW-DOC+DW-NAV finding: Catalog surface(s) /player/voyages/[id]/ledger do not exactly match the accepted Homeport route inventory.",
+      "severity": "MEDIUM",
+      "suspectedLossLayer": "FEATURE_CATALOG_TO_ROUTE_INVENTORY"
+    },
+    {
+      "activeProjectConsiderations": "Audit accepted main only; coordinate with Wakebook and Ledgerlight catalog reconciliation before remediation.",
+      "canonicalOwner": "Wakebook",
+      "capabilityId": "DW-CAP-SHIPS-LOG",
+      "confidence": "HIGH",
+      "currentClassification": "PARTIALLY_REALIZED",
+      "evidenceAvailable": ["FT-019", "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json"],
+      "missingEvidence": [
+        "Owning Feature Catalog fragment reconciled to current route identity or annotated with a governed compatibility explanation; feature sync and validation pass."
+      ],
+      "queueId": "DW-P2-CATALOG-SURFACE-FT-019",
+      "reasonSelected": "MEDIUM DW-DOC+DW-NAV finding: Catalog surface(s) /player/voyages/[id]/log do not exactly match the accepted Homeport route inventory.",
+      "severity": "MEDIUM",
+      "suspectedLossLayer": "FEATURE_CATALOG_TO_ROUTE_INVENTORY"
+    },
+    {
+      "activeProjectConsiderations": "Audit accepted main only; coordinate with One Voyage and Ledgerlight catalog reconciliation before remediation.",
+      "canonicalOwner": "One Voyage",
+      "capabilityId": "DW-CAP-FINALE-CHAMBER",
+      "confidence": "HIGH",
+      "currentClassification": "PARTIALLY_REALIZED",
+      "evidenceAvailable": ["FT-020", "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json"],
+      "missingEvidence": [
+        "Owning Feature Catalog fragment reconciled to current route identity or annotated with a governed compatibility explanation; feature sync and validation pass."
+      ],
+      "queueId": "DW-P2-CATALOG-SURFACE-FT-020",
+      "reasonSelected": "MEDIUM DW-DOC+DW-NAV finding: Catalog surface(s) /player/voyages/[id]/finale do not exactly match the accepted Homeport route inventory.",
+      "severity": "MEDIUM",
+      "suspectedLossLayer": "FEATURE_CATALOG_TO_ROUTE_INVENTORY"
+    },
+    {
+      "activeProjectConsiderations": "Audit accepted main only; coordinate with Watchglass or future owner-coordinated provider phase before remediation.",
+      "canonicalOwner": "One Voyage",
+      "capabilityId": "DW-CAP-VERIFICATION-PROVIDER-FRAMEWORK",
+      "confidence": "HIGH",
+      "currentClassification": "PARTIALLY_REALIZED",
+      "evidenceAvailable": ["Development_Docs/Features/catalog/one-voyage.json", "src/server/progression.ts"],
+      "missingEvidence": [
+        "Source-bound provider, privacy, authorization, failure-state, and natural-journey evidence on accepted main."
+      ],
+      "queueId": "DW-P2-VERIFICATION-PROVIDER-REALIZATION-GAP",
+      "reasonSelected": "MEDIUM DW-CAP+DW-UI finding: The catalog explicitly records that real camera capture and recognition are not implemented; current proof uses the framework and simulator boundary.",
+      "severity": "MEDIUM",
+      "suspectedLossLayer": "EXTERNAL_PROVIDER"
+    },
+    {
+      "activeProjectConsiderations": "Audit accepted main only; coordinate with One Voyage and Ledgerlight catalog reconciliation before remediation.",
+      "canonicalOwner": "One Voyage",
+      "capabilityId": "DW-CAP-INVITATION-CREW-LIFECYCLE",
+      "confidence": "HIGH",
+      "currentClassification": "PARTIALLY_REALIZED",
+      "evidenceAvailable": ["FT-005", "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json"],
+      "missingEvidence": [
+        "Owning Feature Catalog fragment reconciled to current route identity or annotated with a governed compatibility explanation; feature sync and validation pass."
+      ],
+      "queueId": "DW-P2-CATALOG-SURFACE-FT-005",
+      "reasonSelected": "LOW DW-DOC+DW-NAV finding: Catalog surface(s) /join do not exactly match the accepted Homeport route inventory.",
+      "severity": "LOW",
+      "suspectedLossLayer": "FEATURE_CATALOG_TO_ROUTE_INVENTORY"
+    },
+    {
+      "activeProjectConsiderations": "Audit accepted main only; coordinate with Helm and Ledgerlight catalog reconciliation before remediation.",
+      "canonicalOwner": "Helm",
+      "capabilityId": "DW-CAP-CAPTAIN-VOYAGE-OPERATIONS",
+      "confidence": "HIGH",
+      "currentClassification": "PARTIALLY_REALIZED",
+      "evidenceAvailable": ["FT-007", "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json"],
+      "missingEvidence": [
+        "Owning Feature Catalog fragment reconciled to current route identity or annotated with a governed compatibility explanation; feature sync and validation pass."
+      ],
+      "queueId": "DW-P2-CATALOG-SURFACE-FT-007",
+      "reasonSelected": "LOW DW-DOC+DW-NAV finding: Catalog surface(s) /captain/voyages/[id] do not exactly match the accepted Homeport route inventory.",
+      "severity": "LOW",
+      "suspectedLossLayer": "FEATURE_CATALOG_TO_ROUTE_INVENTORY"
+    },
+    {
+      "activeProjectConsiderations": "Audit accepted main only; coordinate with One Voyage and Ledgerlight catalog reconciliation before remediation.",
+      "canonicalOwner": "One Voyage",
+      "capabilityId": "DW-CAP-AUTHORITATIVE-PROGRESSION",
+      "confidence": "HIGH",
+      "currentClassification": "PARTIALLY_REALIZED",
+      "evidenceAvailable": ["FT-014", "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json"],
+      "missingEvidence": [
+        "Owning Feature Catalog fragment reconciled to current route identity or annotated with a governed compatibility explanation; feature sync and validation pass."
+      ],
+      "queueId": "DW-P2-CATALOG-SURFACE-FT-014",
+      "reasonSelected": "LOW DW-DOC+DW-NAV finding: Catalog surface(s) /api/voyages do not exactly match the accepted Homeport route inventory.",
+      "severity": "LOW",
+      "suspectedLossLayer": "FEATURE_CATALOG_TO_ROUTE_INVENTORY"
+    },
+    {
+      "activeProjectConsiderations": "Audit accepted main only; coordinate with One Voyage and Ledgerlight catalog reconciliation before remediation.",
+      "canonicalOwner": "One Voyage",
+      "capabilityId": "DW-CAP-REALTIME-PRESENCE-REPLAY",
+      "confidence": "HIGH",
+      "currentClassification": "PARTIALLY_REALIZED",
+      "evidenceAvailable": ["FT-021", "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json"],
+      "missingEvidence": [
+        "Owning Feature Catalog fragment reconciled to current route identity or annotated with a governed compatibility explanation; feature sync and validation pass."
+      ],
+      "queueId": "DW-P2-CATALOG-SURFACE-FT-021",
+      "reasonSelected": "LOW DW-DOC+DW-NAV finding: Catalog surface(s) /api/player/events do not exactly match the accepted Homeport route inventory.",
+      "severity": "LOW",
+      "suspectedLossLayer": "FEATURE_CATALOG_TO_ROUTE_INVENTORY"
+    },
+    {
+      "activeProjectConsiderations": "Audit accepted main only; coordinate with One Voyage and Ledgerlight catalog reconciliation before remediation.",
+      "canonicalOwner": "One Voyage",
+      "capabilityId": "DW-CAP-VERIFICATION-PROVIDER-FRAMEWORK",
+      "confidence": "HIGH",
+      "currentClassification": "PARTIALLY_REALIZED",
+      "evidenceAvailable": ["FT-023", "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json"],
+      "missingEvidence": [
+        "Owning Feature Catalog fragment reconciled to current route identity or annotated with a governed compatibility explanation; feature sync and validation pass."
+      ],
+      "queueId": "DW-P2-CATALOG-SURFACE-FT-023",
+      "reasonSelected": "LOW DW-DOC+DW-NAV finding: Catalog surface(s) /api/verification do not exactly match the accepted Homeport route inventory.",
+      "severity": "LOW",
+      "suspectedLossLayer": "FEATURE_CATALOG_TO_ROUTE_INVENTORY"
+    },
+    {
+      "activeProjectConsiderations": "Audit accepted main only; coordinate with Harborlight and Ledgerlight catalog reconciliation before remediation.",
+      "canonicalOwner": "Harborlight",
+      "capabilityId": "DW-CAP-COMMUNITY-EXCHANGE",
+      "confidence": "HIGH",
+      "currentClassification": "PARTIALLY_REALIZED",
+      "evidenceAvailable": ["FT-025", "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json"],
+      "missingEvidence": [
+        "Owning Feature Catalog fragment reconciled to current route identity or annotated with a governed compatibility explanation; feature sync and validation pass."
+      ],
+      "queueId": "DW-P2-CATALOG-SURFACE-FT-025",
+      "reasonSelected": "LOW DW-DOC+DW-NAV finding: Catalog surface(s) /studio/community do not exactly match the accepted Homeport route inventory.",
+      "severity": "LOW",
+      "suspectedLossLayer": "FEATURE_CATALOG_TO_ROUTE_INVENTORY"
+    },
+    {
+      "activeProjectConsiderations": "Refresh if Wayfarer changes the audited surface before Phase 2 begins.",
+      "canonicalOwner": "Wayfarer",
+      "capabilityId": "DW-CAP-ACCOUNT-DATA-EXPORT",
+      "confidence": "HIGH",
+      "currentClassification": "PARTIALLY_REALIZED",
+      "evidenceAvailable": [
+        "src/app/account/data/page.tsx",
+        "src/wayfarer/account-lifecycle.ts",
+        "Development_Docs/Projects/Project_Homeport/Project_Homeport_Account_Data_Export_Contract.md"
+      ],
+      "missingEvidence": ["Complete source-to-terminal-rung trace and capability-specific evidence"],
+      "queueId": "DW-P2-TRACE-ACCOUNT-DATA-EXPORT",
+      "reasonSelected": "Initial PARTIALLY_REALIZED classification requires a complete end-to-end trace.",
+      "severity": "LOW",
+      "suspectedLossLayer": "JOURNEY"
+    },
+    {
+      "activeProjectConsiderations": "Refresh if Wayfarer changes the audited surface before Phase 2 begins.",
+      "canonicalOwner": "Wayfarer",
+      "capabilityId": "DW-CAP-ACCOUNT-EMAIL-CHANGE",
+      "confidence": "HIGH",
+      "currentClassification": "PARTIALLY_REALIZED",
+      "evidenceAvailable": [
+        "src/app/account/email-change/page.tsx",
+        "src/app/api/account/email/change/request/route.ts",
+        "src/app/api/account/email/change/confirm/route.ts"
+      ],
+      "missingEvidence": ["Complete source-to-terminal-rung trace and capability-specific evidence"],
+      "queueId": "DW-P2-TRACE-ACCOUNT-EMAIL-CHANGE",
+      "reasonSelected": "Initial PARTIALLY_REALIZED classification requires a complete end-to-end trace.",
+      "severity": "LOW",
+      "suspectedLossLayer": "JOURNEY"
+    },
+    {
+      "activeProjectConsiderations": "Refresh if Wayfarer changes the audited surface before Phase 2 begins.",
+      "canonicalOwner": "Wayfarer",
+      "capabilityId": "DW-CAP-ACCOUNT-LIFECYCLE-DEACTIVATION",
+      "confidence": "HIGH",
+      "currentClassification": "PARTIALLY_REALIZED",
+      "evidenceAvailable": [
+        "src/wayfarer/account-lifecycle.ts",
+        "src/app/api/auth/account/reactivate/route.ts",
+        "src/app/api/auth/account/cancel-deletion/route.ts",
+        "Development_Docs/Projects/Project_Homeport/Project_Homeport_Account_Deactivation_and_Deletion_Contract.md"
+      ],
+      "missingEvidence": ["Complete source-to-terminal-rung trace and capability-specific evidence"],
+      "queueId": "DW-P2-TRACE-ACCOUNT-LIFECYCLE-DEACTIVATION",
+      "reasonSelected": "Initial PARTIALLY_REALIZED classification requires a complete end-to-end trace.",
+      "severity": "LOW",
+      "suspectedLossLayer": "JOURNEY"
+    },
+    {
+      "activeProjectConsiderations": "Refresh if Wayfarer changes the audited surface before Phase 2 begins.",
+      "canonicalOwner": "Wayfarer",
+      "capabilityId": "DW-CAP-ACCOUNT-SESSION-ROLE-SYSTEM",
+      "confidence": "MEDIUM",
+      "currentClassification": "PARTIALLY_REALIZED",
+      "evidenceAvailable": [
+        "Development_Docs/Features/catalog/platform.json#FT-002",
+        "src/platform/auth.ts",
+        "src/platform/policy.ts",
+        "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-account",
+        "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-verify-email",
+        "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-forgot-password",
+        "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-account",
+        "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-forgot-password"
+      ],
+      "missingEvidence": ["Complete source-to-terminal-rung trace and capability-specific evidence"],
+      "queueId": "DW-P2-TRACE-ACCOUNT-SESSION-ROLE-SYSTEM",
+      "reasonSelected": "Initial PARTIALLY_REALIZED classification requires a complete end-to-end trace.",
+      "severity": "LOW",
+      "suspectedLossLayer": "JOURNEY"
+    },
+    {
+      "activeProjectConsiderations": "Refresh if Wayfarer changes the audited surface before Phase 2 begins.",
+      "canonicalOwner": "Wayfarer",
+      "capabilityId": "DW-CAP-ARTIFACT-CABINET-ACHIEVEMENTS",
+      "confidence": "MEDIUM",
+      "currentClassification": "PARTIALLY_REALIZED",
+      "evidenceAvailable": [
+        "Development_Docs/Features/catalog/wayfarer.json#FT-031",
+        "src/wayfarer/artifacts.ts",
+        "prisma/migrations/20260725120000_wayfarer_phase4_artifacts_achievements/migration.sql",
+        "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-passport-artifacts",
+        "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-passport-artifacts"
+      ],
+      "missingEvidence": ["Complete source-to-terminal-rung trace and capability-specific evidence"],
+      "queueId": "DW-P2-TRACE-ARTIFACT-CABINET-ACHIEVEMENTS",
+      "reasonSelected": "Initial PARTIALLY_REALIZED classification requires a complete end-to-end trace.",
+      "severity": "LOW",
+      "suspectedLossLayer": "JOURNEY"
+    },
+    {
+      "activeProjectConsiderations": "Refresh if Wayfarer changes the audited surface before Phase 2 begins.",
+      "canonicalOwner": "Wayfarer",
+      "capabilityId": "DW-CAP-CHRONICLE-PASSPORT-PUBLIC-PROFILE",
+      "confidence": "MEDIUM",
+      "currentClassification": "PARTIALLY_REALIZED",
+      "evidenceAvailable": [
+        "Development_Docs/Features/catalog/wayfarer.json#FT-004",
+        "src/wayfarer/profile.ts",
+        "src/wayfarer/providers.ts",
+        "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-passport",
+        "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-profile-handle",
+        "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-passport",
+        "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-profile-handle"
+      ],
+      "missingEvidence": ["Complete source-to-terminal-rung trace and capability-specific evidence"],
+      "queueId": "DW-P2-TRACE-CHRONICLE-PASSPORT-PUBLIC-PROFILE",
+      "reasonSelected": "Initial PARTIALLY_REALIZED classification requires a complete end-to-end trace.",
+      "severity": "LOW",
+      "suspectedLossLayer": "JOURNEY"
+    },
+    {
+      "activeProjectConsiderations": "Refresh if Lanternwake changes the audited surface before Phase 2 begins.",
+      "canonicalOwner": "Lanternwake",
+      "capabilityId": "DW-CAP-CINEMATIC-RUNTIME",
+      "confidence": "MEDIUM",
+      "currentClassification": "PARTIALLY_REALIZED",
+      "evidenceAvailable": [
+        "Development_Docs/Features/catalog/lanternwake.json#FT-022",
+        "src/animation",
+        "Development_Docs/Programs/Lanternwake/Project_Lanternwake_Completion_Receipt.md",
+        "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-player",
+        "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-captain",
+        "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-dev-animations",
+        "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-captain",
+        "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-dev-animations"
+      ],
+      "missingEvidence": ["Complete source-to-terminal-rung trace and capability-specific evidence"],
+      "queueId": "DW-P2-TRACE-CINEMATIC-RUNTIME",
+      "reasonSelected": "Initial PARTIALLY_REALIZED classification requires a complete end-to-end trace.",
+      "severity": "LOW",
+      "suspectedLossLayer": "JOURNEY"
+    },
+    {
+      "activeProjectConsiderations": "Refresh if Harborlight changes the audited surface before Phase 2 begins.",
+      "canonicalOwner": "Harborlight",
+      "capabilityId": "DW-CAP-COMMUNITY-HARBOR-DISCOVERY",
+      "confidence": "MEDIUM",
+      "currentClassification": "PARTIALLY_REALIZED",
+      "evidenceAvailable": [
+        "Development_Docs/Features/catalog/homeport.json#FT-B004",
+        "06394221844c36921d95b1a199d72f18c88645ad",
+        "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_4_Validation_Record.md",
+        "tests/e2e/homeport-phase4.spec.ts",
+        "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-community",
+        "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-community-featured",
+        "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-community-chronicles",
+        "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-community-artifacts"
+      ],
+      "missingEvidence": ["Complete source-to-terminal-rung trace and capability-specific evidence"],
+      "queueId": "DW-P2-TRACE-COMMUNITY-HARBOR-DISCOVERY",
+      "reasonSelected": "Initial PARTIALLY_REALIZED classification requires a complete end-to-end trace.",
+      "severity": "LOW",
+      "suspectedLossLayer": "JOURNEY"
+    },
+    {
+      "activeProjectConsiderations": "Refresh if Homeport changes the audited surface before Phase 2 begins.",
+      "canonicalOwner": "Homeport",
+      "capabilityId": "DW-CAP-COMPLETE-PRODUCT-SURFACES-STATES",
+      "confidence": "MEDIUM",
+      "currentClassification": "PARTIALLY_REALIZED",
+      "evidenceAvailable": [
+        "Development_Docs/Features/catalog/homeport.json#FT-B006",
+        "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+        "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_6_Validation_Record.md",
+        "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_6_Screen_Acceptance_Registry.json",
+        "tests/e2e/homeport-phase6.spec.ts",
+        "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-root",
+        "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-sign-in",
+        "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-player-library"
+      ],
+      "missingEvidence": ["Complete source-to-terminal-rung trace and capability-specific evidence"],
+      "queueId": "DW-P2-TRACE-COMPLETE-PRODUCT-SURFACES-STATES",
+      "reasonSelected": "Initial PARTIALLY_REALIZED classification requires a complete end-to-end trace.",
+      "severity": "LOW",
+      "suspectedLossLayer": "JOURNEY"
+    },
+    {
+      "activeProjectConsiderations": "Refresh if Shipwright changes the audited surface before Phase 2 begins.",
+      "canonicalOwner": "Shipwright",
+      "capabilityId": "DW-CAP-CREATOR-STUDIO",
+      "confidence": "MEDIUM",
+      "currentClassification": "PARTIALLY_REALIZED",
+      "evidenceAvailable": [
+        "Development_Docs/Features/catalog/studio.json#FT-008",
+        "src/chronicle/studio-service.ts",
+        "src/chronicle/api.ts",
+        "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-studio",
+        "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-studio"
+      ],
+      "missingEvidence": ["Complete source-to-terminal-rung trace and capability-specific evidence"],
+      "queueId": "DW-P2-TRACE-CREATOR-STUDIO",
+      "reasonSelected": "Initial PARTIALLY_REALIZED classification requires a complete end-to-end trace.",
+      "severity": "LOW",
+      "suspectedLossLayer": "JOURNEY"
+    },
+    {
+      "activeProjectConsiderations": "Refresh if True North changes the audited surface before Phase 2 begins.",
+      "canonicalOwner": "True North",
+      "capabilityId": "DW-CAP-GLOBAL-SHELL-WAYFINDING",
+      "confidence": "MEDIUM",
+      "currentClassification": "PARTIALLY_REALIZED",
+      "evidenceAvailable": [
+        "Development_Docs/Features/catalog/homeport.json#FT-B002",
+        "ce9fd8e70f0e906416cf41cd508ec5f2063570cc",
+        "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_2_Validation_Record.md",
+        "tests/e2e/homeport-phase2.spec.ts",
+        "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-root",
+        "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-tales",
+        "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-community",
+        "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-player-library"
+      ],
+      "missingEvidence": ["Complete source-to-terminal-rung trace and capability-specific evidence"],
+      "queueId": "DW-P2-TRACE-GLOBAL-SHELL-WAYFINDING",
+      "reasonSelected": "Initial PARTIALLY_REALIZED classification requires a complete end-to-end trace.",
+      "severity": "LOW",
+      "suspectedLossLayer": "JOURNEY"
+    },
+    {
+      "activeProjectConsiderations": "Refresh if Wayfarer changes the audited surface before Phase 2 begins.",
+      "canonicalOwner": "Wayfarer",
+      "capabilityId": "DW-CAP-GOOGLE-GITHUB-AUTHENTICATION",
+      "confidence": "MEDIUM",
+      "currentClassification": "PARTIALLY_REALIZED",
+      "evidenceAvailable": [
+        "Development_Docs/Features/catalog/wayfarer.json#FT-B008",
+        "src/wayfarer/oauth.ts",
+        "src/wayfarer/oauth.exchange.test.ts",
+        "src/app/api/auth/providers/[provider]/callback/route.test.ts",
+        "src/homeport/public-app-origin.test.ts",
+        "tests/oauth/voyagewright-oauth.spec.ts",
+        "Development_Docs/Validation/Voyagewright_Google_GitHub_OAuth_Validation_Record.md",
+        "b4fa3b4b3f50e3f22f82adace3b287b9cadace8a"
+      ],
+      "missingEvidence": ["Complete source-to-terminal-rung trace and capability-specific evidence"],
+      "queueId": "DW-P2-TRACE-GOOGLE-GITHUB-AUTHENTICATION",
+      "reasonSelected": "Initial PARTIALLY_REALIZED classification requires a complete end-to-end trace.",
+      "severity": "LOW",
+      "suspectedLossLayer": "UNKNOWN"
+    },
+    {
+      "activeProjectConsiderations": "Refresh if Wayfarer changes the audited surface before Phase 2 begins.",
+      "canonicalOwner": "Wayfarer",
+      "capabilityId": "DW-CAP-PERSONAL-CHRONICLE-HISTORY",
+      "confidence": "MEDIUM",
+      "currentClassification": "PARTIALLY_REALIZED",
+      "evidenceAvailable": [
+        "Development_Docs/Features/catalog/wayfarer.json#FT-030",
+        "src/wayfarer/chronicle-history.ts",
+        "Development_Docs/Project_Wayfarer_Phase_3_Completion_Receipt.md",
+        "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-passport-history",
+        "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-passport-history"
+      ],
+      "missingEvidence": ["Complete source-to-terminal-rung trace and capability-specific evidence"],
+      "queueId": "DW-P2-TRACE-PERSONAL-CHRONICLE-HISTORY",
+      "reasonSelected": "Initial PARTIALLY_REALIZED classification requires a complete end-to-end trace.",
+      "severity": "LOW",
+      "suspectedLossLayer": "JOURNEY"
+    },
+    {
+      "activeProjectConsiderations": "Refresh if Wayfarer changes the audited surface before Phase 2 begins.",
+      "canonicalOwner": "Wayfarer",
+      "capabilityId": "DW-CAP-PERSONAL-HARBOR",
+      "confidence": "MEDIUM",
+      "currentClassification": "PARTIALLY_REALIZED",
+      "evidenceAvailable": [
+        "Development_Docs/Features/catalog/homeport.json#FT-B003",
+        "761adb7a693feabacc4e7d54d28d443ceda8a273",
+        "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_3_Validation_Record.md",
+        "tests/e2e/homeport-phase3.spec.ts",
+        "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-account",
+        "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-account-profile",
+        "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-account-preferences",
+        "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-account-privacy"
+      ],
+      "missingEvidence": ["Complete source-to-terminal-rung trace and capability-specific evidence"],
+      "queueId": "DW-P2-TRACE-PERSONAL-HARBOR",
+      "reasonSelected": "Initial PARTIALLY_REALIZED classification requires a complete end-to-end trace.",
+      "severity": "LOW",
+      "suspectedLossLayer": "JOURNEY"
+    },
+    {
+      "activeProjectConsiderations": "Refresh if One Voyage changes the audited surface before Phase 2 begins.",
+      "canonicalOwner": "One Voyage",
+      "capabilityId": "DW-CAP-PLAYER-LIBRARY-VOYAGE-LIFECYCLE",
+      "confidence": "MEDIUM",
+      "currentClassification": "PARTIALLY_REALIZED",
+      "evidenceAvailable": [
+        "Development_Docs/Features/catalog/player.json#FT-006",
+        "src/platform/libraries.ts",
+        "src/platform/state.ts",
+        "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-player",
+        "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-player"
+      ],
+      "missingEvidence": ["Complete source-to-terminal-rung trace and capability-specific evidence"],
+      "queueId": "DW-P2-TRACE-PLAYER-LIBRARY-VOYAGE-LIFECYCLE",
+      "reasonSelected": "Initial PARTIALLY_REALIZED classification requires a complete end-to-end trace.",
+      "severity": "LOW",
+      "suspectedLossLayer": "JOURNEY"
+    },
+    {
+      "activeProjectConsiderations": "Refresh if Sealed Hold changes the audited surface before Phase 2 begins.",
+      "canonicalOwner": "Sealed Hold",
+      "capabilityId": "DW-CAP-PRIVATE-CHRONICLE-PROTECTION",
+      "confidence": "MEDIUM",
+      "currentClassification": "PARTIALLY_REALIZED",
+      "evidenceAvailable": [
+        "Development_Docs/Features/catalog/sealed-hold.json#FT-024",
+        "src/private-content/package.ts",
+        "Development_Docs/Project_Sealed_Hold_Phase_4_Completion_Receipt.md",
+        "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-studio-private-content",
+        "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-studio-private-content"
+      ],
+      "missingEvidence": ["Complete source-to-terminal-rung trace and capability-specific evidence"],
+      "queueId": "DW-P2-TRACE-PRIVATE-CHRONICLE-PROTECTION",
+      "reasonSelected": "Initial PARTIALLY_REALIZED classification requires a complete end-to-end trace.",
+      "severity": "LOW",
+      "suspectedLossLayer": "JOURNEY"
+    },
+    {
+      "activeProjectConsiderations": "Refresh if True North changes the audited surface before Phase 2 begins.",
+      "canonicalOwner": "True North",
+      "capabilityId": "DW-CAP-ROLE-AWARE-NAVIGATION-SHELL",
+      "confidence": "MEDIUM",
+      "currentClassification": "PARTIALLY_REALIZED",
+      "evidenceAvailable": [
+        "Development_Docs/Features/catalog/security-operations.json#FT-029",
+        "src/components/shell/ProductShell.tsx",
+        "Development_Docs/Project_True_North_Completion_Receipt.md",
+        "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-root",
+        "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-player",
+        "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-captain",
+        "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-studio",
+        "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-root"
+      ],
+      "missingEvidence": ["Complete source-to-terminal-rung trace and capability-specific evidence"],
+      "queueId": "DW-P2-TRACE-ROLE-AWARE-NAVIGATION-SHELL",
+      "reasonSelected": "Initial PARTIALLY_REALIZED classification requires a complete end-to-end trace.",
+      "severity": "LOW",
+      "suspectedLossLayer": "JOURNEY"
+    },
+    {
+      "activeProjectConsiderations": "Refresh if True North changes the audited surface before Phase 2 begins.",
+      "canonicalOwner": "True North",
+      "capabilityId": "DW-CAP-ROLE-GATEWAY-WORKSPACE-ROUTING",
+      "confidence": "MEDIUM",
+      "currentClassification": "PARTIALLY_REALIZED",
+      "evidenceAvailable": [
+        "Development_Docs/Features/catalog/platform.json#FT-003",
+        "src/app/page.tsx",
+        "src/components/landing/HarborLanding.tsx",
+        "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-root",
+        "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-player",
+        "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-captain",
+        "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-studio",
+        "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-root"
+      ],
+      "missingEvidence": ["Complete source-to-terminal-rung trace and capability-specific evidence"],
+      "queueId": "DW-P2-TRACE-ROLE-GATEWAY-WORKSPACE-ROUTING",
+      "reasonSelected": "Initial PARTIALLY_REALIZED classification requires a complete end-to-end trace.",
+      "severity": "LOW",
+      "suspectedLossLayer": "JOURNEY"
+    },
+    {
+      "activeProjectConsiderations": "Refresh if True North changes the audited surface before Phase 2 begins.",
+      "canonicalOwner": "True North",
+      "capabilityId": "DW-CAP-ROUTE-REACHABILITY-GRAPH",
+      "confidence": "MEDIUM",
+      "currentClassification": "PARTIALLY_REALIZED",
+      "evidenceAvailable": [
+        "Development_Docs/Features/catalog/homeport.json#FT-B005",
+        "b9f1552b78857c36a45f25eb5fdfb7a7e09f102a",
+        "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_5_Validation_Record.md",
+        "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_5_Route_Reachability_Graph.json",
+        "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-root",
+        "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-tales",
+        "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-community",
+        "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-account"
+      ],
+      "missingEvidence": ["Complete source-to-terminal-rung trace and capability-specific evidence"],
+      "queueId": "DW-P2-TRACE-ROUTE-REACHABILITY-GRAPH",
+      "reasonSelected": "Initial PARTIALLY_REALIZED classification requires a complete end-to-end trace.",
+      "severity": "LOW",
+      "suspectedLossLayer": "JOURNEY"
+    },
+    {
+      "activeProjectConsiderations": "Refresh if Platform changes the audited surface before Phase 2 begins.",
+      "canonicalOwner": "Platform",
+      "capabilityId": "DW-CAP-UNIFIED-CHRONICLE-PLATFORM",
+      "confidence": "MEDIUM",
+      "currentClassification": "PARTIALLY_REALIZED",
+      "evidenceAvailable": [
+        "Development_Docs/Features/catalog/platform.json#FT-001",
+        "prisma/schema.sqlite.prisma",
+        "src/compatibility/compatibility-observation.ts",
+        "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-root",
+        "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-player",
+        "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-captain",
+        "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-studio",
+        "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-root"
+      ],
+      "missingEvidence": ["Complete source-to-terminal-rung trace and capability-specific evidence"],
+      "queueId": "DW-P2-TRACE-UNIFIED-CHRONICLE-PLATFORM",
+      "reasonSelected": "Initial PARTIALLY_REALIZED classification requires a complete end-to-end trace.",
+      "severity": "LOW",
+      "suspectedLossLayer": "JOURNEY"
+    },
+    {
+      "activeProjectConsiderations": "Refresh if Wayfarer changes the audited surface before Phase 2 begins.",
+      "canonicalOwner": "Wayfarer",
+      "capabilityId": "DW-CAP-UNIFIED-IDENTITY-SESSION-AUTHORITY",
+      "confidence": "MEDIUM",
+      "currentClassification": "PARTIALLY_REALIZED",
+      "evidenceAvailable": [
+        "Development_Docs/Features/catalog/homeport.json#FT-B001",
+        "43c0fdc701de1425e651acb06924051fbd3a4a34",
+        "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_1_Validation_Record.md",
+        "Development_Docs/Projects/Project_Homeport/Project_Homeport_Phase_1_Compatibility_Cutover_Ledger.csv",
+        "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-sign-in",
+        "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-register",
+        "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-route-api-auth-context",
+        "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-player-sign-in"
+      ],
+      "missingEvidence": ["Complete source-to-terminal-rung trace and capability-specific evidence"],
+      "queueId": "DW-P2-TRACE-UNIFIED-IDENTITY-SESSION-AUTHORITY",
+      "reasonSelected": "Initial PARTIALLY_REALIZED classification requires a complete end-to-end trace.",
+      "severity": "LOW",
+      "suspectedLossLayer": "JOURNEY"
+    },
+    {
+      "activeProjectConsiderations": "Refresh if Universal Language changes the audited surface before Phase 2 begins.",
+      "canonicalOwner": "Universal Language",
+      "capabilityId": "DW-CAP-UNIVERSAL-LANGUAGE-DESIGN-SYSTEM",
+      "confidence": "MEDIUM",
+      "currentClassification": "PARTIALLY_REALIZED",
+      "evidenceAvailable": [
+        "Development_Docs/Features/catalog/security-operations.json#FT-026",
+        "src/language/canonical-terms.ts",
+        "src/components/shell/ProductShell.tsx",
+        "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-root",
+        "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-player",
+        "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-captain",
+        "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-studio",
+        "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-root"
+      ],
+      "missingEvidence": ["Complete source-to-terminal-rung trace and capability-specific evidence"],
+      "queueId": "DW-P2-TRACE-UNIVERSAL-LANGUAGE-DESIGN-SYSTEM",
+      "reasonSelected": "Initial PARTIALLY_REALIZED classification requires a complete end-to-end trace.",
+      "severity": "LOW",
+      "suspectedLossLayer": "JOURNEY"
+    }
+  ],
+  "schemaVersion": "1.0.0",
+  "sourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d"
+}

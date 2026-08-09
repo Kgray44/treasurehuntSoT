@@ -3,7 +3,7 @@ title: Engineering records
 audience: engineering
 status: current
 canonical_for: engineering-records-index
-last_reviewed: 2026-08-08
+last_reviewed: 2026-08-09
 ---
 
 # Engineering records
@@ -24,6 +24,10 @@ protected PR #12. The owner accepted successful real Google and GitHub sign-in
 and sign-up through the protected staging experience with no internal-origin
 redirect. Automated protocol, security, lifecycle, and redirect-boundary proof
 also passed. See the [OAuth validation and completion record](Validation/Voyagewright_Google_GitHub_OAuth_Validation_Record.md).
+
+## Project Deepwater
+
+[Project Deepwater](Programs/Deepwater/README.md) governs product capability-realization and systems-audit truth. Phase 1, Sound the Depths, establishes the deterministic capability ledger, schema, ownership map, initial findings, Feature Catalog reconciliation, Phase 2 trace queue, and validation control plane without changing product behavior or schema. Its classifications and maturity rungs are evidence-bound: source existence, local or synthetic validation, staging access, external-provider proof, deployment, and owner acceptance remain distinct.
 
 ## Engineering-record template
 
