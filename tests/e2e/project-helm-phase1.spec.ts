@@ -449,47 +449,39 @@ test("Captain authority and ordinary Player membership remain independent throug
 test("participation choice remains usable at desktop, tablet, phone, 200% zoom, keyboard, and reduced motion", async ({
   browser,
 }) => {
-  test.setTimeout(360_000);
-  const authContext = await browser.newContext({ viewport: { width: 1440, height: 1000 } });
-  const authPage = await authContext.newPage();
-  let storageState: Awaited<ReturnType<typeof authContext.storageState>>;
+  test.setTimeout(300_000);
+  const context = await browser.newContext({ viewport: { width: 1440, height: 1000 } });
+  const page = await context.newPage();
   try {
-    await authPage.goto("/sign-in");
-    await authPage.getByLabel("Email or legacy Player name").fill(email);
-    await authPage.getByLabel("Password").fill(password);
-    await authPage.getByRole("button", { name: "Continue" }).click();
-    await expect(authPage.getByRole("button", { name: displayName, exact: true })).toBeVisible();
-    storageState = await authContext.storageState();
-  } finally {
-    await authContext.close();
-  }
-  const configurations = [
-    { name: "desktop", viewport: { width: 1440, height: 1000 }, reducedMotion: "no-preference" as const, zoom: 1 },
-    { name: "tablet", viewport: { width: 820, height: 1000 }, reducedMotion: "no-preference" as const, zoom: 1 },
-    { name: "phone", viewport: { width: 390, height: 844 }, reducedMotion: "no-preference" as const, zoom: 1 },
-    { name: "zoom", viewport: { width: 1280, height: 900 }, reducedMotion: "no-preference" as const, zoom: 2 },
-    { name: "reduced", viewport: { width: 820, height: 1000 }, reducedMotion: "reduce" as const, zoom: 1 },
-  ];
-  for (const configuration of configurations) {
-    await test.step(configuration.name, async () => {
-      const context = await browser.newContext({
-        viewport: configuration.viewport,
-        reducedMotion: configuration.reducedMotion,
-        storageState,
-      });
-      const page = await context.newPage();
-      try {
-        await page.goto("/captain/library");
-        await expect(page.getByRole("heading", { name: "Captain's Console", exact: true })).toBeVisible();
-        if (configuration.zoom === 2)
-          await page.locator("html").evaluate((node) => ((node as HTMLElement).style.zoom = "2"));
-        await page.getByRole("button", { name: "Create a Voyage" }).first().click();
-        await expect(page.getByRole("dialog", { name: "Select Chronicle" })).toBeVisible();
-        const wizard = page.locator(".voyage-wizard");
-        await wizard.locator(".wizard-choice-grid > button").first().click();
-        await wizard.getByRole("button", { name: "Continue to Configure Voyage" }).click();
+    await page.goto("/sign-in");
+    await page.getByLabel("Email or legacy Player name").fill(email);
+    await page.getByLabel("Password").fill(password);
+    await page.getByRole("button", { name: "Continue" }).click();
+    await expect(page.getByRole("button", { name: displayName, exact: true })).toBeVisible();
+    await page.goto("/captain/library");
+    await expect(page.getByRole("heading", { name: "Captain's Console", exact: true })).toBeVisible();
+    await page.getByRole("button", { name: "Create a Voyage" }).first().click();
+    await expect(page.getByRole("dialog", { name: "Select Chronicle" })).toBeVisible();
+    const wizard = page.locator(".voyage-wizard");
+    await wizard.locator(".wizard-choice-grid > button").first().click();
+    await wizard.getByRole("button", { name: "Continue to Configure Voyage" }).click();
+    const configurations = [
+      { name: "desktop", viewport: { width: 1440, height: 1000 }, reducedMotion: "no-preference" as const, zoom: 1 },
+      { name: "tablet", viewport: { width: 820, height: 1000 }, reducedMotion: "no-preference" as const, zoom: 1 },
+      { name: "phone", viewport: { width: 390, height: 844 }, reducedMotion: "no-preference" as const, zoom: 1 },
+      { name: "zoom", viewport: { width: 1280, height: 900 }, reducedMotion: "no-preference" as const, zoom: 2 },
+      { name: "reduced", viewport: { width: 820, height: 1000 }, reducedMotion: "reduce" as const, zoom: 1 },
+    ];
+    for (const configuration of configurations) {
+      await test.step(configuration.name, async () => {
+        await page.setViewportSize(configuration.viewport);
+        await page.emulateMedia({ reducedMotion: configuration.reducedMotion });
+        await page
+          .locator("html")
+          .evaluate((node, zoom) => ((node as HTMLElement).style.zoom = String(zoom)), configuration.zoom);
         const captainOnly = wizard.getByRole("radio", { name: /Captain only/u });
         const captainPlayer = wizard.getByRole("radio", { name: /Captain \+ Player/u });
+        await captainOnly.check();
         await expect(captainOnly).toBeChecked();
         await captainOnly.focus();
         await captainOnly.press("ArrowRight");
@@ -511,9 +503,9 @@ test("participation choice remains usable at desktop, tablet, phone, 200% zoom, 
         if (configuration.reducedMotion === "reduce") {
           await expect(wizard.locator(".wizard-step-panel")).toHaveCSS("opacity", "1");
         }
-      } finally {
-        await context.close();
-      }
-    });
+      });
+    }
+  } finally {
+    await context.close();
   }
 });

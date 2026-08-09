@@ -20,10 +20,10 @@ is a pre-integration record and does not claim mainline acceptance.
 | Current `origin/main`  | `28a3139e9d43b234778bbbcd4bde2133ece4d8a2`                           |
 | Branch                 | `codex/project-helm-phase1-take-the-helm`                            |
 | Owned worktree         | `C:\Users\kkids\Documents\treasurehuntSoT-helm-phase1-take-the-helm` |
-| Candidate commit       | Pending governed commit                                              |
+| Candidate commit       | `98b135a086a5d2e6283965561644f3f620f2fff4` reconciled checkpoint     |
 | Protected integration  | Pending                                                              |
 | Final reconciled main  | Pending                                                              |
-| Current mainline state | `NOT_YET_INTEGRATED`                                                 |
+| Current mainline state | `RECONCILED_VALIDATION_IN_PROGRESS`                                  |
 
 ## Intervening commits reviewed
 

@@ -11,28 +11,31 @@ last_reviewed: 2026-08-09
 ## Current decision
 
 **VALIDATION IN PROGRESS.** The Phase 1 implementation, focused service and
-contract proof, and visible product inspection are complete on the owned Helm
-branch. The repaired responsive/accessibility browser matrix, current-main
-reconciliation, exact-candidate Sounding Line gate, protected integration,
-integrated-SHA proof, and remote parity remain required. This record does not
-claim mainline acceptance.
+contract proof, visible product inspection, and semantic reconciliation through
+current `origin/main` are complete on the owned Helm branch. The repaired
+responsive/accessibility browser matrix, authoritative mainline Sounding Line
+gate, protected integration, integrated-SHA proof, and remote parity remain
+required. This record does not claim mainline acceptance.
 
 ## Focused implementation evidence
 
 | Lane                                                                                 | Result                                                                                 | Truth boundary                                                                                                                                                                                            |
 | ------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Helm service, API, component, artifact, history, Homeport, and invitation regression | 13 files, 68 tests passed                                                              | Local diagnostic proof on a task-owned SQLite database                                                                                                                                                    |
-| Sounding Line contract gate                                                          | `RELEASE_GO`; `unit.helm` 26/26; `component.helm` 3/3; static gate passed              | Governed contract evidence before current-main reconciliation; its policy digest is invalidated by the known Sounding Line overlap on current main                                                        |
+| Sounding Line contract gate                                                          | `RELEASE_GO`; `unit.helm` 26/26; `component.helm` 3/3; static gate passed              | Exact-source governed proof on reconciled commit `98b135a086a5d2e6283965561644f3f620f2fff4`; cleanup was `CLEAN`                                                                                          |
 | Sounding Line Helm browser journey                                                   | Signature Captain/Player journey passed twice; responsive matrix remained time-bounded | The first matrix attempt exposed a test-only authentication race. After repair, desktop, tablet, and phone passed before the 180-second aggregate budget expired during zoom; no product assertion failed |
 | Focused browser repair                                                               | ESLint, Prettier, and TypeScript passed                                                | The matrix authenticates once, reuses the same canonical session across isolated viewport contexts, and has a 360-second bounded budget; rerun pending the shared validation lease                        |
 | TypeScript                                                                           | Passed                                                                                 | Static local proof before current-main reconciliation                                                                                                                                                     |
 | Schema                                                                               | **NONE**                                                                               | Both Prisma providers were inspected; no schema or migration file changed                                                                                                                                 |
 
-The pre-reconciliation contract receipt recorded policy digest
-`0cdcdd66de9352fe804a65a462235d439ba4c6e5ea80c03f451c6e974646b00e`
+The reconciled contract receipt recorded plan digest
+`d385d8631564c5ec9b1880b11c0c06066cee6a4f2fa7cba90ac70b82c0e9b40e`
 and evidence digest
-`31f660a56d94c944d9fcd60fbc2896944b08de64d1ca2c8a197b4abdf6b0c145`.
-Those values remain useful provenance, not final acceptance evidence.
+`6a2b9de8b5c9d04907e0a5bec49998425f4beb2998ef8dbf23c59ac0ced5dcd9`.
+The reconciled policy validator reports 420 contracts, 7 gates, 12 owners, 51
+suites, 1,719 registered cases across 46 families, two pre-existing validation
+debt entries, and zero policy errors. The contract result is governed evidence,
+but it is not the final mainline gate or integrated-SHA proof.
 
 ## Visible product inspection
 
@@ -89,9 +92,9 @@ no real private Chronicle content.
 ## Remaining acceptance work
 
 1. Pass the repaired `browser.helm` journey and responsive/accessibility matrix.
-2. Reconcile semantically with current `origin/main` and regenerate shared
-   Sounding Line, documentation, and Feature Catalog outputs.
-3. Run the exact-candidate contract and authoritative mainline gates.
+2. Finalize the Helm records and branch-candidate Feature Catalog entry after
+   browser acceptance.
+3. Run the authoritative exact-candidate mainline gate.
 4. Integrate through the protected repository path and validate the integrated
    SHA.
 5. Prove advertised-remote parity and task-owned runtime cleanup.
