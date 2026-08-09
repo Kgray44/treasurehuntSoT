@@ -11,6 +11,7 @@ vi.mock("@/wayfarer/chronicle-history", () => ({ materializeChronicleHistory }))
 vi.mock("@/wakebook/archive-query", () => ({ queryJourneyArchive }));
 
 import { GET } from "./route";
+import { encodeArchiveCursor } from "@/wakebook/presentation";
 
 describe("GET /api/passport/voyages", () => {
   beforeEach(() => {
@@ -72,6 +73,29 @@ describe("GET /api/passport/voyages", () => {
     expect(response.status).toBe(400);
     expect(materializeChronicleHistory).not.toHaveBeenCalled();
     expect(queryJourneyArchive).not.toHaveBeenCalled();
+  });
+
+  it("does not repeat Wayfarer materialization on an opaque cursor continuation", async () => {
+    requireWayfarerAccount.mockResolvedValue({ account: { profile: { id: "profile-owner" } } });
+    queryJourneyArchive.mockResolvedValue({ groups: [], invitations: [], resultCount: 48, pageCount: 24 });
+    const cursor = encodeArchiveCursor({
+      v: 1,
+      sort: "NEWEST",
+      date: "2026-01-01T00:00:00.000Z",
+      id: "record-24",
+    });
+
+    const response = await GET(
+      new Request(`http://localhost/api/passport/voyages?limit=24&cursor=${encodeURIComponent(cursor)}`),
+    );
+
+    expect(response.status).toBe(200);
+    expect(materializeChronicleHistory).not.toHaveBeenCalled();
+    expect(queryJourneyArchive).toHaveBeenCalledWith(
+      "profile-owner",
+      expect.objectContaining({ cursor, limit: 24, sort: "NEWEST" }),
+      { membershipsExamined: 0, recordsCreated: 0, recordsUpdated: 0, projectionFailures: 0 },
+    );
   });
 
   it("preserves readable accepted history when supplementary materialization fails", async () => {
