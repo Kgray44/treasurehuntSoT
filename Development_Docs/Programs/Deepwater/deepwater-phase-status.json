@@ -4,13 +4,13 @@
   "baseSourceSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d",
   "branch": "codex/project-deepwater-phase1-sound-the-depths",
   "featureCatalogImpact": "NO_CHANGE_REQUIRED",
-  "finalReconciledMainSha": "f1c2f22dd935322c1a71eb80c51592f243dc196d",
+  "finalReconciledMainSha": "d3b04e54fbf537869fe3969d6ae19e8b23942986",
   "limitations": [
     "Initial traces are Phase 1 skeletons, not complete Phase 2 traces.",
     "Homeport evidence retains its local, synthetic, staging, provider, deployment, and owner-decision boundaries.",
     "Phase 2 must begin from accepted main only after Phase 1 convergence."
   ],
-  "mainlineState": "NOT_INTEGRATED",
+  "mainlineState": "ACCEPTED",
   "metrics": {
     "capabilitiesByCanonicalOwner": {
       "Breakwater": 1,
@@ -75,10 +75,10 @@
   "phase": "Phase 1 - Sound the Depths",
   "productSourceImpact": "NONE",
   "project": "Project Deepwater",
-  "reconciliation": "BASELINE_FETCHED_PENDING_FINAL_FETCH",
+  "reconciliation": "RECONCILED_WITH_ACCEPTED_ORIGIN_MAIN",
   "schemaImpact": "NONE",
   "schemaVersion": "1.0.0",
-  "state": "PHASE_1_CANDIDATE_VALIDATED",
-  "validation": "LOCAL_RELEASE_GO_PENDING_FINAL_SOURCE_BINDING",
+  "state": "PHASE_1_MAINLINE_ACCEPTED",
+  "validation": "SOURCE_BOUND_RELEASE_GO_AND_HOSTED_MAINLINE_DECISION",
   "worktree": "C:\\Users\\kkids\\Documents\\treasurehuntSoT-deepwater-phase1"
 }
