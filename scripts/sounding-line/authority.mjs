@@ -15,6 +15,12 @@ import { finalize } from "./finalizer.mjs";
 import { buildPlan } from "./planner.mjs";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
+const configuredBaselineDatabase = process.env.SOUNDING_LINE_BASELINE_DATABASE;
+if (configuredBaselineDatabase && !path.isAbsolute(configuredBaselineDatabase))
+  throw new Error("SOUNDING_LINE_BASELINE_DATABASE_MUST_BE_ABSOLUTE");
+const baselineDatabase = configuredBaselineDatabase
+  ? path.normalize(configuredBaselineDatabase)
+  : path.join(root, "prisma", "dev.db");
 const output = (value) => process.stdout.write(`${JSON.stringify(value, null, 2)}\n`);
 const digest = (value) => createHash("sha256").update(JSON.stringify(value)).digest("hex");
 const escapeRegex = (value) => value.replace(/[.*+?^${}()|[\]\\]/gu, "\\$&");
@@ -71,7 +77,7 @@ function suiteAdapter(suite, registry) {
     }));
     return resolveIsolatedBrowserFamilyAdapter(
       exactSelections,
-      path.join(root, "prisma", "dev.db"),
+      baselineDatabase,
       suite.id !== "browser.access-sentinel",
     );
   }
@@ -126,15 +132,13 @@ async function run(gateId, { serial, executeOnly = false, receiptPath, suiteId, 
         "build",
       ]).has(adapter.id)
     ) {
-      const baseline = path.join(root, "prisma", "dev.db");
-      await access(baseline);
-      Object.assign(adapterEnv, { DATABASE_URL: `file:${baseline.replaceAll("\\", "/")}` });
+      await access(baselineDatabase);
+      Object.assign(adapterEnv, { DATABASE_URL: `file:${baselineDatabase.replaceAll("\\", "/")}` });
     }
     if (adapter.id === "harborlight-browser-lanes") {
-      const baseline = path.join(root, "prisma", "dev.db");
       await mkdir(runtimeRoot, { recursive: true });
       Object.assign(adapterEnv, {
-        SOUNDING_LINE_BASELINE_DATABASE: baseline,
+        SOUNDING_LINE_BASELINE_DATABASE: baselineDatabase,
         SOUNDING_LINE_RUN_ROOT: runtimeRoot,
       });
     }

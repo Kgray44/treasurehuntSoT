@@ -81,6 +81,9 @@ describe("Project Homeport workspace transition authority", () => {
   });
 
   it("homeport.owner-correction.round1.active-lock blocks both staff workspaces while preserving the Player return", async () => {
+    mocks.membershipFind.mockResolvedValue([
+      { playthrough: { captainId: "another-captain", captainAccountId: "another-account" } },
+    ]);
     mocks.profile.mockResolvedValue({
       memberships: [
         {
@@ -97,6 +100,7 @@ describe("Project Homeport workspace transition authority", () => {
     });
     const overview = await workspaceCapabilityOverview("account-1");
     expect(overview.transitionLock.state).toBe("BLOCKED_ACTIVE_PLAYER_CHRONICLE");
+    expect(overview.transitionLock.blockedWorkspaces).toEqual(["CAPTAIN", "CREATOR"]);
     expect(overview.activeChronicles[0]).toMatchObject({
       alias: "Night Cartographer",
       returnHref: "/play/moonlit-map/session/voyage-1",
@@ -110,6 +114,9 @@ describe("Project Homeport workspace transition authority", () => {
   });
 
   it("homeport.owner-correction.round1.capability-escalation refuses self-initialization during active participation", async () => {
+    mocks.membershipFind.mockResolvedValue([
+      { playthrough: { captainId: "another-captain", captainAccountId: "another-account" } },
+    ]);
     mocks.account.mockResolvedValue({
       status: "ACTIVE",
       claimedAt: new Date(),
@@ -136,6 +143,40 @@ describe("Project Homeport workspace transition authority", () => {
       code: "CONFLICT",
     });
     expect(mocks.roleCreate).not.toHaveBeenCalled();
+  });
+
+  it("helm.phase1 allows Captain entry only when active Player participation belongs to that Captain", async () => {
+    mocks.membershipCount.mockResolvedValue(1);
+    mocks.membershipFind.mockResolvedValue([
+      { playthrough: { captainId: "account-1", captainAccountId: "account-1" } },
+    ]);
+    mocks.profile.mockResolvedValue({
+      memberships: [
+        {
+          id: "membership-1",
+          status: "ACTIVE_MEMBER",
+          participationAlias: "Night Cartographer",
+          playthrough: {
+            id: "voyage-1",
+            voyageName: "Moonlit Run",
+            tale: { title: "The Moonlit Map", slug: "moonlit-map" },
+          },
+        },
+      ],
+    });
+
+    await expect(hasActivePlayerWorkspaceLock("account-1", { target: "CAPTAIN" })).resolves.toBe(false);
+    const overview = await workspaceCapabilityOverview("account-1");
+    expect(overview.transitionLock).toMatchObject({
+      state: "BLOCKED_ACTIVE_PLAYER_CHRONICLE",
+      blockedWorkspaces: ["CREATOR"],
+    });
+    expect(overview.workspaces).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ id: "CAPTAIN", state: "ACTIVE", href: "/captain/library" }),
+        expect.objectContaining({ id: "CREATOR", state: "BLOCKED", href: null }),
+      ]),
+    );
   });
 
   it("homeport.owner-correction.round1.workspace-self-initialize grants one idempotent account role when clear", async () => {

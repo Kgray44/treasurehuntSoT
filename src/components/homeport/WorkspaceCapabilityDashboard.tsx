@@ -17,7 +17,11 @@ type Overview = {
     status: string;
     returnHref: string;
   }>;
-  transitionLock: { state: "CLEAR" | "BLOCKED_ACTIVE_PLAYER_CHRONICLE"; detail: string };
+  transitionLock: {
+    state: "CLEAR" | "BLOCKED_ACTIVE_PLAYER_CHRONICLE";
+    blockedWorkspaces: readonly ("CAPTAIN" | "CREATOR")[];
+    detail: string;
+  };
   workspaces: Array<{
     id: "PLAYER" | "CAPTAIN" | "CREATOR";
     label: string;
@@ -104,7 +108,11 @@ export function WorkspaceCapabilityDashboard() {
       {overview.transitionLock.state === "BLOCKED_ACTIVE_PLAYER_CHRONICLE" ? (
         <section className="workspace-transition-lock" aria-labelledby="workspace-lock-title">
           <p className="eyebrow">Active Chronicle safety lock</p>
-          <h2 id="workspace-lock-title">Captain and Creator transitions are paused</h2>
+          <h2 id="workspace-lock-title">
+            {overview.transitionLock.blockedWorkspaces.includes("CAPTAIN")
+              ? "Captain and Creator transitions are paused"
+              : "Creator transitions are paused"}
+          </h2>
           <p>{overview.transitionLock.detail}</p>
           <ul>
             {overview.activeChronicles.map((chronicle) => (

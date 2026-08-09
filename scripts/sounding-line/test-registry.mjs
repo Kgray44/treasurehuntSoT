@@ -12,11 +12,24 @@ const ignored = new Set(["node_modules", ".git", ".next", "coverage", "artifacts
 const homeportContracts = JSON.parse(await fs.readFile(path.join(root, "testing", "contracts.json"), "utf8"))
   .contracts.map((contract) => contract.id)
   .filter((contractId) => contractId.startsWith("homeport."));
+const helmContracts = JSON.parse(await fs.readFile(path.join(root, "testing", "contracts.json"), "utf8"))
+  .contracts.map((contract) => contract.id)
+  .filter((contractId) => contractId.startsWith("helm."));
 const hash = (text) => createHash("sha256").update(text).digest("hex").slice(0, 20);
 const execFileAsync = promisify(execFile);
 const normal = (value) => value.replaceAll("\\", "/");
 
+function isHelmFile(file) {
+  return (
+    file.includes("project-helm") ||
+    file.startsWith("src/helm/") ||
+    file.includes(".helm.test.") ||
+    file.includes("src/app/api/captain/playthroughs/")
+  );
+}
+
 function ownerFor(file) {
+  if (isHelmFile(file)) return "project-helm";
   if (file.includes("homeport")) return "project-homeport";
   if (file.includes("private-content")) return "sealed-hold";
   if (file.includes("community")) return "harborlight";
@@ -28,6 +41,7 @@ function ownerFor(file) {
 }
 
 function unitFamily(file) {
+  if (isHelmFile(file)) return "unit.helm";
   if (file.startsWith("src/homeport/") || file.startsWith("scripts/homeport/") || file.startsWith("tests/homeport/"))
     return "unit.homeport";
   if (file.startsWith("scripts/sounding-line/") || file.startsWith("tests/sounding-line/")) return "unit.sounding-line";
@@ -46,6 +60,7 @@ function unitFamily(file) {
 }
 
 function componentFamily(file) {
+  if (isHelmFile(file)) return "component.helm";
   if (file.includes("components/homeport")) return "component.homeport";
   if (file.includes("components/animation")) return "component.animation";
   if (file.includes("components/community")) return "component.community";
@@ -64,6 +79,7 @@ function componentFamily(file) {
 
 function browserFamily(project, file, title) {
   const value = `${file} ${title}`.toLowerCase();
+  if (file.includes("project-helm") || project.includes("helm")) return "browser.helm";
   // Only the dedicated project is the fast, dependency-free access sentinel.
   // Chromium/WebKit copies remain primary browser.auth cases and must not
   // inherit a fixture-free ownership contract they do not satisfy.
@@ -94,6 +110,8 @@ function browserFamily(project, file, title) {
 }
 
 function contractFor(file, family) {
+  if (isHelmFile(file) || family === "unit.helm" || family === "component.helm" || family === "browser.helm")
+    return helmContracts;
   if (file.includes("homeport") || family === "unit.homeport") return homeportContracts;
   if (file.includes("private-content")) return ["sealed-hold-private-delivery", "public-privacy-projection"];
   if (file.includes("community")) return ["community-public-projection"];

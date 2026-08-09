@@ -17,6 +17,7 @@ const homeportPhase1Spec = /homeport-phase1\.spec\.ts/u;
 const homeportPhase2Spec = /homeport-phase2\.spec\.ts/u;
 const homeportPhase4Spec = /homeport-phase4\.spec\.ts/u;
 const homeportPhase7WalkthroughSpecs = /homeport-phase7.*\.spec\.ts/u;
+const helmPhase1Spec = /project-helm-phase1\.spec\.ts/u;
 const phase3MutationSpecs =
   /phase3-(?:player-event-matrix|player-motion|replay-resilience|lifecycle(?:-extended)?|performance)\.spec\.ts/u;
 const phase3MutationSpecGuard = [
@@ -81,6 +82,7 @@ export default defineConfig({
         homeportPhase2Spec,
         homeportPhase4Spec,
         homeportPhase7WalkthroughSpecs,
+        helmPhase1Spec,
       ],
       use: { ...devices["Desktop Chrome"] },
     },
@@ -101,6 +103,14 @@ export default defineConfig({
       // database, fixture, media roots, port, and evidence configuration.
       name: "homeport-phase4",
       testMatch: homeportPhase4Spec,
+      use: { ...devices["Desktop Chrome"], viewport: { width: 1440, height: 1000 } },
+    },
+    {
+      // Project Helm owns a canonical-account journey against Sounding Line's
+      // copied database and loopback runtime. It must never share the generic
+      // mutation project or a developer's canonical database.
+      name: "helm-phase1",
+      testMatch: helmPhase1Spec,
       use: { ...devices["Desktop Chrome"], viewport: { width: 1440, height: 1000 } },
     },
     {
@@ -164,6 +174,7 @@ export default defineConfig({
         homeportPhase2Spec,
         homeportPhase4Spec,
         homeportPhase7WalkthroughSpecs,
+        helmPhase1Spec,
       ],
       use: { ...devices["iPhone 14"] },
     },

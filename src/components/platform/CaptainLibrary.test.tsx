@@ -51,6 +51,7 @@ function library(overrides: Record<string, unknown> = {}) {
     invitations: [invitation],
     publishedTales: [tale],
     playerProfiles: [{ id: "player-1", displayName: "Kato", username: "kato" }],
+    captainProfile: { id: "captain-profile-1", displayName: "Mara Tide", status: "ACTIVE" },
     serverTime: "2026-07-19T12:00:00.000Z",
     ...overrides,
   };
