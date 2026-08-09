@@ -5,15 +5,15 @@
   "schemaVersion": "1.0.0",
   "slices": [
     {
-      "acceptedMainSha": null,
-      "baseSourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e",
+      "acceptedMainSha": "9937af957c1c92c9767b4255705a17f3e189904b",
+      "baseSourceSha": "cf08ed0954e0bfd8279229604d3bec5c1beea4ae",
       "branch": "codex/deepwater-phase3-catalog-player",
       "canonicalOwner": "Ledgerlight",
       "category": "DOCUMENTATION_RECONCILIATION",
       "closureEvidence": [
-        "Generated Feature Catalog matches the corrected fragment",
-        "Deepwater catalog mismatch validators close only the eight linked findings",
-        "Slice commit is accepted on protected main"
+        "Accepted player.json records /join/[token], /player/invitation, /player/library, and /player/playthroughs/[playthroughId]/journal plus the two bounded Player APIs.",
+        "PR #24 exact head dc9be8e0089e2029e7198f1b03bbd84ec9b55795 reached hosted Sounding Line RELEASE_GO with 30/30 receipts PASSED and CLEAN; evidence digest 4dc0f75b4aa2f8e683d622b525f04bfd7de46acd9aefc31ba39019d9c06cd3a3.",
+        "Protected merge 9937af957c1c92c9767b4255705a17f3e189904b is an ancestor of the reconciled current main."
       ],
       "concurrencyClass": "B",
       "contributingOwners": ["One Voyage", "Wayfarer", "Wakebook", "Landfall"],
@@ -22,7 +22,7 @@
       "mainlineSafetyContract": "The fragment-only correction records existing accepted route truth; cancelling every later Deepwater slice leaves product behavior unchanged and documentation more accurate.",
       "ownedPaths": ["Development_Docs/Features/catalog/player.json"],
       "sliceId": "DW-P3-SLICE-CATALOG-PLAYER",
-      "status": "REGISTERED",
+      "status": "MAINLINE_ACCEPTED",
       "title": "Reconcile Player Feature Catalog route identities",
       "verificationPlan": [
         "npm run features:sync",
@@ -35,15 +35,15 @@
       "worktree": "C:\\Users\\kkids\\Documents\\treasurehuntSoT-deepwater-p3-catalog-player"
     },
     {
-      "acceptedMainSha": null,
-      "baseSourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e",
+      "acceptedMainSha": "0ded9be4af04feb1785fd9e56abbacdd39f54b3d",
+      "baseSourceSha": "bbf5e0d991006227ed4097a95b9c89997354798e",
       "branch": "codex/deepwater-phase3-catalog-one-voyage",
       "canonicalOwner": "One Voyage",
       "category": "DOCUMENTATION_RECONCILIATION",
       "closureEvidence": [
-        "Generated Feature Catalog matches the corrected fragment",
-        "Internal API boundaries are not mislabeled as ordinary user routes",
-        "Slice commit is accepted on protected main"
+        "Accepted one-voyage.json records /api/helper/verification as an API boundary and /captain/sessions/[sessionId] as the Captain consumer without claiming a real provider.",
+        "PR #25 exact head d65ac8781236697841a12b799aa0e7f26798df38 reached hosted Sounding Line RELEASE_GO with 30/30 receipts PASSED and CLEAN; evidence digest 9df6b8e0359841a1ce720b4a65b3eb6470eb505c9e3cd944437ef7dad85fddfc.",
+        "Protected merge 0ded9be4af04feb1785fd9e56abbacdd39f54b3d is an ancestor of the reconciled current main."
       ],
       "concurrencyClass": "B",
       "contributingOwners": ["Ledgerlight"],
@@ -52,7 +52,7 @@
       "mainlineSafetyContract": "The fragment-only correction records existing accepted helper and Captain route truth without enabling a provider or changing runtime behavior.",
       "ownedPaths": ["Development_Docs/Features/catalog/one-voyage.json"],
       "sliceId": "DW-P3-SLICE-CATALOG-ONE-VOYAGE",
-      "status": "REGISTERED",
+      "status": "MAINLINE_ACCEPTED",
       "title": "Reconcile One Voyage Feature Catalog route identities",
       "verificationPlan": [
         "npm run features:sync",
@@ -65,15 +65,15 @@
       "worktree": "C:\\Users\\kkids\\Documents\\treasurehuntSoT-deepwater-p3-catalog-one-voyage"
     },
     {
-      "acceptedMainSha": null,
-      "baseSourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e",
+      "acceptedMainSha": "9de00293c73c2d4aea49dc5d2e7a2a4a0515afe1",
+      "baseSourceSha": "f07fbb693e32f6b1069870fae9da668ed3392d4b",
       "branch": "codex/deepwater-phase3-catalog-harborlight",
       "canonicalOwner": "Harborlight",
       "category": "DOCUMENTATION_RECONCILIATION",
       "closureEvidence": [
-        "Generated Feature Catalog matches the corrected fragment",
-        "Community and Studio surfaces remain intentionally composite",
-        "Slice commit is accepted on protected main"
+        "Accepted harborlight.json records /community and /studio/exchange as the intentional composite Community and Studio surfaces.",
+        "PR #26 exact head 38dd98e1b31251ee991b2fee52e5a998b1a22b47 passed local Sounding Line with every receipt CLEAN and no invalid evidence; evidence digest 566f87a84b843dae596c6d982fc418410a169c60d0c8808da20ded3861180f3a.",
+        "Hosted Sounding Line finalized RELEASE_GO with all 36 checks successful, every finalization receipt CLEAN, no invalid evidence, and digest 8b2456d4e60062948471c49ec2e56775c4e5b47e7ef5430b0f20436bc67e218a; protected merge 9de00293c73c2d4aea49dc5d2e7a2a4a0515afe1 is the reconciled current main."
       ],
       "concurrencyClass": "B",
       "contributingOwners": ["Ledgerlight"],
@@ -82,7 +82,7 @@
       "mainlineSafetyContract": "The fragment-only correction records existing Community and Studio exchange routes; product behavior and Harborlight ownership remain unchanged if later work is cancelled.",
       "ownedPaths": ["Development_Docs/Features/catalog/harborlight.json"],
       "sliceId": "DW-P3-SLICE-CATALOG-HARBORLIGHT",
-      "status": "REGISTERED",
+      "status": "MAINLINE_ACCEPTED",
       "title": "Reconcile Harborlight Feature Catalog route identities",
       "verificationPlan": [
         "npm run features:sync",
@@ -95,5 +95,5 @@
       "worktree": "C:\\Users\\kkids\\Documents\\treasurehuntSoT-deepwater-p3-catalog-harborlight"
     }
   ],
-  "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
+  "sourceSha": "9de00293c73c2d4aea49dc5d2e7a2a4a0515afe1"
 }

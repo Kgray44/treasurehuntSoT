@@ -10,7 +10,7 @@ last_reviewed: 2026-08-09
 
 ## Decision boundary
 
-All 55 governed capabilities received an operation, safe-metadata, state, recovery, and consumer saturation review against accepted source `40d822cd936c9abbfce064fd7799e6a2f8c9785e`. Realization and utilization remain separate dimensions.
+All 55 governed capabilities received an operation, safe-metadata, state, recovery, and consumer saturation review against accepted source `9de00293c73c2d4aea49dc5d2e7a2a4a0515afe1`. Realization and utilization remain separate dimensions.
 
 ## Result
 
