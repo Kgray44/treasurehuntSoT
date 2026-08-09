@@ -5,7 +5,7 @@ This generated catalog records completed, meaningful platform capabilities. It i
 ## Audited repository and commit
 
 Repository: `Kgray44/treasurehuntSoT`
-Audited source commit: `9937af957c1c92c9767b4255705a17f3e189904b`
+Audited source commit: `bbf5e0d991006227ed4097a95b9c89997354798e`
 
 ## Status vocabulary
 
@@ -1313,4 +1313,4 @@ Captains create, launch, operate, recover, and reconcile live Voyages through au
 
 Update the owning machine-readable fragment only when completed work changes a major capability, important subfeature, availability, or meaningful limitation. Regenerate this file with `npm run features:sync`; never hand-edit it. Validate before closeout with `npm run features:validate`.
 
-Generation source commit: `9937af957c1c92c9767b4255705a17f3e189904b`
+Generation source commit: `bbf5e0d991006227ed4097a95b9c89997354798e`
