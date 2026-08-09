@@ -14,7 +14,7 @@ last_reviewed: 2026-08-09
 | ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Initial branch base     | `f1c2f22dd935322c1a71eb80c51592f243dc196d`                                                                                                                    |
 | Current reconciled base | `468530645e983412e5f4c1aaa103915be77c9c07`                                                                                                                    |
-| Prior merge anchor      | `a564fabc95f5dab7e41345dda795462586349323`; final Drydock merge anchor will be recorded after the merge commit                                                |
+| Current merge anchor    | `74e2459ba5fca28fe64b86582b912f47f366f32a`                                                                                                                    |
 | Incoming accepted work  | Deepwater through Phase 3, Tideglass Phase 1, Admiralty Phase 1 closure, Drydock Phase 1, Feature Catalog, Homeport catalogs, and Sounding Line control plane |
 | Semantic reconciliation | Combined shared catalogs/control-plane truth; Wakebook moved to `FT-B011`; accepted application/schema behavior preserved                                     |
 | Implementation anchor   | `ab47dc33a29b2cdd80a97da7fd1af4a9e897b2cc`                                                                                                                    |
