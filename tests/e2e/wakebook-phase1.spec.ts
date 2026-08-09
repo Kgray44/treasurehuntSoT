@@ -21,6 +21,23 @@ async function register(browser: import("@playwright/test").Browser, label: stri
   });
   expect(response.status(), await response.text()).toBe(201);
   const body = (await response.json()) as { player: { id: string } };
+  const profile = await db.playerProfile.findUniqueOrThrow({
+    where: { id: body.player.id },
+    select: { accountId: true },
+  });
+  if (!profile.accountId) throw new Error(`Synthetic ${label} account was not linked.`);
+  const verifiedAt = new Date();
+  await db.$transaction([
+    db.userAccount.update({ where: { id: profile.accountId }, data: { status: "ACTIVE" } }),
+    db.accountEmail.updateMany({
+      where: { accountId: profile.accountId, isPrimary: true },
+      data: { verificationState: "VERIFIED", verifiedAt },
+    }),
+    db.accountSession.updateMany({
+      where: { accountId: profile.accountId, revokedAt: null },
+      data: { sessionType: "ORDINARY" },
+    }),
+  ]);
   return { context, profileId: body.player.id };
 }
 
