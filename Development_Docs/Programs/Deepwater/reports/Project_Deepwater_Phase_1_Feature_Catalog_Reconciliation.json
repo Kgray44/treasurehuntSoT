@@ -517,10 +517,10 @@
     {
       "capabilityId": "DW-CAP-PLATFORM-ADMINISTRATION-SUPPORT-ACCESS",
       "declaredStatus": "BRANCH_COMPLETE_NOT_MERGED",
-      "declaredSurfaces": ["/account/support-access", "/admin", "/api/account/support", "/api/admin"],
-      "documentationMismatch": true,
+      "declaredSurfaces": ["/account/support-access", "/admin"],
+      "documentationMismatch": false,
       "featureCatalogId": "FT-B010",
-      "mismatchFindingIds": ["DW-FIND-CATALOG-SURFACE-FT-B010"],
+      "mismatchFindingIds": [],
       "observedClassification": "FULLY_REALIZED",
       "observedHighestRung": "OWNER_ACCEPTED"
     }

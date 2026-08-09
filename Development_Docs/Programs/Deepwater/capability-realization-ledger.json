@@ -15109,18 +15109,18 @@
     },
     {
       "audience": {
-        "privacyClass": "PUBLIC_OR_ACCOUNT_GOVERNED",
-        "privilegeRequirements": ["ROUTE_POLICY"],
-        "roles": ["ACCOUNT_OWNER"]
+        "privacyClass": "CONSENTED_RESTRICTED_DIAGNOSTIC_METADATA",
+        "privilegeRequirements": ["ACTIVE_SUPPORT_GRANT", "CAPABILITY_AUTHORIZATION", "RECENT_ASSURANCE"],
+        "roles": ["ACCOUNT_OWNER", "ADMINISTRATOR", "SUPPORT_OPERATOR"]
       },
       "capabilityId": "DW-CAP-PLATFORM-ADMINISTRATION-SUPPORT-ACCESS",
       "catalogMapping": {
         "declaredLimitations": [
-          "Automated local and synthetic readiness is not owner or product acceptance",
-          "Named branch only; not on main, published, or deployed",
+          "Owner acceptance does not imply deployment or acceptance of later Admiralty phases",
+          "Owner-accepted mainline candidate; canonical integration and remote parity remain pending",
           "Phase 2 and all later operational command-center capabilities remain dormant",
           "Production MySQL execution, live-provider behavior, and physical assistive-technology validation remain external",
-          "Ready for the required owner walkthrough; owner decision remains pending"
+          "The owner accepted the complete governed Phase 1 walkthrough on 2026-08-09"
         ],
         "declaredProgram": "Project Admiralty",
         "declaredStatus": "BRANCH_COMPLETE_NOT_MERGED",
@@ -15135,7 +15135,7 @@
           "Task-owned synthetic browser and owner-walkthrough runtimes",
           "User-approved target, operator, scope, and time-bounded Support Access"
         ],
-        "declaredSurfaces": ["/account/support-access", "/admin", "/api/account/support", "/api/admin"],
+        "declaredSurfaces": ["/account/support-access", "/admin"],
         "featureCatalogId": "FT-B010",
         "mapping": "PARENT"
       },
@@ -15143,7 +15143,7 @@
         "classification": "FULLY_REALIZED",
         "confidence": "MEDIUM",
         "highestRung": "OWNER_ACCEPTED",
-        "secondaryFlags": ["DOCUMENTATION_MISMATCH"]
+        "secondaryFlags": []
       },
       "evidence": {
         "journeyIds": [],
@@ -15200,27 +15200,34 @@
           },
           {
             "evidenceId": "DW-EV-PLATFORM-ADMINISTRATION-SUPPORT-ACCESS-008",
-            "freshness": "CURRENT",
-            "kind": "ROUTE_INVENTORY",
-            "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-admin",
+            "freshness": "BOUNDED",
+            "kind": "COMPLETION_RECORD",
+            "reference": "Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_1_Owner_Decision_Record.md",
             "sourceSha": "273fb5255ad222812530422e902db04c0ddd1961"
           },
           {
             "evidenceId": "DW-EV-PLATFORM-ADMINISTRATION-SUPPORT-ACCESS-009",
             "freshness": "CURRENT",
             "kind": "ROUTE_INVENTORY",
-            "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-account-support-access",
+            "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-admin",
             "sourceSha": "273fb5255ad222812530422e902db04c0ddd1961"
           },
           {
             "evidenceId": "DW-EV-PLATFORM-ADMINISTRATION-SUPPORT-ACCESS-010",
+            "freshness": "CURRENT",
+            "kind": "ROUTE_INVENTORY",
+            "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json#route-page-account-support-access",
+            "sourceSha": "273fb5255ad222812530422e902db04c0ddd1961"
+          },
+          {
+            "evidenceId": "DW-EV-PLATFORM-ADMINISTRATION-SUPPORT-ACCESS-011",
             "freshness": "CURRENT",
             "kind": "SCREEN_CATALOG",
             "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-account-support-access",
             "sourceSha": "273fb5255ad222812530422e902db04c0ddd1961"
           },
           {
-            "evidenceId": "DW-EV-PLATFORM-ADMINISTRATION-SUPPORT-ACCESS-011",
+            "evidenceId": "DW-EV-PLATFORM-ADMINISTRATION-SUPPORT-ACCESS-012",
             "freshness": "CURRENT",
             "kind": "SCREEN_CATALOG",
             "reference": "Development_Docs/Projects/Project_Homeport/Homeport_Screen_Catalog.json#screen-page-admin",
@@ -15232,17 +15239,17 @@
         "testIds": ["tests/e2e/admiralty-phase1.spec.ts"]
       },
       "expectedRealization": {
-        "disposition": "USER_FACING",
+        "disposition": "SECURITY_RESTRICTED",
         "rationale": "The owner accepted the complete governed Phase 1 walkthrough on 2026-08-09, including its deliberately bounded administration and consent surfaces. Production MySQL execution, deployment, and later Admiralty phases remain separately governed non-claims.",
-        "requiredSurfaces": ["/account/support-access", "/admin", "/api/account/support", "/api/admin"],
+        "requiredSurfaces": ["/account/support-access", "/admin"],
         "terminalRung": "OWNER_ACCEPTED"
       },
       "gaps": {
-        "assignedOwner": "Admiralty",
-        "findingIds": ["DW-FIND-CATALOG-SURFACE-FT-B010"],
-        "highestSeverity": "LOW",
-        "impact": "Catalog surface(s) /api/admin, /api/account/support do not exactly match the accepted Homeport route inventory.",
-        "targetPhase": "Admiralty and Ledgerlight catalog reconciliation"
+        "assignedOwner": null,
+        "findingIds": [],
+        "highestSeverity": null,
+        "impact": null,
+        "targetPhase": null
       },
       "lifecycle": {
         "closedAt": null,
@@ -15319,10 +15326,10 @@
           "references": ["src/admiralty/authorization.ts", "src/admiralty/support-access.ts"],
           "status": "PARTIAL"
         },
-        "suspectedFirstLossPoint": "CATALOG_TO_ROUTE",
+        "suspectedFirstLossPoint": null,
         "transport": {
-          "references": ["/api/account/support", "/api/admin"],
-          "status": "PARTIAL"
+          "references": [],
+          "status": "NOT_APPLICABLE"
         },
         "ui": {
           "references": ["src/app/account/support-access/page.tsx", "src/app/admin/page.tsx"],

@@ -240,10 +240,12 @@ test("Phase 2 accounts for every seed queue item exactly once", () => {
 
 test("Phase 2 rejects an accepted queue item omitted from trace policy", () => {
   const candidate = phase2Model();
-  const capability = candidate.ledger.capabilities.find(
-    (entry) => entry.capabilityId === "DW-CAP-PLATFORM-ADMINISTRATION-SUPPORT-ACCESS",
+  const omittedCapabilityId = candidate.phase1.queueDocument.queue.find((item) =>
+    candidate.inputs.phase2Config.tracePolicies.some((policy) => policy.capabilityId === item.capabilityId),
+  ).capabilityId;
+  candidate.inputs.phase2Config.tracePolicies = candidate.inputs.phase2Config.tracePolicies.filter(
+    (policy) => policy.capabilityId !== omittedCapabilityId,
   );
-  capability.catalogMapping.declaredStatus = "MAINLINE";
   includesError(phase2Errors(candidate), "trace policy omits accepted seed queue item");
 });
 

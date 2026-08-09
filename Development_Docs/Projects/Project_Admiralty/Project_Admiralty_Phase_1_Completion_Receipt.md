@@ -10,15 +10,17 @@ last_reviewed: 2026-08-09
 
 ## Disposition
 
-`PROJECT ADMIRALTY PHASE 1 — READY FOR OWNER WALKTHROUGH`
+`PROJECT ADMIRALTY PHASE 1 — OWNER ACCEPTED MAINLINE CANDIDATE`
 
-Owner decision: `PENDING_OWNER_DECISION`.
+Owner decision: `ACCEPTED` on `2026-08-09`.
 
-Phase 1 reaches its governed automated completion boundary on branch
+Phase 1 has passed its governed owner-acceptance boundary on branch
 `codex/project-admiralty-phase1-raise-the-colors`. The implementation checkpoint
 is `648d1068ee3007c303ac76ae3a3c68e137f73a0e`; the exact tested application
-source is `49c2f59d6d75791edbdba84f22f5ec1595d2d129`; and the current-main
-reconciliation anchor is `5eada921c2a2b1169f9c7ddbc89b682e7cf207b4`.
+source is `49c2f59d6d75791edbdba84f22f5ec1595d2d129`; the owner-observed source is
+`750b904cfec013f0b6adec3d930caf5eeae9ec0b`; and reconciliation merge
+`0ba4df35e7bf6a9597ca8d52ff9063e320554a24` contains current `origin/main` at
+`40d822cd936c9abbfce064fd7799e6a2f8c9785e`.
 
 ## Completed Phase 1 capability
 
@@ -40,17 +42,18 @@ reconciliation anchor is `5eada921c2a2b1169f9c7ddbc89b682e7cf207b4`.
 
 ## Walkthrough handoff
 
-The governed walkthrough is documented at
-`Development_Docs/Projects/Project_Admiralty/walkthrough/phase1/README.md`.
-Runtime state, database, logs, evidence, and credential material remain in the
-task-owned ProjectAdmiralty root outside source control. The owner must record
-the decision after reviewing the running experience; automation cannot write an
-accepted decision on the owner's behalf.
+The completed governed walkthrough is documented at
+`Development_Docs/Projects/Project_Admiralty/walkthrough/phase1/README.md`, and
+the owner's decision is recorded in
+`Project_Admiralty_Phase_1_Owner_Decision_Record.md`. The isolated runtime is
+stopped; its task-owned evidence remains outside source control only until the
+governed integration and cleanup sequence finishes.
 
 ## Non-claims and phase boundary
 
-This receipt is not owner acceptance, publication, pull-request approval,
-mainline integration, deployment, production MySQL proof, live-provider proof,
-physical-device proof, or product acceptance. It does not authorize Phase 2.
-The named branch and owned worktree are retained for walkthrough and any owner
-correction round.
+Owner acceptance is established. This receipt does not yet claim canonical
+mainline integration or local/remote parity, and it does not claim deployment,
+production MySQL proof, live-provider proof, physical-device proof, or physical
+assistive-technology proof. It does not authorize Phase 2. The named branch and
+owned worktree are retained only for governed integration, exact-source proof,
+and cleanup.

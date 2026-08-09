@@ -8,9 +8,15 @@ last_reviewed: 2026-08-09
 
 # Project Admiralty Phase 1 owner walkthrough
 
-Current state: `READY_FOR_OWNER_WALKTHROUGH`.
+Current state: `COMPLETED_OWNER_ACCEPTED`.
 
-Owner decision: `PENDING_OWNER_DECISION`.
+Owner decision: `ACCEPTED` on `2026-08-09`.
+
+The owner completed every governed walkthrough step against source
+`750b904cfec013f0b6adec3d930caf5eeae9ec0b`. The decision is recorded in
+`../../Project_Admiralty_Phase_1_Owner_Decision_Record.md`. The isolated runtime
+was stopped after acceptance; the commands below remain historical controller
+instructions, not an invitation to reopen the accepted walkthrough.
 
 The controller uses only a task-owned root below
 `%LOCALAPPDATA%\ProjectAdmiralty`, a fresh synthetic SQLite database, an exact
@@ -62,7 +68,8 @@ fixture version, logs, and pending owner decision in the task root.
 
 ## Decision boundary
 
-This package and its automated evidence do not establish owner acceptance,
-mainline integration, deployment, production MySQL behavior, live-provider
-behavior, or physical assistive-technology validation. Phase 2 is not
-authorized by a Phase 1 walkthrough decision.
+Owner acceptance is established by the separate owner record. The package does
+not by itself establish mainline integration, deployment, production MySQL
+behavior, live-provider behavior, physical-device proof, or physical
+assistive-technology validation. Phase 2 is not authorized by the Phase 1
+decision.

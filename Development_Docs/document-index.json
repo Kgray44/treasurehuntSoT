@@ -2607,6 +2607,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_1_Owner_Decision_Record.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_1_Role_Capability_Registry.json",
       "record_type": "program-record",
       "status": "preserved",

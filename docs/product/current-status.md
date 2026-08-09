@@ -38,14 +38,15 @@ multi-tab/mobile behavior, and a safe final owner-walkthrough runtime package.
 It is ready for owner walkthrough. Owner Decision remains
 `PENDING_OWNER_DECISION`.
 
-**Ready for owner walkthrough on a named development branch, not on main:**
+**Owner accepted on a reconciled mainline-candidate branch:**
 Project Admiralty Phase 1 provides canonical role/capability authorization,
 explicit administrator bootstrap, recent privileged assurance, a limited
 non-navigable `/admin` shell, user-consented scoped Support Access, sanitized
 administrative audit evidence, and a 92-entry capability-floor registry. The
 exact-current-main local implementation, additive SQLite/MySQL migration
 rehearsals, focused tests, production build, and isolated browser journeys pass.
-The owner decision remains `PENDING_OWNER_DECISION`; no deployment, production
+The owner decision is `ACCEPTED`; exact reconciled Sounding Line proof,
+canonical integration, and parity remain pending. No deployment, production
 database execution, or Phase 2 capability is claimed.
 
 **Development-only or compatibility-only:** development showcases, legacy routes, and package-exchange integrations are not a promise of a generally hosted service.

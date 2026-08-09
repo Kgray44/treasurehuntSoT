@@ -1,0 +1,58 @@
+---
+title: Project Admiralty Phase 1 Owner Decision Record
+audience: product-owner-engineering-security
+status: current
+canonical_for: project-admiralty-phase-1-owner-decision
+last_reviewed: 2026-08-09
+---
+
+# Project Admiralty Phase 1 owner decision record
+
+## Decision
+
+Owner decision: `ACCEPTED`.
+
+Decision date: `2026-08-09`.
+
+The owner completed the full governed Project Admiralty Phase 1 walkthrough
+against source `750b904cfec013f0b6adec3d930caf5eeae9ec0b` and accepted the Phase 1
+product experience. The walkthrough used the isolated production runtime with
+build ID `77Za1YwJMEluD56_aGqrr` and synthetic database SHA-256
+`b2a7ee4c4df79bf1ba8536edb91c7e9fc9506714bb6656761bc50973c25538c7`.
+The runtime was stopped after the decision.
+
+## Accepted walkthrough results
+
+The owner verified and accepted:
+
+- ordinary-user denial at `/admin` without privileged-content exposure;
+- authorized administrator entry and a coherent, visually acceptable Phase 1
+  shell;
+- privileged password reauthentication and recent-assurance behavior;
+- scoped Support Access requests with exact target-visible diagnostic
+  categories;
+- approval, denial, bounded support projections, and audited support-scope
+  reads;
+- account-owner revocation and immediate loss of revoked access; and
+- Living Registry truth that distinguishes implemented Phase 1 capability from
+  deliberately dormant future Admiralty capability.
+
+## Accepted Phase 1 limits
+
+The owner explicitly accepts the deliberately limited account information,
+absence of broad support tooling, and absence of administrative write/edit
+operations as later-phase Admiralty scope rather than Phase 1 defects.
+
+This decision establishes Phase 1 owner acceptance only. It does not establish
+deployment, production MySQL execution, live-provider behavior, physical-device
+or physical assistive-technology proof, or acceptance of a later Admiralty
+phase. Phase 2 is not authorized or started by this record.
+
+## Integration state at decision recording
+
+Current `origin/main` at reconciliation was
+`40d822cd936c9abbfce064fd7799e6a2f8c9785e`. Reconciliation merge
+`0ba4df35e7bf6a9597ca8d52ff9063e320554a24` preserves that accepted mainline
+and the accepted Admiralty work. Sounding Line and canonical-mainline parity
+remain required before the state can advance from owner-accepted mainline
+candidate to accepted mainline.

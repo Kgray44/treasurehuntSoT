@@ -103,18 +103,18 @@
       "featureCatalogMappedCount": 43,
       "openFindingsBySeverity": {
         "HIGH": 1,
-        "LOW": 7,
+        "LOW": 6,
         "MEDIUM": 15
       },
       "ownershipAmbiguousCount": 0,
       "ratios": {
         "featureCatalogMappingCoverage": 1,
         "initialRealizationCoverage": 0.2,
-        "naturalJourneyEvidenceCoverage": 0.561,
+        "naturalJourneyEvidenceCoverage": 0.575,
         "ownerMappedCoverage": 1
       },
       "secondaryFlags": {
-        "DOCUMENTATION_MISMATCH": 18,
+        "DOCUMENTATION_MISMATCH": 17,
         "EXTERNAL_PROVIDER_PENDING": 7,
         "JOURNEY_UNPROVEN": 40,
         "LEGACY_DEPENDENT": 1,
@@ -122,10 +122,10 @@
       },
       "totalMeaningfulCapabilities": 55,
       "uncatalogedMeaningfulCapabilityCount": 12,
-      "userFacingLackingAccessibilityEvidence": 41,
-      "userFacingLackingDiscoverabilityEvidence": 41,
-      "userFacingLackingJourneyEvidence": 18,
-      "userFacingLackingStateCompletenessEvidence": 32
+      "userFacingLackingAccessibilityEvidence": 40,
+      "userFacingLackingDiscoverabilityEvidence": 40,
+      "userFacingLackingJourneyEvidence": 17,
+      "userFacingLackingStateCompletenessEvidence": 31
     },
     "prioritizedQueueItemsCompleted": 44,
     "prioritizedTracesCompleted": 43,

@@ -5,7 +5,7 @@ This generated catalog records completed, meaningful platform capabilities. It i
 ## Audited repository and commit
 
 Repository: `Kgray44/treasurehuntSoT`
-Audited source commit: `762258e31d7509aac8a7a46e7828ae0e92b84a84`
+Audited source commit: `40d822cd936c9abbfce064fd7799e6a2f8c9785e`
 
 ## Status vocabulary
 
@@ -1314,15 +1314,15 @@ Canonical account roles, recent privileged assurance, scoped user consent, sanit
 
 ### Primary surfaces
 
-`/admin`, `/account/support-access`, `/api/admin`, `/api/account/support`
+`/admin`, `/account/support-access`
 
 ### Meaningful limitations
 
-- Ready for the required owner walkthrough; owner decision remains pending
-- Named branch only; not on main, published, or deployed
+- The owner accepted the complete governed Phase 1 walkthrough on 2026-08-09
+- Owner-accepted mainline candidate; canonical integration and remote parity remain pending
 - Production MySQL execution, live-provider behavior, and physical assistive-technology validation remain external
 - Phase 2 and all later operational command-center capabilities remain dormant
-- Automated local and synthetic readiness is not owner or product acceptance
+- Owner acceptance does not imply deployment or acceptance of later Admiralty phases
 
 ### Evidence
 
@@ -1332,6 +1332,7 @@ Canonical account roles, recent privileged assurance, scoped user consent, sanit
 - path: `Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_1_Capability_Registry.json`
 - test: `tests/e2e/admiralty-phase1.spec.ts`
 - completion-record: `Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_1_Completion_Receipt.md`
+- completion-record: `Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Phase_1_Owner_Decision_Record.md`
 
 ---
 
@@ -1348,4 +1349,4 @@ Canonical account roles, recent privileged assurance, scoped user consent, sanit
 
 Update the owning machine-readable fragment only when completed work changes a major capability, important subfeature, availability, or meaningful limitation. Regenerate this file with `npm run features:sync`; never hand-edit it. Validate before closeout with `npm run features:validate`.
 
-Generation source commit: `762258e31d7509aac8a7a46e7828ae0e92b84a84`
+Generation source commit: `40d822cd936c9abbfce064fd7799e6a2f8c9785e`

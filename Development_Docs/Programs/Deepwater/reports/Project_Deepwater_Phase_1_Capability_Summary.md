@@ -59,7 +59,7 @@ Audited product source: `f1c2f22dd935322c1a71eb80c51592f243dc196d`. Generated de
 - User-facing capabilities lacking complete state evidence: 32
 - User-facing capabilities lacking verified accessibility evidence: 41
 - User-facing capabilities lacking any mapped journey evidence: 18
-- Open findings: 23
-- Prioritized Phase 2 trace items: 45
+- Open findings: 22
+- Prioritized Phase 2 trace items: 44
 
 These figures prioritize tracing. They do not convert incomplete evidence into product maturity.

@@ -470,28 +470,6 @@
       "status": "ASSIGNED"
     },
     {
-      "assignedProjectPhase": "Admiralty and Ledgerlight catalog reconciliation",
-      "canonicalOwner": "Admiralty",
-      "capabilityId": "DW-CAP-PLATFORM-ADMINISTRATION-SUPPORT-ACCESS",
-      "catalogOutcome": null,
-      "closedAt": null,
-      "closureEvidence": "Owning Feature Catalog fragment reconciled to current route identity or annotated with a governed compatibility explanation; feature sync and validation pass.",
-      "confidence": "HIGH",
-      "contributingOwners": ["Ledgerlight"],
-      "currentBehavior": "Catalog surface(s) /api/admin, /api/account/support do not exactly match the accepted Homeport route inventory.",
-      "debt": null,
-      "evidence": ["Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json", "FT-B010"],
-      "expectedBehavior": "Feature Catalog primary surfaces identify current governed route patterns or an explicit non-route boundary.",
-      "findingId": "DW-FIND-CATALOG-SURFACE-FT-B010",
-      "firstLossPoint": "FEATURE_CATALOG_TO_ROUTE_INVENTORY",
-      "gapFamilies": ["DW-DOC", "DW-NAV"],
-      "mainlineDependency": "Current owner-approved route identity",
-      "observedSourceSha": "273fb5255ad222812530422e902db04c0ddd1961",
-      "rootCause": "Catalog surface(s) /api/admin, /api/account/support do not exactly match the accepted Homeport route inventory.",
-      "severity": "LOW",
-      "status": "ASSIGNED"
-    },
-    {
       "assignedProjectPhase": "Admiralty",
       "canonicalOwner": "Harborlight",
       "capabilityId": "DW-CAP-COMMUNITY-OPERATIONS-HEALTH",

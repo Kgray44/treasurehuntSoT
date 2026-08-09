@@ -341,21 +341,6 @@
       "suspectedLossLayer": "FEATURE_CATALOG_TO_ROUTE_INVENTORY"
     },
     {
-      "activeProjectConsiderations": "Audit accepted main only; coordinate with Admiralty and Ledgerlight catalog reconciliation before remediation.",
-      "canonicalOwner": "Admiralty",
-      "capabilityId": "DW-CAP-PLATFORM-ADMINISTRATION-SUPPORT-ACCESS",
-      "confidence": "HIGH",
-      "currentClassification": "PARTIALLY_REALIZED",
-      "evidenceAvailable": ["FT-B010", "Development_Docs/Projects/Project_Homeport/Homeport_Route_Inventory.json"],
-      "missingEvidence": [
-        "Owning Feature Catalog fragment reconciled to current route identity or annotated with a governed compatibility explanation; feature sync and validation pass."
-      ],
-      "queueId": "DW-P2-CATALOG-SURFACE-FT-B010",
-      "reasonSelected": "LOW DW-DOC+DW-NAV finding: Catalog surface(s) /api/admin, /api/account/support do not exactly match the accepted Homeport route inventory.",
-      "severity": "LOW",
-      "suspectedLossLayer": "FEATURE_CATALOG_TO_ROUTE_INVENTORY"
-    },
-    {
       "activeProjectConsiderations": "Refresh if Wayfarer changes the audited surface before Phase 2 begins.",
       "canonicalOwner": "Wayfarer",
       "capabilityId": "DW-CAP-ACCOUNT-DATA-EXPORT",

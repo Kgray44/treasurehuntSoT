@@ -34,6 +34,7 @@ mutation is independently authorized on the server.
 - [Integration manifest](Project_Admiralty_Phase_1_Integration_Manifest.md)
 - [Validation record](Project_Admiralty_Phase_1_Validation_Record.md)
 - [Completion receipt](Project_Admiralty_Phase_1_Completion_Receipt.md)
+- [Owner decision record](Project_Admiralty_Phase_1_Owner_Decision_Record.md)
 - [Owner walkthrough](walkthrough/phase1/README.md)
 
 ## Machine-readable controls
@@ -44,4 +45,6 @@ mutation is independently authorized on the server.
 - `Project_Admiralty_Phase_1_Support_Scope_Registry.json`
 - `Project_Admiralty_Phase_1_Capability_Registry.json`
 
-Phase 1 does not authorize or begin the Phase 2 operational command center.
+The Phase 1 owner decision is `ACCEPTED`; canonical mainline integration and
+parity remain the active closure gate. Phase 1 does not authorize or begin the
+Phase 2 operational command center.

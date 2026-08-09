@@ -10,26 +10,28 @@ last_reviewed: 2026-08-09
 
 ## Current decision
 
-**AUTOMATED_PHASE_1_READY_FOR_OWNER_WALKTHROUGH.** The exact tested application
-source is `49c2f59d6d75791edbdba84f22f5ec1595d2d129`. Reconciliation merge
-`5eada921c2a2b1169f9c7ddbc89b682e7cf207b4` contains current `origin/main` at
-`762258e31d7509aac8a7a46e7828ae0e92b84a84`; the later mainline material accepts
-Deepwater Phase 2 integration and its documentation/configuration state but
-does not change Admiralty application or schema code. Automated local and
-synthetic evidence cannot self-accept the new administrator and account-owner
-consent surfaces. Owner decision remains `PENDING_OWNER_DECISION`.
+**OWNER_ACCEPTED_RECONCILED_MAINLINE_CANDIDATE.** The exact tested application
+source is `49c2f59d6d75791edbdba84f22f5ec1595d2d129`; the owner completed the
+walkthrough against `750b904cfec013f0b6adec3d930caf5eeae9ec0b` and recorded
+`ACCEPTED` on `2026-08-09`. Reconciliation merge
+`0ba4df35e7bf6a9597ca8d52ff9063e320554a24` contains current `origin/main` at
+`40d822cd936c9abbfce064fd7799e6a2f8c9785e`. The intervening Tideglass work
+overlaps shared catalog, Deepwater, Sounding Line, documentation, and test
+registries but does not change Admiralty application or schema code. Its
+source-bound effect must be decided by the new Sounding Line run before
+integration.
 
 ## Focused and compatibility evidence
 
-| Lane                                | Result                                                                                                                                                        | Truth boundary                                          |
-| ----------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------- |
-| Admiralty unit/component/navigation | 9 files, 56 tests passed                                                                                                                                      | Local focused diagnostic proof                          |
-| Admiralty policy validator          | Passed: 92 capability-floor entries, 8 roles, 6 support scopes, 0 Admin navigation entries                                                                    | Registry/source boundary proof                          |
-| Migration rehearsal                 | Fresh database and prior-head upgrade passed; sentinel row retained                                                                                           | Task-owned SQLite proof, not production MySQL execution |
-| TypeScript                          | Passed                                                                                                                                                        | Local static proof                                      |
-| Homeport Phase 5                    | Passed: 92 pages, 200 service sources, no unexplained ordinary orphans                                                                                        | Shared route-reachability compatibility                 |
-| Homeport Phase 6                    | Passed: 99 screens, 92 pages, 1,125 state pairs, 208 responsive and 26 accessibility cases                                                                    | Shared screen/state compatibility                       |
-| Deepwater                           | 42 tests passed; 54 capabilities and all 42 catalog entries mapped; 44 accepted queue items remain bound to 43 traces while branch-only `FT-B009` is deferred | Deterministic cross-program audit compatibility         |
+| Lane                                | Result                                                                                                                                          | Truth boundary                                          |
+| ----------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------- |
+| Admiralty unit/component/navigation | 9 files, 56 tests passed                                                                                                                        | Local focused diagnostic proof                          |
+| Admiralty policy validator          | Passed: 92 capability-floor entries, 8 roles, 6 support scopes, 0 Admin navigation entries                                                      | Registry/source boundary proof                          |
+| Migration rehearsal                 | Fresh database and prior-head upgrade passed; sentinel row retained                                                                             | Task-owned SQLite proof, not production MySQL execution |
+| TypeScript                          | Passed                                                                                                                                          | Local static proof                                      |
+| Homeport Phase 5                    | Passed: 92 pages, 200 service sources, no unexplained ordinary orphans                                                                          | Shared route-reachability compatibility                 |
+| Homeport Phase 6                    | Passed: 99 screens, 92 pages, 1,125 state pairs, 208 responsive and 26 accessibility cases                                                      | Shared screen/state compatibility                       |
+| Deepwater                           | Reconciled to 55 capabilities and all 43 catalog entries; Admiralty is `FT-B010` and owner-accepted while still branch-only pending integration | Deterministic cross-program audit compatibility         |
 
 ## Production-browser evidence
 
@@ -57,17 +59,28 @@ The manifest status is
 credential handoff and synthetic database remain external; no password, token,
 cookie, raw database, or private product material is committed.
 
+## Owner walkthrough evidence
+
+The owner completed the full Phase 1 walkthrough on `2026-08-09` against
+source `750b904cfec013f0b6adec3d930caf5eeae9ec0b` and recorded `ACCEPTED`.
+Ordinary-user denial without exposure, authorized administration, privileged
+reauthentication, exact-scope request review, approval, denial, bounded reads,
+audit visibility, revocation, immediate revoked-access denial, visual
+coherence, and Living Registry truth were accepted. The deliberately limited
+account projection and absence of broad support or administrative write/edit
+tooling were accepted as later-phase scope, not defects.
+
 ## Governed gate receipts
 
 | Gate                                | Result                                                                                                                                                       | Boundary                                                                    |
 | ----------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------- |
 | Production build                    | Passed for the exact tested source                                                                                                                           | Local production build only                                                 |
 | Documentation index and validation  | Passed after current-document and engineering-evidence reconciliation                                                                                        | Repository documentation governance                                         |
-| Feature Catalog sync and validation | Passed with `FT-B009` as `BRANCH_COMPLETE_NOT_MERGED`                                                                                                        | Branch availability only                                                    |
-| Deepwater audit and validation      | Passed; owner-acceptance terminal rung remains visibly unmet                                                                                                 | Cross-program capability truth                                              |
+| Feature Catalog sync and validation | Reconciliation assigned Admiralty `FT-B010` as `BRANCH_COMPLETE_NOT_MERGED`; exact candidate validation is pending                                           | Owner-accepted branch availability only                                     |
+| Deepwater audit and validation      | Reconciled owner-acceptance rung; exact candidate validation is pending                                                                                      | Cross-program capability truth                                              |
 | Sounding Line subsystem authority   | `RELEASE_GO`: 5/5 suites, plan `31bcc47fd7a0d1a6e7cd59b7a4014edffe27cbe2ebec06f790d256476eb5deb8`, all cleanup `CLEAN`                                       | Admiralty unit/component/browser plus shared static/Homeport authority      |
 | Sounding Line mainline authority    | `RELEASE_GO`: 32/32 suites and 1,246 selected registered cases, plan `fa4691c5f60b84c40fa85b9b26e26efddc4034008d71054f30b5c36aaa777a6b`, all cleanup `CLEAN` | Authoritative repository-local decision; not deployment or owner acceptance |
-| Git reconciliation                  | Current merge anchor contains `origin/main`; exact tested application source is unchanged                                                                    | No push, pull request, or mainline merge                                    |
+| Git reconciliation                  | Merge `0ba4df35` contains current `origin/main` `40d822cd`; exact tested Admiralty application source is unchanged                                           | No push or canonical mainline integration yet                               |
 
 The first mainline attempt failed before suite execution because the owned
 worktree intentionally lacked the ignored `prisma/dev.db` baseline required by
@@ -97,8 +110,8 @@ no bootstrap commit was run against canonical or deployed data.
 
 ## Retained limits
 
-- owner walkthrough and owner decision remain pending;
-- the branch is not pushed, in a pull request, on main, or deployed;
+- owner walkthrough is complete and the owner decision is `ACCEPTED`;
+- the reconciled candidate is not yet on canonical main or deployed;
 - production MySQL migration/application behavior is not established by local
   SQLite rehearsal or schema parity;
 - live providers, physical devices, and physical assistive technology remain

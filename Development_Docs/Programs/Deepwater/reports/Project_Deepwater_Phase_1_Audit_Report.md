@@ -20,9 +20,9 @@ Phase 1 establishes the governed inventory foundation. It does not claim complet
 | Feature Catalog mapped                      |    43 |
 | Uncataloged meaningful                      |    12 |
 | Ownership ambiguous                         |     0 |
-| Initial findings                            |    23 |
+| Initial findings                            |    22 |
 | Phase 2 queue                               |    44 |
-| Catalog entries with route-surface mismatch |    18 |
+| Catalog entries with route-surface mismatch |    17 |
 
 The reconciled catalog contains 43 entries. The uncataloged survey adds account lifecycle, transactional email, private-provider operations, backup/restore, repair, community operations, bounded compatibility observation, and public-origin trust capabilities that have named consumers or operational purpose.
 
@@ -58,7 +58,7 @@ The classifications are deliberately conservative. A catalog status, source path
 
 ## Catalog reconciliation
 
-18 catalog capabilities advertise at least one surface that does not exactly match the accepted Homeport route inventory. Most are legacy naming or composite-surface issues and are recorded as `DW-DOC`/`DW-NAV` findings rather than product-source fixes. Deepwater does not hand-edit the generated Feature Catalog or overwrite subsystem metadata.
+17 catalog capabilities advertise at least one surface that does not exactly match the accepted Homeport route inventory. Most are legacy naming or composite-surface issues and are recorded as `DW-DOC`/`DW-NAV` findings rather than product-source fixes. Deepwater does not hand-edit the generated Feature Catalog or overwrite subsystem metadata.
 
 ## Truth boundaries
 
