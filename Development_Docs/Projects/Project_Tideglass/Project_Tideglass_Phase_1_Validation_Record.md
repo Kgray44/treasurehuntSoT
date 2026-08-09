@@ -21,8 +21,8 @@ Status: governed subsystem accepted; final source-bound mainline-candidate decis
 | Sounding Line registry generation | PASS        | 1,687 cases total; 43 Tideglass cases in one owned read-only family         |
 | Sounding Line policy validation   | PASS        | Eleven owners, 48 suites, 415 contracts; zero policy errors                 |
 | Governed Tideglass/subsystem gate | RELEASE_GO  | Static; Homeport 68/68; One Voyage 76/76; Tideglass 43/43; cleanup clean    |
-| Documentation validation          | PENDING     | Run after index generation                                                  |
-| Feature Catalog validation        | PENDING     | Final branch/mainline maturity decision pending                             |
+| Documentation validation          | PASS        | 813 engineering records indexed; current documentation contract passed      |
+| Feature Catalog validation        | PASS        | `FT-B002` records the branch-complete internal foundation only              |
 | Current-main reconciliation       | PENDING     | Required immediately before candidate acceptance                            |
 | Mainline candidate decision       | PENDING     | Sounding Line remains authoritative                                         |
 

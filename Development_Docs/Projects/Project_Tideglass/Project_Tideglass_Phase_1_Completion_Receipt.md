@@ -15,7 +15,8 @@ last_reviewed: 2026-08-09
 | Branch                 | `codex/project-tideglass-phase1-set-the-glass`          |
 | Original base          | `f1c2f22dd935322c1a71eb80c51592f243dc196d`              |
 | Reconciled main        | pending final reconciliation                            |
-| Candidate commit       | pending                                                 |
+| Implementation commit  | `35b1418`                                               |
+| Candidate branch tip   | recorded by the protected publication procedure         |
 | Integrated main SHA    | not integrated                                          |
 | Implementation status  | implemented; subsystem `RELEASE_GO`; candidate pending  |
 | Mainline Safety        | implementation conforms; source-bound candidate pending |
@@ -26,7 +27,7 @@ last_reviewed: 2026-08-09
 | Comparison policy      | `tideglass.policy.v1`                                   |
 | Digest                 | SHA-256 over canonical UTF-8 JSON                       |
 | Sounding Line decision | subsystem `RELEASE_GO`; mainline candidate pending      |
-| Feature Catalog        | pending local acceptance and stable branch commit       |
+| Feature Catalog        | UPDATED as branch-complete `FT-B002` at `35b1418`       |
 
 ## Delivered capability
 

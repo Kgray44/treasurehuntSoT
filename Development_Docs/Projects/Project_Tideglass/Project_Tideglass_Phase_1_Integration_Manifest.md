@@ -10,21 +10,22 @@ last_reviewed: 2026-08-09
 
 ## Source identity
 
-| Field             | Value                                          |
-| ----------------- | ---------------------------------------------- |
-| Branch            | `codex/project-tideglass-phase1-set-the-glass` |
-| Original base     | `f1c2f22dd935322c1a71eb80c51592f243dc196d`     |
-| Original upstream | `origin/main`                                  |
-| Reconciled main   | pending final fetch                            |
-| Candidate commit  | pending governed completion commit             |
-| Integrated main   | not integrated                                 |
+| Field                 | Value                                           |
+| --------------------- | ----------------------------------------------- |
+| Branch                | `codex/project-tideglass-phase1-set-the-glass`  |
+| Original base         | `f1c2f22dd935322c1a71eb80c51592f243dc196d`      |
+| Original upstream     | `origin/main`                                   |
+| Reconciled main       | pending final fetch                             |
+| Implementation commit | `35b1418`                                       |
+| Candidate branch tip  | recorded by the protected publication procedure |
+| Integrated main       | not integrated                                  |
 
 ## Owned change surface
 
 - Additive Tideglass source, safe diagnostic CLI, and synthetic tests.
 - Sounding Line owner, suite, four contracts, path/contract impact mapping, gates, and generated case registry.
 - Phase 1 design, test, validation, integration, and completion records plus navigation.
-- A branch-accurate Feature Catalog record only after local acceptance and a stable commit exist.
+- Branch-complete Feature Catalog entry `FT-B002`, bound to implementation commit `35b1418`.
 
 ## Explicitly unchanged
 

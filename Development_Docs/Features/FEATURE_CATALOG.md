@@ -5,7 +5,7 @@ This generated catalog records completed, meaningful platform capabilities. It i
 ## Audited repository and commit
 
 Repository: `Kgray44/treasurehuntSoT`
-Audited source commit: `f7bb10064f831a06e350a298ca8b380274d5f931`
+Audited source commit: `f1c2f22dd935322c1a71eb80c51592f243dc196d`
 
 ## Status vocabulary
 
@@ -1260,6 +1260,39 @@ Voyagewright adds first-class Google and GitHub sign-up, sign-in, and explicit a
 
 # Completed Branch Features Not Yet Available on Main
 
+## FT-B002 - Tideglass Semantic Edition Comparison Foundation
+
+**Status:** BRANCH COMPLETE NOT MERGED
+**Program or subsystem:** Project Tideglass Phase 1
+
+A read-only authority compares exact immutable Chronicle editions through deterministic semantic normalization, stable identity matching, domain comparators, redacted Change Sets, and source-bound receipts.
+
+### Important subfeatures
+
+- Exact edition and checksum binding
+- Versioned semantic normalization
+- Stable identity and graph comparison
+- Deterministic Change Sets and receipts
+- Server-authorized redacted projections
+- Read-only cross-domain invariance
+
+### Primary surfaces
+
+`npm run tideglass:compare`, `src/tideglass`
+
+### Meaningful limitations
+
+- Ordinary user comparison routes and polished What Changed interaction are outside Phase 1.
+- Unknown historical semantics remain explicitly unavailable until an accepted Drydock reader can normalize them.
+
+### Evidence
+
+- path: `src/tideglass/service.ts`
+- test: `tests/tideglass`
+- completion-record: `Development_Docs/Projects/Project_Tideglass/Project_Tideglass_Phase_1_Completion_Receipt.md`
+
+---
+
 # Deliberately Excluded Until Complete
 
 - Harborlight Phase 4 is planned and is not cataloged as an implemented capability.
@@ -1273,4 +1306,4 @@ Voyagewright adds first-class Google and GitHub sign-up, sign-in, and explicit a
 
 Update the owning machine-readable fragment only when completed work changes a major capability, important subfeature, availability, or meaningful limitation. Regenerate this file with `npm run features:sync`; never hand-edit it. Validate before closeout with `npm run features:validate`.
 
-Generation source commit: `f7bb10064f831a06e350a298ca8b380274d5f931`
+Generation source commit: `f1c2f22dd935322c1a71eb80c51592f243dc196d`

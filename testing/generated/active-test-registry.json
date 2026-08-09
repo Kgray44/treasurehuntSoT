@@ -82276,7 +82276,7 @@
     {
       "id": "sl-test-324535d37f57af0c0e71",
       "title": "F01 normalizes object/property ordering to identical semantics",
-      "line": 25,
+      "line": 29,
       "file": "tests/tideglass/canonicalization.test.ts",
       "suiteId": "unit.tideglass",
       "owner": "tideglass",
@@ -82321,7 +82321,7 @@
     {
       "id": "sl-test-16791867cab2dc9cf788",
       "title": "F02 removes storage keys, derivative filenames, timestamps, and set ordering noise",
-      "line": 33,
+      "line": 40,
       "file": "tests/tideglass/canonicalization.test.ts",
       "suiteId": "unit.tideglass",
       "owner": "tideglass",
@@ -82366,7 +82366,7 @@
     {
       "id": "sl-test-089d1eb4ced5e8e88db1",
       "title": "F03 classifies public description and cover changes as presentation metadata",
-      "line": 47,
+      "line": 54,
       "file": "tests/tideglass/canonicalization.test.ts",
       "suiteId": "unit.tideglass",
       "owner": "tideglass",
@@ -82411,7 +82411,7 @@
     {
       "id": "sl-test-5f56386409e8ece010b2",
       "title": "F05 preserves meaningful chapter ordering",
-      "line": 57,
+      "line": 66,
       "file": "tests/tideglass/canonicalization.test.ts",
       "suiteId": "unit.tideglass",
       "owner": "tideglass",
@@ -82456,7 +82456,7 @@
     {
       "id": "sl-test-6a9019f8f343f3370718",
       "title": "F06 preserves authored Story Block meaning and emits digests instead of raw prose",
-      "line": 75,
+      "line": 86,
       "file": "tests/tideglass/canonicalization.test.ts",
       "suiteId": "unit.tideglass",
       "owner": "tideglass",
@@ -82501,7 +82501,7 @@
     {
       "id": "sl-test-30f040e2ac539bb18b84",
       "title": "F19 losslessly normalizes the supported historical fixture representation",
-      "line": 87,
+      "line": 100,
       "file": "tests/tideglass/canonicalization.test.ts",
       "suiteId": "unit.tideglass",
       "owner": "tideglass",
@@ -82546,7 +82546,7 @@
     {
       "id": "sl-test-8042c41be426649dcb5a",
       "title": "F20 compares unaffected metadata while reporting an unsupported historical section",
-      "line": 104,
+      "line": 117,
       "file": "tests/tideglass/canonicalization.test.ts",
       "suiteId": "unit.tideglass",
       "owner": "tideglass",
@@ -82591,7 +82591,7 @@
     {
       "id": "sl-test-1b9c11f9d92c267bc4d0",
       "title": "rejects malformed current snapshots with a bounded contract failure",
-      "line": 118,
+      "line": 131,
       "file": "tests/tideglass/canonicalization.test.ts",
       "suiteId": "unit.tideglass",
       "owner": "tideglass",
@@ -82636,7 +82636,7 @@
     {
       "id": "sl-test-a18ced230c6527c7619f",
       "title": "binds every semantic result to explicit governed schema and policy versions",
-      "line": 124,
+      "line": 140,
       "file": "tests/tideglass/canonicalization.test.ts",
       "suiteId": "unit.tideglass",
       "owner": "tideglass",
@@ -82681,7 +82681,7 @@
     {
       "id": "sl-test-a020e83d7b5002cd6ace",
       "title": "F26 keeps canonical output byte-stable under shuffled property and set-like input order",
-      "line": 130,
+      "line": 149,
       "file": "tests/tideglass/canonicalization.test.ts",
       "suiteId": "unit.tideglass",
       "owner": "tideglass",
@@ -82771,7 +82771,7 @@
     {
       "id": "sl-test-3142098eefc2f83becfd",
       "title": "F07 never fuzzy-matches recreated blocks with identical prose",
-      "line": 101,
+      "line": 106,
       "file": "tests/tideglass/comparison.test.ts",
       "suiteId": "unit.tideglass",
       "owner": "tideglass",
@@ -82816,7 +82816,7 @@
     {
       "id": "sl-test-99ed73b909f19c685481",
       "title": "F08 supports explicit replacement only through an explicit matching-unit map",
-      "line": 112,
+      "line": 121,
       "file": "tests/tideglass/comparison.test.ts",
       "suiteId": "unit.tideglass",
       "owner": "tideglass",
@@ -82861,7 +82861,7 @@
     {
       "id": "sl-test-337d8e5497115fba89cf",
       "title": "F09 classifies a new choice branch",
-      "line": 120,
+      "line": 129,
       "file": "tests/tideglass/comparison.test.ts",
       "suiteId": "unit.tideglass",
       "owner": "tideglass",
@@ -82906,7 +82906,7 @@
     {
       "id": "sl-test-90bb63ffb82ab2a3e64a",
       "title": "F10 detects a stable graph edge target rewire",
-      "line": 141,
+      "line": 152,
       "file": "tests/tideglass/comparison.test.ts",
       "suiteId": "unit.tideglass",
       "owner": "tideglass",
@@ -82951,7 +82951,7 @@
     {
       "id": "sl-test-6c04285f00adffbab313",
       "title": "F11 classifies a new ending",
-      "line": 150,
+      "line": 163,
       "file": "tests/tideglass/comparison.test.ts",
       "suiteId": "unit.tideglass",
       "owner": "tideglass",
@@ -82996,7 +82996,7 @@
     {
       "id": "sl-test-63a3947493480d4716ee",
       "title": "F12 classifies completion-provider changes",
-      "line": 170,
+      "line": 183,
       "file": "tests/tideglass/comparison.test.ts",
       "suiteId": "unit.tideglass",
       "owner": "tideglass",
@@ -83041,7 +83041,7 @@
     {
       "id": "sl-test-fa01efbc02a1e15e3c6c",
       "title": "F13 classifies artifact recipient semantics",
-      "line": 178,
+      "line": 191,
       "file": "tests/tideglass/comparison.test.ts",
       "suiteId": "unit.tideglass",
       "owner": "tideglass",
@@ -83086,7 +83086,7 @@
     {
       "id": "sl-test-8456bc158bbf8b7bbea8",
       "title": "F14 classifies location/provider changes without exposing coordinates",
-      "line": 187,
+      "line": 200,
       "file": "tests/tideglass/comparison.test.ts",
       "suiteId": "unit.tideglass",
       "owner": "tideglass",
@@ -83131,7 +83131,7 @@
     {
       "id": "sl-test-18427a8c54a6bf4b222e",
       "title": "F15 classifies a caption addition as accessibility",
-      "line": 206,
+      "line": 221,
       "file": "tests/tideglass/comparison.test.ts",
       "suiteId": "unit.tideglass",
       "owner": "tideglass",
@@ -83176,7 +83176,7 @@
     {
       "id": "sl-test-0ccb90acab96dd78ac35",
       "title": "F16 classifies a static/reduced-motion fallback addition as accessibility",
-      "line": 215,
+      "line": 232,
       "file": "tests/tideglass/comparison.test.ts",
       "suiteId": "unit.tideglass",
       "owner": "tideglass",
@@ -83221,7 +83221,7 @@
     {
       "id": "sl-test-c0525e1e4e9d2ef0f517",
       "title": "F17 classifies Player/Captain requirement changes",
-      "line": 224,
+      "line": 241,
       "file": "tests/tideglass/comparison.test.ts",
       "suiteId": "unit.tideglass",
       "owner": "tideglass",
@@ -83266,7 +83266,7 @@
     {
       "id": "sl-test-d83c195dc56d2b3b4def",
       "title": "F18 classifies minimum platform/provider requirement changes",
-      "line": 233,
+      "line": 250,
       "file": "tests/tideglass/comparison.test.ts",
       "suiteId": "unit.tideglass",
       "owner": "tideglass",
@@ -83311,7 +83311,7 @@
     {
       "id": "sl-test-37f54ddcf328797ecdb6",
       "title": "F21 reports duplicate stable identity as unavailable instead of choosing a match",
-      "line": 242,
+      "line": 259,
       "file": "tests/tideglass/comparison.test.ts",
       "suiteId": "unit.tideglass",
       "owner": "tideglass",
@@ -83356,7 +83356,7 @@
     {
       "id": "sl-test-6c576184187e3899d7eb",
       "title": "F23 reverses additions/removals and changes comparison identity",
-      "line": 251,
+      "line": 270,
       "file": "tests/tideglass/comparison.test.ts",
       "suiteId": "unit.tideglass",
       "owner": "tideglass",
@@ -83401,7 +83401,7 @@
     {
       "id": "sl-test-59a534e45ae73f375f52",
       "title": "F27 compares a meaningful complex Voyage across all required domains",
-      "line": 271,
+      "line": 294,
       "file": "tests/tideglass/comparison.test.ts",
       "suiteId": "unit.tideglass",
       "owner": "tideglass",
@@ -83806,7 +83806,7 @@
     {
       "id": "sl-test-0d59aaa0c1c85553c508",
       "title": "binds comparison to the exact published snapshot checksum",
-      "line": 51,
+      "line": 55,
       "file": "tests/tideglass/service-security.test.ts",
       "suiteId": "unit.tideglass",
       "owner": "tideglass",
@@ -83851,7 +83851,7 @@
     {
       "id": "sl-test-8e037d5a459fdea4b957",
       "title": "returns one generic unavailable error for missing exact IDs without enumeration detail",
-      "line": 58,
+      "line": 62,
       "file": "tests/tideglass/service-security.test.ts",
       "suiteId": "unit.tideglass",
       "owner": "tideglass",
@@ -83896,7 +83896,7 @@
     {
       "id": "sl-test-b54d12324468d40adfdd",
       "title": "rejects malformed identifiers and client-supplied diagnostic privilege mode",
-      "line": 65,
+      "line": 69,
       "file": "tests/tideglass/service-security.test.ts",
       "suiteId": "unit.tideglass",
       "owner": "tideglass",
@@ -83941,7 +83941,7 @@
     {
       "id": "sl-test-2c4f116accef27f10ce9",
       "title": "rejects oversized/pathological snapshot input before semantic traversal",
-      "line": 81,
+      "line": 84,
       "file": "tests/tideglass/service-security.test.ts",
       "suiteId": "unit.tideglass",
       "owner": "tideglass",
@@ -83986,7 +83986,7 @@
     {
       "id": "sl-test-949fe2f3620e556963b1",
       "title": "reports invalid current-schema data without returning the invalid payload",
-      "line": 89,
+      "line": 92,
       "file": "tests/tideglass/service-security.test.ts",
       "suiteId": "unit.tideglass",
       "owner": "tideglass",
@@ -84031,7 +84031,7 @@
     {
       "id": "sl-test-54568cbefd2d2acdb250",
       "title": "never leaks raw snapshots, storage paths, answers, Creator notes, or Captain-only prose",
-      "line": 103,
+      "line": 110,
       "file": "tests/tideglass/service-security.test.ts",
       "suiteId": "unit.tideglass",
       "owner": "tideglass",
@@ -84076,7 +84076,7 @@
     {
       "id": "sl-test-e8ecfe85ba39bcb54fb7",
       "title": "reports unsupported schemas honestly as a partial safe-anchor comparison",
-      "line": 156,
+      "line": 163,
       "file": "tests/tideglass/service-security.test.ts",
       "suiteId": "unit.tideglass",
       "owner": "tideglass",
@@ -84121,7 +84121,7 @@
     {
       "id": "sl-test-38b6f4c1847f19714f00",
       "title": "supports cancellation through the bounded failure union",
-      "line": 171,
+      "line": 182,
       "file": "tests/tideglass/service-security.test.ts",
       "suiteId": "unit.tideglass",
       "owner": "tideglass",
@@ -84166,7 +84166,7 @@
     {
       "id": "sl-test-39d30ad8db909fd7960a",
       "title": "does not mutate published rows, live Voyages, Wayfarer history, or Community releases",
-      "line": 178,
+      "line": 191,
       "file": "tests/tideglass/service-security.test.ts",
       "suiteId": "unit.tideglass",
       "owner": "tideglass",
