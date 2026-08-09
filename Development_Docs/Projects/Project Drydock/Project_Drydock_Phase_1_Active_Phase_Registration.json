@@ -1,0 +1,75 @@
+{
+  "schemaVersion": 1,
+  "project": "Project Drydock",
+  "projectId": "project-drydock",
+  "phase": 1,
+  "phaseName": "Set the Blocks",
+  "phaseId": "project-drydock-phase-1-set-the-blocks",
+  "state": "ACCEPTED_MAINLINE",
+  "branch": "codex/project-drydock-phase1-set-the-blocks",
+  "worktree": {
+    "ownership": "TASK_OWNED",
+    "pathHint": "sibling worktree treasurehuntSoT-drydock-phase1"
+  },
+  "baseSha": "5b266251bd5a42efe90988e45daf55bca8e566f1",
+  "integrationPattern": ["ADDITIVE_FOUNDATION", "COMPATIBLE_MIGRATION"],
+  "concurrencyClass": "CLASS_B_COORDINATED",
+  "hardDependencies": [],
+  "softDependencies": [
+    {
+      "project": "Project Shipwright Phase 1",
+      "contract": "Creator Studio interaction and authoring ergonomics remain Shipwright-owned"
+    },
+    {
+      "project": "Project One Voyage",
+      "contract": "Live progression, runtime state, event ordering, completion, and publication authority remain unchanged"
+    }
+  ],
+  "sharedContracts": [
+    {
+      "contract": "Canonical Story Block authoring semantics",
+      "canonicalOwner": "Project Drydock",
+      "consumers": ["Creator Studio", "Chronicle validation", "publishing", "imports", "historical readers"]
+    },
+    {
+      "contract": "Creator Studio interaction and presentation",
+      "canonicalOwner": "Project Shipwright",
+      "drydockUse": "narrow typed metadata and compatibility adaptations only"
+    },
+    {
+      "contract": "Chronicle runtime progression",
+      "canonicalOwner": "Project One Voyage",
+      "drydockUse": "read and validate current contracts without changing semantics"
+    }
+  ],
+  "schemaImpact": {
+    "prismaChanges": false,
+    "models": [],
+    "migrations": [],
+    "backfills": []
+  },
+  "migrationReservation": null,
+  "mainlineSafetyStatus": "ACCEPTED",
+  "activation": {
+    "existingAuthoringExperience": "ACTIVE",
+    "typedContractFoundation": "ACTIVE_INTERNAL_AND_COMPATIBILITY",
+    "fullDrydockWorkspace": "NOT_EXPOSED",
+    "simulation": "NOT_IMPLEMENTED",
+    "wholeChronicleStaticAnalysis": "DEFERRED_PHASE_2"
+  },
+  "rollback": "Revert the additive Drydock contract layer and compatibility integration; no data rollback is required because Phase 1 adds no Prisma migration or mass draft mutation.",
+  "permanentStopCoherent": true,
+  "registeredAt": "2026-08-09",
+  "acceptedAt": "2026-08-09",
+  "acceptance": {
+    "pullRequest": 22,
+    "candidateSha": "2f86938858b91207b6e58245baa9496bdc839b12",
+    "mergeSha": "468530645e983412e5f4c1aaa103915be77c9c07",
+    "mainlineDecision": "RELEASE_GO",
+    "selectedReceipts": 34,
+    "passedReceipts": 34,
+    "cleanReceipts": 34,
+    "evidenceDigest": "0abd730bbd588744175e419ab717d94b9d4c39ede6271f1cad9be4681ac3d47a",
+    "postMergeTreeParity": "EXACT"
+  }
+}

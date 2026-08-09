@@ -84,6 +84,8 @@ type RegistryItem = {
   description: string;
   defaultTitle: string;
   defaultConfiguration: JsonObject;
+  defaultPresentation?: JsonObject;
+  defaultCompletion?: JsonObject;
   fields: InspectorField[];
   schemaVersion: number;
 };
@@ -566,19 +568,21 @@ export function TaleEditor({
     const definition = data?.registry.find((item) => item.type === type);
     if (!definition) return;
     const id = crypto.randomUUID();
-    change((next) =>
+    change((next) => {
+      const configuration = clone(definition.defaultConfiguration);
+      if (type === "setVariable") configuration.variableId = `var-${id}`;
       next.chapters[chapterIndex].blocks.splice(blockIndex ?? next.chapters[chapterIndex].blocks.length, 0, {
         id,
         blockType: type,
         title: definition.defaultTitle,
-        configuration: clone(definition.defaultConfiguration),
-        presentation: {},
-        completion: {},
+        configuration,
+        presentation: clone(definition.defaultPresentation ?? {}),
+        completion: clone(definition.defaultCompletion ?? {}),
         creatorNotes: "",
         isEnabled: true,
         schemaVersion: definition.schemaVersion,
-      }),
-    );
+      });
+    });
     setSelectedId(id);
     setInsertedId(id);
   }
@@ -1704,13 +1708,21 @@ export function TaleEditor({
                         <Field
                           key={field.key}
                           field={field}
-                          value={selected.block.configuration[field.key]}
+                          value={
+                            field.key === "completionMode"
+                              ? (selected.block.completion.mode ?? selected.block.configuration.completionMode)
+                              : selected.block.configuration[field.key]
+                          }
                           assets={data.assets}
                           locations={data.locations}
                           artifacts={data.artifacts}
                           onChange={(value) =>
                             updateSelected((block) => {
-                              block.configuration[field.key] = value;
+                              if (field.key === "completionMode") {
+                                block.completion.mode = value;
+                                delete block.configuration.completionMode;
+                                delete block.configuration.verificationProvider;
+                              } else block.configuration[field.key] = value;
                             })
                           }
                         />

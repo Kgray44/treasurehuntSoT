@@ -1,0 +1,260 @@
+{
+  "currentSchemaVersion": 2,
+  "migrations": [
+    {
+      "blockType": "narrative",
+      "checksumBehavior": "CANONICAL_OUTPUT_CHANGES",
+      "dataLoss": "NONE",
+      "fixtureIds": ["drydock-fixture-narrative-v1"],
+      "fromVersion": 1,
+      "id": "drydock.narrative.v1-to-v2",
+      "idempotent": true,
+      "toVersion": 2,
+      "warnings": []
+    },
+    {
+      "blockType": "captainsNote",
+      "checksumBehavior": "CANONICAL_OUTPUT_CHANGES",
+      "dataLoss": "NONE",
+      "fixtureIds": ["drydock-fixture-captainsNote-v1"],
+      "fromVersion": 1,
+      "id": "drydock.captainsNote.v1-to-v2",
+      "idempotent": true,
+      "toVersion": 2,
+      "warnings": []
+    },
+    {
+      "blockType": "riddle",
+      "checksumBehavior": "CANONICAL_OUTPUT_CHANGES",
+      "dataLoss": "NONE",
+      "fixtureIds": ["drydock-fixture-riddle-v1"],
+      "fromVersion": 1,
+      "id": "drydock.riddle.v1-to-v2",
+      "idempotent": true,
+      "toVersion": 2,
+      "warnings": []
+    },
+    {
+      "blockType": "information",
+      "checksumBehavior": "CANONICAL_OUTPUT_CHANGES",
+      "dataLoss": "NONE",
+      "fixtureIds": ["drydock-fixture-information-v1"],
+      "fromVersion": 1,
+      "id": "drydock.information.v1-to-v2",
+      "idempotent": true,
+      "toVersion": 2,
+      "warnings": []
+    },
+    {
+      "blockType": "travelDirection",
+      "checksumBehavior": "CANONICAL_OUTPUT_CHANGES",
+      "dataLoss": "NONE",
+      "fixtureIds": ["drydock-fixture-travelDirection-v1"],
+      "fromVersion": 1,
+      "id": "drydock.travelDirection.v1-to-v2",
+      "idempotent": true,
+      "toVersion": 2,
+      "warnings": []
+    },
+    {
+      "blockType": "location",
+      "checksumBehavior": "CANONICAL_OUTPUT_CHANGES",
+      "dataLoss": "NONE",
+      "fixtureIds": ["drydock-fixture-location-v1"],
+      "fromVersion": 1,
+      "id": "drydock.location.v1-to-v2",
+      "idempotent": true,
+      "toVersion": 2,
+      "warnings": []
+    },
+    {
+      "blockType": "arrivalCheck",
+      "checksumBehavior": "CANONICAL_OUTPUT_CHANGES",
+      "dataLoss": "NONE",
+      "fixtureIds": ["drydock-fixture-arrivalCheck-v1"],
+      "fromVersion": 1,
+      "id": "drydock.arrivalCheck.v1-to-v2",
+      "idempotent": true,
+      "toVersion": 2,
+      "warnings": []
+    },
+    {
+      "blockType": "image",
+      "checksumBehavior": "CANONICAL_OUTPUT_CHANGES",
+      "dataLoss": "NONE",
+      "fixtureIds": ["drydock-fixture-image-v1"],
+      "fromVersion": 1,
+      "id": "drydock.image.v1-to-v2",
+      "idempotent": true,
+      "toVersion": 2,
+      "warnings": []
+    },
+    {
+      "blockType": "imageTransformation",
+      "checksumBehavior": "CANONICAL_OUTPUT_CHANGES",
+      "dataLoss": "NONE",
+      "fixtureIds": ["drydock-fixture-imageTransformation-v1"],
+      "fromVersion": 1,
+      "id": "drydock.imageTransformation.v1-to-v2",
+      "idempotent": true,
+      "toVersion": 2,
+      "warnings": []
+    },
+    {
+      "blockType": "cinematic",
+      "checksumBehavior": "CANONICAL_OUTPUT_CHANGES",
+      "dataLoss": "NONE",
+      "fixtureIds": ["drydock-fixture-cinematic-v1"],
+      "fromVersion": 1,
+      "id": "drydock.cinematic.v1-to-v2",
+      "idempotent": true,
+      "toVersion": 2,
+      "warnings": []
+    },
+    {
+      "blockType": "audio",
+      "checksumBehavior": "CANONICAL_OUTPUT_CHANGES",
+      "dataLoss": "NONE",
+      "fixtureIds": ["drydock-fixture-audio-v1"],
+      "fromVersion": 1,
+      "id": "drydock.audio.v1-to-v2",
+      "idempotent": true,
+      "toVersion": 2,
+      "warnings": []
+    },
+    {
+      "blockType": "artifactReveal",
+      "checksumBehavior": "CANONICAL_OUTPUT_CHANGES",
+      "dataLoss": "NONE",
+      "fixtureIds": ["drydock-fixture-artifactReveal-v1"],
+      "fromVersion": 1,
+      "id": "drydock.artifactReveal.v1-to-v2",
+      "idempotent": true,
+      "toVersion": 2,
+      "warnings": []
+    },
+    {
+      "blockType": "hiddenMessageReveal",
+      "checksumBehavior": "CANONICAL_OUTPUT_CHANGES",
+      "dataLoss": "NONE",
+      "fixtureIds": ["drydock-fixture-hiddenMessageReveal-v1"],
+      "fromVersion": 1,
+      "id": "drydock.hiddenMessageReveal.v1-to-v2",
+      "idempotent": true,
+      "toVersion": 2,
+      "warnings": []
+    },
+    {
+      "blockType": "collectionUpdate",
+      "checksumBehavior": "CANONICAL_OUTPUT_CHANGES",
+      "dataLoss": "NONE",
+      "fixtureIds": ["drydock-fixture-collectionUpdate-v1"],
+      "fromVersion": 1,
+      "id": "drydock.collectionUpdate.v1-to-v2",
+      "idempotent": true,
+      "toVersion": 2,
+      "warnings": []
+    },
+    {
+      "blockType": "confirmation",
+      "checksumBehavior": "CANONICAL_OUTPUT_CHANGES",
+      "dataLoss": "NONE",
+      "fixtureIds": ["drydock-fixture-confirmation-v1"],
+      "fromVersion": 1,
+      "id": "drydock.confirmation.v1-to-v2",
+      "idempotent": true,
+      "toVersion": 2,
+      "warnings": []
+    },
+    {
+      "blockType": "choice",
+      "checksumBehavior": "CANONICAL_OUTPUT_CHANGES",
+      "dataLoss": "NONE",
+      "fixtureIds": ["drydock-fixture-choice-v1"],
+      "fromVersion": 1,
+      "id": "drydock.choice.v1-to-v2",
+      "idempotent": true,
+      "toVersion": 2,
+      "warnings": []
+    },
+    {
+      "blockType": "textAnswer",
+      "checksumBehavior": "CANONICAL_OUTPUT_CHANGES",
+      "dataLoss": "NONE",
+      "fixtureIds": ["drydock-fixture-textAnswer-v1"],
+      "fromVersion": 1,
+      "id": "drydock.textAnswer.v1-to-v2",
+      "idempotent": true,
+      "toVersion": 2,
+      "warnings": []
+    },
+    {
+      "blockType": "captainApproval",
+      "checksumBehavior": "CANONICAL_OUTPUT_CHANGES",
+      "dataLoss": "NONE",
+      "fixtureIds": ["drydock-fixture-captainApproval-v1"],
+      "fromVersion": 1,
+      "id": "drydock.captainApproval.v1-to-v2",
+      "idempotent": true,
+      "toVersion": 2,
+      "warnings": []
+    },
+    {
+      "blockType": "wait",
+      "checksumBehavior": "CANONICAL_OUTPUT_CHANGES",
+      "dataLoss": "NONE",
+      "fixtureIds": ["drydock-fixture-wait-v1"],
+      "fromVersion": 1,
+      "id": "drydock.wait.v1-to-v2",
+      "idempotent": true,
+      "toVersion": 2,
+      "warnings": []
+    },
+    {
+      "blockType": "condition",
+      "checksumBehavior": "CANONICAL_OUTPUT_CHANGES",
+      "dataLoss": "NONE",
+      "fixtureIds": ["drydock-fixture-condition-v1"],
+      "fromVersion": 1,
+      "id": "drydock.condition.v1-to-v2",
+      "idempotent": true,
+      "toVersion": 2,
+      "warnings": []
+    },
+    {
+      "blockType": "setVariable",
+      "checksumBehavior": "CANONICAL_OUTPUT_CHANGES",
+      "dataLoss": "NONE",
+      "fixtureIds": ["drydock-fixture-setVariable-v1"],
+      "fromVersion": 1,
+      "id": "drydock.setVariable.v1-to-v2",
+      "idempotent": true,
+      "toVersion": 2,
+      "warnings": []
+    },
+    {
+      "blockType": "chapterComplete",
+      "checksumBehavior": "CANONICAL_OUTPUT_CHANGES",
+      "dataLoss": "NONE",
+      "fixtureIds": ["drydock-fixture-chapterComplete-v1"],
+      "fromVersion": 1,
+      "id": "drydock.chapterComplete.v1-to-v2",
+      "idempotent": true,
+      "toVersion": 2,
+      "warnings": []
+    },
+    {
+      "blockType": "taleComplete",
+      "checksumBehavior": "CANONICAL_OUTPUT_CHANGES",
+      "dataLoss": "NONE",
+      "fixtureIds": ["drydock-fixture-taleComplete-v1"],
+      "fromVersion": 1,
+      "id": "drydock.taleComplete.v1-to-v2",
+      "idempotent": true,
+      "toVersion": 2,
+      "warnings": []
+    }
+  ],
+  "minimumReaderVersion": 1,
+  "schemaVersion": 1
+}

@@ -8,7 +8,7 @@ last_reviewed: 2026-08-09
 
 # Project Tideglass Phase 2 completion receipt
 
-Status: `FOCUSED_VALIDATED_AWAITING_RECONCILIATION`.
+Status: `RECONCILED_AWAITING_EXACT_CANDIDATE`.
 
 The Phase 2 implementation currently provides stable change codes, explainable significance, compatibility deltas, `PUBLIC_PREVIEW`/`PLAYER_SAFE`/`CREATOR_FULL` projections, structured disclosure states, deterministic summaries, append-only Creator annotation revisions, contradiction/omission warnings, a bounded digest-validating cache, and safe server APIs. It preserves the Phase 1 semantic/comparison policy versions and adds no Phase 3 route or history-aware product experience.
 
@@ -18,7 +18,7 @@ This is not yet an accepted-mainline completion claim. Candidate Sounding Line, 
 | ---------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Project / phase                    | Project Tideglass / Phase 2: Read the Wake                                                                                                                                             |
 | Original base SHA                  | `d1344e8ce613cdb3e3adc1fc13803b6356f1c0db`                                                                                                                                             |
-| Latest reconciled main SHA         | Pending coordinated final reconciliation                                                                                                                                               |
+| Latest reconciled main SHA         | `9de00293c73c2d4aea49dc5d2e7a2a4a0515afe1`                                                                                                                                             |
 | Candidate / merged / postmerge SHA | Pending exact-commit and protected-mainline workflow                                                                                                                                   |
 | Semantic / comparison policy       | `tideglass.semantic.v1` / `tideglass.policy.v1` unchanged                                                                                                                              |
 | Projection / summary policy        | `tideglass.projection.v1` / `tideglass.summary.v1`                                                                                                                                     |

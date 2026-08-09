@@ -8,13 +8,14 @@ last_reviewed: 2026-08-09
 
 # Project Tideglass Phase 2 validation record
 
-Status: focused validation in progress; this record does not yet claim exact-candidate `RELEASE_GO`, protected-hosted success, integration, or post-merge proof.
+Status: reconciled candidate validation in progress; this record does not yet claim exact-candidate `RELEASE_GO`, protected-hosted success, integration, or post-merge proof.
 
 ## Baseline and isolation
 
 - Worktree: `C:\Users\kkids\Documents\treasurehuntSoT-tideglass-phase2-read-the-wake`
 - Branch: `codex/project-tideglass-phase2-read-the-wake`
-- Original and current implementation base: `d1344e8ce613cdb3e3adc1fc13803b6356f1c0db`
+- Original implementation base: `d1344e8ce613cdb3e3adc1fc13803b6356f1c0db`
+- Latest reconciled accepted main: `9de00293c73c2d4aea49dc5d2e7a2a4a0515afe1`
 - Phase 1 accepted implementation is an ancestor; integrated main receipt: `40d822cd936c9abbfce064fd7799e6a2f8c9785e`.
 - Canonical checkout and canonical databases were not mutated. Runtime lease status was empty before validation.
 

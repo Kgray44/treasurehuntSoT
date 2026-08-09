@@ -4,7 +4,14 @@
   "gates": [
     {
       "id": "local-change",
-      "requiredSuites": ["static.core", "unit.deepwater", "unit.homeport", "unit.sounding-line", "unit.tideglass"],
+      "requiredSuites": [
+        "static.core",
+        "unit.drydock",
+        "unit.deepwater",
+        "unit.homeport",
+        "unit.sounding-line",
+        "unit.tideglass"
+      ],
       "conditionalSuites": [
         "unit.auth",
         "unit.one-voyage",
@@ -51,6 +58,7 @@
       "id": "subsystem",
       "requiredSuites": [
         "static.core",
+        "unit.drydock",
         "unit.homeport",
         "unit.tideglass",
         "unit.admiralty",
@@ -121,6 +129,7 @@
         "static.core",
         "unit.auth",
         "unit.one-voyage",
+        "unit.drydock",
         "unit.tideglass",
         "unit.wayfarer",
         "unit.community",
@@ -175,6 +184,7 @@
         "static.core",
         "unit.auth",
         "unit.one-voyage",
+        "unit.drydock",
         "unit.tideglass",
         "unit.wayfarer",
         "unit.community",
