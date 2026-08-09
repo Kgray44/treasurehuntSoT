@@ -5,7 +5,7 @@
     "summary": "A narrow versioned verification boundary accepts trusted evidence without giving helpers or providers unrestricted progression control.",
     "status": "MAINLINE",
     "program": "One Voyage",
-    "surfaces": ["/api/verification", "/captain"],
+    "surfaces": ["/api/helper/verification", "/captain/sessions/[sessionId]"],
     "subfeatures": [
       "Bound verification requests",
       "Versioned evidence envelope",
