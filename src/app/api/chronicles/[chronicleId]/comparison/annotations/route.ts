@@ -28,40 +28,49 @@ async function comparison(accountId: string, chronicleId: string, sourceEditionI
 }
 
 export async function GET(request: Request, context: { params: Promise<{ chronicleId: string }> }) {
-  const { chronicleId } = await context.params;
-  const session = await requireTideglassCreatorChronicle(chronicleId);
-  if (!session) return tideglassUnavailable();
-  const rate = enforceTideglassRateLimit("comparison-read", session.accountId, chronicleId);
-  if (!rate.ok) return rate.response;
-  const url = new URL(request.url);
-  const pair = pairQuerySchema.safeParse({
-    sourceEditionId: url.searchParams.get("sourceEditionId"),
-    targetEditionId: url.searchParams.get("targetEditionId"),
-  });
-  if (!pair.success) return tideglassSafeError(new Error("INVALID"));
-  const result = await comparison(session.accountId, chronicleId, pair.data.sourceEditionId, pair.data.targetEditionId);
-  if (!result.ok) return tideglassUnavailable(result.correlationId);
-  const history = await prismaTideglassAnnotationRepository.listPair({
-    chronicleId,
-    sourceEditionId: result.value.changeSet.pair.source.editionId,
-    sourceEditionChecksum: result.value.changeSet.pair.source.editionChecksum,
-    targetEditionId: result.value.changeSet.pair.target.editionId,
-    targetEditionChecksum: result.value.changeSet.pair.target.editionChecksum,
-    comparisonPolicyVersion: result.value.changeSet.comparisonPolicyVersion,
-  });
-  return NextResponse.json(
-    { annotations: history.map((annotation) => tideglassCreatorAnnotationDto(annotation)) },
-    { headers: rate.headers },
-  );
+  try {
+    const { chronicleId } = await context.params;
+    const session = await requireTideglassCreatorChronicle(chronicleId);
+    if (!session) return tideglassUnavailable();
+    const rate = enforceTideglassRateLimit("comparison-read", session.accountId, chronicleId);
+    if (!rate.ok) return rate.response;
+    const url = new URL(request.url);
+    const pair = pairQuerySchema.safeParse({
+      sourceEditionId: url.searchParams.get("sourceEditionId"),
+      targetEditionId: url.searchParams.get("targetEditionId"),
+    });
+    if (!pair.success) return tideglassSafeError(new Error("INVALID"));
+    const result = await comparison(
+      session.accountId,
+      chronicleId,
+      pair.data.sourceEditionId,
+      pair.data.targetEditionId,
+    );
+    if (!result.ok) return tideglassUnavailable(result.correlationId);
+    const history = await prismaTideglassAnnotationRepository.listPair({
+      chronicleId,
+      sourceEditionId: result.value.changeSet.pair.source.editionId,
+      sourceEditionChecksum: result.value.changeSet.pair.source.editionChecksum,
+      targetEditionId: result.value.changeSet.pair.target.editionId,
+      targetEditionChecksum: result.value.changeSet.pair.target.editionChecksum,
+      comparisonPolicyVersion: result.value.changeSet.comparisonPolicyVersion,
+    });
+    return NextResponse.json(
+      { annotations: history.map((annotation) => tideglassCreatorAnnotationDto(annotation)) },
+      { headers: rate.headers },
+    );
+  } catch (cause) {
+    return tideglassSafeError(cause);
+  }
 }
 
 export async function POST(request: Request, context: { params: Promise<{ chronicleId: string }> }) {
-  const { chronicleId } = await context.params;
-  const session = await requireTideglassCreatorChronicle(chronicleId, request);
-  if (!session) return tideglassUnavailable();
-  const rate = enforceTideglassRateLimit("annotation-mutation", session.accountId, chronicleId);
-  if (!rate.ok) return rate.response;
   try {
+    const { chronicleId } = await context.params;
+    const session = await requireTideglassCreatorChronicle(chronicleId, request);
+    if (!session) return tideglassUnavailable();
+    const rate = enforceTideglassRateLimit("annotation-mutation", session.accountId, chronicleId);
+    if (!rate.ok) return rate.response;
     const body = await parseBoundedTideglassJson(request);
     const parsed = annotationMutationSchema.safeParse(body);
     if (!parsed.success) return tideglassSafeError(new Error("INVALID"));

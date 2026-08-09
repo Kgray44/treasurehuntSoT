@@ -2,6 +2,7 @@ import { randomUUID } from "node:crypto";
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { consumeRateLimit, rateLimitHeaders } from "@/lib/rate-limit";
+import { logger } from "@/lib/logger";
 import { requireStudioWorkspace } from "@/chronicle/studio-authorization";
 
 export type TideglassAuthorizedCreator = NonNullable<Awaited<ReturnType<typeof requireStudioWorkspace>>>;
@@ -77,20 +78,30 @@ export function tideglassUnavailable(correlationId: string = randomUUID()) {
   );
 }
 
-export function tideglassSafeError(cause: unknown, correlationId = randomUUID()) {
+export function tideglassSafeError(cause: unknown, correlationId: string = randomUUID()) {
+  const message = cause instanceof Error ? cause.message : "";
   const code =
-    cause instanceof Error && cause.message === "TIDEGLASS_REQUEST_TOO_LARGE"
+    message === "TIDEGLASS_REQUEST_TOO_LARGE"
       ? "TIDEGLASS_REQUEST_TOO_LARGE"
-      : "TIDEGLASS_REQUEST_INVALID";
+      : cause instanceof SyntaxError || message === "INVALID" || message === "TIDEGLASS_REQUEST_INVALID"
+        ? "TIDEGLASS_REQUEST_INVALID"
+        : "TIDEGLASS_INTERNAL_FAILURE";
+  if (code === "TIDEGLASS_INTERNAL_FAILURE")
+    logger.error(
+      { area: "tideglass-api", failureCode: code, correlationId },
+      "Tideglass request failed without exposing cause content",
+    );
   return NextResponse.json(
     {
       code,
       error:
         code === "TIDEGLASS_REQUEST_TOO_LARGE"
           ? "The Tideglass request is too large."
-          : "The Tideglass request is invalid.",
+          : code === "TIDEGLASS_REQUEST_INVALID"
+            ? "The Tideglass request is invalid."
+            : "Tideglass could not complete the request.",
       correlationId,
     },
-    { status: code === "TIDEGLASS_REQUEST_TOO_LARGE" ? 413 : 400 },
+    { status: code === "TIDEGLASS_REQUEST_TOO_LARGE" ? 413 : code === "TIDEGLASS_REQUEST_INVALID" ? 400 : 500 },
   );
 }

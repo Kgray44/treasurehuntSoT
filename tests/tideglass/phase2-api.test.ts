@@ -13,6 +13,7 @@ const mocks = vi.hoisted(() => ({
   selectAudience: vi.fn(),
   editions: vi.fn(),
   annotationDto: vi.fn(),
+  safeError: vi.fn(),
 }));
 
 vi.mock("@/lib/db", () => ({ db: { publishedTaleVersion: { findMany: mocks.editions } } }));
@@ -22,7 +23,7 @@ vi.mock("@/tideglass/http", () => ({
   enforceTideglassRateLimit: mocks.rate,
   parseBoundedTideglassJson: mocks.parse,
   tideglassUnavailable: () => NextResponse.json({ code: "TIDEGLASS_UNAVAILABLE" }, { status: 404 }),
-  tideglassSafeError: () => NextResponse.json({ code: "TIDEGLASS_REQUEST_INVALID" }, { status: 400 }),
+  tideglassSafeError: mocks.safeError,
 }));
 
 vi.mock("@/tideglass", () => ({
@@ -81,6 +82,16 @@ describe("Tideglass Phase 2 API boundaries", () => {
     mocks.selectAudience.mockReset().mockImplementation((_maximum: string, requested: string) => requested);
     mocks.editions.mockReset().mockResolvedValue([]);
     mocks.annotationDto.mockReset().mockImplementation((annotation: { id: string }) => ({ id: annotation.id }));
+    mocks.safeError
+      .mockReset()
+      .mockImplementation((cause: unknown) =>
+        cause instanceof Error && cause.message === "INVALID"
+          ? NextResponse.json({ code: "TIDEGLASS_REQUEST_INVALID" }, { status: 400 })
+          : NextResponse.json(
+              { code: "TIDEGLASS_INTERNAL_FAILURE", error: "Tideglass could not complete the request." },
+              { status: 500 },
+            ),
+      );
   });
 
   it("authorizes edition listing without enumerating a hidden Chronicle", async () => {
@@ -123,6 +134,33 @@ describe("Tideglass Phase 2 API boundaries", () => {
     expect(body.availability.available).toBe(false);
     expect(body.recommendation.available).toBe(false);
     expect(JSON.stringify(body)).not.toMatch(/PRIVATE_SNAPSHOT|PRIVATE_CHECKSUM|contentSnapshot|checksum/u);
+  });
+
+  it("contains unexpected edition-read failures inside the safe API envelope", async () => {
+    mocks.editions.mockRejectedValueOnce(new Error("PRIVATE_DATABASE_DETAIL"));
+    const route = await import("../../src/app/api/chronicles/[chronicleId]/editions/route");
+    const response = await route.GET(new Request("http://localhost/editions"), {
+      params: Promise.resolve({ chronicleId: "chronicle-tideglass" }),
+    });
+    expect(response.status).toBe(500);
+    expect(await response.json()).toEqual({
+      code: "TIDEGLASS_INTERNAL_FAILURE",
+      error: "Tideglass could not complete the request.",
+    });
+    expect(mocks.safeError).toHaveBeenCalledWith(expect.objectContaining({ message: "PRIVATE_DATABASE_DETAIL" }));
+  });
+
+  it("returns a generic correlation-bound internal failure without echoing the cause", async () => {
+    const actual = await vi.importActual<typeof import("../../src/tideglass/http")>("../../src/tideglass/http");
+    const response = actual.tideglassSafeError(new Error("PRIVATE_DATABASE_DETAIL"), "correlation-safe");
+    expect(response.status).toBe(500);
+    const body = await response.json();
+    expect(body).toEqual({
+      code: "TIDEGLASS_INTERNAL_FAILURE",
+      error: "Tideglass could not complete the request.",
+      correlationId: "correlation-safe",
+    });
+    expect(JSON.stringify(body)).not.toContain("PRIVATE_DATABASE_DETAIL");
   });
 
   it("returns only a server projection and rejects client-supplied authority fields", async () => {

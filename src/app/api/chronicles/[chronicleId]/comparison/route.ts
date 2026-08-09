@@ -29,12 +29,12 @@ const requestSchema = z
   .strict();
 
 export async function POST(request: Request, context: { params: Promise<{ chronicleId: string }> }) {
-  const { chronicleId } = await context.params;
-  const session = await requireTideglassCreatorChronicle(chronicleId);
-  if (!session) return tideglassUnavailable();
-  const rate = enforceTideglassRateLimit("comparison-read", session.accountId, chronicleId);
-  if (!rate.ok) return rate.response;
   try {
+    const { chronicleId } = await context.params;
+    const session = await requireTideglassCreatorChronicle(chronicleId);
+    if (!session) return tideglassUnavailable();
+    const rate = enforceTideglassRateLimit("comparison-read", session.accountId, chronicleId);
+    if (!rate.ok) return rate.response;
     const parsed = requestSchema.safeParse(await parseBoundedTideglassJson(request));
     if (!parsed.success) return tideglassSafeError(new Error("INVALID"));
     const result = await compareExactEditions(
