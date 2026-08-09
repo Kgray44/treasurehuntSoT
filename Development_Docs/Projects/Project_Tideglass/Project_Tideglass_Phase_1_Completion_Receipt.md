@@ -16,10 +16,12 @@ last_reviewed: 2026-08-09
 | Original base          | `f1c2f22dd935322c1a71eb80c51592f243dc196d`                                                                                      |
 | Reconciled main        | `762258e31d7509aac8a7a46e7828ae0e92b84a84`                                                                                      |
 | Implementation commits | `35b1418931bcef3babe12e981571207314bc6120`, `1366095b3ae637675c5dd9a97406bff0439fadf9`                                          |
-| Candidate branch tip   | recorded by the protected publication procedure                                                                                 |
-| Integrated main SHA    | not integrated                                                                                                                  |
-| Implementation status  | corrected; focused 49/49 pass; exact candidate pending                                                                          |
-| Mainline Safety        | implementation conforms; corrected candidate pending                                                                            |
+| Candidate branch tip   | `83ef66ff70a3bbeb85b90f6a99aeb8cfb0da8bf9`                                                                                      |
+| Protected integration  | pull request #17                                                                                                                |
+| Integrated main SHA    | `40d822cd936c9abbfce064fd7799e6a2f8c9785e`                                                                                      |
+| Finalization base      | `9937af957c1c92c9767b4255705a17f3e189904b`                                                                                      |
+| Implementation status  | MAINLINE; corrected read-only foundation integrated                                                                             |
+| Mainline Safety        | ACCEPTED; source-bound candidate and integrated-main decisions both `RELEASE_GO`                                                |
 | Prisma impact          | NONE                                                                                                                            |
 | SQLite migration       | NONE                                                                                                                            |
 | MySQL migration        | NONE                                                                                                                            |
@@ -35,10 +37,10 @@ last_reviewed: 2026-08-09
 | No fuzzy rename        | PASS diagnostic: equal prose under new IDs remains remove/add                                                                   |
 | Graph result           | PASS diagnostic: stable rewire, add/remove direction, endings, and branching                                                    |
 | Read-only invariance   | PASS diagnostic: editions, Voyage, Wayfarer, and Harborlight fingerprints unchanged                                             |
-| Sounding Line decision | pre-reconciliation `7db576d0` `RELEASE_GO`; exact reconciled rerun pending                                                      |
-| Post-merge decision    | pending protected integration                                                                                                   |
-| Remote parity          | pending protected integration                                                                                                   |
-| Feature Catalog        | UPDATED and validated as branch-complete `FT-B009` at `1366095b3ae637675c5dd9a97406bff0439fadf9`                                |
+| Sounding Line decision | candidate `83ef66ff` `RELEASE_GO`; hosted protected decision and all 32 check runs passed                                       |
+| Post-merge decision    | integrated `40d822cd` `RELEASE_GO`; 30/30 receipts passed and cleanup `CLEAN`                                                   |
+| Remote parity          | PASS for implementation closure at `40d822cd`; final records reconciled accepted main through `9937af95`                        |
+| Feature Catalog        | UPDATED and validated as MAINLINE `FT-B009`                                                                                     |
 
 ## Delivered capability
 
@@ -54,4 +56,4 @@ No polished What Changed page, audience-specific prose, spoiler interaction, Com
 
 ## Decision boundary
 
-This record is not yet a completion or mainline acceptance claim. It becomes a branch-complete receipt only after the governed subsystem/candidate evidence, final documentation and Feature Catalog checks, current-main reconciliation, stable candidate commit, and exact status fields above are recorded. Integrated completion additionally requires protected integration, post-merge validation, and local/remote parity.
+This is an integrated Phase 1 completion claim for the additive read-only Tideglass foundation. It does not claim a user-facing comparison experience, deployment, production or private-data execution, live-provider proof, or owner acceptance. Phase 2 remains outside this receipt and is not authorized by Phase 1 completion.
