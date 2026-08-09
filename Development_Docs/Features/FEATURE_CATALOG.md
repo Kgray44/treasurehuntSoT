@@ -1258,11 +1258,9 @@ Voyagewright adds first-class Google and GitHub sign-up, sign-in, and explicit a
 
 ---
 
-# Completed Branch Features Not Yet Available on Main
-
 ## FT-B009 - Tideglass Semantic Edition Comparison Foundation
 
-**Status:** BRANCH COMPLETE NOT MERGED
+**Status:** MAINLINE
 **Program or subsystem:** Project Tideglass Phase 1
 
 A read-only authority compares exact immutable Chronicle editions through deterministic semantic normalization, stable identity matching, domain comparators, redacted Change Sets, and source-bound receipts.
@@ -1292,6 +1290,8 @@ A read-only authority compares exact immutable Chronicle editions through determ
 - completion-record: `Development_Docs/Projects/Project_Tideglass/Project_Tideglass_Phase_1_Completion_Receipt.md`
 
 ---
+
+# Completed Branch Features Not Yet Available on Main
 
 ## FT-B010 - Governed Platform Administration and Consented Support Access
 
