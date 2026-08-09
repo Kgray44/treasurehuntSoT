@@ -4,7 +4,7 @@
   "gates": [
     {
       "id": "local-change",
-      "requiredSuites": ["static.core", "unit.deepwater", "unit.homeport", "unit.sounding-line"],
+      "requiredSuites": ["static.core", "unit.deepwater", "unit.homeport", "unit.sounding-line", "unit.tideglass"],
       "conditionalSuites": [
         "unit.auth",
         "unit.one-voyage",
@@ -49,7 +49,14 @@
     },
     {
       "id": "subsystem",
-      "requiredSuites": ["static.core", "unit.homeport", "unit.wakebook", "component.wakebook", "browser.wakebook"],
+      "requiredSuites": [
+        "static.core",
+        "unit.homeport",
+        "unit.tideglass",
+        "unit.wakebook",
+        "component.wakebook",
+        "browser.wakebook"
+      ],
       "conditionalSuites": [
         "unit.auth",
         "unit.one-voyage",
@@ -107,6 +114,7 @@
         "browser.cross-project"
       ],
       "conditionalSuites": [
+        "unit.tideglass",
         "browser.invitations",
         "browser.passport",
         "browser.wakebook",
@@ -121,6 +129,7 @@
         "static.core",
         "unit.auth",
         "unit.one-voyage",
+        "unit.tideglass",
         "unit.wayfarer",
         "unit.wakebook",
         "unit.community",
@@ -175,6 +184,7 @@
         "static.core",
         "unit.auth",
         "unit.one-voyage",
+        "unit.tideglass",
         "unit.wayfarer",
         "unit.wakebook",
         "unit.community",

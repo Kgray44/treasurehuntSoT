@@ -67,6 +67,18 @@
       "contractIds": ["sealed-hold-private-delivery", "public-privacy-projection"]
     },
     {
+      "id": "tideglass",
+      "project": "project-tideglass",
+      "sourcePaths": ["src/tideglass/**", "scripts/tideglass/**", "Development_Docs/Projects/Project_Tideglass/**"],
+      "testPaths": ["tests/tideglass/**/*.test.*"],
+      "contractIds": [
+        "tideglass-exact-edition-pair",
+        "tideglass-semantic-determinism",
+        "tideglass-safe-projection",
+        "tideglass-read-only-invariance"
+      ]
+    },
+    {
       "id": "breakwater",
       "project": "breakwater",
       "sourcePaths": ["scripts/test-all.ps1", "playwright.config.ts"],

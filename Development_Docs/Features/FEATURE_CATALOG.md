@@ -136,7 +136,7 @@ Captains assemble exact-edition crews through individualized invitations with au
 
 ### Primary surfaces
 
-`/join`, `/player`
+`/join/[token]`, `/player/invitation`, `/player/library`
 
 ### Evidence
 
@@ -396,7 +396,7 @@ A Player-safe Journal represents active and historical Chronicles with physical 
 
 ### Primary surfaces
 
-`/player/voyages/[id]`
+`/player/playthroughs/[playthroughId]/journal`
 
 ### Evidence
 
@@ -422,7 +422,7 @@ The Player chart presents safe geography, progression, revealed routes, and curr
 
 ### Primary surfaces
 
-`/player/voyages/[id]/chart`
+`/player/playthroughs/[playthroughId]/journal`
 
 ### Evidence
 
@@ -448,7 +448,7 @@ Awarded artifacts have authoritative reveal, inspection, collection, and fallbac
 
 ### Primary surfaces
 
-`/player/voyages/[id]/treasure`
+`/player/playthroughs/[playthroughId]/journal`
 
 ### Evidence
 
@@ -474,7 +474,7 @@ Optional Chronicle branches retain independent discovery, progression, reward, a
 
 ### Primary surfaces
 
-`/player/voyages/[id]/ledger`
+`/player/playthroughs/[playthroughId]/journal`
 
 ### Evidence
 
@@ -500,7 +500,7 @@ A readable, filterable, Player-safe event history records the Voyage's ordered n
 
 ### Primary surfaces
 
-`/player/voyages/[id]/log`
+`/player/playthroughs/[playthroughId]/journal`
 
 ### Evidence
 
@@ -526,7 +526,7 @@ The finale has explicit protected release states and replay behavior that never 
 
 ### Primary surfaces
 
-`/player/voyages/[id]/finale`
+`/player/playthroughs/[playthroughId]/journal`
 
 ### Evidence
 
@@ -552,7 +552,7 @@ Authenticated event delivery separates durable server replay from observed and a
 
 ### Primary surfaces
 
-`/api/player/events`, `/player`
+`/api/player/[campaignSlug]/events`, `/api/player/[campaignSlug]/presence`, `/player/playthroughs/[playthroughId]/journal`
 
 ### Evidence
 
@@ -1258,9 +1258,42 @@ Voyagewright adds first-class Google and GitHub sign-up, sign-in, and explicit a
 
 ---
 
+## FT-B009 - Tideglass Semantic Edition Comparison Foundation
+
+**Status:** MAINLINE
+**Program or subsystem:** Project Tideglass Phase 1
+
+A read-only authority compares exact immutable Chronicle editions through deterministic semantic normalization, stable identity matching, domain comparators, redacted Change Sets, and source-bound receipts.
+
+### Important subfeatures
+
+- Exact edition and checksum binding
+- Versioned semantic normalization
+- Stable identity and graph comparison
+- Deterministic Change Sets and receipts
+- Server-authorized redacted projections
+- Read-only cross-domain invariance
+
+### Primary surfaces
+
+`npm run tideglass:compare`, `src/tideglass`
+
+### Meaningful limitations
+
+- Ordinary user comparison routes and polished What Changed interaction are outside Phase 1.
+- Unknown historical semantics remain explicitly unavailable until an accepted Drydock reader can normalize them.
+
+### Evidence
+
+- path: `src/tideglass/service.ts`
+- test: `tests/tideglass`
+- completion-record: `Development_Docs/Projects/Project_Tideglass/Project_Tideglass_Phase_1_Completion_Receipt.md`
+
+---
+
 # Completed Branch Features Not Yet Available on Main
 
-## FT-B009 - Private Living Journey Archive
+## FT-B010 - Private Living Journey Archive
 
 **Status:** BRANCH COMPLETE NOT MERGED
 **Program or subsystem:** Project Wakebook Phase 1

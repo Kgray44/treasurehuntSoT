@@ -20,7 +20,7 @@
     "phase": { "const": "Phase 2 - Trace the Current" },
     "sourceSha": { "$ref": "#/$defs/sha" },
     "seedQueueCount": { "const": 44 },
-    "queueItemCount": { "const": 45 },
+    "queueItemCount": { "const": 44 },
     "traceCount": { "type": "integer", "minimum": 1 },
     "traces": {
       "type": "array",

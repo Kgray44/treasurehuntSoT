@@ -22,7 +22,9 @@ const entry = (overrides: Partial<FeatureCatalogEntry> = {}): FeatureCatalogEntr
 describe("Feature Catalog", () => {
   it("loads the audited catalog with stable ordering", () => {
     const { entries } = loadFeatureCatalog();
-    expect(entries).toHaveLength(42);
+    expect(entries).toHaveLength(43);
+    expect(entries.find((item) => item.id === "FT-B009")?.program).toBe("Project Tideglass Phase 1");
+    expect(entries.find((item) => item.id === "FT-B010")?.program).toBe("Project Wakebook Phase 1");
     expect(sortedEntries(entries).map((item) => item.id)).toEqual(
       [...sortedEntries(entries).map((item) => item.id)].sort((a, b) =>
         a.localeCompare(b, undefined, { numeric: true }),

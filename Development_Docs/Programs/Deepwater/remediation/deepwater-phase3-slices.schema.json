@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Project Deepwater Phase 3 realization slices",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "project", "phase", "sourceSha", "mainlineSafetyContract", "slices"],
+  "properties": {
+    "schemaVersion": { "const": "1.0.0" },
+    "project": { "const": "Project Deepwater" },
+    "phase": { "const": "Phase 3 - Raise the Capability" },
+    "sourceSha": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+    "mainlineSafetyContract": { "type": "string", "minLength": 1 },
+    "slices": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "sliceId",
+          "title",
+          "canonicalOwner",
+          "contributingOwners",
+          "category",
+          "concurrencyClass",
+          "status",
+          "baseSourceSha",
+          "branch",
+          "worktree",
+          "ownedPaths",
+          "excludedPaths",
+          "hardDependencies",
+          "mainlineSafetyContract",
+          "verificationPlan",
+          "closureEvidence",
+          "acceptedMainSha"
+        ],
+        "properties": {
+          "sliceId": { "type": "string", "pattern": "^DW-P3-SLICE-[A-Z0-9]+(?:-[A-Z0-9]+)*$" },
+          "title": { "type": "string", "minLength": 1 },
+          "canonicalOwner": { "type": "string", "minLength": 1 },
+          "contributingOwners": { "type": "array", "uniqueItems": true, "items": { "type": "string" } },
+          "category": { "enum": ["OWNER_PROJECT_WORK", "DEEPWATER_SLICE_ELIGIBLE", "DOCUMENTATION_RECONCILIATION"] },
+          "concurrencyClass": { "enum": ["A", "B", "C", "D"] },
+          "status": {
+            "enum": ["REGISTERED", "IN_PROGRESS", "MAINLINE_CANDIDATE", "MAINLINE_ACCEPTED", "BLOCKED", "RETIRED"]
+          },
+          "baseSourceSha": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+          "branch": { "type": "string", "minLength": 1 },
+          "worktree": { "type": "string", "minLength": 1 },
+          "ownedPaths": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "type": "string" } },
+          "excludedPaths": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "type": "string" } },
+          "hardDependencies": { "type": "array", "uniqueItems": true, "items": { "type": "string" } },
+          "mainlineSafetyContract": { "type": "string", "minLength": 1 },
+          "verificationPlan": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "type": "string" } },
+          "closureEvidence": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "type": "string" } },
+          "acceptedMainSha": { "type": ["string", "null"], "pattern": "^[0-9a-f]{40}$" }
+        }
+      }
+    }
+  }
+}
