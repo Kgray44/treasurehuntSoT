@@ -24,10 +24,11 @@ Project Deepwater is Voyagewright's capability-realization and systems-audit pro
 - [Utilization report](reports/Project_Deepwater_Phase_3_Utilization_Report.md)
 - [Remediation report](reports/Project_Deepwater_Phase_3_Remediation_Report.md)
 - [Phase 2 to Phase 3 delta report](reports/Project_Deepwater_Phase_2_to_Phase_3_Delta_Report.md)
+- [Final report](reports/Project_Deepwater_Phase_3_Final_Report.md)
 - `reports/Project_Deepwater_Phase_3_Realization_Queue.json`
 - `reports/Project_Deepwater_Phase_4_Proof_Queue.json`
 
-Phase 3 is active and explicitly authorized. Its current artifacts are local coordination-branch evidence until the registered slices and final control-plane candidate pass Sounding Line and protected-mainline integration.
+Phase 3 is active and explicitly authorized. All three registered documentation slices are accepted on protected main and close ten route-identity findings. The final control-plane candidate remains local until owner-project reconciliation, exact-source Sounding Line, protected integration, and actual-main proof complete. Phase 4 remains unauthorized.
 
 ## Current Phase 2 records
 
