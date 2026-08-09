@@ -38,12 +38,18 @@ async function identity({ key, username, displayName, roles, status = "ACTIVE" }
   });
   const account = await db.userAccount.upsert({
     where: { id: `hp7-account-${key}` },
-    update: { status, legacyGameMasterId: gm.id, claimedAt: createdAt },
+    update: {
+      status,
+      legacyGameMasterId: gm.id,
+      claimedAt: createdAt,
+      ordinaryWorkspaceEntryAt: status === "ACTIVE" ? createdAt : null,
+    },
     create: {
       id: `hp7-account-${key}`,
       status,
       legacyGameMasterId: gm.id,
       claimedAt: createdAt,
+      ordinaryWorkspaceEntryAt: status === "ACTIVE" ? createdAt : null,
       createdAt,
     },
   });
@@ -168,6 +174,10 @@ async function seed() {
   };
   for (const value of Object.values(inherited)) {
     await db.gameMasterUser.update({ where: { username: value.username }, data: { passwordHash } });
+    await db.userAccount.updateMany({
+      where: { id: value.accountId, status: "ACTIVE" },
+      data: { ordinaryWorkspaceEntryAt: createdAt },
+    });
     await upsertCanonicalCredential(value.accountId, value.email);
   }
 
