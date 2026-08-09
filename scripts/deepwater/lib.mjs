@@ -1869,7 +1869,7 @@ function phase3QueueFor(findings, phase2Queue, config) {
         category = "OWNER_PROJECT_WORK";
         eligibility = "BLOCKED_BY_ACTIVE_OWNER";
         activeProjectStatus =
-          "Project Tideglass has an unaccepted active owner lane; Deepwater records the gap but does not compete.";
+          "The Tideglass foundation is accepted; Studio consumer migration remains Tideglass and Shipwright owner work, and Deepwater does not compete with the active Shipwright lane.";
       } else if (finding.findingId.startsWith("DW-FIND-CATALOG-SURFACE-")) {
         category = "DOCUMENTATION_RECONCILIATION";
         eligibility = "BLOCKED_BY_ACTIVE_OWNER";
@@ -2021,7 +2021,7 @@ ${sliceRows}
 ## Explainable changes
 
 - Phase 2 realization history is retained unchanged in the trace and remediation artifacts.
-- Phase 3 adds utilization status for all 53 capabilities.
+- Phase 3 adds utilization status for all ${artifacts.utilizationDocument.reviewedCapabilityCount} current accepted capabilities. The Phase 2 baseline remains ${artifacts.inputs.phase3Config.phase2AcceptedCapabilityCount}; accepted-main Tideglass completion added ${artifacts.inputs.phase3Config.currentMainCapabilityAdditions.map((entry) => entry.capabilityId).join(", ")} before coordination publication.
 - New utilization finding: ${newFindingIds}.
 - Findings closed by accepted Phase 3 slices: ${closedFindings.length ? closedFindings.join(", ") : "none yet"}.
 - Product behavior changed by the coordination branch: none.
@@ -2868,8 +2868,13 @@ export function validatePhase3Model(artifacts) {
   const ledgerById = new Map(artifacts.ledger.capabilities.map((capability) => [capability.capabilityId, capability]));
   const findingsById = new Map(artifacts.findingsDocument.findings.map((finding) => [finding.findingId, finding]));
   const utilization = artifacts.utilizationDocument.capabilities;
-  if (utilization.length !== 53 || artifacts.utilizationDocument.reviewedCapabilityCount !== 53)
-    errors.push("Phase 3 utilization does not review all 53 governed capabilities");
+  const expectedCapabilityCount = artifacts.inputs.phase3Config.expectedCurrentCapabilityCount;
+  if (
+    utilization.length !== expectedCapabilityCount ||
+    artifacts.utilizationDocument.reviewedCapabilityCount !== expectedCapabilityCount ||
+    artifacts.ledger.capabilities.length !== expectedCapabilityCount
+  )
+    errors.push(`Phase 3 utilization does not review all ${expectedCapabilityCount} governed capabilities`);
   const duplicateCapabilityIds = duplicateValues(utilization.map((capability) => capability.capabilityId));
   if (duplicateCapabilityIds.length)
     errors.push(`duplicate utilization capability IDs: ${duplicateCapabilityIds.join(", ")}`);

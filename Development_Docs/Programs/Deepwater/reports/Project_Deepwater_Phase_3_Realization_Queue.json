@@ -328,7 +328,7 @@
       "status": "ASSIGNED"
     },
     {
-      "activeProjectStatus": "Project Tideglass has an unaccepted active owner lane; Deepwater records the gap but does not compete.",
+      "activeProjectStatus": "The Tideglass foundation is accepted; Studio consumer migration remains Tideglass and Shipwright owner work, and Deepwater does not compete with the active Shipwright lane.",
       "capabilityId": "DW-CAP-IMMUTABLE-PUBLISHING-EDITIONS-FORKS",
       "category": "OWNER_PROJECT_WORK",
       "closureEvidence": [
@@ -336,10 +336,12 @@
       ],
       "deepwaterSliceEligibility": "BLOCKED_BY_ACTIVE_OWNER",
       "findingId": "DW-FIND-EDITION-COMPARISON-SEMANTIC-UNDERUTILIZATION",
-      "hardDependencies": ["Accepted Tideglass semantic comparison authority and owner-coordinated consumer migration"],
+      "hardDependencies": [
+        "Accepted Tideglass semantic comparison authority plus owner-coordinated Studio consumer migration"
+      ],
       "owner": "Tideglass",
       "queueId": "DW-P3-EDITION-COMPARISON-SEMANTIC-UNDERUTILIZATION",
-      "recommendedIntegrationVehicle": "Project Tideglass current governed phase",
+      "recommendedIntegrationVehicle": "Tideglass and Shipwright owner-coordinated follow-on; no later phase is started by Deepwater",
       "severity": "MEDIUM",
       "sliceId": null,
       "status": "ASSIGNED"
@@ -403,5 +405,5 @@
     }
   ],
   "schemaVersion": "1.0.0",
-  "sourceSha": "762258e31d7509aac8a7a46e7828ae0e92b84a84"
+  "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
 }

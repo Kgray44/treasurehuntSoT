@@ -10,7 +10,7 @@ last_reviewed: 2026-08-09
 
 ## Current state
 
-Phase 3 is not yet integrated. The coordination lane is based on accepted `origin/main` `762258e31d7509aac8a7a46e7828ae0e92b84a84`; all three documentation slices are registered and not yet accepted.
+Phase 3 is not yet integrated. The coordination lane is reconciled with accepted `origin/main` `40d822cd936c9abbfce064fd7799e6a2f8c9785e`; all three documentation slices are registered and not yet accepted.
 
 The record will be updated after each slice converges, after the coordination branch refreshes to the resulting accepted main, and after the final protected-mainline decision. Until then, no merge, remote parity, hosted-mainline pass, or Phase 3 acceptance is claimed.
 

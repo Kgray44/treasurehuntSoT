@@ -1,5 +1,5 @@
 {
-  "auditedSourceSha": "762258e31d7509aac8a7a46e7828ae0e92b84a84",
+  "auditedSourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e",
   "findings": [
     {
       "assignedProjectPhase": "One Voyage and Ledgerlight catalog reconciliation",
@@ -496,7 +496,7 @@
       "status": "CLOSED"
     },
     {
-      "assignedProjectPhase": "Project Tideglass current governed phase",
+      "assignedProjectPhase": "Tideglass and Shipwright owner-coordinated follow-on; no later phase is started by Deepwater",
       "canonicalOwner": "Tideglass",
       "capabilityId": "DW-CAP-IMMUTABLE-PUBLISHING-EDITIONS-FORKS",
       "catalogOutcome": null,
@@ -516,8 +516,8 @@
       "findingId": "DW-FIND-EDITION-COMPARISON-SEMANTIC-UNDERUTILIZATION",
       "firstLossPoint": "PROJECTION",
       "gapFamilies": ["DW-SVC", "DW-PROJ", "DW-UI"],
-      "mainlineDependency": "Accepted Tideglass semantic comparison authority and owner-coordinated consumer migration",
-      "observedSourceSha": "762258e31d7509aac8a7a46e7828ae0e92b84a84",
+      "mainlineDependency": "Accepted Tideglass semantic comparison authority plus owner-coordinated Studio consumer migration",
+      "observedSourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e",
       "rootCause": "The accepted comparePublishedVersions path compares serialized snapshot fields and the Studio consumer renders internal paths and before/after serialized values. It does not consume a schema-normalized semantic Change Set or audience-safe Tideglass projection.",
       "severity": "MEDIUM",
       "status": "ASSIGNED"

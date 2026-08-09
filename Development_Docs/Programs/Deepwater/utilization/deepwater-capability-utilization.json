@@ -11432,6 +11432,133 @@
       ]
     },
     {
+      "canonicalConsumption": true,
+      "canonicalOwner": "Tideglass",
+      "capabilityId": "DW-CAP-TIDEGLASS-SEMANTIC-EDITION-COMPARISON",
+      "consumedOperations": [
+        "deterministic-change-sets-and-receipts",
+        "exact-edition-and-checksum-binding",
+        "read-only-cross-domain-invariance",
+        "server-authorized-redacted-projections",
+        "stable-identity-and-graph-comparison",
+        "versioned-semantic-normalization"
+      ],
+      "consumedOrRepresentedStates": ["FAILURE", "SUCCESS"],
+      "consumedSafeMetadata": [
+        "authoritative lifecycle state",
+        "authorization and audience scope",
+        "source, version, and provenance identity"
+      ],
+      "evidence": [
+        "Development_Docs/Projects/Project_Tideglass/Project_Tideglass_Phase_1_Completion_Receipt.md",
+        "src/tideglass/service.ts",
+        "tests/tideglass"
+      ],
+      "expectedOperations": [
+        {
+          "consumerReferences": ["src/tideglass/service.ts", "tests/tideglass"],
+          "disposition": "CONSUMED",
+          "findingId": null,
+          "name": "Deterministic Change Sets and receipts",
+          "operationId": "deterministic-change-sets-and-receipts",
+          "rationale": null,
+          "sourceReferences": [
+            "src/tideglass/service.ts",
+            "tests/tideglass",
+            "Development_Docs/Projects/Project_Tideglass/Project_Tideglass_Phase_1_Completion_Receipt.md"
+          ]
+        },
+        {
+          "consumerReferences": ["src/tideglass/service.ts", "tests/tideglass"],
+          "disposition": "CONSUMED",
+          "findingId": null,
+          "name": "Exact edition and checksum binding",
+          "operationId": "exact-edition-and-checksum-binding",
+          "rationale": null,
+          "sourceReferences": [
+            "src/tideglass/service.ts",
+            "tests/tideglass",
+            "Development_Docs/Projects/Project_Tideglass/Project_Tideglass_Phase_1_Completion_Receipt.md"
+          ]
+        },
+        {
+          "consumerReferences": ["src/tideglass/service.ts", "tests/tideglass"],
+          "disposition": "CONSUMED",
+          "findingId": null,
+          "name": "Read-only cross-domain invariance",
+          "operationId": "read-only-cross-domain-invariance",
+          "rationale": null,
+          "sourceReferences": [
+            "src/tideglass/service.ts",
+            "tests/tideglass",
+            "Development_Docs/Projects/Project_Tideglass/Project_Tideglass_Phase_1_Completion_Receipt.md"
+          ]
+        },
+        {
+          "consumerReferences": ["src/tideglass/service.ts", "tests/tideglass"],
+          "disposition": "CONSUMED",
+          "findingId": null,
+          "name": "Server-authorized redacted projections",
+          "operationId": "server-authorized-redacted-projections",
+          "rationale": null,
+          "sourceReferences": [
+            "src/tideglass/service.ts",
+            "tests/tideglass",
+            "Development_Docs/Projects/Project_Tideglass/Project_Tideglass_Phase_1_Completion_Receipt.md"
+          ]
+        },
+        {
+          "consumerReferences": ["src/tideglass/service.ts", "tests/tideglass"],
+          "disposition": "CONSUMED",
+          "findingId": null,
+          "name": "Stable identity and graph comparison",
+          "operationId": "stable-identity-and-graph-comparison",
+          "rationale": null,
+          "sourceReferences": [
+            "src/tideglass/service.ts",
+            "tests/tideglass",
+            "Development_Docs/Projects/Project_Tideglass/Project_Tideglass_Phase_1_Completion_Receipt.md"
+          ]
+        },
+        {
+          "consumerReferences": ["src/tideglass/service.ts", "tests/tideglass"],
+          "disposition": "CONSUMED",
+          "findingId": null,
+          "name": "Versioned semantic normalization",
+          "operationId": "versioned-semantic-normalization",
+          "rationale": null,
+          "sourceReferences": [
+            "src/tideglass/service.ts",
+            "tests/tideglass",
+            "Development_Docs/Projects/Project_Tideglass/Project_Tideglass_Phase_1_Completion_Receipt.md"
+          ]
+        }
+      ],
+      "expectedSafeMetadata": [
+        "authoritative lifecycle state",
+        "authorization and audience scope",
+        "source, version, and provenance identity"
+      ],
+      "expectedStates": ["FAILURE", "SUCCESS"],
+      "findingBlockedMetadata": [],
+      "intentionallyOmittedMetadata": [],
+      "intentionallyOmittedStates": [],
+      "intentionallyUnconsumedOperations": [],
+      "name": "Tideglass Semantic Edition Comparison Foundation",
+      "phase3Disposition": "INTERNAL_OR_DEPRECATED",
+      "rationale": "The capability is consumed by a named machine, developer, or operator workflow and is intentionally absent from ordinary product navigation.",
+      "realizationClassification": "INTERNAL_BY_DESIGN",
+      "status": "INTERNAL_ONLY",
+      "utilizationConsumers": [
+        "audience:CREATOR_SERVICE",
+        "audience:DEVELOPER",
+        "consumer:src/tideglass/service.ts",
+        "consumer:tests/tideglass",
+        "surface:npm run tideglass:compare",
+        "surface:src/tideglass"
+      ]
+    },
+    {
       "canonicalConsumption": false,
       "canonicalOwner": "Wayfarer",
       "capabilityId": "DW-CAP-TRANSACTIONAL-EMAIL-DELIVERY",
@@ -13014,13 +13141,13 @@
   ],
   "phase": "Phase 3 - Raise the Capability",
   "project": "Project Deepwater",
-  "reviewedCapabilityCount": 53,
+  "reviewedCapabilityCount": 54,
   "schemaVersion": "1.0.0",
-  "sourceSha": "762258e31d7509aac8a7a46e7828ae0e92b84a84",
+  "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e",
   "statusCounts": {
     "FULLY_UTILIZED": 40,
     "INTENTIONALLY_PARTIAL": 2,
-    "INTERNAL_ONLY": 7,
+    "INTERNAL_ONLY": 8,
     "NOT_APPLICABLE": 1,
     "PARTIALLY_UTILIZED": 3
   }

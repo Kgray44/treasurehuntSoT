@@ -366,8 +366,10 @@ test("Phase 2 semantic output is deterministic", async () => {
   assert.equal(stableStringify(baseline.phase3Queue), stableStringify(second.phase3Queue));
 });
 
-test("Phase 3 reviews all 53 capabilities and accepts the generated utilization model", () => {
-  assert.equal(baseline.utilizationDocument.reviewedCapabilityCount, 53);
+test("Phase 3 reviews all 54 current accepted capabilities and accepts the generated utilization model", () => {
+  assert.equal(baseline.inputs.phase3Config.phase2AcceptedCapabilityCount, 53);
+  assert.equal(baseline.inputs.phase3Config.expectedCurrentCapabilityCount, 54);
+  assert.equal(baseline.utilizationDocument.reviewedCapabilityCount, 54);
   assert.deepEqual(phase3Errors(phase3Model()), []);
 });
 

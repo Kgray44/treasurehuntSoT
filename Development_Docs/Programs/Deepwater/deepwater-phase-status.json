@@ -1,6 +1,6 @@
 {
   "activation": "ACTIVE_OWNER_COORDINATED_REALIZATION_AND_UTILIZATION_CLOSURE",
-  "auditedSourceSha": "762258e31d7509aac8a7a46e7828ae0e92b84a84",
+  "auditedSourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e",
   "authorityGaps": [
     {
       "basis": "Current accepted source, the Global Product Governance Standard, Feature Catalog, Homeport records, and accepted Landfall references remain the bounded authority.",
@@ -25,19 +25,19 @@
   ],
   "mainlineState": "NOT_YET_ACCEPTED",
   "metrics": {
-    "backendOperationsReviewed": 334,
+    "backendOperationsReviewed": 340,
     "capabilityRealization": {
       "BACKEND_ONLY": 1,
       "DEPRECATED": 1,
       "FULLY_REALIZED": 40,
-      "INTERNAL_BY_DESIGN": 7,
+      "INTERNAL_BY_DESIGN": 8,
       "PARTIALLY_REALIZED": 2,
       "SECURITY_RESTRICTED": 2
     },
     "capabilityUtilization": {
       "FULLY_UTILIZED": 40,
       "INTENTIONALLY_PARTIAL": 2,
-      "INTERNAL_ONLY": 7,
+      "INTERNAL_ONLY": 8,
       "NOT_APPLICABLE": 1,
       "PARTIALLY_UTILIZED": 3
     },

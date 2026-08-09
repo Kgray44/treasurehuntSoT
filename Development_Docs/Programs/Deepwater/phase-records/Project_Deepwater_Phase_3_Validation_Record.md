@@ -10,11 +10,11 @@ last_reviewed: 2026-08-09
 
 ## Current state
 
-Phase 3 validation is in progress. The deterministic control plane currently passes its focused model and validator suites against accepted base `762258e31d7509aac8a7a46e7828ae0e92b84a84`.
+Phase 3 validation is in progress. The deterministic control plane currently passes its focused model and validator suites against accepted source `40d822cd936c9abbfce064fd7799e6a2f8c9785e`.
 
 | Gate                                                     | Current result                                                    |
 | -------------------------------------------------------- | ----------------------------------------------------------------- |
-| Phase 3 artifact generation                              | PASS; 53 utilization reviews, 21 queue items, 3 registered slices |
+| Phase 3 artifact generation                              | PASS; 54 utilization reviews, 21 queue items, 3 registered slices |
 | Deepwater validation                                     | PASS on the coordination worktree                                 |
 | Deepwater control-plane tests                            | PASS; 54/54 including 12 Phase 3 negative families                |
 | Documentation, Feature Catalog, formatter, static checks | pending final coordination candidate                              |

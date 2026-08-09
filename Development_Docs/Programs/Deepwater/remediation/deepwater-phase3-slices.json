@@ -6,7 +6,7 @@
   "slices": [
     {
       "acceptedMainSha": null,
-      "baseSourceSha": "762258e31d7509aac8a7a46e7828ae0e92b84a84",
+      "baseSourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e",
       "branch": "codex/deepwater-phase3-catalog-player",
       "canonicalOwner": "Ledgerlight",
       "category": "DOCUMENTATION_RECONCILIATION",
@@ -36,7 +36,7 @@
     },
     {
       "acceptedMainSha": null,
-      "baseSourceSha": "762258e31d7509aac8a7a46e7828ae0e92b84a84",
+      "baseSourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e",
       "branch": "codex/deepwater-phase3-catalog-one-voyage",
       "canonicalOwner": "One Voyage",
       "category": "DOCUMENTATION_RECONCILIATION",
@@ -66,7 +66,7 @@
     },
     {
       "acceptedMainSha": null,
-      "baseSourceSha": "762258e31d7509aac8a7a46e7828ae0e92b84a84",
+      "baseSourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e",
       "branch": "codex/deepwater-phase3-catalog-harborlight",
       "canonicalOwner": "Harborlight",
       "category": "DOCUMENTATION_RECONCILIATION",
@@ -95,5 +95,5 @@
       "worktree": "C:\\Users\\kkids\\Documents\\treasurehuntSoT-deepwater-p3-catalog-harborlight"
     }
   ],
-  "sourceSha": "762258e31d7509aac8a7a46e7828ae0e92b84a84"
+  "sourceSha": "40d822cd936c9abbfce064fd7799e6a2f8c9785e"
 }
